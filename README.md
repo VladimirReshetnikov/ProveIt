@@ -25,11 +25,37 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 49 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 51 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
+
+The complex cosine fold now has its exact infinitesimal root classification,
+real and imaginary branch behavior, half-valuation law, and complete strong
+inverse-sine expansion. The displayed cubic factor has an exact finite
+fourth-order remainder. The exact local angular strong series has order one at separated roots and
+order two at collision. Euler's identity identifies the manuscript's
+exponential coordinate, and the native polynomial multiplicities agree
+with those local orders, completing the cosine fold theorem.
+
+The coupled two-angle collision now has a bijection with two independent
+quadratic root sets, the exact arcsine branches, and the complete counts of
+distinct complex and real solutions. Its intersection algebra represents the
+two diagonal equations in every commutative target algebra and has basis
+`1, X, Y, XY` at every parameter. Actual fine partial derivatives verify the
+Jacobian and its discriminant locus. The algebra now decomposes into four
+field factors, two local dual-number factors, or one local rank-four factor
+on the respective collision strata. The local dimensions sum to four.
+The verified centered sine series now induces a formal coordinate automorphism
+at every infinitesimal root. Together with linear diagonalization and removal
+of unit factors, it identifies each angular formal quotient with `(X^m,Y^n)`,
+where each exponent is one or two on the corresponding collision stratum.
+A coefficient basis proves these formal quotients are finite-dimensional.
+Their native local dimensions are one, two and four, agreeing with the
+algebraic local factors. The finite sum of angular multiplicities over all
+actual infinitesimal solutions is four, completing the coupled collision
+assertions.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
@@ -260,7 +286,28 @@ factors now proves full finite-family Hensel lifting in Hahn valuation rings:
 the lower-degree corrections have positive supports inside the monoid generated
 by the original errors. Every simple residue root lifts uniquely with the
 same support control.
-Its first correction coefficient is the negative error coefficient evaluated
+Simple-root existence and uniqueness now also hold directly in the actual
+finite surreal and surcomplex rings, without a monicity assumption. The
+proof places the coefficients in one small Hahn workspace and compares
+all actual candidates by divided differences. In particular, a real
+polynomial reducing to `Y+b₀` has a unique finite root with standard part
+`-b₀` and native multiplicity one, supplying the trigonometric stability
+lemma. The actual complex lift is a unique infinitesimal correction;
+transfer of the Hahn support and first-coefficient bounds remains pending.
+For actual real polynomials, the stability normalization now gives a unique
+simple root throughout `v(h)>κ` when `v(A)=κ≥0`, the constant and linear
+errors have valuation at least `σ>2κ`, and higher coefficients are finite.
+It proves both `v(h)≥σ−κ` and `v(h+P(0)/A)≥2σ−3κ` for actual surreal
+exponents. Mathlib Laurent polynomials now have exact real numerators in
+Cayley coordinates, with a positive denominator and coefficient valuation
+bounds. Applying the polynomial theorem proves both bounds and uniqueness
+for the exact trigonometric pullback in `x=2 tan(h/2)`. The inverse chart
+preserves valuation and has a finite cubic remainder, transferring both bounds
+to the actual angle `h`. The formal Fourier derivative is the native fine
+derivative, and the perturbed angular root is simple and unique throughout
+`v(h)>κ`. This completes the angular stability theorem; its separate
+sharpness examples remain pending.
+In the Hahn theorem, the first correction coefficient is the negative error coefficient evaluated
 at the residue root, divided by the residue derivative; cancellation is allowed.
 The distinct complex residue roots also index unique cluster factors, with
 the prescribed multiplicities and a characterization of every existing Hahn

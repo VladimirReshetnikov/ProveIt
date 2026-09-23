@@ -1,0 +1,13 @@
+.PHONY: all pdf check clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=_build article.tex
+	cp _build/article.pdf article.pdf
+
+check:
+	python code/verify.py --output verification-rerun.json
+
+clean:
+	rm -rf _build

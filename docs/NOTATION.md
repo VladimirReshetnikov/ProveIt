@@ -37,6 +37,57 @@ class is not one such workspace. `∞` in a valuation is an added symbol with
 `v(0) = ∞`, not a surreal number. Natural numbers are ordinary finite integers;
 write `ℕ = {0,1,2,…}` and `n ≥ 1` where division by `n` is intended.
 
+## Omnific integers and the constant coefficient
+
+The [Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
+now writes `Oz = ℤ ⊕ Π`, agreeing with the foundations report. Its original
+base used `A = Oz = ℤ ⊕ J`; below `J` denotes the same ideal. The
+[set-sized quotient report](surreal/set-sized-quotients-of-omnific-integers/article.tex)
+uses `I` for the infinite-part ideal. The decomposition is additive, not a
+product of unital rings. In growth notation `ω^γ`, every exponent of `Oz`
+is nonnegative and the coefficient at zero is an ordinary integer.
+`J` consists of the forms with strictly positive support, including zero.
+Its nonzero elements can have either sign. In `t^γ = ω^(−γ)` notation these
+conditions become nonpositive and strictly negative support, respectively.
+They constrain **every** exponent, not only the leading exponent.
+
+Constant coefficient `ct` is a ring retraction on these support-restricted
+rings. It is not a ring homomorphism on all of `No`, since `ω · ω⁻¹ = 1`,
+and it is not order preserving: `ω − 1 > 0` but `ct(ω − 1) = −1`.
+The ring of finite surreals has the opposite growth-support condition;
+its standard-part homomorphism has a different domain. In the complex
+nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
+For a nonzero form, growth degree is the largest supported exponent and
+satisfies `v = −deg` under the reversed valuation convention.
+
+For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
+`Oz/nOz ≅ ℤ/nℤ` describe quotient
+maps and ordinary representatives; proper-class cosets are not elements of
+a set. Similarly, `Frac(Oz) = No` asserts representation by fractions
+inside `No`. Common support bounds for set-sized families may require a
+larger exponent group than the input workspace. These class statements
+must be distinguished from the corresponding assertions in any fixed Hahn
+field or fixed universe.
+
+For quadratic forms the omnific report uses `q(x) = B(x,x)` and
+`B(x,y) = (q(x+y) − q(x) − q(y))/2`. Off-diagonal entries of the bilinear
+matrix are half the mixed-term polynomial coefficients; an integral
+quadratic polynomial need not have an integral bilinear matrix. Polarization
+is performed over `ℝ` and extended by the same finite expressions to `No`.
+The parameter `t` in its polynomial isometries `U_t` is free and may be
+purely infinite; it is distinct from the fixed monomial `t = ω⁻¹` used below.
+The quadratic energy `π(n) = ½ nᵀΠn` in Hahn–Tate Part II has an explicit
+factor `½`; its associated polarized form therefore has matrix `Π/2`.
+
+For omnific tuples, **primitive** means nonzero with no common nonunit
+divisor; **unimodular** means that an `Oz`-linear combination of the
+coordinates is `1`. Unimodularity implies primitivity. Their equivalence
+for representatives of real projective directions in the Diophantine
+report is a special result, not a convention for arbitrary tuples.
+Its polynomial-arc variable `T` is formal; evaluation at `t ∈ Π` preserves
+omnific membership, while preservation of eventual positive-real signs
+requires `t > 0`. Choosing `t = ω` also ensures finite supports.
+
 ## Monomials, support orientation, and valuation
 
 The common Hahn convention is
@@ -668,6 +719,15 @@ distinction to explain nonconstant zero-derivative functions. The
 (`phys:tab:derivatives`) states explicitly which operation is used for its
 fields on ordinary spacetime.
 
+The [omnific Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
+(`odg:eq:euler`) instead uses freely chosen local Euler derivations
+`∂_λ(ω^h) = λ(h)ω^h`, where `λ : H → ℝ` is rational linear and `H` is a
+set-sized divisible exponent group. They kill the scalar coefficient field.
+In the `t = ω⁻¹` convention this becomes `∂_λ(t^γ) = −λ(γ)t^γ`.
+One fixed `λ` can kill nonconstant monomials; detecting a given nonconstant
+requires choosing a suitable functional. This construction does not specify
+a derivation of the full surreal field.
+
 In the regular-singular part of the differential-equations report,
 `t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
 The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`
@@ -838,6 +898,45 @@ functionals `Res_F` and `Λ_F` agree only through the stated comparison
 (`analytic:prop:residues-agree`). A coefficientwise contour integral should
 retain its `H` decoration and its ordinary parameter path; it is not defined
 by fine-topological Riemann-sum convergence.
+
+## Automorphism structures
+
+The [field-automorphism report](surcomplex/surcomplex-field-automorphisms/article.tex)
+uses `K = No(i)` and the proper-class exponent group `Γ = (No,+,<)`;
+every individual normal-form support remains a set. Its `Aut(K)` is a
+collection of class maps, not an NBG class containing their graphs.
+Factorizations describe individual maps and composition. A finite action
+is encoded by one class relation with a finite index set; fixed-field
+identities for all class automorphisms are interpreted pointwise.
+
+| Preserved structure | Meaning |
+|---|---|
+| Real axis | Setwise preservation of `No`; fixing it pointwise is stronger. |
+| Valuation ring | `α(𝒪)=𝒪`, allowing an ordered reindexing `v(αz)=τ(vz)`. |
+| Individual values | `v(αz)=v(z)` for every nonzero input. |
+| Leading terms | `v(αz−z)>v(z)`, the report's `1`-automorphism condition. |
+| Norm or modulus | Exact preservation forces identity or conjugation; equivariance `|αz|=σ(|z|)` allows other real-axis automorphisms. |
+
+Strong additivity preserves summable families and their Hahn sums; a strong
+automorphism requires this for both directions. It is separate from
+coefficient linearity and fine continuity. A strong field map is determined
+by its coefficient and monomial images. Monomial images alone determine it
+when coefficients are fixed; the Taylor motions `Φ_d` show why that condition
+matters. Residue action `ρ` also need not be the restriction to the embedded
+coefficient field, which can move by infinitesimals.
+
+The decomposition `α=u D_χ M_{ρ,τ}` applies the rightmost map first and uses
+`χ(g)=lc(α(t^{τ⁻¹g}))`. This character is indexed after undoing the value
+action. The additive-group decomposition one level deeper permits arbitrary
+order permutations of exponents, while a field monomial map needs an
+**additive** order automorphism. The coefficient functional `ℓ(g)=[g]₀`
+is defined even for infinite exponents and is not a standard-part map there.
+
+The fine derivative can take any value in `K`; “no `K`-valued derivative”
+excludes infinite values too. It is tested by punctured neighborhoods,
+not by a set-indexed cofinal sequence in the full surreal topology.
+Generic exponential rigidity acts on the actual valuation image `w(Fˣ)`;
+surjectivity onto a larger written codomain must be stated separately.
 
 ## Radii, modulus, and order-theoretic terminology
 

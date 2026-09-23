@@ -1,25 +1,26 @@
 # Cofinality, Factorization and Scalar Extension for Entire Hahn Functions at Arbitrary Rank
 
-**A merged research report, 110 pages, from six manuscripts.** Everything in
+**A merged research report, 133 pages, from seven manuscripts.** Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled 110-page report
+article.pdf   the compiled 133-page report
 README.md     this guide
 07-scale-moderate-interpolation-SOURCE_AUDIT.md   source 4: provenance, scope and novelty audit
 09-prime-spectra-SOURCE_AUDIT.md                  source 6: provenance, claim boundaries and literature
-code/         the six source verification programs, unmodified, and three delivered build helpers
+10-entire-rectification-SOURCE_AUDIT.md           source 7: provenance, literature, proposed contributions, non-claims
+code/         the seven source verification programs, unmodified, and four delivered build helpers
 data/         the recorded verification runs, the sources' build reports, source 4's
-              package manifest and source 5's research audit
+              package manifest, source 5's research audit and source 7's requirements file
 ```
 
 Every label in `article.tex` carries the prefix `ent:`. Material added from
-the fourth source carries `ent:sm:`, from the fifth `ent:mv:`, and from the
-sixth `ent:ps:`. File names keep the local numbers they were placed under:
-`06` is the first source, `03` the second, `01` the third, `07` the fourth,
-`08` the fifth and `09` the sixth.
+the fourth source carries `ent:sm:`, from the fifth `ent:mv:`, from the sixth
+`ent:ps:`, and from the seventh `ent:rc:`. File names keep the local numbers
+they were placed under: `06` is the first source, `03` the second, `01` the
+third, `07` the fourth, `08` the fifth, `09` the sixth and `10` the seventh.
 
 | file prefix | source | pinned commit | contribution |
 |---|---|---|---|
@@ -29,6 +30,7 @@ sixth `ent:ps:`. File names keep the local numbers they were placed under:
 | `07-scale-moderate-interpolation` | 4 | `0097304` | second proof of the image; ideal theory above the product |
 | `08-multivariate-extension` | 5 | `4cf691c` | several variables: exact extension domains |
 | `09-prime-spectra` | 6 | `465a54b` | all prime ideals above a one-simple-node product; cofinal splitting |
+| `10-entire-rectification` | 7 | `71e9606` | several variables: rectification dichotomy, reduction obstruction, fat-point ideals |
 
 The sixth source's files are `code/09-prime-spectra-verify_finite.py`,
 `code/09-prime-spectra-build.sh`, `data/09-prime-spectra-verification_results.json`,
@@ -36,6 +38,17 @@ The sixth source's files are `code/09-prime-spectra-verify_finite.py`,
 Its own article (`prime_spectra_at_surreal_infinity.tex`, 28 pages), PDF and
 delivery README are not shipped; its build helper and build report refer to
 them.
+
+The seventh source's files are `code/10-entire-rectification-verify.py`,
+`code/10-entire-rectification-build.sh`,
+`data/10-entire-rectification-verification-results.json`,
+`data/10-entire-rectification-BUILD_REPORT.json`,
+`data/10-entire-rectification-requirements.txt` and
+`10-entire-rectification-SOURCE_AUDIT.md`. Its own article
+(`entire_rectification.tex`, 25 pages), PDF and delivery README are not
+shipped; its build helper and build report refer to them, and its source
+audit refers to "Sections 10–11 of the article" (its provenance and proof
+audit), which are summarized in Section 11.15 and Appendices A–C here.
 
 ## What the report is
 
@@ -97,6 +110,29 @@ Section 13, examples 14, relation to the collection 15, scope and questions
 the first route of Theorem 8.6 specialized, so it is printed once, by
 citation (Remark 12.2). It states that its ultraproduct and valuation-domain
 mechanism is classical (Finocchiaro–Frisch–Windisch; the Stacks Project).
+
+A **seventh manuscript**, *Entire Automorphisms at Surreal Scales: An
+order-unit dichotomy, omnific rectification, and exact fat-point ideals*
+(23 September 2026, pinned at `71e9606`, after the sixth source was merged;
+this directory is identical at that pin and at the base of the merge), asks
+when an infinite configuration of points of `K^d` can be carried into a
+coordinate line by an entire automorphism, and what the ideals of points with
+multiplicities are once it has been. It presented this as a problem different
+from the report's; it is in fact a partial answer to the ideal-theory and
+interpolation clauses of Question 16.5 (`ent:q:several`), and is placed
+accordingly. It is **Sections 11.9–11.15** (`ent:rc:`), the closing
+subsections of Section 11, chosen so that **no existing section, theorem,
+question or equation number changed**: its items are numbered 11.33–11.70,
+its displayed equations (R1)–(R29), and its five questions 16.12–16.16. Its
+analytic tools duplicate this report and are printed once, by citation: its
+criterion is Theorem 11.3, its products and division are Theorem 7.3,
+Lemma 6.4, Corollary 7.5 and Proposition 8.8, its countability lemma is
+Lemma 7.2, its separated scales are Lemma 8.1, and its interpolation theorem
+is a special case of Theorems 8.6 and 9.2 (its explicit series is kept as a
+second proof of Lemma 11.44). Its reduction theorem generalizes
+`hol:cf:lem:reduction` of the holonomic-rigidity report and this report's
+Lemma 8.4 and Theorem 4.1 argument, which it did not cite; the merge credits
+them.
 
 ## What the report claims
 
@@ -178,7 +214,7 @@ the slopes `v(a_n)/n` for `n >= 1` with `a_n != 0` and the negated
 valuations of nonzero zeros generate the same
 convex subgroup.
 
-**5. Several ordinary variables (Section 11, fifth source).** Here **no
+**5. Several ordinary variables (Sections 11.1–11.8, fifth source).** Here **no
 divisibility** is assumed and the coefficient field is any trivially valued
 field. For a whole-family entire `F = sum a_alpha X^alpha` and a point `z`
 with nonzero coordinates in the larger field, the family `(a_alpha z^alpha)`
@@ -257,6 +293,50 @@ source).** Here `cf(Gamma) = aleph_0`, the coefficient field `k` is `R` or
   not `P_D`; such primes are not maximal (the merge's remark after
   Theorem 12.40, from Theorem 8.36).
 
+**7. Rectification and fat points (Sections 11.9–11.15, seventh source).**
+Here `Gamma` is divisible, the coefficient field `k` is `R` or `C`, *entire*
+is whole-family entire in `d` ordinary variables, `v(p) = min_j v(p_j)`, and
+`X ⊂ K^d` is **radially finite** when it meets every polydisk `v(p) >= gamma`
+in finitely many points. It is **line-rectifiable** when an entire
+automorphism (with entire inverse) maps it into `K × 0^(d-1)`.
+- **Dichotomy (Theorem 11.35).** For `d >= 2` and `cf(Gamma) = aleph_0`:
+  every radially finite set is line-rectifiable **iff** `Gamma` has an order
+  unit, and then an affine map plus one triangular shear suffices
+  (Proposition 11.50). The cofinality hypothesis is needed: for
+  `cf(Gamma) > aleph_0` every radially finite set is finite (Lemma 11.46).
+- **Without an order unit (Theorem 11.36, Corollary 11.51).** Every radially
+  finite subset of `(K^{<=0})^d`, series supported in `Gamma_{<=0}`, is still
+  line-rectifiable; this covers the omnific integers `Z + R((t^{Gamma<0}))`
+  and Gaussian omnific integers `Z[i] + C((t^{Gamma<0}))` of a workspace
+  (displays (R12)–(R13)), and sets whose radii are eventually distinct. The
+  rectifying map is **not** claimed to preserve the omnific ring. The tool is a
+  denominator formula for cardinal interpolation (Lemmas 11.43–11.44,
+  Corollary 11.45).
+- **Reduction and obstruction (Theorems 11.53, 11.57).** Along an exhaustion
+  by proper convex subgroups, finitely many entire series eventually have
+  integral coefficients, polynomial reductions and compatible evaluation;
+  an automorphism and its inverse reduce to inverse polynomial automorphisms
+  with Jacobian in `GL_d(V_H)` (Corollary 11.54). So the escaping
+  infinitesimal simplices `p_n = t^(-gamma_n) u_1`, `p_n + t^(gamma_(n+1)) u_j`
+  stay affinely independent under every entire automorphism at all late
+  scales (Proposition 11.56): no automorphism puts them, or any cofinite
+  subset, in a hyperplane.
+- **Fat points (Theorems 11.37, 11.62, 11.66; Corollaries 11.63, 11.65;
+  Proposition 11.67).** On a line-rectifiable configuration with bounded
+  multiplicities of maximum `m̄`, the ideal of functions of order `>= m_i` at
+  `p_i` is generated by `P_<|alpha|>(X_1) X'^alpha`, `|alpha| <= m̄`, and needs
+  exactly `binom(m̄+d-1, d-1)` generators; simple points give the complete
+  intersection `(P, X_2, ..., X_d)` with `E_d/I = E/(P)`; constant
+  multiplicity gives `I^m̄`; unbounded multiplicities and `d >= 2` give an ideal
+  that is **not finitely generated**, with a radical strictly smaller than the
+  vanishing ideal although the zero sets agree. In dimension one these ideals
+  are principal.
+- **Evaluation (Corollary 11.64, the merge's).** On a line-rectifiable
+  configuration the values taken by entire functions are exactly those allowed
+  by Theorem 8.6 at the image nodes, and `E_d/I` is the restricted product of
+  Theorem 8.7; with an order unit arbitrary values on any radially finite
+  subset of `K^d` are interpolated.
+
 ## Three things to read before using a theorem from here
 
 **The two extension statements are one statement (Remarks 1.8 and 10.6).**
@@ -296,13 +376,19 @@ hidden-tail pair and Section 14.6 the separation table. In several variables
 (Section 11): `sum t^(n^2) (XY)^n` is evaluable at `X = omega^omega`,
 `Y = omega^(-omega)`; `sum t^(n^4) X^n Y^(n^2)` has a nonclosed domain; and
 `1 + sum t^(n^2) prod_(j<=n) (Y - c_j X)` has polynomial directions exactly
-`[1 : c_m]`.
+`[1 : c_m]`. For rectification (Section 11.13): the omnific centres
+`omega^(omega^(2n)) u_1` lie on a line, but their refinements by the clusters
+`+ omega^(-omega^(2n+1)) u_j` are not line-rectifiable (display (R19),
+Corollary 11.58); with the scales `e_n` instead, the first two points of each
+cluster are the close pair of the Bézout counterexample (Remark 11.59). The
+nodes `omega^(omega^(2i))` with multiplicities `i+1` give a non-finitely
+generated fat-point ideal on a straight line (Example 11.70).
 
 ## What the report does not claim
 
 - No named published conjecture is solved. Priority is **not** certified by
   any source; literature checks were targeted, and searches returning nothing
-  were not treated as evidence of absence. None of the six manuscripts was
+  were not treated as evidence of absence. None of the seven manuscripts was
   refereed or machine-checked; **no Lean verification is claimed**.
 - Classical inputs are credited, not claimed: rank-one factorization, Newton
   polygons and canonical products, the Hahn–Neumann support lemmas, algebraic
@@ -322,7 +408,9 @@ hidden-tail pair and Section 14.6 the separation table. In several variables
 - Outside Section 11, `Gamma` must be divisible and algebraic closedness is
   used essentially in the factorization theory. Section 11 works under weaker
   hypotheses, and none of the divisible-group results — in particular zero
-  conservation — is transferred to it.
+  conservation — is transferred to it. (This describes Sections 11.1–11.8;
+  the seventh source's Sections 11.9–11.15 keep divisibility, take `k = R` or
+  `C`, use the uncountability of `k` once, and use no algebraic closedness.)
 - The maximal-ideal classification is for **one node per shell** only;
   several nodes per shell, prime ideals, and maximal ideals of `E_Gamma`
   containing no such product are not treated (Question 16.4 stays open,
@@ -347,6 +435,37 @@ hidden-tail pair and Section 14.6 the separation table. In several variables
   (Question 16.5), as do the block domain at arbitrary new-field tuples
   (Question 16.6) and effective support classes (Question 16.7). The number
   of variables is finite; all fields are full Hahn fields.
+  *Re-scoped by the seventh source:* for configurations of **points** that an
+  entire automorphism carries into a coordinate line, the ideal theory
+  (fat-point generators, their sharp number, non-finite generation for
+  unbounded multiplicities) and the interpolation of **values** are now
+  settled (Sections 11.9–11.15). Preparation, GCD/Bézout, divisors with
+  positive-dimensional support, ideals of non-rectifiable configurations and
+  jet interpolation in several variables remain open.
+- The seventh source's limits (Section 11.15): every result is relative to one
+  fixed Hahn workspace, radial finiteness is not fine discreteness and is lost
+  in a larger workspace, and there is no class-global entire theory on `No` or
+  `No[i]`; constant coefficients are trivially valued (`exp(X)` is not
+  entire); the coefficient field is `R` or `C` and uncountability is used,
+  with no countable-field or descent statement; no classification of all
+  ideals of `E_d`, all entire automorphisms, all non-rectifiable sets or all
+  entire functions on the class; line-rectifiable is **not** claimed
+  equivalent to Rosay–Rudin tameness or Winkelmann's extension properties,
+  and the classical comparison is not a transfer principle; the rectifying
+  maps are not claimed to preserve `Oz`, nothing concerns ring automorphisms
+  of `Oz` or field automorphisms of `No`, ordinary integers are not radially
+  finite, and extension of arbitrary bijections of omnific configurations is
+  not claimed; no omnific factorization question is settled, and the
+  Berarducci–Mantova derivation is not used; the simplex obstruction is not
+  shown to be the only one, and no threshold is uniform over all
+  automorphisms; the interpolation lemma is sufficient, not an exact image;
+  ideal generation is algebraic, no countable generation is implied, and no
+  Noetherianity, coherence or Nakayama lemma is assumed; the evaluation map
+  `E/(P) -> prod K` is not claimed surjective without an order unit, and no
+  unrestricted product description of the evaluation quotient is given; the
+  radical distinction is not claimed new as a phenomenon; projection-and-shear
+  is classical and jet counting elementary; "proposed" means only not found in
+  a bounded search; no named conjecture is settled.
 - All supports and index sets are sets; the extension theorems keep the
   coefficient field fixed; the hidden-tail table covers monomial arguments
   only; strong summability, intrinsic valuation convergence and the fine
@@ -375,9 +494,22 @@ hidden-tail pair and Section 14.6 the separation table. In several variables
   product, primes containing no such product, relations between divisors.
 - Question 16.5 (several variables): the "In particular" clause answered by
   the fifth source; the rest open. Questions 16.6 and 16.7 are new.
+  *Re-scoped by the seventh source:* the ideal-theory clause and interpolation
+  of values are answered for configurations of points that an entire
+  automorphism carries into a coordinate line (Theorems 11.35, 11.37, 11.62,
+  11.66, Corollary 11.64); Bézout/GCD, preparation, positive-dimensional
+  divisors, ideals of non-rectifiable configurations and jet interpolation
+  remain open. The text of the question and of its earlier notes is kept.
+- Question 16.2 (what the image theorem does not decide): its several-variable
+  part now has an answer for values on line-rectifiable configurations
+  (Corollary 11.64); jets and other configurations remain open.
 - Questions 16.9–16.11 are the sixth source's: several nodes on a shell,
   unbounded multiplicities, and when the prime spectrum is invariant under
   cofinal extension.
+- Questions 16.12–16.16 are the seventh source's: a rectifiability criterion
+  without an order unit, lower-dimensional targets, ideals of non-rectifiable
+  configurations, extension of prescribed maps, and countable coefficient
+  fields and descent.
 
 ## Stale statements corrected
 
@@ -405,6 +537,22 @@ hidden-tail pair and Section 14.6 the separation table. In several variables
   prime ideals are "not classified" (end of Section 8.9, the scope paragraph
   on the image theorem, Question 16.4) is kept and now carries a re-scoping
   pointer to Section 12.
+- The seventh source calls its question "a different several-variable global
+  problem" from this report's; it partly answers Question 16.5, and the
+  statements that only the scalar-extension clause is answered (Section 1.3,
+  the head of Section 11, Section 11.8, Section 16.3, Questions 16.2 and 16.5,
+  and this README) are kept as written with a re-scoping sentence. Its account
+  of this report (coefficient criterion, products and division, order-unit
+  interpolation, restricted-product interpolation, several-variable criteria
+  and scalar extension) was checked and holds. Its search for
+  "rectification" found nothing at its pin; the word now occurs only in its
+  own placed files. At its pin the collection had no omnific-integer
+  report; it now has two, and Section 15 records the relation (a shared normal
+  form, no shared theorem). It did not credit `hol:cf:lem:reduction` or this
+  report's Lemma 8.4 and Theorem 4.1 argument; Section 11.12 does. The
+  sentences "the sixth source's letters are translated by the last table of
+  Section 2.5" (and the same for the fifth) had become inaccurate once a
+  later table was appended; they now name the table.
 
 ## Relation to the rest of the collection
 
@@ -435,8 +583,17 @@ hidden-tail pair and Section 14.6 the separation table. In several variables
   recorded in Section 15 as context; the sixth source does not cite it.
 - **`surcomplex/holonomic-rigidity-for-entire-hahn-functions`** uses the same
   whole-family convention in several variables. The covering step of Theorem
-  11.27 is the countable-field device of its `hol:lem:generic`. No shared
-  theorem.
+  11.27 is the countable-field device of its `hol:lem:generic`. Its
+  `hol:cf:lem:reduction` (one-variable polynomial reduction modulo a proper
+  convex subgroup) is the antecedent of Theorem 11.53, which is its
+  several-variable form with evaluation compatibility, applied to an
+  automorphism and its inverse; the seventh source did not cite it.
+- **`surreal/omnific-diophantine-geometry`** and
+  **`surreal/set-sized-quotients-of-omnific-integers`** were placed after the
+  seventh source's pin. The only omnific input of Sections 11.9–11.15 is the
+  normal form `Oz = Pi ⊕ Z` read in a workspace, which agrees with
+  `found:eq:omnific`, `odg:def:rings` and `odg:lem:workspace`; no theorem is
+  shared, and the rectifying maps are not asserted to preserve `Oz`.
 - **`surcomplex/nonabelian-support`** uses `Pol` for a normalized polar
   factor; the polynomial-direction locus is written `Pdir` here.
 
@@ -458,13 +615,23 @@ hidden-tail pair and Section 14.6 the separation table. In several variables
   the manifest also lists that manuscript's own `article.tex`, `article.pdf`
   and `README.md`, which are not shipped. `data/08-…-build.json` likewise
   hashes the fifth manuscript's own source and PDF, not shipped.
-- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 110
+- For the seventh merge, `10-entire-rectification-verify.py --output <scratch>`
+  on a copy, Python 3.14.4 with SymPy 1.14.0: **all finite checks passed**
+  (four padded-cardinal node values, one linear-division identity, two
+  normalized simplex determinants in dimensions 2 and 3, 40 jet-count cases,
+  two finite fat-point ideals with 40 and 30 generator-jet equalities and 35
+  and 51 kernel vectors reduced to zero by a Gröbner basis). The output is
+  identical to `data/10-entire-rectification-verification-results.json`
+  except the recorded Python version (3.13.5 there).
+- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 133
   pages, 0 errors, 0 undefined references or citations, 0 multiply defined
   labels, 0 duplicate PDF destinations, no overfull or underfull boxes, no
-  LaTeX or package warnings. 184 numbered statements: 43 theorems, 31 lemmas,
-  18 propositions, 35 corollaries, 11 definitions, 2 conventions, 8 examples,
-  11 questions, 25 remarks. The sixth merge kept all 266 earlier labels and
-  added 61 (`ent:ps:`), 327 in all.
+  LaTeX or package warnings. 227 numbered statements: 50 theorems, 43 lemmas,
+  21 propositions, 42 corollaries, 12 definitions, 3 conventions, 11 examples,
+  16 questions, 29 remarks. The sixth merge kept all 266 earlier labels and
+  added 61 (`ent:ps:`), 327 in all; the seventh kept those 327 and added 79
+  (`ent:rc:`), 406 in all. Every one of the 327 earlier labels resolves to the
+  same number as before the seventh merge.
 
 The checks prove no infinite theorem. In particular the **finite truncations
 of the counterexample pair are coprime polynomials and do satisfy polynomial
@@ -482,7 +649,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 **Run the programs on a copy, or with an output path outside this
-directory.** All use only the Python standard library.
+directory.** The first six use only the Python standard library; the seventh
+needs Python 3.10 or later and SymPy (`pip install -r
+data/10-entire-rectification-requirements.txt`, which pins `sympy==1.14.0`).
 
 - `06-cofinality-bezout-trichotomy-verify-examples.py` requires `--output`
   and exits nonzero without one; it cannot overwrite the delivered record by
@@ -500,6 +669,10 @@ directory.** All use only the Python standard library.
   otherwise only prints. Its documented command
   (`--json verification_results.json`) rewrites the delivered record in
   place; name a scratch path instead.
+- `10-entire-rectification-verify.py` takes an optional `--output PATH`;
+  without it, it writes `verification-results.json` **next to the script**.
+  In the source's layout that rewrites the delivered record in place; here it
+  would add a file to `code/`. Name a scratch path, on a copy.
 
 ```sh
 mkdir -p /tmp/ent/code /tmp/ent/data
@@ -510,16 +683,22 @@ python /tmp/ent/code/01-exact-jet-image-verify.py --output /tmp/ent/C.json
 python /tmp/ent/code/07-scale-moderate-interpolation-verify.py --output /tmp/ent/D.json
 python /tmp/ent/code/08-multivariate-extension-verify_examples.py --output /tmp/ent/E.json
 python /tmp/ent/code/09-prime-spectra-verify_finite.py --json /tmp/ent/F.json
+python /tmp/ent/code/10-entire-rectification-verify.py --output /tmp/ent/G.json
 ```
 
 `code/03-cofinality-and-scalar-extension-Makefile`,
-`code/06-cofinality-bezout-trichotomy-build.sh` and
-`code/09-prime-spectra-build.sh` build their source manuscripts in their
+`code/06-cofinality-bezout-trichotomy-build.sh`,
+`code/09-prime-spectra-build.sh` and `code/10-entire-rectification-build.sh`
+build their source manuscripts in their
 original layouts and do not build this report; they are kept only as
 delivered. `09-prime-spectra-build.sh` expects the unshipped
 `prime_spectra_at_surreal_infinity.tex` and an unprefixed `verify_finite.py`
 in its own directory, so here it fails; in its original layout it overwrites
 the delivered PDF and rewrites `verification_results.json` in place.
+`10-entire-rectification-build.sh` likewise expects the unshipped
+`entire_rectification.tex` and an unprefixed `verify.py`; in its original
+layout it reruns `verify.py`, rewriting `verification-results.json` in place,
+and overwrites the delivered PDF.
 
 ## Maintained review scope
 
@@ -542,4 +721,5 @@ do not establish priority or independent peer review.
 The review reran the first two unmodified programs on temporary copies:
 **831/831** and **664/664** checks passed. This does not verify the later suites
 or the infinite mathematical statements. Section 12, from the sixth source,
-has not received that review either.
+and Sections 11.9–11.15, from the seventh, have not received that review
+either.

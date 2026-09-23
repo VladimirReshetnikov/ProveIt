@@ -1,0 +1,2979 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools,aliascnt}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Omnific-Preserving Automorphisms},
+ pdfauthor={Merged research report for the Surreal project},
+ pdfsubject={Convex-scale stabilizers, definable constants, nondefinable monomials, and algebraic-parameter rigidity}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Omnific-preserving automorphisms}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\newaliascnt{fact}{theorem}
+\newtheorem{fact}[fact]{Cited theorem}
+\aliascntresetthe{fact}
+\crefname{fact}{cited theorem}{cited theorems}
+\Crefname{fact}{Cited theorem}{Cited theorems}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Question}
+\aliascntresetthe{question}
+\crefname{question}{question}{questions}
+\Crefname{question}{Question}{Questions}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{part}{part}{parts}
+\Crefname{part}{Part}{Parts}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\Og}{\mathbf{Oz}[i]}
+\newcommand{\SC}{\mathbf{No}(i)}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\oo}{\mathfrak o}
+\newcommand{\Ak}{\mathcal A_k}
+\newcommand{\Ro}{\mathcal R_{\oo}}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\LL}{\mathfrak L}
+\newcommand{\UU}{\mathcal U}
+\newcommand{\FF}{\mathfrak F}
+\newcommand{\EE}{\mathcal E}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\Mon}{\mathfrak M}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\Span}{\operatorname{span}_{\Q}}
+\newcommand{\ad}{\operatorname{ad}}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\RV}{\operatorname{RV}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\ML}{\operatorname{ML}}
+\newcommand{\LND}{\operatorname{LND}}
+\newcommand{\ev}{\operatorname{ev}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\bb}{\mathbin{\ll}}
+\newcommand{\Hahn}[2]{#1((t^{#2}))}
+\newcommand{\coef}[2]{[t^{#1}]#2}
+\newcommand{\src}[1]{\textup{\textsf{\small[#1]}}}
+\newcommand{\mergetag}{\textup{\textsf{\small[merge]}}}
+\newcommand{\lbl}[1]{\nolinkurl{#1}}
+\newcommand{\fn}[1]{\nolinkurl{#1}}
+\newcommand{\status}[1]{\par\smallskip\noindent\textit{Provenance.} #1\par\smallskip}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0mm}
+{\Large Merged research report for the Surreal project\par}
+\vspace{7mm}
+{\huge\bfseries Omnific-Preserving\\[3mm] Automorphisms\par}
+\vspace{5mm}
+{\Large Convex-scale stabilizers, definable constants,\\[1mm]
+ nondefinable monomials, and algebraic-parameter rigidity\par}
+\vspace{5mm}
+{\large Built from four manuscripts dated September 23, 2026\par}
+\vspace{4mm}
+\begin{minipage}{\textwidth}
+\begin{abstract}
+Which symmetries of a Hahn field preserve its omnific-type integer part, and
+what does that integer part remember? Let $k$ have characteristic zero, let
+$\Gamma\ne0$ be a divisible ordered abelian group, write $C_\delta$ for the
+principal convex subgroup generated by $\delta>0$, and let $\oo\subseteq k$ be
+a unital subring. A strong coefficient-fixing $1$-automorphism $\sigma$ of
+$\Hahn k\Gamma$ preserves $\oo\oplus\Pi$, where $\Pi$ is the purely infinite
+ideal, exactly when, for every $\delta>0$, the shift-$\delta$ coefficient of
+its logarithmic character $\log(t^{-g}\sigma(t^g))$ vanishes on $C_\delta$.
+The proof uses no exponential--logarithm correspondence and applies verbatim
+to the surreal field and $\Oz$. Where that correspondence is available, the
+same condition for the operator logarithm $\Log\sigma$ is equivalent; the
+two coefficient functionals are different.
+
+Consequences: the stabilizer is trivial exactly in Archimedean rank one; its
+common fixed field is the Hahn field on the bottom convex subgroup, and for
+$(\No,\Oz)$ it is $\R$; in finite rank $r$ its derived length is at most
+$r-1$, with equality for $\Q^r$; explicit successive-scale flows generate a
+faithful $\Z\wr\Z$; for every set of surreal parameters the pointwise
+stabilizer is nonsolvable and carries a faithful action of $\R^\kappa$ for
+every set cardinal $\kappa$. Consequently no set of parameters makes the
+Conway monomials, the omega-map or any valuation-representative rule
+definable in $(\No,+,\cdot,<,\Oz)$, although the pair defines the three
+zero-cut projections and the floor map. A second part proves
+algebraic-parameter rigidity of $\Oz$: embeddings into polynomial, Laurent and
+finite-type domains land in the coefficients, strong cancellation holds, and
+$\ML(\Oz[T_1,\dots,T_n])=\Oz$, while explicit commuting derivations integrate
+to formal flows that no polynomial family realizes.
+
+This report merges four independently written manuscripts, prints shared
+results once with every source named, and keeps every source's limitations.
+It is an AI-assisted draft: it has not been refereed, and nothing in it has
+been formalized in Lean.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{\textwidth}
+\footnotesize
+Sources: manuscripts 09 (the base text), 04 and 02, pinned to repository
+commit \texttt{fb5c4b5}, and 08, pinned to \texttt{befe739}; their titles are
+in \cref{opa:sub:provenance}. Results already printed in the omnific
+Diophantine report \fn{docs/surreal/omnific-diophantine-geometry} are cited,
+not reprinted. The provenance of every section is recorded in
+\cref{opa:app:provenance}; non-claims are collected in
+\cref{opa:app:nonclaims}. Finite checks accompany the report and check finite
+identities only (\cref{opa:app:checks}).
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{Scope, results, and conventions}\label{opa:sec:intro}
+
+A Conway normal form carries three kinds of information: coefficients,
+exponents, and the monomials that represent the exponents. The omnific
+integers keep the purely infinite part of a normal form and an ordinary
+integer constant coefficient. This report asks how much of the normal-form
+presentation is determined by the surreal field together with this
+distinguished ring, and which automorphisms preserve it.
+
+The answer is asymmetric. The coefficient field, the cut between negative
+and nonnegative Hahn exponents, the constant coefficient and the floor map
+are recoverable from the pair $(\No,\Oz)$; much of this was already proved in
+the omnific Diophantine report (\cref{opa:sec:remember}). The monomial
+cross-section is not recoverable. Even an arbitrary \emph{set} of named
+parameters leaves enough automorphisms to move a monomial to an infinite
+series and to defeat every definable choice of valuation representatives.
+The mechanism is a family of derivations that change a higher Archimedean
+scale by a lower one without ever moving a purely infinite term across the
+constant-term boundary. \Cref{opa:part:aut} classifies these
+automorphisms and derives the consequences. \Cref{opa:part:par}, from a
+separate manuscript, shows the complementary rigidity: $\Oz$ admits no
+nonconstant \emph{algebraic} family of embeddings, although it admits
+formal flows of all orders.
+
+\subsection{Principal results}\label{opa:sub:results}
+
+Bracketed numbers name the source manuscripts (\cref{opa:sub:provenance});
+\mergetag{} marks statements assembled or generalized by the merge, each with
+a complete proof. The Hahn conventions are fixed in
+\cref{opa:sub:notation}: $K=\Hahn k\Gamma$ with well-ordered supports,
+$t^\gamma=\omega^{-\gamma}$ on the surreals, $\Pi$ the series supported in
+$\Gamma^{<0}$, $\Ak=k\oplus\Pi$ and $\Ro=\oo\oplus\Pi$, so that
+$\mathcal R_\Z=\Oz$ when $k=\R$ and $\Gamma=\No$.
+\begin{enumerate}[label=\textup{(\arabic*)},leftmargin=*,itemsep=3pt]
+\item \textbf{The convex-support criterion} \src{04, 09}\mergetag. For
+every characteristic-zero $k$, every unital $\oo\subseteq k$, every nonzero
+divisible $\Gamma$ (set-sized, or $\Gamma=\No$), and every strong
+$k$-linear $1$-automorphism $\sigma$: $\sigma(\Ro)=\Ro$ if and only if the
+logarithmic-character coefficients $a_{\sigma,\delta}$ vanish on $C_\delta$
+for every $\delta>0$, if and only if $\sigma$ commutes with the three
+zero-cut projections (\cref{opa:thm:criterion}). The proof is 04's and
+imports no exponential--logarithm correspondence. For contracting strong
+derivations the analogous criterion holds with 09's coefficients $c_\delta$
+(\cref{opa:thm:derivation}); where the correspondence is available the
+operator form follows (\cref{opa:cor:operator}). The functionals
+$a_{\sigma,\delta}$ and $c_\delta$ differ; their vanishing conditions are
+equivalent (\cref{opa:ex:functionals}). For single fixed-shift flows 08
+proves the criterion without divisibility (\cref{opa:thm:threshold}).
+\item \textbf{Rank and fixed fields} \src{04, 08, 09}. The stabilizer
+$\UU_{\Ro}(\Gamma)$ is trivial exactly when $\Gamma$ is Archimedean
+(\cref{opa:thm:rank}); for set-sized $\Gamma$ its common fixed field is the
+Hahn field on the bottom convex subgroup (\cref{opa:thm:bottom}); and
+$\Fix(\UU_\Oz)=\R$, also for all field automorphisms of $\No$ preserving $\Oz$
+(\cref{opa:thm:fixed}). For every set $A$ of parameters the elementary shears
+fixing $A$ have common fixed field $\Hahn\R{V_A}$, $V_A$ the rational span of
+the supports (\cref{opa:thm:hull}).
+\item \textbf{Group structure} \src{04, 08, 09}. In finite ordered rank $r$
+the stabilizer and its Lie algebra have derived length at most $r-1$, with
+equality for $\Q^r$ (\cref{opa:thm:derivedrank,opa:thm:sharp}). Two
+successive-scale flows generate a faithful $\Z\wr\Z$ with exact commutator
+leading terms (\cref{opa:thm:commutator,opa:thm:wreath}). For every set $P$
+of surreal parameters, the pointwise stabilizer of $P$ in $\UU_\Oz$ carries a
+faithful action of the full product $\R^\kappa$ for every set cardinal
+$\kappa$ and is nonsolvable (\cref{opa:thm:product,opa:thm:nonsolvable}).
+\item \textbf{What the pair remembers} \src{08, 09}. Beyond the
+reconstruction package of the Diophantine report, the three zero-cut
+projections $P_-,P_0,P_+$ on all of $\No$, the floor map and truncation at a
+named monomial are parameter-free definable in $(\No,\Oz)$, and every field
+automorphism preserving $\Oz$ commutes with them, without strongness
+(\cref{opa:thm:projections,opa:cor:allautos}).
+\item \textbf{What it forgets} \src{04, 08, 09}. For every set $P$ of
+parameters, some strong $1$-automorphism preserving $\Oz$ fixes $P$
+pointwise and moves a Conway monomial to an infinite series; so neither the
+monomial class nor the omega-map is $P$-definable
+(\cref{opa:thm:parameters}), and no $P$-definable rule selects a
+representative of each natural-valuation class (\cref{opa:thm:nosection}).
+\item \textbf{Surcomplex consequences} \src{04, 08, 09}. The criterion holds
+for $\Og$; real shears commute with conjugation; an imaginary-time shear
+fixing any set moves the real axis inside the leading-term kernel
+(\cref{opa:thm:realaxis}); a wild coefficient lift moves an ordinary real
+(\cref{opa:prop:wild}); and the common fixed field of all automorphisms
+preserving $\Og$ is $\Q$ (\cref{opa:cor:gaussianfixed}).
+\item \textbf{Algebraic-parameter rigidity} \src{02}. Every nonzero element
+of $\Oz$ or $\Og$ divides a monomial whose roots of all orders lie in the
+ring (\cref{opa:par:cor:ozcover}). Consequently injective homomorphisms into
+polynomial and Laurent rings over a domain land in the coefficients
+(\cref{opa:par:thm:poly,opa:par:thm:laurent}), polynomial cylinders over
+$\Oz$ recover $\Oz$ under every isomorphism
+(\cref{opa:par:thm:cancellation}), $\ML(\Oz[\mathbf T])=\Oz$
+(\cref{opa:par:thm:ML}), and embeddings of set-sized root-covered rings into
+finite-type domains land in a finite field of algebraic constants
+(\cref{opa:par:thm:finitetype}). Commuting derivations of $\Oz$ integrate to
+formal flows of all orders that no polynomial family realizes, with an exact
+transcendence degree for their monomial orbit fields
+(\cref{opa:par:thm:nonalg,opa:par:thm:orbitfield}).
+\end{enumerate}
+
+These statements are proved here, but proving a statement here is not a claim
+that nobody proved it earlier. The general theory of strong Hahn-field
+automorphisms and of the exponential--derivation correspondence is prior
+work (\cref{opa:sub:imported}); each source names its most distinctive
+contributions, and no exhaustive priority claim is made
+(\cref{opa:app:nonclaims}).
+
+\subsection{Provenance of this report}\label{opa:sub:provenance}
+
+The report is built from four manuscripts written independently and placed
+together in commit \texttt{f4c9504} (batch 26, items 02, 04, 08 and 09; they
+keep these numbers here, as their shipped file prefixes do). Manuscripts 02,
+04 and 09 pin repository commit \texttt{fb5c4b53} (12 commits before the
+placement); manuscript 08 pins \texttt{befe739b} (10 commits before). Both
+pins contain the batch-24 placement \texttt{be06fc8} but precede the
+batch-24 and batch-25 writes, so no source saw the reconstruction package
+now in the omnific Diophantine report (its section \lbl{odg:def:sec:reconstruction},
+placed after both pins).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.50\textwidth}}
+\toprule
+Source & Manuscript & Principal contribution to this report\\
+\midrule
+09 & \emph{Omnific-Preserving Automorphisms: convex-scale stabilizers,
+definable constants, and nondefinable monomials} &
+Base text and structure; the criterion for any characteristic-zero $k$ and
+unital $\oo$; the derivation form with $c_\delta$; the Archimedean
+dichotomy; the strong factorization; the finite-rank derived-length bound
+and its sharpness for the abstract group; set-parameter nondefinability and
+the absence of any definable representative rule; $\R^\kappa$ actions and
+nonsolvable stabilizers; projections and truncation.\\
+04 & \emph{Automorphisms Preserving the Omnific Integers: a convex-support
+criterion, fixed fields, and nondefinability of Conway monomials} &
+The import-free proof of the criterion through the logarithmic character
+(the proof of record here); exact displacement and fixed fields; the bottom
+subgroup and the relative Hahn hull; the common-positive-shift
+exponential--logarithm correspondence; the explicit commutator formula;
+the one-term class and the $\RV$ sort; the real axis inside the
+leading-term kernel.\\
+08 & \emph{What the Omnific Integer Part Remembers: coefficient
+reconstruction, convex-scale automorphisms, nondefinable monomials, and an
+explicit wreath product} &
+The divisibility-free threshold for single fixed-shift flows; phase shears;
+the faithful $\Z\wr\Z$ and exact commutator leading terms; the floor map and
+the order formula on $\Oz$; the wild coefficient lift and the Gaussian fixed
+field $\Q$.\\
+02 & \emph{Algebraic-Parameter Rigidity of the Omnific Integers: strong
+cancellation, finite-type embeddings, and nonalgebraizable formal flows} &
+All of \cref{opa:part:par}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Manuscripts 04, 08 and 09 prove one classification at three generalities
+(\cref{opa:sec:criterion}) and the same consequences: rank triviality, fixed
+field $\R$, set-parameter nondefinability and a nonnilpotent stabilizer. They
+are printed once. 09 is the base because its hypotheses on $(k,\oo)$ are the
+weakest and its group-theoretic results the widest; 04's proof is used for
+the criterion itself because it needs no imported correspondence, and 08's
+single-flow version is kept as a marked case because it needs no
+divisibility. Their reconstruction and definability sections re-derive
+results now in the Diophantine report; those are cited, and only the
+remaining extras are printed (\cref{opa:sec:remember}). Manuscript 02 has a
+different subject, algebraic families rather than automorphisms preserving a
+support condition, and forms \cref{opa:part:par} with the sub-prefix
+\lbl{opa:par:}; its relation to \cref{opa:part:aut} is recorded in
+\cref{opa:par:sec:relation}. None of the four contradicts another or any
+report in the collection. \Cref{opa:app:provenance} records, section by
+section, what each source proved, where the merge had to choose, and every
+symbol renamed from a source.
+
+\subsection{Imported results}\label{opa:sub:imported}
+
+Conway normal forms, real closedness of $\No$ and the omnific integers are
+classical \cite{Conway,Gonshor}; factorization theory of $\Oz$ is due to
+L'Innocente and Mantova \cite{LM}. The monomial/character/kernel
+decomposition of valued Hahn automorphisms is due to Kuhlmann and Serra
+\cite{KS}, and its surreal form, with the class-size conventions used here, to
+Kaplan, Krapp and Serra \cite{KKS}. The collection's surcomplex automorphism
+report (\fn{docs/surcomplex/surcomplex-field-automorphisms}) already
+constructs the fixed-shift derivations and flows used below, in greater
+generality (its \lbl{saut:thm:shiftflow}), and the four-layer decomposition
+of valued automorphisms (\lbl{saut:thm:decomp}).
+
+The correspondence between contracting strong derivations and strong
+$1$-automorphisms is due to Bagayoko, Krapp, Kuhlmann, Panazzolo and Serra.
+
+\begin{fact}[{\cite[Theorem 3.13]{BKKPS}; \cite[Fact 4.2]{KKS}}]\label{opa:fact:import}
+Let $k$ have characteristic zero and $\Gamma$ be an ordered abelian group.
+If $\partial$ is a contracting strongly $k$-linear derivation of
+$\Hahn k\Gamma$, then
+\[
+ \Exp(\partial)(f)=\sum_{n\ge0}\frac{\partial^n(f)}{n!}
+\]
+is a strongly $k$-linear $1$-automorphism, and $\partial\mapsto\Exp(\partial)$
+is a bijection between contracting strongly $k$-linear derivations and
+strongly $k$-linear $1$-automorphisms, with inverse
+$\Log(\sigma)=\sum_{n\ge1}(-1)^{n+1}(\sigma-\id)^n/n$. Composition
+corresponds to the Baker--Campbell--Hausdorff operation.
+\end{fact}
+
+\begin{remark}[What is proved where]\label{opa:rem:import}
+\cite{BKKPS} proves the correspondence for set-sized $\Gamma$. Source 09
+attributes the surreal case to \cite[Fact 4.2]{KKS}; the placement dossier,
+reading an HTML rendering, doubted that this Fact states the bijection. The
+merge re-read the PDF of \cite{KKS} (version~3): Fact~4.2 does state the
+bijection, cites \cite[Theorem 3.13]{BKKPS}, and adds that the correspondence
+``was established in the case that $G$ is a set, but it also holds for $G$ a
+proper class'', without a separate proof. So 09's citation is accurate, and
+for $\Gamma=\No$ the operator-logarithm statements rest on that assertion.
+The criterion itself does not: its proof (\cref{opa:thm:criterion}) and 04's
+correspondence on the common-positive-shift class (\cref{opa:thm:lie}) are
+complete and elementwise, and the explicit constructions on $\No$ use one
+set-sized well-ordered set of shifts (\cref{opa:prop:uniform}). Every
+statement below that uses \cref{opa:fact:import} says so.
+\end{remark}
+
+\subsection{Class size and foundations}\label{opa:sub:foundations}
+
+Unless $\Gamma=\No$ is explicitly under discussion, exponent groups are sets,
+so fields and automorphism groups are ordinary sets. For $\Gamma=\No$ we work
+in NBG with global choice \src{04, 08, 09}; every individual Hahn support and
+every summation family is a set. An automorphism of $\No$ is an individual
+class map; no set or NBG class whose members are all such proper-class
+graphs is formed. A statement about $\UU_\Oz$ is a statement about individual
+maps, their compositions, or a set-indexed action encoded by one class
+relation; this is the convention of \cite{KKS}. A common-fixed-field
+statement is pointwise; nonsolvability means that no ordinary finite derived
+length annihilates all iterated commutators; valuation representatives are
+treated through an equivalence relation on nonzero elements, not through
+proper-class cosets \src{09}. A quotient notation $G/H$ in a full-class
+application abbreviates an additive map on $G$ vanishing on $H$ \src{08}.
+Bases are chosen only for set-sized vector spaces
+(\cref{opa:lem:separation}).
+
+\subsection{Notation and conventions}\label{opa:sub:notation}
+
+\Cref{opa:part:aut} uses the small-$t$ Hahn convention of sources 04 and 09.
+\Cref{opa:part:par} keeps its source's large-monomial convention, which is
+the convention of the other omnific reports; see \cref{opa:par:sub:conv}.
+For actual surreals
+\begin{equation}\label{opa:eq:sign}
+ t^\gamma=\omega^{-\gamma}.
+\end{equation}
+Thus negative $t$-exponents are purely infinite terms and positive ones are
+infinitesimal. The tempting false reading is the opposite: in this Part,
+$\Pi$ is supported at \emph{negative} $t$-exponents, and a ``positive shift''
+$\delta>0$ moves a term towards the infinitesimal side. Source 08 wrote in the
+$\omega$-convention with decreasing supports; its statements have been
+translated, and its derivation $D_{\varphi,\delta}$ with
+$D_{\varphi,\delta}(\omega^g)=\varphi(g)\omega^{g-\delta}$ is
+$D_{\delta,\theta}$ below with $\theta(\gamma)=\varphi(-\gamma)=-\varphi(\gamma)$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}}
+\toprule
+Notation & Meaning in \cref{opa:part:aut}, and the sources' symbols\\
+\midrule
+\endhead
+$K=\Hahn k\Gamma$ & Hahn field, $k$ of characteristic zero; $v(f)=\min\supp f$,
+$v(0)=\infty$; $\lc(f)$ the coefficient at $v(f)$.\\
+$\Pi$ & Series supported in $\Gamma^{<0}$, zero included (the purely
+infinite ideal). Sources: $\mathcal J$ (08, 09), $\mathcal I$ (04).\\
+$\Ak=k\oplus\Pi$ & Series supported in $\Gamma^{\le0}$, the boundary ring.
+Sources: $B$ (09), $\mathcal A$ (04), $\mathcal B_k$ (08); the Diophantine report's
+$\mathcal A_\Bbbk(\Gamma)$.\\
+$\Ro=\oo\oplus\Pi$ & The integer-part ring for a unital subring
+$\oo\subseteq k$; $\mathcal R_\Z=\Oz$ for $(\R,\No)$ and
+$\mathcal R_{\Z[i]}=\Og$ for $(\C,\No)$. Sources: $A_D$ (09), $O_D$ (04), $A_k$
+(08); the Diophantine report's $\mathcal R_{\oo}(\Bbbk,\Gamma)$. The letter $D$
+of the sources is freed for derivations.\\
+$\OO$, $\mm$ & Series supported in $\Gamma^{\ge0}$ and $\Gamma^{>0}$: the
+valuation ring and its maximal ideal.\\
+$P_-,P_0,P_+$ & Projections onto $\Pi$, $k$ and $\mm$ in
+$K=\Pi\oplus k\oplus\mm$; $P_0$ restricted to $\Ak$ is the retraction $\ct$.\\
+$C_\delta$ & Principal convex subgroup
+$\{\gamma:|\gamma|\le n\delta\text{ for some }n\ge1\}$ of $\delta>0$. Sources:
+$C_\delta$ (04, 09), $H_\delta$ (08), $H(a)$ (02); the transcendence report's
+$C(a)$.\\
+$\delta\bb\epsilon$ & $n\delta<\epsilon$ for every ordinary $n\ge1$.\\
+$H_g$ & $\{h:n|h|<|g|\text{ for all }n\ge1\}$ for $g\ne0$ \src{04}; the same
+convex subgroup as the quotient report's $H_a$ with $a=|g|$.\\
+$a_{\sigma,\delta}$ & Logarithmic-character coefficient
+$\coef\delta{\log(t^{-g}\sigma(t^g))}$ of a $1$-automorphism \src{04}.\\
+$c_\delta$ & Operator coefficient $\coef{\gamma+\delta}{\partial(t^\gamma)}$
+of a derivation $\partial$ \src{09}; for $\partial=\Log\sigma$ it differs from
+$a_{\sigma,\delta}$ (\cref{opa:ex:functionals}).\\
+$D_{\delta,\theta}$ & The derivation $t^\gamma\mapsto\theta(\gamma)t^{\gamma+\delta}$
+for additive $\theta:\Gamma\to k$ and $\delta>0$. Sources: $D_{\delta,\theta}$
+(09), $D_{\delta,a}$ (04), $D_{\varphi,\delta}$ (08, sign as above).\\
+$\UU_{\Ro}(\Gamma)$, $\UU_\Oz$ & Strong $k$-linear $1$-automorphisms
+preserving $\Ro$ (independent of $\oo$ by \cref{opa:thm:criterion}). Sources:
+$\UU_{A_D}$ (09), $\mathcal U_D(G)$ (04).\\
+$q_\beta(\gamma)$ & The coefficient of $\omega^\beta$ in the Conway normal form
+of the \emph{exponent} $\gamma\in\No$. Sources: $q_\eta$ (09), $[\omega^\beta]g$
+(04), $c_a$ (08), $\chi_b$ (02), $\ell_\eta$ (quotient report).\\
+$\exp(u)$, $\Exp$, $\Log$ & The Hahn series $\sum u^n/n!$ for $v(u)>0$
+($\mathsf E$ in 08); operator exponential and logarithm.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Two further collisions are resolved in the new material. Source 09's
+parameter monomial $H=\omega^\eta$ and its family $H_j$ are written
+$\eta=\omega^\beta$ and $\eta_j$ here, leaving $H_g$ to 04's convex
+subgroup; and 08's automorphisms $A_1,B_1$ are written in 04's normalization
+$A_s,B_u$, with $A_1^{(08)}=A_{-1}$ and $B_1^{(08)}=B_{-1}$
+(\cref{opa:sec:group}). A $1$-automorphism is a field automorphism that
+preserves the valuation and the leading coefficient of every nonzero series.
+\emph{Strong} means that every Hahn-summable family is sent to a summable
+family with the same sum; a strong automorphism is one whose inverse is also
+strong (04's convention); \emph{$k$-linear} includes fixing $k$ pointwise.
+
+\part{Automorphisms preserving the omnific integers}\label{opa:part:aut}
+
+\section{Hahn support, the boundary ring, and strong maps}\label{opa:sec:prelim}
+
+\subsection{Summability}
+
+An element of $K=\Hahn k\Gamma$ is a formal sum $f=\sum_{\gamma\in S}a_\gamma
+t^\gamma$ with $S\subseteq\Gamma$ well ordered. A set-indexed family
+$(f_i)_{i\in I}$ is \emph{Hahn summable} if the union of its supports is well
+ordered and each exponent lies in only finitely many of the supports; its sum
+is formed coefficientwise with finite sums in $k$. No convergence in the fine
+topology of the surreals is involved; a strong sum is a support-controlled
+algebraic construction \src{04, 08, 09}.
+
+We use the Neumann support principle in its word form: if $S$ is well ordered
+and $T\subseteq\Gamma^{>0}$ is well ordered, then $S+\langle T\rangle_\N$ is well
+ordered, and each exponent receives only finitely many contributions from a
+choice of an element of $S$ and a finite word in $T$, counted across all word
+lengths \cite{BKKPS}. The one-shift case is proved directly.
+
+\begin{lemma}[One-shift summation \src{04, 08}]\label{opa:lem:shift}
+If $T\subseteq\Gamma$ is well ordered and $\delta>0$, then $T+\N\delta$ is well
+ordered, and each $\gamma\in\Gamma$ has only finitely many representations
+$\gamma=g+n\delta$ with $g\in T$ and $n\in\N$.
+\end{lemma}
+\begin{proof}
+An infinite strictly decreasing sequence $g_j+n_j\delta$ has an infinite
+subsequence on which the $n_j$ are nondecreasing; on it the $g_j$ strictly
+decrease, contradicting well-ordering of $T$. Infinitely many representations
+of one $\gamma$ would have unbounded, hence eventually increasing, values of
+$n$, and the corresponding $g=\gamma-n\delta$ would strictly decrease in $T$.
+\end{proof}
+
+For $h\in\mm$ the series $\exp(h)=\sum_{n\ge0}h^n/n!$ and
+$\log(1+h)=\sum_{n\ge1}(-1)^{n+1}h^n/n$ are Hahn summable, and they are
+inverse group isomorphisms between $(\mm,+)$ and $(1+\mm,\cdot)$. This local
+exponential is the only exponential used in the criterion; neither $\exp$ nor
+$\Exp$ asserts anything about the Gonshor exponential of $\No$.
+
+\begin{lemma}[Coefficient polynomial \src{04}]\label{opa:lem:polynomial}
+For $h\in\mm$ and $\delta>0$ the expression
+$P_{h,\delta}(X)=\sum_{n\ge1}\frac{X^n}{n!}\coef\delta{h^n}$ is a polynomial
+over $k$. For every $q\in\Q$ one has $P_{h,\delta}(q)=\coef\delta{\exp(qh)}$,
+and its coefficient of $X$ is $\coef\delta h$.
+\end{lemma}
+\begin{proof}
+The support principle gives only finitely many contributions to the exponent
+$\delta$ across all powers $h^n$, not merely within each power. So only
+finitely many displayed terms are nonzero. The rest is coefficientwise.
+\end{proof}
+
+\subsection{The rings and the zero cut}
+
+The additive decompositions
+\begin{equation}\label{opa:eq:decomp}
+ K=\Pi\oplus k\oplus\mm,\qquad \Ak=k\oplus\Pi,\qquad \Ro=\oo\oplus\Pi,
+ \qquad \OO=k\oplus\mm
+\end{equation}
+define the projections $P_-,P_0,P_+$ \src{04, 09}. Membership in $\Pi$ means
+that \emph{all} exponents are negative, which is stronger than $v(f)<0$: the
+series $t^{-1}+t$ has negative valuation and is not in $\Pi$ \src{04}. $\Pi$ is
+a nonunital ideal of $\Ak$ and of $\Ro$; $\Ak$ is not a valuation ring; $P_0$ is
+a ring retraction $\Ak\to k$ restricting to $\Ro\to\oo$, but not a ring map on
+$K$: $P_0(t^{-1})P_0(t)=0\ne1=P_0(1)$. For $k=\R$, $\oo=\Z$ the ring $\mathcal
+R_\Z$ is an integer part of $K$; for $\Gamma=\No$ it is $\Oz$ and its floor
+function is the Diophantine report's \lbl{odg:thm:floor}.
+
+The units $\Ak^\times=k^\times$, and more generally the fact that a product of
+two elements of $\Ak$ lying in $k^\times$ has constant factors, are the
+Diophantine report's constant-product lemma (\lbl{odg:lem:constantproduct},
+\lbl{odg:def:lem:units}); sources 04, 08 and 09 reprove it, and it is not
+reprinted.
+
+\begin{lemma}[The divisible part \src{04, 08}]\label{opa:lem:divisible}
+If $\bigcap_{n\ge1}n\oo=0$ (for example $\oo=\Z$ or $\Z[i]$), then
+$\Pi=\bigcap_{n\ge1}n\Ro$, the largest divisible subgroup of $\Ro$; it is
+preserved by every ring automorphism of $\Ro$. This holds for every ordered
+abelian $\Gamma$, divisible or not.
+\end{lemma}
+\begin{proof}
+A series in $\Pi$ is $n$ times a series with the same support. Conversely the
+constant coefficient of an element of the intersection lies in
+$\bigcap_n n\oo=0$. Every divisible subgroup lies in the intersection.
+\end{proof}
+
+For $\Oz$ this is the identity \lbl{odg:eq:divkernel} of the Diophantine
+report; it is printed because the threshold theorem uses it
+for non-divisible $\Gamma$.
+
+\begin{definition}[Principal convex scale]\label{opa:def:convex}
+For $\delta>0$ let $C_\delta=\{\gamma\in\Gamma:|\gamma|\le n\delta\text{ for some }
+n\ge1\}$, and write $\delta\bb\epsilon$ if $n\delta<\epsilon$ for all $n\ge1$.
+Then $\gamma\notin C_\delta$ if and only if $\delta\bb|\gamma|$;
+$C_\delta\subsetneq C_\epsilon$ if and only if $\delta\bb\epsilon$; and
+$C_\delta$ is divisible when $\Gamma$ is. For $g\ne0$ the set
+$H_g=\{h:n|h|<|g|\text{ for all }n\ge1\}$ is a convex subgroup, and a finite
+sum of positive elements of $H_g$ is still smaller than $|g|$ \src{04}.
+\end{definition}
+
+\section{The convex-support criterion}\label{opa:sec:criterion}
+
+\subsection{Two coefficient functionals}
+
+Let $\sigma$ be a strong $k$-linear $1$-automorphism. Since $t^{-g}\sigma(t^g)$
+has leading term $1$, its local logarithm is defined \src{04}:
+\begin{equation}\label{opa:eq:logchar}
+ h_\sigma(g)=\log\bigl(t^{-g}\sigma(t^g)\bigr)\in\mm,\qquad
+ a_{\sigma,\delta}(g)=\coef\delta{h_\sigma(g)}\quad(\delta>0),
+\end{equation}
+so that $\sigma(t^g)=t^g\exp(h_\sigma(g))$. For a contracting strong
+$k$-derivation $\partial$ (that is, $v(\partial f)>v(f)$ for $f\ne0$) put
+\src{09}
+\begin{equation}\label{opa:eq:opcoef}
+ c_\delta(\gamma)=\coef{\gamma+\delta}{\partial(t^\gamma)}\quad(\delta>0),
+ \qquad\text{so}\qquad
+ \partial(t^\gamma)=t^\gamma\sum_{\delta>0}c_\delta(\gamma)t^\delta .
+\end{equation}
+For fixed $\gamma$ the nonzero terms have well-ordered set support; no
+assumption is made that all shifts together form one well-ordered set.
+
+\begin{lemma}[Additivity \src{04, 09}]\label{opa:lem:additive}
+The maps $h_\sigma:\Gamma\to(\mm,+)$, $a_{\sigma,\delta}$ and $c_\delta$ are
+additive, hence $\Q$-linear when $\Gamma$ is divisible. If $\Gamma$ is divisible
+and an additive $\theta:\Gamma\to k$ vanishes on $(-\delta,0)$, it vanishes on
+$C_\delta$.
+\end{lemma}
+\begin{proof}
+The quotient at $g+g'$ is the product of the quotients at $g$ and $g'$, and
+$\log$ takes products to sums. For $c_\delta$ the product rule gives
+$t^{-\gamma-\eta}\partial(t^{\gamma+\eta})=t^{-\gamma}\partial(t^\gamma)
++t^{-\eta}\partial(t^\eta)$. For the last claim, given $0\ne h\in C_\delta$
+choose $N$ with $|h|/N<\delta$; one of $\pm h/N$ lies in $(-\delta,0)$, and
+additivity gives $\theta(h)=0$.
+\end{proof}
+
+\begin{example}[The functionals differ \mergetag]\label{opa:ex:functionals}
+Let $\Gamma=\No$, $k=\R$, and
+$\partial=D_{1,q_1}+D_{\omega,q_2}$ (notation of
+\cref{opa:sub:notation}; the $t$-exponent $\gamma$ has $q_1(\gamma)$ and
+$q_2(\gamma)$ as its coefficients at $\omega$ and $\omega^2$). Take
+$\sigma=\Exp(\partial)$, an element of $\UU_\Oz$ by
+\cref{opa:prop:uniform}, and $g=\omega^2$. Then
+$\partial(t^g)=t^{g+\omega}$ and
+$\partial^2(t^g)=t^{g+\omega+1}+t^{g+2\omega}$, and the only word in the
+shifts $\{1,\omega\}$ reaching the exponent $\omega+1$ applies the shift
+$\omega$ first; $\log(1+u)=u-u^2/2+\cdots$ adds nothing at $\omega+1$, since
+$u^2$ starts at $2\omega$. Hence
+\[
+ t^{-g}\sigma(t^g)=1+t^\omega+\tfrac12t^{\omega+1}+(\text{terms at exponents}>\omega+1),
+ \qquad a_{\sigma,\omega+1}(\omega^2)=\tfrac12,
+\]
+whereas $c_{\omega+1}(\omega^2)=0$: the operator coefficients of $\partial$ at
+$g$ are $c_\omega(g)=1$ and zero at every other shift. So
+$a_{\sigma,\delta}\ne c_\delta$ in general; 04's condition concerns the
+logarithm of the monomial image, 09's the logarithm of the operator. Both
+vanishing conditions hold here, and by
+\cref{opa:thm:criterion,opa:cor:operator} each is equivalent to preservation
+of $\Oz$, hence to the other. The placement dossier checked the example by
+exact computation.
+\end{example}
+
+\subsection{The criterion}
+
+The following statement combines 09's generality with 04's proof. 04 proved
+it for $k=\R,\C$ and $\oo=\Z,\Z[i]$, passing through \cref{opa:lem:divisible};
+09 proved it for every characteristic-zero $k$ and unital $\oo$, but through
+the operator logarithm (\cref{opa:fact:import}). The first step below is 09's
+and removes the need for $\bigcap n\oo=0$; the rest is 04's.
+
+\begin{theorem}[Convex-support criterion \src{04, 09}\mergetag]\label{opa:thm:criterion}
+Let $k$ have characteristic zero, let $\oo\subseteq k$ be a unital subring,
+let $\Gamma\ne0$ be divisible (a set, or $\Gamma=\No$), and let $\sigma$ be a
+strong $k$-linear $1$-automorphism of $K=\Hahn k\Gamma$. The following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},itemsep=1pt]
+\item $\sigma(\Ro)=\Ro$;
+\item $\sigma(\Ak)\subseteq\Ak$;
+\item $\sigma(\Pi)\subseteq\Pi$;
+\item $a_{\sigma,\delta}(C_\delta)=0$ for every $\delta>0$;
+\item for every $g\ne0$, every exponent $\delta\in\supp h_\sigma(g)$ satisfies
+$\delta\bb|g|$;
+\item $\sigma$ commutes with $P_-$, $P_0$ and $P_+$.
+\end{enumerate}
+When they hold, $\sigma(\Pi)=\Pi$, $\sigma(\Ak)=\Ak$, $\sigma(\mm)=\mm$,
+the constant coefficient of every series is preserved, and every purely
+infinite monomial stays purely infinite, though not necessarily a monomial.
+In particular the group $\UU_{\Ro}(\Gamma)$ does not depend on $\oo$.
+\end{theorem}
+\begin{proof}
+\emph{(i)$\Rightarrow$(ii)} \src{09}. For $\gamma<0$, $t^\gamma\in\Ro$, so
+$\sigma(t^\gamma)\in\Ro\subseteq\Ak$. An element of $\Ak$ is
+$c+\sum_{\gamma<0}a_\gamma t^\gamma$ with $c\in k$; strong $k$-linearity writes
+its image as $c+\sum a_\gamma\sigma(t^\gamma)$, a summable family of series
+supported in $\Gamma^{\le0}$, whose sum is supported there.
+
+\emph{(ii)$\Rightarrow$(iv)} \src{04}. Fix $\delta>0$ and $0\ne g\in C_\delta$;
+put $x=-|g|<0$, so $h_\sigma(x)=\pm h_\sigma(g)$, and choose $N\ge1$ with
+$|g|\le N\delta$. By \cref{opa:lem:polynomial},
+$P(X)=\coef\delta{\exp(Xh_\sigma(x))}$ is a polynomial. For rational
+$0<q<1/N$, divisibility gives $qx\in\Gamma^{<0}$ and additivity gives
+$\sigma(t^{qx})=t^{qx}\exp(qh_\sigma(x))$, whose coefficient at $qx+\delta$ is
+$P(q)$. Since $q|g|<\delta$, this exponent is strictly positive, while
+$\sigma(t^{qx})\in\Ak$ has no positive exponents. So $P$ has infinitely many
+zeros and vanishes; its linear coefficient is $a_{\sigma,\delta}(x)$, so
+$a_{\sigma,\delta}(g)=0$. This tests every coefficient of the logarithm;
+testing only the first nonzero one would not suffice.
+
+\emph{(iv)$\Leftrightarrow$(v)} \src{04}. $g\notin C_\delta$ means
+$\delta\bb|g|$; consider each nonzero coefficient.
+
+\emph{(v)$\Rightarrow$(iii)} \src{04}. For $g<0$, $\supp h_\sigma(g)\subseteq
+H_g^{>0}$, so every exponent of $\exp(h_\sigma(g))$ is $0$ or a finite sum of
+elements of $H_g^{>0}$, hence smaller than $|g|$; thus
+$\sigma(t^g)=t^g\exp(h_\sigma(g))\in\Pi$. For $f\in\Pi$ write
+$\sigma(f)=\sum c_g\sigma(t^g)$ by strongness; all supports are negative.
+
+\emph{(iii)$\Rightarrow$(vi)} \src{04}. A $1$-automorphism maps $\mm$ into
+$\mm$, and $\sigma$ fixes $k$; so each summand of \eqref{opa:eq:decomp} is
+mapped into itself and $\sigma$ commutes with the projections.
+
+\emph{(vi)$\Rightarrow$(i)} \src{04}. If $\sigma(y)\in\Pi$ with
+$y=y_-+c+y_+$, then $0=P_0\sigma(y)=c$ and $0=P_+\sigma(y)=\sigma(y_+)$, so
+$y\in\Pi$. With (iii) this gives $\sigma(\Pi)=\Pi$, and since $\sigma$ fixes
+$\oo\subseteq k$, $\sigma(\Ro)=\Ro$. The same argument gives
+$\sigma(\Ak)=\Ak$ and $\sigma(\mm)=\mm$, and (vi) preserves constant
+coefficients. Condition (ii) does not mention $\oo$, which proves the last
+assertion.
+\end{proof}
+
+Only (ii)$\Rightarrow$(iv) uses divisibility; it divides an \emph{exponent},
+while characteristic zero separately permits rational scalars \src{09}. The
+argument is elementwise with set-sized supports, so it applies verbatim to
+$\Gamma=\No$, $k=\R$, $\oo=\Z$, that is to $\Oz$, and to $\Og$ with $(k,\oo)=
+(\C,\Z[i])$ \src{04}. The theorem classifies \emph{existing} strong maps: an
+arbitrary additive $h:\Gamma\to\mm$ need not define a strong surjective field map
+by $t^g\mapsto t^g\exp h(g)$ \src{04} (\cref{opa:q:characters}).
+
+\begin{theorem}[Boundary-preserving derivations \src{09}]\label{opa:thm:derivation}
+Let $\Gamma\ne0$ be divisible and let $\partial$ be a contracting strong
+$k$-derivation of $K$. Then $\partial(\Ak)\subseteq\Ak$ if and only if
+$c_\delta(C_\delta)=0$ for every $\delta>0$. In that case
+$\partial(\Ak)\subseteq\Pi$, $\partial(\Pi)\subseteq\Pi$, and $\partial$ commutes
+with $P_-,P_0,P_+$.
+\end{theorem}
+\begin{proof}
+If $\partial(\Ak)\subseteq\Ak$ and $-\delta<\gamma<0$, then $t^\gamma\in\Ak$ and
+$\gamma+\delta>0$, so $c_\delta(\gamma)=0$; \cref{opa:lem:additive} extends this
+to $C_\delta$. Conversely, if $\gamma<0$ and $c_\delta(\gamma)\ne0$, then
+$\gamma\notin C_\delta$, so $-\gamma>n\delta$ for all $n$ and in particular
+$\gamma+\delta<0$. Every term of $\partial(t^\gamma)$ is negative; constants are
+killed; strongness sums over any negative support. Positive exponents stay
+positive under positive shifts, which gives the projection identities.
+\end{proof}
+
+The condition excludes a boundary term as well as a crossing term: testing
+$-\delta/2$ gives $c_\delta(-\delta)=0$. This matters when constant
+coefficients are restricted to $\oo$ rather than $k$ \src{09}. Source 04
+proves the same criterion for derivations with common positive shifts
+(\cref{opa:thm:derivcriterion}), testing $t^{-u}$ for $0<u\le\delta$.
+
+\begin{corollary}[Operator form \src{09}]\label{opa:cor:operator}
+Let $\sigma$ be a strong $k$-linear $1$-automorphism of the form
+$\sigma=\Exp(\partial)$ for a contracting strong $k$-derivation $\partial$ with
+$\Log(\sigma)=\partial$. Then the conditions of \cref{opa:thm:criterion} are
+equivalent to $\partial(\Ak)\subseteq\Ak$ and to $c_\delta(C_\delta)=0$ for all
+$\delta>0$. For set-sized $\Gamma$ every strong $k$-linear $1$-automorphism
+has this form, so
+\[
+ \UU_{\Ro}(\Gamma)=\Exp(\LL_A),\qquad
+ \LL_A=\{\partial\text{ contracting strong }k\text{-derivation}:
+ c_\delta(C_\delta)=0\text{ for all }\delta>0\}.
+\]
+For $\Gamma=\No$ the same equality holds if the correspondence of
+\cref{opa:fact:import} is granted for proper-class $\Gamma$, as \cite[Fact
+4.2]{KKS} asserts (\cref{opa:rem:import}); on the common-positive-shift
+class it is proved in \cref{opa:thm:lie}.
+\end{corollary}
+\begin{proof}
+If the conditions hold, $\sigma(\Ak)=\Ak$; then each $(\sigma-\id)^n$ maps $\Ak$
+into $\Ak$, and $\Log(\sigma)$ is a strongly summable family of series
+supported in $\Gamma^{\le0}$, so $\partial(\Ak)\subseteq\Ak$. This step is taken
+in the $k$-algebra $\Ak$, not in $\Ro$, so no division by integers inside
+$\oo$ is needed. \Cref{opa:thm:derivation} converts this into the coefficient
+condition. Conversely, under the coefficient condition every iterate of
+$\partial$ maps $\Ak$ into $\Pi$ and kills $k$, so $\Exp(\pm\partial)$ preserve
+$\Ro$. The last assertions are \cref{opa:fact:import}.
+\end{proof}
+
+The two routes are genuinely different. 04's functional is read off the
+monomial images and needs no correspondence; 09's is read off the generator
+and gives the Lie-theoretic structure of \cref{opa:sec:group}. Neither
+condition is stated in terms of the other: each is equivalent to preservation
+of $\Ro$ (\cref{opa:ex:functionals}).
+
+\begin{remark}[What has and has not been classified \src{04, 09}]\label{opa:rem:classified}
+The classification is inside the \emph{strong, coefficient-fixing,
+leading-term-preserving} automorphisms. It does not assert that every abstract
+field automorphism preserving $\Ro$ is strong; for the real pair, fixing of
+$\R$ is automatic (\cref{opa:cor:allautos}), strongness is not known to be. The
+coefficient functionals come from an existing strong map; arbitrary functions
+satisfying the vanishing condition cannot be assembled into an operator
+without checking summability and invertibility.
+\end{remark}
+
+\section{Shears, flows, and the rank dichotomy}\label{opa:sec:shears}
+
+\subsection{Homogeneous shears}
+
+Let $\theta:\Gamma\to(k,+)$ be additive and $\delta>0$. The formula
+\begin{equation}\label{opa:eq:Dshift}
+ D_{\delta,\theta}\Bigl(\sum_\gamma a_\gamma t^\gamma\Bigr)
+ =\sum_\gamma a_\gamma\theta(\gamma)t^{\gamma+\delta}
+\end{equation}
+defines a contracting strong derivation: translation keeps supports well
+ordered and families summable, and additivity of $\theta$ gives the product
+rule on monomials, hence on all series. This is the fixed-shift derivation of
+the surcomplex automorphism report, \lbl{saut:thm:shiftflow}, which constructs
+its exponential for every additive $\theta$ and every $\delta>0$; its $n$th
+iterate has coefficient $\prod_{j<n}\theta(\gamma+j\delta)$. Sources 04, 08 and
+09 re-derive it; only 04 credited it. The integer-part condition is the
+additional restriction $\theta(C_\delta)=0$, not merely $\theta(\delta)=0$.
+
+\begin{theorem}[Homogeneous shears \src{04, 09}; after \lbl{saut:thm:shiftflow}]\label{opa:thm:shear}
+Suppose $\theta(C_\delta)=0$. Then
+$D_{\delta,\theta}^n(t^\gamma)=\theta(\gamma)^nt^{\gamma+n\delta}$ and
+\begin{equation}\label{opa:eq:shear}
+ \sigma_{\delta,\theta}(t^\gamma):=\Exp(D_{\delta,\theta})(t^\gamma)
+ =t^\gamma\exp\bigl(\theta(\gamma)t^\delta\bigr).
+\end{equation}
+The strong extension $\sigma_{\delta,\theta}$ lies in $\UU_{\Ro}(\Gamma)$ for every
+$\oo$, with inverse $\sigma_{\delta,-\theta}$, and
+$\sigma_{\delta,\theta}\sigma_{\delta,\psi}=\sigma_{\delta,\theta+\psi}$ when
+$\theta,\psi$ both vanish on $C_\delta$. With $\Phi_s=\sigma_{\delta,s\theta}$
+$(s\in k)$, $s\mapsto\Phi_s$ is a homomorphism, injective if $\theta\ne0$.
+Conversely $\Exp(D_{\delta,\theta})$ preserves $\Ro$ only if
+$\theta(C_\delta)=0$.
+\end{theorem}
+\begin{proof}
+$\theta(\delta)=0$ gives $\theta(\gamma+n\delta)=\theta(\gamma)$ and the iterate
+formula. For a series supported on $S$, all terms of the image lie in
+$S+\N\delta$; \cref{opa:lem:shift} gives well-ordering and finite
+contributions across all $n$, for single inputs and for summable families.
+On monomials the prescription is multiplicative by additivity of $\theta$ and
+the exponential law; strongness extends this to all series. The map fixes
+$t^\delta$ and every coefficient of $\exp(\cdot)$, so applying it termwise gives
+$\sigma_{\delta,\theta}\sigma_{\delta,\psi}(t^\gamma)=t^\gamma\exp((\theta+\psi)(\gamma)
+t^\delta)$, which gives the group law and the inverse. Every correction has
+larger exponent, so leading terms are fixed. Here $h_\sigma(\gamma)=\theta(\gamma)
+t^\delta$, whose only coefficient $a_{\sigma,\delta}=\theta$ annihilates
+$C_\delta$; apply \cref{opa:thm:criterion}. The coefficient at $\gamma+\delta$
+of $\Phi_s(t^\gamma)$ is $s\theta(\gamma)$, which gives injectivity. The converse
+is the same criterion, since $a_{\sigma,\delta}=\theta$ is the only functional.
+\end{proof}
+
+The summability above is proved directly; no appeal to
+\cref{opa:fact:import} is made. For $\gamma<0$ with $\theta(\gamma)\ne0$, every
+$\gamma+n\delta$ stays negative, because $-\gamma>n\delta$ for all ordinary $n$:
+the whole exponential, not only a Taylor polynomial, stays on the correct side
+of the boundary \src{09}.
+
+\begin{theorem}[Exact displacement and fixed field \src{04, 08, 09}]\label{opa:thm:fixedshear}
+Let $\theta(C_\delta)=0$, $s\ne0$, and $f=\sum c_\gamma t^\gamma$. If
+$T_\theta(f)=\{\gamma\in\supp f:\theta(\gamma)\ne0\}$ is empty, $\Phi_s(f)=f$.
+Otherwise let $\gamma_0=\min T_\theta(f)$; then
+\[
+ v(\Phi_s(f)-f)=\gamma_0+\delta,\qquad
+ \coef{\gamma_0+\delta}{(\Phi_s(f)-f)}=s\,\theta(\gamma_0)c_{\gamma_0}.
+\]
+In particular $\Fix(\Phi_s)=\Hahn k{\ker\theta}$.
+\end{theorem}
+\begin{proof}
+Only exponents with $\theta(\gamma)\ne0$ and powers $n\ge1$ contribute to the
+difference, at $\gamma+n\delta\ge\gamma_0+\delta$, with equality only for
+$\gamma=\gamma_0$, $n=1$. $\ker\theta$ is a divisible subgroup, so the Hahn
+field on it is a subfield.
+\end{proof}
+
+This first-displacement computation appears three times in the sources: as
+04's exact displacement, as 08's leading term of $T(x)-x$, and inside 09's
+fixed-field proof. It is printed once.
+
+\begin{example}[A nonmonomial image \src{04, 09}]\label{opa:ex:omegaomega}
+Let $\Gamma=\No$, $\delta=1$, $\theta=q_1$, the coefficient of $\omega$ in an
+exponent. Every member of $C_1$ is finite, so $q_1(C_1)=0$. The flow fixes
+$\R$ and $\omega=t^{-1}$, and
+\[
+ \Phi_s(\omega^\omega)=\omega^\omega\exp(-s\omega^{-1})
+ =\sum_{n\ge0}\frac{(-s)^n}{n!}\omega^{\omega-n}.
+\]
+For $s\ne0$ this is not a monomial; every exponent $\omega-n$ is positive, so it
+is an omnific integer. The sum is a Hahn sum with strictly decreasing
+exponents, not a limit in the fine topology.
+\end{example}
+
+\subsection{Families of shifts and a proved correspondence}
+
+\begin{proposition}[Uniformly supported shifts \src{09}]\label{opa:prop:uniform}
+Let $S\subseteq\Gamma^{>0}$ be a set-sized well-ordered set and
+$(\theta_s)_{s\in S}$ additive maps $\Gamma\to k$. Then
+$D(f)=\sum_{\gamma}\sum_{s\in S}a_\gamma\theta_s(\gamma)t^{\gamma+s}$ is a contracting
+strong derivation, the terms of $\Exp(D)(f)$ are supported in
+$\supp f+\langle S\rangle_\N$ and form a summable family, and if
+$\theta_s(C_s)=0$ for all $s$ then $\Exp(D)\in\UU_{\Ro}(\Gamma)$.
+\end{proposition}
+\begin{proof}
+The support principle applies to $\supp f+S$ and to all finite words in $S$;
+every coefficient of $D$, its iterates and products is a finite sum.
+Additivity of each $\theta_s$ gives the product rule; replacing one input
+support by the union of the supports of a summable input family gives
+strongness; each output exponent exceeds its input exponent. Preservation of
+$\Ro$ follows from the no-crossing argument of \cref{opa:thm:derivation}
+applied at each step of a word in $S$, which shows that $\Exp(\pm D)$ preserve
+$\Pi$ and fix $k$.
+\end{proof}
+
+All explicit constructions on $\No$ below use one set-sized well-ordered set
+of shifts, so they do not depend on the proper-class case of
+\cref{opa:fact:import} \src{09}. Source 04 proves the correspondence itself on
+a class of this kind.
+
+\begin{definition}[Common positive shifts \src{04}]\label{opa:def:common}
+A strong $k$-linear operator $L$ has \emph{common positive shifts} if there is
+a well-ordered set $S\subseteq\Gamma^{>0}$ with $\supp L(t^g)\subseteq g+S$ for
+every $g$. Write $S^*$ for the additive monoid generated by $S$.
+\end{definition}
+
+\begin{lemma}[Iterated operator summability \src{04}]\label{opa:lem:operator}
+If $L$ has common positive shifts, then $(L^nf)_{n\ge0}$ is Hahn summable for
+every $f$, formal power series in $L$ define strong operators, and
+coefficientwise formal identities between such series hold under composition.
+\end{lemma}
+\begin{proof}
+$\supp L^nf\subseteq\supp f+nS$. Translate $\supp f$ by its minimum and apply the
+support principle to the positive well-ordered set $S\cup((\supp f-\min\supp
+f)\setminus\{0\})$; a base exponent is used once and later shifts come from
+$S$, so every exponent receives finitely many contributions across all paths
+and all $n$. For a summable input family use the union of supports; regrouping
+is justified because every coefficient has finitely many contributions.
+\end{proof}
+
+\begin{theorem}[Derivations with common shifts \src{04}]\label{opa:thm:derivcriterion}
+Let $S\subseteq\Gamma^{>0}$ be well ordered and $a_\delta:\Gamma\to k$ additive
+for $\delta\in S$. Then $D=\sum_{\delta\in S}D_{\delta,a_\delta}$ is a strong
+$k$-linear derivation with common positive shifts, and every such derivation
+has a unique expression of this form. When $\bigcap_nn\oo=0$, $D$ maps $\Ro$ into
+itself if and only if $a_\delta(C_\delta)=0$ for all $\delta\in S$.
+\end{theorem}
+\begin{proof}
+Summability and the Leibniz rule are termwise. Conversely put
+$a_\delta(g)=\coef{g+\delta}{D(t^g)}$; the Leibniz rule for $t^{g+h}$ gives
+additivity, and strong linearity the expression. If $D(\Ro)\subseteq\Ro$ and
+$x\in\Pi$, then $D(x)=nD(x/n)\in n\Ro$ for all $n$, so $D(x)\in\Pi$ by
+\cref{opa:lem:divisible}. For $0<u\le\delta$ the coefficient of $D(t^{-u})$ at
+the nonnegative exponent $\delta-u$ is $a_\delta(-u)$, with no cancellation
+between distinct shifts, so it vanishes; additivity and divisibility extend
+this to $C_\delta$. The converse is the no-crossing argument.
+\end{proof}
+
+In this theorem $D$ is a derivation; the sources' coefficient ring $D$ is
+$\oo$ here, which removes the collision 04 flagged.
+
+\begin{theorem}[Exponential and logarithm on common shifts \src{04}]\label{opa:thm:lie}
+On operators with common positive shifts, $D\mapsto\Exp(D)$ and
+$\sigma\mapsto\Log(\sigma)=\sum_{n\ge1}(-1)^{n+1}(\sigma-\id)^n/n$ are inverse
+bijections between strong $k$-linear derivations and strong $k$-linear field
+automorphisms whose difference from the identity has common positive shifts;
+the shift set may enlarge to $S^*\setminus\{0\}$. They restrict to a
+bijection between derivations preserving $\Ro$ and automorphisms preserving
+$\Ro$ (for $\bigcap_nn\oo=0$).
+\end{theorem}
+\begin{proof}
+All series are justified by \cref{opa:lem:operator}. For a derivation $D$, the
+iterated Leibniz rule gives multiplicativity of $\Exp D$ after regrouping, and
+$\Exp D\Exp(-D)=\id$ gives bijectivity; leading terms are fixed since all other
+shifts are positive. Conversely let $L=\sigma-\id$ and
+$\sigma^{[X]}=\sum_{n\ge0}\binom XnL^n$. For each ordinary $m\ge0$ this is the
+binomial expansion of $\sigma^m$, so for every exponent $\gamma$ the $t^\gamma$
+coefficient of $\sigma^{[X]}(fg)-\sigma^{[X]}(f)\sigma^{[X]}(g)$, a polynomial in
+$X$ by \cref{opa:lem:operator}, vanishes at all $m\ge0$ and is zero.
+Differentiating at $X=0$, with $\frac{d}{dX}\binom Xn\big|_{X=0}=(-1)^{n-1}/n$,
+shows that $\Log\sigma$ is a derivation; one-variable formal identities give
+the inverse correspondence. If $D$ preserves $\Ro$ it maps $\Pi$ into $\Pi$, so
+$\Exp(\pm D)$ do; if $\sigma(\Pi)=\Pi$, then $(\sigma-\id)(\Pi)\subseteq\Pi$ and the
+strong logarithmic sum has negative support.
+\end{proof}
+
+\subsection{Single-shift flows without divisibility}
+
+Source 08 treats one flow at a time but allows any ordered abelian group and
+does not require $\theta(\delta)=0$. Its statements are translated from the
+$\omega$-convention (\cref{opa:sub:notation}). For an ordered abelian group $G$,
+$(k,\oo)=(\R,\Z)$ or $(\C,\Z[i])$, let $\Pi_G$ be the series supported in
+$G^{<0}$ and $\mathcal R_G=\oo\oplus\Pi_G$.
+
+\begin{proposition}[Falling-factorial iterates \src{08}]\label{opa:prop:iterate}
+For any additive $\theta:G\to k$ and $\delta>0$,
+$D_{\delta,\theta}^n(t^\gamma)=\prod_{j=0}^{n-1}(\theta(\gamma)+j\theta(\delta))\,
+t^{\gamma+n\delta}$, and $T^s=\sum_{n\ge0}s^nD_{\delta,\theta}^n/n!$ $(s\in k)$ is a
+strong $k$-linear $1$-automorphism with $T^sT^u=T^{s+u}$. If $\theta(\delta)=0$,
+$T^s(t^\gamma)=t^\gamma\exp(s\theta(\gamma)t^\delta)$; if $c=\theta(\delta)\ne0$,
+$T^s(t^\gamma)=t^\gamma(1+sct^\delta)^{\theta(\gamma)/c}$ as a formal binomial
+series. In either case $T^s(t^{-\delta})=t^{-\delta}-s\theta(\delta)$.
+\end{proposition}
+\begin{proof}
+The iterate formula is induction. Summability, strongness and the group law
+follow from \cref{opa:lem:shift} as in \cref{opa:thm:shear}, and the pairs
+$(n,m)$ with $n+m=r$ are finite in number; multiplicativity follows from the
+iterated Leibniz rule. The two monomial formulas are the substitutions of the
+iterate. For $\gamma=-\delta$ every product of length at least two has the
+factor $\theta(-\delta)+\theta(\delta)=0$.
+\end{proof}
+
+This is \lbl{saut:thm:shiftflow} once more, over an arbitrary ordered abelian
+$G$; 08 reproves the summability for that reason.
+
+\begin{theorem}[Threshold for single flows \src{08}]\label{opa:thm:threshold}
+Let $G$ be any ordered abelian group, $\delta>0$, $\theta:G\to k$ additive and
+$s\in k\setminus\{0\}$. The following are equivalent: \textup{(a)}
+$T^s(\mathcal R_G)\subseteq\mathcal R_G$; \textup{(b)}
+$T^s(\mathcal R_G)=\mathcal R_G$; \textup{(c)} $\theta(C_\delta)=0$. When they hold,
+$T^s$ fixes every series supported in $C_\delta$ and preserves the constant
+coefficient of every series.
+\end{theorem}
+\begin{proof}
+Assume (a). By \cref{opa:lem:divisible}, $\Pi_G=\bigcap_nn\mathcal R_G$, so
+$T^s(\Pi_G)\subseteq\Pi_G$. The constant term of $T^s(t^{-\delta})$ is
+$-s\theta(\delta)$, so $\theta(\delta)=0$. If $0>\gamma\in C_\delta$ and
+$\theta(\gamma)\ne0$, choose $n$ with $\gamma+n\delta>0$; the coefficient of
+$T^s(t^\gamma)$ there is $(s\theta(\gamma))^n/n!\ne0$, and the exponents
+$\gamma+m\delta$ are distinct, contradicting $T^s(t^\gamma)\in\Pi_G$. So $\theta$
+vanishes on the negative part of $C_\delta$, hence on $C_\delta$. Conversely,
+under (c), monomials with exponents in $C_\delta$ are fixed; if $\gamma<0$ lies
+outside $C_\delta$, then $\gamma<-n\delta$ for all $n$, so all
+$\gamma+n\delta$ stay negative; positive exponents outside $C_\delta$ stay
+positive. So no term enters or leaves exponent $0$, $T^{\pm s}(\mathcal R_G)
+\subseteq\mathcal R_G$, and (b) follows. (b)$\Rightarrow$(a) is trivial.
+\end{proof}
+
+Only divisibility of \emph{coefficients} by ordinary integers is used, so
+$G$ need not be divisible. The theorem covers the elementary family only:
+even at rank one, exponent rescalings and characters preserve the integer part,
+and it does not assert that every leading-term-preserving automorphism is the
+exponential of one fixed-shift derivation \src{08}.
+
+\begin{remark}[Divisibility and the ring $\Ak$ \src{09}; corrected]\label{opa:rem:divisibility}
+Source 09 remarks that divisibility of $\Gamma$ is essential, because with
+$\Gamma=\Z$ the translation below preserves $\Ak(\Z)=k[t^{-1}]$. That is right
+for the boundary ring $\Ak$ and wrong if read for the integer-part ring: the
+translation $t^{-1}\mapsto t^{-1}-1$ sends $\tfrac12t^{-1}\in\mathcal R_\Z(\Z)=
+\Z+t^{-1}\R[t^{-1}]$ to $\tfrac12t^{-1}-\tfrac12\notin\mathcal R_\Z(\Z)$, as
+\cref{opa:thm:threshold} predicts. So for $\Gamma=\Z$ the stabilizers of $\Ak$ and
+of $\mathcal R_\Z$ differ, and the independence of $\oo$ in
+\cref{opa:thm:criterion} genuinely needs divisibility, whereas the
+$\mathcal R_\Z$-form of the criterion holds without divisibility for single
+flows. Whether the general criterion for $\mathcal R_\Z$ holds for every
+non-divisible $\Gamma$ is left open (\cref{opa:q:nondivisible}).
+\end{remark}
+
+\subsection{Why translations fail}
+
+\begin{example}[Translations \src{04, 08, 09}; the saut example]\label{opa:ex:translation}
+Let $\Gamma=\Q$, $\delta=1$, $\theta(\gamma)=\gamma$. Then
+$D^n(t^\gamma)=\gamma(\gamma+1)\cdots(\gamma+n-1)t^{\gamma+n}$ and
+$\Exp(D)(t^\gamma)=t^\gamma(1-t)^{-\gamma}$; on $t$ this is
+$t\mapsto t/(1-t)$, and on $t^{-1}$ it is $t^{-1}\mapsto t^{-1}-1$, which
+preserves $k[t^{-1}]$. But
+\[
+ \Exp(D)(t^{-1/2})=t^{-1/2}(1-t)^{1/2}=t^{-1/2}-\tfrac12t^{1/2}-\tfrac18t^{3/2}-\cdots
+\]
+has positive support, so neither $\Ak$ nor $\Ro$ is preserved: $\theta(C_1)\ne0$.
+The inverse $t\mapsto t/(1+t)$ is 04's example and $X\mapsto X+s$, $X=t^{-1}$, is
+08's. This is exactly the transparent example $T_1(t)=t/(1-t)$ of the
+surcomplex automorphism report (its $\lambda=\ell$, the constant-coefficient
+functional, with $\delta=1$, after \lbl{saut:thm:shiftflow}); on the surreals
+$\ell(1)=1\ne0$, so $T_1$ does \emph{not} preserve $\Oz$: it sends
+$\omega^{1/2}$ to $\omega^{1/2}-\tfrac12\omega^{-1/2}-\cdots\notin\Oz$. Preservation
+of a few familiar infinite integers is not enough; all rational monomial powers
+must be tested.
+\end{example}
+
+The Taylor coefficient flows of that report (\lbl{saut:thm:coeffflow}) move
+real constants and never preserve $\Oz$: this follows from
+\cref{opa:cor:allautos}, and directly, for $d(b)=1$ they send
+$bt^{-\delta/2}$ to $bt^{-\delta/2}+t^{\delta/2}$.
+
+\subsection{The rank dichotomy and the bottom subgroup}
+
+\begin{theorem}[Rank dichotomy \src{04, 09}; \src{08} for single flows]\label{opa:thm:rank}
+For a nonzero divisible ordered abelian group $\Gamma$, any characteristic-zero
+$k$ and unital $\oo\subseteq k$: $\UU_{\Ro}(\Gamma)=\{\id\}$ if and only if $\Gamma$
+is Archimedean. For every ordered abelian $G$, the single flows of
+\cref{opa:thm:threshold} preserving $\mathcal R_G$ are trivial if $G$ is
+Archimedean, and some are nontrivial if $G$ is a set with a proper $C_\delta$.
+\end{theorem}
+\begin{proof}
+If $\Gamma$ is Archimedean, $C_\delta=\Gamma$ for all $\delta$, so by
+\cref{opa:thm:criterion} every $h_\sigma(g)$ vanishes; $\sigma$ fixes all
+monomials, hence everything. If some $C_\delta$ is proper, choose (by a basis
+of the set-sized $\Q$-space $\Gamma/C_\delta$, or of the rationalization of the
+torsion-free $G/C_\delta$ for 08's case) a nonzero $\Q$-linear $\theta$ into
+$\Q\subseteq k$ vanishing on $C_\delta$; \cref{opa:thm:shear} or
+\cref{opa:thm:threshold} gives a nonidentity element. For $\Gamma=\No$ explicit
+functionals $q_\beta$ replace the choice (\cref{opa:sec:fixed}).
+\end{proof}
+
+\begin{definition}[Bottom convex subgroup \src{04}]\label{opa:def:bottom}
+$B(\Gamma)=\bigcap_{\delta>0}C_\delta$, possibly zero.
+\end{definition}
+
+\begin{theorem}[Common fixed field at arbitrary set-sized rank \src{04}]\label{opa:thm:bottom}
+For a set-sized nonzero divisible $\Gamma$, $\Fix\bigl(\UU_{\Ro}(\Gamma)\bigr)=
+\Hahn k{B(\Gamma)}$.
+\end{theorem}
+\begin{proof}
+If $g\in B(\Gamma)$, every $a_{\sigma,\delta}(g)$ vanishes by
+\cref{opa:thm:criterion}, so $t^g$ is fixed, and strong linearity fixes the Hahn
+field on $B(\Gamma)$. If $g\in\supp f$ lies outside $B(\Gamma)$, choose $\delta$
+with $g\notin C_\delta$ and a $\Q$-linear $\theta$ with $\theta(C_\delta)=0$ and
+$\theta(g)=1$; \cref{opa:thm:fixedshear} shows $\Phi_1$ moves $f$.
+\end{proof}
+
+\begin{example}[\src{04, 09}]\label{opa:ex:Qr}
+Let $\Gamma=\Q^r$, ordered so that the \emph{last} nonzero coordinate decides the
+sign (09's reverse-lexicographic order; 04 orders by the first coordinate, which
+is the same group with coordinates reversed). Then the coordinate vectors satisfy
+$0<e_1\bb e_2\bb\cdots\bb e_r$, $C_{e_j}=\Q e_1\oplus\cdots\oplus\Q e_j$, and
+$B(\Gamma)=\Q e_1$. For $r=1$ the stabilizer is trivial; for $r\ge2$ it is
+nontrivial and fixes exactly $\Hahn k{\Q e_1}$. The presence of a smallest
+Archimedean layer, not the number of layers, controls the fixed field. For
+$\Gamma=\No$, $B(\No)=0$: for $g\ne0$ take $\delta=|g|/\omega$.
+\end{example}
+
+\subsection{Phase shears}
+
+\begin{theorem}[Finite-dimensional phase shears \src{08}]\label{opa:thm:phase}
+Let $H$ be a convex subgroup of an ordered abelian group $G$, let $\mm_H$ be the
+series supported in $H^{>0}$, and let $L$ be an additive map on $G$ vanishing on
+$H$, with values in $\mm_H$ and image in a finite-dimensional $k$-subspace. Then
+$T_L(t^g)=t^g\exp(L(g))$ extends strongly to a $k$-linear $1$-automorphism of
+the Hahn field that fixes $\Hahn kH$ pointwise, preserves $\mathcal R_G$ and
+constant coefficients, and satisfies $T_LT_M=T_{L+M}$, $T_L^{-1}=T_{-L}$,
+and $T_L=\id\Leftrightarrow L=0$.
+\end{theorem}
+\begin{proof}
+Let $u_1,\dots,u_d$ span the image of $L$ and $U=\bigcup_j\supp u_j$, a
+well-ordered subset of $H^{>0}$. All supports of all powers in all $\exp(L(g))$
+lie in the monoid generated by $U$, which is well ordered with finite
+representations; with the input support this gives one summable bound, hence
+the strong extension. Additivity of $L$ gives multiplicativity. Exponents in
+$H$ have zero phase, so $\Hahn kH$ is fixed; in particular each $M(g)$ and its
+exponential are fixed, which gives $T_LT_M=T_{L+M}$ on monomials and then
+strongly. Injectivity follows from injectivity of $\exp$ on $\mm$. If $g\notin
+H$, every exponent of $t^g\exp(L(g))$ lies in $g+H$, which has constant strict
+sign by convexity; so positive and negative supports are preserved and no term
+reaches exponent $0$.
+\end{proof}
+
+The finite-dimensionality is a sufficient uniform support condition and must
+not be dropped silently: independent phases for infinitely many exponents need
+not form a summable family \src{08}. Taking $H=C_\delta$ and
+$L(g)=s\theta(g)t^\delta$ recovers the flows of \cref{opa:thm:threshold}.
+
+\section{The strong stabilizer and all pair automorphisms}\label{opa:sec:factorization}
+
+Call $\sigma$ \emph{valued} if $v(\sigma f)=\tau(v(f))$ for an order automorphism
+$\tau$ of $\Gamma$. For a character $\chi:(\Gamma,+)\to(k^\times,\cdot)$ put
+\begin{equation}\label{opa:eq:monomialmap}
+ M_{\chi,\tau}\Bigl(\sum a_\gamma t^\gamma\Bigr)=\sum a_\gamma\chi(\gamma)t^{\tau(\gamma)}.
+\end{equation}
+It is a strong field automorphism preserving $\Ro$, since $\tau$ preserves signs
+of exponents and $\chi(0)=1$; $M_{\chi,\tau}M_{\chi',\tau'}=
+M_{\chi'\cdot(\chi\circ\tau'),\tau\tau'}$ \src{04, 09}.
+
+\begin{theorem}[Strong valued factorization \src{04, 09}]\label{opa:thm:factorization}
+Every strong valued $k$-fixing automorphism $\sigma$ with $\sigma(\Ro)=\Ro$ factors
+uniquely as $\sigma=M_{\chi,\tau}\circ u$ with $u\in\UU_{\Ro}(\Gamma)$, where
+$\tau$ is the induced exponent automorphism and $\chi(\gamma)=\lc(\sigma(t^\gamma))$.
+The monomial maps form a subgroup normalizing $\UU_{\Ro}(\Gamma)$, and
+\begin{equation}\label{opa:eq:conj}
+ M_{\chi,\tau}D_{\delta,\theta}M_{\chi,\tau}^{-1}=
+ D_{\tau(\delta),\,\chi(\delta)\,\theta\circ\tau^{-1}},
+\end{equation}
+so the convex condition is invariant, since $\tau(C_\delta)=C_{\tau(\delta)}$.
+\end{theorem}
+\begin{proof}
+Multiplicativity of leading coefficients gives that $\chi$ is a character.
+$u=M_{\chi,\tau}^{-1}\sigma$ fixes the leading term of each monomial; since the
+images of distinct monomial terms have strictly ordered valuations, strongness
+shows that $u$ fixes the leading term of every series, and $u$ preserves $\Ro$.
+The data $\tau$, $\chi$ are forced by $\sigma$, hence so is $u$. Conjugating a
+$1$-automorphism by a monomial map gives a $1$-automorphism preserving $\Ro$.
+Formula \eqref{opa:eq:conj} is checked on monomials.
+\end{proof}
+
+The ambient decomposition is due to Kuhlmann--Serra \cite{KS}, and its
+surcomplex form is the four-layer decomposition \lbl{saut:thm:decomp}
+$U\rtimes\Hom(\Gamma,\C^\times)\rtimes(\Aut\C\times\Aut\Gamma)$ of the surcomplex
+automorphism report; \cref{opa:thm:factorization} is its restriction to the
+$\Ro$-stabilizer with the residue layer trivial. Sources 04 and 09 credit
+\cite{KS}; the new information is the description of $u$ by
+\cref{opa:thm:criterion}. For $k=\R$ and divisible $\Gamma$ every character is
+positive, $\chi(\gamma)=\chi(\gamma/2)^2$; for $\Gamma=\Q$ the factor $u$ is absent and
+every such real automorphism is $t^q\mapsto c^qt^{\lambda q}$ with $c>0$,
+$\lambda\in\Q_{>0}$, so the higher-rank shears are a new phenomenon, not
+complicated one-variable substitutions \src{09}. The monomial maps include the
+dilations $\mathsf S_a$ of the Diophantine report (\lbl{odg:def:ex:dilation}) and
+the character twists (\cref{opa:rem:twists}).
+
+\begin{corollary}[All pair automorphisms \src{08, 09}]\label{opa:cor:allautos}
+Every field automorphism of $\No$ preserving $\Oz$ setwise fixes $\R$ pointwise,
+preserves order and the natural valuation ring, and commutes with $P_-,P_0,P_+$
+and with the floor map of $\Oz$; this needs no strongness. Consequently, among
+strong automorphisms, the $\Oz$-stabilizer is exactly
+$\{M_{\chi,\tau}\}\ltimes\UU_\Oz$, with $\chi$ positive.
+\end{corollary}
+\begin{proof}
+By \lbl{odg:def:thm:autreal} of the Diophantine report, every automorphism of
+$\Oz$ extends uniquely to $\No$, preserves order, $\R$ and the finite ring, and
+fixes $\R$ pointwise; restriction and extension are inverse correspondences
+\src{08, 09}. The sets and graphs of \cref{opa:thm:projections} are
+parameter-free definable, so they are preserved. Fixing $\R$ pointwise makes a
+strong such map $k$-fixing, and preserving the valuation ring makes it valued,
+so \cref{opa:thm:factorization} applies.
+\end{proof}
+
+\section{Convex rank, solvability, and a wreath product}\label{opa:sec:group}
+
+\subsection{The bracket law}
+
+\begin{lemma}[Homogeneous brackets \src{04, 08, 09}]\label{opa:lem:bracket}
+For additive $\theta,\psi:\Gamma\to k$ and $\delta,\epsilon>0$,
+\begin{equation}\label{opa:eq:bracket}
+ [D_{\delta,\theta},D_{\epsilon,\psi}]=D_{\delta+\epsilon,\ \theta(\epsilon)\psi-\psi(\delta)\theta}.
+\end{equation}
+If $\theta(C_\delta)=0$ and $\psi(C_\epsilon)=0$, the bracket is zero when
+$C_\delta=C_\epsilon$; if $C_\delta\subsetneq C_\epsilon$ it is a multiple of
+$D_{\delta+\epsilon,\psi}$, whose shift lies in the $C_\epsilon$ scale and whose
+functional vanishes on $C_{\delta+\epsilon}=C_\epsilon$.
+\end{lemma}
+\begin{proof}
+On $t^\gamma$ the two compositions differ at $\gamma+\delta+\epsilon$ by
+$\psi(\gamma)\theta(\gamma+\epsilon)-\theta(\gamma)\psi(\gamma+\delta)=
+\theta(\epsilon)\psi(\gamma)-\psi(\delta)\theta(\gamma)$; strongness extends the
+identity. Equal scales: each functional kills the other's shift. If
+$C_\delta\subsetneq C_\epsilon$, then $\psi(\delta)=0$.
+\end{proof}
+
+Source 08 records the same identity in its own normalization (its bracket
+$[D_{\varphi,\delta},D_{\psi,\varepsilon}]=D_{\psi(\delta)\varphi-\varphi(\varepsilon)\psi,
+\delta+\varepsilon}$, which is \eqref{opa:eq:bracket} after the sign change of
+\cref{opa:sub:notation}). Elementary derivations with shifts in the same
+Archimedean class commute; noncommutativity is an interaction between layers
+\src{04}. For general strong derivations the computation applies after
+expansion into shift coefficients: the two compositions are strongly summable
+and every output coefficient is a finite sum \src{09}.
+
+\subsection{A filtration by convex scales}
+
+Say that $\Gamma$ has \emph{finite ordered rank $r$} if its distinct nonzero
+principal convex subgroups are exactly $0<C_1<\cdots<C_r=\Gamma$. The layer of a
+shift $\delta$ is the $j$ with $C_\delta=C_j$. A shift in layer $r$ contributes
+nothing to $\LL_A$ (\cref{opa:cor:operator}), since its functional vanishes on
+$\Gamma$. Let $\FF_j\subseteq\LL_A$ consist of the derivations whose nonzero
+shifts have layers at least $j$, so $\LL_A=\FF_1\supseteq\cdots\supseteq\FF_r=0$.
+Selecting the terms of prescribed layers from the images of monomials keeps a
+summable subfamily, and the new coefficient functions stay additive, so the
+$\FF_j$ are strongly closed Lie ideals \src{09}.
+
+\begin{lemma}[\src{09}]\label{opa:lem:rankfiltration}
+$[\FF_j,\FF_j]\subseteq\FF_{j+1}$ and $[\LL_A,\FF_j]\subseteq\FF_j$.
+\end{lemma}
+\begin{proof}
+Apply \cref{opa:lem:bracket} to pairs of shifts: equal layers cancel and unequal
+layers give a term in the larger layer.
+\end{proof}
+
+\begin{theorem}[Finite-rank bound \src{09}]\label{opa:thm:derivedrank}
+If the set-sized group $\Gamma$ has finite ordered rank $r$, then $\LL_A$ and
+$\UU_{\Ro}(\Gamma)$ have derived length at most $r-1$.
+\end{theorem}
+\begin{proof}
+Inductively $\LL_A^{(n)}\subseteq\FF_{n+1}$. For the group, put
+$G_j=\Exp(\FF_j)$; by the Baker--Campbell--Hausdorff part of
+\cref{opa:fact:import} each $G_j$ is a subgroup, and the logarithm of a
+commutator of two elements of $G_j$ is a strongly summable Lie series each of
+whose terms contains a bracket of two elements of $\FF_j$, hence lies in
+$\FF_{j+1}$. So $[G_j,G_j]\subseteq G_{j+1}$, and $G_r=\{\id\}$.
+\end{proof}
+
+The Lie bound is elementary; the group bound uses the imported
+correspondence, which \cite{BKKPS} proves for set-sized $\Gamma$.
+
+\subsection{Sharpness, including the abstract group}
+
+In $\Q^r$ ordered as in \cref{opa:ex:Qr}, let $\theta_i$ extract the $i$th
+coordinate, $X_{j,i}=D_{e_j,\theta_i}$ for $j<i$, and
+\[
+ a_0=0,\qquad a_k=\sum_{h=1}^k2^{k-h}e_h,\qquad
+ Y_{k;j,i}=D_{a_k+e_j,\theta_i}\quad(k<j<i\le r).
+\]
+These satisfy the criterion, since $C_{e_j}=\Q e_1\oplus\cdots\oplus\Q e_j$.
+
+\begin{lemma}[Balanced brackets \src{09}]\label{opa:lem:balanced}
+$Y_{k;j,i}\in\LL_A^{(k)}$, and $[Y_{k-1;k,j},Y_{k-1;j,i}]=Y_{k;j,i}$ for $k\ge1$.
+\end{lemma}
+\begin{proof}
+At $k=0$ this is the definition. In the bracket,
+$\theta_j(a_{k-1}+e_j)=1$ and $\theta_i(a_{k-1}+e_k)=0$, and the shift is
+$2a_{k-1}+e_k+e_j=a_k+e_j$; apply \eqref{opa:eq:bracket} and induct.
+\end{proof}
+
+\begin{lemma}[Mixed-parameter detection \src{09}]\label{opa:lem:mixed}
+Take finitely many homogeneous positive-shift derivations and an iterated Lie
+bracket $W$ of them. Replace each leaf occurrence $D_\ell$ by $\Exp(s_\ell D_\ell)$
+with independent scalar parameters and each bracket by the group word
+$ghg^{-1}h^{-1}$, giving $\mathcal W(\mathbf s)$. In its action on a monomial,
+the coefficient of the product of all leaf parameters is the action of $W$. If
+$W\ne0$, some specialization $\mathbf s\in k^m$ gives a nonidentity group word.
+\end{lemma}
+\begin{proof}
+Formally, $(1+sD+\cdots)(1+uE+\cdots)(1-sD+\cdots)(1-uE+\cdots)=1+su[D,E]+{}$terms
+of other multidegrees; induct on the bracket tree, using that the subtrees have
+disjoint parameter sets and that a group word is the identity when a required
+leaf parameter is zero. Choose a monomial and an output exponent on which $W$
+acts nontrivially. Only a finite set of shifts occurs, so by the support
+principle the coefficient at that output is a polynomial in the parameters,
+nonzero by the first part. An infinite field has a point where it does not
+vanish. Repeated leaves are handled by their separate parameters.
+\end{proof}
+
+\begin{theorem}[Sharp derived length \src{09}]\label{opa:thm:sharp}
+For $\Gamma=\Q^r$ as above, every characteristic-zero $k$ and every unital
+$\oo\subseteq k$, the group $\UU_{\Ro}(\Gamma)$ and its Lie algebra $\LL_A$ have
+derived length exactly $r-1$.
+\end{theorem}
+\begin{proof}
+For $r=1$ use \cref{opa:thm:rank}. For $r\ge2$,
+$0\ne Y_{r-2;r-1,r}\in\LL_A^{(r-2)}$ by \cref{opa:lem:balanced}, and
+\cref{opa:lem:mixed} turns its balanced bracket into a nonidentity element of the
+$(r-2)$nd derived subgroup. The upper bound is \cref{opa:thm:derivedrank}.
+\end{proof}
+
+The lower bound does not identify the abstract derived subgroup with the
+exponential of the derived Lie algebra; it uses independent parameters and a
+nonzero mixed coefficient. The upper bound uses BCH and strongly closed ideals
+\src{09}.
+
+\subsection{Metabelian and not nilpotent: one group, printed once}
+
+On $\Gamma=\No$ put $D=D_{1,q_1}$, $E=D_{\omega,q_2}$ and $E_n=D_{\omega+n,q_2}$. Both
+$D$ and $E$ satisfy the criterion: $q_1$ kills the finite exponents and $q_2$
+kills every exponent bounded by an ordinary multiple of $\omega$.
+
+\begin{proposition}[\src{04, 09}]\label{opa:prop:lienilp}
+$[D,E_n]=E_{n+1}$ and $[E_m,E_n]=0$; the $E_n$ are nonzero and linearly
+independent over $\R$. So the Lie algebra spanned by $D,E_0,E_1,\ldots$ is
+metabelian and not nilpotent. The same holds in rank three: in $\Q^3$ with
+$X=D_{e_1,\theta_2}$, $Y=D_{e_2,\theta_3}$ one has $(\ad X)^nY=D_{e_2+ne_1,\theta_3}\ne0$.
+\end{proposition}
+\begin{proof}
+$q_1(\omega+n)=1$, $q_2(1)=q_2(\omega+n)=0$; apply \eqref{opa:eq:bracket}.
+$E_n(t^{\omega^2})=t^{\omega^2+\omega+n}$ gives independence. The rank-three case is
+the same computation \src{09}.
+\end{proof}
+
+Put $A_s=\Exp(sD)$ and $B_u=\Exp(uE)$ for $s,u\in\R$, and $[F,G]=FGF^{-1}G^{-1}$.
+Here $e^{st}$ denotes the Hahn series $\exp(st)$ in the monomial $t=\omega^{-1}$.
+
+\begin{theorem}[Exact commutators \src{04, 08}]\label{opa:thm:commutator}
+$A_sB_uA_s^{-1}=\Exp\bigl(ue^{st}E\bigr)$ and
+$[A_s,B_u]=\Exp\bigl(u(e^{st}-1)E\bigr)$. With $C_0=B_u$ and $C_{n+1}=[A_s,C_n]$,
+\[
+ C_n=\Exp\bigl(u(e^{st}-1)^nE\bigr),\qquad
+ C_n(t^{-\omega^2})=t^{-\omega^2}\exp\bigl(-u(e^{st}-1)^nt^\omega\bigr),
+\]
+so for $s,u\ne0$, $C_n(t^{-\omega^2})-t^{-\omega^2}$ has leading term
+$-us^nt^{-\omega^2+\omega+n}$. Hence $\langle A_s,B_u\rangle$ is metabelian and not
+nilpotent. At $s=u=-1$, the leading term is $(-1)^n\omega^{\omega^2-\omega-n}$.
+\end{theorem}
+\begin{proof}
+$D$ fixes $t$ (as $q_1(1)=0$) and $A_s(t^\omega)=t^\omega e^{st}$. On monomials,
+$A_sEA_s^{-1}(t^\gamma)=q_2(\gamma)t^{\gamma+\omega}e^{st}$, because $E$ kills every
+series in $t$ and $q_1(\gamma+\omega)-q_1(\gamma)=1$; so $A_sEA_s^{-1}=e^{st}E$, and
+exponentiating gives the first formula. $E$ kills $\R[[t]]$, so the derivations
+$h(t)E$, $h\in\R[[t]]$, commute and their exponentials add coefficients, which
+gives the second formula and, by induction, $C_n$. All shifts lie in the monoid
+generated by the well-ordered set $\{1\}\cup(\omega+\N)$, so
+\cref{opa:thm:lie} justifies all sums. The maps $\Exp(h(t)E)$ form an abelian group
+normalized by $A_s$, which acts by $h\mapsto e^{st}h$; so the generated group is
+abelian-by-abelian. Since $q_2(-\omega^2)=-1$, $C_n(t^{-\omega^2})$ is as displayed,
+and $(e^{st}-1)^n$ has leading term $s^nt^n$; the leading term of the difference
+is therefore nonzero at every depth, so the lower central series never
+terminates.
+\end{proof}
+
+Source 08 works with $A_1^{(08)}=A_{-1}$ and $B_1^{(08)}=B_{-1}$ and proves
+faithfulness, which identifies the group. Write $v=t=\omega^{-1}$,
+$u_0=t^\omega=\omega^{-\omega}$, $P=t^{-\omega}=\omega^\omega$, $M=t^{-\omega^2}=\omega^{\omega^2}$,
+and for $h$ supported in $C_\omega^{>0}$ let $N_h(t^\gamma)=t^\gamma\exp(-q_2(\gamma)h)$, a
+phase shear (\cref{opa:thm:phase}) with $N_hN_{h'}=N_{h+h'}$, fixing $v,u_0,P$ and
+with $N_h(M)=M\exp(h)$. Then $B_{-1}=N_{u_0}$, $A_{-1}(u_0)=u_0e^{-v}$,
+$A_{-1}(P)=Pe^{v}$, and $A_{-1}N_hA_{-1}^{-1}=N_{A_{-1}(h)}$.
+
+\begin{lemma}[Finite exponential independence \src{08}]\label{opa:lem:vandermonde}
+For a Laurent polynomial $p\in\Z[X,X^{-1}]$ put $h_p=u_0\,p(e^{-v})$ and
+$\mathcal N_p=N_{h_p}$. Then $p\mapsto p(e^{-v})$ is injective, $p\mapsto\mathcal N_p$
+is an injective homomorphism, and $A_{-1}\mathcal N_pA_{-1}^{-1}=\mathcal N_{Xp}$.
+\end{lemma}
+\begin{proof}
+If $\sum_{n\in F}k_ne^{-nv}=0$ with $|F|=r$ distinct integers, comparing the
+coefficients of $v^j$, $0\le j<r$, gives a Vandermonde system with distinct nodes
+$-n$, so all $k_n=0$. Injectivity of $\mathcal N$ follows from
+$\mathcal N_p(M)=M\exp(h_p)$, and $A_{-1}(h_p)=u_0e^{-v}p(e^{-v})=h_{Xp}$.
+\end{proof}
+
+\begin{theorem}[A faithful $\Z\wr\Z$ \src{08}]\label{opa:thm:wreath}
+The map $\Z[X,X^{-1}]\rtimes\Z\to\UU_\Oz$, $(p,m)\mapsto\mathcal N_pA_{-1}^m$, with
+$(p,m)(q,n)=(p+X^mq,m+n)$, is an injective homomorphism onto
+$\langle A_{-1},B_{-1}\rangle$. So this group is the restricted wreath product
+$\Z\wr\Z$, of derived length exactly two. It extends $\C$-linearly to $\SC$
+preserving $\Og$, and it already lives on the set-sized exponent group
+$\Q\omega^2+\Q\omega+\Q$.
+\end{theorem}
+\begin{proof}
+\Cref{opa:lem:vandermonde} gives the multiplication law, and
+$\mathcal N_{X^n}=A_{-1}^nB_{-1}A_{-1}^{-n}$ shows that the image is generated by
+$A_{-1},B_{-1}$. If $\mathcal N_pA_{-1}^m=\id$, applying it to $P$ gives
+$Pe^{mv}=P$, so $m=0$, and then to $M$ gives $h_p=0$, so $p=0$. Finite Laurent
+polynomials under multiplication by $X$ are $\bigoplus_\Z\Z$ with the shift.
+The group is nonabelian and its normal subgroup $\mathcal N$ is abelian with
+cyclic quotient.
+\end{proof}
+
+\begin{remark}[All nonzero times \mergetag]\label{opa:rem:alltimes}
+The same proof gives $\langle A_s,B_u\rangle\cong\Z\wr\Z$ for all real $s,u\ne0$:
+here $B_u=N_{-ut^\omega}$, $A_sN_hA_s^{-1}=N_{A_s(h)}$ and
+$A_s(t^\omega)=t^\omega e^{st}$, so with $h_p=-ut^\omega p(e^{st})$ the map
+$(p,m)\mapsto N_{h_p}A_s^m$ obeys the same law; the Vandermonde nodes $ns$ are
+distinct, and $A_s^m(P)=Pe^{-mst}$ forces $m=0$.
+\end{remark}
+
+\begin{corollary}[Every set stabilizer is not nilpotent \src{04, 08}]\label{opa:cor:localnonabelian}
+For every set $P\subseteq\No$, the pointwise stabilizer of $P$ in $\UU_\Oz$ contains a
+subgroup isomorphic to $\Z\wr\Z$, metabelian and not nilpotent.
+\end{corollary}
+\begin{proof}
+Choose ordinals $0<\beta<\beta'$ above every inner exponent of every outer
+exponent of every member of $P$ (\cref{opa:lem:avoid}), and replace $\omega$,
+$\omega^2$ by $\epsilon=\omega^\beta$, $\omega^{\beta'}$, using the functionals
+$q_\beta$, $q_{\beta'}$ and the shifts $1$, $\epsilon$. Both functionals vanish on
+the exponents of $P$ and satisfy the criterion, and $q_\beta(\epsilon)=1$,
+$q_\beta(1)=q_{\beta'}(\epsilon)=q_{\beta'}(1)=0$; the proofs are unchanged.
+\end{proof}
+
+These examples live in rank three, consistent with \cref{opa:thm:derivedrank}
+(derived length at most two there) \src{08, 09}.
+
+\section{Fixed fields and arbitrarily large stabilizers}\label{opa:sec:fixed}
+
+\subsection{Exponent coefficient functionals}
+
+For $\beta\in\No$ let $q_\beta(\gamma)=[\omega^\beta]\gamma$ be the coefficient of
+$\omega^\beta$ in the Conway normal form of the exponent $\gamma$ (the \emph{inner}
+normal form; the outer support of $f=\sum c_\gamma t^\gamma$ consists of the
+exponents $\gamma$). Normal-form addition makes $q_\beta:\No\to\R$ additive; it
+need not commute with infinite sums inside the exponent group, and only finite
+additivity is used \src{04}. If $0<\delta\bb\omega^\beta$ then $q_\beta(C_\delta)=0$:
+a nonzero $\gamma$ with $|\gamma|\le n\delta$ has leading Conway exponent at most that
+of $\delta$, which is below $\beta$ \src{04, 08, 09}.
+
+\begin{lemma}[Parameter avoidance \src{04, 08, 09}]\label{opa:lem:avoid}
+Let $P\subseteq\SC$ be a set, $E$ the union of the outer supports of the real and
+imaginary parts of its members, and $T$ the union of the inner supports of the
+members of $E$. Then $E$ and $T$ are sets, and for every ordinal $\beta>0$ above
+all members of $T$, $q_\beta$ vanishes on $E$.
+\end{lemma}
+\begin{proof}
+Replacement and union; every set of surreals has a strict upper bound, for
+example an ordinal above all their birthdays. This bounds a set of supports; it
+does not choose a bound for all exponents at once.
+\end{proof}
+
+\begin{theorem}[The common fixed field \src{04, 08, 09}]\label{opa:thm:fixed}
+$\Fix(\UU_\Oz)=\R$, and already the elementary shears $\sigma_{\delta,q_\beta}$ have
+common fixed field $\R$. The same holds for all field automorphisms of $\No$
+preserving $\Oz$. The common fixed elements in $\Oz$ are $\Z$, and the common
+fixed subring of all ring automorphisms of $\Oz$ is $\Z$.
+\end{theorem}
+\begin{proof}
+All these maps fix $\R$ (\cref{opa:cor:allautos}). If $f\notin\R$, some nonzero
+$\gamma\in\supp f$ has $q_\beta(\gamma)\ne0$ for some $\beta$, for instance its leading
+inner exponent \src{08}. Put $\theta=q_\beta$ and $\delta=\omega^{\beta-1}$; then
+$\theta(C_\delta)=0$ and $\theta(\delta)=0$, and \cref{opa:thm:fixedshear} shows that
+$\sigma_{\delta,\theta}$ moves $f$: its first displacement is
+$a_\lambda\theta(\lambda)t^{\lambda+\delta}$, $\lambda$ the least exponent of $f$ with
+$\theta(\lambda)\ne0$. Ring automorphisms of $\Oz$ are restrictions of field
+automorphisms preserving $\Oz$ (\lbl{odg:def:thm:autreal}).
+\end{proof}
+
+Source 04 reaches the same conclusion through \cref{opa:lem:separation} with
+$V=0$; the explicit choice above is 08's and 09's.
+
+\subsection{Relative fixed fields and the Hahn hull}
+
+\begin{lemma}[Set-sized coefficient separation \src{04}]\label{opa:lem:separation}
+Let $V\subseteq\No$ be a set-sized $\Q$-subspace and $g\in\No\setminus V$. There are
+$\delta>0$ and an additive class map $a:\No\to\R$ with $a(V)=0$,
+$a(C_\delta)=0$ and $a(g)=1$.
+\end{lemma}
+\begin{proof}
+Let $T=\bigcup_{x\in V\cup\{g\}}\supp_\omega(x)$, a nonempty set of inner exponents,
+and $p_T(x)=([\omega^\beta]x)_{\beta\in T}\in\R^T$. It is injective on the set-sized
+space $W=V+\Q g$, so $\ell_0(p_T(v+qg))=q$ is a well-defined $\Q$-linear functional
+on $p_T(W)$; extend it through a basis of the \emph{set} $\R^T$ to $\ell$ and put
+$a=\ell\circ p_T$. Choose $\beta_0$ below every member of $T$ and
+$\delta=\omega^{\beta_0}$; then $p_T(C_\delta)=0$.
+\end{proof}
+
+For a set $A\subseteq\Hahn k\No$ ($k=\R$ or $\C$) let $S_A$ be the union of the outer
+supports, $V_A=\Span(S_A)$ and $\HH(A)=\Hahn k{V_A}$; let $\EE_A$ be the group
+generated by the elementary shears $\Phi_s$ (with real $s$) that fix $A$
+pointwise, in the sense of \cref{opa:sub:foundations}.
+
+\begin{theorem}[Exact elementary hull \src{04}]\label{opa:thm:hull}
+For every set $A\subseteq\Hahn k\No$, $\Fix(\EE_A)=\HH(A)=\Hahn k{V_A}$.
+\end{theorem}
+\begin{proof}
+By \cref{opa:thm:fixedshear} a nonidentity shear with functional $a$ fixes all of
+$A$ iff $a$ vanishes on $S_A$, iff $a(V_A)=0$; such shears fix every series
+supported in $V_A$. If $f\notin\HH(A)$, take $g\in\supp f\setminus V_A$ and apply
+\cref{opa:lem:separation}.
+\end{proof}
+
+\begin{corollary}[Monomial parameters \src{04}]\label{opa:cor:monoparams}
+For a set $S\subseteq\No$ with $V=\Span(S)$, the pointwise stabilizer in $\UU_\Oz$
+of $\{t^g:g\in S\}$ has common fixed field exactly $\Hahn\R V$.
+\end{corollary}
+\begin{proof}
+The elementary subgroup already has this fixed field. Conversely an ordered
+field automorphism fixing $t^g$ fixes its positive rational powers, hence all
+$t^v$, $v\in V$, and strong linearity fixes every series supported on $V$.
+\end{proof}
+
+Naming $\omega=t^{-1}$ gives the fixed field $\Hahn\R\Q$, much larger than
+$\R(\omega)$; naming all monomials with real exponents gives $\Hahn\R\R$ \src{04}.
+On sets, $A\mapsto\HH(A)$ is extensive, monotone and idempotent, and $\HH(A)$ is
+the smallest Hahn subfield with divisible exponent group containing every
+monomial of the normal forms of $A$ \src{04}. For nonmonomial parameters
+\cref{opa:thm:hull} computes the fixed field of $\EE_A$ only: a general strong
+automorphism fixing a series may do so by cancellation, and $\HH(A)$ is not
+asserted to be the model-theoretic definable closure \src{04}
+(\cref{opa:q:relative}).
+
+\subsection{Product actions and nonsolvable stabilizers}
+
+\begin{theorem}[Faithful $\R^\kappa$ actions \src{09}]\label{opa:thm:product}
+For every set $P\subseteq\No$ and every set cardinal $\kappa$ there is a faithful
+action of the full product $\R^\kappa$ by strong $1$-automorphisms preserving
+$\Oz$ and fixing $P$ pointwise.
+\end{theorem}
+\begin{proof}
+Let $E,T$ be as in \cref{opa:lem:avoid}, and choose an ordinal $\beta$ above
+$\kappa$ and all of $T$. For $j<\kappa$ put $\delta_j=\omega^j$,
+$\eta_j=\omega^{\beta+j}$ (ordinal addition in the index) and $\theta_j=q_{\beta+j}$.
+Then $\theta_j|_E=0$, $\theta_j(C_{\delta_j})=0$, $\theta_j(\delta_\ell)=0$ and
+$\theta_j(\eta_\ell)$ is the Kronecker delta. For $\mathbf a\in\R^\kappa$ let
+$D_{\mathbf a}(t^\gamma)=t^\gamma\sum_{j<\kappa}a_j\theta_j(\gamma)t^{\delta_j}$; the shifts
+form one well-ordered set, so \cref{opa:prop:uniform} applies with no finiteness
+condition on $\mathbf a$. $D_{\mathbf a}$ kills the exponents of $P$. The
+$D_{\mathbf a}$ commute by \eqref{opa:eq:bracket} and add, so
+$\mathbf a\mapsto\Exp(D_{\mathbf a})$ is a homomorphism, and
+$\Exp(D_{\mathbf a})(t^{\eta_j})=t^{\eta_j}\exp(a_jt^{\delta_j})$ detects every $a_j$.
+The result is one class relation encoding a set-indexed action.
+\end{proof}
+
+\begin{theorem}[Nonsolvable stabilizers \src{09}]\label{opa:thm:nonsolvable}
+For every set $P\subseteq\No$ the pointwise stabilizer of $P$ in $\UU_\Oz$ is
+nonsolvable; for every $r\ge2$ it contains a subgroup whose derived length is at
+least $r-1$, and exactly $r-1$ granted \cref{opa:fact:import} for $\Gamma=\No$.
+\end{theorem}
+\begin{proof}
+Choose ordinals $\beta\le\eta_1<\cdots<\eta_r$ above $T$, and put $e_j=\omega^{\eta_j}$,
+$\theta_i=q_{\eta_i}$. Then $e_1\bb\cdots\bb e_r$, $\theta_i(e_j)$ is the Kronecker
+delta, and each $D_{e_j,\theta_i}$ ($j<i$) satisfies the criterion and kills
+$P$. The balanced brackets of \cref{opa:lem:balanced} are unchanged, so
+\cref{opa:lem:mixed} shows that the group generated by all
+$\Exp(sD_{e_j,\theta_i})$, $s\in\R$, has derived length at least $r-1$; this
+already gives nonsolvability. The upper bound applies the filtration by the
+$r-1$ scales $C_{e_1},\dots,C_{e_{r-1}}$ as in \cref{opa:thm:derivedrank}; its
+group step uses BCH.
+\end{proof}
+
+\section{What the pair \texorpdfstring{$(\No,\Oz)$}{(No, Oz)} remembers}\label{opa:sec:remember}
+
+Sources 04, 08 and 09 each reconstruct the coefficient field from $\Oz$; 08 and
+09 add first-order definitions of the ordinary integers and of $\Pi$. All of
+this is now in the omnific Diophantine report, placed after the three pins,
+and is cited rather than reprinted:
+\begin{itemize}[itemsep=1pt]
+\item $\Pi$ is defined in $\Oz$ and $\Og$ by $\exists y\,(x^2=2y^2)$
+(\lbl{odg:def:thm:ideal}); the first-order definitions of $\Pi$ and of the graph
+of $\ct$ through ordinary integers are \lbl{odg:cor:definablect}, and a
+positive-existential definition of $\Z$ is \lbl{odg:thm:guard}; Pell rigidity is
+\lbl{odg:cor:pell};
+\item the multiplier identity $(\Pi:\Pi)=\Ak$, $k=\{0\}\cup\Ak^\times$ and its
+internal first-order form (\lbl{odg:def:thm:multiplier},
+\lbl{odg:def:cor:internal}); $\Frac\Oz=\No$ (\lbl{odg:thm:fractions});
+\item the pure ring $\Oz$ interprets $\No$ with $\R$, the order, the finite ring,
+the infinitesimals and the standard part (\lbl{odg:def:thm:realrecovery}); the
+value group (\lbl{odg:def:cor:valuegroup}); every automorphism of $\Oz$ extends
+uniquely to $\No$ and fixes $\R$ pointwise (\lbl{odg:def:thm:autreal});
+\item for $\Og$: $\C$ is definable (\lbl{odg:def:cor:internal}), every field
+automorphism of $\C$ lifts coefficientwise and restriction to $\C$ splits
+(\lbl{odg:def:prop:coeffaut}); a phase twist shows that neither $\No$ nor
+conjugation is definable from $\Og$ (\lbl{odg:def:lem:twist},
+\lbl{odg:def:thm:norealaxis}).
+\end{itemize}
+In the sources: 04's intrinsic coefficient invariance, 08's characteristic
+reconstruction, its restriction correspondence and its split restriction to
+$\Aut\C$, and 09's corollary on all pair automorphisms re-derive
+\lbl{odg:def:thm:multiplier}, \lbl{odg:def:thm:autreal} and
+\lbl{odg:def:prop:coeffaut}. 08's formula
+$J(x):\Leftrightarrow\forall n\,(\mathrm{Int}(n)\wedge n\ne0\Rightarrow\exists y\,x=ny)$
+is the definition \lbl{odg:cor:definablect} in structure (present at 08's pin);
+09's order-free formula
+$\Phi_J(a):\Leftrightarrow a\in\Oz\wedge\forall u,v\in\Oz\,[u^2-2v^2=1\Rightarrow\exists
+b\in\Oz\,a=ub]$ is a variant using all Pell first coordinates; both are dominated
+by the one-witness existential formula \lbl{odg:def:thm:ideal}, and 08's
+existential definition of $\Z$ (six witnesses, two inequations) by
+\lbl{odg:thm:guard}. 09 observes that the order symbol can be omitted, positivity
+being definable by nonzero squares. The following extras are not in the
+Diophantine report.
+
+\begin{lemma}[Order on $\Oz$ through fractions \src{08}]\label{opa:lem:positive}
+For $z\in\Oz$, $z\ge0$ if and only if $\exists a,b\in\Oz\,(b\ne0\wedge a^2=zb^2)$.
+\end{lemma}
+\begin{proof}
+If $a^2=zb^2$ with $b\ne0$ then $z=(a/b)^2\ge0$. Conversely a square root of
+$z\ge0$ exists in the real closed field $\No$ and is a quotient $a/b$ of omnific
+integers (\lbl{odg:thm:fractions}).
+\end{proof}
+
+The formula is existential with one inequation, consistent with the Diophantine
+report's result that the nonnegative cone is not positive-existentially
+definable (\lbl{odg:prop:notdiophantine}).
+
+\begin{theorem}[Zero-cut projections and floor \src{08, 09}]\label{opa:thm:projections}
+In $(\No,+,\cdot,<,\Oz)$, equivalently in the fraction field interpreted in the
+pure ring $\Oz$, the graphs of the projections $P_-,P_0,P_+$ on all of $\No$
+(so $P_0=\ct$ extended to $\No$) and of the floor map $x\mapsto\lfloor x\rfloor_\Oz$
+are parameter-free definable. For every monomial $m=t^\alpha$, truncation below
+$\alpha$, $T_{<\alpha}(f)=m\,P_-(f/m)$, is definable with the single parameter $m$.
+The same definitions work in $(\Hahn\R\Gamma,\mathcal R_\Z)$ for every nonzero
+divisible ordered abelian $\Gamma$.
+\end{theorem}
+\begin{proof}
+$\Pi$, $\R$, $\OO$ and $\mm$ are definable by the results cited above (in the
+$t$-convention $\OO$ is the finite ring and $\mm$ the infinitesimals). For $x\in\No$,
+$P_-(x)$ is the unique $j\in\Pi$ with $x-j\in\OO$: existence by splitting the
+support at $0$, uniqueness from $\Pi\cap\OO=0$. Then $P_0(x)$ is the unique $c\in\R$
+with $x-j-c\in\mm$, since $\R\cap\mm=0$, and $P_+=\id-P_--P_0$ \src{09}. The floor
+graph is $y\in\Oz\wedge y\le x<y+1$, unique because distinct omnific integers
+differ by at least one \src{08}; its value is \lbl{odg:thm:floor}. Dividing by
+$m$ translates exponents by $-\alpha$, $P_-$ keeps those below $0$, and
+multiplying by $m$ restores them \src{09}. For the set-sized field the proof uses
+only real coefficients, the Hahn order (the field is real closed since
+$\Gamma$ is divisible), and the definitions of $\Pi$ and $\R$: the formula of
+\lbl{odg:def:thm:ideal} works for every $\Gamma$, and the multiplier identity
+\lbl{odg:def:thm:multiplier} holds inside the whole Hahn field by the same
+one-monomial proof \src{09}.
+\end{proof}
+
+Every pair automorphism therefore preserves $\Pi\oplus\R\oplus\mm$ summandwise,
+fixes the real summand, and satisfies $\ct(\sigma x)=\ct(x)$ and
+$\sigma(\lfloor x\rfloor)=\lfloor\sigma x\rfloor$ (\cref{opa:cor:allautos}).
+
+\begin{remark}[Zero truncation is not the normal form \src{08, 09}]\label{opa:rem:zerotruncation}
+$P_0$ is definable on all of $\No$ but is not multiplicative there. Definability of
+$P_-$ does not define the set of monomials, and truncation at a named monomial is
+not a uniform definable choice of such a boundary at every valuation; the
+distinction matters in comparison with work on truncation \cite{Camacho}.
+Recovering every coefficient by $[\omega^g]x=\ct(\omega^{-g}x)$ would need the
+monomial map $g\mapsto\omega^g$, and \cref{opa:sec:nondef} shows that this is a genuine
+obstruction.
+\end{remark}
+
+Source 08's Question 2, whether the reconstruction of $\C$ from the pure ring
+$\Og$ is first-order, is answered positively by \lbl{odg:def:cor:internal}, whose
+formula $\exists y\,(x^2=2y^2)$ defines $\Pi_\C$ in $\Og$ and whose multiplier
+formula then defines $\C$; 09 gives an independent route, its Pell-divisibility
+formula with the Gaussian Pell solutions (such as $(i,i)$) handled, followed by
+the idealizer. The question is not repeated here.
+
+\section{What the pair forgets: monomials and representatives}\label{opa:sec:nondef}
+
+\begin{theorem}[Set-parameter invisibility \src{04, 08, 09}]\label{opa:thm:parameters}
+For every set $P\subseteq\No$ there is a nonidentity strong real-linear
+$1$-automorphism $\sigma$ of $\No$ with $\sigma(\Oz)=\Oz$ that fixes
+$P\cup\R\cup\{\omega\}$ pointwise and sends a positive Conway monomial in $\Oz$ to a
+nonmonomial in $\Oz$. Explicitly, with $\beta$ as in \cref{opa:lem:avoid} and
+$\eta=\omega^\beta$, one may take $\sigma=\sigma_{1,q_\beta}$, and then
+\begin{equation}\label{opa:eq:moveH}
+ \sigma(t^{-\eta})=t^{-\eta}\exp(-t)=\sum_{n\ge0}\frac{(-1)^n}{n!}t^{-\eta+n},
+ \qquad\text{that is}\qquad
+ \sigma(\omega^{\omega^\beta})=\sum_{n\ge0}\frac{(-1)^n}{n!}\,\omega^{\omega^\beta-n}.
+\end{equation}
+Consequently, in $\mathfrak S=(\No,0,1,+,\cdot,<,\Oz)$ neither the monomial class
+$\Mon=\{\omega^x:x\in\No\}$ nor the graph of $x\mapsto\omega^x$ is definable with
+parameters from any set, even after naming $\R$ as a predicate, every ordinary
+real, $\omega$, and any further set of surreal constants.
+\end{theorem}
+\begin{proof}
+$q_\beta$ kills $C_1$ since $\beta>0$, so $\sigma\in\UU_\Oz$ by \cref{opa:thm:shear}. It
+fixes each monomial with exponent in $E$, hence every member of $P$ by strongness,
+and it fixes $\R$ and $t^{-1}=\omega$ because $q_\beta(-1)=0$. Since
+$q_\beta(-\eta)=-1$, \eqref{opa:eq:moveH} follows; all exponents $-\eta+n$ are negative
+because $\eta$ is infinite, and the terms at $-\eta$ and $-\eta+1$ show that the image
+is not a monomial. A class definable from parameters fixed pointwise by an
+automorphism of $\mathfrak S$ is invariant under it; $\sigma$ preserves every symbol
+and moves an element of $\Mon$ out of $\Mon$. A definable graph of the omega-map
+would make its range definable by an existential quantifier.
+\end{proof}
+
+The three sources give the same construction: 04 with $a=[\omega^\beta]\cdot$ and
+explicit fixing of $\R\cup\{\omega\}$, 08 with the witness
+$\omega^{\omega^\alpha}\mapsto\sum_n\omega^{\omega^\alpha-n}/n!$ (its sign convention), 09
+with $q_\eta$. An individual formula uses finitely many parameters; the theorem is
+the stronger statement that one automorphism fixes an entire prescribed set.
+Nothing is claimed after naming a proper class of parameters: naming every
+surreal would remove the symmetry \src{04, 08}. Expanding the structure by the
+already definable order, floor or zero-truncation maps cannot remove the
+obstruction \src{08}.
+
+\begin{corollary}[\src{04, 09}]\label{opa:cor:puring}
+The monomial class is not determined, as an automorphism-invariant subclass, by
+$\Oz$, its ordered fraction field and any set of parameters; the standard
+normal-form section of the natural valuation is not first-order recoverable
+from these data. The Conway monomials lying in $\Oz$ are not definable in the
+pure ring $\Oz$ with parameters from any set.
+\end{corollary}
+\begin{proof}
+The range of the section is $\Mon$. For the pure ring, restrict the witness of
+\cref{opa:thm:parameters} to $\Oz$, with parameters in $\Oz$; automorphisms of $\Oz$
+and field automorphisms of $\No$ preserving $\Oz$ correspond
+(\lbl{odg:def:thm:autreal}).
+\end{proof}
+
+\subsection{No definable representative rule}
+
+Write $x\sim_vy$ if $v(x)=v(y)$ on $\No^\times$. A \emph{valuation representative
+rule} is a function $s:\No^\times\to\No^\times$ with $v(s(x))=v(x)$ and
+$s(x)=s(y)$ whenever $x\sim_vy$. For a set-sized field this is a section of the
+quotient by $\OO^\times$; the formulation also makes sense on the class $\No$
+without treating proper-class equivalence classes as elements. No
+multiplicativity, positivity or monomial-image assumption is imposed \src{09}.
+
+\begin{lemma}[A whole fiber moves \src{09}]\label{opa:lem:fiber}
+For $\sigma$ and $\eta$ as in \cref{opa:thm:parameters}, every $f$ with $v(f)=-\eta$
+satisfies $v(\sigma f-f)=-\eta+1$ and $\lc(\sigma f-f)=-\lc(f)$.
+\end{lemma}
+\begin{proof}
+This is \cref{opa:thm:fixedshear} with $\gamma_0=-\eta$ and $\theta(-\eta)=-1$: later
+input terms contribute beyond $-\eta+1$, higher iterates at $-\eta+n$, $n\ge2$.
+\end{proof}
+
+\begin{theorem}[No definable section \src{09}]\label{opa:thm:nosection}
+For every set $P\subseteq\No$, no $P$-definable function on $\No^\times$ is a
+valuation representative rule.
+\end{theorem}
+\begin{proof}
+Let $x=t^{-\eta}$. Since $\sigma$ fixes valuations, $\sigma x\sim_vx$ and
+$s(\sigma x)=s(x)$, while $P$-definability gives $s(\sigma x)=\sigma(s(x))$. So $s(x)$
+would be a fixed point of $\sigma$ with valuation $-\eta$, contradicting
+\cref{opa:lem:fiber}.
+\end{proof}
+
+This is the strongest nondefinability statement of the sources; it covers any
+representative rule, including one-term ones, and does not follow from character
+twists. The nondefinability is relative to the field-and-integer-part language;
+Conway's normal forms remain set-theoretically defined in the ambient foundation
+\src{09}.
+
+\begin{remark}[Character twists, one-term series and the $\RV$ sort \src{04, 02}]\label{opa:rem:twists}
+Bare nondefinability of the coefficient-one monomials already follows from
+character twists: for a nonzero additive $a:\No\to\R$ with $a(V_A)=0$
+(\cref{opa:lem:separation}), $\sum c_gt^g\mapsto\sum c_ge^{a(g)}t^g$ preserves $\Oz$,
+fixes $A$ and sends some monomial to a non-unit multiple of itself \src{04}. These
+twists are the $M_{\chi,\id}$ of \cref{opa:thm:factorization}; they are 02's
+$\tau_{\chi,t}$ (\cref{opa:par:rem:actual}), the real form of the Diophantine
+report's phase twist (\lbl{odg:def:lem:twist}), and the collection's character
+twists (\lbl{saut:thm:decomp}); they are established and not claimed new. What
+the shears add is motion inside the leading-term kernel with more than one
+nonzero term. In particular the class of nonzero one-term series
+$\{c\omega^g:c\in\R^\times,g\in\No\}$ is not definable from the ordered field,
+$\Oz$ and set parameters: the shear sends a one-term series to a multiterm one,
+which rescaling cannot do \src{04}. Nondefinability also survives adding the sort
+$\RV(K)=K^\times/(1+\mm)$ with its multiplication, the quotient map and \emph{every}
+element of that sort named, since a $1$-automorphism acts trivially on it (for the
+class $\No$ this is a metatheoretic expansion, read formula by formula). This
+must be distinguished from naming a representative map $\RV(K)\to K$, which the
+Conway monomials partly constitute and which would destroy the symmetry by design:
+$\Phi_s(t^{-\omega})$ has leading term $t^{-\omega}$, yet $\Phi_s$ moves $t^{-\omega}$
+\src{04}.
+\end{remark}
+
+\begin{remark}[Contrasts in the collection]\label{opa:rem:contrasts}
+The single dilation $S_2(\sum a_gt^g)=\sum a_gt^{2g}$ \emph{defines} the canonical
+monomials, every coefficient and truncation in the language of fields with one
+automorphism (\lbl{dsup:thm:definability} in
+\fn{docs/surcomplex/single-dilation-hahn-support}); $(\No,\Oz)$ does not, even with
+set parameters. The two expansions differ exactly on the monomial section, and
+there is no conflict: the shears do not commute with $S_2$, in line with that
+report's centralizer theorem (\lbl{dsup:thm:centralizer}). The shears are not
+exponential: by \lbl{cor:question54} of the rigidity report
+\fn{docs/surreal/exponential-automorphism-rigidity} (from its \lbl{thm:no}), every
+exponential $1$-automorphism of $\No$ is the identity, which is stronger than
+\cite[Proposition 5.2]{KKS} (strongly linear exponential $1$-automorphisms are
+trivial), the result cited by 09. The shears are compatible with that report's
+displacement lemma: their displacement $-t^{-\eta+1}$ is infinite. Nor do they
+preserve the omega-map, whose compatibility questions \cite[Questions 5.6,
+5.7]{KKS} are untouched here.
+\end{remark}
+
+\section{Surcomplex and Gaussian consequences}\label{opa:sec:complex}
+
+Identify $\SC$ with $\Hahn\C\No$ by taking coefficientwise real and imaginary
+parts; the union of the two supports is well ordered. Then
+$\Og=\Z[i]\oplus\Pi_\C=\Oz+i\Oz$, which is not an ordered ring; conjugation is
+coefficientwise \src{04, 08, 09}.
+
+\begin{theorem}[Gaussian stabilizer and conjugation-compatible witnesses \src{04, 09}]\label{opa:thm:complex}
+\Cref{opa:thm:criterion} applies to $(k,\oo)=(\C,\Z[i])$ with the same condition.
+The real-coefficient shears and actions of \cref{opa:sec:fixed,opa:sec:nondef} extend
+$\C$-linearly, commute with conjugation, preserve $\No$ and $\Og$; for every set of
+surcomplex parameters they fix the parameters and give nondefinability of the
+monomials and of any valuation representative rule, even with the real axis,
+conjugation and every ordinary complex constant named. Their common fixed field
+is $\C$, and for every set $A\subseteq\SC$ the real elementary shears fixing $A$ have
+common fixed field $\Hahn\C{V_A}$.
+\end{theorem}
+\begin{proof}
+The criterion was proved for every characteristic-zero $k$ and unital $\oo$, and its
+proof uses no order on coefficients. The functionals $q_\beta$ are real, so the
+derivations and their exponentials commute with conjugation and restrict to the
+real automorphisms on $\No$. Use the union of the real and imaginary supports in
+\cref{opa:lem:avoid}; the moved monomial is real, and \cref{opa:lem:fiber} holds with
+any nonzero complex leading coefficient. For the fixed field, the first
+displacement of \cref{opa:thm:fixedshear} is a product of a nonzero real functional
+value and a nonzero complex coefficient. The hull statement is \cref{opa:thm:hull}
+with $k=\C$ \src{04}.
+\end{proof}
+
+For these real-axis-preserving maps the surreal modulus is equivariant,
+$|\sigma(z)|=\sigma(|z|)$, since $|z|$ is the nonnegative square root of $z\overline z$;
+this is not a statement that moduli are fixed \src{09}.
+
+\begin{theorem}[The real axis inside the leading-term kernel \src{04}]\label{opa:thm:realaxis}
+For every set $A\subseteq\SC$ there is a strong $\C$-linear $1$-automorphism of $\SC$
+that preserves $\Og$, fixes $A$ pointwise and does not preserve $\No$. Hence $\No$
+is not definable in $(\SC,0,1,+,\cdot,\Og)$ with parameters from any set, even with
+all ordinary complex constants named and the Hahn valuation ring as a predicate.
+\end{theorem}
+\begin{proof}
+Take $\beta$ above the inner exponents of the outer supports of $A$, and the flow
+$\Phi_s$ of \cref{opa:thm:shear} with $\theta=q_\beta$, $\delta=1$ and the imaginary time
+$s=i$. It fixes $A$ and is strong, $\C$-linear, leading-term preserving and
+$\Og$-preserving. With $\eta=\omega^\beta$,
+$\Phi_i(t^{-\eta})=t^{-\eta}\exp(-it)=t^{-\eta}-it^{-\eta+1}-\tfrac12t^{-\eta+2}+\cdots$
+has a nonreal coefficient, although $t^{-\eta}$ is real; all its exponents are
+negative. A $1$-automorphism preserves every valuation, hence the valuation ring.
+\end{proof}
+
+Phase twists preserving $\Og$ and moving the real axis are already in the
+collection (\lbl{saut:thm:phase}; \lbl{odg:def:lem:twist},
+\lbl{odg:def:thm:norealaxis}); the new points are arbitrary set-parameter fixing
+\emph{inside the complete leading-term kernel} and multiterm images. The real
+shears commute with conjugation and the imaginary-time shear does not; the two
+conclusions must not be combined into a claim that one automorphism commutes with
+conjugation and moves its fixed field \src{04}.
+
+\begin{proposition}[A wild coefficient lift \src{08}]\label{opa:prop:wild}
+There is a strong automorphism of $\SC$ that preserves $\Og$, fixes $\Z[i]$ and every
+Conway monomial, and sends an ordinary real number outside $\R$. So neither $\R$ nor
+$\No$ is invariant under all field automorphisms preserving $\Og$.
+\end{proposition}
+\begin{proof}
+Choose a real $r$ transcendental over $\Q$ and a transcendence basis of $\C$ over
+$\overline\Q$ containing it. On the rational function field it generates, fix
+$\overline\Q$ and the other basis elements and send $r\mapsto r+i$ (inverse
+$r\mapsto r-i$), and extend to an automorphism $\rho$ of $\C$ by the set-sized
+algebraic-closure extension theorem; the extension is onto, since its image is
+algebraically closed and $\C$ is algebraic over the base. The coefficientwise lift
+$\hat\rho$ (\lbl{odg:def:prop:coeffaut}) preserves $\Og$ and monomials and sends
+$r$ to $r+i$.
+\end{proof}
+
+\begin{corollary}[Gaussian fixed field \src{08, 09}]\label{opa:cor:gaussianfixed}
+The common fixed elements in $\SC$ of all field automorphisms preserving $\Og$ are
+exactly $\Q$; in $\Og$ they are $\Z$.
+\end{corollary}
+\begin{proof}
+The shears of \cref{opa:thm:complex} reduce a common fixed point to $\C$. Every field
+automorphism of $\C$ lifts coefficientwise and preserves $\Og$
+(\lbl{odg:def:prop:coeffaut}). A nonrational algebraic number is moved by a
+conjugate embedding extended to $\C$; a transcendental one by a translation of a
+transcendence basis element; rationals are fixed. Finally $\Q\cap\Og=\Z$.
+\end{proof}
+
+This agrees with \lbl{saut:prop:fixedfields} of the surcomplex automorphism report,
+$\Fix(\Aut\SC)=\Q$, for the larger collection of all field automorphisms. The real
+and complex answers differ because a real automorphism preserves order and cannot
+move an ordinary real, whereas a complex one can unless real structure is required;
+the explicit witnesses of \cref{opa:thm:complex} fix all of $\C$ \src{09}. Three
+mechanisms move the real axis while preserving $\Og$: the phase twist of the
+Diophantine report (fixes $\C$, preserves supports), the imaginary-time shear of
+\cref{opa:thm:realaxis} (fixes $\C$ and all leading terms), and the wild lift of
+\cref{opa:prop:wild} (fixes monomials, moves $\R$). The real shears of
+\cref{opa:thm:complex} preserve the real axis.
+
+\section{Scope, answered questions, and further questions}\label{opa:sec:scope}
+
+\subsection{What is settled, and status in other reports}\label{opa:sub:status}
+
+For a strong infinitesimal automorphism, preservation of the integer part is
+exactly a convex-scale annihilation condition; the size of the residual symmetry is
+measured by a sharp solvability bound in finite rank and by arbitrarily large
+parameter-fixing actions on $\No$; and the omnific predicate recovers the
+coefficient fields and zero-cut truncation but no definable valuation
+cross-section \src{09}. An attempt to reconstruct Conway monomials by a
+first-order formula in the pair cannot succeed with any set of constants; a
+classification of strong $\Oz$-automorphisms by coefficient and exponent actions
+alone misses the higher-rank factor $\UU_\Oz$; and an alleged rank-one
+nontrivial $1$-automorphism preserving a divisible-exponent integer part must violate
+a support hypothesis, as \cref{opa:ex:translation} shows \src{09}.
+
+The results bear on three questions of other reports. They are recorded here;
+the other reports are not edited by this merge.
+\begin{itemize}[itemsep=2pt]
+\item \lbl{osq:q:invisible} of \fn{docs/surreal/set-sized-quotients-of-omnific-integers}
+asks, in its second clause, how much an automorphism of $\Oz$ can do inside $\Pi$
+while fixing $\ct$. \emph{Partly answered:} every automorphism of $\Oz$ fixes $\R$
+and $\ct$ (\lbl{odg:def:thm:autreal}, \cref{opa:cor:allautos}); the \emph{strong}
+ones are exactly $\{M_{\chi,\tau}\}\ltimes\UU_\Oz$, with $\UU_\Oz$ classified by
+\cref{opa:thm:criterion}; they move monomials to infinite series, fix any set of
+parameters, carry $\R^\kappa$ and have nonsolvable stabilizers
+(\cref{opa:thm:parameters,opa:thm:product,opa:thm:nonsolvable}). Nonstrong
+automorphisms, and the first clause of that question, remain open.
+\item \lbl{odg:def:q:realform} of the Diophantine report asks which natural
+structure on $\Og$ rules out the coefficient-fixing twists and determines the real
+omnific subring. \emph{Negative information, not an answer:} naming the valuation
+ring, every complex constant, the $\RV$ sort, or requiring leading-term fixing does
+not suffice (\cref{opa:thm:realaxis}); and in $(\SC,\Og)$ even $\R\subseteq\C$ is not
+invariant (\cref{opa:prop:wild}).
+\item The surcomplex automorphism report's research direction ``effective
+descriptions inside the leading-term kernel'' (its section \lbl{saut:sec:questions})
+is \emph{not} answered. Its $\Oz$-stabilizing part is now described by coefficient
+functionals (\cref{opa:thm:criterion,opa:cor:operator}), with finite support
+certificates on the common-positive-shift class (\cref{opa:thm:lie}); no
+exhaustion or generation theorem is proved (\cref{opa:q:generation}). Its
+omega-map compatibility questions are untouched.
+\end{itemize}
+The novelty statements of the sources were checked against the tree at the merge:
+no report contains a classification of $\Oz$-preserving automorphisms, the rank
+dichotomy or set-parameter nondefinability of monomials, and \lbl{osq:q:invisible}
+was recorded as open. Their reconstruction and definability claims were stale
+(\cref{opa:sec:remember}).
+
+\subsection{Further questions}\label{opa:sub:questions}
+
+These questions arise from the proofs; they are not presented as named historical
+problems \src{04, 08, 09}.
+
+\begin{question}[Strongness \src{04, 09}]\label{opa:q:strong}
+Which ring automorphisms of $\Oz$ extend to strong field automorphisms of $\No$?
+Does preservation of $\Oz$ force strongness, or is there a nonstrong
+$\Oz$-preserving example? Equivalently for 09: characterize the nonstrong
+automorphisms of $(\No,\Oz)$ that commute with all set-indexed normal-form sums.
+\end{question}
+\Cref{opa:cor:allautos} removes coefficient motion from this question but does not
+settle preservation of infinite sums; nothing is inferred from the existence of
+nonstrong automorphisms of the ambient field \cite{KKS}.
+
+\begin{question}[Admissible logarithmic characters \src{04}]\label{opa:q:characters}
+Give testable necessary and sufficient conditions on an additive $h:\Gamma\to\mm$
+for $t^g\mapsto t^g\exp h(g)$ to define a strong bijective field map. Within that
+class the integer-part condition is exactly $a_\delta(C_\delta)=0$.
+\end{question}
+Common positive support is one sufficient regime; the convex condition alone is not
+asserted to solve the global problem. This is the problem the surcomplex report
+describes under ``what monomial prescriptions do not automatically give''.
+
+\begin{question}[Full relative fixed fields \src{04}]\label{opa:q:relative}
+For a set $A$ of parameters, determine $\Fix((\UU_\Oz)_A)$. It is contained in
+$\Hahn\R{V_A}$, with equality for monomial parameters
+(\cref{opa:cor:monoparams}); which conditions on $A$ force equality?
+\end{question}
+
+\begin{question}[Generation and exhaustion \src{04, 08}]\label{opa:q:generation}
+How much of $\UU_\Oz$ is generated by elementary shears and their
+support-controlled limits, and can an intrinsic summation convention make this
+precise without one common shift set for all inputs? Can all strong
+leading-term-fixing $\Oz$-preserving automorphisms be described by a necessary and
+sufficient uniform support condition on their monomial phases?
+\end{question}
+No density or generation theorem is claimed; fine-topology convergence is not a
+substitute for a strong summation rule; the finite-dimensional phase condition of
+\cref{opa:thm:phase} is sufficient only.
+
+\begin{question}[Weaker normal-form data \src{08}]\label{opa:q:weaker}
+Which normal-form data weaker than the omega-map remove the monomial
+nondefinability? Set-sized collections of constants do not
+(\cref{opa:thm:parameters}).
+\end{question}
+
+\begin{question}[Non-divisible exponent groups \mergetag]\label{opa:q:nondivisible}
+For non-divisible $\Gamma$ and $\oo=\Z$, is a strong $k$-linear $1$-automorphism
+preserving $\mathcal R_\Z$ characterized by a convex-annihilator condition, as
+single flows are (\cref{opa:thm:threshold})?
+\end{question}
+This records the scope correction of \cref{opa:rem:divisibility}.
+
+\part{Algebraic-parameter rigidity of the omnific integers}\label{opa:part:par}
+
+This part is manuscript 02. Its question is different from that of
+\cref{opa:part:aut}: not which automorphisms preserve a support condition, but
+whether $\Oz$ admits nonconstant \emph{algebraic} families of embeddings. It does
+not: the decisive property is that every nonzero element divides an element with
+roots of every order. It does admit formal families of all orders. The relation to
+\cref{opa:part:aut} is recorded in \cref{opa:par:sec:relation}.
+
+\section{Conventions and the root-covered property}\label{opa:par:sec:foundations}
+
+\subsection{Conventions of this part}\label{opa:par:sub:conv}
+
+Ring homomorphisms are unital, domains are commutative integral domains, and
+$\N=\{0,1,2,\dots\}$; degrees of polynomials are ordinary integers. This part keeps
+its source's \emph{large-monomial} convention, which is that of the other omnific
+reports: for a characteristic-zero field $k$, a unital subring $\oo\subseteq k$ and a
+nonzero divisible ordered abelian group $\Gamma$,
+\[
+ k((X^\Gamma))=\Bigl\{\sum_{g\in S}a_gX^g:S\subseteq\Gamma\text{ reverse well ordered}\Bigr\},
+ \qquad X^g=t^{-g},
+\]
+so the leading exponent $\ell(x)=\max\supp x$ is the largest, and
+$\ell(xy)=\ell(x)+\ell(y)$. The ideal $\Pi_k(\Gamma)$ consists of the series supported
+in $\Gamma^{>0}$ (the same set as $\Pi$ in \cref{opa:part:aut}), and
+$\mathcal R_\oo(k,\Gamma)=\oo+\Pi_k(\Gamma)$ is the ring $\Ro$ of \cref{opa:part:aut},
+the Diophantine report's $\mathcal R_\oo(\Bbbk,\Gamma)$. For surreals $X=\omega$, so
+$\Oz=\mathcal R_\Z(\R,\No)$ and $\Og=\mathcal R_{\Z[i]}(\C,\No)$. Renamings from the
+source: its $R_\Gamma(D,k)$ and $\mathcal P_\Gamma(k)$ are
+$\mathcal R_\oo(k,\Gamma)$ and $\Pi_k(\Gamma)$; its principal convex subgroup $H(a)$ is
+$C(a)$, the transcendence report's notation ($C_\delta$ in \cref{opa:part:aut}; the
+quotient report's $H_a$ means the opposite, the elements infinitesimal relative to
+$a$); its covering element $c$ is
+$z$; its bounded-scale field $K_b$ is $K_{\mathrm{bd}}$ and its stages $H_j$ are
+$\Gamma_{\le j}$. Elsewhere in this part the letters $R,B,A,K,F,L$ denote rings and
+fields local to each statement.
+
+The general theorems are proved for sets. Their conclusions for $\Oz$, $\Og$, $\No$
+and $\SC$ use class functions and set-supported normal forms. A statement about one
+polynomial contains finitely many coefficients and variables, so the degree
+arguments apply to a class-sized coefficient domain unchanged. No proper-class
+scheme $\operatorname{Spec}(\Oz)$ and no class compactness or Noetherian theorem is
+used; the finite-type theorem is a theorem about sets, applied to the set-sized
+models of \cref{opa:par:sec:workspaces}. Expressions involving $\Aut(\Oz)$ or
+$\ML$ of a class ring abbreviate statements about each automorphism or derivation;
+$(b,x)\mapsto D_b(x)$ is one definable class operation. For cancellation against a
+class-sized $B$, the transcendence-degree arguments involve only finite tuples of
+indeterminates inside one rational-function field \src{02}.
+
+\begin{definition}[\src{02}]\label{opa:par:def:rootcover}
+A domain $R$ is \emph{root-covered} if for every $0\ne a\in R$ there are $b\in R$ and
+$z=ab\ne0$ such that for every $n\ge1$ some $z_n\in R$ has $z_n^n=z$. (No
+compatibility between the $z_n$ is required; the terminology is local to this
+report.)
+\end{definition}
+
+Fields are root-covered. The interesting examples have few units: $\Oz^\times=\{\pm1\}$
+and $\Og^\times=\{\pm1,\pm i\}$, and in general $\mathcal R_\oo(k,\Gamma)^\times=\oo^\times$ by
+additivity of leading exponents (the Diophantine report's \lbl{odg:prop:units},
+\lbl{odg:def:lem:units}).
+
+\begin{lemma}[Localization \src{02}]\label{opa:par:lem:localize}
+If $R$ is root-covered and $S\subseteq R\setminus\{0\}$ is multiplicative, then $S^{-1}R$ is
+root-covered.
+\end{lemma}
+\begin{proof}
+$(a/s)(sb)=z$, and the roots $z_n$ remain.
+\end{proof}
+
+Root-covered is sufficient for the conclusions below and is not asserted
+necessary; failure of the monomial criterion is not used to claim failure of
+cancellation or stable rigidity \src{02}.
+
+\section{The monomial-divisibility criterion}\label{opa:par:sec:hahn}
+
+For $a>0$ in $\Gamma$ let $C(a)=\{g:|g|\le na\text{ for some }n\ge1\}$; $a$ is an
+\emph{order unit} if $C(a)=\Gamma$.
+
+\begin{theorem}[Monomial divisibility \src{02}; after \lbl{bst:thm:fieldcriterion}]\label{opa:par:thm:scale}
+For $\Gamma\ne0$ divisible and $R=\mathcal R_\oo(k,\Gamma)$ the following are equivalent:
+\textup{(i)} $\Gamma$ has no order unit; \textup{(ii)} for every $0\ne x\in R$ some
+monomial $X^c$ with $c>0$ is divisible by $x$ in $R$. Then the quotient can be chosen
+in $\Pi_k(\Gamma)$, and $R$ is root-covered.
+\end{theorem}
+\begin{proof}
+Assume (i). The support of $x$ lies in $[0,a]$ for some $a>0$. The inverse of $x$ in
+the Hahn field has support in the subgroup generated by $\supp x$, hence in $C(a)$
+(write $x=\alpha X^h(1+\varepsilon)$ and expand the geometric series). Choose $c>na$ for all
+$n$; then $X^cx^{-1}$ has strictly positive support, lies in $\Pi_k(\Gamma)$, and
+$x\cdot X^cx^{-1}=X^c$. Divisibility of $\Gamma$ gives $(X^{c/n})^n=X^c$. Conversely,
+if $a$ is an order unit and $x=1+X^a$, the unique Hahn quotient
+$X^c/(1+X^a)=\sum_{n\ge1}(-1)^{n-1}X^{c-na}$ has a nonzero coefficient at a negative
+exponent, so it is not in $R$.
+\end{proof}
+
+This is the transcendence report's field criterion \lbl{bst:thm:fieldcriterion}
+(\fn{docs/surreal/transcendence-over-bounded-support}: the bounded-support ring is a
+field if and only if $\Gamma$ has no order unit, by the same two arguments, the
+inverse support in a proper convex subgroup and the geometric series of $1-t^u$),
+restricted to positive-support elements; its ``order unit'' is defined identically.
+Source 02's audit read only the openings of the omnific reports and did not see
+it. The positive-support phrasing is what the rigidity theorems use.
+
+\begin{example}[\src{02}; \cite{LM}]\label{opa:par:ex:omega}
+In $\No$, $\omega>n$ for all ordinary $n$, so
+$\omega^\omega/(1+\omega)=\omega^{\omega-1}-\omega^{\omega-2}+\omega^{\omega-3}-\cdots$ is an
+omnific integer: $1+\omega$ divides $\omega^\omega$. With exponent group $\Q$ no exponent
+can absorb the tail. The example is L'Innocente and Mantova's; the distinction is
+a larger Archimedean scale, not convergence.
+\end{example}
+
+\begin{corollary}[Omnific root coverage \src{02}]\label{opa:par:cor:ozcover}
+$\Oz$ and $\Og$ are root-covered: every nonzero element divides a positive real
+monomial $\omega^c$, with quotient of strictly positive support.
+\end{corollary}
+\begin{proof}
+This is immediate from the global monomial clearing \lbl{odg:thm:fractions} of the
+Diophantine report, applied to $x^{-1}$: some $\omega^c$ makes $\omega^cx^{-1}$ purely
+infinite. Source 02 gives the same argument through \cref{opa:par:thm:scale}, using
+a strict upper bound of the set $\{na:n\ge1\}$; the coefficients' order is not used.
+\end{proof}
+
+\section{Finite-type domains carry no varying embedding}\label{opa:par:sec:finitetype}
+
+The results of this section concern set-sized fields and domains.
+
+\begin{lemma}[Unbounded roots \src{02}]\label{opa:par:lem:rootsfield}
+Let $F/K$ be finitely generated and $u\in F^\times$. If $u$ has $n$th roots in $F$ for
+an unbounded set of $n$, then $u$ is algebraic over $K$.
+\end{lemma}
+\begin{proof}
+Otherwise extend $u$ to a transcendence basis $u,t_2,\dots,t_r$, with
+$[F:E]=d<\infty$ for $E=K(u,t_2,\dots,t_r)$. $Z^n-u$ is Eisenstein at the prime $u$ of
+$K(t_2,\dots,t_r)[u]$, hence irreducible over $E$ by Gauss's lemma, so an $n$th root
+has degree $n\le d$.
+\end{proof}
+
+\begin{lemma}[Algebraic constants \src{02}]\label{opa:par:lem:constants}
+If $F/K$ is finitely generated, the relative algebraic closure $K'$ of $K$ in $F$ is
+finite over $K$; if $A$ is an integral $K$-algebra with $\Frac A=F$, then
+$C_A=A\cap K'$ is a field finite over $K$.
+\end{lemma}
+\begin{proof}
+With a transcendence basis $\mathbf t$ and $[F:K(\mathbf t)]=d$, every finitely generated
+$L\subseteq K'$ has $[L:K]=[L(\mathbf t):K(\mathbf t)]\le d$ (adjoining algebraically
+independent indeterminates preserves linear independence; $\mathbf t$ stays
+independent over $L$). An $L$ of maximal degree contains every element of $K'$. For
+$0\ne a\in C_A$ the minimal polynomial has nonzero constant term, which expresses
+$a^{-1}$ as a polynomial in $a$ over $K$.
+\end{proof}
+
+\begin{lemma}[Finitely many unit translates \src{02}]\label{opa:par:lem:translates}
+Let $A$ be a finitely generated integral $K$-algebra and $f\in A$ transcendental over
+$K$. Only finitely many $\lambda\in K$ make $f-\lambda$ a unit of $A$.
+\end{lemma}
+\begin{proof}
+Extend $f$ to a transcendence basis $f,t_2,\dots,t_r$ of $\Frac A$, and put
+$B_0=K[f,t_2,\dots,t_r]$. Generators of $A$ are algebraic over $\Frac B_0$; clearing
+denominators gives $0\ne d\in B_0$ with $A$ integral over $B=B_0[1/d]$ in the common
+overring. If $(f-\lambda)^{-1}\in A$, it lies in $\Frac B_0$ and is integral over the
+integrally closed $B$, so $f-\lambda$ divides a power of $d$ in the UFD $B_0$, hence
+divides $d$; the primes $f-\lambda$ are pairwise nonassociate. The argument does not
+assume $B\subseteq A$.
+\end{proof}
+
+\begin{theorem}[Finite-type embedding rigidity \src{02}]\label{opa:par:thm:finitetype}
+Let $R$ be a characteristic-zero root-covered domain, $K$ a characteristic-zero
+field, and $A$ a finitely generated integral $K$-algebra. Every injective
+homomorphism $\phi:R\to A$ has image in the field
+$C_A=\{x\in A:x\text{ algebraic over }K\}$, finite over $K$, and extends uniquely to
+$\Frac R\to C_A$. If $K$ is relatively algebraically closed in $\Frac A$, then $C_A=K$.
+Neither $K$-linearity of $\phi$ nor a map $K\to R$ is assumed.
+\end{theorem}
+\begin{proof}
+For $a\ne0$ take $ab=z$ and $z_n^n=z$. Then $\phi(z)\ne0$ has roots of all orders, so it
+is algebraic (\cref{opa:par:lem:rootsfield}) and a unit of $A$
+(\cref{opa:par:lem:constants}); hence $\phi(a)$ is a unit. If $f=\phi(a)$ were
+transcendental, every $f-m=\phi(a-m)$, $m\in\Z$, would be a unit (as $a-m\ne0$),
+contradicting \cref{opa:par:lem:translates}. So $\phi(R)\subseteq C_A$, and nonzero
+images are invertible there.
+\end{proof}
+
+The theorem is nontrivial only for set-sized $R$, such as the Hahn models of
+\cref{opa:par:sec:workspaces}; it is not a disguised statement that a proper class
+cannot inject into a set. One must not replace $C_A$ by the whole relative algebraic
+closure: $A=\Q[x,\sqrt2x]$ has $\Frac A=\Q(\sqrt2)(x)$ but $C_A=\Q$, since elements of
+$A$ have rational constant term; no normality of $A$ is assumed \src{02}. If $K$ is
+relatively algebraically closed in $\Frac A$, every embedding $R\to A$ has image in
+$K$, and none exists if $\Frac R$ does not embed in $K$.
+
+\begin{theorem}[Pointed parameter spaces \src{02}]\label{opa:par:thm:pointed}
+Let $R$ be a set-sized characteristic-zero root-covered domain, $F=\Frac R$, $A$ a
+finite-type integral $F$-algebra with an $F$-algebra map $\varepsilon:A\to F$. If a
+ring homomorphism $\psi:R\to A$ has $\varepsilon\psi$ equal to the inclusion, then
+$\psi(x)=x$ for all $x$.
+\end{theorem}
+\begin{proof}
+$\psi$ is injective, so $\psi(R)\subseteq C_A$. The restriction of $\varepsilon$ to the
+field $C_A$ is injective and fixes $F$; for $a\in C_A$, $a-\varepsilon(a)\in C_A$ has
+image $0$, so $C_A=F$.
+\end{proof}
+
+Examples are $A=F[s_1,\dots,s_r,1/h]$ with an $F$-point where $h\ne0$; relations,
+singularities and localizations are allowed, and relative algebraic closedness is not
+required. The hypothesis is one common finite-type algebra containing the images of
+all of $R$, not separate formulas in unrelated algebras. For a finite extension
+$L/F$, $L[s]$ contains the root-covered $L$ as constants and has no $F$-valued
+augmentation when $L\ne F$ \src{02}.
+
+\section{Polynomial and Laurent coefficient rigidity}\label{opa:par:sec:coefficient}
+
+These proofs work over arbitrary coefficient domains, need no finite generation and
+assume no preservation of infinite sums \src{02}.
+
+\begin{theorem}[Polynomial coefficient rigidity \src{02}]\label{opa:par:thm:poly}
+If $R$ is root-covered and $B$ a domain, every injective $\phi:R\to B[T_1,\dots,T_n]$
+has image in $B$.
+\end{theorem}
+\begin{proof}
+$\deg\phi(z)=n\deg\phi(z_n)$ for all $n$ forces $\deg\phi(z)=0$, and
+$\deg\phi(a)+\deg\phi(b)=0$.
+\end{proof}
+
+\begin{lemma}[Laurent units \src{02}]\label{opa:par:lem:laurentunits}
+For a domain $B$, the units of $B[U_1^{\pm1},\dots,U_q^{\pm1}]$ are the
+$b\mathbf U^{\mathbf e}$ with $b\in B^\times$ and $\mathbf e\in\Z^q$.
+\end{lemma}
+\begin{proof}
+The widths $M_j-m_j$ of the $U_j$-exponents are nonnegative and additive, so a unit
+has a single exponent vector.
+\end{proof}
+
+\begin{theorem}[Laurent coefficient rigidity \src{02}]\label{opa:par:thm:laurent}
+If $R$ is root-covered and $B$ a domain, every injective
+$\phi:R\to B[\mathbf U^{\pm1}]$ has image in $B$; hence so does every injective
+$\phi:R\to B[\mathbf T,\mathbf U^{\pm1}]$.
+\end{theorem}
+\begin{proof}
+The largest and smallest $U_j$-exponents of $\phi(z)$ are divisible by every $n$, so
+$\phi(z)$ is a nonzero constant, a unit over $\Frac B$, and $\phi(a)$ is a Laurent
+monomial by \cref{opa:par:lem:laurentunits}. If $a\ne-1$ the same holds for $\phi(a)+1$,
+which forces $\phi(a)$ to be constant. For mixed targets apply
+\cref{opa:par:thm:poly} over $B[\mathbf U^{\pm1}]$ first.
+\end{proof}
+
+Injectivity and a domain target are needed: $x\mapsto x+sD(x)$ into $R[s]/(s^2)$ can
+be nonconstant with identity specialization (\cref{opa:par:sec:formal}). No
+noninjective analogue for all targets is claimed \src{02}.
+
+\begin{theorem}[Strong coefficient invariance \src{02}]\label{opa:par:thm:cancellation}
+Let $R$ be root-covered, $B$ any commutative unital ring, and
+$\Phi:R[X_1,\dots,X_p,U_1^{\pm1},\dots,U_q^{\pm1}]\to
+B[Y_1,\dots,Y_{p'},V_1^{\pm1},\dots,V_{q'}^{\pm1}]$ an isomorphism with
+$p+q=p'+q'<\infty$. Then $\Phi(R)=B$, $q=q'$ and $p=p'$. In particular, for
+$R=\Oz$ or $\Og$, every isomorphism $R[\mathbf X_n]\cong B[\mathbf Y_n]$ carries $R$
+onto $B$: $R$ is strongly invariant and cancels against an arbitrary coefficient
+ring with the same number of variables. If $B$ is also root-covered, the equality of
+total variable counts can be dropped.
+\end{theorem}
+\begin{proof}
+The target is a domain, so $B$ is, and \cref{opa:par:thm:laurent} gives
+$\Phi(R)\subseteq B$. With $F=\Frac\Phi(R)\subseteq L=\Frac B\subseteq E$,
+$\trdeg_FE=p+q=p'+q'=\trdeg_LE$, so $L/F$ is algebraic. $E$ is a rational function
+field over $F$, which has no new algebraic constants (a nonconstant rational function
+is transcendental, one variable at a time), so $B\subseteq F$, and comparing coefficients
+gives $B\subseteq\Phi(R)$. Polynomial variables add no units, and the quotient unit
+groups give $\Z^q\cong\Z^{q'}$. If both rings are root-covered, apply the first step
+to $\Phi$ and $\Phi^{-1}$.
+\end{proof}
+
+Equality of total variable counts cannot be dropped for arbitrary $B$:
+$R[X_1,X_2]=B[X_2]$ with $B=R[X_1]$. The general statements do not solve the
+unrestricted cancellation problem for finitely generated algebras; the
+strong-invariance terminology and history are older \cite{Hirano} \src{02}.
+
+\begin{theorem}[Automorphisms of polynomial and torus rings \src{02}]\label{opa:par:thm:aut}
+For a root-covered $R$, every automorphism of $R[\mathbf T]$ or $R[\mathbf U^{\pm1}]$
+preserves $R$; for polynomial extensions, restriction to $R$ is split surjective onto
+$\Aut R$, with kernel the $R$-algebra automorphisms. Every automorphism of $R[T]$ is $T\mapsto uT+b$ with $u\in R^\times$,
+$b\in R$, over a unique $\sigma\in\Aut R$; every automorphism of
+$R[\mathbf U^{\pm1}]$ is $U_i\mapsto u_i\prod_jU_j^{m_{ji}}$ over $\sigma$, with
+$u_i\in R^\times$ and $(m_{ji})\in\GL_q(\Z)$. For $\Oz$, $u\in\{\pm1\}$; for $\Og$,
+$u\in\{\pm1,\pm i\}$.
+\end{theorem}
+\begin{proof}
+Apply \cref{opa:par:thm:laurent} to an automorphism and its inverse; coefficientwise
+extension is the section. In one variable, $\deg g\deg f=1$; units give the torus
+formula via \cref{opa:par:lem:laurentunits}.
+\end{proof}
+
+The affine and torus formulas are standard once coefficients are preserved; the new
+omnific conclusion is that \emph{every} ring automorphism preserves $\Oz$. No
+classification of multivariable polynomial automorphisms over $R$ and no claim about
+the Jacobian conjecture follows \src{02}.
+
+\section{Locally nilpotent derivations, coactions and gradings}\label{opa:par:sec:lnd}
+
+A derivation $D$ of a domain is \emph{locally nilpotent} if every element is killed by
+some iterate, and $\ML(A)=\bigcap_{D\in\LND(A)}\ker D$. Derivations are ring
+derivations, hence $\Z$-linear; $A$ need not contain $\Q$.
+
+\begin{lemma}[\src{02}]\label{opa:par:lem:lnddegree}
+For a locally nilpotent $D$ of a characteristic-zero domain,
+$\deg_D(a)=\max\{j:D^ja\ne0\}$ satisfies $\deg_D(ab)=\deg_Da+\deg_Db$.
+\end{lemma}
+\begin{proof}
+$D^{r+s}(ab)=\binom{r+s}rD^ra\,D^sb\ne0$, and higher iterates vanish.
+\end{proof}
+
+\begin{theorem}[Stable locally nilpotent rigidity \src{02}]\label{opa:par:thm:ML}
+Let $R$ be a characteristic-zero root-covered domain. Every locally nilpotent
+derivation of any domain containing $R$ kills $R$, and
+$\ML(R[T_1,\dots,T_n])=R$ for every finite $n$. In particular
+$\ML(\Oz[\mathbf T])=\Oz$, $\ML(\Og[\mathbf T])=\Og$, and $\Oz$ has no nonzero locally
+nilpotent derivation.
+\end{theorem}
+\begin{proof}
+$\deg_D(z)=m\deg_D(z_m)$ for all $m$ forces $\deg_Dz=0$, hence $\deg_Da=0$. The partial
+derivatives $\partial/\partial T_j$ are locally nilpotent with common kernel $R$.
+\end{proof}
+
+\begin{corollary}[No coactions or gradings \src{02}]\label{opa:par:cor:coaction}
+If $R$ is root-covered, a homomorphism $\psi:R\to R[s_1,\dots,s_r]$ with identity
+specialization at $\mathbf s=0$, or $\theta:R\to R[u_1^{\pm1},\dots,u_r^{\pm1}]$ with
+identity specialization at $\mathbf u=1$, is the constant inclusion; so there are no
+nontrivial additive-group or split-torus coactions of finite rank, and every
+$\Z^r$-grading of $R$ is concentrated in degree zero.
+\end{corollary}
+\begin{proof}
+Identity specialization makes the map injective; apply
+\cref{opa:par:thm:poly,opa:par:thm:laurent}. A grading gives
+$\sum x_{\mathbf m}\mapsto\sum x_{\mathbf m}\mathbf u^{\mathbf m}$.
+\end{proof}
+
+A Hahn expansion $\sum a_gX^g$ is not a grading: it has infinitely many terms, and the
+no-grading result concerns finite homogeneous decompositions. \Cref{opa:par:thm:ML}
+does not say that $R[\mathbf T]$ has no locally nilpotent derivation, and it is not a
+solution of a general stable-rigidity conjecture \cite{CD} \src{02}.
+
+\section{Euler derivations and formal flows}\label{opa:par:sec:formal}
+
+The parameter $s$ in this section is a new formal indeterminate, not a surreal and not
+a Hahn monomial.
+
+\begin{proposition}[Support-preserving Euler derivations \src{02}]\label{opa:par:prop:Euler}
+For additive $\chi:\Gamma\to(k,+)$, $D_\chi(\sum a_gX^g)=\sum\chi(g)a_gX^g$ is a
+$k$-linear derivation of $k((X^\Gamma))$ that preserves $\mathcal R_\oo(k,\Gamma)$, kills
+$\oo$ and maps $\mathcal R_\oo(k,\Gamma)$ into $\Pi_k(\Gamma)$; and
+$D_\chi D_\psi=D_\psi D_\chi$ for additive $\chi,\psi$.
+\end{proposition}
+\begin{proof}
+The coefficient of $X^h$ in $xy$ is a finite sum of $a_gb_{h-g}$, and
+$\chi(h)=\chi(g)+\chi(h-g)$ splits it; $\chi(0)=0$.
+\end{proof}
+
+In the notation of \cref{opa:part:aut}, $D_\chi$ is the shift-zero derivation
+$t^\gamma\mapsto\chi(-\gamma)t^\gamma$. Division by $n!$ is allowed on $\Pi_k(\Gamma)$, and
+$D_\chi^n(x)\in\Pi_k(\Gamma)$ for $n\ge1$, so
+\begin{equation}\label{opa:par:eq:formalexp}
+ \EE_{\chi,s}(x)=\sum_{n\ge0}\frac{D_\chi^n(x)}{n!}s^n
+\end{equation}
+has coefficients in $\mathcal R_\oo(k,\Gamma)$; no division of an integer constant occurs.
+
+\begin{theorem}[Compatible formal flows \src{02}]\label{opa:par:thm:formal}
+$\EE_{\chi,s}$ is a unital ring homomorphism $\mathcal R_\oo(k,\Gamma)\to
+\mathcal R_\oo(k,\Gamma)[[s]]$ with identity specialization, satisfying
+$\EE_{\chi,s}\EE_{\chi,t}=\EE_{\chi,s+t}$; its coefficientwise extension fixing $s$ is
+an automorphism of $\mathcal R_\oo(k,\Gamma)[[s]]$ with inverse from $-s$, and it induces
+compatible automorphisms of $\mathcal R_\oo(k,\Gamma)[s]/(s^{N+1})$ for every $N$.
+\end{theorem}
+\begin{proof}
+$D_\chi^n(xy)/n!=\sum_rD_\chi^r(x)/r!\cdot D_\chi^{n-r}(y)/(n-r)!$, first in the Hahn
+field; the coefficient of $s^rt^m$ in both sides of the flow law is
+$D_\chi^{r+m}(x)/(r!m!)$; each coefficient uses finitely many inputs. Substituting $t=-s$
+is valid since both parameters have positive order.
+\end{proof}
+
+\begin{theorem}[Nonalgebraization at the first jet \src{02}]\label{opa:par:thm:nonalg}
+If $\Gamma$ has no order unit and $\chi\ne0$, the reduction of $\EE_{\chi,s}$ modulo $s^2$
+is nonconstant and is induced by no homomorphism
+$\psi:\mathcal R_\oo(k,\Gamma)\to\mathcal R_\oo(k,\Gamma)[s]$ with
+$\ev_{s=0}\psi=\id$, and $D_\chi$ is not locally nilpotent.
+\end{theorem}
+\begin{proof}
+Some $g>0$ has $\chi(g)\ne0$; then $D_\chi^n(X^g)=\chi(g)^nX^g\ne0$. By
+\cref{opa:par:thm:scale} the ring is root-covered, and by \cref{opa:par:cor:coaction}
+every such $\psi$ is constant.
+\end{proof}
+
+Formal automorphisms exist to \emph{all} orders; the obstruction appears only when a
+single polynomial family must realize even the first-order part. A formal power
+series ring is not of finite type, and $R[s]/(s^2)$ is not a domain, so there is no
+conflict with \cref{opa:par:thm:finitetype} \src{02}. The flows involve no analytic
+convergence, no fine-topology limit and no identification of $s$ with a surreal
+infinitesimal, and they are not an exponentiation of a derivation \emph{inside} the
+Hahn field \src{02}.
+
+\subsection{The monomial orbit field}
+
+Let $R=\mathcal R_\oo(k,\Gamma)$ be set sized, $F=\Frac R$ (which contains $k$:
+$a=aX^g/X^g$) and $W=\chi(\Gamma)$, a $\Q$-subspace of $k$. In $F((s))$ put
+\begin{equation}\label{opa:par:eq:orbit}
+ L_\chi=F\Bigl(\frac{\EE_{\chi,s}(X^g)}{X^g}:g>0\Bigr)=F(e^{ws}:w\in W),
+ \qquad e^{ws}=\sum_nw^ns^n/n!.
+\end{equation}
+It uses only transformed monomials; it is not claimed to contain the image of every
+Hahn series \src{02}.
+
+\begin{lemma}[Formal exponential independence \src{02}]\label{opa:par:lem:expindep}
+For distinct $\lambda_j\in F$ the $e^{\lambda_js}$ are $F$-linearly independent; for
+$\Q$-independent $w_1,\dots,w_r$ the $e^{w_js}$ are algebraically independent over $F$.
+\end{lemma}
+\begin{proof}
+Comparing coefficients of $s^n$, $n<m$, gives a Vandermonde system. A polynomial
+relation is a linear relation among $e^{(\alpha\cdot\mathbf w)s}$ with distinct exponents.
+\end{proof}
+
+\begin{theorem}[Monomial orbit field \src{02}]\label{opa:par:thm:orbitfield}
+$\trdeg_FL_\chi=\dim_\Q W$. If $\chi\ne0$, $L_\chi$ lies in no finitely generated
+extension of $F$ inside $F((s))$, so $\EE_{\chi,s}:R\to F[[s]]$ factors through no
+finite-type $F$-algebra with an $F$-algebra second map.
+\end{theorem}
+\begin{proof}
+A $\Q$-basis $(w_j)$ of $W$ gives algebraically independent $e^{w_js}$, and each $e^{ws}$
+has a power equal to a monomial in finitely many of them, so $L_\chi$ is algebraic over
+$F(e^{w_js})$. For $0\ne w\in W$, $e^{ws}$ is transcendental and has roots $e^{(w/n)s}$ in
+$L_\chi$, so \cref{opa:par:lem:rootsfield} excludes a finitely generated overfield, even
+when $\dim_\Q W=1$. A factorization would put the image of $R$ in a finite-type domain
+$B\subseteq F[[s]]$ with $\Frac B\supseteq L_\chi$.
+\end{proof}
+
+\subsection{An omnific family of commuting directions}
+
+\begin{theorem}[Commuting omnific derivations \src{02}; after \lbl{osq:prop:classder}]\label{opa:par:thm:Db}
+For $b\in\No$, $D_b(\sum a_g\omega^g)=\sum q_b(g)a_g\omega^g$ is an $\R$-linear derivation
+of $\No$ and, with complex coefficients, a $\C$-linear derivation of $\SC$ commuting
+with conjugation; it preserves $\Oz$ and $\Og$. The $D_b$ commute, and every finite
+family with distinct indices is linearly independent over $\Oz$, respectively $\Og$.
+\end{theorem}
+\begin{proof}
+\Cref{opa:par:prop:Euler} with $\chi=q_b$. For $m_c=\omega^{\omega^c}\in\Oz$,
+$D_b(m_c)=m_c$ if $b=c$ and $0$ otherwise; applying $\sum_ja_jD_{b_j}=0$ to $m_{b_\ell}$
+gives $a_\ell m_{b_\ell}=0$ in a domain.
+\end{proof}
+
+These derivations, with the test elements $m_c$, are the quotient report's
+class-valued derivations \lbl{osq:prop:classder}
+(\fn{docs/surreal/set-sized-quotients-of-omnific-integers}), which combine that report's
+sources 06, 08 and 10 and state independence over $\R$; the same evaluation gives
+independence over the omnific ring, as 02 states, and 02 adds their commutation and
+flows. In the $t$-convention of \cref{opa:part:aut}, $D_b(t^\gamma)=-q_b(\gamma)t^\gamma$.
+
+\begin{corollary}[Multi-parameter flows \src{02}]\label{opa:par:cor:multiflow}
+For distinct $b_1,\dots,b_r$ and $R=\Oz$ or $\Og$, the map
+\[
+ x\longmapsto\sum_{\alpha\in\N^r}\frac{D_{b_1}^{\alpha_1}\cdots D_{b_r}^{\alpha_r}(x)}
+ {\alpha_1!\cdots\alpha_r!}\,s_1^{\alpha_1}\cdots s_r^{\alpha_r}
+ \quad\text{into }R[[s_1,\dots,s_r]]
+\]
+obeys the additive formal group law; its coordinate directions are independent, and no nonzero
+coordinate direction is induced by a polynomial family on $R$.
+\end{corollary}
+\begin{proof}
+Compose one-parameter flows, which commute; independence is \cref{opa:par:thm:Db}, and
+the last claim is \cref{opa:par:thm:nonalg} in one parameter.
+\end{proof}
+
+\begin{example}[\src{02}]\label{opa:par:ex:flow}
+For $b=0$, $q_0(g)$ is the real constant coefficient of the exponent $g$:
+$D_0(\omega^r)=r\omega^r$ for real $r$, $D_0(\omega^\omega)=0$, and
+$\EE_{0,s}(\omega)=\omega+\omega s+\frac\omega2s^2+\frac\omega6s^3+\cdots$, every coefficient in
+$\Oz$ although $\frac12,\frac16\notin\Oz$; ``$\omega e^s$'' abbreviates this series and is
+not the surreal exponential. Also
+$D_0\bigl(\omega^\omega/(1+\omega)\bigr)=-\omega^{\omega+1}/(1+\omega)^2$, again omnific, supported at
+$\omega-n$ for positive ordinary $n$ (checked coefficientwise to 29 terms by the
+placement dossier).
+\end{example}
+
+\begin{corollary}[A continuum of independent orbit elements \src{02}]\label{opa:par:cor:continuum}
+For $R=\Oz$, $F=\No$ (or $R=\Og$, $F=\SC$), the monomial orbit field $F(e^{rs}:r\in\R)$
+of $D_0$ has transcendence degree $2^{\aleph_0}$ over $F$, in the sense of a set-sized
+transcendence basis with finite algebraic relations.
+\end{corollary}
+\begin{proof}
+$q_0(r)=r$, and $e^{rs}=\EE_{0,s}(\omega^r)/\omega^r$ for $r>0$. A $\Q$-basis of $\R$, made
+positive, has $2^{\aleph_0}$ elements; \cref{opa:par:lem:expindep} holds over the class
+field $F$ since each relation uses finitely many coefficients.
+\end{proof}
+
+Only a lower bound is asserted for the field generated by the formal images of all
+Hahn series \src{02}.
+
+\begin{remark}[Actual automorphisms remain abundant \src{02}]\label{opa:par:rem:actual}
+For additive $\chi:\No\to\R$ and ordinary $t\in\R$,
+$\tau_{\chi,t}(\sum a_g\omega^g)=\sum e^{t\chi(g)}a_g\omega^g$ is a support-preserving
+automorphism of $\No$ and $\SC$ preserving $\Oz$ and $\Og$, with
+$\tau_{\chi,t}\tau_{\chi,u}=\tau_{\chi,t+u}$ and positive multipliers. These character
+twists are established \cite{KKS} and not claimed new (\cref{opa:rem:twists}); they
+prevent reading the rigidity theorems as $\Aut(\Oz)=1$. What fails is realization of a
+family by a homomorphism into a polynomial or finite-type parameter algebra: with
+$\chi=q_0$ the twists send $\omega^r$ to $e^{tr}\omega^r$ for all real $r$ at once, which no
+single polynomial parameter algebra can carry.
+\end{remark}
+
+\section{Set-sized workspaces and a fraction-field warning}\label{opa:par:sec:workspaces}
+
+Let $\Gamma=\bigoplus_{j\ge0}\Q e_j$, ordered by the sign of the coefficient at the
+largest index, so $e_{j+1}>ne_j$ for all $n$: $\Gamma$ is divisible with no order unit.
+For $(\oo,k)=(\Z,\R)$ or $(\Z[i],\C)$, $R=\mathcal R_\oo(k,\Gamma)$ is a root-covered set
+(\cref{opa:par:thm:scale}), so all the results of this part apply to it in ordinary set
+theory. The order embedding $e_j\mapsto\omega^j$ of exponent groups induces
+$X^{e_j}\mapsto\omega^{\omega^j}$ and embeds $R$ in $\Oz$, respectively $\Og$; the coordinate
+projections give commuting derivations already here, and replacing $\Q e_j$ by $\R e_j$
+gives a set-sized realization of \cref{opa:par:cor:continuum} \src{02}.
+
+Let $\Gamma_{\le j}=\bigoplus_{\ell\le j}\Q e_\ell$ (convex) and
+$K_{\mathrm{bd}}=\bigcup_jk((X^{\Gamma_{\le j}}))$.
+
+\begin{proposition}[Bounded-scale fraction field \src{02}; after \lbl{bst:prop:localdensity}]\label{opa:par:prop:fracworkspace}
+For this $R$, $\Frac R=K_{\mathrm{bd}}\subsetneq k((X^\Gamma))$.
+\end{proposition}
+\begin{proof}
+An element of $R$ with positive leading exponent in $\Gamma_{\le j}$ has all its exponents
+in $\Gamma_{\le j}$ by convexity, so quotients lie in $K_{\mathrm{bd}}$. Conversely
+$y\in k((X^{\Gamma_{\le j}}))$ gives $X^{e_{j+1}}y\in R$. Finally $\sum_{j\ge0}X^{-e_j}$ is a Hahn
+series in no $k((X^{\Gamma_{\le j}}))$.
+\end{proof}
+
+This is the transcendence report's localization proposition
+\lbl{bst:prop:localdensity} together with its field criterion (condition (2) of
+\lbl{bst:thm:fieldcriterion}) for this group. For the full class ring,
+$\Frac\Oz=\No$ and $\Frac\Og=\SC$ (\lbl{odg:thm:fractions}); that fact does not justify
+replacing $K_{\mathrm{bd}}$ by the full Hahn field, since a fixed set-sized group may lack
+an upper bound for a set of its scales even without an order unit \src{02}.
+
+\section{Relation to Part I and the questions of this part}\label{opa:par:sec:relation}
+
+The two parts are complementary. \Cref{opa:part:aut} concerns derivations with
+\emph{positive} shifts and their exponentials inside the Hahn field; this part concerns
+shift-zero (support-preserving) derivations and needs an external formal parameter.
+\begin{itemize}[itemsep=2pt]
+\item 02's question on formal directions below is partly answered by
+\cref{opa:part:aut}: the positive-shift derivations preserving $\Oz$ are classified
+exactly, by $c_\delta(C_\delta)=0$ (\cref{opa:thm:derivation}) and, on common positive
+shifts, by $a_\delta(C_\delta)=0$ (\cref{opa:thm:derivcriterion}). Those with a common
+well-ordered set of shifts integrate \emph{inside} $\No$ to automorphisms of $\Oz$
+(\cref{opa:thm:lie}), so they are integrable by an honest automorphism rather than only
+by a formal flow; for an arbitrary contracting strong one this holds granted
+\cref{opa:fact:import} for $\Gamma=\No$ (\cref{opa:rem:import}). The shift-zero derivations, the Hasse--Schmidt extensions of other
+derivations of $\Oz$, and derivations with no common well-ordered shift set are not
+covered.
+\item There is no conflict with \cref{opa:par:thm:ML}: the shift derivations
+$D_{\delta,\theta}$ restrict to derivations of $\Oz$ but are not locally nilpotent, since
+$D_{\delta,\theta}^n(t^\gamma)=\theta(\gamma)^nt^{\gamma+n\delta}\ne0$ when $\theta(\gamma)\ne0$; and the
+flows $\Phi_s$ are not polynomial in $s$, since $\Phi_s(t^{-\eta})$ involves every power
+of $s$.
+\item The character twists of \cref{opa:par:rem:actual} are the factor $M_{\chi,\id}$ of
+\cref{opa:thm:factorization}.
+\end{itemize}
+\Cref{opa:par:thm:aut} concerns $\Aut(\Oz[T])$, not $\Aut(\Oz)$, and does not bear on
+\lbl{osq:q:invisible}. The rational self-maps of $\Oz$ studied in the quotient report
+are maps of the ring given by rational functions, not ring automorphisms of $\Oz[T]$; the
+objects differ. Derivations into set-sized modules vanish (\lbl{osq:thm:derivations}),
+which does not conflict with \cref{opa:par:thm:Db}, whose values lie in the class module
+$\Pi$.
+
+\begin{question}[Beyond the scale criterion \src{02}]\label{opa:par:q:orderunit}
+For a nonzero divisible $\Gamma$ \emph{with} an order unit, which rings
+$\mathcal R_\oo(k,\Gamma)$ remain strongly invariant or stably rigid?
+\end{question}
+\Cref{opa:par:thm:scale} shows that their elements need not divide monomials; it does not
+show that cancellation or locally nilpotent rigidity fails.
+
+\begin{question}[Formal directions \src{02}; re-scoped]\label{opa:par:q:directions}
+Which derivations of $\Oz$ preserve its purely infinite ideal, and which admit an
+iterative integral Hasse--Schmidt extension $\Oz\to\Oz[[s]]$? How much larger is this
+class than the Euler family of \cref{opa:par:thm:Db}?
+\end{question}
+\emph{Status.} Partly answered for positive shifts by \cref{opa:part:aut}, as recorded
+above; open otherwise. The factorial argument of \cref{opa:par:thm:formal} is a
+sufficient condition for the displayed family and is not asserted to classify all
+integrable derivations or all formal automorphisms tangent to the identity.
+
+\begin{question}[Reduced parameter algebras \src{02}]\label{opa:par:q:reduced}
+How far does coefficient rigidity extend to reduced parameter rings with several
+irreducible components when a prescribed specialization stays injective on the source?
+\end{question}
+The present proofs apply to domain quotients on which the map stays injective; a
+component can kill root-cover elements, and the dual-number example shows that
+nilpotent parameter rings need a different statement.
+
+\appendix
+
+\section{Provenance ledger}\label{opa:app:provenance}
+
+\subsection{Section by section}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.72\textwidth}}
+\toprule
+Section & Sources and choices\\
+\midrule
+\endhead
+\ref{opa:sec:intro} & Structure from 09; imported results from all three
+automorphism sources; the Fact~4.2 recheck is the merge's (\cref{opa:rem:import}).\\
+\ref{opa:sec:prelim} & 04's one-shift lemma and coefficient polynomial; 09's and 04's
+ring decompositions; 04's and 08's divisible part. Units and constant products are
+cited from the Diophantine report, not reprinted.\\
+\ref{opa:sec:criterion} & The criterion is printed once. \emph{Choice:} 09's
+generality ($k$ of characteristic zero, unital $\oo$) with 04's import-free proof; the
+first implication is 09's, which removes 04's use of $\bigcap n\oo=0$. 09's derivation
+form is printed as \cref{opa:thm:derivation}; its operator form, which uses
+\cref{opa:fact:import}, as \cref{opa:cor:operator}. \Cref{opa:ex:functionals} is from
+the placement dossier's check.\\
+\ref{opa:sec:shears} & Shears from 04 and 09 (after \lbl{saut:thm:shiftflow}); exact
+displacement from 04 (08 and 09 have the same computation); 09's uniform shifts;
+04's common-shift correspondence as a second, proved route; 08's divisibility-free
+threshold as a marked case; the translation example from 04, 08, 09 and the surcomplex
+report; rank dichotomy from 04 and 09 (08's for single flows); bottom subgroup from 04;
+phase shears from 08.\\
+\ref{opa:sec:factorization} & Factorization from 04 and 09 (credited to \cite{KS} and
+\lbl{saut:thm:decomp}); all pair automorphisms from 08 and 09 through
+\lbl{odg:def:thm:autreal}.\\
+\ref{opa:sec:group} & Bracket law from 04, 08, 09; filtration, rank bound, balanced
+brackets, mixed-parameter lemma and sharpness from 09; 04's commutator formula and
+08's faithful $\Z\wr\Z$ printed as one group in 04's normalization; the all-times
+remark is the merge's.\\
+\ref{opa:sec:fixed} & Fixed field $\R$ from 04, 08, 09 (explicit choice of 08, 09);
+separation, hull, monomial parameters and closure from 04; $\R^\kappa$ and
+nonsolvability from 09.\\
+\ref{opa:sec:remember} & Reconstruction and definitions of $\Z$ and $\Pi$ from 04, 08, 09
+are cited to the Diophantine report; printed extras: 08's order formula, the
+projections (09), floor (08), truncation and the set-sized version (09).\\
+\ref{opa:sec:nondef} & Set-parameter nondefinability from 04, 08, 09 printed once with
+04's strengthening; representative rules from 09; twists, one-term class and $\RV$
+from 04; contrasts added by the merge.\\
+\ref{opa:sec:complex} & Complex criterion and conjugation-compatible witnesses from 09
+and 04; real axis inside the kernel from 04; wild lift and Gaussian fixed field from
+08 and 09 (09's definition of $\C$ is cited to the Diophantine report).\\
+\ref{opa:sec:scope} & Status records and questions: 04's four, 08's first and third,
+09's nonstrong question (merged with 04's first), and the merge's non-divisibility
+question.\\
+\cref{opa:part:par} & Manuscript 02 throughout, with credits to
+\lbl{bst:thm:fieldcriterion}, \lbl{bst:prop:localdensity}, \lbl{osq:prop:classder} and
+\lbl{odg:thm:fractions}; \cref{opa:par:sec:relation} is the merge's.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Printed once, and where the merge chose}
+
+\begin{itemize}[itemsep=2pt]
+\item \emph{The classification} (04 thm.~criterion, 08 thm.~threshold, 09
+thms.~derivation and stabilizer): \cref{opa:thm:criterion} with 04's proof,
+\cref{opa:thm:derivation}, \cref{opa:cor:operator}, and 08's
+\cref{opa:thm:threshold} as the divisibility-free single-flow case. 04's
+$a_{\sigma,\delta}$ and 09's $c_\delta$ are kept as different functionals with
+equivalent conditions (\cref{opa:ex:functionals}).
+\item \emph{Rank triviality} (04, 09; 08 for single flows): \cref{opa:thm:rank}.
+\emph{Common fixed field $\R$} (04, 08, 09): \cref{opa:thm:fixed}. \emph{Set-parameter
+nondefinability} (04, 08, 09): \cref{opa:thm:parameters}.
+\item \emph{The metabelian non-nilpotent group}: 04's $\langle A_s,B_u\rangle$ and 08's
+$\langle A_1,B_1\rangle$ are the same group at $s=u=-1$; printed once as
+\cref{opa:thm:commutator,opa:thm:wreath}.
+\item \emph{Strong factorization} (04, 09): \cref{opa:thm:factorization}.
+\item \emph{Not reprinted} (cited to the Diophantine report): units and constant
+products, Pell rigidity, $\Frac\Oz=\No$, the multiplier ring, the reconstruction of
+$\R$ and of the order, automorphisms fix $\R$, the split restriction to $\Aut\C$, the
+first-order and existential definitions of $\Z$, $\Pi$ and $\C$.
+\item \emph{Kept as second routes}: 04's common-shift correspondence
+(\cref{opa:thm:lie}) beside the imported one; 04's separation lemma beside the explicit
+choice in \cref{opa:thm:fixed}; 09's Pell-divisibility definition of $\Pi_\C$ is
+mentioned beside the Diophantine report's.
+\item \emph{Added by the merge} (tagged \mergetag, complete proofs): the combined
+statement of \cref{opa:thm:criterion}; \cref{opa:ex:functionals};
+\cref{opa:rem:alltimes}; \cref{opa:q:nondivisible}.
+\end{itemize}
+
+\subsection{Corrections and stale statements}\label{opa:sub:corrections}
+
+\begin{enumerate}[itemsep=2pt]
+\item \emph{Divisibility} (09): its remark that divisibility is essential is correct for
+$\Ak$ and not for $\mathcal R_\Z$: the translation does not preserve
+$\Z+t^{-1}\R[t^{-1}]$ (\cref{opa:rem:divisibility}).
+\item \emph{Fact 4.2 of \cite{KKS}} (09): the placement dossier doubted that it states
+the bijection; the merge re-read the PDF and found that it does, with only an assertion
+for proper classes (\cref{opa:rem:import}). 09's claims $\UU_\Oz=\Exp(\LL_A)$ and the
+upper half of ``exactly $r-1$'' in its nonsolvability theorem rest on that assertion
+and are stated so (\cref{opa:cor:operator,opa:thm:nonsolvable}).
+\item \emph{Stale novelty} (04, 08, 09): their reconstruction, first-order recovery of
+$\R$ and definitions of $\Pi$ were written at pins \texttt{fb5c4b53} and
+\texttt{befe739b}, before the Diophantine report's reconstruction section was placed;
+they are cited, not claimed (\cref{opa:sec:remember}). 04's remark that its
+reconstruction is not first order is superseded by \lbl{odg:def:cor:internal}. 08's
+definition of $\Pi$ has the structure of \lbl{odg:cor:definablect}, which was in the tree
+at 08's pin.
+\item \emph{08's Question 2} is answered (\cref{opa:sec:remember}) and dropped.
+\item \emph{Credits added}: \lbl{saut:thm:shiftflow} (08 and 09 did not credit it),
+\lbl{saut:thm:decomp} (04 and 09 credited only \cite{KS}), the rigidity report's
+\lbl{thm:no} and \lbl{cor:question54} (09 cited only \cite[Proposition 5.2]{KKS}),
+\lbl{bst:thm:fieldcriterion}, \lbl{bst:prop:localdensity}, \lbl{osq:prop:classder} and
+\lbl{odg:thm:fractions} (for 02); and the surcomplex report's $T_1(t)=t/(1-t)$ is noted
+not to preserve $\Oz$ (\cref{opa:ex:translation}).
+\item \emph{Repository statements checked true}: at both pins the catalogue listed 51
+reports (04, 08); the fixed-shift flow is \lbl{saut:thm:shiftflow} (04); phase twists
+preserve $\Og$ and move the real axis (04); the exponential-rigidity question is answered
+in its report (04); Pell rigidity and a definition of $\Z$ were in the Diophantine report
+(08); $\Frac\Oz=\No$ was there (09, 02); no report contained an $\Oz$-automorphism
+classification (04, 08, 09). 04 reports two date fields for \cite{KKS}~v3 (23 April and
+24 August 2026); it is cited as version~3 of 23 April 2026, as elsewhere in the
+collection.
+\end{enumerate}
+
+\subsection{Symbols renamed from the sources}
+
+$\mathcal J$ (08, 09) and $\mathcal I$ (04) are $\Pi$; $B$ (09), $\mathcal A$ (04),
+$\mathcal B_k$ (08) are $\Ak$; $A_D$ (09), $O_D$ (04), $A_k$ (08), $R_\Gamma(D,k)$ (02) are
+$\Ro$ or $\mathcal R_\oo(k,\Gamma)$, with the coefficient ring $D$ renamed $\oo$ because
+$D$ names derivations; $\mathcal P_\Gamma(k)$ (02) is $\Pi_k(\Gamma)$; $H_\delta$ (08) and
+$H(a)$ (02) are $C_\delta$ and, in \cref{opa:part:par}, $C(a)$; $\UU_{A_D}$ (09) and $\mathcal U_D(G)$ (04) are
+$\UU_{\Ro}(\Gamma)$; $D_{\varphi,\delta}$ (08) is $D_{\delta,-\varphi}$; $q_\eta$ (09),
+$[\omega^\beta]\cdot$ (04), $c_a$ (08) and $\chi_b$ (02) are $q_\beta$; 09's $H=\omega^\eta$ and
+$H_j$ are $\eta=\omega^\beta$ and $\eta_j$; 08's $A_1,B_1,u,\mathsf E$ are
+$A_{-1},B_{-1},u_0,\exp$; 02's covering element $c$ is $z$, its $K_b$ and $H_j$ are
+$K_{\mathrm{bd}}$ and $\Gamma_{\le j}$. 08's $\omega$-convention statements are translated to
+the $t$-convention (\cref{opa:sub:notation}); \cref{opa:part:par} keeps 02's
+large-monomial convention (\cref{opa:par:sub:conv}).
+
+\section{Non-claims, by source}\label{opa:app:nonclaims}
+
+No source claims to solve a named conjecture, and none claims Lean verification, peer
+review or historical priority; the finite suites check identities only. The report
+keeps every limitation stated by each source.
+
+\paragraph{Source 09.}
+\begin{enumerate}[itemsep=1pt]
+\item The classification is only within strong, coefficient-fixing,
+leading-term-preserving automorphisms; it does not assert that an abstract
+automorphism preserving $\Ro$ is strong, and nonstrong pair automorphisms are not
+classified (the definability recovery applies to them; the logarithmic classification
+does not).
+\item Coefficient functionals come from an existing strong derivation; arbitrary
+functions satisfying the vanishing condition are not asserted to assemble into an
+operator.
+\item The shears are plain-field automorphisms and are not claimed to preserve the
+Gonshor exponential.
+\item No set or NBG class of class-function graphs is formed; actions are encoded by
+single class relations; supports are sets.
+\item The exponential--logarithm correspondence and the factorization pattern are
+imported, not reproved or claimed; the explicit many-shift constructions avoid the
+class version of the import.
+\item No new factorization theorem for omnific integers is claimed; \cite{LM} addresses a
+different problem.
+\item $\Oz$ is not identified with a model of full ordinary arithmetic.
+\item Truncation at a named monomial is not a uniform definable choice of boundary.
+\item Nondefinability is relative to the field-and-integer-part language; Conway normal
+forms remain set-theoretically defined.
+\item Hahn-sum formulas are not claims of convergence in the fine topology.
+\item Modulus equivariance is not a claim that moduli are fixed.
+\item The repository comparison was bounded and targeted; search coverage is not a
+proof of novelty.
+\item The exact-arithmetic program checks finite identities only; it does not decide
+well-ordering, prove the correspondence, verify class-theoretic statements or certify
+novelty; the formalization order is a proposal, not implemented modules.
+\end{enumerate}
+
+\paragraph{Source 04.}
+\begin{enumerate}[itemsep=1pt]
+\item It does not classify abstract (nonstrong) automorphisms of $\Oz$; the fraction-field
+extension of an abstract automorphism is not known to be strong.
+\item It imposes no exponential, omega-map, birthday or simplicity structure, and does not
+revisit the collection's exponential-rigidity question as if unanswered.
+\item The criterion classifies existing maps; it is not a construction for arbitrary
+logarithmic characters, and the convex condition alone is not asserted to solve global
+admissibility.
+\item The relative fixed field is computed for the elementary subgroup only; the full
+stabilizer only for monomial parameters; the Hahn hull is not asserted to be definable
+closure.
+\item Class maps are treated individually; no class of all automorphisms is formed.
+\item Nothing is claimed after naming a proper class of parameters.
+\item Bare nondefinability of coefficient-one monomials already follows from character
+twists; the nondefinability statement alone is not advertised as a new mechanism.
+\item $\Frac\Oz=\No$ is a full-class statement; a set-sized Hahn field need not be the
+fraction field of its integer-part ring.
+\item Its intrinsic coefficient invariance was not claimed to be first order (now
+superseded by the Diophantine report).
+\item Real and imaginary shear times preserve different structures; its Gaussian result is
+not the first surcomplex automorphism moving the real axis.
+\item No generation or density theorem; fine-topology convergence is not strong summation.
+\item The fixed-shift exponential, the general monomial/kernel decomposition and the
+exponential--derivation correspondence are prior work.
+\item Its finite checks are not proofs and do not implement arbitrary normal forms; no Lean
+file, no repository checkout or build; historical priority unverified.
+\end{enumerate}
+
+\paragraph{Source 08.}
+\begin{enumerate}[itemsep=1pt]
+\item The threshold covers the elementary family only; rank-one rescalings and characters
+preserve the integer part; not every leading-term-preserving automorphism is claimed to be
+the exponential of one fixed-shift derivation.
+\item Finite-dimensional phase images are a sufficient condition only.
+\item No first-order Gaussian reconstruction was claimed (one now exists,
+\cref{opa:sec:remember}).
+\item The automorphisms are not asserted to commute with the surreal exponential, the
+Berarducci--Mantova derivation or the omega-map; the wreath product does not contradict
+rigidity for those structures.
+\item Parameter avoidance fails for set-sized fields with the whole field named; a
+universe-relative collection is not identified with the proper class.
+\item No classification of the full stabilizer, and no solution of additional-structure
+problems.
+\item The reconstruction is not a homomorphism $\Oz\to\R$.
+\item The nondefinability is not a statement about adding an arbitrary class predicate, nor
+about automorphisms required to commute with the omega-map.
+\item Strong summation is not topological convergence.
+\item Pell rigidity, the existence of nontrivial Hahn automorphisms, the
+derivation--exponential construction and the monomial-character viewpoint are not claimed
+new; some elementary lemmas may be known; priority is provisional.
+\item Its questions are not named historical problems.
+\item No Lean; not refereed; the checks are regression tests, not proofs of well-ordering,
+parameter avoidance or definability.
+\end{enumerate}
+
+\paragraph{Source 02.}
+\begin{enumerate}[itemsep=1pt]
+\item Root-covered is sufficient, not claimed necessary; failure of the monomial criterion
+is not used to claim failure of cancellation or rigidity.
+\item The finite-type theorems are theorems about sets; no $\operatorname{Spec}(\Oz)$ and no
+class compactness; ``$\Aut(\Oz)$'' and $\ML$ of class rings are shorthand; the finite-type
+theorem is not a statement that a class cannot inject into a set.
+\item It does not classify $\Aut(\Oz)$, all derivations, or multivariable polynomial
+automorphisms, and makes no Jacobian-conjecture claim.
+\item Not every homomorphism into every target is constant: injectivity and domain targets
+are required; no noninjective analogue is given.
+\item It does not claim that $R[\mathbf T]$ has no locally nilpotent derivation; a Hahn
+expansion is not a grading.
+\item The orbit-field formula concerns monomials; only a lower bound holds for the full
+formal image.
+\item Formal flows involve no analytic convergence and no fine-topology limits, $s$ is not a
+surreal, and they are not exponentiation inside a Hahn field.
+\item The cancellation theorem does not solve the unrestricted cancellation problem;
+$\ML(R[\mathbf T])=R$ is not a solution of a general stable-rigidity conjecture.
+\item Not new: character twists \cite{KKS}, strong-invariance terminology \cite{Hirano}, the
+Makar--Limanov framework \cite{CD}, Euler derivations, Vandermonde arguments, and the
+example of \cite{LM}.
+\item No named factorization conjecture is claimed solved; the literature search is not a
+priority certificate.
+\item The questions are not presented as published open problems; no Lean, no peer review;
+the checks are finite identities.
+\end{enumerate}
+
+Counts: 13 non-claims from 09, 13 from 04, 12 from 08, 11 from 02.
+
+\section{Finite checks}\label{opa:app:checks}
+
+Four suites ship with the report, byte-identical to their delivery, under the prefixes
+of their manuscripts. They check finite identities in exact arithmetic; they do not
+prove Hahn summability, class-sized statements, definability or novelty. They were
+rerun on copies for this merge with Python~3.14.4 and SymPy~1.14.0, with the recorded
+results reproduced.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.59\textwidth}}
+\toprule
+Script and record & Content and behaviour\\
+\midrule
+\endhead
+\fn{code/09-omnific-preserving-verify_finite_identities.py};
+\fn{data/09-omnific-preserving-verification_output.txt} & Standard library. Product rule
+and bracket on finite Laurent polynomials, balanced brackets for ranks 2 to 8, mixed
+group-commutator coefficients with square-zero parameters, shear iterates, exponential
+laws, the rank-one escape, Pell growth. Twelve PASS lines and ``ALL CHECKS PASSED''.
+Prints only.\\
+\fn{code/04-preserving-automorphisms-verification.py};
+\fn{data/04-preserving-automorphisms-verification_report.json} & SymPy~1.14.0
+(\fn{data/04-preserving-automorphisms-requirements.txt}). 7{,}062 assertions in 17 groups:
+exponential group law, bracket formula, coefficient polynomial, first corrections,
+commutator coefficients in lexicographic $\Q^3$. \emph{Writes} its report to
+\fn{--output}, by default \fn{verification_report.json} in the working directory.\\
+\fn{code/08-integer-part-symmetries-verify.py};
+\fn{data/08-integer-part-symmetries-verification.json} & Standard library. 9{,}469 checks in
+15 categories: derivation rule, falling-factorial iterates, flow composition, bracket,
+Vandermonde determinants, the semidirect-product law, commutator phases. \emph{Always
+writes} \fn{verification.json} beside itself.\\
+\fn{code/02-parameter-rigidity-verify.py};
+\fn{data/02-parameter-rigidity-verification.json} & Standard library. 7{,}041 assertions in 13
+families: Euler product rule, factorial Leibniz, truncated flow composition, commutation,
+geometric remainders, Vandermonde determinants, binomial identity. Writes
+\fn{verification.json} beside itself unless \fn{--output} is given.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The placement dossiers also recorded independent checks (281 for the automorphism
+cluster, including \cref{opa:ex:functionals}, the commutator formula for symbolic $s,u$,
+the leading terms of \cref{opa:thm:commutator} for $n\le4$, the conjugation lemma and the
+failure example of \cref{opa:rem:divisibility}; and for 02 the quotient-rule identity of
+\cref{opa:par:ex:flow} to 29 terms); these scripts are not shipped.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+
+\bibitem{BKKPS}
+V.~Bagayoko, L.~S.~Krapp, S.~Kuhlmann, D.~Panazzolo and M.~Serra,
+\emph{Automorphisms and derivations on algebras endowed with formal infinite sums},
+\href{https://arxiv.org/abs/2403.05827v2}{arXiv:2403.05827v2}, September 22, 2025;
+especially Theorems 3.11 and 3.13.
+
+\bibitem{Camacho}
+S.~Camacho, \emph{Truncation in Hahn fields is undecidable and wild},
+\href{https://arxiv.org/abs/1706.03722}{arXiv:1706.03722}, 2017.
+
+\bibitem{CD}
+M.~Chitayat and D.~Daigle, \emph{On the rigidity of certain Pham--Brieskorn rings},
+J.~Algebra \textbf{550} (2020), 290--308;
+\href{https://arxiv.org/abs/1907.13259}{arXiv:1907.13259}.
+
+\bibitem{Conway}
+J.~H.~Conway, \emph{On Numbers and Games}, Academic Press, 1976; second edition,
+A K Peters, 2001.
+
+\bibitem{Gonshor}
+H.~Gonshor, \emph{An Introduction to the Theory of Surreal Numbers}, London
+Mathematical Society Lecture Note Series 110, Cambridge University Press, 1986.
+
+\bibitem{Hirano}
+Y.~Hirano, \emph{On the uniqueness of rings of coefficients in skew polynomial rings},
+Publ. Math. Debrecen \textbf{54} (1999), 489--495.
+
+\bibitem{KKS}
+E.~Kaplan, L.~S.~Krapp and M.~Serra, \emph{Decomposing the automorphism group of the
+surreal numbers}, \href{https://arxiv.org/abs/2509.22374v3}{arXiv:2509.22374v3}, April 23,
+2026; especially Fact 4.2, Proposition 5.2 and Questions 5.4, 5.6, 5.7.
+
+\bibitem{KS}
+S.~Kuhlmann and M.~Serra, \emph{The automorphism group of a valued field of generalised
+formal power series}, J.~Algebra \textbf{605} (2022), 339--376;
+\href{https://arxiv.org/abs/2107.03362}{arXiv:2107.03362}.
+
+\bibitem{LM}
+S.~L'Innocente and V.~Mantova, \emph{A factorisation theory for generalised power
+series and omnific integers}, Adv. Math. \textbf{442} (2024), 109513;
+\href{https://arxiv.org/abs/1710.07304v5}{arXiv:1710.07304v5}.
+
+\end{thebibliography}
+
+Reports of the collection are cited by directory and label: the omnific Diophantine
+report \fn{docs/surreal/omnific-diophantine-geometry} (\lbl{odg:}), the quotient report
+\fn{docs/surreal/set-sized-quotients-of-omnific-integers} (\lbl{osq:}), the surcomplex
+automorphism report \fn{docs/surcomplex/surcomplex-field-automorphisms} (\lbl{saut:}),
+the rigidity report \fn{docs/surreal/exponential-automorphism-rigidity} (bare labels),
+the transcendence report \fn{docs/surreal/transcendence-over-bounded-support}
+(\lbl{bst:}) and the single-dilation report
+\fn{docs/surcomplex/single-dilation-hahn-support} (\lbl{dsup:}).
+
+\end{document}
