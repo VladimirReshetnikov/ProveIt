@@ -542,6 +542,30 @@ powers of infinite scales. A surreal exponent outside `ℝ`, such as
 a non-real complex exponent. A critical potential is the strong sum of its increments, not
 the generally nonsummable family of its partial potentials.
 
+An exact Hahn normal form specifies every coefficient, including zeros
+outside the displayed support. Prescribing coefficients only at an earlier
+hierarchy of scales allows smaller remainder terms. The critical-potential
+invisibility theorem concerns that latter data; it does not give two
+values for one exact strong sum.
+
+For the three limit-stage fields, distinguish inner support in the Conway
+normal form of an exponent from outer support in the Hahn series itself.
+`Δ₀` is a finite real span of prefix sums. Full Hahn summation allows
+well-ordered outer supports in `Δ₀`, but does not add new exponents to
+`Δ₀`. The first two real fields are closed under the ambient logarithm;
+the third contains `ℓ_λ` but omits its logarithm `ℓ_{λ+1}`. Algebraic
+closure, derivative stability, logarithm closure and solving a particular
+equation are separate properties.
+
+For the limit-stage Picard–Vessiot basis, use the right-matrix convention
+`ψ(Y) = Y M_ψ`. Composition applies the right-hand automorphism first and
+satisfies `M_{ψ∘φ} = M_ψ M_φ`. The action parameters `(a,b)` have law
+`(a,b)·(a′,b′) = (aa′,a′⁻²b+b′)`; the upper-right matrix entry is `ab`.
+In Schwarzian reconstruction, `v² ∂s = 1` is an algebraic square-root
+choice. Möbius matrices lie in `GL₂(ℂ)` and act on a nonconstant solution
+ratio, which ensures their denominators are nonzero. These constructions
+do not require a complex logarithm or a global composition operation.
+
 For a scale `s` with `∂s ≠ 0`, the field derivation
 `∂_s = (∂s)⁻¹∂` has the same constants as `∂`; writing `s∂_s = ∂_{log s}`
 when `s > 0` asserts an operator identity, not a global substitution map.

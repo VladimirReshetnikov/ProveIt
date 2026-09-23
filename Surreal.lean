@@ -111,6 +111,7 @@ import Surreal.Foundations.SignSequenceValuationBounds
 import Surreal.Foundations.SignSequenceValuationApproximation
 import Surreal.Foundations.SignSequenceValuationBalls
 import Surreal.Foundations.SignSequenceFiniteLeading
+import Surreal.Foundations.SignSequenceFiniteUnits
 import Surreal.Foundations.SignSequenceLeadingTerm
 import Surreal.Foundations.SignSequenceMonomialAlgebra
 import Surreal.Foundations.SignSequenceFiniteNormalForm
@@ -180,6 +181,7 @@ import Surreal.Surcomplex.PowerSeriesHom
 import Surreal.Surcomplex.PowerSeriesLeading
 import Surreal.Surcomplex.PowerSeriesLeadingFactor
 import Surreal.Surcomplex.PowerSeriesRemainder
+import Surreal.Surcomplex.PowerSeriesTruncation
 import Surreal.Surcomplex.MvPowerSeriesBounds
 import Surreal.Surcomplex.PowerSeriesFineDerivative
 import Surreal.Surcomplex.PowerSeriesDerivative
@@ -205,6 +207,7 @@ import Surreal.Surcomplex.FiniteTrigonometry
 import Surreal.Surcomplex.TrigonometricTaylor
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
+import Surreal.Surcomplex.TrigonometricLeading
 import Surreal.Surcomplex.StrongConjugation
 import Surreal.Surcomplex.ExpLogConjugation
 import Surreal.Surcomplex.MvPowerSeries
