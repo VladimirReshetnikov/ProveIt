@@ -491,6 +491,16 @@ Observers on either common open arc see equal actual interior angles,
 and every angle subtending a diameter is right.
 Four points in finite-lift cyclic order satisfy Ptolemy equality,
 including when consecutive arcs are infinitesimal.
+Finite regular polygons have distinct vertices and a proved closing edge;
+summing their actual edge lengths and center-triangle areas gives the
+exact perimeter and area formulas at every positive surreal radius.
+Squared side lengths and squared angle sines satisfy the spread, cross,
+and triple-spread laws, with rational expressions in the actual coordinates.
+An interior angle's sine has the valuation of its distance from the nearer
+endpoint of `(0, pi)`. The triangle laws then give exact valuation formulas
+for side ratios, area, semiperimeter factors, and both circle radii.
+For two infinitesimal interior angles, their ratio is algebraically
+equivalent to the opposite side ratio, even when those ratios are infinite.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

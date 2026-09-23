@@ -275,6 +275,10 @@ import Surreal.Surcomplex.LineAngle
 import Surreal.Surcomplex.InscribedAngle
 import Surreal.Surcomplex.InscribedArcAngles
 import Surreal.Surcomplex.CyclicPtolemy
+import Surreal.Surcomplex.RegularPolygon
+import Surreal.Surcomplex.TriangleSpread
+import Surreal.Surcomplex.AngleDefect
+import Surreal.Surcomplex.TriangleValuation
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
