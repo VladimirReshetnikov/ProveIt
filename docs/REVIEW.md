@@ -2924,6 +2924,61 @@ declarations with the same three permitted axioms. All 3,797 cited labels
 and 1,421 local Markdown destinations resolve; the 3,297-row source
 inventory is unchanged.
 
+## Omnific denominator ideals and multipliers: Sections 15.1–15.4
+
+The [Diophantine article](surreal/omnific-diophantine-geometry/article.tex)
+now has an independent proof review through the affine denominator
+dichotomy. Its [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+identifies the recovered source-08 and source-09 archives and exact
+sections compared. Sections 15.5–15.12, the new material in Sections 6
+and 10, Sections 17–18, new companions and remaining imported foundations
+and source reconciliation remain outside this completed review.
+
+The calculus proof spells out translation, reciprocal and projective
+covariance identities, including why the scaled ideal is still omnific.
+Translation now includes zero. A finite tuple has a nonzero common
+denominator; the analogous assertion over an arbitrary domain requires
+membership in its fraction field. Least denominators use ordered division
+once per element and cancellation, without a Euclidean-termination claim.
+The ordinary localization proof gives its additive splitting and units,
+restores the finite-factorization proof for algebraic surreals, and provides
+explicit witnesses for the strict ring inclusions. Real-constant arguments
+cover zero, divisibility by every ordinary integer and the no-gcd step.
+
+The multiplier proof tracks the inverse rescaling of its Bézout row and
+the original scalar lattice `λR_ℤ` before normalization. It permits a zero
+retraction kernel. The pair `(ω,ω)` illustrates why ambient unimodularity
+is necessary. The alternative lift now specifies its ordered-pair syzygy
+sum and verifies both its zero pairing and its residue. Polynomial
+indeterminates, evaluated parameters and determinant notation are aligned
+with the shared guide. Remark 15.16 corrects the source's scope: the
+denominator equivalences apply to affine points, while infinity only has
+the projective specialization and unimodular-presentation assertions.
+
+All 143 standard statements and 310 labels are preserved, with unchanged
+numbering. Only the calculus proposition changes standard-statement
+wording, restoring translation at zero. Section 15.5 onward is
+byte-identical. Three-pass pdfLaTeX builds produce a clean 122-page article
+and 29-page catalogue, without warning, reference or box diagnostics.
+Visual inspection covers article PDF pages 5, 11 and 68–76 and all four
+changed catalogue pages, 9–12. The independent inventory verifies 3,297
+standard results across 57 main texts; all 3,797 cited source labels and
+1,426 local Markdown destinations resolve. The delivered finite verifiers
+are unchanged and were not rerun: they do not establish these general
+ideal and multiplier arguments. The source-level results remain **Pending**
+in Lean.
+
+The initial synchronization fast-forwarded to `ba6dff6`, adding the
+stationary-angle work without changing any manuscript. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,329 jobs and audits 13,627
+declarations, using only `propext`, `Classical.choice` and `Quot.sound`.
+
+The final synchronization merged `bf428a5` in `17aa289`, adding two
+polynomial-positivity modules and no manuscript changes. The combined
+build passes 4,331 jobs and audits 13,640 declarations with the same
+three permitted axioms. The source-label and independent inventory audits
+still pass; both reviewed PDFs remain identical to the validated builds.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
@@ -2957,7 +3012,7 @@ passes. This is integration validation, not a proof review of the new reports.
 
 ## Remaining scope
 
-The current collection has 56 main texts. The synchronization record above
+The current collection has 57 main texts. The synchronization record above
 states the latest omnific review boundary and the remaining companion
 integrations. Historical counts below identify the versions previously
 reviewed; they do not replace the current inventory.

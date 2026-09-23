@@ -79,7 +79,12 @@ which differs from `a ≠ 0` and from invertibility. The graph predicate
 need not be unique. The predicate `Mult(a,b)` describes the fraction
 `a/b` preserving the ideal under multiplication, with `b ≠ 0`. Recovering
 the coefficient field requires both a nonzero multiplier and its inverse
-to be multipliers. The interpreted value group uses `v(x) ≥ v(y)` exactly
+to be multipliers. For fractions, `𝔇(x₁,…,xₙ)` includes zero; actual
+denominators are its nonzero members. It is defined for affine tuples,
+not for the projective point at infinity. In the multiplier theorem, if
+`λv` is primitive integral, the allowed scalar set is `λR_ℤ` for the
+original vector and `R_ℤ` after rescaling the vector by `λ`.
+The interpreted value group uses `v(x) ≥ v(y)` exactly
 when `x/y` is finite, consistent with `v = −leading exponent`.
 
 For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,

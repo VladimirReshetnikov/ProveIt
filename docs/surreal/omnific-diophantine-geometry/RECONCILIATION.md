@@ -5,7 +5,8 @@ maintained [article](article.tex), followed by proof reviews of the original Sec
 After both expansions, the reviewed original Sections 11–12 are Sections
 14 and 16; the new fractions section is Section 15.
 Subsequent passes review the newly added Sections 11–13 from sources 06–07.
-The added material in Sections 6 and 10 and Sections 15 and 17–18 remain
+A further pass reviews Sections 15.1–15.4 from sources 08–09. The added
+material in Sections 6 and 10, Sections 15.5–15.12 and Sections 17–18 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the seven manuscripts
 or review of all later proofs and imported classical results.
@@ -352,3 +353,55 @@ theorem. No result numbers change. Section 14 onward is unchanged. All
 these source-level arguments remain pending in Lean. Added material in
 Sections 6 and 10, Sections 15 and 17–18, the new companions and remaining
 foundational/source reconciliation still need review.
+
+## Denominator ideals and the multiplier theorem: Sections 15.1–15.4
+
+This pass compares source 08's Sections 3–5 (ordinary denominators,
+denominator ideals and the representation lemma) and source 09's Sections
+4–6 (ordinary denominators, lowest terms and projective specialization)
+with the maintained article. Source 08 is recovered from
+`5fb910f:docs/new/omnific_fractions_article.zip` and source 09 from
+`5fb910f:docs/new/omnific_fractions_article (1).zip`, in each case the member
+`omnific_fractions/omnific_fractions.tex`. Historical novelty and the
+fixed-workspace discussion are not certified by this comparison.
+
+The denominator calculus now proves translation and reciprocal identities
+explicitly, restores translation at zero, and explains why the projective
+covariance formula lands in the omnific ring even when its scalar does
+not. The determinant uses `δ_g`, keeping `Δ` for discriminants. A finite
+tuple has a nonzero denominator by simultaneous clearing; over an arbitrary
+domain this instead requires its coordinates to belong to the fraction
+field. Class ideals are handled by finite sums, not sets of class cosets.
+
+The least-denominator argument spells out cancellation and its single use
+of ordered division; it does not assume a terminating Euclidean algorithm
+or obtain a Bézout identity from principality. The ordinary localization
+proof gives its splitting and units and distinguishes the additive direct
+sum from a ring product. The proof that algebraic surreals are real
+algebraic restores source 09's finite-factorization argument. Explicit
+witnesses distinguish the four rings in the displayed inclusion chain.
+The real-constant computation includes zero and explains divisibility by
+every nonzero ordinary integer before its no-gcd argument.
+
+The multiplier proof tracks the inverse rescaling of a Bézout row, gives
+the scalar lattice before normalization, and handles a zero retraction
+kernel. Its hypothesis is illustrated by `(ω,ω)`: multiplying by `ω⁻¹`
+gives an omnific vector but that scalar is outside the support ring, and
+the starting pair is not unimodular there. The alternative lift specifies
+the ordered-pair syzygy sum, its zero pairing and its residue. Polynomial
+indeterminates are distinguished from evaluated omnific parameters.
+
+The dichotomy proof was checked in both cases, including transport of
+set-generatedness under multiplication by the nonzero denominator and
+the halving argument for every common divisor. Remark 15.16 inherited an
+overbroad scope from source 09: denominator-ideal equivalences now apply
+only to affine points. Infinity retains its rational specialization and
+unimodular presentation, but has no affine denominator ideal in this text.
+
+All 143 standard statements and 310 labels are retained, with no
+renumbering. The calculus proposition drops an unnecessary nonzero
+hypothesis for translation; the scope correction is in a remark. The text
+from Section 15.5 onward is unchanged. These source-level arguments remain
+pending in Lean. The unreviewed added material in Sections 6 and 10,
+Sections 15.5–15.12, Sections 17–18, new companions and remaining imported
+foundations/source reconciliation remain separate obligations.

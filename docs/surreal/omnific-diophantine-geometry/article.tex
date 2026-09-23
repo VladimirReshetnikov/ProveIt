@@ -440,8 +440,11 @@ The other newly inserted material remains outside the earlier reviews.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
-\cref{odg:sec:questions}; the reviews did not cover this material either. The
-insertion of \cref{odg:frac:sec:fractions} moved the three sections after it
+\cref{odg:sec:questions}. A further pass now reviews
+\cref{odg:frac:sub:conventions,odg:frac:sub:ideals,odg:frac:sub:multiplier,odg:frac:sub:region}:
+denominator ideals, least denominators, the multiplier theorem and the
+affine denominator dichotomy. The rest of the added material remains
+unreviewed. The insertion of \cref{odg:frac:sec:fractions} moved the three sections after it
 by one: the former Sections 15--17 are now \cref{odg:sec:coefficients,odg:sec:formal,odg:sec:questions}.
 Nine earlier
 labels renamed or combined during assembly remain as aliases, so existing
@@ -4690,8 +4693,10 @@ dense. Source 08 adds a localization with residue field $\Q$, polynomial
 models, the exact denominator defect of a scale extension with its $\Tor_1$
 witness, and the Gaussian dichotomy. The Gaussian dichotomy contains the
 Gaussian unimodular-direction criterion of manuscript 14 of the sibling
-report (\cref{odg:frac:cor:gaussiandirections}). This section is outside the
-proof reviews recorded in \fn{RECONCILIATION.md}.
+report (\cref{odg:frac:cor:gaussiandirections}). The proof review recorded in
+\fn{RECONCILIATION.md} now covers this section through
+\cref{odg:frac:sub:region}; the rational-function applications and later
+subsections still await that review.
 
 \subsection{Conventions}\label{odg:frac:sub:conventions}
 
@@ -4743,16 +4748,22 @@ $(x_1,\ldots,x_n)$ is a vector $(bx_1,\ldots,bx_n,b)\in\Oz^{n+1}$ with $b\ne0$.
 \end{definition}
 
 Zero belongs to $\Den(x_1,\ldots,x_n)$. The actual common denominators are its
-nonzero members, and they exist by \cref{odg:thm:fractions}. Clearly
-$\Den(x_1,\ldots,x_n)=\bigcap_j\Den(x_j)$. Source 09 writes $\operatorname
+nonzero members, and a common one exists by applying
+\cref{odg:thm:fractions} to the finite set of coordinates. Moreover
+$\Den(x_1,\ldots,x_n)=\bigcap_j\Den(x_j)$, so it is an ideal as well.
+For a general domain $R'$ in an ambient field, this ideal can instead be
+zero: a nonzero denominator forces every $x_j$ to lie in $\Frac(R')$.
+Conversely, if all coordinates lie in $\Frac(R')$, the product of finitely
+many individual denominators is a nonzero common denominator.
+Ideals of $\Oz$ here may be proper classes; their operations and generated
+ideals use finite sums and products, as in \cref{odg:sub:notation}. Source 09 writes $\operatorname
 D(x)$; the letter $D$ is the Pell parameter here.
 
 \begin{proposition}[Calculus of denominator ideals \src{09}]\label{odg:frac:prop:calculus}
 For every $x\in\No$, $\Den(x)$ is a nonzero ideal of $\Oz$, with
-$\Den(0)=\Oz$ and $\Den(x)=\Oz\cap x^{-1}\Oz$ for $x\ne0$. For $z\in\Oz$ and
-$x\ne0$,
+$\Den(0)=\Oz$ and $\Den(x)=\Oz\cap x^{-1}\Oz$ for $x\ne0$. For $z\in\Oz$,
 \[
- \Den(x+z)=\Den(x),\qquad x\,\Den(x)=\Den(1/x).
+ \Den(x+z)=\Den(x),\qquad x\,\Den(x)=\Den(1/x)\quad(x\ne0).
 \]
 For $g=\bigl(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\bigr)\in\GL_2(\Oz)$ and
 $cx+d\ne0$,
@@ -4762,13 +4773,24 @@ $cx+d\ne0$,
 \end{proposition}
 \begin{proof}
 Closure under addition and under multiplication by $\Oz$ is direct, and
-nonzero denominators exist by \cref{odg:thm:fractions}. The next identities
-follow from the definition. For \eqref{odg:frac:eq:covariance} put
+nonzero denominators exist by \cref{odg:thm:fractions}. For $h\in\Oz$,
+$h(x+z)\in\Oz$ is equivalent to $hx\in\Oz$, by subtracting $hz$; this also
+covers $x=0$. For $x\ne0$, multiplication by $x$ sends a denominator $h$ of
+$x$ to $xh\in\Oz$, with $(xh)/x=h\in\Oz$. Its inverse sends a denominator
+$k$ of $1/x$ to $k/x$. This proves the reciprocal identity.
+For \eqref{odg:frac:eq:covariance} put
 $y=(ax+b)/(cx+d)$. If $h\in\Den(x)$, then $k=(cx+d)h\in\Oz$ and
-$yk=(ax+b)h\in\Oz$. Conversely let $k\in\Den(y)$ and $\Delta=ad-bc\in\Oz^\times$.
-Since $a-cy=\Delta/(cx+d)$ and $dy-b=\Delta x/(cx+d)$, the elements
-$h=\Delta^{-1}(a-cy)k=k/(cx+d)$ and $xh=\Delta^{-1}(dy-b)k$ lie in $\Oz$, so
-$h\in\Den(x)$ and $k=(cx+d)h$.
+$yk=(ax+b)h\in\Oz$. Conversely let $k\in\Den(y)$ and write
+$\delta_g=ad-bc\in\Oz^\times$ for the determinant. Since
+$a-cy=\delta_g/(cx+d)$ and $dy-b=\delta_g x/(cx+d)$, the elements
+\[
+ h=\delta_g^{-1}(a-cy)k=\frac{k}{cx+d},\qquad
+ xh=\delta_g^{-1}(dy-b)k
+\]
+lie in $\Oz$: both $k$ and $yk$ do, and $\delta_g^{-1}\in\Oz$.
+Thus $h\in\Den(x)$ and $k=(cx+d)h$. In particular the right side of
+\eqref{odg:frac:eq:covariance} lies in $\Oz$, even though the scalar
+$cx+d$ itself need not lie there.
 \end{proof}
 
 \begin{proposition}[Least denominators \src{09}]\label{odg:frac:prop:least}
@@ -4785,7 +4807,10 @@ least positive member and $a\in\mathfrak a$, ordered division
 (\cref{odg:prop:division}) gives $a=qb_0+r$ with $0\le r<b_0$ and
 $r\in\mathfrak a$, so $r=0$. The description of the representations follows
 from the definition. If $d$ divides $a_0$ and $b_0$, then $b_0/d\in\Den(x)$, so
-$b_0/d=b_0h$ with $h\in\Oz$, and $d$ is a unit.
+$b_0/d=b_0h$ with $h\in\Oz$, and cancellation of $b_0\ne0$ gives $dh=1$, so $d$ is a unit.
+This uses one ordered division for each $a$; it does not assume termination
+of a Euclidean algorithm in $\Oz$. The argument proves primitivity;
+the stronger B\'ezout conclusion below comes from the multiplier theorem.
 \end{proof}
 
 \begin{lemma}[Unimodular fractions \src{08, 09}]\label{odg:frac:lem:unimodular}
@@ -4802,7 +4827,8 @@ Take $u_1p_1+\cdots+u_np_n+u_0q=1$ in $R'$. If $b$ is a denominator, then
  \frac bq=u_0b+\sum_ju_j\frac{bp_j}{q}\in R'.
 \]
 Thus $b=qh$, and the numerators are $p_jh$. Conversely every $h\in R'$ gives
-a denominator. A common divisor of $h(p_1,\ldots,p_n,q)$ divides the same
+a denominator, and $q\ne0$ makes the multiplier $h=b/q$ unique and nonzero
+for an actual representation. A common divisor of $h(p_1,\ldots,p_n,q)$ divides the same
 linear combination, which is $h$, and $h$ is a common divisor. For $R'=\Oz$ a
 representation is primitive exactly when $h$ is a unit, that is, $h=\pm1$.
 \end{proof}
@@ -4825,9 +4851,15 @@ for integers $u,v$ with $um+vn=1$,
 \end{proposition}
 \begin{proof}
 If $a=k+y\in\Oz$ with $k\in\Z$, $y\in\Pi$, and $0\ne n\in\Z$, then
-$a/n=k/n+y/n\in\Q\oplus\Pi$; conversely $y+m/n=(ny+m)/n$. The real elements
-and units follow from \cref{odg:prop:units} by the same leading-degree
-argument, and $\omega$ lies in the ring while $\omega^{-1}$ does not. For
+$a/n=k/n+y/n\in\Q\oplus\Pi$; conversely $y+m/n=(ny+m)/n$.
+The constant-term map has kernel $\Pi$ and is split by the inclusion of
+rational constants. The direct sum describes the additive decomposition;
+it is not a direct product of rings, since rational constants act on $\Pi$
+by scalar multiplication. A nonzero element of this ring has nonnegative
+leading degree. If it and its inverse both belong to the ring, additivity
+of leading degrees forces both degrees to be zero. Their supports are
+nonnegative, so both are rational constants. Conversely every nonzero
+rational is a unit. Also $\omega$ lies in the ring while $\omega^{-1}$ does not. For
 $b\in\Oz$ the product $bx$ has no negative exponent, and its constant
 coefficient is $(m/n)\ct(b)$. So $b\in\Den(x)$ exactly when $n\mid\ct(b)$,
 which is $b\in n\Oz$ by \cref{odg:thm:finitequotients}. The identity
@@ -4837,8 +4869,13 @@ $\Q\oplus\Pi$ is infinite, and its inverse is a nonzero infinitesimal outside
 the ring. So every member of a subfield is real, hence rational.
 \end{proof}
 
-An element of $\No$ algebraic over $\Q$ is a real algebraic number, since
-$\No$ is an ordered field containing the real closure of $\Q$ in $\R$.
+An element of $\No$ algebraic over $\Q$ is a real algebraic number.
+Indeed, a nonzero polynomial in $\Q[T]$ factors over the real algebraic
+numbers into linear factors and irreducible quadratics. After a nonzero
+scalar is removed, each quadratic has the form $(T-a)^2+b^2$ with $b\ne0$,
+and has no root in any ordered extension. A surreal root must therefore
+annihilate a linear factor and be real algebraic. This uses only the real
+closedness of the real algebraic numbers, not a transfer theorem for classes.
 Hence the elements of $\Q\oplus\Pi$ algebraic over $\Q$ are exactly the
 rationals, and those of $\Oz$ are the integers \src{09}. Fractions that
 produce $\sqrt2$ need infinite omnific denominators. Also
@@ -4851,13 +4888,19 @@ So there are four rings to keep apart \src{08}:
 The second admits only ordinary integer denominators. The third, the
 localization of $\Oz$ at the prime ideal $\Pi$, admits every denominator with a
 nonzero constant coefficient; it is studied in \cref{odg:frac:sub:residues}.
+The strict inclusions have concrete witnesses: $\omega$ is not rational;
+$1/(1+\omega)$ belongs to $\Oz_\Pi$ but is a nonzero infinitesimal and hence
+is not in $\Q\oplus\Pi$; and $\sqrt2$ is an omnific fraction but cannot
+have a denominator with nonzero integer constant coefficient, by
+\cref{odg:frac:thm:realconstants}.
 
 \begin{proposition}[No set of denominators \src{08}]\label{odg:frac:prop:nosetdenominators}
 No set $S\subseteq\Oz\setminus\{0\}$ supplies a denominator for every surreal:
 there is $0<x\in\No$ with $bx\notin\Oz$ for every $b\in S$.
 \end{proposition}
 \begin{proof}
-By \cref{odg:lem:setbounds} choose $\eta>\ddeg(b)$ for every $b\in S$, and put
+The leading exponents of the members of $S$ form a set. By
+\cref{odg:lem:setbounds} choose $\eta>0$ exceeding every $\ddeg(b)$, and put
 $x=\omega^{-\eta}$. Then $bx\ne0$ has negative leading exponent, so it is a
 nonzero infinitesimal and does not lie in $\Oz$.
 \end{proof}
@@ -4887,12 +4930,17 @@ principal; $\Den(r)$ is generated by a set; a least positive omnific
 denominator exists.
 \end{theorem}
 \begin{proof}
-Write $b=k+y$ with $k\in\Z$ and $y\in\Pi$. Multiplication by a real preserves
-support, so $rb\in\Oz$ exactly when $rk\in\Z$. For $r=p/q$ in lowest terms this
+Write $b=k+y$ with $k\in\Z$ and $y\in\Pi$. Multiplication by a real introduces
+no new exponents (and preserves support when the scalar is nonzero), so
+$rb\in\Oz$ exactly when $rk\in\Z$. This includes $r=0$, whose reduced
+denominator is $q=1$. For $r=p/q$ in lowest terms this
 means $q\mid k$, and since $\Pi=q\Pi$ (\cref{odg:thm:finitequotients}) the ideal
 is $q\Oz$. For irrational $r$ it forces $k=0$, giving $\Pi$.
 
-For irrational $r$, then $a=rb\in\Pi$ as well. If $d$ is a common divisor of
+For irrational $r$, then $a=rb\in\Pi$ as well. Dividing their coefficients
+by any nonzero ordinary integer preserves positive support, so every such
+integer divides both. In particular the pair is not primitive.
+If $d$ is a common divisor of
 $a$ and $b$, then $(a/d,b/d)$ is another representation of $r$, so both
 quotients again lie in $\Pi$ and are divisible by $2$. Hence $2d$ is a common
 divisor; it does not divide $d$, because $1/2\notin\Oz$. So no common divisor
@@ -4934,8 +4982,13 @@ We first isolate the algebraic mechanism. Throughout this subsection, $R$ is a
 domain containing $\R$ with a ring retraction $c:R\to\R$ that fixes $\R$. Put
 $I_R=\ker c$ and $R_\Z=c^{-1}(\Z)=\Z\oplus I_R$, and let $K$ be any field
 containing $R$, possibly larger than $\Frac(R)$. The main example is
-$(R,c)=(\BR,\ct)$, with $R_\Z=\Oz$ and $I_R=\Pi$. Another is $R=\R[t]$ with
-evaluation at $T=0$ (\cref{odg:frac:sub:models}).
+$(R,c)=(\BR,\ct)$, with $R_\Z=\Oz$ and $I_R=\Pi$. Another is the polynomial ring $R=\R[T]$ with evaluation at $T=0$;
+its image $\R[t]$ under evaluation at the omnific parameter is treated in
+\cref{odg:frac:sub:models}. Every element of $R$ decomposes uniquely as
+$c(h)+(h-c(h))\in\R\oplus I_R$, and multiplication by a nonzero real
+preserves $I_R$. No nonzero-kernel hypothesis is needed for the algebraic
+theorem: when $I_R=0$, the irrational case simply has no nonzero
+admissible scalar.
 
 \begin{definition}[Rational directions \src{08}]\label{odg:frac:def:rational}
 A nonzero $\mathbf v\in\R^{n+1}$ has \emph{rational projective direction} if
@@ -4952,7 +5005,12 @@ is a primitive integral vector, then $\mathcal L_{\mathbf v}=\Z$.
 \begin{proof}
 A nonzero $s$ in the first case would make the line rational. In the second
 case choose integers $u_i$ with $\sum_iu_iv_i=1$. If every $sv_i$ is an
-integer, so is $s=\sum_iu_i(sv_i)$.
+integer, so is $s=\sum_iu_i(sv_i)$. Conversely every integer $s$ works.
+More generally, if $\lambda\mathbf v$ is primitive integral, then
+$s\mathbf v\in\Z^{n+1}$ exactly when $s/\lambda\in\Z$, giving
+$\mathcal L_{\mathbf v}=\lambda\Z$. Clearing ordinary denominators and
+dividing by the positive integer gcd constructs this primitive generator;
+the same lattice calculation shows that it is unique up to sign.
 \end{proof}
 
 \begin{theorem}[All ambient scalar representations \src{08}; pairs \src{09}]\label{odg:frac:thm:pullback}
@@ -4981,7 +5039,11 @@ every $hP_i$ lies in $R_\Z\subseteq R$, then
 For $h\in R$, membership of $hP_i$ in $R_\Z$ is exactly $c(h)v_i\in\Z$. This
 proves \eqref{odg:frac:eq:scalars}, and \cref{odg:frac:lem:lattice} gives the
 two scalar sets. It remains to show that the normalized vector in (a) is
-unimodular over $R_\Z$, not merely primitive. Choose $u_i\in\Z$ with
+unimodular over $R_\Z$, not merely primitive. Here $P_i$ denotes the
+normalized coordinate, and $U_i$ is a B\'ezout row for that normalized
+vector: rescaling the original vector by $\lambda$ rescales its row by
+$\lambda^{-1}$. The normalized coordinates $P_i$ belong to $R_\Z$
+because their residues are integers. Choose $u_i\in\Z$ with
 $\sum_iu_iv_i=1$, put $S=\sum_iu_iP_i$, so that $c(S)=1$, and define
 \begin{equation}\label{odg:frac:eq:lift}
  V_i=u_i+(1-S)U_i .
@@ -4995,6 +5057,13 @@ allowed in a much larger field. For $R=\BR$ this is why numerators and
 denominators with arbitrary infinite supports, or with scales outside the
 supports of $\mathbf P$, cannot evade the classification; formal reduction of a
 rational function would not show this \src{08, 09}.
+The scalar set includes zero; nonzero scalars give the actual projective
+representations. If $\lambda\mathbf v$ is primitive integral, the scalar
+set for the \emph{original} vector is $\lambda R_\Z$, since
+$c(h)\in\lambda\Z$ and $\lambda I_R=I_R$; it becomes $R_\Z$ after
+normalization. Unimodularity over $R$ is essential. For instance the pair
+$(\omega,\omega)$ over $\BR$ admits the scalar $\omega^{-1}\notin\BR$,
+which takes it to $(1,1)$, but has no B\'ezout identity over $\BR$.
 
 \begin{remark}[A second route to the lift \src{09}]\label{odg:frac:rem:lift}
 Source 09 adjusts constants instead of using \eqref{odg:frac:eq:lift}. For a
@@ -5006,8 +5075,11 @@ $(u_1,u_0)=(c(U_0),c(V_0))+k(m_0,-m_1)$. Then $U_0+kA_0$ and $V_0-kA_1$ have
 constants $u_1$ and $u_0$ and still form a B\'ezout row. With $n+1$ coordinates
 and constant vector $\mathbf m$, let $\mathbf w=\mathbf u-c(\mathbf U)$ for an
 integer row $\mathbf u$ with $\mathbf u\cdot\mathbf m=1$, and choose a real row
-$\mathbf r$ with $\mathbf r\cdot\mathbf m=1$. Add to $\mathbf U$ the syzygies
-$A_ie_j-A_je_i$ with coefficients $r_iw_j$. Their constant sum is
+$\mathbf r$ with $\mathbf r\cdot\mathbf m=1$. Write $\mathbf A$ for the
+normalized column and $e_j$ for the $j$th standard row. Add to $\mathbf U$
+the row $\sum_{i,j}r_iw_j(A_ie_j-A_je_i)$, summing over all ordered pairs.
+Each summand pairs to zero with $\mathbf A$, so the B\'ezout identity is
+unchanged. Its constant row is
 $(\mathbf r\cdot\mathbf m)\mathbf w-(\mathbf w\cdot\mathbf m)\mathbf r=\mathbf w$,
 since $\mathbf w\cdot\mathbf m=0$. Source 08's formula \eqref{odg:frac:eq:lift}
 is shorter.
@@ -5088,10 +5160,13 @@ point with rational specialization, and $\infty=[1:0]$.
 \end{proof}
 
 \begin{remark}[The exact strength of the dichotomy \src{09}]\label{odg:frac:rem:strength}
-On $\Vreg$ the following coincide: rational specialization, unimodularity over
-$\Oz$, principality of the denominator ideal, a least positive denominator,
-and a primitive presentation. The equivalence is proved on $\Vreg$ only. It is
-not claimed for all of $\mathbb P^1(\No)$, and neither source claims that every
+For affine points of $\Vreg$ the following coincide: rational specialization,
+unimodularity over $\Oz$, principality of the denominator ideal, a least
+positive denominator, and a primitive presentation. The equivalence is
+proved on $\Vreg\cap\No$ only. The point $\infty$ also has rational
+specialization and the unimodular presentation $[1:0]$, but the affine
+denominator ideal and its least positive element are not defined there.
+No such equivalence is asserted outside $\Vreg$, and neither source claims that every
 surreal lies in $\Vreg$ (\cref{odg:frac:q:region}). Source 09 notes that
 L'Innocente--Mantova use ``reduced'' for a different, support-theoretic notion
 \cite{LM}; the word is not used here for lowest terms. For $n+1$ coordinates

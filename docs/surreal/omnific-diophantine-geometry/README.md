@@ -10,7 +10,7 @@ placed in `cf350b1`, numbered 06 and 07 here), and two more dated 23 September
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 121 pages
+article.pdf                        the compiled report, 122 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -85,8 +85,10 @@ automorphisms and logical consequences. It extends coefficient reconstruction
 to the number-field ideal predicates and the c.e.-set classification to
 all characteristic-zero coefficient fields using finite equation systems.
 The new material in Sections 6 and 10 still needs review.
-No review covers the batch-27 material: Section 15, the
-additions to Section 17, Section 18.3 and Questions 18.12–18.16. Inserting
+A further pass reviews Sections 15.1–15.4: denominator ideals, least
+denominators, the multiplier theorem and the affine denominator dichotomy.
+The rest of the batch-27 material remains unreviewed: Sections 15.5–15.12,
+the additions to Section 17, Section 18.3 and Questions 18.12–18.16. Inserting
 Section 15 moved the former Sections 15–17 to 16–18; statement numbers in
 Sections 1–14 are unchanged. See [RECONCILIATION.md](RECONCILIATION.md) for the
 elementary claim correspondence, these proof reviews and the remaining review
