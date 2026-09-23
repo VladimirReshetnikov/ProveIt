@@ -180,6 +180,9 @@ The degree lemma `odg:lem:degree`, unit/finite-element proposition
 The [floor construction](../../../Surreal/Foundations/OmnificFloor.lean)
 handles the negative infinitesimal correction at an integer coefficient
 and proves existence and uniqueness of the omnific integer part.
+The [polynomial-root package](../../../Surreal/Foundations/OmnificPolynomialRoots.lean)
+also proves `odg:prop:univariate` and transcendence over `ℝ` of every
+infinite omnific integer.
 Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report

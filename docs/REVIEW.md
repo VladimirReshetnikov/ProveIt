@@ -3322,6 +3322,24 @@ accepts 14,739 declarations with only `propext`, `Classical.choice` and
 `Quot.sound`. This build verifies the merged library, not the remaining
 manuscript proofs.
 
+## Combined validation with ordinary polynomial-root rigidity
+
+The following incoming commit `e69defb` proves ordinary polynomial-root
+rigidity in the real and complex support rings and the omnific ring,
+including transcendence over the ordinary reals of every infinite omnific
+integer. Its statements agree with the unchanged proposition in the report.
+The coverage notes now include this result. All 200 standard statement
+texts, 416 labels and existing result numbers remain unchanged from the
+start of the review. Clean three-pass PDFs retain 176 and 32 pages; the
+final formalization page was inspected on article page 127.
+
+The 3,650-statement inventory, 4,185 source references and 1,530 local
+Markdown destinations pass. The final `LEAN_NUM_THREADS=2 lake build`
+passes 4,388 jobs; its axiom audit accepts 14,747 declarations with only
+`propext`, `Classical.choice` and `Quot.sound`. The quartic and generic
+Euler proof review remains manuscript work; their unmapped results still
+await Lean proofs.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

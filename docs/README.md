@@ -60,8 +60,9 @@ and later additions remain outside that review, with the exact boundary in its
 [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md); its
 remaining rigidity arguments in Sections 16–18 and the other new reports and additions await
 review. Lean covers the omnific ring and constant-term package, degree
-laws, units and finite elements, and the exact omnific floor of the
-Diophantine report. Its higher Diophantine results remain pending.
+laws, units and finite elements, the exact omnific floor and ordinary
+polynomial-root rigidity of the Diophantine report. Its other unmapped
+Diophantine results remain pending.
 
 Placement `21375f8` (batch 30) adds two report bases,
 [critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)

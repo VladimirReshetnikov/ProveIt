@@ -349,6 +349,7 @@ import Surreal.Surcomplex.FineTopology
 import Surreal.Surcomplex.TopologicalField
 import Surreal.Surcomplex.Modulus
 import Surreal.Surcomplex.ComplexEmbedding
+import Surreal.Surcomplex.ConstantPolynomialRoots
 import Surreal.Surcomplex.NoPaths
 import Surreal.Surcomplex.NoMetric
 import Surreal.Surcomplex.StandardPart
@@ -575,6 +576,7 @@ import Surreal.Surcomplex.NonnegativeSupportRing
 import Surreal.Foundations.OmnificDegree
 import Surreal.Foundations.OmnificUnits
 import Surreal.Foundations.OmnificFloor
+import Surreal.Foundations.OmnificPolynomialRoots
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree
