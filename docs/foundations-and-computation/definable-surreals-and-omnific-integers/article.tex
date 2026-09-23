@@ -1,0 +1,1916 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={Definable Surreal Numbers and Omnific Integers},pdfauthor={Research article prepared for the Surreal project},pdfsubject={Ambient definability, HOD, reversible omnific coding, and a transcendence dichotomy}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Definable surreals and omnific integers}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt,leftmargin=2em}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\bd}{\operatorname{b}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\NF}{\operatorname{NF}}
+\newcommand{\dcl}{\operatorname{dcl}}
+\newcommand{\acl}{\operatorname{acl}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\TC}{\operatorname{TC}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Sat}{\operatorname{Sat}}
+\newcommand{\Code}{\mathsf C}
+\newcommand{\Decode}{\mathsf D}
+\newcommand{\Cell}{\mathcal U}
+\newcommand{\KH}{K_{\HOD}}
+\newcommand{\IH}{I_{\HOD}}
+\newcommand{\repoSHA}{\texttt{9a385d3957bdfe3d9ea79f9a524751c90bd2c894}}
+\newcommand{\repopath}[1]{\nolinkurl{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\title{\textbf{Definable Surreal Numbers\\and Omnific Integers}\\[5pt]
+\large Ambient definability, reversible coding,\newline
+hereditary ordinal definability, and a transcendence dichotomy}
+\author{Research article prepared for the Surreal project}
+\date{September 23, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A surreal number cannot be called definable without specifying a language,
+a universe, and permitted parameters. We develop ambient set-theoretic
+notions, distinguish them from definability in the ordered field, and give
+an algebraic theory of the resulting numbers. For a fixed parameter set,
+the ambiently definable surreals form a real closed field; the definable
+omnific integers form an integer part whose fraction field is exactly that
+field. Ordinal-definable surreals admit the particularly concrete description
+$\KH=\No\cap\HOD=\No^{\HOD}$, using canonical sign sequences.
+
+Our main constructions go beyond these closure facts. A parameter-free,
+reversible normal-form code sends every surreal into the fixed omnific
+interval $\omega<z<\omega+\omega^{1/2}$, with leading term $\omega$,
+zero constant term, and coefficients in $\{1,2,3\}$. Consequently,
+ordinal definability of all integers in this one interval is equivalent to
+$V=\HOD$; the analogous parameter-free condition in a model is equivalent
+to pointwise definability of the entire model. More strongly, if
+$V\ne\HOD$, the same interval contains an explicitly given
+$\Ord$-indexed algebraically independent family over $\KH$. Thus the
+failure of ordinal definability is never merely a finite or set-bounded
+transcendence defect.
+
+We also determine the first birthday of a non-ordinal-definable surreal,
+exhibit failures of termwise definability for Hahn sums, construct
+complexity-bounded definability escape ordinals, and show how homogeneous
+forcing can create the full transcendence phenomenon without adding any
+real numbers. Proofs, scope restrictions, source comparisons, and finite
+regression checks are included. The coding and transcendence results are
+proposed as original contributions; priority is not established, and the
+article is not refereed or formally verified.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Keywords.} Surreal numbers; omnific integers; definability;
+HOD; normal forms; algebraic independence; pointwise definable models.
+\clearpage
+\setcounter{tocdepth}{2}
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The question and the contribution}
+\label{sec:intro}
+
+The familiar phrase ``definable real number'' conceals several choices.
+A positive root of a rational polynomial is definable in an ordered field;
+a computable real can instead be defined by a statement about its
+algorithm; and a set-theoretic definition can refer to ordinals, models,
+and forcing extensions. These are different notions, not alternative
+notations for one fixed countable field. The user-specified reference on
+definable reals is a useful starting point \cite{WikiDef}; the foundational
+analysis and the pointwise-definability results used below come from
+Hamkins--Linetsky--Reitz \cite{HLR}.
+
+For surreals the distinction becomes essential. The pure ordered field
+has no parameter-free definable infinite element, whereas the first
+infinite ordinal $\omega$ has a very short parameter-free definition in
+set theory. An omnific integer can simultaneously have elementary-looking
+normal-form coefficients and contain the information of an arbitrary
+set of ordinals. Our goal is to make these facts into a coherent theory
+rather than to announce an unspecified collection of ``describable''
+numbers.
+
+\subsection{Three central results}
+
+Let $\No$ be represented by ordinal-length sign sequences, and let $\Oz$
+be the classical omnific-integer ring. Write
+\begin{equation}\label{eq:maincell}
+ \Cell=\{z\in\Oz:\ \omega<z<\omega+\omega^{1/2},\ \ct(z)=0\}.
+\end{equation}
+The exponentiation $x\mapsto\omega^x$ throughout this article is the
+\emph{Conway monomial map}, not $x\mapsto\exp(x\log\omega)$.
+The main results are the following.
+
+\paragraph{Reversible compression.}
+There is a parameter-free set-theoretically definable injection
+$\Code:\No\longrightarrow\Cell$ with a parameter-free definable inverse
+on its image. For every permitted parameter family, a number and its
+code have exactly the same ambient definability degree
+(Theorem~\ref{thm:code}). This is not asserted to be a ring homomorphism
+or to be definable in the pure ordered field.
+
+\paragraph{A one-interval test for the universe.}
+Every element of $\Cell$ is ordinal definable if and only if $V=\HOD$.
+In the external semantics of a model $M\models\ZFC$, every element of
+$\Cell^M$ is parameter-free definable in $M$ if and only if $M$ is
+pointwise definable (Theorems~\ref{thm:globalOD} and
+\ref{thm:pointwise}). Thus a fixed leading asymptotic term does not put
+a bound on set-theoretic information.
+
+\paragraph{A transcendence dichotomy.}
+Either $\No=\KH$, or $\Cell$ contains an $\Ord$-indexed algebraically
+independent family over $\KH$ (Theorem~\ref{thm:dichotomy}). The proof
+is explicit: starting with any $t\in(0,1)\setminus\KH$, use
+\begin{equation}\label{eq:introfam}
+ z_\alpha=\omega+\omega^{\,t\omega^{-(\alpha+1)}}
+ \qquad(\alpha\in\Ord).
+\end{equation}
+The obstruction to a polynomial relation is separation of normal-form
+supports into distinct additive cosets of $\KH$.
+
+\subsection{What is prior work, and what is proposed here}
+
+The sign construction, normal forms, the monomial map, real closedness,
+and the omnific integer part are classical \cite{Conway,Gonshor,vdDE,LM}.
+Quantifier elimination, ordinal definability, HOD, partial truth
+predicates, and Mostowski collapse are standard tools
+\cite{Marker,Jech,HLR}. We do not claim these tools, or their routine
+closure consequences, as new.
+
+Chen, Hamkins, and Yang have announced that the surreal ordered field
+expanded by birthday order is bi-interpretable with set theory
+\cite{CHY}. The repository explicitly credits that announcement in its
+birthday-cutoff report. In particular, the general idea of encoding
+well-founded membership graphs by surreal signs is \emph{not} a new
+contribution of this article. No theorem below needs an unverified
+version of that announced bi-interpretation.
+
+The candidate-original contribution is the particular reversible
+\emph{omnific} code with fixed leading data, its one-interval
+pointwise-definability criterion, and especially the explicit
+\emph{proper-class transcendence dichotomy in that same interval}.
+The birthday and complexity results are useful refinements and
+applications, with less ambitious originality claims. The literature
+search did not locate these precise statements. It was not exhaustive;
+no theorem is described as settling a named open problem in the
+published literature.
+
+\subsection{Repository snapshot and dependency boundary}
+
+The repository was inspected at commit
+\begin{center}\small\repoSHA.\end{center}
+The source catalogue and introductions to the birthday-cutoff and
+omnific-Diophantine reports were read through the GitHub connector
+\cite{Repo,RepoBirthday,RepoOmnific}. The catalogue describes AI-assisted
+research drafts and separates written arguments from Lean coverage.
+This paper follows that distinction. It imports no nonclassical
+Diophantine, quotient, automorphism, or bi-interpretation claim from
+those drafts. Appendix~\ref{app:audit} records the limited audit scope.
+
+\section{Foundations and canonical representations}
+\label{sec:foundations}
+
+\subsection{Universes, models, and class notation}
+
+Our mathematical statements are made in ZFC, with proper-class notation
+understood schematically. Each individual surreal is a \emph{set}.
+A class function used below is specified by one set-theoretic formula;
+all its values and all sums at which it is evaluated are set-sized.
+An $\Ord$-indexed independent family means a definable class assignment
+whose every finite subfamily is algebraically independent. It does not
+mean that the entire family is a set or that its class sum exists.
+
+When a literal satisfaction relation is needed, fix a transitive
+set model $M\models\ZFC$ in an ambient metatheory, and interpret
+$\No^M$, $\Oz^M$, and the relevant definitions internally. This
+conditional framework does not assert that ZFC proves the existence
+of such an $M$. More generally, the model-theoretic statements explicitly
+identified as external apply to arbitrary set models. For nonstandard
+models, their ``ordinals,'' ``finite sequences,'' and surreal codes
+are internal objects, not necessarily actual well-founded sequences.
+
+\subsection{Signs and normal forms}
+
+A canonical surreal is a function
+\[
+ s:\alpha\longrightarrow\{-,+\},\qquad\alpha\in\Ord.
+\]
+Its birthday is $\bd(s)=\alpha$. Comparison is by the first disagreement,
+with a missing sign ordered between $-$ and $+$. The ordinal $\alpha$
+itself is represented by the all-plus sequence of length $\alpha$.
+The standard real embedding and the arithmetic operations are
+parameter-free definable in set theory \cite{Conway,Gonshor}.
+
+Every nonzero surreal has a unique Conway normal form
+\begin{equation}\label{eq:normal}
+ x=\sum_{\xi<\lambda}r_\xi\omega^{g_\xi},
+ \qquad r_\xi\in\R\setminus\{0\},\quad
+ g_\xi>g_\eta\ \ (\xi<\eta<\lambda).
+\end{equation}
+The length $\lambda$ is an ordinal, and the support
+$\supp(x)=\{g_\xi:\xi<\lambda\}$ is reverse well-ordered and set-sized.
+Conversely, any such coefficient/exponent sequence has a surreal sum.
+Addition and multiplication are Hahn addition and convolution. We use
+$\NF(x)$ for the \emph{whole indexed sequence}, including its length,
+not merely the collection of its individual entries.
+
+The uniqueness theorem supplies parameter-free set-theoretic operations
+$x\mapsto\NF(x)$ and evaluation of valid normal forms. It supplies no
+algorithm for arbitrary infinite codes and no assertion of topological
+convergence of finite partial sums. The primary factorisation paper
+\cite[Sections 1--2]{LM} is a convenient modern reference for the
+normal-form convention and the distinction between series fields and
+omnific subrings.
+
+\begin{lemma}[Ordinal domination]\label{lem:ordinalbound}
+Every set $S\subseteq\No$ is strictly bounded in absolute value by a
+surreal ordinal. Moreover, the least ordinal $\delta$ satisfying
+$|s|<\delta$ for every $s\in S$ is definable from $S$.
+\end{lemma}
+\begin{proof}
+A sign sequence of length $\alpha$ lies between the all-minus and
+all-plus sequences of length $\alpha$, hence $|s|\leq\bd(s)$.
+Replacement gives the set of birthdays. An ordinal strictly exceeding
+all of them gives the required bound. The qualifying ordinals form a
+nonempty definable class, so it has a least member, uniquely specified
+from $S$.
+\end{proof}
+
+\subsection{Omnific integers and the correct floor formula}
+
+\begin{definition}
+An \emph{omnific integer} is a surreal whose normal form has no negative
+exponents and whose coefficient at exponent $0$ is an ordinary integer.
+Thus
+\begin{equation}\label{eq:Oz}
+ \Oz=\Pi\oplus\Z,\qquad
+ \Pi=\{x\in\No:\supp(x)\subseteq\No_{>0}\}.
+\end{equation}
+The empty support is permitted, so $0\in\Pi$. The map
+$\ct:\Oz\to\Z$ takes the coefficient at exponent $0$.
+\end{definition}
+
+This is the standard ring, not the ring generated by the ordinals.
+For example, $\sqrt2\,\omega$ is omnific, but $\omega+\pi$ is not.
+The direct sum in \eqref{eq:Oz} is additive, not a direct product of
+unital rings. Positive exponents stay positive under addition, so
+$\Pi$ is an ideal and $\ct$ is a ring retraction.
+
+\begin{proposition}[Integer part]\label{prop:floor}
+The ring $\Oz$ is discretely ordered with least positive element $1$.
+For every $x\in\No$ there is exactly one $z\in\Oz$ such that
+$z\leq x<z+1$. This $z=\lfloor x\rfloor_{\Oz}$ is parameter-free
+definable from $x$ in set theory.
+\end{proposition}
+\begin{proof}
+Write, by splitting the normal form,
+$x=P+r+\varepsilon$, where $P\in\Pi$, $r\in\R$, and
+$\varepsilon$ is infinitesimal. Put
+\begin{equation}\label{eq:floor}
+ \lfloor x\rfloor_{\Oz}=P+
+ \begin{cases}
+ r-1,&r\in\Z\ \text{and}\ \varepsilon<0,\\
+ \lfloor r\rfloor,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+A nonzero positive element of $\Pi$ is larger than every real, since
+its leading exponent is positive. Hence every positive element of
+$\Oz$ is at least $1$. Formula~\eqref{eq:floor} directly verifies the
+two inequalities. If two omnific integers had the required property,
+their nonzero difference would have absolute value less than $1$,
+contradicting discreteness. Both the normal-form formula and the unique
+integer-part property are set-theoretic definitions.
+\end{proof}
+
+\begin{remark}
+The correction when $r$ is integral and $\varepsilon<0$ is essential:
+$\lfloor\omega-\omega^{-1}\rfloor_{\Oz}=\omega-1$, not $\omega$.
+The proposition is classical \cite{Conway,LM}; its proof is included
+to make subsequent definability closure entirely explicit.
+\end{remark}
+
+\section{Which notion of definability?}
+\label{sec:definitions}
+
+\subsection{Ambient definability with parameters}
+
+\begin{definition}\label{def:ambient}
+Let $M\models\ZFC$ be a set model, and let $A$ be an external collection
+of allowed elements of $M$. An element $a\in M$ is \emph{ambiently
+$A$-definable in $M$} if some standard first-order formula
+$\varphi(v,\bar u)$ and some finite tuple $\bar p$ from $A$ satisfy
+\[
+ M\models\forall v\,[\varphi(v,\bar p)\leftrightarrow v=a].
+\]
+Write $D_A^M=\dcl_{(M,\in)}(A)$, and define
+\[
+ K_A^M=D_A^M\cap\No^M,\qquad I_A^M=D_A^M\cap\Oz^M.
+\]
+When $A=\varnothing$, say \emph{parameter-free definable}. Superscripts
+are omitted when the universe is fixed.
+\end{definition}
+
+For a set model, $D_A^M$ is an external set, definable using the external
+satisfaction relation of $M$. In particular,
+\[
+ |D_A^M|\leq\max(\aleph_0,|A|).
+\]
+This estimate is external. It does not put into $M$ a list of all the
+elements definable in $M$.
+
+For the intended universe $V$, the same terminology is a metatheoretic
+scheme: for each particular formula we can ask whether it uniquely
+defines a given object. We do not add a first-order truth predicate for
+$V$, and do not assume that the full collection $D_\varnothing^V$ is
+an internally available set or class.
+
+\subsection{Ordinal parameters}
+
+\begin{definition}\label{def:OD}
+A surreal or omnific integer is \emph{ordinal definable} if its canonical
+set code is in $\OD$. Define
+\[
+ \KH=\No\cap\OD,\qquad \IH=\Oz\cap\OD.
+\]
+The standard internal definition of $\OD$ says that an object is uniquely
+definable over some set structure $(V_\theta,\in)$ using finitely many
+ordinal parameters below $\theta$. Reflection identifies this with the
+usual notion of definability in $V$ from ordinal parameters. The extra
+ordinal $\theta$ is allowed; no truth predicate for $V$ is required.
+\end{definition}
+
+Both $\OD$ and $\HOD$ are definable classes of ZFC, unlike a uniform
+truth-based relation between arbitrary formulas and their unique
+solutions in $V$. HOD is the transitive class of sets whose transitive
+closures, including the sets themselves, consist of ordinal-definable
+sets; it is an inner model of ZFC with a canonical definable well-order
+\cite{Jech,GoldbergPoveda}. Every ordinal is ordinal definable, using
+itself as an allowed parameter. This alone shows why $\KH$ need not
+be a countable collection.
+
+\subsection{Intrinsic ordered-field definability}
+
+\begin{theorem}[Classical language contrast]\label{thm:purefield}
+In the pure ordered-field language, the parameter-free definable
+surreals are exactly the real algebraic numbers. Their intersection
+with $\Oz$ is exactly $\Z$. More generally, in a real closed surreal
+field $F$,
+\[
+ \dcl_F(A)=\text{the relative real closure of }\Q(A)\text{ in }F.
+\]
+\end{theorem}
+\begin{proof}
+Quantifier elimination for real closed fields reduces a definable
+singleton to a semialgebraic singleton over $\Q(A)$ \cite{Marker}.
+If a point is not a zero of any of the finitely many nonzero polynomials
+appearing in a quantifier-free defining formula, their signs are locally
+constant, so the formula cannot isolate that point. Thus the point is
+algebraic over $\Q(A)$. Conversely, an algebraic element is specified as
+the $k$th real root of its polynomial, for a fixed finite $k$.
+Real algebraic elements of $\No$ lie in its standard real subfield.
+A real is omnific exactly when it is an integer.
+\end{proof}
+
+For the full proper-class field, the argument is a formula-by-formula
+application of the same quantifier-elimination theorem. In particular,
+$\omega$ is \emph{ambiently} parameter-free definable, but is not
+parameter-free definable in the pure field. Nor does adding the word
+``omnific'' to our prose add a predicate to that language. The structure
+$(\No;+,-,\cdot,<,0,1,\Oz)$ is a different structure, whose definable
+closure is not classified here.
+
+\subsection{Provable descriptions and computability}
+
+For a recursively axiomatized theory $T$, one can restrict to formulas
+$\varphi$ for which $T\vdash\exists!x\,(\No(x)\wedge\varphi(x))$.
+These are \emph{$T$-provably unique descriptions}. Their interpretation
+in a model of $T$ need not be invariant between different models.
+The statement ``$T$ proves uniqueness'' is not a replacement for choosing
+the semantic universe.
+
+A genuine effective presentation of a surreal sign sequence gives an
+ambient definition when the presentation uniquely determines a
+well-founded sequence. The converse fails already for real numbers:
+the characteristic real of a noncomputable but arithmetically definable
+set is definable. We therefore do not identify definability with any
+one of the computable-surreal representations catalogued by the
+repository, or with a numerical approximation algorithm.
+
+\section{The field and integer part of ambiently definable numbers}
+\label{sec:hulls}
+
+In this section the superscript $M$ refers to a fixed transitive model
+when external semantics are used. All operations on its surreals and
+normal forms are its internal operations.
+
+\begin{lemma}[Unique-output closure]\label{lem:closure}
+Suppose a set-theoretic formula defines a unique output $F(\bar x)$
+from each input in its domain. If every component of $\bar a$ lies
+in $D_A$, then $F(\bar a)\in D_A$.
+\end{lemma}
+\begin{proof}
+Choose definitions for the finitely many components of $\bar a$.
+Existentially quantify those components, assert their defining formulas,
+and assert the graph formula for $F$. This is a single formula using
+only finitely many parameters from $A$, with a unique solution.
+\end{proof}
+
+\begin{theorem}[Definable field and integer part]\label{thm:hull}
+The ambiently $A$-definable surreals $K_A$ form a real closed field.
+The ring $I_A=K_A\cap\Oz$ is a discretely ordered integer part of $K_A$,
+and
+\begin{equation}\label{eq:frac}
+ K_A=\Frac(I_A).
+\end{equation}
+The field $K_A$ is an elementary substructure of the ambient surreal
+ordered field, in the pure ordered-field language.
+\end{theorem}
+\begin{proof}
+The constants $0,1$, addition, subtraction, multiplication, and inverse
+away from zero are uniquely definable set-theoretic operations.
+Lemma~\ref{lem:closure} proves the field axioms by restriction.
+Every positive element has a unique positive square root in $\No$,
+so that square root belongs to $K_A$. For an odd-degree polynomial
+with coefficients in $K_A$, real closedness of $\No$ gives at least
+one real root; its finite set of real roots has a least member, uniquely
+definable from the coefficient tuple. That root lies in $K_A$.
+The square-root and odd-degree-root criterion proves real closedness.
+This is an application of the classical real-closed-field theorem,
+not a new proof of real closedness of $\No$.
+
+The floor from Proposition~\ref{prop:floor} belongs to $D_A$ whenever
+its input does. Hence every $x\in K_A$ has its omnific floor in $I_A$.
+Discreteness and the subring property restrict from $\Oz$.
+
+For the fraction-field assertion, let $0\ne x\in K_A$, and put
+$S=\supp(x)$. The whole normal form and $S$ are definable from $x$.
+There exists a positive ordinal $\delta$ such that
+\[
+ \delta+g>0\qquad(g\in S)
+\]
+by Lemma~\ref{lem:ordinalbound}. Choose the \emph{least} such positive
+ordinal. It is definable from $x$, so $\delta\in K_A$. Thus
+$q=\omega^\delta$ and $p=qx$ belong to $K_A$. Their supports are
+strictly positive, so $p,q\in I_A$, and $x=p/q$. The zero case is
+$0=0/1$. The reverse inclusion follows because $K_A$ is a field.
+Finally, every inclusion of real closed fields is elementary by
+quantifier elimination \cite{Marker}.
+\end{proof}
+
+\begin{remark}
+The proof does not suppose that each exponent of an $A$-definable
+normal form is $A$-definable. It only uses definability of the
+\emph{entire support} to choose one ordinal bound. Confusing these
+two assertions would invalidate the fraction-field argument.
+The equality $\Frac(\Oz)=\No$ itself is not claimed as new; the point
+here is that denominator clearing can be chosen uniformly enough to
+preserve ambient definability.
+\end{remark}
+
+\begin{corollary}[Open induction]\label{cor:openinduction}
+The nonnegative part of $I_A$ satisfies induction for every
+quantifier-free formula in the ordered-ring language, with parameters
+from $I_A$.
+\end{corollary}
+\begin{proof}
+A quantifier-free formula with parameters in $I_A$ defines a
+semialgebraic subset of the real closed field $K_A$, hence a finite
+union of intervals and points. Every nonempty intersection of such a
+set with $(I_A)_{\geq0}$ has a least member. Indeed, the integer-part
+property supplies the first integer at or immediately above each
+finite left endpoint, with a one-unit adjustment for a strict endpoint;
+an interval unbounded to the left is treated by the lower bound $0$.
+Take the least of the finitely many nonempty pieces.
+If an induction instance failed, the set of counterexamples would
+therefore have a least member. It is not $0$, and its predecessor is
+nonnegative and satisfies the formula, contradicting the inductive
+step. This is the standard integer-part route to open induction
+\cite{Shepherdson,LM}.
+\end{proof}
+
+\begin{proposition}[Finite ambiguity does not enlarge the hull]
+\label{prop:algebraicity}
+An element of $\No$ belonging to a finite ambiently $A$-definable set
+of surreals is itself ambiently $A$-definable. In particular, ambient
+model-theoretic algebraicity and definability coincide on the surreal
+sort. Every surreal algebraic over $K_A$ already belongs to $K_A$.
+\end{proposition}
+\begin{proof}
+Order the finite candidate set by the surreal order. Each member is
+its $k$th member for a fixed finite $k$; this property is expressible
+by a formula with the same parameters. For the final assertion, the
+roots of a nonzero polynomial over $K_A$ form such a finite definable
+set. Equivalently, a real closed field has no proper algebraic ordered
+extension.
+\end{proof}
+
+This finite-ordering argument is a particularly transparent case of
+model-theoretic algebraicity; broader set-theoretic questions about
+algebraicity and implicit definability are studied in
+Hamkins--Leahy \cite{HamkinsLeahy}. It concerns a genuinely finite
+candidate set, not an internally nonstandard finite set viewed from
+outside a nonstandard model.
+
+\begin{proposition}[Uniform constructions]\label{prop:uniform}
+The field $K_A$ is closed under the Conway monomial map and under
+forming the simplest separator of an $A$-definable set-sized separated
+cut. It is also closed under the sum of a valid normal form when the
+\emph{whole indexed normal form} is $A$-definable.
+\end{proposition}
+\begin{proof}
+Each construction has a unique set-theoretically specified output.
+Apply Lemma~\ref{lem:closure}. For a cut, both option sets must be
+jointly available as $A$-definable sets, not merely have individually
+$A$-definable elements.
+\end{proof}
+
+\section{The ordinal-definable surreal field is the HOD field}
+\label{sec:HOD}
+
+The canonical sign representation makes hereditary definability much
+more transparent than it is for arbitrary sets.
+
+\begin{theorem}[HOD identification]\label{thm:HOD}
+With canonical sign-sequence representatives,
+\begin{equation}\label{eq:HODid}
+ \KH=\No\cap\OD=\No\cap\HOD=\No^{\HOD},
+ \qquad
+ \IH=\Oz\cap\HOD.
+\end{equation}
+The field $\KH$ is real closed, contains every ordinal, and is
+closed under the Conway monomial map. The ring $\IH$ is an integer
+part with $\Frac(\IH)=\KH$.
+\end{theorem}
+\begin{proof}
+Let $s:\alpha\to\{-,+\}$ be ordinal definable. Every element in its
+transitive closure is built from ordinals and the two fixed sign
+symbols by the fixed ordered-pair construction. All such elements are
+ordinal definable. Since $s$ itself is ordinal definable, $s\in\HOD$.
+The converse is part of the definition of HOD.
+
+HOD contains every ordinal and is transitive. Its surreal sign
+sequences are consequently exactly the ambient sign sequences that
+belong to HOD. This gives the equality of carriers in
+\eqref{eq:HODid}. Their ordered-field structures agree: comparison is
+computed from the same signs; canonical options are the same initial
+segments; and the recursive arithmetic on these set-sized option
+closures is absolute between a transitive inner model and the ambient
+universe. For the monomial map one may use its recursive cut with
+integer and dyadic multipliers, so no newly added reals enter the
+recursion. Thus the carrier identification is an ordered-field
+identification, not just a coincidence of underlying sets.
+
+Alternatively, all closure assertions follow directly by substituting
+ordinal definitions into the unique-output constructions in
+Theorem~\ref{thm:hull}. The ordinals used by those substitutions are
+still permitted parameters. Proposition~\ref{prop:floor} and the same
+least-ordinal denominator clearing prove the claims about $\IH$.
+\end{proof}
+
+\begin{lemma}[Support of an ordinal-definable number]
+\label{lem:HODsupport}
+If $x\in\KH$ has normal form \eqref{eq:normal}, then for every
+$\xi<\lambda$,
+\[
+ r_\xi\in\R\cap\HOD,\qquad g_\xi\in\KH.
+\]
+In fact, $\NF(x)\in\HOD$, and
+\begin{equation}\label{eq:NFcriterion}
+ x\in\KH\quad\Longleftrightarrow\quad\NF(x)\in\HOD.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The entire normal form is uniquely definable from $x$, so is ordinal
+definable. An individual entry is uniquely definable from $x$ and the
+ordinal index $\xi$. Its real coefficient is ordinal definable, hence
+hereditarily ordinal definable under the usual real coding. Its
+surreal exponent belongs to HOD by Theorem~\ref{thm:HOD}. The length,
+indices, and the fixed tuple coding are also hereditarily ordinal
+definable. Hence the whole sequence belongs to HOD. Conversely,
+$\NF(x)\in\HOD$ implies that it is ordinal definable, so its unique
+surreal value is ordinal definable.
+\end{proof}
+
+The last equivalence requires the whole sequence to lie in HOD. The
+strictly weaker condition ``every coefficient and exponent lies in
+HOD'' is insufficient; Section~\ref{sec:uniformity} supplies explicit
+counterexamples, even with a HOD support and rational coefficients.
+In particular, $\KH$ is not being identified with the unrestricted
+ambient Hahn field containing \emph{all} externally assembled series
+with coefficients and exponents in HOD.
+
+\begin{corollary}[No algebraic defect]\label{cor:noalgebraic}
+Every $x\in\No\setminus\KH$ is transcendental over $\KH$. The
+inclusion $\KH\subseteq\No$ is elementary in the ordered-field
+language, whether or not $V=\HOD$.
+\end{corollary}
+\begin{proof}
+Apply Proposition~\ref{prop:algebraicity} with ordinal parameters,
+and then quantifier elimination.
+\end{proof}
+
+\begin{proposition}[The HOD field is not intrinsically definable when proper]
+If $\KH\ne\No$, no ordered-field formula, even with finitely many
+surreal parameters, defines $\KH$ inside $\No$.
+\end{proposition}
+\begin{proof}
+An infinite definable subset of a real closed field is a finite union
+of points and intervals, so an infinite definable subfield contains
+an interval. Taking differences, it contains $(0,c)$ for some
+$c>0$ belonging to the subfield. For any $x>0$, the number
+$y=1/(x+2/c)$ lies in $(0,c)$, hence in the subfield. Then
+$x=1/y-2/c$ belongs to it as well. Thus every infinite definable
+subfield is the entire field.
+\end{proof}
+
+\section{A reversible code in a fixed omnific interval}
+\label{sec:code}
+
+For each ordinal $\beta$, viewed as a surreal ordinal, define
+\begin{equation}\label{eq:eps}
+ e_\beta=\omega^{-(\beta+1)}.
+\end{equation}
+The $e_\beta$ form a strictly decreasing class of positive infinitesimal
+surreals. In particular $0<e_\beta\leq\omega^{-1}<1/2$.
+Every $e_\beta$ is ordinal definable. For a sign sequence
+$s:\alpha\to\{-,+\}$ put
+\[
+ c_s(\beta)=\begin{cases}1,&s(\beta)=-,\\2,&s(\beta)=+.\end{cases}
+\]
+
+\begin{definition}[Self-delimiting omnific code]\label{def:code}
+Define
+\begin{equation}\label{eq:code}
+ \Code(s)=\omega+
+       \sum_{\beta<\alpha}c_s(\beta)\omega^{e_\beta}
+       +3\omega^{e_\alpha},\qquad\alpha=\bd(s).
+\end{equation}
+The coefficient $3$ is an end marker, not a third sign value.
+\end{definition}
+
+\begin{theorem}[Reversible fixed-leading-term coding]\label{thm:code}
+Formula~\eqref{eq:code} defines a parameter-free set-theoretic injection
+$\Code:\No\to\Cell$. Its image is set-theoretically definable, and
+there is a parameter-free definable inverse $\Decode$ on that image.
+For every model $M$ and every allowed parameter family $A$,
+\begin{equation}\label{eq:degree}
+ s\in D_A^M\quad\Longleftrightarrow\quad\Code^M(s)\in D_A^M.
+\end{equation}
+In particular, $s$ and $\Code(s)$ are mutually definable and have the
+same ordinal-definability status.
+\end{theorem}
+\begin{proof}
+The exponents in \eqref{eq:code} occur in strictly decreasing order:
+first $1$, then $e_\beta$ for $\beta\leq\alpha$. They form a set,
+because $\alpha$ is an ordinal. Each coefficient is nonzero and real,
+so the expression is a valid Conway normal form. Every exponent is
+positive. Thus the value is an omnific integer with constant term zero.
+Its leading term is exactly $\omega$.
+
+The tail $T=\Code(s)-\omega$ is positive. Its leading exponent is
+$e_0=\omega^{-1}$, including the empty-sign case, in which the leading
+tail coefficient is $3$. Since $e_0<1/2$, comparison of normal forms
+gives $T<\omega^{1/2}$. Hence $\Code(s)\in\Cell$.
+
+To decode, take the unique normal form of $z$. Verify that its leading
+term is $\omega$, that its remaining exponents are exactly
+$e_\beta$ for an initial ordinal segment $\beta\leq\alpha$, that
+the last coefficient is $3$, and that every preceding coefficient is
+$1$ or $2$. The map $\beta\mapsto e_\beta$ is injective, so the end
+marker uniquely determines $\alpha$. At each $\beta<\alpha$, recover
+$-$ from coefficient $1$ and $+$ from coefficient $2$. This produces
+exactly one sign sequence $s$ and satisfies $\Decode(\Code(s))=s$.
+
+These are set-theoretic definitions: the assertion that there exists
+an ordinal $\alpha$ and the specified indexed normal form is a
+first-order assertion about sets. It neither quantifies over class
+sequences nor needs a field-intrinsic way to recognize $\omega$.
+The unique-output closure lemma applied to both maps proves
+\eqref{eq:degree}. The same proof is a theorem internal to any model;
+external definability uses standard formulas for the two maps.
+\end{proof}
+
+\begin{example}
+The first three codes are
+\[
+ \Code(0)=\omega+3\omega^{\omega^{-1}},
+\]
+\[
+ \Code(1)=\omega+2\omega^{\omega^{-1}}+3\omega^{\omega^{-2}},
+ \qquad
+ \Code(-1)=\omega+\omega^{\omega^{-1}}+3\omega^{\omega^{-2}}.
+\]
+The code for $0$ is not $0$. The coding theorem makes no assertion of
+arithmetic compatibility.
+\end{example}
+
+\begin{corollary}[Congruence and leading-data blindness]\label{cor:blind}
+Every code has leading exponent $1$, leading coefficient $1$, constant
+term $0$, and coefficients from $\{1,2,3\}$. Moreover, for every
+ordinary positive integer $n$,
+\[
+ \Code(s)\in n\Oz.
+\]
+These invariants therefore do not bound ambient definability complexity.
+\end{corollary}
+\begin{proof}
+Division by an ordinary $n>0$ scales the real coefficients and leaves
+all exponents positive, so the quotient is still omnific. The remaining
+assertions follow from the normal form. Since every surreal is
+recoverable from its code, the listed common invariants cannot
+separate definability degrees.
+\end{proof}
+
+\begin{proposition}[A complementary two-term code]\label{prop:twotermcode}
+There is also a parameter-free definable order isomorphism
+\[
+ \mathsf T:\No\longrightarrow
+ \Cell_2:=\{\omega+\omega^g:0<g<1/2\}\subseteq\Cell.
+\]
+Every value has exactly two nonzero normal-form terms, both with
+coefficient $1$, and is mutually ambiently definable with its input.
+\end{proposition}
+\begin{proof}
+The rationally defined map
+\[
+ h(x)=\frac14\left(1+\frac{x}{1+|x|}\right)
+\]
+is an increasing bijection from $\No$ onto $(0,1/2)$. For its
+inverse, put $u=4g-1$ and use $x=u/(1-|u|)$. Therefore
+$\mathsf T(x)=\omega+\omega^{h(x)}$ has the stated normal form,
+is strictly increasing, and has exactly the stated image. Extracting
+the lower exponent from the unique normal form and applying the
+inverse of $h$ recovers $x$ by a parameter-free set-theoretic
+operation.
+\end{proof}
+
+The two codes have different purposes. The elementary two-term
+code allows an arbitrary surreal exponent to carry all the input
+information. The sign code $\Code$ instead fixes its exponents in
+an ordinal-definable template, so that all information is stored in
+the assignment of a finite coefficient alphabet. It is the latter
+feature that will prove the failure of termwise HOD closure.
+
+\begin{remark}[An interval is still a proper class]
+Although $\Cell$ is bounded by two explicitly given surreals, it is a
+proper class in the ambient universe. Otherwise its subset
+$\ran(\Code)$ would be a set and Replacement applied to $\Decode$
+would make all of $\No$ a set. Ordered boundedness is not a size bound
+for the full surreal field.
+\end{remark}
+
+\section{One interval detects the entire set-theoretic universe}
+\label{sec:global}
+
+We first spell out the standard set-coding step needed for the global
+consequences. This step is not an original bi-interpretation claim.
+
+\begin{lemma}[Every set is recoverable from some surreal]
+\label{lem:setcoding}
+There is a parameter-free partial set-theoretic function $E$ on
+surreal sign sequences such that every set is $E(s)$ for some $s$.
+No parameter-free selection of such an $s$ from the set being coded
+is asserted.
+\end{lemma}
+\begin{proof}
+For a set $a$, Choice gives a bijection $f:\kappa\to\TC(\{a\})$
+for some ordinal $\kappa$. Transport membership to a well-founded
+extensional relation $R$ on $\kappa$, and record the unique index
+$\rho$ with $f(\rho)=a$.
+
+Fix a parameter-free class pairing of ordinals
+$p:\Ord^2\to\Ord$. One construction well-orders ordinal pairs first
+by their maximum and then lexicographically, and uses the order type
+of each predecessor set. Every predecessor collection is a set, so
+this defines a class bijection. Form the set of ordinals
+\[
+ B=\{p(0,\kappa),p(1,\rho)\}
+       \cup\{p(2,p(\xi,\eta)):(\xi,\eta)\in R\}.
+\]
+Let $\lambda=\sup\{\gamma+1:\gamma\in B\}$ and take the sign
+sequence of length $\lambda$ whose positive positions are exactly
+$B$. From this sequence recover $B$, then $\kappa,\rho,R$, and finally
+the value at $\rho$ of the unique Mostowski collapse. These operations
+are parameter-free and unique whenever the code is valid. For invalid
+codes leave $E$ undefined. Mostowski collapse is standard
+\cite{Jech}; the same pointed-graph mechanism is present in the
+announced surreal/set-theory dictionary \cite{CHY}.
+\end{proof}
+
+\begin{theorem}[The ordinal-definability test]\label{thm:globalOD}
+The following statements are equivalent in ZFC:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $V=\HOD$;
+\item every surreal is ordinal definable;
+\item every omnific integer is ordinal definable;
+\item every member of $\Cell$ is ordinal definable;
+\item every value of the restricted code $\Code$ is ordinal definable.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The forward implications through (v) are immediate from the inclusions.
+If (v) holds, recover each $s$ from $\Code(s)$ by
+Theorem~\ref{thm:code}; hence every surreal is ordinal definable.
+For any set $a$, choose a surreal $s$ with $E(s)=a$ by
+Lemma~\ref{lem:setcoding}. Its canonical sign code lies in HOD by
+Theorem~\ref{thm:HOD}. More explicitly, the associated ordinal set
+$B$ lies in HOD, and HOD decodes the same well-founded extensional
+relation and its Mostowski collapse. Thus $a\in\HOD$.
+Since $a$ was arbitrary, $V=\HOD$.
+\end{proof}
+
+\begin{corollary}[Two terms already detect HOD]
+The equivalent conditions in Theorem~\ref{thm:globalOD} remain
+equivalent if condition \textup{(iv)} is replaced by ``every member
+of $\Cell_2$ is ordinal definable.''
+\end{corollary}
+\begin{proof}
+Use the two mutually definable maps in
+Proposition~\ref{prop:twotermcode} to recover every surreal from
+such a two-term omnific integer, and then apply
+Theorem~\ref{thm:globalOD}.
+\end{proof}
+
+\begin{remark}
+There is no Choice-based definable selection hidden in the converse.
+We choose a code only to prove its existence; hypothesis (ii) says
+\emph{every} such surreal code is ordinal definable. This is much
+weaker as a proof requirement than constructing a canonical code from
+an arbitrary set in a universe not satisfying $V=\HOD$.
+\end{remark}
+
+\begin{theorem}[The pointwise-definability test]\label{thm:pointwise}
+Let $M\models\ZFC$ be any set model. In external semantics, the
+following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $M$ is pointwise definable;
+\item every member of $\No^M$ is parameter-free definable in $M$;
+\item every member of $\Oz^M$ is parameter-free definable in $M$;
+\item every member of $\Cell^M$ is parameter-free definable in $M$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Only (iv)$\Rightarrow$(i) needs proof. Each $s\in\No^M$ is recovered
+by a fixed standard formula from $\Code^M(s)\in\Cell^M$, so (iv)
+implies (ii). Internally to $M$, every set has a code as in
+Lemma~\ref{lem:setcoding}. For any fixed $a\in M$, choose such a
+code $s\in M$. A standard formula defines $s$ by (ii), and composing
+it with the standard decoder formula defines $a$. This does not
+require $M$'s internal relation to be externally well-founded:
+the collapse operation is the one that $M$ proves exists uniquely.
+\end{proof}
+
+Pointwise definable models of ZFC exist whenever ZFC is consistent;
+Hamkins--Linetsky--Reitz also prove strong extension theorems
+\cite{HLR}. Their existence theorem is prior work. The new feature of
+Theorem~\ref{thm:pointwise} is the restriction of the test to a single
+fixed-leading-term omnific interval. It also explains why an external
+counting argument cannot be converted into an internal proof that
+some member of $\Oz^M$ is undefinable. The formulas that define
+particular elements are not presented to $M$ as a surjective internal
+list.
+
+\section{From one missing number to proper-class transcendence}
+\label{sec:transcendence}
+
+This section contains the strongest algebraic result. We first isolate a
+support argument that does not involve definability at all.
+
+\begin{lemma}[Disjoint support cosets]\label{lem:cosets}
+Let $K\subseteq\No$ be a subfield, and let $G\subseteq(\No,+)$ be an
+additive subgroup such that
+\[
+ \supp(a)\subseteq G\qquad(0\ne a\in K).
+\]
+Suppose $(g_i)_{i\in J}$ is a family such that every nonzero finitely
+supported integer combination satisfies
+\begin{equation}\label{eq:modind}
+ \sum_i m_i g_i\notin G.
+\end{equation}
+Then the family $(\omega^{g_i})_{i\in J}$ is algebraically independent
+over $K$. The assertion applies to a class family when the condition
+is read on each finite subfamily.
+\end{lemma}
+\begin{proof}
+Take a nonzero polynomial in finitely many distinct variables,
+\[
+ P(Y_1,\ldots,Y_n)=\sum_{\nu\in F}a_\nu Y_1^{\nu_1}\cdots
+ Y_n^{\nu_n},
+\]
+where $F\subseteq\N^n$ is finite and the displayed coefficients are
+nonzero. Since $\omega^u\omega^v=\omega^{u+v}$, the normal-form
+support of the term at multi-index $\nu$ after substitution is
+\begin{equation}\label{eq:supportshift}
+ \supp(a_\nu)+\sum_{j=1}^n\nu_jg_j
+ \ \subseteq\ G+\sum_{j=1}^n\nu_jg_j.
+\end{equation}
+For $\nu\ne\mu$, these cosets are disjoint. Otherwise subtracting an
+exponent in their intersection would give
+$\sum_j(\nu_j-\mu_j)g_j\in G$, contrary to \eqref{eq:modind}.
+Every displayed term is nonzero, and its coefficients cannot be
+cancelled by any other term. The finite sum is therefore nonzero.
+This proves the required absence of polynomial relations. No infinite
+polynomial, class sum, or interchange of summations is used.
+\end{proof}
+
+\begin{theorem}[Support-subfield amplification]\label{thm:amplify}
+Let $K$ be a proper subfield of $\No$ satisfying
+\begin{equation}\label{eq:Khyp}
+ \omega\in K,\qquad e_\alpha\in K\ (\alpha\in\Ord),\qquad
+ \supp(a)\subseteq K\ (0\ne a\in K),
+\end{equation}
+where $e_\alpha=\omega^{-(\alpha+1)}$.
+For any $t\in(0,1)\setminus K$, the class family
+\begin{equation}\label{eq:indfam}
+ y_\alpha=\omega^{t e_\alpha},\qquad
+ z_\alpha=\omega+y_\alpha\qquad(\alpha\in\Ord)
+\end{equation}
+is algebraically independent over $K$, both for the $y$ family and
+for the $z$ family. Each $z_\alpha$ lies in $\Cell$ and has exactly
+two nonzero normal-form terms, both with coefficient $1$.
+Such a $t$ exists for every proper $K$ satisfying \eqref{eq:Khyp}.
+\end{theorem}
+\begin{proof}
+First, the family $(e_\alpha)$ is linearly independent over $\Q$.
+Indeed, a finite rational linear combination is already a normal
+form with distinct exponents $-(\alpha+1)$; after deleting zero
+coefficients it cannot vanish. Hence for distinct
+$\alpha_1,\ldots,\alpha_n$ and integers $m_j$ not all zero,
+\[
+ c=\sum_{j=1}^n m_j e_{\alpha_j}\in K\setminus\{0\}.
+\]
+If $\sum_jm_jte_{\alpha_j}=tc$ belonged to $K$, division by $c$
+would give $t\in K$, a contradiction. Thus the exponents
+$te_\alpha$ satisfy \eqref{eq:modind} for the additive subgroup
+$G=(K,+)$. Lemma~\ref{lem:cosets} proves algebraic independence of
+the $y_\alpha$.
+
+Translation by $\omega\in K$ is a polynomial automorphism on each
+finite tuple of variables. Therefore a nonzero relation among the
+$z_\alpha=\omega+y_\alpha$ would give a nonzero relation among the
+$y_\alpha$, which is impossible.
+
+Finally,
+\[
+ 0<te_\alpha<e_\alpha\leq\omega^{-1}<1/2.
+\]
+Consequently $\omega^{te_\alpha}$ is a positive, purely infinite
+omnific monomial strictly below $\omega^{1/2}$. The exponents $1$
+and $te_\alpha$ are distinct and positive, so the asserted two-term
+normal form is exact and $z_\alpha\in\Cell$.
+
+For existence, take $x\in\No\setminus K$. Then $u=|x|>0$ is not
+in $K$, since otherwise $x=u$ or $x=-u$ would be in $K$. Set
+$t=u/(1+u)$. It lies strictly between $0$ and $1$. If $t\in K$,
+then $u=t/(1-t)\in K$, again a contradiction.
+\end{proof}
+
+\begin{theorem}[The HOD-surreal transcendence dichotomy]
+\label{thm:dichotomy}
+Exactly one of the following occurs:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $V=\HOD$ and $\No=\KH$;
+\item $V\ne\HOD$, and for any $t\in(0,1)\setminus\KH$, the family
+\[
+ \left(\omega+\omega^{\,t\omega^{-(\alpha+1)}}\right)_{\alpha\in\Ord}
+\]
+is algebraically independent over $\KH$ and is contained in $\Cell$.
+\end{enumerate}
+In case \textup{(ii)}, for every cardinal $\kappa$ there is an
+algebraically independent subset of $\Cell$ of cardinality $\kappa$
+over $\KH$. In particular, the transcendence defect has no set-sized
+cardinal bound.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:globalOD} identifies $V\ne\HOD$ with
+$\KH\ne\No$. The field $\KH$ contains $\omega$ and every
+$e_\alpha$ because these are ordinal definable. Its support property
+is Lemma~\ref{lem:HODsupport}. Apply Theorem~\ref{thm:amplify}.
+Restricting the class family to $\alpha<\kappa$ gives a set family
+by Replacement. Algebraic independence implies distinctness, hence
+that set has cardinality $\kappa$.
+\end{proof}
+
+\begin{remark}[What ``proper-class transcendence'' means]
+The theorem gives a concrete class injection with finite polynomial
+independence, definable from one parameter $t$. It does not choose a
+transcendence basis for $\No$, invoke Global Choice, or assign an
+ordinary cardinal to a proper class. Each individual $z_\alpha$ is
+transcendental over $\KH$, but this pointwise assertion alone would
+be much weaker than the simultaneous algebraic independence proved
+above. In a set model, the assertions have their internal cardinal
+and ordinal meaning, not an assertion that its externally set-sized
+carrier is literally a proper class in the metatheory.
+\end{remark}
+
+\begin{corollary}[Localization at other definable scales]
+\label{cor:localize}
+Assume $V\ne\HOD$. For every $p\in\IH$, every positive
+$\gamma\in\KH$, and every $t\in(0,1)\setminus\KH$, the family
+\begin{equation}\label{eq:localfam}
+ w_\alpha=p+\omega^{\gamma t e_\alpha}\qquad(\alpha\in\Ord)
+\end{equation}
+is algebraically independent over $\KH$ and lies in
+$(p,p+\omega^\gamma)\cap\Oz$.
+\end{corollary}
+\begin{proof}
+For every nonzero finite integer combination $c$ of the $e_\alpha$,
+we have $c\in\KH\setminus\{0\}$. If $\gamma tc\in\KH$, division
+by $\gamma c$ would put $t$ in $\KH$. The coset proof therefore
+applies to the exponents $\gamma te_\alpha$. Translation by
+$p\in\KH$ preserves independence. The exponents are positive and
+less than $\gamma$, so the added monomials are omnific and lie
+strictly between $0$ and $\omega^\gamma$.
+\end{proof}
+
+The widths in this corollary are infinite monomial widths. It would
+be false to replace them indiscriminately by positive real widths:
+an interval of width less than $1$ contains at most one omnific
+integer. The result is localization at an arbitrary definable
+\emph{infinite scale}, not density of omnific integers in $\No$.
+
+\section{Uniform definability is not termwise definability}
+\label{sec:uniformity}
+
+There are two different pitfalls. Individually definable terms need
+not form a definable sequence; conversely, a definable sequence need
+not have parameter-free definable entries at arbitrary ordinal indices.
+
+\begin{theorem}[Definable support and terms do not suffice]
+\label{thm:termwise}
+Assume $V\ne\HOD$. There is a valid normal form $q$ satisfying all
+of the following:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $q\in\Cell\setminus\IH$;
+\item its support, as a whole set, belongs to HOD;
+\item every coefficient is in $\{1,2,3\}$, and every individual
+monomial term belongs to $\KH$;
+\item the whole indexed coefficient/exponent sequence does not
+belong to HOD.
+\end{enumerate}
+Thus $\KH$ is not closed under arbitrary ambient Hahn-summable
+families of its elements, even when the support belongs to HOD.
+\end{theorem}
+\begin{proof}
+Choose $s\notin\KH$ by Theorem~\ref{thm:globalOD}, and let
+$\alpha=\bd(s)$ and $q=\Code(s)$. The reversible code gives
+$q\notin\IH$. Its support is the set
+\[
+ \{1\}\cup\{e_\beta:\beta\leq\alpha\},
+\]
+which is definable from the ordinal $\alpha$ and whose members all
+belong to HOD. Hence the support itself belongs to HOD. Every
+individual coefficient is one of three fixed rationals, and every
+individual exponent is ordinal definable, so every individual term
+is ordinal definable. If the whole normal form belonged to HOD,
+Lemma~\ref{lem:HODsupport} would give $q\in\KH$, a contradiction.
+The summable family here is simply the family of its distinct
+monomial terms, so no additional summability issue occurs.
+\end{proof}
+
+\begin{remark}
+In this example even the \emph{set of coefficient values} is a
+finite HOD set. What fails is the definability of which coefficient
+is assigned to which exponent. Saying ``the coefficients are
+rational'' erases precisely the information carrying the original
+sign sequence.
+\end{remark}
+
+\begin{proposition}[A definable integer can encode nondefinable entries]
+\label{prop:collector}
+There is a parameter-free ambiently definable $q_*\in\Cell$ whose
+normal-form coefficients canonically encode every member of
+$\R\cap\HOD$. In any universe or fixed transitive model in which
+some member of $\R\cap\HOD$ is not parameter-free definable, $q_*$
+has a normal-form coefficient that is not parameter-free definable.
+The last hypothesis is essential and is not asserted in every model.
+\end{proposition}
+\begin{proof}
+The set $R_H=\R\cap\HOD$ is parameter-free definable. Restrict the
+canonical set-like HOD well-order to it, and let
+$(r_\xi)_{\xi<\lambda}$ be the unique increasing enumeration. The
+entire enumeration and its ordinal order type $\lambda$ are
+parameter-free definable. Define the injective real function
+\[
+ h(r)=\frac32+\frac{r}{2(1+|r|)}\in(1,2).
+\]
+Its inverse on $(1,2)$ is parameter-free definable: if
+$u=2h(r)-3$, then $r=u/(1-|u|)$. Form
+\begin{equation}\label{eq:collector}
+ q_*=\omega+\sum_{\xi<\lambda}h(r_\xi)\omega^{e_\xi}.
+\end{equation}
+This is a valid normal form and is parameter-free definable from the
+whole enumeration. The set $R_H$ is nonempty, and the leading tail
+exponent is $e_0<1/2$, so $q_*\in\Cell$. Every $r\in R_H$ occurs
+in exactly one coefficient, after applying $h$.
+If that $r$ is not parameter-free definable, neither is $h(r)$,
+since the displayed inverse would otherwise define $r$.
+\end{proof}
+
+This does not contradict unique-output closure. Extracting the
+coefficient at position $\xi$ uses $\xi$ as an additional parameter;
+a parameter-free definition of $q_*$ need not define every such
+ordinal position. Ordinal definability allows that parameter, which
+is why all coefficients of an ordinal-definable surreal do belong
+to HOD.
+
+\section{The first birthday of a non-ordinal-definable surreal}
+\label{sec:firstbirthday}
+
+When $V\ne\HOD$, there is a genuine definable first place where
+ordinal-definable signs cease to exhaust the construction. It is
+not the birthday of a canonically selected nondefinable number.
+
+\begin{definition}
+Assuming $V\ne\HOD$, define
+\begin{equation}\label{eq:firstlambda}
+ \lambda_H=\min\{\alpha\in\Ord:
+                 \mathcal P(\alpha)\nsubseteq\HOD\}.
+\end{equation}
+Existence follows from the set-of-ordinals coding in
+Lemma~\ref{lem:setcoding}. All terms in this definition are
+first-order definable classes or set constructions.
+\end{definition}
+
+\begin{theorem}[Exact birthday threshold]\label{thm:firstbirthday}
+Assume $V\ne\HOD$. Then
+\begin{equation}\label{eq:firstbd}
+ \lambda_H=\min\{\bd(s):s\in\No\setminus\KH\}.
+\end{equation}
+The ordinal $\lambda_H$ is an infinite cardinal in both HOD and $V$.
+It is itself a parameter-free definable ordinal, and therefore a
+parameter-free definable omnific integer.
+\end{theorem}
+\begin{proof}
+For a sign sequence of length $\alpha$, its set of positive positions
+is a subset of $\alpha$, and the two objects are mutually definable
+from each other and $\alpha$. Since $\alpha\in\HOD$, one belongs
+to HOD exactly when the other does. This proves \eqref{eq:firstbd}.
+Every finite subset of an ordinal is ordinal definable, so the
+threshold is infinite.
+
+Suppose first that $\lambda_H$ is not a cardinal of HOD. A bijection
+in HOD from some $\kappa<\lambda_H$ onto $\lambda_H$ would pull a
+non-HOD subset of $\lambda_H$ back to a non-HOD subset of $\kappa$.
+Indeed, if the pullback were in HOD, its image under that same
+bijection would be in HOD. This contradicts minimality.
+
+Next suppose that $V$ has a bijection from an infinite cardinal
+$\kappa<\lambda_H$ onto $\lambda_H$. Transport the ordinal order
+to a well-order $R$ of $\kappa$ having order type $\lambda_H$.
+The ordinal $\kappa$, being a cardinal in $V$, is also a cardinal
+in HOD. Choose in HOD a bijection between $\kappa$ and
+$\kappa\times\kappa$. It codes $R$ as a subset of $\kappa$.
+Every subset of $\kappa$ belongs to HOD by minimality, so $R$ itself
+belongs to HOD. Its well-order collapse in HOD is absolute and gives
+a HOD bijection between $\kappa$ and $\lambda_H$, contradicting
+that $\lambda_H$ is a HOD cardinal. Thus it is also a cardinal in $V$.
+
+Finally, \eqref{eq:firstlambda} is a parameter-free unique definition
+of $\lambda_H$. Ordinal surreals are omnific, giving the last claim.
+\end{proof}
+
+\begin{corollary}[No definable witness selection]
+The set of non-ordinal-definable signs of length $\lambda_H$ is a
+nonempty parameter-free definable set, but none of its members is
+ordinal definable. In particular, there is no ordinal-definable
+selection of one of those signs, or of one of their omnific codes.
+\end{corollary}
+\begin{proof}
+The set is defined using the definable predicate HOD and the
+parameter-free ordinal $\lambda_H$. Its nonemptiness follows from
+the definition of that ordinal. A selected ordinal-definable member
+would contradict the defining condition. An ordinal-definable code
+would yield such a member by the decoder.
+\end{proof}
+
+\subsection{A current set-theoretic restriction on the threshold}
+
+The threshold is the first cardinal where $V$ and HOD disagree about
+subsets. It therefore inherits restrictions already proved in set
+theory; these are \emph{not} new surreal theorems in substance.
+Benhamou, Cummings, Goldberg, Hayut, and Poveda prove that a singular
+strong-limit cardinal of uncountable cofinality cannot be the first
+such disagreement, and, from a measurable cardinal, obtain a model
+whose first disagreement is $\aleph_\omega$
+\cite{BCHGP2026}. Hence their first theorem gives:
+
+\begin{corollary}[Translation of a cited preprint theorem]
+If $\lambda_H$ is singular and strong limit, then
+$\operatorname{cf}(\lambda_H)=\omega$.
+\end{corollary}
+\begin{proof}
+An infinite singular cardinal has infinite cofinality. Uncountable
+cofinality is excluded by the cited compactness theorem, so its
+cofinality must be $\omega$.
+\end{proof}
+
+The preprint was submitted on August 25, 2026. It is important not to
+replace the cardinal conclusion of Theorem~\ref{thm:firstbirthday}
+by an unsupported regular-cardinal claim: the cited relative
+consistency result explicitly permits a singular first threshold.
+The older repository discussion of the first new birthday across
+universes provides a closely related framework
+\cite{RepoBirthday}; here the inner universe is specifically HOD.
+
+\section{Complexity-bounded definability and escape ordinals}
+\label{sec:complexity}
+
+The unrestricted phrase ``all parameter-free definable numbers'' is
+external. A fixed syntactic complexity bound, by contrast, admits an
+internal treatment. This gives a precise version of the familiar
+intuition that definitions of bounded complexity can be diagonalized
+against without creating a paradox.
+
+\subsection{The bounded hierarchy}
+
+Fix a standard natural number $n\geq1$. Use a standard syntactic
+coding of formulas in the L\'evy hierarchy, with padding so that
+$\Sigma_n$ formulas are also admitted at every higher level. There
+is a partial truth formula $\Sat_{\Sigma_n}(e,x)$ for this fixed
+fragment. The existence of each fixed-fragment truth definition is
+standard; it does not provide one truth formula for all values of
+$n$ simultaneously \cite{Jech,HLR}.
+
+\begin{definition}
+Let $S_n$ be the collection of unique solutions of parameter-free
+$\Sigma_n$ formulas, and put $B_n=S_n\cap\No$. More explicitly,
+$x\in S_n$ means that some code $e$ of a formula with one free
+variable satisfies
+\[
+ \Sat_{\Sigma_n}(e,x)\ \wedge\
+ \forall y\bigl(\Sat_{\Sigma_n}(e,y)\longrightarrow y=x\bigr).
+\]
+Each formula is required to have a unique solution among all sets,
+not just among the surreals.
+\end{definition}
+
+\begin{lemma}
+For every fixed standard $n$, both $S_n$ and $B_n$ are
+parameter-free definable sets of ZFC.
+\end{lemma}
+\begin{proof}
+For a formula code having a unique solution, send the code to that
+solution; send every other code to a fixed default set. The
+fixed-fragment truth formula defines this total function on a subset
+of $\omega$, so Replacement gives its range as a set. Separation
+removes the default value when necessary and restricts to actual
+unique solutions. A further Separation restricts to surreal codes.
+All definitions use the fixed standard integer $n$ only through its
+finite numeral, so there are no free parameters.
+\end{proof}
+
+\begin{theorem}[Definability-complexity escape]\label{thm:escape}
+For every fixed standard $n\geq1$, let
+\begin{equation}\label{eq:escape}
+ \delta_n=\sup\{\bd(x)+1:x\in B_n\},
+ \qquad d_n=\text{the all-plus surreal of length }\delta_n.
+\end{equation}
+Then $d_n$ is a parameter-free definable omnific integer, but
+$d_n\notin B_n$. There is a standard $m>n$ with $d_n\in B_m$.
+Consequently the hierarchy $(B_n)$ does not eventually stabilize.
+\end{theorem}
+\begin{proof}
+Replacement gives the set of birthdays and the ordinal supremum in
+\eqref{eq:escape}. The all-plus sequence is then uniquely defined,
+so $d_n$ is parameter-free definable and is an ordinal surreal.
+If $d_n\in B_n$, the definition of the supremum would imply
+\[
+ \bd(d_n)+1=\delta_n+1\leq\delta_n,
+\]
+which is impossible. On the other hand, the parameter-free formula
+just given for $d_n$ is a particular finite formula. After conversion
+to prenex form and adding dummy quantifiers, it belongs to some
+$\Sigma_m$ fragment. Thus $d_n\in B_m$. By nesting and its failure
+to lie in $B_n$, we must have $m>n$.
+\end{proof}
+
+\begin{remark}[No unproved complexity estimate]
+The theorem does not assert $m=n+1$, a closed expression for
+$\delta_n$, or a computable method that outputs the full transfinite
+sign sequence of $d_n$. The syntactic complexity of the normal-form,
+birthday, and sign-coding formulas depends on coding conventions.
+Only existence of a finite higher level is used. Nor is the sequence
+of escape ordinals asserted to be cofinal in all ordinals.
+\end{remark}
+
+\subsection{Why the separate definitions cannot be collected uniformly}
+
+\begin{proposition}[No definable set contains its own full hull]
+\label{prop:nouniformset}
+There is no ambiently $A$-definable set $S\subseteq\No$ such that
+$K_A\subseteq S$. In particular, no ambiently $A$-definable map
+$\omega\to\No$ has range containing all of $K_A$.
+\end{proposition}
+\begin{proof}
+If such an $S$ were given, choose the least ordinal strictly above
+all its birthdays and form its all-plus surreal representative $d$.
+The construction is uniquely definable from $S$, so $d\in K_A$.
+But its birthday is strictly larger than that of any member of $S$,
+so $d\notin S$, a contradiction. For a definable map on $\omega$,
+Replacement gives an $A$-definable range set, reducing to the first
+assertion.
+\end{proof}
+
+\begin{corollary}[Failure of a uniform bounded-truth collector]
+\label{cor:nouniformBn}
+In an $\omega$-standard model of ZFC there is no single
+parameter-free formula that, for each $n\geq1$, uniquely defines
+the set $B_n$ above, uniformly in $n$.
+\end{corollary}
+\begin{proof}
+A uniform formula would, by Replacement, give a parameter-free set
+$B=\bigcup_{n\geq1}B_n$. Every parameter-free definable surreal is
+uniquely defined by a finite formula and hence belongs to some
+$B_n$. Thus $B$ would contain $K_\varnothing$, contrary to
+Proposition~\ref{prop:nouniformset}. The $\omega$-standardness
+hypothesis ensures that internal natural indices are precisely the
+standard finite levels discussed here.
+\end{proof}
+
+This is the exact point at which the false ``least undefinable
+surreal'' argument tries to use more truth than it has. Separate
+formulas defining each fixed $B_n$ do not constitute one internal
+formula defining the sequence of all these sets. The argument also
+does not claim that the membership class of definable elements can
+never accidentally be definable: in a pointwise definable model it
+is simply the entire universe. What fails there is an internal
+surjective set-sized list of those elements, not the external fact
+that every one of them has some definition.
+
+\section{Forcing can change the theory without adding reals}
+\label{sec:forcing}
+
+We now give a concrete source of models exhibiting the dichotomy.
+The forcing facts are standard, but proofs of the relevant
+homogeneity and closure steps are included. The result connects
+ambient definability of real numbers to genuinely transfinite
+surreal information without conflating the two.
+
+\begin{lemma}[Homogeneity over a constructible ground]
+\label{lem:forcingHOD}
+Let $W$ be a transitive model of ZFC satisfying $V=L$, and let
+$G$ be generic for an ordinal-definable weakly homogeneous forcing
+$\mathbb P\in W$. Then, in $W[G]$,
+\[
+ \HOD^{W[G]}=W.
+\]
+The assertion has the usual relative-model interpretation; it does
+not assume that a generic filter over the actual universe is a set
+in that universe.
+\end{lemma}
+\begin{proof}
+First let $A\subseteq\theta$ be ordinal definable in $W[G]$.
+Membership in $A$ is expressed there by one formula
+$\psi(\beta,\bar\alpha)$ with a finite ordinal tuple. For each
+$\beta<\theta$, weak homogeneity implies that the top condition
+decides $\psi(\check\beta,\check{\bar\alpha})$.
+Indeed, if one condition forced the sentence and another forced its
+negation, an automorphism could make their images compatible, while
+fixing all check names for ordinals. Compatible conditions cannot
+force contradictory sentences. Thus
+\[
+ A=\{\beta<\theta:1_{\mathbb P}\Vdash
+                 \psi(\check\beta,\check{\bar\alpha})\}\in W
+\]
+by the definability of the forcing relation.
+
+Every HOD set is coded within HOD by a set of ordinals: use its
+canonical HOD well-order on a transitive closure and the pointed
+membership-relation code. Such a code is itself ordinal definable,
+so the previous paragraph places it in $W$. The absolute Mostowski
+collapse in $W$ then recovers the original set. This proves
+$\HOD^{W[G]}\subseteq W$.
+Conversely, forcing does not change the ordinals or the constructible
+hierarchy, so $L^{W[G]}=W$. Every constructible set is ordinal
+definable in $W[G]$ using its position in the canonical constructible
+well-order, and so are all members of its transitive closure.
+Therefore $W\subseteq\HOD^{W[G]}$.
+These are the standard homogeneity/HOD arguments \cite{Jech}.
+\end{proof}
+
+\begin{theorem}[Prescribed regular first birthday]\label{thm:forcing}
+Let $W\models\ZFC+V=L$ be transitive, and let $\kappa$ be an
+infinite regular cardinal of $W$. Force with
+\[
+ \operatorname{Add}(\kappa,1)^W
+ =\{p:p\text{ is a partial map }\kappa\to2,
+                    \ |\dom(p)|^W<\kappa\},
+\]
+ordered by extension, and let $V=W[G]$. Then
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\HOD^V=W$ and $\KH^V=\No^W$ as ordered fields;
+\item the least birthday of a surreal outside $\KH^V$ is exactly
+$\lambda_H^V=\kappa$;
+\item $\Cell^V$ contains the explicit ordinal-indexed independent
+family of Theorem~\ref{thm:dichotomy} over the old field $\No^W$;
+\item if $\kappa>\omega$, then $\R^V=\R^W$, and every real of $V$
+is ordinal definable in $V$, despite \textup{(ii)} and \textup{(iii)}.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For two conditions $p,q$, flip the bits on the set of common-domain
+coordinates at which they disagree. This is a ground-model
+automorphism sending $p$ to a condition compatible with $q$.
+Thus the forcing is weakly homogeneous and ordinal definable, so
+Lemma~\ref{lem:forcingHOD} applies. The field identification follows
+from Theorem~\ref{thm:HOD} and the absoluteness of canonical surreal
+arithmetic.
+
+Regularity of $\kappa$ makes the union of a descending chain of
+length less than $\kappa$ a condition. Given a name for a sequence
+of ordinals of length $\mu<\kappa$, recursively strengthen a
+condition to decide each coordinate, taking lower bounds at limit
+stages and at the end. The resulting ground-model sequence is
+forced to equal the name. Hence the forcing adds no subsets of any
+$\mu<\kappa$. For $\kappa=\omega$, the corresponding assertion
+about finite subsets is immediate. This closure also prevents a
+collapse of the cardinal $\kappa$ by a shorter sequence.
+
+The union $g=\bigcup G$ is a total subset of $\kappa$, and is new:
+for every ground-model $a\subseteq\kappa$, the set of conditions
+already disagreeing with $a$ at some coordinate is dense. Since
+$\HOD^V=W$, the first non-HOD subset therefore occurs exactly at
+$\kappa$. Theorem~\ref{thm:firstbirthday} proves (ii).
+The new sign sequence with positive positions $g$ lies outside
+$\KH^V$; normalize its absolute value as in
+Theorem~\ref{thm:amplify} to obtain the parameter $t$ for (iii).
+
+When $\kappa>\omega$, the no-new-short-sequences conclusion in
+particular gives no new subsets of $\omega$, hence no new reals.
+All old reals belong to $W=\HOD^V$, which proves (iv).
+\end{proof}
+
+\begin{example}[All reals ordinal definable, but many omnific integers not]
+Take $\kappa=\omega_1^W$ in Theorem~\ref{thm:forcing}. In the
+extension, every real is ordinal definable; every surreal of birthday
+less than $\omega_1^W$ is in the HOD-surreal field; and a non-HOD
+surreal first appears at birthday $\omega_1^W$. Nevertheless a
+single fixed interval of purely infinite omnific integers already
+contains independent sets of every internal cardinality over the
+old surreal field. This is a strict separation between the real
+question and the surreal question, not a consequence of adding an
+undefinable real.
+\end{example}
+
+\begin{remark}[What is, and is not, absolute]
+The forcing theorem compares old sign sequences and their arithmetic.
+It does not assert that every old parameter-free definition keeps
+its truth or uniqueness in an extension. An ambient definition can
+mention the continuum, a generic object, or the set-theoretic
+universe itself. Its truth can change even when the particular sign
+sequence and all arithmetic performed on old inputs stay unchanged.
+Nor is the relation $V=\HOD$ preserved by arbitrary forcing.
+\end{remark}
+
+\section{Relativization and a surcomplex companion}
+\label{sec:relativize}
+
+\subsection{An allowed set of ordinal information}
+
+Let $p$ be a fixed set of ordinals. Write $\OD(p)$ for definitions
+using $p$ together with finitely many ordinals, and $\HOD(p)$ for
+hereditary membership in this class. Here the parameter is the
+\emph{single set} $p$, not permission to use its arbitrary elements
+as unrelated parameters. Since $p$ is a set of ordinals, it belongs
+to $\HOD(p)$; this is an inner model of ZFC with its corresponding
+canonical definable well-order \cite{Jech}.
+
+\begin{proposition}[Relativized theory]\label{prop:relative}
+Put $K_p=\No\cap\OD(p)$ and $I_p=\Oz\cap\OD(p)$. Then
+\[
+ K_p=\No\cap\HOD(p)=\No^{\HOD(p)},\qquad
+ K_p=\Frac(I_p).
+\]
+The field $K_p$ is real closed and $I_p$ is an integer part.
+Every member of $\Cell$ is in $\OD(p)$ if and only if
+$V=\HOD(p)$. If $V\ne\HOD(p)$, the family
+\[
+ \omega+\omega^{\,t\omega^{-(\alpha+1)}}\quad(\alpha\in\Ord)
+\]
+is algebraically independent over $K_p$ for every
+$t\in(0,1)\setminus K_p$.
+\end{proposition}
+\begin{proof}
+The hereditary sign-code argument only uses that ordinals and the
+fixed sign tags are hereditarily definable; permitting $p$ does not
+change it. Unique-output closure gives the field, floor, and fraction
+claims. The reversible code uses no extra parameter, while the
+membership-graph collapse works inside $\HOD(p)$ because that inner
+model contains $p$. Finally every normal-form entry of an
+$\OD(p)$ surreal is definable from $p$ and ordinal parameters, so
+its support lies in $K_p$. The support-subfield amplification proof
+applies without change.
+\end{proof}
+
+This relativization describes precisely how adding allowed information
+changes the theory. It is different from allowing \emph{all} surreal
+parameters, which makes every individual surreal trivially definable
+by equality to itself.
+
+\subsection{Canonical surcomplex pairs}
+
+For completeness, define the surcomplex field by pairs
+$\No(i)=\No\times\No$ with $i=(0,1)$ and the usual quadratic
+extension operations. This fixed coordinate representation names a
+real axis and an imaginary unit.
+
+\begin{proposition}[Definable surcomplex closure]
+\label{prop:surcomplex}
+In the canonical pair representation, the ambiently $A$-definable
+surcomplex numbers are exactly $K_A(i)$, and they form an algebraically
+closed field. The ordinal-definable ones are exactly $\KH(i)$.
+If $V\ne\HOD$, the real omnific family in
+Theorem~\ref{thm:dichotomy} remains algebraically independent over
+$\KH(i)$ inside $\No(i)$.
+\end{proposition}
+\begin{proof}
+Pairing and the two coordinate projections are parameter-free
+set-theoretic operations. Thus a pair is $A$-definable precisely when
+both coordinates are. The quadratic extension of a real closed field
+by $i$ is algebraically closed. For the independence assertion,
+write a purported complex-coefficient polynomial relation as
+$P_0(\bar z)+iP_1(\bar z)=0$, with polynomials over $\KH$.
+At real inputs both values are real, so both are zero; a nonzero
+relation would contradict real algebraic independence.
+\end{proof}
+
+There is no conflict with complex conjugation or with the failure of
+a pure field to choose an imaginary unit. The proposition uses
+\emph{ambient canonical coordinates}. An abstract algebraically
+closed-field language without those coordinates has a different
+definable closure, just as the abstract real field does.
+
+\section{Further questions and a formalization route}
+\label{sec:questions}
+
+The preceding theorems have complete written proofs. The questions
+below are further projects, not omitted hypotheses or unfinished
+steps in those proofs. They are not asserted to be previously
+published open problems.
+
+\begin{question}[The omnific predicate as a language expansion]
+Determine the parameter-free definable closure of
+$(\No;+,-,\cdot,<,0,1,\Oz)$, or of well-specified set-sized models
+of its first-order theory. Which ambiently definable surreals become
+intrinsically definable after adding only the omnific predicate?
+\end{question}
+The pure ordered-field answer is Theorem~\ref{thm:purefield}.
+The omnific code does not settle the expanded-language question:
+its decoder recognizes ordinal-indexed monomials and normal-form
+coefficients through set theory, not just through the ring predicate.
+
+\begin{question}[Birthday cost of reversible omnific coding]
+Obtain sharp upper and lower bounds for $\bd(\Code(s))$ in terms of
+$\bd(s)$, and compare alternative reversible codes with the same
+leading term and coefficient alphabet. Can a useful optimality
+statement be proved for a specified class of such codes?
+\end{question}
+Our construction controls support order type and the leading scale,
+not the exact surreal birthday of its nested monomials. No unstated
+birthday estimate is used in the independence theorem.
+
+\begin{question}[Intermediate support fields]
+Classify naturally occurring proper subfields satisfying
+\eqref{eq:Khyp}, especially those arising from relative definability
+or canonical inner models. Determine when stronger structural
+invariants than the independent family can be read from the
+quotient additive group $\No/K$.
+\end{question}
+The support-subfield theorem already gives one invariant uniformly:
+a single element outside such a field produces an ordinal-indexed
+independent family in one fixed omnific interval.
+
+\subsection{A realistic Lean decomposition}
+
+A formalization should separate the general Hahn-field mathematics
+from satisfaction and internal models. The shortest algebraic route
+is to formalize Lemma~\ref{lem:cosets} for set-sized Hahn series and
+finite polynomials first: coefficient supports in different cosets
+cannot cancel. Next formalize the finite linear independence of
+monomials, the normalized-parameter argument, and the finite form
+of Theorem~\ref{thm:amplify}. These steps require no model-theoretic
+truth predicates or proper-class objects.
+
+The set-theoretic track then needs a precise universe convention,
+canonical sign codes, unique normal forms, and definable class maps.
+HOD identification requires a model-of-ZFC interface, with standard
+external formulas kept distinct from internal formula codes.
+The statements about $B_n$ should be separate theorems for each
+fixed fragment, not a falsely uniform truth evaluator.
+The repository already documents sign, Hahn, size, and normal-form
+interfaces, but this article neither maps the new statements to
+specific checked declarations nor claims to have built or extended
+its Lean code \cite{Repo}.
+
+\section{Conclusion}
+
+There is no single language-independent class of ``the definable
+surreals.'' Once the ambient universe and permitted parameters are
+fixed, however, the basic algebra is robust: definable surreals form
+a real closed field, and definable omnific integers are an integer
+part with exactly that fraction field. Ordinal parameters reveal a
+particularly natural inner field, the canonical surreal field of HOD.
+
+The strongest results are not counting observations. An explicit
+normal-form map compresses every surreal definability degree into a
+fixed-leading-term omnific interval. If HOD fails to contain the
+universe, one missing surreal generates an ordinal-indexed
+algebraically independent family in that same interval. Uniform
+coefficient assignments, rather than small coefficient alphabets or
+ordinary congruences, carry the missing information. This yields a
+concrete bridge from set-theoretic definability to the support
+geometry and transcendence theory of surreal and omnific arithmetic.
+
+\appendix
+\section{Provenance, proof scope, and reproducibility}
+\label{app:audit}
+
+\subsection{Claim ledger}
+
+\begin{longtable}{@{}P{0.26\textwidth}P{0.29\textwidth}P{0.39\textwidth}@{}}
+\toprule
+Statement family & Status & Dependency and qualification\\
+\midrule
+\endhead
+Signs, normal forms, real closedness, and omnific floor & Classical &
+Conway, Gonshor, van den Dries--Ehrlich, and
+L'Innocente--Mantova; elementary proofs supplied where useful.\\[4pt]
+Ambient field and integer-part closure & Standard-method consequence &
+Unique-output closure, ordered finite root selection, and a uniformly
+chosen ordinal denominator. No priority claim for the general
+closure principle.\\[4pt]
+Global birthday/set-theory interpretation & Prior announced work &
+Chen--Hamkins--Yang. Not used as a black-box proved dependency and
+not claimed here.\\[4pt]
+HOD/sign-code identification & Foundational application &
+Hereditariness of a sign code, inner-model recursion, and canonical
+normal forms. No claim to have introduced HOD-valued surreal fields.\\[4pt]
+Fixed-interval reversible code & Proposed contribution &
+Theorem~\ref{thm:code}; complete normal-form proof. Search did not
+locate this precise fixed-leading-term code.\\[4pt]
+One-interval universe tests & Proposed consequences &
+Theorems~\ref{thm:globalOD} and \ref{thm:pointwise}; standard pointed
+set coding followed by the new omnific code.\\[4pt]
+Support-subfield amplification and HOD transcendence dichotomy &
+Principal proposed contribution &
+Theorems~\ref{thm:amplify} and \ref{thm:dichotomy}; finite support-coset
+proof, explicit ordinal-indexed family. No transcendence-basis claim.\\[4pt]
+First non-HOD birthday & Translation/refinement &
+The threshold is the standard first subset disagreement
+$\Delta(\HOD,V)$. Its birthday interpretation is explicit; the
+compactness restriction is credited to \cite{BCHGP2026}.\\[4pt]
+Bounded-complexity escape & Standard-method refinement &
+Fixed-fragment truth and Replacement; no all-level truth predicate
+and no asserted one-step complexity bound.\\[4pt]
+Forcing without new reals & Application &
+Standard homogeneous closed forcing over $L$, combined with the
+new independent-family theorem.\\[4pt]
+Finite verification & Regression tests only &
+Finite symbolic codes, decoder validation, and formal support-coset
+checks. These do not prove any infinite or set-theoretic theorem.\\
+\bottomrule
+\end{longtable}
+
+\subsection{What was actually inspected}
+
+The repository was accessed through its GitHub connector at the
+pinned commit printed in Section~\ref{sec:intro}. Inspection covered
+its README, the report catalogue, the introduction and provenance
+section of the birthday-cutoff/hereditary-set report, and the
+introduction and convention section of the omnific-Diophantine
+report. It was not a line-by-line audit of all 51 reports or their
+preserved source manuscripts. No existing repo files were edited,
+no commit was made, and no Lean build was performed.
+
+The literature comparison used the supplied definable-real reference,
+primary works and author announcements on pointwise definability,
+HOD, surreal arithmetic, omnific normal forms, and quantifier
+elimination. The recent first-HOD-disagreement preprint was checked
+as well. The cited works and the repository catalogue did not reveal
+the specific fixed-interval code or the support-subfield
+transcendence amplification proved here. This limited negative
+search evidence cannot establish publication priority.
+
+\subsection{Files and checks}
+
+The archive contains this article as both \repopath{.tex} and
+\repopath{.pdf}, a build/readme file, a standalone Python regression
+script, its JSON results, and a concise audit note. The source is
+self-contained apart from ordinary LaTeX packages: its bibliography
+is included below, and no external graphics or bibliography database
+is required. Build with \repopath{latexmk -pdf} or by running
+\repopath{pdflatex} sufficiently many times to resolve references.
+
+The finite script represents the nested exponents $e_n$ by formal
+tags. It checks the decoder on all sign words through a stated
+finite length, rejects malformed codes, and verifies support-coset
+separation on finite formal examples. It deliberately does not
+replace $\omega$ by a large real number: that numerical substitution
+would destroy the exact non-Archimedean ordering relevant to the
+proofs. The script neither decides definability nor approximates HOD.
+
+The delivered run passed 8,191 finite code round trips through sign
+length 12, 11 malformed-code rejections, 3,121 exact rational
+normalization checks, 2,157 formal infinitesimal floor cases, and
+500 finite support-coset polynomial checks. A deliberately dependent
+exponent example correctly produced a vanishing polynomial, checking
+that the independence hypothesis is not silently omitted. The JSON
+file records the detailed counts and the fixed random seed.
+
+
+\clearpage
+\section{Notation and reading guide}
+
+\begin{longtable}{@{}P{0.22\textwidth}P{0.72\textwidth}@{}}
+\toprule
+Notation & Meaning\\
+\midrule
+\endhead
+$\No$, $\Oz$ & Canonical surreal field and classical omnific-integer ring.\\[3pt]
+$\bd(s)$ & Ordinal length of the canonical sign sequence.\\[3pt]
+$\omega^x$ & Conway monomial map; not general surreal exponential
+power with base $\omega$.\\[3pt]
+$\NF(x)$, $\supp(x)$ & Whole indexed normal form; its exponent support.\\[3pt]
+$D_A^M$ & External definable closure of $A$ in the membership structure
+$(M,\in)$, using standard formulas and finite parameter tuples.\\[3pt]
+$K_A$, $I_A$ & Ambiently $A$-definable surreals and omnific integers.\\[3pt]
+$\KH$, $\IH$ & Ordinal-definable surreals and omnific integers;
+$\KH=\No^{\HOD}$ under canonical sign representation.\\[3pt]
+$\Cell$ & $\{z\in\Oz:\omega<z<\omega+\omega^{1/2},\ \ct(z)=0\}$.\\[3pt]
+$e_\alpha$ & $\omega^{-(\alpha+1)}$, a positive infinitesimal surreal.\\[3pt]
+$\Code$, $\Decode$ & Reversible omnific coding map and its partial inverse.\\[3pt]
+$\lambda_H$ & First ordinal with a non-HOD subset; equivalently the
+first birthday of a non-OD surreal.\\[3pt]
+$B_n$, $d_n$ & Fixed-$\Sigma_n$ uniquely definable surreals, and the
+corresponding definable ordinal surreal escaping that level.\\
+\bottomrule
+\end{longtable}
+
+For the main new algebraic argument alone, read
+Sections~\ref{sec:foundations}, \ref{sec:HOD}, and
+\ref{sec:transcendence}. For the definability concept and its
+model-theoretic limitations, read Sections~\ref{sec:definitions},
+\ref{sec:global}, and \ref{sec:complexity}. The code in
+Section~\ref{sec:code} connects the two routes.
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Conway}
+J. H. Conway, \emph{On Numbers and Games}, second edition,
+A K Peters, 2001; first edition, Academic Press, 1976.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+
+\bibitem{vdDE}
+L. van den Dries and P. Ehrlich,
+Fields of surreal numbers and exponentiation,
+\emph{Fundamenta Mathematicae} \textbf{167} (2001), 173--188;
+erratum, \textbf{168} (2001), 295--297.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3};
+\href{https://doi.org/10.4064/fm168-3-5}{erratum doi:10.4064/fm168-3-5}.
+Only classical background, not a disputed cutoff formula, is used here.
+
+\bibitem{LM}
+S. L'Innocente and V. Mantova,
+\emph{A factorisation theory for generalised power series and omnific
+integers}, arXiv:1710.07304, version 5, January 22, 2024.
+\url{https://arxiv.org/abs/1710.07304}.
+Journal version: \href{https://doi.org/10.1016/j.aim.2024.109513}
+{doi:10.1016/j.aim.2024.109513}.
+
+\bibitem{Marker}
+D. Marker, \emph{Model Theory: An Introduction}, Graduate Texts in
+Mathematics 217, Springer, 2002.
+For the quantifier-elimination argument, see also the author's
+\emph{Introductory Lectures on Model Theory II: Quantifier Elimination},
+October 14, 2020,
+\url{https://homepages.math.uic.edu/~marker/MSRI-2.pdf}.
+
+\bibitem{Jech}
+T. Jech, \emph{Set Theory: The Third Millennium Edition, Revised and
+Expanded}, Springer Monographs in Mathematics, Springer, 2003.
+
+\bibitem{Shepherdson}
+J. C. Shepherdson,
+A non-standard model for a free variable fragment of number theory,
+\emph{Bulletin de l'Acad\'emie Polonaise des Sciences, S\'erie des
+sciences math\'ematiques, astronomiques et physiques}
+\textbf{12} (1964), 79--86.
+The integer-part application to $\Oz$ is also stated explicitly
+in \cite[Section 1.1]{LM}.
+
+\bibitem{HLR}
+J. D. Hamkins, D. Linetsky, and J. Reitz,
+Pointwise definable models of set theory,
+\emph{Journal of Symbolic Logic} \textbf{78} (2013), no.~1, 139--156.
+\url{https://arxiv.org/abs/1105.4597}.
+Author's discussion:
+\url{https://jdh.hamkins.org/pointwisedefinablemodelsofsettheory/}.
+
+\bibitem{HamkinsLeahy}
+J. D. Hamkins and C. Leahy,
+Algebraicity and implicit definability in set theory,
+\emph{Notre Dame Journal of Formal Logic} \textbf{57} (2016),
+no.~3, 431--439.
+\url{https://arxiv.org/abs/1305.5953};
+\href{https://doi.org/10.1215/00294527-3542326}
+{doi:10.1215/00294527-3542326}.
+
+\bibitem{GoldbergPoveda}
+G. Goldberg and A. Poveda,
+Compactness phenomena in HOD,
+\emph{Forum of Mathematics, Sigma} \textbf{13} (2025), e118.
+\href{https://doi.org/10.1017/fms.2025.10070}
+{doi:10.1017/fms.2025.10070}.
+Author's version:
+\url{https://math.berkeley.edu/~goldberg/Papers/CompactnessPhenomenaInHOD.pdf}.
+
+\bibitem{BCHGP2026}
+T. Benhamou, J. Cummings, G. Goldberg, Y. Hayut, and A. Poveda,
+\emph{Compactness phenomena in HOD and the Optimality of Magidor's
+Covering theorem}, arXiv:2608.24190, version 1, August 25, 2026.
+\url{https://arxiv.org/abs/2608.24190}.
+Theorems 1.1--1.2 supply the cited first-disagreement results;
+these are external inputs, not newly proved claims of this article.
+
+\bibitem{CHY}
+J. D. Hamkins, \emph{Surreal arithmetic is bi-interpretable with set
+theory}, CUNY Logic Workshop announcement, March 2026;
+joint work with Junhong Chen and Ruizhi Yang, described as work in progress.
+\url{https://jdh.hamkins.org/surreal-arithmetic-cuny-logic-workshop-march-2026/}.
+The announcement, rather than a refereed completed paper, is the
+source used for the attribution.
+
+\bibitem{WikiDef}
+Wikipedia contributors, \emph{Definable real number},
+user-specified starting reference, accessed September 23, 2026.
+\url{https://en.wikipedia.org/wiki/Definable_real_number}.
+No new theorem depends on this secondary reference.
+
+\bibitem{Repo}
+V. Reshetnikov and contributors, \emph{Surreal}, GitHub repository,
+README and report catalogue at commit \repoSHA,
+accessed September 23, 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/9a385d3957bdfe3d9ea79f9a524751c90bd2c894}.
+
+\bibitem{RepoBirthday}
+\emph{Birthday Cutoffs and Hereditary Sets}, AI-assisted merged research
+report in the Surreal repository, pinned snapshot as in \cite{Repo}.
+\repopath{docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex}.
+The introduction explicitly credits Chen--Hamkins--Yang's announced
+global bi-interpretation and separates that work from cutoff refinements.
+
+\bibitem{RepoOmnific}
+\emph{Omnific Integers and Omnific--Diophantine Geometry}, AI-assisted
+merged research report in the Surreal repository, pinned snapshot
+as in \cite{Repo}.
+\repopath{docs/surreal/omnific-diophantine-geometry/article.tex}.
+The definition and convention sections were inspected; nonclassical
+Diophantine claims are not dependencies of the present proofs.
+
+\end{thebibliography}
+\end{document}

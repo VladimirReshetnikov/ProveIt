@@ -1,0 +1,12 @@
+.PHONY: all pdf check clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -halt-on-error -interaction=nonstopmode omnific_fractions.tex
+
+check:
+	python3 verify.py --output verification.json
+
+clean:
+	latexmk -c omnific_fractions.tex

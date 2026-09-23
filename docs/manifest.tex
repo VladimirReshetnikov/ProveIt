@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of fifty-one research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of fifty-six research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,7 +59,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Fifty-one mathematical research packages,\\
+ {\large Fifty-six mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -70,11 +70,11 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the fifty-one research packages stored under
+This document catalogues the fifty-six research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Eighteen
+The collection divides in five, and so does the directory tree.  Twenty
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
@@ -83,8 +83,9 @@ automorphisms, Gamma functions, differential transcendence of explicit
 surreals, Hahn-valued measures and probability, Markov generators,
 transcendence over bounded-support series, diagonal matrix scaling, vector
 and tensor fields, Euclidean three-space and its rotations, and finite
-probability, and the arithmetic and set-sized quotients of omnific integers.
-Twenty-six, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
+probability, and the arithmetic, set-sized quotients, automorphisms, groups
+and lattices of omnific integers.
+Twenty-seven, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
 the theory of holomorphic functions over it, its differential algebra, its
 rank-one analytic geometry, its finite and infinite-dimensional spectral
 theory, its local, quasi-periodic and expanding dynamics, its nonabelian
@@ -93,19 +94,18 @@ their holonomic rigidity, Tate curves and multiscale theta series, Herglotz
 positivity, moment reconstruction, the summability of Wick expansions,
 the duals of Hahn vector spaces, the automorphisms of the field, cardinally
 bounded Hahn fields, what one dilation defines, the Gamma and zeta functions,
-and hidden negative directions
-of Hermitian
-forms.  One, under \dir{docs/surquaternions}, leaves
+hidden negative directions of Hermitian forms, and Hahn--Hilbert geometry.  One, under \dir{docs/surquaternions}, leaves
 commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  One, under \dir{docs/physics}, is the only report here whose subject is
 not mathematics: it asks what surreal scalars do and do not buy in general
-relativity, and answers negatively.  The last five, under
+relativity, and answers negatively.  The last seven, under
 \dir{docs/foundations-and-computation}, stand outside all of these: they are
 about the subject rather than inside it, asking in what foundation this
 mathematics legally lives, how one computes with it exactly, which surreal
 numbers are computable at all, how the surreal field of one set-theoretic
 universe looks from a larger one, and which universe of hereditary sets a
-birthday cutoff remembers.
+birthday cutoff remembers, which surreals are definable, and how exact
+omnific notations can be computed.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -113,8 +113,8 @@ That is why an entry may refer to a merge, a duplicate sweep or a delivery
 number: those describe how the report reached its present form, and the
 record is kept rather than rewritten.
 
-Each directory holds a \LaTeX{} source and a \texttt{README.md}; all except the
-newly placed set-sized-quotient report also have a current typeset article.
+Each directory holds a \LaTeX{} source and a \texttt{README.md}; the three bases
+placed in a4dcb91 await PDFs, while the other reports have typeset articles.
 Most include verification code and its recorded output. The omnific reports
 are partially integrated or still placed bases, as their entries specify.
 Source manuscripts for merged reports remain in Git history; their
@@ -134,7 +134,7 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Eighteen reports about $\No$ and its real Hahn subfields.  Two questions of
+Twenty reports about $\No$ and its real Hahn subfields.  Two questions of
 Lipparini on evaluating formal sums; two independent halves of Gonshor's
 product-birthday conjecture, on domains neither of which contains the other;
 the subgraph question from Roughan's paper on birthday arithmetic; a genetic
@@ -145,16 +145,17 @@ transcendence of explicit surreals; Hahn-valued measures and probability;
 Markov generators at every valuation scale; transcendence over bounded-support
 series; diagonal matrix scaling; vector and tensor fields in every
 dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
-probability; and two new placements on omnific Diophantine geometry and
-set-sized quotients. Among the first sixteen, the first and the fourth
+probability; and four reports on omnific Diophantine geometry, set-sized quotients,
+preserving automorphisms, and groups and lattices. Among the first sixteen, the first and the fourth
 each arrived as a pair of archives and were merged; the exponential-automorphism
 report later absorbed two independent re-derivations of its own theorem, and
 the measures report merges five manuscripts, the vector-field report three
 and the three-space report three; the others are single manuscripts.
-The Diophantine report assembles three manuscripts, with two further
-companions placed but unintegrated; the quotient report remains a base text
-awaiting twelve companions. A further entire-function rectification
-manuscript is also placed but not yet integrated.
+The Diophantine report assembles five manuscripts, with two further
+fraction companions placed but unintegrated; the quotient report assembles
+thirteen, with three further companions awaiting integration. The preserving
+automorphism report merges four sources and the groups and lattices report
+three. Assembly, independent proof review and Lean coverage are separate.
 
 \entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
 {surreal/hahn-evaluation-at-omega}
@@ -617,50 +618,67 @@ refereed, no Lean verification, priority not certified.}
 
 \entry{Omnific integers and omnific--Diophantine geometry}
 {surreal/omnific-diophantine-geometry}
-{article.pdf}{01, 02 and 05 assembled in bbdd536; 06--07 placed in cf350b1}
+{article.pdf}{five manuscripts; two further fraction companions placed}
 {Arithmetic and Diophantine geometry over Conway's omnific integers:
 constant-term retraction, equational transfer, finite quotients, linear
 systems, binary and norm-form rigidity, quadratic levels and Diophantine
-definitions of the ordinary integers. Commit bbdd536 assembles sources
-01, 02 and 05, including Euler derivations, separated powers, unimodular
-Fermat rigidity and two quartic definitions. The proof review reaches
-Section 12, including support and class-quotient clarifications, complex
-separated-power rigidity, quadratic coordinate-ideal preservation,
-quantified bounded-set transfer, induction domains, primitive real
-directions, finite-support specialization and finite-factorization root
-obstructions. Omnific and finite-surreal residue lifting are distinguished.
-Later proofs and remaining source reconciliation await review. Two further definability and
-reconstruction manuscripts remain unintegrated. A current PDF and maintained
-build instructions accompany the source. No new Lean coverage is claimed.}
+definitions of ordinary integers. The five-source assembly adds definability
+of the purely infinite ideal and reconstruction of coefficients and the field.
+The proof review covers the original material in Sections 1--10 and current
+Sections 14--15: support and class-quotient conventions, complex separated-power
+rigidity, quadratic coordinate ideals, quantified bounded-set transfer,
+induction domains, finite-support specialization and finite-factorization
+root obstructions. Omnific and finite-surreal residue lifting are distinguished.
+New material in Sections 6 and 10, Sections 11--13 and 16--17, and remaining
+source reconciliation await review. Fraction companions 08--09 remain
+unintegrated. No new Lean coverage is claimed.}
 
 \entry{The universal set-sized quotient of the omnific integers}
 {surreal/set-sized-quotients-of-omnific-integers}
-{article.tex}{03, 04 and 06--11 placed in be06fc8; 12--16 in cf350b1}
-{The base manuscript claims that every unital ring map from the omnific
-integers to a set-sized ring factors through the constant term; it also
-studies Gaussian variants and cardinal and homological thresholds for
-set-sized integer parts. Only base manuscript 06 is currently installed as
-the article. Twelve companion manuscripts, delivery filenames and current
-PDF build await integration; proof review and formalization remain pending.
-The catalogue does not certify the delivery's priority claims.}
+{article.pdf}{thirteen manuscripts assembled; three further companions placed}
+{Every unital ring map from the omnific integers to a set-sized ring is
+claimed to factor through the constant term. The report studies Gaussian
+variants, small-target rigidity, cardinal and homological thresholds,
+tensors and gaps at fresh scales. The maintained article assembles thirteen
+manuscripts; supplements 17--19 remain unintegrated. Its proof review and
+formalization remain pending.}
+
+\entry{Omnific-preserving automorphisms}
+{surreal/omnific-preserving-automorphisms}
+{article.pdf}{four manuscripts, assembled in 9b80a30}
+{Convex-support criteria for automorphisms preserving the omnific integers,
+scale stabilizers, definable constants and nondefinable monomials. The
+four-source assembly also treats algebraic-parameter rigidity and the
+obstruction to algebraizing formal flows. Its proof review and formalization
+remain pending.}
+
+\entry{Omnific groups and lattices}
+{surreal/omnific-groups-and-lattices}
+{article.pdf}{three manuscripts, assembled in 1e54d5a}
+{Algebraic groups over omnific integer rings, elementary kernels invisible
+to set-sized targets, a matrix-size dichotomy, and shortest vectors and
+missing infima in omnific lattices. The report distinguishes primitive
+vectors from unimodular ones in the terminology of the Diophantine report.
+Its proof review and formalization remain pending.}
 
 \section{The surcomplex plane}
 
-Twenty-six reports about $\SC=\No[i]$.  Seven are about holomorphic function
+Twenty-seven reports about $\SC=\No[i]$.  Seven are about holomorphic function
 theory, rest on one framework, and are all merges: twenty-seven manuscripts
 reduced to seven documents, with three more later added to trigonometry,
 one on $\mathrm{SO}(2,\No)$ and two on the periods of global phases.  The
-other nineteen came later and are listed
+other twenty came later and are listed
 after them.  Nine are merges: differential algebra (eleven manuscripts),
 dynamics and normal forms (ten), nonabelian support obstructions (three),
-entire functions at arbitrary rank (six), finite spectral theory (three),
+entire functions at arbitrary rank (seven), finite spectral theory (three),
 Hahn--Tate uniformization (three), holonomic rigidity (five),
-infinite-dimensional spectral theory (four) and Gamma and zeta (six).  Ten are single manuscripts: on
+infinite-dimensional spectral theory (four) and Gamma and zeta (six).  Eleven currently have a single main manuscript: on
 rank-one analytic geometry, expanding polynomial dynamics, Herglotz
 positivity, moment reconstruction, Wick summability, the three duals of Hahn
 vector spaces, hidden negative Hermitian directions, the automorphisms of
-the field, cardinally bounded Hahn fields, and what one dilation defines.  Each
-of the nineteen
+the field, cardinally bounded Hahn fields, what one dilation defines, and
+Hahn--Hilbert geometry (whose companion is not yet integrated).  Each
+of these later reports
 was written against this repository and names the gap it fills.
 
 \medskip
@@ -1135,7 +1153,7 @@ refereed, no Lean code, no priority certified.}
 
 \entry{Cofinality, factorization and scalar extension for entire Hahn functions at arbitrary rank}
 {surcomplex/entire-functions-at-arbitrary-rank}
-{article.pdf}{six manuscripts: two delivered 21~September 2026, four 22~September 2026}
+{article.pdf}{seven manuscripts, delivered 21--23~September 2026}
 {Ordinary power series $\sum a_nZ^n$ over a \emph{fixed} Hahn field
 $K_\Gamma=\C((t^\Gamma))$, $\Gamma$ nonzero, set-sized, divisible and of
 arbitrary valuation rank; \emph{entire} means strongly Hahn-summable at every
@@ -1182,7 +1200,9 @@ priority is not certified.  A sixth manuscript (Section~12) classifies every pri
 canonical product with one simple node per shell: the quotient is
 zero-dimensional exactly when $\Gamma$ has an order unit, otherwise continuum
 chains of primes appear, and a cofinal group extension can split one prime into
-a continuum-sized chain while the zeros are unchanged.}
+a continuum-sized chain while the zeros are unchanged. A seventh source
+(Sections 11.9--11.15) studies formal rectification and its strong-support
+obstructions; this addition remains outside the earlier proof-review scope.}
 
 \entry{Holonomic rigidity for entire Hahn functions: a sharp order-unit criterion for dilations}
 {surcomplex/holonomic-rigidity-for-entire-hahn-functions}
@@ -1677,6 +1697,15 @@ merge itself proves are marked.  No proof of classical RH, no canonical Gamma
 or zeta on all of $\No[i]$, not refereed, no Lean verification.}
 
 
+\entry{Hilbert geometry at surreal scales}
+{surcomplex/hahn-hilbert-geometry}
+{article.tex}{base source 03 placed in a4dcb91; companion 06 pending}
+{Orthogonally split Hahn--Hilbert subspaces, graphs of amplified operators,
+Fredholm least squares and inverse valuations. The main text is the placed
+base manuscript, with a foundational companion still to integrate; no
+maintained PDF is supplied yet. Independent proof review and formalization
+remain pending.}
+
 \section{Surquaternions}
 
 One report, which is where commutativity stops.  It is filed on its own
@@ -1779,15 +1808,17 @@ the metric alone.}  No priority claim; not refereed.}
 
 \section{Foundations and computation}
 
-Five reports that take the rest of the collection, or the surreal field as a
+Seven reports that take the rest of the collection, or the surreal field as a
 set-theoretic object, as their object.  None belongs under \dir{surreal} or
-\dir{surcomplex}: the first three range over the whole subject, and the last two
+\dir{surcomplex}: the first three range over the whole subject, and two later reports
 are set theory about $\No$ rather than algebra or analysis inside it.  Each of
 the first three is a merge of three manuscripts delivered together, the first
 two on 21~September 2026, and in those two the hazard was not overlap but a
-collision of near-identical names.  The last two are merges of four and five
+collision of near-identical names.  Those two are merges of four and five
 manuscripts delivered on 22~September 2026, each proving one spine several
-times under different hypotheses.
+times under different hypotheses. Two further placed base texts address
+definable surreals and omnific notations; their companions and review remain
+pending.
 
 \entry{Foundations for surreal and surcomplex mathematics}
 {foundations-and-computation/foundations}
@@ -1934,5 +1965,22 @@ kept as different proofs.}  Five finite suites pass; a finite check proves no
 infinite theorem.  Not refereed, no Lean verification, priority not
 certified.}
 
+
+\entry{Definable surreal numbers and omnific integers}
+{foundations-and-computation/definable-surreals-and-omnific-integers}
+{article.tex}{base source 04 placed in a4dcb91; companion 07 pending}
+{The definable surreal field, its relation to HOD, finite omnific codes,
+and algebraic independence over support-defined subfields. The placed base
+text has a companion on the initial core still to integrate; no maintained
+PDF is supplied yet. Proof review and formalization remain pending.}
+
+\entry{Notations for omnific integers}
+{foundations-and-computation/omnific-notations}
+{article.tex}{base source 08 placed in a4dcb91; companions 05 and 09 pending}
+{Exact holonomic fraction towers and guarded integer parts, together with
+computability bounds for equality, sign and semantic support validity.
+Two further manuscripts treat hereditary shielding and rational $\omega$
+notations. They remain unintegrated into the placed base text, whose proof
+review and formalization are pending; no maintained PDF is supplied yet.}
 
 \end{document}

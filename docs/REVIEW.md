@@ -2640,6 +2640,58 @@ sections, imported foundations, source reconciliation and unintegrated
 companions remain pending.
 
 
+## Synchronization of the omnific reviews and expanded collection
+
+The root-obstruction review in `3dd4e2c` is preserved through the assembly
+merge `ed7202a` and synchronization with `9693b28`. The Diophantine article
+now has 104 standard statements and 228 labels; all statement texts and
+labels from the incoming five-source assembly survive. The local root
+proof changes survive in Section 15, alongside the incoming pointer to the
+sibling report's fresh-scale image-gap theorem. The earlier specialization
+review is now Section 14. These numbers replace the historical numbering in
+the preceding review records.
+
+The reviewed scope is the **original material in Sections 1–10 and current
+Sections 14–15**. New material in Sections 6 and 10, Sections 11–13 and
+16–17, and remaining imported results and source reconciliation still need
+review. In particular, integration does not certify the newly added
+Diophantine definitions or reconstruction arguments.
+
+The reader map, catalogue and ledger now cover 56 main texts and 3,089
+standard statements. The quotient assembly, entire-function rectification,
+omnific-preserving automorphisms and omnific groups/lattices are recorded
+in their current written forms. The three new bases placed in `a4dcb91`
+are indexed separately from their four unintegrated companions. Two further
+Diophantine fraction manuscripts and three quotient companions also await
+integration. The new base READMEs now describe the actual maintained paths,
+missing PDFs and scratch-directory verification commands, instead of
+claiming that the original delivery layout is still present.
+
+Validation: the merged Diophantine PDF builds in three passes to 88 pages,
+and the catalogue to 28, with no warnings or box diagnostics. Rendered
+specialization/root pages, section transitions and provenance tables were
+inspected, as were all catalogue pages. All 56 catalogue destinations exist.
+An independent parser checks the 3,089 ledger rows against their source
+statements, labels, headings and line anchors. The source-reference audit
+finds no missing labels among 3,582 cited labels; local Markdown links also
+pass. All earlier standard statements and labels in the expanded
+entire-functions report are retained unchanged. The incoming computer-algebra
+correction identifies its `Π ⊕ Z` floor as the omnific floor, consistently
+with the shared notation guide.
+
+The corrected commands rerun the three new base finite suites successfully:
+41 holonomic-notation groups, 16 Hilbert symbolic checks (including 125
+exponent triples), and the HOD suite's finite codes, floor and support-coset
+examples. They establish finite regression evidence, not the reports'
+transfinite or definability claims. Delivered data files are unchanged.
+
+The incoming Laurent Cayley implementation retains its precise chart-level
+coverage: angle-coordinate transport and the fine-derivative identification
+remain separate obligations. `LEAN_NUM_THREADS=2 lake build` passes 4,303
+jobs; the audit accepts 13,351 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. This documentation review adds no Lean
+coverage of omnific integers.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

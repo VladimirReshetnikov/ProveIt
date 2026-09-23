@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **51 research reports in five families**. Start with the
+This collection has **56 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -16,22 +16,26 @@ hypotheses, limitations and provenance.
 
 ## Newest reports
 
-The omnific-integer manuscripts placed in `be06fc8` are assigned to
-[omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) and
-[set-sized quotients](surreal/set-sized-quotients-of-omnific-integers/).
-The Diophantine article now assembles sources 01, 02 and 05 (`bbdd536`),
-with an elementary algebra comparison, a proof review through Section 12,
-and a current PDF. Sections 13 onward and remaining source reconciliation
-still need review. Its
-[reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
-records that boundary. The quotient article remains base 06.
+The [omnific Diophantine article](surreal/omnific-diophantine-geometry/)
+now assembles five manuscripts, and the
+[set-sized quotient article](surreal/set-sized-quotients-of-omnific-integers/)
+thirteen. The Diophantine proof review covers the original material in
+Sections 1–10 and current Sections 14–15. Added material in Sections 6 and 10,
+Sections 11–13 and 16–17, and remaining source reconciliation need review;
+the [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+records that boundary. Two further Diophantine companions (08–09) and three
+quotient companions (17–19) are placed but not integrated. The rectification
+addition to [entire functions](surcomplex/entire-functions-at-arbitrary-rank/)
+is integrated, but remains outside its earlier review scope.
 
-The further placement `cf350b1` adds two Diophantine manuscripts (local
-06–07), five quotient manuscripts (12–16), and a rectification manuscript
-for [entire functions](surcomplex/entire-functions-at-arbitrary-rank/) (10).
-These additions are not yet integrated; the quotient report now has twelve
-companions awaiting assembly. Its maintained build paths, PDF and proof review
-also remain pending. Formalization of both omnific reports remains pending.
+Two further assembled reports cover
+[omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/)
+and [omnific groups and lattices](surreal/omnific-groups-and-lattices/).
+Placement `a4dcb91` adds the base texts for
+[definable surreals](foundations-and-computation/definable-surreals-and-omnific-integers/),
+[omnific notations](foundations-and-computation/omnific-notations/), and
+[Hahn–Hilbert geometry](surcomplex/hahn-hilbert-geometry/), with four companions
+still to integrate. Their proof review and formalization remain pending.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -90,7 +94,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: eighteen reports
+## Surreal numbers: twenty reports
 
 | Report | Question or main subject |
 |---|---|
@@ -110,8 +114,10 @@ not extend their earlier proof-review scope.
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)` |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
-| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; three-source assembly; proof review through Section 12, later review pending |
-| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; placed base manuscript, integration pending |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; five-source assembly; reviewed original material in Sections 1–10 and current Sections 14–15; added material and later review pending |
+| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; thirteen-source assembly; three further companions and proof review pending |
+| [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Convex-scale stabilizers, definable constants, nondefinable monomials and algebraic-parameter rigidity; four-source assembly, review pending |
+| [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups, elementary kernels and missing lattice minima over omnific integers; three-source assembly, review pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
@@ -119,7 +125,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 `ℝ[[ω⁻¹]]`. Neither domain theorem subsumes the other. Here `⊗` denotes
 **natural ordinal multiplication**, as distinguished in the notation guide.
 
-## Surcomplex numbers: twenty-six reports
+## Surcomplex numbers: twenty-seven reports
 
 | Report | Main subject and useful prerequisite |
 |---|---|
@@ -135,7 +141,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [Spectral theory](surcomplex/spectral-theory/) | Finite matrices over real closed fields, singular values and valuation scales; exact matrix-root fields and Hankel splitting fields of squarefree real-rooted polynomials over a nondivisible `Γ` |
 | [Dynamics and normal forms](surcomplex/dynamics-and-normal-forms/) | Linearization, periods and quasi-periodic equations; exact scalar and drifting multipliers answer the common-domain question oppositely, and an angular-rank bound covers every exact diagonal multiplier; its convention and threshold tables are prerequisites |
 | [Nonabelian support](surcomplex/nonabelian-support/) | Matrix Cousin problems, inverse monodromy, and essential-singularity bundles that stay nontrivial over `Mer((t^Γ))`; its two support criteria test different objects; compare the scalar global-divisor report |
-| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Cofinality, factorization, the exact jet image, ideals above canonical products and scalar extension of entire series over one fixed Hahn field; in several variables only the scalar-extension clause is answered; prime ideals above one-simple-node products and their splitting under cofinal extension |
+| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Cofinality, factorization, the exact jet image, ideals above canonical products and scalar extension of entire series over one fixed Hahn field; in several variables only the scalar-extension clause is answered; prime ideals above one-simple-node products and their splitting under cofinal extension; formal rectification and its support restrictions |
 | [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Entire D-finite series are polynomials, and an order-unit criterion decides which nontorsion dilations admit nonpolynomial entire solutions; this is not the order-unit dichotomy of entire functions at arbitrary rank; first-order algebraic ODEs have only polynomial entire solutions; with no order unit, every nonpolynomial entire series is differentially transcendental in all orders (the order-unit case stays open) |
 | [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Tate elliptic curves at arbitrary rank: exact Hahn domain `U_q` and `U_q/q^ℤ ≅ E_q(K)`, plus multiscale theta series; the bounded-period quotient itself has a Molcho–Wise precedent |
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Two inequivalent spectra: ordinary normal operators extended to `H((t^Γ))`, and exact diagonalization of row- and column-finite Hahn matrices; Section 3 reconciles their apparently conflicting accumulation statements; Parts III and IV add Drazin halos for any unital algebra and noncommuting compact perturbations |
@@ -145,6 +151,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [Wick summability certificates](surcomplex/wick-summability-certificates/) | Finite strict valuation inequalities decide strong summability of polynomial Wick diagram families over `ℂ((t^Γ))`, `Γ` divisible; diagramwise only, and a Hahn value is not an integral |
 | [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Algebraic extension, completion and strong closure of `V((t^Γ))`; strong operators; comparison of represented, strong and continuous duals of a Hahn–Hilbert space |
 | [Hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/) | Hermitian forms positive over the finite-lattice-supported subfield yet indefinite over `ℂ((t^Γ))`; a two-scale matrix null-ideal criterion |
+| [Hahn–Hilbert geometry](surcomplex/hahn-hilbert-geometry/) | Orthogonal splitting, amplified graphs and Fredholm least squares; placed base, companion integration and review pending |
 | [Surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/) | Plain, valued, value-fixing and 1-automorphisms of `No(i)`; the real-axis stabilizer `Aut(No)×C₂` and phase twists that move `No`; exponential results are the rigidity report's |
 | [First-κ coefficients](surcomplex/first-kappa-coefficients/) | Hahn series with fewer than `κ` terms: omitted types classified by the first `κ` coefficients, completion iff `cf(Γ) ≠ cf(κ)`, never spherically complete |
 | [Single-dilation Hahn support](surcomplex/single-dilation-hahn-support/) | One monomial dilation defines coefficients, monomials and the valuation ring; its centralizer among all field automorphisms; undecidability |
@@ -212,7 +219,7 @@ in `48m²/r⁶` gives a pole of order `6q` and leading coefficient
 `48m² w(0)^(−6)`. The recorded special case `w(s) = 1+s` preserves `48m²`;
 general substitutions need the factor `w(0)^(−6)`.
 
-## Foundations and computation: five reports
+## Foundations and computation: seven reports
 
 | Report | Main subject |
 |---|---|
@@ -220,6 +227,8 @@ general substitutions need the factor `w(0)^(−6)`.
 | [Computer algebra](foundations-and-computation/computer-algebra/) | Exact denotation, coefficient access, equality and approximation; three distinct Wolfram prototypes |
 | [Computable surreals](foundations-and-computation/computable-surreals/) | Structural names, effective left-finite Hahn names and bounded-denominator Puiseux names |
 | [Surreal fields across universes](foundations-and-computation/surreal-fields-across-universes/) | External saturation of an inner model's `No^M` in a same-ordinal outer universe: new ordinal sequences, fresh-sign gaps, first new birthday, nonconjugate surcomplex real forms |
+| [Definable surreals and omnific integers](foundations-and-computation/definable-surreals-and-omnific-integers/) | Definability, HOD and finite omnific codes; placed base, companion integration and review pending |
+| [Omnific notations](foundations-and-computation/omnific-notations/) | Exact holonomic towers and complexity of equality and support validity; placed base, two companions and review pending |
 | [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation |
 
 A mathematical closure theorem need not supply a uniform algorithm on the

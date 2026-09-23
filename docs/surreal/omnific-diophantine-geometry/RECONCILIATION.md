@@ -203,7 +203,7 @@ keep their section numbers, while statement numbers in Sections 6 and 10
 shift. That material is outside this review. Their archives are recoverable at
 `de0acc6`; their code and data are present here. The
 [quotient report](../set-sized-quotients-of-omnific-integers/) has thirteen
-assigned manuscripts (its base and twelve companions); its assembly is
+assembled manuscripts and three further placed companions (17–19); its assembly is
 recorded in its own README, and its source reconciliation is not part of
 this record.
 

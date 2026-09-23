@@ -1,0 +1,10 @@
+.PHONY: all verify clean
+
+all:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error definable_surreals.tex
+
+verify:
+	python3 verify_finite.py --output verification.json
+
+clean:
+	latexmk -c definable_surreals.tex

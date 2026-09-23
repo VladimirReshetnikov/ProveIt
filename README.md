@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 51 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 56 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -298,8 +298,12 @@ For actual real polynomials, the stability normalization now gives a unique
 simple root throughout `v(h)>κ` when `v(A)=κ≥0`, the constant and linear
 errors have valuation at least `σ>2κ`, and higher coefficients are finite.
 It proves both `v(h)≥σ−κ` and `v(h+P(0)/A)≥2σ−3κ` for actual surreal
-exponents. Applying this result to trigonometric polynomials through the
-exact rational chart, and the sharpness examples, remains pending.
+exponents. Mathlib Laurent polynomials now have exact real numerators in
+Cayley coordinates, with a positive denominator and coefficient valuation
+bounds. Applying the polynomial theorem proves both bounds and uniqueness
+for the exact trigonometric pullback in `x=2 tan(h/2)`. Transfer to the angle
+`h`, fine-derivative identification and angular simplicity, and the sharpness
+examples remain pending.
 In the Hahn theorem, the first correction coefficient is the negative error coefficient evaluated
 at the residue root, divided by the residue derivative; cancellation is allowed.
 The distinct complex residue roots also index unique cluster factors, with

@@ -71,6 +71,10 @@ results of the five-source assembly by `odg:` label, all **Pending**; no
 implementation mapping cites an `odg:` label, and no Lean code about omnific
 integers exists in the repository.
 
+Two further fraction manuscripts were placed in `a4dcb91`, with preserved
+supplements prefixed `08-fractions-` and `09-fraction-fibres-`. They are not
+yet integrated into this five-source article or its proof review.
+
 ## Five sources, one report
 
 | | Manuscript | Repository pin | Contributes |
