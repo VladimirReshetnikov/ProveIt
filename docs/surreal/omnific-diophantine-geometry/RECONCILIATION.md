@@ -7,7 +7,10 @@ A subsequent pass reviews the newly added Section 11 from sources 06–07.
 The added material in Sections 6 and 10 and Sections 12–13 and 16–17 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the five manuscripts
-or review of all later proofs and imported classical results.
+or review of all later proofs and imported classical results. Section numbers
+below are those current when each pass was made; the last two paragraphs give the
+present numbering. The fractions part (Section 15) and the curve and differential
+rigidity part (Sections 16–18) are outside every pass recorded here.
 
 ## Recoverable sources
 
@@ -259,3 +262,17 @@ this review. Inserting Section 15 moved the sections that followed Section 14
 by one: the passes above use the numbering current when they were made: the
 families section they call 11 (in the passes before the batch-25 merge) is
 Section 14, and the omnific-coefficients section they call 15 is Section 16. No label was renamed or removed.
+
+Five manuscripts on curve and differential rigidity, tagged C10–C14 after their
+file prefixes `10-` to `14-`, were placed in `c6359e4` and integrated after that as
+new Sections 16–18 (`odg:cr:` labels): the squarefree and Weierstrass theorems,
+the two-ring differential principle, the classification of smooth affine curves,
+arithmetic fibers, projective coordinates, group varieties and boundary examples.
+The same integration added pointers in Sections 6, 7 and 14, a paragraph and a
+proposed module in the formalization section, the answer to `odg:q:affine` for
+smooth curves, partial answers to `odg:q:search` and `odg:q:homogeneous`, and six
+new questions. That material is outside this review. Inserting Sections 16–18
+moved the three sections after them by three: the omnific-coefficients section
+(called 15 or 16 above) is now Section 19, the formalization section Section 20
+and the questions Section 21. Statement numbers in Sections 1–15 are unchanged,
+and no label was renamed or removed.

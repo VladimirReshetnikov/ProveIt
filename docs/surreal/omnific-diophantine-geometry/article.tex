@@ -108,6 +108,20 @@
 \newcommand{\Ureg}{\mathcal U}
 \newcommand{\Kcong}{\mathsf K}
 \newcommand{\Pmod}{\mathcal P}
+\newcommand{\crH}{\mathbb H_\Bbbk(\Gamma)}
+\newcommand{\crA}{\mathcal A_\Bbbk(\Gamma)}
+\newcommand{\crP}{\Pi_\Bbbk(\Gamma)}
+\newcommand{\crO}{\mathcal O_\Bbbk(\Gamma)}
+\newcommand{\crm}{\mathfrak m_\Bbbk(\Gamma)}
+\newcommand{\Aff}{\mathbb A}
+\newcommand{\Gm}{\mathbb G_{\mathrm m}}
+\newcommand{\Ga}{\mathbb G_{\mathrm a}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Lie}{\operatorname{Lie}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\dif}{\mathrm d}
 
 \begin{document}
 \hypersetup{pageanchor=false}
@@ -115,13 +129,13 @@
 \centering
 \vspace*{0mm}
 {\Large Merged research report for the Surreal project\par}
-\vspace{6mm}
+\vspace{2mm}
 {\huge\bfseries Omnific Integers and\\[3mm] Omnific--Diophantine Geometry\par}
-\vspace{5mm}
+\vspace{3mm}
 {\Large Retractions, rigidity, definability,\\ and infinite families\par}
-\vspace{5mm}
-{\large Built from seven manuscripts dated September 22 and 23, 2026\par}
-\vspace{4mm}
+\vspace{3mm}
+{\large Built from twelve manuscripts dated September 22 and 23, 2026\par}
+\vspace{2mm}
 \begin{minipage}{\textwidth}
 \begin{abstract}
 The omnific integers $\Oz=\Pi\oplus\Z$ form a discretely ordered subring of
@@ -169,7 +183,12 @@ complex rational functions of one purely infinite parameter. The fibers of the
 specialization are the orbits of the congruence kernel of $\SL_2(\Oz)$, and
 each of them is dense.
 
-This report merges seven independently written manuscripts; it states which
+On proper varieties Euler derivations make global differentials vanish at points
+over the one-sided ring. So only the affine line among smooth affine curves has
+nonconstant such points, and every nonsingular $y^2=x^3+ax+b$ has only ordinary
+omnific solutions.
+
+This report merges twelve independently written manuscripts; it states which
 source proved each result, prints shared results once, and keeps every
 source's limitations. It is an AI-assisted draft: it has not been refereed,
 and nothing in it has been formalized in Lean.
@@ -178,9 +197,9 @@ and nothing in it has been formalized in Lean.
 \vfill
 \begin{minipage}{\textwidth}
 \footnotesize
-Sources: manuscripts 01 (the base text), 02 and 05, pinned to repository
-commit \texttt{2cb9c02}; 06 and 07, pinned to \texttt{71e9606}; and 08 and
-09, pinned to \texttt{9a385d3}. Their titles are in \cref{odg:sub:provenance}.
+Sources: manuscripts 01 (the base text), 02, 05, 06, 07, 08, 09 and
+C10--C14; their titles and pinned repository commits are in
+\cref{odg:sub:provenance}.
 Fiber results of one manuscript of the sibling report, and the direction
 criterion of another, appear here once. The provenance of every
 section is recorded in \cref{odg:app:provenance}; non-claims are collected in
@@ -322,6 +341,23 @@ coordinates on rational curves, a localization with residue field $\Q$, a
 nonflat integral scale extension with its $\Tor_1$ witness, and the Gaussian
 form of \cref{odg:thm:realray}
 (\cref{odg:frac:cor:curves,odg:frac:prop:localization,odg:frac:thm:nonflat,odg:frac:cor:gaussiandirections}).
+\item \textbf{Curve and differential rigidity} \src{C10--C14}. Over any field
+$\Bbbk$ of characteristic zero and any ordered exponent group $\Gamma$, a smooth
+proper variety with globally generated cotangent sheaf, in particular a curve of
+positive genus or an abelian variety, has only constant points over the
+nonnegative-support Hahn ring $\crA$ (\cref{odg:cr:cor:hahnproper}), and a smooth
+geometrically integral affine curve has nonconstant points exactly when it is the
+affine line (\cref{odg:cr:thm:affine}). Every squarefree equation $y^m=P(x)$ with
+$m,\deg P\ge2$ is rigid by an elementary certificate (\cref{odg:cr:thm:squarefree}),
+so the nonsingular Weierstrass equations have only ordinary omnific solutions and the
+singular ones have polynomial families
+(\cref{odg:cr:cor:weierstrass,odg:cr:prop:singular}). On an affine integral model
+with smooth generic fiber, either all omnific points are ordinary or the fiber is an
+affine line and every fiber of $\ct$ over an integer point is a copy of $\Pi$
+(\cref{odg:cr:cor:omnific}); semiabelian varieties are rigid, the nonconstant part of
+a commutative algebraic group is a vector group $\crP^{\,d}$, and on rigid projective
+targets only rational points have invertible coordinate ideals
+(\cref{odg:cr:thm:semiabelian,odg:cr:thm:groupkernel,odg:cr:thm:ozideal}).
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a
@@ -339,7 +375,7 @@ special cases proved by source 01.
 
 \subsection{Provenance of this report}\label{odg:sub:provenance}
 
-This report is built from seven manuscripts written independently. Sources
+This report is built from twelve manuscripts written independently. Sources
 01, 02 and 05, dated September 22, 2026, are items of the batch placed in
 commit \texttt{be06fc8} and pin repository commit \pin{} (107 commits before
 that placement). Sources 06 and 07, dated September 23, 2026, are items 01
@@ -362,6 +398,15 @@ of the same report (item 04 of that batch, files prefixed
 directions over $\Z$ and $\Z[i]$ is printed here once, in
 \cref{odg:frac:cor:gaussiandirections}, and it is not counted among this
 report's sources either.
+
+Sources C10--C14, all dated September 23, 2026, are items 02, 03, 04, 07 and 08
+of the batch placed in commit \texttt{c6359e4} (their archives arrived in
+\texttt{5610500} and \texttt{21016dc}); their shipped files carry the prefixes
+\fn{10-} to \fn{14-}, and the letter C distinguishes their tags from the tags
+\src{13} and \src{14} above. Sources C10, C13 and C14 pin \texttt{4cdeaec}, source
+C11 pins \texttt{f6e031a} and source C12 pins \texttt{89bec38}; at all three pins
+this report had only sources 01, 02 and 05, and its questions were in Section 14.
+None of the five saw the others.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -411,6 +456,45 @@ theorem and the one-scale case (special cases of 08).\\
 \end{tabular}
 \end{center}
 
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}}
+\toprule
+Source & Manuscript & Principal contribution to this report\\
+\midrule
+C10 & \emph{Curve Rigidity over the Omnific Integers: Elliptic equations,
+differential separation, and semiabelian varieties} &
+Exact fibers $\Pi\to\ct^{-1}(\mathbf n)$ on affine-line models; quasi-finite maps
+to rigid targets; nonsplit tori by faithful flatness; the general elliptic field
+point; the valuation-ring and verticality boundaries.\\
+C11 & \emph{Curve and Abelian Rigidity over the Omnific Integers: A complete
+smooth-affine-curve dichotomy, support-preserving derivations, and invariance over
+reduced coefficient rings} &
+Arithmetic fibers over any coefficient ring $\mathfrak o$; reduced coefficient
+algebras; the dual-number defect; the characteristic-two elliptic point; a
+discretely ordered ring with no omnific copy; proper classes of fiber points.\\
+C12 & \emph{Curve Rigidity over Omnific Integers: Logarithmic differentials,
+elliptic equations, and denominator ideals} &
+The strict certificate proof; the logarithmic proof of the curve classification;
+descent for separated models over $\Z$; coordinate ideals (invertible, principal,
+rational); the singular Weierstrass dichotomy.\\
+C13 & \emph{Differential Rigidity of Omnific Points: Smooth-curve classification,
+squarefree equations, and algebraic groups} &
+Annihilation of global tensors; symmetric differentials and ample cotangent bundles;
+general Weierstrass equations; smooth projective curves including $\mathbb P^1$;
+polynomial witnesses; the kernel of commutative groups; a characteristic-$p$
+counterexample.\\
+C14 & \emph{Differential Rigidity of Hahn Rings: Curves, Abelian Varieties, and
+Omnific Diophantine Points} &
+Base of \cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}: the
+two-ring principle and the curve classification over every field of characteristic
+zero and every exponent group; integer polynomial arcs; the congruence criterion;
+unimodular coordinates over $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ and rational
+projective points.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 Where the sources overlap, the statement with the weakest hypotheses is
 printed and the others are recorded as special cases. Results added by the
 merge carry the tag \mergetag{} and have complete proofs.
@@ -437,8 +521,16 @@ reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
 \cref{odg:sec:questions}; the reviews did not cover this material either. The
 insertion of \cref{odg:frac:sec:fractions} moved the three sections after it
-by one: the former Sections 15--17 are now \cref{odg:sec:coefficients,odg:sec:formal,odg:sec:questions}.
-Nine earlier
+by one, from Sections 15--17 to 16--18. Sources C10--C14, placed in
+\texttt{c6359e4}, were integrated after that as
+\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}, with pointers in
+\cref{odg:sec:rigidity,odg:sec:derivations,odg:sec:primitive}, additions to
+\cref{odg:sec:formal}, and, in \cref{odg:sec:questions}, \cref{odg:q:affine}
+answered for smooth curves, two further questions answered in part and six new
+questions; this material is outside all the reviews. Its
+insertion moved the same three sections by three more, so that the former Sections
+15--17 are now \cref{odg:sec:coefficients,odg:sec:formal,odg:sec:questions};
+statement numbers in Sections 1--15 are unchanged. Nine earlier
 labels renamed or combined during assembly remain as aliases, so existing
 references resolve.
 
@@ -503,7 +595,8 @@ $\ddeg(0)=-\infty$. Not an ordinal and not a birthday.\\
 $\Std(t)$, $\Std_n(\mathbf x)$ & The existential formulas of
 \cref{odg:thm:standarddef,odg:thm:guard} defining $\Z$ and $\Z^n$.\\
 $\partial_\lambda$, $W_\partial$ & Local Euler derivation and two-term
-Wronskian (\cref{odg:sec:derivations}).\\
+Wronskian (\cref{odg:sec:derivations}); for an arbitrary exponent group and
+coefficient field, \eqref{odg:cr:eq:euler}.\\
 $B$, $q$, $G$ & Symmetric bilinear form, its quadratic form $q(x)=B(x,x)$,
 and the Lorentz Gram matrix $G=\diag(1,-1,-1)$.\\
 $R$, $S$ & A generic commutative ring; a set-sized target ring.\\
@@ -526,6 +619,12 @@ the $\BR$- and $\Oz$-unimodular regions of $\mathbb P^1(\No)$, the congruence
 kernel of $\SL_2(\Oz)$ (\cref{odg:frac:sub:conventions}).\\
 $\Oz_\Pi$, $\res$, $\Ex$, $\Pmod[X]$ & Localization at $\Pi$, its rational
 residue, monic monomial exponents, $\Z+X\R[X]$ (\cref{odg:frac:sec:fractions}).\\
+$\crH$, $\crO$, $\crm$ & The Hahn field with exponents in $\Gamma$, its valuation
+ring (support in $\Gamma^{\le0}$) and maximal ideal; opposite to $\crA$
+(\cref{odg:cr:sub:conventions}).\\
+$\mathcal D$, $\Aff^n$, $\Gm$, $\Ga$, $\langle\mathbf a\rangle$ & A family of
+derivations, affine space, the multiplicative and additive groups, the ideal generated
+by the coordinates of $\mathbf a$ (\cref{odg:cr:sec:principle}).\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -601,7 +700,15 @@ four-square theorems, Shepherdson's theorem, the Fermat theorem of Wiles and
 Taylor--Wiles, and Dirichlet's theorem with quadratic reciprocity are imported
 with explicit attribution at their points of use. The intersective polynomial
 of \cref{odg:def:sec:arithmetic} is classical
-\cite{BorevichShafarevich,LeSpencer,BerendBilu}.
+\cite{BorevichShafarevich,LeSpencer,BerendBilu}. The curve part
+(\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}) imports standard
+algebraic geometry: K\"ahler differentials, the valuative criterion of properness for
+arbitrary valuation rings, smooth completion, Riemann--Roch and genus zero for curves,
+invariant differentials and the structure of commutative algebraic groups
+\cite{StacksDiff,StacksProper,StacksCurves,StacksRR,StacksGenusZero,MilneAV,MilneAG}.
+Its sources inspected the repository at commits where this report had only sources
+01, 02 and 05; their references to its numbering are translated in
+\cref{odg:app:provenance}.
 Relations to neighbouring reports are listed in \cref{odg:sub:neighbours}.
 
 \section{The normal-form rings and the integer part}\label{odg:sec:basic}
@@ -1900,6 +2007,10 @@ very-affine coordinate presentation. The norm argument is a concrete
 linear-coordinate instance: a nonzero product relation forces its factors
 into a constant torus. It is not a claim that every affine variety is
 constant over $\BC$; the affine line has the full class $\BC$ of points.
+For smooth curves the affine line is the only exception: the unit argument is the
+genus-zero case of the classification of \cref{odg:cr:thm:affine}
+(\cref{odg:cr:lem:punctures}), and curves of positive genus are rigid by a
+differential argument (\cref{odg:cr:thm:positivegenus}).
 
 \section{Euler derivations: separated powers and unimodular Fermat}\label{odg:sec:derivations}
 
@@ -2026,7 +2137,10 @@ coordinates are integers.
 Source 05 states the real case. The proof above gives its complex extension:
 it uses nonnegative support degrees and nonzero scalar units, not an order on
 the coefficients. The real and omnific conclusions follow by intersection
-with $\BR$ and $\Oz$.
+with $\BR$ and $\Oz$. The theorem is the case $P(X)=(c-aX^m)/b$ of the squarefree
+theorem \cref{odg:cr:thm:squarefree} of sources C10--C14, which holds over every
+field of characteristic zero and every exponent group and also covers
+$y^2=x^3+ax+b$ with $a\ne0$.
 
 The quotient-ring step replaces any appeal to unique factorization: if $y$
 becomes a unit modulo $x^{m-1}$, a product of $\partial y$ with a unit can
@@ -2084,7 +2198,10 @@ nothing about variable omnific exponents. A general elliptic equation
 $y^2=x^3+ax+b$ with $a\ne0$ is outside it: the differentiated equation has
 additional terms, and the divisibility by a high power of $x$ no longer
 follows. This is a boundary of the proof, not a reason to extend the
-statement to all elliptic curves.
+statement to all elliptic curves. Sources C10--C14 cross that boundary by a
+different certificate, a B\'ezout identity between the cubic and its derivative:
+every nonsingular equation has only ordinary omnific solutions, and every singular one
+has polynomial families (\cref{odg:cr:cor:weierstrass,odg:cr:prop:singular}).
 
 \subsection{Unimodular Fermat rigidity}\label{odg:sub:fermat}
 
@@ -4205,7 +4322,10 @@ not licensed by this proposition; the Taylor expansion of $\sqrt{1+T}$ is not
 an admissible way to assert that $\sqrt{1+\omega}$ lies in $\Oz$. Polynomial
 maps supply a systematic sufficient condition for nontrivial fibers; they do
 not exhaust all normal-form constructions, and no such exhaustion is assumed
-(but see \cref{odg:thm:specialization} for finite supports).
+(but see \cref{odg:thm:specialization} for finite supports). On smooth affine
+curves they do decide existence: a nonordinary omnific point exists exactly on an
+affine line through an integer point, and then every point of the fiber comes from a
+polynomial parametrization (\cref{odg:cr:cor:omnific,odg:cr:cor:polywitness}).
 
 \subsection{Infinite solutions of homogeneous equations}
 
@@ -4360,7 +4480,10 @@ and $\mathbb P^n(\C(t))$ for $0\ne t\in\Pi$, and to the region $\Vreg$ of
 $\mathbb P^1(\No)$ (\cref{odg:frac:thm:main,odg:frac:cor:curves,odg:frac:thm:dichotomy,odg:frac:thm:gaussian});
 the Gaussian form of the theorem is \cref{odg:frac:cor:gaussiandirections}.
 A classification of all points of $\mathbb P^n(\No)$ is still not claimed
-(\cref{odg:frac:q:ideals,odg:frac:q:region}).
+(\cref{odg:frac:q:ideals,odg:frac:q:region}). On projective varieties that are rigid
+over the one-sided rings, such as curves of positive genus, sources C12 and C14 show
+that only rational points have invertible, and in particular unimodular, omnific
+coordinates (\cref{odg:cr:thm:ozideal,odg:cr:cor:projectiveQ}).
 
 \subsection{Finite supports specialize to polynomial arcs}
 
@@ -4453,7 +4576,9 @@ value. Positive $t\in\Pi\setminus\{0\}$ also preserves the prescribed signs,
 because its positive leading term makes each polynomial's leading term
 determine its sign. A single specialization therefore preserves any finite
 list of polynomial equalities, disequalities and sign conditions. This does
-not turn infinite-support solutions into polynomial arcs.
+not turn infinite-support solutions into polynomial arcs. For smooth affine curves,
+however, every nonordinary point shares its constant term with a nonordinary point
+of finite support (\cref{odg:cr:cor:polywitness}).
 
 Finite-support B\'ezout certificates can be retained as well. If
 $x_i,u_i\in\Oz$ all have finite supports and $\sum_i u_i x_i=1$, apply the
@@ -5783,6 +5908,1634 @@ general flatness or normalization theorem for Hahn integer parts \src{08}. The
 questions left by the two sources are
 \cref{odg:frac:q:ideals,odg:frac:q:region,odg:frac:q:orbits,odg:frac:q:parameters,odg:frac:q:scales}.
 
+\section{Differential rigidity over one-sided Hahn rings}\label{odg:cr:sec:principle}
+
+This section and the next two form the part \emph{Curve and differential
+rigidity}. They are built from five manuscripts written independently on
+September 23, 2026, tagged \src{C10}--\src{C14} after their file prefixes
+\fn{10-} to \fn{14-} (\cref{odg:sub:provenance}); the tags \src{13} and
+\src{14} without the letter keep their meaning as manuscripts of the sibling
+report. All five prove the same spine. A smooth geometrically integral affine
+curve with constant coefficients has nonconstant points over a one-sided Hahn
+ring exactly when it is the affine line
+(\cref{odg:cr:thm:affine}); in particular every omnific solution of a
+nonsingular Weierstrass equation is an ordinary integer solution
+(\cref{odg:cr:cor:weierstrass}). Each source reaches this by two routes: an
+elementary B\'ezout certificate for squarefree equations $y^m=P(x)$, and a
+geometric \emph{two-ring} argument in which properness and the Euler
+derivations force every global differential form to vanish at a point. Source
+C14 is the base because it has the weakest hypotheses on the shared theorems:
+any coefficient field of characteristic zero and any ordered exponent group.
+Sources C10 and C12 assume an algebraically closed field for curves, source
+C11 an algebraically closed field or $\R$, and source C13 a divisible exponent
+group and the fields $\R$, $\C$. The results answer \cref{odg:q:affine} for
+smooth curves and its Weierstrass test completely, and they answer
+\cref{odg:q:search,odg:q:homogeneous} in part (\cref{odg:cr:sub:settled}).
+They contain \cref{odg:thm:separated,odg:cor:mordell} as special cases.
+Labels of this material carry the sub-prefix \fn{odg:cr:}. The part is outside
+the proof reviews recorded in \fn{RECONCILIATION.md}.
+
+\subsection{Conventions}\label{odg:cr:sub:conventions}
+
+Throughout the part, $\Bbbk$ is a field of characteristic zero, $\bar\Bbbk$ an
+algebraic closure, and $\Gamma$ a set-sized ordered abelian group; $\Gamma$ is
+\emph{not} assumed divisible, and $\Gamma_\Q=\Gamma\otimes_\Z\Q$ is its ordered
+divisible hull, into which $\Gamma$ embeds because it is torsion free. We use the
+$\omega$-convention and the rings of \cref{odg:def:sub:setting}: the series
+$\sum_\gamma a_\gamma\omega^\gamma$ with $a_\gamma\in\Bbbk$ and reverse-well-ordered
+support form the Hahn field $\crH$, and inside it
+\begin{align*}
+ \crA&=\{f:\supp f\subseteq\Gamma^{\ge0}\},&
+ \crP&=\{f:\supp f\subseteq\Gamma^{>0}\},\\
+ \crO&=\{f:\supp f\subseteq\Gamma^{\le0}\},&
+ \crm&=\{f:\supp f\subseteq\Gamma^{<0}\}.
+\end{align*}
+For $0\ne f\in\crH$ the valuation is $v(f)=-\ddeg f$, with $v(0)=+\infty$; so
+$\crO$ is its valuation ring and $\crm$ the maximal ideal. For a subring
+$\mathfrak o\subseteq\Bbbk$ the arithmetic ring is
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)=\mathfrak o+\crP$. In the surreal instances
+$\Gamma\subseteq\No$, $\crA$ is the part of $\BR$ or $\BC$ supported in $\Gamma$,
+$\mathcal R_\Z(\R,\Gamma)=\Oz_\Gamma$, and $\crO$ is the workspace form of the
+finite surreals $\Ofin$, with $\crm$ its infinitesimals. The two rings $\crA$
+and $\crO$ point in opposite support directions: $\crA$ is \emph{not} the
+valuation ring and not the ring of finite elements (\cref{odg:rem:notvaluation}).
+
+\paragraph{The $t$-convention of three sources.} Sources C11, C12 and C14 write
+$\Bbbk((t^\Gamma))$ with well-ordered supports and $t^\gamma=\omega^{-\gamma}$, as
+in \cref{odg:sub:notation}. Their ring $B_\Gamma(k)$ of series supported on
+$\Gamma_{\le0}$ is $\crA$ with exponents negated, their ideal of series supported
+on $\Gamma_{<0}$ ($P_\Gamma(k)$ in C11, $I$ in C12) is $\crP$, and their
+valuation ring ($\mathcal O$ in C11 and C14, $V$ in C12) is $\crO$. Sources C10
+and C13 use the $\omega$-convention of this report. Every statement below is
+translated; no normalization changes.
+
+\paragraph{Points and the class convention.} For a $\Bbbk$-scheme $X$ and a
+commutative $\Bbbk$-algebra $S$, $X(S)=\Hom_\Bbbk(\Spec S,X)$. A point is
+\emph{constant} if it comes from $X(\Bbbk)$. The retraction $\ct$ acts on points
+functorially. All schemes, modules of differentials and valuation rings in this
+part are set-sized. For the class rings $\BR$, $\BC$, $\Oz$ and $\Og$ we never
+form a spectrum: an affine point is a finite tuple satisfying the equations,
+and for a separated $\Bbbk$-scheme of finite type a point over $\BR$ means a point
+over some $\mathcal A_\R(\Gamma)$, $\Gamma\subseteq\No$ set-sized, two such being
+identified after passage to a common larger workspace \src{C10, C12, C13}. A
+projective point over a ring is given by an invertible quotient; its finite
+presentation data, like a unit-ideal witness, fit into one workspace \src{C12}.
+By \cref{odg:lem:workspace} every finite datum lies in some $\mathcal A_\R(\Gamma)$
+or $\mathcal A_\C(\Gamma)$, and every theorem below holds for every $\Gamma$, so
+either the rational span of the supports \src{C10, C12, C13} or the group they
+generate \src{C11, C14} may be used.
+
+\paragraph{Letters.} In this part $\partial_\lambda$ is an Euler derivation (the
+sources' $D_\lambda$) and $\mathcal D$ a family of derivations; $C$ is a curve,
+$\overline C$ its smooth projective completion, $\Sigma=\overline C\setminus C$ its
+boundary and $g$ the genus; $A$ is an abelian variety (not an intermediate ring
+as in \cref{odg:def:sec:arithmetic}), $G$ an algebraic group, $T$ a torus and $U$
+a unipotent group; $S$ is a commutative $\Bbbk$-algebra of coefficients (as
+elsewhere, a set-sized ring); $\langle\mathbf a\rangle$ is the ideal generated by
+the coordinates of a tuple $\mathbf a$. A calligraphic $\mathcal O$ with a scheme
+as subscript is a structure sheaf, while $\crO$ is the valuation ring above. The
+sources write the valuation ring with a macro \texttt{\textbackslash OO} (source C12
+writes $V$), affine space with \texttt{\textbackslash A}, and use
+\texttt{\textbackslash dd} for the degree (C10) or for the differential (C11, C13).
+In this report \texttt{\textbackslash OO} is the orthogonal group
+$\OO$ and \texttt{\textbackslash V} a zero set $\V$, and the omnific groups report
+uses \texttt{\textbackslash A} for a ring; so the new material writes $\crO$,
+$\Aff$, $\ddeg$ and $\dif$ instead. The complete list of renamed symbols is in
+\cref{odg:tab:renames}.
+
+\subsection{Two opposite rings in one Hahn field}\label{odg:cr:sub:rings}
+
+\begin{lemma}[Intersections, units and degree \src{C14; also C10, C11, C12, C13}]\label{odg:cr:lem:rings}
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=*]
+\item $\crA$ is a $\Bbbk$-subalgebra of $\crH$, $\crP$ is an ideal of it,
+$\crA=\Bbbk\oplus\crP$, and $\ct$ is a ring retraction of $\crA$ onto $\Bbbk$ with
+kernel $\crP$. Likewise $\crO=\Bbbk\oplus\crm$ is the valuation ring of $v$, with
+fraction field $\crH$, maximal ideal $\crm$ and residue map $\ct$.
+\item $\crA\cap\crO=\Bbbk$, $\crA\cap\crm=\{0\}$ and $\crP\cap\crO=\{0\}$.
+\item $\crA^\times=\Bbbk^\times$, and for a subring $\mathfrak o\subseteq\Bbbk$,
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)\cap\Bbbk=\mathfrak o$ and
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)^\times=\mathfrak o^\times$.
+\item If $P\in\Bbbk[X]$ has degree $d\ge1$ and $x\in\crA\setminus\Bbbk$, then
+$P(x)\ne0$ and $\ddeg P(x)=d\,\ddeg x$. Every element of $\crA$ algebraic over
+$\Bbbk$ lies in $\Bbbk$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Parts (a), (c) for $\crA$ and (d) are \cref{odg:def:lem:units} and its proof; on
+$\crO$ the same support arguments apply with the inequalities reversed, and a
+nonzero $f\in\crH$ has $f\in\crO$ or $f^{-1}\in\crm$, so $\crO$ is a valuation
+ring. Part (b) compares supports: a support in $\Gamma^{\ge0}\cap\Gamma^{\le0}$ is
+contained in $\{0\}$, and one in $\Gamma^{\ge0}\cap\Gamma^{<0}$ or
+$\Gamma^{>0}\cap\Gamma^{\le0}$ is empty. A unit of
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ is a unit of $\crA$, hence a nonzero
+constant, and a constant lies in $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ exactly
+when it lies in $\mathfrak o$; this gives (c).
+\end{proof}
+
+The ring $\crA$ is not a valuation ring, and nothing below assumes that it is
+Noetherian, normal, a gcd domain, or that $\Frac\crA=\crH$
+\src{C10, C11, C12, C13, C14}. It is not integrally closed in general
+(\cref{odg:cr:sub:singular}). For $\Gamma=\Z$ it is the polynomial ring
+$\Bbbk[\omega]$ (\cref{odg:def:sub:setting}); for $\Gamma=\Q$ it contains
+$\sum_{n\ge1}\omega^{1/n}$, whose support has no least element, and for
+lexicographically ordered $\Q^2$ it contains $\sum_{n\ge1}\omega^{(1,1/n)}$, whose
+fine structure lies below the first Archimedean scale \src{C11, C12, C13, C14}.
+No proof below replaces such a support by a finite truncation.
+
+\subsection{Euler derivations on both rings}\label{odg:cr:sub:euler}
+
+For a $\Q$-linear map $\lambda:\Gamma_\Q\to\Bbbk$, equivalently an additive map
+$\Gamma\to(\Bbbk,+)$, put
+\begin{equation}\label{odg:cr:eq:euler}
+ \partial_\lambda\Bigl(\sum_{\gamma\in\Gamma}a_\gamma\omega^\gamma\Bigr)
+ =\sum_{\gamma\in\Gamma}\lambda(\gamma)a_\gamma\omega^\gamma .
+\end{equation}
+For a divisible $\Gamma=H\subseteq\No$ and a real $\lambda$ this is
+\eqref{odg:eq:euler}; here neither divisibility nor real values are needed, and
+values in $\Q\subseteq\Bbbk$ already suffice for detection
+\src{C11, C12, C13}. In the $t$-convention the rule reads
+$\partial(t^\gamma)=\lambda(-\gamma)t^\gamma$; the sources C11, C12 and C14 define
+their family by $t^\gamma\mapsto\lambda(\gamma)t^\gamma$, which is the same family
+with $\lambda$ replaced by $-\lambda$. As in \cref{odg:sec:derivations}, these are
+local, freely chosen derivations; they are not a canonical surreal derivation,
+not the Berarducci--Mantova derivation, and not derivatives in the surreal
+order topology \src{C10, C11, C12, C13, C14}.
+
+\begin{lemma}[Euler derivations on the two rings \src{C12, C13; also C10, C11, C14}]\label{odg:cr:lem:euler}
+Each $\partial=\partial_\lambda$ is a $\Bbbk$-derivation of $\crH$ with
+$\supp\partial f\subseteq\supp f$, hence $v(\partial f)\ge v(f)$, and
+\begin{equation}\label{odg:cr:eq:tworings}
+ \partial\bigl(\crA\bigr)\subseteq\crP,\qquad
+ \partial\bigl(\crO\bigr)\subseteq\crm .
+\end{equation}
+For $u\in\crH^\times$ one has $\partial u/u\in\crO$, and $\partial u/u\in\crm$
+when $u\in\crO^\times$.
+\end{lemma}
+\begin{proof}
+A subset of a reverse-well-ordered support is reverse well ordered, so
+\eqref{odg:cr:eq:euler} defines a series, and additivity is coefficientwise. At a
+fixed exponent the product has finitely many contributions, and
+$\lambda(\alpha+\beta)=\lambda(\alpha)+\lambda(\beta)$ gives the Leibniz rule
+coefficientwise, as in the proof of \cref{odg:lem:derivation}; $\lambda(0)=0$
+kills $\Bbbk$. Deleting the exponent $0$ from a support in $\Gamma^{\ge0}$ leaves one
+in $\Gamma^{>0}$, and from a support in $\Gamma^{\le0}$ one in $\Gamma^{<0}$; this is
+\eqref{odg:cr:eq:tworings}. Finally $v(\partial u/u)=v(\partial u)-v(u)\ge0$, and if
+$v(u)=0$ then $\partial u\in\crm$ by \eqref{odg:cr:eq:tworings}, so
+$\partial u/u\in\crm$ \src{C12}.
+\end{proof}
+
+The strict inclusion $\partial(\crA)\subseteq\crP$ is proved by sources C11, C12
+and C13, and appears already in the collection, as a derivation
+$\Oz\to\Pi$ in \replabel{osq:prop:classder} and as a map
+$\mathcal R_{\mathfrak o}(k,\Gamma)\to\Pi_k(\Gamma)$ in \replabel{opa:par:prop:Euler}.
+Sources C10 and C14 use only $\partial(\crA)\subseteq\crA$. The inclusion
+$\partial(\crO)\subseteq\crm$ on the \emph{opposite} ring is the new ingredient of
+all five sources; it is the bridge to properness.
+
+\begin{lemma}[Joint constants and leading detection \src{C10, C11, C12, C13, C14}]\label{odg:cr:lem:separation}
+The common kernel of all Euler derivations of $\crH$ is $\Bbbk$. If
+$x\in\crA\setminus\Bbbk$ has $\ddeg x=\alpha$, there is $\lambda$ with
+$\lambda(\alpha)=1$, and then $\partial_\lambda x\ne0$ and
+$\ddeg\partial_\lambda x=\alpha$.
+\end{lemma}
+\begin{proof}
+If $f$ has a nonzero coefficient at $\gamma\ne0$, extend $\{\gamma\}$ to a basis of
+the $\Q$-vector space $\Gamma_\Q$ and let $\lambda$ be the coordinate functional
+taking $\gamma$ to $1\in\Q\subseteq\Bbbk$; then $\partial_\lambda f$ has the same
+nonzero coefficient at $\gamma$. Only choice for a set-sized vector space is used.
+For the last assertion take $\gamma=\alpha$: no new exponent is created and the
+leading coefficient survives. This is \cref{odg:lem:detection} for an arbitrary
+$\Gamma$ and $\Bbbk$.
+\end{proof}
+
+As after \cref{odg:lem:detection}, a single Euler derivation can kill a
+nonconstant series ($\lambda(a+b\sqrt2)=a$ kills $\omega^{\sqrt2}$ on
+$\Q+\Q\sqrt2$); every constancy argument below uses the whole family
+\src{C10, C11, C12, C13, C14}.
+
+\begin{corollary}[Relatively algebraically closed constants \src{C10, C14}]\label{odg:cr:cor:algclosed}
+Every element of $\crH$ algebraic over $\Bbbk$ lies in $\Bbbk$.
+\end{corollary}
+\begin{proof}
+Let $p$ be the minimal polynomial of $f$ over $\Bbbk$. In characteristic zero it
+is separable, so $p'(f)\ne0$, and $0=\partial(p(f))=p'(f)\partial f$ for every
+Euler derivation. Thus $f$ is a joint constant, and
+\cref{odg:cr:lem:separation} applies.
+\end{proof}
+
+\subsection{The squarefree certificate}\label{odg:cr:sub:squarefree}
+
+\begin{lemma}[Differential division \src{C14; also C10, C11, C12, C13}]\label{odg:cr:lem:division}
+Let $P\in\Bbbk[X]$ be squarefree and choose $U,W\in\Bbbk[X]$ with
+$UP+WP'=1$. In independent variables $x,y,\xi,\upsilon$ put
+\[
+ F=y^m-P(x),\quad G=my^{m-1}\upsilon-P'(x)\xi,\quad
+ H=U(x)y\xi+mW(x)\upsilon .
+\]
+Then
+\begin{equation}\label{odg:cr:eq:universal}
+ \xi-y^{m-1}H+U(x)\xi F+W(x)G=0 .
+\end{equation}
+Consequently, if $x,y$ lie in a commutative $\Bbbk$-algebra with $y^m=P(x)$ and
+$\partial$ is a $\Bbbk$-derivation of it,
+\begin{equation}\label{odg:cr:eq:division}
+ \partial x=y^{m-1}\bigl(U(x)y\,\partial x+mW(x)\,\partial y\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expanding, the terms in $y^m\xi$ and in $y^{m-1}\upsilon$ cancel and
+$\xi\bigl(1-U(x)P(x)-W(x)P'(x)\bigr)=0$ remains. Substituting
+$\xi=\partial x$, $\upsilon=\partial y$ makes $F$ and $G$ vanish, since the
+derivative of $y^m=P(x)$ is $G=0$ \src{C12, C13}.
+\end{proof}
+
+The identity is a finite certificate in the ideal generated by the equation and
+its derivative; it replaces the unique factorization or the quotient-ring step of
+\cref{odg:thm:separated} and needs no cancellation in the ring
+\src{C10, C11, C12, C13, C14}.
+
+\begin{theorem}[Squarefree superelliptic rigidity \src{C12, C13; also C10, C11, C14}]\label{odg:cr:thm:squarefree}
+Let $P\in\Bbbk[X]$ be squarefree of degree $d\ge2$ and $m\ge2$ an ordinary integer.
+Every solution of $y^m=P(x)$ in $\crA^2$ lies in $\Bbbk^2$.
+\end{theorem}
+\begin{proof}
+If $x\in\Bbbk$, then $y$ is algebraic over $\Bbbk$ and lies in $\Bbbk$ by
+\cref{odg:cr:lem:rings}(d). Suppose $\alpha=\ddeg x>0$. By
+\cref{odg:cr:lem:rings}(d), $P(x)\ne0$ has degree $d\alpha$, so $y\ne0$ and
+$\beta=\ddeg y$ satisfies $m\beta=d\alpha$; in particular $\beta>0$. Choose
+$\partial$ with $\ddeg\partial x=\alpha$ (\cref{odg:cr:lem:separation}) and put
+$h=U(x)y\,\partial x+mW(x)\,\partial y$, so that $\partial x=y^{m-1}h$ by
+\eqref{odg:cr:eq:division}. The factors $\partial x$ and $\partial y$ lie in the
+ideal $\crP$ (\cref{odg:cr:lem:euler}), and their coefficients lie in $\crA$, so
+$h\in\crP$; and $h\ne0$ because $\partial x\ne0$. A nonzero element of $\crP$ has
+positive degree, so
+\[
+ \alpha=\ddeg\partial x=(m-1)\beta+\ddeg h>(m-1)\beta .
+\]
+Multiplying by $m$ gives $m\alpha>(m-1)d\alpha$, that is
+$\bigl(m-(m-1)d\bigr)\alpha>0$. But $m-(m-1)d\le0$ for all ordinary $m,d\ge2$, and
+$\alpha>0$, a contradiction. Only multiplication of group elements by ordinary
+integers is used, so $\Gamma$ need not be divisible.
+\end{proof}
+
+\begin{remark}[The unit route at the corner $(2,2)$ \src{C10, C11, C14}]\label{odg:cr:rem:unitroute}
+Sources C10, C11 and C14 use only $h\in\crA$. Then $\ddeg h\ge0$ and the same
+computation gives $\bigl(m-(m-1)d\bigr)\alpha\ge0$, a contradiction whenever
+$(m-1)d>m$; since $(m-1)d-m=(m-1)(d-1)-1$, this excludes every pair except
+$m=d=2$. That corner they treat by units: extend coefficients to $\bar\Bbbk$,
+write $P(X)=c(X-r_1)(X-r_2)$ with $r_1\ne r_2$, choose $q^2=c$ and put
+$u=x-(r_1+r_2)/2$; then $(y-qu)(y+qu)=-c(r_1-r_2)^2/4\in\bar\Bbbk^\times$, so both
+factors are units of $\mathcal A_{\bar\Bbbk}(\Gamma)$, hence constants, and so are
+$x,y$, whose coefficients lie in $\Bbbk$. This is the constant-product mechanism
+of \cref{odg:lem:constantproduct,odg:thm:binary}. The strict inclusion
+$h\in\crP$ of sources C12 and C13 removes the corner without it; it is printed
+as the primary proof, and this unit argument is kept as the second route.
+\end{remark}
+
+The hypotheses are sharp \src{C10, C11, C12, C13, C14}. For $d=1$ the curve is an
+affine line: $y^m=ax+b$ with $a\ne0$ has the points $(\,(u^m-b)/a,\,u)$ for all
+$u\in\crA$. For $m=1$ the graph $y=P(x)$ has the evident families. Squarefreeness
+is needed: the cusp $y^2=x^3$ has $(u^2,u^3)$ (\cref{odg:cr:prop:singular}).
+Characteristic zero is needed (\cref{odg:cr:sub:charp}).
+
+\Cref{odg:cr:thm:squarefree} contains \cref{odg:thm:separated}: for
+$a,b,c\in\C^\times$ and $m,n\ge2$, the equation $ax^m+by^n=c$ is
+$y^n=P(x)$ with $P(X)=(c-aX^m)/b$, which is squarefree of degree $m$ because its
+derivative vanishes only at $0$, where $P(0)=c/b\ne0$. So
+\cref{odg:cr:thm:squarefree} with $\Bbbk=\C$ and $\Gamma\subseteq\No$ reproves
+\cref{odg:thm:separated,odg:cor:mordell} without the binary-form step, and the
+case $d=2$ includes the Pell-type equations $y^2=Dx^2+c$ with $Dc\ne0$
+(\cref{odg:cor:pell}) \src{C13}. The separated-power proof of
+\cref{odg:sec:derivations} remains a valid second proof of its case.
+
+\begin{proposition}[A cubic certificate \src{C10, C11, C12, C13, C14}]\label{odg:cr:prop:cubic}
+For $P(X)=X^3+aX+b$ and $\Delta_0=4a^3+27b^2$,
+\begin{equation}\label{odg:cr:eq:cubic}
+ (27b-18aX)\,P(X)+(6aX^2-9bX+4a^2)\,P'(X)=\Delta_0
+\end{equation}
+in $\Z[a,b,X]$. So $P$ is squarefree when $\Delta_0\ne0$; conversely a repeated
+root $r$ gives $a=-3r^2$, $b=2r^3$ and $\Delta_0=0$. On $y^2=P(x)$ and for a
+derivation $\partial$ killing $a,b$,
+\begin{equation}\label{odg:cr:eq:cubicdiv}
+ \Delta_0\,\partial x=y\bigl((27b-18ax)\,y\,\partial x+2(6ax^2-9bx+4a^2)\,\partial y\bigr),
+\end{equation}
+and, with $U=(27b-18aX)/\Delta_0$ and $W=(6aX^2-9bX+4a^2)/\Delta_0$, the regular
+differential of the affine curve satisfies
+\begin{equation}\label{odg:cr:eq:dxy}
+ \frac{\dif x}{y}=U(x)\,y\,\dif x+2W(x)\,\dif y .
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expansion proves \eqref{odg:cr:eq:cubic}; a common root of $P$ and $P'$ would
+divide $\Delta_0$. A repeated root satisfies $3r^2+a=0$ and $r^3+ar+b=0$, whence
+$b=2r^3$ and $\Delta_0=4(-3r^2)^3+27(2r^3)^2=0$. Identity \eqref{odg:cr:eq:cubicdiv}
+is \eqref{odg:cr:eq:division} with $m=2$ multiplied by $\Delta_0$. Finally
+$y\bigl(U(x)y\,\dif x+2W(x)\dif y\bigr)=\bigl(U(x)P(x)+W(x)P'(x)\bigr)\dif x=\dif x$ in
+the function field, because $2y\,\dif y=P'(x)\dif x$ \src{C12, C13}.
+\end{proof}
+
+The right side of \eqref{odg:cr:eq:dxy} is regular on the whole affine curve,
+including its points with $y=0$, and the element $h$ in the proof of
+\cref{odg:cr:thm:squarefree} is its contraction with $\partial$ divided by $2$.
+This is the bridge between the elementary certificate and the geometric argument
+below: the certificate exhibits one global regular differential of the curve
+\src{C12, C13}. The classical discriminant of $P$ is $-\Delta_0$ and the elliptic
+discriminant is $-16\Delta_0$; only the nonvanishing matters \src{C10, C12}.
+
+\begin{corollary}[Nonsingular short Weierstrass equations \src{C10, C11, C12, C13, C14}]\label{odg:cr:cor:weierstrass}
+For $a,b\in\Bbbk$ with $4a^3+27b^2\ne0$, every solution of $y^2=x^3+ax+b$ in
+$\crA^2$ is constant. For $a,b\in\Z$,
+\[
+ \{(x,y)\in\Oz^2:y^2=x^3+ax+b\}=\{(x,y)\in\Z^2:y^2=x^3+ax+b\},
+\]
+and for $a,b\in\Z[i]$ the solutions in $\Og^2$ are those in $\Z[i]^2$.
+\end{corollary}
+\begin{proof}
+The first assertion is \cref{odg:cr:thm:squarefree} with $(m,d)=(2,3)$ and
+\cref{odg:cr:prop:cubic}. Directly: if $\ddeg x=\alpha>0$ then $2\ddeg y=3\alpha$,
+and with $\ddeg\partial x=\alpha$ the element
+$h=\tfrac12U(x)y\,\partial x+W(x)\,\partial y\in\crP$ satisfies $2yh=\partial x$,
+so $\ddeg h=\alpha-\tfrac32\alpha<0$ in $\Gamma_\Q$, impossible \src{C13, C14}.
+For omnific coordinates put both in one workspace $\mathcal A_\C(\Gamma)$
+(\cref{odg:lem:workspace}); they become complex constants, and
+$\Oz\cap\C=\Z$, $\Og\cap\C=\Z[i]$.
+\end{proof}
+
+So $y^2=x^3-x+1$ ($\Delta_0=23$), $y^2=x^3+2x+3$ ($\Delta_0=275$) and, by
+\cref{odg:cr:thm:squarefree}, $y^2=x^5-x+1$ (whose gcd with $5x^4-1$ is one)
+have only their ordinary omnific points \src{C12, C13}; no complete list of those
+ordinary points is claimed.
+
+\begin{corollary}[General Weierstrass equations \src{C13}, for every $\Bbbk$]\label{odg:cr:cor:generalweierstrass}
+Let $a_1,a_2,a_3,a_4,a_6\in\Bbbk$ and suppose the projective cubic of
+\begin{equation}\label{odg:cr:eq:generalweierstrass}
+ y^2+a_1xy+a_3y=x^3+a_2x^2+a_4x+a_6
+\end{equation}
+is nonsingular. Every solution in $\crA^2$ is constant. If the $a_j$ lie in $\Z$
+(or $\Z[i]$), every solution in $\Oz^2$ (or $\Og^2$) is ordinary.
+\end{corollary}
+\begin{proof}
+Put $Y=2y+a_1x+a_3$. Then $Y^2=Q(x)$ with
+\[
+ Q(X)=4X^3+(a_1^2+4a_2)X^2+(2a_1a_3+4a_4)X+(a_3^2+4a_6),
+\]
+because $Y^2-Q(x)$ is four times the difference of the two sides of
+\eqref{odg:cr:eq:generalweierstrass}. The change of variables is invertible over
+$\Bbbk$, and a repeated root $r$ of $Q$ would make the point with $x=r$, $Y=0$
+singular; so $Q$ is squarefree of degree three. \Cref{odg:cr:thm:squarefree} makes
+$x$ and $Y$ constant, hence $y=(Y-a_1x-a_3)/2$. Division by $2$ takes place in
+$\crA$, not in $\Oz$ \src{C13}.
+\end{proof}
+
+Source C13 states this over $\Z$ and $\Z[i]$ with the fields $\R$ and $\C$; the
+proof uses only characteristic zero.
+
+\begin{proposition}[Singular cubics \src{C10, C11, C12, C14}]\label{odg:cr:prop:singular}
+If $4a^3+27b^2=0$, put $r=-3b/(2a)$ when $a\ne0$ and $r=0$ when $a=0$. Then
+$a=-3r^2$, $b=2r^3$, and
+\begin{equation}\label{odg:cr:eq:nodefamily}
+ x=s^2-2r,\qquad y=s^3-3rs
+\end{equation}
+solves $y^2=x^3+ax+b$ in every commutative $\Bbbk$-algebra. If $a,b\in\Z$, then
+$r\in\Z$, and \eqref{odg:cr:eq:nodefamily} gives omnific solutions for every
+$s\in\Oz$, nonordinary when $s$ is. Likewise the node $y^2=x^2(x+1)$ carries
+$(h^2-1,\,h(h^2-1))$ and the cusp $y^2=x^3$ carries $(h^2,h^3)$ \src{C11}.
+\end{proposition}
+\begin{proof}
+From $4a^3=-27b^2$ one gets $r^2=9b^2/(4a^2)=-a/3$ and $r^3=r\cdot r^2=b/2$. Then
+$X^3-3r^2X+2r^3=(X-r)^2(X+2r)$, and at $x=s^2-2r$ the two factors are
+$(s^2-3r)^2$ and $s^2$, whose product is $y^2$. For integers $a,b$, the number $r$
+is a rational root of the monic integer polynomial $X^3+aX+b$, hence an integer
+\src{C12}; equivalently, $r=p/q$ in lowest terms and $-3p^2/q^2=a\in\Z$ force
+$q=1$ \src{C14}. A nonconstant $s$ gives $\ddeg x=2\ddeg s>0$. The node and cusp
+identities are $(h(h^2-1))^2=(h^2-1)^2h^2$ and $(h^3)^2=(h^2)^3$.
+\end{proof}
+
+The case $r=0$ is the cusp and $r=1$ the node $y^2=x^3-3x+2$ with
+$(s^2-2,\,s^3-3s)$ \src{C12, C14}. For positive infinite $s\in\Oz$ the map
+$s\mapsto s^2-2r$ is injective, so every singular integral Weierstrass cubic has a
+proper class of distinct omnific points, while a nonsingular one has only its set
+of ordinary points \src{C12, C14}. This is a polynomial family, not a claim that
+every point of a singular curve has a parameter in the same ring \src{C14}. Thus
+the test equation of \cref{odg:q:affine} has two sharply different outcomes:
+every nonsingular equation is rigid, and every singular one has polynomial
+families \src{C10, C12}.
+
+\subsection{The two-ring contraction principle}\label{odg:cr:sub:tworing}
+
+\begin{definition}[Differential separation data \src{C14; also C10, C11, C13}]\label{odg:cr:def:data}
+Let $L/\Bbbk$ be a field extension, $R\subseteq L$ a $\Bbbk$-subalgebra, and
+$V\subseteq L$ a valuation ring containing $\Bbbk$, with fraction field $L$ and
+maximal ideal $\mathfrak m_V$. A family $\mathcal D$ of $\Bbbk$-derivations of $L$
+is \emph{separating} if
+\begin{equation}\label{odg:cr:eq:data}
+ \partial(R)\subseteq R,\qquad \partial(V)\subseteq\mathfrak m_V
+ \quad(\partial\in\mathcal D),\qquad R\cap\mathfrak m_V=\{0\},\qquad
+ \bigcap_{\partial\in\mathcal D}\ker\partial=\Bbbk .
+\end{equation}
+\end{definition}
+
+No inclusion between $R$ and $V$ is required, and $R$ is not assumed to be a
+valuation ring, normal, finitely generated or of finite transcendence degree;
+$L$ may be larger than $\Frac R$ \src{C10, C11, C14}. By
+\cref{odg:cr:lem:rings,odg:cr:lem:euler,odg:cr:lem:separation},
+$(L,R,V,\mathcal D)=(\crH,\crA,\crO,\{\partial_\lambda\})$ is separating data, with
+the stronger inclusion $\partial(\crA)\subseteq\crP$.
+
+\begin{lemma}[Equality from an ambient field \src{C10, C11, C12, C13, C14}]\label{odg:cr:lem:separated}
+Let $X$ be a separated scheme and $\sigma_1,\sigma_2\in X(S)$. If $S\to T_i$ are
+ring maps whose kernels have zero intersection, and the images of
+$\sigma_1,\sigma_2$ in each $X(T_i)$ agree, then $\sigma_1=\sigma_2$. In particular
+$X(S)\to X(T)$ is injective for an injective ring map $S\hookrightarrow T$, such as
+$S\subseteq L$ with $L$ a field; $L=\Frac S$ is not needed.
+\end{lemma}
+\begin{proof}
+The equalizer of $\sigma_1,\sigma_2$ is the inverse image of the closed diagonal,
+a closed subscheme of $\Spec S$ with ideal $J$. Agreement over $T_i$ puts $J$ in
+the kernel of $S\to T_i$ for every $i$, so $J=0$ \src{C11}.
+\end{proof}
+
+\begin{theorem}[Two-ring annihilation \src{C13}; one-forms \src{C10, C11, C12, C14}]\label{odg:cr:thm:annihilation}
+Let $L,R,V,\mathfrak m_V$ and $\mathcal D$ satisfy the first three conditions of
+\eqref{odg:cr:eq:data}. Let $X$ be proper over $\Bbbk$ and $p\in X(R)$, with
+$p_L\in X(L)$ its image. For every $r\ge1$, every global covariant tensor
+$s\in H^0\bigl(X,(\Omega^1_{X/\Bbbk})^{\otimes r}\bigr)$ and all
+$\partial_1,\ldots,\partial_r\in\mathcal D$,
+\begin{equation}\label{odg:cr:eq:annihilation}
+ s_{p_L}(\partial_1p_L,\ldots,\partial_rp_L)=0 ,
+\end{equation}
+and every global symmetric differential vanishes on the diagonal
+$(\partial p_L,\ldots,\partial p_L)$. Smoothness of $X$ is not needed.
+\end{theorem}
+\begin{proof}
+A $\Bbbk$-derivation $\partial:S\to M$ into an $S$-module factors uniquely through
+an $S$-linear map $\iota_\partial:\Omega^1_{S/\Bbbk}\to M$,
+$\sum a_j\,\dif b_j\mapsto\sum a_j\partial b_j$; the sums are finite, and no finite
+generation of $S$ is needed \cite[Tag 00RM]{StacksDiff}. Pulling $s$ back along
+$p$ to $(\Omega^1_{R/\Bbbk})^{\otimes r}$ and contracting with the restrictions
+$\partial_j|_R:R\to R$ gives an element $a_R\in R$. By the valuative criterion
+for properness, which holds for arbitrary valuation rings and not only discrete
+ones \cite[Tag 0BX5]{StacksProper}, $p_L$ extends to $q\in X(V)$. The restrictions
+$\partial_j|_V$ take values in the $V$-module $\mathfrak m_V$; pulling $s$ back along
+$q$ and contracting gives a finite sum of products of $r$ elements of
+$\mathfrak m_V$ with coefficients in $V$, an element $a_V\in\mathfrak m_V$. Both
+constructions are functorial and restrict to the contraction along $p_L$ by the
+same derivations of $L$; locally, for $s$ written with regular functions $f$ and
+differentials $\dif g$, both give the same finite expression in the values
+$f(p_L)$ and $\partial_j(g(p_L))$, and these local expressions agree on overlaps
+even when the images of $\Spec R$ and $\Spec V$ lie in different affine charts
+\src{C13, C14}. Hence $a_R=a_V\in R\cap\mathfrak m_V=0$. For a symmetric
+differential contract every factor with the same derivation.
+\end{proof}
+
+The derivations are relative to $\Bbbk$, not to $L$: an $L$-linear derivation of
+$L$ is zero and would give nothing. The forms are global and regular; a rational
+form with a pole at the centre of $q$ need not contract into $\mathfrak m_V$
+\src{C14}. The argument compares two extensions of one field-valued point; it
+does not assert a ring map $R\to V$ compatible with the embeddings in $L$, and
+such a map generally does not exist \src{C10}. For $X\subseteq\mathbb P^n_\Bbbk$
+the valuative step is concrete: write $p_L=[a_0:\cdots:a_n]$, choose $j$ with $a_j\ne0$
+of least valuation, and use the coordinates $a_i/a_j\in V$ \src{C13}. A regular
+differential thus has two descriptions at the point, one with no strictly
+negative exponent and one, after an Euler derivation, with only strictly negative
+exponents; properness supplies the second even when the affine coordinates of
+the point are infinite \src{C14}. Nothing here is an order-topological or
+transfinite-limit argument.
+
+\begin{lemma}[From vanishing tangents to a constant point \src{C13, C14; also C10, C11, C12}]\label{odg:cr:lem:constantpoint}
+Let $(L,R,V,\mathcal D)$ be separating data, $X$ a separated $\Bbbk$-scheme of
+finite type and $p\in X(R)$. If $\partial(f(p_L))=0$ for every $\partial\in\mathcal D$
+and every regular function $f$ on some affine open $W\ni p_L$, then $p$ comes from
+a unique point of $X(\Bbbk)$.
+\end{lemma}
+\begin{proof}
+The algebra map $\Bbbk[W]\to L$ of $p_L$ has image in the joint constants $\Bbbk$,
+so it defines $p_0\in W(\Bbbk)\subseteq X(\Bbbk)$ whose extension to $L$ is $p_L$.
+The constant $R$-point of $p_0$ and $p$ agree over $L$, hence over $R$ by
+\cref{odg:cr:lem:separated}. Uniqueness follows from $\Bbbk\hookrightarrow L$. The
+point $p$ need not factor through $W$ before this is proved \src{C13}.
+\end{proof}
+
+\begin{theorem}[Proper differential rigidity \src{C14; also C10, C11, C12, C13}]\label{odg:cr:thm:proper}
+Let $(L,R,V,\mathcal D)$ be separating data and $X$ a smooth proper $\Bbbk$-scheme
+whose cotangent sheaf $\Omega^1_{X/\Bbbk}$ is generated by global sections. Then
+$X(\Bbbk)\to X(R)$ is a bijection.
+\end{theorem}
+\begin{proof}
+Let $p\in X(R)$ and $\partial\in\mathcal D$. Differentiation of $p_L$ defines an
+$L$-linear map $p_L^*\Omega^1_{X/\Bbbk}\to L$. Global generation makes
+$H^0(X,\Omega^1_{X/\Bbbk})\otimes_\Bbbk L\to p_L^*\Omega^1_{X/\Bbbk}$ surjective,
+since tensoring a surjection with a residue field preserves surjectivity; by
+\cref{odg:cr:thm:annihilation} the map vanishes on its image, hence is zero. So
+$\partial(f(p_L))=0$ for every regular $f$ on an affine open through $p_L$, and
+\cref{odg:cr:lem:constantpoint} makes $p$ constant. Injectivity follows from
+$\Bbbk\hookrightarrow L$.
+\end{proof}
+
+\begin{corollary}[Hahn realization \src{C14; also C10, C11, C12, C13}]\label{odg:cr:cor:hahnproper}
+For every field $\Bbbk$ of characteristic zero, every set-sized ordered abelian
+group $\Gamma$ and every smooth proper $\Bbbk$-scheme $X$ with globally generated
+cotangent sheaf, $X(\crA)=X(\Bbbk)$, and $\ct$ is inverse to the inclusion of
+constant points. For $\Bbbk=\R$ or $\C$ the same holds over $\BR$ or $\BC$ in the
+class convention of \cref{odg:cr:sub:conventions}.
+\end{corollary}
+\begin{proof}
+Apply \cref{odg:cr:thm:proper} to the data $(\crH,\crA,\crO,\{\partial_\lambda\})$.
+The retraction fixes constant points \src{C10}. A class point lies over some
+$\mathcal A_\R(\Gamma)$ or $\mathcal A_\C(\Gamma)$.
+\end{proof}
+
+The proof uses only that global forms span the cotangent space at the particular
+field-valued point $p_L$ \src{C11, C12}. Hence if $Z\subseteq X$ is the locus where
+global forms fail to generate, every nonconstant $\crA$-point has its $\crH$-point
+in $Z$, and every Euler tangent direction of a point lies in the common
+annihilator of the global one-forms there \src{C10, C11}. This is an obstruction,
+not a classification of varieties with a nonempty failure locus, and it does not
+prove that surviving directions integrate to nonconstant Hahn points.
+
+\begin{definition}[Tangent detection by symmetric differentials \src{C13}]\label{odg:cr:def:detect}
+Global symmetric differentials \emph{detect tangent directions} on a smooth proper
+$\Bbbk$-scheme $X$ if for every field extension $L/\Bbbk$, every $x\in X(L)$ and
+every nonzero tangent vector $u\in T_xX_L$ there are $r\ge1$ and
+$s\in H^0(X,\Sym^r\Omega^1_{X/\Bbbk})$ with $s_x(u,\ldots,u)\ne0$.
+\end{definition}
+
+The quantification over extension fields is needed because the point $p_L$ is
+generally not classical; since proper coherent cohomology commutes with field
+extension, sections after base change are linear combinations of sections over
+$\Bbbk$ \src{C13}.
+
+\begin{theorem}[Symmetric-differential rigidity \src{C13}]\label{odg:cr:thm:symmetric}
+If $X$ is smooth and proper over $\Bbbk$ and its global symmetric differentials
+detect tangent directions, then $X(\crA)=X(\Bbbk)$ for every $\Gamma$.
+\end{theorem}
+\begin{proof}
+If some $\partial_\lambda p_L$ were nonzero, a detecting symmetric differential
+would have nonzero diagonal value on it, contrary to
+\cref{odg:cr:thm:annihilation}. So all Euler tangent vectors vanish and
+\cref{odg:cr:lem:constantpoint} applies.
+\end{proof}
+
+\begin{corollary}[A semiample tautological bundle \src{C13}]\label{odg:cr:cor:semiample}
+Let $X$ be smooth and projective over $\Bbbk$, and let
+$\mathcal L=\mathcal O_{\mathbb P(\Omega^1_{X/\Bbbk})}(1)$, with $\mathbb P(E)$
+parametrizing one-dimensional quotients of $E$. If some positive tensor power of
+$\mathcal L$ is globally generated, then $X(\crA)=X(\Bbbk)$. This holds in
+particular when $\mathcal L$ is ample, which is what ``$\Omega^1_{X/\Bbbk}$ is
+ample'' means here, and when $\Sym^r\Omega^1_{X/\Bbbk}$ is globally generated for
+some $r\ge1$.
+\end{corollary}
+\begin{proof}
+A nonzero tangent vector $u$ at $x$ defines a one-dimensional quotient of the
+cotangent space, a point of $\mathbb P(\Omega^1)$ over $x$. Under
+$H^0(\mathbb P(\Omega^1),\mathcal L^{\otimes r})=H^0(X,\Sym^r\Omega^1)$
+\cite[Tag 01OA]{StacksProjBundle}, a section of $\mathcal L^{\otimes r}$ not vanishing at
+that point is a symmetric differential with $s_x(u,\ldots,u)\ne0$. An ample line
+bundle on a projective scheme has a globally generated power
+\cite[Tag 01PR]{StacksAmple}, and global generation of $\Sym^r\Omega^1$ gives that of
+$\mathcal L^{\otimes r}$ through the universal quotient. Apply
+\cref{odg:cr:thm:symmetric}.
+\end{proof}
+
+Conventions for semiample vector bundles vary, so the hypothesis is stated for
+the tautological line bundle. No implication from nefness, bigness or general
+type is asserted \src{C13}.
+
+\begin{proposition}[Inheritance \src{C13; also C10, C11, C14}]\label{odg:cr:prop:inherit}
+Let $X$ be a separated $\Bbbk$-scheme of finite type with $X(\crA)=X(\Bbbk)$. Every
+locally closed subscheme $Y\subseteq X$ has $Y(\crA)=Y(\Bbbk)$. For a morphism
+$f:Z\to X$, every $\crA$-point $z$ of $Z$ satisfies $f(z)=f(\ct z)$; so if every
+fiber of $f$ over a $\Bbbk$-point is rigid, then $Z(\crA)=Z(\Bbbk)$.
+\end{proposition}
+\begin{proof}
+For $y\in Y(\crA)$ its image in $X$ is constant, equal to the image of
+$y_0=\ct(y)\in Y(\Bbbk)$; an immersion is a monomorphism, so $y=y_0$. For $f$, the
+point $f(z)$ is constant with constant term $f(\ct z)$, so $z$ lies in that
+fiber.
+\end{proof}
+
+Neither hypothesis of \cref{odg:cr:thm:proper} can be dropped
+\src{C10, C11, C12, C13, C14}. The affine line $\Ga$ has trivial cotangent sheaf,
+generated by $\dif T$, but is not proper, and $\Ga(\crA)=\crA$: the point
+$T=\omega^\gamma$ does not extend to a $\crO$-point of that chart. The projective
+line is proper but has no nonzero global one-form, and $[\omega^\gamma:1]$ is a
+nonconstant point of $\mathbb P^1(\crA)$ for $\gamma>0$. Properness supplies the
+valuation-ring point and global generation the detection; they are separate
+hypotheses. Nor is finite generation a shortcut: a finite tuple of Hahn series
+generates a finitely generated algebra, but an Euler derivation need not preserve
+it, so one cannot infer that the tuple comes from a polynomial arc; polynomial
+arcs appear only after the classification has forced the affine line
+(\cref{odg:cr:cor:polywitness}) \src{C14}.
+
+\section{Smooth curves and their omnific points}\label{odg:cr:sec:curves}
+
+\subsection{Positive genus}\label{odg:cr:sub:positivegenus}
+
+\begin{lemma}[Canonical forms have no common zero \src{C13, C14; also C10, C11, C12}]\label{odg:cr:lem:canonical}
+Let $\overline C$ be a smooth proper geometrically integral curve of genus $g\ge1$
+over $\Bbbk$. Then $\Omega^1_{\overline C/\Bbbk}$ is generated by its global sections.
+\end{lemma}
+\begin{proof}
+Global sections of a coherent sheaf on a proper scheme commute with field
+extension, and surjectivity descends along the faithfully flat extension
+$\Bbbk\subseteq\bar\Bbbk$, so assume $\Bbbk$ algebraically closed. Let $P$ be a point.
+A nonconstant rational function with at most a simple pole at $P$ would be a
+degree-one morphism $\overline C\to\mathbb P^1$, an isomorphism of smooth projective
+curves, contradicting $g\ge1$; so $h^0(\overline C,\mathcal O_{\overline C}(P))=1$.
+Riemann--Roch and duality \cite{StacksRR} give
+$h^0\bigl(\overline C,\Omega^1(-P)\bigr)=h^0(\mathcal O_{\overline C}(P))+g-2=g-1$,
+while $h^0(\overline C,\Omega^1)=g$. So some global differential does not vanish at
+$P$ and spans the one-dimensional cotangent fiber there.
+\end{proof}
+
+\begin{theorem}[Positive-genus curves \src{C11, C13, C14; also C10, C12}]\label{odg:cr:thm:positivegenus}
+Let $\overline C$ be a smooth proper geometrically integral curve of genus at least
+one over $\Bbbk$. Then $\overline C(\crA)=\overline C(\Bbbk)$, and every locally closed
+subscheme of $\overline C$, in particular every open subcurve, has only constant
+$\crA$-points.
+\end{theorem}
+\begin{proof}
+Apply \cref{odg:cr:lem:canonical,odg:cr:cor:hahnproper,odg:cr:prop:inherit}.
+\end{proof}
+
+Sources C11, C13 and C14 prove this over every field of characteristic zero,
+source C11 by extending coefficients to $\bar\Bbbk$ and comparing a point with its
+constant term through \cref{odg:cr:lem:separated}; sources C10 and C12 assume $\Bbbk$
+algebraically closed. No rational point is selected in advance: a genus-one torsor
+without a $\Bbbk$-point has no $\crA$-point at all \src{C14}. Source C10 notes that
+the projective statement also follows from an Abel--Jacobi embedding and
+\cref{odg:cr:thm:abelian}; the proof above avoids that construction.
+
+\begin{remark}[One nonzero form suffices for curves \src{C11, C12}]\label{odg:cr:rem:oneform}
+For curves the base-point-free statement can be bypassed. Let $p$ be a
+nonconstant $\crA$-point of a smooth geometrically integral curve $X$ of positive
+genus (proper, or an open subcurve of a proper one). If the image of the generic
+point of $\Spec\crA$ were a closed point, its residue field would be finite over
+$\Bbbk$ and embedded in $\crH$, hence equal to $\Bbbk$ by
+\cref{odg:cr:cor:algclosed}, and $p$ would be constant by
+\cref{odg:cr:lem:separated}. So $p$ gives an embedding $F=\Bbbk(X)\hookrightarrow\crH$.
+A nonzero global regular form $\eta$ on the completion spans the one-dimensional
+$F$-space $\Omega^1_{F/\Bbbk}$, and its contraction with every $\partial_\lambda$
+vanishes by \cref{odg:cr:thm:annihilation}. Writing $\dif f=h_f\eta$ gives
+$\partial_\lambda f=h_f\,\eta(\partial_\lambda)=0$ for all $f\in F$ and all $\lambda$,
+so $F\subseteq\Bbbk$ by \cref{odg:cr:lem:separation}, contradicting
+$\trdeg_\Bbbk F=1$. Source C11 gives this for affine curves over algebraically
+closed $\Bbbk$ and source C12 for projective ones; the closed-point step for a
+general $\Bbbk$ uses \cref{odg:cr:cor:algclosed}.
+\end{remark}
+
+\subsection{The smooth affine classification}\label{odg:cr:sub:affine}
+
+\begin{lemma}[Two punctures force constancy \src{C10, C11, C13, C14}]\label{odg:cr:lem:punctures}
+Let $\Bbbk$ be algebraically closed. If $U=\mathbb P^1_\Bbbk\setminus\Sigma$ with
+$|\Sigma|\ge2$, then $U(\crA)=U(\Bbbk)$. More generally, an integral affine curve
+$C$ over $\Bbbk$ whose coordinate ring has a nonconstant unit has
+$C(\crA)=C(\Bbbk)$.
+\end{lemma}
+\begin{proof}
+Let $\varphi:\Bbbk[C]\to\crA$ be a point and $u$ a nonconstant unit. Then
+$\varphi(u)\in\crA^\times=\Bbbk^\times$, say $\varphi(u)=c$. The kernel of $\varphi$
+contains $u-c\ne0$; it is a prime of the one-dimensional finitely generated domain
+$\Bbbk[C]$, hence maximal with residue field $\Bbbk$ by the Nullstellensatz, and
+$\varphi$ factors through $\Bbbk$ \src{C13}. For $U$, a coordinate $z$ with its zero
+and pole at two removed points is such a unit \src{C10, C11, C14}.
+\end{proof}
+
+This is the curve case of the torus remark of \cref{odg:sec:rigidity}
+(``An algebraic-geometric formulation''): a coordinate ring generated by units
+has only constant points.
+
+\begin{lemma}[Forms of the affine line \src{C14}; real case \src{C10, C11, C13}]\label{odg:cr:lem:formA1}
+If $C$ is a smooth geometrically integral affine curve over $\Bbbk$ with
+$C_{\bar\Bbbk}\cong\Aff^1_{\bar\Bbbk}$, then $C\cong\Aff^1_\Bbbk$.
+\end{lemma}
+\begin{proof}
+The smooth projective completion $\overline C$ becomes $\mathbb P^1$ over $\bar\Bbbk$,
+and its reduced boundary has exactly one geometric point. Since $\Bbbk$ is perfect,
+a closed point of degree greater than one would have several geometric points, so
+the boundary point $P$ is $\Bbbk$-rational. A smooth proper genus-zero curve with a
+rational point is $\mathbb P^1_\Bbbk$ \cite{StacksGenusZero}: by Riemann--Roch,
+$h^0(\mathcal O_{\overline C}(P))=2$, and a function with a single simple pole at
+$P$ is a degree-one map to $\mathbb P^1_\Bbbk$ sending $P$ to $\infty$. Removing
+$P$ gives $C\cong\Aff^1_\Bbbk$.
+\end{proof}
+
+For $\Bbbk=\R$ the boundary point is fixed by complex conjugation; sources C10,
+C11 and C13 prove this case. It covers real genus-zero curves whose punctures are
+conjugate, such as the affine unit circle, for which a real parametrization must
+not be assumed before a rational point is found \src{C13}.
+
+\begin{theorem}[Smooth affine curves \src{C14; also C10, C11, C12, C13}]\label{odg:cr:thm:affine}
+Let $\Gamma\ne0$ and let $C$ be a smooth geometrically integral affine curve over
+a field $\Bbbk$ of characteristic zero. Then
+\[
+ C(\crA)\ne C(\Bbbk)\quad\Longleftrightarrow\quad C\cong\Aff^1_\Bbbk ,
+\]
+and in that case an isomorphism identifies $C(\crA)$ with $\crA$. The following
+are equivalent: $C\cong\Aff^1_\Bbbk$; $C_{L}\cong\Aff^1_{L}$ for some (or every)
+field extension $L/\Bbbk$; there is a nonconstant morphism $\Aff^1_\Bbbk\to C$.
+\end{theorem}
+\begin{proof}
+First let $\Bbbk$ be algebraically closed. Let $\overline C$ be the smooth projective
+completion and $\Sigma=\overline C\setminus C$; it is finite and nonempty, because a
+positive-dimensional proper integral curve is not affine \cite{StacksCurves}. If
+$\overline C$ has positive genus, use \cref{odg:cr:thm:positivegenus}. Otherwise
+$\overline C\cong\mathbb P^1_\Bbbk$ \cite{StacksGenusZero}; if $|\Sigma|\ge2$ use
+\cref{odg:cr:lem:punctures}, and if $|\Sigma|=1$ then $C\cong\Aff^1_\Bbbk$.
+
+For general $\Bbbk$, the coefficientwise inclusion
+$\crA\hookrightarrow\mathcal A_{\bar\Bbbk}(\Gamma)$ preserves supports. Unless
+$C_{\bar\Bbbk}\cong\Aff^1_{\bar\Bbbk}$, a point $\Bbbk[C]\to\crA$ becomes constant over
+$\bar\Bbbk$, so its image lies in $\crA\cap\bar\Bbbk=\Bbbk$ and it is a $\Bbbk$-point
+\src{C14}. If $C_{\bar\Bbbk}\cong\Aff^1_{\bar\Bbbk}$, then $C\cong\Aff^1_\Bbbk$ by
+\cref{odg:cr:lem:formA1}, whose points are the elements of $\crA$; for
+$0<\gamma\in\Gamma$ the element $\omega^\gamma$ is nonconstant. The same argument
+over $L$ and \cref{odg:cr:lem:formA1} give the equivalence with $C_L\cong\Aff^1_L$.
+A nonconstant morphism $\Aff^1\to C$ composed with the injective map
+$\Bbbk[T]\to\crA$, $T\mapsto\omega^\gamma$, gives a nonconstant point; conversely
+$\Aff^1\cong C$ is such a morphism \src{C12}.
+\end{proof}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.52\textwidth}}
+\toprule
+Completion and boundary (over $\bar\Bbbk$) & Mechanism \src{C14}\\
+\midrule
+Positive genus, any boundary & Global regular differentials force constancy.\\
+Genus zero, at least two missing points & An invertible coordinate forces constancy.\\
+Genus zero, one missing point & The affine line takes every value in $\crA$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The criterion is intrinsic to the affine curve, not to a plane equation: the
+parabola $Y=X^2$ is an affine line and has the points $(u,u^2)$, whereas the
+hyperbola $XY=1$ is $\mathbb P^1$ minus two points, and its omnific points are only
+$(1,1)$ and $(-1,-1)$ \src{C10, C11, C12}. Boundedness is not the mechanism:
+$x^2+y^2=1$ is rigid already by \cref{odg:thm:bounded}, and over $\BC$ by
+$(x+iy)(x-iy)=1$, but $y^2=x^3+x$ is unbounded in its real locus and is rigid by
+\cref{odg:cr:prop:cubic} or by its global differential \src{C14}. The classification
+uses no finite generation, rank or order-type hypothesis on supports
+\src{C10, C11, C12, C13, C14}.
+
+The rigid direction has a second proof, by logarithmic differentials, due to
+source C12. We print it over an algebraically closed field, where its local
+computation takes place; \cref{odg:cr:thm:affine} then descends as above.
+
+\begin{lemma}[Logarithmic forms \src{C12}]\label{odg:cr:lem:logdim}
+Let $\Bbbk$ be algebraically closed, $\overline C$ a smooth projective curve of genus
+$g$ and $\Sigma=P_1+\cdots+P_r$ a nonempty reduced divisor. Then
+$h^0\bigl(\overline C,\Omega^1(\Sigma)\bigr)=g+r-1$, which vanishes only for $g=0$,
+$r=1$, that is, for $\overline C\setminus\Sigma\cong\Aff^1_\Bbbk$. If $u$ is a local
+parameter at a point $Q$, a rational differential with at most a simple pole at $Q$
+has the form $c\,\dif u/u$ with $c\in\mathcal O_{\overline C,Q}$.
+\end{lemma}
+\begin{proof}
+Riemann--Roch for $K_{\overline C}+\Sigma$, where $K_{\overline C}$ is a canonical
+divisor of degree $2g-2$, gives $h^0(\Omega^1(\Sigma))-h^0(\mathcal O(-\Sigma))=g+r-1$,
+and $h^0(\mathcal O(-\Sigma))=0$ because a regular function on the proper integral
+curve is constant and vanishes at a point of $\Sigma$ only if it is zero. A curve of
+genus zero is $\mathbb P^1_\Bbbk$. The local form holds because
+$\mathcal O_{\overline C,Q}$ is a discrete valuation ring and $\dif u$ generates the
+differentials there.
+\end{proof}
+
+\begin{theorem}[The logarithmic route \src{C12}, closed centre \mergetag]\label{odg:cr:thm:logroute}
+Let $\Bbbk$ be algebraically closed and $C$ a smooth integral affine curve over
+$\Bbbk$ with $C\not\cong\Aff^1_\Bbbk$. Then $C(\crA)=C(\Bbbk)$.
+\end{theorem}
+\begin{proof}
+Let $p:\Bbbk[C]\to\crA$ be a nonconstant point. Its kernel is a prime; a nonzero
+prime of the one-dimensional domain $\Bbbk[C]$ is maximal with residue field $\Bbbk$,
+which would make $p$ constant. So $p$ is injective and extends to an embedding
+$F=\Bbbk(C)\hookrightarrow\crH$. By \cref{odg:cr:lem:logdim} there is a nonzero
+$\eta\in H^0\bigl(\overline C,\Omega^1(\Sigma)\bigr)$. Its restriction to the affine
+curve $C$ is regular, a finite sum $\sum_ja_j\,\dif b_j$ with $a_j,b_j\in\Bbbk[C]$,
+so for every Euler derivation $\partial$
+\[
+ \eta(\partial)=\sum_jp(a_j)\,\partial\bigl(p(b_j)\bigr)\in\crP
+\]
+by \cref{odg:cr:lem:euler}. On the other hand the $\crH$-point of $\overline C$
+extends, by properness, to a $\crO$-point with centre $Q$. The centre is a closed
+point: if it were the generic point, then $F\subseteq\crO$ and the residue map would
+give an injective $\Bbbk$-algebra map $F\to\Bbbk$, impossible since
+$\trdeg_\Bbbk F=1$ \mergetag. The local ring $\mathcal O_{\overline C,Q}$ maps into
+$\crO$ and a local parameter $u$ at $Q$ to a nonzero element of $\crm$. Since $\eta$
+has at most a simple pole at $Q$, \cref{odg:cr:lem:logdim} and
+\cref{odg:cr:lem:euler} give $\eta(\partial)=c\,\partial u/u\in\crO$. As
+$\crP\cap\crO=0$, $\eta(\partial)=0$. Now $\Omega^1_{F/\Bbbk}$ is one-dimensional over
+$F$ and spanned by $\eta$, so $\dif f=h_f\eta$ gives $\partial f=h_f\,\eta(\partial)=0$
+for all $f\in F$ and all $\partial$, and $F\subseteq\Bbbk$ by
+\cref{odg:cr:lem:separation}, contradicting $\trdeg_\Bbbk F=1$.
+\end{proof}
+
+Source C12 writes ``let $Q$ be its centre'' without showing that $Q$ is closed;
+the step marked \mergetag{} supplies it. This route needs the strict inclusion
+$\partial(\crA)\subseteq\crP$: with $\partial(\crA)\subseteq\crA$ alone one would only get
+$\eta(\partial)\in\crA\cap\crO=\Bbbk$. It also avoids the unit lemma: $\Gm$ has the
+logarithmic form $\dif x/x$, a genus-one affine curve has regular forms even with
+one point removed, and the affine line has none, since $\dif x$ has a double pole
+at its boundary point; these are three values of $g+r-1$ \src{C12}.
+
+\begin{corollary}[Curve subalgebras \src{C11, C12}]\label{odg:cr:cor:subalgebra}
+Let $\Bbbk$ be algebraically closed. A finitely generated $\Bbbk$-subalgebra
+$A_0\subseteq\crA$ that is a smooth (equivalently, normal) domain of transcendence
+degree one is $\Bbbk[u]$ for some $u\in\crA\setminus\Bbbk$.
+\end{corollary}
+\begin{proof}
+A normal curve over the perfect field $\Bbbk$ is smooth. The inclusion is a
+nonconstant point of $\Spec A_0$, so $\Spec A_0\cong\Aff^1_\Bbbk$ by
+\cref{odg:cr:thm:affine}, and $u$ is the image of the coordinate.
+\end{proof}
+
+Smoothness of the algebra cannot be dropped: $\Bbbk[\omega^{2\gamma},\omega^{3\gamma}]$
+is a cusp algebra inside $\crA$. The corollary does not say that every finitely
+generated subalgebra of $\crA$ is a polynomial ring; higher transcendence degree is
+outside it \src{C11}.
+
+\begin{corollary}[All smooth curves \src{C13}, for every $\Bbbk$]\label{odg:cr:cor:allcurves}
+Let $\Gamma\ne0$ and let $C$ be a smooth geometrically integral separated curve of
+finite type over $\Bbbk$. Then $C$ has a nonconstant $\crA$-point if and only if
+$C\cong\Aff^1_\Bbbk$ or $C\cong\mathbb P^1_\Bbbk$.
+\end{corollary}
+\begin{proof}
+A smooth connected curve that is not proper is affine, and
+\cref{odg:cr:thm:affine} applies. A proper curve of positive genus is rigid by
+\cref{odg:cr:thm:positivegenus}. A proper curve of genus zero with an $\crA$-point
+has the $\Bbbk$-point obtained by $\ct$, hence is $\mathbb P^1_\Bbbk$
+\cite{StacksGenusZero}, and $[\omega^\gamma:1]$ is a nonconstant point.
+\end{proof}
+
+Source C13 proves the corollary for $\Bbbk=\R$ and $\C$; its proof uses only
+the curve classification and the rational point supplied by $\ct$, so the
+statement holds over every field of characteristic zero. It is the only one of the
+five sources to include the projective line.
+
+\subsection{Arithmetic models and exact fibers}\label{odg:cr:sub:arith}
+
+\begin{theorem}[Exact fibers over an arbitrary coefficient ring \src{C11}, for every $\Bbbk$]\label{odg:cr:thm:arith}
+Let $\mathfrak o\subseteq\Bbbk$ be a subring, $\mathcal U\subseteq\Aff^n_{\mathfrak o}$
+an affine scheme of finite type such that $U=\mathcal U_\Bbbk$ is a smooth
+geometrically integral curve, and $R=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item If $U\not\cong\Aff^1_\Bbbk$, then $\mathcal U(R)=\mathcal U(\mathfrak o)$.
+\item If $\phi:\Aff^1_\Bbbk\to U$ is an isomorphism, then for every
+$\mathbf n\in\mathcal U(\mathfrak o)$, with $c_{\mathbf n}=\phi^{-1}(\mathbf n)\in\Bbbk$,
+\[
+ \crP\longrightarrow\{\mathbf x\in\mathcal U(R):\ct(\mathbf x)=\mathbf n\},\qquad
+ s\longmapsto\phi(c_{\mathbf n}+s),
+\]
+is a bijection, and $\phi(c_{\mathbf n}+s)$ is constant only for $s=0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i) A point of $\mathcal U(R)$ is a point of $U(\crA)$, constant by
+\cref{odg:cr:thm:affine}; its coordinates lie in $R\cap\Bbbk=\mathfrak o$.
+(ii) Write $\phi=(\phi_1,\ldots,\phi_n)$ with $\phi_j\in\Bbbk[T]$. Each
+$\phi_j(c_{\mathbf n}+s)-\phi_j(c_{\mathbf n})$ is a polynomial in $s$ without constant
+term, hence lies in $\crP$, and $\phi_j(c_{\mathbf n})=n_j\in\mathfrak o$; so the point
+lies in $R^n$, satisfies the equations and has constant term $\mathbf n$. The inverse
+of $\phi$ is a regular function on $U$, represented by a polynomial $q$ with
+coefficients in $\Bbbk$, and evaluation commutes with $\ct$. For $\mathbf x$ in the
+fiber, $t=q(\mathbf x)\in\crA$ has $\ct(t)=q(\mathbf n)=c_{\mathbf n}$, so
+$t=c_{\mathbf n}+s$ with a unique $s\in\crP$, and $\mathbf x=\phi(t)$. If
+$\phi(c_{\mathbf n}+s)$ is constant, it equals its constant term
+$\mathbf n=\phi(c_{\mathbf n})$, and injectivity gives $s=0$ \src{C10}.
+\end{proof}
+
+The parametrization need not be defined over $\mathfrak o$: every nonconstant term
+lies in $\crP$, and only the constant term must lie in $\mathfrak o$
+\src{C11, C13}. Source C11 states the theorem for $\Bbbk$ algebraically closed or
+$\Bbbk=\R$; it holds for every $\Bbbk$ of characteristic zero by
+\cref{odg:cr:thm:affine}. Only the geometric fiber over $\Bbbk$ is assumed smooth:
+the model may have bad reduction at primes of $\mathfrak o$ \src{C11, C13, C14}. No
+integer-part assertion is made for an arbitrary $\mathfrak o$ or $\Gamma$ \src{C11}.
+
+\begin{corollary}[Omnific points on smooth affine curves \src{C10, C11, C13, C14}]\label{odg:cr:cor:omnific}
+Let $\mathcal C\subseteq\Aff^n_\Z$ be an affine scheme of finite type whose generic
+fiber $C=\mathcal C_\Q$ is a smooth geometrically integral curve (equivalently, whose
+real or complex fiber is one).
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=*]
+\item If $C_\C\not\cong\Aff^1_\C$ (equivalently $C\not\cong\Aff^1_\Q$, or
+$C_\R\not\cong\Aff^1_\R$), then $\mathcal C(\Oz)=\mathcal C(\Z)$ and
+$\mathcal C(\Og)=\mathcal C(\Z[i])$.
+\item If $C\cong\Aff^1_\Q$, then $\mathcal C(\Oz)\ne\mathcal C(\Z)$ if and only if
+$\mathcal C(\Z)\ne\varnothing$. For an isomorphism $\phi:\Aff^1_\R\to C_\R$ and
+$\mathbf n\in\mathcal C(\Z)$, the fiber of $\ct$ over $\mathbf n$ is exactly
+$\{\phi(\phi^{-1}(\mathbf n)+s):s\in\Pi\}$, parametrized bijectively; the Gaussian
+fiber is parametrized by $\Pi_\C$.
+\item Accordingly, either $\mathcal C(\Oz)$ is empty, or it equals the set
+$\mathcal C(\Z)$, or every nonempty fiber of $\ct$ on it is a proper class.
+\end{enumerate}
+The same holds for a model over $\Z[i]$ and its points in $\Og$, with the complex
+fiber in place of $C$.
+\end{corollary}
+\begin{proof}
+Smoothness and geometric integrality are invariant under extension of fields of
+characteristic zero, and so is the affine-line condition by
+\cref{odg:cr:lem:formA1}. A finite tuple of omnific integers lies in
+$\mathcal R_\Z(\R,\Gamma)$ for a set-sized $\Gamma$ (\cref{odg:lem:workspace}); apply
+\cref{odg:cr:thm:arith} with $(\mathfrak o,\Bbbk)=(\Z,\R)$ or $(\Z[i],\C)$. The
+formula of \cref{odg:cr:thm:arith}(ii) is finite polynomial evaluation, so it makes
+sense for every $s\in\Pi$; every given point lies in a workspace where its
+parameter exists uniquely. Since $\ct$ is a retraction, an omnific point has an
+ordinary constant term, so $\mathcal C(\Z)=\varnothing$ forces
+$\mathcal C(\Oz)=\varnothing$. A nonempty fiber in case (b) contains the distinct
+points for $s=\omega^\alpha$, $\alpha$ ranging over the positive ordinals, so it is a
+proper class \src{C10, C11, C13}.
+\end{proof}
+
+Source C14 states (a) and (b) with the generic fiber over $\Q$, source C10 with
+the complex fiber, and sources C11 and C13 with the real fiber; the conditions agree
+by \cref{odg:cr:lem:formA1}. In the rigid case the retraction
+$\mathcal C(\Oz)\to\mathcal C(\Z)$ is a bijection, not merely a surjection, and in
+the affine-line case it is surjective onto the integer points with explicitly
+parametrized fibers. The equality $\mathcal C(\Oz)=\mathcal C(\Z)$ is not an
+algorithm for the integer points and does not assert that there are finitely many
+\src{C10, C11, C13, C14}. The whole argument also takes place in one fixed nonzero
+workspace, with $\Pi$ replaced by $\Pi_\R(\Gamma)$ \src{C10, C13}.
+
+\begin{example}[Complete fibers \src{C10, C11, C13}]\label{odg:cr:ex:fibers}
+On $Y=X^2$ the fiber over $(n,n^2)$ is $\{(n+s,\ n^2+2ns+s^2):s\in\Pi\}$. On
+$Y=X^2-X+3$ with $\phi(T)=(2+T,\,5+3T+T^2)$, the fiber over $(2,5)$ is
+$\{(2+u,\ 5+3u+u^2):u\in\Pi\}$; $u=\omega$ gives a point of finite support and
+$u=\sum_{n\ge1}\omega^{1/n}$ one of infinite support, both by the same formula.
+\end{example}
+
+\begin{lemma}[Integer polynomial arcs \src{C14}]\label{odg:cr:lem:arcs}
+Let $\mathcal C\subseteq\Aff^n_\Z$ have generic fiber isomorphic to $\Aff^1_\Q$.
+Through every $\mathbf n\in\mathcal C(\Z)$ there are polynomials $q_i(S)\in\Z[S]$
+with $q_i(0)=n_i$ such that $\mathbf q:R\to\mathcal C(R)$ is injective for every
+domain $R\supseteq\Z$ of characteristic zero. Over $\Oz$ every nonordinary parameter
+has a nonordinary image, and parameters in $\Pi$ stay in the fiber of $\ct$ over
+$\mathbf n$.
+\end{lemma}
+\begin{proof}
+Write an isomorphism $\Aff^1_\Q\to\mathcal C_\Q$ as $\mathbf p(T)$ with
+$p_i\in\Q[T]$, and its inverse as a polynomial $u$ with rational coefficients, so
+that $u(\mathbf p(T))=T$. Put $t_0=u(\mathbf n)\in\Q$, expand
+$p_i(t_0+T)=\sum_jc_{ij}T^j$ with $c_{i0}=n_i$, and choose an ordinary $N>0$
+clearing the denominators of all $c_{ij}$ with $j\ge1$. Then
+$q_i(S)=p_i(t_0+NS)\in\Z[S]$. The defining polynomials of $\mathcal C$ vanish on
+$\mathbf q(S)$ over $\Q$, hence in $\Z[S]$. If $\mathbf q(s)=\mathbf q(s')$ in $R$,
+apply $u$ in $\Frac R$ to get $t_0+Ns=t_0+Ns'$. Some $q_i$ is nonconstant, since
+$u(\mathbf q(S))=t_0+NS$, and by \cref{odg:cr:lem:rings}(d) its value at a
+nonordinary omnific parameter is nonordinary. For $s\in\Pi$,
+$\ct(\mathbf q(s))=\mathbf q(0)=\mathbf n$.
+\end{proof}
+
+The nonemptiness condition is needed: the model $2X=1$ with a free coordinate $Y$
+has generic fiber $\Aff^1_\Q$ but neither integer nor omnific points \src{C14}.
+
+\begin{proposition}[A congruence criterion \src{C14}]\label{odg:cr:prop:congruence}
+Keep $\mathbf p$ and $u$ from \cref{odg:cr:lem:arcs}. Let $N_1>0$ clear the
+denominators of the coefficients of $u$, and $N_2>0$ satisfy
+$P_i(V)=N_2\,p_i(V/N_1)\in\Z[V]$ for all $i$. Then $n\mapsto\mathbf p(n/N_1)$ is a
+bijection from
+\[
+ \{n\in\Z:P_i(n)\equiv0\pmod{N_2}\text{ for all }i\}
+\]
+onto $\mathcal C(\Z)$. This set is a union of residue classes modulo $N_2$, and
+whether it is empty is decided by checking $0\le n<N_2$.
+\end{proposition}
+\begin{proof}
+For $\mathbf x\in\mathcal C(\Z)$, $u(\mathbf x)\in N_1^{-1}\Z$; write it $n/N_1$. Then
+$x_i=p_i(n/N_1)=P_i(n)/N_2$ are integers, so $n$ satisfies the congruences.
+Conversely the congruences make the coordinates integral, and the defining
+polynomials vanish identically on $\mathbf p$. The inverse identity gives the
+bijection, and $P_i(n)\bmod N_2$ depends only on $n\bmod N_2$.
+\end{proof}
+
+This is an algorithm only after an affine-line isomorphism and its inverse are
+supplied; it is not an algorithm for integer points of arbitrary curves
+\src{C14}. For $3Y=X^2-X$ take $p_1=T$, $p_2=(T^2-T)/3$ and $u=X$: then $N_1=1$,
+$N_2=3$, the admissible residues are $0$ and $1$ modulo $3$, and the arcs through
+$(0,0)$ and $(1,0)$ are $(3S,\,3S^2-S)$ and $(1+3S,\,3S^2+S)$, valid for every
+omnific parameter. In the letters above, $N$, $N_1$, $N_2$ are the sources' $M$,
+$D$, $L$ (\cref{odg:tab:renames}).
+
+\begin{corollary}[Polynomial witnesses \src{C13}; also \src{C12}]\label{odg:cr:cor:polywitness}
+For $\mathcal C$ as in \cref{odg:cr:cor:omnific}, with real fiber $C_\R$, the
+following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item $\mathcal C$ has a nonordinary omnific point;
+\item $C_\R\cong\Aff^1_\R$ and $\mathcal C(\Z)\ne\varnothing$;
+\item $C_\R$ has a nonconstant real polynomial arc through an integer point;
+\item $\mathcal C$ has a nonordinary omnific point all of whose coordinates have
+finite support.
+\end{enumerate}
+Every nonordinary omnific point has the same constant term as some nonordinary
+point of finite support.
+\end{corollary}
+\begin{proof}
+(i) and (ii) are equivalent by \cref{odg:cr:cor:omnific}. Given (ii) and
+$\mathbf n=\phi(t_0)$, the arc $T\mapsto\phi(t_0+T)$ gives (iii). Given (iii),
+substitute $T=\omega^\gamma$ with $\gamma>0$ (\cref{odg:prop:polylift}); the
+coordinates have finite support and integer constants, and some coordinate has
+positive degree. Clearly (iv) implies (i). Applying this construction at the
+constant term of a given nonordinary point proves the last assertion.
+\end{proof}
+
+For smooth affine curves this answers the existence part of \cref{odg:q:search}:
+no nonordinary point exists only because of infinite supports
+(\cref{odg:cr:sub:settled}). It is stronger than \cref{odg:thm:specialization},
+which starts from a finite-support point, and it removes the finite-support
+hypothesis there for smooth curves \src{C12, C13}. It is not asserted for singular
+curves or in higher dimension, and it gives no algorithm for the integer points
+\src{C13}. Source C12 states the geometric part: over an algebraically closed
+field, $C(\crA)\ne C(\Bbbk)$ exactly when there is a nonconstant morphism
+$\Aff^1\to C$, which is the last equivalence of \cref{odg:cr:thm:affine}; this
+classifies which curves acquire points, not the shape of an arbitrary
+infinite-support point.
+
+\begin{theorem}[Descent for separated models \src{C12}]\label{odg:cr:thm:descent}
+Let $\mathcal X$ be a separated scheme of finite type over $\Z$ and
+$X=\mathcal X_\C$. Suppose $X(\mathcal A_\C(\Gamma))=X(\C)$ for every set-sized
+$\Gamma\subseteq\No$. Then inclusion and $\ct$ are inverse bijections
+$\mathcal X(\Z)\cong\mathcal X(\Oz_\Gamma)$ for every such $\Gamma$, and
+$\mathcal X(\Oz)=\mathcal X(\Z)$ in the class convention.
+\end{theorem}
+\begin{proof}
+Let $p\in\mathcal X(\Oz_\Gamma)$ and $p_0=\ct(p)\in\mathcal X(\Z)$. The image of $p$
+in $X(\mathcal A_\C(\Gamma))$ is constant, and since
+$\Oz_\Gamma\to\Z\to\C$ and $\Oz_\Gamma\to\mathcal A_\C(\Gamma)\to\C$ are compatible
+with $\ct$, it is the image of $p_0$. So $p$ and $p_0$ agree over the field
+$\mathbb H_\C(\Gamma)$, in which the domain $\Oz_\Gamma$ embeds, hence over
+$\Oz_\Gamma$ by \cref{odg:cr:lem:separated}. Every class point lies over some
+$\Oz_\Gamma$.
+\end{proof}
+
+No smoothness of $\mathcal X$ at any prime and no flatness of
+$\Oz_\Gamma\to\mathcal A_\C(\Gamma)$ is used; smoothness enters only through the
+rigidity of the complex fiber, and separatedness recovers the integral point from
+the ambient field \src{C12}. The hypothesis holds when $X$ is a smooth affine curve
+other than $\Aff^1_\C$, a smooth projective curve of positive genus, an abelian or
+semiabelian variety, a smooth proper variety with globally generated cotangent
+sheaf, or a separated scheme with a quasi-finite map to one of these
+(\cref{odg:cr:thm:affine,odg:cr:thm:positivegenus,odg:cr:thm:abelian,odg:cr:thm:semiabelian,odg:cr:cor:hahnproper,odg:cr:thm:quasifinite}),
+so all of these have only ordinary omnific points on every separated integral
+model \src{C12}. This is a reduction theorem, not an algorithm for the ordinary
+points, and it gives no height bound \src{C12}.
+
+\subsection{Projective coordinates}\label{odg:cr:sub:projective}
+
+A nonzero homogeneous tuple over a field determines a projective point. Over a
+ring it determines one only when its coordinate ideal is invertible, for example
+the unit ideal \src{C10, C11, C12, C13, C14}. By \cref{odg:cor:projectiveclear},
+every point of $\mathbb P^n(\No)$ has coordinates in $\Pi^{n+1}$, and such
+coordinates generate a proper ideal; sources C10 and C12 reprove this clearing,
+which may fail when the clearing exponent is confined to a fixed workspace
+\src{C10}. So raw homogeneous solutions can be abundant while unimodular ones are
+constant; there is no conflict.
+
+\begin{theorem}[Unimodular coordinates \src{C14}; for $\mathfrak o=\Bbbk$ \src{C10, C13}]\label{odg:cr:thm:unimodular}
+Let $\mathfrak o\subseteq\Bbbk$ be a subring, $R=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$,
+and $X\subseteq\mathbb P^N_\Bbbk$ a closed subscheme with $X(\crA)=X(\Bbbk)$. If a
+unimodular tuple $\mathbf a\in R^{N+1}$ satisfies the homogeneous equations of $X$,
+then $\mathbf a=\ct(\mathbf a)\in\mathfrak o^{N+1}$.
+\end{theorem}
+\begin{proof}
+Choose $b_i\in R$ with $\sum_ib_ia_i=1$ and put $c_i=\ct(a_i)$, $d_i=\ct(b_i)$, so
+$\sum_id_ic_i=1$. The unimodular tuple defines a point of $X(\crA)$, which is
+constant; applying $\ct$ identifies it with $[c_0:\cdots:c_N]$. So
+$a_ic_j=a_jc_i$ in $\crH$ for all $i,j$. Put $s=\sum_jd_ja_j\in R$. Then
+$sc_i=\sum_jd_ja_jc_i=a_i\sum_jd_jc_j=a_i$, and $1=\sum_ib_ia_i=s\sum_ib_ic_i$, so
+$s\in R^\times=\mathfrak o^\times$ (\cref{odg:cr:lem:rings}). As $\ct(s)=\sum d_jc_j=1$
+and $s$ is constant, $s=1$ and $a_i=c_i$.
+\end{proof}
+
+\begin{lemma}[Invertible coordinate ideals \src{C12}]\label{odg:cr:lem:coordinatepoint}
+Let $S$ be a domain contained in a field $L$, $X\subseteq\mathbb P^N_S$ a closed
+subscheme, and $\mathbf a\in S^{N+1}$ a tuple with $[\mathbf a]\in X(L)$. If
+$\langle\mathbf a\rangle$ is invertible, the tuple defines a morphism
+$\Spec S\to X$ with that $L$-point.
+\end{lemma}
+\begin{proof}
+The surjection $S^{N+1}\to\langle\mathbf a\rangle$ onto an invertible module defines a
+morphism to $\mathbb P^N_S$ \cite[Tag 01ND]{StacksProjSpace}. The inverse image of
+$X$ is a closed subscheme of $\Spec S$ whose ideal vanishes in $L$, hence is zero.
+\end{proof}
+
+Only this sufficient direction is used; no claim is made that every projective
+point over such a ring has a global unimodular coordinate tuple \src{C12}.
+
+\begin{theorem}[Coordinate ideals on rigid targets \src{C12}]\label{odg:cr:thm:ideals}
+Let $X\subseteq\mathbb P^N_\Bbbk$ be projective with $X(\crA)=X(\Bbbk)$, and let a nonzero
+$\mathbf a\in\crA^{N+1}$ represent $p\in X(\crH)$. Then $\langle\mathbf a\rangle$ is
+invertible if and only if it is principal, if and only if $p\in X(\Bbbk)$.
+\end{theorem}
+\begin{proof}
+If $\langle\mathbf a\rangle$ is invertible, \cref{odg:cr:lem:coordinatepoint} gives an
+$\crA$-point, which is constant. If $p=[c_0:\cdots:c_N]$ with $c_i\in\Bbbk$, then
+$a_i=\mu c_i$ with $\mu=a_j/c_j\in\crA$ for some $c_j\ne0$, and the constants $c_i$
+generate the unit ideal, so $\langle\mathbf a\rangle=\mu\crA$. A nonzero principal
+ideal is invertible.
+\end{proof}
+
+\begin{theorem}[Omnific coordinate ideals \src{C12}]\label{odg:cr:thm:ozideal}
+Let $\mathcal X\subseteq\mathbb P^N_\Z$ be closed with complex fiber $X$ satisfying
+$X(\mathcal A_\C(\Gamma))=X(\C)$ for every set-sized $\Gamma$. Let
+$\mathbf a\in\Oz^{N+1}$ be nonzero with $[\mathbf a]\in\mathcal X(\No)$. Then
+$\langle\mathbf a\rangle$ is invertible if and only if it is principal, if and only if
+$[\mathbf a]\in\mathcal X(\Q)$. If $\langle\mathbf a\rangle=\Oz$, every $a_i$ is an
+ordinary integer.
+\end{theorem}
+\begin{proof}
+Put the generators, an inverse fractional ideal with its finitely many generators,
+and the finite relations witnessing invertibility into one workspace. By
+\cref{odg:cr:lem:coordinatepoint} the tuple is a point of $\mathcal X(\Oz_\Gamma)$,
+which is ordinary by \cref{odg:cr:thm:descent}; so $[\mathbf a]$ is rational. If
+$[\mathbf a]$ is rational, choose a primitive integer representative $\mathbf c$ and
+integers $r_i$ with $\sum r_ic_i=1$; then $\mathbf a=\mu\mathbf c$ with
+$\mu=\sum r_ia_i\in\Oz$ and $\langle\mathbf a\rangle=\mu\Oz$ (as after
+\cref{odg:thm:realray}). A nonzero principal ideal is invertible. If
+$\langle\mathbf a\rangle=\Oz$, then $\mu\in\Oz^\times=\{\pm1\}$.
+\end{proof}
+
+\begin{corollary}[Rational projective points \src{C14; also C10, C12, C13}]\label{odg:cr:cor:projectiveQ}
+Let integer homogeneous equations define $\mathcal X\subseteq\mathbb P^N_\Z$ whose
+complex fiber is smooth and proper with globally generated cotangent sheaf, for
+example a smooth projective curve of positive genus or a projectively embedded
+abelian variety. Every unimodular omnific solution tuple is an ordinary integer
+tuple, and likewise with $\Og$ and $\Z[i]$. For a smooth projective curve of
+positive genus over $\Q$ in such an embedding, the points with a unimodular omnific
+representative are exactly the points of $\mathcal X(\Q)$, their unimodular
+representatives are $\pm$ the primitive integer representatives, and every other
+point of $\mathcal X(\No)$ represented in $\Oz^{N+1}$ has a coordinate ideal that is
+neither invertible nor principal.
+\end{corollary}
+\begin{proof}
+Put the tuple and a unit-ideal witness into one workspace and apply
+\cref{odg:cr:cor:hahnproper,odg:cr:thm:unimodular} with $(\mathfrak o,\Bbbk)=(\Z,\C)$
+or $(\Z[i],\C)$; the constant tuple lies in $\Z^{N+1}$ or $\Z[i]^{N+1}$. A rational
+point has a primitive integer representative with an ordinary B\'ezout witness,
+hence unimodular over $\Oz$ \src{C14}. The last assertion is
+\cref{odg:cr:thm:ozideal} \src{C12}.
+\end{proof}
+
+An ordinary integer tuple is unimodular over $\Oz$ exactly when its coordinates
+generate $\Z$: apply $\ct$ to an omnific witness, and use an ordinary B\'ezout
+identity for the converse \src{C13}. For the Fermat curve of exponent $n\ge3$,
+\cref{odg:cr:thm:unimodular} with $\mathfrak o=\Bbbk=\C$ gives a second route to
+\cref{odg:thm:unimodularfermat}, without its nonvanishing hypothesis on the
+coordinates; excluding particular ordinary
+points still needs the theorem of Wiles and Taylor--Wiles (\cref{odg:cor:flt})
+\src{C13, C14}. This is a specialization, not a new Fermat result. The unimodular
+Pythagorean family of \cref{odg:prop:pythagoras} shows that positive genus cannot be
+dropped \src{C13}. The corollary uses actual unit-ideal witnesses; absence of a
+common nonunit divisor is a different condition in the non-B\'ezout ring $\Oz$, and
+\cref{odg:q:primitivefermat} is not answered \src{C10, C11, C12, C13, C14}. It is
+complementary to \cref{odg:frac:cor:curves}: there, on rational curves, primitive
+coordinates exist exactly at points of rational specialization; here, on rigid
+projective targets, only constant points have unimodular or invertible coordinates.
+Both agree that a principal coordinate ideal means a rational point.
+
+\begin{example}[A noninvertible coordinate ideal \src{C12}]\label{odg:cr:ex:denominator}
+Let $\mathcal E:\ Y^2Z=X^3-XZ^2+Z^3$, whose affine cubic has $\Delta_0=23$. In $\No$
+put $x=\omega^2$ and
+\[
+ y=\omega^3\bigl(1-\omega^{-4}+\omega^{-6}\bigr)^{1/2}
+ =\omega^3-\tfrac12\omega^{-1}+\tfrac12\omega^{-3}-\tfrac18\omega^{-5}
+ +\tfrac14\omega^{-7}-\tfrac3{16}\omega^{-9}+\cdots,
+\]
+so $y^2=x^3-x+1$ and $y\notin\BR$. With $M=\omega^\omega$ the tuple
+$(Mx,My,M)$ is omnific, since every exponent of $y$ is an integer at most $3$, and
+represents the nonrational point $[x:y:1]$. By \cref{odg:cr:thm:ozideal} the ideal
+$\langle Mx,My,M\rangle=\langle My,M\rangle$ is neither invertible nor principal. The
+monomial $M$ is not a common divisor in $\Oz$, since $My/M=y\notin\Oz$, but
+$\omega^{\omega/2}$ is; so this tuple is not primitive and does not bear on the
+primitive question.
+\end{example}
+
+\begin{remark}[Field points outside the ring \src{C10; also C12, C13, C14}]\label{odg:cr:rem:fieldpoints}
+The theorems concern points over the support-restricted rings, not over $\No$ or
+$\No[i]$. For real $a,b$ with $4a^3+27b^2\ne0$, the point
+$x=\omega$, $y=\omega^{3/2}\bigl(1+a\omega^{-2}+b\omega^{-3}\bigr)^{1/2}$ of
+$y^2=x^3+ax+b$ lies in $\No$; its first correction term is
+$\tfrac a2\omega^{-1/2}$ if $a\ne0$ and $\tfrac b2\omega^{-3/2}$ otherwise, so
+$y\notin\BR$ \src{C10}. Likewise $x=\omega^2$,
+$y=\omega^3(1+\omega^{-4})^{1/2}=\omega^3+\tfrac12\omega^{-1}-\tfrac18\omega^{-5}+\cdots$
+on $y^2=x^3+x$ \src{C14}, and the point of \cref{odg:cr:ex:denominator}
+\src{C12, C13}. The binomial expansions are support-controlled Hahn sums. Truncating
+the tail changes the equation: replacing $y$ by $\omega^3$ in
+\cref{odg:cr:ex:denominator} turns $\omega^6-\omega^2+1$ into $\omega^6$
+\src{C12, C14}. Clearing such a point by \cref{odg:cor:projectiveclear} gives an
+omnific tuple with a proper coordinate ideal, not an affine omnific point
+\src{C10}.
+\end{remark}
+
+\subsection{Singular curves and normalization}\label{odg:cr:sub:singular}
+
+The classification is for smooth curves. The short Weierstrass cubics are settled
+completely (\cref{odg:cr:cor:weierstrass,odg:cr:prop:singular}) \src{C12}. The node
+and the cusp have normalizations isomorphic to $\Aff^1$ but are not affine lines
+themselves, so smoothness cannot be replaced by integrality in
+\cref{odg:cr:thm:affine} \src{C14}. In the other direction a singular curve that is a
+locally closed subscheme of an abelian variety (\cref{odg:cr:thm:abelian}) or has a
+quasi-finite map to a rigid target (\cref{odg:cr:thm:quasifinite}) is rigid; the
+embedding or map is a substantial extra hypothesis, and not every singular curve
+has one \src{C13, C14}. Reducible affine curves are not classified: a point over the
+domain $\crA$ has its generic image in one component, which may be singular
+\src{C12}.
+
+Points need not lift to the normalization, because $\crA$ need not be integrally
+closed. For the full class this is \cref{odg:prop:notnormal}, with the witness
+$\sqrt{\omega^2+1}$ of sources 01, 02 and 05. Sources C10 and C13 give the same
+witness in a fixed workspace: for $\Gamma=\Q+\Q\omega\subseteq\No$ (C13 allows any
+$\Q+\Q H$ with $H$ above every ordinary integer),
+$q=\sqrt{\omega^2+1}=\omega+\tfrac12\omega^{-1}-\tfrac18\omega^{-3}+\cdots$ is integral
+over $\mathcal A_\R(\Gamma)$ and not in it, while $\omega^\omega q\in\mathcal A_\R(\Gamma)$
+because all its exponents $\omega+1-2n$ are positive; so
+$q\in\Frac\mathcal A_\R(\Gamma)\setminus\mathcal A_\R(\Gamma)$. Source C12 gives the
+same phenomenon for $\Gamma=\Z^2$ ordered lexicographically, with $g=(0,1)$,
+$h=(1,0)$, $z=\omega^g(1+\omega^{-2g})^{1/2}$ and $\omega^hz\in\crA$. Only these
+fixed-workspace forms are new. The dominating scale matters: an integral element of
+the larger field $\crH$ need not lie in $\Frac\crA$ \src{C13}. For $\Gamma=\Z$,
+$\crA=\Bbbk[\omega]$ is integrally closed, and
+$z=\omega(1+\omega^{-2})^{1/2}$ is integral over it but not in it; source C14 uses
+this only to show that integrality in the ambient field does not keep a lift in the
+ring, and explicitly does not claim non-normality. Nor is a non-normality example
+by itself a point of a constant curve that fails to lift \src{C13}. For an arbitrary
+morphism $f:X\to G$ to a rigid target, \cref{odg:cr:prop:inherit} gives only
+$f(x)=f(\ct x)$; applied to an Albanese map this confines nonconstant directions to
+its fibers, and positive-dimensional fibers need not be rigid \src{C10}. The
+remaining problem is \cref{odg:cr:q:singular}.
+
+\section{Group varieties, coefficient algebras and sharpness}\label{odg:cr:sec:groups}
+
+\subsection{Abelian and semiabelian varieties}\label{odg:cr:sub:abelian}
+
+\begin{lemma}[Invariant differentials \src{C11, C12, C13, C14}]\label{odg:cr:lem:invariant}
+For a smooth algebraic group $G$ over $\Bbbk$ with identity $e$, translation gives an
+isomorphism $\Omega^1_{G/\Bbbk}\cong\mathcal O_G\otimes_\Bbbk e^*\Omega^1_{G/\Bbbk}$; in
+particular $\Omega^1_{G/\Bbbk}$ is generated by global invariant one-forms.
+\end{lemma}
+\begin{proof}
+Differentiating the multiplication $G\times G\to G$ in the second factor along
+$G\times\{e\}$ gives a morphism of vector bundles $G\times T_eG\to TG$,
+$(g,v)\mapsto d(L_g)_e(v)$, whose inverse comes from translation by $g^{-1}$ and is
+algebraic because inversion is a morphism; dualize \src{C12, C13}. The statement is
+also \cite[Tag 047I]{StacksGroups} and, for abelian varieties,
+\cite[Chapter IV, \S6]{MilneAV}.
+\end{proof}
+
+\begin{theorem}[Abelian varieties \src{C10, C11, C13, C14; also C12}]\label{odg:cr:thm:abelian}
+For every abelian variety $A$ over $\Bbbk$, $A(\crA)=A(\Bbbk)$ as groups, with $\ct$
+inverse to the inclusion. Every locally closed subscheme of $A$, singular or not,
+has only constant $\crA$-points.
+\end{theorem}
+\begin{proof}
+An abelian variety is smooth and proper, and \cref{odg:cr:lem:invariant} gives
+global generation; apply \cref{odg:cr:cor:hahnproper,odg:cr:prop:inherit}. The
+maps come from ring maps and preserve the group law.
+\end{proof}
+
+This concerns scheme-valued points over the ring, including points not given by a
+unimodular tuple in a fixed projective embedding; it is not the statement
+$A(\crH)=A(\Bbbk)$, which is false, and it is not restricted to torsion points
+\src{C10, C11, C13}. For $\Gamma=\Z$ it is the familiar constancy of polynomially
+parametrized points of an abelian variety; for other groups the extra infinite
+supports create no new points \src{C10}. Source C12 proves the theorem over
+algebraically closed $\Bbbk$ and for closed subvarieties.
+
+\begin{lemma}[Tori \src{C14; also C10, C11, C12, C13}]\label{odg:cr:lem:torus}
+For every $\Bbbk$-torus $T$, $T(\crA)=T(\Bbbk)$.
+\end{lemma}
+\begin{proof}
+Over $\bar\Bbbk$ the torus is $\Gm^r$, whose points over $\mathcal A_{\bar\Bbbk}(\Gamma)$
+are tuples of units, hence constants. The coordinate map of a point over $\crA$
+therefore takes values in $\crA\cap\bar\Bbbk=\Bbbk$ \src{C14}.
+\end{proof}
+
+Source C10 descends instead along a finite splitting field $L/\Bbbk$: coefficientwise
+scalar extension gives $\crA\otimes_\Bbbk L\cong\mathcal A_L(\Gamma)$, because a finite
+union of reverse-well-ordered supports is reverse well ordered, and the faithfully
+flat extension $\crA\to\crA\otimes_\Bbbk L$ reflects equality of points. Source C13
+does the same from $\R$ to $\C$, as in \replabel{ogl:alg:lem:torus}, and source C11
+descends from $\bar\Bbbk$ through \cref{odg:cr:lem:separated}; source C12 treats split
+tori over an algebraically closed field.
+
+\begin{theorem}[Semiabelian varieties \src{C10, C11, C12, C13, C14}]\label{odg:cr:thm:semiabelian}
+If $1\to T\to G\xrightarrow{\pi}A\to0$ is an extension of an abelian variety by a
+torus over $\Bbbk$, then $G(\crA)=G(\Bbbk)$.
+\end{theorem}
+\begin{proof}
+For $\sigma\in G(\crA)$ put $\sigma_0=\ct(\sigma)\in G(\Bbbk)$. By
+\cref{odg:cr:thm:abelian}, $\pi(\sigma)$ is constant with constant term
+$\pi(\sigma_0)$, so $\pi(\sigma)=\pi(\sigma_0)$ and $\sigma_0^{-1}\sigma$ lies in the
+scheme-theoretic kernel $T(\crA)$. By \cref{odg:cr:lem:torus} it is constant, and its
+constant term is the identity; so $\sigma=\sigma_0$.
+\end{proof}
+
+No surjectivity of $G(\Bbbk)\to A(\Bbbk)$ is used: the lift $\sigma_0$ is the constant
+term of the given point \src{C10, C13}. Properness is not assumed for $G$; the torus
+part is handled by the unit lemma, and a trivial cotangent sheaf alone is not
+enough, since $\Ga(\crA)=\crA$ \src{C11, C14}.
+
+\begin{theorem}[Quasi-finite maps \src{C11; also C10, C12, C14}]\label{odg:cr:thm:quasifinite}
+Let $f:X\to Y$ be a quasi-finite morphism of separated $\Bbbk$-schemes of finite type
+with $Y(\crA)=Y(\Bbbk)$. Then $X(\crA)=X(\Bbbk)$.
+\end{theorem}
+\begin{proof}
+A $\Bbbk$-scheme $Z$ of finite type and dimension zero is $\Spec E$ with $E$ finite
+over $\Bbbk$, and every element of the image of $E\to\crA$ is algebraic over $\Bbbk$,
+hence in $\Bbbk$ by \cref{odg:cr:lem:rings}(d); so $Z(\crA)=Z(\Bbbk)$, nilpotents mapping
+to zero in the domain $\crA$ \src{C11, C14}. For $x\in X(\crA)$ the image $f(x)$ is a
+constant point $y$, so $x$ factors through the fiber $X_y$, which has dimension zero.
+\end{proof}
+
+Thus locally closed subschemes and finite covers of semiabelian varieties, of
+positive-genus curves and of their finite products are rigid, and so are finite
+covers of products of positive-genus curves \src{C10, C11, C12, C14}. Source C14
+states the finite case and source C10 the quasi-finite case over semiabelian and
+other rigid separated targets; source C10 proves the zero-dimensional step by
+\cref{odg:cr:cor:algclosed}. Adjoining a free affine-line factor destroys rigidity:
+a product $X\times\Aff^1$ has nonconstant points through each $\Bbbk$-point of $X$
+\src{C12}.
+
+\begin{theorem}[The nonconstant part of a commutative group \src{C13}, for every $\Bbbk$]\label{odg:cr:thm:groupkernel}
+Let $G$ be a smooth connected commutative algebraic group over $\Bbbk$, let $U$ be its
+maximal connected unipotent affine subgroup, and fix an isomorphism
+$U\cong\Ga^d$. Then $\ct$ gives a split exact sequence of abelian groups
+\[
+ 0\longrightarrow\crP^{\,d}\longrightarrow G(\crA)
+ \xrightarrow{\ \ct\ }G(\Bbbk)\longrightarrow0,
+ \qquad\text{so}\qquad G(\crA)\cong G(\Bbbk)\oplus\crP^{\,d}.
+\]
+The kernel is canonically $\ker\bigl(U(\crA)\to U(\Bbbk)\bigr)$; its identification with
+$\crP^{\,d}$ depends on the chosen coordinates. For $\Gamma=\No$ in the class
+convention the kernel is $\Pi^d$ over $\R$ and $\Pi_\C^d$ over $\C$.
+\end{theorem}
+\begin{proof}
+By the Barsotti--Chevalley theorem there is a connected affine normal subgroup
+$N\subseteq G$ with $G/N$ an abelian variety; since $G$ is commutative and $\Bbbk$ is
+perfect, $N\cong T\times U$ with $T$ a torus and $U$ unipotent, and in
+characteristic zero the commutative unipotent group $U$ is a vector group
+\cite[Theorem 8.27, Corollaries 14.33, 16.15]{MilneAG}. So $G/U$ is an extension of
+$G/N$ by $N/U\cong T$, a semiabelian variety. For $\sigma\in G(\crA)$ with
+$\sigma_0=\ct(\sigma)$, the image of $\sigma$ in $(G/U)(\crA)$ is constant by
+\cref{odg:cr:thm:semiabelian} and equals that of $\sigma_0$; so
+$\sigma-\sigma_0\in U(\crA)$ has constant term $0$, that is, lies in $\crP^{\,d}$ in the
+chosen coordinates. Conversely $\crP^{\,d}\subseteq U(\crA)$ lies in the kernel of $\ct$.
+The constants split $\ct$, and commutativity makes the splitting a direct sum.
+\end{proof}
+
+Source C13 states and proves the theorem for $\Bbbk=\R$ and $\C$. Its structure inputs
+are stated in its reference for perfect fields and for characteristic zero, and the
+torus and semiabelian steps hold over every field of characteristic zero
+(\cref{odg:cr:lem:torus,odg:cr:thm:semiabelian}); so the statement is printed for every
+such $\Bbbk$. The statement numbers of \cite{MilneAG} are those given by source C13 and
+were not rechecked for this report. The splitting is a splitting of groups of points
+supplied by the retraction, not an algebraic splitting of $G$: an extension of an
+abelian variety by a vector group can be nontrivial. It is not a formal-completion
+statement either: $\crP$ is not nilpotent, and its nonzero elements are infinite, not
+infinitesimal \src{C13}. For instance $\Ga(\crA)=\Bbbk\oplus\crP$, $\Gm(\crA)=\Bbbk^\times$
+and $A(\crA)=A(\Bbbk)$. No analogous claim is made for noncommutative groups:
+$\SL_2(\crA)$ and $\GL_2(\crA)$ contain the nonconstant unipotent matrices
+$\bigl(\begin{smallmatrix}1&u\\0&1\end{smallmatrix}\bigr)$, $u\in\crP$
+\src{C12, C13}.
+
+\begin{remark}[Consistency with the omnific groups report \mergetag]\label{odg:cr:rem:ogl}
+The report \fn{docs/surreal/omnific-groups-and-lattices} decides rigidity for closed
+subgroup schemes of $\GL_N$: over $\BR$ exactly when the real fiber has no
+nonidentity unipotent element, over $\BC$ exactly when the identity component is a
+torus (\replabel{ogl:alg:thm:real}, \replabel{ogl:alg:thm:complex}), which answers
+\cref{odg:q:affine} for group schemes (\replabel{ogl:alg:rem:affine}). The two
+answers agree where they overlap. (1) In dimension one, $\Ga$ is the affine line and
+is nonrigid in both; $\Gm$, which is $\mathbb P^1$ minus two points, and the
+anisotropic torus $\SO(2)$, the conic $x^2+y^2=1$ with two conjugate points at
+infinity, are rigid in both. (2) For a commutative unipotent group the
+Baker--Campbell--Hausdorff product of \replabel{ogl:alg:prop:bch} is addition, and
+its kernel $\exp(\mathfrak u\otimes\Pi_\Bbbk)$ is the group $\crP^{\,d}$ of
+\cref{odg:cr:thm:groupkernel} in vector coordinates; the latter theorem extends the
+description to commutative groups that are not affine. (3) Semiabelian rigidity
+extends the torus freezing of \replabel{ogl:alg:lem:torus} beyond linear groups. (4)
+For smooth curves real and complex rigidity coincide
+(\cref{odg:cr:cor:omnific}(a)), but for groups they do not: $\SO_3$ is rigid over
+$\BR$ because $\SO_3(\R)$ is compact, and not over $\BC$ because $\SO_{3,\C}$ is not a
+torus. There is no conflict, because sources C10--C14 transfer rigidity only from
+the complex fiber to the real one, never conversely.
+\end{remark}
+
+\subsection{Reduced coefficient algebras and dual numbers}\label{odg:cr:sub:reduced}
+
+For a commutative $\Bbbk$-algebra $S$ let $\mathcal A_S(\Gamma)$ be the formal sums
+$\sum_\gamma a_\gamma\omega^\gamma$ with $a_\gamma\in S$ and reverse-well-ordered support
+in $\Gamma^{\ge0}$. The Hahn support lemma makes this a ring even when $S$ has zero
+divisors, with maps $S\hookrightarrow\mathcal A_S(\Gamma)\xrightarrow{\ct}S$ whose
+composite is the identity; for such $S$ no leading coefficient is divided by
+\src{C11}.
+
+\begin{lemma}[Coefficientwise separation \src{C11}]\label{odg:cr:lem:reducedinjective}
+If $S$ is reduced, the coefficientwise maps
+$\mathcal A_S(\Gamma)\to\mathcal A_{F_{\mathfrak p}}(\Gamma)$, with
+$F_{\mathfrak p}=\Frac(S/\mathfrak p)$ for the primes $\mathfrak p$ of $S$, have kernels
+with zero intersection.
+\end{lemma}
+\begin{proof}
+A series in every kernel has all its coefficients in every prime, hence in the
+nilradical, which is zero.
+\end{proof}
+
+\begin{theorem}[Reduced coefficient algebras \src{C11}]\label{odg:cr:thm:reduced}
+Let $X$ be a separated $\Bbbk$-scheme with $X(\mathcal A_F(\Gamma))=X(F)$ for every field
+extension $F/\Bbbk$. Then for every reduced commutative $\Bbbk$-algebra $S$ the inclusion
+and $\ct$ are inverse bijections $X(S)\cong X(\mathcal A_S(\Gamma))$. This applies to
+smooth proper varieties with globally generated cotangent sheaf, to semiabelian
+varieties, to smooth geometrically integral affine curves not isomorphic to the
+affine line, and to separated schemes of finite type with a quasi-finite map to one
+of these.
+\end{theorem}
+\begin{proof}
+Injectivity holds because $\ct$ is a retraction. For $\sigma\in X(\mathcal A_S(\Gamma))$
+let $\sigma_0$ be the constant point of $\ct(\sigma)$. For each prime $\mathfrak p$ the
+image of $\sigma$ over $\mathcal A_{F_{\mathfrak p}}(\Gamma)$ is constant by hypothesis,
+and since all maps are coefficientwise its constant term is the image of
+$\ct(\sigma)$; so $\sigma$ and $\sigma_0$ agree over every
+$\mathcal A_{F_{\mathfrak p}}(\Gamma)$, and \cref{odg:cr:lem:reducedinjective,odg:cr:lem:separated}
+give $\sigma=\sigma_0$. The listed classes satisfy the hypothesis over every
+$F\supseteq\Bbbk$, which has characteristic zero: properness, smoothness and global
+generation are stable under field extension
+(\cref{odg:cr:cor:hahnproper,odg:cr:thm:semiabelian}), the affine-line condition is
+geometric (\cref{odg:cr:thm:affine}), and \cref{odg:cr:thm:quasifinite} applies after
+base change.
+\end{proof}
+
+This is not faithful flatness: $\mathcal A_S(\Gamma)$ is in general not
+$S\otimes_\Bbbk\crA$, since one series may involve infinitely many linearly independent
+coefficients \src{C11}. The principle uses all primes and needs no Jacobson or
+finite-type condition on $S$; for $S=\Bbbk[s_1,\ldots,s_r]$ it says that a family of
+points with Hahn coordinates and polynomial coefficient functions already comes from
+a family over $S$ \src{C11}.
+
+\begin{lemma}[Square-zero lifts \src{C11}]\label{odg:cr:lem:tangent}
+Let $X$ be locally of finite type over $\Bbbk$, $S$ a $\Bbbk$-algebra and $p\in X(S)$.
+With the constant lift as origin, the lifts of $p$ to $S[\epsilon]=S[\epsilon]/(\epsilon^2)$
+correspond to $\Hom_S(p^*\Omega^1_{X/\Bbbk},S)$; if $p$ comes from a smooth point
+$p_0\in X(\Bbbk)$, this is $T_{p_0}X\otimes_\Bbbk S$.
+\end{lemma}
+\begin{proof}
+Locally a lift of $\varphi$ is $\varphi+\epsilon\delta$, and multiplicativity says that
+$\delta(ab)=\varphi(a)\delta(b)+\varphi(b)\delta(a)$, so $\delta$ is a derivation along $p$;
+apply the universal property and glue.
+\end{proof}
+
+\begin{theorem}[The dual-number defect \src{C11}]\label{odg:cr:thm:dualdefect}
+For an abelian variety $A$ over $\Bbbk$ there is a canonical split description
+\[
+ A\bigl(\crA[\epsilon]\bigr)\cong A(\Bbbk)\oplus\bigl(\Lie A\otimes_\Bbbk\crA\bigr),
+\]
+under which $A(\Bbbk[\epsilon])=A(\Bbbk)\oplus\Lie A$. Since
+$\mathcal A_{\Bbbk[\epsilon]}(\Gamma)\cong\crA[\epsilon]$ coefficientwise,
+\[
+ A\bigl(\mathcal A_{\Bbbk[\epsilon]}(\Gamma)\bigr)\big/A(\Bbbk[\epsilon])
+ \cong\Lie A\otimes_\Bbbk\crP .
+\]
+\end{theorem}
+\begin{proof}
+Reduction modulo $\epsilon$ maps $A(\crA[\epsilon])$ onto $A(\crA)=A(\Bbbk)$
+(\cref{odg:cr:thm:abelian}), split by constant lifts. By \cref{odg:cr:lem:tangent} the
+kernel over the identity is $\Lie A\otimes_\Bbbk\crA$, and on square-zero tangent vectors
+the group law is addition. Commutativity makes the split extension a direct sum; the
+same argument with $\Bbbk$ in place of $\crA$ identifies the constant subgroup, and
+$\crA=\Bbbk\oplus\crP$ gives the quotient.
+\end{proof}
+
+If $\dim A>0$ and $\Gamma\ne0$, a nonzero $v\in\Lie A$ and $h=\omega^\gamma$ with
+$\gamma>0$ give the new point $\epsilon hv$; so reducedness cannot be dropped in
+\cref{odg:cr:thm:reduced}, even for elliptic curves. Concretely, on the smooth affine
+curve $Y^2=X^3-X$ the pair $(0,\epsilon h)$ with $0\ne h\in\crP$ is a point over
+$\mathcal A_{\Bbbk[\epsilon]}(\Gamma)$ not coming from $\Bbbk[\epsilon]$. No omnific ring
+contains such a nilpotent; the example belongs to the coefficient-ring extension of
+the theory only \src{C11}.
+
+\subsection{Positive characteristic}\label{odg:cr:sub:charp}
+
+\begin{proposition}[An elliptic point in characteristic two \src{C11, C14}]\label{odg:cr:prop:char2}
+Let $\Bbbk$ have characteristic two. In $\mathcal A_\Bbbk(\Q)$ put
+\[
+ x=\omega^{1/3},\qquad y=\sum_{n\ge1}\omega^{1/2^n}.
+\]
+Then $y^2+y=x^3$, and the projective closure $Y^2Z+YZ^2=X^3$ is a smooth cubic of
+genus one with the rational point $[0:1:0]$. The point $(x,y)$ is nonconstant.
+\end{proposition}
+\begin{proof}
+The support $\{2^{-n}:n\ge1\}$ is reverse well ordered and positive. In
+characteristic two the off-diagonal terms of the square cancel in pairs,
+coefficientwise, so $y^2=\sum_{n\ge1}\omega^{2^{1-n}}=\omega+y=x^3+y$. The partial
+derivatives of $Y^2Z+YZ^2-X^3$ are $X^2$, $Z^2$ and $Y^2$ in characteristic two, with
+no common projective zero; a smooth plane cubic has genus one.
+\end{proof}
+
+Source C14 states this for every field of characteristic two with $\Gamma=\Q$;
+source C11 states it for $\Bbbk=\bar{\mathbb F}_2$ and $\Gamma=\Z[\tfrac12]$ with the
+point $x=\omega$, $y=\sum_{n\ge1}\omega^{3/2^n}$, which is the same example with all
+exponents multiplied by three. The partial sums $y_N$ satisfy
+$y_N^2+y_N+x^3=\omega^{2^{-N}}$, and this residual monomial does not tend to zero in
+the valuation topology; the proof is an exact coefficient identity, not a limit
+\src{C11, C14}. Every additive map from a $2$-divisible group to a field of
+characteristic two is zero, since $\lambda(\gamma)=2\lambda(\gamma/2)$; so the separating
+Euler family disappears exactly where the characteristic-zero argument needs it. The
+exponent group has rank one, so neither rank nor non-Archimedean complexity explains
+the failure. The telescoping is the Artin--Schreier phenomenon in Hahn form and is not
+claimed as new \src{C11}.
+
+\begin{proposition}[Squarefree rigidity fails in characteristic $p$ \src{C13}]\label{odg:cr:prop:charp}
+Over $\mathbb F_p$ with $\Gamma=\Q$, the elements $x=\omega$ and
+$y=\omega-\omega^{1/p}$ of $\mathcal A_{\mathbb F_p}(\Q)$ satisfy $y^p=x^p-x$, although
+$X^p-X$ is squarefree.
+\end{proposition}
+\begin{proof}
+The Frobenius is additive in characteristic $p$, so
+$y^p=\omega^p-\omega=x^p-x$; and $(X^p-X)'=-1$.
+\end{proof}
+
+The curve $y^p=x^p-x$ is itself an affine line in characteristic $p$: with
+$w=y-x$ one has $w^p=-x$, so $x=-w^p$ and $y=w-w^p$ \mergetag. Thus this example
+refutes the characteristic-$p$ analogue of \cref{odg:cr:thm:squarefree}, not of
+\cref{odg:cr:thm:affine}; the genus-one example of \cref{odg:cr:prop:char2} refutes
+the latter. Characteristic zero is used twice: to separate exponents by rational
+linear functionals and to differentiate minimal polynomials of algebraic elements;
+ordinary derivations in characteristic $p$ kill $p$-th powers, so the proofs give no
+positive-characteristic classification \src{C10, C12, C13}.
+
+\subsection{Discretely ordered rings}\label{odg:cr:sub:dor}
+
+The rigidity singles out the omnific integers; it does not extend to every
+discretely ordered subring of a surreal field. Let $\R((\omega^{-1}))$ be the ordered
+field of Laurent series in the positive infinitesimal $\omega^{-1}$, a subfield of
+$\No$, and put
+\[
+ x=\omega^2,\qquad y=\omega^3(1-\omega^{-4})^{1/2}
+ =\omega^3-\tfrac12\omega^{-1}-\tfrac18\omega^{-5}-\tfrac1{16}\omega^{-9}-\cdots,
+\]
+so that $y^2=\omega^6-\omega^2=x^3-x$.
+
+\begin{theorem}[A discretely ordered ring with no omnific copy \src{C11}]\label{odg:cr:thm:dor}
+The ring $R_0=\Z[x,y]\subseteq\R((\omega^{-1}))$ is isomorphic to
+$\Z[X,Y]/(Y^2-X^3+X)$ and is discretely ordered by the order of $\No$. It admits no
+injective unital ring homomorphism into $\Oz$, although it is an ordered subring of
+$\No$.
+\end{theorem}
+\begin{proof}
+The relation is monic in $Y$, so every class has a unique representative
+$f(X)+Yg(X)$. If $f\ne0$ the leading exponent of $f(x)$ is $2\deg f$, even; if $g\ne0$
+that of $yg(x)$ is $3+2\deg g$, odd; so a nonzero representative does not vanish, and
+evaluation is injective. A nonconstant representative has positive leading exponent,
+hence infinite absolute value, and a constant one is an integer; so $1$ is the least
+positive element. If $\psi:R_0\to\Oz$ were an injective unital homomorphism, then
+$\psi(x),\psi(y)$ would solve the nonsingular equation $Y^2=X^3-X$, so both would be
+integers by \cref{odg:cr:cor:weierstrass}, and the nonzero element $x-\psi(x)$ would lie
+in the kernel.
+\end{proof}
+
+The element $y$ has an infinite leading term and a nonzero infinitesimal tail, so it is
+not omnific; discrete order says that no element lies strictly between $0$ and $1$, not
+that elements lack infinitesimal terms \src{C11}. So the canonical integer part $\Oz$ of
+$\No$ need not contain a copy of every discretely ordered ring inside $\No$. Van den
+Dries studied which curves over $\Z$ have infinite points in \emph{some} discretely
+ordered ring, in connection with open induction \cite{vdDries}; that quantifier over
+rings is not the fixed-ring question here. Sources C11 and C14 consulted only the
+bibliographic record and the abstract of that paper, and no source uses it; the
+abstract was confirmed during placement, but the paper itself was not read for this
+report, and no comparison or priority statement is made. The theorem is consistent
+with open induction in the nonnegative part of $\Oz$ (see
+\cref{odg:rem:foursquares,odg:thm:induction}; the analogue for the definable
+omnific ring is \replabel{dsn:cor:openinduction}), which concerns those rings, not
+$R_0$.
+
+\subsection{Coefficients, rings and the scope of the method}\label{odg:cr:sub:boundaries}
+
+The coefficients of the equations must be constants, because the Euler derivations
+kill only constants. One may choose a nonconstant point first and build it into the
+coefficients \src{C14}: $y^2=x^3+(1-\omega^3)$ has the omnific point $(\omega,1)$
+\src{C10}, $y^2=x^3+x-u^2$ with $u$ positive infinite has $(u^2,u^3)$ although
+$4+27u^4\ne0$ \src{C12}, and $y^2=x^3+x-\omega^2$ has $(\omega^2,\omega^3)$ \src{C13}.
+No rigidity is claimed for equations whose coefficients vary at a surreal scale
+(\cref{odg:cr:q:coefficients}).
+
+The valuation ring is not rigid. For $\gamma>0$ and $\varepsilon=\omega^{-\gamma}\in\crm$,
+the nonsingular cubic $y^2=x^3-x+1$ has the nonconstant $\crO$-point $x=\varepsilon$,
+$y=(1-\varepsilon+\varepsilon^3)^{1/2}$ \src{C12}; over $\C$, at a point $(x_0,y_0)$ of
+$y^2=x^3+ax+b$ with $y_0\ne0$, the formal implicit solution
+$x=x_0+\varepsilon$, $y=y_0+\tfrac{3x_0^2+a}{2y_0}\varepsilon+\cdots$ is another
+\src{C10}. Confusing the two rings would reverse the main conclusion. Together with
+\cref{odg:cr:rem:fieldpoints}, this shows that nothing is claimed over $\No$, $\No[i]$
+or $\Ofin$.
+
+The exponent group may be arbitrary: no order unit, rank, cofinality, cardinality,
+divisibility or finite-support condition is imposed, and well ordering with finite
+coefficient convolution suffices. For $\Gamma=0$ the ring is $\Bbbk$ and everything is
+trivially rigid; $\Gamma\ne0$ is needed only for the converse direction of
+\cref{odg:cr:thm:affine,odg:cr:cor:allcurves} \src{C14}. Every field, module, scheme and
+space of functionals is set-sized; only the final collection of points ranges over a
+class \src{C10, C11, C12, C13, C14}. The results classify which smooth curves acquire
+nonordinary points; they give no enumeration, finiteness statement or height bound for
+the ordinary points, and they decide no Diophantine problem over $\Z$ that was not
+already decided \src{C10, C11, C12, C13, C14}. What they leave open is recorded in
+\cref{odg:cr:sub:settled}.
+
 \section{Equations with omnific coefficients}\label{odg:sec:coefficients}
 
 For $P\in\Oz[X_1,\ldots,X_n]$ let $\overline P\in\Z[X_1,\ldots,X_n]$ apply
@@ -6042,6 +7795,18 @@ surreals, the orbit density and the focusing theorem use the full class
 \src{08, 09}. Sources 08 and 09 show in one workspace that the fraction field
 of its omnific ring is smaller than the Hahn field (\cref{odg:frac:ex:workspace}).
 
+\paragraph{Curve and differential rigidity.} Every theorem of
+\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups} is proved in a
+set-sized Hahn ring $\crA$ over an arbitrary ordered exponent group, divisible or
+not, and the statements about $\BR$, $\BC$, $\Oz$ and $\Og$ are read one point at a
+time in a workspace containing its coordinates and finitely many witnesses
+\src{C10, C11, C12, C13, C14}. They therefore hold for $\Oz_\Gamma$ as stated. The
+full class enters only through the monomial clearing of
+\cref{odg:cor:projectiveclear}, quoted in \cref{odg:cr:sub:projective}, and the
+statement that nonempty affine-line fibers are proper classes
+(\cref{odg:cr:cor:omnific}); in a workspace those fibers are copies of
+$\Pi_\R(\Gamma)$.
+
 \subsection{A formalization route}
 
 No part of this report has been formalized. At the placement commit the
@@ -6096,6 +7861,25 @@ explicit smallness hypothesis on the input family.\\
 \end{tabular}
 \end{center}
 
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.6\textwidth}}
+\toprule
+Proposed layer & Main obligations\\
+\midrule
+\fn{Omnific.CurveRigidity} \src{C12, C13; also C10} & First the elementary chain in a
+set-sized Hahn field: the one-sided rings, the strict image
+$\partial(\crA)\subseteq\crP$, the certificate \eqref{odg:cr:eq:universal} and the
+ordered-group degree contradiction; the cubic certificate is a ring-normalization
+identity. Then, separately, the geometric chain in three layers: a differential
+support algebra with $\crP\cap\crO=0$; a one-variable function-field statement with a
+logarithmic differential and a valuation centre; and the compactification and
+Riemann--Roch input producing that differential. No proper-class scheme; the surreal
+instances last.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 Source 05 points to the normal-form bridge (\fn{docs/NORMAL_FORM_BRIDGE.md})
 and the modules \fn{SmallNormalFormFieldEquiv.lean},
 \fn{SmallNormalFormHahnEmbedding.lean},
@@ -6114,7 +7898,10 @@ theorem and quadratic reciprocity, and the reconstruction of $\No$ the real
 closedness of $\No$. Sources 06 and 07 propose the order followed in the row
 \fn{Omnific.Definability}, keeping the class-sized instantiation separate from
 the set-sized Hahn results; this is a proposal, not a report of completed
-formalization.
+formalization. Sources C12 and C13 propose the order of the row
+\fn{Omnific.CurveRigidity}, and source C10 notes that finite coordinate certificates
+for arbitrary smooth curves would make the geometric chain checkable in the same way
+as the cubic certificate (\cref{odg:cr:q:coefficients}); these too are proposals.
 
 \section{Questions and synthesis}\label{odg:sec:questions}
 
@@ -6124,7 +7911,9 @@ list is exhaustive. Two were settled inside the batch of manuscripts from
 which sources 01, 02 and 05 come. In the merge of sources 06 and 07 one more
 was answered and two were answered in part. Source 08 answers
 \cref{odg:q:homogeneous} in part, and sources 08 and 09 add five questions
-(\cref{odg:frac:sub:settled}).
+(\cref{odg:frac:sub:settled}). Sources C10--C14 answer \cref{odg:q:affine} for
+smooth curves, answer \cref{odg:q:search,odg:q:homogeneous} in part, and add six
+questions (\cref{odg:cr:sub:settled}); the three questions stay open, re-scoped.
 
 \subsection{Questions settled by source 05}\label{odg:sub:settled}
 
@@ -6135,8 +7924,9 @@ proved rigidity of $x^m-y^n=c$ only for $\gcd(m,n)>1$
 for every separated equation $ax^m+by^n=c$ with $abc\ne0$ and $m,n\ge2$; in
 particular $Y^2=X^3+1$ and $x^2-y^3=1$ have only ordinary omnific points
 (\cref{odg:cor:mordell}). The general part of source 01's question, a
-criterion for arbitrary affine curves, remains open as
-\cref{odg:q:affine}.
+criterion for arbitrary affine curves, was left open as \cref{odg:q:affine};
+sources C10--C14 answer it for smooth curves (\cref{odg:cr:sub:settled}), and it
+remains open for singular curves and in higher dimension.
 
 \paragraph{Unimodular Fermat (sources 01 and 02).} Source 01 asked for the
 classification of primitive or unimodular omnific solutions of
@@ -6199,9 +7989,64 @@ below; source 08's first question and source 09's second are merged into
 \cref{odg:frac:q:ideals}. The sources present them as questions of their
 articles, not as certified open problems.
 
+\subsection{Questions in the merge of sources C10--C14}\label{odg:cr:sub:settled}
+
+\paragraph{Rigid affine varieties and curves (sources 01, 02, 05).} All five
+sources answer the second part of \cref{odg:q:affine} for smooth geometrically
+integral curves: over any field of characteristic zero and any exponent group, a
+smooth affine curve has nonconstant points over the one-sided Hahn ring exactly when
+it is the affine line (\cref{odg:cr:thm:affine}); for an affine integral model with
+smooth generic fiber, $\mathcal C(\Oz)=\mathcal C(\Z)$ unless the generic fiber is an
+affine line, in which case every fiber of $\ct$ over an integer point is a copy of
+$\Pi$ (\cref{odg:cr:cor:omnific}). The named test $Y^2=X^3+aX+b$ is settled
+completely: only ordinary solutions when $4a^3+27b^2\ne0$
+(\cref{odg:cr:cor:weierstrass}, also for general Weierstrass equations,
+\cref{odg:cr:cor:generalweierstrass}) and injective polynomial families otherwise
+(\cref{odg:cr:prop:singular}). For the first part, \cref{odg:cr:thm:descent}
+reduces the question for every separated model to the rigidity of its complex fiber
+over the rings $\mathcal A_\C(\Gamma)$, and the part supplies rigid affine varieties
+in every dimension: locally closed subschemes and quasi-finite covers of abelian and
+semiabelian varieties (\cref{odg:cr:thm:abelian,odg:cr:thm:quasifinite}). The
+question stays open for singular curves and for general affine varieties of higher
+dimension; its refined forms are \cref{odg:cr:q:singular,odg:cr:q:higher}.
+
+\paragraph{Effective finite-support discovery (source 05).} For smooth affine curves
+the existence part of \cref{odg:q:search} is answered: a nonordinary omnific point
+exists if and only if one with finite supports exists, and then one with the same
+constant term (\cref{odg:cr:cor:polywitness}). In the affine-line case integer
+polynomial arcs through every integer point and a finite congruence test describe
+the points once an affine-line isomorphism and its inverse are supplied
+(\cref{odg:cr:lem:arcs,odg:cr:prop:congruence}). The question stays open beyond
+smooth curves, and \cref{odg:cr:cor:polywitness} is not an algorithm for the ordinary
+points.
+
+\paragraph{Primitive homogeneous solutions (source 02).} For projective varieties
+whose complex fiber is rigid, in particular smooth projective curves of positive
+genus and abelian varieties, every unimodular omnific solution is an ordinary integer
+tuple, and a coordinate ideal is invertible exactly when it is principal, exactly
+when the point is rational (\cref{odg:cr:thm:unimodular,odg:cr:thm:ozideal,odg:cr:cor:projectiveQ}).
+For these targets the answer does not depend on the integral model beyond the fixed
+projective embedding: the unimodular points are the rational points. With
+\cref{odg:frac:cor:homogeneous} for rational curves, this answers
+\cref{odg:q:homogeneous} for two opposite classes of varieties; other varieties, and
+primitive tuples that are not unimodular, remain open
+(\cref{odg:q:primitivefermat,odg:cr:q:primitive}).
+
+\paragraph{New questions (sources C10--C14).} The sources' continuation questions
+are merged into six. Singular curves (all five sources) are
+\cref{odg:cr:q:singular}; rigidity beyond cotangent generation (C11, C13, C14) is
+\cref{odg:cr:q:beyond}; higher-dimensional varieties (C10's discussion, C12's
+logarithmic question and C13's polynomial-arc question) are \cref{odg:cr:q:higher};
+primitive versus unimodular tuples (C12, C13, C14, and the corresponding remarks of
+C10 and C11) are \cref{odg:cr:q:primitive}; positive characteristic (C11, and C10's
+suggestion of higher derivations) is \cref{odg:cr:q:charp}; omnific coefficients,
+effective certificates and other coefficient systems (C12, and C10's remarks) are
+\cref{odg:cr:q:coefficients}. None of the sources presents these as known open
+problems of the literature.
+
 \subsection{Open questions}
 
-\begin{question}[Rigid affine varieties and curves \src{01, 02, 05}]\label{odg:q:affine}
+\begin{question}[Rigid affine varieties and curves \src{01, 02, 05}; smooth curves answered by \src{C10--C14}]\label{odg:q:affine}
 For which affine varieties $X$ over $\Z$ does $X(\Oz)=X(\Z)$ hold? For which
 affine curves does every omnific point have ordinary coordinates? A natural
 next test is $Y^2=X^3+aX+b$ with $a\ne0$, outside
@@ -6218,8 +8063,17 @@ structural analysis of possible supports \src{05}. No claim is made that all
 other fibers are rigid, or that all nontrivial fibers come from real
 polynomial curves \src{02}. The report
 \fn{docs/surreal/omnific-groups-and-lattices} answers the question for closed
-subgroup schemes of $\GL_N$ over $\Z$ (and over $\Z[i]$ for $\Og$); general
-affine varieties and curves remain open.
+subgroup schemes of $\GL_N$ over $\Z$ (and over $\Z[i]$ for $\Og$). Sources
+C10--C14 answer the second part for smooth geometrically integral curves and
+settle the test equation (\cref{odg:cr:sub:settled}): the only smooth affine curve
+with nonordinary omnific points is the affine line, the nonsingular Weierstrass
+equations have only ordinary solutions and the singular ones have polynomial
+families. For smooth curves the criterion is exactly the separation into polynomial
+parametrization, torus rigidity and genuinely algebraic branches asked for above,
+and source 02's caution is resolved: every nontrivial fiber of a smooth affine curve
+comes from a real polynomial curve (\cref{odg:cr:cor:omnific,odg:cr:cor:polywitness}).
+Singular curves and general affine varieties of higher dimension remain open
+(\cref{odg:cr:q:singular,odg:cr:q:higher}).
 
 \begin{question}[Primitive Fermat triples \src{01, 05}]\label{odg:q:primitivefermat}
 For $n\ge3$, can the unit-ideal hypothesis of
@@ -6247,8 +8101,13 @@ indefinite quadratic cases have many (\cref{odg:prop:pythagoras},
 \eqref{odg:eq:hyperunimodular}). Source 08 answers the question in part
 (\cref{odg:frac:sub:settled}): a rational curve of real polynomials with gcd one
 in the zero locus gives unimodular omnific solutions exactly when its
-specialization at $T=0$ is rational (\cref{odg:frac:cor:homogeneous}). Points
-off rational curves, and the dependence on the integral model, remain open.
+specialization at $T=0$ is rational (\cref{odg:frac:cor:homogeneous}). Sources
+C10--C14 answer it in part at the opposite extreme (\cref{odg:cr:sub:settled}): on a
+projective variety whose complex fiber is rigid, such as a smooth curve of positive
+genus or an abelian variety, the unimodular omnific solutions are exactly the
+ordinary unimodular ones, and in a fixed embedding the points with such solutions are
+the rational points (\cref{odg:cr:thm:unimodular,odg:cr:cor:projectiveQ}). Other
+varieties, and the dependence on the integral model in general, remain open.
 
 \begin{question}[An existential definition of $\Pi$ \src{01}; first part answered by \src{06}]\label{odg:q:existentialPi}
 Is there an existential definition of $\Pi$ over $\Oz$ with ordinary integer
@@ -6308,6 +8167,12 @@ constructions are needed? It can find witnesses and expose obstructions, but
 it cannot become a complete decision procedure for integer-coefficient
 systems, by \cref{odg:cor:H10}.
 \end{question}
+For smooth affine curves the existence part is answered by sources C12 and C13: a
+nonordinary omnific point exists exactly when one of finite support with the same
+constant term exists (\cref{odg:cr:cor:polywitness}), and source C14 makes the
+affine-line case constructive once a parametrization is supplied
+(\cref{odg:cr:lem:arcs,odg:cr:prop:congruence}). Beyond smooth curves the question
+stays open (\cref{odg:cr:sub:settled}).
 
 \begin{question}[Coefficient recovery of lower complexity \src{06}]\label{odg:def:q:coeffpe}
 Can the canonical $\R$ or $\C$ in the interpreted fraction field be recovered
@@ -6383,6 +8248,87 @@ terms of the newly admitted support scales?
 \Cref{odg:frac:thm:scale,odg:frac:prop:tor} settle one explicit case; they give
 no general flatness or normalization theorem for Hahn integer parts \src{08}.
 
+\begin{question}[Singular curves \src{C10, C11, C12, C13, C14}]\label{odg:cr:q:singular}
+Which integral singular affine curves over $\Bbbk$ have only constant
+$\crA$-points, uniformly in $\Gamma$? Can the answer be expressed through the
+normalization, the conductor and the points at infinity, and which finite
+normalization maps admit nonconstant points downstairs without a lift over the same
+ring?
+\end{question}
+The node and the cusp show that ``only the affine line'' is no longer the right
+statement, and a point need not lift to the normalization because $\crA$ need not be
+integrally closed (\cref{odg:cr:sub:singular}) \src{C10, C11, C13, C14}. Finite or
+quasi-finite maps to rigid targets are covered (\cref{odg:cr:thm:quasifinite}), but
+not every singular curve has one \src{C14}. Source C12 proposes a route through
+logarithmic differentials on the normalization whose pullbacks are regular on the
+singular curve, with the conductor controlling the descent; this is a proposal, not a
+proved criterion.
+
+\begin{question}[Beyond cotangent generation \src{C11, C13, C14}]\label{odg:cr:q:beyond}
+For which smooth proper varieties does $X(\crA)=X(\Bbbk)$ hold for every $\Gamma$?
+Must a smooth proper complex variety containing no rational curves satisfy
+$X(\BC)=X(\C)$ \src{C11, C13}? Which positivity conditions on the cotangent bundle
+suffice, and what obstruction is encoded by the locus where global forms fail to
+generate \src{C11, C14}?
+\end{question}
+Global generation of $\Omega^1$, or tangent detection by symmetric differentials, is
+sufficient (\cref{odg:cr:thm:proper,odg:cr:thm:symmetric}) and not claimed necessary;
+no implication from the absence of rational curves, from nefness, bigness or general
+type is proved, and varieties without global one-forms are not classified
+\src{C11, C13, C14}.
+
+\begin{question}[Affine varieties of higher dimension \src{C10, C12, C13}]\label{odg:cr:q:higher}
+For a smooth affine variety with a smooth normal-crossings compactification, which
+hypotheses on logarithmic one-forms force all $\crA$-points to be constant
+\src{C12}? For an affine complex variety $X$, does every nonconstant $\BC$-point force
+a nonconstant polynomial arc $\Aff^1\to X$ \src{C13}? Which of the Euler tangent
+directions allowed by the global forms, and by the fibers of an Albanese map, arise
+from Hahn points \src{C10}?
+\end{question}
+For smooth curves the first two questions have affirmative answers
+(\cref{odg:cr:thm:logroute,odg:cr:thm:affine}).
+In higher dimension one nonzero logarithmic form need not span the cotangent space,
+the centre of an arbitrary-rank valuation must be handled, and no equivalence with
+uniruledness, rational connectedness or the existence of polynomial curves is
+asserted \src{C10, C12}. A product with $\Aff^1$ is never rigid \src{C12}.
+
+\begin{question}[Primitive versus unimodular \src{C12, C13, C14; also C10, C11}]\label{odg:cr:q:primitive}
+For positive-genus projective curves over $\Z$, can the unit-ideal hypothesis of
+\cref{odg:cr:cor:projectiveQ} be weakened to the absence of a common nonunit divisor in
+$\Oz$? Can a nonrational point of such a curve be represented by a primitive omnific
+tuple whose coordinate ideal is not invertible \src{C12}?
+\end{question}
+This contains \cref{odg:q:primitivefermat}. \Cref{odg:cr:thm:ozideal} decides
+invertibility and principality, not the existence of a common nonunit divisor in a
+noninvertible ideal; the tuple of \cref{odg:cr:ex:denominator} has one and does not
+answer the question \src{C12}. No gcd or B\'ezout property of $\Oz$ may be substituted
+for an explicit unit-ideal identity \src{C10, C11, C13, C14}.
+
+\begin{question}[Positive characteristic \src{C11; also C10}]\label{odg:cr:q:charp}
+For which ordered groups $\Gamma$, fields $\Bbbk$ of positive characteristic and smooth
+curves do nonconstant $\crA$-points exist? Can the Artin--Schreier mechanism of
+\cref{odg:cr:prop:char2} be characterized by ramification and the $p$-divisible part
+of $\Gamma$ \src{C11}, and can iterative higher derivations replace the Euler
+derivations \src{C10}?
+\end{question}
+\Cref{odg:cr:prop:char2,odg:cr:prop:charp} show that both the curve classification and
+the squarefree theorem fail as stated in positive characteristic
+(\cref{odg:cr:sub:charp}).
+
+\begin{question}[Omnific coefficients and effective certificates \src{C12; also C10}]\label{odg:cr:q:coefficients}
+For equations with genuinely omnific coefficients, which support and nondegeneracy
+conditions recover a rigidity theorem \src{C12}? For an arbitrary smooth curve, can
+the global-form argument be turned into a finite coordinate certificate like
+\cref{odg:cr:prop:cubic} with useful complexity bounds \src{C10}, and can the support
+obstruction be combined with effective methods for integral points without losing
+explicit bounds \src{C12}? Which other pairs of a ring and a valuation ring in one
+field satisfy \eqref{odg:cr:eq:data} \src{C10}?
+\end{question}
+With nonconstant coefficients even nonsingular cubics have nonordinary omnific points
+(\cref{odg:cr:sub:boundaries}); these are separate from the proved constant-coefficient
+statements \src{C12}. A finite certificate would formalize the mechanism; it would not
+by itself enumerate integer points \src{C10}.
+
 \subsection{Synthesis}
 
 The arithmetic of $\Oz$ is governed by three simultaneous facts:
@@ -6430,6 +8376,17 @@ scalar copy of $\Pi$ and no gcd. This arithmetic is invisible to the order:
 both kinds of point occur in every interval, and the specialization is
 continuous nowhere.
 
+Sources C10--C14 turn the differential side of the second divide into geometry.
+Euler derivations preserve the one-sided ring and push the opposite valuation ring
+into its maximal ideal; properness lets one point be seen from both rings, so every
+global differential vanishes at it, and enough differentials force constancy. For
+smooth curves the three mechanisms are then exhaustive: positive genus gives
+differential rigidity, two or more punctures of a rational curve give unit rigidity,
+and the single remaining case, the affine line, gives polynomial flexibility with
+every fiber a copy of $\Pi$. The elliptic test equation of \cref{odg:q:affine} is the
+first case with a one-line certificate, and its singular members are the polynomial
+case.
+
 \subsection{Relations to neighbouring reports}\label{odg:sub:neighbours}
 
 \begin{itemize}[leftmargin=*]
@@ -6469,7 +8426,21 @@ contain the rank-two case of \cref{odg:frac:thm:realconstants}
 the scalar step of \cref{odg:frac:thm:pullback} (\replabel{osq:tn:thm:hom}).
 Localization at the positive monomials gives $\No$
 (\replabel{osq:prop:fractions}), and the residue field $\Q$ of $\Oz_\Pi$ agrees
-with its list of small primes (\replabel{osq:cor:smallprimes}).
+with its list of small primes (\replabel{osq:cor:smallprimes}). Its class-valued
+derivations $\Oz\to\Pi$ (\replabel{osq:prop:classder}) contain the strict inclusion
+$\partial(\crA)\subseteq\crP$ used in \cref{odg:cr:sec:principle}; its theorem that
+derivations of the class ring into set-sized modules vanish
+(\replabel{osq:thm:derivations}) is no conflict, since the Euler derivations here act
+on set-sized workspaces and take values in them.
+\item \fn{docs/surreal/omnific-preserving-automorphisms}: its support-preserving
+Euler derivations map $\mathcal R_{\mathfrak o}(k,\Gamma)$ into $\Pi_k(\Gamma)$
+(\replabel{opa:par:prop:Euler}), the strict inclusion of \cref{odg:cr:lem:euler} on
+the arithmetic rings; sources C10--C14 did not cite it.
+\item \fn{docs/surcomplex/hahn-tate-uniformization}: its Tate points concern field
+points of curves with nonconstant $j$-invariant, outside the constant-coefficient
+hypothesis of \cref{odg:cr:sec:curves}; like
+\cref{odg:cr:rem:fieldpoints,odg:cr:sub:boundaries}, they show that field points and
+points with varying coefficients are not constrained by the ring rigidity here.
 \item \fn{docs/surreal/omnific-groups-and-lattices}: its non-elementary
 unipotents and cusp-residue obstruction
 (\replabel{ogl:el:thm:nonel}, \replabel{ogl:el:prop:cuspresidue}) show that the
@@ -6478,7 +8449,14 @@ elementary matrices at irrational centres, and that the density of
 \cref{odg:frac:cor:dense} needs such matrices (\cref{odg:frac:rem:elementary}).
 That report also cites \cref{odg:thm:nogcd,odg:thm:realray}, and it answers
 \cref{odg:q:affine} for closed subgroup schemes of $\GL_N$ over $\Z$ (and over
-$\Z[i]$ for $\Og$), not for general affine varieties or curves.
+$\Z[i]$ for $\Og$), not for general affine varieties or curves; its remark
+\replabel{ogl:alg:rem:affine} still records the curve case as open, which
+\cref{odg:cr:sec:curves} now settles for smooth curves. The two answers agree where
+they overlap (\cref{odg:cr:rem:ogl}): $\Ga$ is nonrigid and the one-dimensional tori
+are rigid; the vector-group kernel of \cref{odg:cr:thm:groupkernel} is its unipotent
+kernel \replabel{ogl:alg:prop:bch} for commutative groups; semiabelian rigidity
+extends its torus freezing; and real and complex rigidity coincide for smooth curves
+but not for groups ($\SO_3$).
 \Cref{odg:def:thm:homct} concerns homomorphisms into class-sized Hahn rings as
 well and is consistent with the quotient theorem there.
 \item \fn{docs/surcomplex/surcomplex-field-automorphisms}: constructs the
@@ -6504,7 +8482,7 @@ $\SO(3,\Oz)$ is finite.
 
 \subsection{Sources}
 
-The report is built from seven manuscripts. Sources 01, 02 and 05 are three of
+The report is built from twelve manuscripts. Sources 01, 02 and 05 are three of
 a batch of eleven placed in commit \texttt{be06fc8}, and their numbers are the
 batch item numbers; they are dated September 22, 2026, and the repository
 commit they pin is \pin. Sources 06 and 07 are items 01 and 07 of a batch of
@@ -6541,6 +8519,23 @@ lists the delivered file names. Manuscript 14 of the sibling report is item 04
 of the batch placed in \texttt{cf350b1}; its files are shipped there with the
 prefix \fn{14-arithmetic-tensors-}.
 
+Sources C10--C14 are items 02, 03, 04, 07 and 08 of a batch of nine placed in
+commit \texttt{c6359e4}, whose archives arrived in \texttt{5610500} (C10, C11, C12)
+and \texttt{21016dc} (C13, C14); they are tagged by their shipped file prefixes
+\fn{10-curve-rigidity-}, \fn{11-curve-abelian-rigidity-},
+\fn{12-curve-logarithmic-}, \fn{13-differential-rigidity-} and
+\fn{14-hahn-differential-rigidity-}, with the letter C to keep them apart from the
+sibling report's manuscripts 13 and 14. All are dated September 23, 2026. Sources
+C10, C13 and C14 pin \nolinkurl{4cdeaec43ff1692ed2ad9f5bdf761a41872975a5} (``Record
+merged validation for the quadratic geometry review''), 23 commits before
+\texttt{5610500}; source C11 pins \nolinkurl{f6e031a8ebe78203f7d7b449d7e97cb7a540c949}
+and source C12 \nolinkurl{89bec380b218c0a5bb865f53a86f5abf7f8fb5ad}, 26 and 27
+commits before it. None of the five was aware of the others. Their code, data and
+audits are shipped under those prefixes: the source audits of all five, source C11's
+build audit, and the build records of sources C10 and C14 (in \fn{data/}). Their
+texts, PDFs and delivered READMEs are not shipped, nor are the checksum manifests of
+sources C10 and C12, which list the delivered file names.
+
 \subsection{Section map}
 
 \begin{center}
@@ -6567,7 +8562,8 @@ norm forms with any $\Q$-basis; 13 Gaussian fibers, converse, kernel remark,
 rank-deficient example, \'etale norms; 07 norms over any base field; merged
 \'etale theorem\\
 \ref{odg:sec:derivations} Derivations & 05, extended to $\C$ by the review;
-merge remark \ref{odg:rem:separatedidentity}\\
+merge remark \ref{odg:rem:separatedidentity}; pointers to the squarefree theorem
+of C10--C14\\
 \ref{odg:sec:quadratic} Quadratic dichotomy & 01 base; 02 skewness,
 determinant, Lorentz matrix, unipotent subgroup\\
 \ref{odg:sec:obstructions} Bounded geometry & 02 semialgebraic theorem; 01
@@ -6596,7 +8592,8 @@ merge quartic graph and number-field remark\\
 reconstruction, automorphisms, twist, c.e.\ sets, QF bound; 07 recursive
 saturation and arithmetic; 06 and 07 collapse obstruction\\
 \ref{odg:sec:primitive} Families and primitivity & 01 base; 02 sign
-conditions and decidability; 05 witness and finite-support specialization\\
+conditions and decidability; 05 witness and finite-support specialization;
+pointers to C12--C14\\
 \ref{odg:frac:sec:fractions} Fractions & 08 base: multiplier theorem,
 rational-function classification, real constants, curves, localization,
 models, scale defect, $\Tor_1$, monomials, Gaussian dichotomy; 09 region
@@ -6604,13 +8601,36 @@ $\Vreg$, denominator calculus, least denominators, orbits, focusing, density,
 nowhere continuity, examples; 14's Gaussian direction criterion credited;
 merge remarks \ref{odg:frac:rem:halving}, \ref{odg:frac:rem:elementary} and
 \cref{odg:frac:cor:homogeneous}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.56\textwidth}}
+\toprule
+Section & Sources\\
+\midrule
+\ref{odg:cr:sec:principle} Differential rigidity & C14 base: two rings, two-ring
+contraction, proper rigidity; C12 and C13 strict certificate; C13 tensors and
+symmetric differentials, general Weierstrass; C10, C11, C14 unit route; all five
+cubic certificate and singular families (node of C11)\\
+\ref{odg:cr:sec:curves} Smooth curves & C14 base: classification over every field,
+forms of $\Aff^1$, integer arcs, congruences, unimodular coordinates over
+$\mathcal R_{\mathfrak o}$; C12 logarithmic route (closed-centre step \mergetag),
+descent, coordinate ideals; C11 fibers over any $\mathfrak o$, class size, one-form
+remark; C13 all curves, polynomial witnesses; C10 fiber bijection, field points\\
+\ref{odg:cr:sec:groups} Groups and boundaries & all five abelian and semiabelian;
+C11 quasi-finite, reduced algebras, dual numbers, discretely ordered ring; C13 group
+kernel, characteristic $p$; C11 and C14 characteristic two; C10, C12, C13, C14
+coefficient and valuation-ring boundaries; merge remark \ref{odg:cr:rem:ogl}\\
 \ref{odg:sec:coefficients} Omnific coefficients & 02 quadratic criterion and
 initial forms (also 01); 05 binomials and failed lifting\\
 \ref{odg:sec:coefficients} (continued) & pointer to the image-gap theorem of
 the sibling report\\
-\ref{odg:sec:formal}, \ref{odg:sec:questions} & All seven; settled
+\ref{odg:sec:formal}, \ref{odg:sec:questions} & All twelve; settled
 questions recorded in
-\cref{odg:sub:settled,odg:def:sub:settled,odg:frac:sub:settled}\\
+\cref{odg:sub:settled,odg:def:sub:settled,odg:frac:sub:settled,odg:cr:sub:settled}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -6733,6 +8753,55 @@ printed once, crediting both (\cref{odg:frac:cor:gaussiandirections}).
 formulation of source 08's curve criterion for homogeneous systems) and
 \cref{odg:frac:rem:elementary} (comparison with the elementary group of the
 omnific groups report) carry the tag \mergetag{} and have complete proofs.
+\item \emph{Curve base.} Source C14 is the base of
+\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}: on the shared
+theorems it has the weakest hypotheses (any field of characteristic zero, any
+exponent group, the curve classification over the field itself, the arithmetic
+dichotomy with the generic fiber over $\Q$, unimodular coordinates over
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$). Source C11 has the most additional material
+but states its classification over an algebraically closed field or $\R$; source C12
+assumes an algebraically closed field throughout; source C13 assumes a divisible
+exponent group and the fields $\R$ and $\C$; source C10 assumes an algebraically
+closed field for curves.
+\item \emph{Hidden hypotheses.} Proofs taken from sources with stronger hypotheses
+were re-read before being attached to weaker ones. Source C12's logarithmic proof uses
+closed points with residue field $\Bbbk$, so it is printed over an algebraically closed
+field (\cref{odg:cr:thm:logroute}), and the general case descends as in source C14.
+Source C13's tensor theorem, general Weierstrass corollary, curve corollary and group
+kernel use only a functional $\Gamma_\Q\to\Bbbk$ and characteristic zero, and are
+printed for every $\Bbbk$ and $\Gamma$
+(\cref{odg:cr:thm:annihilation,odg:cr:cor:generalweierstrass,odg:cr:cor:allcurves,odg:cr:thm:groupkernel});
+source C11's arithmetic fibers extend to every $\Bbbk$ by the classification
+(\cref{odg:cr:thm:arith}). These extensions use the sources' own proofs.
+\item \emph{Squarefree equations.} The strict-ideal proof of sources C12 and C13 is
+printed (\cref{odg:cr:thm:squarefree}); the unit argument at the corner $(2,2)$ of
+sources C10, C11 and C14 is kept as a second route (\cref{odg:cr:rem:unitroute}).
+The strict inclusion $\partial(\crA)\subseteq\crP$ is credited to
+\replabel{osq:prop:classder} and \replabel{opa:par:prop:Euler}, which none of the five
+cites.
+\item \emph{Two rings.} Source C13's version for global tensors and symmetric
+differentials is printed (\cref{odg:cr:thm:annihilation,odg:cr:thm:symmetric}); the
+one-form versions of the other four are its case $r=1$. Source C14's bijection form
+and source C11's equalizer lemma for families of maps are used
+(\cref{odg:cr:thm:proper,odg:cr:lem:separated}).
+\item \emph{Curves.} Source C14's proof of the classification is printed; source C12's
+logarithmic proof is a second route; source C11's one-form remark and source C12's
+projective-curve proof are combined in \cref{odg:cr:rem:oneform}; the real descent of
+sources C10, C11 and C13 is the case $\Bbbk=\R$ of \cref{odg:cr:lem:formA1}.
+\item \emph{Arithmetic.} Source C11's fibers over any coefficient ring are printed
+(\cref{odg:cr:thm:arith}), with the fiber bijections of sources C10 and C13 and the
+generic-fiber dichotomy of source C14 as \cref{odg:cr:cor:omnific}. Source C14's
+integer arcs and congruence criterion, source C13's polynomial witnesses and source
+C12's descent and coordinate ideals are added. The coordinate clearing reproved by
+sources C10 and C12 is \cref{odg:cor:projectiveclear} and is not reprinted.
+\item \emph{Groups.} Source C14's torus proof is printed, with the faithful-flatness
+descent of source C10 and the complex descent of source C13 recorded; source C11's
+quasi-finite theorem for any rigid target is printed, with the finite and semiabelian
+cases of the others.
+\item \emph{Further additions.} The closed-centre step in \cref{odg:cr:thm:logroute},
+the comparison with the omnific groups report (\cref{odg:cr:rem:ogl}) and the
+observation that source C13's characteristic-$p$ curve is an affine line (after
+\cref{odg:cr:prop:charp}) carry the tag \mergetag{} and have complete proofs.
 \end{enumerate}
 
 \paragraph{Printed once.} The floor formula, retraction, congruences, finite
@@ -6759,7 +8828,23 @@ them. These are printed once, in
 \cref{odg:frac:sec:fractions}, the unimodular-fraction lemma, the real
 constants, ordinary denominators, the one-function criterion, the monomial
 criterion and the Gaussian fraction field are printed once with both sources
-named.
+named. All five of sources C10--C14 reprove the rings, the retraction, the units, the
+degree rules, the Euler derivations and their detection property, which are printed
+once (\cref{odg:sec:basic,odg:sec:derivations,odg:def:lem:units}, extended in
+\cref{odg:cr:lem:rings,odg:cr:lem:euler,odg:cr:lem:separation}), and all five credit
+them to this report. Within
+\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}, the following are
+printed once with every proving source named: the squarefree theorem and the cubic
+certificate (all five), the singular Weierstrass families (C10, C11, C12, C14), the
+two-ring principle and proper rigidity (all five), the canonical-bundle lemma (all
+five), the puncture lemma (C10, C11, C13, C14), the curve classification (all five,
+at different generality), the arithmetic fibers (C10, C11, C13, C14), unimodular
+coordinates (C10, C13, C14), abelian and semiabelian rigidity (all five), the
+quasi-finite theorem (C10, C11, C12, C14), the characteristic-two point (C11 and C14,
+the same example with exponents rescaled by three), the fixed-workspace non-normality
+examples (C10, C12, C13, with \cref{odg:prop:notnormal}), the field points outside the
+ring (C10, C12, C13, C14) and the examples with nonconstant coefficients (C10, C12, C13,
+C14).
 
 \subsection{Renamed symbols}
 
@@ -6878,6 +8963,50 @@ intersective polynomial)\\
 09 & ``finite'' point; ``divisor-primitive''; ``B\'ezout fraction'' & affine
 point; primitive; unimodular presentation\\
 09 & fibre & fiber\\
+C10 & $k$, $H$; $K_{k,H}$, $B_{k,H}$, $O_{k,H}$, $\mathfrak m_{k,H}$ & $\Bbbk$,
+$\Gamma$; $\crH$, $\crA$, $\crO$, $\crm$\\
+C10 & $D_\lambda$, script $D$ (family); \texttt{\textbackslash dd} ($\deg_\omega$) &
+$\partial_\lambda$, $\mathcal D$; $\ddeg$\\
+C10 & $f$ (squarefree polynomial), $U,V$; $U_0,V_0$ & $P$, $U,W$; the polynomials of
+\eqref{odg:cr:eq:cubic}\\
+C10 & $\Phi_p$, $c_p$, $q$ (inverse) & $s\mapsto\phi(c_{\mathbf n}+s)$,
+$c_{\mathbf n}$, $q$\\
+C10 & $\eta_x(D)$; $X(\mathcal B_k)$ & $\eta(\partial)$; the class convention of
+\cref{odg:cr:sub:conventions}\\
+C11 & $k$; $B_\Gamma(k)$, $P_\Gamma(k)$, $K_\Gamma(k)$, $\mathcal O$, $\mathfrak m$
+($t$-convention) & $\Bbbk$; $\crA$, $\crP$, $\crH$, $\crO$, $\crm$ (exponents
+negated)\\
+C11 & $D\subseteq k$, $R_\Gamma(D,k)$; $A$ (reduced algebra); $B_\Gamma(A)$ &
+$\mathfrak o$, $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$; $S$; $\mathcal A_S(\Gamma)$\\
+C11 & $D_\lambda$, script $D$ (family), \texttt{\textbackslash dd} ($\mathrm d$); $A_0,C_0$ &
+$\partial_\lambda$, $\mathcal D$, $\dif$; the polynomials of \eqref{odg:cr:eq:cubic}\\
+C11 & $U$ (curve), $a_P$, $\mathcal U$; $h$ (fiber parameter) & $U$ or $C$,
+$c_{\mathbf n}$, $\mathcal U$; $s$\\
+C12 & $k$; $B$, $I$, $V$, $\mathfrak m$, $K$ ($t$-convention) & $\Bbbk$; $\crA$,
+$\crP$, $\crO$, $\crm$, $\crH$\\
+C12 & $\deg_H$; $D_\lambda$; $U,W$; $D_\infty$, $r$ & $\ddeg$; $\partial_\lambda$;
+$U,W$; $\Sigma$, $r$\\
+C12 & $J(\mathbf a)$; $\Oz_\Gamma=\Z\oplus I_{\R,\Gamma}$; $\Pi_\R$ &
+$\langle\mathbf a\rangle$; $\mathcal R_\Z(\R,\Gamma)$; $\Pi$\\
+C13 & $\mathcal B_k$, $\mathcal B_{k,\Gamma}$, $I$, $O=\mathcal O_{k,\Gamma}$,
+$\mathfrak m$, $K$ & $\BR$ or $\BC$, $\crA$, $\crP$, $\crO$, $\crm$, $\crH$\\
+C13 & $D_\lambda$ with $\lambda:\Gamma\to\Q$; $\deg_\omega$; $F$ (squarefree), $U,V$ &
+$\partial_\lambda$ with $\lambda:\Gamma_\Q\to\Bbbk$; $\ddeg$; $P$, $U,W$\\
+C13 & $R$, $V$, $\mathfrak n$ (abstract rings) & $R$, $V$, $\mathfrak m_V$\\
+C13 & $L=\mathcal O_{\mathbb P(\Omega)}(1)$; $P_R$, $P_K$ & $\mathcal L$; $p$, $p_L$\\
+C14 & $k$, $K$; $\mathcal B_\Gamma(k)$, $\mathcal B_{<0}$, $\mathcal O$, $\mathfrak m$
+($t$-convention) & $\Bbbk$, $\crH$; $\crA$, $\crP$, $\crO$, $\crm$\\
+C14 & $R_\Gamma(D;k)$ & $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ ($D$ is the Pell
+parameter)\\
+C14 & $D_\lambda$, $\mathcal D$; $A,C$ (B\'ezout) & $\partial_\lambda$, $\mathcal D$;
+$U,W$\\
+C14 & $B$, $O$, $\mathfrak n$ (abstract data); $\langle\eta,D\rangle_p$ & $R$, $V$,
+$\mathfrak m_V$; the contraction $\eta(\partial)$ at $p$\\
+C14 & $M$ (arcs); $D$, $L$ (congruence criterion) & $N$; $N_1$, $N_2$\\
+C14 & $S$ (boundary); script $C$ (model) & $\Sigma$; $\mathcal C$\\
+C10--C14 & \texttt{\textbackslash A} ($\mathbb A$), \texttt{\textbackslash OO}
+($\mathcal O$) & $\Aff$, $\crO$ (this report's \texttt{\textbackslash OO} is the
+orthogonal group)\\
 \end{longtable}
 
 \subsection{Corrections to the sources}
@@ -6961,9 +9090,45 @@ fixed here and both symbols are renamed (\cref{odg:tab:renames}).
 disclaims novelty for the conic. The sibling report's coefficient-lattice
 results and its localization $\mathcal M^{-1}\Oz=\No$ were written after the pin
 of sources 08 and 09. These credits are added (merge choices above).
+\item Source C12's logarithmic proof of the curve classification takes ``the
+centre'' $Q$ of the valuation-ring point without showing that $Q$ is a closed point.
+If it were the generic point, the function field would lie in the valuation ring and
+the residue map would embed it into $\Bbbk$, which is impossible for transcendence
+degree one. This step is added (\cref{odg:cr:thm:logroute}).
+\item Source C13 assumes a divisible exponent group, with $\lambda:\Gamma\to\Q$, and,
+for curves and groups, the fields $\R$ and $\C$. Its proofs need neither; its results
+are printed for every ordered exponent group and every field of characteristic zero,
+with $\lambda:\Gamma_\Q\to\Bbbk$ as in sources C10 and C14. Sources C10 and C12 state
+their curve theorems over algebraically closed fields and source C11 over such fields
+or $\R$; the report states them over every field of characteristic zero by source
+C14's descent.
+\item Sources C10, C11 and C14 treat the corner $m=d=2$ of the squarefree theorem by
+units. The strict inclusion $\partial(\crA)\subseteq\crP$ used by sources C12 and C13
+removes it; it is already in \replabel{opa:par:prop:Euler} and
+\replabel{osq:prop:classder}, which none of the five cites. The strict proof is
+printed first and the credit is added.
+\item Source C13 cites Stacks Project Tag 02AT for K\"ahler differentials; that tag is
+Section 111.50 of the chapter of exercises. The citation is replaced by Tag 00RM
+(Section 10.131), which sources C10 and C14 cite. Source C13's Tag 01KF for the
+valuative criterion was not checked; Tag 0BX5 (Lemma 29.43.1), cited by sources C12
+and C14, is cited instead. Sources C10 and C11 cite Tag 0BX4, the section containing
+that lemma, and Riemann--Roch is cited as Section 53.5 (Tag 0B5B) or as its Lemma
+53.5.2 (Tag 0BS6); these are consistent. Milne's \emph{Abelian Varieties}, Chapter IV,
+6.7 is called a proposition by sources C10 and C11 and a corollary by source C14;
+this was not checked.
+\item The non-integral-closure examples of sources C10, C12 and C13 repeat, in fixed
+workspaces, the witness $\sqrt{\omega^2+1}$ of \cref{odg:prop:notnormal} (sources
+01, 02, 05), which was in this report at their pins; only the fixed-workspace forms are
+new, and the credit is added (\cref{odg:cr:sub:singular}).
+\item Source C13's characteristic-$p$ example is correct as stated, a counterexample
+to squarefree rigidity; its curve is, however, an affine line in characteristic $p$,
+which is recorded after \cref{odg:cr:prop:charp}.
 \end{enumerate}
 No mathematical error was found in any main proof of the seven sources, or in
-the printed results of sources 13 and 14. The later proof review of
+the printed results of sources 13 and 14. In sources C10--C14 the only gap found is
+the closed-centre step of source C12, supplied above; there is no false theorem and
+no contradiction among the five, with the collection, or with the other sources of this
+report. The later proof review of
 \cref{odg:sec:transfer,odg:sec:rigidity,odg:sec:derivations} (recorded in
 \fn{RECONCILIATION.md}) corrects the coefficient-derivation hypothesis in the
 merge's own \cref{odg:rem:separatedidentity}: the derivation must kill $a$
@@ -7036,6 +9201,29 @@ that report only for comparison, not as a proof dependency.
 principal-ideal form of the direction criterion is printed in this report with
 \cref{odg:thm:realray}. Before this merge it was not; it is now
 \cref{odg:frac:cor:gaussiandirections}.
+\item Sources C10--C14 inspected the repository through the GitHub connector at
+\texttt{4cdeaec} (C10, C13, C14), \texttt{f6e031a} (C11) and \texttt{89bec38}
+(C12), without a checkout or build. At all three pins this report had only sources 01,
+02 and 05 and fourteen sections. All five cite \cref{odg:q:affine} as ``Question
+14.1''; it is now \cref{odg:q:affine}, and source C14's ``Question 14.2'' is
+\cref{odg:q:primitivefermat}. Source C13's ``Section 11'' (projective tuples and
+finite-support specialization) is now \cref{odg:sec:primitive}, and the sources'
+``Section 14'' is now \cref{odg:sec:questions}; their Sections 6 and 7, and
+Theorem 7.4 cited by source C12, keep their numbers. Their descriptions of the Euler
+derivations, the separated-power proof and its stated boundary for
+$y^2=x^3+ax+b$, the finite-support specialization (now
+\cref{odg:thm:specialization}) and the Pythagorean family were accurate at the pins.
+\item The blob hashes recorded by the sources are correct: the report file was
+\nolinkurl{4c26f4e4bee62f76428d7c69adf4aabe5af5ec53} at \texttt{4cdeaec} (C10, C13,
+C14) and \nolinkurl{47af413cd5f5d186a8c1391514d69e9933034498} at \texttt{89bec38}
+(C12), the same blob as at \texttt{f6e031a} (C11). Source C14 describes the report as a three-source
+assembly and source C11 says that its guide separates the reviewed Sections 1--7 from
+later material; both were true at their pins. The report now has twelve sources, and
+the reviews recorded in \fn{RECONCILIATION.md} extend further, but do not cover
+\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}.
+\item Source C12 describes the collection as having 51 reports, true at
+\texttt{89bec38}; the catalogue has since grown. The sources' statements that no Lean
+declaration concerns omnific integers are still true.
 \end{enumerate}
 
 \section{Non-claims by source}\label{odg:app:nonclaims}
@@ -7447,6 +9635,173 @@ not all points of a projective scheme over a ring.
 \item The example $[1:\sqrt2]$ is not new; it predates manuscript 14.
 \end{enumerate}
 
+\paragraph{Common to sources C10--C14.} AI-assisted research drafts with written
+proofs; not refereed or independently reviewed; no Lean files and no Lean-verified
+result, and the repository's build and axiom audit are not a verification of these
+results; the repository was inspected through the GitHub connector and not built; the
+finite checks verify identities and finite-support examples, not arbitrary infinite
+supports, properness, Riemann--Roch, global generation or the class transfer, and a
+count of passing checks is not a formal proof; historical priority is not established,
+the searches were targeted, and a missing search hit is not evidence of absence; the
+question answered is a continuation question of this report, not a literature
+conjecture, and no named long-standing conjecture, in particular none of Conway's
+factorization or refinement questions, is claimed to be solved; nothing is claimed
+about singular curves in general, about general affine varieties of higher dimension,
+or about primitive, non-unimodular Fermat triples; no enumeration, finiteness
+statement, height bound or algorithm for the ordinary integer points is given; no
+rigidity over $\No$, $\No[i]$ or the valuation ring is claimed, and field points outside
+the rings exist; coefficients must be constants; the Euler derivations are local, not
+canonical and not the Berarducci--Mantova derivation; no spectrum of a proper-class
+ring is formed; the standard inputs (Hahn arithmetic, K\"ahler differentials, the
+valuative criterion, smooth completion, Riemann--Roch, invariant differentials) are
+imported and credited, and the constant term, units, Euler derivations,
+separated-power and unimodular Fermat rigidity and finite-support specialization of
+this report are credited, not claimed.
+
+\paragraph{Source C10 (14 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item The finite-polynomial special case, that maps from an affine line to a curve of
+positive genus are constant, is standard and not claimed as new.
+\item The weaker verticality conclusion $f(x)=f(\ct x)$ is not a claim of rigidity for
+positive-dimensional fibers.
+\item No equivalence with uniruledness, rational connectedness or the existence of
+polynomial curves is asserted in higher dimension.
+\item The clearing lemma may fail when the clearing exponent is confined to a fixed
+workspace.
+\item $\Frac(\crA)=\crH$ is not assumed; normality and unique factorization are not
+assumed; ambient roots are never truncated into the ring.
+\item The two-ring argument does not assert a ring map from the ring to the valuation
+ring; properness supplies a second point, not an inclusion of rings.
+\item Failure of global generation identifies the possible surviving directions; it
+does not prove that they integrate to nonconstant Hahn points.
+\item The arithmetic criterion is not an enumeration algorithm, decides no arbitrary
+Diophantine system and uses no finiteness theorem for integral points.
+\item Replacing a singular curve by its normalization changes the point problem unless
+lifting is justified; that issue is not hidden in the smooth completion.
+\item The argument is not a positive-characteristic theorem.
+\item No rigidity is asserted for equations whose coefficients vary at a surreal scale.
+\item Its suggestions of other coefficient systems and of iterative higher derivations
+are suggestions, not results.
+\item Its questions are boundaries of its arguments, not open problems certified in the
+literature.
+\item A native code search that returned no match is not evidence of absence.
+\end{enumerate}
+
+\paragraph{Source C11 (15 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item No integer-part assertion is made for an arbitrary subring $\mathfrak o$ or an
+arbitrary $\Gamma$.
+\item $\mathcal A_S(\Gamma)$ is in general not $S\otimes_\Bbbk\crA$; the reduced-base
+principle is not faithful flatness.
+\item Van den Dries (1981) was compared through its bibliographic record and abstract
+only; no theorem-by-theorem comparison is made, and its discretely ordered ring theorem
+uses nothing from that paper.
+\item The Artin--Schreier telescoping identity is not claimed as new.
+\item No implication from the absence of rational curves to rigidity is proved.
+\item The pointwise criterion is an obstruction, not a classification of varieties
+whose global forms fail to generate somewhere.
+\item The curve-subalgebra corollary needs a smooth algebra, does not say that every
+finitely generated subalgebra is a polynomial ring, and does not cover higher
+transcendence degree.
+\item The surcomplex conclusion does not say that the curves have no nonconstant points
+in $\No[i]$; such points exist.
+\item The projective theorem does not settle the primitive, non-unimodular Fermat
+question, and projective points over a ring are not arbitrary homogeneous tuples over
+its fraction field.
+\item Integer coefficients cannot be replaced by omnific coefficients without
+qualification.
+\item The canonical integer part need not contain a copy of every discretely ordered ring
+inside $\No$.
+\item Conway's and Gonshor's texts were not newly read; for L'Innocente--Mantova only
+the abstract and version information were checked, and their factorization theorems are
+not used.
+\item Enlarging $\Gamma$ to its divisible hull is permitted but not needed, and no
+cofinal set in the class of surreal exponents is used.
+\item Its build audit concerns its own artifact, not a mathematical proof.
+\item Its questions are proposed continuation questions, not assertions of open status
+in the literature.
+\end{enumerate}
+
+\paragraph{Source C12 (13 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item The definition of $\Oz$, the Hahn construction, the retractions, the degree
+estimates and the Euler derivations are not claimed as new.
+\item Only the sufficient direction of the coordinate test is used; no claim is made that
+every projective point over the ring has a global unimodular tuple.
+\item The ideal of its elliptic example has an explicit common nonunit divisor and does
+not answer the primitive question.
+\item Reducible affine curves are not classified.
+\item Its formalization route is a proposal; no formalization was done.
+\item The descent theorem is a reduction, not an algorithm for integer points; the
+squarefree theorem does not decide the remaining ordinary questions; no effective
+enumeration or height bound is given.
+\item The Euler contractions are not claimed to separate all elements of
+$\Omega^1_{\crH/\Bbbk}$; they separate functions.
+\item No characteristic-$p$ classification is given.
+\item In higher dimension one logarithmic form does not suffice, and no assertion is made
+that it does.
+\item Group structure alone does not give rigidity; the result is not about every
+algebraic group ($\Ga$, $\SL_2$).
+\item Uniform normality of the ring across exponent groups is not assumed.
+\item Nonduplication is not certified against every supplementary manuscript, historical
+commit or paper; the 51-report collection of its pin was not audited exhaustively.
+\item Its symbolic checks guard against transcription errors; they do not prove the
+arbitrary-support lemmas, the compactification argument or the coordinate-ideal theorem.
+\end{enumerate}
+
+\paragraph{Source C13 (13 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item No conclusion is drawn from nefness, bigness or general type; ``ample'' means the
+literal tautological-bundle condition, and conventions for semiample bundles vary.
+\item The splitting of group points is not an algebraic splitting of the group, and not a
+formal-completion approximation.
+\item Its non-normality example is not itself a failed lift of a point of a constant
+curve, and a normalization lift may not be declared to exist.
+\item Embedding a singular curve in an abelian variety is a substantial extra hypothesis;
+the singular-subscheme consequence does not classify singular curves.
+\item The abelian theorem is not $A(\crH)=A(\Bbbk)$ and not a statement about torsion points.
+\item The polynomial-witness principle is not asserted for singular curves or in higher
+dimension, and gives no uniform algorithm for integer points.
+\item No resolution of Conway's factorization or refinement questions, or of any named
+conjecture, is claimed.
+\item Its 12,874 assertions are not independently verified theorems; the checks do not
+verify the valuative criterion, the sheaf-theoretic contraction, Riemann--Roch, group
+structure, the class assembly, correctness of every proof or originality.
+\item Division by $2$ takes place in $\crA$; $2$ is not claimed to be a unit of $\Oz$.
+\item The Fermat case is a specialization of an earlier result, not a new Fermat
+theorem, and nothing is concluded about primitive, non-unimodular tuples.
+\item $\mathcal C(\Oz)=\mathcal C(\Z)$ is neither an algorithm nor a finiteness statement,
+and no undecidability problem is solved.
+\item No theorem is asserted to have a matching Lean declaration; its formalization order
+is a proposal.
+\item Its example equations come with no claimed complete list of integer points.
+\end{enumerate}
+
+\paragraph{Source C14 (12 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item The integral-closure remark for $\Gamma=\Z$ does not assert that $\Bbbk[\omega]$ is
+not normal.
+\item The congruence criterion is an algorithm only after a rational parametrization and
+its inverse are supplied, not for arbitrary curves.
+\item Varieties with no global one-forms are not classified; global generation is
+sufficient, not claimed necessary.
+\item The supplementary definability manuscripts were not reviewed line by line, and the
+repository was not audited exhaustively.
+\item The singular families are polynomial families; not every point of a singular curve
+is claimed to have a parameter in the same ring.
+\item The arithmetic dichotomy permits bad reduction but not a singular generic fiber, and
+gives no algorithm for integer points on curves of positive genus.
+\item The factorization results of Berarducci and of L'Innocente--Mantova, and Conway's
+refinement problem, are neither claimed nor solved.
+\item Van den Dries (1981) was consulted through its record and abstract only; no
+exhaustive comparison with its consequences, or priority over them, is claimed.
+\item For a Fermat curve, excluding particular ordinary points needs separate arithmetic
+input.
+\item A nonzero exponent group is needed only for the converse of the curve classification.
+\item No assertion is made that field-valued surreal points are constant.
+\item A finite check count is not a formal proof of the paper.
+\end{enumerate}
+
 \section{Dependencies and verification}\label{odg:app:verification}\label{odg:app:dependencies}
 
 \subsection{Imported inputs}
@@ -7476,6 +9831,19 @@ B\'ezout identities, the Euclidean property of $\Z[i]$, the equational
 criterion of flatness \cite[Tag 00HK]{StacksFlat} (\cref{odg:frac:thm:nonflat})
 and standard tensor exact sequences (\cref{odg:frac:prop:tor}), and it uses
 \cref{odg:frac:rem:elementary}'s citation of the omnific groups report.
+The material of sources C10--C14 imports the universal property of K\"ahler
+differentials \cite[Tag 00RM]{StacksDiff}; the valuative criterion of properness for
+arbitrary valuation rings \cite[Tag 0BX5]{StacksProper}; smooth projective completion
+of curves, Riemann--Roch with duality, and the genus-zero classification
+\cite{StacksCurves,StacksRR,StacksGenusZero}; invariant differentials on algebraic groups
+\cite{StacksGroups,MilneAV}; the functorial description of projective space, the
+projective bundle of a locally free sheaf and globally generated powers of ample bundles
+\cite{StacksProjSpace,StacksProjBundle,StacksAmple} (\cref{odg:cr:lem:coordinatepoint,odg:cr:cor:semiample});
+the Barsotti--Chevalley theorem and the structure of commutative algebraic groups
+\cite{MilneAG} (\cref{odg:cr:thm:groupkernel} only); and the Nullstellensatz, the
+square-zero description of tangent vectors, the smoothness of normal curves over a
+perfect field and the genus of a smooth plane cubic. It also uses
+\cref{odg:cr:rem:ogl}'s citations of the omnific groups report.
 All other deductions are proved here from these and finite algebra.
 
 The principal dependency chains are:
@@ -7507,23 +9875,36 @@ The principal dependency chains are:
  \ \Longrightarrow\ \text{multiplier theorem}
  \ \Longrightarrow\ \text{denominator dichotomy};\\
  &\text{matrix completion}+\text{set-cut bounds}
- \ \Longrightarrow\ \text{congruence orbits, focusing, dense fibers}.
+ \ \Longrightarrow\ \text{congruence orbits, focusing, dense fibers};\\
+ &\text{Euler degrees}+\text{strict image}+\gcd(P,P')=1
+ \ \Longrightarrow\ \text{squarefree rigidity};\\
+ &\text{two opposite rings}+\text{properness}+\text{global forms}
+ \ \Longrightarrow\ \text{proper rigidity};\\
+ &\text{positive genus}+\text{units}+\text{forms of }\Aff^1
+ \ \Longrightarrow\ \text{smooth affine curves};\\
+ &\text{smooth affine curves}+\ct+\text{separatedness}
+ \ \Longrightarrow\ \text{arithmetic fibers and descent}.
 \end{align*}
 The source-05 proofs that most deserve independent review are, by its own
 account, the separated-power theorem (divisibility in a quotient ring without
 unique factorization), the unimodular Fermat theorem (strict leading-term
 cancellation in the equal-degree Wronskian), and the set-sized quotient
 theorem (positivity of every exponent in the geometric quotient; printed in
-the sibling report).
+the sibling report). Sources C10 and C13 ask for specialist review of the
+scheme-valued two-ring argument at the level of its functorial maps, and of the exact
+arithmetic fibers; the elementary chain of the squarefree theorem is independent of
+algebraic geometry, and the Weierstrass result has both proofs.
 
 \subsection{Finite checks}
 
-Seven scripts are shipped in \fn{code/}, each with its recorded output in
+Twelve scripts are shipped in \fn{code/}, each with its recorded output in
 \fn{data/}. The first three need Python~3.9 or later and SymPy (tested with
 SymPy 1.14.0); source 06's needs Python~3.10 or later and SymPy, and source
 07's Python~3.10 or later and the standard library only; source 08's needs
-Python~3.10 or later and source 09's Python~3.9 or later, both with SymPy. They
-check finite identities and examples only.
+Python~3.10 or later and source 09's Python~3.9 or later, both with SymPy. Of
+the scripts of sources C10--C14, source C11's needs Python~3.10 or later and the
+standard library only, source C12's Python~3.9 or later with SymPy, and the others
+Python~3.10 or later with SymPy. They check finite identities and examples only.
 
 \begin{itemize}[leftmargin=*]
 \item \fn{01-diophantine-geometry-verification.py}: scalar identities
@@ -7584,6 +9965,43 @@ construction; five finite focusing samples over $\Q$ and the image of
 $\infty$). It always writes \fn{verification_report.json} next to the
 script, so it should be run on a copy; the shipped record is
 \fn{09-fraction-fibres-verification_report.json}.
+\item \fn{10-curve-rigidity-verify.py}: 3,991 exact assertions in eight groups (the
+cubic certificate and its differential form, squarefree certificates for eleven
+polynomials and $2\le m\le8$, the degree obstruction on the grid $2\le d,m\le30$, the
+nodal family, binomial coefficients, the constant-term boundary, finite-support Euler
+laws in lexicographic ranks one to three, and lexicographic clearing). It writes
+\fn{verification.json} next to itself unless \texttt{--output} is given; the shipped
+record is \fn{10-curve-rigidity-verification.json}, and
+\fn{10-curve-rigidity-BUILD_AUDIT.json} records source C10's build of its own article.
+\item \fn{11-curve-abelian-rigidity-verify.py}: 13,049 exact assertions in 19
+categories over $\Q$ and $\mathbb F_2$ (the universal cubic certificate, the
+divisibility identity, finite-support Euler laws, the characteristic-two tail and
+Frobenius squares, the discretely ordered ring's parity and leading terms, binomial
+coefficients, the dual-number example). It writes \fn{verification.json} next to itself
+unless \texttt{--output} is given, and prints the report; the shipped record is
+\fn{11-curve-abelian-rigidity-verification.json}.
+\item \fn{12-curve-logarithmic-verification.py}: 49 recorded checks, among them 35
+differential-ideal certificates for five squarefree polynomials and $2\le m\le8$, the
+cubic certificate and discriminant, the singular parametrization, the
+nonconstant-coefficient example, the integer threshold $(m-1)d\ge m$, the coefficients of
+the elliptic root in \cref{odg:cr:ex:denominator}, and 400 finite-support Euler trials
+over lexicographic $\Z^2$. It writes \fn{verification_report.json} next to itself unless
+\texttt{--output} is given; the shipped record is
+\fn{12-curve-logarithmic-verification_report.json}.
+\item \fn{13-differential-rigidity-verify_certificates.py}: 12,874 exact assertions in
+17 checks (the universal cubic certificate, the general Weierstrass completion,
+squarefree and differential certificates, degree inequalities, finite Hahn Leibniz,
+support, degree and detection tests over lexicographic pairs, the two-ring inclusions,
+the single-derivation caution, sharpness and affine-line fiber identities). It prints
+its report and writes a file only to the path given with \texttt{--output}; the shipped
+record is \fn{13-differential-rigidity-verification_report.txt}.
+\item \fn{14-hahn-differential-rigidity-verify.py}: 3,440 exact assertions in five
+groups (symbolic certificates, finite series, degrees, arithmetic including the
+congruence example, and characteristic-two telescoping). It always writes
+\fn{verification.json} next to itself, so it should be run on a copy; the shipped
+record is \fn{14-hahn-differential-rigidity-verification.json}, and
+\fn{14-hahn-differential-rigidity-BUILD_AUDIT.json} records source C14's build of its
+own article.
 \end{itemize}
 When this report was assembled the first three passed with Python 3.14.4 and
 SymPy 1.14.0, and source 05's script also passed with
@@ -7605,6 +10023,17 @@ differs from its record only in the generation time and the recorded Python
 version (3.13.5 there). The certificates of
 \cref{odg:frac:rem:elementary,odg:frac:rem:lift} and the table of
 \cref{odg:frac:ex:table} were checked separately with SymPy when the section
+was written; the shipped scripts are unchanged.
+The five scripts of sources C10--C14 passed with Python 3.14.4 and SymPy 1.14.0 when
+\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups} were written, each run
+on a copy in a scratch directory: 3,991, 13,049, 49, 12,874 and 3,440 assertions or
+checks. Their reports differ from the shipped records only in the recorded Python
+version (3.13.5 there) and, for source C10, the run time and timestamp; source C11's
+record contains neither and its report is identical. The identities printed in
+\cref{odg:cr:prop:cubic,odg:cr:lem:division,odg:cr:prop:singular,odg:cr:cor:generalweierstrass},
+the expansions in \cref{odg:cr:ex:denominator,odg:cr:rem:fieldpoints,odg:cr:sub:dor}, the
+Frobenius identity of \cref{odg:cr:prop:charp}, the arcs of the congruence example and
+the vanishing of $g+r-1$ only at $(0,1)$ were checked separately with SymPy when the part
 was written; the shipped scripts are unchanged.
 
 \section{Repository and literature audit}\label{odg:app:repo}\label{odg:app:audit}
@@ -7629,8 +10058,18 @@ README, the tree, the documentation catalogue, the guides of this report and
 of the sibling report, and source 06's source audit; source 09 read this
 report's article and README, the root README and the collection guide. Both
 call this a selective inspection through the connector, without a checkout or
-build. The checks of all these repository statements against the
-placement commits are in \cref{odg:app:provenance}.
+build. Sources C10, C13 and C14 pin \texttt{4cdeaec} and read the report's
+article at blob \texttt{4c26f4e}: source C10 its lines 1--130, 1350--1690 and
+2910--3100, the README and the catalogues; source C13 lines 1--230, 1000--1200,
+1460--1670, 2650--2860 and 2980--3125, the README and the opening of
+\fn{docs/FORMALIZATION.md}; source C14 lines 1--180, 1000--1185, 1550--1785 and
+2920--3080, the README, the catalogue and other reports' READMEs. Source C11 pins
+\texttt{f6e031a} and compared against the report's README and the catalogue. Source
+C12 pins \texttt{89bec38} and read Sections 6--7 of the article (blob
+\texttt{47af413}), its README, the root README and the catalogue. All five call this a
+targeted inspection through the connector, without a checkout or build. The checks of
+all these repository statements against the placement commits are in
+\cref{odg:app:provenance}.
 
 \subsection{Literature checks}
 
@@ -7679,6 +10118,22 @@ fractions; it does not discuss gcds there. Klawa's arXiv:2211.13412v2
 \cite{Klawa} exists with the stated title and is cited by source 09 for
 background only. Stacks Tag 00HK is the equational criterion of flatness
 \cite{StacksFlat}.
+\item For sources C10--C14 the following were checked during placement. Stacks Tag
+0BX5 is Lemma 29.43.1, the valuative criterion of properness for arbitrary valuation
+rings, inside the section Tag 0BX4 cited by sources C10 and C11; Tag 0BS6 is Lemma
+53.5.2 (Riemann--Roch) inside Section 53.5, Tag 0B5B. Tag 02AT, cited by source C13
+for differentials, is Section 111.50 of the chapter of exercises, so Tag 00RM,
+cited by sources C10 and C14, is used instead (\cref{odg:app:provenance}). The other
+Stacks tags and the statement numbers in Milne's \emph{Abelian Varieties} and
+\emph{Algebraic Groups} are cited as the sources give them and were not rechecked for
+this report.
+\item Van den Dries's paper \cite{vdDries} is cited by sources C11 and C14 from its
+bibliographic record and the abstract reproduced in the author's bibliography on
+Celebratio Mathematica, where the abstract says that a criterion is given for curves
+over $\Z$ ``to have an infinite point in a discrete ordered ring''. The placement check
+confirmed that abstract; neither source nor this report read the paper itself, no
+result here depends on it, and no comparison or priority statement is made
+(\cref{odg:cr:sub:dor}).
 \end{itemize}
 
 \subsection{A dated factorization announcement}
@@ -7905,6 +10360,74 @@ The Stacks Project Authors.
 \emph{Flat modules and flat ring maps}, Section 10.39, Lemma 10.39.11
 (equational criterion of flatness), Tag 00HK.
 \url{https://stacks.math.columbia.edu/tag/00HK}.
+
+\bibitem{StacksDiff}
+The Stacks Project Authors.
+\emph{Differentials}, Section 10.131, Tag 00RM.
+\url{https://stacks.math.columbia.edu/tag/00RM}. Cited by sources C10 and C14; used
+here in place of source C13's Tag 02AT.
+
+\bibitem{StacksProper}
+The Stacks Project Authors.
+\emph{Valuative criteria}, Section 29.43 (Tag 0BX4), Lemma 29.43.1, Tag 0BX5.
+\url{https://stacks.math.columbia.edu/tag/0BX5}. Cited by sources C10, C11 (as the
+section), C12 and C14; source C13 cites Tag 01KF.
+
+\bibitem{StacksCurves}
+The Stacks Project Authors.
+\emph{Curves and function fields}, Section 53.2, Tag 0BXX, especially Tags 0BY1 and
+0BY3. \url{https://stacks.math.columbia.edu/tag/0BXX}. Cited by sources C10--C14.
+
+\bibitem{StacksRR}
+The Stacks Project Authors.
+\emph{Riemann--Roch}, Section 53.5, Tag 0B5B, and Lemma 53.5.2, Tag 0BS6.
+\url{https://stacks.math.columbia.edu/tag/0B5B}. Cited by sources C10--C14.
+
+\bibitem{StacksGenusZero}
+The Stacks Project Authors.
+\emph{Curves of genus zero}, Tag 0C6L.
+\url{https://stacks.math.columbia.edu/tag/0C6L}. Cited by sources C11 and C14; source
+C12 cites the characterization of the projective line, Tag 0C6U.
+
+\bibitem{StacksGroups}
+The Stacks Project Authors.
+\emph{Properties of group schemes}, Lemma 39.6.3, Tag 047I.
+\url{https://stacks.math.columbia.edu/tag/047I}. Cited by source C11.
+
+\bibitem{StacksProjSpace}
+The Stacks Project Authors.
+\emph{Projective space}, Section 27.13, Tag 01ND.
+\url{https://stacks.math.columbia.edu/tag/01ND}. Cited by source C12.
+
+\bibitem{StacksProjBundle}
+The Stacks Project Authors.
+\emph{Projective bundles}, Section 27.21, Tag 01OA.
+\url{https://stacks.math.columbia.edu/tag/01OA}. Cited by sources C12 and C13.
+
+\bibitem{StacksAmple}
+The Stacks Project Authors.
+\emph{Ample invertible sheaves}, Section 28.27, Proposition 28.27.13, Tag 01PR.
+\url{https://stacks.math.columbia.edu/tag/01PR}. Cited by source C13.
+
+\bibitem{MilneAV}
+James S. Milne.
+\emph{Abelian Varieties}, course notes, version 2.00, 2008. Chapter III, \S2 and
+Chapter IV, \S6. \url{https://www.jmilne.org/math/CourseNotes/AV.pdf}. Cited by
+sources C10, C11, C12 and C14.
+
+\bibitem{MilneAG}
+James S. Milne.
+\emph{Algebraic Groups: The Theory of Group Schemes of Finite Type over a Field}.
+Cambridge Studies in Advanced Mathematics 170, Cambridge University Press, 2017.
+Theorem 8.27, Corollaries 14.33 and 16.15, as cited by source C13.
+
+\bibitem{vdDries}
+Lou van den Dries.
+Which curves over $\Z$ have points with coordinates in a discrete ordered ring?
+\emph{Transactions of the American Mathematical Society} \textbf{264}(1) (1981),
+181--189. \href{https://doi.org/10.2307/1998418}{doi:10.2307/1998418}. Cited by
+sources C11 and C14 from the record and abstract at
+\url{https://celebratio.org/vandenDries_LP/article/788/}; the paper was not read.
 
 \bibitem{Glivicky}
 Jana Glivick\'a and Petr Glivick\'y.
