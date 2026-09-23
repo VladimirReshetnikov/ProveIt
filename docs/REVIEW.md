@@ -1783,6 +1783,31 @@ rigidity assertions. Before the sync, the independent inventory checks
 2,465 statements in 49 sources; all 2,728 cited source labels and 1,083
 local Markdown destinations resolve.
 
+The sync merged `56f9aa6`, including polygon and triangle formalizations
+from `f5d30b8` and the six-manuscript gamma/zeta assembly/catalogue from
+`7af7056` and `087ee37`. The only changed LaTeX sources were the gamma/zeta
+report and collection manifest; the holonomic review source is unchanged.
+The gamma/zeta source now has 94 indexed standard statements in place of
+the provisional base's 25, so the independently checked inventory has
+2,534 statements in 49 assembled reports. Its main-text mathematical review
+remains pending. All 2,802 cited source labels and 1,099 local Markdown
+destinations resolve after the merge.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passed 4,034 jobs. The default
+axiom audit accepted 8,010 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. This confirms the synced Lean target;
+it does not formalize the nonlinear holonomic or gamma/zeta manuscripts.
+
+The incoming implementation mappings and four new root imports were checked
+against the polygon, spread and triangle-valuation source hypotheses. The
+gamma/zeta integration check confirms 94 indexed statements and 222 unique
+labels, with no mapped proof dependent on a replaced source label. All 29
+historical code/data files (eight code/build files and 21 data files) remain
+byte-identical to `c384738`, including the 738-byte CSV with 24 CRLF lines.
+Corrected the new guide's blanket label-citation claim: neighbouring guides
+and the ledger cite its labels, while Lean mappings remain absent. This is an
+integration check, not the pending gamma/zeta mathematical review.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1792,13 +1817,14 @@ in `5d369a0`. Its two reports,
 new sections of entire functions, holonomic rigidity, trigonometry, Euclidean
 three-space and Hahn probability are now indexed from their written sources.
 Their mathematical proof review and source reconciliation remain pending.
-The collection has 48 assembled reports and one placed report awaiting assembly.
-The six gamma/zeta archives delivered in `cafe42f` were placed in `e4f8848` as
-[gamma and zeta functions](surcomplex/gamma-and-zeta-functions/). Its base
-manuscript 06 is provisionally indexed with 25 standard results, bringing the
-49-source index to 2,465. That count excludes the additional claims of the other
-five manuscripts. Assembly, catalogue integration and mathematical review of
-the six-source report remain pending; the retired archives remain in Git history.
+The collection now has 49 assembled reports. The six gamma/zeta archives
+delivered in `cafe42f` and placed in `e4f8848` were assembled in `7af7056` as
+[gamma and zeta functions](surcomplex/gamma-and-zeta-functions/) and catalogued
+in `087ee37`. The current merged source has 94 standard result environments,
+replacing the provisional base manuscript's 25 and bringing the 49-source
+inventory to 2,534. Mathematical proof review and independent source-claim
+reconciliation remain pending; assembly and inventory inclusion do not
+establish either. The retired archives remain in Git history.
 
 The nine manuscripts placed in `d4e71b7` are grouped as
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)

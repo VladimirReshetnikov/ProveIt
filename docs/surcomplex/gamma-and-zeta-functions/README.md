@@ -41,8 +41,11 @@ data/
   06-phases-and-rh-build-quality.json
 ```
 
-Every label in `article.tex` carries the prefix `gz:` (222 labels). No label
-of this report is cited elsewhere yet. The code and data files are
+Every label in `article.tex` carries the prefix `gz:` (222 labels).
+Neighbouring guides cite these labels, and the
+[formalization ledger](../../FORMALIZATION.md) indexes this report's 94
+standard statements; it does not yet map a result to a Lean proof. The code
+and data files are
 byte-identical to the delivered packages, under the prefixes above. The six
 manuscripts themselves, with their PDFs and delivery READMEs, are not
 shipped. The shipped audit and build records describe those manuscripts,
