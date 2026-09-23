@@ -3,8 +3,8 @@
 **Strong Hahn operators, completion defects, and invisible functionals**
 Research report, 22 September 2026, built from one manuscript (item 04 of the
 collection's nineteenth batch, prepared for Vladimir Reshetnikov, written
-against repository revision `048b72c`, placed at `52c7ab6`). AI-assisted
-draft; not refereed; no Lean formalization.
+against repository revision `048b72c`, placed at `30dfb4f` and assembled at
+`ed88b8f`). AI-assisted draft; not refereed; no Lean formalization.
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
@@ -17,7 +17,7 @@ data/              verification_report.json      recorded output of that program
 
 Every label in `article.tex` carries the prefix `duals:`. The 70 labels of the
 delivered manuscript were all kept, each with the prefix added; seven labels
-were added at placement (`duals:sec:conventions`, `duals:rem:order-unit`,
+were added during assembly (`duals:sec:conventions`, `duals:rem:order-unit`,
 `duals:rem:ihs-riesz`, `duals:rem:basechange-collection`,
 `duals:sec:collection`, `duals:tab:ihs`, `duals:app:provenance`). No `duals:`
 label currently has a row in the **Implementation mappings** section of the
@@ -169,7 +169,7 @@ citing it only by label because that report is receiving additions:
 - `ihs:hh:prop:riesz` (a non-represented continuous functional) is shown in
   Remark 8.5 to be **strong**, with a discontinuous leading coefficient, so it
   lies in the first gap `D_str / D_rep`, not the second. This is an editorial
-  comparison added at placement.
+  comparison added during assembly.
 - `ihs:hh:thm:closedrange` (closed range with zero orthogonal complement,
   infinite codimension) is the in-collection predecessor of Theorem 9.1 (a
   hyperplane). `ihs:hh:prop:complete` (rank-one metric completeness) is
@@ -196,10 +196,10 @@ Part I's divisibility hypothesis and proved `ihs:hh:thm:closedrange` at every
 rank (revision `6e34651`; at the pin, for divisible `Γ ⊆ R`), that
 `ihs:hh:prop:riesz` and `ihs:hh:thm:closedrange` were omitted from the
 manuscript's comparison, and that the two manuscripts added to the spectral
-report at `52c7ab6` contain no theorem about duals, completions or strong
+report at `30dfb4f` contain no theorem about duals, completions or strong
 maps. The negative search for other coefficient-rank completion, restriction
-sequence and completion-intersection theorems describes that placement;
-it is not a renewed repository-wide absence claim. The later first-kappa
+sequence and completion-intersection theorems describes the assembly at
+`ed88b8f`; it is not a renewed repository-wide absence claim. The later first-kappa
 report now explicitly summarizes this report's completion results in
 `fkc:rem:countable-analogue` and proves a distinct cardinal-support analogue.
 
@@ -237,7 +237,7 @@ assertions in nine groups (operator composition 60, scalar compatibility 60,
 finite-family regrouping 60, leading squared norm 180, coefficient ranks below
 cuts 69, two-scale ranks 69, projection algebra 69, descending-support prefix
 42, cancellation 1), with seed 20260922 and `fractions.Fraction` arithmetic. A
-rerun at placement (Python 3.14) reproduced it exactly. The program does not
+rerun during assembly (Python 3.14) reproduced it exactly. The program does not
 verify infinite well-ordering or the arbitrary-rank Hom theorem, the
 completion and cofinality classifications, spherical completeness or
 Hahn–Banach, the existence of Hamel or invisible functionals, the

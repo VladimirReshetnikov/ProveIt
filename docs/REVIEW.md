@@ -49,6 +49,8 @@ No row below certifies every claim in an entire report.
 | [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Reviewed the main text, Sections 1–15. Expanded support facts, arbitrary regrouping, finite triple convolutions, the uniform shift bound and zero-group cases. Made the strong-map isomorphism and the descending-support counterexample explicit. Expanded coefficient-rank approximation by nets, nonzero-scalar closure and the countable-cofinal sequence construction. Corrected the guide's order-unit summary to distinguish strict completion from the noncyclic middle case. Expanded compatible-ball and Cauchy-net completeness, ball nesting, set-sized Zorn extension and its empty-chain case; corrected the claim that selecting one element of a known nonempty set separately requires choice. Expanded continuous restriction and separation, the canonical quotient kernel, cyclic finite-subsum convergence, Hilbert norm identities and topology, Riesz coefficients and cardinality. Corrected positive-versus-nonnegative bound scope at the zero operator and characterized bounds for unbounded leading coefficients. Expanded dense-kernel, projection, orthogonality and distance-cut proofs; distinguished an orthogonal complement from an orthogonal direct-sum complement. Expanded the cofinal/noncofinal induced topology, two-scale target topology, unique strong extension and normal-form transport. Corrected vector outputs described as scalars, the first-kappa comparison's missing properness hypothesis, spectral extension scope and stale negative-search/current-review claims. Checked BKKPS summability definitions, Kaplan–Krapp–Serra normal-form conventions and Morillon's real-valued one-step statement against primary text. Remaining imports/source reconciliation are pending. |
 | [Hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/) | Reviewed the main text, Sections 1–11. Expanded character extension, finite support-index bounds, primorial degree, algebraic independence, closure minima, density and the workspace containing an algebraic surreal root. Expanded the positive-kernel lemma, arbitrary-ordered-field pivot argument, explicit Schur congruence and empty-block cases; detailed vector variation and scalar/vector null sets. Corrected the geometric-series witness for incomparable bases, restricted that comparison to rational exponents and explained containment when no order unit exists. Distinguished congruence from unitary diagonalization. Remaining imports, priority and original-source reconciliation are pending; no Lean mapping added. |
 
+| [Bounded-support Hahn arithmetic](surreal/transcendence-over-bounded-support/) | Reviewed Sections 1–10 and the conditional implication in Appendix A. Expanded elementary support bounds, localization, coset and coefficient projections, tensor consequences, separated support bands, coding, top-rank grouping and normalized GCD descent. Replaced the factorial-family limiting argument by a finite Vandermonde proof. Corrected convergence to bounded initial truncations, with an explicit obstruction to finite-subsum convergence at uncountable cofinality. Clarified ideal extension, coefficient-field hypotheses and the neighbouring base-field comparisons. Checked the cited Hahn and rank-one imports against L’Innocente–Mantova v5; the GCD premise remains conditional. Remaining foundational/source reconciliation and priority are separate; no Lean mapping added. |
+
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -1442,6 +1444,97 @@ The independent 49-source index remains clean at 2,465 statements, and all
 This validation preserves the distinction between the new Lean triangle
 mapping and this report's mathematical proof review.
 
+## Bounded-support main-text review
+
+The [bounded-support report](surreal/transcendence-over-bounded-support/)
+review covers Sections 1–10 and the conditional implication in Appendix A.
+Independent readings checked the elementary support and localization facts,
+cofinal descent, separated exponents and polynomial support bands, coefficient
+coding, explicit families, rank structure and the surreal specializations.
+The proofs now spell out coset projection without treating it as a ring map,
+the finite-dimensional domain argument for algebraic degrees, and the
+noncofinal tensor-kernel witness. The integer-grid statement specifies a field;
+the descent preview now describes the ideal generated after scalar extension.
+
+The support-band proof makes the surviving coefficient and its two strict
+gaps explicit. The countable multiplicative-parameter family now uses a finite
+Vandermonde matrix over the Hahn field: among a sufficiently late block of
+consecutive evaluations, at least one is nonzero. No ordinary limit of Hahn
+coefficients is needed. The countable code's starting index is aligned with
+the delivered program, and the arbitrary-cardinal coding argument retains
+its singular-cardinal scope.
+
+The convergence prose previously conflated bounded initial Hahn truncations
+with finite subsums. Initial truncations of the constructed cofinal support
+have cofinal error valuations. For uncountable cofinality, every finite subset
+misses a term before the first limit index, so its error cannot enter the
+neighborhood beyond that limit exponent. The article, guide and notation
+reference now distinguish these nets and explain why full surreal fine
+convergence still fails.
+
+The rank proof constructs the maximal proper convex subgroup explicitly,
+checks the iterated Hahn presentation in both directions, and applies the
+rank-one upper-support formula only after passage to an Archimedean quotient.
+The imported closedness, iterated presentation, nonrationality obstruction
+and upper-support theorem were compared with L’Innocente–Mantova's cited
+v5, including the locations and hypotheses. Normalized GCD descent now
+includes the character-extension well-definedness and normalization steps.
+The GCD existence premise remains unproved here; no external Lean project
+was built or adopted. Other foundational imports, original-source
+reconciliation and literature priority remain separate obligations.
+
+Local comparisons distinguish full coefficient Hahn fields from bounded
+fraction fields, sufficient almost-disjoint families from unrestricted
+index sets, and the rational-exponent incomparability of two fields from
+containment when no order unit exists. Historical keyword counts are scoped
+to their pinned snapshots. Source inventory is distinguished from an
+Implementation mapping; this review adds no Lean proof coverage.
+
+
+The baseline and revised PDFs each compiled in three clean LaTeX passes;
+the revised report has 31 pages (previously 29). All 73 source labels and
+result numbers are preserved. Of the 30 standard result environments, 28
+are unchanged and two have only the ideal-extension and coefficient-field
+wording clarifications above. All seven delivered audit/code/data files
+remain byte-identical to both the previous source revision and raw placement;
+the six applicable historical manifest digests match. The delivered verifier
+passes all 3,163 assertions in 12 groups under Python 3.13.14, matching its
+recorded JSON except for the Python version. Those finite checks do not
+prove transfinite or cardinal assertions. All revised pages were visually
+inspected, including the corrected Theorem 8.2 page break.
+
+The 49-source inventory remains at 2,465 standard statements. Its independent
+audit reports no count, heading, label or anchor issues; all 2,720 cited
+source labels and 1,040 local Markdown destinations in 109 files resolve.
+
+
+The sync merged triangle reconstruction and incircle work through `c74287c`.
+No incoming manuscript source changed. The combined
+`LEAN_NUM_THREADS=2 lake build` passed all 4,009 jobs; the default axiom audit
+accepted 7,688 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent 49-source index remains unchanged, and all
+2,723 cited source labels plus 1,054 local Markdown destinations resolve.
+The incoming triangle mappings remain distinct from this documentation review.
+
+## Batch 19 provenance correction
+
+The four new reports in batch 19 cited an unavailable placement hash,
+`52c7ab6`. Retained Git history identifies raw placement as
+`30dfb4f5b794818315af63ab6f4215337e68dec8` and its child, editorial assembly
+and the first compiled report PDFs, as
+`ed88b8f6a3901d4cbcf8e4249673161f493f679b`. Their articles and guides now
+attribute placement, editorial additions, PDF comparisons and historical
+search counts to the appropriate snapshot. This does not infer why the
+unavailable hash was recorded.
+
+The three-duals, hidden-negative-directions and matrix-scaling provenance
+changes preserve all mathematical statements and proofs. Their baseline and
+revised PDFs each passed three clean LaTeX passes and retain 39, 33 and 32
+pages respectively. All 260 source labels and their numbering are preserved;
+all 19 historical audit/code/data files remain byte-identical. The 19 changed
+PDF pages were visually inspected. Matrix scaling has received this
+provenance correction only; its mathematical proof review remains pending.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1484,10 +1577,12 @@ has now received the Sections 1–15 main-text review recorded above;
 remaining imports/source reconciliation are pending. Its
 [hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/)
 report has now received the Sections 1–11 main-text review recorded above;
-remaining imports/source reconciliation are pending. Two reports from that
-batch have not yet received this mathematical review:
+remaining imports/source reconciliation are pending. Its
 [transcendence over bounded support](surreal/transcendence-over-bounded-support/)
-and [matrix scaling](surreal/matrix-scaling-at-surreal-scales/).
+report has received the Sections 1–10 and conditional Appendix A review above;
+remaining foundational/source reconciliation and priority are pending.
+[Matrix scaling](surreal/matrix-scaling-at-surreal-scales/) has received a
+provenance correction but still awaits mathematical proof review.
 Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral
 theory additions also remain pending. The critical-potential main-text review now
 covers Sections 35–42; remaining imports and source reconciliation are pending.

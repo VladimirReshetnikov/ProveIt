@@ -32,7 +32,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{remark}[theorem]{Remark}
-% Added on placement: statements share the theorem counter, and without these
+% Added during assembly: statements share the theorem counter, and without these
 % aliases cleveref names every lemma, corollary, definition, example and
 % remark a "theorem".
 \AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
@@ -323,9 +323,9 @@ state the audit boundaries in more detail.
 
 \subsection{Relation to other reports of the collection}\label{scale:sec:neighbours}
 No proof in this report depends on another report, and no other report
-depends on this one. The comparisons below are with the articles as committed
-at \texttt{52c7ab6}; theorem numbers of other reports are those of their
-committed PDFs.
+depends on this one. The comparisons below were added during editorial
+assembly at \texttt{ed88b8f}; theorem numbers of other reports are those
+of their PDFs committed there.
 
 \paragraph{Markov generators at every scale.}
 The Markov report \cite{RepoMarkov}, held in
@@ -498,8 +498,10 @@ source \texttt{surreal\_matrix\_scaling.tex}, its PDF, a README, the audit
 files \texttt{SOURCE\_AUDIT.md} and \texttt{PROOF\_AUDIT.md}, the program
 \texttt{code/verify.py} with its recorded output and console record, a build
 record with its console log, a requirements file and a build script. It was
-placed at commit \texttt{52c7ab6}. Its own repository comparison is pinned to
-\texttt{\pin} (\cref{scale:sec:comparison}).
+placed as raw source at commit \texttt{30dfb4f}; editorial assembly at
+\texttt{ed88b8f} added the report PDF and the material described below. Its
+own repository comparison is pinned to \texttt{\pin}
+(\cref{scale:sec:comparison}).
 
 There is no second source, so there was no merge and no choice between
 sources. Nothing was selected out of a larger body of work. Every theorem,
@@ -508,17 +510,17 @@ member of the surreal family because its positive matrices, the global
 scaling theory and the tree costs are real Hahn objects; the surcomplex
 branch of \cref{scale:thm:existence} extends that real theory.
 
-Placement changed the following and nothing else.
+Raw placement and subsequent editorial assembly made these changes.
 \begin{enumerate}[label=(\alph*)]
-\item The source was renamed \texttt{article.tex}. The two audit files, the
+\item On raw placement, the source was renamed \texttt{article.tex}. The two audit files, the
 program and everything in \texttt{data/} are kept byte-identical. The build
 script was moved to \texttt{code/} and the requirements file to
 \texttt{data/}. The delivered PDF and README are not shipped.
 \item All 88 labels of the manuscript already carried the prefix
-\texttt{scale:} and are unchanged. The labels added on placement carry the
-same prefix.
+\texttt{scale:} and are unchanged. The labels added during assembly carry
+the same prefix.
 \item \Cref{scale:sec:nonclaims,scale:sec:neighbours,scale:sec:words,scale:sec:provenance}
-were added, and so were \cref{scale:rem:support,scale:rem:trees}, which
+were added during assembly, and so were \cref{scale:rem:support,scale:rem:trees}, which
 point to other reports. They were placed so that every theorem, equation
 and section number of the manuscript is unchanged. The title-page status
 paragraph now states the draft status.
@@ -526,7 +528,7 @@ paragraph now states the draft status.
 kept as provenance (the paragraph ``Since the pin'' in
 \cref{scale:sec:comparison}, and \cref{scale:app:build}, whose build
 instructions now describe this directory). \Cref{scale:sec:verification}
-records a rerun of the checks on placement.
+records a rerun of the checks during assembly.
 \item The formal series written $F(X)$ in \cref{scale:lem:evaluation} and
 \cref{scale:ex:badformal} was renamed $\Phi(X)$, since $F$ is the real Hahn
 field.
@@ -535,7 +537,7 @@ every cross-reference to a proposition, lemma, corollary, definition,
 example or remark printed the word ``theorem''. Six lines in the preamble now make each
 reference print the right name; no number changed.
 \end{enumerate}
-Placement left the mathematics unchanged.
+These changes left the mathematics unchanged.
 
 \section{Literature and repository comparison}\label{scale:sec:comparison}
 
@@ -618,20 +620,21 @@ no assertion that every publication or every repository line has been
 excluded as a possible precedent.
 
 \paragraph{Since the pin.}
-The manuscript was placed in the collection at commit \texttt{52c7ab6},
-eight commits after its pin. The statements above remain true of the pin
-and are kept as provenance; the following has changed or was checked on
-placement. The catalogue \texttt{docs/README.md} did not change between the
-two commits. It still lists 36 reports, and it does not yet list this
-report or the three other reports placed by the same commit. The directory
+The manuscript was placed as raw source at commit \texttt{30dfb4f}. The
+statements above describe the pin and are kept as provenance. This paragraph
+was added during editorial assembly at \texttt{ed88b8f}; its catalogue and
+search observations describe the raw-placement snapshot. The catalogue
+\texttt{docs/README.md} did not change between the pin and raw placement:
+it listed 36 reports, excluding this report and the three others placed
+with it. The directory
 \texttt{docs/new} held only its README at the pin, as stated above. Commit
 \texttt{330aa79} then added nine delivered archives, this manuscript's among
-them; commit \texttt{52c7ab6} unpacked, placed and removed all nine, so the
-directory again holds only its README. The positive-control file
-\nolinkurl{Surreal/Algebra/MarkovResolvent.lean} is still present. It proves
+them; commit \texttt{30dfb4f} unpacked, placed and removed all nine, so that
+snapshot again held only the README in this directory. The positive-control
+file \nolinkurl{Surreal/Algebra/MarkovResolvent.lean} was still present. It proves
 finite resolvent and projection-flag algebra for the Markov report and
 contains no spanning-tree, forest-sum or Cauchy--Binet statement.
-At \texttt{52c7ab6}, a full-text search of every LaTeX source in the
+At \texttt{30dfb4f}, a full-text search of every LaTeX source in the
 collection finds the words \texttt{Sinkhorn}, \texttt{bistochastic},
 \texttt{Kirchhoff} and \texttt{transfer current} only in this report.
 The phrase \texttt{spanning tree} occurs elsewhere only once, in the proof of
@@ -1921,8 +1924,8 @@ underlying graphs with different cost groups where explicitly stated.
 
 The program writes \texttt{data/verification.json} next to its own
 \texttt{code/} directory, so a run replaces the recorded file; it should be
-run on a copy of this directory. When the report joined the collection, such
-a run under Python~3.14.4 and SymPy~1.14.0 passed in about twenty seconds and
+run on a copy of this directory. During editorial assembly, such a run under
+Python~3.14.4 and SymPy~1.14.0 passed in about twenty seconds and
 reproduced every count above. The file it wrote differed from the recorded
 one only in the Python version field and in line endings.
 
@@ -2131,7 +2134,7 @@ commit \texttt{\shortpin}, inspected 22 September 2026.
 AI-assisted research report in the Surreal repository,
 \texttt{docs/surreal/markov-generators-at-every-scale/}.
 Detailed README inspected at commit \texttt{\shortpin}; the article was
-compared on placement at commit \texttt{52c7ab6}.
+compared during editorial assembly at commit \texttt{ed88b8f}.
 \repo.
 
 \bibitem{RepoSpectral}
@@ -2140,7 +2143,7 @@ multiscale stability, exact determinantal ramification, and Hankel
 square-class profiles}, AI-assisted research report in the Surreal
 repository, \texttt{docs/surcomplex/spectral-theory/}.
 README lines 1--180 inspected at commit \texttt{\shortpin}; the article
-was compared on placement at commit \texttt{52c7ab6}.
+was compared during editorial assembly at commit \texttt{ed88b8f}.
 \repo.
 \end{thebibliography}
 \end{document}

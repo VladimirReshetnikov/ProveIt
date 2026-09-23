@@ -33,8 +33,8 @@ moved to `code/` and `data/`. The delivered PDF and README are not shipped.
 
 Every label in `article.tex` carries the prefix `scale:`. There are 94 labels:
 the manuscript's 88, which already carried the prefix and are unchanged, and 6
-added on placement. None was dropped. No label of any other report was touched.
-The added material was placed so that every theorem, equation and section
+added during assembly. None was dropped. No label of any other report was touched.
+The added material was inserted so that every theorem, equation and section
 number of the manuscript is unchanged, so the theorem numbers quoted in
 `PROOF_AUDIT.md` still apply. The numbers below are checked against the build
 of `article.tex` in this directory.
@@ -242,24 +242,27 @@ certificate (Theorem 8.1 there, `prony:thm:graph`) is also a minimum-cost path
 computation in an ordered group, on a directed graph of moment interactions. It
 involves no spanning trees and no normalization.
 
-The theorem numbers of other reports quoted here are from their PDFs as
-committed at `52c7ab6`.
+These comparisons were added during editorial assembly at `ed88b8f`. The
+theorem numbers of other reports quoted here are from their PDFs committed
+there.
 
 ## Stale repository statements, corrected
 
 The manuscript's audit is pinned to `048b72c`. The article keeps the pin as
-provenance and adds a "Since the pin" paragraph to Section 2.2.
+provenance; editorial assembly added a "Since the pin" paragraph to Section
+2.2. Its catalogue and search observations describe the raw-placement
+snapshot, `30dfb4f`.
 `SOURCE_AUDIT.md` is kept as delivered, so it still describes the repository at
 the pin.
 
 - *"The complete research catalogue `docs/README.md` at that pin lists 36
-  reports."* It still does at `52c7ab6`. It does not yet list this report or the
-  three others placed with it.
+  reports."* It still did at raw placement, `30dfb4f`, when it did not yet
+  list this report or the three others placed with it.
 - *"The directory `docs/new` at the pin contains only its README."* True at the
   pin. Commit `330aa79` then added nine archives, this one among them, and
-  `52c7ab6` placed and removed all nine.
+  `30dfb4f` placed and removed all nine.
 - *"Searches for `Sinkhorn` and `spanning` returned no results"* (with an
-  unreliable index). At `52c7ab6`, a full-text search of every LaTeX source
+  unreliable index). At `30dfb4f`, a full-text search of every LaTeX source
   finds `Sinkhorn`, `bistochastic`, `Kirchhoff` and `transfer current` only in
   this report. `spanning tree` occurs once elsewhere, in the Markov report's
   proof of the matrix-forest identity. `matrix scaling` occurs once elsewhere, in
@@ -271,8 +274,8 @@ the pin.
   `surreal_matrix_scaling.tex`. It now gives the commands for this directory
   and says the script does not work as placed.
 
-One typesetting defect was also fixed. All numbered statements share one
-counter, and the delivered build called every referenced lemma, corollary,
+Editorial assembly also fixed one typesetting defect. All numbered statements
+share one counter, and the delivered build called every referenced lemma, corollary,
 proposition, definition, example and remark a "theorem". Six preamble lines now
 give each reference its right name. No number changed.
 
@@ -294,7 +297,7 @@ changes into its own directory (`code/`), then runs `code/verify.py` and builds
 Use the `latexmk` command above instead. The delivered record in
 `data/build_validation.json` (26 pages, pdfTeX from TeX Live 2025/dev) and
 `data/final_build_console.txt` describe the manuscript's own build, before the
-material added on placement.
+material added during assembly.
 
 `code/verify.py` **overwrites `data/verification.json`**, since it writes to
 `../data/` relative to its own location. Run it on a copy of this directory:
@@ -325,7 +328,7 @@ recorded run (Python 3.13.5, SymPy 1.14.0) reports `PASS` for:
 - chain inverse valuations for sizes 2 to 6 (55 entries) and three exact
   identities for the closed-form `2 × 2` example.
 
-A rerun on a copy at placement took about twenty seconds under Python 3.14.4
+A rerun on a copy during assembly took about twenty seconds under Python 3.14.4
 and SymPy 1.14.0. It reproduced the recorded file except for the Python
 version field and the line endings the operating system writes. The console
 record `data/verification_console.txt` prints the path of the original run's
@@ -336,24 +339,30 @@ theorems, and no Lean formalization exists.
 
 The source is one manuscript, *Sharp Matrix-Scaling Stability over Surreal and
 Surcomplex Fields*, dated 22 September 2026. It arrived with the nine archives
-committed as `330aa79` and was placed at `52c7ab6`. Its repository comparison
-is pinned to `048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`. With one source there
+committed as `330aa79`. Raw source placement is commit
+`30dfb4f5b794818315af63ab6f4215337e68dec8`; editorial assembly and addition
+of the first report PDF followed in its child commit
+`ed88b8f6a3901d4cbcf8e4249673161f493f679b`.
+Its repository comparison is pinned to
+`048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`. With one source there
 were no merge decisions. Every theorem, proof, example and disclaimer is kept.
 
-Placement made the following changes, recorded in Section 1.7 of the article:
+Raw placement renamed the source `article.tex` and moved `build.sh` to
+`code/` and `requirements.txt` to `data/`. Editorial assembly then made the
+following changes, recorded in Section 1.7 of the article:
 
-- It renamed the source `article.tex` and moved `build.sh` to `code/` and
-  `requirements.txt` to `data/`.
 - It added Sections 1.4 (non-claims), 1.5 (neighbouring reports), 1.6 (words)
   and 1.7 (provenance), and Remarks 3.6 and 4.2, which point to the spectral
   and Markov reports.
 - It added the "Since the pin" paragraph (Section 2.2), a rerun note
   (Section 13.1), and build instructions for this directory (Appendix B). It
-  also added the draft status to the title page and a placement note to the
+  also added the draft status to the title page and an assembly note to the
   two repository bibliography entries.
 - It renamed the formal series `F(X)` to `Φ(X)` and fixed the cross-reference
   names.
 
-Placement left the mathematics unchanged. `PROOF_AUDIT.md` is the
+These changes left the mathematics unchanged. The present provenance
+correction distinguishes the two verified commits; it is not a mathematical
+review. `PROOF_AUDIT.md` is the
 manuscript's own self-review, not an independent referee report. No
 subsequent proof review has been recorded for this report.
