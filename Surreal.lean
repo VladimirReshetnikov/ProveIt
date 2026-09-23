@@ -263,6 +263,12 @@ import Surreal.Algebra.ThreeTermAMGM
 import Surreal.Surcomplex.TriangleRadiusInequality
 import Surreal.Surcomplex.TriangleEuler
 import Surreal.Surcomplex.TriangleAreaBound
+import Surreal.Surcomplex.CevianSineMonotonicity
+import Surreal.Surcomplex.TriangleCevianGeometry
+import Surreal.Surcomplex.TriangleAffine
+import Surreal.Surcomplex.TriangleCevian
+import Surreal.Surcomplex.TriangleCeva
+import Surreal.Surcomplex.TrigonometricCeva
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
