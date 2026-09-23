@@ -701,6 +701,19 @@ trigonometric-expansion merge, the full build passed 3,903 jobs and the axiom
 audit checked 6,092 declarations using only `propext`, `Classical.choice`
 and `Quot.sound`. The intrinsic Part VII results remain pending in Lean.
 
+The final integration merged `465a54b`, including the exact infinitesimal
+trigonometric expansions and normalization proof, through `ce1dcca`.
+The incoming source mappings distinguish finite normalized remainders,
+valuation identities and infinitesimal relative errors from sequence limits;
+the fine-derivative and intrinsic-derivation boundary remains unchanged.
+The combined build passed 3,906 jobs, and the axiom audit checked 6,127
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,114 indexed statements in 44 reports remain correctly catalogued,
+and all 887 local Markdown destinations in 93 files resolve. The merge
+left the reviewed differential-equations source and 198-page PDF unchanged.
+This integration does not establish Lean coverage for its intrinsic
+Picard–Vessiot or Schwarzian results.
+
 ## Remaining scope
 
 The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
