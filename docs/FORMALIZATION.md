@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **40 main reports** with **1946**
+The canonical inventory below identifies **44 main texts** with **2030**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -27,8 +27,10 @@ counts its 23 standard results.
 The inventory and statement index include the ten reports and six report
 expansions integrated through `66dd6bc`, plus batch 19: four new reports and
 further expansions of four existing reports, integrated from `7657737`.
-Their inclusion supplies navigation, not mathematical review or formalization. The implementation table retains the precise scope of the
-newly mapped Lean statements.
+The four further report drafts placed in `5fe7f8d` are also indexed in their
+current form; their assembly and review remain pending. Inclusion supplies
+navigation, not mathematical review or formalization. The implementation
+table retains the precise scope of the newly mapped Lean statements.
 
 Before archive retirement in `e5791a8`, the tree contained 63 source
 manuscripts with 1582 literal standard result environments. Those are historical
@@ -479,9 +481,11 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. Paths below identify all 40 canonical
-main texts present in the repository, including the two whose source is not
-named `article.tex`. The document map and typeset catalogue list the same reports.
+custom environments are not included. Paths below identify all 44 main texts
+present in the repository, including the two whose source is not named
+`article.tex`. The reader map lists all of them; the typeset catalogue still
+covers the 40 reports preceding the placement of `5fe7f8d`. The four newly
+placed sources are indexed as drafts awaiting assembly and review.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping below states otherwise.
 
@@ -527,7 +531,11 @@ remain pending unless a precise implementation mapping below states otherwise.
 | [surcomplex/hidden-negative-hermitian-directions/article.tex](surcomplex/hidden-negative-hermitian-directions/article.tex) | 10 | 4 | 4 | 6 | 24 |
 | [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 9 | 8 | 3 | 10 | 30 |
 | [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-scaling-at-surreal-scales/article.tex) | 7 | 3 | 2 | 4 | 16 |
-| **Total** | 746 | 391 | 413 | 396 | **1946** |
+| [surcomplex/surcomplex-field-automorphisms/article.tex](surcomplex/surcomplex-field-automorphisms/article.tex) | 16 | 3 | 6 | 1 | 26 |
+| [surreal/euclidean-three-space/article.tex](surreal/euclidean-three-space/article.tex) | 14 | 0 | 2 | 0 | 16 |
+| [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex) | 15 | 2 | 7 | 1 | 25 |
+| [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 8 | 1 | 6 | 2 | 17 |
+| **Total** | 799 | 397 | 434 | 400 | **2030** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -3155,3 +3163,127 @@ Mappings cover only the hypotheses and clauses they state.
 | Corollary | `scale:cor:positivebranch` (line 1576) | The positive normalization is the local branch |
 | Theorem | `scale:thm:linear` (line 1615) | Basis-gap normalization |
 | Corollary | `scale:cor:descent` (line 1678) | Exact local support-group descent |
+
+### surcomplex-field-automorphisms
+
+Source: [surcomplex/surcomplex-field-automorphisms/article.tex](surcomplex/surcomplex-field-automorphisms/article.tex).
+
+Newly placed text; assembly, proof review and formalization remain pending.
+Statements are **pending unless explicitly mapped** in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:order` (line 238) | Untitled |
+| Theorem | `thm:axis` (line 249) | Centralizer and stabilizer |
+| Theorem | `thm:norm` (line 296) | Exact norm rigidity |
+| Theorem | `thm:circle` (line 319) | Untitled |
+| Lemma | `lem:support` (line 401) | Support control used below |
+| Theorem | `thm:monomial` (line 435) | Monomial construction |
+| Theorem | `thm:phase` (line 530) | A faithful phase action |
+| Theorem | `thm:coeffflow` (line 617) | Taylor motion of coefficient constants |
+| Theorem | `thm:shiftflow` (line 685) | A fixed-shift flow |
+| Theorem | `thm:decomp` (line 757) | Four layers for surcomplex valued automorphisms |
+| Proposition | `prop:continuous` (line 899) | Untitled |
+| Proposition | `prop:discrete` (line 930) | Untitled |
+| Theorem | `thm:derivative` (line 1014) | Derivative dichotomy for field automorphisms |
+| Theorem | `thm:zeroderiv` (line 1034) | Exponent dilations have derivative zero |
+| Corollary | `cor:bidifferentiable` (line 1064) | Untitled |
+| Theorem | `thm:acfhomogeneity` (line 1096) | Class back-and-forth |
+| Theorem | `thm:orderedhomogeneity` (line 1123) | Ordered surreal extension |
+| Proposition | `prop:nondefinability` (line 1165) | Untitled |
+| Proposition | `prop:fixedfields` (line 1204) | Untitled |
+| Theorem | `thm:torsion` (line 1265) | Finite subgroups and real forms |
+| Theorem | `thm:inequivalentrealform` (line 1297) | Untitled |
+| Lemma | `lem:displacement` (line 1396) | Displacement cannot be globally bounded |
+| Theorem | `thm:expfaithful` (line 1419) | Faithful value-group action |
+| Proposition | `prop:rationalnonlift` (line 1471) | Untitled |
+| Theorem | `thm:L` (line 1507) | Logarithmic-modulus automorphisms |
+| Proposition | `prop:conjugacycriterion` (line 1895) | Untitled |
+
+### euclidean-three-space
+
+Source: [surreal/euclidean-three-space/article.tex](surreal/euclidean-three-space/article.tex).
+
+Newly placed text; assembly, proof review and formalization remain pending.
+Statements are **pending unless explicitly mapped** in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Theorem | `thm:phase` (line 309) | Every direction has a finite phase |
+| Theorem | `thm:vector` (line 375) | Euclidean vector identities over the scalar field |
+| Theorem | `thm:skew` (line 507) | Distance and closest points of nonparallel lines |
+| Theorem | `thm:isometries` (line 618) | Classification of field-distance isometries |
+| Theorem | `thm:rodrigues` (line 651) | Rodrigues formula |
+| Theorem | `thm:angularmetric` (line 858) | Angular triangle inequality |
+| Theorem | `thm:spherical-laws` (line 967) | Spherical sine and cosine laws |
+| Theorem | `thm:polar` (line 1010) | Polar duality |
+| Theorem | `thm:SSS` (line 1085) | Complete side-data criterion and reconstruction |
+| Proposition | `prop:SSA` (line 1169) | Exact SSA alternatives |
+| Theorem | `thm:ceva` (line 1287) | Spherical Ceva |
+| Theorem | `thm:excess` (line 1320) | Branch-correct spherical excess |
+| Theorem | `thm:polygonarea` (line 1400) | Consistency, positivity, and finite additivity |
+| Theorem | `thm:holonomy` (line 1581) | Holonomy equals spherical excess |
+| Theorem | `thm:local-area` (line 1687) | Uniform gnomonic area comparison |
+| Proposition | `prop:conditioning` (line 1759) | Three conditioning estimates |
+
+### finite-surreal-probability
+
+Source: [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex).
+
+Newly placed text; assembly, proof review and formalization remain pending.
+Statements are **pending unless explicitly mapped** in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:workspace` (line 244) | Local exponential workspace |
+| Proposition | `prop:st` (line 271) | Residue algebra |
+| Theorem | `thm:finitebounds` (line 407) | Variance, Cauchy--Schwarz, and tail bounds |
+| Theorem | `thm:skeleton` (line 531) | Conditional leading-scale skeleton |
+| Theorem | `thm:compression` (line 568) | Signed-row lexicographic compression |
+| Theorem | `thm:scalebayes` (line 620) | Minimum-plus Bayes with coefficient tie breaking |
+| Theorem | `thm:stability` (line 681) | Absolute and valuation-sensitive conditioning stability |
+| Proposition | Line 750 (unlabeled) | Logit coordinates |
+| Proposition | `prop:softbound` (line 831) | Normalization and perturbation bounds |
+| Theorem | `thm:multisoft` (line 861) | Finite multiscale softmax limit |
+| Theorem | `thm:kl` (line 916) | Finite Gibbs inequality and entropy bounds |
+| Theorem | `thm:dataprocessing` (line 984) | Finite data processing |
+| Theorem | `thm:gibbs` (line 1070) | Surreal finite Gibbs principle |
+| Proposition | `prop:separation` (line 1144) | No attained logistic optimum under strict separation |
+| Proposition | Line 1201 (unlabeled) | Bounded finite-horizon optional stopping |
+| Proposition | `prop:fine` (line 1256) | Set-indexed fine convergence is eventually constant |
+| Theorem | `thm:hierarchy` (line 1352) | Normalized hierarchy of real probability laws |
+| Theorem | `thm:integrationfailure` (line 1469) | An uncountable-support positivity failure |
+| Theorem | `thm:rarecoin` (line 1583) | A repeated infinitesimal success probability |
+| Theorem | `thm:faircoin` (line 1609) | A repeated infinitesimal perturbation of a fair coin |
+| Lemma | `lem:embedding` (line 1663) | Set-sized relative field embedding |
+| Theorem | `thm:extension` (line 1768) | All-subsets regular extension after field enlargement |
+| Corollary | `cor:coinextension` (line 1812) | The two coin models do have regular finite-additive laws |
+| Proposition | `prop:tailfailure` (line 1885) | Finite-update shadows need not recover rare tail conditioning |
+| Theorem | `thm:shadowcountable` (line 1933) | A continuity test for the shadow |
+
+### vector-and-tensor-fields
+
+Source: [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex).
+
+Newly placed text; assembly, proof review and formalization remain pending.
+Statements are **pending unless explicitly mapped** in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Proposition | `prop:localize` (line 205) | Localization of set-sized scalar data |
+| Lemma | `lem:neumann` (line 248) | Classical support lemma |
+| Corollary | `cor:geometric` (line 267) | Geometric inversion |
+| Proposition | `prop:diffalgebra` (line 384) | Differential algebra |
+| Theorem | `thm:prolongation` (line 507) | Multivariable smooth prolongation |
+| Proposition | `prop:diffeo` (line 605) | Lifting coordinate diffeomorphisms |
+| Theorem | Line 784 (unlabeled) | Levi--Civita construction in the admissible algebra |
+| Proposition | Line 866 (unlabeled) | Bianchi identities and conservation |
+| Theorem | `thm:stokes` (line 1026) | Hahn Stokes theorem |
+| Proposition | Line 1049 (unlabeled) | Positivity for smooth common-support integrands |
+| Theorem | `thm:poincare` (line 1078) | Support-preserving local exactness |
+| Theorem | `thm:derham` (line 1144) | Compact de Rham base change |
+| Corollary | `cor:hodge` (line 1190) | Coefficientwise Hodge decomposition |
+| Theorem | `thm:reduction` (line 1234) | Regular reduction of tensor geometry |
+| Proposition | `prop:threshold` (line 1261) | A quantitative support threshold |
+| Theorem | `thm:flow` (line 1387) | Near-real Hahn flows |
+| Theorem | `thm:lifting` (line 1475) | Regular nonlinear Hahn lifting |

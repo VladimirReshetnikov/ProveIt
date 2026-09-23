@@ -418,8 +418,10 @@ The independent statement-index audit checks all 1,946 entries across
 
 ## Collection-wide work
 
-The [reader map](README.md), [catalogue](manifest.tex) and statement index
-now cover all 40 canonical reports. The [notation guide](NOTATION.md) was
+The [reader map](README.md) and statement index now cover all 44 main texts,
+including four newly placed drafts. The [catalogue](manifest.tex) still
+covers the earlier 40 reports; assembly and catalogue updates for the new
+placement remain pending. The [notation guide](NOTATION.md) was
 checked across the earlier 26-report collection; checking every convention in
 the fourteen additions and all expanded reports remains pending. The guide records
 meaningful differences rather than treating shared names as definitions:
@@ -448,7 +450,25 @@ version, and the source from Part VII onward is unchanged. The combined Lean
 build passes 3,872 jobs and the 5,880-declaration axiom audit. These integration
 checks do not review the newly added mathematics.
 
+The placement of `5fe7f8d`, merged during the Section 31 review's final
+sync, adds four draft report sources. Their 84 standard statements are now
+indexed, bringing the total to 2,030 across 44 texts. The independent parser
+checks every heading, count, label and line hint; two results with only a
+nested equation label are correctly indexed as unlabeled statements.
+The combined Lean build again passes 3,872 jobs and the 5,880-declaration
+audit. These are navigation and integration checks, not a review of the
+new mathematics or completion of the incoming batch's assembly. All 820
+local Markdown destinations in 93 files resolve.
+
 ## Remaining scope
+
+The newly placed [vector and tensor fields](surreal/vector-and-tensor-fields/),
+[three-space](surreal/euclidean-three-space/),
+[finite probability](surreal/finite-surreal-probability/) and
+[field automorphisms](surcomplex/surcomplex-field-automorphisms/) drafts
+await assembly and proof review. So do the new source additions to measures
+and trigonometry. Their delivered README, verification and audit records
+have been retained as placement material.
 
 Batch 19 adds four reports whose mathematical proofs have not yet received
 this review: [three duals](surcomplex/three-duals-of-hahn-vector-spaces/),
