@@ -5872,38 +5872,38 @@ Source: [surreal/independent-surreal-copies/article.tex](surreal/independent-sur
 Placed in `9d28e28` as a single-source base. Its prescribed independent copies
 use a set-sized divisible Hahn core and NBG with Global Choice for the class
 construction. The 29 standard environments are indexed below. The separately
-styled main theorems `main:copies`, `main:fractions` and `main:join` are additional
+styled main theorems `isc:main:copies`, `isc:main:fractions` and `isc:main:join` are additional
 obligations outside that count. All claims are **Pending** in Lean; mathematical
 proof review and source reconciliation remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `lem:avoid` (line 393) | A cut avoiding a set |
-| Lemma | `lem:extend` (line 407) | Ordered one-point extension with avoidance |
-| Theorem | `thm:group` (line 447) | Independent group copies over any set-sized base |
-| Corollary | `cor:groupintersection` (line 501) | Untitled |
-| Theorem | `thm:lift` (line 526) | Monomial lift |
-| Proposition | `prop:arithmeticlift` (line 558) | What the lift remembers |
-| Proposition | `prop:classification` (line 602) | Classification within the monomial-preserving class |
-| Lemma | `lem:slice` (line 646) | Slice linearity and separation |
-| Lemma | `lem:matrix` (line 661) | A finite separating matrix |
-| Theorem | `thm:sliceddisjoint` (line 681) | Full Hahn fields are disjoint over their full intersection |
-| Corollary | `cor:joint` (line 711) | Independence of any finite number of full Hahn fields |
-| Corollary | `cor:relations` (line 731) | Polynomial-relation descent |
-| Corollary | `cor:parameters` (line 766) | Fixing every element of a prescribed set |
-| Theorem | `thm:intersectionclassification` (line 786) | Exact classification of set-sized intersections in this class |
-| Theorem | `thm:boolean` (line 814) | Boolean meet realization |
-| Corollary | `cor:choices` (line 847) | Independent choices and absence of new relations |
-| Lemma | `lem:compression` (line 885) | Compression of the surreal order |
-| Theorem | `thm:explicit` (line 934) | An explicit independent ordinal family |
-| Lemma | `lem:iterated` (line 984) | Re-expansion at separated scales |
-| Lemma | `lem:finitecoeff` (line 1024) | Finite coefficient-field control |
-| Theorem | `thm:joinobstruction` (line 1043) | A coefficient-transcendence obstruction |
-| Lemma | `lem:denominator` (line 1139) | Common denominators for a set of surreals |
-| Proposition | `prop:uniform` (line 1161) | Separate uniform denominators, no shared uniform one |
-| Proposition | `prop:boundedfrac` (line 1212) | Identification of the fraction fields |
-| Lemma | `lem:gapscale` (line 1243) | Cofinal sequences with polynomial gaps |
-| Theorem | `thm:cofinalgap` (line 1280) | One transcendental series over all bounded-support fractions |
-| Corollary | `cor:factorial` (line 1335) | The factorial witness |
-| Corollary | `cor:noshareddenom` (line 1365) | Failure witnessed by the denominator equation |
-| Theorem | `thm:setversion` (line 1402) | Independent embeddings in a saturated ordered group |
+| Lemma | `isc:lem:avoid` (line 393) | A cut avoiding a set |
+| Lemma | `isc:lem:extend` (line 407) | Ordered one-point extension with avoidance |
+| Theorem | `isc:thm:group` (line 447) | Independent group copies over any set-sized base |
+| Corollary | `isc:cor:groupintersection` (line 501) | Untitled |
+| Theorem | `isc:thm:lift` (line 526) | Monomial lift |
+| Proposition | `isc:prop:arithmeticlift` (line 558) | What the lift remembers |
+| Proposition | `isc:prop:classification` (line 602) | Classification within the monomial-preserving class |
+| Lemma | `isc:lem:slice` (line 646) | Slice linearity and separation |
+| Lemma | `isc:lem:matrix` (line 661) | A finite separating matrix |
+| Theorem | `isc:thm:sliceddisjoint` (line 681) | Full Hahn fields are disjoint over their full intersection |
+| Corollary | `isc:cor:joint` (line 711) | Independence of any finite number of full Hahn fields |
+| Corollary | `isc:cor:relations` (line 731) | Polynomial-relation descent |
+| Corollary | `isc:cor:parameters` (line 766) | Fixing every element of a prescribed set |
+| Theorem | `isc:thm:intersectionclassification` (line 786) | Exact classification of set-sized intersections in this class |
+| Theorem | `isc:thm:boolean` (line 814) | Boolean meet realization |
+| Corollary | `isc:cor:choices` (line 847) | Independent choices and absence of new relations |
+| Lemma | `isc:lem:compression` (line 885) | Compression of the surreal order |
+| Theorem | `isc:thm:explicit` (line 934) | An explicit independent ordinal family |
+| Lemma | `isc:lem:iterated` (line 984) | Re-expansion at separated scales |
+| Lemma | `isc:lem:finitecoeff` (line 1024) | Finite coefficient-field control |
+| Theorem | `isc:thm:joinobstruction` (line 1043) | A coefficient-transcendence obstruction |
+| Lemma | `isc:lem:denominator` (line 1139) | Common denominators for a set of surreals |
+| Proposition | `isc:prop:uniform` (line 1161) | Separate uniform denominators, no shared uniform one |
+| Proposition | `isc:prop:boundedfrac` (line 1212) | Identification of the fraction fields |
+| Lemma | `isc:lem:gapscale` (line 1243) | Cofinal sequences with polynomial gaps |
+| Theorem | `isc:thm:cofinalgap` (line 1280) | One transcendental series over all bounded-support fractions |
+| Corollary | `isc:cor:factorial` (line 1335) | The factorial witness |
+| Corollary | `isc:cor:noshareddenom` (line 1365) | Failure witnessed by the denominator equation |
+| Theorem | `isc:thm:setversion` (line 1402) | Independent embeddings in a saturated ordered group |
