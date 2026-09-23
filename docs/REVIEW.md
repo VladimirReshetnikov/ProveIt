@@ -1828,7 +1828,10 @@ is explicitly historical. These updates record incoming Lean coverage and
 do not prove the source-10 nonlinear or later coefficient-field theorems.
 The updated report still has 90 pages after three LaTeX passes, with no final
 warnings or box notices. All 88 result environments, 274 label numbers and
-28 historical files remain unchanged.
+28 historical files remain unchanged. A rendered comparison with the
+preceding review PDF found 54 changed pages (physical pages 1–2, 34–83 and
+86–87); all were visually inspected, including the expanded dependency
+subsection and the resulting text reflow. No layout defect was found.
 
 The new row/column-finite algebra mapping exposed a source error in the
 closing clause of `ihs:rf:prop:algebra`. Part II allows any nonempty index
@@ -1856,6 +1859,22 @@ The statement inventory remains 2,534 results in 49 reports; line anchors
 were refreshed after the two source edits. All 2,851 cited source labels
 and 1,120 local Markdown destinations resolve, and `git diff --check` passes.
 These are scope and source corrections, not additional Lean declarations.
+
+The final sync merged `9abc436`, including the seven triangle-defect and
+relative-flatness modules from `ae0ec9f`. It changed no manuscript source.
+The analysis guide's finite-lift label and the gamma/zeta guide's qualified
+attribution labels were checked against the current sources. The gamma
+merge resolution retains the 94-statement inventory and the distinction
+between label citations and mapped Lean proofs. All seven imports occur
+once, and the new rows' nine source labels resolve. The two mappings retain
+the nonzero-vector and infinitesimal-angle hypotheses for the defect, and
+the largest-side and relative-gap hypotheses for flatness, without assuming
+comparable side scales. The normalized-coordinate flatness theorem remains
+explicitly pending; this was a bounded mapping/scope audit.
+The combined `LEAN_NUM_THREADS=2 lake build` passed 4,058 jobs, with the
+axiom audit accepting 8,861 declarations and only the same three axioms.
+The independent inventory remains 2,534 statements in 49 reports; all 2,858
+cited source labels and 1,127 local Markdown destinations resolve.
 
 ## Remaining scope
 

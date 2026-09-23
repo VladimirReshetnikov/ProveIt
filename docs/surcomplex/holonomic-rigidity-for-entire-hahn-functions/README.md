@@ -545,6 +545,16 @@ historical audit/code/data files remain unchanged. The source-10 suite was
 rerun on a copy under Python 3.13.14: all 2,113 checks pass and the full
 record differs from the delivered JSON only in the Python version.
 
+
+A subsequent coverage sync updates the current status for already proved
+partial-theta implications, polynomial-orbit valuations, constant-point
+avoidance, inward stability and torsion covariance. Section 13.3 distinguishes
+those results from the remaining support, closure and classification steps.
+After this prose update the three-pass PDF still has 90 pages, with no final
+warnings or box notices. All 88 result statements, 274 label numbers and 28
+historical files remain unchanged. All 54 pages affected by the coverage
+text and its reflow (physical pages 1–2, 34–83 and 86–87) were visually checked.
+
 ## Merge of sources 11 and 12
 
 The code, data and audit files of sources 11 and 12 are byte-identical to the
