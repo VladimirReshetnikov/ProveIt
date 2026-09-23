@@ -412,8 +412,13 @@ angle intervals, including inputs infinitesimally close to either endpoint.
 Inverse tangent is an increasing bijection from all surreal slopes onto its
 finite open angle interval, with the square-root coordinate formulas and
 positive-input reciprocal complement identity. The inverse-sine half-angle
-formula holds at both endpoints. Tangent has fine derivative `1+tan^2`;
-fine derivatives of the inverse functions remain pending.
+formula holds at both endpoints. Tangent has fine derivative `1+tan^2`.
+The inverse functions have their native fine derivatives on their full open
+domains: `1/(1+t^2)` even at infinite tangent inputs, and the positive or
+negative reciprocal square root for sine and cosine even infinitesimally
+close to the endpoints. Their continuity follows from the actual interval
+order isomorphisms; a general topological-field inverse rule supplies the
+derivatives.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

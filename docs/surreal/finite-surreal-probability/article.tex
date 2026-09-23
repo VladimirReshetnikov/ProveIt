@@ -642,7 +642,10 @@ audit, programs and data remain unchanged. The
 Sections~\ref{fsp:sec:gibbs}--\ref{fsp:sec:processes} pass adds the
 posterior-support qualification after smoothing, expands the Gibbs and
 finite-process proofs, and makes adaptation and stopping-time measurability
-explicit.
+explicit. The Sections~\ref{fsp:sec:infinity}--\ref{fsp:sec:hierarchy}
+pass expands common-support and integration arguments, distinguishes uniform
+bounds from one-component essential bounds, and supplies a posterior with
+nonintegrable coefficients before density cancellation.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -2078,7 +2081,8 @@ finite calculation.
 
 \begin{proposition}[Set-indexed fine convergence is eventually constant]
 \label{fsp:prop:fine}
-If a net $(x_i)_{i\in I}$ with set-sized index set converges to $x$ in
+If a net $(x_i)_{i\in I}$ with a nonempty set-sized directed index set
+converges to $x$ in
 the full ordered-field topology of $\No$, then $x_i=x$ eventually.
 \end{proposition}
 \begin{proof}
@@ -2087,12 +2091,18 @@ $D=\{|x_i-x|:x_i\ne x\}$ of positive surreals. If $D$ is empty the
 claim is immediate. Otherwise the surreal cut property gives a positive
 $\delta$ smaller than every member of $D$, for example a number between
 $\{0\}$ and $D$. Convergence makes $|x_i-x|<\delta$ eventually. By
-construction this forces $x_i=x$.
+construction this forces $x_i=x$. Conversely, a net eventually equal to
+$x$ converges to $x$, so this describes all such convergent nets.
 \end{proof}
 
 The statement concerns the full fine topology and set-sized indices.
 It does not concern an intrinsic topology on a fixed subfield: the
-$\delta$ chosen in the proof may lie outside that subfield. Nevertheless,
+$\delta$ chosen in the proof may lie outside that subfield. For a
+universe-sized formal carrier, the permitted index sets must be small
+relative to that carrier, as in the foundations theorem; quantifying over
+all subsets of the carrier would remove the crucial size hypothesis.
+This does not make the full fine topology discrete: the ball of radius
+$r>0$ about $x$ contains the distinct point $x+r/2$. Nevertheless,
 even in any ordered subfield containing a positive infinitesimal $t$,
 the ordinary real partial sums of $\sum_{n\ge1}2^{-n}$ do not converge
 to one in the field's order topology. Their real tails $2^{-N}$ exceed
@@ -2109,12 +2119,18 @@ topology, or a standard-part procedure.
 
 \subsection{What strong Hahn addition does and does not allow}
 
-A strong Hahn probability on a sigma-algebra requires, for every disjoint
-sequence $(A_n)$, that $(P(A_n))$ be strongly Hahn summable and that
+Work in one Hahn field $\R((t^\Gamma))$, with $\Gamma$ a set-sized
+ordered abelian group. A strong Hahn probability is a nonnegative event
+map on a sigma-algebra, with $P(\varnothing)=0$ and $P(\Omega)=1$,
+such that for every disjoint sequence $(A_n)$ the family $(P(A_n))$ is
+strongly Hahn summable and
 \begin{equation}
  P\Bigl(\bigcup_n A_n\Bigr)=\hsum_nP(A_n).
 \end{equation}
-The ordinary series $\sum_n2^{-n}$ is not strong: every summand contributes
+Here strong summability requires a well-ordered union of supports and
+only finitely many nonzero contributions at each exponent. In particular,
+finite additivity follows by appending empty events to a finite disjoint list.
+The ordinary series $\sum_{n\ge1}2^{-n}$ is not strong: every summand contributes
 to exponent zero. An infinite collection of equal positive infinitesimal
 singleton masses is not strong either, since the leading monomial repeats
 infinitely often. These are failures of a specified support rule, not
@@ -2122,17 +2138,30 @@ contradictions in the ordered field or in finite additivity.
 
 \begin{example}[A regular strong Hahn probability on a countably infinite space]
 \label{fsp:ex:geometric}
-On $\N_{\ge1}$ take $t=\omega^{-1}$ and
+On $\N_{\ge1}$ with all subsets measurable, take $t=\omega^{-1}$ and
 \begin{equation}
  w_n=(1-t)t^{n-1},\qquad
  P(A)=\hsum_{n\in A}w_n.
 \end{equation}
-Every exponent occurs in at most two weights. All subfamilies are
-strongly summable, and the sum of all weights is one by coefficientwise
-telescoping. For nonempty $A$, its least element $m$ supplies the leading
-term $t^{m-1}$ with coefficient one, so $P(A)>0$. Disjoint regrouping
-is still strong, proving countable additivity in this sense. The standard
-part is the point mass at $1$.
+The supports lie in $\N$, a well-ordered set, and
+$w_n=t^{n-1}-t^n$ contributes only at two consecutive exponents.
+Every exponent therefore occurs in at most two weights, proving strong
+summability of all subfamilies. With $\ind_A(0)=0$, the coefficient of
+$t^k$ in $P(A)$ is
+\[
+ \ind_A(k+1)-\ind_A(k)\qquad(k\ge0).
+\]
+For the whole space this is one at $k=0$ and zero thereafter, so
+$P(\N_{\ge1})=1$. For nonempty $A$, its least element $m$ makes
+all coefficients below $m-1$ zero and the coefficient at $m-1$ one;
+hence $P(A)>0$. In a disjoint sequence of events, each of the two
+indices $k,k+1$ can belong to at most one event. Thus at most two
+event probabilities contribute at $k$, and their coefficients sum to
+that of the union. This proves strong countable additivity directly.
+The constant coefficient is $\ind_A(1)$, so the standard part is the
+point mass at $1$. More explicitly,
+$P(\{n>N\})=t^N>0$ for every ordinary $N\ge0$; the first $N$
+weights sum to $1-t^N$, not to one.
 \end{example}
 
 Strong probabilities on countably separated spaces are much more rigid
@@ -2149,14 +2178,22 @@ make that exponent recur infinitely often.
 
 \begin{definition}\label{fsp:def:coefficientwise}
 A coefficientwise Hahn measure on $(\Omega,\A)$ is specified by a
-well-ordered set $W\subseteq\Gamma$ and ordinary finite signed measures
-$\mu_\gamma$ on $\A$, via
+set-sized well-ordered set $W\subseteq\Gamma$ and ordinary countably
+additive signed measures $\mu_\gamma$ of finite total variation on
+$\A$, via
 \begin{equation}\label{fsp:eq:coefficientmeasure}
  P(A)=\sum_{\gamma\in W}\mu_\gamma(A)t^\gamma.
 \end{equation}
 It is a probability when these Hahn values are nonnegative on every
 $A$ and $P(\Omega)=1$. Countable additivity means that each coefficient
-uses the ordinary absolutely convergent scalar sum on a disjoint sequence.
+uses the ordinary absolutely convergent scalar sum on a disjoint sequence:
+\[
+ \mu_\gamma\Bigl(\bigcup_n A_n\Bigr)=\sum_n\mu_\gamma(A_n),
+ \qquad \sum_n|\mu_\gamma(A_n)|\le|\mu_\gamma|(\Omega)<\infty.
+\]
+Here $|\mu_\gamma|$ denotes ordinary total variation. The one common
+set $W$ controls all events; a different support bound for each event
+would not be this definition.
 \end{definition}
 
 The definition assumes a sigma-algebra and ordinary countably additive
@@ -2195,29 +2232,55 @@ such index, then
 In particular $\st P=\mu_0$.
 \end{theorem}
 \begin{proof}
-The monomial family has a well-ordered support and one contribution at
-each exponent, so both displayed sums exist. The denominator has leading
-term one and is positive. A nonzero numerator has a first positive
-coefficient, so it is positive. The numerator for $\Omega$ is $Z$,
-giving normalization; finite additivity follows coefficientwise.
+Put $W_0=\{\gamma_\alpha:\alpha<\kappa\}$. The strictly
+increasing image of the ordinal $\kappa$ is well ordered, and each
+exponent receives one monomial contribution. Thus both displayed sums
+exist, with all numerator supports contained in $W_0$. Write $Z=1+U$,
+where $U$ has strictly positive support. The positive-support Neumann
+lemma makes $\hsum_{n\ge0}(-U)^n$ a Hahn series and the inverse of
+$Z$; when $\kappa=1$, $U=0$ and this is just one. In particular,
+$Z$ and $Z^{-1}$ have leading coefficient one at exponent zero.
 
-To verify the full coefficientwise definition, expand $Z^{-1}$ as a Hahn
-series. Its support is well ordered by the positive-support Neumann
-lemma, and multiplying by the common support
-$\{\gamma_\alpha\}$ has only finitely many contributions at each exponent.
-Thus each coefficient of $P$ is a finite real linear combination of the
-$\mu_\alpha$, hence an ordinary finite signed measure. The resulting
-support is common to all events. This proves coefficientwise countable
-additivity. Finally the factor $Z^{-1}$ cancels in conditional ratios;
-dividing by $t^{\gamma_{\alpha(B)}}$ and taking residues proves
-\eqref{fsp:eq:hierconditional}.
+If every $\mu_\alpha(A)$ is zero, the numerator is zero. Otherwise
+its first nonzero coefficient is positive, since every component is a
+positive real measure; multiplication by $Z^{-1}>0$ preserves its sign.
+The numerator for $\Omega$ is $Z$, giving normalization. Finite
+additivity holds in each coefficient, so complements also give $P(A)\le1$.
+
+For the full coefficientwise definition, write
+$Z^{-1}=\sum_{\delta\in V}c_\delta t^\delta$, with $V$ well
+ordered and extend $c_\delta$ by zero off $V$. The Hahn product lemma
+makes $W=V+W_0$ well ordered and gives only finitely many pairs
+$(\delta,\gamma_\alpha)$ at each exponent $\eta$. Consequently
+\[
+ [t^\eta]P(A)=\sum_{\alpha:\,\eta-\gamma_\alpha\in V}
+ c_{\eta-\gamma_\alpha}\mu_\alpha(A).
+\]
+This is a finite real linear combination of ordinary probability
+measures, with total variation at most
+$\sum_{\alpha:\,\eta-\gamma_\alpha\in V}|c_{\eta-\gamma_\alpha}|$.
+The support bound $W$ is independent of $A$. Each coefficient is
+therefore an ordinary finite signed measure, proving coefficientwise
+countable additivity.
+
+For $P(B)>0$, put $b=\alpha(B)$. Cancel $Z^{-1}$ in the conditional
+ratio and divide both numerator and denominator by $t^{\gamma_b}$.
+All coefficients before $b$ in the numerator vanish because
+$0\le\mu_\alpha(A\cap B)\le\mu_\alpha(B)=0$ there.
+The denominator now has positive real residue $\mu_b(B)$; the
+numerator has residue $\mu_b(A\cap B)$, possibly zero. Both are
+limited, so standard-part division proves \eqref{fsp:eq:hierconditional}.
+Taking $B=\Omega$, whose first active component is zero, gives
+$\st P=\mu_0$.
 \end{proof}
 
 This construction is not restricted to finite or countable hierarchies.
 Its existence uses set-sized well-ordered support, not a real-convergent
 sum of the coefficients of $Z$. In particular, one must not evaluate
 $t=1$ in \eqref{fsp:eq:hierarchy} and regard the generally divergent result
-as an ordinary mixture.
+as an ordinary mixture. The law is regular precisely when every nonempty
+measurable event has positive mass for at least one component. An arbitrary
+hierarchy need not satisfy that coverage condition.
 
 \begin{example}[Diffuse probability with exceptional point events]
 \label{fsp:ex:diffuse}
@@ -2235,7 +2298,9 @@ solve conditioning on every exact-null event.
 \end{example}
 
 Higher coefficients of this normalized law are signed because division
-by $1+t+t^2$ introduces corrections. Those signed coefficients are
+by $1+t+t^2$ introduces corrections: its coefficient at $t$ is
+$\delta_0-\lambda$, negative on any positive-Lebesgue-measure event
+that omits zero. Those signed coefficients are
 compatible with positivity of every event, which was proved before
 expanding the reciprocal. This is a useful construction pattern: prove
 positivity of the normalized expression rather than demand positivity
@@ -2249,41 +2314,56 @@ For the hierarchy in Theorem~\ref{fsp:thm:hierarchy} and a bounded measurable
  \E_P f=Z^{-1}\hsum_{\alpha<\kappa}t^{\gamma_\alpha}
                   \int f\,d\mu_\alpha.
 \end{equation}
-This is a positive real-linear functional, agrees with event probabilities
-on indicators, and obeys $|\E_Pf|\le\norm{f}_\infty$. Indeed, if $f\ge0$
-all integrals in the numerator are nonnegative; apply this observation
-to $\norm{f}_\infty\pm f$ for the bound. It also gives
-$\st\E_Pf=\int f\,d\mu_0$.
+Every component integral is a finite real number, and the numerator
+support lies in $W_0$ from the proof above, so this defines a Hahn value.
+Ordinary linearity and finite Hahn addition give real linearity, and
+indicators recover $P(A)$. If $f\ge0$, all numerator coefficients are
+nonnegative, proving positivity after division by $Z>0$. Constants are
+preserved: $\E_Pc=c$. Applying positivity to $M\pm f$ whenever
+$|f|\le M$ gives $|\E_Pf|\le M$, in particular
+$|\E_Pf|\le\norm{f}_\infty$, where this norm is the pointwise
+supremum bound, not an essential supremum for $\mu_0$ alone.
+The constant coefficient gives $\st\E_Pf=\int f\,d\mu_0$.
+For example, the endpoint indicator in the preceding example has
+$\mu_0$-essential supremum zero but positive surreal expectation.
 
-If $f_n$ are uniformly bounded real functions converging pointwise
-outside a null set for every component $\mu_\alpha$ to $f$, ordinary
-dominated convergence gives convergence of every component integral.
-Every coefficient of the normalized series is a finite linear
-combination of component integrals. Thus $\E_Pf_n$ converges
+Let $f_n,f$ be bounded measurable real functions with one uniform real
+bound, and suppose $f_n\to f$ almost everywhere for each component
+$\mu_\alpha$. The exceptional null set may depend on $\alpha$;
+no uncountable intersection of full-measure sets is needed. Ordinary
+dominated convergence gives convergence of each component integral.
+The coefficient formula in the proof of Theorem~\ref{fsp:thm:hierarchy}
+is a finite linear combination of those integrals at every fixed exponent.
+Thus $\E_Pf_n$ converges
 \emph{coefficientwise in the real coefficient topology} to $\E_Pf$.
 This is a precise dominated-convergence statement, but it is not fine
-or ordered-field convergence. For example, a nonconstant ordinary real
-sequence of expectations need not converge in the order topology of a
-field with infinitesimals.
+or ordered-field convergence. For example, the constant functions
+$f_n=1/n$ have expectations $1/n$, which converge coefficientwise to
+zero but stay above any fixed positive infinitesimal. Their errors all
+have valuation zero, so they do not converge in the intrinsic valuation
+topology either.
 
-For finite hierarchies on two spaces, form products of their component
-measures. The weights are products of monomials, and the normalizer is
-the product of normalizers. Ordinary Fubini for a bounded real function
-on each component product then proves the corresponding coefficientwise
-Fubini identity. More explicitly, for two hierarchies with exponents
-$\gamma_\alpha,\delta_\beta$, the iterated integral is defined through
-component pairing as
+For two set-sized hierarchies on two measurable spaces, take both exponent
+families in one ordered group $\Gamma$, and let $f$ be a bounded real
+function measurable for the product sigma-algebra. Their well-ordered
+supports have a well-ordered sum and finitely many decompositions at each
+exponent by the Hahn product lemma. Thus the component product measures
+and monomial weights define a positive normalized law, with normalizer
+$Z_PZ_Q$, even for uncountable hierarchies. Coincident exponents combine
+by finite sums. Ordinary Fubini on each component product then proves
+the corresponding coefficientwise identity. Explicitly, the iterated
+integral is defined through component pairing as
 \begin{equation}
  \frac{1}{Z_PZ_Q}\hsum_{\alpha,\beta}
  t^{\gamma_\alpha+\delta_\beta}
  \int\!\int f(x,y)\,d\nu_\beta(y)\,d\mu_\alpha(x).
 \end{equation}
-One does not apply the real-observable definition unchanged to an arbitrary
-Hahn-valued inner integral. The same argument applies to longer hierarchies when
-the two support families satisfy the Hahn product support condition,
-which guarantees finitely many contributions to each coefficient.
-This is a support-controlled construction, not a Fubini theorem for all
-possible surreal-valued functions.
+Reversing the two ordinary integrals leaves each component unchanged;
+Hahn multiplication by the fixed reciprocal normalizers then preserves
+equality. The support condition is automatic for these two hierarchies
+in a common value group. One does not apply the real-observable definition
+unchanged to an arbitrary Hahn-valued inner integral. This construction
+does not give a Fubini theorem for all surreal-valued functions.
 
 \subsection{A genuine obstruction for arbitrary surreal-valued observables}
 
@@ -2306,10 +2386,14 @@ the countable--cocountable sigma-algebra. Give countable sets measure
 zero and cocountable sets measure one. This is countably additive:
 a disjoint sequence either has no cocountable member, in which case
 its union is countable, or has exactly one, with all remaining members
-countable.
+countable. Two cocountable sets cannot be disjoint on the uncountable
+space $\omega_1$. These cases give respectively total mass zero and one.
 
-Choose a set-sized ordered subgroup $\Gamma\subset\No$ containing all
-ordinals $\xi\le\omega_1$, and use the associated Hahn field. Set
+Take the additive subgroup $\Gamma\subset\No$ generated by the
+set of surreal ordinals $\xi\le\omega_1$, with its inherited order;
+it is set-sized because finite integer combinations of a set form a set.
+Use the associated Hahn field, with $t^\gamma=\omega^{-\gamma}$
+in the canonical surreal realization. Set
 \begin{equation}\label{fsp:eq:badintegral}
  X(\xi)=t^\xi-t^{\omega_1}\quad(\xi<\omega_1).
 \end{equation}
@@ -2334,15 +2418,22 @@ There is a useful boundary to this failure. If a pointwise nonnegative
 Hahn-valued function has a \emph{countable} common well-ordered support
 and each coefficient is integrable against an ordinary positive finite
 measure, its coefficientwise integral is nonnegative. To see this,
-proceed along the support. Provided all earlier coefficient integrals
-are zero, induction makes all earlier coefficient functions zero
-almost everywhere. Their predecessors are countable, so their common
-zero set still has full measure. Pointwise Hahn positivity forces the
-current coefficient to be nonnegative there. Its integral is
-nonnegative, and if zero the coefficient also vanishes almost everywhere.
-The first nonzero integral is therefore positive, or all integrals
-are zero. The failure in \eqref{fsp:eq:badintegral} exploits an uncountable
-union of null sets; that union need not be null.
+write $X=\sum_{\gamma\in W}x_\gamma t^\gamma$ and suppose
+first that the integral has a least nonzero coefficient at $\eta$.
+For $\gamma<\eta$ in $W$, transfinite induction shows
+$x_\gamma=0$ almost everywhere. Indeed, outside the countable union
+of the earlier exceptional null sets, all preceding coefficients vanish.
+Hahn positivity then forces $x_\gamma\ge0$ there; its zero integral
+forces it to vanish almost everywhere. Apply the same argument at
+$\eta$: $x_\eta\ge0$ almost everywhere and its nonzero integral
+is strictly positive. If there is no nonzero integral coefficient, the
+integral is zero. This proves the claim, including finite and empty
+supports. Applying it also to $M-X$ gives
+$0\le\int X\,d\mu\le M\mu(\Omega)$ when $0\le X\le M$;
+for a probability measure this preserves the bound $M$. The failure in \eqref{fsp:eq:badintegral}
+occurs at exponent $\omega_1$, where removing the earlier exceptional
+singletons would remove the whole sample space: an uncountable union
+of null sets need not be null.
 
 \subsection{Posterior kernels in a finite diffuse hierarchy}
 \label{fsp:subsec:kernels}
@@ -2357,22 +2448,42 @@ $K_j(y,A)$ and marginal measures $\mu_j^Y$ have been selected, so that
  \mu_j(X\in A,Y\in B)=\int_B K_j(y,A)\,d\mu_j^Y(y).
 \end{equation}
 The usual real disintegration theorem supplies this input in this
-setting \cite{kallenberg}; it is not a theorem about a new surreal
-sigma-algebra.
+setting \cite[Theorem~8.5]{kallenberg}, applied with the observation
+as the conditioning variable and the state as the Borel-valued variable.
+It is an ordinary real disintegration input.
 
 Take $\rho=(m+1)^{-1}\sum_j\mu_j^Y$ and let
 $h_j=d\mu_j^Y/d\rho$. Choose versions which are finite and nonnegative
-on a common full-$\rho$ set. There $\sum_jh_j=m+1$, so at least one
-$h_j$ is positive. For $0=\gamma_0<\cdots<\gamma_m$, put
+on a common full-$\rho$ measurable set $G$. By uniqueness of
+Radon--Nikodym derivatives, $\sum_jh_j=m+1$ almost everywhere;
+shrink $G$ to enforce this equality everywhere on $G$. Thus
+$0\le h_j\le m+1$ there and at least one $h_j$ is positive.
+Set every $h_j$ to zero off $G$. For $y\in G$ and
+$0=\gamma_0<\cdots<\gamma_m$, put
 \begin{align}
  D(y)&=\sum_{j=0}^m t^{\gamma_j}h_j(y),\label{fsp:eq:kerneldensity}\\
  P_y(A)&=\frac{\sum_{j=0}^m t^{\gamma_j}h_j(y)K_j(y,A)}{D(y)}.
  \label{fsp:eq:posterior}
 \end{align}
-For each such $y$ this is a positive normalized coefficientwise Hahn probability in
-$A$. Its standard part selects the first $j$ with $h_j(y)>0$ and uses
-$K_j(y,\cdot)$. One can assign any fixed probability kernel on the
-remaining $\rho$-null set.
+For each $y\in G$, let $j$ be the first index with $h_j(y)>0$.
+Factoring $t^{\gamma_j}h_j(y)$ out of $D(y)$ leaves one plus a
+finite positive-exponent series. The denominator is therefore positive,
+and expansion of its inverse makes each coefficient of $P_y$ a finite
+real linear combination of the ordinary probability measures
+$K_k(y,\cdot)$. This proves coefficientwise countable additivity in
+$A$; positivity and normalization follow directly from the quotient.
+Its standard part is $K_j(y,\cdot)$.
+
+There is also a common support bound as $y$ varies. On the measurable
+piece with first active index $j$, the inverse expansion uses the additive
+monoid generated by the positive gaps
+$\gamma_k-\gamma_j$ for $k>j$. This monoid is well ordered with
+finitely many contributions to each coefficient by the Neumann lemma.
+The finite union over $j$ is again well ordered. Every coefficient of
+$P_y(A)$ is measurable in $y$, being a finite sum of products and
+quotients of measurable functions with $h_j(y)>0$ on that piece.
+Extend $P_y$ by any fixed ordinary probability law off $G$; this adds
+at most exponent zero and preserves coefficientwise measurability.
 
 The precise reconstruction identity is
 \begin{equation}\label{fsp:eq:kernelreconstruction}
@@ -2387,7 +2498,18 @@ it cancels the denominator, giving exactly the finite sum on the right.
 Those coefficient functions are integrable, since $0\le K_j\le1$ and
 $h_j$ is a probability density. Coefficients of the quotient
 $P_y(A)$ alone need not have the integrability needed for an arbitrary
-termwise integration operation.
+termwise integration operation. For an explicit example, take
+$Y\in(0,1)$, $X\in\{0,1\}$, and two components: under $\mu_0$,
+$X=0$ and $Y$ has density $2y$; under $\mu_1$, $X=1$ and $Y$
+has density $2(1-y)$. Then $\rho$ is Lebesgue probability,
+$h_0(y)=2y$, $h_1(y)=2(1-y)$, and weights $1,t$ give
+\[
+ P_y(\{1\})=\frac{t(1-y)}{y+t(1-y)}.
+\]
+Its coefficient at $t$ is $(1-y)/y$, whose real integral diverges at
+zero. Yet $D(y)P_y(\{1\})=2t(1-y)$ is integrable coefficientwise,
+and reconstruction gives $P(X=1)=t/(1+t)$. Boundedness of the
+posterior as a Hahn value does not bound its separate real coefficients.
 
 Equation~\eqref{fsp:eq:kernelreconstruction} is a rigorous posterior
 construction for this model, not a general surreal Radon--Nikodym or
