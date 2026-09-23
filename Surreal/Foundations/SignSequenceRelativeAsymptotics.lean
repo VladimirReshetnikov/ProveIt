@@ -92,6 +92,18 @@ theorem valuation_eq_of_infinitesimal_div_sub_one {x y : SignSequence.{u}} (hy :
     _ = valuation (x / y) + valuation y := valuation_mul _ _
     _ = valuation y := by rw [valuation_eq_zero_of_infinitesimal_sub_one h, _root_.zero_add]
 
+/-- Relative infinitesimal equivalence preserves finiteness at arbitrary scales. -/
+theorem finite_iff_of_infinitesimal_div_sub_one {x y : SignSequence.{u}} (hy : y ≠ 0)
+    (h : IsInfinitesimal (x / y - 1)) : IsFinite x ↔ IsFinite y := by
+  rw [isFinite_iff_valuation_nonneg, isFinite_iff_valuation_nonneg,
+    valuation_eq_of_infinitesimal_div_sub_one hy h]
+
+/-- Relative infinitesimal equivalence preserves infinitesimality as well. -/
+theorem infinitesimal_iff_of_infinitesimal_div_sub_one {x y : SignSequence.{u}} (hy : y ≠ 0)
+    (h : IsInfinitesimal (x / y - 1)) : IsInfinitesimal x ↔ IsInfinitesimal y := by
+  rw [isInfinitesimal_iff_valuation_pos, isInfinitesimal_iff_valuation_pos,
+    valuation_eq_of_infinitesimal_div_sub_one hy h]
+
 /-- Products of normalizations near one remain near one. -/
 theorem infinitesimal_mul_sub_one {p q : SignSequence.{u}}
     (hp : IsInfinitesimal (p - 1)) (hq : IsInfinitesimal (q - 1)) :
@@ -100,6 +112,14 @@ theorem infinitesimal_mul_sub_one {p q : SignSequence.{u}}
   obtain ⟨hqf, hqs⟩ := infinitesimal_sub_one_iff.mp hq
   apply infinitesimal_sub_one_iff.mpr
   exact ⟨finite_mul hpf hqf, by rw [standardPart_mul hpf hqf, hps, hqs, one_mul]⟩
+
+/-- Relative infinitesimal equivalence is transitive through a nonzero intermediate scale. -/
+theorem infinitesimal_div_sub_one_trans {x y z : SignSequence.{u}} (hy : y ≠ 0)
+    (hxy : IsInfinitesimal (x / y - 1)) (hyz : IsInfinitesimal (y / z - 1)) :
+    IsInfinitesimal (x / z - 1) := by
+  have he : (x / y) * (y / z) = x / z := by
+    rw [div_mul_div_comm, mul_comm y z, mul_div_mul_right _ _ hy]
+  simpa only [he] using infinitesimal_mul_sub_one hxy hyz
 
 /-- The reciprocal of a normalization near one remains near one. -/
 theorem infinitesimal_inv_sub_one {q : SignSequence.{u}}
