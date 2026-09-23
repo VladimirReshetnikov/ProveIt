@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 188 pages, built from eleven manuscripts. Everything
+A merged research report, 189 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 188-page report
+article.pdf                        the compiled 189-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -20,8 +20,9 @@ data/                              their recorded verification, build and requir
 
 Every label in `article.tex` carries the prefix `diff:`; the labels added with
 members 11, 12 and 13 carry the sub-prefixes `diff:aut:`, `diff:rs:` and
-`diff:cp:`. No pre-existing label was ever renamed or removed (506 labels before
-members 11 and 12, 685 after them, 764 after member 13).
+`diff:cp:`. The current text has 763 valid label definitions, all preserved
+from the merged upstream text. The earlier count included the malformed
+placeholder described in the correction record below.
 
 The current proof review covers the earlier scalar, matrix, workspace and
 coordinate chains and all of the regular-singular main text, Sections
@@ -31,13 +32,16 @@ The revisions expand the proof steps, distinguish the derivative frames
 and field extensions, illustrate the normalizations, and prove the forced
 degree bound sharp. The finite procedure now states its effective
 coefficient requirements; complex algebraic coefficients suffice.
-The autonomous review now covers normalized derivations, formal evaluation,
-projective reduction and simple zeros (Section 29 and Sections 30.1–30.3).
-It expands the support and local uniqueness arguments, makes the
-properness comparison set-sized, and gives an explicit quadratic
-linearizer. Multiple zeros, later autonomous proofs, remaining imports
-and source reconciliation are still pending; scope and validation are
-recorded in the collection's [review record](../../REVIEW.md).
+The autonomous review now covers Sections 29–30: normalized derivations,
+formal evaluation, projective reduction, simple and multiple zeros, and
+completeness of the curve-realization list. It expands the support,
+local uniqueness and forced-scale arguments, makes the properness
+comparison set-sized, and gives explicit quadratic and pure monomial
+formulas. Branch choices and the time parameter's first differing scale
+are stated explicitly. Uniform localization, derivation independence,
+later autonomous proofs, remaining imports and source reconciliation
+are still pending; scope and validation are recorded in the collection's
+[review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -911,6 +915,28 @@ build passed 3,872 jobs and the 5,880-declaration axiom audit. The primary
 comparison checked NPT arXiv v1 Lemma 6.1(i) and Stacks Tag 0BX5;
 the multiple-zero classification and later autonomous arguments remain
 for review.
+
+The second autonomous pass reviewed the multiple-zero classification and
+completeness proof in Section 30.4. The report rebuilt in three passes at
+170 pages without warnings or box issues, against a clean 169-page
+baseline; the changed proof pages were inspected. The unchanged member-11
+verifier again passed ten checks and matched the historical record except
+for the Python version. Separate exact checks covered pure monomial zeros
+of orders two through six, their parameter-separation coefficients, and
+a triple-zero example with nonzero logarithmic residue. All 48 historical
+files remain byte-identical. The full Lean build passed 3,872 jobs and
+the 5,880-declaration axiom audit. These finite calculations support the
+examples; they do not prove the general classification or complete its
+Lean formalization. Sections 29–30 are now reviewed; later autonomous
+arguments, other imports and source reconciliation remain pending.
+
+After merging batch 19 from `7657737`, the combined report rebuilds in
+three passes at 189 pages without warnings or box issues, against a clean
+188-page upstream baseline. The multiple-zero proof pages were inspected.
+All 51 historical code, data and source-log files match the upstream bytes;
+Part VII and subsequent source text are unchanged by this review. The full
+Lean build passes 3,872 jobs and its 5,880-declaration axiom audit. This merge
+validation does not extend the proof review to the critical-potential part.
 
 ## Re-running the source verifiers
 
