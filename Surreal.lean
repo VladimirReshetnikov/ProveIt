@@ -69,6 +69,10 @@ import Surreal.Algebra.TailSpan
 import Surreal.Algebra.WickSemigroup
 import Surreal.Algebra.TateCubicNode
 import Surreal.Algebra.PolynomialBranchValues
+import Surreal.Algebra.TailAnalyticSpan
+import Surreal.Algebra.GenericConstantPoint
+import Surreal.Algebra.ExponentialProfile
+import Surreal.Algebra.MarkovEffective
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -383,3 +387,9 @@ import Surreal.HahnSeries.NativeEquicontinuity
 import Surreal.HahnSeries.InvariantStrongMeasures
 import Surreal.HahnSeries.FiniteVisibility
 import Surreal.HahnSeries.PronyCofactorBound
+import Surreal.HahnSeries.RowColumnFinite
+import Surreal.HahnSeries.SignCoherentSums
+import Surreal.HahnSeries.UnitOrbitPolynomials
+import Surreal.HahnSeries.TorsionCovariance
+import Surreal.HahnSeries.AdmissibleCones
+import Surreal.HahnSeries.BoundedOrbitLocus
