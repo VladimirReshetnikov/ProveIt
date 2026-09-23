@@ -1,7 +1,7 @@
 # Reconciliation of the three Diophantine manuscripts
 
 This record covers the elementary source comparison in Sections 1–4 of the
-maintained [article](article.tex), followed by proof reviews of Sections 5–11.
+maintained [article](article.tex), followed by proof reviews of Sections 5–12.
 It does **not** certify integration of every result in the three manuscripts
 or review of all later proofs and imported classical results.
 
@@ -167,7 +167,24 @@ arbitrary witnesses are not silently assumed to have finite supports.
 The reverse implication uses `t = ω` to ensure finite supports, and positive
 parameters preserve the prescribed signs.
 
-Sections 12 onward still await independent proof review; the assembly's own
+The Section 12 pass compares source 02's square-discriminant proof,
+sources 01–02's initial-form test, and source 05's binomial-root and failed
+lifting arguments. The monic quadratic proof now records exhaustiveness and
+the repeated-root case; a nonmonic example shows why a square discriminant
+still needs divisibility by twice the leading coefficient. The initial-form
+discussion distinguishes a maximum candidate weight from the degree after
+cancellation and treats zero-variable substitution explicitly.
+
+The two-term root obstruction now has a finite-algebra proof from the
+constant-product lemma, with source 05's binomial proof retained as a
+support explanation. The expansion's support and finite convolution fibers
+are justified for every positive surreal exponent, without a cofinality or
+topological-limit assumption. The failed-lifting example has two simple
+ordinary residue roots and no omnific lift; its discriminant proves this
+without reading the full series. The omnific constant-term map is explicitly
+distinguished from the finite-surreal valuation ring's standard-part map.
+
+Sections 13 onward still await independent proof review; the assembly's own
 section map and corrections in Appendix A are inputs to that review.
 Imported foundations, classical results and historical priority are separate
 obligations. No broad preservation of the old statement wording or numbering

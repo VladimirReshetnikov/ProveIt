@@ -55,7 +55,10 @@ Constant coefficient `ct` is a ring retraction on these support-restricted
 rings. It is not a ring homomorphism on all of `No`, since `ω · ω⁻¹ = 1`,
 and it is not order preserving: `ω − 1 > 0` but `ct(ω − 1) = −1`.
 The ring of finite surreals has the opposite growth-support condition;
-its standard-part homomorphism has a different domain. In the complex
+its standard-part homomorphism has a different domain and an infinitesimal
+kernel. The omnific counterexample `X² − X − ω` has two simple roots modulo
+`Π` and no omnific root. Its infinite coefficient `−ω` excludes it from
+finite-surreal residue lifting; it does not contradict that theorem. In the complex
 nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
 For a nonzero form, growth degree is the largest supported exponent and
 satisfies `v = −deg` under the reversed valuation convention.

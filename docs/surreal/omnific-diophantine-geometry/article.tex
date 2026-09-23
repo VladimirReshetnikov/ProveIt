@@ -297,7 +297,7 @@ where the merge had to choose, and every symbol renamed from a source.
 
 \paragraph{Current review and placement status.}
 Commit \texttt{bbdd536} assembled sources 01, 02 and 05. The subsequent
-proof review reaches \cref{odg:sec:primitive}; its scope and source
+proof review reaches \cref{odg:sec:coefficients}; its scope and source
 comparisons are recorded in \fn{RECONCILIATION.md}. Later proofs and remaining
 imported foundations still require review.
 Two further Diophantine manuscripts, locally numbered 06 and 07 and placed
@@ -2919,7 +2919,20 @@ Specializing and reducing modulo $4$ gives $\ct(y)^2\equiv\ct(b)^2\pmod4$.
 Integer squares are $0$ or $1$ modulo $4$, so $\ct(y)$ and $\ct(b)$ have the
 same parity, and \cref{odg:thm:finitequotients} shows that $-b\pm y$ are
 divisible by two in $\Oz$. The usual identity verifies the roots.
+Conversely every root determines one of these two square roots by $y=2x+b$,
+so the list is exhaustive. When $\Delta=0$ the two expressions coincide;
+otherwise they are distinct.
 \end{proof}
+
+Monicity is essential to the criterion as stated. For a general quadratic
+$ax^2+bx+c$ with $a\ne0$ in $\Oz$, a root is equivalent to an element
+$y\in\Oz$ satisfying both $y^2=b^2-4ac$ and $y-b\in2a\Oz$.
+Indeed a root gives $y=2ax+b$; conversely write $y-b=2ax$ and use
+$y^2-(b^2-4ac)=4a(ax^2+bx+c)$, cancelling $4a\ne0$.
+A square discriminant alone does not ensure this divisibility: the
+polynomial $6x^2+x-1=(3x-1)(2x+1)$ has discriminant $25$, but its two field
+roots $1/3$ and $-1/2$ are not omnific. For a monic quadratic, the parity
+argument above supplies exactly the missing divisibility by two.
 
 Testing whether a nonnegative surreal has an omnific square root is not the
 same as testing whether it has a surreal square root: real closedness gives
@@ -2966,7 +2979,18 @@ $\omega^W$ is exactly the sum in \eqref{odg:eq:initial}, and it must vanish; a
 single maximizer would contribute a nonzero product.
 \end{proof}
 
-Variables assigned zero can first be substituted out. For ordinary
+The maximum is taken over the finite nonempty polynomial support, so it
+exists even when the surreal weights have arbitrary rank. The exponent
+$W$ is a candidate degree before cancellation, not an assertion that
+$\ddeg(P(\mathbf x))=W$. Several maximal terms can cancel; their leading
+coefficients, including their signs, must actually sum to zero. Merely
+having two terms of maximal weight is insufficient: for $P(X)=X^2+\omega^2$
+and a candidate with $\ddeg(x)=1$, the initial equation is $r^2+1=0$,
+which has no real solution.
+
+Variables assigned zero can first be substituted out. If this makes the
+polynomial identically zero, it imposes no initial-form condition; otherwise
+apply the proposition to the remaining nonzero coordinates. For ordinary
 coefficients this is a weighted initial polynomial over $\R$ with surreal
 weights. The constant-coefficient equation and the initial equation constrain
 opposite ends of a normal form; they are complementary necessary tests, not a
@@ -2982,25 +3006,53 @@ When $b=0$ its positive solution is $a^{1/n}\omega^{\gamma/n}$, together with
 its negative when $n$ is even.
 \end{proposition}
 \begin{proof}
-The right side is positive and infinite. Its positive $n$th root in $\No$ has
-the formal binomial expansion
+When $b=0$, put $u=a^{1/n}\omega^{\gamma/n}\in\Pi$. Then
+$u^n=a\omega^\gamma$, and strict monotonicity of positive integer powers
+on the positive cone gives the stated list of roots.
+
+For $b\ne0$, the right side is still positive and infinite. Suppose an
+omnific root exists, replacing it by its absolute value if $n$ is even;
+the resulting root $x$ is positive. With the same positive $u$, factor
+\[
+ b=x^n-u^n=(x-u)S,\qquad
+ S=\sum_{j=0}^{n-1}x^{n-1-j}u^j.
+\]
+Both factors belong to $\BR$, so \cref{odg:lem:constantproduct} would make
+$S$ a nonzero real constant. But every summand is positive and
+$S\ge u^{n-1}$ is infinite, a contradiction. This finite-algebra proof
+uses only the previously established unit computation.
+\end{proof}
+
+Source 05 instead proves the obstruction by displaying the positive field
+root. Its formal binomial expansion is
 \begin{equation}\label{odg:eq:binomial}
  a^{1/n}\omega^{\gamma/n}
  \sum_{k=0}^{\infty}\binom{1/n}{k}
- \Bigl(\frac ba\Bigr)^k\omega^{-k\gamma},
+ \Bigl(\frac ba\Bigr)^k\omega^{-k\gamma}.
 \end{equation}
-whose exponents strictly decrease; the formal power-series binomial identity
-shows it is an $n$th root in the Hahn field, positivity gives uniqueness among
-positive roots, and in an ordered field the only other real root is its
-negative when $n$ is even. If $b\ne0$, the $k=1$ coefficient is nonzero at
-the exponent $\gamma/n-\gamma<0$, which no other term has, so neither root is
-omnific. If $b=0$ the root is the single positive monomial displayed.
-\end{proof}
+For every positive surreal $\gamma$, the exponents
+$\gamma/n-k\gamma$ form a reverse-well-ordered set: the largest exponent
+of any nonempty subset corresponds to its least natural index. Each
+coefficient in an $n$-fold product involves finitely many index tuples
+with a fixed sum. Hence the formal power-series binomial identity evaluates
+coefficientwise to the $n$th-root identity in a set-sized Hahn workspace
+containing $\gamma/n$. The leading coefficient is positive, so this is the
+positive field root; the only other possible root is its negative for even
+$n$.
+
+If $b\ne0$, the $k=1$ term has nonzero coefficient
+$(b/n)a^{1/n-1}$ at exponent $\gamma/n-\gamma<0$, which no other term has.
+Thus the expansion identifies the forbidden term for both possible signs.
+No convergence of partial sums in the full surreal order topology is used,
+and no assumption that the multiples of $\gamma$ are cofinal among positive
+surreals is needed.
 
 \begin{example}[A simple residue root need not lift \src{05}]\label{odg:ex:hensel}
 Let $f(T)=T^2-T-\omega$. Modulo $\Pi$ it becomes $T(T-1)$, and the residue
-root $0$ is simple, with derivative $-1$, a unit. Nevertheless $f$ has no root
-in $\Oz$: its roots in $\No$ are
+roots $0$ and $1$ are simple, with derivatives $-1$ and $1$, respectively,
+both units in $\Z$. Nevertheless $f$ has no root in $\Oz$: its discriminant
+$1+4\omega$ is not an omnific square by \cref{odg:prop:binomial}, so
+\cref{odg:thm:quadraticformula} applies. Its roots in $\No$ are
 \[
  \tfrac12\pm\bigl(\omega^{1/2}+\tfrac18\omega^{-1/2}
  -\tfrac1{128}\omega^{-3/2}+\cdots\bigr),
@@ -3011,6 +3063,14 @@ Jacobson radical, since $-\omega\in\Pi$ but $1+\omega$ is not a unit, and
 $\Pi^2=\Pi$, so there is no decreasing nilpotent-error filtration. This is a
 failure of the simple-root lifting property itself.
 \end{example}
+
+This example concerns the constant-term map on the omnific ring. The
+standard-part map on the valuation ring of finite surreals has a different
+domain and an infinitesimal kernel. In particular $\omega$ is not finite,
+so the displayed polynomial does not even have all its coefficients in
+that valuation ring. Simple-residue-root lifting there, as used in the
+trigonometry report (\replabel{trigonometry:lem:hensel}), makes no lifting
+claim for $\Oz\to\Z$. The two uses of residue must be kept separate.
 
 For general coefficients, a viable approach must inspect actual normal-form
 supports. Matching constant terms is necessary, and occasionally useful, but

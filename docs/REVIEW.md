@@ -2598,6 +2598,48 @@ to the current Section 11 review boundary. The combined
 label audit resolves 3,127 references, and all 1,318 local Markdown
 destinations resolve; the 51-report inventory and `git diff --check` pass.
 
+## Omnific root obstructions and residue domains
+
+The Section 12 review compares source 02's quadratic criterion, sources
+01–02's initial-form calculation, and source 05's two-term root obstruction
+and failed-lifting example. The quadratic argument explicitly includes the
+repeated-root case and exhaustiveness. For a nonmonic quadratic it gives the
+additional condition `y − b ∈ 2a Oz`; the example `6x² + x − 1`, with square
+discriminant `25` but roots `1/3` and `−1/2`, shows why that condition matters.
+The initial-form discussion explains the candidate maximum before
+cancellation, includes a real-sign obstruction even when two terms have
+maximal weight, and handles substitution that makes the polynomial zero.
+
+The two-term root obstruction now has a shorter proof using finite algebra.
+For a proposed positive root `x` and the positive monomial root `u`,
+`xⁿ − uⁿ = b ≠ 0` factors as `(x − u) S`. Both factors have nonnegative
+support, so the constant-product lemma forces `S` to be real; positivity
+gives `S ≥ uⁿ⁻¹`, an infinite lower bound. Source 05's binomial expansion is
+retained to display the forbidden negative exponent. Its reverse-well-ordered
+support and finite convolution fibers are now justified for every positive
+surreal exponent, without cofinality or a topological limit.
+
+The failed-lifting example `X² − X − ω` has two simple residue roots, and
+its nonsquare discriminant proves absence of an omnific lift using the
+finite-algebra obstruction. The notation guide and article distinguish this
+constant-term map from the finite-surreal valuation ring's standard-part
+map. The polynomial has an infinite coefficient, so it is outside the
+hypotheses of the simple-root lifting theorem for that valuation ring.
+
+All 67 standard statements, 159 labels and label numbers are preserved;
+main Sections 13–14 are byte-identical. Article and catalogue have clean
+three-pass builds of 60 and 28 pages; all 21 changed article pages and four
+changed catalogue pages were visually inspected. Source-02 and source-05 SymPy 1.14.0
+checks pass, with only source 02's recorded Python version differing from
+delivery. Separate finite symbolic checks verify the new discriminant and
+factorization examples and the displayed square-root coefficients. Those
+checks do not replace the general source proofs. The 51-report inventory
+resolves all 2,636 results, and all 3,127 cited source labels and 1,318 local
+Markdown destinations resolve. No Lean source or coverage is added; later
+sections, imported foundations, source reconciliation and unintegrated
+companions remain pending.
+
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

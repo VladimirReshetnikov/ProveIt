@@ -44,9 +44,9 @@ table retains the precise scope of the newly mapped Lean statements.
 
 The eleven omnific-integer manuscripts placed in `be06fc8` are assigned to
 two reports. Commit `bbdd536` assembled sources 01, 02 and 05 into the
-Diophantine article. Its proof review now extends through Section 11, as
+Diophantine article. Its proof review now extends through Section 12, as
 recorded in the [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md);
-Sections 12 onward and remaining source reconciliation still need review. The quotient
+Sections 13 onward and remaining source reconciliation still need review. The quotient
 text remains base 06. The further placement `cf350b1` adds two Diophantine
 companions (local 06–07), five quotient companions (local 12–16), and a
 rectification manuscript for entire functions (local 10); these additions
@@ -992,7 +992,7 @@ At placement these added 75 literal standard results, plus three custom
 `maintheorem` statements indexed separately. The elementary review first
 added four standard results; the subsequent assembly in `bbdd536` now has
 67 Diophantine results, for 101 across the two current omnific sources.
-All are **Pending** in Lean. The Diophantine proof review now reaches Section 11,
+All are **Pending** in Lean. The Diophantine proof review now reaches Section 12,
 including complex separated-power rigidity, the corrected divisibility
 identity, explicit quadratic polarization, preservation of coordinate ideals
 and bounded-set transfer for quantified formulas. The Section 10 review
@@ -1001,7 +1001,10 @@ workspace proof of open induction. Section 11 adds the ordinary-coordinate
 consequence for primitive real directions and expands finite ordered
 specialization; its polynomial-arc theorem now allows real coefficients
 and explicitly real-coefficient auxiliary expressions. These source-level
-extensions remain **Pending** in Lean. Sections 12 onward and
+extensions remain **Pending** in Lean. Section 12 adds a finite-factorization
+proof of the two-term root obstruction and clarifies binomial supports,
+nonmonic divisibility and the distinct domains of the two residue maps.
+Sections 13 onward and
 remaining source reconciliation still need review; its two newly placed
 companions and all twelve quotient companions remain unintegrated. The further entire-function
 rectification manuscript also remains a placement. The additional artifacts
@@ -4273,7 +4276,7 @@ It asserts no Lean coverage. All statements remain **pending unless explicitly m
 Source: [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex).
 
 Sources 01, 02 and 05 were assembled in `bbdd536`. The elementary algebra
-comparison, proof review through Section 11 and remaining work are recorded in the report
+comparison, proof review through Section 12 and remaining work are recorded in the report
 reconciliation. Local sources 06–07 are not yet integrated. All statements
 below are **Pending** in Lean. The separately styled cited theorem
 `odg:fact:settarget` is also in scope, outside the standard-environment table.
@@ -4345,8 +4348,8 @@ below are **Pending** in Lean. The separately styled cited theorem
 | Lemma | `odg:lem:specialization` (line 2789) | Finite ordered specialization \src{05} |
 | Theorem | `odg:thm:specialization` (line 2828) | Finite-support solutions specialize to arcs \src{05} |
 | Theorem | `odg:thm:quadraticformula` (line 2911) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 2947) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 2978) | A two-term root obstruction \src{05} |
+| Proposition | `odg:prop:initial` (line 2960) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 3002) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 

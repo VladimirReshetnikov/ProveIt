@@ -7,7 +7,7 @@ Merged research report, from three manuscripts written independently on
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 59 pages
+article.pdf                        the compiled report, 60 pages
 README.md                          this guide
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
@@ -30,7 +30,7 @@ elementary review also added four results. This merge retains that review's
 support and size clarifications, and preserves nine renamed or combined
 labels as aliases (159 labels in total). See
 [RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence,
-the subsequent proof reviews through Section 11, and the remaining
+the subsequent proof reviews through Section 12, and the remaining
 source-reconciliation boundary. The [ledger](../../FORMALIZATION.md) indexes the current
 67 standard results; it does not claim Lean coverage for this report.
 
@@ -162,8 +162,10 @@ Numbers refer to the built `article.pdf`.
     case); supplied finite-support Bézout witnesses specialize with them.
 11. **Omnific coefficients (Section 12).** The square-discriminant criterion
     (Theorem 12.1), initial forms (Proposition 12.3), two-term roots
-    (Proposition 12.4) and a simple residue root that does not lift (Example
-    12.5).
+    (Proposition 12.4, now also proved by finite factorization) and simple
+    residue roots that do not lift (Example 12.5). Nonmonic quadratics need
+    an extra divisibility condition; this omnific lifting failure concerns
+    a different ring from finite-surreal standard-part lifting.
 
 **Questions (Section 14).** Two source questions are recorded as settled by
 source 05 (Section 14.1): source 01's `Y² = X³ + 1` and coprime exponents, and
@@ -216,6 +218,11 @@ the literature.
   directions, expands the finite ordered specialization argument, and
   extends the arc theorem to real coefficients. Finite-support Bézout
   witnesses and the positive-parameter sign condition are explicit.
+- The Section 12 review gives a finite-algebra proof of the two-term root
+  obstruction, expands the support justification of its binomial series,
+  and distinguishes the omnific constant-term map from finite-surreal
+  residue lifting. The monic hypothesis and leading-term cancellation
+  requirement have explicit counterexamples.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
