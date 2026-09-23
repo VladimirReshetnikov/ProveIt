@@ -161,7 +161,9 @@ the omnific units are `1` and `-1`. An omnific integer bounded by an ordinary
 real is an ordinary integer, and `1` is the least positive omnific integer.
 Every surreal now has a unique omnific floor `a` satisfying `a ≤ x < a+1`.
 The proved formula includes the negative-infinitesimal boundary correction;
-for example, the floor of a negative infinitesimal is `-1`.
+for example, the floor of a negative infinitesimal is `-1`. A nonzero
+ordinary integer polynomial has exactly its ordinary integer roots in the
+omnific ring; every infinite omnific integer is transcendental over `ℝ`.
 Higher Diophantine and set-sized quotient results remain pending; source
 review is distinct from checked formalization.
 
