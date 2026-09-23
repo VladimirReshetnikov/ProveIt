@@ -2488,6 +2488,18 @@ link audits pass, as does `git diff --check`. No Lean source or coverage is
 added by this review. Sections 10 onward, remaining imports, source
 reconciliation and the placed companions remain pending.
 
+Synchronization merged through `f6e031a`: `42c920e` completes the coupled
+angular multiplicities using native formal-quotient dimensions, and the later
+commit proves nonmonic simple-residue-root lifting in the actual finite
+surreal and surcomplex rings. The latter does not assert lifting inside the
+omnific ring; its domain is the finite valuation ring. The incoming ledger
+retains the pending multivariate and actual support/first-coefficient
+obligations. No manuscript or PDF changed in this merge. The combined
+`LEAN_NUM_THREADS=2 lake build` passes all 4,295 jobs; the axiom audit passes
+13,232 declarations with only the permitted three axioms. All source-label
+and statement-index checks still pass, and all 1,314 local Markdown
+destinations resolve.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
