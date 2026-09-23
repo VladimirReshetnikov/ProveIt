@@ -14,7 +14,7 @@ Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 176 pages
+article.pdf                        the compiled report, 177 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -154,7 +154,12 @@ covers the full batch-28 material. A further elementary pass reviews
 Sections 16.2–16.3 (Lemmas 16.1–16.3 and Corollary 16.4): rings, Euler
 derivations and their joint constants. It corrects the trivial-group
 valuation-ring exception and distinguishes an image inclusion from a
-proper inclusion. The rest of Sections 16–18, the pointers added in Sections 6, 7
+proper inclusion. A subsequent pass reviews Section 16.4: the squarefree
+certificate, degree obstruction, cubic differential and Weierstrass
+applications, including singular families. It supplies the missing
+positive-integer hypothesis for differential division, qualifies division
+by the discriminant and corrects the factor of two in the contraction
+comparison. The rest of Sections 16–18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to
@@ -182,7 +187,15 @@ handles the negative infinitesimal correction at an integer coefficient
 and proves existence and uniqueness of the omnific integer part.
 The [polynomial-root package](../../../Surreal/Foundations/OmnificPolynomialRoots.lean)
 also proves `odg:prop:univariate` and transcendence over `ℝ` of every
-infinite omnific integer.
+infinite omnific integer. The [ordinary residue package](../../../Surreal/Foundations/OmnificResidues.lean)
+proves `odg:thm:finitequotients`, and
+[integer divisor rigidity](../../../Surreal/Foundations/OmnificIntegerDivisors.lean)
+proves `odg:prop:finitedivisors`.
+The [ordinary arithmetic package](../../../Surreal/Foundations/OmnificOrdinaryArithmetic.lean)
+proves the primality, mixed-gcd and Chinese remainder corollary
+`odg:cor:mixedgcd`. The [finite quotient package](../../../Surreal/Foundations/OmnificFiniteQuotients.lean)
+proves `odg:cor:charideals`, including unique ordinary moduli and
+factorization of every finite-target homomorphism through the constant term.
 Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report
@@ -900,7 +913,7 @@ record (`4c26f4e` at `4cdeaec`, `47af413` at `89bec38` and `f6e031a`) are
 correct. Source C14's "three-source assembly", source C11's "reviewed Sections
 1–7" and source C12's "51-report collection" were true at their pins; the report
 now has thirteen sources, the reviews extend further, including the
-elementary Sections 16.2–16.3, but not the curve and geometric proofs,
+elementary Sections 16.2–16.4, but not the later geometric proofs,
 and the catalogue has grown. Source C15 inspected the repository through the
 connector at `934810a`, when this report had sources 01, 02, 05, 06 and 07, and
 quoted correctly its guide's statement that `y² = x³ + ax + b` with `a ≠ 0` was

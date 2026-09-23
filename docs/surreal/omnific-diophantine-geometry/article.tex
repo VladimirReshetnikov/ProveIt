@@ -6828,7 +6828,8 @@ family. Thus $f$ is a joint constant, and
 \subsection{The squarefree certificate}\label{odg:cr:sub:squarefree}
 
 \begin{lemma}[Differential division \src{C14; also C10, C11, C12, C13, C15}]\label{odg:cr:lem:division}
-Let $P\in\Bbbk[X]$ be squarefree and choose $U,W\in\Bbbk[X]$ with
+Let $m\ge1$ be an ordinary integer, let $P\in\Bbbk[X]$ be squarefree,
+and choose $U,W\in\Bbbk[X]$ with
 $UP+WP'=1$. In independent variables $x,y,\xi,\upsilon$ put
 \[
  F=y^m-P(x),\quad G=my^{m-1}\upsilon-P'(x)\xi,\quad
@@ -6845,7 +6846,9 @@ $\partial$ is a $\Bbbk$-derivation of it,
 \end{equation}
 \end{lemma}
 \begin{proof}
-Expanding, the terms in $y^m\xi$ and in $y^{m-1}\upsilon$ cancel and
+Characteristic zero makes $P$ coprime to $P'$, so such $U,W$ exist.
+Expanding in $\Bbbk[x,y,\xi,\upsilon]$, the terms in $y^m\xi$ and in
+$y^{m-1}\upsilon$ cancel and
 $\xi\bigl(1-U(x)P(x)-W(x)P'(x)\bigr)=0$ remains. Substituting
 $\xi=\partial x$, $\upsilon=\partial y$ makes $F$ and $G$ vanish, since the
 derivative of $y^m=P(x)$ is $G=0$ \src{C12, C13}.
@@ -6915,30 +6918,47 @@ For $P(X)=X^3+aX+b$ and $\Delta_0=4a^3+27b^2$,
 \begin{equation}\label{odg:cr:eq:cubic}
  (27b-18aX)\,P(X)+(6aX^2-9bX+4a^2)\,P'(X)=\Delta_0
 \end{equation}
-in $\Z[a,b,X]$. So $P$ is squarefree when $\Delta_0\ne0$; conversely a repeated
-root $r$ gives $a=-3r^2$, $b=2r^3$ and $\Delta_0=0$. On $y^2=P(x)$ and for a
-derivation $\partial$ killing $a,b$,
+in $\Z[a,b,X]$. For $a,b\in\Bbbk$, the polynomial $P$ is squarefree if and
+only if $\Delta_0\ne0$. In every commutative $\Bbbk$-algebra, on
+$y^2=P(x)$ and for a derivation $\partial$ killing $a,b$,
 \begin{equation}\label{odg:cr:eq:cubicdiv}
  \Delta_0\,\partial x=y\bigl((27b-18ax)\,y\,\partial x+2(6ax^2-9bx+4a^2)\,\partial y\bigr),
 \end{equation}
-and, with $U=(27b-18aX)/\Delta_0$ and $W=(6aX^2-9bX+4a^2)/\Delta_0$, the regular
-differential of the affine curve satisfies
+whether or not $\Delta_0$ vanishes. If $\Delta_0\ne0$, set
+$U=(27b-18aX)/\Delta_0$ and $W=(6aX^2-9bX+4a^2)/\Delta_0$. Then the
+differential $\dif x/y$, initially defined where $y\ne0$, extends regularly
+to the whole affine curve by
 \begin{equation}\label{odg:cr:eq:dxy}
  \frac{\dif x}{y}=U(x)\,y\,\dif x+2W(x)\,\dif y .
 \end{equation}
 \end{proposition}
 \begin{proof}
-Expansion proves \eqref{odg:cr:eq:cubic}; a common root of $P$ and $P'$ would
-divide $\Delta_0$. A repeated root satisfies $3r^2+a=0$ and $r^3+ar+b=0$, whence
-$b=2r^3$ and $\Delta_0=4(-3r^2)^3+27(2r^3)^2=0$. Identity \eqref{odg:cr:eq:cubicdiv}
-is \eqref{odg:cr:eq:division} with $m=2$ multiplied by $\Delta_0$. Finally
-$y\bigl(U(x)y\,\dif x+2W(x)\dif y\bigr)=\bigl(U(x)P(x)+W(x)P'(x)\bigr)\dif x=\dif x$ in
-the function field, because $2y\,\dif y=P'(x)\dif x$ \src{C12, C13}.
+Expansion proves \eqref{odg:cr:eq:cubic}. If $\Delta_0\ne0$, dividing this
+identity by $\Delta_0$ proves coprimality of $P$ and $P'$. A repeated root
+satisfies $3r^2+a=0$ and $r^3+ar+b=0$, whence $b=2r^3$ and
+$\Delta_0=4(-3r^2)^3+27(2r^3)^2=0$. Conversely, if $\Delta_0=0$ and $a=0$,
+then $b=0$ and $r=0$ is repeated. If $a\ne0$, put $r=-3b/(2a)$;
+then $r^2=-a/3$ and $r^3=b/2$, so $P(r)=P'(r)=0$.
+
+To obtain \eqref{odg:cr:eq:cubicdiv} without dividing by $\Delta_0$,
+multiply \eqref{odg:cr:eq:cubic} at $x$ by $\partial x$ and substitute
+$P(x)=y^2$ and $P'(x)\partial x=2y\partial y$.
+Now assume $\Delta_0\ne0$ and write
+$\eta=U(x)y\,\dif x+2W(x)\dif y$. This polynomial expression is a global
+regular differential. The relation $2y\,\dif y=P'(x)\dif x$ gives
+$y\eta=(U(x)P(x)+W(x)P'(x))\dif x=\dif x$.
+Thus $\eta=\dif x/y$ where $y\ne0$. Where $P'(x)\ne0$, substituting
+$\dif x=2y\,\dif y/P'(x)$ instead gives $\eta=2\dif y/P'(x)$.
+These two open sets cover the curve because $U(x)y^2+W(x)P'(x)=1$;
+in particular the second formula explains regularity at every point
+with $y=0$ \src{C12, C13}.
 \end{proof}
 
 The right side of \eqref{odg:cr:eq:dxy} is regular on the whole affine curve,
 including its points with $y=0$, and the element $h$ in the proof of
-\cref{odg:cr:thm:squarefree} is its contraction with $\partial$ divided by $2$.
+\cref{odg:cr:thm:squarefree}, for $m=2$ and these $U,W$, is exactly its
+contraction with $\partial$. The half-form $\dif x/(2y)$ instead contracts
+to $h/2$; this is the normalization used in the direct proof below.
 This is the bridge between the elementary certificate and the geometric argument
 below: the certificate exhibits one global regular differential of the curve
 \src{C12, C13}. The classical discriminant of $P$ is $-\Delta_0$ and the elliptic
@@ -6946,18 +6966,21 @@ discriminant is $-16\Delta_0$; only the nonvanishing matters \src{C10, C12}.
 
 \begin{corollary}[Nonsingular short Weierstrass equations \src{C10, C11, C12, C13, C14, C15}]\label{odg:cr:cor:weierstrass}
 For $a,b\in\Bbbk$ with $4a^3+27b^2\ne0$, every solution of $y^2=x^3+ax+b$ in
-$\crA^2$ is constant. For $a,b\in\Z$,
+$\crA^2$ is constant. In particular, for $a,b\in\Z$ with the same
+nonvanishing condition,
 \[
  \{(x,y)\in\Oz^2:y^2=x^3+ax+b\}=\{(x,y)\in\Z^2:y^2=x^3+ax+b\},
 \]
-and for $a,b\in\Z[i]$ the solutions in $\Og^2$ are those in $\Z[i]^2$.
+and for $a,b\in\Z[i]$ satisfying that condition the solutions in $\Og^2$
+are those in $\Z[i]^2$.
 \end{corollary}
 \begin{proof}
 The first assertion is \cref{odg:cr:thm:squarefree} with $(m,d)=(2,3)$ and
 \cref{odg:cr:prop:cubic}. Directly: if $\ddeg x=\alpha>0$ then $2\ddeg y=3\alpha$,
 and with $\ddeg\partial x=\alpha$ the element
-$h=\tfrac12U(x)y\,\partial x+W(x)\,\partial y\in\crP$ satisfies $2yh=\partial x$,
-so $\ddeg h=\alpha-\tfrac32\alpha<0$ in $\Gamma_\Q$, impossible \src{C13, C14}.
+$g=\tfrac12U(x)y\,\partial x+W(x)\,\partial y\in\crP$ satisfies $2yg=\partial x$.
+Here $g\ne0$ since $\partial x\ne0$, so
+$\ddeg g=\alpha-\tfrac32\alpha<0$ in $\Gamma_\Q$, impossible \src{C13, C14}.
 For omnific coordinates put both in one workspace $\mathcal A_\C(\Gamma)$
 (\cref{odg:lem:workspace}); they become complex constants, and
 $\Oz\cap\C=\Z$, $\Og\cap\C=\Z[i]$.
@@ -6985,10 +7008,19 @@ Put $Y=2y+a_1x+a_3$. Then $Y^2=Q(x)$ with
 \]
 because $Y^2-Q(x)$ is four times the difference of the two sides of
 \eqref{odg:cr:eq:generalweierstrass}. The change of variables is invertible over
-$\Bbbk$, and a repeated root $r$ of $Q$ would make the point with $x=r$, $Y=0$
-singular; so $Q$ is squarefree of degree three. \Cref{odg:cr:thm:squarefree} makes
+$\Bbbk$ and extends to the invertible projective linear change
+$[x:y:z]\mapsto[x:2y+a_1x+a_3z:z]$. A repeated root $r\in\bar\Bbbk$ of $Q$
+would give the affine point $(r,0)$ on $Y^2=Q(x)$ where both partial
+derivatives $-Q'(r)$ and $2Y$ vanish, so its tangent space has dimension
+two rather than one (the plane-curve Jacobian criterion
+\cite[Section 53.9]{StacksPlane}). This contradicts nonsingularity of
+the projective cubic. Hence $Q$ is squarefree of degree three.
+\Cref{odg:cr:thm:squarefree} makes
 $x$ and $Y$ constant, hence $y=(Y-a_1x-a_3)/2$. Division by $2$ takes place in
-$\crA$, not in $\Oz$ \src{C13}.
+$\crA$. For omnific coordinates use a common complex workspace and then
+intersect the constant coordinates with $\Oz$ or $\Og$, as in
+\cref{odg:cr:cor:weierstrass}; division by $2$ in the integer coefficient
+ring is not required \src{C13}.
 \end{proof}
 
 Source C13 states this over $\Z$ and $\Z[i]$ with the fields $\R$ and $\C$; the
@@ -7006,7 +7038,9 @@ $s\in\Oz$, nonordinary when $s$ is. Likewise the node $y^2=x^2(x+1)$ carries
 $(h^2-1,\,h(h^2-1))$ and the cusp $y^2=x^3$ carries $(h^2,h^3)$ \src{C11}.
 \end{proposition}
 \begin{proof}
-From $4a^3=-27b^2$ one gets $r^2=9b^2/(4a^2)=-a/3$ and $r^3=r\cdot r^2=b/2$. Then
+If $a=0$, then $b=0$ and the claims hold with $r=0$. If $a\ne0$,
+the identity $4a^3=-27b^2$ gives $r^2=9b^2/(4a^2)=-a/3$ and
+$r^3=r\cdot r^2=b/2$. In both cases
 $X^3-3r^2X+2r^3=(X-r)^2(X+2r)$, and at $x=s^2-2r$ the two factors are
 $(s^2-3r)^2$ and $s^2$, whose product is $y^2$. For integers $a,b$, the number $r$
 is a rational root of the monic integer polynomial $X^3+aX+b$, hence an integer
@@ -7017,7 +7051,7 @@ identities are $(h(h^2-1))^2=(h^2-1)^2h^2$ and $(h^3)^2=(h^2)^3$.
 
 The case $r=0$ is the cusp and $r=1$ the node $y^2=x^3-3x+2$ with
 $(s^2-2,\,s^3-3s)$ \src{C12, C14}. For positive infinite $s\in\Oz$ the map
-$s\mapsto s^2-2r$ is injective, so every singular integral Weierstrass cubic has a
+$s\mapsto s^2-2r$ is injective, so every singular integral short Weierstrass cubic has a
 proper class of distinct omnific points, while a nonsingular one has only its set
 of ordinary points \src{C12, C14}. This is a polynomial family, not a claim that
 every point of a singular curve has a parameter in the same ring \src{C14}. Thus
@@ -8841,6 +8875,13 @@ rigidity of \cref{odg:prop:univariate} and transcendence over $\R$ of
 every infinite omnific integer, in
 \fn{Surreal/Foundations/OmnificPolynomialRoots.lean} and
 \fn{Surreal/Surcomplex/ConstantPolynomialRoots.lean}.
+Commit \texttt{efe4957} proves \cref{odg:thm:finitequotients,odg:prop:finitedivisors}
+in \fn{Surreal/Foundations/OmnificResidues.lean} and
+\fn{OmnificIntegerDivisors.lean}. The ordinary-modulus package identifies
+divisibility with constant-term divisibility, constructs the quotient
+isomorphism, and proves the intersections and exact prime-power bounds.
+The divisor result says that every omnific divisor of a nonzero ordinary
+integer is an ordinary integer divisor.
 Other Diophantine results remain pending unless mapped in the ledger.
 The sources proposed overlapping routes; the following merges them. The
 module names in the table are proposals, not the names of the implemented files.
@@ -11619,6 +11660,12 @@ The Stacks Project Authors.
 \emph{Differentials}, Section 10.131, Tag 00RM.
 \url{https://stacks.math.columbia.edu/tag/00RM}. Cited by sources C10 and C14; used
 here in place of source C13's Tag 02AT.
+
+\bibitem{StacksPlane}
+The Stacks Project Authors.
+\emph{Plane curves}, Section 53.9, Tag 0BYA, especially the discussion of
+partial derivatives in the proof of Lemma 53.9.4.
+\url{https://stacks.math.columbia.edu/tag/0BYA}.
 
 \bibitem{StacksProper}
 The Stacks Project Authors.
