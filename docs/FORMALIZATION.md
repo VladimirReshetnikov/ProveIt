@@ -3138,6 +3138,19 @@ Mappings cover only the hypotheses and clauses they state.
 
 Source: [surcomplex/three-duals-of-hahn-vector-spaces/article.tex](surcomplex/three-duals-of-hahn-vector-spaces/article.tex).
 
+The proof review covers Sections 2–5. Support and regrouping arguments now
+show finite coefficient and triple rearrangements explicitly; the strong-map
+classification includes canonical `K`-linearity and the discrete zero-group
+case. Completion uses the induced valuation uniformity and an explicit net
+of truncations. The cyclic and countable-cofinality boundaries retain their
+separate hypotheses; an order unit suffices for `E ⊊ C`, and gives the middle
+case only for noncyclic groups. Spherical completeness and contractive
+extension now spell out compatibility, ball nesting and the set-sized Zorn
+argument. The choice explanation is corrected. Sections 6 onward and remaining
+imports/source reconciliation remain pending. These are source improvements,
+not new Lean mappings.
+
+
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
@@ -3146,32 +3159,32 @@ Mappings cover only the hypotheses and clauses they state.
 | Theorem | `duals:thm:overview-completion` (line 196) | Completion and enlargement; proved in \cref{duals:sec:completion,duals:sec:enlargement} |
 | Theorem | `duals:thm:overview-duals` (line 218) | Strong maps and the continuous dual; proved in \cref{duals:sec:strong,duals:sec:continuous} |
 | Lemma | `duals:lem:support` (line 386) | Classical support facts |
-| Lemma | `duals:lem:continuous-shift` (line 440) | Continuity is a uniform valuation-shift bound |
-| Theorem | `duals:thm:strong` (line 483) | Global-support classification |
-| Corollary | `duals:cor:strong-calculus` (line 548) | Operator calculus and automatic continuity |
-| Proposition | `duals:prop:algebraic` (line 598) | Finite total coefficient rank |
-| Theorem | `duals:thm:completion` (line 623) | Finite rank below every cut |
-| Lemma | `duals:lem:group` (line 679) | An order-theoretic alternative |
-| Theorem | `duals:thm:cyclic` (line 707) | The cyclic-group boundary |
-| Theorem | `duals:thm:cofinality-completion` (line 736) | The cofinality boundary for nontrivial completion |
-| Proposition | `duals:prop:spherical` (line 801) | Spherical completeness of the full Hahn space |
-| Theorem | `duals:thm:HB` (line 855) | Contractive scalar extension |
-| Lemma | `duals:lem:E-extension` (line 928) | Extension from constants to their algebraic span |
-| Theorem | `duals:thm:restriction` (line 947) | Exact restriction sequence |
-| Theorem | `duals:thm:separation` (line 985) | Separation of the completion defect |
-| Corollary | `duals:cor:ghost-boundary` (line 1030) | Exact existence boundary |
-| Theorem | `duals:thm:twofailures` (line 1051) | Two failures, for every noncyclic group |
-| Corollary | `duals:cor:second-quotient` (line 1094) | A second quotient obstruction |
-| Theorem | `duals:thm:continuous-strong` (line 1121) | When continuous and strong duals agree |
-| Proposition | `duals:prop:norm` (line 1177) | Norm and valuation; standard coefficient extension |
-| Proposition | `duals:prop:order-bound` (line 1223) | Order bounds for all continuous maps |
-| Theorem | `duals:thm:infinite-bounds` (line 1262) | An ordinary unbounded functional has precisely infinite bounds |
-| Theorem | `duals:thm:riesz` (line 1303) | Coefficientwise Riesz criterion and exact first gap |
-| Corollary | `duals:cor:three-duals` (line 1374) | The three-dual trichotomy |
-| Proposition | `duals:prop:dimension` (line 1401) | Untitled |
-| Theorem | `duals:thm:hyperplane` (line 1451) | A closed, strongly complemented hyperplane with zero orthogonal complement |
-| Theorem | `duals:thm:distance` (line 1512) | Exact lower-bound cut for the distance |
-| Theorem | `duals:thm:basechange` (line 1558) | Cofinal preservation and noncofinal collapse |
+| Lemma | `duals:lem:continuous-shift` (line 461) | Continuity is a uniform valuation-shift bound |
+| Theorem | `duals:thm:strong` (line 516) | Global-support classification |
+| Corollary | `duals:cor:strong-calculus` (line 598) | Operator calculus and automatic continuity |
+| Proposition | `duals:prop:algebraic` (line 666) | Finite total coefficient rank |
+| Theorem | `duals:thm:completion` (line 691) | Finite rank below every cut |
+| Lemma | `duals:lem:group` (line 757) | An order-theoretic alternative |
+| Theorem | `duals:thm:cyclic` (line 787) | The cyclic-group boundary |
+| Theorem | `duals:thm:cofinality-completion` (line 816) | The cofinality boundary for nontrivial completion |
+| Proposition | `duals:prop:spherical` (line 893) | Spherical completeness of the full Hahn space |
+| Theorem | `duals:thm:HB` (line 957) | Contractive scalar extension |
+| Lemma | `duals:lem:E-extension` (line 1041) | Extension from constants to their algebraic span |
+| Theorem | `duals:thm:restriction` (line 1060) | Exact restriction sequence |
+| Theorem | `duals:thm:separation` (line 1098) | Separation of the completion defect |
+| Corollary | `duals:cor:ghost-boundary` (line 1143) | Exact existence boundary |
+| Theorem | `duals:thm:twofailures` (line 1164) | Two failures, for every noncyclic group |
+| Corollary | `duals:cor:second-quotient` (line 1207) | A second quotient obstruction |
+| Theorem | `duals:thm:continuous-strong` (line 1234) | When continuous and strong duals agree |
+| Proposition | `duals:prop:norm` (line 1290) | Norm and valuation; standard coefficient extension |
+| Proposition | `duals:prop:order-bound` (line 1336) | Order bounds for all continuous maps |
+| Theorem | `duals:thm:infinite-bounds` (line 1375) | An ordinary unbounded functional has precisely infinite bounds |
+| Theorem | `duals:thm:riesz` (line 1416) | Coefficientwise Riesz criterion and exact first gap |
+| Corollary | `duals:cor:three-duals` (line 1487) | The three-dual trichotomy |
+| Proposition | `duals:prop:dimension` (line 1514) | Untitled |
+| Theorem | `duals:thm:hyperplane` (line 1564) | A closed, strongly complemented hyperplane with zero orthogonal complement |
+| Theorem | `duals:thm:distance` (line 1625) | Exact lower-bound cut for the distance |
+| Theorem | `duals:thm:basechange` (line 1671) | Cofinal preservation and noncofinal collapse |
 
 ### hidden-negative-hermitian-directions
 
