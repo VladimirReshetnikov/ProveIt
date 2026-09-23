@@ -2741,6 +2741,14 @@ this pass; the 4,307-job build and 13,389-declaration axiom audit from
 `c0a36ee` remain applicable. Formalization and the remaining imported-result,
 historical-priority and source-reconciliation work stay pending.
 
+The final fetch brought `eeb87b2`, whose sine-square Fourier witnesses prove
+sharpness of the angular stability bounds. Merge `e3b086d` retains those
+implementation mappings and changes no manuscript or PDF. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,311 jobs, and its axiom audit accepts
+13,431 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+The 3,089-row statement audit and 3,582-label audit still pass; all 1,387 local
+Markdown destinations resolve.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
