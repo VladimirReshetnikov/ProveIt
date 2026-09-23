@@ -12,7 +12,7 @@ dependent results, reusing mathlib constructions.
   integers `Oz`), the surcomplex numbers `No[i]` (28), surquaternions (1),
   physics (2), and foundations and computation (8). Each has a LaTeX source,
   a README stating what it claims and what it does not, and usually finite
-  verification code. Some newly placed reports still await a typeset PDF.
+  verification code.
   Start with the [reader's guide](docs/README.md) and the
   [typeset catalogue](docs/manifest.pdf); the [notation guide](docs/NOTATION.md)
   reconciles local conventions, and the [formalization ledger](docs/FORMALIZATION.md)
@@ -203,7 +203,7 @@ totally disconnected topological rings. The canonical map has dense image
 and induces exactly the omnific congruence topology. Higher Diophantine
 and general set-sized quotient results remain pending; source review is distinct from checked formalization.
 
-The new [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
+The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
 Its class constructions and proofs remain pending in Lean.
