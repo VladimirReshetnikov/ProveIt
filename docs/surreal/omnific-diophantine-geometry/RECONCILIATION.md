@@ -2,11 +2,12 @@
 
 This record covers the elementary source comparison in Sections 1–4 of the
 maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
-After the expansion, the reviewed original Sections 11–12 are Sections 14–15.
+After both expansions, the reviewed original Sections 11–12 are Sections
+14 and 16; the new fractions section is Section 15.
 Subsequent passes review the newly added Sections 11–12 from sources 06–07.
-The added material in Sections 6 and 10 and Sections 13 and 16–17 remain
+The added material in Sections 6 and 10 and Sections 13, 15 and 17–18 remain
 outside the completed proof review.
-It does **not** certify integration of every result in the five manuscripts
+It does **not** certify integration of every result in the seven manuscripts
 or review of all later proofs and imported classical results.
 
 ## Recoverable sources
@@ -292,3 +293,14 @@ is unchanged. These are source-level proofs, still pending in Lean. The
 added material in Sections 6 and 10, Sections 13 and 16–17, and remaining
 imported foundations, historical priority and source reconciliation still
 require review.
+
+## Integration of fraction manuscripts and current numbering
+
+Two further manuscripts on omnific fractions, local 08 and 09, were placed in
+`a4dcb91` and integrated after these reviews as a new Section 15
+(`odg:frac:` labels), with additions to the formalization section, a partial
+answer to `odg:q:homogeneous` and five new questions. That material is outside
+this review. Inserting Section 15 moved the sections that followed Section 14
+by one: the passes above use the numbering current when they were made: the
+families section they call 11 (in the passes before the batch-25 merge) is
+Section 14, and the omnific-coefficients section they call 15 is Section 16. No label was renamed or removed.

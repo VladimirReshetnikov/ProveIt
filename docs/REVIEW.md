@@ -2799,6 +2799,40 @@ accepts 13,458 declarations using only `propext`, `Classical.choice` and
 16–17, and remaining imported foundations, historical priority and source
 reconciliation still need review.
 
+## Constant-term review synchronized with the fraction integrations
+
+The final fetch brought documentation-only `c060ec8`, including the
+fraction integration `b829d8b`, quotient expansion `aae58bb`, and assembled
+definable-surreal, notation and Hahn–Hilbert reports (`337d4a4`, `600397e`,
+`e118d89`). The merge retains the Section 12 review from `229fe0b`
+byte-for-byte and all 143 upstream Diophantine standard statement texts,
+310 labels and their numbers. Section 13 onward matches the fetched source.
+The added fractions are Section 15; the previously reviewed coefficients
+section is now Section 16. Current review boundaries are updated throughout
+the reader map, report guide, reconciliation, ledger and catalogue.
+
+The catalogue now describes seven Diophantine and sixteen quotient sources,
+and the assembled two-source definability, three-source notation and
+two-source Hilbert reports with their maintained PDFs. Their assembly does
+not extend proof-review coverage. The ledger now indexes 3,271 standard
+results in 56 main texts (1,298 theorems, 668 lemmas, 677 propositions,
+628 corollaries), including 143 Diophantine and 227 quotient results. Its
+separate nine custom quotient main-theorem anchors are refreshed as well.
+The new reports' guides now distinguish these pending index entries from
+checked implementation mappings. New archives in `5610500` and `21016dc`
+remain to place and reconcile.
+
+The merged Diophantine PDF builds in three passes to 119 pages, and the
+catalogue to 28 pages, without warnings or box diagnostics. Widened contents
+number columns separate the new `15.10`–`15.12` entries from their titles.
+The contents, review status, Section 12 and its transitions were inspected,
+as were all eight changed catalogue pages. An independent source inventory
+audit passes, all 3,771 cited labels resolve, and all 1,406 local Markdown
+destinations resolve. The incoming changes touch no Lean file, root import,
+package configuration or toolchain, so the 4,315-job build and
+13,458-declaration axiom audit above remain applicable. The full document
+review, source reconciliation and formalization goals remain incomplete.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
