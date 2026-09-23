@@ -506,3 +506,7 @@ import Surreal.Algebra.PolynomialRootNormalization
 import Surreal.Foundations.SignSequenceRootNormalization
 import Surreal.Foundations.SignSequencePolynomialStability
 import Surreal.Foundations.SignSequencePolynomialStabilityError
+import Surreal.Algebra.LaurentCayley
+import Surreal.Algebra.ComplexPolynomialRealPart
+import Surreal.Surcomplex.TrigonometricPolynomialCayley
+import Surreal.Surcomplex.TrigonometricCayleyStability
