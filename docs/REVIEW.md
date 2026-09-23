@@ -3557,6 +3557,56 @@ labels. The renamed autonomous-dilation labels now use `adr:`. All 4,269
 cited source references resolve. The nine archives placed in `39fe674`
 are incoming material, not reviewed or indexed maintained articles.
 
+## Arithmetic-fiber and polynomial-witness review
+
+The Diophantine review now covers Section 17.3, Theorems 17.11–17.17 and
+the intervening example. Closed affine presentations are explicit, and
+equations descend through the injective arithmetic-to-support-ring map.
+The example `2Y=0` demonstrates that the integral model need not be flat.
+The proof treats the zero exponent group separately and corrects a scope
+ambiguity: fixed-workspace fibers are sets, whereas the proper-class
+conclusion uses all surreal supports.
+
+The integer-arc proof expands denominator clearing and cancellation.
+Clearing the inverse identity extends injectivity to any torsion-free
+`ℤ`-algebra; `q(S)=2S` on `ℤ × 𝔽₂` explains why characteristic zero alone
+does not suffice. The congruence criterion supplies its inverse, the
+modulus-one case, and the empty-or-countably-infinite consequence for the
+ordinary point set with a supplied parametrization. Multiplication by the
+clearing integer is bijective on `Π`, so the integer polynomial arc still
+parametrizes the entire exceptional fiber. In particular, a nonordinary
+point has a finite-support witness in the same fiber with coordinates in
+`ℤ[ω^γ]` for one positive exponent.
+
+The polynomial-witness proof translates the parameter explicitly. The
+separated-model proof distinguishes a point from its constant extension
+and gives the closed-equalizer ideal argument. The report reconciliation
+records targeted comparisons with C11–C14 and the checked separatedness
+reference. These results and the added prose consequences remain
+**Pending** in Lean. Projective coordinates, later geometric applications
+and full source reconciliation remain to be reviewed.
+
+Validation: three-pass article and catalogue builds give 179 and 32 pages
+with no warnings, unresolved references or bad boxes. Article PDF pages
+110–114 and catalogue pages 9–10 were inspected visually. All 200 standard
+results, 416 labels and existing result numbers are preserved. Exactly
+three statement texts now specify closed affine presentations:
+`odg:cr:thm:arith`, `odg:cr:cor:omnific` and `odg:cr:lem:arcs`; the other
+197 are unchanged. SymPy 1.14.0 verifies the two displayed integer arcs,
+the admissible residues modulo three and the shifted-parabola identity;
+these finite checks do not verify the geometric proofs. The independent
+inventory audit checks 3,730 results in 60 reports, all 4,269 cited source
+references resolve, and the local Markdown link audit passes. No Lean
+source changed in this review.
+
+The catalogue also corrects a stale description of the incoming
+omnific-preserving-automorphism assembly: it now contains eight manuscripts
+and states automatic strongness for `Oz` automorphisms in Part III. The
+catalogue previously still described this as open in the written text.
+The updated synopsis was checked against `opa:as:thm:main` and
+`opa:as:thm:explicit`; it reports their claims as awaiting proof review and
+Lean formalization, preserving the unresolved Gaussian compatibility case.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

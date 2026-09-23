@@ -206,7 +206,10 @@ geometric pullback argument explicit. The smooth-curve classification now also
 has a manuscript proof review: over any characteristic-zero coefficient field,
 only the affine and projective lines admit nonconstant points in the nonnegative
 Hahn support ring when the exponent group is nonzero. The proof explains descent
-and the role of geometric punctures; its Lean formalization remains pending.
+and the role of geometric punctures. The arithmetic review shows that an
+integer polynomial parametrization covers each entire exceptional fiber,
+including infinite-support points; a finite-support witness can always be
+chosen in the same fiber. These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

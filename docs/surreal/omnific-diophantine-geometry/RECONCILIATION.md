@@ -12,15 +12,17 @@ A further pass reviews source 07's quartic in Section 10 and the
 elementary ring and Euler subsections 16.2–16.3. The subsequent pass
 reviews the squarefree certificate and Weierstrass applications in
 Section 16.4. The next pass covers Section 16.5 through inheritance,
-completing the maintained Section 16 proof chain. Sections 17–18,
+completing the maintained Section 16 proof chain. Later passes cover the curve
+classification in Sections 17.1–17.2 and the arithmetic fibers, polynomial
+witnesses and separated-model descent in Section 17.3. Section 17.4 onward and 18,
 their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the thirteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. The geometric curve proofs and all of Sections 17–18
-remain outside these passes; the review of Section 16 now includes
-the two-ring principle, symmetric differentials and inheritance.
+present numbering. Projective coordinates, group varieties and subsequent
+geometric applications remain outside these passes. The review of Section 16
+includes the two-ring principle, symmetric differentials and inheritance.
 
 ## Recoverable sources
 
@@ -892,3 +894,73 @@ imported foundations. This proof review adds no Lean coverage: all results
 of Sections 17.1–17.2 remain **Pending**. Arithmetic fibers in Section 17.3,
 later applications, earlier curve pointers and the remaining source
 reconciliation still require review.
+
+## Arithmetic fibers, integer arcs and separated descent
+
+This pass reviews Section 17.3, Theorem 17.11 through Theorem 17.17,
+including the complete-fiber example. The affine models are now explicitly
+closed subschemes of the displayed affine spaces, matching the sources'
+equation presentations. In the exact-fiber proof each defining equation
+vanishes after evaluation in the coefficient support ring and therefore
+in the arithmetic subring by injectivity. No flatness of the integral
+model is used. The model `2Y = 0` supplies an explicit nonflat example:
+its generic fiber is a line, its characteristic-two fiber is a plane,
+and its omnific fibers are still `(n+s,0)` for `s ∈ Π`.
+
+The proof separately treats the zero exponent group. The full-class
+corollary uses finite-coordinate workspaces and injective families indexed
+by positive ordinals. The old sentence saying that the “whole argument”
+works in one fixed workspace is now qualified: the fiber formulas and
+rigidity do, but a fixed-workspace fiber is a set. It is infinite when the
+group is nonzero and a singleton for the zero group. Only the full surreal
+fiber has the proper-class conclusion.
+
+The integer-arc proof writes each scaled coefficient as
+`N^j c_ij = N^(j−1)(N c_ij)` and descends the defining polynomial identities
+from `ℚ[S]` to `ℤ[S]`. Its inverse identity gives injectivity over domains
+and, after clearing its own denominators, over every `ℤ`-torsion-free
+algebra. Characteristic zero alone is insufficient: the allowed arc
+`q(S)=2S` on the affine line identifies `(0,0)` and `(0,1)` in
+`ℤ × 𝔽₂`. This extension and boundary example are manuscript consequences,
+not additions to the standard-statement inventory or checked Lean theorems.
+
+The congruence proof identifies its inverse and includes modulus one.
+With a rational parametrization supplied, it yields either no ordinary
+points or countably infinitely many, since one admissible residue class
+already supplies infinitely many distinct parameters. The constructed
+integer arc parametrizes the entire purely infinite fiber, not just a
+subfamily: multiplication by its clearing integer `N` is a bijection of
+`Π`, so `p(t₀+s) = q(s/N)`. Consequently a finite-support witness in the
+same fiber can be chosen with coordinates in `ℤ[ω^γ]` for one `γ > 0`.
+These conclusions concern the exceptional affine-line branch, not an
+algorithm for arbitrary curves or a finite-support representation of the
+original point.
+
+The polynomial-witness proof explicitly translates the real parameter to
+put the ordinary point at zero. The separated-model proof distinguishes
+the ordinary point from its constant extension, spells out the closed
+equalizer's zero ideal under the injective field map, and explains class
+points through workspace representatives. The
+[closed-equalizer fact](https://stacks.math.columbia.edu/tag/01KM)
+was checked against the separatedness hypothesis; the proof already appears
+in the report's equality lemma and is made explicit again at this application.
+The list of higher-dimensional rigid targets remains conditional on its
+later cited theorems, whose proofs are outside this pass.
+
+Targeted source comparison used C11's arithmetic setup and
+`thm:arith-rigid`/`thm:arith-line`, from
+`curve-and-abelian-rigidity/article.tex` in
+`c6359e4^:docs/new/Curve_and_Abelian_Rigidity.zip`; C12's `thm:descent`,
+from `omnific_curve_rigidity/article.tex` in
+`c6359e4^:docs/new/omnific_curve_rigidity (1).zip`; C13's `thm:fibers`
+and `cor:polywitness`, from
+`omnific_differential_rigidity/omnific_differential_rigidity.tex` in
+`c6359e4^:docs/new/omnific_differential_rigidity.zip`; and C14's
+`lem:arcs` and `prop:congruence`, from `omnific_curve_rigidity/article.tex`
+in `c6359e4^:docs/new/omnific_curve_rigidity (2).zip`. This is not full
+reconciliation of the six curve sources.
+
+All results in Section 17.3 and the added prose consequences remain
+**Pending** in Lean. The projective-coordinate section, subsequent geometric
+applications, earlier curve pointers and full source reconciliation remain
+to be reviewed.
