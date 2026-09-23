@@ -297,6 +297,12 @@ import Surreal.Surcomplex.SmallSlopeExpansion
 import Surreal.Surcomplex.NormalizedFlatTriangle
 import Surreal.Surcomplex.NormalizedFlatRadius
 import Surreal.Surcomplex.NormalizedFlatValuation
+import Surreal.Foundations.SignSequenceSqrtCubic
+import Surreal.Surcomplex.SymmetricHeightTriangle
+import Surreal.Surcomplex.SymmetricGapTriangle
+import Surreal.Surcomplex.SymmetricGapSeries
+import Surreal.Surcomplex.SymmetricGapValuation
+import Surreal.Surcomplex.AppreciableGapTriangle
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

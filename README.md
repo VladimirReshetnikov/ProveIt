@@ -514,6 +514,13 @@ quadratic slack, circumradius and inradius. Positive leading residues
 prove all six height-valuation identities, including the supplement of
 the upper angle. The coordinate formulas also hold for arbitrary positive
 surreal base length and height before any infinitesimal specialization.
+The two symmetric examples are realized by actual triangles. An infinitesimal
+height gives an exact infinite circumradius despite uniformly bounded vertices;
+its inradius has the stated cubic and quintic corrections. An infinitesimal
+side gap gives full strong series for the angle supplement, altitude and
+circumradius, with the corresponding square-root valuation scales.
+The omega-squared-side example has gap exactly one and infinitesimal angular
+defect, while its area and circumradius are infinite with the stated equivalents.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
