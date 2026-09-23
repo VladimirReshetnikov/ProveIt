@@ -14,6 +14,18 @@ Some statements and prerequisites now have checked Lean proofs; no complete
 formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
 
+## Newest reports
+
+Four reports placed in `5fe7f8d` and written in `fb182ea` are catalogued in the
+tables below:
+[vector and tensor fields](surreal/vector-and-tensor-fields/),
+[Euclidean three-space](surreal/euclidean-three-space/),
+[finite surreal probability](surreal/finite-surreal-probability/) and
+[surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/).
+Their proof review and formalization remain pending. The same batch added
+source material to the measures and trigonometry reports; those additions do
+not extend their earlier proof-review scope.
+
 ## Reading routes
 
 - **For foundations or formalization:** read

@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 189 pages, built from eleven manuscripts. Everything
+A merged research report, 194 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 189-page report
+article.pdf                        the compiled 194-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -25,22 +25,16 @@ from the merged upstream text. The earlier count included the malformed
 placeholder described in the correction record below.
 
 The current proof review covers the earlier scalar, matrix, workspace and
-coordinate chains and all of the regular-singular main text, Sections
-23–28: the Euler frame, support and resonance arguments, classification,
-logarithmic repair, forcing, examples, workspaces and finite procedure.
-The revisions expand the proof steps, distinguish the derivative frames
-and field extensions, illustrate the normalizations, and prove the forced
-degree bound sharp. The finite procedure now states its effective
-coefficient requirements; complex algebraic coefficients suffice.
-The autonomous review now covers Sections 29–30: normalized derivations,
-formal evaluation, projective reduction, simple and multiple zeros, and
-completeness of the curve-realization list. It expands the support,
-local uniqueness and forced-scale arguments, makes the properness
-comparison set-sized, and gives explicit quadratic and pure monomial
-formulas. Branch choices and the time parameter's first differing scale
-are stated explicitly. Uniform localization, derivation independence,
-later autonomous proofs, remaining imports and source reconciliation
-are still pending; scope and validation are recorded in the collection's
+coordinate arguments, the complete regular-singular main text (Sections
+23–28), and the autonomous proofs through the abelian image and speed
+threshold, together with their scope comparisons (Sections 29–34).
+
+The latest pass makes the finite decision procedure's input requirements
+explicit, illustrates the difference between formal and intrinsic time, and
+explains the noncommutative boundary by an invariant form that is not closed.
+It distinguishes current algebraic evaluation coverage from the pending
+intrinsic chain rule and geometric bridge. The critical-potential part,
+remaining imports and source reconciliation still require review. Detailed scope and validation are in the collection's
 [review record](../../REVIEW.md).
 
 ## What the report is
@@ -223,9 +217,12 @@ to the one fixed `∂`.
   explicit series in `ω^(−1/m)` and `(log ω)/ω`, with no hidden
   beyond-all-orders parameter.
 * **One finite-scale field; derivation independence** (Theorems 31.1, 31.4).
-  All solutions lie in one set-sized Hahn field with a finitely generated
-  monomial group; for every `F ∈ C[Y,Z]` the solution set of `F(y, ðy) = 0` is
-  the same for every normalized derivation, and on it all of them agree. This
+  For each curve, all solutions lie in one set-sized Hahn field with a
+  finitely generated monomial group; for every `F ∈ C[Y,Z]` the solution set of `F(y, ðy) = 0` is
+  the same for every normalized derivation. For `F ≠ 0`, they also agree
+  pointwise on its solutions, and one finite-scale field contains all of them.
+  The zero polynomial has all of `No[i]` as its solution collection and gives
+  no such field bound or derivative-agreement conclusion. This
   reproves the first-order parts of Corollaries 8.8 and 8.11 for every
   normalized derivation (Corollary 31.7), and nothing more.
 * **Projective obstructions** (Theorem 33.3). `(ðy)² = Q(y)` with `Q`
@@ -236,8 +233,9 @@ to the one fixed `∂`.
   identity monad, and the logarithmic-derivative image is exactly
   `Lie(A)(ð𝔪_C)` — for `ð = ∂`, the *whole* Lie coordinate must have finite
   primitives, unlike the multiplicative group, where only the imaginary part
-  is constrained. With surjectivity: a finite-primitive criterion and the
-  speed threshold `p > 1`.
+  is constrained. Surjectivity gives the primitive obstruction on every input
+  and its finite-primitive criterion. The speed threshold `p > 1` holds
+  for every normalized derivation, using explicit power/logarithmic primitives.
 
 These lift, for this class only, the report's former non-claims N21 and N25
 and the remark after Corollary 8.11 that it "is not a general nonlinear
@@ -731,10 +729,14 @@ N80–N94 from member 11 and N95–N106 from member 13. In outline:
   normal forms and Rosenlicht's theorem are imported (from Noordman–van der
   Put–Top, numbered by its arXiv v1); parametrizations are not canonical;
   constant commutative abelian varieties only, with no uniformization or
-  global exponential; surjectivity only in two flagged corollaries;
-  effectivity only with exact algebraic coefficients and decidable signs; no
-  trigonometric assertion; no refereeing, no Lean file, no priority
-  certificate.
+  global exponential; surjectivity only for the global primitive obstruction
+  and its finite-primitive criterion, not for the explicit speed threshold;
+  effectivity requires divisor/local-expansion algorithms and coefficient
+  equality and sign tests; no trigonometric assertion, refereeing or priority
+  certificate. The source supplied no Lean file; current finite-variable
+  evaluation and composition prerequisites are mapped in the ledger, while
+  the intrinsic chain rule, projective reduction and autonomous theorems remain
+  pending.
 * **Transfinite critical-potential scope (N95–N106).** Scalar unknowns in a
   fixed differential field, not functions on an interval; relative to the one
   fixed `∂`, with the log-atomic formulas imported and not implied by `∂ω = 1`,
@@ -829,17 +831,18 @@ N80–N94 from member 11 and N95–N106 from member 13. In outline:
   Berarducci–Mantova derivation. Part VI's identity-monad splitting does this
   for **constant** abelian varieties over `No[i]`, reducing by standard part —
   a cross-link, not an answer to that report's question over Hahn fields with
-  a coarse valuation — and is the collection's first contact between surreal
-  derivations and abelian varieties. **Cross-link both ways.**
+  a coarse valuation. The two constructions use different residue maps,
+  and the Tate construction imposes no intrinsic differential equation.
+  **Cross-link both ways.**
 * **`docs/surreal/tail-spans-and-differential-transcendence/`** uses the Euler
   derivation that Part V writes `∂_τ`. Part VI's continuum of independent
   solutions concerns algebraic independence of differentially *algebraic*
   solutions, a different notion from that report's differential
   transcendence; there is no conflict.
 * **`docs/surcomplex/dynamics-and-normal-forms/`**: its "autonomous flow" is the
-  embedding of near-identity maps into formal flows; Part VI's autonomous
-  equations are a different subject, and member 11's archive name
-  ("dynamics") should not suggest otherwise.
+  embedding of near-identity maps into formal flows and their generators;
+  Part VI instead solves intrinsic differential equations. Shared formal
+  calculus does not identify these constructions or their time parameters.
 * **`docs/surcomplex/nonabelian-support/`**: its Frobenius theory is for the
   *coordinate* derivative `d/dz` with positive-support residue; Part V is for
   the intrinsic Euler derivation, and the two are not merged.
@@ -937,6 +940,113 @@ All 51 historical code, data and source-log files match the upstream bytes;
 Part VII and subsequent source text are unchanged by this review. The full
 Lean build passes 3,872 jobs and its 5,880-declaration axiom audit. This merge
 validation does not extend the proof review to the critical-potential part.
+
+The third autonomous pass reviewed Section 31, including the finite-scale
+field, algebraic independence, scalar-to-curve reduction and derivation
+independence. The report rebuilt in three passes at 190 pages without warnings
+or box issues, against a clean 189-page baseline; the changed pages were
+inspected. The unchanged member-11 verifier passed all ten default-degree
+checks with Python 3.13.14 and SymPy 1.14.0, matching the delivered record
+apart from Python version. Separate exact checks differentiated five signed
+power–logarithm–exponential monomials, checked a redundant exponential
+generator, and verified the quadratic solution family and induced vector
+field. All 51 historical code, data and source-log files remain byte-identical.
+The full Lean build passed 3,872 jobs and its 5,880-declaration axiom audit.
+BM arXiv v3 §3.2, Definition 5.1 and Remark 5.18 support the monomial inputs;
+NPT arXiv v1 Lemma 7.2 and Proposition 7.3 supply the stated independence
+import in a set-sized field with constant field ℂ. The bibliography now links
+to those exact preprint versions. The finite checks do not prove the general
+Hahn-support or classification arguments. Review of Section 32 onward and
+remaining imports and source reconciliation is still pending.
+
+The fourth autonomous pass reviewed Section 32 and Section 33.1: real
+branches and all four worked equations, infinitesimal contraction, the
+holomorphic-dual and hyperelliptic obstructions, branch-point constants and
+both hypothesis counterexamples. The PDF rebuilt in three passes at 192
+pages without warnings or box issues, against a clean 190-page baseline;
+the changed pages were inspected. Member 11's unchanged verifier passed
+all ten default-degree checks with Python 3.13.14 and SymPy 1.14.0; the
+output matches its archive apart from Python version. Separate exact checks
+covered the logistic substitution and family, the logarithmic primitive,
+the normalized linearizer at −1, the pole at infinity and both obstruction
+counterexamples. Six squarefree examples of degrees three through eight
+verify the local infinity equations and the predicted orders of the regular
+differential, including both branches in even degree. All 51 historical
+code, data and source-log files remain byte-identical. The full Lean build
+passed 3,872 jobs and the 5,880-declaration axiom audit. These finite checks
+do not replace the general geometric and support proofs, and no new Lean
+coverage is claimed. Formal-group and abelian arguments from Section 33.2
+onward, the critical-potential part and remaining imports and source
+reconciliation still require review.
+
+The final sync merged `70683e3`, including nine Lean modules from
+`8924f58` for Taylor differentiation and related calculus rules. The
+combined build passed 3,882 jobs and audited 5,965 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. The differential-equations
+source and PDF were unchanged by that merge. The source index still checks
+2,030 statements, and all 829 local Markdown destinations in 93 files
+resolve. The incoming formalization mappings retain their stated scope;
+they do not formalize this report's autonomous examples or obstruction.
+
+The fifth autonomous pass reviewed Sections 33.2–33.4: the formal-group
+logarithm, global splitting, abelian logarithmic-derivative image, primitive
+obstruction and power-speed threshold. The latter now holds for every
+normalized derivation; its explicit primitives remove the surjectivity
+assumption. The PDF rebuilt in three passes at 193 pages without warnings
+or box issues, against a clean 192-page baseline; the changed pages were
+inspected. Member 11's unchanged verifier passed ten default-degree checks
+with Python 3.13.14 and SymPy 1.14.0, matching the delivered record apart
+from Python version. Separate exact checks covered the multiplicative
+formal logarithm and inverse/group laws through degree six, a nonlinear
+two-dimensional formal group and its invariant matrix and coordinate
+covariance, homogeneous integration through degree six, and six explicit
+power/logarithmic primitives. All 51 historical code, data and source-log
+files remain byte-identical. Milne v2, Chapter I §1 and Theorem 6.4 were
+checked for the ordinary algebraic-group setting; the formal logarithm
+argument is supplied in the article and uses no analytic uniformization.
+The full Lean build passed 3,882 jobs and the 5,965-declaration axiom audit.
+The finite calculations support examples and formulas, not the entire
+formal-group or abelian proofs. Section 34, the critical-potential part,
+remaining imports and source reconciliation still require review.
+
+The final sync merged `4590b2c`, including the leading-term formalizations
+from `6ae6fd5`. The combined Lean build passed 3,885 jobs and its
+5,990-declaration audit using only `propext`, `Classical.choice` and
+`Quot.sound`. The differential-equations source and PDF were unchanged by
+the merge. The independent index still checks 2,030 entries, and all 833
+local Markdown destinations in 93 files resolve. These incoming analytic
+mappings do not formalize the abelian results reviewed here.
+
+The sixth autonomous pass reviewed Section 34's scope and implementation
+comparisons, completing the Part VI main-text pass. It corrected the
+remaining surjectivity wording, made the effective geometric input
+requirements explicit, and distinguished formal time from intrinsic time.
+The affine-group example explains precisely why invariant forms need not
+be closed without commutativity. The ledger now maps the existing actual
+finite-variable evaluation and composition prerequisites, with the
+intrinsic chain rule and geometric bridge still pending.
+
+The PDF rebuilt in three passes at 194 pages with no warnings or box issues,
+against a clean 193-page baseline; the changed Section 34 pages were
+inspected. Exact symbolic checks verified the translation solution, its
+reciprocal projective double zero, and the affine group's left-invariant
+forms and nonzero exterior derivative. These checks illustrate the scope
+boundaries; they do not prove the geometric bridge or intrinsic calculus.
+All 51 historical code, data and source-log files remain byte-identical.
+The independent index audit checks all 2,030 statements across 44 texts,
+and all 835 local Markdown destinations in 93 files resolve. The full Lean
+build passed 3,885 jobs and audited 5,990 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The critical-potential part, remaining
+imports and source reconciliation remain outside this review.
+
+The final sync merged `5ff3266`, including `3b702c9`'s closed-interval
+nonnegativity proofs for actual analytic lifts. The combined Lean build
+passed 3,887 jobs and audited 5,998 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The differential-equations source and
+PDF were unchanged by the merge. The independent statement audit still
+checks all 2,030 entries, and all 837 local Markdown destinations in 93
+files resolve. The incoming sign-lifting results retain their own scope;
+they do not supply the intrinsic derivative or geometric bridge.
 
 ## Re-running the source verifiers
 
