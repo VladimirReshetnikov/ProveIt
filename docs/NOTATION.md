@@ -69,6 +69,16 @@ larger exponent group than the input workspace. These class statements
 must be distinguished from the corresponding assertions in any fixed Hahn
 field or fixed universe.
 
+For quadratic forms the omnific report uses `q(x) = B(x,x)` and
+`B(x,y) = (q(x+y) − q(x) − q(y))/2`. Off-diagonal entries of the bilinear
+matrix are half the mixed-term polynomial coefficients; an integral
+quadratic polynomial need not have an integral bilinear matrix. Polarization
+is performed over `ℝ` and extended by the same finite expressions to `No`.
+The parameter `t` in its polynomial isometries `U_t` is free and may be
+purely infinite; it is distinct from the fixed monomial `t = ω⁻¹` used below.
+The quadratic energy `π(n) = ½ nᵀΠn` in Hahn–Tate Part II has an explicit
+factor `½`; its associated polarized form therefore has matrix `Π/2`.
+
 ## Monomials, support orientation, and valuation
 
 The common Hahn convention is

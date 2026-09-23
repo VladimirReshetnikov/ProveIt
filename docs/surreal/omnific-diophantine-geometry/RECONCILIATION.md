@@ -1,7 +1,7 @@
 # Reconciliation of the three Diophantine manuscripts
 
 This record covers the elementary source comparison in Sections 1–4 of the
-maintained [article](article.tex), followed by a proof review of Sections 5–7.
+maintained [article](article.tex), followed by proof reviews of Sections 5–10.
 It does **not** certify integration of every result in the three manuscripts
 or review of all later proofs and imported classical results.
 
@@ -109,7 +109,44 @@ witnesses and nonzero divisibility quotients must lie in its
 nonnegative-support subring. Its ordinary-coordinate conclusion explicitly
 retains the hypothesis that all three coordinates are nonzero.
 
-Sections 8 onward still await independent proof review; the assembly's own
+The Sections 8–9 pass compares source 01's quadratic dichotomy and
+transvection proof, and its positive-bound, orthogonal, symmetric-matrix and
+leading-homogeneous arguments, with the maintained text. It also compares
+source 02's bounded semialgebraic and nilpotent-isometry arguments. The
+polarization and orthogonal-complement construction are expanded. A new
+consequence of the existing inverse formula shows that the quadratic orbit
+preserves its coordinate ideal, so primitive integer starting points produce
+unimodular omnific families. The definite-form argument gives finite integer
+isometry groups beyond the Euclidean signed-permutation case.
+
+The bounded-set proof now handles quantified formulas explicitly: enlarge a
+set-sized real closed field to contain an existential witness, then descend
+by model completeness. This uses the classical theorem only between
+set-sized fields. The formula's language is specified as ordered rings;
+its mathematical scope is unchanged. Empty definite levels and zero matrix
+size are explicit. New examples show why symmetry is essential and why
+changing polynomial generators can change their top-form obstruction.
+
+The model-completeness input was checked against Marker, *Introduction to
+Model Theory*, Theorem 3.5 and Proposition 4.1; this does not independently
+verify the imported surreal normal-form or real-closedness foundations.
+
+The Section 10 pass compares source 01's Pell residue table and five-variable
+guard with source 05's four-square guard, constant-term definition and failed
+induction instance. Bounds and quantifier domains are explicit. The
+open-induction argument now spells out preservation of quantifier-free
+truth between the workspace and full ring. The order-free induction remark
+specifies its nonnegative domain and supplies a formula with witnesses in
+the nonnegative semiring and no subtraction. Failure of Peano arithmetic
+follows directly from this failed instance, without an additional claim
+about formalizing Lagrange's theorem inside arithmetic.
+
+The three-square input was checked against the AFP entry of Danilkin and
+Chevalier; the four-square statement against the pinned Mathlib source.
+Glivická–Glivický, Sections 2.1, 2.3 and Theorem 1, records the nonnegative
+semiring convention and Shepherdson equivalence. These checks do not prove
+the imported Hahn-field real-closedness or establish new Lean coverage.
+Sections 11 onward still await independent proof review; the assembly's own
 section map and corrections in Appendix A are inputs to that review.
 Imported foundations, classical results and historical priority are separate
 obligations. No broad preservation of the old statement wording or numbering
@@ -118,9 +155,11 @@ is claimed after the expansion.
 Two additional Diophantine manuscripts, local 06 and 07, arrived in
 `cf350b1`. Commit `0240140`, concurrent with this review, integrated them as
 Sections 11–13, together with results of theirs and of the quotient report's
-manuscript 13 in Section 6; the merged article has 84 pages, 104 standard
-statements and 228 labels, and Sections 1–7 keep their numbers. That
-material is outside this review. Their archives are recoverable at
+manuscript 13 in Section 6 and source 07's quartic
+(`odg:def:rem:quarticvariant`) in Section 10. Merged with this review, the
+article has 86 pages, 104 standard statements and 228 labels; Sections 1–10
+keep their section numbers, while statement numbers in Sections 6 and 10
+shift. That material is outside this review. Their archives are recoverable at
 `de0acc6`; their code and data are present here. The
 [quotient report](../set-sized-quotients-of-omnific-integers/) has thirteen
 assigned manuscripts (its base and twelve companions); its assembly is

@@ -9,9 +9,9 @@ Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 84 pages
+article.pdf                        the compiled report, 86 pages
 README.md                          this guide
-RECONCILIATION.md                  the elementary source review and the Sections 5–7 proof review
+RECONCILIATION.md                  the elementary source review and the Sections 5–10 proof reviews
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
 06-definability-reconstruction-SOURCE_AUDIT.md   source 06's source and novelty audit, as delivered
@@ -56,11 +56,12 @@ or combined nine locations cited by that review; their old labels (`odg:cor:Jglo
 `odg:eq:pellmod8`, `odg:app:dependencies`, `odg:app:audit`) are kept as
 aliases on the new locations, so all 81 labels of the review resolve. A later
 proof review of Sections 5–7 (`f0bdcf3`) extended one-variable and
-separated-power rigidity to complex coefficients and corrected Remark 7.5; it
-did not cover the batch-25 material (Sections 11–13 and the Section 6 results
-of sources 07 and 13). See [RECONCILIATION.md](RECONCILIATION.md) for the
-elementary claim correspondence, that proof review and the remaining review
-boundary.
+separated-power rigidity to complex coefficients and corrected Remark 7.5; a
+further review of Sections 8–10 (`40c09a3`, `58cd8e1`) expanded their proofs
+without adding or renumbering statements. Neither covered the batch-25
+material (Sections 11–13, the Section 6 results of sources 07 and 13, and
+Remark 10.5). See [RECONCILIATION.md](RECONCILIATION.md) for the elementary
+claim correspondence, these proof reviews and the remaining review boundary.
 
 The article has 104 standard results (40 theorems, 19 propositions, 19 lemmas,
 26 corollaries). The [ledger](../../FORMALIZATION.md) indexes the 67 standard
@@ -218,17 +219,25 @@ Numbers refer to the built `article.pdf`.
    points only in the nondegenerate definite case and in dimension at most
    two; injective linear families for degenerate `q`; injective quadratic
    families through every integer point for nondegenerate indefinite `q` in
-   at least three variables (Theorem 8.1). `(Π, +)` embeds in
+   at least three variables (Theorem 8.1). The quadratic matrix orbits preserve
+   the coordinate ideal, hence carry primitive integer points to unimodular
+   omnific points. `(Π, +)` embeds in
    `ker(SO(q, Oz) → SO(q, Z))` (Corollary 8.4).
 8. **Bounded geometry (Section 9).** Bounded semialgebraic sets (Theorem 9.2),
    definite levels (Corollary 9.3), `O_n(Oz)` = signed permutations
    (Corollary 9.4), symmetric matrices with constant `tr(M²)` (Corollary 9.5),
-   no real point at infinity (Theorem 9.6).
+   no real point at infinity (Theorem 9.6). The set-sized transfer argument
+   includes quantified ordered-ring formulas. Any definite real form has a
+   finite integer isometry group, while the signed-permutation description
+   is specific to standard Euclidean coordinates.
 9. **Defining `Z` (Section 10).** Theorem 10.3 (five auxiliaries, defines
    `Z^n`) and Theorem 10.4 (six auxiliaries, defines `Z`; source 07's variant
    is Remark 10.5); `ct` and `Π` are first-order definable (Corollary 10.7);
    an explicit `Σ₁` induction instance fails (Theorem 10.10) while open
    induction holds.
+   The workspace argument and the nonnegative domain of induction are explicit;
+   an order-free semiring formula also defines exactly the ordinary naturals
+   inside the nonnegative cone (Remark 10.11).
 10. **Diophantine arithmetic (Section 11).** For a domain `𝔬 ⊆ 𝕜` with
     `√2 ∈ 𝕜 \ Frac(𝔬)`, `∃y (x² = 2y²)` defines `Π_𝕜(Γ)` in `ℛ_𝔬(𝕜, Γ)`, in
     particular `Π` in `Oz` and `Π_C` in `Oz[i]` (Theorem 11.2); homomorphisms
@@ -333,6 +342,17 @@ claims that these are open in the literature.
   rigidity to complex coefficients (Proposition 2.8, Theorem 7.4), explains
   the support-ring witnesses in Fermat rigidity, and distinguishes these local
   Euler derivations from the normalized surreal derivation.
+- The Sections 8–9 review makes polarization and the isotropic complement
+  explicit, proves preservation of coordinate ideals along the quadratic
+  orbits, and fills in transfer of quantified formulas from `No` to a
+  set-sized real closed field. It includes empty definite levels and shows
+  why symmetry and the chosen polynomial generators matter in the two
+  matrix/leading-form criteria. The exact review boundary is in the
+  reconciliation record.
+- The Section 10 review expands the finite bounds and divisibility test,
+  specifies the induction domain, and gives nonnegative witnesses for the
+  order-free arithmetic formula. The open-induction argument explicitly
+  transfers quantifier-free truth to a set-sized Hahn workspace.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
@@ -451,7 +471,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 84 pages with no errors, warnings, undefined references or
+The build gives 86 pages with no errors, warnings, undefined references or
 overfull boxes. Source 01's `code/01-diophantine-geometry-build.sh` and `.ps1`
 compile source 01's delivered file name (`omnific_integers.tex`), which is not
 shipped; they do not build this report. Source 06's
