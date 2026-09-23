@@ -431,6 +431,9 @@ finite factor of standard part one. At every positive infinitesimal defect,
 inverse cosine satisfies the exact square-root half-angle identity and full
 central-binomial strong series. Its normalized cubic expansion has a finite
 fourth-order remainder, and its valuation is half the defect valuation.
+At both inverse-sine endpoints the inward difference quotient eventually
+exceeds every fixed surreal bound, including infinite bounds, so no
+surreal-valued one-sided or fine derivative exists.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
