@@ -246,6 +246,16 @@ event. Conditional identities are pointwise on positive-mass atoms and hold
 up to arbitrary constant versions on null atoms; scalar expectations remain
 independent of those choices.
 
+Conditional shadows retain the order of leading atom scales and normalized
+leading coefficients, while real-payoff comparisons can also depend on signed
+higher coefficient rows. Neither representation determines arbitrary surreal
+payoff comparisons. For conditioning precision, `β` and `λ` belong to the
+ordered value group: `v(error) > β + λ` is a sufficient uniform contract,
+with `β` the event valuation and `λ ≥ 0` the requested output precision.
+It need not hold when particular numerator and denominator errors cancel.
+Finite likelihood updates require a positive joint normalizer to commute;
+a neutral likelihood ratio of one leaves a binary law unchanged.
+
 The word **finite** has several other explicit uses: a finite-dimensional
 algebra, a finite map, finitely many terms, and finite birthday. The
 [graph report](surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex)

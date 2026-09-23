@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 43 pages
+article.pdf        the compiled report, 44 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -36,12 +36,13 @@ contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
 
-The current proof review covers Sections 2–3: scalar workspaces, standard
-part, Hahn leading scales, finite probability inequalities, conditioning and
-coherence. It corrects the point-weight representation to require the full
-event algebra, and distinguishes pointwise conditional identities from
-versions on null atoms. Later sections and the remaining imported results
-still require review; see the collection's [review record](../../REVIEW.md).
+The current proof review covers Sections 2–5: scalar workspaces, standard
+part, finite probability, conditional shadows, coefficient-row compression
+and Bayesian updates. It corrects the point-weight event-algebra hypothesis,
+the joint-normalizer condition for successive updates, neutral evidence and
+the distinction between sufficient and necessary conditioning precision.
+Later sections and the remaining imports still require review; see the
+collection's [review record](../../REVIEW.md).
 
 ## What the report claims
 
@@ -68,7 +69,7 @@ sets; no law on the class `No` is constructed.
    breaking.
 3. **Bayes at every scale.** Minimum-plus valuation rule with coefficient tie
    breaking (Theorem 5.1; Example 5.2, rare evidence reversing the dominant
-   hypothesis); absolute and valuation-sensitive conditioning stability, a
+   hypothesis); absolute and valuation-sensitive conditioning stability, a sufficient
    precision contract `v(p_i − q_i) > β + λ` (Theorem 5.3); infinite prior
    logits survive finitely many bounded-real increments (Section 5.3).
 4. **Logits and softmax.** `σ` and `logit` are inverse increasing bijections
@@ -303,7 +304,7 @@ the pin and the delivered 35-page PDF.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build gives 43 pages (a title page, two contents pages and 40 numbered
+This build gives 44 pages (a title page, two contents pages and 41 numbered
 pages), with no errors, no undefined or multiply-defined references or
 citations, no duplicate PDF destinations, and no LaTeX, package or box warnings.
 No bibliography database or external figure is needed.
@@ -350,7 +351,8 @@ Sections 10 and 12, updated the title-page status, Section 16.3, Appendix B and
 the bibliography notes, and made the *strong* renames listed above. It left the
 mathematics unchanged. `RESEARCH_AUDIT.md` is the manuscript's own audit, not an
 independent review. The subsequent review below concerns Sections 2–3 and
-records the correction to the finite point-weight representation.
+records the correction to the finite point-weight representation. The later
+Sections 4–5 pass records the update and precision corrections.
 
 ## Subsequent proof review
 
@@ -397,3 +399,38 @@ Markdown destinations in 97 files resolve. The probability source and its
 43-page PDF are unchanged by the merge, and the 30 newly delivered files
 remain unchanged. This is integration validation, not a proof review of
 the new foundations packages or additional probability Lean coverage.
+
+The second finite-probability pass reviews Sections 4–5. It expands the
+conditional-shadow product law and leading-scale formula, including empty
+numerators, and shows how pairwise conditional shadows recover the ordered
+leading groups and their coefficient ratios. The signed-row proof now makes
+the well-ordered selection, dimension bound and coefficient argument explicit;
+a two-state example shows why surreal payoffs outside ordinary `ℝ` are not
+covered. The comparison with conditional probability spaces and real-payoff
+equivalence was checked against Halpern Definition 2.1 and Section 4.
+
+Three scope corrections matter for use: successive updates with zero
+likelihoods require a positive joint normalizer; a neutral likelihood ratio
+leaves the exact prior unchanged; and the strict valuation-error contract is
+sufficient, not necessary for an individual pair of laws. The precision
+clause now has its own positive-event hypothesis, and the exact difference
+numerator has the correct sign. A rescaling example gives identical
+conditionals despite larger input errors; a boundary example proves that
+replacing the strict valuation bound by a non-strict one loses the stated
+output precision. Infinite-logit persistence now includes the finite-sum
+bound and the exponential argument for its unchanged real shadow.
+
+Validation: clean three-pass PDFs at 43 pages in the baseline and 44 after
+revision; the changed proof pages were visually inspected. All 114 label
+numbers and all five historical audit/code/data artifacts are preserved.
+The copied source verifier reproduces its 2,145 assertions, with the JSON
+matching apart from the Python version. An additional 1,361 exact `Q(t)`
+checks cover conditional products, scale recovery, compatible and impossible
+joint updates, strict precision, cancellation, the payoff counterexample and
+neutral odds. These are finite examples, not a general proof or an
+implementation of surreal logarithms. The independent index audit checks
+2,181 entries across 46 main sources (including two provisional bases), and
+all 903 local Markdown destinations in 97 files resolve. The full build
+passes 3,912 jobs and its axiom audit checks 6,214 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. Sections 6 onward and the
+remaining imports still require review; probability Lean coverage is unchanged.

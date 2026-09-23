@@ -630,8 +630,11 @@ arguments and supplies the full-event-algebra hypothesis for the point-weight
 representation. On a smaller finite algebra it is the measurable atoms, not
 necessarily the points, that carry the uniquely determined weights.
 It also makes the limited-input and conditional-version conventions explicit.
-The live review record is \path{docs/REVIEW.md}; the delivered audit, programs
-and data remain unchanged.
+The review of Sections~\ref{fsp:sec:shadows}--\ref{fsp:sec:bayes}
+subsequently adds the joint-normalizer hypothesis for commuting likelihood
+updates, corrects the neutral-likelihood wording, and separates sufficient
+conditioning precision from necessity. The live review record is
+\path{docs/REVIEW.md}; the delivered audit, programs and data remain unchanged.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -993,7 +996,9 @@ coherence alone does not require such stakes to be practically available.
 
 \subsection{The unconditional shadow is not enough}
 
-The function $P_0(A)=\st P(A)$ is a real finitely additive probability.
+Since every event mass lies in $[0,1]$, standard part is defined on it.
+Its positivity, additivity and value at $1$ show that
+$P_0(A)=\st P(A)$ is a real finitely additive probability.
 For $P_0(B)>0$, Proposition~\ref{fsp:prop:st} gives
 \begin{equation}\label{fsp:eq:stcondition}
  \st P(A\mid B)=P_0(A\mid B).
@@ -1010,10 +1015,12 @@ On three states let
 \end{equation}
 Both shadows are $(1,0,0)$, whereas
 $P(\{2\}\mid B)=1/2$ and $Q(\{2\}\mid B)=1/4$.
-Their total variation distance is only $2t$.
+The coordinate differences are $(2t,0,-2t)$, so their total variation
+distance is $\tfrac12(2t+0+2t)=2t$.
 \end{example}
 
-For a regular probability there is a richer real object:
+For a regular probability on an event algebra $\A$ there is a richer
+real object, defined for $A,B\in\A$ with $B\ne\varnothing$:
 \begin{equation}\label{fsp:eq:conditionalshadow}
  C(A\mid B)=\st\frac{P(A\cap B)}{P(B)},\qquad B\ne\varnothing.
 \end{equation}
@@ -1022,23 +1029,28 @@ on $B$. Whenever $D\ne\varnothing$ and $B\cap D\ne\varnothing$,
 \begin{equation}\label{fsp:eq:popperproduct}
  C(A\cap B\mid D)=C(A\mid B\cap D)C(B\mid D).
 \end{equation}
-Indeed the identity holds before taking standard part, and both factors
-are limited. This remains true if $C(B\mid D)=0$. Such conditional
-systems are closely related to the Popper-function literature
-\cite{halpern,brickhill}; no convention for conditioning on the empty
-set is needed here. Importantly, the existence of all ratios in
-\eqref{fsp:eq:conditionalshadow} is supplied by regularity, not by a
-purported universal rule for $0/0$.
+Regularity makes $P(D)$ and $P(B\cap D)$ positive, so the ordinary
+cancellation identity for these ratios applies before standard part.
+Each factor lies in $[0,1]$, and the ring law for standard part gives
+\eqref{fsp:eq:popperproduct}, even when $C(B\mid D)=0$.
+The conditioning domain is precisely $\A\setminus\{\varnothing\}$.
+This has the normalization, finite-additivity and product properties of
+conditional probability spaces in \cite[Definition~2.1]{halpern}; compare
+also \cite{brickhill}. No convention for the empty conditioning event is
+needed. The existence of the ratios comes from regularity of $P$, whereas
+the real conditional law itself can vanish on nonempty events.
 
 \subsection{Leading atoms determine every conditional real shadow}
 
 \begin{theorem}[Conditional leading-scale skeleton]\label{fsp:thm:skeleton}
-Let a finite regular Hahn probability have atom weights
+Let a finite regular Hahn probability have atoms indexed by
+$\{1,\ldots,n\}$ and weights
 \begin{equation}
  p_i=c_i t^{a_i}(1+\eta_i),\qquad c_i>0,\quad v(\eta_i)>0,
 \end{equation}
-where a zero error is allowed. For a nonempty $B$, put
-$a(B)=\min_{i\in B}a_i$. Then
+where $c_i\in\R_{>0}$, $a_i\in\Gamma$, and a zero error is allowed
+by $v(0)=+\infty$. Identify events with their sets of atom indices.
+For a nonempty event $B$, put $a(B)=\min_{i\in B}a_i$. Then
 \begin{equation}\label{fsp:eq:skeleton}
  \st P(A\mid B)
  =\frac{\sum_{i\in A\cap B,\ a_i=a(B)}c_i}
@@ -1049,12 +1061,16 @@ partition of atoms into equal-$a_i$ groups and their positive leading
 coefficients, up to a common positive rescaling within each group.
 \end{theorem}
 \begin{proof}
-Divide numerator and denominator of \eqref{fsp:eq:condition} by $t^{a(B)}$.
-The denominator has positive real standard part
-$\sum_{i\in B,a_i=a(B)}c_i$. Terms with larger exponent are
-infinitesimal, and terms with minimal exponent have standard part $c_i$.
-Proposition~\ref{fsp:prop:st} now applies. Common rescaling of the coefficients
-of the first group meeting $B$ cancels in the quotient.
+Divide numerator and denominator of \eqref{fsp:eq:condition} by
+$t^{a(B)}$. Each resulting summand has the form
+$c_i t^{a_i-a(B)}(1+\eta_i)$. It is limited: its residue is $c_i$
+when $a_i=a(B)$, and zero when $a_i>a(B)$. Hence the normalized
+denominator has positive real residue
+$\sum_{i\in B,a_i=a(B)}c_i$, and the normalized numerator has the
+residue in the formula, possibly zero. The quotient rule of
+Proposition~\ref{fsp:prop:st} applies even if $A\cap B$ is empty.
+Rescaling all coefficients in the first group meeting $B$ multiplies
+both residues by the same positive real, which cancels.
 \end{proof}
 
 Equivalently, give each group the real probability proportional to its
@@ -1065,7 +1081,13 @@ It does not reconstruct the full surreal probability or all expected
 utility comparisons. For example, $(1/2+t,1/2-t)$ has just the uniform
 leading group but prefers the first-state payoff to the second-state
 payoff. Higher coefficients can resolve ties even within one leading
-group.
+group. Conversely the conditional shadows recover the ordered groups
+and their coefficient ratios. For two distinct atoms $i,j$, the value of
+$C(\{i\}\mid\{i,j\})$ is $1$ when $a_i<a_j$, $0$ when $a_i>a_j$,
+and $c_i/(c_i+c_j)\in(0,1)$ when $a_i=a_j$. Within a tied group this
+last number recovers $c_i/c_j$. Thus the group order and the normalized
+coefficients are exactly the information retained, but the numerical gaps
+between exponents and the higher coefficients are lost.
 
 \subsection{A finite compression that retains real-act comparisons}
 
@@ -1085,25 +1107,47 @@ increasing exponent order.
 The finite union $W$ of the supports of the $p_i$ is well ordered.
 For $\gamma\in W$ let
 $r_\gamma=([t^\gamma]p_1,\ldots,[t^\gamma]p_n)\in\R^n$.
-Choose the first nonzero row. Repeatedly choose the earliest row outside
-the span of the previously chosen rows, stopping when no such row
-remains. Each choice increases dimension, so there are at most $n$ choices.
-Every skipped row is in the span of chosen rows that precede it.
-If $u_j$ is the first chosen row with nonzero pairing with $d$, all rows
-before $u_j$ pair to zero, so its exponent is the first nonzero
-coefficient of $\sum_i p_i d_i$. Its sign is therefore the sign of that
-series. If all chosen rows annihilate $d$, all coefficient rows do.
+The row set is nonempty because $\sum_i p_i=1$. Choose its earliest
+nonzero row. If the chosen rows do not yet span every coefficient row,
+the set of exponents whose rows lie outside their span is a nonempty
+subset of $W$, so has a least member. Choose that row next.
+The chosen rows are linearly independent, so after at most $n$ choices
+they span every coefficient row. In particular, each skipped row lies
+in the span of chosen rows with strictly earlier exponents.
+
+For $d\in\R^n$, finite distributivity gives
+\[
+ [t^\gamma]\sum_i p_i d_i=r_\gamma\cdot d.
+\]
+If $u_j$ is the first chosen row pairing nontrivially with $d$, then
+every earlier coefficient row pairs to zero: the chosen earlier rows do,
+and each skipped one is their linear combination. The exponent of $u_j$
+is therefore exactly the leading exponent of the expectation, with
+coefficient $u_j\cdot d$. If all chosen rows annihilate $d$, so do all
+coefficient rows, and the expectation is zero. The converse follows by
+coefficient extraction.
 \end{proof}
 
 Applied to the difference of two real-valued acts, the theorem retains
 all their preference comparisons, including infinitesimal tie breaking.
-The rows need not be positive probabilities: normalization gives total
-coefficient zero at every nonzero exponent, so signed rows are natural.
-The theorem is not a claim that an arbitrary signed-row list is a
-positive lexicographic probability system. Nor does it compress comparisons
-of arbitrary surreal-valued acts: multiplying by such acts can introduce
-new exponents and cancellations. It is a finite-dimensional statement
-with an explicit domain of payoffs.
+All weights have nonnegative valuation. Normalization makes the
+exponent-zero row a real probability vector and the sum of every later
+row zero. Each nonzero later row therefore has both positive and negative
+entries. These selected coefficient rows need not themselves be a list of
+probability laws; this construction is distinct from the finite-state
+probability-system equivalence in \cite[Section~4]{halpern}.
+The selection argument establishes existence, not a finite search through
+an arbitrary infinite Hahn support.
+
+The real-payoff hypothesis is essential. Take
+$p=(1/2+t,1/2-t)$, whose selected rows are $(1/2,1/2)$ and $(1,-1)$.
+For the surreal payoff difference $d=(-1+t,1)$, the first row gives
+$t/2>0$, but the actual expectation is
+\[
+ (1/2+t)(-1+t)+(1/2-t)=-3t/2+t^2<0.
+\]
+Multiplication by surreal payoffs outside $\R$ shifts exponents, invalidating the
+coefficient-extraction step used in the theorem.
 
 \section{Bayesian inference at every scale}
 \label{fsp:sec:bayes}
@@ -1117,8 +1161,9 @@ likelihoods $\ell_i\ge0$, not all zero, define
 \end{equation}
 If the likelihood is an event probability then $\ell_i\le1$; if it is a
 density or an unnormalized score, this upper bound is unnecessary.
-Multiplying all likelihoods by one positive factor leaves the posterior
-unchanged. Bayes' formula is exact for either interpretation when the
+At least one product $p_i\ell_i$ is positive, so $Z>0$; thus every
+$q_i\ge0$ and $\sum_iq_i=1$. Multiplying all likelihoods by one positive
+factor multiplies $Z$ by that factor and leaves the posterior unchanged. Bayes' formula is exact for either interpretation when the
 likelihood is part of a specified model.
 
 \begin{theorem}[Minimum-plus Bayes with coefficient tie breaking]
@@ -1140,9 +1185,15 @@ Zero likelihoods may be omitted and yield zero posterior mass.
 \begin{proof}
 The product $p_i\ell_i$ has valuation $a_i+b_i$ and leading coefficient
 $c_id_i>0$. Equation~\eqref{fsp:eq:positiveval} shows that $Z$ has leading
-term $Dt^m$. Dividing each numerator by this leading term proves
-\eqref{fsp:eq:scalebayes}. Nonminimal terms then have positive valuation,
-while minimal terms have valuation zero and the displayed real residue.
+term $Dt^m$, where $D>0$. Write $Z=Dt^m(1+\zeta)$ with
+$v(\zeta)>0$. The factor $(1+\zeta)^{-1}$ is a unit with residue one,
+so division subtracts $m$ from every numerator valuation and divides
+its leading coefficient by $D$. This proves \eqref{fsp:eq:scalebayes}
+for every surviving index, not just the minimizers. Nonminimal terms
+have positive valuation and residue zero; the minimal ones have the
+stated positive residues, summing to one. An exactly zero likelihood
+has no leading coefficient and is excluded from the minimum; its
+posterior mass is exactly zero.
 \end{proof}
 
 The valuation rule is minimum-plus arithmetic: multiply probabilities by
@@ -1167,10 +1218,21 @@ this update; it has erased exactly the information that the observation
 selects.
 \end{example}
 
-Successive finite likelihood updates commute because their product
-commutes. Under conditional independence, posterior odds equal prior odds
-times the product of likelihood ratios. Neither the field algebra nor
-this statement licenses an unspecified infinite product of likelihoods.
+For finitely many nonnegative likelihood vectors $\ell^{(1)},\ldots,
+\ell^{(k)}$, successive updates commute provided their joint normalizer
+$Z_* = \sum_i p_i\prod_{j=1}^k\ell_i^{(j)}$ is positive.
+Some index then has positive prior and every likelihood factor positive,
+so every intermediate normalizer is positive in every update order.
+Canceling those normalizers gives
+$q_i=p_i\prod_j\ell_i^{(j)}/Z_*$, independent of the order.
+Individual updates being defined is not enough: with a positive two-state
+prior, likelihoods $(1,0)$ and $(0,1)$ each define an update, but their
+joint normalizer is zero and neither second update exists.
+Under conditional independence this product is the likelihood of the
+combined observations; without it, the factors must be the appropriate
+conditional likelihoods. For surviving hypotheses, posterior odds are
+prior odds times the product of likelihood ratios. No unspecified
+infinite product is defined by this finite identity.
 
 \subsection{How much precision does conditioning require?}
 
@@ -1179,8 +1241,12 @@ For finite laws $p,q$ define
  \delta=\TV(P,Q)=\max_A|P(A)-Q(A)|
  =\frac12\sum_i|p_i-q_i|.
 \end{equation}
-The equality follows by taking the subset of positive differences and
-using $\sum_i(p_i-q_i)=0$; it is valid over any ordered field.
+Put $h_i=p_i-q_i$ and $I_+=\{i:h_i>0\}$.
+Since $\sum_i h_i=0$, the positive and negative totals satisfy
+$\sum_{I_+}h_i=-\sum_{h_i<0}h_i=\tfrac12\sum_i|h_i|$.
+Every event sum lies between these two signed extremes; the event $I_+$
+attains the positive one. This proves the equality over any ordered field,
+including zero differences and nonregular laws.
 
 \begin{theorem}[Absolute and valuation-sensitive conditioning stability]
 \label{fsp:thm:stability}
@@ -1188,12 +1254,13 @@ Suppose $P(B)\ge b>\delta$. Then $Q(B)>0$ and for every $A$,
 \begin{equation}\label{fsp:eq:conditionalbound}
  |P(A\mid B)-Q(A\mid B)|\le\frac{2\delta}{b}.
 \end{equation}
-For Hahn probabilities, let $\beta=v(P(B))$ and $\lambda\ge0$.
+Separately, for Hahn probabilities assume $P(B)>0$ and put
+$\beta=v(P(B))\in\Gamma$ and $\lambda\in\Gamma_{\ge0}$.
 If
 \begin{equation}\label{fsp:eq:precision}
  v(p_i-q_i)>\beta+\lambda\quad\text{for every atom }i,
 \end{equation}
-then $Q(B)$ has the same leading term as $P(B)$ and
+then $Q(B)>0$, it has the same leading term as $P(B)$, and
 \begin{equation}
  v\bigl(P(A\mid B)-Q(A\mid B)\bigr)>\lambda.
 \end{equation}
@@ -1208,31 +1275,65 @@ Then
  \le\frac{2\delta}{d},
 \end{equation}
 since $0\le y\le e$. This implies \eqref{fsp:eq:conditionalbound}.
-For the valuation assertion write $e=d+\Delta_d$ and
-$y=x+\Delta_x$. Finite sums in \eqref{fsp:eq:precision} give
-$v(\Delta_d),v(\Delta_x)>\beta+\lambda$.
-Thus $v(e)=v(d)=\beta$ and $e$ has the same leading coefficient.
-Also $0\le x\le d$ implies $v(x)\ge\beta$ when $x\ne0$.
-The numerator $d\Delta_x-x\Delta_d$ of the difference has valuation
-strictly greater than $2\beta+\lambda$, while $de$ has valuation
-$2\beta$. Division proves the assertion, including a zero numerator.
+The valuation assertion does not require a separately chosen $b$.
+Write $e=d+\Delta_d$ and $y=x+\Delta_x$. Each difference is a finite
+sum of atom errors, so the valuation inequality for sums gives
+$v(\Delta_d),v(\Delta_x)>\beta+\lambda$. Because $\lambda\ge0$,
+the perturbation $\Delta_d$ cannot change the leading term of $d$.
+Thus $e>0$ and $v(e)=v(d)=\beta$.
+Also $0\le x\le d$ implies $v(x)\ge\beta$: a smaller valuation
+would make positive $x$ dominate $d$. The case $x=0$ uses $v(0)=+\infty$.
+The exact difference is
+\[
+ \frac{x}{d}-\frac{y}{e}
+ =\frac{x\Delta_d-d\Delta_x}{de}.
+\]
+Both numerator terms have valuation greater than $2\beta+\lambda$,
+so their difference does too; cancellation can only raise that valuation.
+The denominator has valuation $2\beta$. Division proves the strict
+bound, including the case of an identically zero numerator.
 \end{proof}
 
 Consequently an approximation suitable for unconditional probabilities
-may be unusable after rare conditioning. To preserve a conditional answer
-through scale $\lambda$, one needs input errors beyond the event scale
-$\beta+\lambda$. Example~\ref{fsp:ex:shadowloss} demonstrates the qualitative
-issue: an infinitesimal unconditional discrepancy can become a real
-conditional discrepancy.
+may be unusable after rare conditioning. Input errors beyond the event scale $\beta+\lambda$ are a
+\emph{sufficient} contract for preserving a conditional answer through
+scale $\lambda$. They are not necessary for a particular pair of laws:
+$(1-2t,t,t)$ and $(1-4t,2t,2t)$ have the same conditional law on
+$B=\{2,3\}$, although their atom errors already have valuation $1=v(P(B))$.
+
+The strict inequality in the uniform contract cannot simply be weakened.
+Choose $\beta>0$, $\lambda\ge0$ in $\Gamma$, set
+$\eps=\tfrac12t^{\beta+\lambda}$, and take
+\[
+ p=(1-2t^\beta,t^\beta,t^\beta),\qquad
+ q=(1-2t^\beta,t^\beta+\eps,t^\beta-\eps).
+\]
+Both are positive laws, and the nonzero atom errors have valuation
+$\beta+\lambda$. On $B=\{2,3\}$ their first conditional coordinates
+differ by $t^\lambda/4$, of valuation exactly $\lambda$, not greater.
+At $\lambda=0$ this is a real discrepancy. These examples isolate the
+precision loss without asserting necessity when numerator and denominator
+errors happen to cancel.
 
 \subsection{Infinite prior odds are not ordinary dogmatism}
 
-If $0<p<1$, a nonzero likelihood can always change its odds algebraically.
-Nevertheless, an infinite prior logit cannot be brought to a finite logit
-by an ordinary finite number of bounded-real log-likelihood increments.
+For $0<p<1$ and any positive likelihood ratio $R\in K$,
+the posterior odds are $R\,p/(1-p)$. They change if and only if $R\ne1$;
+a neutral ratio leaves the prior exactly unchanged. With strictly positive
+likelihoods both posterior coordinates remain nonzero. An exact prior
+endpoint, by contrast, cannot be revived by multiplying its zero weight.
+
+An infinite prior logit cannot be brought to a limited logit by an
+ordinary finite number of log-likelihood increments bounded by real numbers.
 If $L$ is positive infinite and $|b_j|\le C\in\R$ for $j\le n$ with
-ordinary finite $n$, then $L+\sum_{j=1}^n b_j$ remains positive infinite.
-Thus the posterior shadow remains one although the exact posterior changes.
+ordinary finite $n$, then $|\sum_{j=1}^n b_j|\le nC$ is limited.
+For every real $M$, the inequality $L>M+nC$ gives
+$L+\sum_jb_j>M$, so the updated logit remains positive infinite.
+For such a logit $L'$, $\exp(-L')$ is a positive infinitesimal:
+for every positive real $a$, $L'>-\log a$ implies $\exp(-L')<a$.
+Hence the logistic posterior $1/(1+\exp(-L'))$ has shadow one,
+even when the exact posterior changes. If the increments sum to zero,
+the exact posterior is unchanged as well.
 A countervailing infinite-scale likelihood can overturn it. A statement
 about learning from an infinite data stream requires a chosen probability
 law on streams and a chosen limiting operation; it does not follow from
