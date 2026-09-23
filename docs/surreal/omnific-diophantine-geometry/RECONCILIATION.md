@@ -14,15 +14,20 @@ reviews the squarefree certificate and Weierstrass applications in
 Section 16.4. The next pass covers Section 16.5 through inheritance,
 completing the maintained Section 16 proof chain. Later passes cover the curve
 classification in Sections 17.1–17.2 and the arithmetic fibers, polynomial
-witnesses and separated-model descent in Section 17.3. Section 17.4 onward and 18,
+witnesses and separated-model descent in Section 17.3, followed by projective
+coordinates and coordinate ideals in Section 17.4. Sections 17.5–17.6 and 18,
 their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
-It does **not** certify integration of every result in the thirteen manuscripts
+It does **not** certify integration of every result in the fourteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. Projective coordinates, group varieties and subsequent
+present numbering. Singular curves, group varieties and subsequent
 geometric applications remain outside these passes. The review of Section 16
 includes the two-ring principle, symmetric differentials and inheritance.
+Source C16, integrated in `1ad4ad8`, adds seventeen standard results in
+Section 17.6 and updates the earlier singular-curve status notes. Its
+normalization criterion, conductor certificates and arithmetic applications
+are indexed but remain outside the completed proof review.
 
 ## Recoverable sources
 
@@ -964,3 +969,57 @@ All results in Section 17.3 and the added prose consequences remain
 **Pending** in Lean. The projective-coordinate section, subsequent geometric
 applications, earlier curve pointers and full source reconciliation remain
 to be reviewed.
+
+## Projective coordinates and the rational-point obstruction
+
+This pass reviews Section 17.4, Theorem 17.18 through Corollary 17.22,
+Example 17.23 and Remark 17.24. It distinguishes a nonzero homogeneous
+tuple, an invertible coordinate ideal and a unimodular tuple. A proper
+principal ideal is invertible; invertibility does not assert the unit
+ideal. The coordinate-point proof explicitly identifies the generic
+quotient with the given tuple and factors through the closed target by
+injectivity into the ambient field. The unimodular proof explains how
+the constant-term identity forces the remaining scalar to be one.
+
+For the full-class coordinate-ideal theorem, the proof now chooses finitely
+many `b_i` with `Σ a_i b_i = 1` and every `a_j b_i ∈ Oz`. Numerators and
+denominators of the `b_i`, the original coordinates, and these products
+fit into a common workspace. Their identities make the two generated
+fractional ideals inverse there. Finite witnesses, not a Noetherian
+hypothesis or a spectrum of a class-sized ring, justify the descent.
+The Gaussian corollary explains primitive `ℤ[i]` coordinates and the
+four unit factors `±1, ±i`.
+
+The comparison with the fraction section contained a false extra claim:
+“Both agree that a principal coordinate ideal means a rational point.”
+On a rational curve, `[ω:1]` is already a counterexample: its coordinate
+ideal is `Oz` and its constant-term specialization is the rational point
+`[0:1]`, but it is not a `ℚ`-point. The earlier rational-curve theorem
+tests specialization; the current theorem tests the point itself under
+the rigidity hypothesis. The statements agree for constant directions.
+The source-08 corollary in Section 15 already states the correct criterion;
+the mistake was in this cross-section comparison, not in that corollary.
+The shared notation guide also distinguishes the constant-term value
+`[0:1]` from projective standard part `[1:0]` in this example.
+
+The elliptic example now checks the point at infinity, explains that
+`ω+n` and `ω/2+n` are positive for every ordinary integer `n`, and
+distinguishes redundancy of `Mx` in the ideal from divisibility of `My`
+by `M`. Its displayed nonunit common divisor shows why it does not answer
+the primitive Fermat question. The field-point remark separates existence
+of a square root from detection of a negative tail: a singular cubic can
+have both coordinates in `Oz`. The explicit nonsingular binomial examples
+do have the displayed negative coefficients.
+
+The proofs were compared with C12's projective-coordinate section through
+its elliptic denominator example, from `omnific_curve_rigidity/article.tex`
+in `c6359e4^:docs/new/omnific_curve_rigidity (1).zip`, and C14's unimodular
+coordinate theorem and rational-projective corollaries, from the same member
+name in `c6359e4^:docs/new/omnific_curve_rigidity (2).zip`. The imported
+[invertible-quotient description of projective space](https://stacks.math.columbia.edu/tag/01ND)
+was checked for its precise generating-section hypothesis. This is targeted
+source comparison, not complete reconciliation of C10–C15.
+
+All five standard results in Section 17.4 retain their statements, and all
+remain **Pending** in Lean. Singular curves in Section 17.5, Section 18,
+earlier curve pointers and full source reconciliation remain to be reviewed.

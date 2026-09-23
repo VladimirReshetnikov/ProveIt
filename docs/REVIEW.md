@@ -3643,6 +3643,172 @@ cited source references resolve, local Markdown destinations pass, and
 by this merge and remains 179 pages. This synchronization adds no Lean
 coverage for the reviewed geometric arguments.
 
+## Projective-coordinate proof review
+
+The Diophantine review now covers Section 17.4: the unimodular theorem,
+invertible-quotient construction, coordinate-ideal classification, rational
+projective corollary, elliptic example and field-point remark. The proofs
+distinguish invertibility from generating the unit ideal, identify the
+generic quotient coordinates, and explain the scalar step that recovers
+the original unimodular tuple. The full-class ideal theorem now exhibits
+finite inverse-ideal witnesses and includes their numerators, denominators
+and products in one workspace. The Gaussian case includes its four units.
+
+The cross-section claim that both the rational-curve and rigid-target
+results make a principal coordinate ideal imply a rational point was false.
+The counterexample `[ω:1]` has coordinate ideal `Oz` and rational
+constant-term specialization `[0:1]`, but is not a `ℚ`-point. The revised
+comparison keeps rational specialization distinct from rationality of the
+point itself and retains the rigid-target hypothesis. The notation guide
+also distinguishes this constant-term specialization from projective
+standard part `[1:0]`.
+
+The elliptic example now checks smoothness at infinity and gives the
+support inequalities behind its clearing monomial and common nonunit
+divisor. The field-point remark distinguishes square-root existence from
+the negative-tail obstruction and explains Hahn summability. Targeted C12
+and C14 comparisons and the projective-space reference are recorded in
+the report reconciliation. No theorem statement changes and no new Lean
+coverage is claimed. Section 17.5, later applications and full source
+reconciliation remain pending review.
+
+The three-pass article/catalogue builds produce 180/32 pages without
+warnings, unresolved references or bad boxes. Article PDF pages 114–117
+and catalogue pages 9–10 were inspected. All 200 standard statements,
+416 labels and existing numbers are unchanged. SymPy 1.14.0 verifies the
+displayed elliptic expansion through exponent −9, its squared identity
+to that order, the discriminant and the derivative at infinity; these
+finite checks do not prove the ideal classification. The independent
+inventory audit checks 3,759 results in 61 reports; all 4,301 cited source
+references resolve and the 1,562 local Markdown destinations pass.
+No Lean source changed in this review.
+
+## Profinite and separation-topology synchronization
+
+Merged upstream through `efc5446`, including the profinite topology work
+in `4a5bc50` and the arithmetic separation homeomorphisms. The ordinary
+congruence inverse limit now has its product-subspace topology, with
+compactness for finite residues, Hausdorffness, total disconnectedness
+and a dense canonical map. The actual omnific-to-integer comparison is
+both a ring isomorphism and a homeomorphism, and the canonical map from
+the congruence topology is dense inducing; its kernel remains `Π`.
+The ordinary and prime-adic separation quotients are likewise homeomorphic
+to `ℤ` with their respective arithmetic topologies. The separate
+uniform-space completion comparison and the prime-adic completion
+homeomorphism remain **Pending**. None of these arithmetic results
+formalizes the geometric arguments reviewed above.
+
+No manuscript source changed in this merge. The new generic topology
+modules and their actual omnific instantiations were read against the
+updated implementation mappings. With no other Lean process active,
+`LEAN_NUM_THREADS=2 lake build` passes all 4,422 jobs; the axiom audit
+passes 15,076 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent inventory checks 3,759 standard results
+across 61 reports, all 4,301 cited source references resolve, and all
+1,567 local Markdown destinations across 185 files pass. The article
+and catalogue remain the previously validated 180/32-page versions.
+
+## Large-cardinal and independent-copies synchronization
+
+The next publication attempt encountered upstream through `ce272a7`.
+The merge is documentation-only: `de45cee` assembles the three
+large-cardinal manuscripts, `781b19e` writes the single independent-copies
+manuscript, and `aa268a4` delivers nine further archives awaiting placement.
+The index now includes all 76 standard environments of the large-cardinal
+report, replacing the base's 32, and refreshes the independent-copies
+report's 29 entries and its three additional main-theorem references to
+their `isc:` labels. Its 34-page PDF and the new 80-page large-cardinal PDF
+are present. All 61 reports now have PDFs; the catalogue, reader map and
+root README no longer describe the large-cardinal write as pending.
+
+The newly added same-reals inner-model application in
+`dsn:rem:largecardinal` points to `lce:lem:absolute`. Its scope and the
+large-cardinal and independent-copies additions remain pending independent
+proof review, source reconciliation and Lean formalization. No existing
+mapped theorem changes in this merge. This record verifies navigation
+and integration, not the incoming proofs or their imported foundations.
+
+The independent inventory passes for 3,803 standard results in 61 reports,
+including 3,784 labeled and 19 unlabeled entries. All 4,347 cited source
+references resolve and all 1,575 local Markdown destinations pass.
+The catalogue builds in three passes to 32 pages without warnings or bad
+boxes; its changed entries on pages 11 and 32 were inspected. No Lean
+source changed, so the preceding 4,422-job build and 15,076-declaration
+audit apply without another build. The Diophantine review boundary and
+its validated 180-page article are unchanged.
+
+## Singular-curve and automatic-summability integration
+
+Merged the next upstream publication through `889b87c`, including
+`1ad4ad8` (Diophantine source C16) and `d4d72d7` (automorphism source 14).
+The Diophantine report now has fourteen manuscripts and 217 standard
+results; the automorphism report has nine manuscripts and 140 standard
+results. The ledger adds all seventeen singular-curve results and six
+automatic-summability results. The catalogue and reader map now describe
+these additions without treating their mathematical review as complete.
+The six other batch-31 companions still await integration.
+
+The merge preserves every one of the previous 200 Diophantine statements
+and 134 automorphism statements, apart from source-credit additions.
+The projective-coordinate proof corrections survive intact. The index
+conflict was resolved from the current sources, and the Diophantine PDF
+conflict by rebuilding the merged article. All existing Diophantine label
+numbers are unchanged. The three-pass article build has 198 pages, with
+no warnings, unresolved references or bad boxes; pages 117–118 at the
+reviewed/unreviewed transition were inspected. The catalogue builds cleanly
+in three passes to 32 pages, with the changed continuation pages inspected.
+
+The independent inventory passes for 3,826 standard results across 61
+reports, including 3,807 labeled and 19 unlabeled entries. All 4,370 cited
+source references resolve and all 1,575 local Markdown destinations pass.
+No Lean source changed; the passing 4,422-job build and 15,076-declaration
+audit remain applicable. Sections 17.5–17.6 and 18 of the Diophantine report,
+the new automorphism arguments and remaining imported foundations still
+need independent proof review. In particular, indexing the normalization
+criterion does not justify using a normalization lift without proof.
+
+## Prime-adic topology and finite-test synchronization
+
+Merged upstream through `cb55b52`: `8eee62a` proves the prime-adic
+completion homeomorphism, and `9b463f7` adds quotient source 22 on finite
+tests at new scales. The topology proof compares residue neighborhoods
+with Mathlib's existing metric on the p-adic integers. Its canonical map
+is dense inducing with the same constant-term formula and kernel. The
+generic topology modules and actual omnific instance were read against
+the ledger; `LEAN_NUM_THREADS=2 lake build` passes 4,427 jobs and the axiom
+audit passes 15,107 declarations using only `propext`, `Classical.choice`
+and `Quot.sound`. The separate uniform-space completion comparison remains
+pending, but both inverse-limit topological identifications are now proved.
+
+The quotient report now assembles nineteen manuscripts, with 277 standard
+results and nine separately styled main theorems. The twelve new standard
+results and the expanded `osq:main:polynomial` remain pending independent
+proof review and Lean formalization. The earlier standard statement bodies
+are unchanged; only source credits are added. The reader map, catalogue
+and ledger reflect the new scope and the five remaining batch-31 companions.
+The independent inventory passes for 3,838 results in 61 reports; all
+4,382 cited source references and 1,578 local Markdown destinations resolve.
+The catalogue again builds cleanly in three passes to 32 pages, and its
+updated quotient entry was inspected. No Diophantine source or review
+boundary changed in this merge.
+
+## Support-bound and fraction-clearing synchronization
+
+Merged upstream through `0b71362`, including the actual-surreal support
+bounds and fraction-clearing proofs in `49da84e`. The new module and its
+mappings were checked against `odg:lem:setbounds`, `odg:thm:commondivisor`
+and `odg:thm:fractions`. Smallness is explicit in the carrier's lower
+universe, and the bounding exponent may leave a fixed Hahn workspace.
+The resulting `IsFractionRing` instance identifies the actual surreal
+field as a fraction field of its omnific subring. This adds no geometric
+normalization-lifting or projective-ideal coverage.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,428 jobs; the axiom audit passes
+15,123 declarations with only `propext`, `Classical.choice` and `Quot.sound`.
+No manuscript or PDF changes in this merge. The independent inventory
+still verifies 3,838 standard results in 61 reports, all 4,382 source
+references resolve, and all 1,581 local Markdown destinations pass.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
@@ -3676,7 +3842,7 @@ passes. This is integration validation, not a proof review of the new reports.
 
 ## Remaining scope
 
-The current collection has 57 main texts. The synchronization record above
+The current collection has 61 main texts. The synchronization record above
 states the latest omnific review boundary and the remaining companion
 integrations. Historical counts below identify the versions previously
 reviewed; they do not replace the current inventory.

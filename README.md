@@ -12,7 +12,7 @@ dependent results, reusing mathlib constructions.
   integers `Oz`), the surcomplex numbers `No[i]` (28), surquaternions (1),
   physics (2), and foundations and computation (8). Each has a LaTeX source,
   a README stating what it claims and what it does not, and usually finite
-  verification code.
+  verification code. All 61 reports now have typeset PDFs.
   Start with the [reader's guide](docs/README.md) and the
   [typeset catalogue](docs/manifest.pdf); the [notation guide](docs/NOTATION.md)
   reconciles local conventions, and the [formalization ledger](docs/FORMALIZATION.md)
@@ -184,8 +184,7 @@ completion is ring-isomorphic and homeomorphic to Mathlib's `ℤ_[p]` with
 its usual metric topology. The source has the inverse-limit topology of
 discrete prime-power quotients; it is compact, Hausdorff and totally
 disconnected. Its canonical map is dense and induces the original omnific
-`p`-adic topology. This map takes
-the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
+`p`-adic topology. This map takes the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
 infinite ideal. Both the ordinary congruence topology and each `p`-adic
 topology are proved non-Hausdorff: the closure of zero is precisely that
 ideal, and two omnific integers are topologically indistinguishable exactly
@@ -201,12 +200,38 @@ finite-index omnific ideal occurs in the diagram. With the inverse-limit
 topology this isomorphism is also a homeomorphism of compact Hausdorff,
 totally disconnected topological rings. The canonical map has dense image
 and induces exactly the omnific congruence topology. Higher Diophantine
-and general set-sized quotient results remain pending; source review is distinct from checked formalization.
+and general set-sized quotient results remain pending; source review is
+distinct from checked formalization.
+
+The actual surreal field is also proved to be a field of fractions of its
+omnific subring, using Mathlib's `IsFractionRing`. One positive Conway
+monomial simultaneously clears every member of a small surreal family into
+the purely infinite ideal. Conversely, every small family in that ideal
+has a common positive monomial divisor with purely infinite quotients.
+Each nonzero purely infinite element therefore factors into two nonzero
+purely infinite nonunits. These arguments use bounds on the union of the
+actual normal-form supports; the new exponent can leave any previously
+chosen Hahn workspace. Smallness is explicit in the carrier's lower universe.
+
+The purely infinite ideal `Π` satisfies `Π² = Π` and has no small set of
+ideal generators; in particular it is not finitely generated. Its cotangent
+module `Π/Π²` vanishes even though `Π` is nonzero. Every positive ideal-power
+quotient is `ℤ`, and completion at `Π` is the discrete integer ring, with
+constant extraction as the canonical map. No finite product of irreducibles
+belongs to `Π`. Any homomorphism sending `Π` into a nilpotent ideal of any
+target ring kills `Π` entirely.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
 Its class constructions and proofs remain pending in Lean.
+
+The expanded [critical-point-defects report](docs/foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
+compares two actions of a large-cardinal embedding on surreal normal forms.
+Its three manuscripts describe an exact support threshold for their agreement,
+measure recovery from a defect coefficient, and criteria for the transformed
+series to belong to the target model. These are conditional research claims;
+independent proof review and Lean formalization remain pending.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
@@ -226,7 +251,9 @@ Hahn support ring when the exponent group is nonzero. The proof explains descent
 and the role of geometric punctures. The arithmetic review shows that an
 integer polynomial parametrization covers each entire exceptional fiber,
 including infinite-support points; a finite-support witness can always be
-chosen in the same fiber. These curve and fiber results remain pending in Lean.
+chosen in the same fiber. The projective review makes the coordinate-ideal
+obstruction explicit and separates rational points from rational specialization.
+These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

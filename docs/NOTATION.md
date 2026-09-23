@@ -120,6 +120,15 @@ order topology; its degree topology is a different, non-discrete topology.
 The focusing matrix `F_{x,b}`
 is the identity when `b = 0`; its value `x + 1/b` at infinity requires `b ≠ 0`.
 
+For projective coordinates over a domain, an invertible coordinate ideal
+need not be the unit ideal; only the latter means that the tuple is
+unimodular. On a rigid projective target, the Diophantine report proves
+that invertible omnific coordinate ideals detect ordinary rational points.
+On rational curves its earlier criterion instead tests constant-term
+specialization. For `[ω:1]`, that specialization is `[0:1]`, while projective
+standard part is `[1:0]`, computed in the reciprocal chart. The point itself
+is not rational, although its coordinate ideal is the unit ideal.
+
 The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
 Its rational residue `res` has domain `Oz_Π`; standard part `st` has
 domain the finite surreals. On their common domain, the maps agree

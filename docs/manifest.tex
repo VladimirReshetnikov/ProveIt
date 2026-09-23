@@ -120,9 +120,7 @@ That is why an entry may refer to a merge, a duplicate sweep or a delivery
 number: those describe how the report reached its present form, and the
 record is kept rather than rewritten.
 
-Each directory holds a \LaTeX{} source and a \texttt{README.md}. Every report
-has a typeset article except the critical-point-defects base placed in
-\texttt{21375f8}, whose write phase is pending.
+Each directory holds a \LaTeX{} source, a \texttt{README.md} and a typeset article.
 Most include verification code and its recorded output.
 Source manuscripts for merged reports remain in Git history; their
 provenance notes record contributions and editorial choices. These are
@@ -162,8 +160,8 @@ report later absorbed two independent re-derivations of its own theorem, and
 the measures report merges five manuscripts, the vector-field report three
 and the three-space report four; the others are single manuscripts.
 The omnific reports are all merges, grown by later additions: the
-Diophantine report assembles thirteen manuscripts, the quotient report
-eighteen, the preserving-automorphism report five, the groups and lattices
+Diophantine report assembles fourteen manuscripts, the quotient report
+nineteen, the preserving-automorphism report nine, the groups and lattices
 report four and the initial-subgroup report two. Assembly, independent proof
 review and Lean coverage are separate; the ledger maps the ring and
 constant-term package, degree laws, units, finite elements and exact
@@ -639,7 +637,7 @@ refereed, no Lean verification, priority not certified.}
 
 \entry{Omnific integers and omnific--Diophantine geometry}
 {surreal/omnific-diophantine-geometry}
-{article.pdf}{thirteen manuscripts, delivered 22--23~September 2026}
+{article.pdf}{fourteen manuscripts, delivered 22--23~September 2026}
 {What do Diophantine equations look like over Conway's omnific integers
 $\Oz=\Pi\oplus\Z$?  The theory is organized around the ring retraction
 $\mathrm{ct}:\Oz\to\Z$ onto the constant coefficient: an integer system has an
@@ -657,7 +655,10 @@ $m,n\ge2$) rigid, and more generally, over the one-sided ring, give only
 constant points on every smooth affine curve other than the affine line, on
 nonsingular Weierstrass cubics, abelian and semiabelian varieties, proper
 varieties with enough symmetric differentials, and logarithmic complements
-whose logarithmic forms separate tangent directions.  Pell rigidity with the
+whose logarithmic forms separate tangent directions. The new singular-curve
+companion claims that a geometrically integral affine curve has nonconstant
+points exactly when its normalization is the affine line; this addition
+awaits proof review. Pell rigidity with the
 three- or four-square theorem gives single quartic equations defining $\Z$
 in $\Oz$; $x^2=2y^2$ defines $\Pi$, one order-free system defines $\Z$ in
 $\Oz$ and $\Z[i]$ in $\Oz[i]$, and the graph of $\mathrm{ct}$ is Diophantine,
@@ -667,8 +668,7 @@ that $\Oz[i]$ does not determine the real axis.  Fractions: a point with a
 unimodular presentation has unique lowest terms or no gcd at all, according
 as its standard part is rational, and the specialization fibers are dense
 orbits of the congruence kernel of $\mathrm{SL}_2(\Oz)$.  \emph{Assembled
-from thirteen manuscripts in five writes, \texttt{bbdd536} to
-\texttt{2da3bd4}; the report states which source proved each result and
+from fourteen manuscripts through \texttt{1ad4ad8}; the report states which source proved each result and
 prints shared results once.}  A proof review covers the original material of
 Sections 1--10 and Sections 11--15 and 19, with corrections recorded in
 \texttt{RECONCILIATION.md}. The Gaussian-fiber and \'etale-norm additions
@@ -683,19 +683,21 @@ descent and the logarithmic argument, correcting the real-circle boundary
 example. Section 17.3 now also has a proof review of exact arithmetic fibers,
 integer polynomial arcs and separated-model descent. It distinguishes fixed
 workspace fibers from proper classes and explains why denominator clearing
-preserves the whole purely infinite fiber. Projective coordinates and subsequent
+preserves the whole purely infinite fiber. Section 17.4 now has a proof review
+of projective coordinates and their ideal obstruction, correcting a conflation
+of rational specialization with rational points. Singular curves and subsequent
 applications, their pointers and later additions await review. Lean covers the ring and constant-term
 package, degree laws, units and finite elements, the exact omnific floor,
 ordinary polynomial-root rigidity, ordinary residue rings and divisors
 of nonzero ordinary integers, mixed gcds, Chinese remainders and all
-finite quotients. Not claimed: a classification of singular curves or
+finite quotients. Not claimed: a classification of
 affine varieties of higher dimension, primitive non-unimodular
 Fermat triples, or squarefree rigidity
 in positive characteristic. Not refereed, priority not certified.}
 
 \entry{Set-sized quotients of the omnific integers}
 {surreal/set-sized-quotients-of-omnific-integers}
-{article.pdf}{eighteen manuscripts, delivered 22--23~September 2026}
+{article.pdf}{nineteen manuscripts, delivered 22--23~September 2026}
 {Can the omnific integers be seen from a set?  For a unital subring $D$ of a
 set field $K$ and $\Pi_K$ the purely infinite normal forms over $K$, every
 additive multiplicative map from $D+\Pi_K$ to a set-sized ring, commutative
@@ -722,17 +724,18 @@ not finitely presented, $\Oz$ is not coherent, and derived tensor data
 recover the multiplication of an order.  The Grothendieck ring of the
 ordinals under natural operations is not a quotient of $\Oz$, a negative
 answer to the addendum of Elliott's MathOverflow question 188430.
-\emph{Assembled from eighteen manuscripts in five writes, \texttt{7494d53} to
-\texttt{a8f35b5}; where sources prove one theorem under different hypotheses,
+The new finite-test chapter gives criteria using a scale outside the
+coefficient support group; it awaits proof review.
+\emph{Assembled from nineteen manuscripts through \texttt{9b463f7}; where sources prove one theorem under different hypotheses,
 as for the cardinal thresholds, the most general form is printed and the
-agreement explained, and all 240 source limitations are kept.}  Not claimed:
+agreement explained, and the source limitations are kept.} Not claimed:
 the general fixed-group threshold, the homological dimensions of $\Oz$
 itself, the isomorphism type of the Boolean algebra.  Proof review pending;
 not refereed, no Lean formalization, priority not certified.}
 
 \entry{Omnific-preserving automorphisms}
 {surreal/omnific-preserving-automorphisms}
-{article.pdf}{eight manuscripts, delivered 23~September 2026}
+{article.pdf}{nine manuscripts, delivered 23~September 2026}
 {Which automorphisms of a Hahn field preserve its omnific integer part?  For
 $K=k((t^\Gamma))$, $k$ of characteristic zero and $\Gamma$ divisible,
 including $\Gamma=\No$ and so $\Oz$ and $\Oz[i]$, a strong $k$-linear
@@ -757,12 +760,13 @@ imported, and the statements depending on it are marked.} Part~III, added
 in \texttt{20c4c9f}, claims automatic strongness of every $\Oz$-automorphism
 and proper strong embeddings moving real coefficients. Strongness for
 arbitrary $\Oz[i]$-automorphisms without conjugation or valuation compatibility
-remains open in the report. The new claims await proof review and Lean
+remains open in the report. Source 14 adds automatic summability criteria
+and formal-power-series covariance in Part~IV. The new claims await proof review and Lean
 formalization; not refereed, priority not certified.}
 
 \entry{Independent surreal copies and arithmetic intersections}
 {surreal/independent-surreal-copies}
-{article.pdf}{one manuscript, placed in \texttt{9d28e28}, 23~September 2026}
+{article.pdf}{one manuscript, written in \texttt{781b19e}, 23~September 2026}
 {Proposed strong self-embeddings with prescribed common full Hahn field on a
 set-sized divisible exponent subgroup, finite-family linear disjointness,
 and preservation and reflection of omnific integers. The report distinguishes
@@ -2260,16 +2264,17 @@ pending; not refereed, no Lean formalization, priority not certified.}
 
 \entry{Critical-point defects in surreal arithmetic}
 {foundations-and-computation/large-cardinal-embeddings-and-normal-forms}
-{article.tex}{three manuscripts, placed in 21375f8; write phase pending}
+{article.pdf}{three manuscripts, written in \texttt{de45cee}, 23~September 2026}
 {How does an elementary embedding $j:V\to M$ with critical point $\kappa$ act
 on surreal numbers?  Applying $j$ to sign sequences and applying it termwise
-to the exponents of a Conway normal form are different maps.  The placed base
+to the exponents of a Conway normal form are different maps. The report
 claims that they agree exactly on normal forms with fewer than $\kappa$ terms,
 that their difference is an explicit subseries, and that the defect of a
 Boolean mask records membership in the normal measure derived from $j$, with
-omnific and surcomplex versions.  A measurable cardinal supplies an instance.
-\emph{A placed base with two companions; the merge, collection README and
-typeset article await the write phase.}  Not refereed, no Lean
-formalization, priority not certified.}
+omnific and surcomplex versions. The companions add criteria for descent to
+the target model, support covers and omnific algebraic independence.
+A measurable cardinal supplies an instance of the hypotheses; its existence
+is not asserted. Independent proof review and source reconciliation remain
+pending. Not refereed, no Lean formalization, priority not certified.}
 
 \end{document}
