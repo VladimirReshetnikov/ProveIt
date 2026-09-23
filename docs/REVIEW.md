@@ -3792,6 +3792,23 @@ The catalogue again builds cleanly in three passes to 32 pages, and its
 updated quotient entry was inspected. No Diophantine source or review
 boundary changed in this merge.
 
+## Support-bound and fraction-clearing synchronization
+
+Merged upstream through `0b71362`, including the actual-surreal support
+bounds and fraction-clearing proofs in `49da84e`. The new module and its
+mappings were checked against `odg:lem:setbounds`, `odg:thm:commondivisor`
+and `odg:thm:fractions`. Smallness is explicit in the carrier's lower
+universe, and the bounding exponent may leave a fixed Hahn workspace.
+The resulting `IsFractionRing` instance identifies the actual surreal
+field as a fraction field of its omnific subring. This adds no geometric
+normalization-lifting or projective-ideal coverage.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,428 jobs; the axiom audit passes
+15,123 declarations with only `propext`, `Classical.choice` and `Quot.sound`.
+No manuscript or PDF changes in this merge. The independent inventory
+still verifies 3,838 standard results in 61 reports, all 4,382 source
+references resolve, and all 1,581 local Markdown destinations pass.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
