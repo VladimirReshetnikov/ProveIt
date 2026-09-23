@@ -548,3 +548,6 @@ import Surreal.Surcomplex.FejerRieszCayley
 import Surreal.Algebra.CayleyBoundaryCoefficients
 import Surreal.Surcomplex.FejerRieszBoundary
 import Surreal.Surcomplex.FejerRieszExistence
+import Surreal.Surcomplex.PolynomialRootReflection
+import Surreal.Surcomplex.PolynomialPositiveNormalization
+import Surreal.Surcomplex.FejerRieszNormalization
