@@ -398,9 +398,9 @@ The independent statement-index audit checks all 1,754 entries across
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
-now cover all 36 canonical reports. The [notation guide](NOTATION.md) was
+now cover all 40 canonical reports. The [notation guide](NOTATION.md) was
 checked across the earlier 26-report collection; checking every convention in
-the ten additions and six expanded reports remains pending. The guide records
+the fourteen additions and all expanded reports remains pending. The guide records
 meaningful differences rather than treating shared names as definitions:
 coefficient domains, support orientation, scalar standard part versus function
 reduction, topologies, strong sums, derivatives, phases and computational names.
@@ -415,9 +415,31 @@ counts and line hints against the merged sources. The catalogue and the three
 reports with overlapping PDF changes were rebuilt from their merged LaTeX;
 this checks the integration, not the new mathematical claims.
 
+The merge from `7657737` adds batch 19 to the current index: 1,946 standard
+statements across all 40 reports, with labels, headings, counts and line hints
+checked independently. All 804 local Markdown destinations in 87 files resolve.
+The differential-equations merge preserves the expanded multiple-zero proofs
+and the upstream critical-potential part. Its PDF rebuilt in three passes at
+189 pages, with no warnings or box issues, against a clean 188-page upstream
+baseline; the changed proof pages were inspected. All 51 delivered code, data
+and source-log files in that report remain byte-identical to the upstream
+version, and the source from Part VII onward is unchanged. The combined Lean
+build passes 3,872 jobs and the 5,880-declaration axiom audit. These integration
+checks do not review the newly added mathematics.
+
 ## Remaining scope
 
-All ten reports added on September 22 have received the main-text proof
+Batch 19 adds four reports whose mathematical proofs have not yet received
+this review: [three duals](surcomplex/three-duals-of-hahn-vector-spaces/),
+[hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/),
+[transcendence over bounded support](surreal/transcendence-over-bounded-support/)
+and [matrix scaling](surreal/matrix-scaling-at-surreal-scales/).
+Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral
+theory and transfinite critical-potential additions also remain pending.
+Their inclusion in the statement index does not extend an earlier proof-review
+scope or establish Lean coverage.
+
+All ten reports from the earlier September 22 integration have received the main-text proof
 reviews recorded above, including both parts of infinite-dimensional
 spectral theory and Sections 2–21 of Hahn–Tate uniformization. This does not
 complete the imported-result and source-reconciliation work.

@@ -15,7 +15,7 @@
 \titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{.65em}{}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Infinite-dimensional Hahn spectral theory}
-\fancyhead[R]{\small Two spectra on two vector spaces}
+\fancyhead[R]{\small Spectra relative to named spaces and algebras}
 \fancyfoot[C]{\thepage}
 \setlength{\parskip}{.26em}
 \setlength{\parindent}{1.1em}
@@ -100,35 +100,65 @@
 \newcommand{\ip}[2]{\langle#1,#2\rangle}
 \newcommand{\commitA}{608dd23c0539fce73723843949ee627641c27b30}
 \newcommand{\commitB}{a3124af79f66b8b9c196d76b4cbc5ac3938907c4}
+\newcommand{\commitC}{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}
+% Part III (Drazin halos) and Part IV (Fredholm windows)
+\newcommand{\Alg}{\mathfrak A}
+\newcommand{\AlgG}{\mathfrak A_\Gamma}
+\newcommand{\SigA}{\Sigma^{\Alg}_\Gamma}
+\newcommand{\sigD}{\sigma_{\mathrm D,\Alg}}
+\newcommand{\acc}{\operatorname{acc}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\Tr}{\operatorname{tr}}
+\newcommand{\Det}{\operatorname{Det}_\Gamma}
+\newcommand{\TT}{\mathscr T}
+\newcommand{\SH}{\mathcal S_1(H)}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-\hypersetup{pdftitle={Infinite-Dimensional Hahn Spectral Theory},pdfauthor={Research manuscript for the Surreal project},pdfsubject={Two inequivalent infinite-dimensional spectra over a Hahn scalar field}}
+\hypersetup{pdftitle={Infinite-Dimensional Hahn Spectral Theory},pdfauthor={Research manuscript for the Surreal project},pdfsubject={Inequivalent infinite-dimensional spectra over a Hahn scalar field}}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{0mm}
+\vspace*{12mm}
 {\large\scshape A research manuscript for the Surreal project\par}
-\vspace{3mm}
+\vspace{10mm}
 {\Huge\bfseries\color{Ink} Infinite-Dimensional\\[.15em] Hahn Spectral Theory\par}
-\vspace{3mm}
-{\LARGE Part I: infinitesimal thickening and range defects\\[.15em]
+\vspace{10mm}
+{\Large Part I: infinitesimal thickening and range defects\\[.1em]
  in Hahn--Hilbert spaces\par}
-\vspace{2mm}
-{\LARGE Part II: exact synthesis and algebra-relative spectra\\[.15em]
+\vspace{4mm}
+{\Large Part II: exact synthesis and algebra-relative spectra\\[.1em]
  for row- and column-finite Hahn matrices\par}
-\vspace{3mm}
+\vspace{4mm}
+{\Large Part III: Drazin halos and ramified spectral mapping\\[.1em]
+ in arbitrary Hahn operator algebras\par}
+\vspace{4mm}
+{\Large Part IV: Fredholm windows for compact self-adjoint\\[.1em]
+ operators under noncommuting Hahn perturbations\par}
+\vspace{10mm}
 {\large September 22, 2026\par}
-\vspace{3mm}
-\begin{minipage}{.95\textwidth}
+\vfill
+\begin{minipage}{.97\textwidth}\small
+\textbf{Status.} Four candidate original theorem packages, each with
+explicit proofs and its own documented literature comparison. None claims to
+solve a named published open problem. Priority is not certified for any of
+them. The general proofs have not been independently refereed or checked by
+a proof assistant. The four accompanying programs check finite algebraic
+identities, not the infinite-dimensional theorems. Classical Hilbert,
+Drazin, Fredholm, Hahn--Neumann, Higman and surreal normal-form inputs are
+identified rather than presented as new.
+\end{minipage}
+\newpage
+\thispagestyle{empty}
+\begin{minipage}{.97\textwidth}\small
 \begin{abstract}
 \noindent
-This report assembles two independent infinite-dimensional spectral theories
-over one Hahn scalar field $\K=\C((t^\Gamma))$. They are printed together
-because they continue the same non-claim of the collection's
-finite-dimensional spectral report, and they are printed as two parts because
-the word \emph{spectrum} does not mean the same thing in them, the vector
-spaces and operator algebras are different. Both parts now allow arbitrary
-nonzero set-sized ordered value groups.
+This report assembles four infinite-dimensional spectral theories over one
+Hahn scalar field $\K=\C((t^\Gamma))$. They are printed together because
+they continue the same non-claim of the collection's finite-dimensional
+spectral report, and they are printed as separate parts because the word
+\emph{spectrum} does not mean the same thing in them: the vector spaces and
+operator algebras are different. Parts I--III allow arbitrary nonzero
+set-sized ordered value groups; Part IV assumes $\Gamma$ divisible.
 
 \emph{Part I} fixes an ordinary complex Hilbert space $H$ and a nonzero
 set-sized ordered abelian group $\Gamma$, and studies
@@ -158,21 +188,30 @@ eigenvalue set, even when the real residues accumulate. Weighted walks
 control every coefficient, and a sharp order $2r+2$ finite-section threshold
 holds for one-scale locally finite graphs.
 
-\Cref{ihs:sec:interface} states the interface: what the two spectra are,
-why the accumulation statements of the two parts are not in conflict, and
-which hypothesis is doing the work in each.
+\emph{Part III} takes any nonzero unital complex algebra $\Alg$ and proves
+that the spectrum of a constant $T\in\Alg$ relative to $\Alg((t^\Gamma))$ is
+$\sigma_\Alg(T)\cup(\sigma_{\mathrm D,\Alg}(T)+\mK)$, with
+$\sigma_{\mathrm D,\Alg}$ the finite-index Drazin spectrum, without
+normality, norm or divisibility. For $\Alg=\mathcal B(H)$ this is Part~I's
+adjointable-algebra spectrum, and it recovers that half of Part~I's normal
+formula; for $\Alg=\RCF_I(\C)$ it is Part~II's spectrum of constant
+matrices. A ramification criterion decides exactly when polynomial spectral
+mapping holds over a nondivisible $\Gamma$.
+
+\emph{Part IV} returns to $H((t^\Gamma))$ with $\Gamma$ divisible. For an
+injective compact self-adjoint $T$ and a self-adjoint Hahn perturbation $E$
+of positive order that need not commute with $T$, the spectrum of $T+E$ is
+the whole monad $\mK$ together with finite Hermitian eigenvalue clusters over
+the nonzero eigenvalues of $T$. These local pieces do not assemble: a
+trace-class example has no Hahn-unitary diagonalizer with bounded
+coefficients and no coefficientwise eigenvalue trace sum or determinant
+product, although a coefficientwise Fredholm determinant with an exact
+Fredholm alternative exists.
+
+\Cref{ihs:sec:interface} states the interface: what the spectra are, why the
+accumulation statements of the parts are not in conflict, and which
+hypothesis is doing the work in each.
 \end{abstract}
-\end{minipage}
-\vfill
-\begin{minipage}{.95\textwidth}\small
-\textbf{Status.} Two candidate original theorem packages, each with explicit
-proofs and its own documented literature comparison. Neither claims to solve
-a named published open problem. Priority is not certified for either. The
-general proofs have not been independently refereed or checked by a proof
-assistant. The two accompanying programs check finite algebraic identities,
-not the infinite-dimensional theorems. Classical Hilbert, Hahn--Neumann,
-Higman and surreal normal-form inputs are identified rather than presented
-as new.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -184,9 +223,9 @@ as new.
 \part*{Shared front matter}
 \addcontentsline{toc}{part}{Shared front matter}
 
-\section{Why this is one report, and why it is two parts}\label{ihs:sec:intro}
+\section{Why this is one report, and why it is four parts}\label{ihs:sec:intro}
 
-\subsection{The non-claim that both parts continue}\label{ihs:sec:nonclaim}
+\subsection{The non-claim that the parts continue}\label{ihs:sec:nonclaim}
 The collection already contains a substantial finite-dimensional spectral
 report: Hermitian diagonalization, singular values, conditioning,
 determinantal scales, spectral descent, and ramification of positive matrix
@@ -198,10 +237,15 @@ integer. That report closes by listing, in its own words, what it does
 $\No[i]$, bounded-operator spectra, compact or trace-class operators,
 or spectral measures.''
 \end{quote}
-The two manuscripts assembled here supply the first two of those items and
-the compact half of the third. Trace-class theory and a classical
-Hilbert-space spectral-measure theory are not developed; Part II supplies
-an algebraic projection calculus with vectorwise Hahn additivity.
+The first two manuscripts assembled here (Parts I and II) supply the first
+two of those items and the compact half of the third. The two later ones add
+to the second and third items: Part III computes the algebra-relative
+spectrum of every constant bounded operator, normal or not, and Part IV
+treats compact self-adjoint operators under noncommuting infinitesimal
+perturbations and supplies a coefficientwise trace and Fredholm determinant.
+A general trace-class theory and a classical Hilbert-space spectral-measure
+theory are still not developed; Part II supplies an algebraic projection
+calculus with vectorwise Hahn additivity.
 
 \begin{itemize}
 \item \emph{Infinite-dimensional Hilbert spaces over the surcomplex
@@ -210,14 +254,27 @@ an algebraic projection calculus with vectorwise Hahn additivity.
  exactly.
 \item \emph{Bounded-operator spectra.} \Cref{ihs:hh:thm:spectrum} computes
  the spectrum of the scalar extension of every ordinary bounded normal
- operator.
+ operator. \Cref{ihs:dz:thm:halo} computes, for every constant element of
+ any unital complex algebra, its spectrum relative to the Hahn extension of
+ that algebra; for bounded operators this is the adjointable-algebra
+ spectrum of Part~I, and the Volterra operator shows that isolated spectral
+ points of nonnormal operators can acquire whole halos
+ (\cref{ihs:dz:sec:volterra}).
 \item \emph{Compact operators.} \Cref{ihs:hh:cor:compact} does the same for
  ordinary compact normal operators, and states explicitly that
  ``compact'' there describes the original operator on the ordinary Hilbert
  space and asserts nothing about compactness or compactoidness in the Hahn
- valuation topology.
+ valuation topology. \Cref{ihs:fr:thm:main} adds an arbitrary
+ noncommuting self-adjoint positive-order Hahn perturbation of an injective
+ compact self-adjoint operator, with the same meaning of ``compact''.
 \item \emph{Trace-class operators and spectral measures.}
- Nothing below is a trace-class theory. \Cref{ihs:rf:thm:commutant} gives a
+ Parts I--III contain no trace-class theory. Part IV defines a
+ coefficientwise trace on $\SH((t^\Gamma))$ and a Fredholm determinant on
+ its nonnegative-valuation component, with an exact Fredholm alternative
+ (\cref{ihs:fr:thm:fredholm}), and proves that ordinary coefficientwise
+ eigenvalue sums and products need not represent them
+ (\cref{ihs:fr:thm:nolidskii,ihs:fr:thm:noproduct}). This is not a general
+ trace-class or nuclear-operator theory. \Cref{ihs:rf:thm:commutant} gives a
  complete Boolean algebra of spectral projections with vectorwise strong
  Hahn additivity. This does not assert topological countable additivity:
  \cref{ihs:rf:rem:notopsum} distinguishes the two and supplies a
@@ -225,39 +282,70 @@ an algebraic projection calculus with vectorwise Hahn additivity.
 \end{itemize}
 
 The finite-dimensional report is already a long treatise on determinantal
-finite-matrix theory. Absorbing these two manuscripts into it would bury
-both. This report is its sibling, not its continuation, and
-\cref{ihs:sec:interface} records what the two reports may and may not be
-read as saying jointly.
+finite-matrix theory. Absorbing these manuscripts into it would bury them.
+This report is its sibling, not its continuation, and
+\cref{ihs:sec:interface} records what the reports may and may not be read
+as saying jointly. Parts III and IV arrived after Parts I and II and are
+built on them: Part III generalizes the algebra half of Part~I's normal
+spectral formula, and Part IV treats the case that Part~I sets aside as
+requiring a different theorem (\cref{ihs:hh:sec:different}).
+\Cref{ihs:app:provenance} records how the four manuscripts were assembled.
 
-\subsection{The central hazard: two senses of ``spectrum''}\label{ihs:sec:hazard}
-The two parts use the word \emph{spectrum} for two different things, on two
-different vector spaces and in different operator algebras. Quoted side
-by side without their categories, their conclusions about accumulation read
-as a contradiction. They are not one. Both parts allow arbitrary nonzero
+\subsection{The central hazard: several senses of ``spectrum''}\label{ihs:sec:hazard}
+The parts use the word \emph{spectrum} for different things, on different
+vector spaces and in different operator algebras. Quoted side by side without
+their categories, the conclusions of Parts I and II about accumulation read
+as a contradiction. They are not one. Parts I--III allow arbitrary nonzero
 set-sized ordered abelian groups; the coefficient spaces and operator classes,
 rather than divisibility, account for the different spectral conclusions.
 The original Part I manuscript assumed divisibility. The proof review removes
-that unused restriction, as explained in \cref{ihs:hh:sec:field}.
+that unused restriction, as explained in \cref{ihs:hh:sec:field}. Part IV
+keeps its source's divisibility hypothesis.
 
-\begin{table}[ht]
-\centering\small
-\begin{tabularx}{\textwidth}{@{}p{.2\textwidth}YY@{}}
+There are exactly two kinds of spectrum in this report, and the parts use
+three instances of them. A \emph{bijectivity spectrum} is the set of $\lambda$
+for which $X-\lambda I$ fails to be bijective on a named vector space: this
+is $\sigma^{\mathrm{alg}}_\Gamma$ of Part~I, also used in Part~IV. An
+\emph{algebra-relative spectrum} is the set of $\lambda$ for which
+$X-\lambda1$ has no two-sided inverse in a named unital algebra: this is
+$\sigma^{\mathrm{adj}}_\Gamma$ (the algebra $\Ahh$) in Parts I and IV,
+$\sigma_{\Arf}$ (the algebra $\Arf$) in Part~II, and $\SigA$ (the algebra
+$\AlgG=\Alg((t^\Gamma))$, for an arbitrary unital $\Alg$) in Part~III. The
+third notion, $\SigA$, is defined for constant elements $T\in\Alg$ and
+contains the constant cases of the other two algebra-relative spectra:
+$\Sigma^{\B}_\Gamma=\sigma^{\mathrm{adj}}_\Gamma$ and
+$\Sigma^{\RCF_I(\C)}_\Gamma=\sigma_{\Arf}$ (\cref{ihs:prop:unify}). No
+statement of this report identifies a bijectivity spectrum with an
+algebra-relative one except where a theorem proves it for the operators in
+question (\cref{ihs:hh:thm:spectrum,ihs:fr:thm:main}, and the Volterra
+example \cref{ihs:dz:sec:volterra}).
+
+\begin{table}[p]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.13\textwidth}YYYY@{}}
 \toprule
- & Part I & Part II\\
+ & Part I & Part II & Part III & Part IV\\
 \midrule
 Vector space &
 $\Hil=H((t^\Gamma))$, $H$ an ordinary complex Hilbert space; every ordinary
 square-summable vector is a constant of $\Hil$ &
 $\Hrf=\C^{(I)}((t^\Gamma))$; each Hahn coefficient has \emph{finite}
 coordinate support, but a vector may have infinitely many nonzero Hahn
-coordinates\\
+coordinates &
+none is needed; for $\Alg=\B$ the algebra acts on $\Hil$, for
+$\Alg=\RCF_I(\C)$ on $\Hrf$ &
+$\Hil$ of Part~I, with $H$ infinite-dimensional and separable\\
 \addlinespace
 Operator class &
 $\Ahh=\B((t^\Gamma))$, Hahn series of \emph{ordinary bounded} operators on
 $H$ &
 $\Arf=\RCF_I(\C)((t^\Gamma))$, Hahn series of row- and column-finite
-matrices, with no ordinary boundedness at all\\
+matrices, with no ordinary boundedness at all &
+\emph{constant} elements $T$ of $\AlgG=\Alg((t^\Gamma))$, $\Alg$ any nonzero
+unital complex algebra &
+$A=T+E\in\Ahh$, $T$ injective compact self-adjoint, $E=E^*$ of positive
+order, not commuting with $T$\\
 \addlinespace
 ``Spectrum'' means &
 $\sigma^{\mathrm{alg}}_\Gamma(A)=\{\lambda\in\K:A-\lambda I$ is not
@@ -265,7 +353,12 @@ bijective on $\Hil\}$; for $A\in\Ahh$ also
 $\sigma^{\mathrm{adj}}_\Gamma(A)$, failure of invertibility in $\Ahh$ &
 $\sigma_{\Arf}(X)=\{z\in\K:X-z\Id$ has no two-sided inverse
 \emph{inside} $\Arf\}$: a spectrum relative to a named unital
-$\K$-algebra\\
+$\K$-algebra &
+$\SigA(T)$: no two-sided inverse of $T-\lambda1$ inside $\AlgG$; equal to
+$\sigma^{\mathrm{adj}}_\Gamma$ for $\Alg=\B$ and to $\sigma_{\Arf}$ for
+$\Alg=\RCF_I(\C)$ &
+both Part~I spectra, proved equal for this class; also the algebraic
+Fredholm spectrum $\sigma_{\mathrm{ess,alg}}$\\
 \addlinespace
 Hypothesis on $\Gamma$ &
 nonzero, set-sized, ordered abelian, \textbf{not assumed divisible};
@@ -273,29 +366,40 @@ only the metric-completeness subsection
 \ref{ihs:hh:sec:rankone} assumes $\Gamma\subseteq\R$ &
 nonzero, set-sized, ordered abelian, \textbf{not assumed divisible}; the
 source manuscript records the absence of that hypothesis as a feature, and
-only near-one binomial roots are used\\
+only near-one binomial roots are used &
+nonzero, set-sized, ordered abelian, \textbf{not assumed divisible}; the
+polynomial image depends on divisibility (\cref{ihs:dz:thm:criterion}) &
+nonzero, set-sized, ordered abelian and \textbf{divisible}\\
 \addlinespace
 What accumulation does &
 accumulation points of $\sigma_\C(T)$ acquire whole complex infinitesimal
 monads (\cref{ihs:hh:thm:spectrum}); isolated points do not thicken &
 accumulation of the ordinary residues $d_i$ does not enlarge
 $\sigma_{\Arf}(A)$ beyond $\{\lambda_i\}$
-(\cref{ihs:rf:thm:resolvent,ihs:rf:ex:accum})\\
+(\cref{ihs:rf:thm:resolvent,ihs:rf:ex:accum}) &
+every point of the Drazin spectrum acquires a whole halo; in a Banach
+algebra these are the accumulation points and the isolated non-poles
+(\cref{ihs:dz:thm:halo}, \eqref{ihs:dz:eq:dictionary}) &
+the accumulation point $0$ keeps the whole monad $\mK$, with no eigenvalues
+in it; each nonzero eigenvalue becomes a finite Hermitian cluster
+(\cref{ihs:fr:thm:main})\\
 \bottomrule
 \end{tabularx}
-\caption{The two senses of ``spectrum'' used in this report. Every spectral
-statement below names its vector space and which of these definitions it
-uses.}\label{ihs:tab:senses}
+\caption{The senses of ``spectrum'' used in this report. Every spectral
+statement below names its vector space or algebra and which of these
+definitions it uses.}\label{ihs:tab:senses}
 \end{table}
 
-\Cref{ihs:sec:interface} works the apparent conflict out on a single
-operator and says exactly why both conclusions hold.
+\Cref{ihs:sec:interface} works the apparent conflict between Parts I and II
+out on a single operator, says exactly why both conclusions hold, and shows
+that Part~III's formula produces both of them.
 
-The inner-product conventions also differ: Part I is linear in the first
-variable, whereas Part II is conjugate-linear in the first. To translate a
-scalar pairing, conjugate its value (equivalently, exchange its arguments);
-do not copy a variational functional without translating its linearity.
-Positivity and the adjoint identity are unchanged by this conversion.
+The inner-product conventions also differ: Parts I and IV are linear in the
+first variable, whereas Part II is conjugate-linear in the first. To
+translate a scalar pairing, conjugate its value (equivalently, exchange its
+arguments); do not copy a variational functional without translating its
+linearity. Positivity and the adjoint identity are unchanged by this
+conversion. Part III uses no inner product.
 
 \subsection{Part I at a glance}\label{ihs:sec:glanceone}
 Throughout Part I, $H\ne0$ is a complex Hilbert space, $\Gamma$ is nonzero,
@@ -377,9 +481,55 @@ outside a finite section can first affect it only through a walk that leaves
 the section and returns, and the corresponding valuation threshold is exact
 in a family of path examples.
 
+\subsection{Part III at a glance}\label{ihs:sec:glancethree}
+Throughout Part III, $\Alg$ is any nonzero unital complex algebra and
+$\Gamma$ any nonzero set-sized ordered abelian group; no norm, normality or
+divisibility is assumed. For a constant $T\in\Alg$,
+\cref{ihs:dz:thm:halo} proves
+\[
+ \SigA(T)=\sigma_\Alg(T)\cup\bigl(\sigD(T)+\mK\bigr),
+\]
+where $\sigD(T)$ is the set of $a\in\C$ at which $T-a1$ is not
+finite-index Drazin invertible. The mechanism is an exact inverse descent
+(\cref{ihs:dz:thm:descent}): a strong automorphism of the Hahn field moves
+any nonzero infinitesimal to a monomial, a cyclic-support projection reduces
+a putative inverse to a finite-tail Laurent inverse, and such an inverse
+exists exactly at Drazin points, with exact valuation $-\nu v(\eps)$ at index
+$\nu$ (\cref{ihs:dz:thm:scale}). In a Banach algebra the Drazin spectrum
+consists of the accumulation points and the isolated non-poles
+\eqref{ihs:dz:eq:dictionary}, which recovers the adjointable-algebra half of
+Part~I's normal formula (\cref{ihs:dz:cor:normal,ihs:dz:rem:recover}); the
+Volterra operator has spectrum $\{0\}$, no accumulation point, and
+$\Sigma^{\B}_\Gamma(\mathcal V)=\mK$. A polynomial germ of ramification index
+$e$ maps a halo onto exactly the infinitesimals with valuation in $e\Gamma$,
+which gives a necessary and sufficient criterion for spectral mapping over
+every value group (\cref{ihs:dz:thm:image,ihs:dz:thm:criterion}).
+
+\subsection{Part IV at a glance}\label{ihs:sec:glancefour}
+Throughout Part IV, $H$ is infinite-dimensional and separable, $\Gamma$ is
+\emph{divisible}, and the space and algebra are $\Hil$ and $\Ahh$ of Part~I.
+For $A=T+E$ with $T$ ordinary injective compact self-adjoint and
+$E=E^*\in\Ahh$ of positive order, not necessarily commuting with $T$,
+\cref{ihs:fr:thm:main} proves
+\[
+ \sigma^{\mathrm{adj}}_\Gamma(A)=\sigma^{\mathrm{alg}}_\Gamma(A)=\mK\cup
+ \bigcup_{c\in\sigma_\C(T)\setminus\{0\}}\{\lambda_{c,1},\ldots,\lambda_{c,m_c}\},
+\]
+with the second set exactly the point spectrum, and
+$\sigma_{\mathrm{ess,alg}}(A)=\mK$. The finite clusters come from
+coefficientwise Riesz projections and a direct rotation. They do not
+assemble into a global spectral theorem in $\Ahh$: for
+$A_\star=\diag(2^{-n})+t^\eta Y$ with a trace-class weighted path $Y$, no
+Hahn unitary in $\Ahh$ diagonalizes $A_\star$ (\cref{ihs:fr:thm:nounitary}),
+and the coefficientwise eigenvalue sum and product diverge although the
+coefficientwise trace and Fredholm determinant exist
+(\cref{ihs:fr:thm:nolidskii,ihs:fr:thm:noproduct,ihs:fr:thm:fredholm}). No
+nonzero coherent Hahn analytic function detects the whole monad at the
+accumulation point (\cref{ihs:fr:thm:nocharacteristic}).
+
 \subsection{What is and is not claimed as new}\label{ihs:sec:novelty}
-Neither part claims a classical input as new, and the two parts have
-separate novelty boundaries and separate literature comparisons.
+No part claims a classical input as new, and the four parts have separate
+novelty boundaries and separate literature comparisons.
 
 For Part I: the ordinary spectral theorem, Baire category, the closed graph
 theorem, Hilbert norm estimates and Hahn support lemmas are classical inputs
@@ -422,6 +572,36 @@ sources state that package. This is a targeted comparison, not an exhaustive
 theorem of bibliographic absence; some components may have predecessors in
 formal operator or valued-algebra literature not located in this search.
 
+For Part III: Drazin inverses and their finite-index identities, the
+resolvent-pole characterization, Banach-algebra Drazin spectra, the
+empty-Drazin-spectrum characterization of algebraic elements, ordinary
+polynomial spectral mapping and the nilpotent ceiling formula are classical
+\cite{Drazin,BoassoOperators,Boasso}; generalized Drazin invertibility
+\cite{Koliha} is a different condition. Strong Hahn-automorphism
+constructions belong to the surrounding literature \cite{KaplanKrappSerra}.
+The constant-normal formula is Part~I's. The proposed contribution is the
+arbitrary-infinitesimal inverse descent in the original value group, the
+resulting halo formula for every unital complex algebra, the exact inverse
+valuation, and the ramification criterion identifying every missing
+polynomial-image valuation. The algebraicity criterion is a Hahn
+interpretation of a classical fact.
+
+For Part IV: compact spectral theory, isolated-cluster perturbation
+\cite{Kato}, the direct rotation of two projections \cite{SimonProjections},
+ordinary trace-class determinant identities \cite{Bornemann}, Hahn-field
+algebraic closedness \cite{Poonen} and non-Archimedean Fredholm theory in
+Serre's different category \cite{Serre} are credited, and the range-defect
+factorization is Part~I's. The proposed contribution is the exact
+arbitrary-rank spectrum and algebraic Fredholm spectrum for the stated
+noncommuting compact-residue class, the trace-class example with no
+bounded-coefficient Hahn-unitary diagonalizer and no coefficientwise
+eigenvalue trace sum or determinant product, the support-controlled Hahn
+Fredholm alternative with its finite-coupling domain and accumulation
+obstruction, and the separation of point-spectrum invariance from monad
+growth under enlargement of the value group. Both comparisons were targeted,
+at the pin recorded in \cref{ihs:app:auditC,ihs:app:auditD}, and certify no
+priority.
+
 \begin{table}[ht]
 \centering\small
 \begin{tabularx}{\textwidth}{@{}p{.25\textwidth}YY@{}}
@@ -437,6 +617,10 @@ Operator norm bounds & Ordinary norm and attainment & Exact least-bound criterio
 Perturbation recursions & Rayleigh--Schr\"odinger corrections & Global support certificate for all orders at once (Part II)\\
 Row- and column-finite matrices & Ara--Goodearl--O'Meara & Hahn diagonalization under simple ordinary residues (Part II)\\
 Matrix walks & Path-sum framework & Marked-walk stability and sharp section thresholds (Part II)\\
+Drazin inverses & Finite-index identities, resolvent poles & Inverse descent at every Hahn infinitesimal; halo formula in any unital algebra (Part III)\\
+Polynomial spectral mapping & Ordinary Drazin spectral mapping & Exact ramified image and value-group criterion (Part III)\\
+Compact perturbation & Riesz projections, direct rotation & Exact spectrum under noncommuting Hahn perturbations (Part IV)\\
+Fredholm determinants & Ordinary trace-ideal identities & Hahn Fredholm alternative; failure of spectral sums and products (Part IV)\\
 \bottomrule
 \end{tabularx}
 \caption{The novelty boundary: classical tools are not renamed as new
@@ -459,7 +643,11 @@ is used only to delimit related contemporary work; none of its theorems is
 an input to the proofs here. Formal resolvent expansions also have a
 classical relationship with pole and Drazin-spectrum questions; see Boasso
 \cite{Boasso}. The normal-operator formula of Part I is proved directly, so
-no Drazin-theoretic equivalence is needed as an unproved bridge.
+no Drazin-theoretic equivalence is needed as an unproved bridge. Part III
+now proves that equivalence for constant elements of any unital algebra
+(\cref{ihs:dz:thm:descent}), and so gives a second proof of the
+algebra-relative half of Part~I's formula (\cref{ihs:dz:rem:recover}); the
+Part~I proof does not depend on it.
 
 For Part II, the relevant nearby object is the algebra of ordinary row- and
 column-finite matrices itself \cite{ago}. The reference concerns ordinary
@@ -548,6 +736,18 @@ sequence in a well-ordered set has an infinite nondecreasing subsequence,
 obtained by successively choosing an occurrence of the minimum of the
 remaining tail. Part (ii) is the usual Neumann lemma in its positive-support
 form. Both are stated classical inputs here, not new combinatorial claims.
+
+\emph{Part (ii) from Higman's theorem, as the Part~IV source deduces it.}
+Order finite words over the well-ordered alphabet $S$ by subsequence
+embedding with coordinatewise increase; Higman's theorem makes this a
+well-quasi-order \cite{Higman}. In any infinite sequence of words there are
+indices $i<j$ with the $i$th word embedded in the $j$th, and positivity of
+the letters makes the total of the first at most that of the second; so no
+infinite strictly decreasing sequence of totals exists. For a fixed total, a
+strict embedding either inserts a positive letter or strictly increases a
+letter, and so strictly increases the total; hence infinitely many distinct
+words cannot share one total. This deduction does not assume that $n\min S$
+is cofinal in $\Gamma$.
 
 \begin{remark}[Why the full word form is needed]\label{ihs:rem:wordform}
 Both parts use the finite-\emph{word} assertion of
@@ -658,15 +858,25 @@ workspace is discrete \cite{RepoMap}. All of these distinctions matter to
 the results.
 \end{warning}
 
-\section{The interface between the two parts}\label{ihs:sec:interface}
+The closure of $H\otimes_\C\K$ in $H((t^\Gamma))$ is determined exactly by
+\texttt{duals:thm:completion} and \texttt{duals:thm:cofinality-completion} of
+\path{docs/surcomplex/three-duals-of-hahn-vector-spaces/}.
+
+\section{The interface between the parts}\label{ihs:sec:interface}
 
 \subsection{What is shared and what is not}\label{ihs:sec:sharednot}
-The two parts share the scalar field $\K$, the support conventions of
+Parts I and II share the scalar field $\K$, the support conventions of
 \cref{ihs:sec:supportconv}, the support lemma \cref{ihs:lem:support}, the
 inversion tools of \cref{ihs:sec:neumann}, and the surcomplex embedding
 \eqref{ihs:eq:surreal-embedding}. Nothing else is shared. In particular no
 theorem of Part I is used in the proof of any theorem of Part II, and no
-theorem of Part II is used in Part I. Each part has its own inner product,
+theorem of Part II is used in Part I. Parts III and IV use the same shared
+tools. Part IV works in Part~I's space and algebra and uses Part~I's
+range-defect theorem \cref{ihs:hh:thm:defect}, for which its source gives a
+second proof (\cref{ihs:fr:rem:secondproof}). The main theorems of Part III
+use no theorem of Parts I, II or IV; its comparison with them is
+\cref{ihs:sec:unify}. No theorem of Part III or IV is used in Part I or
+Part II. Each part has its own inner product,
 its own operator algebra, its own spectral definition, and its own
 coefficient-space requirements, and each proves its own positivity statement
 from scratch:
@@ -677,7 +887,10 @@ Likewise, \cref{ihs:rf:prop:inner} proves positivity without assuming that
 every positive scalar has a square root. Part II uses no norm, and
 \cref{ihs:rf:cor:scales} explicitly allows nondivisible groups.
 
-Neither construction needs divisibility. In Part I all field-valued roots
+Neither construction needs divisibility, and neither does Part III, whose
+straightening automorphism adjoins no fractional exponent
+(\cref{ihs:dz:lem:straighten}). Part IV assumes it, to diagonalize finite
+Hermitian clusters inside the field (\cref{ihs:fr:lem:hermitian}). In Part I all field-valued roots
 used in norms and moduli have even leading exponent, and all other scalar
 roots are near-one binomial roots; ordinary positive operator square roots
 are taken in $\B$, before Hahn extension. General positive Hahn scalars
@@ -724,15 +937,80 @@ precisely because row- and column-finiteness replaces boundedness there.
 side, and \cref{ihs:rf:prop:bounded} makes the converse point: the Part II
 diagonalizer has a first coefficient with unbounded entries, so that theorem
 does not secretly solve the ordinary bounded-operator problem.
+\Cref{ihs:fr:thm:nounitary} of Part~IV makes the same point for an arbitrary
+Hahn unitary in $\Ahh$ and a trace-class perturbation.
 
-\subsection{Reading either part alone}\label{ihs:sec:readingalone}
-Each part is self-contained given \cref{ihs:sec:prelim}. A reader interested
-in the Hilbert-space obstructions can read Part~I and stop; a
-reader interested in exact infinite diagonalization can read
-Part~II and stop. \Cref{ihs:sec:checks} describes the two
-verification suites together, and \cref{ihs:app:auditA,ihs:app:auditB}
-record the two separate repository and literature audits, which were carried
-out against two different pinned revisions.
+\subsection{One formula for the constant algebra-relative spectra}\label{ihs:sec:unify}
+Part III's spectrum is defined for any unital algebra, and two of this
+report's algebra-relative spectra are instances of it. The following
+statement is an observation made in assembling this report: it follows from
+the definitions and \cref{ihs:dz:thm:halo} and is not a theorem of any of
+the four source manuscripts.
+
+\begin{proposition}[The algebra-relative spectra of constant elements]\label{ihs:prop:unify}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For $\Alg=\B$ one has $\AlgG=\Ahh$, so for every ordinary bounded $T$
+\[
+ \sigma^{\mathrm{adj}}_\Gamma(T)=\Sigma^{\B}_\Gamma(T)
+ =\sigma_\C(T)\cup\bigl(\sigma_{\mathrm D,\B}(T)+\mK\bigr)
+ \supseteq\sigma^{\mathrm{alg}}_\Gamma(T).
+\]
+For normal $T$ the inclusion is an equality by \cref{ihs:hh:thm:spectrum}.
+\item For $\Alg=\RCF_I(\C)$ one has $\AlgG=\Arf$, so for every constant
+row- and column-finite matrix $T$, not necessarily diagonal or Hermitian,
+$\sigma_{\Arf}(T)=\Sigma^{\RCF_I(\C)}_\Gamma(T)$ is given by
+\eqref{ihs:dz:eq:halo}.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Both algebra identities are the definitions of $\Ahh$ and $\Arf$, and the
+spectra are then defined by the same condition. The inclusion in (i) holds
+because a two-sided inverse in $\Ahh$ acts as an inverse map on $\Hil$.
+\end{proof}
+
+Applied to the operator of \cref{ihs:sec:accum}, $d_n=1/n$, the one formula
+\eqref{ihs:dz:eq:halo} produces both of that section's conclusions, and
+shows that the difference lies entirely in which algebra is named.
+\begin{itemize}
+\item In $\Alg=\B$, $\sigma_\C(D)=\{1/n\}\cup\{0\}$ and $0$ is an
+accumulation point, hence not a finite pole, so
+$\sigma_{\mathrm D,\B}(D)=\{0\}$ by \eqref{ihs:dz:eq:dictionary}. Then
+$\Sigma^{\B}_\Gamma(D)=\{1/n:n\ge1\}\cup\mK$, which is
+\cref{ihs:hh:cor:compact}.
+\item In $\Alg=\RCF_I(\C)$, $D-a$ is invertible for every
+$a\notin\{1/n\}$, including $a=0$, because every diagonal matrix is row- and
+column-finite; so $\sigma_{\RCF_I(\C)}(D)=\{1/n\}$. Each $D-1/m$ is Drazin
+invertible of index one, with $P_{\mathrm{nil}}=E_{\{m\}}$ and the diagonal
+Drazin inverse with entries $(1/n-1/m)^{-1}$ for $n\ne m$ and $0$ at $m$. So
+the Drazin spectrum is empty and $\Sigma^{\RCF_I(\C)}_\Gamma(D)=\{1/n\}$,
+which is \cref{ihs:rf:ex:accum}.
+\end{itemize}
+The same computation applies to any constant diagonal $D=\diag(d_i)$ in
+$\RCF_I(\C)$, distinct labels or not, and gives $\{d_i:i\in I\}$; for
+distinct real labels this is the case $B=0$ of
+\cref{ihs:rf:thm:resolvent}. Part III does not treat the perturbed,
+nonconstant operators $D+B$ of Part~II, nor the nonconstant operators of
+Part~IV. Neither does it speak about bijectivity on a vector space: the
+statement $\sigma^{\mathrm{alg}}_\Gamma=\sigma^{\mathrm{adj}}_\Gamma$ is
+proved in this report for constant normal operators
+(\cref{ihs:hh:thm:spectrum}), for the Volterra operator
+(\cref{ihs:dz:sec:volterra}), and for the operators of Part~IV
+(\cref{ihs:fr:thm:main}), and nowhere else.
+
+\subsection{Reading one part alone}\label{ihs:sec:readingalone}
+Each part is self-contained given \cref{ihs:sec:prelim}, except that Part~IV
+uses Part~I's space, algebra and range-defect theorem, and Part III's
+comparison remarks refer to Parts I and II. A reader interested in the
+Hilbert-space obstructions can read Part~I and stop; a reader interested in
+exact infinite diagonalization can read Part~II and stop; a reader
+interested in nonnormal constant operators in an arbitrary algebra can read
+Part~III; a reader interested in noncommuting compact perturbations and
+determinants can read Part~I's \cref{ihs:sec:construction,ihs:hh:sec:defect}
+and then Part~IV. \Cref{ihs:sec:checks} describes the four verification
+suites together, and
+\cref{ihs:app:auditA,ihs:app:auditB,ihs:app:auditC,ihs:app:auditD} record
+the separate repository and literature audits, which were carried out
+against three different pinned revisions.
 
 \clearpage
 \part*{Part I. Hahn--Hilbert spaces: infinitesimal spectral thickening and closed-range defects}
@@ -946,6 +1224,10 @@ algebraic endomorphisms, used later for choosing range complements, are not
 automatically adjointable.
 \end{remark}
 
+Endomorphisms preserving strong sums, without adjointability, are classified
+as $\mathrm{End}_\C(H)((t^\Gamma))$ in \texttt{duals:thm:strong} of
+\path{docs/surcomplex/three-duals-of-hahn-vector-spaces/}.
+
 \section{An injective leading term preserves the whole range defect}\label{ihs:hh:sec:defect}
 
 \subsection{A theorem independent of Hilbert structure}\label{ihs:hh:sec:defectthm}
@@ -1048,7 +1330,9 @@ invertibility in the unital algebra $\Ahh$. These definitions need not be
 identified in advance. In the theorem below, explicit inverses and explicit
 range obstructions will prove their equality. Neither is the
 algebra-relative spectrum $\sigma_{\Arf}$ of Part~II, which is
-taken in a different algebra acting on a different vector space.
+taken in a different algebra acting on a different vector space. For a
+constant $A$, $\sigma^{\mathrm{adj}}_\Gamma(A)$ is the case $\Alg=\B$ of
+Part~III's spectrum $\SigA$ (\cref{ihs:prop:unify}).
 
 An ordinary bounded operator $T$ is regarded as a constant member of
 $\Ahh$. We often suppress the extension subscript on $T$.
@@ -1173,6 +1457,18 @@ nonconstant eigenvalue for the nonnormal operator $B$, in direct contrast to
 series is asserted or needed.
 \end{example}
 
+\begin{remark}[The nonnormal constant case]\label{ihs:hh:rem:drazin}
+Part~III computes $\sigma^{\mathrm{adj}}_\Gamma(T)$ for \emph{every}
+ordinary bounded $T$, normal or not, and for constant elements of any unital
+algebra: the accumulation set is replaced by the finite-index Drazin
+spectrum (\cref{ihs:dz:thm:halo,ihs:dz:cor:normal}). Its proof is a second
+route to the $\sigma^{\mathrm{adj}}$ half of \eqref{ihs:hh:eq:exactspectrum}
+(\cref{ihs:dz:rem:recover}). It does not replace
+\cref{ihs:hh:thm:spectrum}, which also determines
+$\sigma^{\mathrm{alg}}_\Gamma$, nor \cref{ihs:hh:thm:point}; and it concerns
+the spectral formula, not the new eigenvalue of the example above.
+\end{remark}
+
 \section{Consequences that separate finite and infinite spectral geometry}\label{ihs:hh:sec:consequences}
 
 \subsection{Self-adjoint spectra are real exactly in the finite-spectrum case}\label{ihs:hh:sec:reality}
@@ -1217,6 +1513,12 @@ points are isolated eigenvalues of finite multiplicity and zero is the only
 possible accumulation point. Infinite rank forces zero to be an accumulation
 point. Apply \cref{ihs:hh:thm:spectrum}.
 \end{proof}
+
+For an injective compact self-adjoint $T$, Part~IV adds a self-adjoint Hahn
+perturbation of positive order that need not commute with $T$: the monad
+$\mK$ stays in the spectrum, and each nonzero eigenvalue is replaced by a
+finite cluster of real Hahn eigenvalues (\cref{ihs:fr:thm:main}, under a
+divisibility hypothesis).
 
 Here ``compact'' describes the original operator on the ordinary Hilbert
 space. It makes no claim of compactness or compactoidness in the Hahn
@@ -1571,6 +1873,12 @@ If $F(x)=\ip{x}{z}$, then vanishing on $M$ implies $z\in M^\perp=0$, which
 would force $F=0$.
 \end{proof}
 
+This functional is strong in the sense of the report
+\path{docs/surcomplex/three-duals-of-hahn-vector-spaces/}
+(\texttt{duals:thm:strong}); its leading coefficient is discontinuous, so it
+lies in the first gap of \texttt{duals:thm:riesz}
+(\texttt{duals:rem:ihs-riesz}).
+
 The algebraic maps $U$ and $\psi$ need not be continuous for the ordinary
 Hilbert norm. That does not prevent the displayed Hahn maps from being
 valuation-continuous. Confusing those topologies would incorrectly apply an
@@ -1719,6 +2027,32 @@ point-spectrum rigidity fails without normality. The perturbation theorem
 handles injective leading coefficients and proves a large class of
 obstructions, but is not a classification of all spectra of all Hahn
 operator series.
+
+Two later parts of this report supply such different theorems for two
+classes, and leave the general classification open.
+\begin{itemize}
+\item \emph{Constant nonnormal operators.} Part~III computes the
+ algebra-relative spectrum $\sigma^{\mathrm{adj}}_\Gamma(T)$ of every
+ constant bounded $T$, with the Drazin spectrum in place of the accumulation
+ set (\cref{ihs:dz:thm:halo}). The Volterra operator has no ordinary
+ accumulation point and still acquires the whole monad
+ (\cref{ihs:dz:sec:volterra}), so the accumulation-only formula is false
+ without normality. The bijectivity spectrum $\sigma^{\mathrm{alg}}_\Gamma$
+ of nonnormal constant operators is determined there only in examples.
+\item \emph{A nonconstant class.} Part~IV treats $T+E$ with $T$ injective
+ compact self-adjoint and $E$ a self-adjoint Hahn series of positive order
+ that need not commute with $T$, over a divisible $\Gamma$: both spectra
+ agree and equal the monad $\mK$ together with finite Hermitian clusters
+ (\cref{ihs:fr:thm:main}). The eigenvalues move, unlike those of a constant
+ normal operator (\cref{ihs:hh:thm:point}), but only within their clusters.
+ This local answer does \emph{not} assemble into a global spectral theorem
+ with bounded coefficients: an explicit trace-class example has no
+ Hahn-unitary diagonalizer in $\Ahh$ and no coefficientwise eigenvalue
+ trace sum or determinant product
+ (\cref{ihs:fr:thm:nounitary,ihs:fr:thm:nolidskii,ihs:fr:thm:noproduct}).
+\end{itemize}
+Spectra of general Hahn operator series with several coefficient scales,
+including nonnormal nonconstant ones, remain unclassified.
 
 One could change the vector construction to allow coefficientwise objects
 outside $H$, choose a different sequence-space completion, or impose a
@@ -2400,7 +2734,8 @@ is unbounded. It records the different algebra in which invertibility is
 being tested. It also does not contradict \cref{ihs:hh:cor:compact}, which
 puts the whole infinitesimal monad $\mK$ into the failure-of-bijectivity
 spectrum of the same diagonal data \emph{as a compact operator on
-$\ell^2((t^\Gamma))$}; \cref{ihs:sec:accum} sets the two side by side.
+$\ell^2((t^\Gamma))$}; \cref{ihs:sec:accum} sets the two side by side, and
+\cref{ihs:sec:unify} derives both from Part~III's single formula.
 \end{example}
 
 \begin{corollary}[The inhomogeneous equation]\label{ihs:rf:cor:forcing}
@@ -3063,7 +3398,11 @@ extension could connect the exact algebraic results to ordinary spectral
 approximation, but it is not a consequence of the current construction.
 Part~I is a Hilbert-coefficient theory in that spirit, but for
 a different class of operators, and it does not supply the missing
-diagonalization theorem either.
+diagonalization theorem either. Part~IV shows that in Part~I's
+bounded-coefficient algebra the corresponding global statement is false
+even for a trace-class tridiagonal perturbation with simple residues
+(\cref{ihs:fr:thm:nounitary}), so an extension of this kind would need
+hypotheses beyond simple residues and small coefficient ideals.
 
 Similarly, the marked-walk bounds identify first possible errors, not their
 noncancellation in every graph. It is worthwhile to classify graphs and
@@ -3100,28 +3439,2056 @@ its vector expansions are licensed sums, its resolvents are coherent
 operators, and its finite-section errors have verifiable scale thresholds.
 
 \clearpage
+\part*{Part III. Drazin halos: constant elements of an arbitrary Hahn operator algebra}
+\addcontentsline{toc}{part}{Part III. Drazin halos}
+
+\emph{Standing hypotheses for Part III.} $\Alg$ is a nonzero associative
+unital complex algebra, with the complex scalars central, and $\Gamma$ is a
+nonzero set-sized ordered abelian group. Divisibility, a norm on $\Alg$,
+normality and rank one are \emph{not} assumed; only
+\cref{ihs:dz:sec:banach} and \cref{ihs:dz:prop:polemap} add a Banach norm.
+``Spectrum'' in this part means $\SigA(T)$, failure of two-sided
+invertibility of $T-\lambda1$ inside the named algebra $\AlgG$, for a
+\emph{constant} $T\in\Alg$ (\cref{ihs:dz:def:spectrum}). It is the third
+sense recorded in \cref{ihs:tab:senses}. It is a spectrum relative to an
+algebra, like $\sigma^{\mathrm{adj}}_\Gamma$ of Part~I and $\sigma_{\Arf}$ of
+Part~II, and \cref{ihs:sec:unify} proves that it contains both of them as
+special cases for constant elements. It is not a failure-of-bijectivity
+spectrum on a chosen vector space.
+
+\emph{Notation.} The source manuscript of this part wrote $A$ for the
+algebra, $D$ for a Drazin inverse, $P,Q$ for its idempotents, $B$ for the
+Drazin spectrum, $V$ for the Volterra operator, $h$ for a positive-order
+correction and $r$ for a ramification index. Each of these letters already
+has a different meaning in Parts~I and~II, so this part writes instead
+$\Alg$, $S^{\mathrm D}$, $P_{\mathrm{nil}},P_{\mathrm{inv}}$, $Z$,
+$\mathcal V$, $\kappa$ and $e_a$. Its $K_\Gamma$ and $\mathfrak m_\Gamma$
+are the $\K$ and $\mK$ of this report.
+
+\section{The question, the answer, and its scope}\label{ihs:dz:sec:intro}
+
+\subsection{Why nonnormal constant elements are the next step}\label{ihs:dz:sec:why}
+The distinction between a nilpotent operator and a quasinilpotent but
+nonnilpotent operator is easy to blur at infinitesimal scales. Over $\C$,
+every nonzero scalar displacement of either operator can be invertible.
+Over a Hahn field, an exact inverse must satisfy a support condition. The
+nilpotent case requires only finitely many negative powers of the
+displacement. A nonnilpotent singularity can demand an infinite descending
+sequence of exponents, which is not a Hahn support. Small numerical size is
+not a replacement for this support requirement.
+
+For constant \emph{normal} operators, \cref{ihs:hh:thm:spectrum} gives the
+ordinary spectrum together with infinitesimal halos of the ordinary
+accumulation points. This part asks what replaces accumulation points when
+normality is dropped and the Hilbert operator algebra is replaced by an
+arbitrary unital algebra, and exactly how a nondivisible value group affects
+polynomial spectral mapping. The answers are finite-index Drazin
+invertibility and a ramification test. An isolated spectral point can acquire
+an entire infinitesimal halo when the ordinary resolvent singularity is not a
+finite pole. Conversely, every finite pole permits an inverse at every
+nonzero infinitesimal displacement, with an exact valuation determined by its
+order. These questions are formulated and answered here; they are not
+represented as named open conjectures already posed in published literature.
+
+\subsection{The theorem package at a glance}\label{ihs:dz:sec:glance}
+Write $\sigma_\Alg(T)$ for the ordinary algebra-relative spectrum of
+$T\in\Alg$ and $\sigD(T)$ for the set of $a\in\C$ such that $T-a1$ is not
+Drazin invertible (\cref{ihs:dz:def:drazin}). The first main conclusion,
+\cref{ihs:dz:thm:halo}, is
+\begin{equation}\label{ihs:dz:eq:preview}
+ \SigA(T)=\sigma_\Alg(T)\cup\bigl(\sigD(T)+\mK\bigr).
+\end{equation}
+The added halos contain all infinitesimals, including nonmonomial ones with
+arbitrary well-ordered support. The inverse criterion is unchanged by
+enlarging the value group.
+
+For a nonconstant $p\in\C[X]$, set $Z=\sigD(T)$. For $b\in p(Z)$ define the
+finite nonempty fiber and the ramification indices
+\[
+ Z_b=\{a\in Z:p(a)=b\},\qquad
+ e_a=\operatorname{ord}_{X=a}(p(X)-b).
+\]
+The second conclusion, \cref{ihs:dz:thm:image}, is the exact local image
+\begin{equation}\label{ihs:dz:eq:imagepreview}
+ p(\SigA(T))\cap(b+\mK)=\{b\}\cup
+ \Bigl\{b+\zeta:0\ne\zeta\in\mK,\ v(\zeta)\in\bigcup_{a\in Z_b}e_a\Gamma\Bigr\}.
+\end{equation}
+In contrast, $\SigA(p(T))$ contains the whole halo $b+\mK$. Spectral mapping
+therefore holds exactly when, in each relevant fiber, at least one of the
+integers $e_a$ acts surjectively on $\Gamma$ (\cref{ihs:dz:thm:criterion}).
+This includes divisible groups but gives a sharp answer for every group.
+
+\subsection{Classical ingredients and the proposed novelty}\label{ihs:dz:sec:novelty}
+Drazin inverses and their finite-index algebraic identities are classical
+\cite{Drazin}. Their relation to resolvent poles, their Banach-algebra
+spectra, and ordinary polynomial spectral mapping are also classical
+\cite{BoassoOperators,Boasso}. Generalized Drazin invertibility, which permits
+a quasinilpotent singular part, is a different condition \cite{Koliha}; only
+the finite-index notion is used here.
+
+The candidate contribution is the combined arbitrary-rank classification:
+straightening and descent for every infinitesimal in the original Hahn field,
+the resulting nonnormal halo formula, and the complete ramification and
+value-group description of the polynomial image. Independent coefficient
+proofs are given, but re-proving a classical Laurent identity does not make
+that identity new. The constant-normal case is an explicit overlap with
+Part~I (\cref{ihs:dz:rem:recover}), not a new claim. The Banach algebraicity
+criterion (\cref{ihs:dz:cor:algebraic}) is a Hahn interpretation of a
+classical Drazin-spectrum characterization. \Cref{ihs:app:auditC} records the
+source's repository and literature audit, and corrects the statements of it
+that are stale.
+
+\section{Hahn algebras and the third spectrum}\label{ihs:dz:sec:hahn}
+
+\subsection{The coefficient algebra is part of the statement}\label{ihs:dz:sec:algebra}
+Set $\AlgG=\Alg((t^\Gamma))$, with coefficientwise addition and convolution
+product; \cref{ihs:lem:support}(i) makes it a unital $\K$-algebra with $\K$
+central. No topology on $\Alg$ is needed. For nonzero $x\in\AlgG$ write
+$v_\Alg(x)=\min\supp x$ and $\lc_\Alg(x)=x_{v_\Alg(x)}$, and put
+$v_\Alg(0)=+\infty$; on scalar series write $v$ and $\lc$. Since $\Alg$ may
+have zero divisors, in general only $v_\Alg(xy)\ge v_\Alg(x)+v_\Alg(y)$. For
+a nonzero central scalar $s\in\K$ and nonzero $x\in\AlgG$, however,
+\begin{equation}\label{ihs:dz:eq:scalarvaluation}
+ v_\Alg(sx)=v(s)+v_\Alg(x),\qquad
+ \lc_\Alg(sx)=\lc(s)\lc_\Alg(x),
+\end{equation}
+because a nonzero complex number cannot annihilate a nonzero element of
+$\Alg$. Every $s\in\Ocal$ is uniquely $a+\eps$ with $a=\st(s)\in\C$ and
+$\eps\in\mK$. A scalar of negative valuation is called infinite; the
+\emph{halo} of $a\in\C$ is $a+\mK$.
+
+\begin{definition}[The spectrum relative to a Hahn operator algebra]\label{ihs:dz:def:spectrum}
+For a constant $T\in\Alg$ put
+\[
+ \SigA(T)=\{\lambda\in\K:T-\lambda1\text{ has no two-sided inverse in }\AlgG\}.
+\]
+The ordinary spectrum $\sigma_\Alg(T)$ is defined by the same condition for
+$\lambda\in\C$ and inverses in $\Alg$.
+\end{definition}
+
+For $\Alg=\B$, convolution gives an action on $H((t^\Gamma))$, and $\AlgG$
+is exactly the adjointable algebra $\Ahh$ of Part~I. The definition is
+\emph{not} silently replaced by failure of bijectivity in the algebra of all
+$\K$-linear endomorphisms, or by the spectrum of row- and column-finite
+matrices on a finite-coordinate module; \cref{ihs:sec:unify} states exactly
+which identifications hold. In the examples of Volterra and unbounded Jordan
+lengths below, actual vector nonsurjectivity is proved directly.
+
+\subsection{The support calculus used}\label{ihs:dz:sec:support}
+All infinite sums in this part are strong Hahn sums in the sense of
+\cref{ihs:sec:supportconv}. The positive-support lemma is
+\cref{ihs:lem:support}; the source manuscript used it in the combined form:
+\emph{if $S\subseteq\Gamma_{>0}$ and $B\subseteq\Gamma$ are well ordered,
+then $B+S^*$ is well ordered and each exponent has only finitely many
+representations as an element of $B$ plus an ordered word in $S$.} This is
+\cref{ihs:lem:support}(i) applied to $B$ and $S^*$, followed by
+\cref{ihs:lem:support}(ii) inside $S^*$; it is classical, not a new result
+here. If $v_\Alg(h)>0$ then $\sum_{n\ge0}h^n$ inverts $1-h$
+(\cref{ihs:lem:neumann}), and for a scalar $h$ of positive order and
+$q\in\Q$ the binomial series $(1+h)^q=\sum_n\binom qnh^n$ is strongly defined
+and obeys the exponent law (\cref{ihs:cor:binomial}).
+
+\begin{warning}[No hidden rank-one assumption]\label{ihs:dz:warn:rank}
+This part never assumes that $n\eta$ eventually exceeds every element of
+$\Gamma$ for $\eta>0$; that fails at higher rank. All infinite sums are
+justified by well ordering and coefficientwise local finiteness, not by
+convergence of finite subsums in a valuation topology.
+\end{warning}
+
+\section{Drazin decomposition and finite Laurent tails}\label{ihs:dz:sec:laurent}
+
+\begin{definition}[Finite-index Drazin invertibility]\label{ihs:dz:def:drazin}
+An element $S\in\Alg$ is \emph{Drazin invertible} if there exist
+$S^{\mathrm D}\in\Alg$ and an integer $\nu\ge0$ with
+\begin{equation}\label{ihs:dz:eq:drazin}
+ SS^{\mathrm D}=S^{\mathrm D}S,\qquad
+ S^{\mathrm D}SS^{\mathrm D}=S^{\mathrm D},\qquad
+ S^{\nu+1}S^{\mathrm D}=S^\nu.
+\end{equation}
+The least such $\nu$ is the Drazin index; index zero means ordinary
+invertibility. The \emph{Drazin spectrum} is
+$\sigD(T)=\{a\in\C:T-a1\text{ is not Drazin invertible}\}$; it is contained
+in $\sigma_\Alg(T)$.
+\end{definition}
+
+Given the identities, put $P_{\mathrm{nil}}=1-SS^{\mathrm D}$ and
+$P_{\mathrm{inv}}=SS^{\mathrm D}$. These are complementary idempotents
+commuting with $S$, $S^{\mathrm D}P_{\mathrm{nil}}=P_{\mathrm{nil}}S^{\mathrm D}=0$,
+and $S^\nu P_{\mathrm{nil}}=0$. In the corner algebra
+$P_{\mathrm{inv}}\Alg P_{\mathrm{inv}}$, with identity $P_{\mathrm{inv}}$,
+the element $SP_{\mathrm{inv}}$ is invertible with inverse $S^{\mathrm D}$.
+Thus $P_{\mathrm{nil}}$ is the nilpotent part and $P_{\mathrm{inv}}$ the
+invertible part. If $\nu\ge1$ is least, then $S^{\nu-1}P_{\mathrm{nil}}\ne0$.
+No centrality of $P_{\mathrm{nil}}$ in the whole algebra is required.
+
+Let $u$ be a central formal variable; the ordinary Laurent algebra $\Alg((u))$
+permits only finitely many negative integer exponents.
+
+\begin{lemma}[Laurent inverse criterion]\label{ihs:dz:lem:laurent}
+For $S\in\Alg$, the pencil $S-u1$ is invertible in $\Alg((u))$ if and only if
+$S$ is Drazin invertible. If $S^{\mathrm D}$ and
+$P_{\mathrm{nil}}=1-SS^{\mathrm D}$ are its data of index $\nu$, then
+\begin{equation}\label{ihs:dz:eq:laurent}
+ (S-u1)^{-1}=\sum_{n\ge0}u^n(S^{\mathrm D})^{n+1}
+            -\sum_{j=0}^{\nu-1}u^{-j-1}S^jP_{\mathrm{nil}}.
+\end{equation}
+The second sum is empty for $\nu=0$; otherwise its exact pole order is $\nu$.
+\end{lemma}
+\begin{proof}
+Assume the Drazin identities. Multiplying the first sum by $S-u1$ on either
+side gives $P_{\mathrm{inv}}$: its constant term is $SS^{\mathrm D}$ and the
+higher coefficients cancel. Multiplying the negative sum gives
+$P_{\mathrm{nil}}-u^{-\nu}S^\nu P_{\mathrm{nil}}=P_{\mathrm{nil}}$. The
+combined result is $1$. Its coefficient at $u^{-\nu}$ is
+$-S^{\nu-1}P_{\mathrm{nil}}\ne0$ when $\nu\ge1$ is least.
+
+Conversely, suppose $B(u)=\sum_{n\ge-m}B_nu^n$ is a two-sided inverse, with
+$m\ge0$ and absent coefficients set to zero. Coefficient comparison in both
+products gives
+\begin{equation}\label{ihs:dz:eq:recurrence}
+ SB_n-B_{n-1}=\delta_{n0}1=B_nS-B_{n-1}\qquad(n\in\Z).
+\end{equation}
+In particular each $B_n$ commutes with $S$. Set $S^{\mathrm D}=B_0$ and
+$P_{\mathrm{nil}}=-B_{-1}=1-SS^{\mathrm D}$. If $m=0$, then
+$SS^{\mathrm D}=S^{\mathrm D}S=1$. If $m\ge1$, the negative recurrences,
+including the finite lower bound, give $S^mP_{\mathrm{nil}}=0$, and the
+positive recurrences give $S^{\mathrm D}=S^mB_m$. Since $P_{\mathrm{nil}}$
+commutes with $S$, this gives $P_{\mathrm{nil}}S^{\mathrm D}=0$; the
+definition of $P_{\mathrm{nil}}$ and commutation give
+$S^{\mathrm D}P_{\mathrm{nil}}=0$. It follows that
+$P_{\mathrm{nil}}^2=P_{\mathrm{nil}}$, $S^{\mathrm D}SS^{\mathrm D}=S^{\mathrm D}$
+and $S^{m+1}S^{\mathrm D}=S^m$, which are Drazin identities. Any Drazin data
+give \eqref{ihs:dz:eq:laurent}; uniqueness of a two-sided inverse therefore
+identifies its constant coefficient with $S^{\mathrm D}$ and proves
+uniqueness of the Drazin inverse.
+\end{proof}
+
+This is the classical finite-Laurent mechanism, written out to expose the
+exact obstruction that arbitrary Hahn supports must not be allowed to
+conceal. No complex-analytic convergence was used.
+
+\section{Straightening and inverse descent at arbitrary rank}\label{ihs:dz:sec:descent}
+
+\begin{lemma}[Strong parameter straightening]\label{ihs:dz:lem:straighten}
+Given $0\ne\eps\in\mK$ and $\eta=v(\eps)$, there is a strong,
+valuation-preserving $\C$-algebra automorphism $\Phi$ of $\K$ with
+$\Phi(t^\eta)=\eps$. The same construction is an $\Alg$-fixing automorphism
+of $\AlgG$. No divisibility or enlargement of $\Gamma$ is required.
+\end{lemma}
+\begin{proof}
+Write $\eps=c\,t^\eta(1+\kappa)$ with $c\in\C^*$ and $v(\kappa)>0$. Since
+$\Gamma$ is torsion-free, it embeds in $\Gamma\otimes_\Z\Q$. Choose a
+rational linear functional $\ell$ on that vector space with $\ell(\eta)=1$;
+its restriction to $\Gamma$ is a homomorphism to $\Q$, not necessarily
+order-preserving. Choose $L\in\C$ with $e^L=c$ and set $c^q=e^{qL}$ for
+$q\in\Q$; these are compatible rational powers of the one constant $c$.
+Define on monomials
+\begin{equation}\label{ihs:dz:eq:straighten}
+ \Phi(t^\gamma)=c^{\ell(\gamma)}t^\gamma(1+\kappa)^{\ell(\gamma)},
+\end{equation}
+and extend coefficientwise using strong sums. Let $S=\supp\kappa$. For an
+input support $B$, every resulting exponent lies in $B+S^*$, so by the
+combined support lemma of \cref{ihs:dz:sec:support} each output coefficient
+has finitely many contributors. The same bound works simultaneously for any
+strongly summable family of inputs, so the map is well defined and strong,
+including for uncountable supports. Additivity of $\ell$ and the binomial
+exponent law make it multiplicative on monomials, and the same support bounds
+justify all rearrangements, hence multiplication of arbitrary series. This
+remains true for noncommuting coefficients in $\Alg$, since every binomial
+factor is central. The leading coefficient of a nonzero input $x$ is
+multiplied by $c^{\ell(v_\Alg(x))}\ne0$, so valuation is preserved.
+
+Surjectivity needs an argument: a triangular-looking map is not surjective
+merely because its leading terms are nonzero. Write $\Phi=\Psi\circ C_c$,
+where $C_c(t^\gamma)=c^{\ell(\gamma)}t^\gamma$ has an evident inverse and
+$\Psi(t^\gamma)=t^\gamma(1+\kappa)^{\ell(\gamma)}$. Put $\Xi=\Psi-\mathrm{id}$.
+One application of $\Xi$ shifts a starting exponent by a sum of at least one
+member of $S$, so a term of $\Xi^n(x)$ is shifted by a word of length at
+least $n$ in $S$. Hence
+\begin{equation}\label{ihs:dz:eq:operatorinverse}
+ \Theta(x)=\sum_{n\ge0}(-\Xi)^n(x)
+\end{equation}
+is a strong sum: at a fixed final exponent there are finitely many starting
+exponents and words, and each word has only finitely many partitions into
+nonempty blocks, so only finitely many iterations and intermediate terms
+contribute. The same reasoning shows that $\Theta$ preserves strongly
+summable families. Coefficientwise telescoping gives
+$(\mathrm{id}+\Xi)\Theta=\Theta(\mathrm{id}+\Xi)=\mathrm{id}$. Hence $\Psi$ is
+bijective, and its inverse is an algebra homomorphism. If $\kappa=0$, take
+$\Xi=0$. Finally \eqref{ihs:dz:eq:straighten} sends $t^\eta$ to
+$c\,t^\eta(1+\kappa)=\eps$ and fixes every coefficient in $\Alg$.
+\end{proof}
+
+The rational functional chooses a coordinate on the rational span of the
+exponents; it does not adjoin any fractional exponent to the field. The
+binomial corrections use only exponents already generated by
+$\supp\kappa$. This is why nondivisibility causes no obstruction to
+straightening a parameter that already exists. Related strong
+Hahn-automorphism constructions belong to the surrounding literature
+\cite{KaplanKrappSerra}; the general idea is not claimed as new here.
+
+\begin{lemma}[Cyclic-support inverse descent]\label{ihs:dz:lem:projection}
+For $S\in\Alg$ and $0<\eta\in\Gamma$, put $u=t^\eta$. The pencil $S-u1$ is
+invertible in $\AlgG$ if and only if it is invertible in $\Alg((u))$. If it
+is invertible, its inverse in $\AlgG$ already belongs to the embedded
+Laurent subalgebra.
+\end{lemma}
+\begin{proof}
+Retain the coefficients on the cyclic subgroup $\Z\eta$:
+$\varpi_\eta\bigl(\sum B_\gamma t^\gamma\bigr)=\sum_{n\in\Z}B_{n\eta}u^n$.
+The intersection of a well-ordered support with $\Z\eta$ is well ordered and
+becomes, under $n\mapsto n\eta$, a subset of $\Z$ with a finite lower bound;
+thus $\varpi_\eta B\in\Alg((u))$. Because the pencil is supported on
+$\Z\eta$, coefficient comparison gives
+$\varpi_\eta((S-u1)B)=(S-u1)\varpi_\eta B$ and
+$\varpi_\eta(B(S-u1))=(\varpi_\eta B)(S-u1)$. A two-sided inverse therefore
+projects to a two-sided Laurent inverse. Conversely a Laurent inverse embeds
+into $\AlgG$, since a lower-bounded set of integer multiples of a positive
+element is well ordered. Uniqueness of a two-sided inverse identifies it
+with its projection.
+\end{proof}
+
+The map $\varpi_\eta$ is not generally a ring homomorphism: if
+$\eta/2\in\Gamma$, it sends $t^{\eta/2}$ to zero but its square to $u$. The
+proof used only left and right compatibility with the particular cyclically
+supported pencil, and no claim that $n\eta$ is cofinal in $\Gamma$.
+
+\begin{theorem}[Arbitrary-parameter inverse descent]\label{ihs:dz:thm:descent}
+For $S\in\Alg$ and $0\ne\eps\in\mK$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $S-\eps1$ has a two-sided inverse in $\AlgG$;
+\item its inverse is a Laurent series in $\eps$ with coefficients in $\Alg$
+ and only finitely many negative powers;
+\item $S$ is Drazin invertible in $\Alg$.
+\end{enumerate}
+When they hold, the unique inverse is
+\begin{equation}\label{ihs:dz:eq:epsinverse}
+ (S-\eps1)^{-1}=\sum_{n\ge0}\eps^n(S^{\mathrm D})^{n+1}
+                -\sum_{j=0}^{\nu-1}\eps^{-j-1}S^jP_{\mathrm{nil}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \cref{ihs:dz:lem:straighten} with $\eta=v(\eps)$. It fixes $S$ and
+takes $t^\eta$ to $\eps$, so it preserves the invertibility question.
+\Cref{ihs:dz:lem:projection} descends an inverse of $S-t^\eta1$ to its
+Laurent subalgebra, and \cref{ihs:dz:lem:laurent} identifies the condition as
+Drazin invertibility and supplies the inverse. Applying the strong
+automorphism to that formula gives \eqref{ihs:dz:eq:epsinverse}; its
+nonnegative part is a strong sum by the support lemma and its negative part
+is finite.
+\end{proof}
+
+The conclusion rules out more than one unsuccessful expansion: no inverse
+with exotic extra exponents can exist when the finite-Laurent obstruction
+remains. Although the straightening automorphism involved choices,
+existence and the inverse formula are intrinsic.
+
+\section{Spectral halos and exact resolvent scales}\label{ihs:dz:sec:halo}
+
+\begin{theorem}[Constant-element spectrum]\label{ihs:dz:thm:halo}
+For every $T\in\Alg$,
+\begin{equation}\label{ihs:dz:eq:halo}
+ \SigA(T)=\sigma_\Alg(T)\cup\bigl(\sigD(T)+\mK\bigr).
+\end{equation}
+No infinite scalar is spectral. A constant $a\in\C$ is spectral exactly when
+$a\in\sigma_\Alg(T)$. For $0\ne\eps\in\mK$, the scalar $a+\eps$ is spectral
+exactly when $a\in\sigD(T)$.
+\end{theorem}
+\begin{proof}
+If $v(\lambda)<0$, then $\lambda^{-1}T$ has positive order unless $T=0$, and
+the strong geometric series gives
+\begin{equation}\label{ihs:dz:eq:infiniteinverse}
+ (T-\lambda1)^{-1}=-\lambda^{-1}\sum_{n\ge0}\lambda^{-n}T^n;
+\end{equation}
+for $T=0$ the formula has just its first term. If $\lambda=a\in\C$ and $B$
+is a two-sided Hahn inverse, its constant coefficient satisfies
+$(T-a1)B_0=B_0(T-a1)=1$, because $T-a1$ is constant; so the ordinary
+invertibility question is unchanged by Hahn extension. Every other scalar is
+uniquely $a+\eps$ with $0\ne\eps\in\mK$, and \cref{ihs:dz:thm:descent}
+applied to $S=T-a1$ decides exactly this case. Since
+$\sigD(T)\subseteq\sigma_\Alg(T)$, the halo centres are included correctly.
+\end{proof}
+
+\begin{theorem}[Exact valuation and leading coefficient]\label{ihs:dz:thm:scale}
+Suppose $S=T-a1$ is Drazin invertible of index $\nu\ge1$. For
+$0\ne\eps\in\mK$ put $\eta=v(\eps)$ and $c=\lc(\eps)$. Then
+\begin{equation}\label{ihs:dz:eq:scale}
+ v_\Alg\bigl((T-a1-\eps1)^{-1}\bigr)=-\nu\eta,\qquad
+ \lc_\Alg\bigl((T-a1-\eps1)^{-1}\bigr)=-c^{-\nu}S^{\nu-1}P_{\mathrm{nil}}.
+\end{equation}
+For index zero the inverse has valuation zero and leading coefficient
+$S^{-1}$. For infinite $\lambda$ the inverse has valuation $-v(\lambda)$ and
+leading coefficient $-\lc(\lambda)^{-1}1$.
+\end{theorem}
+\begin{proof}
+In \eqref{ihs:dz:eq:epsinverse} the last nonzero negative term is
+$-\eps^{-\nu}S^{\nu-1}P_{\mathrm{nil}}$, of valuation $-\nu\eta$ and with the
+stated nonzero leading coefficient; every other term has strictly larger
+valuation, so no cancellation can affect it. The other cases follow from the
+initial term of the corresponding geometric series.
+\end{proof}
+
+This is a valuation of an operator-valued Hahn series, not a statement about
+the least field-valued operator-norm bound of \cref{ihs:hh:sec:norm}. The
+integer $\nu$ measures the largest nilpotent chain in the singular part.
+Isolation of a spectral point does not by itself determine it.
+
+\begin{corollary}[Workspace invariance]\label{ihs:dz:cor:workspace}
+Let $\Gamma\hookrightarrow\Lambda$ be an order-preserving group embedding.
+For every constant $T\in\Alg$ and every $\lambda\in K_\Gamma$, invertibility of
+$T-\lambda1$ in $\Alg((t^\Gamma))$ is equivalent to invertibility of its
+image in $\Alg((t^\Lambda))$; when an inverse exists, the latter is the image
+of the former.
+\end{corollary}
+\begin{proof}
+The embedding preserves the sign of the valuation, the constant coefficient,
+and nonzeroness of the infinitesimal part, hence every case of
+\cref{ihs:dz:thm:halo}. The explicit inverse formulas already exist in the
+smaller workspace; uniqueness identifies them after extension.
+\end{proof}
+
+Adjoining fractional exponents cannot repair a non-Drazin constant pencil. It
+can repair a scalar root problem; \cref{ihs:dz:sec:poly} shows why these two
+facts are compatible with a change in the image of a spectrum under a
+polynomial. \Cref{ihs:hh:cor:extension,ihs:rf:prop:extension} are the
+corresponding statements of Parts~I and~II. Invariance concerns the status
+of each old scalar: the halos themselves grow with the field, and
+\cref{ihs:fr:cor:extension} of Part~IV makes this explicit for a nonconstant
+operator, whose eigenvalues do not change while its non-eigenvalue monad
+grows.
+
+\section{Banach algebras: poles, nonnormality and algebraicity}\label{ihs:dz:sec:banach}
+
+This section adds a Banach norm on $\Alg$; the preceding results did not
+need one. In a Banach algebra, finite-index Drazin invertibility has a
+familiar analytic meaning: a spectral point is Drazin invertible exactly when
+it is a finite pole of the ordinary resolvent \cite{BoassoOperators,Boasso}.
+
+To see the mechanism, take $S=T-a1$ with Drazin inverse $S^{\mathrm D}$. The
+positive part of \eqref{ihs:dz:eq:laurent} converges in norm for
+sufficiently small complex $u$, being a geometric series in $uS^{\mathrm D}$;
+its negative part is finite. It supplies the ordinary resolvent on a
+punctured disk, with pole order equal to the Drazin index if $a$ is
+spectral. Conversely, the coefficients of a finite-pole Laurent expansion of
+the analytic resolvent satisfy \eqref{ihs:dz:eq:recurrence}, so its constant
+coefficient is a Drazin inverse. No accumulation point of the ordinary
+spectrum can be a finite pole, and an isolated spectral singularity cannot be
+removable, since continuity of the inverse identity would then invert
+$T-a1$. Consequently
+\begin{equation}\label{ihs:dz:eq:dictionary}
+ \sigD(T)=\acc\sigma_\Alg(T)\cup
+ \{a\in\sigma_\Alg(T):a\text{ is isolated and the resolvent has no finite
+ pole at }a\}.
+\end{equation}
+Here $\acc$ is the ordinary accumulation set, written $\sigma_\C(T)'$ in
+Part~I. For a normal operator an isolated spectral point is a simple pole.
+Without normality, an isolated essential resolvent singularity is an
+additional source of a whole infinitesimal halo. Generalized Drazin
+invertibility is not an adequate substitute: it permits a quasinilpotent
+singular corner \cite{Koliha}, whereas \cref{ihs:dz:thm:descent} requires
+that corner to be nilpotent of \emph{finite} index. The Volterra example of
+\cref{ihs:dz:sec:volterra} distinguishes them.
+
+\begin{corollary}[Recovery of the normal case]\label{ihs:dz:cor:normal}
+For a bounded normal operator $T$ on a nonzero ordinary complex Hilbert space
+$H$, with $\Alg=\B$,
+\[
+ \Sigma^{\B}_\Gamma(T)=\sigma_\C(T)\cup\bigl(\sigma_\C(T)'+\mK\bigr).
+\]
+Every isolated ordinary spectral point has Drazin index one, regardless of
+the dimension of its eigenspace.
+\end{corollary}
+\begin{proof}
+The ordinary spectral theorem decomposes the space at an isolated normal
+spectral point into its eigenspace and orthogonal complement; on the former
+$T-aI$ is zero, on the latter boundedly invertible
+(\cref{ihs:hh:lem:normalgap}). Apply \eqref{ihs:dz:eq:dictionary} and
+\cref{ihs:dz:thm:halo}.
+\end{proof}
+
+\begin{remark}[What is recovered from Part~I, and which hypotheses are dropped]\label{ihs:dz:rem:recover}
+Since $\B((t^\Gamma))=\Ahh$, the left side of \cref{ihs:dz:cor:normal} is
+exactly $\sigma^{\mathrm{adj}}_\Gamma(T)$ of \cref{ihs:hh:sec:twodefs}.
+The corollary is therefore the $\sigma^{\mathrm{adj}}$ half of
+\cref{ihs:hh:thm:spectrum}, obtained by a different route: straightening and
+Laurent descent instead of the defect splitting. At a Drazin point of index
+one, \eqref{ihs:dz:eq:epsinverse} with $S=T-aI$ reads
+$-\eps^{-1}P_{\mathrm{nil}}+\sum_{n\ge0}\eps^n(S^{\mathrm D})^{n+1}$; with
+the notation of \cref{ihs:hh:lem:normalgap}, $P_{\mathrm{nil}}=P$ and
+$S^{\mathrm D}$ is the inverse of $(T-aI)|_M$ composed with $Q$, and this is
+the isolated-point inverse \eqref{ihs:hh:eq:isolatedres}. Relative to that theorem,
+\cref{ihs:dz:thm:halo} drops \emph{normality} (the accumulation set is
+replaced by the Drazin spectrum) and the \emph{Hilbert and Banach structure}
+(any unital complex algebra; a norm enters only to identify $\sigD$ through
+\eqref{ihs:dz:eq:dictionary}). It does \emph{not} drop divisibility relative
+to the present Part~I, which has not assumed divisibility since the revision
+recorded in \cref{ihs:hh:sec:field}; the source manuscript's claim to drop it
+refers to an earlier state of Part~I (\cref{ihs:app:staleC}).
+
+Two parts of \cref{ihs:hh:thm:spectrum} are \emph{not} recovered. The first
+is the failure-of-bijectivity spectrum $\sigma^{\mathrm{alg}}_\Gamma(T)$ on
+$\Hil$: Part~III is a statement about invertibility in an algebra and says
+nothing about bijectivity on a vector space, except in its explicitly worked
+examples (the Volterra operator of \cref{ihs:dz:sec:volterra}, and the block
+operator of \cref{ihs:dz:sec:blocks} at monomial displacements). The second is point-spectrum rigidity,
+\cref{ihs:hh:thm:point}. \Cref{ihs:hh:thm:spectrum} proves
+$\sigma^{\mathrm{alg}}_\Gamma(T)=\sigma^{\mathrm{adj}}_\Gamma(T)$ for
+constant normal $T$; together with \cref{ihs:dz:cor:normal} this gives the
+full normal formula by two proofs of its algebra half. For nonnormal $T$ one
+always has $\sigma^{\mathrm{alg}}_\Gamma(T)\subseteq
+\Sigma^{\B}_\Gamma(T)$, since an inverse in $\Ahh$ is a bijection; equality is
+not asserted in general (\cref{ihs:dz:sec:questions}).
+\end{remark}
+
+\begin{corollary}[Algebraicity criterion]\label{ihs:dz:cor:algebraic}
+For an element $T$ of a Banach algebra $\Alg$ the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\SigA(T)\subseteq\C$;
+\item $\sigD(T)=\varnothing$;
+\item $T$ is algebraic over $\C$.
+\end{enumerate}
+In that case $\SigA(T)=\sigma_\Alg(T)$ is finite.
+\end{corollary}
+\begin{proof}
+The first equivalence follows from \cref{ihs:dz:thm:halo} and the existence
+of a positive element of $\Gamma\ne0$. For completeness, the classical second
+equivalence can be proved as follows. If $\sigD(T)$ is empty, all points of
+the ordinary spectrum are isolated poles, so the compact spectrum is finite,
+say $\{a_1,\ldots,a_s\}$. Its finite Riesz decomposition gives commuting
+complementary projections $P_j$ with sum one and
+$(T-a_j1)^{\nu_j}P_j=0$ for the finite pole orders $\nu_j$; hence
+$\prod_j(T-a_j1)^{\nu_j}=0$. Conversely, factor an annihilating polynomial
+into powers of distinct linear factors. Polynomial Chinese remaindering gives
+complementary idempotents polynomial in $T$; on each part $T$ is a scalar
+plus a finite-index nilpotent, so every scalar shift is a direct sum of an
+invertible and a finite-index nilpotent part, hence Drazin invertible. The
+empty-Drazin-spectrum characterization itself is classical \cite{Boasso};
+its exact Hahn spectral interpretation is the consequence asserted here.
+\end{proof}
+
+The Banach assumption is essential for the algebraicity implication. For
+$\Alg=\C(X)$ and $T=X$, every $T-a$ is invertible, both ordinary and Drazin
+spectra are empty, yet $T$ is transcendental over $\C$. No algebraicity claim
+is made for arbitrary unital complex algebras. For an ordinary bounded
+self-adjoint $T$, being algebraic is the same as having finite spectrum, so
+\cref{ihs:dz:cor:algebraic} is consistent with the spectral-reality criterion
+\cref{ihs:hh:cor:reality} of Part~I; the two statements concern different
+spectra ($\sigma^{\mathrm{adj}}$ here, $\sigma^{\mathrm{alg}}$ there), which
+agree for constant normal operators by \cref{ihs:hh:thm:spectrum}.
+
+\section{Ramified polynomial spectral mapping}\label{ihs:dz:sec:poly}
+
+We return to an arbitrary nonzero unital complex algebra $\Alg$ and a
+nonconstant $p\in\C[X]$. A nondivisible value group obstructs scalar roots;
+the following lemmas turn that obstruction into an exact spectral-mapping
+theorem.
+
+\begin{lemma}[Power image]\label{ihs:dz:lem:powers}
+For every integer $e\ge1$,
+\begin{equation}\label{ihs:dz:eq:powers}
+ \{x^e:x\in\mK\}=\{0\}\cup\{\zeta\in\mK\setminus\{0\}:v(\zeta)\in e\Gamma\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Necessity follows from $v(x^e)=ev(x)$. Conversely write
+$\zeta=d\,t^{e\gamma}(1+k)$ with $d\in\C^*$ and $v(k)>0$. Since
+$e\gamma>0$, also $\gamma>0$. Choose a complex root $d^{1/e}$ and put
+$x=d^{1/e}t^\gamma(1+k)^{1/e}$, by the strong binomial series. Then
+$x\in\mK$ and $x^e=\zeta$.
+\end{proof}
+
+\begin{lemma}[Exact local polynomial image]\label{ihs:dz:lem:local}
+Suppose $p(a)=b$ with $a,b\in\C$, and put $e=\operatorname{ord}_{X=a}(p(X)-b)$.
+There is a bijection $\varphi_a:\mK\to\mK$, induced by a formal complex power
+series with nonzero linear coefficient, such that
+$p(a+x)-b=\varphi_a(x)^e$ for $x\in\mK$. Consequently
+$p(a+\mK)-b=\{x^e:x\in\mK\}$.
+\end{lemma}
+\begin{proof}
+Factor $p(a+X)-b=cX^e(1+Xg(X))$ with $c\in\C^*$ and $g\in\C[X]$. Choose
+$c^{1/e}$ and put $\varphi_a(X)=c^{1/e}X(1+Xg(X))^{1/e}\in X\C[[X]]$. Its
+nonzero linear coefficient gives a unique formal compositional inverse
+$\psi_a\in X\C[[X]]$: at each degree the next unknown coefficient is
+multiplied by that nonzero linear coefficient and all other terms are
+already determined. Every series and composition in these identities can be
+evaluated at any element of $\mK$ by \cref{ihs:cor:binomial}; the values stay
+in $\mK$, and the identities make the resulting maps mutually inverse on the
+whole of $\mK$. The defining $e$th-power identity proves the claim. No
+ordinary convergence radius was used.
+\end{proof}
+
+A ramification index is thus an exact condition on the value group, not an
+approximate estimate along one selected scale; the leading coefficient causes
+no additional obstruction because $\C$ contains its roots.
+
+\begin{lemma}[Commuting factors]\label{ihs:dz:lem:commuting}
+A finite product of commuting elements in a unital algebra is a unit if and
+only if every factor is a unit.
+\end{lemma}
+\begin{proof}
+If the product $q$ is a unit, each factor commutes with $q$ and hence with
+$q^{-1}$, and the product of all other factors times $q^{-1}$ is both a left
+and a right inverse of that factor. The converse is immediate.
+\end{proof}
+
+\begin{proposition}[Ordinary polynomial mapping]\label{ihs:dz:prop:ordinarymapping}
+For every nonconstant $p\in\C[X]$,
+\begin{equation}\label{ihs:dz:eq:ordinarymapping}
+ \sigma_\Alg(p(T))=p(\sigma_\Alg(T)),\qquad \sigD(p(T))=p(\sigD(T)).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Factor $p(X)-b$ over $\C$ and apply \cref{ihs:dz:lem:commuting} at $T$ for
+the first equality. For the second, work temporarily in the auxiliary field
+$\C((u^\Q))$; this imposes no divisibility assumption on the workspace of the
+later theorems. Let $a_1,\ldots,a_s$ be the distinct roots of $p(X)-b$, with
+multiplicities $e_1,\ldots,e_s$. For every $e_j$th root of unity $\xi$,
+\cref{ihs:dz:lem:local} gives a root $\alpha_{j,\xi}=a_j+\psi_{a_j}(\xi
+u^{1/e_j})$ of $p(X)-b-u$. These roots are distinct: different $a_j$ have
+different residues, and for the same $a_j$ the series $\psi_{a_j}$ is
+injective on infinitesimals. Their number is $\sum_je_j=\deg p$, so with
+$c_p$ the leading coefficient of $p$,
+\[
+ p(X)-b-u=c_p\prod_{j=1}^s\prod_{\xi^{e_j}=1}(X-\alpha_{j,\xi}).
+\]
+After evaluation at $T$ all factors commute. By \cref{ihs:dz:thm:descent}, a
+factor is a unit exactly when $T-a_j1$ is Drazin invertible, and the product
+is a unit exactly when $p(T)-b1$ is Drazin invertible. The commuting-factor
+lemma proves that this happens exactly when every $T-a_j1$ is Drazin
+invertible, which is the second equality.
+\end{proof}
+
+\begin{theorem}[Exact ramified spectral image]\label{ihs:dz:thm:image}
+Let $Z=\sigD(T)$ and, for $b\in p(Z)$, let $Z_b$ and $e_a$ be as in
+\cref{ihs:dz:sec:glance}; these multiplicities refer to the polynomial germ,
+not to the multiplicity of an operator eigenvalue. Then for $b\in p(Z)$,
+\begin{equation}\label{ihs:dz:eq:image}
+ p(\SigA(T))\cap(b+\mK)=\{b\}\cup
+ \Bigl\{b+\zeta:0\ne\zeta\in\mK,\ v(\zeta)\in\bigcup_{a\in Z_b}e_a\Gamma\Bigr\}.
+\end{equation}
+For $b\in p(\sigma_\Alg(T))\setminus p(Z)$ this intersection is $\{b\}$; for
+$b\notin p(\sigma_\Alg(T))$ it is empty. In contrast,
+\begin{equation}\label{ihs:dz:eq:polyspectrum}
+ \SigA(p(T))=p(\sigma_\Alg(T))\cup\bigl(p(Z)+\mK\bigr).
+\end{equation}
+In particular $p(\SigA(T))\subseteq\SigA(p(T))$, and these formulas describe
+every possible omission from the polynomial image.
+\end{theorem}
+\begin{proof}
+By \cref{ihs:dz:thm:halo}, a spectral point is either an ordinary point of
+$\sigma_\Alg(T)$ or a member of a halo $a+\mK$ with $a\in Z$. The standard
+part of $p(a+\eps)$ is $p(a)$, so contributions to a halo $b+\mK$ come only
+from its ordinary fibre. For each $a\in Z_b$,
+\cref{ihs:dz:lem:local,ihs:dz:lem:powers} give exactly the condition
+$v(\zeta)\in e_a\Gamma$. Their finite union proves \eqref{ihs:dz:eq:image},
+including the cases with no Drazin-spectral preimage. Finally apply
+\cref{ihs:dz:thm:halo} to $p(T)$ and substitute
+\cref{ihs:dz:prop:ordinarymapping}.
+\end{proof}
+
+\begin{lemma}[Finite unions of integer-multiple subgroups]\label{ihs:dz:lem:group}
+For any abelian group $G$ and positive integers $e_1,\ldots,e_s$ with
+$s\ge1$, one has $G=\bigcup_je_jG$ if and only if $e_jG=G$ for some $j$. If
+$G$ is ordered and the union is proper, it omits a positive element.
+\end{lemma}
+\begin{proof}
+Assume every $e_jG$ is proper. Choose a prime divisor $p_j$ of $e_j$ with
+$p_jG\ne G$; one exists, since surjectivity of multiplication by all prime
+factors would give surjectivity of multiplication by $e_j$. Let $\mathcal P$
+be the finite set of chosen primes and choose $x_\ell\notin \ell G$ for each
+$\ell\in\mathcal P$. By the integer Chinese remainder theorem choose
+$c_\ell\equiv1\pmod \ell$ and $c_\ell\equiv0\pmod q$ for the other
+$q\in\mathcal P$. Then $x=\sum_{\ell\in\mathcal P}c_\ell x_\ell$ has the same
+class as $x_\ell$ modulo $\ell G$, so lies in none of the $\ell G$ and hence
+in none of the $e_jG$. The converse is immediate. In an ordered group
+$x\ne0$, and one of $x,-x$ is positive and still outside every subgroup in
+the union.
+\end{proof}
+
+\begin{theorem}[Sharp spectral-mapping criterion]\label{ihs:dz:thm:criterion}
+For a nonconstant $p\in\C[X]$, the equality
+\begin{equation}\label{ihs:dz:eq:criterion}
+ \SigA(p(T))=p(\SigA(T))
+\end{equation}
+holds if and only if, for every $b\in p(\sigD(T))$, at least one $a\in Z_b$
+has $e_a\Gamma=\Gamma$. If the condition fails at $b$, there is a positive
+$\delta\in\Gamma$ with
+\begin{equation}\label{ihs:dz:eq:witness}
+ b+t^\delta\in\SigA(p(T))\setminus p(\SigA(T)).
+\end{equation}
+\end{theorem}
+\begin{proof}
+\Cref{ihs:dz:thm:image} says equality holds exactly when
+$\bigcup_{a\in Z_b}e_a\Gamma$ contains every positive element for every
+relevant $b$; as a union of subgroups it then contains all of $\Gamma$.
+\Cref{ihs:dz:lem:group} gives exactly the stated condition, and if the union
+is proper its positive omitted element supplies \eqref{ihs:dz:eq:witness}.
+\end{proof}
+
+For divisible $\Gamma$ the criterion always holds. More generally, an
+unramified Drazin-spectral preimage, $e_a=1$, suffices for its fibre whatever
+the group. For $\Gamma=\Z$ every relevant fibre must contain such an
+unramified preimage; for $\Gamma=\Z[1/2]$, ramification of order a power of
+two creates no obstruction, but an exclusively order-three fibre does. If $T$
+is algebraic, its Drazin spectrum is empty and the criterion is vacuous, so
+finite matrices alone cannot exhibit the nontrivial halo obstruction. The
+obstruction couples a non-Drazin singularity with insufficient scalar roots
+in the chosen workspace. It is not a failure of ordinary complex polynomial
+spectral mapping, and it is not a claimed failure over the full surcomplex
+field (\cref{ihs:dz:cor:fullmapping}).
+
+\begin{proposition}[Pole-order profile]\label{ihs:dz:prop:polemap}
+Let $\Alg$ be a Banach algebra and $b\in p(\sigma_\Alg(T))\setminus
+p(\sigD(T))$. For each spectral $a$ with $p(a)=b$ let $\nu_a$ be its finite
+pole order and $e_a=\operatorname{ord}_{X=a}(p(X)-b)$. The Drazin index of
+$p(T)-b1$ is
+\begin{equation}\label{ihs:dz:eq:polemap}
+ \nu_b=\max_{a\in\sigma_\Alg(T),\ p(a)=b}\left\lceil\frac{\nu_a}{e_a}\right\rceil,
+\end{equation}
+and its inverse at a displacement $0\ne\eps\in\mK$ has exact valuation
+$-\nu_bv(\eps)$.
+\end{proposition}
+\begin{proof}
+The indicated spectral preimages are finite poles. Their finite Riesz
+decomposition separates them from a part on which $p(T)-b1$ is invertible.
+On the part for $a$ write $T=a1+N_a$ with $N_a$ of nilpotency index $\nu_a$.
+Then $p(a1+N_a)-b1=N_a^{e_a}w_a(N_a)$ with $w_a(0)\ne0$; the factor
+$w_a(N_a)$ is invertible and commutes with $N_a$, so the $k$th power vanishes
+exactly when $N_a^{e_ak}$ does, giving index $\lceil\nu_a/e_a\rceil$. The
+index of a finite direct sum is the maximum. Apply \cref{ihs:dz:thm:scale}
+for the valuation.
+\end{proof}
+
+The ceiling formula is an elementary nilpotent-algebra fact, not claimed as
+new by itself; here it gives the exact resolvent exponent.
+
+\section{Examples separating poles, halos and scalar-root defects}\label{ihs:dz:sec:examples}
+
+\subsection{Finite Jordan blocks and infinite-rank nilpotents}\label{ihs:dz:sec:jordan}
+Let $J_\nu$ be the nilpotent $\nu\times\nu$ Jordan matrix with ones on the
+superdiagonal. For $T=aI+J_\nu$,
+\[
+ \SigA(T)=\{a\},\qquad
+ (T-aI-\eps I)^{-1}=-\sum_{j=0}^{\nu-1}\eps^{-j-1}J_\nu^j.
+\]
+Every nonzero infinitesimal displacement is invertible, although the inverse
+has valuation $-\nu v(\eps)$: a large inverse and a spectral value are
+different notions. For example $J_5^2$ has nilpotency index three, and its
+inverse at displacement $\eps$ has valuation $-3v(\eps)$, not $-5v(\eps)$ or
+$-\tfrac52v(\eps)$.
+
+Infinite rank alone does not force a halo. On $H\oplus H$ let
+$N=\begin{psmallmatrix}0&X\\0&0\end{psmallmatrix}$ with $X$ any bounded
+operator, possibly compact of infinite rank. Then $N^2=0$, so
+$\Sigma^{\B}_\Gamma(N)=\{0\}$ and its shifted inverse has only finitely many
+negative powers.
+
+\subsection{Volterra: an isolated point that acquires a whole halo}\label{ihs:dz:sec:volterra}
+Let $H=L^2([0,1],\C)$ and $(\mathcal Vf)(x)=\int_0^xf(s)\,ds$. The operator is
+injective; its range consists of functions with an absolutely continuous
+representative vanishing at zero, so the constant function $1$ is not in its
+range. Repeated integration gives
+\begin{equation}\label{ihs:dz:eq:volterra}
+ (\mathcal V^nf)(x)=\frac1{(n-1)!}\int_0^x(x-s)^{n-1}f(s)\,ds\qquad(n\ge1),
+\end{equation}
+and the squared Hilbert--Schmidt norm of this kernel is
+$1/\bigl(((n-1)!)^2(2n-1)(2n)\bigr)\le1/(n!)^2$. Thus
+$\norm{\mathcal V^n}\le1/n!$, and for every ordinary $z\ne0$ the series
+$-\sum_{n\ge0}z^{-n-1}\mathcal V^n$ converges in operator norm and inverts
+$\mathcal V-zI$. Since $\mathcal V$ is not onto, its ordinary spectrum is
+exactly $\{0\}$.
+
+Nevertheless $\mathcal V^n1=x^n/n!\ne0$ for every $n$, so $\mathcal V$ is not
+nilpotent. It is not Drazin invertible either: if $S^{\mathrm D}$ were a
+Drazin inverse, then $P_{\mathrm{inv}}=\mathcal V^n(S^{\mathrm D})^n$ for
+every $n\ge1$, of norm at most $\norm{S^{\mathrm D}}^n/n!\to0$; hence
+$P_{\mathrm{inv}}=0$ and $\mathcal V$ would be nilpotent. \Cref{ihs:dz:thm:halo}
+gives
+\begin{equation}\label{ihs:dz:eq:volterrahalo}
+ \Sigma^{\B}_\Gamma(\mathcal V)=\mK.
+\end{equation}
+The ordinary spectrum has no accumulation points at all, so an
+accumulation-only formula is false without normality; this is the
+nonnormal counterpart of \cref{ihs:hh:ex:backshift}, which exhibits the
+failure of point-spectrum rigidity rather than of the spectral formula.
+
+In this example the spectral obstruction is also genuine vector
+nonsurjectivity on $H((t^\Gamma))$. If $x\ne0$ has leading exponent $\delta$,
+the coefficient of $(\mathcal V-\eps I)x$ at $\delta$ is $\mathcal Vx_\delta\ne0$,
+because the infinitesimal term has strictly larger order. The operator is
+therefore injective and preserves the leading exponent; if its image
+contained the constant vector $1$, then $\delta=0$ and $\mathcal Vx_0=1$,
+which is impossible. This is \cref{ihs:hh:thm:defect} with $S=\mathcal V$ and
+$E=-\eps I$, and it does not rely on any equivalence of categories. Thus
+$\sigma^{\mathrm{alg}}_\Gamma(\mathcal V)=\Sigma^{\B}_\Gamma(\mathcal V)=\mK$:
+away from $\mK$ the algebra inverses are bijections.
+
+\subsection{The missing odd valuation levels}\label{ihs:dz:sec:odd}
+Choose $\Gamma=\Z$ and $p(X)=X^e$ with $e\ge2$. For Volterra, $Z=\{0\}$ and
+the relevant ramification index is $e$. \Cref{ihs:dz:thm:image} gives
+\begin{equation}\label{ihs:dz:eq:volterrapower}
+ \Sigma^{\B}_\Gamma(\mathcal V^e)=\mK,\qquad
+ \{\lambda^e:\lambda\in\Sigma^{\B}_\Gamma(\mathcal V)\}
+ =\{0\}\cup\{\zeta\in\mK\setminus\{0\}:v(\zeta)\in e\Z\}.
+\end{equation}
+For $e=2$ every odd positive valuation is missing from the image:
+$t\in\Sigma^{\B}_\Gamma(\mathcal V^2)$ but $t$ is not the square of a point
+of $\Sigma^{\B}_\Gamma(\mathcal V)$. After passage to $\Gamma=\Q$, $t^{1/2}$
+exists and belongs to the spectrum of $\mathcal V$, so this image defect
+disappears; yet $\mathcal V^2-tI$ is still not invertible there, by
+\cref{ihs:dz:cor:workspace}. What changed was the existence of a spectral
+preimage, not the invertibility of the target pencil.
+
+\subsection{Norm-convergent finite sections can miss an entire halo}\label{ihs:dz:sec:blocks}
+On $H=\bigoplus_{n\ge1}\C^n$ consider
+\begin{equation}\label{ihs:dz:eq:blocks}
+ \mathcal N=\bigoplus_{n\ge1}2^{-n}J_n.
+\end{equation}
+Let $\mathcal N_M$ retain the first $M$ blocks and vanish elsewhere. It has
+finite rank and is nilpotent, with $\norm{\mathcal N-\mathcal N_M}\le
+2^{-(M+1)}\to0$; hence $\mathcal N$ is compact. It is not nilpotent, because
+arbitrarily long blocks occur. For $z\in\C^*$, finitely many initial blocks
+have finite-dimensional inverses, and on the remaining blocks
+$\norm{2^{-n}J_n}<\abs z/2$, so ordinary Neumann series bound their inverse
+norms by $2/\abs z$; the inverses form a bounded direct sum. Thus
+$\sigma_\C(\mathcal N)=\{0\}$, as $\mathcal N$ has nonzero kernel. It is not
+Drazin invertible: for $k\ge1$ only the blocks with $n>k$ contribute to
+$\mathcal N^k$, so $\norm{\mathcal N^k}=2^{-k(k+1)}$, and Drazin data would
+give $\norm{P_{\mathrm{inv}}}\le2^{-k(k+1)}\norm{S^{\mathrm D}}^k\to0$, making
+$\mathcal N$ nilpotent. Therefore
+\begin{equation}\label{ihs:dz:eq:finitefailure}
+ \Sigma^{\B}_\Gamma(\mathcal N_M)=\{0\}\ \text{for every }M,\qquad
+ \Sigma^{\B}_\Gamma(\mathcal N)=\mK.
+\end{equation}
+There is a direct support witness at $\eps=t^\eta$. The constant vector $y$
+whose $n$th block is $2^{-n}e_n$ lies in $H$. A putative solution $x$ of
+$(\mathcal N-t^\eta I)x=y$ must, in the $n$th block, equal
+$x^{(n)}=-\sum_{j=0}^{n-1}t^{-(j+1)\eta}(2^{-n}J_n)^j2^{-n}e_n$, whose
+coefficient at $-n\eta$ is nonzero. The global support of $x$ would contain
+$-\eta,-2\eta,-3\eta,\ldots$, which is not well ordered, so no Hahn-vector
+solution exists. A finite number of block checks can never establish the
+uniform bound on nilpotent chain lengths that would remove this obstruction.
+This is the Drazin counterpart of \cref{ihs:sec:finitesections}, where every
+finite section of a normal operator is invertible but the infinite one is
+not.
+
+\subsection{Two ranks and a nonmonomial displacement}\label{ihs:dz:sec:tworank}
+Let $\Gamma=\Z\times\Z$ in lexicographic order and $\eta=(0,1)>0$. The
+sequence $n\eta$ never exceeds $(1,0)$, yet all the preceding inverse
+formulas remain strongly valid. For example take
+$\eps=t^{(0,1)}\bigl(1+t^{(0,2)}+t^{(1,0)}\bigr)$. At a Drazin point of index
+three, its shifted inverse has exact valuation $(0,-3)$, irrespective of the
+nonmonomial correction. The straightening lemma applies within this very
+group and adjoins no fractions. In contrast, the image of the squaring map
+on infinitesimals consists precisely of those whose valuation has both
+coordinates even; inverse descent and the scalar-power criterion answer
+different questions. Under the ordered embedding $(m,n)\mapsto m\omega+n$
+and $t^\gamma=\omega^{-\gamma}$, the displacement is the actual positive
+surreal number $\eps=\omega^{-1}(1+\omega^{-2}+\omega^{-\omega})$, and the
+exact inverse valuation at index three corresponds to the leading monomial
+$\omega^3$, with operator coefficient given by \cref{ihs:dz:thm:scale}.
+
+\section{Actual surreal and surcomplex specialization}\label{ihs:dz:sec:surreal}
+
+The normal-form bridge is the imported classical theorem of
+\cref{ihs:sec:surcomplex}, with the sign convention $t^\gamma=\omega^{-\gamma}$
+of \eqref{ihs:eq:surreal-embedding} \cite{Gonshor,DriesEhrlich}; it is not a
+newly proposed construction of the surreal field. Positive valuation is
+exactly infinitesimal size in the embedded fields. Any \emph{set} of
+surcomplex scalars fits in a common workspace: take the union of the supports
+of their real and imaginary normal forms, negate the exponents, and form the
+additive subgroup they generate, adjoining $1$ to make it nonzero. This is
+set-sized, and its rational span is a set-sized divisible workspace when
+scalar roots are wanted. No single set-sized workspace is asserted to contain
+all surreal numbers.
+
+For a fixed set-sized complex algebra $\Alg$, let $\Alg_{\No}$ denote the
+class of expressions $\sum_{\gamma\in S}a_\gamma\omega^{-\gamma}$ with
+$a_\gamma\in\Alg$ and $S\subset\No$ a well-ordered set. These are
+\emph{operator-valued normal forms}, not scalar surreal numbers when $\Alg$ is
+noncommutative. Any finite collection of them lies in a common $\AlgG$, so
+additions and products are defined there and independent of enlargement.
+This is a locality construction, not a theorem with a proper class passed as
+its set-sized group parameter. For constant $T\in\Alg$ define
+$\Sigma_{\No,\Alg}(T)$ by failure of a two-sided inverse of $T-\lambda1$ in
+$\Alg_{\No}$, where $\lambda\in\No[i]$, and write $\mathfrak m_{\No[i]}$ for
+the surcomplex infinitesimals, including zero.
+
+\begin{theorem}[Surcomplex halo classification]\label{ihs:dz:thm:surcomplex}
+For every constant $T\in\Alg$,
+\begin{equation}\label{ihs:dz:eq:surcomplex}
+ \Sigma_{\No,\Alg}(T)=\sigma_\Alg(T)\cup
+ \bigl(\sigD(T)+\mathfrak m_{\No[i]}\bigr).
+\end{equation}
+The exact resolvent formulas and leading-scale assertions hold at every
+actual surcomplex parameter in their indicated cases.
+\end{theorem}
+\begin{proof}
+Place the normal-form support of $\lambda$ in a set-sized nonzero ordered
+subgroup $\Gamma$. If \cref{ihs:dz:thm:halo} gives an inverse, its formula
+already lies in $\AlgG\subseteq\Alg_{\No}$. Conversely a putative inverse in
+$\Alg_{\No}$ has set-sized support; enlarge $\Gamma$ to a set-sized subgroup
+containing both supports. The set-sized theorem then forces the same
+ordinary or Drazin invertibility condition, which is independent of the
+enlargement by \cref{ihs:dz:cor:workspace}. The exact leading terms follow
+from \cref{ihs:dz:thm:scale}.
+\end{proof}
+
+\begin{corollary}[Polynomial mapping for the full surcomplex scalars]\label{ihs:dz:cor:fullmapping}
+For nonconstant $p\in\C[X]$,
+$\Sigma_{\No,\Alg}(p(T))=p(\Sigma_{\No,\Alg}(T))$.
+\end{corollary}
+\begin{proof}
+For any particular parameter and its support choose a set-sized divisible
+workspace as above. The criterion of \cref{ihs:dz:thm:criterion} holds there,
+and inverses and spectral membership are unchanged after further
+enlargement. Alternatively, every positive surreal valuation is divisible by
+each positive integer, and the local germ construction supplies all the
+required spectral preimages in the full field.
+\end{proof}
+
+The nondivisible counterexamples are therefore genuine phenomena of exact
+Hahn subfields of the surcomplexes, while the non-Drazin halo itself persists
+over the full surcomplex scalar field. Passing from the integer workspace to
+the full field fills missing polynomial preimages; it does not remove the
+target spectral obstruction.
+
+For a real unital algebra $\Alg_\R$, complexify to $\Alg=\Alg_\R\otimes_\R\C$.
+At real Hahn parameters, invertibility of a real pencil in the
+complexification is equivalent to invertibility in the real coefficient
+algebra, because the unique complex inverse is fixed by conjugation and so
+has real coefficients; likewise uniqueness of the Drazin inverse shows that
+Drazin data of a real element, when they exist in the complexification, are
+real. The real-parameter version of \cref{ihs:dz:thm:surcomplex} follows by
+intersection with $\No$. This avoids choosing rational powers of negative
+real leading coefficients in the straightening proof: real coefficients
+descend by conjugation only after the complex theorem is established. For
+the real Volterra operator, every nonzero real surreal infinitesimal remains
+a spectral value in the corresponding real operator-normal-form algebra.
+
+\section{Part III: interpretation, boundaries and further questions}\label{ihs:dz:sec:limits}
+
+\subsection{What the results establish}\label{ihs:dz:sec:establish}
+There are two independent mechanisms. A constant pencil admits an
+infinitesimally shifted Hahn inverse exactly when its singular corner is
+nilpotent of bounded finite index, and that condition survives all
+exponent-workspace enlargements. A polynomial can then map the resulting
+halos onto only selected valuation levels when the workspace lacks enough
+roots, and the defect is determined exactly by the ramification indices over
+the Drazin-spectral fibres. The argument is not a transfer of the analytic
+theory of complex operators into a non-Archimedean setting: it uses finite
+algebra on the singular part and exact support calculus on the regular part.
+The surreal extension localizes all supports in set-sized subfields rather
+than declaring a proper class to be a Banach field. The Volterra example
+explains why an ordinary inverse series that converges for every nonzero
+complex parameter can still be inadmissible at every nonzero infinitesimal:
+its negative exponent tail descends without a least element. The
+increasing-block example explains why all finite nilpotent approximants may
+pass while their norm limit fails. These are structural obstructions, not
+floating-point problems.
+
+\subsection{Non-claims that matter mathematically}\label{ihs:dz:sec:nonclaims}
+The spectra of this part are relative to the named algebras $\AlgG$ and
+$\Alg_{\No}$, and concern \emph{constant} elements only. No classification
+of all linear endomorphisms, of all possible non-Archimedean Hilbert
+completions, or of all Hahn operator series is asserted. Actual vector
+nonsurjectivity was proved for the two explicit examples, not inferred
+universally from lack of an inverse in a specified subalgebra. The Banach
+algebraicity corollary depends on compactness of the ordinary spectrum and
+the finite Riesz decomposition and is false for arbitrary complex algebras.
+The pole-order formula concerns a finite integer index; generalized Drazin
+invertibility permits an infinite-order obstruction and cannot replace that
+hypothesis. Every infinite operation uses strong support conditions, and no
+conclusion about convergence of finite subsums in a higher-rank valuation
+topology is implicit. No least field-valued operator norm, trace-class
+determinant, spectral measure or physical application is supplied by this
+part. The main theorems are proved in the text; they have not been
+independently refereed or formalized in Lean, and the finite program of
+\cref{ihs:sec:checksthree} cannot validate arbitrary support well ordering,
+proper-class foundations, or the infinite-dimensional spectral formula.
+
+\subsection{Natural next questions}\label{ihs:dz:sec:questions}
+The first genuine extension is from a constant pencil to $T_0+E-\lambda1$,
+with $E$ of positive Hahn order and not necessarily commuting with $T_0$.
+The straightening argument no longer removes $E$, and a singular Drazin
+corner can interact with its complement. A useful goal is an exact
+Schur-reduction criterion with a support certificate, particularly when the
+singular corner is infinite dimensional; no such general classification is
+claimed. \emph{Status in this report:} Part~IV answers one case of this
+question, for $\Alg=\B$, $T_0$ injective compact self-adjoint and $E$
+self-adjoint in $\Ahh$, over a divisible $\Gamma$
+(\cref{ihs:fr:thm:main}); there the halo of the Drazin-spectral point $0$
+stays the whole of $\mK$, and each isolated simple pole $c\ne0$ is replaced
+by finitely many Hermitian cluster eigenvalues in $c+\mK$. The general
+question remains open.
+
+A second question concerns the operator category. For which nondivisible
+value groups and vector modules does bijectivity of an everywhere-defined
+coefficientwise bounded Hahn operator force its inverse to have a common
+well-ordered operator support? An answer would relate the present
+algebra-relative spectrum to larger endomorphism spectra, such as
+$\sigma^{\mathrm{alg}}_\Gamma$ of Part~I; the examples show why assuming that
+these categories coincide is unsafe. A third direction is an analytic
+functional calculus beyond polynomials: ordinary holomorphic germs with
+nonzero finite ramification can be handled locally by the same formal
+inverse construction, but a global Hahn-valued calculus must specify common
+domains and admissible coefficient supports. For formal verification, the
+clean first target is the finite-Laurent Drazin criterion, which needs only a
+unital algebra and coefficient recurrences; the next are cyclic-support
+projection and strong straightening. No checked implementation is included.
+
+\clearpage
+\part*{Part IV. Fredholm windows: compact self-adjoint residues under noncommuting Hahn perturbations}
+\addcontentsline{toc}{part}{Part IV. Fredholm windows}
+
+\emph{Standing hypotheses for Part IV.} $H$ is an ordinary
+\emph{infinite-dimensional separable} complex Hilbert space, $\Gamma$ is a
+nonzero set-sized ordered abelian group that is \textbf{divisible}, and the
+vector space, inner product and operator algebra are those of Part~I:
+$\Hil=H((t^\Gamma))$ with the inner product \eqref{ihs:hh:eq:inner}, linear in
+the first variable, and $\Ahh=\B((t^\Gamma))$. Divisibility is a hypothesis
+of this part only; it is used to make $\K$ algebraically closed and $\Fld$
+real closed, so that finite Hermitian clusters diagonalize inside the field
+(\cref{ihs:fr:lem:hermitian}). This report has not examined which Part~IV
+statements survive without it. ``Spectrum'' in this part means both Part~I
+spectra: $\sigma^{\mathrm{alg}}_\Gamma$, failure of bijectivity on $\Hil$,
+and $\sigma^{\mathrm{adj}}_\Gamma$, failure of invertibility in $\Ahh$; the
+main theorem proves that they agree for the operators studied. The source
+manuscript wrote $\mathscr B$, $\sigma_{\mathscr B}$ and $\sigma_{\mathrm{bij}}$
+for $\Ahh$, $\sigma^{\mathrm{adj}}_\Gamma$ and $\sigma^{\mathrm{alg}}_\Gamma$,
+$\operatorname{res}$ for the standard part $\st$, and $W$, $M$, $U$, $V$, $D$, $B$ for
+objects that are renamed below to avoid Part~I and Part~II meanings.
+
+\section{The question and the answer}\label{ihs:fr:sec:intro}
+
+A useful surcomplex spectral theory must distinguish three operations:
+solving each finite spectral cluster, assembling all clusters into one
+operator, and detecting the spectrum by a scalar analytic determinant. In
+the coefficientwise Hahn setting these operations have different answers.
+This part gives a class in which all three answers are proved exactly. The
+principal example starts with a compact self-adjoint operator whose ordinary
+eigenvalues accumulate only at zero. An infinitesimal noncommuting
+perturbation moves the individual eigenvalues. Nevertheless zero does not
+simply acquire a sequence of displaced eigenvalues: it retains an entire
+complex infinitesimal neighbourhood of non-eigenvalue spectral points. Every
+nonzero ordinary spectral window is finite-dimensional, but the accumulation
+window is not Fredholm in the algebraic sense of \cref{ihs:fr:sec:essential}.
+
+Let $T$ be an ordinary injective compact self-adjoint operator on $H$ and
+\begin{equation}\label{ihs:fr:eq:perturbation}
+ A=T+E,\qquad E=E^*\in\Ahh,\qquad v(E)>0.
+\end{equation}
+The coefficient operators of $E$ need only be bounded; they need not be
+compact or commute with each other or with $T$. For an ordinary eigenvalue
+$c\ne0$ of $T$ write $m_c=\dim_\C\ker(T-cI)$. \Cref{ihs:fr:thm:main}
+constructs $m_c$ real Hahn eigenvalues $\lambda_{c,1},\ldots,\lambda_{c,m_c}$
+with standard part $c$, counted with multiplicity, and proves
+\begin{equation}\label{ihs:fr:eq:headline}
+ \sigma^{\mathrm{adj}}_\Gamma(A)=\sigma^{\mathrm{alg}}_\Gamma(A)
+ =\mK\cup\bigcup_{c\in\sigma_\C(T)\setminus\{0\}}
+ \{\lambda_{c,1},\ldots,\lambda_{c,m_c}\}.
+\end{equation}
+The second set is exactly the point spectrum. For $z\in\mK$, $A-zI$ is
+injective but not surjective, with cokernel isomorphic to the Hahn extension
+of an algebraic complement of $\Ran T$. Thus even nonreal infinitesimals
+belong to the spectrum of this self-adjoint operator. This is not a claim
+about the spectrum of an ordinary complex Hilbert-space operator.
+
+\emph{Relation to Part~I.} For $E=0$, \eqref{ihs:fr:eq:headline} is the
+injective compact self-adjoint case of \cref{ihs:hh:cor:compact}, and
+Part~I is more general there (normal, not necessarily injective, any
+$\Gamma$, any $H$). The new content is the noncommuting perturbation. This is
+the case that \cref{ihs:hh:sec:different} describes as requiring a different
+theorem. The local answer, however, does not assemble into a global
+bounded-coefficient spectral theorem: \cref{ihs:fr:thm:nounitary} gives an
+explicit tridiagonal perturbation with trace-class coefficients and
+individually defined eigenbranches but no Hahn-unitary diagonalizer in
+$\Ahh$, and \cref{ihs:fr:thm:nolidskii,ihs:fr:thm:noproduct} show that even
+ordinary coefficientwise eigenvalue sums and products fail for it. A
+coefficientwise lift of the trace-class Fredholm determinant nevertheless
+exists and has an exact Fredholm alternative
+(\cref{ihs:fr:thm:fredholm}); it detects every finite-coupling spectral
+window, but no nonzero coherent Hahn analytic function can detect the whole
+spectral monad at the accumulation point
+(\cref{ihs:fr:thm:nocharacteristic}).
+
+\emph{Relation to Part~III.} In the language of Part~III,
+$\sigD(T)=\{0\}$ for $\Alg=\B$: zero is an accumulation point, and each
+nonzero eigenvalue is an isolated simple pole. \Cref{ihs:dz:thm:halo} then
+gives $\Sigma^{\B}_\Gamma(T)=\mK\cup(\sigma_\C(T)\setminus\{0\})$ at $E=0$.
+Part~IV answers the first question of \cref{ihs:dz:sec:questions} for this
+class: under a noncommuting $E$ the halo of the Drazin-spectral point stays
+all of $\mK$, while each pole $c$ is replaced by a finite Hermitian cluster.
+
+\emph{What is inherited and what is added.} The range-defect factorization
+used below is \cref{ihs:hh:thm:defect} of Part~I, re-proved in the source by
+a different factorization (\cref{ihs:fr:rem:secondproof}); the Hahn support
+lemma, ordinary compact spectral theory, the Riesz projection construction,
+finite Hermitian diagonalization, and the classical trace-class determinant
+identities are likewise inherited or classical, and their transfer alone is
+not presented as new. Ordinary analytic perturbation theory supplies isolated
+spectral projections and finite-dimensional reduction \cite{Kato}; the
+direct rotation of two nearby orthogonal projections is the classical
+Sz.-Nagy--Kato construction, with the explicit formula in Simon's account
+\cite{SimonProjections}; ordinary Fredholm determinant identities are
+standard trace-ideal theory, used in Bornemann's formulation
+\cite{Bornemann}; non-Archimedean Fredholm theory has a substantial
+precedent in Serre's work \cite{Serre}, whose category of completely
+continuous operators on a non-Archimedean Banach space is not the
+coefficient algebra used here. The proposed additions are the full formula
+\eqref{ihs:fr:eq:headline} for arbitrary noncommuting self-adjoint
+positive-order perturbations, the trace-class counterexample to global
+bounded-coefficient diagonalization and to spectral sums and products, and
+the exact interface between Hahn Fredholm determinants and the unavoidable
+accumulation monad. A targeted search did not locate these combined
+statements; it is not an exhaustive priority determination.
+
+\section{The operator category and the identity-lifting device}\label{ihs:fr:sec:framework}
+
+\subsection{The algebra is specified in advance}\label{ihs:fr:sec:category}
+All objects are those of \cref{ihs:sec:construction,ihs:sec:adjoints}. Part~I
+proves that $\Ahh$ is exactly the algebra of everywhere-defined adjointable
+operators (\cref{ihs:hh:thm:adjoint}); this part does not need that theorem,
+because it specifies $\Ahh$ at the outset. Membership in $\Ahh$ requires every
+coefficient to be an ordinary bounded operator and one well-ordered operator
+support; it does not require $\sup_\gamma\norm{A_\gamma}<\infty$. Conversely,
+a matrix whose entries are individually valid Hahn series need not define an
+element of $\Ahh$: its coefficient at a single exponent can be an unbounded
+ordinary matrix. This is the obstruction used in
+\cref{ihs:fr:sec:obstruction}. For $X\in\Ahh$ also write
+$\sigma_{p,\Gamma}(X)=\{\lambda:\ker(X-\lambda I)\ne0\}$. The inclusion
+$\sigma^{\mathrm{alg}}_\Gamma(X)\subseteq\sigma^{\mathrm{adj}}_\Gamma(X)$
+always holds; equality is proved below for the operators studied, not
+inferred for every $X\in\Ahh$.
+
+Divisibility makes $\K$ algebraically closed and $\Fld$ real closed. The
+complex statement is the standard Hahn-field closedness theorem
+\cite[Corollary~4]{Poonen}; the real statement follows equivalently from
+positive square roots and complexification, and a positive square root can
+be built directly from half the leading exponent and a near-one binomial
+series (\cref{ihs:hh:sec:field}). The results apply to genuine surcomplex
+coefficients through \eqref{ihs:eq:surreal-embedding}; they posit no set
+containing the proper class $\No[i]$ and do not identify the intrinsic
+valuation topology with the fine topology of the surreal class.
+
+The support tools are \cref{ihs:lem:support,ihs:lem:neumann}; the correction
+exponents of $(I+F)^{-1}$ lie in $(\supp F)^*\setminus\{0\}$. If
+$X=X_0+X_+$ with $X_0$ an invertible ordinary bounded operator and
+$v(X_+)>0$, factoring out $X_0$ gives an inverse in $\Ahh$ with nonnegative
+support. This criterion is sufficient, not necessary: $t^\eta I$ is
+invertible although its standard part is zero.
+
+\subsection{Lifting analytic identities coefficientwise}\label{ihs:fr:sec:lift}
+Let $X,Y$ be ordinary complex Banach spaces and $f$ holomorphic near
+$x_0\in X$. For a positive-support Hahn perturbation
+$h=\sum_{s\in S}h_st^s$ define
+\begin{equation}\label{ihs:fr:eq:taylorlift}
+ f^{\mathrm H}(x_0+h)=\sum_{n\ge0}\frac1{n!}\,\mathrm d^nf(x_0)[h,\ldots,h],
+\end{equation}
+expanded into the finite coefficient words of \cref{ihs:lem:support}(ii). It
+is a formal Hahn sum; no inequality involving ordinary norms of the $h_s$ is
+required.
+
+\begin{lemma}[Identity lifting]\label{ihs:fr:lem:lift}
+Ordinary holomorphic identities between maps as above lift to identities of
+their Hahn Taylor expansions whenever the ordinary base points lie in the
+domains of the identities. Finite compositions, products and continuous
+multilinear operations commute with this lifting.
+\end{lemma}
+\begin{proof}
+Fix an exponent $\gamma$. Only finitely many words in $S$ contribute to that
+coefficient, and only finitely many directions $h_s$ occur in them.
+Introduce one ordinary complex variable for each such direction and restrict
+the ordinary identity to the resulting finite-dimensional parameter space
+near zero. Equality of its Taylor coefficients gives the coefficient
+equality at $\gamma$. For composition, zero-constant inner increments and the
+same finite-word condition justify all regrouping.
+\end{proof}
+
+A real-analytic identity involving adjoints is treated by real auxiliary
+parameters and compared coefficientwise in the same way; this is used for
+orthogonal projections of self-adjoint families. An infinite ordinary sum at
+one exponent must first be evaluated in its ordinary coefficient space:
+infinitely many nonzero constants are not a strongly Hahn-summable family.
+Ordinary traces, contour integrals and determinants are taken inside the
+coefficient space before the Hahn support argument is applied.
+
+\section{The inherited range defect and the infinitesimal reservoir}\label{ihs:fr:sec:defect}
+
+The range-defect mechanism is \cref{ihs:hh:thm:defect}: for $S:V\to V$
+injective, $F\in\End_\C(V)((t^\Gamma))$ of positive order and an algebraic
+complement $V=\Ran S\oplus W$, the operator $S+F$ is injective and
+$\coker(S+F)\cong W((t^\Gamma))$. Its elementary factorization allows
+completely noncommuting perturbations, and it is printed once, in Part~I.
+
+\begin{remark}[A second proof, from the Part~IV source]\label{ihs:fr:rem:secondproof}
+Define $L:V\to V$ by $L(Sx+w)=x$, so that $LS=I$ and
+\[
+ S+F=(I+FL)S.
+\]
+Since $FL$ has positive support, \cref{ihs:lem:neumann} inverts $I+FL$ in
+the Hahn algebra of all endomorphisms, so multiplication by $I+FL$ is an
+automorphism of $V((t^\Gamma))$ carrying $S(V((t^\Gamma)))$ onto
+$\Ran(S+F)$. Applying the two ordinary projections of $V=\Ran S\oplus W$ to
+every coefficient does not enlarge supports, so
+$V((t^\Gamma))=(\Ran S)((t^\Gamma))\oplus W((t^\Gamma))$, and the
+coefficientwise inverse of $S$ on its range gives
+$S(V((t^\Gamma)))=(\Ran S)((t^\Gamma))$. Both conclusions follow. This
+factorizes on the left of $S$, whereas the Part~I proof builds a left
+inverse and a complementary projection; both use only the Neumann lemma. For
+compact injective $S$ with nonclosed range, $L$ is generally unbounded; it is
+used only in the auxiliary algebra of all endomorphisms, and the
+factorization produces no bounded inverse, no bounded projection onto $W$,
+and no orthogonal decomposition of $\Hil$.
+\end{remark}
+
+\begin{proposition}[The size of a compact range defect]\label{ihs:fr:prop:continuum}
+If $T$ is injective, compact and self-adjoint on an ordinary
+infinite-dimensional separable $H$, then $\dim_\C(H/\Ran T)=2^{\aleph_0}$.
+Consequently $W((t^\Gamma))$ contains at least $2^{\aleph_0}$ vectors that
+are linearly independent over $\K$.
+\end{proposition}
+\begin{proof}
+The compact spectral theorem gives an orthonormal eigenbasis with nonzero
+real eigenvalues $d_n\to0$. Choose a subsequence with
+$0<\abs{d_{n_k}}\le2^{-k^2}$ and, for real $a\in(0,1)$, put
+$x^{(a)}_{n_k}=\abs{d_{n_k}}^a$ and $x^{(a)}_j=0$ off the subsequence; the
+vector is square summable. For a nonzero combination
+$x=\sum_{j=1}^rc_jx^{(a_j)}$ with $a_1<\cdots<a_r$ and $c_1\ne0$,
+\[
+ \frac{x_{n_k}}{d_{n_k}}=\frac{\abs{d_{n_k}}^{a_1}}{d_{n_k}}
+ \Bigl(c_1+\sum_{j=2}^rc_j\abs{d_{n_k}}^{a_j-a_1}\Bigr);
+\]
+the bracket tends to $c_1$ and the first factor tends to infinity in
+absolute value, so these coordinates are not square summable and
+$x\notin\Ran T$. This gives continuum many independent cosets; the
+underlying set of a separable Hilbert space has the cardinality of the
+continuum, which gives the other bound. Independent cosets are represented by
+independent vectors of $W$. A finite $\K$-linear dependence among their
+constant embeddings would, at any exponent with a nonzero scalar coefficient,
+give an ordinary complex dependence, so they remain independent over $\K$
+(this is the argument of \cref{ihs:hh:cor:independent}).
+\end{proof}
+
+The exact $\K$-dimension of $W((t^\Gamma))$ is not asserted for every large
+$\Gamma$; only the lower bound is used (compare \cref{ihs:hh:warn:dimension}).
+For the particular operator $De_n=n^{-1}e_n$, \cref{ihs:hh:lem:continuum}
+gives the same lower bound by explicit power vectors.
+
+\begin{corollary}[The infinitesimal reservoir]\label{ihs:fr:cor:reservoir}
+Under \eqref{ihs:fr:eq:perturbation}, every $z\in\mK$ satisfies
+\[
+ \ker(A-zI)=0,\qquad \coker(A-zI)\cong W((t^\Gamma)),\qquad
+ H=\Ran T\oplus W.
+\]
+In particular $\mK\subseteq\sigma^{\mathrm{alg}}_\Gamma(A)$, and no point of
+$\mK$ is an eigenvalue.
+\end{corollary}
+\begin{proof}
+Apply \cref{ihs:hh:thm:defect} with $S=T$ and positive-order perturbation
+$E-zI$ (zero allowed); \cref{ihs:fr:prop:continuum} makes the cokernel
+nonzero.
+\end{proof}
+
+\section{Isolated spectral windows are exactly finite-dimensional}\label{ihs:fr:sec:clusters}
+
+Fix a nonzero ordinary eigenvalue $c$ of $T$. Let $P^\circ_c$ be its ordinary
+orthogonal spectral projection and $H_c=P^\circ_cH$. Compactness makes $c$
+isolated and $m_c=\dim H_c<\infty$. Choose a positively oriented ordinary
+circle $\mathcal C_c$ around $c$ containing no other point of $\sigma_\C(T)$
+in its closed interior and none on its boundary; its radius may shrink as
+$c\to0$, and no common radius is required.
+
+\subsection{Coefficientwise Riesz projections and direct rotation}\label{ihs:fr:sec:riesz}
+Put $R_0(\zeta)=(\zeta I-T)^{-1}$ for $\zeta\in\mathcal C_c$ and define
+\begin{equation}\label{ihs:fr:eq:riesz}
+ R(\zeta)=\sum_{n\ge0}(R_0(\zeta)E)^nR_0(\zeta),\qquad
+ P_c=\frac1{2\pi i}\int_{\mathcal C_c}R(\zeta)\,d\zeta.
+\end{equation}
+The integral is an ordinary bounded-operator-valued contour integral of each
+Hahn coefficient, not an integral over a surcomplex contour.
+
+\begin{proposition}\label{ihs:fr:prop:riesz}
+Let $S=\supp E\subseteq\Gamma_{>0}$. Formula \eqref{ihs:fr:eq:riesz} defines
+$P_c\in\Ahh$ with
+\[
+ P_c^2=P_c=P_c^*,\qquad AP_c=P_cA,\qquad
+ P_c=P^\circ_c+\text{positive-order terms},
+\]
+and $\supp(P_c-P^\circ_c)\subseteq S^*\setminus\{0\}$.
+\end{proposition}
+\begin{proof}
+At a fixed exponent the resolvent expansion has finitely many ordered
+coefficient words, so each coefficient is a finite sum of products of
+ordinary resolvents and bounded operators; on the compact circle these are
+norm-continuous, and their contour integrals exist. The constant coefficient
+is $P^\circ_c$. For any finite collection of directions $E_s$, the ordinary
+Riesz projection of $T+\sum_sz_sE_s$ on the fixed circle, for complex
+parameters near zero, is holomorphic, idempotent and commutes with the
+perturbed operator; its Taylor coefficients are the contour coefficients
+above, and \cref{ihs:fr:lem:lift} proves idempotence and commutation. Each
+$E_s$ is self-adjoint because $E=E^*$, so for real parameters near zero the
+projection is orthogonal; comparing real Taylor coefficients gives
+$P_c^*=P_c$. \Cref{ihs:lem:support} gives the support containment.
+\end{proof}
+
+\begin{lemma}[Support-controlled direct rotation]\label{ihs:fr:lem:rotation}
+Let $P=P^2=P^*\in\Ahh$ and let $P^\circ$ be an ordinary orthogonal projection
+with $v(P-P^\circ)>0$. Put
+\begin{equation}\label{ihs:fr:eq:rotation}
+ \Omega=PP^\circ+(I-P)(I-P^\circ),\qquad
+ U=\Omega\bigl(I-(P-P^\circ)^2\bigr)^{-1/2},
+\end{equation}
+the inverse square root being its binomial expansion at $I$. Then
+$U^*U=UU^*=I$, $UP^\circ=PU$ and $v(U-I)>0$. If
+$\supp(P-P^\circ)\subseteq S^*\setminus\{0\}$, then
+$\supp(U-I)\subseteq S^*\setminus\{0\}$.
+\end{lemma}
+\begin{proof}
+Direct multiplication using $P^2=P$ and $(P^\circ)^2=P^\circ$ gives
+$\Omega^*\Omega=\Omega\Omega^*=I-(P-P^\circ)^2$ and $P\Omega=\Omega P^\circ$.
+The square $(P-P^\circ)^2$ commutes with both projections and hence with
+$\Omega$. The binomial series for $(I-(P-P^\circ)^2)^{-1/2}$ exists by
+\cref{ihs:cor:binomial}, is self-adjoint, commutes with $\Omega,P,P^\circ$,
+and squares to the inverse. The unitary and intertwining identities follow,
+and all nonconstant terms have support in the stated monoid.
+\end{proof}
+
+This is the classical two-projection calculation of \cite{SimonProjections},
+recorded in the present algebra. Apply it to $P=P_c$ and $P^\circ=P^\circ_c$,
+and call the unitary $U_c$. Then $U_c^*AU_c$ commutes with $P^\circ_c$, so
+relative to $H=H_c\oplus H_c^\perp$ it has an exact block form
+\begin{equation}\label{ihs:fr:eq:block}
+ U_c^*AU_c=A_c\oplus A_c^\perp,\qquad A_c\in M_{m_c}(\K),\quad A_c=A_c^*.
+\end{equation}
+The standard part of $A_c$ is $cI_{m_c}$ and that of $A_c^\perp$ is
+$T|_{H_c^\perp}$; both blocks have nonnegative support, and their positive
+exponents lie in $S^*$.
+
+\subsection{Finite Hermitian algebra over the Hahn field}\label{ihs:fr:sec:hermitian}
+\begin{lemma}[Finite Hermitian diagonalization]\label{ihs:fr:lem:hermitian}
+Every Hermitian matrix over $\K=\Fld[i]$ is unitarily diagonalizable, with
+eigenvalues in $\Fld$. If its entries are finite and its standard part is
+$cI_m$, all its eigenvalues are finite with standard part $c$.
+\end{lemma}
+\begin{proof}
+Since $\K$ is algebraically closed, the characteristic polynomial has a root
+and an eigenvector $x\ne0$. For a Hermitian $X$,
+$\lambda\ip xx=\ip{Xx}x=\overline{\ip{Xx}x}$ with $\ip xx>0$ in $\Fld$, so
+$\lambda$ is real. The positive square root of $\ip xx$ normalizes $x$; its
+orthogonal complement is invariant, and induction gives an orthonormal
+eigenbasis. For the standard-part assertion, write the monic characteristic
+polynomial as $X^m+\sum_{j<m}a_jX^j$ with $v(a_j)\ge0$. A root of negative
+valuation would make $X^m$ strictly smaller in valuation than every other
+term, impossible in a zero sum; so every root is finite, and reducing the
+characteristic equation gives $(\st\lambda-c)^m=0$.
+\end{proof}
+
+\begin{theorem}[Exact isolated-cluster reduction]\label{ihs:fr:thm:cluster}
+For every nonzero ordinary eigenvalue $c$ of $T$, the construction above
+produces a finite Hermitian matrix $A_c$ with exactly $m_c$ real Hahn
+eigenvalues $\lambda_{c,1},\ldots,\lambda_{c,m_c}$ counted with
+multiplicity, all with standard part $c$. For every $\lambda\in c+\mK$,
+\begin{equation}\label{ihs:fr:eq:clusterkernel}
+ \ker(A-\lambda I)\cong\ker(A_c-\lambda I),\qquad
+ A-\lambda I\text{ invertible in }\Ahh\iff\det(\lambda I_{m_c}-A_c)\ne0.
+\end{equation}
+The kernel is finite-dimensional, of dimension the multiplicity of
+$\lambda$ in the Hermitian eigenvalue list.
+\end{theorem}
+\begin{proof}
+\Cref{ihs:fr:lem:hermitian} applies to $A_c$. On the complementary block the
+standard part of $A_c^\perp-\lambda I$ is $T|_{H_c^\perp}-cI$, an ordinary
+bounded invertible operator because $c$ has been removed from the compact
+spectrum; the remaining terms have positive valuation, and
+\cref{ihs:lem:neumann} inverts the block in its bounded-coefficient Hahn
+algebra. If the finite determinant is nonzero, invert $A_c-\lambda I$ over
+$\K$, combine with the complementary inverse and conjugate by $U_c$; a
+finite matrix of scalar Hahn entries acts by a bounded coefficient at each
+exponent on the finite-dimensional block, so the inverse lies in $\Ahh$,
+even if some exponents are negative. If the determinant is zero, a nonzero
+finite block eigenvector gives a nonzero vector of $\Hil$ after conjugation.
+The complementary inverse also proves the kernel isomorphism.
+\end{proof}
+
+\begin{remark}[Precisely what is support controlled]\label{ihs:fr:rem:support}
+The entries of $A_c-cI$ and the projection and rotation corrections have
+support in the original positive monoid $S^*$. For a \emph{multiple}
+residue eigenvalue it is not asserted that each root of the finite
+characteristic polynomial has support in that monoid; the roots belong to
+the original divisible Hahn field, and \cref{ihs:fr:sec:monoid} shows that
+their supports can leave $S^*$. For a \emph{simple} residue eigenvalue,
+ordinary analytic eigenvalue perturbation and \cref{ihs:fr:lem:lift} give
+the eigenbranch directly with support in $S^*$. This matches the Part~II
+boundary \cref{ihs:rf:rem:monoid}: monoid support is a consequence of simple
+residues, not an unconditional invariant.
+\end{remark}
+
+\section{The complete spectrum of a noncommuting perturbation}\label{ihs:fr:sec:main}
+
+\begin{theorem}[Compact-residue spectral classification]\label{ihs:fr:thm:main}
+Under the standing hypotheses of Part~IV and \eqref{ihs:fr:eq:perturbation},
+with $T$ injective, compact and self-adjoint,
+\begin{align}
+ \sigma^{\mathrm{adj}}_\Gamma(A)=\sigma^{\mathrm{alg}}_\Gamma(A)
+ &=\mK\cup\bigcup_{c\in\sigma_\C(T)\setminus\{0\}}
+   \{\lambda_{c,1},\ldots,\lambda_{c,m_c}\},\label{ihs:fr:eq:mainspectrum}\\
+ \sigma_{p,\Gamma}(A)
+ &=\bigcup_{c\in\sigma_\C(T)\setminus\{0\}}
+   \{\lambda_{c,1},\ldots,\lambda_{c,m_c}\}.\label{ihs:fr:eq:mainpoint}
+\end{align}
+All eigenvalues are real with finite-dimensional eigenspaces. At every
+$z\in\mK$, $A-zI$ is injective with cokernel $W((t^\Gamma))$, where
+$H=\Ran T\oplus W$ is any algebraic complement; this cokernel has
+$\K$-dimension at least $2^{\aleph_0}$.
+\end{theorem}
+\begin{proof}
+Every $\lambda\in\K$ falls in one of four disjoint cases. If
+$v(\lambda)<0$, then $A-\lambda I=-\lambda(I-\lambda^{-1}A)$ with
+$v(\lambda^{-1}A)>0$, so the second factor has a Neumann inverse in $\Ahh$.
+If $\lambda$ is finite and $c=\st\lambda\notin\sigma_\C(T)$, then
+$A-\lambda I=(T-cI)+(E-(\lambda-c)I)$ is an ordinary invertible operator plus
+a positive-order term, again invertible in $\Ahh$. If $c\ne0$ belongs to
+$\sigma_\C(T)$, it is an isolated eigenvalue of finite multiplicity, and
+\cref{ihs:fr:thm:cluster} gives exactly the listed eigenvalues in its halo;
+every other point of the halo has an inverse in $\Ahh$. Finally, if
+$\st\lambda=0$, including $\lambda=0$, then $\lambda\in\mK$ and
+\cref{ihs:fr:cor:reservoir} gives injectivity and non-surjectivity with the
+stated cokernel. Every excluded point has a constructed algebra inverse and
+every included point fails bijectivity, proving equality of the two spectra.
+The point-spectrum and dimension statements follow from the finite Hermitian
+blocks and \cref{ihs:fr:prop:continuum}.
+\end{proof}
+
+Solving formal characteristic equations near each nonzero $c$ would establish
+only that the displayed eigenvalues belong to the point spectrum; it would
+say nothing about infinite scalars, ordinary resolvent halos, or the monad at
+zero. The four-case proof controls all of these. The hypotheses have
+identifiable roles: compactness makes every nonzero ordinary spectral point
+an isolated finite cluster; injectivity makes the whole zero monad a
+non-eigenvalue reservoir through \cref{ihs:hh:thm:defect}; self-adjointness
+makes the clusters Hermitian and their roots real; divisibility keeps those
+roots inside the selected field; and infinite dimension ensures that an
+injective compact operator is not onto. None of these roles is replaced by a
+claim of completeness of a surreal Hilbert space.
+
+\subsection{The algebraic Fredholm spectrum}\label{ihs:fr:sec:essential}
+Call a $\K$-linear endomorphism of $\Hil$ \emph{algebraically Fredholm} when
+its kernel and cokernel are finite-dimensional over $\K$, with algebraic
+index the difference of these dimensions; no topological closed-range
+condition is included. Put
+$\sigma_{\mathrm{ess,alg}}(X)=\{\lambda\in\K:X-\lambda I\text{ is not
+algebraically Fredholm}\}$.
+
+\begin{corollary}\label{ihs:fr:cor:essential}
+Under the hypotheses of \cref{ihs:fr:thm:main},
+$\sigma_{\mathrm{ess,alg}}(A)=\mK$, and at every point outside $\mK$ the
+algebraic Fredholm index of $A-\lambda I$ is zero.
+\end{corollary}
+\begin{proof}
+At a point of $\mK$ the cokernel has dimension at least the continuum.
+Outside that monad the operator is either invertible or conjugate to a
+finite square matrix plus an invertible complementary block, and a finite
+square matrix has kernel and cokernel of the same finite dimension.
+\end{proof}
+
+Arbitrary positive-order bounded self-adjoint coefficient perturbations
+therefore preserve the full algebraic Fredholm spectral monad of this
+compact residue. The terminology is explicitly algebraic; no identification
+with a Banach-space or compactoid essential spectrum is made, and the prime
+of Part~I is not an essential spectrum either (\cref{ihs:hh:sec:reality}).
+
+\subsection{Extension of the exponent group}\label{ihs:fr:sec:extension}
+\begin{corollary}[Fixed point spectrum, growing spectral monad]\label{ihs:fr:cor:extension}
+Let $\iota:\Gamma\hookrightarrow\Gamma'$ be an ordered embedding into another
+nonzero divisible set-sized ordered abelian group, and extend all Hahn series
+coefficientwise. The point spectrum and the finite cluster multiplicities of
+$A$ are unchanged under the scalar embedding, whereas
+\begin{equation}\label{ihs:fr:eq:extension}
+ \sigma^{\mathrm{adj}}_{\Gamma'}(A)=\mathfrak m_{K_{\Gamma'}}\cup
+ \iota\bigl(\sigma_{p,\Gamma}(A)\bigr).
+\end{equation}
+Enlarging the workspace can add spectral points without adding eigenvalues.
+\end{corollary}
+\begin{proof}
+The constructions of $P_c,U_c,A_c$ commute with an ordered exponent
+embedding: at every exponent the same finite algebraic and ordinary contour
+operations are performed. The characteristic polynomial of $A_c$ already
+splits over $\K$, so it has no new roots in the extension and its
+multiplicities are unchanged. Apply \cref{ihs:fr:thm:main} over $\Gamma'$;
+its non-eigenvalue part is exactly the enlarged infinitesimal ideal.
+\end{proof}
+
+For example, extend $\Gamma=\Q$ into $\Q^2$ with lexicographic order by
+$q\mapsto(0,q)$; then $it^{(1,0)}$ is a new spectral point but not a new
+eigenvalue. The formula concerns spectra in their respective modules; it
+does not assert that scalar extension leaves the module unchanged. It is
+consistent with \cref{ihs:hh:cor:extension,ihs:dz:cor:workspace}, which say
+that each old scalar keeps its spectral status.
+
+\section{A trace-class counterexample to simultaneous diagonalization}\label{ihs:fr:sec:obstruction}
+
+The local finite-dimensional theorem does not imply a global
+bounded-coefficient diagonalization, even for a one-scale perturbation with
+exceptionally small ordinary coefficient ideals.
+
+\subsection{The operator and its individual eigenvalues}\label{ihs:fr:sec:operator}
+Let $H=\ell^2(\N_{\ge1})$, fix $\eta>0$ in $\Gamma$, and put
+\begin{equation}\label{ihs:fr:eq:counterexample}
+ D_\star e_n=2^{-n}e_n,\qquad
+ Y=\sum_{n\ge1}\frac1{n^2}\bigl(\lvert e_n\rangle\langle e_{n+1}\rvert
+       +\lvert e_{n+1}\rangle\langle e_n\rvert\bigr),\qquad
+ A_\star=D_\star+t^\eta Y.
+\end{equation}
+The sum defining $Y$ is an ordinary trace-norm convergent series of rank-one
+operators, evaluated before it is used as a Hahn coefficient:
+$\norm{D_\star}_1=1$ and $\norm Y_1\le2\sum_n n^{-2}<\infty$. Both
+coefficients are self-adjoint and trace class, and they do not commute.
+$A_\star$ is positive definite: if $v(x)=\alpha$, then $\ip{A_\star x}x$ has
+leading term $\ip{D_\star x_\alpha}{x_\alpha}_Ht^{2\alpha}>0$. For each $n$,
+\cref{ihs:fr:thm:cluster} supplies one eigenvalue $\lambda_n$ with standard
+part $2^{-n}$; since that residue is simple, $\lambda_n$ is the unique
+ordinary analytic perturbation series in $s=t^\eta$, so
+$\lambda_n\in\C[[s]]\subseteq\K$. The existence of these formal series does
+not give one common ordinary analytic radius as $n\to\infty$.
+
+\begin{theorem}[No global bounded-coefficient Hahn unitary]\label{ihs:fr:thm:nounitary}
+For $A_\star$ of \eqref{ihs:fr:eq:counterexample}, no $U\in\Ahh$ with
+$U^*U=UU^*=I$ makes $U^*A_\star U$ diagonal relative to $(e_n)$. This holds
+even when the support of $U$ may use arbitrary exponents of $\Gamma$, not
+only integer multiples of $\eta$.
+\end{theorem}
+\begin{proof}
+Suppose such $U$ exists and put $\Lambda=U^*A_\star U$. If $\alpha=v(U)$,
+the coefficient of $U^*U$ at $2\alpha$ is $U_\alpha^*U_\alpha\ne0$, so
+$2\alpha=0$ and $\alpha=0$; the two unitary identities make $U_0$ an ordinary
+unitary. Since $U_0^*D_\star U_0$ is diagonal and $D_\star$ has distinct
+eigenvalues, every column of $U_0$ is a phase multiple of one basis vector,
+and unitarity makes the assignment a permutation. Right multiplication by
+the inverse ordinary monomial unitary reduces to $U_0=I$, $\Lambda_0=D_\star$,
+with both $U$ and $\Lambda$ of nonnegative support.
+
+Compare coefficients in $A_\star U=U\Lambda$. For every $0<\gamma<\eta$,
+$\Lambda_\gamma=0$ and $U_\gamma$ is diagonal, by well-ordered induction over
+the union of the positive supports: at such $\gamma$,
+\[
+ D_\star U_\gamma-U_\gamma D_\star=\Lambda_\gamma+
+ \sum_{\alpha+\beta=\gamma,\ \alpha,\beta>0}U_\alpha\Lambda_\beta,
+\]
+every $\beta$ on the right is smaller than $\gamma$, so the sum vanishes; the
+left side has zero diagonal while $\Lambda_\gamma$ is diagonal, so
+$\Lambda_\gamma=0$, and distinct diagonal entries make $U_\gamma$ diagonal.
+This covers supports with infinitely many exponents below $\eta$. At
+exponent $\eta$ the same equation acquires the term $Y$, and the lower-order
+products still vanish, so $[D_\star,U_\eta]+Y=\Lambda_\eta$. The $(n,n+1)$
+entry gives
+\begin{equation}\label{ihs:fr:eq:unboundedgenerator}
+ (U_\eta)_{n,n+1}=\frac{Y_{n,n+1}}{2^{-(n+1)}-2^{-n}}=-\frac{2^{n+1}}{n^2}.
+\end{equation}
+These entries are unbounded, and every entry of an ordinary bounded operator
+is bounded by its norm, so $U_\eta\notin\B$, contradicting $U\in\Ahh$.
+\end{proof}
+
+This is a global, arbitrary-support strengthening of the first-order
+obstruction \cref{ihs:rf:prop:bounded} of Part~II, which rules out a bounded
+first coefficient $X$ in a formal expansion $U(t)=\Id+tX+\cdots$ for
+$\diag(1/n)$ and the unweighted adjacency operator. Here the perturbation is
+trace class, the exponents of $U$ are arbitrary, and the conclusion is about
+any Hahn unitary in $\Ahh$.
+
+\begin{proposition}[The eigenvalue list is not a bounded coefficient]\label{ihs:fr:prop:eigencoeff}
+For $A_\star$, all odd powers of $s=t^\eta$ in each $\lambda_n$ vanish, and
+\begin{equation}\label{ihs:fr:eq:eigensecond}
+ \lambda_1=\tfrac12+4s^2+O(s^4),\qquad
+ \lambda_n=2^{-n}+2^n\Bigl(\frac2{n^4}-\frac1{(n-1)^4}\Bigr)s^2+O(s^4)
+ \quad(n\ge2).
+\end{equation}
+The coefficient of $s^2$ is at least $2^{n-1}/n^4$ for $n\ge16$.
+Consequently $\diag(\lambda_n)$ is not an element of $\Ahh$, nor is any
+permutation of this diagonal list.
+\end{proposition}
+\begin{proof}
+Write an eigenvector with $n$th coordinate normalized to one as
+$e_n+su^{(1)}+s^2u^{(2)}+\cdots$. The first coefficient equation gives
+$(u^{(1)})_j=Y_{jn}/(d_n-d_j)$ for $j\ne n$, with $d_n=2^{-n}$, and
+$[s]\lambda_n=Y_{nn}=0$. The $n$th coordinate of the second equation gives
+$[s^2]\lambda_n=\sum_{j\ne n}Y_{nj}Y_{jn}/(d_n-d_j)$. Only adjacent indices
+occur: for $n=1$ this is $4$, and for $n\ge2$ the two terms are
+$-2^n/(n-1)^4$ and $2^{n+1}/n^4$. With $Je_n=(-1)^ne_n$ one has
+$JD_\star J=D_\star$ and $JYJ=-Y$, so $A_\star(s)$ and $A_\star(-s)$ have the
+same uniquely labelled simple eigenbranch at residue $d_n$, and
+$\lambda_n(s)=\lambda_n(-s)$; this proves the odd-coefficient assertion
+without any convergence argument in $\Gamma$. For $n\ge16$,
+$(n/(n-1))^4\le(16/15)^4<3/2$, so the bracket in \eqref{ihs:fr:eq:eigensecond}
+is at least $1/(2n^4)$, and the resulting positive sequence is unbounded. A
+diagonal coefficient operator is bounded exactly when its entries are, and
+permutation does not change that.
+\end{proof}
+
+\subsection{Why Part~II has a different answer}\label{ihs:fr:sec:rowfinite}
+For the locally finite path matrix in \eqref{ihs:fr:eq:counterexample},
+each fixed formal perturbation coefficient of an eigenvector has finite
+coordinate support: formal recursion propagates a bounded number of edges at
+a fixed order. The coefficients can therefore be assembled as row- and
+column-finite matrices, and the entries \eqref{ihs:fr:eq:unboundedgenerator}
+are allowed there, since row- and column-finiteness does not bound their
+sizes. This is why \cref{ihs:fr:thm:nounitary} does not contradict
+\cref{ihs:rf:thm:unitary}: that theorem acts on $\C^{(\N)}((t^\Gamma))$, not
+on $\ell^2(\N)((t^\Gamma))$, in a coefficient algebra without ordinary
+boundedness, and \cref{ihs:fr:thm:nounitary} proves that its conclusion
+cannot simply be transferred to $\Ahh$. Nor does the result deny all
+spectral representations in other categories: it rules out the specified
+global Hahn unitary and diagonal coefficient operator. A theory allowing
+unbounded coefficient operators, different vector spaces or a different
+summation notion would have to state its own domain and action requirements.
+
+\section{A trace-class determinant with an exact Fredholm alternative}\label{ihs:fr:sec:determinant}
+
+\subsection{Trace class is imposed coefficient by coefficient}\label{ihs:fr:sec:traceclass}
+Let $\SH$ be the ordinary complex trace-class ideal with its trace norm, and
+\[
+ \TT=\SH((t^\Gamma)),\qquad \TT_+=\{C\in\TT:v(C)\ge0\}.
+\]
+$\TT$ is a two-sided ideal of $\Ahh$ under finite coefficient convolution. It
+is a specified coefficient ideal; no identification with all nuclear or
+compactoid operators for a non-Archimedean norm is assumed. Define
+\begin{equation}\label{ihs:fr:eq:hahntrace}
+ \Tr_\Gamma C=\sum_\gamma(\Tr C_\gamma)t^\gamma.
+\end{equation}
+Ordinary traces are taken before forming the Hahn series; the support can
+shrink by cancellation but cannot enlarge. Ordinary cyclicity at each of the
+finitely many coefficient products gives
+$\Tr_\Gamma(XC)=\Tr_\Gamma(CX)$ for $X\in\Ahh$ and $C\in\TT$.
+
+The following classical inputs are not claimed as new. The map
+$C\mapsto\det_H(I+C)$ on $\SH$ is entire; it is multiplicative on products of
+operators of the form $I+C$, agrees with finite-dimensional determinants,
+satisfies the finite-rank Sylvester identity, and is nonzero exactly when
+$I+C$ is invertible; near $C=0$ it satisfies
+$\det_H(I+C)=\exp(\Tr\log(I+C))$ \cite[Section~3]{Bornemann}.
+
+\begin{definition}[Hahn Fredholm determinant]\label{ihs:fr:def:determinant}
+Every $C\in\TT_+$ decomposes uniquely as $C=C_0+C_+$ with $C_0\in\SH$ and
+$v(C_+)>0$. Define
+\begin{equation}\label{ihs:fr:eq:hahndet}
+ \Det(I+C)=\sum_{k\ge0}\frac1{k!}\,\mathrm d^k{\det}_H(I+\cdot\,)(C_0)[C_+,\ldots,C_+],
+\end{equation}
+each multilinear expression being expanded into ordered coefficient words as
+in \eqref{ihs:fr:eq:taylorlift}.
+\end{definition}
+
+This is well defined by \cref{ihs:lem:support}, with support in
+$(\supp C_+)^*$. It is independent of any basis and needs no labelling of
+eigenvalues. The ordinary coefficient $C_0$ may have large trace norm and
+$I+C_0$ may be singular, so this is not merely a determinant on the
+near-identity group $I+\TT_{>0}$.
+
+\begin{proposition}[Determinant identities]\label{ihs:fr:prop:detidentities}
+For $C,C'\in\TT_+$,
+\begin{equation}\label{ihs:fr:eq:detidentities}
+ \st\Det(I+C)=\det_H(I+C_0),\qquad
+ \Det\bigl((I+C)(I+C')\bigr)=\Det(I+C)\Det(I+C').
+\end{equation}
+The determinant commutes with coefficient conjugation and adjunction and
+agrees with a finite matrix determinant on a finite-dimensional ordinary
+summand. If $v(C)>0$,
+\begin{equation}\label{ihs:fr:eq:detlog}
+ \Det(I+C)=\exp\Bigl(\Tr_\Gamma\sum_{k\ge1}\frac{(-1)^{k+1}}kC^k\Bigr),
+\end{equation}
+all powers, logarithms and exponentials being strong Hahn sums.
+\end{proposition}
+\begin{proof}
+The standard-part assertion is the constant Taylor coefficient. For
+multiplicativity apply \cref{ihs:fr:lem:lift} to the ordinary identity
+$\det_H(I+C+C'+CC')=\det_H(I+C)\det_H(I+C')$ near the ordinary pair
+$(C_0,C'_0)$; the nonconstant increments of $C+C'+CC'$ have positive support.
+The adjoint and finite-matrix assertions follow by the same comparison. For
+$v(C)>0$, the ordinary logarithmic identity holds near zero in trace norm;
+compare Taylor coefficients at zero and lift. Positive-word finiteness
+justifies the operator logarithm and the scalar exponential without any
+claim of sequential convergence in the value group.
+\end{proof}
+
+\subsection{The Fredholm alternative}\label{ihs:fr:sec:alternative}
+The nonzero-determinant criterion needs more than residue testing: a
+determinant with zero standard part can still be a nonzero Hahn number. The
+argument reduces the singular ordinary residue to one finite matrix.
+
+\begin{lemma}[Ordinary finite-rank correction]\label{ihs:fr:lem:correction}
+For $C_0\in\SH$ there is a finite-rank ordinary operator $F=\iota\kappa$,
+with $\iota:\C^m\to H$ and $\kappa:H\to\C^m$, such that $I+C_0+F$ is
+invertible.
+\end{lemma}
+\begin{proof}
+$I+C_0$ is Fredholm of index zero. Decompose its domain as its
+finite-dimensional kernel plus the orthogonal complement, and its target as
+its closed range plus a finite-dimensional orthogonal complement of equal
+dimension. Choose an isomorphism from the kernel onto that complement and
+extend it by zero; adding it makes both block maps bijective and boundedly
+invertible. Any finite-rank operator factors through $\C^m$.
+\end{proof}
+
+\begin{theorem}[Hahn Fredholm alternative]\label{ihs:fr:thm:fredholm}
+Let $C\in\TT_+$. Then
+\begin{equation}\label{ihs:fr:eq:fredholmequivalence}
+ \Det(I+C)\ne0\iff(I+C)^{-1}\in\Ahh\iff I+C:\Hil\to\Hil\text{ is bijective}.
+\end{equation}
+Every such $I+C$ is algebraically Fredholm of index zero; if the determinant
+vanishes, $I+C$ has a nonzero finite-dimensional kernel and a cokernel of
+the same dimension. Explicitly, with $F=\iota\kappa$ as in
+\cref{ihs:fr:lem:correction}, $M_F=I+C+F$ and $L_F=I_m-\kappa M_F^{-1}\iota$,
+\begin{equation}\label{ihs:fr:eq:finitefredholm}
+ \Det(I+C)=\Det(M_F)\,\det_mL_F,\qquad \st\Det(M_F)\ne0,
+\end{equation}
+so one finite matrix decides the exact invertibility problem.
+\end{theorem}
+\begin{proof}
+The constant coefficient of $M_F$ is invertible, so $M_F^{-1}$ exists in the
+nonnegative part of $\Ahh$ by \cref{ihs:lem:neumann}. Let
+$R_F=M_F^{-1}\iota$; then $I+C=M_F(I-R_F\kappa)$. Every coefficient of
+$R_F\kappa=M_F^{-1}F$ is trace class, with nonnegative support.
+Multiplicativity and the lifted finite-rank Sylvester identity give
+$\Det(I+C)=\Det(M_F)\Det(I-R_F\kappa)=\Det(M_F)\det_m(I_m-\kappa R_F)$, and
+$\Det(M_F)$ has the nonzero standard part $\det_H$ of the constant
+coefficient. If $L_F$ is invertible, the identity
+$(I-R_F\kappa)^{-1}=I+R_FL_F^{-1}\kappa$ constructs an inverse in $\Ahh$
+(the entries of $L_F^{-1}$ may have negative valuation, which $\Ahh$
+permits); combined with $M_F^{-1}$ this proves the first implication, and an
+algebra inverse is a module inverse. If $\det_mL_F=0$, choose $y\ne0$ with
+$L_Fy=0$; then $y=\kappa R_Fy$, the vector $x=R_Fy$ is nonzero, and
+$(I-R_F\kappa)x=0$, so $(I+C)x=0$. Finally $R_F$ and $\kappa$ identify the
+kernel and cokernel of $N_F=I-R_F\kappa$ with those of $L_F$: on kernels they
+are inverse because $R_F\kappa=I-N_F$ and $\kappa R_F=I_m-L_F$, and on
+cokernels they are well defined and inverse because $N_FR_F=R_FL_F$ and
+$\kappa N_F=L_F\kappa$. Multiplication by the invertible $M_F$ does not change
+the dimensions, so both are finite and equal. The empty correction when the
+constant coefficient is already invertible is covered by $\det_0=1$.
+\end{proof}
+
+\begin{remark}[The exact domain matters]\label{ihs:fr:rem:domain}
+The theorem applies to $C$ of nonnegative valuation, not to every series in
+$\TT$. It allows a singular ordinary residue and arbitrary positive Hahn
+corrections and produces inverses whose valuations may be negative. It does
+not extend \eqref{ihs:fr:eq:hahndet} to negative-valuation trace-class
+series; \cref{ihs:fr:sec:boundary} explains why that cannot be done by the
+same infinite Taylor formula.
+\end{remark}
+
+\section{Trace and determinant without eigenvalue sums or products}\label{ihs:fr:sec:lidskii}
+
+The trace-class counterexample yields an obstruction stronger than the
+automatic failure of strong summability of infinitely many nonzero
+constants: even if ordinary infinite sums are allowed at each Hahn
+coefficient, spectral trace and product formulas fail. For $A_\star$ of
+\eqref{ihs:fr:eq:counterexample} put $s=t^\eta$, $a_n=[s^2]\lambda_n$, and
+$g_n=2^{n+1}/n^4$ for $n\ge1$, $g_0=0$; \cref{ihs:fr:prop:eigencoeff} says
+exactly that $a_n=g_n-g_{n-1}$.
+
+\begin{theorem}[Failure of the spectral trace sum]\label{ihs:fr:thm:nolidskii}
+$\Tr_\Gamma A_\star=1$. However, $\sum_{n\ge1}\lambda_n$ does not exist even
+under the convention of taking an ordinary complex sum separately at every
+Hahn exponent: its second coefficient has the exact partial-sum law
+\begin{equation}\label{ihs:fr:eq:traceboundary}
+ \sum_{n=1}^Na_n=\frac{2^{N+1}}{N^4}\longrightarrow+\infty.
+\end{equation}
+This rules out a universal eigenvalue-sum formula for the trace in the
+coefficientwise trace-class category $\TT$.
+\end{theorem}
+\begin{proof}
+$\Tr D_\star=1$ and the off-diagonal trace-class $Y$ has trace zero. The
+second-coefficient partial sum telescopes to $g_N$. The individual $a_n$ do
+not tend to zero, so no rearrangement makes their sum convergent; the
+spectral sum is undefined rather than equal to a different Hahn scalar.
+\end{proof}
+
+For comparison, truncate to the first $N$ basis vectors. The finite-matrix
+eigenbranches agree to second order with $\lambda_n$ for $n<N$, but the last
+branch loses the edge to $N+1$, so its second coefficient is
+$a_N-g_N=-g_{N-1}$, and the finite-section second trace coefficient is
+$\sum_{n<N}a_n+(a_N-g_N)=0$, as the finite trace identity requires. The
+missing boundary term $g_N$ grows rather than tends to zero: stabilization of
+each fixed branch is insufficient to exchange the branch sum with formal
+coefficient extraction.
+
+Put $\mathfrak d_0=\det_H(I+D_\star)=\prod_{n\ge1}(1+2^{-n})>0$ and
+$q_n=1/\bigl(n^4(1+2^{-n})(1+2^{-(n+1)})\bigr)$; these products and sums are
+ordinary real ones.
+
+\begin{theorem}[Failure of a spectral product formula]\label{ihs:fr:thm:noproduct}
+\begin{equation}\label{ihs:fr:eq:detsecond}
+ [s^2]\Det(I+A_\star)=-\mathfrak d_0\sum_{n\ge1}q_n<0,
+\end{equation}
+whereas the coefficient of $s^2$ in $\prod_{n=1}^N(1+\lambda_n)$ tends to
+$+\infty$. This spectral product has no coefficientwise ordinary limit and
+cannot represent $\Det(I+A_\star)$.
+\end{theorem}
+\begin{proof}
+Factor $I+D_\star+sY=(I+D_\star)(I+sK_0)$ with $K_0=(I+D_\star)^{-1}Y$, an
+ordinary trace-class operator of trace zero. The determinant logarithm
+\eqref{ihs:fr:eq:detlog} gives $[s^2]\Det(I+A_\star)=-\tfrac12\mathfrak
+d_0\Tr(K_0^2)$. The diagonal of $K_0^2$ consists of adjacent two-step
+contributions, and absolute convergence gives
+$\Tr(K_0^2)=2\sum_{n\ge1}q_n$, finite and positive. Let
+$P_N=\prod_{n=1}^N(1+2^{-n})$. Since all first eigenvalue coefficients
+vanish, $[s^2]\prod_{n=1}^N(1+\lambda_n)=P_N\sum_{n=1}^Na_n/(1+2^{-n})$, and
+summation by parts, or pairing the two ends of each edge, gives
+\begin{equation}\label{ihs:fr:eq:productboundary}
+ \sum_{n=1}^N\frac{a_n}{1+2^{-n}}=\frac{g_N}{1+2^{-N}}-\sum_{n=1}^{N-1}q_n.
+\end{equation}
+The first term tends to $+\infty$, the sum of the $q_n$ converges, and
+$P_N\to\mathfrak d_0>0$.
+\end{proof}
+
+The same missing edge that obstructs the trace sum supplies the divergent
+boundary term. Finite-section determinants remove that term and converge
+coefficientwise to \eqref{ihs:fr:eq:detsecond}; products of the labelled
+branches of the infinite operator do not. There is no conflict with ordinary
+Lidskii theory or the ordinary trace-class eigenvalue product: at each fixed
+ordinary real parameter, $D_\star+sY$ is an ordinary compact self-adjoint
+trace-class operator and the ordinary theory applies. What fails is
+interchanging a countable spectral sum with a formal perturbation expansion
+around infinitely many spectral gaps shrinking to zero, for want of a
+uniform analytic labelling.
+
+\section{Finite-coupling determinants and the accumulation boundary}\label{ihs:fr:sec:boundary}
+
+\subsection{One coherent entire family on ordinary coupling space}\label{ihs:fr:sec:coupling}
+Assume now that $A=T+E$ satisfies the hypotheses of \cref{ihs:fr:thm:main}
+and also $A\in\TT_+$, so $T$ and every coefficient of $E$ are trace class.
+Let $\mathcal O(\C)$ be the ordinary entire functions. For an ordinary complex
+variable $z$, expand the ordinary determinant map at $-zT$ in the directions
+$-zE_\gamma$; the coefficient of any Hahn exponent is a finite sum of such
+derivatives and is entire in $z$, with common support in $(\supp E)^*$. This
+defines a coherent family
+\begin{equation}\label{ihs:fr:eq:couplingdet}
+ \mathcal F_A\in\mathcal O(\C)((t^\Gamma)),\qquad
+ \mathcal F_A(z)=\Det(I-zA)\quad(z\in\Ocal),
+\end{equation}
+where at $z=z_0+\delta$, with ordinary $z_0$ and $v(\delta)>0$, the entire
+coefficients are evaluated by their Taylor series at $z_0$ using the
+positive support of $\delta$; \cref{ihs:fr:lem:lift} identifies this with
+\cref{ihs:fr:def:determinant} applied to $-zA$.
+
+\begin{theorem}[Exact finite-coupling detection]\label{ihs:fr:thm:coupling}
+For every finite $z\in\Ocal$,
+$\mathcal F_A(z)=0$ if and only if $I-zA$ is not invertible in $\Ahh$. Its
+finite zeros are exactly $\{\lambda^{-1}:\lambda\in\sigma_{p,\Gamma}(A)\}$;
+in particular $\mathcal F_A(0)=1$ and no infinitesimal coupling is a zero.
+\end{theorem}
+\begin{proof}
+For finite $z$, $-zA$ has nonnegative support with trace-class coefficients,
+so \cref{ihs:fr:thm:fredholm} gives the equivalence. If $z=0$ there is
+nothing to prove; if $v(z)>0$, $I-zA$ has a Neumann inverse. For $v(z)=0$,
+invertibility is equivalent to that of $A-z^{-1}I$, where $z^{-1}$ has a
+nonzero standard part, and \cref{ihs:fr:thm:main} makes it singular exactly
+at the listed eigenvalues. Conversely every eigenvalue in
+\eqref{ihs:fr:eq:mainpoint} has a finite inverse with nonzero standard part.
+\end{proof}
+
+The entire \emph{ordinary coefficient functions} do not mean that the
+Taylor series can be evaluated at every infinite surcomplex argument.
+
+\begin{proposition}[Negative-valuation evaluation can fail]\label{ihs:fr:prop:negeval}
+Write the ordinary entire determinant of $D_\star$ as
+$\prod_{n\ge1}(1-2^{-n}z)=\sum_{k\ge0}c_kz^k$. Every $c_k$ is nonzero, and
+for $\eta>0$ the family $(c_kt^{-k\eta})_{k\ge0}$ is not strongly Hahn
+summable; so the entire Taylor series does not define the determinant at
+$t^{-\eta}$ by Hahn substitution.
+\end{proposition}
+\begin{proof}
+Up to sign, $c_k$ is the $k$th elementary symmetric sum of the positive
+numbers $2^{-n}$, finite (at most $(\sum_n2^{-n})^k/k!$) and strictly
+positive. The substituted terms have exponents $0,-\eta,-2\eta,\ldots$, which
+are not well ordered.
+\end{proof}
+
+This does not exclude a separately defined regularization or another function
+category at infinite arguments; it excludes the termwise extension by the
+entire Taylor series. Finite coupling $z$ corresponds to spectral parameter
+$\lambda=z^{-1}$ away from the zero monad, and nonzero $\lambda\in\mK$ would
+require infinite coupling, exactly where that substitution need not exist.
+
+\subsection{No coherent analytic characteristic function through zero}\label{ihs:fr:sec:nochar}
+Let $\mathbb D_r=\{z\in\C:\abs z<r\}$ with ordinary $r>0$. A \emph{coherent
+Hahn analytic function} on its halo is a series
+$\mathcal G(z)=\sum_{\gamma\in S}g_\gamma(z)t^\gamma$ with
+$g_\gamma\in\mathcal O(\mathbb D_r)$ and one well-ordered support $S$,
+evaluated at $z=c+\delta$ by ordinary Taylor expansion of its coefficients at
+$c\in\mathbb D_r$ and positive-order Hahn substitution of $\delta$. Its halo
+is $\mathbb D_r^\#=\{c+\delta:c\in\mathbb D_r,\ \delta\in\mK\}$.
+
+\begin{lemma}[A nonzero coherent germ cannot vanish on a whole monad]\label{ihs:fr:lem:nonvanishing}
+If $\mathcal G\in\mathcal O(\mathbb D_r)((t^\Gamma))$ is nonzero, there is
+$\delta_0\in\Gamma_{\ge0}$ with $\mathcal G(x)\ne0$ whenever $0\ne x\in\mK$
+and $v(x)>\delta_0$.
+\end{lemma}
+\begin{proof}
+Let $m$ be the least vanishing order at $0$ among the nonzero coefficient
+germs. Every coefficient is divisible by $z^m$, so $\mathcal G=z^m\mathcal H$
+with $\mathcal H(0)\ne0$. Let $\alpha$ be the least exponent of a nonzero
+coefficient function of $\mathcal H$ and $\beta=v(\mathcal H(0))\ge\alpha$.
+All Taylor coefficients of $\mathcal H$ at zero have valuation at least
+$\alpha$, so for $x\ne0$ of positive valuation the strong substitution gives
+$v(\mathcal H(x)-\mathcal H(0))\ge\alpha+v(x)$; the substitution is legitimate
+after extracting $t^\alpha$, by \cref{ihs:lem:support}. If
+$v(x)>\beta-\alpha$, the bound exceeds $\beta$, so $\mathcal H(x)$ has the
+leading term of $\mathcal H(0)$; since $x^m\ne0$, $\mathcal G(x)\ne0$. Take
+$\delta_0=\beta-\alpha$.
+\end{proof}
+
+\begin{theorem}[No analytic characteristic determinant at the accumulation point]\label{ihs:fr:thm:nocharacteristic}
+For $A$ as in \cref{ihs:fr:thm:main}, no coherent Hahn analytic function on
+$\mathbb D_r^\#$, for any ordinary $r>0$, has zero set exactly
+$\sigma^{\mathrm{adj}}_\Gamma(A)\cap\mathbb D_r^\#$.
+\end{theorem}
+\begin{proof}
+The desired zero set contains all of $\mK$ by \cref{ihs:fr:cor:reservoir},
+and a nonzero coherent function cannot vanish there by
+\cref{ihs:fr:lem:nonvanishing}. The zero function fails too: a nonreal
+ordinary $c$ with $0<\abs c<r$ lies outside the real ordinary spectrum of
+$T$, so $A-cI$ is invertible by the second case of \cref{ihs:fr:thm:main}.
+\end{proof}
+
+The theorem concerns a scalar analytic characteristic function of the
+\emph{spectral parameter} near zero. It does not conflict with the
+finite-coupling family $\mathcal F_A$, which equals one at coupling zero, or
+with the finite polynomial $\det(\lambda I-A_c)$ on an isolated nonzero halo.
+It does not exclude set-theoretic indicators, meromorphic objects with a
+singularity at zero, or function classes whose coefficients do not share an
+ordinary neighbourhood; its content is the failure inside the named coherent
+analytic category.
+
+\section{Genuinely higher-rank examples}\label{ihs:fr:sec:rank}
+
+\subsection{A scale invisible to every power of another scale}\label{ihs:fr:sec:invisible}
+Take $\Gamma=\Q^2$ lexicographically, $\eta=(0,1)$ and $\beta=(1,0)$, so
+$n\eta<\beta$ for every ordinary integer $n$. The strong identity
+$(1-t^\eta)^{-1}=\sum_{n\ge0}t^{n\eta}$ holds, but its finite partial sums
+do not converge to it in the full valuation topology: the remainder after
+order $N$ has valuation $(N+1)\eta<\beta$ (compare \cref{ihs:sec:ranktwo}).
+All proofs above use finite coefficient words, not such convergence. For a
+noncommuting example at both scales take
+\[
+ A=D_\star+t^\eta Y+t^\beta\lvert e_1\rangle\langle e_1\rvert,
+\]
+with $D_\star,Y$ from \eqref{ihs:fr:eq:counterexample}. The main spectral
+theorem and the determinant theorem apply; the obstruction at exponent
+$\eta$ is unchanged, and the second eigenvalue coefficients at $2\eta$ are
+unchanged because $\beta>n\eta$ for every finite $n$. The failures of global
+diagonalization and of the spectral trace sum therefore persist in a
+genuinely higher-rank perturbation. Identifying $(a,b)$ with $a\omega+b$
+gives $t^\eta=\omega^{-1}$ and $t^\beta=\omega^{-\omega}$: the example has
+actual surcomplex coefficients involving both scales.
+
+\subsection{Finite clusters may need exponents outside the input monoid}\label{ihs:fr:sec:monoid}
+Let the first two ordinary coordinates share the eigenvalue $c=1$, let the
+remaining eigenvalues be $2^{-1},2^{-2},\ldots$, and perturb only the first
+block by
+\begin{equation}\label{ihs:fr:eq:twoscaleblock}
+ A_c=\begin{pmatrix}c+t^\eta&t^\beta\\t^\beta&c-t^\eta\end{pmatrix}.
+\end{equation}
+Its eigenvalues are exactly
+\begin{equation}\label{ihs:fr:eq:twoscaleeigen}
+ \lambda_\pm=c\pm\sqrt{t^{2\eta}+t^{2\beta}}
+ =c\pm t^\eta\sum_{k\ge0}\binom{1/2}{k}t^{2k(\beta-\eta)},
+\end{equation}
+the binomial series being strongly summable because $\beta-\eta>0$. The
+first two nonconstant exponents are $\eta$ and $2\beta-\eta$; the second is
+not in the nonnegative integer monoid generated by $\eta$ and $\beta$,
+although it lies in the original group. The cluster matrix has support
+controlled by the input positive monoid, its eigenvalues lie in the original
+divisible field, and their supports need not stay in that monoid; the last
+claim would be false and is not part of \cref{ihs:fr:thm:cluster}. This is a
+repeated-residue phenomenon of the same kind as the finite example cited in
+\cref{ihs:rf:rem:monoid}. Under the surreal identification,
+$\lambda_\pm=1\pm\omega^{-1}\bigl(1+\tfrac12\omega^{-2(\omega-1)}
+-\tfrac18\omega^{-4(\omega-1)}+\cdots\bigr)$, with set-sized normal-form
+supports.
+
+\section{Part IV: proof dependencies, limits and further questions}\label{ihs:fr:sec:limits}
+
+\subsection{Dependencies}\label{ihs:fr:sec:dependencies}
+The main spectrum theorem uses ordinary compact self-adjoint spectral theory,
+finite-word support, the inherited range factorization and finite Hermitian
+diagonalization. The obstruction uses only its simple-eigenvalue instance and
+a first-coefficient commutator equation. The spectral trace and product
+failures additionally use the explicit second-order recurrence and
+elementary finite summation identities. The determinant theorem uses the
+ordinary trace-class determinant as an analytic map, finite-word Taylor
+lifting, the ordinary index-zero Fredholm alternative and finite-dimensional
+linear algebra. The analytic accumulation obstruction uses only a common
+coefficient neighbourhood, the least ordinary vanishing order and a
+valuation comparison, and is independent of trace-class assumptions. The
+matrix identities, finite recurrence and support algebra are natural
+formalization targets; the ordinary compact and trace-ideal inputs would
+remain substantial analytic prerequisites in a Lean development. No Lean
+files are included and no theorem here is represented as machine checked.
+
+\subsection{Precisely limited claims}\label{ihs:fr:sec:nonclaims}
+This part does not classify spectra of arbitrary elements of $\Ahh$; its
+complete formula requires an injective compact self-adjoint ordinary residue,
+a self-adjoint positive-order perturbation, a separable infinite-dimensional
+$H$ and a divisible $\Gamma$. It does not supply a positive spectral measure,
+a general non-Archimedean Hilbert-space spectral theorem, or a
+nuclear-operator theory independent of the chosen coefficient model. Its
+determinant is defined on the nonnegative-valuation component of the
+coefficientwise trace-class ideal, not on every trace-class-valued Hahn
+series. The no-product theorem concerns products of the labelled Hahn
+eigenbranches and ordinary coefficientwise limits; it does not claim that all
+conceivable regularized products are impossible. The no-characteristic
+theorem is confined to the named coherent analytic category. The
+counterexample to global diagonalization is confined to bounded ordinary
+operator coefficients, not to the row- and column-finite algebra of Part~II
+or to every possible unbounded-operator framework. No complete
+classification of bounded-coefficient Hahn operators, no equivalence with
+intrinsic nuclear or compactoid operator ideals, and no determinant for every
+negative-valuation trace-class series is claimed. The finite checks of
+\cref{ihs:sec:checksfour} are not evidence of priority and do not replace
+the infinite-dimensional arguments; the part has not been independently
+refereed.
+
+\subsection{Further questions}\label{ihs:fr:sec:questions}
+First, what uniform spectral-gap and coefficient-ideal hypotheses ensure that
+all cluster rotations assemble into a bounded-coefficient Hahn unitary? The
+first commutator equation requires a bounded solution of
+$[D,X]=-B_{\mathrm{off}}$ for the diagonal residue $D$ and the off-diagonal
+first perturbation coefficient $B_{\mathrm{off}}$; that necessary first-order
+condition is not asserted to be sufficient at every higher order. Second,
+which altered coefficient categories support a meaningful regularized
+spectral product compatible with the Fredholm determinant when the ordinary
+coefficientwise product fails? Third, how should the classification change
+when the compact residue has a nontrivial kernel, so that genuine
+infinitesimal eigenvalues can coexist with the range defect? These are
+directions beyond the proved statements, not missing steps in their proofs.
+
+\clearpage
 \part*{Shared back matter}
 \addcontentsline{toc}{part}{Shared back matter}
 
-\section{The two exact check suites}\label{ihs:sec:checks}
+\section{The four exact check suites}\label{ihs:sec:checks}
 
-The two parts arrived with separate verification programs, which are kept
-separate in \texttt{code/} and \texttt{data/}. Neither program checks any
-statement of the other part.
+The four parts arrived with separate verification programs, which are kept
+separate in \texttt{code/} and \texttt{data/} under the numbers \texttt{02}
+(Part I), \texttt{03} (Part II), \texttt{04} (Part III) and \texttt{05}
+(Part IV). No program checks any statement of another part.
 
 \begin{warning}[A coincidence, not a dependence]\label{ihs:warn:coincidence}
-Both suites report exactly \textbf{218 exact checks}, and both recorded runs
-used \textbf{Python 3.13.5} with \textbf{SymPy 1.14.0}. This is a
-coincidence of two independently written programs, and the shared tool
-versions are a coincidence of two runs on the same day. The two counts are
-of entirely different assertions: the Part I total is
+The Part I and Part II suites both report exactly \textbf{218 exact checks},
+and both recorded runs used \textbf{Python 3.13.5} with \textbf{SymPy 1.14.0}.
+This is a coincidence of two independently written programs, and the shared
+tool versions are a coincidence of two runs on the same day. The two counts
+are of entirely different assertions: the Part I total is
 $218$ assertions in six groups about finite convolutions, adjoints,
 truncated Neumann identities, the isolated-point resolvent, a finite
 rectangular analogue, finite sections and a backward-shift residual, while
 the Part II total is $218$ checks about perturbation jets, an accumulating
 chain, sharp boundary coefficients, bidegree truncations, projection
 identities and a closed-form eigenpair. Neither number is evidence about the
-other suite, and neither program copied the other.
+other suite, and neither program copied the other. The Part III and Part IV
+suites report $484$ and $1{,}268$ checks; their recorded runs also used
+Python 3.13.5 (Part IV with SymPy 1.14.0, Part III with the standard library
+only). The four counts are counts of program assertions, not of theorems, and
+are not comparable with one another.
 \end{warning}
 
 \subsection{The Part I suite}\label{ihs:sec:checksone}
@@ -3164,6 +5531,46 @@ and cannot replace the summability arguments. The script raises an exception
 at the first failed check. The two-scale test uses finite bidegrees, not an
 allegedly finite initial segment of a lexicographic valuation group.
 
+\subsection{The Part III suite}\label{ihs:sec:checksthree}
+The program \texttt{code/04-drazin-halos-verify.py} uses exact
+\texttt{fractions.Fraction} arithmetic and only the Python standard library.
+Its recorded run, \nolinkurl{data/04-drazin-halos-verification.json}, passed
+\textbf{484} assertions in six categories: pure nilpotent inverses (30),
+mixed Drazin decompositions after a nonorthogonal rational change of basis
+with left and right residuals of truncated regular resolvents (175),
+nilpotent pole-order transformation under ramified polynomials (210), local
+ramified germs and their compositional inverses (18), nonmonomial shifted
+nilpotent inverses (24), and finite-order instances of the straightening
+inverse construction (27). An exact finite matrix identity is verified for
+the tested matrix only, and a truncated formal identity to its recorded
+order only. Neither the Volterra spectrum nor the increasing-Jordan-block
+counterexample is established by these tests; their evidence is the proof in
+\cref{ihs:dz:sec:examples}. The program prints its report and writes a file
+only when given \texttt{--output}.
+
+\subsection{The Part IV suite}\label{ihs:sec:checksfour}
+The program \texttt{code/05-fredholm-verify.py} uses exact rational and
+symbolic arithmetic with SymPy and the deterministic seed \texttt{20260922}.
+Its recorded run, \nolinkurl{data/05-fredholm-verification.json}, passed
+\textbf{1,268} checks in eighteen categories. They cover exact eigenpair
+recursions through order six for $24$ finite symmetric systems, with
+residuals, normalization and the second-order Rayleigh coefficient; truncated
+coefficient identities for $U^*U=I$ and $UP^\circ=PU$ in the direct rotation
+of \cref{ihs:fr:lem:rotation}; the determinant--exponential-trace identity,
+finite-rank Sylvester identities and the singular-residue finite-rank
+correction; the forced generator entries
+\eqref{ihs:fr:eq:unboundedgenerator}, the second eigenvalue coefficients,
+vanishing odd coefficients and the growth bound of
+\cref{ihs:fr:prop:eigencoeff}; the telescoping laws
+\eqref{ihs:fr:eq:traceboundary} and \eqref{ihs:fr:eq:productboundary} and
+their finite-section cancellations; and finite instances of $n\eta<\beta$ in
+lexicographic order. No finite run verifies arbitrary-rank support
+well-ordering, existence of all Hahn coefficients, continuum-dimensional
+cokernels, spectral exhaustion over the whole field, or the absence of all
+possible global unitaries. The program writes its report to
+\texttt{data/verification.json} relative to the working directory unless
+\texttt{--output} is given, so it should be run on a copy.
+
 \subsection{Building}\label{ihs:sec:building}
 The \LaTeX\ source contains its bibliography and needs no external images,
 fonts, or bibliography database. A standard build is
@@ -3173,10 +5580,16 @@ pdflatex -interaction=nonstopmode -halt-on-error article.tex
 pdflatex -interaction=nonstopmode -halt-on-error article.tex
 python code/02-hahn-hilbert-spectral-verify.py
 python code/03-infinite-spectral-verify.py
+python code/04-drazin-halos-verify.py
+python code/05-fredholm-verify.py --output rerun/05-verification.json
 \end{verbatim}
-Both Python scripts need SymPy and support Python 3.10 or later. The source
-is not Lean code, and no proof-assistant certification is claimed for either
-part.
+The scripts support Python 3.10 or later; those of Parts I, II and IV need
+SymPy, and that of Part III needs only the standard library. Some of them
+write their reports next to themselves or into the working directory, so run
+them on a copy of this directory. The delivered \texttt{build.sh} wrappers
+refer to the source packages' original unnumbered file names and do not run
+as placed. The source is not Lean code, and no proof-assistant certification
+is claimed for any part.
 
 \appendix
 \section{Part I: repository and literature audit}\label{ihs:app:auditA}
@@ -3264,6 +5677,164 @@ positivity of the letters in an ordered group is an additional hypothesis
 used only after the word-order result, to pass from embeddings to
 comparisons of sums.
 
+\section{Part III: repository and literature audit}\label{ihs:app:auditC}
+
+\subsection{Repository snapshot}\label{ihs:app:snapshotC}
+The Part III source compared its results with the repository at
+\begin{center}\small\texttt{\commitC},\end{center}
+reviewed on September 22, 2026 \cite{RepoPinC}. It consulted the root
+README, \texttt{docs/README.md}, \texttt{docs/manifest.tex}, the
+incoming-report inventory, and the README and source of this report as it
+then stood, with Parts I and II only. It identified Part~I's
+constant-normal spectral formula as the closest existing result and credited
+it as an overlap. It noted that the report's related-work paragraph already
+mentioned Drazin spectra and cited Boasso, so that a claim that the
+repository contained no Drazin mention would have been false. A GitHub code
+search for ``Drazin'' returned no matches but marked its results incomplete,
+and was not used as evidence of absence; a search of the retrieved catalogue
+found no occurrence, and the retrieved spectral source contained the
+related-work mention. The novelty assessment rests on comparison of
+statements and hypotheses. No repository file was changed. The delivered
+audit is kept unchanged as \texttt{04-drazin-halos-RESEARCH\_AUDIT.md}.
+
+\subsection{Primary sources}\label{ihs:app:sourcesC}
+The bibliographic record of Drazin's paper \cite{Drazin} (the audit does not
+claim a full reading of it); the relevant portions of Boasso's two papers
+\cite{BoassoOperators,Boasso}, including definitions, the resolvent-pole
+characterization and spectral mapping; Koliha's distinction between
+finite-index and generalized Drazin inverses \cite{Koliha}; Gonshor and van
+den Dries--Ehrlich for normal forms and field foundations
+\cite{Gonshor,DriesEhrlich}; and Kaplan--Krapp--Serra for contemporary Hahn
+and surreal automorphism context \cite{KaplanKrappSerra}, not credited with
+the spectral statements. Targeted searches combining Hahn, Drazin, Laurent
+inverse, surreal spectrum and ramified spectral mapping did not locate the
+combined theorem package; this does not establish priority.
+
+\subsection{Statements of the source that are stale or had to be corrected}\label{ihs:app:staleC}
+\begin{itemize}
+\item \emph{Divisibility in Part I.} The source says that Part~I works
+ ``under a standing divisibility assumption'' (its audit: ``with
+ divisibility as a standing convention''), and presents the absence of
+ divisibility as one of the hypotheses Part~III drops. At its pin
+ \texttt{048b72c} this was accurate: Part~I then kept divisibility as a
+ standing convention although its norm did not need it. Commit
+ \texttt{6e34651} removed that assumption from Part~I
+ (\cref{ihs:hh:sec:field}) before Part III was placed. Relative to the
+ present Part~I, Part~III drops normality and the Hilbert and Banach
+ structure, not divisibility (\cref{ihs:dz:rem:recover}).
+\item \emph{README line numbers.} The audit locates the normal formula at
+ lines 67--70 of this report's README at the pin. That was correct there;
+ the README has since been rewritten, and the formula is
+ \cref{ihs:hh:thm:spectrum}.
+\item \emph{What the report contains.} The audit describes this report as two
+ inequivalent theories, which was accurate at the pin. The report now also
+ contains Parts III and IV, and the related-work paragraph it cites
+ (\cref{ihs:sec:nearby}) now points to Part~III.
+\item \emph{Notation.} The source's letters $A$, $D$, $P$, $Q$, $B$, $V$,
+ $h$, $r$, $K_\Gamma$ and $\mathfrak m_\Gamma$ are renamed as stated at the
+ start of Part~III; no statement changes.
+\end{itemize}
+
+\section{Part IV: repository and literature audit}\label{ihs:app:auditD}
+
+\subsection{Repository snapshot}\label{ihs:app:snapshotD}
+The Part IV source is pinned to the same revision \texttt{048b72c} as
+Part~III and was inspected on September 22, 2026; its build and verification
+timestamps fall on September 23 in UTC. It retrieved, through a GitHub
+connector, the root \texttt{README.md}, \texttt{docs/README.md}, this
+report's README and source, and the READMEs of the dynamics and
+analytic-geometry reports, and checked the introduction and relevant scope
+passages of this report. It identified Part~I's constant-normal formula and
+positive-order range-defect factorization as predecessors, not discoveries.
+The comparison was targeted, not a review of every file or proof, and no
+repository file was modified. The delivered record is kept unchanged as
+\texttt{05-fredholm-PROVENANCE.md}.
+
+\subsection{Primary sources and search scope}\label{ihs:app:sourcesD}
+Conway and Gonshor for surreal normal forms \cite{Conway,Gonshor}; Higman
+\cite{Higman}; Poonen, Corollary~4, for Hahn-field algebraic closedness
+\cite{Poonen}; Kato for compact spectral and isolated-cluster perturbation
+inputs \cite{Kato}; Simon for the direct-rotation formula
+\cite{SimonProjections}; Bornemann, Section~3, for ordinary trace-class
+determinant identities \cite{Bornemann}; and Serre for prior
+non-Archimedean Fredholm theory in a different operator category
+\cite{Serre}. The Bornemann, Simon and Poonen material was also inspected
+through page images. Targeted searches combined Hahn, surreal, compact
+operator, trace class, Fredholm determinant, Lidskii and noncommuting
+perturbation; exact-phrase searches for ``Hahn series'' with ``Fredholm
+determinant'' and for ``Hahn'' with ``Lidskii'' produced no directly
+matching treatment. That negative outcome is not a proof of priority, and
+unrelated search snippets were not used as evidence.
+
+\subsection{Statements of the source that are stale or had to be corrected}\label{ihs:app:staleD}
+\begin{itemize}
+\item \emph{Trace class.} The source says this report ``explicitly excludes
+ a trace-class theory''. That was true at the pin and remains true of
+ Parts I--III. The report now contains Part~IV's coefficientwise trace and
+ Fredholm determinant, which is still not a general trace-class theory
+ (\cref{ihs:sec:nonclaim}).
+\item \emph{Constant spectra.} The source describes the bounded-coefficient
+ part as computing the spectrum of constant normal operators. The report now
+ also computes the adjointable-algebra spectrum of every constant bounded
+ operator (Part~III).
+\item \emph{Divisibility.} The source's divisibility hypothesis is its own
+ and is kept. Unlike the Part III source, it makes no claim about Part~I's
+ hypotheses on $\Gamma$.
+\item \emph{Duplicated inputs.} The source re-proves the range-defect
+ factorization, the support lemma and the Neumann inverse. They are printed
+ once (\cref{ihs:hh:thm:defect,ihs:lem:support,ihs:lem:neumann}); the
+ source's different proof of the first is kept as
+ \cref{ihs:fr:rem:secondproof}, and its deduction of the word lemma from
+ Higman's theorem as a paragraph after \cref{ihs:lem:support}.
+\item \emph{Notation.} The source's $\mathscr B$, $\sigma_{\mathscr B}$,
+ $\sigma_{\mathrm{bij}}$ and $\operatorname{res}$ are written $\Ahh$,
+ $\sigma^{\mathrm{adj}}_\Gamma$, $\sigma^{\mathrm{alg}}_\Gamma$ and $\st$;
+ its letters $D$, $B$, $P_0$, $W$ and $M$ (rotation), $U,V$ (finite-rank
+ factors), $M$, $L$, $R$ (Fredholm reduction), $d_0$, $d_A$ and $G$ become
+ $D_\star$, $Y$, $P^\circ_c$, $\Omega$ and $I-(P-P^\circ)^2$, $\iota,\kappa$,
+ $M_F$, $L_F$, $R_F$, $\mathfrak d_0$, $\mathcal F_A$ and $\mathcal G$; no
+ statement changes.
+\end{itemize}
+
+\section{How this report was assembled}\label{ihs:app:provenance}
+The report is built from \textbf{four} research manuscripts, all dated
+September 22, 2026. Two arrived together and were assembled first as Parts
+I and II; two arrived in a later batch and were added as Parts III and IV.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.05\textwidth}p{.31\textwidth}p{.09\textwidth}Y@{}}
+\toprule
+Part & Files & Pin & Contribution\\
+\midrule
+I & \texttt{02-hahn-hilbert-spectral-*} & \texttt{608dd23} & Hahn--Hilbert spaces: automatic adjoints, defect rigidity, normal spectral formula, coercive defects, norm attainment\\
+II & \texttt{03-infinite-spectral-*} & \texttt{a3124af} & Row- and column-finite Hahn matrices: diagonalization, synthesis, commutants, algebra-relative spectrum, walks\\
+III & \texttt{04-drazin-halos-*} & \texttt{048b72c} & Drazin halos in any unital algebra, exact resolvent valuation, ramified spectral mapping, Volterra and block examples\\
+IV & \texttt{05-fredholm-*} & \texttt{048b72c} & Compact self-adjoint operators under noncommuting perturbations; obstruction to global diagonalization; Hahn Fredholm determinant\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The source manuscripts themselves are not shipped; their code, data and
+provenance records are, under the numbers above. Where the merge had to
+choose:
+\begin{itemize}
+\item Results duplicated between sources are printed once: the support
+ lemma and Neumann inverse (all four sources), and the range-defect
+ factorization (Parts I and IV), with the Part IV proof kept as a second
+ route. The Part III normal-case corollary is kept as a second proof of the
+ algebra half of \cref{ihs:hh:thm:spectrum}, not merged into it.
+\item Parts III and IV are kept as separate parts, not merged into Part~I,
+ because Part III's spectrum is relative to an arbitrary algebra and Part IV
+ assumes divisibility and a separable infinite-dimensional $H$, which Part~I
+ does not.
+\item Letters with an existing meaning in Parts I and II were renamed in the
+ new parts (\cref{ihs:app:staleC,ihs:app:staleD}); no existing label or
+ statement of Parts I and II was changed, and cross-references to the new
+ parts were added to them.
+\item The comparison of the algebra-relative spectra (\cref{ihs:prop:unify})
+ and the cross-references between parts were made in assembly and are
+ marked as such; they add no hypothesis to any source theorem and no result
+ to any source.
+\end{itemize}
+
 \section{Dependency and proof-obligation ledgers}\label{ihs:app:ledgers}
 
 \subsection{Part I}\label{ihs:app:ledgerA}
@@ -3318,16 +5889,70 @@ spectral projections; a spectral theorem for arbitrary repeated residues;
 coherence of arbitrary entrywise Hahn matrices; decidability for arbitrary
 surreal presentations; or a completed Lean formalization.
 
+\subsection{Part III}\label{ihs:app:ledgerC}
+The positive-support lemma supports the straightening automorphism and the
+formal substitutions. The elementary Laurent recurrence supports the Drazin
+criterion. Straightening plus cyclic-support projection yields inverse
+descent, which yields the halo formula and the exact scale. The power image
+and the formal inverse germ, with the halo formula and the commuting-factor
+lemma, yield the ramified image, and the finite-union subgroup lemma turns
+that image into the necessary and sufficient criterion. Only the Banach
+corollaries (\cref{ihs:dz:cor:normal,ihs:dz:cor:algebraic,ihs:dz:prop:polemap})
+use ordinary analytic spectral theory, and only the surreal specialization
+uses Conway normal forms. The steps most worth auditing independently are
+the surjectivity argument in \cref{ihs:dz:lem:straighten} and the converse
+direction of \cref{ihs:dz:lem:laurent}.
+
+The Part III results do not assert a classification of nonconstant Hahn
+operators, of all linear endomorphisms, or of bijectivity spectra beyond the
+worked examples; algebraicity for non-Banach algebras; a least field-valued
+norm, trace-class determinant or spectral measure; a solution of a named
+published conjecture; priority; or a Lean formalization.
+
+\subsection{Part IV}\label{ihs:app:ledgerD}
+The main spectrum theorem uses ordinary compact self-adjoint spectral
+theory, finite-word support, Part~I's range-defect theorem and finite
+Hermitian diagonalization over the divisible field. The obstruction uses
+only the simple-eigenvalue instance and one commutator equation; the trace
+and product failures add the explicit second-order recurrence and finite
+summation identities. The determinant theorem uses the ordinary trace-class
+determinant, Taylor lifting, the ordinary index-zero Fredholm alternative and
+finite-dimensional linear algebra; the accumulation obstruction uses only a
+common coefficient neighbourhood and a valuation comparison. The steps most
+worth auditing independently are the self-adjointness of the coefficientwise
+Riesz projection (\cref{ihs:fr:prop:riesz}), the well-ordered induction in
+\cref{ihs:fr:thm:nounitary}, and the kernel--cokernel identification in
+\cref{ihs:fr:thm:fredholm}.
+
+The Part IV results do not assert a spectral classification of arbitrary
+elements of $\Ahh$ or of compact residues with nontrivial kernel; anything
+without divisibility; a positive spectral measure or general
+non-Archimedean Hilbert-space spectral theorem; equivalence with intrinsic
+nuclear or compactoid ideals; a determinant for negative-valuation
+trace-class series; the impossibility of every regularized spectral product;
+anything outside the named coherent analytic category; a failure of global
+diagonalization outside bounded coefficients; a solution of a named published
+conjecture; priority; or a Lean formalization.
+
 \subsection{What this report as a whole does not claim}\label{ihs:app:jointnonclaims}
-Nothing above unifies the two parts into a single theorem, and no hypothesis
-is transferred between them. Both now allow nondivisible $\Gamma$ by
-their respective proofs; the row- and column-finiteness of Part~II is
-not available in Part~I. The two
+Nothing above unifies the four parts into a single theorem, and no hypothesis
+is transferred between them. Parts I--III allow nondivisible $\Gamma$ by
+their respective proofs; Part IV assumes divisibility, and nothing here
+transfers its conclusions to nondivisible groups. The row- and
+column-finiteness of Part~II is not available in Part~I or Part~IV. The
 spectra of \cref{ihs:tab:senses} are not proved to agree, and no claim is
-made that either determines the other. Neither part is a trace-class theory.
-Part II supplies a vectorwise Hahn-additive projection calculus, not a
-general topologically countably additive spectral-measure theorem; the
+made that one determines another, beyond the identities of definitions in
+\cref{ihs:prop:unify} and the equalities proved for particular operators
+(\cref{ihs:hh:thm:spectrum,ihs:fr:thm:main}, \cref{ihs:dz:sec:volterra}).
+Parts I--III are not trace-class theories; Part IV supplies a coefficientwise
+trace and a Fredholm determinant on the nonnegative-valuation component of
+$\SH((t^\Gamma))$, and neither a general trace-class nor a nuclear-operator
+theory. Part II supplies a vectorwise Hahn-additive projection calculus, not
+a general topologically countably additive spectral-measure theorem; the
 counterexample in \cref{ihs:rf:rem:notopsum} states the precise limitation.
+No part supplies a positive spectral measure. The local cluster theory of
+Part IV does not assemble into a global bounded-coefficient spectral
+theorem (\cref{ihs:fr:thm:nounitary}).
 
 \clearpage
 \phantomsection
@@ -3354,6 +5979,13 @@ inspected September 22, 2026 at commit \texttt{\commitB}. Pinned sources:
 the spectral-theory README and the documentation catalogue at that revision.
 The repository identifies its research reports as AI-assisted drafts.
 \url{https://github.com/VladimirReshetnikov/Surreal/blob/a3124af79f66b8b9c196d76b4cbc5ac3938907c4/docs/surcomplex/spectral-theory/README.md}.
+
+\bibitem{RepoPinC}
+V. Reshetnikov, \emph{Surreal} repository at commit \texttt{\commitC},
+consulted September 22, 2026 by the Part III and Part IV sources; in
+particular this report's README and source as they then stood (Parts I and
+II only).
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/048b72cf7cbfc8ab246e4f73788c10460cb3f6e0/docs/surcomplex/infinite-dimensional-hahn-spectral-theory}.
 
 \bibitem{Gonshor}
 H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
@@ -3442,5 +6074,62 @@ cousins, arXiv:2607.25134v1, July 27, 2026.
 \url{https://arxiv.org/html/2607.25134v1}.
 This reference concerns ordinary row- and column-finite matrices; it is
 not a source for the Hahn diagonalization asserted in Part~II.
+
+\bibitem{Drazin}
+M. P. Drazin, Pseudo-inverses in associative rings and semigroups,
+\emph{The American Mathematical Monthly} \textbf{65} (1958), no.~7,
+506--514.
+
+\bibitem{BoassoOperators}
+E. Boasso, Drazin spectra of Banach space operators and Banach algebra
+elements, arXiv:1307.6942, 2013.
+\url{https://arxiv.org/abs/1307.6942}.
+
+\bibitem{Koliha}
+J. J. Koliha, A generalized Drazin inverse,
+\emph{Glasgow Mathematical Journal} \textbf{38} (1996), no.~3,
+367--381. \url{https://doi.org/10.1017/S0017089500031803}.
+
+\bibitem{DriesEhrlich}
+L. van den Dries and P. Ehrlich, Fields of surreal numbers and
+exponentiation, \emph{Fundamenta Mathematicae} \textbf{167} (2001),
+173--188. \url{https://doi.org/10.4064/fm167-2-3}.
+
+\bibitem{KaplanKrappSerra}
+E. Kaplan, L. S. Krapp and M. Serra, Decomposing the automorphism group
+of the surreal numbers, arXiv:2509.22374v3, April 23, 2026.
+\url{https://arxiv.org/abs/2509.22374v3}.
+
+\bibitem{Conway}
+J. H. Conway, \emph{On Numbers and Games}, second edition,
+A K Peters, 2001. First edition, Academic Press, 1976.
+
+\bibitem{Poonen}
+B. Poonen, Maximally complete fields,
+\emph{L'Enseignement Math\'ematique} (2) \textbf{39} (1993), 87--106.
+\url{https://math.stanford.edu/~conrad/Perfseminar/refs/poonencomplete.pdf}.
+
+\bibitem{Kato}
+T. Kato, \emph{Perturbation Theory for Linear Operators},
+second edition, Springer, 1976.
+\url{https://doi.org/10.1007/978-3-642-66282-9}.
+
+\bibitem{SimonProjections}
+B. Simon, Unitaries permuting two orthogonal projections,
+\emph{Linear Algebra and its Applications} \textbf{528} (2017),
+436--441. Preprint: arXiv:1703.05437.
+\url{https://arxiv.org/abs/1703.05437}.
+
+\bibitem{Bornemann}
+F. Bornemann, On the numerical evaluation of Fredholm determinants,
+\emph{Mathematics of Computation} \textbf{79} (2010), 871--915.
+\url{https://doi.org/10.1090/S0025-5718-09-02280-7}.
+Preprint: \url{https://arxiv.org/abs/0804.2543}.
+
+\bibitem{Serre}
+J.-P. Serre, Endomorphismes compl\`etement continus des espaces de Banach
+$p$-adiques, \emph{Publications Math\'ematiques de l'IH\'ES}
+\textbf{12} (1962), 69--85.
+\url{https://www.numdam.org/item/PMIHES_1962__12__69_0/}.
 \end{thebibliography}
 \end{document}

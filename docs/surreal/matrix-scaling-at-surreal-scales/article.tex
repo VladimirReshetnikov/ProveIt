@@ -1,0 +1,2146 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Sharp Matrix-Scaling Stability over Surreal and Surcomplex Fields},
+ pdfauthor={AI-assisted research manuscript prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sharp matrix-scaling stability}
+\fancyhead[R]{\small Surreal and surcomplex fields}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+% Added on placement: statements share the theorem counter, and without these
+% aliases cleveref names every lemma, corollary, definition, example and
+% remark a "theorem".
+\AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
+\AddToHook{env/lemma/begin}{\crefalias{theorem}{lemma}}
+\AddToHook{env/corollary/begin}{\crefalias{theorem}{corollary}}
+\AddToHook{env/definition/begin}{\crefalias{theorem}{definition}}
+\AddToHook{env/example/begin}{\crefalias{theorem}{example}}
+\AddToHook{env/remark/begin}{\crefalias{theorem}{remark}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\GG}{\mathcal G}
+\newcommand{\TT}{\mathcal T}
+\newcommand{\NN}{\mathcal N}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\od}{\mathbin{\odot}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ph}{\varphi}
+\newcommand{\pin}{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}
+\newcommand{\shortpin}{048b72c}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/Surreal}}
+\newcommand{\valvec}[1]{\min_{e\in E}v(#1_e)}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{7mm}
+\noindent{\small RESEARCH MANUSCRIPT \hfill 22 September 2026}
+\vspace{11mm}
+\begin{center}
+{\LARGE\bfseries Sharp Matrix-Scaling Stability\\[4pt]
+over Surreal and Surcomplex Fields}\par
+\vspace{6mm}
+{\large Spanning-tree gaps, infinitesimal normalization,\\[3pt]
+and exact multiscale propagation}\par
+\vspace{8mm}
+{\normalsize Prepared for Vladimir Reshetnikov}
+\end{center}
+\vspace{7mm}
+\begin{abstract}
+We study diagonal matrix scaling in set-sized Hahn fields
+$F=\R((t^\Gamma))$ and $K=\C((t^\Gamma))$, with no rank or divisibility
+assumption on the ordered value group for the local theory. A positive
+matrix may have entries at arbitrarily different infinitesimal scales.
+Nevertheless, normalization to its fixed row and column sums admits a
+unique support-controlled surcomplex analytic branch on the entire
+relative infinitesimal polydisc.
+
+The main quantitative invariant is the \emph{spanning-tree deletion gap}.
+For an edge $e$ of the bipartite support graph, let $\tau$ be the minimum
+sum of entry valuations over spanning trees and let $\tau_e^-$ be the same
+minimum over trees avoiding $e$. Then $\kappa_e=\tau_e^--\tau$ is the
+exact, uniform gain in relative valuation at entry $e$: an input change
+of valuation at least $\delta>0$ produces an output change of valuation
+at least $\delta+\kappa_e$. The assertion is a nonlinear two-point
+estimate, not merely an infinitesimal derivative formula. Every change
+in just entry $e$ attains equality at that entry; a bridge is fixed
+exactly. All positive-degree Taylor coefficients satisfy the same
+entrywise valuation bounds.
+
+A tree interpolation identity and a secant reweighting of the exponential
+prove the sharp estimate. A separate finite-generator support argument
+licenses evaluation at arbitrary rank, where integrality of formal
+coefficients alone is insufficient. For a tridiagonal bistochastic
+chain we obtain an exact nonlinear propagation law: valuation gains add
+along consecutive links. We also give a real-linear-constraint
+extension, an unramified local descent statement, explicit examples,
+and exact finite verification programs.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status and priority.}
+The main theorems are proved in this manuscript. Their originality is a
+\emph{candidate} conclusion of a targeted, non-exhaustive comparison with
+published work and the repository at commit \texttt{\shortpin}.
+No named long-standing open problem is claimed solved, and no refereeing
+or complete machine verification is claimed. Known scaling, projection,
+and spanning-tree results are explicitly credited.
+This is an AI-assisted research draft, and no statement of it has a Lean
+formalization. It is built from a single
+manuscript; \cref{scale:sec:provenance} records how that manuscript was
+placed in the collection and what was changed.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{The problem and the contribution}\label{scale:sec:intro}
+
+\subsection{Why this is more than scalar extension}
+Let $P=(p_{ij})$ be a finite matrix with positive surreal entries on a
+fixed support. Change its nonzero entries by relative infinitesimals,
+and then multiply rows and columns by positive factors so that the
+original margins are restored. How accurately are the individual
+entries of the normalized matrix determined?
+
+A direct inverse-Jacobian bound can suggest a loss of precision when
+some entries are extremely small. A different phenomenon occurs for
+fixed margins. The normalized entries never lose relative valuation,
+and certain entries gain a precisely computable additional amount.
+The answer depends on which edges are indispensable to
+minimum-valuation spanning trees, rather than on a smallest eigenvalue
+used as a scalar condition number.
+
+This is a genuinely multiscale question. For example, in
+$\Gamma=\Z^2$ with lexicographic order, put
+$\alpha=(0,1)$ and $\beta=(1,0)$. Then $n\alpha<\beta$ for every
+ordinary positive integer $n$. An argument requiring $n\alpha$ to
+become arbitrarily large cannot justify a Hahn expansion at
+$t^\alpha$. The proofs below retain the entire ordered group and use
+strong summability, not an implicit replacement by a real-valued norm.
+
+The word \emph{surcomplex} means the complexification $\No[i]$.
+For rigorous constructions we first work in the set-sized field
+$K=\C((t^\Gamma))$. The final passage to surreal and surcomplex numbers
+uses the normal-form embedding and introduces no class-sized sums;
+see \cref{scale:sec:surreal}. The local existence theorem is actually
+slightly stronger than a real-positive statement: each base weight may
+be surcomplex, provided its leading coefficient is positive real.
+
+\subsection{An overview of the exact result}
+For a connected bipartite graph $\GG=(R\sqcup C,E)$ and edge weights
+$p_e$, write $c_e=v(p_e)$. Let $\TT$ be its finite set of spanning trees.
+Define
+\begin{equation}\label{scale:eq:overviewgap}
+ \tau=\min_{T\in\TT}\sum_{a\in T}c_a,\qquad
+ \tau_e^-=\min_{\substack{T\in\TT\\e\notin T}}\sum_{a\in T}c_a,
+ \qquad \kappa_e=\tau_e^--\tau.
+\end{equation}
+An empty minimum is $+\infty$. Thus a bridge has $\kappa_e=+\infty$.
+For $f\in\mm_K^E$ let the perturbed kernel be
+$A_e(f)=p_e\exp(f_e)$, using only the infinitesimal exponential.
+Let $q(f)$ denote its normalization to the margins of $p$ on the
+relative infinitesimal branch. The central estimate is
+\begin{equation}\label{scale:eq:overviewbound}
+ v\!\left(\frac{q_e(f)}{q_e(g)}-1\right)
+ \geq \kappa_e+\min_{a\in E}v(f_a-g_a),\qquad f,g\in\mm_K^E.
+\end{equation}
+When $f-g=s\mathbf e_e$, where $0\ne s\in\mm_K$, equality holds in
+\eqref{scale:eq:overviewbound} for a nonbridge $e$. Therefore no larger
+uniform gain can replace $\kappa_e$. This conclusion holds even when
+minimum trees are tied and when the perturbations have nonreal
+coefficients.
+
+An equivalent combinatorial formula needs no tree enumeration. If
+$e$ joins $u$ to $v$, then
+\begin{equation}\label{scale:eq:overviewpath}
+ \kappa_e=\max\left\{0,
+ \min_{\pi:u\leadsto v\text{ in }\GG\setminus e}
+       \max_{a\in\pi}c_a-c_e\right\}.
+\end{equation}
+The value is $+\infty$ if no alternative path exists. The minimax
+path formula is familiar minimum-spanning-tree sensitivity. Its role
+as the \emph{optimal nonlinear normalization gain}, including all
+Taylor orders, is the contribution investigated here.
+
+\subsection{What is proposed as new, and what is not}
+\begin{center}
+\begin{tabular}{@{}L{0.27\textwidth}L{0.65\textwidth}@{}}
+\toprule
+Result & Status in this manuscript\\
+\midrule
+Scaling existence over real closed fields &
+Classical real scaling plus first-order transfer; included as background.\\[3pt]
+Weighted constraint projection and tree formulas &
+Known linear-algebraic and transfer-current ingredients; proved directly
+for transparency.\\[3pt]
+Whole-infinitesimal-polydisc normalization &
+Candidate original arbitrary-rank, positive-leading surcomplex theorem,
+with an explicit strong-summability proof.\\[3pt]
+Sharp tree-deletion gain &
+Candidate original nonlinear two-point law, coefficient bounds, and exact
+one-coordinate sharpness.\\[3pt]
+Propagation through a chain &
+Candidate original exact nonlinear valuation formulas at all links and
+diagonal entries.\\[3pt]
+Real-linear-constraint extension &
+A proved extension replacing trees by bases; no new matroid combinatorics
+is claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first derivative alone is \emph{not} a novelty claim. Nor is the
+mere existence of generalized series for a one-parameter scaling
+problem. Both have substantial precedents, described next.
+
+\subsection{What this report does not claim}\label{scale:sec:nonclaims}
+Each limitation below is also stated where it applies. They are collected
+here so that none of them is lost when the results are quoted elsewhere.
+\begin{enumerate}[label=(N\arabic*),leftmargin=3.2em]
+\item \emph{Priority and status.} The whole-polydisc normalization, the
+sharp tree- and basis-gap laws and the chain propagation formulas are
+\emph{candidate} original results after a targeted, non-exhaustive
+comparison with published work and with the repository at its pin
+(\cref{scale:sec:comparison}). Publication priority, absence from every
+repository file and independent expert validation are not certified. The
+repository audit was not a line-by-line review of every article or Lean
+declaration, and its indexed searches were unusable as negative evidence.
+No named long-standing open problem is claimed solved. The report is an
+AI-assisted draft; it has not been refereed; no statement of it has a Lean
+formalization, and \cref{scale:sec:verification} does not assert that the
+Lean modules it outlines exist.
+\item \emph{Credited, not claimed.} Existence, uniqueness and ordinary
+real continuity of prescribed-margin scaling (Idel's review and classical
+scaling theory); generalized-series expansions of a one-parameter scaling
+problem, so that no first use of Hahn-type series in matrix scaling is
+claimed (Sharify--Gaubert--Grigori); the first-order implicit
+differentiation formula (Eisenberger et al.); the determinant formula, its
+tree interpretation and transfer-current representations (Burton--Pemantle);
+the minimax path formula~\eqref{scale:eq:overviewpath} and the
+minimum-spanning-tree exchange arguments of \cref{scale:sec:bottleneck};
+Hahn and surreal normal-form background (Gonshor, Berarducci--Mantova);
+Higman's word theorem; real-closed transfer (Tarski). The real-linear-constraint
+extension (\cref{scale:thm:linear}) claims no new matroid combinatorics.
+\item \emph{No convergence assertion.} Neither convergence of the alternating
+Sinkhorn iteration in an arbitrary-rank valuation topology, nor its iteration
+complexity, nor convergence of set-indexed sequences in the full surreal fine
+topology is claimed. Strong sums are coefficientwise sums, not limits of
+partial sums (\cref{scale:sec:boundaries}), and the remainder certificate
+(\cref{scale:cor:remainder}) does not promise that a finite Taylor degree
+reaches every requested precision at higher rank.
+\item \emph{What ``analytic'' means.} The normalization branch is given by a
+strongly evaluated formal series on the relative infinitesimal polydisc. No
+classical holomorphic manifold structure in the full surreal fine topology
+is asserted. No exponential or logarithm at an infinite surcomplex argument,
+no global surcomplex exponential and no surreal derivation is used; Taylor
+coefficients are formal derivatives with respect to the edge parameters.
+\item \emph{The hypotheses matter.} Positive leading coefficients of the
+base weights are sufficient, not claimed to be necessary; without them
+integrality and uniqueness can fail
+(\cref{scale:ex:phasejacobian,scale:ex:phasebranches}). The field $K$ is not
+ordered, and ``positive-leading'' refers only to the leading coefficient.
+The margins are fixed; if they move, even by relative infinitesimals, the
+bridge rigidity fails (\cref{scale:sec:boundaries}). The support is fixed.
+\item \emph{What ``sharp'' means.} $\kappa_e$ is the largest gain valid
+uniformly; equality is not asserted for every input direction
+(\cref{scale:thm:sharp} and the remark after it). Optimality of the exponent
+$N$ in \cref{scale:prop:cutbound} is not claimed.
+\item \emph{Which costs.} The tree costs of the sharp theorem are valuations
+of the normalized base matrix. No equally sharp formula from the valuations
+of an unscaled kernel is claimed (\cref{scale:cor:positivebranch}).
+\item \emph{Divisibility and real closedness.} The local theory assumes no
+divisibility of $\Gamma$. The global positive interpretation
+(\cref{scale:prop:global,scale:cor:positivebranch} and the global paragraph
+of \cref{scale:sec:surreal}) uses real closedness, reached through the
+divisible hull and first-order transfer; the real optimization proof is not
+repeated inside a non-Archimedean field, and no non-Archimedean compactness
+or global logarithm is used. The descent statement \cref{scale:cor:descent}
+is local: global scaling over a nondivisible group can require ramification
+\eqref{scale:eq:ramificationexample}.
+\item \emph{Real constant constraints.} \Cref{scale:thm:linear} needs a real
+constant constraint matrix. The same basis-cost formula is not asserted for a
+Hahn-valued constraint matrix.
+\item \emph{Surreal transport.} The surreal and surcomplex statements are
+obtained by set-sized support-group localization. No class-sized sum, net or
+compactness argument is used, and no proof of a local result uses spherical
+completeness or Banach contraction.
+\item \emph{Computation.} The workflow of \cref{scale:sec:verification} is an
+exact-operation specification, not a universal computable representation of
+surreal numbers: arbitrary Hahn coefficients need not come with an effective
+leading exponent, equality test or support oracle. The amplitude $C_e$ needs
+all minimizing trees when there are ties. The finite checks of
+\cref{scale:sec:verification} do not prove strong summability, arbitrary-rank
+existence or surreal transport, and a successful compilation is not a proof
+check.
+\item \emph{Open questions.} The three questions of \cref{scale:sec:verification}
+(a sharp two-edge propagation formula on a general support graph, of which the
+chain theorem solves one family; a classification of the surcomplex base
+weights with a unique integral whole-polydisc branch; and the convergence and
+complexity of alternating normalization over higher-rank valued fields,
+together with a global surcomplex scaling theorem for arbitrary complex
+kernels) are not settled.
+\end{enumerate}
+The delivered files \texttt{SOURCE\_AUDIT.md} and \texttt{PROOF\_AUDIT.md}
+state the audit boundaries in more detail.
+
+\subsection{Relation to other reports of the collection}\label{scale:sec:neighbours}
+No proof in this report depends on another report, and no other report
+depends on this one. The comparisons below are with the articles as committed
+at \texttt{52c7ab6}; theorem numbers of other reports are those of their
+committed PDFs.
+
+\paragraph{Markov generators at every scale.}
+The Markov report \cite{RepoMarkov}, held in
+\nolinkurl{docs/surreal/markov-generators-at-every-scale/}, and this one
+share one mechanism: a positive combinatorial
+expansion whose valuation is a minimum over trees or forests and whose
+leading coefficient is a positive sum over the minimizers. There,
+Proposition~3.1 (\nolinkurl{markov:prop:forest}, the directed matrix-forest
+theorem) writes $\det(sI+L)$ and $\operatorname{adj}(sI+L)$ as sums of
+positive in-forest weights, and equation~(3.10) there
+(\nolinkurl{markov:eq:profile-properties}) reads off the minimal forest weight
+and its amplitude. Its Theorem~4.1 (\nolinkurl{markov:thm:leading}) gives the
+valuation of a resolvent entry as a minimum over forests with a prescribed
+root, minus the unrestricted minimum. Here \cref{scale:thm:tree} writes
+$\det L_p$ as the positive tree sum $Z(p)$, \eqref{scale:eq:Hdiagonal} writes
+a diagonal projection entry as $Z_e^-(p)/Z(p)$, and the gap
+$\kappa_e=\tau_e^--\tau$ is again a restricted minimum (trees avoiding $e$)
+minus the unrestricted one, with the quotient of amplitudes
+$C_e$ in \eqref{scale:eq:leadinggain}. As polynomial identities in the
+weights, symmetric rates $q_{uv}=q_{vu}=p_e$ on the support graph make the
+in-forests of that report with $N-1$ edges and a fixed root exactly the
+spanning trees oriented towards that root, so its top forest coefficient
+$\sigma_{N-1}$ equals $N\,Z(p)$. This report does not use that identity.
+
+The differences are as follows. (i) \emph{Objects.} There, the row Laplacian
+of a directed graph, in general neither symmetric nor normal, and the
+normalized resolvent, a rational function of the rates and of a scale
+parameter, with forests of every size. Here, the symmetric reduced Laplacian
+$BW_pB^{\mathsf T}$ of a bipartite support graph, only spanning trees, no
+scale parameter, and a \emph{nonlinear} fixed-margin normalization obtained
+from a support-controlled power series (\cref{scale:thm:existence}).
+(ii) \emph{Stability.} Theorem~8.1 there (\nolinkurl{markov:thm:stability}) turns
+relative rate errors of valuation at least $\delta$ into relative
+resolvent-entry errors of valuation at least $\delta$, uniformly in the
+resolvent parameter, and Example~8.3 there shows that no gain is possible in
+general. \Cref{scale:thm:sharp} turns relative kernel changes of valuation at
+least $\delta$ into normalized-entry changes of valuation at least
+$\delta+\kappa_e$, with equality for one-coordinate changes; the gain comes
+from the fixed margins and fails when the margins move
+(\cref{scale:sec:boundaries}). The two theorems concern different maps, and
+neither implies the other. Both need a fixed support: a new edge is not a
+relative perturbation (Remark~8.4 there). (iii) \emph{Hypotheses.} That
+report assumes a divisible value group throughout and real positive rates.
+The local theory here assumes no divisibility and allows surcomplex
+positive-leading base weights with complex perturbations. (iv) The
+crossover hierarchy, effective generators, rank-one realization and
+eigenvalue amplitudes of that report have no counterpart here. The whole-polydisc
+branch, the deletion gap and its bottleneck formula, and the chain
+propagation law of this report have no counterpart there.
+
+\paragraph{Surcomplex spectral theory.}
+The spectral report \nolinkurl{docs/surcomplex/spectral-theory/}
+\cite{RepoSpectral} shares three ingredients with this one.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Positive Cauchy--Binet sums.} Its Theorem~8.1
+(\nolinkurl{thm:gram}, a label without report prefix) writes the coefficients of
+$\det(I+sA^*A)$ as sums of squared moduli of minors, so that no leading
+cancellation occurs. \Cref{scale:thm:tree} expands
+$\det(BW_pB^{\mathsf T})$ by Cauchy--Binet as
+$\sum_T(\det B_T)^2w_T(p)$, and \cref{scale:thm:linear} has the same form
+with real factors $(\det B_T)^2>0$. When the weights are real and positive
+and have square roots in the field, $BW_pB^{\mathsf T}=A^*A$ with
+$A=W_p^{1/2}B^{\mathsf T}$, and $\det L_p$ is the top Gram coefficient of that
+theorem. The proof here needs neither square roots, which a nondivisible
+value group need not supply, nor real weights: it applies Cauchy--Binet to
+the product $B\cdot W_p\cdot B^{\mathsf T}$ with positive-leading surcomplex
+weights. The interpolation identity~\eqref{scale:eq:treeaverage} for the
+projection itself has no counterpart there.
+\item \emph{The support engine.} \Cref{scale:lem:neumann} and Lemma~9.4
+there (\nolinkurl{spec:lem:neumann}) state the same positive-support word
+finiteness, both from Higman's theorem. \Cref{scale:lem:evaluation} with no
+generators ($R_0=\C$) gives the strong-evaluation part of Lemma~9.5 there
+(\nolinkurl{spec:lem:evaluate}); \cref{scale:lem:evaluation} allows coefficients
+in a finitely generated subalgebra of $\OO$, and \cref{scale:ex:badformal}
+shows why arbitrary coefficients in $\OO$ are not allowed. Example~9.2 there
+(\nolinkurl{spec:ex:nonconvergence}) and the last subsection of
+\cref{scale:sec:boundaries} make the same point with the same elements
+$(0,1)$ and $(1,0)$ of $\Z^2_{\mathrm{lex}}$: strong sums are not limits of
+partial sums. Each report keeps its own proofs.
+\item \emph{No new exponents.} Its Theorem~9.18 (\nolinkurl{spec:thm:svd}) keeps
+singular value decompositions in the subgroup generated by the input
+supports, as \cref{scale:cor:descent} keeps the local normalization in
+$\C((t^\Lambda))$. Its Section~10 computes when positive matrix roots need
+new exponents. The global ramification example
+\eqref{scale:eq:ramificationexample} here is computed directly and is not
+derived from that section.
+\end{enumerate}
+What is not shared: that report is about eigenvalues, singular values and
+Hermitian or normal matrices, and its perturbation results (for instance
+Theorem~5.2 there, \nolinkurl{thm:weyl}) bound changes of eigenvalues and
+singular values. No eigenvalue or singular value appears in this report. The
+gain $\kappa_e$ is a combinatorial invariant of the support graph and the
+entry valuations, not a smallest singular value used as a condition number
+(\cref{scale:sec:intro}), and singular-value stability supplies neither the
+whole-polydisc support argument nor the tree-deletion sharpness
+(\cref{scale:sec:comparison}). This report does not use the word
+\emph{spectrum}.
+
+\paragraph{Prony reconstruction.}
+The nonuniform certificate of the Prony reconstruction report
+(Theorem~8.1 there, \nolinkurl{prony:thm:graph}) is also a minimum-cost path
+computation in an ordered group. Its graph is a directed graph of moment
+interactions with a positive-cycle hypothesis, and its path minima bound node
+errors. It involves no spanning trees and no normalization, and its moment
+precisions $\kappa_k$ are unrelated to the gaps $\kappa_e$.
+
+\subsection{Words and symbols used differently elsewhere in the collection}
+\label{scale:sec:words}
+Several words and letters of this report mean other things in other reports.
+Each has one meaning here.
+\begin{itemize}
+\item \emph{Scaling} and \emph{normalization} mean diagonal row and column
+scaling of a matrix to prescribed margins, and its local branch
+$\NN_p$, $q_p$. They are not the monomial rescalings or polynomial
+normalizations of other reports. \emph{Scale}, as in the title, means a
+valuation.
+\item \emph{Positive}, for a matrix, means entries positive on the support
+in the ordered field $F$; \emph{positive-leading}
+(\cref{scale:def:positiveleading}) is the only positivity notion in $K$,
+which is not ordered. Neither means positive definite, the sense of the
+spectral report.
+\item \emph{Gap} means the spanning-tree deletion gap $\kappa_e$. It is not a
+spectral gap and not a surreal gap (a Dedekind section of $\No$) in the sense
+of the genetic-gap report. The letter $\kappa$ also denotes moment
+precisions in the Prony report and the valuation gain $v(q)$ of an inverse
+branch in the expanding-polynomial-dynamics report; those are unrelated.
+\item \emph{Tree} means an undirected spanning tree of the support graph. It
+is not an in-forest of the Markov report, nor a cluster, separation or
+splitting tree of the polynomial, Prony or spectral reports.
+\item \emph{Branch} means the unique relative-infinitesimal solution
+$\NN_p$ on $\mm^E$, and \emph{analytic} means given there by a strongly
+evaluated formal series with coefficients in $R_p$. These are not the
+germ-analytic or coherent-section classes of the analysis report, and the
+branch is not a branch selector in the computational sense of
+\nolinkurl{docs/NOTATION.md}.
+\item \emph{Gauge factors} are the diagonal row and column factors of
+\cref{scale:cor:gauge}; neither the noise gauge of the Prony report nor a
+differential gauge equivalence.
+\item \emph{Bistochastic} means that all row and column sums are $1$.
+\item $p$ denotes base weights and $q_p(f)$ normalized weights; $P$ and $Q$
+are the corresponding matrices. In the Markov report $q_e$ are rates and $P_i$
+idempotents. $L_p=BW_pB^{\mathsf T}$ is a symmetric reduced weighted Laplacian,
+not that report's row Laplacian. $H_p=I-\Pi_p$ is a projection, not a
+Hermitian matrix $H$ as in the spectral report, and $\Pi_p$ is unrelated to
+the exponent matrix $\Pi$ of the theta-series material in the Hahn--Tate
+report. $s$ is a perturbation scalar, not a resolvent parameter.
+\item Local letters are reused with local meanings, each defined where it is
+used: $\delta$ (the least valuation of an input change in
+\cref{scale:sec:intro,scale:sec:gain,scale:sec:chain}, the group element
+$(0,1)$ in \cref{scale:ex:badformal} and \cref{scale:sec:boundaries}, and a
+positive parameter in the examples of \cref{scale:sec:boundaries});
+$C$ (the column set, the Cramer matrices $C_k$, the amplitude $C_e$, the
+cycle basis of \cref{scale:sec:chain}); $R$ (the row set, $R(z)=\exp z-1-z$,
+the rings $R_0$ and $R_p$); $D$ (the diagonal factors $D_r,D_c$, the
+continuants $D_{a,b}$, a truncation degree). The formal series of
+\cref{scale:lem:evaluation,scale:ex:badformal} is written $\Phi(X)$, so that
+$F$ always denotes the real Hahn field ($F_0$ in \cref{scale:prop:global} is
+an arbitrary real closed field).
+\item The valuation is $v(x)=\min\supp x$, and the surreal embedding is
+$t^\gamma\mapsto\omega^{-\gamma}$ \eqref{scale:eq:surrealembedding}, as
+elsewhere in the collection. \emph{Surcomplex} means $\No[i]$.
+\end{itemize}
+
+\subsection{Provenance of this report}\label{scale:sec:provenance}
+This report is built from one manuscript, \emph{Sharp Matrix-Scaling
+Stability over Surreal and Surcomplex Fields}, dated 22 September 2026. It
+arrived as the archive \nolinkurl{surreal_matrix_scaling.zip}, one of nine
+archives committed on arrival at \texttt{330aa79}. The archive held the LaTeX
+source \texttt{surreal\_matrix\_scaling.tex}, its PDF, a README, the audit
+files \texttt{SOURCE\_AUDIT.md} and \texttt{PROOF\_AUDIT.md}, the program
+\texttt{code/verify.py} with its recorded output and console record, a build
+record with its console log, a requirements file and a build script. It was
+placed at commit \texttt{52c7ab6}. Its own repository comparison is pinned to
+\texttt{\pin} (\cref{scale:sec:comparison}).
+
+There is no second source, so there was no merge and no choice between
+sources. Nothing was selected out of a larger body of work. Every theorem,
+proof, example and disclaimer of the manuscript is kept. The report is a
+member of the surreal family because its positive matrices, the global
+scaling theory and the tree costs are real Hahn objects; the surcomplex
+branch of \cref{scale:thm:existence} extends that real theory.
+
+Placement changed the following and nothing else.
+\begin{enumerate}[label=(\alph*)]
+\item The source was renamed \texttt{article.tex}. The two audit files, the
+program and everything in \texttt{data/} are kept byte-identical. The build
+script was moved to \texttt{code/} and the requirements file to
+\texttt{data/}. The delivered PDF and README are not shipped.
+\item All 88 labels of the manuscript already carried the prefix
+\texttt{scale:} and are unchanged. The labels added on placement carry the
+same prefix.
+\item \Cref{scale:sec:nonclaims,scale:sec:neighbours,scale:sec:words,scale:sec:provenance}
+were added, and so were \cref{scale:rem:support,scale:rem:trees}, which
+point to other reports. They were placed so that every theorem, equation
+and section number of the manuscript is unchanged. The title-page status
+paragraph now states the draft status.
+\item Repository statements that had gone stale were corrected, with the pin
+kept as provenance (the paragraph ``Since the pin'' in
+\cref{scale:sec:comparison}, and \cref{scale:app:build}, whose build
+instructions now describe this directory). \Cref{scale:sec:verification}
+records a rerun of the checks on placement.
+\item The formal series written $F(X)$ in \cref{scale:lem:evaluation} and
+\cref{scale:ex:badformal} was renamed $\Phi(X)$, since $F$ is the real Hahn
+field.
+\item All numbered statements share one counter. In the delivered build,
+every cross-reference to a proposition, lemma, corollary, definition,
+example or remark printed the word ``theorem''. Six lines in the preamble now make each
+reference print the right name; no number changed.
+\end{enumerate}
+Placement left the mathematics unchanged.
+
+\section{Literature and repository comparison}\label{scale:sec:comparison}
+
+\subsection{The closest published precedents}
+The prescribed-margin matrix-scaling problem and its support conditions
+are classical. Idel's review \cite{Idel} is a useful entry point;
+its Theorem~3.1 gives a general scaling criterion, and its Section~4.3
+records continuity results. The present article does not reclaim
+existence, uniqueness, or ordinary real continuity.
+
+Sharify, Gaubert and Grigori \cite{SGG}, Theorem~2.6, prove that the
+entries obtained by scaling the Hadamard deformation $A^{(p)}$ have
+convergent generalized Dirichlet expansions in $t=\exp(-p)$.
+Their analysis also gives convergence to the optimal-assignment face.
+This is an important prior connection between matrix scaling,
+generalized series, and tropical methods. Our question is different:
+we fix an arbitrary-rank Hahn matrix, allow arbitrary strongly defined
+relative infinitesimal changes, and identify the exact edgewise
+nonlinear valuation gain. We make no claim to the first use of Hahn-type
+series in matrix scaling.
+
+Eisenberger, Toker, Leal-Taix\'e, Bernard and Cremers \cite{Eisenberger}
+derive an implicit differentiation framework for Sinkhorn normalization.
+The inverse weighted constraint matrix appearing there is the same
+linear-algebraic object that underlies our projection. Their work also
+analyzes approximate inputs. Our additional conclusions concern exact
+nonlinear changes in an ordered value group, integrality of all Taylor
+coefficients, and support-controlled evaluation beyond rank one.
+
+Spanning-tree representations of electrical projections and
+transfer-current matrices belong to a well-developed theory; see
+Burton and Pemantle \cite{BurtonPemantle}. We use an elementary
+Cauchy--Binet and Cramer's-rule proof of the particular interpolation
+identity needed here. The determinant formula, its tree interpretation,
+and ordinary minimum-spanning-tree exchange arguments are not proposed
+as new.
+
+The Hahn-field and surreal background is standard; the normal-form
+conventions can be compared with Gonshor \cite{Gonshor} and the
+preliminaries of Berarducci and Mantova \cite{BM}. The support lemma
+used below is proved from the standard word-ordering theorem of
+Higman \cite{Higman}. None of these foundational ingredients is
+claimed as a contribution of this article.
+
+\subsection{Comparison with the specified repository}
+The audit is pinned to the repository commit
+\begin{center}\small\texttt{\pin}.\end{center}
+The complete research catalogue \texttt{docs/README.md} at that pin
+lists 36 reports. The nearest subjects are the Markov-generator report
+and the spectral-theory report \cite{RepoCatalogue,RepoMarkov,RepoSpectral}.
+The former studies normalized resolvents, positive forest formulas,
+scale hierarchies, and relative stability of resolvent entries. The
+latter develops finite spectral theory, valuation scales, positive
+Cauchy--Binet identities, and exact field-of-definition questions.
+
+Our shared mechanism with those reports is the absence of leading
+cancellation in positive finite sums. Our object is different: a
+nonlinear fixed-margin diagonal normalization, its surcomplex local
+branch, and its optimal entrywise gains. A stability theorem for
+$s(sI+L)^{-1}$ is not the normalization theorem proved below.
+Likewise, singular-value stability does not provide the whole-polydisc
+support argument or the tree-deletion sharpness statement.
+
+The audit read the catalogue, the Markov report's detailed guide, and
+the first 180 lines of the spectral report's guide. The directory
+\texttt{docs/new} at the pin contains only its README, not unexamined
+ZIP archives. These observations support choosing the present topic;
+they are not a line-by-line audit of every article or Lean declaration.
+In particular, indexed connector searches were unusable as negative
+evidence: searches for \texttt{Sinkhorn} and \texttt{spanning} returned
+no results, but so did the positive-control query
+\texttt{MarkovResolvent}, a file name present in the repository tree.
+
+The accompanying \texttt{SOURCE\_AUDIT.md} records the scope and search
+phrases. Searches that returned irrelevant results were not treated as
+evidence of absence. The appropriate priority claim is therefore:
+\emph{the main formulations were not found in the sources actually
+compared, and are submitted as candidate original results}. There is
+no assertion that every publication or every repository line has been
+excluded as a possible precedent.
+
+\paragraph{Since the pin.}
+The manuscript was placed in the collection at commit \texttt{52c7ab6},
+eight commits after its pin. The statements above remain true of the pin
+and are kept as provenance; the following has changed or was checked on
+placement. The catalogue \texttt{docs/README.md} did not change between the
+two commits. It still lists 36 reports, and it does not yet list this
+report or the three other reports placed by the same commit. The directory
+\texttt{docs/new} held only its README at the pin, as stated above. Commit
+\texttt{330aa79} then added nine delivered archives, this manuscript's among
+them; commit \texttt{52c7ab6} unpacked, placed and removed all nine, so the
+directory again holds only its README. The positive-control file
+\nolinkurl{Surreal/Algebra/MarkovResolvent.lean} is still present. It proves
+finite resolvent and projection-flag algebra for the Markov report and
+contains no spanning-tree, forest-sum or Cauchy--Binet statement.
+At \texttt{52c7ab6}, a full-text search of every LaTeX source in the
+collection finds the words \texttt{Sinkhorn}, \texttt{bistochastic},
+\texttt{Kirchhoff} and \texttt{transfer current} only in this report.
+The phrase \texttt{spanning tree} occurs elsewhere only once, in the proof of
+the Markov report's matrix-forest identity \cite{RepoMarkov}, where it
+means a directed spanning tree rooted at a vertex. The phrase
+\texttt{matrix scaling} occurs elsewhere only once, in the outline of
+remaining Lean development of the Prony reconstruction report
+(\nolinkurl{docs/surcomplex/prony-reconstruction-at-surreal-scales/}); that
+sentence does not concern the prescribed-margin problem studied here. No
+Lean source mentions Sinkhorn scaling, spanning trees, doubly stochastic
+matrices or Kirchhoff's theorem. These searches, like the original ones,
+locate words, not results stated under other names. The comparison with the
+two nearest reports is made precise in \cref{scale:sec:neighbours}.
+
+\section{Hahn conventions and the summability issue}\label{scale:sec:hahn}
+
+\subsection{Fields, valuation, and positive leading coefficients}
+Throughout the local theory, $\Gamma$ is a set-sized ordered abelian
+group, written additively. It need not be divisible, Archimedean,
+discrete, countable, or of finite rank. Put
+\begin{equation}\label{scale:eq:fields}
+ F=\R((t^\Gamma)),\qquad K=\C((t^\Gamma)).
+\end{equation}
+A series $x=\sum_{\gamma\in S}x_\gamma t^\gamma$ has well-ordered
+support $S\subseteq\Gamma$. For $x\ne0$ define
+$v(x)=\min S$ and $\lc(x)=x_{v(x)}$; set $v(0)=+\infty$.
+The valuation ring and its maximal ideal are
+\[
+ \OO=\{x:v(x)\geq0\},\qquad \mm=\{x:v(x)>0\}.
+\]
+These symbols refer to $K$ unless a subscript indicates $F$.
+A vector is infinitesimal when every coordinate belongs to $\mm$.
+All vector dimensions in this article are ordinary finite integers.
+
+\begin{definition}\label{scale:def:positiveleading}
+A nonzero $p\in K$ is \emph{positive-leading} when $\lc(p)$ is a
+positive real number. Equivalently,
+$p=a t^\gamma(1+u)$ with $a\in\R_{>0}$ and $u\in\mm$.
+\end{definition}
+Every positive element of $F$ is positive-leading. Finite nonempty sums
+and products, and inverses, preserve the positive-leading property.
+For a finite positive-leading family,
+\begin{equation}\label{scale:eq:nocancel}
+ v\left(\sum_j p_j\right)=\min_j v(p_j).
+\end{equation}
+Indeed, the coefficients at the least occurring exponent add to a
+positive real number. This is the only positivity mechanism required
+for the local surcomplex results. It does not put an order on $K$.
+
+\subsection{Strong summability}
+\begin{definition}
+A set-indexed family $(x_i)_{i\in I}$ of Hahn series is \emph{strongly
+summable} if $\bigcup_i\supp(x_i)$ is well ordered and every exponent
+belongs to the support of only finitely many $x_i$. Its sum is formed
+coefficientwise, by finite sums at each exponent.
+\end{definition}
+We will never infer strong summability solely from a statement that
+valuations increase strictly. Nor will a strongly summable expansion
+be called a limit of finite partial sums unless the relevant
+topological convergence has separately been justified.
+
+\begin{lemma}[Positive-support word finiteness]\label{scale:lem:neumann}
+If $S\subseteq\Gamma_{>0}$ is well ordered, then the additive monoid
+$S^*$ generated by $S$, including $0$, is well ordered. Every
+$\gamma\in\Gamma$ has only finitely many representations as a finite
+nondecreasing word of elements of $S$ whose sum is $\gamma$.
+Consequently it has only finitely many ordered-word representations.
+\end{lemma}
+\begin{proof}
+Use Higman's theorem: finite words over a well-quasi-ordered alphabet
+are well-quasi-ordered by subsequence embedding with componentwise
+increase \cite{Higman}. A well-ordered set is such an alphabet.
+If $S^*$ had a strictly descending sequence, choose a nondecreasing
+word representing each of its terms. Some earlier word embeds into
+a later one. Positivity of all letters and nonnegativity of the
+componentwise increases imply that the earlier sum is at most the
+later sum, a contradiction.
+
+If infinitely many distinct nondecreasing words had one fixed sum,
+apply the same theorem. An embedding can preserve the sum only if
+there are no extra letters and no strict componentwise increases.
+The two words would then be identical, again a contradiction.
+Each nondecreasing word has only finitely many permutations, proving
+the last assertion.
+\end{proof}
+
+\begin{lemma}[Finite-generator evaluation]\label{scale:lem:evaluation}
+Let $a_1,\ldots,a_s\in\OO$ and
+$R_0=\C[a_1,\ldots,a_s]\subseteq\OO$.
+For every formal series
+$\Phi(X)=\sum_{\nu\in\N^m}b_\nu X^\nu\in R_0[[X_1,\ldots,X_m]]$
+and every $x\in\mm^m$, the family $(b_\nu x^\nu)_\nu$ is strongly
+summable. Evaluation respects sums, products, and compositions with
+formal series of zero constant term whenever all coefficients lie
+in the same such finite-generator algebra.
+\end{lemma}
+\begin{proof}
+Let $S$ be the union of the positive supports of the $a_j$ and the
+supports of the nonzero $x_i$. It is a finite union of well-ordered
+positive sets, hence well ordered. Every $a_j$ has only a possible
+constant term outside $S$. Since each $b_\nu$ is a polynomial in the
+$a_j$, the support of every evaluated term is contained in $S^*$.
+
+More specifically, a contribution to $b_\nu x^\nu$ uses at least
+$|\nu|$ positive letters from the supports of the $x_i$. For a fixed
+exponent $\gamma$, \cref{scale:lem:neumann} bounds the length of all
+words summing to $\gamma$. Thus only bounded total degrees $|\nu|$
+can contribute. There are only finitely many such multi-indices.
+This proves local finiteness at $\gamma$, while $S^*$ proves
+well-ordering of the union of supports. Expanding finite polynomial
+expressions for the coefficients and applying the same argument to
+products and compositions licenses the corresponding rearrangements.
+No bound on the polynomial degrees of the individual $b_\nu$ is
+required, since there are only finitely many relevant $\nu$ at a
+fixed exponent.
+\end{proof}
+
+\begin{example}[Why integral coefficients alone do not suffice]
+\label{scale:ex:badformal}
+In $\Gamma=\Z^2_{\mathrm{lex}}$, let
+$\delta=(0,1)$ and $\beta=(1,0)$. The formal series
+\[
+ \Phi(X)=\sum_{n\geq1} t^{\beta-n\delta}X^n
+\]
+belongs to $\OO[[X]]$, since $\beta-n\delta>0$ for every $n$.
+But at $X=t^\delta$ every displayed term is $t^\beta$.
+The family is not strongly summable. The coefficients do not admit
+the common positive-support control in \cref{scale:lem:evaluation}.
+An arbitrary-rank implicit-function proof that stops after establishing
+membership in $\OO[[X]]$ therefore has a genuine gap.
+\end{example}
+
+\subsection{Restricted exponential and logarithm}
+For $z\in\mm$ define
+\begin{equation}\label{scale:eq:explog}
+ \exp z=\sum_{n\geq0}\frac{z^n}{n!},\qquad
+ \log(1+z)=\sum_{n\geq1}\frac{(-1)^{n+1}z^n}{n}.
+\end{equation}
+The preceding lemma applies with constant coefficient algebra $\C$.
+The formal identities for these series remain valid under evaluation.
+In particular they are inverse group isomorphisms
+$\mm\leftrightarrow1+\mm$, and for nonzero infinitesimals
+\begin{equation}\label{scale:eq:valexplog}
+ v(\exp z-1)=v(z),\qquad v(\log(1+z))=v(z).
+\end{equation}
+Their leading terms are $z$. We also use
+\begin{equation}\label{scale:eq:phi}
+ \ph(z)=\frac{\exp z-1}{z}
+       =\sum_{n\geq0}\frac{z^n}{(n+1)!},\qquad \ph(0)=1.
+\end{equation}
+Thus $\ph(z)\in1+\mm$. No exponential or logarithm at an arbitrary
+infinite surcomplex argument is used anywhere.
+
+\begin{remark}[The same support engine in the spectral report]
+\label{scale:rem:support}
+\Cref{scale:lem:neumann} is also Lemma~9.4 of the collection's spectral
+report \cite{RepoSpectral}, proved there from Higman's theorem as well, and
+\cref{scale:lem:evaluation} with no generators gives the strong-evaluation
+part of Lemma~9.5 there. The generators $a_1,\ldots,a_s$ are what this
+report adds, and \cref{scale:ex:badformal} shows that they cannot be replaced
+by arbitrary elements of $\OO$. \Cref{scale:sec:neighbours} compares the
+two reports.
+\end{remark}
+
+\section{The tree interpolation identity}\label{scale:sec:trees}
+
+\subsection{Incidence, cuts, and weighted cycles}
+Let $\GG=(V,E)$ be a finite connected graph without loops, with an
+arbitrary orientation, $N=|V|\geq2$ and $m=|E|$. Choose a root
+vertex. The reduced incidence matrix $B\in\Z^{(N-1)\times m}$ has
+$+1$ at the initial vertex and $-1$ at the terminal vertex of each
+edge, with the root row deleted. It has rank $N-1$.
+
+For positive-leading weights $p=(p_e)$ put
+\begin{equation}\label{scale:eq:projection}
+ W_p=\diag(p_e),\quad L_p=BW_pB^{\mathsf T},\quad
+ \Pi_p=B^{\mathsf T}L_p^{-1}BW_p,\quad H_p=I-\Pi_p.
+\end{equation}
+The invertibility in this formula will follow from the tree identity.
+The subspace $\im B^{\mathsf T}$ is the space of potential differences,
+or cuts. The kernel $\ker B$ is the space of conserved edge flows.
+The kernel $\ker(BW_p)$ consists of edge functions whose weighted
+flows are conserved.
+
+For a spanning tree $T$, let $B_T$ be the square submatrix with columns
+in $T$. Given $f\in K^E$, solve
+$B_T^{\mathsf T}u_T=f_T$ and define
+\begin{equation}\label{scale:eq:treeinterp}
+ \Pi_T f=B^{\mathsf T}u_T.
+\end{equation}
+It extends the values of $f$ on tree edges to a potential difference
+on every edge. Its value on an edge is the signed sum along the
+unique tree path between that edge's endpoints. Consequently every
+matrix entry of $\Pi_T$ is $0$, $1$, or $-1$.
+
+\begin{theorem}[Weighted tree interpolation]\label{scale:thm:tree}
+Write
+\[
+ w_T(p)=\prod_{a\in T}p_a,\qquad Z(p)=\sum_{T\in\TT}w_T(p).
+\]
+Then
+\begin{equation}\label{scale:eq:treeaverage}
+ \det L_p=Z(p)\ne0,\qquad
+ \Pi_p=\sum_{T\in\TT}\frac{w_T(p)}{Z(p)}\Pi_T.
+\end{equation}
+Moreover
+\begin{equation}\label{scale:eq:projproperties}
+ \Pi_p^2=\Pi_p,\quad H_p^2=H_p,\quad
+ H_pB^{\mathsf T}=0,\quad BW_pH_p=0,
+\end{equation}
+and both $\Pi_p$ and $H_p$ have entries in $\OO$.
+\end{theorem}
+\begin{proof}
+Cauchy--Binet gives
+\[
+ \det(BW_pB^{\mathsf T})
+ =\sum_{|T|=N-1}(\det B_T)^2\prod_{a\in T}p_a.
+\]
+An incidence minor vanishes unless $T$ is a spanning tree; for a tree
+it is $\pm1$. These facts follow, for example, by deleting a leaf
+and inducting, while a disconnected choice has deficient rank.
+This proves the determinant formula. Every summand is positive-leading,
+so \eqref{scale:eq:nocancel} proves nonvanishing.
+
+To obtain the vector identity, set $u=L_p^{-1}BW_pf$.
+For coordinate $k$, replace column $k$ of $B^{\mathsf T}$ by $f$,
+calling the resulting $m\times(N-1)$ matrix $C_k$. Then $BW_pC_k$
+is $L_p$ with column $k$ replaced by $BW_pf$. Cauchy--Binet and
+Cramer's rule yield
+\[
+ u_k=\frac{1}{Z(p)}\sum_T \det(B_T)w_T(p)\det((C_k)_T)
+     =\frac{1}{Z(p)}\sum_T w_T(p)(u_T)_k.
+\]
+In the second equality we used
+$\det((C_k)_T)=\det(B_T^{\mathsf T})(u_T)_k$.
+Multiplying by $B^{\mathsf T}$ proves the interpolation formula.
+
+The projection identities follow directly from
+$L_p=BW_pB^{\mathsf T}$. Finally
+$v(w_T/Z)\geq0$ by the determinant formula and no leading
+cancellation. Each $\Pi_T$ has integer entries. Finite sums therefore
+show $\Pi_p,H_p\in\operatorname{Mat}_m(\OO)$.
+\end{proof}
+
+\subsection{The row formula and the diagonal coefficient}
+For $e\notin T$, define the fundamental-cycle functional
+\[
+ \ell_{T,e}(f)=f_e-(\Pi_Tf)_e.
+\]
+It has coefficients $0,1,-1$, its coefficient at $f_e$ is $1$, and
+it vanishes on $\im B^{\mathsf T}$. If $e\in T$, the corresponding
+row of $I-\Pi_T$ is zero. Thus
+\begin{equation}\label{scale:eq:rowtree}
+ (H_pf)_e=\sum_{\substack{T\in\TT\\e\notin T}}
+              \frac{w_T(p)}{Z(p)}\ell_{T,e}(f).
+\end{equation}
+In particular, with $Z_e^-(p)=\sum_{T:e\notin T}w_T(p)$,
+\begin{equation}\label{scale:eq:Hdiagonal}
+ (H_p)_{ee}=\frac{Z_e^-(p)}{Z(p)}.
+\end{equation}
+For a bridge the numerator and the entire row of $H_p$ vanish.
+For other edges its valuation is exactly the gap $\kappa_e$ in
+\eqref{scale:eq:overviewgap}.
+
+The matrix $L_p^{-1}$ itself need not be integral. The finite
+projection $B^{\mathsf T}L_p^{-1}BW_p$ nevertheless is integral.
+This cancellation of apparent conditioning loss is the algebraic
+reason to work with edge variables rather than estimate vertex
+potentials using an unstructured inverse bound.
+
+\begin{remark}[Positive tree sums elsewhere in the collection]
+\label{scale:rem:trees}
+That a positive-leading tree sum has the minimum tree cost as its valuation,
+and the sum of the minimizers' leading amplitudes as its leading coefficient,
+is the mechanism of the directed forest sums of the Markov report
+\cite{RepoMarkov} and of the squared-minor sums of Gram determinants in the
+spectral report
+\cite{RepoSpectral}. \Cref{scale:sec:neighbours} states what is shared and
+what is not.
+\end{remark}
+
+\section{Normalization on the whole infinitesimal polydisc}
+\label{scale:sec:normalization}
+
+\subsection{The nonlinear equations}
+Keep the finite oriented graph and positive-leading weights from the
+previous section. For $f\in\mm^E$ we seek $h\in\mm^E$ satisfying
+\begin{equation}\label{scale:eq:normalizingeqs}
+ h-f\in\im B^{\mathsf T},\qquad
+ BW_p(\exp h-\mathbf1)=0.
+\end{equation}
+Exponential, multiplication, and subtraction in an edge vector are
+componentwise. The corresponding normalized weights are
+\begin{equation}\label{scale:eq:qdef}
+ q_p(f)=p\od\exp h.
+\end{equation}
+The second equation says $Bq_p(f)=Bp$. On a bipartite graph oriented
+from rows to columns it says exactly that every row sum and column
+sum is restored. Deleting one incidence row loses no condition,
+because the sum of all rows of the full incidence matrix is zero.
+The first equation says that $q_p(f)$ is obtained from
+$p\od\exp f$ by vertex-potential factors.
+
+\begin{theorem}[Uniform infinitesimal normalization]
+\label{scale:thm:existence}
+For every $f\in\mm^E$ there is exactly one $h\in\mm^E$ satisfying
+\eqref{scale:eq:normalizingeqs}. Write $h=\NN_p(f)$.
+There is a unique formal series
+\[
+ \mathcal H_p(X)\in (X_1,\ldots,X_m)\OO[[X_1,\ldots,X_m]]^E
+\]
+solving the same equations formally. Its coefficients belong to the
+finite-generator algebra
+\begin{equation}\label{scale:eq:coeffring}
+ R_p=\C[(\Pi_p)_{ab}:a,b\in E]\subseteq\OO.
+\end{equation}
+It evaluates strongly at every $f\in\mm^E$, and that evaluation is
+$\NN_p(f)$. No lower bound on the entries $p_e$, no rank-one
+hypothesis, and no divisibility of $\Gamma$ are required.
+\end{theorem}
+\begin{proof}
+Put $R(z)=\exp z-1-z$, componentwise. Applying the complementary
+projections to \eqref{scale:eq:normalizingeqs} shows that these
+equations are equivalent to
+\begin{equation}\label{scale:eq:fixedpoint}
+ h=H_pf-\Pi_pR(h).
+\end{equation}
+Indeed, the cut condition is $H_ph=H_pf$, and conservation is
+$\Pi_p(h+R(h))=0$. Adding these two projected identities gives
+\eqref{scale:eq:fixedpoint}; the converse follows from
+\cref{scale:thm:tree}.
+
+Now work formally in variables $X=(X_e)$. Write
+$\mathcal H_p=\sum_{d\geq1}h_d$ with each $h_d$ homogeneous of degree
+$d$. Since $R$ starts in degree two, the recurrence is triangular:
+\begin{align}
+ h_1&=H_pX,\label{scale:eq:recursionone}\\
+ h_d&=-\Pi_p\sum_{k=2}^{d}\frac1{k!}
+       \sum_{\substack{d_1+\cdots+d_k=d\\d_j\geq1}}
+             h_{d_1}\od\cdots\od h_{d_k},\quad d\geq2.
+             \label{scale:eq:recursion}
+\end{align}
+Every index $d_j$ on the right is less than $d$. This constructs one
+and only one formal solution. Induction shows that its coefficients
+are polynomials over $\Q$ in the entries of $\Pi_p$; $H_p=I-\Pi_p$
+requires no extra generators. Thus they belong to $R_p\subseteq\OO$.
+
+Apply \cref{scale:lem:evaluation} to this specific coefficient algebra.
+It proves strong evaluation of the entire series at $f\in\mm^E$,
+not merely formal existence. It also permits the products and
+exponential substitution in \eqref{scale:eq:fixedpoint}. The evaluated
+vector lies in $\mm^E$: each term has positive degree in infinitesimal
+inputs, and its support lies in a well-ordered positive set. Hence
+it gives a solution of \eqref{scale:eq:normalizingeqs}.
+
+For uniqueness, let $h,k\in\mm^E$ solve \eqref{scale:eq:fixedpoint}.
+Suppose $h\ne k$ and let $\nu=\min_e v(h_e-k_e)$.
+There is a common $\eta>0$ not exceeding the valuations of any
+nonzero coordinate of $h$ or $k$, since there are finitely many.
+The formal factorization
+\[
+ R(z)-R(w)=(z-w)\psi(z,w),\qquad
+ \psi\in(z,w)\C[[z,w]],
+\]
+together with strong evaluation gives
+\[
+ \min_e v(R(h_e)-R(k_e))\geq\nu+\eta.
+\]
+But $h-k=-\Pi_p(R(h)-R(k))$, and every entry of $\Pi_p$ is integral.
+It follows that $\nu\geq\nu+\eta$, impossible in an ordered group.
+This argument uses one strict valuation improvement, not convergence
+of a sequence of improvements. It is therefore valid at arbitrary
+rank.
+\end{proof}
+
+\subsection{Gauge factors, retraction, and local coordinates}
+\begin{corollary}\label{scale:cor:gauge}
+There is a unique root-normalized potential $u\in\mm^{N-1}$ with
+$\NN_p(f)-f=B^{\mathsf T}u$. Thus in the matrix case the normalizing
+row factors and column factors may all be chosen in $1+\mm$.
+Furthermore, for $a\in\mm^{N-1}$,
+\begin{equation}\label{scale:eq:gaugeinvariance}
+ \NN_p(f+B^{\mathsf T}a)=\NN_p(f).
+\end{equation}
+The map is a retraction onto the set of $h\in\mm^E$ satisfying
+$BW_p(\exp h-\mathbf1)=0$.
+\end{corollary}
+\begin{proof}
+Existence of a potential over $K$ follows from the cut condition.
+Restrict that condition to any spanning tree. The inverse of
+$B_T^{\mathsf T}$ has integral entries, so the root-normalized
+potential is a finite signed sum of infinitesimal edge differences
+and is itself infinitesimal. Uniqueness follows from the rank of $B$.
+For an edge oriented from row $i$ to column $j$, the multiplier is
+$\exp(u_i-u_j)$, with the root potential interpreted as zero.
+These are row factors $\exp u_i$ and column factors $\exp(-u_j)$.
+Changing $f$ by a cut does not change its class modulo cuts, so
+uniqueness proves \eqref{scale:eq:gaugeinvariance}. If $h$ is already
+balanced, it solves the problem with input $h$, proving the retraction
+assertion.
+\end{proof}
+
+The weighted cycle coordinates are especially simple:
+\begin{equation}\label{scale:eq:cyclechart}
+ H_p\NN_p(f)=H_pf.
+\end{equation}
+Consequently $x\mapsto\NN_p(x)$ is a bijection from
+$\ker(BW_p)\cap\mm^E$ onto the balanced infinitesimal set, with
+inverse $h\mapsto H_ph$. Its tangent space has dimension
+$m-N+1$ over $K$. This is a support-controlled analytic chart in
+Hahn coordinates, not an assertion about classical holomorphic
+manifolds in the full surreal fine topology.
+
+For reference, the first terms are
+\begin{align}
+ h_1&=H_pX,\notag\\
+ h_2&=-\tfrac12\Pi_p(h_1\od h_1),\label{scale:eq:firstterms}\\
+ h_3&=\tfrac12\Pi_p\bigl(h_1\od\Pi_p(h_1\od h_1)\bigr)
+       -\tfrac16\Pi_p(h_1\od h_1\od h_1).\notag
+\end{align}
+Only the first line is the familiar implicit differentiation formula.
+The theorem supplies all orders and justifies their evaluation on a
+common relative infinitesimal domain.
+
+\section{Sharp nonlinear valuation gains}\label{scale:sec:gain}
+
+\subsection{Secant reweighting}
+The decisive step turns an exact nonlinear comparison into a linear
+projection with slightly altered weights.
+
+\begin{lemma}[Exact secant identity]\label{scale:lem:secant}
+Let $f,g\in\mm^E$, set
+$h=\NN_p(f)$, $k=\NN_p(g)$, $r=h-k$, and $d=f-g$.
+Define
+\begin{equation}\label{scale:eq:secantweights}
+ \widetilde p_e=p_e\exp(k_e)\ph(r_e).
+\end{equation}
+Then $\widetilde p_e$ has the same valuation and leading coefficient
+as $p_e$, and
+\begin{equation}\label{scale:eq:secantidentity}
+ r=H_{\widetilde p}d.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Both $\exp(k_e)$ and $\ph(r_e)$ belong to $1+\mm$, so the leading
+data are unchanged. Subtract the two conservation equations:
+\[
+ 0=B\diag(p_e\exp k_e)(\exp r-\mathbf1)
+   =B\diag(\widetilde p_e)r.
+\]
+Also $r-d\in\im B^{\mathsf T}$. Project with
+$H_{\widetilde p}$: it fixes $r$ by the first identity and kills
+$r-d$ by the second. This gives \eqref{scale:eq:secantidentity}.
+\end{proof}
+
+\subsection{The optimal two-point bound}
+For a tree $T$ put $c(T)=\sum_{a\in T}c_a$, with $c_a=v(p_a)$.
+Define $\tau$, $\tau_e^-$, and $\kappa_e$ by
+\eqref{scale:eq:overviewgap}. If $e$ is not a bridge, let
+\begin{equation}\label{scale:eq:leadinggain}
+ C_e=
+ \frac{\displaystyle\sum_{\substack{T:e\notin T\\c(T)=\tau_e^-}}
+                         \prod_{a\in T}\lc(p_a)}
+      {\displaystyle\sum_{\substack{T\\c(T)=\tau}}
+                         \prod_{a\in T}\lc(p_a)}\in\R_{>0}.
+\end{equation}
+Ties are included in both sums.
+
+\begin{theorem}[Sharp nonlinear tree-gap law]\label{scale:thm:sharp}
+For every pair $f,g\in\mm^E$ with $f\ne g$, put
+$\delta=\min_a v(f_a-g_a)>0$. Then for every edge $e$,
+\begin{equation}\label{scale:eq:sharpbound}
+ v\bigl(\NN_p(f)_e-\NN_p(g)_e\bigr)
+ =v\!\left(\frac{q_p(f)_e}{q_p(g)_e}-1\right)
+ \geq\delta+\kappa_e.
+\end{equation}
+If $e$ is a bridge, its normalized entry is exactly $p_e$ for all
+inputs. If $e$ is not a bridge and $f-g=s\mathbf e_e$ with
+$0\ne s\in\mm$, then
+\begin{equation}\label{scale:eq:exactsharp}
+ v\bigl(\NN_p(f)_e-\NN_p(g)_e\bigr)=v(s)+\kappa_e,
+\end{equation}
+and, more precisely,
+\begin{equation}\label{scale:eq:exactamplitude}
+ \lc\!\left(
+   \frac{\NN_p(f)_e-\NN_p(g)_e}{s}\right)=C_e,
+ \qquad
+ v\!\left(
+   \frac{\NN_p(f)_e-\NN_p(g)_e}{s}\right)=\kappa_e.
+\end{equation}
+The same leading amplitude holds with the logarithmic difference
+replaced by $q_p(f)_e/q_p(g)_e-1$.
+\end{theorem}
+\begin{proof}
+Apply the row formula \eqref{scale:eq:rowtree} to the exact secant
+identity:
+\begin{equation}\label{scale:eq:secantrow}
+ r_e=\sum_{T:e\notin T}
+       \frac{w_T(\widetilde p)}{Z(\widetilde p)}\ell_{T,e}(d).
+\end{equation}
+Every cycle functional has valuation at least $\delta$, since its
+coefficients are $0,1,-1$. All reweighted entries have their original
+leading data, so no leading cancellation occurs in the tree sums.
+In particular
+\[
+ v Z(\widetilde p)=\tau,\qquad
+ v\bigl(w_T(\widetilde p)/Z(\widetilde p)\bigr)=c(T)-\tau.
+\]
+Each tree appearing in \eqref{scale:eq:secantrow} avoids $e$, hence
+each summand has valuation at least $\delta+\kappa_e$.
+This proves the inequality. For a bridge the sum is empty; taking
+$g=0$ gives $r_e=0$ and $q_p(f)_e=p_e$.
+
+If $d=s\mathbf e_e$, then $\ell_{T,e}(d)=s$ for every tree avoiding
+$e$. The exact identity becomes
+\begin{equation}\label{scale:eq:owncoordinate}
+ r_e=s\,\frac{Z_e^-(\widetilde p)}{Z(\widetilde p)}.
+\end{equation}
+Both finite sums are nonzero and positive-leading. Their valuations
+are $\tau_e^-$ and $\tau$, and their leading coefficients are the
+numerator and denominator in \eqref{scale:eq:leadinggain}. This proves
+\eqref{scale:eq:exactsharp} and \eqref{scale:eq:exactamplitude}, without
+a genericity assumption. Finally $q_p(f)_e/q_p(g)_e=\exp r_e$, so
+\eqref{scale:eq:valexplog} gives equality of valuations and preservation
+of the leading coefficient for the relative output error.
+\end{proof}
+
+\begin{remark}[What ``sharp'' means]
+The quantity $\kappa_e$ is the largest gain valid uniformly over all
+infinitesimal changes and all centers in this relative polydisc.
+A particular perturbation can have a larger gain because of cycle
+cancellation or because it is supported far away. The chain theorem
+below gives exact examples of such stronger, location-sensitive gains.
+Sharpness does not assert equality for every input direction.
+\end{remark}
+
+\subsection{All Taylor orders and a remainder certificate}
+\begin{theorem}[Coefficientwise gain]\label{scale:thm:coeffgain}
+For each edge $e$ and each nonzero multi-index $\nu$,
+\begin{equation}\label{scale:eq:coefficientbound}
+ v\bigl([X^\nu]\mathcal H_p(X)_e\bigr)\geq\kappa_e,
+ \qquad
+ v\bigl([X^\nu](\exp\mathcal H_p(X)_e-1)\bigr)\geq\kappa_e.
+\end{equation}
+For a nonbridge, the coefficient of $X_e$ has valuation exactly
+$\kappa_e$ and leading coefficient $C_e$. At every center $g\in\mm^E$
+the same assertions hold for the centered branch with base weights
+$q_p(g)$.
+\end{theorem}
+\begin{proof}
+Set formally $\widetilde p_e=p_e\ph(\mathcal H_p(X)_e)$.
+The argument for the secant identity, now in the formal power-series
+ring, gives
+\[
+ \mathcal H_p(X)_e=
+ \sum_{T:e\notin T}
+     \frac{w_T(\widetilde p)}{Z(\widetilde p)}\ell_{T,e}(X).
+\]
+The denominator can be written as
+\[
+ \frac{Z(\widetilde p)}{Z(p)}
+ =\sum_T\frac{w_T(p)}{Z(p)}
+          \prod_{a\in T}\ph(\mathcal H_p(X)_a).
+\]
+It has coefficients in $\OO$ and constant term $1$. Therefore its
+formal inverse has coefficients in $\OO$. For every tree avoiding
+$e$, the scalar $w_T(p)/Z(p)$ has valuation at least $\kappa_e$.
+All other factors in the row formula have integral coefficients.
+The first bound in \eqref{scale:eq:coefficientbound} follows.
+Since $\kappa_e\geq0$, every positive power of that row series also
+has all its nonzero coefficients of valuation at least $\kappa_e$;
+this proves the exponential bound. The coefficient of $X_e$ is
+$(H_p)_{ee}=Z_e^-(p)/Z(p)$, with the asserted leading data.
+
+For a center $g$, uniqueness gives the exact recentering identity
+\begin{equation}\label{scale:eq:recenter}
+ \NN_p(g+x)-\NN_p(g)=\NN_{q_p(g)}(x),\qquad x\in\mm^E.
+\end{equation}
+Its right side is defined by its own support-controlled formal
+series, so no unjustified substitution of a nonzero constant into
+an arbitrary formal series is involved. The weights $q_p(g)$ have
+the same valuations and leading coefficients as $p$. Apply the
+proved result with that base.
+\end{proof}
+
+\begin{corollary}[Finite-degree precision certificate]
+\label{scale:cor:remainder}
+If $f\in\mm^E$ is nonzero, $\delta=\min_e v(f_e)$, and
+$h^{[D]}=\sum_{d=1}^D h_d(f)$, then
+\begin{equation}\label{scale:eq:remainder}
+ v\bigl(\NN_p(f)_e-h^{[D]}_e\bigr)
+ \geq\kappa_e+(D+1)\delta.
+\end{equation}
+An analogous bound holds for truncating the relative output series.
+\end{corollary}
+\begin{proof}
+Every term of total degree $d>D$ has valuation at least
+$\kappa_e+d\delta$. The family is strongly summable by the existence
+theorem. Its sum cannot acquire an exponent below the common lower
+bound $\kappa_e+(D+1)\delta$.
+\end{proof}
+This is an exact certificate, but it is not a promise that finite
+Taylor degree reaches every requested precision. In a higher-rank
+group the set of multiples $D\delta$ can be bounded above.
+The complete Hahn value still exists by its support construction.
+
+\section{Computing the gain without summing trees}\label{scale:sec:bottleneck}
+
+\begin{theorem}[Bottleneck replacement formula]\label{scale:thm:bottleneck}
+For a nonbridge edge $e$ joining vertices $u$ and $v$, define
+\[
+ b_e=\min_{\pi:u\leadsto v\text{ in }\GG\setminus e}
+                   \max_{a\in\pi}c_a,
+\]
+where it suffices to consider simple paths. Then
+\begin{equation}\label{scale:eq:bottleneck}
+ \kappa_e=\max(0,b_e-c_e).
+\end{equation}
+Thus $\kappa_e>0$ precisely when $e$ belongs to every
+minimum-valuation spanning tree; $\kappa_e=0$ precisely when some
+minimum tree avoids $e$.
+\end{theorem}
+\begin{proof}
+Choose a minimum-weight spanning tree $T_0$ of $\GG\setminus e$.
+The maximum edge cost on its $u$--$v$ path is $b_e$.
+To prove this familiar bottleneck property, remove a maximum-cost
+edge of that path. Every alternative $u$--$v$ path crosses the
+resulting cut. If an alternative path had every cost below that
+maximum, one of its crossing edges could replace the removed edge
+and make $T_0$ cheaper, a contradiction.
+
+Insert $e$ into $T_0$ and remove a path edge of cost $b_e$.
+The resulting tree has total cost $\tau_e^-+c_e-b_e$.
+On the other hand, let $U$ be any tree containing $e$. Removing
+$e$ separates it into two components. A path realizing $b_e$ crosses
+this cut in some edge $a$ of cost at most $b_e$. Hence
+\[
+ \tau_e^-\leq c(U)-c_e+c_a\leq c(U)-c_e+b_e.
+\]
+It follows that the least tree cost in the full graph is
+\[
+ \tau=\min\{\tau_e^-,\tau_e^-+c_e-b_e\}
+      =\tau_e^-+\min(0,c_e-b_e).
+\]
+Subtracting from $\tau_e^-$ proves \eqref{scale:eq:bottleneck}.
+The last assertions also follow directly from the definitions of
+$\tau$ and $\tau_e^-$.
+\end{proof}
+
+All calculations in this proof use finite sums, comparisons, and
+subtractions in $\Gamma$. No real embedding of the value group is
+needed. A simple exact certificate for all gains consists of one
+minimum spanning tree and replacement-edge data for its cuts.
+An edge outside the chosen minimum tree already has gain zero.
+For a tree edge, deleting it gives a cut; the cheapest other crossing
+edge determines its replacement cost. The difference from the
+original edge cost is its gain, or $+\infty$ when no replacement
+exists. These are standard finite minimum-spanning-tree operations;
+the new use is the precision certificate for a nonlinear Hahn
+normalization.
+
+The positive leading coefficient $C_e$ contains more information
+than $\kappa_e$. Computing it requires the weighted sums of all
+minimizing trees in \eqref{scale:eq:leadinggain}, or equivalent
+determinant initial terms. A single minimum tree does not determine
+that amplitude when there are ties.
+
+\section{Exact nonlinear propagation through a chain}
+\label{scale:sec:chain}
+
+\subsection{The matrix and the response}
+Let $n\geq2$ and choose positive infinitesimals
+$a_1,\ldots,a_{n-1}\in F$, with $\gamma_i=v(a_i)>0$.
+Put $a_0=a_n=0$ and
+\begin{equation}\label{scale:eq:chainmatrix}
+ p_{ii}=d_i=1-a_{i-1}-a_i,\qquad
+ p_{i,i+1}=p_{i+1,i}=a_i,
+\end{equation}
+with all other entries zero. The matrix $P$ is positive on its
+tridiagonal support and is bistochastic. Each $d_i$ has valuation
+zero and leading coefficient $1$.
+
+Perturb only the bottom-right kernel entry:
+\[
+ A_{nn}=p_{nn}\exp s,\qquad A_{ij}=p_{ij}\ \ ((i,j)\ne(n,n)),
+ \qquad 0\ne s\in\mm_K.
+\]
+Let $Q$ be the normalization from \cref{scale:thm:existence}, and
+write $\delta=v(s)$. The result below gives all nonzero response
+valuations, not just a common bound.
+
+\begin{theorem}[Additive attenuation along the chain]
+\label{scale:thm:chain}
+For $1\leq i\leq n-1$,
+\begin{equation}\label{scale:eq:chainoffdiag}
+ v\!\left(\frac{Q_{i,i+1}}{a_i}-1\right)
+ =v\!\left(\frac{Q_{i+1,i}}{a_i}-1\right)
+ =\delta+\sum_{k=i+1}^{n-1}\gamma_k.
+\end{equation}
+For the diagonal entries,
+\begin{align}
+ v\!\left(\frac{Q_{ii}}{d_i}-1\right)
+     &=\delta+\sum_{k=i}^{n-1}\gamma_k,
+            &&1\leq i<n,\label{scale:eq:chaindiag}\\
+ v\!\left(\frac{Q_{nn}}{d_n}-1\right)
+     &=\delta+\gamma_{n-1}.\label{scale:eq:chainlast}
+\end{align}
+These are exact nonlinear identities for arbitrary positive
+$\gamma_i$ in the ordered group. They do not require the
+$\gamma_i$ to be comparable by Archimedean size.
+\end{theorem}
+
+\subsection{Cycle coordinates and the secant matrix}
+\begin{proof}
+Let $r=n-1$. For $1\leq i\leq r$, define the edge vector $C_i$ to
+have $+1$ at $(i,i)$ and $(i+1,i+1)$, $-1$ at $(i,i+1)$ and
+$(i+1,i)$, and zero elsewhere. These are conserved flows. They are
+linearly independent because each off-diagonal pair belongs to only
+one $C_i$. The connected support graph has $2n$ vertices and
+$3n-2$ edges, so its cycle-space dimension is $n-1$. Hence the
+columns of $C=(C_1,\ldots,C_r)$ form a basis of $\ker B$.
+
+Write the change in normalized entries as
+\begin{equation}\label{scale:eq:flowcoordinates}
+ j=Q-P=Cx.
+\end{equation}
+Then
+\[
+ j_{i,i+1}=j_{i+1,i}=-x_i,\qquad
+ j_{ii}=x_{i-1}+x_i,
+\]
+where $x_0=x_n=0$.
+Set $h=\NN_p(s\mathbf e_{nn})$ and
+$\widetilde p_e=p_e\ph(h_e)$. The identity
+$Q-P=\diag(\widetilde p_e)h$ gives
+$h=\diag(\widetilde p_e)^{-1}Cx$.
+Since $C^{\mathsf T}B^{\mathsf T}=0$, the cut condition implies
+$C^{\mathsf T}h=C^{\mathsf T}(s\mathbf e_{nn})=s\mathbf e_r$.
+Thus
+\begin{equation}\label{scale:eq:chainM}
+ Mx=s\mathbf e_r,\qquad
+ M=C^{\mathsf T}\diag(\widetilde p_e)^{-1}C.
+\end{equation}
+This equation is exact even though its coefficients depend on the
+unknown normalized solution. That dependence is harmless for
+valuations, because the leading data of $\widetilde p$ and $p$
+coincide.
+
+The matrix $M$ is symmetric tridiagonal. Its entries are
+\begin{align*}
+ M_{ii}&=\widetilde p_{ii}^{-1}
+        +\widetilde p_{i+1,i+1}^{-1}
+        +\widetilde p_{i,i+1}^{-1}
+        +\widetilde p_{i+1,i}^{-1},\\
+ M_{i,i+1}&=M_{i+1,i}=\widetilde p_{i+1,i+1}^{-1}.
+\end{align*}
+Consequently
+\begin{equation}\label{scale:eq:chainMvals}
+ v(M_{ii})=-\gamma_i,\qquad v(M_{i,i+1})=0,
+ \qquad M_{ii}\sim\frac{2}{a_i},\quad M_{i,i+1}\sim1.
+\end{equation}
+Here $u\sim v$ means $u/v\in1+\mm$. The two inverse off-diagonal
+weights in $M_{ii}$ have the same positive leading coefficient and
+cannot cancel.
+
+Let $D_{a,b}$ be the determinant of the principal interval indexed
+from $a$ to $b$, with the empty determinant equal to $1$.
+The continuant recurrence is
+\[
+ D_{a,b}=M_{bb}D_{a,b-1}-M_{b-1,b}^2D_{a,b-2}.
+\]
+Induction proves
+\begin{equation}\label{scale:eq:continuantval}
+ v(D_{a,b})=-\sum_{k=a}^b\gamma_k,
+ \qquad D_{a,b}\sim\prod_{k=a}^b\frac{2}{a_k}.
+\end{equation}
+For an interval of length at least two, the second term in the
+recurrence has valuation strictly larger than that of the first
+by $\gamma_{b-1}+\gamma_b>0$. This proves both statements and also
+proves that $M$ is invertible.
+
+For $i\leq j$, cofactor expansion of a tridiagonal matrix gives
+\begin{equation}\label{scale:eq:tridiaginverse}
+ (M^{-1})_{ij}=(-1)^{i+j}
+ \frac{\left(\prod_{k=i}^{j-1}M_{k,k+1}\right)
+              D_{1,i-1}D_{j+1,r}}{D_{1,r}}.
+\end{equation}
+One way to see the factorization is to delete row $j$ and column
+$i$ in the cofactor. Expanding successively through the intervening
+rows forces the entries $M_{i,i+1},\ldots,M_{j-1,j}$; the remaining
+blocks are the two displayed principal intervals. The cofactor sign
+is $(-1)^{i+j}$. Symmetry gives the formula for $i>j$.
+Equations \eqref{scale:eq:chainMvals}--\eqref{scale:eq:tridiaginverse}
+now imply
+\begin{equation}\label{scale:eq:inversechainval}
+ v((M^{-1})_{ij})=\sum_{k=\min(i,j)}^{\max(i,j)}\gamma_k.
+\end{equation}
+In particular,
+\begin{equation}\label{scale:eq:xival}
+ v(x_i)=\delta+\sum_{k=i}^{r}\gamma_k,
+ \qquad
+ x_i\sim(-1)^{r-i}\frac{s\,a_i a_{i+1}\cdots a_r}{2^{r-i+1}}.
+\end{equation}
+These are exact statements about the nonlinear solution of
+\eqref{scale:eq:chainM}, not substitutions into a linearization at
+$s=0$.
+
+For an off-diagonal entry, divide $-x_i$ by $a_i$ to obtain
+\eqref{scale:eq:chainoffdiag}. If $1<i<n$, then
+$v(x_{i-1})=v(x_i)+\gamma_{i-1}>v(x_i)$, so the two summands in
+$j_{ii}=x_{i-1}+x_i$ cannot cancel at the leading exponent.
+The first diagonal entry is $j_{11}=x_1$ and the last is
+$j_{nn}=x_r$. Since all $d_i$ have valuation zero, the diagonal
+formulas follow.
+\end{proof}
+
+\subsection{A rank-two example}
+Take $n=3$, $a_1=t^\alpha$, $a_2=t^\beta$, with
+$\alpha=(0,1)$ and $\beta=(1,0)$ in $\Z^2_{\mathrm{lex}}$.
+Let $s\ne0$ be any surcomplex infinitesimal. The leading responses are
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Entry & Relative error, up to a factor in $1+\mm$ & Valuation\\
+\midrule
+$(1,1)$ & $-s\,t^{\alpha+\beta}/4$ & $v(s)+\alpha+\beta$\\
+$(2,2),(3,3)$ & $s\,t^\beta/2$ & $v(s)+\beta$\\
+$(1,2),(2,1)$ & $s\,t^\beta/4$ & $v(s)+\beta$\\
+$(2,3),(3,2)$ & $-s/2$ & $v(s)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The perturbation reaches the adjacent small link at its original
+relative scale, but its influence on the far end acquires both
+link valuations. The formulas remain valid when $v(s)=\alpha$;
+there is no need for integer multiples of $\alpha$ to cross $\beta$.
+The far diagonal has uniform own-entry gain $\alpha$, but this remote
+perturbation gains $\alpha+\beta$. The chain theorem is therefore
+strictly more location-sensitive than the uniform row bound.
+The signs in the table also illustrate why off-coordinate leading
+responses can alternate even though the sharp own-coordinate
+amplitude in \cref{scale:thm:sharp} is positive.
+
+\section{Global positive matrix scaling and its relation to the branch}
+\label{scale:sec:global}
+
+\subsection{Classical existence and real-closed transfer}
+The following background proposition explains how the local result
+applies to the usual positive normalization, not only to an abstract
+choice of a surcomplex branch.
+
+\begin{proposition}[Positive scaling over real closed fields]
+\label{scale:prop:global}
+Let $F_0$ be a real closed ordered field. Fix a finite bipartite
+support $E$ and prescribed row and column margins. Suppose a matrix
+$P$ with exactly this support, strictly positive on $E$, realizes
+those margins. Then every matrix $A$ strictly positive on the same
+support has a unique normalized matrix
+$Q=D_r A D_c$ with those margins, where $D_r,D_c$ are positive
+diagonal matrices. On a connected support the factors are unique
+up to multiplying $D_r$ by a common positive scalar and $D_c$ by
+its inverse.
+\end{proposition}
+\begin{proof}
+Over $\R$, consider the nonnegative matrices on $E$ with the given
+margins and minimize
+\[
+ \sum_{e\in E} x_e\bigl(\log(x_e/A_e)-1\bigr),
+ \qquad 0\log0:=0.
+\]
+The feasible polytope is nonempty and compact: each entry is bounded
+by its row sum. The objective is strictly convex, so a minimizer
+exists and is unique. It has no zero entry on $E$. Indeed, interpolate
+from a putative boundary minimizer toward the strictly positive
+feasible witness $P$. A zero coordinate contributes a negative
+term of order $-c\,s|\log s|$, while changes in positive coordinates
+are only $O(s)$. The objective would decrease for sufficiently
+small positive real $s$.
+
+At the interior minimizer, the gradient vector
+$(\log(x_e/A_e))$ annihilates the tangent space of the margin
+constraints. It is therefore a sum of a row potential and a column
+potential. Exponentiating gives the diagonal factors. Conversely,
+such a positive matrix is a constrained critical point and is the
+unique minimizer. If two pairs of factors give the same matrix,
+their ratios are reciprocal across each support edge; connectedness
+makes them one common gauge factor. This is a standard form of
+classical scaling theory \cite{Idel,SGG}.
+
+For each fixed finite support, the existence and uniqueness assertion
+can be written using only polynomial equalities, strict inequalities,
+and finitely many quantified field elements: the positive witness
+$P$, the input entries, the margins, the factors, and the output
+entries. Completeness of the theory of real closed fields \cite{Tarski} transfers
+that assertion from $\R$ to $F_0$. The real optimization proof is
+not repeated inside a non-Archimedean field, and no non-Archimedean
+compactness or global logarithm is assumed.
+\end{proof}
+
+In particular, the proposition applies to $F=\R((t^\Gamma))$ when
+$\Gamma$ is divisible. The local results earlier require no such
+hypothesis.
+
+\subsection{An elementary multiplicative comparison}
+\begin{proposition}[A finite cut bound]\label{scale:prop:cutbound}
+Over any ordered field, suppose two positive kernels $A,A'$ on a
+connected bipartite graph with $N$ vertices have positive diagonal
+normalizations $P,P'$ to the same margins. If $\eta\geq1$ and
+\[
+ \eta^{-1}\leq A'_e/A_e\leq\eta\quad(e\in E),
+\]
+then
+\begin{equation}\label{scale:eq:cutbound}
+ \eta^{-N}\leq P'_e/P_e\leq\eta^N\quad(e\in E).
+\end{equation}
+This is a useful elementary comparison bound; optimality of the
+ordinary exponent $N$ is not claimed.
+\end{proposition}
+\begin{proof}
+Write $P=D_rAD_c$ and $P'=D'_rA'D'_c$.
+Associate a positive vertex number $x_i=D'_{r,i}/D_{r,i}$ to a row
+vertex and $x_j=D_{c,j}/D'_{c,j}$ to a column vertex. Then
+\[
+ \frac{P'_{ij}}{P_{ij}}=
+       \frac{A'_{ij}}{A_{ij}}\frac{x_i}{x_j}.
+\]
+Sort the $N$ vertex numbers in nondecreasing order. No consecutive
+ratio can exceed $\eta$. Otherwise, let $U$ be the nonempty proper
+set of vertices above such a gap. On every edge from a row in $U$
+to a column outside $U$, one has $P'_e-P_e>0$. On every edge
+from a row outside $U$ to a column in $U$, one has $P'_e-P_e<0$.
+With incidence signs, every crossing edge therefore contributes
+strictly positively to the total divergence over $U$. There is a
+crossing edge by connectedness. But $P$ and $P'$ have the same
+margins, so that divergence is zero, a contradiction.
+
+The ratio of the largest vertex number to the smallest is thus at
+most $\eta^{N-1}$. Multiplying this bound by the kernel ratio bound
+proves \eqref{scale:eq:cutbound} and its reciprocal.
+\end{proof}
+
+\begin{corollary}[The positive normalization is the local branch]
+\label{scale:cor:positivebranch}
+Assume $\Gamma$ is divisible and $A,A'$ are positive matrices over
+$F$ on the same connected support, with strictly positive feasible
+fixed margins. Let $P,P'$ be their positive normalizations.
+If $A'_e/A_e\in1+\mm_F$ for every edge, put
+$f_e=\log(A'_e/A_e)$. Then
+\[
+ P'=q_P(f).
+\]
+In particular \cref{scale:thm:sharp} applies to the usual positive
+normalization, with the tree costs computed from the normalized
+base matrix $P$.
+\end{corollary}
+\begin{proof}
+A finite maximum of the kernel ratios, their reciprocals, and $1$
+gives an $\eta\in1+\mm_F$ as in the cut bound. Hence
+$P'_e/P_e\in1+\mm_F$. The vertex numbers used in that proof may
+be divided by a root value; their largest-to-smallest ratio is in
+$1+\mm_F$, so all root-normalized vertex numbers lie in
+$1+\mm_F$. Their restricted logarithms give an infinitesimal
+potential $u$ with
+\[
+ \log(P'/P)-f=B^{\mathsf T}u.
+\]
+The margin equation is automatic. Uniqueness in
+\cref{scale:thm:existence} now identifies $P'$ with $q_P(f)$.
+\end{proof}
+The distinction between $A$ and its normalized matrix $P$ matters:
+the costs in the sharp theorem are valuations of the base
+\emph{normalized entries}, not, in general, valuations of the
+unscaled kernel. We do not claim an equally sharp formula from
+unscaled valuations alone.
+
+\section{Extension to real linear constraints}\label{scale:sec:linear}
+The nonlinear support argument and sharp gain do not fundamentally
+require an incidence matrix. This gives a broader version useful
+for finite exponential constraint systems.
+
+\begin{theorem}[Basis-gap normalization]\label{scale:thm:linear}
+Let $B\in\R^{r\times m}$ have full row rank and let
+$p\in K^m$ have positive-leading coordinates. Consider
+\[
+ h-f\in\im B^{\mathsf T},\qquad
+ B\diag(p_e)(\exp h-\mathbf1)=0,
+ \qquad f,h\in\mm^m.
+\]
+There is a unique solution for every $f$, represented by a
+support-controlled formal series on the whole infinitesimal
+polydisc. Let $\mathcal B$ be the column bases of $B$ and define
+\begin{align*}
+ \tau_B&=\min_{T\in\mathcal B}\sum_{a\in T}v(p_a),\\
+ \tau_{B,e}^-&=\min_{\substack{T\in\mathcal B\\e\notin T}}
+                              \sum_{a\in T}v(p_a),
+ \qquad \kappa_{B,e}=\tau_{B,e}^--\tau_B.
+\end{align*}
+The nonlinear two-point inequality, one-coordinate equality, and
+all Taylor-coefficient bounds of \cref{scale:thm:sharp,scale:thm:coeffgain}
+hold with these basis gaps. A column contained in every basis has
+an exactly fixed normalized coordinate. In the leading amplitude
+formula, each basis term acquires the factor $(\det B_T)^2$.
+\end{theorem}
+\begin{proof}
+For a basis $T$ put
+$\Pi_Tf=B^{\mathsf T}(B_T^{\mathsf T})^{-1}f_T$.
+Its coefficients are real constants and hence integral in $K$.
+Cauchy--Binet and the Cramer's-rule argument give
+\[
+ Z_B(p)=\det(B\diag(p)B^{\mathsf T})
+       =\sum_{T\in\mathcal B}(\det B_T)^2\prod_{a\in T}p_a,
+\]
+and
+\[
+ \Pi_p=\sum_{T\in\mathcal B}
+ \frac{(\det B_T)^2\prod_{a\in T}p_a}{Z_B(p)}\Pi_T.
+\]
+Every determinant square in this sum is a strictly positive real
+constant. The denominator is positive-leading, the scalar ratios
+are integral, and $\Pi_p,H_p$ have integral entries. The recurrence
+and finite-generator proof in \cref{scale:thm:existence} therefore
+apply unchanged.
+
+For a coordinate $e\in T$, the $e$th row of $I-\Pi_T$ is zero.
+For $e\notin T$, the $e$th row is a real linear functional with
+coefficient $1$ at $f_e$. Its value on an infinitesimal vector of
+minimum valuation $\delta$ has valuation at least $\delta$.
+The secant identity is purely linear algebra plus the exponential
+identity and remains valid. Repeating its rowwise proof gives the
+basis-gap bound and exact equality for $f-g=s\mathbf e_e$.
+The same formal denominator argument proves the coefficient bounds.
+The leading determinant-square factors are exactly those displayed
+in $Z_B$.
+\end{proof}
+The hypothesis that $B$ has real constant entries is explicit.
+This theorem does not assert the same basis-cost formula for an
+arbitrary Hahn-valued constraint matrix, where minors and basis
+interpolation coefficients can carry additional valuations.
+
+\section{Surreal specialization and preservation of the support group}
+\label{scale:sec:surreal}
+
+\subsection{No ramification in the relative infinitesimal problem}
+\begin{corollary}[Exact local support-group descent]
+\label{scale:cor:descent}
+Let $\Lambda\leq\Gamma$ be the subgroup generated by the supports
+of all base weights $p_e$ and all perturbations $f_e$.
+Then the normalized weights, logarithmic responses, and
+root-normalized infinitesimal vertex potentials belong to
+$\C((t^\Lambda))$. No divisible hull, fractional exponent, or
+larger ordered group is needed for the local normalization.
+\end{corollary}
+\begin{proof}
+The Hahn field $\C((t^\Lambda))$ contains all the input entries
+and is closed under the finite field operations defining $\Pi_p$.
+The finite-generator evaluation argument can be carried out inside
+that same field. It yields $h$ there; restricted exponentiation and
+multiplication give $q$ there. Solving for the potential on a
+spanning tree uses only a constant integral inverse matrix.
+\end{proof}
+This is a local statement. Global scaling over a nondivisible
+support group can require ramification. For example, over
+$\R((t^\Z))$ the positive matrix
+\begin{equation}\label{scale:eq:ramificationexample}
+ A=\begin{pmatrix}1&t\\1&1\end{pmatrix}
+\end{equation}
+cannot be scaled within that field to a bistochastic matrix.
+Such a matrix would have the form
+$Q=\left(\begin{smallmatrix}x&1-x\\1-x&x\end{smallmatrix}\right)$,
+and invariance of the cross-ratio would give
+$x^2/(1-x)^2=t^{-1}$. Thus
+$2v(x)-2v(1-x)=-1$, impossible for integer valuations.
+In the half-integer extension the solution is
+$x=(1+t^{1/2})^{-1}$.
+The contrast with \cref{scale:cor:descent} is exact: normalization
+near an already normalized positive-leading base is unramified,
+even though arbitrary global normalization need not be.
+
+\subsection{Transport to surreal and surcomplex numbers}
+Conway normal form identifies a surreal number with a real series
+in monomials $\omega^x$ with set-sized reverse-well-ordered support;
+see \cite{Gonshor,BM}. For a set-sized ordered subgroup
+$\Lambda\leq(\No,+)$, the map
+\begin{equation}\label{scale:eq:surrealembedding}
+ \sum_{\gamma}a_\gamma t^\gamma
+ \longmapsto\sum_\gamma a_\gamma\omega^{-\gamma}
+\end{equation}
+is an ordered field embedding on real coefficients and a field
+embedding on complex coefficients into $\No[i]$. It preserves
+normal-form strong sums and the restricted exponential and logarithm.
+The sign in $\omega^{-\gamma}$ is important: increasing valuation
+must correspond to decreasing monomial size.
+
+Given finitely many surreal or surcomplex input entries, take the
+subgroup generated by the negatives of their normal-form exponents.
+It is a set. Their entire supports lie in that one workspace, and
+\cref{scale:cor:descent} keeps the answer there. Therefore all local
+theorems are genuine theorems about finite surreal and surcomplex
+matrices, not statements about formal symbols awaiting an
+interpretation.
+
+For global positive scaling, include a positive feasible witness and
+pass to the divisible hull of the input support group. The resulting
+real Hahn field is real closed, so \cref{scale:prop:global} gives
+existence there and hence in $\No$. Uniqueness in $\No$ follows by
+placing any two proposed finite answers in one larger set-sized
+real-closed workspace. This avoids treating a proper class as an
+ordinary set-theoretic model.
+
+Order-preserving group embeddings commute with the local construction,
+because they preserve supports, field operations, and strongly
+summable evaluation. Complex conjugation also commutes with it:
+\[
+ \overline{\NN_p(f)}=\NN_{\overline p}(\overline f).
+\]
+In particular, a real base and real perturbation produce a real
+answer. None of these statements concerns the Berarducci--Mantova
+scalar derivation; the derivatives implicit in Taylor coefficients
+are formal derivatives with respect to the edge parameters.
+
+\section{Examples, boundaries, and failure modes}\label{scale:sec:boundaries}
+
+\subsection{A closed-form square example}
+Let $b=t^\gamma$ with $\gamma>0$, $a=1-b$, and
+\[
+ P=\begin{pmatrix}a&b\\b&a\end{pmatrix}.
+\]
+Multiply only the $(1,1)$ kernel entry by $1+z$, where
+$0\ne z\in\mm_K$. The infinitesimal square-root branch
+$r=(1+z)^{1/2}\in1+\mm$ is defined by its binomial series. The
+normalized answer is
+\begin{equation}\label{scale:eq:squareexact}
+ Q=\begin{pmatrix}x&1-x\\1-x&x\end{pmatrix},\qquad
+ x=\frac{ar}{b+ar}.
+\end{equation}
+The row and column sums are $1$, and
+$x^2/(1-x)^2=(a/b)^2(1+z)$ is the kernel cross-ratio. All entries
+are relatively infinitesimally close to their base values, so
+uniqueness identifies this formula with the constructed branch.
+The relative errors simplify exactly to
+\begin{equation}\label{scale:eq:squareerrors}
+ \frac{x}{a}-1=\frac{b(r-1)}{b+ar},\qquad
+ \frac{1-x}{b}-1=\frac{a(1-r)}{b+ar}.
+\end{equation}
+Thus diagonal entries gain $\gamma$ in valuation while the two
+small off-diagonal entries gain zero. The square graph has the
+same gaps: deleting a diagonal forces a tree of cost $2\gamma$
+instead of $\gamma$, while a minimum tree can avoid either
+off-diagonal edge. Notice that small normalized entries are not
+necessarily unstable in \emph{relative} valuation.
+
+\subsection{Positivity cannot simply be removed}
+\begin{example}[Large formal derivative after phase cancellation]
+\label{scale:ex:phasejacobian}
+On a square support, take three weights equal to $1$ and the fourth
+$w=-1/3+t^\beta$, with $\beta>0$. Then
+\[
+ Z=1+3w=3t^\beta,\qquad (H_p)_{44}=\frac{1}{3t^\beta}.
+\]
+All four entry valuations are zero, but a formal derivative
+coefficient has valuation $-\beta$. The positive-leading assumption
+fails at $w$, and cancellation in the tree denominator is exactly
+the obstruction. This disproves the naive assertion that the same
+integral-coefficient theorem follows from nonvanishing entries and
+their valuations alone.
+\end{example}
+
+\begin{example}[Two distinct infinitesimal surcomplex solutions]
+\label{scale:ex:phasebranches}
+The failure can be nonlinear, not just a poor derivative bound.
+Take
+\[
+ P=\begin{pmatrix}1&1\\1&-1/3\end{pmatrix},\qquad
+ A=\begin{pmatrix}1&1\\1&-(1/3)\exp s\end{pmatrix},
+ \qquad s=t^{2\delta},\quad\delta>0.
+\]
+Every matrix on this support with the same margins as $P$ is of the
+form
+\[
+ Q(z)=\begin{pmatrix}1+z&1-z\\1-z&-1/3+z\end{pmatrix}.
+\]
+The cross-ratio equation for diagonal equivalence with $A$ is
+\begin{equation}\label{scale:eq:phasequadratic}
+ (1+\tfrac13\exp s)z^2
+ +\tfrac23(1-\exp s)z
+ +\tfrac13(\exp s-1)=0.
+\end{equation}
+Its discriminant has leading term $-(16/9)t^{2\delta}$.
+It therefore has two square roots in $K$, obtained from
+$\pm(4i/3)t^\delta$ times a binomial series in $1+\mm$.
+The two roots of \eqref{scale:eq:phasequadratic} satisfy
+\[
+ z_+\sim\tfrac{i}{2}t^\delta,
+ \qquad z_-\sim-\tfrac{i}{2}t^\delta.
+\]
+Both yield matrices relatively infinitesimally close to $P$, and
+both are diagonal-equivalent to $A$. For a full $2\times2$ support,
+equality of the nonzero cross-ratios is sufficient: solve three
+row/column factor equations, and the fourth follows. Here the
+factors can all be chosen in $1+\mm$ because all entry ratios are
+in $1+\mm$.
+Thus there are two infinitesimal solutions, and an input change of
+valuation $2\delta$ produces changes of valuation $\delta$.
+The uniqueness and no-loss conclusions genuinely fail without
+an appropriate positivity or noncancellation hypothesis. Positive
+leading coefficients are a sufficient condition, not claimed to
+be a necessary one.
+\end{example}
+
+\subsection{Fixed margins are essential}
+Consider the tree support of
+\[
+ P=\begin{pmatrix}1&t^\gamma\\0&1\end{pmatrix},\qquad\gamma>0.
+\]
+Its row margins are $(1+t^\gamma,1)$ and its column margins are
+$(1,1+t^\gamma)$. Keep the columns fixed, but change the rows to
+$(1+t^\gamma+s,1-s)$ with $s=t^\delta$ and $0<\delta<\gamma$.
+The unique matrix on this support with the new margins is
+\[
+ P'=\begin{pmatrix}1&t^\gamma+s\\0&1-s\end{pmatrix}.
+\]
+All margin changes are relative infinitesimals, but
+\[
+ v(P'_{12}/P_{12}-1)=\delta-\gamma<0.
+\]
+Every edge of this graph is a bridge. The exact bridge rigidity
+of \cref{scale:thm:sharp} holds for \emph{fixed} margins, not for
+this different problem.
+
+\subsection{No topological convergence claim is hidden in the proof}
+In $\Z^2_{\mathrm{lex}}$, with $\delta=(0,1)$ and $\beta=(1,0)$,
+the strongly defined exponential
+$\exp(t^\delta)=\sum_{n\geq0}t^{n\delta}/n!$ is not the limit of its
+finite Taylor sums in the intrinsic valuation topology. The error
+after degree $D$ has valuation $(D+1)\delta<\beta$ for every $D$.
+The error never enters the neighborhood $\{x:v(x)>\beta\}$.
+This does not affect existence of the Hahn sum, which is a
+coefficientwise support statement.
+
+Accordingly, we have proved neither convergence of the alternating
+Sinkhorn iteration in an arbitrary-rank valuation topology nor
+convergence of set-indexed sequences in the full surreal fine
+topology. Our normalization is specified by exact algebraic and
+strong-series identities. Algorithmic convergence and exact
+normalization are different assertions.
+
+\section{Verification, implementation, and remaining questions}
+\label{scale:sec:verification}
+
+\subsection{What the supplied program checks}
+The package contains \texttt{code/verify.py}, using Python and SymPy
+with exact integers, rational functions, and rational coefficients.
+It does not use floating-point evidence for a valuation identity.
+The recorded run used Python~3.13.5, SymPy~1.14.0, and random seed
+20260922. It passed the following finite checks:
+\begin{center}
+\begin{tabular}{@{}L{0.39\textwidth}L{0.53\textwidth}@{}}
+\toprule
+Check & Recorded scope\\
+\midrule
+Tree interpolation and projections &
+60 connected bipartite graphs; 348 spanning trees in those graphs;
+2,056 projection matrix entries.\\[3pt]
+Deletion-gap versus minimax path &
+458 graph/cost instances from 229 connected support graphs;
+2,612 edge-gap comparisons, including 1,266 bridges;
+integer and lexicographic integer-pair costs.\\[3pt]
+Formal normalization recurrence &
+Two exact constant-weight examples through degree 7, and two
+Laurent-weight square examples through degree 6;
+conservation, cut identities, and coefficient gain bounds.\\[3pt]
+Chain inverse valuations &
+Chain sizes $n=2,3,4,5,6$, checking 55 inverse entries.\\[3pt]
+Closed-form square &
+Three exact rational identities for the cross-ratio and relative
+errors.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The full machine-readable result is
+\texttt{data/verification.json}; the console record is also included.
+The graph family consists of all connected spanning subgraphs of
+$K_{2,2}$, $K_{2,3}$, and $K_{3,3}$, with a fixed-seed sample of 60
+used for the more expensive matrix identities. All 229 graphs are
+used for the two cost-group gap comparisons. Counts include repeated
+underlying graphs with different cost groups where explicitly stated.
+
+The program writes \texttt{data/verification.json} next to its own
+\texttt{code/} directory, so a run replaces the recorded file; it should be
+run on a copy of this directory. When the report joined the collection, such
+a run under Python~3.14.4 and SymPy~1.14.0 passed in about twenty seconds and
+reproduced every count above. The file it wrote differed from the recorded
+one only in the Python version field and in line endings.
+
+These checks are independent corroboration of finite formulas, not
+a proof of strong Hahn summability, arbitrary-rank existence, or
+surreal transport. They do not constitute a Lean verification of any
+new theorem. The general proofs are the arguments in the preceding
+sections; their imported inputs are identified in the bibliography.
+
+\subsection{A reproducible symbolic workflow}
+Given exact base data $p$ and a perturbation $f$, the following finite
+and formal tasks are separated.
+First form the reduced incidence matrix and the rational projection
+$\Pi_p$. Compute the costs $v(p_e)$ and tree-deletion gains to obtain
+a precision certificate. Generate the homogeneous terms from
+\eqref{scale:eq:recursionone}--\eqref{scale:eq:recursion} only to the
+required total degree. The evaluation lemma supplies the full
+mathematical denotation; \cref{scale:cor:remainder} supplies the
+precision of the finite output.
+
+This is an exact-operation specification, not a universal computable
+representation of all surreal numbers. Arbitrary Hahn coefficients
+need not come with an effective leading exponent, equality test, or
+support oracle. The program uses finite graphs and rational-function
+examples where these questions are decidable by explicit algebra.
+At higher rank, finite Taylor degree may never reach a requested
+valuation threshold, as already illustrated. A practical
+implementation must distinguish a formal exact expression, a
+support-truncated representation, and a finite Taylor approximation.
+
+A Lean implementation could be modular: prove the incidence-minor and
+Cauchy--Binet identities over fields; isolate the positive-leading
+no-cancellation lemma; formalize the triangular coefficient recursion;
+then connect it to a proved strong-summability evaluation theorem.
+No assertion is made that these proposed new modules are currently
+implemented in the repository.
+
+\subsection{Questions not settled here}
+The principal theorems answer the concrete local stability question
+posed in \cref{scale:sec:intro}. They leave other questions open.
+For a general support graph and two \emph{different} edges, a complete
+sharp formula for the propagation gain from one prescribed input
+edge to a prescribed output edge would need to control cancellations
+between signed tree-path contributions. The chain theorem solves
+one structured family, not this entire problem.
+
+A second problem is to classify arbitrary surcomplex base weights
+for which the whole-polydisc branch remains unique and integral.
+Positive leading coefficients are sufficient, and the examples above
+show that they cannot simply be omitted. They are not an exact
+classification of all possible phases or all projection matrices.
+
+Finally, this article does not determine the convergence behavior or
+iteration complexity of alternating normalization over every
+higher-rank valued field. Nor does it supply a global surcomplex
+matrix-scaling theorem for arbitrary complex kernels. These are
+separate targets; neither is hidden inside the word ``analytic''
+used for our support-controlled local branch.
+
+\section{Conclusion}\label{scale:sec:conclusion}
+Three results form the core of this article. First, a positive-leading
+Hahn matrix has a unique surcomplex normalization on the entire
+relative infinitesimal polydisc, with a finite-generator support proof
+that works at arbitrary rank. Second, a finite spanning-tree deletion
+gap is the exact uniform nonlinear gain in each entry, with matching
+Taylor-coefficient bounds and one-coordinate leading amplitudes.
+Third, a chain admits explicit nonlinear propagation laws in which
+successive link valuations add.
+
+The mathematical mechanism is not a general promise that replacing
+real scalars by surreal scalars preserves analysis. It is a specific
+combination of finite positive determinant sums, weighted projections,
+a secant identity, and support-controlled formal algebra. This
+combination both gives the theorems and states precisely where they
+can fail. The local answer remains in the exact input support group;
+the passage to surreal and surcomplex numbers changes the available
+scales without changing the proof.
+
+\appendix
+\section{Proof dependency map}\label{scale:app:dependencies}
+\begin{center}
+\begin{tabular}{@{}L{0.31\textwidth}L{0.61\textwidth}@{}}
+\toprule
+Statement & Dependencies\\
+\midrule
+Evaluation lemma &
+Higman's word theorem; positive ordered-group sums;
+finite-generator coefficient algebra.\\[3pt]
+Tree interpolation &
+Incidence minors; Cauchy--Binet; Cramer's rule;
+positive-leading finite sums.\\[3pt]
+Whole-polydisc existence &
+Integral tree projection; triangular formal recursion;
+evaluation lemma; one-step strict valuation uniqueness.\\[3pt]
+Sharp nonlinear gain &
+Existence; exact secant reweighting; rowwise tree formula;
+no leading cancellation in both tree sums.\\[3pt]
+Taylor coefficient gain &
+Formal secant identity; integral inverse of a formal unit;
+finite tree-weight valuation bounds.\\[3pt]
+Chain propagation &
+Existence; cycle basis; exact secant weights; continuant
+and cofactor identities; strict valuation dominance.\\[3pt]
+Positive global interpretation &
+Classical real scaling; real-closed transfer; finite cut bound;
+local uniqueness.\\[3pt]
+Surreal specialization &
+Conway normal form and its Hahn arithmetic;
+set-sized support-group localization.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Only the global-positive interpretation uses real closedness. Only
+the last step uses a special property of surreal numbers beyond
+being realizable as Hahn normal forms. None of the main local
+proofs uses spherical completeness, Banach contraction, a global
+surcomplex exponential, or a surreal derivation.
+
+\section{Build and artifact record}\label{scale:app:build}
+From this directory, build the report with
+\begin{verbatim}
+latexmk -pdf -halt-on-error -interaction=nonstopmode article.tex
+\end{verbatim}
+and run the checks on a copy of the directory (\cref{scale:sec:verification}),
+from the root of that copy, with
+\begin{verbatim}
+python -m pip install -r data/requirements.txt
+python code/verify.py
+\end{verbatim}
+The bibliography is internal; no external database or figure file
+is required. Compilation verifies typesetting,
+not mathematical validity. The delivered PDF was rendered and
+visually inspected separately from the exact algebra checks.
+
+As delivered, the manuscript was built as
+\texttt{surreal\_matrix\_scaling.tex}, and its \texttt{build.sh}, then at the
+top of the package, changed to its own directory before running the program
+and the build. That script is kept unchanged in \texttt{code/}, where it
+changes to \texttt{code/} and looks for \texttt{code/verify.py} and
+\texttt{surreal\_matrix\_scaling.tex} there, neither of which exists. It
+therefore does not work as placed; use the commands above.
+
+The article, source audit, code, and recorded test outputs belong to
+this one contribution. The package contained no copies of the
+repository's existing reports, and its delivery changed no repository
+file; \cref{scale:sec:provenance} records how it was placed.
+
+\begin{thebibliography}{99}
+\bibitem{BM}
+A. Berarducci and V. Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018),
+339--390. \url{https://doi.org/10.4171/JEMS/769}.
+Preprint: \url{https://arxiv.org/abs/1503.00315}.
+
+\bibitem{BurtonPemantle}
+R. Burton and R. Pemantle,
+\emph{Local characteristics, entropy and limit theorems for spanning
+trees and domino tilings via transfer-impedances},
+Annals of Probability \textbf{21} (1993), 1329--1371.
+\url{https://arxiv.org/abs/math/0404048}.
+
+\bibitem{Eisenberger}
+M. Eisenberger, A. Toker, L. Leal-Taix\'e, F. Bernard and D. Cremers,
+\emph{A unified framework for implicit Sinkhorn differentiation},
+CVPR 2022; arXiv:2205.06688 (2022).
+\url{https://arxiv.org/abs/2205.06688}.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 121,
+Cambridge University Press, 1986.
+
+\bibitem{Higman}
+G. Higman, \emph{Ordering by divisibility in abstract algebras},
+Proceedings of the London Mathematical Society, third series,
+\textbf{2} (1952), 326--336.
+\url{https://doi.org/10.1112/plms/s3-2.1.326}.
+
+\bibitem{Idel}
+M. Idel, \emph{A review of matrix scaling and Sinkhorn's normal form
+for matrices and positive maps}, arXiv:1609.06349 (2016).
+\url{https://arxiv.org/abs/1609.06349}.
+
+\bibitem{SGG}
+M. Sharify, S. Gaubert and L. Grigori,
+\emph{Solution of the optimal assignment problem by diagonal scaling
+algorithms}, arXiv:1104.3830, version 2 (2013; first version 2011).
+\url{https://arxiv.org/abs/1104.3830}.
+
+\bibitem{Tarski}
+A. Tarski, \emph{A Decision Method for Elementary Algebra and Geometry},
+prepared with the assistance of J. C. C. McKinsey,
+RAND report R-109, 1951.
+\url{https://www.rand.org/pubs/reports/R109.html}.
+
+\bibitem{RepoCatalogue}
+V. Reshetnikov, \emph{Surreal repository: the surreal and surcomplex
+reports}, research catalogue \texttt{docs/README.md},
+commit \texttt{\shortpin}, inspected 22 September 2026.
+\repo. Full commit identifier is recorded in
+\cref{scale:sec:comparison} and in \texttt{SOURCE\_AUDIT.md}.
+
+\bibitem{RepoMarkov}
+\emph{Surreal Markov generators at every valuation scale},
+AI-assisted research report in the Surreal repository,
+\texttt{docs/surreal/markov-generators-at-every-scale/}.
+Detailed README inspected at commit \texttt{\shortpin}; the article was
+compared on placement at commit \texttt{52c7ab6}.
+\repo.
+
+\bibitem{RepoSpectral}
+\emph{Surcomplex spectral theory: singular values, infinitesimal rank,
+multiscale stability, exact determinantal ramification, and Hankel
+square-class profiles}, AI-assisted research report in the Surreal
+repository, \texttt{docs/surcomplex/spectral-theory/}.
+README lines 1--180 inspected at commit \texttt{\shortpin}; the article
+was compared on placement at commit \texttt{52c7ab6}.
+\repo.
+\end{thebibliography}
+\end{document}

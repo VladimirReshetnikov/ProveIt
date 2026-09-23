@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **36 research reports in five families**. Start with the
+This collection has **40 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -39,7 +39,7 @@ hypotheses, limitations and provenance.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: eleven reports
+## Surreal numbers: thirteen reports
 
 | Report | Question or main subject |
 |---|---|
@@ -54,6 +54,8 @@ hypotheses, limitations and provenance.
 | [Tail-spans and differential transcendence](surreal/tail-spans-and-differential-transcendence/) | Cofinite spans classify relations among Hahn sums with independent square-root coefficients; continuum many differentially independent surreals and analytic functions; its derivation formula is cited from the surcomplex differential-equations report |
 | [Hahn-valued measures and probability](surreal/hahn-valued-measures-and-probability/) | Strong and coefficientwise Hahn-valued measures: atomicity, extension and moment criteria, hidden negative mass; the `ω+1` threshold and the finitely supported standard part hold only in the strong class |
 | [Markov generators at every scale](surreal/markov-generators-at-every-scale/) | All-scale resolvent hierarchies of finite positive Hahn rate matrices and their converse realization; divisible value group, no path measures or infinite state spaces |
+| [Transcendence over bounded support](surreal/transcendence-over-bounded-support/) | `2^cf(G)` algebraically independent Hahn series over the fraction field of bounded-support series, and linear-disjointness descent; transcendence from the support, not the coefficients |
+| [Matrix scaling at surreal scales](surreal/matrix-scaling-at-surreal-scales/) | Fixed-margin diagonal scaling of positive Hahn matrices; the spanning-tree deletion gap is the exact gain; no Sinkhorn convergence claim |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
@@ -61,7 +63,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 `ℝ[[ω⁻¹]]`. Neither domain theorem subsumes the other. Here `⊗` denotes
 **natural ordinal multiplication**, as distinguished in the notation guide.
 
-## Surcomplex numbers: twenty reports
+## Surcomplex numbers: twenty-two reports
 
 | Report | Main subject and useful prerequisite |
 |---|---|
@@ -72,19 +74,21 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [Global divisors](surcomplex/global-divisors/) | Plane support obstructions; compact Picard classification, cohomology and Abel criteria |
 | [Polynomial algebra](surcomplex/polynomial-algebra/) | Finite-degree factorization and root geometry in modulus and valuation balls |
 | [Trigonometry](surcomplex/trigonometry/) | Finite-angle polar representation and geometry at arbitrary surreal scale |
-| [Differential equations](surcomplex/differential-equations/) | Berarducci–Mantova differential algebra and finite primitives; matrix, regular-singular and autonomous equations; coherent coordinate equations; its Section 5 on "phase" is a prerequisite |
+| [Differential equations](surcomplex/differential-equations/) | Berarducci–Mantova differential algebra and finite primitives; matrix, regular-singular and autonomous equations; transfinite second-order critical potentials; coherent coordinate equations; its Section 5 on "phase" is a prerequisite |
 | [Rank-one Berkovich geometry](surcomplex/rank-one-berkovich/) | Tate algebras, disks and annuli in the fixed field `ℂ((t^ℝ))` |
 | [Spectral theory](surcomplex/spectral-theory/) | Finite matrices over real closed fields, singular values and valuation scales; exact matrix-root fields and Hankel splitting fields of squarefree real-rooted polynomials over a nondivisible `Γ` |
-| [Dynamics and normal forms](surcomplex/dynamics-and-normal-forms/) | Linearization, periods and quasi-periodic equations; exact scalar and drifting multipliers answer the common-domain question oppositely; its convention and threshold tables are prerequisites |
+| [Dynamics and normal forms](surcomplex/dynamics-and-normal-forms/) | Linearization, periods and quasi-periodic equations; exact scalar and drifting multipliers answer the common-domain question oppositely, and an angular-rank bound covers every exact diagonal multiplier; its convention and threshold tables are prerequisites |
 | [Nonabelian support](surcomplex/nonabelian-support/) | Matrix Cousin problems, inverse monodromy, and essential-singularity bundles that stay nontrivial over `Mer((t^Γ))`; its two support criteria test different objects; compare the scalar global-divisor report |
 | [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Cofinality, factorization, the exact jet image, ideals above canonical products and scalar extension of entire series over one fixed Hahn field; in several variables only the scalar-extension clause is answered |
-| [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Entire D-finite series are polynomials, and an order-unit criterion decides which nontorsion dilations admit nonpolynomial entire solutions; this is not the order-unit dichotomy of entire functions at arbitrary rank |
+| [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Entire D-finite series are polynomials, and an order-unit criterion decides which nontorsion dilations admit nonpolynomial entire solutions; this is not the order-unit dichotomy of entire functions at arbitrary rank; first-order algebraic ODEs have only polynomial entire solutions |
 | [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Tate elliptic curves at arbitrary rank: exact Hahn domain `U_q` and `U_q/q^ℤ ≅ E_q(K)`, plus multiscale theta series; the bounded-period quotient itself has a Molcho–Wise precedent |
-| [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Two inequivalent spectra: ordinary normal operators extended to `H((t^Γ))`, and exact diagonalization of row- and column-finite Hahn matrices; Section 3 reconciles their apparently conflicting accumulation statements |
+| [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Two inequivalent spectra: ordinary normal operators extended to `H((t^Γ))`, and exact diagonalization of row- and column-finite Hahn matrices; Section 3 reconciles their apparently conflicting accumulation statements; Parts III and IV add Drazin halos for any unital algebra and noncommuting compact perturbations |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Exact itinerary fibers of expanding polynomials over Hahn fields, and the order-unit dichotomy; valuation-expanding is not repelling, and no Julia/Fatou theory is built |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Matrix Herglotz normalization on halos, a null-ideal positivity criterion, and Toeplitz-positive Fourier moments with no positive measure; it assumes coefficientwise additivity, with strong additivity optional |
 | [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/) | Sharp valuation threshold for recovering `n` weighted nodes from `2n` power moments (no measures); compare polynomial algebra's coefficient threshold |
 | [Wick summability certificates](surcomplex/wick-summability-certificates/) | Finite strict valuation inequalities decide strong summability of polynomial Wick diagram families over `ℂ((t^Γ))`, `Γ` divisible; diagramwise only, and a Hahn value is not an integral |
+| [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Algebraic extension, completion and strong closure of `V((t^Γ))`; strong operators; three strictly nested duals of a Hahn–Hilbert space |
+| [Hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/) | Hermitian forms positive over the finite-lattice-supported subfield yet indefinite over `ℂ((t^Γ))`; a two-scale matrix null-ideal criterion |
 
 Three distinctions recur throughout these reports.
 

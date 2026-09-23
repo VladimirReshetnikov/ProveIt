@@ -15,7 +15,7 @@
 \hypersetup{%
   pdftitle={Differential Algebra and Differential Equations over the Surreal and Surcomplex Numbers},
   pdfsubject={Merged research report: the finite-primitive criterion, the phase obstruction, and coherent coordinate systems},
-  pdfkeywords={surreal numbers, surcomplex numbers, Berarducci--Mantova derivation, H-field, Hahn series, differential Galois theory, regular-singular systems, autonomous differential equations, abelian varieties}}
+  pdfkeywords={surreal numbers, surcomplex numbers, Berarducci--Mantova derivation, H-field, Hahn series, differential Galois theory, regular-singular systems, autonomous differential equations, abelian varieties, log-atomic numbers, critical potentials}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Differential algebra over the surreal and surcomplex numbers}
 \fancyhead[R]{\small\thepage}
@@ -102,6 +102,11 @@
 \newcommand{\Commit}{\nolinkurl{e260237db9b71da8b74a0c13c8e6355119091100}}
 \newcommand{\CommitB}{\nolinkurl{aa846271b4dcae2c055b216126a87210292ec19b}}
 \newcommand{\CommitC}{\nolinkurl{a3124af79f66b8b9c196d76b4cbc5ac3938907c4}}
+\newcommand{\CommitD}{\nolinkurl{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}}
+% Notation of the transfinite critical-potential part (member 13); see
+% diff:cp:conv:alphabet.
+\newcommand{\Sch}{\operatorname{Sch}}
+\newcommand{\Bor}{\operatorname{Bor}}
 % Notation of the regular-singular part (member 12) and the autonomous part
 % (member 11); see diff:rs:conv:alphabet and diff:aut:conv:alphabet.
 \newcommand{\derT}{\der_{\tau}}
@@ -139,12 +144,12 @@ and support-certified coordinate systems\par}
 \begin{minipage}{0.93\textwidth}
 \begin{abstract}
 \noindent
-Ten independently written manuscripts developed the theory of the
+Eleven independently written manuscripts developed the theory of the
 Berarducci--Mantova derivation $\der$ on the surreal class field $\No$,
 normalized by $\der\omega=1$, and of its unique extension to the surcomplex
 field $\SC$. This report is their union. Seven of them share a twelve-item
-spine of scalar and workspace theory; the eighth, ninth and tenth joined
-later and carry the matrix, regular-singular and autonomous strata.
+spine of scalar and workspace theory; four joined later and carry the
+matrix, regular-singular, autonomous and transfinite second-order strata.
 
 The organizing identity is exact: the image of the logarithmic derivative is
 \[
@@ -186,15 +191,16 @@ deliberate counterexample --- a nonnormal coefficient with instantaneous
 eigenvalues $\pm i$ and a fundamental matrix already in the base field ---
 marks the boundary of the eigenvalue formula, not of the finite-system classification. That part also
 invokes a separately imported linear-splitting and first-order surjectivity
-theorem, which is not a consequence of the scalar criterion and is flagged
-wherever it is used.
+theorem, not a consequence of the scalar criterion and flagged wherever used.
 
-Two later parts classify regular-singular systems $\der y=-t\,Ay$ with an
+Three later parts classify regular-singular systems $\der y=-t\,Ay$ with an
 ordinary residual matrix and a positive real-power Hahn perturbation, for which
 $\Ph(-tA)=\{(\Imm\lambda_{j})\log t\}$ is an explicit non-Hermitian sector reached
-without the import, and first-order autonomous equations with constant
-coefficients, for \emph{every} normalized surreal derivation, together with the
-logarithmic-derivative image of a constant abelian variety.
+without the import; first-order autonomous equations with constant
+coefficients, for \emph{every} normalized surreal derivation, with the
+logarithmic-derivative image of a constant abelian variety; and second-order
+equations on the log-atomic tower, with a sharp threshold $1/4$ at every
+ordinal depth.
 
 A deliberately separate half treats \emph{coordinate} differential equations
 in fixed-common-domain Hahn rings $\Hol(U)((t^{\Gamma}))$: existence,
@@ -212,11 +218,12 @@ claimed as new, refereed, or machine-checked.
 \end{minipage}
 \vfill
 \begin{minipage}{0.93\textwidth}\small
-\textbf{Status.} A merged exposition assembled from ten independent
+\textbf{Status.} A merged exposition assembled from eleven independent
 manuscripts: seven pinned to \Repo\ at commit \Commit; the eighth,
 which supplies \cref{diff:part:matrix}, pinned to the later revision
-\CommitB; and the ninth and tenth, which supply
-\cref{diff:aut:part,diff:rs:part}, pinned to \CommitC. Deep structural inputs
+\CommitB; the ninth and tenth, which supply
+\cref{diff:aut:part,diff:rs:part}, pinned to \CommitC; and the eleventh,
+which supplies \cref{diff:cp:part}, pinned to \CommitD. Deep structural inputs
 are attributed; the connecting deductions are proved in the text. No priority
 claim, no solution of a named published open problem, no independent
 refereeing, and no proof-assistant verification is asserted.
@@ -237,10 +244,10 @@ refereeing, and no proof-assistant verification is asserted.
 \section{What this report is}
 \label{diff:sec:intro}
 
-\subsection{Ten manuscripts, one theory}
+\subsection{Eleven manuscripts, one theory}
 \label{diff:sub:seven}
 
-This report is the union of ten independently written manuscripts on the
+This report is the union of eleven independently written manuscripts on the
 differential algebra of the surreal and surcomplex numbers. Seven of them form
 the original core: they were prepared separately, they are all pinned to the
 same documentation snapshot, and they prove --- in seven notations --- the same
@@ -296,7 +303,7 @@ first seven do not use and which the register of non-claims accordingly
 records as an import rather than as a proved consequence.
 
 The ninth and tenth manuscripts --- members~11 and~12 in the numbering of
-\cref{diff:app:provenance} --- joined last, arrived together, and are pinned to
+\cref{diff:app:provenance} --- joined next, arrived together, and are pinned to
 a third revision, \CommitC{} \cite{RepoSnapshotC}. Each compared itself with the repository's root
 README, its catalogue and this report's README at that revision, not with this
 article, and neither contradicts the report or the other. Between that revision
@@ -322,6 +329,23 @@ Their reproofs of results already here --- smallness, the missing oscillator,
 the ordered-word lemma, the strip logarithm, the logarithmic separator, the
 missing logarithmic primitive --- are recorded as agreements and cited, not
 printed twice.
+
+The eleventh manuscript --- member~13 --- joined after them and is pinned to a
+fourth revision, \CommitD{} \cite{RepoSnapshotD}. At that revision this article
+was byte-identical to the one it was merged into, and the member's description
+of what the report contains --- the imported derivative, the type
+distinctions, the summability conventions, the finite-primitive criterion and
+the normalized primitive --- holds. It supplies \cref{diff:cp:part}: the
+second-order equations $\der^{2}y+(Q_{\alpha}+c(\ell_{\alpha}^{\dagger})^{2})y=0$
+along the ordinal log-atomic tower, with the sharp threshold $c=\frac14$ at
+every ordinal depth, the failure of every set of earlier scales to decide it,
+and a limit-stage filtration by differential Hahn fields with a Borel
+Picard--Vessiot group. It amends item~N21 for one explicit family of
+second-order equations, and it is adjacent to, without answering, member~12's
+layered logarithmic continuation (\cref{diff:sub:nc:open}). Its reproof of the
+obstruction for nonreal powers of an infinite scale is this report's criterion,
+and is recorded as agreement (\cref{diff:cp:cor:nonreal}); its connection with
+the missing oscillator is made precise in \cref{diff:cp:rem:oscillator}.
 
 Merging carries a specific risk, which \cref{diff:sec:hazard} addresses before
 any theorem is stated: several different objects in these manuscripts are
@@ -383,7 +407,9 @@ composition-incompatibility theorem for $\omega$-series are separately imported
 from \cite{BMGerms} and are flagged wherever used. The universal $H$-field
 results of \cite{ADH} are background for
 \cref{diff:part:foundations,diff:part:scalar,diff:part:workspaces,diff:rs:part,diff:aut:part,diff:part:coordinate},
-not premises; in \cref{diff:part:matrix} alone they become a premise, because
+not premises; \cref{diff:cp:part} uses a different part of \cite{ADH}, the
+ordinal log-atomic formulas of its Section~2, as a premise, and not its
+elementary embedding; in \cref{diff:part:matrix} alone they become a premise, because
 \cref{diff:thm:matsurjectivity} transfers along the elementary embedding of
 \cite{ADH} two further published facts --- splitting of monic scalar operators
 into first-order factors and surjectivity of nonzero scalar operators
@@ -394,7 +420,7 @@ initial-value theory \cite{Teschl} supplies the analytic ingredient of the
 coordinate half, and Picard--Vessiot terminology is used in the standard sense
 of \cite{PS,Singer}.
 
-The two latest parts add no new import of that kind. \Cref{diff:rs:part} uses
+\Cref{diff:rs:part,diff:aut:part} add no new import of that kind. \Cref{diff:rs:part} uses
 the Berarducci--Mantova clauses \emph{without} surjectivity and without
 \cref{diff:thm:matsurjectivity} (\cref{diff:rs:rem:imports}); classical
 regular-singular theory \cite{Levelt,KW,vdH} is its acknowledged antecedent.
@@ -405,6 +431,13 @@ only, and it imports the classical local normal forms and Rosenlicht's
 algebraic-independence theorem as presented by Noordman, van der Put and Top
 \cite{NPT}, with the standard setting of abelian varieties \cite{Milne} and the
 valuative reading of properness \cite{Stacks}.
+\Cref{diff:cp:part} imports one input about the derivation that
+\cref{diff:thm:BM} does not list: the ordinal log-atomic tower and its
+derivatives, limit stages included \cite[Section~2]{ADH}
+(\cref{diff:cp:prop:tower}). It does not use surjectivity in its main
+construction, and it takes the classical Euler and
+Kneser--Weber--Hartman--Hille thresholds as its acknowledged antecedents
+\cite{KT}.
 
 Everything else is proved here. None of it is claimed to be new.
 
@@ -420,7 +453,9 @@ spectral--integral theorem \cref{diff:thm:matspectral};
 \cref{diff:rs:part} classifies regular-singular matrix systems over those
 workspaces and over $\SC$; \cref{diff:aut:part} classifies first-order
 autonomous equations with constant coefficients for every normalized
-derivation;
+derivation; \cref{diff:cp:part} classifies one family of second-order
+equations along the transfinite log-atomic tower and continues the missing
+oscillator there;
 \cref{diff:part:coordinate} is the separate coordinate theory, whose only
 dependence on \cref{diff:part:scalar} is negative --- it explains what the
 scalar obstruction does \emph{not} forbid. \Cref{diff:part:limits} collects the
@@ -1275,6 +1310,9 @@ frequency $b$ corresponds to the phase $b\log t$ of sense (e)
 (\cref{diff:rs:warn:frequencies}). Member~11 uses the word only to cite this
 report, and its one ``finite angle'' is sense (a); its abelian logarithmic
 derivative is a tangent vector, not an angle (\cref{diff:aut:sub:image}).
+Member~13 uses ``phase obstruction'' for this report's criterion and writes
+$\theta$ for a real infinitesimal primitive of the angular rate of a unit; that
+is sense (b), written $\eta$ here (\cref{diff:cp:conv:alphabet}).
 \end{warning}
 
 \subsection{Two load-bearing classes that differ by one operator}
@@ -2060,6 +2098,11 @@ defined and nonzero, and
 contradicting \cref{diff:cor:oscillator}.
 \end{proof}
 
+The same Riccati equation for the variable derivative $D_z$, on strongly
+entire Hahn power series, has the same two solutions; see
+\texttt{hol:nl:prop:riccati} in the holonomic-rigidity report. The
+derivations differ, and neither result implies the other.
+
 This is not a general nonlinear solvability theorem. It is a direct way to
 transfer the first-order phase obstruction to a familiar nonlinear equation.
 (Added with member~11: the sentence stands for this proof, but the class
@@ -2306,7 +2349,9 @@ infinite. Apply \cref{diff:thm:phasecriterion}.
 \end{proof}
 
 These are finite iterated constructions: no infinite product and no transfinite
-logarithm tower is used. The tests resemble familiar convergence thresholds for
+logarithm tower is used. (Added with member~13: \cref{diff:cp:part} imports
+that tower, and \cref{diff:cp:cor:nonreal} carries the obstructed boundary case
+$p=1$ to every ordinal depth.) The tests resemble familiar convergence thresholds for
 improper integrals, but their proof here is algebraic differentiation and
 comparison of surreal sizes. No improper real integral, no limiting process
 and no integration to a numerical endpoint occurs anywhere.
@@ -4067,7 +4112,9 @@ fundamental pair $e^{\omega},e^{-\omega}$ and alternative (ii) gives many
 positive amplitudes. A unique positive solution of a second-order equation is
 not a contradiction to ordinary initial-value theory: intrinsic differentiation
 has no two-real-parameter initial-data interpretation
-(\cref{diff:warn:separators}).
+(\cref{diff:warn:separators}). (Added with member~13: for the supercritical
+critical potentials of \cref{diff:cp:part} the unique positive solution and the
+canonical phase are explicit; see \cref{diff:cp:rem:pinney}.)
 
 \begin{theorem}[Canonical amplitude--phase reduction]
 \label{diff:thm:matamplitude}
@@ -5258,7 +5305,12 @@ new constants}. Five explicit constructions occur across the source
 manuscripts, over four base fields (with two constructions over $\SC$).
 They are genuinely different theorems and all are recorded; none of them
 appeals to an unqualified existence theorem for differential extensions of a
-proper-class field.
+proper-class field. Other parts compute further differential Galois groups:
+the phase-lattice torus of an arbitrary finite system
+(\cref{diff:cor:mattorus}), the additive group of one logarithm
+(\cref{diff:rs:thm:minlog}), and, over a set-sized Hahn base at every limit
+stage of the log-atomic tower, the Borel subgroup of $\SL_{2}(\C)$
+(\cref{diff:cp:thm:pv}), the only non-commutative one in this report.
 
 \subsection{The missing-solution extension over \texorpdfstring{$\SC$}{No[i]}}
 \label{diff:sub:PVone}
@@ -7231,7 +7283,9 @@ the obstruction: in $\der$-form the imaginary coefficient
 $-1/(\omega\log\omega)$ has the infinite primitive $-\log\log\omega$
 (\cref{diff:cor:logscales}). A layered analogue for coefficient fields
 containing $\log\omega$, $\log\log\omega$ and their real powers is recorded as
-an open continuation in \cref{diff:sub:nc:open}.
+an open continuation in \cref{diff:sub:nc:open}. (Added with member~13: the
+equation is the case $s=\ell_{1}$, $\nu=-i$ of \cref{diff:cp:cor:nonreal}, the
+first-order obstruction at stage one of the log-atomic tower.)
 \end{remark}
 
 \subsection{An exact finite procedure, and what it does not compute}
@@ -8699,6 +8753,1144 @@ surjectivity of $\Dn$. Standard part only of finite primitive vectors. \\
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\part{Transfinite critical potentials: second-order equations at every logarithmic depth}
+\label{diff:cp:part}
+
+This part is the contribution of member~13 (\cref{diff:app:provenance}). It
+treats the scalar second-order equations
+\[
+ \der^{2}y+\bigl(Q_{\alpha}+c\,(\ell_{\alpha}^{\dagger})^{2}\bigr)y=0,
+ \qquad
+ Q_{\alpha}=\frac14\sum_{\beta<\alpha}(\ell_{\beta}^{\dagger})^{2},
+\]
+where $\alpha$ is an arbitrary ordinal, $c$ is an ordinary real number,
+$\ell_{\alpha}=\omega^{\omega^{-\alpha}}$ is the log-atomic tower that continues
+the iterated logarithms of \cref{diff:eq:logtower} through every ordinal, and
+$\ell^{\dagger}=\der\ell/\ell$. The unknown ranges over all of $\No$ or $\SC$.
+For every ordinal the solution space is two-dimensional when $c\leq\frac14$ and
+zero when $c>\frac14$ (\cref{diff:cp:thm:main}); no set of earlier logarithmic
+scales decides which case occurs (\cref{diff:cp:thm:invisible}); and at every
+nonzero limit ordinal three nested, $\der$-stable, real closed Hahn fields that
+contain the same potential have solution dimensions $0$, $1$ and $2$, the
+solution field over the first having the upper triangular Borel subgroup of
+$\SL_{2}(\C)$ as differential Galois group
+(\cref{diff:cp:thm:fieldjump,diff:cp:thm:pv}). Four relations to the rest of the
+report fix its place.
+\begin{itemize}[leftmargin=1.6em]
+\item \emph{The missing oscillator.} The supercritical half is the
+second-order statement of \cref{diff:cor:oscillator} read at another scale.
+\Cref{diff:cp:rem:oscillator} makes this precise: one gauge identity carries
+$\der^{2}y+b^{2}y=0$ to the Euler operator at the scale $e^{\omega}$, and the
+family to the same Euler operator at the scale
+$\ell_{\alpha}$; in both cases the obstruction is an infinite accumulated
+phase, $\abs b\,\omega$ in the first and $\sqrt{c-\frac14}\,\ell_{\alpha+1}$ in
+the second. Neither statement contains the other.
+\item \emph{First-order thresholds and \cref{diff:rs:part}.} The coefficient
+$\ell_{n}^{\dagger}$ is the boundary case $p=1$ of \cref{diff:cor:logscales},
+and \cref{diff:cp:cor:nonreal} carries that obstructed boundary to every
+ordinal depth. Stage $0$ is a power-Hahn regular-singular system, and its
+classification in \cref{diff:rs:part} agrees with the one here; every stage
+$\alpha\geq1$ has coefficients outside $\KR$, where
+\cref{diff:rs:prop:boundary} shows that \cref{diff:rs:part} cannot reach
+(\cref{diff:cp:rem:stagezero}).
+\item \emph{\Cref{diff:part:matrix}.} For a real coefficient,
+\cref{diff:thm:matpinney} excludes a one-dimensional solution space in $\No$.
+The family confirms this without that part's import, exhibits the
+one-dimensional case inside a set-sized subfield exactly where a primitive is
+missing (\cref{diff:cp:thm:fieldjump,diff:cp:prop:gaps}), and has an explicit
+canonical amplitude and phase (\cref{diff:cp:rem:pinney}).
+\item \emph{Workspaces.} The fields of \cref{diff:cp:sec:fields} are full Hahn
+fields $K_{\Gamma}$ in the sense of \cref{diff:sec:localization}, of higher
+rank and with logarithmic monomials. Like \cref{diff:ex:sqrt2,diff:ex:logmissing}
+they separate closure properties, here with algebraic closure, derivative
+stability and closure under logarithms all present while an exponential and
+then a primitive are missing (\cref{diff:cp:rem:workspaces}).
+\end{itemize}
+Every statement of this part is relative to the one fixed $\der$
+(\cref{diff:warn:nouniqueness}). The main construction uses the clauses of
+\cref{diff:thm:BM} other than \ref{diff:BM:surj}, because the primitives it
+needs are supplied by the tower itself; surjectivity enters only the real Riccati
+remark (\cref{diff:cp:rem:riccati}) and the comparison with
+\cref{diff:part:matrix} (\cref{diff:cp:rem:pinney}), which also uses that
+part's import. The part adds one input that \cref{diff:thm:BM} does not list:
+the ordinal log-atomic formulas of \cite{ADH}, imported with their limit cases
+in \cref{diff:cp:prop:tower}.
+
+\section{The log-atomic tower, and the alphabet of this part}
+\label{diff:cp:sec:tower}
+
+\begin{convention}[The alphabet of this part]
+\label{diff:cp:conv:alphabet}
+Throughout \cref{diff:cp:part}:
+\begin{itemize}[leftmargin=1.6em]
+\item Ordinals are written $\alpha,\beta,\zeta$, and $\lambda$ always denotes a
+\emph{nonzero limit ordinal}; in this part $\lambda$ is never an eigenvalue.
+An ordinal is regarded as a surreal number, and $\omega^{x}$ is the Conway
+monomial map of \cref{diff:eq:normal}, with \cref{diff:warn:monomialmap} in
+force. Exponent-group elements are written $\gamma$. Member~13's ordinal index
+$\eta$ is $\zeta$ here.
+\item $\ell_{\alpha}=\omega^{\omega^{-\alpha}}$,
+$\varpi_{\alpha}=\sum_{\beta<\alpha}\omega^{-\beta}$,
+$\ell_{<\alpha}=\omega^{\varpi_{\alpha}}$ and
+$u_{\alpha}=\omega^{\varpi_{\alpha}/2}$. Member~13 writes $p_{\alpha}$,
+$s_{\alpha}$, $P_{\alpha}$, $U_{\alpha}$ for $\omega^{-\alpha}$,
+$\varpi_{\alpha}$, $\ell_{<\alpha}$, $u_{\alpha}$: here $p$ is the real
+threshold exponent of \cref{diff:cor:power,diff:cor:logscales}, $s$ is a scale
+as in $\der_{s}$, the $P_{j}$ are phases, and $U$ is an ordinary complex domain.
+\item Logarithmic derivatives are written with $\dagger$. Member~13's
+$a_{\alpha}$, $A_{\alpha}$ and $h_{\alpha}$ are $\ell_{\alpha}^{\dagger}$,
+$\ell_{<\alpha}^{\dagger}$ and $u_{\alpha}^{\dagger}=\frac12\ell_{<\alpha}^{\dagger}$
+(\cref{diff:cp:lem:triangular}); $a$ is a real coefficient and $A$ a matrix here.
+\item Potentials are written $Q$: $Q_{\alpha}$ as above (\cref{diff:cp:lem:triangular}),
+$Q_{\alpha,c}=Q_{\alpha}+c(\ell_{\alpha}^{\dagger})^{2}$, and a general
+potential $Q\in\SC$. Member~13 writes $q_{\alpha,c}$ and $q$; in this report
+$q$ is the rank-one coefficient of \cref{diff:thm:phasecriterion}.
+\item A scale is written $s$, with the rescaled derivation $\der_{s}$ of
+\cref{diff:tab:derivatives}; the Euler operator is $s\der_{s}$, which is
+$\der_{\log s}$ when $s>0$. Member~13 writes $T$, $D_{T}$ and $E_{T}$; the
+sans-serif $\mathsf T$ is an adjoined generator here, never a number. Its
+partner $U$ with $U^{2}T'=1$ is $u$ here.
+\item $\mathrm{Wr}(y_{1},y_{2})=y_{1}\der y_{2}-y_{2}\der y_{1}$, as in
+\cref{diff:eq:matpinneyclassical}, and $\mathrm{Wr}_{s}$ is the same expression
+for $\der_{s}$; member~13 writes $W$, which is a unitary matrix here. For a
+differential subfield $F\subseteq\SC$ and $Q\in F$,
+$\Sol_{F}(Q)=\{y\in F:\der^{2}y+Qy=0\}$.
+\item At a limit ordinal the exponent groups are $\Delta_{0}\subset
+\Delta_{1}\subset\Delta_{2}$ and the fields are
+$H_{\Delta_{j}}=\R((t^{\Delta_{j}}))$ and $K_{\Delta_{j}}=\C((t^{\Delta_{j}}))$,
+as in \cref{diff:tab:notation}. Member~13 writes $\Gamma_{j}$, $K_{j}$ and
+$k_{j}$; the report's $K_{0}$ is $\C((t))$, and $\Gamma_{n}$ are the stages of
+\cref{diff:thm:hull}.
+\item $Y$ is a fundamental matrix, $\psi_{a,b}$ a differential automorphism,
+$\Bor_{2}(\C)$ the upper triangular Borel subgroup of $\SL_{2}(\C)$, and
+$\Sch(s)$ the Schwarzian. Member~13 writes $\Phi$, $\sigma_{a,b}$, $B(\C)$ and
+$\mathcal S_{\der}$; here $\Phi$ is the phase map, $\sigma$ the local parameter
+of \cref{diff:aut:part}, $B$ an accumulated phase and $\Strip$ the strip. The
+word ``Borel'' in this part names that algebraic subgroup; it is unrelated to
+the Borel summation disclaimed in item~N37.
+\item Member~13's real infinitesimal primitive $\theta$ of an angular rate is
+the infinitesimal phase residue $\eta$ of \cref{diff:conv:phases}(b), and its
+Riccati solution $b$ is $w$ here.
+\item For $g\neq0$, $f\prec g$ means $f/g\in\mm_{\C}$, and $f\sim g$ means
+$f/g-1\in\mm_{\C}$, as in \cref{diff:aut:part}.
+\end{itemize}
+\end{convention}
+
+\begin{warning}[Member~13's $\mathfrak m$ is not this report's $\mm$]
+\label{diff:cp:warn:frakm}
+Member~13 writes $\mathfrak m(x)=\omega^{x}$ for the Conway monomial map, and
+$\mathfrak i$ and $\mathcal O$ for the infinitesimals and the finite surreals.
+In this report $\mm$ is the ideal of infinitesimals and never takes an argument,
+$\Ofin$ is the class of finite surreals, and the monomial map is written
+$\omega^{x}$ or, in increasing orientation, $t^{-x}$ (\cref{diff:eq:tmonomial}).
+Every formula of the member has been transcribed accordingly. A reader moving
+between the two texts should translate $\mathfrak m(\,\cdot\,)$ before reading
+anything else.
+\end{warning}
+
+\begin{proposition}[The ordinal log-atomic tower: imported]
+\label{diff:cp:prop:tower}
+For every ordinal $\alpha$ the families $(\omega^{-\beta})_{\beta<\alpha}$ and
+$(\ell_{\beta+1})_{\beta<\alpha}$ are summable, $\ell_{\alpha}$ is positive
+infinite and log-atomic, and
+\begin{equation}\label{diff:cp:eq:tower}
+ \log\ell_{\alpha}=\ell_{\alpha+1},\qquad
+ \der\ell_{\alpha}=\ell_{<\alpha}^{-1},\qquad
+ \ell_{<\alpha}=\omega^{\varpi_{\alpha}}
+ =\exp\Bigl(\sum_{\beta<\alpha}\ell_{\beta+1}\Bigr).
+\end{equation}
+For every real $r$,
+$\ell_{\alpha}^{r}=\exp(r\ell_{\alpha+1})=\omega^{r\omega^{-\alpha}}$ and
+$\ell_{<\alpha}^{r}=\omega^{r\varpi_{\alpha}}$.
+\end{proposition}
+
+These are imported, not proved here: \cite[Proposition~2.5, Lemmas~2.6--2.8
+and the pre-derivation formula on p.~10]{ADH}, where the notation is
+$\lambda_{-\alpha}=\log_{\alpha}\omega$, and for the real powers the
+real-linear exponent formula in the proof of \cite[Lemma~2.3]{ADH}; the
+numbering is that of the arXiv version~3 consulted by member~13. For finite
+$n$, $\ell_{n}$ is the $n$-fold logarithm of $\omega$ and
+$\ell_{<n}=\ell_{0}\cdots\ell_{n-1}$, so \cref{diff:cp:eq:tower} returns
+\cref{diff:eq:logtower}; $\ell_{0}=\omega$ and $\ell_{1}=\log\omega$. At an
+infinite limit $\lambda$, $\ell_{\lambda}$ is the simplest positive infinite
+surreal below every $\ell_{\beta}$ with $\beta<\lambda$. The monomial
+$\ell_{<\alpha}$ is the monomial product $\prod_{\beta<\alpha}\ell_{\beta}$, and
+its two readings --- sum the exponents $\omega^{-\beta}$ in normal form, or
+exponentiate the sum of the logarithms $\ell_{\beta+1}$ --- agree by the
+monomial-product logarithm identity of \cite[Section~2]{ADH}. At a limit
+ordinal that identity is an imported fact; replacing it by ordinary
+convergence of finite products would be invalid (\cref{diff:warn:summability}).
+Likewise the limit-stage derivative formula is a fact about this derivation,
+not the result of formally differentiating a finite iterate, and the
+normalization $\der\omega=1$ alone does not determine it
+(\cref{diff:cp:rem:derivation}). Derivatives of monomials with non-real
+exponents are computed only through the logarithms of the specific monomials
+involved, as \cref{diff:warn:monomialmap} requires. The real powers rest on
+two facts recorded by member~13 from \cite[Section~2]{ADH}: the logarithm of a
+monomial is purely infinite, and the correspondence between the exponent of a
+monomial and its logarithm is real-linear. Since the monomial map is
+multiplicative, $u_{\alpha}^{2}=\ell_{<\alpha}$.
+
+\begin{remark}[What the notation does not assert]
+\label{diff:cp:rem:notation}
+The symbols $\ell_{\alpha}$ designate particular log-atomic numbers. They do
+not assert a globally defined transfinite iteration or composition of $\log$
+on $\No$ (\cref{diff:rem:nocomposition}), and \cref{diff:cp:prop:noend} shows
+that the tower has no final stage inside $\No$. The remark after
+\cref{diff:cor:logscales} --- ``no transfinite logarithm tower is used'' ---
+remains true of \cref{diff:part:scalar}; this part imports that tower.
+\end{remark}
+
+\begin{lemma}[Separation of scales]
+\label{diff:cp:lem:scales}
+The families $(\omega^{-\beta})_{\beta<\alpha}$ and
+$(\ell_{\beta+1})_{\beta<\alpha}$ are strictly decreasing, and
+$\varpi_{\beta}<\varpi_{\zeta}$ for $\beta<\zeta$. Consequently
+$\ell_{\beta}^{\dagger}=\omega^{-\varpi_{\beta+1}}=\ell_{<\beta+1}^{-1}=\der\ell_{\beta+1}$,
+\begin{equation}\label{diff:cp:eq:ratio}
+ \frac{\ell_{\beta+1}^{\dagger}}{\ell_{\beta}^{\dagger}}=\frac{1}{\ell_{\beta+1}},
+ \qquad
+ \ell_{\zeta}^{\dagger}\prec\ell_{\beta}^{\dagger}\quad(\beta<\zeta),
+\end{equation}
+and at a limit $\lambda$, $\ell_{\lambda}\prec\ell_{\beta}$ for every
+$\beta<\lambda$.
+\end{lemma}
+\begin{proof}
+The monomial map is strictly increasing and $-\zeta<-\beta$, which gives the
+first assertion. A nonempty interval of the positive family
+$(\omega^{-\beta})$ has a positive sum, so $\varpi$ increases. By
+\cref{diff:cp:eq:tower}, $\ell_{\beta}^{\dagger}=\ell_{<\beta}^{-1}\ell_{\beta}^{-1}
+=\omega^{-\varpi_{\beta}-\omega^{-\beta}}=\omega^{-\varpi_{\beta+1}}$, and
+$\der\ell_{\beta+1}=\der\log\ell_{\beta}=\ell_{\beta}^{\dagger}$. Distinct
+monomials are Archimedean separated, and
+$\varpi_{\beta+2}-\varpi_{\beta+1}=\omega^{-(\beta+1)}$ gives the ratio.
+Finally $\omega^{-\lambda}<\omega^{-\beta}$.
+\end{proof}
+
+For finite $n$, $\ell_{n}^{\dagger}=1/(\ell_{0}\ell_{1}\cdots\ell_{n})$ is the
+coefficient $b_{n,1}$ of \cref{diff:cor:logscales}: the obstructed boundary
+case $p=1$ at depth $n$.
+
+\section{The critical identity at every ordinal}
+\label{diff:cp:sec:support}
+
+\begin{lemma}[Summation and triangular differentiation]
+\label{diff:cp:lem:triangular}
+For every ordinal $\alpha$ the families $(\ell_{\beta}^{\dagger})_{\beta<\alpha}$,
+$((\ell_{\beta}^{\dagger})^{2})_{\beta<\alpha}$ and
+$(\ell_{\beta}^{\dagger}\ell_{\zeta}^{\dagger})_{\beta,\zeta<\alpha}$ are summable,
+and
+\begin{align}
+ \ell_{<\alpha}^{\dagger}&=\sum_{\beta<\alpha}\ell_{\beta}^{\dagger},
+ \label{diff:cp:eq:Adef}\\
+ \der\bigl(\ell_{\beta}^{\dagger}\bigr)&=-\ell_{\beta}^{\dagger}\,\ell_{<\beta+1}^{\dagger}
+ \qquad\text{for every ordinal }\beta,\label{diff:cp:eq:ader}\\
+ \der\bigl(\ell_{<\alpha}^{\dagger}\bigr)&=-\frac12\Bigl((\ell_{<\alpha}^{\dagger})^{2}
+ +\sum_{\beta<\alpha}(\ell_{\beta}^{\dagger})^{2}\Bigr).\label{diff:cp:eq:Ader}
+\end{align}
+In particular $Q_{\alpha}$ is a well-defined surreal, $Q_{0}=0$, and
+$Q_{\alpha}>0$ for $\alpha\geq1$.
+\end{lemma}
+\begin{proof}
+In the orientation of \cref{diff:eq:tmonomial},
+$\ell_{\beta}^{\dagger}=t^{\varpi_{\beta+1}}$ with exponents strictly increasing
+in $\beta$ (\cref{diff:cp:lem:scales}); an ordinal-indexed increasing family of
+exponents is well ordered and each exponent occurs once, so the first two
+families are summable (\cref{diff:def:summable}), and so is
+$(\ell_{\beta+1})_{\beta<\alpha}$. The double family is the product family of
+the first with itself, summable by the Hahn product theorem
+\cite[Section~2.4]{BM}. Since $\ell_{<\alpha}=\exp(\sum_{\beta<\alpha}\ell_{\beta+1})$,
+clauses \ref{diff:BM:exp} and \ref{diff:BM:additive} give
+$\ell_{<\alpha}^{\dagger}=\sum_{\beta<\alpha}\der\ell_{\beta+1}
+=\sum_{\beta<\alpha}\ell_{\beta}^{\dagger}$, which is \cref{diff:cp:eq:Adef}.
+As $\ell_{\beta}^{\dagger}=\ell_{<\beta+1}^{-1}$, this gives
+\cref{diff:cp:eq:ader}. Differentiating \cref{diff:cp:eq:Adef} by
+\ref{diff:BM:additive},
+\[
+ \der\bigl(\ell_{<\alpha}^{\dagger}\bigr)
+ =-\sum_{\beta<\alpha}\sum_{\zeta\leq\beta}\ell_{\beta}^{\dagger}\ell_{\zeta}^{\dagger},
+\]
+a subfamily of the summable double family. The square
+$(\ell_{<\alpha}^{\dagger})^{2}$ counts each off-diagonal unordered pair twice and
+each diagonal pair once, so twice the triangular sum is
+$(\ell_{<\alpha}^{\dagger})^{2}+\sum_{\beta<\alpha}(\ell_{\beta}^{\dagger})^{2}$;
+all regroupings are licensed by the joint summability just proved
+(\cref{diff:warn:summability}). For $\alpha\geq1$ the leading term of
+$Q_{\alpha}$ is $\frac14(\ell_{0}^{\dagger})^{2}=\frac14\omega^{-2}>0$.
+\end{proof}
+
+\begin{theorem}[Exact critical solutions and Wronskian]
+\label{diff:cp:thm:critical}
+For every ordinal $\alpha$,
+\begin{equation}\label{diff:cp:eq:critical}
+ u_{\alpha}^{\dagger}=\frac12\,\ell_{<\alpha}^{\dagger},
+ \qquad
+ \der^{2}u_{\alpha}+Q_{\alpha}u_{\alpha}=0,
+ \qquad
+ u_{\alpha}^{2}\,\der\ell_{\alpha}=1 .
+\end{equation}
+Both $u_{\alpha}$ and $u_{\alpha}\ell_{\alpha}$ solve $\der^{2}y+Q_{\alpha}y=0$,
+and $\mathrm{Wr}(u_{\alpha},u_{\alpha}\ell_{\alpha})=1$.
+\end{theorem}
+\begin{proof}
+The first identity is the derivative of
+$\log u_{\alpha}=\frac12\sum_{\beta<\alpha}\ell_{\beta+1}$. Hence, by
+\cref{diff:cp:eq:Ader},
+\[
+ \frac{\der^{2}u_{\alpha}}{u_{\alpha}}
+ =\der\bigl(u_{\alpha}^{\dagger}\bigr)+\bigl(u_{\alpha}^{\dagger}\bigr)^{2}
+ =\frac12\der\bigl(\ell_{<\alpha}^{\dagger}\bigr)+\frac14(\ell_{<\alpha}^{\dagger})^{2}
+ =-\frac14\sum_{\beta<\alpha}(\ell_{\beta}^{\dagger})^{2}=-Q_{\alpha}.
+\]
+The third identity is $\ell_{<\alpha}\,\der\ell_{\alpha}=1$. Write $u=u_{\alpha}$
+and $s=\ell_{\alpha}$. Differentiating $u^{2}\der s=1$ gives
+$2\der u\,\der s+u\,\der^{2}s=0$, so
+$\der^{2}(us)+Q_{\alpha}us=s(\der^{2}u+Q_{\alpha}u)+2\der u\,\der s+u\,\der^{2}s=0$,
+and $\mathrm{Wr}(u,us)=u^{2}\der s=1$.
+\end{proof}
+
+\begin{remark}[A limit stage is not a missing induction step]
+\label{diff:cp:rem:limitstage}
+At a successor, $\ell_{<\alpha+1}=\ell_{<\alpha}\ell_{\alpha}$ and
+$Q_{\alpha+1}=Q_{\alpha}+\frac14(\ell_{\alpha}^{\dagger})^{2}$. At a limit, the
+same identity for $\der^{2}u_{\alpha}$ comes from the single summable
+triangular calculation of \cref{diff:cp:lem:triangular}. No derivative of a
+nonconvergent net and no interchange of an uncontrolled double series occurs,
+and $Q_{\lambda}$ is the Hahn sum of its increments, not a sum or limit of the
+partial sums $Q_{\beta}$.
+\end{remark}
+
+\begin{lemma}[A fundamental pair spans every solution]
+\label{diff:cp:lem:span}
+Let $F$ be a differential field of characteristic zero with constants $C_{F}$,
+and let $y_{1},y_{2}\in F$ solve $\der^{2}y+Qy=0$ with
+$\mathrm{Wr}(y_{1},y_{2})\neq0$. Then $\mathrm{Wr}(y_{1},y_{2})\in C_{F}$, and
+every solution in $F$ lies in $C_{F}y_{1}+C_{F}y_{2}$.
+\end{lemma}
+\begin{proof}
+$\der\mathrm{Wr}=y_{1}\der^{2}y_{2}-y_{2}\der^{2}y_{1}=0$. For a third solution
+$y$ put $a=\mathrm{Wr}(y,y_{2})/\mathrm{Wr}(y_{1},y_{2})$ and
+$b=\mathrm{Wr}(y_{1},y)/\mathrm{Wr}(y_{1},y_{2})$; the same calculation gives
+$\der a=\der b=0$, and direct substitution gives $y=ay_{1}+by_{2}$.
+\end{proof}
+
+With $F=\SC$ the solution collection is first a class; the spanning formulas
+of \cref{diff:cp:thm:main} show that it is a set, isomorphic to $\C^{2}$ or to
+$0$, so no dimension theory of a proper-class vector space is used, as in
+\cref{diff:rs:rem:setsized}. All Hahn and Picard--Vessiot fields of
+\cref{diff:cp:sec:fields,diff:cp:sec:pv} are set-sized from the outset.
+
+\section{The Euler threshold at an infinite scale, and the missing oscillator}
+\label{diff:cp:sec:euler}
+
+\begin{corollary}[No nonreal powers of an infinite scale]
+\label{diff:cp:cor:nonreal}
+Let $s\in\No$ with $s>\R$, so that $\der s>0$ by \ref{diff:BM:positivity},
+and let $\nu\in\C\setminus\R$. Then
+\begin{equation}\label{diff:cp:eq:forbidden}
+ \der z=\nu\,s^{\dagger}z,\qquad\text{equivalently}\qquad s\der_{s}z=\nu z,
+\end{equation}
+has no nonzero solution in $\SC$. For real $\nu$ its solutions are exactly
+$\C\,s^{\nu}$, with $s^{\nu}=\exp(\nu\log s)$.
+\end{corollary}
+\begin{proof}
+Write $\nu=a+ib$ with $b\neq0$. The imaginary coefficient $b\,s^{\dagger}$ has
+the accumulated phase $b\log s$, which is infinite: a real bound on $\log s$
+would exponentiate to a real bound on $s$. By \cref{diff:thm:phasecriterion},
+whose direction (i)$\Rightarrow$(iii) uses no primitive, there is no nonzero
+solution. For real $\nu$, $s^{\nu}$ is a solution by \ref{diff:BM:exp}, and the
+quotient of any solution by it has derivative zero.
+\end{proof}
+
+Member~13 proves this from an infinitesimal real primitive of the angular rate
+of a unit, obtained from the strong Hahn logarithm; that primitive is the
+infinitesimal phase residue $\eta$ of \cref{diff:thm:unitphase}, and its
+argument is the direction (i)$\Rightarrow$(iii) of
+\cref{diff:thm:phasecriterion}. The route is recorded as agreement and not
+printed twice. The forbidden coefficient $\nu s^{\dagger}$ may be very small ---
+at $s=\ell_{\alpha}$ it lies below $\ell_{\beta}^{\dagger}$ for every
+$\beta<\alpha$ --- and the obstruction is the infinite primitive $\log s$, not
+the size of the coefficient (\cref{diff:warn:integrated}). Three earlier
+statements are instances: $s=e^{\omega}$ gives the first-order statement of
+\cref{diff:cor:oscillator}; $s=\ell_{n}$ gives the case $p=1$ of
+\cref{diff:cor:logscales}, multiplied by $\Imm\nu$; and $s=\ell_{1}$,
+$\nu=-i$ gives \cref{diff:rs:prop:boundary}, since
+$\derT y=iy/\log\omega$ is $\der y=-i\ell_{1}^{\dagger}y$.
+
+\begin{lemma}[Liouville transformation as an operator identity]
+\label{diff:cp:lem:gauge}
+Let $F\subseteq\SC$ be a differential subfield and let $s,u,Q\in F$ with
+$s\neq0$, $\der s\neq0$, $u\neq0$, $\der^{2}u+Qu=0$ and $u^{2}\der s=1$. Then for
+every $v\in F$ and every $c\in\C$,
+\begin{equation}\label{diff:cp:eq:gauge}
+ \Bigl(\der^{2}+Q+c\,(s^{\dagger})^{2}\Bigr)(uv)
+ =u\,(s^{\dagger})^{2}\Bigl((s\der_{s})^{2}-s\der_{s}+c\Bigr)v .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiating $u^{2}\der s=1$ gives $2\der u\,\der s+u\,\der^{2}s=0$. Since
+$\der v=(\der s)\der_{s}v$ and $\der^{2}v=(\der^{2}s)\der_{s}v+(\der s)^{2}\der_{s}^{2}v$,
+the finite product rule gives
+\[
+ \der^{2}(uv)+Quv=(\der^{2}u+Qu)v+(2\der u\,\der s+u\,\der^{2}s)\der_{s}v
+ +u(\der s)^{2}\der_{s}^{2}v=u(\der s)^{2}\der_{s}^{2}v .
+\]
+Since $\der_{s}s=1$, $(s\der_{s})^{2}-s\der_{s}=s^{2}\der_{s}^{2}$; adding the
+term $c(s^{\dagger})^{2}uv$ gives \cref{diff:cp:eq:gauge}.
+\end{proof}
+
+The identity treats $v$ as an arbitrary element of the field. It does not
+assert that every surreal is a composite $v(s)$ and invokes no substitution
+operator; such a distinction is essential in view of the global
+composition obstruction of \cite[Theorem~8.4]{BMGerms}
+(\cref{diff:rem:nocomposition}).
+
+\begin{proposition}[Euler classification at a positive infinite scale]
+\label{diff:cp:prop:euler}
+Let $s\in\No$ with $s>\R$ (so $\der s>0$), let $c\in\R$, and put
+$r_{\pm}=\frac12\bigl(1\pm\sqrt{1-4c}\bigr)$ when $c\leq\frac14$. Then
+\[
+ \Ker_{\SC}\Bigl((s\der_{s})^{2}-s\der_{s}+c\Bigr)=
+ \begin{cases}
+ \C\,s^{r_{+}}+\C\,s^{r_{-}}, & c<\frac14,\\[0.2em]
+ \C\,s^{1/2}+\C\,s^{1/2}\log s, & c=\frac14,\\[0.2em]
+ 0, & c>\frac14,
+ \end{cases}
+\]
+and the real kernel is the same with $\R$ in place of $\C$.
+\end{proposition}
+\begin{proof}
+The operator is $s^{2}\bigl(\der_{s}^{2}+cs^{-2}\bigr)$, and $\der_{s}$ is a
+derivation of $\SC$ with constants $\C$. For real $r$, $s\der_{s}(s^{r})=rs^{r}$.
+If $c<\frac14$ the two distinct real roots of $r^{2}-r+c$ give solutions with
+$\mathrm{Wr}_{s}(s^{r_{+}},s^{r_{-}})=(r_{-}-r_{+})s^{r_{+}+r_{-}-1}=r_{-}-r_{+}\neq0$,
+and \cref{diff:cp:lem:span} for $\der_{s}$ gives completeness. If $c=\frac14$,
+direct differentiation gives the pair $s^{1/2}$, $s^{1/2}\log s$ with
+$\mathrm{Wr}_{s}=1$. If $c>\frac14$ the roots are
+$\nu_{\pm}=\frac12\pm i\sqrt{c-\frac14}$, the operator factors as
+$(s\der_{s}-\nu_{+})(s\der_{s}-\nu_{-})$ with commuting constant-coefficient
+factors, and each factor is injective by \cref{diff:cp:cor:nonreal}. Real
+statements follow by intersecting with $\No$.
+\end{proof}
+
+The number $\frac14$ and the repeated-root logarithm are the classical Euler
+phenomenon. The nonreal-root argument excludes \emph{every} nonzero element of
+$\SC$, not merely a particular trial formula.
+
+\begin{remark}[The Euler operator is a constant-coefficient operator at a rescaled scale]
+\label{diff:cp:rem:constant}
+This remark is an observation of this merge; member~13 does not state it. For
+$s>0$, $s\der_{s}=\der_{\sigma}$ with $\sigma=\log s$ (\cref{diff:prop:rescale}),
+and $\sigma$ is positive infinite when $s>\R$. So
+\cref{diff:cp:prop:euler} is the order-two case of the constant-coefficient
+classification of \cref{diff:thm:constant}, with $P(X)=X^{2}-X+c$, read for
+$\der_{\sigma}$ and $\sigma$ in place of $\der$ and $\omega$: the roots are real
+exactly when $c\leq\frac14$, and $e^{\lambda\sigma}=s^{\lambda}$,
+$\sigma=\log s$. \Cref{diff:thm:constant} is stated for $\der$ only; its proof
+goes through for $\der_{\sigma}$ with \cref{diff:cp:cor:nonreal} in place of
+\cref{diff:cor:oscillator}, but nothing below uses that, because member~13's
+direct proof is complete.
+\end{remark}
+
+\begin{remark}[The missing oscillator is the Euler problem at the scale $e^{\omega}$]
+\label{diff:cp:rem:oscillator}
+This remark is an observation of this merge, with its proof; member~13 does
+not state it. Take $s=e^{\omega}$. Then $s^{\dagger}=1$, $s\der_{s}=\der$, and
+$u=e^{-\omega/2}$ satisfies $u^{2}\der s=1$ and $\der^{2}u-\frac14u=0$, so
+\cref{diff:cp:lem:gauge} with $Q=-\frac14$ reads
+\[
+ \Bigl(\der^{2}+c-\tfrac14\Bigr)\bigl(e^{-\omega/2}v\bigr)
+ =e^{-\omega/2}\bigl(\der^{2}-\der+c\bigr)v .
+\]
+For $c=\frac14+b^{2}$ with $b\in\R\setminus\{0\}$ the left operator is
+$\der^{2}+b^{2}$, and the case $c>\frac14$ of \cref{diff:cp:prop:euler} is the
+second-order statement of \cref{diff:cor:oscillator}; for $c=\frac14-\kappa^{2}$
+it returns the solutions $Ae^{\kappa\omega}+Be^{-\kappa\omega}$ of
+$\der^{2}y-\kappa^{2}y=0$, and $A+B\omega$ at $c=\frac14$, as
+\cref{diff:thm:constant} does. At the scale $s=\omega$ the same lemma, with
+$u=1$ and $Q=0$, gives stage~$0$ of the family, and at the scale
+$s=\ell_{\alpha}$, with $u=u_{\alpha}$ and $Q=Q_{\alpha}$, it gives
+\cref{diff:cp:thm:main}. So the constant-potential oscillator, stage~$0$ and
+stage~$\alpha$ are one Euler threshold read at the scales
+$\sigma=\log s=\omega$, $\ell_{1}$ and $\ell_{\alpha+1}$, and in every
+supercritical case the obstruction is the infinite accumulated phase
+$\sqrt{c-\frac14}\,\sigma$ of \cref{diff:cp:cor:nonreal}; the constant-potential
+threshold $b^{2}>0$ is the Euler threshold $c>\frac14$ shifted by the gauge
+potential $-\frac14$.
+
+This is the precise sense, and the only sense, in which the supercritical half
+of \cref{diff:cp:thm:main} generalizes the missing oscillator: it moves the
+obstructed accumulated phase from $\omega$ down through every stage of the
+log-atomic tower, where the forbidden potential
+$(c-\frac14)(\ell_{\alpha}^{\dagger})^{2}$ lies below every earlier scale
+(\cref{diff:cp:thm:invisible}). The oscillator is not a member of the family:
+its potential is an ordinary constant, its gauge potential $-\frac14$ is
+negative, and its scale $e^{\omega}$ lies above the whole tower, since
+$\log e^{\omega}=\ell_{0}$. Conversely the family is not a corollary of
+\cref{diff:cor:oscillator}: it needs the imported tower, the critical identity
+\cref{diff:cp:thm:critical} and the criterion at the scale $\ell_{\alpha+1}$.
+Neither statement says anything about a general potential
+(\cref{diff:cp:rem:notarbitrary}).
+\end{remark}
+
+\section{The transfinite classification}
+\label{diff:cp:sec:classification}
+
+\begin{theorem}[Transfinite critical classification]
+\label{diff:cp:thm:main}
+For every ordinal $\alpha$ and every $c\in\R$, the potential
+$Q_{\alpha,c}=Q_{\alpha}+c(\ell_{\alpha}^{\dagger})^{2}$ is a well-defined
+surreal, and the solution space of
+\begin{equation}\label{diff:cp:eq:main}
+ \der^{2}y+Q_{\alpha,c}\,y=0
+\end{equation}
+in $\No$ has dimension two over $\R$ if $c\leq\frac14$ and dimension zero if
+$c>\frac14$. The identical statement holds in $\SC$ over $\C$. For $c<\frac14$
+a basis is
+\begin{equation}\label{diff:cp:eq:basissub}
+ u_{\alpha}\ell_{\alpha}^{r_{+}},\qquad u_{\alpha}\ell_{\alpha}^{r_{-}},
+ \qquad r_{\pm}=\tfrac12\bigl(1\pm\sqrt{1-4c}\bigr),
+\end{equation}
+and for $c=\frac14$ a basis is
+\begin{equation}\label{diff:cp:eq:basiscrit}
+ u_{\alpha+1},\qquad u_{\alpha+1}\ell_{\alpha+1}.
+\end{equation}
+Every displayed basis element is a single Conway monomial, and
+$Q_{\alpha,1/4}=Q_{\alpha+1}$.
+\end{theorem}
+\begin{proof}
+The coefficients exist by \cref{diff:cp:lem:triangular}. Apply
+\cref{diff:cp:lem:gauge} in $F=\SC$ with $s=\ell_{\alpha}$, $u=u_{\alpha}$ and
+$Q=Q_{\alpha}$; its hypotheses are \cref{diff:cp:thm:critical}, and
+$s^{\dagger}=\ell_{\alpha}^{\dagger}$. Multiplication by $u_{\alpha}$ is a
+bijection of $\SC$ and of $\No$, and the factor $u(s^{\dagger})^{2}$ is nonzero,
+so \cref{diff:cp:eq:main} is equivalent to
+$\bigl((s\der_{s})^{2}-s\der_{s}+c\bigr)v=0$, and
+\cref{diff:cp:prop:euler} gives the dimensions and bases. At $c=\frac14$ use
+$u_{\alpha}\ell_{\alpha}^{1/2}=\omega^{\varpi_{\alpha}/2+\omega^{-\alpha}/2}=u_{\alpha+1}$
+and $\log\ell_{\alpha}=\ell_{\alpha+1}$. The monomial assertion is
+$u_{\alpha}\ell_{\alpha}^{r}=\omega^{\varpi_{\alpha}/2+r\omega^{-\alpha}}$, by
+\cref{diff:cp:prop:tower}.
+\end{proof}
+
+The theorem is proved at limit ordinals by the same argument as at successors;
+it is not an induction that silently skips limits. The critical endpoint is
+exactly the next stage, including after a limit. In Conway normal form,
+\begin{align}
+ Q_{\alpha,c}&=\frac14\sum_{\beta<\alpha}\omega^{-2\varpi_{\beta+1}}
+ +c\,\omega^{-2\varpi_{\alpha+1}},\label{diff:cp:eq:qnormal}\\
+ y_{\pm}&=\omega^{\varpi_{\alpha}/2+r_{\pm}\omega^{-\alpha}}
+ &&(c<\tfrac14),\label{diff:cp:eq:ynormal}\\
+ y_{0}&=\omega^{\varpi_{\alpha+1}/2},\qquad
+ y_{1}=\omega^{\varpi_{\alpha+1}/2+\omega^{-(\alpha+1)}}
+ &&(c=\tfrac14),\label{diff:cp:eq:ycrit}
+\end{align}
+with no unspecified primitive, inverse operator or integration constant; for
+$c=0$ the last term of \cref{diff:cp:eq:qnormal} is omitted. In the printed
+order, $\mathrm{Wr}(y_{+},y_{-})=-\sqrt{1-4c}$ and $\mathrm{Wr}(y_{0},y_{1})=1$.
+
+\begin{remark}[A Riccati form]
+\label{diff:cp:rem:riccati}
+For a real root $r$ of $r^{2}-r+c$, the logarithmic derivative of
+$u_{\alpha}\ell_{\alpha}^{r}$ is
+\begin{equation}\label{diff:cp:eq:riccati}
+ w=\tfrac12\ell_{<\alpha}^{\dagger}+r\,\ell_{\alpha}^{\dagger},
+ \qquad \der w+w^{2}+Q_{\alpha,c}=0 .
+\end{equation}
+Indeed $\der\ell_{\alpha}^{\dagger}=-\ell_{\alpha}^{\dagger}(\ell_{<\alpha}^{\dagger}
++\ell_{\alpha}^{\dagger})$ by \cref{diff:cp:eq:ader}, and the coefficient of
+$(\ell_{\alpha}^{\dagger})^{2}$ in the residual is $r^{2}-r+c$. When
+$c>\frac14$ there is no \emph{real} Riccati solution: from one, a real
+primitive and its exponential would give a nonzero real solution of
+\cref{diff:cp:eq:main}. That implication uses the surjectivity clause
+\ref{diff:BM:surj}, equivalently the Liouville closedness of $\No$ \cite{BM};
+the second-order nonexistence itself does not.
+\end{remark}
+
+\begin{remark}[Not a classification of arbitrary potentials]
+\label{diff:cp:rem:notarbitrary}
+The theorem is exact for the family \cref{diff:cp:eq:qnormal}. It does not
+say that every surreal potential has this form, that a comparison of leading
+coefficients settles arbitrary perturbations, or that every
+$\varepsilon\prec(\ell_{\alpha}^{\dagger})^{2}$ preserves subcritical or
+supercritical behaviour of $Q_{\alpha,c}+\varepsilon$; that would need further
+differential asymptotic estimates, which the gauge identity alone does not
+give, and at $c=\frac14$ the construction itself shows that a smaller
+perturbation can matter. No comparison theorem for general surreal Riccati
+equations is used.
+\end{remark}
+
+\begin{remark}[Stage zero is a regular-singular system; the finite stages are first-order thresholds]
+\label{diff:cp:rem:stagezero}
+At $\alpha=0$: $\ell_{0}=\omega$, $u_{0}=1$, $Q_{0}=0$ and
+$\ell_{0}^{\dagger}=t$, so \cref{diff:cp:eq:main} is $\der^{2}y+ct^{2}y=0$. With
+$\derT=-\omega\der$ one has $\omega^{2}\der^{2}=\derT^{2}+\derT$, so the
+equation is $\derT^{2}y+\derT y+cy=0$, the power-Hahn regular-singular system
+$\derT Y=A_{0}Y$ of \cref{diff:rs:def:class} for $Y=(y,\derT y)$, with
+$A_{0}=\left(\begin{smallmatrix}0&1\\-c&-1\end{smallmatrix}\right)$ and
+$A_{+}=0$. Its eigenvalues $\mu$ solve $\mu^{2}+\mu+c=0$ and are real exactly
+when $c\leq\frac14$, so \cref{diff:rs:thm:selection} gives dimension $2$ or
+$0$, in agreement; the bases correspond through $t^{\mu}=\omega^{r}$ with
+$\mu=-r$, and at $c=\frac14$ the Jordan block gives $\omega^{1/2}$ and
+$\omega^{1/2}\log\omega$. This comparison is made by this merge and is
+recorded as agreement. For $\alpha\geq1$ the potential involves $\log\omega$
+and lies outside $\KR$, beyond the class of \cref{diff:rs:part}
+(\cref{diff:rs:prop:boundary,diff:rs:rem:boundary}). For finite $n$ the
+supercritical obstruction is the boundary case $p=1$ of
+\cref{diff:cor:logscales} at depth $n$, and \cref{diff:cp:cor:nonreal} extends
+it to every ordinal.
+\end{remark}
+
+\begin{remark}[Amplitude and phase of a supercritical member]
+\label{diff:cp:rem:pinney}
+This remark is an observation of this merge, with its proof; member~13 does
+not state it. Let $c>\frac14$ and put
+$\rho=(c-\frac14)^{-1/4}u_{\alpha+1}>0$. Then
+\[
+ \der^{2}\rho+Q_{\alpha,c}\,\rho=\rho^{-3},
+\]
+because $\der^{2}u_{\alpha+1}=-Q_{\alpha+1}u_{\alpha+1}$ by
+\cref{diff:cp:thm:critical}, $Q_{\alpha,c}-Q_{\alpha+1}=(c-\frac14)(\ell_{\alpha}^{\dagger})^{2}$,
+and $(\ell_{\alpha}^{\dagger})^{2}u_{\alpha+1}^{4}=1$ since
+$u_{\alpha+1}^{2}=\ell_{<\alpha+1}=(\ell_{\alpha}^{\dagger})^{-1}$. Moreover
+$\rho^{-2}=\sqrt{c-\frac14}\;\der\ell_{\alpha+1}$, whose normalized primitive is
+$\sqrt{c-\frac14}\;\ell_{\alpha+1}$, a purely infinite monomial with zero
+infinitesimal part. By \cref{diff:cp:thm:main} the equation is intrinsically
+oscillatory in the sense of \cref{diff:thm:matamplitude}, so
+\cref{diff:thm:matpinney}(i) makes $\rho$ the \emph{unique} positive Pinney
+solution, \cref{diff:thm:matamplitude} has canonical phase
+$P=\sqrt{c-\frac14}\;\ell_{\alpha+1}$ with $\eta=0$, and the companion system has
+differential phase spectrum $\{P,-P\}$. The Pinney identity is direct; the
+uniqueness, the canonical phase and the spectrum use \cref{diff:part:matrix},
+hence the import \cref{diff:thm:matsurjectivity} (item~N53) and
+\ref{diff:BM:surj}. At the scale $e^{\omega}$ of \cref{diff:cp:rem:oscillator}
+the same formula gives $\rho=\abs b^{-1/2}$ and $P=\abs b\,\omega$ for
+$\der^{2}y+b^{2}y=0$, which for $b=1$ is the value $\rho=1$ recorded after
+\cref{diff:thm:matpinney}.
+\end{remark}
+
+\section{Invisible perturbations, and no final stage}
+\label{diff:cp:sec:invisible}
+
+\begin{proposition}[The exact earlier-stage asymptotics]
+\label{diff:cp:prop:earlier}
+For $\beta<\alpha$ and $c,d\in\R$,
+\begin{equation}\label{diff:cp:eq:earlier}
+ Q_{\alpha,c}-Q_{\beta}\sim\tfrac14(\ell_{\beta}^{\dagger})^{2},
+ \qquad
+ Q_{\alpha,c}-Q_{\alpha,d}=(c-d)(\ell_{\alpha}^{\dagger})^{2}
+ \prec(\ell_{\beta}^{\dagger})^{2}\quad(c\neq d).
+\end{equation}
+\end{proposition}
+\begin{proof}
+After subtracting $Q_{\beta}$, the largest monomial left in
+\cref{diff:cp:eq:qnormal} is $(\ell_{\beta}^{\dagger})^{2}$, with coefficient
+$\frac14$; every other term is strictly smaller by \cref{diff:cp:lem:scales}.
+The second assertion is the explicit difference with the same separation.
+\end{proof}
+
+\begin{theorem}[No set of earlier scales decides solvability]
+\label{diff:cp:thm:invisible}
+For every set $\mathcal B$ of ordinals there are positive surreals $Q_{-},Q_{+}$
+with
+\[
+ Q_{+}-Q_{-}\prec(\ell_{\beta}^{\dagger})^{2}
+ \quad\text{and}\quad
+ Q_{\pm}-Q_{\beta}\sim\tfrac14(\ell_{\beta}^{\dagger})^{2}
+ \qquad(\beta\in\mathcal B),
+\]
+such that $\der^{2}y+Q_{-}y=0$ has two independent surcomplex solutions and
+$\der^{2}y+Q_{+}y=0$ has only $y=0$ in $\SC$.
+\end{theorem}
+\begin{proof}
+Since $\mathcal B$ is a set, there is an ordinal $\alpha\geq1$ with
+$\alpha>\beta$ for every $\beta\in\mathcal B$. Take $Q_{-}=Q_{\alpha,0}=Q_{\alpha}$
+and $Q_{+}=Q_{\alpha,1}$. Both are positive, with leading term
+$\frac14\omega^{-2}$; \cref{diff:cp:thm:main} gives dimensions two and zero, and
+\cref{diff:cp:prop:earlier} gives the two precision assertions.
+\end{proof}
+
+\begin{example}[The first infinite stage]
+\label{diff:cp:ex:omegaexpansion}
+At $\alpha=\omega$, with $\ell_{n}=\log_{n}\omega$,
+\begin{equation}\label{diff:cp:eq:Qomega}
+ Q_{\omega}=\frac{1}{4\omega^{2}}
+ +\frac{1}{4\omega^{2}(\log\omega)^{2}}
+ +\frac{1}{4\omega^{2}(\log\omega)^{2}(\log_{2}\omega)^{2}}+\cdots .
+\end{equation}
+The coefficient $(\ell_{\omega}^{\dagger})^{2}$ is smaller than every displayed
+monomial, yet adding it changes the dimension from two to zero, and
+$Q_{\omega}+c(\ell_{\omega}^{\dagger})^{2}$ has the exact threshold
+$c=\frac14$. Specifying the entire countable logarithmic expansion
+\cref{diff:cp:eq:Qomega} does not specify solvability.
+\end{example}
+
+\begin{warning}[What the invisibility statement is about]
+\label{diff:cp:warn:quotient}
+\Cref{diff:cp:thm:invisible} concerns the explicitly named precision hierarchy
+$(\ell_{\beta}^{\dagger})^{2}$, not every conceivable observation or algorithm.
+It is a statement about a quotient by an additive class of errors smaller than
+all the designated monomials. It is not a discontinuity claim in the fine
+surreal topology (\cref{diff:warn:summability}), and that additive class is not
+called an ideal of the surreal field.
+\end{warning}
+
+\begin{proposition}[There is no all-ordinal critical potential]
+\label{diff:cp:prop:noend}
+There is no surreal $Q$ with
+$Q-Q_{\beta}\sim\frac14(\ell_{\beta}^{\dagger})^{2}$ for every ordinal $\beta$.
+In particular $\frac14\sum_{\beta\in\mathbf{On}}(\ell_{\beta}^{\dagger})^{2}$ is not a
+Hahn sum in $\No$.
+\end{proposition}
+\begin{proof}
+The relation at $\beta$ forces the coefficient of $(\ell_{\beta}^{\dagger})^{2}$
+in the normal form of $Q$ to be $\frac14$, since the support of $Q_{\beta}$
+consists of earlier monomials. The support of $Q$ would then contain the
+proper class of distinct monomials $(\ell_{\beta}^{\dagger})^{2}$,
+contradicting the set-sized support of a surreal.
+\end{proof}
+
+This does not conflict with the existence of $Q_{\alpha}$ for every set
+ordinal, uncountable ones included: every initial segment is a set, their
+union is not. The absence of a final stage is a boundary of the construction,
+not a convergence problem to be repaired by a summation convention
+(\cref{diff:sub:classes}).
+
+\begin{remark}[Relation to the valuation-insufficiency pair]
+\label{diff:cp:rem:separator}
+\Cref{diff:ex:logseparator,diff:warn:noglobalization} show that for first-order
+equations a real-exponent valuation cannot see the slower logarithmic scale
+that decides solvability. \Cref{diff:cp:thm:invisible} is the second-order,
+transfinite counterpart: within this family no set of logarithmic scales
+below the relevant stage decides, while the single coefficient $c$ at the
+stage $\alpha$ does. It concerns this family only
+(\cref{diff:cp:rem:notarbitrary}).
+\end{remark}
+
+\section{Three differential Hahn fields at a limit ordinal}
+\label{diff:cp:sec:fields}
+
+Fix a nonzero limit ordinal $\lambda$ and put
+\begin{equation}\label{diff:cp:eq:groups}
+ \Delta_{0}=\Span_{\R}\{\varpi_{\beta}:\beta<\lambda\},\qquad
+ \Delta_{1}=\Delta_{0}+\R\,\varpi_{\lambda},\qquad
+ \Delta_{2}=\Delta_{1}+\R\,\omega^{-\lambda},
+\end{equation}
+set-sized ordered real vector subgroups of the additive surreals. Let
+$H_{\Delta_{j}}=\R((t^{\Delta_{j}}))$ and $K_{\Delta_{j}}=H_{\Delta_{j}}[i]
+=\C((t^{\Delta_{j}}))$ be the full Hahn fields, viewed in $\No$ and $\SC$;
+since each $\Delta_{j}$ is a group, $t^{\Delta_{j}}=\omega^{\Delta_{j}}$, and
+membership of an exponent does not depend on the orientation.
+
+\begin{warning}[Two levels of support]
+\label{diff:cp:warn:supports}
+$\Span_{\R}$ means \emph{finite} real linear combinations. It is not closure
+under Hahn sums inside the exponent group: an element of $\Delta_{0}$ has
+bounded \emph{inner} support, while an element of $H_{\Delta_{0}}$ may have
+arbitrary well-ordered \emph{outer} support made from such exponents. The
+outer sum defining $Q_{\lambda}$ is allowed; the inner sum $\varpi_{\lambda}$ is
+not an allowed exponent of $H_{\Delta_{0}}$. Everything below depends on this
+distinction, and confusing the two levels would destroy the example.
+\end{warning}
+
+\begin{lemma}[Bounded support in the exponent group]
+\label{diff:cp:lem:exponents}
+Every $\gamma\in\Delta_{0}$ has Conway support in
+$\{\omega^{-\zeta}:\zeta<\beta\}$ for some $\beta<\lambda$. Consequently
+$\varpi_{\lambda}\notin\Delta_{0}$, $\omega^{-\lambda}\notin\Delta_{1}$, and
+$\varpi_{\lambda},\omega^{-\lambda}$ are linearly independent over $\R$
+modulo $\Delta_{0}$.
+\end{lemma}
+\begin{proof}
+A finite combination of the $\varpi_{\beta}$ has support bounded by the largest
+of its finitely many indices, which is below $\lambda$. The support of
+$\varpi_{\lambda}$ is all of $\{\omega^{-\zeta}:\zeta<\lambda\}$ and is not so
+bounded. Every element of $\Delta_{1}$ has support inside that family, hence
+zero coefficient at $\omega^{-\lambda}$. If
+$a\varpi_{\lambda}+b\omega^{-\lambda}\in\Delta_{0}$, the coefficient at
+$\omega^{-\lambda}$ gives $b=0$ and the unbounded support then gives $a=0$.
+\end{proof}
+
+All three groups are divisible, so the classical Hahn real-closedness theorem
+makes every $H_{\Delta_{j}}$ real closed and every $K_{\Delta_{j}}$
+algebraically closed \cite[Section~2.3]{BM}, the standard algebraic fact used in
+\cref{diff:thm:hull}. \Cref{diff:cp:lem:exponents} shows that both inclusions
+$H_{\Delta_{0}}\subsetneq H_{\Delta_{1}}\subsetneq H_{\Delta_{2}}$ are strict.
+
+\begin{proposition}[Derivative stability is a support assertion]
+\label{diff:cp:prop:fieldclosure}
+Each $H_{\Delta_{j}}$ and $K_{\Delta_{j}}$ is $\der$-stable and contains
+$Q_{\lambda}$; their constants are $\R$ and $\C$. More precisely, the
+logarithmic derivative of every monomial $\omega^{\gamma}$ with
+$\gamma\in\Delta_{1}$ lies in $H_{\Delta_{0}}$, and with $\gamma\in\Delta_{2}$ in
+$H_{\Delta_{2}}$.
+\end{proposition}
+\begin{proof}
+If $\beta<\lambda$ then $\beta+1<\lambda$, so $\varpi_{\beta+1}\in\Delta_{0}$
+and $\ell_{\beta}^{\dagger}=\omega^{-\varpi_{\beta+1}}\in H_{\Delta_{0}}$; hence
+$\ell_{<\beta}^{\dagger}$ for $\beta\leq\lambda$, and $Q_{\lambda}$, have support
+in $\Delta_{0}$ and lie in the full Hahn field $H_{\Delta_{0}}$. For
+$\gamma=\sum_{j=1}^{m}r_{j}\varpi_{\beta_{j}}\in\Delta_{0}$ with $\beta_{j}<\lambda$,
+$\omega^{\gamma}=\prod_{j}\ell_{<\beta_{j}}^{r_{j}}$ by \cref{diff:cp:prop:tower}
+and the multiplicativity of the monomial map; so
+$(\omega^{\gamma})^{\dagger}=\sum_{j}r_{j}\ell_{<\beta_{j}}^{\dagger}\in H_{\Delta_{0}}$.
+A further term $r\varpi_{\lambda}$ adds $r\ell_{<\lambda}^{\dagger}\in
+H_{\Delta_{0}}$, and a further $r\omega^{-\lambda}$ adds
+$r\ell_{\lambda}^{\dagger}=r\omega^{-\varpi_{\lambda}-\omega^{-\lambda}}\in
+H_{\Delta_{2}}$. So each $\Delta_{j}$ is differentially closed on monomials
+(\cref{diff:def:monomialclosed}), and \cref{diff:lem:monomialcriterion} gives
+$\der$-stability of $H_{\Delta_{j}}$ and $K_{\Delta_{j}}$; that step uses
+strong additivity \ref{diff:BM:additive}, not continuity. A constant of a
+subfield is an ambient constant, and the fields contain $\R$, respectively $\C$.
+\end{proof}
+
+\begin{theorem}[Zero, one and two solutions over closed Hahn fields]
+\label{diff:cp:thm:fieldjump}
+For $j=0,1,2$,
+\begin{equation}\label{diff:cp:eq:jump}
+ \dim_{\R}\Sol_{H_{\Delta_{j}}}(Q_{\lambda})
+ =\dim_{\C}\Sol_{K_{\Delta_{j}}}(Q_{\lambda})=j,
+\end{equation}
+and the complex solution spaces are $0$, $\C\,u_{\lambda}$ and
+$\C\,u_{\lambda}+\C\,u_{\lambda}\ell_{\lambda}$.
+\end{theorem}
+\begin{proof}
+By \cref{diff:cp:thm:critical,diff:cp:lem:span} every ambient solution is
+$au_{\lambda}+bu_{\lambda}\ell_{\lambda}$ with $a,b\in\C$, a combination of the
+two distinct monomials with exponents $\varpi_{\lambda}/2$ and
+$\varpi_{\lambda}/2+\omega^{-\lambda}$. By \cref{diff:cp:lem:exponents} neither
+lies in $\Delta_{0}$, only the first lies in $\Delta_{1}$, and both lie in
+$\Delta_{2}$. A nonzero constant combination of distinct monomials cannot cancel
+either support position, so Hahn membership gives exactly the stated spaces;
+the real case is the same with real constants.
+\end{proof}
+
+\begin{proposition}[An exponential gap followed by a primitive gap]
+\label{diff:cp:prop:gaps}
+$H_{\Delta_{0}}$ and $H_{\Delta_{1}}$ are closed under $\log$ on positive
+elements. Nevertheless
+\[
+ \log u_{\lambda}\in H_{\Delta_{0}},\quad u_{\lambda}\notin H_{\Delta_{0}};
+ \qquad
+ u_{\lambda}^{-2}\in H_{\Delta_{1}},\quad
+ \text{no primitive of }u_{\lambda}^{-2}\text{ lies in }H_{\Delta_{1}} .
+\]
+\end{proposition}
+\begin{proof}
+For $\beta\leq\lambda$, $\log\ell_{<\beta}=\sum_{\zeta<\beta}\ell_{\zeta+1}$, and
+the exponent of $\ell_{\zeta+1}$ is
+$\omega^{-(\zeta+1)}=\varpi_{\zeta+2}-\varpi_{\zeta+1}\in\Delta_{0}$ because
+$\zeta+2<\lambda$ for $\zeta<\lambda$; so $\log\ell_{<\beta}\in H_{\Delta_{0}}$,
+and the logarithm of any monomial with exponent in $\Delta_{1}$ is a finite
+real combination of these, hence in $H_{\Delta_{0}}$. A positive element of
+$H_{\Delta_{j}}$ is $r\omega^{\gamma}(1+\varepsilon)$ with $r>0$ real and
+$\varepsilon\prec1$ in $H_{\Delta_{j}}$, and $\log(1+\varepsilon)$ is a summable
+Taylor series in $\varepsilon$ with support in $\Delta_{j}$ (\cref{diff:lem:neumann}).
+This gives the closure. Now $\log u_{\lambda}=\frac12\log\ell_{<\lambda}\in
+H_{\Delta_{0}}$ while $\varpi_{\lambda}/2\notin\Delta_{0}$. Also
+$u_{\lambda}^{-2}=\omega^{-\varpi_{\lambda}}\in H_{\Delta_{1}}$ and
+$\der\ell_{\lambda}=u_{\lambda}^{-2}$; every real primitive is $\ell_{\lambda}+r$
+with $r\in\R$, and $\omega^{-\lambda}\notin\Delta_{1}$.
+\end{proof}
+
+\begin{remark}[Which closure is missing, and the relation to \cref{diff:part:workspaces,diff:part:matrix}]
+\label{diff:cp:rem:workspaces}
+Full Hahn summation, real closedness, derivative stability and closure under
+logarithms are all present in $H_{\Delta_{0}}$, and still
+$\Sol_{H_{\Delta_{0}}}(Q_{\lambda})=0$: the first missing operation is an
+exponential, the second a primitive, which is the phenomenon of
+\cref{diff:ex:logmissing} at a limit stage. No closure assertion is made about
+$H_{\Delta_{2}}$, logarithms included. $\Delta_{0}$ is divisible and
+differentially closed on monomials, so it is its own differential Hahn hull
+(\cref{diff:thm:hull}); the example is a further witness that the hull is not
+solution closure (\cref{diff:warn:hulllimits}). Over the whole of $\No$,
+\cref{diff:thm:matpinney} excludes a one-dimensional solution space for a real
+potential, because a primitive of $u^{-2}$ produces a second solution from one
+(\ref{diff:BM:surj}); $H_{\Delta_{1}}$ lacks exactly that primitive, which is
+why the one-dimensional case occurs there and nowhere in $\No$. The three
+complex fields are algebraically closed, so no step of the jump is an
+algebraic root; compare \cref{diff:rem:algnotdiff}.
+\end{remark}
+
+\section{A Borel Picard--Vessiot group at every limit stage}
+\label{diff:cp:sec:pv}
+
+Keep $\lambda$ and take the set-sized differential field $k=K_{\Delta_{0}}$, with
+constants $\C$. By \cref{diff:cp:thm:critical},
+\begin{equation}\label{diff:cp:eq:pvder}
+ \der u_{\lambda}=h\,u_{\lambda},\quad h=\tfrac12\ell_{<\lambda}^{\dagger}\in k,
+ \qquad
+ \der\ell_{\lambda}=u_{\lambda}^{-2}.
+\end{equation}
+The calculation below needs neither an abstract existence theorem for
+Picard--Vessiot extensions nor a black-box Galois computation, in keeping with
+\cref{diff:sec:PV}.
+
+\begin{lemma}[Algebraic independence of the two generators]
+\label{diff:cp:lem:algind}
+$u_{\lambda}$ and $\ell_{\lambda}$ are algebraically independent over $k$.
+\end{lemma}
+\begin{proof}
+Their exponents $\varpi_{\lambda}/2$ and $\omega^{-\lambda}$ are linearly
+independent over $\Q$ modulo $\Delta_{0}$ (\cref{diff:cp:lem:exponents}). In a
+finite relation $\sum_{(n,m)}f_{nm}u_{\lambda}^{n}\ell_{\lambda}^{m}=0$ with
+$f_{nm}\in k$, a nonzero term has support in the coset
+$\Delta_{0}+n\varpi_{\lambda}/2+m\omega^{-\lambda}$, distinct pairs give
+disjoint cosets, and terms in disjoint cosets cannot cancel.
+\end{proof}
+
+\begin{theorem}[Borel differential Galois group]
+\label{diff:cp:thm:pv}
+The field $L=k(u_{\lambda},\ell_{\lambda})\subseteq K_{\Delta_{2}}$ is a
+Picard--Vessiot field for $\der^{2}y+Q_{\lambda}y=0$ over $k$. Its constants are
+$\C$, its transcendence degree over $k$ is two, and its differential
+$k$-automorphisms are exactly
+\begin{equation}\label{diff:cp:eq:pvaction}
+ \psi_{a,b}(u_{\lambda})=a\,u_{\lambda},\qquad
+ \psi_{a,b}(\ell_{\lambda})=a^{-2}\ell_{\lambda}+b,
+ \qquad a\in\C^{\times},\ b\in\C .
+\end{equation}
+On the ordered solution basis $(u_{\lambda},u_{\lambda}\ell_{\lambda})$ the group
+is
+\begin{equation}\label{diff:cp:eq:borel}
+ \Bor_{2}(\C)=\left\{\begin{pmatrix}a&d\\0&a^{-1}\end{pmatrix}:
+ a\in\C^{\times},\ d\in\C\right\}\subseteq\SL_{2}(\C).
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \cref{diff:cp:eq:pvder}, $L$ is a differential field. It contains the
+fundamental matrix
+\[
+ Y=\begin{pmatrix}u_{\lambda}&u_{\lambda}\ell_{\lambda}\\
+ hu_{\lambda}&hu_{\lambda}\ell_{\lambda}+u_{\lambda}^{-1}\end{pmatrix},
+ \qquad \det Y=1,
+\]
+whose entries generate $u_{\lambda}$ and $\ell_{\lambda}=(u_{\lambda}\ell_{\lambda})/u_{\lambda}$
+over $k$. No new constant occurs, because $L\subseteq\SC$, whose constants are
+$\C\subseteq k$; these are the Picard--Vessiot requirements. The transcendence
+degree is \cref{diff:cp:lem:algind}. For a differential $k$-automorphism
+$\psi$, $\psi(u_{\lambda})^{\dagger}=h=u_{\lambda}^{\dagger}$, so
+$\psi(u_{\lambda})=au_{\lambda}$ with $a\in\C^{\times}$; then
+$\der\psi(\ell_{\lambda})=a^{-2}u_{\lambda}^{-2}$, so
+$\psi(\ell_{\lambda})-a^{-2}\ell_{\lambda}=b\in\C$. Conversely,
+\cref{diff:cp:lem:algind} makes \cref{diff:cp:eq:pvaction} a well-defined
+$k$-automorphism of the rational function field $k(u_{\lambda},\ell_{\lambda})$;
+\cref{diff:cp:eq:pvder} shows that it commutes with $\der$ on the generators,
+hence on $L$. It sends $u_{\lambda}\ell_{\lambda}$ to
+$ab\,u_{\lambda}+a^{-1}u_{\lambda}\ell_{\lambda}$, so its matrix is
+$\left(\begin{smallmatrix}a&ab\\0&a^{-1}\end{smallmatrix}\right)$, and $d=ab$ is
+arbitrary. The parameters and the action are algebraic, so the algebraic group
+is the Borel subgroup itself, not only an abstract list of automorphisms.
+\end{proof}
+
+\begin{corollary}[After the first Hahn enlargement]
+\label{diff:cp:cor:additive}
+Over $K_{\Delta_{1}}$ the Picard--Vessiot field is $K_{\Delta_{1}}(\ell_{\lambda})$,
+with differential Galois group $\ell_{\lambda}\mapsto\ell_{\lambda}+b$, $b\in\C$.
+\end{corollary}
+\begin{proof}
+$K_{\Delta_{1}}$ contains $u_{\lambda}$ and not $\ell_{\lambda}$, which is therefore
+transcendental over it, $K_{\Delta_{1}}$ being algebraically closed. Its
+derivative lies in $K_{\Delta_{1}}$, an automorphism fixing $u_{\lambda}$ has
+$a=1$, and the same fundamental matrix and no-new-constants argument apply.
+\end{proof}
+
+\begin{remark}[Scope of the Galois computation]
+\label{diff:cp:rem:pvscope}
+``Minimal'' refers to the solution-generated field $L$, not to the much larger
+$K_{\Delta_{2}}$: every fundamental system is a constant invertible
+combination of $(u_{\lambda},u_{\lambda}\ell_{\lambda})$ and generates $L$. The
+intermediate Hahn fields are explicit workspaces, and no minimality is claimed
+for them among arbitrary fields. The other differential Galois groups computed
+in this report are commutative --- $\gm(\C)$ in \cref{diff:thm:PVone}, the tori
+of \cref{diff:thm:torus,diff:cor:mattorus}, and $(\C,+)$ in
+\cref{diff:rs:thm:minlog} and \cref{diff:cp:cor:additive} --- so
+$\Bor_{2}(\C)$ is the only non-commutative one; it reflects the two successive
+missing operations of \cref{diff:cp:prop:gaps}, an exponential and a primitive.
+\end{remark}
+
+\section{Schwarzian form, the first limit stage, and what this part does not claim}
+\label{diff:cp:sec:schwarzian}
+
+\subsection{Schwarzian coordinates}
+\label{diff:cp:sub:schwarzian}
+
+For $s\in\SC$ with $\der s\neq0$ put
+\begin{equation}\label{diff:cp:eq:schwarzian}
+ \Sch(s)=\frac{\der^{3}s}{\der s}-\frac32\Bigl(\frac{\der^{2}s}{\der s}\Bigr)^{2},
+\end{equation}
+a finite differential rational expression; no topology and no composition is
+involved.
+
+\begin{lemma}[Schwarzian and a normalized fundamental pair]
+\label{diff:cp:lem:schwarzian}
+For $Q\in\SC$ the following are equivalent: some $s\in\SC$ has $\der s\neq0$ and
+$\Sch(s)=2Q$; the equation $\der^{2}y+Qy=0$ has a fundamental pair in $\SC$. If
+$y_{1},y_{2}$ is such a pair, every such $s$ is a constant fractional linear
+transform of $y_{2}/y_{1}$.
+\end{lemma}
+\begin{proof}
+Given $s$, algebraic closedness supplies $v=(\der s)^{-1/2}\neq0$, for either
+root. Then $v^{\dagger}=-\frac12\der^{2}s/\der s$ and
+$\der^{2}v/v=-\frac12\der^{3}s/\der s+\frac34(\der^{2}s/\der s)^{2}=-\frac12\Sch(s)$,
+so $v$ and $vs$ are solutions with $\mathrm{Wr}(v,vs)=v^{2}\der s=1$.
+Conversely, for a fundamental pair with constant $\mathrm{Wr}\neq0$, the
+quotient $s=y_{2}/y_{1}$ has $\der s=\mathrm{Wr}/y_{1}^{2}$, and the same
+differentiation gives $\Sch(s)=-2\der^{2}y_{1}/y_{1}=2Q$. If $s$ and
+$s_{0}=y_{2}/y_{1}$ both have Schwarzian $2Q$, their reconstructed fundamental
+pairs differ by an invertible constant matrix $(m_{jk})$
+(\cref{diff:cp:lem:span}), so $s=(m_{11}s_{0}+m_{12})/(m_{21}s_{0}+m_{22})$, the
+denominator being nonzero because
+$\der s_{0}\neq0$ rules out $s_{0}\in\C$; conversely every such quotient comes
+from another fundamental pair.
+\end{proof}
+
+\begin{corollary}[Transfinite Schwarzian potentials]
+\label{diff:cp:cor:schwarzian}
+For every ordinal $\alpha$, $\Sch(\ell_{\alpha})=2Q_{\alpha}$. The $s$ with
+$\der s\neq0$ and $\Sch(s)=2Q_{\alpha,c}$ are the constant fractional linear
+transforms of $\ell_{\alpha}^{\sqrt{1-4c}}$ if $c<\frac14$ and of
+$\ell_{\alpha+1}$ if $c=\frac14$; if $c>\frac14$ there is no such $s$ in $\SC$.
+\end{corollary}
+\begin{proof}
+Use the pair $u_{\alpha},u_{\alpha}\ell_{\alpha}$ for $Q_{\alpha}$, the quotient
+of the pair \cref{diff:cp:eq:basissub} for $c<\frac14$, and of
+\cref{diff:cp:eq:basiscrit} for $c=\frac14$; then apply
+\cref{diff:cp:lem:schwarzian,diff:cp:thm:main}.
+\end{proof}
+
+So the invisible perturbation of \cref{diff:cp:thm:invisible} also crosses the
+image of the scalar Schwarzian map. This is an exact projective reformulation
+of \cref{diff:cp:thm:main}, not an independent result, and the classical
+Schwarzian correspondence is reproved only to make its application to
+surcomplex scalars unambiguous.
+
+\subsection{The first limit stage in normal form}
+\label{diff:cp:sub:omega}
+
+\begin{example}[$\lambda=\omega$]
+\label{diff:cp:ex:omega}
+The inner exponent sum is the strong geometric series
+$\varpi_{\omega}=\sum_{n\geq0}\omega^{-n}=\omega/(\omega-1)$; the identity does
+not turn an outer monomial into a variable-base exponential. Then
+\[
+ u_{\omega}=\omega^{\omega/(2(\omega-1))},\qquad
+ \ell_{\omega}=\omega^{\omega^{-\omega}},\qquad
+ \ell_{\omega}^{\dagger}=\omega^{-\omega/(\omega-1)-\omega^{-\omega}},\qquad
+ \der\ell_{\omega}=\omega^{-\omega/(\omega-1)}=u_{\omega}^{-2}.
+\]
+$\ell_{\omega}$ is a positive infinite number below every $\log_{n}\omega$; its
+role as a primitive of the infinite inverse logarithmic product is recorded in
+the proof of \cite[Theorem~8.4]{BMGerms}, and its existence is not a new
+assertion. The whole surcomplex solution space of $\der^{2}y+Q_{\omega}y=0$ is
+\[
+ \C\,\omega^{\omega/(2(\omega-1))}+\C\,\omega^{\omega/(2(\omega-1))+\omega^{-\omega}},
+\]
+$Q_{\omega}+(\ell_{\omega}^{\dagger})^{2}$ has only the zero solution, and at
+the boundary $Q_{\omega}+\frac14(\ell_{\omega}^{\dagger})^{2}=Q_{\omega+1}$ the
+basis is $\omega^{\varpi_{\omega+1}/2}$,
+$\omega^{\varpi_{\omega+1}/2+\omega^{-(\omega+1)}}$. All of this is exact. The
+groups of \cref{diff:cp:eq:groups} are
+\[
+ \Delta_{0}=\bigoplus_{n\geq0}\R\,\omega^{-n},\qquad
+ \Delta_{1}=\Delta_{0}+\R\,\frac{\omega}{\omega-1},\qquad
+ \Delta_{2}=\Delta_{1}+\R\,\omega^{-\omega};
+\]
+the direct sum is inside the additive surreals, its members have finitely
+many terms, and it is not the field of Laurent series in $\omega^{-1}$. Every
+term of $Q_{\omega}$ has exponent $-2(1+\omega^{-1}+\dots+\omega^{-n})\in\Delta_{0}$,
+so $H_{\Delta_{0}}$ contains the potential; adjoining the direction
+$\omega/(\omega-1)$ admits the first solution monomial, and adjoining
+$\omega^{-\omega}$ the second. At higher limits ``finite inner support'' is
+replaced by ``support bounded below $\lambda$'' (\cref{diff:cp:lem:exponents});
+no countability assumption is used there or in \cref{diff:cp:thm:pv}.
+\end{example}
+
+\subsection{Inputs, boundaries and continuations}
+\label{diff:cp:sub:limits}
+
+\begin{remark}[Which assumptions matter, and the derivation]
+\label{diff:cp:rem:derivation}
+The normal-form and strong-additivity inputs justify every limit stage. The
+ordinal derivative formula of \cref{diff:cp:prop:tower} fixes the coefficients
+and the bases; the normalization $\der\omega=1$ alone does not determine it.
+The exact constant field is essential both to the angular obstruction and to
+the spanning argument, and the complex argument needs only infinitesimal
+logarithms, not an exponential at arbitrary imaginary arguments. For another
+surreal derivation the finite identities may still hold, but the limit-stage
+derivatives need not be the Berarducci--Mantova ones; no derivation-independent
+version is claimed, and in particular nothing here is asserted for the class
+of normalized derivations of \cref{diff:aut:part}. These are not statements
+about coordinate differentiation in $\Hol(U)((t^{\Gamma}))$
+(\cref{diff:part:coordinate}) or about fine-differentiable class functions
+(\cref{diff:warn:separators}).
+\end{remark}
+
+\begin{remark}[Established inputs and proposed contributions]
+\label{diff:cp:rem:inputs}
+The finite critical hierarchy is classical Kneser--Weber--Hartman--Hille
+theory, with a modern treatment and the positive-solution reduction in
+\cite[Section~2]{KT}, whose Schr\"odinger potential has the opposite sign to
+$Q$ here; neither the finite threshold nor reduction of order is new. The
+derivation is Berarducci and Mantova's \cite{BM}, the ordinal log-atomic
+formulas are \cite[Section~2]{ADH}, Hahn real closedness and Neumann's lemma are
+standard, and the finite-primitive obstruction is \cref{diff:part:scalar}. The
+general logical theory of such solvability is not new either:
+\cite[p.~17]{ADH} discusses the predicate $\Omega(a)$ for the existence of a
+nonzero solution of $4y''+ay=0$, and the asymptotic differential algebra of
+\cite{ADHBook} is neither replaced nor claimed. Mantova's monotonicity and
+Taylor results for transseries \cite{Mantova2026} concern functional
+composition and are not used or superseded. The main proofs use no model
+completeness, no differential closure and no finite-system splitting theorem.
+Member~13 proposes as its contributions only the transfinite classification
+(\cref{diff:cp:thm:main}), the invisibility theorem
+(\cref{diff:cp:thm:invisible}), and especially the limit-stage filtration and
+its Galois group (\cref{diff:cp:thm:fieldjump,diff:cp:thm:pv}); the gauge and Schwarzian mechanisms
+are standard, and no isolated elementary identity is promoted. Priority is
+provisional (item~N103).
+\end{remark}
+
+\begin{remark}[A formalization interface]
+\label{diff:cp:rem:formalization}
+The proofs split into an imported surreal interface --- Conway normal forms,
+Hahn summability, the log-atomic derivative identities and the strongly
+additive derivation --- and explicit finite differential algebra: the operator
+identity, the Euler factorization, Wronskian spanning, exponent-coset
+independence and the automorphism calculation. Member~13 recommends isolating
+that interface rather than trying to infer the whole derivation from
+$\der\omega=1$. No Lean file is supplied (\cref{diff:warn:noformalization}).
+\end{remark}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Proof dependencies of \cref{diff:cp:part}.}
+\label{diff:cp:tab:dependencies}
+\begin{tabularx}{\textwidth}{@{}L{0.27\textwidth}Y@{}}
+\toprule
+Conclusion & Necessary inputs, and the check against overreach \\
+\midrule
+Tower (\cref{diff:cp:prop:tower}) & Imported from \cite{ADH}, limit cases
+included. Not derived from $\der\omega=1$. \\
+Critical identity (\cref{diff:cp:thm:critical}) & Strong additivity, the
+exponential clause, joint summability of the double family. No limit of partial
+sums. \\
+Nonreal powers (\cref{diff:cp:cor:nonreal}) & \Cref{diff:thm:phasecriterion},
+direction (i)$\Rightarrow$(iii); constant field $\C$. No primitive. \\
+Euler classification (\cref{diff:cp:prop:euler}) & Wronskian spanning for
+$\der_{s}$, real powers, \cref{diff:cp:cor:nonreal}. \\
+Classification (\cref{diff:cp:thm:main}) & The gauge identity with
+$s=\ell_{\alpha}$. Not a classification of arbitrary potentials. \\
+Invisibility (\cref{diff:cp:thm:invisible}) & Scale separation; a set of
+ordinals has a strict upper bound. The named hierarchy only. \\
+Field jump (\cref{diff:cp:thm:fieldjump}) & Bounded inner support, the monomial
+criterion, Hahn real closedness. Finite spans, not Hahn closure, of exponents. \\
+Borel group (\cref{diff:cp:thm:pv}) & Coset independence, constants of $\SC$.
+No abstract Picard--Vessiot existence theorem. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
 \part{Coordinate differential equations in common-domain Hahn rings}
 \label{diff:part:coordinate}
 
@@ -10004,17 +11196,26 @@ generalized-series operator methods \cite{vdH} are the antecedents of
 \cref{diff:rs:part}; the geometric formalism of autonomous first-order equations,
 their local normal forms and Rosenlicht's theorem \cite{NPT} are the antecedents
 of \cref{diff:aut:part}, with \cite{Milne,Stacks} for the algebraic geometry.
+\item \textbf{Classical oscillation theory and the log-atomic tower.} The
+finite critical hierarchy of \cref{diff:cp:part} is classical
+Kneser--Weber--Hartman--Hille theory, treated in \cite{KT}; the ordinal
+log-atomic formulas are \cite[Section~2]{ADH}; the solvability predicate
+$\Omega$ of \cite[p.~17]{ADH} and the asymptotic differential algebra of
+\cite{ADHBook} are the general theory the family instantiates; and Mantova's
+composition results \cite{Mantova2026} are neither used nor superseded
+(\cref{diff:cp:rem:inputs}).
 \end{itemize}
 
 \section{The register of non-claims}
 \label{diff:sec:nonclaims}
 
 This section is part of the result. Each item below was stated explicitly by
-at least one of the ten source manuscripts, or is an artifact-level finding of
+at least one of the eleven source manuscripts, or is an artifact-level finding of
 the audit of a source package and is marked as such; all of them survive the
 merge. Several are also stated in place above, and the cross-references say
 where. Items N1--N52 come from the first seven manuscripts, N53--N64 from the
-eighth, N65--N79 from member~12 and N80--N94 from member~11; where a later
+eighth, N65--N79 from member~12, N80--N94 from member~11 and N95--N106 from
+member~13; where a later
 member changed the status of an earlier item, the item is amended in place and
 its original wording is kept.
 
@@ -10157,7 +11358,8 @@ branch. The repository's existing phase decomposition and chosen-exponential
 obstruction are acknowledged as prior coverage, not presented as missing
 results. No repository file was modified by any of the seven source packages,
 and the placement suggestions they made were suggestions. The later, equally
-scoped audits of members~11 and~12, pinned to \CommitC, are items N93 and N77.
+scoped audits of members~11 and~12, pinned to \CommitC, are items N93 and N77,
+and that of member~13, pinned to \CommitD, is item~N104.
 \end{enumerate}
 
 \subsection{Effectivity: what is exact but not computable}
@@ -10223,6 +11425,12 @@ projective curve, for every normalized derivation. The item stands for
 everything beyond that class: variable coefficients in $\SC\setminus\C$, higher
 order, simultaneous systems and higher-dimensional autonomous systems
 (items~N81--N82), and $\SC$ remains not differentially closed.
+\emph{Amended with member~13:} one explicit family of linear second-order
+equations with variable coefficients is classified at every ordinal depth,
+$\der^{2}y+(Q_{\alpha}+c(\ell_{\alpha}^{\dagger})^{2})y=0$
+(\cref{diff:cp:thm:main}). The item stands for every other higher-order
+operator, and in particular for arbitrary perturbations of that family
+(item~N99).
 \item No general inhomogeneous existence theorem is claimed \emph{by
 \cref{diff:part:scalar}}. Outside the admissible locus $\Phi(q)=0$ its only
 assertion is \emph{uniqueness}
@@ -10259,7 +11467,11 @@ does not settle an inhomogeneous equation over a smaller subfield.
 class of \cref{diff:rs:part} is a different statement, for the Euler derivation
 $\derT$ and power-Hahn coefficients $A_{0}+A_{+}$, and it does not extend the
 constant-coefficient theorem to arbitrary surcomplex coefficients; its own
-limits are items N65--N79.
+limits are items N65--N79. \emph{Amended with member~13:} the item still
+stands. \Cref{diff:cp:prop:euler} is the order-two constant-coefficient
+classification read for a rescaled derivation $\der_{\log s}$
+(\cref{diff:cp:rem:constant}); it does not extend \cref{diff:thm:constant} to
+arbitrary coefficients, and its limits are items N95--N106.
 \item \Cref{diff:thm:matnormal} gives a complete phase normal form for every
 ordinary finite system, including non-Hermitian ones, and \cref{diff:thm:matspectral} computes
 its invariant from ordinary algebraic eigenvalues \emph{when the coefficient is
@@ -10449,7 +11661,8 @@ $1{,}395+115+149+258+291+150+259+62$ passing checks
 (\cref{diff:app:verification}); a matrix identity or a whole checked
 coefficient prefix counts as one check in two of the suites. The suites of
 members~11 and~12 record $10$ and $8$ passing checks and carry their own scope
-items, N94 and N78--N79; every limitation stated in the rest of this item applies
+items, N94 and N78--N79, and the suite of member~13 records $70$, with scope
+items N105--N106; every limitation stated in the rest of this item applies
 to them as well. They do not
 construct the surreal numbers, do not implement Conway normal forms or the
 Berarducci--Mantova path construction, do not verify arbitrary Hahn
@@ -10814,6 +12027,120 @@ and its README's rebuild instructions redirect that output onto the delivered
 \path{verification.txt}; run them only on a copy. There is no checksum manifest.
 \end{enumerate}
 
+\subsection{Scope of the transfinite critical potentials}
+\label{diff:cp:sub:nc}
+
+Member~13 states twenty-one explicit limitations of its own, by this merge's
+count. All survive here, together with the audit findings recorded against its
+package (item~N106); its two open directions, which it does not claim to have
+solved, are among the continuations of \cref{diff:sub:nc:open}.
+
+\begin{enumerate}[label=\textup{N\arabic*.},leftmargin=3.0em,itemsep=0.35em,start=95]
+\item \emph{Scalar unknowns.} The unknown of \cref{diff:cp:part} is a scalar of a
+specified differential field, not a function on an ordinary interval
+(\cref{diff:conv:meaning}); ``no solution in $\SC$'' is not a claim that an
+ordinary complex initial-value problem has no analytic solution, and nothing
+is asserted about coordinate differentiation in $\Hol(U)((t^{\Gamma}))$ or about
+fine-differentiable class functions (\cref{diff:cp:rem:derivation}).
+\item \emph{One derivation, and an imported tower.} Every statement is relative
+to the fixed $\der$ (item~N3). The ordinal log-atomic formulas, limit cases
+included, are imported from \cite[Section~2]{ADH}; they are not obtained by
+differentiating finite iterates, and the normalization $\der\omega=1$ alone
+does not determine them. No derivation-independent version is claimed: for
+another derivation the finite identities may still hold, but the limit-stage
+derivatives need not be the Berarducci--Mantova ones, and nothing is asserted
+for the class of normalized derivations of \cref{diff:aut:part}
+(\cref{diff:cp:prop:tower,diff:cp:rem:derivation}).
+\item \emph{No transfinite iteration or composition.} The $\ell_{\alpha}$ are
+particular numbers; no globally defined transfinite iteration or composition of
+$\log$, no substitution $v(s)$ and no global composition is used
+(\cref{diff:cp:rem:notation,diff:cp:lem:gauge}, \cite[Theorem~8.4]{BMGerms}).
+The Conway monomial map is not $x\mapsto\exp(x\log\omega)$, and no
+variable-exponent power rule is used (\cref{diff:warn:monomialmap}).
+\item \emph{Sums and classes.} Every sum is a Hahn sum of a set-indexed summable
+family; none is a limit of partial sums in the fine topology, $Q_{\lambda}$ is
+the sum of its increments and not of the $Q_{\beta}$, the imported product
+identity is not replaced by convergence of finite products, and no proper-class
+family is summed. There is no all-ordinal potential
+(\cref{diff:cp:prop:noend}), and that is a boundary of the construction, not a
+convergence problem. Solution collections are sets; no dimension theory of a
+proper-class vector space is used.
+\item \emph{This family only.} No classification of arbitrary potentials, and
+no comparison of leading coefficients, is asserted; no comparison theorem for
+surreal Riccati equations is used; that every
+$\varepsilon\prec(\ell_{\alpha}^{\dagger})^{2}$ preserves subcritical or
+supercritical behaviour is not proved and would need further differential
+asymptotic estimates, and at $c=\frac14$ a smaller perturbation can matter
+(\cref{diff:cp:rem:notarbitrary}).
+\item \emph{What invisibility means.} \Cref{diff:cp:thm:invisible} concerns the
+named hierarchy $(\ell_{\beta}^{\dagger})^{2}$, not every conceivable
+observation or algorithm. It is a statement about a quotient by an additive
+class of errors, not a discontinuity in the fine topology, and that class is
+not called an ideal of the field (\cref{diff:cp:warn:quotient}).
+\item \emph{Field-theoretic scope.} $\Span_{\R}$ means finite combinations, not
+Hahn closure inside the exponent group, and at $\lambda=\omega$ the group
+$\Delta_{0}$ is not a Laurent-series field (\cref{diff:cp:warn:supports,diff:cp:ex:omega}).
+No closure property of $H_{\Delta_{2}}$, logarithms included, is asserted;
+``minimal'' refers to the solution-generated field only, and no minimality of
+the intermediate Hahn fields among arbitrary fields is claimed
+(\cref{diff:cp:rem:workspaces,diff:cp:rem:pvscope}).
+\item \emph{Inputs and antecedents.} The finite critical hierarchy and
+reduction of order are classical \cite{KT}, whose potential has the opposite
+sign; the derivation \cite{BM}, the log-atomic formulas \cite{ADH}, Hahn real
+closedness and the positive-support lemma are imported; the obstruction for
+nonreal powers is this report's criterion, reproved there in a special case;
+the gauge and Schwarzian mechanisms are standard, and the Schwarzian form is
+not an independent result. The general theory of such solvability, including
+the predicate $\Omega$ of \cite[p.~17]{ADH}, is not new; \cite{ADHBook} is
+neither replaced nor claimed; \cite{Mantova2026} is neither used nor
+superseded. The main proofs use no model completeness, no differential closure
+and no finite-system splitting theorem, and surjectivity only in the real
+Riccati remark (\cref{diff:cp:rem:inputs,diff:cp:rem:riccati}).
+\item \emph{Novelty and verification.} Member~13 proposes as new only the
+transfinite classification, the invisibility theorem, and the limit-stage
+filtration with its Borel group; no isolated elementary identity is promoted.
+Priority is provisional: the literature search was targeted and did not
+certify exhaustive coverage, an expert may recognize a conclusion as a known
+consequence of a broader theorem, and the arguments do not depend on the
+novelty assessment. No named published conjecture is claimed resolved. No
+independent refereeing, no proof-assistant verification and no Lean
+implementation is claimed. This report itself makes no novelty claim
+(item~N9).
+\item \emph{The repository comparison.} Member~13 read the repository at
+\CommitD: its tree, root README, the catalogue \path{docs/README.md}, the listing
+of \path{docs/new/}, the introductions of the entire-functions and
+Gamma-functions reports, and source ranges of this article. Connector searches
+for ``Kneser'' and ``iterated-logarithm'' returned no hits, including none for
+wording visible in an inspected source, and were not treated as evidence of
+absence. The comparison is bounded and is not a proof of absence from the
+repository, its history or later commits; the repository was read, not
+modified. \emph{Recorded by this merge:} the article it read already
+contained the first-order counterpart \cref{diff:cor:logscales}, titled
+``Iterated-logarithm thresholds at every finite depth'', which the member does
+not cite; \cref{diff:cp:lem:scales,diff:cp:cor:nonreal} now connect the two.
+\item \emph{The checks.} The $70$ exact symbolic checks --- the critical and
+Riccati identities at lengths $0$ to $12$ ($39$), Euler powers, bases and
+Wronskians ($8$), the gauge identity ($4$), Schwarzian identities ($4$) and the
+fundamental matrix and Borel action ($15$) --- test finite identities, with the
+Euler checks modelling the scale by an ordinary positive variable. They do not
+construct the surreal numbers or the derivation, do not prove the imported
+derivative formula, do not certify transfinite Hahn summability or
+exponent-field membership, and do not establish novelty; a count is not a
+measure of proof strength, and no finite list of checks certifies a theorem for
+every ordinal.
+\item \emph{Audit findings on package~13} (artifact level; no mathematical
+statement is affected). The program writes to standard output and, with
+\texttt{--output}, to the named file; the package README's
+\texttt{python verify.py --output verification.txt} would overwrite a record
+of that name, so run it only on a copy. The placed manifest
+\path{data/13-critical-potentials-manifest.json} lists five files with SHA-256
+digests; all five match the delivered package, but only the program and its
+record are shipped here, as \path{code/13-critical-potentials-verify.py} and
+\path{data/13-critical-potentials-verification.txt}, and the package's
+\path{article.tex}, $21$-page \path{article.pdf} and \path{README.md} are not.
+The record states Python 3.13.5 and SymPy 1.14.0.
+\end{enumerate}
+
 \subsection{Open continuations, hedged}
 \label{diff:sub:nc:open}
 
@@ -10859,7 +12186,7 @@ The separation is not free --- existence comes from the imported
 half is claimed (item~N57).
 \end{itemize}
 
-Three of the remaining continuations are touched by the two latest parts: two
+Three of the remaining continuations are touched by \cref{diff:rs:part,diff:aut:part}: two
 are answered \emph{in part}, and one only has an adjacent result. They are
 re-scoped here rather than deleted.
 \begin{itemize}[leftmargin=1.6em]
@@ -10883,10 +12210,13 @@ workspaces where support shifts lack the uniform rational form of
 \cref{diff:eq:hahnderiv}.} Not answered. Member~11 supplies explicit multi-scale
 $\der$-stable Hahn fields $K_{\xi}$, with power, logarithmic and exponential
 scales (\cref{diff:aut:rem:monomial}), but does not classify logarithmic
-derivatives on them.
+derivatives on them; member~13 supplies the higher-rank logarithmic fields
+$H_{\Delta_{j}}$ of \cref{diff:cp:sec:fields}, with an explicit
+logarithmic-derivative formula for their monomials
+(\cref{diff:cp:prop:fieldclosure}), and does not classify them either.
 \end{itemize}
 
-The two latest members add continuations of their own. From member~12: a
+Members~11 and~12 add continuations of their own. From member~12: a
 \emph{layered} analogue of the regular-singular theory for coefficient fields
 containing $\log\omega$, $\log\log\omega$ and their real powers, where
 \cref{diff:rs:prop:boundary} shows residual data at the first power scale to be
@@ -10907,6 +12237,19 @@ normalized derivation, and on $\KR$ the operator $-\omega\Dn$ acts by
 $t^{a}\mapsto at^{a}$ for every normalized $\Dn$, so \cref{diff:rs:part} appears to
 hold for every normalized derivation; that has not been audited line by line, and
 no statement of \cref{diff:rs:part} is upgraded.
+
+Member~13 adds two directions and does not claim either solved: characterize
+the ordered exponent groups $\Gamma$ for which $Q_{\lambda}$ lies in
+$\R((t^{\Gamma}))$ and $\der$ restricts, and classify the solution dimension there
+by the two basis exponents; and study controlled nonconstant perturbations of
+$c$ after the exact reduction to $\der_{s}^{2}+cs^{-2}$. Its part is adjacent to
+member~12's layered continuation above without answering it: within its one
+family the coefficient at the last scale decides existence and no set of
+earlier scales does (\cref{diff:cp:thm:invisible,diff:cp:rem:separator}), but no
+restricted logarithmic class of regular-singular type is classified. It is
+likewise adjacent to the extension of the workspace algorithms to logarithmic
+and higher-rank parents below: the fields $H_{\Delta_{j}}$ are explicit such
+parents, with no algorithm.
 
 The remaining continuations stand.
 Build explicitly typed analytic and coefficient interfaces that prove exchange
@@ -10983,6 +12326,18 @@ when its eigenvalue is negative real, a multiple zero contributes finitely many
 power--logarithm families, and the whole answer is the same for every normalized
 surreal derivation. Constant abelian varieties obey the same rule with their
 whole Lie coordinate: $\dlog$ lands exactly in $\Lie(\mathbf A)(\der\mm_{\C})$.
+
+The same obstruction also runs down the log-atomic tower. For the second-order
+potentials $Q_{\alpha}+c(\ell_{\alpha}^{\dagger})^{2}$ one gauge identity
+reduces the equation to the Euler operator at the scale $\ell_{\alpha}$, and
+the threshold $c=\frac14$ is exact at every ordinal depth: the missing
+oscillator is the same Euler problem at the scale $e^{\omega}$, and in every
+supercritical case the obstruction is an infinite accumulated phase, now
+$\sqrt{c-\frac14}\,\ell_{\alpha+1}$. No set of earlier logarithmic scales
+decides solvability, and at every limit stage the solutions appear one at a
+time in differential Hahn fields that are already real closed and closed under
+logarithms --- first after an exponential, then after a primitive --- with the
+Borel subgroup of $\SL_{2}(\C)$ as the Galois group of the two steps together.
 
 A distinct theory of coordinate initial-value problems remains available and
 useful. On a common ordinary complex domain, positive-support Hahn
@@ -11224,6 +12579,23 @@ $\dlog_{\Dn}$, $\Obs^{\C}_{\Dn}$ & The abelian logarithmic derivative, and the
 complex primitive obstruction $\pp(\mathfrak b)$ with $\Dn\mathfrak b=a$; not $\Phi$. \\
 $\Log$, $\mathfrak t$ & A strip logarithm, used pointwise, and a time
 primitive. \\
+$\ell_{\alpha}$, $\varpi_{\alpha}$ & In \cref{diff:cp:part}: the log-atomic number
+$\omega^{\omega^{-\alpha}}$ for an ordinal $\alpha$, extending the iterated
+logarithms $\ell_{n}$; and the exponent sum $\sum_{\beta<\alpha}\omega^{-\beta}$. \\
+$\ell_{<\alpha}$, $u_{\alpha}$ & The monomials $\omega^{\varpi_{\alpha}}$ (the
+monomial product of the $\ell_{\beta}$, $\beta<\alpha$) and
+$\omega^{\varpi_{\alpha}/2}$. \\
+$Q_{\alpha}$, $Q_{\alpha,c}$ & The critical potential
+$\frac14\sum_{\beta<\alpha}(\ell_{\beta}^{\dagger})^{2}$ and
+$Q_{\alpha}+c(\ell_{\alpha}^{\dagger})^{2}$; $Q_{\alpha,1/4}=Q_{\alpha+1}$. \\
+$\lambda$, $\Delta_{j}$ & In \cref{diff:cp:sec:fields,diff:cp:sec:pv}: a nonzero limit
+ordinal, never an eigenvalue; and the exponent groups of
+\cref{diff:cp:eq:groups}. \\
+$\mathrm{Wr}$, $\Sch$ & The Wronskian $y_{1}\der y_{2}-y_{2}\der y_{1}$, and the
+Schwarzian of \cref{diff:cp:eq:schwarzian}. \\
+$\Bor_{2}(\C)$, $\psi_{a,b}$ & The upper triangular Borel subgroup of
+$\SL_{2}(\C)$, and the automorphisms of \cref{diff:cp:eq:pvaction}; unrelated to
+Borel summation. \\
 \bottomrule
 \end{longtable}
 
@@ -11326,6 +12698,22 @@ is an accumulated phase here; its infinitesimal error $\delta$ is an
 $\varepsilon$, its formal series $F_{p,\beta,C}$ is $w_{p,\beta,C}$, and its
 evaluation points $x,y$ are $x_{m},y_{\omega}$.
 
+Member~13's letters are renamed in \cref{diff:cp:conv:alphabet}, and its most
+dangerous letter first (\cref{diff:cp:warn:frakm}): its $\mathfrak m(x)$ is the
+Conway monomial map $\omega^{x}$, and its $\mathfrak i$ and $\mathcal O$ are
+$\mm$ and $\Ofin$. Its $p_{\alpha}$, $s_{\alpha}$, $P_{\alpha}$, $U_{\alpha}$ are
+$\omega^{-\alpha}$, $\varpi_{\alpha}$, $\ell_{<\alpha}$, $u_{\alpha}$; its $a_{\alpha}$,
+$A_{\alpha}$, $h_{\alpha}$ are $\ell_{\alpha}^{\dagger}$, $\ell_{<\alpha}^{\dagger}$,
+$u_{\alpha}^{\dagger}$; its potentials $q_{\alpha,c}$ and $q$ are $Q_{\alpha,c}$ and
+$Q$, since $q$ is the rank-one coefficient here; its coordinate $T$ with $D_{T}$,
+$E_{T}$ and partner $U$ is a scale $s$ with $\der_{s}$, $s\der_{s}$ and $u$; its
+Wronskian $W$ is $\mathrm{Wr}$; its $\Gamma_{j}$, $K_{j}$, $k_{j}$ are $\Delta_{j}$,
+$H_{\Delta_{j}}$, $K_{\Delta_{j}}$; its fundamental matrix $\Phi$, automorphisms
+$\sigma_{a,b}$, Borel group $B(\C)$ and Schwarzian $\mathcal S_{\der}$ are $Y$,
+$\psi_{a,b}$, $\Bor_{2}(\C)$ and $\Sch$; its infinitesimal primitive $\theta$ of
+an angular rate is $\eta$; its Riccati solution $b$ is $w$; and its ordinal
+index $\eta$ is $\zeta$.
+
 Finally, $\Ofin$ never takes an argument. Where a source wrote
 $\mathcal O(V)$ for holomorphic functions, this report writes $\Hol(V)$.
 \end{warning}
@@ -11370,19 +12758,22 @@ classification.
 \section{Provenance: what each archive contributed}
 \label{diff:app:provenance}
 
-This report merges ten source manuscripts. The manuscripts themselves are
+This report merges eleven source manuscripts. The manuscripts themselves are
 not distributed with this report; the disposition of each source result is
 recorded in the provenance material below and in the package README. The
 identifiers below are the merge identifiers; among the first seven the original archive names collided, three pairs of them
 differing only by a trailing marker, so the mapping is recorded here and in the
 package README because it is not recoverable from the filenames. Members 01--09
 are pinned to \Commit; member 10 joined later and is pinned to \CommitB;
-members 11 and 12 joined last, from the archives
+members 11 and 12 joined together after it, from the archives
 \texttt{surreal\_autonomous\_dynamics} and
 \texttt{surcomplex\_regular\_singular}, and are pinned to \CommitC. The first of
 those archive names is misleading on two counts: its field is $\No[i]$ with real
 corollaries, not $\No$ alone, and its ``dynamics'' are flows of autonomous
-differential equations, not iteration of maps.
+differential equations, not iteration of maps. Member~13 joined after them,
+from the archive \texttt{surreal\_transfinite\_critical\_potentials}, and is pinned to
+\CommitD; its code and data are placed under the prefix
+\texttt{13-critical-potentials}.
 
 \begin{longtable}{@{}L{0.13\textwidth}L{0.80\textwidth}@{}}
 \caption{Provenance by member.}
@@ -11601,7 +12992,28 @@ repair with Galois group $(\C,+)$, and the exact Hahn obstruction sequence
 the six worked examples (\cref{diff:rs:sec:examples}); the finite-monomial,
 one-logarithm envelope (\cref{diff:rs:thm:workspace}); the power-Hahn boundary
 (\cref{diff:rs:prop:boundary}); and the exact finite procedure with its limits
-(\cref{diff:rs:sub:procedure}). \\
+(\cref{diff:rs:sub:procedure}). \\[0.3em]
+13 \newline\emph{transfinite critical potentials} &
+The whole of \cref{diff:cp:part}: the imported ordinal log-atomic tower with its
+limit-stage caveats and scale separation
+(\cref{diff:cp:prop:tower,diff:cp:lem:scales}); the summable triangular
+differentiation and the exact critical solutions with Wronskian one at every
+ordinal (\cref{diff:cp:lem:triangular,diff:cp:thm:critical}); the Wronskian
+spanning lemma, the Liouville gauge identity and the Euler classification at a
+positive infinite scale (\cref{diff:cp:lem:span,diff:cp:lem:gauge,diff:cp:prop:euler});
+the transfinite classification with its Conway normal forms, Wronskians and
+Riccati form (\cref{diff:cp:thm:main,diff:cp:rem:riccati}); the earlier-stage
+asymptotics, the invisibility theorem, the first infinite stage and the absence
+of an all-ordinal potential
+(\cref{diff:cp:prop:earlier,diff:cp:thm:invisible,diff:cp:ex:omegaexpansion,diff:cp:prop:noend});
+the three Hahn fields at a limit ordinal with bounded inner support, derivative
+stability, the $0,1,2$ jump and the exponential-then-primitive gap
+(\cref{diff:cp:lem:exponents,diff:cp:prop:fieldclosure,diff:cp:thm:fieldjump,diff:cp:prop:gaps});
+the Borel Picard--Vessiot group and its additive remainder
+(\cref{diff:cp:lem:algind,diff:cp:thm:pv,diff:cp:cor:additive}); the Schwarzian
+form (\cref{diff:cp:lem:schwarzian,diff:cp:cor:schwarzian}); the first limit
+stage in normal form (\cref{diff:cp:ex:omega}); and its boundaries, inputs and
+formalization interface (\cref{diff:cp:sub:limits}). \\
 \bottomrule
 \end{longtable}
 
@@ -11627,14 +13039,39 @@ strengthened beyond what a source proves.
 The first seven manuscripts state, between them,
 $13+16+18+13+24+21+13=118$ explicit non-claims, with heavy overlap, and the
 eighth states a further $12$, giving $130$. Members~11 and~12 state fifteen
-each, by this merge's count, giving $160$.
-\Cref{diff:sec:nonclaims} consolidates them into $94$ numbered items,
-organized by theme; every one of the $160$ has a home there, and many items
+each, by this merge's count, giving $160$, and member~13 states twenty-one,
+giving $181$.
+\Cref{diff:sec:nonclaims} consolidates them into $106$ numbered items,
+organized by theme; every one of the $181$ has a home there, and many items
 carry several sources' phrasings at once. Two of the $118$ are artifact-level
 discrepancies in the source packages rather than mathematical limitations, and
 they are recorded as such in item~N52; a third, the eighth package's
 self-rewriting verification script, is item~N64; and the audit findings on the
-packages of members~12 and~11 are items N79 and N94.
+packages of members~12, 11 and~13 are items N79, N94 and N106.
+
+Integrating member~13 followed the same rules. Its reproof of the obstruction
+for nonreal powers of an infinite scale, through an infinitesimal primitive of
+the angular rate, is \cref{diff:thm:unitphase} with the direction
+(i)$\Rightarrow$(iii) of \cref{diff:thm:phasecriterion}, and is recorded as
+agreement (\cref{diff:cp:cor:nonreal}); its derivative-stability argument is an
+instance of \cref{diff:lem:monomialcriterion} and is cited as such
+(\cref{diff:cp:prop:fieldclosure}); and its stage~$0$ agrees with
+\cref{diff:rs:thm:selection} (\cref{diff:cp:rem:stagezero}). Its own proofs are
+kept: they use neither surjectivity nor the import of
+\cref{diff:thm:matsurjectivity}. Three observations that the member does not
+state are recorded as such, with proofs: the Euler operator as a
+constant-coefficient operator at a rescaled scale (\cref{diff:cp:rem:constant}),
+the missing oscillator as the Euler problem at the scale $e^{\omega}$
+(\cref{diff:cp:rem:oscillator}), and the amplitude and phase of a supercritical
+member, which use \cref{diff:part:matrix} and flag its import
+(\cref{diff:cp:rem:pinney}); the comparison of stage~$0$ with
+\cref{diff:rs:part} is likewise made by this merge. Hedges were amended in place
+and not removed: items N13, N21, N23 and N48, the remark after
+\cref{diff:cor:logscales}, \cref{diff:rs:rem:boundary}, the opening of
+\cref{diff:sec:PV}, the remark after \cref{diff:thm:matpinney},
+\cref{diff:warn:phasecollision}, and the continuation on multi-scale Hahn
+workspaces. One omission in the member's repository comparison is recorded,
+with its pin kept (item~N104).
 
 Integrating members~11 and~12 followed the same rules. Their reproofs of results
 already in the report are recorded as agreements and cited: smallness
@@ -11684,11 +13121,11 @@ earlier summaries that had conflated those two scopes.
 
 Each source package shipped a deterministic exact-symbolic program together
 with its \emph{recorded} run. This appendix reproduces those records. It does
-not re-run them and does not merge their counts into a single suite: ten
-suites with ten scopes remain ten suites.
+not re-run them and does not merge their counts into a single suite: eleven
+suites with eleven scopes remain eleven suites.
 
 \begin{longtable}{@{}L{0.09\textwidth}L{0.13\textwidth}L{0.70\textwidth}@{}}
-\caption{The ten recorded verification runs.}
+\caption{The eleven recorded verification runs.}
 \label{diff:tab:verification}\\
 \toprule
 Member & Recorded & Scope and declared cutoffs \\
@@ -11831,7 +13268,26 @@ $((1-\tfrac1j)-1)(-j)=1$ for $2\leq j\leq100$; the forced nilpotent example of
 \cref{diff:rs:ex:forced} with a failed constant-image test; and twelve seeded
 random cases (seed $20260922$) through weight $4$, with and without Jordan blocks.
 Its scope field reads: finite algebraic checks, not a formal verification of the
-theorems. \\
+theorems. \\[0.3em]
+13 & $70$ checks passed &
+Python 3.13.5 with SymPy 1.14.0, exact symbolic expressions and no
+floating-point evaluation; a nonzero residual raises and gives a nonzero exit
+status. Suites: the finite hierarchy $39$ --- for lengths $n=0,\dots,12$, with
+generators $a_{j}$ and the derivation $a_{j}\mapsto-a_{j}\sum_{k\leq j}a_{k}$
+modelling $\ell_{j}^{\dagger}$, the triangular identity \cref{diff:cp:eq:Ader},
+the critical potential identity of \cref{diff:cp:thm:critical} and the Riccati
+residual \cref{diff:cp:eq:riccati}; Euler identities $8$ --- real-power
+eigenvalue, the Euler polynomial, the distinct-root basis with Wronskian $-2d$
+for roots $\frac12\pm d$ and the repeated-root basis with Wronskian $1$, in an
+ordinary positive variable $T$ with $d/dT$; the gauge identity
+\cref{diff:cp:eq:gauge} with its normalization, first-derivative cancellation
+and Wronskian $4$; the Schwarzian $4$, including that the ratio of two solutions
+has Schwarzian $2Q$; and the Picard--Vessiot suite $15$ --- $\det Y=1$, the four
+entries of the fundamental-matrix equation, derivative compatibility of the
+automorphism on both generators, the four entries of the Borel action and the
+four entries of the group law. Its trailing note: finite identities only, not a
+proof-assistant verification; transfinite summability, the imported derivation,
+exponent-field membership and novelty need the mathematical arguments. \\
 \bottomrule
 \end{longtable}
 
@@ -11841,9 +13297,12 @@ records SymPy 1.14.0 and a status of \textsc{pass} with $62$ checks, but
 records no Python version; its package pins \path{sympy==1.14.0} and its README
 states Python 3.10 or later. The ninth record (member~11) states Python 3.13.5
 and SymPy 1.14.0; the tenth (member~12) states SymPy 1.14.0, its README says
-Python~3, and its program requires Python 3.10 or later. All ten record zero
+Python~3, and its program requires Python 3.10 or later; the eleventh
+(member~13) states Python 3.13.5 and SymPy 1.14.0, and its program requires
+Python 3.10 or later. All eleven record zero
 failures. The consolidated scope limits are item~N48 to item~N52, item~N63 to
-item~N64, items N78--N79 and item~N94 of \cref{diff:sec:nonclaims}.
+item~N64, items N78--N79, item~N94 and items N105--N106 of
+\cref{diff:sec:nonclaims}.
 Artifact-level discrepancies are recorded there and repeated here for
 completeness: one package's PowerShell build script was supplied but not
 executed on Windows in its preparation environment; one package's README lists a
@@ -11854,9 +13313,13 @@ reproduced above is the delivered one and a rerun would overwrite it; member~12'
 program writes its output file, by default \path{verification.json} in the
 current directory, and its \texttt{verify} target also overwrites the text record;
 member~11's build script and README redirect the program's output onto the
-delivered text record; neither of the last two packages carries a checksum
-manifest; and member~12's record labels the mixed-frequency ambient dimension
-$1$ without computing it.
+delivered text record; neither of those two packages carries a checksum
+manifest; member~12's record labels the mixed-frequency ambient dimension
+$1$ without computing it; and member~13's program writes a record only when
+given \texttt{--output}, while its package README suggests
+\texttt{--output verification.txt}, and its manifest lists three package files
+--- the article source, the $21$-page PDF and the README --- that are not
+shipped here.
 
 \paragraph{Maintained review rerun.}
 The eight earlier programs (members 01, 02 and 05--10), unmodified, were
@@ -11868,7 +13331,11 @@ failures. Their generated outputs stayed outside the repository; the delivered
 matrix-coefficient check confirmed the added $[t^4]$ cocycle counterexample
 in \cref{diff:ex:matnoncommuting}; it is not included in those historical
 suite counts. The later programs of members 11 and 12 were not rerun in this
-review. These finite checks do not prove the general theorems.
+review. Member~13's program, unmodified, was run once on a separate temporary
+copy during its merge, under Python 3.14.4 and SymPy 1.14.0: it exited
+successfully with $70$ passed and $0$ failed, and its output agreed with the
+delivered record line for line apart from the recorded Python version. These
+finite checks do not prove the general theorems.
 
 \section{Building this report}
 \label{diff:app:build}
@@ -11885,12 +13352,14 @@ and, if \texttt{latexmk} is unavailable, run \texttt{pdflatex} with
 the cross-references and the \texttt{cleveref} labels settle. The directory
 also contains \path{README.md}, member~11's review log
 \path{11-autonomous-dynamics-sources.md}, and the unmodified \path{code/} and
-\path{data/} directories of the ten source packages. To re-run a source
+\path{data/} directories of the eleven source packages. To re-run a source
 suite, run it \emph{on a copy}: several of the delivered programs rewrite their own evidence files beside themselves, the
 eighth writes to a \path{data/} directory it creates one level \emph{above} its
 own, member~12's program writes \path{verification.json} into the current
-directory, and the build scripts of members~11 and~12 redirect output onto their
-recorded transcripts, still under the packages' original file names; so a
+directory, the build scripts of members~11 and~12 redirect output onto their
+recorded transcripts, and member~13's program writes whatever file its
+\texttt{--output} option names, all still under the packages' original file
+names; so a
 byte-identity check performed after a run compares two equally modified copies
 and tells you nothing.
 
@@ -11927,7 +13396,11 @@ Journal of the European Mathematical Society \textbf{21} (2019), 1179--1199.
 \href{https://doi.org/10.4171/JEMS/858}{doi:10.4171/JEMS/858}.
 Preprint: \href{https://arxiv.org/abs/1512.02267}{arXiv:1512.02267v3}.
 Theorem 1 concerns an elementary embedding in the ordered differential
-language.
+language. Section~2 --- Proposition~2.5, Lemmas~2.6--2.8, the pre-derivation
+formula on p.~10 and the real-linear exponent formula in the proof of
+Lemma~2.3, numbered as in the arXiv version~3 consulted by member~13 --- supplies
+the ordinal log-atomic formulas imported in \cref{diff:cp:prop:tower}, and
+p.~17 the solvability predicate $\Omega$ cited in \cref{diff:cp:rem:inputs}.
 
 \bibitem{ADHNorm}
 Matthias Aschenbrenner, Lou van den Dries and Joris van der Hoeven,
@@ -12159,6 +13632,37 @@ derivation; see \cref{diff:aut:rem:tate}.
 \path{docs/surcomplex/differential-equations/README.md} at commit \CommitC, the
 snapshot to which members~11 and~12 are pinned and against which they compared
 themselves (items N77 and N93).
+
+\bibitem{RepoSnapshotD}
+\Repo, repository tree, root \path{README.md}, catalogue \path{docs/README.md},
+the listing of \path{docs/new/}, and
+\path{docs/surcomplex/differential-equations/article.tex} at commit \CommitD, the
+snapshot to which member~13 is pinned and against which it compared itself
+(item~N104). At that commit this article was byte-identical to the one into
+which member~13 was merged.
+
+\bibitem{KT}
+Helge Kr\"uger and Gerald Teschl,
+\emph{Effective Pr\"ufer angles and relative oscillation criteria},
+preprint \href{https://arxiv.org/abs/0709.0127}{arXiv:0709.0127v2} (2007).
+Section~2: the Kneser--Weber--Hartman--Hille hierarchy and the positive-solution
+reduction behind it, cited by member~13 as the antecedent of the finite critical
+hierarchy of \cref{diff:cp:part}. The sign of their Schr\"odinger potential is
+opposite to that of $Q$ in $\der^{2}y+Qy=0$.
+
+\bibitem{ADHBook}
+Matthias Aschenbrenner, Lou van den Dries and Joris van der Hoeven,
+\emph{Asymptotic Differential Algebra and Model Theory of Transseries},
+Annals of Mathematics Studies 195, Princeton University Press, 2017;
+corrected preprint \href{https://arxiv.org/abs/1509.02588}{arXiv:1509.02588v7}
+(2025). The general theory of transseries and $H$-fields; its existence theory
+is neither replaced nor claimed in \cref{diff:cp:part}.
+
+\bibitem{Mantova2026}
+Vincenzo Mantova,
+\emph{Monotonicity and a Taylor approximation theorem for transseries},
+preprint \href{https://arxiv.org/abs/2601.07747}{arXiv:2601.07747v2} (2026).
+Composition results cited by member~13 as context; not used or superseded.
 
 \end{thebibliography}
 \end{document}

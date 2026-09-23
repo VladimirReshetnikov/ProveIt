@@ -115,6 +115,16 @@ Part VI proves algebraic independence of differentially algebraic solutions
 differential transcendence degree here (`tail:eq:maxdtrdeg`); neither result
 bears on the other.
 
+Two later reports sit beside this one without depending on it.
+[transcendence-over-bounded-support](../transcendence-over-bounded-support/)
+(`bst:sec:collection`) proves independence over the fraction field of
+bounded-support series, from support rather than coefficients; its
+integer-coefficient witnesses lie in `B_0`, and its family over all subsets is
+independent. [hidden-negative-hermitian-directions](../../surcomplex/hidden-negative-hermitian-directions/)
+uses prime-denominator tails as the exponent-side counterpart over a
+finite-lattice-supported base (`hnd:thm:independence`); for `Γ = Q` the two
+bases do not contain each other.
+
 ## What was checked when this was fitted into the collection
 
 The headline claim — `dtrdeg_{B_0} H_0 = 2^{ℵ_0}` with the explicit `ξ_α` —

@@ -40,7 +40,8 @@ commits cited at the end are worked examples, subject to these differences.
 - **Check that every archive is committed as delivered.** Run
   `git status --short -- docs/new`; it must show no untracked `.zip`.
   Deliveries are committed on arrival, as in `f7f9a96` and `15d4bab` ("New
-  incoming external reports: …"). If an archive is untracked, ask the user to
+  incoming external reports: …"). `*.zip` is in `.gitignore`, so a delivery
+  is committed with `git add -f`. If an archive is untracked, ask the user to
   commit it before placing anything. Never delete it. Only a committed
   archive can be recovered after section 7 removes it.
 - Extract every archive into a scratch directory **outside the repository**,
@@ -389,6 +390,7 @@ that commit.
 | 15 | `d3d9688` | `608dd23` | `e5791a8` (late) | — |
 | 17 | `a826a41` | `de84d8b` (a WIP; see section 3), `b147a9d` | with batch 18 | — |
 | 18 | `e9a9650` | `813ce54` | `befea11` (with batch 17) | — |
+| 19 | `30dfb4f` | `ed88b8f` | `9b69d4e` | — |
 
 Batch numbers:
 - No commit names a batch 16. The only report added between batches 15 and 17

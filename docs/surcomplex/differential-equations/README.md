@@ -3,24 +3,26 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 170 pages, built from ten manuscripts. Everything in
-this directory other than `article.tex`, `article.pdf` and this README is
+A merged research report, 189 pages, built from eleven manuscripts. Everything
+in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 170-page report
+article.pdf                        the compiled 189-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
-code/                              the verification programs and build scripts of the ten
-                                   source packages (18 files), unmodified
+code/                              the verification programs and build scripts of the eleven
+                                   source packages (19 files), unmodified
 data/                              their recorded verification, build and requirement
-                                   records (29 files), unmodified
+                                   records, and member 13's manifest (31 files), unmodified
 ```
 
 Every label in `article.tex` carries the prefix `diff:`; the labels added with
-members 11 and 12 carry the sub-prefixes `diff:aut:` and `diff:rs:`. No
-pre-existing label was renamed or removed (506 before, 685 after).
+members 11, 12 and 13 carry the sub-prefixes `diff:aut:`, `diff:rs:` and
+`diff:cp:`. The current text has 763 valid label definitions, all preserved
+from the merged upstream text. The earlier count included the malformed
+placeholder described in the correction record below.
 
 The current proof review covers the earlier scalar, matrix, workspace and
 coordinate chains and all of the regular-singular main text, Sections
@@ -43,14 +45,16 @@ are still pending; scope and validation are recorded in the collection's
 
 ## What the report is
 
-Ten independently written manuscripts developed the theory of the
+Eleven independently written manuscripts developed the theory of the
 Berarducci–Mantova derivation `∂` on the surreal class field `No`, normalized
 by `∂ω = 1`, and of its unique extension to the surcomplex field `No[i]`.
 This report is their **union**, not a selection from them. Seven of them share
 a twelve-item spine of scalar and workspace theory; the eighth joined later and
 carries the finite **matrix** stratum — Part III; the ninth and tenth joined
-last, together: member 12 carries the **regular-singular** stratum — Part V —
-and member 11 a **first-order autonomous** nonlinear stratum — Part VI.
+next, together: member 12 carries the **regular-singular** stratum — Part V —
+and member 11 a **first-order autonomous** nonlinear stratum — Part VI; the
+eleventh, member 13, joined last and carries a **second-order** stratum along
+the transfinite log-atomic tower — Part VII.
 
 | Part | Content |
 |---|---|
@@ -60,9 +64,15 @@ and member 11 a **first-order autonomous** nonlinear stratum — Part VI.
 | IV | Workspaces: Laurent, rational, Hahn, set-sized |
 | V | Regular-singular systems over real-exponent Hahn workspaces (member 12) |
 | VI | Autonomous first-order equations: curves, derivation independence, abelian logarithmic derivatives (member 11) |
-| VII | Coordinate differential equations in common-domain Hahn rings |
-| VIII | Computation, formalization, and the register of non-claims |
-| App. A–E | Positive-support calculus, notation and concordance, provenance, verification records, build |
+| VII | Transfinite critical potentials: second-order equations at every logarithmic depth (member 13) |
+| VIII | Coordinate differential equations in common-domain Hahn rings |
+| IX | Computation, formalization, and the register of non-claims |
+| X (App. A–E) | Positive-support calculus, notation and concordance, provenance, verification records, build |
+
+Part VII was inserted after Part VI, not beside the missing oscillator in
+Part II, so that Parts I–VI and Sections 1–34 keep their numbers: other reports
+of the collection cite Parts V and VI of this one by number. The former Parts
+VII–IX are now VIII–X, and Sections 35–44 are now 43–52.
 
 The organizing identity is exact:
 
@@ -233,6 +243,56 @@ These lift, for this class only, the report's former non-claims N21 and N25
 and the remark after Corollary 8.11 that it "is not a general nonlinear
 solvability theorem"; the old wording is kept, amended in place.
 
+### The transfinite critical-potential stratum (Part VII, member 13)
+
+Write `ℓ_α = ω^(ω^(−α))` for the ordinal log-atomic tower (`ℓ_0 = ω`,
+`ℓ_{n+1} = log ℓ_n`, continued through every ordinal; its derivative formulas,
+limit stages included, are **imported** from Aschenbrenner–van den Dries–van der
+Hoeven, Proposition 35.3), `ℓ† = ∂ℓ/ℓ`, and
+
+```
+Q_α = ¼ Σ_{β<α} (ℓ_β†)² ,      Q_{α,c} = Q_α + c (ℓ_α†)² .
+```
+
+* **Transfinite classification** (Theorem 38.1). For every ordinal `α` and
+  real `c`, `∂²y + Q_{α,c} y = 0` has a two-dimensional solution space in `No`
+  (over `R`) and in `No[i]` (over `C`) when `c ≤ ¼`, and only `y = 0` when
+  `c > ¼`. The bases are single Conway monomials, `Q_{α,¼} = Q_{α+1}`, and the
+  proof at a limit ordinal is one summable triangular calculation (Lemma 36.1,
+  Theorem 36.2), not a skipped induction step.
+* **The missing oscillator** (Remark 37.5, an observation of this merge with
+  its proof). One gauge identity (Lemma 37.2) reduces the family to the Euler
+  operator `s∂_s` at the scale `s = ℓ_α`; the same identity at the scale
+  `s = e^ω` turns Corollary 8.8's `∂²y + b²y = 0` into the same Euler problem
+  with `c = ¼ + b²`. In every supercritical case the obstruction is an infinite
+  accumulated phase — `|b|·ω` for the oscillator, `√(c−¼)·ℓ_{α+1}` at stage `α`
+  (Corollary 37.1). That is the precise sense in which the `c > ¼` side
+  generalizes the missing oscillator; the oscillator is not a member of the
+  family, and the family is not a corollary of the oscillator.
+* **Invisibility** (Theorem 39.2). For every *set* of ordinals, two positive
+  potentials agree beyond all those scales while their solution dimensions are
+  2 and 0; there is no all-ordinal potential (Proposition 39.5).
+* **Limit-stage field jump** (Theorem 40.4, Proposition 40.5). At every
+  nonzero limit ordinal `λ`, three nested, `∂`-stable, real closed Hahn fields
+  `H_{Δ_0} ⊂ H_{Δ_1} ⊂ H_{Δ_2}` contain `Q_λ` and have solution dimensions
+  0, 1, 2; the first two are closed under `log`, and what is missing is first an
+  exponential, then a primitive.
+* **Borel Galois group** (Theorem 41.2). Over `K_{Δ_0}` the solution field
+  `K_{Δ_0}(u_λ, ℓ_λ)` has differential Galois group the upper triangular Borel
+  subgroup of `SL_2(C)` — the only non-commutative differential Galois group in
+  the report; over `K_{Δ_1}` what remains is `(C,+)` (Corollary 41.3).
+* Also: a Riccati form, an exact Schwarzian reformulation (Corollary 42.2), the
+  first limit stage `λ = ω` in normal form (Example 42.3), and, as observations
+  of this merge, the Euler operator as a constant-coefficient operator at the
+  scale `log s` (Remark 37.4), stage 0 as a regular-singular system of Part V
+  (Remark 38.4), and the explicit unique Pinney amplitude and canonical phase of
+  a supercritical member (Remark 38.5; its uniqueness and phase statements use
+  Part III and that part's import).
+
+Part VII uses neither surjectivity of `∂` (except in one flagged Riccati
+remark) nor Part III's imported splitting theorem. It is relative to the one
+fixed `∂`; nothing is claimed for Part VI's class of normalized derivations.
+
 A **deliberately separate** half treats *coordinate* differential equations in
 fixed-common-domain Hahn rings `Hol(U)((t^Γ))`: existence, uniqueness, support
 certificates, variation of constants, a Liouville determinant identity,
@@ -301,6 +361,16 @@ the new material (Conventions 23.6 and 29.3, Warnings 23.7, 23.8 and B.1):
   and its curve parameter `t` is written `σ` so that `t` stays the number
   `ω⁻¹`. Member 12's `δ = −ω∂` and `ℓ = log t` are written `∂_τ` and `τ`.
 
+Member 13 brought one more hazard and several letter collisions, resolved in
+the new material (Convention 35.1, Warning 35.2, Warning B.1). Its `𝔪(x)` is
+the Conway monomial map `ω^x`, while `𝔪` here is the ideal of infinitesimals;
+its `θ` for an infinitesimal primitive of an angular rate is sense (b), `η`
+here; its potentials `q` are `Q` (here `q` is the rank-one coefficient); its
+`U`, `W`, `Φ`, `B(C)`, `σ` and `𝒮` are `u`, `Wr`, `Y`, `Bor_2(C)`, `ψ` and `Sch`;
+its coordinate `T` is a scale `s`, with the existing rescaled derivation `∂_s`
+and no new operator symbol; and "Borel" there means the algebraic subgroup of
+`SL_2`, unrelated to the Borel summation that item N37 disclaims.
+
 The concordance (Warning B.1) previously said that `D` is used for no operator
 on `No` or `No[i]`; that was inaccurate — Proposition 18.1 abbreviates
 `∂|_{C((t))}` as `D` — and it now lists every use truthfully. No label or
@@ -308,7 +378,7 @@ statement changed with that correction.
 
 ## Where it came from
 
-Ten source archives. Among the first seven, three pairs of archive filenames
+Eleven source archives. Among the first seven, three pairs of archive filenames
 collided, differing only by a trailing marker, so the mapping from archive name
 to manuscript is recorded here because it is not recoverable from the
 filenames.
@@ -325,12 +395,16 @@ filenames.
 | 10 | `surcomplex_phase_spectrum` | `10-hermitian-phase-spectral-integral.tex` |
 | 11 | `surreal_autonomous_dynamics` | autonomous dynamics (Part VI) |
 | 12 | `surcomplex_regular_singular` | regular-singular spectral selection (Part V) |
+| 13 | `surreal_transfinite_critical_potentials` | transfinite critical potentials (Part VII) |
 
 Members 01–09 are pinned to `VladimirReshetnikov/Surreal` at commit
 `e260237db9b71da8b74a0c13c8e6355119091100`; member 10 joined later and is
 pinned to the later revision
-`aa846271b4dcae2c055b216126a87210292ec19b`; members 11 and 12 joined last,
-together, and are pinned to `a3124af79f66b8b9c196d76b4cbc5ac3938907c4`. The
+`aa846271b4dcae2c055b216126a87210292ec19b`; members 11 and 12 joined next,
+together, and are pinned to `a3124af79f66b8b9c196d76b4cbc5ac3938907c4`;
+member 13 joined last and is pinned to
+`048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`, at which this report's
+`article.tex` was byte-identical to the one it was merged into. The
 archive name of member 11 is misleading on two counts: its field is `No[i]`
 (with real corollaries), and its "dynamics" are flows of autonomous
 differential equations, not iteration of maps — it is unrelated to
@@ -473,6 +547,21 @@ statement twice.
   the exact Hahn obstruction sequence; six worked examples; the
   finite-monomial, one-logarithm envelope; the power-Hahn boundary; and the
   exact finite procedure with its limits.
+* **13 — transfinite critical potentials.** The whole of Part VII: the
+  imported ordinal log-atomic tower and scale separation; the summable
+  triangular differentiation and the exact critical solutions at every
+  ordinal; the Wronskian spanning lemma, the Liouville gauge identity and the
+  Euler classification at a positive infinite scale; the transfinite
+  classification with Conway normal forms, Wronskians and a Riccati form; the
+  earlier-stage asymptotics, the invisibility theorem, the first infinite stage
+  and the absence of an all-ordinal potential; the three Hahn fields at a limit
+  ordinal with the `0, 1, 2` jump and the exponential-then-primitive gap; the
+  Borel Picard–Vessiot group and its additive remainder; the Schwarzian form;
+  the first limit stage `λ = ω` worked out; its boundaries, inputs and
+  formalization interface. The code and data are placed as
+  `code/13-critical-potentials-verify.py`,
+  `data/13-critical-potentials-verification.txt` and
+  `data/13-critical-potentials-manifest.json`.
 
 ### How conflicts were resolved
 
@@ -524,6 +613,20 @@ statement twice.
   kept; items N24 and N57 and two continuations are answered **in part** and
   stay open beyond the regular-singular class. Item N41 (coordinate irregular
   singularities) is untouched: Part V is about the intrinsic derivation.
+* **Member 13 was integrated by the same rules.** Its proof that nonreal
+  powers of an infinite scale do not exist (through an infinitesimal primitive
+  of the angular rate) is this report's criterion and is recorded as agreement
+  (Corollary 37.1); its derivative-stability argument is cited as an instance
+  of the monomial criterion (Proposition 40.3); its stage 0 agrees with Part V
+  (Remark 38.4). Its own proofs are kept, since they use neither surjectivity
+  nor Part III's import. Three connections it does not state are recorded as
+  observations of this merge, with proofs (Remarks 37.4, 37.5, 38.5). Items
+  N13, N21, N23 and N48, the remark after Corollary 10.3, Remark 28.5, the
+  opening of Section 21, the remark after Theorem 17.6, Warning 5.3 and one
+  open continuation are amended in place, with the original wording kept.
+  One omission in the member's repository comparison is recorded with its pin
+  (item N104): the article it read already contained the first-order
+  counterpart, Corollary 10.3.
 * **Two things are recorded rather than claimed.** Remark 25.13 is an
   observation of this merge, with its proof, that neither source states; and
   the open continuations record, unaudited, that member 12's hypotheses are all
@@ -537,13 +640,13 @@ statement twice.
 
 ## What is NOT claimed
 
-Section 43 of the report is the consolidated register: 94 numbered items
-covering the 160 explicit non-claims that the ten manuscripts state between
-them (118 from the first seven, 12 from the eighth, and 15 each from members
-11 and 12 by this merge's count), together with the audit findings on the
-source packages. It is part of the result. Items N1–N52 come from the first
-seven, N53–N64 from the eighth, N65–N79 from member 12 and N80–N94 from
-member 11. In outline:
+Section 51 of the report is the consolidated register: 106 numbered items
+covering the 181 explicit non-claims that the eleven manuscripts state between
+them (118 from the first seven, 12 from the eighth, 15 each from members
+11 and 12 and 21 from member 13, by this merge's count), together with the
+audit findings on the source packages. It is part of the result. Items N1–N52
+come from the first seven, N53–N64 from the eighth, N65–N79 from member 12,
+N80–N94 from member 11 and N95–N106 from member 13. In outline:
 
 * **Provenance.** The Berarducci–Mantova derivation is imported, not
   constructed and not reproved; no uniqueness of it is claimed and no other
@@ -553,8 +656,9 @@ member 11. In outline:
   the same for all of them, does not classify them and does not assert that
   two of them agree on `No[i]`; Part V is stated for `∂` only. The Neumann
   support lemma, Gonshor's normal forms, the `ω`-series composition and
-  incompatibility results, and the universal `H`-field results are separately
-  imported with their hypotheses intact, and none is strengthened. One source
+  incompatibility results, the universal `H`-field results and, for Part VII,
+  the ordinal log-atomic formulas are separately imported with their
+  hypotheses intact, and none is strengthened. One source
   records that the Neumann paper was not retrieved in full, which is why
   Appendix A proves the lemma.
 * **Novelty and verification.** No priority claim, no solution of a named
@@ -575,7 +679,10 @@ member 11. In outline:
   (Part VI now classifies first-order *autonomous* equations with constant
   coefficients; variable coefficients, higher order, systems and
   higher-dimensional autonomous systems remain unclassified, and the finite
-  decision criterion there needs exact algebraic coefficients.)
+  decision criterion there needs exact algebraic coefficients. Part VII
+  classifies one explicit family of second-order linear equations with
+  variable coefficients; every other higher-order operator, and every
+  perturbation of that family, remains unclassified — item N21, amended.)
   No differential closedness; no general inhomogeneous existence theorem there
   (outside the admissible locus its claim is *uniqueness* only); no higher-rank
   differential modules; and the constant-coefficient results concern ordinary
@@ -628,6 +735,22 @@ member 11. In outline:
   effectivity only with exact algebraic coefficients and decidable signs; no
   trigonometric assertion; no refereeing, no Lean file, no priority
   certificate.
+* **Transfinite critical-potential scope (N95–N106).** Scalar unknowns in a
+  fixed differential field, not functions on an interval; relative to the one
+  fixed `∂`, with the log-atomic formulas imported and not implied by `∂ω = 1`,
+  and nothing claimed for other derivations or for Part VI's class; no
+  transfinite iteration or composition of `log`, no substitution, and the
+  monomial map is not `exp(x log ω)`; only Hahn sums, no fine-topology limits,
+  no proper-class sums, no all-ordinal potential; this family only — no
+  classification of arbitrary potentials and no stability of the threshold
+  under smaller perturbations; invisibility concerns the named hierarchy only
+  and is not a fine-topology discontinuity; finite spans of exponents, no
+  closure claims for the largest Hahn field and no minimality of the
+  intermediate ones; the classical Kneser–Weber–Hartman–Hille hierarchy, the
+  derivation, the tower, Hahn real closedness, the gauge and Schwarzian
+  mechanisms are antecedents or imports; priority provisional, no refereeing,
+  no Lean; a bounded repository comparison at its pin; 70 finite checks that
+  certify no transfinite statement; and the package audit (N106).
 * **Workspace scope.** Neither localization gives closure under all summable
   families; no Hahn completeness, no birthday bound, no enumeration, no
   termination claim. The hull's minimality holds only among full Hahn fields
@@ -640,14 +763,16 @@ member 11. In outline:
   an ordinary-domain construction; monodromy for the nonlinear problem on
   non-simply-connected domains remains future work. No Stokes theory, no
   irregular-singularity classification, no Riemann–Hilbert correspondence.
-* **The checks.** The ten suites check finite exact symbolic identities and
+* **The checks.** The eleven suites check finite exact symbolic identities and
   finite jets: 1,395 + 115 + 149 + 258 + 291 + 150 + 259 + 62 recorded passing
-  checks for the first eight, and 10 (member 11, at the default truncation
-  degree 4) and 8 (member 12) for the last two. The first seven ran under
+  checks for the first eight, 10 (member 11, at the default truncation
+  degree 4), 8 (member 12) and 70 (member 13). The first seven ran under
   Python 3.13.5 (six of them with SymPy 1.14.0); the eighth records SymPy 1.14.0
-  and a status of PASS but no Python version; member 11 records Python 3.13.5
-  and SymPy 1.14.0; member 12 records SymPy 1.14.0, and its README says only
-  "Python 3". They do not construct the surreal numbers, do not verify Hahn
+  and a status of PASS but no Python version; members 11 and 13 record Python
+  3.13.5 and SymPy 1.14.0; member 12 records SymPy 1.14.0, and its README says
+  only "Python 3". Member 13's program was rerun once on a copy during this
+  merge (Python 3.14.4, SymPy 1.14.0): 70 passed, output identical to the record
+  apart from the version line. They do not construct the surreal numbers, do not verify Hahn
   summability, class-size arguments, Higman's lemma, transfinite recursion, or
   any general nonexistence theorem; the eighth adds that it verifies none of
   the arbitrary-support Hahn arguments, none of the published model-theoretic
@@ -661,7 +786,11 @@ member 11. In outline:
   label written by the script, not a computed quantity, and its tail-invariance
   check compares coefficients only through weight 4. Member 11's tests do not
   establish the support lemma, the algebraic-geometric reduction or the
-  completeness of the solution list. Appendix D reproduces each record.
+  completeness of the solution list. Member 13's checks model the log-atomic
+  derivatives by a finite derivation on generators and the Euler scale by an
+  ordinary variable; they do not prove the imported derivative formula,
+  transfinite summability or field membership. Appendix D reproduces each
+  record.
 
 ## Relation to the neighbouring reports
 
@@ -714,6 +843,15 @@ member 11. In outline:
 * **`docs/surcomplex/nonabelian-support/`**: its Frobenius theory is for the
   *coordinate* derivative `d/dz` with positive-support residue; Part V is for
   the intrinsic Euler derivation, and the two are not merged.
+* **`docs/physics/surreal-scalars-and-spacetime/`** cites the oscillator
+  corollary (Corollary 8.8, number unchanged) and adopts the three phase
+  symbols. Part VII keeps both and adds that the corollary's second-order
+  statement is the Euler threshold at the scale `e^ω` (Remark 37.5); nothing
+  there needs to change.
+* A keyword search of `docs/` at this merge found the log-atomic tower,
+  Kneser-type critical potentials and the Schwarzian nowhere outside this
+  directory, so Part VII has no neighbour to cross-link beyond this report's
+  own Parts II, III, IV and V.
 
 ## Build
 
@@ -726,7 +864,7 @@ latexmk -pdf -interaction=nonstopmode article.tex
 
 If `latexmk` is unavailable, run `pdflatex -interaction=nonstopmode` three
 times so that the table of contents, the cross-references and the `cleveref`
-labels settle. The delivered build (165 pages) has zero LaTeX errors, zero
+labels settle. The delivered build (188 pages) has zero LaTeX errors, zero
 warnings, zero undefined references or citations, zero multiply-defined
 labels, zero duplicate destinations, and zero overfull or underfull boxes.
 
@@ -792,6 +930,14 @@ examples; they do not prove the general classification or complete its
 Lean formalization. Sections 29–30 are now reviewed; later autonomous
 arguments, other imports and source reconciliation remain pending.
 
+After merging batch 19 from `7657737`, the combined report rebuilds in
+three passes at 189 pages without warnings or box issues, against a clean
+188-page upstream baseline. The multiple-zero proof pages were inspected.
+All 51 historical code, data and source-log files match the upstream bytes;
+Part VII and subsequent source text are unchanged by this review. The full
+Lean build passes 3,872 jobs and its 5,880-declaration axiom audit. This merge
+validation does not extend the proof review to the critical-potential part.
+
 ## Re-running the source verifiers
 
 The programs in `code/` are the originals. **Run them on a copy.** Several
@@ -802,8 +948,8 @@ run compares two equally modified copies and tells you nothing. Their recorded o
 report reproduces them. Nothing in `code/` or `data/` was modified to
 produce this report.
 
-The two latest packages have hazards of their own, and their scripts still use
-the packages' original file names rather than the placed ones:
+The three latest packages have hazards of their own, and their scripts still
+use the packages' original file names rather than the placed ones:
 
 * member 12: `code/12-regular-singular-verify.py` (Python ≥ 3.10, SymPy; see
   `data/12-regular-singular-requirements.txt`) writes its `--output` file,
@@ -818,5 +964,14 @@ the packages' original file names rather than the placed ones:
   `code/11-autonomous-dynamics-build.sh` and the package README redirect it
   onto `verification.txt`; the delivered record is
   `data/11-autonomous-dynamics-verification.txt`.
+* member 13: `code/13-critical-potentials-verify.py` (Python ≥ 3.10, SymPy)
+  prints its report and writes a file only when given `--output`; the package
+  README's `python verify.py --output verification.txt` would overwrite a
+  record of that name. The delivered record is
+  `data/13-critical-potentials-verification.txt` (70 checks).
 
-Neither package has a checksum manifest.
+Members 11 and 12 have no checksum manifest. Member 13's is kept as
+`data/13-critical-potentials-manifest.json`: its five SHA-256 digests match the
+delivered package, but three of the files it lists — the package's
+`article.tex`, its 21-page `article.pdf` and its `README.md` — are source
+material that is not shipped in this directory.
