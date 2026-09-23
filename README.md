@@ -455,6 +455,10 @@ angles in `(0, pi)`, with the normalized dot product and area as cosine
 and sine coordinates. Their three angles sum exactly to ordinary pi,
 including their infinitesimal parts. The included-angle cosine and area
 laws also hold without restrictions on side lengths.
+Every such triangle has a unique circumcircle with positive actual radius
+`abc/(4*area)`. All three side-to-sine ratios equal twice that radius,
+and the tangent law has positive denominators on its prescribed domains.
+The least of the three side valuations is attained at least twice.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
