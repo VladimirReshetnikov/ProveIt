@@ -40,7 +40,7 @@ No row below certifies every claim in an entire report.
 | [Tail spans and differential transcendence](surreal/tail-spans-and-differential-transcendence/) | Read the coefficient-field, cofinite-span, polarization, exceptional-field, affine-plane, actual-surreal, mixed-jet, halo, approximation and undecidability proofs. Made characteristic hypotheses explicit and supplied a characteristic-two counterexample; replaced the abbreviated mixed-difference argument by finite Taylor operators, including degenerate directions. Expanded separating-functional construction, coordinate recovery and Galois splitting. Corrected the purported value-group enlargement from lexicographic integers to rationals, with the embedding specified. Aligned the partial Lean scope and rerun instructions, checked the extension-of-embeddings citation and local BM restriction, and distinguished cofinite tails from valuation prefixes. Other foundational imports, literature comparisons and original-source reconciliation remain outside this review. |
 | [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/) | Read the main support, reconstruction, sharpness, Hermite-precision and graph proofs and examples. Removed the graph theorem's divisibility assumption by auxiliary scaling and descent to the original Hahn field. Strengthened the classical uniqueness statement to arbitrary competing representations and the first-`2n−1`-moment rank obstruction, already covered in Lean. Corrected collision terminology, the measure-report comparison and stale formalization claims; checked the cited Caruso–Roe–Vaccon v1 hypotheses. A targeted follow-up restricted the equal-separation cluster formulas to at least two nodes and supplied the singleton threshold. |
 | [Wick summability](surcomplex/wick-summability-certificates/) | Read the main support, semigroup, strict-alternative, diagram, connected-graph, covariance, identity and cancellation proofs and examples. Corrected the zero-semigroup boundary and proved the exact finite-sector criterion; added an integer-group counterexample explaining original-group divisibility. Extended the grouping proposition to a common nonzero complex factor and repaired the quartic comparison for signed Hahn tails. Specified monomial-insertion, zero-derivative and unit-exponent conventions and current partial Lean coverage. Checked the BM normal-form references and Etingof's normalized connected identity; other imports, literature comparisons and original-source reconciliation remain outside this review. |
-| [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Read the main support, escape, orbit, recurrence, differential, generic-line, dilation, theta, torsion and mixed-operator proofs and examples. Added inward stability of strong evaluation and used it to remove divisibility from the torsion equivalence. Repaired empty refined maxima, periodic starting indices and the unit-residue period choice. Replaced the false coefficientwise coarsening picture by a valuation on the same field, with a collapsing-support example; extended the explicit witness's short cofinal proof to arbitrary tails. Checked Stanley's recurrence correspondence and the local coarsening statement; other imports, priority and original-source reconciliation remain outside this review. |
+| [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Read the main support, escape, orbit, recurrence, differential, generic-line, dilation, theta, torsion and mixed-operator proofs and examples. Added inward stability of strong evaluation and used it to remove divisibility from the torsion equivalence. Repaired empty refined maxima, periodic starting indices and the unit-residue period choice. Replaced the false coefficientwise coarsening picture by a valuation on the same field, with a collapsing-support example; extended the explicit witness's short cofinal proof to arbitrary tails. Checked Stanley's recurrence correspondence and the local coarsening statement. The source-10 nonlinear review now covers Theorem D, Sections 14–17 and the corresponding Section 19.3 limitations. Expanded support regrouping, the finite initial layer, scale comparisons, denominator clearing and positive-weight finiteness; handled the constant-equation case and sharpened coefficient-degree wording. Added cancellation and same-solution-set/different-corner examples. Corrected the comparison of Euler and mixed-derivative criteria, a missing nonzero-equation summary hypothesis and an overbroad repository absence claim. Checked the targeted nonlinear predecessors, retaining Hu–Luan's characteristic-zero hypothesis. Other foundational imports, priority and original-source reconciliation, and the later sources 11–12 coefficient-field proofs remain separate. |
 | [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Corrected the three coordinate-family exact-domain clauses to exclude zero inputs. Subsequently read Sections 2–7: support calculus, formal inverse, normalization, exact theta and coordinate domains, coarse formal evaluation, rank-one completeness, formal germs, Taylor/Hahn agreement and the first uniformization/reduction proof. Removed the unnecessary characteristic-zero restriction from the formal inverse lemma while retaining later curve hypotheses; expanded finite normalization, convexity and maximality of the infinitesimal subgroup, and the completeness tail estimate. Added the fine-positive/coarse-zero counterexample to unrestricted evaluation and aligned the two coarsenings with the notation guide. Restricted the blanket no-divisibility claim to one-period uniformization, since classification and Part II have their own extra hypotheses. Checked the complete-field hypotheses and surjective kernel statement against Tate Theorem 1, and located the Jacobi product in DLMF 20.5.9. Subsequently read the second uniformization route and Section 9: universal specialization, integral node chart, smooth and infinity inverses, constructive surjectivity, the group law, support monoids and valuation geometry. Expanded actual-point uniqueness, assembled the normalized inverse in a chart table, clarified both support inclusions, and added discrete-value and rank-two examples. Checked the universal secant identities and generic-pair lemma against Tate pp. 6–7. Read Sections 10–13: scalar extension, value and residue sequences, extension obstruction, modular recovery, negative-j classification, torsion fields and surreal transfer. Corrected the conflation of the full value quotient with its real rank-one quotient and the description of the two coarsenings. Extended modular recovery to arbitrary characteristic-zero coefficients, added a nonsplit twist example, proved torsion exhaustiveness from the kernel theorem, and expanded the degree and class-obstruction arguments. Checked BPR Remark 4.24, Poonen Corollary 4 and the stated Molcho–Wise boundedness/Tate-curve precedent. Read Sections 14–17: finite-rank coordinate reduction, positive generation, one-level and flag summability criteria, and ordinal support length. Expanded primitive-lattice quotient arguments, explicit allocation, inheritance of the inductive hypotheses, non-full lattice reduction, and the translated-coset ordinal induction. Corrected the generating-set size bound to a cardinality bound and illustrated why finite exponent fibres are essential. Checked AN Definitions 2.5 and 11.10, Theorem 8.1, Question 11.14 and its rank-one construction in the published paper. Read Sections 18–21 and the computation/limitation notes: unit robustness, Taylor summation, quasi-periodicity, minimum certificates and graph geometry, initial polynomials, implicit substitution, smooth zero lifting and examples. Expanded finite-contribution bounds, directed enumeration and the infinite-parameter recursion; added sharp cube bounds and a singular zero with nonunique lifts. Corrected the coupled zero-row equation to use the coarse reduction of the full solution, with a nonzero higher-row witness, and corrected the preserved verifier's Python-version provenance. Checked the real-valued setting and tropical minimum formula in FRSS and the formal/convergent distinction in Joswig–Smith. Remaining imports and source reconciliation are pending. |
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Read the shared support tools and Part I inner-product, automatic-adjoint, defect, normal-spectrum, inverse-smooth, coercivity, completeness, duality and norm-attainment proofs. Reconstructed the norm over arbitrary value groups, then removed the unused Part I divisibility restriction after tracing every root operation. Proved closedness of the coercive range at every rank using the continuous defect projection, retaining the original metric argument under its rank-one hypothesis. Added the positive-scale guard to the backward-shift example, distinguished valuation zero from metric distance one, and aligned the two inner-product conventions, summaries and hypothesis ledger. A subsequent Part II pass read the algebra, homogeneous diagonalization, normalization, synthesis, commutant, resolvent, walk, stability, finite-section, example and transport proofs. Corrected strict diagonal-coherence claims at finite index sets and trivial groups; supplied a coherent diagonal with incoherent inverse. Distinguished vectorwise Hahn projection additivity from classical strong-operator additivity, checked against Williams Definition 5.1, and gave a rank-one counterexample to pointwise valuation convergence. Expanded the sharp boundary coefficient’s formal root-comparison step and supplied its positive-length guard. Other imported classical results, priority and source-claim reconciliation remain outside this review. |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
@@ -1706,6 +1706,83 @@ axiom audit accepted 7,925 declarations using only `propext`,
 1,080 local Markdown destinations resolve. These incoming implementation
 mappings remain distinct from the source-10 mathematical review.
 
+## Nonlinear holonomic main-text review
+
+The [holonomic report](surcomplex/holonomic-rigidity-for-entire-hahn-functions/)
+review now covers source 10's Theorem D, Sections 14–17 and the corresponding
+Section 19.3 limitations. Independent readings checked the elementary
+coefficient-family algebra and scaled initial polynomial before the finite
+exclusion certificate, first-order nondegeneracy, degree candidates, algebraic
+solution locus, Riccati classifications, higher-order examples, positive-weight
+Euler theorem and support-derived consequences. The later coefficient-field
+proofs from sources 11 and 12 retain their separate pending review scope.
+
+The family-algebra proof now explains why regrouping preserves finite
+contribution at each exponent. Gauss multiplicativity identifies both the
+minimum and its residue. The active polynomial is written as the finite sum
+of the active coefficients' leading terms; distinct powers of the auxiliary
+variable prevent cancellation. The example `1 − X + t^η X²` separates that
+nonzero initial polynomial from evaluation at `X = 1`. The active-degree
+proof gives a positive scale even with no low-index coefficients and no
+divisibility or order unit.
+
+The exclusion proof applies its own finite inequalities directly and explains
+why every positive-valuation noncorner term has zero residue. Its cofinal
+corollary treats `d_P = 0` before invoking the positive-degree certificate.
+The corner target degree is explicitly nonnegative, despite the possibility
+of negative shift. Clearing rational-function denominators is justified in
+the formal Laurent field, without requiring a nonzero denominator at zero.
+The nonuniform Riccati proof chooses `λ = δ + ε`, using just a positive
+element of the nonzero group. The candidate-degree and solution-locus
+arguments retain injective Hahn-field extension and exact finite-solving
+hypotheses; the necessary candidate set is not claimed attained in full.
+
+The higher-order proof now refers to the coefficient in its specified degree,
+which may vanish by cancellation. An explicit unit multiplier changes a
+nonzero corner to a zero corner while preserving exactly the constant formal
+solutions. The degenerate example still gives only polynomial solutions of
+unbounded degree, not a counterexample to polynomial rigidity. Positive Euler
+weights bound each multi-index coordinate explicitly. The comparison with
+finite mixed-derivative span describes different input criteria; on the
+strongly entire class each criterion forces polynomials, which satisfy both.
+The README's Euler summary now retains the essential nonzero-polynomial
+hypothesis. The shared notation guide separates Gauss values from evaluated
+values, residue from full-coefficient corners, and rational degree bounds
+from value-group scales.
+
+The source-10 repository comparison is now explicitly bounded by its historical
+pin and named reports; the preserved audit does not support a blanket current
+absence claim. The scalar Riccati and tail-span comparisons were checked
+against their actual stated derivations, fields and function classes. The
+current primary-source check read Hu–Luan v1's field hypotheses and Theorems
+1.1, 1.3 and 1.5, adding the omitted characteristic-zero qualifier; Cano–Fortuny
+Ayuso's initial/indicial definitions; Giansiracusa–Mereta's differential-norm
+framework; and Mantova–Matusinski's normal-form discussion. Hayman's
+bibliographic/introduction extract and Hu–Yang's publisher description were
+checked at that limited scope. These are contextual precedents, not imported
+proofs of the arbitrary-rank theorem; no full-book or priority audit is claimed.
+Historical source audits and package records keep their original bytes.
+
+The baseline and revised PDFs each completed three LaTeX passes; their final
+logs have no warnings or box notices. The revised report has 90 pages
+(previously 89), and 26 physical pages covering the source-10 body, front
+matter and limitations were visually inspected. All 274 source labels retain
+their order and numbering. All 81 standard statement environments and seven
+principal theorems A–G are unchanged modulo whitespace; source 10 accounts
+for 19 standard statements and Theorem D. The changes concern proofs,
+examples and scope descriptions, without adding Lean coverage.
+
+All 28 historical audit/code/data files match the saved baseline and
+`c384738` byte for byte. The unchanged source-10 verifier was run on a copy
+with Python 3.13.14; its full record matches the delivered JSON except for
+Python 3.13.5 becoming 3.13.14. All 2,113 checks pass: 450 finite-Hahn
+certificates, 240 first-order nondegeneracy checks, 480 higher-order corners,
+500 ordered-group inequalities, 360 weighted-Euler identities and 83 worked
+examples. These are finite checks, not proofs of the general support or
+rigidity assertions. Before the sync, the independent inventory checks
+2,465 statements in 49 sources; all 2,728 cited source labels and 1,083
+local Markdown destinations resolve.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1757,8 +1834,10 @@ Sections 1–14 main-text review above; remaining foundational imports,
 original-source reconciliation and priority are pending.
 The nonscalar dynamics addition has received the source-10 review recorded
 above; remaining foundational imports and source reconciliation are separate.
-The nonlinear holonomic rigidity and Drazin/Fredholm spectral additions remain
-pending. The critical-potential main-text review now
+The nonlinear holonomic addition has received the source-10 review recorded
+above; its remaining foundational/source reconciliation and the later
+sources 11–12 coefficient-field proofs are separate. The Drazin/Fredholm
+spectral additions remain pending. The critical-potential main-text review now
 covers Sections 35–42; remaining imports and source reconciliation are pending.
 Their inclusion in the statement index does not extend an earlier proof-review
 scope or establish Lean coverage.

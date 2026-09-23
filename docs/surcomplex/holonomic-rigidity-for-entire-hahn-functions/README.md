@@ -10,7 +10,7 @@ coefficient-field part.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 89 pages
+article.pdf   the compiled report, 90 pages
 README.md     this guide
 08-finite-recurrences-PROOF_AUDIT.md          source 08: assumptions and critical proof steps
 08-finite-recurrences-SOURCES_AND_SCOPE.md    source 08: sources, repository pin, priority limits
@@ -218,7 +218,8 @@ The nonlinear part (source 10, Sections 14–17) works over `k((t^Γ))` for
   `t^λ/(1 − t^λ z)` of `f' = f²` have exact domain `v(x) > −λ`, unlike the
   operator-only bound of Theorem A.
 - **Positive-weight Euler rigidity** (Theorem 16.5): a strongly entire
-  `f(x_1, …, x_m)` satisfying `P(x, f, ϑ_q f) = 0`, with
+  `f(x_1, …, x_m)` satisfying `P(x, f, ϑ_q f) = 0` for a nonzero
+  `P ∈ 𝕂[x_1,…,x_m,Y,Z]`, with
   `ϑ_q = Σ q_ν x_ν ∂_ν` and all `q_ν` positive integers, is a polynomial; zero
   and mixed weights fail (Section 16.3).
 - Two-jet independence of `Σ t^(n²) z^n` over `C((t^Q))` (Corollary 17.1)
@@ -401,7 +402,7 @@ python code/11-coarsening-differential-rigidity-verify.py --output rerun-11.json
 python code/12-coefficient-field-rigidity-verify.py --output rerun-12.json
 ```
 
-The build gives 89 pages with zero errors, zero warnings, zero overfull or
+The current build gives 90 pages with zero errors, zero warnings, zero overfull or
 underfull boxes, zero undefined references and zero duplicate PDF
 destinations, as did the 61-page build of the text before this merge. The
 programs of sources 08, 09, 10 and 12 use only the Python standard library
@@ -502,11 +503,45 @@ Question 19.2 (vector fields beyond positive Euler operators) and
 Question 19.3 (effective representations and minimal certificates). Source
 10's references to "Question 15.1" and "Theorems A–C" of this report were
 accurate at its pin `048b72c`, where the report was identical to the text it
-was merged into. The nonlinear part has not been independently refereed or
-formalized; a merge-added remark (Section 15.1) combines Theorem 15.1 with
+was merged into. Its main nonlinear rigidity theorems remain unmapped in the
+implementation ledger, and the delivered package includes no independent
+referee report. A merge-added remark (Section 15.1) combines Theorem 15.1 with
 inward stability for `k = C`, and a merge-added comparison (Section 15.5)
 notes that each `t^λ/(1 − t^λ z)` also satisfies a λ-dependent linear
 equation.
+
+## Nonlinear proof review
+
+The source-10 review covers Theorem D, Sections 14–17 and the corresponding
+limitations in Section 19.3. It expands strong-family multiplication, Gauss
+multiplicativity, the active initial polynomial and the finite scale
+comparison. An explicit cancellation example separates the coefficient Gauss
+value from the valuation after evaluation. The cofinal-scales proof now
+handles equations independent of the unknown function, and denominator
+clearing is explained in the formal Laurent field.
+
+The higher-order proof identifies the precise degree whose coefficient must
+vanish. Two equations with the same formal solutions now illustrate that
+one can have a nonzero corner polynomial while the other has zero corner.
+The Euler proof gives an explicit bounded-weight count; its comparison with
+the finite mixed-derivative criterion no longer asserts their nonimplication
+on the strongly entire class. The README's Euler summary retains the
+nonzero-equation hypothesis. The notation guide separates residue/full
+corners, rational degree cutoffs and value-group exclusion scales.
+
+The targeted literature comparison retains Hu–Luan's characteristic-zero
+hypothesis and limits the repository comparison to its named sources and
+historical pin. Current primary checks do not certify priority or replace
+the source's historical audit. Sources 11 and 12's all-order proofs remain
+outside this main-text review, and no Lean coverage is added. The detailed
+scope and validation are in the [collection review record](../../REVIEW.md#nonlinear-holonomic-main-text-review).
+All 81 standard statements and seven principal theorems A–G are unchanged,
+as are the 274 source labels and their numbers. Baseline and revised PDFs
+passed three LaTeX passes, with no final warnings or box notices. The revised
+90-page report was visually checked on 26 affected/context pages. All 28
+historical audit/code/data files remain unchanged. The source-10 suite was
+rerun on a copy under Python 3.13.14: all 2,113 checks pass and the full
+record differs from the delivered JSON only in the Python version.
 
 ## Merge of sources 11 and 12
 

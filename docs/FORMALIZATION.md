@@ -54,6 +54,14 @@ at every angular rank. See the [review record](REVIEW.md). These proof and
 scope clarifications add no Lean coverage; current implementation mappings
 remain clause-specific, and other foundational/source reconciliation is separate.
 
+The nonlinear holonomic review covers source 10's Theorem D, Sections 14–17
+and its Section 19.3 limitations: finite initial polynomials, exclusion
+certificates, degree candidates, the first-order classification, the
+higher-order corner condition and positive-weight Euler rigidity. Its
+proof and scope clarifications do not extend the existing Lean mappings.
+The later coefficient-field proofs from sources 11 and 12 remain outside
+that review; see the [review record](REVIEW.md).
+
 Before archive retirement in `e5791a8`, the tree contained 63 source
 manuscripts with 1582 literal standard result environments. Those are historical
 counts, not additional independent results: merged reports overlap them and
@@ -2902,54 +2910,54 @@ Mappings cover only the hypotheses and clauses they state.
 | Theorem | `hol:thm:explicit` (line 2102) | An explicit universally nonholonomic entire series |
 | Corollary | `hol:cor:detect` (line 2224) | Detecting order units by functional equations |
 | Lemma | `hol:nl:lem:algebra` (line 2551) | Hahn-family algebra and its residue |
-| Corollary | `hol:nl:cor:gauss` (line 2592) | Gauss multiplicativity |
-| Lemma | `hol:nl:lem:derivatives` (line 2630) | Exact derivative scaling |
-| Lemma | `hol:nl:lem:active` (line 2647) | Large active degrees |
-| Lemma | `hol:nl:lem:corner` (line 2713) | The exact corner identity |
-| Theorem | `hol:nl:thm:certificate` (line 2746) | Nonlinear finite exclusion certificate |
-| Corollary | `hol:nl:cor:cofinal` (line 2841) | Cofinal scales suffice |
-| Theorem | `hol:nl:thm:degrees` (line 2905) | Finite candidate degrees |
-| Corollary | `hol:nl:cor:locus` (line 2950) | An algebraic entire-solution locus |
-| Proposition | `hol:nl:prop:riccati` (line 2996) | Two exact Riccati classifications |
-| Theorem | `hol:nl:thm:nouniform` (line 3041) | A fixed Riccati equation defeats every uniform bound |
-| Theorem | `hol:nl:thm:corner` (line 3090) | Higher-order corner criterion and its boundary |
-| Proposition | `hol:nl:prop:higherdegrees` (line 3109) | Higher-order degree candidates |
-| Proposition | `hol:nl:prop:painleve` (line 3130) | The first two Painlev\'e polynomial equations |
-| Proposition | `hol:nl:prop:degenerate` (line 3170) | Complete formal classification of the example |
-| Theorem | `hol:nl:thm:euler` (line 3243) | Positive-weight Euler rigidity |
-| Corollary | `hol:nl:cor:eulerdegrees` (line 3304) | Weighted-degree candidates |
-| Corollary | `hol:nl:cor:theta` (line 3368) | Two independent jets of the quadratic-exponent series |
-| Corollary | `hol:nl:cor:infiniterank` (line 3391) | An example without an order unit |
-| Proposition | `hol:cf:prop:criterion` (line 4530) | All-scale coefficient criterion; sources~11 and~12 |
-| Corollary | `hol:cf:cor:cofinality` (line 4572) | When the statements are nonvacuous; source~12 |
-| Proposition | `hol:cf:prop:ring` (line 4595) | Differential algebra structure; source~11 |
-| Lemma | `hol:cf:lem:min` (line 4616) | A minimum coefficient value; source~11 |
-| Lemma | `hol:cf:lem:valuerank` (line 4630) | Valuation-rank inequality; sources~11 and~12 |
-| Lemma | `hol:cf:lem:principal` (line 4654) | A principal convex bound; sources~11 and~12 |
-| Proposition | `hol:cf:prop:exterior` (line 4709) | Coarsened exterior obstruction; sources~11 and~12 |
-| Corollary | `hol:cf:cor:finitefield` (line 4734) | Finite transcendence degree; source~12 |
-| Corollary | `hol:cf:cor:cvr` (line 4754) | Necessary infinite coefficient-value rank; source~12 |
-| Lemma | `hol:cf:lem:exppoly` (line 4793) | Nondegenerate exponential polynomials; source~12 |
-| Theorem | `hol:cf:thm:coefficients` (line 4832) | Finite coefficient field; sources~11 and~12 |
-| Corollary | `hol:cf:cor:finitegen` (line 4974) | Finitely many scalar parameters; source~11 |
-| Lemma | `hol:cf:lem:reduction` (line 4997) | Polynomial reduction of an entire series; source~11 |
-| Lemma | `hol:cf:lem:rationaldescent` (line 5014) | Rationality needs no new constants; source~11 |
-| Theorem | `hol:cf:thm:descent` (line 5032) | Coarsening descent; source~11 |
-| Corollary | `hol:cf:cor:free` (line 5120) | A free differential algebra of dilates; source~12 |
-| Corollary | `hol:cf:cor:relative` (line 5140) | Relative differential-algebraic closedness; source~11 |
-| Corollary | `hol:cf:cor:systems` (line 5150) | Finite rational differential systems; source~11 |
-| Corollary | `hol:cf:cor:painleve` (line 5169) | Painlev\'e~I in the fraction field; source~11 |
-| Corollary | `hol:cf:cor:DAexterior` (line 5193) | A solution-dependent exterior certificate; source~12 |
-| Proposition | `hol:cf:prop:theta` (line 5219) | A one-generator coefficient field; source~12 |
-| Theorem | `hol:cf:thm:rankone` (line 5276) | An explicit rank-one family; source~12 |
-| Theorem | `hol:cf:thm:Fomega` (line 5307) | Full mixed-jet independence of the explicit series; source~12 |
-| Theorem | `hol:cf:thm:indcriterion` (line 5341) | Infinite independent coefficient supply; source~11 |
-| Lemma | `hol:cf:lem:monomials` (line 5373) | Independent scale monomials; source~11 |
-| Proposition | `hol:cf:prop:branchentire` (line 5400) | Source~11 |
-| Proposition | `hol:cf:prop:branchind` (line 5411) | Source~11 |
-| Theorem | `hol:cf:thm:continuum` (line 5428) | Maximal differential transcendence in one workspace; source~11 |
-| Proposition | `hol:cf:prop:scalar` (line 5479) | Independence survives extension of constants; source~12 |
-| Corollary | `hol:cf:cor:several` (line 5600) | Several multiplicatively independent dilations; merge observation |
+| Corollary | `hol:nl:cor:gauss` (line 2596) | Gauss multiplicativity |
+| Lemma | `hol:nl:lem:derivatives` (line 2649) | Exact derivative scaling |
+| Lemma | `hol:nl:lem:active` (line 2666) | Large active degrees |
+| Lemma | `hol:nl:lem:corner` (line 2735) | The exact corner identity |
+| Theorem | `hol:nl:thm:certificate` (line 2770) | Nonlinear finite exclusion certificate |
+| Corollary | `hol:nl:cor:cofinal` (line 2870) | Cofinal scales suffice |
+| Theorem | `hol:nl:thm:degrees` (line 2938) | Finite candidate degrees |
+| Corollary | `hol:nl:cor:locus` (line 2983) | An algebraic entire-solution locus |
+| Proposition | `hol:nl:prop:riccati` (line 3029) | Two exact Riccati classifications |
+| Theorem | `hol:nl:thm:nouniform` (line 3074) | A fixed Riccati equation defeats every uniform bound |
+| Theorem | `hol:nl:thm:corner` (line 3125) | Higher-order corner criterion and its boundary |
+| Proposition | `hol:nl:prop:higherdegrees` (line 3144) | Higher-order degree candidates |
+| Proposition | `hol:nl:prop:painleve` (line 3165) | The first two Painlev\'e polynomial equations |
+| Proposition | `hol:nl:prop:degenerate` (line 3205) | Complete formal classification of the example |
+| Theorem | `hol:nl:thm:euler` (line 3291) | Positive-weight Euler rigidity |
+| Corollary | `hol:nl:cor:eulerdegrees` (line 3352) | Weighted-degree candidates |
+| Corollary | `hol:nl:cor:theta` (line 3420) | Two independent jets of the quadratic-exponent series |
+| Corollary | `hol:nl:cor:infiniterank` (line 3443) | An example without an order unit |
+| Proposition | `hol:cf:prop:criterion` (line 4583) | All-scale coefficient criterion; sources~11 and~12 |
+| Corollary | `hol:cf:cor:cofinality` (line 4625) | When the statements are nonvacuous; source~12 |
+| Proposition | `hol:cf:prop:ring` (line 4648) | Differential algebra structure; source~11 |
+| Lemma | `hol:cf:lem:min` (line 4669) | A minimum coefficient value; source~11 |
+| Lemma | `hol:cf:lem:valuerank` (line 4683) | Valuation-rank inequality; sources~11 and~12 |
+| Lemma | `hol:cf:lem:principal` (line 4707) | A principal convex bound; sources~11 and~12 |
+| Proposition | `hol:cf:prop:exterior` (line 4762) | Coarsened exterior obstruction; sources~11 and~12 |
+| Corollary | `hol:cf:cor:finitefield` (line 4787) | Finite transcendence degree; source~12 |
+| Corollary | `hol:cf:cor:cvr` (line 4807) | Necessary infinite coefficient-value rank; source~12 |
+| Lemma | `hol:cf:lem:exppoly` (line 4846) | Nondegenerate exponential polynomials; source~12 |
+| Theorem | `hol:cf:thm:coefficients` (line 4885) | Finite coefficient field; sources~11 and~12 |
+| Corollary | `hol:cf:cor:finitegen` (line 5027) | Finitely many scalar parameters; source~11 |
+| Lemma | `hol:cf:lem:reduction` (line 5050) | Polynomial reduction of an entire series; source~11 |
+| Lemma | `hol:cf:lem:rationaldescent` (line 5067) | Rationality needs no new constants; source~11 |
+| Theorem | `hol:cf:thm:descent` (line 5085) | Coarsening descent; source~11 |
+| Corollary | `hol:cf:cor:free` (line 5173) | A free differential algebra of dilates; source~12 |
+| Corollary | `hol:cf:cor:relative` (line 5193) | Relative differential-algebraic closedness; source~11 |
+| Corollary | `hol:cf:cor:systems` (line 5203) | Finite rational differential systems; source~11 |
+| Corollary | `hol:cf:cor:painleve` (line 5222) | Painlev\'e~I in the fraction field; source~11 |
+| Corollary | `hol:cf:cor:DAexterior` (line 5246) | A solution-dependent exterior certificate; source~12 |
+| Proposition | `hol:cf:prop:theta` (line 5272) | A one-generator coefficient field; source~12 |
+| Theorem | `hol:cf:thm:rankone` (line 5329) | An explicit rank-one family; source~12 |
+| Theorem | `hol:cf:thm:Fomega` (line 5360) | Full mixed-jet independence of the explicit series; source~12 |
+| Theorem | `hol:cf:thm:indcriterion` (line 5394) | Infinite independent coefficient supply; source~11 |
+| Lemma | `hol:cf:lem:monomials` (line 5426) | Independent scale monomials; source~11 |
+| Proposition | `hol:cf:prop:branchentire` (line 5453) | Source~11 |
+| Proposition | `hol:cf:prop:branchind` (line 5464) | Source~11 |
+| Theorem | `hol:cf:thm:continuum` (line 5481) | Maximal differential transcendence in one workspace; source~11 |
+| Proposition | `hol:cf:prop:scalar` (line 5532) | Independence survives extension of constants; source~12 |
+| Corollary | `hol:cf:cor:several` (line 5653) | Several multiplicatively independent dilations; merge observation |
 
 ### infinite-dimensional-hahn-spectral-theory
 
