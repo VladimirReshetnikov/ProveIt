@@ -2749,6 +2749,56 @@ implementation mappings and changes no manuscript or PDF. The combined
 The 3,089-row statement audit and 3,582-label audit still pass; all 1,387 local
 Markdown destinations resolve.
 
+## Constant-term detector and graph: the added Section 12
+
+Reviewed Section 12 against source 07's augmentation detector, ideal test
+and number-field arguments and source 06's retraction and homomorphism
+section, using the same `de0acc6` deliveries as the preceding review.
+The maintained proof now identifies the full pullback `A = ε⁻¹(o)` and
+locates scalar cancellation in the coefficient field. An explicit certificate
+in `Z × R` illustrates the allowed zero divisors. A second boundary example,
+`Z[ω]` inside `R[ω]`, shows why an ambient root and integer constant terms
+do not replace the full pullback hypothesis. General polynomial coefficients
+are parameters; the integer coefficients of `Λ` and `Λ_K` are numerals.
+
+The support proof explains finite convolution and retention of the original
+exponent group. The ideal's intersection description includes both
+directions and its failure over coefficient rings containing `Q`. The graph
+proof exhibits its six witnesses and specifies that uniqueness concerns its
+output. The quartic degree follows directly from its `x⁴` coefficient.
+The canonical splitting has an explicit proof and a multiplication formula
+distinguishing the additive direct sum from a ring direct product.
+The homomorphism argument separates preservation of existential equations
+from automorphism invariance of arbitrary first-order definitions.
+
+The number-field proof now constructs witnesses in the coefficient subring,
+without assuming integrality or finite generation. Remark 12.15 adds a
+consequence of the combined sources: the detector's assumed root has square
+`p`, `q` or `pq`, a nonsquare in the base number field. This radicand gives
+a one-witness existential ideal and a six-witness existential graph under
+the same hypotheses, alongside the two-witness complement detector. No
+additional quadratic extension or uniform formula over all number fields
+is asserted. This strengthens the documented conclusion at source level;
+all these omnific claims remain **Pending** in Lean.
+
+All 104 standard statement texts, all 228 labels and their numbers remain
+unchanged, and Section 13 onward is byte-identical. Three-pass LaTeX builds
+produce a 90-page article and 28-page catalogue without warnings or box
+diagnostics. The contents, status paragraph, reviewed pages and section
+transitions were visually checked, as was the catalogue's sole changed
+page. The independent inventory audit checks 3,089 standard results in 56
+main texts; 3,585 cited labels and 1,391 local Markdown destinations resolve.
+The earlier finite suites are unchanged and were not rerun: they are not
+proofs of the added definability consequence.
+
+Before editing, `0502930` was merged by fast-forward. Its conditioned
+inverse-cosine Lean results change no manuscript. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,315 jobs, and the axiom audit
+accepts 13,458 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The new material in Sections 6 and 10, Sections 13 and
+16–17, and remaining imported foundations, historical priority and source
+reconciliation still need review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

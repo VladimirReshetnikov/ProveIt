@@ -3,8 +3,8 @@
 This record covers the elementary source comparison in Sections 1–4 of the
 maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
 After the expansion, the reviewed original Sections 11–12 are Sections 14–15.
-A subsequent pass reviews the newly added Section 11 from sources 06–07.
-The added material in Sections 6 and 10 and Sections 12–13 and 16–17 remain
+Subsequent passes review the newly added Sections 11–12 from sources 06–07.
+The added material in Sections 6 and 10 and Sections 13 and 16–17 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the five manuscripts
 or review of all later proofs and imported classical results.
@@ -250,3 +250,45 @@ All standard statement texts and labels are unchanged. This is a source-level
 proof review, not new Lean coverage. Classical imported results, historical
 priority, Sections 12–13 and 16–17, and the unreviewed additions in Sections
 6 and 10 remain separate obligations.
+
+## Constant-term review: Section 12
+
+This pass compares the maintained augmentation detector, ideal test and
+number-field extension with source 07's detector, augmentation and
+number-field sections, and the constant-term graph and homomorphism results
+with source 06's retraction section. The source files are the same recovered
+versions identified in the Section 11 record above.
+
+Witness membership now uses `A = ε⁻¹(o)` explicitly. The only inverse is
+that of the nonzero scalar `ε(a)` in the coefficient field; a certificate
+in `Z × R` demonstrates the construction for a zero divisor. General
+polynomial coefficients are parameters in the formula, whereas `Λ` and
+`Λ_K` have integer coefficients and give parameter-free definitions.
+The counterexample `Z[ω]` shows that an ambient root and integer constant
+coefficients alone do not suffice without the full pullback ring.
+The support argument keeps exponents in the original ordered group.
+
+The ideal's intersection description now includes both directions and the
+failure over rings containing `Q`. The graph proof gives all six witnesses
+and separates uniqueness of its value from uniqueness of those witnesses.
+The quartic's degree is read from its `x⁴` coefficient. The splitting has
+an explicit proof and multiplication formula, so the additive direct sum
+cannot be mistaken for a ring direct product. The homomorphism discussion
+distinguishes preservation of existential equations from invariance of
+arbitrary first-order definitions under automorphisms.
+
+The number-field proof gives witnesses in the actual coefficient subring,
+without integrality or finite-generation assumptions. A further consequence
+is added to the merge's Remark 12.15: a root `r` of `Λ_K` has square one
+of `p`, `q`, `pq`, all nonsquares in `K`. Its integer radicand therefore
+gives a one-witness existential ideal and a six-witness existential graph
+under the detector's existing hypotheses. Primality of this radicand is
+unnecessary. This is a deduction from the combined arguments, not a claim
+that source 07 itself stated the stronger result. The formula is chosen for
+the fixed fields; no uniform polynomial over all number fields is asserted.
+
+All standard statements and source labels are preserved. Section 13 onward
+is unchanged. These are source-level proofs, still pending in Lean. The
+added material in Sections 6 and 10, Sections 13 and 16–17, and remaining
+imported foundations, historical priority and source reconciliation still
+require review.

@@ -73,7 +73,10 @@ condition is enough for the Pell-based integer definition, but not for the
 quadratic ideal predicate, whose witness `x/√2` must belong to the ring.
 `Inf(x)` in that report names the positive-growth-support ideal, including
 zero and elements of either sign; it does not mean a positive infinite
-number or an infinitesimal.
+number or an infinitesimal. The detector `Θ(a)` means `ct(a) ≠ 0`,
+which differs from `a ≠ 0` and from invertibility. The graph predicate
+`CT(x,n)` has the unique output `n = ct(x)`; its existential witness tuple
+need not be unique.
 
 For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
 `Oz/nOz ≅ ℤ/nℤ` describe quotient
