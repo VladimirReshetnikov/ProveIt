@@ -434,6 +434,27 @@ fourth-order remainder, and its valuation is half the defect valuation.
 At both inverse-sine endpoints the inward difference quotient eventually
 exceeds every fixed surreal bound, including infinite bounds, so no
 surreal-valued one-sided or fine derivative exists.
+Angular distance on the actual unit circle satisfies the metric axioms and
+the exact chord formula, with Jordan comparison bounds and identical
+angular/chordal valuation. Directions with equal standard part have a unique
+infinitesimal relative angle, given by the strong logarithm; its absolute
+value is their angular distance. The normalized chord and cosine-defect
+factors have full strong series and exact finite remainders.
+Phase differences preserve the exact infinitesimal angular valuation and
+have the expected complex linear term with infinitesimal relative error.
+Rotation displacement obeys the exact half-angle chord formula at arbitrary
+radii. Rotating by `omega^-1` gives displacement equivalent to one at radius
+`omega`, and infinite displacement at radius `omega^2`.
+For every relatively infinitesimal perturbation of a nonzero surcomplex
+number, the geometric direction change is the imaginary local logarithm.
+Its quadratic expansion has a bounded cubic remainder, and its valuation
+is at least that of the relative perturbation, with equality when the
+leading coefficient has nonzero imaginary part.
+Noncollinear triangles at arbitrary surreal scales have unique interior
+angles in `(0, pi)`, with the normalized dot product and area as cosine
+and sine coordinates. Their three angles sum exactly to ordinary pi,
+including their infinitesimal parts. The included-angle cosine and area
+laws also hold without restrictions on side lengths.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

@@ -8,7 +8,7 @@ draft; not refereed; no Lean formalization.
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 34 pages (title, contents i-ii, pages 1-31)
+article.pdf        the compiled report, 37 pages (title, contents i-ii, pages 1-34)
 README.md          this guide
 source_audit.md    the manuscript's own repository and literature audit, as delivered
 code/              verify_examples.py            exact finite checks (standard library only)
@@ -24,6 +24,18 @@ label currently has a mapping in the [formalization ledger](../../FORMALIZATION.
 The files in `code/` and `data/` and `source_audit.md` are byte-identical to
 the delivery; `source_audit.md` describes the repository at the manuscript's
 pin, not the current tree (see "Relation to neighbouring reports").
+
+The current proof review covers Sections 2–9: support and strong operators,
+coefficient-rank completion, spherical completeness and extension, continuous
+duality, the two failures of strongness, Hilbert duals and closed hyperplanes.
+The arguments now make finite rearrangements, net convergence, separation,
+quotient maps, norm comparisons, Riesz coefficients and cardinal bounds
+explicit. The norm-attainment comparison distinguishes positive from
+nonnegative bounds, including the zero operator. The hyperplane has zero
+orthogonal complement and no orthogonal direct-sum complement; its distance
+set has no infimum. All result numbers and labels are preserved.
+Sections 10 onward and remaining imports/source reconciliation are pending;
+see the [review record](../../REVIEW.md). No new Lean coverage is claimed.
 
 ## The setting
 
@@ -74,7 +86,7 @@ Numbers refer to the built `article.pdf`.
    `cf(Γ) = ℵ0`. Hence the trichotomy `E ⊊ C = V_Γ` (`Γ ≅ Z`),
    `E ⊊ C ⊊ V_Γ` (noncyclic, countable cofinality), `E = C ⊊ V_Γ`
    (uncountable cofinality). An order unit is sufficient but not necessary
-   for the middle case.
+   for `E ⊊ C`; when `Γ` is noncyclic this gives the middle case.
 4. **Completeness and extension (Proposition 5.1, Theorem 5.3).** `V_Γ` is
    spherically complete at every rank with no topology on `V`; a contractive
    Hahn–Banach extension theorem over arbitrary `Γ`, proved in full (a
@@ -136,7 +148,9 @@ the manuscript's limitations was dropped. The main ones:
   formulas. The exact sequence has no canonical splitting; invisible
   functionals have no canonical transport under enlargement.
 - No least real-Hahn operator norm is defined; `F`-valued boundedness is not
-  an ordinary norm estimate.
+  an ordinary norm estimate. The spectral norm-attainment theorem uses
+  **nonnegative** bounds; the zero operator has least nonnegative bound `0`
+  but no least positive bound.
 - Everything is set-sized: no Zorn argument over a proper class, no dual of a
   class-sized space over `No[i]`; the intrinsic topology is not the fine
   topology; a Hilbert vector is not a surcomplex scalar.
@@ -224,3 +238,47 @@ completion and cofinality classifications, spherical completeness or
 Hahn–Banach, the existence of Hamel or invisible functionals, the
 infinite-dimensional orthogonal-complement and missing-infimum claims, or
 novelty.
+
+## Current proof review
+
+The first three-duals pass reviews Sections 2–5. The support proof makes
+choice, the nondecreasing-subsequence argument and finite coefficient fibers
+explicit. Regrouping includes empty fibers, and triple-support finiteness
+justifies scalar associativity and the canonical strong-map isomorphism.
+The valuation-shift proof names its target neighborhood, handles zero values
+and treats the zero group separately. The operator calculus identifies its
+identity and central scalar action; cancellation yields an inequality rather
+than an equality of valuations. The pointwise-support example now uses
+`Γ = Q`, exponents `1/n` and an explicit Hahn vector whose putative image
+has infinitely many contributions at zero, in every coefficient characteristic.
+
+The completion criterion specifies the induced uniformity and its net of
+truncations, and handles zero scalars before subtracting their valuations.
+The countable-cofinal construction builds an increasing cofinal sequence
+without assuming an order unit; the converse chooses independent coefficients
+below a common cut. The guide's order-unit summary is corrected: it gives
+`E ⊊ C`, but yields the middle case only for noncyclic groups. All infinite
+formal sums in these proofs use the shared strong-sum notation.
+
+The completeness proof expands compatible ball prescriptions and uniform
+stabilization of Cauchy-net truncations, including the zero group and empty
+ball family. The Hahn–Banach proof writes out ball containment, uniqueness
+and linearity of the one-vector extension, and the set of partial extensions
+used by Zorn, including the empty-chain upper bound. It corrects the claim
+that selecting one element of a known nonempty intersection separately uses
+the axiom of choice. Independent reviews checked the completion boundaries,
+the edited support/operator proofs and the extension argument; the final
+empty-chain clarification arose from that review.
+
+Validation: three-pass baseline and revised PDFs are warning-free at 34 and
+35 pages, and changed pages were visually inspected. All 77 source-label
+numbers (154 including cleveref companions) and three historical audit/code/data
+files are preserved. The delivered verifier reproduces all 610 assertions
+with byte-equivalent JSON data. A separate 2,800 exact sparse-convolution
+checks in characteristics 2, 3, 5 and 7 cover scalar compatibility, operator
+composition, additivity, identity, direct triple expansion, finite regrouping
+and valuation shifts. These finite checks do not establish infinite support,
+completion or choice-based extension. The independent index checks 2,298
+entries in 48 sources, all 2,545 cited labels resolve, and all 976 local
+Markdown destinations in 108 files resolve. Sections 6 onward and remaining
+imports/source reconciliation are pending; no new Lean mapping is claimed.

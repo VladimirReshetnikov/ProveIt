@@ -36,7 +36,7 @@
 \newtheorem{question}[theorem]{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-% Added on placement: all environments share the theorem counter, and cleveref
+% Added during assembly: all environments share the theorem counter, and cleveref
 % would otherwise print every one of them as "theorem".
 \makeatletter
 \@for\fkc@env:=proposition,lemma,corollary,definition,example,question,remark\do{%
@@ -178,7 +178,7 @@ The manuscript's repository comparison was made at its pinned revision; see \cre
 \label{fkc:subsec:collection}
 
 \paragraph{Provenance.}
-This report is built from one manuscript, \emph{The First-$\kappa$ Coefficients: Omitted Types, Singular Compression, and Completion in Surreal and Surcomplex Hahn Fields}, dated 22 September 2026 (21 pages, author line ``OpenAI ChatGPT''), delivered as the archive \texttt{surreal\_first\_kappa\_types} (item~04 of batch~22) and placed in the collection in commit \texttt{7b5f934}. Its repository comparison is pinned at commit \texttt{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}. It is not a merge: no other manuscript proves its results, and the nearest material in the collection is cross-referenced below, not merged. The statements, proofs, limitations and priority caveats are the manuscript's. On placement the following changed.
+This report is built from one manuscript, \emph{The First-$\kappa$ Coefficients: Omitted Types, Singular Compression, and Completion in Surreal and Surcomplex Hahn Fields}, dated 22 September 2026 (21 pages, author line ``OpenAI ChatGPT''), delivered as the archive \texttt{surreal\_first\_kappa\_types} (item~04 of batch~22) and placed as raw files in commit \texttt{7b5f934}. The report was assembled in commit \texttt{68e2960}. Its repository comparison is pinned at commit \texttt{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}. It is not a merge: no other manuscript proves its results, and the nearest material in the collection is cross-referenced below, not merged. The statements, proofs, limitations and priority caveats are the manuscript's. During assembly the following changed.
 \begin{itemize}
 \item Every label received the prefix \texttt{fkc:}; all 72 labels of the manuscript are kept, and no statement was renumbered or removed.
 \item Added: this subsection; \cref{fkc:rem:countable-analogue} (the countable analogues in other reports); \cref{fkc:rem:groups-elsewhere} (the groups $\Gamma_\theta$ elsewhere in the collection); a pointer after the rank-one boundary case; the corrections of \cref{fkc:subsec:corrections}; the collected non-claims of \cref{fkc:subsec:nonclaims}; bibliography entries for collection reports; and the file paths of \cref{fkc:app:checks}, which now name this directory's layout.
@@ -683,7 +683,7 @@ By \cref{fkc:thm:completion,fkc:prop:new-supports}, a proper $\K$ fails to be co
 A new completion element is required to have cofinal support of order type exactly $\kappa$. A series with $\kappa$ support positions confined below a fixed exponent is never added by completion. Thus the completion is not obtained simply by replacing $<\kappa$ by $\le\kappa$, nor by replacing $\kappa$ with $\kappa^+$. Example~\ref{fkc:ex:partialcompletion} gives an explicit strict chain $K_{\kappa,k}\subsetneq L_{\kappa,k}\subsetneq F_k$.
 \end{remark}
 
-\begin{remark}[The countable analogue elsewhere in the collection; added on placement]\label{fkc:rem:countable-analogue}
+\begin{remark}[The countable analogue elsewhere in the collection; added during assembly]\label{fkc:rem:countable-analogue}
 The case $\kappa=\aleph_0$ is excluded here, since finite-support series do not form a field (\cref{fkc:app:checks}). Two other reports prove the countable analogue of \cref{fkc:thm:completion,fkc:thm:dichotomy} for other objects. In the report on three duals of Hahn vector spaces, the completion of the algebraic scalar extension $E_\Gamma(V)$ of an infinite-dimensional $k$-vector space $V$ consists of the vectors with finite coefficient rank below every $\gamma\in\Gamma$ (\texttt{duals:thm:completion}), and it is strictly larger than $E_\Gamma(V)$ exactly when $\cf(\Gamma)=\aleph_0$ (\texttt{duals:thm:cofinality-completion}). This is the shape of \eqref{fkc:eq:localfield} and \eqref{fkc:eq:complete-dichotomy} with ``finite coefficient rank'' in place of ``fewer than $\kappa$ support terms'' and $\aleph_0=\cf(\aleph_0)$ in place of $\cf(\kappa)$. In the rank-one Berkovich report, the metric closure of the finite-support series in $\C((t^\Q))$ consists of the series whose support meets every $(-\infty,B]$ in a finite set, which is \eqref{fkc:eq:localfield} with $\kappa$ replaced by $\aleph_0$. Neither result is used here, and neither implies nor is implied by the theorems above: the objects there are a vector space over the full Hahn field and the ring of finite-support series, and the bound is countable.
 \end{remark}
 
@@ -855,7 +855,7 @@ If $\Gamma$ is a subgroup of $(\R,+)$, every well-ordered subset of $\Gamma$ is 
 \]
 The nontrivial cardinal-support phenomena in this paper therefore require value groups beyond the Archimedean case. Merely replacing the real coefficients by complex ones in a rank-one Hahn field does not create these missing types. This is consistent with the rank-one Berkovich report, where the proper closure of the finite-support series in $\C((t^\Q))$ occurs only at the excluded countable bound (\cref{fkc:rem:countable-analogue}).
 
-\begin{remark}[The same groups elsewhere in the collection; added on placement]\label{fkc:rem:groups-elsewhere}
+\begin{remark}[The same groups elsewhere in the collection; added during assembly]\label{fkc:rem:groups-elsewhere}
 The construction \eqref{fkc:eq:Gtheta}, together with the embedding $e_\alpha\mapsto\omega^\alpha$ of \cref{fkc:sec:surreal}, is the one used in the report on entire functions at arbitrary rank. Its group $\Gamma_\infty=\bigoplus_{j\ge0}\Q e_j$ with $e_j=\omega^j$ (\texttt{ent:eq:concrete-group}) is $\Gamma_\omega$ here, and its group $\Gamma_{\omega_1}$ (\texttt{ent:eq:Gamma-omegaone}) is the group of \cref{fkc:ex:regular}. Both reports compute the same cofinalities, $\aleph_0$ and $\aleph_1$. The questions asked about these groups are different: there, entire functions and their rings; here, cardinally bounded subfields.
 \end{remark}
 
@@ -967,7 +967,7 @@ A second question concerns richer languages: named truncation, named conjugation
 
 \subsection{Corrections to the manuscript's repository statements}
 \label{fkc:subsec:corrections}
-The statements above describe the repository at the manuscript's pin \texttt{465a54b}, which is kept as provenance; the pinned URLs in \cite{Repo} are also kept. On placement they were checked against the current collection, with the following results.
+The statements above describe the repository at the manuscript's pin \texttt{465a54b}, which is kept as provenance; the pinned URLs in \cite{Repo} are also kept. During assembly they were checked against the current collection, with the following results.
 \begin{enumerate}[label=\textup{(\arabic*)}]
 \item \emph{Catalogue size.} At the pin the catalogue described 44 reports, as stated. Since then batch~21 added \texttt{surreal-fields-across-universes} and \texttt{birthday-cutoffs-and-hereditary-sets}, and batch~22 added this report and \texttt{single-dilation-hahn-support}; the collection had 48 report directories when this report was written.
 \item \emph{Universes.} At the pin, universes were treated in the foundations report. The collection now also has a report on surreal fields across set-theoretic universes, which studies saturation and omitted cuts of proper-class surreal fields of inner models. Its objects differ from the set-sized fields here; see \cref{fkc:subsec:collection}.
@@ -978,7 +978,7 @@ The statements above describe the repository at the manuscript's pin \texttt{465
 
 \subsection{What is not claimed}
 \label{fkc:subsec:nonclaims}
-The manuscript states its limitations where they arise. They are collected here, with the one limitation added on placement; none is withdrawn.
+The manuscript states its limitations where they arise. They are collected here, with the one limitation added during assembly; none is withdrawn.
 \begin{enumerate}[label=\textup{N\arabic*.}, leftmargin=2.6em]
 \item $\kappa$ is uncountable; the finite-support case $\kappa=\aleph_0$ is excluded (\cref{fkc:app:checks}).
 \item Established mathematics is credited, not claimed: cardinally bounded Hahn fields (Kuhlmann--Shelah for regular $\kappa$; Berarducci--Kuhlmann--Mantova--Matusinski), Hahn arithmetic and closedness, Conway normal forms, general approximation-type theory including its ball formulas (F.-V.~Kuhlmann, Proposition~4.4 and Section~4.2), full-Hahn ball gluing (Poonen), and quantifier elimination for real closed and algebraically closed valued fields (Tarski, Robinson, Yin).
@@ -991,7 +991,7 @@ The manuscript states its limitations where they arise. They are collected here,
 \item No new general Hahn--Banach theorem is claimed. The zero continuous dual is over an incomplete base in the inherited topology and does not contradict finite-dimensional functional analysis.
 \item This is not a new version of the independence theorem of the report on transcendence over bounded support.
 \item The 9,622 finite assertions of \texttt{code/verify.py} test finite local identities only. They do not verify the transfinite theorems, quantifier elimination, novelty or any Lean implementation.
-\item Added on placement: the comparisons with other reports in \cref{fkc:subsec:collection,fkc:rem:countable-analogue,fkc:rem:groups-elsewhere} are editorial. They prove no new theorem, and no statement here is derived from those reports.
+\item Added during assembly: the comparisons with other reports in \cref{fkc:subsec:collection,fkc:rem:countable-analogue,fkc:rem:groups-elsewhere} are editorial. They prove no new theorem, and no statement here is derived from those reports.
 \end{enumerate}
 
 \section{Conclusion}
