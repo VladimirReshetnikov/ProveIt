@@ -257,6 +257,19 @@ it, because the collection ships no checksum manifests. And M2's reproduction
 recipe warns explicitly against running `lake update` and then describing the
 result as a check of the pinned revision.
 
+## Later reports building on this one
+
+- [birthday-cutoffs-and-hereditary-sets](../birthday-cutoffs-and-hereditary-sets/)
+  proves cutoff-local versions of the bi-interpretation announced by
+  Chen–Hamkins–Yang (recorded here, `found:sub:announcement`) and prints a
+  written proof of the global statement as a proof of the announced theorem,
+  credited to them; the announced axiomatization is not addressed there.
+- [surreal-fields-across-universes](../surreal-fields-across-universes/)
+  proves an external form of `found:thm:discrete`: for transitive `M ⊆ N`
+  with the same ordinals, every `N`-set of elements of `No^M` is closed and
+  uniformly discrete, and set-indexed Cauchy nets of old numbers are
+  eventually constant, although filling of small cuts can fail in `N`.
+
 ---
 
 ## Build

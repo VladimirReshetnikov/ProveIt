@@ -189,6 +189,21 @@ multiplier, not an argument or the trigonometry/differential-equations phase;
 "real form" is a real closed `F` with `K = F(i)`, not the real-coefficient
 versions in entire-functions or analytic-geometry.
 
+Two later reports use conjugation on `No[i]`.
+[surreal-fields-across-universes](../../foundations-and-computation/surreal-fields-across-universes/)
+continues, but does not settle, the real-form question of Section 14: under
+global choice it transports an inner model's conjugation to real forms of
+`No[i]` that have no set-sized cofinal subset and are not conjugate to `c`
+(by the easy direction of `saut:prop:conjugacycriterion`), separates several
+such forms by an external gap invariant, and lets them agree with `c` on `C`.
+[birthday-cutoffs-and-hereditary-sets](../../foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+enriches bounded surcomplex fields by conjugation and a coordinate birthday;
+its bounded `Aut = {id, c}` statements are credited to `saut:thm:axis` and the
+simplicity rigidity of `saut:sec:exponential`, and only its two-lift
+classification of elementary embeddings and, under GBC, its elementary
+self-embeddings of the full structure are new there. Neither addresses
+`Aut_L`.
+
 ## Stale statements corrected
 
 The source compared itself with the repository at `dcf8666` (Section 13, kept
