@@ -584,6 +584,9 @@ import Surreal.Foundations.OmnificOrdinaryArithmetic
 import Surreal.Foundations.OmnificFiniteQuotients
 import Surreal.Foundations.OmnificConstantRigidity
 import Surreal.Foundations.OmnificSupportBounds
+import Surreal.Foundations.OmnificPurelyInfiniteIdeal
+import Surreal.Algebra.IdempotentAdicCompletion
+import Surreal.Foundations.OmnificPurelyInfiniteCompletion
 import Surreal.Foundations.OmnificPadicCompletion
 import Surreal.Algebra.IdealCongruenceTopology
 import Surreal.Foundations.OmnificCongruenceTopology
