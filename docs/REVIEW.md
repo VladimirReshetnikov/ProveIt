@@ -3683,6 +3683,31 @@ inventory audit checks 3,759 results in 61 reports; all 4,301 cited source
 references resolve and the 1,562 local Markdown destinations pass.
 No Lean source changed in this review.
 
+## Profinite and separation-topology synchronization
+
+Merged upstream through `efc5446`, including the profinite topology work
+in `4a5bc50` and the arithmetic separation homeomorphisms. The ordinary
+congruence inverse limit now has its product-subspace topology, with
+compactness for finite residues, Hausdorffness, total disconnectedness
+and a dense canonical map. The actual omnific-to-integer comparison is
+both a ring isomorphism and a homeomorphism, and the canonical map from
+the congruence topology is dense inducing; its kernel remains `Π`.
+The ordinary and prime-adic separation quotients are likewise homeomorphic
+to `ℤ` with their respective arithmetic topologies. The separate
+uniform-space completion comparison and the prime-adic completion
+homeomorphism remain **Pending**. None of these arithmetic results
+formalizes the geometric arguments reviewed above.
+
+No manuscript source changed in this merge. The new generic topology
+modules and their actual omnific instantiations were read against the
+updated implementation mappings. With no other Lean process active,
+`LEAN_NUM_THREADS=2 lake build` passes all 4,422 jobs; the axiom audit
+passes 15,076 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent inventory checks 3,759 standard results
+across 61 reports, all 4,301 cited source references resolve, and all
+1,567 local Markdown destinations across 185 files pass. The article
+and catalogue remain the previously validated 180/32-page versions.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
@@ -3716,7 +3741,7 @@ passes. This is integration validation, not a proof review of the new reports.
 
 ## Remaining scope
 
-The current collection has 57 main texts. The synchronization record above
+The current collection has 61 main texts. The synchronization record above
 states the latest omnific review boundary and the remaining companion
 integrations. Historical counts below identify the versions previously
 reviewed; they do not replace the current inventory.
