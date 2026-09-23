@@ -1531,8 +1531,8 @@ These are identities in the analogous two-variable coefficient ring, with
 $1-u$, $1-u'$ and $1-uu'$ inverted. They are established classical
 identities, not inferred from any finite computation: Tate proves them as
 universal formal identities by comparison with the complex elliptic
-functions \cite[Theorem~1 and its proof]{Tate}. The new obligation is to
-justify their \emph{Hahn} specialization.
+functions \cite[Theorem~1, pp.~6--7, especially (25$'$)]{Tate}. The new
+obligation is to justify their \emph{Hahn} specialization.
 
 \subsection{The wide annulus and Hahn specialization}
 
@@ -1756,10 +1756,17 @@ $x$-coordinate solves
  x^3-\frac{r}{(1-r)^2}x^2+a_4(q)x+a_6(q)=0.\label{tate:node:eq:smoothpolynomial}
 \end{equation}
 At $(q,r,x)=(0,c,x_0)$ the derivative with respect to $x$ is $x_0^2$, which
-is nonzero. \Cref{tate:node:lem:implicit}, after translating by these
-constants, proves uniqueness of the infinitesimal correction to $x_0$.
-Thus $x=x'$ and $y=y'$. Any other $u$ with residue $c$ would solve the same
-invertible equation $R(q,u-c)=r$, so it is equal to this one.
+is nonzero. Uniqueness can also be seen directly among actual Hahn
+points. Put $d_r=r/(1-r)^2$ and subtract the two polynomial equations:
+\[
+ 0=(x-x')\bigl(x^2+xx'+x'^2-d_r(x+x')+a_4(q)\bigr).
+\]
+The second factor has residue $3x_0^2-2x_0^2=x_0^2\ne0$, so it is a
+unit and $x=x'$. Then $y=y'$. Any other $u$ with residue $c$ would solve
+the same invertible equation $R(q,u-c)=r$, so it is equal to this one.
+All substitutions use the positive-valuation inputs $q,r-c$ or $q,u-c$;
+the possibly noninfinitesimal constants $c,x_0$ have first been translated
+into the coefficient field.
 \end{proof}
 
 \subsection{Points reducing to infinity}
@@ -1814,11 +1821,15 @@ the second variable is the series $A(Q,z)$ of \cref{tate:lem:formal-identity};
 source~01 evaluates them at the coarse valuation, here they are evaluated
 at the fine one. Put $s=A(q,z)$.
 
-The resulting Tate point has the same $z$ and, by \eqref{tate:eq:localcurve},
-the same unique $r=r_\infty(q,z)$ as the original point. Since $x=z/r$ and
-$y=-1/r$, the points agree. The formal inverse also proves uniqueness. Since
-$A(Q,0)=0$ and its linear coefficient in $z$ is $1$, $A$ is $z$ times a
-formal unit, so a nonzero $z$ gives $s\ne0$.
+Since $A(Q,0)=0$ and its linear coefficient in $z$ is $1$, $A$ is $z$
+times a formal unit. Thus $z\ne0$ implies $s\ne0$ and $v(s)=v(z)>0$.
+After specialization $N_X(q,s)$ and $N_Y(q,s)$ are units, so the resulting
+Tate point has coordinate valuations $-2v(s)$ and $-3v(s)$. In particular,
+its $r=-1/Y_q(1+s)$ is infinitesimal. It has the same $z$ and hence, by
+\eqref{tate:eq:localcurve} and the actual-input uniqueness in
+\cref{tate:node:lem:implicit}, the same $r=r_\infty(q,z)$ as the original
+point. Since $x=z/r$ and $y=-1/r$, the points agree. The formal inverse
+also proves uniqueness.
 \end{proof}
 
 \subsection{Constructive surjectivity}
@@ -1839,10 +1850,33 @@ possibilities. The annular parameter has valuation in $(0,\alpha)$, while
 the other two parameters are units, so all belong to $U_q$.
 \end{proof}
 
+The charts in fact give a bijection from the normalized annulus
+$\{u:0\le v(u)<\alpha\}$ onto $E_q(\KK)$, before proving the group law.
+Their images are disjoint and can be read from the input point:
+\[
+\begin{array}{c|c|c}
+ \text{point} & \text{normalized parameter} & \text{inverse}\\ \hline
+ O & u=1 & 1\\
+ x,y\in\m_v & 0<v(u)<\alpha & \UU(x,y)\\
+ \text{nonsingular affine residue} & v(u)=0,\ \bar u=c\ne1
+   & c+S_c(q,y/(x+y)-c)\\
+ \text{a negative coordinate valuation} & u\in1+\m_v,\ u\ne1
+   & 1+A(q,-x/y)
+\end{array}
+\]
+For the node row, use \cref{tate:node:thm:nodalsurj}. For the smooth row,
+the positive tails vanish in the residue field, leaving $(f(c),g(c))$.
+For the last row, the unit numerators at infinity give the negative
+valuations just computed. Thus every normalized parameter lies in exactly
+one row, and the inverse in that row is unique.
+
 The argument is constructive in the formal-series sense. It does not
 assume that $k$ is algebraically closed or that the value group permits
 root extraction; even the valuation pattern at infinity was obtained from
-integer linear combinations, without division in $\Gamma$.
+integer linear combinations, without division in $\Gamma$. The node row
+may be empty: when $\Gamma=\Z$ and $\alpha=1$, there is no value strictly
+between $0$ and $\alpha$, so the nodal inverse theorem also says that no
+$\KK$-point reduces to the node.
 
 \subsection{The group law and the kernel}
 
@@ -1951,10 +1985,12 @@ $\SpanM{\supp u\cup\supp(q/u)}=\SpanM{\supp X_q(u)\cup\supp Y_q(u)}$.
 \end{theorem}
 
 \begin{proof}
-The forward inclusion is \eqref{tate:node:eq:support-control} applied to the
-integral zero-constant series $\X,\Y$. Apply it to the zero-constant formal
-inverse $\UU,\VV$ for the reverse inclusion. Taking generated monoids on
-both sides gives equality.
+Write $M_{U,V}=\SpanM{\supp U\cup\supp V}$ and
+$M_{x,y}=\SpanM{\supp x\cup\supp y}$. The support bound
+\eqref{tate:node:eq:support-control}, applied to $\X,\Y$, gives
+$M_{x,y}\subseteq M_{U,V}$. Applying it to the zero-constant formal
+inverse $\UU,\VV$ gives $M_{U,V}\subseteq M_{x,y}$.
+This proves equality without requiring equality of individual supports.
 \end{proof}
 
 \begin{corollary}[Exact monoidal descent]\label{tate:node:cor:monoidal}
@@ -2096,6 +2132,18 @@ For period sensitivity take $q=t^3$, $q'=t^3+t^N$ with an integer $N>3$,
 and $u=t$. Then \eqref{tate:node:eq:sensitivity} gives exact depth $N-1$:
 the formula identifies the valuation of the difference, not merely an upper
 bound for its size.
+
+To see what a rank-one quotient loses, work over
+$\Gamma=\Z\oplus_{\mathrm{lex}}\Z$ with
+\[
+ q=t^{(2,0)},\qquad u=t^{(1,0)},\qquad
+ u'=t^{(1,0)}(1+t^{(0,1)}).
+\]
+Both parameters have value $(1,0)$, whereas $v(u-u')=(1,1)$.
+The fixed-period formula therefore gives vector difference value $(1,1)$,
+while each point separately has vector value $(1,0)$. The first-coordinate
+quotient assigns value $1$ to all three: it detects the common leading
+depth but loses the extra closeness in the second coordinate.
 
 \section{Scalar extension and the valuation-circle quotient}\label{tate:sec:extension}
 

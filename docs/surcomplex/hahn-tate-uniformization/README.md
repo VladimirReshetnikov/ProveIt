@@ -6,7 +6,7 @@ independently on the same day. Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex      the report, standalone LaTeX with an internal bibliography
-article.pdf      the compiled report, 62 pages
+article.pdf      the compiled report, 63 pages
 README.md        this guide
 PROOF_AUDIT.md   claims, inputs, dependency map and verification boundaries
 03-tate-uniformization-PROOF_STATUS.md   source 03's own proof-status file, as delivered
@@ -93,8 +93,14 @@ It expands finite normalization and the two convex-subgroup arguments,
 makes the formal inverse lemma characteristic-free, and explains why
 fine-positive inputs alone do not permit arbitrary coarse-coefficient
 evaluation. The later Tate-curve statements retain their characteristic-zero
-hypotheses. The second route, arithmetic refinements and multiscale theta
-proofs remain for the next review.
+hypotheses. The second route and Section 9's support and valuation arguments have now
+also been read. The smooth-chart uniqueness proof exhibits its unit factor;
+the infinity chart explicitly checks the valuations needed for uniqueness;
+and a chart table assembles the normalized inverse before the group law.
+Examples explain an empty node tube over a discrete value group and the
+extra closeness erased by a rank-one quotient. Tate's universal secant
+identities and generic-pair lemma were checked against his pp. 6–7.
+Arithmetic refinements and multiscale theta proofs remain for review.
 
 ## What the report claims
 
@@ -365,6 +371,12 @@ During the first-route proof review, the 62-page PDF rebuilt without warnings
 or box issues, and source 01's unchanged verifier passed on a temporary copy
 with Python 3.13.14 and SymPy 1.14.0. Its JSON again matched the delivered
 record except for the Python version; no historical record was overwritten.
+
+During the second-route review, the PDF rebuilt in three passes at 63 pages
+without warnings or box issues. The unchanged source-03 verifier again
+passed all 728 coefficient equalities through total degree 12 on a temporary
+copy; its JSON matched the delivered record except for elapsed time.
+The historical code, data and audit files were preserved.
 
 A clean compile and passing finite checks prove nothing about the infinite
 arguments.

@@ -173,6 +173,14 @@ Over the lexicographic group `ℤ ⊕ ℤ` with
 `H = {0} ⊕ ℤ`, substituting `z = t^(0,1)` into
 `Σₙ t^(0,−n) Zⁿ` makes every term `1` and fails strong summability.
 
+In the same report's node chart, the vector valuation is
+`𝐯(x,y) = min{v(x),v(y)}`, with `v(0) = ∞`. The word “isometry” means equality
+of these ordered-group values for differences in the chosen coordinates;
+it does not introduce a real-valued metric. Both coordinates are needed
+because their leading terms can cancel separately. Passing to a rank-one
+quotient can erase a strict increase in vector valuation, as the
+`ℤ ⊕ ℤ` example in Section 9.3 shows.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and
