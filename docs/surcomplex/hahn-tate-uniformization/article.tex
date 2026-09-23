@@ -2909,7 +2909,8 @@ every $j$, $\cB_j|_{V_{j-1}}$ is positive semidefinite,
  \cB_j(V_j,\cH)=0,\label{tate:theta:eq:globalradical}
 \end{equation}
 each $V_j$ is rational with respect to $L$, and $V_r=0$. Rationality means
-$\spanR(L\cap V_j)=V_j$. The \emph{active depth} is
+$\spanR(L\cap V_j)=V_j$; it is a condition on the subspace, not a demand
+that the matrix entries of $\cB_j$ be rational. The \emph{active depth} is
 $s=\#\{j:V_j\ne V_{j-1}\}$. Repeated stages are allowed and do not count
 toward $s$.
 \end{definition}
@@ -3052,9 +3053,15 @@ There are integers $c_{ia}\in\{0,\ldots,M\}$ and $r_a\ge0$ such that
 \end{lemma}
 
 \begin{proof}
-For a fixed $a$, if $m_a\ge NM$, fill every bin to $M$ and put the remainder
-into $r_a$. Otherwise distribute $m_a$ among $N$ bins of capacity $M$ and
-set $r_a=0$. The constructions for different $a$ are independent.
+An explicit choice, for $1\le i\le N$, is
+\[
+ c_{ia}=\min\{M,\max\{0,m_a-(i-1)M\}\},\qquad
+ r_a=\max\{0,m_a-NM\}.
+\]
+The first $N$ bins contain a total of $\min\{m_a,NM\}$ units. If
+$r_a>0$, then $m_a>NM$ and every bin is full. If $m_a=NM$, every bin is
+also full but the remainder is zero, as allowed. The constructions for
+different $a$ are independent; no bound on $\sum_a c_{ia}$ is required.
 \end{proof}
 
 \begin{lemma}[A shift dominates every fixed mixed term]\label{tate:theta:lem:shift}
@@ -3079,15 +3086,22 @@ at a scale higher than the self-pairing of $a$.
 Induct on the number of active levels. The zero-dimensional case is empty,
 and the one-level case follows from \cref{tate:theta:lem:acute}. Delete
 initial zero stages and call the first form $\cB_1$. Let $V=\rad\cB_1$ and
-$L_0=L\cap V$. The quotient $\overline L=L/L_0$ is a full lattice in
-$\cH/V$, because $V$ is rational. The induced $\cB_1$ is positive definite
-there.
+$L_0=L\cap V$. The subgroup $L_0$ is primitive: if a nonzero integer
+multiple of a lattice vector lies in $V$, the vector itself lies in $V$.
+A basis of $L_0$ therefore extends to a basis of $L$.
+Rationality says that the first basis spans $V$ over $\R$, so the
+remaining basis vectors project to a real basis of $\cH/V$.
+Consequently $\overline L=L/L_0$ is a full lattice in that quotient,
+and the induced $\cB_1$ is positive definite there.
 
 Choose finite acute families in $\overline L$ by
 \cref{tate:theta:lem:acute}. Write $\cT$ for their union, and choose once
 and for all a lift $\widetilde t\in L$ for every $t\in\cT$. On $V$, the
-remaining forms and $L_0$ satisfy the inductive hypotheses. Let $S_0$ be a
-finite positively generating set for $L_0$. If $V=0$, the lifted acute sets
+remaining forms and $L_0$ satisfy the inductive hypotheses: their
+restricted radicals are the later $V_j$, their global annihilation
+conditions restrict from $\cH$ to $V$, and those subspaces are rational
+relative to $L_0$. At least one active level has been removed.
+Let $S_0$ be a finite positively generating set for $L_0$. If $V=0$, the lifted acute sets
 suffice, so assume $S_0\ne\varnothing$. By \cref{tate:theta:lem:shift},
 choose a positive integer $M$ satisfying
 \begin{equation}
@@ -3126,17 +3140,29 @@ the required positive-integer representation. This closes the induction.
 
 \begin{remark}[Non-full lattices]\label{tate:theta:rem:nonfull}
 The theorem also covers the non-full lattices of the published question.
-Let $F^j$ be the global radical filtration and $L_j=L\cap F^j$.
-Admissibility says that each image of $L_j$ in $F^j/F^{j+1}$ is discrete
-\cite[Theorem~8.1]{AN}. Set $W_L=\spanR L$. Inductively,
-$W_L\cap F^j=\spanR L_j$: the image of $L_j$ is a lattice, so its rank
-equals the dimension of its real span, and rank--nullity identifies the
-kernel dimension with $\operatorname{rank}L_{j+1}$; the inclusion of
-$\spanR L_{j+1}$ in that kernel is consequently equality. The restricted
-form on $W_L$ has filtration $W_L\cap F^j$: a vector outside that
-intersection has an earlier positive self-pairing and cannot enter the
-restricted radical. Thus $L$ is a full AN-admissible lattice in $W_L$, to
-which the proof applies.
+Let $F^j$ be the global radical filtration, with $F^1=\cH$, and
+$L_j=L\cap F^j$. Admissibility says that the image
+$\overline L_j$ of $L_j$ in $F^j/F^{j+1}$ is discrete
+\cite[Theorem~8.1]{AN}. Set $W_L=\spanR L$.
+We prove $W_L\cap F^j=\spanR L_j$ by induction, starting at $j=1$.
+Under this identification the kernel of
+\[
+ \spanR L_j\longrightarrow F^j/F^{j+1}
+\]
+is $W_L\cap F^{j+1}$. Its dimension is
+$\operatorname{rank}L_j-\operatorname{rank}\overline L_j
+=\operatorname{rank}L_{j+1}$: discreteness identifies ranks with
+dimensions of real spans, and the last equality is the rank formula
+for $0\to L_{j+1}\to L_j\to\overline L_j\to0$.
+It contains $\spanR L_{j+1}$, which has the same dimension, so they
+are equal.
+
+The restricted form on $W_L$ has this same radical filtration:
+a vector in $W_L\cap F^j$ outside $F^{j+1}$ has positive $j$th
+self-pairing, while vectors in $F^{j+1}$ annihilate that coordinate
+on all of $\cH$. Hence its successive radicals are lattice-rational
+and its graded forms are positive definite. Thus $L$ is a full
+AN-admissible lattice in $W_L$, to which the proof applies.
 \end{remark}
 
 \subsection{Size and dependence}
@@ -3145,8 +3171,9 @@ The construction gives
 \begin{equation}
  |S|\le|S_0|+|\cT|(M+1)^{|S_0|},\label{tate:theta:eq:Sbound}
 \end{equation}
-with possible duplicates removed. This is an existence and termination
-bound, not a claim of practical optimality. The set depends only on $\cB$
+with possible duplicates removed. This bounds the cardinality of the
+constructed generating set, not the number of steps in a later descent
+algorithm. No practical optimality is claimed. The set depends only on $\cB$
 and $L$, not on any theta evaluation point or linear term. Adjoining its
 negative makes it symmetric without invalidating positive generation. The
 proof allows irrational coefficients in the forms and irrational lifts of
@@ -3166,12 +3193,23 @@ its real span if and only if $\ker R$ is rational relative to $\Z^d$.
 \end{lemma}
 
 \begin{proof}
-A rational kernel admits an adapted lattice basis; the remaining basis
-vectors give a basis of the quotient real space, and their images generate a
-full lattice in $\operatorname{im}R$. Conversely, a discrete subgroup
-spanning a $k_0$-dimensional real space is a lattice of rank $k_0$. Hence
-$\ker(R|_{\Z^d})$ has rank $d-k_0$, which equals $\dim\ker R$. Its real
-span is contained in that kernel and has the same dimension.
+Put $L_0=\ker R\cap\Z^d$. It is primitive, since $R(mx)=0$ for a
+nonzero integer $m$ implies $R(x)=0$. If $\ker R$ is rational, a basis
+of $L_0$ spans it over $\R$ and extends to an integer basis of $\Z^d$.
+The remaining basis vectors project to a real basis of
+$\R^d/\ker R$, and their images therefore generate a full lattice in
+$\operatorname{im}R$.
+
+Conversely, a discrete subgroup spanning a $k_0$-dimensional real space
+is a lattice of rank $k_0$. The exact sequence
+\[
+ 0\longrightarrow L_0\longrightarrow\Z^d
+   \xrightarrow{R}R\Z^d\longrightarrow0
+\]
+then gives $\operatorname{rank}L_0=d-k_0=\dim\ker R$.
+As a subgroup of the discrete lattice $\Z^d$, $L_0$ has real span of
+that same dimension. Its span is contained in $\ker R$, so equality
+follows.
 \end{proof}
 
 The elementary assertion about discrete subgroups follows, for example, by
@@ -3275,8 +3313,20 @@ fibres, and finite unions preserve both properties. Taking the
 lexicographic union over the well-ordered first-coordinate values preserves
 well-ordering. A full exponent fixes one first-coordinate value and
 therefore only finitely many cosets, each with a finite tail fibre. This
-proves (i).
+proves (i). The induction ends either with a zero-dimensional radical
+lattice, whose only vector is zero, or with the last coordinate, where
+$V_r=0$ makes every remaining fibre finite.
 \end{proof}
+
+The two parts of (i) do different work. Well-ordering forces the
+semidefinite restrictions, rational intermediate radicals, global mixed-term
+annihilation and compatible linear terms. Finite fibres additionally
+force the terminal radical to vanish. For instance,
+$\cE(m,n)=(m^2,0)$ has a well-ordered value set, but every exponent
+has infinitely many lattice preimages; its monomial family is therefore
+not strongly summable. Positive self-pairings alone also do not suffice:
+\cref{tate:theta:ex:irrational,tate:theta:ex:cross} display the distinct
+irrational-radical and mixed-term obstructions.
 
 \begin{corollary}[The exact linear domain]\label{tate:theta:cor:domain}
 For an AN-admissible form $\cB$, let
@@ -3346,11 +3396,16 @@ bounded-below, unbounded-above subset of $\R$, and hence have order type
 $\omega$; each value comes from finitely many cosets of the radical
 lattice.
 
-If the radical is zero, each such fibre is finite, and subsequent
-coordinates only split it into finitely many points; the whole order type
+Write $V$ for this first active radical. If $V=0$, each such fibre is
+finite, and subsequent coordinates only split it into finitely many points;
+the whole order type
 is $\omega$. Otherwise every radical coset has a tail energy of active
 depth $s-1$, with compatible shifted linear terms, whose value set has order
-type $\omega^{s-1}$ by induction. A first-coordinate fibre is a finite union
+type $\omega^{s-1}$ by induction. More explicitly, on a coset
+$n_0+(L\cap V)$ write $n=n_0+x$; the terms independent of $x$ translate
+the value set and hence do not change its order type. The remaining
+quadratic and linear terms are exactly the restricted and shifted ones
+used in the flag theorem. A first-coordinate fibre is a finite union
 of such sets, so its order type lies between $\omega^{s-1}$ and
 $\omega^{s-1}N$ for some positive finite $N$, by
 \cref{tate:theta:lem:shuffle}. There are $\omega$ first-coordinate values.

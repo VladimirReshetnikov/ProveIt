@@ -2554,27 +2554,27 @@ Mappings cover only the hypotheses and clauses they state.
 | Corollary | `tate:cor:lattice` (line 2571) | A finite-lattice degree formula |
 | Theorem | `tate:thm:surcomplex` (line 2619) | Surcomplex uniformization |
 | Corollary | `tate:node:cor:real` (line 2663) | Real surreal case and transferred refinements |
-| Theorem | `tate:theta:thm:positive` (line 2991) | Finite positive generation |
-| Lemma | `tate:theta:lem:acute` (line 3012) | Finite acute generating families |
-| Lemma | `tate:theta:lem:allocation` (line 3045) | Distributing lower-level coefficients |
-| Lemma | `tate:theta:lem:shift` (line 3060) | A shift dominates every fixed mixed term |
-| Lemma | `tate:theta:lem:latticeprojection` (line 3163) | Untitled |
-| Lemma | `tate:theta:lem:onelevel` (line 3182) | One-level quadratic criterion |
-| Theorem | `tate:theta:thm:flag` (line 3229) | Exact flag criterion |
-| Corollary | `tate:theta:cor:domain` (line 3281) | The exact linear domain |
-| Lemma | `tate:theta:lem:shuffle` (line 3313) | A finite interleaving bound |
-| Theorem | `tate:theta:thm:ordinal` (line 3329) | Exact ordinal support law |
-| Corollary | `tate:theta:cor:surrealordinal` (line 3369) | Actual surreal support lengths |
-| Theorem | `tate:theta:thm:units` (line 3399) | Exact domain and unit robustness |
-| Corollary | `tate:theta:cor:norepair` (line 3448) | No repair by units or ordered scalar extension |
-| Corollary | `tate:theta:cor:rankone` (line 3465) | One-dimensional and diagonal domains |
-| Theorem | `tate:theta:thm:certificate` (line 3528) | Finite minimum certificate |
-| Corollary | `tate:theta:cor:voronoi` (line 3560) | Finite higher-rank Voronoi inequalities |
-| Theorem | `tate:theta:thm:minimizers` (line 3586) | Finite minimizer geometry |
-| Corollary | `tate:theta:cor:BFS` (line 3617) | Complete finite enumeration after one minimum |
-| Lemma | `tate:theta:lem:implicit` (line 3659) | Implicit substitution with a Hahn certificate |
-| Theorem | `tate:theta:thm:zerolift` (line 3709) | Smooth initial zeros lift |
-| Corollary | `tate:theta:cor:notentire` (line 3886) | Untitled |
+| Theorem | `tate:theta:thm:positive` (line 2992) | Finite positive generation |
+| Lemma | `tate:theta:lem:acute` (line 3013) | Finite acute generating families |
+| Lemma | `tate:theta:lem:allocation` (line 3046) | Distributing lower-level coefficients |
+| Lemma | `tate:theta:lem:shift` (line 3067) | A shift dominates every fixed mixed term |
+| Lemma | `tate:theta:lem:latticeprojection` (line 3190) | Untitled |
+| Lemma | `tate:theta:lem:onelevel` (line 3220) | One-level quadratic criterion |
+| Theorem | `tate:theta:thm:flag` (line 3267) | Exact flag criterion |
+| Corollary | `tate:theta:cor:domain` (line 3331) | The exact linear domain |
+| Lemma | `tate:theta:lem:shuffle` (line 3363) | A finite interleaving bound |
+| Theorem | `tate:theta:thm:ordinal` (line 3379) | Exact ordinal support law |
+| Corollary | `tate:theta:cor:surrealordinal` (line 3424) | Actual surreal support lengths |
+| Theorem | `tate:theta:thm:units` (line 3454) | Exact domain and unit robustness |
+| Corollary | `tate:theta:cor:norepair` (line 3503) | No repair by units or ordered scalar extension |
+| Corollary | `tate:theta:cor:rankone` (line 3520) | One-dimensional and diagonal domains |
+| Theorem | `tate:theta:thm:certificate` (line 3583) | Finite minimum certificate |
+| Corollary | `tate:theta:cor:voronoi` (line 3615) | Finite higher-rank Voronoi inequalities |
+| Theorem | `tate:theta:thm:minimizers` (line 3641) | Finite minimizer geometry |
+| Corollary | `tate:theta:cor:BFS` (line 3672) | Complete finite enumeration after one minimum |
+| Lemma | `tate:theta:lem:implicit` (line 3714) | Implicit substitution with a Hahn certificate |
+| Theorem | `tate:theta:thm:zerolift` (line 3764) | Smooth initial zeros lift |
+| Corollary | `tate:theta:cor:notentire` (line 3941) | Untitled |
 
 ### holonomic-rigidity-for-entire-hahn-functions
 

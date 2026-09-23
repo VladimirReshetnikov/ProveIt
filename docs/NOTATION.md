@@ -188,6 +188,18 @@ because their leading terms can cancel separately. Passing to a rank-one
 quotient can erase a strict increase in vector valuation, as the
 `ℤ ⊕ ℤ` example in Section 9.3 shows.
 
+Part II of Hahn–Tate uses `Π` for the matrix of period exponents,
+`π(n) = ½ nᵀΠn` for its quadratic energy, and `β_j = v(z_j)` for argument
+values. In a finite lexicographic coordinate model, `𝓑_j` are real bilinear
+forms and `V_j` are their successive restricted radicals. “Rational”
+means `span_ℝ(L ∩ V_j) = V_j`; the form coefficients may be irrational.
+The lattice rank `g`, number of coordinate levels `r`, and number of strict
+radical drops `s` have different roles: `s ≤ min(g,r)`. Under the flag
+criterion, `ω^s` is the order type of the exponent set before cancellation.
+It is the actual support length at positive monomial arguments; it is
+not a surreal birthday. Well-ordering of that exponent set and finiteness
+of every exponent fibre are separate requirements for strong summability.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and

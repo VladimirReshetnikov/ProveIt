@@ -6,7 +6,7 @@ independently on the same day. Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex      the report, standalone LaTeX with an internal bibliography
-article.pdf      the compiled report, 64 pages
+article.pdf      the compiled report, 65 pages
 README.md        this guide
 PROOF_AUDIT.md   claims, inputs, dependency map and verification boundaries
 03-tate-uniformization-PROOF_STATUS.md   source 03's own proof-status file, as delivered
@@ -108,7 +108,14 @@ The value quotient is distinguished from its rank-one circle quotient;
 the twist example explains why recovering a period does not classify a
 curve over a nondivisible workspace. Torsion exhaustiveness is proved from
 uniformization, and the class-level obstruction has an explicit finite
-witness. Multiscale theta proofs remain for review.
+witness. Sections 14–17 have now also been read: finite-rank exponent
+coordinates, positive generation, the exact quadratic flag criterion and
+ordinal support length. The review expands the lattice quotient arguments,
+gives an explicit bounded-allocation formula, and spells out the non-full
+lattice reduction. The bound on the generating set is a cardinality bound;
+it does not bound later descent steps. A repeated-exponent example
+separates well-ordering from finite fibres. The theta evaluation,
+minimum-certificate and zero-lifting sections remain for review.
 
 ## What the report claims
 
@@ -399,6 +406,13 @@ SymPy 1.14.0; only the Python-version field differs from its historical JSON.
 The source check covered BPR Remark 4.24, Poonen Corollary 4, and the stated
 Molcho–Wise boundedness and Tate-curve precedent. It did not prove the
 still-open functorial comparison with logarithmic Picard theory.
+
+During the theta-foundations review, the PDF rebuilt in three passes at
+65 pages without warnings or box issues. Source 02's unchanged verifier
+passed all its finite suites on a temporary copy, with JSON identical in
+every field to the delivered record. The proof review and published-source
+comparison cover Sections 14–17; rerunning later examples does not certify
+their general proofs.
 
 A clean compile and passing finite checks prove nothing about the infinite
 arguments.
