@@ -10,7 +10,7 @@ No row below certifies every claim in an entire report.
 | Report | Inspected portion and result |
 |---|---|
 | [Foundations](foundations-and-computation/foundations/) | Expanded `found:thm:workspace` with arithmetic and universe-smallness prerequisites; supplied the missing positive, well-ordered control-set hypothesis in `found:prop:positive`. Distinguished intrinsic modulus/valuation topology from the full fine subspace topology. Proved the geometric convergence criterion and added `found:ex:boundedrankone`. |
-| [Dynamics](surcomplex/dynamics-and-normal-forms/) | Corrected `dyn:cor:ancestry` to retain input support, proved finite dependence by word/block decompositions, and checked its arbitrary-input uses. The specialized linearizer counts an initial positive letter and retains its stronger bound. Corrected the blanket claim that changing exponent orientation reverses every inequality. |
+| [Dynamics](surcomplex/dynamics-and-normal-forms/) | Corrected `dyn:cor:ancestry` to retain input support, proved finite dependence by word/block decompositions, and checked its arbitrary-input uses. The specialized linearizer counts an initial positive letter and retains its stronger bound. Corrected the blanket claim that changing exponent orientation reverses every inequality. The source-10 main-text review now covers Sections 7.7–7.13 and its Section 26.10 limitations: angular rank, contracted tree products, common domains, inverse ancestry, the exact criterion and examples. Expanded determinant and normal-convergence estimates, empty-support and infinite-rate cases; separated Hahn labels from integer tree weights. Corrected necessity claims about finite families and linear heights, added an exponential-height counterexample, and retained the sharp zero-rate radius at every angular rank. Checked the targeted tree-cut and inversion comparisons; other foundational/source reconciliation remains separate. |
 | [Physics](physics/surreal-scalars-and-spacetime/) | Expanded `phys:prop:pole` and corrected abstract, conclusion and summaries: formal ramification preserves the pole but changes the coefficient by `w(0)^(−p)`. Distinguished the normalized recorded tests from the general theorem. |
 | [Analytic geometry](surcomplex/analytic-geometry/) | Corrected `analytic:conv:notation` to define standard-part topology on finite tuples and explain its indiscrete zero-monad restriction. In `analytic:rem:fixed-not-transferred`, showed explicitly why the fixed-disk corona pair generates the whole common-domain germ ring after shrinking. |
 | [Trigonometry](surcomplex/trigonometry/) | Corrected the infinitesimal-ideal notation and stated the nonzero-denominator condition in the asymptotic conventions. |
@@ -1620,6 +1620,83 @@ passed 4,024 jobs and audited 7,827 declarations using the same three permitted
 axioms. All 2,726 cited source labels and 1,070 local Markdown destinations
 resolve; the 49-source statement inventory is unchanged.
 
+## Nonscalar dynamics main-text review
+
+The [dynamics report](surcomplex/dynamics-and-normal-forms/) review now covers
+source 10, Sections 7.7–7.13 and the corresponding Section 26.10 limitations.
+Independent readings checked the elementary angular-rate argument before the
+colored-tree contraction and product estimate, then formal expansion, common
+domains, inversion, the exact criterion and examples. The earlier dynamics
+review and the other source packages retain their separately recorded scopes.
+
+The determinant proof now handles an empty family, gives its integer-cofactor
+bound and quantifies the contradiction between two distinct exponential rates.
+The nearest-integer reduction records its height bound and preservation of
+rates. Linear height is sufficient, not necessary: the proof works for
+subexponential heights. The rate-count conclusion also extends to a fixed
+infinite family by finite-subfamily restriction, without a uniform eventual
+rank bound or a bound on sums over growing multiplicities. A Fibonacci example
+exhibits two positive rates for one real variable at exponential heights.
+These observations correct the necessity wording without changing the numbered
+height lemma used by the tree proof.
+
+The finite-prefix construction of the divisor constant and the fixed-skeleton
+subsequence bounds are explicit. The rank-one product equality handles infinite
+rate directly by its one-vertex lower bound. The formal expansion distinguishes
+Hahn labels `η_v` from integer subtree weights `s_v`, restricts word depth to
+supported nonzero exponents, and specifies the coordinate slots responsible
+for multinomial multiplicities. Its least-difference uniqueness proof applies
+to any normalized positive-support competitor. The common-domain proof covers
+empty support and expands the multivariable root test into normal convergence.
+The inverse proof records inclusion of the input ancestry sets, so finite
+products and derivatives preserve the same open domain. Rectangular radii use
+finite diagonal rescaling and exhaustion for infinite entries; ordinary
+parameter dependence is explicitly joint holomorphy.
+
+The exact criterion and the two-mode and algebraic examples check out. The
+zero-rate case has universal radius exactly `R` at every angular rank. The
+article, guide and hypothesis table now restrict the undetermined higher-rank
+optimum to `0 < τ < ∞`. A subsequence proof supplying no effective formula is
+no longer described as proving noncomputability. The nongrid example is
+identified as one example, and strong summability does not presume convergence
+of partial sums in the fine topology. The notation guide separates angular
+rank, value-group rank, ordinary radius and tree complexity.
+
+The targeted primary comparison checked Fauvet–Menous–Sauzin arXiv
+2507.13216v2, Sections 5.1–5.3 and its Section 6.1 usage. Admissible-cut closure
+is Theorem E, for forests whose associated operators are not universally zero;
+Proposition 5.6 supplies the homogeneity-degree consequences. The citation
+now names both and retains that qualification. The v2 metadata confirms
+submission on 13 September 2026 and 41 pages; the PDF title date is
+15 September, so the bibliography says “submitted.” Carletti's v1 and v2
+abstracts and metadata support the limited inversion/linearization background
+comparison; no full-text audit or exhaustive priority search was performed.
+The bibliography distinguishes first submission in 2001 from the 2002 revision.
+The delivered source audit remains historical evidence with its original bytes.
+
+The baseline and revised PDFs each passed three LaTeX passes. The revised
+report has 172 pages (previously 171), with the same three small overfull
+boxes and one underfull box and no LaTeX/package warnings. The subsection
+contents-number column now fits `26.10`, and the resonance heading stays
+with its table. Forty-six physical pages covering the affected proofs,
+summaries, tables, limitations and bibliography were visually inspected.
+All 651 source labels retain their order; all 1,302 auxiliary numbering
+fields are preserved (floating-label write order may change with pagination).
+Of 149 standard statements, 146 are unchanged modulo whitespace; three
+clarify the formal-case reference, supported exponent/Hahn label, and
+rectangular-radius/parameter hypotheses. Source 10 contains 12 of those
+standard statements. These are source inventories, not Lean coverage.
+
+All 44 historical audit/code/data files remain byte-identical to the saved
+baseline and `a99b4ee`. The unchanged source-10 verifier, which writes only
+to stdout, was run with Python 3.13.14; its output matches the preserved
+record byte for byte: 2,730 exhaustive colored trees, 18,466 marked-subset
+checks, 1,000 seeded random checks, 21 nonzero denominator checks and eight
+conjugacy/inverse component identities through parameter degree three and
+spatial degree six. These finite exact checks do not establish the infinite
+or analytic claims. The independent 49-source audit still checks 2,465
+statements without issues, and all 2,726 cited source labels resolve.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1669,8 +1746,10 @@ remaining foundational/source reconciliation and priority are pending.
 [Matrix scaling](surreal/matrix-scaling-at-surreal-scales/) has received the
 Sections 1–14 main-text review above; remaining foundational imports,
 original-source reconciliation and priority are pending.
-Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral
-theory additions also remain pending. The critical-potential main-text review now
+The nonscalar dynamics addition has received the source-10 review recorded
+above; remaining foundational imports and source reconciliation are separate.
+The nonlinear holonomic rigidity and Drazin/Fredholm spectral additions remain
+pending. The critical-potential main-text review now
 covers Sections 35–42; remaining imports and source reconciliation are pending.
 Their inclusion in the statement index does not extend an earlier proof-review
 scope or establish Lean coverage.

@@ -802,6 +802,19 @@ ordered value group, and an **order unit** has cofinal integer multiples.
 Countable cofinality does not by itself assert the existence of an order unit
 (`ent:rem:one-name`).
 
+For an exact diagonal unitary multiplier in the dynamics report, the
+**angular rank** is `r_ang = dim_ℚ span(1,θ₁,…,θ_d) − 1`, where
+`λ_j = exp(2πiθ_j)`. It is unchanged by changing the angle representatives
+and is independent of the ordered rank of the Hahn exponent group `Γ`.
+Under nonresonance and finite divisor rate `τ`, the universal coefficient
+radius lies between `R exp(−r_ang τ)` and `R exp(−τ)`. It equals `R` when
+`τ = 0` at every angular rank; the unresolved higher-rank optimum concerns
+`0 < τ < ∞`. These are ordinary coefficient radii, not valuation thresholds.
+In the colored-tree proof, `η_v ∈ S` denotes a vertex's Hahn input label,
+whereas `s_v` is its positive integer subtree weight; they live in different
+groups. The fixed complexity `m` may depend on the coefficient exponent,
+and its finite prefactor is not bounded uniformly in `m`.
+
 A sequence whose **range is cofinal** need not tend cofinally to infinity:
 it can keep returning to one small value. An eventual growth estimate must
 state the latter condition. The entire-functions growth barrier
