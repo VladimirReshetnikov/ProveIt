@@ -517,9 +517,11 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers all 46 main texts
+custom environments are not included. The index covers 46 of the 48 main texts
 present in the repository; two are not named `article.tex`. The reader map
-and the typeset catalogue list all 46. The two reports placed in `d4e71b7`
+and the typeset catalogue list all 48; the two new reports of batch 22
+(placed in `7b5f934`, written in `68e2960`) are not yet indexed here, and the
+five reports that batch extended are indexed as they stood before it. The two reports placed in `d4e71b7`
 and written in `3a2d35d`,
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
 and [fields across universes](foundations-and-computation/surreal-fields-across-universes/),
