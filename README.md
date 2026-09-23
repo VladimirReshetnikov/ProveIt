@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 56 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 57 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -63,6 +63,33 @@ controls the endpoint margin and gives all three valuation bounds under
 `v(ε)>2v(sin θ)`. At equality, explicit infinitesimal-angle examples reach
 the endpoint or move the target above one, proving the strict threshold
 is necessary for a uniform guarantee.
+
+Finite Laurent sums now have a verified polynomial algebraization and the
+`2N` root bound on finite real angles modulo ordinary periods. Over an
+algebraically closed field, the cleared polynomial has exactly `2N` nonzero
+roots counted with multiplicity when both endpoint coefficients are nonzero.
+Ordinary-angle values determine all actual surcomplex Fourier coefficients;
+real-valuedness is equivalent to conjugate symmetry. Every native Laurent
+polynomial now has an exact local angular strong series, even with infinite
+coefficients. Its native series order equals the cleared polynomial root
+multiplicity, so the `2N` bound also counts actual angular multiplicities.
+For every positive ordinary `n`, `sin(nθ)` attains the bound: its roots
+have exactly the `2n` classes represented by `jπ/n`, all with angular order
+one. Angular differentiation preserves the frequency bound and annihilates
+exactly the constants. Consequently every nonconstant real trigonometric
+polynomial of degree at most `N` has at most `2N` stationary finite-angle
+classes, also when counted with derivative-germ multiplicities. Stationarity
+uses the native fine derivative. The global strip exponential and its
+root-class correspondence remain pending.
+
+Every everywhere-nonnegative actual surreal polynomial now factors as a
+surcomplex polynomial times its coefficientwise conjugate, with exactly
+half the original degree. At every real input its value is the squared
+modulus of the factor. The proof removes even real-root factors and
+strictly positive conjugate-root quadratics, preserving nonnegativity at
+each step. It uses the proved square roots and algebraic closedness of the
+actual fields. The ensuing Fejér–Riesz Cayley transport and normalized
+uniqueness remain pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term

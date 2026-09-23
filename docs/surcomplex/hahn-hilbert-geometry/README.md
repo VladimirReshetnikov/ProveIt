@@ -24,9 +24,11 @@ data/
 ```
 
 Every label in `article.tex` carries the prefix `hgeo:`; the report has 142
-labels. The placed text was source 03 with 69 bare labels; nothing in the
-collection cited them, and each was prefixed unchanged (`thm:threshold` is
-`hgeo:thm:threshold`, `thm:lattice` is `hgeo:thm:lattice`, and so on). The
+labels. The placed text was source 03 with 69 bare labels, each prefixed
+unchanged (`thm:threshold` is `hgeo:thm:threshold`, `thm:lattice` is
+`hgeo:thm:lattice`, and so on). The formalization ledger now indexes the
+assembled statements under these labels, all **Pending**, with no checked
+implementation mapping. The
 source manuscripts and their PDFs are not shipped. `code/`, `data/` and the two
 audit files are byte-identical to the deliveries; they refer to the sources'
 own file names and theorem numbers (for example source 03's Theorem 7.2 is

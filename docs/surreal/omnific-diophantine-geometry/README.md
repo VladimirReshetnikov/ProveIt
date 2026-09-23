@@ -12,7 +12,7 @@ prefixes `10-` to `14-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 157 pages
+article.pdf                        the compiled report, 160 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -116,12 +116,22 @@ now Sections 14 and 19, including real-coefficient specialization and the finite
 factorization proof of the two-term root obstruction. These reviews exclude the batch-25
 material (Sections 11–13, the Section 6 results of sources 07 and 13, and
 Remark 10.5). A review of Section 14 (`25e372c`, merged in `ef806c0`) expanded
-its proofs. A further pass reviews Section 11: leading degrees, the quadratic ideal
-predicate, Pell divisibility, intersectivity and the order-free
-integer-defining system, with boundary examples for intermediate rings.
-Sections 12–13 and the new material in Sections 6 and 10 still need review. No review covers the batch-27 material: Section 15, the
-additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review covers
-the batch-28 material either: Sections 16–18, the pointers added in Sections 6, 7
+its proofs. A subsequent pass reviews Section 11: leading degrees, the
+quadratic ideal predicate, Pell divisibility, intersectivity and the
+order-free integer-defining system. It adds boundary examples for intermediate
+rings and expands the finite congruence arguments. A further pass reviews
+Section 12: the detector, ideal test, constant-term graph, homomorphisms and
+number-field extension. Its root hypothesis already gives an existential
+ideal and graph. Section 13 now also has a proof review of reconstruction,
+automorphisms and logical consequences. It extends coefficient reconstruction
+to the number-field ideal predicates and the c.e.-set classification to
+all characteristic-zero coefficient fields using finite equation systems.
+The new material in Sections 6 and 10 still needs review.
+A further pass reviews Sections 15.1–15.4: denominator ideals, least
+denominators, the multiplier theorem and the affine denominator dichotomy.
+The rest of the batch-27 material remains unreviewed: Sections 15.5–15.12,
+the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
+covers the batch-28 material: Sections 16–18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22. Inserting Section 15
 moved the former Sections 15–17 to 16–18, and inserting Sections 16–18 moved them
@@ -131,8 +141,9 @@ these proof reviews and the remaining review boundary.
 
 The article has 194 standard results (70 theorems, 37 propositions, 41 lemmas,
 46 corollaries), of which 39 are in Section 15 and 51 in Sections 16–18. The
-[ledger](../../FORMALIZATION.md) indexes the 67 standard results of the
-three-source assembly by `odg:` label, all **Pending**; no implementation
+[ledger](../../FORMALIZATION.md) indexes the 143 standard results of the
+seven-source assembly by `odg:` label, all **Pending**, but not yet the 51 of
+Sections 16–18; no implementation
 mapping cites an `odg:` label, and no Lean code about omnific integers exists
 in the repository.
 
@@ -293,7 +304,8 @@ ring language, via `Std` (Remark 10.11); a quartic with six witnesses for the
 graph of `ct` in `Oz` (Corollary 12.9, replacing source 06's degree-ten,
 eight-witness polynomial); Diophantine definitions of the ideal and of the
 graph of `ct` over number-field coefficient rings through another radicand
-(Remark 12.15); the combined étale norm theorem in intermediate rings (Theorem
+(Remark 12.15, strengthened by the later review: the detector
+hypothesis already supplies the required square root); the combined étale norm theorem in intermediate rings (Theorem
 6.15); the collapse of source 06's quintic over `Oz[i]` at `x = ω` (Remark
 11.10); and the Gaussian point `(1 + ω, iω)` of `X + iY = 1` (Remark 6.5). The
 degrees, witness identities and collapses were checked with SymPy when the
@@ -452,7 +464,9 @@ Numbers refer to the built `article.pdf`.
     Gaussian case, without any size condition (Theorem 12.12); for subrings of
     a number field `K`, a tailored polynomial `Λ_K` gives the same constant
     definition and, with a root of `Λ_K` in `𝕜`, the detector (Lemma 12.13,
-    Theorem 12.14; existential ideal via another radicand, Remark 12.15).
+    Theorem 12.14). The same root hypothesis also gives a one-witness
+    existential ideal and a six-witness existential graph (Remark 12.15):
+    the square of that root supplies a suitable radicand.
 12. **Reconstruction and logic (Section 13).** For `Γ ≠ 0` the multiplier ring
     of the ideal is `𝒜_𝕜(Γ)` and its units with `0` are `𝕜` (Theorem 13.2);
     from the pure ring `Oz` one interprets `No` and defines `R`, the order,
@@ -654,8 +668,11 @@ in the literature.
   Theory*, p. 3, which is added.
 - Source 06's `∃y (x² = 2y²)` fails for number-field coefficient rings with
   `√2` in their fraction field; Remark 12.15 uses another radicand.
-- No mathematical error was found in any main proof of sources 01, 02, 05, 06
-  and 07.
+  Under the detector hypotheses one can use `p`, `q` or `pq`, according
+  to which factor vanishes at the chosen root.
+- The initial assembly reported no mathematical error in the main proofs
+  of the five sources; the proof review and source reconciliation remain
+  incomplete, as recorded above.
 - The later Sections 5–7 review corrected the merge's own divisibility
   identity (Remark 7.5): it requires the derivation to kill `a` and `b`, and
   its use at level `c` also requires `∂c = 0`. The Euler derivations satisfy
@@ -694,7 +711,7 @@ in the literature.
   criterion. The sibling report's results postdate the pin of sources 08
   and 09.
 - The review of the omnific-coefficients section (numbered 15 in that pass,
-  now Section 16) gives a finite-algebra proof of the two-term root
+  now Section 19) gives a finite-algebra proof of the two-term root
   obstruction, expands the support justification of its binomial series,
   and distinguishes the omnific constant-term map from finite-surreal
   residue lifting. The monic hypothesis and leading-term cancellation
@@ -705,6 +722,17 @@ in the literature.
   and makes the witness and congruence steps in the integer definitions
   explicit. The shared notation guide now records the different meanings
   of the two reports' `𝒜` notation.
+- The new Section 12 review checks witness membership even with zero
+  divisors, distinguishes coefficient parameters from integer numerals,
+  adds a detector counterexample in `Z[ω]`, proves the additive splitting
+  explicitly, and derives the existential number-field ideal and graph
+  from the existing detector hypothesis. Standard statements are unchanged.
+- The Section 13 review expands fraction interpretation, coefficient
+  reconstruction, value-group ordering, automorphism invariance and the
+  computable omitted type. It makes the nontrivial-exponent hypothesis
+  explicit, specifies strict positivity in the collapse obstruction, and
+  derives the c.e.-set classification without ordering or a square root
+  of two, using the order-free integer guard.
 - Source C12's logarithmic proof takes "the centre" of the valuation-ring point
   without showing that it is a closed point; if it were the generic point the
   function field would embed into `𝕜`. The step is added (Theorem 17.8).
@@ -948,8 +976,11 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 157 pages with no errors, warnings, undefined references,
-multiply defined labels or overfull boxes. (The text at `c6359e4`, before
+The build gives 160 pages with no errors, warnings, undefined references,
+multiply defined labels or overfull boxes. (Before the merge that joined the
+reviews of Sections 12, 13 and 15.1–15.4 to Sections 16–18, the text at
+`ac54217` built to 157 pages and the reviewed text at `3d40856`, without
+Sections 16–18, to 122. The text at `c6359e4`, before
 Sections 16–18, built to 118 pages with the same MiKTeX installation, with the
 same zero counts; the text at `a4dcb91`, before Section 15, built to 87 pages,
 and the PDF committed then had 86 pages.) As in the text at `c6359e4`, the

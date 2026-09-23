@@ -2,15 +2,19 @@
 
 This record covers the elementary source comparison in Sections 1–4 of the
 maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
-After the expansion, the reviewed original Sections 11–12 are Sections 14–15.
-A subsequent pass reviews the newly added Section 11 from sources 06–07.
-The added material in Sections 6 and 10 and Sections 12–13 and 16–17 remain
+After the three expansions, the reviewed original Sections 11–12 are Sections
+14 and 19; the fractions section is Section 15, and the curve and differential
+rigidity part is Sections 16–18.
+Subsequent passes review the newly added Sections 11–13 from sources 06–07.
+A further pass reviews Sections 15.1–15.4 from sources 08–09. The added
+material in Sections 6 and 10, Sections 15.5–15.12, Sections 16–18 with the
+pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
-It does **not** certify integration of every result in the five manuscripts
+It does **not** certify integration of every result in the twelve manuscripts
 or review of all later proofs and imported classical results. Section numbers
-below are those current when each pass was made; the last two paragraphs give the
-present numbering. The fractions part (Section 15) and the curve and differential
-rigidity part (Sections 16–18) are outside every pass recorded here.
+below are those current when each pass was made; the last section gives the
+present numbering. The curve and differential rigidity part (Sections 16–18)
+is outside every pass recorded here.
 
 ## Recoverable sources
 
@@ -254,6 +258,50 @@ proof review, not new Lean coverage. Classical imported results, historical
 priority, Sections 12–13 and 16–17, and the unreviewed additions in Sections
 6 and 10 remain separate obligations.
 
+## Constant-term review: Section 12
+
+This pass compares the maintained augmentation detector, ideal test and
+number-field extension with source 07's detector, augmentation and
+number-field sections, and the constant-term graph and homomorphism results
+with source 06's retraction section. The source files are the same recovered
+versions identified in the Section 11 record above.
+
+Witness membership now uses `A = ε⁻¹(o)` explicitly. The only inverse is
+that of the nonzero scalar `ε(a)` in the coefficient field; a certificate
+in `Z × R` demonstrates the construction for a zero divisor. General
+polynomial coefficients are parameters in the formula, whereas `Λ` and
+`Λ_K` have integer coefficients and give parameter-free definitions.
+The counterexample `Z[ω]` shows that an ambient root and integer constant
+coefficients alone do not suffice without the full pullback ring.
+The support argument keeps exponents in the original ordered group.
+
+The ideal's intersection description now includes both directions and the
+failure over rings containing `Q`. The graph proof gives all six witnesses
+and separates uniqueness of its value from uniqueness of those witnesses.
+The quartic's degree is read from its `x⁴` coefficient. The splitting has
+an explicit proof and multiplication formula, so the additive direct sum
+cannot be mistaken for a ring direct product. The homomorphism discussion
+distinguishes preservation of existential equations from invariance of
+arbitrary first-order definitions under automorphisms.
+
+The number-field proof gives witnesses in the actual coefficient subring,
+without integrality or finite-generation assumptions. A further consequence
+is added to the merge's Remark 12.15: a root `r` of `Λ_K` has square one
+of `p`, `q`, `pq`, all nonsquares in `K`. Its integer radicand therefore
+gives a one-witness existential ideal and a six-witness existential graph
+under the detector's existing hypotheses. Primality of this radicand is
+unnecessary. This is a deduction from the combined arguments, not a claim
+that source 07 itself stated the stronger result. The formula is chosen for
+the fixed fields; no uniform polynomial over all number fields is asserted.
+
+All standard statements and source labels are preserved. Section 13 onward
+is unchanged. These are source-level proofs, still pending in Lean. The
+added material in Sections 6 and 10, Sections 13 and 16–17, and remaining
+imported foundations, historical priority and source reconciliation still
+require review.
+
+## Integration of fraction manuscripts and the numbering then current
+
 Two further manuscripts on omnific fractions, local 08 and 09, were placed in
 `a4dcb91` and integrated after these reviews as a new Section 15
 (`odg:frac:` labels), with additions to the formalization section, a partial
@@ -263,16 +311,127 @@ by one: the passes above use the numbering current when they were made: the
 families section they call 11 (in the passes before the batch-25 merge) is
 Section 14, and the omnific-coefficients section they call 15 is Section 16. No label was renamed or removed.
 
+## Reconstruction and logical consequences: Section 13
+
+This pass compares the multiplier, real reconstruction, automorphism,
+Gaussian obstruction and logical sections of source 06 with the maintained
+Section 13, and compares its transfer and omitted-type clauses with source
+07. The recovered source versions are those identified in the Section 11
+record. Imported real closedness, MRDP and historical priority remain
+separate review obligations.
+
+The fraction presentation now gives its operations and witness domains.
+The multiplier proof isolates the noncancelling translated coefficient,
+and the coefficient predicate explicitly tests units, not just nonzero
+multipliers. The internal-reconstruction corollary has a proof and repeats
+the subsection's nontrivial-exponent hypothesis. The integer-radicand ideal
+predicate from the number-field extension can be substituted unchanged,
+giving the same reconstruction even when two is a square in the coefficient
+subring's fraction field. The value-group proof gives its equivalence and
+order relations and checks the sign convention `v = −leading exponent`.
+Normal-form representatives respect the proper-class convention.
+
+The automorphism arguments distinguish exponent substitution from squaring,
+use finite coefficient convolution without continuity assumptions, and
+separate named complex constants from Gaussian ring parameters. The phase
+twist still obstructs a definable real axis after naming all complex
+constants. Standard-part existence uses the largest remaining negative
+exponent; uniqueness uses that no nonzero real is infinitesimal.
+
+The c.e.-set proof guards the free tuple and transfers auxiliary witnesses.
+Its finite-system version extends to every characteristic-zero coefficient
+field by using the number-field theorem's integer predicate with `K = Q`;
+this needs neither ordering nor a square root of two. The same predicate
+proves non-elementarity without that root. These are combined consequences,
+not claims that source 06 stated the stronger generality. The collapse
+obstruction now says strictly positive cone, and the singleton `x = h`
+explains its parameter restriction. The quantifier-free lower bound spells
+out finite Boolean combinations and uses the coefficient predicate to
+exclude quantifier elimination, without adding a square-root assumption.
+Canonical polynomial syntax makes the omitted type decidable, and a degree
+bound supplies an ordinary integer for each finite part.
+
+The 143 standard statements and 310 labels are retained. Two statements
+have wording clarifications: the already standing nontrivial-group
+hypothesis in internal reconstruction and strict positivity in the collapse
+theorem. No result numbers change. Section 14 onward is unchanged. All
+these source-level arguments remain pending in Lean. Added material in
+Sections 6 and 10, Sections 15 and 17–18, the new companions and remaining
+foundational/source reconciliation still need review.
+
+## Denominator ideals and the multiplier theorem: Sections 15.1–15.4
+
+This pass compares source 08's Sections 3–5 (ordinary denominators,
+denominator ideals and the representation lemma) and source 09's Sections
+4–6 (ordinary denominators, lowest terms and projective specialization)
+with the maintained article. Source 08 is recovered from
+`5fb910f:docs/new/omnific_fractions_article.zip` and source 09 from
+`5fb910f:docs/new/omnific_fractions_article (1).zip`, in each case the member
+`omnific_fractions/omnific_fractions.tex`. Historical novelty and the
+fixed-workspace discussion are not certified by this comparison.
+
+The denominator calculus now proves translation and reciprocal identities
+explicitly, restores translation at zero, and explains why the projective
+covariance formula lands in the omnific ring even when its scalar does
+not. The determinant uses `δ_g`, keeping `Δ` for discriminants. A finite
+tuple has a nonzero denominator by simultaneous clearing; over an arbitrary
+domain this instead requires its coordinates to belong to the fraction
+field. Class ideals are handled by finite sums, not sets of class cosets.
+
+The least-denominator argument spells out cancellation and its single use
+of ordered division; it does not assume a terminating Euclidean algorithm
+or obtain a Bézout identity from principality. The ordinary localization
+proof gives its splitting and units and distinguishes the additive direct
+sum from a ring product. The proof that algebraic surreals are real
+algebraic restores source 09's finite-factorization argument. Explicit
+witnesses distinguish the four rings in the displayed inclusion chain.
+The real-constant computation includes zero and explains divisibility by
+every nonzero ordinary integer before its no-gcd argument.
+
+The multiplier proof tracks the inverse rescaling of a Bézout row, gives
+the scalar lattice before normalization, and handles a zero retraction
+kernel. Its hypothesis is illustrated by `(ω,ω)`: multiplying by `ω⁻¹`
+gives an omnific vector but that scalar is outside the support ring, and
+the starting pair is not unimodular there. The alternative lift specifies
+the ordered-pair syzygy sum, its zero pairing and its residue. Polynomial
+indeterminates are distinguished from evaluated omnific parameters.
+
+The dichotomy proof was checked in both cases, including transport of
+set-generatedness under multiplication by the nonzero denominator and
+the halving argument for every common divisor. Remark 15.16 inherited an
+overbroad scope from source 09: denominator-ideal equivalences now apply
+only to affine points. Infinity retains its rational specialization and
+unimodular presentation, but has no affine denominator ideal in this text.
+
+All 143 standard statements and 310 labels are retained, with no
+renumbering. The calculus proposition drops an unnecessary nonzero
+hypothesis for translation; the scope correction is in a remark. The text
+from Section 15.5 onward is unchanged. These source-level arguments remain
+pending in Lean. The unreviewed added material in Sections 6 and 10,
+Sections 15.5–15.12, Sections 17–18, new companions and remaining imported
+foundations/source reconciliation remain separate obligations.
+
+## Integration of curve and differential rigidity manuscripts and current numbering
+
 Five manuscripts on curve and differential rigidity, tagged C10–C14 after their
-file prefixes `10-` to `14-`, were placed in `c6359e4` and integrated after that as
+file prefixes `10-` to `14-`, were placed in `c6359e4` and integrated after the fraction manuscripts as
 new Sections 16–18 (`odg:cr:` labels): the squarefree and Weierstrass theorems,
 the two-ring differential principle, the classification of smooth affine curves,
 arithmetic fibers, projective coordinates, group varieties and boundary examples.
 The same integration added pointers in Sections 6, 7 and 14, a paragraph and a
 proposed module in the formalization section, the answer to `odg:q:affine` for
 smooth curves, partial answers to `odg:q:search` and `odg:q:homogeneous`, and six
-new questions. That material is outside this review. Inserting Sections 16–18
+new questions. That material is outside every pass recorded here. Inserting Sections 16–18
 moved the three sections after them by three: the omnific-coefficients section
 (called 15 or 16 above) is now Section 19, the formalization section Section 20
 and the questions Section 21. Statement numbers in Sections 1–15 are unchanged,
 and no label was renamed or removed.
+
+The passes above therefore use three numberings of the last three sections.
+The records up to and including the Section 11 and Section 12 reviews call the
+omnific-coefficients, formalization and questions sections 15, 16 and 17 (and,
+before the batch-25 merge, the families section 11); the fraction-integration
+record, the Section 13 review and the Sections 15.1–15.4 review call them 16, 17
+and 18. They are now
+Sections 19, 20 and 21. Sections 1–15 and their subsections, including the
+Sections 15.1–15.4 reviewed above, keep their numbers.

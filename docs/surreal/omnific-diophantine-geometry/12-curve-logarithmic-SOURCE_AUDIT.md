@@ -2,7 +2,7 @@
 
 ## Pinned repository
 
-Repository: https://github.com/VladimirReshetnikov/Surreal  
+Repository: https://github.com/VladimirReshetnikov/Surreal\
 Commit: `89bec380b218c0a5bb865f53a86f5abf7f8fb5ad`
 
 The repository was read through the GitHub connector. The substantive comparison

@@ -24,6 +24,10 @@
 \setlength{\parindent}{1.2em}
 \setlength{\emergencystretch}{2em}
 \setcounter{tocdepth}{2}
+% Leave room for two-digit subsection numbers such as 15.10.
+\makeatletter
+\renewcommand*{\l@subsection}{\@dottedtocline{2}{1.5em}{3.2em}}
+\makeatother
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
 \newaliascnt{proposition}{theorem}
@@ -513,13 +517,20 @@ imported foundations still require review. Sources 06 and 07, placed in
 together with their material and that of source 13 in
 \cref{odg:sec:rigidity} and source 07's quartic
 (\cref{odg:def:rem:quarticvariant}). A subsequent pass reviews
-\cref{odg:def:sec:arithmetic}, including the distinction between intermediate
-rings and full positive-support rings; the rest of this material remains
+\cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction}, including
+the distinction between intermediate rings and full positive-support rings,
+the detector witnesses, coefficient reconstruction and logical consequences.
+The material they added to \cref{odg:sec:rigidity,odg:sec:guard} remains
 outside the reviews.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
-\cref{odg:sec:questions}; the reviews did not cover this material either. The
+\cref{odg:sec:questions}. A further pass now reviews
+\cref{odg:frac:sub:conventions,odg:frac:sub:ideals,odg:frac:sub:multiplier,odg:frac:sub:region}:
+denominator ideals, least denominators, the multiplier theorem and the
+affine denominator dichotomy. The rest of the fractions material,
+\cref{odg:frac:sub:rational} onwards, and its additions to
+\cref{odg:sec:formal,odg:sec:questions} remain unreviewed. The
 insertion of \cref{odg:frac:sec:fractions} moved the three sections after it
 by one, from Sections 15--17 to 16--18. Sources C10--C14, placed in
 \texttt{c6359e4}, were integrated after that as
@@ -3577,6 +3588,10 @@ No hypothesis that $\mathcal H$ is a domain, reduced, complete or Henselian is
 needed.
 \end{theorem}
 \begin{proof}
+Identify $\Bbbk$ with its image in $\mathcal H$; the retraction makes this
+embedding injective. Then $A=\varepsilon^{-1}(\mathfrak o)$, since every
+$z\in\mathcal H$ decomposes as $\varepsilon(z)+(z-\varepsilon(z))$, with the
+second summand in the kernel.
 If $as=f(t)$ and $\varepsilon(a)=0$, applying $\varepsilon$ gives
 $f(\varepsilon(t))=0$ with $\varepsilon(t)\in\mathfrak o$, contrary to (a).
 Conversely let $c=\varepsilon(a)\ne0$, choose $b$ by (c), and factor
@@ -3592,7 +3607,20 @@ the nonzero scalar $c$ is inverted, in the field $\Bbbk$.
 \end{proof}
 
 The augmentation need not be part of the ring language: the conclusion is a
-ring-language formula that detects its kernel \src{07}.
+ring-language formula that detects its kernel \src{07}, with the coefficients
+of $f$ as parameters. In the applications below $f\in\Z[T]$, so these are
+integer numerals and the formula is parameter-free.
+
+For a concrete example with zero divisors, take $\mathcal H=\R\times\R$,
+embed $\R$ diagonally, and let $\varepsilon(u,v)=u$. Then
+$A=\Z\times\R$. The zero divisor $a=(1,0)$ has nonzero augmentation and
+admits the certificate
+\[
+ t=(0,\sqrt{13}),\qquad s=(-48841,0),\qquad
+ as=(-48841,0)=\Lambda(t).
+\]
+Thus invertibility of $a$ is not required; the cancellation in the proof
+takes place in $\Bbbk$, after applying $\varepsilon$.
 
 \begin{theorem}[Detecting a nonzero constant term \src{07}]\label{odg:def:thm:detector}
 Let $(\mathfrak o,\Bbbk)$ be $(\Z,\R)$ or $(\Z[i],\C)$ and
@@ -3626,7 +3654,11 @@ nonconstant, $\ddeg t=\ddeg a$ and $\ddeg s=5\ddeg a$.
 \begin{proof}
 The witness $t$ is affine in $a$ and $s$ is a polynomial of degree five in
 $a$ with constant coefficients, so the support inclusions follow from finite
-convolution. Since $b\in\mathfrak o$ and $r\notin\mathfrak o$, $\alpha\ne0$; the
+convolution. Finite sumsets of reverse-well-ordered supports are again
+reverse well ordered, and each fixed exponent has only finitely many
+contributions in each such convolution. All exponents remain in $\Gamma$;
+the scalars $r,\alpha$ change coefficients only.
+Since $b\in\mathfrak o$ and $r\notin\mathfrak o$, $\alpha\ne0$; the
 leading coefficients of the two polynomials in $a$ are $\alpha$ and
 $\alpha^6$, and \cref{odg:def:lem:units} gives the degrees.
 \end{proof}
@@ -3634,6 +3666,9 @@ $\alpha^6$, and \cref{odg:def:lem:units} gives the degrees.
 The construction divides no series by $a$, expands no $(1+h)^{-1}$ and takes
 no limit; it applies unchanged to supports accumulating towards zero and to
 exponent groups of any rank \src{07}.
+
+The predicate $\Theta$ detects a nonzero constant term: it rejects the
+nonzero element $\omega$ and accepts the nonunit $1+\omega$.
 
 \begin{example}[Certificates \src{07}]\label{odg:def:ex:certificates}
 For $a=\omega$ (or $a=\sum_{n\ge1}\omega^{1/n}$) there is no certificate: a
@@ -3660,8 +3695,12 @@ a quotient with the same constant coefficient. So $A/(1+\omega)A\cong\Q$ has no
 root of $\Lambda$, and $(1+\omega)s=\Lambda(t)$ has no solution although
 $\ct(1+\omega)=1$. Here $\Q$ contains no root of $\Lambda$, so hypothesis (b)
 of \cref{odg:def:thm:augdetector} fails. The detector is not asserted for
-arbitrary intermediate rings, whose elements may not contain the polynomial
-witnesses.
+arbitrary intermediate rings, which need not contain the polynomial
+witnesses. For example, take $A=\Z[\omega]\subseteq\R[\omega]$.
+Here $\ct(A)\subseteq\Z$ and the ambient coefficient field contains
+$\sqrt{13}$, but a certificate $(1+\omega)s=\Lambda(t)$ in $A$ would give
+$\Lambda(t(-1))=0$ in $\Z$ upon evaluation at $\omega=-1$. Thus the full
+pullback condition $A=\mathfrak o+\ker\varepsilon$ also matters.
 \end{remark}
 
 \subsection{The largest ideal without a root}
@@ -3703,9 +3742,13 @@ existential one of \cref{odg:def:thm:ideal}; it is kept as the negation of the
 detector. Together, \cref{odg:def:thm:ideal,odg:def:thm:detector} make both $I$
 and its complement Diophantine. Source 07 also notes the external description
 $I=\bigcap_{n\ge1}nA$ for $\mathfrak o=\Z,\Z[i]$, of which
-\eqref{odg:eq:divkernel} is the case of $\Oz$; it must not be transferred to
-coefficient rings containing $\Q$, where division by ordinary integers
-detects nothing.
+\eqref{odg:eq:divkernel} is the case of $\Oz$. Indeed, writing $x=d+u$ with
+$d\in\mathfrak o$ and $u\in I$, we have $x\in nA$ exactly when
+$d\in n\mathfrak o$: necessity follows by applying $\ct$, and sufficiency
+uses $u/n\in I$. An ordinary integer divisible by every positive integer is
+zero; applying this to both coordinates gives the same conclusion in
+$\Z[i]$. If instead $\mathfrak o$ contains $\Q$, then $nA=A$ for every
+$n\ge1$, so this intersection does not detect $I$.
 
 \subsection{The graph of the constant term}
 
@@ -3724,6 +3767,10 @@ replaced by any Diophantine definition of $\Z$.
 The first clause says $n\in\mathfrak o$ (\cref{odg:def:thm:constants}); by
 \cref{odg:def:thm:ideal} the second says $x-n\in I$. In the decomposition
 $A=\mathfrak o\oplus I$ the two conditions together say exactly $n=\ct(x)$.
+Existence is explicit: take $n=\ct(x)$, choose the five witnesses for
+$\Xi(n)$, and put $y=(x-n)/\sqrt2\in I$. Uniqueness concerns the output
+$n$, not the six existential witnesses: two possible outputs differ by an
+element of $\mathfrak o\cap I=\{0\}$.
 \end{proof}
 
 Source 06 proves the theorem with its own predicates, the quintic in the real
@@ -3752,10 +3799,10 @@ when the three squared polynomials vanish, that is, when
 $\Psi_1(m,u,v,w_1,w_2,w_3)=0$ and $(x-m)^2=2y^2$. By \cref{odg:thm:guard},
 witnesses for the first equation exist exactly when $m\in\Z$, and by
 \cref{odg:def:thm:ideal}, a witness $y$ for the second exists exactly when
-$x-m\in\Pi$. Both together say $m=\ct(x)$. Each of the three squared
-polynomials has degree two, and the degree-four part of the sum is a sum of
-squares of three nonzero real quadratic forms, which is nonzero; so the total
-degree is four. The witnesses are $u,v,w_1,w_2,w_3,y$. The variant follows in
+$x-m\in\Pi$. Both together say $m=\ct(x)$. Every term has degree at most
+four, and the coefficient of $x^4$ is $1$, since $\Psi_1$ does not involve
+$x$; hence the total degree is exactly four. The witnesses are
+$u,v,w_1,w_2,w_3,y$. The variant follows in
 the same way from \cref{odg:thm:standarddef} or
 \cref{odg:def:rem:quarticvariant}.
 \end{proof}
@@ -3770,7 +3817,19 @@ $0\to I\to A\xrightarrow{\ct}\mathfrak o\to0$ has a parameter-free definable
 retraction and a parameter-free definable section; its kernel and the graph of
 the retraction are Diophantine.
 \end{corollary}
+\begin{proof}
+The predicate $\Xi$ defines the embedded copy of $\mathfrak o$.
+On that domain the section is the inclusion, with graph $x=n$.
+The retraction has graph $\mathsf{CT}$, and its kernel is defined by
+$\mathsf{Inf}$. These formulas have no parameters.
+\end{proof}
 
+The direct-sum decomposition is additive. In the coordinates
+$x=n+u\leftrightarrow(n,u)$ its multiplication is
+\[
+ (n,u)(m,v)=(nm,nv+mu+uv),
+\]
+so the splitting does not assert a direct product of rings.
 The existence of the sequence is elementary normal-form algebra; the content
 is the definability of the actual splitting, not merely an interpretation of
 $A/I$ \src{06}.
@@ -3786,7 +3845,8 @@ Source 07 defines the graph by $\mathsf{CT}^{\forall}(a,c):\Leftrightarrow
 \]
 where $\mathbf u$ is a quintuple of witnesses. In the first form the witnesses
 for $\Xi(c)$ do not occur in the universal inequality; in the second, a
-single pair $(s,t)$ already produces witnesses for $\Xi(c)$, and conversely a
+single pair, for example $(s,t)=(0,0)$, already produces witnesses for
+$\Xi(c)$, and conversely a
 fixed witness works for all $(s,t)$. Both are correct by
 \cref{odg:def:thm:constants,odg:def:cor:universal}. Source 07 claimed neither
 minimality nor the impossibility of an existential definition; source 06's
@@ -3821,7 +3881,10 @@ $\mathfrak o$, $I$ and $\ct$ up to $\sigma$, which source 07 derives from the
 parameter-free definitions. It does not say that homomorphisms kill the ideal:
 the identity does not. Preservation of the ideal, annihilation of the ideal and
 pointwise fixation of the real coefficients are three different assertions
-\src{06}. For set-sized $\Gamma'$ it is consistent with
+\src{06}. For general homomorphisms the proof uses preservation of
+equations and their existential witnesses; parameter-free first-order
+definability alone would only ensure invariance under automorphisms.
+For set-sized $\Gamma'$ it is consistent with
 \cref{odg:fact:settarget}: every unital homomorphism
 $\Oz\to\mathcal R_\Z(\R,\Gamma')$ is then $x\mapsto\ct(x)1$. Source 07's
 version concerns ring automorphisms of the coefficient-restricted ring; it
@@ -3845,8 +3908,10 @@ Galois extension of $\Q$, whose Galois group has finitely many subgroups. By
 Dirichlet's theorem choose a prime $p\equiv1\pmod8$ with
 $\Q(\sqrt p)\not\subseteq K$, and then a prime $q\equiv1\pmod{8p}$ with
 $\Q(\sqrt q),\Q(\sqrt{pq})\not\subseteq K$; only finitely many $q$ are
-excluded, since distinct values give distinct squarefree radicands $q$ and
-$pq$. Then none of $p,q,pq$ is a square in $K$. For an odd prime
+excluded, since distinct positive squarefree radicands give distinct
+quadratic fields. Both arithmetic progressions have residue $1$ coprime
+to their modulus, so Dirichlet supplies infinitely many candidates; also
+$q\equiv1\pmod p$ ensures $q\ne p$. Then none of $p,q,pq$ is a square in $K$. For an odd prime
 $\ell\notin\{p,q\}$, one of $p,q,pq$ is a nonzero square modulo $\ell$, as in
 \cref{odg:def:prop:intersective}. At $\ell=p$ use $q\equiv1\pmod p$. At
 $\ell=q$, quadratic reciprocity and $p\equiv1\pmod4$ give
@@ -3872,8 +3937,16 @@ The proof of \cref{odg:def:thm:constants} used Pell rigidity
 (\cref{odg:def:cor:pell}), the absence of roots of the polynomial in
 $\mathfrak o$ (\cref{odg:def:lem:tailored,odg:def:lem:units}), a nonzero integer
 in every $x\mathfrak o$ (\cref{odg:def:lem:intmultiple}) and roots modulo all
-integers; it applies verbatim. For the detector, given $c\ne0$ in
-$\mathfrak o$ choose a positive integer $m\in c\mathfrak o$ and $b\in\Z$ with
+integers. More explicitly, for $x\ne0$ the system forces $u,v\in\mathfrak o$
+by Pell rigidity and $v\ne0$ by root exclusion. Then $xw=v$ forces $x$ to
+have degree zero, hence to lie in $A\cap\Bbbk=\mathfrak o$.
+Conversely, if $0\ne x\in\mathfrak o$, choose $m>0$ in $x\mathfrak o$ and
+ordinary Pell coordinates $u,v$ with $0<v\in m\Z$. Put $w=v/x\in\mathfrak o$,
+choose $t\in\Z$ with $\Lambda_K(t)\in v\Z$, and put
+$s=\Lambda_K(t)/v\in\Z$. These are witnesses already in $\mathfrak o$;
+$x=0$ is admitted by the factors $x$ in the defining equations. No
+integrality or finite-generation hypothesis on $\mathfrak o$ is used.
+For the detector, given $c\ne0$ in $\mathfrak o$ choose a positive integer $m\in c\mathfrak o$ and $b\in\Z$ with
 $\Lambda_K(b)\in m\Z$, and apply \cref{odg:def:thm:augdetector} with any root of
 $\Lambda_K$ in $\Bbbk$. The ideal test and the graph use only the detector and
 the constant definition.
@@ -3902,6 +3975,21 @@ applied to the intermediate ring $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$, and
 the second says $x-n\in\Pi_\Bbbk(\Gamma)$. Both definitions are Diophantine;
 they improve source 07's universal and prenex formulas whenever
 $\sqrt\delta\in\Bbbk$, and need no root of $\Lambda_K$ in $\Bbbk$.
+
+In particular, the detector hypothesis in \cref{odg:def:thm:numberfield}
+already suffices for these existential conclusions. If
+$\Lambda_K(r)=0$ in the field $\Bbbk$, one of its three factors vanishes,
+so $r^2=\delta$ for some $\delta\in\{p,q,pq\}$. Each of these radicands is
+nonsquare in $K$, by \cref{odg:def:lem:tailored}. The preceding argument
+therefore applies with this $\delta$, including the composite choice $pq$:
+primality was only a way to find a suitable radicand. Thus the ideal has a
+one-witness Diophantine definition, its complement has the two-witness
+detector, and the graph of $\ct$ has a six-witness Diophantine definition
+under exactly the stated detector hypotheses. This is a further consequence
+of combining sources 06 and 07. The integer $\delta$ is chosen once for
+the fixed coefficient fields; the formulas contain its numeral, not a
+parameter naming $r$, and no uniform choice across all number fields is
+asserted.
 \end{remark}
 
 \section{Coefficient reconstruction and logical consequences}\label{odg:def:sec:reconstruction}
@@ -3920,7 +4008,11 @@ $\mathcal A\subseteq\mathcal F$.
 \end{lemma}
 \begin{proof}
 Choose $g\in\Gamma^{>0}$. For $a\in\mathcal A$ both $\omega^g$ and $a\omega^g$
-lie in $I\subseteq\mathcal R$, so $a=(a\omega^g)/\omega^g\in\mathcal F$.
+lie in $I\subseteq\mathcal R$, and $\omega^g\ne0$, so
+$a=(a\omega^g)/\omega^g\in\mathcal F$. This also covers constants
+$c\in\Bbbk$: although $c$ need not belong to $\mathcal R$, the fraction
+$(c\omega^g)/\omega^g$ does. No common positive lower bound on the support
+of $a$ is needed.
 \end{proof}
 
 \begin{theorem}[The multiplier identity \src{06}]\label{odg:def:thm:multiplier}
@@ -3936,13 +4028,19 @@ exponent, so $\mathcal AI\subseteq I$. Conversely let
 $r\in\mathcal F\setminus\mathcal A$ and choose a negative exponent $h$ in
 $\supp(r)$; it need not be the least, and there need not be a least. Then
 $\omega^{-h}\in I$, and the coefficient of $r\omega^{-h}$ at exponent zero is
-the nonzero coefficient of $\omega^h$ in $r$, so $r\omega^{-h}\notin I$. The
-second identity follows from $\mathcal A^\times=\Bbbk^\times$
+the nonzero coefficient of $\omega^h$ in $r$, so $r\omega^{-h}\notin I$.
+Multiplication by a single monomial translates support injectively; no
+other coefficient contributes at zero and no cancellation can remove it.
+This witnesses the failure to be a multiplier. The second identity follows
+from $\mathcal A^\times=\Bbbk^\times$
 (\cref{odg:def:lem:units}).
 \end{proof}
 
 An integral domain interprets its fraction field by pairs $(a,b)$ with
-$b\ne0$, modulo $ad=bc$, with the usual operations; for the proper classes
+$b\ne0$, where $(a,b)\sim(c,d)$ means $ad=bc$. Addition and multiplication
+are represented by $(ad+bc,bd)$ and $(ac,bd)$, and the original ring by
+$a\mapsto(a,1)$. The denominator $bd$ is nonzero because the ring is a
+domain. For the proper classes
 ``quotient'' means this definable presentation, with set-valued
 representatives supplied by the surreal quotient, and no proper class is used
 as an element of another \src{06}. With $\mathsf{Inf}$ from
@@ -3954,16 +4052,39 @@ as an element of another \src{06}. With $\mathsf{Inf}$ from
  \mathsf{Mult}(a,b)\wedge\mathsf{Mult}(b,a))\bigr).
 \end{align*}
 The first says that the fraction $a/b$ multiplies $I$ into $I$, and is
-invariant under change of representative; the second, by
-\cref{odg:def:thm:multiplier}, says that $a/b\in\Bbbk$.
+invariant under change of representative. Indeed $ax=by$ is equivalent in
+$\mathcal F$ to $(a/b)x=y$; all $x,y$ in this formula range over the original
+ring, where $\mathsf{Inf}$ defines $I$. The second formula handles zero
+separately and otherwise requires both $a/b$ and its inverse $b/a$ to be
+multipliers, so \cref{odg:def:thm:multiplier} identifies it with
+$a/b\in\Bbbk$. It does not assert that every nonzero multiplier is a
+coefficient: $\omega^g\in\mathcal A$ is not a unit there for $g>0$.
 
 \begin{corollary}[Internal reconstruction \src{06}]\label{odg:def:cor:internal}
-Under the hypotheses of \cref{odg:def:thm:ideal} (for instance in the real and
-Gaussian rings), $\mathcal A$ and the actual embedded coefficient field
+Assume $\Gamma\ne0$ and the hypotheses of \cref{odg:def:thm:ideal} (for
+instance in the real and Gaussian rings). Then $\mathcal A$ and the actual
+embedded coefficient field
 $\Bbbk$ are parameter-free first-order definable in the interpreted fraction
 field, and the coefficient map $\mathcal A\to\Bbbk$ has the definable graph
 $\{(a,c):a\in\mathcal A,\ c\in\Bbbk,\ a-c\in I\}$.
 \end{corollary}
+\begin{proof}
+Use $\mathsf{Mult}$ and $\mathsf{Coeff}$ in the interpreted fraction field.
+The last condition means that $a-c$ is the image of an element of the
+original ring satisfying $\mathsf{Inf}$. Every $a\in\mathcal A$ has a unique
+decomposition $a=c+u$ with $c\in\Bbbk$ and $u\in I$, so the displayed
+relation is exactly the coefficient map. This recovers the embedded field,
+not just an abstract isomorphic copy.
+\end{proof}
+
+The same reconstruction works whenever $I$ has a parameter-free definition
+in $\mathcal R$: the multiplier argument imposes no condition on
+$\mathfrak o$ beyond being a unital subring of $\Bbbk$. In particular, for
+$\Gamma\ne0$ the integer-radicand definitions in
+\cref{odg:def:rem:numberfieldideal} recover the coefficient field and map
+under the number-field detector hypotheses, even when $2$ is a square in
+$\Frac(\mathfrak o)$. Substitute that ideal predicate for $\mathsf{Inf}$ in
+the two formulas above; no square root is named in them.
 
 The formulas do not mention monomials; monomials are used only to prove that
 they define the right sets, and $\sqrt2$ is not a hidden parameter. The
@@ -4000,12 +4121,17 @@ graph of the standard part $\st:\Ofin\to\R$.
 Interpret the fraction field, which is $\No$. By \cref{odg:def:cor:internal}
 the predicate $\mathsf{Coeff}$ defines its subfield $\R$. Since $\No$ is real
 closed \cite{Conway,Gonshor}, $x>0\Leftrightarrow x\ne0\wedge\exists z\,(z^2=x)$
-defines the order. Put
-$\Ofin(x):\Leftrightarrow\exists r\in\R\,(r>0\wedge-r\le x\le r)$ and
+defines the order, with $x<y$ obtained by applying it to $y-x$.
+Here $z$ ranges over the interpreted field, not just $\Oz$.
+Put $\Ofin(x):\Leftrightarrow\exists r\in\R\,(r>0\wedge-r\le x\le r)$ and
 $\mathfrak m(x):\Leftrightarrow\forall r\in\R\,(r>0\Rightarrow-r<x<r)$. A
-finite surreal has no positive exponents, and its coefficient at exponent zero
-is a real number differing from it by an infinitesimal, unique since a nonzero
-real is not infinitesimal. So
+nonzero surreal is bounded by a real number exactly when its leading
+exponent is nonpositive. For a finite surreal, removing the coefficient at
+zero leaves either zero or a remainder with a largest, strictly negative
+exponent; that remainder is
+therefore smaller in absolute value than every positive real. This proves
+existence of standard part, including zero by taking coefficient zero.
+It is unique because a nonzero real is not infinitesimal. So
 $\mathsf{ST}(x,r):\Leftrightarrow\Ofin(x)\wedge r\in\R\wedge\mathfrak m(x-r)$
 defines the standard part.
 \end{proof}
@@ -4020,11 +4146,25 @@ $\omega+7$ is not finite \src{06}.
 The natural ordered value group of $\No$ is interpretable from $\Oz$ as
 $\No^\times/\Ofin^\times$, ordered by $v(x)\ge v(y)\Leftrightarrow x/y\in\Ofin$.
 \end{corollary}
+\begin{proof}
+For $x\ne0$, membership in $\Ofin^\times$ means that both $x$ and $x^{-1}$
+are finite. Thus $x\sim y$ iff $x/y\in\Ofin^\times$ is definable, and
+multiplication descends to the quotient. If the leading exponents of $x,y$
+are $g,h$, then $x/y$ has leading exponent $g-h$. It is finite exactly
+when $g\le h$, and a finite unit exactly when $g=h$. Consequently the
+displayed relation is a well-defined total order on the quotient,
+compatible with multiplication; in additive valuation notation
+$v(xy)=v(x)+v(y)$ it corresponds externally to $v(x)=-g$.
+\end{proof}
 
 This recovers the value group as an interpreted quotient, not a canonical
 cross-section of monomials, and does not show that the $\omega$-map, the
 simplicity order, birthdays or the surreal exponential are definable
-\src{06}. The fraction-field construction can be phrased as a canonical
+\src{06}. The external representative $-g$ also explains the proper-class
+convention: it is a surreal number representing a valuation class, not a
+proper class used as an element. Its use to verify the quotient does not
+put a definable monomial cross-section into the interpreted language.
+The fraction-field construction can be phrased as a canonical
 bi-interpretation between the pure ring $\Oz$ and the field $\No$ with a
 predicate for $\Oz$; the essential content is the reconstruction of the
 \emph{canonical} coefficient field.
@@ -4055,7 +4195,11 @@ homomorphisms \src{06}.
 The map $\mathsf S_2(\sum_ga_g\omega^g)=\sum_ga_g\omega^{2g}$ is a field
 automorphism of $\No$ with inverse $\mathsf S_{1/2}$, since doubling exponents
 is an order automorphism of $(\No,+)$; it preserves supports and $\Oz$, fixes
-real coefficients and sends $\omega$ to $\omega^2$. So $\Aut(\Oz)$ is not
+real coefficients and sends $\omega$ to $\omega^2$. Nonnegative exponents
+remain nonnegative,
+and the coefficient at zero is unchanged, so the inverse also preserves
+$\Oz$. This is an exponent substitution, not the squaring map $x\mapsto x^2$;
+for example $\mathsf S_2(1+\omega)=1+\omega^2$. Thus $\Aut(\Oz)$ is not
 trivial.
 \end{example}
 
@@ -4082,10 +4226,15 @@ $\sigma\mapsto\hat\sigma$ is a composition-preserving section.
 \end{proposition}
 \begin{proof}
 A coefficient automorphism preserves supports and the finite sums and products
-defining Hahn convolution; its inverse is $\widehat{\sigma^{-1}}$. It fixes $\Z$
+defining Hahn convolution; its inverse is $\widehat{\sigma^{-1}}$.
+The coefficients of each product are finite sums, so no continuity or
+analytic regularity of $\sigma$ is needed. It fixes $\Z$
 and sends $i$ to $\pm i$, so it preserves $\Z[i]$ and hence $\Og$. An
 automorphism of $\Og$ extends to the fraction field and preserves the
 first-order coefficient predicate of \cref{odg:def:cor:internal}.
+Finally $\widehat{\sigma\circ\rho}=\hat\sigma\circ\hat\rho$ coefficientwise,
+and restriction of $\hat\sigma$ to $\C$ is $\sigma$, giving the stated
+section.
 \end{proof}
 
 For proper-class fields this is a statement about individual maps and their
@@ -4110,7 +4259,10 @@ clear. If $a+b=g$, the contribution of $(a,b)$ to the coefficient at $g$ is
 multiplied by $\chi(a)\chi(b)=\chi(g)$, so $\tau$ commutes with convolution;
 $\chi^{-1}$ gives the inverse. Constants sit at exponent zero and are fixed. A
 Gaussian omnific integer keeps its positive support and its Gaussian integer
-constant term.
+constant term, since $\chi(0)=1$; the inverse has the same property.
+These operations are coefficientwise on set-supported normal forms,
+without an infinite analytic summation. The exponential in $\chi$ is only
+the ordinary complex exponential of a real scalar.
 \end{proof}
 
 The character-twist construction and its use to move the real axis while
@@ -4132,6 +4284,10 @@ sets are invariant under automorphisms fixing the parameters. Conjugation
 does not commute with $\tau$: $\tau(\overline\omega)=i\omega$ while
 $\overline{\tau(\omega)}=-i\omega$. Finally the restriction of $\tau$ to $\Og$
 fixes $\Z[i]$ and moves $\omega\in\Oz$ outside $\Oz$.
+Naming every element of $\C$ does not affect the first obstruction:
+$\tau$ fixes each of them, and every individual formula uses only finitely
+many names. For the restriction to $\Og$, the parameters $\Z[i]$ already
+lie in that ring; arbitrary complex constants need not.
 \end{proof}
 
 There is no conflict with the recovery of $\C$: the twist fixes $\C$
@@ -4151,6 +4307,9 @@ in the Gaussian case, with $\Z[i]$ in place of $\Z$. It is printed once, as
 \cref{odg:thm:transfer,odg:cor:H10}; the proof is the same for every
 $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$. Transfer does not make solutions
 constant: $y=x$ has many nonconstant solutions \src{07}.
+Both the parameters and the free tuple must be in the coefficient subring
+for this two-way transfer. Existential witnesses may range over the entire
+ring: applying $\ct$ supplies coefficient witnesses.
 
 \begin{theorem}[Diophantine subsets of $\Z^n$ \src{06}]\label{odg:def:thm:ce}
 Let $\Bbbk$ be an ordered field containing $\sqrt2$. A subset $S\subseteq\Z^n$,
@@ -4167,13 +4326,28 @@ integer form, by sign coding and sums of squares) $S$ is defined over $\Z$ by
 an integer system $\Phi_S$. In $\mathcal R_\Z(\Bbbk,\Gamma)$ impose
 $\Std(x_1)\wedge\cdots\wedge\Std(x_n)\wedge\Phi_S(\mathbf x)$, with $\Std$ the
 quintic \eqref{odg:def:eq:quintic}; once the free tuple is standard, transfer
-makes the remaining condition equivalent to $\Phi_S$ over $\Z$. In the real
-ring the conjunction can be written as one sum of squares.
+makes the remaining condition equivalent to $\Phi_S$ over $\Z$.
+The guards exclude nonstandard free tuples; no guards on the auxiliary
+witnesses of $\Phi_S$ are needed, since $\ct$ sends any such witnesses to
+integer ones. In the real ring the conjunction can be written as one sum
+of squares.
 \end{proof}
 
 Here $S$ is required to consist of standard tuples. No computability
 classification of arbitrary subsets of the ring is claimed, and arbitrary
 surreal parameters are not finite inputs to an algorithm \src{06}.
+
+\paragraph{Generality of the classification \mergetag.}
+With the finite-system convention for Diophantine definitions, the same
+equivalence holds in $\mathcal R_\Z(\Bbbk,\Gamma)$ for every characteristic-zero
+field $\Bbbk$, without an ordering or a square root of $2$. Apply
+\cref{odg:def:thm:numberfield} with $\mathfrak o=\Z$ and $K=\Q$ to obtain
+the integer guard $\Xi_\Q$; its first assertion needs no root of
+$\Lambda_\Q$ in $\Bbbk$. Replace $\Std$ by this guard in the proof, and use
+the same retraction in both directions. All formula coefficients are
+integers. A single sum-of-squares equation is not claimed over an
+unordered field. This is a consequence of combining the order-free
+definition with source 06's transfer argument.
 
 \begin{corollary}[Standard arithmetic is definable \src{06, 07}]\label{odg:def:cor:arithmetic}
 The structures $(\Z,+,\cdot,0,1)$ and $(\N,+,\cdot,0,1)$ are parameter-free
@@ -4194,7 +4368,8 @@ axiomatization of a complete theory would decide each sentence by searching for
 a proof of it or of its negation.
 \end{proof}
 
-For $\Oz$ the same holds sentence by sentence under the class convention.
+For $\Oz$ the same holds sentence by sentence under the class convention;
+no definable global satisfaction predicate for the class ring is asserted.
 Source 07 credits the non-axiomatizability of omnific arithmetic to
 Je\v r\'abek's 2011 MathOverflow answer \cite{JerabekMO}, and source 06 cites
 the same answer for the logical limitations of $\Oz$; the undecidability of
@@ -4209,7 +4384,7 @@ formula with parameters in $\mathfrak o$ defines a subset of $\mathcal R$ that
 contains a nonzero element of $\Pi_\Bbbk(\Gamma)$ and excludes $0$. In
 particular $\mathcal R\setminus\{0\}$, $\mathcal R\setminus\mathfrak o$ and
 $\Pi_\Bbbk(\Gamma)\setminus\{0\}$ are not so definable, and in the real case
-neither is the positive cone.
+neither is the strictly positive cone.
 \end{theorem}
 \begin{proof}
 The composite $\mathcal R\xrightarrow{\ct}\mathfrak o\hookrightarrow
@@ -4221,6 +4396,10 @@ contains $\omega^g$ for $g\in\Gamma^{>0}$, which is positive in the real case,
 and excludes $0$.
 \end{proof}
 
+The parameter restriction is essential to this endomorphism argument:
+for a fixed nonzero $h\in I$, the equation $x=h$ defines $\{h\}$ with
+parameter $h$, which is not fixed by $\ct$. In the real case ``strictly
+positive'' means $x>0$, so zero is excluded.
 This generalizes \cref{odg:prop:notdiophantine}. It is consistent with the
 Diophantine definitions of $\Pi$ and of $\{\ct\ne0\}$: the first contains $0$,
 and the second contains no element of $\Pi$. The detector avoids the
@@ -4239,10 +4418,17 @@ set-sized ring does not eliminate quantifiers in the ring language.
 \end{proposition}
 \begin{proof}
 In an infinite domain a nonzero one-variable polynomial has finitely many
-roots, so every quantifier-free one-variable definable set is finite or
-cofinite. The ideal and $\mathfrak o$ are infinite, and so are their
-complements: constants witness one, and the monomials $\omega^{kg}$, $k\ge1$,
-the other.
+roots. Each atomic equality is therefore true either everywhere (the
+zero polynomial) or at finitely many points; finite Boolean combinations
+of finite or cofinite sets remain finite or cofinite. This also covers
+negated equalities and any finite tuple of ring parameters.
+Fix $g\in\Gamma^{>0}$. The ideal contains the infinitely many distinct
+monomials $\omega^{kg}$, $k\ge1$, and its complement contains the nonzero
+ordinary integers. The coefficient subring is infinite and its complement
+contains those same monomials. Neither set is finite or cofinite. If the
+complete theory eliminated quantifiers, the coefficient-subring definition
+from \cref{odg:def:thm:numberfield}, with $K=\Q$ or $\Q(i)$, would be
+equivalent to a quantifier-free formula, contradicting what was just proved.
 \end{proof}
 
 This is a first lower bound on logical complexity only; it does not show that
@@ -4260,11 +4446,19 @@ the full rings $\Oz$ and $\Og$ the same explicit type is finitely satisfiable
 and omitted.
 \end{theorem}
 \begin{proof}
-A finite part excludes the roots of finitely many nonzero polynomials, which
-are finitely many elements of the infinite ring $\mathfrak o$, so some element
-of $\mathfrak o$ satisfies it. A realization of the whole type would lie in
-$\mathfrak o$ and be algebraic over $\Q$, so some nonzero integer polynomial
-would vanish at it.
+Use a fixed canonical syntax for integer polynomials, with signed integer
+coefficients and no trailing zero coefficient. Testing that a formula is
+$\Xi_A(x)$ or a displayed inequality for a nonzero polynomial is decidable;
+this makes the type computable, not just countable. Its only coefficients
+are integer numerals, including those of the fixed guard $\Xi_A$.
+A finite part excludes the roots of finitely many nonzero polynomials.
+If the sum of their degrees is $D$, at most $D$ of the ordinary integers
+$0,1,\ldots,D$ are excluded; at least one satisfies every inequality and
+$\Xi_A$. A realization of the whole type would lie in $\mathfrak o$, hence
+be algebraic over $\Q$; clearing denominators in an annihilating rational
+polynomial gives a nonzero integer polynomial vanishing at it, a
+contradiction. Recursive saturation would realize this computable finitely
+satisfiable type over no parameters.
 \end{proof}
 
 For $\mathfrak o=\Z$ the simpler countable type $\{\Std(x)\}\cup\{x\ne n:n\in\Z\}$
@@ -4282,6 +4476,12 @@ sentence $\exists x,y\,(x^2=2y^2\wedge y\ne0)$ is false in $\Z$ and in $\Z[i]$
 and holds in the ring, with $y=\omega^g$ and $x=\sqrt2\,\omega^g$ for any
 $g>0$ (when $\sqrt2\in\Bbbk$). This is a second route to the non-elementarity
 recorded after \cref{odg:thm:induction} and in \cref{odg:rem:ringinduction}.
+The same non-elementarity conclusion for
+$\Z\hookrightarrow\mathcal R_\Z(\Bbbk,\Gamma)$ holds even when $\Bbbk$
+does not contain $\sqrt2$: the sentence $\forall x\,\Xi_\Q(x)$, using the
+guard above, holds in $\Z$ but fails at $\omega^g$ in the larger ring.
+The guard defines $\Z$ in both structures by
+\cref{odg:def:thm:numberfield}; this argument uses no ordering of $\Bbbk$.
 A formula that defines the actual integers in this ring need not select the
 standard copy in an elementary extension, where it defines an elementary
 extension of the induced arithmetic; this is compatible with the omitted
@@ -4621,8 +4821,10 @@ dense. Source 08 adds a localization with residue field $\Q$, polynomial
 models, the exact denominator defect of a scale extension with its $\Tor_1$
 witness, and the Gaussian dichotomy. The Gaussian dichotomy contains the
 Gaussian unimodular-direction criterion of manuscript 14 of the sibling
-report (\cref{odg:frac:cor:gaussiandirections}). This section is outside the
-proof reviews recorded in \fn{RECONCILIATION.md}.
+report (\cref{odg:frac:cor:gaussiandirections}). The proof review recorded in
+\fn{RECONCILIATION.md} now covers this section through
+\cref{odg:frac:sub:region}; the rational-function applications and later
+subsections still await that review.
 
 \subsection{Conventions}\label{odg:frac:sub:conventions}
 
@@ -4674,16 +4876,22 @@ $(x_1,\ldots,x_n)$ is a vector $(bx_1,\ldots,bx_n,b)\in\Oz^{n+1}$ with $b\ne0$.
 \end{definition}
 
 Zero belongs to $\Den(x_1,\ldots,x_n)$. The actual common denominators are its
-nonzero members, and they exist by \cref{odg:thm:fractions}. Clearly
-$\Den(x_1,\ldots,x_n)=\bigcap_j\Den(x_j)$. Source 09 writes $\operatorname
+nonzero members, and a common one exists by applying
+\cref{odg:thm:fractions} to the finite set of coordinates. Moreover
+$\Den(x_1,\ldots,x_n)=\bigcap_j\Den(x_j)$, so it is an ideal as well.
+For a general domain $R'$ in an ambient field, this ideal can instead be
+zero: a nonzero denominator forces every $x_j$ to lie in $\Frac(R')$.
+Conversely, if all coordinates lie in $\Frac(R')$, the product of finitely
+many individual denominators is a nonzero common denominator.
+Ideals of $\Oz$ here may be proper classes; their operations and generated
+ideals use finite sums and products, as in \cref{odg:sub:notation}. Source 09 writes $\operatorname
 D(x)$; the letter $D$ is the Pell parameter here.
 
 \begin{proposition}[Calculus of denominator ideals \src{09}]\label{odg:frac:prop:calculus}
 For every $x\in\No$, $\Den(x)$ is a nonzero ideal of $\Oz$, with
-$\Den(0)=\Oz$ and $\Den(x)=\Oz\cap x^{-1}\Oz$ for $x\ne0$. For $z\in\Oz$ and
-$x\ne0$,
+$\Den(0)=\Oz$ and $\Den(x)=\Oz\cap x^{-1}\Oz$ for $x\ne0$. For $z\in\Oz$,
 \[
- \Den(x+z)=\Den(x),\qquad x\,\Den(x)=\Den(1/x).
+ \Den(x+z)=\Den(x),\qquad x\,\Den(x)=\Den(1/x)\quad(x\ne0).
 \]
 For $g=\bigl(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\bigr)\in\GL_2(\Oz)$ and
 $cx+d\ne0$,
@@ -4693,13 +4901,24 @@ $cx+d\ne0$,
 \end{proposition}
 \begin{proof}
 Closure under addition and under multiplication by $\Oz$ is direct, and
-nonzero denominators exist by \cref{odg:thm:fractions}. The next identities
-follow from the definition. For \eqref{odg:frac:eq:covariance} put
+nonzero denominators exist by \cref{odg:thm:fractions}. For $h\in\Oz$,
+$h(x+z)\in\Oz$ is equivalent to $hx\in\Oz$, by subtracting $hz$; this also
+covers $x=0$. For $x\ne0$, multiplication by $x$ sends a denominator $h$ of
+$x$ to $xh\in\Oz$, with $(xh)/x=h\in\Oz$. Its inverse sends a denominator
+$k$ of $1/x$ to $k/x$. This proves the reciprocal identity.
+For \eqref{odg:frac:eq:covariance} put
 $y=(ax+b)/(cx+d)$. If $h\in\Den(x)$, then $k=(cx+d)h\in\Oz$ and
-$yk=(ax+b)h\in\Oz$. Conversely let $k\in\Den(y)$ and $\Delta=ad-bc\in\Oz^\times$.
-Since $a-cy=\Delta/(cx+d)$ and $dy-b=\Delta x/(cx+d)$, the elements
-$h=\Delta^{-1}(a-cy)k=k/(cx+d)$ and $xh=\Delta^{-1}(dy-b)k$ lie in $\Oz$, so
-$h\in\Den(x)$ and $k=(cx+d)h$.
+$yk=(ax+b)h\in\Oz$. Conversely let $k\in\Den(y)$ and write
+$\delta_g=ad-bc\in\Oz^\times$ for the determinant. Since
+$a-cy=\delta_g/(cx+d)$ and $dy-b=\delta_g x/(cx+d)$, the elements
+\[
+ h=\delta_g^{-1}(a-cy)k=\frac{k}{cx+d},\qquad
+ xh=\delta_g^{-1}(dy-b)k
+\]
+lie in $\Oz$: both $k$ and $yk$ do, and $\delta_g^{-1}\in\Oz$.
+Thus $h\in\Den(x)$ and $k=(cx+d)h$. In particular the right side of
+\eqref{odg:frac:eq:covariance} lies in $\Oz$, even though the scalar
+$cx+d$ itself need not lie there.
 \end{proof}
 
 \begin{proposition}[Least denominators \src{09}]\label{odg:frac:prop:least}
@@ -4716,7 +4935,10 @@ least positive member and $a\in\mathfrak a$, ordered division
 (\cref{odg:prop:division}) gives $a=qb_0+r$ with $0\le r<b_0$ and
 $r\in\mathfrak a$, so $r=0$. The description of the representations follows
 from the definition. If $d$ divides $a_0$ and $b_0$, then $b_0/d\in\Den(x)$, so
-$b_0/d=b_0h$ with $h\in\Oz$, and $d$ is a unit.
+$b_0/d=b_0h$ with $h\in\Oz$, and cancellation of $b_0\ne0$ gives $dh=1$, so $d$ is a unit.
+This uses one ordered division for each $a$; it does not assume termination
+of a Euclidean algorithm in $\Oz$. The argument proves primitivity;
+the stronger B\'ezout conclusion below comes from the multiplier theorem.
 \end{proof}
 
 \begin{lemma}[Unimodular fractions \src{08, 09}]\label{odg:frac:lem:unimodular}
@@ -4733,7 +4955,8 @@ Take $u_1p_1+\cdots+u_np_n+u_0q=1$ in $R'$. If $b$ is a denominator, then
  \frac bq=u_0b+\sum_ju_j\frac{bp_j}{q}\in R'.
 \]
 Thus $b=qh$, and the numerators are $p_jh$. Conversely every $h\in R'$ gives
-a denominator. A common divisor of $h(p_1,\ldots,p_n,q)$ divides the same
+a denominator, and $q\ne0$ makes the multiplier $h=b/q$ unique and nonzero
+for an actual representation. A common divisor of $h(p_1,\ldots,p_n,q)$ divides the same
 linear combination, which is $h$, and $h$ is a common divisor. For $R'=\Oz$ a
 representation is primitive exactly when $h$ is a unit, that is, $h=\pm1$.
 \end{proof}
@@ -4756,9 +4979,15 @@ for integers $u,v$ with $um+vn=1$,
 \end{proposition}
 \begin{proof}
 If $a=k+y\in\Oz$ with $k\in\Z$, $y\in\Pi$, and $0\ne n\in\Z$, then
-$a/n=k/n+y/n\in\Q\oplus\Pi$; conversely $y+m/n=(ny+m)/n$. The real elements
-and units follow from \cref{odg:prop:units} by the same leading-degree
-argument, and $\omega$ lies in the ring while $\omega^{-1}$ does not. For
+$a/n=k/n+y/n\in\Q\oplus\Pi$; conversely $y+m/n=(ny+m)/n$.
+The constant-term map has kernel $\Pi$ and is split by the inclusion of
+rational constants. The direct sum describes the additive decomposition;
+it is not a direct product of rings, since rational constants act on $\Pi$
+by scalar multiplication. A nonzero element of this ring has nonnegative
+leading degree. If it and its inverse both belong to the ring, additivity
+of leading degrees forces both degrees to be zero. Their supports are
+nonnegative, so both are rational constants. Conversely every nonzero
+rational is a unit. Also $\omega$ lies in the ring while $\omega^{-1}$ does not. For
 $b\in\Oz$ the product $bx$ has no negative exponent, and its constant
 coefficient is $(m/n)\ct(b)$. So $b\in\Den(x)$ exactly when $n\mid\ct(b)$,
 which is $b\in n\Oz$ by \cref{odg:thm:finitequotients}. The identity
@@ -4768,8 +4997,13 @@ $\Q\oplus\Pi$ is infinite, and its inverse is a nonzero infinitesimal outside
 the ring. So every member of a subfield is real, hence rational.
 \end{proof}
 
-An element of $\No$ algebraic over $\Q$ is a real algebraic number, since
-$\No$ is an ordered field containing the real closure of $\Q$ in $\R$.
+An element of $\No$ algebraic over $\Q$ is a real algebraic number.
+Indeed, a nonzero polynomial in $\Q[T]$ factors over the real algebraic
+numbers into linear factors and irreducible quadratics. After a nonzero
+scalar is removed, each quadratic has the form $(T-a)^2+b^2$ with $b\ne0$,
+and has no root in any ordered extension. A surreal root must therefore
+annihilate a linear factor and be real algebraic. This uses only the real
+closedness of the real algebraic numbers, not a transfer theorem for classes.
 Hence the elements of $\Q\oplus\Pi$ algebraic over $\Q$ are exactly the
 rationals, and those of $\Oz$ are the integers \src{09}. Fractions that
 produce $\sqrt2$ need infinite omnific denominators. Also
@@ -4782,13 +5016,19 @@ So there are four rings to keep apart \src{08}:
 The second admits only ordinary integer denominators. The third, the
 localization of $\Oz$ at the prime ideal $\Pi$, admits every denominator with a
 nonzero constant coefficient; it is studied in \cref{odg:frac:sub:residues}.
+The strict inclusions have concrete witnesses: $\omega$ is not rational;
+$1/(1+\omega)$ belongs to $\Oz_\Pi$ but is a nonzero infinitesimal and hence
+is not in $\Q\oplus\Pi$; and $\sqrt2$ is an omnific fraction but cannot
+have a denominator with nonzero integer constant coefficient, by
+\cref{odg:frac:thm:realconstants}.
 
 \begin{proposition}[No set of denominators \src{08}]\label{odg:frac:prop:nosetdenominators}
 No set $S\subseteq\Oz\setminus\{0\}$ supplies a denominator for every surreal:
 there is $0<x\in\No$ with $bx\notin\Oz$ for every $b\in S$.
 \end{proposition}
 \begin{proof}
-By \cref{odg:lem:setbounds} choose $\eta>\ddeg(b)$ for every $b\in S$, and put
+The leading exponents of the members of $S$ form a set. By
+\cref{odg:lem:setbounds} choose $\eta>0$ exceeding every $\ddeg(b)$, and put
 $x=\omega^{-\eta}$. Then $bx\ne0$ has negative leading exponent, so it is a
 nonzero infinitesimal and does not lie in $\Oz$.
 \end{proof}
@@ -4818,12 +5058,17 @@ principal; $\Den(r)$ is generated by a set; a least positive omnific
 denominator exists.
 \end{theorem}
 \begin{proof}
-Write $b=k+y$ with $k\in\Z$ and $y\in\Pi$. Multiplication by a real preserves
-support, so $rb\in\Oz$ exactly when $rk\in\Z$. For $r=p/q$ in lowest terms this
+Write $b=k+y$ with $k\in\Z$ and $y\in\Pi$. Multiplication by a real introduces
+no new exponents (and preserves support when the scalar is nonzero), so
+$rb\in\Oz$ exactly when $rk\in\Z$. This includes $r=0$, whose reduced
+denominator is $q=1$. For $r=p/q$ in lowest terms this
 means $q\mid k$, and since $\Pi=q\Pi$ (\cref{odg:thm:finitequotients}) the ideal
 is $q\Oz$. For irrational $r$ it forces $k=0$, giving $\Pi$.
 
-For irrational $r$, then $a=rb\in\Pi$ as well. If $d$ is a common divisor of
+For irrational $r$, then $a=rb\in\Pi$ as well. Dividing their coefficients
+by any nonzero ordinary integer preserves positive support, so every such
+integer divides both. In particular the pair is not primitive.
+If $d$ is a common divisor of
 $a$ and $b$, then $(a/d,b/d)$ is another representation of $r$, so both
 quotients again lie in $\Pi$ and are divisible by $2$. Hence $2d$ is a common
 divisor; it does not divide $d$, because $1/2\notin\Oz$. So no common divisor
@@ -4865,8 +5110,13 @@ We first isolate the algebraic mechanism. Throughout this subsection, $R$ is a
 domain containing $\R$ with a ring retraction $c:R\to\R$ that fixes $\R$. Put
 $I_R=\ker c$ and $R_\Z=c^{-1}(\Z)=\Z\oplus I_R$, and let $K$ be any field
 containing $R$, possibly larger than $\Frac(R)$. The main example is
-$(R,c)=(\BR,\ct)$, with $R_\Z=\Oz$ and $I_R=\Pi$. Another is $R=\R[t]$ with
-evaluation at $T=0$ (\cref{odg:frac:sub:models}).
+$(R,c)=(\BR,\ct)$, with $R_\Z=\Oz$ and $I_R=\Pi$. Another is the polynomial ring $R=\R[T]$ with evaluation at $T=0$;
+its image $\R[t]$ under evaluation at the omnific parameter is treated in
+\cref{odg:frac:sub:models}. Every element of $R$ decomposes uniquely as
+$c(h)+(h-c(h))\in\R\oplus I_R$, and multiplication by a nonzero real
+preserves $I_R$. No nonzero-kernel hypothesis is needed for the algebraic
+theorem: when $I_R=0$, the irrational case simply has no nonzero
+admissible scalar.
 
 \begin{definition}[Rational directions \src{08}]\label{odg:frac:def:rational}
 A nonzero $\mathbf v\in\R^{n+1}$ has \emph{rational projective direction} if
@@ -4883,7 +5133,12 @@ is a primitive integral vector, then $\mathcal L_{\mathbf v}=\Z$.
 \begin{proof}
 A nonzero $s$ in the first case would make the line rational. In the second
 case choose integers $u_i$ with $\sum_iu_iv_i=1$. If every $sv_i$ is an
-integer, so is $s=\sum_iu_i(sv_i)$.
+integer, so is $s=\sum_iu_i(sv_i)$. Conversely every integer $s$ works.
+More generally, if $\lambda\mathbf v$ is primitive integral, then
+$s\mathbf v\in\Z^{n+1}$ exactly when $s/\lambda\in\Z$, giving
+$\mathcal L_{\mathbf v}=\lambda\Z$. Clearing ordinary denominators and
+dividing by the positive integer gcd constructs this primitive generator;
+the same lattice calculation shows that it is unique up to sign.
 \end{proof}
 
 \begin{theorem}[All ambient scalar representations \src{08}; pairs \src{09}]\label{odg:frac:thm:pullback}
@@ -4912,7 +5167,11 @@ every $hP_i$ lies in $R_\Z\subseteq R$, then
 For $h\in R$, membership of $hP_i$ in $R_\Z$ is exactly $c(h)v_i\in\Z$. This
 proves \eqref{odg:frac:eq:scalars}, and \cref{odg:frac:lem:lattice} gives the
 two scalar sets. It remains to show that the normalized vector in (a) is
-unimodular over $R_\Z$, not merely primitive. Choose $u_i\in\Z$ with
+unimodular over $R_\Z$, not merely primitive. Here $P_i$ denotes the
+normalized coordinate, and $U_i$ is a B\'ezout row for that normalized
+vector: rescaling the original vector by $\lambda$ rescales its row by
+$\lambda^{-1}$. The normalized coordinates $P_i$ belong to $R_\Z$
+because their residues are integers. Choose $u_i\in\Z$ with
 $\sum_iu_iv_i=1$, put $S=\sum_iu_iP_i$, so that $c(S)=1$, and define
 \begin{equation}\label{odg:frac:eq:lift}
  V_i=u_i+(1-S)U_i .
@@ -4926,6 +5185,13 @@ allowed in a much larger field. For $R=\BR$ this is why numerators and
 denominators with arbitrary infinite supports, or with scales outside the
 supports of $\mathbf P$, cannot evade the classification; formal reduction of a
 rational function would not show this \src{08, 09}.
+The scalar set includes zero; nonzero scalars give the actual projective
+representations. If $\lambda\mathbf v$ is primitive integral, the scalar
+set for the \emph{original} vector is $\lambda R_\Z$, since
+$c(h)\in\lambda\Z$ and $\lambda I_R=I_R$; it becomes $R_\Z$ after
+normalization. Unimodularity over $R$ is essential. For instance the pair
+$(\omega,\omega)$ over $\BR$ admits the scalar $\omega^{-1}\notin\BR$,
+which takes it to $(1,1)$, but has no B\'ezout identity over $\BR$.
 
 \begin{remark}[A second route to the lift \src{09}]\label{odg:frac:rem:lift}
 Source 09 adjusts constants instead of using \eqref{odg:frac:eq:lift}. For a
@@ -4937,8 +5203,11 @@ $(u_1,u_0)=(c(U_0),c(V_0))+k(m_0,-m_1)$. Then $U_0+kA_0$ and $V_0-kA_1$ have
 constants $u_1$ and $u_0$ and still form a B\'ezout row. With $n+1$ coordinates
 and constant vector $\mathbf m$, let $\mathbf w=\mathbf u-c(\mathbf U)$ for an
 integer row $\mathbf u$ with $\mathbf u\cdot\mathbf m=1$, and choose a real row
-$\mathbf r$ with $\mathbf r\cdot\mathbf m=1$. Add to $\mathbf U$ the syzygies
-$A_ie_j-A_je_i$ with coefficients $r_iw_j$. Their constant sum is
+$\mathbf r$ with $\mathbf r\cdot\mathbf m=1$. Write $\mathbf A$ for the
+normalized column and $e_j$ for the $j$th standard row. Add to $\mathbf U$
+the row $\sum_{i,j}r_iw_j(A_ie_j-A_je_i)$, summing over all ordered pairs.
+Each summand pairs to zero with $\mathbf A$, so the B\'ezout identity is
+unchanged. Its constant row is
 $(\mathbf r\cdot\mathbf m)\mathbf w-(\mathbf w\cdot\mathbf m)\mathbf r=\mathbf w$,
 since $\mathbf w\cdot\mathbf m=0$. Source 08's formula \eqref{odg:frac:eq:lift}
 is shorter.
@@ -5019,10 +5288,13 @@ point with rational specialization, and $\infty=[1:0]$.
 \end{proof}
 
 \begin{remark}[The exact strength of the dichotomy \src{09}]\label{odg:frac:rem:strength}
-On $\Vreg$ the following coincide: rational specialization, unimodularity over
-$\Oz$, principality of the denominator ideal, a least positive denominator,
-and a primitive presentation. The equivalence is proved on $\Vreg$ only. It is
-not claimed for all of $\mathbb P^1(\No)$, and neither source claims that every
+For affine points of $\Vreg$ the following coincide: rational specialization,
+unimodularity over $\Oz$, principality of the denominator ideal, a least
+positive denominator, and a primitive presentation. The equivalence is
+proved on $\Vreg\cap\No$ only. The point $\infty$ also has rational
+specialization and the unimodular presentation $[1:0]$, but the affine
+denominator ideal and its least positive element are not defined there.
+No such equivalence is asserted outside $\Vreg$, and neither source claims that every
 surreal lies in $\Vreg$ (\cref{odg:frac:q:region}). Source 09 notes that
 L'Innocente--Mantova use ``reduced'' for a different, support-theoretic notion
 \cite{LM}; the word is not used here for lowest terms. For $n+1$ coordinates

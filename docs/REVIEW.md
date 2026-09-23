@@ -2749,6 +2749,236 @@ implementation mappings and changes no manuscript or PDF. The combined
 The 3,089-row statement audit and 3,582-label audit still pass; all 1,387 local
 Markdown destinations resolve.
 
+## Constant-term detector and graph: the added Section 12
+
+Reviewed Section 12 against source 07's augmentation detector, ideal test
+and number-field arguments and source 06's retraction and homomorphism
+section, using the same `de0acc6` deliveries as the preceding review.
+The maintained proof now identifies the full pullback `A = ε⁻¹(o)` and
+locates scalar cancellation in the coefficient field. An explicit certificate
+in `Z × R` illustrates the allowed zero divisors. A second boundary example,
+`Z[ω]` inside `R[ω]`, shows why an ambient root and integer constant terms
+do not replace the full pullback hypothesis. General polynomial coefficients
+are parameters; the integer coefficients of `Λ` and `Λ_K` are numerals.
+
+The support proof explains finite convolution and retention of the original
+exponent group. The ideal's intersection description includes both
+directions and its failure over coefficient rings containing `Q`. The graph
+proof exhibits its six witnesses and specifies that uniqueness concerns its
+output. The quartic degree follows directly from its `x⁴` coefficient.
+The canonical splitting has an explicit proof and a multiplication formula
+distinguishing the additive direct sum from a ring direct product.
+The homomorphism argument separates preservation of existential equations
+from automorphism invariance of arbitrary first-order definitions.
+
+The number-field proof now constructs witnesses in the coefficient subring,
+without assuming integrality or finite generation. Remark 12.15 adds a
+consequence of the combined sources: the detector's assumed root has square
+`p`, `q` or `pq`, a nonsquare in the base number field. This radicand gives
+a one-witness existential ideal and a six-witness existential graph under
+the same hypotheses, alongside the two-witness complement detector. No
+additional quadratic extension or uniform formula over all number fields
+is asserted. This strengthens the documented conclusion at source level;
+all these omnific claims remain **Pending** in Lean.
+
+All 104 standard statement texts, all 228 labels and their numbers remain
+unchanged, and Section 13 onward is byte-identical. Three-pass LaTeX builds
+produce a 90-page article and 28-page catalogue without warnings or box
+diagnostics. The contents, status paragraph, reviewed pages and section
+transitions were visually checked, as was the catalogue's sole changed
+page. The independent inventory audit checks 3,089 standard results in 56
+main texts; 3,585 cited labels and 1,391 local Markdown destinations resolve.
+The earlier finite suites are unchanged and were not rerun: they are not
+proofs of the added definability consequence.
+
+Before editing, `0502930` was merged by fast-forward. Its conditioned
+inverse-cosine Lean results change no manuscript. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,315 jobs, and the axiom audit
+accepts 13,458 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The new material in Sections 6 and 10, Sections 13 and
+16–17, and remaining imported foundations, historical priority and source
+reconciliation still need review.
+
+## Constant-term review synchronized with the fraction integrations
+
+The final fetch brought documentation-only `c060ec8`, including the
+fraction integration `b829d8b`, quotient expansion `aae58bb`, and assembled
+definable-surreal, notation and Hahn–Hilbert reports (`337d4a4`, `600397e`,
+`e118d89`). The merge retains the Section 12 review from `229fe0b`
+byte-for-byte and all 143 upstream Diophantine standard statement texts,
+310 labels and their numbers. Section 13 onward matches the fetched source.
+The added fractions are Section 15; the previously reviewed coefficients
+section is now Section 16. Current review boundaries are updated throughout
+the reader map, report guide, reconciliation, ledger and catalogue.
+
+The catalogue now describes seven Diophantine and sixteen quotient sources,
+and the assembled two-source definability, three-source notation and
+two-source Hilbert reports with their maintained PDFs. Their assembly does
+not extend proof-review coverage. The ledger now indexes 3,271 standard
+results in 56 main texts (1,298 theorems, 668 lemmas, 677 propositions,
+628 corollaries), including 143 Diophantine and 227 quotient results. Its
+separate nine custom quotient main-theorem anchors are refreshed as well.
+The new reports' guides now distinguish these pending index entries from
+checked implementation mappings. New archives in `5610500` and `21016dc`
+remain to place and reconcile.
+
+The merged Diophantine PDF builds in three passes to 119 pages, and the
+catalogue to 28 pages, without warnings or box diagnostics. Widened contents
+number columns separate the new `15.10`–`15.12` entries from their titles.
+The contents, review status, Section 12 and its transitions were inspected,
+as were all eight changed catalogue pages. An independent source inventory
+audit passes, all 3,771 cited labels resolve, and all 1,406 local Markdown
+destinations resolve. The incoming changes touch no Lean file, root import,
+package configuration or toolchain, so the 4,315-job build and
+13,458-declaration axiom audit above remain applicable. The full document
+review, source reconciliation and formalization goals remain incomplete.
+
+## Final synchronization: the 57th report and Laurent root counts
+
+A further fetch brought `c6359e4` and `b895e86`. The placement adds one
+main text on discrete initial subgroups and omnific normalization, plus
+eight companions for five existing reports. The reader map and catalogue
+now include the 57th report; the ledger indexes its 26 standard statements
+and separately records its three custom main theorems. Its guide now uses
+the placed file paths and attributes the delivered PDF checks correctly:
+no maintained PDF was placed, and no independent proof review is claimed.
+The eight new companions remain to integrate.
+
+The ledger merge preserves the completed Section 12 review and the incoming
+Laurent algebraization, finite-angle root-count and Fourier-uniqueness
+implementation mapping. No already-mapped manuscript changed. The independent
+inventory audit passes 3,297 standard rows across 57 main texts; all 3,797
+cited labels and 1,413 local Markdown destinations resolve. The expanded
+catalogue builds cleanly in three passes to 29 pages; the new entry and
+adjacent family transition and final page were inspected. The reviewed
+Diophantine source and its 119-page PDF are unchanged in this synchronization.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,318 jobs. The audit accepts
+13,506 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The full review and formalization goals remain incomplete.
+
+## Coefficient reconstruction and logic: the added Section 13
+
+Compared Section 13 with source 06's multiplier, real reconstruction,
+automorphism, Gaussian obstruction and logical sections, and with source
+07's transfer and omitted-type arguments, using the recovered source versions
+identified in the Section 11 record. The review now covers the newly added
+Sections 11–13, alongside the previously reviewed original Sections 1–10,
+14 and 16. Additions in Sections 6 and 10, Sections 15 and 17–18, the new
+companions and remaining foundational/source reconciliation still need review.
+
+The fraction presentation supplies operations, nonzero denominators and
+witness domains. The multiplier proof identifies the single translated
+coefficient that cannot cancel. Coefficient reconstruction uses units of
+the multiplier ring, with zero treated separately, and the corollary now
+repeats its standing nontrivial-group hypothesis and includes a proof.
+Any parameter-free ideal predicate supports the same reconstruction; in
+particular the number-field integer-radicand predicate from Section 12 does
+so even when two is a square in the coefficient subring's fraction field.
+The standard-part proof uses the largest remaining negative exponent, and
+the value-group proof verifies equivalence, ordering and the sign convention
+`v = −leading exponent` without adding a definable monomial section.
+
+The automorphism explanations distinguish exponent substitution from
+squaring, use finite coefficient convolution without analytic continuity,
+and make the composition-preserving coefficient section explicit. The
+phase twist fixes every named complex constant; its restriction to the
+Gaussian ring fixes all allowable Gaussian parameters. Proper-class
+quotients and sentence-by-sentence translations remain distinct from a
+global satisfaction predicate.
+
+The c.e.-set proof guards free tuples and transfers its auxiliary witnesses.
+Combining it with the order-free integer guard extends the finite-system
+classification to every characteristic-zero coefficient field, without
+ordering or a square root of two. The same guard proves non-elementarity
+when that root is absent. The collapse obstruction specifies strict
+positivity, and the singleton `x = h` explains why its coefficient-parameter
+restriction matters. The quantifier-free lower bound includes negated
+equalities and uses the coefficient predicate to exclude quantifier
+elimination without an extra root assumption. Canonical polynomial syntax
+makes the omitted type decidable; a sum-of-degrees bound gives an ordinary
+integer satisfying each finite part.
+
+All 143 standard statements, 310 labels and their numbers are retained.
+Only two standard statement texts change: the explicit standing hypothesis
+and strict-positivity wording above. Section 14 onward is byte-identical.
+The article builds in three passes to 121 pages and the catalogue to 29,
+without warnings or box diagnostics. The reviewed pages, contents, status
+and transitions, and the changed catalogue page, were visually checked.
+The independent inventory audit passes 3,297 standard rows across 57 texts;
+all 3,797 cited labels and 1,419 local Markdown destinations resolve.
+The finite suites are unchanged and were not rerun; they would not verify
+the logical extensions. These source-level arguments remain **Pending**
+in Lean; real closedness, MRDP and historical priority are separate imports.
+
+The initial synchronization fast-forwarded to `0865f04`, including the
+angular-multiplicity work `1ced5a4`. It changed no manuscript. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,324 jobs, and the audit accepts
+13,560 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`.
+
+The final fetch added `cf56b89` (sine-family sharpness and finite-angle
+root classes), merged in `a094091`. It changes no manuscript or PDF.
+The combined two-thread build passes 4,326 jobs and audits 13,608
+declarations with the same three permitted axioms. All 3,797 cited labels
+and 1,421 local Markdown destinations resolve; the 3,297-row source
+inventory is unchanged.
+
+## Omnific denominator ideals and multipliers: Sections 15.1–15.4
+
+The [Diophantine article](surreal/omnific-diophantine-geometry/article.tex)
+now has an independent proof review through the affine denominator
+dichotomy. Its [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+identifies the recovered source-08 and source-09 archives and exact
+sections compared. Sections 15.5–15.12, the new material in Sections 6
+and 10, Sections 17–18, new companions and remaining imported foundations
+and source reconciliation remain outside this completed review.
+
+The calculus proof spells out translation, reciprocal and projective
+covariance identities, including why the scaled ideal is still omnific.
+Translation now includes zero. A finite tuple has a nonzero common
+denominator; the analogous assertion over an arbitrary domain requires
+membership in its fraction field. Least denominators use ordered division
+once per element and cancellation, without a Euclidean-termination claim.
+The ordinary localization proof gives its additive splitting and units,
+restores the finite-factorization proof for algebraic surreals, and provides
+explicit witnesses for the strict ring inclusions. Real-constant arguments
+cover zero, divisibility by every ordinary integer and the no-gcd step.
+
+The multiplier proof tracks the inverse rescaling of its Bézout row and
+the original scalar lattice `λR_ℤ` before normalization. It permits a zero
+retraction kernel. The pair `(ω,ω)` illustrates why ambient unimodularity
+is necessary. The alternative lift now specifies its ordered-pair syzygy
+sum and verifies both its zero pairing and its residue. Polynomial
+indeterminates, evaluated parameters and determinant notation are aligned
+with the shared guide. Remark 15.16 corrects the source's scope: the
+denominator equivalences apply to affine points, while infinity only has
+the projective specialization and unimodular-presentation assertions.
+
+All 143 standard statements and 310 labels are preserved, with unchanged
+numbering. Only the calculus proposition changes standard-statement
+wording, restoring translation at zero. Section 15.5 onward is
+byte-identical. Three-pass pdfLaTeX builds produce a clean 122-page article
+and 29-page catalogue, without warning, reference or box diagnostics.
+Visual inspection covers article PDF pages 5, 11 and 68–76 and all four
+changed catalogue pages, 9–12. The independent inventory verifies 3,297
+standard results across 57 main texts; all 3,797 cited source labels and
+1,426 local Markdown destinations resolve. The delivered finite verifiers
+are unchanged and were not rerun: they do not establish these general
+ideal and multiplier arguments. The source-level results remain **Pending**
+in Lean.
+
+The initial synchronization fast-forwarded to `ba6dff6`, adding the
+stationary-angle work without changing any manuscript. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,329 jobs and audits 13,627
+declarations, using only `propext`, `Classical.choice` and `Quot.sound`.
+
+The final synchronization merged `bf428a5` in `17aa289`, adding two
+polynomial-positivity modules and no manuscript changes. The combined
+build passes 4,331 jobs and audits 13,640 declarations with the same
+three permitted axioms. The source-label and independent inventory audits
+still pass; both reviewed PDFs remain identical to the validated builds.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
@@ -2782,7 +3012,7 @@ passes. This is integration validation, not a proof review of the new reports.
 
 ## Remaining scope
 
-The current collection has 56 main texts. The synchronization record above
+The current collection has 57 main texts. The synchronization record above
 states the latest omnific review boundary and the remaining companion
 integrations. Historical counts below identify the versions previously
 reviewed; they do not replace the current inventory.
