@@ -3488,6 +3488,48 @@ are unchanged by this sync, so the 178/32-page build and visual checks
 remain applicable. Section 17 and subsequent manuscript work remain
 outside the completed review.
 
+## Smooth-curve classification and geometric boundary review
+
+The Diophantine review now covers Sections 17.1–17.2, from the canonical
+bundle lemma through the classification of all smooth curves. The proof
+supplies closed-point evaluation and Nakayama, explains ambient-field
+contractions without derivation-stable function fields, and makes the
+finite geometric boundary explicit. Descent of an affine-line isomorphism
+across any field extension uses genus and the degree of the finite étale
+boundary; no embedding of that extension into an algebraic closure is needed.
+
+The real unit circle has two conjugate boundary points and belongs to the
+two-puncture case after complexification. The assembly had misleadingly
+attached this example to the one-boundary-point affine-line-form argument.
+C13's original paragraph referred to its full real-descent proof. The
+hyperbola paragraph now distinguishes its constant coefficient-field points
+from its two real omnific-integer points. In the logarithmic proof the
+valuation centre is closed and lies on the boundary, the local parameter
+has nonzero image in the maximal ideal, and both contractions refer to
+the same rational differential. The local expression, affine-line pole
+order and nonnormal cusp example are spelled out.
+
+The targeted comparisons with C12, C13 and C14, including archive members,
+are recorded in the report's reconciliation file. The Stacks curve
+compactification, affineness and genus-zero results were checked for the
+needed hypotheses and cited. This is manuscript proof review, not new
+Lean coverage. Sections 17.1–17.2 remain **Pending** in Lean; arithmetic
+fibers, subsequent geometric applications and full source reconciliation
+remain outside this pass.
+
+The article retains 200 standard results and all 416 labels and their
+existing numbers. Only two standard statement texts change:
+`odg:cr:lem:punctures` specifies a finite set of closed points, and
+`odg:cr:lem:logdim` specifies integrality and a closed point for the local
+parameter. The other 198 standard statements are unchanged. Three-pass
+article and catalogue builds produce 178 and 32 pages with no warnings,
+unresolved references or bad boxes. Article PDF pages 106–110 and catalogue
+page 9 were inspected visually. The independent index audit checks
+3,650 results in 60 reports; the source audit resolves 4,189 references,
+and the Markdown audit finds no broken local destinations. No finite
+verifier is claimed to validate these geometric arguments. No Lean source
+changed in this review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

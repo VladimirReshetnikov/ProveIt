@@ -197,7 +197,11 @@ splitting arguments, with boundary examples explaining the hypotheses.
 The review now covers squarefree and Weierstrass rigidity and the abstract
 two-ring differential principle, including tangent detection and inheritance.
 It corrects differential normalization and hypotheses and makes the
-geometric pullback argument explicit.
+geometric pullback argument explicit. The smooth-curve classification now also
+has a manuscript proof review: over any characteristic-zero coefficient field,
+only the affine and projective lines admit nonconstant points in the nonnegative
+Hahn support ring when the exponent group is nonzero. The proof explains descent
+and the role of geometric punctures; its Lean formalization remains pending.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta
