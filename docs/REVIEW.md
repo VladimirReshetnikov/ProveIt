@@ -2542,6 +2542,51 @@ Later proofs, source reconciliation and unintegrated companions remain
 pending.
 
 
+## Omnific projective directions and finite-support arcs
+
+The Section 11 proof review compares source 01's lifting, Pythagorean and
+rational-direction arguments, source 02's homogeneous clearing and signed
+existence theorem, and source 05's finite ordered specialization and arc
+theorem. New examples make two boundaries concrete: extracting the leading
+coefficient vector can lose a positive coordinate, and a nonzero homogenizing
+coordinate need not give an omnific affine ratio.
+
+The rational-direction theorem has a stronger explicit consequence. Given an
+ordinary gcd-one representative `m`, every omnific representative is `s m`;
+an integer Bézout identity puts `s` in `Oz` and identifies the coordinate
+ideal as `s Oz`. Primitivity forces `s = ±1`. Thus every primitive omnific
+representative of a real projective point is an ordinary coprime integer
+tuple. This does not equate primitivity and unimodularity for arbitrary
+omnific tuples. The notation guide records that distinction.
+
+The finite ordered specialization proof now establishes rationality of a
+minimal-support convex combination by independent augmented integer
+columns, and obtains strict separation from a closest point to zero. These
+steps take place in ordinary finite-dimensional real space. The arc theorem
+is extended from integer to real system coefficients, with auxiliary
+expressions explicitly restricted to real coefficients: the group-algebra
+map fixes those scalars. Its possible kernel is illustrated by a map on
+`ℤ + ℤ√2` that preserves a chosen finite exponent list but kills an
+unrequested expression. Equalities always survive; nonvanishing and signs
+are protected by the chosen finite list. Substitution at `ω` proves the
+finite-support converse, while positive purely infinite parameters retain
+the prescribed signs. Including finite-support Bézout witnesses produces
+unimodular families; no finite-support claim is made for arbitrary witnesses.
+
+The article retains 67 standard results and all 159 labels and label numbers.
+Only `odg:thm:specialization` changes its standard-statement text, with the
+coefficient extension and clarification above; main Sections 12–14 are
+byte-identical. Article and catalogue compile cleanly in three passes to
+59 and 28 pages; all 24 changed article pages and the changed catalogue
+page were visually inspected. Source-01 and source-05 SymPy 1.14.0 checks pass, with only
+source 01's recorded Python version differing from delivery. Inventory,
+source-label and local-link audits pass for 2,636 results in 51 reports,
+3,124 cited labels and 1,314 local destinations. The new general arguments
+are source proofs, not assertions established by those finite scripts.
+No Lean source or coverage is added. Later proofs, imported foundations,
+source reconciliation and unintegrated companions remain pending.
+
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

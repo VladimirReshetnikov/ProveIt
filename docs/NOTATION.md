@@ -79,6 +79,15 @@ purely infinite; it is distinct from the fixed monomial `t = ω⁻¹` used below
 The quadratic energy `π(n) = ½ nᵀΠn` in Hahn–Tate Part II has an explicit
 factor `½`; its associated polarized form therefore has matrix `Π/2`.
 
+For omnific tuples, **primitive** means nonzero with no common nonunit
+divisor; **unimodular** means that an `Oz`-linear combination of the
+coordinates is `1`. Unimodularity implies primitivity. Their equivalence
+for representatives of real projective directions in the Diophantine
+report is a special result, not a convention for arbitrary tuples.
+Its polynomial-arc variable `T` is formal; evaluation at `t ∈ Π` preserves
+omnific membership, while preservation of eventual positive-real signs
+requires `t > 0`. Choosing `t = ω` also ensures finite supports.
+
 ## Monomials, support orientation, and valuation
 
 The common Hahn convention is

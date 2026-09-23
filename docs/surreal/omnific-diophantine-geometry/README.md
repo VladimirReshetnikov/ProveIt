@@ -7,7 +7,7 @@ Merged research report, from three manuscripts written independently on
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 58 pages
+article.pdf                        the compiled report, 59 pages
 README.md                          this guide
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
@@ -30,7 +30,7 @@ elementary review also added four results. This merge retains that review's
 support and size clarifications, and preserves nine renamed or combined
 labels as aliases (159 labels in total). See
 [RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence,
-the subsequent proof reviews through Section 10, and the remaining
+the subsequent proof reviews through Section 11, and the remaining
 source-reconciliation boundary. The [ledger](../../FORMALIZATION.md) indexes the current
 67 standard results; it does not claim Lean coverage for this report.
 
@@ -156,7 +156,10 @@ Numbers refer to the built `article.pdf`.
     11.1); homogeneous cone criterion and its decidability (Theorem 11.2);
     unimodular Pythagorean triples (Proposition 11.4); a real direction has a
     primitive omnific representative iff it is rational (Theorem 11.5);
-    finite-support solutions specialize to polynomial arcs (Theorem 11.7).
+    every primitive representative of a real direction is an ordinary coprime
+    integer tuple. Finite-support solutions specialize to polynomial arcs
+    over real coefficients (Theorem 11.7, extending source 05's integer
+    case); supplied finite-support Bézout witnesses specialize with them.
 11. **Omnific coefficients (Section 12).** The square-discriminant criterion
     (Theorem 12.1), initial forms (Proposition 12.3), two-term roots
     (Proposition 12.4) and a simple residue root that does not lift (Example
@@ -209,6 +212,10 @@ the literature.
   specifies the induction domain, and gives nonnegative witnesses for the
   order-free arithmetic formula. The open-induction argument explicitly
   transfers quantifier-free truth to a set-sized Hahn workspace.
+- The Section 11 review strengthens the description of primitive real
+  directions, expands the finite ordered specialization argument, and
+  extends the arc theorem to real coefficients. Finite-support Bézout
+  witnesses and the positive-parameter sign condition are explicit.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
