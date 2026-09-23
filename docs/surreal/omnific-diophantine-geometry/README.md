@@ -9,7 +9,7 @@ Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 88 pages
+article.pdf                        the compiled report, 89 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -62,7 +62,11 @@ without adding or renumbering statements. The later reviews `25e372c` and `3dd4e
 now Sections 14–15, including real-coefficient specialization and the finite
 factorization proof of the two-term root obstruction. These reviews exclude the batch-25
 material (Sections 11–13, the Section 6 results of sources 07 and 13, and
-Remark 10.5). See [RECONCILIATION.md](RECONCILIATION.md) for the elementary
+Remark 10.5). A subsequent pass reviews Section 11: leading degrees, the
+quadratic ideal predicate, Pell divisibility, intersectivity and the
+order-free integer-defining system. It adds boundary examples for intermediate
+rings and expands the finite congruence arguments. Sections 12–13 and the
+new material in Sections 6 and 10 still need review. See [RECONCILIATION.md](RECONCILIATION.md) for the elementary
 claim correspondence, these proof reviews and the remaining review boundary.
 
 The article has 104 standard results (40 theorems, 19 propositions, 19 lemmas,
@@ -364,15 +368,21 @@ claims that these are open in the literature.
   specifies the induction domain, and gives nonnegative witnesses for the
   order-free arithmetic formula. The open-induction argument explicitly
   transfers quantifier-free truth to a set-sized Hahn workspace.
-- The Section 11 review strengthens the description of primitive real
+- The former Section 11 review (now Section 14) strengthens the description of primitive real
   directions, expands the finite ordered specialization argument, and
   extends the arc theorem to real coefficients. Finite-support Bézout
   witnesses and the positive-parameter sign condition are explicit.
-- The Section 12 review gives a finite-algebra proof of the two-term root
+- The former Section 12 review (now Section 15) gives a finite-algebra proof of the two-term root
   obstruction, expands the support justification of its binomial series,
   and distinguishes the omnific constant-term map from finite-surreal
   residue lifting. The monic hypothesis and leading-term cancellation
   requirement have explicit counterexamples.
+
+- The new Section 11 review expands leading-degree and Pell-divisibility
+  proofs, separates arbitrary intermediate rings from full support rings,
+  and makes the witness and congruence steps in the integer definitions
+  explicit. The shared notation guide now records the different meanings
+  of the two reports' `𝒜` notation.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the

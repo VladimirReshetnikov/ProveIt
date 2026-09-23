@@ -2697,6 +2697,50 @@ local Markdown destinations pass after that merge. The article and catalogue
 PDFs are unchanged by this Lean-only follow-up. This documentation review
 adds no Lean coverage of omnific integers.
 
+## Elementary omnific definability: the added Section 11
+
+Reviewed the newly assembled Section 11 against sources 06 and 07 recovered
+from `de0acc6`. Its degree algebra, quadratic ideal predicate, Pell rigidity
+and divisibility, intersective polynomial, order-free integer definition,
+real quintic comparison and natural-number clause are now covered by this
+main-text pass. This does not extend the review to Sections 12–13 or to the
+inserted material in Sections 6 and 10.
+
+The proof now identifies the unique leading product and explains why a
+nonconstant polynomial evaluation has positive degree over an unordered
+coefficient field. An intermediate ring need not admit a constant-term
+retraction onto its constant subring: `Z[ω + 1/2]` demonstrates the distinction.
+The quadratic ideal predicate needs its witness inside the ring;
+`Z[ω]` and `Z[√2] + Π` explain, respectively, the witness-closure and
+nonsquare hypotheses. The homomorphism argument needs only preservation
+of the integer numeral, not of the chosen root or coefficient field.
+
+The Pell recurrence proof supplies an integral inverse matrix and removes
+any possible preperiod via a finite pigeonhole argument, including modulus
+one. The alternative quotient-ring proof explains its cardinality. The
+principal-ideal argument uses algebraicity without assuming integrality.
+The intersectivity proof makes CRT assembly explicit and distinguishes
+existence of roots at each power of two from lifting a prescribed residue.
+The order-free system's witnesses are typed correctly: four are ordinary
+integers, while the fifth can be Gaussian. Its proof uses coefficient
+intersection, not a retraction. The notation guide corrects the quotient
+report's now-obsolete `I` notation and translates its coefficient-restricted
+`𝒜_{D,k}` to the Diophantine report's `ℛ_o(k,Γ)`.
+
+All 104 standard statements, all 228 labels and their numbers are preserved.
+Section 12 onward is byte-identical in the source. The article builds in
+three passes to 89 pages without warnings or box diagnostics; the reviewed
+pages, contents and section transitions were visually checked. The catalogue
+builds cleanly to 28 pages, and all three changed pages were inspected.
+Source 06's finite verification output agrees with delivery except for the
+Python version; source 07's output agrees exactly. Neither finite suite
+proves the infinite-support or definability claims. The independent inventory
+and statement audit passes 3,089 rows in 56 texts, and all 3,582 cited labels
+and 1,383 local Markdown destinations resolve. No Lean source changes in
+this pass; the 4,307-job build and 13,389-declaration axiom audit from
+`c0a36ee` remain applicable. Formalization and the remaining imported-result,
+historical-priority and source-reconciliation work stay pending.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

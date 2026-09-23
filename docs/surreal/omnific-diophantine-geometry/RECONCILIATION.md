@@ -1,11 +1,12 @@
-# Reconciliation of the three Diophantine manuscripts
+# Diophantine source reconciliation and proof review
 
 This record covers the elementary source comparison in Sections 1–4 of the
 maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
 After the expansion, the reviewed original Sections 11–12 are Sections 14–15.
-The added material in Sections 6 and 10 and the new Sections 11–13 are
-outside this review; Sections 16–17 also await review.
-It does **not** certify integration of every result in the three manuscripts
+A subsequent pass reviews the newly added Section 11 from sources 06–07.
+The added material in Sections 6 and 10 and Sections 12–13 and 16–17 remain
+outside the completed proof review.
+It does **not** certify integration of every result in the five manuscripts
 or review of all later proofs and imported classical results.
 
 ## Recoverable sources
@@ -198,7 +199,7 @@ Two additional Diophantine manuscripts, local 06 and 07, arrived in
 Sections 11–13, together with results of theirs and of the quotient report's
 manuscript 13 in Section 6 and source 07's quartic
 (`odg:def:rem:quarticvariant`) in Section 10. Merged with this review, the
-article has 88 pages, 104 standard statements and 228 labels; Sections 1–10
+article then had 88 pages, 104 standard statements and 228 labels; Sections 1–10
 keep their section numbers, while statement numbers in Sections 6 and 10
 shift. That material is outside this review. Their archives are recoverable at
 `de0acc6`; their code and data are present here. The
@@ -211,3 +212,41 @@ The three original verification scripts are unchanged by synchronization.
 Their finite examples do not prove the new class-sized arguments or establish
 full equivalence of the manuscripts. No additional Lean theorem is asserted
 by this reconciliation.
+
+## Elementary definability review: Section 11
+
+Sources 06 and 07 were recovered from `de0acc6`:
+`omnific_definability_reconstruction.zip` (`omnific_definability/article.tex`)
+and `Omnific_Arithmetic_Definability.zip`
+(`Omnific_Arithmetic_Definability/article.tex`). This pass compares their
+nonnegative-support algebra, ideal predicate, Pell and modular arguments,
+integer-defining systems, real quintic comparison and natural-number clauses
+with the maintained Section 11. Source 07's quartic is read for that comparison;
+the inserted Remark 10.5 and other earlier additions have not thereby received
+a complete proof review.
+
+The maximum-degree proof now spells out uniqueness of the leading product
+and the absence of cancellation in polynomial evaluation. An intermediate
+ring need not be closed under constant coefficient: `Z[ω + 1/2]` has exactly
+`Z` as its constant elements but contains an element with constant coefficient
+`1/2`. Thus the order-free system's proof uses degree and coefficient
+intersection, whereas the quadratic ideal predicate additionally needs its
+witness in the full positive-support ring. In `Z[ω]`, `ω` has no witness
+for `x² = 2y²`; over `Z[√2] + Π`, the same equation also accepts a nonzero
+constant. These examples explain both boundaries without weakening the
+stated theorem.
+
+The Pell recurrence proof now exhibits its inverse matrix and explains why
+finite recurrence yields a positive return to the initial point, including
+modulus one. The alternative finite-ring proof gives unique degree-one
+representatives. The principal-ideal argument makes denominator clearing,
+nonzero constant coefficient and the lack of an integrality assumption
+explicit. The intersectivity proof completes the CRT step and notes that
+its two-adic construction need not lift an arbitrarily fixed residue class.
+The ordinary and Gaussian witness types are distinguished. No ordered
+coefficient-field hypothesis is used in the order-free argument.
+
+All standard statement texts and labels are unchanged. This is a source-level
+proof review, not new Lean coverage. Classical imported results, historical
+priority, Sections 12–13 and 16–17, and the unreviewed additions in Sections
+6 and 10 remain separate obligations.

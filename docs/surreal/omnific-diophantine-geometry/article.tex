@@ -370,8 +370,10 @@ imported foundations still require review. Sources 06 and 07, placed in
 \cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction},
 together with their material and that of source 13 in
 \cref{odg:sec:rigidity} and source 07's quartic
-(\cref{odg:def:rem:quarticvariant}); the reviews did not cover this material. Nine earlier
-labels renamed or combined during assembly remain as aliases, so existing
+(\cref{odg:def:rem:quarticvariant}). A subsequent pass reviews
+\cref{odg:def:sec:arithmetic}, including the distinction between intermediate
+rings and full positive-support rings. The other newly inserted material
+remains outside the earlier reviews. Nine earlier labels renamed or combined during assembly remain as aliases, so existing
 references resolve.
 
 \subsection{Class size and foundations}\label{odg:sub:foundations}
@@ -2929,7 +2931,12 @@ sub-prefix \fn{odg:def:}.
 \subsection{General nonnegative-support rings}\label{odg:def:sub:setting}
 
 Let $\Bbbk$ be a field of characteristic zero and $\Gamma$ an ordered abelian
-group. Consider formal series $f=\sum_\gamma a_\gamma\omega^\gamma$ with
+group. For a set-sized $\Gamma$ these constructions take place in an
+ordinary Hahn field. When $\Gamma=\No$, every series still has set-sized
+support; the same finite algebra is interpreted under the class convention
+below, rather than treating $\No$ as a set. The notation $\omega^\gamma$ is
+formal for an abstract group $\Gamma$ and is a Conway monomial in the actual
+surreal instances. Consider series $f=\sum_\gamma a_\gamma\omega^\gamma$ with
 $a_\gamma\in\Bbbk$ and reverse-well-ordered support in $\Gamma$, added
 coefficientwise and multiplied by convolution: the Hahn field with the
 exponent order reversed, written in the $\omega$-convention of
@@ -2950,7 +2957,13 @@ with
  \mathfrak o\subseteq A\subseteq\mathcal A_\Bbbk(\Gamma),\qquad
  A\cap\Bbbk=\mathfrak o ;
 \end{equation}
-no inclusion $\ct(A)\subseteq\mathfrak o$ is required. The instances used in
+no inclusion $\ct(A)\subseteq\mathfrak o$ is required. This is weaker than
+being the full ring $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$. For example,
+$A=\Z[\omega+\tfrac12]\subseteq\R[\omega]=\mathcal A_\R(\Z)$ has
+$A\cap\R=\Z$: a nonconstant polynomial in $\omega+\tfrac12$ still has
+positive degree. Nevertheless $\ct(\omega+\tfrac12)=\tfrac12\notin\Z$.
+Thus the constant-term argument for $\mathcal R_{\mathfrak o}$ must not be
+silently applied to every intermediate ring. The instances used in
 this report are
 \begin{gather*}
  \BR=\mathcal A_\R(\No),\qquad \BC=\mathcal A_\C(\No),\qquad
@@ -2962,7 +2975,9 @@ $\Gamma=\Z$ every reverse-well-ordered subset of $\Z^{\ge0}$ is finite, so
 $\mathcal A_\Bbbk(\Z)=\Bbbk[\omega]$ and
 $\mathcal R_{\mathfrak o}(\Bbbk,\Z)=\mathfrak o+\omega\Bbbk[\omega]$ \src{06}.
 For $\Gamma=\R$ supports such as $\{1,\frac12,\frac13,\ldots\}$ occur, and no
-proof below uses a least positive exponent.
+proof below uses a least positive exponent. For $\Gamma=\{0\}$ the ideal
+is zero and $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)=\mathfrak o$; the
+statements in this section include that case.
 
 \begin{lemma}[Degree, units and algebraic elements \src{06, 07}]\label{odg:def:lem:units}
 For nonzero $f,g\in\mathcal A_\Bbbk(\Gamma)$,
@@ -2976,13 +2991,25 @@ polynomial over $\Bbbk$ with no root in $\mathfrak o$ has no root in any
 intermediate ring for $\mathfrak o\subseteq\Bbbk$.
 \end{lemma}
 \begin{proof}
-The degree and unit statements are proved as \cref{odg:lem:degree} and
-\cref{odg:prop:units}: the coefficient at $\ddeg f+\ddeg g$ is the product of
-the leading coefficients, and nonnegative degrees adding to zero vanish. For
-the last statement, the term of $Q(f)$ of highest degree in $f$ has degree
-$n\ddeg f$, strictly larger than that of every other term, so it cannot
-cancel. A root of a polynomial in an intermediate ring $A$ is therefore
-constant, hence lies in $A\cap\Bbbk=\mathfrak o$.
+Write $\alpha=\ddeg f$ and $\beta=\ddeg g$. Any exponents contributing to
+a coefficient of $fg$ satisfy $\gamma\le\alpha$ and $\delta\le\beta$.
+Equality $\gamma+\delta=\alpha+\beta$ forces $\gamma=\alpha$ and
+$\delta=\beta$, so the coefficient there is the nonzero product of the two
+leading coefficients. No term of larger degree occurs. If $fg=1$, the
+nonnegative degrees $\alpha,\beta$ have sum zero, hence both vanish. A
+nonnegative-support form of degree zero is constant; conversely every
+nonzero constant has a constant inverse. The same degree argument applies
+to a finite product equal to a nonzero constant.
+
+If $f$ is nonconstant, then $d=\ddeg f>0$. For
+$Q(T)=a_nT^n+\cdots+a_0$ with $a_n\ne0$, the leading coefficient of $a_nf^n$
+is $a_n\lc(f)^n\ne0$ at exponent $nd$. Every nonzero term $a_jf^j$ with
+$j<n$ has degree $jd<nd$, so that coefficient cannot cancel. This proves
+$\ddeg Q(f)=nd>0$ without ordering the coefficient field. An algebraic
+nonconstant element would make such a nonzero polynomial vanish, a
+contradiction. A root of a nonconstant polynomial over $\Bbbk$ in $A$ must
+therefore lie in $A\cap\Bbbk=\mathfrak o$; a nonzero constant polynomial has
+no root anywhere.
 \end{proof}
 
 In particular $\Og^\times=\{\pm1,\pm i\}$, while the units of
@@ -3027,6 +3054,15 @@ hypothesis is the irrationality of $\sqrt2$; for $\mathfrak o=\Z[i]$, a square
 root of $2$ in $\Q(i)$ would lie in $\Q(i)\cap\R=\Q$.
 \end{proof}
 
+The full positive-support part is needed for the forward implication:
+its closure under multiplication by $1/\sqrt2$ supplies the witness.
+The conclusion does not hold for arbitrary intermediate rings. For example,
+$\omega\in A\cap\Pi_\R(\Z)$ for $A=\Z[\omega]$, but no $y\in A$ satisfies
+$\omega^2=2y^2$: degree forces $y$ to be linear and its leading integer
+coefficient would have square $1/2$. The nonsquare hypothesis also matters:
+in $\mathcal R_{\Z[\sqrt2]}(\R,\Gamma)$ the nonzero constant $x=\sqrt2$
+satisfies the equation with $y=1$, although it is not in the ideal.
+
 For example $\pi\omega^3-\sqrt3\,\omega+7$ does not satisfy $\mathsf{Inf}$,
 because its constant term is $7$, while $\pi\omega^3-\sqrt3\,\omega$ and
 $\sum_{n\ge1}\omega^{1/n}$ do; ``purely infinite'' includes $0$ and negative
@@ -3053,7 +3089,10 @@ No injectivity or size condition on the target is needed.
 \end{corollary}
 \begin{proof}
 For $x$ in the source ideal, $x^2=2(x/\sqrt2)^2$ with $x/\sqrt2$ in the source
-ring. Apply the homomorphism and \cref{odg:def:thm:ideal} in the target.
+ring. A unital homomorphism fixes the integer numeral $2$, so its images
+satisfy the same equation. Apply \cref{odg:def:thm:ideal} in the target.
+The homomorphism need not fix the chosen square root, the coefficient field
+or any monomial: the formula contains none of those parameters.
 \end{proof}
 
 \begin{remark}[Other radicands \src{06}]\label{odg:def:rem:delta}
@@ -3094,13 +3133,19 @@ ordinary $m\ge1$ there is $k$ with $1\le k\le m^2$ such that
 $X_k\equiv1$ and $Y_k\equiv0\pmod m$; then $Y_k>0$.
 \end{lemma}
 \begin{proof}
-The recurrence matrix $\bigl(\begin{smallmatrix}3&4\\2&3\end{smallmatrix}\bigr)$
-has determinant one, so it permutes the finite set $(\Z/m\Z)^2$; the orbit
-of $(1,0)$ is therefore a cycle and returns to $(1,0)$ within $m^2$ steps
-\src{07}. The returning index $k$ is positive, so $Y_k>0$ by
-\cref{odg:lem:pellsequence}. Source 06 argues instead that $3+2T$ is a unit
-of the ring $(\Z/m\Z)[T]/(T^2-2)$ of $m^2$ elements, so a positive power of it
-at most $m^2$ equals $1$; comparing coordinates gives the same congruences.
+Let $M=\bigl(\begin{smallmatrix}3&4\\2&3\end{smallmatrix}\bigr)$.
+Its inverse $\bigl(\begin{smallmatrix}3&-4\\-2&3\end{smallmatrix}\bigr)$ has
+integer entries, so $M$ permutes $(\Z/m\Z)^2$. Among the $m^2+1$ points
+$M^j(1,0)$ for $0\le j\le m^2$, two coincide, say at $j<\ell$. Applying
+$M^{-j}$ gives $M^{\ell-j}(1,0)=(1,0)$, with
+$1\le k=\ell-j\le m^2$ \src{07}. In the ordinary integer recurrence
+$X_0=1$, $Y_0=0$, the first step gives $(3,2)$ and both coordinates remain
+positive, so $Y_k>0$. This also covers $m=1$, whose residue set has one
+point. Source 06 argues instead that $3+2T$ is a unit
+of the ring $(\Z/m\Z)[T]/(T^2-2)$, with inverse $3-2T$. Division by the
+monic polynomial $T^2-2$ gives a unique representative $a+bT$, so the ring
+has $m^2$ elements; some positive power at most $m^2$ equals $1$.
+Comparing the two coordinates gives the same congruences.
 \end{proof}
 
 No classification of Pell solutions, primitive-divisor theorem or
@@ -3118,9 +3163,15 @@ $a\in\mathfrak o$, the ideal $a\mathfrak o$ contains a nonzero ordinary
 integer; for a Gaussian integer $a$ one may take $a\overline a$.
 \end{lemma}
 \begin{proof}
-Take a relation $A_na^n+\cdots+A_1a+A_0=0$ of least degree with $A_j\in\Z$;
-minimality gives $A_0\ne0$, and
+Algebraicity supplies a nonzero integer polynomial vanishing at $a$ after
+clearing the denominators of a rational relation. Choose one of least
+degree, $A_na^n+\cdots+A_1a+A_0=0$. If $A_0=0$, cancellation of $a\ne0$
+gives a nonzero relation of smaller degree. Thus $A_0\ne0$, and
 $A_0=-a(A_1+A_2a+\cdots+A_na^{n-1})\in a\mathfrak o$.
+The expression uses only integer coefficients and nonnegative powers of
+$a$, which belong to the unital subring $\mathfrak o$; no algebraic-integrality
+hypothesis is needed. Changing its sign if necessary gives a positive
+ordinary integer in the same ideal.
 \end{proof}
 
 \subsection{An intersective polynomial}
@@ -3156,7 +3207,7 @@ $b=0$ would make $d$ a rational square, which none of the three is.
 
 (i) It suffices to find a root modulo each prime power $p^a$ dividing $N$
 and to combine them by the Chinese remainder theorem; the chosen factor of
-$\Lambda$ may depend on $p$. Let $p$ be odd. If $p\notin\{13,17\}$, then $13$
+$\Lambda$ may depend on $p$. For $N=1$ every integer works. Let $p$ be odd. If $p\notin\{13,17\}$, then $13$
 and $17$ are nonzero modulo $p$; if neither is a square, their product $221$
 is, by multiplicativity of the Legendre symbol. For $p=13$ use
 $17\equiv2^2$, and for $p=17$ use $13\equiv8^2$. In each case some factor
@@ -3166,7 +3217,13 @@ $2rh$ modulo $p$, and $2r$ is invertible modulo $p$. For $p=2$ use $17$: the
 root $1$ works modulo $2^a$ for $a\le3$, since $17\equiv1\pmod8$; if an odd
 $r$ satisfies $r^2\equiv17\pmod{2^a}$ with $a\ge3$, then
 $(r+2^{a-1})^2-r^2=2^ar+2^{2a-2}\equiv2^a\pmod{2^{a+1}}$, so exactly one of
-$r$ and $r+2^{a-1}$ is a root modulo $2^{a+1}$.
+$r$ and $r+2^{a-1}$ is a root modulo $2^{a+1}$. This step constructs a
+root at each power of $2$; it need not preserve the previously chosen
+residue modulo $2^a$, and no compatible sequence of such choices is needed.
+For each prime-power divisor of $N$, choose one of the roots just
+constructed. The Chinese remainder theorem gives an integer congruent to
+all of them; its $\Lambda$-value is divisible by every such prime power,
+hence by their product $N$.
 
 (iii) Put $N=v\overline v\in\Z_{>0}$, choose $t$ by (i) with $\Lambda(t)=Nq$,
 and take $s=q\overline v$.
@@ -3209,8 +3266,20 @@ $x\ne0$ let $m=|x|$, or $m=x\overline x$ in the Gaussian case, so that
 $m\in x\mathfrak o$. By \cref{odg:def:lem:pelldiv} choose a Pell pair
 $(u,v)=(X_k,Y_k)$ with $v>0$ and $m\mid v$; then $w=v/x\in\mathfrak o$. By
 intersectivity choose $t\in\Z$ with $v\mid\Lambda(t)$ and put
-$s=\Lambda(t)/v\in\Z$. These ordinary witnesses satisfy the system.
+$s=\Lambda(t)/v\in\Z$. These witnesses all lie in $\mathfrak o\subseteq A$: $u,v,s,t$ are
+ordinary integers, while $w$ may be a nonreal Gaussian integer. They
+satisfy the system.
 \end{proof}
+
+The proof uses the intermediate-ring condition, not a retraction
+$A\to\mathfrak o$. It therefore applies, for example, to
+$\Z[\omega+\tfrac12]$ above even though its constant coefficient need not be
+an integer. In fact the same proof works with any characteristic-zero
+coefficient field containing the indicated copy of $\Z$ or $\Z[i]$:
+coefficient extension proves Pell rigidity, root exclusion uses
+$A\cap\Bbbk=\mathfrak o$, and the witnesses are already in $\mathfrak o$.
+The displayed theorem retains the two source pairs; the broader
+number-field version is stated in \cref{odg:def:thm:numberfield}.
 
 Source 07 states the theorem in this form, for both pairs and all
 intermediate rings. Source 06 proves the identical system (with witnesses

@@ -43,7 +43,7 @@ The [Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
 now writes `Oz = ℤ ⊕ Π`, agreeing with the foundations report. Its original
 base used `A = Oz = ℤ ⊕ J`; below `J` denotes the same ideal. The
 [set-sized quotient report](surreal/set-sized-quotients-of-omnific-integers/article.tex)
-uses `I` for the infinite-part ideal. The decomposition is additive, not a
+now also uses `Π` (its base used `I`) for the infinite-part ideal. The decomposition is additive, not a
 product of unital rings. In growth notation `ω^γ`, every exponent of `Oz`
 is nonnegative and the coefficient at zero is an ordinary integer.
 `J` consists of the forms with strictly positive support, including zero.
@@ -62,6 +62,18 @@ finite-surreal residue lifting; it does not contradict that theorem. In the comp
 nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
 For a nonzero form, growth degree is the largest supported exponent and
 satisfies `v = −deg` under the reversed valuation convention.
+
+In the Diophantine report's Section 11, `𝒜_k(Γ)` is the ring of all
+nonnegative-growth-support forms over `k`, and `ℛ_o(k,Γ) = o + Π_k(Γ)`
+restricts the constant coefficient to `o`. The quotient report writes its
+corresponding latter ring as `𝒜_{D,k}`; the subscript `D` records that
+restriction. An **intermediate ring** `o ⊆ A ⊆ 𝒜_k(Γ)` with `A ∩ k = o`
+need not satisfy `ct(A) ⊆ o`: for example `Z[ω + 1/2]` does not. This
+condition is enough for the Pell-based integer definition, but not for the
+quadratic ideal predicate, whose witness `x/√2` must belong to the ring.
+`Inf(x)` in that report names the positive-growth-support ideal, including
+zero and elements of either sign; it does not mean a positive infinite
+number or an infinitesimal.
 
 For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
 `Oz/nOz ≅ ℤ/nℤ` describe quotient
