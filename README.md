@@ -440,6 +440,11 @@ angular/chordal valuation. Directions with equal standard part have a unique
 infinitesimal relative angle, given by the strong logarithm; its absolute
 value is their angular distance. The normalized chord and cosine-defect
 factors have full strong series and exact finite remainders.
+Phase differences preserve the exact infinitesimal angular valuation and
+have the expected complex linear term with infinitesimal relative error.
+Rotation displacement obeys the exact half-angle chord formula at arbitrary
+radii. Rotating by `omega^-1` gives displacement equivalent to one at radius
+`omega`, and infinite displacement at radius `omega^2`.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
