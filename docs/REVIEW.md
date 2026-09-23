@@ -2440,6 +2440,108 @@ passes 13,135 declarations with only `propext`, `Classical.choice` and
 `Quot.sound`. The source-label and 51-report inventory audits still pass,
 and all 1,308 local Markdown destinations resolve.
 
+## Omnific quadratic levels and bounded geometry
+
+The next pass reads Sections 8–9 of the
+[Diophantine article](surreal/omnific-diophantine-geometry/article.tex),
+comparing source 01's quadratic classification, transvection, positive-bound,
+orthogonal, symmetric-matrix and leading-homogeneous proofs, and source 02's
+bounded-set and nilpotent-isometry arguments. It makes the polarization
+`q(x) = B(x,x)` explicit, including half-integral mixed coefficients, and
+expands the isotropic spanning and nondegenerate-complement construction.
+The free isometry parameter is distinguished from the fixed infinitesimal
+monomial used to reverse exponents. The notation guide also distinguishes
+this quadratic normalization from Hahn–Tate's energy with a factor `½`.
+
+The inverse matrix formula gives an additional consequence: along the
+quadratic orbit, the coordinate ideal equals the starting integer tuple's
+ordinary gcd ideal. Primitive integer points therefore yield unimodular
+omnific families. The degenerate affine family also has proper-class size.
+The definite-form argument extends finite integer isometry groups beyond the
+standard Euclidean signed-permutation case.
+
+The bounded-set proof previously passed from truth in `No` to a small field
+without spelling out what happens to quantifiers. The expanded argument
+constructs set-sized real closed subfields and proves agreement by induction
+on finite ordered-ring formulas: an existential witness lies in a larger
+set-sized field, and model completeness descends the assertion. The classical
+inputs were checked against [Marker, Theorem 3.5 and Proposition 4.1](https://library.slmath.org/books/Book39/files/marker.pdf),
+now cited in the bibliography. The proof applies the ordinary theorem only
+between set-sized fields. It does not verify the imported real-closedness of
+`No` or the normal-form foundations.
+
+Empty definite levels, the explicit positive coordinate bound and zero-size
+matrices are handled explicitly. A nonsymmetric nilpotent matrix with an
+infinite entry shows why a constant characteristic polynomial alone gives no
+entry bound. Two equivalent polynomial systems with different top-form zero
+sets show why the leading-homogeneous criterion concerns the displayed
+generators. Their elementary identities were checked symbolically.
+
+All 67 standard results, 159 labels and label numbers are preserved. Only the
+bounded-set statement's wording changes, to specify the ordered-ring language;
+its scope is unchanged. Main Sections 10–14 remain byte-identical. The article
+and catalogue have clean three-pass PDFs of 57 and 28 pages, respectively;
+changed pages were visually checked. The source-01 and source-02 SymPy 1.14.0
+verifiers pass, differing from delivery output only in the Python version
+(3.13.5 versus 3.13.14). Source-label, full statement-index and local Markdown
+link audits pass, as does `git diff --check`. No Lean source or coverage is
+added by this review. Sections 10 onward, remaining imports, source
+reconciliation and the placed companions remain pending.
+
+Synchronization merged through `f6e031a`: `42c920e` completes the coupled
+angular multiplicities using native formal-quotient dimensions, and the later
+commit proves nonmonic simple-residue-root lifting in the actual finite
+surreal and surcomplex rings. The latter does not assert lifting inside the
+omnific ring; its domain is the finite valuation ring. The incoming ledger
+retains the pending multivariate and actual support/first-coefficient
+obligations. No manuscript or PDF changed in this merge. The combined
+`LEAN_NUM_THREADS=2 lake build` passes all 4,295 jobs; the axiom audit passes
+13,232 declarations with only the permitted three axioms. All source-label
+and statement-index checks still pass, and all 1,314 local Markdown
+destinations resolve.
+
+## Omnific definability and induction
+
+The omnific Diophantine proof review now reaches Section 10. Source 01's
+Pell residue table and five-auxiliary guard were compared with source 05's
+four-square definition, constant-term formula and failed induction instance.
+The Pell index and unboundedness claims refer explicitly to ordinary
+integers, and the guard proof supplies an ordinary bound for every witness.
+The divisibility proof now gives the explicit obstruction `k = |ct(j)| + 1`
+when `ct(j) ≠ 0`, and explains why the definition is a single ring-language
+formula rather than an externally indexed infinite conjunction.
+
+The induction discussion specifies the nonnegative domain throughout.
+The order-free remark now supplies a formula in `{0,1,+,·}` whose witnesses
+also lie in the nonnegative semiring; it defines precisely the ordinary
+naturals there. This proves failure of an arithmetic induction instance
+without an extra dependency on formalizing Lagrange's theorem inside Peano
+arithmetic. The open-induction proof spells out why the workspace floor
+stays inside its support group, and why quantifier-free truth, base case,
+successor implication and a proposed counterexample transfer to that
+set-sized workspace. No first-order theorem is applied directly to a proper
+class as if it were a set-sized model.
+
+Imported theorem statements were checked against the
+[AFP three-square entry](https://isa-afp.org/entries/Three_Squares.html), the
+pinned Mathlib `Nat.sum_four_squares`, and
+[Glivická–Glivický, Sections 2.1, 2.3 and Theorem 1](https://arxiv.org/html/1701.02001).
+The last reference is added to the bibliography without renumbering earlier
+citations. The surreal normal-form and Hahn-field real-closedness inputs
+remain separate imported obligations.
+
+All 67 standard statements, 159 labels and label numbers are preserved;
+main Sections 11–14 are byte-identical. Clean three-pass builds produce the
+58-page article and 28-page catalogue, with all 28 changed article pages and
+the changed catalogue page visually inspected. Source 01's SymPy 1.14.0
+verifier passes (only its recorded Python version differs); source 05's
+output matches its delivery record exactly. All 2,636 indexed results in
+51 reports, 3,124 cited source labels and 1,314 local Markdown destinations
+pass their audits. No Lean source changes or new Lean coverage are asserted.
+Later proofs, source reconciliation and unintegrated companions remain
+pending.
+
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

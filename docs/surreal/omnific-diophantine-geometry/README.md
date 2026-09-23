@@ -7,7 +7,7 @@ Merged research report, from three manuscripts written independently on
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 56 pages
+article.pdf                        the compiled report, 58 pages
 README.md                          this guide
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
@@ -30,8 +30,8 @@ elementary review also added four results. This merge retains that review's
 support and size clarifications, and preserves nine renamed or combined
 labels as aliases (159 labels in total). See
 [RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence,
-the subsequent Sections 5–7 proof review, and the remaining source-reconciliation
-boundary. The [ledger](../../FORMALIZATION.md) indexes the current
+the subsequent proof reviews through Section 10, and the remaining
+source-reconciliation boundary. The [ledger](../../FORMALIZATION.md) indexes the current
 67 standard results; it does not claim Lean coverage for this report.
 
 Two further manuscripts, locally numbered 06 and 07 and placed in `cf350b1`,
@@ -135,16 +135,23 @@ Numbers refer to the built `article.pdf`.
    points only in the nondegenerate definite case and in dimension at most
    two; injective linear families for degenerate `q`; injective quadratic
    families through every integer point for nondegenerate indefinite `q` in
-   at least three variables (Theorem 8.1). `(Π, +)` embeds in
+   at least three variables (Theorem 8.1). The quadratic matrix orbits preserve
+   the coordinate ideal, hence carry primitive integer points to unimodular
+   omnific points. `(Π, +)` embeds in
    `ker(SO(q, Oz) → SO(q, Z))` (Corollary 8.4).
 8. **Bounded geometry (Section 9).** Bounded semialgebraic sets (Theorem 9.2),
    definite levels (Corollary 9.3), `O_n(Oz)` = signed permutations
    (Corollary 9.4), symmetric matrices with constant `tr(M²)` (Corollary 9.5),
-   no real point at infinity (Theorem 9.6).
+   no real point at infinity (Theorem 9.6). The set-sized transfer argument
+   includes quantified ordered-ring formulas. Any definite real form has a
+   finite integer isometry group, while the signed-permutation description
+   is specific to standard Euclidean coordinates.
 9. **Defining `Z` (Section 10).** Theorem 10.3 (five auxiliaries, defines
    `Z^n`) and Theorem 10.4 (six auxiliaries, defines `Z`); `ct` and `Π` are
    first-order definable (Corollary 10.6); an explicit `Σ₁` induction instance
-   fails (Theorem 10.9) while open induction holds.
+   fails (Theorem 10.9) while open induction holds. The workspace argument
+   and the nonnegative domain of induction are explicit; an order-free
+   semiring formula also defines exactly the ordinary naturals.
 10. **Families and primitivity (Section 11).** Polynomial lifting (Proposition
     11.1); homogeneous cone criterion and its decidability (Theorem 11.2);
     unimodular Pythagorean triples (Proposition 11.4); a real direction has a
@@ -191,6 +198,17 @@ the literature.
   extends one-variable and separated-power rigidity to complex coefficients,
   explains the support-ring witnesses in Fermat rigidity, and distinguishes
   these local Euler derivations from the normalized surreal derivation.
+- The Sections 8–9 review makes polarization and the isotropic complement
+  explicit, proves preservation of coordinate ideals along the quadratic
+  orbits, and fills in transfer of quantified formulas from `No` to a
+  set-sized real closed field. It includes empty definite levels and shows
+  why symmetry and the chosen polynomial generators matter in the two
+  matrix/leading-form criteria. The exact review boundary is in the
+  reconciliation record.
+- The Section 10 review expands the finite bounds and divisibility test,
+  specifies the induction domain, and gives nonnegative witnesses for the
+  order-free arithmetic formula. The open-induction argument explicitly
+  transfers quantifier-free truth to a set-sized Hahn workspace.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
