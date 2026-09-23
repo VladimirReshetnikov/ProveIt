@@ -214,6 +214,7 @@ import Surreal.Surcomplex.AngleRoots
 import Surreal.Surcomplex.PolarRoots
 import Surreal.Surcomplex.Cayley
 import Surreal.Surcomplex.CayleyInfinitesimal
+import Surreal.Surcomplex.InverseTrigonometry
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
