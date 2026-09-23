@@ -179,8 +179,12 @@ factors uniquely through the constant-term map, so these maps kill the
 entire purely infinite ideal. Nonzero monomials therefore prove that the
 omnific ring is not residually finite. Constant extraction is also the
 unique unital homomorphism to `ℤ`, and every omnific endomorphism preserves
-it. Higher Diophantine, completion and general set-sized quotient results
-remain pending; source review is distinct from checked formalization.
+it. For every ordinary prime `p`, the actual omnific ring's `p`-adic
+completion is ring-isomorphic to Mathlib's `ℤ_[p]`. Its canonical map takes
+the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
+infinite ideal. The profinite completion, topological assertions, higher
+Diophantine and general set-sized quotient results remain pending; source
+review is distinct from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
