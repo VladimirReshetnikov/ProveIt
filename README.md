@@ -89,10 +89,12 @@ modulus of the factor. The proof removes even real-root factors and
 strictly positive conjugate-root quadratics, preserving nonnegativity at
 each step. It uses the proved square roots and algebraic closedness of the
 actual fields. Mathlib homogenization now gives the explicit Fejér–Riesz
-polynomial factor of degree at most `N` on the entire affine Cayley chart.
-The proof tests positivity at all finite surreal angles and permits infinite
-coefficients and chart parameters. Extending the same factor to the omitted
-circle point `-1` and proving the normalized form remain pending.
+polynomial factor of degree at most `N` on the entire actual unit circle.
+A top-coefficient identity extends the affine Cayley construction to `-1`.
+Nonnegativity at every finite surreal angle is therefore equivalent to
+this squared-modulus factorization, including infinite coefficients and
+infinitesimal angles. Selecting the normalized factor with no zeros in
+the open unit disk and proving its uniqueness remain pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
