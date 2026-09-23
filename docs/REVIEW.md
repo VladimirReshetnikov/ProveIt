@@ -45,6 +45,7 @@ No row below certifies every claim in an entire report.
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Read the shared support tools and Part I inner-product, automatic-adjoint, defect, normal-spectrum, inverse-smooth, coercivity, completeness, duality and norm-attainment proofs. Reconstructed the norm over arbitrary value groups, then removed the unused Part I divisibility restriction after tracing every root operation. Proved closedness of the coercive range at every rank using the continuous defect projection, retaining the original metric argument under its rank-one hypothesis. Added the positive-scale guard to the backward-shift example, distinguished valuation zero from metric distance one, and aligned the two inner-product conventions, summaries and hypothesis ledger. A subsequent Part II pass read the algebra, homogeneous diagonalization, normalization, synthesis, commutant, resolvent, walk, stability, finite-section, example and transport proofs. Corrected strict diagonal-coherence claims at finite index sets and trivial groups; supplied a coherent diagonal with incoherent inverse. Distinguished vectorwise Hahn projection additivity from classical strong-operator additivity, checked against Williams Definition 5.1, and gave a rank-one counterexample to pointwise valuation convergence. Expanded the sharp boundary coefficient’s formal root-comparison step and supplied its positive-length guard. Other imported classical results, priority and source-claim reconciliation remain outside this review. |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
+| [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed Sections 2–3. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Later sections and remaining imports are pending. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -714,13 +715,43 @@ left the reviewed differential-equations source and 198-page PDF unchanged.
 This integration does not establish Lean coverage for its intrinsic
 Picard–Vessiot or Schwarzian results.
 
+The finite-probability review begins with Sections 2–3. The full event
+algebra is now an explicit hypothesis for point-weight models; the trivial
+two-point algebra demonstrates why point weights are otherwise not unique.
+The expanded scalar and finite proofs cover standard-part uniqueness and
+units, positive leading coefficients, common-partition expectation,
+Cauchy–Schwarz at zero second moment, tail bounds and Jensen, positive
+conditioning denominators, nested conditional expectations, total variance,
+and the ticket identities characterizing coherence. Regularity remains a
+separate condition, and null-atom versions do not affect scalar identities.
+The canonical Hahn embedding was checked against van den Dries–Ehrlich
+Section 2, p. 176, and the scalar exponential transfer against Corollary 2.2,
+p. 177; the erratum changes ordinal support estimates, not that result.
+
+Validation: three-pass baseline and revised PDFs are clean, with 41 and 43
+pages respectively; the changed scalar, probability, inequality and
+conditioning pages were visually inspected. All 114 source labels and their
+numbers are preserved. The copied delivered verifier passes 2,145 assertions
+and matches its recorded JSON apart from the Python version. A separate
+953-check exact `Q(t)` run covers all 15 partitions of four points and
+nested refinements, including zero masses, infinite payoffs, infinitesimal
+thresholds, limited-unit residues and the additivity sure-loss witness.
+These are finite examples, not proofs of the general or infinite statements.
+All five historical audit/code/data artifacts are unchanged. The independent
+index audit checks 2,114 entries in 44 reports; 890 local Markdown destinations
+in 93 files resolve. The full Lean build passes 3,906 jobs and its axiom audit
+checks 6,127 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. This source review adds no Lean coverage. Sections 4 onward,
+remaining imports and broader source reconciliation still require review.
+
 ## Remaining scope
 
 The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
-[three-space](surreal/euclidean-three-space/),
-[finite probability](surreal/finite-surreal-probability/) and
+[three-space](surreal/euclidean-three-space/) and
 [field automorphisms](surcomplex/surcomplex-field-automorphisms/) reports
-are now written and catalogued, but await proof review. The measures and
+are now written and catalogued, but await proof review.
+[Finite probability](surreal/finite-surreal-probability/) has received the
+Sections 2–3 review recorded above; its later proof chains remain pending. The measures and
 trigonometry expansions are also assembled; their new claims remain outside
 the earlier review scopes. Delivered verification and source-audit artifacts
 remain historical evidence, not a substitute for that review.

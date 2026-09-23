@@ -595,8 +595,8 @@ and a build script. It was placed at commit \texttt{5fe7f8d}. Its repository
 comparison is pinned to \texttt{\pin} (Section~\ref{fsp:sub:repository}).
 
 There is no second source, so there was no merge and no choice between sources.
-Every theorem, proof, example and disclaimer of the manuscript is kept. The
-manuscript continues the measures report but answers no question it names, so
+Placement retained every theorem, proof, example and disclaimer of the
+manuscript. The manuscript continues the measures report but answers no question it names, so
 it was placed as a report of its own rather than as a part of that one.
 
 Placement changed the following and nothing else.
@@ -624,7 +624,14 @@ strong Hahn probability'', and the four mentions of classical strong laws
 and record a rerun of the checks; the bibliography entries of the repository
 reports carry a placement note, and an entry for the physics report was added.
 \end{enumerate}
-Placement left the mathematics unchanged.
+Placement left the mathematics unchanged. The subsequent proof review of
+Sections~\ref{fsp:sec:scalars}--\ref{fsp:sec:finite} expands the elementary
+arguments and supplies the full-event-algebra hypothesis for the point-weight
+representation. On a smaller finite algebra it is the measurable atoms, not
+necessarily the points, that carry the uniquely determined weights.
+It also makes the limited-input and conditional-version conventions explicit.
+The live review record is \path{docs/REVIEW.md}; the delivered audit, programs
+and data remain unchanged.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -653,6 +660,10 @@ $E_n\cup\exp(E_n)\cup\log((E_n)_{>0})$.
 Replacement and finite field expressions make each stage a set.
 The union $E=\bigcup_{n<\omega}E_n$ has the required properties because each
 input and each finite list of inputs already lies at one stage.
+More explicitly, the stages form an increasing chain, so two elements of
+$E$ lie together in some $E_n$. Their sum, product and any defined quotient
+lie in that field. For $x\in E_n$, its exponential and, when $x>0$, its
+logarithm lie in $E_{n+1}$. This proves each claimed closure separately.
 \end{proof}
 
 This lemma supplies closure, not an algorithm, a canonical smallest Hahn
@@ -666,13 +677,20 @@ An element $x$ is \emph{limited} if $|x|<n$ for some ordinary positive
 integer $n$, and \emph{infinitesimal} if $|x|<1/n$ for every such $n$.
 Write $x\simeq y$ when $x-y$ is infinitesimal. Every limited surreal has a
 unique real standard part, denoted $\st x$, with $x\simeq\st x$.
-One proof takes the supremum in $\R$ of the real numbers below $x$; the
-Dedekind completeness used here belongs to $\R$, not to $\No$.
+Indeed, if $|x|<n$, the set $\{a\in\R:a<x\}$ is nonempty and
+bounded above in $\R$. Let $r$ be its real supremum. For each real
+$\delta>0$, the supremum property gives $r-\delta<x$, while
+$r+\delta/2$ exceeds the supremum and hence cannot be strictly below $x$.
+Hence $r-\delta<x<r+\delta$. This proves $x\simeq r$.
+Two such real numbers differ by a real infinitesimal and therefore agree.
+The Dedekind completeness used here belongs to $\R$, not to $\No$.
+Here \emph{limited} means what the collection's notation guide calls a
+\emph{finite element}; it is unrelated to finite birthday or finite support.
 
 \begin{proposition}[Residue algebra]\label{fsp:prop:st}
 On limited elements, standard part is an order-preserving ring homomorphism.
-If $y$ is limited and $\st y\ne0$, then
-$\st(x/y)=\st x/\st y$. If $x>0$ is limited, it is infinitesimal exactly
+If $x,y$ are limited and $\st y\ne0$, then $x/y$ is limited and
+$\st(x/y)=\st x/\st y$. A limited $x$ is infinitesimal exactly
 when $\st x=0$.
 \end{proposition}
 \begin{proof}
@@ -680,7 +698,13 @@ Write $x=r+\eta$ and $y=s+\theta$ with $r,s\in\R$ and infinitesimal
 $\eta,\theta$. Sums and products of infinitesimals with limited factors
 are infinitesimal. If $s\ne0$, then $y$ is bounded away from zero by a
 positive real, and $y^{-1}-s^{-1}=-\theta/(sy)$ is infinitesimal.
-Order preservation and the last assertion follow from the definition.
+Thus $y^{-1}$ is limited with standard part $s^{-1}$, proving the
+quotient assertion. If $x\le y$ but $r>s$, the positive real gap $r-s$
+cannot be canceled by the infinitesimal $\theta-\eta$, a contradiction.
+Finally $x=r+\eta$ is infinitesimal if and only if $r=0$.
+The map fixes real constants, so it is onto $\R$; its kernel is precisely
+the infinitesimal ideal of the limited-element ring. It is not strictly
+order preserving: $0<t=\omega^{-1}$ but $\st t=\st0=0$.
 \end{proof}
 
 A field need not contain all limited surreals to have this residue map;
@@ -697,7 +721,8 @@ of $\No$, and put
  K_\Gamma=\R((t^\Gamma)),\qquad t^\gamma\longmapsto\omega^{-\gamma}.
 \end{equation}
 The exponent support is well ordered in increasing order. These normal
-forms identify $K_\Gamma$ with an ordered subfield of $\No$; the field need
+forms identify $K_\Gamma$ with an ordered subfield of $\No$
+\cite[Section~2, p.~176]{vdde}; the field need
 not be closed under the canonical exponential. An abstract ordered group
 can instead be used with a specified embedding into the additive surreals.
 For $x\ne0$ set
@@ -712,8 +737,15 @@ For positive $x,y$,
  v(xy)=v(x)+v(y),\qquad
  v(x+y)=\min\{v(x),v(y)\}.
 \end{equation}
-The second equality has no cancellation because leading coefficients are
-positive. For probabilities $0<p\le1$, $v(p)\ge0$.
+For products the least exponent is $v(x)+v(y)$, with coefficient
+$\lc(x)\lc(y)\ne0$. For sums with unequal valuations, the smaller
+exponent survives; with equal valuations its coefficient is
+$\lc(x)+\lc(y)>0$. This proves both identities without a cancellation
+assumption on any higher coefficient. If $v(p)<0$ and $p>0$, its leading
+monomial dominates every positive real constant, contradicting $p\le1$.
+Thus probabilities have $v(p)\ge0$. More generally a Hahn element is limited
+exactly when its valuation is nonnegative, and its standard part is then
+$[t^0]x$; zero has the assigned valuation $+\infty$.
 
 A family $(x_i)_{i\in I}$ is \emph{strongly Hahn summable} if its combined
 support is well ordered and, for each exponent, only finitely many members
@@ -753,10 +785,16 @@ We use the scalar inequalities
  \exp x\ge1+x,\qquad \log y\le y-1\quad(y>0),
 \end{equation}
 with equality only at $x=0$ and $y=1$, respectively. These follow from the
-established elementary equivalence with the real exponential field
-\cite{vdde,vddeerr}. For each fixed ordinary integer $n$, a universally
-quantified real-exponential inequality involving $n$ coordinates can be
-used this way. This does \emph{not} transfer a theorem quantifying over
+elementary-extension theorem \cite[Corollary~2.2, p.~177]{vdde}.
+The erratum \cite{vddeerr} corrects ordinal support bounds in Section~4
+and leaves this transfer statement unchanged. No such ordinal bound is
+used here. For each fixed ordinary integer $n$, a universally quantified
+real-exponential inequality involving $n$ coordinates can be used this way:
+first it holds in $\No$, then its quantifier-free instance at inputs in
+$E$ has the same meaning there, since $E$ inherits the order and field
+operations and is closed under the displayed exponential and logarithm.
+The workspace lemma alone does not make $E$ an elementary substructure. This does
+\emph{not} transfer a theorem quantifying over
 arbitrary sample spaces, countable sequences, measurable functions, or
 integration operations. The distinction will matter repeatedly.
 
@@ -775,23 +813,39 @@ It is \emph{regular} if $P(A)>0$ for every nonempty $A\in\A$.
 No countable-additivity assertion is implicit in this definition.
 \end{definition}
 
-Finite additivity implies $P(\varnothing)=0$, $P(A^c)=1-P(A)$,
-monotonicity, and $0\le P(A)\le1$. On a finite space
-$\Omega=\{1,\ldots,n\}$ it is equivalent to a vector
-$p\in K_{\ge0}^n$ with $\sum_i p_i=1$: necessarily
-$P(A)=\sum_{i\in A}p_i$. Regularity means exactly that all $p_i>0$.
-Thus no extra consistency problem arises merely from replacing real
-weights by infinitesimal ones.
+Taking the two disjoint events to be empty gives $P(\varnothing)=0$.
+The decompositions $\Omega=A\sqcup A^c$ and
+$B=A\sqcup(B\setminus A)$ when $A\subseteq B$ give complements and
+monotonicity, hence $0\le P(A)\le1$.
+
+On $\Omega=\{1,\ldots,n\}$ \emph{with the full event algebra
+$\A=2^\Omega$}, a law is equivalent to its point-weight vector
+$p_i=P(\{i\})\ge0$, with $\sum_i p_i=1$; finite additivity gives
+$P(A)=\sum_{i\in A}p_i$, and this formula conversely defines a law.
+Regularity means exactly that all $p_i>0$. For a smaller finite event
+algebra, use its nonempty minimal events (its \emph{atoms}) instead:
+these partition $\Omega$, every event is a union of them, and their masses
+uniquely determine the law. Individual point masses need not be defined.
+For example, on $\{1,2\}$ with algebra $\{\varnothing,\Omega\}$, the
+point-weight vectors $(1,0)$ and $(0,1)$ restrict to the same law.
+Throughout the finite vector models below, all subsets are measurable;
+this is an additional convention, not a consequence of finiteness alone.
 
 A finite-range $K$-valued random variable is a function constant on the
 members of a finite measurable partition. Its expectation is
 \begin{equation}\label{fsp:eq:expectation}
  \E_P X=\sum_j x_jP(A_j),\qquad X=\sum_jx_j\ind_{A_j}.
 \end{equation}
-Refining partitions proves that this definition is independent of the
-representation. It is $K$-linear, positive, and satisfies
-$\min X\le\E X\le\max X$. No convergence notion is needed, even if the
-finitely many values $x_j$ are infinite surreals.
+For two representations, pass to the common partition of nonempty
+intersections of their cells. On each such intersection the two assigned
+values agree, and finite additivity splits each original mass into the
+masses of these intersections. Thus the displayed sum is independent of
+the representation. A common partition also proves $K$-linearity and
+positivity. Applying positivity to $X-\min X$ and $\max X-X$, and using
+$\E1=1$, gives $\min X\le\E X\le\max X$.
+No convergence notion is needed, even if the finitely many values are
+infinite surreals. If $P(B)=0$, then $\E[X\ind_B]=0$: every cell inside
+$B$ has mass zero, whatever its assigned value.
 
 For two finite laws, the product weights $p_iq_j$ define independent
 coordinates. A finite map $f:\Omega\to S$ pushes the law forward by
@@ -807,28 +861,43 @@ to a missing infinite extension theorem.
 
 \begin{theorem}[Variance, Cauchy--Schwarz, and tail bounds]
 \label{fsp:thm:finitebounds}
-For finite-range variables over $K$,
+For finite-range measurable variables $X,Y$ on the same $K$-probability
+space, define $\Var(X)=\E[(X-\E X)^2]$. Then
 \begin{align}
- \Var(X)&=\E(X-\E X)^2\ge0,\\
- (\E XY)^2&\le\E X^2\,\E Y^2,\label{fsp:eq:cs}\\
- P(X\ge a)&\le\E X/a\quad(X\ge0,\ a>0),\label{fsp:eq:markov}\\
+ \Var(X)&=\E[(X-\E X)^2]\ge0,\\
+ (\E[XY])^2&\le\E[X^2]\,\E[Y^2],\label{fsp:eq:cs}\\
+ P(X\ge a)&\le\E[X]/a\quad(X\ge0,\ a>0),\label{fsp:eq:markov}\\
  P(|X-\E X|\ge a)&\le\Var(X)/a^2\quad(a>0).
 \end{align}
 The thresholds and variable values may be surreal.
 \end{theorem}
 \begin{proof}
-Positivity of squares gives the variance assertion. If $\E Y^2=0$,
-each positive-mass partition cell has $Y=0$, so $\E XY=0$.
-Otherwise substitute $c=\E XY/\E Y^2$ in
-$0\le\E(X-cY)^2$ and multiply by $\E Y^2>0$ to obtain
-\eqref{fsp:eq:cs}. The pointwise inequality
-$a\ind_{\{X\ge a\}}\le X$ proves \eqref{fsp:eq:markov}.
-Apply it to $(X-\E X)^2$ for the last claim.
+Work on a common finite measurable partition for $X$ and $Y$.
+Positivity of squares gives the variance assertion, and expansion gives
+$\Var(X)=\E[X^2]-(\E X)^2$. Put
+$A=\E[X^2]$, $B=\E[XY]$, and $C=\E[Y^2]$.
+If $C=0$, each nonnegative summand $p_jy_j^2$ is zero, so every
+positive-mass cell has $y_j=0$ and $B=0$.
+If $C>0$, expansion at $c=B/C$ gives
+\[
+ 0\le\E[(X-cY)^2]=A-2cB+c^2C=A-B^2/C.
+\]
+Multiplication by $C$ proves \eqref{fsp:eq:cs}.
+For Markov, $a\ind_{\{X\ge a\}}\le X$ pointwise; apply positivity
+of expectation and divide by $a>0$.
+For Chebyshev, apply Markov to $(X-\E X)^2$ at the positive threshold
+$a^2$. The events agree because $|z|\ge a$ if and only if $z^2\ge a^2$
+in an ordered field. No division by a possibly zero second moment or
+probability is used.
 \end{proof}
 
 If a function $f$ is convex on an interval of $K$ in the ordered-field
 sense, finite Jensen follows by induction on the number of positive
-weights. One cannot apply this assertion to an arbitrary function
+weights. With at least two such weights, separate one of weight $p\in(0,1)$,
+normalize the remaining weights by $1-p$, apply the inductive assertion,
+and then the defining two-point convexity inequality. One positive weight
+is the equality case; zero weights may be discarded. One cannot apply this
+assertion to an arbitrary function
 originally defined only on $\R$ without first specifying its extension to
 $K$. The result is algebraic convexity, not a general surreal integration
 theorem.
@@ -840,7 +909,14 @@ Whenever $P(B)>0$, define
  P(A\mid B)=\frac{P(A\cap B)}{P(B)}.
 \end{equation}
 An infinitesimal denominator is nonzero and poses no algebraic problem.
-Multiplication of denominators proves Bayes' rule and the chain rule.
+The map $A\mapsto P(A\mid B)$ is again a finitely additive law.
+For $P(A),P(B)>0$, cancellation gives
+$P(A\mid B)P(B)=P(B\mid A)P(A)$; division by $P(B)$ gives Bayes' rule.
+Likewise
+$P(A\cap B\mid C)=P(A\mid B\cap C)P(B\mid C)$ whenever
+$P(B\cap C)>0$ (which also ensures $P(C)>0$).
+Each iterated chain rule requires the displayed conditioning masses to be
+positive; an exact zero does not define a quotient.
 For a finite partition $(B_j)$ with positive masses,
 \begin{equation}
  P(A)=\sum_jP(A\mid B_j)P(B_j).
@@ -857,15 +933,34 @@ $\E[X\ind_B]/P(B)$. Direct finite summation gives
  \E\bigl[\E[X\mid\mathcal G]\mid\mathcal H\bigr]
  =\E[X\mid\mathcal H]\quad(\mathcal H\subseteq\mathcal G).
 \end{equation}
-The second identity follows because an atom of $\mathcal H$ is a finite
-union of atoms of $\mathcal G$. Multiplication by a $\mathcal G$-measurable
-variable can be taken outside conditional expectation. Expanding the square
-and using that property proves the finite law of total variance:
+For the first identity, summing over the atoms cancels their positive
+masses. For the second, let $C$ be an atom of $\mathcal H$ and sum over
+the atoms $B$ of $\mathcal G$ contained in $C$:
+\[
+ \sum_{B\subseteq C}\frac{\E[X\ind_B]}{P(B)}P(B)
+ =\E[X\ind_C].
+\]
+Dividing by $P(C)$ gives the equality on $C$.
+A $\mathcal G$-measurable variable $Z$ is constant on each atom, so
+$\E[ZX\mid\mathcal G]=Z\E[X\mid\mathcal G]$ there.
+
+Write $M=\E[X\mid\mathcal G]$ and define
+$\Var(X\mid\mathcal G)=\E[(X-M)^2\mid\mathcal G]$.
+On each atom the defining average gives
+$\E[(X-M)\ind_B]=0$, hence $\E[(X-M)Z]=0$ for every such $Z$.
+Taking $Z=M-\E X$ in the square expansion
+$X-\E X=(X-M)+(M-\E X)$ proves the finite total-variance identity
 \begin{equation}
  \Var(X)=\E\bigl[\Var(X\mid\mathcal G)\bigr]
        +\Var\bigl(\E[X\mid\mathcal G]\bigr).
 \end{equation}
-These statements hold on zero-mass atoms up to the usual freedom of versions.
+If some atoms have zero mass, assign arbitrary constant values on them.
+The conditional identities then hold outside a measurable null event;
+scalar expectation and variance identities remain exact and independent
+of those choices, since null cells contribute zero. Thus uniqueness is
+pointwise when every atom has positive mass, and otherwise only up to
+these versions. None of this requires bounded real payoffs: the values
+need only form a finite list in $K$.
 
 \subsection{A finite betting interpretation}
 
@@ -878,10 +973,18 @@ one cell has positive mass. This is a finite no-sure-loss statement with
 $K$-valued stakes and payoffs. It does not license infinitely many tickets
 or an infinite series of stakes.
 
-Conversely, inconsistent normalization or finite additivity supplies a
-constant nonzero gain by a finite combination of tickets, and a price
-outside $[0,1]$ supplies a sure loss in one trading direction. Thus the
-usual finite coherence argument is genuinely retained. Physical
+Conversely, write a quoted price as $q(A)$ and its centered ticket as
+$T_A=\ind_A-q(A)$. If $q(\Omega)\ne1$, then $T_\Omega$ is a
+nonzero constant. If disjoint events violate finite additivity, then
+\[
+ T_{A\cup B}-T_A-T_B=q(A)+q(B)-q(A\cup B)
+\]
+is a nonzero constant. Choosing its sign gives a strict sure loss.
+If $q(A)>1$, buying $T_A$ loses in every state; if $q(A)<0$, selling it
+does. Thus absence of a strict sure loss forces precisely normalization,
+nonnegativity and finite additivity. It does not force regularity:
+on a two-point full event space, the weights $(1,0)$ are coherent although
+one nonempty event has price zero. Physical
 interpretations of infinite stakes are a separate modeling issue; finite
 coherence alone does not require such stakes to be practically available.
 

@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 41 pages
+article.pdf        the compiled report, 43 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -35,6 +35,13 @@ was dropped. No label of any other report was touched. The added material
 contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
+
+The current proof review covers Sections 2–3: scalar workspaces, standard
+part, Hahn leading scales, finite probability inequalities, conditioning and
+coherence. It corrects the point-weight representation to require the full
+event algebra, and distinguishes pointwise conditional identities from
+versions on null atoms. Later sections and the remaining imported results
+still require review; see the collection's [review record](../../REVIEW.md).
 
 ## What the report claims
 
@@ -296,7 +303,7 @@ the pin and the delivered 35-page PDF.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build gives 41 pages (a title page, two contents pages and 38 numbered
+This build gives 43 pages (a title page, two contents pages and 40 numbered
 pages), with no errors, no undefined or multiply-defined references or
 citations, no duplicate PDF destinations, and no LaTeX, package or box warnings.
 No bibliography database or external figure is needed.
@@ -332,7 +339,8 @@ The source is one manuscript, *Surreal Probability and Log-Odds: A multiscale
 theory of belief, information, and infinite sampling*, dated 22 September 2026.
 It arrived as `surreal_probability.zip`, number 05 of the nine archives
 committed as `2765c8f`, and was placed at `5fe7f8d`. With one source there were
-no merge decisions; every theorem, proof, example and disclaimer is kept. It
+no merge decisions; placement retained every theorem, proof, example and
+disclaimer. It
 continues the measures report but answers no question it names, so it is a
 report of its own.
 
@@ -341,5 +349,36 @@ added Sections 1.4–1.7, the "Since the pin" paragraph and pointer sentences in
 Sections 10 and 12, updated the title-page status, Section 16.3, Appendix B and
 the bibliography notes, and made the *strong* renames listed above. It left the
 mathematics unchanged. `RESEARCH_AUDIT.md` is the manuscript's own audit, not an
-independent review; no subsequent proof review has been recorded for this
-report.
+independent review. The subsequent review below concerns Sections 2–3 and
+records the correction to the finite point-weight representation.
+
+## Subsequent proof review
+
+The finite-probability review begins with Sections 2–3. The full event
+algebra is now an explicit hypothesis for point-weight models; the trivial
+two-point algebra demonstrates why point weights are otherwise not unique.
+The expanded scalar and finite proofs cover standard-part uniqueness and
+units, positive leading coefficients, common-partition expectation,
+Cauchy–Schwarz at zero second moment, tail bounds and Jensen, positive
+conditioning denominators, nested conditional expectations, total variance,
+and the ticket identities characterizing coherence. Regularity remains a
+separate condition, and null-atom versions do not affect scalar identities.
+The canonical Hahn embedding was checked against van den Dries–Ehrlich
+Section 2, p. 176, and the scalar exponential transfer against Corollary 2.2,
+p. 177; the erratum changes ordinal support estimates, not that result.
+
+Validation: three-pass baseline and revised PDFs are clean, with 41 and 43
+pages respectively; the changed scalar, probability, inequality and
+conditioning pages were visually inspected. All 114 source labels and their
+numbers are preserved. The copied delivered verifier passes 2,145 assertions
+and matches its recorded JSON apart from the Python version. A separate
+953-check exact `Q(t)` run covers all 15 partitions of four points and
+nested refinements, including zero masses, infinite payoffs, infinitesimal
+thresholds, limited-unit residues and the additivity sure-loss witness.
+These are finite examples, not proofs of the general or infinite statements.
+All five historical audit/code/data artifacts are unchanged. The independent
+index audit checks 2,114 entries in 44 reports; 890 local Markdown destinations
+in 93 files resolve. The full Lean build passes 3,906 jobs and its axiom audit
+checks 6,127 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. This source review adds no Lean coverage. Sections 4 onward,
+remaining imports and broader source reconciliation still require review.
