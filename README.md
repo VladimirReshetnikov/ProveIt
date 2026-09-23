@@ -301,9 +301,12 @@ It proves both `v(h)≥σ−κ` and `v(h+P(0)/A)≥2σ−3κ` for actual surreal
 exponents. Mathlib Laurent polynomials now have exact real numerators in
 Cayley coordinates, with a positive denominator and coefficient valuation
 bounds. Applying the polynomial theorem proves both bounds and uniqueness
-for the exact trigonometric pullback in `x=2 tan(h/2)`. Transfer to the angle
-`h`, fine-derivative identification and angular simplicity, and the sharpness
-examples remain pending.
+for the exact trigonometric pullback in `x=2 tan(h/2)`. The inverse chart
+preserves valuation and has a finite cubic remainder, transferring both bounds
+to the actual angle `h`. The formal Fourier derivative is the native fine
+derivative, and the perturbed angular root is simple and unique throughout
+`v(h)>κ`. This completes the angular stability theorem; its separate
+sharpness examples remain pending.
 In the Hahn theorem, the first correction coefficient is the negative error coefficient evaluated
 at the residue root, divided by the residue derivative; cancellation is allowed.
 The distinct complex residue roots also index unique cluster factors, with

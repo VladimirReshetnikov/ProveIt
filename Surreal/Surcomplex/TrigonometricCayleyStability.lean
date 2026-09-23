@@ -7,9 +7,8 @@ import Surreal.Foundations.SignSequencePolynomialStabilityError
 This proves the exact rational-chart step of `trigonometry:thm:stability`,
 including existence, uniqueness throughout the prescribed open valuation
 neighborhood, simple polynomial multiplicity and both error bounds. The
-variable here is `x = 2 tan(h/2)`; transferring the bounds and simplicity to
-the angle `h`, and identifying the Fourier derivative with the fine
-derivative, are subsequent obligations.
+variable here is `x = 2 tan(h/2)`. The bounds and simplicity are transferred
+to the angle, with the actual fine derivative, in `TrigonometricRootStability`.
 -/
 
 universe u
