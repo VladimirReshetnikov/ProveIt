@@ -1613,6 +1613,13 @@ clean; all 2,724 cited source labels and 1,064 local Markdown destinations
 resolve. The incoming Lean mappings remain distinct from this mathematical
 review of the matrix-scaling report.
 
+
+A final sync merged `e439806`, adding cevian sine ratios and trigonometric
+Ceva, again without changing a manuscript source. The rebuilt combination
+passed 4,024 jobs and audited 7,827 declarations using the same three permitted
+axioms. All 2,726 cited source labels and 1,070 local Markdown destinations
+resolve; the 49-source statement inventory is unchanged.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
