@@ -17,7 +17,8 @@
  urlcolor=blue!45!black,
  pdftitle={Set-Sized Quotients of the Omnific Integers},
  pdfauthor={Merged AI-assisted research report},
- pdfsubject={Omnific integers, universal set-sized quotients, cardinal thresholds}}
+ pdfsubject={Omnific integers, universal set-sized quotients, cardinal thresholds,
+ homological and tensor algebra of omnific cores, polynomial maps}}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
@@ -113,6 +114,8 @@
 \newcommand{\Refset}{\operatorname{Ref}_{\mathrm{set}}}
 \newcommand{\degw}{\deg_{\omega}}
 \newcommand{\Char}{\operatorname{char}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\rk}{\operatorname{rank}}
 \DeclareMathOperator{\diag}{diag}
 \newcommand{\src}[1]{\textup{\textsf{[#1]}}}
 \newcommand{\merge}{\textup{\textsf{[merge]}}}
@@ -141,9 +144,10 @@
 {\large The universal constant-term quotient, exact cardinal thresholds,\par
 support thresholds, and what survives in large quotients\par}
 \vspace{0.3in}
-{Merged research report built from eight manuscripts (03, 04, 06, 07, 08, 09, 10, 11)\par}
+{Merged research report built from thirteen manuscripts (03, 04, 06--11 of one batch,\par
+12--16 of the next)\par}
 \vspace{0.08in}
-{22 September 2026; merged 23 September 2026\par}
+{22--23 September 2026; merged 23 September 2026\par}
 \vspace{0.3in}
 \begin{minipage}{0.9\textwidth}
 \begin{abstract}
@@ -165,14 +169,19 @@ two of these values, and the exact thresholds of two examples in fixed exponent 
 are new to this merge. The report also keeps the large-quotient side (a copy of $\No$ and
 a Cantor algebra inside $\Oz/(1+\omega^a)$), the integral and complete integral closures
 of $\Oz$, the arithmetic of integer-valued polynomials on $\Oz$, and a negative answer to a
-posted question on natural ordinal arithmetic. It is an AI-assisted merge of unrefereed
-manuscripts; nothing in it is verified in Lean.
+posted question on natural ordinal arithmetic. Five later manuscripts add the ordinary
+homological and tensor algebra of subrings of $\Oz$: for set-sized finite-support cores the
+arithmetic quotient has flat dimension $d$ when the exponents form a coordinatewise cone of
+rank $d$ and $1$ when they form a totally ordered cone, and coefficient-lattice ideals have
+explicit tensor, Rees and duality algebra; and they add a fresh-scale image-gap theorem for
+polynomial and rational maps. It is an AI-assisted merge of unrefereed manuscripts; nothing
+in it is verified in Lean.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.9\textwidth}\small
-\textbf{Status.} Proof-bearing research report assembled from eight AI-assisted
-manuscripts written on 22 September 2026. The sources call their main results candidate
+\textbf{Status.} Proof-bearing research report assembled from thirteen AI-assisted
+manuscripts written on 22 and 23 September 2026. The sources call their main results candidate
 original; priority is not certified, no named conjecture is claimed solved, the proofs have
 not been refereed, and no statement is formalized. Results added in the merge are marked
 \merge; the source of every other statement is tagged \src{NN}.
@@ -192,9 +201,10 @@ not been refereed, and no statement is formalized. Results added in the merge ar
 The omnific integers $\Oz=\Z\oplus\Pi$ form a discretely ordered subring of $\No$ whose
 fraction field is all of $\No$. Their purely infinite ideal $\Pi$ is a proper class; each of
 its elements has a set-sized normal form, but below any positive exponent there is a proper
-class of smaller exponent scales. The eight manuscripts merged here ask the same question:
-\emph{what can an ordinary, set-sized ring or module see of an omnific integer?} All eight
-give the same answer, by different proofs: exactly its ordinary integer constant term. This
+class of smaller exponent scales. The eight manuscripts of the first merge (03, 04, 06--11) ask
+the same question: \emph{what can an ordinary, set-sized ring or module see of an omnific
+integer?} All eight give the same answer, by different proofs, and two later manuscripts (13, 15)
+reprove it independently: exactly its ordinary integer constant term. This
 is much stronger than the observation that a proper-class field cannot embed in a set: the
 source is a ring, its homomorphisms have large kernels, and the targets may have zero
 divisors, nilpotents, noncommutative multiplication and any characteristic (06, 11). Nor is
@@ -204,8 +214,11 @@ of positive characteristic (04, 07).
 The sources then go in different directions: exact cardinal thresholds for set-sized
 integer parts (03, 06, 08, 09, 11), the finite side and the support threshold (04, 11), the
 large quotients in which a purely infinite element becomes a unit (07), integral closure
-(03), polynomial maps (10), and natural ordinal arithmetic (11). This report prints the
-common spine once and keeps every result of every source.
+(03), polynomial maps (10), and natural ordinal arithmetic (11). Three later manuscripts add
+the ordinary homological and tensor algebra of subrings of $\Oz$ with finite supports or with
+coefficient lattices (12, 14; \cref{osq:hd:sec:cores}), and fresh-scale arguments for polynomial and
+rational maps (16; \cref{osq:fs:sub:gaps,osq:fs:sub:tests}). This report prints the common spine
+once and keeps every result of every source.
 
 \subsection{Main theorems}\label{osq:sub:main}
 
@@ -216,8 +229,8 @@ maps correspond bijectively to unital maps from $D$; every set-sized module is a
 by $\Pi_K$. For $\Oz$ the unique unital map to a set-sized ring $S$ is $x\mapsto\ct(x)1_S$, and
 unital maps $\GOz\to S$ correspond to $j\in S$ with $j^2=-1$. The kernels admitting set-sized
 quotients are exactly the $\ct^{-1}(\mathfrak a)$; for $\Oz$ they are $\Pi$ and $n\Oz$
-($n\ge1$). (\Cref{osq:thm:universal,osq:cor:Oz,osq:cor:gaussian,osq:thm:quotients}; all eight
-sources and manuscript 05 of the sibling report.)
+($n\ge1$). (\Cref{osq:thm:universal,osq:cor:Oz,osq:cor:gaussian,osq:thm:quotients}; the eight
+sources of the first merge, manuscripts 13 and 15, and manuscript 05 of the sibling report.)
 \end{maintheorem}
 
 \begin{maintheorem}[The finite side and the support threshold]\label{osq:main:support}
@@ -275,21 +288,43 @@ The ring of finite-degree surreal polynomials preserving $\Oz^r$ is $\Pi[\mathbf
 with universal set-sized image $\Int(\Z^r)$; a Newton least-common-multiple condition decides
 congruence preservation modulo every omnific integer; the $p$-adic completion is $C(\Z_p^r,\Z_p)$
 and most of its characters are not evaluations; rational self-maps of $\Oz$ and $\GOz$ are
-polynomial and the bijections are affine (10).
-(\Cref{osq:pm:thm:numreal,osq:pm:thm:cp,osq:pm:cor:completion,osq:pm:cor:bijections}.)
+polynomial and the bijections are affine (10). For every unital $D\subseteq k\in\{\R,\C\}$ and every
+polynomial $f$ of degree at least two with coefficients in a set-sized Hahn field $K_G$, a fresh
+monomial $t$ has $f(D+\Pi_k)\cap(f(t)+K_G)=\{f(t)\}$, every root of $f(Y)=f(t)+c$ ($c\ne0$) having an
+explicit forbidden block of negative exponents; rational self-maps of $D+\Pi_k$ are polynomials and the
+surjective ones are the affine maps $uX+a$, $u\in D^\times$; $d+1$ points test degree $d$ and no fewer do,
+while no set-sized sample tests all rational self-maps (16).
+(\Cref{osq:pm:thm:numreal,osq:pm:thm:cp,osq:pm:cor:completion,osq:pm:cor:bijections,osq:fs:thm:imagegap,osq:fs:thm:surjective,osq:fs:thm:lower,osq:fs:thm:nosmall}.)
 \end{maintheorem}
 
 \begin{maintheorem}[Natural ordinal arithmetic]\label{osq:main:ordinal}
 The Grothendieck ring of the ordinals under natural operations is not a quotient of $\Oz$; every
 unital ring map from $\Oz$ to it has image $\Z$. This answers negatively the quotient question in
-MathOverflow question 188430 of Jesse Elliott (11). (\Cref{osq:thm:ordinal}.)
+MathOverflow question 188430 of Jesse Elliott (11; independently 13). (\Cref{osq:thm:ordinal}.)
+\end{maintheorem}
+
+\begin{maintheorem}[Homological and tensor algebra of omnific cores]\label{osq:hd:main:cores}
+Let $D\subseteq K$ be $\Z\subset\R$ or $\Z[i]\subset\C$. The set-sized subring
+$A_d=D+\bigoplus_{0\ne\boldsymbol\alpha\in\Q_{\ge0}^d}KX^{\boldsymbol\alpha}$ of $\Oz$ (or $\GOz$), whose exponents form a
+coordinatewise cone of rank $d$, has $\Tor^{A_d}_{>0}(D,D)=0$ but $\fd_{A_d}D=d$, with a complete multigraded
+computation of $\Tor^{A_d}(D,A_d/(X_i:i\in F))$, and its finite quotients are those of $D$ (12). Enlarging the cone to
+all positive exponents of the same ordered group is a nonflat extension over which $\fd D=1$ and $\pd D=2$, as for the
+totally ordered cones of \cref{osq:sec:homological} (12, with the merge). For a coefficient lattice $M\subset K$ of rank
+$r\ge2$, the module $L(M)=M+\Pi$ over $\Oz$ or $\GOz$ (or over the set-sized model $A_1$) has first syzygy $\Pi^{r-1}$,
+tensor square $\Pi\oplus(M\otimes M)$ whose torsion is $\ker(M\otimes M\to M^2)$, nonlinear Rees equations exactly the
+ordinary relations among the generators (the first one in degree $d$ for $(\omega,2^{1/d}\omega)$), isomorphism type
+determined by $M$ up to a scalar, ideal classes realizing $\operatorname{Pic}$ of an order, and dual $\Pi$ (14).
+(\Cref{osq:hd:thm:boolean,osq:hd:cor:fd,osq:hd:thm:collapse,osq:hd:thm:fdlattice,osq:tn:thm:syzygy,osq:tn:thm:tensor,osq:tn:thm:rees,osq:tn:thm:hom,osq:tn:thm:pic,osq:tn:thm:duals}.)
 \end{maintheorem}
 
 \subsection{Sources, provenance and where the merge chose}\label{osq:sub:sources}
 
-The report is built from eight manuscripts, all dated 22 September 2026 and placed in commit
-\texttt{be06fc8}; none has a reviewer, and none is shipped with this report. Their numbers are
-arrival numbers in the batch.
+The report is built from thirteen manuscripts. Eight (03, 04, 06--11), dated 22 September 2026
+and placed in commit \texttt{be06fc8}, were merged first; their numbers are arrival numbers in
+their batch. Five (12--16), dated 23 September 2026 and placed in commit \texttt{cf350b1}, are items
+02--06 of the following batch; they are numbered here by the file prefixes under which their
+programs and data are stored in this directory. None has a reviewer, and none is shipped with this
+report.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.03\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
@@ -308,8 +343,25 @@ arrival numbers in the batch.
 \end{tabular}
 \end{center}
 
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.03\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
+\toprule
+& Later manuscript (pages) & Pin & Contribution and placement\\
+\midrule
+12 & \emph{Arithmetic Invisibility and Homological Dimension in Omnific Integer Cores} (21) & none & coordinate-cone cores $A_d$: Boolean flat resolution, multigraded $\Tor$, $\fd D=d$; noncoherence certificate; ordered-cone collapse to $\fd D=1$; projective bounds (\cref{osq:hd:sec:cores})\\
+13 & \emph{Small-Target Rigidity and Arithmetic Specialization} (21) & \texttt{71e9606} & independent proofs of the universal theorem and of the ordinal answer (credited in \cref{osq:sub:universalthm,osq:sec:ordinal}); its fiber and norm theorems belong to the Diophantine report \cite{RepoOdg}\\
+14 & \emph{Arithmetic Tensors in the Omnific Integers} (19) & \texttt{71e9606} & coefficient-lattice modules: syzygy, tensor normal form, symmetric and exterior powers, Rees equations, Hom, ideal classes, duals, matrix kernels, $\fd$ over $A_0$ (\cref{osq:hd:sec:cores})\\
+15 & \emph{Omnific Integers Have Only Ordinary Set-Sized Representations} (21) & \texttt{71e9606} & an independent proof of the universal theorem and its consequences (credited throughout); two one-line additions (\cref{osq:rep:cor:kernels,osq:rep:prop:projectivity})\\
+16 & \emph{Fresh-Scale Image Gaps and Rational Rigidity for Omnific Integers} (23) & \texttt{71e9606} & image gap and forbidden layers, fresh fibers, rational collapse and surjective maps over any constant ring, optimal and Gaussian finite tests, rational probes, sampling obstructions (\cref{osq:fs:sub:gaps,osq:fs:sub:tests})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 The pins are the repository commits the manuscripts inspected (\texttt{cd80e5e0adc2},
-\texttt{a5c2a97df4b5}, \texttt{37eefca1a309}, all of 22 September 2026, Pacific time).
+\texttt{a5c2a97df4b5}, \texttt{37eefca1a309}, all of 22 September 2026, Pacific time; and
+\texttt{71e9606d297c}, 23 September 2026, for 13--16). The commit \texttt{71e9606} precedes the placement
+of the first eight manuscripts, so 13--16 saw neither this report nor its sibling; 12 records no commit,
+only access to the repository through a GitHub connector on 23 September 2026.
 Manuscript~05 of the same batch, \emph{Omnific Integers and Diophantine Rigidity}, is merged
 into the sibling report \cite{RepoOdg}. It also proves the unital universal theorem for $\Oz$
 (its ``set-target rigidity''), the clearing of set supports and common monomial divisors, and it
@@ -336,6 +388,16 @@ general law is stated.
 constructions satisfy (\cref{osq:thm:homological}).
 \item \emph{Foundations.} NBG with choice for sets; global choice, stated by 04, 06, 09 (and 05),
 is not used anywhere (\cref{osq:sub:foundations}).
+\item \emph{Later manuscripts.} 13 and 15 reprove the universal theorem and its consequences; they are
+credited where each result is printed, and only two one-line additions of 15 are printed
+(\cref{osq:rep:cor:kernels,osq:rep:prop:projectivity}); 13's answer to Elliott's question is credited in
+\cref{osq:sec:ordinal}. 12 and 14 form one new section (\cref{osq:hd:sec:cores}), placed after the homological
+package it is to be compared with; the ring $A_0=A_1$ and the two-generator syzygy are printed once, the syzygy
+in 14's rank generality over 12's rings. 16's results sit with 10's polynomial maps; where they overlap (rational
+collapse, affine surjections, transfer, grids) the general-$D$ statement is printed once with 16's fresh-scale
+proof and 10's statements keep their finite-difference and lattice proofs as a second route. 14's criterion for
+unimodular projective directions and 13's fiber and norm theorems are printed in the Diophantine report
+\cite{RepoOdg}, not here.
 \end{itemize}
 
 \paragraph{Results added in the merge.} Each carries the tag \merge\ and a complete proof:
@@ -351,8 +413,13 @@ theorem itself (\cref{osq:thm:thresholds}) and the reconciliation of the realize
 constructions (\cref{osq:thm:homological,osq:thm:extthreshold}); the negative-side extension
 criterion (\cref{osq:thm:support}(iv)); the embedding $\No\hookrightarrow\Frac(\Oz/P)$ for primes
 not containing $\Pi$ (\cref{osq:if:rem:composition}); and the explicit elements of the
-normalization provided by 08's equation (\cref{osq:nm:rem:rootinN}). Each follows from lemmas
-of the sources; none is a new method.
+normalization provided by 08's equation (\cref{osq:nm:rem:rootinN}). From the later manuscripts:
+the syzygy, noncoherence and nonflatness theorems in the common generality of 12's and 14's rings
+(\cref{osq:tn:thm:syzygy,osq:tn:prop:nonflat}); the flat dimensions of lattice modules and cyclic quotients over
+every core, which removes a superfluous hypothesis of 12 (\cref{osq:hd:thm:fdlattice}); exact projective dimensions
+where 12 gives bounds, and $\pd D=2$ for every ring of \cref{osq:sec:homological} with countably generated tail
+(\cref{osq:hd:prop:pd}); and the comparison of the two kinds of flat-dimension statements
+(\cref{osq:hd:rem:reconcile}). Each follows from lemmas of the sources; none is a new method.
 
 \subsection{Relation to the repository}\label{osq:sub:repository}
 The foundations report defines $\Oz=\Pi\oplus\Z$ (\nolinkurl{found:eq:omnific} in
@@ -363,7 +430,9 @@ finite-side theorem for $\mathrm{SO}(3,\No)$ (\cref{osq:sec:finite}). The first-
 closedness of bounded-support Hahn fields, which contains the closure step of 06's construction
 (06 proves that step itself; \cref{osq:sub:model06}). The
 $\kappa$-bounded coefficient rings $\Z+K(\!(G^{<0})\!)_\kappa$ of L'Innocente--Mantova \cite{LM} are
-the published precedent for the bounded-support rings of 06 and 11. No statement of this report
+the published precedent for the bounded-support rings of 06 and 11. The Hahn-evaluation report
+\cite{RepoHahnEval}, cited by 12, separates finite polynomial evaluation at $\omega$ from evaluation of
+unrestricted series; 12's embeddings use finite normal forms only. No statement of this report
 has a Lean counterpart; the repository has no omnific module.
 
 \paragraph{Stale statements corrected.} Three sources report a repository code search for
@@ -373,6 +442,14 @@ listed above; what it lacked was a report devoted to omnific arithmetic, and the
 two (this one and \cite{RepoOdg}). 03's companion draft and 04's ``prior manuscript'' were not in the
 repository at their pins; they are now manuscripts 05 and 02 of \cite{RepoOdg}. 07's description of
 the staging directory (``Gamma--zeta ZIP archives'') was true at its pin and is a snapshot statement.
+Of the later manuscripts, 13 and 15 (and 15's audit file) report that a repository search for ``omnific''
+returned no matches; at their pin \texttt{71e9606} the foundations report already defined $\Oz$ at
+\nolinkurl{found:eq:omnific}. 13 and 15 call the universal theorem a proposed, respectively candidate-original,
+contribution, and 13 calls its answer to Elliott's question one; the same theorem and the same answer are in the
+eight manuscripts of the first merge, dated a day earlier (\cref{osq:thm:universal,osq:thm:ordinal}), which 13 and 15
+could not see, so both are independent re-derivations. 16 found no integer-valued-polynomial treatment in the
+repository; at its pin that was accurate, and the collection now has 10's (\cref{osq:sec:polynomial}). 14's
+``companion manuscripts'' are manuscripts 02 and 05 of the Diophantine report \cite{RepoOdg} and 03 of this one.
 The shipped audit files keep these statements verbatim; the README records the corrections.
 
 \paragraph{Corrections to the sources.} 03's source lost a relation symbol and prints
@@ -385,7 +462,12 @@ $\lambda^{\aleph_0}=\lambda$ (\cref{osq:sub:model09}). 04's remark on its $\Q\op
 example is true but misleading (\cref{osq:rem:04misleading}). 06's remark that
 $|A^{06}_\kappa/xA^{06}_\kappa|\ge\kappa$ ``under the cardinal-arithmetic hypothesis'' needs no
 hypothesis and in fact gives $\kappa^{<\kappa}$ (\cref{osq:sec:homological}). 06, 04 and 09 state
-global choice, which is never used (\cref{osq:sub:foundations}). No source contains a false theorem.
+global choice, which is never used (\cref{osq:sub:foundations}). 12 assumes $c^2\in D$ for its flat dimensions
+$d+1$ and $2$ of cyclic modules, but needs it only for its $\Tor_2$ formula (\cref{osq:hd:thm:fdlattice}), and gives
+only bounds for projective dimensions that are exact in rank one (\cref{osq:hd:prop:pd}). 14 credits the
+Diophantine report's example $[1:\sqrt2]$ but not its rationality theorem for primitive directions, of which 14's
+criterion is the Gaussian and principal-ideal extension (\cref{osq:tn:sub:hom}). 16's rational collapse has the
+D-ring precedent that 16 itself credits (\cref{osq:fs:thm:collapse}). No source contains a false theorem.
 
 \section{Conventions, notation, and the constant-term retraction}
 \label{osq:sec:conv}
@@ -487,7 +569,7 @@ $\A_{\R,\R}=\R+\Pi$ is the nonnegative-support ring (03's $P_\R$). For a general
 field $k$ (06, 07, 10) the class field $\hahn k\No$ need not be realized inside the
 surreals; nothing below requires such a realization.
 
-\begin{lemma}[Constant term \src{03, 04, 06, 07, 08, 09, 10, 11}]\label{osq:lem:ct}
+\begin{lemma}[Constant term \src{03, 04, 06, 07, 08, 09, 10, 11, 13, 14, 15, 16}]\label{osq:lem:ct}
 The map $\ct:\A_{D,k}(G)\to D$ extracting the coefficient of $X^0$ is a surjective
 unital ring homomorphism with kernel $\Pi_k(G)$, split by the inclusion of constants.
 On $\B_{D,k}(G)$ the same coefficient is a split surjective ring homomorphism with kernel
@@ -512,7 +594,7 @@ maps $\ct$ and $\st$ receive different names because they have different domains
 (04), and \eqref{osq:eq:incompatible} below shows that they cannot be combined.
 \end{remark}
 
-\begin{lemma}[Degree and units \src{03, 04, 07, 08, 09, 10, 11}]\label{osq:lem:units}
+\begin{lemma}[Degree and units \src{03, 04, 07, 08, 09, 10, 11, 13, 14, 16}]\label{osq:lem:units}
 For $x\neq0$ in $\hahn kG$ put $\degw(x)=\max\supp x$. Then
 $\degw(xy)=\degw(x)+\degw(y)$ for $x,y\ne0$, so $\A_{D,k}(G)$ and $\B_{D,k}(G)$ are
 domains, and
@@ -534,22 +616,23 @@ Here $\degw$ is the largest growth exponent (04); it is not the ordinal-valued d
 the order type of a support used in parts of the factorization literature \cite{LM}.
 
 \subsection{Notation and renamings}\label{osq:sub:notation}
-The eight manuscripts use five symbols for the purely infinite ideal and three for the
+The manuscripts use many symbols for the purely infinite ideal and several for the
 constant term. We use the repository's $\Pi$ and the common $\ct$, and resolve every
 collision by renaming in the new material. The renamings, and the tags distinguishing
-the different set-sized constructions, are listed below.
+the different set-sized constructions, are listed below; \cref{osq:hd:sec:cores} and
+\cref{osq:fs:sub:gaps} list the further renamings of 12, 14 and 16.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
 \toprule
 Object & In the sources & Here\\
 \midrule
-purely infinite ideal & $\mathcal I$ (03, 06, 09), $\mathcal J_k$ (04), $\mathfrak I$ (07, 08, 11), $\mathfrak P$ (10) & $\Pi$, $\Pi_k$, $\Pi_\C$\\
-constant term & $c_0$ (06), $\pi$, $\pi_D$ (10), $\varepsilon_D$ (09), $\ct$ (others) & $\ct$\\
+purely infinite ideal & $\mathcal I$ (03, 06, 09, 14), $\mathcal J_k$ (04), $\mathfrak I$ (07, 08, 11), $\mathfrak P$ (10), $J_k$ (13), $\mathcal I_K$ (15), $\mathcal P_k$ (16) & $\Pi$, $\Pi_k$, $\Pi_\C$\\
+constant term & $c_0$ (06), $\pi$, $\pi_D$ (10), $\varepsilon_D$ (09), $\varepsilon$ (12), $\ct$ (others) & $\ct$\\
 coefficientwise constant term on polynomials & $\Pi$ (10), $c_0$ (06) & $\ct_*$\\
-$D+\Pi_k$ & $\A_{D,k}$ (04), $A_{D,k}$ (06), $A(D,K)$ (07), $R_D$ (08), $\A_D$ (09), $R(D,K)$ (10), $\mathcal Z_{K,D}$ (11), $A(D,k,G)$ (03) & $\A_{D,k}$, $\A_{D,k}(G)$\\
+$D+\Pi_k$ & $\A_{D,k}$ (04), $A_{D,k}$ (06), $A(D,K)$ (07), $R_D$ (08), $\A_D$ (09), $R(D,K)$ (10), $\mathcal Z_{K,D}$ (11), $A(D,k,G)$ (03), $A_D$ (13), $R_A$ (15), $\mathcal A_D$ (16) & $\A_{D,k}$, $\A_{D,k}(G)$\\
 Gaussian omnific ring & $\mathrm{GOz}$ (06), $\mathbf{Og}$ (09) & $\GOz$\\
-surcomplex field & $\No(i)$ (04, 07, 08, 09) & $\SC=\No[i]$ \cite{RepoNotation}\\
+surcomplex field & $\No(i)$ (04, 07, 08, 09, 12, 15, 16) & $\SC=\No[i]$ \cite{RepoNotation}\\
 Hahn field over $H_a$ & $L_a$ (06), $\mathscr F_a$ (07), $L_h$ (03, set version) & $\FF_a(k)$; $L_h$ for 03's set field\\
 localization $\Oz[\omega^{-a}]$ & $L_a$ (07) & $\Oz[\omega^{-a}]$ (never $L_a$)\\
 binomial quotient $\Oz/(1+\omega^a)$ & $B_a$ (07) & $\Qa_a$\\
@@ -578,11 +661,12 @@ the construction of 03.
 \section{Support gaps and the purely infinite ideal}\label{osq:sec:gaps}
 
 This section collects the facts that use the full surreal exponent class. All eight
-manuscripts prove them, as does manuscript~05 of the sibling report \cite{RepoOdg};
-they are background for the new results, not claimed as new. Throughout, $k$ is a set
+manuscripts of the first merge prove them, as do 13 and 15 and manuscript~05 of the sibling
+report \cite{RepoOdg}, and 14 and 16 use them; they are background for the new results, not
+claimed as new. Throughout, $k$ is a set
 field and $D\subseteq k$ a unital subring.
 
-\begin{lemma}[Gaps below and above a set \src{03, 04, 06, 07, 08, 09, 10, 11}]\label{osq:lem:gap}
+\begin{lemma}[Gaps below and above a set \src{03, 04, 06, 07, 08, 09, 10, 11, 13, 15, 16}]\label{osq:lem:gap}
 \leavevmode
 \begin{enumerate}
 \item Every set of surreal numbers has a strict upper and a strict lower bound in $\No$.
@@ -610,8 +694,9 @@ $na_\alpha<h$.
 Only the existence of a separator is used, not its simplicity or birthday (08). The
 sources use several equivalent families in place of \eqref{osq:eq:scales}:
 $a/\omega^{\alpha+1}$ (04, 05, 06, 08, 09, 03), $a/(\omega+\alpha+1)$ with the
-field sum of embedded ordinals (07), $\delta\omega^{-(\alpha+1)}$ (11) and
-$\epsilon\xi/\kappa$ (10). Each is a set whenever $\alpha$ ranges over a set.
+field sum of embedded ordinals (07), $\delta\omega^{-(\alpha+1)}$ (11),
+$\epsilon\xi/\kappa$ (10), $\epsilon/(\bar\alpha+2)$ with $\bar\alpha$ the surreal ordinal (13), and
+$g\omega^{-(\xi+1)}$ (15). Each is a set whenever $\alpha$ ranges over a set.
 
 \begin{example}[Surreal gaps where real gaps fail \src{03, 06, 08, 10, 11}]\label{osq:ex:gap}
 The series $f=\sum_{n\ge1}\omega^{1/n}$ lies in $\Pi$; its support has no positive
@@ -622,7 +707,7 @@ $X^h$, $h>0$, inside the nonnegative-support ring (03); this is where the passag
 monomials to the whole ideal fails in a fixed group (\cref{osq:sec:fixed}).
 \end{example}
 
-\begin{proposition}[Common monomial divisors \src{03, 04, 06, 07, 08, 09, 10, 11}]\label{osq:prop:common}
+\begin{proposition}[Common monomial divisors \src{03, 04, 06, 07, 08, 09, 10, 11, 13, 14, 15}]\label{osq:prop:common}
 Let $A=\A_{D,k}$ and $\Pi_k$ its purely infinite ideal.
 \begin{enumerate}
 \item Every set-sized family $\mathcal F\subseteq\Pi_k$ satisfies
@@ -665,7 +750,7 @@ since a nonzero ordinary integer (or Gaussian integer) is not divisible by every
 every prime (08, 10, 11). For a general $D$ the intersection formula can fail: for $D=\Q$
 every element of $\A_{\Q,\R}$ is divisible by every ordinary positive integer (11).
 
-\begin{proposition}[Clearing and fraction fields \src{03, 04, 06, 07, 08, 09, 11}]\label{osq:prop:fractions}
+\begin{proposition}[Clearing and fraction fields \src{03, 04, 06, 07, 08, 09, 11, 14, 15, 16}]\label{osq:prop:fractions}
 \leavevmode
 \begin{enumerate}
 \item For every set $E\subseteq\hahn k\No$ there is $h>0$ with $X^hE\subseteq\Pi_k$. For
@@ -766,7 +851,7 @@ real closed and contains a copy of all of $\No$ (\cref{osq:if:prop:closed,osq:if
 
 \subsection{The geometric telescope}\label{osq:sub:telescope}
 
-\begin{lemma}[Bounded-exponent telescope \src{03, 04, 05, 06, 07, 08, 09, 10, 11}]\label{osq:lem:telescope}
+\begin{lemma}[Bounded-exponent telescope \src{03, 04, 05, 06, 07, 08, 09, 10, 11, 15}]\label{osq:lem:telescope}
 Let $G$ be an ordered abelian group, and let $0<b<a$ and $a\ll c$ in $G$. Put $d=a-b$.
 Then
 \begin{equation}\label{osq:eq:telescope}
@@ -803,14 +888,15 @@ $q_{c;a,b}$ is absent and the nonzero remainder of \eqref{osq:eq:finitetelescope
 be removed.
 \end{remark}
 
-\begin{example}[A witness for $\omega$ \src{04, 10}]\label{osq:ex:omegatelescope}
+\begin{example}[A witness for $\omega$ \src{04, 10, 15}]\label{osq:ex:omegatelescope}
 With $c=1$, $b=1/\omega$ and $a=2/\omega$,
 $\bigl(\omega^{2/\omega}-\omega^{1/\omega}\bigr)\sum_{n\ge0}\omega^{1-(n+2)/\omega}=\omega$,
 while the finite partial products leave the nonzero remainders
 $\omega^{1-(N+1)/\omega}$ (04). In the lexicographic group $\Z\times\Z$ with $c=(1,0)$,
 $a=(0,2)$, $b=(0,1)$ the quotient is $\sum_{n\ge0}X^{(1,-n-2)}$ and the $N$-th remainder is
 $X^{(1,-N-1)}$ (10); under a compatible monomial realization each remainder is still
-infinite.
+infinite. 15 uses the same series $q=\sum_{n\ge0}\omega^{1-(n+2)/\omega}$ to block the extension of the
+finite-support augmentation (\cref{osq:sec:support}).
 \end{example}
 
 \paragraph{Precedents.} The countable geometric-series product with a monomial result is
@@ -846,7 +932,7 @@ $r\cdot r^{-1}(s/r)^k$ and $-s\cdot r^{-1}(s/r)^{k-1}$, which cancel.
 The telescope divides a monomial. Manuscripts 09, 10 and 11 divide an arbitrary element
 directly, which removes the separate reduction to monomials.
 
-\begin{lemma}[Subordinate division \src{09, 10, 11}]\label{osq:lem:division}
+\begin{lemma}[Subordinate division \src{09, 10, 11, 13, 15}]\label{osq:lem:division}
 Let $G$ be an ordered abelian group, $0\ne s=\sum_{g\in S}c_gX^g\in\Pi_k(G)$ and
 $a>b>0$ in $U_G(S)$. Put $d=a-b$. Then
 \begin{equation}\label{osq:eq:division}
@@ -894,7 +980,7 @@ pigeonhole principle to a set.
 Item (i) is 04's separation lemma, (ii) is 09's orbit separation and 03's exponent-family
 obstruction, and (iii) is 11's collision--divisibility principle.
 
-\begin{theorem}[Divisibility-separated families \src{11}]\label{osq:thm:packing}
+\begin{theorem}[Divisibility-separated families \src{11, 15}]\label{osq:thm:packing}
 Let $\mathcal S\subseteq\Pi_k$ be a set and $\Lambda$ an ordinal. There are distinct
 monomials $(u_\alpha)_{\alpha<\Lambda}$ in $\A_{D,k}$ with
 \[
@@ -910,13 +996,15 @@ reversing the indices only changes the sign of the quotient.
 \end{proof}
 
 The coefficients of the $u_\alpha$ are $1$; no independence of the coefficients of $s$ is
-used, and cancellations inside $s$ or the quotient are harmless (11).
+used, and cancellations inside $s$ or the quotient are harmless (11). 15 proves the same with the
+family $u_\xi=\omega^{g\omega^{-(\xi+1)}}$, $\xi<\theta$, for every ordinal $\theta$, and simultaneously for a set
+of elements $s$.
 
 \section{The universal set-sized quotient}\label{osq:sec:universal}
 
 \subsection{The theorem}\label{osq:sub:universalthm}
 
-\begin{theorem}[Universal set-sized quotient \src{04, 06, 07, 08, 09, 10, 11; 03, 05}]\label{osq:thm:universal}
+\begin{theorem}[Universal set-sized quotient \src{04, 06, 07, 08, 09, 10, 11, 13, 15; 03, 05}]\label{osq:thm:universal}
 Let $K$ be a set field, $D\subseteq K$ a unital subring, and $A=\A_{D,K}=D+\Pi_K$ with the
 full surreal exponent class.
 \begin{enumerate}
@@ -973,7 +1061,13 @@ $D\subseteq\C$ (08). Nonunital maps are treated by 08 (as a theorem), 06 (as a r
 and 10 (including maps defined on $\Pi_K$ alone). Noncommutative targets are allowed in
 all eight sources. Manuscript 05 of the sibling report \cite{RepoOdg} proves the unital
 case for $\Oz$ with the telescope and a cardinal $\kappa>|A|$, and 03 reproves that case
-(credited to 05) through its exponent-family obstruction. The proofs differ, and the
+(credited to 05) through its exponent-family obstruction. Two later manuscripts prove the theorem
+again, independently and without seeing the others: 13 for any set field $k$ and unital
+$D\subseteq k$ (unital maps, noncommutative targets), by direct division of an arbitrary purely infinite
+element with the Hartogs family $\epsilon/(\bar\alpha+2)$ (the route of 09, 10 and 11 below), and 15 for
+$k\in\{\R,\C\}$ and unital $D\subseteq k$, with nonunital maps in a remark, by the separating families of
+\cref{osq:thm:packing} and a Hartogs ordinal, which is 08's formulation; 15 also states the universe-relative
+reading of \cref{osq:sub:foundations}. Neither adds a hypothesis-free generalization. The proofs differ, and the
 following are genuinely different routes, kept here in brief.
 \begin{itemize}
 \item \emph{Explicit telescope} (04, 05, 06 appendix, 08). If $\varphi(X^c)\ne0$, then
@@ -1003,7 +1097,7 @@ $|\End_\Z(M)|$; the direct argument above (06, 09, 03) and 08's cyclic-module ar
 
 \subsection{Consequences for rings and representations}\label{osq:sub:consequences}
 
-\begin{corollary}[Omnific integers \src{03, 04, 05, 06, 07, 08, 09, 10, 11}]\label{osq:cor:Oz}
+\begin{corollary}[Omnific integers \src{03, 04, 05, 06, 07, 08, 09, 10, 11, 13, 15}]\label{osq:cor:Oz}
 For every set-sized unital ring $S$ the only unital homomorphism $\Oz\to S$ is
 $x\mapsto\ct(x)1_S$. Additive multiplicative maps $\Oz\to S$ into a set-sized ring
 correspond bijectively to idempotents $e\in S$, via $x\mapsto\ct(x)e$.
@@ -1014,7 +1108,7 @@ $e=\psi(1)$, which satisfies $e^2=e$, and every idempotent defines one. Apply
 \cref{osq:thm:universal}(i),(ii).
 \end{proof}
 
-\begin{corollary}[Gaussian omnific integers \src{04, 06, 07, 08, 09, 10, 11}]\label{osq:cor:gaussian}
+\begin{corollary}[Gaussian omnific integers \src{04, 06, 07, 08, 09, 10, 11, 13, 15}]\label{osq:cor:gaussian}
 For a set-sized unital ring $S$, unital maps $\GOz\to S$ correspond bijectively to
 elements $j\in S$ with $j^2=-1_S$, via
 $x+iy\mapsto\ct(x)1_S+\ct(y)j$ $(x,y\in\Oz)$. Every such map discards all
@@ -1046,6 +1140,19 @@ $\ct$.
 
 This does not say that the elements of $\Pi_k$ are zero: $\omega\ne0$ in $\Oz$, yet every
 set-target ring homomorphism sends it to $0$ (04).
+
+\begin{corollary}[A common monomial in a set of kernels \src{15}]\label{osq:rep:cor:kernels}
+Let $(\varphi_j:\A_{D,k}\to B_j)_{j\in J}$ be a set-indexed family of ring homomorphisms, the targets possibly proper
+classes, together with specified nonzero $b_j\in\ker\varphi_j$. Then some nonzero monomial $X^\delta$ lies in every
+$\ker\varphi_j$; in particular the family is not jointly injective.
+\end{corollary}
+\begin{proof}
+Apply \cref{osq:prop:fractions}(i) to the set $\{b_j^{-1}\}$: some $X^\delta$ has $X^\delta/b_j\in\Pi_k$ for all $j$, so
+$X^\delta\in b_j\A_{D,k}\subseteq\ker\varphi_j$.
+\end{proof}
+
+The witnesses are specified so that no choice over a proper class of families is needed; nothing is claimed about an
+intersection indexed by the class of all nonzero elements (15).
 
 \begin{corollary}[No faithful set-sized representation \src{04, 06, 07, 08, 11}]\label{osq:cor:faithful}
 No nonzero element of $\Pi_k$ acts nontrivially on a set-sized unital $\A_{D,k}$-module; in
@@ -1086,7 +1193,9 @@ set-sized $\A_{D,k}$-algebras and $D$-algebras coincide, with the same underlyin
 morphisms; noncentral structure maps are covered by the noncommutative form (04).
 Enlarging the set-sized algebra in which a calculation takes place therefore never yields
 a faithful algebraic model of the full ring, although such calculations can be faithful on
-a chosen set-sized subring (04).
+a chosen set-sized subring (04). Nor does the theorem forbid set-sized rings from embedding
+\emph{into} $\Oz$: the inclusion of $\Z[\omega]$ detects $\omega$; it concerns maps defined on all of
+$\Oz$, and it makes no claim that $\Oz$ and $\Z$ have the same first-order theory (15).
 
 \begin{corollary}[No ordered specialization, no small retract, rigid endomorphisms \src{08, 10, 11; 05}]\label{osq:cor:rigid}
 \leavevmode
@@ -1135,13 +1244,13 @@ completes the proof of \cref{osq:prop:fractions}(iv).
 \begin{remark}[Positive characteristic and additive observations]\label{osq:rem:poschar}
 If the target has positive characteristic $n$, the conclusion needs no cardinal argument:
 $f=n(f/n)$ with $f/n\in\Pi_k$ gives $\varphi(f)=n\varphi(f/n)=0$ (04, 07); more generally
-an ideal of $\A_{D,k}$ containing a nonzero element of $D$ contains $\Pi_k$ (07). The
+an ideal of $\A_{D,k}$ containing a nonzero element of $D$ contains $\Pi_k$ (07, 15). The
 cardinal argument is needed exactly for characteristic-zero targets such as $\Q$, $\R$ or
 $\End_\Z(M)$ for infinite torsion-free $M$ (11). The theorem concerns multiplicative
 maps: for a fixed $\gamma>0$ the coefficient extraction $x\mapsto[\omega^\gamma]x$ is a
 nonzero additive map $\Oz\to\R$ detecting $\omega^\gamma$, but it is not multiplicative,
 since $\omega^{\gamma/2}$ has coefficient $0$ at $\gamma$ while its square has coefficient
-$1$ (04, 07, 09, 10, 11). Valuations also detect nonconstant parts, but not by unital ring
+$1$ (04, 07, 09, 10, 11, 15). Valuations also detect nonconstant parts, but not by unital ring
 maps into set-sized rings (04).
 \end{remark}
 
@@ -1163,7 +1272,7 @@ through $q$; this refers to the explicit universal property, not to a category o
 rings with set-sized hom-sets.
 \end{remark}
 
-\begin{theorem}[Residually set-sized targets \src{11}]\label{osq:thm:residual}
+\begin{theorem}[Residually set-sized targets \src{11, 13}]\label{osq:thm:residual}
 Call a class ring $B$ \emph{residually set-sized} if for each nonzero $b\in B$ there are a
 set-sized ring $A_b$ and a unital map $\pi_b:B\to A_b$ with $\pi_b(b)\ne0$ (the quantifier
 is elementwise; no set of detecting maps is formed). Every unital map $h:\A_{D,k}\to B$
@@ -1185,7 +1294,7 @@ and $\Pi_k=\ker\ct$.
 
 \subsection{Every quotient and its small image}\label{osq:sub:allquotients}
 
-\begin{theorem}[Small reflection of an arbitrary quotient \src{06, 07, 09, 11}]\label{osq:thm:reflection}
+\begin{theorem}[Small reflection of an arbitrary quotient \src{06, 07, 09, 11, 15}]\label{osq:thm:reflection}
 Let $J$ be a class ideal of $A$. Then $\ct(J)$ is an ideal of $D$, and for every
 set-sized unital ring $S$
 \[
@@ -1207,7 +1316,7 @@ quotient presentation of a proper-class ring is not automatically a set-sized ri
 ``Reflection'' is only a name for the displayed mapping property; no category of all proper
 classes is used (07).
 
-\begin{theorem}[Ideals with set-sized quotient \src{04, 06, 07, 08, 09, 10, 11}]\label{osq:thm:quotients}
+\begin{theorem}[Ideals with set-sized quotient \src{04, 06, 07, 08, 09, 10, 11, 13, 15}]\label{osq:thm:quotients}
 For a class ideal $J$ of $A$ the following are equivalent:
 \begin{enumerate}
 \item $J$ admits a set-sized quotient (\cref{osq:def:setquotient});
@@ -1242,7 +1351,7 @@ $\Pi$, not $0\Oz$; one must not set $n=0$ in $n\Oz=n\Z+\Pi$ (04, 06, 07, 08, 09,
 For $D=k$, the only proper kernel with a set-sized quotient is $\Pi_k$, with quotient $k$
 (04).
 
-\begin{corollary}[Small primes, maximal ideals and fields \src{06, 07, 08, 10, 11}]\label{osq:cor:smallprimes}
+\begin{corollary}[Small primes, maximal ideals and fields \src{06, 07, 08, 10, 11, 13, 15}]\label{osq:cor:smallprimes}
 The prime class ideals of $\Oz$ with set-sized quotient are $\Pi$ and $p\Oz$ ($p$ an
 ordinary prime), with quotient domains $\Z$ and $\F_p$ and fraction fields $\Q$ and $\F_p$;
 the maximal ones are the $p\Oz$. A unital map from $\Oz$ to a set-sized field has kernel
@@ -1277,7 +1386,7 @@ $\mathfrak a=0$ use \cref{osq:prop:common}(iii); otherwise some $0\ne d\in\mathf
 $d\Pi_k=\Pi_k$, so the ideal generated by the set $\mathfrak a$ already contains $\Pi_k$.
 \end{proof}
 
-\begin{theorem}[Quotient-size alternative \src{08}]\label{osq:thm:idealsize}
+\begin{theorem}[Quotient-size alternative \src{08, 13}]\label{osq:thm:idealsize}
 Let $J$ be a class ideal of $\Oz$ with $\Pi\not\subseteq J$. For every set cardinal $\mu$
 there is a set of at least $\mu$ elements of $\Oz$ pairwise incongruent modulo $J$.
 \end{theorem}
@@ -1326,7 +1435,7 @@ The converse of the second statement is false: $\omega^2-1=(\omega-1)(\omega+1)$
 constant term $-1$ and is reducible. The constant term is a complete invariant for
 set-sized ring observations, not for factorization inside $\Oz$ (09).
 
-\begin{corollary}[A prime quotient invisible to all set-sized rings \src{06, 08, 09, 11}]\label{osq:cor:primeexample}
+\begin{corollary}[A prime quotient invisible to all set-sized rings \src{06, 08, 09, 11, 15}]\label{osq:cor:primeexample}
 Let $q=\omega^{\sqrt2}+\omega+1$. Then $\Oz/(q)$ is a nonzero proper-class integral domain
 of characteristic $0$; it admits no unital map to a nonzero set-sized ring and no nonzero
 set-sized unital module.
@@ -1363,7 +1472,7 @@ it contains. The benefit of $q$ in \cref{osq:cor:primeexample} is that the quoti
 domain (06). Under any map to a set-sized ring, $\omega^a$ becomes $0$ and $1+\omega^a$
 becomes $1$, which is the arithmetic reason (07).
 
-\begin{theorem}[Arithmetic completions \src{04, 06, 07, 08, 09, 10, 11}]\label{osq:thm:completions}
+\begin{theorem}[Arithmetic completions \src{04, 06, 07, 08, 09, 10, 11, 13, 15}]\label{osq:thm:completions}
 All finite quotient rings of $\Oz$ are the $\Z/n\Z$, and
 \[
  \widehat\Oz:=\varprojlim_{n\ge1}\Oz/n\Oz\cong\widehat\Z,\qquad
@@ -1419,7 +1528,7 @@ the ring although $X^{a\omega}$ is; the ring is proper and not a field.
 The same argument shows $\omega^{-\omega}\notin\Oz[1/\omega]$: $\omega^{-\omega}=a/\omega^n$
 would force $a=\omega^{n-\omega}\notin\Oz$ (11).
 
-\begin{theorem}[Quotient--localization calculus \src{08, 09, 11}]\label{osq:thm:localization}
+\begin{theorem}[Quotient--localization calculus \src{08, 09, 11, 15}]\label{osq:thm:localization}
 Let $R=\A_{D,k}$, $J$ a class ideal and $S\subseteq R$ a multiplicative class containing $1$.
 Put $D_0=D/\ct(J)$ and $T=\{\ct(s)+\ct(J):s\in S\}\subseteq D_0$. For every set-sized
 commutative ring $B$,
@@ -1440,7 +1549,7 @@ noncommutative statement, the denominators $\ct(s)1_B$ are central, so the ordin
 universal property of localization applies (08).
 \end{proof}
 
-\begin{example}[Three effects \src{08, 11}]\label{osq:ex:localizations}
+\begin{example}[Three effects \src{08, 11, 15}]\label{osq:ex:localizations}
 $\Refset(\Oz[1/(\omega+2)])=\Z[1/2]$; $\Refset(\Oz[1/\omega])=0$;
 $\Refset(\Oz/(\omega+1))=0$; and $\Refset(\Oz[1/n])=\Z[1/n]$ for a nonzero ordinary
 integer $n$. The second ring is a nonzero domain inside $\No$ and the third is nonzero because
@@ -1452,7 +1561,7 @@ unital map to a nonzero set-sized ring can make a nonzero $f\in\Pi_k$ invertible
 element with unit constant term zero.
 \end{example}
 
-\begin{theorem}[Algebraic points forget infinite coefficients \src{06, 09, 11}]\label{osq:thm:presentations}
+\begin{theorem}[Algebraic points forget infinite coefficients \src{06, 09, 11, 15}]\label{osq:thm:presentations}
 Let $X$ be a set of commuting variables, $(f_j)_{j\in E}$ a set-indexed family in
 $\A_{D,k}[X]$, $B=\A_{D,k}[X]/(f_j)$ and $B_0=D[X]/(\ct_*f_j)$, where $\ct_*$ applies
 $\ct$ to coefficients. For every set-sized commutative ring $S$ the natural map $B\to B_0$
@@ -1483,7 +1592,7 @@ $P(\ct(x))=0$ (take $P(X)=X$ and $x=\omega$), and it does not classify infinite 
 curves; inequalities, supports, valuations and nonmultiplicative coefficient observations
 remain available (04).
 
-\begin{proposition}[Conservativity for integer coefficients \src{08}]\label{osq:prop:conservative}
+\begin{proposition}[Conservativity for integer coefficients \src{08, 13}]\label{osq:prop:conservative}
 A finite system of polynomial equations with coefficients in $\Z$ has a solution in $\Oz$
 if and only if it has one in $\Z$; more generally, positive existential ring formulas with
 parameters in $\Z$ have the same truth value in $\Oz$ and $\Z$. With an inequation this
@@ -1504,7 +1613,7 @@ setting.
 
 \section{Modules and derivations over the full class ring}\label{osq:sec:modules}
 
-\begin{theorem}[Set-sized modules \src{04, 06, 07, 08, 09, 10, 11}]\label{osq:thm:modules}
+\begin{theorem}[Set-sized modules \src{04, 06, 07, 08, 09, 10, 11, 13, 15}]\label{osq:thm:modules}
 Let $A=\A_{D,k}$. Restriction along $D\hookrightarrow A$ and inflation along $\ct$ are mutually
 inverse equivalences between set-sized unital $A$-modules and set-sized unital $D$-modules;
 the action of $A$ on a set-sized module is $(d+f)m=dm$ ($d\in D$, $f\in\Pi_k$). The
@@ -1531,7 +1640,7 @@ statement about homological dimensions computed with arbitrary class-sized modul
 rank-one free module $A$ is not an object of the small-module category (07).
 \Cref{osq:sec:homological} treats the homological algebra over set-sized integer parts.
 
-\begin{proposition}[An additive splitting that is not a module splitting \src{08}]\label{osq:prop:nonsplit}
+\begin{proposition}[An additive splitting that is not a module splitting \src{08, 15}]\label{osq:prop:nonsplit}
 The exact sequence of class $\Oz$-modules $0\to\Pi\to\Oz\xrightarrow{\ct}\Z\to0$, with
 $\Z$ carrying the action $x\cdot n=\ct(x)n$, does not split as a sequence of $\Oz$-modules,
 although it splits as a sequence of additive groups and of rings.
@@ -1541,7 +1650,20 @@ A module section $s$ gives $e=s(1)$ with $\ct(e)=1$ and $ue=s(u\cdot1)=s(0)=0$ f
 $u\in\Pi$. With $u=\omega$ and $\Oz$ a domain, $e=0$, a contradiction.
 \end{proof}
 
-\begin{theorem}[Derivations into set-sized modules \src{04, 06, 08, 09, 10, 11}]\label{osq:thm:derivations}
+\begin{proposition}[Projectivity depends on the size convention \src{15}]\label{osq:rep:prop:projectivity}
+With the constant-term action, $\Z$ is projective in the category of set-sized $\Oz$-modules, although
+$\ct:\Oz\to\Z$ has no $\Oz$-linear section (\cref{osq:prop:nonsplit}). For every set-sized $\Oz$-module $M$,
+$\Hom_{\Oz}(M,\Oz)=0$.
+\end{proposition}
+\begin{proof}
+By \cref{osq:thm:modules} the set-sized modules are abelian groups, and $\Z$ is free on one generator. If
+$f:M\to\Oz$ is linear and $m\in M$, then $\omega f(m)=f(\omega m)=f(0)=0$, so $f(m)=0$ in the domain $\Oz$.
+\end{proof}
+
+No nonzero free $\Oz$-module is set-sized, yet the set-sized module category has many projectives; this is a
+warning against importing the size convention of ordinary module theory, not a Morita statement (15).
+
+\begin{theorem}[Derivations into set-sized modules \src{04, 06, 08, 09, 10, 11, 13}]\label{osq:thm:derivations}
 Let $A=\A_{D,k}$ and $M$ a set-sized $A$-module. Every derivation $\partial:A\to M$ (an
 additive class map with $\partial(xy)=x\partial(y)+y\partial(x)$) vanishes on $\Pi_k$, and
 restriction gives a natural bijection $\Der_\Z(A,M)\cong\Der_\Z(D,M)$ with inverse
@@ -1808,7 +1930,8 @@ support (04, 07, 11).
 \end{remark}
 
 The finite-support augmentation appears independently in 03 (``two necessary warnings''),
-04, 09 and 11; 07 describes the same boundary in words (on a finite-support fragment the
+04, 09, 11 and 15 (which blocks its extension with the single series of \cref{osq:ex:omegatelescope}),
+and 12's cores carry it too (\cref{osq:hd:prop:finite}); 07 describes the same boundary in words (on a finite-support fragment the
 certificate \eqref{osq:eq:telescope} need not exist, and a faithful interpretation in a
 set-sized target can exist), and manuscript~05 of the sibling report \cite{RepoOdg}
 observes that $\Z+\omega\R[\omega]$ has many real evaluation maps that do not extend to
@@ -1849,7 +1972,7 @@ controlled subfield.
 
 \subsection{The bounds of the sources}\label{osq:sub:sourcebounds}
 
-\begin{proposition}[Monomial-count bounds \src{03, 04, 07, 10}]\label{osq:prop:monomialbounds}
+\begin{proposition}[Monomial-count bounds \src{03, 04, 07, 10, 13, 15}]\label{osq:prop:monomialbounds}
 Let $A=\A_{D,k}(\Gamma)$ and $\varphi:A\to S$ a ring homomorphism.
 \begin{enumerate}
 \item If $\varphi(X^a)\ne0$ for some $a>0$, then $\gamma\mapsto\varphi(X^\gamma)$ is injective
@@ -1857,7 +1980,9 @@ on $H_a(\Gamma)_{>0}$ (04); more generally $r X^\delta\mapsto\varphi(rX^\delta)$
 $\{rX^\delta:r\in k^\times,\ 0<\delta\in H_a(\Gamma)\}$, and the same holds if $X^a$ divides
 some $g$ with $\varphi(g)\ne0$ (07).
 \item If $0\ne x\in\Pi_k(\Gamma)$ and $\varphi(x)\ne0$, then $a\mapsto\varphi(X^a)$ is injective on
-$U_\Gamma(\supp x)$; this also holds for a nonunital map defined on $\Pi_k(\Gamma)$ alone (10).
+$U_\Gamma(\supp x)$; this also holds for a nonunital map defined on $\Pi_k(\Gamma)$ alone (10; 15's
+local criterion is this bound, and 13's criterion is the same injection on any set $T\subseteq\Gamma_{>0}$ with
+$s>a+n(a-b)$ for $a>b$ in $T$, $s\in\supp x$).
 \item On the negative side, if $0\ne\varepsilon\in\mm_k(\Gamma)$, $a=v(\varepsilon)$ and
 $\varphi(\varepsilon)\ne0$ for a map $\varphi$ on $\B_{D,k}(\Gamma)$, then
 $\gamma\mapsto\varphi(X^{-\gamma})$ is injective on $(0,a)_\Gamma$ (04).
@@ -1873,7 +1998,7 @@ $a$, $\gamma$, $\delta$, subtraction and ordinary integer multiples, so their wi
 $\A_{D,k}(\Gamma)$ or $\B_{D,k}(\Gamma)$; apply \cref{osq:lem:separation}.
 \end{proof}
 
-\begin{example}[Where these bounds are vacuous \src{04, 08, 10}]\label{osq:ex:archimedean}
+\begin{example}[Where these bounds are vacuous \src{04, 08, 10, 13}]\label{osq:ex:archimedean}
 If $\Gamma$ is Archimedean, $H_a(\Gamma)=\{0\}$ and the telescopes do not exist. For
 $\Gamma=\Z$ a reverse well-ordered positive support is finite, $\A_{\Z,\R}(\Z)=\Z+X\R[X]$,
 and evaluation at $X=1$ is a map to the set field $\R$ detecting $X$ (10). An arbitrary fixed
@@ -2742,7 +2867,10 @@ spliced sequence $0\to J\to P\to A\to D\to0$.
 
 In standard terms, $A\to D$ is a homological ring epimorphism ($D\otimes_AD=D$, all higher self-$\Tor$
 vanish) but not a flat one (03, 06); this terminology is optional. The exact value of $\pd_AD$ is not
-determined: only $\pd_AD\ge2$ and $\fd_AD=1$ are proved (06). The nonzero $\Tor_1^A(D,A/xA)$ does not
+determined in general: only $\pd_AD\ge2$ and $\fd_AD=1$ are proved (06); when $I$ is countably generated,
+$\pd_AD=2$ (\cref{osq:hd:prop:pd}(v), from 12's telescope). Hypothesis (H2) is where the totally ordered exponent
+cone enters: for 12's coordinatewise cones the flat dimension of $D$ is any $d\ge1$, and the two kinds of
+statement are compared in \cref{osq:hd:rem:reconcile}. The nonzero $\Tor_1^A(D,A/xA)$ does not
 contradict (ii), because $A/xA$ is not a $D$-module: $I\not\subseteq xA$, since a gap below $\supp x$
 exhibits a smaller positive monomial of $I$ outside $xA$ (06). $I/I^2=0$ is not a finite-presentation or
 smoothness statement (09).
@@ -2774,6 +2902,734 @@ Gaussian versions with $D=\Z[i]$, where $\Ext_D$ means extensions of $\Z[i]$-mod
 $0\ne x\in\Pi^{06}_\kappa$ the module $A^{06}_\kappa/xA^{06}_\kappa$ is detected by $I$ (it is not a $D$-module), so
 its carrier has at least $\kappa^{<\kappa}$ elements; 06 stated this with the qualifier ``under the
 cardinal-arithmetic hypothesis'', which is not needed.
+
+\section{Homological and tensor algebra of omnific cores}\label{osq:hd:sec:cores}
+
+This section is the part contributed by manuscripts~12 and~14 (\cref{osq:sub:sources}). Both
+study ordinary commutative algebra of rings of the form ``constants plus a tail'' inside $\Oz$ and
+$\GOz$, and they share one set-sized model: 14's finite-support ring $A_0$ is 12's rank-one
+coordinate-cone core $A_1$, and 12's two-generator relation module is the case $r=2$ of 14's
+lattice syzygy. Each is printed once (\cref{osq:hd:lem:cores,osq:tn:thm:syzygy}). Manuscript~12
+computes flat and projective dimensions of set-sized finite-support cores
+(\cref{osq:hd:sub:cores,osq:hd:sub:resolution,osq:hd:sub:tor,osq:hd:sub:dimensions}); 14 computes
+tensor products, symmetric and exterior powers, Rees algebras, homomorphisms and duals of
+coefficient-lattice modules, over the full class ring and over $A_0$
+(\cref{osq:tn:sub:lattices,osq:tn:sub:tensor,osq:tn:sub:rees,osq:tn:sub:hom}). Labels carry the
+sub-prefixes \texttt{osq:hd:} (12) and \texttt{osq:tn:} (14).
+
+\paragraph{Scope.} The rings of \cref{osq:hd:sub:cores,osq:hd:sub:resolution,osq:hd:sub:tor,osq:hd:sub:dimensions}
+and 14's model $A_0$ have \emph{finite} supports. They are therefore outside the universal theorem, like
+the finite-support rings of \cref{osq:sec:support}: the augmentation that sends every monomial to $1$
+is a unital map to the coefficient field that detects the tail (\cref{osq:hd:prop:finite}). What 12
+calls arithmetic invisibility is invisibility to \emph{finite} rings and to modules on which the tail
+acts by zero; these rings are not invisible to set-sized rings in the sense of \cref{osq:thm:universal}.
+
+\paragraph{Notation.} 12's augmentation $\varepsilon$ is $\ct$; its tail $M$ is $\Pi_\Lambda$ (the letter $M$ is
+14's coefficient lattice); its ordered-cone ring $T=D\oplus P$ with monomials $t^\gamma$ is
+$T_\Gamma=D\oplus\Pi^{\mathrm{fin}}_\Gamma$ with monomials $X^\gamma$ (in this report $t^g$ means $X^{-g}$,
+\cref{osq:sub:orientation}); its test modules $N_F$ are $V_F$; its cyclic module $Q=A/(X_1,cX_1)$ is written
+$A/H$. 14's ideal $\mathcal I$, its rings $B=k+\mathcal I$, $A=D+\mathcal I$ and its field $F$ are $\Pi_k$,
+$\A_{k,k}$, $\A_{D,k}$ and $\hahn k\No$; its set-sized $P$, $A_0$, $B_0$ are $\Pi^{\mathrm{fin}}_\Q$,
+$T_\Q$ and $k+\Pi^{\mathrm{fin}}_\Q$; its multiplication map $\mu_{M,N}$, kernel $K(M,N)$ and carrier $E(M,N)$
+are $\mathsf m_{M,N}$, $\mathcal T(M,N)$ and $\mathsf E(M,N)$; its multiplier ring $\mathcal O(M)$ and orders
+$\mathcal O$ in number fields $K$ are $\mathfrak o(M)$ and $\mathfrak o\subset K_0$ (the letter $\OO$ denotes the
+finite surreal rings); the saturated lattice $L$ of its matrix theorem is $W_D$.
+
+\subsection{Coordinate-cone and ordered-cone cores}\label{osq:hd:sub:cores}
+
+Throughout \cref{osq:hd:sub:cores,osq:hd:sub:resolution,osq:hd:sub:tor}, $K$ is a field and $D\subseteq K$ a unital
+subring, so $D$ is a domain. Let $\Lambda$ be $[d]=\{1,\dots,d\}$ ($d\ge1$) or $\N_{>0}$, and let
+$P_\Lambda=\Q_{\ge0}^{(\Lambda)}$ be the monoid of finitely supported vectors
+$\boldsymbol\alpha=(\alpha_i)_{i\in\Lambda}$ with nonnegative rational coordinates. In the monoid algebra
+$K[P_\Lambda]$ (finite sums, $X^{\boldsymbol\alpha}X^{\boldsymbol\beta}=X^{\boldsymbol\alpha+\boldsymbol\beta}$) put
+\begin{equation}\label{osq:hd:eq:cores}
+ \Pi_\Lambda=\bigoplus_{0\ne\boldsymbol\alpha\in P_\Lambda}KX^{\boldsymbol\alpha},\qquad
+ A_\Lambda=D\oplus\Pi_\Lambda ,
+\end{equation}
+and write $A_d,\Pi_d$ for $\Lambda=[d]$ and $X_i=X^{\mathbf e_i}$. The coefficient at $X^{\mathbf 0}$ is a split
+surjective ring homomorphism $\ct:A_\Lambda\to D$ with kernel $\Pi_\Lambda$, because a sum of two nonnegative
+vectors is zero only when both are. For a nonzero divisible subgroup $\Gamma\subseteq\R$ put
+\begin{equation}\label{osq:hd:eq:T}
+ \Pi^{\mathrm{fin}}_\Gamma=\bigoplus_{\gamma\in\Gamma_{>0}}KX^\gamma,\qquad
+ T_\Gamma=D\oplus\Pi^{\mathrm{fin}}_\Gamma ,
+\end{equation}
+the finite-support ring of \cref{osq:sec:support} over the fixed ordered group $\Gamma$, again with
+$\ct:T_\Gamma\to D$. The difference between the two families is the exponent cone: coordinatewise
+nonnegative vectors in $A_\Lambda$, the positive cone of a totally ordered group in $T_\Gamma$.
+
+\begin{lemma}[Domains and embeddings \src{12; 14}]\label{osq:hd:lem:cores}
+\leavevmode
+\begin{enumerate}
+\item $K[P_\Lambda]$, $A_\Lambda$ and $T_\Gamma$ are domains, and $\Pi_\Lambda$ is a nonzero prime ideal.
+\item Let $(\gamma_i)_{i\in\Lambda}$ be positive surreals linearly independent over $\Q$. Then
+$X^{\boldsymbol\alpha}\mapsto\omega^{\sum_i\alpha_i\gamma_i}$ defines an injective ring homomorphism
+$\R[P_\Lambda]\to\No$, and, applied to real and imaginary parts, $\C[P_\Lambda]\to\SC$; it maps $\Z+\Pi_\Lambda$
+into $\Oz$ and $\Z[i]+\Pi_\Lambda$ into $\GOz$. The $\gamma_i$ may be taken real: $\gamma_i=\theta^{i-1}$ for a
+transcendental real $\theta>1$. Likewise $X^\gamma\mapsto\omega^\gamma$ embeds $T_\Gamma$ in $\Oz$ or $\GOz$ for
+$(D,K)=(\Z,\R)$ or $(\Z[i],\C)$.
+\item If the $\gamma_i$ are positive reals linearly independent over $\Q$ and $\Gamma=\sum_i\Q\gamma_i$, then
+$X_i\mapsto X^{\gamma_i}$ is an injective ring homomorphism $A_\Lambda\hookrightarrow T_\Gamma$ compatible with
+$\ct$. For $d=1$ and $\gamma_1=1$ it is an isomorphism $A_1\cong T_\Q$; this ring, with $(D,K)=(\Z,\R)$ or
+$(\Z[i],\C)$, is 14's set-sized model $A_0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) Finitely many elements of $K[P_\Lambda]$ involve finitely many coordinates and a common denominator $n$ of
+their exponents, so they lie in the polynomial ring $K[X_{i_1}^{1/n},\dots,X_{i_s}^{1/n}]$, a domain. In $T_\Gamma$
+the largest exponents of two nonzero finite sums add and their leading coefficients multiply. $A_\Lambda/\Pi_\Lambda=D$
+is a domain and $X_1\in\Pi_\Lambda$. (ii) The map $\ell(\boldsymbol\alpha)=\sum_i\alpha_i\gamma_i$ is additive,
+injective by linear independence, and positive on nonzero $\boldsymbol\alpha\in P_\Lambda$; so the monomials go to
+distinct Conway monomials, $\omega^u\omega^v=\omega^{u+v}$ and finite distributivity give a ring homomorphism, and
+uniqueness of finite normal forms gives injectivity. Nonconstant terms go to positive exponents and the constant
+coefficient is an integer (Gaussian integer), which is membership in $\Oz$ ($\GOz$). A rational relation among
+the $\theta^{i-1}$ would give a nonzero rational polynomial vanishing at $\theta$. The case of $T_\Gamma$ is the same
+with $\ell=\mathrm{id}$. (iii) $\ell$ is an injective monoid map $P_\Lambda\to\Gamma_{\ge0}$ with $\ell^{-1}(0)=0$; for
+$d=1$ it is $\Q_{\ge0}\to\Q_{\ge0}$, the identity.
+\end{proof}
+
+Thus $d$ counts independent monomial directions, not Archimedean scales: with $\gamma_i=\theta^{i-1}$ all exponents lie
+in the single Archimedean class of $1$ (12). Every element of every ring in this subsection is a finite sum; no
+topology, convergence or infinite summation is involved.
+
+\begin{proposition}[Finite targets only \src{12}]\label{osq:hd:prop:finite}
+Let $A$ be $A_\Lambda$ or $T_\Gamma$ with tail $\Pi$, and $(D,K)=(\Z,\R)$ or $(\Z[i],\C)$.
+\begin{enumerate}
+\item For $0\ne a\in D$, $a\Pi=\Pi$ and $A/aA\cong D/aD$. Every unital map from $A$ to a finite ring, and every
+finite $A$-module, factors through $\ct$; $\widehat A\cong\widehat D$ for the profinite completions,
+$\varprojlim_kA/p^kA\cong\varprojlim_kD/p^kD$ for every ordinary prime $p$, $\bigcap_kp^kA=\Pi$, and
+$\Tor^A_{>0}(D,E)=0$ for every finite $A$-module $E$.
+\item The augmentation $\sum_{\boldsymbol\alpha}c_{\boldsymbol\alpha}X^{\boldsymbol\alpha}\mapsto\sum_{\boldsymbol\alpha}c_{\boldsymbol\alpha}$
+is a unital ring homomorphism $A\to K$ sending every monomial to $1$; it does not factor through $\ct$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(i) Divide the coefficients of a tail by $a$; so $aA=aD\oplus\Pi$. A finite ring has a positive characteristic $n$,
+so a map to it kills $n\Pi=\Pi$; a finite module is killed by some $n\ge1$, and $m=n(m/n)$ for $m\in\Pi$. The ideals
+$nA=nD\oplus\Pi$ are cofinal among ideals of finite index, and $\bigcap_nnD=0=\bigcap_kp^kD$ (coordinatewise for
+$\Z[i]$). A finite module is therefore a $D$-module, and the $\Tor$ assertion is \cref{osq:hd:cor:arithmeticTor} below for
+$A_\Lambda$ and \cref{osq:thm:homological}(ii) with \cref{osq:hd:thm:orderedcone} for $T_\Gamma$. (ii) is the computation of
+\cref{osq:thm:support}(ii): for finite supports, the coefficient sum of a product is the product of the coefficient
+sums.
+\end{proof}
+
+Hence all the cores, and 14's $A_0$, have the same finite quotients and profinite completion as $D$, while
+\cref{osq:hd:cor:fd} below shows that their homological dimensions differ; this limits any reconstruction of an
+omnific subring from its finite arithmetic shadows (12). Item (ii) is the reason the word ``invisible'' must be read
+with (i)'s restriction.
+
+\subsection{Flat face ideals and a Boolean resolution}\label{osq:hd:sub:resolution}
+
+For a finite nonempty $S\subseteq\Lambda$ put $p_S=\prod_{i\in S}X_i$ and let
+\begin{equation}\label{osq:hd:eq:IS}
+ I_S=\bigoplus_{\boldsymbol\alpha\in P_\Lambda,\ \alpha_i>0\ (i\in S)}KX^{\boldsymbol\alpha},
+\end{equation}
+an ideal of $A_\Lambda$ with $I_S=\bigcap_{i\in S}I_{\{i\}}$ and $\Pi_\Lambda=\sum_iI_{\{i\}}$.
+
+\begin{lemma}[Face ideals \src{12}]\label{osq:hd:lem:faces}
+Let $A=A_\Lambda$ and $\Pi=\Pi_\Lambda$.
+\begin{enumerate}
+\item $I_S=\bigcup_{n\ge0}p_S^{2^{-n}}A$, an increasing chain of free rank-one $A$-modules; hence $I_S$ is flat.
+\item $\Pi^2=\Pi$, $I_S^2=I_S$ and $\Pi I_S=I_S$; for every $D$-module $E$, regarded as an $A$-module through $\ct$,
+$I_S\otimes_AE=0$.
+\item Neither $\Pi$ nor any $I_S$ is finitely generated.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) Multiplication by $p_S^{2^{-n}}$ is injective (\cref{osq:hd:lem:cores}), and
+$p_S^{2^{-n}}=p_S^{2^{-n-1}}p_S^{2^{-n-1}}$ gives the chain. Given $f\in I_S$, choose $n$ with $2^{-n}$ below every
+coordinate indexed by $S$ of the finitely many exponents of $f$; then $f/p_S^{2^{-n}}$ has nonnegative exponents,
+positive on $S$, so it lies in $\Pi\subseteq A$ although its coefficients are arbitrary in $K$. A filtered colimit of
+flat modules is flat \cite[Lemma~10.39.3]{StacksFlat}.
+(ii) $kX^{\boldsymbol\alpha}=(kX^{\boldsymbol\alpha/2})X^{\boldsymbol\alpha/2}$, both factors in $I_S$ when
+$\boldsymbol\alpha$ is positive on $S$. Since $\Pi E=0$, $I_S\otimes_AE\cong(I_S/\Pi I_S)\otimes_DE=0$.
+(iii) Let $|\boldsymbol\alpha|=\sum_i\alpha_i$. If finitely many elements generated $\Pi$ (or $I_S$), let $\delta>0$ be
+the least total degree of their monomials; every element of the generated ideal has only monomials of total degree
+at least $\delta$, since multiplication by $A$ adds nonnegative degrees and cancellation creates no new monomial. But
+$X_1^q\in\Pi$ (respectively $p_S^q\in I_S$) with $q$ small has smaller total degree.
+\end{proof}
+
+Flatness of every $I_S$ does not imply flatness of their sum $\Pi$; the failure begins at $d=2$
+(\cref{osq:hd:cor:fd}). For $p\ge1$ put $C_p=\bigoplus_{S\subseteq\Lambda,\ |S|=p}I_S$ and $C_0=A$; for
+$S=\{s_1<\dots<s_p\}$ let $d_p$ send $f$ in the summand $I_S$ to $\sum_{r=1}^p(-1)^{r-1}f$ in the summands
+$I_{S\setminus\{s_r\}}$ (for $p=1$ the target is $A$ and the map is the inclusion). Deleting two indices in either
+order gives opposite signs, so $d_{p-1}d_p=0$.
+
+\begin{theorem}[Coordinate-intersection resolution \src{12}]\label{osq:hd:thm:resolution}
+The augmented complex
+\[
+ \cdots\longrightarrow C_2\xrightarrow{d_2}C_1\xrightarrow{d_1}A_\Lambda\xrightarrow{\ct}D\longrightarrow0
+\]
+is exact and every $C_p$ is flat. For $\Lambda=[d]$, $C_p=0$ for $p>d$, and this is a flat resolution of $D$ of
+length $d$; also for $\Lambda=\N_{>0}$ the complex is exact.
+\end{theorem}
+\begin{proof}
+All maps preserve the exponent grading. In degree $\mathbf 0$ only $A$ and $D$ contribute, and $\ct$ is the identity
+of $D$. Fix $\boldsymbol\alpha\ne\mathbf 0$ with support $T=\{i:\alpha_i>0\}$. The degree-$\boldsymbol\alpha$ part of
+$I_S$ is $K$ exactly when $\varnothing\ne S\subseteq T$, so the degree-$\boldsymbol\alpha$ part of the complex is the
+augmented chain complex of the full simplex on $T$ with coefficients $K$, a $p$-subset in degree $p$. With $t=\min T$,
+the homotopy that inserts $t$ (with the sign placing it in the ordered list) into subsets not containing $t$, is zero on
+subsets containing $t$, and sends the augmentation vector to the vertex $\{t\}$, satisfies $dh+hd=1$. Each element
+involves finitely many degrees and summands, so degreewise exactness is exactness. Flatness is
+\cref{osq:hd:lem:faces}(i) and closure under direct sums.
+\end{proof}
+
+\begin{corollary}[Arithmetic modules are $\Tor$-acyclic \src{12}]\label{osq:hd:cor:arithmeticTor}
+For every $D$-module $E$, $D\otimes_{A_\Lambda}E\cong E$ and $\Tor^{A_\Lambda}_j(D,E)=0$ for $j>0$; in particular
+$A_\Lambda\to D$ is a homological ring epimorphism.
+\end{corollary}
+\begin{proof}
+Tensor the resolution with $E$: every positive term vanishes by \cref{osq:hd:lem:faces}(ii), and flat resolutions
+compute $\Tor$.
+\end{proof}
+
+This concerns every module on which the tail acts by zero; it is why such modules cannot see the flat dimension
+computed next (12).
+
+\begin{proposition}[Formal lifting and differentials \src{12; 13}]\label{osq:hd:prop:etale}
+Let $A$ be $A_\Lambda$ or $T_\Gamma$ with tail $\Pi$. Then $A\to D$ is formally \'etale for nilpotent lifting
+problems, but neither flat nor finitely presented as a ring map, and $\Omega_{A/D}\otimes_AD=0$: every
+$D$-derivation of $A$ into a module killed by $\Pi$ vanishes.
+\end{proposition}
+\begin{proof}
+If $f:A\to R$ is an $A$-algebra structure map and $D\to R/J$ an $A$-algebra map with $J^n=0$, then $f(\Pi)\subseteq J$,
+so $f(\Pi)=f(\Pi^n)\subseteq J^n=0$ ($\Pi^2=\Pi$ by halving exponents) and $f$ factors uniquely through $D$; this is
+the idempotent-ideal mechanism of \cite[Tag~060H]{StacksFormal}. Multiplication by a nonzero monomial of $\Pi$ is
+injective on $A$ but becomes $0$ on $D=D\otimes_AA$, so $D$ is not flat; $A/\Pi$ is finitely presented only if $\Pi$ is
+finitely generated, which it is not (\cref{osq:hd:lem:faces}(iii); for $T_\Gamma$, a finite family of tails has a least
+exponent among its monomials). A derivation $\partial$ as stated satisfies $\partial(uv)=u\partial v+v\partial u=0$ for
+$u,v\in\Pi$, and $\Pi=\Pi^2$.
+\end{proof}
+
+The mechanism is classical and not a novelty claim (12). Manuscript~13 proves the same statements for the full
+omnific ring in a two-universe reading (\cref{osq:hd:rem:reconcile}), and \cref{osq:thm:derivations} is the
+class-ring analogue for derivations. ``Nilpotent'' is a test condition on $R$: the cores are domains.
+
+\subsection{The multigraded Tor and exact flat dimensions}\label{osq:hd:sub:tor}
+
+For a finite nonempty $F\subseteq\Lambda$ let $J_F=(X_i:i\in F)A_\Lambda$ and $V_F=A_\Lambda/J_F$. For finite $S$ put
+$\mathbf e_S=\sum_{i\in S}\mathbf e_i$; the notation $K\langle\mathbf e_S\rangle$ means a copy of the $D$-module $K$
+placed in multidegree $\mathbf e_S$ (not a subring of $A_\Lambda$).
+
+\begin{theorem}[Boolean-face $\Tor$ formula \src{12}]\label{osq:hd:thm:boolean}
+For $\Lambda$ finite or countably infinite and $F$ as above,
+\begin{align*}
+ \Tor_0^{A_\Lambda}(D,V_F)&\cong D\langle\mathbf 0\rangle,\qquad
+ \Tor_1^{A_\Lambda}(D,V_F)\cong\bigoplus_{i\in F}D\langle\mathbf e_i\rangle,\\
+ \Tor_p^{A_\Lambda}(D,V_F)&\cong\bigoplus_{S\subseteq F,\ |S|=p}K\langle\mathbf e_S\rangle\qquad(p\ge2).
+\end{align*}
+In particular $\Tor_p=0$ for $p>|F|$.
+\end{theorem}
+\begin{proof}
+Tensor \cref{osq:hd:thm:resolution} with $V_F$; the positive terms become $I_S/J_FI_S$ and the degree-zero term is $V_F$.
+Fix $\boldsymbol\alpha\ne\mathbf 0$ with support $T$. If $\alpha_j>1$ for some $j\in F$, then $\boldsymbol\alpha-\mathbf e_j$
+is nonnegative, nonzero and positive wherever $\boldsymbol\alpha$ is, so the whole coefficient space at
+$\boldsymbol\alpha$ lies in $X_jI_S$ and in $X_jA$; every term vanishes in this degree. So assume $\alpha_j\le1$ for $j\in F$
+and put $U=\{j\in F:\alpha_j=1\}$. For $\varnothing\ne S\subseteq T$ the degree-$\boldsymbol\alpha$ part of $I_S/J_FI_S$ is
+a full copy of $K$ exactly when $U\subseteq S$ (multiplication by $X_j$ reaches this degree from $I_S$ only when
+$\alpha_j=1$ and $j\notin S$), and zero otherwise.
+
+\emph{Case $U=\varnothing$.} $(V_F)_{\boldsymbol\alpha}=K$ and all faces survive; the augmented simplex is exact.
+\emph{Case $U\ne\varnothing\ne T\setminus U$.} $(V_F)_{\boldsymbol\alpha}=0$, since subtracting $\mathbf e_j$ ($j\in U$)
+leaves a nonzero vector; inserting some $t\in T\setminus U$ contracts the complex of faces $U\subseteq S\subseteq T$.
+\emph{Case $T=U$, $|U|\ge2$.} Only $K$ in degree $|U|$ survives, with no incoming or outgoing maps
+($(V_F)_{\mathbf e_U}=0$); this gives $K\langle\mathbf e_U\rangle$.
+\emph{Case $T=U=\{j\}$.} In degree $\mathbf e_j$ the complex is $K\to(V_F)_{\mathbf e_j}=K/D$, because $J_F$ has
+coefficient space $D$ (not $K$) at $\mathbf e_j$: the cofactor of $X_j$ is a constant. The map is the quotient map,
+with kernel $D$ and zero cokernel; this gives $D\langle\mathbf e_j\rangle$ in degree one.
+In degree $\mathbf 0$ only $D$ in degree zero remains.
+\end{proof}
+
+For $|S|=p\ge2$ the class of $k\in K$ is represented by $kX^{\mathbf e_S}$ in $I_S/J_FI_S$; in degree one only
+coefficients $d\in D$ give cycles $dX_i$. Treating the constant coefficient as if it lay in $K$ gives a wrong
+answer (12). Scaling coordinates by positive rationals $b_i$ ($i\in F$) is an automorphism of $A_\Lambda$ fixing the
+coefficients, so the same formula holds for $A_\Lambda/(X_i^{b_i}:i\in F)$ with $\mathbf e_S$ replaced by
+$\sum_{i\in S}b_i\mathbf e_i$ (12).
+
+\begin{corollary}[Exact flat dimensions \src{12}]\label{osq:hd:cor:fd}
+For $\Lambda=[d]$, $\fd_{A_d}D=d$ and $\fd_{A_d}\Pi_d=d-1$; for $\Lambda=\N_{>0}$ both are infinite. All positive
+self-$\Tor$ groups $\Tor^{A_d}_{>0}(D,D)$ vanish.
+\end{corollary}
+\begin{proof}
+The resolution gives $\fd D\le d$, and $\Tor_d(D,V_{[d]})$ is $D$ ($d=1$) or $K$ ($d\ge2$), nonzero. Truncation gives
+$\fd\Pi_d\le d-1$; for $d\ge2$, $0\to\Pi_d\to A_d\to D\to0$ gives $\Tor_{d-1}(\Pi_d,V_{[d]})\cong\Tor_d(D,V_{[d]})\ne0$,
+and for $d=1$, $\Pi_1=I_{\{1\}}$ is flat. In infinite rank take $|F|=n$ for every $n$. The last assertion is
+\cref{osq:hd:cor:arithmeticTor}.
+\end{proof}
+
+For $d=2$ the groups are $D^2$ and $K$ (the latter represented by $kX_1X_2$), and for $d=3$ they are $D^3,K^3,K$:
+vertices, edges and the full face (12). The finite audit of 12 checks this formula for $D=\Q\subset K=\Q(\sqrt2)$
+(\cref{osq:sub:checks}).
+
+\subsection{Coefficient lattices and their syzygies}\label{osq:tn:sub:lattices}
+
+The next results need only a ring of the following shape, which covers 12's cores, 12's ordered-cone rings and 14's
+rings.
+
+\paragraph{Setting (L).} $K$ is a field, $D\subseteq K$ a unital subring, and $A=D\oplus\Pi$ is one of:
+(a) $A_\Lambda$ with $\Pi=\Pi_\Lambda$; (b) $T_\Gamma$ with $\Pi=\Pi^{\mathrm{fin}}_\Gamma$; (c) the class ring
+$\A_{D,K}$ with $\Pi=\Pi_K$ (full surreal exponents, $K$ a set field). In each case $B=K\oplus\Pi$ is a ring containing
+$A$, $\Pi$ is an ideal of $B$ and a $K$-vector space, $K\cap\Pi=0$, all three lie in a field, and $\Pi$ is not finitely
+generated in (a), (b) and not generated by a set in (c) (\cref{osq:hd:lem:faces}(iii), \cref{osq:hd:prop:etale},
+\cref{osq:prop:common}(iii)). A \emph{coefficient lattice} is $M=Dm_1+\dots+Dm_r\subseteq K$ with $m_1,\dots,m_r$
+linearly independent over $D$ (equivalently over $\Frac D$); $r=\rk M$. Put
+\[
+ L(M)=M+\Pi\subseteq B,\qquad J_g(M)=X^gL(M)\subseteq A
+\]
+for a nonzero monomial $X^g\in\Pi$ (a vector $g\ne\mathbf0$ in (a), $g\in\Gamma_{>0}$ in (b), $g>0$ in (c)). For
+$(D,K)=(\Z,\R)$ or $(\Z[i],\C)$, $D$ is a principal ideal domain and every nonzero finitely generated $D$-submodule of
+$K$ is free, so these are exactly 14's coefficient lattices.
+
+\begin{theorem}[Generators and the first syzygy \src{14; 12} \merge]\label{osq:tn:thm:syzygy}
+In Setting (L), let $M$ have basis $m_1,\dots,m_r$.
+\begin{enumerate}
+\item $L(M)=\sum_jAm_j$, $\Pi L(M)=\Pi$ and $L(M)/\Pi L(M)\cong M$; the least number of generators of $L(M)$ is $r$,
+although $L(M)$ has rank one over the fraction field.
+\item The sequence
+\begin{gather*}
+ 0\longrightarrow\Pi^{r-1}\xrightarrow{\ \sigma\ }A^r\xrightarrow{\ \pi\ }L(M)\longrightarrow0,\qquad
+ \pi(a)=\sum_ja_jm_j,\\
+ \sigma(u_2,\dots,u_r)=\Bigl(-\sum_{j\ge2}\tfrac{m_j}{m_1}u_j,\ u_2,\dots,u_r\Bigr),
+\end{gather*}
+is exact. For $r=1$, $L(M)\cong A$; for $r\ge2$, $L(M)$ is not finitely presented in (a), (b), and in (c) the kernel is
+not generated by any set.
+\item \emph{(12's certificate.)} Let $c\in K\setminus\Frac(D)$ and $H=(X^g,cX^g)A$. Then
+$X^gA\cap cX^gA=X^g\Pi$ and $0\to\Pi\xrightarrow{m\mapsto(-cm,m)}A^2\xrightarrow{(a,b)\mapsto X^ga+cX^gb}H\to0$ is
+exact; in (a) and (b), $A$ is not coherent.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i) Since $0\ne m_1\in K$ and $\Pi$ is a $K$-space, $m_1\Pi=\Pi$; so $\sum_jAm_j\supseteq M+m_1\Pi=L(M)$, and the
+reverse inclusion is clear. $\Pi L(M)\subseteq\Pi$ because $\Pi$ is an ideal of $B$, and $\Pi L(M)\supseteq\Pi m_1=\Pi$.
+As $M\cap\Pi\subseteq K\cap\Pi=0$, $L(M)/\Pi\cong M\cong D^r$. Generators of $L(M)$ give generators of the $D$-module
+$L(M)/\Pi L(M)$, and a free module of rank $r$ over a nonzero commutative ring needs at least $r$ generators (reduce
+modulo a maximal ideal).
+(ii) If $\sum_ja_jm_j=0$ with $a_j=d_j+u_j$, the components in $K$ and $\Pi$ give $\sum_jd_jm_j=0$, so every $d_j=0$
+by independence, and $u_1=-\sum_{j\ge2}(m_j/m_1)u_j$; conversely these tuples lie in $\ker\pi$, and $(m_j/m_1)u_j\in\Pi$.
+$\sigma$ is injective. For $r\ge2$ the kernel projects onto $\Pi$, which is not finitely (set-) generated, and a
+finitely presented module has finitely generated kernels for every surjection from a finite free module.
+(iii) Apply (ii) to $M=D+Dc$ (the elements $1,c$ are independent over $D$ because $c\notin\Frac D$) and multiply by
+$X^g$, which is injective: $H=X^gL(M)$. If $X^g(d+u)=cX^g(e+v)$ then $d=ce$ forces $d=e=0$, so
+$X^gA\cap cX^gA=X^g(\Pi\cap c\Pi)=X^g\Pi$, not finitely generated; in a coherent ring the intersection of two finitely
+generated ideals is finitely generated \cite[Tag~05CU]{StacksCoherent}.
+\end{proof}
+
+\Cref{osq:tn:thm:syzygy}(iii) is 12's noncoherence certificate for $A_\Lambda$ and $T_\Gamma$ with any unital $D\subseteq K$;
+(i) and (ii) are 14's theorem for $\Oz$, $\GOz$ and $A_0$ with $D$ a principal ideal domain. Stating both at once in
+Setting (L) is the merge's; the proofs are the sources'. All compatible relations between two generators with the same
+monomial and incompatible constant lines are forced into the infinitely divisible tail (12). No novelty is attached to
+noncoherence as such: rings of the form $D+M$ and their coherence have a long history, including Dobbs--Papick
+\cite{DobbsPapick}; 14 uses no valuation-ring hypothesis on $B$, and the useful information is the exact syzygy (14).
+
+\begin{proposition}[Antisymmetric torsion and nonflatness \src{14} \merge]\label{osq:tn:prop:nonflat}
+In Setting (L), let $M,N$ be coefficient lattices and $\mathsf m_{M,N}:M\otimes_DN\to K$ the multiplication map. On
+$\mathsf E(M,N)=\Pi\oplus(M\otimes_DN)$ the rule
+\begin{equation}\label{osq:tn:eq:action}
+ (d+h)\cdot(u,t)=\bigl(du+hu+h\,\mathsf m_{M,N}(t),\ dt\bigr)\qquad(d\in D,\ h\in\Pi)
+\end{equation}
+is an $A$-module structure, and $(m+u)\otimes(n+v)\mapsto(mv+un+uv,\ m\otimes n)$ is a well-defined $A$-linear map
+$\beta:L(M)\otimes_AL(N)\to\mathsf E(M,N)$. If $\rk M\ge2$ and $m_1,m_2$ are basis vectors, then
+$\tau=m_1\otimes m_2-m_2\otimes m_1$ is a nonzero element of $L(M)\otimes_AL(M)$ with product $0$. Consequently, in
+(a) and (b), $L(M)$ and every ideal $J_g(M)$ are not flat, hence neither projective nor invertible.
+\end{proposition}
+\begin{proof}
+For $a=d+h$, $b=e+g'$ in $A$ one computes that both $a\cdot(b\cdot(u,t))$ and $(ab)\cdot(u,t)$ have first coordinate
+$abu+(dg'+he+hg')\mathsf m_{M,N}(t)$ and second coordinate $de\,t$; additivity and $1\cdot(u,t)=(u,t)$ are clear, and
+$h\,\mathsf m_{M,N}(t)\in\Pi$ because $\Pi$ is a $K$-space. Write $x=m+u\in L(M)$, $y=n+v\in L(N)$ (uniquely, since
+$M\cap\Pi=0$); the formula is $(xy-mn,\ m\otimes n)$, which is biadditive. For $a=d+h\in A$, the constant part of $ax$ is
+$dm$, so the value at $(ax,y)$ is $(axy-dmn,\ dm\otimes n)$, which equals $a\cdot(xy-mn,m\otimes n)$ by
+\eqref{osq:tn:eq:action}, and the value at $(x,ay)$ is the same. Hence $\beta$ exists. $\beta(\tau)=(0,\tau)$, and
+$\tau\ne0$ in the free $D$-module $M\otimes_DM$ with basis $m_i\otimes m_j$. For flatness, $J=J_g(M)\cong L(M)$ is an
+ideal of $A$ ($X^gM\subseteq\Pi$ and $X^g\Pi\subseteq\Pi$); tensoring the injection $J\hookrightarrow A$ with $J$ gives
+the multiplication $J\otimes_AJ\to J$, which kills the nonzero element corresponding to $\tau$. Projective modules and
+invertible ideals are flat.
+\end{proof}
+
+In (c) the tensor product is 14's explicit carrier (\cref{osq:tn:sub:tensor}); there the same element shows that
+tensoring $J_g(M)\hookrightarrow A$ with $J_g(M)$ is not injective, which is 14's statement that $L(M)$ is not flat over
+$\Oz$. Over $A_0$ this is 14's corollary; allowing any unital $D\subseteq K$ and 12's rings is the merge's (the proof is
+14's, and no principal-ideal hypothesis is used in it).
+
+\subsection{Flat and projective dimensions; the ordered cone}\label{osq:hd:sub:dimensions}
+
+\begin{theorem}[Lattice modules and cyclic quotients \src{12, 14} \merge]\label{osq:hd:thm:fdlattice}
+Let $A$ be $A_d$ ($d\ge1$) or $T_\Gamma$, and put $\delta=d$, respectively $\delta=1$. Let $M$ be a coefficient lattice of rank
+$r\ge2$ and $J=J_g(M)$. Then
+\[
+ \fd_AL(M)=\delta,\qquad \fd_A(A/J)=\delta+1,
+\]
+and for every $A$-module $N$ and $j\ge2$,
+$\Tor^A_j(L(M),N)\cong\Tor^A_j(D,N)^{r-1}\cong\Tor^A_{j+1}(A/J,N)$. Over $A_{\N_{>0}}$ both dimensions are infinite.
+In particular, for $c\in K\setminus\Frac(D)$ and $H=(X_1,cX_1)$, $\fd_{A_d}(A_d/H)=d+1$ and $\fd_{T_\Gamma}(T_\Gamma/(X^g,cX^g))=2$,
+and over $A_0=T_\Q$, $\fd L(M)=1$ and $\fd(A_0/J_e(M))=2$. If moreover $c^2\in D$, then
+$\Tor_2^A(A/H,A/H)\cong D+cD\cong D\oplus D$.
+\end{theorem}
+\begin{proof}
+By \cref{osq:tn:thm:syzygy}(ii) there is an exact sequence $0\to\Pi^{r-1}\to A^r\to L(M)\to0$, and $\fd\Pi=\delta-1$
+(\cref{osq:hd:cor:fd}; for $T_\Gamma$, $\Pi$ is flat by \cref{osq:hd:thm:orderedcone} below). Hence $\fd L(M)\le\delta$ and, from
+$0\to J\to A\to A/J\to0$ with $J\cong L(M)$, $\fd(A/J)\le\delta+1$. The long exact sequences give, for $j\ge2$,
+$\Tor_j(L(M),N)\cong\Tor_{j-1}(\Pi,N)^{r-1}\cong\Tor_j(D,N)^{r-1}$ and $\Tor_{j+1}(A/J,N)\cong\Tor_j(J,N)$. If $\delta=d\ge2$,
+$\Tor_d(D,V_{[d]})\cong K\ne0$ (\cref{osq:hd:thm:boolean}) gives both lower bounds. If $\delta=1$, $L(M)$ is not flat
+(\cref{osq:tn:prop:nonflat}), so $\fd L(M)=1$ and $\Tor_2(A/J,N)\cong\Tor_1(J,N)\ne0$ for some $N$. In infinite rank,
+$\Tor_n(D,V_F)\ne0$ for $|F|=n$. The special cases are $M=D+Dc$ with $J=H$, and $M$ of rank at least two over $T_\Q$. For
+the last assertion (12), with $U=D+cD$ one has $H=UX^g\oplus X^g\Pi\subseteq\Pi$, $H\Pi=X^g\Pi$ (as $\Pi^2=\Pi$ and
+$c\Pi=\Pi$) and $cH\subseteq H$ (as $c^2\in D$). The two sequences give
+$\Tor_2(A/H,A/H)\cong\Tor_1(H,A/H)\cong\ker(\Pi/X^g\Pi\to(A/H)^2,\ m\mapsto(-cm,m))$, and the kernel consists of the
+classes of $m\in H$, that is $H/X^g\Pi\cong U$.
+\end{proof}
+
+\paragraph{Correction to 12 and the relation to 14.} 12 states $\fd(A_d/H)=d+1$ and $\fd(T_\Gamma/H)=2$ under the extra
+hypothesis $c^2\in D$, which it uses only to compute $\Tor_2(A/H,A/H)$; for $d\ge2$ its own shift argument never uses it,
+and for $d=1$ and $T_\Gamma$ the lower bound $2$ follows from 14's antisymmetric torsion tensor. The hypothesis is needed only
+for the formula $\Tor_2(A/H,A/H)\cong D\oplus D$. 14's flat-dimension proposition for $A_0$ is the case $A=T_\Q=A_1$ of the
+theorem. Since a nonzero $\Tor$ in degree $n$ forces weak global dimension at least $n$: if $K\ne\Frac D$ (for instance
+$(D,K)=(\Z,\R)$ or $(\Z[i],\C)$ with $c=\sqrt2$), then $\operatorname{w.gl.dim}A_d\ge d+1$,
+$\operatorname{w.gl.dim}T_\Gamma\ge2$, and the countable-rank core has infinite weak global dimension (12, 14). Neither source
+claims the exact weak global dimension of any of these rings.
+
+\begin{proposition}[Projective dimensions \src{12} \merge]\label{osq:hd:prop:pd}
+\leavevmode
+\begin{enumerate}
+\item \emph{(Telescope, 12.)} Let $A$ be a domain and $I=\bigcup_{n\ge0}x_nA$ for nonzero $x_n$ with $x_n=x_{n+1}u_n$,
+$u_n\in A$. With $F=\bigoplus_{n\ge0}Ae_n$, the sequence
+$0\to F\xrightarrow{\Delta}F\xrightarrow{\pi}I\to0$, $\Delta(e_na)=e_na-e_{n+1}u_na$, $\pi(e_na)=x_na$, is exact; so $\pd_AI\le1$.
+This applies to every $I_S$ ($x_n=p_S^{2^{-n}}$) and to $\Pi^{\mathrm{fin}}_\Gamma$ ($x_n=X^{2^{-n}g}$, $g\in\Gamma_{>0}$).
+\item \merge\ $\pd_{A_\Lambda}I_S=1$ and $\pd_{T_\Gamma}\Pi^{\mathrm{fin}}_\Gamma=1$.
+\item $d\le\pd_{A_d}D\le d+1$ (12), and \merge\ $\pd_{A_1}D=\pd_{T_\Gamma}D=2$.
+\item \merge\ Over $T_\Gamma$ (in particular over $A_0$), for a lattice of rank at least two, $\pd L(M)=2$ and
+$\pd(T_\Gamma/J_g(M))=3$. Over $A_d$, $d\le\pd L(M)\le d+1$ and $d+1\le\pd(A_d/J_g(M))\le d+2$ (12, for $M=D+Dc$).
+\item \merge\ Let $(A,I,D)$ satisfy (H1)--(H3) of \cref{osq:sec:homological}, with $A$ consisting of series of nonnegative
+support (as do all rings of \cref{osq:sec:models} and $T_\Gamma$). If $I$ is countably generated, equivalently if $\Gamma_{>0}$ has a
+countable coinitial subset, then $\pd_AI=1$ and $\pd_AD=2$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(i) $\pi\Delta=0$ since $x_{n+1}u_n=x_n$; $\pi$ is onto. $\Delta$ is injective: at the least index $n_0$ of a nonzero vector the
+coefficient is unchanged. If $\pi(v)=0$, use $e_na\equiv e_{n+1}u_na$ modulo $\operatorname{im}\Delta$ to move $v$ to a single index
+$N$: $v\equiv e_Na$ with $x_Na=\pi(v)=0$, so $a=0$. For $T_\Gamma$, every tail has a positive exponent below its finitely many
+exponents, hence below some $2^{-n}g$.
+(ii) These ideals are nonzero and not finitely generated (\cref{osq:hd:lem:faces}(iii) and its analogue for $T_\Gamma$), so they
+are not projective by \cref{osq:lem:projideal}.
+(iii) Every $C_p$ of \cref{osq:hd:thm:resolution} has projective dimension at most $1$ by (i); splicing (or dimension
+shifting along the resolution) gives $\pd D\le d+1$, and $\pd\ge\fd=d$. For $T_\Gamma$ (and $A_1\cong T_\Q$), $0\to\Pi\to T_\Gamma\to D\to0$
+gives $\pd D\le\pd\Pi+1=2$; if $\pd D\le1$, $\Pi$ would be projective (Schanuel), against (ii).
+(iv) $0\to\Pi^{r-1}\to T_\Gamma^r\to L(M)\to0$ gives $\pd L(M)\le2$; if $\pd L(M)\le1$, the kernel $\Pi^{r-1}$, hence its summand $\Pi$,
+would be projective. So $\pd L(M)=2$, and since $J=J_g(M)\cong L(M)$ is not projective, $\pd(T_\Gamma/J)=\pd J+1=3$. Over $A_d$ the upper
+bounds come from $\pd\Pi_d\le d$ (the truncated resolution, by (i)), and the lower bounds from
+\cref{osq:hd:thm:fdlattice}, since $\pd\ge\fd$.
+(v) If $I$ is generated by countably many $f_n=X^{g_n}b_n$ ((H2)), then for $h\in\Gamma_{>0}$ the element $X^h$ lies in
+$\sum_{n\le N}f_nA\subseteq X^{g}A$ with $g=\min_{n\le N}g_n$, and $X^{h-g}\in A$ forces $g\le h$ because $A$ has no negative
+exponents: the $g_n$ are coinitial.
+Conversely, for a coinitial decreasing sequence $h_n$, (H2) gives $I=\bigcup_nX^{h_n}A$ with $X^{h_n}=X^{h_{n+1}}X^{h_n-h_{n+1}}$, a
+countable chain as in (i). So $\pd I\le1$; $I$ is not projective by (H3) and \cref{osq:lem:projideal}; hence $\pd I=1$ and, as in
+(iii), $\pd D=2$.
+\end{proof}
+
+Items (ii)--(v) sharpen 12's bounds $1\le\pd_{A_1}D\le2$ and are consistent with 06's $\pd\ge2$ (\cref{osq:thm:homological}(v)). For
+$d\ge2$ the value $\pd_{A_d}D\in\{d,d+1\}$ is not determined. Among the five constructions of \cref{osq:sec:models}, (v) applies
+exactly to $A^{08}_\kappa$ with $\cf\kappa=\aleph_0$: the tail of each construction needs as many generators as the length of its
+coinitial chain (\cref{osq:rem:reconcile}), namely $\cf\kappa$ for 03 and 08, $\kappa$ for 06 and 11, $\aleph_1$ for 09, and only 08
+allows countable cofinality. \Cref{osq:q:pd} is re-scoped accordingly.
+
+\begin{theorem}[Ordered-cone cores \src{12}]\label{osq:hd:thm:orderedcone}
+$(T_\Gamma,\Pi^{\mathrm{fin}}_\Gamma,D)$ satisfies (H1)--(H3) of \cref{osq:sec:homological}. Consequently
+$\Pi^{\mathrm{fin}}_\Gamma=\bigcup_{\delta\in\Gamma_{>0}}X^\delta T_\Gamma$ is flat and idempotent but not projective,
+$\Tor^{T_\Gamma}_{>0}(D,N)=0$ for every $D$-module $N$, $\fd_{T_\Gamma}D=1$ with $\Tor_1(D,T_\Gamma/X^\gamma T_\Gamma)\cong D$, and
+the other items of \cref{osq:thm:homological} hold; $T_\Gamma\to D$ is formally \'etale and not flat, $\pd_{T_\Gamma}D=2$, and
+$T_\Gamma$ is not coherent.
+\end{theorem}
+\begin{proof}
+(H1) is \cref{osq:hd:lem:cores}(i). For (H2), a nonzero tail $f$ has finitely many positive exponents; with $g$ half the least of
+them, $f=X^g(X^{-g}f)$ and $X^{-g}f$ is again a tail, its coefficients being arbitrary in $K$. (H3) holds because a finite family of
+tails has a least exponent among its monomials and cannot generate a monomial of smaller exponent. Apply
+\cref{osq:thm:homological}, \cref{osq:hd:prop:etale}, \cref{osq:hd:prop:pd}(iii) and \cref{osq:tn:thm:syzygy}(iii).
+\end{proof}
+
+\begin{theorem}[Same exponent group, different dimension \src{12}]\label{osq:hd:thm:collapse}
+Let $(\gamma_i)_{i\in\Lambda}$ be positive reals linearly independent over $\Q$, $\Gamma=\sum_i\Q\gamma_i$, and
+$A_\Lambda\hookrightarrow T_\Gamma$ the inclusion of \cref{osq:hd:lem:cores}(iii). Then $\Pi_\Lambda T_\Gamma=\Pi^{\mathrm{fin}}_\Gamma$
+and $T_\Gamma\otimes_{A_\Lambda}D\cong D$. If $|\Lambda|\ge2$ the extension is not flat:
+$(X_1A_\Lambda\cap X_2A_\Lambda)T_\Gamma\ne X_1T_\Gamma\cap X_2T_\Gamma$. The flat dimension of $D$ drops from $d$ to $1$ in rank $d$,
+and from $\infty$ to $1$ in countable rank.
+\end{theorem}
+\begin{proof}
+For $\gamma\in\Gamma_{>0}$ choose a positive rational $q$ with $q\gamma_1<\gamma$; then
+$kX^\gamma=X_1^q\cdot kX^{\gamma-q\gamma_1}\in\Pi_\Lambda T_\Gamma$, so $\Pi_\Lambda T_\Gamma=\Pi^{\mathrm{fin}}_\Gamma$ and
+$T_\Gamma\otimes_{A_\Lambda}A_\Lambda/\Pi_\Lambda\cong T_\Gamma/\Pi^{\mathrm{fin}}_\Gamma=D$. Relabel so that $\gamma_1<\gamma_2$. Every monomial
+of an element of $X_1A_\Lambda\cap X_2A_\Lambda$ has first and second coordinate at least $1$, hence real exponent at least
+$\gamma_1+\gamma_2$, and multiplying by $T_\Gamma$ only adds nonnegative exponents; but
+$X^{\gamma_2}=X_1X^{\gamma_2-\gamma_1}\in X_1T_\Gamma\cap X_2T_\Gamma$. A flat extension preserves finite intersections of ideals: tensor the
+exact sequence $0\to I\cap I'\to A\to A/I\oplus A/I'$ with it. The dimensions are \cref{osq:hd:cor:fd} and
+\cref{osq:hd:thm:orderedcone}.
+\end{proof}
+
+\begin{example}[Two directions inside $\Oz$ \src{12}]\label{osq:hd:ex:cone}
+With $\gamma_1=1$, $\gamma_2=\sqrt2$ and $(D,K)=(\Z,\R)$, the core $A_2=\Z+\bigoplus_{a,b\in\Q_{\ge0},\,a+b>0}\R\,\omega^{a+b\sqrt2}$
+lies in the ring $T_{\Q+\Q\sqrt2}\subseteq\Oz$, which also contains $\omega^{\sqrt2-1}\notin A_2$; the identity
+$\omega^{\sqrt2}=\omega\cdot\omega^{\sqrt2-1}$ is the extra intersection element, and the two arithmetic quotients have flat
+dimensions $2$ and $1$. Replacing $(\Z,\R)$ by $(\Z[i],\C)$ gives the same example in $\GOz$.
+\end{example}
+
+\begin{remark}[Flat dimension one is a property of the cone \merge]\label{osq:hd:rem:reconcile}
+The report now contains two kinds of statements about the flat dimension of the arithmetic quotient, and they concern
+different rings.
+\begin{itemize}
+\item $\fd_AD=1$ holds whenever (H1)--(H3) hold: the tail is a directed union of principal monomial ideals, because the
+positive exponents form the positive cone of a totally ordered group and every family of tails of the relevant size
+(finite for finite supports, of fewer than $\kappa$ or countably many elements in the constructions, a set for the class ring)
+has a common monomial divisor in the ring. This covers the five constructions of \cref{osq:sec:models}
+(\cref{osq:thm:homological}), including 06's ring $A^{06}_\kappa$; the full omnific ring in the two-universe reading, where
+13 proves that the tail is flat, idempotent and not generated by a family from the smaller universe, that
+$\Tor_{>0}(D,D)=0$ and that $D$ is not flat, so $\fd D=1$; 14's $A_0$; and 12's $T_\Gamma$
+(\cref{osq:hd:thm:orderedcone}).
+\item For the coordinatewise cone $\Q_{\ge0}^d$ the flat dimension is $d$ (\cref{osq:hd:cor:fd}): under the embedding, with
+$\gamma_1<\gamma_2$, the quotient $\omega^{\epsilon(\gamma_2-\gamma_1)}$ of $X_2^\epsilon$ by $X_1^\epsilon$ lies in $\Oz$ but not in
+$A_d$, so the tail of $A_d$ is not a directed union of principal ideals; it is a sum of $d$ flat ideals that is not flat for
+$d\ge2$.
+\end{itemize}
+So ``flat dimension one'' must never be asserted for an arbitrary subring of $\Oz$: $A_d\subseteq T_\Gamma\subseteq\Oz$, with all exponents
+in one Archimedean class, have flat dimensions $d$ and $1$, and $A_d\to T_\Gamma$ is not flat. Being a subring of a ring with small
+quotient flat dimension imposes no bound on the subring, and conversely the cores say nothing about the homological dimensions of
+the full class ring $\Oz$, which none of the sources computes (12, 14). The projective dimension of $D$ behaves differently
+again: under (H1)--(H3) it is $2$ when the tail is countably generated, in particular for $T_\Gamma$, and is otherwise known only
+to be at least~$2$; for $A_d$ with $d\ge2$ it is $d$ or $d+1$ (\cref{osq:hd:prop:pd}).
+\end{remark}
+
+\subsection{The tensor normal form}\label{osq:tn:sub:tensor}
+
+For the rest of this section (14) fix $(D,k)=(\Z,\R)$ or $(\Z[i],\C)$, and let $(A,\Pi,B)$ be either the class rings
+$(\A_{D,k},\Pi_k,\A_{k,k})$, that is $A=\Oz$ or $\GOz$, or the set-sized model $(T_\Q,\Pi^{\mathrm{fin}}_\Q,k+\Pi^{\mathrm{fin}}_\Q)$
+with $T_\Q=A_0$. Coefficient lattices are those of Setting (L). Every result below holds in both cases (14); its proofs use
+only that $D$ is a principal ideal domain in $k$, that $A=D\oplus\Pi$ with $\Pi$ a $k$-linear ideal of $B$, and that every
+$u\in\Pi$ is a product $u=ca$ with $c,a\in\Pi$ (\cref{osq:prop:common}(ii); in $T_\Q$ split off a smaller monomial). This
+interface is 14's proposal for a formalization (\cref{osq:sub:formalization}). For the class rings a tensor product means an
+explicit carrier with the balanced universal property proved by finite identities (for two lattices,
+$\Pi\times(M\otimes_DN)$); no quotient of a proper class by a class relation and no class colimit is used (14).
+
+\begin{lemma}[Absorption \src{14}]\label{osq:tn:lem:absorption}
+For every lattice $N$ and $0\ne n_0\in N$, multiplication is an isomorphism $\Pi\otimes_AL(N)\cong\Pi$ with inverse
+$u\mapsto(u/n_0)\otimes n_0$; indeed $u\otimes v=(uv/n_0)\otimes n_0$ for $u\in\Pi$, $v\in L(N)$.
+\end{lemma}
+\begin{proof}
+Write $u=ca$ with $c,a\in\Pi$. Since $v/n_0\in B$, $b=a(v/n_0)\in\Pi\subseteq A$, and
+$u\otimes v=c\otimes av=c\otimes bn_0=cb\otimes n_0=(uv/n_0)\otimes n_0$. So every finite tensor sum is the image of its
+product, multiplication is onto ($u=(u/n_0)n_0$), and the two maps are mutually inverse. For a balanced bilinear map $b'$ into
+a class module, $u\mapsto b'(u/n_0,n_0)$ is the required factorization, unique by the same identity.
+\end{proof}
+
+\begin{theorem}[Exact tensor normal form \src{14}]\label{osq:tn:thm:tensor}
+The map $\beta$ of \cref{osq:tn:prop:nonflat} is an $A$-module isomorphism $L(M)\otimes_AL(N)\cong\mathsf E(M,N)$. Multiplication
+corresponds to $(u,t)\mapsto u+\mathsf m_{M,N}(t)$, and there is an exact sequence
+\[
+ 0\longrightarrow\mathcal T(M,N)\longrightarrow L(M)\otimes_AL(N)\longrightarrow L(MN)\longrightarrow0,\qquad
+ \mathcal T(M,N)=\ker\bigl(M\otimes_DN\to MN\bigr),
+\]
+with $\mathcal T(M,N)$ embedded as $(0,\mathcal T(M,N))$. This is exactly the $A$-torsion submodule; if it is nonzero its annihilator is
+exactly $\Pi$, and $\rk_D\mathcal T(M,N)=\rk M\cdot\rk N-\rk(MN)$.
+\end{theorem}
+\begin{proof}
+Fix $0\ne n_0\in N$, let $j(w)=(w/n_0)\otimes n_0$ on $\Pi$ and let $s$ be induced by the constant inclusions on $M\otimes_DN$. Then
+$(u,t)\mapsto j(u)+s(t)$ is inverse to $\beta$: in an expanded pure tensor the terms with an infinite first factor reduce by
+\cref{osq:tn:lem:absorption}, a term $m\otimes v$ with $v=ca\in\Pi$ equals $cm\otimes a$, and all mixed terms become
+$j(mv+un+uv)$, while the constant term is $s(m\otimes n)$. The same finite identities give the universal property for balanced maps
+into class modules, so this carrier is the tensor product in the class case. The image of multiplication is $MN+\Pi=L(MN)$, and since
+$\Pi\cap k=0$ its kernel is $(0,\mathcal T(M,N))$, killed by $\Pi$ by \eqref{osq:tn:eq:action}; the quotient lies in a field and is
+torsion free, so the kernel is all the torsion. It is a submodule of a finite free $D$-module, hence free, and a nonzero $d\in D$
+kills none of its nonzero elements. Ranks: $M\otimes_DN\to MN$ is onto.
+\end{proof}
+
+For $M=D+D\alpha$ with $\alpha\notin\Frac D$, $\tau=1\otimes\alpha-\alpha\otimes1$ is a nonzero tensor with $h\tau=0$ for all
+$h\in\Pi$; if $\alpha^2=c\in D$, then $\tau$ and $\alpha\otimes\alpha-c(1\otimes1)$ form a $D$-basis of the multiplication kernel (14).
+Here ``torsion'' means $A$-torsion: $\mathcal T(M,N)$ is a free abelian group (14).
+
+\begin{proposition}[Several factors \src{14}]\label{osq:tn:prop:higher}
+For lattices $M_1,\dots,M_n$, $\bigotimes_{j,A}L(M_j)\cong\Pi\oplus\bigotimes_{j,D}M_j$ with the action \eqref{osq:tn:eq:action} for
+the $n$-fold product map; the torsion is its kernel, killed by $\Pi$. For equal factors, permutations act trivially on the first
+coordinate and by permuting tensor factors on the second.
+\end{proposition}
+\begin{proof}
+Expand a pure tensor: the all-constant term keeps its $D$-tensor coordinate, and every other term contains a factor from $\Pi$ and
+reduces, by repeated absorption (moving a tail scalar to an adjacent factor), to its product in one copy of $\Pi$. So the multilinear
+map has coordinates $\bigl(\prod_j(m_j+u_j)-\prod_jm_j,\ \bigotimes_jm_j\bigr)$, with inverse as in \cref{osq:tn:thm:tensor}.
+\end{proof}
+
+\begin{theorem}[Exterior and symmetric powers \src{14}]\label{osq:tn:thm:powers}
+Let $r=\rk M$.
+\begin{enumerate}
+\item For $j\ge2$, $\bigwedge^j_AL(M)\cong\bigwedge^j_DM$ with $A$ acting through $\ct$: a free $D$-module of rank $\binom rj$ with
+annihilator $\Pi$ when nonzero.
+\item For $n\ge1$, $\operatorname{Sym}^n_AL(M)\cong\Pi\oplus\operatorname{Sym}^n_DM$ with the action \eqref{osq:tn:eq:action} for the
+product map $\mathsf m_n:\operatorname{Sym}^n_DM\to k$; the product map has image $L(M^n)$ ($M^n$ the $D$-span of $n$-fold products) and
+torsion kernel $\ker\mathsf m_n$, of rank $\binom{r+n-1}n-\rk(M^n)$, annihilated by $\Pi$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i) For $u\in\Pi$ and $0\ne m\in M$, $u/m\in A$ and $u\wedge m=(u/m)m\wedge m=0$; for $u,v\in\Pi$ both are multiples of one
+$m_0$, so $u\wedge v=0$. Hence every wedge with a tail factor vanishes, $h(m_1\wedge\dots\wedge m_j)=0$ for $h\in\Pi$, the constant
+inclusion induces a surjection $\bigwedge^j_DM\to\bigwedge^j_AL(M)$, and taking constants in all factors is an alternating
+$A$-multilinear left inverse. (ii) By \cref{osq:tn:prop:higher} a permutation difference has the form $(0,t-\sigma t)$, with product
+zero, so multiplying it by an element of $\Pi$ gives zero and imposes no relation on the first coordinate; the quotient is
+$\Pi\oplus\operatorname{Sym}^n_DM$, and the kernel argument of \cref{osq:tn:thm:tensor} applies.
+\end{proof}
+
+A rank-one ideal of $\Oz$ can thus have a nonzero $r$th exterior power for every $r\ge2$; these powers vanish after passing to the
+fraction field, in agreement with the field-valued rank (14).
+
+\subsection{Rees equations}\label{osq:tn:sub:rees}
+
+For $e>0$ the Rees algebra of $L(M)$ is $\mathcal R(L(M))=A\oplus\bigoplus_{n\ge1}L(M)^nT^n\subseteq F[T]$ ($F$ the fraction field);
+degreewise multiplication by $X^{ne}$ identifies it, and the symmetric algebra, with those of the ideal $J_e(M)$
+\cite[Tag~052P]{StacksRees}. An ideal is \emph{of linear type} if $\operatorname{Sym}\to\mathcal R$ is an isomorphism, and the
+\emph{first nonlinear degree} is the least degree of a nonzero element of the kernel after the linear relations are imposed (14).
+
+\begin{theorem}[All nonlinear Rees equations are arithmetic \src{14}]\label{osq:tn:thm:rees}
+Let $m_1,\dots,m_r$ be a basis of $M$ and $\mathfrak q_M=\ker\bigl(D[X_1,\dots,X_r]\to k[T],\ X_i\mapsto m_iT\bigr)$. The
+constant-coefficient map $D[X_1,\dots,X_r]\to\operatorname{Sym}_AL(M)$ is injective, and under it
+$\ker(\operatorname{Sym}_AL(M)\to\mathcal R(L(M)))=\mathfrak q_M$; this is all the $A$-torsion of the symmetric algebra, it is killed
+by $\Pi$, and it is generated by any set of homogeneous generators of $\mathfrak q_M$, finitely many of which suffice. With
+$\mathfrak l_M=\bigl(hX_j-\tfrac{m_j}{m_1}hX_1:h\in\Pi,\ 2\le j\le r\bigr)\subseteq A[X_1,\dots,X_r]$,
+\[
+ \operatorname{Sym}_AL(M)\cong A[\mathbf X]/\mathfrak l_M,\qquad
+ \mathcal R(L(M))\cong A[\mathbf X]/(\mathfrak l_M+\mathfrak q_MA[\mathbf X]).
+\]
+\end{theorem}
+\begin{proof}
+The symmetric algebra is presented by the linear relations of the generator map \cite[Tag~00DM]{StacksTensor}, which are those of
+\cref{osq:tn:thm:syzygy}(ii). In degree $n\ge1$, \cref{osq:tn:thm:powers}(ii) identifies the constant polynomials with
+$\operatorname{Sym}^n_DM$ and the kernel with $\ker\mathsf m_n$, the degree-$n$ part of $\mathfrak q_M$; in degree $0$ the map is the
+identity of $A$. The quotient embeds in the domain $F[T]$, so the kernel is all the torsion. A polynomial in $A[\mathbf X]$ acts on the
+kernel through its coefficientwise constant term, so generators over $D[\mathbf X]$ generate the kernel, and $D[\mathbf X]$ is
+Noetherian.
+\end{proof}
+
+The nonlinear kernel is finitely generated while, for $r\ge2$, the linear relation module is not finitely (set-) generated
+(\cref{osq:tn:thm:syzygy}); the two statements are compatible (14).
+
+\begin{theorem}[The algebraic degree is the first nonlinear degree \src{14}]\label{osq:tn:thm:degree}
+Let $\alpha\in k\setminus\Frac(D)$, $M=D+D\alpha$ and $J=(X^e,\alpha X^e)\subseteq A$.
+\begin{enumerate}
+\item If $\alpha$ is transcendental over $\Frac(D)$, then $J$ is of linear type, although it is not flat and not finitely presented.
+\item If $\alpha$ is algebraic of degree $d$ (necessarily $d\ge2$), let $f\in D[Z]$ be primitive irreducible with $f(\alpha)=0$ and
+$F_f(X,Y)=X^df(Y/X)$. Then $\mathcal R(J)\cong A[X,Y]/\bigl(hY-\alpha hX\ (h\in\Pi),\ F_f(X,Y)\bigr)$; the kernel of
+$\operatorname{Sym}_AJ\to\mathcal R(J)$ is generated by $F_f$, and the first nonlinear degree is exactly $d$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+A homogeneous $G$ of degree $n$ lies in $\mathfrak q_M$ iff $G(1,\alpha)=0$. In the transcendental case $G=0$. In the algebraic case the
+minimal polynomial of $\alpha$ divides $g(Z)=G(1,Z)$ over $\Frac D$, and Gauss's lemma for the unique factorization domain $D$ and the
+primitivity of $f$ give $g=fh$ with $h\in D[Z]$, $\deg h\le n-d$; homogenizing, $G=F_f\cdot X^{n-d}h(Y/X)$. Conversely $F_f(1,\alpha)=0$.
+Apply \cref{osq:tn:thm:rees}; nonflatness and failure of finite presentation are \cref{osq:tn:prop:nonflat,osq:tn:thm:syzygy}.
+\end{proof}
+
+\begin{corollary}[A family of every degree \src{14}]\label{osq:tn:cor:alldegrees}
+For $d\ge2$ let $J_d=(\omega,2^{1/d}\omega)\subseteq\Oz$. Then
+$\mathcal R_{\Oz}(J_d)\cong\Oz[X,Y]/(hY-2^{1/d}hX\ (h\in\Pi),\ Y^d-2X^d)$, there is no nonlinear equation in degrees $2,\dots,d-1$, and
+for $n\ge1$
+\begin{gather*}
+ \mu_{\Oz}(J_d^n)=\min(n+1,d),\qquad
+ \rk_\Z\ker(\operatorname{Sym}^n_{\Oz}J_d\to J_d^n)=\max(0,n-d+1),\\
+ \rk_\Z\ker(J_d^{\otimes n}\to J_d^n)=2^n-\min(n+1,d),
+\end{gather*}
+where $\mu$ is the least number of generators. All these kernels are killed by $\Pi$.
+\end{corollary}
+\begin{proof}
+$Z^d-2$ is irreducible by Eisenstein at $2$, so $1,\alpha,\dots,\alpha^{d-1}$ are independent and higher powers reduce by $\alpha^d=2$; the
+lattice spanned by $1,\alpha,\dots,\alpha^n$ has rank $\min(n+1,d)$, and $J_d^n$ is the monomial scaling of its lattice module. Apply
+\cref{osq:tn:thm:syzygy}(i), \cref{osq:tn:thm:powers}(ii) and \cref{osq:tn:prop:higher}.
+\end{proof}
+
+For $d=5$ the two-generated ideal $(\omega,2^{1/5}\omega)$ has powers needing $2,3,4,5,5,\dots$ generators, a symmetric kernel of ranks
+$0,0,0,0,1,2,\dots$, and a nonzero antisymmetric tensor already in its tensor square: symmetric and tensor obstructions occur at different
+stages (14).
+
+\subsection{Homomorphisms, ideal classes and duals}\label{osq:tn:sub:hom}
+
+For lattices put $(N:M)=\{c\in k:cM\subseteq N\}$ and $\mathfrak o(M)=(M:M)$.
+
+\begin{theorem}[Scalar homomorphisms and isomorphism types \src{14}]\label{osq:tn:thm:hom}
+Identifying a scalar with multiplication by it, $\Hom_A(L(M),L(N))=\Pi+(N:M)$, composition is multiplication, and
+$L(M)\cong L(N)$ if and only if $N=cM$ for some $c\in k^\times$. Hence $\End_AL(M)=\Pi+\mathfrak o(M)$ and
+$\operatorname{Aut}_AL(M)=\mathfrak o(M)^\times$. The ring $\mathfrak o(M)$ is finite free over $D$ and integral over $D$; in the real case
+$\Q\,\mathfrak o(M)\subseteq\R$ is a number field of degree at most $\rk M$ (not necessarily totally real).
+\end{theorem}
+\begin{proof}
+An $A$-linear map $\varphi$ between nonzero $A$-submodules of the fraction field is multiplication by a scalar: for nonzero $a,b$ in a
+common ideal (after a monomial denominator), $a\varphi(b)=b\varphi(a)$. If $qL(M)\subseteq L(N)$ and $0\ne m_0\in M$, then
+$q=(qm_0)/m_0\in B$; write $q=c+h$ with $c\in k$, $h\in\Pi$; the inclusion is equivalent to $cM\subseteq N$. An isomorphism has $q$ and
+$q^{-1}$ in $B$, so $q\in B^\times=k^\times$ (\cref{osq:lem:units}), and nonzero constants preserve $\Pi$. Multiplication by $m_0$ embeds
+$\mathfrak o(M)$ in $M$; Cayley--Hamilton for the matrix of multiplication by $c$ on a basis of $M$ gives integrality; in the real case the
+rational span is a finite-dimensional domain, hence a field, of dimension at most $\rk M$.
+\end{proof}
+
+Let $K_0\subset\R$ be a number field and $\mathfrak o\subset K_0$ an order. An invertible fractional $\mathfrak o$-ideal is a lattice, and
+for these modules put $U\odot V=(U\otimes_AV)/(\text{elements killed by a nonzero element of }A)$; by \cref{osq:tn:thm:tensor},
+$L(M)\odot L(N)\cong L(MN)$.
+
+\begin{theorem}[Ideal classes survive torsion-free multiplication \src{14}]\label{osq:tn:thm:pic}
+$P\mapsto L(P)$ distinguishes exactly the ideal classes of invertible fractional $\mathfrak o$-ideals, and under $\odot$ these isomorphism
+types form a group isomorphic to $\operatorname{Pic}(\mathfrak o)$ with identity $[L(\mathfrak o)]$. If $[K_0:\Q]\ge2$ this is not a subgroup of
+$\operatorname{Pic}(A)$ and its identity is not $[A]$.
+\end{theorem}
+\begin{proof}
+If $L(P)\cong L(Q)$ then $Q=cP$ with $c\in\R^\times$ (\cref{osq:tn:thm:hom}), and $c=(cp)/p\in K_0^\times$ for $0\ne p\in P$; the converse is
+clear. $\odot$ corresponds to ideal multiplication, $\mathfrak oP=P$ and $PP^{-1}=\mathfrak o$. For $[K_0:\Q]\ge2$, $L(P)$ needs $[K_0:\Q]$
+generators and is not flat (\cref{osq:tn:prop:nonflat}), so it is not invertible, and $L(\mathfrak o)$ needs two or more generators while
+$A=L(\Z)$ needs one.
+\end{proof}
+
+The group has its own idempotent identity inside a larger multiplicative semigroup; it is not a unital homomorphism into the Picard
+group of $A$. In the class setting the isomorphism is read as an explicit set-indexed family of representatives with its equivalence
+criterion (14).
+
+\begin{example}[A class of order two \src{14}]\label{osq:tn:ex:sqrt10}
+In $K_0=\Q(\sqrt{10})$ with $\mathfrak o=\Z+\Z\sqrt{10}$ let $P=2\Z+\Z\sqrt{10}$. It is an $\mathfrak o$-ideal, $P^2=4\Z+2\sqrt{10}\,\Z+10\Z=2\mathfrak o$,
+so $P$ is invertible. It is not principal: $P=c\,\mathfrak o$ with $c=a+b\sqrt{10}\in P$ would give $|a^2-10b^2|=[\mathfrak o:P]=2$, impossible
+modulo $5$. Hence $L(P)\not\cong L(\mathfrak o)$ and $L(P)\odot L(P)\cong L(\mathfrak o)$; both have rank one and need two generators, and the
+tensor square of $L(P)$ has torsion of rank $4-2=2$. As ideals, $\omega L(P)=(2\omega,\sqrt{10}\,\omega)$ and
+$\omega L(\mathfrak o)=(\omega,\sqrt{10}\,\omega)$.
+\end{example}
+
+\begin{theorem}[Uniform duals \src{14}]\label{osq:tn:thm:duals}
+$(A:\Pi)=B$ and $(A:B)=\Pi$ (in both cases of this subsection). For a lattice $M$ of rank at least two,
+$L(M)^*=\Hom_A(L(M),A)=\Pi$, $L(M)^{**}=B$, the canonical bidual map is the inclusion $L(M)\hookrightarrow B$, and $B/L(M)\cong k/M$ with
+$A$ acting through $\ct$. Moreover $\Pi^*=B$, $B^*=\Pi$, $\Pi^{**}=\Pi$, $B^{**}=B$, and $J_e(M)^*=X^{-e}\Pi$, $J_e(M)^{**}=X^eB$.
+\end{theorem}
+\begin{proof}
+If $q\Pi\subseteq A$ and $q$ had a negative exponent $\gamma$, then for $0<\delta<-\gamma$ the coefficient of $X^{\gamma+\delta}$ in $qX^\delta$
+would be the same nonzero coefficient; so $q\in B$ (in $T_\Q$, first $qX^1\in T_\Q$ shows that $q$ has finite rational support). If $qB\subseteq A$
+then $q=d+u\in A$ and $dk\subseteq D$ forces $d=0$. By \cref{osq:tn:thm:hom}, $L(M)^*=\Pi+(D:M)$, and $(D:M)=0$ because a nonzero $c$ would
+embed $M$ in $D$. Evaluation at $x$ sends $u\in\Pi$ to $ux$, so the bidual scalar of $x$ is $x$. Scaling by $X^e$ reverses in the first dual and
+restores in the second.
+\end{proof}
+
+So the two nonisomorphic modules of \cref{osq:tn:ex:sqrt10} have the same dual and reflexive hull: their difference lies below the hull and is
+seen by coefficient arithmetic, not by rank or double dualization (14).
+
+\begin{theorem}[Common-scale constant matrices \src{14}]\label{osq:tn:thm:matrix}
+Let $C\in k^{m\times n}$, $e>0$, $W=\ker_kC$, $q=\dim_kW$, $W_D=W\cap D^n$ and $\ell=\rk_DW_D$. Then
+$\ker_A(X^eC)\cong A^\ell\oplus\Pi^{q-\ell}$. The image of $X^eC:A^n\to A^m$ is finitely presented if and only if $\ell=q$, that is,
+if and only if $W$ is defined over $\Frac(D)$, and it is then free of rank $n-q$.
+\end{theorem}
+\begin{proof}
+For $x=d+u$, $Cx=0$ splits into $Cd=0$ and $Cu=0$ (constants against tails). $W_D$ is saturated in $D^n$, hence a direct summand; a $D$-basis of
+it is $k$-independent and extends to a $k$-basis of $W$; in these coordinates the kernel is $A^\ell\oplus\Pi^{q-\ell}$ (Gaussian elimination
+with constants preserves $\Pi$). If $q>\ell$ the kernel projects onto $\Pi$ and is not finitely (set-) generated. If $q=\ell$, a constant change of
+basis over $D$ makes the first $q$ columns zero and the others independent over the fraction field.
+\end{proof}
+
+The matrix theorem concerns constant matrices at one common monomial scale; several support levels need more analysis (14). Its companion,
+14's criterion that a point $[r_1:\dots:r_n]\in\mathbb P^{n-1}(k)$ has a unimodular representative in $A^n$ if and only if it is
+$\Frac(D)$-rational, is in the real case the rationality theorem for primitive constant directions of the Diophantine report
+\cite{RepoOdg}, which 14 does not credit (it credits only that report's example $[1:\sqrt2]$, to a companion manuscript); the Gaussian and
+principal-ideal form is printed there with that theorem, not here.
+
+\paragraph{The Gaussian case and the reach of the results (14).} All proofs above use only a principal ideal domain $D\subset k$ and the
+common-factor property, so the Gaussian versions over $\GOz=\Z[i]+\Pi_\C$ are proved, not merely analogous: ranks are $\Z[i]$-ranks,
+multiplication kernels are killed by $\Pi_\C$, and in \cref{osq:tn:thm:degree} the degree is taken over $\Q(i)$. For real algebraic $\alpha$ it
+equals the degree over $\Q$ ($[K_0(i):\Q(i)]=[K_0:\Q]$ for $K_0\subset\R$), so \cref{osq:tn:cor:alldegrees} holds over $\GOz$ with the same
+ranks over $\Z[i]$; for $\sqrt2\notin\Q(i)$ the ideal $(\omega,\sqrt2\,\omega)\subseteq\GOz$ has the single quadratic equation $Y^2-2X^2$.
+Complex conjugation transports the construction for $M$ to that for $\overline M$. These results concern the omnific \emph{rings}: over the
+surcomplex field itself all these module calculations are vector-space calculations and the arithmetic torsion vanishes. They do not classify
+arbitrary finitely generated omnific ideals, whose generators may lie at several support levels.
 
 \section{Large internal fields and the binomial quotient}
 \label{osq:sec:internal}
@@ -4280,7 +5136,9 @@ theorem with $D=\Z[i]$ and $k=\C$ (see \cref{osq:cor:gaussian} for the descripti
 maps) again gives $\varphi(\omega^\gamma)=0$.
 \end{proof}
 
-This is not merely a failure of a local--global test by congruences modulo ordinary primes.
+The nonexistence of a root in $\GOz$ is also a case of 16's image-gap theorem
+(\cref{osq:fs:rem:special}(c)). This is not merely a failure of a local--global test by congruences
+modulo ordinary primes.
 Even allowing \emph{every set-sized ring} as a target does not reveal the missing negative
 tail in \eqref{osq:nm:eq:rootexpansion}. The obstruction belongs to the full normal-form
 arithmetic and survives in the proper-class ring itself (08).
@@ -4326,10 +5184,12 @@ themselves.
 \section{Arithmetic of polynomial maps on the omnific lattices}\label{osq:sec:polynomial}
 
 This section is manuscript~10's arithmetic of finite-degree polynomial and rational maps on
-the real lattice $\Oz\subset\No$ and the Gaussian lattice $\GOz\subset\SC$. It uses from the
+the real lattice $\Oz\subset\No$ and the Gaussian lattice $\GOz\subset\SC$, followed by manuscript~16's
+fresh-scale results for $D+\Pi_k$ with any unital constant ring $D$
+(\cref{osq:fs:sub:gaps,osq:fs:sub:tests}). It uses from the
 core only the universal theorem \cref{osq:thm:universal}, the quotient list
 \cref{osq:thm:quotients} with the identity \eqref{osq:eq:nOz}, the constant-term lemma
-\cref{osq:lem:ct} and the unit lists of \cref{osq:lem:units}.
+\cref{osq:lem:ct}, the clearing of supports \cref{osq:prop:fractions}(i) and the unit lists of \cref{osq:lem:units}.
 
 \paragraph{Renamings.} Manuscript~10's symbols are renamed as follows. Its ideals
 $\mathfrak P$ and $\mathfrak P_\C$ are $\Pi$ and $\Pi_\C$; its constant-term map $\pi$ is
@@ -4458,7 +5318,7 @@ closed under $x\mapsto\binom xk$ \cite{ElliottBinomial}. The terminology is clas
 support argument above explains its application here without importing an abstract
 free-ring theorem.
 
-\begin{theorem}[Exact finite-grid test \src{10}]\label{osq:pm:thm:grid}
+\begin{theorem}[Exact finite-grid test \src{10; 16}]\label{osq:pm:thm:grid}
 Let $F\in\No[\mathbf X]$ with $\deg_{X_j}F\le d_j$ for $j=1,\dots,r$. The following are
 equivalent:
 \begin{enumerate}
@@ -4503,7 +5363,7 @@ property quantifies over the entire class $\Oz^r$. It is a mathematical test wit
 surreal input; no claim is made that arbitrary surreal coefficients have an effective
 finite encoding.
 
-\begin{theorem}[The real numerical-polynomial ring \src{10}]\label{osq:pm:thm:numreal}
+\begin{theorem}[The real numerical-polynomial ring \src{10; 16}]\label{osq:pm:thm:numreal}
 Every $F\in\Num_r(\Oz)$ has a unique decomposition
 \begin{equation}\label{osq:pm:eq:decomp}
  F=U+f,\qquad U\in\Pi[\mathbf X],\quad f\in\Int(\Z^r),
@@ -4556,7 +5416,7 @@ finite-degree lattice-preserving polynomial: by \cref{osq:pm:thm:numreal} every
 coefficient of an element of $\Num_r(\Oz)$ lies in $\Q+\Pi$.
 \end{example}
 
-\begin{theorem}[Gaussian numerical polynomials \src{10}]\label{osq:pm:thm:numgaussian}
+\begin{theorem}[Gaussian numerical polynomials \src{10; 16}]\label{osq:pm:thm:numgaussian}
 For every ordinary $r\ge1$,
 \begin{equation}\label{osq:pm:eq:gaussiandecomp}
  \Num_r(\GOz)=\Pi_\C[\mathbf X]\oplus\Int(\Z[i]^r)
@@ -5000,7 +5860,7 @@ Induction on $k$ gives \eqref{osq:pm:eq:rationalleading}. The coefficient is non
 characteristic zero and the exponent is negative, which proves both assertions.
 \end{proof}
 
-\begin{theorem}[Polynomiality of rational lattice self-maps \src{10}]
+\begin{theorem}[Polynomiality of rational lattice self-maps \src{10; 16}]
 \label{osq:pm:thm:rational}
 Let $f\in E(X)$ satisfy $f(x)\in\Lambda$ for every $x\in\Lambda$ at which $f$ is defined.
 Then $f\in E[X]$. In particular its reduced rational presentation has no finite poles
@@ -5040,7 +5900,8 @@ This contradicts \eqref{osq:pm:eq:smallrational} and the lattice separation of
 
 The finite-difference argument is a general discrete-lattice method. It is included as a
 supporting result, not asserted to be a new ordinary theorem about rational functions on
-$\Z$.
+$\Z$. 16 proves the theorem for every unital constant ring with one fresh input
+(\cref{osq:fs:thm:collapse}); the two routes are kept.
 
 Recall that $y\in E$ is finite if $|y|$ is bounded by an ordinary integer and
 infinitesimal if $|y|<1/n$ for every ordinary $n\ge1$; the standard part of a finite
@@ -5173,7 +6034,7 @@ Failure of surjectivity is therefore not a single small defect near zero: the ga
 any prescribed infinite surreal radius and occur beyond any prescribed bound in modulus,
 that is, at arbitrarily large moduli.
 
-\begin{corollary}[All rational bijections of the two lattices \src{10}]
+\begin{corollary}[All rational bijections of the two lattices \src{10; 16}]
 \label{osq:pm:cor:bijections}
 A rational function $F\in E(X)$ defining a bijection $\Lambda\to\Lambda$ has the form
 \[
@@ -5195,7 +6056,377 @@ $X\mapsto u^{-1}(X-b)$. The unit lists are those of \cref{osq:lem:units}.
 
 Here ``rational'' means a rational function in one variable over the ambient field $E$.
 Arbitrary functions $\Lambda\to\Lambda$, and maps such as coordinatewise conjugation on
-$\GOz$, are not being classified.
+$\GOz$, are not being classified. 16 shows that surjectivity alone already forces the affine form, for
+every unital constant ring (\cref{osq:fs:thm:surjective}).
+
+\subsection{Fresh scales: image gaps, fibers and surjective self-maps}\label{osq:fs:sub:gaps}
+
+This subsection and the next are manuscript~16's. They work over an arbitrary constant ring and replace the
+lattice-separation mechanism of \cref{osq:pm:sub:rigidity} by a \emph{fresh scale}: an exponent above an entire
+set-sized group of old exponents. Throughout, $k\in\{\R,\C\}$, $E_k=\hahn k\No$ (so $E_\R=\No$, $E_\C=\SC$), $D\subseteq k$ is a unital
+subring, and $\A_{D,k}=D+\Pi_k$ as in \cref{osq:sub:rings}; $\A_{\Z,\R}=\Oz$ and $\A_{\Z[i],\C}=\GOz$. The ring $\A_{k,k}=k+\Pi_k$ of normal
+forms without negative exponents (16's $\mathcal I_k$) is \emph{not} the ring $\OO_k$ of finite surreals: $\omega\in\A_{k,k}$ and
+$\omega^{-1}\notin\A_{k,k}$. 16's $\mathcal P_k$ and $\mathcal A_D$ are $\Pi_k$ and $\A_{D,k}$; its defect polynomial $D_{\zeta,c}$ is
+$\mathsf d_{\zeta,c}$ (the letter $D$ is the constant ring), its centre $\mu$ is $s$, its affine part $L_\zeta$ is $\mathsf a_\zeta$ and its
+forbidden coefficient $A_\zeta$ is $\mathsf c_\zeta$. For a set-sized additive subgroup $G\subseteq\No$, $K_G=\hahn kG$ is the Hahn field
+with supports in $G$, identified with its normal-form image in $E_k$ ($X^g\mapsto\omega^g$).
+
+\begin{lemma}[Fresh exponents \src{16}]\label{osq:fs:lem:fresh}
+Every set-sized family of elements of $E_k$ lies in $K_G$ for some set-sized subgroup $G\subseteq\No$. There is $b>0$ with
+$b>g$ for all $g\in G$ (a \emph{fresh} exponent), and then $jb+g>0$ for $j>0$ and $jb+g<0$ for $j<0$ ($j\in\Z$, $g\in G$); in
+particular $G\cap\Z b=\{0\}$.
+\end{lemma}
+\begin{proof}
+Let $G$ be the subgroup generated by the union of the supports; it is a set, and $K_G$ is a set-sized Hahn field. Choose
+$b$ strictly above the set $G\cup\{0\}$ (\cref{osq:lem:gap}); since $G=-G$, $b+g>0>-b+g$, and the same follows for all
+nonzero integral multiples of $b$.
+\end{proof}
+
+Freshness dominates the whole group, not only finitely many leading exponents: to dominate $G=\Q$ one may take $b=\omega$,
+while no ordinary real suffices (16).
+
+\begin{theorem}[Laurent blocks \src{16}]\label{osq:fs:thm:embedding}
+Let $b>G$ be fresh and $t=\omega^b$. The map
+$\iota_b:K_G(\!(T^{-1})\!)\to E_k$, $\sum_{j\le m}c_jT^j\mapsto\sum_{j\le m}c_j\omega^{jb}$, is an injective field
+homomorphism, the identity on $K_G$, with $\iota_b(T)=t$. Each nonzero $c_j$ occupies the support block $jb+\supp c_j$; blocks
+with different $j$ are disjoint and ordered by $j$. In particular $t$ is transcendental over $K_G$.
+\end{theorem}
+\begin{proof}
+For $j<\ell$ and $g,h\in G$, $(\ell b+h)-(jb+g)=(\ell-j)b+(h-g)>0$. A nonempty subset of the union of the blocks has a greatest
+element: take the greatest outer index of a block meeting it (the indices are bounded above), then the greatest element in that
+block. So the image is a legitimate Hahn sum even when the $c_j$ have infinite supports. Addition is coefficientwise; in a product
+a fixed outer index receives contributions from finitely many pairs of outer indices, each an ordinary Hahn product. A nonzero
+coefficient gives a nonempty block that cannot cancel, so $\iota_b$ is injective; a unital injective ring map from a field preserves
+inverses, and injectivity on $K_G[T]$ is transcendence.
+\end{proof}
+
+\begin{corollary}[Exact support test \src{16}]\label{osq:fs:cor:blocktest}
+For $L=\sum_{j\le m}c_jT^j$, $\iota_b(L)\in\A_{D,k}$ if and only if $c_j=0$ for all $j<0$ and $c_0\in\A_{D,k}$; the same holds with
+$\A_{k,k}$ in place of $\A_{D,k}$. Positive-index blocks are purely infinite.
+\end{corollary}
+\begin{proof}
+Negative-index blocks consist of negative exponents and cannot cancel; the block of index $0$ is $c_0$; positive-index blocks do not
+affect the negative terms or the constant term.
+\end{proof}
+
+\begin{theorem}[One fresh value forces polynomiality \src{16}]\label{osq:fs:thm:onepoint}
+Let $F\in K_G(T)$. Its denominator does not vanish at $t$, and $F(t)\in\A_{D,k}$ if and only if $F\in K_G[T]$ and the constant
+coefficient of $F$ lies in $\A_{D,k}$. The same holds with $t$ replaced by $ut$ for any $u\in K_G^\times$; these inputs lie in $\Pi_k$.
+If the proper part of $F$ begins $aT^{-n}+O(T^{-n-1})$ with $a\ne0$, $n\ge1$, then $F(t)$ has the nonzero block $-nb+\supp a$, and if
+the constant coefficient of the polynomial part has no negative terms, the leading negative exponent of $F(t)$ is $\max\supp a-nb$,
+with the leading coefficient of $a$.
+\end{theorem}
+\begin{proof}
+Transcendence gives the first assertion. Expand $F$ at infinity by polynomial division and a geometric inverse; its image under $\iota_b$ is
+$F(t)$, and a rational function has no negative Laurent coefficients exactly when it is a polynomial. Apply
+\cref{osq:fs:cor:blocktest}. Substituting $uT$ multiplies $c_j$ by $u^j$ and fixes $c_0$; $ut$ occupies the positive block $b+G$. The
+last assertion is the block order of \cref{osq:fs:thm:embedding}.
+\end{proof}
+
+One fresh value detects negative Laurent tails, not integer-valuedness: $F(X)=X/2$ passes the test but fails at $X=1$ (16).
+
+\begin{lemma}[Branches of a shifted value \src{16}]\label{osq:fs:lem:branches}
+Let $d\ge2$, let $K$ be a field of characteristic $0$ containing the $d$th roots of unity, and
+$f=a_dX^d+\dots+a_0\in K[X]$ with $a_d\ne0$. For every $c\in K$ the equation $f(Y)=f(T)+c$ has exactly $d$ distinct roots in
+$K(\!(T^{-1})\!)$, indexed by $\zeta^d=1$, of the form
+\[
+ Y_{\zeta,c}=\zeta T+(\zeta-1)s+O(T^{-1}),\qquad s=\frac{a_{d-1}}{da_d}.
+\]
+\end{lemma}
+\begin{proof}
+With $u=T^{-1}$ and $W=uY$, multiplying by $u^d$ gives $\sum_ja_ju^{d-j}(W^j-1)-cu^d=0$, which at $u=0$ is $a_d(W^d-1)=0$ with simple
+roots $\zeta$ (the $W$-derivative there is $da_d\zeta^{d-1}\ne0$). The coefficient of $u^n$ is then solved uniquely step by step, giving
+$W_\zeta\in K[[u]]$ with $W_\zeta(0)=\zeta$, and $Y=TW_\zeta(T^{-1})$; the $d$ distinct leading coefficients give $d$ distinct roots, which exhaust
+the roots of a polynomial of degree $d$. Comparing coefficients of $T^{d-1}$ in $f(\zeta T+w+\dots)=f(T)+c$ gives
+$da_d\zeta^{d-1}w+a_{d-1}\zeta^{d-1}=a_{d-1}$, that is $w=(\zeta-1)s$.
+\end{proof}
+
+Put $\mathsf a_\zeta(T)=\zeta T+(\zeta-1)s$ and $\mathsf d_{\zeta,c}(T)=f(\mathsf a_\zeta(T))-f(T)-c$. The choices of $\zeta$ and $s$ cancel
+the terms of degrees $d$ and $d-1$, so $\deg\mathsf d_{\zeta,c}\le d-2$ unless $\mathsf d_{\zeta,c}=0$. Since $\mathsf a_\zeta$ fixes $-s$,
+\begin{equation}\label{osq:fs:eq:defect}
+ \mathsf d_{\zeta,c}(-s)=-c:
+\end{equation}
+a nonzero output shift cannot be produced by an affine change of input, even if the coefficients of $f$ are infinite or
+infinitesimal (16). Degrees and leading coefficients $\lc$ below refer to the formal variable $T$.
+
+\begin{theorem}[Forbidden layers \src{16}]\label{osq:fs:thm:forbidden}
+In \cref{osq:fs:lem:branches} let $c\ne0$. For each $\zeta^d=1$ put $q_\zeta=\deg\mathsf d_{\zeta,c}$, $r_\zeta=d-1-q_\zeta$ and
+$\mathsf c_\zeta=-\lc(\mathsf d_{\zeta,c})/(da_d\zeta^{d-1})$. Then $\mathsf d_{\zeta,c}\ne0$, $1\le r_\zeta\le d-1$, $\mathsf c_\zeta\ne0$ and
+\[
+ Y_{\zeta,c}=\mathsf a_\zeta(T)+\mathsf c_\zeta T^{-r_\zeta}+O(T^{-r_\zeta-1});\qquad\text{in particular}\qquad
+ Y_{1,c}=T+\frac{c}{da_d}T^{1-d}+O(T^{-d}),
+\]
+so the bound $d-1$ is attained for every $c\ne0$.
+\end{theorem}
+\begin{proof}
+By \eqref{osq:fs:eq:defect} the defect is nonzero, of degree between $0$ and $d-2$. The remainder $R=Y_{\zeta,c}-\mathsf a_\zeta$ lies in
+$T^{-1}K[[T^{-1}]]$ and is nonzero; let $\chi T^m$ ($m\le-1$) be its first term. Taylor expansion gives
+$0=\mathsf d_{\zeta,c}+f'(\mathsf a_\zeta)R+\sum_{j\ge2}f^{(j)}(\mathsf a_\zeta)R^j/j!$. The linear term has degree $d-1+m$ and leading coefficient
+$da_d\zeta^{d-1}\chi$, while the $j$th term has degree at most $d-j+jm<d-1+m$ because $(j-1)(1-m)>0$. Hence $q_\zeta=d-1+m$ and
+$\lc(\mathsf d_{\zeta,c})+da_d\zeta^{d-1}\chi=0$. For $\zeta=1$, $\mathsf a_1=T$ and $\mathsf d_{1,c}=-c$.
+\end{proof}
+
+\begin{theorem}[Uniform image gap \src{16}]\label{osq:fs:thm:imagegap}
+Let $f\in K_G[X]$ have degree $d\ge2$, let $b>G$ be fresh and $t=\omega^b$. Then
+\[
+ f(\A_{k,k})\cap\bigl(f(t)+K_G\bigr)=\{f(t)\},\qquad\text{hence}\qquad f(\A_{D,k})\cap\bigl(f(t)+K_G\bigr)=\{f(t)\}.
+\]
+For every $0\ne c\in K_G$, every root in $\SC$ of $f(Y)=f(t)+c$ has a nonzero block $-r_\zeta b+\supp\mathsf c_\zeta$ of negative
+exponents, with $1\le r_\zeta\le d-1$ as in \cref{osq:fs:thm:forbidden}.
+\end{theorem}
+\begin{proof}
+Work over $\hahn\C G$ if $k=\R$ (the roots of unity are ordinary constants, so no new exponents arise). \Cref{osq:fs:lem:branches} and
+\cref{osq:fs:thm:embedding} give $d$ distinct roots of $f(Y)-f(t)-c$ in $\SC$, hence all of them. For $c\ne0$ each has, by
+\cref{osq:fs:thm:forbidden}, a nonzero coefficient in a block of negative index, which lies below exponent $0$ and cannot cancel against the
+affine constant or another block; so no root lies in $\A_{\C,\C}$, and none in $\A_{k,k}\supseteq\A_{D,k}$. For $c=0$, $t\in\Pi_k$ gives the value
+$f(t)$.
+\end{proof}
+
+The same $b$ works for every $c\in K_G$ at once, and $G$ need not be Archimedean, countable or divisible (16).
+
+\begin{remark}[Special cases printed elsewhere \src{16; 08}]\label{osq:fs:rem:special}
+Three nonsolvability statements proved separately are instances of \cref{osq:fs:thm:imagegap} with $G=\{0\}$, where every $b>0$ is
+fresh and $K_G=k$. (a) $x^2=\omega^2+1$ has no solution in $\Oz$: take $f=X^2$, $t=\omega$, $c=1$; this is an example of the
+Diophantine report \cite{RepoOdg}. (b) For $a\in\R_{>0}$, $\gamma>0$, $0\ne\beta\in\Z$ and $n\ge2$, $X^n=a\omega^\gamma+\beta$ has
+no solution in $\Oz$: put $X=a^{1/n}Y$ with $Y\in\A_{\R,\R}$, $f=aY^n$, $t=\omega^{\gamma/n}$, $c=\beta$; this is the two-term root obstruction of
+the Diophantine report \cite{RepoOdg}, whose short proof by the binomial expansion is kept there. (c) For $\gamma>0$ and $m\ge2$,
+$X^m=\omega^\gamma+1$ has no root in $\GOz$: take $k=\C$, $f=X^m$, $t=\omega^{\gamma/m}$, $c=1$; this is 08's invisible equation
+(\cref{osq:nm:thm:invisible}), whose explicit expansion \eqref{osq:nm:eq:rootexpansion} exhibits the forbidden block of layer $r_1=m-1$.
+\Cref{osq:fs:thm:imagegap} is also consistent with 10's local count (\cref{osq:pm:thm:localcount}): for fresh $t$ the fiber of $f(t)$ has
+at most $e(f)\le d$ points in the complex case and at most one ($d$ odd) or two ($d$ even) in the real case (\cref{osq:fs:thm:fiber} below),
+within 10's bound $q_{E,d}$.
+\end{remark}
+
+\begin{corollary}[Omnific non-solvability \src{16}]\label{osq:fs:cor:diophantine}
+If $f$ maps $\A_{D,k}$ into itself and has degree at least two, then with $K_G$ and $t$ as above, $f(Y)=f(t)+c$ has no solution
+$Y\in\A_{D,k}$ for any $0\ne c\in K_G\cap\A_{D,k}$, although its right side lies in $\A_{D,k}$. For $f\in k[X]$ one may take $G=\{0\}$ and any
+$b>0$.
+\end{corollary}
+
+\begin{definition}[Centered polynomial \src{16}]\label{osq:fs:def:centered}
+For $f$ of degree $d\ge2$ with centre $s=a_{d-1}/(da_d)$ write $h(U)=f(U-s)=\sum_{j=0}^dh_jU^j$ (so $h_{d-1}=0$) and
+$e(f)=\gcd\{j\ge1:h_j\ne0\}$.
+\end{definition}
+
+\begin{theorem}[Exact fresh fibers \src{16}]\label{osq:fs:thm:fiber}
+For $\zeta^d=1$, $f(\mathsf a_\zeta(T))=f(T)$ if and only if $h(\zeta U)=h(U)$ if and only if $\zeta^{e(f)}=1$; if this fails, the branch
+$Y_{\zeta,0}$ has a nonzero negative Laurent term, and if it holds, $Y_{\zeta,0}=\mathsf a_\zeta$. Consequently, for $f\in K_G[X]$ of degree at
+least two and fresh $t$,
+\[
+ \{y\in\A_{D,k}:f(y)=f(t)\}=\bigl\{\zeta t+(\zeta-1)s:\ \zeta\in k,\ \zeta^{e(f)}=1,\ (\zeta-1)s\in\A_{D,k}\bigr\},
+\]
+distinct $\zeta$ giving distinct points. If $s$ has a nonzero negative-exponent part the fiber is $\{t\}$; if $s\in\Pi_k$, all $e(f)$ points occur
+when $k=\C$, and one or two when $k=\R$, according as $e(f)$ is odd or even.
+\end{theorem}
+\begin{proof}
+$\mathsf a_\zeta(T)+s=\zeta(T+s)$ gives the first equivalence; the second is $\zeta^j=1$ for all supported $j$, that is $\zeta^{e(f)}=1$ by
+B\'ezout. If the defect vanishes, $\mathsf a_\zeta$ is a root with leading coefficient $\zeta$, hence the branch by uniqueness of the simple-root
+lift; otherwise the remainder is nonzero and the argument of \cref{osq:fs:thm:forbidden} applies. Every root is a branch; nonsymmetric branches
+have a forbidden block; a symmetric one is $\zeta t+(\zeta-1)s$, whose fresh term cannot affect the old negative terms or the constant, so it lies in
+$\A_{D,k}$ exactly when $(\zeta-1)s$ does (and $\zeta\in k$: a nonreal $\zeta$ gives a nonreal leading coefficient). Distinct $\zeta$ have distinct
+fresh leading coefficients; multiplying a nonzero negative part of $s$ by $\zeta-1\ne0$ keeps it; the count is that of roots of unity in $k$.
+\end{proof}
+
+\begin{example}[Worked fibers and defects \src{16}]\label{osq:fs:ex:worked}
+(a) For $f=X^d$, $s=0$ and $e(f)=d$: the fresh fiber of $t^d$ in $\GOz$ is $\{\zeta t:\zeta^d=1\}$ (the constant term of $\zeta t$ is $0$, so
+$\zeta$ need not be a Gaussian integer), and for $0\ne c\in k$ the shifted roots are
+$\zeta t(1+ct^{-d})^{1/d}=\zeta t+\frac{\zeta c}{d}t^{1-d}+\frac{\zeta(1-d)c^2}{2d^2}t^{1-2d}+\cdots$, with first negative layer exactly
+$d-1$ (a formal binomial expansion followed by the block embedding). (b) $f=X^3+X^2$ has $s=\tfrac13$, $h=U^3-\tfrac13U+\tfrac2{27}$ and
+$e(f)=1$, so $f(t)$ has the single preimage $t$ in $\Oz$ and in $\GOz$; this does not make $f$ injective ($f(0)=f(-1)$). (c) $f=\omega X^2+X$
+has the infinitesimal centre $1/(2\omega)$; at $t=\omega^\omega$ the other algebraic preimage of $f(t)$ is $-t-\omega^{-1}$, and $f$ is in fact
+injective on $\Oz$ and $\GOz$, since $f(x)=f(y)$, $x\ne y$, forces $x+y=-\omega^{-1}$. (d) For $f=X^3+\lambda X+\nu$ ($s=0$),
+$\mathsf d_{\zeta,c}=\lambda(\zeta-1)T-c$: the identity branch first detects the shift at layer two ($\frac c3T^{-2}$), a nontrivial branch
+with $\lambda\ne0$ at layer one ($-\lambda(\zeta-1)T^{-1}/(3\zeta^2)$). (e) For $f=X^4+pX^2+qX+r$,
+$\mathsf d_{\zeta,c}=p(\zeta^2-1)T^2+q(\zeta-1)T-c$; the first negative terms are $cT^{-3}/4$ at $\zeta=1$, $-qT^{-2}/2$ at $\zeta=-1$ ($q\ne0$) and
+$ipT^{-1}/2$ at $\zeta=i$ ($p\ne0$); when a displayed coefficient vanishes the next term of the finite defect decides. (f) Freshness cannot be
+weakened casually: with $G=\Q$, $F(T)=\omega/T$ takes the value $1$ at the non-fresh $T=\omega$; and $f=X^2$, $t=\omega$ with the shift
+$2\omega+1$, which is not below a fresh exponent, gives $(t+1)^2$, an omnific square.
+\end{example}
+
+\begin{theorem}[Rational self-maps over any constant ring \src{16}; second route to \cref{osq:pm:thm:rational}]\label{osq:fs:thm:collapse}
+Let $F\in E_k(X)$ be a rational function, in lowest terms, whose values lie in $\A_{D,k}$ at every point of $\A_{D,k}$ where it is defined.
+Then $F$ is a polynomial. Hence the rational self-maps of $\A_{D,k}$ are exactly its integer-valued polynomials.
+\end{theorem}
+\begin{proof}
+Put the finitely many coefficients in some $K_G$ (\cref{osq:fs:lem:fresh}) and take a fresh $t=\omega^b\in\Pi_k\subseteq\A_{D,k}$. The
+denominator does not vanish at $t$, and $F(t)\in\A_{D,k}$, so $F$ is a polynomial by \cref{osq:fs:thm:onepoint}.
+\end{proof}
+
+For $D=\Z,\Z[i]$ this is 10's \cref{osq:pm:thm:rational}; the two proofs are different routes. 10's uses finite differences and
+lattice separation ($|x|\ge1$ for $0\ne x\in\Oz$), which fails for $D=\Q$ or $D=k$; 16's uses one fresh input and works for every $D$. The
+bare statement that integer-valued rational functions are polynomials is not new in principle: it is the D-ring phenomenon of
+Gunji--McQuillan \cite{GunjiMcQuillan}, as recalled by Liu \cite[Proposition~1.12]{Liu}; for $\Oz$ and $\GOz$, whose unit groups are finite,
+a nonconstant polynomial cannot take all its values in the unit group, which is the link with that criterion. 16 avoids importing a
+theorem about set-sized domains into a proper-class ring and supplies an explicit fresh witness (16).
+
+\begin{theorem}[Surjective rational self-maps \src{16}; second route to \cref{osq:pm:cor:bijections}]\label{osq:fs:thm:surjective}
+A rational function over $E_k$ that is defined at every point of $\A_{D,k}$ and maps $\A_{D,k}$ into itself is surjective onto $\A_{D,k}$
+if and only if it is $X\mapsto uX+a$ with $a\in\A_{D,k}$ and $u\in D^\times$; every such map is
+bijective, and under composition they form the affine group $\A_{D,k}\rtimes D^\times$, $(a,u)(a',u')=(a+ua',uu')$. For $\Oz$ these are
+$X\mapsto\pm X+a$, and for $\GOz$ they are $X\mapsto uX+a$ with $u\in\{\pm1,\pm i\}$.
+\end{theorem}
+\begin{proof}
+By \cref{osq:fs:thm:collapse} the map is a polynomial; constants are not surjective. If its degree is at least two, then for a fresh $t$ the
+element $F(t)+1\in\A_{D,k}$ is not a value, by \cref{osq:fs:thm:imagegap}. So $F=uX+a$ with $a=F(0)$ and $u=F(1)-F(0)$ in $\A_{D,k}$, and
+surjectivity at $a+1$ gives $ux=1$ with $x\in\A_{D,k}$, so $u\in D^\times$ (\cref{osq:lem:units}). The inverse is $X\mapsto u^{-1}(X-a)$.
+\end{proof}
+
+For $\Oz$ and $\GOz$ this contains 10's classification of the rational bijections; 16 assumes only surjectivity and allows every unital
+$D\subseteq k$, and its proof uses the image gap where 10's uses holes of every radius (\cref{osq:pm:thm:holes}). Both are kept.
+
+\begin{corollary}[Omitted values form a proper class \src{16}]\label{osq:fs:cor:omitted}
+If $F$ is an integer-valued polynomial of $\A_{D,k}$ of degree at least two, then $\A_{D,k}\setminus F(\A_{D,k})$ is a proper class; changing
+$F$ on a set of inputs cannot make it surjective.
+\end{corollary}
+\begin{proof}
+Given a set $S\subseteq\A_{D,k}$, enlarge $G$ to contain the supports of $S$ and of the coefficients of $F$ and take $b>G$. The omitted value
+$F(\omega^b)+1$ has leading exponent $db+g_d$ ($g_d$ the leading exponent of the leading coefficient), which is not in $G$, so it is not in $S$.
+Changing $F$ on a set adds at most a set of values.
+\end{proof}
+
+Complex conjugation bijects $\GOz$ but is not a rational function of one surcomplex variable (a rational function agreeing with $X$ on the
+ordinary integers is $X$); admitting $F(\overline X)$ adds exactly the maps $u\overline X+a$. The theorem is one-variable:
+$(x,y)\mapsto(x+y^2,y)$ is a nonlinear polynomial bijection of $\A_{D,k}^2$ (16).
+
+\subsection{Finite tests, fresh probes and sampling}\label{osq:fs:sub:tests}
+
+For a unital $D\subseteq k$ and $r\ge1$ put $\Int(D^r)=\{g\in\Frac(D)[\mathbf X]:g(D^r)\subseteq D\}$ and
+$\Num_r(\A_{D,k})=\{F\in E_k[\mathbf X]:F(\A_{D,k}^r)\subseteq\A_{D,k}\}$, so that $\Num_r(\Oz)$ and $\Num_r(\GOz)$ are those of
+\cref{osq:sec:polynomial}.
+
+\begin{proposition}[Constant-ring transfer \src{16}; 10 for {$D=\Z,\Z[i]$}]\label{osq:fs:prop:transfer}
+For every unital $D\subseteq k$ and $r\ge1$, $\Num_r(\A_{D,k})=\Int(D^r)\oplus\Pi_k[\mathbf X]$ additively, the second summand an ideal,
+and the coefficientwise constant term is a ring homomorphism onto $\Int(D^r)$, split by inclusion.
+\end{proposition}
+\begin{proof}
+Let $F\in\Num_r(\A_{D,k})$ have degree at most $d$ in each variable. The Newton coefficients \eqref{osq:pm:eq:newtoncoef} are integral
+combinations of values at $\{0,\dots,d\}^r$, hence lie in $\A_{D,k}$, and $(d!)^r\binom{\mathbf X}{\mathbf k}\in\Z[\mathbf X]$, so every monomial
+coefficient of $F$ lies in $\Frac(D)+\Pi_k$. Split $F=g+p$ with $g\in\Frac(D)[\mathbf X]$, $p\in\Pi_k[\mathbf X]$. The constant term is a ring
+homomorphism on $\Frac(D)+\Pi_k$ (\cref{osq:lem:ct}), so for $\mathbf a\in D^r$, $g(\mathbf a)=\ct(F(\mathbf a))\in D$; thus $g\in\Int(D^r)$.
+Conversely, for $\mathbf x=\mathbf a+\mathbf z$ with $\mathbf a\in D^r$, $\mathbf z\in\Pi_k^r$, every term of $g(\mathbf a+\mathbf z)-g(\mathbf a)$
+contains a factor $z_j$, so it lies in the ideal $\Pi_k$ of $\A_{k,k}$, and $p(\mathbf x)\in\Pi_k$; hence $F(\mathbf x)\in g(\mathbf a)+\Pi_k$.
+Uniqueness is $k\cap\Pi_k=0$, and the section is the inclusion.
+\end{proof}
+
+For $D=\Z$ and $\Z[i]$ this is \cref{osq:pm:thm:numreal,osq:pm:thm:numgaussian} (10); 16 proves it for $r=1$ and for several variables with
+any $D$. The finite-difference identity needs no convergence argument: both sides agree at the grid points (16).
+
+\begin{theorem}[Optimal point tests \src{16}; 10]\label{osq:fs:thm:lower}
+Let $L\subseteq\N^n$ be a finite nonempty lower set ($\boldsymbol\alpha\in L$ and $\boldsymbol\beta\le\boldsymbol\alpha$ coordinatewise imply
+$\boldsymbol\beta\in L$) and $V_L=\Span_{\No}\{\mathbf X^{\boldsymbol\alpha}:\boldsymbol\alpha\in L\}$. For $F\in V_L$ the following are
+equivalent: $F(\Oz^n)\subseteq\Oz$; $F(\boldsymbol\alpha)\in\Oz$ for all $\boldsymbol\alpha\in L$; all coefficients of the expansion
+$F=\sum_{\boldsymbol\alpha\in L}c_{\boldsymbol\alpha}\binom{\mathbf X}{\boldsymbol\alpha}$ lie in $\Oz$. Moreover $|L|$ is the least size of a set of
+points of $\Oz^n$, arbitrary omnific points allowed, whose values test membership for all of $V_L$. In particular, for one variable and degree at
+most $d$, the $d+1$ points $0,\dots,d$ suffice and no $d$ points do.
+\end{theorem}
+\begin{proof}
+The $\binom{\mathbf X}{\boldsymbol\alpha}$, $\boldsymbol\alpha\in L$, form a basis of $V_L$: each has leading monomial
+$\mathbf X^{\boldsymbol\alpha}/\prod_j\alpha_j!$ and its other monomials have smaller indices, which stay in $L$. In a linear extension of the
+coordinatewise order the evaluation matrix $\bigl(\binom{\boldsymbol\beta}{\boldsymbol\alpha}\bigr)$ on $L$ is integral and unitriangular, so
+$c_{\boldsymbol\alpha}=\sum_{\boldsymbol\beta\le\boldsymbol\alpha}(-1)^{|\boldsymbol\alpha|-|\boldsymbol\beta|}\prod_j\binom{\alpha_j}{\beta_j}F(\boldsymbol\beta)$.
+Each $\binom{X_j}{\alpha_j}$ preserves $\Oz$ (\cref{osq:pm:lem:binomial}). If fewer than $|L|$ points are proposed, their evaluation maps have a
+common nonzero kernel element $h\in V_L$; a polynomial vanishing on $\Z^n$ is zero, so $h(\mathbf n)\ne0$ for some $\mathbf n\in\Z^n$, and
+$h/(2h(\mathbf n))$ passes all proposed tests but takes the value $\tfrac12$ at $\mathbf n$.
+\end{proof}
+
+For rectangular $L$ the equivalences are 10's \cref{osq:pm:thm:grid}; general lower sets (for instance total degree at most $d$, with
+$\binom{n+d}n$ points) and the optimality statement are 16's. So the binomial polynomials form a basis of the $\Oz$-module $\Num_1(\Oz)$, each
+element having finitely many nonzero coordinates, and the countable set $\Z$ tests all of $\Num_1(\Oz)$; no topological density is asserted
+(16).
+
+\begin{proposition}[A finite Gaussian test \src{16}]\label{osq:fs:prop:gausstest}
+Let $F\in\SC[\mathbf X]$ have total degree at most $d$, $M=d!$ and $C_M=\{a+bi:a,b\in\Z,\ 0\le a,b<M\}$. Then $F$ preserves $\GOz$ if and
+only if its values lie in $\GOz$ on $L_d\cup C_M^{\,n}$, where $L_d=\{\boldsymbol\alpha\in\N^n:|\boldsymbol\alpha|\le d\}$. This is an explicit
+finite certificate, not a claim of minimal size.
+\end{proposition}
+\begin{proof}
+The values on $L_d$ give $F=g+p$ with $g\in M^{-1}\Z[i][\mathbf X]$ and $p\in\Pi_\C[\mathbf X]$ (the denominators $\prod_j\alpha_j!$ divide $d!$).
+With $h=Mg\in\Z[i][\mathbf X]$, $g(\mathbf z)\in\Z[i]$ means $h(\mathbf z)\equiv0\pmod{M\Z[i]}$, which depends only on the residues of the
+coordinates, and $C_M$ is a complete residue system. So $g\in\Int(\Z[i]^n)$; apply \cref{osq:fs:prop:transfer}.
+\end{proof}
+
+The ordinary grid alone is not enough over $\GOz$: $\binom i2=(-1-i)/2$ (\cref{osq:pm:rem:gaussnewton}).
+
+\begin{lemma}[Independent fresh coordinates \src{16}]\label{osq:fs:lem:independent}
+For a set-sized subgroup $G$ there are positive $b_1,\dots,b_n$ whose classes are linearly independent over $\Q$ modulo $G$, and the
+$t_j=\omega^{b_j}$ are algebraically independent over $K_G$.
+\end{lemma}
+\begin{proof}
+Choose $b_j$ above the set-sized rational span of $G,b_1,\dots,b_{j-1}$; a nontrivial relation would contradict the freshness of the last
+participating $b_j$. Distinct monomials $\prod_jt_j^{\alpha_j}$ have exponents in distinct cosets of $G$, so their $K_G$-multiples have disjoint
+supports.
+\end{proof}
+
+With such $b_j$, let $H=G+\sum_j\Q b_j$, choose $B>H$, and let $\xi^{(i)}\in\A_{D,k}^n$ have $i$th coordinate $\omega^B$ and $j$th coordinate
+$\omega^{b_j}$ for $j\ne i$.
+
+\begin{theorem}[Coordinate-dominant probes \src{16}]\label{osq:fs:thm:probes}
+If $F\in K_G(X_1,\dots,X_n)$ and $F(\xi^{(i)})\in\A_{D,k}$ for $1\le i\le n$, then $F\in K_G[X_1,\dots,X_n]$. Consequently every rational
+function mapping $\A_{D,k}^n$ into $\A_{D,k}$ at its points of definition is a polynomial.
+\end{theorem}
+\begin{proof}
+Fix $i$ and view $F$ as a rational function of $X_i$ over $E_i=K_G(X_j:j\ne i)$. Substituting $X_j=t_j$ ($j\ne i$) embeds $E_i$ in $K_H$
+(\cref{osq:fs:lem:independent}); a reduced numerator and denominator stay coprime (their B\'ezout identity survives) and keep their degrees. As
+$\omega^B$ is fresh over $K_H$, \cref{osq:fs:thm:onepoint} makes the denominator constant in $X_i$, so $F\in E_i[X_i]$ for each $i$. If $F=P/Q$ in
+lowest terms in the unique factorization domain $K_G[\mathbf X]$ had nonconstant $Q$, an irreducible factor of positive degree in some $X_i$
+would remain a denominator over $E_i$ (Gauss's lemma).
+\end{proof}
+
+\begin{corollary}[Workspace-uniform rational certificates \src{16}]\label{osq:fs:cor:certificates}
+Fix $K_G$ and $d\ge0$. For rational functions over $K_G$ with numerator of total degree at most $d$ in lowest terms, being a self-map of
+$\Oz^n\to\Oz$ is tested by $L_d$ together with the $n$ probes $\xi^{(i)}$ (at most $\binom{n+d}n+n$ values; $d+2$ for $n=1$), and of
+$\GOz^n\to\GOz$ by $L_d\cup C_{d!}^{\,n}$ together with the probes.
+\end{corollary}
+\begin{proof}
+The probes force a polynomial, of total degree at most $d$; then apply \cref{osq:fs:thm:lower} or \cref{osq:fs:prop:gausstest}. Necessity is
+clear since all test points lie in the domain.
+\end{proof}
+
+These certificates are uniform for a whole coefficient workspace $K_G$; they are relative to exact coefficient data, zero tests and a certificate
+of freshness, and are not an algorithm for arbitrary presentations of surreal coefficients (16).
+
+\begin{theorem}[No set-sized sample tests all rational maps \src{16}]\label{osq:fs:thm:nosmall}
+Let $\Lambda$ be $\Oz$ or $\GOz$ and $S\subseteq\Lambda$ a set. There is $\beta>0$ such that $R_S(X)=\omega^\beta/(X-\frac12)$ is defined on all of
+$\Lambda$, satisfies $R_S(S)\subseteq\Pi_k$, and $R_S(\omega^{2\beta})=\sum_{m\ge0}2^{-m}\omega^{-(2m+1)\beta}\notin\Lambda$.
+\end{theorem}
+\begin{proof}
+$\tfrac12\notin\Lambda$. Clear the set of supports of the $(s-\tfrac12)^{-1}$, $s\in S$ (\cref{osq:prop:fractions}(i)) to get $\beta$. At
+$x=\omega^{2\beta}$, $R_S(x)=\omega^{-\beta}(1-\tfrac12\omega^{-2\beta})^{-1}$ is a nonzero infinitesimal.
+\end{proof}
+
+Thus no set of points, with all values known, detects all rational self-maps, even among functions of numerator degree $0$ and denominator
+degree $1$ with no pole on $\Lambda$: the single function $\omega/(X-\frac12)$ takes purely infinite values at every ordinary and Gaussian
+integer, yet $\omega/(\omega^2-\frac12)=\omega^{-1}+\frac12\omega^{-3}+\cdots\notin\Oz$. For polynomials, by contrast, the ordinary integers
+suffice in every degree (\cref{osq:fs:thm:lower}) (16).
+
+\begin{theorem}[Co-small integrality \src{16}]\label{osq:fs:thm:cosmall}
+If $F\in E_k(X)$ is defined and $\A_{D,k}$-valued outside a set-sized subset of $\A_{D,k}$, then $F$ is an integer-valued polynomial of
+$\A_{D,k}$: a rational function that is not a self-map fails on a proper class of inputs (poles counted as failures).
+\end{theorem}
+\begin{proof}
+Let $S$ contain all failures and put its supports and the coefficients of $F$ into $K_G$. If $F$ is not a polynomial, a fresh $t\notin S$
+gives $F(t)\notin\A_{D,k}$ (\cref{osq:fs:thm:onepoint}). If $F$ is a polynomial with $F(a)\notin\A_{D,k}$, enlarge $G$ by the supports of $a$;
+the constant coefficient of $F(a+T)$ is $F(a)$, so $F(a+t)\notin\A_{D,k}$ by \cref{osq:fs:cor:blocktest}, and $a+t\notin S$.
+\end{proof}
+
+\Cref{osq:fs:thm:nosmall,osq:fs:thm:cosmall} do not conflict: the first builds a bad function adapted to a set of successful tests, the second
+says its failures form a proper class; neither provides one set meeting the failures of every function (16).
+
+\begin{proposition}[Hulls \src{16}]\label{osq:fs:prop:hulls}
+For $S\subseteq\A_{D,k}$ let $\operatorname{Hull}_{\mathrm{rat}}(S)$ be the set of $a\in\A_{D,k}$ such that every rational function over $E_k$
+defined and $\A_{D,k}$-valued on $S$ is defined and $\A_{D,k}$-valued at $a$ (poles off $S$ allowed), and define
+$\operatorname{Hull}_{\mathrm{pol}}$ with polynomials. Then $\operatorname{Hull}_{\mathrm{rat}}(S)=S$ for every set $S$, while
+$\operatorname{Hull}_{\mathrm{pol}}(\Z)=\Oz$ and $\operatorname{Hull}_{\mathrm{pol}}(\Z[i])=\GOz$.
+\end{proposition}
+\begin{proof}
+For $a\notin S$, clearing the supports of the $(s-a)^{-1}$ gives $\beta$ with $\omega^\beta/(X-a)$ purely infinite on $S$ and a pole at $a$.
+The polynomial statements follow from \cref{osq:fs:prop:transfer}: values on $D$ force the ordinary part into $\Int(D)$, and the purely infinite
+part is harmless.
+\end{proof}
+
+The pole allowed in the hull is not what drives \cref{osq:fs:thm:nosmall}, whose functions have no pole on the ring (16). In a fixed smaller Hahn
+field whose value group has no exponent above the coefficient group, the fresh-scale argument cannot be reused; this is one of 16's questions
+(\cref{osq:fs:q:fresh}).
 
 \subsection{Scope of the polynomial arithmetic}\label{osq:pm:sub:scope}
 
@@ -5210,7 +6441,12 @@ lie less than $1$ apart, which the lattice forbids. This gives
 \cref{osq:pm:thm:localcount,osq:pm:thm:holes} without a count of points in a surreal
 interval or a real-valued asymptotic density; it uses the real or surcomplex modulus, the
 standard part and the unit-spaced lattices. Neither mechanism should be used as a
-substitute for the other.
+substitute for the other. 16 adds a third: \emph{fresh scales} (\cref{osq:fs:sub:gaps,osq:fs:sub:tests}). A
+monomial above an entire set-sized exponent group separates formal Laurent powers into disjoint support
+blocks, so negative Laurent tails cannot be hidden by cancellation; this needs no lattice separation, works for
+every unital $D\subseteq k$, and is a support argument, not a convergence argument in the fine topology. It needs the
+full surreal exponent class: in a fixed Hahn field whose value group has no exponent above the coefficient group
+it cannot be reused (16).
 
 Manuscript~10 proposes \cref{osq:pm:thm:numreflection} and the arbitrary-scale bound
 \cref{osq:pm:thm:localcount} as new; the other results of this section are explicit
@@ -5230,7 +6466,9 @@ classification of \cref{osq:pm:cor:bijections} concerns rational functions only.
 Manuscript~10 records a question suggested by this material: for the full omnific
 integers, determine how much an automorphism can do inside the ideal $\Pi$ while fixing
 the ordinary shadow $\ct$ (every ring endomorphism of $\Oz$ preserves $\ct$, by the
-uniqueness in \cref{osq:thm:universal}).
+uniqueness in \cref{osq:thm:universal}). Manuscript~16 presents the image-gap, forbidden-layer and fresh-fiber
+package and the two sampling statements as its proposed contributions, credits rational collapse to the D-ring
+theory and Newton interpolation to the classical literature, and proves only one-variable surjectivity rigidity.
 
 \section{Natural ordinal arithmetic is not a quotient of the omnific integers}\label{osq:sec:ordinal}
 
@@ -5247,7 +6485,7 @@ with $T_\alpha$ represented by $\omega^{\omega^\alpha}$ under the natural embedd
 operations, not the usual noncommutative ordinal operations, are essential. The description
 \eqref{osq:eq:ordinalring} appears in the question \cite{MO188430}; the argument above fixes the operations.
 
-\begin{theorem}[The ordinal quotient question \src{11}]\label{osq:thm:ordinal}
+\begin{theorem}[The ordinal quotient question \src{11, 13}]\label{osq:thm:ordinal}
 Every unital ring map $h:\Oz\to\mathcal G_{\mathrm{nat}}$ has image exactly the ordinary integral
 constants. In particular $\mathcal G_{\mathrm{nat}}$ is not isomorphic to a quotient ring of $\Oz$.
 More generally, no ring map $\Oz\to\Z[X]$ with $X\ne\varnothing$ is surjective.
@@ -5273,6 +6511,19 @@ illustrates the general residual theorem, and the second isolates the weaker mec
 this target. The obstruction is not a cardinal comparison, since both rings may be proper classes; it is
 their divisibility and representation properties (11).
 
+\begin{remark}[An independent answer \src{13}]\label{osq:str:rem:elliott}
+Manuscript~13, dated a day after 11 and pinned to a repository commit that precedes 11's placement, answers the same addendum negatively with
+the same two proofs: its lemma that every unital map from $\Oz$ into a ring $B$ with $\bigcap_nnB=0$ factors through
+$\ct$ is the second proof above, and its route through the maps
+$q_F:\mathcal G_{\mathrm{nat}}\to\Z[T_\alpha:\alpha\in F]$ ($F$ finite) and the universal theorem is the first
+(its corollary for rings ``separated by set-sized ring targets'' is \cref{osq:thm:residual}). 13 adds that the
+inclusion $\mathcal G_{\mathrm{nat}}\subset\Oz$ has no unital ring retraction, which is immediate since every unital map
+has image $\Z$, and derives \eqref{osq:eq:ordinalring} from Cantor normal forms in the same way. 13 records that the
+question writes the ring as $K[\Omega]$, with $K$ a Grothendieck construction; that notation was not rechecked for
+this merge. 13 does not claim to answer the original transcendence-degree question, and states that its priority as
+a first answer is not established.
+\end{remark}
+
 \section{Boundaries, non-claims and open questions}\label{osq:sec:boundaries}
 
 \subsection{What the results do not say}\label{osq:sub:notsay}
@@ -5287,6 +6538,12 @@ for the five constructions and the two fixed-group examples treated; no classifi
 groups or support restrictions is claimed, and generator counts follow no general law stated here.
 The large-quotient results describe specified subalgebras of $\Oz/(1+\omega^a)$ and conditional
 statements about primes; no existence theorem for nonarithmetic class primes is claimed.
+The later additions do not change this. The flat and projective dimensions of \cref{osq:hd:sec:cores} are those of
+set-sized finite-support cores, of coefficient-lattice modules and of the rings of \cref{osq:sec:homological}; they
+say nothing about the homological dimensions of the class ring $\Oz$, and a flat dimension computed for one subring of
+$\Oz$ bounds nothing for another (\cref{osq:hd:rem:reconcile}). The finite-support cores are not invisible to set-sized
+rings, only to finite ones (\cref{osq:hd:prop:finite}). The fresh-scale theorems concern polynomials and rational
+functions with finitely many coefficients and use the whole surreal exponent class.
 
 As an internal ring, $\Oz$ has all surreal scales available through its fraction field, a nonzero
 proper-class ideal $\Pi$, nonzero class-valued derivations and nonarithmetic prime quotients; as a
@@ -5429,18 +6686,91 @@ newly settled; the ideals, class-valued representations and factorization theory
 to set-sized rings are not determined, and ordinary factorization questions about $\Oz$ remain
 outside the conclusions.
 
+\paragraph{12.} (1) Nothing is claimed about the homological dimensions of the full proper-class ring $\Oz$; all
+rings are set-sized and all embeddings use finite normal forms. (2) The weak global dimension of $A_d$ is not computed;
+only the lower bound $d+1$ is proved. (3) Projective dimensions are given only as bounds (the exact values in rank one
+are merge results). (4) Arbitrary non-simplicial cones, arbitrary ideals and all homological localizations of the cores
+are not classified. (5) The cores are not integer parts of $\No$, not initial in the simplicity order, not preserved by
+all surreal automorphisms and not Hahn rings; the countable-rank ring still consists of finite sums. (6) $\widehat A$ is
+the profinite completion, not a Hahn completion or a completion in a surreal-valued topology. (7) The $D+M$ framework
+(with the pullback literature, for instance \cite{WKX}), filtered-colimit flatness, coherence criteria and the
+idempotent-kernel mechanism of formal \'etaleness are classical and credited; the proposed contributions are the
+Boolean $\Tor$ computation, its dimension consequences, the countable-rank realization and the ordered-cone comparison.
+(8) No named conjecture is claimed solved; the originality check was targeted, not an exhaustive priority audit.
+(9) Not refereed and not checked in Lean. (10) The finite audit uses $\Q\subset\Q(\sqrt2)$ on a five-point grid and proves
+nothing over $\Z$ or for all exponents. (11) The Gaussian version uses only the quadratic extension $\SC$; no analytic
+continuation and no topology on a proper class is used. (12) ``Nilpotent'' is a test condition on algebras; the cores are
+domains.
+
+\paragraph{13.} (1) The theorems are relative to size; nothing is claimed about all maps out of a fixed set-sized Hahn
+ring, whose identity is a counterexample ($\Z+X\R[X]$ with evaluation at $1$ is 13's example). (2) No classification of
+class quotients, class residue objects or class ideals, and no maximal-ideal theorem or Zorn argument for class rings.
+(3) The ordinal result answers only the quotient addendum; the original transcendence-degree question has Wofsey's
+answer; 13's priority as a first answer is not established. (4) The integer divisibility of the purely infinite part is
+known (L'Innocente--Mantova); equation-only transfer along a retraction, filtered-colimit flatness and the algebra of
+idempotent quotient ideals are standard, and the homological and lifting statements are standard consequences, with no
+\'etaleness claimed under finite presentation. (5) The fiber theorem (printed in \cite{RepoOdg}) classifies only nonzero
+fibers of decomposable polynomials; there is no general classification of fibers, no Thue or Baker finiteness, and no
+enumeration of the ordinary solutions of its cubic. (6) The cardinal criterion is a necessary condition, not an existence
+theorem for detecting maps. (7) The statement on Hilbert's tenth problem is a transfer of the classical theorem, with no
+complexity claim for Gaussian or number-field problems. (8) No claim about Conway's refinement conjecture; no refinement,
+primality or unique-factorization property is used. (9) In the two-universe reading ``not generated by a set'' means not
+generated by a family from the smaller universe. (10) Unrefereed; no Lean; the finite checks verify identities only; the
+literature and repository searches were bounded, and the repository was neither audited nor built.
+
+\paragraph{14.} (1) Arbitrary finitely generated omnific ideals, with generators at several support levels, are not
+classified. (2) The rank-one modules with double dual $B$ are not all listed. (3) No coefficient ring other than a
+principal ideal domain is treated. (4) The exact weak global dimension of $A_0$ is not claimed. (5) The ideal-class group
+under $\odot$ is not a subgroup of $\operatorname{Pic}(A)$, and its identity is $L(\mathfrak o)$, not $A$. (6) Full-class
+tensor products are explicit carriers only, and ordinary flat dimensions are asserted only over $A_0$. (7) No novelty is
+attached to noncoherence; the $D+M$ context is credited to Dobbs--Papick, and no valuation-ring hypothesis is used.
+(8) The number field spanned by a multiplier ring need not be totally real. (9) The unimodular-direction criterion
+concerns coordinate representatives, not all points of a projective scheme over a ring, and its example $[1:\sqrt2]$ is
+not new. (10) The matrix theorem concerns constant matrices at one common monomial scale. (11) Constant-term arithmetic,
+flat idempotent support ideals and cardinal obstructions are credited to companion manuscripts and are not presented as
+new. (12) No Conway factorization or refinement claim; no peer review and no new Lean verification; priority is
+provisional; the finite checks are supplementary and certify no arbitrary support, class universal property, flatness
+statement or Eisenstein criterion in all degrees.
+
+\paragraph{15.} (1) The main theorem is for the full class only; the finite-support ring and fixed Hahn workspaces are
+counterexamples. (2) Its local cardinal criterion is sufficient only. (3) No classification of class prime or maximal
+ideals; its prime classification carries a set-sized residue hypothesis. (4) The primality of $\omega^{\sqrt2}+\omega+1$ is
+imported from L'Innocente--Mantova and is not a new solution of Gonshor's question. (5) No claim about Conway's refinement
+problem; the repository \texttt{gaearon/conway-refinement} was noticed but neither built, audited nor relied on. (6) Only
+set-sized modules are classified; this is not a Morita statement. (7) Universe parameters must stay separate.
+(8) Geometric factorization and the congruence calculations are classical or elementary, the categorical deductions are
+not new techniques, and the rotation-group theorem is a precedent, not a dependency. (9) Blocking one extension of the
+finite-support augmentation is weaker than the theorem. (10) Embeddings of set-sized rings into $\Oz$ are not excluded,
+and $\Oz$ and $\Z$ are not claimed to have the same first-order theory. (11) Candidate originality rests on a bounded
+search; no referee; no Lean; the checks cover finite identities only.
+
+\paragraph{16.} (1) Rational-to-polynomial collapse is not new in principle (D-rings: Gunji--McQuillan, as recalled by
+Liu; related framework in \cite{CFMT}). (2) Surjectivity rigidity covers one variable and rational functions only;
+conjugation, multivariate triangular bijections, class functions, definable maps and formal power series are excluded,
+and not every bijection of $\Oz$ is claimed affine. (3) The fresh-scale arguments do not transfer to a fixed Hahn field
+without dominant exponents. (4) The certificates are relative to exact coefficient data, zero tests and a certificate of
+freshness; they are not a decision procedure for arbitrary surreal inputs. (5) No convergence, analytic continuation,
+surreal exponential, Berarducci--Mantova derivation, fine-topological completeness or factorization is used. (6) Newton
+interpolation and binomial bases are classical, and the Gaussian test is not claimed minimal. (7) The fiber theorem
+classifies the particular fresh fiber, not every fiber. (8) Priority rests on a bounded search; no referee; no Lean; the
+finite checks are not proofs.
+
 \paragraph{The merge.} (1) The results marked \merge\ are consequences of the sources' lemmas; they
 are no more refereed than the sources and are not formalized. (2) No general law is asserted for the
 generator counts. (3) For full-support Hahn rings over a prescribed set group, exact thresholds are computed only in
 \cref{osq:ex:lexQQ,osq:ex:countablecoeff}; the general questions of 04 and 10 stay open. (4) The
 support-threshold theorem is stated for $k\in\{\R,\C\}$ as in 04 and 11, not for every set field.
-(5) No Gaussian analogue of 10's congruence-preservation criterion is given.
+(5) No Gaussian analogue of 10's congruence-preservation criterion is given. (6) Nothing is claimed about the
+homological dimensions of the class ring $\Oz$; $\pd_{A_d}D$ for $d\ge2$ and the weak global dimensions of the cores remain
+undetermined. (7) The finite-support cores of 12 and 14 are outside \cref{osq:thm:universal}: they have set-sized images
+detecting the tail. (8) \Cref{osq:hd:prop:pd}(v) needs a countably generated tail; among the five constructions it settles
+only $A^{08}_\kappa$ with $\cf\kappa=\aleph_0$.
 
 \subsection{Open questions and their status}\label{osq:sub:questions}
 The sources pose the following questions, each as a question suggested by the proofs rather than as
 an established open problem. Several coincide and are merged.
 
-\begin{question}[Least detecting targets over a fixed exponent group; 03, 04, 07, 08, 09, 10, 11]\label{osq:q:fixed}
+\begin{question}[Least detecting targets over a fixed exponent group; 03, 04, 07, 08, 09, 10, 11, 13, 15]\label{osq:q:fixed}
 For a set-sized ordered group $\Gamma$, a family of admissible supports and a specified element (or
 the whole positive-support ideal), what is the least cardinality of a ring target detecting it, and
 which intrinsic support conditions characterize it?
@@ -5451,7 +6781,11 @@ exact for the five constructions and for the two examples of \cref{osq:sub:field
 bound attained'' it shows that the bound need not be attained (in the rational example, and for
 $A^{03}_{\aleph_1}$ if CH fails). 08's criterion
 and 11's coinitiality theorem give sufficient conditions (07's ``sharp set-sized analogues'' and 09's
-``quantitative problem'' are the same question).
+``quantitative problem'' are the same question). 13's question (how large a target must be to detect a prescribed
+series, and whether its divisibility bound is optimal) and 15's ``optimal local cardinal bounds'' are this question as
+well: their bounds are the monomial count of \cref{osq:prop:monomialbounds}(ii), which the field bound dominates; the
+threshold theorem (\cref{osq:thm:thresholds}) answers them for the five constructions, and \cref{osq:ex:countablecoeff}
+shows that the monomial bound need not be attained.
 
 \begin{question}[Cardinal arithmetic without the matching hypothesis; 06]\label{osq:q:kappa}
 For $\kappa$ uncountable regular with $\kappa^{<\kappa}>\kappa$, what is the least size of a target
@@ -5466,7 +6800,12 @@ size exactly $\kappa$ with threshold $\kappa$ (\cref{osq:thm:model08}), without 
 What is $\pd_A\Z$ for the set-sized integer parts, and how does it depend on the cofinality of the
 principal-ideal chain?
 \end{question}
-\emph{Status.} Open; only $\fd_AD=1$ and $\pd_AD\ge2$ are known, now for all five constructions.
+\emph{Status.} Partly answered. $\fd_AD=1$ and $\pd_AD\ge2$ are known for all five constructions. If the tail is
+countably generated, that is if the principal-ideal chain has countable cofinality, then $\pd_AD=2$
+(\cref{osq:hd:prop:pd}(v), a merge result from 12's telescope); among the five constructions this is the case exactly for
+$A^{08}_\kappa$ with $\cf\kappa=\aleph_0$. For chains of uncountable cofinality (03, 06, 09, 11, and 08 with
+$\cf\kappa>\aleph_0$) the question stays open. For comparison, the ordered-cone cores have $\pd D=2$ and the
+coordinate-cone cores $d\le\pd_{A_d}D\le d+1$ (\cref{osq:hd:q:cores}).
 
 \begin{question}[Nonarithmetic primes and their residue fields; 06, 07]\label{osq:q:primes}
 Which prime or maximal class ideals of $\Oz$ have nonzero constant-term image and zero intersection with
@@ -5495,7 +6834,7 @@ cardinality?
 \end{question}
 \emph{Status.} Open.
 
-\begin{question}[Intermediate rings; 04, 11]\label{osq:q:intermediate}
+\begin{question}[Intermediate rings; 04, 11, 15]\label{osq:q:intermediate}
 Which rings between the finite-support ring and $D+\Pi_k$ (for instance, given by allowed families of
 support order types) still have set-sized reflection $D$? Is enough closure under subordinate division
 also necessary?
@@ -5510,7 +6849,7 @@ which structured families of set-sized local models can retain a specified famil
 \end{question}
 \emph{Status.} Open.
 
-\begin{question}[Invisible class domains and automorphisms; 10, 11]\label{osq:q:invisible}
+\begin{question}[Invisible class domains and automorphisms; 10, 11, 15]\label{osq:q:invisible}
 What are the ideals, class-valued representations and factorization theory of proper-class quotient
 domains invisible to all set-sized rings? How much can an automorphism of $\Oz$ do inside $\Pi$ while
 fixing $\ct$?
@@ -5523,14 +6862,39 @@ generated exponent subgroup; decide the descent $\NN\cap F^{03}_\kappa=\NN_\kapp
 generation number of $\NN_\kappa$ between $\cf\kappa$ and $\kappa^{\aleph_0}$; find a class-sized
 replacement for the valuative criterion of integrality; describe the infinite set-sized images of $\NN$.
 \end{question}
-\emph{Status.} Open. 04's question on Diophantine fibers belongs to the sibling report \cite{RepoOdg}.
+\emph{Status.} Open. 04's question on Diophantine fibers belongs to the sibling report \cite{RepoOdg}, and so does 13's
+question on fibers of polynomials with nonlinear factors.
+
+\begin{question}[Homological dimensions of the cores; 12, 14, merge]\label{osq:hd:q:cores}
+For $d\ge2$, is $\pd_{A_d}D$ equal to $d$ or to $d+1$? What are the weak global dimensions of $A_d$ (at least $d+1$) and of
+$A_0=A_1$ (at least $2$)? How do cores over non-simplicial cones, their arbitrary ideals and their homological
+localizations behave?
+\end{question}
+\emph{Status.} Open. In rank one $\pd D=2$, and over every ordered-cone core $\pd D=2$ (\cref{osq:hd:prop:pd}).
+
+\begin{question}[Beyond one coefficient lattice; 14]\label{osq:tn:q:lattices}
+Replace the single coefficient lattice by a finite filtration of lattices indexed by support levels and determine which
+extension data survive multiplication; characterize all finitely generated rank-one modules with double dual $B$; determine
+how coefficient rings that are not principal ideal domains change the tensor kernel.
+\end{question}
+\emph{Status.} Open.
+
+\begin{question}[Fresh scales; 16]\label{osq:fs:q:fresh}
+(a) Can the factorial-residue Gaussian certificate be replaced by an optimal or near-optimal grid, and how does a regular basis
+of $\Int(\Z[i])$ interact with the omnific splitting? (b) Under what hypotheses are the formal inverse branches of a polynomial
+map in several variables at independently fresh coordinates classified by finitely many forbidden support blocks (triangular
+automorphisms exclude a direct analogue of one-variable surjectivity rigidity)? (c) For a fixed set-sized Hahn subfield and its
+nonnegative-support ring, which coefficient subgroups admit enough dominant extensions inside the field to recover the image
+gap and the rational certificates?
+\end{question}
+\emph{Status.} Open.
 
 \section{Verification record and formalization routes}\label{osq:sec:provenance}
 
 \subsection{Finite checks}\label{osq:sub:checks}
 Each manuscript ships a program that checks finite identities with exact arithmetic. They are
 kept byte-identical in \texttt{code/} with their recorded outputs in \texttt{data/}; all were rerun
-for this merge on copies (Python~3.14.4, SymPy~1.14.0) and reproduce the recorded outputs, up to line
+for the two merges on copies (Python~3.14.4, SymPy~1.14.0) and reproduce the recorded outputs, up to line
 endings and the recorded Python version.
 
 \begin{center}\small
@@ -5546,6 +6910,11 @@ Source & What is checked & Checks & Needs\\
 09 & telescopes, truncated comaximality, coefficient maps, finite-support evaluation, Gaussian derivation, gcd identities & 597 & stdlib\\
 10 & divided differences, Newton reconstruction, digit indicators and lifts, telescopes, rational differences & 171{,}395 & SymPy\\
 11 & finite division identities, positive quotient supports, augmentation and conjugation identities, Gaussian derivation & 1{,}858 & stdlib\\
+12 & homology of the Boolean tensor complex for $\Q\subset\Q(\sqrt2)$ on a five-point grid in ranks 1--4, with $d\circ d=0$ (\cref{osq:hd:thm:boolean}) & 780 & SymPy\\
+13 & 51 finite geometric remainders and their positivity, a cubic norm determinant, a Laurent norm identity, a rank-deficient point, a constant-term product & 6 groups & stdlib\\
+14 & ranks for $\alpha^d=2$, homogenized Rees equations, quadratic torsion generators, $P^2=2\,\Z[\sqrt{10}]$ and the mod-5 obstruction, action associativity and tensor balancing & 2{,}189 & SymPy\\
+15 & finite telescopes and divisor truncations, constant-term products, finite-support evaluation, Gaussian matrix evaluation & 820 & stdlib\\
+16 & Newton reconstruction, lower-set interpolation matrices, Gaussian counterexample, 150 centered defects, 22 formal inverse branches & 1{,}354 & SymPy\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -5553,7 +6922,10 @@ Source & What is checked & Checks & Needs\\
 These checks catch sign, index and coefficient errors in finite special cases. None of them
 verifies an infinite support, a class-size argument, a cardinal computation, the existence of a
 maximal ideal, an $\Ext$ computation, a primality statement, or novelty; those rest on the written
-proofs (all sources). The merge results were not machine-checked.
+proofs (all sources). The merge results were not machine-checked. For the second merge an independent exact
+computation, not shipped, rechecked \cref{osq:hd:thm:boolean} in $1{,}626$ cases (multidegree and subset $F$, including
+every proper $F$, over $\Q\subset\Q(\sqrt2)$ in ranks up to $3$) and the formulas of \cref{osq:tn:cor:alldegrees} for
+$d\le8$, $n\le12$; like the shipped checks it verifies finite cases only.
 
 \subsection{Formalization routes}\label{osq:sub:formalization}
 No statement of this report is formalized, and the repository has no omnific module. The sources
@@ -5572,6 +6944,13 @@ binomial kernel should be kept separate from the finite Chinese-remainder algebr
 small-normal-form modules (\texttt{SmallNormalForm.lean}, \texttt{SmallNormalFormTruncation.lean},
 \texttt{SmallNormalFormEvaluation.lean}, \texttt{SignSequenceValuationBalls.lean}, see
 \cite{RepoBridge}) are possible prerequisites (04); they are not a certificate for any result here.
+The later manuscripts add three proposals. 12 would define its cores as subrings of a monoid algebra cut out by the
+constant-coefficient predicate, with the directed-union equality, exactness of the finite-support simplex complex and the
+degreewise classification of \cref{osq:hd:thm:boolean} as the main obligations, and the surreal embedding last. 14 would
+start from an abstract domain $A=D\oplus P$ with $P$ a $k$-linear ideal in which every element is a product of two, a
+hypothesis the finite-support model satisfies. 16 separates a finite part (simple-root recursion, centering, the leading-term
+argument, finite differences), a Hahn part (the block embedding) and an actual-surreal part (a common set-sized exponent
+workspace and a fresh exponent). None was executed.
 
 \begingroup
 \raggedright
@@ -5607,8 +6986,16 @@ Monographs \textbf{48}, American Mathematical Society, 1997.
 P.~Cegielski, S.~Grigorieff and I.~Guessarian, Characterizing congruence preserving functions
 $\Z/n\Z\to\Z/m\Z$ via rational polynomials, arXiv:1506.00133, 2015.
 
+\bibitem{CFMT}
+M.~M.~Chems-Eddin, B.~Feryouch, H.~Mouanis and A.~Tamoussit, On rings of integer-valued rational
+functions, arXiv:2410.16142v2, 2024. A related framework cited by 16; no result is used.
+
 \bibitem{Conway}
 J.~H.~Conway, \emph{On Numbers and Games}, Academic Press, 1976; second edition, A K Peters, 2001.
+
+\bibitem{DobbsPapick}
+D.~E.~Dobbs and I.~J.~Papick, When is $D+M$ coherent?, \emph{Proceedings of the American Mathematical
+Society} \textbf{56} (1976), 51--54. Cited by 14 for context; no criterion is imported.
 
 \bibitem{ElliottBinomial}
 J.~Elliott, Binomial rings, integer-valued polynomials, and $\lambda$-rings, \emph{Journal of Pure
@@ -5626,6 +7013,10 @@ H.~Gonshor, \emph{An Introduction to the Theory of Surreal Numbers}, London Math
 Lecture Note Series \textbf{110}, Cambridge University Press, 1986,
 \href{https://doi.org/10.1017/CBO9780511629143}{doi:10.1017/CBO9780511629143}.
 
+\bibitem{GunjiMcQuillan}
+H.~Gunji and D.~L.~McQuillan, On rings with a certain divisibility property, \emph{Michigan
+Mathematical Journal} \textbf{22} (1976), 289--299.
+
 \bibitem{Kuhlmann}
 F.-V.~Kuhlmann, Dense subfields of henselian fields, and integer parts, arXiv:1003.5681, 2010.
 Context only.
@@ -5638,6 +7029,10 @@ integers, \emph{Advances in Mathematics} \textbf{442} (2024), article 109513,
 product), Fact~8.0.1 (Gonshor's Theorem~8.6) with the example on p.~46, Proposition~8.2.1
 (truncation criterion for divisibility), Theorem~B (primality of $\omega^{\sqrt2}+\omega+1$).
 
+\bibitem{Liu}
+B.~Liu, Ring structure of integer-valued rational functions, arXiv:2208.09935v3, 26 February 2024
+(Proposition~1.12 recalls the D-ring criterion of \cite{GunjiMcQuillan}).
+
 \bibitem{Poonen}
 B.~Poonen, Maximally complete fields, \emph{L'Enseignement Math\'ematique} \textbf{39} (1993),
 87--106 (Corollary~4).
@@ -5646,9 +7041,31 @@ B.~Poonen, Maximally complete fields, \emph{L'Enseignement Math\'ematique} \text
 The Stacks Project Authors, \emph{The Stacks Project}, Section 10.39, Tag 00H9, Lemma 10.39.3,
 \url{https://stacks.math.columbia.edu/tag/00H9}.
 
+\bibitem{StacksFormal}
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 060H (a formally \'etale ring map that is not
+flat), \url{https://stacks.math.columbia.edu/tag/060H}.
+
+\bibitem{StacksCoherent}
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 05CU (coherent rings),
+\url{https://stacks.math.columbia.edu/tag/05CU}.
+
+\bibitem{StacksTensor}
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 00DM (tensor algebra),
+\url{https://stacks.math.columbia.edu/tag/00DM}.
+
+\bibitem{StacksRees}
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 052P (blow-up algebras),
+\url{https://stacks.math.columbia.edu/tag/052P}.
+
 \bibitem{StacksVal}
 The Stacks Project Authors, \emph{The Stacks Project}, Section 10.50, Tag 00I8, Lemmas 10.50.3 and
 10.50.11, \url{https://stacks.math.columbia.edu/tag/00I8}.
+
+\bibitem{WKX}
+F.~Wang, H.~Kim and T.~Xiong, Finitistic weak dimensions of pullbacks, \emph{Journal of Pure and Applied
+Algebra} \textbf{224} (2020), no.~6, 106274,
+\href{https://doi.org/10.1016/j.jpaa.2019.106274}{doi:10.1016/j.jpaa.2019.106274}. Cited by 12 for context;
+no theorem is used.
 
 \bibitem{RepoFound}
 \emph{Surreal} repository, foundations report,
@@ -5671,7 +7088,8 @@ definition $\Oz=\Pi\oplus\Z$, and the fine-topology size obstructions).
 \bibitem{RepoOdg}
 \emph{Surreal} repository, sibling report on the Diophantine geometry of the omnific integers,
 \texttt{docs/surreal/omnific-diophantine-geometry/}, merged from manuscripts 01, 02 and 05 of the
-same batch; written concurrently with this report.
+first batch and later additions; written concurrently with this report. Its rationality theorem for
+primitive constant directions and its exact decomposable fibers are the results cited here.
 
 \bibitem{RepoNotation}
 \emph{Surreal} repository, \texttt{docs/NOTATION.md}.
@@ -5682,6 +7100,10 @@ same batch; written concurrently with this report.
 \bibitem{RepoGammaZeta}
 \emph{Surreal} repository, gamma and zeta functions report,
 \texttt{docs/surcomplex/gamma-and-zeta-functions/}.
+
+\bibitem{RepoHahnEval}
+\emph{Surreal} repository, \emph{A square-root obstruction to evaluating increasing Hahn series at
+$\omega$}, \texttt{docs/surreal/hahn-evaluation-at-omega/}.
 
 \bibitem{RepoDiffEq}
 \emph{Surreal} repository, differential equations report,
