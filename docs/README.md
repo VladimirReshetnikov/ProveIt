@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **44 research reports in five families**. Start with the
+This collection has **46 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -16,15 +16,11 @@ hypotheses, limitations and provenance.
 
 ## Newest reports
 
-Four reports placed in `5fe7f8d` and written in `fb182ea` are catalogued in the
-tables below:
-[vector and tensor fields](surreal/vector-and-tensor-fields/),
-[Euclidean three-space](surreal/euclidean-three-space/),
-[finite surreal probability](surreal/finite-surreal-probability/) and
-[surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/).
-Their proof review and formalization remain pending. The same batch added
-source material to the measures and trigonometry reports; those additions do
-not extend their earlier proof-review scope.
+Two reports placed in `d4e71b7` and written in `3a2d35d` are catalogued in the
+tables below: [surreal fields across universes](foundations-and-computation/surreal-fields-across-universes/)
+and [birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/),
+both set theory about the surreal field. Their proof review and formalization
+remain pending.
 
 ## Reading routes
 
@@ -168,13 +164,15 @@ in `48m²/r⁶` gives a pole of order `6q` and leading coefficient
 `48m² w(0)^(−6)`. The recorded special case `w(s) = 1+s` preserves `48m²`;
 general substitutions need the factor `w(0)^(−6)`.
 
-## Foundations and computation: three reports
+## Foundations and computation: five reports
 
 | Report | Main subject |
 |---|---|
 | [Foundations](foundations-and-computation/foundations/) | Classes and universes, workspace localization, support recursion, topology and a formalization proposal |
 | [Computer algebra](foundations-and-computation/computer-algebra/) | Exact denotation, coefficient access, equality and approximation; three distinct Wolfram prototypes |
 | [Computable surreals](foundations-and-computation/computable-surreals/) | Structural names, effective left-finite Hahn names and bounded-denominator Puiseux names |
+| [Surreal fields across universes](foundations-and-computation/surreal-fields-across-universes/) | External saturation of an inner model's `No^M` in a same-ordinal outer universe: new ordinal sequences, fresh-sign gaps, first new birthday, nonconjugate surcomplex real forms |
+| [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation |
 
 A mathematical closure theorem need not supply a uniform algorithm on the
 chosen names. In particular, numerical coefficient access does not supply a

@@ -497,9 +497,11 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. Paths below identify all 44 main texts
+custom environments are not included. Paths below identify 44 of the 46 main texts
 present in the repository, including the two whose source is not named
-`article.tex`. The reader map and the typeset catalogue list all of them. The
+`article.tex`. The reader map and the typeset catalogue list all 46; the two
+reports of batch 21 (placed in `d4e71b7`, written in `3a2d35d`) are not yet
+indexed here. The
 four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
 their labels; they are indexed here but not yet reviewed.
 The four reports and expanded sections from batch 19 are indexed here, but
