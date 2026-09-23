@@ -555,3 +555,6 @@ import Surreal.Algebra.PolynomialReflectionMultiplicity
 import Surreal.Surcomplex.CirclePolynomialNorm
 import Surreal.Surcomplex.OuterPolynomialUniqueness
 import Surreal.Surcomplex.FejerRiesz
+import Surreal.Algebra.FiniteAutocorrelation
+import Surreal.Surcomplex.FejerRieszCoefficients
+import Surreal.Surcomplex.FejerRieszCoefficientBounds

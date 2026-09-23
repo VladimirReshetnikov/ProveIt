@@ -114,7 +114,11 @@ unique: equal boundary moduli give equal polynomial norm encodings, which
 recover every root multiplicity and hence determine the factor up to a unit
 scalar. Positivity at zero removes that scalar. This completes the
 Fejér–Riesz theorem on the actual fields, without a compactness or
-Hilbert-space assumption.
+Hilbert-space assumption. The
+factor coefficients now give the exact Fourier autocorrelations: the constant
+coefficient is their squared energy, is positive for nonzero input, and bounds
+the modulus of every Fourier coefficient. At the highest positive frequency,
+twice the coefficient modulus is bounded by the same energy.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
