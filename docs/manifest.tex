@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of forty research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of forty-four research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,7 +59,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Forty independent mathematical research packages,\\
+ {\large Forty-four independent mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -70,26 +70,28 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the forty research packages stored under
+This document catalogues the forty-four research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Thirteen
+The collection divides in five, and so does the directory tree.  Sixteen
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
 of Lipparini about evaluating formal sums, the rigidity of exponential
 automorphisms, Gamma functions, differential transcendence of explicit
 surreals, Hahn-valued measures and probability, Markov generators,
-transcendence over bounded-support series, and diagonal matrix scaling.
-Twenty-two, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
+transcendence over bounded-support series, diagonal matrix scaling, vector
+and tensor fields, Euclidean three-space and its rotations, and finite
+probability.  Twenty-three, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
 the theory of holomorphic functions over it, its differential algebra, its
 rank-one analytic geometry, its finite and infinite-dimensional spectral
 theory, its local, quasi-periodic and expanding dynamics, its nonabelian
 support obstructions, its entire functions at arbitrary valuation rank and
 their holonomic rigidity, Tate curves and multiscale theta series, Herglotz
 positivity, moment reconstruction, the summability of Wick expansions,
-the duals of Hahn vector spaces, and hidden negative directions of Hermitian
+the duals of Hahn vector spaces, the automorphisms of the field, and hidden
+negative directions of Hermitian
 forms.  One, under \dir{docs/surquaternions}, leaves
 commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  One, under \dir{docs/physics}, is the only report here whose subject is
@@ -128,7 +130,7 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Thirteen reports about $\No$ and its real Hahn subfields.  Two questions of
+Sixteen reports about $\No$ and its real Hahn subfields.  Two questions of
 Lipparini on evaluating formal sums; two independent halves of Gonshor's
 product-birthday conjecture, on domains neither of which contains the other;
 the subgraph question from Roughan's paper on birthday arithmetic; a genetic
@@ -137,11 +139,13 @@ constants; a rigidity theorem for exponential automorphisms; a sharp
 convexity classification of surreal Gamma functions; differential
 transcendence of explicit surreals; Hahn-valued measures and probability;
 Markov generators at every valuation scale; transcendence over bounded-support
-series; and diagonal matrix scaling.  The first and the fourth
+series; diagonal matrix scaling; vector and tensor fields in every
+dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
+probability.  The first and the fourth
 each arrived as a pair of archives and were merged; the exponential-automorphism
 report later absorbed two independent re-derivations of its own theorem, and
-the measures report merges three manuscripts; the rest are single
-manuscripts.
+the measures report merges four manuscripts, the vector-field report three
+and the three-space report two; the rest are single manuscripts.
 
 \entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
 {surreal/hahn-evaluation-at-omega}
@@ -385,7 +389,7 @@ theorems remain pending.}
 
 \entry{Hahn-valued measures and probability: strong atomicity, coefficientwise extension, and hidden negative mass}
 {surreal/hahn-valued-measures-and-probability}
-{article.pdf}{three manuscripts, delivered 22~September 2026}
+{article.pdf}{four manuscripts, delivered 22~September 2026}
 {Measures with values in $\R((t^\Gamma))$ and $\C((t^\Gamma))$, and through
 $t^\gamma=\omega^{-\gamma}$ in $\No$ and $\SC$, with $\Gamma$ a set-sized ordered
 abelian group \emph{not} assumed divisible except in one Gaussian quadrature
@@ -424,7 +428,12 @@ and this report works out two; it shows that the object refused by non-claim N75
 \nolinkurl{surcomplex/dynamics-and-normal-forms} cannot exist in the strong class
 for an ordinary group action with only infinite orbits,
 and states canonically the null-ideal criterion proved independently in
-\nolinkurl{surcomplex/hahn-herglotz-positivity}.}
+\nolinkurl{surcomplex/hahn-herglotz-positivity}.  A fourth manuscript (Sections~25--31) develops the coefficientwise
+class for countably many scales: every measure has a Hahn-valued density with
+respect to one finite real control measure, positivity is positivity of that
+density almost everywhere (related exactly to the null-ideal criterion, whose
+proof it re-derives for countable exponent sets), and Hahn--Jordan,
+Radon--Nikodym, Fubini, conditional expectation and infinite masses follow.}
 
 \entry{Surreal Markov generators at every valuation scale}
 {surreal/markov-generators-at-every-scale}
@@ -519,19 +528,89 @@ report's stability bound has no gain, and $\kappa_e$ is not a condition
 number.  No convergence or complexity claim for Sinkhorn iteration.  One
 manuscript; not refereed, no Lean verification, priority not certified.}
 
+\entry{Surreal vector and tensor fields in every dimension}
+{surreal/vector-and-tensor-fields}
+{article.pdf}{three manuscripts, delivered 22~September 2026}
+{Replacing $\R$ by $\No$ gives tensor algebra but no calculus.  Three
+manuscripts built the same layered theory, printed once from the
+$n$-dimensional one: finite algebra over a set-sized real-closed surreal
+subfield; a sheaf of locally Hahn-supported smooth tensor fields on ordinary
+real spaces, under one support condition that makes sums, products,
+contraction, differentiation and integration over compact real chains
+compatible; and genuine surreal-coordinate neighbourhoods reached by
+support-controlled Taylor prolongation and scale charts.  Part~I gives Lie and
+Cartan calculus, connections and curvature, Hodge theory for a real or regular
+Riemannian Hahn metric, Stokes and Poincar\'e, Hahn cohomology, standard-part
+reduction and an infinite-frequency obstruction.  Part~II, from the
+three-dimensional manuscript, is dot and cross products, integral theorems
+and multiscale continuum equations; Part~III, from the Minkowski manuscript,
+is Lorentz transformations at every scale, the Lorentzian Hodge operator,
+Maxwell and scalar fields and stress--energy, as mathematics on Minkowski
+space --- not an assessment in the sense of
+\nolinkurl{physics/surreal-scalars-and-spacetime}.  Results proved in three
+dimensions are printed in every dimension only where the proof allows, and
+nothing Lorentzian is attached to a general statement.  The complex-coefficient
+Stokes and cohomology results of \nolinkurl{surcomplex/contours-and-stokes} are
+credited, not reclaimed.  Not refereed, no Lean verification, priority not
+certified.}
+
+\entry{Euclidean three-space and the rotation group over the surreals}
+{surreal/euclidean-three-space}
+{article.pdf}{two manuscripts, delivered 22~September 2026}
+{Coordinate geometry of $\No^3$ inside set-sized real-closed Hahn fields,
+where lengths, areas and radii may be infinite or infinitesimal but angles
+between directions always have canonical finite representatives, so spatial
+trigonometry needs no oscillatory meaning for an infinite angle.  Part~I, the
+base: incidence, projections, skew-line distance, sphere intersections,
+quadrics, rigid motions, Rodrigues rotations, screw motions, spherical
+coordinates, and spherical trigonometry with sine and cosine laws,
+branch-correct excess, area and holonomy.  Part~II is the class group
+$\mathrm{SO}(3,\No)$: every nonidentity rotation has an axis, Rodrigues,
+Euler and Cayley coordinates stay exact, the standard part gives a split
+extension $K\rtimes\mathrm{SO}(3,\R)$ whose infinitesimal kernel is uniquely
+divisible and perfect (every element a single commutator), finite subgroups
+are conjugate to real ones, and the rotation exponential has rank-one
+critical spheres.  What both manuscripts proved (isometries, Rodrigues, the
+Cayley chart, the finite phase) is printed once; the spin double cover is
+cited from \nolinkurl{surquaternions/surquaternions}, and the plane case is
+the $\mathrm{SO}(2,\No)$ section of \nolinkurl{surcomplex/trigonometry}.  Not
+refereed, no Lean verification, priority not certified.}
+
+\entry{Finite surreal probability, log-odds and conditioning}
+{surreal/finite-surreal-probability}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Probability with values in set-sized subfields of $\No$, with logarithmic
+odds from the surreal exponential.  On finite event algebras, where finite,
+strong and coefficientwise additivity coincide: conditioning on
+infinitesimal events and exact Bayesian updates, a leading-scale calculus with
+coefficient-sensitive tie breaking, quantitative conditioning stability,
+softmax models, relative entropy, proper scoring rules, Gibbs variational
+principles and finite-horizon processes; a conditional real shadow keeps what
+the unconditional standard part destroys.  Beyond finite algebras it gives
+regular finitely additive laws on all subsets for two coin models, a
+fine-ultrafilter law, a Loeb bridge, and a counterexample to positive
+coefficientwise integration of Hahn-valued functions.  Its coin theorems are
+the cases $p=t$ and $p=\tfrac12+t$ of the i.i.d.\ corollary of
+\nolinkurl{surreal/hahn-valued-measures-and-probability}, which it answers no
+question of.  No physical interpretation is claimed, in line with
+\nolinkurl{physics/surreal-scalars-and-spacetime}.  One manuscript; not
+refereed, no Lean verification, priority not certified.}
+
 \section{The surcomplex plane}
 
-Twenty-two reports about $\SC=\No[i]$.  Seven are about holomorphic function
+Twenty-three reports about $\SC=\No[i]$.  Seven are about holomorphic function
 theory, rest on one framework, and are all merges: twenty-seven manuscripts
-reduced to seven documents.  The other fifteen came later and are listed
+reduced to seven documents, with a twenty-eighth, on $\mathrm{SO}(2,\No)$,
+later added to trigonometry.  The other sixteen came later and are listed
 after them.  Eight are merges: differential algebra (eleven manuscripts),
 dynamics and normal forms (ten), nonabelian support obstructions (three),
 entire functions at arbitrary rank (five), finite spectral theory (three),
 Hahn--Tate uniformization (three), holonomic rigidity (three) and
-infinite-dimensional spectral theory (four).  Seven are single manuscripts: on
+infinite-dimensional spectral theory (four).  Eight are single manuscripts: on
 rank-one analytic geometry, expanding polynomial dynamics, Herglotz
 positivity, moment reconstruction, Wick summability, the three duals of Hahn
-vector spaces and hidden negative Hermitian directions.  Each of the fifteen
+vector spaces, hidden negative Hermitian directions and the automorphisms of
+the field.  Each of the sixteen
 was written against this repository and names the gap it fills.
 
 \medskip
@@ -751,7 +830,12 @@ classification.  Two coherence obstructions close it: there is no coherent
 bounded sine of infinite frequency, and all-scale coherence forces a
 polynomial.  \emph{No mathematical disagreement was found between the three
 sources; the duplication was near-total on the first two thirds and the
-divergence near-total on the last.}}
+divergence near-total on the last.}  A later manuscript adds Section~18 on
+$\mathrm{SO}(2,\No)\cong\mathcal{O}/2\pi\Z\cong\mathrm{SO}(2,\R)\times(\mathfrak{m},+)$:
+isometries are automatically linear, a rational projective chart, torsion
+$\Q/\Z$, one real coordinate per valuation layer, a strongly summable
+logarithm, non-algebraic group automorphisms and the fine topology; what it
+shares with the circle-group results above is printed once.}
 
 
 
@@ -1432,6 +1516,28 @@ the matrix criterion that \nolinkurl{surcomplex/hahn-herglotz-positivity}
 excludes; more exponents stay open.  Transported to surreal normal forms.
 One manuscript; background inputs are named as such; not refereed, no Lean
 verification.}
+
+\entry{Automorphisms of the surcomplex field}
+{surcomplex/surcomplex-field-automorphisms}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{``Automorphism of $\SC=\No(i)$'' has several inequivalent meanings, and this
+report keeps six apart: plain field, valued, value-fixing, 1-automorphisms,
+exponential, and those preserving the logarithmic modulus.  The automorphisms
+fixing $\No$ pointwise are the identity and conjugation; those preserving $\No$
+setwise form $\mathrm{Aut}(\No)\times C_2$, a proper subgroup of all field
+automorphisms, as Hahn-series phase twists show by fixing every ordinary
+complex number and every value while moving the surreal real axis.  Also the
+coefficient, character, value-group and leading-term-kernel layers of the
+valued automorphism group, automorphisms moving ordinary real constants by
+infinitesimals, zero-derivative field automorphisms and real forms.  The
+exponential results --- the amplification lemma, faithfulness, the negative
+answer to Kaplan--Krapp--Serra Question~5.4 and the logarithmic-modulus
+classification --- are reprinted with attribution from
+\nolinkurl{surreal/exponential-automorphism-rigidity}; here
+$\mathrm{Aut}_L(\SC)$ is observed to be a proper subgroup of the real-axis
+stabilizer.  Readings of the Kaplan--Krapp--Serra paper beyond Question~5.4
+are the source's and were not rechecked.  One manuscript; not refereed, no
+Lean verification.}
 
 
 \section{Surquaternions}

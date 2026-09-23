@@ -476,9 +476,16 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. Paths below identify all 40 canonical
-main texts present in the repository, including the two whose source is not
-named `article.tex`. The document map and typeset catalogue list the same reports.
+custom environments are not included. Paths below identify 40 of the 44
+canonical main texts present in the repository, including the two whose source
+is not named `article.tex`. The document map and typeset catalogue list all 44.
+Four reports written in `fb182ea` are **not yet indexed or mapped**:
+`surreal/vector-and-tensor-fields`, `surreal/euclidean-three-space`,
+`surreal/finite-surreal-probability` and
+`surcomplex/surcomplex-field-automorphisms`. The same commit added sections to
+`surreal/hahn-valued-measures-and-probability` and `surcomplex/trigonometry`,
+whose new result environments are not indexed either; some line hints below
+have moved. None of this material is in the counts on this page.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping below states otherwise.
 
