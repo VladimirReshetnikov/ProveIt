@@ -546,6 +546,15 @@ build passed 3,885 jobs and audited 5,990 declarations using only `propext`,
 `Classical.choice` and `Quot.sound`. The critical-potential part, remaining
 imports and source reconciliation remain outside this review.
 
+The final sync merged `5ff3266`, including `3b702c9`'s closed-interval
+nonnegativity proofs for actual analytic lifts. The combined Lean build
+passed 3,887 jobs and audited 5,998 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The differential-equations source and
+PDF were unchanged by the merge. The independent statement audit still
+checks all 2,030 entries, and all 837 local Markdown destinations in 93
+files resolve. The incoming sign-lifting results retain their own scope;
+they do not supply the intrinsic derivative or geometric bridge.
+
 ## Remaining scope
 
 The newly placed [vector and tensor fields](surreal/vector-and-tensor-fields/),
