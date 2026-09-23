@@ -2381,6 +2381,55 @@ inventory checks still pass, and all 1,301 local Markdown destinations
 resolve. The angular transport of algebraic multiplicities remains pending
 in the incoming coverage mapping.
 
+## Omnific transfer and rigidity review
+
+The next pass reads Sections 5–7 of the expanded
+[Diophantine article](surreal/omnific-diophantine-geometry/article.tex):
+equational and positive-existential transfer, the Smith and ordinary-right-hand-side
+criteria, constant products and decomposable fibers, binary/Pell/conic/norm
+rigidity, local Euler derivations, separated powers and unimodular Fermat.
+The Euler, separated-power and Fermat arguments were compared with the
+recoverable source-05 manuscript. Exhaustive source reconciliation for the
+other Sections 5–6 claims and verification of imported classical theorems
+remain separate obligations.
+
+The direct divisibility identity added during assembly omitted the hypothesis
+that the derivation kills its coefficients. The corrected statement requires
+`∂a = ∂b = 0`, displays the missing terms when this fails, and explains why
+`∂c = 0` holds for the chosen Euler derivation. The proof of separated-power
+rigidity therefore remains valid. Its leading-degree, quotient-ring and
+binary-factor arguments also prove the complex version over `B_C`; the
+one-variable prerequisite is extended likewise, with explicit attribution
+of the archived real statements. No new standard result is added.
+
+The proof explanations distinguish the real kernel from the complex kernel,
+include the zero case of Pell descent, define norm-polynomial evaluation
+without embedding a number field into `No`, and give a zero-row obstruction
+to replacing Smith compatibility by constant-term compatibility. A rational
+functional on `Q + Q√2` illustrates why one fixed Euler derivation need not
+detect every nonconstant. The notation guide and article both state the minus
+sign under `t = ω⁻¹` and distinguish this local construction from the normalized
+surreal derivation. The Fermat proof makes the workspace containing the
+unit-ideal witness explicit and explains why its divisibility quotients must
+have nonnegative support. Its integer-coordinate consequence now explicitly
+requires all three coordinates to be nonzero.
+
+Validation preserves all 67 standard results, all 159 unique source labels,
+and all label numbers. Four standard statement texts change: the two complex
+extensions, the scalar-prefactor wording for decomposable equations, and the
+Fermat nonzero-coordinate wording. Main Sections 8–14 remain byte-identical;
+the appendix records the coefficient correction and updates the scalar
+notation. The article has a clean three-pass 56-page PDF; the catalogue has
+a clean three-pass 28-page PDF. Changed pages were visually checked.
+The source-05 SymPy 1.14.0 verifier passes with output identical to its
+preserved delivery record. Separate finite symbolic checks pass for all 36
+pairs `2 ≤ m,n ≤ 7`, both with constant coefficients and with the full
+derivative error terms; these do not certify the arbitrary-support proofs.
+The statement-index and source-label audits pass, local Markdown destinations
+resolve, and `git diff --check` passes. This is a documentation-only change;
+it adds no Lean coverage. Sections 8 onward, remaining imported results,
+source reconciliation and the placed companions remain on the review queue.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

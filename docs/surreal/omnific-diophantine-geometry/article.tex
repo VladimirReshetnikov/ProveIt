@@ -644,16 +644,20 @@ takes ``the appropriate side when $f$ is infinitesimally adjacent to an
 integer'' (text following \replabel{trigonometry:eq:split}).}
 
 \begin{proposition}[One-variable rigidity \src{02, 05}]\label{odg:prop:univariate}
-If $P\in\R[T]$ is nonzero, every root of $P$ in $\BR$ belongs to $\R$.
-In particular, the roots in $\Oz$ of a nonzero $P\in\Z[T]$ are exactly its
-ordinary integer roots.
+If $P\in\C[T]$ is nonzero, every root of $P$ in $\BC$ belongs to $\C$.
+In particular, roots in $\BR$ of a nonzero real polynomial are real, and
+the roots in $\Oz$ of a nonzero $P\in\Z[T]$ are exactly its ordinary
+integer roots.
 \end{proposition}
 \begin{proof}
 If a root $x$ were nonconstant, $\alpha=\ddeg(x)>0$. For nonzero
 coefficients $a_j$, the terms $a_jx^j$ have distinct degrees $j\alpha$, so
 the highest-degree term cannot cancel. Thus $P(x)\ne0$. A constant root in
-$\Oz$ is an integer.
+$\Oz$ is an integer. The real case follows from $\BR\cap\C=\R$.
 \end{proof}
+
+Source 02 states the integer case and source 05 the real case. The same
+leading-degree argument proves the complex extension above.
 
 Every infinite omnific integer is therefore transcendental over $\R$. This
 does not make a tuple of infinite omnific integers algebraically independent:
@@ -1267,7 +1271,9 @@ For example, every solution of $2x+3y=1$ is $x=-1+3t$, $y=1-2t$ with
 $t\in\Oz$, and every solution of $6x+10y=14$ is $x=4+5t$, $y=-1-3t$ with
 $t\in\Oz$. The same formulas as over $\Z$ work, but the parameter class is
 larger. The equation $2x=\omega+1$ has no solution, whereas $2x=\omega+2$ has
-the unique solution $x=\omega/2+1$.
+the unique solution $x=\omega/2+1$. A zero row illustrates a different
+obstruction: $0\cdot x=\omega$ has no solution, although its constant-term
+equation is $0=0$.
 
 \section{Rigidity of constant products: binary forms, Pell, norms}\label{odg:sec:rigidity}
 
@@ -1294,8 +1300,8 @@ Let
  L_j(\mathbf X)=\beta_j+\ell_j(\mathbf X),
 \]
 where $\beta_j\in\C$, each $\ell_j$ is a complex linear form in
-$n$ variables, and each $e_j\ge1$ is an ordinary integer (a constant factor
-can be absorbed into one $L_j$). Fix $c\in\C^\times$ and put
+$n$ variables, and each $e_j\ge1$ is an ordinary integer. A nonzero scalar
+prefactor may instead be divided into the level. Fix $c\in\C^\times$ and put
 \[
  \mathcal K=\{\mathbf v\in\R^n:\ell_j(\mathbf v)=0\text{ for every }j\}.
 \]
@@ -1347,8 +1353,11 @@ can have infinite fibers,
  (x-y)^2=1\quad\Longleftrightarrow\quad x=y\pm1,\qquad y\in\Oz,
 \]
 and the two-variable equation $X^d=1$ forces $X$ to be constant but says
-nothing about $Y$. On the zero level, even independent factors permit
-infinite points, since the unit argument cannot be applied to a product
+nothing about $Y$. The real kernel in (a) need not equal the complex kernel
+in (b): $L(X,Y)=X+iY$ has zero kernel on $\R^2$, so its level $1$ has the
+unique omnific point $(1,0)$. In $\BC^2$ the same level contains
+$(1-it,t)$ for every $t\in\BC$. On the zero level, even independent factors
+permit infinite points, since the unit argument cannot be applied to a product
 equal to zero: $(\sqrt2\,\omega)^2-2\omega^2=0$.
 
 \subsection{Binary forms, Pell equations, and conics}
@@ -1421,8 +1430,9 @@ elementary extension of ordinary integer arithmetic.
 \begin{example}[The full class for $D=2$, $c=1$ \src{05}]\label{odg:ex:pell2}
 Let $X_k+Y_k\sqrt2=(3+2\sqrt2)^k$ for ordinary $k\ge0$. Every omnific
 solution of $x^2-2y^2=1$ is $(\pm X_k,\pm Y_k)$ with independent signs.
-Indeed, \cref{odg:cor:pell} first makes $x,y$ ordinary. After changing signs
-suppose $x,y>0$; then $y\ge2$, since $y=1$ would need $x^2=3$.
+Indeed, \cref{odg:cor:pell} first makes $x,y$ ordinary. If $y=0$, then
+$x=\pm1$, giving $k=0$. Otherwise, after changing signs suppose $x,y>0$;
+then $y\ge2$, since $y=1$ would need $x^2=3$.
 Multiplication by $3-2\sqrt2$ gives the integer Pell pair
 $X=3x-4y$, $Y=3y-2x$ with $X>0$ (as $x>\sqrt2\,y>4y/3$) and $0\le Y<y$ (as
 $x^2=2y^2+1\le9y^2/4$ and $x>y$). Ordinary descent on $y$ reaches $(1,0)$,
@@ -1476,6 +1486,12 @@ exponent pairs are covered by \cref{odg:thm:separated} of source 05.
 \end{remark}
 
 \subsection{Number-field norm equations}
+
+Here a norm form is first constructed as a polynomial over $\Q$, then
+evaluated on omnific coordinates. We do not embed the number field $K$ into
+$\No$; such an embedding need not exist. Equivalently, form the determinant
+of the multiplication matrix in a $\Q$-basis, with indeterminate coordinates.
+Its complex factorization is used only after this polynomial is formed.
 
 \begin{theorem}[Norm-form rigidity \src{01, 02}]\label{odg:thm:norm}
 Let $K/\Q$ be a number field of degree $d$, let $e_1,\ldots,e_d$ be a
@@ -1544,7 +1560,12 @@ $H$, define
    =\sum_{h\in H}\lambda(h)a_h\omega^h.
 \end{equation}
 This is a local, freely chosen Euler derivation. It is not a canonical
-surreal derivation and not the Berarducci--Mantova derivation.
+surreal derivation and not the Berarducci--Mantova derivation. Under
+$t=\omega^{-1}$ its rule is
+$\partial_\lambda(t^\gamma)=-\lambda(\gamma)t^\gamma$; the minus sign comes
+from reversing exponents. It must not be identified with the differential
+equations report's $\partial_\tau=-\omega\partial$, whose real-exponent rule
+is $\partial_\tau(t^\gamma)=\gamma t^\gamma$.
 
 \begin{lemma}[Euler derivations \src{05}]\label{odg:lem:derivation}
 The map $\partial_\lambda$ is a derivation, kills every real or complex
@@ -1584,7 +1605,10 @@ For $\partial=\partial_\lambda$ define the two-term Wronskian
 $W_\partial(f,g)=f\,\partial g-g\,\partial f$. For $f\ne0$ it vanishes exactly
 when $\partial(g/f)=0$; it need not detect whether $g/f$ is an absolute
 constant for one fixed $\partial$, which is why \cref{odg:lem:detection}
-lets the derivation be chosen for the given ratio.
+lets the derivation be chosen for the given ratio. For example, on
+$H=\Q+\Q\sqrt2$ the functional $\lambda(a+b\sqrt2)=a$ kills the nonconstant
+$\omega^{\sqrt2}$. Detection uses the family of functionals, not a claim
+that each individual derivation has only scalar constants.
 
 \begin{lemma}[A strict Wronskian bound \src{05}]\label{odg:lem:wronskian}
 For nonzero $f,g\in\mathcal B_{\C,H}$ with $W_\partial(f,g)\ne0$,
@@ -1604,12 +1628,13 @@ that maximum by an unattained supremum.
 \subsection{Separated powers}
 
 \begin{theorem}[Separated-power rigidity \src{05}]\label{odg:thm:separated}
-Let $a,b,c\in\R\setminus\{0\}$ and let $m,n\ge2$ be ordinary integers.
-Every solution in $\BR^2$ of
+Let $a,b,c\in\C\setminus\{0\}$ and let $m,n\ge2$ be ordinary integers.
+Every solution in $\BC^2$ of
 \begin{equation}\label{odg:eq:separated}
  a x^m+b y^n=c
 \end{equation}
-has $x,y\in\R$. Consequently, if $a,b,c$ are nonzero ordinary integers,
+has $x,y\in\C$. In particular, every solution in $\BR^2$ is real.
+Consequently, if $a,b,c$ are nonzero ordinary integers,
 every solution in $\Oz^2$ is an ordinary integer solution.
 \end{theorem}
 \begin{proof}
@@ -1625,11 +1650,11 @@ Differentiating gives
 \end{equation}
 and since $x\ne0$ also $\partial y\ne0$.
 
-We work in $\mathcal B_{\R,H}$, in which $a,b,c,m,n$ are units. Modulo the
+We work in $\mathcal B_{\C,H}$, in which $a,b,c,m,n$ are units. Modulo the
 principal ideal $(x^{m-1})$, \eqref{odg:eq:separated} says $by^n=c$, so the
 image of $y$ is a unit; reducing \eqref{odg:eq:separatedderivative} then
 shows that $\partial y$ vanishes in the quotient. Equivalently
-$\partial y=x^{m-1}q$ with $q\in\mathcal B_{\R,H}$, and $q\ne0$ because
+$\partial y=x^{m-1}q$ with $q\in\mathcal B_{\C,H}$, and $q\ne0$ because
 $\partial y\ne0$. Nonnegative degree and \cref{odg:lem:derivation} give
 \[
  (m-1)\alpha\le\ddeg(\partial y)\le\beta=\tfrac mn\alpha .
@@ -1641,6 +1666,11 @@ projective linear factors over $\C$ because $ab\ne0$, and
 coordinates are integers.
 \end{proof}
 
+Source 05 states the real case. The proof above gives its complex extension:
+it uses nonnegative support degrees and nonzero scalar units, not an order on
+the coefficients. The real and omnific conclusions follow by intersection
+with $\BR$ and $\Oz$.
+
 The quotient-ring step replaces any appeal to unique factorization: if $y$
 becomes a unit modulo $x^{m-1}$, a product of $\partial y$ with a unit can
 vanish there only if $\partial y$ itself does. The argument is valid in a
@@ -1648,7 +1678,8 @@ non-Noetherian ring and for supports of arbitrary set-sized order type.
 
 \begin{remark}[A direct divisibility identity \mergetag]\label{odg:rem:separatedidentity}
 The divisibility $x^{m-1}\mid\partial y$ also follows from an explicit
-identity. Put $f=ax^m+by^n$. For every derivation $\partial$,
+identity. Put $f=ax^m+by^n$. For every derivation $\partial$ that kills
+$a$ and $b$,
 \[
  a\,x^{m-1}\bigl(n\,x\,\partial y-m\,y\,\partial x\bigr)
  =n\,f\,\partial y-y\,\partial f,
@@ -1656,9 +1687,12 @@ identity. Put $f=ax^m+by^n$. For every derivation $\partial$,
 as one sees by expanding
 $\partial f=amx^{m-1}\partial x+bny^{n-1}\partial y$: the right side is
 $anx^m\partial y+bny^n\partial y-amx^{m-1}y\,\partial x-bny^{n}\partial y$.
-On a solution of \eqref{odg:eq:separated}, $f=c$ and $\partial f=0$, so
+Without that hypothesis, the right side has the additional term
+$-y\bigl((\partial a)x^m+(\partial b)y^n\bigr)$. The Euler derivations kill
+all scalar coefficients, including $c$. On a solution of
+\eqref{odg:eq:separated}, therefore, $f=c$ and $\partial f=0$, so
 $nc\,\partial y=x^{m-1}\cdot a(nx\,\partial y-my\,\partial x)$, and since $nc$
-is a unit of $\mathcal B_{\R,H}$, $x^{m-1}$ divides $\partial y$. This route
+is a unit of $\mathcal B_{\C,H}$, $x^{m-1}$ divides $\partial y$. This route
 avoids the quotient ring. The suite of 05 checks a related identity only
 for $a=1$, $b=-1$; the identity above was checked symbolically for general
 $a,b$ and $2\le m,n\le7$ when this report was assembled.
@@ -1722,8 +1756,9 @@ are again comaximal.
 \begin{proof}
 In $R/(x,y)$ the element $z$ is nilpotent, as $z^n=0$, and a unit, because a
 unit-ideal witness reduces to $wz=1$. The quotient is therefore zero. The
-other pairs are similar. If $au+bv=1$, the binomial expansion of
-$(au+bv)^{r+s-1}$ lies in $(u^r,v^s)$.
+other pairs are similar. For ordinary integers $r,s\ge1$, if $au+bv=1$,
+the binomial expansion of $(au+bv)^{r+s-1}$ lies in $(u^r,v^s)$: each term
+has either at least $r$ factors $u$ or at least $s$ factors $v$.
 \end{proof}
 
 \begin{theorem}[Unimodular Fermat rigidity \src{05}]\label{odg:thm:unimodularfermat}
@@ -1731,8 +1766,8 @@ Let $n\ge3$ be an ordinary integer. Suppose $x,y,z\in\BC$ are nonzero,
 \[
  x^n+y^n=z^n,\qquad (x,y,z)=\BC.
 \]
-Then $x,y,z\in\C$. In particular, a nonzero unimodular Fermat triple in $\Oz$
-has ordinary integer coordinates.
+Then $x,y,z\in\C$. In particular, a unimodular Fermat triple in $\Oz$
+with all three coordinates nonzero has ordinary integer coordinates.
 \end{theorem}
 \begin{proof}
 First suppose that all ratios among $x,y,z$ are complex constants: $x=\mu z$,
@@ -1743,6 +1778,10 @@ constants by \cref{odg:prop:units}.
 It remains to rule out a nonconstant ratio. Choose a set-sized workspace $H$
 containing the supports of $x,y,z$ and of a unit-ideal witness; the ratios
 $u=x/z$ and $v=y/z$ lie in the Hahn field over $H$ and satisfy $u^n+v^n=1$.
+These ratios may have negative exponents; only the original coordinates,
+their derivatives and the chosen unit-ideal witness are required to lie in
+$\mathcal B_{\C,H}$. In particular that witness establishes unimodularity
+inside this ring before any comaximality argument is applied.
 If one of $u,v$ is constant, the other is algebraic over $\C$, hence equal to
 one of the complex roots of its polynomial, because that polynomial splits
 over $\C$ and the Hahn field has no zero divisors. So both are nonconstant.
@@ -1774,7 +1813,12 @@ relations, gives
  y^{n-1}\mid W_\partial(z,x),\quad
  z^{n-1}\mid W_\partial(x,y)
 \end{equation}
-in $\mathcal B_{\C,H}$. Let $\alpha$ be the greatest of the three coordinate
+in $\mathcal B_{\C,H}$. Each divisibility has a nonzero quotient, since its
+Wronskian is nonzero. That quotient has nonnegative degree by the support
+restriction, which is essential for the next lower bound; divisibility in
+the ambient field alone would give no such bound.
+
+Let $\alpha$ be the greatest of the three coordinate
 degrees and $\beta,\gamma$ the other two. If $\alpha=0$, all coordinates are
 constants. If $\alpha>0$, the divisibility in \eqref{odg:eq:fermatdiv} for
 the coordinate of degree $\alpha$ and the weak Wronskian bound give
@@ -3174,7 +3218,7 @@ Source & Source symbol & This report\\
 01 & $E$ (hyperboloid coefficient) & $D'$\\
 01 & $T_t$ (transvection) & $U_t$\\
 01 & $\lambda_\alpha,c_\alpha,M$ (initial forms) & $\ddeg a_\alpha$, $\lc a_\alpha$, $W$\\
-01 & $\lambda$ (scalar in decomposable forms) & absorbed into one factor\\
+01 & $\lambda$ (scalar in decomposable forms) & divided into the nonzero level\\
 01 & $f$ (endomorphism) & $\psi$\\
 02 & $\mathcal I$, $\mathcal I_{\C}$ & $\Pi$, $\Pi_{\C}$\\
 02 & $\mathcal A_{\R}$, $\mathcal A_{\C}$ & $\BR$, $\BC$\\
@@ -3236,7 +3280,11 @@ questions.
 MathOverflow comments could not be verified; it is printed as source 02's
 attribution, marked unverified (\cref{odg:ex:fermatscaling}).
 \end{enumerate}
-No mathematical error was found in any main proof of the three sources.
+The assembly reported no mathematical error in the main proofs of its three
+sources. The subsequent review corrects the coefficient-derivation hypothesis
+in the added \cref{odg:rem:separatedidentity}; the Euler derivations used in
+the proof satisfy it. The complex extensions of one-variable and
+separated-power rigidity are explained after their proofs.
 
 \subsection{Stale repository statements}
 
