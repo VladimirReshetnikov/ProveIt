@@ -2167,6 +2167,17 @@ inventory still has 2,535 standard statements in 49 reports; all 2,866 cited
 source labels and 1,149 local Markdown destinations resolve. This review
 changes source exposition and scope, with no new Lean coverage.
 
+Merged `cb479fe`, including `f6fe627`'s amplitude-intersection and signed
+tangency formalizations. A bounded source/declaration review confirmed all
+seven new root imports and the three new mapping rows, including the signed
+error estimate and the tangent example's positive-infinitesimal parameter;
+SSA reconstruction remains pending. No manuscript or historical artifact
+changed upstream. The combined `LEAN_NUM_THREADS=2 lake build` passed all
+4,083 jobs, and the default audit accepted 9,588 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. After merging, all 2,872 cited
+source labels and 1,156 local Markdown destinations resolve; the inventory
+remains 2,535 standard statements in 49 reports.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
