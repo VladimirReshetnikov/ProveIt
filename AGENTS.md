@@ -143,6 +143,12 @@ check the alias line that `git grep` shows.
 - Sync: `git fetch origin && git merge origin/main`, rebuild, then publish the
   branch with a fast-forward push: `git push origin HEAD:main` (it must be a
   fast-forward of `origin/main`; never force-push `main`).
+- `origin/main` often advances while a build runs (other sessions merge
+  documentation and Lean work several times an hour), so the fast-forward
+  push can be rejected. Repeat fetch, merge, rebuild, push until the push
+  succeeds; skip the rebuild when the newly merged commits touch only
+  `docs/` (check `git diff --name-only <old-HEAD> HEAD` for `Surreal/`,
+  `Surreal.lean`, `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`).
 - The Git stash is shared across worktrees; do not use bare `git stash`.
 - `.gitattributes` normalizes text files to LF; `.editorconfig` asks for
   UTF-8, LF, final newline and no trailing whitespace. Run
