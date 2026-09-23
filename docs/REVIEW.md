@@ -3258,6 +3258,19 @@ a clean three-pass 29-page build, with its first page and the new entries
 on pages 25 and 29 inspected. No new manuscript theorem is claimed proved
 by these navigation and build checks.
 
+## Catalogue synchronization before publication
+
+The first push was rejected after `main` advanced to `b5f0bfd`, a
+documentation-only catalogue and README revision. The merge retains its
+expanded report descriptions and root overview, the 60-report inventory,
+and the precise Section 6 review boundary and characteristic distinction.
+The Diophantine article and Lean files do not change. The combined
+catalogue compiles cleanly in three passes to 32 pages; its revised
+Diophantine entry and final entry were inspected on pages 9 and 32.
+The independent 3,650-statement inventory, 4,183 source references and
+1,520 local Markdown destinations pass. The earlier two-thread Lean build
+remains applicable.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

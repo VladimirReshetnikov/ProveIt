@@ -1,8 +1,115 @@
 # Surreal
 
-Lean formalization of the theorems about surreal numbers, surcomplex numbers
-and omnific integers in the project's source documents. Work proceeds from
-foundational lemmas to their dependent results, reusing mathlib constructions.
+Research on surreal numbers, surcomplex numbers and omnific integers: a
+collection of research reports in [`docs/`](docs/README.md), and a Lean 4
+formalization of their theorems that proceeds from foundational lemmas to
+dependent results, reusing mathlib constructions.
+
+## What the repository contains
+
+- **Research reports.** [`docs/`](docs/README.md) holds 60 reports in five
+  families: the surreal field `No` (21, including five on Conway's omnific
+  integers `Oz`), the surcomplex numbers `No[i]` (28), surquaternions (1),
+  physics (2), and foundations and computation (8). Each has a LaTeX source,
+  a README stating what it claims and what it does not, and usually finite
+  verification code; all but the two most recently placed have a typeset PDF.
+  Start with the [reader's guide](docs/README.md) and the
+  [typeset catalogue](docs/manifest.pdf); the [notation guide](docs/NOTATION.md)
+  reconciles local conventions, and the [formalization ledger](docs/FORMALIZATION.md)
+  maps statements to Lean declarations.
+- **Lean library.** [`Surreal/`](Surreal/) constructs the actual surreal field
+  as an ordered field of sign sequences, proves it real closed and the
+  surcomplex numbers algebraically closed, and formalizes a growing set of
+  results from the reports. The default build checks that every declaration
+  in its namespaces depends only on the axioms `propext`, `Quot.sound` and
+  `Classical.choice`. The [Formalization](#formalization) section below
+  records progress.
+
+### Highlights
+
+The reports are AI-assisted, unrefereed research drafts. "Proposed" marks an
+answer to a published question whose correctness and priority have not been
+independently certified. A result is machine-checked only where the
+[ledger](docs/FORMALIZATION.md) maps it to Lean; apart from the last item,
+none of the results below is.
+
+- **Ehrlich–Kaplan's initial-subgroup question.** A proposed affirmative
+  answer to their question (arXiv:1512.04001v1, Question 2; *J. Symbolic
+  Logic* 83 (2018), Question 9.1): every discretely ordered initial subgroup
+  of `No` is isomorphic to an initial subgroup of `Oz`. The possible images
+  are classified exactly.
+  [Report](docs/surreal/discrete-initial-subgroups-and-omnific-normalization/).
+- **The universal set-sized quotient of `Oz`.** Every ring homomorphism from
+  `Oz` to a set-sized ring factors through the constant term `Oz → ℤ`. For
+  five set-sized integer parts, the least ring detecting a purely infinite
+  element has exactly the ring's cardinality, in ZFC. The Grothendieck ring
+  of the ordinals is not a quotient of `Oz`, a negative answer to the
+  addendum of Elliott's MathOverflow question 188430.
+  [Report](docs/surreal/set-sized-quotients-of-omnific-integers/).
+- **Diophantine geometry over `Oz`.** Hilbert's tenth problem over `Oz` is
+  the ordinary one, and Pell and norm-form equations gain no new solutions.
+  Single quartic equations define `ℤ` inside `Oz`. Among smooth affine
+  curves only the affine line has nonconstant omnific points, so every
+  nonsingular `y² = x³ + ax + b` over `ℤ` has only its ordinary integer
+  solutions in `Oz`. [Report](docs/surreal/omnific-diophantine-geometry/).
+- **Groups seen from a set.** For `n ≥ 3`, `SL_n(ℤ)` is the universal
+  set-sized quotient of `E_n(Oz)`; in rank two no universal quotient exists
+  ([report](docs/surreal/omnific-groups-and-lattices/)). For compact
+  connected groups over `No`, a universal set-sized quotient exists exactly
+  in the semisimple case, and it is then standard part
+  ([report](docs/surreal/euclidean-three-space/)).
+- **Differential rigidity of entire Hahn functions.** Over a fixed Hahn field
+  `k((t^Γ))`, entire D-finite series are polynomials. A linear
+  `q`-difference equation with polynomial coefficients and `q` of infinite
+  multiplicative order has a nonpolynomial entire solution iff `|v(q)|` is
+  an order unit of `Γ`. `Γ` has an order unit iff some nonpolynomial entire
+  series is differentially algebraic (Theorem H); an explicit theta series
+  has differential order three. Whether order two occurs is open in the
+  written text.
+  [Report](docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions/).
+- **Exponential automorphisms of `No`.** Every exponential 1-automorphism of
+  `No` is the identity, a proposed negative answer to Question 5.4 of
+  Kaplan–Krapp–Serra (arXiv:2509.22374v3).
+  [Report](docs/surreal/exponential-automorphism-rigidity/).
+- **Gamma and zeta on `No[i]`.** Six independent manuscripts are reconciled
+  claim by claim. At finite points the lifts have exactly the classical zeros,
+  so their Riemann hypothesis is the classical one. At positive infinite real
+  part every formal Dirichlet series is strongly summable and zeta has no
+  zeros. Reflection is obstructed at infinite height. No proof of the
+  classical Riemann hypothesis is claimed.
+  [Report](docs/surcomplex/gamma-and-zeta-functions/).
+- **Surreal fields across universes.** For transitive `M ⊆ N` with the same
+  ordinals and uncountable `κ`, `No^M` is `κ`-saturated in `N` iff `N` adds
+  no ordinal sequence of length below `κ`. Naming conjugation gives real
+  forms of one algebraically closed class field that are not conjugate to the
+  standard one.
+  [Report](docs/foundations-and-computation/surreal-fields-across-universes/).
+- **Birthday cutoffs.** The surreals born below an epsilon number `λ`, with
+  their birthdays, are bi-interpretable with the hereditary sets
+  `(H_κ(λ), ∈, λ)`; already `No_{<ε₀}` recovers every hereditarily countable
+  set. [Report](docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets/).
+- **Published questions of Lipparini and Roughan.** No unital homomorphism
+  evaluates increasing Hahn series at `ω`, a negative answer to Lipparini's
+  Problem 7.7 ([report](docs/surreal/hahn-evaluation-at-omega/)). His
+  sign-truncation game always has a surreal value but is not monotone
+  ([report](docs/surreal/broadcast-sum-of-surreal-sequences/)). A canonical
+  form need not be a subgraph of another form of the same value, answering
+  Roughan negatively ([report](docs/surreal/canonical-forms-need-not-be-subgraphs/)).
+- **Gonshor's product-birthday bound** `b(xy) ≤ b(x) ⊗ b(y)` is proved on two
+  specified domains, ordinal-support series and `ℝ((ω⁻¹))`, with exact
+  formulas; the general conjecture is not claimed
+  ([reports](docs/surreal/gonshor-product-birthdays/),
+  [Laurent case](docs/surreal/gonshor-laurent-birthdays/)).
+- **Physics without overclaiming.** Surreal scalars record every divergence
+  of a singular metric exactly but do not regularize it
+  ([report](docs/physics/surreal-scalars-and-spacetime/)). Infinitesimal
+  scales give exact results on rare quantum branches and gauge holonomy but
+  no departure from ordinary quantum theory
+  ([report](docs/physics/quantum-and-gauge-scale-reductions/)).
+- **Checked foundations.** In Lean, the constructed surreal field is real
+  closed and the surcomplex numbers are algebraically closed. The omnific
+  ring is constructed inside the surreal field together with its
+  constant-term retraction onto `ℤ` ([ledger](docs/FORMALIZATION.md)).
 
 ## Build
 
