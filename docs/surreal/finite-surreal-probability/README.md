@@ -519,3 +519,14 @@ infinite path law or compute canonical surreal exp/log. The independent index
 audit checks 2,181 entries in 46 current sources, and all 907 local Markdown
 destinations in 97 files resolve. No new probability Lean coverage is claimed.
 Sections 10 onward and remaining imports are pending.
+
+The following integration merges the actual surreal projective half-angle
+formalization from `7ce5edd`/`f38a1ef` through `2a2d1c9`. The affine and
+projective Cayley charts, direction multiplication, finite half-angle formula
+and infinite-parameter proximity to the half-turn now have actual-surreal
+Lean mappings. The full merged build passes 3,918 jobs and audits 6,313
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+The independent index still checks 2,181 entries in 46 current sources;
+all 910 local Markdown destinations in 97 files resolve. The probability
+source and 47-page PDF are unchanged by the merge, which adds no probability
+formalization or review of its later sections.
