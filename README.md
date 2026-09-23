@@ -392,7 +392,9 @@ negative real input, including infinite and infinitesimal scales.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
-Taylor strong sums, preserving sums, products and standard parts. Fine derivatives
+Taylor strong sums, preserving sums, products, correctly recentered composition
+and standard parts. This Taylor rule uniquely specifies the extension on its
+finite analytic domain. Fine derivatives
 use every positive surreal tolerance: polynomials have their formal derivatives,
 formal evaluation differentiates at every infinitesimal point, and Taylor lifts
 have the lifted ordinary derivative throughout their infinitesimal monads.
@@ -409,8 +411,8 @@ the interval hypotheses.
 A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Multivariable analytic
-lifting, analytic composition, the trigonometric derivative and
-order identities, and universe coherence remain separate obligations.
+lifting, the trigonometric derivative and order identities, and universe
+coherence remain separate obligations.
 The reports placed after the canonical inventory are formalized clause by
 clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly
 summable weights define strong Hahn measures on all subsets, additive on every

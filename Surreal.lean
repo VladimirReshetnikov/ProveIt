@@ -45,6 +45,7 @@ import Surreal.Algebra.PowerSeriesLeadingFactor
 import Surreal.Algebra.FineDerivative
 import Surreal.Algebra.FineDerivativeRules
 import Surreal.Algebra.AnalyticTaylor
+import Surreal.Algebra.AnalyticComposition
 import Surreal.Algebra.AnalyticSign
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.MvPowerSeriesFactorLifting
@@ -182,10 +183,12 @@ import Surreal.Surcomplex.MvPowerSeriesBounds
 import Surreal.Surcomplex.PowerSeriesFineDerivative
 import Surreal.Surcomplex.PowerSeriesDerivative
 import Surreal.Surcomplex.AnalyticTaylor
+import Surreal.Surcomplex.AnalyticComposition
 import Surreal.Foundations.SignSequenceAnalyticTaylor
 import Surreal.Foundations.SignSequenceAnalyticSign
 import Surreal.Surcomplex.AnalyticFineDerivative
 import Surreal.Surcomplex.AnalyticFineDerivativeAll
+import Surreal.Surcomplex.AnalyticLiftCalculus
 import Surreal.Surcomplex.AnalyticLeading
 import Surreal.Surcomplex.StrongEvaluation
 import Surreal.Surcomplex.PowerSeriesStrongHom
