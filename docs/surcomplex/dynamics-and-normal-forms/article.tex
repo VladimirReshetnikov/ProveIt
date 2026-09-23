@@ -7,6 +7,10 @@
 \usepackage{microtype,booktabs,array,longtable,enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{fancyhdr,aliascnt}
+\usepackage{needspace}
+\makeatletter
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{3em}}
+\makeatother
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \hypersetup{%
@@ -192,7 +196,7 @@ there; for an exact \emph{nonscalar} diagonal unitary multiplier, one common
 polydisk of radius $Re^{-\rang\tau}$, where $\rang$ is the rational rank of
 the multiplier's angles, sharp when $\rang=1$, so that the common-domain
 question is answered positively for every such multiplier and only the
-optimal radius for $\rang\ge2$ remains open; an exact radius-collapse law
+optimal radius for $\rang\ge2$ and $0<\tau<\infty$ remains open; an exact radius-collapse law
 $\rad(h_{k,1})=R\,e^{-(k+1)\sigma}$ in the \emph{drifted}-multiplier
 category, which answers the same question negatively there, already over the
 cyclic value group $\Z$ with a single Hahn monomial; an exact maximal
@@ -300,8 +304,9 @@ that sources 08 and 09 had left open, a \emph{nonscalar} exact diagonal
 unitary multiplier. For every such multiplier with $\tau<\infty$ it gives
 one common polydisk of radius $Re^{-\rang\tau}$, where $\rang$ is the
 rational rank of the angles (\cref{dyn:nsc:thm:main}); this is sharp when
-$\rang=1$, which includes every scalar multiplier, and for $\rang\ge2$ the
-optimal radius is left open (\cref{dyn:nsc:thm:criterion}). Source 10 read
+$\rang=1$, which includes every nonresonant scalar multiplier, and also
+when $\tau=0$ at every angular rank. For $\rang\ge2$ and $0<\tau<\infty$
+the optimal radius is left open (\cref{dyn:nsc:thm:criterion}). Source 10 read
 this report after sources 08 and 09 had been merged, cites their scalar
 theorem rather than claiming it, and contradicts no earlier source. Its
 proof is a genuinely different route; in the scalar case it is kept as a
@@ -415,7 +420,9 @@ disclaim priority (\cref{dyn:esm:rem:antecedents};
 their contributions is correspondingly uncertain. Source 10 credits the
 same tree expansions, inspecting the HTML text of their revision of
 13 September 2026, including their
-preservation of admissible cuts \cite[Prop.~5.6]{FMS26}, and Carletti's
+admissible-cut closure for forests whose associated operators are not
+universally zero, and the resulting homogeneity-degree constraints
+\cite[Thm.~E and Prop.~5.6]{FMS26}, and Carletti's
 tree formulas for inversion and linearization over non-Archimedean
 formal-series structures \cite{CarlettiLagrange}, which it saw at abstract
 level only. It claims only the rank count and its common-domain consequence,
@@ -440,6 +447,7 @@ attach an arithmetic threshold to a theorem proved with no arithmetic
 hypothesis at all, and reverse the direction of every domain inequality in
 half the report.
 
+\Needspace{12\baselineskip}
 \subsection{Four notions of resonance}
 \label{dyn:subsec:resonance}
 
@@ -691,7 +699,8 @@ common-domain germs $\mathcal R_n$
  $\Lambda=\lambda I_d$ (\cref{dyn:esm:thm:main}); $\kappa<\infty$ also for
  nonscalar $\Lambda$, with universal radius between $Re^{-\rang\kappa}$
  and $Re^{-\kappa}$, equal to $Re^{-\kappa}$ when $\rang=1$
- (\cref{dyn:nsc:thm:criterion}); the optimal radius for $\rang\ge2$ is
+ (\cref{dyn:nsc:thm:criterion}), and equal to $R$ for $\kappa=0$ at every
+ angular rank; the optimal radius for $\rang\ge2$ and $0<\kappa<\infty$ is
  \textbf{open} (\cref{dyn:q:commongerm})
 & $\kappa=0$ (\cref{dyn:thm:trichotomy}), already over any fixed nonzero
  $\Gamma$, including $\Z$ (\cref{dyn:cyc:cor:classification})\\
@@ -1184,7 +1193,7 @@ neither row, nor their combination, classifies $\mathcal R_n$ in the
 intermediate regime. For a scalar multiplier $\lambda I_d$ that is done by
 \cref{dyn:esm:thm:main}; for a nonscalar diagonal one by
 \cref{dyn:nsc:thm:criterion}, except for the value of the optimal radius
-when $\rang\ge2$, which is \cref{dyn:q:commongerm}.
+when $\rang\ge2$ and $0<\tau<\infty$, which is \cref{dyn:q:commongerm}.
 \end{convention}
 
 \subsection{The support certificate: finite words, not sequential limits}
@@ -2395,7 +2404,7 @@ coefficient has isotropic radius at least $Re^{-\rang\tau}$, with $\rang$
 the rational angular rank (\cref{dyn:nsc:thm:main}), and that
 \eqref{dyn:eq:radius-depth} holds with $\ell_S(\gamma)$ replaced by
 $\min(\rang,\ell_S(\gamma))$ (\cref{dyn:nsc:cor:local}). What remains open
-is the optimal radius when $\rang\ge2$ (\cref{dyn:q:commongerm}).
+is the optimal radius when $\rang\ge2$ and $0<\tau<\infty$ (\cref{dyn:q:commongerm}).
 \end{warning}
 
 \begin{theorem}[Polynomial coefficient degrees]\label{dyn:thm:degrees}
@@ -3320,7 +3329,7 @@ delicate cancellation. Source 09 lists three substantive limitations,
 which are not hidden exceptions to the statement: the absence of ordinary
 parameter convergence, the remaining open problem (in this report the
 nonscalar case, since answered by source 10 except for the optimal radius
-when $\rang\ge2$), and the absence of machine-checked proofs. The first row
+when $\rang\ge2$ and $0<\tau<\infty$), and the absence of machine-checked proofs. The first row
 of \cref{dyn:esm:tab:audit} is exactly the hypothesis that source 10
 removes, at the price of the factor $\rang$ in the exponent
 (\cref{dyn:nsc:thm:main}).
@@ -3357,8 +3366,9 @@ $\Delta_n$ into the scalar proof; it bounds the number of distinct
 exponential rates by $\rang$ (\cref{dyn:nsc:cor:angular}) and pays for each
 rate once with contracted blocks that stay inside the nonlinear cone
 (\cref{dyn:nsc:lem:blocks}). The constant $e^{-\tau}$ is recovered, and is
-sharp, when $\rang=1$ (\cref{dyn:nsc:thm:criterion}); whether it holds when
-$\rang\ge2$ is open.
+sharp, when $\rang=1$ (\cref{dyn:nsc:thm:criterion}), and equals $1$ when
+$\tau=0$ at every angular rank. Whether it holds when $\rang\ge2$ and
+$0<\tau<\infty$ is open.
 
 \emph{Individual inputs.} $Re^{-\tau}$ is a universal guarantee, not a
 formula for each input; polynomial inputs already do much better. Criteria
@@ -3400,8 +3410,8 @@ byte-identical to its state immediately before source 10 was added. Source
 unitary multiplier. The answer is again positive. Every Hahn coefficient of
 the normalized conjugacy and of its inverse is holomorphic on one polydisk,
 whose radius loses at most the factor $e^{-\rang\tau}$, where $\rang$ is the
-rational rank of the multiplier's angles. When $\rang=1$ the loss is exactly
-$e^{-\tau}$ and is sharp, in particular for every scalar $\lambda I_d$
+rational rank of the multiplier's angles. When $\rang=1$ the universally
+guaranteed factor is $e^{-\tau}$ and is sharp, in particular for every scalar $\lambda I_d$
 (\cref{dyn:esm:thm:main}) and for many nonscalar multipliers. For
 $\rang\ge2$ and $0<\tau<\infty$ the optimal radius is not determined
 (\cref{dyn:nsc:subsec:limits}). Source 10 does not claim the scalar theorem
@@ -3465,6 +3475,17 @@ shell polynomial $P$.
 \end{enumerate}
 \end{convention}
 
+The rate constant exists by a finite-prefix argument. Put
+$M_n=\max(1,\Delta_n^{-1})$. For $a>\tau$, the definition of the
+limsup gives $n_0$ such that $M_n\le e^{an}$ for $n\ge n_0$.
+The finitely many earlier nonzero divisors are controlled by
+\[
+ C_a(\Lambda)=\max\bigl(\{1\}\cup
+       \{M_ne^{-an}:2\le n<n_0\}\bigr).
+\]
+This is the least constant at least one satisfying \eqref{dyn:nsc:eq:Ca}.
+No uniform bound in a varying multiplier is asserted.
+
 \begin{theorem}[Common-domain linearization for a nonscalar exact multiplier;
 source 10]\label{dyn:nsc:thm:main}
 Let $\Gamma$ be any nonzero set-sized ordered abelian group, $d\ge1$,
@@ -3474,8 +3495,8 @@ $\Lambda$ diagonal unitary with $\nres$, and $\tau=\tau(\Lambda)<\infty$. Let
  f_s\in\OO(\mathbb D_R^{d})^{d},\quad f_s(0)=0,\quad \mathrm Df_s(0)=0,
 \end{equation}
 with $S\subset\Gamma_{>0}$ well ordered and no common bound on the sizes of
-the $f_s$. Then the unique normalized positive conjugacy $H=z+h$ of
-\cref{dyn:thm:main}, $H\circ F=\Lambda H$, and its inverse
+the $f_s$. Then the unique normalized positive conjugacy $H=z+h$ from the formal
+coefficient case of \cref{dyn:thm:main}, $H\circ F=\Lambda H$, and its inverse
 $\check H=H^{-1}=z+\check h$ satisfy
 \begin{equation}\label{dyn:nsc:eq:main}
  h_\gamma,\ \check h_\gamma\in\OO\bigl(\mathbb D^{d}_{Re^{-\rang\tau}}\bigr)^{d},
@@ -3521,16 +3542,19 @@ $e_v(k)=\psi\cdot u_v(k)-p_v(k)\ne0$ and that
 Then $\{b_v:v\in V\}$ has at most $q$ elements.
 \end{lemma}
 \begin{proof}
+The empty family has no rates, so assume $V\ne\emptyset$.
 \emph{The vectors eventually span at most $q$ rational dimensions.} Let
 $b_*=\min_vb_v>0$; eventually $|e_v(k)|\le e^{-b_*N_k/2}$ for every $v$.
 Take any $q+1$ of the vectors as the rows of a square integer matrix and
 subtract $\psi_1,\dots,\psi_q$ times its first $q$ columns from its last
 column. The determinant does not change, and the last column becomes
-$(-e_v(k))_v$. Expanding along it bounds the determinant by
-$C_1N_k^{q}e^{-b_*N_k/2}$, with $C_1$ independent of $k$. An integer of
+$(-e_v(k))_v$. Each cofactor has modulus at most $q!(CN_k)^q$,
+so expansion along that column bounds the determinant by
+$(q+1)q!C^qN_k^{q}e^{-b_*N_k/2}$. An integer of
 modulus less than one is zero, so for large $k$ every such determinant
 vanishes. There are finitely many choices of rows, so the whole family has
-rational rank at most $q$ for large $k$.
+rational rank at most $q$ for large $k$. If there are fewer than $q+1$
+vectors, that rank bound is immediate.
 
 \emph{Each strictly smaller positive rate adds a dimension.} Pass to a
 subsequence along which the rank of every subset of the family is constant;
@@ -3543,8 +3567,12 @@ most $C_2N_k^{q}$: the denominator is a nonzero integer, of modulus at least
 one, and the numerators are polynomially bounded in $N_k$. Applying the
 linear form $(u,p)\mapsto\psi\cdot u-p$ gives
 $|e_v(k)|\le C_3N_k^{q}\max_w|e_w(k)|$, the maximum over the faster basis.
-Polynomial factors do not change a positive exponential rate, so the rate
-of $e_v$ would exceed $b$, a contradiction. Order the distinct rates from
+Let $c>b$ be the least rate among this finite faster basis, and put
+$\epsilon=(c-b)/3$. For large $k$, the asserted limits give
+$|e_v(k)|\ge e^{-(b+\epsilon)N_k}$ and
+$\max_w|e_w(k)|\le e^{-(b+2\epsilon)N_k}$. The preceding bound would
+force $1\le C_3N_k^qe^{-\epsilon N_k}$, impossible for large $k$.
+Thus a slower rate adds a rationally independent direction. Order the distinct rates from
 the largest down. The fastest nonzero vector spans a nonzero space, and a
 vector at each later rate lies outside the span of all faster ones, so each
 rate raises the rank by at least one. The first step bounds that rank by
@@ -3552,11 +3580,25 @@ $q$.
 \end{proof}
 
 No coordinate of $\psi$ need be algebraic or Diophantine; the argument is an
-integer-determinant argument, not a subspace theorem. Source 10 records two
-limits of the lemma. The finiteness of the family is essential: nothing is
-asserted for a number of vector sequences growing with $N_k$. And the height
-bound must be linear, or at least polynomial; exponentially large heights
-would destroy the polynomial Cramer bound.
+integer-determinant argument, not a subspace theorem. The stated linear
+height is sufficient. The same proof works for a common bound $H_k\ge1$
+with $\log H_k=o(N_k)$: the determinant and Cramer factors are bounded
+by a constant times $H_k^q=e^{o(N_k)}$. The distinct-rate conclusion also
+extends to a fixed infinite family satisfying the hypotheses at each index:
+$q+1$ distinct rates would already occur in a finite subfamily. This gives
+neither a uniform eventual rank bound for the entire infinite family nor an
+estimate for a sum over a growing number of divisors. The tree application
+below keeps its complexity fixed.
+
+Unrestricted exponential height really can fail. Let
+$\phi=(1+\sqrt5)/2$ and let $F_0=0,F_1=1,F_{n+1}=F_n+F_{n-1}$ be
+the Fibonacci numbers. The recurrence gives
+$\phi F_n-F_{n+1}=(-1)^{n+1}\phi^{-n}$. With $q=1$, $\psi=\phi$
+and $N_k=k$, the two vectors
+$(F_k,F_{k+1})$ and $(F_{2k},F_{2k+1})$ therefore have distinct positive
+error rates $\log\phi$ and $2\log\phi$. Their exponential heights lie
+outside the hypothesis. These distinctions correct the source's necessity
+wording; the numbered lemma is used below exactly as stated.
 
 \begin{corollary}[Angular-rank form; source 10]\label{dyn:nsc:cor:angular}
 Let $k_v(N)\in\Z^{d}$, for finitely many indices $v$, satisfy
@@ -3576,11 +3618,14 @@ $\theta_j=a_{j0}+\sum_{\ell}a_{j\ell}\psi_\ell$ with rational $a_{j\ell}$,
 and let $Q\ge1$ clear all denominators. With $p_v(N)$ a nearest integer to
 $\theta\cdot k_v(N)$, the integers
 $u_{v,\ell}=\sum_jQa_{j\ell}k_{v,j}$ and
-$p'_v=Qp_v-\sum_jQa_{j0}k_{v,j}$ have height $O(N)$ and satisfy
+$p'_v=Qp_v-\sum_jQa_{j0}k_{v,j}$ have height $O(N)$:
+$|p_v|\le\sum_j|\theta_j||k_{v,j}|+1/2$. They satisfy
 $\psi\cdot u_v-p'_v=Q(\theta\cdot k_v-p_v)$. By \eqref{dyn:esm:eq:sine},
 $4\|x\|_{\Z}\le|e^{2\pi ix}-1|\le2\pi\|x\|_{\Z}$, so these real errors have
-the same exponential rates as the circle divisors. Apply
-\cref{dyn:nsc:lem:height} with $q=\rang$.
+the same exponential rates as the circle divisors: fixed multiplicative
+constants change their logarithms divided by $N$ by $O(1/N)$.
+A nonzero circle divisor also makes the real error nonzero.
+Apply \cref{dyn:nsc:lem:height} with $q=\rang\ge1$.
 \end{proof}
 
 \subsection{Colored trees, block contractions, and the product bound}
@@ -3606,9 +3651,10 @@ leaves and $\sum_va_v=n+m$, by counting its $m-1$ internal edges. In several
 variables a difference of two homological exponent vectors need not be a
 homological exponent vector again. The contraction below produces exactly
 the differences that are, so the proof never strengthens $\nres$ to a
-condition on all of $\Z^{d}$. Preservation of admissible cuts in operator
-trees has a precedent in \cite[Prop.~5.6]{FMS26}; source 10 claims the rank
-estimate, not the use of tree cuts.
+condition on all of $\Z^{d}$. Admissible-cut closure for forests whose
+associated operators are not universally zero, and its homogeneity-degree
+consequences, have a precedent in \cite[Thm.~E and Prop.~5.6]{FMS26}; source
+10 claims the rank estimate, not the use of tree cuts.
 
 \begin{lemma}[Marked-block contraction; source 10]\label{dyn:nsc:lem:blocks}
 Mark any set $A$ of internal vertices. For $v\in A$ let $C_A(v)$ be its
@@ -3691,8 +3737,9 @@ counts still vary with $k$. Pass to a further subsequence along which
 \[
  b_v=\lim_{k\to\infty}\frac1{n_k}\log^{+}\bigl(\mathfrak d_v(k)^{-1}\bigr)
 \]
-exists for every internal vertex; the limits are finite and nonnegative by
-\eqref{dyn:nsc:eq:Ca} and $|\alpha_v|\le n_k+1$. The rate of
+exists for every internal vertex. Indeed each sequence is nonnegative
+and bounded above by $a(1+1/n_k)+\log C_a(\Lambda)/n_k$, so finitely
+many subsequence extractions suffice. The limits are finite and nonnegative. The rate of
 $\mathsf P(T_k)$ along the subsequence is $\sum_vb_v$.
 
 \emph{At most $\rang$ positive rates.} For the vertices with $b_v>0$ take
@@ -3713,7 +3760,8 @@ integer, so the contracted divisor is at most
 $2\pi|A_b|e^{-(b-\zeta)n_k}$. Cancellation can only help this upper
 bound, and the divisor is nonzero because $|\beta_v|\ge2$. Applying
 \eqref{dyn:nsc:eq:Ca} to it gives $(b-\zeta)n_k\le a|\beta_v|+O(1)$, with
-the constant independent of $v$ and $k$. Summing over $A_b$ and using the
+the constant independent of $v$ and $k$ (the finite skeleton and $a$ are
+fixed). Summing over $A_b$ and using the
 third identity of \eqref{dyn:nsc:eq:blockfacts},
 $|A_b|(b-\zeta)n_k\le a(n_k+|A_b|)+O(1)$. Divide by $n_k$ and let
 $k\to\infty$, $\zeta\downarrow0$ and $a\downarrow\tau$:
@@ -3741,11 +3789,12 @@ If $\rang=1$, then for every $m\ge1$
 \]
 \end{corollary}
 \begin{proof}
-The upper bound is \cref{dyn:nsc:thm:products}. For each $n$ choose a
-monomial and output color realizing $\Delta_{n+1}$; its one-vertex tree has
+For each $n$ choose a monomial and output color realizing $\Delta_{n+1}$;
+its one-vertex tree has
 weight $n$ and is admissible for $A^{\Lambda}_m(n)$. The resulting lower
 bound has limsup $\tau$, since replacing $n+1$ by $n$ does not change the
-rate.
+rate. This already proves the assertion when $\tau=\infty$. For finite
+$\tau$, the matching upper bound is \cref{dyn:nsc:thm:products}.
 \end{proof}
 
 The argument extracts subsequences, so the prefactor $C_{m,\eps,\Lambda}$ is
@@ -3796,22 +3845,33 @@ source 10]\label{dyn:nsc:prop:formal}
 For formal input coefficients of order at least two and well-ordered
 $S\subset\Gamma_{>0}$, \eqref{dyn:nsc:eq:forward} has a unique normalized
 positive-support formal solution, supported in $S^{*}\setminus\{0\}$. At a
-fixed exponent $\gamma$ its expansion uses trees with at most $\ell_S(\gamma)$
+fixed exponent $\gamma\in S^{*}\setminus\{0\}$ its expansion uses trees with
+at most $\ell_S(\gamma)$
 internal vertices, labelled only by letters in $D_S(\gamma)$, and at a fixed
 exponent and spatial multi-index it is a finite sum. Each vertex $v$
-contributes one Taylor coefficient $f_{s_v,j_v,\mu_v}$ of an input, with
-$|\mu_v|=a_v$, and the divisor $\lambda^{\alpha_v}-\lambda_{j_v}$ of
+contributes one Taylor coefficient $f_{\eta_v,j_v,\mu_v}$ of an input, with
+Hahn label $\eta_v\in S$ and $|\mu_v|=a_v$, and the divisor $\lambda^{\alpha_v}-\lambda_{j_v}$ of
 modulus $\mathfrak d_v$.
 \end{proposition}
 \begin{proof}
 Existence and uniqueness are \cref{dyn:prop:linearization} for $H$, with
 $\check H=H^{-1}$ from \cref{dyn:prop:subgroup}; source 10 also proves them
-directly, by the least-difference argument for
-\eqref{dyn:nsc:eq:forward}, which does not assume that a second solution is
-supported in $S^{*}$. For the expansion, iterate
+directly, by a least-difference argument. If two normalized positive
+solutions differ first at exponent $\delta$, every term in
+$f(z+\check h)-f(z+\check h')$ involving that difference has an additional
+positive input weight and therefore has weight greater than $\delta$.
+Its coefficient at $\delta$ is zero. The forward equation then gives
+$\Li(\check h_\delta-\check h'_\delta)=0$, contradicting nonresonance.
+The least differing exponent exists in the union of the two well-ordered
+positive supports; neither support need be assumed contained in $S^{*}$.
+For the expansion, iterate
 $\check h=\Li^{-1}f(z+\check h)$ formally. A coefficient
 $f_{s,j,\mu}z^{\mu}e_j$ supplies an internal vertex of output color $j$,
-arity $|\mu|\ge2$ and Hahn letter $s$. Expanding a slot by a further copy of
+arity $|\mu|\ge2$ and Hahn letter $s=\eta_v$. This label is distinct
+from the integer subtree weight $s_v$ in \eqref{dyn:nsc:eq:weights}.
+For $z^\mu$, distinguish the $\mu_i$ slots of coordinate $i$, listed in
+coordinate order; this records the usual multinomial multiplicities.
+Expanding a slot by a further copy of
 $\check h$ supplies a child, and an unexpanded slot becomes an external leaf
 of its coordinate color. The subtree of $v$ carries the monomial
 $z^{\alpha_v}e_{j_v}$, so by \eqref{dyn:eq:homological} the divisor at $v$
@@ -3851,8 +3911,10 @@ Only polynomiality in $n$ at fixed $m$ matters, as in
 cost a spurious factor exponential in $n$ and a smaller radius (source 10).
 
 \begin{proof}[Proof of \cref{dyn:nsc:thm:main}]
-Construct $\check H$ by \cref{dyn:nsc:prop:formal}. Fix $\gamma$, put
-$m=\ell_S(\gamma)$, and fix $0<r<R$. By Cauchy's estimate there is a finite
+Construct $\check H$ by \cref{dyn:nsc:prop:formal}. For
+$\gamma\notin S^{*}\setminus\{0\}$ its coefficient is zero; this also
+settles every coefficient if $S$ is empty. Otherwise put
+$m=\ell_S(\gamma)\ge1$ and fix $0<r<R$. By Cauchy's estimate there is a finite
 $M_\gamma(r)\ge1$ with
 $|f_{s,j,\mu}|\le M_\gamma(r)r^{-|\mu|}$ for the finitely many $s\in D_S(\gamma)$
 and all $j,\mu$. A term of total spatial degree $n+1$ with $m'\le m$
@@ -3866,8 +3928,13 @@ to $\gamma$ absorbed into the constant,
  \max_{j,\ |\mu|=n+1}\bigl|[z^{\mu}]\check h_{\gamma,j}\bigr|
  \le C'(n+m+1)^{dm+m}\,r^{-n}e^{(\min(\rang,m)\tau+\eps)n}.
 \end{equation}
-The root test gives $\radiso(\check h_\gamma)\ge re^{-\min(\rang,m)\tau-\eps}$;
-letting $r\uparrow R$ and $\eps\downarrow0$,
+There are $\binom{n+d}{d-1}$ multi-indices of degree $n+1$, only
+polynomially many in $n$. On any closed polydisk of radius
+$q<re^{-\min(\rang,m)\tau-\eps}$, summing the absolute Taylor terms is
+therefore bounded by a polynomial times a geometric series with ratio
+$q e^{\min(\rang,m)\tau+\eps}/r<1$. This proves normal convergence and
+$\radiso(\check h_\gamma)\ge re^{-\min(\rang,m)\tau-\eps}$.
+Letting $r\uparrow R$ and $\eps\downarrow0$,
 \begin{equation}\label{dyn:nsc:eq:localdepth}
  \radiso(\check h_\gamma)\ge Re^{-\min(\rang,\ell_S(\gamma))\tau}\ge Re^{-\rang\tau}.
 \end{equation}
@@ -3900,9 +3967,13 @@ above. For $h_\gamma$ expand the inverse recursion. Every $\check h_\beta$
 that occurs has an input word that extends to one at $\gamma$, so its
 letters lie in $D_S(\gamma)$ and $\ell_S(\beta)\le\ell_S(\gamma)$
 (concatenate a longest word at $\beta$ with a word for the remaining
-weight). Each such $\check h_\beta$ is holomorphic on the polydisk of
-\eqref{dyn:nsc:eq:relative}, and finite products and derivatives keep it
-there.
+weight). Thus $D_S(\beta)\subseteq D_S(\gamma)$ and
+$R_\beta\ge R_\gamma$; since $\tau\ge0$, the forward-coordinate bound
+for $\beta$ is at least the radius in \eqref{dyn:nsc:eq:relative}.
+Only finitely many such weights and word partitions occur at $\gamma$.
+Finite sums, products and coordinate derivatives of their holomorphic
+coefficients preserve that open polydisk, proving the inverse bound without
+another homological inversion.
 \end{proof}
 
 Since $\min(\rang,\ell)\le\ell$, \eqref{dyn:nsc:eq:relative} improves the
@@ -3913,17 +3984,22 @@ even when there is no common input radius.
 
 \begin{corollary}[Rectangular polydisks and ordinary parameters; source 10]
 \label{dyn:nsc:cor:parameters}
-If the input coefficients are holomorphic on $\prod_j\mathbb D_{R_j}$, all
+If the input coefficients are holomorphic on $\prod_j\mathbb D_{R_j}$,
+where $0<R_j\le\infty$, all
 coefficients of $H$ and $H^{-1}$ are holomorphic on
 $\prod_j\mathbb D_{R_je^{-\rang\tau}}$. If the $f_s$ also depend
-holomorphically on ordinary parameters $w$ in a complex domain $V$, with
+jointly holomorphically on $(z,w)\in(\prod_j\mathbb D_{R_j})\times V$,
+where $V$ is an ordinary complex parameter domain, with
 $\Lambda$ independent of $w$, the coefficients are jointly holomorphic on
 that polydisk times $V$.
 \end{corollary}
 \begin{proof}
-The rescaling $z_j=R_jx_j$ commutes with the diagonal $\Lambda$ and does not
-change its divisors; apply \cref{dyn:nsc:thm:main} with radius one and undo
-it. For parameters, fix a relatively compact subset of $V$. The finitely
+For finite radii the rescaling $z=Dx$, $D=\operatorname{diag}(R_j)$,
+commutes with $\Lambda$ and does not change its divisors. The inputs become
+$D^{-1}f_s(Dx)$; apply \cref{dyn:nsc:thm:main} with radius one and undo
+the rescaling. If some radii are infinite, exhaust those coordinates by
+finite radii; formal uniqueness makes the resulting coefficients agree.
+For parameters, fix a relatively compact subset of $V$. The finitely
 many inputs used at one exponent have Cauchy bounds uniform on it, so
 \eqref{dyn:nsc:eq:coefbound} gives normal convergence on compact subsets of
 the polydisk, uniformly in the parameter. The Taylor coefficients are
@@ -4083,14 +4159,15 @@ $u,v,p$ with $|u|+|v|=O(n)$ and $(u,v)\ne0$, the algebraic integer
 $u\sqrt2+v\sqrt3-p$ is nonzero, its norm from $\Q(\sqrt2,\sqrt3)$ is a nonzero
 integer, and its three other conjugates are $O(n+1)$ when $p$ is a nearest
 integer to $u\sqrt2+v\sqrt3$. Hence
-$|u\sqrt2+v\sqrt3-p|\ge C(n+1)^{-3}$. With $(u,v)=\alpha-e_j$ this bounds
-every homological divisor polynomially from below, so $\tau=0$ and the
+$|u\sqrt2+v\sqrt3-p|\ge C(n+1)^{-3}$. With $(u,v)=\alpha-e_j$, the sine
+bound \eqref{dyn:esm:eq:sine} transfers this estimate to every homological
+divisor, giving a polynomial lower bound. Thus $\tau=0$ and the
 original polydisk is kept. This is row one of \cref{dyn:thm:main}; source
 10 gives it only to show that $\rang\ge2$ is compatible with zero loss, and
 it is a familiar algebraic-number estimate, not a new Diophantine statement.
 \end{example}
 
-For an arbitrary well-ordered support, source 10 uses exactly the set $S$
+As a nongrid well-ordered-support example, source 10 uses the set $S$
 and group $\Gamma=\Q+\Q\Omega$ of \cref{dyn:ex:ranktwo}, with any of the
 spectra above and independently chosen order-two coefficients $f_s$ on
 $\mathbb D_R^{d}$, with no bound uniform in $s$. \Cref{dyn:nsc:thm:main}
@@ -4106,8 +4183,9 @@ $t^{\gamma}=\omega^{-\gamma}$ and set-sized workspaces, is
 \cref{dyn:subsec:halo,dyn:prop:workspace}; neither is reprinted. All
 derivatives are coordinate derivatives of coefficient functions, not the
 Berarducci--Mantova derivation (\cref{dyn:warn:derivative}), and strong
-summation is the support operation of \cref{dyn:def:summable}, not a limit
-in the fine topology. The failure at $\tau=\infty$ concerns ordinary
+summation is the support operation of \cref{dyn:def:summable}; convergence
+of partial sums in the fine topology is not assumed. The failure at
+$\tau=\infty$ concerns ordinary
 coefficient holomorphy only; the formal conjugacy still evaluates on the
 monad (\cref{dyn:prop:monad}).
 
@@ -4818,7 +4896,7 @@ different categories and must never be merged into one ``intermediate
 case'' (\cref{dyn:warn:resolution}). Positive assertions hold over every
 nonzero $\Gamma$, and negative ones already over $\Z$. The nonscalar exact
 case in several variables, open when source 08 wrote, is settled by source
-10 except for the optimal radius when $\rang\ge2$
+10 except for the optimal radius when $\rang\ge2$ and $0<\tau<\infty$
 (\cref{dyn:nsc:thm:criterion,dyn:q:commongerm}).}
 \label{dyn:cyc:tab:exactdrift}
 \end{table}
@@ -4921,7 +4999,7 @@ every nonscalar diagonal unitary $\Lambda$, with radius at least
 $Re^{-\rang\tau}$ (\cref{dyn:nsc:thm:main}); again no cancellation is
 needed, and the number of distinct exponential rates, at most $\rang$, is
 what is paid for (\cref{dyn:nsc:thm:products}). Only the optimal radius for
-$\rang\ge2$ remains \textbf{open}.
+$\rang\ge2$ and $0<\tau<\infty$ remains \textbf{open}.
 \item The two categories must not be averaged into a single ``intermediate
 case'' claim (\cref{dyn:cyc:tab:exactdrift}). Neither
 \eqref{dyn:eq:collapse} nor \eqref{dyn:cyc:eq:radius} may ever be quoted
@@ -4936,8 +5014,8 @@ drifted category over any fixed value group (no such neighborhood exists in
 general), for a scalar exact multiplier (it always exists, with radius
 $Re^{-\tau}$), and for a nonscalar exact diagonal unitary multiplier (it
 always exists, with radius at least $Re^{-\rang\tau}$, and exactly
-$Re^{-\tau}$ when $\rang=1$). The optimal radius when $\rang\ge2$ is still
-open.
+$Re^{-\tau}$ when $\rang=1$, or $R$ when $\tau=0$ at every angular rank).
+The optimal radius when $\rang\ge2$ and $0<\tau<\infty$ is still open.
 \end{warning}
 
 \section{The exact finite-return threshold and its shell cycles}
@@ -10757,7 +10835,7 @@ prove that radius collapse occurs (\cref{dyn:warn:lowerbound}). This is
 source 03's limitation and is kept as such. The regime has since been
 settled for a scalar multiplier by sources 08 and 09
 (\cref{dyn:esm:thm:main}), and for a nonscalar diagonal one by source 10
-(\cref{dyn:nsc:thm:main}); only the optimal radius when $\rang\ge2$ remains
+(\cref{dyn:nsc:thm:main}); only the optimal radius when $\rang\ge2$ and $0<\tau<\infty$ remains
 open (\cref{dyn:q:commongerm}).
 \item (03) No universal analytic Poincar\'e--Dulac statement for resonant
 multipliers of infinite order is proved
@@ -10899,7 +10977,7 @@ both wordings are kept, because source 09 states its own for one variable.
 Source 09's scope limitation is re-scoped rather than dropped: it is the
 limitation of source 09, and after the merge the scalar several-variable case
 is covered by source 08. The nonscalar case, which both sources leave open,
-is covered by source 10 except for the optimal radius when $\rang\ge2$
+is covered by source 10 except for the optimal radius when $\rang\ge2$ and $0<\tau<\infty$
 (\cref{dyn:nsc:subsec:nonclaims}); \ref{dyn:esm:nc:scalar} and
 \ref{dyn:esm:nc:onevar} are kept as sources 08 and 09 state them.
 \begin{enumerate}[label=\textbf{N\arabic*.},ref=\textbf{N\arabic*},leftmargin=3.2em,start=81]
@@ -10910,7 +10988,7 @@ rational-clustering proof does not apply as written to the divisors
 $\lambda^{\beta}-\lambda_j$ (\cref{dyn:esm:subsec:limits}). \emph{Re-scoped
 after source 10's merge}: the nonscalar case is \cref{dyn:nsc:thm:main},
 proved by a different argument, and only its optimal radius for $\rang\ge2$
-is open (\ref{dyn:nsc:nc:gap}).
+and $0<\tau<\infty$ is open (\ref{dyn:nsc:nc:gap}).
 \item (08) The cyclic theorem is settled only in the one-dimensional drifting
 setting in which the repository question was posed
 (\cref{dyn:cyc:subsec}); the several-variable collapse over a fixed cyclic
@@ -11085,26 +11163,31 @@ fixed-complexity rate are already in this report and are not claimed; the
 general upper bound $Re^{-\tau}$ and the $\tau=\infty$ obstruction are
 first-weight obstructions already here, included only to complete the
 criterion.
-\item\label{dyn:nsc:nc:gap} (10) For $\rang>1$ the factor $\rang$ is a
+\item\label{dyn:nsc:nc:gap} (10) For $\rang>1$ and $0<\tau<\infty$ the
+factor $\rang$ is a
 proved bound, not an optimality assertion. The optimal universal radius lies
 between $Re^{-\rang\tau}$ and $Re^{-\tau}$ and is undetermined. The proof
 does not show that several rate values can saturate their charges at once,
 or that saturation survives the cancellations of an actual conjugacy. The
 theorem answers the existence of a common radius, not the optimal general
-nonscalar radius.
+nonscalar radius in this positive-rate regime. When $\tau=0$, both bounds
+equal $R$, so the optimal radius is known at every angular rank.
 \item (10) Holomorphy is asserted on the \emph{open} polydisk only; nothing is
 asserted about continuity up to its boundary.
 \item (10) Uniqueness is in the normalized formal positive-support class. No
 classification of nonnormalized, non-Hahn-coherent or purely set-theoretic
 conjugacies is given.
 \item (10) The prefactor $C_{m,\eps,\Lambda}$ of \cref{dyn:nsc:thm:products}
-comes from a subsequence argument: it is finite but has no computable
-formula. No bound uniform in $m$ follows, and replacing $m$ by $n$ in
+comes from a subsequence argument: it is finite, but this argument supplies
+no effective formula. No bound uniform in $m$ follows, and replacing $m$ by $n$ in
 \eqref{dyn:nsc:eq:products} and dropping the prefactor is invalid.
-\item (10) \Cref{dyn:nsc:lem:height} needs a finite family of vector
-sequences, and asserts nothing for a number of sequences growing with the
-height; and it needs heights growing linearly, since exponentially large
-heights would invalidate the polynomial Cramer bound.
+\item (10) \Cref{dyn:nsc:lem:height} is stated for a fixed finite family
+with linear heights. As explained after its proof, subexponential heights
+suffice, and the distinct-rate count extends to a fixed infinite family by
+applying the finite result to each finite subfamily. This gives neither a
+uniform eventual rank bound for that infinite family nor a bound on a sum
+over a growing number of divisors. Unrestricted exponential heights fail,
+as the Fibonacci example there shows.
 \item (10) ``Sharp'' concerns the largest universally guaranteed centered
 isotropic polydisk for the ordinary coefficient functions. A particular
 forcing may have much larger domains, and a coefficient may continue
@@ -11407,7 +11490,9 @@ fixed-complexity form \cref{dyn:esm:thm:treebound}, the sharp radius
 in its version~2 of 13 September 2026, and \cite{Yoccoz} at metadata level.
 No priority is certified (\ref{dyn:esm:nc:priority08},
 \ref{dyn:esm:nc:priority09}).\\[3pt]
-Preservation of admissible cuts in operator trees \cite[Prop.~5.6]{FMS26};
+Admissible-cut closure for forests with non-universally-zero associated
+operators, and its homogeneity-degree consequences
+\cite[Thm.~E and Prop.~5.6]{FMS26};
 Carletti's tree formulas for Lagrange inversion and linearization over
 non-Archimedean formal-series structures \cite{CarlettiLagrange};
 integer minors, Cramer's rule and norms of algebraic integers
@@ -11641,7 +11726,7 @@ no degree-$0$ or degree-$1$ coordinate terms at any exponent; a fixed
 polydisk of finite positive radius in row one. Rows are not
 interchangeable; the sixth category is \cref{dyn:esm:thm:main} for
 $\Lambda=\lambda I_d$ and \cref{dyn:nsc:thm:criterion} for nonscalar
-$\Lambda$, whose optimal radius for $\rang\ge2$ is
+$\Lambda$, whose optimal radius for $\rang\ge2$ and $0<\tau<\infty$ is
 \cref{dyn:q:commongerm}.\\[3pt]
 \cref{dyn:thm:radius-depth} &
 $\tau<\infty$. \textbf{Lower bound only}
@@ -11662,14 +11747,16 @@ A \emph{fixed finite} family of integer vector sequences with heights
 $O(N)$ and positive limiting rates. No Diophantine or algebraicity
 hypothesis on the angles. Counts distinct rates, not vectors.\\[3pt]
 \cref{dyn:nsc:thm:products,dyn:nsc:cor:rankone} &
-$\nres$; $\tau<\infty$; arities at least two, so every weight is positive
-(no infinitesimal linear term). Fixed $m$; the prefactor is not explicit and
-not uniform in $m$.\\[3pt]
+$\nres$; arities at least two, so every weight is positive
+(no infinitesimal linear term). The product bound requires $\tau<\infty$;
+the rank-one equality also includes $\tau=\infty$. Fixed $m$; the finite-rate
+prefactor is not explicit and not uniform in $m$.\\[3pt]
 \cref{dyn:nsc:thm:main,dyn:nsc:thm:criterion} &
 $\nres$ with the multiplier \emph{exactly} a diagonal unitary $\Lambda$;
 $f_s(0)=0$ and $\mathrm Df_s(0)=0$ coefficientwise; one common input
 polydisk; $\tau<\infty$. Open polydisk only; a universal radius, proved
-sharp for $\rang=1$; the optimal radius for $\rang\ge2$ is open
+sharp for $\rang=1$ and for $\tau=0$ at every angular rank; the optimal
+radius for $\rang\ge2$ and $0<\tau<\infty$ is open
 (\cref{dyn:nsc:subsec:limits}).\\[3pt]
 \cref{dyn:nsc:cor:local} &
 Convergent-germ inputs; the radius is relative to the finitely many inputs
@@ -11946,15 +12033,15 @@ Explicit linearization of one-dimensional germs through tree-expansions,
 T.~Carletti,
 \emph{The Lagrange inversion formula on non-Archimedean fields.
 Non-Analytical Form of Differential and Finite Difference Equations},
-\href{https://arxiv.org/abs/math/0110135}{arXiv:math/0110135}, 12 October
-2001. Source 10 used its abstract and metadata only.
+\href{https://arxiv.org/abs/math/0110135}{arXiv:math/0110135}, first submitted
+12 October 2001; revised 1 July 2002. Source 10 used its abstract and metadata only.
 
 \bibitem{FMS26}
 F.~Fauvet, F.~Menous, and D.~Sauzin,
 \emph{Explicit linearization of multi-dimensional germs and vector fields
 through Ecalle's tree expansions},
 \href{https://arxiv.org/abs/2507.13216v2}{arXiv:2507.13216v2},
-version~2 dated 13 September 2026 (first posted 17 July 2025), 41~pp.
+version~2 submitted 13 September 2026 (first posted 17 July 2025), 41~pp.
 
 \bibitem{Bounemoura}
 A.~Bounemoura,

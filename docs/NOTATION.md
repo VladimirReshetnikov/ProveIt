@@ -121,6 +121,55 @@ infinitely many supported exponents to one value; it need not produce a
 Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
 makes this distinction explicit.
 
+The [hidden-negative-directions report](surcomplex/hidden-negative-hermitian-directions/article.tex)
+uses `𝒫_Γ` for complex Hahn series supported in some finitely generated
+additive subgroup of `Γ`; “finite-lattice support” permits infinite supports
+and nondiscrete subgroups. Its valuation closure is `P̄_Γ`, written
+`\overline{\mathscr P}_Γ` in the article, and uses neighborhoods
+`v(x−a) > ρ` for `ρ ∈ Γ`. For `Γ = ℚ` it is the complex Levi–Civita field
+of left-finite series. This differs from the Hahn–Herglotz notation `𝒞_Γ(X)`
+for Hahn series with continuous-function coefficients.
+
+In that report, `A ⪰ 0` tests **every** vector over the stated scalar field;
+positivity on a smaller probe field always names that field. Its two-scale
+measure criterion uses the scalar Jordan parts `ν_u⁺`, `ν_u⁻` of
+`ν_u = u* M₁ u` and the ordinary vector total variation `|σ_u|` of
+`σ_u = M₁ u`. Neither is an entrywise positive part of a matrix measure.
+The null conditions quantify over every ordinary `u` and every measurable
+null set; the resulting matrix positivity quantifies over all Hahn vectors.
+
+In [bounded-support transcendence](surreal/transcendence-over-bounded-support/article.tex),
+`𝓑_G(K)` is the ring of `K`-coefficient Hahn series whose support is bounded
+above **in G**, and `𝓕_G(K) = Frac(𝓑_G(K))`. These are distinct from the
+full real Hahn field `F_Γ` and the tail-span report's full coefficient fields
+`B`, `B₀`. An unbounded geometric series may already lie in `𝓕_G(K)`.
+When `G` has no order unit, `𝓑_G(K)` itself is a field. The rank-one width
+used in the unit criterion takes a supremum in `ℝ` after passing to the
+highest Archimedean quotient, not a supremum in the original arbitrary group.
+
+For an increasing cofinal support `(a_α)_{α<κ}`, its bounded initial Hahn
+truncations have error valuation `a_β` and converge in the named workspace.
+If `κ` is uncountable, these truncations are generally infinite series.
+In this uncountable case, the net of finite subsums does not reach the neighborhood beyond `a_ω`,
+because a finite set omits some earlier coefficient. Thus strong summability
+and cofinal support do not alone imply convergence of finite subsums.
+
+The [matrix-scaling report](surreal/matrix-scaling-at-surreal-scales/article.tex)
+uses `κ_e = τ_e⁻ − τ` for a spanning-tree deletion gap, with `∞` for a
+bridge. The costs are valuations of the normalized base entries, and
+“positive-leading” means a positive real leading coefficient even when
+higher coefficients are complex. Its `Π_p` projects onto potential differences
+and `H_p = I − Π_p` onto weighted conserved flows; neither symbol denotes a
+Hermitian form. The general-constraint version requires a real constant matrix
+because Hahn-valued minors can contribute their own valuations.
+
+The formal tangent space of the matrix-scaling conservation equations at a
+balanced `h` is `ker(B diag(p_e exp(h_e)))`, a vector space over the Hahn field.
+The evaluated domain `𝔪^E` is not itself a vector space over that field.
+For the trivial value group it is a singleton: formal coefficient sharpness
+still makes sense, but optimality over nonzero infinitesimal changes requires
+`Γ ≠ {0}`.
+
 ## Inner products and operator spectra
 
 The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
@@ -370,7 +419,13 @@ For Hilbert coefficients, **order-bounded** means a positive real-Hahn bound.
 When comparing least bounds with the spectral report, allow nonnegative bounds:
 the zero operator has least nonnegative bound `0` but no least positive one.
 A subspace with zero orthogonal complement can have an algebraic direct-sum
-complement while admitting no orthogonal direct-sum complement.
+complement while admitting no orthogonal direct-sum complement. Under exponent-group
+inclusion `Γ ⊆ Δ`, the induced topology on `V_Γ` agrees with its intrinsic
+topology when `Γ` is cofinal; otherwise it is discrete. Strong operator series
+extend uniquely as strong operators. For Hilbert coefficient spaces, norms
+and scalar-valued functionals take values in the scalar field; general operator
+outputs remain vectors. Allowing all positive surreal norm tolerances isolates
+those vectors without identifying them with surcomplex scalars.
 
 A **coefficientwise Hahn sum** in the
 [measure report](surreal/hahn-valued-measures-and-probability/article.tex)
@@ -746,6 +801,19 @@ notation. “Cofinality” in the entire-functions report is cofinality of the
 ordered value group, and an **order unit** has cofinal integer multiples.
 Countable cofinality does not by itself assert the existence of an order unit
 (`ent:rem:one-name`).
+
+For an exact diagonal unitary multiplier in the dynamics report, the
+**angular rank** is `r_ang = dim_ℚ span(1,θ₁,…,θ_d) − 1`, where
+`λ_j = exp(2πiθ_j)`. It is unchanged by changing the angle representatives
+and is independent of the ordered rank of the Hahn exponent group `Γ`.
+Under nonresonance and finite divisor rate `τ`, the universal coefficient
+radius lies between `R exp(−r_ang τ)` and `R exp(−τ)`. It equals `R` when
+`τ = 0` at every angular rank; the unresolved higher-rank optimum concerns
+`0 < τ < ∞`. These are ordinary coefficient radii, not valuation thresholds.
+In the colored-tree proof, `η_v ∈ S` denotes a vertex's Hahn input label,
+whereas `s_v` is its positive integer subtree weight; they live in different
+groups. The fixed complexity `m` may depend on the coefficient exponent,
+and its finite prefactor is not bounded uniformly in `m`.
 
 A sequence whose **range is cofinal** need not tend cofinally to infinity:
 it can keep returning to one small value. An eventual growth estimate must

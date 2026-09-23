@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **48 main texts** with **2440**
+The canonical inventory below identifies **49 main texts** with **2534**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -36,8 +36,20 @@ expansions remain pending within the review scopes recorded separately. Batch 21
 statements; their review remains pending. Batch 22 (placed in `7b5f934`, written in
 `68e2960`) adds two reports and new sections to five existing ones, all
 indexed in their written form; their review remains pending.
+Batch 23 (placed in `e4f8848`, written in `7af7056`) adds one report merged
+from six gamma/zeta manuscripts, indexed in its written form; its review
+remains pending. The original archives remain in Git history at `cafe42f`.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
+
+The source-10 nonscalar dynamics review now covers its angular-rate lemma,
+colored-tree product bound, common-domain proof, exact criterion and examples
+(Sections 7.7–7.13), with the corresponding limitations in Section 26.10.
+It corrects the height and finite-family limitations, distinguishes Hahn
+labels from integer tree weights, and retains the solved zero-rate radius
+at every angular rank. See the [review record](REVIEW.md). These proof and
+scope clarifications add no Lean coverage; current implementation mappings
+remain clause-specific, and other foundational/source reconciliation is separate.
 
 Before archive retirement in `e5791a8`, the tree contained 63 source
 manuscripts with 1582 literal standard result environments. Those are historical
@@ -262,7 +274,7 @@ remaining clauses of a partially mapped statement.
 | `found:eq:gram`, `found:eq:cauchyschwarz`, `trigonometry:eq:gram` | `Surreal.Complexify.gram_identity`, `cauchy_schwarz_sq`, `normSq_mul`, `mul_conj` | Generic algebraic identities and their ordered-field consequence. The scalar formula is proved independently of any surreal representation. **Prerequisites proved**; build and axiom audit pass. |
 | `a:prop:triangle` | `Surreal.Complexify.modulus_mul`, `modulus_add_le`, `abs_re_le_modulus`, `abs_im_le_modulus`, `inv_eq_modulus` in [Modulus.lean](../Surreal/Algebra/Modulus.lean) | The stated identities over an ordered field with the proved nonnegative-square-root property, with modulus valued in that field. The concrete surcomplex interpretation is proved below. **Prerequisites proved**; build and axiom audit pass. |
 | Nonnegative square-root obligation of `found:sub:realclosed` and `found:sub:modulus` | `Surreal.Foundations.SignSequence.squareRootTransition`, `squareRootTransition_sq_sub`, `IsSquareRootBracket`, `squareRootOptions`, `squareRootOptionCut`, `squareRootOptionCut_product_realized`, `squareRootOptionCut_sq_isPrefix`, `exists_nonneg_sq`, `existsUnique_nonneg_sq`, `sqrt`, `sqrt_sq`, `sqrt_sq_eq_abs` in [SignSequenceRoots.lean](../Surreal/Foundations/SignSequenceRoots.lean) | Every nonnegative element of the actual sign field has a unique nonnegative square root. Simplicity induction supplies roots of nonnegative canonical options. A countable closure under the rational transition `(x+a*b)/(a+b)` preserves square bracketing and lower-universe smallness; zero denominators are excluded and the all-zero product-option case is handled separately. Arbitrary-presentation multiplication proves one prefix direction for the candidate square, and the seed roots prove the reverse direction. A total square-root function is zero on negative inputs. This constructs roots without topological convergence, a Hahn bridge, or a real-closedness assumption. Odd-degree polynomial roots and real closedness remain pending. **Proved** for square roots; build and axiom audit pass. |
-| Full `a:prop:triangle`; `found:sub:modulus`; concrete area/inequality clauses of `trigonometry:thm:heron` and `trigonometry:thm:ptolemy` | `Surreal.HasNonnegSquareRoots` in [OrderedSquareRoots.lean](../Surreal/Algebra/OrderedSquareRoots.lean); `SignSequence.signSequenceHasNonnegSquareRoots`, `Surcomplex.modulus`, `modulus_sq`, `modulus_mul`, `modulus_add_le`, coordinate bounds, `inv_eq_modulus`, `modulus_add_eq_iff_pos_quotient`, `heron`, `ptolemy`, `fineBall_eq_modulus`, `nhds_hasBasis_modulus`, `uniformity_hasBasis_modulus_sub`, `abs_sub_modulus_le`, `continuous_modulus` in [Surcomplex/Modulus.lean](../Surreal/Surcomplex/Modulus.lean) | The proved sign-field square roots instantiate the existing generic geometry through an explicit square-root property, automatically satisfied by real closed fields but strictly sufficient here without asserting real closedness. The actual surcomplex modulus is surreal-valued and satisfies every identity and inverse clause of the analysis proposition. Its positive-radius balls generate exactly the native fine topology and Cauchy uniformity; it obeys the reverse triangle estimate and is continuous. Heron, Ptolemy inequality, and the nonzero positive-quotient triangle-equality criterion apply to the concrete carrier. Angle/radius clauses, cyclic Ptolemy equality, and algebraic closedness remain pending. **Proved** for the full modulus proposition and these exact geometric/topological clauses; build and axiom audit pass. |
+| Full `a:prop:triangle`; `found:sub:modulus`; concrete area/inequality clauses of `trigonometry:thm:heron` and `trigonometry:thm:ptolemy` | `Surreal.HasNonnegSquareRoots` in [OrderedSquareRoots.lean](../Surreal/Algebra/OrderedSquareRoots.lean); `SignSequence.signSequenceHasNonnegSquareRoots`, `Surcomplex.modulus`, `modulus_sq`, `modulus_mul`, `modulus_add_le`, coordinate bounds, `inv_eq_modulus`, `modulus_add_eq_iff_pos_quotient`, `heron`, `ptolemy`, `fineBall_eq_modulus`, `nhds_hasBasis_modulus`, `uniformity_hasBasis_modulus_sub`, `abs_sub_modulus_le`, `continuous_modulus` in [Surcomplex/Modulus.lean](../Surreal/Surcomplex/Modulus.lean) | The proved sign-field square roots instantiate the existing generic geometry through an explicit square-root property, automatically satisfied by real closed fields but strictly sufficient here without asserting real closedness. The actual surcomplex modulus is surreal-valued and satisfies every identity and inverse clause of the analysis proposition. Its positive-radius balls generate exactly the native fine topology and Cauchy uniformity; it obeys the reverse triangle estimate and is continuous. Heron, Ptolemy inequality, and the nonzero positive-quotient triangle-equality criterion apply to the concrete carrier. The remaining Heron angle/radius clauses and cyclic Ptolemy equality are completed below; actual algebraic closedness remains pending. **Proved** for the full modulus proposition and these exact geometric/topological clauses; build and axiom audit pass. |
 | Actual finite-ring, maximal-ideal, residue and decomposition clauses of `a:eq:st` | `Surreal.Surcomplex.IsFinite`, `IsInfinitesimal`, modulus-bound equivalences, `finiteSubring`, `finiteValuationSubring`, `standardPartHom`, `standardPartHom_surjective`, `standardPart_modulus`, `infinitesimalIdeal_isMaximal`, `standardPartQuotientEquiv`, `existsUnique_complex_infinitesimal_decomposition` in [Surcomplex/StandardPart.lean](../Surreal/Surcomplex/StandardPart.lean) | On the actual surcomplex field, coordinatewise standard part is a surjective ring homomorphism from the finite valuation subring to ordinary `ℂ`. Finiteness is exactly a natural modulus bound and infinitesimality exactly every positive reciprocal-natural bound. The kernel is the maximal infinitesimal ideal, its quotient is `ℂ`, and both terms of the ordinary-complex plus infinitesimal decomposition are unique. Standard part commutes with conjugation and sends the modulus of a finite element to the ordinary norm of its standard part. Identification with Hahn exponents and coefficient-zero extraction remains pending. **Proved** for these actual algebraic and modulus assertions; build and axiom audit pass. |
 | Ordinary complex coefficient embedding for `a:eq:normal` and `a:eq:st` | `Surreal.Surcomplex.ofComplex`, `ofComplex_injective`, coordinate and conjugation compatibility, `normSq_ofComplex`, `modulus_ofComplex` in [ComplexEmbedding.lean](../Surreal/Surcomplex/ComplexEmbedding.lean) | Applies the actual ordered real embedding to both ordinary complex coordinates, giving an injective ring homomorphism into the constructed surcomplex field. Its actual modulus is the embedded ordinary complex norm. This supplies constants without identifying the ordinary and fine topologies or assuming algebraic closedness. **Proved**; build and axiom audit pass. |
 | `found:cor:nopaths`, `a:cor:nopath` | `Surreal.Surcomplex.eq_of_isPreconnected_of_small_range`, `eq_of_isPreconnected`, `eq_of_continuous`, `eq_of_continuousOn_Icc` in [NoPaths.lean](../Surreal/Surcomplex/NoPaths.lean) | A fine-continuous map with permitted-small range is constant on every preconnected subset of its domain. Small index types suffice, including every ordinary real interval. This reuses Mathlib connectedness and the proved small-range discreteness of the actual fine topology, without requiring the whole surcomplex carrier to be small or discrete. **Proved**; build and axiom audit pass. |
@@ -283,8 +295,24 @@ remaining clauses of a partially mapped statement.
 | Full `trigonometry:thm:metric`, `trigonometry:eq:metricbounds`, `trigonometry:eq:metricval`, `trigonometry:eq:localangle`, `trigonometry:eq:chordseries`; preceding metric assertion | `unitCircleAngle`, `angularDistance`, `modulus_unitCircle_sub_sq`, `modulus_unitCircle_sub_eq_two_sin`, `angularDistance_chord_bounds`, `valuation_angularDistance` in [AngularDistance.lean](../Surreal/Surcomplex/AngularDistance.lean); `unitCircleAngle_eq_abs_of_phase`, `unitCircleAngle_le_abs_of_phase`, `exists_angularDistance_representative`, `angularDistance_comm`, `angularDistance_eq_zero_iff`, `angularDistance_self`, `angularDistance_triangle` in [AngularMetric.lean](../Surreal/Surcomplex/AngularMetric.lean); `localAngle`, `finitePhase_localAngle`, `existsUnique_infinitesimal_relative_angle`, `angularDistance_eq_abs_localAngle`, `valuation_localAngle`, `infinitesimal_relative_sub_one`, `ofReal_localAngle_eq_log` in [LocalAngularDistance.lean](../Surreal/Surcomplex/LocalAngularDistance.lean); `chordNormalizedSeries`, `cosineDefectNormalizedSeries`, their even/odd coefficient formulas, `modulus_unitCircle_sub_eq_normalizedSeries`, `unitCircle_cosine_defect_eq_normalizedSeries`, `modulus_unitCircle_sub_eq_strongSeries`, `unitCircle_cosine_defect_eq_strongSeries`, `normalizedAngularSeries_finite_residue`, `modulus_unitCircle_sub_expansion`, `unitCircle_cosine_defect_expansion` in [AngularDistanceSeries.lean](../Surreal/Surcomplex/AngularDistanceSeries.lean) | Inverse cosine of the relative direction's real coordinate defines a nonnegative actual surreal angular distance bounded by ordinary pi. It is the least absolute representative, is symmetric, vanishes exactly on equal directions, and satisfies the triangle inequality. The chord is exactly `2*sin(d/2)`, with `chord ≤ d ≤ (pi/2)*chord`; these ordinary-factor bounds give identical valuations, including zero. Equal-standard-part directions have a unique infinitesimal oriented angle `δ`; its real-axis embedding equals `-i*Logm(w/z)`, its absolute value is angular distance, and its valuation is the displacement valuation. The normalized chord and cosine-defect factors are actual strongly summable power-series evaluations with every odd coefficient zero and even coefficients respectively `(-1)^n/(2^(2*n)*(2*n+1)!)` and `2*(-1)^n/(2*n+2)!`. Both factors are finite with standard part one. Their displayed degree-four truncations have exact degree-six finite remainders of standard parts `-1/322560` and `-1/20160`. **Proved** for the entire theorem and the preceding metric assertion, on the actual carriers; no real-valued metric is substituted. The subsequent phase-isometry and direction-stability corollaries are mapped below. Build and axiom audit pass. |
 | Full `trigonometry:cor:phaseisometry`, `trigonometry:eq:phaseisometry`, `trigonometry:eq:rotdisplacement`; following omega-scale examples | `infExp_sub_one_leading_factor`, `valuation_infExp_sub_one`, `infinitesimal_infExp_sub_one_div_sub_one` in [InfinitesimalExponentialLeading.lean](../Surreal/Surcomplex/InfinitesimalExponentialLeading.lean); `finitePhase_of_isInfinitesimal`, `valuation_finitePhase`, `finitePhase_sub_leading_factor`, `valuation_finitePhase_sub`, `infinitesimal_phase_difference_relative_error`, `infinitesimal_phase_modulus_relative_error` in [PhaseIsometry.lean](../Surreal/Surcomplex/PhaseIsometry.lean); `modulus_finitePhase_sub_one`, `modulus_rotation_displacement_factor`, `modulus_rotation_displacement`, `infinitesimal_rotation_modulus_relative_error`, `valuation_rotation_displacement_scale`, `inverseOmegaAngle`, `rotation_omega_displacement_sub_one_infinitesimal`, `rotation_omega_sq_displacement_not_finite` in [RotationDisplacement.lean](../Surreal/Surcomplex/RotationDisplacement.lean) | The actual infinitesimal exponential displacement is its input times a finite complex factor with standard part one. For finite angles with infinitesimal difference, phase displacement is exactly `i*phase(phi)*(theta-phi)` times such a factor. This gives exact valuation preservation, including zero; for nonzero differences, both the complex quotient and the modulus quotient have infinitesimal error from one. The exact rotation chord formula `2*modulus(z)*abs(sin(delta/2))` holds for every finite angle and arbitrary actual surcomplex radius, including zero. At nonzero infinitesimal angles and nonzero radius, it is relatively equivalent to `modulus(z)*abs(delta)`; its valuation is that scale's valuation. At the concrete angle `omega^-1`, displacement at radius `omega` differs infinitesimally from one, whereas displacement at radius `omega^2` is infinite. **Proved** for the full corollary and the two ensuing examples. Build and axiom audit pass. |
 | Full `trigonometry:cor:directionstability` | `infLog_expansion`, `valuation_infLog`, `leadingCoeff_infLog`, `valuation_im_eq_of_leadingCoeff_im_ne_zero`, `valuation_im_infLog_ge`, `valuation_im_infLog_eq_of_leadingCoeff_im_ne_zero`, `infLog_im_expansion`, `infLog_im_remainder_bound` in [InfinitesimalLogarithmLeading.lean](../Surreal/Surcomplex/InfinitesimalLogarithmLeading.lean); `unitDirection`, `modulus_mul_unitDirection`, `standardPart_unitDirection_of_near_one`, `infinitesimal_unitDirection_sub_one`, `infLog_unitDirection_im`, `unitDirection_standardPart_eq_of_relative`, `localAngle_unitDirection_eq_infLog_im` in [DirectionNormalization.lean](../Surreal/Surcomplex/DirectionNormalization.lean); `add_ne_zero_of_relative_infinitesimal`, `directionChange`, `direction_standardPart_eq`, `finitePhase_directionChange`, `directionChange_eq_infLog_im`, `directionChange_expansion`, `directionChange_remainder_bound`, `valuation_directionChange_ge`, `valuation_directionChange_eq_of_leadingCoeff_im_ne_zero` in [DirectionStability.lean](../Surreal/Surcomplex/DirectionStability.lean) | For every nonzero actual surcomplex `z` and infinitesimal relative perturbation `eta = h/z`, the perturbed element is nonzero and its normalized direction has the same ordinary standard part. The canonical local geometric angle has phase equal to the relative unit direction and is exactly `Im(Logm(1+eta))`: removing the positive radial factor leaves the imaginary logarithm unchanged. Its quadratic expansion has an exact cubic complex remainder factor, finite with standard part `1/3`, and an explicit bound by `modulus(eta)^3` times a nonnegative finite surreal. Its valuation is at least that of `eta`, including the zero case, and is equal when the actual complex leading coefficient of `eta` has nonzero imaginary part. **Proved** for the full corollary at arbitrary actual surreal scales. Build and axiom audit pass. |
-| Full `trigonometry:eq:interiorangle`; cosine and area prerequisites of `trigonometry:thm:trianglelaws` | `left_ne_zero_of_cross_ne_zero`, `right_ne_zero_of_cross_ne_zero`, `triangleArea_pos_of_cross_ne_zero`, `interiorDirection`, `modulus_interiorDirection`, `interiorDirection_im_pos`, `existsUnique_interiorAngle`, `interiorAngle`, `interiorAngle_mem`, `finitePhase_interiorAngle`, `finiteCos_interiorAngle`, `finiteSin_interiorAngle`, `finiteSin_interiorAngle_area`, `interiorAngle_comm`, `interiorAngle_cosine_law`, `interiorAngle_area` in [InteriorAngle.lean](../Surreal/Surcomplex/InteriorAngle.lean) | Nonzero determinant makes both adjacent vectors and the actual triangle area positive in modulus. Gram's identity puts the normalized dot product and absolute determinant on the upper open unit semicircle, giving a unique actual finite surreal angle strictly between zero and ordinary pi. Its cosine is the normalized dot product, its sine is twice the area divided by the adjacent-length product, and it is invariant under exchanging the two vectors. Expanding the opposite side gives the cosine law; the area identity follows from the sine coordinate. These results apply to arbitrary actual surreal scales. **Proved** for the complete interior-angle construction; **Prerequisites proved** for the cosine and area clauses of the triangle-laws theorem. The common sine-law value, tangent law and circumcircle claims remain pending. Build and axiom audit pass. |
+| Full `trigonometry:eq:interiorangle`; cosine and area prerequisites of `trigonometry:thm:trianglelaws` | `left_ne_zero_of_cross_ne_zero`, `right_ne_zero_of_cross_ne_zero`, `triangleArea_pos_of_cross_ne_zero`, `interiorDirection`, `modulus_interiorDirection`, `interiorDirection_im_pos`, `existsUnique_interiorAngle`, `interiorAngle`, `interiorAngle_mem`, `finitePhase_interiorAngle`, `finiteCos_interiorAngle`, `finiteSin_interiorAngle`, `finiteSin_interiorAngle_area`, `interiorAngle_comm`, `interiorAngle_cosine_law`, `interiorAngle_area` in [InteriorAngle.lean](../Surreal/Surcomplex/InteriorAngle.lean) | Nonzero determinant makes both adjacent vectors and the actual triangle area positive in modulus. Gram's identity puts the normalized dot product and absolute determinant on the upper open unit semicircle, giving a unique actual finite surreal angle strictly between zero and ordinary pi. Its cosine is the normalized dot product, its sine is twice the area divided by the adjacent-length product, and it is invariant under exchanging the two vectors. Expanding the opposite side gives the cosine law; the area identity follows from the sine coordinate. These results apply to arbitrary actual surreal scales. **Proved** for the complete interior-angle construction; **Prerequisites proved** for the cosine and area clauses of the triangle-laws theorem. The complete triangle-laws theorem is mapped below. Build and axiom audit pass. |
 | Full `trigonometry:thm:anglesum` | `finiteAngle_eq_pi_of_phase_eq_neg_one` in [AngleSumKernel.lean](../Surreal/Surcomplex/AngleSumKernel.lean); `unitDirection_div_eq`, `interiorDirection_eq_unitDirection`, `interiorDirection_eq_conj_unitDirection`, `cross_triangle_cyclic`, `cross_triangle_cyclic_ne_zero`, `interiorDirection_triangle_product`, `interiorAngle_triangle_sum` in [TriangleAngleSum.lean](../Surreal/Surcomplex/TriangleAngleSum.lean) | For every actual surcomplex triangle with nonzero determinant, the cyclically ordered edge pairs have the same determinant sign. Their interior phases are normalized relative directions for positive orientation and conjugates of those directions for negative orientation. The cyclic quotient product is minus one; multiplicativity of unit direction and conjugation therefore makes the product of interior phases minus one in both cases. The three angle bounds place their sum strictly between zero and three pi, and the ordinary integral phase kernel forces the sum to be exactly pi. **Proved** as equality of actual finite surreal elements, including their infinitesimal parts, with no finiteness assumption on vertices, sides or area. The source's quotient-product argument is made explicit by normalizing each quotient and handling both orientations. Build and axiom audit pass. |
+| Full `trigonometry:thm:trianglelaws`, `trigonometry:eq:trianglelaws` | `Complexify.circumcenter`, its dot equations, equidistance and uniqueness, `normSq_circumcenter`, `modulus_circumcenter`, `existsUnique_circumcircle` in [Algebra/Circumcircle.lean](../Surreal/Algebra/Circumcircle.lean); `Triangle`, `Triangle.rotate`, actual side/area/angle definitions and positivity, `Triangle.cosine_law`, `Triangle.area_law`, `Triangle.sine_law`, `Triangle.sine_law_cyclic`, `triangle_halfAngle_bounds`, `sine_ratio_eq_tangent_half_ratio`, `Triangle.tangent_law_denominator_pos`, `Triangle.tangent_law_cosines_pos`, `Triangle.tangent_law` in [TriangleLaws.lean](../Surreal/Surcomplex/TriangleLaws.lean); `Triangle.circumcenter`, `Triangle.circumradius`, `Triangle.circumcenter_equidistant`, `Triangle.eq_circumcenter_of_equidistant`, `Triangle.circumradius_pos`, `Triangle.existsUnique_circumcircle`, `Triangle.circumradius_eq_side_product`, `Triangle.sine_law_circumradius_cyclic` in [TriangleCircumcircle.lean](../Surreal/Surcomplex/TriangleCircumcircle.lean); `Triangle.side_valuation_minimum` in [TriangleSideValuation.lean](../Surreal/Surcomplex/TriangleSideValuation.lean) | A nonzero determinant is the only hypothesis on the three actual surcomplex vertices. Cyclic permutation preserves area and supplies all cosine and area laws. All three side-to-sine ratios equal `abc/(2*area)`. The perpendicular-bisector equations have a unique solution over any ordered field with nonnegative square roots; its squared radius and positive radius are computed explicitly. Translation instantiates this construction at the actual triangle, giving the unique center and positive radius through its three vertices and `R = abc/(4*area)`. Consequently every sine-law ratio equals `2*R`. The exact angle sum bounds the half-sum and half-difference; both tangent cosines and the half-sum tangent are strictly positive, and sum-to-product proves the tangent law. All remaining denominators are nonzero by side, area and sine positivity. The ultrametric displacement law proves that the least side valuation occurs at least twice. **Proved** for the full theorem, its displayed equations and closing side-scale assertion, without finite-size or scale-comparability restrictions. Build and axiom audit pass. |
+| Minimum-attainment clause of `trigonometry:thm:valuationtriangle` | `Triangle.min_side_valuation_le`, `Triangle.side_valuation_eq_min_of_ne`, `Triangle.side_valuation_minimum` in [TriangleSideValuation.lean](../Surreal/Surcomplex/TriangleSideValuation.lean) | The third side valuation is at least the minimum of the first two; if those two differ, it equals their minimum. A three-way disjunction states that a pair of equal valuations is no larger than the remaining one. **Proved** for the least-side-valuation clause, using actual sign-field valuations of actual side lengths. The defect dictionary, area/radius valuation formulas and infinitesimal angle-ratio conclusion are completed in the full valuation-triangle mapping below. Build and axiom audit pass. |
+| Full `trigonometry:cor:right` | `finiteCos_eq_zero_iff_of_mem_Icc`, `Triangle.right_angleC_iff_pythagoras`, `Triangle.acute_angles_of_right`, `Triangle.tan_angleA_of_right`, `Triangle.angleA_eq_arctan_of_right`, `Triangle.angleB_eq_arctan_of_right`, `Triangle.fromPositiveLegs`, its side and squared-hypotenuse formulas, `Triangle.right_fromPositiveLegs`, `Triangle.angleA_fromPositiveLegs`, `Triangle.exists_right_triangle_of_slope` in [RightTriangle.lean](../Surreal/Surcomplex/RightTriangle.lean) | Cosine has exactly one zero on the actual closed interval from zero to pi, at the right angle. Applying the cosine law and positivity of adjacent sides proves that an arbitrary noncollinear actual triangle is right at the third vertex exactly when the opposite side satisfies Pythagoras. The exact angle sum makes the other two angles strictly acute. Complementarity and the sine law identify their tangents with the opposite-to-adjacent leg ratios; inverse tangent on the actual central open interval recovers both angles. Vertices `p`, `i*q`, and zero realize every positive actual pair of legs, with acute angle `arctan(q/p)`. Taking `p=1` realizes every positive surreal slope, including infinite ones. **Proved** for the entire corollary, without a finite-slope or finite-leg hypothesis. Build and axiom audit pass. |
+| Full `trigonometry:thm:sss`, `trigonometry:eq:heronfactor` | `modulus_add_lt_of_cross_ne_zero`, `modulus_sub_lt_of_cross_ne_zero` in [StrictTriangle.lean](../Surreal/Algebra/StrictTriangle.lean); `sssHeightSq_factorization`, `sssHeightSq_pos`, `exists_normalized_triangle_point`, `normalized_point_eq_or_eq_conj`, `existsUnique_normalized_triangle_point` in [TriangleSideConstruction.lean](../Surreal/Algebra/TriangleSideConstruction.lean); `PreservesModulus`, translation, multiplication and conjugation affine equivalences, `exists_normalizing_affineEquiv` in [PlaneIsometry.lean](../Surreal/Surcomplex/PlaneIsometry.lean); `Triangle.strict_side_inequalities`, `Triangle.cosine_side_quotient_mem_Ioo`, `Triangle.angleA_eq_arccos_sides`, `Triangle.exists_positive_side_scale_of_angles_eq` in [TriangleSideData.lean](../Surreal/Surcomplex/TriangleSideData.lean); `exists_triangle_of_sides`, `exists_triangle_sides_iff`, `existsUnique_upper_vertex_of_sides`, `exists_two_normalized_vertices_of_sides` in [TriangleFromSides.lean](../Surreal/Surcomplex/TriangleFromSides.lean); `Triangle.sides_eq_iff_exists_isometry` in [TriangleCongruence.lean](../Surreal/Surcomplex/TriangleCongruence.lean); `triangle_angle_sine_sq_identity`, `exists_triangle_of_included_angle`, `exists_triangle_of_angles` in [TriangleFromAngles.lean](../Surreal/Surcomplex/TriangleFromAngles.lean); `Triangle.scale`, its side formulas, `Triangle.exists_similarity_of_sides_scaled`, `Triangle.exists_similarity_of_angles_eq`, `Triangle.exists_isometry_of_angles_eq_of_sideA_eq`, `existsUnique_triangle_angle_scale` in [TriangleSimilarity.lean](../Surreal/Surcomplex/TriangleSimilarity.lean) | Gram's identity makes the triangle inequality strict for noncollinear vectors. The Heron factorization and positive square roots construct a normalized triangle from every positive side triple satisfying all three strict inequalities; these inequalities are also necessary. Exactly two normalized third vertices have the given distances, one above the base and its distinct conjugate reflection. Translation and unit-modulus multiplication normalize any actual triangle, and equality of side data gives an actual surreal-affine equivalence preserving the surreal-valued modulus of every difference. The cosine-law quotient is strictly between minus one and one; inverse cosine recovers each actual finite interior angle, cyclically by rotation. Every positive finite angle triple summing to pi and every positive actual surreal scale give a triangle with exactly those angles and sides `k*sin(angle)`. The sine law makes equal-angle sides proportional; positive dilation followed by congruence supplies an affine equivalence scaling every distance by the same positive scalar. Specifying one positive side uniquely fixes that scalar and determines the triangle up to isometry. **Proved** for the entire numbered theorem and factorization, with no finiteness restriction on side lengths or scale. The following SAS and ASA existence/congruence assertions are proved in the next row; the SSA ambiguity remains associated with the pending amplitude theorem. Build and axiom audit pass. |
+| SAS and ASA reconstruction assertions following `trigonometry:thm:sss` | `Triangle.exists_isometry_of_sas`, `Triangle.exists_isometry_of_asa`, `exists_triangle_of_sas`, `exists_triangle_of_asa` in [TriangleSASASA.lean](../Surreal/Surcomplex/TriangleSASASA.lean) | Two positive adjacent sides and an actual finite included angle strictly between zero and pi have a noncollinear realization. Two positive actual finite angles whose sum is strictly below pi and any positive included side also have a realization, obtained by fixing the unique positive sine-law scale. Equal SAS data forces the remaining side by the cosine law; equal ASA data forces the third angle by the exact angle sum. Both give whole-plane actual surreal-affine equivalences preserving every surreal-valued distance and matching corresponding vertices. **Proved** for the two reconstruction/congruence assertions, with no finite-side hypothesis. The adjacent SSA ambiguity assertion remains pending with the amplitude theorem. Build and axiom audit pass. |
+| Full `trigonometry:thm:heron`, `trigonometry:eq:halfangletriangle`, `trigonometry:eq:incenter`, `trigonometry:eq:bisector` | `Triangle.semiperimeter`, its positive side defects, `Triangle.heron`, `Triangle.inradius`, positive half-angle bounds, `Triangle.sin_half_angleA_sq`, `Triangle.cos_half_angleA_sq`, `Triangle.sin_half_angleA`, `Triangle.cos_half_angleA`, `Triangle.tan_half_angleA`, `Triangle.tan_half_angleA_eq_inradius` in [TriangleHeron.lean](../Surreal/Surcomplex/TriangleHeron.lean); `Complexify.lineProjectionParameter`, `lineProjection`, `lineDistance`, perpendicularity, Pythagorean decomposition, `lineDistance_eq_cross_div`, minimum-distance uniqueness and `existsUnique_line_contact` in [LineDistance.lean](../Surreal/Algebra/LineDistance.lean); `Triangle.IsInteriorPoint`, `Triangle.incenter`, `Triangle.incenter_isInteriorPoint`, `Triangle.incenter_projection_parameter`, `Triangle.incenter_contact_mem_openSegment`, `Triangle.lineDistance_incenter_cyclic`, `Triangle.incircle_contact` in [TriangleIncenter.lean](../Surreal/Surcomplex/TriangleIncenter.lean); barycentric determinant/distance formulas, `Triangle.eq_incenter_of_isInteriorPoint_of_equidistant`, `Triangle.existsUnique_incenter`, `Triangle.existsUnique_incircle` in [TriangleIncenterUniqueness.lean](../Surreal/Surcomplex/TriangleIncenterUniqueness.lean); `Triangle.bisectorPoint`, its barycentric expression, open-segment membership, side ratio, length and both actual half-angle equalities in [TriangleBisector.lean](../Surreal/Surcomplex/TriangleBisector.lean) | Strict triangle inequalities make the semiperimeter and its three side defects positive. Heron's area identity and the cosine law give the half-angle squares; strictly positive sine, cosine and tangent select the positive actual square roots, and Heron's identity gives `tan(alpha/2) = r/(s-a)`. The side-weighted barycenter has positive coordinates summing to one. Explicit orthogonal projection onto each actual side line gives perpendicular distance `area/s`; its parameter on AB is `(s-a)/c`, strictly between zero and one, and cyclic rotation gives the other two contact points. Exact Pythagorean decomposition proves that each entire supporting line meets the circle only at this perpendicular foot. Positive barycentric coordinates and equal perpendicular distances force the displayed center and radius uniquely, excluding the exterior centers. The internal bisector point `(bB+cC)/(b+c)` belongs to the actual open segment BC, divides it in ratio `c/b`, has length `2bc*cos(alpha/2)/(b+c)`, and forms two actual finite angles each equal to `alpha/2`. **Proved** for the entire theorem and displayed equations, including the proof's interior-contact assertion. All radii and distances are actual surreal values, with arbitrary positive side scales and no Archimedean or compactness hypothesis. The subsequent Euler identity and area inequality are completed in the next two rows. Build and axiom audit pass. |
+| Full `trigonometry:thm:euler`, `trigonometry:eq:euler`; finite weighted variance in its proof | `Complexify.normSq_weighted_variance`, `Complexify.normSq_weighted_variance_three`, `Complexify.normSq_weighted_mean` in [WeightedVariance.lean](../Surreal/Algebra/WeightedVariance.lean); `Triangle.euler_radius_defect_squares`, `Triangle.twice_inradius_le_circumradius`, `Triangle.circumradius_eq_twice_inradius_iff`, `Triangle.twice_inradius_lt_circumradius` in [TriangleRadiusInequality.lean](../Surreal/Surcomplex/TriangleRadiusInequality.lean); `Triangle.weighted_vertex_displacement`, `Triangle.center_distance_sq_eq_side_product`, `Triangle.euler`, `Triangle.circumcenter_eq_incenter_iff` in [TriangleEuler.lean](../Surreal/Surcomplex/TriangleEuler.lean) | The finite-family variance identity holds without division over every commutative ring, with the ordered-pair sum equal to twice the unordered-pair contribution. Over a characteristic-zero field and nonzero total weight, division gives the weighted-mean squared norm identity in the source proof. Applying its three-point version to actual vertices translated by the circumcenter gives the squared center distance `R^2-abc/(2s)`, hence exactly `R*(R-2r)`. A separate polynomial identity expresses `4*area*(R-2r)` as the sum of the three positive side defects times the squared differences of the other sides. This proves `2r ≤ R` and equality if and only if all three side lengths coincide; every other triangle has strict inequality. The actual centers coincide exactly in the equilateral case. **Proved** for the complete theorem, its displayed identity and the finite weighted variance calculation, with arbitrary actual surreal side lengths and radii. Build and axiom audit pass. |
+| Full `trigonometry:cor:areabound` | `three_term_cubic_amgm`, `three_term_cubic_amgm_eq_iff` in [ThreeTermAMGM.lean](../Surreal/Algebra/ThreeTermAMGM.lean); `Triangle.side_defects_sum`, `Triangle.area_sq_bound`, `Triangle.area_sq_bound_eq_iff`, `Triangle.area_le_semiperimeter_sq`, `Triangle.area_eq_semiperimeter_sq_iff` in [TriangleAreaBound.lean](../Surreal/Surcomplex/TriangleAreaBound.lean) | The cubic three-term arithmetic-geometric mean inequality is proved over every ordered field for nonnegative inputs, with equality exactly when all three inputs agree. Choosing a least input makes an explicit cubic decomposition nonnegative and identifies the equality case algebraically. Applied to the three positive side defects, their sum and Heron's identity give `27*area^2 ≤ s^4`, with equality exactly for equal side lengths. Positivity and the actual positive square root of three then give precisely `area ≤ s^2/(3*sqrt(3))` and its equilateral equality characterization. **Proved** without finite-scale, compactness or Archimedean assumptions. Build and axiom audit pass. |
+| Full `trigonometry:thm:cevian`, `trigonometry:eq:cevian`; strict sine-ratio comparison in its proof | `Triangle.sidePoint`, its open-segment characterization and injectivity, `Triangle.cross_sidePoint_left`, `Triangle.cross_sidePoint_right`, actual side-piece lengths and ratio, `Triangle.cross_cevian_left_ne_zero`, `Triangle.cross_cevian_right_ne_zero`, `Triangle.eq_of_side_ratio_eq`, `Triangle.existsUnique_point_of_side_ratio`, `Triangle.eq_bisectorPoint_of_side_ratio` in [TriangleCevianGeometry.lean](../Surreal/Surcomplex/TriangleCevianGeometry.lean); `cevian_sine_cross_difference`, `cevian_sine_ratio_lt`, `cevian_sine_ratio_strictMonoOn` in [CevianSineMonotonicity.lean](../Surreal/Surcomplex/CevianSineMonotonicity.lean); `Triangle.cevianAngleLeft`, `Triangle.cevianAngleRight`, their open-angle bounds and sine positivity, `Triangle.cevian_area_ratio`, `Triangle.cevian_sine_ratio`, `Triangle.cevian_angles_eq_iff_side_ratio`, `Triangle.cevian_angles_eq_iff_eq_bisectorPoint` in [TriangleCevian.lean](../Surreal/Surcomplex/TriangleCevian.lean) | Every actual point strictly inside BC has a unique affine parameter strictly between zero and one. The two subtriangle determinants are that parameter and its complement times the original determinant, so both actual interior angles exist strictly between zero and pi. The exact base-piece lengths and subareas have the same division ratio. Their positive sine coordinates give precisely the side-weighted ratio `c*sin(BAD)/(b*sin(DAC))`. Every positive actual surreal division ratio determines a unique interior side point. Equal subangles are equivalent to ratio `c/b` and hence to the previously constructed internal bisector, whose two angles are exactly half the original angle. Independently, the sine subtraction identity makes `sin(x)/sin(alpha-x)` strictly increasing throughout the actual open split-angle interval. **Proved** for the complete theorem and the stated strict-order argument, including infinitesimal or infinite positive division ratios and either orientation. Build and axiom audit pass. |
+| Full `trigonometry:thm:ceva`, `trigonometry:eq:trigceva` | `Triangle.not_collinear`, `Triangle.affineIndependent_vertices`, `Triangle.toAffine` in [TriangleAffine.lean](../Surreal/Surcomplex/TriangleAffine.lean); `Triangle.CeviansConcurrent`, `Triangle.cevian_ratio_product_of_concurrent`, `Triangle.ceviansConcurrent_of_ratio_product`, `Triangle.ceviansConcurrent_lineMap_iff` in [TriangleCeva.lean](../Surreal/Surcomplex/TriangleCeva.lean); `Triangle.ceviansConcurrent_iff_side_ratio_product`, `Triangle.cevian_sine_ratio_product`, `Triangle.trigonometric_ceva` in [TrigonometricCeva.lean](../Surreal/Surcomplex/TrigonometricCeva.lean) | The nonzero actual determinant gives Mathlib affine independence, packaging the existing triangle as an affine simplex over the actual surreal scalar field. Concurrence means an actual point belonging to all three full Mathlib affine lines AD, BE and CF. Mathlib's Ceva theorem gives the necessary product of the three side-parameter ratios; conversely an explicit positive barycentric construction supplies a common point whenever that product is one. Arbitrary interior side traces are reduced to their exact affine parameters. Applying the three cyclic cevian sine laws cancels the positive side factors `c/b`, `a/c` and `b/a`, proving concurrence if and only if the product of the three displayed sine ratios equals one. All six angles are actual finite surreal angles strictly between zero and pi, with positive sine denominators. **Proved** for the complete theorem on the actual carriers, with no finite-size or scale-comparability restriction. Directed endpoint or exterior-trace variants remain separate from this interior-trace statement. Build and axiom audit pass. |
+| Circle parametrization preceding `trigonometry:eq:chordfactor`; full signed chord and length formulas | `circlePoint`, `modulus_circlePoint_sub_center`, `mem_circle_iff_exists_circlePoint`, `finitePhase_sub_factor`, `circlePoint_sub_factor`, `modulus_circlePoint_sub`, `circlePoint_eq_iff_period` in [CircleChords.lean](../Surreal/Surcomplex/CircleChords.lean); `circlePoint_ne_center`, `sin_half_sub_ne_zero_of_circlePoint_ne`, `circle_chord_quotient`, `circle_central_quotient` in [CircleChordQuotient.lean](../Surreal/Surcomplex/CircleChordQuotient.lean) | Polar surjectivity identifies every actual positive-radius circle exactly with the points `O + R*cis(theta)` for finite actual surreal angles. The phase subtraction identity factors every chord as `2*i*R*cis((theta1+theta2)/2)*sin((theta2-theta1)/2)` and gives length `2*R*abs(sin((theta2-theta1)/2))`. Chord division leaves a real sine ratio times the half-difference phase, with nonzero denominators proved from distinct endpoints; central division leaves the full-difference phase. Equality of parametrized points is exactly an ordinary integral full-turn difference. **Proved** at arbitrary actual surreal radius, including infinite radii and infinitesimally separated parameters. Build and axiom audit pass. |
+| Full `trigonometry:prop:inscribed` | `LineAngle`, `lineAnglePeriods_eq_zpowers`, `lineAngle_eq_iff`, `lineAngleQuotientEquiv`, `halveAngleQuotient`, `halveAngleQuotient_mk`, `directedLineAngle_eq_of_real_phase` in [LineAngle.lean](../Surreal/Surcomplex/LineAngle.lean); `directedAngleBetween`, `directedLineAngleBetween`, `circle_central_directedAngle`, `circle_inscribed_directedLineAngle`, `inscribed_angle` in [InscribedAngle.lean](../Surreal/Surcomplex/InscribedAngle.lean); `circle_inscribed_interiorAngle`, `circle_same_arc_interiorAngle_eq`, `SameOpenCircleArc`, `cross_ne_zero_of_sameOpenCircleArc`, `interiorAngle_eq_of_sameOpenCircleArc`, `diameter_chord_dot_eq_zero`, `diameter_chord_cross_ne_zero`, `interiorAngle_of_diameter` in [InscribedArcAngles.lean](../Surreal/Surcomplex/InscribedArcAngles.lean) | The half-turn angle quotient has exactly ordinary integer multiples of pi as periods. Squared phase identifies this quotient with the actual unit circle, and halving descends as an equivalence from the existing full-turn quotient with the required formula on every representative. Real scaling of either sign preserves a directed line angle. For arbitrary actual points on any positive-radius circle, the two chords therefore make half the directed central angle in these precise quotients. Ordered finite lifts identify the actual interior angle with the positive half-difference; the common-open-arc predicate allows either endpoint orientation and gives equal interior angles for arbitrary actual observers. Antipodal endpoints have zero chord dot product, and every other circle point gives a nonzero determinant and actual angle pi/2. **Proved** for the entire proposition, without finite-radius, ordinary-coordinate, or scale-comparability assumptions. Build and axiom audit pass. |
+| Full `trigonometry:thm:ptolemy`, `trigonometry:eq:ptolemy` | Actual arbitrary-point inequality `ptolemy` in [Surcomplex/Modulus.lean](../Surreal/Surcomplex/Modulus.lean); `finiteSin_ptolemy_identity`, `CyclicAngleOrder`, `circlePoints_distinct_of_cyclicAngleOrder`, `ptolemy_eq_of_cyclicAngleOrder`, `CyclicallyOrderedOnCircle`, `distinct_of_cyclicallyOrderedOnCircle`, `ptolemy_eq_of_cyclicallyOrderedOnCircle` in [CyclicPtolemy.lean](../Surreal/Surcomplex/CyclicPtolemy.lean) | The existing four-point inequality has no restrictions on the points. For equality, cyclic order is witnessed by four strictly increasing finite actual representatives within one ordinary full turn, exactly as defined in the source. Positive half-difference sines give all six distinctness statements and the chord lengths; the addition formulas and sine-cosine square identity prove the exact Ptolemy equality. The actual-point predicate packages the positive radius, circle membership and cyclic lifts. **Proved** for the full inequality and cyclic equality case at arbitrary positive surreal radius, including infinitesimal consecutive arcs. Cyclic order uses finite representatives and imposes no path or continuity hypothesis. Build and axiom audit pass. |
+| Full `trigonometry:cor:polygon` | `RegularPolygon.vertex`, `vertex_eq_zeta`, `vertex_periodic`, `vertex_closing`, `vertex_injective`, `vertex_radius`, `side_length`, `closing_edge_length`, `perimeter`, `perimeter_eq`, `center_cross`, `center_cross_pos`, `center_triangle_area`, `area`, `area_eq` in [RegularPolygon.lean](../Surreal/Surcomplex/RegularPolygon.lean), reusing [PolarRoots.lean](../Surreal/Surcomplex/PolarRoots.lean) | For every ordinary natural number `n >= 3` and every positive actual surreal radius, the prescribed vertices `O + R*cis(2*pi*k/n)` agree with powers of the primitive ordinary root of unity. Their restriction to `Fin n` is injective, they lie on the circle, and the vertex at index n equals the initial vertex. Each actual edge, including the closing edge, has length `2*R*sin(pi/n)`. Perimeter is defined as the finite sum of the n edge lengths and equals `2*n*R*sin(pi/n)`. Each center triangle has positive determinant `R^2*sin(2*pi/n)`; the finite sum of their actual areas equals `(n/2)*R^2*sin(2*pi/n)`. **Proved** at arbitrary positive surreal radius, with an ordinary finite vertex set and no circumference-limit claim. Build and axiom audit pass. |
+| Full `trigonometry:eq:spreadlaws`, `trigonometry:eq:triplespread`; their coordinate interpretation | `finiteSin_sq_neg`, `finiteSin_sq_pi_sub`, `interiorAngle_spread_eq_cross_sq_div`, `finiteSin_triple_spread`, `Triangle.quadranceA`, `Triangle.spreadA` and their cyclic variants, positivity and bounds, `Triangle.quadranceA_eq_normSq`, `Triangle.spreadA_eq_cross_sq_div`, `Triangle.spread_div_quadrance`, `Triangle.spread_law`, `Triangle.cross_law`, `Triangle.triple_spread` in [TriangleSpread.lean](../Surreal/Surcomplex/TriangleSpread.lean) | Quadrances are squared actual side lengths and spreads are squared actual interior-angle sines. They have rational coordinate expressions using squared norms and determinants, with nonzero denominators supplied by noncollinearity. The three spread-to-quadrance ratios agree; the squared cosine law gives the displayed cross law, with cyclic cases by rotation. For any finite actual angle triple summing to pi, the sine addition formulas prove the exact triple-spread polynomial identity, hence its triangle specialization. Squared sine is invariant under negation and supplementation, making the source's loss of orientation explicit. **Proved** without any finiteness restriction on coordinates or side lengths. Build and axiom audit pass. |
+| Full `trigonometry:thm:valuationtriangle`, `trigonometry:eq:valuationtriangle` | `angleDefect`, `val_angleDefect`, `angleDefect_mem`, `finiteSin_angleDefect`, `angleDefect_sine_bounds`, `valuation_finiteSin_eq_angleDefect` in [AngleDefect.lean](../Surreal/Surcomplex/AngleDefect.lean); `Triangle.valuation_sin_angles`, `Triangle.valuation_side_ratios_cyclic`, `Triangle.valuation_area_cyclic`, `Triangle.valuation_heron`, `Triangle.valuation_circumradius`, `Triangle.valuation_inradius`, `Triangle.valuation_circumdiameter`, `Triangle.valuation_side_sub_defect_cyclic`, `Triangle.infinitesimal_angle_ratio_div_side_ratio_sub_one` in [TriangleValuation.lean](../Surreal/Surcomplex/TriangleValuation.lean); `Triangle.side_valuation_minimum` in [TriangleSideValuation.lean](../Surreal/Surcomplex/TriangleSideValuation.lean) | The actual angle defect is `min(theta, pi-theta)` and lies in `(0,pi/2]`. Its sine equals the original sine, and Jordan's inequalities give `sin(theta) <= defect <= (pi/2)*sin(theta)`. The ordinary comparison factor has valuation zero, so the two valuations coincide even infinitesimally near either endpoint. Applying the actual valuation to the sine law, area law, Heron identity and radius formulas gives all six displayed identities, their cyclic forms, and the common side-minus-defect valuation `v(2R)`. The previously proved minimum-attainment theorem completes the side-scale assertion. For two infinitesimal interior angles, finite normalized sine factors with standard part one prove that `(alpha/beta)/(a/b)-1` is infinitesimal; neither ratio is assumed finite. **Proved** for the entire theorem on actual surcomplex triangles at arbitrary scales. Values use the existing actual-surreal exponent group with infinity at zero; all geometric factors in these identities are positive. Build and axiom audit pass. |
 | Factorization clauses of `polynomial:thm:fta`, `polynomial:eq:factorization`, `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_root`, `factorization`, `factorization_grouped`, `exists_unique_factorization`, `factorization_unique`, `sum_rootMultiplicities`, `logarithmic_derivative`, `logarithmic_derivative_grouped` in [Polynomial.lean](../Surreal/Algebra/Polynomial.lean) | Root existence, unique scalar/multiset factorization, grouped multiplicities and both logarithmic-derivative formulas. Existence assumes algebraic closedness; uniqueness holds over every field. The rational identities require a nonroot evaluation point. The fixed-Hahn closedness instance and explicit factorization specialization are now constructed below; transfer to the actual surcomplex field remains pending. **Prerequisites proved**; build and axiom audit pass. |
 | Division, gcd and ideal clauses of `polynomial:thm:fta`; gcd formula in `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_unique_division`, `exists_monic_gcd`, `gcd_bezout`, `ideal_principal`, `ideal_pair_eq_span_gcd`, `squarefree_iff_gcd_derivative_eq_one`, `gcd_derivative_rootMultiplicity`, `gcd_derivative_eq_prod` in [PolynomialDivision.lean](../Surreal/Algebra/PolynomialDivision.lean) | Unique division, normalized monic Bézout gcds and principal ideals over every field. The squarefree criterion assumes perfectness (supplied by characteristic zero); derivative multiplicities use characteristic zero. The grouped gcd product assumes a nonzero split polynomial and does not need monicity of the input. **Prerequisites proved**; build and axiom audit pass. |
 | Multiplicity and Taylor clauses of `polynomial:thm:fta` | `Surreal.FinitePolynomial.multiplicity_eq_iff_derivatives`, `multiplicity_isLeast_nonzero_derivative`, `derivative_rootMultiplicity`, `multiple_root_iff`, `taylor_coeff_eq_derivative`, `taylor_eq_sum_derivatives`, `eq_sum_derivatives`, `eval_add_eq_sum_derivatives` in [PolynomialMultiplicity.lean](../Surreal/Algebra/PolynomialMultiplicity.lean) | The least nonvanishing derivative, derivative multiplicity and finite Taylor formulas over characteristic-zero fields. The least-index characterization explicitly excludes the zero polynomial. **Prerequisites proved**; build and axiom audit pass. |
@@ -326,8 +354,8 @@ remaining clauses of a partially mapped statement.
 | `polynomial:thm:criticalballs`; all-root-ball containment clause of `polynomial:cor:nearest` | `Surreal.HahnSeries.closedBallRootCount`, `openBallRootCount`, `closedBallRootCount_iterate_derivative`, `openBallRootCount_iterate_derivative`, `directionRootCount_iterate_derivative`, `critical_direction_count`, `criticalPoint_mem_closedBall`, `criticalPoint_mem_openBall` in [PolynomialCriticalBalls.lean](../Surreal/HahnSeries/PolynomialCriticalBalls.lean) | Native root multisets count multiplicities in closed/open valuation balls. If the original count is `k`, the `r`th derivative has count `k-r` for `r≤k`, with occupation forced whenever `r>0`; the zeroth case is included. The relevant derivative is proved nonzero even at `r=k`. Its residue-direction multiplicities are those of the corresponding initial derivative. Every closed or open ball containing all roots also contains all critical points. Residue characteristic zero and splitting of the original and relevant derivative are explicit. The nearest-neighbour maximum equality is proved below; Hahn algebraic closedness and surreal specialization remain pending. **Prerequisites proved**; build and axiom audit pass. |
 | Nearest-neighbour clause of `polynomial:cor:nearest`; `polynomial:eq:nearest` | `Surreal.HahnSeries.criticalPoint_orderTop_le_of_otherRoots_le`, `exists_criticalPoint_orderTop_eq_of_nearest_root`, `otherRootValues`, `criticalPointValues`, `nearestCriticalValue` in [PolynomialNearestCritical.lean](../Surreal/HahnSeries/PolynomialNearestCritical.lean) | For a squarefree polynomial of degree at least two, the finite valuations of displacements from a chosen root to other roots and to critical points have a common attained greatest element. No critical point equals the chosen root. Open-ball count one excludes every closer critical point; closed-ball count at least two supplies a critical point on the nearest-root shell. Both the polynomial and its derivative explicitly split, and residue characteristic zero is retained. Valuations of zero are excluded before finite-order comparisons. Hahn algebraic closedness and concrete surreal specialization remain pending. **Prerequisites proved**; build and axiom audit pass. |
 | `trigonometry:eq:dotcross`, `trigonometry:eq:gram` and following triangle-equality characterization | `Surreal.Complexify.dot`, `cross`, `dot_sq_add_cross_sq`, `abs_dot_le`, `modulus_add_eq_iff_dot`, `modulus_add_eq_iff_pos_quotient` in [Geometry.lean](../Surreal/Algebra/Geometry.lean) | Coordinate identities and the equality criterion for nonzero vectors over any ordered field with nonnegative square roots. The positive quotient is an embedded element of that same base field. The concrete surcomplex equality criterion is proved below. **Prerequisites proved**; build and axiom audit pass. |
-| Area clause of `trigonometry:thm:heron`, factorization behind `trigonometry:eq:heronfactor` | `Surreal.Complexify.heron_factorization`, `heron`, `triangleArea` | Heron's identity for the triangle with vertices `0,z,w`, including degenerate cases, over an ordered field with nonnegative square roots. The concrete surcomplex specialization is proved below; radius, incenter, bisector and half-angle clauses remain pending. **Prerequisites proved**; build and axiom audit pass. |
-| Inequality clause of `trigonometry:thm:ptolemy` | `Surreal.Complexify.ptolemy_identity`, `ptolemy` | The four-point inequality over any real closed ordered base field. Cyclic order and the cyclic equality case remain pending. **Prerequisites proved**; build and axiom audit pass. |
+| Area clause of `trigonometry:thm:heron`, factorization behind `trigonometry:eq:heronfactor` | `Surreal.Complexify.heron_factorization`, `heron`, `triangleArea` | Heron's identity for the triangle with vertices `0,z,w`, including degenerate cases, over an ordered field with nonnegative square roots. The actual surcomplex specialization and the remaining radius, incenter, bisector and half-angle clauses are mapped above. **Prerequisites proved**; build and axiom audit pass. |
+| Inequality clause of `trigonometry:thm:ptolemy` | `Surreal.Complexify.ptolemy_identity`, `ptolemy` | The four-point inequality over any real closed ordered base field. Its actual surcomplex specialization and the cyclic equality case with finite-lift cyclic order are mapped above. **Prerequisites proved**; build and axiom audit pass. |
 | Finite normalization for the Hahn closedness assertions in `found:sub:hahncomplex`, `polynomial:prop:workspace` | `Surreal.FinitePolynomial.scalePolynomial`, degree, coefficient, reconstruction and affine root-pullback formulas in [PolynomialScaling.lean](../Surreal/Algebra/PolynomialScaling.lean); `exists_coprime_monic_factors`, `exists_odd_coprime_monic_factors_of_root`, `realClosed_depressed_odd_coprime_factorization` in [RealClosedPolynomialFactors.lean](../Surreal/Algebra/RealClosedPolynomialFactors.lean); `Surreal.HahnSeries.exists_weighted_monomial_normalization`, `exists_monic_reduction`, `exists_monic_depressed_reduction` in [PolynomialNormalization.lean](../Surreal/HahnSeries/PolynomialNormalization.lean) | Generic field scaling preserves monicity and degree and supplies exact root pullbacks; the actual sign-field API now reuses it. In a divisible ordered abelian exponent group, an attained minimum of the finitely many weighted orders makes every coefficient nonnegative in valuation and retains a nonzero lower residue. The resulting monic residue has the same degree, retains the depressed coefficient, and is not a pure power. The exponent group needs no field structure or Archimedean hypothesis. Finite coprime factor extraction uses only an existing residue root; ordinary real-closed coefficients supply odd roots. **Proved** prerequisites for the full fixed-Hahn closedness constructions below. Build and axiom audit pass. |
 | Global square roots in the real Hahn workspace of `found:sub:hahncomplex` | `Surreal.HahnSeries.leadingNormalized`, `orderTop_leadingNormalized_sub_one_pos`, `leadingMonomial_mul_leadingNormalized`, `exists_pos_square_root_of_coefficients`, `existsUnique_nonneg_square_root`, `hahnLexHasNonnegSquareRoots`, `isSquare_of_nonneg_lex` in [SquareRoots.lean](../Surreal/HahnSeries/SquareRoots.lean) | Every nonnegative lexicographic Hahn series has a unique nonnegative square root when the coefficient field has nonnegative square roots and the exponent group is divisible. Leading-term normalization gives one plus a positive-order error; the already constructed binomial half-power, a coefficient square root and a halved exponent give the exact root. Zero and pure monomials are included. This uses the weaker square-root interface and assumes no Hahn real closedness. **Proved** on the fixed Hahn carrier. Build and axiom audit pass. |
 | Real and algebraic closedness clauses in `found:sub:hahncomplex`, `found:sub:localization`, `polynomial:prop:workspace` | `Surreal.HahnSeries.hahnCharZero` in [Characteristic.lean](../Surreal/HahnSeries/Characteristic.lean); `exists_root_of_monic_of_isAlgClosed`, `exists_root_of_isAlgClosed_coefficients`, `hahnIsAlgClosed` in [AlgebraicallyClosed.lean](../Surreal/HahnSeries/AlgebraicallyClosed.lean); `exists_isRoot_of_monic_odd_natDegree`, `exists_isRoot_of_odd_natDegree`, `exists_isRoot_of_odd_natDegree_lex`, `hahnLexIsRealClosed`, `hahnIsRealClosed` in [RealClosed.lean](../Surreal/HahnSeries/RealClosed.lean) | Over a divisible ordered abelian exponent group, Hahn fields with algebraically closed characteristic-zero coefficients are algebraically closed, and Hahn fields with ordered real-closed coefficients are real closed. The proofs translate and scale each polynomial, extract proper coprime residue factors, lift them using the constructed Hahn Hensel theorem, and induct on strictly smaller degree. Pure powers give explicit roots; monic normalization handles all nonconstant inputs. The real proof selects a proper odd-degree factor and combines odd roots with the constructed square roots. Characteristic zero transfers through the injective constant map. These are proved native `IsAlgClosed` and `IsRealClosed` instances, with no closure hypothesis on the Hahn field. [RealClosedReal.lean](../Surreal/Algebra/RealClosedReal.lean) supplies the ordinary real coefficient instance missing from the pinned Mathlib, using its square roots and intermediate value theorem; the default audit explicitly checks both ordinary real and complex Hahn instantiations. **Proved** for the fixed-Hahn closedness assertions; embedding arbitrary actual surreal data and constructing the normal-form bridge remain pending. Build and axiom audit pass. |
@@ -528,10 +556,10 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers 48 of the 49 main texts
+custom environments are not included. The index covers all 49 main texts
 present in the repository; two are not named `article.tex`. The reader map
-and the typeset catalogue list all 49; the report of batch 23 (placed in
-`e4f8848`, written in `7af7056`) is not yet indexed here. The two reports placed in `7b5f934`
+and the typeset catalogue list all 49. The report placed in `e4f8848` and
+written in `7af7056` is indexed from its written, six-source text. The two reports placed in `7b5f934`
 and written in `68e2960`, and the five reports that batch extended, are
 indexed from their written sources. The two reports placed in `d4e71b7`
 and written in `3a2d35d`,
@@ -560,6 +588,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surcomplex/entire-functions-at-arbitrary-rank/article.tex](surcomplex/entire-functions-at-arbitrary-rank/article.tex) | 43 | 31 | 18 | 35 | 127 |
 | [surcomplex/expanding-polynomial-dynamics/article.tex](surcomplex/expanding-polynomial-dynamics/article.tex) | 10 | 3 | 4 | 8 | 25 |
 | [surcomplex/finite-deformations/article.tex](surcomplex/finite-deformations/article.tex) | 23 | 10 | 6 | 13 | 52 |
+| [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex) | 35 | 19 | 26 | 14 | 94 |
 | [surcomplex/global-divisors/article.tex](surcomplex/global-divisors/article.tex) | 17 | 13 | 15 | 12 | 57 |
 | [surcomplex/hahn-herglotz-positivity/article.tex](surcomplex/hahn-herglotz-positivity/article.tex) | 12 | 2 | 2 | 4 | 20 |
 | [surcomplex/hahn-tate-uniformization/article.tex](surcomplex/hahn-tate-uniformization/article.tex) | 25 | 19 | 10 | 16 | 70 |
@@ -596,7 +625,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 23 | 16 | 8 | 10 | 57 |
 | [surcomplex/first-kappa-coefficients/article.tex](surcomplex/first-kappa-coefficients/article.tex) | 10 | 6 | 2 | 5 | 23 |
 | [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex) | 12 | 5 | 1 | 7 | 25 |
-| **Total** | 971 | 486 | 509 | 474 | **2440** |
+| **Total** | 1006 | 505 | 535 | 488 | **2534** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1431,155 +1460,155 @@ required beyond the finite-word support lemmas already checked.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `dyn:lem:neumann` (line 1202) | Positive-support lemma of Neumann, in finite-word form |
-| Corollary | `dyn:cor:ancestry` (line 1265) | Finite ancestry relative to the input support |
-| Lemma | `dyn:lem:evaluation` (line 1398) | Evaluation, inversion, isometry |
-| Proposition | `dyn:prop:eval` (line 1458) | Faithful analytic realization |
-| Lemma | `dyn:lem:faithful` (line 1491) | Faithfulness of infinitesimal evaluation |
-| Proposition | `dyn:prop:subgroup` (line 1530) | Substitution group |
-| Lemma | `dyn:lem:inverse` (line 1579) | Near-identity inverses |
-| Theorem | `dyn:thm:exp-log` (line 1609) | Same-domain exponential--logarithm correspondence |
-| Lemma | `dyn:lem:fixedderivative` (line 1698) | Derivative of the logarithmic generator at an ordinary fixed point |
-| Corollary | `dyn:cor:julia` (line 1720) | Julia equation |
-| Proposition | `dyn:prop:intertwine` (line 1729) | Conjugacy and vector fields |
-| Corollary | `dyn:cor:flow` (line 1743) | Exact flow law and admissible Hahn times |
-| Corollary | `dyn:cor:roots` (line 1776) | Unique fractional iteration; torsion-freeness |
-| Theorem | `dyn:thm:fixed-ideal` (line 1796) | Fixed-point ideal of a positive flow |
-| Theorem | `dyn:thm:centralizer` (line 1846) | The full positive centralizer in one variable |
-| Proposition | `dyn:prop:workspace` (line 1910) | Workspace invariance |
-| Lemma | `dyn:lem:radius-loss` (line 1963) | Single-step analytic loss |
-| Lemma | `dyn:lem:sharp-divisor` (line 1983) | Sharpness and analytic failure |
-| Proposition | `dyn:prop:norm` (line 2026) | A compact-disk estimate, offered only as a starting point |
-| Theorem | `dyn:thm:main` (line 2061) | Universal coefficient-category classification |
-| Proposition | `dyn:prop:linearization` (line 2120) | Support-controlled inverse; route A |
-| Theorem | `dyn:thm:lifting` (line 2164) | Support-controlled lifting; route B, drift permitted |
-| Proposition | `dyn:prop:reusable` (line 2256) | Reusable abstract form |
-| Proposition | `dyn:prop:first-weight` (line 2285) | The first-weight obstruction |
-| Corollary | `dyn:cor:entirethreshold` (line 2335) | The entire-coefficient threshold; polynomial universality |
-| Theorem | `dyn:thm:radius-depth` (line 2352) | Radius at a specified Hahn exponent |
-| Theorem | `dyn:thm:degrees` (line 2401) | Polynomial coefficient degrees |
-| Proposition | `dyn:prop:halo` (line 2447) | Actual conjugacy on a finite halo |
-| Proposition | `dyn:prop:monad` (line 2466) | The monad needs no arithmetic |
-| Lemma | `dyn:lem:multihomological` (line 2504) | Multivariable homological inverse |
-| Theorem | `dyn:thm:multilifting` (line 2520) | Multivariable support-controlled lifting |
-| Theorem | `dyn:thm:commoncoord` (line 2555) | A common coordinate for the centralizer |
-| Lemma | `dyn:esm:lem:cluster` (line 2679) | One rational cluster; sources 08 and 09 |
-| Lemma | `dyn:esm:lem:packing` (line 2710) | Divisible-subtree packing; sources 08 and 09 |
-| Theorem | `dyn:esm:thm:treebound` (line 2750) | Tree product bound; source 09 |
-| Corollary | `dyn:esm:cor:chain` (line 2773) | Strict chains and the fixed-complexity rate; sources 08 and 09 |
-| Lemma | `dyn:esm:lem:degreechain` (line 2856) | Strict degree chains; source 08 |
-| Proposition | `dyn:esm:prop:coefbound` (line 2909) | A depth-uniform exponential rate; source 08 |
-| Corollary | `dyn:esm:cor:commondomain` (line 2945) | One open polydisk for every coefficient; source 08 |
-| Theorem | `dyn:esm:thm:main` (line 2965) | Sharp common domain for an exact scalar multiplier; sources 08 and 09 |
-| Corollary | `dyn:esm:cor:sixthrow` (line 3033) | The sixth category for a scalar exact multiplier; sources 08 and 09 |
-| Proposition | `dyn:tree:prop:formula` (line 3154) | Plane-tree coefficient formula; source 09 |
-| Lemma | `dyn:tree:lem:count` (line 3183) | Polynomial tree count; source 09 |
-| Proposition | `dyn:tree:prop:estimate` (line 3202) | Finite-depth estimate for the forward coordinate; source 09 |
-| Corollary | `dyn:esm:cor:parameters` (line 3241) | Several formal parameters, one dynamical variable; source 09 |
-| Theorem | `dyn:nsc:thm:main` (line 3468) | Common-domain linearization for a nonscalar exact multiplier; source 10 |
-| Lemma | `dyn:nsc:lem:height` (line 3510) | Exponential rates and integer height; source 10 |
-| Corollary | `dyn:nsc:cor:angular` (line 3561) | Angular-rank form; source 10 |
-| Lemma | `dyn:nsc:lem:blocks` (line 3613) | Marked-block contraction; source 10 |
-| Theorem | `dyn:nsc:thm:products` (line 3671) | Rational-rank divisor-product bound; source 10 |
-| Corollary | `dyn:nsc:cor:rankone` (line 3736) | The fixed-complexity rate in angular rank one; source 10 |
-| Proposition | `dyn:nsc:prop:formal` (line 3794) | Colored tree expansion of the forward coordinate; source 10 |
-| Lemma | `dyn:nsc:lem:count` (line 3829) | Polynomial diagram count; source 10 |
-| Corollary | `dyn:nsc:cor:local` (line 3887) | Input-relative radius at a specified exponent; source 10 |
-| Corollary | `dyn:nsc:cor:parameters` (line 3914) | Rectangular polydisks and ordinary parameters; source 10 |
-| Theorem | `dyn:nsc:thm:criterion` (line 3974) | Exact criterion and rank-one sharpness; source 10 |
-| Proposition | `dyn:nsc:prop:twomode` (line 4033) | Two modes in one irrational direction; source 10 |
-| Lemma | `dyn:lem:jets` (line 4206) | Uniform reciprocal-jet estimates |
-| Theorem | `dyn:thm:collapse` (line 4236) | Exact coefficient-radius collapse; requires drift |
-| Corollary | `dyn:cor:finitefailure` (line 4301) | A finite-support instability |
-| Theorem | `dyn:thm:trichotomy` (line 4312) | The common-domain / radius-free trichotomy |
-| Theorem | `dyn:thm:multicollapse` (line 4380) | Exact multivariable radius collapse |
-| Proposition | `dyn:prop:cf` (line 4437) | Continued-fraction formula |
-| Theorem | `dyn:thm:nonbrjuno` (line 4470) | Explicit arithmetic separations |
-| Lemma | `dyn:cyc:lem:chains` (line 4587) | Pole multiplicity after collisions; source 08 |
-| Lemma | `dyn:cyc:lem:majorant` (line 4614) | Polynomial numerators at fixed parameter degree; source 08 |
-| Proposition | `dyn:cyc:prop:upper` (line 4634) | The upper bound under drift; source 08 |
-| Proposition | `dyn:cyc:prop:noncancel` (line 4670) | Collision noncancellation at convergent degrees; source 08 |
-| Theorem | `dyn:cyc:thm` (line 4700) | Sharp collapse with one cyclic exponent; \textbf{requires drift}; source 08 |
-| Corollary | `dyn:cyc:cor:classification` (line 4753) | No independent scales are needed; source 08 |
-| Corollary | `dyn:cyc:cor:onecoef` (line 4792) | One positive Hahn coefficient suffices; source 08 |
-| Lemma | `dyn:lem:nonresonant` (line 4966) | Nonresonant residue |
-| Lemma | `dyn:lem:displacement` (line 4995) | Divisible displacement: cancelling a common infinitesimal divisor |
-| Lemma | `dyn:lem:root-count` (line 5031) | Roots on the unit shell |
-| Theorem | `dyn:thm:exact` (line 5059) | Exact finite-return linearization |
-| Theorem | `dyn:thm:shell` (line 5173) | Resonant shell cycles |
-| Corollary | `dyn:cor:finite-certificate` (line 5219) | A finite obstruction certificate |
-| Theorem | `dyn:thm:stability` (line 5235) | Stability above the first return face |
-| Theorem | `dyn:thm:coherent` (line 5298) | Coherent realization of resonant linearization |
-| Proposition | `dyn:prop:leading` (line 5403) | The leading-coefficient exponential integral |
-| Proposition | `dyn:prop:noncoherent` (line 5469) | A divergent ordinary linearizer survives on the monad |
-| Theorem | `dyn:thm:workspace` (line 5516) | Workspace invariance for the finite-return package |
-| Corollary | `dyn:cor:surcomplex` (line 5545) | Transfer to the surcomplex numbers |
-| Theorem | `dyn:thm:phase` (line 5654) | Cancellation phase diagram |
-| Lemma | `dyn:lem:unit` (line 5805) | A sufficient unit criterion |
-| Theorem | `dyn:thm:common` (line 5823) | Common-domain Hahn linearization |
-| Corollary | `dyn:cor:universal` (line 5899) | Universal leading profile at a resonant scale |
-| Proposition | `dyn:prop:factorV` (line 5938) | The generator gains no new pole |
-| Lemma | `dyn:lem:residue` (line 5976) | Exact residue at a simple fixed point |
-| Proposition | `dyn:prop:firstcorrection` (line 5996) | The first correction is an explicit logarithm |
-| Corollary | `dyn:cor:factorization` (line 6016) | Separation of the branching factors |
-| Lemma | `dyn:lem:torsion` (line 6049) | An infinitesimal phase has no torsion |
-| Theorem | `dyn:thm:monodromy` (line 6070) | Exact monodromy and obstruction to finite ramification |
-| Lemma | `dyn:lem:slopes` (line 6105) | A nonlinear polynomial cannot have one slope at all its zeros |
-| Lemma | `dyn:lem:reduction` (line 6120) | Reduction of an algebraic Hahn element |
-| Lemma | `dyn:lem:essential` (line 6134) | A higher-order logarithmic pole forces transcendence |
-| Theorem | `dyn:thm:dichotomy` (line 6153) | Polynomial Euler maps: the algebraicity dichotomy |
-| Proposition | `dyn:prop:leadingalgebraic` (line 6216) | Classification of algebraic leading coordinates |
-| Proposition | `dyn:prop:recurrence` (line 6304) | Exact finite recurrence |
-| Theorem | `dyn:thm:sharp` (line 6333) | Sharp domain and valuative isometry |
-| Theorem | `dyn:thm:modelfactor` (line 6433) | All-orders factorization and finite-cover obstruction for the model |
-| Proposition | `dyn:prop:second` (line 6471) | Explicit second-order expansion |
-| Lemma | `dyn:lem:primitive` (line 6592) | Support-preserving primitives |
-| Lemma | `dyn:lem:homotopy` (line 6622) | Explicit exactness of an infinitesimal pullback |
-| Proposition | `dyn:prop:time-conjugacy` (line 6656) | Time forms under conjugacy |
-| Theorem | `dyn:thm:difference` (line 6679) | Discrete equation as a primitive problem |
-| Corollary | `dyn:cor:abel` (line 6727) | Exact global Abel criterion |
-| Theorem | `dyn:thm:exact-sequence` (line 6750) | Complete finite-dimensional discrete obstruction |
-| Lemma | `dyn:lem:displacement2` (line 6827) | Implicit displacement lemma |
-| Theorem | `dyn:thm:classification` (line 6875) | Complete period invariant and marked conjugacy |
-| Corollary | `dyn:cor:simplyconnected` (line 6916) | Simply connected domains |
-| Theorem | `dyn:thm:moduli` (line 6949) | An explicit moduli space |
-| Theorem | `dyn:thm:flat` (line 7023) | Flatly indistinguishable but globally nonconjugate |
-| Proposition | `dyn:prop:euler-residue` (line 7144) | Exact residue of the Euler time form |
-| Corollary | `dyn:cor:euler-normal` (line 7202) | A global coherent normal form for the Euler family |
-| Theorem | `dyn:thm:slowtime` (line 7281) | Common-chart Hahn lifting of the slow flow |
-| Proposition | `dyn:prop:inverse` (line 7405) | Positive near-identity maps |
-| Proposition | `dyn:prop:exp` (line 7429) | Supported Hamiltonian exponential |
-| Lemma | `dyn:lem:projection` (line 7487) | Entire action projection |
-| Theorem | `dyn:thm:homological` (line 7507) | Sharp homological criterion |
-| Theorem | `dyn:thm:normalform` (line 7555) | Exact positive-Hahn normal form |
-| Corollary | `dyn:cor:hamsurcomplex` (line 7656) | Finite surcomplex phase space |
-| Theorem | `dyn:thm:integrability` (line 7684) | Exact integrability |
-| Theorem | `dyn:thm:pcentralizer` (line 7705) | Poisson centralizer |
-| Proposition | `dyn:prop:flow` (line 7747) | Exact ordinary-time evolution |
-| Theorem | `dyn:thm:universal` (line 7785) | Sharp universal normalization criterion |
-| Proposition | `dyn:prop:explicitbad` (line 7826) | An explicit super-Liouville obstruction |
-| Theorem | `dyn:thm:rescale` (line 7941) | Compatible support-certified domains |
-| Corollary | `dyn:cor:homogeneous` (line 8013) | A degree-dependent radius |
-| Proposition | `dyn:prop:discrete` (line 8169) | Polynomial-layer linearization |
-| Lemma | `dyn:lem:qpmultiplier` (line 8317) | Subexponential Fourier multipliers |
-| Lemma | `dyn:lem:qpsubstitution` (line 8330) | Taylor substitution on the torus, with its Lipschitz estimate |
-| Theorem | `dyn:thm:flag` (line 8406) | Finite flag and one common reciprocal support |
-| Proposition | `dyn:prop:qpjets` (line 8487) | Coefficient structure of the inverse |
-| Proposition | `dyn:prop:qpvalbound` (line 8519) | An arithmetic-free valuation bound |
-| Theorem | `dyn:thm:qplinear` (line 8619) | Universal fixed-strip solvability |
-| Corollary | `dyn:cor:qpsharp` (line 8693) | The divisor loss $\kups$ is attained |
-| Corollary | `dyn:cor:qptail` (line 8717) | Higher tails do not change the arithmetic test |
-| Theorem | `dyn:thm:qpjet` (line 8764) | Arbitrary finite analytic lifting, but no full lift |
-| Theorem | `dyn:thm:qpnormalform` (line 8864) | Hahn-analytic constant normal form |
-| Lemma | `dyn:lem:qpcoordinverse` (line 9018) | Infinitesimal coordinate inverses on the torus |
-| Theorem | `dyn:thm:qpnecessity` (line 9055) | Non-linearizable perturbations beyond any prescribed valuation |
-| Corollary | `dyn:cor:qpequivalence` (line 9093) | Exact universal infinitesimal normal-form criterion |
-| Proposition | `dyn:prop:qpboundary` (line 9103) | Failure exactly at the threshold, with no zero of the slow speed |
-| Lemma | `dyn:lem:qpchangevar` (line 9149) | Formal change of variables |
-| Theorem | `dyn:thm:qpdensity` (line 9176) | Invariant density and its uniqueness |
-| Theorem | `dyn:thm:finite-order` (line 9380) | Same-domain finite-order decomposition |
-| Proposition | `dyn:prop:quadratic-scale` (line 9463) | Quadratic scaling and the boundary of the halo theorem |
-| Proposition | `dyn:prop:critical` (line 9506) | A precise rescaled-germ obstruction |
+| Lemma | `dyn:lem:neumann` (line 1211) | Positive-support lemma of Neumann, in finite-word form |
+| Corollary | `dyn:cor:ancestry` (line 1274) | Finite ancestry relative to the input support |
+| Lemma | `dyn:lem:evaluation` (line 1407) | Evaluation, inversion, isometry |
+| Proposition | `dyn:prop:eval` (line 1467) | Faithful analytic realization |
+| Lemma | `dyn:lem:faithful` (line 1500) | Faithfulness of infinitesimal evaluation |
+| Proposition | `dyn:prop:subgroup` (line 1539) | Substitution group |
+| Lemma | `dyn:lem:inverse` (line 1588) | Near-identity inverses |
+| Theorem | `dyn:thm:exp-log` (line 1618) | Same-domain exponential--logarithm correspondence |
+| Lemma | `dyn:lem:fixedderivative` (line 1707) | Derivative of the logarithmic generator at an ordinary fixed point |
+| Corollary | `dyn:cor:julia` (line 1729) | Julia equation |
+| Proposition | `dyn:prop:intertwine` (line 1738) | Conjugacy and vector fields |
+| Corollary | `dyn:cor:flow` (line 1752) | Exact flow law and admissible Hahn times |
+| Corollary | `dyn:cor:roots` (line 1785) | Unique fractional iteration; torsion-freeness |
+| Theorem | `dyn:thm:fixed-ideal` (line 1805) | Fixed-point ideal of a positive flow |
+| Theorem | `dyn:thm:centralizer` (line 1855) | The full positive centralizer in one variable |
+| Proposition | `dyn:prop:workspace` (line 1919) | Workspace invariance |
+| Lemma | `dyn:lem:radius-loss` (line 1972) | Single-step analytic loss |
+| Lemma | `dyn:lem:sharp-divisor` (line 1992) | Sharpness and analytic failure |
+| Proposition | `dyn:prop:norm` (line 2035) | A compact-disk estimate, offered only as a starting point |
+| Theorem | `dyn:thm:main` (line 2070) | Universal coefficient-category classification |
+| Proposition | `dyn:prop:linearization` (line 2129) | Support-controlled inverse; route A |
+| Theorem | `dyn:thm:lifting` (line 2173) | Support-controlled lifting; route B, drift permitted |
+| Proposition | `dyn:prop:reusable` (line 2265) | Reusable abstract form |
+| Proposition | `dyn:prop:first-weight` (line 2294) | The first-weight obstruction |
+| Corollary | `dyn:cor:entirethreshold` (line 2344) | The entire-coefficient threshold; polynomial universality |
+| Theorem | `dyn:thm:radius-depth` (line 2361) | Radius at a specified Hahn exponent |
+| Theorem | `dyn:thm:degrees` (line 2410) | Polynomial coefficient degrees |
+| Proposition | `dyn:prop:halo` (line 2456) | Actual conjugacy on a finite halo |
+| Proposition | `dyn:prop:monad` (line 2475) | The monad needs no arithmetic |
+| Lemma | `dyn:lem:multihomological` (line 2513) | Multivariable homological inverse |
+| Theorem | `dyn:thm:multilifting` (line 2529) | Multivariable support-controlled lifting |
+| Theorem | `dyn:thm:commoncoord` (line 2564) | A common coordinate for the centralizer |
+| Lemma | `dyn:esm:lem:cluster` (line 2688) | One rational cluster; sources 08 and 09 |
+| Lemma | `dyn:esm:lem:packing` (line 2719) | Divisible-subtree packing; sources 08 and 09 |
+| Theorem | `dyn:esm:thm:treebound` (line 2759) | Tree product bound; source 09 |
+| Corollary | `dyn:esm:cor:chain` (line 2782) | Strict chains and the fixed-complexity rate; sources 08 and 09 |
+| Lemma | `dyn:esm:lem:degreechain` (line 2865) | Strict degree chains; source 08 |
+| Proposition | `dyn:esm:prop:coefbound` (line 2918) | A depth-uniform exponential rate; source 08 |
+| Corollary | `dyn:esm:cor:commondomain` (line 2954) | One open polydisk for every coefficient; source 08 |
+| Theorem | `dyn:esm:thm:main` (line 2974) | Sharp common domain for an exact scalar multiplier; sources 08 and 09 |
+| Corollary | `dyn:esm:cor:sixthrow` (line 3042) | The sixth category for a scalar exact multiplier; sources 08 and 09 |
+| Proposition | `dyn:tree:prop:formula` (line 3163) | Plane-tree coefficient formula; source 09 |
+| Lemma | `dyn:tree:lem:count` (line 3192) | Polynomial tree count; source 09 |
+| Proposition | `dyn:tree:prop:estimate` (line 3211) | Finite-depth estimate for the forward coordinate; source 09 |
+| Corollary | `dyn:esm:cor:parameters` (line 3250) | Several formal parameters, one dynamical variable; source 09 |
+| Theorem | `dyn:nsc:thm:main` (line 3489) | Common-domain linearization for a nonscalar exact multiplier; source 10 |
+| Lemma | `dyn:nsc:lem:height` (line 3531) | Exponential rates and integer height; source 10 |
+| Corollary | `dyn:nsc:cor:angular` (line 3603) | Angular-rank form; source 10 |
+| Lemma | `dyn:nsc:lem:blocks` (line 3659) | Marked-block contraction; source 10 |
+| Theorem | `dyn:nsc:thm:products` (line 3717) | Rational-rank divisor-product bound; source 10 |
+| Corollary | `dyn:nsc:cor:rankone` (line 3784) | The fixed-complexity rate in angular rank one; source 10 |
+| Proposition | `dyn:nsc:prop:formal` (line 3843) | Colored tree expansion of the forward coordinate; source 10 |
+| Lemma | `dyn:nsc:lem:count` (line 3889) | Polynomial diagram count; source 10 |
+| Corollary | `dyn:nsc:cor:local` (line 3954) | Input-relative radius at a specified exponent; source 10 |
+| Corollary | `dyn:nsc:cor:parameters` (line 3985) | Rectangular polydisks and ordinary parameters; source 10 |
+| Theorem | `dyn:nsc:thm:criterion` (line 4050) | Exact criterion and rank-one sharpness; source 10 |
+| Proposition | `dyn:nsc:prop:twomode` (line 4109) | Two modes in one irrational direction; source 10 |
+| Lemma | `dyn:lem:jets` (line 4284) | Uniform reciprocal-jet estimates |
+| Theorem | `dyn:thm:collapse` (line 4314) | Exact coefficient-radius collapse; requires drift |
+| Corollary | `dyn:cor:finitefailure` (line 4379) | A finite-support instability |
+| Theorem | `dyn:thm:trichotomy` (line 4390) | The common-domain / radius-free trichotomy |
+| Theorem | `dyn:thm:multicollapse` (line 4458) | Exact multivariable radius collapse |
+| Proposition | `dyn:prop:cf` (line 4515) | Continued-fraction formula |
+| Theorem | `dyn:thm:nonbrjuno` (line 4548) | Explicit arithmetic separations |
+| Lemma | `dyn:cyc:lem:chains` (line 4665) | Pole multiplicity after collisions; source 08 |
+| Lemma | `dyn:cyc:lem:majorant` (line 4692) | Polynomial numerators at fixed parameter degree; source 08 |
+| Proposition | `dyn:cyc:prop:upper` (line 4712) | The upper bound under drift; source 08 |
+| Proposition | `dyn:cyc:prop:noncancel` (line 4748) | Collision noncancellation at convergent degrees; source 08 |
+| Theorem | `dyn:cyc:thm` (line 4778) | Sharp collapse with one cyclic exponent; \textbf{requires drift}; source 08 |
+| Corollary | `dyn:cyc:cor:classification` (line 4831) | No independent scales are needed; source 08 |
+| Corollary | `dyn:cyc:cor:onecoef` (line 4870) | One positive Hahn coefficient suffices; source 08 |
+| Lemma | `dyn:lem:nonresonant` (line 5044) | Nonresonant residue |
+| Lemma | `dyn:lem:displacement` (line 5073) | Divisible displacement: cancelling a common infinitesimal divisor |
+| Lemma | `dyn:lem:root-count` (line 5109) | Roots on the unit shell |
+| Theorem | `dyn:thm:exact` (line 5137) | Exact finite-return linearization |
+| Theorem | `dyn:thm:shell` (line 5251) | Resonant shell cycles |
+| Corollary | `dyn:cor:finite-certificate` (line 5297) | A finite obstruction certificate |
+| Theorem | `dyn:thm:stability` (line 5313) | Stability above the first return face |
+| Theorem | `dyn:thm:coherent` (line 5376) | Coherent realization of resonant linearization |
+| Proposition | `dyn:prop:leading` (line 5481) | The leading-coefficient exponential integral |
+| Proposition | `dyn:prop:noncoherent` (line 5547) | A divergent ordinary linearizer survives on the monad |
+| Theorem | `dyn:thm:workspace` (line 5594) | Workspace invariance for the finite-return package |
+| Corollary | `dyn:cor:surcomplex` (line 5623) | Transfer to the surcomplex numbers |
+| Theorem | `dyn:thm:phase` (line 5732) | Cancellation phase diagram |
+| Lemma | `dyn:lem:unit` (line 5883) | A sufficient unit criterion |
+| Theorem | `dyn:thm:common` (line 5901) | Common-domain Hahn linearization |
+| Corollary | `dyn:cor:universal` (line 5977) | Universal leading profile at a resonant scale |
+| Proposition | `dyn:prop:factorV` (line 6016) | The generator gains no new pole |
+| Lemma | `dyn:lem:residue` (line 6054) | Exact residue at a simple fixed point |
+| Proposition | `dyn:prop:firstcorrection` (line 6074) | The first correction is an explicit logarithm |
+| Corollary | `dyn:cor:factorization` (line 6094) | Separation of the branching factors |
+| Lemma | `dyn:lem:torsion` (line 6127) | An infinitesimal phase has no torsion |
+| Theorem | `dyn:thm:monodromy` (line 6148) | Exact monodromy and obstruction to finite ramification |
+| Lemma | `dyn:lem:slopes` (line 6183) | A nonlinear polynomial cannot have one slope at all its zeros |
+| Lemma | `dyn:lem:reduction` (line 6198) | Reduction of an algebraic Hahn element |
+| Lemma | `dyn:lem:essential` (line 6212) | A higher-order logarithmic pole forces transcendence |
+| Theorem | `dyn:thm:dichotomy` (line 6231) | Polynomial Euler maps: the algebraicity dichotomy |
+| Proposition | `dyn:prop:leadingalgebraic` (line 6294) | Classification of algebraic leading coordinates |
+| Proposition | `dyn:prop:recurrence` (line 6382) | Exact finite recurrence |
+| Theorem | `dyn:thm:sharp` (line 6411) | Sharp domain and valuative isometry |
+| Theorem | `dyn:thm:modelfactor` (line 6511) | All-orders factorization and finite-cover obstruction for the model |
+| Proposition | `dyn:prop:second` (line 6549) | Explicit second-order expansion |
+| Lemma | `dyn:lem:primitive` (line 6670) | Support-preserving primitives |
+| Lemma | `dyn:lem:homotopy` (line 6700) | Explicit exactness of an infinitesimal pullback |
+| Proposition | `dyn:prop:time-conjugacy` (line 6734) | Time forms under conjugacy |
+| Theorem | `dyn:thm:difference` (line 6757) | Discrete equation as a primitive problem |
+| Corollary | `dyn:cor:abel` (line 6805) | Exact global Abel criterion |
+| Theorem | `dyn:thm:exact-sequence` (line 6828) | Complete finite-dimensional discrete obstruction |
+| Lemma | `dyn:lem:displacement2` (line 6905) | Implicit displacement lemma |
+| Theorem | `dyn:thm:classification` (line 6953) | Complete period invariant and marked conjugacy |
+| Corollary | `dyn:cor:simplyconnected` (line 6994) | Simply connected domains |
+| Theorem | `dyn:thm:moduli` (line 7027) | An explicit moduli space |
+| Theorem | `dyn:thm:flat` (line 7101) | Flatly indistinguishable but globally nonconjugate |
+| Proposition | `dyn:prop:euler-residue` (line 7222) | Exact residue of the Euler time form |
+| Corollary | `dyn:cor:euler-normal` (line 7280) | A global coherent normal form for the Euler family |
+| Theorem | `dyn:thm:slowtime` (line 7359) | Common-chart Hahn lifting of the slow flow |
+| Proposition | `dyn:prop:inverse` (line 7483) | Positive near-identity maps |
+| Proposition | `dyn:prop:exp` (line 7507) | Supported Hamiltonian exponential |
+| Lemma | `dyn:lem:projection` (line 7565) | Entire action projection |
+| Theorem | `dyn:thm:homological` (line 7585) | Sharp homological criterion |
+| Theorem | `dyn:thm:normalform` (line 7633) | Exact positive-Hahn normal form |
+| Corollary | `dyn:cor:hamsurcomplex` (line 7734) | Finite surcomplex phase space |
+| Theorem | `dyn:thm:integrability` (line 7762) | Exact integrability |
+| Theorem | `dyn:thm:pcentralizer` (line 7783) | Poisson centralizer |
+| Proposition | `dyn:prop:flow` (line 7825) | Exact ordinary-time evolution |
+| Theorem | `dyn:thm:universal` (line 7863) | Sharp universal normalization criterion |
+| Proposition | `dyn:prop:explicitbad` (line 7904) | An explicit super-Liouville obstruction |
+| Theorem | `dyn:thm:rescale` (line 8019) | Compatible support-certified domains |
+| Corollary | `dyn:cor:homogeneous` (line 8091) | A degree-dependent radius |
+| Proposition | `dyn:prop:discrete` (line 8247) | Polynomial-layer linearization |
+| Lemma | `dyn:lem:qpmultiplier` (line 8395) | Subexponential Fourier multipliers |
+| Lemma | `dyn:lem:qpsubstitution` (line 8408) | Taylor substitution on the torus, with its Lipschitz estimate |
+| Theorem | `dyn:thm:flag` (line 8484) | Finite flag and one common reciprocal support |
+| Proposition | `dyn:prop:qpjets` (line 8565) | Coefficient structure of the inverse |
+| Proposition | `dyn:prop:qpvalbound` (line 8597) | An arithmetic-free valuation bound |
+| Theorem | `dyn:thm:qplinear` (line 8697) | Universal fixed-strip solvability |
+| Corollary | `dyn:cor:qpsharp` (line 8771) | The divisor loss $\kups$ is attained |
+| Corollary | `dyn:cor:qptail` (line 8795) | Higher tails do not change the arithmetic test |
+| Theorem | `dyn:thm:qpjet` (line 8842) | Arbitrary finite analytic lifting, but no full lift |
+| Theorem | `dyn:thm:qpnormalform` (line 8942) | Hahn-analytic constant normal form |
+| Lemma | `dyn:lem:qpcoordinverse` (line 9096) | Infinitesimal coordinate inverses on the torus |
+| Theorem | `dyn:thm:qpnecessity` (line 9133) | Non-linearizable perturbations beyond any prescribed valuation |
+| Corollary | `dyn:cor:qpequivalence` (line 9171) | Exact universal infinitesimal normal-form criterion |
+| Proposition | `dyn:prop:qpboundary` (line 9181) | Failure exactly at the threshold, with no zero of the slow speed |
+| Lemma | `dyn:lem:qpchangevar` (line 9227) | Formal change of variables |
+| Theorem | `dyn:thm:qpdensity` (line 9254) | Invariant density and its uniqueness |
+| Theorem | `dyn:thm:finite-order` (line 9458) | Same-domain finite-order decomposition |
+| Proposition | `dyn:prop:quadratic-scale` (line 9541) | Quadratic scaling and the boundary of the halo theorem |
+| Proposition | `dyn:prop:critical` (line 9584) | A precise rescaled-germ obstruction |
 
 ### entire-functions-at-arbitrary-rank
 
@@ -3258,7 +3287,7 @@ Mappings cover only the hypotheses and clauses they state.
 
 Source: [surcomplex/three-duals-of-hahn-vector-spaces/article.tex](surcomplex/three-duals-of-hahn-vector-spaces/article.tex).
 
-The proof review covers Sections 2–9. Support and regrouping arguments now
+The main-text proof review covers Sections 1–15. Support and regrouping arguments now
 show finite coefficient and triple rearrangements explicitly; the strong-map
 classification includes canonical `K`-linearity and the discrete zero-group
 case. Completion uses the induced valuation uniformity and an explicit net
@@ -3270,9 +3299,12 @@ argument. The choice explanation is corrected. Continuous restriction,
 separation, quotient kernels, Hilbert norms, Riesz coefficients and the
 hyperplane distance arguments are expanded. The review distinguishes positive
 from nonnegative operator bounds and a zero orthogonal complement from the
-absence of an orthogonal direct-sum complement. Sections 10 onward and
-remaining imports/source reconciliation remain pending. These are source
-improvements, not new Lean mappings.
+absence of an orthogonal direct-sum complement. Exponent enlargement now
+includes the induced-topology dichotomy and unique strong extension;
+normal-form interpretation distinguishes scalar outputs from module vectors.
+Local source comparisons and targeted primary terminology checks are recorded
+in the review ledger. Remaining imports/source reconciliation remain pending.
+These are source improvements, not new Lean mappings.
 
 
 Statements remain **pending unless explicitly mapped** in the implementation table.
@@ -3280,39 +3312,51 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `duals:thm:overview-completion` (line 196) | Completion and enlargement; proved in \cref{duals:sec:completion,duals:sec:enlargement} |
-| Theorem | `duals:thm:overview-duals` (line 218) | Strong maps and the continuous dual; proved in \cref{duals:sec:strong,duals:sec:continuous} |
-| Lemma | `duals:lem:support` (line 386) | Classical support facts |
-| Lemma | `duals:lem:continuous-shift` (line 461) | Continuity is a uniform valuation-shift bound |
-| Theorem | `duals:thm:strong` (line 516) | Global-support classification |
-| Corollary | `duals:cor:strong-calculus` (line 598) | Operator calculus and automatic continuity |
-| Proposition | `duals:prop:algebraic` (line 666) | Finite total coefficient rank |
-| Theorem | `duals:thm:completion` (line 691) | Finite rank below every cut |
-| Lemma | `duals:lem:group` (line 757) | An order-theoretic alternative |
-| Theorem | `duals:thm:cyclic` (line 787) | The cyclic-group boundary |
-| Theorem | `duals:thm:cofinality-completion` (line 816) | The cofinality boundary for nontrivial completion |
-| Proposition | `duals:prop:spherical` (line 893) | Spherical completeness of the full Hahn space |
-| Theorem | `duals:thm:HB` (line 957) | Contractive scalar extension |
-| Lemma | `duals:lem:E-extension` (line 1049) | Extension from constants to their algebraic span |
-| Theorem | `duals:thm:restriction` (line 1072) | Exact restriction sequence |
-| Theorem | `duals:thm:separation` (line 1110) | Separation of the completion defect |
-| Corollary | `duals:cor:ghost-boundary` (line 1162) | Exact existence boundary |
-| Theorem | `duals:thm:twofailures` (line 1183) | Two failures, for every noncyclic group |
-| Corollary | `duals:cor:second-quotient` (line 1229) | A second quotient obstruction |
-| Theorem | `duals:thm:continuous-strong` (line 1266) | When continuous and strong duals agree |
-| Proposition | `duals:prop:norm` (line 1345) | Norm and valuation; standard coefficient extension |
-| Proposition | `duals:prop:order-bound` (line 1411) | Order bounds for all continuous maps |
-| Theorem | `duals:thm:infinite-bounds` (line 1461) | An ordinary unbounded functional has precisely infinite bounds |
-| Theorem | `duals:thm:riesz` (line 1503) | Coefficientwise Riesz criterion and exact first gap |
-| Corollary | `duals:cor:three-duals` (line 1584) | The three-dual trichotomy |
-| Proposition | `duals:prop:dimension` (line 1611) | Untitled |
-| Theorem | `duals:thm:hyperplane` (line 1674) | A closed, strongly complemented hyperplane with zero orthogonal complement |
-| Theorem | `duals:thm:distance` (line 1747) | Exact lower-bound cut for the distance |
-| Theorem | `duals:thm:basechange` (line 1801) | Cofinal preservation and noncofinal collapse |
+| Theorem | `duals:thm:overview-completion` (line 195) | Completion and enlargement; proved in \cref{duals:sec:completion,duals:sec:enlargement} |
+| Theorem | `duals:thm:overview-duals` (line 217) | Strong maps and the continuous dual; proved in \cref{duals:sec:strong,duals:sec:continuous} |
+| Lemma | `duals:lem:support` (line 397) | Classical support facts |
+| Lemma | `duals:lem:continuous-shift` (line 472) | Continuity is a uniform valuation-shift bound |
+| Theorem | `duals:thm:strong` (line 527) | Global-support classification |
+| Corollary | `duals:cor:strong-calculus` (line 609) | Operator calculus and automatic continuity |
+| Proposition | `duals:prop:algebraic` (line 677) | Finite total coefficient rank |
+| Theorem | `duals:thm:completion` (line 702) | Finite rank below every cut |
+| Lemma | `duals:lem:group` (line 768) | An order-theoretic alternative |
+| Theorem | `duals:thm:cyclic` (line 798) | The cyclic-group boundary |
+| Theorem | `duals:thm:cofinality-completion` (line 827) | The cofinality boundary for nontrivial completion |
+| Proposition | `duals:prop:spherical` (line 904) | Spherical completeness of the full Hahn space |
+| Theorem | `duals:thm:HB` (line 968) | Contractive scalar extension |
+| Lemma | `duals:lem:E-extension` (line 1060) | Extension from constants to their algebraic span |
+| Theorem | `duals:thm:restriction` (line 1083) | Exact restriction sequence |
+| Theorem | `duals:thm:separation` (line 1121) | Separation of the completion defect |
+| Corollary | `duals:cor:ghost-boundary` (line 1173) | Exact existence boundary |
+| Theorem | `duals:thm:twofailures` (line 1194) | Two failures, for every noncyclic group |
+| Corollary | `duals:cor:second-quotient` (line 1240) | A second quotient obstruction |
+| Theorem | `duals:thm:continuous-strong` (line 1277) | When continuous and strong duals agree |
+| Proposition | `duals:prop:norm` (line 1356) | Norm and valuation; standard coefficient extension |
+| Proposition | `duals:prop:order-bound` (line 1422) | Order bounds for all continuous maps |
+| Theorem | `duals:thm:infinite-bounds` (line 1472) | An ordinary unbounded functional has precisely infinite bounds |
+| Theorem | `duals:thm:riesz` (line 1514) | Coefficientwise Riesz criterion and exact first gap |
+| Corollary | `duals:cor:three-duals` (line 1595) | The three-dual trichotomy |
+| Proposition | `duals:prop:dimension` (line 1622) | Untitled |
+| Theorem | `duals:thm:hyperplane` (line 1685) | A closed, strongly complemented hyperplane with zero orthogonal complement |
+| Theorem | `duals:thm:distance` (line 1758) | Exact lower-bound cut for the distance |
+| Theorem | `duals:thm:basechange` (line 1814) | Cofinal preservation and noncofinal collapse |
 
 ### hidden-negative-hermitian-directions
 
 Source: [surcomplex/hidden-negative-hermitian-directions/article.tex](surcomplex/hidden-negative-hermitian-directions/article.tex).
+
+The main-text proof review covers Sections 1–11. It expands character
+extension, the support-index and primorial arguments, closure and density,
+algebraic-root workspace selection, two-scale Schur congruence and
+vector-measure null sets. The comparison with bounded-support fractions
+now uses `√(1+t)` and scopes incomparability to `Γ = ℚ`; a geometric series
+is itself a bounded-support fraction. Congruence is distinguished from
+unitary diagonalization. The 24 standard statements retain their mathematical
+content; the valuation-topology wording and unconditional definition of the
+compression are clarified. All 89 labels and result numbers are retained.
+Remaining imported-result checks and source reconciliation are pending.
+This review adds no Lean implementation mapping.
 
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
@@ -3320,29 +3364,29 @@ Mappings cover only the hypotheses and clauses they state.
 | Kind | Source label or line | Heading |
 |---|---|---|
 | Theorem | `hnd:thm:preview` (line 171) | Maximal hidden negative inertia; preview |
-| Proposition | `hnd:prop:evaluation` (line 561) | Closure under positive-order formal evaluation |
-| Lemma | `hnd:lem:characterextension` (line 593) | Character extension and separation |
-| Lemma | `hnd:lem:supportdegree` (line 631) | Algebraic degree bounds the support index |
-| Proposition | `hnd:prop:probeclosed` (line 675) | Algebraic closedness of the probe field |
-| Lemma | `hnd:lem:cyclicintersection` (line 726) | Untitled |
-| Theorem | `hnd:thm:barrier` (line 755) | Uniform finite-lattice approximation barrier |
-| Theorem | `hnd:thm:degree` (line 778) | Primorial approximation law |
-| Corollary | `hnd:cor:degreebound` (line 835) | A degree-limited obstruction |
-| Theorem | `hnd:thm:separation` (line 892) | Uniform linear-combination separation |
-| Theorem | `hnd:thm:independence` (line 937) | Independent prime-tail family |
-| Corollary | `hnd:cor:trdeg` (line 1012) | Untitled |
-| Theorem | `hnd:thm:inertia` (line 1035) | Hidden-inertia construction |
-| Corollary | `hnd:cor:smallmatrix` (line 1085) | Smallest example |
-| Theorem | `hnd:thm:closedseparation` (line 1148) | The barrier persists through valuation closure |
-| Proposition | `hnd:prop:lc` (line 1192) | Untitled |
-| Corollary | `hnd:cor:lc` (line 1212) | Untitled |
-| Proposition | `hnd:prop:density` (line 1235) | Quadratic testing characterizes order density |
-| Theorem | `hnd:thm:surreal` (line 1318) | Workspace-independent surreal probe obstruction |
-| Lemma | `hnd:lem:psdkernel` (line 1360) | Untitled |
-| Theorem | `hnd:thm:twoscale` (line 1377) | Two-scale matrix positivity |
-| Theorem | `hnd:thm:measure` (line 1564) | Two-scale matrix null ideals |
-| Corollary | `hnd:cor:measurekernel` (line 1634) | Eventwise kernel and rank |
-| Corollary | `hnd:cor:scalarmeasure` (line 1657) | Scalar specialization |
+| Proposition | `hnd:prop:evaluation` (line 595) | Closure under positive-order formal evaluation |
+| Lemma | `hnd:lem:characterextension` (line 636) | Character extension and separation |
+| Lemma | `hnd:lem:supportdegree` (line 679) | Algebraic degree bounds the support index |
+| Proposition | `hnd:prop:probeclosed` (line 726) | Algebraic closedness of the probe field |
+| Lemma | `hnd:lem:cyclicintersection` (line 781) | Untitled |
+| Theorem | `hnd:thm:barrier` (line 810) | Uniform finite-lattice approximation barrier |
+| Theorem | `hnd:thm:degree` (line 833) | Primorial approximation law |
+| Corollary | `hnd:cor:degreebound` (line 894) | A degree-limited obstruction |
+| Theorem | `hnd:thm:separation` (line 954) | Uniform linear-combination separation |
+| Theorem | `hnd:thm:independence` (line 999) | Independent prime-tail family |
+| Corollary | `hnd:cor:trdeg` (line 1079) | Untitled |
+| Theorem | `hnd:thm:inertia` (line 1102) | Hidden-inertia construction |
+| Corollary | `hnd:cor:smallmatrix` (line 1152) | Smallest example |
+| Theorem | `hnd:thm:closedseparation` (line 1216) | The barrier persists through valuation closure |
+| Proposition | `hnd:prop:lc` (line 1263) | Untitled |
+| Corollary | `hnd:cor:lc` (line 1283) | Untitled |
+| Proposition | `hnd:prop:density` (line 1312) | Quadratic testing characterizes order density |
+| Theorem | `hnd:thm:surreal` (line 1402) | Workspace-independent surreal probe obstruction |
+| Lemma | `hnd:lem:psdkernel` (line 1452) | Untitled |
+| Theorem | `hnd:thm:twoscale` (line 1471) | Two-scale matrix positivity |
+| Theorem | `hnd:thm:measure` (line 1686) | Two-scale matrix null ideals |
+| Corollary | `hnd:cor:measurekernel` (line 1758) | Eventwise kernel and rank |
+| Corollary | `hnd:cor:scalarmeasure` (line 1781) | Scalar specialization |
 
 ### transcendence-over-bounded-support
 
@@ -3351,38 +3395,48 @@ Source: [surreal/transcendence-over-bounded-support/article.tex](surreal/transce
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
+The documentation review covers Sections 1–10 and the conditional implication
+in Appendix A. It expands the support, projection, coding, rank and normalized
+GCD arguments and uses a finite Vandermonde proof for the explicit factorial
+family. Convergence is stated for bounded initial truncations; at uncountable
+cofinality finite subsums fail to converge. The descent preview specifies the
+extended relation ideal, and the integer-grid lemma specifies a coefficient
+field. The cited Hahn and rank-one imports were compared with their primary
+source; the GCD premise remains conditional. This mathematical review adds
+no Lean coverage. See [the review record](REVIEW.md).
+
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `bst:thm:mainintro` (line 147) | Optimal-support independence; proved in Section~\ref{bst:sec:independence} |
-| Theorem | `bst:thm:descentintro` (line 169) | Cofinal coefficient--exponent descent; proved in Section~\ref{bst:sec:descent} |
-| Lemma | `bst:lem:bounds` (line 309) | Elementary support bounds |
-| Proposition | `bst:prop:localdensity` (line 330) | Localization and density |
-| Lemma | `bst:lem:cofinality` (line 365) | Untitled |
-| Lemma | `bst:lem:projection` (line 443) | Projection identity |
-| Theorem | `bst:thm:descent` (line 475) | Simultaneous descent |
-| Corollary | `bst:cor:relations` (line 515) | Intersection, relations, and algebraic degree |
-| Corollary | `bst:cor:onescale` (line 553) | One cofinal scale |
-| Lemma | `bst:lem:skeleton` (line 628) | Existence at the exact cofinality |
-| Lemma | `bst:lem:detection` (line 681) | Support-band detection |
-| Corollary | `bst:cor:onegap` (line 741) | A one-series version |
-| Lemma | `bst:lem:coding` (line 771) | Cofinal finite-pattern realization |
-| Lemma | `bst:lem:grid` (line 807) | Integer grids detect polynomials |
-| Theorem | `bst:thm:independent` (line 825) | The sharp support theorem |
-| Corollary | `bst:cor:optimal` (line 864) | Optimal cardinality and order type |
-| Corollary | `bst:cor:perturb` (line 883) | Arbitrary bounded perturbations |
-| Corollary | `bst:cor:balls` (line 896) | Independent families in every valuation ball |
-| Corollary | `bst:cor:exactcard` (line 927) | Cardinality-matched groups |
-| Corollary | `bst:cor:realgroup` (line 944) | Every nonzero real-exponent subgroup |
-| Theorem | `bst:thm:explicit` (line 980) | Explicit multiplicative-parameter family |
-| Theorem | `bst:thm:fieldcriterion` (line 1086) | Absence of a highest scale |
-| Corollary | `bst:cor:closedbase` (line 1121) | Closed coefficient fields at unbounded rank |
-| Proposition | `bst:prop:toprank` (line 1157) | Top-rank presentation |
-| Proposition | `bst:prop:supimport` (line 1185) | Imported rank-one support theorem |
-| Corollary | `bst:cor:units` (line 1196) | Units see exactly the highest rank |
-| Theorem | `bst:thm:actualreal` (line 1265) | A continuum of independent actual infinitesimals |
-| Theorem | `bst:thm:kappa` (line 1319) | Arbitrarily large, explicit-support surreal families |
-| Theorem | `bst:thm:gcddescent` (line 1639) | Normalized GCD descent |
-| Lemma | `bst:lem:characters` (line 1649) | Untitled |
+| Theorem | `bst:thm:mainintro` (line 148) | Optimal-support independence; proved in Section~\ref{bst:sec:independence} |
+| Theorem | `bst:thm:descentintro` (line 170) | Cofinal coefficient--exponent descent; proved in Section~\ref{bst:sec:descent} |
+| Lemma | `bst:lem:bounds` (line 323) | Elementary support bounds |
+| Proposition | `bst:prop:localdensity` (line 344) | Localization and density |
+| Lemma | `bst:lem:cofinality` (line 383) | Untitled |
+| Lemma | `bst:lem:projection` (line 463) | Projection identity |
+| Theorem | `bst:thm:descent` (line 495) | Simultaneous descent |
+| Corollary | `bst:cor:relations` (line 535) | Intersection, relations, and algebraic degree |
+| Corollary | `bst:cor:onescale` (line 576) | One cofinal scale |
+| Lemma | `bst:lem:skeleton` (line 655) | Existence at the exact cofinality |
+| Lemma | `bst:lem:detection` (line 709) | Support-band detection |
+| Corollary | `bst:cor:onegap` (line 773) | A one-series version |
+| Lemma | `bst:lem:coding` (line 804) | Cofinal finite-pattern realization |
+| Lemma | `bst:lem:grid` (line 844) | Integer grids detect polynomials |
+| Theorem | `bst:thm:independent` (line 863) | The sharp support theorem |
+| Corollary | `bst:cor:optimal` (line 910) | Optimal cardinality and order type |
+| Corollary | `bst:cor:perturb` (line 929) | Arbitrary bounded perturbations |
+| Corollary | `bst:cor:balls` (line 942) | Independent families in every valuation ball |
+| Corollary | `bst:cor:exactcard` (line 973) | Cardinality-matched groups |
+| Corollary | `bst:cor:realgroup` (line 990) | Every nonzero real-exponent subgroup |
+| Theorem | `bst:thm:explicit` (line 1026) | Explicit multiplicative-parameter family |
+| Theorem | `bst:thm:fieldcriterion` (line 1133) | Absence of a highest scale |
+| Corollary | `bst:cor:closedbase` (line 1168) | Closed coefficient fields at unbounded rank |
+| Proposition | `bst:prop:toprank` (line 1214) | Top-rank presentation |
+| Proposition | `bst:prop:supimport` (line 1251) | Imported rank-one support theorem |
+| Corollary | `bst:cor:units` (line 1266) | Units see exactly the highest rank |
+| Theorem | `bst:thm:actualreal` (line 1338) | A continuum of independent actual infinitesimals |
+| Theorem | `bst:thm:kappa` (line 1393) | Arbitrarily large, explicit-support surreal families |
+| Theorem | `bst:thm:gcddescent` (line 1746) | Normalized GCD descent |
+| Lemma | `bst:lem:characters` (line 1756) | Untitled |
 
 ### matrix-scaling-at-surreal-scales
 
@@ -3391,24 +3445,34 @@ Source: [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-sc
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
+The main-text documentation review covers Sections 1–14 and the dependency
+appendix. It expands finite-generator composition evaluation, projection
+kernels, formal inversion, recentering, tree replacement, chain base cases and
+strict support feasibility. Evaluated optimality requires a nontrivial value
+group; formal coefficient sharpness retains the trivial group. The remainder
+degree, strict feasible-witness condition and empty basis minimum are explicit.
+Primary-source comparisons were checked, while remaining foundational imports,
+source reconciliation and priority remain separate. This adds no Lean mapping;
+see [the review record](REVIEW.md).
+
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `scale:lem:neumann` (line 696) | Positive-support word finiteness |
-| Lemma | `scale:lem:evaluation` (line 721) | Finite-generator evaluation |
-| Theorem | `scale:thm:tree` (line 830) | Weighted tree interpolation |
-| Theorem | `scale:thm:existence` (line 938) | Uniform infinitesimal normalization |
-| Corollary | `scale:cor:gauge` (line 1011) | Untitled |
-| Lemma | `scale:lem:secant` (line 1065) | Exact secant identity |
-| Theorem | `scale:thm:sharp` (line 1103) | Sharp nonlinear tree-gap law |
-| Theorem | `scale:thm:coeffgain` (line 1172) | Coefficientwise gain |
-| Corollary | `scale:cor:remainder` (line 1220) | Finite-degree precision certificate |
-| Theorem | `scale:thm:bottleneck` (line 1243) | Bottleneck replacement formula |
-| Theorem | `scale:thm:chain` (line 1326) | Additive attenuation along the chain |
-| Proposition | `scale:prop:global` (line 1486) | Positive scaling over real closed fields |
-| Proposition | `scale:prop:cutbound` (line 1539) | A finite cut bound |
-| Corollary | `scale:cor:positivebranch` (line 1576) | The positive normalization is the local branch |
-| Theorem | `scale:thm:linear` (line 1615) | Basis-gap normalization |
-| Corollary | `scale:cor:descent` (line 1678) | Exact local support-group descent |
+| Lemma | `scale:lem:neumann` (line 721) | Positive-support word finiteness |
+| Lemma | `scale:lem:evaluation` (line 746) | Finite-generator evaluation |
+| Theorem | `scale:thm:tree` (line 871) | Weighted tree interpolation |
+| Theorem | `scale:thm:existence` (line 994) | Uniform infinitesimal normalization |
+| Corollary | `scale:cor:gauge` (line 1070) | Untitled |
+| Lemma | `scale:lem:secant` (line 1132) | Exact secant identity |
+| Theorem | `scale:thm:sharp` (line 1170) | Sharp nonlinear tree-gap law |
+| Theorem | `scale:thm:coeffgain` (line 1242) | Coefficientwise gain |
+| Corollary | `scale:cor:remainder` (line 1302) | Finite-degree precision certificate |
+| Theorem | `scale:thm:bottleneck` (line 1328) | Bottleneck replacement formula |
+| Theorem | `scale:thm:chain` (line 1420) | Additive attenuation along the chain |
+| Proposition | `scale:prop:global` (line 1584) | Positive scaling over real closed fields |
+| Proposition | `scale:prop:cutbound` (line 1637) | A finite cut bound |
+| Corollary | `scale:cor:positivebranch` (line 1674) | The positive normalization is the local branch |
+| Theorem | `scale:thm:linear` (line 1724) | Basis-gap normalization |
+| Corollary | `scale:cor:descent` (line 1800) | Exact local support-group descent |
 
 ### surcomplex-field-automorphisms
 
@@ -3900,3 +3964,108 @@ are **Pending** unless explicitly mapped in the implementation table.
 | Theorem | `dsup:thm:rationaldef` (line 1549) | Interdefinable dilations |
 | Theorem | `dsup:thm:nonconjugate` (line 1586) | Distinct rational dilations are not conjugate |
 | Theorem | `dsup:thm:surreal` (line 1766) | Surreal and surcomplex consequences |
+
+### gamma-and-zeta-functions
+
+Source: [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex).
+
+Merged report placed in `e4f8848` and written in `7af7056` from six
+manuscripts; this index covers its written `article.tex` (all labels `gz:`).
+It asserts no Lean coverage. All statements remain **pending unless explicitly mapped**.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `gz:lem:neumann` (line 723) | Neumann's support lemma \cite{Neumann} |
+| Lemma | `gz:lem:substitution` (line 735) | Infinitesimal substitution \src{01--06} |
+| Lemma | `gz:lem:mixed` (line 769) | Mixed supports \src{02, 03, 04} |
+| Lemma | `gz:lem:realpowers` (line 790) | Locally finite real exponents \src{01} |
+| Lemma | `gz:lem:evalhom` (line 811) | Evaluation of weighted series \merge |
+| Proposition | `gz:prop:polar` (line 881) | Polar form and finite-phase exponential \src{01, 02, 03, 05, 06} |
+| Proposition | `gz:prop:Echi` (line 920) | Exponential calculus \src{01, 02, 03} |
+| Proposition | `gz:prop:families` (line 960) | Explicit phase families \src{01, 02, 03} |
+| Proposition | `gz:prop:primephases` (line 987) | Prescribed prime phases on a set-sized subspace \src{04} |
+| Theorem | `gz:thm:periods` (line 1009) | Period groups \src{03} |
+| Proposition | `gz:prop:twofreq` (line 1043) | Two-frequency test \src{06} |
+| Proposition | `gz:prop:resonance` (line 1070) | Existence and failure of resonances \merge |
+| Proposition | `gz:prop:functorial` (line 1178) | Functoriality \src{01--06} |
+| Theorem | `gz:thm:divisor` (line 1201) | Divisor rigidity \src{01--06} |
+| Corollary | `gz:cor:finite-divisors` (line 1238) | Finite Gamma, zeta and $\xi$ \src{01--06} |
+| Corollary | `gz:cor:halofree` (line 1320) | Zero-free halos \src{06} |
+| Theorem | `gz:thm:finiteRH` (line 1340) | Finite RH \src{01, 02, 04, 05, 06} |
+| Lemma | `gz:lem:implicit` (line 1359) | Formal implicit function \src{05} |
+| Lemma | `gz:lem:splitting` (line 1373) | Constant perturbation of a zero \src{04} |
+| Proposition | `gz:prop:conservation` (line 1391) | Local multiplicity conservation \src{04} |
+| Theorem | `gz:thm:protection` (line 1443) | Protection of simple critical-line zeros \src{04, 05, 06} |
+| Theorem | `gz:thm:twosign` (line 1478) | Two-sign reality criterion \src{04} |
+| Theorem | `gz:thm:stability` (line 1497) | Unified stability theorem \src{04, 05, 06}; unified form \merge |
+| Corollary | `gz:cor:criteria` (line 1522) | The source criteria \src{04, 05, 06} |
+| Corollary | `gz:cor:scale` (line 1567) | Splitting scale \src{04, 06} |
+| Theorem | `gz:thm:protected` (line 1600) | Protected counts \src{04} |
+| Theorem | `gz:thm:dirichlet` (line 1651) | Arbitrary-coefficient Dirichlet realization \src{01--06} |
+| Proposition | `gz:prop:Dtaylor` (line 1693) | Local analytic dependence \src{01, 02, 03, 05, 06} |
+| Theorem | `gz:thm:euler` (line 1720) | Euler identities and zero-freeness \src{01--06} |
+| Proposition | `gz:prop:dichotomy` (line 1773) | Summability dichotomy \src{02} |
+| Theorem | `gz:thm:headline` (line 1823) | Inverse-zeta fibre \src{01} |
+| Lemma | `gz:lem:weightmonoid` (line 1840) | The weight monoid \src{01} |
+| Lemma | `gz:lem:Vunique` (line 1860) | Unique near-one solution \src{01}; existence step completed \merge |
+| Theorem | `gz:thm:fibre` (line 1899) | Complete fibre \src{01} |
+| Corollary | `gz:cor:realinverse` (line 1921) | Conjugation and the real inverse \src{01} |
+| Corollary | `gz:cor:complexfibre` (line 1932) | All nonzero infinitesimal values \src{01} |
+| Lemma | `gz:lem:multilagrange` (line 1954) | Weighted Lagrange formula \src{01} |
+| Theorem | `gz:thm:arithmetic` (line 1989) | Arithmetic coefficient formula \src{01} |
+| Theorem | `gz:thm:integersector` (line 2024) | The integer-power sector \src{01} |
+| Corollary | `gz:cor:rightmost` (line 2045) | The real branch is rightmost \src{01} |
+| Lemma | `gz:lem:jacobian` (line 2101) | A nonzero Jacobian \src{02} |
+| Lemma | `gz:lem:jaccriterion` (line 2119) | Formal Jacobian criterion \src{02} |
+| Theorem | `gz:thm:zetajets` (line 2130) | Dilation jets \src{02} |
+| Lemma | `gz:lem:polyleading` (line 2152) | Polynomial coefficients \src{02} |
+| Theorem | `gz:thm:fieldleading` (line 2170) | Leading forms \src{02} |
+| Lemma | `gz:lem:logscale` (line 2184) | A logarithmic scale \src{02} |
+| Theorem | `gz:thm:joint` (line 2205) | Joint scale separation \src{02} |
+| Theorem | `gz:thm:indep-main` (line 2219) | Principal independence \src{02} |
+| Lemma | `gz:lem:chebyshev` (line 2236) | Chebyshev determinant \src{03} |
+| Lemma | `gz:lem:primeindependence` (line 2254) | Finite-prime independence \src{03}; proof completed \merge |
+| Theorem | `gz:thm:indep-monomial` (line 2302) | Shift jets over a monomial field \src{03} |
+| Lemma | `gz:lem:sloweval` (line 2329) | Slow coefficients \src{03} |
+| Theorem | `gz:thm:indep-slow` (line 2342) | Over the slow Hahn field \src{03} |
+| Theorem | `gz:thm:gamma-zeta-independence` (line 2355) | Over a field containing the Gamma ray \src{03} |
+| Proposition | `gz:thm:stirling` (line 2440) | Recurrence, Gauss and formal uniqueness \src{01, 02, 03, 05, 06} |
+| Theorem | `gz:thm:translation` (line 2493) | Bernoulli translation formula \src{02, 03, 05} |
+| Theorem | `gz:thm:cocycle` (line 2534) | Ratio cocycle \src{05} |
+| Proposition | `gz:prop:phase` (line 2572) | Phase estimate \src{01, 02, 03, 04, 05, 06} |
+| Proposition | `gz:prop:phase-locus` (line 2605) | $\Om$ is the locus of phase independence \merge |
+| Proposition | `gz:prop:gammachi` (line 2631) | Phase Gamma on $\Sinf$ \src{01, 02, 03, 06} |
+| Proposition | `gz:prop:hurwitz-exists` (line 2738) | Existence \src{01, 02, 03} |
+| Theorem | `gz:thm:hurwitz-unit` (line 2768) | Normalized unit \src{03} |
+| Theorem | `gz:thm:hurwitz-identities` (line 2784) | Hurwitz identities \src{01, 02, 03, 04, 06} |
+| Corollary | `gz:cor:hurwitz-unique` (line 2825) | Formal uniqueness \src{03} |
+| Theorem | `gz:thm:lerch` (line 2835) | Bernoulli values and the Lerch identity \src{01, 02, 03, 04, 06} |
+| Proposition | `gz:prop:flathurwitz` (line 2883) | A flat Hurwitz modification \src{04} |
+| Proposition | `gz:prop:wing` (line 2917) | Wing sums for ordinary-circle phases \src{02, 03}; general form \merge |
+| Corollary | `gz:cor:continuum` (line 2940) | A continuum of wing values \src{02} |
+| Proposition | `gz:prop:wingfail` (line 2951) | Wing sums can fail \merge |
+| Corollary | `gz:cor:wingfibre` (line 2974) | Wing fibres \merge; from \src{01, 03} |
+| Theorem | `gz:thm:forced` (line 3007) | Forced poles \src{03, 06} |
+| Theorem | `gz:thm:gamma-tube` (line 3058) | Gamma on $\Th$ \src{03} |
+| Theorem | `gz:thm:gauss-tube` (line 3090) | Gauss on $\Th$ \src{03} |
+| Proposition | `gz:prop:tube-unique` (line 3107) | Uniqueness for fixed data \src{03} |
+| Lemma | `gz:lem:FEfactor` (line 3140) | The reflection factor \src{03} |
+| Theorem | `gz:thm:zeta-tube` (line 3159) | Zeta on $\Th$ \src{03} |
+| Corollary | `gz:cor:canonical-zeros` (line 3182) | Canonical trivial zeros \src{03} |
+| Theorem | `gz:thm:xi-tube` (line 3193) | Completed-divisor rigidity \src{03} |
+| Corollary | `gz:cor:horizontalRH` (line 3211) | Horizontal RH \src{03} |
+| Proposition | `gz:prop:cancel` (line 3221) | Explicit cancellation \src{03} |
+| Proposition | `gz:prop:moving` (line 3239) | A movable infinite zero \src{01, 03} |
+| Theorem | `gz:thm:strip` (line 3301) | The reflection defect \src{05} for $\sigma=\tfrac12$; all $\sigma$ \merge |
+| Theorem | `gz:thm:resonance` (line 3450) | Resonant-galaxy obstruction \src{06}; general form written out \merge |
+| Theorem | `gz:thm:weak` (line 3517) | Symmetric completions with different infinite zeros \src{05, 06} |
+| Proposition | `gz:prop:embedding` (line 3606) | Realization inside the surreals \src{04, 05, 06} |
+| Theorem | `gz:thm:RHstar` (line 3670) | Transferred RH \src{04, 05, 06} |
+| Proposition | `gz:prop:mty` (line 3739) | Zero-free layers at infinite height \src{04, 05, 06} |
+| Corollary | `gz:cor:verified` (line 3770) | Protection in verified monads \src{05} |
+| Corollary | `gz:cor:stableproportion` (line 3833) | Stable proportions \src{04, 05, 06} |
+| Proposition | `gz:prop:density` (line 3866) | Fixed-parameter density transfer \src{04, 05, 06} |
+| Proposition | `gz:prop:hermitian` (line 3904) | Finite Hermitian tests \src{04, 06} |
+| Proposition | `gz:prop:margin` (line 3918) | A real margin protects positivity \src{04} |
+| Lemma | `gz:lem:heatpersist` (line 3962) | Local real-root persistence \src{04, 05, 06} |
+| Theorem | `gz:thm:escape` (line 3979) | Escape at negative infinitesimal time \src{04, 05, 06} |

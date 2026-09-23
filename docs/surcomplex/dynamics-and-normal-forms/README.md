@@ -7,7 +7,7 @@ preserved source material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 171 pages
+article.pdf   the compiled report, 172 pages
 README.md     this guide
 08-exact-and-drifting-multipliers-SOURCE_AUDIT.md
               source 08's own source-and-claim audit, as delivered
@@ -51,7 +51,8 @@ report at its pin `048b72c`. That commit is later than the merge of sources
 version just before source 10 was added (blob `a95e062`). So its statement
 that the report leaves the nonscalar common-domain case open, and that the
 scalar theorem is already here and not claimed, is accurate for that
-version; the case is now settled except for the optimal radius (see below).
+version; the case is now settled except for the optimal radius when
+`r_ang >= 2` and `0 < tau < infinity` (see below).
 The labels it cites (`dyn:thm:radius-depth`, `dyn:q:commongerm`,
 `dyn:esm:thm:treebound`, `dyn:esm:thm:main`, `dyn:prop:cf`) are unchanged.
 It names its files `verify.py` and `verification_results.txt`, which here
@@ -104,14 +105,16 @@ earlier source; see "The one conflict" below.
 
 Source 10 also belongs to the germ half and was integrated after them, as
 §§7.7–7.13, at the end of §7. It answers the case that sources 08 and 09
-left open, a **nonscalar** exact diagonal unitary multiplier: every
-coefficient of the normalized conjugacy and its inverse is holomorphic on
-one polydisk of radius `R exp(-r_ang tau)`, where `r_ang` is the rational
-rank of the multiplier's angles (Theorem 7.23). This is sharp when
-`r_ang = 1`, which includes every scalar multiplier and many nonscalar ones;
-for `r_ang >= 2` only the optimal radius is left open (Theorem 7.34,
-Question 25.1). Source 10 read this report after sources 08 and 09 were
-merged and cites their scalar theorem rather than claiming it.
+left open, a **nonscalar** exact diagonal unitary multiplier satisfying
+nonresonance (`NR`) and `tau < infinity`: every coefficient of the normalized
+conjugacy and its inverse is holomorphic on one polydisk of radius
+`R exp(-r_ang tau)`, where `r_ang` is the rational angular rank (Theorem
+7.23). This is sharp when `r_ang = 1`, which includes every nonresonant
+scalar multiplier and many nonscalar ones. When `tau = 0`, the sharp
+universal radius is `R` at every angular rank. Only the optimal radius for
+`r_ang >= 2` and `0 < tau < infinity` remains open (Theorem 7.34, Question
+25.1). Source 10 read this report after sources 08 and 09 were merged and
+cites their scalar theorem rather than claiming it.
 
 ## Read Section 2 first: the notion table
 
@@ -168,9 +171,11 @@ Remark 2.2 now also records the **sixth category**, common-domain germs,
 in two separate cells that must never be merged: for an exact scalar
 multiplier it holds iff `tau < infinity` (sources 08, 09); under drift it
 holds iff `sigma = 0` (sources 02, 08). For an exact nonscalar diagonal
-multiplier it also holds iff `tau < infinity`, with universal radius between
-`R exp(-r_ang tau)` and `R exp(-tau)`, equal to the latter when `r_ang = 1`
-(source 10); the optimal radius for `r_ang >= 2` is open.
+unitary multiplier satisfying `NR`, it also holds iff `tau < infinity`.
+At finite rate the universal radius lies between `R exp(-r_ang tau)` and
+`R exp(-tau)`, equal to the latter when `r_ang = 1` (source 10). When
+`tau = 0`, it equals `R` at every angular rank; only the optimum for
+`r_ang >= 2` and `0 < tau < infinity` is open.
 
 **The two radii.** Valuation balls `B_r = {v(z) > r}` and valuation
 polydisks `D_rho` **shrink** as the threshold grows; ordinary disks and
@@ -192,7 +197,7 @@ exponent and reverses its threshold inequality; ordinary estimates are unchanged
 | `07-small-divisor-resonance-flag` | **The whole quasi-periodic half (§§17–19).** The headline: a frequency vector with `d` surreal components has **at most `d`** arithmetically visible divisor valuations, identified by a canonical descending flag of saturated integer resonance lattices whose ranks strictly drop, together with one explicitly constructed well-ordered set `T_Upsilon` containing the support of *every* reciprocal nonzero divisor (Theorem 17.5); the exact arithmetic criterion `SD_ss`, necessary **and** sufficient for universal solvability of the cohomological equation in a Hahn algebra all of whose coefficients are holomorphic on **one fixed** torus strip (Theorem 18.3), with the valuation loss `kappa_Upsilon` shown attained; the arbitrary-order lifting obstruction — for every `N` an entire forcing whose first `N+1` solution coefficients are analytic while the next is not even a distribution, with robustness under enlarging the value group *argued* from uniqueness of the modewise Hahn inverse rather than assumed (Theorem 18.7); the unique normalized infinitesimal mean-zero conjugacy to a constant vector field with a frequency correction, proved by **marked support words** and exact coefficient stabilization rather than by sequential valuation convergence (Theorem 19.1); necessity of the arithmetic condition even for arbitrarily high-valuation perturbations (Theorem 19.4) and a boundary example at valuation exactly `kappa_Upsilon` with an everywhere-positive slow speed (Proposition 19.6); and the canonical invariant density with its uniqueness (Theorem 19.8). Plus the arithmetic-free valuation bound (Proposition 17.9), which needs no divisor estimate of any kind |
 | `08-exact-and-drifting-multipliers` | **Base of the 08+09 merge** (weaker hypotheses: every dimension `d`; it also carries the drifted theorem). *Exact and Drifting Multipliers in Surcomplex Dynamics*. The sharp common domain for an exact **scalar** multiplier `lambda I_d` in every dimension: all coefficients of the normalized conjugacy and its inverse are holomorphic on the one polydisk of radius `R exp(-tau)`, which is optimal (Theorem 7.13, with the strict degree chains of Lemma 7.9 and the depth-uniform estimate of Proposition 7.11); the unequal-radius rescaling `R_j exp(-tau)`; the sixth-category row (Corollary 7.14); the **single-cyclic-exponent collapse** over `Z`: for `(lambda+t)z + t z^2/(1-z/R)` the coefficient of `t^m` has radius exactly `R exp(-m sigma)` (Theorem 8.15), by the collision noncancellation at convergent denominators (Proposition 8.14) and the pole-multiplicity lemma (Lemma 8.11); the fixed-group criterion `CD iff sigma=0` over any fixed nonzero `Gamma` (Corollary 8.17); one positive Hahn coefficient suffices (Corollary 8.18); the `tau = log 2` comparison `R/2` against `R/2^m` (Example 8.19); the nonscalar-boundary analysis (§7.6); the SymPy suite with the cyclic fold test; `SOURCE_AUDIT.md` |
 | `09-single-loss-linearization` | *A Single-Loss Theorem for Exact-Multiplier Surcomplex Linearization*, one variable. The **tree product bound** `prod 1/|lambda^{s_v}-1| <= (C_a n)^m e^{a n}` for positively weighted forests, with the cluster threshold `1/(4n)` (Theorem 7.5). Source 08's strict-chain bound, whose polynomial factor is `n^{3r}`, becomes the chain case of this bound (Corollary 7.6(i)) and is credited there; the forward plane-tree route, **kept as route D** (§7.4: Proposition 7.17, Lemma 7.18, Proposition 7.19), which is a second proof of Theorem 7.13 for `d = 1`; several formal parameters (Corollary 7.20); the lex `Z^2` example (Example 7.21); the hypothesis-use audit (Table 5); its limitations; `repository_scope.md` |
-| `10-nonscalar-common-domain` | *Common-Domain Linearization over Surcomplex Hahn Fields: a rational-rank bound for nonscalar multipliers* (§§7.7–7.13, §26.10). The nonscalar common domain: for an exact diagonal unitary nonresonant `Lambda` with `tau < infinity`, all coefficients of the normalized conjugacy and its inverse are holomorphic on the polydisk of radius `R exp(-r_ang tau)`, over every nonzero `Gamma`, whatever the support (Theorem 7.23); the integer-minor lemma that at most `q` distinct positive exponential rates occur for a linear form in `q` variables along linearly growing integer vectors (Lemma 7.24, Corollary 7.25); marked-block contraction of colored trees, which keeps each block's divisor inside the nonlinear cone (Lemma 7.26); the product bound `limsup n^{-1} log A^Lambda_m(n) <= min(r_ang, m) tau` at fixed complexity (Theorem 7.27), with equality `tau` in rank one (Corollary 7.28); route D in several variables by colored trees, with a polynomial diagram count that has no factor `d^{n+1}` (Proposition 7.30, Lemma 7.31); the input-relative radius `R_gamma exp(-min(r_ang, ell_S(gamma)) tau)`, which improves Theorem 6.9 (Corollary 7.32); rectangular polydisks and joint holomorphy in ordinary parameters (Corollary 7.33); the exact criterion `tau < infinity` and `R exp(-r_ang tau) <= R_univ <= R exp(-tau)`, sharp for `r_ang = 1` (Theorem 7.34); the two-mode example `diag(lambda^2, lambda^3)` with `tau = 3 tau(lambda)` and any prescribed loss factor (Proposition 7.35); a rank-two zero-loss example (Example 7.36); the exact standard-library suite; `SOURCES.md` |
+| `10-nonscalar-common-domain` | *Common-Domain Linearization over Surcomplex Hahn Fields: a rational-rank bound for nonscalar multipliers* (§§7.7–7.13, §26.10). The nonscalar common domain: for an exact diagonal unitary nonresonant `Lambda` with `tau < infinity`, all coefficients of the normalized conjugacy and its inverse are holomorphic on the polydisk of radius `R exp(-r_ang tau)`, over every nonzero `Gamma`, with arbitrary well-ordered positive support (Theorem 7.23); the integer-minor lemma that at most `q` distinct positive exponential rates occur for a linear form in `q` variables along linearly growing integer vectors (Lemma 7.24, Corollary 7.25); marked-block contraction of colored trees, which keeps each block's divisor inside the nonlinear cone (Lemma 7.26); the product bound `limsup n^{-1} log A^Lambda_m(n) <= min(r_ang, m) tau` at fixed complexity (Theorem 7.27), with equality `tau` in rank one (Corollary 7.28); route D in several variables by colored trees, with a polynomial diagram count that has no factor `d^{n+1}` (Proposition 7.30, Lemma 7.31); the input-relative radius `R_gamma exp(-min(r_ang, ell_S(gamma)) tau)`, which improves Theorem 6.9 (Corollary 7.32); rectangular polydisks and joint holomorphy in ordinary parameters (Corollary 7.33); the exact criterion `tau < infinity` and `R exp(-r_ang tau) <= R_univ <= R exp(-tau)`, sharp for `r_ang = 1` and with `R_univ = R` at `tau = 0` in every angular rank; only the optimum for `r_ang >= 2` and `0 < tau < infinity` remains open (Theorem 7.34); the two-mode example `diag(lambda^2, lambda^3)` for an irrational rotation `lambda`, with `tau = 3 tau(lambda)` and any prescribed loss factor (Proposition 7.35); a rank-two zero-loss example (Example 7.36); the exact standard-library suite; `SOURCES.md` |
 
 Sources 08 and 09 are each written in their own convention, and the merge
 had to choose between them. Source 08 uses the report's convention
@@ -334,18 +339,20 @@ laws are never quoted without their drift hypothesis (Warnings 2.6 and
 8.21), and the two categories are not averaged into a single
 "intermediate case" claim. For a **nonscalar** exact multiplier the
 question was still open at the pins of sources 08 and 09. Source 10 has
-since answered it the same way as for a scalar one: every input has a
-common-domain linearizer, of radius at least `R exp(-r_ang tau)`, and
-exactly `R exp(-tau)` universally when `r_ang = 1` (Theorems 7.23 and
-7.34). Only the optimal radius for `r_ang >= 2` is open (Question 25.1).
+since answered it for every nonresonant exact diagonal unitary multiplier
+with finite `tau`: every input has a common-domain linearizer of radius at
+least `R exp(-r_ang tau)`, and exactly `R exp(-tau)` universally when
+`r_ang = 1` (Theorems 7.23 and 7.34). At `tau = 0`, the sharp universal
+radius is `R` at every angular rank. Only the optimal radius for
+`r_ang >= 2` and `0 < tau < infinity` is open (Question 25.1).
 
 Sources 08 and 09 do not contradict each other. Source 09 says it settles
 only one variable and not the drifted or cyclic questions. Source 08
 settles the scalar case in every dimension and the cyclic question in one
 variable. Both agree that the nonscalar diagonal case is open, as it was
 when they wrote. Source 10 contradicts neither: it cites their scalar
-theorem, recovers its constant only in angular rank one, and leaves the
-drifted and cyclic questions alone.
+theorem, recovers its universal radius in angular rank one and at zero rate
+in every angular rank, and leaves the drifted and cyclic questions alone.
 
 ## Correction to finite ancestry
 
@@ -414,11 +421,15 @@ See the [formalization ledger](../../FORMALIZATION.md) for exact coverage.
   radius `R exp(-r_ang tau)`, and evaluate to a bijective conjugacy of the
   corresponding finite halo. Corollary 7.32 refines the radius at a given
   exponent to `R_gamma exp(-min(r_ang, ell_S(gamma)) tau)`.
-- **Theorem 7.34** (source 10). Universal common-domain linearization holds
-  iff `tau < infinity`, and the largest universally guaranteed radius
-  satisfies `R exp(-r_ang tau) <= R_univ <= R exp(-tau)`, with equality on
-  the right when `r_ang = 1`. Proposition 7.35: for
-  `Lambda = diag(lambda^2, lambda^3)`, `r_ang = 1` and `tau = 3 tau(lambda)`,
+- **Theorem 7.34** (source 10). For an exact diagonal unitary nonresonant
+  multiplier over any nonzero `Gamma`, universal common-domain linearization
+  holds iff `tau < infinity`. At finite rate the largest universally
+  guaranteed radius satisfies `R exp(-r_ang tau) <= R_univ <= R exp(-tau)`,
+  with equality on the right when `r_ang = 1`; when `tau = 0`,
+  `R_univ = R` at every angular rank. The optimum remains open only for
+  `r_ang >= 2` and `0 < tau < infinity`. Proposition 7.35: for
+  `Lambda = diag(lambda^2, lambda^3)` with `lambda` an irrational rotation,
+  `r_ang = 1` and `tau = 3 tau(lambda)`,
   so any loss factor `0 < kappa < 1` is attained exactly by a nonscalar
   multiplier.
 - **Theorem 7.27** (source 10). At fixed tree complexity `m` the colored
@@ -458,14 +469,16 @@ limitations:
   (N94, N105). Source 10 credits the same tree expansions (their 2026
   revision, inspected in HTML) and Carletti's non-Archimedean tree formulas
   (abstract level only), and disclaims priority too (N111).
-- **The exact-multiplier answer is sharp only in angular rank one.**
+- **The higher-rank optimum is open only at positive finite rate.**
   Theorem 7.13 covers `Lambda = lambda I_d`, and sources 08 and 09 left the
   nonscalar case open because their clustering argument does not apply to
   the divisors `lambda^beta - lambda_j` (§7.6, N81, N97). Source 10's
-  Theorem 7.23 covers every exact diagonal unitary nonresonant `Lambda`,
-  but its factor `r_ang` is a proved bound, not an optimality claim: for
-  `r_ang >= 2` and `0 < tau < infinity` the optimal universal radius is
-  undetermined between `R exp(-r_ang tau)` and `R exp(-tau)` (N114).
+  Theorem 7.23 covers every exact diagonal unitary nonresonant `Lambda`
+  with finite `tau`. Its radius is sharp when `r_ang = 1`, and at
+  `tau = 0` the sharp universal radius is `R` at every angular rank. For
+  `r_ang >= 2` and `0 < tau < infinity`, the factor `r_ang` is a proved
+  bound, and the optimal universal radius is undetermined between
+  `R exp(-r_ang tau)` and `R exp(-tau)` (N114).
   Drifting multipliers in several variables, resonant spectra, Jordan
   blocks, nonunitary spectra and infinite coordinate dimension are not
   covered (N120). The prefactor of Theorem 7.27 is not explicit and not
@@ -539,8 +552,8 @@ limitations:
 Section 25 records the eleven open questions in the categories in which
 they are open. Two of them are re-scoped by sources 08 and 09, and one of
 those again by source 10. Question 25.1 (with its first statement,
-Question 8.20) is now settled for every exact diagonal unitary multiplier
-and stays open only for the **optimal radius** when `r_ang >= 2` and
+Question 8.20) is now settled for every exact diagonal unitary nonresonant
+multiplier and stays open only for the **optimal radius** when `r_ang >= 2` and
 `0 < tau < infinity`; Question 25.2 is settled in one variable and stays
 open only for the several-variable collapse over a fixed cyclic group. The
 three sources add no new question. Their remaining directions are folded
@@ -678,6 +691,37 @@ dynamics of expanding polynomials `q^{-1}P` is in
 [expanding-polynomial-dynamics](../expanding-polynomial-dynamics/); it is a
 different subject, kept separate, and answers neither N18 nor N51.
 
+## Source-10 proof review
+
+The current review covers Sections 7.7–7.13 and the corresponding limitations
+in Section 26.10. It expands the integer-minor rate proof, finite-prefix
+constant, fixed-skeleton bounds, formal uniqueness, empty-support case,
+multivariable normal convergence and inverse ancestry. Vertex Hahn labels
+`η_v` are distinct from the integer subtree weights `s_v`; rectangular radii
+and joint parameter holomorphy have explicit hypotheses and proofs.
+
+The height argument also works for subexponential heights, and its count of
+distinct rates extends to fixed infinite families by finite-subfamily
+restriction. An exponential-height Fibonacci example shows why unrestricted
+height is different. No uniform eventual rank or growing-complexity product
+bound follows. The proof supplies no effective formula for its prefactor;
+it does not prove noncomputability. At `τ = 0`, the universal radius is `R`
+at every angular rank; only the higher-rank optimum for `0 < τ < infinity`
+remains undetermined.
+
+The current primary comparison checks FMS v2 Theorem E and Proposition 5.6,
+including the non-universally-zero operator hypothesis, and Carletti's v1/v2
+abstracts and metadata. It does not upgrade the delivered audit to a full-text
+Carletti review or certify priority. The detailed scope and validation are in
+[the collection review record](../../REVIEW.md#nonscalar-dynamics-main-text-review).
+No Lean coverage is added by this review. The unchanged source-10 verifier
+was rerun with Python 3.13.14 and reproduced its preserved stdout byte for
+byte; all 44 historical audit/code/data files remain unchanged. Baseline
+and revised PDFs each passed three LaTeX passes, with the same four minor
+box notices. All 651 labels and their numbers are preserved; three of the
+149 standard statement environments have the scope clarifications above.
+Affected proof and summary pages were visually inspected.
+
 ## How to build
 
 Standalone LaTeX with an internal bibliography. No external `.bib` file, no
@@ -690,7 +734,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 A standard TeX Live or MiKTeX installation with the packages named in the
 preamble suffices. The recorded build is clean: 0 errors, 0 undefined
 references, 0 undefined citations, 0 multiply-defined labels, 0 duplicate
-PDF destinations, 0 LaTeX warnings and 0 package warnings, 171 pages. The
+PDF destinations, 0 LaTeX warnings and 0 package warnings, 172 pages. The
 three small overfull boxes (at most 3.2pt) and one underfull box predate
 source 10. All 651 labels carry the `dyn:` prefix.
 
@@ -723,17 +767,18 @@ source 10. All 651 labels carry the `dyn:` prefix.
   rows are added (entire coefficients, polynomial coefficients) with the
   note that they are new **rows**, not new rings. Theorem 7.13 decides the
   common-domain germ ring `R_n` of that table for a scalar exact multiplier,
-  and Theorem 7.34 for every exact diagonal unitary one, up to the optimal
-  radius when `r_ang >= 2`.
+  and Theorem 7.34 for every exact diagonal unitary nonresonant one with
+  finite `tau`. The sharp universal radius is `R` at zero rate in every
+  angular rank; only the optimum when `r_ang >= 2` and
+  `0 < tau < infinity` remains open.
 - **Adjacent to** `docs/surcomplex/contours-and-stokes/`. It is background
   for the period section and deliberately unused there: every integral is an
   ordinary complex line integral taken coefficient by coefficient over
   ordinary curves in a fixed domain in `C`. A period here is **not** a
   surcomplex contour integral and **not** a residue at a surcomplex point.
 - **Kept separate from** `docs/surcomplex/rank-one-berkovich/`, with an
-  explicit cross-note (§23.5). That is the one report in the
-  collection where convergence is genuine convergence, inside a fixed
-  rank-one workspace. This report works at arbitrary rank with a
+  explicit cross-note (§23.5). That report studies convergence inside a fixed
+  rank-one valued workspace. This report works at arbitrary rank with a
   deliberately rank-2 example. A Lindahl-type ultrametric disk radius and
   the maximal centered valuation ball here are **different categories**,
   and the exact-ball and shell-periodicity conclusions must not be

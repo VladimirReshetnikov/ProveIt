@@ -32,7 +32,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{remark}[theorem]{Remark}
-% Added on placement: statements share the theorem counter, and without these
+% Added during assembly: statements share the theorem counter, and without these
 % aliases cleveref names every lemma, corollary, definition, example and
 % remark a "theorem".
 \AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
@@ -95,7 +95,8 @@ The main quantitative invariant is the \emph{spanning-tree deletion gap}.
 For an edge $e$ of the bipartite support graph, let $\tau$ be the minimum
 sum of entry valuations over spanning trees and let $\tau_e^-$ be the same
 minimum over trees avoiding $e$. Then $\kappa_e=\tau_e^--\tau$ is the
-exact, uniform gain in relative valuation at entry $e$: an input change
+uniform gain in relative valuation at entry $e$, and is optimal when
+$\Gamma\ne\{0\}$: an input change
 of valuation at least $\delta>0$ produces an output change of valuation
 at least $\delta+\kappa_e$. The assertion is a nonlinear two-point
 estimate, not merely an infinitesimal derivative formula. Every change
@@ -120,8 +121,9 @@ published work and the repository at commit \texttt{\shortpin}.
 No named long-standing open problem is claimed solved, and no refereeing
 or complete machine verification is claimed. Known scaling, projection,
 and spanning-tree results are explicitly credited.
-This is an AI-assisted research draft, and no statement of it has a Lean
-formalization. It is built from a single
+This is an AI-assisted research draft. Its 16 standard statements are
+inventoried in the collection's ledger, but none has an Implementation mapping;
+no Lean proof coverage is claimed here. It is built from a single
 manuscript; \cref{scale:sec:provenance} records how that manuscript was
 placed in the collection and what was changed.
 \end{titlepage}
@@ -184,8 +186,12 @@ relative infinitesimal branch. The central estimate is
  \geq \kappa_e+\min_{a\in E}v(f_a-g_a),\qquad f,g\in\mm_K^E.
 \end{equation}
 When $f-g=s\mathbf e_e$, where $0\ne s\in\mm_K$, equality holds in
-\eqref{scale:eq:overviewbound} for a nonbridge $e$. Therefore no larger
-uniform gain can replace $\kappa_e$. This conclusion holds even when
+\eqref{scale:eq:overviewbound} for a nonbridge $e$. If $\Gamma\ne\{0\}$,
+such an $s$ exists (take $s=t^\gamma$ with $\gamma>0$), so no larger
+uniform gain can replace $\kappa_e$. When $\Gamma=\{0\}$, the
+infinitesimal domain is the singleton $\{0\}$; the coefficientwise
+sharpness below still holds, but evaluated optimality has no witness.
+The equality for nonzero changes holds even when
 minimum trees are tied and when the perturbations have nonreal
 coefficients.
 
@@ -244,8 +250,8 @@ repository file and independent expert validation are not certified. The
 repository audit was not a line-by-line review of every article or Lean
 declaration, and its indexed searches were unusable as negative evidence.
 No named long-standing open problem is claimed solved. The report is an
-AI-assisted draft; it has not been refereed; no statement of it has a Lean
-formalization, and \cref{scale:sec:verification} does not assert that the
+AI-assisted draft; it has not been refereed; none of its results has a Lean
+Implementation mapping in the ledger, and \cref{scale:sec:verification} does not assert that the
 Lean modules it outlines exist.
 \item \emph{Credited, not claimed.} Existence, uniqueness and ordinary
 real continuity of prescribed-margin scaling (Idel's review and classical
@@ -262,8 +268,9 @@ extension (\cref{scale:thm:linear}) claims no new matroid combinatorics.
 \item \emph{No convergence assertion.} Neither convergence of the alternating
 Sinkhorn iteration in an arbitrary-rank valuation topology, nor its iteration
 complexity, nor convergence of set-indexed sequences in the full surreal fine
-topology is claimed. Strong sums are coefficientwise sums, not limits of
-partial sums (\cref{scale:sec:boundaries}), and the remainder certificate
+topology is claimed. Strong sums are formed coefficientwise; strong
+summability alone does not imply convergence of partial sums
+(\cref{scale:sec:boundaries}). The remainder certificate
 (\cref{scale:cor:remainder}) does not promise that a finite Taylor degree
 reaches every requested precision at higher rank.
 \item \emph{What ``analytic'' means.} The normalization branch is given by a
@@ -279,8 +286,10 @@ integrality and uniqueness can fail
 ordered, and ``positive-leading'' refers only to the leading coefficient.
 The margins are fixed; if they move, even by relative infinitesimals, the
 bridge rigidity fails (\cref{scale:sec:boundaries}). The support is fixed.
-\item \emph{What ``sharp'' means.} $\kappa_e$ is the largest gain valid
-uniformly; equality is not asserted for every input direction
+\item \emph{What ``sharp'' means.} For $\Gamma\ne\{0\}$,
+$\kappa_e$ is the largest gain valid uniformly over infinitesimal inputs.
+Formal coefficient sharpness also holds for the trivial group;
+equality is not asserted for every input direction
 (\cref{scale:thm:sharp} and the remark after it). Optimality of the exponent
 $N$ in \cref{scale:prop:cutbound} is not claimed.
 \item \emph{Which costs.} The tree costs of the sharp theorem are valuations
@@ -322,10 +331,11 @@ The delivered files \texttt{SOURCE\_AUDIT.md} and \texttt{PROOF\_AUDIT.md}
 state the audit boundaries in more detail.
 
 \subsection{Relation to other reports of the collection}\label{scale:sec:neighbours}
-No proof in this report depends on another report, and no other report
-depends on this one. The comparisons below are with the articles as committed
-at \texttt{52c7ab6}; theorem numbers of other reports are those of their
-committed PDFs.
+The proofs in this report are given directly; the neighbouring reports below
+supply comparisons. These were added during editorial assembly at
+\texttt{ed88b8f} and checked again against the source labels at
+\texttt{034ab96} during the main-text review. Historical search claims
+remain tied to their snapshots in \cref{scale:sec:comparison}.
 
 \paragraph{Markov generators at every scale.}
 The Markov report \cite{RepoMarkov}, held in
@@ -402,9 +412,9 @@ generators ($R_0=\C$) gives the strong-evaluation part of Lemma~9.5 there
 in a finitely generated subalgebra of $\OO$, and \cref{scale:ex:badformal}
 shows why arbitrary coefficients in $\OO$ are not allowed. Example~9.2 there
 (\nolinkurl{spec:ex:nonconvergence}) and the last subsection of
-\cref{scale:sec:boundaries} make the same point with the same elements
-$(0,1)$ and $(1,0)$ of $\Z^2_{\mathrm{lex}}$: strong sums are not limits of
-partial sums. Each report keeps its own proofs.
+\cref{scale:sec:boundaries} give the same failure of partial-sum convergence,
+with the elements $(0,1)$ and $(1,0)$ of $\Z^2_{\mathrm{lex}}$.
+Strong summability alone does not imply such convergence. Each report keeps its own proofs.
 \item \emph{No new exponents.} Its Theorem~9.18 (\nolinkurl{spec:thm:svd}) keeps
 singular value decompositions in the subgroup generated by the input
 supports, as \cref{scale:cor:descent} keeps the local normalization in
@@ -421,15 +431,16 @@ gain $\kappa_e$ is a combinatorial invariant of the support graph and the
 entry valuations, not a smallest singular value used as a condition number
 (\cref{scale:sec:intro}), and singular-value stability supplies neither the
 whole-polydisc support argument nor the tree-deletion sharpness
-(\cref{scale:sec:comparison}). This report does not use the word
-\emph{spectrum}.
+(\cref{scale:sec:comparison}).
 
 \paragraph{Prony reconstruction.}
 The nonuniform certificate of the Prony reconstruction report
 (Theorem~8.1 there, \nolinkurl{prony:thm:graph}) is also a minimum-cost path
 computation in an ordered group. Its graph is a directed graph of moment
-interactions with a positive-cycle hypothesis, and its path minima bound node
-errors. It involves no spanning trees and no normalization, and its moment
+interactions. Its sufficient reconstruction certificate requires positive
+cycle weights and the strict-ball inequalities
+$\rho_i-E_i>\delta_i$ for every $i$; its path minima then bound node errors.
+Those letters are local to that report. It involves no spanning trees and no normalization, and its moment
 precisions $\kappa_k$ are unrelated to the gaps $\kappa_e$.
 
 \subsection{Words and symbols used differently elsewhere in the collection}
@@ -498,8 +509,10 @@ source \texttt{surreal\_matrix\_scaling.tex}, its PDF, a README, the audit
 files \texttt{SOURCE\_AUDIT.md} and \texttt{PROOF\_AUDIT.md}, the program
 \texttt{code/verify.py} with its recorded output and console record, a build
 record with its console log, a requirements file and a build script. It was
-placed at commit \texttt{52c7ab6}. Its own repository comparison is pinned to
-\texttt{\pin} (\cref{scale:sec:comparison}).
+placed as raw source at commit \texttt{30dfb4f}; editorial assembly at
+\texttt{ed88b8f} added the report PDF and the material described below. Its
+own repository comparison is pinned to \texttt{\pin}
+(\cref{scale:sec:comparison}).
 
 There is no second source, so there was no merge and no choice between
 sources. Nothing was selected out of a larger body of work. Every theorem,
@@ -508,17 +521,17 @@ member of the surreal family because its positive matrices, the global
 scaling theory and the tree costs are real Hahn objects; the surcomplex
 branch of \cref{scale:thm:existence} extends that real theory.
 
-Placement changed the following and nothing else.
+Raw placement and subsequent editorial assembly made these changes.
 \begin{enumerate}[label=(\alph*)]
-\item The source was renamed \texttt{article.tex}. The two audit files, the
+\item On raw placement, the source was renamed \texttt{article.tex}. The two audit files, the
 program and everything in \texttt{data/} are kept byte-identical. The build
 script was moved to \texttt{code/} and the requirements file to
 \texttt{data/}. The delivered PDF and README are not shipped.
 \item All 88 labels of the manuscript already carried the prefix
-\texttt{scale:} and are unchanged. The labels added on placement carry the
-same prefix.
+\texttt{scale:} and are unchanged. The labels added during assembly carry
+the same prefix.
 \item \Cref{scale:sec:nonclaims,scale:sec:neighbours,scale:sec:words,scale:sec:provenance}
-were added, and so were \cref{scale:rem:support,scale:rem:trees}, which
+were added during assembly, and so were \cref{scale:rem:support,scale:rem:trees}, which
 point to other reports. They were placed so that every theorem, equation
 and section number of the manuscript is unchanged. The title-page status
 paragraph now states the draft status.
@@ -526,7 +539,7 @@ paragraph now states the draft status.
 kept as provenance (the paragraph ``Since the pin'' in
 \cref{scale:sec:comparison}, and \cref{scale:app:build}, whose build
 instructions now describe this directory). \Cref{scale:sec:verification}
-records a rerun of the checks on placement.
+records a rerun of the checks during assembly.
 \item The formal series written $F(X)$ in \cref{scale:lem:evaluation} and
 \cref{scale:ex:badformal} was renamed $\Phi(X)$, since $F$ is the real Hahn
 field.
@@ -535,21 +548,32 @@ every cross-reference to a proposition, lemma, corollary, definition,
 example or remark printed the word ``theorem''. Six lines in the preamble now make each
 reference print the right name; no number changed.
 \end{enumerate}
-Placement left the mathematics unchanged.
+These assembly changes left the mathematics unchanged. The subsequent
+main-text review of Sections 1--14 expanded proofs and corrected the scope
+and comparisons: it distinguished evaluated sharpness from formal
+coefficient sharpness at the trivial group, specified strict feasibility
+on the whole support, corrected two published theorem citations, and
+separated strong summability from partial-sum convergence. The delivered
+audit, code and data remain unchanged. The review is mathematical reading,
+not Lean coverage or a literature-priority certificate; the collection's
+\nolinkurl{docs/REVIEW.md} records its scope.
 
 \section{Literature and repository comparison}\label{scale:sec:comparison}
 
 \subsection{The closest published precedents}
 The prescribed-margin matrix-scaling problem and its support conditions
 are classical. Idel's review \cite{Idel} is a useful entry point;
-its Theorem~3.1 gives a general scaling criterion, and its Section~4.3
-records continuity results. The present article does not reclaim
+its Theorem~3.1 gives a general scaling criterion, and Theorem~4.5
+(p.~26 of the cited v1) gives continuity on the fixed prescribed-margin
+pattern class. The present article does not reclaim
 existence, uniqueness, or ordinary real continuity.
 
-Sharify, Gaubert and Grigori \cite{SGG}, Theorem~2.6, prove that the
-entries obtained by scaling the Hadamard deformation $A^{(p)}$ have
-convergent generalized Dirichlet expansions in $t=\exp(-p)$.
-Their analysis also gives convergence to the optimal-assignment face.
+Sharify, Gaubert and Grigori \cite{SGG}, Theorem~2.4 (p.~6 of v2),
+prove that for a nonnegative square matrix $A$ with total support,
+the bistochastic scaling of its Hadamard deformation $A^{(p)}$ has
+absolutely convergent generalized Dirichlet expansions in $t=\exp(-p)$.
+Their Theorem~2.3 gives convergence to the unique maximum-entropy point
+of the optimal-assignment face.
 This is an important prior connection between matrix scaling,
 generalized series, and tropical methods. Our question is different:
 we fix an arbitrary-rank Hahn matrix, allow arbitrary strongly defined
@@ -618,20 +642,21 @@ no assertion that every publication or every repository line has been
 excluded as a possible precedent.
 
 \paragraph{Since the pin.}
-The manuscript was placed in the collection at commit \texttt{52c7ab6},
-eight commits after its pin. The statements above remain true of the pin
-and are kept as provenance; the following has changed or was checked on
-placement. The catalogue \texttt{docs/README.md} did not change between the
-two commits. It still lists 36 reports, and it does not yet list this
-report or the three other reports placed by the same commit. The directory
+The manuscript was placed as raw source at commit \texttt{30dfb4f}. The
+statements above describe the pin and are kept as provenance. This paragraph
+was added during editorial assembly at \texttt{ed88b8f}; its catalogue and
+search observations describe the raw-placement snapshot. The catalogue
+\texttt{docs/README.md} did not change between the pin and raw placement:
+it listed 36 reports, excluding this report and the three others placed
+with it. The directory
 \texttt{docs/new} held only its README at the pin, as stated above. Commit
 \texttt{330aa79} then added nine delivered archives, this manuscript's among
-them; commit \texttt{52c7ab6} unpacked, placed and removed all nine, so the
-directory again holds only its README. The positive-control file
-\nolinkurl{Surreal/Algebra/MarkovResolvent.lean} is still present. It proves
+them; commit \texttt{30dfb4f} unpacked, placed and removed all nine, so that
+snapshot again held only the README in this directory. The positive-control
+file \nolinkurl{Surreal/Algebra/MarkovResolvent.lean} was still present. It proves
 finite resolvent and projection-flag algebra for the Markov report and
 contains no spanning-tree, forest-sum or Cauchy--Binet statement.
-At \texttt{52c7ab6}, a full-text search of every LaTeX source in the
+At \texttt{30dfb4f}, a full-text search of every LaTeX source in the
 collection finds the words \texttt{Sinkhorn}, \texttt{bistochastic},
 \texttt{Kirchhoff} and \texttt{transfer current} only in this report.
 The phrase \texttt{spanning tree} occurs elsewhere only once, in the proof of
@@ -640,8 +665,8 @@ means a directed spanning tree rooted at a vertex. The phrase
 \texttt{matrix scaling} occurs elsewhere only once, in the outline of
 remaining Lean development of the Prony reconstruction report
 (\nolinkurl{docs/surcomplex/prony-reconstruction-at-surreal-scales/}); that
-sentence does not concern the prescribed-margin problem studied here. No
-Lean source mentions Sinkhorn scaling, spanning trees, doubly stochastic
+sentence does not concern the prescribed-margin problem studied here. At that same raw-placement snapshot, no
+Lean source mentioned Sinkhorn scaling, spanning trees, doubly stochastic
 matrices or Kirchhoff's theorem. These searches, like the original ones,
 locate words, not results stated under other names. The comparison with the
 two nearest reports is made precise in \cref{scale:sec:neighbours}.
@@ -741,12 +766,28 @@ exponent $\gamma$, \cref{scale:lem:neumann} bounds the length of all
 words summing to $\gamma$. Thus only bounded total degrees $|\nu|$
 can contribute. There are only finitely many such multi-indices.
 This proves local finiteness at $\gamma$, while $S^*$ proves
-well-ordering of the union of supports. Expanding finite polynomial
-expressions for the coefficients and applying the same argument to
-products and compositions licenses the corresponding rearrangements.
-No bound on the polynomial degrees of the individual $b_\nu$ is
-required, since there are only finitely many relevant $\nu$ at a
-fixed exponent.
+well-ordering of the union of supports. If an input coordinate is zero,
+terms using a positive power of it vanish and can simply be omitted.
+For each of the finitely many relevant coefficients, its polynomial
+expression in the $a_j$ has finitely many terms. Constant contributions
+of the generators cause no extra infinite sum. Thus no uniform bound
+on the polynomial degrees of all the $b_\nu$ is required.
+
+For completeness, let $G_1,\ldots,G_\ell\in R_0[[X]]$ have zero
+constant term and let $\Phi\in R_0[[Y_1,\ldots,Y_\ell]]$. Each
+$G_j(x)$ lies in $\mm$: every nonzero evaluated term has positive input
+degree, and the union of its supports is well ordered and positive.
+At a fixed Hahn exponent, word finiteness bounds the total input degree.
+Since each inner monomial has positive degree, this also bounds the outer
+degree and leaves only finitely many choices of inner monomials. Expanding
+their finitely many coefficients therefore licenses the rearrangement
+\[
+ \operatorname{ev}_x(\Phi\circ G)
+   =\operatorname{ev}_{G(x)}(\Phi).
+\]
+The same finite-contribution argument proves compatibility with sums
+and products. This proves the composition assertion, including the case
+of zero inner series, without a topological limit.
 \end{proof}
 
 \begin{example}[Why integral coefficients alone do not suffice]
@@ -851,8 +892,11 @@ Cauchy--Binet gives
  =\sum_{|T|=N-1}(\det B_T)^2\prod_{a\in T}p_a.
 \]
 An incidence minor vanishes unless $T$ is a spanning tree; for a tree
-it is $\pm1$. These facts follow, for example, by deleting a leaf
-and inducting, while a disconnected choice has deficient rank.
+it is $\pm1$. A connected selection of $N-1$ edges is a tree;
+deleting a leaf other than the root and expanding its row proves the
+$\pm1$ assertion by induction. A disconnected selection has deficient
+rank: a component not containing the root supplies a nonzero left-kernel
+vector, its vertex indicator.
 This proves the determinant formula. Every summand is positive-leading,
 so \eqref{scale:eq:nocancel} proves nonvanishing.
 
@@ -860,7 +904,8 @@ To obtain the vector identity, set $u=L_p^{-1}BW_pf$.
 For coordinate $k$, replace column $k$ of $B^{\mathsf T}$ by $f$,
 calling the resulting $m\times(N-1)$ matrix $C_k$. Then $BW_pC_k$
 is $L_p$ with column $k$ replaced by $BW_pf$. Cauchy--Binet and
-Cramer's rule yield
+Cramer's rule yield the following formula, where $(C_k)_T$ selects
+\emph{rows} indexed by $T$, whereas $B_T$ selects columns:
 \[
  u_k=\frac{1}{Z(p)}\sum_T \det(B_T)w_T(p)\det((C_k)_T)
      =\frac{1}{Z(p)}\sum_T w_T(p)(u_T)_k.
@@ -870,8 +915,19 @@ $\det((C_k)_T)=\det(B_T^{\mathsf T})(u_T)_k$.
 Multiplying by $B^{\mathsf T}$ proves the interpolation formula.
 
 The projection identities follow directly from
-$L_p=BW_pB^{\mathsf T}$. Finally
-$v(w_T/Z)\geq0$ by the determinant formula and no leading
+$L_p=BW_pB^{\mathsf T}$. More explicitly, $\Pi_p$ takes values in
+$\im B^{\mathsf T}$ and fixes that space, since
+$\Pi_pB^{\mathsf T}=B^{\mathsf T}$. Also
+$BW_p\Pi_p=BW_p$, so $\Pi_pf=0$ implies $BW_pf=0$; the converse
+is immediate from its formula. Hence
+\[
+ \im\Pi_p=\im B^{\mathsf T},\qquad
+ \ker\Pi_p=\ker(BW_p),\qquad
+ \im H_p=\ker(BW_p),\qquad
+ \ker H_p=\im B^{\mathsf T}.
+\]
+These descriptions explain the complementary projections used below.
+Finally $v(w_T/Z)\geq0$ by the determinant formula and no leading
 cancellation. Each $\Pi_T$ has integer entries. Finite sums therefore
 show $\Pi_p,H_p\in\operatorname{Mat}_m(\OO)$.
 \end{proof}
@@ -962,7 +1018,9 @@ equations are equivalent to
 Indeed, the cut condition is $H_ph=H_pf$, and conservation is
 $\Pi_p(h+R(h))=0$. Adding these two projected identities gives
 \eqref{scale:eq:fixedpoint}; the converse follows from
-\cref{scale:thm:tree}.
+\cref{scale:thm:tree}. The image and kernel descriptions extend
+coefficientwise to the modules over $K[[X]]$, giving the same equivalence
+for the formal equations.
 
 Now work formally in variables $X=(X_e)$. Write
 $\mathcal H_p=\sum_{d\geq1}h_d$ with each $h_d$ homogeneous of degree
@@ -994,7 +1052,8 @@ nonzero coordinate of $h$ or $k$, since there are finitely many.
 The formal factorization
 \[
  R(z)-R(w)=(z-w)\psi(z,w),\qquad
- \psi\in(z,w)\C[[z,w]],
+ \psi(z,w)=\sum_{n\geq2}\frac1{n!}
+     \sum_{j=0}^{n-1}z^{n-1-j}w^j\in(z,w)\C[[z,w]],
 \]
 together with strong evaluation gives
 \[
@@ -1022,7 +1081,8 @@ $BW_p(\exp h-\mathbf1)=0$.
 \begin{proof}
 Existence of a potential over $K$ follows from the cut condition.
 Restrict that condition to any spanning tree. The inverse of
-$B_T^{\mathsf T}$ has integral entries, so the root-normalized
+$B_T^{\mathsf T}$ has integer entries $0,1,-1$, given by signed
+root-path sums. Thus the root-normalized
 potential is a finite signed sum of infinitesimal edge differences
 and is itself infinitesimal. Uniqueness follows from the rank of $B$.
 For an edge oriented from row $i$ to column $j$, the multiplier is
@@ -1040,8 +1100,15 @@ The weighted cycle coordinates are especially simple:
 \end{equation}
 Consequently $x\mapsto\NN_p(x)$ is a bijection from
 $\ker(BW_p)\cap\mm^E$ onto the balanced infinitesimal set, with
-inverse $h\mapsto H_ph$. Its tangent space has dimension
-$m-N+1$ over $K$. This is a support-controlled analytic chart in
+inverse $h\mapsto H_ph$. Indeed $H_p\NN_p(x)=H_px=x$ on that
+kernel. Conversely, for balanced $h$, gauge invariance and retraction give
+$\NN_p(H_ph)=\NN_p(h)=h$; $H_ph-h$ is an infinitesimal cut.
+Integrality of $H_p$ ensures that these maps preserve the infinitesimal
+domains. At a balanced point $h$, the formal
+linearization of conservation has kernel
+$\ker(B\diag(p_e\exp h_e))$. The diagonal is invertible and $B$
+has rank $N-1$, so this formal tangent space has dimension $m-N+1$
+over $K$; at $h=0$ it is $\ker(BW_p)$. This is a support-controlled analytic chart in
 Hahn coordinates, not an assertion about classical holomorphic
 manifolds in the full surreal fine topology.
 
@@ -1160,8 +1227,11 @@ of the leading coefficient for the relative output error.
 \end{proof}
 
 \begin{remark}[What ``sharp'' means]
-The quantity $\kappa_e$ is the largest gain valid uniformly over all
-infinitesimal changes and all centers in this relative polydisc.
+If $\Gamma\ne\{0\}$, the quantity $\kappa_e$ is the largest gain
+valid uniformly over all infinitesimal changes and all centers in this
+relative polydisc: any nonzero $s\in\mm$ tests its own coordinate.
+For $\Gamma=\{0\}$ there is only the zero input, so this evaluated
+optimality assertion is replaced by the formal coefficient assertion below.
 A particular perturbation can have a larger gain because of cycle
 cancellation or because it is supported far away. The chain theorem
 below gives exact examples of such stronger, location-sensitive gains.
@@ -1183,8 +1253,11 @@ $q_p(g)$.
 \end{theorem}
 \begin{proof}
 Set formally $\widetilde p_e=p_e\ph(\mathcal H_p(X)_e)$.
-The argument for the secant identity, now in the formal power-series
-ring, gives
+The formal weighted Laplacian has constant term $L_p$, so its determinant
+has nonzero constant term $Z(p)$ and is a unit in $K[[X]]$.
+The adjugate, Cauchy--Binet and Cramer identities used for tree interpolation
+therefore apply over this formal ring as well. No notion of positive-leading
+$X$-series is needed. The formal secant argument gives
 \[
  \mathcal H_p(X)_e=
  \sum_{T:e\notin T}
@@ -1200,13 +1273,22 @@ It has coefficients in $\OO$ and constant term $1$. Therefore its
 formal inverse has coefficients in $\OO$. For every tree avoiding
 $e$, the scalar $w_T(p)/Z(p)$ has valuation at least $\kappa_e$.
 All other factors in the row formula have integral coefficients.
-The first bound in \eqref{scale:eq:coefficientbound} follows.
-Since $\kappa_e\geq0$, every positive power of that row series also
+The first bound in \eqref{scale:eq:coefficientbound} follows. For a
+bridge the row sum is empty, so the entire formal row is zero and both
+bounds with $\kappa_e=+\infty$ hold. For a nonbridge,
+since $\kappa_e\geq0$, every positive power of that row series also
 has all its nonzero coefficients of valuation at least $\kappa_e$;
 this proves the exponential bound. The coefficient of $X_e$ is
 $(H_p)_{ee}=Z_e^-(p)/Z(p)$, with the asserted leading data.
 
-For a center $g$, uniqueness gives the exact recentering identity
+For a center $g$, put $h=\NN_p(g+x)$, $k=\NN_p(g)$ and $r=h-k$.
+Then $r-x\in\im B^{\mathsf T}$ and
+\[
+ B\diag(q_p(g))(\exp r-\mathbf1)
+   =B\diag(p)(\exp h-\exp k)=0.
+\]
+The vector $r$ is infinitesimal, and $q_p(g)$ has the same positive leading
+data as $p$. Uniqueness at this new base gives the exact recentering identity
 \begin{equation}\label{scale:eq:recenter}
  \NN_p(g+x)-\NN_p(g)=\NN_{q_p(g)}(x),\qquad x\in\mm^E.
 \end{equation}
@@ -1219,7 +1301,7 @@ proved result with that base.
 
 \begin{corollary}[Finite-degree precision certificate]
 \label{scale:cor:remainder}
-If $f\in\mm^E$ is nonzero, $\delta=\min_e v(f_e)$, and
+If $D\in\N_0$, $f\in\mm^E$ is nonzero, $\delta=\min_e v(f_e)$, and
 $h^{[D]}=\sum_{d=1}^D h_d(f)$, then
 \begin{equation}\label{scale:eq:remainder}
  v\bigl(\NN_p(f)_e-h^{[D]}_e\bigr)
@@ -1231,7 +1313,10 @@ An analogous bound holds for truncating the relative output series.
 Every term of total degree $d>D$ has valuation at least
 $\kappa_e+d\delta$. The family is strongly summable by the existence
 theorem. Its sum cannot acquire an exponent below the common lower
-bound $\kappa_e+(D+1)\delta$.
+bound $\kappa_e+(D+1)\delta$. The relative output series
+$\exp(\mathcal H_p)-\mathbf1$ also has coefficients in $R_p$ and zero
+constant term, so the same evaluation lemma and coefficient bound apply.
+The case $D=0$ uses the empty truncation; bridge rows are identically zero.
 \end{proof}
 This is an exact certificate, but it is not a promise that finite
 Taylor degree reaches every requested precision. In a higher-rank
@@ -1255,6 +1340,7 @@ minimum-valuation spanning tree; $\kappa_e=0$ precisely when some
 minimum tree avoids $e$.
 \end{theorem}
 \begin{proof}
+The finite nonempty set of simple alternative paths attains its minimum.
 Choose a minimum-weight spanning tree $T_0$ of $\GG\setminus e$.
 The maximum edge cost on its $u$--$v$ path is $b_e$.
 To prove this familiar bottleneck property, remove a maximum-cost
@@ -1289,7 +1375,15 @@ An edge outside the chosen minimum tree already has gain zero.
 For a tree edge, deleting it gives a cut; the cheapest other crossing
 edge determines its replacement cost. The difference from the
 original edge cost is its gain, or $+\infty$ when no replacement
-exists. These are standard finite minimum-spanning-tree operations;
+exists. To justify this certificate for any chosen minimum tree $T$, let
+$f$ be the cheapest replacement for $e\in T$. For any tree $U$ avoiding
+$e$, its endpoint path crosses the cut of $T\setminus e$ in an edge $a$
+with $c_a\geq c_f$. The tree $U+e-a$ and minimality of $T$ give
+\[
+ c(T)\leq c(U)+c_e-c_a\leq c(U)+c_e-c_f.
+\]
+Thus $T-e+f$ attains $\tau_e^-=c(T)-c_e+c_f$. This argument includes ties.
+These are standard finite minimum-spanning-tree operations;
 the new use is the precision certificate for a nonlinear Hahn
 normalization.
 
@@ -1399,7 +1493,8 @@ cannot cancel.
 
 Let $D_{a,b}$ be the determinant of the principal interval indexed
 from $a$ to $b$, with the empty determinant equal to $1$.
-The continuant recurrence is
+The initial values are $D_{a,a}=M_{aa}$ and the empty determinant $1$.
+For $b\geq a+1$ the continuant recurrence is
 \[
  D_{a,b}=M_{bb}D_{a,b-1}-M_{b-1,b}^2D_{a,b-2}.
 \]
@@ -1445,7 +1540,10 @@ $v(x_{i-1})=v(x_i)+\gamma_{i-1}>v(x_i)$, so the two summands in
 $j_{ii}=x_{i-1}+x_i$ cannot cancel at the leading exponent.
 The first diagonal entry is $j_{11}=x_1$ and the last is
 $j_{nn}=x_r$. Since all $d_i$ have valuation zero, the diagonal
-formulas follow.
+formulas follow. For the smallest chain $n=2$, $M$ has one entry,
+$x_1\sim s a_1/2$, both diagonal relative responses have valuation
+$\delta+\gamma_1$, and both off-diagonal relative responses have valuation
+$\delta$. This also checks the empty sums in the statement.
 \end{proof}
 
 \subsection{A rank-two example}
@@ -1576,8 +1674,9 @@ proves \eqref{scale:eq:cutbound} and its reciprocal.
 \begin{corollary}[The positive normalization is the local branch]
 \label{scale:cor:positivebranch}
 Assume $\Gamma$ is divisible and $A,A'$ are positive matrices over
-$F$ on the same connected support, with strictly positive feasible
-fixed margins. Let $P,P'$ be their positive normalizations.
+$F$ on the same connected support, with fixed margins realized by a matrix
+strictly positive on every edge of that support. Let $P,P'$ be their
+positive normalizations.
 If $A'_e/A_e\in1+\mm_F$ for every edge, put
 $f_e=\log(A'_e/A_e)$. Then
 \[
@@ -1589,11 +1688,15 @@ base matrix $P$.
 \end{corollary}
 \begin{proof}
 A finite maximum of the kernel ratios, their reciprocals, and $1$
-gives an $\eta\in1+\mm_F$ as in the cut bound. Hence
+gives an $\eta\in1+\mm_F$ as in the cut bound. Its positive and
+negative integer powers also lie in $1+\mm_F$. Since the infinitesimals
+are order-convex, the inequalities
+$\eta^{-N}\leq P'_e/P_e\leq\eta^N$ imply
 $P'_e/P_e\in1+\mm_F$. The vertex numbers used in that proof may
-be divided by a root value; their largest-to-smallest ratio is in
-$1+\mm_F$, so all root-normalized vertex numbers lie in
-$1+\mm_F$. Their restricted logarithms give an infinitesimal
+be divided by a root value. Their largest-to-smallest ratio is bounded by
+$\eta^{N-1}$, so every root-normalized ratio lies between
+$\eta^{-(N-1)}$ and $\eta^{N-1}$ and thus in $1+\mm_F$.
+Their restricted logarithms give an infinitesimal
 potential $u$ with
 \[
  \log(P'/P)-f=B^{\mathsf T}u.
@@ -1601,6 +1704,12 @@ potential $u$ with
 The margin equation is automatic. Uniqueness in
 \cref{scale:thm:existence} now identifies $P'$ with $q_P(f)$.
 \end{proof}
+The support-feasibility hypothesis means more than positive margin numbers
+and a nonnegative feasible matrix. On the support of
+$\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)$, row and
+column margins $(1,1)$ force the off-diagonal entry to be zero; no positive
+diagonal scaling can realize them on the entire support.
+
 The distinction between $A$ and its normalized matrix $P$ matters:
 the costs in the sharp theorem are valuations of the base
 \emph{normalized entries}, not, in general, valuations of the
@@ -1629,8 +1738,8 @@ polydisc. Let $\mathcal B$ be the column bases of $B$ and define
                               \sum_{a\in T}v(p_a),
  \qquad \kappa_{B,e}=\tau_{B,e}^--\tau_B.
 \end{align*}
-The nonlinear two-point inequality, one-coordinate equality, and
-all Taylor-coefficient bounds of \cref{scale:thm:sharp,scale:thm:coeffgain}
+An empty deletion minimum is $+\infty$. The nonlinear two-point
+inequality, one-coordinate equality, and all Taylor-coefficient bounds of \cref{scale:thm:sharp,scale:thm:coeffgain}
 hold with these basis gaps. A column contained in every basis has
 an exactly fixed normalized coordinate. In the leading amplitude
 formula, each basis term acquires the factor $(\det B_T)^2$.
@@ -1664,12 +1773,25 @@ identity and remains valid. Repeating its rowwise proof gives the
 basis-gap bound and exact equality for $f-g=s\mathbf e_e$.
 The same formal denominator argument proves the coefficient bounds.
 The leading determinant-square factors are exactly those displayed
-in $Z_B$.
+in $Z_B$. If $e$ belongs to every basis (a coloop), every row in the
+formula for $(H_pf)_e$ vanishes, so its normalized coordinate is exactly
+$p_e$. A zero column belongs to no basis and has gap zero; its row in $\Pi_p$
+is zero and its logarithmic response is precisely $f_e$.
+The convention also covers $r=0$: the unique basis is empty, its determinant
+and weight are $1$, and the normalization is the identity. If $m=0$,
+full row rank forces $r=0$ and there are no coordinate assertions.
 \end{proof}
 The hypothesis that $B$ has real constant entries is explicit.
 This theorem does not assert the same basis-cost formula for an
 arbitrary Hahn-valued constraint matrix, where minors and basis
-interpolation coefficients can carry additional valuations.
+interpolation coefficients can carry additional valuations. For example,
+take $B=(1,\ t^\beta)$, $\beta>0$, and $p=(1,1)$. Both column bases
+have entry-cost sum zero, but
+\[
+ (H_p)_{11}=\frac{t^{2\beta}}{1+t^{2\beta}}
+\]
+has valuation $2\beta$, rather than the zero predicted by the formula
+that ignores the constraint minors.
 
 \section{Surreal specialization and preservation of the support group}
 \label{scale:sec:surreal}
@@ -1733,8 +1855,8 @@ theorems are genuine theorems about finite surreal and surcomplex
 matrices, not statements about formal symbols awaiting an
 interpretation.
 
-For global positive scaling, include a positive feasible witness and
-pass to the divisible hull of the input support group. The resulting
+For global positive scaling, include a feasible witness positive on every
+edge of the prescribed support and pass to the divisible hull of the input support group. The resulting
 real Hahn field is real closed, so \cref{scale:prop:global} gives
 existence there and hence in $\No$. Uniqueness in $\No$ follows by
 placing any two proposed finite answers in one larger set-sized
@@ -1819,7 +1941,8 @@ The cross-ratio equation for diagonal equivalence with $A$ is
  +\tfrac23(1-\exp s)z
  +\tfrac13(\exp s-1)=0.
 \end{equation}
-Its discriminant has leading term $-(16/9)t^{2\delta}$.
+Its discriminant is exactly $\tfrac{16}{9}(1-\exp s)$ and hence has
+leading term $-(16/9)t^{2\delta}$.
 It therefore has two square roots in $K$, obtained from
 $\pm(4i/3)t^\delta$ times a binomial series in $1+\mm$.
 The two roots of \eqref{scale:eq:phasequadratic} satisfy
@@ -1921,10 +2044,13 @@ underlying graphs with different cost groups where explicitly stated.
 
 The program writes \texttt{data/verification.json} next to its own
 \texttt{code/} directory, so a run replaces the recorded file; it should be
-run on a copy of this directory. When the report joined the collection, such
-a run under Python~3.14.4 and SymPy~1.14.0 passed in about twenty seconds and
+run on a copy of this directory. During editorial assembly, such a run under
+Python~3.14.4 and SymPy~1.14.0 passed in about twenty seconds and
 reproduced every count above. The file it wrote differed from the recorded
-one only in the Python version field and in line endings.
+one only in the Python version field and in line endings. The main-text
+proof review reran the unchanged suite on a scratch copy under Python~3.13.14
+and SymPy~1.14.0; it passed and matched the historical JSON except for the
+Python version. The historical files were not overwritten.
 
 These checks are independent corroboration of finite formulas, not
 a proof of strong Hahn summability, arbitrary-rank existence, or
@@ -1987,8 +2113,9 @@ Three results form the core of this article. First, a positive-leading
 Hahn matrix has a unique surcomplex normalization on the entire
 relative infinitesimal polydisc, with a finite-generator support proof
 that works at arbitrary rank. Second, a finite spanning-tree deletion
-gap is the exact uniform nonlinear gain in each entry, with matching
-Taylor-coefficient bounds and one-coordinate leading amplitudes.
+gap is a uniform nonlinear gain in each entry, optimal when
+$\Gamma\ne\{0\}$, with matching Taylor-coefficient bounds and
+one-coordinate leading amplitudes.
 Third, a chain admits explicit nonlinear propagation laws in which
 successive link valuations add.
 
@@ -2071,6 +2198,8 @@ repository's existing reports, and its delivery changed no repository
 file; \cref{scale:sec:provenance} records how it was placed.
 
 \begin{thebibliography}{99}
+\small
+\raggedright
 \bibitem{BM}
 A. Berarducci and V. Mantova,
 \emph{Surreal numbers, derivations and transseries},
@@ -2104,14 +2233,14 @@ Proceedings of the London Mathematical Society, third series,
 
 \bibitem{Idel}
 M. Idel, \emph{A review of matrix scaling and Sinkhorn's normal form
-for matrices and positive maps}, arXiv:1609.06349 (2016).
-\url{https://arxiv.org/abs/1609.06349}.
+for matrices and positive maps}, arXiv:1609.06349v1 (2016).
+\url{https://arxiv.org/abs/1609.06349v1}.
 
 \bibitem{SGG}
 M. Sharify, S. Gaubert and L. Grigori,
 \emph{Solution of the optimal assignment problem by diagonal scaling
 algorithms}, arXiv:1104.3830, version 2 (2013; first version 2011).
-\url{https://arxiv.org/abs/1104.3830}.
+\url{https://arxiv.org/abs/1104.3830v2}.
 
 \bibitem{Tarski}
 A. Tarski, \emph{A Decision Method for Elementary Algebra and Geometry},
@@ -2131,7 +2260,8 @@ commit \texttt{\shortpin}, inspected 22 September 2026.
 AI-assisted research report in the Surreal repository,
 \texttt{docs/surreal/markov-generators-at-every-scale/}.
 Detailed README inspected at commit \texttt{\shortpin}; the article was
-compared on placement at commit \texttt{52c7ab6}.
+compared during editorial assembly at commit \texttt{ed88b8f}; cited
+statements rechecked at \texttt{034ab96} during the proof review.
 \repo.
 
 \bibitem{RepoSpectral}
@@ -2140,7 +2270,8 @@ multiscale stability, exact determinantal ramification, and Hankel
 square-class profiles}, AI-assisted research report in the Surreal
 repository, \texttt{docs/surcomplex/spectral-theory/}.
 README lines 1--180 inspected at commit \texttt{\shortpin}; the article
-was compared on placement at commit \texttt{52c7ab6}.
+was compared during editorial assembly at commit \texttt{ed88b8f}; cited
+statements rechecked at \texttt{034ab96} during the proof review.
 \repo.
 \end{thebibliography}
 \end{document}

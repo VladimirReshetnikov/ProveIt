@@ -455,6 +455,52 @@ angles in `(0, pi)`, with the normalized dot product and area as cosine
 and sine coordinates. Their three angles sum exactly to ordinary pi,
 including their infinitesimal parts. The included-angle cosine and area
 laws also hold without restrictions on side lengths.
+Every such triangle has a unique circumcircle with positive actual radius
+`abc/(4*area)`. All three side-to-sine ratios equal twice that radius,
+and the tangent law has positive denominators on its prescribed domains.
+The least of the three side valuations is attained at least twice.
+Right triangles are characterized by Pythagoras. Each acute angle is the
+inverse tangent of its opposite-to-adjacent leg ratio, and explicit
+triangles realize every positive surreal slope, including infinite slopes.
+Positive side lengths determine a noncollinear triangle exactly when all
+three strict triangle inequalities hold. Its angles are recovered by
+inverse cosine, and equal side data gives an affine isometry preserving
+actual surreal distances. Positive finite angles summing to pi and any
+positive surreal scale also determine a triangle. Equal angles give an
+actual affine similarity; one specified positive side fixes the scale.
+The SAS and ASA constructions also have existence and congruence theorems.
+Heron's formula gives the positive half-angle square-root identities.
+The side-weighted incenter has a unique perpendicular contact with each
+side line, strictly inside the side segment, at radius equal to area
+divided by semiperimeter. It is the unique interior equidistant center.
+The internal bisector divides its opposite side in the prescribed ratio,
+has length `2bc*cos(alpha/2)/(b+c)`, and makes two actual equal half-angles.
+Euler's center-distance identity gives `|O-I|^2 = R*(R-2r)`.
+The radius inequality `2r ≤ R` and the sharp area bound
+`area ≤ s^2/(3*sqrt(3))` have equality exactly for equilateral triangles,
+at arbitrary positive surreal scales.
+Interior cevians satisfy the exact side-weighted sine ratio, which
+uniquely characterizes the internal bisector. Trigonometric Ceva gives
+an equivalence between concurrence of the three actual affine lines and
+the product of their positive split-angle sine ratios being one.
+Every positive-radius circle is parametrized by finite actual angles,
+with exact signed chord factorization and chord length at every surreal scale.
+The directed inscribed angle modulo ordinary pi is half the central angle
+modulo ordinary two pi; halving is well-defined on these quotient groups.
+Observers on either common open arc see equal actual interior angles,
+and every angle subtending a diameter is right.
+Four points in finite-lift cyclic order satisfy Ptolemy equality,
+including when consecutive arcs are infinitesimal.
+Finite regular polygons have distinct vertices and a proved closing edge;
+summing their actual edge lengths and center-triangle areas gives the
+exact perimeter and area formulas at every positive surreal radius.
+Squared side lengths and squared angle sines satisfy the spread, cross,
+and triple-spread laws, with rational expressions in the actual coordinates.
+An interior angle's sine has the valuation of its distance from the nearer
+endpoint of `(0, pi)`. The triangle laws then give exact valuation formulas
+for side ratios, area, semiperimeter factors, and both circle radii.
+For two infinitesimal interior angles, their ratio is algebraically
+equivalent to the opposite side ratio, even when those ratios are infinite.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

@@ -3,7 +3,8 @@
 **Prime-denominator approximation barriers and a two-scale matrix-measure criterion**
 Single-source research report, 22 September 2026. It is built from one
 manuscript, manuscript 06 of batch 19 (archive `hidden_negative_directions`),
-pinned to repository commit `048b72c`, and placed in commit `52c7ab6`.
+pinned to repository commit `048b72c`, placed in commit `30dfb4f`, and
+assembled in `ed88b8f`.
 Prepared for Vladimir Reshetnikov.
 
 This directory holds one manuscript. It is not a merge: there was no second
@@ -12,7 +13,7 @@ proof, example, question and limitation of the manuscript is printed.
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 31 pages (title, two contents pages, 28 numbered pages)
+article.pdf        the compiled report, 33 pages (title, two contents pages, 30 numbered pages)
 README.md          this guide
 source_audit.md    the source's own repository and literature audit, as delivered
 code/              verify.py (exact finite checks), build.sh (the source's build script)
@@ -166,32 +167,62 @@ and are independent (even differentially) over `Q((t^Q))`; here the tails
 have coefficient one and prime-denominator exponents and are independent over
 `P_Γ`. For `Γ = Q` each base contains the other's witnesses: `h_A ∈ Q((t^Q))`
 and `ξ_A ∈ P_Q`. So square-root tails cannot hide a direction from `P_Γ`
-probes. Its `tail:thm:closure` (Σ √p_n t^n is a limit of algebraic
-truncations) and Corollary 4.4 here use different meanings of "algebraic".
+probes. Its `tail:thm:closure` approximates `Σ √p_n t^n` by finite
+truncations algebraic over `Q((t^Q))`, since their coefficients lie in one
+finite extension of `Q`. Here Proposition 3.4 and Theorem 4.2 exclude even
+net approximation by elements algebraic over the monomial field;
+Corollary 4.4 specializes to `C(t^δ)`. The algebraicity assertions use
+different base fields; algebraic individual coefficients alone do not suffice.
 Its warning `tail:rem:indexfamily` applies: the family of all `h_A` is not
 independent.
 
 **[transcendence-over-bounded-support](../../surreal/transcendence-over-bounded-support/)**,
 placed in the same commit, works over the fraction field of series with
-support bounded above. Every `h_A` lies in that ring, and `P_Q` contains
-`Σ_n t^n`; neither independence theorem implies the other. Background inputs
+support bounded above. For `Γ = Q` the two bases are incomparable: every `h_A` lies in the
+bounded-support ring but outside `P_Q`, while `√(1+t) ∈ P_Q` lies outside
+the bounded-support fraction field. The article proves the latter by
+projecting a putative fraction to one integer-exponent coset and using
+that `1+t` is not a rational square. Unbounded support alone does not
+suffice: `Σ_{n≥1} t^n = t/(1−t)` already belongs to the fraction field.
+For a group with no order unit, every finitely generated subgroup is
+bounded above, so `P_Γ` is contained in the bounded-support ring. The two
+independence theorems have different bases and witnesses. Background inputs
 are `found:sub:positivesupport` (foundations) and `polynomial:prop:workspace`
 (polynomial-algebra).
+
+## Main-text proof review
+
+Sections 1–11 have received a mathematical proof review. It expands character
+extension, support-index finiteness, the primorial lower and upper bounds,
+closure and density, and the workspace containing an algebraic surreal root.
+The finite matrix proof now displays its Schur congruence and explains why
+positive pivots suffice over nondivisible Hahn groups. The measure proof
+spells out vector-variation finiteness and the null-set argument.
+
+The bounded-support comparison above corrects an invalid geometric-series
+witness and restricts incomparability to the stated exponent group. The
+spectral comparison distinguishes congruence from unitary diagonalization.
+The 24 numbered result statements retain their mathematical content; two
+wording clarifications name the intrinsic valuation topology and define the
+compression even before positivity of `P` is known. All 89 labels and result
+numbers are retained. Remaining imported-result checks, literature priority
+and original-source reconciliation are separate from this main-text review;
+see [the review record](../../REVIEW.md). No Lean mapping was added.
 
 ## Stale statements corrected
 
 The source audited the collection at `048b72c`; `source_audit.md` keeps that
 audit as delivered, and Appendix A.3 of the article corrects it. At the pin
-the reader map did describe 36 reports; commit `52c7ab6` has since added four,
-this one among them. The source's search for "finite-lattice" reported no
-matches, but at the pin the phrase already occurs in an unrelated sense
+the reader map did describe 36 reports; raw placement `30dfb4f` added four,
+this one among them, bringing the count then to 40. The source's search for
+"finite-lattice" reported no matches, but at the pin the phrase already occurs in an unrelated sense
 (`tate:cor:lattice`, "A finite-lattice degree formula", listed in
 `FORMALIZATION.md`), so its conclusion stands while the search was
 incomplete. The source did not mention the measures report's proof of the
 scalar criterion or its Lean proof, and cited the reader map generically for
 Hahn closedness and the tail-span constructions; the article now points to
 the specific results. The neighbouring reports compared here changed in no
-relevant way between the pin and the placement.
+relevant way between the pin and assembly at `ed88b8f`.
 
 ## Build and reproduce
 
@@ -224,3 +255,12 @@ it printed the same five `PASS` lines and counts, and its JSON output matched
 runs `latexmk` (or `pdflatex` three times) on `article.tex`, overwriting
 `article.pdf`. As placed under `code/` it does not find `article.tex`; to use
 it, copy this directory and put the script beside `article.tex` in the copy.
+
+During the main-text review, the delivered verifier was rerun with Python
+3.13.14 and SymPy 1.14.0. All five checks passed; its JSON agrees with the
+historical output except for the Python version. An additional scratch
+check compared the criterion with principal-minor signs for 390,625
+Hermitian 2×2 pairs with integer real and imaginary components in
+`{−2,−1,0,1,2}`; all agreed, and the 18,145 positive cases also matched
+the rank formula. These finite diagnostics do not prove the general theorem.
+The current 33-page PDF was rebuilt with three clean `pdflatex` passes.
