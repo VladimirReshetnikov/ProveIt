@@ -6,8 +6,9 @@ After the three expansions, the reviewed original Sections 11–12 are Sections
 14 and 19; the fractions section is Section 15, and the curve and differential
 rigidity part is Sections 16–18.
 Subsequent passes review the newly added Sections 11–13 from sources 06–07.
-Further passes review all of Section 15 from sources 08–09. The added
-material in Sections 6 and 10, Sections 16–18 with the
+Further passes review all of Section 15 from sources 08–09 and the
+Gaussian-fiber and étale-norm additions in Section 6 from sources 07 and 13.
+The added material in Section 10, Sections 16–18 with the
 pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the twelve manuscripts
@@ -566,3 +567,56 @@ through Section 15 are unchanged. The combined PDF has 163 pages after
 a clean three-pass build. The current inventory includes all 194 results;
 the new curve material and later additions remain unreviewed and all
 omnific claims remain **Pending** in Lean.
+
+## Gaussian fibers and étale norms: the Section 6 additions
+
+This pass compares source 07's norm theorem and degree/units proof with
+source 13's Sections 8–9 and the maintained Section 6 additions. The texts
+were recovered from `de0acc6:docs/new/Omnific_Arithmetic_Definability.zip`
+(member `Omnific_Arithmetic_Definability/article.tex`) and
+`de0acc6:docs/new/omnific_rigidity_research.zip`
+(member `omnific_rigidity/article.tex`). Source 13 belongs to the sibling
+quotient report; this pass covers its fiber and norm material printed here,
+not its separate quotient and module theorems.
+
+The Gaussian fiber proof now constructs its basis parameters through
+coefficient functionals, checks admissible supports in both directions,
+and proves parameter uniqueness. It uses no convergence of partial sums.
+The exact kernel criterion retains the ordinary-point hypothesis, with
+`X−Y=√2` as a counterexample if that hypothesis is omitted. A nonzero
+kernel gives an injective copy of the proper-class positive-support ideal
+inside each nonempty fiber; this stronger size conclusion is proved as
+a combined consequence. The real kernel can be computed by stacking the
+real and imaginary parts of the complex coefficient matrix. The Gaussian
+kernel uses the complex matrix itself.
+
+The étale norm proof now constructs the splitting isomorphism by a
+primitive element in each field factor and the polynomial Chinese remainder
+theorem. The individual maps from a product algebra into a field need not
+be injective. Their combined matrix is invertible because it represents
+the splitting isomorphism. The trace matrix is its transpose product,
+without conjugation. Coefficient extension preserves supports and finite
+convolutions; the invertible matrix then kills every positive coefficient
+of the original coordinates. No assumption that the intermediate ring
+is closed under constant extraction is used. The finite étale algebra
+characterization was checked against the primary [Stacks Lemma 10.143.4](https://stacks.math.columbia.edu/tag/00U3)
+on 23 September 2026 and added to the bibliography. The classical
+primitive-element theorem remains an imported finite-algebra result.
+
+New proved boundary examples use `Q×Q` at norm zero and the dual-number
+algebra at norm one. The proof itself extends to abstract nonnegative-support
+Hahn rings in every characteristic: leading-degree multiplication and
+separable splitting use no characteristic-zero hypothesis. This is a
+combined extension, not a claim attributed to either source and not a
+change to the coefficient fields of actual omnific integers. A purely
+inseparable counterexample over `F₂(s)` shows that separability cannot
+be discarded: in the coefficient field containing `θ²=s`, the polynomial
+pair `(1+θT,T)` has norm one and is nonconstant.
+
+All 194 standard statement texts and 405 labels remain, without renumbering.
+The arbitrary-characteristic extension and size consequence are prose
+results with explicit proofs; they remain **Pending** in Lean. Section 7
+onward is byte-identical except for the appended bibliography item.
+This pass does not review the new curve pointer at the end of Section 6,
+the added quartic in Section 10, the curve/differential part (Sections
+16–18), later formalization/questions, or remaining source reconciliation.

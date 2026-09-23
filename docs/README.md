@@ -21,8 +21,10 @@ now assembles twelve manuscripts, and the
 [set-sized quotient article](surreal/set-sized-quotients-of-omnific-integers/)
 seventeen. The Diophantine proof review covers the original material in
 Sections 1–10 and current Sections 14 and 19, plus the new elementary
-definability, constant-term and reconstruction Sections 11–13. Added material in Sections 6
-and 10, new curve material in Sections 16–18 and pointers in Sections 6, 7
+definability, constant-term and reconstruction Sections 11–13. The
+Gaussian-fiber and étale-norm additions in Section 6 are also reviewed,
+with explicit support arguments and sharp boundary examples. Added
+material in Section 10, new curve material in Sections 16–18 and pointers in Sections 6, 7
 and 14, Sections 20–21, and remaining source reconciliation need review;
 the [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
 records that boundary. Section 15 now has a proof review throughout:

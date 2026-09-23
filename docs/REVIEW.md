@@ -3170,6 +3170,42 @@ the audit accepts 13,813 declarations with only `propext`,
 normalized Fejér–Riesz uniqueness and adds actual-field Fourier coefficient
 bounds. It does not change the pending Lean status of the omnific results.
 
+## Gaussian fibers and étale norm proof review
+
+The additions from sources 07 and 13 to Section 6 of the omnific
+Diophantine report have now been compared with the delivered sources.
+The Gaussian fiber proof constructs its parameters coefficientwise on a
+common admissible support and proves uniqueness. The real kernel test
+uses the stacked real and imaginary parts of the matrix. An explicit
+empty-fiber example explains the ordinary-point hypothesis; when that
+hypothesis holds, a nonzero kernel vector gives a proper class of points.
+
+The étale norm proof now explains separable splitting, the invertible
+matrix of algebra maps, the bilinear trace matrix, and coefficient
+extension. It uses the constant intersection of the intermediate ring
+only after showing that each coordinate is constant. Boundary examples
+show why a nonzero level and the étale assumption matter. The abstract
+Hahn-ring argument extends to arbitrary characteristic; a purely
+inseparable quadratic example in characteristic two shows why separable
+splitting is still needed. This extension does not change the coefficient
+fields of the actual omnific rings. Shared notation also corrects the
+detector name to match the maintained `Ex` macro.
+
+All 194 standard statement texts, 405 labels and existing result numbers
+are unchanged. Section 7 onward is unchanged except for the appended
+Stacks bibliography entry. Three-pass pdfLaTeX builds give a clean
+164-page article and 29-page catalogue. Rendered article pages 12,
+28–35 and 164, and catalogue page 9, have been inspected. The independent
+inventory verifies 3,428 results in 58 main texts; all 3,934 cited source
+labels resolve, and local Markdown links pass. Both supplied finite
+verifiers (07 and 13) reproduce their recorded outputs exactly; these
+checks do not prove the general Hahn-series arguments.
+
+The new combined consequences and characteristic extension remain
+**Pending** in Lean. Source 07's quartic in Section 10, the curve
+material and pointers, companions, imported foundations and remaining
+source reconciliation still require review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

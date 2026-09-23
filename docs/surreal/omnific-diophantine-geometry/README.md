@@ -12,7 +12,7 @@ prefixes `10-` to `14-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 163 pages
+article.pdf                        the compiled report, 164 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -126,7 +126,13 @@ ideal and graph. Section 13 now also has a proof review of reconstruction,
 automorphisms and logical consequences. It extends coefficient reconstruction
 to the number-field ideal predicates and the c.e.-set classification to
 all characteristic-zero coefficient fields using finite equation systems.
-The new material in Sections 6 and 10 still needs review.
+The added Gaussian fibers and étale norm arguments in Section 6 now have
+a proof review against sources 07 and 13. Basis parameters are unique,
+and nonzero kernels give proper-class fibers when an ordinary point exists.
+The norm proof spells out separable splitting and coefficient extension;
+it extends to abstract Hahn rings in every characteristic, with concrete
+zero-level, nilpotent and inseparable counterexamples to weaker hypotheses.
+The quartic in Section 10 and the later curve pointers still need review.
 Further passes review all of Section 15: denominator ideals, the
 multiplier theorem, rational-function and curve applications, congruence
 orbits and density. The focusing formula now handles the zero parameter

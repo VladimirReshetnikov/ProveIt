@@ -520,8 +520,11 @@ together with their material and that of source 13 in
 \cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction}, including
 the distinction between intermediate rings and full positive-support rings,
 the detector witnesses, coefficient reconstruction and logical consequences.
-The material they added to \cref{odg:sec:rigidity,odg:sec:guard} remains
-outside the reviews.
+A further pass reviews their Gaussian-fiber and \'etale-norm additions
+in \cref{odg:sec:rigidity}, including support and coefficient-extension
+arguments and explicit boundary examples. The abstract \'etale norm proof
+also works in arbitrary characteristic; separability remains necessary.
+Source 07's quartic in \cref{odg:sec:guard} remains outside the review.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
@@ -1707,6 +1710,14 @@ vector of $\mathbf u$ at $\gamma$; so $\ell_j(\mathbf u)=0$ for all $j$ says
 exactly that every $\mathbf u_\gamma$ lies in $\mathcal K_{\C}$, and expanding
 each $\mathbf u_\gamma$ in the basis gives series $t_k$ supported in the
 (set-sized, reverse-well-ordered) union of the coordinate supports.
+More explicitly, the coordinate functionals of the basis are complex
+linear maps on $\mathcal K_{\C}$; apply each to every coefficient vector
+to form $t_k$. Taking a subset of the common support preserves its
+admissibility. Conversely, arbitrary $t_k\in\Pi_{\C}$ give a vector
+with coefficients in $\mathcal K_{\C}$, since only finitely many basis
+vectors are used. Independence of the $\mathbf v_k$ makes these parameters
+unique coefficient by coefficient. This argument uses finite linear
+algebra and Hahn supports, not convergence of a sequence of partial sums.
 Disjointness holds because the constant coefficient of a normal form is
 unique. If $\mathcal K_{\C}=0$, then $\mathbf u=0$.
 \end{proof}
@@ -1728,6 +1739,15 @@ infinite coordinate. The other implications are
 So, subject to one ordinary point, the linear-kernel criterion is not merely
 sufficient: it detects exactly whether a nonzero constant fiber acquires
 infinite directions \src{13}.
+The nonemptiness hypothesis cannot be omitted: $F(X,Y)=X-Y$ and
+$c=\sqrt2$ have kernel $\R(1,1)$, but no omnific solution, because
+taking constants would give an integer difference equal to $\sqrt2$.
+In the Gaussian case the same example works because $\sqrt2\notin\Z[i]$.
+When an ordinary point $\mathbf a$ and a nonzero kernel vector
+$\mathbf v$ do exist, the map $t\mapsto\mathbf a+t\mathbf v$ is
+injective on $\Pi$ (and on $\Pi_{\C}$ in the Gaussian case): a nonzero
+coordinate of $\mathbf v$ allows cancellation. Thus every such fiber
+is a proper class, not merely an infinite set \mergetag.
 
 \begin{remark}[Real and complex kernels \src{13}]\label{odg:dec:rem:kernels}
 For omnific variables the relevant kernel is
@@ -1739,6 +1759,16 @@ on $\R^2$: every omnific solution of $x+iy=c$ is ordinary. For Gaussian
 variables the criterion is the complex kernel. For instance \mergetag,
 $\mathcal K_{\C}=\C(1,i)$ for $X+iY$, and $(1+\omega,\,i\omega)\in\Og^2$
 solves $X+iY=1$, since $(1+\omega)+i\cdot i\omega=1$.
+For an explicit real rank test, write $M$ for the complex matrix of the
+$\ell_j$. Then
+\[
+ \mathcal K=\ker_{\R}
+ \begin{pmatrix}\operatorname{Re}M\\ \operatorname{Im}M\end{pmatrix}:
+\]
+for a real vector, $M\mathbf v=0$ exactly when both its real and
+imaginary parts vanish. Full column rank of this real matrix is the
+necessary and sufficient kernel condition for real variables, whereas
+Gaussian variables use the rank of $M$ over $\C$.
 \end{remark}
 
 \begin{example}[A rank-deficient level \src{13}]\label{odg:dec:ex:rankdeficient}
@@ -1966,29 +1996,52 @@ of $N(\mathbf x)=a\ne0$ lies in $\Z[i]^r$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-Let $\overline\Bbbk$ be an algebraic closure of $\Bbbk$. Since $E$ is \'etale,
-there are exactly $r$ homomorphisms of $K$-algebras
-$\sigma_1,\ldots,\sigma_r:E\to\overline\Bbbk$, and together they identify
-$E\otimes_K\overline\Bbbk$ with $\overline\Bbbk^r$. In these coordinates
-multiplication by $\sum_je_jX_j$ is diagonal, so taking its determinant gives
+Let $\overline\Bbbk$ be an algebraic closure of $\Bbbk$. Write
+$E=\prod_{h=1}^s L_h$ as a product of finite separable extensions of $K$
+(the characterization of \'etale algebras over a field is
+\cite[Lemma 10.143.4]{StacksEtaleField}). Choose a primitive element for
+each $L_h$. Its minimal polynomial splits over $\overline\Bbbk$ into
+distinct linear factors, so the polynomial Chinese remainder theorem
+gives
+\[
+ L_h\otimes_K\overline\Bbbk\cong
+ \prod_{\sigma:L_h\hookrightarrow\overline\Bbbk}\overline\Bbbk,
+ \qquad E\otimes_K\overline\Bbbk\cong\overline\Bbbk^r.
+\]
+Each unital $K$-algebra map from $E$ to a field selects one factor
+$L_h$: exactly one of its orthogonal idempotents maps to $1$, and
+the others map to $0$.
+Thus there are exactly $r$ such maps $\sigma_\ell$, and they give the
+displayed isomorphism. In the basis $e_j\otimes1$, its matrix is
+$M=(\sigma_\ell(e_j))$, so $M$ is invertible. These maps need not be
+injective on the product algebra $E$; only their combined map is injective.
+In the split coordinates, multiplication by $\sum_je_jX_j$ is diagonal.
+The determinant is unchanged by this constant change of basis, giving
 the polynomial identity
 \[
  N(\mathbf X)=\prod_{\ell=1}^{r}\Bigl(\sum_{j=1}^{r}\sigma_\ell(e_j)X_j\Bigr)
  \quad\text{in }\overline\Bbbk[X_1,\ldots,X_r].
 \]
-The matrix $(\sigma_\ell(e_j))$ is invertible: the square of its determinant
-is the discriminant $\det(\operatorname{Tr}_{E/K}(e_ie_j))$ of the basis,
-which is nonzero because $E$ is \'etale. (Source 13 argues with power bases:
+Equivalently, the trace matrix is $M^{\mathsf T}M$, because its
+$(i,j)$ entry is $\sum_\ell\sigma_\ell(e_i)\sigma_\ell(e_j)$; hence its
+determinant is $(\det M)^2\ne0$. This is a bilinear trace pairing,
+with transpose, not conjugate transpose. Source 13 argues with power bases:
 for a field the matrix is a Vandermonde matrix of distinct conjugates, for a
 product it is block diagonal, and a change of basis over $K$ preserves
-invertibility.) Coefficient extension embeds $\mathcal A_\Bbbk(\Gamma)$ in
-$\mathcal A_{\overline\Bbbk}(\Gamma)$ without changing any support. Each factor
+invertibility. Coefficient extension embeds $\mathcal A_\Bbbk(\Gamma)$ in
+$\mathcal A_{\overline\Bbbk}(\Gamma)$: injectivity of the coefficient-field
+map preserves every nonzero coefficient and thus every support, and finite
+coefficient convolutions commute with this map. Each factor
 $\sum_j\sigma_\ell(e_j)x_j$ lies in $\mathcal A_{\overline\Bbbk}(\Gamma)$, and
 their product is the nonzero constant $a$, so every factor is constant by
-\cref{odg:def:lem:units}. Inverting the matrix shows that every $x_j$ is a
-constant; as $x_j$ has its coefficients in $\Bbbk$, it lies in $\Bbbk$, hence
+\cref{odg:def:lem:units}. For each positive exponent $\gamma$, their
+coefficient vector is $M\mathbf x_\gamma=0$. Invertibility gives
+$\mathbf x_\gamma=0$, so no $x_j$ has positive support. Its remaining
+coefficient was already in $\Bbbk$, so $x_j\in\Bbbk$, hence
 in $A\cap\Bbbk=\mathfrak o$. For (a) and (b) note that $\Oz\cap\R=\Z$ and
 $\Og\cap\C=\Z[i]$.
+No closure of $A$ under constant extraction is needed: the argument first
+makes the entire coordinate constant and only then uses $A\cap\Bbbk$.
 \end{proof}
 
 \Cref{odg:thm:norm} is the case $K=\Q$, $E$ a number field, $A=\Oz$. Source
@@ -2001,11 +2054,52 @@ ingredient is in one of the two sources. Two cautions from source 07 apply.
 When some coefficients of $N$ in $K$ do not lie in $A$, the equation is read
 in the ambient series ring; to use it literally as a formula with parameters
 in $\mathfrak o$, one assumes that its coefficients and right-hand side lie in
-$\mathfrak o$. The nonzero right-hand side and separability are essential;
-this is not a theorem that every algebraic variety has only constant points.
+$\mathfrak o$. The nonzero right-hand side and the \'etale hypothesis are
+essential to this uniform assertion; this is not a theorem that every
+algebraic variety has only constant points.
 The norm on the left is evaluation of a finite polynomial, not a newly
 postulated norm on a class-sized algebra \src{13}. Pell rigidity in
 intermediate rings (\cref{odg:def:cor:pell}) is the case $E=\Q(\sqrt2)$.
+
+\paragraph{Boundary examples and characteristic.}
+The restrictions can be seen in small polynomial rings \mergetag.
+For the \'etale algebra $E=\Q\times\Q$ with its product basis, the norm
+is $N(X,Y)=XY$; its zero level contains $(0,t)$ for every $t\in\Pi$.
+If \'etaleness is dropped, take the dual-number algebra
+$E=\Q[\epsilon]/(\epsilon^2)$ with basis $(1,\epsilon)$. Multiplication
+by $X+Y\epsilon$ has matrix
+$\left(\begin{smallmatrix}X&0\\Y&X\end{smallmatrix}\right)$ and norm
+$X^2$. Thus the nonzero level $N=1$ contains $(1,t)$ for every
+$t\in\Pi$. A nonzero determinant makes this algebra element a unit;
+it does not force its nilpotent coordinate to be constant.
+
+Characteristic zero, in contrast, is unnecessary for the abstract
+\'etale norm argument \mergetag. For any field $\Bbbk$, form the same
+reverse-well-ordered nonnegative-support Hahn ring and take
+$\mathfrak o\subseteq A\subseteq\mathcal A_\Bbbk(\Gamma)$ with
+$A\cap\Bbbk=\mathfrak o$. The conclusion of
+\cref{odg:dec:thm:etale} still holds for finite \'etale $E/K$,
+$K\subseteq\Bbbk$. The splitting argument uses separability only.
+The units argument also works in any characteristic: in a product of
+nonzero series, the coefficient at the sum of the largest exponents
+is the product of the nonzero leading coefficients. Nonnegative degrees
+whose sum is zero all vanish. The remaining matrix argument is unchanged.
+This is a statement about these abstract Hahn rings; it does not replace
+the real or complex coefficient fields of the actual omnific rings.
+
+Separability cannot be removed from this extension. For instance let
+$K=\mathbb F_2(s)$ with $s$ transcendental, let
+$E=K(\theta)$ with $\theta^2=s$, and use $\Bbbk=E$ as the coefficient
+field. The polynomial $X^2-s$ is irreducible over $K$ (the order at
+$s=0$ of a rational square is even), so $E/K$ has degree two and is
+purely inseparable. Multiplication in the basis $(1,\theta)$ has matrix
+$\left(\begin{smallmatrix}X&sY\\Y&X\end{smallmatrix}\right)$, so its norm is
+$N(X,Y)=X^2-sY^2=X^2+sY^2$. In
+$A=\Bbbk[T]\cong\mathcal A_\Bbbk(\Z)$, the nonconstant pair
+$(1+\theta T,T)$ has norm $1$, since $2=0$ and $\theta^2=s$.
+Here $\mathfrak o=\Bbbk$, so the claimed constant-coordinate conclusion
+would fail. The example locates the obstruction in the failure of
+separable splitting, even though $E$ itself is a field.
 
 \subsection{An algebraic-geometric formulation}
 
@@ -10947,6 +11041,11 @@ Jana Glivick\'a and Petr Glivick\'y.
 \emph{Shepherdson's theorems for fragments of open induction}.
 arXiv:1701.02001 (2017), Sections 2.1, 2.3 and Theorem 1.
 \url{https://arxiv.org/abs/1701.02001}.
+
+\bibitem{StacksEtaleField}
+The Stacks Project Authors.
+\emph{\'Etale ring maps}, Lemma 10.143.4: \'etale algebras over a field,
+Tag 00U3. \url{https://stacks.math.columbia.edu/tag/00U3}.
 
 \end{thebibliography}
 \end{document}
