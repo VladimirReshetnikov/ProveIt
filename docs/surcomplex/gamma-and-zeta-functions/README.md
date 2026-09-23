@@ -41,8 +41,11 @@ data/
   06-phases-and-rh-build-quality.json
 ```
 
-Every label in `article.tex` carries the prefix `gz:` (222 labels). No label
-of this report is cited elsewhere yet. The code and data files are
+Every label in `article.tex` carries the prefix `gz:` (222 labels).
+Neighbouring guides cite these labels, and the
+[formalization ledger](../../FORMALIZATION.md) indexes this report's 94
+standard statements; it does not yet map a result to a Lean proof. The code
+and data files are
 byte-identical to the delivered packages, under the prefixes above. The six
 manuscripts themselves, with their PDFs and delivery READMEs, are not
 shipped. The shipped audit and build records describe those manuscripts,
@@ -276,8 +279,9 @@ non-claims and notation). The kinds of fix are these.
 - **Attributions and bibliography.**
   - `Exp` is identified with Ehrlich–Kaplan and `trigonometry:thm:globalexp`,
     and 01's `E_λ` with `e:thm-twisted`.
-  - Credits added: `trigonometry:thm:characters`, `thm:infiniteperiods`,
-    `cor:globalzeros`, `ex:phases`, and the `trigonometry:per:` section.
+  - Credits added: `trigonometry:thm:characters`, `trigonometry:thm:infiniteperiods`,
+    `trigonometry:cor:globalzeros`, `trigonometry:ex:phases`, and the
+    `trigonometry:per:` section.
   - 03's prime lemma is identified as Pong's Theorem 5.5 for `F = ℂ`.
   - Journal data: Ehrlich–Kaplan, *JSL* 86 (2021), with the erratum in 87
     (2022); Costin–Ehrlich, *Adv. Math.* 452 (2024); Guth–Maynard,

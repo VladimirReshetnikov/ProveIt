@@ -27,7 +27,8 @@ on `V_I` by the finite matrix-vector product (`rcf_smul_apply`), the action is f
 inner product `finInner` (`finInner_smul_left`). Every diagonal matrix is row- and
 column-finite (`diagonal_mem_rcfMatrices`), as remarked before the lemma.
 
-`ihs:rf:prop:algebra` is proved for exponents in any partially ordered cancellative commutative
+The algebra and action clauses of `ihs:rf:prop:algebra` are proved for exponents in any
+partially ordered cancellative commutative
 monoid `Γ`; divisibility is never used, and `Γ` is linearly ordered only for the order inequalities.
 `𝒜_rf = (rcf k I)⟦Γ⟧` is an associative unital semiring by Mathlib (a ring when `k` is a
 commutative ring, e.g. `k = ℂ`). It is a `K`-algebra, `K = k⟦Γ⟧`, through the coefficientwise
@@ -45,8 +46,9 @@ nontrivial (`exists_ne_zero_mul_eq_zero`). It needs that hypothesis: for a singl
 algebra `𝒜_rf` is isomorphic to `K`, which has no zero divisors when `k` is a field and `Γ` is
 linearly ordered (as in the source).
 
-No clause of these two statements is pending; the zero-divisor remark is proved in the corrected
-form with `|I| ≥ 2`. The inner product on `ℋ_rf` (`ihs:rf:prop:inner`) and strong-sum
+The mapped algebra, action, involution and order clauses are proved, including the zero-divisor
+remark with `|I| ≥ 2`, now required by the revised source. The source's singleton identification
+is not yet formalized as an equivalence. The inner product on `ℋ_rf` (`ihs:rf:prop:inner`) and strong-sum
 compatibility (`ihs:rf:lem:strongaction`) are not formalized here.
 -/
 
@@ -605,7 +607,7 @@ theorem hahn_faithfulSMul :
     (h (HahnModule.of (rcf k I) (HahnSeries.single 0 v)))
   exact (coeff_smul_single_zero X v g).symm.trans (this.trans (coeff_smul_single_zero Y v g))
 
-/-- `ihs:rf:prop:algebra`, zero divisors (with the hypothesis `|I| ≥ 2` that the source omits):
+/-- `ihs:rf:prop:algebra`, zero divisors with the revised source's hypothesis `|I| ≥ 2`:
 `𝒜_rf` has zero divisors once `I` has two distinct indices and `k` is nontrivial, so its order
 function is not a field valuation. The constant series `E_{ii}` and `E_{jj}` are nonzero with
 product zero. -/

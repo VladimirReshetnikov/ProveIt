@@ -121,6 +121,33 @@ infinitely many supported exponents to one value; it need not produce a
 Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
 makes this distinction explicit.
 
+The nonlinear holonomic argument keeps the scaled lowest-valuation layer
+as a polynomial `φ_δ(X)`. Its coefficient Gauss value `γ_δ` need not equal
+the valuation of the evaluated sum: `φ_δ(1)` may vanish even though the
+polynomial is nonzero. The selected corner has integer data `(d_P,w_P)`;
+its residue polynomial is `χ_P ∈ k[T]`, while its full-coefficient polynomial
+is `I_P ∈ k((t^Γ))[T]`. Integer roots of `I_P` are roots of `χ_P`, but the
+converse can fail. The degree cutoff `κ_P` is an ordinary rational number;
+the exclusion scale `δ₀` is an element of `Γ`. Computing the former does
+not divide elements of `Γ`. The coordinate derivative `D_z` kills the Hahn
+coefficient field, including all monomials `t^γ`.
+
+For the coefficient-field argument, `cvr(f)` is the dimension of the
+rational span of the nonzero Taylor coefficient values in `Γ ⊗ ℚ`.
+It differs from the rational rank of the full coefficient field's value
+group and from the number of exponents in a coefficient's Hahn support.
+“Rank one” means Archimedean here; it does not mean rational rank one.
+“No order unit” means that no single positive scale has cofinal integer
+multiples, a stronger condition than being non-Archimedean.
+
+The linearization offset `θ = min(ord_z Π_ij − j)` is an integer and can
+be negative. Its multiplier `Ξ(n)` depends on the solution and differs
+from the equation's corner polynomials `χ_P` and `I_P`. Mixed jets use
+differentiation before dilation: `(D_z^j f)(λz)`; differentiating `f(λz)`
+instead multiplies this by `λ^j`. Coarsened residue is `red_Δ` in the field
+`k_Δ`; when it embeds a coefficient field `L`, rational identities descend
+through the embedded copy of `L`, without choosing a residue-field section.
+
 The [hidden-negative-directions report](surcomplex/hidden-negative-hermitian-directions/article.tex)
 uses `𝒫_Γ` for complex Hahn series supported in some finitely generated
 additive subgroup of `Γ`; “finite-lattice support” permits infinite supports
@@ -175,17 +202,42 @@ still makes sense, but optimality over nonzero infinitesimal changes requires
 The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
 uses `⟨x,y⟩ = x* y`, conjugate-linear in the first variable.
 [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex)
-retains different source conventions: Part I is linear in the first variable;
-Part II is conjugate-linear in the first. Conjugate the scalar value, or
+retains different source conventions: Parts I and IV are linear in the first
+variable; Part II is conjugate-linear in the first, and Part III uses none.
+Conjugate the scalar value, or
 exchange the arguments, when translating between them. Positivity and
 adjoint identities survive this change, but the linearity of a represented
 functional changes.
 
 In that report, `σ_Γ^alg` means failure of bijectivity on `H((t^Γ))` and
 `σ_Γ^adj` means failure of inversion in `B(H)((t^Γ))`. Their equality is
-proved for constant normal operators. Part II's `σ_𝒜` refers to inversion
+proved for constant normal operators and for Part IV's compact-residue
+class `T+E`, under their respective hypotheses; Part III also proves it in
+the Volterra and increasing-block examples. The Fredholm alternative
+separately equates bijectivity and algebra inversion for `I+C` with
+nonnegative-valuation trace-class coefficients. Part II's `σ_𝒜` refers to inversion
 in the row- and column-finite Hahn algebra on a different vector space.
 A prime in `σ_ℂ(T)'` denotes ordinary spectral accumulation, not a derivative.
+
+Part III's `Σ^𝔄_Γ(T)` is the algebra-relative spectrum of a constant element
+of a named nonzero unital complex algebra. Its `σ_{D,𝔄}(T)` is the
+**finite-index Drazin spectrum**: it excludes precisely those shifts with
+an invertible corner and a finite-index nilpotent corner. Generalized Drazin
+invertibility, which allows a quasinilpotent corner, is a different notion.
+The idempotents `P_nil` and `P_inv` select corners and need not be central
+in the whole algebra; each corner uses its own idempotent as identity.
+The local resolvent here is `(S − u1)⁻¹`, whose constant Laurent coefficient
+is `S^D`; changing to `(u1 − S)⁻¹` changes that coefficient's sign.
+
+Keep the Drazin index `ν` separate from the polynomial ramification index
+`e_a = ord_{X=a}(p(X) − p(a))`. The former controls the shifted inverse's
+valuation `−ν v(ε)` for `ε ≠ 0` infinitesimal; the latter controls the centered image of a halo:
+zero together with nonzero infinitesimals of valuation in `e_a Γ`.
+That image is a scalar-root condition, not a change in invertibility of
+an old parameter when the exponent workspace grows. `v_𝔄` is the leading
+support exponent of an operator series, with `v_𝔄(0)=∞`; multiplication is
+only superadditive when the coefficient algebra has zero divisors, while
+multiplication by a nonzero scalar has exact additive valuation.
 
 Keep the three size notions distinct: `‖T‖_H` is an ordinary real operator
 norm, `‖x‖` is a positive Hahn scalar, and `ρ(x) = exp(−v(x))` is the real
@@ -194,6 +246,32 @@ least possible value. The vector norm and scalar modulus exist without
 divisibility because their squared values have even leading exponents;
 arbitrary positive Hahn scalars have a square root exactly when their
 leading exponent lies in `2Γ`.
+
+Part IV uses `𝒯_Γ = S₁(H)((t^Γ))` for trace-class coefficients and
+`𝒯_Γ⁺ = {C ∈ 𝒯_Γ : v(C) ≥ 0}`. The trace `Tr_Γ` is defined on all of
+`𝒯_Γ`; `Det_Γ(I+C)` is defined only for `C ∈ 𝒯_Γ⁺`. The determinant and
+its Fredholm alternative allow arbitrary complex Hilbert `H` and ordered
+set-sized `Γ`, including zero; the compact-spectrum classification retains
+its stronger hypotheses. Ordinary coefficient trace norms justify the
+Taylor derivatives; Hahn summability uses finite support contributions,
+without a uniform norm bound across coefficients. A zero standard part
+of the determinant does not imply that the Hahn determinant is zero.
+
+Adjunction `C*` is canonical. Operator conjugation `𝒥C𝒥` uses a fixed
+antilinear isometric involution `𝒥` of `H`; the bar on its determinant
+conjugates scalar coefficients only. The Riesz convention `(ζI−T)⁻¹`
+in Part IV has the opposite sign to Part III's local resolvent above.
+In the finite reduction, `F=ικ` has bounded ordinary factors,
+`M_F=I+C+F`, `R_F=M_F⁻¹ι`, and `L_F=I_m−κR_F`; the inverse of `L_F`
+may have negative valuation although each determinant argument lies in
+the declared nonnegative domain. Cokernels and the Fredholm index are
+algebraic over the Hahn field, not quotients by topological closures.
+
+The coupling variable `z` and spectral variable `λ` satisfy `λ=z⁻¹`
+only for `z ≠ 0`. Finite coupling detects reciprocal eigenvalues when
+`A` has trace-class coefficients; it does not evaluate the determinant at
+infinite coupling to detect the spectral monad. Ordinary entire coefficient
+functions alone do not license evaluation at negative-valuation inputs.
 
 The projection calculus in Part II is additive on disjoint label sets
 after applying each projection to a vector and taking a **strong Hahn sum**.

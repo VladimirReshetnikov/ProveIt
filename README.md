@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers twenty-six research reports
+The [source inventory](docs/FORMALIZATION.md) covers 49 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -501,6 +501,46 @@ endpoint of `(0, pi)`. The triangle laws then give exact valuation formulas
 for side ratios, area, semiperimeter factors, and both circle radii.
 For two infinitesimal interior angles, their ratio is algebraically
 equivalent to the opposite side ratio, even when those ratios are infinite.
+The triangle-inequality defect has its exact half-angle formula and a
+quadratic equivalent with effective length scale `ab/(a+b)`, without
+requiring comparable vector lengths. For a largest triangle side, the
+opposite angle is infinitesimally close to pi exactly when the side gap
+is infinitesimal relative to `bc/(b+c)`. Its full inverse-sine strong
+series gives square-root equivalents and exact valuation formulas for
+the angle supplement, area, and circumradius at arbitrary surreal scales.
+Normalized triangles with vertices `0`, `1`, and `x + i*y` now have exact
+arctangent base angles and finite-remainder expansions for their sides,
+quadratic slack, circumradius and inradius. Positive leading residues
+prove all six height-valuation identities, including the supplement of
+the upper angle. The coordinate formulas also hold for arbitrary positive
+surreal base length and height before any infinitesimal specialization.
+The two symmetric examples are realized by actual triangles. An infinitesimal
+height gives an exact infinite circumradius despite uniformly bounded vertices;
+its inradius has the stated cubic and quintic corrections. An infinitesimal
+side gap gives full strong series for the angle supplement, altitude and
+circumradius, with the corresponding square-root valuation scales.
+The omega-squared-side example has gap exactly one and infinitesimal angular
+defect, while its area and circumradius are infinite with the stated equivalents.
+A right triangle with reciprocal legs has area exactly one half and the
+stated inradius expansion at every positive infinite scale. Thin coordinate
+triangles retain their exact formulas at arbitrary side scales; the omega-base
+and epsilon-offset families realize finite and infinite radii and distinct
+infinitesimal angle scales, including the full omega-family angle series.
+First-harmonic equations with a nonzero normal vector have an exact zero, one
+or two solution classification modulo ordinary full turns, at any surreal scale.
+The explicit line-circle points have the stated derivative and Jacobian magnitudes; the
+tangent solution has zero first derivative and nonzero second derivative.
+Near tangency, the two angle branches have square-root splitting. Signed
+perturbations retain the exact finite remainder at relative rate `e/tau`
+and the half-valuation loss. The nearby finite circle points also realize
+the example's infinite rational half-angle coordinates.
+The line-circle coordinate algebra is the quadratic quotient at every
+discriminant, with dimension two and a perfect residue pairing of determinant
+minus one. Its universal property includes nonreduced target algebras;
+at tangency it is the dual-number algebra. Verified local Laurent expansions
+give the two simple residues and the derivative formula at a double root.
+For positive infinitesimal separation, the two constant-numerator residues
+are individually infinite and cancel exactly.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
@@ -570,10 +610,11 @@ families are strongly summable exactly when their block sums are. When the
 constants are uncountable, countably many nonzero polynomials are all nonzero
 at one constant point, the unit-orbit and affine valuation lemmas and the torsion
 covariance of entire Hahn functions hold for every value group, and the
-exponential profile theorem holds for every ordered field with a valuation.
+exponential profile theorem holds over any ordered field equipped with an
+ordered exponential and a nontrivial convex valuation.
 Admissible exponent sets form cones with the period-inequality criterion,
 the bounded-orbit locus of an expanding polynomial is exact, and a
-compressed resolvent family determines a unique row-Laplacian generator.
+stochastic compressed resolvent family determines a unique row-Laplacian generator.
 Prony's perturbed annihilator has exactly one simple root in each
 nearest-neighbour ball, the non-monic residue-simple Hensel lemma holds, and
 the Hermite rows of the moment differential are exact. Independent square

@@ -158,7 +158,8 @@ they continue the same non-claim of the collection's finite-dimensional
 spectral report, and they are printed as separate parts because the word
 \emph{spectrum} does not mean the same thing in them: the vector spaces and
 operator algebras are different. Parts I--III allow arbitrary nonzero
-set-sized ordered value groups; Part IV assumes $\Gamma$ divisible.
+set-sized ordered value groups; Part IV's spectral classification assumes
+$\Gamma$ divisible.
 
 \emph{Part I} fixes an ordinary complex Hilbert space $H$ and a nonzero
 set-sized ordered abelian group $\Gamma$, and studies
@@ -198,7 +199,8 @@ formula; for $\Alg=\RCF_I(\C)$ it is Part~II's spectrum of constant
 matrices. A ramification criterion decides exactly when polynomial spectral
 mapping holds over a nondivisible $\Gamma$.
 
-\emph{Part IV} returns to $H((t^\Gamma))$ with $\Gamma$ divisible. For an
+\emph{Part IV} returns to $H((t^\Gamma))$ for infinite-dimensional separable
+$H$ and divisible $\Gamma$. For an
 injective compact self-adjoint $T$ and a self-adjoint Hahn perturbation $E$
 of positive order that need not commute with $T$, the spectrum of $T+E$ is
 the whole monad $\mK$ together with finite Hermitian eigenvalue clusters over
@@ -206,7 +208,9 @@ the nonzero eigenvalues of $T$. These local pieces do not assemble: a
 trace-class example has no Hahn-unitary diagonalizer with bounded
 coefficients and no coefficientwise eigenvalue trace sum or determinant
 product, although a coefficientwise Fredholm determinant with an exact
-Fredholm alternative exists.
+Fredholm alternative exists. The determinant construction and alternative
+also hold for arbitrary complex Hilbert spaces and set-sized ordered
+exponent groups, without divisibility.
 
 \Cref{ihs:sec:interface} states the interface: what the spectra are, why the
 accumulation statements of the parts are not in conflict, and which
@@ -299,8 +303,9 @@ as a contradiction. They are not one. Parts I--III allow arbitrary nonzero
 set-sized ordered abelian groups; the coefficient spaces and operator classes,
 rather than divisibility, account for the different spectral conclusions.
 The original Part I manuscript assumed divisibility. The proof review removes
-that unused restriction, as explained in \cref{ihs:hh:sec:field}. Part IV
-keeps its source's divisibility hypothesis.
+that unused restriction, as explained in \cref{ihs:hh:sec:field}. Part IV's
+spectral classification keeps divisibility; its determinant and Fredholm
+alternative need no such restriction (\cref{ihs:fr:sec:determinant}).
 
 There are exactly two kinds of spectrum in this report, and the parts use
 three instances of them. A \emph{bijectivity spectrum} is the set of $\lambda$
@@ -317,8 +322,9 @@ $\Sigma^{\B}_\Gamma=\sigma^{\mathrm{adj}}_\Gamma$ and
 $\Sigma^{\RCF_I(\C)}_\Gamma=\sigma_{\Arf}$ (\cref{ihs:prop:unify}). No
 statement of this report identifies a bijectivity spectrum with an
 algebra-relative one except where a theorem proves it for the operators in
-question (\cref{ihs:hh:thm:spectrum,ihs:fr:thm:main}, and the Volterra
-example \cref{ihs:dz:sec:volterra}).
+question (\cref{ihs:hh:thm:spectrum,ihs:fr:thm:main,ihs:fr:thm:fredholm},
+and the Volterra and block examples
+\cref{ihs:dz:sec:volterra,ihs:dz:sec:blocks}).
 
 \begin{table}[p]
 \centering\footnotesize
@@ -345,7 +351,7 @@ matrices, with no ordinary boundedness at all &
 \emph{constant} elements $T$ of $\AlgG=\Alg((t^\Gamma))$, $\Alg$ any nonzero
 unital complex algebra &
 $A=T+E\in\Ahh$, $T$ injective compact self-adjoint, $E=E^*$ of positive
-order, not commuting with $T$\\
+order, not assumed to commute with $T$\\
 \addlinespace
 ``Spectrum'' means &
 $\sigma^{\mathrm{alg}}_\Gamma(A)=\{\lambda\in\K:A-\lambda I$ is not
@@ -389,6 +395,11 @@ in it; each nonzero eigenvalue becomes a finite Hermitian cluster
 statement below names its vector space or algebra and which of these
 definitions it uses.}\label{ihs:tab:senses}
 \end{table}
+
+The Part IV column describes its spectral classification. Its separate
+determinant and Fredholm alternative in \cref{ihs:fr:sec:determinant}
+allow arbitrary complex Hilbert $H$ and set-sized ordered abelian $\Gamma$,
+including the zero group.
 
 \Cref{ihs:sec:interface} works the apparent conflict between Parts I and II
 out on a single operator, says exactly why both conclusions hold, and shows
@@ -501,12 +512,13 @@ consists of the accumulation points and the isolated non-poles
 Part~I's normal formula (\cref{ihs:dz:cor:normal,ihs:dz:rem:recover}); the
 Volterra operator has spectrum $\{0\}$, no accumulation point, and
 $\Sigma^{\B}_\Gamma(\mathcal V)=\mK$. A polynomial germ of ramification index
-$e$ maps a halo onto exactly the infinitesimals with valuation in $e\Gamma$,
+$e$ maps a halo, after subtracting its ordinary image, onto zero and exactly
+the nonzero infinitesimals with valuation in $e\Gamma$,
 which gives a necessary and sufficient criterion for spectral mapping over
 every value group (\cref{ihs:dz:thm:image,ihs:dz:thm:criterion}).
 
 \subsection{Part IV at a glance}\label{ihs:sec:glancefour}
-Throughout Part IV, $H$ is infinite-dimensional and separable, $\Gamma$ is
+For Part IV's spectral classification, $H$ is infinite-dimensional and separable, $\Gamma$ is
 \emph{divisible}, and the space and algebra are $\Hil$ and $\Ahh$ of Part~I.
 For $A=T+E$ with $T$ ordinary injective compact self-adjoint and
 $E=E^*\in\Ahh$ of positive order, not necessarily commuting with $T$,
@@ -526,6 +538,9 @@ coefficientwise trace and Fredholm determinant exist
 (\cref{ihs:fr:thm:nolidskii,ihs:fr:thm:noproduct,ihs:fr:thm:fredholm}). No
 nonzero coherent Hahn analytic function detects the whole monad at the
 accumulation point (\cref{ihs:fr:thm:nocharacteristic}).
+The determinant and Fredholm alternative themselves hold for arbitrary
+complex Hilbert spaces and set-sized ordered abelian exponent groups;
+\cref{ihs:fr:sec:determinant} states this separate scope.
 
 \subsection{What is and is not claimed as new}\label{ihs:sec:novelty}
 No part claims a classical input as new, and the four parts have separate
@@ -673,10 +688,10 @@ Hilbert-space basis.
 
 \section{Shared Hahn preliminaries}\label{ihs:sec:prelim}
 
-This section fixes the conventions used by both parts and states the support
-lemma once. Everything else about the two constructions --- their inner
-products and their operator algebras --- is
-stated separately in each part, because in each case the two differ.
+This section fixes the Hahn conventions used by all four parts and states
+the support lemma once. Each part specifies its own coefficient space,
+operator algebra and, where present, inner product; these are not shared
+merely because the scalar field is the same.
 
 \subsection{Support conventions and strong summability}\label{ihs:sec:supportconv}
 A Hahn series with coefficients in a complex vector space $V$ is a family
@@ -698,7 +713,7 @@ summable family whose partial sums do not converge even in the intrinsic
 valuation topology of $\K$.
 
 \subsection{The support lemma, stated once}\label{ihs:sec:supportlemma}
-Both source manuscripts open with the Hahn--Neumann support lemma, one
+The first two source manuscripts open with the Hahn--Neumann support lemma, one
 citing it and supplying the two-set finiteness argument, the other
 reproving Higman's word-order input by a minimal bad sequence. The lemma is
 classical, and it is already printed with a full proof elsewhere in this
@@ -706,7 +721,7 @@ collection: the finite-dimensional spectral report proves the word-order
 statement as its \texttt{spec:lem:words} and the positive-monoid statement
 as its \texttt{spec:lem:neumann}, in its section ``A self-contained support
 engine'' \cite{RepoSpectral}. We therefore state it here once, in the form
-both parts use, and do not reprint that proof.
+all four parts use, and do not reprint that proof.
 
 \begin{lemma}[Classical Hahn--Neumann support lemma]\label{ihs:lem:support}
 Let $\Gamma$ be an ordered abelian group.
@@ -750,7 +765,7 @@ words cannot share one total. This deduction does not assume that $n\min S$
 is cofinal in $\Gamma$.
 
 \begin{remark}[Why the full word form is needed]\label{ihs:rem:wordform}
-Both parts use the finite-\emph{word} assertion of
+All four parts use the finite-\emph{word} assertion of
 \cref{ihs:lem:support}(ii), not only the assertion that each fixed power is
 meaningful. The latter alone would not justify a geometric series. The
 estimate $v(X^n)\ge n\eps$ is also not a substitute: in a value group of
@@ -876,10 +891,10 @@ range-defect theorem \cref{ihs:hh:thm:defect}, for which its source gives a
 second proof (\cref{ihs:fr:rem:secondproof}). The main theorems of Part III
 use no theorem of Parts I, II or IV; its comparison with them is
 \cref{ihs:sec:unify}. No theorem of Part III or IV is used in Part I or
-Part II. Each part has its own inner product,
-its own operator algebra, its own spectral definition, and its own
-coefficient-space requirements, and each proves its own positivity statement
-from scratch:
+Part II. The coefficient-space and algebra requirements remain local to
+each part. Parts I and II prove positivity for their respective inner
+products; Part III requires no inner product, and Part IV inherits Part~I's.
+In particular,
 \cref{ihs:hh:prop:inner} constructs the positive square root
 $\norm x=\sqrt{\ip xx}$ from the even leading exponent of $\ip xx$ and a
 near-one binomial root; this works for every ordered value group.
@@ -889,8 +904,10 @@ every positive scalar has a square root. Part II uses no norm, and
 
 Neither construction needs divisibility, and neither does Part III, whose
 straightening automorphism adjoins no fractional exponent
-(\cref{ihs:dz:lem:straighten}). Part IV assumes it, to diagonalize finite
-Hermitian clusters inside the field (\cref{ihs:fr:lem:hermitian}). In Part I all field-valued roots
+(\cref{ihs:dz:lem:straighten}). Part IV's spectral classification assumes
+divisibility to diagonalize finite Hermitian clusters inside the field
+(\cref{ihs:fr:lem:hermitian}); its determinant and Fredholm alternative
+do not (\cref{ihs:fr:sec:determinant}). In Part I all field-valued roots
 used in norms and moduli have even leading exponent, and all other scalar
 roots are near-one binomial roots; ordinary positive operator square roots
 are taken in $\B$, before Hahn extension. General positive Hahn scalars
@@ -990,12 +1007,13 @@ $\RCF_I(\C)$, distinct labels or not, and gives $\{d_i:i\in I\}$; for
 distinct real labels this is the case $B=0$ of
 \cref{ihs:rf:thm:resolvent}. Part III does not treat the perturbed,
 nonconstant operators $D+B$ of Part~II, nor the nonconstant operators of
-Part~IV. Neither does it speak about bijectivity on a vector space: the
-statement $\sigma^{\mathrm{alg}}_\Gamma=\sigma^{\mathrm{adj}}_\Gamma$ is
-proved in this report for constant normal operators
-(\cref{ihs:hh:thm:spectrum}), for the Volterra operator
-(\cref{ihs:dz:sec:volterra}), and for the operators of Part~IV
-(\cref{ihs:fr:thm:main}), and nowhere else.
+Part~IV. Its general theorem classifies algebra inversion; its Volterra
+and block examples additionally prove equality with the bijectivity spectrum
+(\cref{ihs:dz:sec:volterra,ihs:dz:sec:blocks}). This report also proves
+$\sigma^{\mathrm{alg}}_\Gamma=\sigma^{\mathrm{adj}}_\Gamma$ for constant
+normal operators (\cref{ihs:hh:thm:spectrum}) and the compact-residue class
+of \cref{ihs:fr:thm:main}. Separately, \cref{ihs:fr:thm:fredholm} equates
+bijectivity and algebra inversion for $I+C$ with $C\in\TT_+$.
 
 \subsection{Reading one part alone}\label{ihs:sec:readingalone}
 Each part is self-contained given \cref{ihs:sec:prelim}, except that Part~IV
@@ -2183,8 +2201,9 @@ products in this algebra and its module,
 \[
  v(XY)\ge v(X)+v(Y),\qquad v(Xx)\ge v(X)+v(x).
 \]
-The order function on $\Arf$ is not asserted to be a field valuation:
-$\Arf$ has zero divisors.
+The order function on $\Arf$ need not be a field valuation: if $I$ contains
+two distinct indices, $\Arf$ has zero divisors. For a singleton $I$,
+$\Arf=\K$ is a field and its order function is the field valuation.
 \end{proposition}
 \begin{proof}
 At a prescribed exponent, \cref{ihs:lem:support}(i) leaves finitely many
@@ -2194,6 +2213,10 @@ product. Scalar Hahn series act through scalar matrices. The support of a
 product is contained in the sum of the supports, proving the displayed
 inequalities. Faithfulness follows by evaluating on each $e_i$ and then
 comparing coefficients. The adjoint identity follows coefficientwise.
+For distinct $i,j\in I$, the nonzero constant diagonal matrix units
+$E_{ii}$ and $E_{jj}$ belong to $R_I$ and satisfy $E_{ii}E_{jj}=0$.
+If $I$ is a singleton, identifying a matrix with its sole entry gives
+$R_I=\C$ and hence $\Arf=\K$.
 \end{proof}
 
 \subsection{The inner product and its positivity}\label{ihs:rf:sec:inner}
@@ -3445,7 +3468,7 @@ operators, and its finite-section errors have verifiable scale thresholds.
 \emph{Standing hypotheses for Part III.} $\Alg$ is a nonzero associative
 unital complex algebra, with the complex scalars central, and $\Gamma$ is a
 nonzero set-sized ordered abelian group. Divisibility, a norm on $\Alg$,
-normality and rank one are \emph{not} assumed; only
+normality and rank one are \emph{not} assumed. Among general results, only
 \cref{ihs:dz:sec:banach} and \cref{ihs:dz:prop:polemap} add a Banach norm.
 ``Spectrum'' in this part means $\SigA(T)$, failure of two-sided
 invertibility of $T-\lambda1$ inside the named algebra $\AlgG$, for a
@@ -3483,7 +3506,8 @@ accumulation points. This part asks what replaces accumulation points when
 normality is dropped and the Hilbert operator algebra is replaced by an
 arbitrary unital algebra, and exactly how a nondivisible value group affects
 polynomial spectral mapping. The answers are finite-index Drazin
-invertibility and a ramification test. An isolated spectral point can acquire
+invertibility and a ramification test. In a Banach algebra, an isolated
+spectral point can acquire
 an entire infinitesimal halo when the ordinary resolvent singularity is not a
 finite pole. Conversely, every finite pole permits an inverse at every
 nonzero infinitesimal displacement, with an exact valuation determined by its
@@ -3612,13 +3636,18 @@ in $\sigma_\Alg(T)$.
 \end{definition}
 
 Given the identities, put $P_{\mathrm{nil}}=1-SS^{\mathrm D}$ and
-$P_{\mathrm{inv}}=SS^{\mathrm D}$. These are complementary idempotents
-commuting with $S$, $S^{\mathrm D}P_{\mathrm{nil}}=P_{\mathrm{nil}}S^{\mathrm D}=0$,
-and $S^\nu P_{\mathrm{nil}}=0$. In the corner algebra
+$P_{\mathrm{inv}}=SS^{\mathrm D}$. Indeed,
+$(SS^{\mathrm D})^2=S(S^{\mathrm D}SS^{\mathrm D})=SS^{\mathrm D}$, so these
+are complementary idempotents commuting with $S$. The second Drazin identity
+gives $S^{\mathrm D}P_{\mathrm{nil}}=P_{\mathrm{nil}}S^{\mathrm D}=0$, and
+the third gives $S^\nu P_{\mathrm{nil}}=0$. In the corner algebra
 $P_{\mathrm{inv}}\Alg P_{\mathrm{inv}}$, with identity $P_{\mathrm{inv}}$,
 the element $SP_{\mathrm{inv}}$ is invertible with inverse $S^{\mathrm D}$.
-Thus $P_{\mathrm{nil}}$ is the nilpotent part and $P_{\mathrm{inv}}$ the
-invertible part. If $\nu\ge1$ is least, then $S^{\nu-1}P_{\mathrm{nil}}\ne0$.
+Thus $P_{\mathrm{nil}}$ selects the nilpotent part and $P_{\mathrm{inv}}$ the
+invertible part; the corresponding elements are $SP_{\mathrm{nil}}$ and
+$SP_{\mathrm{inv}}$. Either corner may be zero. If $\nu\ge1$ is least,
+then $S^{\nu-1}P_{\mathrm{nil}}\ne0$: otherwise
+$S^\nu S^{\mathrm D}=S^{\nu-1}$ would lower the index by one.
 No centrality of $P_{\mathrm{nil}}$ in the whole algebra is required.
 
 Let $u$ be a central formal variable; the ordinary Laurent algebra $\Alg((u))$
@@ -3655,7 +3684,10 @@ including the finite lower bound, give $S^mP_{\mathrm{nil}}=0$, and the
 positive recurrences give $S^{\mathrm D}=S^mB_m$. Since $P_{\mathrm{nil}}$
 commutes with $S$, this gives $P_{\mathrm{nil}}S^{\mathrm D}=0$; the
 definition of $P_{\mathrm{nil}}$ and commutation give
-$S^{\mathrm D}P_{\mathrm{nil}}=0$. It follows that
+$S^{\mathrm D}P_{\mathrm{nil}}=0$. More explicitly,
+$P_{\mathrm{nil}}B_0=P_{\mathrm{nil}}S^mB_m=0$ and
+$B_0P_{\mathrm{nil}}=P_{\mathrm{nil}}B_0$, since $B_0$ commutes with $S$.
+It follows that
 $P_{\mathrm{nil}}^2=P_{\mathrm{nil}}$, $S^{\mathrm D}SS^{\mathrm D}=S^{\mathrm D}$
 and $S^{m+1}S^{\mathrm D}=S^m$, which are Drazin identities. Any Drazin data
 give \eqref{ihs:dz:eq:laurent}; uniqueness of a two-sided inverse therefore
@@ -3752,6 +3784,10 @@ The map $\varpi_\eta$ is not generally a ring homomorphism: if
 $\eta/2\in\Gamma$, it sends $t^{\eta/2}$ to zero but its square to $u$. The
 proof used only left and right compatibility with the particular cyclically
 supported pencil, and no claim that $n\eta$ is cofinal in $\Gamma$.
+The restriction to $\Z\eta$ is essential to the finite negative Laurent
+tail: in lexicographic $\Z\times\Z$, for example, the well-ordered set
+$\{(-1,n):n\ge0\}$ contains infinitely many negative exponents. General
+Hahn supports need not have only finitely many negative terms.
 
 \begin{theorem}[Arbitrary-parameter inverse descent]\label{ihs:dz:thm:descent}
 For $S\in\Alg$ and $0\ne\eps\in\mK$, the following are equivalent:
@@ -3864,14 +3900,17 @@ need one. In a Banach algebra, finite-index Drazin invertibility has a
 familiar analytic meaning: a spectral point is Drazin invertible exactly when
 it is a finite pole of the ordinary resolvent \cite{BoassoOperators,Boasso}.
 
-To see the mechanism, take $S=T-a1$ with Drazin inverse $S^{\mathrm D}$. The
+To see the mechanism, take $S=T-a1$ with Drazin inverse $S^{\mathrm D}$ and
+use the local resolvent convention $R(u)=(S-u1)^{-1}$. The
 positive part of \eqref{ihs:dz:eq:laurent} converges in norm for
 sufficiently small complex $u$, being a geometric series in $uS^{\mathrm D}$;
 its negative part is finite. It supplies the ordinary resolvent on a
 punctured disk, with pole order equal to the Drazin index if $a$ is
 spectral. Conversely, the coefficients of a finite-pole Laurent expansion of
 the analytic resolvent satisfy \eqref{ihs:dz:eq:recurrence}, so its constant
-coefficient is a Drazin inverse. No accumulation point of the ordinary
+coefficient is a Drazin inverse. With the opposite convention
+$(u1-S)^{-1}$ that coefficient would instead be $-S^{\mathrm D}$.
+No accumulation point of the ordinary
 spectrum can be a finite pole, and an isolated spectral singularity cannot be
 removable, since continuity of the inverse identity would then invert
 $T-a1$. Consequently
@@ -3930,7 +3969,8 @@ is the failure-of-bijectivity spectrum $\sigma^{\mathrm{alg}}_\Gamma(T)$ on
 $\Hil$: Part~III is a statement about invertibility in an algebra and says
 nothing about bijectivity on a vector space, except in its explicitly worked
 examples (the Volterra operator of \cref{ihs:dz:sec:volterra}, and the block
-operator of \cref{ihs:dz:sec:blocks} at monomial displacements). The second is point-spectrum rigidity,
+operator of \cref{ihs:dz:sec:blocks}, both at every infinitesimal
+displacement). The second is point-spectrum rigidity,
 \cref{ihs:hh:thm:point}. \Cref{ihs:hh:thm:spectrum} proves
 $\sigma^{\mathrm{alg}}_\Gamma(T)=\sigma^{\mathrm{adj}}_\Gamma(T)$ for
 constant normal $T$; together with \cref{ihs:dz:cor:normal} this gives the
@@ -4015,6 +4055,9 @@ evaluated at any element of $\mK$ by \cref{ihs:cor:binomial}; the values stay
 in $\mK$, and the identities make the resulting maps mutually inverse on the
 whole of $\mK$. The defining $e$th-power identity proves the claim. No
 ordinary convergence radius was used.
+For $x\ne0$ the nonzero linear coefficient is the unique leading term in
+each substitution, so $v(\varphi_a(x))=v(x)=v(\psi_a(x))$. In particular,
+both substitutions preserve nonzeroness as well as positive valuation.
 \end{proof}
 
 A ramification index is thus an exact condition on the value group, not an
@@ -4151,11 +4194,16 @@ $-\nu_bv(\eps)$.
 \begin{proof}
 The indicated spectral preimages are finite poles. Their finite Riesz
 decomposition separates them from a part on which $p(T)-b1$ is invertible.
-On the part for $a$ write $T=a1+N_a$ with $N_a$ of nilpotency index $\nu_a$.
-Then $p(a1+N_a)-b1=N_a^{e_a}w_a(N_a)$ with $w_a(0)\ne0$; the factor
+More precisely, let $P_a$ be the corresponding Riesz idempotents and work
+in the corner $P_a\Alg P_a$, whose identity is $P_a$. There
+$TP_a=aP_a+N_a$ with $N_a=(T-a1)P_a$ of nilpotency index $\nu_a$.
+Thus $(p(T)-b1)P_a=N_a^{e_a}w_a(N_a)$, where $w_a(0)\ne0$ and the
+polynomial $w_a$ is evaluated with corner identity $P_a$; the factor
 $w_a(N_a)$ is invertible and commutes with $N_a$, so the $k$th power vanishes
 exactly when $N_a^{e_ak}$ does, giving index $\lceil\nu_a/e_a\rceil$. The
-index of a finite direct sum is the maximum. Apply \cref{ihs:dz:thm:scale}
+index of a finite direct sum is the maximum. The complementary corner, if
+nonzero, has index zero; the nonempty spectral fibre ensures $\nu_b\ge1$.
+Apply \cref{ihs:dz:thm:scale}
 for the valuation.
 \end{proof}
 
@@ -4185,9 +4233,11 @@ negative powers.
 
 \subsection{Volterra: an isolated point that acquires a whole halo}\label{ihs:dz:sec:volterra}
 Let $H=L^2([0,1],\C)$ and $(\mathcal Vf)(x)=\int_0^xf(s)\,ds$. The operator is
-injective; its range consists of functions with an absolutely continuous
-representative vanishing at zero, so the constant function $1$ is not in its
-range. Repeated integration gives
+injective; its range consists exactly of the $L^2$ classes with an absolutely
+continuous representative $g$ satisfying $g(0)=0$ and $g'\in L^2([0,1])$.
+Indeed, an indefinite integral has those properties, and conversely
+$g=\mathcal Vg'$ almost everywhere. The constant function $1$ has no such
+representative and is not in the range. Repeated integration gives
 \begin{equation}\label{ihs:dz:eq:volterra}
  (\mathcal V^nf)(x)=\frac1{(n-1)!}\int_0^x(x-s)^{n-1}f(s)\,ds\qquad(n\ge1),
 \end{equation}
@@ -4260,14 +4310,28 @@ $\mathcal N$ nilpotent. Therefore
  \Sigma^{\B}_\Gamma(\mathcal N_M)=\{0\}\ \text{for every }M,\qquad
  \Sigma^{\B}_\Gamma(\mathcal N)=\mK.
 \end{equation}
-There is a direct support witness at $\eps=t^\eta$. The constant vector $y$
-whose $n$th block is $2^{-n}e_n$ lies in $H$. A putative solution $x$ of
-$(\mathcal N-t^\eta I)x=y$ must, in the $n$th block, equal
-$x^{(n)}=-\sum_{j=0}^{n-1}t^{-(j+1)\eta}(2^{-n}J_n)^j2^{-n}e_n$, whose
-coefficient at $-n\eta$ is nonzero. The global support of $x$ would contain
+There is a direct support witness for every $0\ne\eps\in\mK$. Put
+$\eta=v(\eps)>0$ and $c=\lc(\eps)$. The constant vector $y$ whose $n$th
+block is $2^{-n}e_n$ lies in $H$, since $\sum_n4^{-n}<\infty$. A putative
+solution $x$ of $(\mathcal N-\eps I)x=y$ must, in the $n$th block, equal
+\[
+ x^{(n)}=-\sum_{j=0}^{n-1}\eps^{-j-1}(2^{-n}J_n)^j2^{-n}e_n.
+\]
+Its final term has valuation $-n\eta$ and leading vector
+$-c^{-n}2^{-n^2}e_1\ne0$; every earlier term has strictly larger valuation.
+The coefficient of the global vector $x$ at $-n\eta$ is therefore nonzero,
+since its projection onto the $n$th block is nonzero. Its support would contain
 $-\eta,-2\eta,-3\eta,\ldots$, which is not well ordered, so no Hahn-vector
 solution exists. A finite number of block checks can never establish the
 uniform bound on nilpotent chain lengths that would remove this obstruction.
+At $\eps=0$ the operator already has nonzero kernel,
+whereas outside $\mK$ its algebra inverse gives a bijection. Consequently
+\[
+ \sigma^{\mathrm{alg}}_\Gamma(\mathcal N)
+ =\Sigma^{\B}_\Gamma(\mathcal N)=\mK.
+\]
+This extension to nonmonomial displacements follows from the same support
+argument; the source's explicit block calculation used a monomial.
 This is the Drazin counterpart of \cref{ihs:sec:finitesections}, where every
 finite section of a normal operator is invertible but the infinite one is
 not.
@@ -4280,8 +4344,8 @@ $\eps=t^{(0,1)}\bigl(1+t^{(0,2)}+t^{(1,0)}\bigr)$. At a Drazin point of index
 three, its shifted inverse has exact valuation $(0,-3)$, irrespective of the
 nonmonomial correction. The straightening lemma applies within this very
 group and adjoins no fractions. In contrast, the image of the squaring map
-on infinitesimals consists precisely of those whose valuation has both
-coordinates even; inverse descent and the scalar-power criterion answer
+on infinitesimals consists of zero and the nonzero infinitesimals whose
+valuation has both coordinates even; inverse descent and the scalar-power criterion answer
 different questions. Under the ordered embedding $(m,n)\mapsto m\omega+n$
 and $t^\gamma=\omega^{-\gamma}$, the displacement is the actual positive
 surreal number $\eps=\omega^{-1}(1+\omega^{-2}+\omega^{-\omega})$, and the
@@ -4369,9 +4433,10 @@ a spectral value in the corresponding real operator-normal-form algebra.
 \section{Part III: interpretation, boundaries and further questions}\label{ihs:dz:sec:limits}
 
 \subsection{What the results establish}\label{ihs:dz:sec:establish}
-There are two independent mechanisms. A constant pencil admits an
-infinitesimally shifted Hahn inverse exactly when its singular corner is
-nilpotent of bounded finite index, and that condition survives all
+There are two independent mechanisms. A constant pencil admits a Hahn
+inverse at a nonzero infinitesimal displacement exactly when it has a Drazin
+decomposition, with an invertible corner and a corner nilpotent of finite
+index, and that condition survives all
 exponent-workspace enlargements. A polynomial can then map the resulting
 halos onto only selected valuation levels when the workspace lacks enough
 roots, and the defect is determined exactly by the ramification indices over
@@ -4441,16 +4506,17 @@ projection and strong straightening. No checked implementation is included.
 \part*{Part IV. Fredholm windows: compact self-adjoint residues under noncommuting Hahn perturbations}
 \addcontentsline{toc}{part}{Part IV. Fredholm windows}
 
-\emph{Standing hypotheses for Part IV.} $H$ is an ordinary
+\emph{Standing hypotheses for the spectral classification in Part IV.} $H$ is an ordinary
 \emph{infinite-dimensional separable} complex Hilbert space, $\Gamma$ is a
 nonzero set-sized ordered abelian group that is \textbf{divisible}, and the
 vector space, inner product and operator algebra are those of Part~I:
 $\Hil=H((t^\Gamma))$ with the inner product \eqref{ihs:hh:eq:inner}, linear in
 the first variable, and $\Ahh=\B((t^\Gamma))$. Divisibility is a hypothesis
-of this part only; it is used to make $\K$ algebraically closed and $\Fld$
+of this classification; it is used to make $\K$ algebraically closed and $\Fld$
 real closed, so that finite Hermitian clusters diagonalize inside the field
-(\cref{ihs:fr:lem:hermitian}). This report has not examined which Part~IV
-statements survive without it. ``Spectrum'' in this part means both Part~I
+(\cref{ihs:fr:lem:hermitian}). The trace and determinant results in
+\cref{ihs:fr:sec:determinant} separately allow arbitrary $H$ and $\Gamma$;
+the spectral statements keep the hypotheses above. ``Spectrum'' in this part means both Part~I
 spectra: $\sigma^{\mathrm{alg}}_\Gamma$, failure of bijectivity on $\Hil$,
 and $\sigma^{\mathrm{adj}}_\Gamma$, failure of invertibility in $\Ahh$; the
 main theorem proves that they agree for the operators studied. The source
@@ -4579,8 +4645,8 @@ support. This criterion is sufficient, not necessary: $t^\eta I$ is
 invertible although its standard part is zero.
 
 \subsection{Lifting analytic identities coefficientwise}\label{ihs:fr:sec:lift}
-Let $X,Y$ be ordinary complex Banach spaces and $f$ holomorphic near
-$x_0\in X$. For a positive-support Hahn perturbation
+Let $X,Y$ be ordinary complex Banach spaces and let $f:U\to Y$ be
+holomorphic on an open neighbourhood $U\subseteq X$ of $x_0$. For a positive-support Hahn perturbation
 $h=\sum_{s\in S}h_st^s$ define
 \begin{equation}\label{ihs:fr:eq:taylorlift}
  f^{\mathrm H}(x_0+h)=\sum_{n\ge0}\frac1{n!}\,\mathrm d^nf(x_0)[h,\ldots,h],
@@ -4603,6 +4669,10 @@ the ordinary identity to the resulting finite-dimensional parameter space
 near zero. Equality of its Taylor coefficients gives the coefficient
 equality at $\gamma$. For composition, zero-constant inner increments and the
 same finite-word condition justify all regrouping.
+For several inputs use the finite union of their positive supports; each
+output coefficient still uses finitely many directions and word lengths.
+The argument bounds the number of contributors to one coefficient, not the
+ordinary norms of all Hahn coefficients simultaneously.
 \end{proof}
 
 A real-analytic identity involving adjoints is treated by real auxiliary
@@ -4726,7 +4796,12 @@ is $P^\circ_c$. For any finite collection of directions $E_s$, the ordinary
 Riesz projection of $T+\sum_sz_sE_s$ on the fixed circle, for complex
 parameters near zero, is holomorphic, idempotent and commutes with the
 perturbed operator; its Taylor coefficients are the contour coefficients
-above, and \cref{ihs:fr:lem:lift} proves idempotence and commutation. Each
+above. To keep this contour in the resolvent set, put
+$M_c=\max_{\zeta\in\mathcal C_c}\norm{R_0(\zeta)}<\infty$ and restrict the
+finitely many parameters by $\sum_s|z_s|\norm{E_s}<1/M_c$. The resulting
+uniform geometric expansion justifies integrating its Taylor coefficients.
+No common parameter neighbourhood for all directions or all $c$ is required.
+Now \cref{ihs:fr:lem:lift} proves idempotence and commutation. Each
 $E_s$ is self-adjoint because $E=E^*$, so for real parameters near zero the
 projection is orthogonal; comparing real Taylor coefficients gives
 $P_c^*=P_c$. \Cref{ihs:lem:support} gives the support containment.
@@ -4751,10 +4826,13 @@ The square $(P-P^\circ)^2$ commutes with both projections and hence with
 $\Omega$. The binomial series for $(I-(P-P^\circ)^2)^{-1/2}$ exists by
 \cref{ihs:cor:binomial}, is self-adjoint, commutes with $\Omega,P,P^\circ$,
 and squares to the inverse. The unitary and intertwining identities follow,
-and all nonconstant terms have support in the stated monoid.
+and all nonconstant terms have support in the stated monoid. In particular,
+$\Omega-I=(P-P^\circ)(2P^\circ-I)$ has positive support, and the binomial
+factor has constant coefficient $I$, so $U-I$ has positive support as claimed.
 \end{proof}
 
-This is the classical two-projection calculation of \cite{SimonProjections},
+This is the classical Kato two-projection formula, as recalled by Simon
+\cite[Equation~(4)]{SimonProjections},
 recorded in the present algebra. Apply it to $P=P_c$ and $P^\circ=P^\circ_c$,
 and call the unitary $U_c$. Then $U_c^*AU_c$ commutes with $P^\circ_c$, so
 relative to $H=H_c\oplus H_c^\perp$ it has an exact block form
@@ -4772,7 +4850,8 @@ eigenvalues in $\Fld$. If its entries are finite and its standard part is
 $cI_m$, all its eigenvalues are finite with standard part $c$.
 \end{lemma}
 \begin{proof}
-Since $\K$ is algebraically closed, the characteristic polynomial has a root
+The zero-dimensional case is empty. In positive dimension, since $\K$ is
+algebraically closed, the characteristic polynomial has a root
 and an eigenvector $x\ne0$. For a Hermitian $X$,
 $\lambda\ip xx=\ip{Xx}x=\overline{\ip{Xx}x}$ with $\ip xx>0$ in $\Fld$, so
 $\lambda$ is real. The positive square root of $\ip xx$ normalizes $x$; its
@@ -4808,7 +4887,13 @@ finite matrix of scalar Hahn entries acts by a bounded coefficient at each
 exponent on the finite-dimensional block, so the inverse lies in $\Ahh$,
 even if some exponents are negative. If the determinant is zero, a nonzero
 finite block eigenvector gives a nonzero vector of $\Hil$ after conjugation.
-The complementary inverse also proves the kernel isomorphism.
+The complementary inverse also proves the kernel isomorphism, explicitly
+$y\mapsto U_c(y,0)$. On quotients the map induced by
+$x\mapsto P^\circ_cU_c^*x$ gives
+$\coker(A-\lambda I)\cong\coker(A_c-\lambda I)$: the complementary
+coordinate is in the image because its block is invertible. Both finite
+defect dimensions therefore equal the multiplicity in the Hermitian
+eigenvalue list, including zero when $\lambda$ is absent from it.
 \end{proof}
 
 \begin{remark}[Precisely what is support controlled]\label{ihs:fr:rem:support}
@@ -5025,6 +5110,14 @@ diagonal coefficient operator is bounded exactly when its entries are, and
 permutation does not change that.
 \end{proof}
 
+These coefficients also rule out a common ordinary complex disc of analytic
+eigenbranches. If all $\lambda_n(s)$ were analytic eigenvalue functions on
+$|s|<r$ for some $r>0$, fix $0<\rho<r$. On $|s|=\rho$ every eigenvalue has
+$|\lambda_n(s)|\le\norm{D_\star+sY}\le\norm{D_\star}+\rho\norm Y$.
+Cauchy's coefficient estimate would then bound all $[s^2]\lambda_n$ by
+$(\norm{D_\star}+\rho\norm Y)/\rho^2$, contradicting their unboundedness.
+Each branch still has its own analytic neighbourhood at zero.
+
 \subsection{Why Part~II has a different answer}\label{ihs:fr:sec:rowfinite}
 For the locally finite path matrix in \eqref{ihs:fr:eq:counterexample},
 each fixed formal perturbation coefficient of an eigenvector has finite
@@ -5043,6 +5136,16 @@ unbounded coefficient operators, different vector spaces or a different
 summation notion would have to state its own domain and action requirements.
 
 \section{A trace-class determinant with an exact Fredholm alternative}\label{ihs:fr:sec:determinant}
+
+\emph{Generality of this section.} Here $H$ may be any ordinary complex
+Hilbert space and $\Gamma$ any set-sized ordered abelian group, possibly
+zero and not necessarily divisible. Set $\K=\C((t^\Gamma))$,
+$\Hil=H((t^\Gamma))$ and $\Ahh=\B((t^\Gamma))$ as before. None of the
+arguments in this section uses the compact residue $T$, self-adjointness,
+separability or infinite dimension. For $H=\{0\}$ the determinant is $1$
+and the Fredholm alternative is trivial; for $\Gamma=\{0\}$ the construction
+is the ordinary determinant. Subsequent applications to $A=T+E$ retain
+their stated spectral hypotheses.
 
 \subsection{Trace class is imposed coefficient by coefficient}\label{ihs:fr:sec:traceclass}
 Let $\SH$ be the ordinary complex trace-class ideal with its trace norm, and
@@ -5066,6 +5169,19 @@ operators of the form $I+C$, agrees with finite-dimensional determinants,
 satisfies the finite-rank Sylvester identity, and is nonzero exactly when
 $I+C$ is invertible; near $C=0$ it satisfies
 $\det_H(I+C)=\exp(\Tr\log(I+C))$ \cite[Section~3]{Bornemann}.
+For the Banach-space analyticity needed here, use the exterior-power
+expansion $\det_H(I+C)=\sum_{n\ge0}\Tr(\bigwedge^n C)$: its terms are
+continuous homogeneous polynomials and satisfy
+$|\Tr(\bigwedge^n C)|\le\norm C_1^n/n!$. Thus the series converges locally
+uniformly on trace-norm bounded sets and defines an entire map on $\SH$,
+not merely an entire function along each scalar line.
+
+The finite-rank identity used below is
+$\det_H(I+UV)=\det_m(I_m+VU)$ for bounded $U:\C^m\to H$ and
+$V:H\to\C^m$. Indeed, $UV$ takes values in the finite-dimensional space
+$\Ran U$, so its Fredholm determinant reduces to that space; the usual
+finite-dimensional rectangular determinant identity then gives the displayed
+formula. This also covers $m=0$ with determinant $1$.
 
 \begin{definition}[Hahn Fredholm determinant]\label{ihs:fr:def:determinant}
 Every $C\in\TT_+$ decomposes uniquely as $C=C_0+C_+$ with $C_0\in\SH$ and
@@ -5089,9 +5205,12 @@ For $C,C'\in\TT_+$,
  \st\Det(I+C)=\det_H(I+C_0),\qquad
  \Det\bigl((I+C)(I+C')\bigr)=\Det(I+C)\Det(I+C').
 \end{equation}
-The determinant commutes with coefficient conjugation and adjunction and
-agrees with a finite matrix determinant on a finite-dimensional ordinary
-summand. If $v(C)>0$,
+The canonical adjoint identity is
+$\Det(I+C^*)=\overline{\Det(I+C)}$. If $\mathcal J$ is any fixed
+conjugation on $H$ (an antilinear isometric involution), then also
+$\Det(I+\mathcal JC\mathcal J)=\overline{\Det(I+C)}$, with
+$\mathcal J$ applied coefficientwise. The determinant agrees with a finite
+matrix determinant on a finite-dimensional ordinary summand. If $v(C)>0$,
 \begin{equation}\label{ihs:fr:eq:detlog}
  \Det(I+C)=\exp\Bigl(\Tr_\Gamma\sum_{k\ge1}\frac{(-1)^{k+1}}kC^k\Bigr),
 \end{equation}
@@ -5102,7 +5221,10 @@ The standard-part assertion is the constant Taylor coefficient. For
 multiplicativity apply \cref{ihs:fr:lem:lift} to the ordinary identity
 $\det_H(I+C+C'+CC')=\det_H(I+C)\det_H(I+C')$ near the ordinary pair
 $(C_0,C'_0)$; the nonconstant increments of $C+C'+CC'$ have positive support.
-The adjoint and finite-matrix assertions follow by the same comparison. For
+The adjoint and fixed-conjugation assertions follow by real-analytic
+coefficient comparison, and the finite-matrix assertion by holomorphic
+comparison. No canonical conjugation of operators on an abstract complex
+Hilbert space is assumed. For
 $v(C)>0$, the ordinary logarithmic identity holds near zero in trace norm;
 compare Taylor coefficients at zero and lift. Positive-word finiteness
 justifies the operator logarithm and the scalar exponential without any
@@ -5115,8 +5237,9 @@ determinant with zero standard part can still be a nonzero Hahn number. The
 argument reduces the singular ordinary residue to one finite matrix.
 
 \begin{lemma}[Ordinary finite-rank correction]\label{ihs:fr:lem:correction}
-For $C_0\in\SH$ there is a finite-rank ordinary operator $F=\iota\kappa$,
-with $\iota:\C^m\to H$ and $\kappa:H\to\C^m$, such that $I+C_0+F$ is
+For $C_0\in\SH$ there is a finite-rank ordinary bounded operator
+$F=\iota\kappa$, with bounded linear maps $\iota:\C^m\to H$ and
+$\kappa:H\to\C^m$, such that $I+C_0+F$ is
 invertible.
 \end{lemma}
 \begin{proof}
@@ -5125,7 +5248,12 @@ finite-dimensional kernel plus the orthogonal complement, and its target as
 its closed range plus a finite-dimensional orthogonal complement of equal
 dimension. Choose an isomorphism from the kernel onto that complement and
 extend it by zero; adding it makes both block maps bijective and boundedly
-invertible. Any finite-rank operator factors through $\C^m$.
+invertible. Here the restriction from the kernel's orthogonal complement
+onto the closed range has a bounded inverse by the ordinary bounded inverse
+theorem. Take $m=\dim\ker(I+C_0)$, let $\kappa$ be the coordinates of the
+orthogonal projection onto that kernel, and let $\iota$ be the chosen
+isomorphism into the complementary target space. Both are bounded. If the
+kernel is zero, take $m=0$ and $F=0$.
 \end{proof}
 
 \begin{theorem}[Hahn Fredholm alternative]\label{ihs:fr:thm:fredholm}
@@ -5147,20 +5275,32 @@ The constant coefficient of $M_F$ is invertible, so $M_F^{-1}$ exists in the
 nonnegative part of $\Ahh$ by \cref{ihs:lem:neumann}. Let
 $R_F=M_F^{-1}\iota$; then $I+C=M_F(I-R_F\kappa)$. Every coefficient of
 $R_F\kappa=M_F^{-1}F$ is trace class, with nonnegative support.
+Both $M_F-I$ and $-R_F\kappa$ therefore lie in the determinant's domain
+$\TT_+$. To lift Sylvester, regard $R_F$ as a Hahn series with coefficients
+in the Banach space $\mathcal B(\C^m,H)$ and keep $\kappa$ fixed. Apply
+\cref{ihs:fr:lem:lift} to
+$R\mapsto\det_H(I-R\kappa)=\det_m(I_m-\kappa R)$ at the ordinary
+constant coefficient of $R_F$. Its coefficients need not have their ranges
+in one common finite-dimensional ordinary subspace of $H$.
 Multiplicativity and the lifted finite-rank Sylvester identity give
 $\Det(I+C)=\Det(M_F)\Det(I-R_F\kappa)=\Det(M_F)\det_m(I_m-\kappa R_F)$, and
 $\Det(M_F)$ has the nonzero standard part $\det_H$ of the constant
 coefficient. If $L_F$ is invertible, the identity
 $(I-R_F\kappa)^{-1}=I+R_FL_F^{-1}\kappa$ constructs an inverse in $\Ahh$
 (the entries of $L_F^{-1}$ may have negative valuation, which $\Ahh$
-permits); combined with $M_F^{-1}$ this proves the first implication, and an
+permits). There are only finitely many matrix entries, so their supports
+have a well-ordered finite union; multiplication by the bounded coefficient
+maps $R_F$ and $\kappa$ then gives an element of $\Ahh$. Combined with
+$M_F^{-1}$ this proves the first implication, and an
 algebra inverse is a module inverse. If $\det_mL_F=0$, choose $y\ne0$ with
 $L_Fy=0$; then $y=\kappa R_Fy$, the vector $x=R_Fy$ is nonzero, and
 $(I-R_F\kappa)x=0$, so $(I+C)x=0$. Finally $R_F$ and $\kappa$ identify the
 kernel and cokernel of $N_F=I-R_F\kappa$ with those of $L_F$: on kernels they
 are inverse because $R_F\kappa=I-N_F$ and $\kappa R_F=I_m-L_F$, and on
-cokernels they are well defined and inverse because $N_FR_F=R_FL_F$ and
-$\kappa N_F=L_F\kappa$. Multiplication by the invertible $M_F$ does not change
+cokernels the maps are $[x]\mapsto[\kappa x]$ and $[y]\mapsto[R_Fy]$.
+The identities $N_FR_F=R_FL_F$ and $\kappa N_F=L_F\kappa$ make them well
+defined, while $R_F\kappa=I-N_F$ and $\kappa R_F=I_m-L_F$ make the
+composites identities modulo the respective images. Multiplication by the invertible $M_F$ does not change
 the dimensions, so both are finite and equal. The empty correction when the
 constant coefficient is already invertible is covered by $\det_0=1$.
 \end{proof}
@@ -5240,9 +5380,14 @@ $P_N\to\mathfrak d_0>0$.
 \end{proof}
 
 The same missing edge that obstructs the trace sum supplies the divergent
-boundary term. Finite-section determinants remove that term and converge
-coefficientwise to \eqref{ihs:fr:eq:detsecond}; products of the labelled
-branches of the infinite operator do not. There is no conflict with ordinary
+boundary term. Finite-section determinants remove that term: their second
+coefficients converge to \eqref{ihs:fr:eq:detsecond}. In fact every coefficient
+converges. The compressions of $D_\star$ and $Y$ converge in trace norm, so
+the ordinary determinant perturbation estimate
+\cite[Equation~(4.1)]{Bornemann} gives uniform convergence on each fixed
+circle in the complex $s$-plane; Cauchy's formula then gives convergence of
+each Taylor coefficient. Products of the labelled branches of the infinite
+operator do not converge coefficientwise. There is no conflict with ordinary
 Lidskii theory or the ordinary trace-class eigenvalue product: at each fixed
 ordinary real parameter, $D_\star+sY$ is an ordinary compact self-adjoint
 trace-class operator and the ordinary theory applies. What fails is
@@ -5304,7 +5449,7 @@ are not well ordered.
 
 This does not exclude a separately defined regularization or another function
 category at infinite arguments; it excludes the termwise extension by the
-entire Taylor series. Finite coupling $z$ corresponds to spectral parameter
+entire Taylor series. Nonzero finite coupling $z$ corresponds to spectral parameter
 $\lambda=z^{-1}$ away from the zero monad, and nonzero $\lambda\in\mK$ would
 require infinite coupling, exactly where that substitution need not exist.
 
@@ -5324,7 +5469,8 @@ and $v(x)>\delta_0$.
 \end{lemma}
 \begin{proof}
 Let $m$ be the least vanishing order at $0$ among the nonzero coefficient
-germs. Every coefficient is divisible by $z^m$, so $\mathcal G=z^m\mathcal H$
+germs. Each such order is finite by the identity theorem on the connected
+disc. Every coefficient is divisible by $z^m$ on that same disc, so $\mathcal G=z^m\mathcal H$
 with $\mathcal H(0)\ne0$. Let $\alpha$ be the least exponent of a nonzero
 coefficient function of $\mathcal H$ and $\beta=v(\mathcal H(0))\ge\alpha$.
 All Taylor coefficients of $\mathcal H$ at zero have valuation at least
@@ -5344,7 +5490,10 @@ $\sigma^{\mathrm{adj}}_\Gamma(A)\cap\mathbb D_r^\#$.
 \begin{proof}
 The desired zero set contains all of $\mK$ by \cref{ihs:fr:cor:reservoir},
 and a nonzero coherent function cannot vanish there by
-\cref{ihs:fr:lem:nonvanishing}. The zero function fails too: a nonreal
+\cref{ihs:fr:lem:nonvanishing}: choose any $\eta_0>0$ in the nonzero group
+and evaluate at $t^{\delta_0+\eta_0}$, whose valuation exceeds the stated
+threshold. This uses no Archimedean or cofinality condition.
+The zero function fails too: a nonreal
 ordinary $c$ with $0<\abs c<r$ lies outside the real ordinary spectrum of
 $T$, so $A-cI$ is invertible by the second case of \cref{ihs:fr:thm:main}.
 \end{proof}
@@ -5381,7 +5530,8 @@ gives $t^\eta=\omega^{-1}$ and $t^\beta=\omega^{-\omega}$: the example has
 actual surcomplex coefficients involving both scales.
 
 \subsection{Finite clusters may need exponents outside the input monoid}\label{ihs:fr:sec:monoid}
-Let the first two ordinary coordinates share the eigenvalue $c=1$, let the
+Keep $\Gamma=\Q^2$, $\eta=(0,1)$ and $\beta=(1,0)$ from the preceding
+example. Let the first two ordinary coordinates share the eigenvalue $c=1$, let the
 remaining eigenvalues be $2^{-1},2^{-2},\ldots$, and perturb only the first
 block by
 \begin{equation}\label{ihs:fr:eq:twoscaleblock}
@@ -5777,8 +5927,12 @@ unrelated search snippets were not used as evidence.
  part as computing the spectrum of constant normal operators. The report now
  also computes the adjointable-algebra spectrum of every constant bounded
  operator (Part~III).
-\item \emph{Divisibility.} The source's divisibility hypothesis is its own
- and is kept. Unlike the Part III source, it makes no claim about Part~I's
+\item \emph{Divisibility.} The source's divisibility hypothesis is kept for
+ the spectral classification. The subsequent proof review removes it, and
+ the Hilbert dimension and separability restrictions, from the independent
+ determinant and Fredholm alternative in \cref{ihs:fr:sec:determinant}.
+ This extension is justified there, not attributed to the delivered source.
+ Unlike the Part III source, that source makes no claim about Part~I's
  hypotheses on $\Gamma$.
 \item \emph{Duplicated inputs.} The source re-proves the range-defect
  factorization, the support lemma and the Neumann inverse. They are printed
@@ -5822,9 +5976,10 @@ choose:
  route. The Part III normal-case corollary is kept as a second proof of the
  algebra half of \cref{ihs:hh:thm:spectrum}, not merged into it.
 \item Parts III and IV are kept as separate parts, not merged into Part~I,
- because Part III's spectrum is relative to an arbitrary algebra and Part IV
- assumes divisibility and a separable infinite-dimensional $H$, which Part~I
- does not.
+ because Part III's spectrum is relative to an arbitrary algebra and Part IV's
+ spectral classification assumes divisibility and a separable
+ infinite-dimensional $H$, which Part~I does not. Its determinant section
+ now states its independently broader hypotheses.
 \item Letters with an existing meaning in Parts I and II were renamed in the
  new parts (\cref{ihs:app:staleC,ihs:app:staleD}); no existing label or
  statement of Parts I and II was changed, and cross-references to the new
@@ -5896,9 +6051,11 @@ criterion. Straightening plus cyclic-support projection yields inverse
 descent, which yields the halo formula and the exact scale. The power image
 and the formal inverse germ, with the halo formula and the commuting-factor
 lemma, yield the ramified image, and the finite-union subgroup lemma turns
-that image into the necessary and sufficient criterion. Only the Banach
-corollaries (\cref{ihs:dz:cor:normal,ihs:dz:cor:algebraic,ihs:dz:prop:polemap})
-use ordinary analytic spectral theory, and only the surreal specialization
+that image into the necessary and sufficient criterion. Among the general
+results, only the Banach section and the pole-order profile
+(\cref{ihs:dz:sec:banach,ihs:dz:prop:polemap}) use ordinary analytic spectral
+theory; the Volterra and block examples also use ordinary operator-norm
+estimates and convergence. Only the surreal specialization
 uses Conway normal forms. The steps most worth auditing independently are
 the surjectivity argument in \cref{ihs:dz:lem:straighten} and the converse
 direction of \cref{ihs:dz:lem:laurent}.
@@ -5917,7 +6074,10 @@ only the simple-eigenvalue instance and one commutator equation; the trace
 and product failures add the explicit second-order recurrence and finite
 summation identities. The determinant theorem uses the ordinary trace-class
 determinant, Taylor lifting, the ordinary index-zero Fredholm alternative and
-finite-dimensional linear algebra; the accumulation obstruction uses only a
+finite-dimensional linear algebra. It allows arbitrary complex Hilbert $H$
+and set-sized ordered abelian $\Gamma$, including zero; no scalar root
+extraction, compact residue or self-adjointness is used. The accumulation
+obstruction retains the spectral hypotheses and uses a
 common coefficient neighbourhood and a valuation comparison. The steps most
 worth auditing independently are the self-adjointness of the coefficientwise
 Riesz projection (\cref{ihs:fr:prop:riesz}), the well-ordered induction in
@@ -5925,8 +6085,8 @@ Riesz projection (\cref{ihs:fr:prop:riesz}), the well-ordered induction in
 \cref{ihs:fr:thm:fredholm}.
 
 The Part IV results do not assert a spectral classification of arbitrary
-elements of $\Ahh$ or of compact residues with nontrivial kernel; anything
-without divisibility; a positive spectral measure or general
+elements of $\Ahh$ or of compact residues with nontrivial kernel; the main
+cluster classification without divisibility; a positive spectral measure or general
 non-Archimedean Hilbert-space spectral theorem; equivalence with intrinsic
 nuclear or compactoid ideals; a determinant for negative-valuation
 trace-class series; the impossibility of every regularized spectral product;
@@ -5937,13 +6097,15 @@ conjecture; priority; or a Lean formalization.
 \subsection{What this report as a whole does not claim}\label{ihs:app:jointnonclaims}
 Nothing above unifies the four parts into a single theorem, and no hypothesis
 is transferred between them. Parts I--III allow nondivisible $\Gamma$ by
-their respective proofs; Part IV assumes divisibility, and nothing here
-transfers its conclusions to nondivisible groups. The row- and
+their respective proofs; Part IV's spectral classification assumes
+divisibility, while its determinant section independently allows arbitrary
+ordered abelian groups. The row- and
 column-finiteness of Part~II is not available in Part~I or Part~IV. The
 spectra of \cref{ihs:tab:senses} are not proved to agree, and no claim is
 made that one determines another, beyond the identities of definitions in
 \cref{ihs:prop:unify} and the equalities proved for particular operators
-(\cref{ihs:hh:thm:spectrum,ihs:fr:thm:main}, \cref{ihs:dz:sec:volterra}).
+(\cref{ihs:hh:thm:spectrum,ihs:fr:thm:main,ihs:fr:thm:fredholm},
+\cref{ihs:dz:sec:volterra,ihs:dz:sec:blocks}).
 Parts I--III are not trace-class theories; Part IV supplies a coefficientwise
 trace and a Fredholm determinant on the nonnegative-valuation component of
 $\SH((t^\Gamma))$, and neither a general trace-class nor a nuclear-operator
