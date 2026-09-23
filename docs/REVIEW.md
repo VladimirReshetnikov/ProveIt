@@ -2279,6 +2279,23 @@ local Markdown destinations resolve. The independent inventory remains
 
 ## Remaining scope
 
+Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
+`be06fc8`, which was merged after the field-automorphism build. This is a
+documentation-only merge: no existing mapped manuscript or Lean source
+changed. The two new reports currently contain only their base manuscripts,
+01 and 06. Their other nine manuscripts still need integration from Git
+history; their delivered READMEs and build commands retain old filenames,
+and no current PDFs are installed. The reader map, catalogue and ledger
+now identify this placement status. The two base texts contribute 75
+standard statements, bringing the inventory to 2,610 in 51 reports; the
+quotient base's three `maintheorem` statements are additional claims outside
+the standard-environment count. Proof review and formalization are pending.
+The independent inventory audit passes for all 51 present sources, and all
+3,090 cited labels and 1,261 local Markdown destinations resolve. The
+catalogue's 51 main-document destinations exist; its three-pass build has
+28 pages and no diagnostics, and all pages were visually checked. The
+previous 4,264-job Lean build remains applicable after this docs-only merge.
+
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
 in `5d369a0`. Its two reports,
 [first-kappa coefficients](surcomplex/first-kappa-coefficients/) and

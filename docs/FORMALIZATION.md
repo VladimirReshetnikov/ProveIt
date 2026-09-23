@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **49 main texts** with **2535**
+The canonical inventory below identifies **51 main texts** with **2610**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -41,6 +41,14 @@ from six gamma/zeta manuscripts, indexed in its written form; its review
 remains pending. The original archives remain in Git history at `cafe42f`.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
+
+The eleven omnific-integer manuscripts placed in `be06fc8` are assigned to
+two new reports. Only base manuscripts 01 and 06 are currently written as
+`article.tex`; integration of the other nine manuscripts, correction of
+delivery filenames, current PDF builds and proof review remain pending.
+The inventory counts 41 and 34 standard environments in these base sources.
+The quotient source also has three `maintheorem` environments, outside that
+count; all mathematical claims remain in scope. No Lean coverage is implied.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -661,9 +669,9 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers all 49 main texts
+custom environments are not included. The index covers all 51 main texts
 present in the repository; two are not named `article.tex`. The reader map
-and the typeset catalogue list all 49. The report placed in `e4f8848` and
+and the typeset catalogue list all 51. The report placed in `e4f8848` and
 written in `7af7056` is indexed from its written, six-source text. The two reports placed in `7b5f934`
 and written in `68e2960`, and the five reports that batch extended, are
 indexed from their written sources. The two reports placed in `d4e71b7`
@@ -674,8 +682,9 @@ merge nine manuscripts and are indexed from their written sources; their
 review remains pending.
 The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
 their labels; they are indexed here. The finite-probability main-text review covers
-Sections 2–17; remaining imports and source reconciliation, and the other
-three reports, await review.
+Sections 2–17, and the field-automorphism review covers Sections 1–15 and
+Appendix B; their remaining imports and source reconciliation, and the two
+other reports, await review.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping states otherwise.
 
@@ -730,7 +739,9 @@ remain pending unless a precise implementation mapping states otherwise.
 | [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 23 | 16 | 8 | 10 | 57 |
 | [surcomplex/first-kappa-coefficients/article.tex](surcomplex/first-kappa-coefficients/article.tex) | 10 | 6 | 2 | 5 | 23 |
 | [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex) | 12 | 5 | 1 | 7 | 25 |
-| **Total** | 1006 | 505 | 535 | 489 | **2535** |
+| [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex) | 14 | 6 | 12 | 9 | 41 |
+| [surreal/set-sized-quotients-of-omnific-integers/article.tex](surreal/set-sized-quotients-of-omnific-integers/article.tex) | 6 | 7 | 14 | 7 | 34 |
+| **Total** | 1026 | 518 | 561 | 505 | **2610** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -4208,3 +4219,102 @@ It asserts no Lean coverage. All statements remain **pending unless explicitly m
 | Proposition | `gz:prop:margin` (line 3918) | A real margin protects positivity \src{04} |
 | Lemma | `gz:lem:heatpersist` (line 3962) | Local real-root persistence \src{04, 05, 06} |
 | Theorem | `gz:thm:escape` (line 3979) | Escape at negative infinitesimal time \src{04, 05, 06} |
+
+### omnific-diophantine-geometry
+
+Source: [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex).
+
+Placed base manuscript only; integration, proof review and formalization are
+**Pending**. The statement index does not cover the unintegrated manuscripts.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Proposition | `prop:ring` (line 281) | Untitled |
+| Lemma | `lem:degree` (line 316) | Untitled |
+| Proposition | `prop:units` (line 332) | Untitled |
+| Theorem | `thm:floor` (line 367) | Integer-part formula |
+| Theorem | `thm:finitequotients` (line 404) | Untitled |
+| Corollary | `cor:charideals` (line 435) | Untitled |
+| Proposition | `prop:canonicalct` (line 472) | Untitled |
+| Lemma | `lem:setbounds` (line 501) | Set-sized exponent bounds |
+| Theorem | `thm:commondivisor` (line 513) | Common monomial divisibility |
+| Corollary | `cor:Jglobal` (line 536) | Untitled |
+| Proposition | `prop:irreduciblect` (line 565) | A necessary residue condition for irreducibility |
+| Theorem | `thm:fractions` (line 588) | Global monomial clearing |
+| Corollary | `cor:projectiveclear` (line 610) | Untitled |
+| Proposition | `prop:division` (line 627) | Untitled |
+| Proposition | `prop:nogcd` (line 656) | An explicit pair without a gcd |
+| Proposition | `prop:notnormal` (line 689) | Untitled |
+| Theorem | `thm:transfer` (line 720) | Retraction theorem for equations |
+| Corollary | `cor:H10` (line 757) | Hilbert's tenth problem |
+| Proposition | `prop:notdiophantine` (line 791) | Untitled |
+| Theorem | `thm:smith` (line 811) | Smith normal form over the omnific integers |
+| Lemma | `lem:constantproduct` (line 855) | Untitled |
+| Theorem | `thm:decomposable` (line 870) | Decomposable polynomial fibers |
+| Theorem | `thm:binary` (line 895) | Binary-form rigidity |
+| Corollary | `cor:pell` (line 916) | Pell rigidity |
+| Proposition | `prop:zeropell` (line 948) | The zero Pell fiber |
+| Corollary | `cor:powers` (line 967) | Power-difference rigidity |
+| Theorem | `thm:norm` (line 985) | Norm-form rigidity |
+| Theorem | `thm:quadclassification` (line 1044) | Quadratic-level dichotomy |
+| Lemma | `lem:transvection` (line 1072) | A polynomial quadratic isometry |
+| Lemma | `lem:nullchoices` (line 1121) | Untitled |
+| Lemma | `lem:pellgap` (line 1247) | A three-square gap below a Pell coordinate |
+| Theorem | `thm:guard` (line 1287) | Uniform quartic integrality guard |
+| Corollary | `cor:Jdefinable` (line 1341) | Untitled |
+| Proposition | `prop:polylift` (line 1392) | Finite polynomial lifting |
+| Theorem | `thm:cone` (line 1419) | Homogeneous cone criterion |
+| Proposition | `prop:pythagoras` (line 1469) | Infinite unimodular Pythagorean triples |
+| Theorem | `thm:realray` (line 1497) | Rationality of primitive constant directions |
+| Theorem | `thm:infinity` (line 1569) | Leading-homogeneous obstruction |
+| Proposition | `prop:squaresbound` (line 1594) | Untitled |
+| Corollary | `cor:orthogonal` (line 1609) | Untitled |
+| Corollary | `cor:symmetric` (line 1630) | Symmetric matrix rigidity |
+
+### set-sized-quotients-of-omnific-integers
+
+Source: [surreal/set-sized-quotients-of-omnific-integers/article.tex](surreal/set-sized-quotients-of-omnific-integers/article.tex).
+
+Placed base manuscript only; integration, proof review and formalization are
+**Pending**. The statement index does not cover the unintegrated manuscripts.
+
+Three additional `maintheorem` statements remain in scope: `main:class`
+(line 167), `main:cardinal` (line 210) and `main:homological` (line 239).
+They are not included in the literal standard-environment table below.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:c0` (line 367) | Constant coefficient |
+| Lemma | `lem:gap` (line 400) | A positive gap below a set |
+| Proposition | `prop:common` (line 413) | Common monomial divisibility |
+| Lemma | `lem:collision` (line 445) | Scaled-field collision |
+| Corollary | `cor:collisioncard` (line 470) | Cardinal version |
+| Lemma | `lem:Ha` (line 489) | Untitled |
+| Theorem | `thm:universal` (line 560) | Coefficient-ring form of the main theorem |
+| Corollary | `cor:nofaithful` (line 614) | No faithful set-sized action |
+| Proposition | `prop:localization` (line 632) | The full field is a monomial localization |
+| Theorem | `thm:quotients` (line 659) | Quotients and their universal small images |
+| Corollary | `cor:smallquot` (line 688) | The set-sized quotients of $\Oz$ |
+| Corollary | `cor:profinite` (line 712) | Profinite completion |
+| Corollary | `cor:primeexample` (line 738) | A domain invisible to nonzero set rings |
+| Proposition | `prop:unitconstant` (line 771) | The same obstruction without primality |
+| Proposition | `prop:primereservoir` (line 788) | A scaled field in every non-arithmetic residue field |
+| Proposition | `prop:matrices` (line 829) | Finite matrix representations |
+| Corollary | Line 864 (unlabeled) | Untitled |
+| Theorem | `thm:polynomialtests` (line 890) | Coefficient reduction for all set-algebra tests |
+| Proposition | `prop:derivations` (line 922) | Reduction of derivations |
+| Proposition | `prop:euler` (line 958) | An internal Euler-type derivation |
+| Lemma | `lem:kappagap` (line 1017) | Simultaneous upper and lower scales |
+| Proposition | `prop:fieldclosure` (line 1057) | Field closure and integer parts |
+| Theorem | `thm:kappasmall` (line 1113) | Ring and module bounds |
+| Proposition | `prop:kappachain` (line 1144) | An increasing chain of principal ideals |
+| Proposition | `prop:sharp` (line 1172) | Sharpness |
+| Lemma | `lem:projectiveideal` (line 1219) | Projective ideals of rank one |
+| Proposition | `prop:flatideal` (line 1237) | Untitled |
+| Lemma | `lem:tensorzero` (line 1259) | Untitled |
+| Theorem | `thm:extreflection` (line 1280) | Derived reflection on quotient modules |
+| Corollary | `cor:smallext` (line 1309) | Small coefficient modules see no obstruction |
+| Proposition | `prop:dimensions` (line 1333) | Flat dimension |
+| Proposition | `prop:extone` (line 1361) | A degree-one witness |
+| Proposition | `prop:exttwo` (line 1375) | An explicit degree-two witness |
+| Theorem | `thm:extthreshold` (line 1404) | Exact size of cohomological witnesses |
