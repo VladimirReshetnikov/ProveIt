@@ -255,7 +255,7 @@ The bilateral family
  \Theta_q(u)=\sum_{n\in\Z}(-1)^nq^{n(n-1)/2}u^n\label{tate:eq:theta}
 \end{equation}
 is strongly Hahn-summable if and only if $u\in U_q$.
-For $u\notin q^\Z$, each of the two bilateral families defining
+For $u\in K^\times\setminus q^\Z$, each of the two bilateral families defining
 \begin{align}
  X_q(u)&=\sum_{n\in\Z}\frac{q^nu}{(1-q^nu)^2}-2s_1(q),\label{tate:eq:X}\\
  Y_q(u)&=\sum_{n\in\Z}\frac{(q^nu)^2}{(1-q^nu)^3}+s_1(q)\label{tate:eq:Y}
@@ -297,12 +297,14 @@ works with $\C$ replaced by an arbitrary field of characteristic zero
 (\cref{tate:node:thm:main}); in particular it gives the real surreal case
 (\cref{tate:node:cor:real}). The first route yields in addition the coarse
 reduction diagram of \cref{tate:cor:diagram}, which the second does not.
-The generality of the coefficient field is confined to
+The generality of the coefficient field applies to
 \cref{tate:thm:main}, to the material of
 \cref{tate:node:sec:second,tate:node:sec:metric,tate:node:sec:filtration},
-and to \cref{tate:node:cor:real};
-the torsion, modular-inversion and classification results below are stated,
-and needed, over $\C$.
+to the modular inversion in \cref{tate:thm:recover},
+and to \cref{tate:node:cor:real}.
+The torsion-field and negative-$j$ classification statements below retain
+their hypotheses over $\C$; classification also assumes a divisible
+exponent group.
 
 \begin{theorem}[Exact arithmetic and scalar extension]\label{tate:thm:arithmetic-main}
 For an integer $n\ge2$, let
@@ -383,9 +385,12 @@ explicitly declines to attempt, carried out on a different object. We
 take the obstruction as binding rather than as an obstacle to be argued
 away: the real-valued coarsening used below in \cref{tate:lem:rank-one}
 is applied only inside $K_{H_\alpha}$, where $\alpha$ is an order unit,
-and it is never presented as a faithful image of $\Gamma$ itself. The
-valuations discarded by that coarsening are exactly the ones recovered
-in \cref{tate:sec:coarse} by formal evaluation, not by a norm.
+and it is never presented as a faithful image of $\Gamma$ itself.
+The rank-one valuation forgets $H_\alpha^-$, but the base field
+$K_{H_\alpha}$ still contains series at those finer scales. The later
+coarse lifting uses the different quotient $w=v\bmod H_\alpha$:
+formal evaluation at $w$-positive inputs lifts from $K_{H_\alpha}$ to
+$K_\Gamma$. These two quotients have different kernels and roles.
 
 Tate's original proof explicitly starts with a nontrivial real-valued
 absolute value and proves uniformization over any complete field with
@@ -533,7 +538,7 @@ A Hahn series is a formal expression
  \qquad a_\gamma\in\C,
 \]
 whose support $\supp(a)=\{\gamma:a_\gamma\ne0\}$ is well ordered in the
-increasing order. For $a\ne0$, its valuation is the least support element.
+increasing order. For $a\ne0$, its valuation is the least support element; put $v(0)=+\infty$.
 A family $(a_i)_{i\in I}$ is \emph{strongly summable} when
 $\bigcup_i\supp(a_i)$ is well ordered and each exponent occurs in the
 support of only finitely many $a_i$. Its sum is defined coefficientwise.
@@ -597,12 +602,13 @@ if $F(0)=0$, the value has positive valuation. The second proof of
 \cref{tate:thm:main} rests on the following lemma, taken from source~03.
 
 \begin{lemma}[Formal inverse and implicit function]\label{tate:node:lem:implicit}
-Let $k$ be a field of characteristic zero, and let $\m_v$ be the
+Let $k$ be any field, and let $\m_v$ be the
 elements of positive valuation in $k((t^\Gamma))$. Suppose
 $A(Z)\in k[[Z_1,\ldots,Z_d]]^d$ has zero constant term and invertible
 linear part $L_A\in\GL_d(k)$. It has a unique zero-constant formal inverse.
-If $L_A\in\GL_d(\Z)$ and $A$ has integral coefficients, the inverse has
-integral coefficients. Its evaluation gives a bijection of $\m_v^d$.
+Its evaluation gives a bijection of $\m_v^d$.
+If $A$ is defined over $\Z$ with $L_A\in\GL_d(\Z)$, its formal inverse
+is defined over $\Z$ as well, before any specialization to $k$.
 
 More generally, if $B(P,Z)$ has zero constant term and the matrix
 $\partial B/\partial Z$ at the origin is invertible, the equation
@@ -615,14 +621,22 @@ Determine the homogeneous terms of an inverse successively. At total
 degree $n$, the unknown correction enters only through multiplication by
 $L_A$; all other contributions were determined in earlier degrees. Solving
 this finite linear system constructs the inverse, proves uniqueness, and
-proves integrality when $L_A^{-1}$ is integral. Formal composition
-identities specialize by \cref{tate:lem:neumann}.
+proves integrality when $L_A^{-1}$ is integral. No division by the
+homogeneous degree occurs, so the construction works in every
+characteristic. Formal composition identities specialize by
+\cref{tate:lem:neumann}. The inverse and the original map both have zero
+constant term, hence preserve $\m_v^d$; their two composition identities
+give surjectivity and injectivity on that entire domain.
 
 Apply the same inverse construction to the map $(P,Z)\mapsto(P,B(P,Z))$
 for the implicit statement. Its inverse, specialized at $(P,0)$, gives
 $C(P)$. Specializing the two-sided inverse identity proves uniqueness among
 actual infinitesimal inputs, not merely among formal series.
 \end{proof}
+
+The characteristic-free formal inverse lemma does not remove the
+characteristic-zero hypotheses from the later Tate-curve statements;
+those retain their own coefficient assumptions.
 
 The limits of these lemmas should be stated. If $\epsilon>0$ lies in a
 proper convex subgroup of $\Gamma$, the sequence $n\epsilon$ need not be
@@ -649,11 +663,16 @@ $N\in\N$.
 \end{lemma}
 
 \begin{proof}
-If $|\beta|\le N\alpha$, the finite list of adjacent half-open intervals
-$[k\alpha,(k+1)\alpha)$ for sufficiently many integers $k$ covers
-$\beta$. Their interiors and endpoint convention give existence and
-uniqueness. The converse is immediate. Convexity of $H_\alpha$ gives the
-last alternative, or it follows directly by separating the two signs.
+If $|\beta|\le N\alpha$, choose the largest integer
+$k\in\{-N,\ldots,N\}$ with $k\alpha\le\beta$; this set is nonempty.
+Then $k\alpha\le\beta<(k+1)\alpha$: maximality gives the upper bound
+when $k<N$, and $\beta\le N\alpha$ gives it when $k=N$.
+Taking $m=-k$ proves existence. If $m'>m$, then
+$\beta+m'\alpha\ge\beta+m\alpha+\alpha\ge\alpha$, proving uniqueness.
+The converse follows from $|\beta|\le(|m|+1)\alpha$.
+Finally, if $\beta\notin H_\alpha$, then $|\beta|>N\alpha$ for every
+$N$; its fixed sign gives the stated alternative. No real-valued
+floor function or divisibility of $\Gamma$ is used.
 \end{proof}
 
 There is another convex subgroup inside $H_\alpha$:
@@ -663,11 +682,23 @@ There is another convex subgroup inside $H_\alpha$:
  \label{tate:eq:Hminus}
 \end{equation}
 It consists of the values infinitesimal relative to $\alpha$.
+To check it is a subgroup, take $\gamma,\delta\in H_\alpha^-$.
+For every $n\ge1$, the inequalities $2n|\gamma|<\alpha$ and
+$2n|\delta|<\alpha$ imply $n|\gamma+\delta|<\alpha$; negation
+preserves the defining condition. Convexity follows from
+$|\xi|\le|\gamma|$ with $\gamma\in H_\alpha^-$.
+It is proper because $\alpha\notin H_\alpha^-$.
+
 The quotient $H_\alpha/H_\alpha^-$ is nonzero and Archimedean.
-Indeed, for every positive $\gamma\notin H_\alpha^-$ some multiple of
-$\gamma$ is at least $\alpha$, and every element of $H_\alpha$ is bounded
-by a multiple of $\alpha$. This proves the Archimedean comparison in the
-quotient. H\"older's theorem embeds this quotient in $(\R,+)$; normalize
+Indeed, for positive $\gamma\notin H_\alpha^-$ some $n\ge1$
+satisfies $n\gamma\ge\alpha$. Given positive $\delta\in H_\alpha$,
+choose $N$ with $\delta\le N\alpha$; then
+$(N+1)n\gamma\ge(N+1)\alpha>\delta$, with the strict inequality
+still true in the quotient since the difference is at least $\alpha$.
+This gives the Archimedean comparison there. It also shows that
+$H_\alpha^-$ is the largest proper convex subgroup of $H_\alpha$:
+a convex subgroup containing such a $\gamma$ contains $\alpha$,
+and then every element bounded by an integer multiple of $\alpha$. H\"older's theorem embeds this quotient in $(\R,+)$; normalize
 the embedding so that $\alpha$ has image $1$.
 
 This construction is not new in the collection, and we do not present it
@@ -685,7 +716,7 @@ statement we need, with kernel exactly \eqref{tate:eq:Hminus}. We cite it
 rather than claim it. One hypothesis must be carried across with it: that
 report's standing assumption is that its exponent group is
 \emph{divisible}, and \emph{we do not assume $\Gamma$, or $H_\alpha$,
-divisible anywhere in this paper} --- \cref{tate:sec:torsion} depends on
+divisible in the one-period uniformization theorem} --- \cref{tate:sec:torsion} depends on
 keeping nondivisible groups. Its proof of that lemma uses only the
 order-unit property and no divisibility, so the statement does transfer;
 because the transfer is ours and not the cited report's, we retain the
@@ -811,7 +842,7 @@ $g(u)$ geometrically in $u$. They are finite rational operations, defined
 unless $u=1$. Their denominators may be arbitrarily small.
 
 \begin{theorem}[Coordinate domain and support certificate]\label{tate:thm:coordinates}
-For $u\notin q^\Z$, the families in \eqref{tate:eq:X} and \eqref{tate:eq:Y} are
+For $u\in K^\times\setminus q^\Z$, the families in \eqref{tate:eq:X} and \eqref{tate:eq:Y} are
 strongly summable exactly when $u\in U_q$.
 For $0\le v(u)<\alpha$ and $u\ne1$, let
 \begin{equation}
@@ -825,6 +856,12 @@ Then
 \end{equation}
 The bilateral and positive-tail formulas agree.
 \end{theorem}
+
+The restriction $u\ne0$ is necessary for this exact-domain assertion.
+At $u=0$ every term of each bilateral coordinate family is zero, so both
+families are strongly summable, although $0\notin U_q$. This does not
+extend the multiplicative uniformization domain, and the theta family,
+which contains negative powers of $u$, is not defined there.
 
 \begin{proof}
 The series $q^nu=q^{n-1}(qu)$ and $q^n/u=q^{n-1}(q/u)$ have positive
@@ -1020,6 +1057,14 @@ is strongly summable, although its coefficient valuations
 $(0,-n^2)$ are unbounded below in $H$. The first coordinate separates
 the degrees. This is precisely the type of separation used in the
 uniformization proof.
+
+The coarse-positive condition cannot be replaced by fine positivity.
+In the same field, take $z=t^{(0,1)}$ and
+$F(Z)=\sum_{n\ge0}t^{(0,-n)}Z^n\in K_H[[Z]]$.
+Now $v(z)>0$ but $w(z)=0$, and every evaluated term is $1$.
+Infinitely many terms contribute at exponent zero, so this family is
+not strongly summable. A lower bound on the fine valuation of the
+input alone cannot compensate for unrestricted coefficient valuations.
 \end{example}
 
 \subsection{The rank-one field at the \texorpdfstring{$q$}{q}-scale}
@@ -1037,8 +1082,8 @@ This is \texttt{ent:lem:coarsening} of \cite{RepoEntire}, instantiated at
 the exponent group $H_\alpha$ with the order unit $\alpha$, and is cited
 rather than claimed as new; see \cref{tate:sec:hahn}. The proof below is
 recorded only because that report states its lemma under a standing
-divisibility hypothesis on the exponent group which this paper does not
-make, and because the package should read standalone. It is a second
+divisibility hypothesis on the exponent group which this one-period
+argument does not make, and because the package should read standalone. It is a second
 proof of a statement already in the collection, not an additional result.
 
 \begin{proof}
@@ -1051,7 +1096,10 @@ strictly larger integer.
 It follows that $(d_k)$ is strongly summable in $K_H$. Indeed, below any
 fixed exponent only finitely many of its supports can occur; any
 hypothetical descending sequence of support exponents would therefore
-lie in a finite union of well-ordered supports. The strong sum
+lie in a finite union of well-ordered supports. For each $m$, every term of the tail $\sum_{k\ge m}d_k$ has
+fine valuation greater than $m\alpha$, so the strong sum has fine
+valuation greater than $m\alpha$ as well, or is zero. Its $v_1$-value
+is therefore at least $m$. Thus
 $a_{n_1}+\sum_kd_k$ is the $v_1$-limit of the subsequence. The original
 Cauchy sequence has the same limit. The assertion about $q_0$ is
 $v_1(q_0)=1$.
@@ -1084,7 +1132,9 @@ are locally analytic in the parameter $q_0$ as well as in $u$.
 \end{theorem}
 
 The surjective group statement is Tate's Theorem~1
-\cite{Tate}. Local analyticity in both variables follows directly from
+\cite[author manuscript, p.~6]{Tate}, under the complete real-valued
+field assumptions stated on its first page. Neither discreteness nor
+algebraic closedness is required. Local analyticity in both variables follows directly from
 the rational tails: on sufficiently small neighborhoods of any non-pole
 pair, the finitely many relevant denominators remain nonzero and the
 remaining terms tend uniformly to zero geometrically. At a pole one
@@ -1486,8 +1536,8 @@ These are identities in the analogous two-variable coefficient ring, with
 $1-u$, $1-u'$ and $1-uu'$ inverted. They are established classical
 identities, not inferred from any finite computation: Tate proves them as
 universal formal identities by comparison with the complex elliptic
-functions \cite[Theorem~1 and its proof]{Tate}. The new obligation is to
-justify their \emph{Hahn} specialization.
+functions \cite[Theorem~1, pp.~6--7, especially (25$'$)]{Tate}. The new
+obligation is to justify their \emph{Hahn} specialization.
 
 \subsection{The wide annulus and Hahn specialization}
 
@@ -1711,10 +1761,17 @@ $x$-coordinate solves
  x^3-\frac{r}{(1-r)^2}x^2+a_4(q)x+a_6(q)=0.\label{tate:node:eq:smoothpolynomial}
 \end{equation}
 At $(q,r,x)=(0,c,x_0)$ the derivative with respect to $x$ is $x_0^2$, which
-is nonzero. \Cref{tate:node:lem:implicit}, after translating by these
-constants, proves uniqueness of the infinitesimal correction to $x_0$.
-Thus $x=x'$ and $y=y'$. Any other $u$ with residue $c$ would solve the same
-invertible equation $R(q,u-c)=r$, so it is equal to this one.
+is nonzero. Uniqueness can also be seen directly among actual Hahn
+points. Put $d_r=r/(1-r)^2$ and subtract the two polynomial equations:
+\[
+ 0=(x-x')\bigl(x^2+xx'+x'^2-d_r(x+x')+a_4(q)\bigr).
+\]
+The second factor has residue $3x_0^2-2x_0^2=x_0^2\ne0$, so it is a
+unit and $x=x'$. Then $y=y'$. Any other $u$ with residue $c$ would solve
+the same invertible equation $R(q,u-c)=r$, so it is equal to this one.
+All substitutions use the positive-valuation inputs $q,r-c$ or $q,u-c$;
+the possibly noninfinitesimal constants $c,x_0$ have first been translated
+into the coefficient field.
 \end{proof}
 
 \subsection{Points reducing to infinity}
@@ -1769,11 +1826,15 @@ the second variable is the series $A(Q,z)$ of \cref{tate:lem:formal-identity};
 source~01 evaluates them at the coarse valuation, here they are evaluated
 at the fine one. Put $s=A(q,z)$.
 
-The resulting Tate point has the same $z$ and, by \eqref{tate:eq:localcurve},
-the same unique $r=r_\infty(q,z)$ as the original point. Since $x=z/r$ and
-$y=-1/r$, the points agree. The formal inverse also proves uniqueness. Since
-$A(Q,0)=0$ and its linear coefficient in $z$ is $1$, $A$ is $z$ times a
-formal unit, so a nonzero $z$ gives $s\ne0$.
+Since $A(Q,0)=0$ and its linear coefficient in $z$ is $1$, $A$ is $z$
+times a formal unit. Thus $z\ne0$ implies $s\ne0$ and $v(s)=v(z)>0$.
+After specialization $N_X(q,s)$ and $N_Y(q,s)$ are units, so the resulting
+Tate point has coordinate valuations $-2v(s)$ and $-3v(s)$. In particular,
+its $r=-1/Y_q(1+s)$ is infinitesimal. It has the same $z$ and hence, by
+\eqref{tate:eq:localcurve} and the actual-input uniqueness in
+\cref{tate:node:lem:implicit}, the same $r=r_\infty(q,z)$ as the original
+point. Since $x=z/r$ and $y=-1/r$, the points agree. The formal inverse
+also proves uniqueness.
 \end{proof}
 
 \subsection{Constructive surjectivity}
@@ -1794,10 +1855,33 @@ possibilities. The annular parameter has valuation in $(0,\alpha)$, while
 the other two parameters are units, so all belong to $U_q$.
 \end{proof}
 
+The charts in fact give a bijection from the normalized annulus
+$\{u:0\le v(u)<\alpha\}$ onto $E_q(\KK)$, before proving the group law.
+Their images are disjoint and can be read from the input point:
+\[
+\begin{array}{c|c|c}
+ \text{point} & \text{normalized parameter} & \text{inverse}\\ \hline
+ O & u=1 & 1\\
+ x,y\in\m_v & 0<v(u)<\alpha & \UU(x,y)\\
+ \text{nonsingular affine residue} & v(u)=0,\ \bar u=c\ne1
+   & c+S_c(q,y/(x+y)-c)\\
+ \text{a negative coordinate valuation} & u\in1+\m_v,\ u\ne1
+   & 1+A(q,-x/y)
+\end{array}
+\]
+For the node row, use \cref{tate:node:thm:nodalsurj}. For the smooth row,
+the positive tails vanish in the residue field, leaving $(f(c),g(c))$.
+For the last row, the unit numerators at infinity give the negative
+valuations just computed. Thus every normalized parameter lies in exactly
+one row, and the inverse in that row is unique.
+
 The argument is constructive in the formal-series sense. It does not
 assume that $k$ is algebraically closed or that the value group permits
 root extraction; even the valuation pattern at infinity was obtained from
-integer linear combinations, without division in $\Gamma$.
+integer linear combinations, without division in $\Gamma$. The node row
+may be empty: when $\Gamma=\Z$ and $\alpha=1$, there is no value strictly
+between $0$ and $\alpha$, so the nodal inverse theorem also says that no
+$\KK$-point reduces to the node.
 
 \subsection{The group law and the kernel}
 
@@ -1865,7 +1949,7 @@ kernel assertion.
 Let $k$ be a field of characteristic zero, $\Gamma$ a set-sized ordered
 abelian group, $\KK=k((t^\Gamma))$, and $q\in\KK$ with $v(q)=\alpha>0$.
 The theta family \eqref{tate:eq:theta} is strongly summable exactly for
-$u\in U_q$; for $u\notin q^\Z$ each of the two bilateral coordinate
+$u\in U_q$; for $u\in\KK^\times\setminus q^\Z$ each of the two bilateral coordinate
 families is strongly summable exactly for $u\in U_q$; and $\Phi_q$ is a
 surjective group homomorphism $U_q\to E_q(\KK)$ with kernel $q^\Z$, so
 \[
@@ -1906,10 +1990,12 @@ $\SpanM{\supp u\cup\supp(q/u)}=\SpanM{\supp X_q(u)\cup\supp Y_q(u)}$.
 \end{theorem}
 
 \begin{proof}
-The forward inclusion is \eqref{tate:node:eq:support-control} applied to the
-integral zero-constant series $\X,\Y$. Apply it to the zero-constant formal
-inverse $\UU,\VV$ for the reverse inclusion. Taking generated monoids on
-both sides gives equality.
+Write $M_{U,V}=\SpanM{\supp U\cup\supp V}$ and
+$M_{x,y}=\SpanM{\supp x\cup\supp y}$. The support bound
+\eqref{tate:node:eq:support-control}, applied to $\X,\Y$, gives
+$M_{x,y}\subseteq M_{U,V}$. Applying it to the zero-constant formal
+inverse $\UU,\VV$ gives $M_{U,V}\subseteq M_{x,y}$.
+This proves equality without requiring equality of individual supports.
 \end{proof}
 
 \begin{corollary}[Exact monoidal descent]\label{tate:node:cor:monoidal}
@@ -2052,6 +2138,18 @@ and $u=t$. Then \eqref{tate:node:eq:sensitivity} gives exact depth $N-1$:
 the formula identifies the valuation of the difference, not merely an upper
 bound for its size.
 
+To see what a rank-one quotient loses, work over
+$\Gamma=\Z\oplus_{\mathrm{lex}}\Z$ with
+\[
+ q=t^{(2,0)},\qquad u=t^{(1,0)},\qquad
+ u'=t^{(1,0)}(1+t^{(0,1)}).
+\]
+Both parameters have value $(1,0)$, whereas $v(u-u')=(1,1)$.
+The fixed-period formula therefore gives vector difference value $(1,1)$,
+while each point separately has vector value $(1,0)$. The first-coordinate
+quotient assigns value $1$ to all three: it detects the common leading
+depth but loses the extra closeness in the second coordinate.
+
 \section{Scalar extension and the valuation-circle quotient}\label{tate:sec:extension}
 
 \subsection{Strong functoriality}
@@ -2088,8 +2186,8 @@ $|\gamma|\le N\alpha$, proving \eqref{tate:eq:Hpullback}. The exact-domain
 theorems over $\Gamma'$ give the last assertion.
 \end{proof}
 
-This theorem has a useful asymmetric meaning. An old admissible
-parameter never becomes inadmissible under an ordered exponent embedding.
+This theorem has a useful asymmetric meaning. An old parameter is admissible after an ordered exponent embedding if
+and only if it was admissible before, by \eqref{tate:eq:Hpullback}.
 But the assertion ``every nonzero parameter is admissible'' may fail
 after enlargement: new valuations can lie outside the old $q$-scale.
 The curve acquires new points, yet its correct, enlarged admissible
@@ -2150,21 +2248,37 @@ There is a second exact sequence of additive groups
  (H_\alpha/H_\alpha^-)/\Z\bar\alpha\longrightarrow0.
  \label{tate:eq:circlelayers}
 \end{equation}
-Indeed $H_\alpha^-\cap\Z\alpha=0$, and the kernel computation is
-immediate. This separates infinitesimal value directions from the
-rank-one circular quotient.
+The first map sends $h$ to $h+\Z\alpha$ and is injective because
+$H_\alpha^-\cap\Z\alpha=0$. If the image of $h+\Z\alpha$ in the last
+term vanishes, then $h-m\alpha\in H_\alpha^-$ for some $m\in\Z$; hence
+that class comes from the first map. Surjectivity follows from the
+quotient map $H_\alpha\to H_\alpha/H_\alpha^-$. This proves exactness.
 
-When the relevant rank-one value group is all of $\R$, this value
-quotient is the familiar real circle of length $v_1(q)$. Over a complete
-algebraically closed rank-one field it agrees with the value-circle
-description of the Tate curve skeleton \cite{BPR}.
+It is the \emph{last} term of \eqref{tate:eq:circlelayers} that becomes
+the real circle $\R/v_1(q)\Z$ when the rank-one group
+$H_\alpha/H_\alpha^-$ is all of $\R$ under the chosen embedding.
+The full quotient $H_\alpha/\Z\alpha$ still retains the kernel
+$H_\alpha^-$. For example, with
+$\Gamma=\R\oplus_{\mathrm{lex}}\R$ and $\alpha=(1,0)$, the map
+\[
+ (\R\oplus_{\mathrm{lex}}\R)/\Z(1,0)\longrightarrow\R/\Z,\qquad
+ [(a,b)]\longmapsto a+\Z
+\]
+has kernel $\{[(0,b)]:b\in\R\}$. A positive class $[(0,b)]$ remains
+before $[(1/2,0)]$ after every positive integer multiple, in the
+normalized circular order. An ordinary real circle has no such
+nonzero infinitesimal direction.
+
+When $H_\alpha^-=0$, the full quotient embeds in the real circle and
+equals it if the embedded value group is $\R$. Over a complete
+algebraically closed rank-one field, Tate's analytic skeleton is the
+whole real circle; the values of field-rational parameters give its
+value-group subgroup, which can be proper if the value group is smaller
+than $\R$ \cite[Remark~4.24]{BPR}.
 At arbitrary rank, \eqref{tate:eq:tropical-seq} is an \emph{algebraic and
-circular-order} assertion. It does not claim the existence of an ordinary
-real-metric Berkovich skeleton with all of $H_\alpha$ as its distance
-set. Higher-rank analytifications require their own definitions
-\cite{FR}. The quotient $H_\alpha/\Z\alpha$ may itself have many proper
-convex subgroups, and it is not identified with a classical real circle
-unless additional hypotheses provide a real-valued interpretation.
+circular-order} assertion. It does not construct an ordinary real-metric
+Berkovich skeleton retaining all the infinitesimal value directions.
+Higher-rank analytifications require their own definitions \cite{FR}.
 
 The sequence \eqref{tate:eq:tropical-seq} has a log-geometric precedent.
 In the Tate-curve example of Molcho and Wise \cite[\S5.1]{MW}, the
@@ -2276,7 +2390,8 @@ $Q(J)\in J\Z[[J]]$. Its first terms are
 The notation $Q$ here denotes a formal series, not the rational field.
 
 \begin{theorem}[Unique, support-preserving recovery]\label{tate:thm:recover}
-Given $j\in K_\Gamma$ with $v(j)<0$, there is a unique $q\in K_\Gamma$
+Let $k$ be a field of characteristic zero and $\KK=k((t^\Gamma))$.
+Given $j\in\KK$ with $v(j)<0$, there is a unique $q\in\KK$
 with $v(q)>0$ and $j(q)=j$. It is $q=Q(j^{-1})$ and satisfies
 $v(q)=-v(j)$. If $G(a)$ denotes the additive subgroup of $\Gamma$
 generated by $\supp(a)$, then
@@ -2309,7 +2424,10 @@ $G(q)$, giving $G(j)\subseteq G(q)$.
 The inverse modular expansion is classical. The support equality is the
 useful extra statement in a symbolic or nondivisible Hahn workspace:
 one need not pass to the divisible hull merely to recover the elliptic
-period parameter.
+period parameter. All the series used here have integral coefficients,
+so this recovery needs neither algebraic closedness of $k$ nor complex
+coefficients. Those are separate issues in classifying curves with that
+$j$-invariant.
 
 \subsection{Which elliptic curves this covers}
 
@@ -2323,7 +2441,7 @@ $E(K_\Gamma)$ is parametrized by $U_q/q^\Z$.
 \begin{proof}
 A Hahn field with algebraically closed coefficient field of
 characteristic zero and divisible exponent group is algebraically
-closed \cite{Poonen}. Elliptic curves over an algebraically closed field
+closed \cite[Corollary~4]{Poonen}. Elliptic curves over an algebraically closed field
 of characteristic zero with the same $j$-invariant are isomorphic
 \cite{SilvermanArithmetic}. Apply this to $E$ and $E_q$.
 \end{proof}
@@ -2334,7 +2452,19 @@ does not remove the usual sign ambiguity of an elliptic isomorphism.
 For nondivisible $\Gamma$, \cref{tate:thm:recover} still holds, while a
 curve with the same $j$ can be a nontrivial twist; we do not silently
 identify all such twists with the split Tate curve over the original
-field. Curves with $v(j)\ge0$ are outside this positive-$q$ theorem.
+field. For a concrete example take $\Gamma=\Z$ and $q=t$. Put $E_t$
+in short Weierstrass form $Y^2=X^3+AX+B$ over $\C((t))$.
+Since $v(j(E_t))=-1$, its invariant is neither $0$ nor $1728$, so
+$A,B\ne0$. Its quadratic twist
+\[
+ E^{(t)}:\quad Y^2=X^3+t^2AX+t^3B
+\]
+has the same $j$ but is not isomorphic to $E_t$ over $\C((t))$.
+Indeed, an isomorphism of these short Weierstrass models would give a
+scaling $a\in\C((t))^\times$ with $a^4=t^2$ and $a^6=t^3$,
+hence $a^2=t$, contradicting $2v(a)=1$. The recovered period is still
+$t$; the missing datum is the twist. Curves with $v(j)\ge0$ are outside
+this positive-$q$ theorem.
 
 \section{Torsion fields and exact exponent ramification}\label{tate:sec:torsion}
 
@@ -2386,7 +2516,9 @@ which is the displayed order in $\Gamma/n\Gamma$.
 \subsection{A primitive torsion point}
 
 \begin{theorem}[The complete torsion field]\label{tate:thm:torsion}
-Under the hypotheses of \cref{tate:lem:radical}, the $n^2$ points
+Under the hypotheses of \cref{tate:lem:radical}, fix a primitive $n$th
+root of unity $\zeta_n\in\C$ and one root $r=q^{1/n}$, and write
+$q^{b/n}=r^b$. Then the $n^2$ points
 \begin{equation}
  \Phi_q(\zeta_n^a q^{b/n}),\qquad 0\le a,b<n,\label{tate:eq:torsionpts}
 \end{equation}
@@ -2408,9 +2540,16 @@ points coincide, injectivity modulo $q^\Z$ gives
 \]
 for some integer $m$. Comparing valuations gives $b-b'=nm$; the chosen
 ranges force $m=0$ and $b=b'$, and then $a=a'$. Thus there are $n^2$
-distinct points. In characteristic zero an elliptic curve has exactly
-$n^2$ geometric $n$-torsion points, proving completeness of the list.
-They all have coordinates in $K_\Lambda$ by strong evaluation.
+distinct points, all with coordinates in $K_\Lambda$ by strong evaluation.
+
+For exhaustiveness, work in the algebraically closed Hahn field
+$K_{\Gamma\otimes_\Z\Q}$ \cite[Corollary~4]{Poonen}, which contains an
+algebraic closure of $K_\Gamma$. Every geometric torsion point is
+represented there by some $u\in U_q$. If $n\Phi_q(u)=O$, the kernel
+theorem gives $u^n=q^m$. Write $m=n\ell+b$ with $0\le b<n$.
+Then $(u/(q^\ell q^{b/n}))^n=1$, so this quotient is $\zeta_n^a$
+for some $0\le a<n$. Periodicity gives exactly the list
+\eqref{tate:eq:torsionpts}; no separate torsion-count theorem is needed.
 
 To prove the stronger primitive assertion, let
 $L=K_\Gamma(q^{1/n})=K_\Lambda$ and let $\sigma\in\Gal(L/K_\Gamma)$
@@ -2439,8 +2578,10 @@ order, and $\alpha$ has coordinates $(a_1,\dots,a_r)$, then
 \end{corollary}
 
 \begin{proof}
-The order of $(a_1,\ldots,a_r)$ in $(\Z/n\Z)^r$ is the least $d>0$
-for which $n$ divides every $da_i$. This is the displayed integer.
+Put $g=\gcd(n,a_1,\ldots,a_r)$. The integer $d=n/g$ makes every
+$da_i$ divisible by $n$. Conversely, if $n$ divides every $ea_i$,
+a B\'ezout expression of $g$ as an integer combination of $n,a_1,\ldots,a_r$
+shows that $n$ divides $eg$. Hence $n/g$ divides $e$, proving minimality.
 \end{proof}
 
 For example, $n=12$ and $\alpha=(6,4)$ give degree $6$; $n=4$ and
@@ -2548,6 +2689,14 @@ the inputs are real. The group law and every finite comparison can be
 checked in a common workspace containing the finitely many inputs.
 Coherence makes the resulting class function independent of this choice.
 All support and valuation assertions transfer literally.
+
+For the extension obstruction, the group argument can be applied directly
+to the class map. If a homomorphism $\Psi$ extends the canonical values,
+choose $a=\omega^{-\omega\alpha}$ outside the admissible domain.
+Surjectivity supplies an admissible $d$ with $\Phi_q(d)=\Psi(a)$.
+Then $ad^{-1}\in\ker\Psi$ still has valuation outside $H_\alpha$, so it
+cannot belong to $q^\Z$. This is a finite witness to the obstruction and
+requires no set of all class-sized cosets.
 \end{proof}
 
 The real case is not covered by the first route as written, which works
@@ -2760,7 +2909,8 @@ every $j$, $\cB_j|_{V_{j-1}}$ is positive semidefinite,
  \cB_j(V_j,\cH)=0,\label{tate:theta:eq:globalradical}
 \end{equation}
 each $V_j$ is rational with respect to $L$, and $V_r=0$. Rationality means
-$\spanR(L\cap V_j)=V_j$. The \emph{active depth} is
+$\spanR(L\cap V_j)=V_j$; it is a condition on the subspace, not a demand
+that the matrix entries of $\cB_j$ be rational. The \emph{active depth} is
 $s=\#\{j:V_j\ne V_{j-1}\}$. Repeated stages are allowed and do not count
 toward $s$.
 \end{definition}
@@ -2903,9 +3053,15 @@ There are integers $c_{ia}\in\{0,\ldots,M\}$ and $r_a\ge0$ such that
 \end{lemma}
 
 \begin{proof}
-For a fixed $a$, if $m_a\ge NM$, fill every bin to $M$ and put the remainder
-into $r_a$. Otherwise distribute $m_a$ among $N$ bins of capacity $M$ and
-set $r_a=0$. The constructions for different $a$ are independent.
+An explicit choice, for $1\le i\le N$, is
+\[
+ c_{ia}=\min\{M,\max\{0,m_a-(i-1)M\}\},\qquad
+ r_a=\max\{0,m_a-NM\}.
+\]
+The first $N$ bins contain a total of $\min\{m_a,NM\}$ units. If
+$r_a>0$, then $m_a>NM$ and every bin is full. If $m_a=NM$, every bin is
+also full but the remainder is zero, as allowed. The constructions for
+different $a$ are independent; no bound on $\sum_a c_{ia}$ is required.
 \end{proof}
 
 \begin{lemma}[A shift dominates every fixed mixed term]\label{tate:theta:lem:shift}
@@ -2930,15 +3086,22 @@ at a scale higher than the self-pairing of $a$.
 Induct on the number of active levels. The zero-dimensional case is empty,
 and the one-level case follows from \cref{tate:theta:lem:acute}. Delete
 initial zero stages and call the first form $\cB_1$. Let $V=\rad\cB_1$ and
-$L_0=L\cap V$. The quotient $\overline L=L/L_0$ is a full lattice in
-$\cH/V$, because $V$ is rational. The induced $\cB_1$ is positive definite
-there.
+$L_0=L\cap V$. The subgroup $L_0$ is primitive: if a nonzero integer
+multiple of a lattice vector lies in $V$, the vector itself lies in $V$.
+A basis of $L_0$ therefore extends to a basis of $L$.
+Rationality says that the first basis spans $V$ over $\R$, so the
+remaining basis vectors project to a real basis of $\cH/V$.
+Consequently $\overline L=L/L_0$ is a full lattice in that quotient,
+and the induced $\cB_1$ is positive definite there.
 
 Choose finite acute families in $\overline L$ by
 \cref{tate:theta:lem:acute}. Write $\cT$ for their union, and choose once
 and for all a lift $\widetilde t\in L$ for every $t\in\cT$. On $V$, the
-remaining forms and $L_0$ satisfy the inductive hypotheses. Let $S_0$ be a
-finite positively generating set for $L_0$. If $V=0$, the lifted acute sets
+remaining forms and $L_0$ satisfy the inductive hypotheses: their
+restricted radicals are the later $V_j$, their global annihilation
+conditions restrict from $\cH$ to $V$, and those subspaces are rational
+relative to $L_0$. At least one active level has been removed.
+Let $S_0$ be a finite positively generating set for $L_0$. If $V=0$, the lifted acute sets
 suffice, so assume $S_0\ne\varnothing$. By \cref{tate:theta:lem:shift},
 choose a positive integer $M$ satisfying
 \begin{equation}
@@ -2977,17 +3140,29 @@ the required positive-integer representation. This closes the induction.
 
 \begin{remark}[Non-full lattices]\label{tate:theta:rem:nonfull}
 The theorem also covers the non-full lattices of the published question.
-Let $F^j$ be the global radical filtration and $L_j=L\cap F^j$.
-Admissibility says that each image of $L_j$ in $F^j/F^{j+1}$ is discrete
-\cite[Theorem~8.1]{AN}. Set $W_L=\spanR L$. Inductively,
-$W_L\cap F^j=\spanR L_j$: the image of $L_j$ is a lattice, so its rank
-equals the dimension of its real span, and rank--nullity identifies the
-kernel dimension with $\operatorname{rank}L_{j+1}$; the inclusion of
-$\spanR L_{j+1}$ in that kernel is consequently equality. The restricted
-form on $W_L$ has filtration $W_L\cap F^j$: a vector outside that
-intersection has an earlier positive self-pairing and cannot enter the
-restricted radical. Thus $L$ is a full AN-admissible lattice in $W_L$, to
-which the proof applies.
+Let $F^j$ be the global radical filtration, with $F^1=\cH$, and
+$L_j=L\cap F^j$. Admissibility says that the image
+$\overline L_j$ of $L_j$ in $F^j/F^{j+1}$ is discrete
+\cite[Theorem~8.1]{AN}. Set $W_L=\spanR L$.
+We prove $W_L\cap F^j=\spanR L_j$ by induction, starting at $j=1$.
+Under this identification the kernel of
+\[
+ \spanR L_j\longrightarrow F^j/F^{j+1}
+\]
+is $W_L\cap F^{j+1}$. Its dimension is
+$\operatorname{rank}L_j-\operatorname{rank}\overline L_j
+=\operatorname{rank}L_{j+1}$: discreteness identifies ranks with
+dimensions of real spans, and the last equality is the rank formula
+for $0\to L_{j+1}\to L_j\to\overline L_j\to0$.
+It contains $\spanR L_{j+1}$, which has the same dimension, so they
+are equal.
+
+The restricted form on $W_L$ has this same radical filtration:
+a vector in $W_L\cap F^j$ outside $F^{j+1}$ has positive $j$th
+self-pairing, while vectors in $F^{j+1}$ annihilate that coordinate
+on all of $\cH$. Hence its successive radicals are lattice-rational
+and its graded forms are positive definite. Thus $L$ is a full
+AN-admissible lattice in $W_L$, to which the proof applies.
 \end{remark}
 
 \subsection{Size and dependence}
@@ -2996,8 +3171,9 @@ The construction gives
 \begin{equation}
  |S|\le|S_0|+|\cT|(M+1)^{|S_0|},\label{tate:theta:eq:Sbound}
 \end{equation}
-with possible duplicates removed. This is an existence and termination
-bound, not a claim of practical optimality. The set depends only on $\cB$
+with possible duplicates removed. This bounds the cardinality of the
+constructed generating set, not the number of steps in a later descent
+algorithm. No practical optimality is claimed. The set depends only on $\cB$
 and $L$, not on any theta evaluation point or linear term. Adjoining its
 negative makes it symmetric without invalidating positive generation. The
 proof allows irrational coefficients in the forms and irrational lifts of
@@ -3017,12 +3193,23 @@ its real span if and only if $\ker R$ is rational relative to $\Z^d$.
 \end{lemma}
 
 \begin{proof}
-A rational kernel admits an adapted lattice basis; the remaining basis
-vectors give a basis of the quotient real space, and their images generate a
-full lattice in $\operatorname{im}R$. Conversely, a discrete subgroup
-spanning a $k_0$-dimensional real space is a lattice of rank $k_0$. Hence
-$\ker(R|_{\Z^d})$ has rank $d-k_0$, which equals $\dim\ker R$. Its real
-span is contained in that kernel and has the same dimension.
+Put $L_0=\ker R\cap\Z^d$. It is primitive, since $R(mx)=0$ for a
+nonzero integer $m$ implies $R(x)=0$. If $\ker R$ is rational, a basis
+of $L_0$ spans it over $\R$ and extends to an integer basis of $\Z^d$.
+The remaining basis vectors project to a real basis of
+$\R^d/\ker R$, and their images therefore generate a full lattice in
+$\operatorname{im}R$.
+
+Conversely, a discrete subgroup spanning a $k_0$-dimensional real space
+is a lattice of rank $k_0$. The exact sequence
+\[
+ 0\longrightarrow L_0\longrightarrow\Z^d
+   \xrightarrow{R}R\Z^d\longrightarrow0
+\]
+then gives $\operatorname{rank}L_0=d-k_0=\dim\ker R$.
+As a subgroup of the discrete lattice $\Z^d$, $L_0$ has real span of
+that same dimension. Its span is contained in $\ker R$, so equality
+follows.
 \end{proof}
 
 The elementary assertion about discrete subgroups follows, for example, by
@@ -3126,8 +3313,20 @@ fibres, and finite unions preserve both properties. Taking the
 lexicographic union over the well-ordered first-coordinate values preserves
 well-ordering. A full exponent fixes one first-coordinate value and
 therefore only finitely many cosets, each with a finite tail fibre. This
-proves (i).
+proves (i). The induction ends either with a zero-dimensional radical
+lattice, whose only vector is zero, or with the last coordinate, where
+$V_r=0$ makes every remaining fibre finite.
 \end{proof}
+
+The two parts of (i) do different work. Well-ordering forces the
+semidefinite restrictions, rational intermediate radicals, global mixed-term
+annihilation and compatible linear terms. Finite fibres additionally
+force the terminal radical to vanish. For instance,
+$\cE(m,n)=(m^2,0)$ has a well-ordered value set, but every exponent
+has infinitely many lattice preimages; its monomial family is therefore
+not strongly summable. Positive self-pairings alone also do not suffice:
+\cref{tate:theta:ex:irrational,tate:theta:ex:cross} display the distinct
+irrational-radical and mixed-term obstructions.
 
 \begin{corollary}[The exact linear domain]\label{tate:theta:cor:domain}
 For an AN-admissible form $\cB$, let
@@ -3197,11 +3396,16 @@ bounded-below, unbounded-above subset of $\R$, and hence have order type
 $\omega$; each value comes from finitely many cosets of the radical
 lattice.
 
-If the radical is zero, each such fibre is finite, and subsequent
-coordinates only split it into finitely many points; the whole order type
+Write $V$ for this first active radical. If $V=0$, each such fibre is
+finite, and subsequent coordinates only split it into finitely many points;
+the whole order type
 is $\omega$. Otherwise every radical coset has a tail energy of active
 depth $s-1$, with compatible shifted linear terms, whose value set has order
-type $\omega^{s-1}$ by induction. A first-coordinate fibre is a finite union
+type $\omega^{s-1}$ by induction. More explicitly, on a coset
+$n_0+(L\cap V)$ write $n=n_0+x$; the terms independent of $x$ translate
+the value set and hence do not change its order type. The remaining
+quadratic and linear terms are exactly the restricted and shifted ones
+used in the flag theorem. A first-coordinate fibre is a finite union
 of such sets, so its order type lies between $\omega^{s-1}$ and
 $\omega^{s-1}N$ for some positive finite $N$, by
 \cref{tate:theta:lem:shuffle}. There are $\omega$ first-coordinate values.
@@ -3285,8 +3489,14 @@ terms and changes complex coefficients; it cannot worsen the support. For a
 multiplicative perturbation $z_j\mapsto z_j(1+\eta_j)$ with $\eta_j\in\m_v$,
 enlarge $\Sigma$ by their finitely many supports. The same monoid argument
 justifies the binomial expansions and every interchange of the lattice
-indices with Taylor indices; every resulting coefficient at a fixed
-exponent receives only finitely many nonzero contributions.
+indices with Taylor indices. Explicitly, fix an output exponent $\gamma$.
+There are finitely many decompositions $\gamma=a+\mu$ with $a\in A$ and
+$\mu$ in the enlarged positive monoid, and finitely many lattice indices
+$n$ for each $a$. For each $\mu$, Neumann's lemma permits only finitely
+many multisets of positive input exponents. Each occurrence has only
+finitely many labels, one for each of the finitely many unit or Taylor
+inputs. Thus the fully expanded family, with lattice and Taylor indices
+kept separate, is strongly summable before regrouping.
 \end{proof}
 
 This is an exact domain for the displayed Hahn family. It does not prohibit
@@ -3337,8 +3547,8 @@ finite-representation support lemma gives summability.
 \end{proof}
 
 For the relation with \cref{tate:thm:theta} see
-\cref{tate:theta:sec:setting}. A one-dimensional theta family summable at
-all valuations in $\R\alpha$ need not be summable at a new valuation
+\cref{tate:theta:sec:setting}. A one-dimensional theta family summable on
+a rank-one value group need not remain summable at a new valuation
 $\beta$ dominating $N\alpha$ for every integer $N$: with the adverse sign,
 successive exponents have difference $(n+\tfrac12)\alpha-|\beta|<0$ for
 all $n\ge0$. The failure is structural, not a matter of an insufficient
@@ -3352,8 +3562,11 @@ Reindexing a summable family gives
  \vartheta_\Pi(t^{\Pi m}z)=t^{-\pi(m)}z^{-m}\vartheta_\Pi(z),
  \qquad \vartheta_\Pi(z^{-1})=\vartheta_\Pi(z).\label{tate:theta:eq:quasiperiod}
 \end{equation}
-These are the familiar theta symmetries, not novelty claims; here they are
-licensed by the exact support criterion. The domain is stable under
+For the first identity, use
+$\pi(n+m)=\pi(n)+n^{\mathsf T}\Pi m+\pi(m)$ and replace $n$ by $n+m$;
+for the second, replace $n$ by $-n$ and use $\pi(-n)=\pi(n)$.
+These are the familiar theta symmetries, licensed here by the exact
+support criterion. The domain is stable under
 $\beta\mapsto\beta+\Pi m$ and $\beta\mapsto-\beta$; the first statement
 follows also from global radical annihilation, the second from
 $n\mapsto-n$. For $g=1$ and $\Pi=(\alpha)$ the first identity is the
@@ -3460,10 +3673,21 @@ $c_{s'}\cB(s',s')=0$ in $\R^r$, so $c_{s'}=0$. There are at most $g$ of
 them, and the path of their partial sums has at most $g$ edges.
 \end{proof}
 
+Both bounds are sharp. With $L=\Z^g$,
+$\cB(x,y)=2\sum_jx_jy_j$, $b(n)=-\sum_jn_j$ and
+$S=\{\pm e_1,\ldots,\pm e_g\}$, one has
+\[
+ \cE(n)=\sum_{j=1}^g n_j(n_j-1),\qquad \cM=\{0,1\}^g.
+\]
+Each integer term $n_j(n_j-1)$ is nonnegative and vanishes exactly at
+$0,1$. The set $S$ positively generates $L$ by selecting the signed
+coordinate directions of a vector, which are pairwise orthogonal.
+The minimum graph is the $g$-cube: it has $2^g$ vertices and diameter
+$g$, attained between opposite corners.
+
 The parity estimate is the familiar midpoint mechanism of lattice Delaunay
-geometry, credited as such. The addition here is its combination with one
-constructive positively generating set, giving an explicit short zero-cost
-move certificate.
+geometry, credited as such. Its combination with one constructive
+positively generating set gives the short zero-cost move certificate.
 
 \begin{corollary}[Complete finite enumeration after one minimum]\label{tate:theta:cor:BFS}
 Starting from one certified minimum, breadth-first search through the
@@ -3472,8 +3696,14 @@ and requires at most $|S|2^g$ energy-difference tests.
 \end{corollary}
 
 \begin{proof}
-All discovered vertices are minimizers, and connectivity in
-\cref{tate:theta:thm:minimizers} prevents any minimizer from being missed.
+At each newly visited vertex $m$, test $m+s$ for every $s\in S$ and
+enqueue it only when $I_m(s)=0$ and it has not been visited. All
+discovered vertices are minimizers. The proof of
+\cref{tate:theta:thm:minimizers} reaches any target from $m$ using
+forward steps belonging to $S$, so symmetry of $S$ is unnecessary.
+Each of at most $2^g$ vertices is processed once, using $|S|$ tests.
+If $S$ is first replaced by $S\cup(-S)$, the bound uses the size of
+that enlarged set.
 \end{proof}
 
 \subsection{The finite initial theta polynomial}
@@ -3494,11 +3724,13 @@ Consequently $P_\beta(c)\ne0$ implies $v(\vartheta_\Pi(z))=\mu_\beta$. When
 $P_\beta(c)=0$, the valuation is strictly larger or the sum is zero; no
 equality of valuations is asserted in that case. This is the higher-rank
 version of the initial-form mechanism underlying tropical theta geometry
-\cite{FRSS}. The finite certificate identifies all its active lattice terms
+\cite[\S1.1 and Theorem~4.10]{FRSS}. That source uses a complete
+real-valued non-Archimedean field; the arbitrary-rank coefficient
+extraction here follows from strong Hahn summation. The finite certificate identifies all its active lattice terms
 without an unproved truncation radius. The quasi-periodicity identity gives
 $\mu_{\beta+\Pi m}=\mu_\beta-\pi(m)-\beta\cdot m$ and
-$\cM_{\beta+\Pi m}=\cM_\beta-m$, so the initial polynomial transforms by the
-corresponding Laurent monomial factor.
+$\cM_{\beta+\Pi m}=\cM_\beta-m$, so
+$P_{\beta+\Pi m}(Z)=Z^{-m}P_\beta(Z)$.
 
 \section{Lifting smooth initial zeros}\label{tate:theta:sec:zeros}
 
@@ -3535,18 +3767,26 @@ equation $R_0(U,W)+\sum_\rho Y_\rho R_\rho(U,W)=0$ has a unique formal
 solution $W=C(U,Y)$ with zero constant term: at each total degree the
 coefficient of the new unknown term is $a_0$, while all other contributions
 depend on lower-degree terms, and for each multiindex these are finite
-coefficient calculations. This is the usual coefficient proof of the formal
-implicit theorem, and it works unchanged for the infinite variable set.
+coefficient calculations. Indeed, for a fixed multiindex $\nu$, the
+summand $Y_\rho R_\rho(U,W)$ can contribute only if $Y_\rho$ occurs
+in $\nu$; there are finitely many such $\rho$. After substituting a
+zero-constant $W$, its relevant powers are bounded by the total degree
+of $\nu$, and each product coefficient has finitely many decompositions.
+This proves the needed local finiteness of the recursion despite the
+infinite variable set.
 
 Now substitute $Y_\rho=t^\rho$ and $U_j=u_j$. The union of all exponent
 supports used is the positive well-ordered set in
 \eqref{tate:theta:eq:implicitsupport}. Neumann's lemma makes its additive
 monoid well ordered and gives only finitely many representations of any
-exponent; since there are only finitely many $U_j$, distributing their
-support terms adds only finitely many labels. Therefore the formal
-substitution is strongly summable, including all sums used in the
-equation, and its value $w$ has positive valuation and satisfies the
-support certificate.
+exponent. An exponent occurring as a generator has at most one label
+$Y_\rho$, and at most $d$ labels from the supports of the $U_j$.
+Thus each finite multiset of generator exponents has only finitely many
+labelled realizations. This proves strong summability of the formal
+substitution, including all sums used in the equation. Its zero-constant
+value $w$ has positive valuation and satisfies the support certificate.
+The same argument shows that the displayed equation is strongly
+summable for every candidate $w\in\m_v$, before imposing that it vanish.
 
 For uniqueness even among infinitesimals not known to have this
 certificate, let $w,w'\in\m_v$ both satisfy \eqref{tate:theta:eq:implicit}.
@@ -3597,6 +3837,23 @@ unique lifting behaviour: at singular residue zeros, branching,
 ramification or additional obstructions require a separate analysis. The
 theorem does not construct an abelian variety or prove a higher-rank
 version of analytic uniformization.
+
+Here is a singular initial zero where uniqueness fails. Take $g=2$,
+$\alpha>0$, $\Pi=\operatorname{diag}(2\alpha,2\alpha)$ and
+$\beta=(-\alpha,-\alpha)$. The minimum set is $\{0,1\}^2$, so
+$P_\beta(Z)=(1+Z_1)(1+Z_2)$. At $c=(-1,-1)$ this polynomial and both
+logarithmic partial derivatives vanish. Strong Hahn multiplication gives
+\[
+ \vartheta_\Pi(z_1,z_2)=T(z_1)T(z_2),\qquad
+ T(z)=\sum_{n\in\Z}t^{\alpha n^2}z^n
+\]
+on the domain. At $z_1=-t^{-\alpha}$, the involution $n\mapsto1-n$
+pairs opposite terms of
+$T(z_1)=\sum_n(-1)^nt^{\alpha n(n-1)}$, with no fixed integer.
+Hence $T(z_1)=0$. Keeping this first argument fixed, every
+$z_2=-t^{-\alpha}(1+\varepsilon_2)$ with $\varepsilon_2\in\m_v$
+is a zero of $\vartheta_\Pi$. The smoothness hypothesis is therefore
+essential to the asserted uniqueness.
 
 \section{Surreal realization and explicit examples}\label{tate:theta:sec:examples}
 
@@ -3709,14 +3966,26 @@ residue-unit parameter as $\xi\in-2(1+\m_v)$. The theta equation is
  \sum_{m,n\in\Z}\tau_1^{m(m-1)}\tau_2^{n^2+(m-1)n-m^2+m}\xi^n=0,
  \label{tate:theta:eq:coupledtheta}
 \end{equation}
-and \cref{tate:theta:thm:zerolift} gives a unique such $\xi$. The
-first-coordinate-zero row of this equation is
+and \cref{tate:theta:thm:zerolift} gives a unique such $\xi$.
+Let $\xi_0$ be its reduction for the coarsening that retains only the
+first-coordinate-zero terms. The support certificate gives
+$\xi_0\in-2+\tau_2\C[[\tau_2]]$: every zero-first-coordinate generator
+has a positive integer second coordinate. Taking this reduction in the
+theta equation gives
 \begin{equation}
- \sum_{n\in\Z}\tau_2^{n(n-1)}\xi^n+\sum_{n\in\Z}\tau_2^{n^2}\xi^n=0;
+ \sum_{n\in\Z}\tau_2^{n(n-1)}\xi_0^n
+   +\sum_{n\in\Z}\tau_2^{n^2}\xi_0^n=0.
  \label{tate:theta:eq:zerorow}
 \end{equation}
-terms from other $m$ have first coordinate at least $2$ and cannot affect
-any coefficient in that row. Exact coefficient recursion gives
+Indeed, reduction commutes with products and inverses of units, and
+terms from other $m$ have first coordinate at least $2$. This equation
+is for $\xi_0$, not for the full $\xi$. Higher rows are essential:
+substituting $\xi_0$ into the full left-hand side of
+\eqref{tate:theta:eq:coupledtheta} leaves leading term
+$-2\tau_1^2\tau_2^{-3}$, from $(m,n)=(-1,1)$; the other terms with
+first coordinate $2$ have second coordinate at least $-2$.
+Exact recursion for $\xi_0$, and the fact that $\xi-\xi_0$ has positive
+first-coordinate valuation, give
 \begin{equation}
  \xi=-2+\tfrac52\tau_2-\tfrac{43}{8}\tau_2^2+\tfrac{247}{16}\tau_2^3
      -\tfrac{5955}{128}\tau_2^4+\tfrac{36493}{256}\tau_2^5+\rho_\xi,
@@ -3784,9 +4053,9 @@ a role in a proof or a counterexample above.
 Three independent programs accompany the report, one from each source.
 None uses floating point, and none proves an infinite identity, a
 summability statement, surjectivity, or novelty. All three were rerun on
-copies when the report was assembled, on Python~3.14.4; each reproduced its
-recorded output (the node-chart suite up to its informational runtime
-field). Each program writes its own evidence file, and two of them write to
+copies when the report was assembled, on Python~3.14.4. The numerical
+and symbolic results agreed with the delivered records; the source-01
+Python-version field and source-03 informational runtime differed. Each program writes its own evidence file, and two of them write to
 paths that collide inside this directory, so they must be run on a copy
 (\cref{tate:app:reproduction}).
 
@@ -3794,12 +4063,12 @@ paths that collide inside this directory, so they must be run on a copy
 This program uses only
 exact rational symbolic arithmetic. Its recorded output is in
 \file{data/verification.json} and \file{data/verification.log}.
-The source package recorded a run on Python~3.13.5 and SymPy~1.14.0; the
-run recorded in the included data files was made when this report was
-placed in the collection, on Python~3.14.4 and SymPy~1.14.0, and it
-reproduced every recorded value except the Python version string itself.
-The JSON records the actual
-runtime version and is authoritative if the script is rerun elsewhere.
+The included JSON and console record are the delivered run on
+Python~3.13.5 and SymPy~1.14.0. The assembly rerun on a copy used
+Python~3.14.4 and SymPy~1.14.0 and reproduced the values, with a
+different Python-version string. The delivered files are preserved here;
+subsequent review runs and their environments are recorded in
+\file{README.md}.
 The checks do not require a numerical value of $q$ or a realization of
 an arbitrary ordered group.
 
@@ -4209,8 +4478,9 @@ into an arbitrary-rank setting.
 The principal classical inputs of Part~I are Tate's complete rank-one
 uniformization theorem, the formal Tate curve and its discriminant,
 Jacobi's product, algebraic closedness of divisible Hahn fields over
-$\C$, and standard finite torsion and $j$-classification of elliptic
-curves. The second route replaces the first input by Tate's universal
+$\C$, and the standard $j$-classification of elliptic curves.
+The torsion list is classical; its exhaustiveness here is derived directly
+from the uniformization kernel over the divisible Hahn extension. The second route replaces the first input by Tate's universal
 integral identities (the curve equation and the cleared secant identities)
 and Tate's generic-pair lemma, together with the finite algebraic group law
 on a nonsingular Weierstrass cubic. The bounded-period quotient and its
@@ -4255,8 +4525,9 @@ repository's unrefereed manuscripts as mathematical axioms. The negative
 result of a keyword search is treated as a navigation aid, not a formal
 proof that a topic occurs nowhere.
 
-The delivered files do not alter the repository or claim to be part of
-its checked Lean build.
+The report does not claim that its theorems are part of the checked Lean
+build. Their implementation status is recorded in the repository's
+formalization ledger; the supplied programs check finite examples.
 
 \subsection{Literature-search scope}
 
@@ -4480,8 +4751,8 @@ Functions at Arbitrary Rank}, research package in \cite{Repo},
 \texttt{docs/surcomplex/entire-functions-at-arbitrary-rank/}.
 The real-valued coarsening at an order unit is its
 \texttt{ent:lem:coarsening}; that report's standing hypothesis is a
-set-sized \emph{divisible} exponent group, which the present paper does
-not assume. This is a repository research draft, not an independently
+set-sized \emph{divisible} exponent group, which the one-period
+uniformization theorem here does not assume. This is a repository research draft, not an independently
 refereed source.
 
 \end{thebibliography}

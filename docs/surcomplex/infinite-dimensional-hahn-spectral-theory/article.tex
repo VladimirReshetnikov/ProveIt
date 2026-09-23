@@ -106,19 +106,19 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{9mm}
+\vspace*{0mm}
 {\large\scshape A research manuscript for the Surreal project\par}
-\vspace{13mm}
+\vspace{3mm}
 {\Huge\bfseries\color{Ink} Infinite-Dimensional\\[.15em] Hahn Spectral Theory\par}
-\vspace{5mm}
+\vspace{3mm}
 {\LARGE Part I: infinitesimal thickening and range defects\\[.15em]
  in Hahn--Hilbert spaces\par}
 \vspace{2mm}
 {\LARGE Part II: exact synthesis and algebra-relative spectra\\[.15em]
  for row- and column-finite Hahn matrices\par}
-\vspace{8mm}
+\vspace{3mm}
 {\large September 22, 2026\par}
-\vspace{8mm}
+\vspace{3mm}
 \begin{minipage}{.95\textwidth}
 \begin{abstract}
 \noindent
@@ -127,11 +127,11 @@ over one Hahn scalar field $\K=\C((t^\Gamma))$. They are printed together
 because they continue the same non-claim of the collection's
 finite-dimensional spectral report, and they are printed as two parts because
 the word \emph{spectrum} does not mean the same thing in them, the vector
-spaces are different, and their hypotheses on $\Gamma$ point in opposite
-directions.
+spaces and operator algebras are different. Both parts now allow arbitrary
+nonzero set-sized ordered value groups.
 
 \emph{Part I} fixes an ordinary complex Hilbert space $H$ and a nonzero
-set-sized \emph{divisible} ordered abelian group $\Gamma$, and studies
+set-sized ordered abelian group $\Gamma$, and studies
 $\Hil=H((t^\Gamma))$ with its coefficientwise-convolution inner product.
 An automatic-structure theorem identifies every everywhere-defined
 adjointable operator, with no assumed continuity or support condition, with
@@ -146,8 +146,7 @@ positive-order Hahn perturbation, so a coercive positive self-adjoint
 operator can fail to be onto with a cokernel of dimension at least the
 continuum.
 
-\emph{Part II} takes $\Gamma$ \emph{arbitrary}, with no divisibility
-assumption, and studies the algebra $\Arf=\RCF_I(\C)((t^\Gamma))$ of Hahn
+\emph{Part II} uses the same generality for $\Gamma$ and studies the algebra $\Arf=\RCF_I(\C)((t^\Gamma))$ of Hahn
 series of row- and column-finite matrices acting on
 $\Hrf=\C^{(I)}((t^\Gamma))$. For $A=D+B$ with $D=\diag(d_i)$ of pairwise
 distinct ordinary real entries and $B=B^*$ of globally well-ordered positive
@@ -200,8 +199,9 @@ $\No[i]$, bounded-operator spectra, compact or trace-class operators,
 or spectral measures.''
 \end{quote}
 The two manuscripts assembled here supply the first two of those items and
-the compact half of the third. Trace-class operators and spectral measures
-are left alone.
+the compact half of the third. Trace-class theory and a classical
+Hilbert-space spectral-measure theory are not developed; Part II supplies
+an algebraic projection calculus with vectorwise Hahn additivity.
 
 \begin{itemize}
 \item \emph{Infinite-dimensional Hilbert spaces over the surcomplex
@@ -216,12 +216,12 @@ are left alone.
  ``compact'' there describes the original operator on the ordinary Hilbert
  space and asserts nothing about compactness or compactoidness in the Hahn
  valuation topology.
-\item \emph{Trace-class operators and spectral measures} remain untouched.
+\item \emph{Trace-class operators and spectral measures.}
  Nothing below is a trace-class theory. \Cref{ihs:rf:thm:commutant} gives a
- complete Boolean algebra of spectral projections, but
- \cref{ihs:rf:rem:notopsum} shows that the family of rank-one projections
- is not strongly Hahn summable as a family of \emph{operators}, so that
- calculus is not a spectral measure and is not offered as one.
+ complete Boolean algebra of spectral projections with vectorwise strong
+ Hahn additivity. This does not assert topological countable additivity:
+ \cref{ihs:rf:rem:notopsum} distinguishes the two and supplies a
+ counterexample even for a rank-one value group.
 \end{itemize}
 
 The finite-dimensional report is already a long treatise on determinantal
@@ -232,11 +232,13 @@ read as saying jointly.
 
 \subsection{The central hazard: two senses of ``spectrum''}\label{ihs:sec:hazard}
 The two parts use the word \emph{spectrum} for two different things, on two
-different vector spaces, under opposite hypotheses on $\Gamma$. Quoted side
+different vector spaces and in different operator algebras. Quoted side
 by side without their categories, their conclusions about accumulation read
-as a contradiction. They are not one. No attempt is made below to write a
-single hypothesis paragraph covering both parts, and the divisibility
-hypothesis is \emph{not} unified.
+as a contradiction. They are not one. Both parts allow arbitrary nonzero
+set-sized ordered abelian groups; the coefficient spaces and operator classes,
+rather than divisibility, account for the different spectral conclusions.
+The original Part I manuscript assumed divisibility. The proof review removes
+that unused restriction, as explained in \cref{ihs:hh:sec:field}.
 
 \begin{table}[ht]
 \centering\small
@@ -266,9 +268,9 @@ $\sigma_{\Arf}(X)=\{z\in\K:X-z\Id$ has no two-sided inverse
 $\K$-algebra\\
 \addlinespace
 Hypothesis on $\Gamma$ &
-nonzero, set-sized, ordered abelian and \textbf{divisible}; divisibility is
-used only for positive square roots in $\Fld=\R((t^\Gamma))$, and
-\cref{ihs:sec:topology} further restricts $\Gamma$ to a subgroup of $\R$ &
+nonzero, set-sized, ordered abelian, \textbf{not assumed divisible};
+only the metric-completeness subsection
+\ref{ihs:hh:sec:rankone} assumes $\Gamma\subseteq\R$ &
 nonzero, set-sized, ordered abelian, \textbf{not assumed divisible}; the
 source manuscript records the absence of that hypothesis as a feature, and
 only near-one binomial roots are used\\
@@ -289,9 +291,15 @@ uses.}\label{ihs:tab:senses}
 \Cref{ihs:sec:interface} works the apparent conflict out on a single
 operator and says exactly why both conclusions hold.
 
+The inner-product conventions also differ: Part I is linear in the first
+variable, whereas Part II is conjugate-linear in the first. To translate a
+scalar pairing, conjugate its value (equivalently, exchange its arguments);
+do not copy a variational functional without translating its linearity.
+Positivity and the adjoint identity are unchanged by this conversion.
+
 \subsection{Part I at a glance}\label{ihs:sec:glanceone}
 Throughout Part I, $H\ne0$ is a complex Hilbert space, $\Gamma$ is nonzero,
-divisible, ordered, abelian and set-sized, and
+ordered, abelian and set-sized, and
 \[
  \K=\C((t^\Gamma)),\qquad \Hil=H((t^\Gamma)).
 \]
@@ -323,8 +331,8 @@ noncanonically. No commutation hypothesis is required.
 \item For $D e_n=n^{-1}e_n$ and $s=t^\eta$, $\eta>0$, the operator
 $C=D^2+s^2I$ on $\ell^2((t^\Gamma))$ is bounded, positive, self-adjoint and
 coercive, but not surjective. Its cokernel has $\K$-dimension at least
-$2^{\aleph_0}$. In rank one its range is closed and proper, with zero
-orthogonal complement.
+$2^{\aleph_0}$. At every rank its range is closed and proper in the
+valuation topology, with zero orthogonal complement.
 \item The extension of an ordinary bounded $T$ has a least
 $\Fld$-valued norm bound if and only if $T$ attains its ordinary Hilbert
 operator norm. When the least bound exists, it is the ordinary norm itself.
@@ -479,7 +487,7 @@ Hilbert-space basis.
 
 This section fixes the conventions used by both parts and states the support
 lemma once. Everything else about the two constructions --- their inner
-products, their operator algebras, their divisibility hypotheses --- is
+products and their operator algebras --- is
 stated separately in each part, because in each case the two differ.
 
 \subsection{Support conventions and strong summability}\label{ihs:sec:supportconv}
@@ -660,20 +668,22 @@ inversion tools of \cref{ihs:sec:neumann}, and the surcomplex embedding
 theorem of Part I is used in the proof of any theorem of Part II, and no
 theorem of Part II is used in Part I. Each part has its own inner product,
 its own operator algebra, its own spectral definition, and its own
-hypothesis on $\Gamma$, and each proves its own positivity statement from
-scratch:
-\cref{ihs:hh:prop:inner} uses divisibility of $\Gamma$ to obtain the
-positive square root defining $\norm x=\sqrt{\ip xx}$, while
-\cref{ihs:rf:prop:inner} proves positivity of $\ip xx$ \emph{without}
-assuming that every positive element of $\Fld$ has a square root, and
-\cref{ihs:rf:cor:scales} records the absence of divisibility as part of its
-conclusion.
+coefficient-space requirements, and each proves its own positivity statement
+from scratch:
+\cref{ihs:hh:prop:inner} constructs the positive square root
+$\norm x=\sqrt{\ip xx}$ from the even leading exponent of $\ip xx$ and a
+near-one binomial root; this works for every ordered value group.
+Likewise, \cref{ihs:rf:prop:inner} proves positivity without assuming that
+every positive scalar has a square root. Part II uses no norm, and
+\cref{ihs:rf:cor:scales} explicitly allows nondivisible groups.
 
-Divisibility is therefore not unified below, and no reader should carry a
-hypothesis across the boundary. The two hypotheses are not merely different
-in strength: Part I needs positive square roots in $\Fld$ to define its norm
-at all, and Part II's point is partly that its construction never needs
-them.
+Neither construction needs divisibility. In Part I all field-valued roots
+used in norms and moduli have even leading exponent, and all other scalar
+roots are near-one binomial roots; ordinary positive operator square roots
+are taken in $\B$, before Hahn extension. General positive Hahn scalars
+and squared norms have different root requirements:
+$t$ has no square root in $\R((t^\Z))$, whereas $\norm{te}=t$ for any
+ordinary unit vector $e$.
 
 \subsection{The accumulation statements are about different objects}\label{ihs:sec:accum}
 Read without their categories, the two parts appear to disagree about
@@ -729,10 +739,10 @@ out against two different pinned revisions.
 \addcontentsline{toc}{part}{Part I. Hahn--Hilbert spaces}
 
 \emph{Standing hypotheses for Part I.} $H\ne0$ is an ordinary complex
-Hilbert space and $\Gamma$ is a nonzero set-sized \emph{divisible} ordered
-abelian group. Divisibility is used only to obtain positive square roots in
-$\Fld=\R((t^\Gamma))$; \cref{ihs:sec:topology} temporarily strengthens the
-hypothesis to $\Gamma\subseteq\R$. ``Spectrum'' in this part means failure
+Hilbert space and $\Gamma$ is a nonzero set-sized ordered abelian group.
+Divisibility is not assumed. Only \cref{ihs:hh:sec:rankone}, which uses a
+real-valued metric, additionally assumes $\Gamma\subseteq\R$; the subsequent
+closed-range and duality statements use the valuation topology at any rank. ``Spectrum'' in this part means failure
 of bijectivity on $\Hil=H((t^\Gamma))$, or failure of invertibility in
 $\Ahh$, and \cref{ihs:hh:thm:spectrum} proves that for constant normal
 operators the two agree.
@@ -758,7 +768,7 @@ classification and quantitative counterexamples to coercive inversion.
 
 \section{The Hahn--Hilbert space}\label{ihs:sec:construction}
 
-\subsection{The field and its divisibility hypothesis}\label{ihs:hh:sec:field}
+\subsection{The field and the roots actually needed}\label{ihs:hh:sec:field}
 Define
 \[
  \Fld=\R((t^\Gamma)),\qquad \K=\C((t^\Gamma))=\Fld[i].
@@ -769,17 +779,21 @@ including zero in both sets. Coefficient extraction at zero gives
 $\st:\Ocal\to\C$. Every finite scalar has a unique expression
 $z=a+\eps$ with $a\in\C$ and $\eps\in\mK$.
 
-Divisibility of $\Gamma$ guarantees positive square roots in $\Fld$. For
-completeness, if $r=ct^\delta(1+u)>0$, where $c>0$ and $v(u)>0$, then
+The source manuscript assumed divisibility to obtain square roots of
+all positive elements of $\Fld$. That assumption is stronger than the
+proofs need. For a positive scalar
+$r=ct^\delta(1+u)$ with $c>0$ and $v(u)>0$, a square root exists in $\Fld$
+if and only if $\delta\in2\Gamma$. Necessity follows by taking valuations;
+if $\delta=2\beta$, then
 \[
- \sqrt r=\sqrt c\,t^{\delta/2}\sum_{n\ge0}\binom{1/2}{n}u^n.
+ \sqrt r=\sqrt c\,t^\beta\sum_{n\ge0}\binom{1/2}{n}u^n.
 \]
-The support lemma and the formal binomial identity prove its square is $r$;
-the positive root is unique in any ordered field. This elementary
-square-root construction is all the real-closed-field structure required in
-Part I, and it is the only place divisibility is used. It is used, however,
-in the definition of the norm itself, so it is not a hypothesis that can be
-dropped from the statements below without replacing that definition.
+The support lemma and the binomial identity verify this positive root.
+Squared vector lengths and scalar moduli always have even leading exponent,
+as the next proposition proves. The roots of ordinary positive operators
+used later are formed in the ordinary bounded-operator algebra. Thus no
+Part I proof requires roots of arbitrary positive Hahn scalars, and the
+standing divisibility restriction can be removed.
 
 \subsection{The Hahn--Hilbert inner product}\label{ihs:hh:sec:inner}
 We take ordinary and extended inner products to be linear in the first
@@ -794,10 +808,10 @@ though the separate family of its constant-coordinate squared magnitudes is
 not Hahn summable. We are not using that inadmissible family as a Hahn sum.
 
 \begin{proposition}[Positive-definite scalar extension]\label{ihs:hh:prop:inner}
-Formula \eqref{ihs:hh:eq:inner} defines a positive-definite Hermitian form.
-Its norm $\norm{x}=\sqrt{\ip{x}{x}}$, which exists in $\Fld$ because
-$\Gamma$ is divisible, satisfies the Cauchy--Schwarz and triangle
-inequalities, and
+For any ordered abelian group $\Gamma$, formula
+\eqref{ihs:hh:eq:inner} defines a positive-definite Hermitian form.
+Its norm $\norm{x}=\sqrt{\ip{x}{x}}$ exists in $\Fld$, satisfies the
+Cauchy--Schwarz and triangle inequalities, and
 \begin{equation}\label{ihs:hh:eq:normvaluation}
  v(\ip{x}{x})=2v(x),\qquad v(\norm{x})=v(x)\quad(x\ne0).
 \end{equation}
@@ -808,7 +822,21 @@ $\norm{x}=t^\delta(\norm{u}_H+\text{positive-order terms})$.
 \Cref{ihs:lem:support}(i) gives well-definedness and sesquilinearity. The
 coefficient at $2\delta$, where $\delta=v(x)$, is exactly
 $\norm{x_\delta}_H^2>0$; all other contributions have larger exponent. This
-proves positivity and the valuation statements. Completing a square, using
+proves positivity. For $x\ne0$ write
+\[
+ \ip{x}{x}=\norm{x_\delta}_H^2 t^{2\delta}(1+u),
+ \qquad u=0\ \text{or}\ v(u)>0.
+\]
+The binomial root of \cref{ihs:cor:binomial} gives
+\[
+ \norm{x}=\norm{x_\delta}_H t^\delta
+       \sum_{n\ge0}\binom{1/2}{n}u^n.
+\]
+This is a positive square root in $\Fld$ for every $\Gamma$; set
+$\norm0=0$. Its leading term proves both valuation assertions.
+The same argument for $H=\C$ defines the scalar modulus
+$\abs z=\sqrt{z\bar z}$ without divisibility. Completing a square for
+$y\ne0$ (the case $y=0$ is immediate), using
 $\ip{x-ay}{x-ay}\ge0$ with $a=\ip{x}{y}/\ip{y}{y}$, gives
 $\abs{\ip{x}{y}}^2\le\ip{x}{x}\ip{y}{y}$. The usual expansion of
 $\norm{x+y}^2$, followed by this inequality, gives the triangle inequality.
@@ -1135,7 +1163,7 @@ equation is coefficientwise, yielding the claimed eigenspace identity.
 
 \begin{example}[Normality is indispensable]\label{ihs:hh:ex:backshift}
 Let $B$ be the backward shift on $\ell^2(\N_0)$: $Be_0=0$, $Be_n=e_{n-1}$
-for $n\ge1$. For $s=t^\eta$,
+for $n\ge1$. For $s=t^\eta$ with $\eta>0$,
 \[
  x=\sum_{n\ge0}s^n e_n\in\Hil,\qquad Bx=sx.
 \]
@@ -1193,8 +1221,10 @@ point. Apply \cref{ihs:hh:thm:spectrum}.
 Here ``compact'' describes the original operator on the ordinary Hilbert
 space. It makes no claim of compactness or compactoidness in the Hahn
 valuation topology. The sequence $(De_n)$ for $De_n=n^{-1}e_n$, for
-instance, has pairwise valuation distance one, despite $\norm{De_n}_H\to0$
-in the ordinary norm.
+instance, satisfies $v(De_n-De_m)=0$ for $n\ne m$, despite
+$\norm{De_n}_H\to0$ in the ordinary norm. Thus the valuation ball
+$\{x:v(x)>0\}$ separates these outputs at every rank; in the rank-one
+metric below their pairwise distance is one.
 
 For another concrete example, let $T$ be multiplication by the coordinate on
 $L^2([0,1],\C)$. Its ordinary spectrum is $[0,1]$, it has no eigenvalues,
@@ -1211,7 +1241,7 @@ single eigenvector.
 
 \subsection{Enlarging the scalar workspace does not repair the defect}\label{ihs:hh:sec:extension}
 \begin{corollary}[Persistence under ordered-group extension]\label{ihs:hh:cor:extension}
-Let $\Gamma\subseteq\Delta$ be ordered divisible groups and use the natural
+Let $\Gamma\subseteq\Delta$ be nonzero ordered abelian groups and use the natural
 coefficient-preserving embedding $K_\Gamma\subseteq K_\Delta$. For constant
 normal $T$,
 \[
@@ -1439,7 +1469,7 @@ familiar-looking algebraic inequalities.
 \section{Completeness does not restore orthogonal projection}\label{ihs:sec:topology}
 
 \subsection{The rank-one topology and its completeness}\label{ihs:hh:sec:rankone}
-In this section only, assume $\Gamma$ is a nonzero divisible ordered
+For this subsection only, assume $\Gamma$ is a nonzero ordered
 subgroup of $\R$. For $x\ne0$ define
 \[
  \rho(x)=e^{-v(x)},\qquad \rho(0)=0,\qquad d(x,y)=\rho(x-y).
@@ -1477,19 +1507,34 @@ stabilization is exact, not approximate.
 \end{proof}
 
 \subsection{A proper closed subspace with zero orthogonal complement}\label{ihs:hh:sec:closedrange}
+Return to an arbitrary nonzero ordered abelian group $\Gamma$. The valuation
+topology has neighborhoods $\{x:v(x)>\gamma\}$, $\gamma\in\Gamma$.
+These define the same topology as field-valued norm balls by the leading
+norm formula. No real-valued metric or completeness hypothesis is needed
+for the next two results.
+
 \begin{theorem}[Closed-range orthogonality failure]\label{ihs:hh:thm:closedrange}
 For the coercive $C=D^2+s^2I$, its range $M=C\Hil$ is closed and proper in
-the complete rank-one space $\Hil$, but
+the valuation topology at every rank, but
 \begin{equation}\label{ihs:hh:eq:orthdefect}
  M^\perp=\{0\},\qquad M^{\perp\perp}=\Hil\ne M.
 \end{equation}
 In particular, $M$ is not the range of a self-adjoint idempotent.
 \end{theorem}
 \begin{proof}
-By \cref{ihs:hh:thm:defect}, $v(Cx)=v(x)$; hence $C$ is an isometry for
-$\rho$. The image of a complete metric space under an isometry is complete
-and therefore closed in any metric ambient space. It is proper by
+Use the splitting in \cref{ihs:hh:thm:defect} with $S=D^2$ and $E=s^2I$.
+Its projection $\Pi=I-C(I+UE)^{-1}U$ has kernel exactly $M$:
+it kills $M$, and $\Pi x=0$ gives $x=C(I+UE)^{-1}Ux$.
+Every coefficient of $\Pi$ has nonnegative exponent, since $U,S$ are
+constant and $E$ has positive order. Therefore $v(\Pi x)\ge v(x)$,
+so $\Pi$ is valuation-continuous. The valuation topology is Hausdorff;
+hence $M=\Pi^{-1}(\{0\})$ is closed. It is proper by
 \cref{ihs:hh:thm:coercive}.
+
+In rank one there is also the original metric proof:
+$v(Cx)=v(x)$ makes $C$ an isometry, and its range is complete and closed
+by \cref{ihs:hh:prop:complete}. The projection proof explains why rank one
+is unnecessary for closedness.
 
 If $z\in M^\perp$, then $\ip{Cx}{z}=0$ for every $x$. Since $C=C^*$,
 $\ip{x}{Cz}=0$ for every $x$, so $Cz=0$. Injectivity gives $z=0$. This
@@ -1499,8 +1544,8 @@ algebraic projection identities. If its range were $M$, the complement would
 be zero and the range all of $\Hil$, a contradiction.
 \end{proof}
 
-The displayed range is not orthogonally closed, although it is metrically
-closed. Thus the usual Hilbert identification of these two closure notions
+The displayed range is not orthogonally closed, although it is closed in the valuation
+topology. Thus the usual Hilbert identification of these two closure notions
 fails. Known non-Archimedean failures of orthomodularity also warn against
 unconditional projection theorems \cite{AN,ANS}. The theorem above gives a
 particularly rigid witness: it is the closed range of a bounded, coercive,
@@ -1854,8 +1899,10 @@ field $\Fld$ need not be real closed. The only roots used in the main
 construction are roots of units with residue $1$, obtained by binomial Hahn
 series through \cref{ihs:cor:binomial}. In particular no analogue of
 $\norm{x}=\sqrt{\ip{x}{x}}$ is introduced here; the norm of
-\cref{ihs:hh:prop:inner} is a Part I object and requires divisibility of
-$\Gamma$.
+\cref{ihs:hh:prop:inner} is a Part I object, but its construction does
+not require divisibility. The even-leading-exponent argument also supplies
+a square root of the squared length in Part II; we simply do not use a norm
+in this part's algebraic construction.
 \end{remark}
 
 \begin{lemma}[Strong sums are respected]\label{ihs:rf:lem:strongaction}
@@ -1885,7 +1932,7 @@ $\Arf$:
  0,&i=j.
  \end{cases}
 \end{equation}
-They preserve support, and they preserve the row- and column-finiteness of
+They do not enlarge Hahn support, and they preserve the row- and column-finiteness of
 every coefficient. On off-diagonal matrices, $\mathcal R_D$ is the inverse
 of $X\mapsto[D,X]$.
 
@@ -2161,9 +2208,17 @@ $\bigcup_i\supp a_i$ is well ordered. There is no finite-incidence condition
 on the indices $i$ here: an arbitrary diagonal matrix of complex numbers is
 one legitimate coefficient in $R_I$.
 
-This is strictly more restrictive than allowing all of $\K^I$, and less
-restrictive than demanding bounded ordinary diagonal coefficients. Both
-facts matter for the spectrum calculation.
+For finite $I$, every family is coherent, so $\Dg=\K^I$; the same equality
+holds for the trivial value group. If $I$ is infinite and $\Gamma\ne0$,
+the inclusion is strict. Choose distinct indices $i_n$ and $\eta>0$, and
+set $a_{i_n}=t^{-n\eta}$ for $n\ge1$, with all other entries zero. Their
+support union contains the decreasing sequence $-\eta,-2\eta,\ldots$,
+so this family does not belong to $\Dg$.
+
+Coherence places no ordinary bound on a fixed diagonal coefficient:
+the constant matrix with entries $n$ at $i_n$ and zero elsewhere belongs
+to $\Dg$ when $I$ is infinite. These are separate conditions, and the
+resolvent proof below uses precisely global support coherence.
 
 \begin{theorem}[The complete commutant]\label{ihs:rf:thm:commutant}
 Within the specified Hahn operator algebra,
@@ -2211,20 +2266,41 @@ can be nonzero. Apply \cref{ihs:rf:lem:strongaction} to transport the sums
 by $U$.
 \end{proof}
 
-\begin{remark}[A necessary distinction, and why this is not a spectral measure]\label{ihs:rf:rem:notopsum}
+\begin{remark}[Operator sums and vectorwise additivity]\label{ihs:rf:rem:notopsum}
 For infinite $I$, the operator family $(P_{\{i\}})_{i\in I}$ is \emph{not}
-strongly Hahn summable as a family in $\Arf$: its coefficient at exponent
-zero is $E_{\{i\}}\ne0$ for every $i$. Thus
+strongly Hahn summable in $\Arf$: its coefficient at exponent zero is
+$E_{\{i\}}\ne0$ for every $i$. Thus $\sH_iP_{\{i\}}$ is undefined in that
+algebra, whereas $\sH_iP_{\{i\}}x=x$ holds for each $x\in\Hrf$.
+This distinction already occurs for $B=0$.
+
+It does not by itself exclude a spectral-measure interpretation.
+Classical projection-valued measures require countable additivity in
+the strong operator topology, which tests convergence on each Hilbert
+vector, rather than an operator-norm sum; see
+\cite[Definition~5.1 and footnote~18]{Williams}.
+Here $J\mapsto P_J$ on the power set of $I$ is a projection-valued set
+function with vectorwise \emph{Hahn} additivity by
+\cref{ihs:rf:cor:projsums}. Such additivity does not imply convergence
+in the intrinsic valuation topology.
+
+For an explicit failure, take $\Gamma=\Q$, $I=\N_{>0}$, $D=\diag(n)$,
+and $B=0$, so $U=\Id$ and $P_{\{n\}}=E_{\{n\}}$. Put
 \[
- \Id=\sH_i P_{\{i\}}
+ \gamma_n=1-\frac1{n+1},\qquad
+ x=\sH_{n\ge1}t^{\gamma_n}e_n.
 \]
-is false under the operator-valued summability definition of
-\cref{ihs:sec:supportconv}. The correct assertion is
-$\Id x=\sH_i P_{\{i\}}x$ for each $x\in\Hrf$. The distinction persists even
-for $B=0$ and is not a technical artifact of the proof. It is also the
-reason \cref{ihs:rf:thm:commutant} is not offered as a spectral measure, one
-of the objects the collection's finite-dimensional report listed as absent
-and which remains absent here.
+The exponents increase strictly, hence form a well-ordered set, and
+each coefficient has one coordinate. Thus $x\in\Hrf$, but
+\[
+ v\!\left(x-\sum_{n=1}^N P_{\{n\}}x\right)
+ =\gamma_{N+1}<1
+\]
+for every $N$. The partial sums never enter the neighborhood of $x$
+with error valuation greater than $1$. Consequently even this rank-one
+example lacks countable additivity in the topology of pointwise
+valuation convergence. The established object is the Hahn-additive
+projection calculus; no general topologically countably additive
+spectral-measure or Borel integration theorem is asserted.
 \end{remark}
 
 \subsection{An unrestricted ordinary label calculus}\label{ihs:rf:sec:labels}
@@ -2255,7 +2331,15 @@ assumption. It is the second of the two senses recorded in
 Diagonalization alone does not automatically identify this spectrum.
 Entrywise invertibility of infinitely many diagonal entries does not, in
 general, guarantee that their inverses have globally well-ordered support.
-The simple-residue hypothesis gives the additional coherence.
+The simple-residue hypothesis gives the additional coherence. For example,
+on $I=\N_0$ and with $\eta>0$, the diagonal
+$Q=\diag(t^{n\eta})$ belongs to $\Dg$, but its entrywise inverse has
+support $\{-n\eta:n\ge0\}$ and is not coherent. Any matrix inverse would
+have to have exactly those diagonal entries and zero off-diagonal entries,
+by multiplying entrywise against $Q$. Thus $Q$ is not invertible in $\Arf$.
+It is not onto $\Hrf$ either: the Hahn vector
+$\sum_{n\ge0}t^{n\eta}e_n$ would require the preimage $(1,1,\ldots)$,
+which has an inadmissible infinite-support coefficient at zero.
 
 \begin{theorem}[Coherent resolvents at every noneigenvalue]\label{ihs:rf:thm:resolvent}
 Under the hypotheses of \cref{ihs:rf:thm:unitary},
@@ -2527,7 +2611,8 @@ has length at least their graph distance. Apply
 \subsection{The threshold is sharp}\label{ihs:rf:sec:sharp}
 
 \begin{theorem}[A nonzero first boundary coefficient]\label{ihs:rf:thm:sharp}
-Let $A_L(t)$ be the tridiagonal matrix on vertices $0,\ldots,L$ with
+Let $L\ge1$ and let $A_L(t)$ be the tridiagonal matrix on vertices
+$0,\ldots,L$ with
 pairwise distinct real diagonal entries $d_0,\ldots,d_L$ and off-diagonal
 entries $t b_k$ and $t\overline{b_k}$ between $k$ and $k+1$, where
 $b_k\in\C\setminus\{0\}$. Let $\lambda_0^{[L]}$ be its branch with residue
@@ -2571,11 +2656,23 @@ Thus
  =\frac{\prod_{k=0}^{L-1}c_k}
  {(x-d_L)\prod_{k=1}^{L-1}(x-d_k)^2}\,q^L+\bigo(q^{L+1}).
 \]
-The two root equations have derivative $1+\bigo(q)$ with respect to $x$ at
-their solutions near $d_0$. Subtracting the equations therefore gives the
-same first root difference, evaluated at $x=d_0$. For $L=1$ the truncated
-branch is exactly $d_0$, and the original Schur equation gives the same
-formula directly. This proves \eqref{ihs:rf:eq:sharp}. The nonzero
+To justify passage from the tail difference to the root difference, let
+\[
+ G_L(x,q)=x-d_0-qc_0H_1^{[L]}(x,q),\qquad
+ x_L=\lambda_0^{[L]},\quad x_{L-1}=\lambda_0^{[L-1]}.
+\]
+Both roots are $d_0+\bigo(q)$. The formal divided difference of $G_L$
+between these two roots is a unit $1+\bigo(q)$, since
+$G_L(x,0)=x-d_0$. If $C(x)$ denotes the displayed coefficient of $q^L$,
+then
+\[
+ G_L(x_{L-1},q)=-C(d_0)q^L+\bigo(q^{L+1}),\qquad
+ G_L(x_L,q)=0.
+\]
+Subtracting and dividing by that unit gives
+$x_L-x_{L-1}=C(d_0)q^L+\bigo(q^{L+1})$, as claimed.
+For $L=1$ the truncated branch is exactly $d_0$, and the original Schur
+equation gives the same formula directly. This proves \eqref{ihs:rf:eq:sharp}. The nonzero
 denominator and the nonzero positive numerator prove sharpness.
 \end{proof}
 
@@ -2885,8 +2982,8 @@ whether a sequence of partial sums converges in the intrinsic valuation
 topology, as \cref{ihs:rf:prop:noconv} illustrates. The exact Hahn
 identities are stable even when such sequential behavior changes.
 \Cref{ihs:hh:cor:extension} is the corresponding statement in
-Part~I; it concerns a different construction, is restricted to
-divisible groups, and is proved separately.
+Part~I; it concerns a different construction and is proved separately,
+also without divisibility.
 
 \section{Effective coefficient calculation}\label{ihs:rf:sec:computation}
 
@@ -3176,13 +3273,13 @@ comparisons of sums.
 \toprule
 Result & Inputs & Independent restriction\\
 \midrule
-Positive inner product & Finite Hahn convolution; positive square roots & Divisible value group\\
+Positive inner product and norm & Finite Hahn convolution; even leading exponent; binomial root & No divisibility needed\\
 Automatic adjoint structure & Ordinary closed graph; Baire; Hahn support & Everywhere-defined adjoints\\
 Defect splitting & Injective leading term; Neumann support lemma & No topology or commutation needed\\
 Normal spectral formula & Defect splitting; ordinary normal spectral theorem & Constant normal operator\\
 New eigenvalue exclusion & Orthogonal eigenspace projection & Normality is essential\\
 Continuum cokernel & Leading-coefficient obstruction; power-series divergence test & Ordinary $\ell^2$ coefficients\\
-Closed coercive range & Defect valuation equality; metric completeness & Rank-one value group\\
+Closed coercive range & Continuous defect projection; kernel identity & Arbitrary value group\\
 Least norm-bound criterion & Ordinary positive square root; leading norm ratio & Constant bounded operator\\
 \bottomrule
 \end{tabularx}
@@ -3223,13 +3320,14 @@ surreal presentations; or a completed Lean formalization.
 
 \subsection{What this report as a whole does not claim}\label{ihs:app:jointnonclaims}
 Nothing above unifies the two parts into a single theorem, and no hypothesis
-is transferred between them. In particular, the divisibility of $\Gamma$
-assumed throughout Part~I is not assumed anywhere in
-Part~II, and the row- and column-finiteness of
-Part~II is not available in Part~I. The two
+is transferred between them. Both now allow nondivisible $\Gamma$ by
+their respective proofs; the row- and column-finiteness of Part~II is
+not available in Part~I. The two
 spectra of \cref{ihs:tab:senses} are not proved to agree, and no claim is
-made that either determines the other. Neither part is a trace-class theory
-and neither supplies a spectral measure.
+made that either determines the other. Neither part is a trace-class theory.
+Part II supplies a vectorwise Hahn-additive projection calculus, not a
+general topologically countably additive spectral-measure theorem; the
+counterexample in \cref{ihs:rf:rem:notopsum} states the precise limitation.
 
 \clearpage
 \phantomsection
@@ -3279,6 +3377,12 @@ G. Higman, Ordering by divisibility in abstract algebras,
 R. G. Douglas, \emph{Banach Algebra Techniques in Operator Theory},
 second edition, Graduate Texts in Mathematics 179, Springer, 1998.
 \url{https://doi.org/10.1007/978-1-4612-1656-8}.
+
+\bibitem{Williams}
+D. P. Williams, \emph{Lecture Notes on the Spectral Theorem},
+Definition~5.1 and footnote~18, pp.~15--16.
+Cited only for the classical strong-operator additivity convention.
+\url{https://www.math.dartmouth.edu/~dana/bookspapers/ln-spec-thm.pdf}.
 
 \bibitem{AN}
 J. Aguayo and M. Nova, Non-Archimedean Hilbert like spaces,

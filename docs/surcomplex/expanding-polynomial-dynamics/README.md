@@ -8,7 +8,7 @@ revision `a3124af`.
 
 ```
 article.tex         the report, standalone LaTeX with an internal bibliography
-article.pdf         the compiled report, 31 pages (title, contents, 29 numbered pages)
+article.pdf         the compiled report, 32 pages (title, contents, 30 numbered pages)
 README.md           this guide
 RESEARCH_STATUS.md  the manuscript's own audit note, kept as delivered
 code/verify.py      the exact finite checks (Python 3.10+, standard library only)
@@ -40,7 +40,10 @@ Section 1.3 lists what the placement changed:
    (Section 13.2).
 5. It collected all non-claims in Appendix C.
 
-No hypothesis, statement or proof was altered beyond the change of word.
+At placement, no hypothesis, statement or proof was altered beyond the change
+of word. The later proof review clarified degree preservation and formal
+substitution, expanded noncompactness, separated the rank-one comparison
+from the order-unit theorem, and updated Lean coverage.
 
 The report is filed under `surcomplex` although the archive name says
 *surreal*. Its theorems hold uniformly for `k = R` or `C`, and its explicit
@@ -64,8 +67,11 @@ words.
 
 Let `K = k((t^Γ))` with `k = R` or `C` and `Γ ≠ 0` any set-sized ordered
 abelian group. Divisibility is not assumed, and neither is algebraic
-closedness. Let `F = q⁻¹P` with `κ = v(q) > 0`, where `P` is integral and
-its reduction `P₀` has degree `d ≥ 2` and `d` distinct roots `c_i ∈ k`.
+closedness. Let `F = q⁻¹P` with `κ = v(q) > 0`, where `P` is integral,
+`deg P = deg P₀ = d ≥ 2`, and its reduction `P₀` has `d` distinct roots
+`c_i ∈ k`. The degree condition matters: with `q = t` and
+`P = (X²−1)(1+tX)`, the reduction still has two simple roots, but
+`−t⁻¹ ↦ 0 ↦ −t⁻¹` is a cycle containing a nonintegral point.
 Set `I_κ = {h : v(h) > nκ for every n ∈ N}` and
 `B_int(F) = {x : Fⁿ(x) ∈ O for all n}`.
 
@@ -119,7 +125,8 @@ Set `I_κ = {h : v(h) > nκ for every n ∈ N}` and
   Corollary 11.4 then gives `J_aff,v(f) = ∅`. This concerns only the affine
   set of Definition 11.3.
 - **Surreal specialization (Theorem 12.1, Corollary 12.4).** For
-  `F(x) = ω(x² − 1)`, the finite-orbit locus in `No[i]` is `⊔_s (x_s + I)`,
+  `F(x) = ω(x² − 1)`, the locus whose every iterate is finite in `No[i]`
+  is `⊔_s (x_s + I)`,
   where the `x_s = Σ a_n(s) ω^(−n)` are real and `ω^(−ω) ∈ I`. Every
   surcomplex preperiodic point is a real center. Every polynomial orbit over
   `No` or `No[i]` is bounded, and the iterates are locally equicontinuous in
@@ -138,13 +145,19 @@ non-claims (P1–P3)**. In brief:
   certified**: the search was targeted, incomplete and sometimes noisy. No
   named published conjecture is claimed solved. The three questions of
   Section 14 are proposed continuations, not established open problems.
-- There is no Lean formalization of the article. The repository audit was
-  targeted, and the repository was neither rebuilt nor modified.
+- Lean coverage is partial: [the ledger](../../FORMALIZATION.md) maps
+  Definition 2.1 and Lemma 2.3 to
+  [ScaleIdeal.lean](../../../Surreal/HahnSeries/ScaleIdeal.lean), including
+  the convex subgroup, error ideal, order-unit criterion and coarsened
+  valuation ring. Clopenness is encoded by valuation-ball conditions.
+  The positive-support lemma is also proved. The centers, fiber theorem
+  and later dynamics remain pending. The source's original repository
+  audit was a targeted survey, not a build or formalization.
 - Classical inputs are credited, not claimed. These are Neumann's
   positive-support lemma, formal implicit functions, valuation coarsening,
   the full shift and its periodic counts, the rank-one Cantor repeller
   (Benedetto, Example 4.39), and Conway normal form.
-- The hypotheses are simple, split reduction (repeated roots are not
+- The hypotheses are degree-preserving, simple split reduction (repeated roots are not
   covered), finitely many coefficients and branches, and polynomials only
   (rational maps are not covered).
 - **Valuation-expanding is not repelling**, and the expanding points are not
@@ -195,10 +208,12 @@ directly without it. The group of Example 11.5 is that report's `Γ_∞`.
 **[hahn-tate-uniformization](../hahn-tate-uniformization/)**: `H_κ` is its
 `H_α` (`tate:eq:H`). The two reports share a subgroup, not a theorem.
 
-**[rank-one-berkovich](../rank-one-berkovich/)**: the order-unit case is the
-classical rank-one Cantor repeller. In that report's field `C((t^R))` every
-positive scale is an order unit. That report has no polynomial dynamics, and
-no transfer is claimed.
+**[rank-one-berkovich](../rank-one-berkovich/)**: the order-unit case has
+the same symbolic Cantor model as the classical rank-one construction.
+It does not require the ambient group to have rank one: `(1,0)` is an
+order unit in `Q ⊕lex Q`. In the other report's field `C((t^R))` every
+positive scale is an order unit. That report has no polynomial dynamics,
+and no transfer is claimed.
 
 ## Build and reproduce
 
@@ -206,8 +221,9 @@ no transfer is claimed.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build gives 31 pages with zero errors, zero warnings, zero
-undefined references and zero overfull boxes. BibTeX is not needed.
+The reviewed source builds to 32 pages with zero errors, zero warnings,
+zero undefined references and no overfull or underfull boxes. The earlier
+placement build had 31 pages. BibTeX is not needed.
 
 **`code/verify.py` overwrites the shipped record by default.** Its only
 option is `--output`, which defaults to `data/verification.json` beside

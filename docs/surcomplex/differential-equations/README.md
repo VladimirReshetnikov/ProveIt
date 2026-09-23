@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 165 pages, built from ten manuscripts. Everything in
+A merged research report, 166 pages, built from ten manuscripts. Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 165-page report
+article.pdf                        the compiled 166-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the ten
@@ -21,6 +21,16 @@ data/                              their recorded verification, build and requir
 Every label in `article.tex` carries the prefix `diff:`; the labels added with
 members 11 and 12 carry the sub-prefixes `diff:aut:` and `diff:rs:`. No
 pre-existing label was renamed or removed (506 before, 685 after).
+
+The current proof review covers the earlier scalar, matrix, workspace and
+coordinate chains, and now Sections 23–24 of the regular-singular part:
+the Euler frame, positive-support calculus, normalized resonant form and
+finite resonance dependence. The review expands the dependency-tree proof
+and illustrates why retaining only the homological kernel can fail.
+It also distinguishes Euler-stable smaller fields from fields stable under
+the original derivation. Later regular-singular and autonomous proofs,
+remaining imports and source reconciliation are still pending; the scope
+and validation are recorded in the collection's [review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -707,6 +717,16 @@ times so that the table of contents, the cross-references and the `cleveref`
 labels settle. The delivered build (165 pages) has zero LaTeX errors, zero
 warnings, zero undefined references or citations, zero multiply-defined
 labels, zero duplicate destinations, and zero overfull or underfull boxes.
+
+The review of Sections 23–24 rebuilt the current report in three passes
+at 166 pages without warnings or box issues, and the changed pages were
+visually inspected. Member 12's unchanged verifier passed all eight suites
+on a temporary copy using Python 3.13.14 and SymPy 1.14.0; every JSON field
+matches the delivered record. A separate exact matrix calculation checked
+the new whole-block example. All 48 historical code, data and source-log
+files remain byte-identical. The full Lean build and its 5,371-declaration
+axiom audit also pass; these documentation changes add no Lean coverage.
+The later regular-singular and autonomous arguments remain for review.
 
 ## Re-running the source verifiers
 

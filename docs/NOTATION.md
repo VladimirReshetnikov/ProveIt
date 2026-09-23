@@ -106,6 +106,105 @@ belongs to a larger group. The distinction from the Prony certificate above
 is that the Wick equivalence explicitly asks for the scaling exponents
 in the original group.
 
+The [holonomic report](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex)
+uses `Dom_str(f)` for strong evaluation of the fixed formal coefficient
+family. Its inward-stability lemma `hol:lem:inward` shows that membership
+depends only on the nonzero argument's valuation and is preserved when that
+valuation increases. This does not mean that the leading valuations of the
+coefficients determine the domain; their higher support tails are retained.
+The torsion substitution `z^r G(z^m)` preserves and reflects entireness
+without divisible exponents.
+
+A valuation coarsening changes the value map on the same field. Projecting
+each Hahn exponent through a quotient with a nonzero kernel can collapse
+infinitely many supported exponents to one value; it need not produce a
+Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
+makes this distinction explicit.
+
+## Inner products and operator spectra
+
+The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
+uses `⟨x,y⟩ = x* y`, conjugate-linear in the first variable.
+[Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex)
+retains different source conventions: Part I is linear in the first variable;
+Part II is conjugate-linear in the first. Conjugate the scalar value, or
+exchange the arguments, when translating between them. Positivity and
+adjoint identities survive this change, but the linearity of a represented
+functional changes.
+
+In that report, `σ_Γ^alg` means failure of bijectivity on `H((t^Γ))` and
+`σ_Γ^adj` means failure of inversion in `B(H)((t^Γ))`. Their equality is
+proved for constant normal operators. Part II's `σ_𝒜` refers to inversion
+in the row- and column-finite Hahn algebra on a different vector space.
+A prime in `σ_ℂ(T)'` denotes ordinary spectral accumulation, not a derivative.
+
+Keep the three size notions distinct: `‖T‖_H` is an ordinary real operator
+norm, `‖x‖` is a positive Hahn scalar, and `ρ(x) = exp(−v(x))` is the real
+valuation size when `Γ ⊆ ℝ`. A field-valued operator bound need not have a
+least possible value. The vector norm and scalar modulus exist without
+divisibility because their squared values have even leading exponents;
+arbitrary positive Hahn scalars have a square root exactly when their
+leading exponent lies in `2Γ`.
+
+The projection calculus in Part II is additive on disjoint label sets
+after applying each projection to a vector and taking a **strong Hahn sum**.
+This is distinct from the classical **strong operator topology**, which
+tests topological convergence on each vector. Even for `Γ = ℚ`, the vector
+`Σₙ t^{1−1/(n+1)} eₙ` is a valid Hahn sum whose coordinate partial sums do
+not converge in valuation. The failure of an operator-valued Hahn sum alone
+does not decide whether a projection-valued set function is a spectral
+measure; specify the intended additivity and topology.
+
+In [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/article.tex),
+the positive period value is `α = v(q)`. Its two convex subgroups have
+different roles:
+
+| Subgroup | Definition and role |
+|---|---|
+| `H_α` | Values bounded in absolute value by some ordinary integer multiple of `α`. The quotient valuation `w = v mod H_α` on `K_Γ` has residue field `K_{H_α}`. |
+| `H_α^-` | Values `γ ∈ H_α` with `n\|γ\| < α` for every `n ≥ 1`. Quotienting `H_α` by this subgroup gives the rank-one valuation on `K_{H_α}` used for classical Tate uniformization. |
+
+The period is a unit for the first coarsening, but has positive rank-one
+valuation for the second. Arbitrary formal coefficients in `K_{H_α}`
+can be evaluated at inputs with `w(z) > 0`; fine positivity `v(z) > 0`
+alone is insufficient. These Part I coarsenings require no divisibility;
+Part II retains its separate hypothesis for halves of period exponents.
+Over the lexicographic group `ℤ ⊕ ℤ` with
+`H = {0} ⊕ ℤ`, substituting `z = t^(0,1)` into
+`Σₙ t^(0,−n) Zⁿ` makes every term `1` and fails strong summability.
+
+Distinguish the circularly ordered quotient `H_α/ℤα` from its rank-one
+quotient `(H_α/H_α^-)/ℤᾱ`: the kernel of the map between them is `H_α^-`.
+Even if `H_α/H_α^-` is the real line, the full quotient can retain
+infinitesimal directions. A classical real circle describes the last
+quotient in that case. It describes the full value quotient when
+`H_α^- = 0` and the embedded value group is all of `ℝ`.
+
+In the same report's node chart, the vector valuation is
+`𝐯(x,y) = min{v(x),v(y)}`, with `v(0) = ∞`. The word “isometry” means equality
+of these ordered-group values for differences in the chosen coordinates;
+it does not introduce a real-valued metric. Both coordinates are needed
+because their leading terms can cancel separately. Passing to a rank-one
+quotient can erase a strict increase in vector valuation, as the
+`ℤ ⊕ ℤ` example in Section 9.3 shows.
+
+Part II of Hahn–Tate uses `Π` for the matrix of period exponents,
+`π(n) = ½ nᵀΠn` for its quadratic energy, and `β_j = v(z_j)` for argument
+values. In a finite lexicographic coordinate model, `𝓑_j` are real bilinear
+forms and `V_j` are their successive restricted radicals. “Rational”
+means `span_ℝ(L ∩ V_j) = V_j`; the form coefficients may be irrational.
+The lattice rank `g`, number of coordinate levels `r`, and number of strict
+radical drops `s` have different roles: `s ≤ min(g,r)`. Under the flag
+criterion, `ω^s` is the order type of the exponent set before cancellation.
+It is the actual support length at positive monomial arguments; it is
+not a surreal birthday. Well-ordering of that exponent set and finiteness
+of every exponent fibre are separate requirements for strong summability.
+
+In Hahn–Tate's coupled theta example, `ξ` is the full Hahn solution and
+`ξ₀` is its reduction retaining only first-coordinate-zero terms. The
+zero-row equation is an equation for `ξ₀`. Its coefficients determine the
+displayed expansion of `ξ` below higher first-coordinate rows.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and
@@ -203,6 +302,16 @@ common support. Only the strong axiom forces finite point support at every
 coefficient on a countably separated space. Positivity of the full Hahn value
 does not mean positivity of every coefficient measure: later signed
 coefficients may be negative while the leading nonzero coefficient is positive.
+
+The [Hahn–Herglotz report](surcomplex/hahn-herglotz-positivity/article.tex)
+uses real coefficientwise measures on the ordinary circle. Its moments are
+Fourier moments `c_n = ∫ ζ^(−n) dμ` and its Toeplitz convention is
+`T_N = (c_(j−k))_(0≤j,k≤N)`, a matrix of size `N+1`.
+These differ from interval power moments and Prony's finite power sums.
+Coefficientwise and strong measure classes overlap: the finite atomic
+quadratures satisfy both, while diffuse Haar leading coefficients exclude
+strong additivity. The distinction is in the summation axiom, not in whether
+the article calls its object a measure.
 
 ## Coefficient rings and functions
 
@@ -325,6 +434,24 @@ distinction to explain nonconstant zero-derivative functions. The
 (`phys:tab:derivatives`) states explicitly which operation is used for its
 fields on ordinary spacetime.
 
+In the regular-singular part of the differential-equations report,
+`t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
+The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`
+for ordinary real `γ`. It preserves every `K_Γ` with `Γ ⊆ ℝ`,
+whereas `∂ = −t∂_τ` preserves that field exactly when `Γ = {0}`
+or `1 ∈ Γ`. Multiplying an Euler gauge identity by `−t` always gives
+an identity in `No[i]`; interpreting both systems over the same smaller
+field also requires that their coefficients and derivations stay there.
+
+The regular-singular residual matrix `A₀` is the exponent-zero coefficient
+of the Euler coefficient `A`; the corresponding `∂`-coefficient is `−tA`
+and its exponent-one coefficient is `−A₀`. A Levelt resonance is a
+positive real eigenvalue difference of `A₀`. Its block projection retains
+the entire space of maps between the corresponding generalized eigenspaces,
+not just the kernel of the homological operator. These resonances differ
+from integer relations among differential phases and from the scalar
+resonant coefficient at `t¹` discussed earlier in that report.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period
@@ -377,6 +504,15 @@ allows `β = +∞`: with `v(0) = +∞`, the bound `O_v(+∞)` means exactly zero
 entrywise for matrices.
 Other reports may instead define an ordinary asymptotic `O(t^7)`; quote its
 local definition before translating the notation.
+
+In [expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/article.tex),
+`σ` is the one-sided symbolic shift and `κ = v(q) > 0` is the valuation
+gain of an inverse branch. Its error ideal `I_κ` consists of values with
+`v(h) > nκ` for every ordinary `n`. This contrasts with the small-divisor
+rate `σ(λ)` and the divisor thresholds in local normal-form dynamics.
+An order unit can exist in a group of rank greater than one; the Cantor
+description concerns the itinerary space and does not identify the ambient
+valuation as rank one.
 
 The dynamics report's ordinary small-divisor growth rates measure complex
 coefficient sizes, even when every nonzero divisor has Hahn valuation zero

@@ -28,31 +28,46 @@ Both manuscripts continue the same sentence of the finite-dimensional
 does not contain: "There is no theorem here about infinite-dimensional Hilbert
 spaces over No[i], bounded-operator spectra, compact or trace-class operators,
 or spectral measures." This report supplies the first two of those items and
-the compact half of the third. **Trace-class operators and spectral measures
-remain untouched.** Part II's spectral projections form a complete Boolean
-algebra, but the family of rank-one projections is not strongly Hahn summable
-as a family of operators, so that calculus is not a spectral measure and is not
-offered as one.
+the compact half of the third. **No trace-class theory or general
+topologically countably additive spectral-measure theorem is supplied.**
+Part II provides a complete Boolean algebra of projections with vectorwise
+strong Hahn additivity. Their failure to form an operator-valued Hahn sum
+does not itself exclude a spectral measure: the classical definition uses
+strong-operator additivity on each vector. Remark 19.4 instead gives an
+explicit failure of pointwise valuation convergence, even over rational
+exponents, distinguishing the established Hahn calculus from that
+topological requirement.
 
 The two parts are **not** one theory with one hypothesis paragraph. The word
-*spectrum* means different things on different vector spaces, and the
-hypotheses on `Γ` point in opposite directions:
+*spectrum* means different things on different vector spaces. Both now allow arbitrary nonzero set-sized ordered value groups:
 
 | | Part I | Part II |
 |---|---|---|
 | Vector space | `H((t^Γ))`, `H` an ordinary complex Hilbert space | `C^(I)((t^Γ))`: each Hahn coefficient has finite coordinate support |
 | Operators | Hahn series of **ordinary bounded** operators | Hahn series of **row- and column-finite** matrices, no boundedness |
-| "Spectrum" | failure of bijectivity on the space (equivalently, in the adjointable algebra) | failure of invertibility **inside the named algebra** |
-| `Γ` | nonzero, set-sized, **divisible**; Section 12 further assumes `Γ ⊆ R` | nonzero, set-sized, **not assumed divisible** |
+| "Spectrum" | failure of bijectivity on the space; for constant normal operators, equivalently failure of invertibility in the adjointable algebra | failure of invertibility **inside the named algebra** |
+| `Γ` | nonzero, set-sized, **not assumed divisible**; only Section 12.1 assumes `Γ ⊆ R` | nonzero, set-sized, **not assumed divisible** |
 | Accumulation | accumulation points of `σ_C(T)` thicken into whole infinitesimal monads | accumulating residues `d_i` do **not** enlarge the spectrum beyond the labeled eigenvalues |
 
 Quoted without their categories, the two accumulation statements read as a
 contradiction. They are not one; Section 3 works the apparent conflict out on a
-single operator. No theorem of Part I is used in Part II or conversely.
+single operator. No theorem of Part I is used in Part II or conversely. Part I
+takes inner products linear in the first variable; Part II takes them
+conjugate-linear in the first. Translate a pairing by conjugating its value
+(or exchanging its arguments), including the linearity of variational
+functionals.
 
 ## What Part I claims
 
-For `K = C((t^Γ))`, `Γ` divisible, and `𝓗 = H((t^Γ))` with the
+The proof review removes the source's standing divisibility assumption.
+A nonzero squared norm has leading exponent `2δ`, so its root already
+lies in the original field. The scalar moduli and near-one binomial roots
+used in Part I need no larger group; ordinary positive operator square roots
+are taken before Hahn extension. General positive scalars have a square root
+exactly when their leading exponent lies in `2Γ`.
+
+For `K = C((t^Γ))` with arbitrary nonzero set-sized ordered `Γ`,
+and `𝓗 = H((t^Γ))` with the
 coefficientwise-convolution inner product:
 
 1. **Automatic structure.** Every everywhere-defined adjointable `K`-linear
@@ -68,8 +83,10 @@ coefficientwise-convolution inner product:
    needed.
 4. **A coercive operator that is not onto.** For `D e_n = e_n / n` and
    `η > 0`, `C = D² + t^(2η) I` is bounded, positive, self-adjoint, coercive
-   and injective, yet its cokernel has dimension at least the continuum. In
-   rank one its range is closed and proper with zero orthogonal complement.
+   and injective, yet its cokernel has dimension at least the continuum. Its
+   range is closed and proper at every rank, with zero orthogonal complement:
+   it is the kernel of the continuous defect projection. Section 12.1 also
+   proves metric completeness when `Γ ⊆ R`.
 5. **Least norm bounds.** The extension of an ordinary bounded `T` has a least
    field-valued norm bound exactly when `T` attains its ordinary norm.
 
@@ -89,7 +106,11 @@ globally well-ordered positive support:
 3. **The algebra-relative spectrum.** `σ_𝒜(A) = {λ_i}`, even when the real
    residues accumulate, with a coherent resolvent at every noneigenvalue.
    This is a spectrum relative to a specified unital `K`-algebra, not a
-   Banach-algebra spectrum.
+   Banach-algebra spectrum. The coherence proof is essential: the diagonal
+   `diag(tⁿ)` has coherent support but its scalar inverses do not form a
+   Hahn operator. For a finite index set the diagonal algebra is all `K^I`;
+   its strict inclusion in `K^I` requires an infinite index set and
+   nonzero value group.
 4. **Walks and finite sections.** Closed weighted walks control every
    eigenvalue coefficient; a change outside a finite section is first seen only
    through a walk that leaves the section and returns; the order `2r+2`
@@ -112,7 +133,8 @@ globally well-ordered positive support:
 - The Part I spectral formula concerns **constant normal** operators. It is
   not a classification of spectra of general Hahn operator series.
 - The Part II hypothesis of distinct real labels forces `|I| ≤ |R|`.
-- **No trace-class theory and no spectral measure** are provided.
+- **No trace-class theory or general topological spectral-measure theorem**
+  is provided; the vectorwise Hahn-additive projection calculus is explicit.
 - The proofs have not been independently refereed or checked by a proof
   assistant.
 - The two programs check finite algebraic identities only. They do not
@@ -146,6 +168,8 @@ It supplies no spectral-measure theory.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has zero errors, zero undefined references and citations,
-and zero duplicate PDF destinations. To rerun the checks, run the scripts in
+The reviewed build has 54 pages, zero errors, zero undefined references and
+citations, and zero duplicate PDF destinations. It retains the baseline
+underfull box in the novelty table. The status note is printed with the
+abstract on one title page. To rerun the checks, run the scripts in
 `code/` on a copy of this directory; SymPy 1.14.0 is pinned in `data/`.

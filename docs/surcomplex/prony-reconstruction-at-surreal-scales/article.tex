@@ -182,7 +182,7 @@ complex reconstruction estimates and analyze correlations between the
 successive errors \cite{KDB}. In particular, their first-order node formula
 already has a denominator consisting of the weight times squared pairwise
 separations. Thus the occurrence of $w_iP'(a_i)^2$ below is not presented as
-a previously unknown conditioning mechanism. For a single cluster of $n$
+a previously unknown conditioning mechanism. For a single cluster of $n\ge2$
 unit-weight nodes with all separation valuations equal to $s$, our formulas
 give the familiar node loss $(2n-2)s$ and threshold $(2n-1)s$.
 
@@ -816,11 +816,14 @@ precision $\kappa\le\Theta$, the universal strict-ball reconstruction
 guarantee holds \emph{if and only if} $\kappa>\Theta$.
 
 \subsection{Cluster interpretation and comparison with a determinant}
-When every weight has valuation zero and all $n$ nodes occupy one equally
-spaced valuation cluster, $d_{ij}=s>0$, one has
+When every weight has valuation zero and all $n\ge2$ nodes occupy one equally
+spaced valuation cluster, $d_{ij}=s>0$ for $i\ne j$, one has
 \[
- d_i=(n-1)s,\qquad \Theta=(2n-1)s.
+ d_i=(n-1)s,\qquad \delta_i=s,\qquad \Theta=(2n-1)s.
 \]
+For a single node there is no pairwise separation: the empty-sum and
+empty-maximum conventions give $d_1=\delta_1=0$, so
+$\Theta=\varpi_1$, or $\Theta=0$ for a weight of valuation zero.
 The pointwise geometry matters when this model is not uniform. A node deep
 inside a nested cluster has one separation contribution for each other
 node, not merely $n-1$ copies of the nearest separation.

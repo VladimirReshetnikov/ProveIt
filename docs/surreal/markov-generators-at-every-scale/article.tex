@@ -1327,9 +1327,13 @@ Theorem~\ref{markov:thm:general-realization}, transported into $\No$ by
 Suppose a surreal rate matrix is reversible with stationary probability $\pi$
 and every entry of $\pi_0=\res\pi$ is strictly positive. Then every plateau is
 the conditional-expectation matrix of a partition, weighted by $\pi_0$, and the
-partitions are nested by coarsening. Conversely, every such finite nested
-partition family is realizable by a reversible irreducible Hahn generator at
-arbitrary prescribed scales.
+partitions are nested by coarsening. Conversely, fix a strictly positive real
+probability row $\pi_0$ and a finite strictly coarsening chain of partitions
+$\mathcal P_0,\ldots,\mathcal P_m$, starting with the discrete partition and
+ending with the one-block partition. Their $\pi_0$-weighted
+conditional-expectation matrices are precisely the plateaux of a reversible
+irreducible Hahn generator at any prescribed scales
+$\alpha_1<\cdots<\alpha_m$ in $\Gamma$.
 \end{proposition}
 
 \begin{proof}
@@ -1344,10 +1348,27 @@ $\nu_a(j)=\pi_0(j)/\pi_0(C_a)$ on its class. This is precisely weighted
 conditional expectation onto that partition. The range consists of observables
 constant on each block; nested ranges give coarsening partitions.
 
-Conversely use \eqref{markov:eq:simple-inverse} for the weighted partition projections.
-Every summand is self-adjoint for $\pi_0$, so detailed balance holds. The last
-projection is $\one\pi_0$ with strictly positive entries. Expression
-\eqref{markov:eq:inverse-signs} then makes every off-diagonal entry strictly negative.
+Conversely, for each partition $\mathcal P_j$ define
+\[
+ (P_j)_{ab}=
+ \begin{cases}
+ \pi_0(b)/\pi_0(B),&a,b\in B\in\mathcal P_j,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Positive weights make these matrices well-defined stochastic idempotents,
+self-adjoint for $\pi_0$. Coarsening gives
+$P_iP_j=P_jP_i=P_{\max(i,j)}$. The endpoints give $P_0=I$ and
+$P_m=\one\pi_0$, and strict coarsening makes their ranks strictly decrease.
+Use \eqref{markov:eq:simple-inverse} for these projections.
+Every summand is self-adjoint for $\pi_0$ and annihilates $\one$, so
+detailed balance holds and $\pi_0$ is stationary.
+Since $P_m$ has strictly positive entries,
+\eqref{markov:eq:inverse-signs} makes every off-diagonal entry strictly
+negative when $m\ge1$. Theorem~\ref{markov:thm:flag-realization} supplies
+exactly the prescribed plateaux and crossovers. If the state space has one
+element, the chain has $m=0$; the zero generator realizes its sole plateau,
+with no crossover.
 \end{proof}
 
 The full-support condition cannot be removed. Example~\ref{markov:ex:fuzzy} gives an

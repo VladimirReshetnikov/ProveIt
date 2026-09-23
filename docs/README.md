@@ -33,7 +33,7 @@ hypotheses, limitations and provenance.
   first. Its distinction between *strong* and *coefficientwise* countable
   additivity is a prerequisite for
   [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/), whose
-  measures are coefficientwise only. "Moment" means power moments there,
+  measures require coefficientwise additivity, with strong additivity optional. "Moment" means power moments there,
   Fourier moments in the Herglotz report, and finite Prony input in
   [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/).
 - **For a particular theorem:** use the report tables below. Read its local
@@ -82,7 +82,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Tate elliptic curves at arbitrary rank: exact Hahn domain `U_q` and `U_q/q^ℤ ≅ E_q(K)`, plus multiscale theta series; the bounded-period quotient itself has a Molcho–Wise precedent |
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Two inequivalent spectra: ordinary normal operators extended to `H((t^Γ))`, and exact diagonalization of row- and column-finite Hahn matrices; Section 3 reconciles their apparently conflicting accumulation statements |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Exact itinerary fibers of expanding polynomials over Hahn fields, and the order-unit dichotomy; valuation-expanding is not repelling, and no Julia/Fatou theory is built |
-| [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Matrix Herglotz normalization on halos, a null-ideal positivity criterion, and Toeplitz-positive Fourier moments with no positive measure; its measures are coefficientwise, not strong |
+| [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Matrix Herglotz normalization on halos, a null-ideal positivity criterion, and Toeplitz-positive Fourier moments with no positive measure; it assumes coefficientwise additivity, with strong additivity optional |
 | [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/) | Sharp valuation threshold for recovering `n` weighted nodes from `2n` power moments (no measures); compare polynomial algebra's coefficient threshold |
 | [Wick summability certificates](surcomplex/wick-summability-certificates/) | Finite strict valuation inequalities decide strong summability of polynomial Wick diagram families over `ℂ((t^Γ))`, `Γ` divisible; diagramwise only, and a Hahn value is not an integral |
 

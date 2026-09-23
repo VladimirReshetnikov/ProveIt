@@ -1007,13 +1007,20 @@ unit), the entire series $\sum_n\omega^{-\omega^n}z^n$, satisfying no
 nonzero linear differential equation, nor a nonzero linear dilation equation
 for any nontorsion parameter (Theorem~11.2).  Source~08, assuming only
 $\Gamma\ne0$, is the base; proofs from 09, which assumes divisibility, were
-re-read for hidden divisions, and divisibility now enters exactly four
-statements, each printing it (Section~1.4).  Remarks~4.5 and~8.2 keep both
+re-read for hidden divisions. Divisibility is now restricted to three
+threshold constructions (Section~1.4): inward stability of strong evaluation
+removes it from the torsion eigenspace equivalence in Proposition~9.1.
+The recurrence thresholds handle an empty forward set explicitly, and
+coarsening changes the valuation on the field rather than projecting every
+Hahn support to a smaller exponent group.  Remarks~4.5 and~8.2 keep both
 sources' proofs, and both exact-arithmetic suites are kept (08: 3{,}705
 checks; 09: 2{,}043; no failures; no infinite statement proved).  Not
 claimed: torsion $q$ (counterexamples in Section~9), nonlinear differential
 or unit-valuation mixed equations (open, Questions~15.1--15.2), optimal
-thresholds, a named conjecture, certified priority, refereeing, Lean.  $D_z$
+thresholds, a named conjecture, certified priority or refereeing. The Lean
+ledger maps the positive-support word lemma, escape mechanism, bounded-cost
+exclusion and formal exponential domain; the main classifications remain
+unformalized. $D_z$
 kills every scalar: it is not the Berarducci--Mantova scalar derivation used
 in \nolinkurl{surcomplex/differential-equations}.  From
 \nolinkurl{surcomplex/entire-functions-at-arbitrary-rank} it cites the
@@ -1029,7 +1036,7 @@ theta witness is not counted as new.}
 any rank and not necessarily divisible, $q\in K$ of valuation $\alpha>0$,
 $H_\alpha$ the convex subgroup of values bounded by an ordinary integer
 multiple of $\alpha$, and $U_q=v^{-1}(H_\alpha)$.  \textbf{Theorem~1.2}: the
-bilateral theta family, and for $u\notin q^\Z$ each Tate coordinate family,
+bilateral theta family, and for $u\in K^\times\setminus q^\Z$ each Tate coordinate family,
 is strongly Hahn-summable \emph{exactly} on $U_q$ --- outside it the leading
 exponents contain a strictly decreasing sequence, so no cancellation
 repairs it --- yet $\Phi_q:U_q\to E_q(K)$ is a surjective homomorphism with
@@ -1044,9 +1051,10 @@ $1\to\mathcal{O}_v^\times\to E_q(K)\to H_\alpha/\Z\alpha\to0$, the good
 coarse reduction and the $q=\omega^{-1}$ example are printed once.  Also:
 exact support and valuation identities in the node chart; if
 $H_\alpha\ne\Gamma$, no homomorphism $K^\times\to E_q(K)$ extending
-$\Phi_q$ has kernel $q^\Z$ (Theorem~10.5); and, over $\C$ only, recovery of
-$q$ from $j$ when $v(j)<0$, $K(E_q[n])=K_{\Gamma+\Z\alpha/n}$, and every
-elliptic curve over $\SC$ with $v(j)<0$ is isomorphic to an $E_q$.
+$\Phi_q$ has kernel $q^\Z$ (Theorem~10.5); recovery of $q$ from $j$ when
+$v(j)<0$ over any characteristic-zero coefficient field; and, over $\C$,
+$K(E_q[n])=K_{\Gamma+\Z\alpha/n}$. Every elliptic curve over $\SC$ with
+$v(j)<0$ is isomorphic to an $E_q$.
 Part~II, source~02, assumes monomial periods, coefficients in $\C$ and
 $\Gamma$ divisible where halves are used: every admissible lattice in a
 finite-dimensional higher-rank inner-product space has a finite positively
@@ -1067,12 +1075,12 @@ targeted searches.  Neighbours: \nolinkurl{surcomplex/rank-one-berkovich}
 {surcomplex/infinite-dimensional-hahn-spectral-theory}
 {article.pdf}{two manuscripts, delivered 22~September 2026}
 {Two manuscripts over one Hahn field $K=\C((t^\Gamma))$, printed as \emph{two
-parts}: \emph{spectrum} means different things on their two vector spaces, and
-their hypotheses on $\Gamma$ point in opposite directions.  Section~3 sets the
+parts}: \emph{spectrum} means different things on their two vector spaces
+and in their different operator algebras.  Section~3 sets the
 two side by side on $\mathrm{diag}(1/n)$; each part is self-contained given
 Section~2.  \textbf{Part~I}: $H$
-an ordinary complex Hilbert space, $\Gamma$ nonzero, set-sized and
-\emph{divisible} (Section~12 also assumes $\Gamma\subseteq\R$), and
+an ordinary complex Hilbert space, $\Gamma$ nonzero, set-sized and ordered
+abelian, without divisibility (only Section~12.1 assumes $\Gamma\subseteq\R$), and
 $H((t^\Gamma))$ with the coefficientwise-convolution inner product.  Every
 everywhere-defined adjointable operator, with no continuity assumed, is a Hahn
 series of ordinary bounded operators with one common well-ordered support
@@ -1085,10 +1093,10 @@ $V=\mathrm{Ran}\,S\oplus W$, under every $E$ of strictly positive order
 (Theorem~7.1).  With $De_n=e_n/n$ on $\ell^2$ and $\eta>0$,
 $C=D^2+t^{2\eta}I$ is self-adjoint and coercive with the infinitesimal
 constant $t^{2\eta}$, yet its cokernel has dimension at least $2^{\aleph_0}$
-(Theorem~11.3), and in rank one its range is closed and proper with zero
+(Theorem~11.3), and at every rank its range is closed and proper with zero
 orthogonal complement (Theorem~12.2).  A least field-valued norm bound exists
-exactly when $T$ attains its ordinary norm (Theorem~13.2).  \textbf{Part~II}
-drops divisibility.  In $\mathcal{A}_I=\mathrm{RCF}_I(\C)((t^\Gamma))$ acting
+exactly when $T$ attains its ordinary norm (Theorem~13.2). \textbf{Part~II}
+also allows arbitrary ordered value groups.  In $\mathcal{A}_I=\mathrm{RCF}_I(\C)((t^\Gamma))$ acting
 on $\C^{(I)}((t^\Gamma))$, $A=\mathrm{diag}(d_i)+B$, with pairwise distinct
 ordinary real $d_i$ and $B=B^*$ of globally well-ordered positive support, has
 a unique near-identity normalized Hahn-unitary diagonalization with
@@ -1102,12 +1110,16 @@ coefficient, and the one-scale finite-section bound $(2r+2)\eta$
 \emph{Merged:} the Hahn--Neumann support lemma is stated once, and Part~II's
 proof of Higman's lemma is not reprinted, the identical argument being
 \texttt{spec:lem:words} and \texttt{spec:lem:neumann} of
-\nolinkurl{surcomplex/spectral-theory}; divisibility is not unified, and
-neither part uses a theorem of the other.  It supplies the first two items of
+\nolinkurl{surcomplex/spectral-theory}. The proof review removes the
+unused divisibility assumption of Part~I and proves range closedness by its
+continuous defect projection at every rank; neither part uses a theorem of
+the other.  It supplies the first two items of
 that report's closing non-claim and the compact half of the third, compact
-meaning compact on $H$; trace-class operators and spectral measures remain
-absent, and \nolinkurl{surcomplex/hahn-herglotz-positivity} bears on the
-latter only negatively.  Both suites report 218 checks, by coincidence; the
+meaning compact on $H$. Part~II supplies a vectorwise Hahn-additive
+projection calculus, with a rank-one counterexample to pointwise valuation
+convergence. No trace-class theory or general topological spectral-measure
+theorem is provided; \nolinkurl{surcomplex/hahn-herglotz-positivity} gives a
+separate obstruction to a positive coefficientwise circle measure.  Both suites report 218 checks, by coincidence; the
 assertions differ.  Priority not certified; not refereed; no proof-assistant
 check.}
 
@@ -1137,22 +1149,25 @@ forward-invariant subset finite.  Also scalar extension
 leading response, the exact valuation-bounded locus, a no-order-unit
 equicontinuity criterion for all polynomials, and $F(x)=\omega(x^2-1)$ in
 $\SC$ with real centers.  One source, not a merge: nothing was selected, and
-no statement changed beyond one renamed term --- the manuscript's ``cofinal
-scale'' is an order unit here, since
+at placement only terminology changed, and a later proof review clarified
+degree preservation, formal substitution and topology. The manuscript's
+``cofinal scale'' is an order unit here, since
 \nolinkurl{surcomplex/entire-functions-at-arbitrary-rank} reserves
 cofinality for $\mathrm{cf}(\Gamma)$.  Valuation-expanding is not repelling
 and no Julia/Fatou theory is built, so neither exclusion of
 \nolinkurl{surcomplex/dynamics-and-normal-forms} is answered.  In $\SC$ the
 set-level discreteness and compactness clauses are special cases of the
 closed-and-discrete theorem of \nolinkurl{surcomplex/analysis}; the
-substance lies in set-sized workspaces.  The order-unit case is the
-classical rank-one Cantor repeller, the only case in the field of
+substance lies in set-sized workspaces. The order-unit case has the
+classical symbolic Cantor model even at higher rank; every positive
+scale is an order unit in the field of
 \nolinkurl{surcomplex/rank-one-berkovich}; $H_\kappa$ is the $H_\alpha$ of
 \nolinkurl{surcomplex/hahn-tate-uniformization}, a shared subgroup, not a
 shared theorem.  Repeated residue roots and rational maps are not covered.
-Not refereed; priority not certified; none of its own statements is
-formalized in Lean, and its 38{,}139 exact finite checks prove no infinite
-statement.}
+Not refereed; priority not certified. Lean proves the scale subgroup and
+error-ideal lemma, including the valuation-ball conditions for clopenness
+and the coarsened valuation ring. The dynamical theorems remain pending;
+the 38{,}139 exact finite checks prove no infinite statement.}
 
 \entry{Positivity without a positive measure: Hahn--Herglotz normalization and strict moment hierarchies in surcomplex analysis}
 {surcomplex/hahn-herglotz-positivity}
@@ -1163,14 +1178,15 @@ finite Toeplitz positivity, positive real part on the halo of an ordinary
 domain, and positive-measure representation on the \emph{ordinary} circle come
 apart.  Measures are real-valued and \emph{coefficientwise}: an ordinary finite
 signed regular Borel measure at each exponent of one well-ordered support,
-additive exponent by exponent, with no strong Hahn summability; moments are
-Fourier moments.  For divisible $\Gamma$, assumed only in Theorems~3.3
-and~3.5 though the source made it standing, a matrix coherent function with
+additive exponent by exponent, without requiring strong summability; moments are
+Fourier moments. For divisible $\Gamma$, assumed only for the congruence
+in Theorem~3.3, a matrix coherent function with
 $\operatorname{Re}H\succeq0$ at ordinary points is, after subtracting a
 constant $iB$ with $B$ Hermitian, constant-congruent to $G\oplus0$ with
 $G(a_0)=I$, $\operatorname{Re}G_0\succ0$ and otherwise unrestricted higher
-coefficients; ordinary and halo positivity agree, and Harnack holds with every
-ordinary $C>C_0$ but need not with the sharp classical constant.
+coefficients. For every nonzero $\Gamma$, ordinary and halo positivity
+agree, kernels are constant, and Harnack holds with every ordinary $C>C_0$
+but need not with the sharp classical constant (Theorem~3.5).
 Theorem~4.2: $\sum\nu_\gamma t^\gamma$ is positive iff each $\nu_\gamma^-$
 vanishes on the common null ideal of the earlier $|\nu_\beta|$.
 Corollary~5.2 gives a strictly positive, unital, pointwise completely positive
@@ -1198,7 +1214,10 @@ mechanism of Theorem~5.1(b); Corollary~6.5 adds only negative information to
 \nolinkurl{surcomplex/infinite-dimensional-hahn-spectral-theory}.  Among 26
 non-claims: nothing on enlarged circles, finitely additive or nonstandard
 representations, or a matrix null-ideal criterion.  A candidate contribution;
-priority not certified, not refereed, no Lean.}
+priority not certified and not refereed. Lean proves the null-ideal and
+two-scale criteria and finite algebraic clauses of the negative-atom,
+quadrature and Schur examples; the remaining analytic and representation
+claims are pending.}
 
 \entry{Sharp moment reconstruction at surreal scales: collision geometry, optimal precision, and Hahn-supported inversion}
 {surcomplex/prony-reconstruction-at-surreal-scales}
