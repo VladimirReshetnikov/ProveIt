@@ -427,7 +427,10 @@ and proves that its angle is strictly and infinitesimally below `pi/2`.
 Inverse sine has the full central-binomial strong series, with an exact finite
 ninth-order remainder after degree seven. Both inverse sine and inverse
 tangent preserve valuation at infinitesimals: each is its input times a
-finite factor of standard part one.
+finite factor of standard part one. At every positive infinitesimal defect,
+inverse cosine satisfies the exact square-root half-angle identity and full
+central-binomial strong series. Its normalized cubic expansion has a finite
+fourth-order remainder, and its valuation is half the defect valuation.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
