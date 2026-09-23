@@ -9919,7 +9919,15 @@ For $\beta<\alpha$ and $c,d\in\R$,
 After subtracting $Q_{\beta}$, the largest monomial left in
 \cref{diff:cp:eq:qnormal} is $(\ell_{\beta}^{\dagger})^{2}$, with coefficient
 $\frac14$; every other term is strictly smaller by \cref{diff:cp:lem:scales}.
-The second assertion is the explicit difference with the same separation.
+More explicitly, dividing the remainder after that leading term
+by $(\ell_{\beta}^{\dagger})^{2}$ shifts its entire Hahn support
+strictly below the monomial $1$. The remainder is therefore
+infinitesimal, including at limit $\alpha$; this uses the
+well-ordered support of the whole sum, not a limit of finite tails.
+For the second assertion, the common initial sum cancels exactly,
+and $(\ell_{\alpha}^{\dagger}/\ell_{\beta}^{\dagger})^{2}$ is
+infinitesimal. Multiplication by the nonzero ordinary constant
+$c-d$ preserves that property.
 \end{proof}
 
 \begin{theorem}[No set of earlier scales decides solvability]
@@ -9936,8 +9944,11 @@ such that $\der^{2}y+Q_{-}y=0$ has two independent surcomplex solutions and
 $\der^{2}y+Q_{+}y=0$ has only $y=0$ in $\SC$.
 \end{theorem}
 \begin{proof}
-Since $\mathcal B$ is a set, there is an ordinal $\alpha\geq1$ with
-$\alpha>\beta$ for every $\beta\in\mathcal B$. Take $Q_{-}=Q_{\alpha,0}=Q_{\alpha}$
+Take the ordinal
+$\alpha=\sup\{\beta+1:\beta\in\mathcal B\}+1$.
+This is a set ordinal, is at least $1$, and exceeds every member
+of $\mathcal B$; for the empty set it gives $\alpha=1$.
+Now take $Q_{-}=Q_{\alpha,0}=Q_{\alpha}$
 and $Q_{+}=Q_{\alpha,1}$. Both are positive, with leading term
 $\frac14\omega^{-2}$; \cref{diff:cp:thm:main} gives dimensions two and zero, and
 \cref{diff:cp:prop:earlier} gives the two precision assertions.
@@ -9954,18 +9965,36 @@ At $\alpha=\omega$, with $\ell_{n}=\log_{n}\omega$,
 The coefficient $(\ell_{\omega}^{\dagger})^{2}$ is smaller than every displayed
 monomial, yet adding it changes the dimension from two to zero, and
 $Q_{\omega}+c(\ell_{\omega}^{\dagger})^{2}$ has the exact threshold
-$c=\frac14$. Specifying the entire countable logarithmic expansion
-\cref{diff:cp:eq:Qomega} does not specify solvability.
+$c=\frac14$. The exact Hahn sum in \cref{diff:cp:eq:Qomega}
+does determine $Q_{\omega}$ uniquely. What fails to determine
+solvability is prescribing its coefficients at all the displayed
+finite logarithmic scales while allowing a remainder smaller
+than every one of them. The two potentials agree in that data,
+but differ at the additional monomial
+$(\ell_{\omega}^{\dagger})^{2}$ in their full normal forms.
 \end{example}
 
 \begin{warning}[What the invisibility statement is about]
 \label{diff:cp:warn:quotient}
 \Cref{diff:cp:thm:invisible} concerns the explicitly named precision hierarchy
 $(\ell_{\beta}^{\dagger})^{2}$, not every conceivable observation or algorithm.
-It is a statement about a quotient by an additive class of errors smaller than
-all the designated monomials. It is not a discontinuity claim in the fine
-surreal topology (\cref{diff:warn:summability}), and that additive class is not
-called an ideal of the surreal field.
+For a fixed set $\mathcal B$, put
+\[
+ \mathcal E_{\mathcal B}
+ =\{e\in\No:e\prec(\ell_{\beta}^{\dagger})^{2}
+                      \text{ for every }\beta\in\mathcal B\}.
+\]
+It is closed under addition and multiplication by ordinary real
+constants, since each normalized error is infinitesimal.
+The theorem gives $Q_{+}-Q_{-}\in\mathcal E_{\mathcal B}$, so
+solvability does not descend to these additive equivalence classes.
+For nonempty $\mathcal B$, this error class is nonzero and proper:
+the constructed difference belongs to it, whereas $1$ does not.
+It is therefore not an ideal of the surreal field, since
+multiplying a nonzero member by its inverse would give $1$.
+For empty $\mathcal B$ it is all of $\No$, as the vacuous condition
+requires. No discontinuity in the fine surreal topology is asserted
+(\cref{diff:warn:summability}).
 \end{warning}
 
 \begin{proposition}[There is no all-ordinal critical potential]
@@ -10020,7 +10049,8 @@ membership of an exponent does not depend on the orientation.
 $\Span_{\R}$ means \emph{finite} real linear combinations. It is not closure
 under Hahn sums inside the exponent group: an element of $\Delta_{0}$ has
 bounded \emph{inner} support, while an element of $H_{\Delta_{0}}$ may have
-arbitrary well-ordered \emph{outer} support made from such exponents. The
+arbitrary well-ordered \emph{outer} support of $t$-exponents in
+that group (equivalently reverse well-ordered Conway exponents). The
 outer sum defining $Q_{\lambda}$ is allowed; the inner sum $\varpi_{\lambda}$ is
 not an allowed exponent of $H_{\Delta_{0}}$. Everything below depends on this
 distinction, and confusing the two levels would destroy the example.
@@ -10035,20 +10065,38 @@ $\varpi_{\lambda},\omega^{-\lambda}$ are linearly independent over $\R$
 modulo $\Delta_{0}$.
 \end{lemma}
 \begin{proof}
-A finite combination of the $\varpi_{\beta}$ has support bounded by the largest
-of its finitely many indices, which is below $\lambda$. The support of
-$\varpi_{\lambda}$ is all of $\{\omega^{-\zeta}:\zeta<\lambda\}$ and is not so
-bounded. Every element of $\Delta_{1}$ has support inside that family, hence
-zero coefficient at $\omega^{-\lambda}$. If
-$a\varpi_{\lambda}+b\omega^{-\lambda}\in\Delta_{0}$, the coefficient at
-$\omega^{-\lambda}$ gives $b=0$ and the unbounded support then gives $a=0$.
+Write $\gamma=\sum_{j=1}^{m}r_j\varpi_{\beta_j}$ with
+$\beta_j<\lambda$. For a nonempty list choose
+$\beta=\max_j\beta_j<\lambda$; for the empty list take $\beta=0$.
+Every summand, and therefore their sum after any cancellations,
+has zero coefficient at $\omega^{-\zeta}$ for $\zeta\geq\beta$.
+This proves the support bound; it does not assert the converse
+that every bounded inner support lies in $\Delta_0$.
+
+The coefficient of $\omega^{-\zeta}$ in $\varpi_{\lambda}$ is
+$1$ at every $\zeta<\lambda$, so no such bound is possible.
+Every element of $\Delta_{1}$ has zero coefficient at
+$\omega^{-\lambda}$, since all its generators do. If
+$a\varpi_{\lambda}+b\omega^{-\lambda}\in\Delta_{0}$, compare the
+coefficient at $\omega^{-\lambda}$ to obtain $b=0$. Next choose
+an inner-support bound $\beta<\lambda$ for that element and
+compare its coefficient at $\omega^{-\beta}$; this gives $a=0$.
+This proves independence modulo $\Delta_0$, not just separate
+nonmembership of the two generators.
 \end{proof}
 
-All three groups are divisible, so the classical Hahn real-closedness theorem
-makes every $H_{\Delta_{j}}$ real closed and every $K_{\Delta_{j}}$
-algebraically closed \cite[Section~2.3]{BM}, the standard algebraic fact used in
-\cref{diff:thm:hull}. \Cref{diff:cp:lem:exponents} shows that both inclusions
-$H_{\Delta_{0}}\subsetneq H_{\Delta_{1}}\subsetneq H_{\Delta_{2}}$ are strict.
+All three groups are set-sized: they are images of sets of finite
+lists of generators and real coefficients. They are divisible
+because they are real vector spaces. The Hahn real-closedness
+theorem therefore makes every $H_{\Delta_j}$ real closed, and
+adjoining $i$ makes every $K_{\Delta_j}$ algebraically closed
+\cite[Section~2.3]{BM}, with the same hypotheses as
+\cref{diff:thm:hull}. The complex Hahn field is exactly this
+quadratic extension: split each coefficient into its real and
+imaginary parts; both supports remain subsets of the original
+well-ordered support. The monomials $u_{\lambda}$ and
+$\ell_{\lambda}$ witness the two strict inclusions respectively,
+by \cref{diff:cp:lem:exponents}.
 
 \begin{proposition}[Derivative stability is a support assertion]
 \label{diff:cp:prop:fieldclosure}
@@ -10073,11 +10121,18 @@ $r\ell_{\lambda}^{\dagger}=r\omega^{-\varpi_{\lambda}-\omega^{-\lambda}}\in
 H_{\Delta_{2}}$. So each $\Delta_{j}$ is differentially closed on monomials
 (\cref{diff:def:monomialclosed}), and \cref{diff:lem:monomialcriterion} gives
 $\der$-stability of $H_{\Delta_{j}}$ and $K_{\Delta_{j}}$; that step uses
-strong additivity \ref{diff:BM:additive}, not continuity. A constant of a
-subfield is an ambient constant, and the fields contain $\R$, respectively $\C$.
+strong additivity \ref{diff:BM:additive}, not continuity.
+Explicitly, $\der(\omega^\gamma)=\omega^\gamma
+(\omega^\gamma)^\dagger$ shifts the latter support by $\gamma$,
+which stays in the same additive group. For an arbitrary Hahn
+series, strong additivity gives a summable family of these
+termwise derivatives; their union of supports still lies in the
+group, so their sum lies in the full Hahn field. A constant of a
+subfield is an ambient constant, and the fields contain $\R$,
+respectively $\C$, giving equality of constant fields.
 \end{proof}
 
-\begin{theorem}[Zero, one and two solutions over closed Hahn fields]
+\begin{theorem}[Solution dimensions zero, one and two]
 \label{diff:cp:thm:fieldjump}
 For $j=0,1,2$,
 \begin{equation}\label{diff:cp:eq:jump}
@@ -10094,8 +10149,14 @@ two distinct monomials with exponents $\varpi_{\lambda}/2$ and
 $\varpi_{\lambda}/2+\omega^{-\lambda}$. By \cref{diff:cp:lem:exponents} neither
 lies in $\Delta_{0}$, only the first lies in $\Delta_{1}$, and both lie in
 $\Delta_{2}$. A nonzero constant combination of distinct monomials cannot cancel
-either support position, so Hahn membership gives exactly the stated spaces;
-the real case is the same with real constants.
+either support position: its coefficient at the first exponent
+is exactly $a$, and at the second exactly $b$.
+Thus membership in $K_{\Delta_0}$ forces $a=b=0$; membership in
+$K_{\Delta_1}$ forces only $b=0$; and $K_{\Delta_2}$ permits both.
+The real case has the identical support test with $a,b\in\R$.
+This rules out hidden solutions with more complicated supports,
+since the ambient spanning theorem was applied before restricting
+to any of the three fields.
 \end{proof}
 
 \begin{proposition}[An exponential gap followed by a primitive gap]
@@ -10108,6 +10169,9 @@ elements. Nevertheless
  u_{\lambda}^{-2}\in H_{\Delta_{1}},\quad
  \text{no primitive of }u_{\lambda}^{-2}\text{ lies in }H_{\Delta_{1}} .
 \]
+The larger field $H_{\Delta_2}$ is not closed under $\log$:
+$\ell_\lambda\in H_{\Delta_2}$ but
+$\log\ell_\lambda=\ell_{\lambda+1}\notin H_{\Delta_2}$.
 \end{proposition}
 \begin{proof}
 For $\beta\leq\lambda$, $\log\ell_{<\beta}=\sum_{\zeta<\beta}\ell_{\zeta+1}$, and
@@ -10118,12 +10182,31 @@ and the logarithm of any monomial with exponent in $\Delta_{1}$ is a finite
 real combination of these, hence in $H_{\Delta_{0}}$. A positive element of
 $H_{\Delta_{j}}$ is $r\omega^{\gamma}(1+\varepsilon)$ with $r>0$ real and
 $\varepsilon\prec1$ in $H_{\Delta_{j}}$, and $\log(1+\varepsilon)$ is a summable
-Taylor series in $\varepsilon$ with support in $\Delta_{j}$ (\cref{diff:lem:neumann}).
-This gives the closure. Now $\log u_{\lambda}=\frac12\log\ell_{<\lambda}\in
+Taylor series in $\varepsilon$ with support in $\Delta_{j}$
+(\cref{diff:lem:neumann}); the case $\varepsilon=0$ gives the
+zero series. Consequently
+\[
+ \log\bigl(r\omega^\gamma(1+\varepsilon)\bigr)
+ =\log r+\log\omega^\gamma+
+   \sum_{n\geq1}\frac{(-1)^{n+1}}{n}\varepsilon^n
+ \in H_{\Delta_j}\qquad(j=0,1).
+\]
+The series is strongly summable inside the fixed group, since its
+exponents are finite sums of exponents of $\varepsilon$.
+This proves the claimed closure without assuming it in advance. Now $\log u_{\lambda}=\frac12\log\ell_{<\lambda}\in
 H_{\Delta_{0}}$ while $\varpi_{\lambda}/2\notin\Delta_{0}$. Also
 $u_{\lambda}^{-2}=\omega^{-\varpi_{\lambda}}\in H_{\Delta_{1}}$ and
 $\der\ell_{\lambda}=u_{\lambda}^{-2}$; every real primitive is $\ell_{\lambda}+r$
-with $r\in\R$, and $\omega^{-\lambda}\notin\Delta_{1}$.
+with $r\in\R$, and its coefficient at exponent
+$\omega^{-\lambda}\notin\Delta_1$ is still $1$, so no such
+primitive lies in $H_{\Delta_1}$.
+
+Finally, every element of $\Delta_2$ has inner support contained
+in $\{\omega^{-\zeta}:\zeta\leq\lambda\}$. Hence
+$\omega^{-(\lambda+1)}\notin\Delta_2$. The positive monomial
+$\ell_\lambda$ lies in $H_{\Delta_2}$, but its logarithm
+$\ell_{\lambda+1}=\omega^{\omega^{-(\lambda+1)}}$ does not.
+This proves the failure of logarithm closure in the third field.
 \end{proof}
 
 \begin{remark}[Which closure is missing, and the relation to \cref{diff:part:workspaces,diff:part:matrix}]
@@ -10132,8 +10215,11 @@ Full Hahn summation, real closedness, derivative stability and closure under
 logarithms are all present in $H_{\Delta_{0}}$, and still
 $\Sol_{H_{\Delta_{0}}}(Q_{\lambda})=0$: the first missing operation is an
 exponential, the second a primitive, which is the phenomenon of
-\cref{diff:ex:logmissing} at a limit stage. No closure assertion is made about
-$H_{\Delta_{2}}$, logarithms included. $\Delta_{0}$ is divisible and
+\cref{diff:ex:logmissing} at a limit stage. The third field
+contains both fundamental solutions, but loses logarithm closure:
+\cref{diff:cp:prop:gaps} supplies the explicit witness. Thus
+solving this equation and being closed under logarithms are
+separate properties. $\Delta_{0}$ is divisible and
 differentially closed on monomials, so it is its own differential Hahn hull
 (\cref{diff:thm:hull}); the example is a further witness that the hull is not
 solution closure (\cref{diff:warn:hulllimits}). Over the whole of $\No$,
@@ -12618,7 +12704,11 @@ not called an ideal of the field (\cref{diff:cp:warn:quotient}).
 \item \emph{Field-theoretic scope.} $\Span_{\R}$ means finite combinations, not
 Hahn closure inside the exponent group, and at $\lambda=\omega$ the group
 $\Delta_{0}$ is not a Laurent-series field (\cref{diff:cp:warn:supports,diff:cp:ex:omega}).
-No closure property of $H_{\Delta_{2}}$, logarithms included, is asserted;
+All three fields are algebraically closed after adjoining $i$ and
+stable under the derivation. The first two real fields are closed
+under logarithms; the third is not, as witnessed in
+\cref{diff:cp:prop:gaps}. No exponential or general solution closure
+is asserted for them;
 ``minimal'' refers to the solution-generated field only, and no minimality of
 the intermediate Hahn fields among arbitrary fields is claimed
 (\cref{diff:cp:rem:workspaces,diff:cp:rem:pvscope}).
