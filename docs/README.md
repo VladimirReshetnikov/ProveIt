@@ -35,7 +35,7 @@ tables below:
 [Euclidean three-space](surreal/euclidean-three-space/),
 [finite surreal probability](surreal/finite-surreal-probability/) and
 [surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/).
-The finite-probability review now covers Sections 2–13; review of its later
+The finite-probability review now covers Sections 2–14; review of its later
 sections and the other three reports remains pending. Lean coverage is tracked
 separately in the ledger. The same batch added
 source material to the measures and trigonometry reports; those additions do

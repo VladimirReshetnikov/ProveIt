@@ -2899,9 +2899,10 @@ interesting infinite stochastic models survive coefficientwise addition.
 Mixtures of ordinary path laws provide explicit counterexamples to that
 impression, and also expose a limitation of finite Bayesian updating.
 
-Let $\mu_0$ be the ordinary independent Bernoulli$(1/3)$ law on
-$\{0,1\}^{\N}$ and $\mu_1$ the independent Bernoulli$(2/3)$ law. Attach
-a latent label $H\in\{0,1\}$ and give the joint space the Hahn law
+Index coordinates by the positive integers. Let $\mu_0$ be the ordinary
+independent Bernoulli$(1/3)$ law on $\{0,1\}^{\N_{\ge1}}$ and $\mu_1$
+the independent Bernoulli$(2/3)$ law, both on the product sigma-algebra.
+Attach a latent label $H\in\{0,1\}$ and give the joint space the Hahn law
 \begin{equation}\label{fsp:eq:latentlaw}
  P=\frac{\delta_0\otimes\mu_0+t\delta_1\otimes\mu_1}{1+t}.
 \end{equation}
@@ -2913,23 +2914,44 @@ Its unconditional coordinate means and covariances are
  \E X_i=\frac{1+2t}{3(1+t)},\qquad
  \Cov(X_i,X_j)=\frac{t}{9(1+t)^2}>0\quad(i\ne j).
 \end{equation}
-To check the covariance, write the mean as the mixture of $1/3,2/3$
-and the cross moment as the same mixture of their squares. Subtraction
-leaves the variance of the latent success probability. The process is
-exchangeable but not independent. Therefore its infinitesimally shifted
+Indeed, independence within each component gives, for $i\ne j$,
+\[
+ \E(X_iX_j)=\frac{1+4t}{9(1+t)},\qquad
+ \Cov(X_i,X_j)
+ =\frac{(1+4t)(1+t)-(1+2t)^2}{9(1+t)^2}
+ =\frac{t}{9(1+t)^2}.
+\]
+Each component is invariant under finite coordinate permutations, so the
+mixture is exchangeable. Its positive covariance rules out independence.
+Therefore its infinitesimally shifted
 marginals do not contradict Theorem~\ref{fsp:thm:faircoin} or the analogous
 coefficientwise independent-product obstructions.
 
-Let $\F_n$ record the first $n$ observed coordinates, and write
-$K_n=\sum_{i=1}^nX_i$. Bayes' rule gives the finite conditional
+Let $\F_n=\sigma(X_1,\ldots,X_n)$ for ordinary integers $n\ge0$, with
+$\F_0$ trivial, and write $K_n=\sum_{i=1}^nX_i$ (so $K_0=0$).
+An observation word of length $n$ with $k$ successes has likelihoods
+$(1/3)^k(2/3)^{n-k}$ and $(2/3)^k(1/3)^{n-k}$ in the two regimes.
+Both are positive, and their ratio is $2^{2k-n}$. Every atom of $\F_n$
+therefore has positive probability. Bayes' rule gives the finite conditional
 probability of the rare regime:
 \begin{equation}\label{fsp:eq:latentposterior}
  M_n=P(H=1\mid\F_n)
  =\frac{t\,2^{2K_n-n}}{1+t\,2^{2K_n-n}}.
 \end{equation}
-Every value of $M_n$ is infinitesimal for each ordinary $n$: the factor
-$2^{2K_n-n}$ is a positive real number. These finite-range variables
-form a bounded martingale by the finite tower property.
+Every value of $M_n$ is positive infinitesimal for each ordinary $n$:
+the factor $r_n=2^{2K_n-n}$ is a positive real number. In particular,
+$M_0=t/(1+t)$ and $0<M_n<1$. These adapted finite-range variables
+form a bounded martingale by the finite tower property. One can also
+check this directly. Given a word with likelihood ratio $r$, the next
+success probability and the two next posterior values are
+\[
+ q=\frac{1+M_n}{3}=\frac{1+2tr}{3(1+tr)},\qquad
+ M_{n+1}^{(1)}=\frac{2tr}{1+2tr},\qquad
+ M_{n+1}^{(0)}=\frac{tr}{2+tr}.
+\]
+Then $qM_{n+1}^{(1)}+(1-q)M_{n+1}^{(0)}=tr/(1+tr)=M_n$.
+All these conditional expectations use finite partitions; no infinite
+surreal sum or martingale convergence theorem is used.
 
 The ordinary strong laws of large numbers of the two real component measures
 \cite{kallenberg} give the Borel event
@@ -2937,7 +2959,31 @@ The ordinary strong laws of large numbers of the two real component measures
  B=\left\{\lim_{n\to\infty}\frac{K_n}{n}=\frac23\right\},
  \qquad \mu_0(B)=0,\quad\mu_1(B)=1.
 \end{equation}
-Consequently
+Here an elementary real argument suffices for the imported strong law.
+For $h\in\{0,1\}$, write $\E_h$ for expectation under $\mu_h$,
+and put $p=(1+h)/3$, $Y_i=X_i-p$.
+Independence, centering and $\E_h Y_i^2\le1/4$, $\E_h Y_i^4\le1$ give, for $n\ge1$,
+\[
+ \E_h\Bigl(\sum_{i=1}^nY_i\Bigr)^4
+ =\sum_{i=1}^n\E_h Y_i^4
+   +6\sum_{i<j}\E_h Y_i^2\E_h Y_j^2
+ \le n+\frac{3n(n-1)}{16}\le n^2.
+\]
+For each real $\varepsilon>0$, Markov's inequality therefore bounds
+the component probability of $|K_n/n-p|\ge\varepsilon$ by
+$1/(n^2\varepsilon^4)$.
+The probability of a violation at some $n\ge N$ is bounded by the
+tail of this convergent real series, which tends to zero. Thus violations
+occur only finitely often almost surely. Intersecting these full-measure
+events for $\varepsilon=1,1/2,1/3,\ldots$ proves $K_n/n\to p$.
+This argument is entirely within the two real component measures.
+
+The convergence condition defining $B$ uses countably many inequalities
+between measurable real functions, so $B$ is measurable. For every fixed
+$m$, the same limit is obtained from $\sum_{i=m+1}^nX_i/n$, which depends
+only on coordinates after $m$. Hence $B$ belongs to every future-coordinate
+sigma-algebra and is a tail event. We also write $B$ for its inverse image
+in the joint space. Consequently
 \begin{equation}\label{fsp:eq:tailposterior}
  P(B)=\frac{t}{1+t}>0,
  \qquad P(H=1\mid B)=1.
@@ -2958,19 +3004,39 @@ path, $M_n<1/2$ because it is infinitesimal. Thus on $B$ its distance
 from the value one remains greater than $1/2$.
 \end{proof}
 
-This also has a precise conditional-expectation formulation. For every
-observation event $A$,
-$P(H=1,A)=P(B\cap A)$, by the two component almost-sure statements.
-Thus $\ind_B$ is a version of the conditional expectation of
-$\ind_{\{H=1\}}$ given the full observation sigma-algebra, in the
-finite-range integral sense. The martingale $(M_n)$ does not recover
-this version on $B$ even at a fixed real resolution. Off $B$, convergence
-to zero also fails at infinitesimal resolution: $M_n>t^2$ for every
-ordinary $n$ and every path. In fact, adjacent posterior differences
-have valuation one and positive real leading magnitude, since the
-likelihood-ratio factor is multiplied by either $2$ or $1/2$ at each
-step. Thus $|M_{n+1}-M_n|>t^2$ everywhere, so the bounded martingale
-is not order-Cauchy along any path.
+This also has a precise conditional-expectation formulation. Put
+$\F_\infty=\sigma(X_1,X_2,\ldots)$. For every observation event $A$,
+\[
+ P(H=1,A)=\frac{t\mu_1(A)}{1+t}
+ =\frac{\mu_0(B\cap A)+t\mu_1(B\cap A)}{1+t}
+ =P(B\cap A),
+\]
+because $\mu_0(B)=0$ and $\mu_1(B^c)=0$. Thus the $\F_\infty$-measurable
+variable $\ind_B$ satisfies
+$\E[\ind_A\ind_{\{H=1\}}]=\E[\ind_A\ind_B]$ for every
+$A\in\F_\infty$. This is precisely the defining integral identity for a
+version of conditional expectation, using only finite-range integrals.
+Also $P(\{H=1\}\mathbin{\triangle}B)=0$. The martingale $(M_n)$ does not
+recover this version on $B$ even at a fixed real resolution.
+
+Off $B$, convergence to zero fails at infinitesimal resolution as well.
+In the fixed chart $t=\omega^{-1}$, each $M_n$ has valuation one and
+leading coefficient $r_n>0$, so $M_n>t^2$ at every ordinary time and on
+every path. More explicitly, if the next observation is $1$ or $0$,
+respectively, then
+\[
+ M_{n+1}-M_n=
+ \begin{cases}
+ \displaystyle\frac{tr_n}{(1+2tr_n)(1+tr_n)},&X_{n+1}=1,\\[6pt]
+ \displaystyle-\frac{tr_n}{(2+tr_n)(1+tr_n)},&X_{n+1}=0.
+ \end{cases}
+\]
+The leading coefficient of the absolute difference is $r_n$ or $r_n/2$,
+respectively, and its valuation is one. Consequently
+$|M_{n+1}-M_n|>t^2$ everywhere. The single order tolerance $t^2$ therefore
+violates the Cauchy condition on every path, regardless of how small or
+large the real factors $r_n$ become. These are ordinary integer times;
+no transfinite extension of the process is being asserted.
 
 By contrast, the posterior standard parts are identically zero. Their
 ordinary limit differs from $\st\ind_B$ exactly on $B$, whose
@@ -2979,6 +3045,19 @@ is zero. This is fully consistent with the ordinary real martingale
 convergence theorem. A surreal analogue retaining all positive
 infinitesimal events or all infinitesimal resolutions must specify a
 different conclusion or impose additional hypotheses.
+
+Coefficientwise convergence gives a third, different answer. At each
+ordinary time the geometric expansion is
+\[
+ M_n=\hsum_{j\ge1}(-1)^{j-1}r_n^j t^j.
+\]
+On the event $B_0=\{K_n/n\to1/3\}$, which has $\mu_0$-measure one,
+$(2K_n-n)/n\to-1/3$, so $r_n\to0$ in $\R$. Every fixed coefficient
+then tends to zero: $M_n$ converges coefficientwise to zero on $B_0$,
+although it is nowhere order-Cauchy. On $B$, instead,
+$(2K_n-n)/n\to1/3$ and $r_n\to+\infty$; already the coefficient of $t$
+has no finite real limit. This coefficientwise statement is a limit in
+$\R$ at each fixed exponent, not strong Hahn summation of the time sequence.
 
 The example also distinguishes two uses of ``infinitely much evidence.''
 A Borel tail observation is an event in a specified path law. It is not
@@ -3123,9 +3202,11 @@ computed first, while residual expressions are retained for ties and
 later rare conditioning. A leading-scale answer should not be presented
 as an exact full probability.
 
-Theorem~\ref{fsp:thm:stability} supplies a precision contract. An operation
-conditioning on mass of valuation $\beta$ and requesting output through
-scale $\lambda$ must demand input error beyond $\beta+\lambda$.
+Theorem~\ref{fsp:thm:stability} supplies a sufficient precision contract:
+when conditioning on mass of valuation $\beta$ and requesting output through
+scale $\lambda$, require input error beyond $\beta+\lambda$.
+This uniform guarantee is not a necessary condition for each query;
+specific numerator--denominator cancellations can permit weaker precision.
 An implementation which first truncates all atoms at one fixed absolute
 threshold cannot guarantee every subsequent conditional query. For
 score-based models, Proposition~\ref{fsp:prop:softbound} gives a different
@@ -3152,8 +3233,11 @@ The first three modules should not import an unproved global integration
 operator. An interface for infinite sums should name its support or
 convergence certificate and state which regroupings it permits.
 A field embedding interface should distinguish preservation of order,
-exponential, standard part, strong sums, and internal structure. None
-of the latter properties should be inferred merely from the first.
+exponential, standard part, strong sums, and internal structure. An ordered
+embedding fixing $\R$ preserves standard parts: the inequalities
+$r-\varepsilon<x<r+\varepsilon$ for every positive real $\varepsilon$
+are preserved. Preservation of exponentials, strong sums or internal
+structure requires additional hypotheses.
 
 The repository has a maintained formalization ledger, but no new Lean
 proofs are delivered here. The present package's executable tests are
