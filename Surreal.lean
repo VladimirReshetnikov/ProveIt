@@ -67,6 +67,8 @@ import Surreal.Algebra.SigmaDerivation
 import Surreal.Algebra.WickQuartic
 import Surreal.Algebra.TailSpan
 import Surreal.Algebra.WickSemigroup
+import Surreal.Algebra.TateCubicNode
+import Surreal.Algebra.PolynomialBranchValues
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -312,3 +314,11 @@ import Surreal.HahnSeries.ChartIsometry
 import Surreal.HahnSeries.NoncommutativeNeumann
 import Surreal.HahnSeries.BranchMetric
 import Surreal.HahnSeries.LeadingVectorTest
+import Surreal.HahnSeries.WickDomain
+import Surreal.HahnSeries.ThetaDomain
+import Surreal.HahnSeries.PartialThetaDomain
+import Surreal.HahnSeries.PointSpectrumRigidity
+import Surreal.HahnSeries.NativeEquicontinuity
+import Surreal.HahnSeries.InvariantStrongMeasures
+import Surreal.HahnSeries.FiniteVisibility
+import Surreal.HahnSeries.PronyCofactorBound
