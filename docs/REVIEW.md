@@ -1398,6 +1398,11 @@ an order unit each finitely generated subgroup is bounded above, so the
 probe field lies in the bounded-support ring. The guide and nonclaim ledger
 now use the same scope. The spectral comparison also distinguishes the
 explicit triangular congruence from unitary diagonalization.
+The tail-spans comparison now specifies algebraicity over the whole
+coefficient Hahn field via one finite coefficient extension, rather than
+merely having algebraic individual coefficients. Its monomial-field
+obstruction cites the probe-closedness and barrier results, and the
+coefficientwise-additivity comparison is limited to the null-ideal results.
 
 The closure proof now verifies preservation of the least coordinate
 valuation. The density proof gives an explicit ordered-field continuity
@@ -1425,6 +1430,17 @@ principal-minor leading signs; all agreed and all 18,145 positive cases
 also matched the rank formula. Those finite checks do not prove arbitrary
 Hahn-support or measure assertions. Remaining imports, literature priority
 and original-source reconciliation remain outside this main-text review.
+The rendered comparison, proof and appendix pages were inspected; the final
+comparison edits changed only physical pages 7–9, which were checked again.
+
+The sync merged `cfdcdc0` through `6980af8`, adding the complete right-triangle
+corollary. No incoming manuscript source changed. The combined
+`LEAN_NUM_THREADS=2 lake build` passed 3,995 jobs; the axiom audit checked
+7,429 declarations and used only `propext`, `Classical.choice` and `Quot.sound`.
+The independent 49-source index remains clean at 2,465 statements, and all
+2,720 cited source labels plus 1,035 local Markdown destinations resolve.
+This validation preserves the distinction between the new Lean triangle
+mapping and this report's mathematical proof review.
 
 ## Remaining scope
 

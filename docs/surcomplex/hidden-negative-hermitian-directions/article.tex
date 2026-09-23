@@ -393,7 +393,8 @@ null-ideal criterion, which is proved once in the collection as
 \repo{FORMALIZATION.md} records a Lean proof of the scalar two-scale
 criterion over any measurable space (\texttt{Surreal.NullIdeal.twoScale},
 \texttt{twoScale\_measure}); no matrix statement of this report is covered
-by it. Both reports use coefficientwise, not strong, countable additivity.
+by it. The null-ideal results compared here use coefficientwise countable
+additivity; they do not require strong Hahn additivity.
 
 \paragraph{Tail-spans and differential transcendence.}
 \repo{surreal/tail-spans-and-differential-transcendence} also builds
@@ -416,11 +417,15 @@ square-root coefficient tails cannot produce hidden directions relative to
 $\Pfield$: with $\xi_j$ in place of $h_j$, the negative vectors
 $(-\xi_j,e_j)$ of \eqref{hnd:eq:quadraticidentity} are probe vectors.
 Likewise \lbl{tail:thm:closure} shows that $\sum_n\sqrt{p_n}\,t^n$ is a
-valuation limit of its algebraic truncations when $\Gamma=\Q$, whereas
-Corollary~\ref{hnd:cor:degreebound} shows that no sequence of elements
-algebraic over the monomial field converges to $h_\delta$; ``algebraic''
-means algebraic coefficients over a coefficient field there and algebraic
-over $\C(t^\gamma:\gamma\in\Gamma)$ here. The warning
+valuation limit of its algebraic truncations when $\Gamma=\Q$.
+Those truncations are algebraic over $B_0$: their finitely many
+coefficients generate one finite extension of $\Q$. Merely having
+algebraic coefficients would not suffice, as the full transcendental
+tail itself demonstrates. Here Proposition~\ref{hnd:prop:probeclosed}
+and Theorem~\ref{hnd:thm:barrier} exclude convergence even of nets of
+elements algebraic over $\C(t^\gamma:\gamma\in\Gamma)$;
+Corollary~\ref{hnd:cor:degreebound} specializes to $\C(t^\delta)$.
+The base fields in these algebraicity assertions differ. The warning
 \lbl{tail:rem:indexfamily} applies verbatim: the family $(h_A)$ indexed by
 \emph{all} infinite sets of primes is not independent, since
 $h_{A\cup B}+h_{A\cap B}=h_A+h_B$ is a nontrivial linear relation among

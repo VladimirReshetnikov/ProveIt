@@ -166,8 +166,12 @@ and are independent (even differentially) over `Q((t^Q))`; here the tails
 have coefficient one and prime-denominator exponents and are independent over
 `P_Γ`. For `Γ = Q` each base contains the other's witnesses: `h_A ∈ Q((t^Q))`
 and `ξ_A ∈ P_Q`. So square-root tails cannot hide a direction from `P_Γ`
-probes. Its `tail:thm:closure` (Σ √p_n t^n is a limit of algebraic
-truncations) and Corollary 4.4 here use different meanings of "algebraic".
+probes. Its `tail:thm:closure` approximates `Σ √p_n t^n` by finite
+truncations algebraic over `Q((t^Q))`, since their coefficients lie in one
+finite extension of `Q`. Here Proposition 3.4 and Theorem 4.2 exclude even
+net approximation by elements algebraic over the monomial field;
+Corollary 4.4 specializes to `C(t^δ)`. The algebraicity assertions use
+different base fields; algebraic individual coefficients alone do not suffice.
 Its warning `tail:rem:indexfamily` applies: the family of all `h_A` is not
 independent.
 
