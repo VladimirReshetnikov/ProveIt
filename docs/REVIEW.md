@@ -1282,6 +1282,15 @@ in 48 sources; all 2,695 cited source labels and 1,015 local Markdown
 destinations resolve. Sections 10 onward and remaining imports/source
 reconciliation are pending. No Lean coverage is added by this proof review.
 
+Merged `fc1c12a` after this review, adding the actual-surcomplex direction
+stability formalization and its root imports. No manuscript source changed
+in that merge. The combined Lean build passed all 3,987 jobs; the default
+axiom audit accepted 7,253 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The statement index remains at 2,440
+results in 48 sources, all 2,695 cited labels resolve, and all 1,018 local
+Markdown destinations in 108 files resolve. The merge preserves the reviewed
+three-duals source and PDF exactly.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
