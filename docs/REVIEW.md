@@ -2061,6 +2061,27 @@ the general support, spectral or strengthened vector assertions. The
 49-report inventory remains 2,535 standard statements; line hints were
 refreshed without adding a Lean mapping.
 
+All 24 pages with changed text or pagination were rendered and visually
+inspected: revised physical pages 6–8, 13, 15–17, 57–71 and 94–95. No layout
+issue remains, and the report README's 15 Part III numbered references match
+the final auxiliary file. A final consistency edit qualifies the standing
+Banach-norm summary as applying to the general results; another three-pass
+build preserved every page except physical page 57's wording, and that page
+was inspected again. This comparison used extracted text and pagination,
+not a claim of pixel equality for other pages.
+
+Merged `2bd87f6`, including the reciprocal-leg and thin-triangle hierarchy
+formalizations in `5e67a5b`. A bounded source/declaration audit confirmed
+both full-example mappings, all five unique new imports, and the added
+relative-asymptotic lemmas. No manuscript source changed in the merge.
+After the first build process terminated without a proof error, a fresh
+incremental `LEAN_NUM_THREADS=2 lake build` completed all 4,076 jobs.
+The default audit accepted 9,427 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. All 2,866 cited source labels and
+1,148 local Markdown destinations resolve; the independent inventory still
+has 2,535 statements in 49 reports. The Drazin source improvements add no
+Lean coverage.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued

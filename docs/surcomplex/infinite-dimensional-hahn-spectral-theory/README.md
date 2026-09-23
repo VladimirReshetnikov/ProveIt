@@ -353,6 +353,9 @@ unchanged. The copied Part III verifier passes all 484 finite checks under
 Python 3.13.14; its full JSON differs from the historical record only in
 the Python version. These checks do not prove the arbitrary-support,
 infinite-dimensional or new nonmonomial vector-surjectivity assertions.
+All 24 pages with changed text or pagination were visually inspected, with
+no layout issues; the 15 Part III numbered references in this README agree
+with the final auxiliary file.
 
 To rerun the checks, copy this directory and run the scripts in `code/` on
 the copy: the Part II script writes `data/verification.json` in the directory above `code/`,
