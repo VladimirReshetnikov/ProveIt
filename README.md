@@ -286,7 +286,15 @@ factors now proves full finite-family Hensel lifting in Hahn valuation rings:
 the lower-degree corrections have positive supports inside the monoid generated
 by the original errors. Every simple residue root lifts uniquely with the
 same support control.
-Its first correction coefficient is the negative error coefficient evaluated
+Simple-root existence and uniqueness now also hold directly in the actual
+finite surreal and surcomplex rings, without a monicity assumption. The
+proof places the coefficients in one small Hahn workspace and compares
+all actual candidates by divided differences. In particular, a real
+polynomial reducing to `Y+b₀` has a unique finite root with standard part
+`-b₀` and native multiplicity one, supplying the trigonometric stability
+lemma. The actual complex lift is a unique infinitesimal correction;
+transfer of the Hahn support and first-coefficient bounds remains pending.
+In the Hahn theorem, the first correction coefficient is the negative error coefficient evaluated
 at the residue root, divided by the residue derivative; cancellation is allowed.
 The distinct complex residue roots also index unique cluster factors, with
 the prescribed multiplicities and a characterization of every existing Hahn
