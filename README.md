@@ -88,8 +88,11 @@ half the original degree. At every real input its value is the squared
 modulus of the factor. The proof removes even real-root factors and
 strictly positive conjugate-root quadratics, preserving nonnegativity at
 each step. It uses the proved square roots and algebraic closedness of the
-actual fields. The ensuing Fejér–Riesz Cayley transport and normalized
-uniqueness remain pending.
+actual fields. Mathlib homogenization now gives the explicit Fejér–Riesz
+polynomial factor of degree at most `N` on the entire affine Cayley chart.
+The proof tests positivity at all finite surreal angles and permits infinite
+coefficients and chart parameters. Extending the same factor to the omitted
+circle point `-1` and proving the normalized form remain pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
