@@ -212,6 +212,8 @@ import Surreal.Surcomplex.CircleSplitting
 import Surreal.Surcomplex.AngleRepresentatives
 import Surreal.Surcomplex.AngleRoots
 import Surreal.Surcomplex.PolarRoots
+import Surreal.Surcomplex.Cayley
+import Surreal.Surcomplex.CayleyInfinitesimal
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
