@@ -330,6 +330,17 @@ the main-text review through Section 26; the later examples, workspace
 and procedure sections, autonomous part and imported-source checks remain
 separate, and no Lean coverage is added.
 
+After this pass, synchronization merged `ebfa006` from `origin/main`,
+including ten new Lean modules and their ledger mappings. The combined
+state passed a fresh `LEAN_NUM_THREADS=2 lake build`: 3,872 jobs and the
+5,880-declaration axiom audit, using only `propext`, `Classical.choice`
+and `Quot.sound`. The independent source index still checks all 1,754
+entries, and all 764 local Markdown destinations in 73 files resolve.
+A wording fix in the incoming trigonometry row keeps derivative, order and
+Taylor-identification claims pending, separately from the newly mapped
+algebraic identities. This integration check does not widen the proof
+review of the articles or independently review the new Lean mathematics.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
