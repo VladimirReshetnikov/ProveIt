@@ -1068,6 +1068,15 @@ local Markdown destinations in 108 files resolve. No Lean module changed in
 this pass and no new probability formalization is claimed. Sections 15 onward
 and remaining imports are pending.
 
+A downstream consistency check also corrects two sentences in Section 16.
+The conditioning precision contract is sufficient, not necessary for each
+query with possible cancellation. An ordered field embedding fixing the
+reals does preserve standard parts, directly from the inequalities defining
+them; preserving exponentials, strong sums or internal structure requires
+more. These targeted corrections do not constitute review of the rest of
+Section 16. The PDF remains 51 pages after three warning-free passes, with
+the affected page inspected and all 114 label numbers preserved.
+
 ## Remaining scope
 
 The placement `7b5f934` adds two manuscripts,

@@ -3403,7 +3403,10 @@ proof of the component strong laws, verifies the full-observation conditional
 expectation identity and proves failure of the order-Cauchy criterion on every
 path. Typical common-regime paths nevertheless have coefficientwise posterior
 limit zero; on the rare tail event the first coefficient diverges. These
-ordinary-time limits remain distinct from strong Hahn summation.
+ordinary-time limits remain distinct from strong Hahn summation. Two targeted
+Section 16 corrections keep the precision contract sufficient and state that
+ordered embeddings fixing the reals preserve standard parts. Its remaining
+implementation discussion is not included in the Section 14 proof review.
 Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |

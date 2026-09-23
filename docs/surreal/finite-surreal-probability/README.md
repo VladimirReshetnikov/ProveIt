@@ -55,7 +55,9 @@ relative embeddings, ultrafilters and finite compactness models. The latent
 model now derives its martingale updates, proves the needed Bernoulli strong
 laws and separates coefficientwise, order and standard-part limits. Sections 15
 onward and the remaining imports still require review; see the
-collection's [review record](../../REVIEW.md).
+collection's [review record](../../REVIEW.md). Two targeted consistency fixes
+in Section 16 clarify the sufficient precision contract and preservation of
+standard parts by ordered embeddings fixing the reals.
 
 ## What the report claims
 
@@ -723,3 +725,12 @@ theorems. The independent index checks 2,298 entries in 48 sources; all 967
 local Markdown destinations in 108 files resolve. No Lean module changed in
 this pass and no new probability formalization is claimed. Sections 15 onward
 and remaining imports are pending.
+
+A downstream consistency check also corrects two sentences in Section 16.
+The conditioning precision contract is sufficient, not necessary for each
+query with possible cancellation. An ordered field embedding fixing the
+reals does preserve standard parts, directly from the inequalities defining
+them; preserving exponentials, strong sums or internal structure requires
+more. These targeted corrections do not constitute review of the rest of
+Section 16. The PDF remains 51 pages after three warning-free passes, with
+the affected page inspected and all 114 label numbers preserved.

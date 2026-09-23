@@ -3202,9 +3202,11 @@ computed first, while residual expressions are retained for ties and
 later rare conditioning. A leading-scale answer should not be presented
 as an exact full probability.
 
-Theorem~\ref{fsp:thm:stability} supplies a precision contract. An operation
-conditioning on mass of valuation $\beta$ and requesting output through
-scale $\lambda$ must demand input error beyond $\beta+\lambda$.
+Theorem~\ref{fsp:thm:stability} supplies a sufficient precision contract:
+when conditioning on mass of valuation $\beta$ and requesting output through
+scale $\lambda$, require input error beyond $\beta+\lambda$.
+This uniform guarantee is not a necessary condition for each query;
+specific numerator--denominator cancellations can permit weaker precision.
 An implementation which first truncates all atoms at one fixed absolute
 threshold cannot guarantee every subsequent conditional query. For
 score-based models, Proposition~\ref{fsp:prop:softbound} gives a different
@@ -3231,8 +3233,11 @@ The first three modules should not import an unproved global integration
 operator. An interface for infinite sums should name its support or
 convergence certificate and state which regroupings it permits.
 A field embedding interface should distinguish preservation of order,
-exponential, standard part, strong sums, and internal structure. None
-of the latter properties should be inferred merely from the first.
+exponential, standard part, strong sums, and internal structure. An ordered
+embedding fixing $\R$ preserves standard parts: the inequalities
+$r-\varepsilon<x<r+\varepsilon$ for every positive real $\varepsilon$
+are preserved. Preservation of exponentials, strong sums or internal
+structure requires additional hypotheses.
 
 The repository has a maintained formalization ledger, but no new Lean
 proofs are delivered here. The present package's executable tests are
