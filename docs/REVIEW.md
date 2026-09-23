@@ -3271,6 +3271,40 @@ The independent 3,650-statement inventory, 4,183 source references and
 1,520 local Markdown destinations pass. The earlier two-thread Lean build
 remains applicable.
 
+## Omnific quartic and elementary Euler prerequisites
+
+The remaining source-07 quartic in Section 10 now has a full argument for
+arbitrary intermediate rings with integer constant intersection. The proof
+separates ambient Pell factorization from membership in the intermediate
+ring, proves that every witness is ordinary, and constructs witnesses
+from an unbounded ordinary Pell sequence and four squares. The comparison
+with the delivered Section 8 is recorded in the Diophantine reconciliation.
+
+The elementary ring and Euler subsections 16.2–16.3 were reviewed next.
+The proof now identifies the opposite ring's fraction field, units,
+maximal ideal and residue field. It corrects the zero-exponent-group
+exception to the non-valuation-ring claim and the false suggestion that
+an Euler image inclusion must be proper. Explicit examples establish
+both corrections. The logarithmic-derivative residue is now computed
+as `ct(∂_λ u/u) = λ(deg u)`, and polynomial Bézout makes the joint-constant
+argument for relative algebraic closedness explicit. The shared notation
+and review boundaries reflect these distinctions. The squarefree
+certificate and geometric arguments remain outside this pass.
+
+All 200 standard statement texts, 416 labels and existing result numbers
+are preserved. The source-07 verifier reproduces its recorded output
+exactly, without establishing the general Hahn-series claims. The new
+residue identity and the reviewed elementary results remain **Pending**
+in Lean. No Lean file changes in this review.
+
+Clean three-pass pdfLaTeX builds produce a 176-page article and 32-page
+catalogue, without warnings, unresolved references or box diagnostics.
+Rendered article pages 13, 48–49 and 96–99 and catalogue page 9 have
+been inspected. The independent inventory validates 3,650 statements in
+60 main texts, all 4,184 cited source labels resolve, and all 1,520 local
+Markdown destinations pass. The previous 4,380-job Lean build and
+14,672-declaration axiom audit remain applicable to the unchanged library.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

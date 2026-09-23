@@ -14,7 +14,7 @@ Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 175 pages
+article.pdf                        the compiled report, 176 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -135,7 +135,10 @@ and nonzero kernels give proper-class fibers when an ordinary point exists.
 The norm proof spells out separable splitting and coefficient extension;
 it extends to abstract Hahn rings in every characteristic, with concrete
 zero-level, nilpotent and inseparable counterexamples to weaker hypotheses.
-The quartic in Section 10 and the later curve pointers still need review.
+Source 07's quartic in Section 10 is now reviewed too: the proof uses the
+ambient support ring before the integer intersection, and constructs
+ordinary witnesses for every allowed intermediate ring. The later curve
+pointers still need review.
 Further passes review all of Section 15: denominator ideals, the
 multiplier theorem, rational-function and curve applications, congruence
 orbits and density. The focusing formula now handles the zero parameter
@@ -147,10 +150,15 @@ expands the scale-defect and Tor proofs, distinguishes finite real
 dimension from infinite module length, and checks fixed workspaces and
 Gaussian normalization.
 The rest of the batch-27 material remains unreviewed: the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
-covers the batch-28 material: Sections 16–18, the pointers added in Sections 6, 7
+covers the full batch-28 material. A further elementary pass reviews
+Sections 16.2–16.3 (Lemmas 16.1–16.3 and Corollary 16.4): rings, Euler
+derivations and their joint constants. It corrects the trivial-group
+valuation-ring exception and distinguishes an image inclusion from a
+proper inclusion. The rest of Sections 16–18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
-Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22. Nor does any review cover
-the batch-29 material: Section 18.6, the credits, corrections and remarks added for
+Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
+The elementary pass also covers the corresponding claims credited to
+source C15. The other batch-29 material remains outside it: Section 18.6, the credits, corrections and remarks added for
 source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
 appendices. Section 18.6 was appended at the end of Section 18, so no section,
 statement or equation number changed. Inserting Section 15
@@ -883,7 +891,8 @@ Section 21; Sections 6–7 and Theorem 7.4 keep their numbers. The blob hashes t
 record (`4c26f4e` at `4cdeaec`, `47af413` at `89bec38` and `f6e031a`) are
 correct. Source C14's "three-source assembly", source C11's "reviewed Sections
 1–7" and source C12's "51-report collection" were true at their pins; the report
-now has thirteen sources, the reviews extend further but not to Sections 16–18,
+now has thirteen sources, the reviews extend further, including the
+elementary Sections 16.2–16.3, but not the curve and geometric proofs,
 and the catalogue has grown. Source C15 inspected the repository through the
 connector at `934810a`, when this report had sources 01, 02, 05, 06 and 07, and
 quoted correctly its guide's statement that `y² = x³ + ax + b` with `a ≠ 0` was
@@ -1062,7 +1071,7 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   sources here transfer rigidity only from the complex fiber to the real one.
 - [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/):
   its Euler derivations map `ℛ_𝔬(k, Γ)` into `Π_k(Γ)` (`opa:par:prop:Euler`),
-  the strict inclusion used in Sections 16–17; sources C10–C14 did not cite it.
+  the support inclusion used in Sections 16–17; sources C10–C14 did not cite it.
 - [`hahn-tate-uniformization`](../../surcomplex/hahn-tate-uniformization/): its
   Tate points are field points of curves with nonconstant `j`-invariant, outside
   the constant-coefficient hypothesis of Section 17; like Remark 17.24 and

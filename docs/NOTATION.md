@@ -63,6 +63,19 @@ nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
 For a nonzero form, growth degree is the largest supported exponent and
 satisfies `v = −deg` under the reversed valuation convention.
 
+In the curve part of the Diophantine report, `𝒜_k(Γ)` has nonnegative
+growth support, while the valuation ring `𝒪_k(Γ)` has nonpositive growth
+support. For `Γ = 0` both are the coefficient field; the assertion that
+`𝒜_k(Γ)` is not a valuation ring requires `Γ ≠ 0`. An Euler derivation
+sends these rings into their strictly positive and strictly negative
+support ideals, respectively. This concerns the exponents of the image;
+it does not assert a proper inclusion of the image in either ideal.
+For example, on `k[ω]` with `∂(ωⁿ) = nωⁿ` in characteristic zero,
+the image is exactly `ω k[ω]`. For any nonzero Hahn series `u`,
+`ct(∂_λ u/u) = λ(deg u)`; when `u` is a valuation-ring unit this
+residue is zero. Here `ct` is applied to the logarithmic derivative in
+the valuation ring, not asserted multiplicative on the whole Hahn field.
+
 In the Diophantine report's Section 11, `𝒜_k(Γ)` is the ring of all
 nonnegative-growth-support forms over `k`, and `ℛ_o(k,Γ) = o + Π_k(Γ)`
 restricts the constant coefficient to `o`. The quotient report writes its

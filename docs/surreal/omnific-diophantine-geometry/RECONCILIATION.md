@@ -8,14 +8,16 @@ rigidity part is Sections 16–18.
 Subsequent passes review the newly added Sections 11–13 from sources 06–07.
 Further passes review all of Section 15 from sources 08–09 and the
 Gaussian-fiber and étale-norm additions in Section 6 from sources 07 and 13.
-The added material in Section 10, Sections 16–18 with the
-pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
+A further pass reviews source 07's quartic in Section 10 and the
+elementary ring and Euler subsections 16.2–16.3. The rest of Sections
+16–18, their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the thirteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. The curve and differential rigidity part (Sections 16–18)
-is outside every pass recorded here.
+present numbering. The geometric curve proofs and all of Sections 17–18
+remain outside these passes; only the elementary ring/Euler prerequisites
+in Section 16 are reviewed.
 
 ## Recoverable sources
 
@@ -651,3 +653,51 @@ about absent Lean code from this coverage. The combined two-thread Lean
 build passes 4,380 jobs and the axiom audit accepts 14,672 declarations.
 Other manuscript results remain pending unless individually mapped in the
 ledger; this build does not verify the remaining Diophantine proofs.
+
+## Quartic and elementary ring/Euler proof review
+
+This pass compares source 07's Section 8 (`lem:squares`, `thm:quartic`
+and `eq:F4`), recovered from the same `de0acc6` archive identified above,
+with Remark 10.5 and its surrounding comparison. The maintained proof now
+gives both directions for every intermediate ring with integer constant
+intersection. Pell factorization is performed in the ambient real support
+ring, where its factors belong even though their coefficients need not
+belong to the intermediate ring. The sum-of-squares argument then forces
+every coordinate to be constant. The reverse direction chooses an ordinary
+Pell coordinate above the integer input's absolute value and uses the
+ordinary four-square theorem. The zero exponent group is included, and
+the Gaussian counterexample is retained. The comparison now correctly
+notes that both four-square versions use a theorem available in Mathlib;
+`Nat.sum_four_squares` was checked in the pinned source. Its classical proof
+and source 07's external exposition are imported, not independently reviewed.
+
+The pass also reviews the maintained elementary subsections 16.2–16.3:
+Lemmas 16.1–16.3 and Corollary 16.4. This is a review of the assembled
+proofs, not a complete comparison of sources C10–C15. The valuation-ring
+proof now gives its fraction field, units, maximal ideal and residue map
+explicitly. Two supporting prose assertions needed correction:
+
+- When the exponent group is zero, the one-sided ring is the coefficient
+  field and is a valuation ring. For a nonzero exponent group, choosing a
+  positive exponent gives `q = ω^γ/(1+ω^γ)` with neither `q` nor `q⁻¹`
+  in the nonnegative-support ring; this proves the correctly qualified claim.
+- The Euler image inclusion in the positive-support ideal need not be
+  proper. On `k[ω]` in characteristic zero, the derivation taking `ωⁿ`
+  to `nωⁿ` has image exactly `ω k[ω]`. The text and shared notation now
+  describe a support condition, not a proper inclusion.
+
+The derivation proof uses finite coefficient convolutions, and detection
+uses a rational coordinate functional on the set-sized divisible hull.
+For a nonzero series `u = a ω^α(1+ε)`, the logarithmic derivative is
+`λ(α) + ∂_λ ε/(1+ε)`; the remainder is in the maximal ideal. This proves
+the new explicit residue identity `ct(∂_λ u/u) = λ(deg u)` and shows why
+the bound for a general logarithmic derivative need not be strict. The
+relative-algebraic-closedness proof now spells out its polynomial Bézout
+identity before applying joint-constant detection.
+
+All 200 standard statement texts, 416 labels and existing result numbers
+are preserved. These elementary results and the new residue identity are
+**Pending** in Lean. The squarefree certificate and later geometric proofs,
+curve pointers, full source comparison and remaining imported foundations
+still require review. The source-07 finite verifier reproduces its recorded
+output exactly; that does not prove the arbitrary-support statements.
