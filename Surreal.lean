@@ -258,6 +258,11 @@ import Surreal.Surcomplex.TriangleHeron
 import Surreal.Surcomplex.TriangleBisector
 import Surreal.Surcomplex.TriangleIncenter
 import Surreal.Surcomplex.TriangleIncenterUniqueness
+import Surreal.Algebra.WeightedVariance
+import Surreal.Algebra.ThreeTermAMGM
+import Surreal.Surcomplex.TriangleRadiusInequality
+import Surreal.Surcomplex.TriangleEuler
+import Surreal.Surcomplex.TriangleAreaBound
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

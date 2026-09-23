@@ -475,6 +475,10 @@ side line, strictly inside the side segment, at radius equal to area
 divided by semiperimeter. It is the unique interior equidistant center.
 The internal bisector divides its opposite side in the prescribed ratio,
 has length `2bc*cos(alpha/2)/(b+c)`, and makes two actual equal half-angles.
+Euler's center-distance identity gives `|O-I|^2 = R*(R-2r)`.
+The radius inequality `2r ≤ R` and the sharp area bound
+`area ≤ s^2/(3*sqrt(3))` have equality exactly for equilateral triangles,
+at arbitrary positive surreal scales.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
