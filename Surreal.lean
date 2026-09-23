@@ -150,6 +150,7 @@ import Surreal.Foundations.SignSequenceStrongAlgebra
 import Surreal.Foundations.SignSequenceStrongRegroup
 import Surreal.Foundations.SignSequencePowerSeries
 import Surreal.Foundations.SignSequenceBinomial
+import Surreal.Foundations.SignSequencePositiveRoots
 import Surreal.Foundations.SignSequenceExpLog
 import Surreal.Foundations.SignSequenceMvPowerSeries
 import Surreal.Foundations.SignSequenceWorkspace
@@ -208,6 +209,9 @@ import Surreal.Surcomplex.AngleGroup
 import Surreal.Surcomplex.PolarGroup
 import Surreal.Surcomplex.TrigonometricTaylor
 import Surreal.Surcomplex.CircleSplitting
+import Surreal.Surcomplex.AngleRepresentatives
+import Surreal.Surcomplex.AngleRoots
+import Surreal.Surcomplex.PolarRoots
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
