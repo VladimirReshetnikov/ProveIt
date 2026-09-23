@@ -45,4 +45,20 @@ theorem taylorSeries_real_sin (c : ℝ) :
       Pi.mul_apply, Pi.pow_apply, Pi.neg_apply, Pi.one_apply, Real.cos_zero, Real.sin_zero]
     ring
 
+/-- The sine coefficients at zero are explicitly even-zero and odd-factorial. -/
+theorem coeff_taylorSeries_sin_zero (n : ℕ) :
+    (taylorSeries Real.sin 0).coeff n =
+      if Even n then 0 else (-1 : ℝ) ^ (n / 2) / n.factorial := by
+  obtain ⟨k, rfl | rfl⟩ := Nat.even_or_odd' n
+  · simp [coeff_taylorSeries, Real.iteratedDeriv_even_sin]
+  · simp [coeff_taylorSeries, show (2 * k + 1) / 2 = k by omega]
+
+/-- The cosine coefficients at zero are explicitly odd-zero and even-factorial. -/
+theorem coeff_taylorSeries_cos_zero (n : ℕ) :
+    (taylorSeries Real.cos 0).coeff n =
+      if Even n then (-1 : ℝ) ^ (n / 2) / n.factorial else 0 := by
+  obtain ⟨k, rfl | rfl⟩ := Nat.even_or_odd' n
+  · simp [coeff_taylorSeries, Real.iteratedDeriv_even_cos]
+  · simp [coeff_taylorSeries]
+
 end Surreal.Analytic
