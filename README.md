@@ -182,9 +182,14 @@ unique unital homomorphism to `ℤ`, and every omnific endomorphism preserves
 it. For every ordinary prime `p`, the actual omnific ring's `p`-adic
 completion is ring-isomorphic to Mathlib's `ℤ_[p]`. Its canonical map takes
 the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
-infinite ideal. The profinite completion, topological assertions, higher
-Diophantine and general set-sized quotient results remain pending; source
-review is distinct from checked formalization.
+infinite ideal. Both the ordinary congruence topology and each `p`-adic
+topology are proved non-Hausdorff: the closure of zero is precisely that
+ideal, and two omnific integers are topologically indistinguishable exactly
+when their integer constant terms agree. Their separation quotients are
+ring-isomorphic to `ℤ`, with constant extraction as the canonical map.
+The profinite completion, completion homeomorphisms, higher Diophantine and
+general set-sized quotient results remain pending; source review is distinct
+from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
