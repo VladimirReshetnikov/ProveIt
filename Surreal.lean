@@ -497,3 +497,5 @@ import Surreal.Algebra.FormalCoupledDiagonal
 import Surreal.Surcomplex.LocalSineSeries
 import Surreal.Surcomplex.CoupledAngularFormalCoordinates
 import Surreal.Surcomplex.CoupledAngularFormalReduction
+import Surreal.Algebra.FormalRectangle
+import Surreal.Surcomplex.CoupledAngularMultiplicity

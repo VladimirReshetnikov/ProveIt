@@ -10,8 +10,8 @@ linear coefficient. Mathlib's compositional inverse induces an automorphism
 of the two-variable formal series ring. The two translated polynomial
 relations map to the corresponding angular series relations, so their
 quotient algebras are isomorphic and have equal native dimensions.
-Identifying the translated formal polynomial quotient with the finite local
-factors of `CoupledAngularLocalAlgebra.lean` remains a separate step.
+`CoupledAngularFormalReduction.lean` reduces these quotients to monomial
+ideals; `CoupledAngularMultiplicity.lean` computes their native dimensions.
 -/
 
 universe u

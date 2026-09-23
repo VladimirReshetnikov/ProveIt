@@ -51,8 +51,11 @@ The verified centered sine series now induces a formal coordinate automorphism
 at every infinitesimal root. Together with linear diagonalization and removal
 of unit factors, it identifies each angular formal quotient with `(X^m,Y^n)`,
 where each exponent is one or two on the corresponding collision stratum.
-Identifying these truncated formal quotients with the finite local factors,
-and thus completing angular intersection multiplicities, remains pending.
+A coefficient basis proves these formal quotients are finite-dimensional.
+Their native local dimensions are one, two and four, agreeing with the
+algebraic local factors. The finite sum of angular multiplicities over all
+actual infinitesimal solutions is four, completing the coupled collision
+assertions.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
