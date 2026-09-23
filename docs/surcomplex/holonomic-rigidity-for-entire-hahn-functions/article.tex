@@ -21,7 +21,8 @@
   pdftitle={Holonomic Rigidity for Entire Hahn Functions},
   pdfauthor={Merged research report prepared for Vladimir Reshetnikov},
   pdfsubject={Arbitrary-rank Hahn fields, strong summability, linear
-              differential and q-difference equations}}
+              differential and q-difference equations, first-order
+              algebraic differential equations}}
 \urlstyle{same}
 \pagestyle{fancy}
 \fancyhf{}
@@ -65,6 +66,12 @@
 \newcommand{\fall}[2]{(#1)_{\underline{#2}}}
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+% Nonlinear part (source 10): any characteristic-zero coefficient field k.
+\newcommand{\KK}{\mathbb K}
+\newcommand{\EK}{\mathcal E_\Gamma(k)}
+\newcommand{\Sfam}{\mathcal S}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\inpoly}{\operatorname{in}}
 \setlist[itemize]{leftmargin=1.5em,itemsep=2pt,topsep=4pt}
 \setlist[enumerate]{leftmargin=1.8em,itemsep=3pt,topsep=4pt}
 
@@ -72,16 +79,17 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{0.25in}
+\vspace*{0in}
 {\color{olive}\large\sffamily SURREAL AND SURCOMPLEX RESEARCH}\par
-\vspace{0.25in}
+\vspace{0.18in}
 {\color{ink}\huge\bfseries Holonomic Rigidity\\[6pt] for Entire Hahn Functions}\par
-\vspace{0.28in}
+\vspace{0.2in}
 {\Large A sharp order-unit criterion for dilations,\\[4pt]
-with uniform exclusion bounds}\par
-\vspace{0.32in}
+with uniform exclusion bounds,\\[4pt]
+and first-order nonlinear rigidity}\par
+\vspace{0.2in}
 {\large Merged research report\quad\textperiodcentered\quad 22 September 2026}\par
-\vspace{0.20in}
+\vspace{0.12in}
 \begin{minipage}{0.94\textwidth}
 \begin{abstract}
 Fix a nonzero set-sized ordered abelian group $\Gamma$ and the complex Hahn
@@ -115,6 +123,12 @@ series $\sum_{n\ge0}\omega^{-\omega^n}z^n$ is strongly entire yet satisfies no
 nonzero linear differential equation and no nonzero linear dilation equation
 for any nontorsion parameter of that workspace.
 
+A third source adds a nonlinear part over $k((t^\Gamma))$, for any field $k$
+of characteristic zero: every strongly entire solution of a nonzero
+first-order algebraic differential equation $P(z,f,D_zf)=0$ is a polynomial,
+with an exclusion bound that must depend on the solution. Higher order stays
+open outside a nondegenerate class.
+
 $\Gamma$ is \emph{not} assumed divisible. Divisibility is hypothesised only
 where it is used, in the three threshold constructions listed in
 Section~\ref{hol:sub:divisibility}, and each of those statements prints the
@@ -127,9 +141,9 @@ hypothesis itself.
 \textbf{Status.} An AI-assisted research report; priority and independent
 refereeing are not certified. Lean covers the positive-support word lemma,
 escape mechanism, bounded-cost exclusion and formal exponential domain.
-The main differential and dilation classifications and the new torsion
-argument remain unformalized. The variable derivative is not the
-Berarducci--Mantova derivation on surreal coefficients.
+The main differential and dilation classifications, the new torsion
+argument and the whole nonlinear part remain unformalized. The variable
+derivative is not the Berarducci--Mantova derivation on surreal coefficients.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -151,6 +165,9 @@ infinite expression is legal only when its supports satisfy an order condition
 and a finiteness condition, and an equation can force either condition to fail
 at a sufficiently large argument. The question of this report is what a finite
 linear equation can accommodate under that stronger global requirement.
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences} ask the same
+of a finite \emph{nonlinear} algebraic differential equation, and answer it in
+order one.
 
 The answer depends decisively on which operator is used, and for dilation
 equations it depends further on whether the valuation of the particular
@@ -278,6 +295,38 @@ If the mixed partial derivatives of $F$ span a finite-dimensional vector space
 over $\K(z_1,\ldots,z_d)$, then $F$ is a polynomial.
 \end{maintheorem}
 
+The fourth principal theorem comes from the third source manuscript and is
+proved in Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:first}. It
+allows an arbitrary coefficient field of characteristic zero; see
+Convention~\ref{hol:nl:conv:field}, which also explains why that generality
+is not transferred to Theorems~\ref{hol:main:ode}--\ref{hol:main:multi}.
+
+\begin{maintheorem}[First-order nonlinear rigidity]\label{hol:nl:main:first}
+Let $\Gamma$ be as in Convention~\ref{hol:conv:group}, let $k$ be any field of
+characteristic zero, and let $\KK=k((t^\Gamma))$, with strong evaluation and
+entireness defined as in Definition~\ref{hol:def:entire} with $k$ in place of
+$\C$. For every nonzero $P\in\KK[z,Y_0,Y_1]$, every strongly entire formal
+solution $f\in\KK[[z]]$ of
+\[
+ P(z,f,D_zf)=0
+\]
+is a polynomial. More strongly, if a nonpolynomial formal solution exists,
+there is $\delta_0\in\Gamma_{>0}$, depending on the equation and on finitely
+many coefficients of that solution, such that $t^{-\delta}\notin\Dom(f)$ for
+every $\delta\ge\delta_0$. Consequently, for every nonpolynomial strongly
+entire $f$, the series $f$ and $D_zf$ are algebraically independent over
+$\KK(z)$.
+\end{maintheorem}
+
+Theorem~\ref{hol:nl:main:first} has no separant, irreducibility or
+solved-form hypothesis on $P$. Its exclusion bound depends on the solution,
+and Theorem~\ref{hol:nl:thm:nouniform} shows that this cannot be avoided,
+in contrast with the operator-only bound of Theorem~\ref{hol:main:ode}. It
+does not say that a nonpolynomial entire function is differentially
+transcendental in all orders: independence of $f$ and $D_zf$ does not exclude
+a relation involving $D_z^2f$. Question~\ref{hol:q:nonlinear} is re-scoped
+accordingly.
+
 The hypotheses separate two obstructions. Differential equations have bounded
 valuation costs after passing to their coefficient recurrence. Dilation
 equations can have costs increasing linearly with the index, but only along
@@ -285,7 +334,7 @@ the single scale $v(q)$; a scale that is not an order unit cannot reach all of
 $\Gamma$, even if its multiples are unbounded within their own Archimedean
 component. Strong entireness detects that failure.
 
-Beyond these three, the report proves: a mixed differential--dilation rigidity
+Beyond the first three, the report proves: a mixed differential--dilation rigidity
 theorem at every nonzero noncofinal dilation scale
 (Theorem~\ref{hol:thm:mixed}); a recurrence exclusion bound that is
 \emph{attained}, boundary included, by an explicit formal exponential
@@ -321,6 +370,13 @@ The torsion eigenspace equivalence in Proposition~\ref{hol:prop:torsion}
 needs no divisibility: inward stability of strong evaluation replaces the
 root-extraction argument of the source manuscripts.
 
+The nonlinear part,
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, uses no
+divisibility anywhere: its only divisions are of ordinary integers in $\Q$
+(the degree cutoff \eqref{hol:nl:eq:kappa}), and its exclusion bounds are
+chosen from finitely many strict inequalities with positive integer
+multipliers.
+
 No theorem in this report states a conclusion under
 Convention~\ref{hol:conv:group} while resting on a proof step that divides by
 an integer in $\Gamma$. The division-free predecessors in (1) and (2) are
@@ -329,8 +385,29 @@ weaker in the constant only, not in the conclusion.
 \subsection{Position relative to the collection and the literature}
 \label{hol:sub:position}
 
-The repository snapshot consulted by both source manuscripts is
-\begin{center}\small\texttt{a3124af79f66b8b9c196d76b4cbc5ac3938907c4}.\end{center}
+\paragraph{Provenance.}
+This report is built from three manuscripts, numbered as they arrived in the
+collection. Sources~08 and~09 were written independently on 22 September 2026
+and both prove the differential rigidity theorem and the order-unit dilation
+criterion (Theorems~\ref{hol:main:ode} and~\ref{hol:main:q}); source~08 is
+the base, because it assumes only $\Gamma\ne0$ while source~09 assumed
+divisibility, and every proof taken from~09 was re-read for a hidden division
+(Section~\ref{hol:sub:divisibility}). Together they supply
+Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates}. Source~10, delivered
+later the same day, supplies the nonlinear part,
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences} and
+Theorem~\ref{hol:nl:main:first}. The repository snapshot consulted by
+sources~08 and~09 is
+\begin{center}\small\texttt{a3124af79f66b8b9c196d76b4cbc5ac3938907c4},\end{center}
+and the one consulted by source~10 is
+\begin{center}\small\texttt{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}.\end{center}
+At the second pin this report consisted of sources~08 and~09 alone and its text
+was identical to the text into which source~10 was merged, so source~10's
+references to ``Question~15.1'' and ``Theorems~A--C'' of this report were
+accurate there; that question is now Question~\ref{hol:q:nonlinear}, re-scoped
+in Section~\ref{hol:sec:status}. The choices the merge made (renamed symbols,
+results printed once, the placement of the nonlinear part after the linear
+theory) are recorded in Section~\ref{hol:nl:sub:conventions}.
 
 \paragraph{The companion entire-function report.}
 The collection already contains a merged report on cofinality, factorization
@@ -348,7 +425,7 @@ $\pi:\Gamma\to\R$ with $\pi(h)=1$ whose kernel is the convex subgroup
 $H=\{\gamma:n\abs\gamma<h\text{ for all }n\ge1\}$, so that
 $\abs a_\pi=\exp(-\pi(v(a)))$ is a nontrivial real-valued non-Archimedean
 absolute value inducing the intrinsic valuation topology. That is exactly the
-sense in which both source manuscripts of this report use the phrase
+sense in which sources~08 and~09 of this report use the phrase
 ``coarsening'', and we cite it rather than repeat it; see
 Remark~\ref{hol:rem:coarsening}.
 
@@ -405,12 +482,14 @@ Conway normal-form conventions used in Section~\ref{hol:sub:embedding} follow
 current surreal field work~\cite{kks}; closure under a scalar derivation is
 assumed in no theorem below.
 
-Both source inspections were targeted: repository documentation, the report
-catalogue, the entire-function report, and the primary sources named above.
-Neither was a line-by-line audit of every repository manuscript or an
-exhaustive bibliography search, and a repository content search for
-\texttt{holonomic} returning no matches is not proof of absence.
-Section~\ref{hol:sec:status} records exactly what is and is not claimed.
+The inspections of sources~08 and~09 were targeted: repository documentation,
+the report catalogue, the entire-function report, and the primary sources
+named above. Neither was a line-by-line audit of every repository manuscript
+or an exhaustive bibliography search, and a repository content search for
+\texttt{holonomic} returning no matches is not proof of absence. Source~10's
+repository and literature comparison, equally targeted, is recorded in
+Section~\ref{hol:nl:sub:predecessors}. Section~\ref{hol:sec:status} records
+exactly what is and is not claimed.
 
 \section{Hahn support and what evaluation means}\label{hol:sec:support}
 
@@ -954,7 +1033,7 @@ that class. Finitely many classes give one finite exceptional range.
 
 \begin{remark}[A second normalization of the same proof]
 \label{hol:rem:unitalt}
-Both source manuscripts prove Theorem~\ref{hol:thm:unitorbit}\,(b), by two
+Sources~08 and~09 both prove Theorem~\ref{hol:thm:unitorbit}\,(b), by two
 slightly different normalizations, and we record the other one because it is
 occasionally more convenient. Instead of factoring out the complex root of
 unity, put $q^h=1+u$ directly, with $\eta=v(u)>0$ and $u\ne0$ for the same
@@ -1234,6 +1313,15 @@ distinction is not cosmetic: the escape mechanism exploits a finite
 nonzero coefficient, whereas nonlinear coefficient equations involve
 convolutions of many earlier coefficients and supply no such forward step
 without further work.
+
+That further work is the nonlinear part of this report
+(Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, from
+source~10). It does not repair the escape chain; it replaces the recurrence by
+a finite initial polynomial at one large scale. Every relation of order
+$R\le1$ is thereby excluded (Theorem~\ref{hol:nl:main:first}), and so is every
+relation of higher order whose residue corner polynomial is nonzero
+(Theorem~\ref{hol:nl:thm:corner}). Relations of order at least two with a
+vanishing residue corner remain outside all proofs in this report.
 \end{remark}
 
 \section{Generic lines and several-variable rigidity}\label{hol:sec:multi}
@@ -1586,7 +1674,7 @@ integer, and no real-valued surrogate for $v$ is introduced.
 \label{hol:rem:thetasecond}
 When $\mu=\beta$ is an order unit, entireness also follows from the
 cofinal-valuation criterion Lemma~\ref{hol:lem:certificate}\,(a) alone, and
-both source manuscripts are kept here because the two routes are genuinely
+the routes of sources~08 and~09 are both kept here because they are genuinely
 different. For $x\ne0$ with $\alpha=v(x)$, the $n$th evaluated term has
 valuation
 \begin{equation}\label{hol:eq:thetaval}
@@ -1931,6 +2019,7 @@ annihilating equations, not a claim that the rule is uncomputable or lacks a
 finite description.
 
 \subsection{Why the same formula is not entire on all surcomplex numbers}
+\label{hol:sub:notallsurcomplex}
 
 Let $e_\ast=\omega^\omega$, which dominates every integer multiple of every
 positive element of $\Gamma_\infty$, and enlarge the group to
@@ -2032,6 +2121,13 @@ equations lie outside these proofs, and a relation involving $F(q_1z)$ and
 $F(q_2z)$ for multiplicatively independent parameters is not covered merely by
 applying the single-$q$ theorem twice.
 
+The nonlinear part adds one more conclusion by a separate proof: $F$ and
+$D_zF$ are algebraically independent over $K_{\Gamma_\infty}(z)$
+(Corollary~\ref{hol:nl:cor:infiniterank}), so every nonlinear relation with
+$R\le1$ is excluded. Relations with $R\ge2$ are still not excluded unless
+their residue corner polynomial is nonzero, and no statement about several
+dilations follows.
+
 \section{Coefficient fields, degenerate value groups, characteristic}
 \label{hol:sec:fields}
 
@@ -2050,7 +2146,16 @@ No statement here is a theorem for arbitrary valued fields of positive residue
 characteristic. In that setting Lemma~\ref{hol:lem:integer} fails and the
 valuations of near-torsion geometric powers can behave differently, so any
 comparison with the ultrametric literature must keep the coefficient field and
-the residue characteristic visible.
+the residue characteristic visible. Example~\ref{hol:nl:ex:charp}, from
+source~10, shows that characteristic zero is needed even for the single
+linear equation $D_zf=0$: over $\mathbb F_p((t^\Q))$ a nonpolynomial strongly
+entire series has zero derivative.
+
+The nonlinear part (Convention~\ref{hol:nl:conv:field}) is proved by its
+source over an arbitrary field of characteristic zero. That is a statement
+about Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences} only;
+the generality of the linear theorems is governed by the first paragraph of
+this section and its own argument.
 
 We assumed $\Gamma\ne0$ in order to speak of positive exterior scales. When
 $\Gamma=0$ the field is $\C$ with the trivial valuation, strong evaluation at
@@ -2152,18 +2257,1178 @@ generic-line extension remain unformalized. The several-variable proof also
 needs countable polynomial avoidance and restriction of a rational
 differential system.
 
-The build and axiom audit cover only imported declarations recorded in the
-ledger. The Python checks are finite checks of formulas and examples; they
+Nothing in the nonlinear part,
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, is
+formalized. The build and axiom audit cover only imported declarations
+recorded in the ledger. The Python checks are finite checks of formulas and examples; they
 do not establish any remaining infinite statement.
 
-\section{The two finite check suites}\label{hol:sec:verification}
+%======================================================================
+% Nonlinear part: source 10 (nonlinear rigidity). Labels use hol:nl:.
+%======================================================================
+\section{Nonlinear equations: finite initial polynomials}
+\label{hol:nl:sec:setting}
 
-Both source manuscripts shipped an independent exact-arithmetic suite, both
-were run on copies and passed, and neither supersedes the other: they cover
-overlapping but distinct finite facts, and they are kept side by side in
-\texttt{code/} for that reason. Both use only the Python standard library,
-integers, and \texttt{fractions.Fraction}, with no floating point, no network
-access, and no third-party packages.
+This section and the next three contain the material of source~10. They
+answer the first-order case of Question~\ref{hol:q:nonlinear}, which
+sources~08 and~09 had left open, together with a nondegenerate higher-order
+class and positive-weight Euler equations in several variables. The method is
+not the escape chain of Section~\ref{hol:sec:escape}. The warning in
+Remark~\ref{hol:rem:transcendence} stands: a nonlinear equation gives
+coefficient convolutions, not a bounded-step linear recurrence. Instead, a
+whole scaled series is reduced to a finite polynomial at one large scale, and
+an exact leading-term computation gives the contradiction.
+
+\subsection{Coefficient field, conventions and the merge's choices}
+\label{hol:nl:sub:conventions}
+
+\begin{convention}[Coefficient field of the nonlinear part]
+\label{hol:nl:conv:field}
+In Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, $k$ is an
+arbitrary field of characteristic zero with the trivial valuation, $\Gamma$ is
+as in Convention~\ref{hol:conv:group}, and
+\[
+ \KK=k((t^\Gamma)).
+\]
+The valuation $v$, leading coefficient $\lc$, residue $\res$, strong
+summability, $\Dom(f)$ and entireness are defined exactly as in
+Section~\ref{hol:sub:conventions} and Definition~\ref{hol:def:entire}, with
+$k$ in place of $\C$, except that, following source~10, $\res(a)$ is defined
+for every $a$ of nonnegative valuation as its coefficient at exponent zero, so
+that $\res(a)=0$ when $v(a)>0$. Write $\EK$ for the strongly entire series in
+$\KK[[z]]$. In several variables, strong entireness of
+$f=\sum_\alpha a_\alpha x^\alpha$ means strong summability of the \emph{joint}
+family $(a_\alpha b^\alpha)_{\alpha\in\N^m}$ at every $b\in\KK^m$. For $k=\C$
+one has $\KK=\K$ and $\EK=\E$. The derivative $D_z$ kills $\KK$, and
+$f'=D_zf$; no scalar surreal derivation, analytic continuation or
+fine-topology limit is involved.
+\end{convention}
+
+\paragraph{Why the coefficient field differs.}
+Source~10 proves every statement of the nonlinear part over an arbitrary
+characteristic-zero field~$k$, and it uses neither algebraic nor real
+closedness. Its hypothesis on the coefficient field is therefore weaker than
+the hypothesis $k=\C$ under which
+Theorems~\ref{hol:main:ode}--\ref{hol:main:multi} and the rest of
+Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} are stated. This
+generality is recorded for the nonlinear part only. It is \emph{not}
+transferred to the linear theorems: they remain stated over~$\C$, and their
+possible extension to other coefficient fields is the separate remark of
+Section~\ref{hol:sec:fields}, resting on its own argument. In the other
+direction, the nonlinear part borrows from Section~\ref{hol:sec:support} only
+facts about well-ordered subsets of~$\Gamma$ and finite coefficient sums
+(Lemmas~\ref{hol:lem:support} and~\ref{hol:lem:certificate}), whose proofs do
+not use any property of~$\C$; source~10 proves the facts it needs over~$k$
+itself, except the positive-support lemma used in
+Theorem~\ref{hol:nl:thm:nouniform}, which it imports as standard. The group $\Gamma$ is not assumed divisible, and no order unit, no
+countable cofinal subset and no real-valued norm is used anywhere in the
+nonlinear part.
+
+\paragraph{Renamed symbols.}
+Several symbols of source~10 would collide with symbols of
+Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates}; they are renamed
+here, in the new material only.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+Source~10 & Here & Reason\\
+\midrule
+$D=\max_\nu d_\nu$, $W$ & $d_P$, $w_P$ & $D_z$ is the derivative.\\
+$H_P$ (residue corner polynomial) & $\chi_P$ & $H$ is an element of $\Gamma$
+in Sections~\ref{hol:sec:support}--\ref{hol:sec:surreal}.\\
+$B_P$ (degree cutoff, in $\Q$) & $\kappa_P$ & $B$, $B_L$, $B_{\mathrm{rec}}$
+are elements of $\Gamma$.\\
+$B$ (set of right sides) & $\mathcal R$ & The same.\\
+$r$, $r_0$ (scale, ``radius'') & $\delta$, $\delta_0$ & $r$ indexes
+derivative orders in \eqref{hol:eq:dlinear}; $t^{-\delta}$ is the notation
+of Corollary~\ref{hol:cor:boundedcost}.\\
+$h_r$, $p_r$ (Gauss value, initial polynomial) & $\gamma_\delta$,
+$\phi_\delta$ & $h$ is a torsion order, $p_r$ an operator coefficient.\\
+$M$ (an integer bound) & $n_\ast$ & $M(S)$ is a support monoid.\\
+$E_q$ (Euler operator) & $\vartheta_q$ & $E_\eta$ is the formal exponential
+of Proposition~\ref{hol:prop:expdomain}.\\
+Theorems~A, B, C & Theorems~\ref{hol:nl:main:first}, \ref{hol:nl:thm:euler},
+\ref{hol:nl:thm:corner} & Theorems~A--C of this report are different
+theorems.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The shipped audit files \path{10-nonlinear-rigidity-PROOF_AUDIT.md} and
+\path{10-nonlinear-rigidity-SOURCES_AND_SCOPE.md} keep the source's
+notation and numbering.
+
+\paragraph{Words with two meanings.}
+\emph{Escape} keeps the meaning of Section~\ref{hol:sec:escape} (a chain
+through a linear recurrence); source~10's lemma ``escape of active degree''
+is a different statement and is called Lemma~\ref{hol:nl:lem:active} here.
+An \emph{exclusion bound} is, as in Section~\ref{hol:sec:escape}, an element
+$\delta_0\in\Gamma$ such that evaluation fails at the arguments $t^{-\delta}$
+with $\delta\ge\delta_0$; the source's word ``radius'' is not used. A
+\emph{corner} is always the finite set of terms of
+Section~\ref{hol:nl:sub:corner}, never a full differential Newton polygon.
+The \emph{residue polynomials} $\overline P$ and $R_r$ of
+Section~\ref{hol:sec:orbits} are unrelated to the residue corner polynomial
+$\chi_P$.
+
+\paragraph{Results printed once.}
+Source~10 reproves several facts that Sections~\ref{hol:sec:support}
+and~\ref{hol:sec:surreal} already contain. They are printed once and cited:
+the support calculus inside Lemma~\ref{hol:nl:lem:algebra}
+(Lemma~\ref{hol:lem:support}\,(1),(3) and Proposition~\ref{hol:prop:closure});
+its ``cofinal escape of coefficient minima'' lemma, which is
+Lemma~\ref{hol:lem:certificate}\,(a); the positive-support geometric-series
+lemma, which source~10 imports and Lemma~\ref{hol:lem:support}\,(2) proves;
+the surreal embedding, which is Section~\ref{hol:sub:embedding} with the same
+monomial convention $t^\gamma\mapsto\omega^{-\gamma}$; strong entireness of
+the series \eqref{hol:eq:explicitF}, which is Theorem~\ref{hol:thm:explicit};
+and the remark on $\Gamma=0$, which is in Section~\ref{hol:sec:fields}.
+Everything else in source~10 is printed in
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, with its
+proofs.
+
+\subsection{The coefficient-family algebra}\label{hol:nl:sub:algebra}
+
+For a finite tuple $X=(X_1,\ldots,X_m)$ of indeterminates put
+\[
+ \Sfam_m=\Bigl\{F=\sum_\alpha b_\alpha X^\alpha\in\KK[[X]]:
+ (b_\alpha)_\alpha\text{ is strongly summable}\Bigr\},
+\]
+and let $\Sfam_m^+$ be the subset whose coefficients all have nonnegative
+valuation. The condition concerns the family of coefficients, not convergence
+in the $X$-adic topology.
+
+\begin{lemma}[Hahn-family algebra and its residue]\label{hol:nl:lem:algebra}
+$\Sfam_m$ is a $\KK$-subalgebra of $\KK[[X]]$, stable under the formal partial
+derivatives and under the Euler operators $\sum_\nu q_\nu X_\nu\partial_\nu$
+with $q_\nu\in k$. Coefficientwise residue is a ring homomorphism
+\[
+ \rho:\Sfam_m^+\longrightarrow k[X],\qquad
+ \rho\Bigl(\sum_\alpha b_\alpha X^\alpha\Bigr)=\sum_\alpha\res(b_\alpha)X^\alpha,
+\]
+whose values are polynomials, not arbitrary formal power series; $\rho$
+commutes with these differential operators.
+\end{lemma}
+
+\begin{proof}
+Closure under sums, scalar multiples and products is the support
+calculation of Lemma~\ref{hol:lem:support}\,(1) and~(3), as in the proof of
+Proposition~\ref{hol:prop:closure}. For strongly summable $(b_\alpha)$ and
+$(c_\epsilon)$ a fixed exponent has finitely many representations as a sum of
+two support exponents, each carried by finitely many indices, so the double
+family $(b_\alpha c_\epsilon)$ is strongly summable, and regrouping by
+$\alpha+\epsilon$ gives the Cauchy product. Source~10 proves this over $k$ by
+the same two-coordinate sequence argument; like the Hahn-field construction
+itself, that argument uses ordinary set-theoretic choice. A formal derivative
+or an Euler operator with coefficients in $k$ reindexes a subfamily and
+multiplies its members by elements of the trivially valued field $k$; it
+creates no new support exponent. For $F\in\Sfam_m^+$ the exponent zero lies
+in only finitely many coefficient supports, so $\rho(F)$ is a polynomial. Each
+$X$-coefficient of a product is a finite sum of products of coefficients, the
+residue is additive and multiplicative on elements of nonnegative valuation,
+and the local finiteness just proved justifies every interchange; so $\rho$ is
+a ring homomorphism. Differentiation commutes with residue coefficientwise.
+\end{proof}
+
+For $0\ne F=\sum_\alpha b_\alpha X^\alpha\in\Sfam_m$ put
+\[
+ \gamma(F)=\min_{b_\alpha\ne0}v(b_\alpha),\qquad
+ \inpoly(F)=\rho\bigl(t^{-\gamma(F)}F\bigr).
+\]
+The minimum exists because it is the least element of the nonempty
+well-ordered union of supports. Then $t^{-\gamma(F)}F\in\Sfam_m^+$ and the
+\emph{initial polynomial} $\inpoly(F)$ is nonzero.
+
+\begin{corollary}[Gauss multiplicativity]\label{hol:nl:cor:gauss}
+For nonzero $F,G\in\Sfam_m$,
+\[
+ \gamma(FG)=\gamma(F)+\gamma(G),\qquad
+ \inpoly(FG)=\inpoly(F)\,\inpoly(G).
+\]
+\end{corollary}
+
+\begin{proof}
+Normalize both factors and apply Lemma~\ref{hol:nl:lem:algebra}. The product
+of the two nonzero residues is nonzero because $k[X]$ is an integral domain,
+so some coefficient of $t^{-\gamma(F)-\gamma(G)}FG$ has valuation exactly zero.
+\end{proof}
+
+\subsection{Scaled initial polynomials}\label{hol:nl:sub:scaled}
+
+Let $f=\sum_{n\ge0}a_nz^n\in\KK[[z]]$ and $\delta\in\Gamma$ with
+$t^{-\delta}\in\Dom(f)$. Then
+\[
+ F_\delta(X)=f(t^{-\delta}X)=\sum_{n\ge0}a_nt^{-n\delta}X^n\in\Sfam_1.
+\]
+For $f\ne0$ put
+\begin{equation}\label{hol:nl:eq:gaussdata}
+ \gamma_\delta=\min_{a_n\ne0}\bigl(v(a_n)-n\delta\bigr),\qquad
+ g_\delta=t^{-\gamma_\delta}F_\delta,\qquad
+ \phi_\delta=\rho(g_\delta),\qquad
+ N_\delta=\deg\phi_\delta.
+\end{equation}
+The \emph{active} indices are the $n$ attaining $\gamma_\delta$; there are
+finitely many, $N_\delta$ is the largest, and $A_\delta=\lc(\phi_\delta)\in
+k^\times$.
+
+The element $\gamma_\delta$ is a \emph{coefficient Gauss value}. It need not
+equal $v(f(t^{-\delta}))$: $\phi_\delta(1)$ can vanish although
+$\phi_\delta\ne0$. The proofs below use identities in $\Sfam_1$ and in $k[X]$
+only, never an identification of these two quantities, and never replace the
+initial polynomial by its value at~$1$.
+
+\begin{lemma}[Exact derivative scaling]\label{hol:nl:lem:derivatives}
+For every $j\ge0$,
+\begin{equation}\label{hol:nl:eq:scalederivative}
+ (D_z^jf)(t^{-\delta}X)=t^{\gamma_\delta+j\delta}\,g_\delta^{(j)}(X),
+ \qquad \rho\bigl(g_\delta^{(j)}\bigr)=\phi_\delta^{(j)}.
+\end{equation}
+If $N_\delta\ge j$, then $\phi_\delta^{(j)}$ has degree $N_\delta-j$ and
+leading coefficient $A_\delta\fall{N_\delta}{j}$.
+\end{lemma}
+
+\begin{proof}
+The scaling identity is a formal coefficient computation:
+$D_X^jF_\delta(X)=t^{-j\delta}(D_z^jf)(t^{-\delta}X)$. The residue identity is
+Lemma~\ref{hol:nl:lem:algebra}. The falling factorial is a nonzero element of
+$k$ for $N_\delta\ge j$ because $k$ has characteristic zero.
+\end{proof}
+
+\begin{lemma}[Large active degrees]\label{hol:nl:lem:active}
+Let $f$ be nonpolynomial, let $n_\ast\in\N$, and choose $m>n_\ast$ with
+$a_m\ne0$. There is $\delta_1\in\Gamma_{>0}$ such that, whenever
+$\delta\ge\delta_1$ and $t^{-\delta}\in\Dom(f)$, every active index exceeds
+$n_\ast$. Moreover $\gamma_\delta\le v(a_m)-m\delta$.
+\end{lemma}
+
+\begin{proof}
+Choose $\delta_1>0$ with
+\begin{equation}\label{hol:nl:eq:lowindices}
+ (m-n)\delta_1>v(a_m)-v(a_n)\qquad(0\le n\le n_\ast,\ a_n\ne0).
+\end{equation}
+There are finitely many inequalities, and they need no division in $\Gamma$:
+take $\delta_1$ positive and larger than the absolute values of all right-hand
+sides, since each multiplier $m-n$ is a positive integer. They persist for
+$\delta\ge\delta_1$ and say that each such low-index term has scaled valuation
+$v(a_n)-n\delta$ strictly larger than that of the $m$th term. The last
+assertion is the definition of $\gamma_\delta$.
+\end{proof}
+
+This is not a limit $N_\delta\to\infty$ along a countable cofinal sequence,
+which need not exist; it concerns a final segment of $\Gamma_{>0}$ and only
+those scales at which strong evaluation is available. It is also unrelated to
+the escape chain of Lemma~\ref{hol:lem:escape}: no recurrence is used.
+
+\subsection{The finite corner of a differential polynomial}
+\label{hol:nl:sub:corner}
+
+Let $P$ be a nonzero differential polynomial of order at most $s$, written in
+combined-monomial form
+\begin{equation}\label{hol:nl:eq:P}
+ P(z,Y_0,\ldots,Y_s)=\sum_{\nu\in J}c_\nu z^{k_\nu}\prod_{j=0}^sY_j^{m_{\nu j}},
+\end{equation}
+with $J$ finite, every $c_\nu\in\KK^\times$, and identical monomials already
+combined. Write $P[f]=P(z,f,D_zf,\ldots,D_z^sf)$. Define the integers
+\begin{equation}\label{hol:nl:eq:dw}
+ d_\nu=\sum_{j=0}^sm_{\nu j},\qquad
+ w_\nu=k_\nu-\sum_{j=0}^sj\,m_{\nu j},\qquad
+ d_P=\max_\nu d_\nu,\qquad
+ w_P=\max_{d_\nu=d_P}w_\nu,
+\end{equation}
+and
+\[
+ \mathcal C_P=\{\nu:d_\nu=d_P,\ w_\nu=w_P\},\qquad
+ \beta_P=\min_{\nu\in\mathcal C_P}v(c_\nu),\qquad
+ \bar c_\nu=\res\bigl(t^{-\beta_P}c_\nu\bigr)\in k\quad(\nu\in\mathcal C_P).
+\]
+Thus $(d_P,w_P)$ is chosen lexicographically: first the largest total
+differential degree, then the largest shift $w$. This is a finite corner
+selection, not the construction of a differential Newton polygon. The
+\emph{residue corner polynomial} and the \emph{full corner polynomial} are
+\begin{equation}\label{hol:nl:eq:chiI}
+ \chi_P(T)=\sum_{\nu\in\mathcal C_P}\bar c_\nu
+ \prod_{j=0}^s\fall Tj^{m_{\nu j}}\in k[T],\qquad
+ I_P(T)=\sum_{\nu\in\mathcal C_P}c_\nu
+ \prod_{j=0}^s\fall Tj^{m_{\nu j}}\in\KK[T].
+\end{equation}
+In general $\chi_P$ can vanish although some $\bar c_\nu\ne0$, because
+different products of falling factorials can be linearly dependent. If
+$\chi_P\ne0$, then $I_P\ne0$, and
+\begin{equation}\label{hol:nl:eq:rootcontainment}
+ I_P(n)=0\ \Longrightarrow\ \chi_P(n)=0\qquad(n\in\N),
+\end{equation}
+because $t^{-\beta_P}I_P$ has coefficients of nonnegative valuation and residue
+commutes with substitution of an ordinary integer.
+
+\begin{lemma}[The exact corner identity]\label{hol:nl:lem:corner}
+Let $\phi\in k[X]$ have degree $N\ge s$ and leading coefficient $A\ne0$, and
+put
+\[
+ \Omega_\phi(X)=\sum_{\nu\in\mathcal C_P}\bar c_\nu X^{k_\nu}
+ \prod_{j=0}^s\bigl(\phi^{(j)}(X)\bigr)^{m_{\nu j}}.
+\]
+Then $\deg\Omega_\phi\le d_PN+w_P$ and
+\begin{equation}\label{hol:nl:eq:corneridentity}
+ [X^{d_PN+w_P}]\,\Omega_\phi=A^{d_P}\chi_P(N).
+\end{equation}
+In particular $\chi_P(N)\ne0$ implies $\Omega_\phi\ne0$.
+\end{lemma}
+
+\begin{proof}
+Each corner summand has degree at most
+$k_\nu+\sum_jm_{\nu j}(N-j)=d_PN+w_P$, and its coefficient in that degree is
+$\bar c_\nu A^{d_P}\prod_j\fall Nj^{m_{\nu j}}$. Summing gives the formula.
+\end{proof}
+
+Only finitely many nonnegative integers are roots of a nonzero $\chi_P$, even
+when $k$ is not algebraically closed. The active degree is an ordinary
+integer, not an element of $\Gamma$, and no root extraction or division in
+$\Gamma$ occurs in this step.
+
+\section{First-order algebraic differential equations}\label{hol:nl:sec:first}
+
+\subsection{A finite certificate excluding all large scales}
+
+The following theorem carries the proof of Theorem~\ref{hol:nl:main:first}
+and is also a practical audit object: its scale inequalities use only finitely
+many coefficients of the solution. It applies to equations of any order.
+
+\begin{theorem}[Nonlinear finite exclusion certificate]
+\label{hol:nl:thm:certificate}
+Let $P$ be as in \eqref{hol:nl:eq:P} with $d_P\ge1$ and $\chi_P\ne0$, and let
+$f=\sum_na_nz^n$ be a nonpolynomial formal solution of $P[f]=0$. Choose an
+integer $n_\ast\ge s$ at least as large as every nonnegative integer root of
+$\chi_P$, and choose $m>n_\ast$ with $a_m\ne0$ and
+\begin{equation}\label{hol:nl:eq:slope}
+ (d_P-d_\nu)m+w_P-w_\nu>0\qquad(d_\nu<d_P).
+\end{equation}
+Every $\delta\in\Gamma_{>0}$ satisfying the finitely many strict inequalities
+\begin{align}
+ (m-n)\delta&>v(a_m)-v(a_n)
+ &&(0\le n\le n_\ast,\ a_n\ne0),\label{hol:nl:eq:cert1}\\
+ (w_P-w_\nu)\delta&>\beta_P-v(c_\nu)
+ &&(d_\nu=d_P,\ w_\nu<w_P),\label{hol:nl:eq:cert2}\\
+ \bigl((d_P-d_\nu)m+w_P-w_\nu\bigr)\delta
+ &>\beta_P-v(c_\nu)+(d_P-d_\nu)v(a_m)
+ &&(d_\nu<d_P)\label{hol:nl:eq:cert3}
+\end{align}
+has $t^{-\delta}\notin\Dom(f)$. Such $m$ and $\delta$ exist, and the
+inequalities persist when $\delta$ increases. Consequently $\Dom(f)$ omits
+$t^{-\delta}$ for every $\delta$ in a final segment of $\Gamma_{>0}$, and every
+strongly entire solution of $P[f]=0$ is a polynomial.
+\end{theorem}
+
+\begin{proof}
+An integer $n_\ast$ exists because $\chi_P\ne0$. For $d_\nu<d_P$ the
+coefficient $d_P-d_\nu$ of $m$ in \eqref{hol:nl:eq:slope} is a positive
+integer, so all sufficiently large $m$ satisfy it, and a nonpolynomial $f$ has
+nonzero coefficients of arbitrarily large index. Every multiplier on the left
+of \eqref{hol:nl:eq:cert1}--\eqref{hol:nl:eq:cert3} is then a positive
+integer, so any $\delta$ that is positive and larger than the absolute values
+of all right-hand sides satisfies them, as does every larger $\delta$.
+
+Suppose $t^{-\delta}\in\Dom(f)$ for such a $\delta$, and form
+$\gamma=\gamma_\delta$, $g=g_\delta$, $\phi=\phi_\delta$, $N=N_\delta$ as in
+\eqref{hol:nl:eq:gaussdata}. By \eqref{hol:nl:eq:cert1} and
+Lemma~\ref{hol:nl:lem:active},
+\begin{equation}\label{hol:nl:eq:hbound}
+ N>n_\ast,\qquad \gamma\le v(a_m)-m\delta.
+\end{equation}
+All derivatives of $g$ lie in $\Sfam_1^+$. Substituting $z=t^{-\delta}X$, a
+ring homomorphism $\KK[[z]]\to\KK[[X]]$, Lemma~\ref{hol:nl:lem:derivatives}
+turns the $\nu$th summand of $P[f]$ into
+\[
+ c_\nu\,t^{d_\nu\gamma-w_\nu\delta}\,X^{k_\nu}\prod_j\bigl(g^{(j)}\bigr)^{m_{\nu j}}.
+\]
+Multiply the whole identity by $t^{-\lambda}$ with
+$\lambda=\beta_P+d_P\gamma-w_P\delta$. The scalar in front of the $\nu$th
+product then has valuation
+\begin{equation}\label{hol:nl:eq:scalarvalue}
+ v(c_\nu)-\beta_P+(d_\nu-d_P)\gamma+(w_P-w_\nu)\delta.
+\end{equation}
+For $\nu\in\mathcal C_P$ this is $v(c_\nu)-\beta_P\ge0$. For $d_\nu=d_P$ and
+$w_\nu<w_P$ it is positive by \eqref{hol:nl:eq:cert2}. For $d_\nu<d_P$,
+multiplying the bound on $\gamma$ in \eqref{hol:nl:eq:hbound} by the negative
+integer $d_\nu-d_P$ reverses it and gives the lower bound
+\[
+ v(c_\nu)-\beta_P-(d_P-d_\nu)v(a_m)
+ +\bigl((d_P-d_\nu)m+w_P-w_\nu\bigr)\delta>0
+\]
+by \eqref{hol:nl:eq:cert3}. So the normalized identity lies in $\Sfam_1^+$,
+and only the corner summands survive the residue map. Applying $\rho$ to the
+formal identity gives
+\begin{equation}\label{hol:nl:eq:residualequation}
+ 0=\sum_{\nu\in\mathcal C_P}\bar c_\nu X^{k_\nu}
+ \prod_j\bigl(\phi^{(j)}\bigr)^{m_{\nu j}}=\Omega_\phi(X).
+\end{equation}
+But $N>n_\ast\ge s$ and $\chi_P(N)\ne0$, so by
+Lemma~\ref{hol:nl:lem:corner} the coefficient of $X^{d_PN+w_P}$ in
+$\Omega_\phi$ is $\lc(\phi)^{d_P}\chi_P(N)\ne0$, a contradiction. The last
+assertion follows because a strongly entire series is evaluable at every
+monomial argument.
+\end{proof}
+
+\paragraph{An explicit, division-free exclusion bound.}
+Let $\mathcal R$ be the finite set of right-hand sides of
+\eqref{hol:nl:eq:cert1}--\eqref{hol:nl:eq:cert3}; an empty list contributes
+nothing. For any $\epsilon\in\Gamma_{>0}$,
+\begin{equation}\label{hol:nl:eq:deltazero}
+ \delta_0=\epsilon+\max\bigl(\{0\}\cup\{\abs b:b\in\mathcal R\}\bigr)
+\end{equation}
+satisfies all of them, since their multipliers are positive integers. This is
+an explicit certificate; it is not claimed to be optimal. The proof uses the
+full supports to form the initial polynomial but only finitely many leading
+valuations to choose $\delta_0$. Leading valuations alone do \emph{not} in
+general decide strong evaluation at a boundary argument, and the certificate
+has no converse.
+
+For $k=\C$, Lemma~\ref{hol:lem:inward} (inward stability) turns the monomial
+conclusion into the exterior form used in Theorem~\ref{hol:main:ode}: a
+nonpolynomial formal solution is then not strongly evaluable at any
+$x\ne0$ with $v(x)\le-\delta_0$. This combination of the two statements is
+made by the merge; source~10 states only the monomial form.
+
+\begin{corollary}[Cofinal scales suffice]\label{hol:nl:cor:cofinal}
+If $\chi_P\ne0$, a formal solution of $P[f]=0$ strongly evaluable at
+$t^{-\delta}$ for a cofinal set of $\delta\in\Gamma_{>0}$ is a polynomial.
+\end{corollary}
+
+\begin{proof}
+A cofinal subset meets the final segment excluded by
+Theorem~\ref{hol:nl:thm:certificate} for a nonpolynomial solution.
+\end{proof}
+
+\paragraph{Dependency audit.}
+The only infinite-support step is Lemma~\ref{hol:nl:lem:algebra}, with the
+existence and finiteness of a leading coefficient layer; the rest is finite
+polynomial algebra. The proof makes none of the following replacements: a
+higher-rank group by a real-valued norm; strong summation by convergence of
+finite subsums; a nonsummable family by a cancelled expression; the residue
+polynomial by its value at~$1$; a nonlinear coefficient recurrence by a
+linear one. The three critical checkpoints are the minimum in
+\eqref{hol:nl:eq:gaussdata}, the order reversal when \eqref{hol:nl:eq:hbound}
+is multiplied by $d_\nu-d_P<0$, and the nonvanishing of $\chi_P(N)$.
+
+\subsection{Why the corner never degenerates in order one; proof of
+\texorpdfstring{Theorem~\ref{hol:nl:main:first}}{Theorem D}}
+\label{hol:nl:sub:firstorder}
+
+Write a first-order equation in combined-monomial form as
+\begin{equation}\label{hol:nl:eq:firstP}
+ P(z,Y,Y')=\sum_{k,i,j}c_{kij}z^kY^i(Y')^j.
+\end{equation}
+For a term, $d=i+j$ and $w=k-j$. At the corner, fixing $j$ forces
+$i=d_P-j$ and $k=w_P+j$, so there is at most one corner term for each $j$, and
+\eqref{hol:nl:eq:chiI} becomes
+\begin{equation}\label{hol:nl:eq:firstchi}
+ \chi_P(T)=\sum_{\substack{i+j=d_P\\ k-j=w_P}}\bar c_{kij}T^j,\qquad
+ I_P(T)=\sum_{\substack{i+j=d_P\\ k-j=w_P}}c_{kij}T^j.
+\end{equation}
+At least one $\bar c_{kij}$ is nonzero by the choice of $\beta_P$, and its
+power $T^j$ cannot cancel against another summand. Hence $\chi_P\ne0$.
+
+\begin{proof}[Proof of Theorem~\ref{hol:nl:main:first}]
+If $d_P=0$, then $P$ is a nonzero polynomial in $z$ alone and has no formal
+solutions. Otherwise the preceding observation and
+Theorem~\ref{hol:nl:thm:certificate} give polynomiality and the exclusion
+statement, with $\delta_0$ as in \eqref{hol:nl:eq:deltazero}. A nonzero
+algebraic relation between $f$ and $D_zf$ over $\KK(z)$ becomes a nonzero
+polynomial of the form \eqref{hol:nl:eq:firstP} after denominators are
+cleared, which gives the independence statement.
+\end{proof}
+
+The uniqueness of a corner term for fixed $j$ is a structural fact of order
+one. It is exactly what fails when several derivative orders can contribute
+the same falling-factorial polynomial (Section~\ref{hol:nl:sub:vanishing}).
+
+\subsection{Finite candidate degrees and the entire-solution locus}
+\label{hol:nl:sub:degrees}
+
+Once polynomiality is known, ordinary polynomial degree gives a sharper
+finite candidate set that uses the \emph{full} coefficients. Assume $d_P\ge1$
+and define the nonnegative rational number
+\begin{equation}\label{hol:nl:eq:kappa}
+ \kappa_P=\max\Bigl(\{0\}\cup\Bigl\{\frac{w_\nu-w_P}{d_P-d_\nu}:d_\nu<d_P\Bigr\}\Bigr)\in\Q.
+\end{equation}
+This divides ordinary integers in $\Q$, not elements of $\Gamma$.
+
+\begin{theorem}[Finite candidate degrees]\label{hol:nl:thm:degrees}
+For the first-order polynomial \eqref{hol:nl:eq:firstP} with $d_P\ge1$, every
+nonconstant strongly entire solution has degree in the finite set
+\begin{equation}\label{hol:nl:eq:candidates}
+ \mathcal D_P=\{n\in\Z_{>0}:n\le\kappa_P\}\ \cup\ \{n\in\Z_{>0}:I_P(n)=0\}.
+\end{equation}
+The constant solutions are exactly the $c\in\KK$ with $P(z,c,0)=0$ as a
+polynomial in $z$. The set \eqref{hol:nl:eq:candidates} is necessary; it does
+not promise that each candidate occurs.
+\end{theorem}
+
+\begin{proof}
+Polynomiality is Theorem~\ref{hol:nl:main:first}. Let $f=az^n+\cdots$ with
+$n\ge1$ and $a\ne0$. A term of \eqref{hol:nl:eq:firstP} has degree
+$k+in+j(n-1)=dn+w$ and leading coefficient $c_{kij}a^dn^j$. If $n>\kappa_P$,
+every term with $d<d_P$ has degree below $d_Pn+w_P$, and so do the terms with
+$d=d_P$, $w<w_P$. So the coefficient of $z^{d_Pn+w_P}$ in $P[f]$ is
+$a^{d_P}I_P(n)$, which must vanish. $I_P$ is nonzero by
+\eqref{hol:nl:eq:firstchi}, so its set of ordinary integer roots is finite.
+The assertion on constants is immediate by substitution.
+\end{proof}
+
+\begin{remark}[What ``finite'' does and does not compute]
+The set of ordinary integer roots of $I_P$ is well defined and finite for
+arbitrary Hahn coefficients, but its existence is not a uniform algorithm for
+arbitrary coefficient names: extracting a leading exponent, deciding
+coefficient equality, or testing an arbitrary complex coefficient for exact
+integrality can need information that no numerical approximation supplies.
+For rational coefficients, or other exact representations with the needed
+operations, \eqref{hol:nl:eq:candidates} is an actual finite algebraic
+search. The shipped program uses only exact rational data.
+\end{remark}
+
+Replacing $I_P(n)=0$ by $\chi_P(n)=0$ gives a coarser necessary set, by
+\eqref{hol:nl:eq:rootcontainment}. Keeping $I_P$ can be genuinely sharper.
+
+\begin{example}[A resonance visible only in the first layer]
+\label{hol:nl:ex:resonance}
+Let $c=t^\eta$ with $\eta>0$, $N\in\Z_{>0}$, and $P=zY'-(N+c)Y$. Then
+$\chi_P(T)=T-N$ but $I_P(T)=T-N-c$ has no ordinary nonnegative integer root.
+The only formal solution in $\KK[[z]]$ is zero, since coefficient comparison
+gives $(n-N-c)a_n=0$ for every $n$. A residue resonance alone is not a
+polynomial solution.
+\end{example}
+
+\begin{corollary}[An algebraic entire-solution locus]\label{hol:nl:cor:locus}
+For a first-order equation $P$ with $d_P\ge1$ put
+$n_P=\max(\{0\}\cup\mathcal D_P)$. There is an explicitly defined affine
+algebraic set $\mathcal V_P\subseteq\mathbb A_{\KK}^{n_P+1}$ whose
+$\KK$-points are in bijection with all strongly entire formal solutions of
+$P[f]=0$. The same equations parametrize all strongly entire solutions over
+every Hahn-field extension $\KK\hookrightarrow\mathbb L=k'((t^{\Gamma'}))$
+induced by an embedding of coefficient fields $k\hookrightarrow k'$ and an
+embedding of ordered groups $\Gamma\hookrightarrow\Gamma'$.
+\end{corollary}
+
+\begin{proof}
+With indeterminates $u_0,\ldots,u_{n_P}$ put $F_u(z)=\sum_{n\le n_P}u_nz^n$ and
+expand $P(z,F_u,F_u')=\sum_\ell Q_\ell(u)z^\ell$ with
+$Q_\ell\in\KK[u_0,\ldots,u_{n_P}]$. Let $\mathcal V_P$ be the common zero
+locus of these finitely many $Q_\ell$. Its points are exactly the polynomial
+solutions of degree at most $n_P$, each of which is strongly entire, and
+Theorem~\ref{hol:nl:thm:degrees} shows there are no others. Under the stated
+extension the monomial degrees and $\kappa_P$ are unchanged, and for an
+ordinary integer $n$ the element $I_P(n)$ vanishes in $\mathbb L$ if and only
+if it vanishes in $\KK$. Theorem~\ref{hol:nl:main:first} applies over
+$\mathbb L$, whose coefficient field again has characteristic zero and whose
+group is again nonzero, so the same degree bound and equations remain
+exhaustive there.
+\end{proof}
+
+This is a finite-dimensional algebraic parametrization, not a claim that the
+number of solutions is finite, and not a moduli statement over coefficient
+rings with nilpotents. The extension class is exactly the one stated.
+
+\subsection{Worked first-order equations}\label{hol:nl:sub:examples}
+
+All identities use the formal derivative $D_z$. For $k=\C$ they are statements
+about surcomplex Hahn workspaces; for $k=\R$ the real versions follow with the
+non-real constant roots omitted. Consider
+\begin{equation}\label{hol:nl:eq:riccati}
+ D_zf=f^2+p(z),\qquad p\in\KK[z].
+\end{equation}
+The corner is the term $-Y^2$, so $d_P=2$, $w_P=0$ and $I_P=-1$. If $p$ has
+degree $e\ge0$, then $\kappa_P=\max(0,e/2)$, so a nonconstant entire solution
+has degree at most $\lfloor e/2\rfloor$. More precisely, a solution of degree
+$n\ge1$ requires $\deg p=2n$ and the leading coefficient of $p$ to be minus
+the square of that of $f$, since the top term of $f^2$ cannot be cancelled by
+$D_zf$. These conditions are necessary only; the remaining coefficient
+equations must still hold.
+
+\begin{proposition}[Two exact Riccati classifications]\label{hol:nl:prop:riccati}
+Over $\KK=\C((t^\Gamma))$, the strongly entire solutions of $D_zf=f^2+1$ are
+exactly $f=i$ and $f=-i$, and the only strongly entire solution of
+$D_zf=f^2+1-z^2$ is $f=z$.
+\end{proposition}
+
+\begin{proof}
+In the first equation the degree bound excludes nonconstant solutions, and a
+constant must satisfy $c^2+1=0$; in the field $\KK$, which contains $i$, the
+roots are $\pm i$. In the second the degree bound is one and constants are
+impossible. For $f=az+b$ coefficient comparison gives $a^2=1$, $2ab=0$ and
+$a=b^2+1$, so $b=0$ and $a=1$, and $f=z$ is verified directly.
+\end{proof}
+
+The first equation is also \texttt{diff:cor:riccati} of the collection's
+differential-equations report~\cite{repodifferential}, with the same two
+solutions, but there $\partial u=1+u^2$ is solved in $\No[i]$ for a derivation
+on surreal \emph{scalars}. The two statements concern different derivations
+and different objects, and neither implies the other.
+
+\begin{example}[The degree cutoff is attained]\label{hol:nl:ex:cutoff}
+For every integer $m\ge1$ the equation $D_zf=f^2+mz^{m-1}-z^{2m}$ has the
+strongly entire solution $f=z^m$. Here $I_P=-1$ and $\kappa_P=m$ exactly, so
+the low-degree part of \eqref{hol:nl:eq:candidates} cannot in general be
+replaced by $n<\kappa_P$.
+\end{example}
+
+\begin{example}[Arbitrarily large resonant degrees]\label{hol:nl:ex:resonant}
+For $N\ge1$ the equation
+\begin{equation}\label{hol:nl:eq:resonant}
+ zf\,D_zf-Nf^2=0
+\end{equation}
+has $d_P=2$, $w_P=0$ and $I_P(T)=T-N$. Since $\KK[[z]]$ is an integral
+domain, a nonzero solution satisfies $zD_zf=Nf$, and coefficient comparison
+gives exactly $f=cz^N$ with $c\in\KK$ (including $c=0$). The exceptional
+integer root is an actual degree, and no degree bound can depend only on the
+positions of the monomials of $P$: the coefficient $N$ matters.
+\end{example}
+
+\subsection{The exclusion bound cannot be uniform}\label{hol:nl:sub:nouniform}
+
+Theorem~\ref{hol:main:ode} has an exclusion bound depending only on the
+operator. For nonlinear equations this is false, already for one fixed
+equation of first order.
+
+\begin{theorem}[A fixed Riccati equation defeats every uniform bound]
+\label{hol:nl:thm:nouniform}
+For $\lambda\in\Gamma$ let $c=t^\lambda$ and
+\[
+ f_\lambda(z)=\frac{c}{1-cz}=\sum_{n\ge0}c^{n+1}z^n\in\KK[[z]].
+\]
+Then $D_zf_\lambda=f_\lambda^2$, $f_\lambda$ is nonpolynomial, and
+\begin{equation}\label{hol:nl:eq:riccatidomain}
+ \Dom(f_\lambda)=\{0\}\cup\{x\in\KK^\times:v(x)+\lambda>0\}.
+\end{equation}
+Consequently, for every $\delta\in\Gamma$ some nonpolynomial solution of the
+fixed equation $D_zf=f^2$ is strongly evaluable at $t^{-\delta}$, and no
+exclusion bound depending on the equation alone excludes all its
+nonpolynomial solutions.
+\end{theorem}
+
+\begin{proof}
+The derivative identity is a coefficient comparison. For $x\ne0$ put $u=cx$,
+so the $n$th evaluation term is $cu^n$. If $v(u)>0$, write
+$u=b\,t^{v(u)}(1+w)$ with $b\in k^\times$ and $w$ zero or of positive
+valuation; then $\supp(u^n)\subseteq nv(u)+M(\supp w)$, the leading exponents
+$nv(u)$ increase strictly, and Lemma~\ref{hol:lem:certificate}\,(b), resting
+on the positive-support monoid of Lemma~\ref{hol:lem:support}\,(2), gives
+strong summability; multiplication by $c$ preserves it. (Source~10 cites the
+Hahn--Neumann positive-support lemma here instead of proving it; no
+Archimedean convergence of $n\,v(u)$ is used.) If $v(u)=0$, every $cu^n$ has
+the nonzero coefficient $\lc(u)^n$ at exponent $\lambda$, so local finiteness
+fails. If $v(u)<0$, the leading exponents $\lambda+nv(u)$ strictly decrease.
+At $x=0$ only one member is nonzero. This proves
+\eqref{hol:nl:eq:riccatidomain}. Given $\delta$, choose $\lambda>\delta$;
+then $v(t^{-\delta})+\lambda=\lambda-\delta>0$.
+\end{proof}
+
+There is no conflict with Theorem~\ref{hol:nl:thm:certificate}, whose
+finite data, and hence whose bound, may depend on the solution; for
+$f_\lambda$ the exact boundary moves with $\lambda$. At the boundary
+$v(x)=-\lambda$ geometric-series algebra cannot legalize infinitely many
+contributions at one exponent. Nor is there a conflict with
+Theorem~\ref{hol:main:ode}: each $f_\lambda$ also satisfies the linear
+equation $(1-t^\lambda z)D_zf-t^\lambda f=0$, whose operator depends on
+$\lambda$, exactly as the operator $D_z-t^\eta$ of the formal exponential of
+Proposition~\ref{hol:prop:expdomain} depends on~$\eta$. (This comparison is
+the merge's; it is a direct computation.)
+
+\section{Higher order and positive-weight Euler equations}
+\label{hol:nl:sec:higher}
+
+\subsection{The nondegenerate higher-order class}
+
+\begin{theorem}[Higher-order corner criterion and its boundary]
+\label{hol:nl:thm:corner}
+Let $P$ be a nonzero differential polynomial \eqref{hol:nl:eq:P} of any finite
+order with $d_P\ge1$ and $\chi_P\ne0$. Then every strongly entire formal
+solution of $P[f]=0$ is a polynomial, and every nonpolynomial formal solution
+fails strong evaluation at $t^{-\delta}$ for all $\delta$ in a final segment
+of $\Gamma_{>0}$, with the finite certificate of
+Theorem~\ref{hol:nl:thm:certificate}. The condition $\chi_P\ne0$ holds
+automatically in order one, but not in order two: a fixed second-order
+equation can have polynomial solutions of every degree
+(Proposition~\ref{hol:nl:prop:degenerate}).
+\end{theorem}
+
+\begin{proof}
+The first two assertions are Theorem~\ref{hol:nl:thm:certificate}; the third
+is Section~\ref{hol:nl:sub:firstorder} and
+Proposition~\ref{hol:nl:prop:degenerate}.
+\end{proof}
+
+\begin{proposition}[Higher-order degree candidates]
+\label{hol:nl:prop:higherdegrees}
+Suppose $d_P\ge1$ and $\chi_P\ne0$ for an equation of order at most $s$. Every
+nonzero strongly entire solution has degree in the finite set
+\[
+ \{0,\ldots,s-1\}\ \cup\ \{n\in\N:n\ge s,\ n\le\kappa_P\}\ \cup\
+ \{n\in\N:n\ge s,\ I_P(n)=0\},
+\]
+with $\kappa_P$ as in \eqref{hol:nl:eq:kappa}. When $s=0$ the first set is
+empty. Constant solutions can always be checked by substitution.
+\end{proposition}
+
+\begin{proof}
+Polynomiality is Theorem~\ref{hol:nl:thm:certificate}. For degree $n\ge s$
+every derivative leading-term formula of Lemma~\ref{hol:nl:lem:corner} applies,
+and if also $n>\kappa_P$ the top coefficient of $P[f]$ is
+$\lc(f)^{d_P}I_P(n)$, which must vanish; $I_P\ne0$ because $\chi_P\ne0$.
+Degrees below $s$, where derivative leading terms can vanish, are listed
+separately.
+\end{proof}
+
+\begin{proposition}[The first two Painlev\'e polynomial equations]
+\label{hol:nl:prop:painleve}
+In characteristic zero, the equation $D_z^2f=6f^2+z$ has no strongly entire
+formal solution, and the equation $D_z^2f=2f^3+zf+\alpha$ with $\alpha\in\KK$
+has a strongly entire solution exactly when $\alpha=0$, the only one then
+being $f=0$.
+\end{proposition}
+
+\begin{proof}
+The first equation has $d_P=2$, $w_P=0$, $\chi_P=-6$; the second has $d_P=3$,
+$w_P=0$, $\chi_P=-2$. Theorem~\ref{hol:nl:thm:certificate} makes every entire
+solution a polynomial. In the first equation a polynomial of degree $n\ge1$
+gives $f^2$ of degree $2n$, larger than $\deg D_z^2f$ (when nonzero) and than
+$\deg z=1$, so no cancellation is possible, and a constant cannot cancel $z$.
+In the second, for $n\ge1$ one has $3n>n+1$ and $3n>\deg D_z^2f$, so $2f^3$
+cannot cancel; a constant $c$ must satisfy $2c^3+zc+\alpha=0$ identically,
+which forces $c=0$ and $\alpha=0$, and substitution proves sufficiency.
+\end{proof}
+
+The names only identify the displayed equations; no classification of their
+classical meromorphic solutions is imported. The examples illustrate a class
+beyond first order: a unique term of greatest total differential degree has a
+nonzero corner whenever its falling-factorial product is nonzero. In
+particular an equation $D_z^sf=Q(z,f)$ with $Q$ of degree at least two in $f$
+has a nonzero corner and hence only polynomial strongly entire solutions; the
+coefficient of the top power of $f$ may be a nonconstant polynomial in $z$,
+whose highest $z$-term then selects the corner.
+
+\subsection{A vanishing corner}\label{hol:nl:sub:vanishing}
+
+Consider
+\begin{equation}\label{hol:nl:eq:degenerate}
+ z^2f\,D_z^2f+zf\,D_zf-z^2(D_zf)^2=0.
+\end{equation}
+All three terms have $d=2$ and $w=0$, and the residue corner polynomial is
+\begin{equation}\label{hol:nl:eq:degeneratechi}
+ T(T-1)+T-T^2=0,
+\end{equation}
+an identity in $k[T]$, not an exceptional integer resonance.
+
+\begin{proposition}[Complete formal classification of the example]
+\label{hol:nl:prop:degenerate}
+The formal solutions of \eqref{hol:nl:eq:degenerate} in $\KK[[z]]$ are exactly
+$0$ and $cz^n$ with $c\in\KK^\times$ and $n\in\N$. All are strongly entire,
+and their degrees are unbounded for this single equation.
+\end{proposition}
+
+\begin{proof}
+With $\vartheta=zD_z$, equation \eqref{hol:nl:eq:degenerate} reads
+$f\,\vartheta^2f-(\vartheta f)^2=0$. For $f\ne0$ work in the Laurent series
+field $\KK((z))$ and divide by $f^2$: $\vartheta(\vartheta f/f)=0$. The
+constants of $\vartheta$ in $\KK((z))$ are exactly $\KK$, since
+$\vartheta\sum b_nz^n=\sum nb_nz^n$ and characteristic zero kills no nonzero
+integer. Hence $\vartheta f/f=c_0\in\KK$; if the first nonzero term of $f$
+has exponent $n$, comparing lowest terms gives $c_0=n$. Then $\vartheta f=nf$
+kills every coefficient except the $n$th. Substitution verifies the monomials
+and zero.
+\end{proof}
+
+The example has two messages. A universal higher-order degree bound cannot
+be obtained by declaring $\chi_P$ nonzero: it may vanish identically, and a
+fixed equation can then have unbounded degrees. And the example is \emph{not}
+a nonpolynomial entire solution, so it does not refute polynomial rigidity in
+higher order; it locates a failure of this proof and of a stronger uniform
+conclusion.
+
+The corner is also not an invariant of the solution set. Multiplying an
+equation by another differential polynomial, or passing to a differential
+consequence, can change the corner data. The criterion $\chi_P\ne0$ is a
+sufficient condition on the displayed combined polynomial: when $\chi_P=0$
+another equation satisfied by the same function may have a nonzero corner, or
+a logarithmic-derivative reduction as in
+Proposition~\ref{hol:nl:prop:degenerate} may be available. A zero corner
+cannot be repaired by retaining only monomial degrees, since the residue
+coefficients and their exact cancellation are essential. The methods here do
+not decide whether a higher-order equation with vanishing residue corner has
+nonpolynomial strongly entire solutions; that is
+Question~\ref{hol:q:nonlinear}.
+
+\subsection{Positive-weight Euler equations in several variables}
+\label{hol:nl:sub:euler}
+
+Fix positive integers $q=(q_1,\ldots,q_m)$, write
+$\wt(\alpha)=q\cdot\alpha$ for $\alpha\in\N^m$, and let
+\[
+ \vartheta_q=\sum_{\nu=1}^mq_\nu x_\nu\frac{\partial}{\partial x_\nu},
+ \qquad \vartheta_qx^\alpha=\wt(\alpha)x^\alpha.
+\]
+Only finitely many multi-indices have weight at most a given integer; this,
+with the eigenvalue identity, is the essential feature of positive weights.
+Write a nonzero equation in combined-monomial form
+\begin{equation}\label{hol:nl:eq:eulerP}
+ P(x,Y,Z)=\sum_{\nu\in J}c_\nu x^{\alpha_\nu}Y^{i_\nu}Z^{j_\nu},
+\end{equation}
+to be read as $P(x,f,\vartheta_qf)=0$, and set
+$d_\nu=i_\nu+j_\nu$, $w_\nu=\wt(\alpha_\nu)$, with $d_P$, $w_P$,
+$\mathcal C_P$, $\beta_P$ and $\bar c_\nu$ as in
+Section~\ref{hol:nl:sub:corner}. The corner polynomials now keep the spatial
+variables:
+\begin{equation}\label{hol:nl:eq:eulerchi}
+ \chi(T,X)=\sum_{\nu\in\mathcal C_P}\bar c_\nu X^{\alpha_\nu}T^{j_\nu},\qquad
+ I(T,X)=\sum_{\nu\in\mathcal C_P}c_\nu X^{\alpha_\nu}T^{j_\nu}.
+\end{equation}
+Both are nonzero: for fixed $(\alpha_\nu,j_\nu)$ the condition $d_\nu=d_P$
+forces $i_\nu=d_P-j_\nu$, so no two combined corner terms give the same
+monomial in $(X,T)$. Only finitely many integers $n$ make $\chi(n,X)$ the zero
+polynomial, since they must all be roots of one nonzero $X$-coefficient of
+$\chi$, and likewise for $I$.
+
+\begin{theorem}[Positive-weight Euler rigidity]\label{hol:nl:thm:euler}
+Let $f\in\KK[[x_1,\ldots,x_m]]$ satisfy $P(x,f,\vartheta_qf)=0$ for a nonzero
+$P\in\KK[x_1,\ldots,x_m,Y,Z]$. If $f$ is nonpolynomial, it fails joint strong
+evaluation at $(t^{-q_1\delta},\ldots,t^{-q_m\delta})$ for every sufficiently
+large $\delta\in\Gamma_{>0}$. Consequently, if $f$ is strongly entire, or
+merely jointly strongly evaluable at these points for a cofinal set of
+$\delta\in\Gamma_{>0}$, then $f$ is a polynomial. Every fixed equation has a
+finite set of possible positive weighted degrees
+(Corollary~\ref{hol:nl:cor:eulerdegrees}).
+\end{theorem}
+
+\begin{proof}
+If $d_P=0$, then $P$ is a nonzero polynomial in $x$ alone and there is no
+solution; assume $d_P\ge1$. Choose $n_\ast\ge0$ with $\chi(n,X)\ne0$ for every integer $n>n_\ast$. Since
+$f=\sum_\alpha a_\alpha x^\alpha$ is nonpolynomial and bounded-weight sets are
+finite, choose $a_\mu\ne0$ of weight $n_\mu=\wt(\mu)>n_\ast$ so large that
+$(d_P-d_\nu)n_\mu+w_P-w_\nu>0$ for $d_\nu<d_P$. Take $\delta>0$ satisfying
+the finitely many inequalities
+\begin{align*}
+ (n_\mu-\wt(\alpha))\delta&>v(a_\mu)-v(a_\alpha)
+ &&(\wt(\alpha)\le n_\ast,\ a_\alpha\ne0),\\
+ (w_P-w_\nu)\delta&>\beta_P-v(c_\nu)
+ &&(d_\nu=d_P,\ w_\nu<w_P),\\
+ \bigl((d_P-d_\nu)n_\mu+w_P-w_\nu\bigr)\delta
+ &>\beta_P-v(c_\nu)+(d_P-d_\nu)v(a_\mu)
+ &&(d_\nu<d_P);
+\end{align*}
+as before they can be met in every nonzero ordered group and persist on a
+final segment. Suppose the joint family is strongly summable at such a scale,
+and put
+\[
+ F(X)=f(t^{-q_1\delta}X_1,\ldots,t^{-q_m\delta}X_m)\in\Sfam_m,\quad
+ \gamma=\gamma(F),\quad g=t^{-\gamma}F,\quad \phi=\rho(g).
+\]
+Then $\gamma\le v(a_\mu)-n_\mu\delta$, and the first inequalities show that
+$\phi$ has no monomial of weight at most $n_\ast$; its greatest weight $N$
+exceeds $n_\ast$. Let $\phi_N\ne0$ be its weight-$N$ homogeneous part. The
+Euler operator commutes with the scaling, so
+$(\vartheta_qf)(t^{-q_1\delta}X_1,\ldots,t^{-q_m\delta}X_m)=t^\gamma\vartheta_qg$.
+Normalizing the substituted equation by $t^{-\beta_P-d_P\gamma+w_P\delta}$,
+the scalar computation \eqref{hol:nl:eq:scalarvalue} shows that only corner
+terms survive the residue, whence
+\begin{equation}\label{hol:nl:eq:eulerresidue}
+ 0=\sum_{\nu\in\mathcal C_P}\bar c_\nu X^{\alpha_\nu}\phi^{i_\nu}
+ (\vartheta_q\phi)^{j_\nu}.
+\end{equation}
+The largest possible weight on the right is $d_PN+w_P$. Since the weight-$N$
+part of $\vartheta_q\phi$ is $N\phi_N$, the homogeneous part of that weight is
+\begin{equation}\label{hol:nl:eq:euleridentity}
+ \phi_N(X)^{d_P}\,\chi(N,X),
+\end{equation}
+a product of two nonzero polynomials, hence nonzero. This contradicts
+\eqref{hol:nl:eq:eulerresidue}.
+\end{proof}
+
+The proof uses \emph{joint} strong evaluation, not a scalar expression
+obtained by first setting $x_1=\cdots=x_m$ and cancelling: a factor
+$x_1-x_2$ can make a diagonal scalar expression zero while the ungrouped
+monomial family is not summable. Keeping $X_1,\ldots,X_m$ in
+\eqref{hol:nl:eq:euleridentity} avoids that error.
+
+\begin{corollary}[Weighted-degree candidates]\label{hol:nl:cor:eulerdegrees}
+With $\kappa_P$ defined by \eqref{hol:nl:eq:kappa} from the Euler data
+$d_\nu,w_\nu$, every nonconstant strongly entire solution of
+$P(x,f,\vartheta_qf)=0$ has greatest weight in the finite set
+\[
+ \{n\in\Z_{>0}:n\le\kappa_P\}\ \cup\ \{n\in\Z_{>0}:I(n,X)\equiv0\}.
+\]
+For a fixed equation all strongly entire solutions are therefore described by
+finitely many polynomial equations in the coefficients of a bounded-weight
+polynomial ansatz.
+\end{corollary}
+
+\begin{proof}
+Polynomiality is Theorem~\ref{hol:nl:thm:euler}. For a polynomial of greatest
+weight $N>\kappa_P$, the terms of lower differential degree have smaller total
+weight, and the top-weight part of the equation is $f_N^{d_P}I(N,X)$, which
+must vanish; so $I(N,X)=0$. The finite-root argument after
+\eqref{hol:nl:eq:eulerchi} applies to $I$, and a bounded-weight ansatz has
+finitely many coefficients.
+\end{proof}
+
+\begin{example}[An exactly described solution space]\label{hol:nl:ex:eulerspace}
+For $N\ge0$ the solutions of $\vartheta_qf=Nf$ in $\KK[[x]]$ are exactly the
+weighted homogeneous polynomials of weight $N$, since coefficient comparison
+gives $(\wt(\alpha)-N)a_\alpha=0$. For $q=(1,2)$ this space has dimension
+$\lfloor N/2\rfloor+1$ over $\KK$, with basis $x_1^{N-2j}x_2^j$,
+$0\le j\le\lfloor N/2\rfloor$. The nonlinear equation
+$f(\vartheta_qf-Nf)=0$ has the same solutions, because $\KK[[x]]$ is an
+integral domain.
+\end{example}
+
+\paragraph{Why positive weights are needed.}
+Let $\KK=\C((t^\Q))$ and $G(u)=\sum_{n\ge0}t^{n^2}u^n$, which is strongly
+entire (Corollary~\ref{hol:nl:cor:theta}). The function $f(x,y)=G(y)$ is
+nonpolynomial and strongly entire but satisfies $x\partial_xf=0$, so a zero
+weight invalidates the theorem. For the mixed weights $(1,-1)$, the
+nonpolynomial strongly entire function $f(x,y)=G(xy)$ satisfies
+$(x\partial_x-y\partial_y)f=0$; at a fixed point its nonzero joint evaluation
+terms are exactly $t^{n^2}(xy)^n$, which are strongly summable. Positivity is
+therefore not a cosmetic substitute for nonzero weights, and a general
+first-order partial differential equation need not have the rigidity of a
+positive Euler operator.
+
+\paragraph{Relation to Theorem~\ref{hol:main:multi}.}
+Theorem~\ref{hol:main:multi} assumes that \emph{all} mixed partial
+derivatives span a finite-dimensional space, and Section~\ref{hol:sec:multi}
+notes that a single differential equation in several variables cannot force
+polynomiality in general, since it may ignore variables; the zero-weight
+example above is an instance. Theorem~\ref{hol:nl:thm:euler} instead assumes
+one algebraic relation between $f$ and $\vartheta_qf$ with all weights
+positive, and no finite-dimensional span. Neither theorem implies the other.
+
+\section{Nonlinear consequences, hypotheses and predecessors}
+\label{hol:nl:sec:consequences}
+
+\subsection{Two-jet independence of explicit series}\label{hol:nl:sub:jets}
+
+With the surreal embedding of Section~\ref{hol:sub:embedding}, for instance
+$\C((\omega^{-\Q}))$ is a set-sized surcomplex workspace to which
+Theorem~\ref{hol:nl:main:first} applies, and its coefficients and admissible
+arguments are actual elements of $\No[i]$. The independence conclusions,
+however, concern \emph{formal functions}: each value $f(x)$ lies in $\KK$ and
+is of course not transcendental over $\KK$.
+
+\begin{corollary}[Two independent jets of the quadratic-exponent series]
+\label{hol:nl:cor:theta}
+Over $\KK=\C((t^\Q))$ let $G(z)=\sum_{n\ge0}t^{n^2}z^n$. Then $G$ is
+nonpolynomial and strongly entire, and $G$ and $D_zG$ are algebraically
+independent over $\KK(z)$.
+\end{corollary}
+
+\begin{proof}
+For $x\ne0$ with $v(x)=\sigma\in\Q$ the $n$th evaluated member has valuation
+$n^2+n\sigma$, which eventually exceeds every rational bound, so
+Lemma~\ref{hol:lem:certificate}\,(a) gives strong summability even when $x$
+has an arbitrary infinite Hahn tail; at $x=0$ the family is finite. All
+coefficients are nonzero. Theorem~\ref{hol:nl:main:first} gives the
+independence.
+\end{proof}
+
+The series is not new: it is the rank-one example of the
+rank-one-Berkovich report~\cite{reporankone}, Example
+\texttt{found:ex:internal} of the foundations report~\cite{repofoundations},
+and a rescaled partial theta series: $G(z)=\Theta_{t^2}(tz)$ in the notation
+of \eqref{hol:eq:theta}. The contribution of source~10 is the nonlinear two-jet
+consequence only.
+
+\begin{corollary}[An example without an order unit]
+\label{hol:nl:cor:infiniterank}
+In $K_{\Gamma_\infty}$, with $\Gamma_\infty$ as in \eqref{hol:eq:gammainfty},
+the strongly entire series $F=\sum_{n\ge0}t^{e_n}z^n=\sum_{n\ge0}\omega^{-\omega^n}z^n$
+of \eqref{hol:eq:explicitF} satisfies: $F$ and $D_zF$ are algebraically
+independent over $K_{\Gamma_\infty}(z)$.
+\end{corollary}
+
+\begin{proof}
+Strong entireness is Theorem~\ref{hol:thm:explicit}; source~10 proves it
+again by the cofinal-valuation route recorded in the second paragraph of that
+proof. Apply Theorem~\ref{hol:nl:main:first}.
+\end{proof}
+
+$F$ and its linear rigidity are in Theorem~\ref{hol:thm:explicit}; the new
+statement is the two-jet strengthening. It answers the first-order case of
+the last sentence of Question~\ref{hol:q:nonlinear} with no coefficient
+restriction, and says nothing about relations of order two or more.
+
+\paragraph{Extension of scalars versus preservation of entireness.}
+The degree classification is stable under the Hahn-field extensions of
+Corollary~\ref{hol:nl:cor:locus}, but entireness of a nonpolynomial series
+need not be. Enlarge $\Q$ to $\Q+\Q\omega$ with its surreal order and view $G$
+over the larger field. At $z=t^{-\omega}$ the member exponents are
+$n^2-n\omega$, with successive differences $(2n+1)-\omega<0$, so the support
+union contains an infinite descending sequence and the evaluation is not
+strong. The same computation appears in the rank-one-Berkovich
+report~\cite{reporankone}, and for $F$ in
+Section~\ref{hol:sub:notallsurcomplex}. No theorem here claims that $G$ or $F$ is
+entire on the proper class $\No[i]$; hypotheses and derivative are relative to
+a specified set-sized workspace.
+
+\subsection{Which hypotheses are used}\label{hol:nl:sub:hypotheses}
+
+\begin{example}[Positive characteristic destroys the conclusion]
+\label{hol:nl:ex:charp}
+Let $p$ be prime and $\KK=\mathbb F_p((t^\Q))$. The nonpolynomial series
+$U(z)=\sum_{n\ge0}t^{n^2}z^{pn}$ is strongly entire: at a point of valuation
+$\sigma$ its member valuations are $n^2+pn\sigma$, and
+Lemma~\ref{hol:lem:certificate}\,(a) applies, its proof being independent of
+the coefficient field. Yet $D_zU=0$.
+\end{example}
+
+So the conclusion fails in positive characteristic even for one linear
+equation. The characteristic-zero requirements of the proof are substantive:
+ordinary integer eigenvalues stay distinct, nonzero falling factorials stay
+nonzero, and a nonzero polynomial cannot vanish at all ordinary integers.
+
+The hypothesis $\Gamma\ne0$ is needed for the scale argument; the degenerate
+case $\Gamma=0$ is treated in Section~\ref{hol:sec:fields}. Under ordinary
+complex analytic summation, by contrast, $\exp z$ is a nonpolynomial entire
+function with $f'=f$; these are different notions of infinite sum, and the
+classical exponential does not contradict the Hahn theorem. The coefficient
+field may be $\R$, $\C$ or any field of characteristic zero; neither algebraic
+nor real closedness is used, no completeness of a real-valued norm is used,
+and $\Gamma$ needs neither an order unit nor a countable cofinal subset.
+Strong summability supplies exactly the finite initial layer the argument
+needs.
+
+\subsection{An exact finite workflow}\label{hol:nl:sub:workflow}
+
+For first-order input $P$ the reduction is as follows. Combine like monomials
+and remove zero coefficients. If no $Y$ or $Y'$ remains, decide the polynomial
+identity directly. Otherwise compute $d_P$, $w_P$, $I_P$ and $\kappa_P$ from
+the finite term list, find the positive integer roots of $I_P$ in the chosen
+exact representation of the coefficients, take the largest candidate degree,
+substitute a generic polynomial of that degree, and solve the resulting
+finite algebraic system. This procedure is complete for \emph{entire}
+solutions whenever its finite coefficient operations and algebraic solving are
+available. It is not a general algorithm for arbitrary surreal names, it does
+not enumerate the local formal solutions, and it does not decide arbitrary
+strong-support membership. A negative answer after an exhaustive exact solve
+is a genuine nonexistence certificate for entire solutions; failure of a
+numerical solver is not.
+
+For a nonpolynomial candidate formal solution a second workflow builds the
+certificate \eqref{hol:nl:eq:cert1}--\eqref{hol:nl:eq:cert3} from one
+sufficiently high nonzero coefficient and finitely many low-index ones; a
+claimed certificate must supply their exact leading valuations. The shipped
+program checks finite algebraic identities and sample certificates; it does
+not decide infinitary summability.
+
+\subsection{Predecessors, repository comparison and priority}
+\label{hol:nl:sub:predecessors}
+
+\paragraph{Inherited ideas.}
+Hahn fields, the positive-support summation lemma, Conway normal forms, Gauss
+initial forms, Euler eigenvalues and indicial-polynomial reasoning are
+established ideas and are not relabelled as new. The organizing method is
+related in spirit to maximum-term and central-index arguments in the
+Wiman--Valiron tradition, surveyed by Hayman~\cite{hayman}; here the finite
+residue polynomial gives an exact identity rather than an analytic
+approximation, and no real-valued growth estimate is imported. Source~10
+consulted Hayman's survey through its publisher metadata and abstract only,
+and uses no theorem from its full text.
+
+Newton-polygon methods for nonlinear equations have a substantial history.
+Cano and Fortuny Ayuso construct initial and indicial polynomials for
+nonlinear $q$-difference equations and obtain support and growth results for
+generalized-series solutions~\cite{cano}. Their operator and setting are not
+those of a formal $z$-series with arbitrary-rank Hahn \emph{coefficients}
+evaluated strongly at every workspace scale. The conceptual precedent is
+important, and no invention of differential Newton polygons is claimed.
+
+Non-Archimedean value distribution already restricts nonlinear functional
+and differential equations. Hu and Luan work over a complete algebraically
+closed field with a nontrivial non-Archimedean absolute value and prove
+Clunie-, Malmquist- and Mokhon'ko-type results~\cite{huluan}; source~10
+consulted the parsed text of that paper for its field hypotheses and
+Theorems~1.1, 1.3 and~1.5, reports that a remote screenshot service failed so
+that no visual inspection of the PDF is claimed, and reproduces no figure or
+table from it. Hu and Yang's monograph~\cite{huyang} is a broader
+predecessor; only its publisher metadata and description were checked, so no
+claim is made that all rank-one special cases were previously unknown.
+Giansiracusa and Mereta develop differential enhancements of non-Archimedean
+norms and a tropicalization of differential equations~\cite{giansiracusa};
+the finite corner here records only the data this obstruction needs, and no
+equivalence to their framework and no new tropical fundamental theorem is
+asserted. Mantova and Matusinski's survey~\cite{mantovamatusinski} was
+consulted for normal forms.
+
+\paragraph{Repository comparison at source~10's pin.}
+Source~10 compared its results with the collection at
+\texttt{048b72c}; the comparison, with the corrections needed now, is as
+follows.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
+>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Material & Existing result or scope & Difference in the nonlinear part\\
+\midrule
+This report, Theorem~\ref{hol:main:ode} & Strongly entire D-finite series are
+polynomials; the nonlinear case was the open Question~15.1, now
+Question~\ref{hol:q:nonlinear}. & All first-order algebraic equations, a
+higher-order corner criterion, and solution-dependent finite certificates.\\
+This report, Theorem~\ref{hol:main:multi} & Finite-dimensional span of all
+mixed derivatives forces polynomiality. & One algebraic relation in $f$ and
+$\vartheta_qf$ suffices for positive weights; no finite-dimensional span.\\
+Tail-spans report~\cite{repotail} & Particular Galois-supported constructions
+have all-order differential independence, for scalar or fixed-domain analytic
+derivations over specified smaller base fields. & A two-jet theorem for every
+nonpolynomial strongly entire function over its own full Hahn field.\\
+Documentation catalogue \texttt{docs/README.md} & Distinguishes workspaces, strong
+summability, coefficient rings and scalar derivations. & Those distinctions
+are kept; no global proper-class analytic claim is added.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The tail-span examples are neither weakened nor rediscovered: that report
+proves stronger all-order independence for particular constructions under
+different coefficient and function-class hypotheses, while the present
+universal statement assumes strong entireness and concludes only two-jet
+independence. Source~10 cited the quadratic-exponent series as occurring in
+this report and in the catalogue; within the collection it occurs as the
+rank-one-Berkovich example~\cite{reporankone}, as
+\texttt{found:ex:internal}~\cite{repofoundations}, and as a case of
+\eqref{hol:eq:theta}. Since that pin the collection has gained this nonlinear
+part itself; no other report now contains a nonlinear rigidity theorem for
+$D_z$, and the Riccati statement \texttt{diff:cor:riccati} of the
+differential-equations report concerns a scalar derivation (compare
+Proposition~\ref{hol:nl:prop:riccati}).
+
+Source~10's repository audit covered the root README, the catalogue, contents
+listings, this report's definitions, theorems and nonlinear-question passages,
+and the README files of the tail-span, analytic-geometry and product-birthday
+reports (the last two for context only). It was a targeted comparison, not a
+line-by-line search of every report, Lean file, archive, branch or the Git
+history, and no absence claim rests on a truncated preview.
+
+\paragraph{Priority and proof status.}
+Source~10's literature search, made on 22 September 2026, did not locate the
+exact all-rank strong-family first-order theorem, the finite exclusion
+certificate, or the positive-weight Euler formulation. Some searches were
+poorly targeted, and no exhaustive MathSciNet, zbMATH, full-book or
+citation-network review was made, so priority is provisional. The safest
+description is a proposed new theorem package and a proved first-order answer
+to a repository question, which is not a named historical conjecture; it is
+not a certified first discovery of nonlinear non-Archimedean rigidity. The
+written proofs are the evidence. The finite checks of
+Section~\ref{hol:sec:verification} establish no arbitrary-support theorem;
+no Lean formalization of the nonlinear part exists, and no independent human
+referee has checked it.
+
+\section{The three finite check suites}\label{hol:sec:verification}
+
+Each source manuscript shipped an independent exact-arithmetic suite. The
+suites of sources~08 and~09 were run on copies and passed, and neither
+supersedes the other: they cover overlapping but distinct finite facts of the
+linear theory, and they are kept side by side in \texttt{code/} for that
+reason. The suite of source~10 checks finite facts of the nonlinear part
+only; it was also run on a copy for this merge and reproduced its recorded
+counts exactly. All three use only the Python standard library, integers, and
+\texttt{fractions.Fraction}, with no floating point, no network access, and no
+third-party packages.
 
 \paragraph{\texttt{code/08-finite-recurrences-verify.py} --- 3{,}705 checks,
 0 failures.}
@@ -2232,17 +3497,53 @@ Lemma~\ref{hol:lem:nonincreasing} rules out, which is what makes the excluded
 region in Corollary~\ref{hol:cor:periodic} closed. Its \verb|--output|
 argument is optional. Seeds are recorded in the shipped records.
 
+\paragraph{\texttt{code/10-nonlinear-rigidity-verify.py} --- 2{,}113 checks,
+0 failures.}
+It checks the finite algebra of
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}X r@{}}
+\toprule
+Finite calculation & Checks\\
+\midrule
+Finite Hahn initial layers and exclusion inequalities & 450\\
+Automatic first-order nondegeneracy of the corner & 240\\
+Univariate falling-factorial corner identities, orders $0$ to $3$ & 480\\
+Lexicographic higher-rank ordered-group exclusion bounds & 500\\
+Weighted Euler homogeneous-part identities & 360\\
+Worked examples: Riccati, degree cutoff, resonance, Painlev\'e, vanishing
+corner, Euler solution space & 83\\
+\midrule
+Total & 2{,}113\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The group names in the record \path{data/10-nonlinear-rigidity-verification.json}
+are \path{finite_hahn_certificate}, \path{first_order_nondegeneracy},
+\path{higher_order_corner}, \path{ordered_group_radius},
+\path{weighted_euler} and \path{worked_examples}, in the order of the
+table; ``radius'' there is source~10's word for an exclusion bound. The
+default seed is $20260922$. The \verb|--output| argument is required, and the
+program refuses to overwrite an existing file. The vanishing-corner example
+is tested for the monomial degrees $0,\ldots,20$ only. The counts are program
+checks, not independently proved theorems.
+
 \paragraph{What the checks do not do.}
-Neither suite proves any infinite theorem. No finite prefix can prove strong
+No suite proves any infinite theorem. No finite prefix can prove strong
 summability of an infinite family, cofinality of $(e_n)$, noncofinality of
 $(n\epsilon)$, the existence of an infinite escape path, the eventual orbit
 statements, the generic-line theorem, or the absence of every possible
-annihilating equation. No infinite Hahn sum is evaluated by either program. In
-particular a finite truncation of the explicit series \eqref{hol:eq:explicitF}
-is a polynomial and is D-finite, so no finite computation can witness its
-nonholonomicity. What the suites can detect is sign, indexing, conversion and
-finite valuation-comparison mistakes. Everything else rests on the written
-arguments.
+annihilating equation. No infinite Hahn sum is evaluated, or numerically
+approximated, by any of the programs. In particular a finite truncation of the
+explicit series \eqref{hol:eq:explicitF} is a polynomial and is D-finite, so no
+finite computation can witness its nonholonomicity; for the same reason no
+finite computation can witness the two-jet independence of
+Corollaries~\ref{hol:nl:cor:theta} and~\ref{hol:nl:cor:infiniterank}.
+Source~10's suite in particular does not test arbitrary infinite supports,
+cofinality, all Hahn elements, the nonexistence of all annihilating
+equations, or historical novelty. What the suites can detect is sign,
+indexing, conversion and finite valuation-comparison mistakes. Everything else
+rests on the written arguments.
 
 The mathematical dependency chain is short.
 \begin{center}
@@ -2263,14 +3564,22 @@ strict increase of $h_n$; or, in the order-unit case, quadratic leading
 valuations and the cofinal-valuation criterion.\\
 Several-variable rigidity & Countable polynomial avoidance; finite-block
 regrouping; rational differential system on a generic line.\\
+First-order nonlinear rigidity & Hahn-family algebra and its residue
+homomorphism; large active degrees; exact corner identity; uniqueness of a
+corner term for each power of $Y'$.\\
+Higher-order corner criterion & The same, with $\chi_P\ne0$ assumed.\\
+Positive-weight Euler rigidity & The same algebra in $m$ variables; finite
+bounded-weight sets; the eigenvalue identity of $\vartheta_q$.\\
 \bottomrule
 \end{tabularx}
 \end{center}
 
 All supports are sets. All operators are finite sums. All integer indices are
 ordinary nonnegative integers. The coefficient valuation is trivial in
-characteristic zero. The equations use the external formal variable
-derivative. None of the proofs asserts convergence in the fine topology of
+characteristic zero; the coefficient field is $\C$ in
+Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and any
+characteristic-zero field in the nonlinear part. The equations use the
+external formal variable derivative. None of the proofs asserts convergence in the fine topology of
 $\No[i]$, substitutes a real-valued norm for an arbitrary-rank valuation, or
 transports a fixed-workspace evaluation to every surcomplex argument.
 
@@ -2303,6 +3612,17 @@ arbitrary Hahn parameter. The mixed noncofinal extension
 (Theorem~\ref{hol:main:multi}), and the explicit series excluded from every
 nontorsion pure dilation equation (Theorem~\ref{hol:thm:explicit}) are further
 consequences proved here.
+
+The nonlinear part (source~10) inherits Gauss initial forms, Euler
+eigenvalues and indicial-polynomial reasoning, and is related to
+central-index, Newton-polygon, non-Archimedean value-distribution and tropical
+differential methods (Section~\ref{hol:nl:sub:predecessors}). Its proposed
+contribution is the precise arbitrary-rank strong-family formulation:
+Theorem~\ref{hol:nl:main:first} with its finite exclusion certificate
+(Theorem~\ref{hol:nl:thm:certificate}), the candidate degrees and the
+entire-solution locus, the higher-order corner criterion, the positive-weight
+Euler theorem, and the non-uniformity of the nonlinear exclusion bound. Its
+priority is provisional in the sense recorded there.
 
 \subsection{A result-by-result attribution ledger}
 
@@ -2339,15 +3659,35 @@ Mixed differential--dilation rigidity at noncofinal nonzero scales & Proved
 here; the unit-valuation mixed case is left open.\\[4pt]
 Several-variable rigidity and multivariate algebraic rigidity & Proved here;
 the generic line is an existence device.\\[4pt]
-Named published open conjecture & None claimed solved.\\[4pt]
+Gauss initial forms, Euler eigenvalues, indicial polynomials, central-index
+and Newton-polygon ideas & Established (source~10); credited to Hayman, Cano
+and Fortuny Ayuso, Hu--Luan, Hu--Yang and Giansiracusa--Mereta as
+predecessors in different settings.\\[4pt]
+First-order nonlinear rigidity (Theorem~\ref{hol:nl:main:first}), finite
+exclusion certificate, candidate degrees and entire-solution locus &
+Proposed contribution of source~10, over any characteristic-zero coefficient
+field; priority provisional.\\[4pt]
+Higher-order corner criterion and positive-weight Euler rigidity & Proposed
+by source~10; sufficient conditions only; the vanishing-corner case is
+Question~\ref{hol:q:nonlinear}.\\[4pt]
+Solution-dependence of the nonlinear exclusion bound & Proved by source~10
+with the explicit Riccati family of
+Theorem~\ref{hol:nl:thm:nouniform}.\\[4pt]
+Two-jet independence of $\sum t^{n^2}z^n$ and of
+\eqref{hol:eq:explicitF} & New consequences (source~10); both series are
+prior collection material.\\[4pt]
+Named published open conjecture & None claimed solved; the nonlinear question
+answered in order one is a question of this report, not a historical
+conjecture.\\[4pt]
 Priority, peer review, formal verification & Priority and independent
 refereeing are not certified. The support word lemma, escape mechanism and
-formal exponential domain have Lean coverage; the main classifications
-remain unformalized.\\
+formal exponential domain have Lean coverage; the main classifications and
+the whole nonlinear part remain unformalized.\\
 \bottomrule
 \end{longtable}
 
-The targeted literature checks located the standard D-finite framework,
+The targeted literature checks of sources~08 and~09 located the standard
+D-finite framework,
 classical complex $q$-difference growth theory, $q$-holonomic degree growth in
 a rational-function setting, and ultrametric $q$-difference theory, but did
 not establish whether an identical arbitrary-rank strong-Hahn formulation
@@ -2358,22 +3698,144 @@ anywhere in the repository can be reformulated into one of these results.
 Accordingly this is a proposed original result with proofs, not a certified
 claim of bibliographic priority. Independent mathematical review is still
 needed; machine-checked scope is the partial coverage recorded in
-Section~\ref{hol:sec:certificates} and the formalization ledger.
+Section~\ref{hol:sec:certificates} and the formalization ledger. The
+corresponding record for the nonlinear part, with its own search limits, is
+Section~\ref{hol:nl:sub:predecessors}.
+
+\subsection{What the nonlinear part does not claim}
+\label{hol:nl:sub:nonclaims}
+
+Every limitation stated by source~10, in its manuscript or its two audit
+files, is kept; they are collected here.
+\begin{enumerate}[label=\textup{(N\arabic*)}]
+\item Only the first-order case of Question~\ref{hol:q:nonlinear} is
+answered, not the unrestricted higher-order question.
+\item Theorem~\ref{hol:nl:main:first} does not say that a nonpolynomial
+entire function is differentially transcendental in all orders; independence
+of $f$ and $D_zf$ does not exclude a relation involving $D_z^2f$.
+\item The criterion $\chi_P\ne0$ is sufficient, not a complete invariant of a
+solution set, and the methods do not decide equations of order at least two
+with vanishing residue corner. Proposition~\ref{hol:nl:prop:degenerate} is not
+a nonpolynomial entire solution and does not refute higher-order rigidity.
+\item The corner is a finite selection, not a full differential Newton
+polygon; no invention of differential Newton polygons, no equivalence to
+tropical differential algebra, and no new tropical fundamental theorem is
+claimed.
+\item The exclusion bound \eqref{hol:nl:eq:deltazero} is not claimed optimal;
+the certificate has no converse; leading valuations alone do not decide
+evaluation at a boundary argument.
+\item Candidate degree sets are necessary, not realized; their finiteness is
+not a uniform algorithm for arbitrary coefficient names, and the workflow of
+Section~\ref{hol:nl:sub:workflow} is not an algorithm for arbitrary surreal
+names, does not enumerate local formal solutions, does not decide
+strong-support membership, and accepts no numerical solver failure as a
+certificate.
+\item Corollary~\ref{hol:nl:cor:locus} does not say that the number of
+solutions is finite, is not a moduli statement over rings with nilpotents,
+and covers only the extension class it states.
+\item No theorem says that $G$, $F$ or any nonpolynomial series is entire on
+the proper class $\No[i]$; entireness and the derivative are relative to one
+set-sized workspace.
+\item The independence statements concern formal functions; no statement
+concerns algebraic independence of a value $f(x)$ from its own ambient field.
+\item $D_z$ kills all Hahn coefficients and is not the Berarducci--Mantova
+derivation; no scalar-derivation result is claimed.
+\item The series $\sum t^{n^2}z^n$ and \eqref{hol:eq:explicitF}, and the
+linear rigidity of the latter, are prior material; only their nonlinear
+two-jet consequences are new. The tail-span report's all-order independence
+results are neither weakened nor rediscovered.
+\item Hahn fields, the positive-support summation lemma, Conway normal forms,
+Gauss initial forms, Euler eigenvalues and indicial-polynomial reasoning are
+established ideas, not relabelled as new; the positive-support lemma is
+imported by source~10, and proved in this report by
+Lemma~\ref{hol:lem:support}\,(2).
+\item The precise all-rank statements are proposed contributions; historical
+priority is not certified. The literature search of 22 September 2026 was
+targeted and not exhaustive; Hayman's survey and the Hu--Yang monograph were
+consulted through metadata only, and no claim is made that rank-one special
+cases were previously unknown.
+\item The repository comparison at \texttt{048b72c} was targeted: no
+line-by-line audit of every report, Lean file, archive, branch or the Git
+history, and no absence claim rests on a truncated preview.
+\item The answered question is a question of this report, not a named
+historical conjecture.
+\item No Lean formalization and no independent refereeing of the nonlinear
+part exists. The 2{,}113 finite checks are program checks, not theorems; they
+do not test infinite supports, cofinality, all Hahn elements, nonexistence of
+annihilating equations or novelty, and no infinite surreal sum is numerically
+approximated. A successful PDF build is not a proof check.
+\item The sequence arguments behind the support calculus use ordinary
+set-theoretic choice.
+\end{enumerate}
 
 \subsection{Further mathematical questions}
 
-\begin{question}[Nonlinear differential equations]\label{hol:q:nonlinear}
-Can a nonpolynomial $f\in\E$ satisfy a nonzero nonlinear algebraic
-differential equation over $\K(z)$? Under which hypotheses on $\Gamma$ can
-linear rigidity be strengthened to differential algebraic rigidity? Does the
-explicit series \eqref{hol:eq:explicitF} avoid all such equations under a
-natural coefficient restriction?
+\begin{question}[Nonlinear differential equations of order at least two]
+\label{hol:q:nonlinear}
+Can a nonpolynomial $f\in\E$ satisfy a nonzero algebraic differential
+equation $P(z,f,D_zf,\ldots,D_z^sf)=0$ over $\K(z)$ of order $s\ge2$? By
+Theorems~\ref{hol:nl:main:first} and~\ref{hol:nl:thm:corner}, such an $f$
+satisfies no nonzero equation of order at most one and no equation with
+$\chi_P\ne0$; equivalently, can a nonpolynomial strongly entire function
+satisfy an equation whose residue corner polynomial vanishes identically,
+without satisfying any other equation to which
+Theorem~\ref{hol:nl:thm:certificate} applies? Under which hypotheses on
+$\Gamma$ can linear rigidity be strengthened to differential algebraic
+rigidity in all orders? Does the explicit series \eqref{hol:eq:explicitF}
+avoid all equations of order at least two under a natural coefficient
+restriction?
 \end{question}
 
-The escape proof does not answer this. A nonlinear differential relation
-produces convolution sums in the coefficients rather than a bounded-step
-linear recurrence, and treating it as though it had the form
-\eqref{hol:eq:generalrecurrence} would be an invalid extension.
+\paragraph{Status.}
+As posed by sources~08 and~09, the question asked about nonlinear algebraic
+differential equations of every order. Source~10 answers its first-order case
+negatively, for every nonzero $\Gamma$ and every characteristic-zero
+coefficient field (Theorem~\ref{hol:nl:main:first}): in order one no
+hypothesis on $\Gamma$ beyond $\Gamma\ne0$ is needed, and
+\eqref{hol:eq:explicitF} avoids every first-order equation with no
+coefficient restriction (Corollary~\ref{hol:nl:cor:infiniterank}). It also
+settles the higher-order equations with $\chi_P\ne0$
+(Theorem~\ref{hol:nl:thm:corner}) and the relations between $f$ and a
+positive-weight Euler derivative (Theorem~\ref{hol:nl:thm:euler}). What stays
+open is order at least two with a vanishing residue corner.
+Proposition~\ref{hol:nl:prop:degenerate} shows that such equations exist and
+can have polynomial solutions of unbounded degree, so the study cannot rely on
+a uniform degree bound for all polynomial solutions of an arbitrary
+higher-order equation; it is not a nonpolynomial entire solution and gives no
+negative answer. Source~10 suggests as a next step classifying the polynomial
+solutions of a vanishing-corner residue equation beyond their leading monomial
+and determining how those constraints propagate between scales.
+
+The escape proof does not answer this, in any order. A nonlinear differential
+relation produces convolution sums in the coefficients rather than a
+bounded-step linear recurrence, and treating it as though it had the form
+\eqref{hol:eq:generalrecurrence} would be an invalid extension. The
+first-order answer uses the different route of
+Section~\ref{hol:nl:sec:setting}.
+
+\begin{question}[Beyond a positive Euler operator]\label{hol:nl:q:vectorfields}
+Which polynomial vector fields $V$ have the property that every strongly
+entire $f$ satisfying a nonzero equation $P(x,f,Vf)=0$ is a polynomial?
+\end{question}
+
+Positive integer Euler weights give one family, and zero and mixed weights
+give explicit counterexamples (Section~\ref{hol:nl:sub:euler}). A useful
+extension would need both a finite-dimensional filtration and a sufficiently
+nondegenerate action on its highest layers; diagonalization alone is not
+enough if infinitely many monomials share a bounded eigenvalue. (Source~10.)
+
+\begin{question}[Effective representations and minimal certificates]
+\label{hol:nl:q:effective}
+For which exact Hahn coefficient representations can the candidate degree set
+and an optimal excluded valuation cut be computed uniformly?
+\end{question}
+
+The bound \eqref{hol:nl:eq:deltazero} is always a valid choice from exact
+finite valuation data but can be far from minimal, and
+Theorem~\ref{hol:nl:thm:nouniform} shows that an optimal cut must in general
+depend on solution data. An algorithmic refinement must state how it receives
+those data and how it decides coefficient cancellation. (Source~10; the
+linear analogue is Question~\ref{hol:q:optimal}.)
 
 \begin{question}[Mixed operators at unit valuation]\label{hol:q:mixedunit}
 For a nontorsion $q$ with $v(q)=0$, must every strongly entire solution of a
@@ -2454,6 +3916,18 @@ workspace, yet no single nontorsion dilation in that workspace supplies a
 finite linear equation for it. That gap between existence and finite linear
 describability is the main mathematical contribution proposed here.
 
+The nonlinear part pushes the same global requirement past linear
+equations by a different mechanism. A finite algebraic relation between a
+function and its first derivative is incompatible with nonpolynomial strong
+entireness over any nontrivial characteristic-zero Hahn workspace: at one
+large admissible scale the whole series leaves a finite initial polynomial,
+whose top coefficient is controlled by a corner polynomial that is
+automatically nonzero in order one. In higher order an exact cancellation of
+that corner is a genuine obstruction to the method, and a fixed nonlinear
+equation can then have polynomial solutions of unbounded degree; whether it
+can have a nonpolynomial entire solution is the open part of
+Question~\ref{hol:q:nonlinear}.
+
 \appendix
 
 \section{Notation}\label{hol:app:notation}
@@ -2485,6 +3959,25 @@ when stated.\\
 $\fall Xr$ & The ordinary falling factorial polynomial of degree $r$.\\
 $\Theta_p$ & The partial theta series \eqref{hol:eq:theta}.\\
 $\Gamma_\infty$ & The increasing-rank direct sum \eqref{hol:eq:gammainfty}.\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Nonlinear part,
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}}}\\
+$k$, $\KK$, $\EK$ & Any characteristic-zero field; $k((t^\Gamma))$; its
+strongly entire series (Convention~\ref{hol:nl:conv:field}).\\
+$\Sfam_m$, $\Sfam_m^+$, $\rho$ & Series with strongly summable coefficient
+family; those with coefficients of nonnegative valuation; coefficientwise
+residue.\\
+$\gamma_\delta$, $\phi_\delta$, $N_\delta$ & Gauss value, initial polynomial
+and top active degree at the scale $t^{-\delta}$,
+\eqref{hol:nl:eq:gaussdata}.\\
+$d_P$, $w_P$, $\mathcal C_P$, $\beta_P$ & Corner data of a differential
+polynomial, \eqref{hol:nl:eq:dw}.\\
+$\chi_P$, $I_P$ & Residue and full corner polynomials,
+\eqref{hol:nl:eq:chiI}.\\
+$\kappa_P$ & The rational degree cutoff \eqref{hol:nl:eq:kappa}.\\
+$\delta_0$ & A solution-dependent exclusion bound,
+\eqref{hol:nl:eq:deltazero}.\\
+$\vartheta_q$, $\wt$ & Positive-weight Euler operator and weight.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -2499,7 +3992,14 @@ criterion. Dilation sufficiency uses only the partial theta identity and the
 support certificate. The mixed extension uses the bivariate orbit lemma. The
 several-variable theorem uses countable polynomial avoidance, finite-block
 regrouping and the one-variable theorem. The infinite-rank application uses a
-direct strong-entireness proof and the completed classification.
+direct strong-entireness proof and the completed classification. The
+nonlinear part uses none of these linear arguments: first-order rigidity uses
+the Hahn-family algebra (with the support calculus of
+Section~\ref{hol:sec:support}), the large-active-degree lemma, the corner
+identity and the order-one nondegeneracy of the corner; the higher-order
+criterion replaces the last step by the hypothesis $\chi_P\ne0$; the Euler
+theorem uses the same algebra in several variables with finite bounded-weight
+sets.
 
 No unproved ring-theoretic conclusion from another report in this collection
 is used. The real-valued coarsening of~\cite[Lemma~9.1]{repoentire} is cited
@@ -2522,15 +4022,23 @@ Section~\ref{hol:sec:multi}. Equation coefficients are rational functions of
 that variable, not arbitrary entire functions; their scalar coefficients may
 be arbitrary Hahn elements.
 \item The residue field is characteristic zero and trivially valued.
-Algebraic closedness is not used.
+Algebraic closedness is not used. It is $\C$ in
+Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and an arbitrary
+characteristic-zero field in the nonlinear part; the latter generality is not
+transferred to the linear theorems (Convention~\ref{hol:nl:conv:field}).
+Characteristic zero is essential (Example~\ref{hol:nl:ex:charp}).
 \item Dilation parameters are nonzero and nontorsion; nontorsion is
 essential, as Section~\ref{hol:sec:torsion} shows by counterexample.
 \item The derivative is $d/dz$, not a scalar surreal derivation.
 \item Entireness is always relative to one fixed workspace, never to
 $\No[i]$. Strong summability requires both well-ordering and local finiteness.
-\item The conclusions concern \emph{linear} equations. No nonlinear
-differential or difference transcendence is claimed, and no unrestricted
-mixed-dilation independence is claimed.
+\item The conclusions of
+Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} concern
+\emph{linear} equations. Nonlinear differential equations are treated only
+in order one, in higher order under $\chi_P\ne0$, and for positive-weight
+Euler relations (the nonlinear part); no nonlinear differential
+transcendence in all orders, no nonlinear difference transcendence and no
+unrestricted mixed-dilation independence is claimed.
 \end{itemize}
 
 Two boundary behaviours deserve separate emphasis because they point in
@@ -2546,10 +4054,13 @@ Section~\ref{hol:sub:coarseboundary} shows why.
 Deliberate exclusions, recorded so that no reader supplies them by analogy:
 finite-order $q$ is excluded from the main classification and has genuine
 periodic-support counterexamples; mixed operators at unit valuation are not
-classified; no nonlinear differential algebraic rigidity is claimed; no
-complete algorithm for arbitrary surreal comparisons or cofinality decisions
-is claimed; the finite checks prove no infinite theorem. The main theorem
-package has no Lean verification or independent refereeing; the existing
+classified; no nonlinear differential algebraic rigidity is claimed beyond
+order one, the nondegenerate higher-order class and positive-weight Euler
+relations, whose own non-claims are listed in
+Section~\ref{hol:nl:sub:nonclaims}; no complete algorithm for arbitrary
+surreal comparisons or cofinality decisions is claimed; the finite checks
+prove no infinite theorem. The main theorem package, the nonlinear part
+included, has no Lean verification or independent refereeing; the existing
 support, escape and exponential-domain coverage is recorded in the
 formalization ledger.
 
@@ -2557,23 +4068,32 @@ formalization ledger.
 \label{hol:app:reproduce}
 
 The directory contains this standalone \LaTeX{} source, its compiled PDF, a
-README, both source verification programs under \texttt{code/}, both recorded
-outputs and both source build reports under \texttt{data/}, and the three source
-audit documents. No source document from the inspected repository is
-redistributed. The bibliography is embedded: no BibTeX run, external graphics,
-shell escape, or repository checkout is required, and a conventional TeX Live
-or MiKTeX installation with the named packages suffices.
+README, the three source verification programs and source~10's build script
+under \texttt{code/}, the three recorded outputs and the source build and
+layout reports under \texttt{data/}, and five source audit documents. No
+source document from the inspected repository is redistributed, and no source
+manuscript is shipped. The bibliography is embedded: no BibTeX run, external
+graphics, shell escape, or repository checkout is required, and a conventional
+TeX Live or MiKTeX installation with the named packages suffices.
 
 \begin{verbatim}
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 python code/08-finite-recurrences-verify.py --output rerun-08.txt
 python code/09-entire-hahn-holonomic-verification.py --output rerun-09.txt
+python code/10-nonlinear-rigidity-verify.py --output rerun-10.json
 \end{verbatim}
 
-The \verb|--output| argument is required by the first script, so that a rerun
-need not overwrite the record distributed with the report, and optional for
-the second. Both use Python 3.9 or later, exit with a nonzero status if any
-assertion fails, and use exact integer and rational arithmetic throughout.
+The \verb|--output| argument is required by the first and third scripts, so
+that a rerun need not overwrite the record distributed with the report, and
+optional for the second; the third refuses an existing output path. All use
+Python 3.9 or later, exit with a nonzero status if any check fails, and use
+exact integer and rational arithmetic throughout. The build script
+\path{code/10-nonlinear-rigidity-build.py} was written for source~10's own
+manuscript: run here it would typeset this report, leave auxiliary files in
+the directory and write \texttt{data/build\_report.json}. The shipped
+\path{data/10-nonlinear-rigidity-build_report.json} and
+\path{data/10-nonlinear-rigidity-layout_audit.json} describe the 23-page
+source manuscript, not this report; use \texttt{latexmk} as above, on a copy.
 
 \clearpage
 \begin{thebibliography}{99}
@@ -2693,6 +4213,66 @@ numbers},
 \texttt{docs/surcomplex/rank-one-berkovich/}, same pinned snapshot.
 \url{https://github.com/VladimirReshetnikov/Surreal/tree/a3124af79f66b8b9c196d76b4cbc5ac3938907c4/docs/surcomplex/rank-one-berkovich}.
 Cited for the pre-existing quadratic-exponent rank-one example.
+
+\bibitem{repofoundations}
+\repo\ project,
+\emph{Foundations for Surreal and Surcomplex Mathematics},
+\texttt{docs/foundations-and-computation/foundations/}.
+Its Example \texttt{found:ex:internal} is the series $\sum t^{n^2}z^n$ over
+$\C((t^\Q))$; cited by this merge, not by source~10.
+
+\bibitem{repotail}
+\repo\ project,
+\emph{Tail-spans and differential transcendence in surreal and surcomplex Hahn
+fields},
+\texttt{docs/surreal/tail-spans-and-differential-transcendence/}, at
+source~10's pin \texttt{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/048b72cf7cbfc8ab246e4f73788c10460cb3f6e0/docs/surreal/tail-spans-and-differential-transcendence}.
+Its README was inspected by source~10 for function-class and derivative
+boundaries.
+
+\bibitem{mantovamatusinski}
+V. Mantova and M. Matusinski,
+\emph{Surreal numbers with derivation, Hardy fields and transseries: a
+survey}, arXiv:1608.03413, inspected version~2, Section~2 on normal forms.
+\url{https://arxiv.org/html/1608.03413v2}.
+
+\bibitem{hayman}
+W. K. Hayman,
+\emph{The local growth of power series: a survey of the Wiman--Valiron
+method},
+Canadian Mathematical Bulletin \textbf{17} (1974), no.~3, 317--358.
+\url{https://doi.org/10.4153/CMB-1974-064-0}.
+Publisher metadata and abstract consulted by source~10.
+
+\bibitem{cano}
+J. Cano and P. Fortuny Ayuso,
+\emph{Power series solutions of non-linear $q$-difference equations and the
+Newton--Puiseux polygon},
+Qualitative Theory of Dynamical Systems \textbf{21} (2022), article~123.
+\url{https://doi.org/10.1007/s12346-022-00656-0}.
+Introduction and Section~2 (initial and indicial polynomials) consulted by
+source~10.
+
+\bibitem{huluan}
+P.-C. Hu and Y.-Z. Luan,
+\emph{Non-Archimedean meromorphic solutions of functional equations},
+arXiv:1311.5291v1 (2013).
+\url{https://arxiv.org/abs/1311.5291}.
+Field hypotheses and Theorems~1.1, 1.3 and~1.5 consulted by source~10.
+
+\bibitem{huyang}
+P.-C. Hu and C.-C. Yang,
+\emph{Meromorphic Functions over Non-Archimedean Fields},
+Mathematics and Its Applications, Springer, Dordrecht, 2000.
+\url{https://doi.org/10.1007/978-94-015-9415-8}.
+Publisher metadata and description only; the book was not audited.
+
+\bibitem{giansiracusa}
+J. Giansiracusa and S. Mereta,
+\emph{A general framework for tropical differential equations},
+manuscripta mathematica \textbf{173} (2024), 1273--1304.
+\url{https://doi.org/10.1007/s00229-023-01492-5}.
 
 \end{thebibliography}
 \end{document}

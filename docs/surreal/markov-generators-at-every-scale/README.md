@@ -203,6 +203,12 @@ measure and probability report. Neither report depends on the other. The path
 measures and infinite state spaces excluded here are not supplied by an appeal
 to it.
 
+[matrix-scaling-at-surreal-scales](../matrix-scaling-at-surreal-scales/) uses
+the same no-cancellation mechanism for spanning-tree sums (`scale:thm:tree`);
+its deletion gap gives relative gains for a fixed-margin normalization
+(`scale:thm:sharp`), unlike this report's gain-free stability bound. The two
+concern different maps.
+
 ## Stale repository statements, corrected
 
 The manuscript's audit is pinned to `4cf691c`. Two of its statements have since

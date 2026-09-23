@@ -48,7 +48,7 @@
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\K}{K}
 \newcommand{\F}{F}
-\newcommand{\HG}{\mathcal H_\Gamma}
+\newcommand{\HG}{H_\Gamma}
 \newcommand{\VG}{V_\Gamma}
 \newcommand{\WG}{W_\Gamma}
 \newcommand{\EG}{E_\Gamma(V)}
@@ -69,15 +69,18 @@
 \newcommand{\ip}[2]{\langle#1,#2\rangle}
 \newcommand{\cyc}{\Gamma\simeq_{\mathrm{ord}}\Z}
 \newcommand{\Commit}{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}
+\newcommand{\PlaceCommit}{52c7ab6d3bbf3a9c5e6142da055947acc9fedff5}
+\newcommand{\ihs}[1]{\texttt{ihs:#1}}
+\newcommand{\lab}[1]{\texttt{#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-\hypersetup{pdftitle={Three Duals at Surreal Scales: Strong Hahn Operators, Completion Defects, and Invisible Functionals},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Hahn vector spaces, continuous and strong duality, completion and scalar enlargement}}
+\hypersetup{pdftitle={Three Duals at Surreal Scales: Strong Hahn Operators, Completion Defects, and Invisible Functionals},pdfauthor={Research report for the Surreal project, from a manuscript prepared for Vladimir Reshetnikov},pdfsubject={Hahn vector spaces, continuous and strong duality, completion and scalar enlargement}}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{.10in}
-{\large\scshape A research article for the Surreal project\par}
-\vspace{.20in}
+\vspace*{-.25in}
+{\large\scshape A research report for the Surreal project\par}
+\vspace{.12in}
 {\Huge\bfseries\color{Ink} Three Duals at\\[.15em] Surreal Scales\par}
 \vspace{.15in}
 {\LARGE Strong Hahn Operators, Completion Defects,\\[.15em] and Invisible Functionals\par}
@@ -93,7 +96,9 @@ closure under strong Hahn summation. The completion consists exactly of
 those series whose coefficients below each valuation cut span a
 finite-dimensional $k$-space. In infinite coefficient dimension it equals
 the full Hahn space exactly when the nonzero group $\Gamma$ is ordered
-isomorphic to $\mathbb Z$. Under a cofinal exponent enlargement this
+isomorphic to $\mathbb Z$, and it is strictly larger than the algebraic
+scalar extension exactly when $\Gamma$ has countable cofinality. Under a
+cofinal exponent enlargement this
 completion criterion is preserved; under a noncofinal enlargement its
 intersection with the original Hahn space collapses to the algebraic
 scalar extension.
@@ -117,6 +122,9 @@ scalar, even when their coefficient maps are discontinuous in the
 ordinary Hilbert norm. An explicit choice-based hyperplane has a strong
 bounded projection but zero orthogonal complement, and the distance from
 an exterior constant vector has no infimum in the scalar field.
+\Cref{duals:sec:collection} compares these results with the collection's
+\emph{Infinite-Dimensional Hahn Spectral Theory}, whose Hahn--Hilbert
+space is the one used here.
 \end{abstract}
 \end{minipage}
 \vfill
@@ -127,16 +135,23 @@ completion--duality--scalar-enlargement classification, not the invention
 of Hahn summation, non-Archimedean Hahn--Banach, or failures of Riesz
 representation. No named published conjecture is claimed solved. A
 targeted repository and primary-literature comparison did not locate this
-exact package; this is not a certification of priority. The proofs have
-not been independently refereed or formally verified. All workspaces and
-choices in the proofs are set-sized.
+exact package; this is not a certification of priority. This is an
+AI-assisted research draft: the proofs have not been independently
+refereed or formally verified in Lean or any other proof assistant. All
+workspaces and choices in the proofs are set-sized.
+
+\textbf{Provenance.} Built from one manuscript, delivered on
+September~22, 2026 as item~04 of the collection's nineteenth batch and
+written against repository revision \texttt{048b72c}; placed at
+\texttt{52c7ab6}. Editorial changes, the updated repository comparison and
+the ledger of non-claims are in \cref{duals:app:provenance}.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 \pagenumbering{roman}\tableofcontents\clearpage
 \pagenumbering{arabic}
 
-\section{The questions and the contribution}\label{sec:intro}
+\section{The questions and the contribution}\label{duals:sec:intro}
 
 \subsection{Why continuity is not the same as respecting a formal sum}
 An infinite-dimensional extension of complex analysis to surcomplex
@@ -179,14 +194,14 @@ Our convention is that a strong map both preserves admissibility of all
 strongly summable families and commutes with their sums.
 
 \begin{theorem}[Completion and enlargement; proved in
-\cref{sec:completion,sec:enlargement}]\label{thm:overview-completion}
+\cref{duals:sec:completion,duals:sec:enlargement}]\label{duals:thm:overview-completion}
 For every $x\in V_\Gamma$,
 \begin{align}
  x\in E_\Gamma(V)
- &\iff \dim_k\Span\{x_\delta:\delta\in\Gamma\}<\infty,\label{eq:overview-E}\\
+ &\iff \dim_k\Span\{x_\delta:\delta\in\Gamma\}<\infty,\label{duals:eq:overview-E}\\
  x\in C_\Gamma(V)
  &\iff (\forall\gamma\in\Gamma)\ 
- \dim_k\Span\{x_\delta:\delta<\gamma\}<\infty.\label{eq:overview-C}
+ \dim_k\Span\{x_\delta:\delta<\gamma\}<\infty.\label{duals:eq:overview-C}
 \end{align}
 If $V$ is infinite-dimensional, then
 $C_\Gamma(V)=V_\Gamma$ exactly when $\cyc$.
@@ -201,7 +216,7 @@ For an ordered subgroup inclusion $\Gamma\subseteq\Delta$,
 \end{theorem}
 
 \begin{theorem}[Strong maps and the continuous dual; proved in
-\cref{sec:strong,sec:continuous}]\label{thm:overview-duals}
+\cref{duals:sec:strong,duals:sec:continuous}]\label{duals:thm:overview-duals}
 For arbitrary $k$-vector spaces $V,W$,
 \[
  \Hom_K^{\mathrm{str}}(V_\Gamma,W_\Gamma)
@@ -228,7 +243,7 @@ separate kinds of freedom, not just an undetectable additive error.
 
 For a complex Hilbert coefficient space the additional comparison with
 inner products is
-\begin{equation}\label{eq:overview-three}
+\begin{equation}\label{duals:eq:overview-three}
  \Drep\ \subseteq\ \Dstr\ \subseteq\ \Dcont,
  \qquad
  \Dstr/\Drep\simeq (H^\#/H')((t^\Gamma)).
@@ -241,9 +256,14 @@ first is strict. In finite coefficient dimension all three coincide.
 The repository's \emph{Infinite-Dimensional Hahn Spectral Theory}
 already constructs the coefficient-convolution inner product and proves
 that every everywhere-defined adjointable operator is a Hahn series of
-ordinary bounded operators. It also proves spectral and closed-range
-phenomena for that space \cite{RepoSpectral}. We do not present those
-results as new. Our operator theorem replaces the adjoint hypothesis by
+ordinary bounded operators (\ihs{hh:thm:adjoint}). It also proves spectral
+and closed-range phenomena for that space \cite{RepoSpectral}, including a
+valuation-continuous functional that is not represented by an inner
+product (\ihs{hh:prop:riesz}) and a valuation-closed proper subspace with
+zero orthogonal complement (\ihs{hh:thm:closedrange}). We do not present
+those results as new; the last two are the nearest predecessors, inside
+the collection, of \cref{duals:thm:riesz,duals:thm:hyperplane} below, and
+\cref{duals:sec:collection} states exactly how they relate. Our operator theorem replaces the adjoint hypothesis by
 preservation of strong sums, permits \emph{arbitrary algebraic}
 coefficient maps, and is then used to compare with the strictly larger
 continuous dual. The coefficient-rank completion criterion and its
@@ -270,12 +290,65 @@ model \cite{AN}. Our final hyperplane theorem specifies a different
 coefficient-Hilbert model and an exact missing-infimum cut.
 
 The proposed originality lies in the precise classification package,
-especially \cref{thm:completion,thm:cyclic,thm:basechange,thm:restriction,thm:separation,thm:twofailures}. The inspected repository inventory and
-the primary sources consulted are recorded in \cref{sec:audit} and the
+especially \cref{duals:thm:completion,duals:thm:cyclic,duals:thm:basechange,duals:thm:restriction,duals:thm:separation,duals:thm:twofailures}. The inspected repository inventory and
+the primary sources consulted are recorded in \cref{duals:sec:audit} and the
 accompanying audit file. This comparison is deliberately narrower than
 an assertion that no equivalent theorem exists anywhere in print.
 
-\section{Hahn vector spaces and the two notions of infinity}\label{sec:setup}
+\subsection{Conventions, and words used elsewhere in the collection}
+\label{duals:sec:conventions}
+Several words below are also used by neighbouring reports, sometimes for
+other things. Each has exactly one meaning in this report.
+\begin{itemize}
+\item \emph{Strong} (map, functional, dual) means preserving strong Hahn
+ summability of every set-indexed family \emph{and} commuting with its sum
+ (\cref{duals:def:strong-family} and the definition in
+ \cref{duals:sec:strong}). This is the ``strongly linear'' of the dynamics
+ report (\lab{dyn:def:summable}) and of \cite{BKKPS}, here required to be
+ linear over the whole Hahn field $K$. It has nothing to do with the
+ classical strong operator topology, a distinction the collection's
+ notation guide also records.
+\item \emph{Continuous} and \emph{completion} refer to the intrinsic
+ valuation topology and uniformity of the one fixed workspace
+ $V((t^\Gamma))$, with thresholds in $\Gamma$. They never refer to the full
+ surreal fine topology, in which a set-sized workspace is discrete
+ (\ihs{warn:three}), nor to the ordinary norm topology of a coefficient
+ space. The completion $C_\Gamma(V)$ is a closure inside $V_\Gamma$; it is
+ not a sequence-space completion such as $\ell^2(K)$.
+\item \emph{Dual} always means a space of $K$-linear or $k$-linear
+ functionals: $V^\#$ is the ordinary algebraic dual, $H'$ the ordinary
+ continuous dual, and $\Drep\subseteq\Dstr\subseteq\Dcont$ the three duals
+ of \cref{duals:sec:hilbert}. It never means an order dual of an exponent
+ group.
+\item \emph{Cofinality} $\operatorname{cf}(\Gamma)$ is the least cardinality
+ of a cofinal subset of the ordered set $\Gamma$, and ``$\Gamma$ is cofinal
+ in $\Delta$'' has its order-theoretic meaning; both agree with the report
+ \emph{Cofinality, Factorization and Scalar Extension for Entire Hahn
+ Functions at Arbitrary Rank} \cite{RepoEntire} (\lab{ent:rem:one-name},
+ \lab{ent:thm:extension-criterion}). An element $\alpha>0$ whose multiples
+ $n\alpha$ are cofinal is called an \emph{order unit} there
+ (\lab{ent:def:order-unit}); countable cofinality does not imply that an
+ order unit exists.
+\item \emph{Noncyclic} is used only for $\Gamma\ne0$ and means that
+ $\Gamma$ is not ordered isomorphic to $\Z$. For a nonzero ordered group
+ this is the same as not being cyclic.
+\item \emph{Bounded} for a map on a Hilbert coefficient space means an
+ inequality with a positive bound in $F=\R((t^\Gamma))$
+ (\cref{duals:prop:order-bound}); ordinary boundedness of coefficient maps
+ is always called ordinary boundedness or ordinary continuity.
+\item \emph{Invisible} is always ``invisible on constants''
+ (\cref{duals:sec:continuous}). It is unrelated to the dynamics report's
+ remark on divisor growth that the valuation does not see
+ (\lab{dyn:rem:invisible}).
+\item Inner products are linear in the first variable, as in Part~I of the
+ spectral report and unlike its Part~II. We write
+ $H_\Gamma=H((t^\Gamma))$; this is the space that report calls
+ $\mathcal H_\Gamma$. The letters $E$ and $C$ of $E_\Gamma(V)$ and
+ $C_\Gamma(V)$ are unrelated to the perturbation $E$ and the coercive
+ operator $C$ used there.
+\end{itemize}
+
+\section{Hahn vector spaces and the two notions of infinity}\label{duals:sec:setup}
 
 \subsection{Supports, scalar multiplication, and strong families}
 Fix a field $k$ and a set-sized ordered abelian group $\Gamma$, written
@@ -295,7 +368,7 @@ are coefficient convolutions. In particular,
 The superscript H emphasizes formal Hahn summation; it never means
 ordinary summation of infinitely many coefficients at one exponent.
 
-\begin{definition}\label{def:strong-family}
+\begin{definition}\label{duals:def:strong-family}
 A set-indexed family $(x_j)_{j\in J}$ in $V_\Gamma$ is strongly
 Hahn summable if $\bigcup_j\supp x_j$ is well ordered and, for every
 $\gamma$, only finitely many $j$ have $(x_j)_\gamma\ne0$.
@@ -310,7 +383,7 @@ that family's Hahn sum: the exponent zero has infinitely many
 contributors. The familiar numerical value may be used as a
 \emph{single coefficient}, which is a different operation.
 
-\begin{lemma}[Classical support facts]\label{lem:support}
+\begin{lemma}[Classical support facts]\label{duals:lem:support}
 If $A,B\subseteq\Gamma$ are well ordered, then $A+B$ is well ordered,
 and each $\eta$ has only finitely many representations
 $\eta=\alpha+\beta$ with $\alpha\in A$, $\beta\in B$.
@@ -328,7 +401,9 @@ sequence in $B$. Infinitely many representations of one sum similarly
 give strictly increasing $A$-coordinates and strictly decreasing
 $B$-coordinates. The finite-union assertion follows by selecting a
 minimum in each nonempty intersection. The positive-monoid assertion is
-the classical Hahn--Neumann support lemma \cite{Neumann}; it is needed
+the classical Hahn--Neumann support lemma \cite{Neumann}, stated in the
+collection as \ihs{lem:support} and proved in the finite-dimensional
+spectral report as \lab{spec:lem:words} and \lab{spec:lem:neumann}; it is needed
 below only for the standard binomial square-root construction. The
 operator and completion classifications use the two-set assertion, whose
 proof was just given.
@@ -337,7 +412,7 @@ proof was just given.
 Strong sums may be regrouped along any map of index sets. Indeed,
 regrouping can only reduce support, and each coefficient involves
 finitely many original indices. Scalar multiplication commutes with
-strong sums by \cref{lem:support}. These statements supply all
+strong sums by \cref{duals:lem:support}. These statements supply all
 infinite rearrangements used in the operator proofs.
 
 \subsection{Valuation topology and bounded shifts}
@@ -363,10 +438,10 @@ The topology is Hausdorff, since a nonzero difference has a finite
 valuation and can be excluded by a higher precision.
 
 \begin{lemma}[Continuity is a uniform valuation-shift bound]
-\label{lem:continuous-shift}
+\label{duals:lem:continuous-shift}
 A $K$-linear map $L:V_\Gamma\to W_\Gamma$ is valuation-continuous
 if and only if there exists $s\in\Gamma$ such that
-\begin{equation}\label{eq:shift}
+\begin{equation}\label{duals:eq:shift}
  v(Lx)\ge v(x)+s\qquad(x\in V_\Gamma).
 \end{equation}
 The same assertion holds for a $K$-linear map on any subspace with the
@@ -394,7 +469,7 @@ contradiction to ordinary functional analysis.
 \end{warning}
 
 \section{All strong linear maps have one global operator support}
-\label{sec:strong}
+\label{duals:sec:strong}
 
 \subsection{The exact Hom theorem}
 \begin{definition}
@@ -402,20 +477,20 @@ A $K$-linear map $T:V_\Gamma\to W_\Gamma$ is strong if, for every
 strongly Hahn-summable family $(x_j)$, the family $(Tx_j)$ is strongly
 Hahn summable and $T(\sH_jx_j)=\sH_jTx_j$.
 \end{definition}
-Both clauses are part of the definition. In \cref{sec:twofailures}
+Both clauses are part of the definition. In \cref{duals:sec:twofailures}
 continuous functionals will exhibit two different obstructions.
 
-\begin{theorem}[Global-support classification]\label{thm:strong}
+\begin{theorem}[Global-support classification]\label{duals:thm:strong}
 For all $k$-vector spaces $V,W$ and every ordered abelian group
 $\Gamma$, including the zero group, the convolution map gives a
 canonical $K$-linear isomorphism
-\begin{equation}\label{eq:strong-Hom}
+\begin{equation}\label{duals:eq:strong-Hom}
  \Hom_k(V,W)((t^\Gamma))
  \xrightarrow{\ \sim\ }
  \Hom_K^{\mathrm{str}}(V_\Gamma,W_\Gamma).
 \end{equation}
 Explicitly, a Hahn series $A=\sH_\gamma A_\gamma t^\gamma$ acts by
-\begin{equation}\label{eq:operator-convolution}
+\begin{equation}\label{duals:eq:operator-convolution}
  (A x)_\eta=\sum_{\gamma+\delta=\eta}A_\gamma(x_\delta).
 \end{equation}
 The set $\{\gamma:A_\gamma\ne0\}$ is one well-ordered support,
@@ -444,15 +519,15 @@ Strongness and $K$-linearity yield
  Tx=\sH_\delta t^\delta T(x_\delta)
    =\sH_{\delta,\gamma}A_\gamma(x_\delta)t^{\delta+\gamma}.
 \]
-The common support $S$ and \cref{lem:support} justify the final
+The common support $S$ and \cref{duals:lem:support} justify the final
 expansion and make its coefficient formula exactly
-\eqref{eq:operator-convolution}. Testing constants also proves
+\eqref{duals:eq:operator-convolution}. Testing constants also proves
 uniqueness of the coefficient maps.
 
 \emph{Sufficiency.}
 Start instead with a well-ordered support of maps $A_\gamma$.
-For one input $x$, \cref{lem:support} makes
-\eqref{eq:operator-convolution} a Hahn vector. It commutes with scalar
+For one input $x$, \cref{duals:lem:support} makes
+\eqref{duals:eq:operator-convolution} a Hahn vector. It commutes with scalar
 multiplication, by finite rearrangement at each coefficient, and is
 additive. If $(x_j)$ is strong, let $B=\bigcup_j\supp x_j$.
 All image supports lie in $S+B$. At a fixed exponent there are finitely
@@ -464,10 +539,14 @@ rearrangement proves commutation with its sum.
 The descending-support test is an automatic uniformity principle: an
 assumption about all summable families rules out a global support defect
 that may not be visible on any one constant vector. It does not use
-Baire category, completeness of $V$, or an adjoint.
+Baire category, completeness of $V$, or an adjoint. By contrast, the
+automatic adjoint theorem of the spectral report obtains its one global
+support by a Baire argument on bounded coefficient operators
+(\ihs{hh:thm:adjoint}, Step~2); \cref{duals:sec:collection} compares the two
+operator classes.
 
 \begin{corollary}[Operator calculus and automatic continuity]
-\label{cor:strong-calculus}
+\label{duals:cor:strong-calculus}
 Composition corresponds to coefficient convolution. In particular,
 \[
  \End_K^{\mathrm{str}}(V_\Gamma)
@@ -479,10 +558,10 @@ $v(Ax)\ge v(x)+s$ for all $x$. Every strong map is valuation-continuous.
 \begin{proof}
 For composable $A,B$, the coefficient of $B\circ A$ at $\eta$ is
 $\sum_{\beta+\alpha=\eta}B_\beta A_\alpha$. All sums are finite by
-\cref{lem:support}, and the action on a vector agrees after regrouping.
+\cref{duals:lem:support}, and the action on a vector agrees after regrouping.
 For the estimate, every nonzero output coefficient lies at a sum of an
 exponent at least $s$ and one at least $v(x)$. Apply
-\cref{lem:continuous-shift}.
+\cref{duals:lem:continuous-shift}.
 \end{proof}
 
 \subsection{Pointwise supports alone do not suffice}
@@ -496,13 +575,13 @@ $e_n$, a strictly decreasing positive sequence $\delta_n$, and set
 $A(e_n)=t^{\delta_n}$, with zero values on all remaining basis vectors.
 Every $A(u)$ has finite support. The global support contains the
 entire decreasing sequence. This example cannot be inserted in
-\eqref{eq:operator-convolution} on arbitrary Hahn vectors. It can,
+\eqref{duals:eq:operator-convolution} on arbitrary Hahn vectors. It can,
 however, be extended to a continuous functional by a different,
 noncanonical construction. That is one of the distinctions explained
-in \cref{sec:continuous}.
+in \cref{duals:sec:continuous}.
 
 \section{The completion is a coefficient-rank condition}
-\label{sec:completion}
+\label{duals:sec:completion}
 
 \subsection{The algebraic scalar extension inside the Hahn space}
 The constant embedding $V\hookrightarrow V_\Gamma$ induces a map
@@ -516,7 +595,7 @@ in $V$ and $a_1,\ldots,a_d\in K$, then
 Independence makes every scalar coefficient zero. Thus the tensor map is
 injective and its image is $E_\Gamma(V)=\Span_KV$.
 
-\begin{proposition}[Finite total coefficient rank]\label{prop:algebraic}
+\begin{proposition}[Finite total coefficient rank]\label{duals:prop:algebraic}
 A vector $x\in V_\Gamma$ belongs to $E_\Gamma(V)$ if and only if all
 its coefficients span a finite-dimensional $k$-subspace of $V$.
 \end{proposition}
@@ -541,9 +620,9 @@ For a cut level $\gamma\in\Gamma$ define
 The coefficients may have a transfinite well-ordered support, but this
 is an ordinary set-generated vector subspace.
 
-\begin{theorem}[Finite rank below every cut]\label{thm:completion}
+\begin{theorem}[Finite rank below every cut]\label{duals:thm:completion}
 For $\Gamma\ne0$,
-\begin{equation}\label{eq:completion}
+\begin{equation}\label{duals:eq:completion}
  C_\Gamma(V)=\{x\in V_\Gamma:
              \dim_k V_{x,<\gamma}<\infty\text{ for every }\gamma\in\Gamma\}.
 \end{equation}
@@ -554,7 +633,7 @@ vectors of $E_\Gamma(V)$, whether or not it lies in $C_\Gamma(V)$.
 \begin{proof}
 Suppose $x$ lies in the closure. For any $\gamma$, choose
 $y\in E_\Gamma(V)$ with $v(x-y)\ge\gamma$. Their coefficients below
-$\gamma$ agree, and by \cref{prop:algebraic} those of $y$ have finite
+$\gamma$ agree, and by \cref{duals:prop:algebraic} those of $y$ have finite
 span. Hence $V_{x,<\gamma}$ is finite-dimensional.
 
 Conversely, assume the right-hand condition. For any $\gamma$, the
@@ -570,17 +649,17 @@ A closure of a vector subspace in a topological vector space is a
 subspace. Alternatively, addition combines two finite coefficient spans;
 for multiplication by a fixed scalar $a$, coefficients below $\gamma$
 use coefficients of $x$ below $\gamma-v(a)$, so their span is still
-finite. The ambient space is complete by \cref{prop:spherical} below;
+finite. The ambient space is complete by \cref{duals:prop:spherical} below;
 its closed subspace is therefore a completion of the embedded tensor
 product. Finally $x=\sH_\delta t^\delta x_\delta$ is always a strong
 sum of elements of $E_\Gamma(V)$.
 \end{proof}
 
 \begin{example}[A bounded increasing support]
-\label{ex:bounded-support}
+\label{duals:ex:bounded-support}
 Let $e_2,e_3,\ldots$ be linearly independent and let $\Gamma$ be nonzero
 and divisible. Choose $\alpha>0$ and put
-\begin{equation}\label{eq:bounded-example}
+\begin{equation}\label{duals:eq:bounded-example}
  x=\sH_{n\ge2}t^{\alpha(1-1/n)}e_n.
 \end{equation}
 Its support is a strictly increasing sequence and is well ordered.
@@ -597,7 +676,7 @@ approximants. The rank criterion excludes \emph{every} algebraic
 scalar-extension approximant.
 
 \subsection{Exactly which exponent groups make the algebraic part dense?}
-\begin{lemma}[An order-theoretic alternative]\label{lem:group}
+\begin{lemma}[An order-theoretic alternative]\label{duals:lem:group}
 For a nonzero ordered abelian group $\Gamma$, precisely one of the
 following holds: $\Gamma\simeq_{\mathrm{ord}}\Z$, or $\Gamma$ contains
 a strictly increasing sequence bounded above in $\Gamma$.
@@ -625,7 +704,7 @@ Conversely, the increasing bounded sequence just constructed is itself
 a well-ordered subset violating that property.
 \end{proof}
 
-\begin{theorem}[The cyclic-group boundary]\label{thm:cyclic}
+\begin{theorem}[The cyclic-group boundary]\label{duals:thm:cyclic}
 If $\dim_kV<\infty$, then $E_\Gamma(V)=V_\Gamma$ for every $\Gamma$.
 If $\dim_kV=\infty$ and $\Gamma\ne0$, then
 \[
@@ -633,13 +712,14 @@ If $\dim_kV=\infty$ and $\Gamma\ne0$, then
 \]
 For infinite-dimensional $V$ and any nonzero $\Gamma$, the first
 inclusion $E_\Gamma(V)\subset C_\Gamma(V)$ is strict whenever there
-exists a sequence $n\alpha$ cofinal in $\Gamma$, with $\alpha>0$.
+exists a sequence $n\alpha$ cofinal in $\Gamma$, with $\alpha>0$, that is,
+whenever $\Gamma$ has an order unit in the sense of \lab{ent:def:order-unit}.
 \end{theorem}
 \begin{proof}
-Finite dimension follows from \cref{prop:algebraic}. In the cyclic case,
+Finite dimension follows from \cref{duals:prop:algebraic}. In the cyclic case,
 every support has finitely many exponents below each cut; apply
-\cref{thm:completion}. In the noncyclic case take a bounded increasing
-sequence $\gamma_n<\beta$ from \cref{lem:group}, choose linearly
+\cref{duals:thm:completion}. In the noncyclic case take a bounded increasing
+sequence $\gamma_n<\beta$ from \cref{duals:lem:group}, choose linearly
 independent $e_n$, and form $\sum t^{\gamma_n}e_n$.
 It violates the finite-rank condition below $\beta$.
 
@@ -654,7 +734,7 @@ workspaces. There is also an exact criterion for whether completion adds
 \emph{any} new vectors.
 
 \begin{theorem}[The cofinality boundary for nontrivial completion]
-\label{thm:cofinality-completion}
+\label{duals:thm:cofinality-completion}
 Suppose $\dim_kV=\infty$ and $\Gamma\ne0$. Then
 \[
  E_\Gamma(V)\subsetneq C_\Gamma(V)
@@ -687,7 +767,7 @@ choose countably many linearly independent coefficients of $x$.
 Their exponents form a countable subset of $\Gamma$, which is not
 cofinal. All are therefore below some common cut, contradicting the
 finite-rank condition for that cut. So $x\in E_\Gamma(V)$.
-Combine this with \cref{thm:cyclic} to obtain the displayed diagram.
+Combine this with \cref{duals:thm:cyclic} to obtain the displayed diagram.
 \end{proof}
 
 Thus an algebraic scalar extension can already be valuation-complete
@@ -695,8 +775,23 @@ while remaining strictly smaller than the full Hahn space. Completion
 and closure under strong sums are genuinely different operations.
 For $\Gamma=0$, the entire construction simply reduces to $V$ over $k$.
 
+\begin{remark}[Order units versus countable cofinality]
+\label{duals:rem:order-unit}
+The sufficient condition in the last clause of \cref{duals:thm:cyclic} is
+the existence of an order unit; the exact condition in
+\cref{duals:thm:cofinality-completion} is countable cofinality. These
+differ: the entire-functions report exhibits a group of countable
+cofinality with no order unit (\lab{ent:rem:one-name}). For such a group
+the proof of \cref{duals:thm:cofinality-completion} still produces a vector
+in $C_\Gamma(V)\setminus E_\Gamma(V)$ from any increasing cofinal
+sequence, although no single monomial $t^\alpha$ has cofinal powers. The
+same invariant decides, in that report, whether a strongly entire power
+series can fail to be a polynomial (\lab{ent:cor:cofinality}); the two
+theorems concern different objects and neither is used to prove the other.
+\end{remark}
+
 \section{Completeness and extension: the classical mechanism}
-\label{sec:extension}
+\label{duals:sec:extension}
 
 \subsection{Spherical completeness without a norm on the coefficients}
 The extension argument needs full Hahn series, not merely a field of
@@ -704,7 +799,7 @@ left-finite or bounded-denominator series. The following proof makes
 this distinction transparent.
 
 \begin{proposition}[Spherical completeness of the full Hahn space]
-\label{prop:spherical}
+\label{duals:prop:spherical}
 Every nested set-indexed family of nonempty closed valuation balls in
 $V_\Gamma$ has nonempty intersection. In particular, $K$ is spherically
 complete and $V_\Gamma$ is complete for its valuation uniformity.
@@ -741,6 +836,14 @@ In particular, spherical completeness here does not recover the ordinary
 Hilbert topology on constants. Even an incomplete ordinary normed
 coefficient space gives a complete Hahn space for this valuation. The
 completeness is completeness of formal truncations.
+
+Within the collection, the spectral report proves metric completeness of
+$V((t^\Gamma))$ for a real-valued metric when $\Gamma\subseteq\R$
+(\ihs{hh:prop:complete}), and the rank-one Berkovich report proves
+spherical completeness of the scalar field $\C((t^\R))$ (its
+\lab{prop:spherical}, a label without report prefix). \Cref{duals:prop:spherical}
+contains both for coefficient vector spaces and arbitrary rank; its proof
+is the same stabilization-of-truncations argument.
 \end{remark}
 
 \subsection{A valuation Hahn--Banach lemma}
@@ -749,7 +852,7 @@ for arbitrary ordered groups. The rank-one version is classical
 Ingleton theory \cite{Ingleton,Morillon}; the argument is the same
 nested-ball argument, written additively.
 
-\begin{theorem}[Contractive scalar extension]\label{thm:HB}
+\begin{theorem}[Contractive scalar extension]\label{duals:thm:HB}
 Let $X$ be a $K$-vector space with a valuation taking nonzero values in
 $\Gamma$, satisfying the scalar and ultrametric laws. Let $M\le X$ and
 $f:M\to K$ be $K$-linear with $v(fm)\ge v(m)$ for every $m\in M$.
@@ -792,7 +895,7 @@ continuous functionals constructed from this theorem below are exact
 existence results, not computable symbolic formulas on all Hahn vectors.
 
 \section{The continuous dual and its invisible kernel}
-\label{sec:continuous}
+\label{duals:sec:continuous}
 
 \subsection{The restriction space}
 Let
@@ -802,12 +905,12 @@ Let
  \Dstr(V_\Gamma)=\Hom_K^{\mathrm{str}}(V_\Gamma,K).
 \]
 Let $V^\#=\Hom_k(V,k)$ be the ordinary \emph{algebraic} dual, not a
-topological dual. By \cref{thm:strong},
-\begin{equation}\label{eq:strong-dual}
+topological dual. By \cref{duals:thm:strong},
+\begin{equation}\label{duals:eq:strong-dual}
  \Dstr(V_\Gamma)\simeq V^\#((t^\Gamma)).
 \end{equation}
 
-\begin{definition}\label{def:restriction-space}
+\begin{definition}\label{duals:def:restriction-space}
 The restriction space $P_\Gamma(V)$ consists of the $k$-linear maps
 $A:V\to K$ such that there exists $s\in\Gamma$ with
 $v(Au)\ge s$ for every $u\in V$. Its $K$-vector-space structure is
@@ -823,7 +926,7 @@ $V^\#((t^\Gamma))$ requires this union itself to be well ordered.
 The two requirements agree for a cyclic group, but not in general.
 
 \begin{lemma}[Extension from constants to their algebraic span]
-\label{lem:E-extension}
+\label{duals:lem:E-extension}
 Every $A\in P_\Gamma(V)$ has a unique $K$-linear extension
 $f_A:E_\Gamma(V)\to K$. If $v(Au)\ge s$ for all $u$, then
 $v(f_Ae)\ge v(e)+s$ for all $e\in E_\Gamma(V)$.
@@ -841,13 +944,13 @@ $v(e)=\min_jv(a_j)$ after omitting zero scalars. Therefore
 The zero vector is automatic.
 \end{proof}
 
-\begin{theorem}[Exact restriction sequence]\label{thm:restriction}
+\begin{theorem}[Exact restriction sequence]\label{duals:thm:restriction}
 Define
 \[
  N_\Gamma(V)=\{L\in\Dcont(V_\Gamma):L(u)=0\text{ for every }u\in V\}.
 \]
 Restriction to constants yields an exact sequence of $K$-vector spaces
-\begin{equation}\label{eq:exact-sequence}
+\begin{equation}\label{duals:eq:exact-sequence}
  0\longrightarrow N_\Gamma(V)\longrightarrow\Dcont(V_\Gamma)
  \xrightarrow{\ \res\ }P_\Gamma(V)\longrightarrow0.
 \end{equation}
@@ -856,16 +959,16 @@ exactly the embedded copy of $V^\#((t^\Gamma))$.
 \end{theorem}
 \begin{proof}
 A continuous functional has a uniform valuation-shift bound by
-\cref{lem:continuous-shift}. On nonzero constants the input valuation
+\cref{duals:lem:continuous-shift}. On nonzero constants the input valuation
 is zero, so its restriction belongs to $P_\Gamma(V)$. The kernel is
 exactly $N_\Gamma(V)$ by definition.
 
 For surjectivity, let $A\in P_\Gamma(V)$ and take a lower bound $s$.
-By \cref{lem:E-extension}, $t^{-s}f_A$ is contractive on
-$E_\Gamma(V)$. Extend it to $V_\Gamma$ by \cref{thm:HB} and multiply
+By \cref{duals:lem:E-extension}, $t^{-s}f_A$ is contractive on
+$E_\Gamma(V)$. Extend it to $V_\Gamma$ by \cref{duals:thm:HB} and multiply
 the extension by $t^s$. The result is continuous and restricts to $A$.
 Finally, the assertion about strong maps is exactly
-\cref{thm:strong}, with $W=k$.
+\cref{duals:thm:strong}, with $W=k$.
 \end{proof}
 
 As vector spaces, the exact sequence admits a noncanonical splitting
@@ -880,15 +983,15 @@ This is a definition, not a statement that they are zero: the constants
 need not be topologically total in the Hahn space.
 
 \begin{theorem}[Separation of the completion defect]
-\label{thm:separation}
+\label{duals:thm:separation}
 For every $V$ and every nonzero $\Gamma$,
-\begin{equation}\label{eq:common-kernel}
+\begin{equation}\label{duals:eq:common-kernel}
  C_\Gamma(V)=\bigcap_{L\in N_\Gamma(V)}\ker L.
 \end{equation}
 More explicitly, if $x\notin C_\Gamma(V)$ and
 $\dim_kV_{x,<\gamma}=\infty$, there is a $K$-linear functional $L$
 satisfying
-\begin{equation}\label{eq:ghost-values}
+\begin{equation}\label{duals:eq:ghost-values}
  L|_V=0,\qquad L(x)=t^\gamma,\qquad
  v(Ly)\ge v(y)\quad(y\in V_\Gamma).
 \end{equation}
@@ -897,12 +1000,12 @@ Such a functional is continuous but not strong.
 \begin{proof}
 Every member of $N_\Gamma(V)$ vanishes on the algebraic span of the
 constants and, by continuity, on its closure. This proves one inclusion
-in \eqref{eq:common-kernel}.
+in \eqref{duals:eq:common-kernel}.
 
 For the other, choose $x$ and $\gamma$ as in the statement. No
 $e\in E_\Gamma(V)$ can agree with $x$ below $\gamma$, by the
 coefficient-rank obstruction. Thus
-\begin{equation}\label{eq:uniform-separation}
+\begin{equation}\label{duals:eq:uniform-separation}
  v(x-e)<\gamma\qquad(e\in E_\Gamma(V)).
 \end{equation}
 Since $x\notin E_\Gamma(V)$, the formula
@@ -915,8 +1018,8 @@ If $a\ne0$, then
  v(e+ax)=v(a)+v(x+a^{-1}e)<v(a)+\gamma=v(f(e+ax)).
 \]
 If $a=0$, the output is zero. Hence $f$ is contractive in valuation.
-Apply \cref{thm:HB} to extend it to $L$ on all of $V_\Gamma$.
-This proves \eqref{eq:ghost-values} and separates $x$.
+Apply \cref{duals:thm:HB} to extend it to $L$ on all of $V_\Gamma$.
+This proves \eqref{duals:eq:ghost-values} and separates $x$.
 
 Finally $x=\sH_\delta t^\delta x_\delta$, while
 $L(t^\delta x_\delta)=0$ for every monomial term. Those images are a
@@ -924,21 +1027,21 @@ summable zero family, but their sum is not $L(x)$. Therefore $L$ is
 not strong.
 \end{proof}
 
-\begin{corollary}[Exact existence boundary]\label{cor:ghost-boundary}
+\begin{corollary}[Exact existence boundary]\label{duals:cor:ghost-boundary}
 For nonzero $\Gamma$, invisible nonzero continuous functionals exist
 if and only if $V$ is infinite-dimensional and $\Gamma$ is not ordered
 isomorphic to $\Z$. Moreover
 $N_\Gamma(V)\cap\Dstr(V_\Gamma)=\{0\}$.
 \end{corollary}
 \begin{proof}
-By \cref{thm:separation}, the kernel is nonzero exactly when the
-algebraic scalar extension is not dense. Apply \cref{thm:cyclic}.
+By \cref{duals:thm:separation}, the kernel is nonzero exactly when the
+algebraic scalar extension is not dense. Apply \cref{duals:thm:cyclic}.
 A strong functional vanishing on constants vanishes on every monomial
 coefficient expansion, proving the intersection statement.
 \end{proof}
 
 \section{Two independent ways continuity can fail strongness}
-\label{sec:twofailures}
+\label{duals:sec:twofailures}
 
 \subsection{One failure changes sums; the other destroys summability}
 The invisible functionals just constructed annihilate every term of a
@@ -946,7 +1049,7 @@ particular strong sum but not its value. A different construction
 produces an image family that is not even summable.
 
 \begin{theorem}[Two failures, for every noncyclic group]
-\label{thm:twofailures}
+\label{duals:thm:twofailures}
 Assume $\dim_kV=\infty$ and $\Gamma\ne0$ is not ordered isomorphic
 to $\Z$.
 There exist continuous $K$-linear functionals of both following types.
@@ -961,8 +1064,8 @@ monomial family to the constant family $(1)_{n\ge1}$.
 It cannot be written as a strong functional plus an invisible one.
 \end{theorem}
 \begin{proof}
-Part (a) is \cref{thm:separation,cor:ghost-boundary}.
-For (b), \cref{lem:group} provides an increasing sequence
+Part (a) is \cref{duals:thm:separation,duals:cor:ghost-boundary}.
+For (b), \cref{duals:lem:group} provides an increasing sequence
 $\gamma_n<\beta$. Put $\delta_n=\beta-\gamma_n$; these are strictly
 decreasing and positive. Choose independent vectors $e_n$ and extend
 them to a Hamel basis of $V$. Define $A:V\to K$ by
@@ -972,7 +1075,7 @@ them to a Hamel basis of $V$. Define $A:V\to K$ by
 \]
 Every vector is a finite Hamel combination, so $A(u)$ has finite
 support. All those supports are positive, so $A\in P_\Gamma(V)$
-with lower bound zero. By \cref{thm:restriction}, extend $A$ to a
+with lower bound zero. By \cref{duals:thm:restriction}, extend $A$ to a
 continuous $K$-linear functional $L$ on $V_\Gamma$.
 
 The family $t^{-\delta_n}e_n$ is strongly summable, its exponents being
@@ -983,24 +1086,24 @@ strictly increasing. But
 \]
 The image family violates the finite-fiber condition at zero.
 If $L=S+N$ with $S$ strong and $N$ invisible on constants, then
-$S|_V=A$. This is impossible by \cref{thm:strong}, because the global
+$S|_V=A$. This is impossible by \cref{duals:thm:strong}, because the global
 coefficient support of $A$ contains the strictly decreasing sequence
 $\delta_n$.
 \end{proof}
 
-\begin{corollary}[A second quotient obstruction]\label{cor:second-quotient}
+\begin{corollary}[A second quotient obstruction]\label{duals:cor:second-quotient}
 Restriction induces a canonical isomorphism
-\begin{equation}\label{eq:second-quotient}
+\begin{equation}\label{duals:eq:second-quotient}
  \frac{\Dcont(V_\Gamma)}{\Dstr(V_\Gamma)+N_\Gamma(V)}
  \simeq
  \frac{P_\Gamma(V)}{V^\#((t^\Gamma))}.
 \end{equation}
-Under the hypotheses of \cref{thm:twofailures}, this quotient is
+Under the hypotheses of \cref{duals:thm:twofailures}, this quotient is
 nonzero, as is $N_\Gamma(V)$ itself.
 \end{corollary}
 \begin{proof}
 Apply the first and third isomorphism theorems to
-\eqref{eq:exact-sequence}, using its identified image of the strong
+\eqref{duals:eq:exact-sequence}, using its identified image of the strong
 subspace. Nonvanishing is the example in part (b).
 \end{proof}
 
@@ -1016,7 +1119,7 @@ coefficient functionals.
 
 \subsection{Why ordinary Laurent exponents are exceptional}
 \begin{theorem}[When continuous and strong duals agree]
-\label{thm:continuous-strong}
+\label{duals:thm:continuous-strong}
 For $\Gamma\ne0$,
 \[
  \Dcont(V_\Gamma)=\Dstr(V_\Gamma)
@@ -1034,10 +1137,10 @@ If $\Gamma\simeq_{\mathrm{ord}}\Z$, then $C_\Gamma(V)=V_\Gamma$,
 so $N_\Gamma(V)=0$. For any $A\in P_\Gamma(V)$, its global support
 is bounded below in an ordered copy of $\Z$, and is therefore well
 ordered. Hence $P_\Gamma(V)=V^\#((t^\Gamma))$. The exact sequence
-\eqref{eq:exact-sequence} now identifies every continuous functional
+\eqref{duals:eq:exact-sequence} now identifies every continuous functional
 with the unique strong functional having its restriction.
 
-In every remaining case, \cref{thm:twofailures} supplies continuous
+In every remaining case, \cref{duals:thm:twofailures} supplies continuous
 nonstrong functionals.
 \end{proof}
 
@@ -1050,7 +1153,7 @@ noncyclic group, a bounded increasing sequence is precisely the
 obstruction to that argument.
 
 \section{Hilbert coefficients: represented, strong, and bounded duals}
-\label{sec:hilbert}
+\label{duals:sec:hilbert}
 
 \subsection{The positive form and its field-valued norm}
 Take $k=\C$, an ordinary complex Hilbert space $H$, and
@@ -1061,8 +1164,9 @@ Take $k=\C$, an ordinary complex Hilbert space $H$, and
 Order $F$ by its first nonzero coefficient and conjugate $K$
 coefficientwise. Our inner products are linear in the first variable.
 The coefficient-convolution form, already used in the repository
-\cite{RepoSpectral}, is
-\begin{equation}\label{eq:inner}
+\cite{RepoSpectral} as \ihs{hh:eq:inner} with the same linearity
+convention, is
+\begin{equation}\label{duals:eq:inner}
  \ip{x}{y}=\sH_{\alpha,\beta}
        \ip{x_\alpha}{y_\beta}_H t^{\alpha+\beta}.
 \end{equation}
@@ -1071,8 +1175,8 @@ Each ordinary Hilbert inner product is evaluated as one coefficient
 over infinitely many ordinary coordinates at the same exponent.
 
 \begin{proposition}[Norm and valuation; standard coefficient extension]
-\label{prop:norm}
-The form \eqref{eq:inner} is positive definite. Its positive square-root
+\label{duals:prop:norm}
+The form \eqref{duals:eq:inner} is positive definite. Its positive square-root
 norm $\norm{x}=\sqrt{\ip{x}{x}}$ exists in $F$ for every ordered group
 $\Gamma$, satisfies Cauchy--Schwarz and the triangle inequality, and
 \[
@@ -1080,8 +1184,11 @@ $\Gamma$, satisfies Cauchy--Schwarz and the triangle inequality, and
 \]
 If $\delta=v(x)$, its leading coefficient is $\norm{x_\delta}_H$.
 \end{proposition}
+This is the spectral report's \ihs{hh:prop:inner}, which since its revision
+\texttt{6e34651} also holds without divisibility of $\Gamma$. The proof
+is repeated so that this report can be read alone.
 \begin{proof}
-Convolution is defined by \cref{lem:support}. If $x\ne0$, the first
+Convolution is defined by \cref{duals:lem:support}. If $x\ne0$, the first
 coefficient of $\ip{x}{x}$ is $\norm{x_\delta}_H^2>0$ at exponent
 $2\delta$. Write it as
 $c^2t^{2\delta}(1+u)$ with $c>0$ and $v(u)>0$, allowing $u=0$.
@@ -1114,11 +1221,11 @@ not the topology induced from the full surreal class.
 
 \subsection{Boundedness is much weaker than ordinary coefficient boundedness}
 \begin{proposition}[Order bounds for all continuous maps]
-\label{prop:order-bound}
+\label{duals:prop:order-bound}
 For $\Gamma\ne0$ and ordinary Hilbert spaces $H,G$, a $K$-linear map
 $T:H_\Gamma\to G_\Gamma$ is valuation-continuous if and only if
 there is $M\in F_{>0}$ such that
-\begin{equation}\label{eq:order-bound}
+\begin{equation}\label{duals:eq:order-bound}
  \norm{Tx}\le M\norm{x}\qquad(x\in H_\Gamma).
 \end{equation}
 In particular, every strong map is bounded in this sense, even if its
@@ -1128,23 +1235,32 @@ $\eta>0$ the scalar $M=t^{s-\eta}$ is a valid bound.
 \end{proposition}
 \begin{proof}
 Continuity gives $v(Tx)\ge v(x)+s$ for some $s$ by
-\cref{lem:continuous-shift}. The valuation of
+\cref{duals:lem:continuous-shift}. The valuation of
 $t^{s-\eta}\norm{x}$ is strictly smaller than that of $\norm{Tx}$
 when both are nonzero. In an ordered Hahn field this means the former
 positive element is larger, irrespective of their ordinary leading
 coefficients. The zero cases are immediate.
-Conversely, a positive inequality \eqref{eq:order-bound} implies
+Conversely, a positive inequality \eqref{duals:eq:order-bound} implies
 $v(Tx)\ge v(M)+v(x)$: otherwise its left side would dominate its right
-side. Apply \cref{lem:continuous-shift}. For strong maps use
-\cref{cor:strong-calculus}.
+side. Apply \cref{duals:lem:continuous-shift}. For strong maps use
+\cref{duals:cor:strong-calculus}.
 \end{proof}
 
+For adjointable operators the spectral report gives the sharper bound
+$M=ct^{\gamma_0}$ with an ordinary real $c>\norm{A_{\gamma_0}}_H$
+(\ihs{hh:cor:autobounded}); a strong map may have an unbounded leading
+coefficient, and then only bounds of the form above are available.
+
 We do not define a real-Hahn operator norm by taking the least bound.
-The set of bounds need not have a least element. The following theorem
-specifies its exact form in a useful case.
+The set of bounds need not have a least element. For ordinary bounded
+operators the spectral report decides exactly when a least bound exists:
+precisely when the ordinary operator norm is attained
+(\ihs{hh:thm:norm}). The following theorem is the complementary case of an
+ordinary \emph{unbounded} coefficient map, and specifies the set of bounds
+exactly.
 
 \begin{theorem}[An ordinary unbounded functional has precisely infinite bounds]
-\label{thm:infinite-bounds}
+\label{duals:thm:infinite-bounds}
 Let $\varphi:H\to\C$ be an ordinary unbounded algebraic linear
 functional, and let $\widehat\varphi$ be its coefficientwise Hahn
 extension. For $M\in F_{>0}$,
@@ -1185,19 +1301,19 @@ linear, not linear. This convention does not affect the following
 linear description in terms of coefficient functionals.
 
 \begin{theorem}[Coefficientwise Riesz criterion and exact first gap]
-\label{thm:riesz}
+\label{duals:thm:riesz}
 There are canonical identifications of spaces of functionals
 \begin{align}
- \Dstr&\simeq H^\#((t^\Gamma)),\label{eq:hilbert-strong}\\
- \Drep&\simeq H'((t^\Gamma)),\label{eq:hilbert-rep}\\
- \Dstr/\Drep&\simeq (H^\#/H')((t^\Gamma)).\label{eq:riesz-quotient}
+ \Dstr&\simeq H^\#((t^\Gamma)),\label{duals:eq:hilbert-strong}\\
+ \Drep&\simeq H'((t^\Gamma)),\label{duals:eq:hilbert-rep}\\
+ \Dstr/\Drep&\simeq (H^\#/H')((t^\Gamma)).\label{duals:eq:riesz-quotient}
 \end{align}
 A strong functional is inner-product-represented exactly when every
 coefficient functional in its global Hahn expansion is ordinarily
 continuous. Its representer is unique.
 \end{theorem}
 \begin{proof}
-The first identification is \cref{thm:strong}. If $L=L_y$, then testing
+The first identification is \cref{duals:thm:strong}. If $L=L_y$, then testing
 on constant $u$ gives
 $[t^\gamma]L(u)=\ip{u}{y_\gamma}_H$, an ordinarily continuous
 functional. Conversely, let
@@ -1221,12 +1337,41 @@ isomorphism are canonical; the auxiliary section need not be.
 This coefficientwise Riesz criterion is consistent with the repository's
 classification of adjointable operators \cite{RepoSpectral}. Indeed, a
 represented functional has an everywhere-defined adjoint from $K$ to
-$\HG$, and conversely. We do not claim to have discovered a general
-failure of Riesz representation in non-Archimedean analysis. What the
-formula adds is an explicit description of the entire first gap for
-this Hahn coefficient model.
+$\HG$, and conversely. (The spectral report states its theorem,
+\ihs{hh:thm:adjoint}, for endomorphisms of $\HG$; for functionals the
+converse is elementary: if $\ip{Lx}{a}_K=\ip{x}{Ba}$ with
+$\ip{a}{b}_K=a\bar b$, then $L=L_{B1}$.) We do not claim to have
+discovered a general failure of Riesz representation in non-Archimedean
+analysis. What the formula adds is an explicit description of the entire
+first gap for this Hahn coefficient model.
 
-\begin{corollary}[The three-dual trichotomy]\label{cor:three-duals}
+\begin{remark}[Editorial: the spectral report's Riesz counterexample lies
+in the first gap]\label{duals:rem:ihs-riesz}
+The spectral report constructs a nonzero valuation-continuous functional
+on $\HG$, for $H=\ell^2$, that vanishes on the range of its coercive
+operator $C=D^2+s^2I$ and is not inner-product-represented
+(\ihs{hh:prop:riesz}; it is called $F$ there, and we write $\Phi$ since $F$
+is our real Hahn field). It has the form $\Phi=\psi_\Gamma\Pi$, where
+$\Pi=I-C(I+UE)^{-1}U$ is built from an algebraic left inverse $U$ of
+$D^2$, $E=s^2I$, and $\psi$ is a nonzero linear functional on an algebraic
+complement $W$ of $\operatorname{Ran}D^2$. All coefficients of $\Pi$ are
+ordinary algebraic endomorphisms of $H$, and $\psi_\Gamma\Pi=
+(\psi\pi_W)_\Gamma\Pi$ with $\pi_W$ the algebraic projection onto $W$
+along $\operatorname{Ran}D^2$. By \cref{duals:thm:strong} both factors
+are strong, so $\Phi\in\Dstr$. Its coefficient at exponent zero is
+$\psi\pi_W$, because the zero coefficient of $\Pi$ is $I-D^2U=\pi_W$.
+This functional vanishes on the dense subspace $\operatorname{Ran}D^2$ of
+$\ell^2$ and is nonzero, so it is not ordinarily continuous. Hence the
+class of $\Phi$ in \eqref{duals:eq:riesz-quotient} is nonzero:
+\ihs{hh:prop:riesz} is an explicit element of the first gap
+$\Dstr\setminus\Drep$, not of the second gap $\Dcont\setminus\Dstr$. This
+is consistent with that proposition holding for every nonzero $\Gamma$,
+including $\cyc$, where \cref{duals:cor:three-duals} below gives
+$\Dstr=\Dcont$. The remark is an editorial comparison added when this
+report was placed; it uses only the two cited statements.
+\end{remark}
+
+\begin{corollary}[The three-dual trichotomy]\label{duals:cor:three-duals}
 Assume $\Gamma\ne0$.
 If $H$ is finite-dimensional, then
 $\Drep=\Dstr=\Dcont$.
@@ -1235,7 +1380,7 @@ If $H$ is infinite-dimensional and $\cyc$, then
  \Drep\subsetneq\Dstr=\Dcont.
 \]
 If $H$ is infinite-dimensional and $\Gamma$ is noncyclic, then
-\begin{equation}\label{eq:strict-three}
+\begin{equation}\label{duals:eq:strict-three}
  \Drep\subsetneq\Dstr\subsetneq\Dcont.
 \end{equation}
 Every functional in these three spaces is bounded by some positive
@@ -1245,15 +1390,15 @@ $F$-scalar.
 In finite dimension every ordinary functional is continuous and every
 $K$-linear functional has a finite coordinate representation.
 In infinite dimension an unbounded algebraic functional supplies the
-first strict inclusion by \cref{thm:riesz}. The second equality or
-strict inclusion follows from \cref{thm:continuous-strong}.
-Boundedness is \cref{prop:order-bound}.
+first strict inclusion by \cref{duals:thm:riesz}. The second equality or
+strict inclusion follows from \cref{duals:thm:continuous-strong}.
+Boundedness is \cref{duals:prop:order-bound}.
 \end{proof}
 
 \subsection{A cardinal lower bound on the first gap}
 This optional quantitative statement shows that the first gap is not
 accounted for by a few exceptional discontinuous coefficients.
-\begin{proposition}\label{prop:dimension}
+\begin{proposition}\label{duals:prop:dimension}
 If $H$ is infinite-dimensional and separable and
 $\mathfrak c=2^{\aleph_0}$, then
 \[
@@ -1282,11 +1427,11 @@ $\dim_\C(H^\#/H')=2^{\mathfrak c}$.
 Independent constant coefficient vectors remain independent over $K$:
 extracting the least nonzero scalar exponent in a finite putative
 relation gives a nontrivial complex relation. Apply
-\eqref{eq:riesz-quotient}.
+\eqref{duals:eq:riesz-quotient}.
 \end{proof}
 
 \section{Closed hyperplanes with no orthogonal geometry}
-\label{sec:hyperplane}
+\label{duals:sec:hyperplane}
 
 \subsection{A strong bounded projection with no orthogonal complement}
 Let $\varphi:H\to\C$ be an unbounded algebraic functional as above,
@@ -1304,13 +1449,13 @@ are compatible because the two topologies treat coefficients
 completely differently.
 
 \begin{theorem}[A closed, strongly complemented hyperplane with zero
-orthogonal complement]\label{thm:hyperplane}
+orthogonal complement]\label{duals:thm:hyperplane}
 For every nonzero $\Gamma$ and every infinite-dimensional ordinary
 complex Hilbert space $H$, the subspace $M_\Gamma$ above has all the
 following properties. It is a valuation-closed $K$-hyperplane; it is
 closed under strong sums; and
 \[
- P(x)=x-u\widehat\varphi(x)
+ P_M(x)=x-u\widehat\varphi(x)
 \]
 is a strong, order-bounded projection onto it. Nevertheless
 \[
@@ -1330,9 +1475,9 @@ Strong sums stay in $M_\Gamma$ since every coefficient sum is finite
 and lies in $M$.
 
 The ordinary algebraic map $p=I-u\varphi$ has $p^2=p$ and range $M$.
-Its coefficientwise Hahn extension is precisely $P$.
-It is strong by \cref{thm:strong}, and bounded by
-\cref{prop:order-bound}.
+Its coefficientwise Hahn extension is precisely $P_M$.
+It is strong by \cref{duals:thm:strong}, and bounded by
+\cref{duals:prop:order-bound}.
 
 If $y\perp M_\Gamma$, testing against every constant $m\in M$
 gives $\ip{m}{y_\delta}_H=0$ for every $\delta$.
@@ -1347,10 +1492,25 @@ an orthogonal projection fails. The subspace has codimension one and a
 strong bounded algebraic projection, but no possible orthogonal
 complement. The general non-Archimedean phenomenon has predecessors
 \cite{AN}; the role of the coefficient topology is fully explicit here.
+(We write $P_M$ for this projection to keep the letter $P$ free for the
+restriction space $P_\Gamma(V)$.)
+
+Inside the collection the nearest predecessor is the spectral report's
+closed-range theorem (\ihs{hh:thm:closedrange}): in the same space
+$\HG$, with $H=\ell^2$, the range $M=C\HG$ of the coercive operator
+$C=D^2+s^2I$ is valuation-closed and proper with $M^\perp=\{0\}$. At the
+pin of the source manuscript that theorem was proved, by a metric
+argument, for divisible $\Gamma\subseteq\R$; the spectral report now proves
+closedness at every rank, as the kernel of a valuation-continuous
+projection whose coefficients are ordinary algebraic maps. The two
+witnesses differ in codimension: that range has algebraic cokernel of
+$K$-dimension at least $2^{\aleph_0}$ (\ihs{hh:thm:continuum}), whereas $M_\Gamma$ here is a hyperplane, the
+kernel of one strong functional. Both are kernels of strong idempotents in
+the sense of \cref{duals:thm:strong}.
 
 \subsection{The distance does not merely fail to attain a minimum}
 \begin{theorem}[Exact lower-bound cut for the distance]
-\label{thm:distance}
+\label{duals:thm:distance}
 For a constant $u\notin M$, consider
 \[
  \mathcal D_u=\{\norm{u-m}:m\in M_\Gamma\}\subset F_{>0}.
@@ -1384,7 +1544,7 @@ there is no greatest one. Confusing an infinitesimal scale with a
 complete ordered continuum would miss this distinction.
 
 \section{Enlarging the exponent group can undo completion}
-\label{sec:enlargement}
+\label{duals:sec:enlargement}
 
 \subsection{The exact cofinality dichotomy}
 Let $\Gamma\subseteq\Delta$ be an ordered subgroup inclusion, and
@@ -1396,13 +1556,13 @@ $\delta\in\Delta$ some $\gamma\in\Gamma$ satisfies
 $\delta\le\gamma$.
 
 \begin{theorem}[Cofinal preservation and noncofinal collapse]
-\label{thm:basechange}
+\label{duals:thm:basechange}
 For nonzero $\Gamma\subseteq\Delta$ and any $V$,
-\begin{equation}\label{eq:algebraic-intersection}
+\begin{equation}\label{duals:eq:algebraic-intersection}
  E_\Delta(V)\cap V_\Gamma=E_\Gamma(V),
 \end{equation}
 and
-\begin{equation}\label{eq:completion-basechange}
+\begin{equation}\label{duals:eq:completion-basechange}
  C_\Delta(V)\cap V_\Gamma=
  \begin{cases}
  C_\Gamma(V),&\Gamma\text{ is cofinal in }\Delta,\\
@@ -1416,7 +1576,7 @@ implicit.
 \begin{proof}
 The algebraic criterion is finite total coefficient rank, which is
 unchanged by the embedding. This proves
-\eqref{eq:algebraic-intersection}.
+\eqref{duals:eq:algebraic-intersection}.
 
 If $\Gamma$ is cofinal and $x\in C_\Gamma(V)$, then for every
 $\delta\in\Delta$ choose $\gamma\in\Gamma$ with
@@ -1433,11 +1593,28 @@ $x\in E_\Gamma(V)$. The reverse inclusion is automatic because an
 algebraic vector belongs to the completion in every larger workspace.
 \end{proof}
 
+\begin{remark}[Two other change-of-workspace statements in the collection]
+\label{duals:rem:basechange-collection}
+The formula \eqref{duals:eq:completion-basechange} has the same shape as
+the entire-functions report's sharp change-of-workspace criterion
+$\mathcal E_\Delta\cap K_\Gamma[[Z]]=\mathcal E_\Gamma$ or $K_\Gamma[Z]$,
+according as $\Gamma$ is or is not cofinal in $\Delta$
+(\lab{ent:thm:extension-criterion}, proved there for divisible groups). In
+both, a single new exponent above all of $\Gamma$ removes every object
+that was only a limit of finite objects. The objects differ (entire power
+series there, completed coefficient spans here) and neither theorem is
+used for the other. The spectral report's persistence statement
+(\ihs{hh:cor:extension}) concerns yet another question: an ordinary
+spectral point, or an ordinary range defect, is not repaired by enlarging
+$\Gamma$. That statement holds for every enlargement, cofinal or not,
+whereas \eqref{duals:eq:completion-basechange} distinguishes the two.
+\end{remark}
+
 \subsection{A completely explicit two-scale example}
 Take $\Gamma=\Q$ and
 $\Delta=\Q\oplus_{\mathrm{lex}}\Q$, embedding $q\mapsto(0,q)$.
 Both groups are divisible. Let $e_n$ be linearly independent and form
-\begin{equation}\label{eq:two-scale}
+\begin{equation}\label{duals:eq:two-scale}
  x=\sH_{n\ge1}t^{(0,n)}e_n,
 \end{equation}
 viewed first as $\sum_{n\ge1}t^ne_n$ in $V_\Q$.
@@ -1456,7 +1633,7 @@ approximant $y$, even using scalars from $K_\Delta$, has
 Admitting the scale $t^{(1,0)}$ defeats \emph{all} such approximants,
 not just the original partial sums.
 
-In addition, \cref{thm:separation} supplies a continuous
+In addition, \cref{duals:thm:separation} supplies a continuous
 $K_\Delta$-linear functional $L$ on $V_\Delta$ with
 \[
  L|_V=0,\qquad L(x)=t^{(1,0)}.
@@ -1467,6 +1644,15 @@ in the algebraic constant span. There is no contradiction: the
 new induced topology on the old vectors is finer. In fact it is
 discrete, since the ball of valuation greater than $(1,0)$ intersects
 $V_\Q$ only in zero.
+
+The same two-scale group already appears in the collection for scalars:
+the notation guide notes that in $\C((t^{\Q+\Q\omega}))$ the finite
+partial sums of $\sum_{n\ge0}t^n$ have error valuations that never exceed
+$\omega$, and the spectral report proves that such geometric partial sums
+do not converge in the valuation topology although the family is strongly
+summable (\ihs{rf:prop:noconv}). The example above is the vector-valued
+form of that phenomenon with independent coefficients, where it removes
+$x$ from the completion altogether.
 
 \subsection{What remains coherent under extension}
 The support expansion of a strong operator
@@ -1482,16 +1668,16 @@ By contrast, an invisible continuous functional comes from extension
 choices on vectors not determined by constants. Its definition does
 not supply a canonical coefficientwise enlargement, and the completion
 on which it must vanish changes exactly as
-\eqref{eq:completion-basechange} specifies. We claim no canonical
+\eqref{duals:eq:completion-basechange} specifies. We claim no canonical
 transport for such functionals.
 
 \section{Interpretation inside the surreal and surcomplex numbers}
-\label{sec:surreal}
+\label{duals:sec:surreal}
 
 \subsection{Fixed Hahn workspaces give genuine surreal scales}
 The link to surreals is the normal-form embedding. For a set-sized
 ordered additive subgroup $\Gamma\subset\No$, send
-\begin{equation}\label{eq:surreal-embedding}
+\begin{equation}\label{duals:eq:surreal-embedding}
  t^\gamma\longmapsto\omega^{-\gamma}.
 \end{equation}
 A well-ordered support in $\Gamma$ becomes a reverse-well-ordered
@@ -1500,7 +1686,8 @@ $\R((t^\Gamma))$ as an ordered subfield of $\No$ and
 $\C((t^\Gamma))$ into $\No[i]$. This standard correspondence is
 reviewed in the modern surreal automorphism literature
 \cite{KKS} and implemented in the repository's normal-form layer
-\cite{RepoRoot}. For this application one may take divisible groups,
+\cite{RepoRoot}; it is the embedding \ihs{eq:surreal-embedding} of the
+spectral report, with the same sign convention. For this application one may take divisible groups,
 so that the scalar workspaces are also real closed and algebraically
 closed, respectively; the main duality proofs did not require that
 extra hypothesis.
@@ -1519,8 +1706,8 @@ For the preceding example take
  \Delta=\Q\omega+\Q\subset\No,
 \]
 with the natural lexicographic ordering under
-$(a,b)\mapsto a\omega+b$. Then \eqref{eq:two-scale} becomes
-\begin{equation}\label{eq:omega-example}
+$(a,b)\mapsto a\omega+b$. Then \eqref{duals:eq:two-scale} becomes
+\begin{equation}\label{duals:eq:omega-example}
  x=\sH_{n\ge1}\omega^{-n}e_n.
 \end{equation}
 It is a limit of finite sums for the intrinsic rational-exponent
@@ -1530,7 +1717,7 @@ The new scalar tolerance is $\omega^{-\omega}$, and an invisible
 functional in the enlarged workspace can satisfy
 $L(x)=\omega^{-\omega}$ while vanishing on every constant vector.
 
-The support of \eqref{eq:omega-example} and its strong sum have not
+The support of \eqref{duals:eq:omega-example} and its strong sum have not
 changed. What changed is the family of precision demands. This gives a
 concrete obstruction to constructing infinite-dimensional surcomplex
 analysis by completing finite-coefficient data at one stage and
@@ -1556,17 +1743,113 @@ estimate with a real constant. A positive infinite bound hides all
 ordinary finite coefficient growth. Extra hypotheses are required to
 recover the ordinary analytic meaning of boundedness, adjoints, or
 Riesz representation. The coefficientwise criterion
-\cref{thm:riesz} states exactly one such hypothesis.
+\cref{duals:thm:riesz} states exactly one such hypothesis.
 
-\section{Worked checks and a formalization route}\label{sec:checks}
+\section{The report in the collection}\label{duals:sec:collection}
+
+\subsection{Relation to infinite-dimensional Hahn spectral theory}
+The Hilbert results of \cref{duals:sec:hilbert,duals:sec:hyperplane}
+live in the space $\HG=H((t^\Gamma))$ of Part~I of the spectral report
+\cite{RepoSpectral}, with the same inner product \ihs{hh:eq:inner}, the
+same linearity convention and the same field $F$ of norm values. That
+report continues to receive additions, so the statements below cite it
+only by label, never by number. For a Hilbert coefficient space the three operator
+classes are nested:
+\[
+ \mathcal B(H)((t^\Gamma))\;\subseteq\;\End_\C(H)((t^\Gamma))
+ \;\subseteq\;\End_K^{\mathrm{cont}}(\HG).
+\]
+The first is the algebra of everywhere-defined adjointable operators
+(\ihs{hh:thm:adjoint}); the second is the algebra of strong
+endomorphisms (\cref{duals:cor:strong-calculus}); the second inclusion,
+that strong maps are continuous, is the last sentence of
+\cref{duals:cor:strong-calculus}. That adjointable
+operators are strong is also the first sentence of
+\ihs{hh:cor:autobounded}. The first inclusion is proper when $H$ is
+infinite-dimensional, since an unbounded algebraic endomorphism is strong
+but not adjointable, as \ihs{hh:rem:baire} anticipates. The second is
+proper when in addition $\Gamma$ is noncyclic: if $L$ is a continuous
+functional that is not strong (\cref{duals:thm:continuous-strong}) and
+$u_0\ne0$ is a constant, then $x\mapsto L(x)u_0$ is continuous but not
+strong, because composing it with the coefficientwise extension of an
+algebraic functional taking the value $1$ at $u_0$, which is strong,
+returns $L$. The
+algebraic operators used in the spectral report's range-defect theorem
+(the left inverse $U$, the maps $R$, $L$ and the projection $\Pi$ of
+\ihs{hh:thm:defect}) all lie in the middle algebra: they are strong, and in
+general not adjointable.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.3\textwidth}>{\raggedright\arraybackslash}p{.2\textwidth}Y@{}}
+\toprule
+Spectral report & Here & Relation\\
+\midrule
+\ihs{lem:support} & \cref{duals:lem:support} & Same classical lemma; here with the two-set proof\\
+\ihs{hh:prop:inner} & \cref{duals:prop:norm} & Same statement, repeated with proof\\
+\ihs{warn:three} & \cref{duals:thm:completion,duals:thm:cofinality-completion} & ``$\HG$ is not $H\otimes_\C K$'' made exact: $E_\Gamma(H)=K\otimes_\C H$, its closure, and when each equals $\HG$\\
+\ihs{hh:thm:adjoint} & \cref{duals:thm:strong} & Adjointable $\subseteq$ strong; Baire argument versus descending-support argument\\
+\ihs{hh:prop:complete} & \cref{duals:prop:spherical} & Rank-one metric completeness versus spherical completeness at every rank\\
+\ihs{hh:cor:autobounded}, \ihs{hh:thm:norm} & \cref{duals:prop:order-bound,duals:thm:infinite-bounds} & Bounds for adjointable versus all continuous maps; least bound for bounded versus unbounded coefficients\\
+\ihs{hh:prop:riesz} & \cref{duals:thm:riesz}, \cref{duals:rem:ihs-riesz} & That functional is a nonzero element of the first gap $\Dstr/\Drep$\\
+\ihs{hh:thm:closedrange} & \cref{duals:thm:hyperplane} & Closed subspaces with zero orthogonal complement; range of infinite codimension versus a hyperplane\\
+\ihs{hh:cor:extension} & \cref{duals:thm:basechange} & Persistence of spectra and range defects under every enlargement, versus the cofinal/noncofinal dichotomy for completions\\
+\ihs{rf:lem:strongaction}, \ihs{rf:prop:noconv} & \cref{duals:thm:strong,duals:thm:continuous-strong} & For $V=\C^{(I)}$: row- and column-finite Hahn matrices are strong; strong sums need not converge in valuation off the cyclic case\\
+\bottomrule
+\end{tabularx}
+\caption{Where each nearby statement of the spectral report sits relative
+to this report. The relations are comparisons; no proof here depends on a
+proof there.}
+\label{duals:tab:ihs}
+\end{table}
+
+For Part~II of the spectral report the relevant coefficient space is
+$V=\C^{(I)}$, with no Hilbert structure. \Cref{duals:thm:strong} applies
+to it: the strong endomorphisms of $\C^{(I)}((t^\Gamma))$ are the Hahn
+series of arbitrary linear endomorphisms of $\C^{(I)}$, that is, of
+column-finite matrices. The algebra $\mathcal A_I$ of Hahn series of
+row- and column-finite matrices is a subalgebra, and the
+sufficiency half of \cref{duals:thm:strong} contains the operator-action
+part of \ihs{rf:lem:strongaction}. \Cref{duals:sec:completion,duals:sec:continuous}
+apply to $V=\C^{(I)}$ as to any vector space. \Cref{duals:sec:hilbert}
+assumes a complete Hilbert coefficient space and is not asserted for
+$\C^{(I)}$ with infinite $I$.
+
+The range-defect and spectral theorems of that report are not used and
+are not reproved here. Conversely, nothing here bears on its spectral
+formulas: a spectrum is a statement about bijectivity or invertibility,
+and this report makes no spectral statement.
+
+\subsection{Other neighbours}
+The report on entire functions at arbitrary rank uses the same two
+order-theoretic notions, the cofinality $\operatorname{cf}(\Gamma)$ and
+cofinality of a subgroup, with the same meanings; the two exact
+statements that share an invariant are compared in
+\cref{duals:rem:order-unit,duals:rem:basechange-collection}. The dynamics
+report's ``strongly linear'' maps (\lab{dyn:def:summable}) are defined by
+the same two conditions; the operator classification here additionally
+requires linearity over the whole Hahn field $K$. The
+collection's notation guide, \texttt{docs/NOTATION.md}, and its report
+inventory, \texttt{docs/README.md}, record the three topologies and the
+distinction between strong summation and convergence that
+\cref{duals:sec:surreal} relies on.
+
+\section{Worked checks and a formalization route}\label{duals:sec:checks}
 
 \subsection{What the accompanying program does}
-The accompanying \texttt{verify\_examples.py} uses exact rational
+The accompanying \texttt{code/verify\_examples.py} uses exact rational
 arithmetic and finite-dimensional rational linear algebra. It checks
 finite coefficient convolution, composition and scalar compatibility,
 leading exponents of squared norms, coefficient-rank tests, and finite
 instances of the projection and two-scale formulas. Its output is
-recorded in \texttt{verification\_report.json}.
+recorded in \texttt{data/verification\_report.json}: 610 exact
+assertions in nine groups (operator composition, scalar compatibility and
+finite-family regrouping, 60 each; leading squared norm, 180; coefficient
+ranks below cuts, two-scale ranks and projection algebra, 69 each;
+a 40-term prefix of the descending-support family of
+\cref{duals:thm:twofailures}(b), 42; one cancellation check). The random
+inputs use the fixed seed 20260922. The report also lists what the
+program does not verify.
 
 The program does not claim to certify the infinite theorems.
 Well-ordering arguments, spherical completeness, Hamel-basis extension,
@@ -1587,8 +1870,10 @@ $x=x_0+t^{(0,2)}x_1$ give
        +t^{(0,3)}A_1x_1\\
      &+t^{(1,0)}A_2x_0+t^{(1,2)}A_2x_1.
 \end{align*}
-The checks compare this coefficient-level action with the action of
-composed operator series. Cancellations are retained rather than
+The program draws operator and vector series with supports among the
+four exponents $(0,0),(0,1),(0,2),(1,0)$ and random rational
+coefficients, and compares this coefficient-level action with the action
+of composed operator series. Cancellations are retained rather than
 assuming every possible support sum is occupied. Rank checks similarly
 use actual linear dependence, not just the number of nonzero
 coefficients. For example, arbitrarily many coefficients of the form
@@ -1598,7 +1883,7 @@ $c_nu$ have rank one and do not obstruct algebraic scalar extension.
 A feasible formalization separates three layers. First comes the
 purely algebraic Hahn-vector layer: well-ordered supports, finite fibers,
 coefficient maps, convolution, and the descending-support test in
-\cref{thm:strong}. This layer needs no Hilbert space. Second comes the
+\cref{duals:thm:strong}. This layer needs no Hilbert space. Second comes the
 valuation layer: balls as matching truncations, coefficient-rank closure,
 spherical completeness, and the one-step extension theorem followed by
 Zorn. Third comes the Hilbert layer: the coefficient form, its binomial
@@ -1607,13 +1892,19 @@ norm, ordinary Riesz representation, and the exact dual comparison.
 The repo already has substantial scalar Hahn infrastructure and an
 independent normal-form bridge \cite{RepoRoot}. Those are reusable
 prerequisites, not a claim that the new module theorems are already
-formalized. A useful first milestone would be the finite coefficient-rank
+formalized. In the current tree no label of this report has a Lean
+mapping in \texttt{docs/FORMALIZATION.md}. The nearest formalized
+prerequisite is scalar: Hahn-to-Hahn embeddings along strictly
+increasing exponent maps preserve strong summability and Hahn sums
+(\texttt{Surreal/HahnSeries/WorkspaceEmbedding.lean}, recorded in that
+ledger), which is the ring-coefficient case of the embeddings used in
+\cref{duals:sec:enlargement}. A useful first milestone would be the finite coefficient-rank
 criterion and the cofinal/noncofinal intersection theorem: they isolate
 the key obstruction without first developing an entire operator theory.
 The nonconstructive steps should be explicit uses of classical choice,
 not hidden as executable definitions of arbitrary functionals.
 
-\section{Limits, further questions, and the audit}\label{sec:audit}
+\section{Limits, further questions, and the audit}\label{duals:sec:audit}
 
 \subsection{What the article settles and what remains separate}
 Within the specified Hahn-vector model, the completion question,
@@ -1630,8 +1921,10 @@ noncofinal scalar enlargement. A second is to describe the size and
 possible canonical structures of $N_\Gamma(V)$ beyond its exact
 annihilator characterization. A third is to develop operator ideals in
 this coefficient model that retain ordinary compactness or nuclearity
-without mistaking valuation continuity for an ordinary norm estimate.
-These are proposed continuations, not assertions of named published
+without mistaking valuation continuity for an ordinary norm estimate;
+the relevant caution is the spectral report's, that ``compact'' in
+\ihs{hh:cor:compact} describes the ordinary operator and asserts nothing
+about compactness or compactoidness in the valuation topology. These are proposed continuations, not assertions of named published
 open problems or prerequisites for the results proved here.
 
 \subsection{Repository comparison}
@@ -1660,6 +1953,36 @@ cofinal/noncofinal completion-intersection formula in the inspected
 material. This is a targeted content comparison, not an exhaustive
 audit of every line or historical revision of the repository.
 
+\emph{Update at placement.} The paragraphs above describe the repository at
+the manuscript's pin and are kept as provenance. When this report was
+placed (collection revision \texttt{52c7ab6}) the comparison was repeated
+against the current tree, with the following changes. (i)~The spectral
+report's revision \texttt{6e34651} removed Part~I's standing divisibility
+hypothesis and proved closedness of its coercive range at every rank
+(\ihs{hh:thm:closedrange}); at the pin that closedness was proved for
+divisible $\Gamma\subseteq\R$. (ii)~The manuscript's comparison does not
+mention two statements that were already present at the pin and are the
+closest in-collection predecessors of its Hilbert results: the explicit
+non-represented continuous functional \ihs{hh:prop:riesz}, which
+\cref{duals:rem:ihs-riesz} identifies as an element of the first gap, and
+the closed subspace with zero orthogonal complement
+\ihs{hh:thm:closedrange}, compared with \cref{duals:thm:hyperplane} after
+its proof. (iii)~The collection's report on entire functions at arbitrary
+rank uses the same cofinality invariants and proves a change-of-workspace
+formula of the same shape for entire power series
+(\cref{duals:rem:order-unit,duals:rem:basechange-collection}). (iv)~At
+placement, two further manuscripts were added to the spectral report
+(on Drazin invertibility and on compact self-adjoint operators under
+noncommuting perturbations); a search of both manuscripts found no
+theorem about duals, completions of the constant span, or strong maps.
+Both use ``Riesz'' for finite Riesz spectral projections and
+decompositions; in this report ``Riesz'' always means Riesz
+representation of functionals. A search of the
+current tree found no statement of the coefficient-rank completion
+theorem, the restriction exact sequence, or the completion-intersection
+formula; the manuscript's negative finding therefore still stands, with
+the same caveat that it is a targeted comparison.
+
 \begin{table}[ht]
 \centering\small
 \begin{tabularx}{\textwidth}{@{}p{.24\textwidth}YY@{}}
@@ -1668,11 +1991,13 @@ Topic & Established input or nearby result & Role in this article\\
 \midrule
 Strong summability & Hahn theory; BKKPS summability spaces & Definitions and support machinery, not new\\
 Hahn--Banach extension & Ingleton; Morillon's choice discussion & Full needed proof given; classical mechanism\\
-Hahn--Hilbert adjoints & Repository spectral article & Distinguished from strong and continuous maps\\
+Hahn--Hilbert adjoints & Repository spectral article (\ihs{hh:thm:adjoint}) & Distinguished from strong and continuous maps\\
+Completeness & Repository spectral article, rank one (\ihs{hh:prop:complete}); classical spherical completeness & Spherical completeness at every rank, with proof\\
 Completion & Algebraic scalar extension inside a Hahn module & Exact finite-rank-below-cuts criterion and cyclic boundary\\
 Continuous restriction & Uniform valuation estimates and extension & Exact image, invisible kernel, two independent obstructions\\
-Exponent enlargement & Coefficient-preserving Hahn embeddings & Cofinal preservation versus noncofinal collapse\\
-Riesz and orthogonality & Ordinary Riesz; known non-Archimedean failures & Exact quotient and explicit hyperplane/distance-cut package\\
+Exponent enlargement & Coefficient-preserving Hahn embeddings; the entire-functions change-of-workspace criterion & Cofinal preservation versus noncofinal collapse\\
+Riesz and orthogonality & Ordinary Riesz; known non-Archimedean failures; \ihs{hh:prop:riesz} and \ihs{hh:thm:closedrange} in the same space & Exact quotient and explicit hyperplane/distance-cut package\\
+Field-valued bounds & \ihs{hh:cor:autobounded}, \ihs{hh:thm:norm} for bounded coefficients & Bounds for all continuous maps; the unbounded-coefficient case\\
 \bottomrule
 \end{tabularx}
 \caption{Attribution and the proposed contribution. Closely related
@@ -1698,6 +2023,10 @@ finite examples have been executed. Neither activity is independent
 refereeing, and no Lean verification of these new statements is
 claimed. The package is a research manuscript with complete proofs,
 not a certified resolution of a longstanding named conjecture.
+When the report was placed in the collection, the proofs were read again
+against their statements, and the finite program was rerun; its output
+agrees with the recorded report. No mathematical correction was needed.
+That reading is an editorial check, not refereeing.
 
 \section{Conclusion}
 There are two independent reasons why extending a Hilbert space to Hahn
@@ -1723,9 +2052,149 @@ under convolution and
 Their interaction yields the exact continuous restriction sequence,
 the three-dual trichotomy, and a sharp failure of completion under
 noncofinal enlargement. The concrete tolerance $\omega^{-\omega}$
-in \cref{eq:omega-example} illustrates why these distinctions matter
+in \cref{duals:eq:omega-example} illustrates why these distinctions matter
 specifically at surreal scales: adding a new scale can invalidate an
 old completion without changing a single coefficient of its strong sum.
+
+\appendix
+\section{Provenance, editorial changes, and non-claims}
+\label{duals:app:provenance}
+
+\subsection{The source}
+This report is built from one manuscript, \emph{Three Duals at Surreal
+Scales: Strong Hahn Operators, Completion Defects, and Invisible
+Functionals}, dated September~22, 2026 and prepared for Vladimir
+Reshetnikov. It arrived as item~04 of the collection's nineteenth batch
+of manuscripts and was written against repository revision
+\texttt{\Commit}. It was placed in the collection at revision
+\texttt{\PlaceCommit}. It contributes the entire mathematical content:
+every definition, theorem, proof and example of
+\cref{duals:sec:intro,duals:sec:setup,duals:sec:strong,duals:sec:completion,duals:sec:extension,duals:sec:continuous,duals:sec:twofailures,duals:sec:hilbert,duals:sec:hyperplane,duals:sec:enlargement,duals:sec:surreal,duals:sec:checks,duals:sec:audit},
+the program \texttt{code/verify\_examples.py}, its recorded output
+\texttt{data/verification\_report.json}, and the audit file
+\texttt{source\_audit.md}. These three files are kept exactly as
+delivered. The manuscript's own PDF and member README are not shipped;
+the README of this directory is new, and the PDF is rebuilt from this
+source. There was no second source, so nothing had to be printed once
+from two sources, and there is no second proof of any result.
+
+\subsection{Editorial changes}
+\begin{enumerate}
+\item {\raggedright All 70 delivered labels now carry the prefix \texttt{duals:}; none was
+ otherwise renamed or removed. New labels:
+ \texttt{duals:sec:conventions}, \texttt{duals:rem:order-unit},
+ \texttt{duals:rem:ihs-riesz}, \texttt{duals:rem:basechange-collection},
+ \texttt{duals:sec:collection}, \texttt{duals:tab:ihs} and
+ \texttt{duals:app:provenance}.\par}
+\item Notation: the Hahn--Hilbert space is written $H_\Gamma$ throughout
+ (the manuscript used both $H_\Gamma$ and $\mathcal H_\Gamma$); the
+ hyperplane projection of \cref{duals:thm:hyperplane} is written $P_M$,
+ because $P_\Gamma(V)$ denotes the restriction space.
+\item Terminology is fixed once in \cref{duals:sec:conventions}. The
+ sufficient condition in \cref{duals:thm:cyclic} is identified with the
+ order unit of the entire-functions report, and
+ \cref{duals:rem:order-unit} explains why countable cofinality is the exact
+ condition.
+\item The repository comparison of \cref{duals:sec:audit} is kept as
+ provenance and followed by an update against the current tree. Pointers
+ to the spectral report were added at
+ \cref{duals:lem:support,duals:prop:spherical,duals:prop:norm,duals:prop:order-bound,duals:thm:riesz,duals:thm:hyperplane,duals:thm:basechange}
+ and in \cref{duals:sec:surreal,duals:sec:checks};
+ \cref{duals:sec:collection} and \cref{duals:tab:ihs} are new.
+ \Cref{duals:rem:ihs-riesz} is an editorial comparison: it shows, from
+ the two cited statements, that the spectral report's non-represented
+ functional is strong. It adds no hypothesis and changes no theorem.
+\item The checks section names the file locations and the per-group
+ assertion counts from the recorded output.
+\item The title page now records the draft status and the provenance, and
+ the abstract adds the countable-cofinality clause, which is
+ \cref{duals:thm:cofinality-completion}, and a pointer to
+ \cref{duals:sec:collection}.
+\end{enumerate}
+No statement of a theorem, proposition, lemma or corollary was
+strengthened or weakened, and no proof was changed. Where a choice had to
+be made, the delivered title was kept, the proof of \cref{duals:prop:norm}
+was kept even though the same statement is \ihs{hh:prop:inner}, and the
+delivered audit file keeps its own pin.
+
+\subsection{Non-claims}
+Every limitation stated by the manuscript is kept at its point of use.
+Collected here, they are the following.
+\begin{enumerate}
+\item The contribution is the combined completion--duality--enlargement
+ classification; Hahn summation, non-Archimedean Hahn--Banach and failures
+ of Riesz representation are not claimed as inventions (title page,
+ \cref{duals:sec:intro}).
+\item No named published conjecture or open problem is claimed solved.
+\item The repository and literature comparisons are targeted; they do not
+ certify originality or priority, and an equivalent statement may exist
+ in print.
+\item The proofs have not been independently refereed and have not been
+ verified in Lean or any other proof assistant; no label of this report
+ has a Lean mapping.
+\item The repository's automatic-adjoint and Hahn--Hilbert results, and the
+ other spectral-report statements compared in \cref{duals:tab:ihs}, are not
+ claimed as new.
+\item Formal summability spaces, strongly linear maps and their operator
+ algebras are established notions \cite{BKKPS}.
+\item Spherical completeness and extension are tools, and non-Archimedean
+ failures of orthogonal complementation are established \cite{AN}.
+\item The positive-monoid support lemma is classical and used only for
+ square roots (\cref{duals:lem:support}).
+\item The Hahn--Banach extension uses choice twice; no effective procedure
+ is asserted, and invisible functionals are existence results, not
+ computable formulas (\cref{duals:sec:extension}).
+\item The exact restriction sequence has no specified canonical splitting
+ and no preferred extension operation (\cref{duals:thm:restriction}).
+\item In \cref{duals:thm:twofailures}(a) summability is preserved only for
+ the displayed family; logical independence of the two clauses of the
+ definition of strongness is not asserted.
+\item No real-Hahn operator norm is defined as a least bound; the set of
+ bounds need not have a least element (\cref{duals:prop:order-bound}).
+\item No ordinary continuity of the Hamel-basis functional of
+ \cref{duals:thm:infinite-bounds} is asserted.
+\item No equality is asserted in the cardinal bound of
+ \cref{duals:prop:dimension} for arbitrary $\Gamma$.
+\item \Cref{duals:thm:basechange} concerns intersections of embedded sets;
+ no commutation of a completed tensor-product functor with enlargement is
+ claimed.
+\item No canonical transport of invisible functionals to a larger
+ workspace is claimed (\cref{duals:sec:enlargement}).
+\item A Hilbert vector is not claimed to be a surcomplex scalar; the
+ construction is a module over a surcomplex subfield, through fixed
+ normal-form workspaces (\cref{duals:sec:surreal}).
+\item No Zorn argument over a proper class and no continuous dual of a
+ class-sized space over $\No[i]$ is constructed.
+\item The intrinsic topology of a workspace is not the subspace topology
+ of the full surreal fine topology.
+\item Order-boundedness is not an ordinary operator-norm estimate; the
+ ordinary meaning of boundedness, adjoints or Riesz representation needs
+ extra hypotheses.
+\item ``Invisible on constants'' is a definition, not a statement that the
+ functionals are zero; the constants need not be topologically total in
+ the Hahn space.
+\item The Hahn field does not replace the ordinary zero distance of
+ \cref{duals:thm:distance} by a particular infinitesimal.
+\item The program checks finite identities and finite prefixes only. It
+ does not verify infinite well-ordering or the arbitrary-rank Hom theorem,
+ the completion and cofinality classifications, spherical completeness or
+ Hahn--Banach extension, the existence of Hamel or invisible functionals,
+ the orthogonal-complement and missing-infimum claims, or novelty. Its
+ finite projection check claims no finite analogue of the zero orthogonal
+ complement.
+\item The formalization route of \cref{duals:sec:checks} is a proposal;
+ existing Lean infrastructure is a prerequisite, not a formalization of
+ these theorems.
+\item The further questions of \cref{duals:sec:audit} are proposed
+ continuations, not named open problems and not prerequisites.
+\item The full texts of Ingleton's paper and of \cite{AN} were not
+ obtained, Neumann's paper was not audited in full, and inaccessible
+ pages or empty searches were not treated as evidence of absence.
+\end{enumerate}
+The editorial additions carry their own limits: the comparisons of
+\cref{duals:sec:collection} and
+\cref{duals:rem:order-unit,duals:rem:basechange-collection} are
+comparisons of statements, not reductions of one theorem to another.
 
 \begin{thebibliography}{99}
 \small\raggedright\setlength{\itemsep}{.25em}
@@ -1787,6 +2256,15 @@ in the Surreal repository,
 same revision as \cite{RepoRoot}.
 \url{https://github.com/VladimirReshetnikov/Surreal/blob/048b72cf7cbfc8ab246e4f73788c10460cb3f6e0/docs/surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex}.
 See Part I: coefficient Hahn--Hilbert spaces, automatic adjoint
-structure, and spectral range defects.
+structure, and spectral range defects. The labels \texttt{ihs:\dots}
+cited in this report refer to the version in the collection at
+revision \texttt{52c7ab6}; see \cref{duals:sec:collection}.
+
+\bibitem{RepoEntire}
+\emph{Cofinality, Factorization and Scalar Extension for Entire Hahn
+Functions at Arbitrary Rank}, report in the Surreal repository,
+\texttt{docs/surcomplex/entire-functions-at-arbitrary-rank/article.tex},
+cited by its labels \texttt{ent:\dots} at revision \texttt{52c7ab6}.
+Not consulted by the source manuscript; added at placement.
 \end{thebibliography}
 \end{document}

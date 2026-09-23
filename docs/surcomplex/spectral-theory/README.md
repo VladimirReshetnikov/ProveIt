@@ -371,6 +371,11 @@ non-Hermitian phase spectrum from the eigenvalues of a residual matrix
 (`diff:rs:prop:phasespectrum`). [hahn-herglotz-positivity](../hahn-herglotz-positivity/)
 gives negative information only about spectral measures: a cyclic algebraic
 unitary with no positive coefficientwise spectral measure (`herg:cor:unitary`).
+[hidden-negative-hermitian-directions](../hidden-negative-hermitian-directions/)
+shows that the exponent group in `spec:thm:hermitian` cannot in general be
+replaced by a finitely generated one: its `A_r` has inertia `(1,r,0)`, yet every
+nonzero vector over the finite-lattice-supported field or its valuation closure
+has positive value (`hnd:thm:inertia`, `hnd:thm:closedseparation`).
 
 ## Scope of the historical coverage audits
 
@@ -423,6 +428,9 @@ Every limitation the three manuscripts shipped with is kept here.
   for the first two and for operators compact on an ordinary Hilbert space,
   under its own hypotheses; trace-class operators and spectral measures are in
   neither report, and nothing here depends on that one.
+  Its Part IV adds a coefficientwise trace and Fredholm determinant on the
+  nonnegative-valuation part of `S_1(H)((t^Γ))`, which is not a general
+  trace-class theory; spectral measures are in neither report.
 - No global analytic choice of eigenvectors through collisions or across
   multiple parameters, and no removal of the obstructions in the
   multivariable formal power-series category — see `spec:warn:crossing`. What

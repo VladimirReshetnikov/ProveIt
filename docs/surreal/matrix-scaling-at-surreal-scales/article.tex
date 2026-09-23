@@ -32,6 +32,15 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{remark}[theorem]{Remark}
+% Added on placement: statements share the theorem counter, and without these
+% aliases cleveref names every lemma, corollary, definition, example and
+% remark a "theorem".
+\AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
+\AddToHook{env/lemma/begin}{\crefalias{theorem}{lemma}}
+\AddToHook{env/corollary/begin}{\crefalias{theorem}{corollary}}
+\AddToHook{env/definition/begin}{\crefalias{theorem}{definition}}
+\AddToHook{env/example/begin}{\crefalias{theorem}{example}}
+\AddToHook{env/remark/begin}{\crefalias{theorem}{remark}}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\Q}{\mathbb Q}
@@ -111,6 +120,10 @@ published work and the repository at commit \texttt{\shortpin}.
 No named long-standing open problem is claimed solved, and no refereeing
 or complete machine verification is claimed. Known scaling, projection,
 and spanning-tree results are explicitly credited.
+This is an AI-assisted research draft, and no statement of it has a Lean
+formalization. It is built from a single
+manuscript; \cref{scale:sec:provenance} records how that manuscript was
+placed in the collection and what was changed.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 \pagenumbering{roman}
@@ -218,6 +231,312 @@ The first derivative alone is \emph{not} a novelty claim. Nor is the
 mere existence of generalized series for a one-parameter scaling
 problem. Both have substantial precedents, described next.
 
+\subsection{What this report does not claim}\label{scale:sec:nonclaims}
+Each limitation below is also stated where it applies. They are collected
+here so that none of them is lost when the results are quoted elsewhere.
+\begin{enumerate}[label=(N\arabic*),leftmargin=3.2em]
+\item \emph{Priority and status.} The whole-polydisc normalization, the
+sharp tree- and basis-gap laws and the chain propagation formulas are
+\emph{candidate} original results after a targeted, non-exhaustive
+comparison with published work and with the repository at its pin
+(\cref{scale:sec:comparison}). Publication priority, absence from every
+repository file and independent expert validation are not certified. The
+repository audit was not a line-by-line review of every article or Lean
+declaration, and its indexed searches were unusable as negative evidence.
+No named long-standing open problem is claimed solved. The report is an
+AI-assisted draft; it has not been refereed; no statement of it has a Lean
+formalization, and \cref{scale:sec:verification} does not assert that the
+Lean modules it outlines exist.
+\item \emph{Credited, not claimed.} Existence, uniqueness and ordinary
+real continuity of prescribed-margin scaling (Idel's review and classical
+scaling theory); generalized-series expansions of a one-parameter scaling
+problem, so that no first use of Hahn-type series in matrix scaling is
+claimed (Sharify--Gaubert--Grigori); the first-order implicit
+differentiation formula (Eisenberger et al.); the determinant formula, its
+tree interpretation and transfer-current representations (Burton--Pemantle);
+the minimax path formula~\eqref{scale:eq:overviewpath} and the
+minimum-spanning-tree exchange arguments of \cref{scale:sec:bottleneck};
+Hahn and surreal normal-form background (Gonshor, Berarducci--Mantova);
+Higman's word theorem; real-closed transfer (Tarski). The real-linear-constraint
+extension (\cref{scale:thm:linear}) claims no new matroid combinatorics.
+\item \emph{No convergence assertion.} Neither convergence of the alternating
+Sinkhorn iteration in an arbitrary-rank valuation topology, nor its iteration
+complexity, nor convergence of set-indexed sequences in the full surreal fine
+topology is claimed. Strong sums are coefficientwise sums, not limits of
+partial sums (\cref{scale:sec:boundaries}), and the remainder certificate
+(\cref{scale:cor:remainder}) does not promise that a finite Taylor degree
+reaches every requested precision at higher rank.
+\item \emph{What ``analytic'' means.} The normalization branch is given by a
+strongly evaluated formal series on the relative infinitesimal polydisc. No
+classical holomorphic manifold structure in the full surreal fine topology
+is asserted. No exponential or logarithm at an infinite surcomplex argument,
+no global surcomplex exponential and no surreal derivation is used; Taylor
+coefficients are formal derivatives with respect to the edge parameters.
+\item \emph{The hypotheses matter.} Positive leading coefficients of the
+base weights are sufficient, not claimed to be necessary; without them
+integrality and uniqueness can fail
+(\cref{scale:ex:phasejacobian,scale:ex:phasebranches}). The field $K$ is not
+ordered, and ``positive-leading'' refers only to the leading coefficient.
+The margins are fixed; if they move, even by relative infinitesimals, the
+bridge rigidity fails (\cref{scale:sec:boundaries}). The support is fixed.
+\item \emph{What ``sharp'' means.} $\kappa_e$ is the largest gain valid
+uniformly; equality is not asserted for every input direction
+(\cref{scale:thm:sharp} and the remark after it). Optimality of the exponent
+$N$ in \cref{scale:prop:cutbound} is not claimed.
+\item \emph{Which costs.} The tree costs of the sharp theorem are valuations
+of the normalized base matrix. No equally sharp formula from the valuations
+of an unscaled kernel is claimed (\cref{scale:cor:positivebranch}).
+\item \emph{Divisibility and real closedness.} The local theory assumes no
+divisibility of $\Gamma$. The global positive interpretation
+(\cref{scale:prop:global,scale:cor:positivebranch} and the global paragraph
+of \cref{scale:sec:surreal}) uses real closedness, reached through the
+divisible hull and first-order transfer; the real optimization proof is not
+repeated inside a non-Archimedean field, and no non-Archimedean compactness
+or global logarithm is used. The descent statement \cref{scale:cor:descent}
+is local: global scaling over a nondivisible group can require ramification
+\eqref{scale:eq:ramificationexample}.
+\item \emph{Real constant constraints.} \Cref{scale:thm:linear} needs a real
+constant constraint matrix. The same basis-cost formula is not asserted for a
+Hahn-valued constraint matrix.
+\item \emph{Surreal transport.} The surreal and surcomplex statements are
+obtained by set-sized support-group localization. No class-sized sum, net or
+compactness argument is used, and no proof of a local result uses spherical
+completeness or Banach contraction.
+\item \emph{Computation.} The workflow of \cref{scale:sec:verification} is an
+exact-operation specification, not a universal computable representation of
+surreal numbers: arbitrary Hahn coefficients need not come with an effective
+leading exponent, equality test or support oracle. The amplitude $C_e$ needs
+all minimizing trees when there are ties. The finite checks of
+\cref{scale:sec:verification} do not prove strong summability, arbitrary-rank
+existence or surreal transport, and a successful compilation is not a proof
+check.
+\item \emph{Open questions.} The three questions of \cref{scale:sec:verification}
+(a sharp two-edge propagation formula on a general support graph, of which the
+chain theorem solves one family; a classification of the surcomplex base
+weights with a unique integral whole-polydisc branch; and the convergence and
+complexity of alternating normalization over higher-rank valued fields,
+together with a global surcomplex scaling theorem for arbitrary complex
+kernels) are not settled.
+\end{enumerate}
+The delivered files \texttt{SOURCE\_AUDIT.md} and \texttt{PROOF\_AUDIT.md}
+state the audit boundaries in more detail.
+
+\subsection{Relation to other reports of the collection}\label{scale:sec:neighbours}
+No proof in this report depends on another report, and no other report
+depends on this one. The comparisons below are with the articles as committed
+at \texttt{52c7ab6}; theorem numbers of other reports are those of their
+committed PDFs.
+
+\paragraph{Markov generators at every scale.}
+The Markov report \cite{RepoMarkov}, held in
+\nolinkurl{docs/surreal/markov-generators-at-every-scale/}, and this one
+share one mechanism: a positive combinatorial
+expansion whose valuation is a minimum over trees or forests and whose
+leading coefficient is a positive sum over the minimizers. There,
+Proposition~3.1 (\nolinkurl{markov:prop:forest}, the directed matrix-forest
+theorem) writes $\det(sI+L)$ and $\operatorname{adj}(sI+L)$ as sums of
+positive in-forest weights, and equation~(3.10) there
+(\nolinkurl{markov:eq:profile-properties}) reads off the minimal forest weight
+and its amplitude. Its Theorem~4.1 (\nolinkurl{markov:thm:leading}) gives the
+valuation of a resolvent entry as a minimum over forests with a prescribed
+root, minus the unrestricted minimum. Here \cref{scale:thm:tree} writes
+$\det L_p$ as the positive tree sum $Z(p)$, \eqref{scale:eq:Hdiagonal} writes
+a diagonal projection entry as $Z_e^-(p)/Z(p)$, and the gap
+$\kappa_e=\tau_e^--\tau$ is again a restricted minimum (trees avoiding $e$)
+minus the unrestricted one, with the quotient of amplitudes
+$C_e$ in \eqref{scale:eq:leadinggain}. As polynomial identities in the
+weights, symmetric rates $q_{uv}=q_{vu}=p_e$ on the support graph make the
+in-forests of that report with $N-1$ edges and a fixed root exactly the
+spanning trees oriented towards that root, so its top forest coefficient
+$\sigma_{N-1}$ equals $N\,Z(p)$. This report does not use that identity.
+
+The differences are as follows. (i) \emph{Objects.} There, the row Laplacian
+of a directed graph, in general neither symmetric nor normal, and the
+normalized resolvent, a rational function of the rates and of a scale
+parameter, with forests of every size. Here, the symmetric reduced Laplacian
+$BW_pB^{\mathsf T}$ of a bipartite support graph, only spanning trees, no
+scale parameter, and a \emph{nonlinear} fixed-margin normalization obtained
+from a support-controlled power series (\cref{scale:thm:existence}).
+(ii) \emph{Stability.} Theorem~8.1 there (\nolinkurl{markov:thm:stability}) turns
+relative rate errors of valuation at least $\delta$ into relative
+resolvent-entry errors of valuation at least $\delta$, uniformly in the
+resolvent parameter, and Example~8.3 there shows that no gain is possible in
+general. \Cref{scale:thm:sharp} turns relative kernel changes of valuation at
+least $\delta$ into normalized-entry changes of valuation at least
+$\delta+\kappa_e$, with equality for one-coordinate changes; the gain comes
+from the fixed margins and fails when the margins move
+(\cref{scale:sec:boundaries}). The two theorems concern different maps, and
+neither implies the other. Both need a fixed support: a new edge is not a
+relative perturbation (Remark~8.4 there). (iii) \emph{Hypotheses.} That
+report assumes a divisible value group throughout and real positive rates.
+The local theory here assumes no divisibility and allows surcomplex
+positive-leading base weights with complex perturbations. (iv) The
+crossover hierarchy, effective generators, rank-one realization and
+eigenvalue amplitudes of that report have no counterpart here. The whole-polydisc
+branch, the deletion gap and its bottleneck formula, and the chain
+propagation law of this report have no counterpart there.
+
+\paragraph{Surcomplex spectral theory.}
+The spectral report \nolinkurl{docs/surcomplex/spectral-theory/}
+\cite{RepoSpectral} shares three ingredients with this one.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Positive Cauchy--Binet sums.} Its Theorem~8.1
+(\nolinkurl{thm:gram}, a label without report prefix) writes the coefficients of
+$\det(I+sA^*A)$ as sums of squared moduli of minors, so that no leading
+cancellation occurs. \Cref{scale:thm:tree} expands
+$\det(BW_pB^{\mathsf T})$ by Cauchy--Binet as
+$\sum_T(\det B_T)^2w_T(p)$, and \cref{scale:thm:linear} has the same form
+with real factors $(\det B_T)^2>0$. When the weights are real and positive
+and have square roots in the field, $BW_pB^{\mathsf T}=A^*A$ with
+$A=W_p^{1/2}B^{\mathsf T}$, and $\det L_p$ is the top Gram coefficient of that
+theorem. The proof here needs neither square roots, which a nondivisible
+value group need not supply, nor real weights: it applies Cauchy--Binet to
+the product $B\cdot W_p\cdot B^{\mathsf T}$ with positive-leading surcomplex
+weights. The interpolation identity~\eqref{scale:eq:treeaverage} for the
+projection itself has no counterpart there.
+\item \emph{The support engine.} \Cref{scale:lem:neumann} and Lemma~9.4
+there (\nolinkurl{spec:lem:neumann}) state the same positive-support word
+finiteness, both from Higman's theorem. \Cref{scale:lem:evaluation} with no
+generators ($R_0=\C$) gives the strong-evaluation part of Lemma~9.5 there
+(\nolinkurl{spec:lem:evaluate}); \cref{scale:lem:evaluation} allows coefficients
+in a finitely generated subalgebra of $\OO$, and \cref{scale:ex:badformal}
+shows why arbitrary coefficients in $\OO$ are not allowed. Example~9.2 there
+(\nolinkurl{spec:ex:nonconvergence}) and the last subsection of
+\cref{scale:sec:boundaries} make the same point with the same elements
+$(0,1)$ and $(1,0)$ of $\Z^2_{\mathrm{lex}}$: strong sums are not limits of
+partial sums. Each report keeps its own proofs.
+\item \emph{No new exponents.} Its Theorem~9.18 (\nolinkurl{spec:thm:svd}) keeps
+singular value decompositions in the subgroup generated by the input
+supports, as \cref{scale:cor:descent} keeps the local normalization in
+$\C((t^\Lambda))$. Its Section~10 computes when positive matrix roots need
+new exponents. The global ramification example
+\eqref{scale:eq:ramificationexample} here is computed directly and is not
+derived from that section.
+\end{enumerate}
+What is not shared: that report is about eigenvalues, singular values and
+Hermitian or normal matrices, and its perturbation results (for instance
+Theorem~5.2 there, \nolinkurl{thm:weyl}) bound changes of eigenvalues and
+singular values. No eigenvalue or singular value appears in this report. The
+gain $\kappa_e$ is a combinatorial invariant of the support graph and the
+entry valuations, not a smallest singular value used as a condition number
+(\cref{scale:sec:intro}), and singular-value stability supplies neither the
+whole-polydisc support argument nor the tree-deletion sharpness
+(\cref{scale:sec:comparison}). This report does not use the word
+\emph{spectrum}.
+
+\paragraph{Prony reconstruction.}
+The nonuniform certificate of the Prony reconstruction report
+(Theorem~8.1 there, \nolinkurl{prony:thm:graph}) is also a minimum-cost path
+computation in an ordered group. Its graph is a directed graph of moment
+interactions with a positive-cycle hypothesis, and its path minima bound node
+errors. It involves no spanning trees and no normalization, and its moment
+precisions $\kappa_k$ are unrelated to the gaps $\kappa_e$.
+
+\subsection{Words and symbols used differently elsewhere in the collection}
+\label{scale:sec:words}
+Several words and letters of this report mean other things in other reports.
+Each has one meaning here.
+\begin{itemize}
+\item \emph{Scaling} and \emph{normalization} mean diagonal row and column
+scaling of a matrix to prescribed margins, and its local branch
+$\NN_p$, $q_p$. They are not the monomial rescalings or polynomial
+normalizations of other reports. \emph{Scale}, as in the title, means a
+valuation.
+\item \emph{Positive}, for a matrix, means entries positive on the support
+in the ordered field $F$; \emph{positive-leading}
+(\cref{scale:def:positiveleading}) is the only positivity notion in $K$,
+which is not ordered. Neither means positive definite, the sense of the
+spectral report.
+\item \emph{Gap} means the spanning-tree deletion gap $\kappa_e$. It is not a
+spectral gap and not a surreal gap (a Dedekind section of $\No$) in the sense
+of the genetic-gap report. The letter $\kappa$ also denotes moment
+precisions in the Prony report and the valuation gain $v(q)$ of an inverse
+branch in the expanding-polynomial-dynamics report; those are unrelated.
+\item \emph{Tree} means an undirected spanning tree of the support graph. It
+is not an in-forest of the Markov report, nor a cluster, separation or
+splitting tree of the polynomial, Prony or spectral reports.
+\item \emph{Branch} means the unique relative-infinitesimal solution
+$\NN_p$ on $\mm^E$, and \emph{analytic} means given there by a strongly
+evaluated formal series with coefficients in $R_p$. These are not the
+germ-analytic or coherent-section classes of the analysis report, and the
+branch is not a branch selector in the computational sense of
+\nolinkurl{docs/NOTATION.md}.
+\item \emph{Gauge factors} are the diagonal row and column factors of
+\cref{scale:cor:gauge}; neither the noise gauge of the Prony report nor a
+differential gauge equivalence.
+\item \emph{Bistochastic} means that all row and column sums are $1$.
+\item $p$ denotes base weights and $q_p(f)$ normalized weights; $P$ and $Q$
+are the corresponding matrices. In the Markov report $q_e$ are rates and $P_i$
+idempotents. $L_p=BW_pB^{\mathsf T}$ is a symmetric reduced weighted Laplacian,
+not that report's row Laplacian. $H_p=I-\Pi_p$ is a projection, not a
+Hermitian matrix $H$ as in the spectral report, and $\Pi_p$ is unrelated to
+the exponent matrix $\Pi$ of the theta-series material in the Hahn--Tate
+report. $s$ is a perturbation scalar, not a resolvent parameter.
+\item Local letters are reused with local meanings, each defined where it is
+used: $\delta$ (the least valuation of an input change in
+\cref{scale:sec:intro,scale:sec:gain,scale:sec:chain}, the group element
+$(0,1)$ in \cref{scale:ex:badformal} and \cref{scale:sec:boundaries}, and a
+positive parameter in the examples of \cref{scale:sec:boundaries});
+$C$ (the column set, the Cramer matrices $C_k$, the amplitude $C_e$, the
+cycle basis of \cref{scale:sec:chain}); $R$ (the row set, $R(z)=\exp z-1-z$,
+the rings $R_0$ and $R_p$); $D$ (the diagonal factors $D_r,D_c$, the
+continuants $D_{a,b}$, a truncation degree). The formal series of
+\cref{scale:lem:evaluation,scale:ex:badformal} is written $\Phi(X)$, so that
+$F$ always denotes the real Hahn field ($F_0$ in \cref{scale:prop:global} is
+an arbitrary real closed field).
+\item The valuation is $v(x)=\min\supp x$, and the surreal embedding is
+$t^\gamma\mapsto\omega^{-\gamma}$ \eqref{scale:eq:surrealembedding}, as
+elsewhere in the collection. \emph{Surcomplex} means $\No[i]$.
+\end{itemize}
+
+\subsection{Provenance of this report}\label{scale:sec:provenance}
+This report is built from one manuscript, \emph{Sharp Matrix-Scaling
+Stability over Surreal and Surcomplex Fields}, dated 22 September 2026. It
+arrived as the archive \nolinkurl{surreal_matrix_scaling.zip}, one of nine
+archives committed on arrival at \texttt{330aa79}. The archive held the LaTeX
+source \texttt{surreal\_matrix\_scaling.tex}, its PDF, a README, the audit
+files \texttt{SOURCE\_AUDIT.md} and \texttt{PROOF\_AUDIT.md}, the program
+\texttt{code/verify.py} with its recorded output and console record, a build
+record with its console log, a requirements file and a build script. It was
+placed at commit \texttt{52c7ab6}. Its own repository comparison is pinned to
+\texttt{\pin} (\cref{scale:sec:comparison}).
+
+There is no second source, so there was no merge and no choice between
+sources. Nothing was selected out of a larger body of work. Every theorem,
+proof, example and disclaimer of the manuscript is kept. The report is a
+member of the surreal family because its positive matrices, the global
+scaling theory and the tree costs are real Hahn objects; the surcomplex
+branch of \cref{scale:thm:existence} extends that real theory.
+
+Placement changed the following and nothing else.
+\begin{enumerate}[label=(\alph*)]
+\item The source was renamed \texttt{article.tex}. The two audit files, the
+program and everything in \texttt{data/} are kept byte-identical. The build
+script was moved to \texttt{code/} and the requirements file to
+\texttt{data/}. The delivered PDF and README are not shipped.
+\item All 88 labels of the manuscript already carried the prefix
+\texttt{scale:} and are unchanged. The labels added on placement carry the
+same prefix.
+\item \Cref{scale:sec:nonclaims,scale:sec:neighbours,scale:sec:words,scale:sec:provenance}
+were added, and so were \cref{scale:rem:support,scale:rem:trees}, which
+point to other reports. They were placed so that every theorem, equation
+and section number of the manuscript is unchanged. The title-page status
+paragraph now states the draft status.
+\item Repository statements that had gone stale were corrected, with the pin
+kept as provenance (the paragraph ``Since the pin'' in
+\cref{scale:sec:comparison}, and \cref{scale:app:build}, whose build
+instructions now describe this directory). \Cref{scale:sec:verification}
+records a rerun of the checks on placement.
+\item The formal series written $F(X)$ in \cref{scale:lem:evaluation} and
+\cref{scale:ex:badformal} was renamed $\Phi(X)$, since $F$ is the real Hahn
+field.
+\item All numbered statements share one counter. In the delivered build,
+every cross-reference to a proposition, lemma, corollary, definition,
+example or remark printed the word ``theorem''. Six lines in the preamble now make each
+reference print the right name; no number changed.
+\end{enumerate}
+Placement left the mathematics unchanged.
+
 \section{Literature and repository comparison}\label{scale:sec:comparison}
 
 \subsection{The closest published precedents}
@@ -298,6 +617,35 @@ compared, and are submitted as candidate original results}. There is
 no assertion that every publication or every repository line has been
 excluded as a possible precedent.
 
+\paragraph{Since the pin.}
+The manuscript was placed in the collection at commit \texttt{52c7ab6},
+eight commits after its pin. The statements above remain true of the pin
+and are kept as provenance; the following has changed or was checked on
+placement. The catalogue \texttt{docs/README.md} did not change between the
+two commits. It still lists 36 reports, and it does not yet list this
+report or the three other reports placed by the same commit. The directory
+\texttt{docs/new} held only its README at the pin, as stated above. Commit
+\texttt{330aa79} then added nine delivered archives, this manuscript's among
+them; commit \texttt{52c7ab6} unpacked, placed and removed all nine, so the
+directory again holds only its README. The positive-control file
+\nolinkurl{Surreal/Algebra/MarkovResolvent.lean} is still present. It proves
+finite resolvent and projection-flag algebra for the Markov report and
+contains no spanning-tree, forest-sum or Cauchy--Binet statement.
+At \texttt{52c7ab6}, a full-text search of every LaTeX source in the
+collection finds the words \texttt{Sinkhorn}, \texttt{bistochastic},
+\texttt{Kirchhoff} and \texttt{transfer current} only in this report.
+The phrase \texttt{spanning tree} occurs elsewhere only once, in the proof of
+the Markov report's matrix-forest identity \cite{RepoMarkov}, where it
+means a directed spanning tree rooted at a vertex. The phrase
+\texttt{matrix scaling} occurs elsewhere only once, in the outline of
+remaining Lean development of the Prony reconstruction report
+(\nolinkurl{docs/surcomplex/prony-reconstruction-at-surreal-scales/}); that
+sentence does not concern the prescribed-margin problem studied here. No
+Lean source mentions Sinkhorn scaling, spanning trees, doubly stochastic
+matrices or Kirchhoff's theorem. These searches, like the original ones,
+locate words, not results stated under other names. The comparison with the
+two nearest reports is made precise in \cref{scale:sec:neighbours}.
+
 \section{Hahn conventions and the summability issue}\label{scale:sec:hahn}
 
 \subsection{Fields, valuation, and positive leading coefficients}
@@ -374,7 +722,7 @@ the last assertion.
 Let $a_1,\ldots,a_s\in\OO$ and
 $R_0=\C[a_1,\ldots,a_s]\subseteq\OO$.
 For every formal series
-$F(X)=\sum_{\nu\in\N^m}b_\nu X^\nu\in R_0[[X_1,\ldots,X_m]]$
+$\Phi(X)=\sum_{\nu\in\N^m}b_\nu X^\nu\in R_0[[X_1,\ldots,X_m]]$
 and every $x\in\mm^m$, the family $(b_\nu x^\nu)_\nu$ is strongly
 summable. Evaluation respects sums, products, and compositions with
 formal series of zero constant term whenever all coefficients lie
@@ -406,7 +754,7 @@ fixed exponent.
 In $\Gamma=\Z^2_{\mathrm{lex}}$, let
 $\delta=(0,1)$ and $\beta=(1,0)$. The formal series
 \[
- F(X)=\sum_{n\geq1} t^{\beta-n\delta}X^n
+ \Phi(X)=\sum_{n\geq1} t^{\beta-n\delta}X^n
 \]
 belongs to $\OO[[X]]$, since $\beta-n\delta>0$ for every $n$.
 But at $X=t^\delta$ every displayed term is $t^\beta$.
@@ -436,6 +784,17 @@ Their leading terms are $z$. We also use
 \end{equation}
 Thus $\ph(z)\in1+\mm$. No exponential or logarithm at an arbitrary
 infinite surcomplex argument is used anywhere.
+
+\begin{remark}[The same support engine in the spectral report]
+\label{scale:rem:support}
+\Cref{scale:lem:neumann} is also Lemma~9.4 of the collection's spectral
+report \cite{RepoSpectral}, proved there from Higman's theorem as well, and
+\cref{scale:lem:evaluation} with no generators gives the strong-evaluation
+part of Lemma~9.5 there. The generators $a_1,\ldots,a_s$ are what this
+report adds, and \cref{scale:ex:badformal} shows that they cannot be replaced
+by arbitrary elements of $\OO$. \Cref{scale:sec:neighbours} compares the
+two reports.
+\end{remark}
 
 \section{The tree interpolation identity}\label{scale:sec:trees}
 
@@ -542,6 +901,17 @@ projection $B^{\mathsf T}L_p^{-1}BW_p$ nevertheless is integral.
 This cancellation of apparent conditioning loss is the algebraic
 reason to work with edge variables rather than estimate vertex
 potentials using an unstructured inverse bound.
+
+\begin{remark}[Positive tree sums elsewhere in the collection]
+\label{scale:rem:trees}
+That a positive-leading tree sum has the minimum tree cost as its valuation,
+and the sum of the minimizers' leading amplitudes as its leading coefficient,
+is the mechanism of the directed forest sums of the Markov report
+\cite{RepoMarkov} and of the squared-minor sums of Gram determinants in the
+spectral report
+\cite{RepoSpectral}. \Cref{scale:sec:neighbours} states what is shared and
+what is not.
+\end{remark}
 
 \section{Normalization on the whole infinitesimal polydisc}
 \label{scale:sec:normalization}
@@ -1549,6 +1919,13 @@ used for the more expensive matrix identities. All 229 graphs are
 used for the two cost-group gap comparisons. Counts include repeated
 underlying graphs with different cost groups where explicitly stated.
 
+The program writes \texttt{data/verification.json} next to its own
+\texttt{code/} directory, so a run replaces the recorded file; it should be
+run on a copy of this directory. When the report joined the collection, such
+a run under Python~3.14.4 and SymPy~1.14.0 passed in about twenty seconds and
+reproduced every count above. The file it wrote differed from the recorded
+one only in the Python version field and in line endings.
+
 These checks are independent corroboration of finite formulas, not
 a proof of strong Hahn summability, arbitrary-rank existence, or
 surreal transport. They do not constitute a Lean verification of any
@@ -1665,23 +2042,33 @@ proofs uses spherical completeness, Banach contraction, a global
 surcomplex exponential, or a surreal derivation.
 
 \section{Build and artifact record}\label{scale:app:build}
-From the package directory, run
+From this directory, build the report with
 \begin{verbatim}
+latexmk -pdf -halt-on-error -interaction=nonstopmode article.tex
+\end{verbatim}
+and run the checks on a copy of the directory (\cref{scale:sec:verification}),
+from the root of that copy, with
+\begin{verbatim}
+python -m pip install -r data/requirements.txt
 python code/verify.py
-latexmk -pdf -halt-on-error -interaction=nonstopmode \
-  surreal_matrix_scaling.tex
 \end{verbatim}
 The bibliography is internal; no external database or figure file
-is required. The provided \texttt{build.sh} changes to its own
-package directory before running these commands, so it also works
-when invoked from elsewhere. Compilation verifies typesetting,
+is required. Compilation verifies typesetting,
 not mathematical validity. The delivered PDF was rendered and
 visually inspected separately from the exact algebra checks.
 
+As delivered, the manuscript was built as
+\texttt{surreal\_matrix\_scaling.tex}, and its \texttt{build.sh}, then at the
+top of the package, changed to its own directory before running the program
+and the build. That script is kept unchanged in \texttt{code/}, where it
+changes to \texttt{code/} and looks for \texttt{code/verify.py} and
+\texttt{surreal\_matrix\_scaling.tex} there, neither of which exists. It
+therefore does not work as placed; use the commands above.
+
 The article, source audit, code, and recorded test outputs belong to
-this one contribution. The package contains no copies of the
-repository's existing reports. No change has been made to the
-repository itself.
+this one contribution. The package contained no copies of the
+repository's existing reports, and its delivery changed no repository
+file; \cref{scale:sec:provenance} records how it was placed.
 
 \begin{thebibliography}{99}
 \bibitem{BM}
@@ -1743,7 +2130,8 @@ commit \texttt{\shortpin}, inspected 22 September 2026.
 \emph{Surreal Markov generators at every valuation scale},
 AI-assisted research report in the Surreal repository,
 \texttt{docs/surreal/markov-generators-at-every-scale/}.
-Detailed README inspected at commit \texttt{\shortpin}.
+Detailed README inspected at commit \texttt{\shortpin}; the article was
+compared on placement at commit \texttt{52c7ab6}.
 \repo.
 
 \bibitem{RepoSpectral}
@@ -1751,7 +2139,8 @@ Detailed README inspected at commit \texttt{\shortpin}.
 multiscale stability, exact determinantal ramification, and Hankel
 square-class profiles}, AI-assisted research report in the Surreal
 repository, \texttt{docs/surcomplex/spectral-theory/}.
-README lines 1--180 inspected at commit \texttt{\shortpin}.
+README lines 1--180 inspected at commit \texttt{\shortpin}; the article
+was compared on placement at commit \texttt{52c7ab6}.
 \repo.
 \end{thebibliography}
 \end{document}

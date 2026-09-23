@@ -41,7 +41,7 @@
 \newcommand{\F}{F_\Gamma}
 \newcommand{\Pfield}{\mathscr P_\Gamma}
 \newcommand{\Efield}{\mathscr E_\Gamma}
-\newcommand{\Cfield}{\mathscr C_\Gamma}
+\newcommand{\Cfield}{\overline{\mathscr P}_\Gamma}
 \newcommand{\supp}{\operatorname{supp}}
 \newcommand{\rank}{\operatorname{rank}}
 \newcommand{\diag}{\operatorname{diag}}
@@ -55,16 +55,19 @@
 \newcommand{\primes}{\mathcal P}
 \newcommand{\qprime}[1]{q_{#1}}
 \newcommand{\restr}[2]{{#1}\!\upharpoonright_{#2}}
-\newcommand{\repo}{\texttt{Surreal}}
+\newcommand{\repoName}{\texttt{Surreal}}
+\newcommand{\repo}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
 \newcommand{\pin}{\texttt{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}}
 \newtcolorbox{summarybox}{colback=MidnightBlue!3,colframe=MidnightBlue!45,boxrule=.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{15mm}
-{\small\sffamily RESEARCH MANUSCRIPT\par}
-\vspace{9mm}
+\vspace*{2mm}
+{\small\sffamily SINGLE-SOURCE RESEARCH REPORT\par}
+\vspace{7mm}
 {\Huge\bfseries Hidden Negative Directions\par}
 \vspace{3mm}
 {\Huge\bfseries in Surcomplex Linear Algebra\par}
@@ -72,11 +75,14 @@
 {\Large Prime-denominator approximation barriers\par}
 \vspace{2mm}
 {\Large and a two-scale matrix-measure criterion\par}
-\vspace{13mm}
+\vspace{8mm}
 {\large Prepared for Vladimir Reshetnikov\par}
 \vspace{2mm}
 {22 September 2026\par}
-\vspace{12mm}
+\vspace{1mm}
+{\small Built from one manuscript of batch 19 of the collection,
+pinned to repository commit \texttt{048b72c}\par}
+\vspace{7mm}
 \begin{minipage}{0.9\textwidth}
 \begin{abstract}
 Let $K_\Gamma=\C((t^\Gamma))$, with $\Gamma$ a nonzero divisible ordered
@@ -84,9 +90,12 @@ abelian group, and let $\mathscr P_\Gamma$ consist of those Hahn series
 whose support lies in a finitely generated additive subgroup of $\Gamma$.
 This is an algebraically closed subfield containing every monomial.
 Nevertheless, for every $r\ge1$ we construct an explicit Hermitian matrix
-of size $r+1$ which is strictly positive on every nonzero vector over
-$\mathscr P_\Gamma$, and even over its valuation closure, but has inertia
-$(1,r,0)$ over $K_\Gamma$.
+of size $r+1$ whose quadratic form is strictly positive at every nonzero
+vector with coordinates in $\mathscr P_\Gamma$, and even in its valuation
+closure, but which has inertia $(1,r,0)$ over $K_\Gamma$; it is therefore
+not positive semidefinite. Throughout, ``positive semidefinite'' means
+nonnegative at \emph{every} vector over $K_\Gamma$; statements about a
+restricted set of test vectors always name that set.
 
 The construction rests on prime-denominator tails. For
 $h=\sum_{p\text{ prime}}t^{\delta(1-1/p)}$, every finite-lattice-supported
@@ -100,7 +109,9 @@ transport to actual surreal normal forms, including $t=\omega^{-1}$.
 A second theorem characterizes positivity of a two-scale matrix-valued
 measure $M_0+\eps M_1$ by ordinary scalar null ideals together with a
 vector-valued absolute-continuity condition. The latter detects the
-coupling into a residual kernel that scalar positivity misses.
+coupling into a residual kernel that scalar positivity misses. It is the
+two-scale case of the matrix-valued null-ideal criterion that the
+collection's Hahn--Herglotz report excludes from its scope.
 All assertions proposed as contributions have written proofs. The
 support-field construction, character automorphisms, finite spectral
 algebra, and elementary density obstruction are explicitly treated as
@@ -110,23 +121,28 @@ background, not new discoveries.
 \vfill
 \begin{minipage}{.9\textwidth}
 \small
-\textbf{Status.} Candidate-original theorem package, not refereed or
-formally verified. No named published conjecture is claimed settled.
-The repository comparison is pinned and targeted, not exhaustive.
-The accompanying finite checks are diagnostics, not proofs of the
-infinite statements.
+\textbf{Status.} An AI-assisted research draft: a candidate-original
+theorem package, not refereed. None of its theorems is Lean-verified;
+the collection's Lean ledger covers the scalar two-scale criterion of
+another report, which Corollary~\ref{hnd:cor:scalarmeasure} recovers as the
+case $d=1$. No named published conjecture is claimed settled. The repository
+comparison is pinned and targeted, not exhaustive
+(Appendix~\ref{hnd:app:audit}). The accompanying finite checks are
+diagnostics, not proofs of the infinite statements. Every label carries
+the prefix \texttt{hnd:}.
 \end{minipage}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \pagenumbering{roman}
 \tableofcontents
 \clearpage
 \pagenumbering{arabic}
 
-\section{The problem and the contribution}\label{sec:intro}
+\section{The problem and the contribution}\label{hnd:sec:intro}
 
 Positivity of a Hermitian matrix is a universal assertion about vectors:
-\begin{equation}\label{eq:psd}
+\begin{equation}\label{hnd:eq:psd}
  A\succeq0\quad\Longleftrightarrow\quad z^*Az\ge0\quad\text{for every }z.
 \end{equation}
 Over the ordinary complex numbers, testing a dense collection of vectors
@@ -152,12 +168,12 @@ The term \emph{finite-lattice support} always means membership in some
 such $H$; it does not mean finite support or a discrete lattice.
 For instance, $\Z+\sqrt2\Z$ is allowed when it is a subgroup of $\Gamma$.
 
-\begin{theorem}[Maximal hidden negative inertia; preview]\label{thm:preview}
+\begin{theorem}[Maximal hidden negative inertia; preview]\label{hnd:thm:preview}
 For each integer $r\ge1$, each nonzero divisible ordered abelian group
 $\Gamma$, and each $\delta\in\Gamma_{>0}$, there are explicit real Hahn
 series $h_1,\ldots,h_r$ of positive valuation such that, with
 $h=(h_1,\ldots,h_r)^T$ and $\eps=t^\delta$,
-\begin{equation}\label{eq:mainmatrix}
+\begin{equation}\label{hnd:eq:mainmatrix}
  A_r=\begin{pmatrix}
  1&h^T\\ h&hh^T-\eps^2 I_r
  \end{pmatrix}
@@ -176,7 +192,7 @@ $\mathscr P_\Gamma$.
 \end{enumerate}
 \end{theorem}
 
-The proof appears in Sections~\ref{sec:tails}--\ref{sec:closure}.
+The proof appears in Sections~\ref{hnd:sec:tails}--\ref{hnd:sec:closure}.
 The word \emph{hidden} is restricted to vector probes from the specified
 subfield. It does not mean hidden from determinants, symbolic
 elimination, or an algorithm allowed to use the entries of $A_r$ as new
@@ -187,7 +203,7 @@ counterexample once its full entries are available.
 \subsection{Why primes enter}
 
 For the increasing sequence of primes $p_1,p_2,\ldots$, put
-\begin{equation}\label{eq:alltail-intro}
+\begin{equation}\label{hnd:eq:alltail-intro}
  q_p=1-\frac1p,
  \qquad h=\sum_{p\in\primes}t^{q_p\delta},
  \qquad P_N=\prod_{j=1}^N p_j.
@@ -202,7 +218,7 @@ approximant $a$ over $\C(t^\delta)$ satisfying
 \[
  v(h-a)>q_{p_N}\delta
 \]
-is exactly $P_N$; see Theorem~\ref{thm:degree}. Thus the obstruction is
+is exactly $P_N$; see Theorem~\ref{hnd:thm:degree}. Thus the obstruction is
 not merely that $h$ is transcendental. There is an exact field-degree
 price for crossing each successive precision threshold.
 
@@ -210,19 +226,21 @@ price for crossing each successive precision threshold.
 
 The scalar Hahn-measure null-ideal criterion is already present in the
 repository. Its Herglotz report explicitly excludes a matrix-valued
-null-ideal criterion from its scope \cite{repo-herglotz}. We resolve the
-\emph{two-scale} version of that extension, not the full arbitrary-support
-problem.
+null-ideal criterion from its scope \cite{repo-herglotz}. We supply the
+\emph{two-scale} case of that excluded criterion, not the full
+arbitrary-support problem. (The exact wording of the exclusion, and the
+precise relation to the scalar criterion, are in
+Section~\ref{hnd:sec:position}.)
 
 Let $M_0,M_1$ be ordinary finite Hermitian matrix-valued measures on a
 measurable space. For an ordinary vector $u\in\C^d$, write
 \[
  \mu_u=u^*M_0u,\qquad \nu_u=u^*M_1u,\qquad \sigma_u=M_1u.
 \]
-Theorem~\ref{thm:measure} proves that $M_0+\eps M_1$ is positive as a
+Theorem~\ref{hnd:thm:measure} proves that $M_0+\eps M_1$ is positive as a
 Hahn-valued matrix measure exactly when $M_0$ is positive and, for every
 ordinary $u$,
-\begin{equation}\label{eq:measure-preview}
+\begin{equation}\label{hnd:eq:measure-preview}
  \nu_u^-\ll\mu_u,
  \qquad
  |\sigma_u|\ll\mu_u+\nu_u^+.
@@ -248,16 +266,191 @@ Puiseux constructions are established subjects
 \cite{rayner,rayner-structures,automorphisms}. The necessary background is
 proved or stated explicitly below. Nor is the bare assertion that a
 nondense subfield can miss a negative quadratic value new mathematics:
-Section~\ref{sec:density} isolates the elementary density principle so
+Section~\ref{hnd:sec:density} isolates the elementary density principle so
 that it is not confused with the quantitative construction.
 
 The distinction between mathematics and evidence is important here.
 The proofs, the exact finite checks, and any future Lean development are
 three different things. This manuscript supplies the first two; it does
-not supply a Lean verification. Appendix~\ref{app:audit} records the
+not supply a Lean verification. Appendix~\ref{hnd:app:audit} records the
 repository snapshot and the limited scope of the searches.
 
-\section{Hahn conventions and the probe field}\label{sec:hahn}
+\subsection{Conventions: one meaning per word}\label{hnd:sec:conventions}
+
+This subsection and the next were written when the manuscript joined the
+collection (Appendix~\ref{hnd:app:provenance}); they fix vocabulary and
+state relations, and add no mathematics.
+
+\paragraph{Positive.} For a Hermitian matrix $A$ over $K_\Gamma$ (or over
+$L[i]$ for an ordered field $L$, as in Lemma~\ref{hnd:lem:psdkernel} and
+Proposition~\ref{hnd:prop:density}), \emph{positive semidefinite}, written
+$A\succeq0$, always means \eqref{hnd:eq:psd} with $z$ ranging over
+\emph{all} vectors over the whole field, and \emph{positive definite},
+$A\succ0$, means strict inequality for every nonzero such $z$. This is the
+meaning fixed in the collection's spectral-theory report
+(\lbl{prop:positive} of \repo{surcomplex/spectral-theory}). When only a
+restricted set of test vectors is allowed, the statement names that set:
+``$z^*Az>0$ for every nonzero $z\in E^n$'', which we also call
+\emph{$E$-probe positivity}. It is never abbreviated to ``positive'':
+a Hermitian matrix or form called ``positive'' without a named probe set
+is positive semidefinite, and ``strictly positive'' without one means
+positive definite. The
+matrices $A_r$ of Theorem~\ref{hnd:thm:inertia} are
+$\Pfield$-probe positive and $\overline{\mathscr P}_\Gamma$-probe positive, and
+are \emph{not} positive semidefinite. A Hahn-valued matrix measure is
+\emph{positive} when every event matrix is positive semidefinite in this
+sense, \eqref{hnd:eq:measurepositive}; for $d=1$ this is the scalar
+meaning $\mu(E)\ge0$ used by the Hahn--Herglotz and measures reports.
+An element of $F_\Gamma$ is positive when its leading coefficient is.
+``Positive valuation'' and ``positive order'' refer to exponents, not to
+signs. ``Positive'' never means entrywise positivity of a matrix, its
+meaning in the collection's Markov-generator and matrix-scaling reports
+(\repo{surreal/markov-generators-at-every-scale},
+\repo{surreal/matrix-scaling-at-surreal-scales}).
+
+\paragraph{Hidden.} A negative direction is \emph{hidden} only relative to
+a named probe set, as in Section~\ref{hnd:sec:intro}. The ``hidden negative
+mass'' of \repo{surreal/hahn-valued-measures-and-probability} is a
+different phenomenon: a Hahn measure that passes a family of cylinder or
+moment tests and is negative on some event. No result transfers between
+the two uses of the word.
+
+\paragraph{Symbols.} The source wrote $\mathscr C_\Gamma$ for the valuation
+closure of $\Pfield$; here it is $\overline{\mathscr P}_\Gamma$, because
+the Hahn--Herglotz report uses $\mathscr C_\Gamma(X)$ for
+$C(X,\C)((t^\Gamma))$. In Sections~\ref{hnd:sec:intro}--\ref{hnd:sec:density},
+$\eps=t^\delta$, with $\delta$ the scale of the prime tails; in
+Sections~\ref{hnd:sec:twoscale} and~\ref{hnd:sec:measure},
+$\eps=t^\eta$ for an arbitrary $\eta>0$. The two parts are logically
+independent. The letters $h$, $h_j$, $h_A$ denote prime tails; they are not
+the Hankel subdiscriminants $h_k$ of the spectral-theory report. $P_N$ is a
+primorial, $P$ (in Sections~\ref{hnd:sec:twoscale}--\ref{hnd:sec:measure})
+an ordinary Hermitian matrix, $\Pfield$ the probe field, and $\primes$ the
+set of primes. Hahn exponents increase, and $t^\gamma$ corresponds to
+$\omega^{-\gamma}$, the collection's common convention (\repo{NOTATION.md}).
+
+\subsection{Relation to other reports of the collection}\label{hnd:sec:position}
+
+The source compared itself with the collection at its pin; that comparison
+is kept in Appendix~\ref{hnd:app:audit}. The relations below were checked
+against the collection as it stands after this report was placed.
+
+\paragraph{Spectral theory.} Everything this report uses about one
+Hermitian matrix is finite Hermitian algebra over a real-closed field, as
+developed in \repo{surcomplex/spectral-theory}: the order $\succeq$ and the
+congruence invariance of inertia are its \lbl{prop:positive}, and its
+\lbl{spec:thm:hermitian} diagonalizes every Hermitian matrix over
+$K_\Gamma$ by a unitary, for arbitrary $\Gamma$, with every exponent of the
+unitary and of the eigenvalues in the subgroup generated by the exponents
+of the entries. Theorem~\ref{hnd:thm:inertia} is consistent with that
+exponent statement and shows that the subgroup in it cannot in general be
+replaced by a finitely generated one. The exponents
+of the entries of $A_r$ generate a subgroup of $\Gamma$ that contains
+$q_p\delta$ for infinitely many primes $p$; its intersection with $\Q\delta$
+is therefore not cyclic, so the subgroup is not finitely generated. The
+negative eigenvectors supplied by \lbl{spec:thm:hermitian} have coordinates
+in the Hahn field of that subgroup, and
+Theorem~\ref{hnd:thm:closedseparation} shows that no vector with
+coordinates in $\overline{\mathscr P}_\Gamma$ can take their place. The
+congruence \eqref{hnd:eq:congruence} is an explicit instance of the
+diagonalization proved there in general; nothing here extends or
+contradicts a theorem of that report. The support-index bound,
+Lemma~\ref{hnd:lem:supportdegree}, is the counterpart over intermediate
+fields $\C(t^G)\subseteq L\subseteq\C((t^G))$ of \lbl{spec:lem:finiteindex},
+which computes $[K_\Lambda:K_\Gamma]=|\Lambda/\Gamma|$ for finite
+$\Lambda/\Gamma$ with the same diagonal character action; and
+\lbl{spec:warn:degreedrop} (relative degrees can drop in a larger
+workspace) is the phenomenon behind the remark that the primorial law
+concerns one fixed ground field (Remark~\ref{hnd:rem:degreescope}).
+
+\paragraph{Hahn--Herglotz positivity and Hahn-valued measures.} In the
+subsection ``Remaining scope boundaries'' (Section~8.3) of
+\repo{surcomplex/hahn-herglotz-positivity}, that report says: ``A
+matrix-valued version of the scalar null-ideal criterion would have to track
+kernel directions of coefficient measures as well as their scalar null
+sets; it is not supplied here.'' Its consolidated non-claims
+(\lbl{herg:sec:nonclaims}) repeat: ``No matrix-valued null-ideal criterion
+is supplied.'' That sentence is a non-claim, not a posed problem.
+Theorem~\ref{hnd:thm:measure} supplies the case of the two exponents
+$0<\eta$, and its condition~(iii) is exactly the tracking of kernel
+directions the sentence anticipates: $\sigma_u=M_1u$ records where $M_1$
+moves a direction $u$ that is null for $\mu_u$ and for $\nu_u^+$. Three
+differences of setting must be kept in view. (a) The Herglotz measures are
+real-valued scalar coefficientwise Hahn measures with finite signed regular
+Borel coefficients on a compact Hausdorff space (\lbl{herg:def:measure});
+here the coefficients are finite complex Hermitian matrix measures on an
+arbitrary measurable space, with no regularity. (b) The Herglotz criterion
+\lbl{herg:thm:nullideal} allows any well-ordered support; here there are
+exactly two exponents, and Question~\ref{hnd:q:morescales} (the transfinite
+matrix case) remains open. (c) Positivity here is tested with vectors in
+$K_\Gamma^d$. For $d=1$, Corollary~\ref{hnd:cor:scalarmeasure} is
+\lbl{herg:cor:twoscale}, the two-exponent case of the transfinite
+null-ideal criterion, which is proved once in the collection as
+\lbl{meas:thm:nullideal} of \repo{surreal/hahn-valued-measures-and-probability}.
+\repo{FORMALIZATION.md} records a Lean proof of the scalar two-scale
+criterion over any measurable space (\texttt{Surreal.NullIdeal.twoScale},
+\texttt{twoScale\_measure}); no matrix statement of this report is covered
+by it. Both reports use coefficientwise, not strong, countable additivity.
+
+\paragraph{Tail-spans and differential transcendence.}
+\repo{surreal/tail-spans-and-differential-transcendence} also builds
+continuum many algebraically independent Hahn tails from an explicit
+binary-prefix almost-disjoint family (\lbl{tail:eq:binarycode},
+\lbl{tail:eq:Aalpha}), using the ``private indices'' of each member exactly
+as Theorems~\ref{hnd:thm:separation} and~\ref{hnd:thm:independence} use
+private primes; the coding of words differs (integers there, primes here).
+The mechanisms and bases are different, and neither result implies the
+other. There, the tails $\xi_A=\sum_{n\in A}\sqrt{p_n}\,t^n$
+(\lbl{tail:eq:xiA}, with $t=\omega^{-1}$) have integer exponents and
+square-root coefficients, and are independent, even differentially for the
+Berarducci--Mantova derivation, over $B_0=\Q((t^\Q))$ (\lbl{tail:thm:surreal});
+the proof changes coefficient signs. Here the tails have coefficient one
+and prime-denominator exponents, and are independent over $\Pfield$; the
+proof twists exponents by characters. For $\Gamma=\Q$ and $\delta=1$ each
+base contains the other's witnesses: $h_A\in\Q((t^\Q))=B_0$, while
+$\xi_A$ has support in $\Z$ and so lies in $\mathscr P_\Q$. In particular,
+square-root coefficient tails cannot produce hidden directions relative to
+$\Pfield$: with $\xi_j$ in place of $h_j$, the negative vectors
+$(-\xi_j,e_j)$ of \eqref{hnd:eq:quadraticidentity} are probe vectors.
+Likewise \lbl{tail:thm:closure} shows that $\sum_n\sqrt{p_n}\,t^n$ is a
+valuation limit of its algebraic truncations when $\Gamma=\Q$, whereas
+Corollary~\ref{hnd:cor:degreebound} shows that no sequence of elements
+algebraic over the monomial field converges to $h_\delta$; ``algebraic''
+means algebraic coefficients over a coefficient field there and algebraic
+over $\C(t^\gamma:\gamma\in\Gamma)$ here. The warning
+\lbl{tail:rem:indexfamily} applies verbatim: the family $(h_A)$ indexed by
+\emph{all} infinite sets of primes is not independent, since
+$h_{A\cup B}+h_{A\cap B}=h_A+h_B$ is a nontrivial linear relation among
+four members whenever $A\cap B$ is infinite and neither set contains the
+other; Theorem~\ref{hnd:thm:independence} is
+about the binary-prefix family only. The upper bound in
+Corollary~\ref{hnd:cor:trdeg} is the same cardinality count as in
+\lbl{tail:thm:surreal}.
+
+\paragraph{Reports placed in the same batch.}
+\repo{surreal/transcendence-over-bounded-support}, placed in the same
+commit as this report, proves algebraic independence over the fraction
+field of the ring $\mathcal B_\Gamma(K)$ of Hahn series with support bounded
+above. That base is not comparable with $\Pfield$: every prime tail $h_A$
+has support bounded above by $\delta$ and so lies in
+$\mathcal B_\Gamma(\C)$, while for $\Gamma=\Q$ the series
+$\sum_{n\ge1}t^n\in\mathscr P_\Q$ has unbounded support. Neither
+independence theorem implies the other.
+
+\paragraph{Background inputs.} The positive-support (Neumann) lemma is
+\lbl{found:sub:positivesupport} of
+\repo{foundations-and-computation/foundations}; algebraic closedness of
+$K_\Gamma$ for divisible $\Gamma$, real closedness of $F_\Gamma$, and the
+fact that a polynomial split in a workspace gains no roots in a larger one
+are \lbl{polynomial:prop:workspace} of \repo{surcomplex/polynomial-algebra}.
+The complex Levi--Civita field of Section~\ref{hnd:sec:closure} is the
+complexification of the real field defined in the same way in
+\repo{foundations-and-computation/computable-surreals}. The
+infinite-dimensional Hahn--Hilbert spaces of
+\repo{surcomplex/infinite-dimensional-hahn-spectral-theory} are not used;
+every matrix here is finite.
+
+\section{Hahn conventions and the probe field}\label{hnd:sec:hahn}
 
 \subsection{Fields, valuation, conjugation, and positivity}
 
@@ -275,12 +468,12 @@ The order on $F_\Gamma$ is the sign of the leading real coefficient.
 Complex conjugation acts coefficientwise and fixes precisely
 $F_\Gamma$. For $z\in K_\Gamma$, write $|z|^2=z\bar z$; this notation
 does not require choosing a square root. For $z\ne0$,
-\begin{equation}\label{eq:normvaluation}
+\begin{equation}\label{hnd:eq:normvaluation}
  |z|^2>0,\qquad v(|z|^2)=2v(z).
 \end{equation}
 If $z_1,\ldots,z_n$ are not all zero, positivity of the leading
 coefficients gives
-\begin{equation}\label{eq:sum-squares}
+\begin{equation}\label{hnd:eq:sum-squares}
  v\!\left(\sum_{j=1}^n|z_j|^2\right)
  =2\min_j v(z_j).
 \end{equation}
@@ -291,7 +484,9 @@ algebraically closed and $F_\Gamma$ is real closed under these
 hypotheses. We use this established input, rather than claim another
 proof of it; it belongs to the classical generalized-series theory
 \cite{rayner}, and the repository separately develops the relevant Hahn
-closedness machinery \cite{repo-map}.
+closedness machinery \cite{repo-map}. (In the collection it is
+\lbl{polynomial:prop:workspace} of \repo{surcomplex/polynomial-algebra},
+which cites Poonen for it.)
 
 A Hermitian matrix $A\in M_n(K_\Gamma)$ is positive semidefinite if
 $z^*Az\ge0$ for all $z\in K_\Gamma^n$. Its inertia
@@ -299,7 +494,9 @@ $\In(A)=(n_+,n_-,n_0)$ records its numbers of positive, negative, and
 zero squares under congruence over $K_\Gamma$. Finite-dimensional
 Hermitian diagonalization over a real-closed base makes this
 well-defined; the repository's spectral report treats this background
-\cite{repo-spectral}.
+\cite{repo-spectral} (\lbl{prop:positive} and \lbl{spec:thm:hermitian}
+there). This is the only meaning of $\succeq0$ in this report
+(Section~\ref{hnd:sec:conventions}).
 
 \subsection{What summation means}
 
@@ -308,11 +505,11 @@ its supports is well ordered and each exponent receives a contribution
 from only finitely many members. Products and the infinite sums used
 here are understood in this sense. The usual positive-support lemma
 licenses power-series substitution at positive-order elements
-\cite{neumann}.
+\cite{neumann}; in the collection it is \lbl{found:sub:positivesupport}.
 
 Strong summation is not asserted to be convergence of finite subsums in
 the valuation topology. In particular, the exponents $q_p\delta$ in
-\eqref{eq:alltail-intro} are all below $\delta$. Their terms form a valid
+\eqref{hnd:eq:alltail-intro} are all below $\delta$. Their terms form a valid
 Hahn sum even though its finite partial sums do not approach it to
 valuation greater than $\delta$. This bounded sequence of exponents is
 precisely what the construction needs.
@@ -323,9 +520,9 @@ set-sized exponent workspace before any Hahn argument is applied.
 
 \subsection{The finite-lattice-supported subfield}
 
-\begin{definition}\label{def:probefield}
+\begin{definition}\label{hnd:def:probefield}
 The complex and real finite-lattice-supported fields are
-\begin{equation}\label{eq:probefields}
+\begin{equation}\label{hnd:eq:probefields}
  \Pfield=\bigcup_{\substack{H\le\Gamma\\H\text{ finitely generated}}}
                \C((t^H)),
  \qquad
@@ -337,7 +534,7 @@ A \emph{probe vector} is a vector with coordinates in $\Pfield$.
 
 A finitely generated subgroup of an ordered abelian group is a finite-rank
 free abelian group. It need not be convex, discrete, or cofinal.
-The union in \eqref{eq:probefields} is directed: the sum of finitely many
+The union in \eqref{hnd:eq:probefields} is directed: the sum of finitely many
 finitely generated subgroups is finitely generated. As each
 $\C((t^H))$ is a subfield of $K_\Gamma$, $\Pfield$ is a field.
 It contains every complex constant and every monomial $t^\gamma$.
@@ -348,7 +545,7 @@ It is closed under arbitrary restrictions of a support, and
 This is an instance of the established support-family approach to Hahn
 subfields, not a new field construction \cite{rayner-structures}.
 
-\begin{example}\label{ex:puiseux}
+\begin{example}\label{hnd:ex:puiseux}
 When $\Gamma=\Q$, every finitely generated subgroup is
 $\frac1n\Z$ for a suitable integer $n\ge1$, after harmless enlargement.
 Consequently
@@ -362,7 +559,7 @@ rank-ten subgroup are just as admissible.
 \end{example}
 
 \begin{proposition}[Closure under positive-order formal evaluation]
-\label{prop:evaluation}
+\label{hnd:prop:evaluation}
 Let $a_1,\ldots,a_m\in\Pfield$ have positive valuation. Every formal
 series $\Phi\in\C[[X_1,\ldots,X_m]]$ has a defined Hahn evaluation
 $\Phi(a_1,\ldots,a_m)$, and this value belongs to $\Pfield$.
@@ -381,17 +578,19 @@ field. This assertion concerns formal evaluation at positive-order
 arguments; it is not a claim that every version of surreal exponentiation
 preserves this field.
 
-\section{Algebraic support and character orbits}\label{sec:characters}
+\section{Algebraic support and character orbits}\label{hnd:sec:characters}
 
 This section supplies an algebraic support bound with all details needed
 later. The underlying diagonal character automorphisms are standard in
 Hahn-field automorphism theory \cite{automorphisms}. Related finite-index
 monomial character arguments are also already used by the repository
-\cite{repo-spectral}. They are tools here, not novelty claims.
+\cite{repo-spectral} (\lbl{spec:lem:finiteindex}, whose Galois group
+$\operatorname{Hom}(\Lambda/\Gamma,\mu_q)$ acts by the same diagonal
+twists). They are tools here, not novelty claims.
 
 \subsection{Extending characters}
 
-\begin{lemma}[Character extension and separation]\label{lem:characterextension}
+\begin{lemma}[Character extension and separation]\label{hnd:lem:characterextension}
 Let $B$ be a subgroup of an abelian group $A$. Every homomorphism
 $B\to\C^\times$ extends to a homomorphism $A\to\C^\times$.
 Moreover, characters separate the elements of any abelian group.
@@ -418,7 +617,7 @@ infinite. Extend it to the entire group.
 
 For a subgroup $G\le\Gamma$ and a character
 $\chi:\Gamma/G\to\C^\times$, define
-\begin{equation}\label{eq:characteraction}
+\begin{equation}\label{hnd:eq:characteraction}
  T_\chi\!\left(\sum a_\gamma t^\gamma\right)
  =\sum a_\gamma\chi(\gamma+G)t^\gamma.
 \end{equation}
@@ -429,7 +628,7 @@ with inverse $T_{\chi^{-1}}$, and it fixes $\C((t^G))$ pointwise.
 
 \subsection{The support-index bound}
 
-\begin{lemma}[Algebraic degree bounds the support index]\label{lem:supportdegree}
+\begin{lemma}[Algebraic degree bounds the support index]\label{hnd:lem:supportdegree}
 Let $G\le\Gamma$ be finitely generated. Suppose $f\in K_\Gamma$ is
 algebraic over a field $L$ satisfying
 \[
@@ -437,7 +636,7 @@ algebraic over a field $L$ satisfying
 \]
 and let $D=[L(f):L]$. Put $B=G+\langle\supp f\rangle$.
 Then
-\begin{equation}\label{eq:supportdegree}
+\begin{equation}\label{hnd:eq:supportdegree}
  [B:G]\le D,
  \qquad
  \supp f\subseteq\frac1{D!}G.
@@ -450,7 +649,7 @@ Every $T_\chi(f)$ is a root of the same minimal polynomial over $L$;
 there are at most $D$ distinct such images. Fix
 $\gamma\in\supp f$. If $\gamma+G$ has infinite order, characters of
 its cyclic subgroup give arbitrarily many different values at that
-class, and Lemma~\ref{lem:characterextension} extends all of them.
+class, and Lemma~\ref{hnd:lem:characterextension} extends all of them.
 The coefficient at $\gamma$ then gives more than $D$ distinct images of
 $f$, a contradiction. If the class has finite order $m>D$, its $m$
 possible character values give the same contradiction. Hence its order
@@ -467,14 +666,14 @@ Their images of $f$ are therefore different. Thus $e\le D$.
 \end{proof}
 
 \begin{remark}
-The second bound in \eqref{eq:supportdegree} is deliberately coarse.
+The second bound in \eqref{hnd:eq:supportdegree} is deliberately coarse.
 The first bound remembers the entire finite quotient generated by the
 support. In the prime construction it is the first bound, not the
 factorial estimate, that produces the sharp answer.
 \end{remark}
 
 \begin{proposition}[Algebraic closedness of the probe field]
-\label{prop:probeclosed}
+\label{hnd:prop:probeclosed}
 For divisible $\Gamma$, $\Pfield$ is algebraically closed and
 $\Efield$ is real closed. In particular every element of $K_\Gamma$
 algebraic over the monomial field
@@ -488,7 +687,7 @@ A polynomial over $\Pfield$ has finitely many coefficients. Choose a
 single finitely generated $G$ containing all their supports. A root $f$
 exists in $K_\Gamma$ by the standard Hahn closedness theorem.
 It is algebraic over $\C((t^G))$, so
-Lemma~\ref{lem:supportdegree} places its support in
+Lemma~\ref{hnd:lem:supportdegree} places its support in
 $\frac1{D!}G$, again a finitely generated group. Thus $f\in\Pfield$.
 Every nonconstant polynomial over $\Pfield$ therefore has a root in it.
 
@@ -510,11 +709,11 @@ expressions. We permit an algebraically closed field, containing all
 monomial scales at once and arbitrary Hahn series in every individual
 finitely generated exponent group.
 
-\section{A prime-denominator approximation barrier}\label{sec:barrier}
+\section{A prime-denominator approximation barrier}\label{hnd:sec:barrier}
 
 Fix $\delta>0$ and set $s=t^\delta$. Let $\primes$ be the ordinary set
 of positive primes, in increasing order. Define
-\begin{equation}\label{eq:hdefinition}
+\begin{equation}\label{hnd:eq:hdefinition}
  h_\delta=\sum_{p\in\primes}s^{1-1/p},\qquad
  h_{\delta,N}=\sum_{j=1}^N s^{1-1/p_j}.
 \end{equation}
@@ -524,15 +723,15 @@ than $\delta$.
 
 \subsection{A denominator lemma}
 
-\begin{lemma}\label{lem:cyclicintersection}
+\begin{lemma}\label{hnd:lem:cyclicintersection}
 If $H\le\Gamma$ is finitely generated and contains $\delta$, then
-\begin{equation}\label{eq:cyclicintersection}
+\begin{equation}\label{hnd:eq:cyclicintersection}
  H\cap\Q\delta=\frac1m\Z\delta
 \end{equation}
 for some integer $m\ge1$.
 If $p$ is prime and $p\nmid m$, then $q_p\delta\notin H$, and for every
 other prime $q$,
-\begin{equation}\label{eq:freshcoset}
+\begin{equation}\label{hnd:eq:freshcoset}
  q_p\delta+H\ne q_q\delta+H.
 \end{equation}
 \end{lemma}
@@ -550,13 +749,13 @@ $p,q$, the difference
 \]
 has a denominator divisible by $p$ after reduction, since $p\nmid q$
 and $p\nmid(p-q)$. It therefore also fails to belong to
-$\frac1m\Z$, proving \eqref{eq:freshcoset}.
+$\frac1m\Z$, proving \eqref{hnd:eq:freshcoset}.
 \end{proof}
 
 \begin{theorem}[Uniform finite-lattice approximation barrier]
-\label{thm:barrier}
+\label{hnd:thm:barrier}
 For every $a\in\Pfield$,
-\begin{equation}\label{eq:barrier}
+\begin{equation}\label{hnd:eq:barrier}
  v(h_\delta-a)<\delta.
 \end{equation}
 In particular $h_\delta\notin\Pfield$, and no element algebraic over
@@ -565,35 +764,35 @@ $\delta$ or higher.
 \end{theorem}
 \begin{proof}
 Choose a finitely generated group $H$ containing $\delta$ and
-$\supp a$. Let $m$ be as in Lemma~\ref{lem:cyclicintersection} and choose
+$\supp a$. Let $m$ be as in Lemma~\ref{hnd:lem:cyclicintersection} and choose
 a prime $p\nmid m$. The coefficient of $a$ at $q_p\delta$ is zero,
 whereas that of $h_\delta$ is one. Thus $h_\delta-a$ is nonzero and
 \[
  v(h_\delta-a)\le q_p\delta<\delta.
 \]
-The last assertion follows from Proposition~\ref{prop:probeclosed}.
+The last assertion follows from Proposition~\ref{hnd:prop:probeclosed}.
 \end{proof}
 
 \subsection{The exact field-degree cost}
 
-\begin{theorem}[Primorial approximation law]\label{thm:degree}
+\begin{theorem}[Primorial approximation law]\label{hnd:thm:degree}
 For $N\ge1$, let $P_N=\prod_{j=1}^N p_j$. Among all $a\in K_\Gamma$
 algebraic over $\C(s)$ and satisfying
-\begin{equation}\label{eq:precision}
+\begin{equation}\label{hnd:eq:precision}
  v(h_\delta-a)>q_{p_N}\delta,
 \end{equation}
 the minimum possible degree $[\C(s,a):\C(s)]$ is exactly $P_N$.
 The finite sum $h_{\delta,N}$ attains this minimum and satisfies
-\begin{equation}\label{eq:partialprecision}
+\begin{equation}\label{hnd:eq:partialprecision}
  v(h_\delta-h_{\delta,N})=q_{p_{N+1}}\delta.
 \end{equation}
 The same minimum holds with $\R(s)$ and real approximants.
 \end{theorem}
 \begin{proof}
-Let $a$ satisfy \eqref{eq:precision} and let
+Let $a$ satisfy \eqref{hnd:eq:precision} and let
 $D=[\C(s,a):\C(s)]$. At every exponent $q_{p_j}\delta$ for $j\le N$,
 the coefficient of $a$ must be one. Apply
-Lemma~\ref{lem:supportdegree} with $G=\Z\delta$.
+Lemma~\ref{hnd:lem:supportdegree} with $G=\Z\delta$.
 The subgroup of $\Gamma/G$ generated by these support classes contains
 \[
  \frac{\delta}{p_1}+G,\ldots,\frac{\delta}{p_N}+G,
@@ -607,7 +806,7 @@ $\C(s)$ of degree at most $P_N$. Its support contains the first $N$
 exponents, so the same lower bound shows that its degree is exactly
 $P_N$. Its difference from $h_\delta$ has least exponent
 $q_{p_{N+1}}\delta$, which proves both admissibility and
-\eqref{eq:partialprecision}.
+\eqref{hnd:eq:partialprecision}.
 
 For real approximants, complexifying can only decrease field degree,
 so the same lower bound applies. The displayed real finite sum has
@@ -633,7 +832,7 @@ The inequalities in the theorem are strict. Crossing the $N$th support
 exponent means matching its coefficient as well. Merely reaching that
 valuation without crossing it need not match the $N$th coefficient.
 
-\begin{corollary}[A degree-limited obstruction]\label{cor:degreebound}
+\begin{corollary}[A degree-limited obstruction]\label{hnd:cor:degreebound}
 If $a$ is algebraic over $\C(s)$ of degree less than $P_N$, then
 \[
  v(h_\delta-a)\le q_{p_N}\delta.
@@ -643,21 +842,23 @@ its degrees, converges to $h_\delta$ in the full valuation topology.
 \end{corollary}
 \begin{proof}
 The first assertion is the contrapositive of
-Theorem~\ref{thm:degree}. The second follows from
-Theorem~\ref{thm:barrier}: every such approximant stays outside the
+Theorem~\ref{hnd:thm:degree}. The second follows from
+Theorem~\ref{hnd:thm:barrier}: every such approximant stays outside the
 valuation neighborhood $v(h_\delta-a)>\delta$.
 \end{proof}
 
-\begin{remark}[What the degree law does not measure]
+\begin{remark}[What the degree law does not measure]\label{hnd:rem:degreescope}
 A field degree is not a lower bound for expression length or running
 time. The sum $h_{\delta,N}$ has a short expression involving $N$
 radicals, despite its primorial degree over $\C(s)$. If the ground field
 already contains those radicals, its degree over the new ground field
 is one. The sharpness claim concerns exactly the field and precision
-specified in Theorem~\ref{thm:degree}.
+specified in Theorem~\ref{hnd:thm:degree}. The same drop of relative
+degree under enlargement of the base is recorded for Hahn fields in
+\lbl{spec:warn:degreedrop} of the spectral-theory report.
 \end{remark}
 
-\section{Almost-disjoint prime tails}\label{sec:tails}
+\section{Almost-disjoint prime tails}\label{hnd:sec:tails}
 
 The single tail suffices for a $2\times2$ counterexample. To hide many
 independent negative directions at once, we need a simultaneous
@@ -667,7 +868,7 @@ Algebraic independence alone would not give the required valuation bound.
 \subsection{An explicit continuum-sized family}
 
 For an infinite set $A\subseteq\primes$, define
-\begin{equation}\label{eq:Atail}
+\begin{equation}\label{hnd:eq:Atail}
  h_A=\sum_{p\in A}t^{q_p\delta}.
 \end{equation}
 Every such sum is a positive-order real Hahn series. Choose a bijection
@@ -681,15 +882,18 @@ when $b\ne c$.
 We shall only use the following property of this family: among finitely
 many distinct selected sets, each one has infinitely many primes that
 belong to none of the other selected sets. The construction makes the
-family explicit without choosing a transcendence basis.
+family explicit without choosing a transcendence basis. The same
+binary-prefix device, with words coded by integers instead of primes, is
+\lbl{tail:eq:Aalpha} of the tail-spans report
+(Section~\ref{hnd:sec:position}).
 
 \subsection{The fresh-prime separation estimate}
 
-\begin{theorem}[Uniform linear-combination separation]\label{thm:separation}
+\begin{theorem}[Uniform linear-combination separation]\label{hnd:thm:separation}
 Let $A_1,\ldots,A_r$ be infinite pairwise almost-disjoint sets of primes,
 and write $h_j=h_{A_j}$. If $a_0,a_1,\ldots,a_r\in\Pfield$ and
 $(a_1,\ldots,a_r)\ne0$, then
-\begin{equation}\label{eq:separation}
+\begin{equation}\label{hnd:eq:separation}
  v\!\left(a_0+\sum_{j=1}^r h_j a_j\right)
  <\delta+\min_{1\le j\le r}v(a_j).
 \end{equation}
@@ -708,7 +912,7 @@ other selected $A_i$. Consider the coefficient at
 \]
 The term $t^{q_p\delta}a_j$ contributes the nonzero leading coefficient
 of $a_j$. No term of $a_0$ contributes, because
-$\alpha\notin H$ by Lemma~\ref{lem:cyclicintersection}.
+$\alpha\notin H$ by Lemma~\ref{hnd:lem:cyclicintersection}.
 No term $t^{q_q\delta}a_i$ for a different prime $q$ contributes,
 because the cosets $q_p\delta+H$ and $q_q\delta+H$ are distinct.
 The same prime $p$ occurs in none of the other $h_i$.
@@ -730,7 +934,7 @@ Archimedean class from $\delta$.
 
 \subsection{Algebraic independence over the entire probe field}
 
-\begin{theorem}[Independent prime-tail family]\label{thm:independence}
+\begin{theorem}[Independent prime-tail family]\label{hnd:thm:independence}
 For the almost-disjoint family constructed above,
 \[
  \{h_{A_b}:b\in\{0,1\}^{\N}\}
@@ -743,7 +947,7 @@ on its size. The same argument covers the initial size one.
 Suppose $h_1,\ldots,h_{r-1}$ are algebraically independent over
 $\Pfield$, and assume that a nonzero polynomial relation involving also
 $h_r$ exists. After treating the last variable separately, it becomes
-\begin{equation}\label{eq:relation}
+\begin{equation}\label{hnd:eq:relation}
  R(h_r)=0,
  \qquad
  R(X)\in\Pfield(h_1,\ldots,h_{r-1})[X],
@@ -783,7 +987,7 @@ The associated automorphism $T$ fixes all original coefficients, all
 $h_j$ for $j<r$, and every term of $h_r$ except its term at
 $q_p\delta=\delta-\delta/p$.
 For $k=0,\ldots,p-1$,
-\begin{equation}\label{eq:orbit-tail}
+\begin{equation}\label{hnd:eq:orbit-tail}
  T^k(h_r)=h_r+(\zeta^{-k}-1)t^{q_p\delta}.
 \end{equation}
 These are $p$ distinct elements. Since $T$ fixes the coefficients of
@@ -797,16 +1001,22 @@ series supported in every individual finitely generated subgroup.
 The proof uses fresh prime denominators in the \emph{exponents}, rather
 than algebraically independent choices of ordinary coefficients.
 This distinguishes it from the repository's existing tail-span and
-differential-transcendence constructions \cite{repo-map}.
+differential-transcendence constructions \cite{repo-map}
+(\lbl{tail:thm:surreal}; the comparison of bases is in
+Section~\ref{hnd:sec:position}). As \lbl{tail:rem:indexfamily} warns there,
+the restriction to an almost-disjoint family is needed: if $A,B$ are
+infinite prime sets with infinite intersection, neither containing the
+other, then $h_{A\cup B}+h_{A\cap B}=h_A+h_B$ is a nontrivial linear
+relation.
 
-\begin{corollary}\label{cor:trdeg}
+\begin{corollary}\label{hnd:cor:trdeg}
 For $\Gamma=\Q$,
 \[
  \trdeg\bigl(\C((t^\Q))/\mathscr P_\Q\bigr)=2^{\aleph_0}.
 \]
 \end{corollary}
 \begin{proof}
-Theorem~\ref{thm:independence} gives the lower bound. A Hahn series on
+Theorem~\ref{hnd:thm:independence} gives the lower bound. A Hahn series on
 the countable group $\Q$ is in particular a function $\Q\to\C$.
 There are only $|\C|^{\aleph_0}=2^{\aleph_0}$ such functions, giving
 the upper bound.
@@ -816,13 +1026,13 @@ This cardinal conclusion is included to record what the explicit
 construction implies. No novelty is claimed for a generic
 transcendence-degree cardinality phenomenon.
 
-\section{Maximal hidden negative inertia}\label{sec:inertia}
+\section{Maximal hidden negative inertia}\label{hnd:sec:inertia}
 
 We now combine the uniform separation estimate with one finite
 congruence calculation. The separation theorem carries the substantive
 support information; the matrix algebra is elementary.
 
-\begin{theorem}[Hidden-inertia construction]\label{thm:inertia}
+\begin{theorem}[Hidden-inertia construction]\label{hnd:thm:inertia}
 Let $A_1,\ldots,A_r$ be infinite pairwise almost-disjoint prime sets,
 $r\ge1$, and put $h_j=h_{A_j}$, $h=(h_1,\ldots,h_r)^T$,
 $\eps=t^\delta$. The real symmetric matrix
@@ -831,23 +1041,23 @@ $\eps=t^\delta$. The real symmetric matrix
 \]
 is strictly positive on every nonzero vector in $\Pfield^{r+1}$.
 Over $K_\Gamma$, however,
-\begin{equation}\label{eq:inertia}
+\begin{equation}\label{hnd:eq:inertia}
  \In(A_r)=(1,r,0),\qquad \det A_r=(-\eps^2)^r.
 \end{equation}
 Its standard-part matrix is $\diag(1,0,\ldots,0)$.
 \end{theorem}
 \begin{proof}
 For $z=(a_0,y)$ with $y=(a_1,\ldots,a_r)^T$,
-\begin{equation}\label{eq:quadraticidentity}
+\begin{equation}\label{hnd:eq:quadraticidentity}
  z^*A_rz
  =\left|a_0+\sum_{j=1}^r h_ja_j\right|^2
   -\eps^2\sum_{j=1}^r|a_j|^2.
 \end{equation}
 If $y=0$ and $z\ne0$, this equals $|a_0|^2>0$.
 Otherwise set $m_0=\min_jv(a_j)$.
-Theorem~\ref{thm:separation} and \eqref{eq:normvaluation} show that the
-first term in \eqref{eq:quadraticidentity} is positive and has valuation
-strictly less than $2m_0+2\delta$. By \eqref{eq:sum-squares}, the second
+Theorem~\ref{hnd:thm:separation} and \eqref{hnd:eq:normvaluation} show that the
+first term in \eqref{hnd:eq:quadraticidentity} is positive and has valuation
+strictly less than $2m_0+2\delta$. By \eqref{hnd:eq:sum-squares}, the second
 term has exactly that valuation. Hence the leading term of the
 difference is the positive leading term of the first term.
 This proves strict positivity for probe vectors.
@@ -858,10 +1068,10 @@ For the actual inertia, define
  \qquad D=\diag(1,-\eps^2 I_r).
 \]
 A direct multiplication gives
-\begin{equation}\label{eq:congruence}
+\begin{equation}\label{hnd:eq:congruence}
  A_r=T^*DT,\qquad \det T=1.
 \end{equation}
-Thus the inertia and determinant are those in \eqref{eq:inertia}.
+Thus the inertia and determinant are those in \eqref{hnd:eq:inertia}.
 Equivalently, the $r$-dimensional subspace
 \[
  \{(-h^Ty,y):y\in K_\Gamma^r\}
@@ -872,9 +1082,9 @@ Finally every $h_j$ and $\eps$ has positive valuation, giving the stated
 standard part.
 \end{proof}
 
-\begin{corollary}[Smallest example]\label{cor:smallmatrix}
+\begin{corollary}[Smallest example]\label{hnd:cor:smallmatrix}
 With the single all-primes tail $h=h_\delta$,
-\begin{equation}\label{eq:smallmatrix}
+\begin{equation}\label{hnd:eq:smallmatrix}
  A=\begin{pmatrix}1&h\\h&h^2-t^{2\delta}\end{pmatrix}
 \end{equation}
 is strictly positive on $\Pfield^2\setminus\{0\}$ but has determinant
@@ -885,7 +1095,7 @@ For $b\ne0$, the quadratic value at $(a,b)$ is
 \[
  |b|^2\left(|a/b+h|^2-t^{2\delta}\right).
 \]
-Theorem~\ref{thm:barrier} applies to $-a/b\in\Pfield$.
+Theorem~\ref{hnd:thm:barrier} applies to $-a/b\in\Pfield$.
 The remaining statements follow directly from the determinant and
 quadratic identity.
 \end{proof}
@@ -909,7 +1119,7 @@ entries is asserted.
 
 The probe field is algebraically closed, but the matrix entries need
 not lie in it. Already $h\notin\Pfield$ by
-Theorem~\ref{thm:barrier}. A transfer principle for formulas with
+Theorem~\ref{hnd:thm:barrier}. A transfer principle for formulas with
 parameters from a real-closed subfield does not allow parameters outside
 that subfield. There is therefore no conflict with real-closed field
 theory.
@@ -925,10 +1135,10 @@ algorithm operating in the field generated by the entries. It is an
 obstruction to replacing quantification over that field by a particular
 fixed support-restricted collection of test vectors.
 
-\section{Valuation closure and the Levi--Civita case}\label{sec:closure}
+\section{Valuation closure and the Levi--Civita case}\label{hnd:sec:closure}
 
-Let $\mathscr C_\Gamma$ be the closure of $\Pfield$ inside $K_\Gamma$
-for the valuation topology. Explicitly, $a\in\mathscr C_\Gamma$ means
+Let $\overline{\mathscr P}_\Gamma$ be the closure of $\Pfield$ inside $K_\Gamma$
+for the valuation topology. Explicitly, $a\in\overline{\mathscr P}_\Gamma$ means
 that for every $\rho\in\Gamma$ there exists $b\in\Pfield$ with
 $v(a-b)>\rho$. This definition uses neighborhoods, not a presumed
 countable cofinal sequence. The closure is a subfield, since addition,
@@ -936,16 +1146,16 @@ multiplication, and inversion away from zero are continuous in a valued
 field.
 
 \begin{theorem}[The barrier persists through valuation closure]
-\label{thm:closedseparation}
-For the tails in Theorem~\ref{thm:separation}, the estimate
+\label{hnd:thm:closedseparation}
+For the tails in Theorem~\ref{hnd:thm:separation}, the estimate
 \[
  v\!\left(a_0+\sum_{j=1}^r h_ja_j\right)
  <\delta+\min_{1\le j\le r}v(a_j)
 \]
-continues to hold for $a_0,\ldots,a_r\in\mathscr C_\Gamma$, provided
+continues to hold for $a_0,\ldots,a_r\in\overline{\mathscr P}_\Gamma$, provided
 $(a_1,\ldots,a_r)\ne0$.
 Consequently $A_r$ is strictly positive on every nonzero vector over
-$\mathscr C_\Gamma$.
+$\overline{\mathscr P}_\Gamma$.
 \end{theorem}
 \begin{proof}
 Suppose the estimate fails and write $m_0=\min_{j\ge1}v(a_j)$.
@@ -962,8 +1172,8 @@ Since each $v(h_j)>0$,
 \]
 The assumed $v(L_a)\ge m_0+\delta$ therefore implies
 $v(L_b)\ge m_0+\delta$, contrary to
-Theorem~\ref{thm:separation}. The positivity conclusion follows from
-exactly the valuation comparison in Theorem~\ref{thm:inertia}.
+Theorem~\ref{hnd:thm:separation}. The positivity conclusion follows from
+exactly the valuation comparison in Theorem~\ref{hnd:thm:inertia}.
 \end{proof}
 
 \subsection{Identifying the closure for rational exponents}
@@ -979,8 +1189,8 @@ valuation-theoretic setting; the Puiseux-field conventions are discussed
 in \cite{dense-subfields}. We include the elementary closure argument to
 make the exact topology explicit.
 
-\begin{proposition}\label{prop:lc}
-The closure $\mathscr C_\Q$ of $\mathscr P_\Q$ in
+\begin{proposition}\label{hnd:prop:lc}
+The closure $\overline{\mathscr P}_\Q$ of $\mathscr P_\Q$ in
 $\C((t^\Q))$ is precisely the complex Levi--Civita field.
 \end{proposition}
 \begin{proof}
@@ -999,7 +1209,7 @@ series, and the difference has valuation greater than $\rho$, or is
 zero. Therefore $f$ lies in the closure.
 \end{proof}
 
-\begin{corollary}\label{cor:lc}
+\begin{corollary}\label{hnd:cor:lc}
 There are explicit Hermitian matrices over $\C((t^\Q))$ with inertia
 $(1,r,0)$ that are strictly positive on every nonzero vector with
 complex Levi--Civita coordinates.
@@ -1009,11 +1219,12 @@ The coefficients of these matrices are \emph{not} all in the
 Levi--Civita field. In particular, $h_\delta$ has infinitely many
 exponents below $\delta$ when $\delta\in\Q_{>0}$.
 The corollary does not say that a Hermitian matrix defined over the
-Levi--Civita field can be positive there and become indefinite under an
+Levi--Civita field can be strictly positive on all nonzero Levi--Civita
+vectors and become indefinite under an
 ordered extension. It says that Levi--Civita probes are insufficient for
 certain matrices defined in a larger Hahn field.
 
-\section{Density and actual surreal numbers}\label{sec:density}
+\section{Density and actual surreal numbers}\label{hnd:sec:density}
 
 \subsection{The elementary density principle}
 
@@ -1022,7 +1233,7 @@ of generalized series. It is included as an elementary organizing fact,
 not as a new theorem of ordered-field theory.
 
 \begin{proposition}[Quadratic testing characterizes order density]
-\label{prop:density}
+\label{hnd:prop:density}
 Let $E\subseteq F$ be ordered fields. The following conditions are
 equivalent.
 \begin{enumerate}[label=(\roman*)]
@@ -1077,7 +1288,7 @@ that a Hahn field has no proper dense subfields.
 
 If $\Gamma$ is a set-sized ordered additive subgroup of $\No$, the
 normal-form correspondence
-\begin{equation}\label{eq:transport}
+\begin{equation}\label{hnd:eq:transport}
  \sum_{\gamma\in S}c_\gamma t^\gamma
  \longmapsto
  \sum_{\gamma\in S}c_\gamma\omega^{-\gamma}
@@ -1088,26 +1299,26 @@ decreasing Conway growth exponents. The correspondence preserves
 addition, multiplication, conjugation, and the leading-coefficient
 order. These are the standard normal-form operations
 \cite{gonshor}; the repository also emphasizes this orientation issue
-\cite{repo-map}.
+\cite{repo-map} (\repo{NOTATION.md}).
 
 Take $\Gamma=\Q$ and $\delta=1$. Then
-\begin{equation}\label{eq:surrealtail}
+\begin{equation}\label{hnd:eq:surrealtail}
  h=\sum_{p\in\primes}\omega^{-1+1/p}
  =\omega^{-1/2}+\omega^{-2/3}+\omega^{-4/5}
   +\omega^{-6/7}+\cdots
 \end{equation}
 is an actual surreal number. No limiting interpretation is required;
 this is its Conway normal form. The actual surcomplex matrix
-\begin{equation}\label{eq:surrealmatrix}
+\begin{equation}\label{hnd:eq:surrealmatrix}
  \begin{pmatrix}1&h\\h&h^2-\omega^{-2}\end{pmatrix}
 \end{equation}
 has a negative quadratic value at $(-h,1)$ and is strictly positive on
 all nonzero finite-lattice-supported surcomplex probe vectors.
 
 \begin{theorem}[Workspace-independent surreal probe obstruction]
-\label{thm:surreal}
-The positivity conclusion for \eqref{eq:surrealmatrix}, and the
-higher-dimensional construction transported by \eqref{eq:transport},
+\label{hnd:thm:surreal}
+The positivity conclusion for \eqref{hnd:eq:surrealmatrix}, and the
+higher-dimensional construction transported by \eqref{hnd:eq:transport},
 holds for every finite surcomplex vector whose coordinates each have
 Conway support contained in some finitely generated additive subgroup
 of $\No$. The subgroup may depend on the vector and may contain
@@ -1120,7 +1331,7 @@ set-sized ordered abelian group $\Gamma'\subseteq\No$.
 Both the vector and the prime-tail matrix are represented in the Hahn
 workspace for $\Gamma'$, with Hahn exponents opposite to the Conway
 exponents. The probe coordinates lie in $\mathscr P_{\Gamma'}$.
-Theorem~\ref{thm:inertia} applies there and transports back.
+Theorem~\ref{hnd:thm:inertia} applies there and transports back.
 \end{proof}
 
 Thus adding any finitely many new monomial scales to a particular probe
@@ -1135,7 +1346,7 @@ many monomial generators. The character support bound places its roots
 in a finite-lattice workspace. Again this does not include a coordinate
 whose defining parameters already contain the prime tail itself.
 
-\section{The exact two-scale matrix criterion}\label{sec:twoscale}
+\section{The exact two-scale matrix criterion}\label{hnd:sec:twoscale}
 
 We now turn to the second part of the paper. Here $\Gamma$ may be any
 nonzero ordered abelian group; divisibility is unnecessary. Let
@@ -1146,7 +1357,7 @@ arbitrary Hahn coordinates.
 
 \subsection{An isotropic vector of a positive form lies in its kernel}
 
-\begin{lemma}\label{lem:psdkernel}
+\begin{lemma}\label{hnd:lem:psdkernel}
 Let $L$ be an ordered field, let $A=A^*$ over $L[i]$, and assume
 $x^*Ax\ge0$ for all $x$. If $u^*Au=0$, then $Au=0$.
 \end{lemma}
@@ -1163,12 +1374,12 @@ also makes it negative. Both contradict positivity. Hence
 $w^*Au=0$ for every $w$, and the coordinate vectors give $Au=0$.
 \end{proof}
 
-\begin{theorem}[Two-scale matrix positivity]\label{thm:twoscale}
+\begin{theorem}[Two-scale matrix positivity]\label{hnd:thm:twoscale}
 Let $P,Q\in M_d(\C)$ be Hermitian. If $P\succeq0$, let
 $N=\ker P$ and let $C_N$ denote the compression of $Q$ to $N$,
 viewed as an ordinary Hermitian operator on $N$.
 Then
-\begin{equation}\label{eq:twoscalecriterion}
+\begin{equation}\label{hnd:eq:twoscalecriterion}
  P+\eps Q\succeq0
  \quad\Longleftrightarrow\quad
  \begin{cases}
@@ -1179,15 +1390,15 @@ Then
 \end{equation}
 Equivalently, the last two clauses say that the quadratic form of $Q$
 is nonnegative on $N$, and that
-\begin{equation}\label{eq:annihilationcondition}
+\begin{equation}\label{hnd:eq:annihilationcondition}
  u\in N,\quad u^*Qu=0\quad\Longrightarrow\quad Qu=0.
 \end{equation}
 When these conditions hold,
 \begin{align}
  \ker(P+\eps Q)&=(\ker P\cap\ker Q)\otimes_\C K_\Gamma,
- \label{eq:kernel}\\
+ \label{hnd:eq:kernel}\\
  \rank(P+\eps Q)&=\rank P+\rank C_N.
- \label{eq:rank}
+ \label{hnd:eq:rank}
 \end{align}
 \end{theorem}
 \begin{proof}
@@ -1196,7 +1407,7 @@ is negative would give a negative leading coefficient, so $P\succeq0$.
 For ordinary $u\in N$, the value is $\eps u^*Qu$, proving
 $C_N\succeq0$. If $u\in\ker C_N$, then $u^*Qu=0$.
 Its value under $P+\eps Q$ is zero, so
-Lemma~\ref{lem:psdkernel} gives $(P+\eps Q)u=0$.
+Lemma~\ref{hnd:lem:psdkernel} gives $(P+\eps Q)u=0$.
 As $Pu=0$, this means $Qu=0$.
 
 Conversely assume the three clauses. Use an ordinary unitary change of
@@ -1211,7 +1422,7 @@ The matrices $P_R$ and $C_+=\restr{C_N}{N_+}$ are positive definite on
 their respective spaces. By hypothesis $Q$ annihilates $N_0$, so the
 entire matrix is zero on that last direct summand. On $R\oplus N_+$ it
 has the block form
-\begin{equation}\label{eq:activeblock}
+\begin{equation}\label{hnd:eq:activeblock}
  \begin{pmatrix}
  P_R+\eps A&\eps B\\
  \eps B^*&\eps C_+
@@ -1221,7 +1432,7 @@ Let $U=P_R+\eps A$. Every leading principal minor of $U$ has positive
 constant coefficient, so $U$ is positive definite over the ordered
 Hahn field. This is also immediate from an $LDL^*$ decomposition.
 Its inverse has entries rational in $\eps$ and constant term $P_R^{-1}$.
-The Schur complement of $U$ in \eqref{eq:activeblock} is
+The Schur complement of $U$ in \eqref{hnd:eq:activeblock} is
 \[
  \eps\bigl(C_+-\eps B^*U^{-1}B\bigr).
 \]
@@ -1234,8 +1445,8 @@ reduces to its remaining positive block without taking an empty inverse.
 
 The only kernel is therefore $N_0\otimes_\C K_\Gamma$.
 Within $N$, the condition $Qu=0$ is equivalent to $u\in\ker C_N$
-under our hypotheses. This proves \eqref{eq:kernel} and
-\eqref{eq:rank}. All inverses used are rational expressions in $\eps$;
+under our hypotheses. This proves \eqref{hnd:eq:kernel} and
+\eqref{hnd:eq:rank}. All inverses used are rational expressions in $\eps$;
 no sequential convergence assertion is involved.
 \end{proof}
 
@@ -1246,7 +1457,7 @@ new techniques.
 
 \subsection{The two ways a residual direction behaves}
 
-\begin{example}[A coupling that positivity forbids]\label{ex:badcoupling}
+\begin{example}[A coupling that positivity forbids]\label{hnd:ex:badcoupling}
 Take
 \[
  P=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad
@@ -1264,7 +1475,7 @@ if $a\ne0$, its leading value is $|a|^2>0$, and if $a=0$, its value is
 zero. Ordinary scalar vector tests miss the coupling completely.
 \end{example}
 
-\begin{example}[A coupling that positivity allows]\label{ex:goodcoupling}
+\begin{example}[A coupling that positivity allows]\label{hnd:ex:goodcoupling}
 With the same $P$ but
 \[
  Q=\begin{pmatrix}0&1\\1&1\end{pmatrix},
@@ -1280,7 +1491,7 @@ and the coupling out of its residual zero space are relevant.
 \end{example}
 
 \begin{example}[Why more than two scales changes the question]
-\label{ex:thirdscale}
+\label{hnd:ex:thirdscale}
 For ordinary real $c$,
 \[
  B_c=\begin{pmatrix}1&\eps\\\eps&c\eps^2\end{pmatrix}
@@ -1292,13 +1503,13 @@ nonzero has positive leading value, and one with first coordinate zero
 has value $c\eps^2|b|^2$.
 
 The third-scale coefficient can repair, exactly cancel, or fail to repair
-the second-order Schur correction. Therefore Theorem~\ref{thm:twoscale}
+the second-order Schur correction. Therefore Theorem~\ref{hnd:thm:twoscale}
 is not an arbitrary-support matrix criterion in disguise. Its
 annihilation condition is forced because no third-scale coefficient is
 available to repair the coupling.
 \end{example}
 
-\section{A two-scale matrix-valued null-ideal theorem}\label{sec:measure}
+\section{A two-scale matrix-valued null-ideal theorem}\label{hnd:sec:measure}
 
 \subsection{Definitions and the quantifiers}
 
@@ -1314,7 +1525,7 @@ For two such measures, define
 \]
 This is a coefficientwise Hahn-valued matrix measure with two possible
 exponents. We call it \emph{positive} when
-\begin{equation}\label{eq:measurepositive}
+\begin{equation}\label{hnd:eq:measurepositive}
  z^*M(E)z\ge0
  \quad\text{for every }E\in\Sigma
  \text{ and every }z\in K_\Gamma^d.
@@ -1323,15 +1534,16 @@ The vector $z$ may depend on $E$ and may contain infinitesimals.
 The model is coefficientwise countable additivity. Strong Hahn
 summability of all countable families of event masses is not assumed.
 The repository distinguishes these notions, and we retain that
-separation \cite{repo-herglotz,repo-map}.
+separation \cite{repo-herglotz,repo-map}; the distinction is drawn in
+\repo{surreal/hahn-valued-measures-and-probability}.
 
 If $M_0$ is an ordinary positive matrix measure, then for
 $u\in\C^d$
-\begin{equation}\label{eq:scalarnotations}
+\begin{equation}\label{hnd:eq:scalarnotations}
  \mu_u(E)=u^*M_0(E)u
 \end{equation}
 is a finite positive real measure. For $M_1$, set
-\begin{equation}\label{eq:tailnotations}
+\begin{equation}\label{hnd:eq:tailnotations}
  \nu_u(E)=u^*M_1(E)u,
  \qquad \sigma_u(E)=M_1(E)u.
 \end{equation}
@@ -1349,19 +1561,19 @@ variation through finite partitions.
 
 \subsection{The characterization}
 
-\begin{theorem}[Two-scale matrix null ideals]\label{thm:measure}
+\begin{theorem}[Two-scale matrix null ideals]\label{hnd:thm:measure}
 Let $M_0,M_1$ be finite Hermitian matrix-valued measures and
 $\eps=t^\eta$ with $\eta>0$. Then $M_0+\eps M_1$ is positive in the
-sense of \eqref{eq:measurepositive} if and only if all of the following
+sense of \eqref{hnd:eq:measurepositive} if and only if all of the following
 hold:
 \begin{enumerate}[label=(\roman*)]
 \item $M_0$ is an ordinary positive matrix-valued measure.
 \item For every ordinary $u\in\C^d$,
-\begin{equation}\label{eq:scalar-null}
+\begin{equation}\label{hnd:eq:scalar-null}
  \nu_u^-\ll\mu_u.
 \end{equation}
 \item For every ordinary $u\in\C^d$,
-\begin{equation}\label{eq:vector-null}
+\begin{equation}\label{hnd:eq:vector-null}
  |\sigma_u|\ll\mu_u+\nu_u^+.
 \end{equation}
 \end{enumerate}
@@ -1381,20 +1593,20 @@ is also $\mu_u$-null. Positivity gives
  0\le u^*M(B)u=\eps\nu_u(B),
 \]
 so $\nu_u$ restricts to a positive measure on $E$.
-Therefore $\nu_u^-(E)=0$, proving \eqref{eq:scalar-null}.
+Therefore $\nu_u^-(E)=0$, proving \eqref{hnd:eq:scalar-null}.
 
 Next suppose $(\mu_u+\nu_u^+)(E)=0$. By
-\eqref{eq:scalar-null}, $\nu_u^-(E)=0$ as well.
+\eqref{hnd:eq:scalar-null}, $\nu_u^-(E)=0$ as well.
 For every measurable $B\subseteq E$, we consequently have
 \[
  u^*M_0(B)u=0,\qquad u^*M_1(B)u=0.
 \]
 The ordinary matrix $M_0(B)$ is positive, so
-$M_0(B)u=0$ by Lemma~\ref{lem:psdkernel}. The Hahn matrix $M(B)$ is
+$M_0(B)u=0$ by Lemma~\ref{hnd:lem:psdkernel}. The Hahn matrix $M(B)$ is
 positive and has zero quadratic value at $u$, so $M(B)u=0$ too.
 Subtracting yields $\eps M_1(B)u=0$, whence $\sigma_u(B)=0$.
 Thus the vector measure vanishes on every subset of $E$, which means
-$|\sigma_u|(E)=0$. This proves \eqref{eq:vector-null}.
+$|\sigma_u|(E)=0$. This proves \eqref{hnd:eq:vector-null}.
 
 \emph{Sufficiency.}
 Assume (i)--(iii), and fix an event $E$. Put $P=M_0(E)$ and
@@ -1408,7 +1620,7 @@ The compression of $Q$ to $\ker P$ is therefore positive.
 If in addition $u^*Qu=0$, then $\nu_u^+(E)=0$.
 The measure $\mu_u+\nu_u^+$ vanishes on $E$, so (iii) gives
 $|\sigma_u|(E)=0$ and in particular $Qu=\sigma_u(E)=0$.
-The exact hypotheses of Theorem~\ref{thm:twoscale} are now satisfied.
+The exact hypotheses of Theorem~\ref{hnd:thm:twoscale} are now satisfied.
 It follows that $M(E)=P+\eps Q$ is positive on every Hahn vector.
 Since $E$ was arbitrary, $M$ is positive.
 \end{proof}
@@ -1417,10 +1629,10 @@ The theorem is a null-ideal characterization, not a finite test in $u$.
 It quantifies over all ordinary vectors and all measurable null sets.
 Its content is that these ordinary measure-theoretic conditions are
 exactly sufficient to handle the vastly larger family of Hahn-valued
-vectors in \eqref{eq:measurepositive}.
+vectors in \eqref{hnd:eq:measurepositive}.
 
-\begin{corollary}[Eventwise kernel and rank]\label{cor:measurekernel}
-Under the equivalent conditions of Theorem~\ref{thm:measure}, for every
+\begin{corollary}[Eventwise kernel and rank]\label{hnd:cor:measurekernel}
+Under the equivalent conditions of Theorem~\ref{hnd:thm:measure}, for every
 event $E$,
 \[
  \ker M(E)=\bigl(\ker M_0(E)\cap\ker M_1(E)\bigr)
@@ -1432,7 +1644,7 @@ If $C_E$ is the compression of $M_1(E)$ to $\ker M_0(E)$, then
 \]
 \end{corollary}
 \begin{proof}
-Apply the kernel and rank clauses of Theorem~\ref{thm:twoscale} to
+Apply the kernel and rank clauses of Theorem~\ref{hnd:thm:twoscale} to
 each event separately.
 \end{proof}
 
@@ -1442,13 +1654,13 @@ Hahn Hilbert space.
 
 \subsection{Reduction to the known scalar criterion}
 
-\begin{corollary}[Scalar specialization]\label{cor:scalarmeasure}
+\begin{corollary}[Scalar specialization]\label{hnd:cor:scalarmeasure}
 For finite real signed measures $\mu_0,\mu_1$, the coefficientwise
 Hahn measure $\mu_0+\eps\mu_1$ is positive if and only if
 \[
  \mu_0\ge0,\qquad \mu_1^-\ll\mu_0.
 \]
-In dimension one, condition \eqref{eq:vector-null} adds no restriction.
+In dimension one, condition \eqref{hnd:eq:vector-null} adds no restriction.
 \end{corollary}
 \begin{proof}
 For $u\ne0$, $\mu_u=|u|^2\mu_0$,
@@ -1460,16 +1672,21 @@ The case $u=0$ is trivial.
 \end{proof}
 
 This specialization is the scalar result already in the repository
-\cite{repo-herglotz}. The new matrix ingredient is not scalarization
+\cite{repo-herglotz}: it is \lbl{herg:cor:twoscale}, the two-exponent
+case of \lbl{herg:thm:nullideal} $=$ \lbl{meas:thm:nullideal}, and
+\repo{FORMALIZATION.md} records a Lean proof of it over an arbitrary
+measurable space. The Herglotz report states it for regular Borel
+measures on a compact Hausdorff space; the proof above uses neither
+topology nor regularity. The new matrix ingredient is not scalarization
 itself, but the extra vector-variation condition that prevents a
 residual zero direction from coupling to a positive leading direction.
 
 \subsection{Examples showing the role of each condition}
 
 \begin{example}[All scalar null tests pass, but matrix positivity fails]
-\label{ex:measurebad}
+\label{hnd:ex:measurebad}
 Let $\rho$ be any nonzero finite positive measure and use the matrices
-$P,Q$ from Example~\ref{ex:badcoupling}. Set $M_0=P\rho$ and
+$P,Q$ from Example~\ref{hnd:ex:badcoupling}. Set $M_0=P\rho$ and
 $M_1=Q\rho$. For $u=(a,b)$,
 \[
  \mu_u=|a|^2\rho,\qquad
@@ -1489,7 +1706,7 @@ subtlety of infinite measure spaces.
 \end{example}
 
 \begin{example}[An indefinite coefficient is harmless]
-Use instead $Q$ from Example~\ref{ex:goodcoupling} and again put
+Use instead $Q$ from Example~\ref{hnd:ex:goodcoupling} and again put
 $M_0=P\rho$, $M_1=Q\rho$. The measure is positive, because each event
 matrix is a nonnegative ordinary multiple of a positive definite
 Hahn matrix. For $u=(a,b)$ with $a\ne0$, the leading control measure is
@@ -1499,7 +1716,7 @@ Thus the vector condition permits the coupling, even though $Q$ is
 indefinite as an ordinary matrix.
 \end{example}
 
-\begin{example}[No bounded density is necessary]\label{ex:unboundeddensity}
+\begin{example}[No bounded density is necessary]\label{hnd:ex:unboundeddensity}
 On $(0,1]$ with Lebesgue measure, take
 \[
  M_0=I_d\,dx,\qquad
@@ -1519,7 +1736,7 @@ comparison is made separately for each event; no ordinary uniform bound
 on density ratios is needed.
 \end{example}
 
-\section{What has been established, and what remains}\label{sec:scope}
+\section{What has been established, and what remains}\label{hnd:sec:scope}
 
 \subsection{Two distinct hierarchies of probes}
 
@@ -1557,15 +1774,15 @@ ordinary vector tests and all Hahn vector tests.
 
 \subsection{Questions genuinely left by this work}
 
-\begin{question}[More than two measure scales]
+\begin{question}[More than two measure scales]\label{hnd:q:morescales}
 For a finite or transfinite well-ordered family of ordinary Hermitian
 matrix measures $\sum_\gamma t^\gamma M_\gamma$, is there an equally
 intrinsic null-ideal characterization that incorporates the Schur
 corrections generated by off-diagonal coefficients?
 \end{question}
 
-Theorem~\ref{thm:measure} answers this only when there are two scales.
-Example~\ref{ex:thirdscale} explains why simply repeating its
+Theorem~\ref{hnd:thm:measure} answers this only when there are two scales.
+Example~\ref{hnd:ex:thirdscale} explains why simply repeating its
 annihilation condition at each coefficient cannot be correct: later
 coefficients can compensate for earlier off-diagonal effects.
 No answer for arbitrary supports is claimed here.
@@ -1577,7 +1794,7 @@ support invariants bound the degree of approximants to an omitted
 valuation ball?
 \end{question}
 
-Proposition~\ref{prop:density} reduces qualitative quadratic testing to
+Proposition~\ref{hnd:prop:density} reduces qualitative quadratic testing to
 density. The prime-tail construction supplies one exact quantitative
 answer. It does not classify all support families.
 
@@ -1592,7 +1809,7 @@ The present theorem deliberately fixes the ground field $\C(t^\delta)$.
 A general extension-degree complexity theory would require a separate
 cost model and should not be inferred from the primorial formula.
 
-\subsection{Non-claims}
+\subsection{Non-claims}\label{hnd:sec:nonclaims}
 
 No result here gives a new construction of the surreal field, a new
 spectral theorem over real-closed fields, or a general solution to a
@@ -1614,8 +1831,172 @@ that assessment. A future discovery of a prior formulation would change
 the priority claim without changing the validity or usefulness of the
 explicit constructions.
 
+\paragraph{Consolidated ledger.} The source states its limitations where
+they arise. Each is kept in place; the list collects them, with the
+place where each stands. Items~1--24 are the source's; items~25--27 were
+added when the report joined the collection.
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+\item Not refereed and not Lean-verified; no Lean source accompanies the
+report, and Appendix~\ref{hnd:app:checks} gives only a possible
+formalization order (title page, Section~\ref{hnd:sec:intro},
+Appendix~\ref{hnd:app:checks}).
+\item No named published conjecture is claimed settled, and no general
+solution to a published surreal conjecture is given (title page, this
+subsection).
+\item Priority is not certified. The novelty assessment is a research
+judgment from a pinned, targeted comparison; negative searches do not
+establish absence; the repository comparison is not a theorem-equivalence
+check; the Rayner paper and the Gonshor book were not audited line by line
+(Section~\ref{hnd:sec:intro}, Appendix~\ref{hnd:app:audit}).
+\item Background, not contribution: the support-family construction of
+$\Pfield$, diagonal character automorphisms and finite-index character
+arguments, finite Hermitian spectral algebra, the Hahn closedness theorem,
+the positive-support lemma, Schur complements and singular perturbation
+(abstract, Sections~\ref{hnd:sec:hahn}, \ref{hnd:sec:characters}
+and~\ref{hnd:sec:twoscale}).
+\item That a nondense subfield can miss a negative quadratic value is not
+new, Proposition~\ref{hnd:prop:density} is an elementary organizing fact,
+and nothing says that a Hahn field has no proper dense subfield
+(Sections~\ref{hnd:sec:intro} and~\ref{hnd:sec:density}).
+\item ``Hidden'' refers only to vector probes from the named subfield.
+Determinants and principal minors detect $A_r$ at once, and the
+construction is no obstruction to an exact positivity algorithm working
+in the field generated by the entries; there is no undecidability or
+general algorithmic-impossibility claim (Sections~\ref{hnd:sec:intro}
+and~\ref{hnd:sec:inertia}; the delivered README).
+\item Strong summation is not valuation convergence of finite partial sums;
+closures use the valuation topology of one set-sized workspace, not the fine
+topology of $\No$ or $\No[i]$; the surreal corollaries use normal-form
+transport, not fine convergence (Section~\ref{hnd:sec:hahn}, this
+subsection).
+\item Proposition~\ref{hnd:prop:evaluation} concerns formal evaluation at
+positive-order arguments, not every version of surreal exponentiation
+(Section~\ref{hnd:sec:hahn}).
+\item Lemma~\ref{hnd:lem:supportdegree} does not assert that $[B:G]$
+divides $D$.
+\item The primorial law measures field degree over $\C(t^\delta)$ at the
+stated strict precision only: not expression length, running time, or a
+cost over an enlarged ground field; reaching a valuation without crossing
+it need not match the next coefficient (Section~\ref{hnd:sec:barrier},
+Remark~\ref{hnd:rem:degreescope}).
+\item No novelty is claimed for the transcendence-degree cardinality in
+Corollary~\ref{hnd:cor:trdeg}.
+\item The independence is ordinary algebraic independence, not
+differential independence for the Berarducci--Mantova derivation (this
+subsection).
+\item The sharpness statements concern dimension and inertia, not the order
+type of the supports of the entries; no support-order threshold is asserted
+(Section~\ref{hnd:sec:inertia}).
+\item The matrices of Corollary~\ref{hnd:cor:lc} do not have all entries in
+the Levi--Civita field; the corollary does not say that a matrix defined
+over that field can be probe positive there and indefinite in an extension
+(Section~\ref{hnd:sec:closure}).
+\item The surreal transport uses no set containing all surreal numbers and
+no class-indexed summation; the statement about coordinates algebraic over
+surreal monomials excludes coordinates whose defining parameters contain the
+prime tail (Section~\ref{hnd:sec:density}).
+\item Theorem~\ref{hnd:thm:twoscale} is not an arbitrary-support criterion
+in disguise, and Theorem~\ref{hnd:thm:measure} uses exactly two scales and
+coefficientwise countable additivity (strong Hahn summability of event
+masses is not assumed); the arbitrary-support matrix-measure problem is not
+settled (Sections~\ref{hnd:sec:twoscale}--\ref{hnd:sec:scope}).
+\item Theorem~\ref{hnd:thm:measure} is a null-ideal characterization, not a
+finite test in $u$ (Section~\ref{hnd:sec:measure}).
+\item Corollary~\ref{hnd:cor:measurekernel} is eventwise: no common kernel
+for all events and no spectral measure theorem for an infinite-dimensional
+Hahn Hilbert space (Section~\ref{hnd:sec:measure}).
+\item The scalar specialization, Corollary~\ref{hnd:cor:scalarmeasure}, is
+already in the repository (Section~\ref{hnd:sec:measure}).
+\item No integration on the full proper-class surcomplex plane, no positive
+spectral measure representation, no infinite-dimensional Hilbert completion,
+no new construction of the surreal field, and no new spectral theorem over
+real-closed fields (this subsection).
+\item The prime-tail construction does not classify support families, and
+no extension-degree complexity theory is to be inferred from the primorial
+formula (Section~\ref{hnd:sec:scope}).
+\item The finite checks are diagnostics: the exhaustive two-scale test
+covers only real matrices of sizes $1$--$3$ with the stated entries, the
+stabilizer test does not check independence, and no finite test proves a
+statement about all measurable sets, ordinary vectors, Hahn supports or
+surreal workspaces (Appendix~\ref{hnd:app:checks}).
+\item No result is claimed in the multiplier or small-divisor directions of
+the dynamics report, which the source considered and did not pursue
+(Appendix~\ref{hnd:app:audit}; \texttt{source\_audit.md}).
+\item The repository comparison is valid at its pin only; the repository has
+changed since (Appendix~\ref{hnd:app:audit}; the changes that matter are in
+Appendix~\ref{hnd:app:pinned}).
+\item Theorem~\ref{hnd:thm:measure} answers no question posed in the
+Hahn--Herglotz report: the sentence it addresses is a non-claim there, and
+the matrix case with more than two exponents remains open
+(Question~\ref{hnd:q:morescales}; Section~\ref{hnd:sec:position}).
+\item Theorem~\ref{hnd:thm:independence} neither implies nor follows from
+the independence theorems of the tail-spans and bounded-support reports;
+the bases are incomparable (Section~\ref{hnd:sec:position}).
+\item The Lean proof of the scalar two-scale criterion recorded in
+\repo{FORMALIZATION.md} covers no matrix statement and no prime-tail
+statement of this report (Section~\ref{hnd:sec:position}).
+\end{enumerate}
+
 \appendix
-\section{Repository and literature audit}\label{app:audit}
+\section{Provenance, repository audit, and literature}\label{hnd:app:audit}
+
+\subsection{Provenance of this report}\label{hnd:app:provenance}
+
+This report is built from \emph{one} manuscript: the archive
+\texttt{hidden\_negative\_directions}, manuscript~06 of batch~19 of the
+collection, dated 22 September 2026 and pinned to repository commit
+\nolinkurl{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}. It was placed in
+commit \texttt{52c7ab6} as a new report, because it continues themes and
+non-claims of existing reports but answers no question a report names.
+There was no second source; nothing was merged and nothing was selected
+away. Every result, proof, example, question and limitation of the
+manuscript is printed here.
+
+The delivered verification program \repo{code/verify.py}, build script
+\repo{code/build.sh}, recorded outputs \repo{data/verification.json} and
+\repo{data/verification.txt}, the build summary
+\repo{data/build_report.json} (which describes the \emph{delivered} PDF, not
+this one), the dependency pin \repo{data/requirements.txt}, and the audit
+note \repo{source_audit.md} are kept byte-identical. The audit note
+records the source's own audit at its pin; corrections are made here, not
+in that file. The manuscript's article and README were rewritten, and the
+delivered PDF was replaced by a build of this text.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{hnd:}. The source's 80 labels
+are kept, unchanged after the prefix, and nine were added
+(\texttt{hnd:sec:conventions}, \texttt{hnd:sec:position},
+\texttt{hnd:sec:nonclaims}, \texttt{hnd:app:provenance},
+\texttt{hnd:app:pinned}, \texttt{hnd:app:reproduce},
+\texttt{hnd:rem:degreescope}, \texttt{hnd:q:morescales},
+\texttt{hnd:app:files}).
+\item The valuation closure of $\Pfield$, written $\mathscr C_\Gamma$ in the
+source, is $\overline{\mathscr P}_\Gamma$, to avoid the Hahn--Herglotz
+report's $\mathscr C_\Gamma(X)$. The meaning of ``positive'' is fixed once,
+and restricted positivity is always qualified by its probe set
+(Section~\ref{hnd:sec:conventions}); the abstract now says so. Two
+source phrases were qualified accordingly: the non-claim after
+Corollary~\ref{hnd:cor:lc} and the count of positive semidefinite pairs in
+Appendix~\ref{hnd:app:checks}.
+\item Section~\ref{hnd:sec:position} (relations to other reports) and the
+consolidated non-claims ledger in Section~\ref{hnd:sec:nonclaims}, with
+three items added, are new. Short pointers to labels of other reports were
+added where the source cited the repository generically.
+\item Repository statements that were true at the pin but are no longer
+accurate or complete are corrected in Appendix~\ref{hnd:app:pinned},
+keeping the pin as provenance.
+\item Appendix~\ref{hnd:app:checks} names the files as placed and records a
+rerun of the checks.
+\end{enumerate}
+No mathematical statement was changed. Where the edit had to choose: the
+closure symbol (renamed, as above, rather than renaming the other
+report's); whether to call Theorem~\ref{hnd:thm:measure} an answer to the
+Herglotz exclusion (it is called the two-scale case of an excluded
+criterion, since the exclusion is a non-claim, not a question); and the
+title, which is kept, with the directory named
+\texttt{hidden-negative-hermitian-directions} to say what kind of direction
+is hidden.
 
 \subsection{Pinned repository scope}
 
@@ -1653,7 +2034,7 @@ invention nor their absence from the repository.\\[5pt]
 & Contains the scalar null-ideal criterion, two-scale scalar
 absolute-continuity condition, matrix halo normalization, and
 negative-mass examples. Explicitly excludes a matrix-valued null-ideal
-criterion. Theorem~\ref{thm:measure} supplies the two-scale matrix case,
+criterion. Theorem~\ref{hnd:thm:measure} supplies the two-scale matrix case,
 not an arbitrary-support replacement.\\[5pt]
 \path{dynamics-and-normal-forms/README.md}
 & Already contains extensive multiplier and surreal-frequency
@@ -1671,6 +2052,46 @@ The shortened report paths in the table are under
 returned in full by the connector; the conclusions above are confined
 to the returned relevant portions. In particular, this was a targeted
 scope audit, not a repository-wide theorem-equivalence check.
+
+\subsection{Corrections since the pin}\label{hnd:app:pinned}
+
+The subsection above is the source's, as of its pin. Checked against the
+repository for this report:
+\begin{itemize}
+\item \emph{Reader map.} At the pin \repo{README.md} did describe 36
+reports. Since then commit \texttt{52c7ab6} has placed four new reports,
+this one among them.
+\item \emph{Negative searches.} ``Algebraic probe'' occurs nowhere under
+\texttt{docs/} at the pin, as the source found. ``Finite-lattice'' does
+occur at the pin, in an unrelated sense: \lbl{tate:cor:lattice} of
+\repo{surcomplex/hahn-tate-uniformization} is ``A finite-lattice degree
+formula'' for torsion fields over $K_\Gamma$ with $\Gamma\cong\Z^r$, and
+\repo{FORMALIZATION.md} lists it; ``finite lattice'' also names
+\lbl{ent:mv:lem:lattice} of \repo{surcomplex/entire-functions-at-arbitrary-rank}.
+Neither concerns probe fields or positivity, so the source's conclusion
+stands, but its search result was incomplete.
+\item \emph{Herglotz and measures.} The table entry for the Herglotz report
+is accurate; its exclusion is quoted in Section~\ref{hnd:sec:position}.
+The source did not mention that the transfinite scalar criterion is proved
+in \repo{surreal/hahn-valued-measures-and-probability}
+(\lbl{meas:thm:nullideal}) and that the scalar two-scale criterion has a
+Lean proof recorded in \repo{FORMALIZATION.md}; both are stated in
+Sections~\ref{hnd:sec:position} and~\ref{hnd:sec:measure}.
+\item \emph{Tail-spans.} The source cites the reader map for the
+tail-span constructions. The precise relation, including the shared
+binary-prefix device, the incomparable bases and \lbl{tail:rem:indexfamily},
+is in Section~\ref{hnd:sec:position}.
+\item \emph{Generic citations.} The source's citations of the reader map
+for Hahn closedness and for the orientation of normal forms are made
+specific: \lbl{polynomial:prop:workspace}, \lbl{found:sub:positivesupport}
+and \repo{NOTATION.md}.
+\item \emph{Same batch.} \repo{surreal/transcendence-over-bounded-support},
+placed with this report, could not have been seen by the source; its
+relation is in Section~\ref{hnd:sec:position}.
+\end{itemize}
+Between the pin and the placement commit, the spectral-theory,
+Hahn--Herglotz, tail-spans and measures reports received no change of
+substance to the material compared here.
 
 \subsection{Literature positioning}
 
@@ -1698,14 +2119,14 @@ application, and the vector-total-variation formulation of the
 matrix-measure criterion. The elementary density equivalence and the
 support-field construction are intentionally outside that claim.
 
-\section{Finite verification and proof boundaries}\label{app:checks}
+\section{Finite verification and proof boundaries}\label{hnd:app:checks}
 
-The archive contains \texttt{code/verify.py}. It uses exact integer,
+The report directory contains \texttt{code/verify.py}. It uses exact integer,
 rational, and symbolic calculations; it does not substitute a small
 floating-point number for an infinitesimal. Its captured output is in
 \texttt{data/verification.json} and \texttt{data/verification.txt}.
 The recorded run passed all tests: 5946 matrix pairs, of which 1823 were
-positive, and 35100 exact fresh-prime nonmembership comparisons.
+positive semidefinite, and 35100 exact fresh-prime nonmembership comparisons.
 The script checks the following finite statements.
 
 \begin{enumerate}
@@ -1720,7 +2141,7 @@ $1\le m\le60$ and primes at most $97$, with exact rational arithmetic.
 \item Every pair consisting of a diagonal $0$--$1$ matrix $P$ and a real
 symmetric matrix $Q$ with entries in $\{-1,0,1\}$ in dimensions
 $1,2,3$. There are $6+108+5832=5946$ pairs. It compares
-Theorem~\ref{thm:twoscale} with the signs of all principal minors of
+Theorem~\ref{hnd:thm:twoscale} with the signs of all principal minors of
 $P+tQ$, using their first nonzero polynomial coefficient.
 \item The determinant identities in the forbidden-coupling,
 allowed-coupling, and three-scale repair examples.
@@ -1734,6 +2155,34 @@ No finite test here proves a claim about all measurable sets, all
 ordinary vectors, all Hahn supports, or all surreal workspaces.
 Those quantifiers are handled by the written proofs.
 
+\subsection{Files as placed}\label{hnd:app:files}
+
+The delivered files keep their contents and were placed as follows.
+\begin{itemize}
+\item \texttt{code/verify.py}: the program above.
+\item \texttt{code/build.sh}: the source's build script.
+\item \texttt{data/verification.json}, \texttt{data/verification.txt}: the
+source's captured run (Python 3.13.5, SymPy 1.14.0).
+\item \texttt{data/build\_report.json}: the source's summary of its own PDF
+build; it does not describe this text.
+\item \texttt{data/requirements.txt}: the pin \texttt{sympy==1.14.0}; the
+source's README placed it at the top level.
+\end{itemize}
+The program prints to standard output only and never rewrites the files in
+\texttt{data/}. The build script changes to its own directory before
+running \texttt{latexmk} or \texttt{pdflatex} on \texttt{article.tex}; as
+placed under \texttt{code/} it does not find the article. To use it, copy
+the report directory and put the script beside \texttt{article.tex} in the
+copy, or run \texttt{latexmk} directly as in the README.
+
+\subsection{Rerun for this report}\label{hnd:app:reproduce}
+
+On a copy of the directory, under Python 3.14.4 with SymPy 1.14.0, the
+program printed the same five \texttt{PASS} lines and the same counts as
+\texttt{data/verification.txt}; only the Python version string differs.
+Its \texttt{-{}-json} output agrees with \texttt{data/verification.json} in
+every field except the recorded Python version.
+
 \subsection{A possible formalization order}
 
 A future Lean development could begin with the finite congruence and
@@ -1745,7 +2194,7 @@ line. Existing repository support, complexification, and spectral
 components should be reused rather than duplicated.
 
 This is an implementation outline only. No Lean source or claim of
-machine-checked coverage for the new theorems accompanies this archive.
+machine-checked coverage for the new theorems accompanies this report.
 
 \begin{thebibliography}{99}
 \small\raggedright
@@ -1793,21 +2242,21 @@ Association for Symbolic Logic, 2006, 204--226.
 Preprint: \url{https://arxiv.org/abs/1003.5681}.
 
 \bibitem{repo-map}
-V.~Reshetnikov, \repo\ repository,
+V.~Reshetnikov, \repoName\ repository,
 \emph{The surreal and surcomplex reports},
 \path{docs/README.md}, snapshot \pin,
 accessed 22 September 2026.
 \href{https://github.com/VladimirReshetnikov/Surreal/blob/048b72cf7cbfc8ab246e4f73788c10460cb3f6e0/docs/README.md}{Pinned repository reader map}.
 
 \bibitem{repo-spectral}
-\repo\ research collection,
+\repoName\ research collection,
 \emph{Surcomplex Spectral Theory: Singular Values, Infinitesimal Rank,
 Multiscale Stability, Exact Determinantal Ramification, and Hankel
 Square-Class Profiles}, report guide, snapshot \pin.
 \href{https://github.com/VladimirReshetnikov/Surreal/blob/048b72cf7cbfc8ab246e4f73788c10460cb3f6e0/docs/surcomplex/spectral-theory/README.md}{Pinned spectral-theory report guide}.
 
 \bibitem{repo-herglotz}
-\repo\ research collection,
+\repoName\ research collection,
 \emph{Positivity without a Positive Measure: Hahn--Herglotz
 Normalization and Strict Moment Hierarchies in Surcomplex Analysis},
 report guide, snapshot \pin.

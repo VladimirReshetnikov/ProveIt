@@ -58,8 +58,10 @@
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
 \newcommand{\auditcommit}{\texttt{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}}
+\newcommand{\placecommit}{\texttt{52c7ab6}}
 \hypersetup{pdftitle={Bounded-Support Hahn Arithmetic: Cofinal Descent and Maximal Transcendence},pdfauthor={Research draft prepared with ChatGPT},pdfsubject={Surreal and surcomplex numbers; Hahn fields; algebraic independence; cofinality}}
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{0.4in}
@@ -101,7 +103,14 @@ to explicitly identified standard Hahn-field and Conway-normal-form foundations.
 The proposed novelty is not a certified priority claim. This draft is not refereed
 or Lean-verified. The GCD application is explicitly conditional and is not used
 in any transcendence theorem.
+
+\smallskip
+\noindent\textbf{In this collection.} A single-source report, built from one
+manuscript; every label carries the prefix \texttt{bst:}. Its relation to
+the neighbouring reports is Section~\ref{bst:sec:collection}; its provenance is
+Section~\ref{bst:subsec:provenance}.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \begingroup
 \small
 \setlength{\parskip}{0pt}
@@ -110,7 +119,7 @@ in any transcendence theorem.
 \endgroup
 \clearpage
 
-\section{The problem, the results, and their provenance}\label{sec:intro}
+\section{The problem, the results, and their provenance}\label{bst:sec:intro}
 
 A Hahn series can contain infinitely many terms while its exponents remain in
 one bounded interval. Such a series is not a polynomial, and adjoining all
@@ -120,7 +129,7 @@ The question pursued here is what remains genuinely transcendental after
 how that answer changes when the ambient exponent group changes.
 
 Write
-\begin{equation}\label{eq:base}
+\begin{equation}\label{bst:eq:base}
  \BB KG=\{f\in\HH KG:\supp(f)\text{ is bounded above in }G\},
  \qquad \FF KG=\Frac\BB KG.
 \end{equation}
@@ -135,8 +144,8 @@ Here is the theorem package in a form that can be read before its proofs.
 All fields and groups in these statements are sets. Cardinal assertions are
 made in set theory with choice.
 
-\begin{theorem}[Optimal-support independence; proved in Section~\ref{sec:independence}]
-\label{thm:mainintro}
+\begin{theorem}[Optimal-support independence; proved in Section~\ref{bst:sec:independence}]
+\label{bst:thm:mainintro}
 Let $K$ have characteristic zero and $G\ne0$ be an ordered abelian group.
 Set $\kappa=\cof(G)$. There are a strictly increasing cofinal sequence
 $(a_\alpha)_{\alpha<\kappa}$ of positive elements of $G$ and positive integers
@@ -157,8 +166,8 @@ field: they can have the same cardinality. It is the construction of a free
 polynomial algebra over the entire bounded-support fraction field, with
 integer-coefficient witnesses and an optimal support requirement.
 
-\begin{theorem}[Cofinal coefficient--exponent descent; proved in Section~\ref{sec:descent}]
-\label{thm:descentintro}
+\begin{theorem}[Cofinal coefficient--exponent descent; proved in Section~\ref{bst:sec:descent}]
+\label{bst:thm:descentintro}
 Let $K\subseteq L$ be fields and let $0\ne H\subseteq G$ be ordered abelian
 groups. If $H$ is cofinal in $G$, multiplication induces an injection
 \[
@@ -186,7 +195,7 @@ has no order unit. In that case it is the union of the Hahn fields over
 proper convex subgroups. For divisible $G$ and real closed or algebraically
 closed $K$, that union is itself real closed or algebraically closed.
 When an order unit exists, the units are controlled by the highest
-Archimedean quotient; see Section~\ref{sec:rank}.
+Archimedean quotient; see Section~\ref{bst:sec:rank}.
 
 \subsection{What is already known, and what is proposed here}
 
@@ -202,15 +211,19 @@ multiplicativity used only in the unit and GCD discussion.
 The repository audit used the documentation catalogue and the closest
 transcendence report at revision
 \begin{center}\small\auditcommit.\end{center}
-The catalogue contains 36 reports. Its tail-span report \cite{RepoTail}
+At that revision the catalogue listed 36 reports; the collection now has 40
+report directories, this one and three others having been placed together in
+commit \placecommit. Its tail-span report \cite{RepoTail}
 constructs differential independence using independent square classes in
 coefficient extensions. Here the coefficients of the witnesses can all be
 positive integers, the base is a bounded-support fraction field, and the
 mechanism is support separation. These are different base fields and
 different assertions; neither report should be described as automatically
 subsuming the other. The catalogue also contains entire-function and
-cofinality results, but a ring of entire functions is not the ring in
-\eqref{eq:base}.
+cofinality results \cite{RepoEntire}, but a ring of entire functions is not
+the ring in \eqref{bst:eq:base}. Section~\ref{bst:sec:collection} states
+precisely which results of these reports overlap with those here and which
+differ.
 
 The proposed priority claims are deliberately limited. Targeted searches did
 not identify the combined descent theorem or the sharp independent-family
@@ -231,10 +244,34 @@ lemma. It does not use a GCD theorem, the upper-support multiplicativity
 result, any surreal derivation, or analytic convergence. The descent proof
 is coefficientwise and works in arbitrary characteristic. Standard
 Hahn-field closedness and Conway normal form are invoked only where named.
-Appendix~\ref{sec:gcd} proves an implication toward a published GCD/pre-Schreier
+Appendix~\ref{bst:sec:gcd} proves an implication toward a published GCD/pre-Schreier
 problem; it does not supply the missing real-exponent GCD input.
 
-\section{Hahn series and bounded-support algebra}\label{sec:setup}
+\subsection{Provenance of this report}\label{bst:subsec:provenance}
+
+This report is built from one manuscript, \emph{Bounded-Support Hahn
+Arithmetic: cofinal descent, optimal support thresholds, and maximal
+transcendence}, a research draft prepared with ChatGPT and dated
+22 September 2026. It arrived as item~07 of the nineteenth batch of external
+manuscripts and was placed in the collection in commit \placecommit. Its own
+repository audit is pinned to revision \auditcommit\ (Appendix~\ref{bst:sec:audit}).
+The manuscript contributed every theorem, proof, example, appendix and
+non-claim printed here; nothing was merged from another source, so no result
+is printed twice and there was no choice between competing proofs.
+
+The editorial changes made when the report entered the collection are:
+every label received the prefix \texttt{bst:}; the actual surreal witnesses
+of Section~\ref{bst:sec:surreal}, written $\xi_A$ and $\xi_p$ in the manuscript,
+are written $\eta_A$ and $\eta_p$ here, because the tail-span report already
+uses $\xi_A$ for different numbers (Section~\ref{bst:subsec:tail}); the
+terminology conventions of Section~\ref{bst:subsec:terms} and the comparison
+of Section~\ref{bst:sec:collection} were added; and statements about the
+repository that had become stale were corrected, keeping the original pin as
+provenance. The delivered programs and records are kept byte-identical in
+\texttt{code/} and \texttt{data/}; Section~\ref{bst:sec:verification} gives
+the file names. No theorem statement was strengthened or weakened.
+
+\section{Hahn series and bounded-support algebra}\label{bst:sec:setup}
 
 \subsection{Conventions}
 
@@ -266,10 +303,10 @@ For $f\in\HH KG$ and $\delta\in G$, write
  f_{\le\delta}=\sum_{g\le\delta} f_g t^g.
 \]
 A nonzero Hahn support has a least element. Therefore ``bounded above'' in
-\eqref{eq:base} is equivalent to containment in some order interval
+\eqref{bst:eq:base} is equivalent to containment in some order interval
 $[\ell,u]\subseteq G$.
 
-\begin{lemma}[Elementary support bounds]\label{lem:bounds}
+\begin{lemma}[Elementary support bounds]\label{bst:lem:bounds}
 The set $\BB KG$ is a subring of $\HH KG$, contains $K$ and every monomial,
 and is closed under taking arbitrary subseries. If
 $\supp(f)\subseteq[\ell,u]$ and
@@ -290,7 +327,7 @@ subseries assertion. These observations also cover zero by using arbitrary
 bounds for its empty support.
 \end{proof}
 
-\begin{proposition}[Localization and density]\label{prop:localdensity}
+\begin{proposition}[Localization and density]\label{bst:prop:localdensity}
 For any nonzero $G$,
 \[
  \BB KG=t^G K((t^{G^{\le0}})).
@@ -325,7 +362,7 @@ An \emph{order unit} is an element $u>0$ such that for every $g\in G$ some
 positive integer $n$ satisfies $\abs g\le nu$.
 \end{definition}
 
-\begin{lemma}\label{lem:cofinality}
+\begin{lemma}\label{bst:lem:cofinality}
 The cardinal $\kappa=\cof(G)$ is infinite and regular. There is a strictly
 increasing positive cofinal sequence $(g_\alpha)_{\alpha<\kappa}$.
 Every subset of $G$ of cardinality less than $\kappa$ is bounded above.
@@ -346,9 +383,47 @@ For a nonzero subgroup of $\R$, every positive element is an order unit and
 the cofinality is $\aleph_0$. The converse implication from countable
 cofinality to the existence of an order unit is false: a countable ascending
 union of strictly increasing Archimedean scales has no highest scale.
-Section~\ref{sec:surreal} gives concrete examples inside $\No$.
+Section~\ref{bst:sec:surreal} gives concrete examples inside $\No$.
 
-\section{Cofinal coefficient--exponent descent}\label{sec:descent}
+\subsection{Terminology shared with other reports}\label{bst:subsec:terms}
+
+The following conventions fix one meaning for each word and symbol that is
+used differently elsewhere in the collection.
+\begin{enumerate}
+\item \emph{Cofinality.} $\cof(G)$ is the least cardinality of a subset of
+the ordered set $G$ that is unbounded above. This is exactly the invariant
+$\cof(\Gamma)$ of the entire-functions report \cite{RepoEntire}, whose
+definition uses ``every element is at most some member''; for a nonzero
+ordered group, which has no greatest element, the two definitions agree.
+\item \emph{Cofinal.} The adjective is used for a subset or sequence of $G$
+that is unbounded above, and for an ordered subgroup $H\subseteq G$ with the
+same property. It is used once for a set of \emph{indices}: in
+Lemma~\ref{bst:lem:coding} a set of ordinals is cofinal in the initial
+ordinal $\kappa$. The entire-functions report expressly excludes that
+ordinal-index meaning from its own word (its remark \texttt{ent:rem:one-name});
+here it is confined to that lemma and the proofs that cite it.
+\item \emph{Order unit.} The definition above agrees with
+\texttt{ent:def:order-unit}: $\abs g\le nu$ for all $g$ is equivalent to
+$\{mu:m\ge1\}$ being unbounded above. An order unit forces $\cof(G)=\aleph_0$,
+and the converse fails, in both reports.
+\item \emph{Cofinite} is not \emph{cofinal}. The tail-span report's
+cofinite span is an intersection over finite deletions of coefficient
+indices; nothing in this report deletes finitely many indices.
+\item \emph{Bounded.} ``Bounded support'' always means bounded above in the
+named exponent group, as in \eqref{bst:eq:base}, and never bounded above in
+all of $\No$ (Section~\ref{bst:sec:surreal}). It is not a bound on
+coefficients or on valuations, and not the cardinal restriction of a
+$\lambda$-bounded Hahn field.
+\item \emph{Symbols.} $\BB KG$ and $\FF KG$ always carry both the exponent
+group and the coefficient field. The collection's notation guide
+\cite{RepoNotation} writes $F_\Gamma$ for the full real Hahn field
+$\R((t^\Gamma))$, and the tail-span report writes $B$ and $B_0$ for full
+Hahn fields $M((t^\Gamma))$ and $\Q((t^\Q))$. Neither is meant by the
+calligraphic letters here: $\FF KG$ is the fraction field of the
+bounded-support ring, a proper subfield of $\HH KG$ in characteristic zero.
+\end{enumerate}
+
+\section{Cofinal coefficient--exponent descent}\label{bst:sec:descent}
 
 The following result is useful independently of the lacunary constructions.
 It explains why a bounded-support coefficient cannot conceal a new relation
@@ -358,14 +433,14 @@ among series supported on a cofinal subgroup.
 
 Let $K\subseteq L$ be fields, $H\subseteq G$ an ordered subgroup, and
 $r\in G$. Define the shifted coset projection
-\begin{equation}\label{eq:projection}
+\begin{equation}\label{bst:eq:projection}
  \pi_r(f)=\sum_{h\in H}f_{r+h}t^h\in\HH LH.
 \end{equation}
 It is defined for every $f\in\HH LG$: a subset of its support remains well
 ordered, and translation preserves that property. This is not asserted to
 be a ring homomorphism.
 
-\begin{lemma}[Projection identity]\label{lem:projection}
+\begin{lemma}[Projection identity]\label{bst:lem:projection}
 For $z\in\HH LH$ and $b\in\HH LG$,
 \[
  \pi_r(bz)=\pi_r(b)z.
@@ -387,7 +462,7 @@ coefficient to obtain
 \]
 This map can kill support terms but introduces none. In particular it
 preserves boundedness of support. For $z\in\HH KH$ it satisfies
-\begin{equation}\label{eq:lambda}
+\begin{equation}\label{bst:eq:lambda}
  \lambda_*(bz)=\lambda_*(b)z.
 \end{equation}
 The reason is again the finiteness of each convolution coefficient, now
@@ -397,12 +472,12 @@ exists: extend $a$ to a basis and prescribe its value to be $1$.
 
 \subsection{The descent theorem}
 
-\begin{theorem}[Simultaneous descent]\label{thm:descent}
+\begin{theorem}[Simultaneous descent]\label{bst:thm:descent}
 Let $K\subseteq L$ be fields and let $0\ne H\subseteq G$ be cofinal.
 Every finite family of elements of $\HH KH$ linearly independent over
 $\FF KH$ remains linearly independent over $\FF LG$. Equivalently, the
 natural multiplication map
-\begin{equation}\label{eq:tensor}
+\begin{equation}\label{bst:eq:tensor}
  \FF LG\otimes_{\FF KH}\HH KH\longrightarrow\HH LG
 \end{equation}
 is injective.
@@ -411,17 +486,17 @@ is injective.
 Let $z_1,\ldots,z_m\in\HH KH$ be linearly independent over $\FF KH$.
 Suppose there is a nonzero linear relation over $\FF LG$. After multiplying
 by a common nonzero denominator, it becomes
-\begin{equation}\label{eq:linearrel}
+\begin{equation}\label{bst:eq:linearrel}
  \sum_{j=1}^m b_jz_j=0,\qquad b_j\in\BB LG,
 \end{equation}
 with some $b_{j_0}\ne0$. Choose an exponent $r\in\supp(b_{j_0})$ and set
-$a=(b_{j_0})_r\ne0$. Applying $\pi_r$ to \eqref{eq:linearrel} gives
+$a=(b_{j_0})_r\ne0$. Applying $\pi_r$ to \eqref{bst:eq:linearrel} gives
 \[
  \sum_j\pi_r(b_j)z_j=0,
 \]
 where all projected coefficients belong to $\BB LH$. Choose a $K$-linear
 functional $\lambda:L\to K$ with $\lambda(a)=1$. Applying $\lambda_*$ and
-using \eqref{eq:lambda} yields
+using \eqref{bst:eq:lambda} yields
 \[
  \sum_j\lambda_*(\pi_r(b_j))z_j=0.
 \]
@@ -437,8 +512,8 @@ This agrees with the standard definition of linear disjointness
 \cite{StacksLD}.
 \end{proof}
 
-\begin{corollary}[Intersection, relations, and algebraic degree]\label{cor:relations}
-Under the hypotheses of Theorem~\ref{thm:descent}:
+\begin{corollary}[Intersection, relations, and algebraic degree]\label{bst:cor:relations}
+Under the hypotheses of Theorem~\ref{bst:thm:descent}:
 \begin{enumerate}
 \item $\FF LG\cap\HH KH=\FF KH$ inside $\HH LG$.
 \item For a finite tuple $z$ in $\HH KH$, let $I_K(z)$ and $I_L(z)$ be its
@@ -459,7 +534,7 @@ $\FF LG$. The reverse inclusion is immediate.
 
 Let $E=\FF KH$ and $F=\FF LG$. The quotient $E[X]/I_K(z)$ embeds in
 $\HH KH$. Tensoring that inclusion with the $E$-vector space $F$ preserves
-injectivity. By Theorem~\ref{thm:descent}, the resulting algebra still embeds
+injectivity. By Theorem~\ref{bst:thm:descent}, the resulting algebra still embeds
 in $\HH LG$. Its presentation is $F[X]/I_K(z)F[X]$, so its evaluation
 kernel is exactly the asserted ideal. This proves the second assertion and
 then the third. Finally $1,z,\ldots,z^{d-1}$ remain linearly independent,
@@ -475,7 +550,7 @@ every algebraic germ extension is Galois.
 
 \subsection{The ordinary Laurent-series case}
 
-\begin{corollary}[One cofinal scale]\label{cor:onescale}
+\begin{corollary}[One cofinal scale]\label{bst:cor:onescale}
 If $u>0$ is an order unit of $G$ and $K\subseteq L$, then
 $K((t^u))$ and $\FF LG$ are linearly disjoint over $K(t^u)$. In particular
 \[
@@ -485,7 +560,7 @@ $K((t^u))$ and $\FF LG$ are linearly disjoint over $K(t^u)$. In particular
 \begin{proof}
 The subgroup $\Z u$ is cofinal. Its bounded well-ordered subsets are finite,
 so $\BB K{\Z u}=K[t^u,t^{-u}]$ and its fraction field is $K(t^u)$.
-Apply Theorem~\ref{thm:descent}.
+Apply Theorem~\ref{bst:thm:descent}.
 \end{proof}
 
 \begin{example}[An algebraic germ does not become a bounded fraction]
@@ -498,7 +573,7 @@ has degree two over $\FF LG$ for every characteristic-zero extension
 $\Q\subseteq L$ and every $G$ in which $u$ is an order unit.
 To check its degree over $\Q(s)$, observe that $1+s$ is not a rational
 square: in a coprime quotient of polynomials, the multiplicity of the
-factor $s+1$ would be even on a square and odd on $1+s$. Corollary~\ref{cor:relations}
+factor $s+1$ would be even on a square and odd on $1+s$. Corollary~\ref{bst:cor:relations}
 then preserves degree two. Thus it is algebraic but not itself in the
 bounded-support fraction field. In contrast, $(1-s)^{-1}$ is in that
 fraction field, although its support is unbounded.
@@ -508,13 +583,13 @@ fraction field, although its support is unbounded.
 
 If $H$ is not cofinal, the entire group $H$ is bounded above in $G$.
 Consequently
-\begin{equation}\label{eq:collapse}
+\begin{equation}\label{bst:eq:collapse}
  \HH KH\subseteq\BB LG\subseteq\FF LG.
 \end{equation}
 Every old Hahn series becomes a bounded-support coefficient in the enlarged
-workspace. Once Theorem~\ref{thm:independent} has established
+workspace. Once Theorem~\ref{bst:thm:independent} has established
 $\FF KH\ne\HH KH$ in characteristic zero, this proves the converse in
-Theorem~\ref{thm:descentintro}: choose $z$ in that difference. The pair
+Theorem~\ref{bst:thm:descentintro}: choose $z$ in that difference. The pair
 $1,z$ is independent over the smaller base but dependent over the larger
 one. The exceptional subgroup $H=0$ is excluded because its Hahn field and
 fraction field are both just $K$.
@@ -523,7 +598,7 @@ This dichotomy is about the actual embedding of exponent groups. Merely
 saying that both groups are divisible or both have countable cofinality does
 not imply that the embedding is cofinal.
 
-\section{The support-separation mechanism}\label{sec:gaps}
+\section{The support-separation mechanism}\label{bst:sec:gaps}
 
 This section supplies the estimate that upgrades the earlier nonrationality
 obstruction to algebraic independence. It is entirely algebraic. Even when
@@ -532,7 +607,7 @@ the estimate.
 
 \subsection{Separated exponent systems}
 
-\begin{definition}\label{def:skeleton}
+\begin{definition}\label{bst:def:skeleton}
 Let $\kappa$ be an infinite cardinal. A \emph{separated exponent system} in
 $G$ consists of positive elements $a_\alpha,b_\alpha$ for $\alpha<\kappa$
 such that:
@@ -541,7 +616,7 @@ such that:
 $a_\beta\le b_\alpha$ whenever $\beta<\alpha$;
 \item for every positive integer $d$ and every $w\in G$, eventually in
 $\alpha$ one has
-\begin{equation}\label{eq:gaps}
+\begin{equation}\label{bst:eq:gaps}
  a_\alpha>d b_\alpha+w,
  \qquad a_{\alpha+1}>d a_\alpha+w.
 \end{equation}
@@ -550,13 +625,13 @@ Every infinite cardinal is a limit ordinal, so $\alpha+1<\kappa$ for all
 $\alpha<\kappa$.
 \end{definition}
 
-\begin{lemma}[Existence at the exact cofinality]\label{lem:skeleton}
+\begin{lemma}[Existence at the exact cofinality]\label{bst:lem:skeleton}
 Every nonzero ordered abelian group admits a separated exponent system of
 length $\kappa=\cof(G)$.
 \end{lemma}
 \begin{proof}
 Fix a strictly increasing positive cofinal sequence $g_\alpha$ from
-Lemma~\ref{lem:cofinality}.
+Lemma~\ref{bst:lem:cofinality}.
 
 First suppose $\kappa=\aleph_0$, and index by $n\ge0$. Choose $b_n>0$
 strictly exceeding $g_n$ and, when $n>0$, $a_{n-1}$. Set
@@ -574,7 +649,7 @@ increasing cofinal sequence. For fixed $d,w$, eventually $b_\alpha>w$;
 then
 $a_\alpha>(d+1)b_\alpha>d b_\alpha+w$.
 The estimate at $\alpha+1$, and $b_{\alpha+1}>a_\alpha$, give the second
-inequality of \eqref{eq:gaps}.
+inequality of \eqref{bst:eq:gaps}.
 \end{proof}
 
 \begin{example}[Factorial spacing]
@@ -603,9 +678,9 @@ $c(\alpha)=(c_1(\alpha),\ldots,c_m(\alpha))\in K^m$, put
 Zero entries cause no problem: each support is a subset of the well-ordered
 set of $a_\alpha$.
 
-\begin{lemma}[Support-band detection]\label{lem:detection}
+\begin{lemma}[Support-band detection]\label{bst:lem:detection}
 Suppose an index $\alpha$ satisfies
-\begin{equation}\label{eq:twogaps}
+\begin{equation}\label{bst:eq:twogaps}
  a_\alpha>d b_\alpha+(u-\ell),\qquad
  a_{\alpha+1}>d a_\alpha+(u-\ell),
 \end{equation}
@@ -620,38 +695,38 @@ Define the earlier part and the truncation through $\alpha$ by
 Every $A_j$ is supported in $[0,b_\alpha]$ and every $T_j$ in
 $[0,a_\alpha]$. Expanding in an auxiliary \emph{polynomial} variable $Z$,
 write
-\begin{equation}\label{eq:auxpoly}
+\begin{equation}\label{bst:eq:auxpoly}
  P(A_1+c_1(\alpha)Z,\ldots,A_m+c_m(\alpha)Z)
    =\sum_{k=0}^d Q_k Z^k.
 \end{equation}
 The coefficient of $Z^d$ is exactly $P_d(c(\alpha))$, so $Q_d\ne0$.
 Every other coefficient is a finite sum of a $p_\nu$, a scalar, and at most
-$d$ factors chosen from the $A_j$. Lemma~\ref{lem:bounds} therefore gives
+$d$ factors chosen from the $A_j$. Lemma~\ref{bst:lem:bounds} therefore gives
 \[
  \supp(Q_k)\subseteq[\ell,u+d b_\alpha]\qquad(0\le k\le d).
 \]
 After substituting $Z=t^{a_\alpha}$, these supports lie in the bands
-\begin{equation}\label{eq:bands}
+\begin{equation}\label{bst:eq:bands}
  [\ell+k a_\alpha,\ u+d b_\alpha+k a_\alpha].
 \end{equation}
-The first inequality in \eqref{eq:twogaps} says that successive bands are
+The first inequality in \eqref{bst:eq:twogaps} says that successive bands are
 strictly disjoint. Since the last band has a nonzero contribution,
 $P(T_1,\ldots,T_m)\ne0$.
 
 A direct bound using the original polynomial and the supports of $T_j$
 shows that
-\begin{equation}\label{eq:truncbound}
+\begin{equation}\label{bst:eq:truncbound}
  \supp(P(T))\subseteq[\ell,u+d a_\alpha].
 \end{equation}
 Meanwhile every tail $Y_j-T_j$ is either zero or has valuation at least
 $a_{\alpha+1}$. Expand each difference $Y^\nu-T^\nu$ as a sum of products
 containing at least one such tail. All other series factors have
 nonnegative valuation. Thus
-\begin{equation}\label{eq:tailbound}
+\begin{equation}\label{bst:eq:tailbound}
  v(P(Y)-P(T))\ge\ell+a_{\alpha+1}.
 \end{equation}
-By the second inequality in \eqref{eq:twogaps}, this lower bound is strictly
-above the upper bound in \eqref{eq:truncbound}. The nonzero bounded-support
+By the second inequality in \eqref{bst:eq:twogaps}, this lower bound is strictly
+above the upper bound in \eqref{bst:eq:truncbound}. The nonzero bounded-support
 series $P(T)$ cannot be canceled by the tail. Hence $P(Y)\ne0$.
 \end{proof}
 
@@ -663,7 +738,7 @@ to a numerical limit. All polynomial expansions are finite, and each
 coefficientwise product is a Hahn convolution.
 \end{remark}
 
-\begin{corollary}[A one-series version]\label{cor:onegap}
+\begin{corollary}[A one-series version]\label{bst:cor:onegap}
 Let $(a_n)$ be positive and strictly increasing, and suppose that for every
 $d\ge1$ and $w\in G$, eventually $a_{n+1}>d a_n+w$. If every $c_n\in K$
 is nonzero, then $Y=\sum_n c_nt^{a_n}$ is transcendental over $\FF KG$.
@@ -671,7 +746,7 @@ is nonzero, then $Y=\sum_n c_nt^{a_n}$ is transcendental over $\FF KG$.
 \begin{proof}
 For a putative relation clear denominators to obtain a nonzero polynomial
 $P\in\BB KG[X]$. The case of constant $P$ is impossible. The same tail
-estimate as \eqref{eq:tailbound} implies $P(T_n)=0$ for every sufficiently
+estimate as \eqref{bst:eq:tailbound} implies $P(T_n)=0$ for every sufficiently
 large $n$, since otherwise its bounded support could not be canceled.
 Here $T_n$ is the finite truncation through $n$, supported at most at $a_n$.
 These truncations are pairwise distinct, whereas a nonzero polynomial over
@@ -684,7 +759,7 @@ chosen coefficient vectors. The next section supplies exactly that
 certificate, without any algebraic independence assumption on the
 coefficients themselves.
 
-\section{Independent coefficient codes and the sharp theorem}\label{sec:independence}
+\section{Independent coefficient codes and the sharp theorem}\label{bst:sec:independence}
 
 \subsection{A finite-pattern coding lemma}
 
@@ -693,7 +768,7 @@ argument. Its role is to realize any prescribed finite tuple of positive
 integers at cofinally many positions. It is not being claimed as a new
 set-theoretic principle.
 
-\begin{lemma}[Cofinal finite-pattern realization]\label{lem:coding}
+\begin{lemma}[Cofinal finite-pattern realization]\label{bst:lem:coding}
 For any infinite cardinal $\kappa$, there are functions
 \[
  c_A:\kappa\longrightarrow\N_{>0}\qquad(A\subseteq\kappa)
@@ -716,7 +791,7 @@ $|D_\kappa|=\kappa$. Fix a bijection
  \quad\text{from }\kappa\text{ to }D_\kappa
 \]
 and set
-\begin{equation}\label{eq:code}
+\begin{equation}\label{bst:eq:code}
  c_A(\alpha)=h_\alpha(A\cap s_\alpha).
 \end{equation}
 For each pair $A_j\ne A_k$, choose a point in their symmetric difference.
@@ -729,7 +804,7 @@ ordinal $\kappa$ has cardinality smaller than $\kappa$, so the realizing
 indices are cofinal.
 \end{proof}
 
-\begin{lemma}[Integer grids detect polynomials]\label{lem:grid}
+\begin{lemma}[Integer grids detect polynomials]\label{bst:lem:grid}
 Let $E$ have characteristic zero. A nonzero polynomial
 $Q\in E[X_1,\ldots,X_m]$ is nonzero at some point of $\N_{>0}^m$.
 More precisely, if each variable has degree at most $d$, any product of
@@ -747,17 +822,17 @@ The positive integers are distinct in a characteristic-zero field.
 
 \subsection{Independence over all bounded-support fractions}
 
-\begin{theorem}[The sharp support theorem]\label{thm:independent}
+\begin{theorem}[The sharp support theorem]\label{bst:thm:independent}
 Let $K$ have characteristic zero and let $0\ne G$ be an ordered abelian
 group. Put $\kappa=\cof(G)$. Choose a separated exponent system as in
-Lemma~\ref{lem:skeleton} and a coefficient code as in Lemma~\ref{lem:coding}.
+Lemma~\ref{bst:lem:skeleton} and a coefficient code as in Lemma~\ref{bst:lem:coding}.
 Then
-\begin{equation}\label{eq:mainfamily}
+\begin{equation}\label{bst:eq:mainfamily}
  Y_A=\sum_{\alpha<\kappa}c_A(\alpha)t^{a_\alpha}
  \qquad(A\subseteq\kappa)
 \end{equation}
 are algebraically independent over $\FF KG$. Consequently
-\begin{equation}\label{eq:lowertrdeg}
+\begin{equation}\label{bst:eq:lowertrdeg}
  \trdeg_{\FF KG}\HH KG\ \ge\ 2^\kappa.
 \end{equation}
 Every member has positive integer coefficients and exactly the common
@@ -771,11 +846,11 @@ is already nonzero. Otherwise let its degree be $d\ge1$ and choose common
 coefficient support bounds $[\ell,u]$.
 
 Its top homogeneous part $P_d$ is a nonzero polynomial over the field
-$\HH KG$. By Lemma~\ref{lem:grid}, there is a tuple of positive integers
-$q=(q_1,\ldots,q_m)$ such that $P_d(q)\ne0$. Lemma~\ref{lem:coding}
+$\HH KG$. By Lemma~\ref{bst:lem:grid}, there is a tuple of positive integers
+$q=(q_1,\ldots,q_m)$ such that $P_d(q)\ne0$. Lemma~\ref{bst:lem:coding}
 realizes this exact tuple at cofinally many indices $\alpha$. The gap
-inequalities \eqref{eq:twogaps} hold at every sufficiently large index.
-Choose a realizing index after that threshold. Lemma~\ref{lem:detection}
+inequalities \eqref{bst:eq:twogaps} hold at every sufficiently large index.
+Choose a realizing index after that threshold. Lemma~\ref{bst:lem:detection}
 then gives
 \[
  P(Y_{A_1},\ldots,Y_{A_m})\ne0.
@@ -786,7 +861,7 @@ bound. Finally the coefficients are positive integers, hence nonzero in
 $K$, so none of the designated exponents disappears.
 \end{proof}
 
-\begin{corollary}[Optimal cardinality and order type]\label{cor:optimal}
+\begin{corollary}[Optimal cardinality and order type]\label{bst:cor:optimal}
 Among all $z\in\HH KG$ transcendental over $\FF KG$, the least support
 cardinality is $\cof(G)$ and the least support order type is the initial
 ordinal $\cof(G)$.
@@ -794,7 +869,7 @@ ordinal $\cof(G)$.
 \begin{proof}
 A support of cardinality less than $\kappa=\cof(G)$ is bounded above by
 definition of cofinality, so its series already belongs to $\BB KG$.
-Theorem~\ref{thm:independent} supplies a transcendental series with support
+Theorem~\ref{bst:thm:independent} supplies a transcendental series with support
 of cardinality and order type exactly $\kappa$. An ordinal smaller than
 the initial ordinal $\kappa$ has smaller cardinality, proving the order-type
 assertion as well.
@@ -805,7 +880,7 @@ cofinality. When the cofinality is uncountable, every countable-support
 series is already a coefficient in the base, regardless of how sparse its
 support looks inside a smaller subgroup.
 
-\begin{corollary}[Arbitrary bounded perturbations]\label{cor:perturb}
+\begin{corollary}[Arbitrary bounded perturbations]\label{bst:cor:perturb}
 For any choices $b_A\in\FF KG$ and $u_A\in\FF KG^\times$, the family
 $(u_AY_A+b_A)_{A\subseteq\kappa}$ is algebraically independent over
 $\FF KG$. In particular arbitrary bounded-support changes, or deletion
@@ -818,7 +893,7 @@ over the base field. They therefore send nonzero polynomials to nonzero
 polynomials. A deleted bounded initial part belongs to $\BB KG$.
 \end{proof}
 
-\begin{corollary}[Independent families in every valuation ball]\label{cor:balls}
+\begin{corollary}[Independent families in every valuation ball]\label{bst:cor:balls}
 Every nonempty ball
 \[
  U(f,\delta)=\{z\in\HH KG:v(z-f)>\delta\}
@@ -835,21 +910,21 @@ $a_\beta>\delta$, and define
 Then $v(Z_A-b)>\delta$ and $v(b-f)>\delta$, with the usual convention for
 zero, so every $Z_A$ lies in the ball. Each $Z_A$ differs from $Y_A$ by a
 bounded-support series: the omitted initial part is bounded above by
-$a_\beta$, and $b$ is bounded. Corollary~\ref{cor:perturb} proves their
+$a_\beta$, and $b$ is bounded. Corollary~\ref{bst:cor:perturb} proves their
 independence. The element $b$ itself belongs to the same ball.
 \end{proof}
 
 \begin{remark}[A precise limitation of bounded truncation data]
 No single bounded truncation can determine algebraicity over $\FF KG$.
 The same truncation is shared by a base-field element and by every member
-of a family as in Corollary~\ref{cor:balls}. This is an information-theoretic
+of a family as in Corollary~\ref{bst:cor:balls}. This is an information-theoretic
 statement about those data, not a claim that every representation of Hahn
 series has an undecidable algebraicity problem.
 \end{remark}
 
 \subsection{Exact transcendence degrees}
 
-\begin{corollary}[Cardinality-matched groups]\label{cor:exactcard}
+\begin{corollary}[Cardinality-matched groups]\label{bst:cor:exactcard}
 Suppose $\kappa=\cof(G)=|G|$ and $\abs K\le2^\kappa$, with $K$ of
 characteristic zero. Then
 \[
@@ -857,7 +932,7 @@ characteristic zero. Then
 \]
 \end{corollary}
 \begin{proof}
-The lower bound is Theorem~\ref{thm:independent}. A Hahn series is a function
+The lower bound is Theorem~\ref{bst:thm:independent}. A Hahn series is a function
 from $G$ to $K$, so
 \[
  |\HH KG|\le |K|^{|G|}\le(2^\kappa)^\kappa=2^\kappa.
@@ -866,10 +941,10 @@ The cardinality of a field bounds its transcendence degree, proving the
 upper bound independently of the construction.
 \end{proof}
 
-\begin{corollary}[Every nonzero real-exponent subgroup]\label{cor:realgroup}
+\begin{corollary}[Every nonzero real-exponent subgroup]\label{bst:cor:realgroup}
 Let $0\ne G\subseteq\R$ and let $K$ have characteristic zero and
 $|K|\le\cc=2^{\aleph_0}$. Then
-\begin{equation}\label{eq:realtrdeg}
+\begin{equation}\label{bst:eq:realtrdeg}
  \trdeg_{\FF KG}\HH KG=\cc.
 \end{equation}
 In particular this holds for $K=\Q,\R,\C$ and $G=\Z,\Q,\R$.
@@ -894,7 +969,7 @@ a transcendence basis: maximal cardinality need not mean maximality under
 inclusion.
 \end{remark}
 
-\section{Explicit countable witnesses and examples}\label{sec:examples}
+\section{Explicit countable witnesses and examples}\label{bst:sec:examples}
 
 The coefficient code gives a family of optimal cardinality with integer
 coefficients, but its indexing uses a set-theoretic bijection. It is useful
@@ -902,10 +977,10 @@ to have additional closed-form witnesses.
 
 \subsection{Factorial gaps with exponential coefficients}
 
-\begin{theorem}[Explicit multiplicative-parameter family]\label{thm:explicit}
+\begin{theorem}[Explicit multiplicative-parameter family]\label{bst:thm:explicit}
 Let $u$ be an order unit of $G$ and let $L$ contain $\R$. If
 $q_1,\ldots,q_m>0$ are multiplicatively independent real numbers, then
-\begin{equation}\label{eq:qfamily}
+\begin{equation}\label{bst:eq:qfamily}
  Z_{q_j}=\sum_{n\ge2}q_j^n t^{n!u}\qquad(1\le j\le m)
 \end{equation}
 are algebraically independent over $\FF LG$. Consequently the series
@@ -933,8 +1008,8 @@ with some $r_\nu\ne0$. Divide by the largest $Q_\nu^n$ with nonzero
 coefficient. The quotient tends to that nonzero coefficient, so the scalar
 expression, and hence $P_d(c(n))$, is nonzero for all sufficiently large
 $n$. Only this ordinary finite-dimensional real limit is used, not a Hahn
-limit. The factorial gaps satisfy \eqref{eq:twogaps} for large $n$.
-Lemma~\ref{lem:detection} proves that $P$ does not vanish on the series.
+limit. The factorial gaps satisfy \eqref{bst:eq:twogaps} for large $n$.
+Lemma~\ref{bst:lem:detection} proves that $P$ does not vanish on the series.
 Clear denominators for a polynomial over the fraction field. Finally,
 unique factorization of ordinary integers makes any finite set of distinct
 primes multiplicatively independent.
@@ -942,7 +1017,7 @@ primes multiplicatively independent.
 
 For $L=\C$ the real-linear functional in this proof can simply be an
 appropriate real or imaginary coefficient functional. An alternative proof
-uses Corollary~\ref{cor:onescale} to reduce to ordinary Laurent series over
+uses Corollary~\ref{bst:cor:onescale} to reduce to ordinary Laurent series over
 $\R(t^u)$. The direct support proof also records the exact obstruction to
 cancellation over bounded-support Hahn coefficients.
 
@@ -953,9 +1028,9 @@ For $\kappa=\aleph_0$ one can choose an effective enumeration of all triples
  (s,h,\rho),\qquad s\subseteq\N\text{ finite},\quad
  h:\mathcal P(s)\to\N_{>0},\quad\rho\in\N.
 \]
-Thus for each binary sequence $A\subseteq\N$, formula \eqref{eq:code}
+Thus for each binary sequence $A\subseteq\N$, formula \eqref{bst:eq:code}
 gives an integer coefficient stream. Relabeling its positions by $n\ge2$,
-\begin{equation}\label{eq:integerfactorial}
+\begin{equation}\label{bst:eq:integerfactorial}
  W_A=\sum_{n\ge2}c_A(n)t^{n!u}
 \end{equation}
 is a continuum-sized independent family whenever $u$ is an order unit.
@@ -982,7 +1057,7 @@ Series or setting & Consequence \\
 \midrule
 $\sum_{n\ge0}t^n$, $G=\R$ & Equals $(1-t)^{-1}$ in $\FF{\C}{\R}$, but does not have bounded support. \\
 $\sqrt{1+t}$, $G=\R$ & Algebraic of degree two over $\FF{\C}{\R}$; not a bounded-support fraction. \\
-$\sum_{n\ge2}t^{n!}$, $G=\R$ & Transcendental over $\FF{\C}{\R}$ by Corollary~\ref{cor:onegap}. \\
+$\sum_{n\ge2}t^{n!}$, $G=\R$ & Transcendental over $\FF{\C}{\R}$ by Corollary~\ref{bst:cor:onegap}. \\
 $\sum_{n\ge2}p^n t^{n!}$, $p$ prime & A fully explicit countable independent family over the same base. \\
 $\R\hookrightarrow \R\omega+\R\subset\No$ & Every series with real exponents becomes bounded in the larger exponent group. \\
 $\cof(G)>\aleph_0$ & Every countable-support Hahn series already belongs to $\BB KG$. \\
@@ -994,7 +1069,7 @@ The first three rows show why ``unbounded support'' is not synonymous with
 ``transcendental.'' The final two show why a transcendence assertion must
 name its ambient exponent group and its base field.
 
-\section{Rank structure and the unit group}\label{sec:rank}
+\section{Rank structure and the unit group}\label{bst:sec:rank}
 
 This section concerns the coefficient ring itself. The field criterion is
 proved from the Hahn field construction. The unit classification additionally
@@ -1008,7 +1083,7 @@ For a positive element $a\in G$, define its principal convex subgroup
 \]
 It is proper precisely when $a$ is not an order unit.
 
-\begin{theorem}[Absence of a highest scale]\label{thm:fieldcriterion}
+\begin{theorem}[Absence of a highest scale]\label{bst:thm:fieldcriterion}
 For any field $K$ and nonzero ordered abelian group $G$, the following are
 equivalent:
 \begin{enumerate}
@@ -1043,7 +1118,7 @@ field, so no inverse can belong to $\BB KG$. Thus (3) excludes an order
 unit and implies (1).
 \end{proof}
 
-\begin{corollary}[Closed coefficient fields at unbounded rank]\label{cor:closedbase}
+\begin{corollary}[Closed coefficient fields at unbounded rank]\label{bst:cor:closedbase}
 Suppose $G$ is divisible and has no order unit. If $K$ is real closed, then
 $\BB KG$ is real closed. If $K$ is algebraically closed of characteristic
 zero, then $\BB KG$ is algebraically closed.
@@ -1052,7 +1127,7 @@ zero, then $\BB KG$ is algebraically closed.
 A convex subgroup of a divisible ordered abelian group is divisible: the
 unique $n$th part of an element of the subgroup has no larger absolute
 value, so belongs to the subgroup by convexity. The standard Hahn-field
-closedness criterion makes each $\HH KC$ in Theorem~\ref{thm:fieldcriterion}
+closedness criterion makes each $\HH KC$ in Theorem~\ref{bst:thm:fieldcriterion}
 real closed or algebraically closed, respectively; this is the imported
 criterion recorded in \cite[Fact~2.1.1]{LM24}.
 
@@ -1066,12 +1141,12 @@ Hahn order.
 
 These fields can be proper and dense in the full Hahn field. There is no
 conflict with algebraic closedness: the remaining extension is
-transcendental. Theorem~\ref{thm:independent} measures how large it is.
+transcendental. Theorem~\ref{bst:thm:independent} measures how large it is.
 
 \subsection{Reduction to the highest Archimedean quotient}
 
 Suppose $G$ has an order unit $u$. Define
-\begin{equation}\label{eq:topconvex}
+\begin{equation}\label{bst:eq:topconvex}
  C=\{g\in G:n\abs g<u\text{ for every positive integer }n\}.
 \end{equation}
 The subgroup $C$ is the unique maximal proper convex subgroup. Indeed,
@@ -1079,11 +1154,11 @@ every $g\notin C$ is itself an order unit in absolute value: some multiple
 of $\abs g$ dominates $u$. A convex subgroup containing such a $g$ must
 be all of $G$. It follows that $G/C$ is nonzero Archimedean.
 
-\begin{proposition}[Top-rank presentation]\label{prop:toprank}
+\begin{proposition}[Top-rank presentation]\label{bst:prop:toprank}
 If $G$ is divisible and has an order unit, choose an ordered embedding of
 $H=G/C$ in $\R$ and a $\Q$-linear section of the quotient map. With
 $M=\HH KC$, that choice gives isomorphisms
-\begin{equation}\label{eq:iterated}
+\begin{equation}\label{bst:eq:iterated}
  \HH KG\cong\HH MH,
  \qquad \BB KG\cong\BB MH.
 \end{equation}
@@ -1107,7 +1182,7 @@ $h\in H$, choose $h'>h$. A lift of $h'$ bounds every fiber, regardless of
 its internal $C$ support. Thus boundedness is equivalent on the two sides.
 \end{proof}
 
-\begin{proposition}[Imported rank-one support theorem]\label{prop:supimport}
+\begin{proposition}[Imported rank-one support theorem]\label{bst:prop:supimport}
 If $M$ has characteristic zero and $H\subseteq\R$, then for nonzero
 $f,g\in\BB MH$,
 \[
@@ -1118,11 +1193,11 @@ This is the monomial-localized form of
 \cite[Proposition~3.5.1]{LM24}. It is not reproved or claimed as new here.
 The supremum is taken in $\R$ and need not be an element of $H$.
 
-\begin{corollary}[Units see exactly the highest rank]\label{cor:units}
+\begin{corollary}[Units see exactly the highest rank]\label{bst:cor:units}
 Suppose $K$ has characteristic zero and $G$ is divisible with an order
-unit, and let $C$ be \eqref{eq:topconvex}. A nonzero $f\in\BB KG$ is a
+unit, and let $C$ be \eqref{bst:eq:topconvex}. A nonzero $f\in\BB KG$ is a
 unit if and only if its support lies in one coset of $C$. Equivalently,
-its image in \eqref{eq:iterated} is a single outer monomial with an arbitrary
+its image in \eqref{bst:eq:iterated} is a single outer monomial with an arbitrary
 nonzero coefficient from $\HH KC$. In particular,
 \[
  1+t^g\in\BB KG^\times\quad\Longleftrightarrow\quad g\in C.
@@ -1133,10 +1208,10 @@ For a nonzero rank-one bounded series define
 \[
  w(f)=\sup_{\R}\supp(f)-\min\supp(f)\ge0.
 \]
-Proposition~\ref{prop:supimport} and the usual valuation identity give
+Proposition~\ref{bst:prop:supimport} and the usual valuation identity give
 $w(fg)=w(f)+w(g)$. A unit must have width zero, hence singleton support.
 Conversely every nonzero monomial is a unit in the bounded-support ring.
-Transfer this statement through \eqref{eq:iterated}. For the last claim,
+Transfer this statement through \eqref{bst:eq:iterated}. For the last claim,
 if $g\ne0$ the support is $\{0,g\}$, which lies in one coset precisely
 when $g\in C$. If $g=0$, the element is $2$, a nonzero scalar in
 characteristic zero, and the same conclusion holds.
@@ -1147,13 +1222,13 @@ rank-one width proof should not be repeated in $G$ itself using a guessed
 Dedekind completion: at higher rank such a formula requires additional
 structure and need not have the same meaning.
 
-\section{Actual surreal and surcomplex realizations}\label{sec:surreal}
+\section{Actual surreal and surcomplex realizations}\label{bst:sec:surreal}
 
 \subsection{The normal-form bridge and its scope}
 
 Let $G$ be a set-sized ordered additive subgroup of $\No$. Conway normal
 form supplies the embedding
-\begin{equation}\label{eq:conway}
+\begin{equation}\label{bst:eq:conway}
  \iota_G:\HH{\R}G\longrightarrow\No,
  \qquad \sum_g r_gt^g\longmapsto\sum_g r_g\omega^{-g}.
 \end{equation}
@@ -1164,7 +1239,7 @@ developed in \cite{Gonshor}. This is an imported foundational theorem,
 not an assertion about convergence of real-indexed sums in the fine
 surreal topology.
 
-Applying \eqref{eq:conway} to real and imaginary coefficients gives a field
+Applying \eqref{bst:eq:conway} to real and imaginary coefficients gives a field
 embedding
 \[
  \iota_G^{\C}:\HH{\C}G\longrightarrow\No[i].
@@ -1187,10 +1262,10 @@ Let $\mathscr B_\R$ and $\mathscr B_\C$ require $S$ to be bounded above
 \emph{in $\R$}, and put $\mathscr F_\R=\Frac\mathscr B_\R$ and
 $\mathscr F_\C=\Frac\mathscr B_\C$.
 
-\begin{theorem}[A continuum of independent actual infinitesimals]\label{thm:actualreal}
+\begin{theorem}[A continuum of independent actual infinitesimals]\label{bst:thm:actualreal}
 There is a family of positive infinitesimal surreal numbers
 \[
- \xi_A=\sum_{n\ge2}c_A(n)\omega^{-n!}\qquad(A\subseteq\N),
+ \eta_A=\sum_{n\ge2}c_A(n)\omega^{-n!}\qquad(A\subseteq\N),
 \]
 with positive integer coefficients, algebraically independent even over
 $\mathscr F_\C$. Moreover
@@ -1200,7 +1275,7 @@ $\mathscr F_\C$. Moreover
 \]
 The separate explicitly given family
 \[
- \xi_p=\sum_{n\ge2}p^n\omega^{-n!}\qquad(p\text{ an ordinary prime})
+ \eta_p=\sum_{n\ge2}p^n\omega^{-n!}\qquad(p\text{ an ordinary prime})
 \]
 is also algebraically independent over $\mathscr F_\C$.
 \end{theorem}
@@ -1210,9 +1285,9 @@ complex-coefficient theorem. Its coefficients happen to be positive
 integers, so the witnesses lie in the real subfield. Their leading term
 is a positive real multiple of $\omega^{-2}$; the remaining terms have
 strictly smaller Conway monomials. Thus they are positive infinitesimals.
-The exact degrees follow from Corollary~\ref{cor:realgroup}, and the prime
-family from Theorem~\ref{thm:explicit}, all transported by
-\eqref{eq:conway}.
+The exact degrees follow from Corollary~\ref{bst:cor:realgroup}, and the prime
+family from Theorem~\ref{bst:thm:explicit}, all transported by
+\eqref{bst:eq:conway}.
 \end{proof}
 
 This is not an assertion of transcendence over all surreals or all
@@ -1224,7 +1299,7 @@ set-sized subfields.
 
 Let $\kappa$ be an infinite regular cardinal, regarded as an initial ordinal,
 and form the ordered additive subgroup of actual surreal numbers
-\begin{equation}\label{eq:Gkappa}
+\begin{equation}\label{bst:eq:Gkappa}
  G_\kappa=\bigoplus_{\alpha<\kappa}\Q\,\omega^\alpha.
 \end{equation}
 The direct sum means finite rational linear combinations. Comparison is
@@ -1241,14 +1316,14 @@ complex Hahn fields on this concrete exponent group, interpreted in
 $\No$ and $\No[i]$. Let $\mathscr B_\kappa^{\R}$ and
 $\mathscr B_\kappa^{\C}$ be their bounded-support rings.
 
-\begin{theorem}[Arbitrarily large, explicit-support surreal families]\label{thm:kappa}
+\begin{theorem}[Arbitrarily large, explicit-support surreal families]\label{bst:thm:kappa}
 For every infinite regular cardinal $\kappa$:
 \begin{enumerate}
 \item $\mathscr B_\kappa^{\R}$ is a real closed field and
 $\mathscr B_\kappa^{\C}$ is an algebraically closed field.
 \item There are $2^\kappa$ positive infinitesimal surreal numbers
-\begin{equation}\label{eq:kappaxi}
- \xi_A=\sum_{\alpha<\kappa}
+\begin{equation}\label{bst:eq:kappaxi}
+ \eta_A=\sum_{\alpha<\kappa}
      c_A(\alpha)\,\omega^{-\omega^{\alpha+1}}
      \qquad(A\subseteq\kappa),
 \end{equation}
@@ -1265,7 +1340,7 @@ its corresponding bounded-support base.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-The first assertion is Corollary~\ref{cor:closedbase}. For the second, the
+The first assertion is Corollary~\ref{bst:cor:closedbase}. For the second, the
 concrete choices
 \[
  a_\alpha=\omega^{\alpha+1},\qquad b_\alpha=\omega^\alpha
@@ -1273,22 +1348,22 @@ concrete choices
 \]
 form a separated exponent system in $G_\kappa$. Earlier $a_\beta$ are at
 most $b_\alpha$. For every finite $n$, $a_\alpha>n b_\alpha$, and the
-$b_\alpha$ are cofinal. Thus the two inequalities in \eqref{eq:gaps}
+$b_\alpha$ are cofinal. Thus the two inequalities in \eqref{bst:eq:gaps}
 follow exactly as in the uncountable construction, and also hold when
-$\kappa=\aleph_0$. Apply Theorem~\ref{thm:independent} over $\C$ and then
+$\kappa=\aleph_0$. Apply Theorem~\ref{bst:thm:independent} over $\C$ and then
 the Conway embedding. Since the base ring is already a field, its fraction
 field is itself. The leading term of each number is a positive integer
 multiple of $\omega^{-\omega}$, proving positivity and infinitesimality.
 
 Finally $|G_\kappa|=\cof(G_\kappa)=\kappa$, while
-$|\R|=|\C|=\cc\le2^\kappa$. Corollary~\ref{cor:exactcard} supplies the
+$|\R|=|\C|=\cc\le2^\kappa$. Corollary~\ref{bst:cor:exactcard} supplies the
 upper bounds as well as the equality. Optimality is
-Corollary~\ref{cor:optimal}.
+Corollary~\ref{bst:cor:optimal}.
 \end{proof}
 
 No continuum hypothesis or generalized continuum hypothesis is used. The
 regularity assumption on $\kappa$ in this concrete example is genuine:
-for a singular initial ordinal the direct sum in \eqref{eq:Gkappa} has
+for a singular initial ordinal the direct sum in \eqref{bst:eq:Gkappa} has
 cofinality $\cof(\kappa)$, not $\kappa$. The general theorem still applies
 to that group with its actual cofinality, but it does not give the displayed
 $2^\kappa$ equality by the same argument.
@@ -1302,9 +1377,9 @@ Consider
 Every real number is smaller than $\omega$ in this ordered group, so $H$
 is not cofinal. All real-exponent Hahn series therefore have support
 bounded above in $G$. In particular every witness of
-Theorem~\ref{thm:actualreal} belongs to $\BB{\C}G$, even though it was
+Theorem~\ref{bst:thm:actualreal} belongs to $\BB{\C}G$, even though it was
 transcendental over $\mathscr F_\C$ in the smaller workspace. This is the
-concrete collapse in \eqref{eq:collapse}, not a failure of field embedding.
+concrete collapse in \eqref{bst:eq:collapse}, not a failure of field embedding.
 
 At the full class level every set of surreal exponents is bounded above by
 a surreal number. Consequently the naive class-wide version of
@@ -1318,21 +1393,157 @@ named Hahn workspace. The partial sums in the constructions converge there
 because their exponents are cofinal in that workspace. This is not a
 claim of convergence of a non-eventually-constant set-indexed net in the
 full surreal fine topology. The repository's foundational distinction
-between those topologies must be retained \cite{RepoCatalogue}.
+between those topologies must be retained \cite{RepoCatalogue}; the
+collection's notation guide now tabulates it under ``Topologies and strong
+summation'' \cite{RepoNotation}.
 
-\section{Verification, formalization, and remaining questions}\label{sec:verification}
+\section{Relation to other reports in this collection}\label{bst:sec:collection}
+
+This section was added when the report entered the collection. It compares
+statements only; no theorem of another report is used in any proof above, and
+no theorem here is claimed to follow from, or to imply, one of theirs unless
+this section says so and gives the reason.
+
+\subsection{Tail-spans and differential transcendence}\label{bst:subsec:tail}
+
+The tail-span report \cite{RepoTail} is the collection's other source of
+algebraic independence in Hahn fields. The two reports answer different
+base-field problems.
+
+\emph{Base fields.} Its base is a \emph{full} Hahn field $M((t^\Gamma))$
+over a smaller coefficient field, and its transcendence comes from the
+coefficients: by its coefficient-field criterion
+(\texttt{tail:thm:coefficient}) a series with coefficients in an algebraic
+closure of $M$ is algebraic over $M((t^\Gamma))$ exactly when its
+coefficients generate a finite extension of $M$. Here the base
+$\FF KG$ keeps the coefficient field of the witnesses (and in
+Theorem~\ref{bst:thm:descent} may even enlarge it), and transcendence comes
+from the support. The actual numbers make the difference concrete. With
+$t=\omega^{-1}$, the witnesses $\eta_A=\sum_{n\ge2}c_A(n)t^{n!}$ and
+$\eta_p$ of Theorem~\ref{bst:thm:actualreal} have integer coefficients and
+integer exponents, so they are \emph{elements} of the tail-span base
+$B_0=\Q((t^\Q))$. Conversely $\sqrt2$, or any bounded real-coefficient series
+such as $\sum_{n\ge2}\sqrt{p_n}\,t^{1-1/n}$, lies in $\FF{\R}{\R}$ but not in
+$B_0$. Neither base contains the other, and neither report's independence
+theorem implies the other's. At uncountable cofinality the two criteria
+separate further: if $\cof(G)>\aleph_0$ and $(\gamma_n)$ is a strictly
+increasing sequence in $G$, the series $\sum_n\sqrt{p_n}\,t^{\gamma_n}$ has
+countable support, so it lies in $\BB{\overline\Q\cap\R}{G}$ by
+Lemma~\ref{bst:lem:cofinality}, while its coefficients generate an infinite
+extension of $\Q$, so it is transcendental over $\Q((t^G))$ by
+\texttt{tail:thm:coefficient}.
+
+\emph{What overlaps.} Both reports prove a relative transcendence degree
+$2^{\aleph_0}$ for set-sized Hahn fields with a countably cofinal exponent
+group, with explicit positive infinitesimal surreal witnesses, and both
+obtain the upper bound by the same separate cardinality count rather than
+from the witnesses: the tail-span report for
+$\trdeg_{\Q((t^\Q))}(\overline\Q\cap\R)((t^\Q))$ (\texttt{tail:thm:surreal}),
+this report for $\trdeg_{\FF KG}\HH KG$ with $0\ne G\subseteq\R$ and
+$\abs K\le\cc$ (Corollary~\ref{bst:cor:realgroup}, Theorem~\ref{bst:thm:actualreal}). Both
+state that an independent family of maximal cardinality is not thereby a
+transcendence basis, and both are relative to named set-sized workspaces.
+Both show that enlarging the exponent group along a noncofinal embedding
+changes the answer for the same surreal expansion: its
+\texttt{tail:thm:closure} example embeds $\Q$ in lexicographic $\Q^2$ by
+$q\mapsto(0,q)$, whose image is bounded above by $(1,0)$, and loses
+approximability by algebraic elements; the example $\R\subset\R\omega+\R$ of
+Section~\ref{bst:sec:surreal} makes every old series a bounded-support
+coefficient and so erases transcendence over the bounded base. The
+phenomena differ; the common cause is the noncofinal embedding. Finally,
+both warn that finite or bounded prefix data do not decide algebraicity; the
+tail-span report proves an undecidability result for computable coefficient
+streams (\texttt{tail:prop:undecidable}), while this report proves no
+undecidability statement (the remark after Corollary~\ref{bst:cor:balls}).
+
+\emph{What differs.} The tail-span report proves differential independence
+for the Berarducci--Mantova derivation and for surcomplex analytic
+functions; this report contains no differential or analytic statement. It
+classifies all relations among its sums through the cofinite span
+(\texttt{tail:thm:tail}); this report does not classify relations, but its
+descent theorem transports relation ideals between bases, which has no
+counterpart there. Its index family must be almost disjoint: the family
+$(\xi_A)_{A\subseteq\N_{>0}}$ indexed by all subsets satisfies the linear
+relation $\xi_{A\cup B}+\xi_{A\cap B}=\xi_A+\xi_B$
+(\texttt{tail:rem:indexfamily}). The family $(\eta_A)$ here is indexed by
+all subsets and is independent, because $c_A$ is the finite-pattern code of
+Lemma~\ref{bst:lem:coding}, not an indicator function; this is why the
+witnesses were renamed (Section~\ref{bst:subsec:provenance}). Its
+constructions live at $\Gamma=\Q$; this report works at every cofinality and
+proves that $\cof(G)$ is the exact support threshold over the bounded base.
+
+\subsection{Entire functions at arbitrary rank}\label{bst:subsec:entire}
+
+The entire-functions report \cite{RepoEntire} uses the same invariant,
+$\cof(G)$, and the same order unit (Section~\ref{bst:subsec:terms}), for a
+different object: the ring of strongly entire power series in one variable
+over $\C((t^\Gamma))$, with $\Gamma$ divisible in its main theorems. The
+parallels are these.
+\begin{itemize}
+\item \emph{The same threshold $\aleph_0$.} There, nonpolynomial entire
+series exist exactly when $\cof(\Gamma)=\aleph_0$ (\texttt{ent:cor:cofinality}).
+Here, a transcendental element with countable support exists exactly when
+$\cof(G)=\aleph_0$ (Corollary~\ref{bst:cor:optimal}). Both rest on the fact
+that a countable subset of a group of uncountable cofinality is bounded above.
+\item \emph{The order unit.} There, the order unit separates the second and
+third cases of the cofinality--rank trichotomy (\texttt{ent:thm:main}) and
+decides which restricted series are units (\texttt{ent:thm:units}). Here, it
+decides whether $\BB KG$ is a field (Theorem~\ref{bst:thm:fieldcriterion});
+the obstruction is the geometric series $(1-t^u)^{-1}=\sum_nt^{nu}$, whose
+support is unbounded exactly because $u$ is an order unit.
+\item \emph{Cofinal and noncofinal enlargement.} There, a nonpolynomial
+entire series stays entire over a larger group exactly when the old group is
+cofinal in it (\texttt{ent:thm:main-extension}(b)). Here, the descent map
+\eqref{bst:eq:tensor} is injective exactly when the subgroup is cofinal
+(Theorem~\ref{bst:thm:descentintro}). These are different statements about
+different objects, proved independently; this report assumes no
+divisibility for its descent theorem.
+\item \emph{GCD rings.} The entire ring there is proved to be a GCD domain.
+Appendix~\ref{bst:sec:gcd} concerns the bounded-support Hahn ring, a different
+ring, and remains conditional on \eqref{bst:hyp:gcd}; nothing in the
+entire-functions report supplies that hypothesis.
+\end{itemize}
+
+\subsection{Hidden negative directions}\label{bst:subsec:hidden}
+
+The report on hidden negative directions in surcomplex linear algebra
+\cite{RepoHidden}, placed in the same commit as this one, proves a third
+kind of independence. Its base $\mathscr P_\Gamma$ is the union of the
+fields $\C((t^H))$ over finitely generated subgroups $H\subseteq\Gamma$ (the
+Puiseux field when $\Gamma=\Q$), and its prime-tail series
+$h_A=\sum_{p\in A}t^{(1-1/p)\delta}$ are independent over it by fresh prime
+denominators in the exponents. The two constructions are complementary:
+every $h_A$ has support bounded above by $\delta$, so it lies in the base
+$\BB{\C}{\Gamma}$ of this report, while the witnesses $W_A$ of
+\eqref{bst:eq:integerfactorial} with $u=1$ have integer exponents and lie in
+$\C((t^\Z))\subseteq\mathscr P_\Q$. Neither base contains the other.
+
+\subsection{Foundations and notation}
+
+The distinction between the intrinsic valuation topology of a named Hahn
+workspace and the fine topology of $\No$, used in Section~\ref{bst:sec:surreal},
+is the collection's standing convention \cite{RepoNotation}. The Conway
+normal-form embedding \eqref{bst:eq:conway} is imported as a standard
+theorem here; its formal counterpart in the collection is tracked in
+\texttt{docs/NORMAL\_FORM\_BRIDGE.md} \cite{RepoBridge}.
+
+\section{Verification, formalization, and remaining questions}\label{bst:sec:verification}
 
 \subsection{What was checked computationally}
 
-The accompanying \texttt{verify.py} uses exact rational arithmetic and sparse
+The accompanying \texttt{code/verify.py} uses exact rational arithmetic and sparse
 finite series. It checks the finite convolution identities underlying
 coset projection, coefficient-functional descent, the auxiliary-polynomial
 expansion, support-band separation, and the tail bound. It also checks
 finite-pattern coding, integer-grid detection, factorial-gap inequalities,
 and explicit multiplicative-parameter examples. Its seed, counts, and
-outputs are recorded in \texttt{verification.json}. The delivered run passed
+outputs are recorded in \texttt{data/verification.json}. The delivered run passed
 3,163 exact assertions in twelve groups. This is an assertion count, not a
-count of independently proved theorems.
+count of independently proved theorems. When the report was placed in the
+collection, the unchanged script was rerun on a copy under Python 3.14.4 and
+reproduced the delivered record in every field except the recorded Python
+version (the delivered run used 3.13.5). The countable coefficient code
+itself is \texttt{code/coefficients.py}, which \texttt{verify.py} imports.
 
 These checks are regression tests of the finite mechanisms. They are not
 proofs of the arbitrary-support, transfinite, or cardinal assertions.
@@ -1340,22 +1551,26 @@ In particular, a finite enumeration does not verify that a coding fiber
 has cardinality $\kappa$, and a finite truncation does not verify algebraic
 independence of an infinite family. Those assertions are established by
 the proofs above. The script uses only the Python standard library and
-can be run with
+can be run from the report directory with
 \begin{center}
-\texttt{python verify.py --output verification.json}.
+\texttt{python code/verify.py --output <scratch>/verification-local.json}.
 \end{center}
-The delivered verification record is separate from the PDF build record.
+Its default output is a file \texttt{verification.json} in the current
+directory; an explicit scratch path keeps the delivered record in
+\texttt{data/} unchanged. The delivered verification record is separate from
+the PDF build record \texttt{data/build\_audit.json}, which describes the
+delivered 24-page PDF, not the PDF of this report.
 
 \subsection{A feasible formalization decomposition}
 
 No Lean proof is supplied or claimed. The results nevertheless break into
 clear interfaces, without a need to formalize all surreal numbers first.
 The first interface is Hahn subseries extraction and its module identity
-\eqref{eq:projection}, followed by coefficient-linear maps
-\eqref{eq:lambda}. The second is a bounded-support subring with finite
+\eqref{bst:eq:projection}, followed by coefficient-linear maps
+\eqref{bst:eq:lambda}. The second is a bounded-support subring with finite
 support bounds and an explicit fraction-field embedding. The third is a
 finite multivariable polynomial expansion lemma giving
-\eqref{eq:bands}--\eqref{eq:tailbound}. These are the main algebraic proof
+\eqref{bst:eq:bands}--\eqref{bst:eq:tailbound}. These are the main algebraic proof
 obligations.
 
 Only after those interfaces are complete is it necessary to add the
@@ -1363,8 +1578,11 @@ cofinality construction, finite-pattern coding, and cardinal estimates.
 The actual-surreal consequences are then transported through the
 Conway-normal-form embedding. Such a transport must be linked to the
 repository's exact proved normal-form bridge, not merely to an abstract
-Hahn field with the same informal description. The optional GCD descent
-in Appendix~\ref{sec:gcd} belongs to a separate dependency branch.
+Hahn field with the same informal description. The current state of that
+bridge in the Lean development is recorded in
+\texttt{docs/NORMAL\_FORM\_BRIDGE.md} \cite{RepoBridge}; no statement of this
+report has an entry in the collection's formalization ledger. The optional GCD descent
+in Appendix~\ref{bst:sec:gcd} belongs to a separate dependency branch.
 
 \subsection{Questions left by these theorems}
 
@@ -1392,7 +1610,7 @@ particular, proving a ring to be GCD would not make the huge transcendental
 extension disappear.
 
 \appendix
-\section{Normalized GCD descent and a published question}\label{sec:gcd}
+\section{Normalized GCD descent and a published question}\label{bst:sec:gcd}
 
 This appendix is logically independent of the transcendence theorems. It
 provides a full proof of a conditional reduction rather than importing a
@@ -1402,24 +1620,24 @@ recent claimed result as an established premise.
 
 For a characteristic-zero field $K$, let $\overline K$ be an algebraic
 closure. Consider the hypothesis
-\begin{equation}\tag{GCD$_{\R,\overline K}$}\label{hyp:gcd}
+\begin{equation*}\tag{GCD$_{\R,\overline K}$}\label{bst:hyp:gcd}
  \BB{\overline K}{\R}\text{ is a GCD domain}.
-\end{equation}
+\end{equation*}
 A GCD domain is an integral domain in which every pair has a greatest common
 divisor, understood up to units. The existence of a GCD for a finite
 nonempty family follows by induction. By
-Proposition~\ref{prop:supimport}, the units of the rank-one bounded-support
+Proposition~\ref{bst:prop:supimport}, the units of the rank-one bounded-support
 ring are exactly the nonzero monomials.
 
 For a nonzero bounded series define
-\begin{equation}\label{eq:normalize}
+\begin{equation}\label{bst:eq:normalize}
  N(f)=\lc(f)^{-1}t^{-v(f)}f.
 \end{equation}
 It has least exponent zero and coefficient $1$ there. Two nonzero bounded
 series are associates precisely when their normalizations agree.
 
-\begin{theorem}[Normalized GCD descent]\label{thm:gcddescent}
-Assume \eqref{hyp:gcd}. For every nonzero ordered subgroup $H\subseteq\R$,
+\begin{theorem}[Normalized GCD descent]\label{bst:thm:gcddescent}
+Assume \eqref{bst:hyp:gcd}. For every nonzero ordered subgroup $H\subseteq\R$,
 $\BB KH$ is a GCD domain. More precisely, the normalized GCD in
 $\BB{\overline K}{\R}$ of any finite family from $\BB KH$, not all zero,
 belongs to $\BB KH$ and is a GCD there. No divisibility or completeness
@@ -1428,7 +1646,7 @@ assumption on $H$ is required.
 
 \subsection{Characters separate exponent cosets}
 
-\begin{lemma}\label{lem:characters}
+\begin{lemma}\label{bst:lem:characters}
 Let $A$ be an abelian group and $L$ an algebraically closed field of
 characteristic zero. For every $0\ne a\in A$, there is a character
 $\chi:A\to L^\times$ with $\chi(a)\ne1$.
@@ -1454,7 +1672,7 @@ subgroup can always be extended to a larger subgroup. The maximal
 extension supplied by Zorn's lemma is defined on all of $A$.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:gcddescent}]
+\begin{proof}[Proof of Theorem~\ref{bst:thm:gcddescent}]
 Let $d$ be the normalized ambient GCD of $f_1,\ldots,f_m\in\BB KH$.
 For every character $\chi:\R/H\to\overline K^\times$, define
 \[
@@ -1467,7 +1685,7 @@ $\chi(0+H)=1$. It fixes every $f_j$. Consequently $T_\chi(d)$ is another
 normalized GCD of the same family. Uniqueness of normalization implies
 $T_\chi(d)=d$.
 
-If an exponent $r\notin H$ occurred in $d$, Lemma~\ref{lem:characters}
+If an exponent $r\notin H$ occurred in $d$, Lemma~\ref{bst:lem:characters}
 would supply a character with $\chi(r+H)\ne1$. Its nonzero coefficient
 would then change, contradicting the equality. Hence
 $\supp(d)\subseteq H$.
@@ -1495,11 +1713,11 @@ all-zero family can separately be assigned GCD zero.
 
 L'Innocente and Mantova ask, immediately after their Example~9.1.3, whether
 $\BB KH$ is pre-Schreier for a divisible Archimedean group $H$
-\cite{LM24}. Since a GCD domain is pre-Schreier, Theorem~\ref{thm:gcddescent}
-gives a positive answer \emph{conditional on} \eqref{hyp:gcd}.
+\cite{LM24}. Since a GCD domain is pre-Schreier, Theorem~\ref{bst:thm:gcddescent}
+gives a positive answer \emph{conditional on} \eqref{bst:hyp:gcd}.
 The latter hypothesis also follows if the one-sided ring
 $\overline K((t^{\R^{\le0}}))$ is a GCD domain, since
-Proposition~\ref{prop:localdensity} identifies its monomial localization
+Proposition~\ref{bst:prop:localdensity} identifies its monomial localization
 with $\BB{\overline K}{\R}$, and localization preserves the GCD property.
 These two general commutative-algebra implications are standard; the new
 argument in this appendix is the normalized character descent.
@@ -1508,7 +1726,7 @@ There is a further conditional consequence at arbitrary divisible rank.
 Suppose the real-exponent GCD input holds over the algebraic closure of
 \emph{every} characteristic-zero coefficient field. If $G$ has no order
 unit, its bounded-support ring is already a field. If it has an order
-unit, Proposition~\ref{prop:toprank} writes its bounded ring as
+unit, Proposition~\ref{bst:prop:toprank} writes its bounded ring as
 $\BB MH$ with $H\subseteq\R$ and $M=\HH KC$. Applying the descent theorem
 to this coefficient field proves that $\BB KG$ is GCD. Thus a universal
 rank-one input would settle bounded-support GCD arithmetic at every
@@ -1522,13 +1740,13 @@ advertises a Lean proof that the one-sided real-exponent Hahn ring is GCD
 relevant nonpositive-support definition. The project itself presents its
 work as provisional. This audit read the statement and README but did not
 build or verify the full proof dependency chain or independently validate
-its semantics. Accordingly this article retains \eqref{hyp:gcd} as an
+its semantics. Accordingly this article retains \eqref{bst:hyp:gcd} as an
 explicit hypothesis. It does not claim an independent resolution of
 Conway's refinement conjecture or an unconditional resolution of the
 published bounded-support pre-Schreier question.
 \end{warning}
 
-\section{Detailed audit and dependency ledger}\label{sec:audit}
+\section{Detailed audit and dependency ledger}\label{bst:sec:audit}
 
 \subsection{Novelty candidates versus imported facts}
 
@@ -1542,13 +1760,13 @@ Statement & Status in this draft & Dependency boundary \\
 \midrule
 \endhead
 Cofinal coefficient--exponent descent
-& Proposed contribution; full proof in Theorem~\ref{thm:descent}.
+& Proposed contribution; full proof in Theorem~\ref{bst:thm:descent}.
 & Coset extraction, a coefficient-linear functional, finite convolution. \\
 Exact cofinality converse
-& Proposed companion; Sections~\ref{sec:descent} and \ref{sec:independence}.
+& Proposed companion; Sections~\ref{bst:sec:descent} and \ref{bst:sec:independence}.
 & Noncofinal supports become bounded; properness follows from independence. \\
 $2^{\cof(G)}$ independent family on optimal support
-& Principal proposed contribution; Theorem~\ref{thm:independent}.
+& Principal proposed contribution; Theorem~\ref{bst:thm:independent}.
 & Full support-gap and coding proofs; no GCD input. \\
 Earlier nonrationality/cofinality obstruction
 & Prior result, not claimed new.
@@ -1571,6 +1789,9 @@ Normalized GCD descent
 Lean certification of this article
 & Not claimed.
 & Finite exact tests are not a proof-assistant check. \\
+Comparison with other reports (Section~\ref{bst:sec:collection})
+& Editorial addition at placement; no new theorem.
+& Statements of the cited reports, quoted by label; none is used in the proof of a theorem here. \\
 \bottomrule
 \end{longtable}
 
@@ -1594,6 +1815,23 @@ a guaranteed absence from every historical file. The delivered
 queries and the exact mathematical strengthening over the closest published
 cofinality result.
 
+\subsection{Repository check made when the report was placed}
+
+When the report entered the collection (commit \placecommit), its repository
+statements were rechecked against the local history. Revision \auditcommit\
+exists; its catalogue lists 36 reports, as stated, and the later revision
+\texttt{6e34651fe640} is its successor, concerning Hahn--Hilbert restrictions
+and closed range. A full-text search of the whole tree finds
+\texttt{lacunary} nowhere, at the pin or now. The phrase ``bounded support''
+did occur at the pin, once, in the analytic-geometry report, in an unrelated
+sense (a remark on ``bounded support cuts'' in a fibre of maximal ideals);
+it now occurs also in the report on three duals of Hahn vector spaces, placed
+in the same commit as this one, whose example of a vector-valued Hahn series
+with support bounded above concerns approximation in Hahn vector spaces,
+not a bounded-support ring. Neither occurrence treats the ring \eqref{bst:eq:base}
+or its fraction field. The comparison with the closest reports is
+Section~\ref{bst:sec:collection}.
+
 \subsection{Proof audit: the points most vulnerable to mistakes}
 
 The proofs depend on several distinctions that deserve an explicit final
@@ -1613,7 +1851,7 @@ is exactly what makes their output coefficients bounded in the smaller
 group. For units, upper-support multiplicativity is used only after
 passing to an Archimedean quotient. For concrete surreal examples, the
 monomial map is Conway's $x\mapsto\omega^x$, and the Hahn valuation sign
-is reversed in \eqref{eq:conway}. Finally, a maximal-cardinality independent
+is reversed in \eqref{bst:eq:conway}. Finally, a maximal-cardinality independent
 family is not claimed to be a transcendence basis.
 
 \subsection{What the deliverable establishes}
@@ -1628,7 +1866,7 @@ optional GCD reduction has an additional stated hypothesis and should not
 be promoted into an unconditional open-problem solution by silently
 accepting an unverified external claim.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \raggedright
 \bibitem{LM24}
 Sonia L'Innocente and Vincenzo Mantova,
@@ -1667,7 +1905,33 @@ Hahn fields}, AI-assisted research report in \repo,
 \texttt{docs/surreal/tail-spans-and-differential-transcendence/}.
 Detailed README examined at the same revision as \cite{RepoCatalogue}.
 \href{https://github.com/VladimirReshetnikov/Surreal/blob/048b72cf7cbfc8ab246e4f73788c10460cb3f6e0/docs/surreal/tail-spans-and-differential-transcendence/README.md}{Versioned report overview}.
+Not treated as a refereed source. Labels quoted in
+Section~\ref{bst:sec:collection} were checked against its \texttt{article.tex}
+at commit \placecommit.
+
+\bibitem{RepoEntire}
+\emph{Cofinality, Factorization and Scalar Extension for Entire Hahn
+Functions at Arbitrary Rank}, AI-assisted research report in \repo,
+\texttt{docs/surcomplex/entire-functions-at-arbitrary-rank/}. Labels quoted
+in Section~\ref{bst:sec:collection} were checked at commit \placecommit.
 Not treated as a refereed source.
+
+\bibitem{RepoHidden}
+\emph{Hidden Negative Directions in Surcomplex Linear Algebra}, AI-assisted
+research report in \repo,
+\texttt{docs/surcomplex/hidden-negative-hermitian-directions/}, placed in
+commit \placecommit. Cited here by theorem title (``Independent prime-tail
+family'') and by the definition of its base field $\mathscr P_\Gamma$.
+Not treated as a refereed source.
+
+\bibitem{RepoNotation}
+Notation guide of \repo, \texttt{docs/NOTATION.md}, section ``Topologies and
+strong summation'' and the table ``Scalars, workspaces, and size'', at commit
+\placecommit.
+
+\bibitem{RepoBridge}
+Implementation note \texttt{docs/NORMAL\_FORM\_BRIDGE.md} of \repo, on the
+Lean normal-form bridge, at commit \placecommit.
 
 \bibitem{Abramov}
 Dan Abramov, \emph{A Proof of Conway's Refinement Conjecture},
