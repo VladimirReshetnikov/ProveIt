@@ -14,7 +14,7 @@ Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 174 pages
+article.pdf                        the compiled report, 175 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -129,7 +129,13 @@ ideal and graph. Section 13 now also has a proof review of reconstruction,
 automorphisms and logical consequences. It extends coefficient reconstruction
 to the number-field ideal predicates and the c.e.-set classification to
 all characteristic-zero coefficient fields using finite equation systems.
-The new material in Sections 6 and 10 still needs review.
+The added Gaussian fibers and étale norm arguments in Section 6 now have
+a proof review against sources 07 and 13. Basis parameters are unique,
+and nonzero kernels give proper-class fibers when an ordinary point exists.
+The norm proof spells out separable splitting and coefficient extension;
+it extends to abstract Hahn rings in every characteristic, with concrete
+zero-level, nilpotent and inseparable counterexamples to weaker hypotheses.
+The quartic in Section 10 and the later curve pointers still need review.
 Further passes review all of Section 15: denominator ideals, the
 multiplier theorem, rational-function and curve applications, congruence
 orbits and density. The focusing formula now handles the zero parameter
@@ -157,9 +163,11 @@ The article has 200 standard results (72 theorems, 38 propositions, 42 lemmas,
 48 corollaries), of which 39 are in Section 15 and 57 in Sections 16–18 (6 of them in
 Section 18.6). The
 [ledger](../../FORMALIZATION.md) indexes the standard results of the
-report by `odg:` label. The ring and constant-term package `odg:prop:ring`
-is **Proved** in Lean (its implementation row in the ledger gives the exact
-scope); every other statement is **Pending**.
+report by `odg:` label, including all six results of Section 18.6.
+The ring and constant-term package `odg:prop:ring` is **Proved**, using
+[actual omnific integers](../../../Surreal/Foundations/OmnificIntegers.lean)
+and the [complex support ring](../../../Surreal/Surcomplex/NonnegativeSupportRing.lean).
+Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report
 
@@ -850,7 +858,8 @@ of `Z` they give were not found in the repository, and source 13 says the same
 of its exact fiber formulation; at their pin `71e9606` this was true, but the
 collection has contained the quartic guards (Theorems 10.3, 10.4) and the exact
 fiber theorem (Theorem 6.2) since `be06fc8`. The collection now has this
-report and its sibling, and still no Lean. Descriptions of
+report and its sibling, and commit `f879c1e` constructs the actual omnific
+ring and its constant-term retraction in Lean. Descriptions of
 `docs/NORMAL_FORM_BRIDGE.md`, the `Surreal/Foundations/` workspace modules,
 the surcomplex automorphism report's phase twists, the catalogue entry on
 coefficient recovery by a dilation, and the formalization ledger remain
@@ -881,8 +890,9 @@ quoted correctly its guide's statement that `y² = x³ + ax + b` with `a ≠ 0` 
 outside the method; since `c6359e4` the collection settles that equation
 independently (Corollary 16.9), and C15's proof is printed there once. Its remarks
 that the unimodular Fermat case was already here and that the ledger separates
-source assertions, review and Lean coverage are accurate. There is still no Lean
-declaration about omnific integers.
+source assertions, review and Lean coverage are accurate. Their absence-of-Lean
+statements describe the source pins; the ring package is now formalized,
+as recorded above.
 
 ## What the report does not claim
 

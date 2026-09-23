@@ -3170,6 +3170,107 @@ the audit accepts 13,813 declarations with only `propext`,
 normalized Fejér–Riesz uniqueness and adds actual-field Fourier coefficient
 bounds. It does not change the pending Lean status of the omnific results.
 
+## Gaussian fibers and étale norm proof review
+
+The additions from sources 07 and 13 to Section 6 of the omnific
+Diophantine report have now been compared with the delivered sources.
+The Gaussian fiber proof constructs its parameters coefficientwise on a
+common admissible support and proves uniqueness. The real kernel test
+uses the stacked real and imaginary parts of the matrix. An explicit
+empty-fiber example explains the ordinary-point hypothesis; when that
+hypothesis holds, a nonzero kernel vector gives a proper class of points.
+
+The étale norm proof now explains separable splitting, the invertible
+matrix of algebra maps, the bilinear trace matrix, and coefficient
+extension. It uses the constant intersection of the intermediate ring
+only after showing that each coordinate is constant. Boundary examples
+show why a nonzero level and the étale assumption matter. The abstract
+Hahn-ring argument extends to arbitrary characteristic; a purely
+inseparable quadratic example in characteristic two shows why separable
+splitting is still needed. This extension does not change the coefficient
+fields of the actual omnific rings. Shared notation also corrects the
+detector name to match the maintained `Ex` macro.
+
+All 194 standard statement texts, 405 labels and existing result numbers
+are unchanged. Section 7 onward is unchanged except for the appended
+Stacks bibliography entry. Three-pass pdfLaTeX builds give a clean
+164-page article and 29-page catalogue. Rendered article pages 12,
+28–35 and 164, and catalogue page 9, have been inspected. The independent
+inventory verifies 3,428 results in 58 main texts; all 3,934 cited source
+labels resolve, and local Markdown links pass. Both supplied finite
+verifiers (07 and 13) reproduce their recorded outputs exactly; these
+checks do not prove the general Hahn-series arguments.
+
+The new combined consequences and characteristic extension remain
+**Pending** in Lean. Source 07's quartic in Section 10, the curve
+material and pointers, companions, imported foundations and remaining
+source reconciliation still require review.
+
+## Combined validation with batch 29 and the actual omnific ring
+
+The Gaussian-fiber and norm review was committed in `85887ed`. Merging
+the twenty incoming commits through `751ff27` preserves that work and
+incorporates six expanded manuscripts: logarithmic rigidity, exact
+homological dimensions, elementary-group kernels, convex factors and
+profinite obstructions, compact groups, and quantum/gauge reductions.
+These additions are indexed, but their independent proof review remains
+pending. The reader map and catalogue now describe the written assemblies
+and link the maintained quantum/gauge PDF.
+
+The combined Diophantine article preserves all 200 incoming standard
+statement texts and 416 labels, with no changes to existing result
+numbers. Clean three-pass builds give a 175-page article and 29-page
+catalogue. The independent inventory verifies 3,592 statements in 58 main
+texts. Mapped statements in the changed manuscripts retain their text;
+the ring proposition and its new actual-field implementation were compared
+directly. The formalization route and repository comparisons now replace
+stale claims that no omnific Lean code exists with the exact ring and
+constant-term coverage supplied by `f879c1e`. Historical source claims
+remain identified by their pins.
+
+The source-label audit resolves all 4,126 references, and all 1,501 local
+Markdown destinations pass. Visual inspection covers combined article
+pages 16, 35, 125–126, 146–148 and 175 and catalogue pages 2, 8–10,
+25–26. The article and catalogue logs have no warnings, unresolved
+references or box diagnostics.
+
+`LEAN_NUM_THREADS=2 lake build` passes all 4,380 jobs; the audit accepts
+14,672 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. This validates the merged library, including the incoming
+omnific construction, and does not establish the pending manuscript proofs.
+
+## Placement reconciliation after the second synchronization
+
+The next fetch brought three documentation commits through `0e4dc98`,
+merged as `516bb70`. Placement `21375f8` retires the nine archives from
+`190d301` into two report bases and companions to three existing reports.
+No existing manuscript body or Lean source changed in this merge. The
+4,380-job build and 14,672-declaration audit therefore remain applicable.
+
+The inventory now includes the autonomous-dilation base and the
+critical-point-defects base: 3,650 standard statements in 60 main texts.
+The independent index audit passes, all 4,183 cited labels resolve, and
+all 1,517 local Markdown destinations pass. Their local guides explain the
+installed paths separately from delivered filenames; their proof reviews,
+formalization and remaining companion assembly are pending. The reader
+map, root README and catalogue reflect this placement. The catalogue has
+a clean three-pass 29-page build, with its first page and the new entries
+on pages 25 and 29 inspected. No new manuscript theorem is claimed proved
+by these navigation and build checks.
+
+## Catalogue synchronization before publication
+
+The first push was rejected after `main` advanced to `b5f0bfd`, a
+documentation-only catalogue and README revision. The merge retains its
+expanded report descriptions and root overview, the 60-report inventory,
+and the precise Section 6 review boundary and characteristic distinction.
+The Diophantine article and Lean files do not change. The combined
+catalogue compiles cleanly in three passes to 32 pages; its revised
+Diophantine entry and final entry were inspected on pages 9 and 32.
+The independent 3,650-statement inventory, 4,183 source references and
+1,520 local Markdown destinations pass. The earlier two-thread Lean build
+remains applicable.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

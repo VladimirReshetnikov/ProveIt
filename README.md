@@ -168,6 +168,8 @@ exhibits dense arithmetic fibers with opposite denominator behavior and
 computes the failure of flatness when finer monomial scales are added.
 Its fraction section now has a full manuscript proof review, including
 a correction to the agreement locus of standard part and rational residue.
+The Gaussian-fiber and étale-norm proofs now spell out their support and
+splitting arguments, with boundary examples explaining the hypotheses.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

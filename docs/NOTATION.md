@@ -104,7 +104,7 @@ Gaussian-rational residue, with values in `ℂ` and `ℚ(i)`.
 The polynomial model `𝒫[T] = ℤ + Tℝ[T]` uses a formal variable;
 `𝒫_t` denotes its evaluated image at `0 ≠ t ∈ Π`. The scale-defect
 quotient `Uℝ[U]/Uᵐℝ[U]` has real dimension `m−1` but infinite
-length as a `𝒫[U]`-module for `m ≥ 2`. The class `ℰ(x)` consists
+length as a `𝒫[U]`-module for `m ≥ 2`. The class `Ex(x)` consists
 of exponents `β`; its associated denominators are `ω^β`.
 
 For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
@@ -134,6 +134,16 @@ report is a special result, not a convention for arbitrary tuples.
 Its polynomial-arc variable `T` is formal; evaluation at `t ∈ Π` preserves
 omnific membership, while preservation of eventual positive-real signs
 requires `t > 0`. Choosing `t = ω` also ensures finite supports.
+
+For decomposable equations, the real kernel is the kernel of the stacked
+real and imaginary coefficient matrices over `ℝ`; Gaussian variables use
+the complex kernel. A kernel-basis parametrization is coefficientwise Hahn
+linear algebra, without an assertion of partial-sum convergence. The norm
+`N_{E/K}(ΣeⱼXⱼ)` is a finite determinant polynomial over `K`; it does not
+assume an embedding of `E` into the surreal field. Its trace pairing uses
+ordinary transpose, not conjugate transpose. The arbitrary-characteristic
+norm extension concerns abstract Hahn rings with finite étale coefficient
+algebras; actual omnific and Gaussian omnific rings retain `ℝ` and `ℂ`.
 
 ## Monomials, support orientation, and valuation
 
