@@ -176,9 +176,11 @@ The finite-quotient classification is also proved: every proper ideal
 containing a nonzero ordinary integer is `nOz` for a unique `n ≥ 2`, and
 every nonzero finite quotient is `ℤ/nℤ`. Every homomorphism to a finite ring
 factors uniquely through the constant-term map, so these maps kill the
-entire purely infinite ideal. Higher Diophantine and general set-sized
-quotient results remain pending; source
-review is distinct from checked formalization.
+entire purely infinite ideal. Nonzero monomials therefore prove that the
+omnific ring is not residually finite. Constant extraction is also the
+unique unital homomorphism to `ℤ`, and every omnific endomorphism preserves
+it. Higher Diophantine, completion and general set-sized quotient results
+remain pending; source review is distinct from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
