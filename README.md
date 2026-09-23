@@ -69,8 +69,12 @@ Finite Laurent sums now have a verified polynomial algebraization and the
 algebraically closed field, the cleared polynomial has exactly `2N` nonzero
 roots counted with multiplicity when both endpoint coefficients are nonzero.
 Ordinary-angle values determine all actual surcomplex Fourier coefficients;
-real-valuedness is equivalent to conjugate symmetry. The full strip theorem
-and the general angular-series multiplicity bridge remain pending.
+real-valuedness is equivalent to conjugate symmetry. Every native Laurent
+polynomial now has an exact local angular strong series, even with infinite
+coefficients. Its native series order equals the cleared polynomial root
+multiplicity, so the `2N` bound also counts actual angular multiplicities.
+The global strip exponential and the sine-family sharpness witness remain
+pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
