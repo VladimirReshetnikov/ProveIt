@@ -514,3 +514,7 @@ import Surreal.Surcomplex.CayleyAngularBounds
 import Surreal.Surcomplex.TrigonometricAngularStability
 import Surreal.Surcomplex.TrigonometricPolynomialDerivative
 import Surreal.Surcomplex.TrigonometricRootStability
+import Surreal.Surcomplex.SineSquareExpansion
+import Surreal.Surcomplex.SineSquareStabilityErrors
+import Surreal.Surcomplex.SineSquareLaurent
+import Surreal.Surcomplex.TrigonometricStabilitySharpness
