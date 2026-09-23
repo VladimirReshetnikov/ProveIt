@@ -7,9 +7,9 @@ import Surreal.Surcomplex.CoupledAngularRoots
 
 The finite intersection algebra from `trigonometry:sec:coupled` decomposes
 into local factors of dimension one, two or four, with the stated supports.
-The sum of these dimensions is four on every stratum. Transport of these
-algebraic dimensions through the analytic angular coordinate germs remains
-a separate obligation; no definition here silently identifies the two.
+The sum of these dimensions is four on every stratum.
+`CoupledAngularMultiplicity.lean` proves that the native formal angular
+quotient dimensions agree with these algebraic local-factor dimensions.
 -/
 
 universe u

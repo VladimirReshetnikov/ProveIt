@@ -10,8 +10,8 @@ product of the two native monic quadratic quotients. Its universal property
 represents both equations in every commutative target algebra, retaining
 nilpotents. Its basis and dimension are independent of the parameters.
 The local factors are identified in `CoupledQuadraticSplit.lean` and
-`CoupledQuadraticLocal.lean`; analytic angular multiplicity transport is
-a separate obligation.
+`CoupledQuadraticLocal.lean`; angular multiplicities are computed from the
+formal coordinate quotients in `CoupledAngularMultiplicity.lean`.
 -/
 
 namespace Surreal.FinitePolynomial

@@ -7,8 +7,8 @@ import Surreal.Surcomplex.CoupledAngularFormalCoordinates
 At every actual infinitesimal solution of `trigonometry:eq:coupled`, the
 angular formal quotient is isomorphic to the quotient by two pure variable
 powers. Each power is two precisely on its diagonal collision, otherwise
-one. This transports the entire ideal, including nilpotents. Computing the
-native dimension of this truncated formal algebra is a separate obligation.
+one. This transports the entire ideal, including nilpotents. The native
+dimension is computed in `CoupledAngularMultiplicity.lean`.
 -/
 
 universe u
