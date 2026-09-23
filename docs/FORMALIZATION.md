@@ -528,9 +528,10 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers all 48 main texts
+custom environments are not included. The index covers 48 of the 49 main texts
 present in the repository; two are not named `article.tex`. The reader map
-and the typeset catalogue list all 48. The two reports placed in `7b5f934`
+and the typeset catalogue list all 49; the report of batch 23 (placed in
+`e4f8848`, written in `7af7056`) is not yet indexed here. The two reports placed in `7b5f934`
 and written in `68e2960`, and the five reports that batch extended, are
 indexed from their written sources. The two reports placed in `d4e71b7`
 and written in `3a2d35d`,
