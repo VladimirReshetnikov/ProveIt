@@ -2500,6 +2500,48 @@ obligations. No manuscript or PDF changed in this merge. The combined
 and statement-index checks still pass, and all 1,314 local Markdown
 destinations resolve.
 
+## Omnific definability and induction
+
+The omnific Diophantine proof review now reaches Section 10. Source 01's
+Pell residue table and five-auxiliary guard were compared with source 05's
+four-square definition, constant-term formula and failed induction instance.
+The Pell index and unboundedness claims refer explicitly to ordinary
+integers, and the guard proof supplies an ordinary bound for every witness.
+The divisibility proof now gives the explicit obstruction `k = |ct(j)| + 1`
+when `ct(j) ≠ 0`, and explains why the definition is a single ring-language
+formula rather than an externally indexed infinite conjunction.
+
+The induction discussion specifies the nonnegative domain throughout.
+The order-free remark now supplies a formula in `{0,1,+,·}` whose witnesses
+also lie in the nonnegative semiring; it defines precisely the ordinary
+naturals there. This proves failure of an arithmetic induction instance
+without an extra dependency on formalizing Lagrange's theorem inside Peano
+arithmetic. The open-induction proof spells out why the workspace floor
+stays inside its support group, and why quantifier-free truth, base case,
+successor implication and a proposed counterexample transfer to that
+set-sized workspace. No first-order theorem is applied directly to a proper
+class as if it were a set-sized model.
+
+Imported theorem statements were checked against the
+[AFP three-square entry](https://isa-afp.org/entries/Three_Squares.html), the
+pinned Mathlib `Nat.sum_four_squares`, and
+[Glivická–Glivický, Sections 2.1, 2.3 and Theorem 1](https://arxiv.org/html/1701.02001).
+The last reference is added to the bibliography without renumbering earlier
+citations. The surreal normal-form and Hahn-field real-closedness inputs
+remain separate imported obligations.
+
+All 67 standard statements, 159 labels and label numbers are preserved;
+main Sections 11–14 are byte-identical. Clean three-pass builds produce the
+58-page article and 28-page catalogue, with all 28 changed article pages and
+the changed catalogue page visually inspected. Source 01's SymPy 1.14.0
+verifier passes (only its recorded Python version differs); source 05's
+output matches its delivery record exactly. All 2,636 indexed results in
+51 reports, 3,124 cited source labels and 1,314 local Markdown destinations
+pass their audits. No Lean source changes or new Lean coverage are asserted.
+Later proofs, source reconciliation and unintegrated companions remain
+pending.
+
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

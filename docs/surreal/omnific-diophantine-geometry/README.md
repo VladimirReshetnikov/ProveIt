@@ -7,7 +7,7 @@ Merged research report, from three manuscripts written independently on
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 57 pages
+article.pdf                        the compiled report, 58 pages
 README.md                          this guide
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
@@ -30,7 +30,7 @@ elementary review also added four results. This merge retains that review's
 support and size clarifications, and preserves nine renamed or combined
 labels as aliases (159 labels in total). See
 [RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence,
-the subsequent proof reviews through Section 9, and the remaining
+the subsequent proof reviews through Section 10, and the remaining
 source-reconciliation boundary. The [ledger](../../FORMALIZATION.md) indexes the current
 67 standard results; it does not claim Lean coverage for this report.
 
@@ -149,7 +149,9 @@ Numbers refer to the built `article.pdf`.
 9. **Defining `Z` (Section 10).** Theorem 10.3 (five auxiliaries, defines
    `Z^n`) and Theorem 10.4 (six auxiliaries, defines `Z`); `ct` and `Π` are
    first-order definable (Corollary 10.6); an explicit `Σ₁` induction instance
-   fails (Theorem 10.9) while open induction holds.
+   fails (Theorem 10.9) while open induction holds. The workspace argument
+   and the nonnegative domain of induction are explicit; an order-free
+   semiring formula also defines exactly the ordinary naturals.
 10. **Families and primitivity (Section 11).** Polynomial lifting (Proposition
     11.1); homogeneous cone criterion and its decidability (Theorem 11.2);
     unimodular Pythagorean triples (Proposition 11.4); a real direction has a
@@ -203,6 +205,10 @@ the literature.
   why symmetry and the chosen polynomial generators matter in the two
   matrix/leading-form criteria. The exact review boundary is in the
   reconciliation record.
+- The Section 10 review expands the finite bounds and divisibility test,
+  specifies the induction domain, and gives nonnegative witnesses for the
+  order-free arithmetic formula. The open-induction argument explicitly
+  transfers quantifier-free truth to a set-sized Hahn workspace.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the

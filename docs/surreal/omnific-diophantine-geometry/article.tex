@@ -297,7 +297,7 @@ where the merge had to choose, and every symbol renamed from a source.
 
 \paragraph{Current review and placement status.}
 Commit \texttt{bbdd536} assembled sources 01, 02 and 05. The subsequent
-proof review reaches \cref{odg:sec:obstructions}; its scope and source
+proof review reaches \cref{odg:sec:guard}; its scope and source
 comparisons are recorded in \fn{RECONCILIATION.md}. Later proofs and remaining
 imported foundations still require review.
 Two further Diophantine manuscripts, locally numbered 06 and 07 and placed
@@ -2306,6 +2306,8 @@ Define ordinary Pell solutions by
  (X_{k+1},Y_{k+1})=(3X_k+4Y_k,\,2X_k+3Y_k),\qquad k\geq0,
 \end{equation}
 with $(X_0,Y_0)=(1,0)$.
+The index $k$ always belongs to the ordinary $\N$; this recurrence does not
+define witnesses at infinite omnific indices.
 
 \begin{lemma}[Pell witnesses \src{01, 05}]\label{odg:lem:pellsequence}\label{odg:eq:pellmod8}
 For every ordinary $k\ge0$, $X_k^2-2Y_k^2=1$; for $k\ge1$ both coordinates
@@ -2319,6 +2321,8 @@ $X_k=\tfrac12\bigl((3+2\sqrt2)^k+(3-2\sqrt2)^k\bigr)$ one gets the recurrence
 $X_{k+2}=6X_{k+1}-X_k$ with $X_0=1$, $X_1=3$; modulo $8$ it gives the
 alternating residues $1,3,1,3,\ldots$ (as $6\cdot3-1\equiv1$ and
 $6\cdot1-3\equiv3$).
+Finally $X_{2j}\ge9^j$ and $X_{2j+1}\ge3\cdot9^j$, so each residue class
+used below supplies witnesses above every ordinary integer bound.
 \end{proof}
 
 \subsection{The five-auxiliary-variable guard}
@@ -2383,7 +2387,9 @@ only when both squares vanish, so
 \end{equation}
 By Pell rigidity (\cref{odg:cor:pell}), $u,v\in\Z$. The second equation
 gives $u\geq0$ and bounds the square of each $x_i$ and $w_j$ by the ordinary
-number $u$, so each is an ordinary integer by \cref{odg:prop:units}.
+number $u$. Explicitly, if $z^2\le u$, then $|z|<u+1$: otherwise
+$z^2\ge(u+1)^2>u$. Thus each coordinate is finite and is an ordinary
+integer by \cref{odg:prop:units}.
 Conversely, for $\mathbf x\in\Z^n$ put $S=\sum_i x_i^2$ and choose the
 witnesses of \cref{odg:lem:pellgap}.
 \end{proof}
@@ -2471,7 +2477,18 @@ The right sides say that $m\in\Z$ and that $a-m$ (respectively $j$) is
 divisible by every nonzero ordinary integer; by \eqref{odg:eq:divkernel}
 this means $a-m\in\Pi$ (respectively $j\in\Pi$), which for $m\in\Z$ is
 equivalent to $\ct(a)=m$.
+For an explicit converse in the divisibility test, write $j=p+n$ with
+$p\in\Pi$ and $n\in\Z$. If $n\ne0$, take the ordinary positive integer
+$k=|n|+1$. The equation $j=ky$ would imply $n=k\ct(y)$, impossible since
+$0<|n|<k$. If $n=0$, division of every coefficient of $p$ by any nonzero
+ordinary $k$ preserves its positive support and gives the required $y$.
 \end{proof}
+
+All displayed quantifiers range over $\Oz$; $\Std$ is an abbreviation for
+the finite existential formula already given. In particular, the universal
+divisibility test is one first-order formula, not an infinite conjunction
+indexed externally by the ordinary integers. The symbol $\ct$ occurs only
+on the left to identify the graph that the ring-language formula defines.
 
 These definitions use a universal quantifier and an implication. Neither
 source claims an existential (Diophantine) definition of $\Pi$ or of the
@@ -2493,7 +2510,8 @@ considered here satisfy the Pell hypothesis by \cref{odg:cor:pell}.
 The positive omnific integer $\omega-1$ is not a sum of any finite number of
 squares in $\Oz$: applying $\ct$ to such an identity gives
 $-1=\sum_j m_j^2$ with $m_j\in\Z$. So the nonnegative cone of $\Oz$ does not
-satisfy Peano arithmetic, in which Lagrange's theorem is provable. This is
+satisfy Peano arithmetic. A direct failed induction instance, independent of
+formalizing Lagrange's theorem in arithmetic, is given next. This is
 compatible with the classical fact that integer parts of real closed fields
 satisfy open induction \cite{Shepherdson,LM}; open induction is not full
 arithmetic.
@@ -2526,23 +2544,53 @@ integers.
 \end{proof}
 
 By Shepherdson's theorem, an integer part of a real closed ordered field
-satisfies open induction, that is, induction for quantifier-free formulas
-\cite{Shepherdson}. In a divisible set-sized Hahn workspace $H$, the ring
+satisfies open induction on its nonnegative cone, that is, induction for
+quantifier-free ordered-ring formulas with parameters
+\cite{Shepherdson,Glivicky}. In a divisible set-sized Hahn workspace $H$, the ring
 $\Oz_H$ is an integer part of the real closed field of real Hahn series with
-exponents in $H$ (\cref{odg:thm:floor}); so the full $\Oz$ satisfies the same
-schema, by applying the theorem in a workspace containing the finitely many
-parameters and any proposed counterexample \src{05}. There is no conflict with
+exponents in $H$: the floor formula in \cref{odg:thm:floor} only truncates
+support and changes the constant, so stays in this workspace.
+
+Here is the passage to the full $\Oz$ in detail. Fix a quantifier-free
+formula $\theta(t,\mathbf a)$ whose base case and successor implication hold
+in $\Oz_{\ge0}$, and suppose it fails at some $b\ge0$. Choose $H$ to contain
+the supports of the finite parameter tuple $\mathbf a$ and of $b$.
+Quantifier-free formulas agree between an ordered subring and its ambient
+ring: polynomial values, equality, order and Boolean operations are
+preserved. Thus the base case and successor implication hold in
+$(\Oz_H)_{\ge0}$, whereas $\theta(b,\mathbf a)$ still fails there,
+contradicting Shepherdson's theorem. This proves each instance of the schema
+without treating the proper class $\Oz$ as a set-sized model \src{05}.
+There is no conflict with
 \cref{odg:thm:induction}: $\Phi$ is existential, not quantifier free. The
 sentence ``every nonnegative $t$ has a larger positive Pell solution'' is
 true over $\Z$ and false over $\Oz$; thus $\Oz$ is not an elementary extension
 of $\Z$ as an ordered ring.
 
 \begin{remark}[An induction failure in the pure ring language \mergetag]\label{odg:rem:ringinduction}
-Existential induction also fails in the pure ring language, without order:
+Induction on the nonnegative cone also fails for an existential formula
+of the pure ring language, without order in its matrix:
 the existential formula $\Std(t)$ of \cref{odg:thm:standarddef} satisfies
 $\Std(0)$ and $\forall t\,(\Std(t)\Rightarrow\Std(t+1))$ over $\Oz$ but not
 $\Std(\omega)$, because it defines $\Z$, which contains $0$ and is closed
-under $t\mapsto t+1$, and $\omega\notin\Z$. In particular the formula
+under $t\mapsto t+1$, and $\omega\notin\Z$. The induction variable is still
+restricted to the nonnegative cone; the displayed successor assertion is
+stronger, since it holds for every $t\in\Oz$.
+
+One can also keep every existential witness inside that cone. In the
+language $\{0,1,+,\cdot\}$ of the nonnegative semiring, use
+\[
+ \exists x,y,z_1,z_2,z_3,z_4\quad
+ x^2=2y^2+1\ \land\ x=t^2+\sum_{j=1}^4 z_j^2.
+\]
+For each ordinary $t\ge0$, the Pell sequence and the four-square theorem
+supply nonnegative ordinary witnesses. Conversely, any witnesses in the
+nonnegative cone are also witnesses in $\Oz$, so force $t\in\Z$.
+This order-free existential formula therefore defines precisely $\N$
+inside $\Oz_{\ge0}$, and has the same base case, successor step and failure
+at $\omega$. No subtraction or order predicate is needed in its matrix.
+
+Separately, over the whole ring, the formula
 $\Std(t)$ also shows that $\Oz$ is not an elementary extension of $\Z$ in the
 ring language: the sentence $\forall t\,\Std(t)$ holds in $\Z$ and fails in
 $\Oz$.
@@ -3788,6 +3836,12 @@ Introduction to model theory.
 In \emph{Model Theory, Algebra, and Geometry}, MSRI Publications
 \textbf{39} (2000), 15--35. Theorem 3.5 and Proposition 4.1.
 \url{https://library.slmath.org/books/Book39/files/marker.pdf}.
+
+\bibitem{Glivicky}
+Jana Glivick\'a and Petr Glivick\'y.
+\emph{Shepherdson's theorems for fragments of open induction}.
+arXiv:1701.02001 (2017), Sections 2.1, 2.3 and Theorem 1.
+\url{https://arxiv.org/abs/1701.02001}.
 
 \end{thebibliography}
 \end{document}

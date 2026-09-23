@@ -991,10 +991,12 @@ At placement these added 75 literal standard results, plus three custom
 `maintheorem` statements indexed separately. The elementary review first
 added four standard results; the subsequent assembly in `bbdd536` now has
 67 Diophantine results, for 101 across the two current omnific sources.
-All are **Pending** in Lean. The Diophantine proof review now reaches Section 9,
+All are **Pending** in Lean. The Diophantine proof review now reaches Section 10,
 including complex separated-power rigidity, the corrected divisibility
 identity, explicit quadratic polarization, preservation of coordinate ideals
-and bounded-set transfer for quantified formulas. Sections 10 onward and
+and bounded-set transfer for quantified formulas. The Section 10 review
+specifies induction domains and nonnegative witnesses and expands the
+workspace proof of open induction. Sections 11 onward and
 remaining source reconciliation still need review; its two newly placed
 companions and all twelve quotient companions remain unintegrated. The further entire-function
 rectification manuscript also remains a placement. The additional artifacts
@@ -4266,7 +4268,7 @@ It asserts no Lean coverage. All statements remain **pending unless explicitly m
 Source: [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex).
 
 Sources 01, 02 and 05 were assembled in `bbdd536`. The elementary algebra
-comparison, proof review through Section 9 and remaining work are recorded in the report
+comparison, proof review through Section 10 and remaining work are recorded in the report
 reconciliation. Local sources 06–07 are not yet integrated. All statements
 below are **Pending** in Lean. The separately styled cited theorem
 `odg:fact:settarget` is also in scope, outside the standard-environment table.
@@ -4325,21 +4327,21 @@ below are **Pending** in Lean. The separately styled cited theorem
 | Corollary | `odg:cor:orthogonal` (line 2214) | Euclidean orthogonal group \src{01, 02} |
 | Corollary | `odg:cor:symmetric` (line 2242) | Symmetric matrix rigidity \src{01} |
 | Theorem | `odg:thm:infinity` (line 2265) | Leading-homogeneous obstruction \src{01} |
-| Lemma | `odg:lem:pellsequence` (line 2310) | Pell witnesses \src{01, 05} |
-| Lemma | `odg:lem:pellgap` (line 2332) | A three-square gap below a Pell coordinate \src{01} |
-| Theorem | `odg:thm:guard` (line 2366) | Uniform quartic integrality guard \src{01} |
-| Theorem | `odg:thm:standarddef` (line 2397) | A quartic definition of $\Z$ \src{05} |
-| Corollary | `odg:cor:definablect` (line 2458) | Definability of $\ct$ and $\Pi$ \src{01, 05} |
-| Theorem | `odg:thm:induction` (line 2502) | A failed existential induction instance \src{05} |
-| Proposition | `odg:prop:polylift` (line 2555) | Finite polynomial lifting \src{01, 02, 05} |
-| Theorem | `odg:thm:cone` (line 2586) | Homogeneous cone criterion \src{01}; part (b) \src{02} |
-| Proposition | `odg:prop:pythagoras` (line 2652) | Infinite unimodular Pythagorean triples \src{01, 05} |
-| Theorem | `odg:thm:realray` (line 2681) | Rationality of primitive constant directions \src{01} |
-| Lemma | `odg:lem:specialization` (line 2715) | Finite ordered specialization \src{05} |
-| Theorem | `odg:thm:specialization` (line 2737) | Finite-support solutions specialize to arcs \src{05} |
-| Theorem | `odg:thm:quadraticformula` (line 2789) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 2825) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 2856) | A two-term root obstruction \src{05} |
+| Lemma | `odg:lem:pellsequence` (line 2312) | Pell witnesses \src{01, 05} |
+| Lemma | `odg:lem:pellgap` (line 2336) | A three-square gap below a Pell coordinate \src{01} |
+| Theorem | `odg:thm:guard` (line 2370) | Uniform quartic integrality guard \src{01} |
+| Theorem | `odg:thm:standarddef` (line 2403) | A quartic definition of $\Z$ \src{05} |
+| Corollary | `odg:cor:definablect` (line 2464) | Definability of $\ct$ and $\Pi$ \src{01, 05} |
+| Theorem | `odg:thm:induction` (line 2520) | A failed existential induction instance \src{05} |
+| Proposition | `odg:prop:polylift` (line 2603) | Finite polynomial lifting \src{01, 02, 05} |
+| Theorem | `odg:thm:cone` (line 2634) | Homogeneous cone criterion \src{01}; part (b) \src{02} |
+| Proposition | `odg:prop:pythagoras` (line 2700) | Infinite unimodular Pythagorean triples \src{01, 05} |
+| Theorem | `odg:thm:realray` (line 2729) | Rationality of primitive constant directions \src{01} |
+| Lemma | `odg:lem:specialization` (line 2763) | Finite ordered specialization \src{05} |
+| Theorem | `odg:thm:specialization` (line 2785) | Finite-support solutions specialize to arcs \src{05} |
+| Theorem | `odg:thm:quadraticformula` (line 2837) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 2873) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 2904) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 

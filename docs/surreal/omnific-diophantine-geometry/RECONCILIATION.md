@@ -1,7 +1,7 @@
 # Reconciliation of the three Diophantine manuscripts
 
 This record covers the elementary source comparison in Sections 1–4 of the
-maintained [article](article.tex), followed by proof reviews of Sections 5–9.
+maintained [article](article.tex), followed by proof reviews of Sections 5–10.
 It does **not** certify integration of every result in the three manuscripts
 or review of all later proofs and imported classical results.
 
@@ -130,7 +130,23 @@ changing polynomial generators can change their top-form obstruction.
 The model-completeness input was checked against Marker, *Introduction to
 Model Theory*, Theorem 3.5 and Proposition 4.1; this does not independently
 verify the imported surreal normal-form or real-closedness foundations.
-Sections 10 onward still await independent proof review; the assembly's own
+
+The Section 10 pass compares source 01's Pell residue table and five-variable
+guard with source 05's four-square guard, constant-term definition and failed
+induction instance. Bounds and quantifier domains are explicit. The
+open-induction argument now spells out preservation of quantifier-free
+truth between the workspace and full ring. The order-free induction remark
+specifies its nonnegative domain and supplies a formula with witnesses in
+the nonnegative semiring and no subtraction. Failure of Peano arithmetic
+follows directly from this failed instance, without an additional claim
+about formalizing Lagrange's theorem inside arithmetic.
+
+The three-square input was checked against the AFP entry of Danilkin and
+Chevalier; the four-square statement against the pinned Mathlib source.
+Glivická–Glivický, Sections 2.1, 2.3 and Theorem 1, records the nonnegative
+semiring convention and Shepherdson equivalence. These checks do not prove
+the imported Hahn-field real-closedness or establish new Lean coverage.
+Sections 11 onward still await independent proof review; the assembly's own
 section map and corrections in Appendix A are inputs to that review.
 Imported foundations, classical results and historical priority are separate
 obligations. No broad preservation of the old statement wording or numbering
