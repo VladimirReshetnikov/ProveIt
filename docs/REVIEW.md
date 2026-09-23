@@ -3155,6 +3155,21 @@ companions placed in `66d7e55` and the nine archives in `190d301` still
 need integration or placement and reconciliation; indexing the main
 texts does not establish coverage of those separate manuscripts.
 
+## Combined validation with Fejér–Riesz uniqueness and coefficient bounds
+
+After the documentation merge `e8dcd56`, the next fetch found four commits
+through `cfd1c89`. Their README and coverage-inventory refresh were
+reconciled with the manuscript review, preserving the updated 58-report
+inventory and the distinction between written and Lean-checked results.
+No manuscript source changed in this merge, so the clean combined PDFs
+remain current. The source-label, independent inventory and Markdown
+link audits pass: 3,934 cited labels, 3,428 indexed statements and 58
+main texts. `LEAN_NUM_THREADS=2 lake build` passes all 4,353 jobs, and
+the audit accepts 13,813 declarations with only `propext`,
+`Classical.choice` and `Quot.sound`. The incoming formalization completes
+normalized Fejér–Riesz uniqueness and adds actual-field Fourier coefficient
+bounds. It does not change the pending Lean status of the omnific results.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
