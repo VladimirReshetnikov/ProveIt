@@ -1004,16 +1004,47 @@ files resolve. The Lean build passes 3,920 jobs and audits 6,397 declarations
 using only `propext`, `Classical.choice` and `Quot.sound`. No new probability
 Lean coverage is claimed. Sections 14 onward and remaining imports are pending.
 
+The following synchronization through `03b474b` merges ten Lean modules
+from `debd084` and the placement `7b5f934`. The new modules cover Wick and
+theta domains, Tate cubic lemmas, point-spectrum rigidity, polynomial-iterate
+equicontinuity, invariant strong measures, finite visibility of negative atoms,
+polynomial branch values and Prony cofactor bounds. Their source mappings retain
+exact hypotheses and remaining clauses. All ten are imported by the default
+root. The merged build passes 3,968 jobs and audits 7,045 declarations using
+only `propext`, `Classical.choice` and `Quot.sound`.
+
+Following the new source-reference check in `AGENTS.md`, all 2,542 distinct
+referenced labels in the ledger and Lean docstrings resolve in current LaTeX
+sources, including optional-argument labels. The placement adds two current
+manuscripts with 48 standard results and source material for five existing
+reports. All 49 newly placed files are preserved byte-for-byte. The two new
+sources are provisionally indexed, giving 2,298 entries in 48 current sources;
+the catalogue still covers 46 assembled reports. Their write phase and review
+remain pending. All 964 local Markdown destinations in 108 files resolve.
+The reviewed finite-probability source and 50-page PDF are unchanged by the
+merge. No new Lean mapping is added for that report, whose Sections 14 onward
+and remaining imports still await review.
+
 ## Remaining scope
+
+The placement `7b5f934` adds two manuscripts,
+[first-kappa coefficients](surcomplex/first-kappa-coefficients/) and
+[single-dilation Hahn support](surcomplex/single-dilation-hahn-support/), now
+provisionally indexed from their current sources. Their write phase, catalogue
+integration, proof review and source reconciliation remain pending. Added source
+material for entire functions, holonomic rigidity, trigonometry, Euclidean
+three-space and Hahn probability also awaits integration and review. The
+collection has 46 assembled reports plus these two placed manuscripts; the
+ledger indexes 2,298 results in the 48 current sources.
 
 The nine manuscripts placed in `d4e71b7` are grouped as
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
 and [fields across universes](foundations-and-computation/surreal-fields-across-universes/).
 The reports were assembled in `3a2d35d` and catalogued in `13cb68e`;
 all nine manuscripts are now represented in the two written sources. Their
-136 standard result environments are indexed in the ledger, giving 2,250
-entries across the collection's 46 assembled reports. Mathematical proof
-review and source-claim reconciliation for these two reports remain pending.
+136 standard result environments remain indexed in the ledger. Mathematical
+proof review and source-claim reconciliation for these two assembled reports
+remain pending.
 
 The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
 [three-space](surreal/euclidean-three-space/) and

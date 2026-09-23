@@ -657,3 +657,24 @@ embeddings or countable measure extensions. The independent index checks
 files resolve. The Lean build passes 3,920 jobs and audits 6,397 declarations
 using only `propext`, `Classical.choice` and `Quot.sound`. No new probability
 Lean coverage is claimed. Sections 14 onward and remaining imports are pending.
+
+The following synchronization through `03b474b` merges ten Lean modules
+from `debd084` and the placement `7b5f934`. The new modules cover Wick and
+theta domains, Tate cubic lemmas, point-spectrum rigidity, polynomial-iterate
+equicontinuity, invariant strong measures, finite visibility of negative atoms,
+polynomial branch values and Prony cofactor bounds. Their source mappings retain
+exact hypotheses and remaining clauses. All ten are imported by the default
+root. The merged build passes 3,968 jobs and audits 7,045 declarations using
+only `propext`, `Classical.choice` and `Quot.sound`.
+
+Following the new source-reference check in `AGENTS.md`, all 2,542 distinct
+referenced labels in the ledger and Lean docstrings resolve in current LaTeX
+sources, including optional-argument labels. The placement adds two current
+manuscripts with 48 standard results and source material for five existing
+reports. All 49 newly placed files are preserved byte-for-byte. The two new
+sources are provisionally indexed, giving 2,298 entries in 48 current sources;
+the catalogue still covers 46 assembled reports. Their write phase and review
+remain pending. All 964 local Markdown destinations in 108 files resolve.
+The reviewed finite-probability source and 50-page PDF are unchanged by the
+merge. No new Lean mapping is added for that report, whose Sections 14 onward
+and remaining imports still await review.

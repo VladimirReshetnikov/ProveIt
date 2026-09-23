@@ -15,8 +15,9 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **46 main texts** with **2250**
-standard result environments. Counts cover
+The canonical inventory below identifies **48 current main sources** with
+**2298** standard result environments: 46 assembled reports and two
+provisionally indexed manuscripts awaiting the write phase. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
 claims. Counts are a navigation aid, **not a completeness certificate**.
@@ -33,7 +34,9 @@ written form. The finite-probability review now covers Sections 2–13; later
 sections, the other new reports and the expansions remain pending within the
 review scopes recorded separately. Batch 21 (placed in `d4e71b7`, written in
 `3a2d35d`) adds two reports merged from nine manuscripts, with 136 indexed
-statements; their review remains pending.
+statements; their review remains pending. The placement `7b5f934` adds two
+provisionally indexed manuscripts (48 further statements) and new source
+material for five existing reports. Their write phase and review remain pending.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
@@ -517,9 +520,11 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers all 46 main texts
-present in the repository; two are not named `article.tex`. The reader map
-and the typeset catalogue list all 46. The two reports placed in `d4e71b7`
+custom environments are not included. The index covers all 48 current main
+sources; two are not named `article.tex`. The reader map and typeset catalogue
+list the 46 assembled reports. The two manuscripts placed in `7b5f934` are
+indexed provisionally below, with write phase and catalogue integration pending.
+The two reports placed in `d4e71b7`
 and written in `3a2d35d`,
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
 and [fields across universes](foundations-and-computation/surreal-fields-across-universes/),
@@ -579,7 +584,9 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
 | [foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex) | 33 | 22 | 13 | 11 | 79 |
 | [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 23 | 16 | 8 | 10 | 57 |
-| **Total** | 900 | 439 | 481 | 430 | **2250** |
+| [surcomplex/first-kappa-coefficients/article.tex](surcomplex/first-kappa-coefficients/article.tex) | 10 | 6 | 2 | 5 | 23 |
+| [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex) | 12 | 5 | 1 | 7 | 25 |
+| **Total** | 922 | 450 | 484 | 442 | **2298** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -3631,3 +3638,77 @@ unless explicitly mapped in the implementation table.
 | Theorem | `univ:thm:booleanyes` (line 2585) | Set-complete dense completion |
 | Lemma | `univ:lem:classdiag` (line 2626) | Diagonal obstruction |
 | Theorem | `univ:thm:booleanno` (line 2647) | No all-subclass completion |
+
+### first-kappa-coefficients
+
+Source: [surcomplex/first-kappa-coefficients/article.tex](surcomplex/first-kappa-coefficients/article.tex).
+
+Provisional index of the manuscript placed in `7b5f934`. Its current source
+is indexed for navigation; the write phase, catalogue integration, proof
+review and source reconciliation remain pending. The delivered verification
+and audit artifacts do not establish review or Lean coverage. Statements
+are **Pending** unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Theorem | `thm:main` (line 129) | Main theorem package |
+| Lemma | `lem:workspace` (line 181) | Small-workspace lemma |
+| Proposition | `prop:closed` (line 195) | Algebraic closedness and real closedness |
+| Theorem | `thm:approx` (line 233) | Exact approximation values |
+| Lemma | `lem:fibers` (line 263) | Prefix fibers |
+| Theorem | `thm:valued-type` (line 285) | First-$\kappa$ classification: valued case |
+| Corollary | `cor:rational` (line 325) | Rational-function data |
+| Theorem | `thm:real-type` (line 337) | First-$\kappa$ classification: ordered case |
+| Corollary | `cor:count` (line 357) | Counting and identifying the missing types |
+| Lemma | `lem:stabilize` (line 392) | Eventual elementary agreement |
+| Theorem | `thm:omission` (line 411) | Exact omission number |
+| Theorem | `thm:pure` (line 435) | Pure-field collapse |
+| Corollary | `cor:tower` (line 452) | Restriction of types is truncation of prefixes |
+| Lemma | `lem:glue` (line 478) | Coefficient gluing with a cardinal bound |
+| Theorem | `thm:balls` (line 499) | First empty nests |
+| Corollary | `cor:ballfiber` (line 510) | Its intersection in the full Hahn field |
+| Theorem | `thm:completion` (line 540) | Completion by locally small support |
+| Proposition | `prop:new-supports` (line 557) | Exactly which supports are added |
+| Lemma | `lem:long-cofinal` (line 575) | Long cofinal supports |
+| Theorem | `thm:dichotomy` (line 601) | Completeness dichotomy |
+| Theorem | `thm:projection` (line 642) | Exact retraction-loss formula |
+| Corollary | `cor:dual` (line 671) | A zero-or-full continuous-dual dichotomy |
+| Lemma | `lem:groupcf` (line 706) | Untitled |
+
+### single-dilation-hahn-support
+
+Source: [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex).
+
+Provisional index of the manuscript placed in `7b5f934`. Its current source
+is indexed for navigation; the write phase, catalogue integration, proof
+review and source reconciliation remain pending. The delivered verification
+and audit artifacts do not establish review or Lean coverage. Statements
+are **Pending** unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Proposition | `prop:monomial` (line 295) | Untitled |
+| Lemma | `lem:orbit` (line 327) | Increasing orbit hull |
+| Corollary | `cor:labeled` (line 369) | Labeled version |
+| Theorem | `thm:resolvent` (line 413) | Strong partial inverse |
+| Corollary | `cor:fixed` (line 475) | Fixed fields and eigenspaces |
+| Corollary | `cor:poly` (line 507) | Split polynomial difference operators |
+| Lemma | `lem:operatorscommute` (line 551) | Commuting normalized inverses |
+| Theorem | `thm:koszul` (line 600) | Explicit deformation retraction |
+| Corollary | `cor:simultaneous` (line 659) | Simultaneous additive equations |
+| Corollary | `cor:defproj` (line 684) | Definable invariant projection |
+| Lemma | `lem:multcoords` (line 737) | Multiplicative coordinates |
+| Corollary | `cor:unitcohom` (line 760) | Principal-unit cohomology |
+| Theorem | `thm:multsingle` (line 772) | Exact multiplicative obstruction |
+| Theorem | `thm:multsystem` (line 830) | Simultaneous multiplicative equations |
+| Theorem | `thm:dilationcohom` (line 889) | Dilation equations and cohomology |
+| Theorem | `thm:definability` (line 973) | Recovery from a single dilation |
+| Lemma | `lem:monomialrecognition` (line 1000) | Monomial recognition |
+| Theorem | `thm:centralizer` (line 1117) | Unrestricted centralizer |
+| Corollary | `cor:nohidden` (line 1166) | No hidden centralizing motions |
+| Theorem | `thm:undecidable` (line 1226) | Undecidability in the unexpanded signature |
+| Theorem | `thm:tp2` (line 1273) | Coefficient independence |
+| Lemma | `lem:rationalrecognition` (line 1326) | Power-equation recognition |
+| Theorem | `thm:rationaldef` (line 1346) | Interdefinable dilations |
+| Theorem | `thm:nonconjugate` (line 1383) | Distinct rational dilations are not conjugate |
+| Theorem | `thm:surreal` (line 1563) | Surreal and surcomplex consequences |
