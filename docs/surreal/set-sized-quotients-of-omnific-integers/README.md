@@ -2,21 +2,23 @@
 
 **The universal constant-term quotient, exact cardinal thresholds, support
 thresholds, and what survives in large quotients**
-Merged research report, 23 September 2026, from seventeen manuscripts: eight of
+Merged research report, 23 September 2026, from eighteen manuscripts: eight of
 22 September 2026 (batch 24, placed in `be06fc8`): 06 (the base), 03, 04, 07,
 08, 09, 10 and 11; five of 23 September 2026 (batch 25, placed in `cf350b1`),
 numbered here 12 to 16 by their file prefixes; three of 23 September 2026
 (items 01, 03 and 05 of batch 26, placed in `f4c9504`), numbered here 17 to 19
-by their file prefixes; and one of 23 September 2026 (item 01 of batch 28,
+by their file prefixes; one of 23 September 2026 (item 01 of batch 28,
 placed in `c6359e4`), numbered here 20 by its file prefix
-`20-boolean-branching-`. Manuscript 05 of batch 24 proves the unital universal
+`20-boolean-branching-`; and one of 23 September 2026 (item 01 of batch 29,
+placed in `66d7e55`), numbered here 21 by its file prefix
+`21-derived-arithmetic-`. Manuscript 05 of batch 24 proves the unital universal
 theorem too; it is merged into the sibling report
 [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) and credited
 here.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 153 pages
+article.pdf   the compiled report, 164 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -57,6 +59,9 @@ code/
   19-normalization-fibres-build.sh                    source 19's build script (original file names; overwrites checks.txt)
   20-boolean-branching-verify.py                      source 20 checks (6,674; needs SymPy; always writes, see below)
   20-boolean-branching-Makefile                       source 20's Makefile (original file names)
+  21-derived-arithmetic-verify.py                     source 21 checks (1,608; stdlib; writes by default, see below)
+  21-derived-arithmetic-build.sh                      source 21's build script (original file names)
+  21-derived-arithmetic-build.ps1                     source 21's PowerShell build script (original file names)
 data/
   03-cardinality-normalization-verification_results.txt   recorded run of the source 03 checks
   04-universal-residue-verification.json                  recorded run of the source 04 checks
@@ -89,6 +94,8 @@ data/
   20-boolean-branching-verification_results.json          recorded run of the source 20 checks
   20-boolean-branching-BUILD_REPORT.json                  source 20's build, rendering and diagnostics record
   20-boolean-branching-requirements.txt                   sympy==1.14.0
+  21-derived-arithmetic-verification_results.json         recorded run of the source 21 checks
+  21-derived-arithmetic-provenance.json                   source 21's pin, scope and verification metadata (no hashes)
 ```
 
 Every label in `article.tex` carries the prefix `osq:`. The large-quotient part
@@ -100,9 +107,11 @@ two printed additions and `osq:str:` (13) for the remark crediting its answer to
 Elliott's question. The three batch-26 manuscripts use `osq:rel:` (17) in
 Section 13.9, `osq:nf:` (19) in Section 15.8 and `osq:or:` (18) in Section 16.8.
 The batch-28 manuscript uses `osq:bb:` (20) in Section 15.9 and for Question 18.18.
-The report has 505 labels (469 before the fourth merge, 409 before the third
-and 334 before the second; none was renamed or removed). The audit files and
-programs keep the source numbers `03` to `20`, and the audit files keep their
+The batch-29 manuscript uses `osq:da:` (21) in Section 13.10.
+The report has 521 labels (505 before the fifth merge, 469 before the fourth,
+409 before the third and 334 before the second; none was renamed or removed,
+and no earlier statement was renumbered). The audit files and
+programs keep the source numbers `03` to `21`, and the audit files keep their
 sources' own notation and theorem numbering. No source manuscript is shipped.
 
 The text placed in `be06fc8` was source 06 with bare labels, which
@@ -130,7 +139,7 @@ statement points to that statement):
 | `prop:unitconstant` | `osq:prop:unitconstant` | `thm:extthreshold` | `osq:thm:extthreshold` |
 | `prop:primereservoir` | `osq:if:prop:reservoir` | `prop:matrices` | `osq:prop:matrices` |
 
-## Seventeen sources, one report
+## Eighteen sources, one report
 
 The eight manuscripts of batch 24 answer the same question, *what can a
 set-sized ring or module see of an omnific integer?*, with the same answer:
@@ -147,6 +156,9 @@ closure (19). The other seven batch-26 items are in
 [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/). The batch-28
 manuscript (20) answers 19's question on the Boolean algebra of that fibre
 (Section 15.9); the other eight batch-28 items were placed in other reports.
+The batch-29 manuscript (21) answers the first clause of 12's and 14's
+Question 18.12: `pd_{A_d} D = d + 1` (Section 13.10); the other eight batch-29
+items were placed in other reports.
 
 | | Manuscript (pages) | Pin | Contributes |
 |---|---|---|---|
@@ -158,7 +170,7 @@ manuscript (20) answers 19's question on the Boolean algebra of that fibre
 | **09** | *Set-Sized Shadows of Omnific Integers* (20) | `37eefca` | Direct division of arbitrary elements; the model `A^09_λ` with residue fields, `≥ λ` non-arithmetic maximal ideals and `ℵ1` generators (Section 11.4); Gaussian ramification. Files `09-set-shadows-*`. |
 | **10** | *Set-Sized Shadows of Omnific Arithmetic* (26) | `a5c2a97` | The theorem over any set field including maps on `Π_K`; the quantitative bound; endomorphisms; numerical polynomials, all-modulus congruences, `p`-adic completion and characters, lattice rigidity (Sections 16.1–16.5). Files `10-omnific-arithmetic-*`. |
 | **11** | *What Set-Sized Algebra Can See of the Omnific Integers* (20) | `37eefca` | Pairwise-difference families; the localization and presentation calculus; the extension criterion (Theorem 9.1(iii)); the coinitiality theorem; residual targets; the ordinal ring and MathOverflow 188430 (Section 17). Files `11-set-sized-algebra-*`. |
-| **12** | *Arithmetic Invisibility and Homological Dimension in Omnific Integer Cores* (21) | none stated | Coordinate-cone cores `A_d ⊂ Oz`: the Boolean flat resolution (Theorem 13.4), the multigraded `Tor` (Theorem 13.7), `fd D = d` (Corollary 13.8); the noncoherence certificate (Theorem 13.9(iii)); the ordered-cone collapse (Theorems 13.13, 13.14); projective bounds and the telescope (Proposition 13.12). Files `12-homological-dimension-*`. |
+| **12** | *Arithmetic Invisibility and Homological Dimension in Omnific Integer Cores* (21) | none stated | Coordinate-cone cores `A_d ⊂ Oz`: the Boolean flat resolution (Theorem 13.4), the multigraded `Tor` (Theorem 13.7), `fd D = d` (Corollary 13.8); the noncoherence certificate (Theorem 13.9(iii)); the ordered-cone collapse (Theorems 13.13, 13.14); projective bounds and the telescope (Proposition 13.12; the bounds for `A_d` are attained, by 21's Corollary 13.47 and Theorem 13.48). Files `12-homological-dimension-*`. |
 | **13** | *Small-Target Rigidity and Arithmetic Specialization* (21) | `71e9606` | An independent proof of the universal theorem (credited at Theorem 5.1) and of the answer to Elliott's addendum (Remark 17.2). Its fiber and norm theorems are printed in the sibling report. Files `13-small-target-rigidity-*`. |
 | **14** | *Arithmetic Tensors in the Omnific Integers* (19) | `71e9606` | Coefficient-lattice modules `L(M) = M + Π`: syzygy (Theorem 13.9), nonflatness (Proposition 13.10), tensor normal form (Theorem 13.18), exterior and symmetric powers (Theorem 13.20), Rees equations (Theorems 13.21, 13.22, Corollary 13.23), Hom and isomorphism types (Theorem 13.24), ideal classes (Theorem 13.25), duals (Theorem 13.27), matrix kernels (Theorem 13.28), `fd` over `A_0` (Theorem 13.11). Files `14-arithmetic-tensors-*`. |
 | **15** | *Omnific Integers Have Only Ordinary Set-Sized Representations* (21) | `71e9606` | An independent proof of the universal theorem and its consequences (credited throughout Sections 3–9); two one-line additions (Corollary 5.5, Proposition 7.3). Files `15-set-sized-representations-*`. |
@@ -167,6 +179,7 @@ manuscript (20) answers 19's question on the Boolean algebra of that fibre
 | **18** | *Polynomial Rigidity of Omnific Integer Lattices* (21) | `befe739` | Independent proofs of 10's and 16's classification of `Num_r`, finite tests, rational collapse and surjections (credited at Theorems 16.7, 16.9, 16.25, 16.46, Corollary 16.29). New (Section 16.8): the ordinary-output dichotomy over any discretely ordered ring (Theorem 16.56), the canonical translation and its coefficient test (Theorems 16.59, 16.60), the unique rich target (Theorem 16.61), composition alignment (Theorem 16.63), a Gaussian simplex test (Proposition 16.64), matrix and jet reductions (Theorem 16.65), rational functions on discretely ordered rings (Theorem 16.66), fixed Hahn workspaces (Corollary 16.67). Files `18-polynomial-rigidity-*`. |
 | **19** | *Normalization and Arithmetic Fibres of the Omnific Integers* (23) | `befe739` | Independent proofs of four results of 03 and of the universal theorem (credited). New (Section 15.8): contraction, radicality, saturation (Lemma 15.28, Theorems 15.29, 15.30); real-rooted lifting (Theorem 15.32); the residue with `v² = −1` (Proposition 15.34); `𝒩/Π𝒩 ≅ Z̄[Idem]` (Theorem 15.38); finitely generated ideals (Theorem 15.39); integral doubling (Theorem 15.42); domain images (Theorem 15.46); detection by maps to `Z̄` and field targets (Theorem 15.49, Corollary 15.50); a finite-axiom form (Theorem 15.51). Files `19-normalization-fibres-*`. |
 | **20** | *Proper-Class Boolean Branching in the Normalization of the Omnific Integers* (24) | `4cdeaec` | Independent proofs of 19's contraction, radicality and saturation (Lemma 15.28, Theorems 15.29, 15.30), coefficient copy, spectral idempotents and Boolean power (Lemmas 15.35, 15.36, Definition 15.37, Theorem 15.38), rational comparison and doubling (Lemma 15.41, Theorem 15.42), factorization of set-sized images, class ultrafilters and detection (Corollary 15.45, Lemma 15.48, Theorem 15.49), of most of Propositions 15.34, 15.43 and Theorem 15.46, and of the universal theorem for `Oz` (credited at Theorem 5.1). New (Section 15.9): monic radical certificates (Lemma 15.53, Corollary 15.54); support projection and exact descent (Lemma 15.55, Theorem 15.57, Corollary 15.58); one-scale rational functions (Theorem 15.60); independent quadratic branches (Lemma 15.63); uniform splitting (Theorems 15.65, 15.66); rank extension of set-sized Hahn fibres (Theorem 15.70); relative Boolean freeness, an explicit ordinal family, atomless proper-class `Idem` (Theorems 15.71–15.73); split idempotent matrices (Corollary 15.74); reduced fibres of fixed Hahn fields (Proposition 15.76); the surcomplex fibre (Corollary 15.77); no jointly faithful set of small targets (Theorem 15.79); `2^κ` branches through prescribed data (Theorem 15.80, Corollary 15.81). Files `20-boolean-branching-*`. |
+| **21** | *Exact Homological Dimensions and Arithmetic Intersections in Omnific Integer Rings* (25) | `9693b28` | Independent proofs of 17's second-`Tor` identification with its rank, the self-`Tor` rank and the `Tor` groups against modules killed by the tail (credited at Theorem 13.34, Corollary 13.36, Theorem 13.42); its flat face resolution, `fd D = d` and lattice syzygy are 12's and 14's (Theorems 13.4, 13.9, 13.11, Corollary 13.8). New (Section 13.10): flat resolutions and flat dimensions of the face quotients (Proposition 13.43); a countably generated free Koszul telescope (Theorem 13.44); the top `Ext` as a `lim¹` cokernel (Theorem 13.45) containing `D^N/D^(N)` (Theorem 13.46); `pd_{A_d} D = d + 1` and `pd` of every face quotient (Corollary 13.47); `pd L(M) = d + 1`, `pd A_d/J = d + 2` (Theorem 13.48); a flat DGA resolution (Theorem 13.50); the first-`Tor` window (Theorem 13.51); the linear-disjointness test (Lemma 13.52, Theorem 13.53); the self-`Tor` product and its alternating and symmetric parts (Theorem 13.54, Corollary 13.55); framed reconstruction of orders (Theorem 13.56); the square-zero constant-term shadow (Theorem 13.57). Files `21-derived-arithmetic-*`. |
 
 - **Base and routes.** 06's coefficient-ring theorem over any set field `K`
   (also proved by 07 and 10) is the most general statement; its scaled-field
@@ -212,7 +225,14 @@ manuscript (20) answers 19's question on the Boolean algebra of that fibre
   theorem at Theorem 5.1, and its dominant-scale lemma as 16's Laurent blocks
   (Lemma 15.62 cites Theorem 16.31 and Corollary 16.32, adding 20's surjectivity
   step); 20's class-ultrafilter lemma from a set with the finite intersection
-  property is printed beside 19's (Lemma 15.78).
+  property is printed beside 19's (Lemma 15.78). From the fifth merge: 21's
+  second-`Tor` identification with its rank, its self-`Tor` rank, the pair
+  `Z[√2]`, `Z[√3]` and its `Tor` groups against modules killed by the tail under
+  17's labels (tagged `[17; 21]`: Theorem 13.34, Corollary 13.36, Theorem 13.42),
+  and its flat face resolution, `fd D = d` and lattice syzygy cited as 12's and
+  14's (Theorems 13.4, 13.9, 13.11, Corollary 13.8); 21's extension of 17's
+  `Tor` formulas to the class ring in a two-universe reading is stated in
+  Theorems 13.51 and 13.57.
 - **Printed in the sibling report, not here:** 13's exact fibers of products of
   linear forms and its étale norm and Pell theorems; 14's criterion for unimodular
   projective directions, which is the Gaussian and principal-ideal extension of
@@ -253,7 +273,15 @@ manuscript (20) answers 19's question on the Boolean algebra of that fibre
   subgroup, `H` is 03's parameter in `u_H`); its branches `s_0, s_1, s_r` are
   `ϱ_0, ϱ_1, ϱ_r`, its specializations `θ_±` are `σ_±` (`θ = κ^ℵ0` in 03's
   construction), and its splitting element `w(T)` is `𝗐_t` (`w_±` are 19's
-  idempotents).
+  idempotents). In Section 13.10: 21's `k, 𝓘_d, L, M, M_L` are
+  `K, Π_d, M, N, L(M)`; its `t_a = ω^a` is `X^a` (here `t^g` means `X^{-g}`) and
+  its `J_{a,L}` is `J_a(M)`; its face quotient `B_U` is `𝖥_U`, its `c = |U|` is
+  `|U|`, its ideals `Q_n` are `J^{(n)}_U`, its `K_n, F, σ, 𝒯, δ_N` are
+  `Kos_n, Kos, sh, Tel, Δ^∨_P`; its `R_0, R, 𝓘` are `T_Q, 𝒜_{D,k}, Π`, its
+  `𝒦(L, M)` is `𝒯(M, N)`, its `W_L, S, T, H_j, λ, Q_2` are
+  `Syz_M, A/I, A/J, 𝖳_j, 𝖻, Ind_2`, its `C_{a,b}, 𝓗_k(0, c)` are
+  `𝖫_{g,h}, Π_{(0,e)}`, and its fields `E, F` over `F_0`, orders `O` and kernels
+  `𝒦_O` are `K_1, K_2` over `Frac D`, `𝔬` and `𝒯(𝔬, 𝔬)`.
 - **Sign convention** (Section 2.2): large monomials, `ω^γ` infinite for
   `γ > 0`. The foundations report defines `Oz = Π ⊕ Z` (`found:eq:omnific`);
   the trigonometry report (`trigonometry:eq:split`) describes the same `Π` by
@@ -266,7 +294,9 @@ manuscript (20) answers 19's question on the Boolean algebra of that fibre
   detection results (Theorem 15.49, Corollary 15.50), which say so. 20 states
   the same foundation; its splitting results need only choice for sets
   (Remark 15.75, a merge observation), and only its extension of branch maps
-  (Theorem 15.80, with Lemma 15.78) uses class ultrafilters.
+  (Theorem 15.80, with Lemma 15.78) uses class ultrafilters. 21 reads the
+  class ring in two Grothendieck universes, as 13 does; its core theorems are
+  ordinary set-sized mathematics.
 
 ## Results added in the merge
 
@@ -329,6 +359,11 @@ sources' lemmas.
   global choice (Remark 15.75); and `𝖡_R` is residually set-sized although no
   set-indexed family of small targets is jointly faithful (remark after
   Theorem 15.79).
+- **From the fifth merge.** 21's projective dimensions of lattice modules over
+  `A_d` for every unital `D ⊆ K` (21 assumes a principal ideal domain only to
+  have a basis; Theorem 13.48); and the observation that the cores `A_d`, with
+  countably generated tails and (H1), (H3) but not (H2), have `pd D = d + 1`, so
+  (H2) cannot be dropped from Proposition 13.12(v) (Remark 13.49).
 
 ## What the report claims
 
@@ -442,7 +477,7 @@ strictly positive set support and coefficients in `K`.
   MathOverflow question 188430 (Jesse Elliott, 2014) negatively; the question's
   only answer (Eric Wofsey) concerns transcendence degree. 13 gives the same
   answer with the same two proofs (Remark 17.2).
-- **Theorem I (Section 13, from 12, 14 and 17).** For the set-sized core
+- **Theorem I (Section 13, from 12, 14, 17 and 21).** For the set-sized core
   `A_d = D + ⊕_{0≠α∈Q_{≥0}^d} K X^α ⊂ Oz` (coordinatewise exponent cone),
   `Tor_{>0}(D, D) = 0` but `fd D = d`, with the full multigraded
   `Tor(D, A_d/(X_i : i ∈ F))` (Theorems 13.4, 13.7, Corollary 13.8); enlarging to
@@ -470,11 +505,30 @@ strictly positive set support and coefficients in `K`.
   Proposition 13.37); the ideals `(ω, αω)` form `2^ℵ0` isomorphism classes,
   the `GL_2(D)` orbits of `α` (Theorem 13.38); `End(J)/Π` is an order in a
   field whose degree divides `rank M`, and every order occurs (Theorem 13.39,
-  Corollary 13.40).
+  Corollary 13.40). From 21 (Section 13.10): `pd_{A_d} D = d + 1` for every
+  `d ≥ 1`, one more than `fd D = d`, and `pd_{A_d} Π_d = d`; more generally the
+  quotient by the open coordinate faces in a nonempty `U ⊆ [d]` has flat
+  dimension `|U|` and projective dimension `|U| + 1`, with a countably generated
+  free Koszul telescope resolution and `D^N/D^(N) ↪ Ext^{|U|+1}` (Theorems
+  13.44–13.46, Corollary 13.47); over `A_d`, `pd L(M) = d + 1` and
+  `pd A_d/J_g(M) = d + 2` for `rank M ≥ 2`, so `gl.dim A_d ≥ d + 2` when
+  `K ≠ Frac D` (Theorem 13.48). Over `T_Q`, and over `Oz`, `Oz[i]` read in two
+  universes: the lattice quotient has a flat DGA resolution of length two
+  (Theorem 13.50); `Tor_1(A/J_g(M), A/J_h(N))` is `(𝖫 + Π)/X^e(MN + Π)`, where
+  `𝖫` is `N`, `M` or `M ∩ N` as `g < h`, `g > h` or `g = h`: a window of scales
+  below `e = min(g, h)` with boundary `k/MN`, while `Tor_2` is 17's scale-free
+  kernel and `Tor_{≥3} = 0` (Theorem 13.51); for orders `𝔬_1, 𝔬_2` with fields
+  `K_1, K_2` over `F = Frac D`, `rank Tor_2 = [K_1:F][K_2:F] − [K_1K_2:F]`, zero
+  exactly under linear disjointness (Theorem 13.53); the self-`Tor` product is
+  `xy = b(x) ⊗ b(y) − b(y) ⊗ b(x)`, and `Tor_2` is an extension of the symmetric
+  relations `ker(Sym² M → M²)` by `Λ² M` (Theorem 13.54, Corollary 13.55); the
+  data `(𝔬, 1, 𝒯(𝔬, 𝔬))` recover the multiplication of an order (discriminants
+  8, 12, 5, −108 in the examples), while derived constant-term reduction gives
+  only the square-zero `D ⊕ M[1]` (Theorems 13.56, 13.57).
 
 ## What the report does not claim
 
-- All seventeen sources are AI-assisted, unrefereed drafts that call their main
+- All eighteen sources are AI-assisted, unrefereed drafts that call their main
   results candidate original or proposed contributions; priority is not
   certified, no named conjecture (Conway's refinement problem, factorization,
   GCD) is claimed solved, and nothing is formalized: the repository has no
@@ -501,8 +555,9 @@ strictly positive set support and coefficients in `K`.
   ordered cone (the five constructions, `T_Γ`, 14's `A_0`, the class ring in the
   two-universe reading); it is not asserted for arbitrary subrings of `Oz`, whose
   flat dimensions are unbounded (Remark 13.16). Nothing is claimed about the
-  homological dimensions of the class ring `Oz`; `pd_{A_d} D` for `d ≥ 2` and the
-  weak global dimensions of the cores are open (Question 18.12). The
+  homological dimensions of the class ring `Oz`; the global and weak global
+  dimensions of the cores are open (Question 18.12, partly answered: before
+  21, `pd_{A_d} D` for `d ≥ 2` was known only to be `d` or `d + 1`). The
   finite-support cores are outside Theorem A: the augmentation detects their
   tails (Proposition 13.2).
 - The support-threshold theorem is stated for `k ∈ {R, C}` as in 04 and 11,
@@ -514,6 +569,16 @@ strictly positive set support and coefficients in `K`.
   codes, and `Tor` and flat dimensions are taken over set-sized models only.
   The `D + M` mechanism and the relation module `M^{n−1}` are classical (Dobbs,
   Dobbs–Papick).
+- 21's value `d + 1` concerns the set-sized cores `A_d`, not `pd Z` over `Oz`;
+  it claims no exact global or weak global dimension, only the lower bounds
+  `d + 2` and `d + 1`, and its resolutions control specified modules, not all
+  ideals. Its class-ring statements are read under a two-universe convention.
+  The vanishing of `Tor_2` is not `Tor`-independence (`Tor_1 ≠ 0`), and the
+  decomposition of `Tor_1` is not an `A`-module splitting. Reconstruction needs
+  the boundary embedding and the distinguished `1`; an abstract `Tor_2` or an
+  abstract derived equivalence is not claimed to recover an order. The DGA is
+  not claimed cofibrant or `E_∞`-formal. Modules killed by the tail have
+  `Tor_{>0}(D, E) = 0` although `pd D = d + 1`.
 - 18's dichotomy is one-variable (`XY` defeats any bound in several
   variables); its coefficient test is relative to exact coefficient operations;
   the Gaussian tests compared are not claimed minimal; nothing is said about
@@ -538,24 +603,29 @@ strictly positive set support and coefficients in `K`.
 - Section 18.2 keeps every limitation stated by a source, numbered per source:
   03 (19 items), 04 (14), 06 (14), 07 (13), 08 (13), 09 (12), 10 (12), 11 (12),
   12 (12), 13 (10), 14 (12), 15 (11), 16 (8), 17 (12), 18 (10), 19 (12),
-  20 (14), and 12 for the merge (222 in all). 03's item (10) carries a note that
+  20 (14), 21 (17), and 13 for the merge (240 in all). 12's item (3) carries a
+  note that 21 determines the projective dimensions. 03's item (10) carries a note that
   19 classifies the domain images, 03's item (8) a note that the descent now
   holds (Corollary 15.59), and 19's items (1), (2), (7) and (9) notes on what
   20 adds. Section 18.3 lists eighteen questions, merging
   duplicates across sources, with their status: one answered (Question 18.2),
   one answered only for specific examples and constructions (Question 18.1,
-  which also absorbs 13's and 15's cardinal-bound questions), four partly
+  which also absorbs 13's and 15's cardinal-bound questions), five partly
   answered (Question 18.3; Question 18.11, whose clause on set-sized images of
   `𝒩` is answered for domain images by 19, whose descent clause is answered by
   Corollary 15.59 and whose fixed-subgroup clause is answered for witnesses at
-  larger scales by 20; Question 18.15, answered for `κ = ℵ0`; Question 18.17,
-  whose part (a) 20 answers and whose part (b) it answers for reduced fibres),
-  one settled for cardinal support bounds only (Question 18.8), and eleven open
-  (of which Question 18.14(a) is partly addressed by 18's tests; Question 18.18
-  is 20's question on the isomorphism type of the Boolean algebra). 19's
-  membership question is merged into Question 18.11, and 20's questions on
-  fixed-workspace radicality and effective certificates into Question 18.17(b),
-  (c).
+  larger scales by 20; Question 18.12, whose first clause, `pd_{A_d} D`, is
+  answered by 21; Question 18.15, answered for `κ = ℵ0`, with part (c) partly
+  addressed by 21's framed reconstruction; Question 18.17, whose part (a) 20
+  answers and whose part (b) it answers for reduced fibres), one settled for
+  cardinal support bounds only (Question 18.8), and ten open (of which
+  Question 18.14(a) is partly addressed by 18's tests; Question 18.18 is 20's
+  question on the isomorphism type of the Boolean algebra). 19's membership
+  question is merged into Question 18.11, 20's questions on fixed-workspace
+  radicality and effective certificates into Question 18.17(b), (c), and 21's
+  three questions (exact global and weak global dimensions of the cores,
+  several support levels, how much framing is needed) into Questions 18.12,
+  18.13 and 18.15(c).
 - The finite checks validate finite identities only; they verify no infinite
   support, class-size, cardinal, maximal-ideal, `Ext`, flatness or priority
   statement.
@@ -607,6 +677,25 @@ strictly positive set support and coefficients in `K`.
   blocks over the old Hahn field is 16's (Theorem 16.31, Corollary 16.32),
   not in the repository at 20's pin, and is credited (Lemma 15.62). 20's
   own statements are otherwise accurate; no error was found.
+- **Fifth batch.** 21 (pin `9693b28`, after the writing of the second merge
+  and before that of the third, `aae58bb`) quotes Proposition 13.12(iii) as
+  `d ≤ pd_{A_d} D ≤ d + 1` with the next paragraph leaving the value
+  undetermined, and (iv) as bounds for lattice modules; both were accurate at
+  its pin and are now settled by 21 itself (Corollary 13.47, Theorem 13.48),
+  with pointers added beside the bounds, and the stale sentences (the
+  paragraph after Proposition 13.12, Remark 13.16, Questions 18.3 and 18.12,
+  the merge's non-claim (6)) are updated. 21 presents a uniform calculation of
+  all `Tor` groups of two lattice quotients, the self-`Tor` ranks, second `Tor`
+  as a linear-disjointness test and the `Tor` groups against constant-term
+  modules as its contributions, and calls the additive second-`Tor` formula a
+  dimension-shift consequence of the report's tensor calculation. At its pin
+  the report did not contain 17's Section 13.9 (written in `aae58bb`); the
+  second-`Tor` identification with its rank, the self-`Tor` range, the pair
+  `Z[√2]`, `Z[√3]` and the `Tor` groups against modules killed by the tail are
+  17's (Theorem 13.34, Corollary 13.36, Theorem 13.42), and 21 is credited
+  there as a further source. The "quadratic self-`Tor` example" that 21 finds in
+  the report is 12's `Tor_2(A/H, A/H) ≅ D ⊕ D` (Theorem 13.11). No error was
+  found in 21's proofs.
 - **Prior manuscripts.** 03's `SOURCE_NOTES` calls its companion draft
   (`omnific_integers(1).tex`) not redistributed, and 04's audit calls its prior
   manuscript (`omnific_integers_diophantine.tex`) absent from the pinned tree.
@@ -625,7 +714,9 @@ strictly positive set support and coefficients in `K`.
   hypothesis (Section 12). 12 assumes `c² ∈ D` for the flat dimensions `d + 1` and
   `2` of its cyclic modules but needs it only for its `Tor_2` formula
   (Theorem 13.11), and gives only bounds for projective dimensions that are exact
-  in rank one (Proposition 13.12). 14 credits the sibling report's example
+  in rank one (Proposition 13.12; 21 has since determined them for every `d`,
+  Corollary 13.47, Theorem 13.48). 21 repeats 17's `Tor` results without credit
+  (it could not see them); they are credited (Section 13.10). 14 credits the sibling report's example
   `[1:√2]` but not its rationality theorem for primitive directions, of which 14's
   unimodular-direction criterion is the Gaussian and principal-ideal extension.
   17 assumes `κ` uncountable for its relation counts, but its proofs use only
@@ -656,7 +747,12 @@ strictly positive set support and coefficients in `K`.
   `verification_results.json` (here
   `data/20-boolean-branching-verification_results.json`) and 20's saved copies
   of 19 (`article(20260923-180548).tex` and its PDF), which are neither shipped
-  nor in the repository).
+  nor in the repository; for the fifth batch: `21-derived-arithmetic-build.sh`
+  and `21-derived-arithmetic-build.ps1` run pdfLaTeX on `article.tex` in their
+  own directory, which is not shipped there, and
+  `21-derived-arithmetic-provenance.json` describes 21's own 25-page PDF and
+  build; 21's delivered `SHA256SUMS.txt` was verified at placement and
+  dropped).
 
 ## Relation to the neighbouring reports
 
@@ -707,12 +803,15 @@ strictly positive set support and coefficients in `K`.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 153 pages with no errors, warnings, undefined references,
+The build gives 164 pages with no errors, warnings, undefined references,
 multiply defined labels or overfull or underfull boxes (the committed text
-before the fourth merge gave 140 pages, and before the third 117, also clean).
+before the fifth merge gave 153 pages, before the fourth 140, and before the
+third 117, also clean). Every statement, section and equation number of the
+text before the fifth merge is unchanged; the fifth merge's statements are
+Proposition 13.43 to Theorem 13.57 in Section 13.10.
 Build in a copy of the directory and do not commit the auxiliary files.
 
-The seventeen check programs were rerun for the four merges on copies (Python
+The eighteen check programs were rerun for the five merges on copies (Python
 3.14.4, SymPy 1.14.0); all pass and reproduce the recorded outputs up to line
 endings, the recorded Python version and (18) the recorded time stamp.
 **Several write files by default**:
@@ -727,8 +826,11 @@ writes `../data/verification.json` relative to the script (here an unprefixed
 `data/verification.json` in this directory) unless given `--output`; 18 always
 writes `verification_results.json` next to the script; 19 prints to standard
 output only, but its `build.sh` would overwrite `checks.txt`; 20 always writes
-`verification_results.json` next to the script (and prints it). Run them with an
-explicit output in a scratch directory, and run 04, 12, 18 and 20 on a copy:
+`verification_results.json` next to the script (and prints it); 21 writes
+`verification_results.json` next to the script unless given `--output` (here
+that would be a new, unshipped `code/verification_results.json`). Run them with
+an explicit output in a scratch directory, and run 04, 12, 18, 20 and 21 on a
+copy:
 
 ```sh
 cd docs/surreal/set-sized-quotients-of-omnific-integers
@@ -751,16 +853,20 @@ python code/17-relations-arithmetic-verify.py --output "$T/17.json"           # 
 cp code/18-polynomial-rigidity-verify.py "$T/" && python "$T/18-polynomial-rigidity-verify.py" > "$T/18.out"   # 499 assertions; writes $T/verification_results.json
 python code/19-normalization-fibres-checks.py > "$T/19.txt"                   # 253 primary checks; = data/19-...
 cp code/20-boolean-branching-verify.py "$T/" && python "$T/20-boolean-branching-verify.py" > "$T/20.out"   # 6,674 assertions; writes $T/verification_results.json
+cp code/21-derived-arithmetic-verify.py "$T/" && python "$T/21-derived-arithmetic-verify.py" --output "$T/21.json"   # 1,008 + 600 checks; stdlib; = data/21-... as JSON
 ```
 
 12 and 19 require SymPy but ship no requirements file (19's README names
 SymPy 1.14.0); 14, 16, 17, 18 and 20 ship `sympy==1.14.0` (20's record was made
-with Python 3.13.5; the rerun under 3.14.4 differs only in that field). Run 12 without Python's `-O` option (its checks are
-assertions). The shipped `04-…-Makefile`, `06-…-Makefile`, `10-…-Makefile`,
+with Python 3.13.5; the rerun under 3.14.4 differs only in that field); 21 needs
+only the standard library, and its rerun equals the recorded JSON in content
+(on Windows the rewritten file has CRLF line endings). Run 12 and 21 without
+Python's `-O` option (their checks are assertions). The shipped `04-…-Makefile`, `06-…-Makefile`, `10-…-Makefile`,
 `09-set-shadows-build.sh`, `11-set-sized-algebra-build.sh`,
 `12-homological-dimension-build.sh`, `14-arithmetic-tensors-build.py`,
-`18-polynomial-rigidity-build.sh`, `19-normalization-fibres-build.sh` and
-`20-boolean-branching-Makefile` use the
+`18-polynomial-rigidity-build.sh`, `19-normalization-fibres-build.sh`,
+`20-boolean-branching-Makefile`, `21-derived-arithmetic-build.sh` and
+`21-derived-arithmetic-build.ps1` use the
 original package file names (`verify.py`, `article.tex`,
 `omnific_set_shadows.tex`, `omnific_homological_dimension.tex`,
 `code/check_finite_identities.py`, …) and do not run as shipped; they are kept
@@ -776,6 +882,12 @@ Proposition 16.64 for `n ≤ 3`, `d ≤ 5`. For the fourth merge, an independent
 exact computation, not shipped, rechecked in 18 checks 20's certificate
 (15.24), the values of the specializations, the many-branch identity of
 Theorem 15.70, the simple zeros behind the square classes and the identities
-behind Proposition 15.68. `19-normalization-fibres-build.sh`
+behind Proposition 15.68. For the fifth merge, an independent exact
+computation, not shipped, rechecked in 78 checks the converse formula of
+Theorem 13.46 in 12 cases, the exponent identities behind it, the Koszul
+transition identity, the `Tor_2` and `Ind_2` ranks and discriminants of the
+four orders, and the product rank for `Q(√2), Q(√3)`; neither it nor 21's
+program proves the infinite `Ext` nonvanishing, which rests on the written
+proof of Theorem 13.46. `19-normalization-fibres-build.sh`
 runs `python3 checks.py | tee checks.txt`, which would overwrite the recorded
 result; do not run it in this directory.
