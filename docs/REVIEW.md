@@ -1954,9 +1954,12 @@ repository comparison remained limited to its historical pin and named
 neighbours. No exhaustive source or priority search is claimed.
 
 Baseline and revised PDFs each passed three LaTeX passes, at 90 and 91 pages,
-with no final warnings or box notices. All 274 earlier labels retain their
-numbers; the new label is Corollary 22.9. Of the original 88 result
-environments, 87 are unchanged and the remaining one only makes the
+with no final warnings or box notices. All 33 pages with changed text or
+pagination were visually inspected, together with the unchanged transition
+page 62: 34 revised physical pages in total (2–3, 7 and 58–88), with no
+layout findings. The baseline contents page was also compared. All 274 earlier
+labels retain their numbers; the new label is Corollary 22.9. Of the original
+88 result environments, 87 are unchanged and the remaining one only makes the
 characteristic-zero coefficient-field assumption explicit. The new corollary
 brings this report to 82 standard statements plus seven main theorems, and
 the independent 49-report inventory to 2,535 standard statements.
@@ -1966,6 +1969,29 @@ SymPy 1.14.0, and source 12 passes 9,308 checks using the standard library.
 Their complete records differ from the delivered records only in Python
 3.13.5 becoming 3.13.14. These finite checks do not prove the general
 coefficient-field, descent, independence or new meromorphic assertions.
+
+### Validation after the triangle merges
+
+Merged `7da84a2`, which adds the normalized-coordinate flat-triangle theorem
+and aligns the row/column-finite spectral comments with the corrected
+two-index zero-divisor hypothesis. Its seven new modules are each imported
+once. A bounded mapping audit checked every normalized-triangle clause and
+confirmed that the singleton algebra equivalence remains explicitly pending.
+The combined `LEAN_NUM_THREADS=2 lake build` passed 4,065 jobs, with 9,011
+declarations accepted by the default axiom audit.
+
+The next fetch brought `a73c1b4`, adding six imported modules for the symmetric
+height and side-gap triangles and the appreciable-gap degeneration. Each
+module is imported once; the bounded scope audit confirmed every clause of
+the three full-example mappings, including complete strong sums, the
+collinear standard-part shadow and the actual ordinal-omega equivalents.
+Neither incoming change altered a manuscript source. After merging it, the combined
+build passed 4,071 jobs, with 9,219 declarations accepted by the axiom audit;
+both builds use only `propext`, `Classical.choice` and `Quot.sound`.
+The independent inventory remains 2,535 statements in 49 reports; all 2,864
+cited source labels and 1,141 local Markdown destinations resolve. The new
+coefficient-field corollary remains a source-level result pending Lean
+formalization.
 
 ## Remaining scope
 

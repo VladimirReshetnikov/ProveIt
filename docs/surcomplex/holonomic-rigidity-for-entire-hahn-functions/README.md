@@ -591,9 +591,11 @@ states the precise literature checks and remaining obligations. This adds
 source-level proofs, not Lean declarations.
 
 The baseline and revised PDFs each pass three LaTeX passes with clean final
-logs; the revised report has 91 pages. All 274 previous label numbers remain,
-and the new corollary is 22.9. The 88 earlier result statements are unchanged
-except for making the existing characteristic-zero assumption explicit in
+logs; the revised report has 91 pages. All 33 pages with changed text or
+pagination and the unchanged transition page 62 were visually inspected
+(34 revised pages total), with no layout findings. All 274 previous label
+numbers remain, and the new corollary is 22.9. The 88 earlier result statements
+are unchanged except for making the existing characteristic-zero assumption explicit in
 Corollary 21.8; there are now 82 standard statements and seven main theorems.
 All 28 historical audit/code/data files are preserved. On copied scripts,
 source 11's 8,673 cases and source 12's 9,308 checks pass; their full records
