@@ -203,6 +203,9 @@ proves the primality, mixed-gcd and Chinese remainder corollary
 `odg:cor:mixedgcd`. The [finite quotient package](../../../Surreal/Foundations/OmnificFiniteQuotients.lean)
 proves `odg:cor:charideals`, including unique ordinary moduli and
 factorization of every finite-target homomorphism through the constant term.
+The [constant rigidity package](../../../Surreal/Foundations/OmnificConstantRigidity.lean)
+proves `odg:prop:canonicalct`, its noninjective-endomorphism example,
+and non-residual-finiteness using an explicit nonzero monomial.
 Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report

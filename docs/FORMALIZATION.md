@@ -740,7 +740,10 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The inventory covers all 60 maintained main texts
+custom environments are not included. A label inside a nested equation
+labels that equation, not the enclosing theorem or proposition; an
+environment without its own label is indexed by its source line.
+The inventory covers all 60 maintained main texts
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in
@@ -4132,7 +4135,7 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 | Theorem | `fsp:thm:compression` (line 1123) | Signed-row lexicographic compression |
 | Theorem | `fsp:thm:scalebayes` (line 1198) | Minimum-plus Bayes with coefficient tie breaking |
 | Theorem | `fsp:thm:stability` (line 1280) | Absolute and valuation-sensitive conditioning stability |
-| Proposition | `fsp:eq:logitbayes` (line 1384) | Logit coordinates |
+| Proposition | Line 1384 (unlabeled) | Logit coordinates |
 | Proposition | `fsp:prop:softbound` (line 1486) | Normalization and perturbation bounds |
 | Theorem | `fsp:thm:multisoft` (line 1529) | Finite multiscale softmax limit |
 | Theorem | `fsp:thm:kl` (line 1601) | Finite Gibbs inequality and entropy bounds |
@@ -4169,7 +4172,7 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 | Proposition | `vtf:3d:prop:darboux` (line 877) | Finite-partition obstruction; source 03 |
 | Theorem | `vtf:thm:prolongation` (line 904) | Multivariable smooth prolongation |
 | Proposition | `vtf:prop:diffeo` (line 1027) | Lifting coordinate diffeomorphisms |
-| Theorem | `vtf:eq:christoffel` (line 1225) | Levi--Civita construction in the admissible algebra |
+| Theorem | Line 1225 (unlabeled) | Levi--Civita construction in the admissible algebra |
 | Proposition | Line 1317 (unlabeled) | Bianchi identities and conservation |
 | Theorem | `vtf:thm:stokes` (line 1489) | Hahn Stokes theorem |
 | Proposition | Line 1522 (unlabeled) | Positivity for smooth common-support integrands |

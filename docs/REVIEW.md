@@ -3450,6 +3450,26 @@ all 4,188 source references and 1,539 local Markdown destinations resolve.
 The library is unchanged by this pass; the preceding 4,406-job build and
 14,809-declaration axiom audit remain applicable before synchronization.
 
+## Combined validation with canonical constant extraction
+
+After the two-ring review `bf1d084`, synchronization through `5da5961`
+adds canonical constant extraction, endomorphism preservation, a concrete
+noninjective constant endomorphism and non-residual-finiteness of the actual
+omnific ring. The new declarations agree with the unchanged source
+proposition and its following example; the latter finiteness result does
+not claim the pending inverse-limit or topology constructions. The
+report guide now includes this coverage. Two incoming index entries
+were corrected: the logit and Christoffel labels belong to equations
+inside unlabeled results, not to the enclosing result environments.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,407 jobs and
+audits 14,830 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent inventory still validates 3,650 standard
+results, of which 19 are unlabeled, across 60 reports. All 4,189 source
+references and 1,542 local Markdown destinations resolve. No LaTeX or
+PDF changed in this synchronization; the clean 178/32-page artifacts
+remain current.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
