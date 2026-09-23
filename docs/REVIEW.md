@@ -3708,6 +3708,35 @@ across 61 reports, all 4,301 cited source references resolve, and all
 1,567 local Markdown destinations across 185 files pass. The article
 and catalogue remain the previously validated 180/32-page versions.
 
+## Large-cardinal and independent-copies synchronization
+
+The next publication attempt encountered upstream through `ce272a7`.
+The merge is documentation-only: `de45cee` assembles the three
+large-cardinal manuscripts, `781b19e` writes the single independent-copies
+manuscript, and `aa268a4` delivers nine further archives awaiting placement.
+The index now includes all 76 standard environments of the large-cardinal
+report, replacing the base's 32, and refreshes the independent-copies
+report's 29 entries and its three additional main-theorem references to
+their `isc:` labels. Its 34-page PDF and the new 80-page large-cardinal PDF
+are present. All 61 reports now have PDFs; the catalogue, reader map and
+root README no longer describe the large-cardinal write as pending.
+
+The newly added same-reals inner-model application in
+`dsn:rem:largecardinal` points to `lce:lem:absolute`. Its scope and the
+large-cardinal and independent-copies additions remain pending independent
+proof review, source reconciliation and Lean formalization. No existing
+mapped theorem changes in this merge. This record verifies navigation
+and integration, not the incoming proofs or their imported foundations.
+
+The independent inventory passes for 3,803 standard results in 61 reports,
+including 3,784 labeled and 19 unlabeled entries. All 4,347 cited source
+references resolve and all 1,575 local Markdown destinations pass.
+The catalogue builds in three passes to 32 pages without warnings or bad
+boxes; its changed entries on pages 11 and 32 were inspected. No Lean
+source changed, so the preceding 4,422-job build and 15,076-declaration
+audit apply without another build. The Diophantine review boundary and
+its validated 180-page article are unchanged.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

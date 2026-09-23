@@ -71,13 +71,16 @@ Placement `21375f8` (batch 30) adds two report bases,
 and [dilation rigidity](surcomplex/autonomous-dilation-relations/), and
 companions to the holonomic, nonabelian-support and omnific-preserving
 reports. The first four writes through `1ab41af` integrate those companions
-and the dilation report; the critical-point-defects write is pending.
+and the dilation report; `de45cee` completes the three-manuscript
+critical-point-defects assembly. Its 76 standard results are now indexed;
+independent proof review and Lean formalization remain pending.
 The automorphism assembly now has eight manuscripts and states automatic
 strongness for `Oz` automorphisms; these new claims await proof review.
 
 Placement `9d28e28` adds [independent surreal copies](surreal/independent-surreal-copies/),
 a proposed construction of copies sharing a prescribed set-sized Hahn core,
-and eight further companions awaiting integration. The new report and its
+written as a single-source report in `781b19e`, and eight further companions
+awaiting integration. The new report and its
 class-foundation assumptions remain pending proof review and Lean formalization.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
@@ -284,7 +287,7 @@ quantum theory and no measurable infinitesimal.
 | [Definable surreals and omnific integers](foundations-and-computation/definable-surreals-and-omnific-integers/) | The definable surreals form a real closed subfield, elementary in `No` and closed under `exp`, `log` and the omnific floor; `No ∩ HOD = No^HOD`, and `V = HOD` iff every omnific integer in `(0, ω)` is ordinal definable; the maximal initial core |
 | [Omnific notations](foundations-and-computation/omnific-notations/) | Holonomic towers, hereditary forms and rational `ω`-terms with decidable equality and floor; raw `d`-block equality is `Π⁰₁`-complete and support validity `Π¹₁`-complete |
 | [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation |
-| [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Set transport and termwise normal-form transport under an elementary embedding agree exactly on normal forms with fewer than `κ` terms, `κ` the critical point; placed in `21375f8`, write phase pending |
+| [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Three manuscripts on the claimed exact support threshold for two transports, defect coefficients, and descent to the target model; proof review pending |
 
 A mathematical closure theorem need not supply a uniform algorithm on the
 chosen names. In particular, numerical coefficient access does not supply a
@@ -295,8 +298,7 @@ lattice, supported operations and known implementation defects.
 
 ## Files, provenance and building
 
-Each report has a LaTeX source, a typeset PDF and a local README, except
-the critical-point-defects base placed in `21375f8`, whose write is pending. Most
+Each report has a LaTeX source, a typeset PDF and a local README. Most
 also retain verification programs under `code/` and recorded outputs under
 `data/`. Those finite checks do not establish infinite theorems. The former
 `sources/` archives were retired in `e5791a8`; their tracked originals remain
