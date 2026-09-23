@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **49 research reports in five families**. Start with the
+This collection has **51 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -15,6 +15,12 @@ formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
 
 ## Newest reports
+
+The documents placed in `be06fc8` add [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/)
+and [set-sized quotients of the omnific integers](surreal/set-sized-quotients-of-omnific-integers/),
+from eleven incoming manuscripts. Their 75 standard results and three custom
+main theorems are indexed in the formalization ledger and remain pending.
+The typeset catalogue still covers the earlier 49 reports.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -72,7 +78,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: sixteen reports
+## Surreal numbers: eighteen reports
 
 | Report | Question or main subject |
 |---|---|
@@ -92,6 +98,8 @@ not extend their earlier proof-review scope.
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)` |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Constant-term retraction, finite quotients, norm and quadratic rigidity, a quartic definition of the ordinary integers, and global support bounds |
+| [Set-sized quotients of the omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Universal constant-term quotients, small module actions, Gaussian analogues, cardinal detection thresholds and homological obstructions |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
