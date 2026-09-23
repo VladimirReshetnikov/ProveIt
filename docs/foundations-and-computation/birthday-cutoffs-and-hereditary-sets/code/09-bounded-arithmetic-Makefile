@@ -1,0 +1,12 @@
+.PHONY: all pdf check clean
+
+all: pdf check
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error surreal_cutoffs.tex
+
+check:
+	python3 finite_checks.py
+
+clean:
+	latexmk -c surreal_cutoffs.tex

@@ -1,0 +1,2131 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=green!35!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={The Set-Theoretic Content of Bounded Surreal Arithmetic},pdfauthor={Research article prepared with ChatGPT},pdfsubject={Birthday cutoffs, hereditary set universes, bi-interpretation, axiom spectra and extension rigidity}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Bounded surreal arithmetic and set theory}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=2em}
+\clubpenalty=10000\widowpenalty=10000\displaywidowpenalty=10000
+\allowdisplaybreaks[2]\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Ord}{\operatorname{Ord}}
+\newcommand{\bd}{\operatorname{b}}
+\newcommand{\TC}{\operatorname{TC}}
+\newcommand{\B}{\mathcal B}
+\newcommand{\K}{\mathcal K}
+\newcommand{\C}{\mathcal C}
+\newcommand{\I}{\mathcal I}
+\newcommand{\J}{\mathcal J}
+\newcommand{\Code}{\operatorname{Code}}
+\newcommand{\Bit}{\operatorname{Bit}}
+\newcommand{\Pre}{\operatorname{Pre}}
+\newcommand{\Vis}{\operatorname{VisOrd}}
+\newcommand{\Coll}{\operatorname{Coll}}
+\newcommand{\SG}{\operatorname{SignGraph}}
+\newcommand{\Etern}{\mathsf E}
+\newcommand{\Pack}{\mathsf P}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\om}{\omega}
+\newcommand{\nsum}{\mathbin{\oplus}}
+\newcommand{\nprod}{\mathbin{\otimes}}
+\newcommand{\card}[1]{\lvert#1\rvert}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ceilcard}[1]{\kappa(#1)}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.5in}
+{\large\scshape A foundational research article\par}
+\vspace{0.35in}
+{\Huge\bfseries The Set-Theoretic Content\par of Bounded Surreal Arithmetic\par}
+\vspace{0.28in}
+{\Large Hereditary-size universes, coherent bi-interpretations,\par axiom spectra, and extension rigidity\par}
+\vspace{0.35in}
+{\large September 22, 2026\par}
+\vspace{0.12in}
+{Research article prepared with ChatGPT\par}
+\vspace{0.35in}
+\begin{minipage}{0.92\textwidth}
+\begin{abstract}
+Equip a surreal field with its birthday function. Its global connection with
+set theory is already the subject of a bi-interpretation theorem announced by
+Chen--Hamkins--Yang. This article investigates a more quantitative question:
+\emph{which set universe is recovered from a particular birthday cutoff?}
+
+For an epsilon number $\lambda$, let $\B_\lambda$ be the ordered field
+$\No_{<\lambda}$ with birthday, and let $\kappa(\lambda)$ be the least cardinal
+not below $\lambda$. We give an explicit interpretation whose collapse is
+exactly $H_{\kappa(\lambda)}$. If $\lambda$ is a cardinal, this is a uniform
+bi-interpretation with $H_\lambda$. Otherwise it is a uniform
+bi-interpretation with $(H_{\kappa(\lambda)},\in,\lambda)$: the missing cutoff
+is itself recoverable as an interpreted set. Thus even
+$\No_{<\varepsilon_0}$, with birthday, recovers all hereditarily countable sets.
+Small certificates for arithmetic justify the reverse interpretation without
+assuming Replacement inside the hereditary-size universe.
+
+The resulting elementary-inclusion classification is sharp: for epsilon
+numbers $\lambda<\eta$, the inclusion $\B_\lambda\prec\B_\eta$ holds exactly
+when both cutoffs are cardinals and $H_\lambda\prec H_\eta$. We also calibrate
+two explicit growth principles: birthday eternity corresponds to Replacement
+at cardinal cutoffs, while packing birthday fibers corresponds to the strong
+limit property. Their conjunction selects precisely the worldly cardinal
+cutoffs. Finally we give a power-set-sized detector for new subsets in outer
+models, prove extension rigidity at strong-limit cutoffs, and explain the
+orientation obstruction to bi-interpretation for surcomplex numbers.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.92\textwidth}\small
+\textbf{Status.} Written proofs of proposed local refinements, not a refereed
+publication or a proof-assistant-certified development. The global
+bi-interpretation theorem, the classical field-cutoff theorem, and ordinary
+well-founded coding are prior work, not discoveries claimed here. Novelty is
+limited to the refinements identified in the provenance discussion; an
+exhaustive priority claim is not made.
+\end{minipage}
+\end{titlepage}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage\pagenumbering{arabic}
+
+\section{The question, the results, and their provenance}
+\label{sec:intro}
+
+The field structure of the surreal numbers and their construction history
+carry very different information. Real-closed-field quantifier elimination
+makes all inclusions between real closed subfields elementary in the ordered
+field language. A birthday predicate remembers much more: it can distinguish
+individual sign coordinates and thereby encode sets and well-founded
+relations. The issue addressed here is not merely whether this coding is
+possible globally, but how its strength changes when only birthdays below one
+ordinal are allowed.
+
+\subsection{What is already known}
+
+Chen, Hamkins, and Yang announced that the surreal ordered field with birthday
+order is bi-interpretable with the set-theoretic universe, and described a
+first-order theory of surreal arithmetic intended to be bi-interpretable with
+ZFC. Hamkins's September and November 2025 slides give the global coding by
+pointed well-founded extensional relations, together with birthday-growth
+principles; the March 2026 seminar announcement repeats the global theorem
+\cite{CHYKobe,CHYNotreDame,CHYCUNY}. This article does \emph{not} claim that
+theorem, its basic coding idea, or the association of growth with set-existence
+axioms as new. We use a different, size-explicit implementation to study
+cutoffs. We do not rely on the full axiomatics of the announced theory being
+finalized.
+
+The classical cutoff result is also essential prior work: if $\lambda$ is an
+epsilon number, $\No_{<\lambda}$ is a real closed subfield. The original
+van den Dries--Ehrlich paper must be used together with its erratum
+\cite{vdDE,vdDEerr}; Bournez--Guilmant state the corrected field and
+real-closedness results explicitly in their Theorems 1.1--1.2
+\cite{BG}. The sign construction and recursive arithmetic used below are
+classical \cite{Conway,Gonshor}. Rangel--Mariano provide a separate algebraic
+set-theoretic program and foundational discussion; their different language
+and aims must not be conflated with birthday-enriched field structures
+\cite{RM}.
+
+\subsection{The local questions answered here}
+
+We use $\TC(\{x\})$ for the transitive closure containing $x$ and all its
+iterated members, and write
+\[
+ H_\kappa=\{x:\card{\TC(\{x\})}<\kappa\}.
+\]
+The following statements are the principal refinements developed in this
+article. The word ``uniform'' means that fixed finite formulas work at every
+cutoff in the stated class, not that a separate language is chosen for each
+cardinal.
+
+\begin{theorem}[Cardinal rounding and cutoff recovery; proved below]
+\label{thm:main-rounding}
+Let $\lambda$ be an epsilon number and let
+\[
+ \ceilcard{\lambda}=\min\{\kappa:\kappa\text{ is a cardinal and }\lambda\le\kappa\}.
+\]
+There is one parameter-free interpretation $\I$ such that
+\[
+ \I(\B_\lambda)\cong(H_{\ceilcard{\lambda}},\in).
+\]
+If $\lambda$ is a cardinal, $\B_\lambda$ and $(H_\lambda,\in)$ are uniformly
+bi-interpretable. If $\lambda$ is not a cardinal, $\B_\lambda$ and
+$(H_{\ceilcard{\lambda}},\in,\lambda)$ are uniformly bi-interpretable.
+In the latter case the named ordinal $\lambda$ is definable, as an interpreted
+set, in $\B_\lambda$ itself.
+\end{theorem}
+
+This is a cardinal-rounding statement, not a rank-cutoff statement.
+For example, $\kappa(\varepsilon_0)=\omega_1$, whereas
+$V_{\varepsilon_0}$ is not the recovered universe. At a singular cardinal
+$\kappa$ the recovered structure is still $H_\kappa$; no regularity assumption
+is hidden in the theorem.
+
+\begin{theorem}[Elementary-inclusion spectrum; proved below]
+\label{thm:main-elementary}
+For epsilon numbers $\lambda<\eta$,
+\[
+ \B_\lambda\prec\B_\eta
+ \quad\Longleftrightarrow\quad
+ \lambda,\eta\text{ are cardinals and }H_\lambda\prec H_\eta.
+\]
+The field reducts, in contrast, always form an elementary inclusion.
+\end{theorem}
+
+Two further results explain the set-existence and extension content of this
+classification. We introduce fully specified principles $\Etern$ and $\Pack$
+in \cref{sec:growth}, rather than silently choosing among possible versions of
+the announced surreal-arithmetic axioms.
+
+\begin{theorem}[Growth spectrum; proved below]
+\label{thm:main-growth}
+For an epsilon-number cutoff, birthday eternity $\Etern$ fails at every
+noncardinal cutoff. At an uncountable cardinal $\kappa$,
+\[
+ \B_\kappa\models\Etern
+ \quad\Longleftrightarrow\quad
+ H_\kappa\models\text{Replacement}.
+\]
+Fiber packing $\Pack$ holds exactly at the uncountable strong-limit cardinal
+cutoffs. Consequently
+\[
+ \B_\lambda\models\Etern+\Pack
+ \quad\Longleftrightarrow\quad
+ \lambda\text{ is a cardinal and }V_\lambda\models\mathrm{ZFC}.
+\]
+\end{theorem}
+
+\begin{theorem}[Extension rigidity at a strong-limit cutoff; proved below]
+\label{thm:main-extension}
+Let $M\subseteq N$ be transitive models of ZFC with the same ordinals, and let
+$\kappa$ be an uncountable cardinal in both, strong limit in $M$. Then
+\[
+ \B_\kappa^M\prec\B_\kappa^N
+ \quad\Longleftrightarrow\quad
+ \B_\kappa^M=\B_\kappa^N
+ \quad\Longleftrightarrow\quad
+ \Pow^M(\alpha)=\Pow^N(\alpha)\quad(\alpha<\kappa).
+\]
+Without the strong-limit hypothesis, a new subset of $\alpha<\kappa$ still
+prevents elementarity whenever $(2^{\card\alpha})^M<\kappa$.
+\end{theorem}
+
+The proofs supply explicit witnesses and specify the sense in which the last
+cardinal bound is sharp. It is sharp for the old-power-set \emph{parameter},
+not a claim that every other possible detector needs that much space.
+
+\subsection{Repository comparison and novelty boundary}
+
+The repository inspection was pinned to
+\begin{center}\small\texttt{4f2645599121fa872c7104995e47f86f0382351f}.\end{center}
+The report catalog and the foundations report were inspected, with particular
+attention to sign presentations, local recursion, universes, birthday
+cutoffs, and size distinctions. The newer surcomplex-automorphism report's
+scope was also checked \cite{RepoCatalog,RepoFoundations,RepoAutomorphisms}.
+These sources already cover classical cutoff closure, foundational size
+obstructions, localization of arithmetic, and automorphism rigidity. None of
+those broad subjects is novel merely because it reappears below.
+
+The proposed contribution is the \emph{specific package} of cardinal rounding,
+recovery of a noncardinal cutoff as a set, the exact elementary-inclusion
+classification, the singular-cardinal-safe growth calibration, and the
+explicit extension detector. These formulations were not located in the
+inspected sources. That is a bounded literature-and-repository observation,
+not proof of worldwide absence or an assertion about unpublished work of
+other researchers. In particular, the refinements may overlap with details
+of the Chen--Hamkins--Yang project not present in the public announcements.
+No named longstanding conjecture is advertised as resolved.
+
+\section{Foundations and the two ordinal languages}
+\label{sec:foundations}
+
+\subsection{Ambient theory and class conventions}
+
+The proofs take place in ZFC. All cutoff structures are sets. The optional
+statements about the full surreal class are definable-class statements,
+understood one first-order formula at a time. Neither a set of all surreals
+nor an internally available truth predicate for the entire universe is
+assumed. Quotient interpretations use definable equivalence relations; the
+Mostowski collapse supplies set representatives when we compare them with
+$H_\kappa$. Global Choice is not used.
+
+When a transitive model $M$ is explicitly mentioned, its surreals are the sign
+sequences belonging to $M$, and cardinalities with superscript $M$ are computed
+there. A statement proved internally in an arbitrary model of ZFC does not
+assert that the model's well-founded relations are externally well founded.
+Our outer-model comparison theorems explicitly use transitive models.
+
+\subsection{The carrier and the birthday function}
+
+A surreal is a function $s:\alpha\longrightarrow\{-,+\}$ for an ordinal
+$\alpha$. Comparison is lexicographic, with termination between $-$ and $+$.
+The all-plus sequence of length $\alpha$ is the embedded ordinal $\alpha$.
+Throughout, $\bd(s)$ is the \emph{surreal ordinal} corresponding to the length
+of $s$. Thus it is a function on the surreal carrier, not an extra ordinal
+sort. Set-theoretic lengths and their surreal embeddings are distinguished
+by context.
+
+For an epsilon number $\lambda$, define
+\[
+ K_\lambda=\No_{<\lambda},\qquad
+ \B_\lambda=(K_\lambda;0,1,+,-,\cdot,<,\bd).
+\]
+The language includes no exponentiation, support predicate, membership
+predicate, or second-order quantifier.
+
+\begin{lemma}[Birthday order and birthday function]
+\label{lem:birthday-language}
+On each $\B_\lambda$, the birthday function and the birthday-precedence
+relation $x\prec_b y\iff\bd(x)<\bd(y)$ are definitionally interconvertible.
+Moreover, the embedded ordinals are exactly the fixed points of $\bd$.
+\end{lemma}
+\begin{proof}
+Given the function, precedence is immediate. Conversely, equality of birthdays
+is expressed by neither $x\prec_b y$ nor $y\prec_b x$. In the class of sign
+sequences of length $\alpha$, the largest in numerical order is the all-plus
+sequence. Therefore $\bd(x)$ is the unique largest member of $x$'s
+birthday-equivalence class. A sign sequence is fixed by this function exactly
+when it is all plus.
+\end{proof}
+
+We abbreviate $\Ord(a)$ by $\bd(a)=a$. Quantification over embedded ordinals
+in $K_\lambda$ is precisely quantification over $\alpha<\lambda$.
+
+\subsection{Natural arithmetic, not ordinary ordinal arithmetic}
+
+For ordinal arguments, surreal addition and multiplication are the
+Hessenberg operations
+\[
+ \alpha+\beta=\alpha\nsum\beta,\qquad
+ \alpha\beta=\alpha\nprod\beta.
+\]
+They are strictly increasing in each positive argument where appropriate,
+and $\alpha+1$ agrees with ordinary ordinal successor. We use ordinary
+ordinal exponentiation only in metamathematical bounds and in explicitly
+set-theoretic constructions. It is not silently identified with a field
+operation.
+
+\begin{lemma}[Closure and cardinal estimates]
+\label{lem:card-estimates}
+Every uncountable cardinal is an epsilon number. For infinite ordinals
+$\alpha,\beta$, natural sums and products have cardinality at most
+$\max(\aleph_0,\card\alpha,\card\beta)$. In particular, if $\kappa$ is an
+uncountable cardinal and $\alpha,\beta<\kappa$, their natural sum and product
+are below $\kappa$.
+\end{lemma}
+\begin{proof}
+In Cantor normal form, a natural sum joins finitely many exponent terms; a
+natural product uses finitely many natural sums of their exponents. The
+cardinality estimate follows from the corresponding estimate for
+$\omega^\gamma$: for infinite $\gamma$, its cardinality is at most
+$\max(\aleph_0,\card\gamma)$. One can see the latter by representing ordinals
+below $\omega^\gamma$ by finite Cantor-normal-form lists with exponents below
+$\gamma$ and natural-number coefficients. These observations also cover
+finite arguments after adjoining $\aleph_0$ to the bound.
+
+If $\kappa$ is uncountable and initial, $\omega^\alpha<\kappa$ for every
+$\alpha<\kappa$. Continuity gives $\omega^\kappa\le\kappa$. The opposite
+inequality follows from $\omega^\alpha\ge\alpha$ and taking suprema. Hence
+$\omega^\kappa=\kappa$.
+\end{proof}
+
+For a general epsilon number, closure of natural arithmetic below $\lambda$
+also follows from the classical field-cutoff theorem. This simple closure is
+all the ordinal arithmetic needed by our relation codes.
+
+\subsection{Hereditary size rather than rank}
+
+\begin{lemma}[Basic hereditary-size facts]
+\label{lem:hereditary}
+Let $\kappa$ be an uncountable cardinal.
+A sign sequence of length $\alpha$ belongs to $H_\kappa$ exactly when
+$\alpha<\kappa$. Every subset of an ordinal $\alpha<\kappa$ belongs to
+$H_\kappa$. Also $H_\kappa\subseteq V_\kappa$.
+\end{lemma}
+\begin{proof}
+The transitive closure of the usual set-coded graph of a sign sequence has
+cardinality at most $\max(\aleph_0,\card\alpha)$, and it contains enough of
+the domain ordinal to have cardinality at least $\card\alpha$ when $\alpha$
+is infinite. The same estimate applies to a subset of $\alpha$.
+
+If $\card{\TC(\{x\})}\le\mu$ for an infinite $\mu<\kappa$, the membership
+relation on this transitive closure is a well-founded relation of size at
+most $\mu$. Its rank function takes values below $\mu^+$. This follows by
+well-founded induction, using regularity of the successor cardinal $\mu^+$:
+the supremum of at most $\mu$ ordinals below $\mu^+$ remains below $\mu^+$.
+Thus $\rank(x)<\mu^+\le\kappa$, and $x\in V_\kappa$.
+\end{proof}
+
+The statement that every subset of $\alpha$ belongs to $H_\kappa$ does
+\emph{not} say that the collection $\Pow(\alpha)$ is an element of
+$H_\kappa$. This distinction drives the growth results.
+
+\section{Small certificates for surreal arithmetic}
+\label{sec:certificates}
+
+A reverse interpretation cannot simply say ``perform the usual set-theoretic
+recursion inside $H_\kappa$.'' At a singular cutoff, Replacement may fail in
+that structure. We instead prove that each individual arithmetic computation
+has a certificate of the same hereditary cardinal scale as its inputs.
+
+\subsection{Legal cuts can be checked using prefixes}
+
+For sets of sign sequences $L<R$, let $\{L\mid R\}$ denote their simplest
+separator. The classical simplicity theorem supplies this separator and the
+bound
+\begin{equation}
+ \bd(\{L\mid R\})\le
+ \sup\{\bd(a)+1:a\in L\cup R\}.
+ \label{eq:cut-bound}
+\end{equation}
+The supremum of the empty set is zero. These statements can equivalently be
+proved by the sign-by-sign cut construction \cite{Gonshor}.
+
+\begin{lemma}[Prefix test for a cut value]
+\label{lem:cut-test}
+A sign sequence $z$ equals $\{L\mid R\}$ if and only if it separates $L$ and
+$R$ and no proper sign prefix of $z$ separates them.
+\end{lemma}
+\begin{proof}
+The forward implication is immediate. For the converse, suppose $y$ is a
+separator shorter than $z$. If $y$ is a prefix of $z$, the stated test fails.
+If it is not, their longest common prefix lies numerically between them and
+is a proper prefix of $z$. The set of separators is convex, so this common
+prefix is another separator. Again the test fails. Thus $z$ has minimum
+birthday among separators, and uniqueness of the simplest separator gives
+the result.
+\end{proof}
+
+The check in this lemma quantifies only over the displayed option sets and
+the prefixes of $z$. In set coding it is a bounded check: one does not
+quantify over all sign sequences of earlier birthdays.
+
+\subsection{Well-founded option graphs of small size}
+
+A labeled option graph has a set $D$ of vertices, left and right successor
+relations, and a rank label that strictly decreases along every option edge.
+A valuation of such a graph assigns a sign sequence to each vertex so that
+its value passes \cref{lem:cut-test} for the values at its options. When the
+graph is numeric, this valuation exists and is unique.
+
+\begin{lemma}[Small numeric graphs have small certificates]
+\label{lem:graph-size}
+Suppose $\mu$ is infinite and a numeric, well-founded option graph has at
+most $\mu$ vertices, with its structural data of hereditary size at most
+$\mu$. Then it has a rank-labeled valuation certificate of hereditary size
+at most $\mu$.
+\end{lemma}
+\begin{proof}
+The graph rank of every vertex is below $\mu^+$, by the successor-cardinal
+argument in \cref{lem:hereditary}. Applying \eqref{eq:cut-bound} by induction
+shows that a vertex value has birthday at most that vertex's graph rank.
+Thus each rank label and each sign value has hereditary size at most $\mu$.
+There are at most $\mu$ vertices and at most $\mu^2=\mu$ edges, so the union
+of all these data still has hereditary size at most $\mu$. The existence
+construction here takes place in the ambient ZFC universe, not in a
+possibly deficient $H_\kappa$.
+\end{proof}
+
+\subsection{The computation graph for addition and multiplication}
+
+Take all sign prefixes of the inputs, including the inputs themselves. With
+\[
+ \mu=\max(\aleph_0,\card{\bd(x)},\card{\bd(y)}),
+\]
+this prefix family and its data have hereditary size at most $\mu$.
+For addition, use finite signed words of prefix atoms $A(a)$; an option moves
+one atom to one of its sign-prefix options, reversing left and right for a
+negative atom. The root word is $A(x)+A(y)$. This is the usual disjunctive-sum
+construction of the numeric game for $x+y$.
+
+For multiplication, use finite signed words of pair atoms $P(a,b)$, with
+$a,b$ prefixes of the respective inputs. An option of a positive pair atom
+is a signed three-term word
+\begin{equation}
+ P(a',b)+P(a,b')-P(a',b').
+ \label{eq:pair-option}
+\end{equation}
+It is a left option when $(a',b')$ is left--left or right--right, and a right
+option for the two mixed choices. Negative atoms exchange the sides and
+negate the replacement word. An option of a word replaces one atom by one
+of these words. The root is $P(x,y)$. This spells out Conway's multiplication
+recursion without first constructing a large universe of games.
+
+There are at most $\mu$ possible finite words. These graphs are well founded.
+For addition, use the natural sum, over atoms of the word, of
+$\omega^{\bd(a)}$. For multiplication put
+\[
+ \rho(a,b)=\bd(a)\nsum\bd(b)
+\]
+and use the natural sum of $\omega^{\rho(a,b)}$ over the pair atoms.
+Every pair atom in \eqref{eq:pair-option} has strictly smaller $\rho$ than the
+replaced atom. A finite sum of lower powers of $\omega$ is smaller than the
+replaced power, so each move strictly decreases the displayed measure.
+The standard numeric-game arithmetic theorem identifies the values of these
+graphs with $x+y$ and $xy$; their options are exactly the classical recursive
+options, including the signs in the negative summands \cite{Conway}.
+
+\begin{theorem}[Hereditary-size arithmetic certificates]
+\label{thm:certificates}
+There are fixed first-order set-theoretic formulas defining surreal addition,
+negation, and multiplication on sign sequences such that, for inputs of
+hereditary size at most an infinite $\mu$, a correct computation has a
+certificate of hereditary size at most $\mu$. Verification of a supplied
+certificate is absolute between transitive sets containing its data.
+Consequently, for every uncountable cardinal $\kappa$, these formulas define
+in $H_\kappa$ exactly the external surreal operations on its sign sequences.
+No assumption $H_\kappa\models\mathrm{Replacement}$ is required.
+\end{theorem}
+\begin{proof}
+For $+$ and multiplication, existentially quantify a set of word vertices
+containing the root and closed under the explicit option rule, its exact
+option relations, an ordinal rank labeling decreasing on edges, and a
+valuation by sign sequences passing the prefix cut test at every vertex.
+The node labels specify the input prefixes and the finite signed words; all
+checks of option generation quantify over those input prefix families and
+over entries of the finite words. Exactness requires both that each generated
+option is present and that every recorded edge is generated by the rule.
+The predicates for sign sequence, prefix, numerical comparison, finite word,
+and decreasing ordinal rank have bounded verifications on the supplied
+sets. In particular, a supplied prefix family is not accepted merely because
+its members are prefixes: for each ordinal $\xi\le\dom(s)$ it must contain
+the unique restriction $s\mathbin{\upharpoonright}\xi$, and every recorded
+prefix must be one of these restrictions. The same completeness check is
+imposed on the prefix families of vertex values used by the cut test.
+These are bounded checks against $\dom(s)+1$ and the supplied families.
+A word length is a finite ordinal; this is checked by requiring every
+ordinal at most that length to be zero or a successor. Thus a missing
+prefix or a nonstandard-length word cannot evade an option requirement.
+The verifier is consequently a fixed bounded set-theoretic predicate,
+after including these domains and prefix families as certificate data.
+Their cardinality and hereditary-size bounds remain $\mu$.
+
+Any valid certificate is sound: external well-founded induction on its
+rank labels identifies each vertex value with the value of its generated
+numeric game. This also proves uniqueness of the root value. A certificate
+exists by the preceding graph construction and \cref{lem:graph-size}, with
+hereditary size at most $\mu$. Negation simply reverses all signs and has the
+same size estimate.
+
+For inputs in $H_\kappa$, choose the infinite bound $\mu<\kappa$ given above.
+The external certificate belongs to $H_\kappa$; conversely any certificate
+there is externally sound by bounded absoluteness. Hence the existential
+formulas have the same intended values. The uses of cardinal regularity were
+at $\mu^+$, not at $\kappa$.
+\end{proof}
+
+\begin{remark}[Scope of the certificate theorem]
+This is not a proof that every class-recursive surreal operation is absolute
+in every hereditary-size structure. It proves the specific finite-signature
+claim needed here. Inversion is definable from multiplication by $xy=1$;
+its existence in the epsilon-number cutoffs, and real closedness, are supplied
+by the classical cutoff theorem. No normal-form birthday estimates or
+unproved sharp product-birthday conjecture enter the argument.
+\end{remark}
+
+\section{Definable sign access and a bounded pairing map}
+\label{sec:bits}
+
+\subsection{Recovering the sign tree from the two orders}
+
+For $x,y,z$ let $\operatorname{Between}(z;x,y)$ say that $z$ lies in the closed
+numerical interval with endpoints $x$ and $y$. Define
+\begin{equation}
+ \Pre(x,y)\quad\Longleftrightarrow\quad
+ \forall z\bigl((\operatorname{Between}(z;x,y)\land z\ne x)
+                 \longrightarrow\bd(x)<\bd(z)\bigr).
+ \label{eq:prefix}
+\end{equation}
+
+\begin{lemma}[Definable prefix relation]
+\label{lem:prefix}
+In every $\B_\lambda$, \eqref{eq:prefix} holds exactly when $x$ is a sign
+prefix of $y$, allowing equality.
+\end{lemma}
+\begin{proof}
+If $x$ is a prefix of $y$, every other point between them must continue the
+sign sequence of $x$; a point diverging earlier would lie outside that
+interval. Its birthday is therefore larger.
+
+If $x$ is not a prefix of $y$ and $y$ is a proper prefix of $x$, the endpoint
+$z=y$ violates the formula. In the remaining case the longest common prefix
+of $x,y$ lies strictly between them and has birthday smaller than that of
+$x$. This prefix belongs to the same cutoff. Finally, for $x=y$ the formula
+is vacuous, as required.
+\end{proof}
+
+Define the bit predicate by
+\begin{align}
+ \Bit(s,\alpha)\quad\Longleftrightarrow\quad &
+ \Ord(\alpha)\land\alpha<\bd(s)\ \land\nonumber\\
+ &\exists t\bigl(\Pre(t,s)\land\bd(t)=\alpha\land t<s\bigr).
+ \label{eq:bit}
+\end{align}
+The unique prefix of length $\alpha$ lies below $s$ precisely when the sign
+of $s$ at position $\alpha$ is plus. Thus
+\begin{equation}
+ \{\alpha<\delta:\Bit(s,\alpha)\},\qquad\bd(s)=\delta,
+ \label{eq:fiber-subsets}
+\end{equation}
+runs through \emph{all} subsets of $\delta$, once each. This uses a
+first-order quantifier over numbers of one birthday, not a second-order
+quantifier in the language.
+
+\subsection{Pairing without reconstructing ordinary ordinal multiplication}
+
+For a positive embedded ordinal $\theta$, put
+\begin{equation}
+ p_\theta(\xi,\zeta)=\theta\xi+\zeta,
+ \qquad \Lambda(\theta)=\theta^2+\theta.
+ \label{eq:pairing}
+\end{equation}
+All operations in \eqref{eq:pairing} are field operations, hence natural
+ordinal operations on these arguments.
+
+\begin{lemma}[Bounded pairing]
+\label{lem:pairing}
+The map $p_\theta$ injects $\theta\times\theta$ into $\Lambda(\theta)$.
+For every epsilon number $\lambda$ and every $0<\theta<\lambda$,
+$\Lambda(\theta)<\lambda$. For infinite $\theta$,
+$\card{\Lambda(\theta)}=\card\theta$.
+\end{lemma}
+\begin{proof}
+Suppose $\xi<\xi'<\theta$ and $\zeta,\zeta'<\theta$. Since
+$\xi+1\le\xi'$ in ordinal order, positivity and distributivity give
+\[
+ \theta\xi+\zeta<\theta\xi+\theta
+ =\theta(\xi+1)\le\theta\xi'\le\theta\xi'+\zeta'.
+\]
+For fixed $\xi$, cancellation gives injectivity in $\zeta$. Also
+$\theta\xi+\zeta<\theta^2+\theta$. Closure below $\lambda$ follows from its
+being a field cutoff. The cardinal estimate is
+\cref{lem:card-estimates}, together with $\theta\le\Lambda(\theta)$.
+\end{proof}
+
+Consequently a sign sequence of birthday $\Lambda(\theta)$ codes a binary
+relation on $\theta$. To make this code canonical for a given relation,
+require every plus position to be in the image of $p_\theta$; unused
+positions are minus. This last requirement is the first-order formula
+\[
+ \forall\rho<\Lambda(\theta)\,
+ \bigl(\Bit(r,\rho)\longrightarrow
+       \exists\xi,\zeta<\theta\ [\rho=p_\theta(\xi,\zeta)]\bigr).
+\]
+Here and below bounded ordinal quantifiers include the predicate $\Ord$.
+
+For a graph between two different ordinals $\delta,\epsilon<\lambda$, use
+$\theta=\delta+\epsilon+1$, which is above both. Coding the graph in the
+$\delta\times\epsilon$ rectangle of this square again stays below $\lambda$.
+The construction requires no definable global pairing on the entire class
+of ordinals, and no reconstruction of ordinary ordinal arithmetic.
+
+\section{Pointed relation codes and the exact interpreted universe}
+\label{sec:codes}
+
+\subsection{The definable domain of codes}
+
+A prospective code is a triple
+\[
+ c=(\delta,r,t),\qquad
+ 0<\delta<\lambda,\quad t<\delta,\quad\bd(r)=\Lambda(\delta),
+\]
+with $\delta,t$ embedded ordinals and with unused bits of $r$ equal to minus.
+Write
+\[
+ E_c(i,j)\quad\Longleftrightarrow\quad
+ i,j<\delta\ \land\ \Bit(r,p_\delta(i,j)).
+\]
+The orientation is \emph{child belongs to parent}: $i\,E_c\,j$ will mean
+that the object at node $i$ is a member of the object at node $j$.
+
+Require extensionality,
+\begin{equation}
+ \forall i,j<\delta\,
+ \bigl[\forall k<\delta\ (E_c(k,i)\leftrightarrow E_c(k,j))
+       \longrightarrow i=j\bigr],
+ \label{eq:extensional}
+\end{equation}
+and well-foundedness in the following form:
+\begin{align}
+ \forall u\,[\bd(u)=\delta\ \longrightarrow\ (&
+ (\exists j<\delta\ \Bit(u,j))\ \longrightarrow\nonumber\\[-0.2em]
+ &\exists j<\delta\,[\Bit(u,j)\land
+    \forall i<\delta\ (\Bit(u,i)\longrightarrow\neg E_c(i,j))])].
+ \label{eq:wf}
+\end{align}
+By \eqref{eq:fiber-subsets}, this is \emph{actual} well-foundedness of the
+set relation, not just well-foundedness against a restricted collection of
+subsets.
+
+Finally require generation by the root:
+\begin{align}
+ \forall u\,[\bd(u)=\delta\ \longrightarrow\ (&
+ \Bit(u,t)\land
+ \forall i,j<\delta\,[\Bit(u,j)\land E_c(i,j)\longrightarrow\Bit(u,i)]
+ \nonumber\\[-0.2em]
+ &\longrightarrow\forall i<\delta\ \Bit(u,i))].
+ \label{eq:rooted}
+\end{align}
+Thus no proper downward-closed subset of the graph contains the root.
+Let $\Code(c)$ be the conjunction of these conditions. The triple is an
+ordinary finite-dimensional interpretation domain in the single-sorted
+structure $\B_\lambda$.
+
+\begin{lemma}[Rooted collapse]
+\label{lem:collapse}
+Every valid code has a unique Mostowski collapse
+$\pi_c:\delta\longrightarrow T_c$ onto a transitive set. If
+$x_c=\pi_c(t)$, then
+\[
+ T_c=\TC(\{x_c\}),\qquad
+ \card\delta=\card{\TC(\{x_c\})}.
+\]
+\end{lemma}
+\begin{proof}
+Define by well-founded recursion
+\[
+ \pi_c(j)=\{\pi_c(i):i\,E_c\,j\}.
+\]
+Extensionality and well-founded induction show that $\pi_c$ is injective:
+if a collision existed, comparison of predecessor values would give equal
+predecessor sets at the first possible collision. Its image is transitive,
+and the displayed recursion gives an isomorphism. Uniqueness follows by
+well-founded induction as well; this is the usual Mostowski-collapse
+argument.
+
+The nodes reachable from $t$ by finitely many downward edges form a
+downward-closed subset containing $t$. By \eqref{eq:rooted} this is all of
+$\delta$. Under the collapse, these are exactly $x_c$ and its iterated
+members. Thus the image is $\TC(\{x_c\})$, giving the cardinal equality.
+\end{proof}
+
+Root generation is not needed merely to encode arbitrary sets. It is useful
+here because it makes the hereditary-size cost exact rather than just an
+upper bound polluted by unrelated graph components.
+
+\subsection{Equality and membership are definable}
+
+For codes $c=(\delta,r,t)$ and $d=(\epsilon,s,u)$, define $c\sim d$ when a
+coded bijection $f:\delta\to\epsilon$ preserves $E$, sends $t$ to $u$, and
+reflects $E$. Such a graph is expressed by a sign sequence in a square of
+width $\delta+\epsilon+1$, as in \cref{lem:pairing}. The familiar function,
+bijection, and edge-preservation clauses use only bounded ordinal
+quantifiers and bits. Therefore $\sim$ is a single first-order relation.
+
+For membership, let $c\in_\I d$ mean that there is a coded injection
+$f:\delta\to\epsilon$ such that
+\begin{align}
+ &E_d(f(t),u),\label{eq:member-root}\\
+ &E_c(i,j)\ \longleftrightarrow\ E_d(f(i),f(j))
+       &&(i,j<\delta),\label{eq:member-edge}\\
+ &E_d(v,f(j))\ \longrightarrow\
+       \exists i<\delta\,[E_c(i,j)\land f(i)=v]
+       &&(j<\delta,0\le v<\epsilon).\label{eq:member-full}
+\end{align}
+In \eqref{eq:member-full}, the quantifier on $v$ simply ranges over the
+embedded ordinals below $\epsilon$. The clause says that the image contains
+\emph{all} predecessors of its nodes, not merely some of them.
+
+\begin{lemma}[Correctness of equality and membership]
+\label{lem:equal-member}
+For valid codes,
+\[
+ c\sim d\iff x_c=x_d,
+ \qquad
+ c\in_\I d\iff x_c\in x_d.
+\]
+\end{lemma}
+\begin{proof}
+A root-preserving isomorphism gives equal collapsed roots by uniqueness of
+collapse. Conversely, if the roots agree, the two images are the same
+transitive closure by \cref{lem:collapse}, and
+$\pi_d^{-1}\pi_c$ gives the required isomorphism. Its graph has size at most
+$\max(\card\delta,\card\epsilon)$ and is codable within the same cutoff.
+
+For membership, \eqref{eq:member-edge} and \eqref{eq:member-full}, followed
+by induction along $E_c$, imply
+$\pi_d(f(j))=\pi_c(j)$ for all $j$. The root condition then gives
+$x_c\in x_d$. Conversely, if $x_c\in x_d$, the inclusion
+$\TC(\{x_c\})\subseteq\TC(\{x_d\})$ transports through the collapse maps to
+an injection satisfying all three clauses. Its image is predecessor-closed,
+so \eqref{eq:member-full} really does hold. The graph is again small enough
+to be coded below the cutoff.
+\end{proof}
+
+Let $\I(\B_\lambda)$ be the quotient of valid codes by $\sim$, with the
+membership relation just defined. All quantifiers in its interpreted
+formulas are replaced by quantifiers over triples satisfying $\Code$.
+No quotient class is assumed to be an element of the original structure.
+
+\subsection{Cardinal rounding}
+
+\begin{theorem}[Exact collapse range]
+\label{thm:collapse-range}
+For every epsilon number $\lambda$, the map $[c]\mapsto x_c$ is an
+isomorphism
+\[
+ \I(\B_\lambda)\cong(H_{\ceilcard{\lambda}},\in).
+\]
+More precisely, the ordinals $\delta$ supporting rooted codes for a given
+set $x$ are exactly those with
+\[
+ 0<\delta<\lambda,
+ \qquad\card\delta=\card{\TC(\{x\})}.
+ \label{eq:exact-code-size}
+\]
+\end{theorem}
+\begin{proof}
+Every code has $\delta<\lambda\le\kappa(\lambda)$. Hence its collapse has
+hereditary size $\card\delta<\kappa(\lambda)$, by
+\cref{lem:collapse}. This proves one inclusion of the range.
+
+Conversely, suppose $x\in H_{\kappa(\lambda)}$. Its nonempty transitive
+closure has some cardinal $\nu<\kappa(\lambda)$. By the definition of
+cardinal ceiling, $\nu<\lambda$: if $\lambda$ is a cardinal this is
+immediate; otherwise $\nu\le\card\lambda<\lambda$. Choose a bijection from
+$\nu$ onto $\TC(\{x\})$, transfer membership to $\nu$, and designate the
+node for $x$. The resulting graph is extensional, well founded, and generated
+by that node. It has a sign code of length $\Lambda(\nu)<\lambda$.
+Thus $x$ occurs in the range.
+
+For any other $\delta<\lambda$ equipotent to this transitive closure, the
+same construction works with a bijection from $\delta$. Necessity in
+\eqref{eq:exact-code-size} was already proved by rooted collapse. Correctness
+of both relations is \cref{lem:equal-member}.
+\end{proof}
+
+\begin{example}[The empty set and a first nonempty code]
+The empty set uses one node, no edges, and root zero. With $\delta=1$, the
+canonical relation string has birthday $\Lambda(1)=2$ and both signs minus.
+Thus a code for the empty set is $(1,--,0)$, not the surreal zero itself.
+For $\{\varnothing\}$ take $\delta=2$, root $1$, and the single edge
+$0E1$. The relation string has length $6$ and its only plus is at
+$p_2(0,1)=1$. Numeric values and the sets they code must not be identified.
+\end{example}
+
+\begin{example}[A countable cutoff already recovers all countable sets]
+Every hereditarily countable set has a rooted code on a finite ordinal or
+on $\omega$. Since
+\[
+ \Lambda(\omega)=\omega^2+\omega<\varepsilon_0,
+\]
+all such codes already occur in $\B_{\varepsilon_0}$. They recover
+$H_{\omega_1}$, including countable ordinals far larger than
+$\varepsilon_0$. Those larger ordinals are recovered as \emph{collapsed
+relations}, not as all-plus scalar sign sequences in the cutoff.
+\end{example}
+
+\section{Bi-interpretation and recovery of the cutoff}
+\label{sec:biinterpretation}
+
+\subsection{The ordinal and sign-graph bridges}
+
+For an actual embedded ordinal $a<\lambda$, there is a distinguished code
+$O(a)$ with domain $a+1$, root $a$, and edge relation $iEj$ iff $i<j$.
+Its sign relation code is uniquely determined by the unused-bit convention.
+The formula defining $O(a)$ is uniform, and its collapse is the
+von Neumann ordinal $a$.
+
+\begin{definition}[Visible interpreted ordinals]
+For a set code $c$ define
+\[
+ \Vis(c)\quad\Longleftrightarrow\quad
+ \exists a\,[\Ord(a)\land c\sim O(a)].
+\]
+Under the collapse isomorphism, these are exactly the ordinals below
+$\lambda$, not necessarily all ordinals of $H_{\kappa(\lambda)}$.
+\end{definition}
+
+There is also a definable bridge $\SG(s,c)$ saying that $c$ represents the
+set-coded sign function of the scalar $s$: its domain is $O(\bd(s))$, its
+values are the interpreted ordinals $0$ and $1$, and at each actual
+$\alpha<\bd(s)$ it has value $1$ exactly when $\Bit(s,\alpha)$ holds.
+Application of a set-coded function and the Kuratowski ordered-pair
+construction are ordinary fixed formulas in the interpreted membership
+language. The ordinal bridge supplies their arguments. Thus $\SG$ is a
+fixed first-order formula, not an external assignment operation.
+
+For each $s$ there is exactly one equivalence class of codes $c$ with
+$\SG(s,c)$; conversely, every sign function whose length is below $\lambda$
+arises this way. Existence follows from the hereditary-size estimate for
+sign graphs and \cref{thm:collapse-range}.
+
+\subsection{A first-order test for a cardinal cutoff}
+
+Define the \emph{visible-ordinal collector} formula
+\begin{equation}
+ \Coll(c)\quad\Longleftrightarrow\quad
+ \Code(c)\land
+ \forall d\,[\Code(d)\longrightarrow
+       (d\in_\I c\leftrightarrow\Vis(d))].
+ \label{eq:collector}
+\end{equation}
+It says that one interpreted set collects all the scalar ordinals. This is
+not the assertion that the scalar carrier itself is a set inside itself.
+
+\begin{theorem}[The cutoff is a set exactly in the noncardinal case]
+\label{thm:collector}
+For an epsilon number $\lambda$,
+\[
+ \B_\lambda\models\exists c\,\Coll(c)
+ \quad\Longleftrightarrow\quad
+ \lambda\text{ is not a cardinal}.
+\]
+When it exists, the collector is unique modulo $\sim$ and its collapse is
+exactly the ordinal $\lambda$.
+\end{theorem}
+\begin{proof}
+The elements specified in \eqref{eq:collector} are exactly all ordinals
+$a<\lambda$. In the ambient set universe the unique set with precisely
+those elements is $\lambda$. Hence a collector exists precisely when
+$\lambda\in H_{\kappa(\lambda)}$, equivalently
+$\card\lambda<\kappa(\lambda)$. For a cardinal $\lambda$ the right side
+fails; otherwise $\kappa(\lambda)=(\card\lambda)^+$ and it holds.
+Uniqueness follows from extensionality of the interpreted universe.
+\end{proof}
+
+This collector is the additional information needed to recover a
+noncardinal cutoff after interpreting its hereditary-size universe. Merely
+saying that $\B_\lambda$ interprets $H_{\kappa(\lambda)}$ would lose it.
+
+\subsection{The reverse interpretation}
+
+If $\lambda=\kappa$ is a cardinal, interpret surreals in $H_\kappa$ as all
+set-coded functions from an ordinal into $\{0,1\}$. By
+\cref{lem:hereditary}, these are exactly the sign sequences of length below
+$\kappa$. Define the order by first disagreement, birthday by the all-one
+function on the domain ordinal, and arithmetic by the certificate formulas
+of \cref{thm:certificates}. Call this interpretation $\J$.
+
+If $\lambda$ is not a cardinal, work instead in the pointed structure
+$(H_{\kappa(\lambda)},\in,\lambda)$. Use the same definitions, with the
+extra domain restriction that the sign length is below the named ordinal
+$\lambda$. The certificate verifier may use auxiliary sign sequences
+anywhere in $H_{\kappa(\lambda)}$; it is not required to carry out a large
+recursion inside the smaller interpreted sign domain. The root outputs are
+below $\lambda$ by classical cutoff closure. This gives a uniform
+interpretation $\J_{\rm cut}$ in the language with one named cutoff.
+
+\begin{theorem}[Uniform local bi-interpretation]
+\label{thm:biinterpretation}
+The interpretations just constructed prove all assertions of
+\cref{thm:main-rounding}. The maps witnessing the two bi-interpretations are
+definable, not merely external bijections.
+\end{theorem}
+\begin{proof}
+Start on the set side. A code in the interpreted surreal structure gives
+an extensional well-founded relation on an ordinal. Its Mostowski-collapse
+root defines the map back to the original set. The graph of the collapse
+belongs to the same $H_\kappa$: its domain, range, and all values have
+hereditary size bounded by a fixed infinite cardinal below $\kappa$.
+Consequently this correspondence is defined by a first-order formula in
+$H_\kappa$, even when Replacement is not an axiom of that structure.
+The collapse equation is a bounded verification of the supplied function.
+Every set has a code, and equality and membership are respected by
+\cref{lem:equal-member}. In the pointed case, the collector collapses to the
+named cutoff, so the correspondence preserves that constant as well.
+
+Start on the surreal side. The formula $\SG(s,c)$ identifies $s$ with the
+sign function representing it in the copy of the set universe. In the
+cardinal case all sign functions in the interpreted $H_\lambda$ occur.
+In the noncardinal case, the collector defines $\lambda$, and the restricted
+reverse interpretation uses exactly lengths below that ordinal. Thus $\SG$
+is a definable bijection to the twice-interpreted surreal structure.
+It preserves numerical order and birthday directly from the sign rules,
+and it preserves arithmetic by the certificate theorem. This proves the
+required definable isomorphisms in both directions.
+\end{proof}
+
+\begin{corollary}[The first epsilon cutoff and hereditary countability]
+\label{cor:epsilon0}
+The structure $\B_{\varepsilon_0}$ is parameter-free bi-interpretable with
+$(H_{\omega_1},\in)$.
+\end{corollary}
+\begin{proof}
+The theorem first gives the pointed structure
+$(H_{\omega_1},\in,\varepsilon_0)$. The ordinal $\varepsilon_0$ is
+parameter-free definable in $H_{\omega_1}$ as the least nonzero fixed point
+of ordinary ordinal $\alpha\mapsto\omega^\alpha$. For any countable
+arguments, the functions witnessing ordinal arithmetic and the relevant
+well-orders are countable sets, hence belong to $H_{\omega_1}$. Their
+well-founded recursive verification is absolute. The least-fixed-point
+specification therefore picks out the actual $\varepsilon_0$ there.
+Naming it is a definitional expansion, which may be removed.
+\end{proof}
+
+The same argument applies to any noncardinal epsilon number that is
+parameter-free definable, with its correct ordinal value, in the recovered
+hereditary-size universe. It is not an assertion that every ordinal can be
+named parameter-free.
+
+\subsection{Coherence of the interpretation}
+
+\begin{proposition}[Coherence under cutoff inclusions]
+\label{prop:coherence}
+If $\lambda\le\eta$ are epsilon numbers, the inclusion of scalar cutoffs
+induces, under $\I$, the actual inclusion
+\[
+ H_{\kappa(\lambda)}\longrightarrow H_{\kappa(\eta)}.
+\]
+A code keeps the same collapsed value, and all sign-graph bridges agree.
+For cardinal cutoffs the reverse interpretations also commute with the
+actual inclusions.
+\end{proposition}
+\begin{proof}
+For a code already below $\lambda$, the larger structure has no additional
+sign sequences of birthday $\delta$ for any $\delta<\lambda$: both contain
+\emph{all} sequences of each such length in the same ambient universe.
+Thus the subset tests in well-foundedness and root generation are unchanged.
+Equality and membership agree by their collapse characterizations; any
+needed witness graph has a code below $\lambda$ as proved above. The
+collapse is defined from the same relation, so its value is unchanged.
+The sign-graph bridge refers to the same prefixes and bits. Finally the
+reverse arithmetic formulas compute the same external operations.
+\end{proof}
+
+If two noncardinal cutoffs have the same cardinal ceiling, the induced
+inclusion on recovered \emph{unpointed} set universes is the identity.
+Their recovered distinguished cutoffs nevertheless differ. This is precisely
+why elementary inclusion will usually fail.
+
+\section{The exact elementary-inclusion spectrum}
+\label{sec:elementary}
+
+The elementary-inclusion result is stronger than the observation that a
+birthday expansion is not governed by real-closed-field quantifier
+elimination. It identifies exactly which initial inclusions are possible.
+
+\begin{lemma}[Noncardinal lower cutoffs never include elementarily]
+\label{lem:lower-noncardinal}
+If $\lambda<\eta$ are epsilon numbers and $\lambda$ is not a cardinal, then
+$\B_\lambda\not\prec\B_\eta$.
+\end{lemma}
+\begin{proof}
+Choose a code $c$ in $\B_\lambda$ for its visible-ordinal collector. Its
+collapse is $\lambda$, and it satisfies $\Coll(c)$ there. By coherence it
+still collapses to $\lambda$ in $\B_\eta$. But $\lambda$ itself is now a
+scalar ordinal, since $\lambda<\eta$. Its interpreted ordinal code is
+visible, and is not a member of the set coded by $c$, because
+$\lambda\notin\lambda$. Thus $\Coll(c)$ is false in the larger structure.
+This single formula, with the three entries of $c$ as parameters, witnesses
+failure of elementarity.
+\end{proof}
+
+\begin{lemma}[A cardinal lower cutoff cannot include elementarily into a
+noncardinal cutoff]
+\label{lem:upper-noncardinal}
+If $\lambda$ is a cardinal and $\eta$ is not, then
+$\B_\lambda\not\equiv\B_\eta$.
+\end{lemma}
+\begin{proof}
+The parameter-free sentence $\exists c\,\Coll(c)$ is false in the first
+structure and true in the second, by \cref{thm:collector}.
+\end{proof}
+
+\begin{theorem}[Classification of elementary initial inclusions]
+\label{thm:elementary}
+For epsilon numbers $\lambda<\eta$,
+\[
+ \B_\lambda\prec\B_\eta
+ \quad\Longleftrightarrow\quad
+ \lambda,\eta\text{ are cardinals and }H_\lambda\prec H_\eta.
+\]
+\end{theorem}
+\begin{proof}
+The preceding two lemmas force both cutoffs to be cardinals. For cardinal
+cutoffs, an elementary inclusion of the surreal structures induces an
+elementary inclusion of their interpreted set structures. By
+\cref{prop:coherence} this is the actual inclusion $H_\lambda\subseteq H_\eta$.
+Conversely, an elementary inclusion of those set structures induces an
+elementary inclusion of the uniformly interpreted sign structures. The
+reverse interpretation and its definable sign-graph isomorphism identify this
+with the original inclusion $\B_\lambda\subseteq\B_\eta$.
+\end{proof}
+
+\begin{corollary}[Two kinds of elementary extension]
+The ordered field inclusion $K_\lambda\subseteq K_\eta$ is elementary for
+all epsilon numbers $\lambda<\eta$. Adding birthday changes its elementary
+status according to \cref{thm:elementary}. In particular,
+\[
+ K_{\varepsilon_0}\prec K_{\omega_1},
+ \qquad
+ \B_{\varepsilon_0}\not\prec\B_{\omega_1}.
+\]
+\end{corollary}
+\begin{proof}
+Both fields are real closed, so ordered-field quantifier elimination gives
+the first assertion. The birthday assertions are instances of the theorem.
+\end{proof}
+
+Despite the last failure, both structures in that example are separately
+bi-interpretable with $H_{\omega_1}$. There is no contradiction: a
+bi-interpretation does not make \emph{every particular inclusion} elementary.
+The smaller structure defines an interpreted cutoff set; that formula changes
+its meaning under the displayed inclusion.
+
+\begin{corollary}[Comparison with the full class]
+For an epsilon number $\lambda$, interpreted formula by formula,
+\[
+ \B_\lambda\prec\B_{\mathrm{all}}
+ \quad\Longleftrightarrow\quad
+ \lambda\text{ is a cardinal and }H_\lambda\prec V.
+\]
+\end{corollary}
+\begin{proof}
+The same collector obstruction excludes a noncardinal lower cutoff. For a
+cardinal lower cutoff, the uniform interpretation and reverse sign-graph
+interpretation extend to definable classes. The induced set map is
+$H_\lambda\subseteq V$, so the elementary equivalence follows for each
+formula. This uses no internal satisfaction class for $V$.
+\end{proof}
+
+The condition $H_\lambda\prec H_\eta$ in the theorem is not replaced here by
+a conjectural large-cardinal characterization. It is an exact reduction of
+one elementary-inclusion problem to another familiar one, together with the
+complete exclusion of every noncardinal initial cutoff.
+
+\section{Birthday growth and set-existence axioms}
+\label{sec:growth}
+
+\subsection{Birthday eternity}
+
+\begin{definition}[The eternity scheme $\Etern$]
+For every formula $\varphi(a,x,\vec p)$ in the birthday-field language,
+include the assertion that if $\gamma$ is an embedded ordinal and
+\[
+ \forall a<\gamma\ \exists!x\ \varphi(a,x,\vec p),
+\]
+then some embedded ordinal $\beta$ satisfies
+\[
+ \forall a<\gamma\ \forall x\,
+       (\varphi(a,x,\vec p)\longrightarrow\bd(x)<\beta).
+\]
+The tuple $\vec p$ consists of arbitrary parameters from the structure.
+\end{definition}
+
+This is a precisely specified version of birthday boundedness for definable
+ordinal-indexed functions. The analogy with the eternity principle in the
+Chen--Hamkins--Yang announcements is intentional; the cutoff classification
+below is proved directly, rather than imported from an unexpanded axiom
+scheme in the slides.
+
+\begin{theorem}[Eternity forces cardinality of an epsilon cutoff]
+\label{thm:eternity-noncardinal}
+If $\lambda$ is a noncardinal epsilon number, then
+$\B_\lambda\not\models\Etern$.
+\end{theorem}
+\begin{proof}
+Put $\mu=\card\lambda$, so $\mu<\lambda$ and
+$\kappa(\lambda)=\mu^+$. Choose a bijection $f:\mu\to\lambda$.
+Its graph has hereditary size at most $\mu$, so it belongs to
+$H_{\mu^+}$ and has a code in $\B_\lambda$. Fix one such code as a
+parameter. Using the interpreted graph of $f$ and the ordinal bridge, a
+single formula now defines a scalar map on the actual ordinal $\mu$:
+at $a<\mu$ its value is the embedded ordinal $f(a)<\lambda$.
+Its birthdays exhaust $\lambda$, hence have no bound below $\lambda$.
+This violates the corresponding instance of $\Etern$.
+\end{proof}
+
+At a singular \emph{cardinal} $\kappa$, an external cofinal map into
+$\kappa$ generally has hereditary size $\kappa$ and need not belong to
+$H_\kappa$. Thus the same argument cannot simply be repeated with
+$\mu=\operatorname{cf}(\kappa)$. Whether an internally definable cofinal
+map exists is the point of the next theorem.
+
+\subsection{The axioms that all hereditary-size universes already satisfy}
+
+\begin{lemma}[The fixed background axioms]
+\label{lem:H-background}
+For every uncountable cardinal $\kappa$, $H_\kappa$ satisfies
+Extensionality, Empty Set, Pairing, Union, Infinity, Foundation, every
+Separation instance, and Choice. Moreover the actual transitive closure of
+each of its elements belongs to $H_\kappa$, and its cardinality is correctly
+computed there.
+\end{lemma}
+\begin{proof}
+Transitivity gives Extensionality and Foundation. Empty Set, Pairing, Union,
+and Infinity preserve hereditary size below $\kappa$. For any fixed formula
+and parameters, the externally defined subset of a set $a\in H_\kappa$
+satisfying that formula in the set structure $H_\kappa$ has hereditary size
+bounded by that of $a$ (up to finitely many additional objects). It therefore
+belongs to $H_\kappa$, proving Separation, including formulas with unbounded
+quantifiers in that structure.
+
+An ambient choice function for a family $a\in H_\kappa$ has its domain and
+chosen values inside the transitive closure of $a$, and its graph has the
+same infinite hereditary-cardinality bound. It belongs to $H_\kappa$.
+This proves Choice for set families, not a class-choice principle.
+
+Writing $T=\TC(\{x\})$, the transitive closure of $T$ adds at most the set
+$T$ to its already transitive data, so $T\in H_\kappa$. Its description as
+the least transitive set containing $x$ as an element is correct internally:
+the actual least such set is available there. A bijection between $T$ and
+its least equipotent ordinal has hereditary size below $\kappa$, and any
+bijection asserted internally is externally a bijection. Minimality among
+ordinals is therefore also computed correctly.
+\end{proof}
+
+\subsection{Replacement is exactly eternity at cardinal cutoffs}
+
+\begin{theorem}[Eternity--Replacement equivalence]
+\label{thm:eternity-replacement}
+For every uncountable cardinal $\kappa$,
+\[
+ \B_\kappa\models\Etern
+ \quad\Longleftrightarrow\quad
+ H_\kappa\models\text{every instance of Replacement}.
+\]
+\end{theorem}
+\begin{proof}
+Assume first Replacement in $H_\kappa$. A definable scalar function on an
+ordinal $\gamma<\kappa$ corresponds under the bi-interpretation to a
+set-theoretically definable function assigning to $a<\gamma$ its unique
+sign graph. Replacement collects those sign graphs in one set of
+$H_\kappa$. The union of their domains, with one added successor for each
+length, is bounded below $\kappa$: otherwise the transitive closure of the
+collected set would contain at least $\kappa$ ordinals. More explicitly,
+\[
+ \beta=\sup\{\dom(s)+1:s\text{ is an image sign graph}\}<\kappa
+\]
+bounds their birthdays strictly. This proves the corresponding eternity
+instance; the empty-domain case is vacuous.
+
+Conversely, assume eternity and consider a formula defining, in
+$H_\kappa$, a function $F:a\to H_\kappa$, where $a\in H_\kappa$ and the
+formula has fixed parameters. Choose a bijection $e:\delta\to a$ with
+$\delta<\kappa$. Its graph belongs to $H_\kappa$. For each $i<\delta$, put
+externally
+\[
+ \nu_i=\card{\TC(\{F(e(i))\})},
+\]
+regarded as an initial ordinal. By \cref{lem:H-background}, this is a
+uniquely defined ordinal of $H_\kappa$, with the correct external value.
+The definition of $F$, the parameter $e$, and the hereditary-cardinality
+formula translate into a definable scalar map $i\mapsto\nu_i$ in
+$\B_\kappa$. Here the ordinal bridge is available for every ordinal below
+$\kappa$. No definable choice of a code for $F(e(i))$ is required: its
+\emph{hereditary cardinal} is unique.
+
+Eternity gives a $\beta<\kappa$ bounding all these ordinals. Ambient
+Replacement forms the actual image set $A=F[a]$, and its transitive closure
+has cardinality at most
+\[
+ \max(\aleph_0,\card\delta,\card\beta)<\kappa.
+\]
+Indeed it is contained, up to the image set itself, in the union of
+$\card\delta$ transitive closures, each of cardinality at most
+$\max(\aleph_0,\card\beta)$. Thus $A\in H_\kappa$, proving the desired
+Replacement instance in that structure. This proof uses a fixed cardinal
+bound below $\kappa$; it never assumes that an arbitrary union of fewer than
+$\kappa$ small sets is small.
+\end{proof}
+
+\begin{corollary}
+If $\kappa$ is uncountable and regular, then $\B_\kappa\models\Etern$.
+\end{corollary}
+\begin{proof}
+Any externally given function on an ordinal below $\kappa$ has fewer than
+$\kappa$ birthdays in its image. Regularity bounds them below $\kappa$.
+This argument applies in particular to definable functions.
+\end{proof}
+
+\subsection{Packing a birthday fiber into one code}
+
+\begin{definition}[The fiber-packing principle $\Pack$]
+For every embedded ordinal $\alpha$, there exist a positive embedded ordinal
+$\theta$ and a scalar $r$, with
+\[
+ \chi=\theta+\alpha+1,
+ \qquad\bd(r)=\Lambda(\chi),
+\]
+such that
+\begin{equation}
+ \forall u\,[\bd(u)=\alpha\longrightarrow
+   \exists\xi<\theta\ \forall\zeta<\alpha\,
+    (\Bit(u,\zeta)\leftrightarrow\Bit(r,p_\chi(\xi,\zeta)))].
+ \label{eq:packing}
+\end{equation}
+\end{definition}
+
+This is one first-order sentence, using the previously defined bit and
+pairing formulas. Its rows list every sign string of birthday $\alpha$;
+repetitions are allowed. Unused coordinates can be ignored. It does not use
+ordinary ordinal concatenation or a primitive power-set operation.
+
+\begin{theorem}[Exact packing threshold]
+\label{thm:packing}
+In $\B_\lambda$, the instance of \eqref{eq:packing} for a particular
+$\alpha<\lambda$ holds exactly when
+\[
+ 2^{\card\alpha}<\kappa(\lambda),
+ \quad\text{equivalently, }2^{\card\alpha}<\lambda.
+\]
+where the cardinal on the left is compared as an ordinal in the second
+inequality. Consequently $\Pack$ holds exactly when $\lambda$ is an
+uncountable strong-limit cardinal.
+\end{theorem}
+\begin{proof}
+A packing table with $\theta<\lambda$ rows gives a surjection from $\theta$
+onto $\Pow(\alpha)$, so $2^{\card\alpha}\le\card\theta<\kappa(\lambda)$.
+Conversely, if that power-set cardinal is $\nu<\kappa(\lambda)$, then
+$\nu<\lambda$ by cardinal rounding. Choose an enumeration of the fiber by
+$\theta=\nu$ and encode its table in the square of width
+$\chi=\theta+\alpha+1$. The square code stays below $\lambda$ by closure,
+so the required $r$ exists. The equivalence of the two inequalities follows
+because no cardinal lies in $[\lambda,\kappa(\lambda))$.
+
+For a cardinal $\lambda$, validity for all $\alpha<\lambda$ is exactly the
+strong-limit property. If $\lambda$ is not a cardinal, let
+$\mu=\card\lambda<\lambda$ and use $\alpha=\mu$. Cantor's theorem gives
+$2^\mu\ge\mu^+=\kappa(\lambda)$, so this instance fails.
+\end{proof}
+
+\begin{proposition}[Power Set in the interpreted universe]
+\label{prop:powerset}
+For an uncountable cardinal $\kappa$,
+\[
+ H_\kappa\models\text{Power Set}
+ \quad\Longleftrightarrow\quad
+ \kappa\text{ is strong limit}.
+\]
+For an individual $\alpha<\kappa$, the actual power set $\Pow(\alpha)$ is
+an element of $H_\kappa$ exactly when $2^{\card\alpha}<\kappa$.
+\end{proposition}
+\begin{proof}
+Every subset of $\alpha$ is already in $H_\kappa$, so an internal power set
+of $\alpha$, if it exists, is its full actual power set. Its hereditary
+size is $2^{\card\alpha}$ up to harmless finite or countable bounds.
+This proves necessity and the individual assertion. Conversely, for
+$x\in H_\kappa$, the transitive closure of $\Pow(x)$ has size at most
+\[
+ \max(\aleph_0,\card{\TC(\{x\})},2^{\card x}).
+\]
+This is below a strong-limit $\kappa$, so every required power set exists
+in $H_\kappa$.
+\end{proof}
+
+Notice that for a noncardinal cutoff $\lambda$, the recovered
+$H_{\kappa(\lambda)}$ and the scalar domain do not have the same ordinal
+height. Assertions about \emph{all} interpreted ordinals and assertions
+about only scalar ordinals must be kept separate. The failure at
+$\alpha=\card\lambda$ is enough to settle the full packing principle.
+
+\section{Worldly cutoffs and separation examples}
+\label{sec:worldly}
+
+\subsection{The exact conjunction}
+
+Call an uncountable cardinal $\kappa$ \emph{worldly} here when
+$V_\kappa\models\mathrm{ZFC}$. This definition does not impose regularity.
+We need the following familiar set-theoretic fact, for which a proof is
+included to fix the precise meaning.
+
+\begin{lemma}[When hereditary size becomes cumulative rank]
+\label{lem:worldly-HV}
+For an uncountable cardinal $\kappa$,
+\[
+ H_\kappa\models\mathrm{ZFC}
+ \quad\Longleftrightarrow\quad
+ H_\kappa=V_\kappa\text{ and }V_\kappa\models\mathrm{ZFC}.
+\]
+Moreover, $V_\kappa\models\mathrm{ZFC}$ by itself implies
+$H_\kappa=V_\kappa$.
+\end{lemma}
+\begin{proof}
+Suppose $H_\kappa\models\mathrm{ZFC}$. Its internal cumulative hierarchy
+exists to every ordinal $\alpha<\kappa$. Every subset of each of its sets
+belongs to $H_\kappa$, so its internal power sets are actual power sets.
+Induction on $\alpha$ shows that its internal $V_\alpha$ is the actual
+$V_\alpha$; the limit step is ordinary union over the actual smaller
+ordinals. Thus every $V_\alpha$ for $\alpha<\kappa$ belongs to $H_\kappa$,
+and transitivity gives $V_\kappa\subseteq H_\kappa$.
+The reverse inclusion is \cref{lem:hereditary}.
+
+Conversely, assume $V_\kappa\models\mathrm{ZFC}$. For every
+$\alpha<\kappa$, that model can well-order $V_\alpha$ and supply a bijection
+with some ordinal $\delta<\kappa$. These are actual sets and actual
+bijections, because the model is transitive. Hence
+$\card{V_\alpha}<\kappa$. The transitive closure of any
+$x\in V_\kappa$ is contained in some such $V_\alpha$, and therefore has
+size below $\kappa$. Again $H_\kappa=V_\kappa$ follows. The remaining
+implication is immediate from equality.
+\end{proof}
+
+\begin{theorem}[Worldly-cutoff characterization]
+\label{thm:worldly}
+For an epsilon number $\lambda$,
+\begin{align*}
+ \B_\lambda\models\Etern+\Pack
+ &\iff \lambda\text{ is a cardinal and }H_\lambda\models\mathrm{ZFC}\\
+ &\iff \lambda\text{ is a worldly cardinal}.
+\end{align*}
+For regular uncountable $\lambda$, this holds exactly when $\lambda$ is
+strongly inaccessible.
+\end{theorem}
+\begin{proof}
+Either growth principle excludes noncardinal epsilon cutoffs. At cardinal
+cutoffs, \cref{thm:eternity-replacement,prop:powerset,lem:H-background}
+identify the two missing ZFC requirements as Replacement and Power Set.
+The equivalence with the rank formulation is \cref{lem:worldly-HV}.
+For regular uncountable cardinals, eternity is automatic and packing is
+exactly strong limit, giving the usual inaccessible condition.
+\end{proof}
+
+This proves \cref{thm:main-growth}. It does not identify our two formulas with
+every formulation of a theory called SA. It is an exact theorem about the
+explicit schemes and sentence defined in this article.
+
+\subsection{The two growth principles do different work}
+
+\begin{example}[Eternity without fiber packing]
+At $\kappa=\omega_1$, regularity gives eternity. The birthday-$\omega$ fiber
+has $2^{\aleph_0}\ge\aleph_1$ members, so no ordinal below $\omega_1$ can
+index a packing of it. Hence
+\[
+ \B_{\omega_1}\models\Etern,
+ \qquad\B_{\omega_1}\not\models\Pack.
+\]
+In the decoded structure, every individual real is present, but the set of
+all reals is not an element of $H_{\omega_1}$.
+\end{example}
+
+\begin{example}[Fiber packing without eternity]
+\label{ex:bethomega}
+Let $\kappa=\beth_\omega=\sup_{n<\omega}\beth_n$, with
+$\beth_0=\aleph_0$ and $\beth_{n+1}=2^{\beth_n}$. This is a strong-limit
+cardinal: for every $\mu<\kappa$ some $\beth_n$ is at least $\mu$, and then
+$2^\mu\le\beth_{n+1}<\kappa$. Thus packing holds.
+
+In $H_\kappa$, each finite initial segment of the beth recursion is present
+and correctly computed. The necessary finite sequence of power sets,
+cardinals, and bijections has hereditary size below $\kappa$, and Power Set
+is correct there by \cref{prop:powerset}. A single formula therefore defines
+$n\mapsto\beth_n$ on the actual $\omega$. Transporting this formula through
+the ordinal bridge gives a definable scalar function whose birthdays are
+cofinal in $\kappa$. Consequently
+\[
+ \B_{\beth_\omega}\models\Pack,
+ \qquad\B_{\beth_\omega}\not\models\Etern.
+\]
+The infinite sequence of all these ordinals is precisely what cannot be
+collected as an element of $H_\kappa$.
+\end{example}
+
+\begin{example}[A noncardinal field cutoff]
+Both principles fail at $\varepsilon_0$. Packing fails at the ordinal
+$\omega$. Eternity fails by \cref{thm:eternity-noncardinal}; one may also use
+the definable finite power-tower sequence cofinal in $\varepsilon_0$,
+with ordinary ordinal exponentiation computed in the decoded
+$H_{\omega_1}$. Nevertheless the field is real closed and its birthday
+expansion is bi-interpretable with hereditary countability.
+\end{example}
+
+These are actual structures exhibiting independence of the two displayed
+growth requirements within this family. They are not an assertion of
+independence from an unspecified list of all the other axioms of SA.
+
+\subsection{Singular cutoffs satisfying both principles}
+
+\begin{proposition}[A conditional source of singular worldly cutoffs]
+\label{prop:singular-worldly}
+If $\Omega$ is strongly inaccessible, there is a cardinal $\kappa<\Omega$
+of cofinality $\omega$ such that
+\[
+ V_\kappa\prec V_\Omega.
+\]
+In particular, $\kappa$ is worldly and $\B_\kappa$ satisfies both growth
+principles.
+\end{proposition}
+\begin{proof}
+Enumerate all existential formulas in the language of set theory. Construct
+strictly increasing infinite cardinals $\alpha_n<\Omega$. Given
+$\alpha_n$, consider the first $n$ formulas and all their finite parameter
+tuples from $V_{\alpha_n}$. Whenever $V_\Omega$ has a witness, choose one.
+There are fewer than $\Omega$ such requirements, since
+$\card{V_{\alpha_n}}<\Omega$. Regularity bounds their witness ranks below
+$\Omega$. Choose a cardinal $\alpha_{n+1}<\Omega$ above that bound and above
+$\alpha_n$.
+
+Set $\kappa=\sup_n\alpha_n$. Regularity of $\Omega$ gives $\kappa<\Omega$;
+it is a cardinal of cofinality $\omega$. Every finite tuple in $V_\kappa$
+appears in one stage, and every existential formula is treated at all
+sufficiently late stages. Thus every existential statement true in
+$V_\Omega$ with parameters in $V_\kappa$ has a witness in $V_\kappa$.
+The Tarski--Vaught criterion gives elementarity. Since $V_\Omega$ satisfies
+ZFC, so does $V_\kappa$. Apply \cref{thm:worldly}.
+\end{proof}
+
+The reflection construction is standard set-theoretic reasoning, included
+as an illustration rather than as a novelty claim. It demonstrates why
+replacing ``worldly'' by ``inaccessible'' in \cref{thm:worldly} would be wrong.
+No inaccessible cardinal is assumed in the unconditional cutoff theorems.
+
+\section{Outer models, new subsets, and a sharp parameter bound}
+\label{sec:extensions}
+
+\subsection{Coherence when the sign fibers themselves grow}
+
+Assume $M\subseteq N$ are transitive models of ZFC with the same ordinals
+(or the same ordinal height for set models). Let $\kappa$ be an uncountable
+cardinal of both models. The structures $\B_\kappa^M$ and $\B_\kappa^N$
+use their respective internal sign sequences. Unlike two cutoffs in a single
+universe, they may have different birthday fibers even at the same small
+ordinal.
+
+\begin{proposition}[Cross-model coherence]
+\label{prop:cross-model}
+There are actual inclusions
+\[
+ \B_\kappa^M\subseteq\B_\kappa^N,
+ \qquad H_\kappa^M\subseteq H_\kappa^N,
+\]
+compatible with the interpretations and their definable isomorphisms.
+Consequently
+\[
+ \B_\kappa^M\prec\B_\kappa^N
+ \quad\Longleftrightarrow\quad H_\kappa^M\prec H_\kappa^N.
+\]
+\end{proposition}
+\begin{proof}
+A sign sequence of $M$ remains the same sign sequence in $N$; order and
+birthday are absolute. A small arithmetic certificate existing in $M$
+remains valid in $N$, so the field operations agree. An old set of hereditary
+size below $\kappa$ comes with an old bijection witnessing that bound; since
+$\kappa$ is still a cardinal, it belongs to $H_\kappa^N$.
+
+For code validity, one must not claim that the two models have the same
+subsets of the coding ordinal. Instead, a relation well founded in $M$ has
+an ordinal rank function in $M$, which remains decreasing in $N$. Its
+well-foundedness therefore persists despite the extra subsets in $N$.
+Root generation says that every node is connected to the root by a finite
+downward path, as established in \cref{lem:collapse}; these paths are
+absolute. Extensionality is bounded and absolute. Failure of any of the
+code conditions in $M$ also persists, using its old witness. Thus validity
+on old codes is unchanged.
+
+The old Mostowski collapse still satisfies its bounded defining equations
+in $N$ and hence is the same collapse. Equality and membership of decoded
+old sets are unchanged. Witnesses to their equality and membership can be
+constructed in $M$ from those collapses, so their required graph codes
+already exist there. The reverse sign-graph interpretation likewise sends
+old objects to their actual images. Applying each interpretation to an
+elementary inclusion now proves the equivalence.
+\end{proof}
+
+\subsection{The old-power-set detector}
+
+\begin{theorem}[Uniform detector for an added subset]
+\label{thm:detector}
+Suppose $\alpha<\kappa$, $N$ has a subset of $\alpha$ not in $M$, and
+\[
+ \nu=(2^{\card\alpha})^M<\kappa.
+\]
+Then $\B_\kappa^M\not\prec\B_\kappa^N$. One fixed interpreted formula
+witnesses the failure using parameters coding $\alpha$ and
+$A=\Pow^M(\alpha)$.
+\end{theorem}
+\begin{proof}
+The cardinal bound gives $A\in H_\kappa^M$. In the membership language
+consider
+\begin{equation}
+ \exists u\,[\forall v\in u\ (v\in\alpha)\ \land\ u\notin A].
+ \label{eq:new-subset-detector}
+\end{equation}
+This is false in $H_\kappa^M$, because all its subsets of $\alpha$ lie in
+$A$. It is true in $H_\kappa^N$: any newly added subset of $\alpha$ has
+hereditary size below the still-cardinal $\kappa$ and is not an element of
+the old set $A$. Translate \eqref{eq:new-subset-detector} through $\I$ and
+choose old codes for the two parameters. Cross-model coherence gives the
+claimed failure in the birthday structures.
+\end{proof}
+
+The membership-language formula \eqref{eq:new-subset-detector} is
+$\Sigma_1$: its matrix has only bounded quantifiers. Its fully expanded
+birthday-field translation need \emph{not} be existential or $\Sigma_1$ in
+that different language, because code validity includes the bit-quantified
+well-foundedness test. We make no quantifier-complexity claim across that
+translation.
+
+\begin{proposition}[Sharpness of the detector's parameter cost]
+\label{prop:detector-cost}
+The old parameter $\Pow^M(\alpha)$ belongs to $H_\kappa^M$ exactly when
+$(2^{\card\alpha})^M<\kappa$. In our rooted coding scheme, every code for
+that parameter has node-domain cardinality
+\[
+ \card{\TC(\{\Pow^M(\alpha)\})}^M,
+\]
+which equals the power-set cardinal for infinite $\alpha$. In that infinite case, a code of
+birthday cardinality no larger than that cardinal can be chosen.
+\end{proposition}
+\begin{proof}
+The first statement is \cref{prop:powerset} inside $M$. The exact
+node-domain cardinality is \eqref{eq:exact-code-size}. For infinite
+$\alpha$, the transitive closure consists of the power set, its subsets,
+and the ordinal data beneath $\alpha$, giving cardinality
+$2^{\card\alpha}$. Choosing its initial ordinal as the node domain gives
+relation birthday $\Lambda(\nu)$, of cardinality $\nu$ by
+\cref{lem:pairing}.
+\end{proof}
+
+This is not a theorem that elementarity must hold when the bound fails.
+Another formula can detect a change at a smaller cutoff. It says exactly
+when this particular, universally applicable old-power-set witness is
+available.
+
+\begin{example}[A conditional continuum-sized illustration]
+Suppose $M$ satisfies CH, $N$ preserves $\omega_2^M$, and $N$ adds a real.
+Then the old set of reals has hereditary size $\omega_1^M$, so the detector
+works at the cutoff $\omega_2^M$. That old set is not an element of
+$H_{\omega_1}^M$, so the same parameter cannot be used at the cutoff
+$\omega_1^M$. No claim of elementarity at the smaller cutoff follows.
+\end{example}
+
+\subsection{Rigidity under extensions at a strong limit}
+
+\begin{theorem}[Strong-limit extension rigidity]
+\label{thm:extension-rigidity}
+Under the hypotheses of \cref{prop:cross-model}, assume in addition that
+$\kappa$ is strong limit in $M$. Then
+\begin{align*}
+ \B_\kappa^M\prec\B_\kappa^N
+ &\iff \B_\kappa^M=\B_\kappa^N\\
+ &\iff \Pow^M(\alpha)=\Pow^N(\alpha)
+                 \quad\text{for every }\alpha<\kappa.
+\end{align*}
+\end{theorem}
+\begin{proof}
+If some subset of an $\alpha<\kappa$ is new, the strong-limit property
+makes its old power-set parameter small enough, and \cref{thm:detector}
+excludes elementarity. Conversely, if all these power sets agree, every
+sign sequence in $N$ of length $\alpha<\kappa$ has its plus-set in $M$.
+Reconstructing the sign sequence from that plus-set in $M$ shows that the
+two scalar domains agree. Their operations agree by
+\cref{prop:cross-model}, so the structures are equal and hence the
+inclusion is elementary. Equality of the scalar domains also forces
+equality of the corresponding plus-sets, proving the remaining direction.
+\end{proof}
+
+This proves \cref{thm:main-extension}. It applies, for example, to any
+forcing extension satisfying the stated cardinal-preservation hypotheses,
+but uses no particular forcing construction. It is a theorem about
+\emph{standard cutoff structures at a fixed common cardinal}, not a
+prohibition on abstract elementary extensions supplied by model theory.
+
+Their ordered field reducts still include elementarily even when the
+birthday expansion fails the detector, since both reducts are real closed.
+Thus a set-theoretic change can be invisible to ordered-field formulas yet
+visible to one fixed birthday-field formula with old parameters.
+
+\section{Surcomplex numbers and the orientation obstruction}
+\label{sec:surcomplex}
+
+\subsection{The natural enriched surcomplex structure}
+
+For an epsilon number $\lambda$, put $C_\lambda=K_\lambda[i]$. This is the
+usual pair field, with conjugation $\sigma(x+iy)=x-iy$. Introduce the
+coordinate-birthday function
+\[
+ \beta(x+iy)=\max(\bd(x),\bd(y)),
+\]
+whose value is an embedded real ordinal. Consider the two structures
+\[
+ \C_\lambda^-=(C_\lambda;0,1,+,-,\cdot,\sigma,\beta),
+ \qquad
+ \C_\lambda^+=(\C_\lambda^-,i).
+\]
+Here a choice of square root $i$ of $-1$ is named in the second structure
+but not in the first. These are specific enrichments of the surcomplex
+field, not claims about the field language alone.
+
+\begin{proposition}[Recovery of the real birthday structure]
+\label{prop:real-recovery}
+Both surcomplex structures interpret $\B_\lambda$ without parameters.
+The structure $\C_\lambda^+$ is uniformly bi-interpretable with
+$\B_\lambda$.
+\end{proposition}
+\begin{proof}
+The real carrier is the definable fixed field of $\sigma$. Its order is
+recovered by
+\[
+ x<y\quad\Longleftrightarrow\quad
+ \exists t\,[\sigma(t)=t\land t\ne0\land t^2=y-x],
+\]
+using real closedness. The restriction of $\beta$ is exactly $\bd$.
+This gives the first interpretation.
+
+Conversely, interpret complex numbers as pairs of reals, with
+\[
+ (x,y)(u,v)=(xu-yv,xv+yu),\qquad
+ \sigma(x,y)=(x,-y),\qquad i=(0,1),
+\]
+and with $\beta$ the maximum of the two birthdays. In the structure with
+$i$ named, the map $(x,y)\mapsto x+iy$ is definable, with inverse
+\[
+ z\longmapsto
+ \left(\frac{z+\sigma(z)}2,
+       \frac{z-\sigma(z)}{2i}\right).
+\]
+These give the two definable isomorphisms required for a bi-interpretation.
+\end{proof}
+
+Thus cardinal rounding, recovery of a noncardinal cutoff, and the resulting
+set-theoretic distinctions transfer to the oriented surcomplex structures.
+In particular the interpretations do not acquire a new set-theoretic
+size requirement merely by adjoining $i$.
+
+\subsection{Why omitting the imaginary unit changes bi-interpretability}
+
+\begin{lemma}[Rigidity of a standard birthday cutoff]
+\label{lem:rigidity}
+Every automorphism of $\B_\lambda$ is the identity.
+\end{lemma}
+\begin{proof}
+The embedded ordinals are definable and numerically well ordered. Any
+order automorphism of this ordinal segment fixes every ordinal, by
+transfinite induction. The automorphism therefore fixes all birthday
+values. The bit predicate is definable, so it preserves the sign at each
+fixed ordinal coordinate. Every sign sequence is determined by its domain
+and bits, and hence is fixed.
+\end{proof}
+
+This is a standard simplicity/birthday rigidity argument, not a new
+classification of the unrestricted field automorphisms studied elsewhere
+in the repository \cite{RepoAutomorphisms}.
+
+\begin{theorem}[The two-element orientation obstruction]
+\label{thm:orientation}
+The automorphism group of $\C_\lambda^-$ consists exactly of the identity
+and conjugation. Consequently $\C_\lambda^-$ is mutually interpretable
+with, but is not parameter-free bi-interpretable with, the corresponding
+set structure
+\[
+ (H_{\kappa(\lambda)},\in)
+ \quad\text{or, in the noncardinal case,}\quad
+ (H_{\kappa(\lambda)},\in,\lambda).
+\]
+After naming $i$, the bi-interpretation holds as in
+\cref{prop:real-recovery,thm:biinterpretation}.
+\end{theorem}
+\begin{proof}
+An automorphism preserves the fixed field of $\sigma$, its definable order,
+and the birthday function on it. Its restriction is therefore the identity
+by \cref{lem:rigidity}. The image of $i$ is a root of $X^2+1$, so it is
+$i$ or $-i$. Since every element has the form $x+iy$, the automorphism is
+respectively the identity or conjugation. Both do preserve $\sigma$ and
+$\beta$.
+
+Each transitive membership structure $H_\kappa$ has no nontrivial
+automorphism: if all members of $x$ are fixed, extensionality fixes $x$,
+and external well-founded induction applies to every $x$. Naming an ordinal
+does not change this rigidity. Were $\C_\lambda^-$ bi-interpretable with
+such a structure, its nontrivial conjugation would induce the identity on
+the interpreted set structure, hence the identity on the twice-interpreted
+surcomplex structure. The definable isomorphism back to
+$\C_\lambda^-$ would then force conjugation itself to be the identity,
+a contradiction.
+
+Mutual interpretation still holds: recover the real birthday structure
+inside $\C_\lambda^-$ and then its set universe; in the opposite direction
+use the reverse surreal interpretation and the pair field, simply omitting
+the distinguished constant $i$. The missing definable choice of orientation
+is exactly the obstruction to upgrading this to a bi-interpretation.
+\end{proof}
+
+The group computation is a consequence of classical rigidity. The point for
+this article is the precise distinction between mutual interpretability and
+bi-interpretability, and why an unnamed imaginary unit cannot be treated as
+harmless notation in the latter claim.
+
+\section{What the theorems do and do not imply}
+\label{sec:scope}
+
+\subsection{Logical strength versus field strength}
+
+Already $\B_{\varepsilon_0}$ recovers $H_{\omega_1}$. Within that membership
+structure, the natural numbers and all subsets of the natural numbers form
+the usual full two-sorted structure of second-order arithmetic: each subset
+is hereditarily countable, and arithmetic on finite ordinals is definable.
+Thus the birthday-field interpretation includes quantification over all
+actual subsets of $\omega$, not merely over computable subsets. Its ordinary
+first-order language can carry that quantification because the numbers
+coding those subsets are first-order elements.
+
+This does not make set theory definable in the pure ordered-field reduct.
+The needed birthday structure is absent there. Nor does it give a decision
+procedure: a hypothetical effective enumeration of all true birthday-field
+sentences would, by the effective interpretation of standard arithmetic,
+enumerate all true arithmetic sentences, which is impossible. These are
+logical-complexity consequences, not new algorithms for deciding truth.
+
+\subsection{Four statements that must not be conflated}
+
+For a cutoff $\lambda$ the following can have very different answers:
+\begin{center}
+\begin{tabular}{@{}P{0.31\textwidth}P{0.61\textwidth}@{}}
+\toprule
+Question & Exact issue in this article\\
+\midrule
+Is $K_\lambda$ a real closed field? & Classical epsilon-number cutoff theorem.\\[0.35em]
+Which sets can be decoded? & Exactly $H_{\kappa(\lambda)}$, by rooted relation codes.\\[0.35em]
+Does the decoded universe satisfy ZFC? & At cardinal cutoffs, exactly the worldly condition.\\[0.35em]
+Is an initial inclusion elementary? & Both cutoffs must be cardinals, followed by elementarity of their hereditary-size universes.\\
+\bottomrule
+\end{tabular}
+\end{center}
+An algebraic closure theorem alone does not answer any of the last three
+questions. Conversely, a transitive set model satisfying ZFC need not arise
+from a regular inaccessible cutoff.
+
+\subsection{Choice and quotients}
+
+Ordinary Choice is used to enumerate an individual transitive closure and,
+in some proofs, to enumerate a particular fiber or choose a particular
+bijection. The interpretation does not choose one representative
+simultaneously for every set. It keeps all valid codes and quotients by a
+definable equivalence relation. This is why Global Choice is unnecessary.
+
+The exact cardinal-rounding conclusion is stated in ZFC. Without Choice,
+not every transitive closure is well-orderable, and a code on an ordinal
+cannot automatically represent every set in a proposed hereditary-size
+universe. Removing Choice therefore requires changing the target or the
+coding language. No choice-free version is claimed here.
+
+\subsection{Set models, nonstandard models, and class truth}
+
+At a fixed uncountable cardinal, the structures in the main theorems are
+actual set structures, with ordinary first-order satisfaction. Their
+interpretations are not hypothetical syntactic models satisfying only a
+fragment of surreal arithmetic. A nonstandard model of ZFC can internally
+perform the same constructions, but its coded well-foundedness and its
+internal cardinal ceiling must be read in that model. In particular, an
+externally ill-founded model is not covered by an external Mostowski-collapse
+claim merely because it internally believes its code is well founded.
+
+For the full class $\No$, one applies the translation to a fixed formula
+and fixed set parameters. Statements about ``all formulas'' are metatheoretic
+schemes. We do not form a set of all class functions, a proper-class
+membership quotient, or a truth predicate for $V$ inside ZFC. The cutoff
+results themselves do not require a class theory, a Grothendieck universe,
+or a large-cardinal existence axiom.
+
+\subsection{Why uncountability and the epsilon hypothesis matter}
+
+For the main hereditary-size bi-interpretation theorem at cardinal cutoffs,
+uncountability ensures that countably sized computation certificates and the
+ordinary infinite set $\omega$ remain below the cutoff. At $\omega$, the
+finite-birthday surreals form the dyadic ring rather than a field; it would
+be incorrect to reuse the real-closed-field argument there.
+
+For noncardinal cutoffs, the epsilon hypothesis supplies closure of the
+bounded pairing terms and field operations. This article does not classify
+arbitrary ordinal sign cutoffs that fail those closure conditions. One can
+formulate relation-code interpretations under weaker closure hypotheses,
+but the full birthday-field statement would then need a different language
+or partial operations.
+
+\section{Research audit and further mathematical targets}
+\label{sec:audit}
+
+\subsection{Dependency and novelty ledger}
+
+\begin{longtable}{@{}P{0.25\textwidth}P{0.37\textwidth}P{0.30\textwidth}@{}}
+\toprule
+Result & Main inputs & Status here\\
+\midrule\endhead
+Global birthday-field interpretation & Pointed well-founded relation coding & Prior Chen--Hamkins--Yang announcement; not claimed new.\\[0.5em]
+Real-closed epsilon cutoffs & Classical surreal field theory & Prior van den Dries--Ehrlich, with correction.\\[0.5em]
+Small arithmetic certificates & Prefix option graphs, finite words, graph rank & Explicit local proof ingredient; no historical priority claim for the general locality principle.\\[0.5em]
+Cardinal rounding and cutoff recovery & Bounded pairing, rooted collapse, sign-graph bridge & Proposed local refinement, including noncardinal and singular cases.\\[0.5em]
+Elementary-inclusion spectrum & Collector formula and coherent bi-interpretations & Proposed exact classification for initial cutoff inclusions.\\[0.5em]
+Eternity and packing spectrum & Hereditary cardinal bounds; internal correctness of small cardinalities & Proposed quantitative calibration; growth/set-existence analogy is prior work.\\[0.5em]
+Old-power-set detector & A fixed membership-language formula and code-cost equality & Proposed explicit refinement; ordinary outer-model set reasoning is standard.\\[0.5em]
+Orientation obstruction & Real-axis interpretation and classical rigidity & A consequence clarifying the surcomplex bi-interpretation statement, not a new unrestricted automorphism classification.\\
+\bottomrule
+\end{longtable}
+
+The central place where the argument could not be replaced by a general
+slogan is \cref{sec:certificates}. Saying that the global construction is
+set-theoretically definable would not prove that the same formula computes
+arithmetic in $H_\kappa$ when that structure lacks Replacement. The
+certificate bound resolves that issue. A second essential point is the
+collector: a noncardinal cutoff is not recovered merely by interpreting the
+unpointed hereditary-size universe.
+
+\subsection{Scope of the source inspection}
+
+The public sources inspected for the current global interpretation program
+were Hamkins's September and November 2025 announcements and slides and the
+March 2026 seminar announcement. The available slides explicitly mark the
+work as new and its details as being checked. This article treats the
+announced result as prior work while supplying its own local proofs; it does
+not claim to have audited an unpublished complete manuscript.
+
+The repository comparison used the pinned report catalog, the foundations
+report's relevant construction, recursion, universe, and cutoff discussions,
+and the surcomplex-automorphism report's stated scope. Repository search did
+not provide a dependable exhaustive full-text index, so a negative keyword
+search was not used as proof of absence. No complete build or formal theorem
+inventory of the repository was performed. No repository files were changed.
+
+Literature searches specifically combined surreal arithmetic with bounded
+birthdays, hereditary-size universes, cardinal cutoffs, bi-interpretation,
+and worldly cardinals. No inspected source stated the exact local spectrum
+proved here. This supports a \emph{proposed novelty} assessment, not a
+categorical claim that no specialist has previously obtained the results.
+
+\subsection{Questions now reduced to more precise form}
+
+One target is to replace the remaining condition $H_\kappa\prec H_\tau$
+in \cref{thm:elementary} by useful explicit hypotheses in interesting
+families of cardinals. The theorem already rules out every noncardinal
+initial inclusion, so the residual question is genuinely about hereditary
+set universes, not field embeddings.
+
+A second target is a syntactic comparison with a finalized axiom system for
+surreal arithmetic. The principles $\Etern$ and $\Pack$ are deliberately
+explicit here. Establishing exact definitional equivalence with particular
+published axiom formulations should be a separate theorem, rather than an
+identification by terminology.
+
+A third target is formalization of the size-certified interpretation. The
+necessary objects are ordinary set-coded sign functions, bounded relation
+codes, well-founded option graphs, and quotient interpretations. The first
+milestone should be the pairing and bit lemmas; the main proof obligation is
+the certificate verifier and its hereditary-size bound. The present article
+contains no Lean proof terms and claims no kernel verification.
+
+A fourth target is the choice-free analogue. Ordinal-indexed well-founded
+relations naturally recover sets with well-orderable transitive closures.
+An exact account in ZF would have to state that restriction and examine
+whether a richer surreal coding signature can escape it. Nothing in the
+ZFC proofs justifies silently deleting Choice.
+
+\section{Conclusion}
+
+Birthday truncation has a precise set-theoretic effect. At an epsilon-number
+cutoff $\lambda$, rooted sign codes recover the hereditary-size universe at
+the cardinal ceiling of $\lambda$. When $\lambda$ is not itself a cardinal,
+its value survives as a definable interpreted set. This extra datum explains
+why noncardinal cutoff inclusions never become elementary, even though all
+their ordered field reducts are elementary subfields.
+
+The growth calculations distinguish two independent resources. Packing a
+birthday fiber requires its full power-set cardinal to fit below the cutoff.
+Bounding definable ordinal-indexed birthday growth corresponds, at cardinal
+cutoffs, to collecting definable images. Their conjunction detects worldly
+cardinals, not merely inaccessible ones. Under an outer-model extension,
+the old power set supplies an equally explicit detector of added subsets,
+with an exact hereditary-size cost.
+
+The same information is available in surcomplex arithmetic once conjugation,
+coordinate birthday, and a choice of imaginary unit are specified. Omitting
+the last choice preserves mutual interpretation but leaves a genuine
+two-element automorphism obstruction to bi-interpretation. Across these
+results, the decisive structure is not the field alone: it is the field
+with a carefully specified memory of how its elements are born.
+
+\appendix
+\section{Formula expansion and size checks}
+\label{app:formulas}
+
+\subsection{What ``first-order'' means in the coding proof}
+
+Every abbreviation used above expands to a finite formula in
+$\{0,1,+,-,\cdot,<,\bd\}$. Bounded ordinal quantifiers are shorthand for
+ordinary scalar quantifiers with guards $\Ord(x)$ and $x<\delta$.
+A set variable in an interpreted membership formula becomes a triple of
+scalar variables. Equality becomes $\sim$, and membership becomes
+$\in_\I$; quantifiers are relativized to $\Code$.
+
+For example, a graph code $f$ on $\delta\times\epsilon$, embedded in the
+square of width $\theta=\delta+\epsilon+1$, uses
+\[
+ F(i,j)\iff i<\delta\land j<\epsilon\land
+                 \Bit(f,p_\theta(i,j)).
+\]
+It is a total function exactly when
+\[
+ \forall i<\delta\ \exists j<\epsilon\,
+ \bigl(F(i,j)\land\forall k<\epsilon\ (F(i,k)\longrightarrow k=j)\bigr).
+\]
+Injectivity is
+\[
+ \forall i,i'<\delta\ \forall j<\epsilon\,
+       (F(i,j)\land F(i',j)\longrightarrow i=i'),
+\]
+and surjectivity is $\forall j<\epsilon\,\exists i<\delta\,F(i,j)$.
+Occurrences of $f(i)$ in the main text can therefore be eliminated by these
+unique-value clauses. Root preservation and edge correspondence add only
+finitely many quantifiers.
+
+The graph code's birthday is $\Lambda(\theta)$; all plus positions outside
+the relevant rectangle can be required absent. The same convention makes
+canonical relation coding a definable operation when the intended relation
+is already specified by a formula and its bit string exists.
+
+\subsection{Every potentially large construction has a stated bound}
+
+\begin{longtable}{@{}P{0.35\textwidth}P{0.56\textwidth}@{}}
+\toprule
+Object & Bound used in the proof\\
+\midrule\endhead
+Subsets tested in well-foundedness & Individual sign strings of birthday $\delta$; no collection of that whole fiber is required.\\[0.4em]
+A relation on a code domain $\delta$ & Sign birthday $\Lambda(\delta)=\delta^2+\delta<\lambda$.\\[0.4em]
+An isomorphism or member embedding & Square width $\delta+\epsilon+1<\lambda$, with the corresponding $\Lambda$ bound.\\[0.4em]
+Collapse value of a rooted code & Transitive closure has exactly $\card\delta$ members.\\[0.4em]
+An arithmetic computation & At most $\mu$ word vertices and hereditary size $\mu$, where $\mu$ bounds the inputs and is infinite.\\[0.4em]
+Rank labels in that computation & Below $\mu^+$, hence each has cardinality at most $\mu$.\\[0.4em]
+Replacement image after eternity & One bound $\max(\aleph_0,\card\delta,\card\beta)<\kappa$, not an arbitrary singular-cardinal union.\\[0.4em]
+A packed birthday-$\alpha$ fiber & Exists exactly if $2^{\card\alpha}<\kappa(\lambda)$.\\[0.4em]
+The old-power-set parameter & Hereditary size $(2^{\card\alpha})^M$ for infinite $\alpha$.\\
+\bottomrule
+\end{longtable}
+
+\subsection{An essential negative regression}
+
+In the membership definition, edge preservation alone is insufficient.
+Take the code for $x=\varnothing$ and the three-node chain coding
+$y=\{\{\varnothing\}\}$. Map the sole node of the first code to the middle
+node of the chain, which codes $\{\varnothing\}$. The image root is a child
+of the target root, and the one-node induced subgraph has no edges, just
+like the source. But $\varnothing\notin\{\{\varnothing\}\}$.
+The predecessor-full clause \eqref{eq:member-full} rejects this false
+witness, because the middle node has a predecessor omitted from the image.
+
+\section{Finite verification and reproduction}
+\label{app:verification}
+
+The accompanying script \path{finite_checks.py} checks finite analogues of
+the prefix formula, the bounded pairing map, rooted relation coding,
+isomorphism, and the membership test. It also checks the negative regression
+in the preceding appendix. Its concrete counts and outcome are recorded in
+\path{verification_report.json}. The script uses only the Python standard
+library and may be run by
+\begin{quote}\ttfamily python3 finite\_checks.py\end{quote}
+
+The delivered run passed 16,129 ordered sign-pair tests on all 127 strings
+of length at most six, 642 sign-coordinate tests, and 11,440 finite pairing
+checks. It examined all 530 directed relations on domains of size one
+through three, all 1,570 choices of a rooted relation, and all 225 ordered
+pairs among the 15 valid rooted extensional well-founded codes, for both
+equality and membership. The deliberately incomplete membership test
+accepted the false witness above; the predecessor-full version rejected it.
+
+These checks can expose a reversed edge, a missing root condition, a bad
+pairing index, or an incorrect finite sign formula. They do not prove
+transfinite well-foundedness, cardinal bounds, bi-interpretability,
+Replacement equivalences, or any large-cardinal assertion. The proofs of
+those statements are the written arguments above.
+
+The PDF is built from this standalone source; the bibliography is included
+below and no external graphics or font files are needed. Run
+\begin{quote}\ttfamily
+pdflatex -interaction=nonstopmode -halt-on-error surreal\_cutoffs.tex
+\end{quote}
+three times, or use \texttt{latexmk -pdf}. Document-production checks and
+finite tests are separate from formal mathematical verification.
+
+\begin{thebibliography}{99}
+
+\bibitem{Conway}
+J. H. Conway, \emph{On Numbers and Games}, second edition,
+A K Peters, 2001. Classical number forms and recursive arithmetic.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986. Sign sequences and the simplicity theorem.
+
+\bibitem{vdDE}
+L. van den Dries and P. Ehrlich, ``Fields of surreal numbers and
+exponentiation,'' \emph{Fundamenta Mathematicae} \textbf{167} (2001),
+173--188. Read with the following erratum.
+
+\bibitem{vdDEerr}
+L. van den Dries and P. Ehrlich, ``Erratum to `Fields of surreal numbers and
+exponentiation','' \emph{Fundamenta Mathematicae} \textbf{168} (2001),
+295--297.
+
+\bibitem{BG}
+O. Bournez and Q. Guilmant, ``Surreal fields stable under exponential and
+logarithmic functions,'' arXiv:2201.08199, 2022.
+\url{https://arxiv.org/abs/2201.08199}.
+The corrected cutoff and real-closedness statements used here are stated
+in Theorems 1.1--1.2; their original source is \cite{vdDE,vdDEerr}.
+
+\bibitem{RM}
+D. R. Rangel and H. L. Mariano, ``An algebraic (set) theory of surreal
+numbers, I,'' arXiv:1911.12726, 2019.
+\url{https://arxiv.org/abs/1911.12726}.
+Foundational and algebraic set-theory background, distinct from the
+birthday-field interpretation considered here.
+
+\bibitem{CHYKobe}
+J. D. Hamkins, reporting joint work with J. Chen and R. Yang,
+``The elementary theory of surreal arithmetic is bi-interpretable with set
+theory,'' Kobe, September 2025; announcement dated August 20, 2025,
+with linked slides.
+\url{https://jdh.hamkins.org/theory-of-surreal-arithmetic-bi-interpretable-with-set-theory-japan-september-2025/}.
+The consulted slides announce the global result and discuss the coding and
+growth principles; they are not a complete refereed paper.
+
+\bibitem{CHYNotreDame}
+J. D. Hamkins, reporting joint work with J. Chen and R. Yang,
+``The elementary theory of surreal arithmetic is bi-interpretable with set
+theory,'' Notre Dame Logic Seminar, November 2025, with linked slides.
+\url{https://jdh.hamkins.org/surreal-arithmetic-notre-dame-logic-seminar-nov-2025/}.
+
+\bibitem{CHYCUNY}
+New York Logic Workshop, ``Surreal arithmetic is bi-interpretable with set
+theory,'' seminar announcement for J. D. Hamkins, March 13, 2026,
+reporting joint work with J. Chen and R. Yang.
+\url{https://nylogic.github.io/logic-workshop/2026/03/13/surreal-arithmetic-is-bi-interpretable-with-set-theory.html}.
+
+\bibitem{RepoCatalog}
+V. Reshetnikov, \emph{Surreal} repository, documentation catalog,
+\path{docs/README.md}, inspected at commit
+\texttt{4f2645599121fa872c7104995e47f86f0382351f} on September 22, 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/4f2645599121fa872c7104995e47f86f0382351f/docs}.
+Repository research manuscripts are treated as prior project material,
+not as independently refereed publications.
+
+\bibitem{RepoFoundations}
+\emph{Foundations for Surreal and Surcomplex Mathematics: Sets, Classes,
+Universes, Type Theories, and a Pinned Lean Audit}, maintained repository
+exposition, September 2026. At the commit in \cite{RepoCatalog}, see
+\path{docs/foundations-and-computation/foundations/article.tex}
+and its README. Relevant inspected topics include sign presentations,
+local recursion, universes, and birthday cutoffs.
+
+\bibitem{RepoAutomorphisms}
+\emph{Automorphisms of the Surcomplex Numbers: Real Forms, Hahn Symmetries,
+Valuation, and Rigidity}, repository research exposition,
+September 22, 2026. At the commit in \cite{RepoCatalog}, see
+\path{docs/surcomplex/surcomplex-field-automorphisms/README.md}.
+The scope statement was inspected to avoid treating broad automorphism
+rigidity as a new contribution of the present article.
+
+\end{thebibliography}
+\end{document}
