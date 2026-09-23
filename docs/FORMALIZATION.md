@@ -989,11 +989,12 @@ At placement these added 75 literal standard results, plus three custom
 `maintheorem` statements indexed separately. The elementary review first
 added four standard results; the subsequent assembly in `bbdd536` now has
 67 Diophantine results, for 101 across the two current omnific sources.
-All are **Pending** in Lean. The Diophantine proof review now reaches Section 7,
-including the complex extension of separated-power rigidity and a correction
-to its coefficient-derivation hypothesis. Sections 8 onward and remaining
-source reconciliation still need review; its two newly placed companions and all twelve
-quotient companions remain unintegrated. The further entire-function
+All are **Pending** in Lean. The Diophantine proof review now reaches Section 9,
+including complex separated-power rigidity, the corrected divisibility
+identity, explicit quadratic polarization, preservation of coordinate ideals
+and bounded-set transfer for quantified formulas. Sections 10 onward and
+remaining source reconciliation still need review; its two newly placed
+companions and all twelve quotient companions remain unintegrated. The further entire-function
 rectification manuscript also remains a placement. The additional artifacts
 are preserved from `cf350b1`, with original archives in `de0acc6`.
 
@@ -4263,80 +4264,80 @@ It asserts no Lean coverage. All statements remain **pending unless explicitly m
 Source: [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex).
 
 Sources 01, 02 and 05 were assembled in `bbdd536`. The elementary algebra
-comparison, proof review through Section 7 and remaining work are recorded in the report
+comparison, proof review through Section 9 and remaining work are recorded in the report
 reconciliation. Local sources 06–07 are not yet integrated. All statements
 below are **Pending** in Lean. The separately styled cited theorem
 `odg:fact:settarget` is also in scope, outside the standard-environment table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Proposition | `odg:prop:ring` (line 479) | Rings and retraction \src{01, 02, 05} |
-| Lemma | `odg:lem:degree` (line 524) | Degree \src{01, 02, 05} |
-| Proposition | `odg:prop:units` (line 545) | Units and finite elements \src{01, 02, 05} |
-| Lemma | `odg:lem:workspace` (line 577) | Set-sized workspaces \src{05} |
-| Theorem | `odg:thm:floor` (line 609) | Integer-part formula \src{01, 02, 05} |
-| Proposition | `odg:prop:univariate` (line 646) | One-variable rigidity \src{02, 05} |
-| Theorem | `odg:thm:finitequotients` (line 671) | Ordinary moduli \src{01, 02, 05} |
-| Proposition | `odg:prop:finitedivisors` (line 706) | Divisors of integers \src{05} |
-| Corollary | `odg:cor:mixedgcd` (line 715) | Ordinary primes and mixed gcds \src{02, 05} |
-| Corollary | `odg:cor:charideals` (line 734) | Positive-characteristic quotients \src{01, 02, 05} |
-| Proposition | `odg:prop:canonicalct` (line 775) | Uniqueness of the retraction \src{01} |
-| Lemma | `odg:lem:setbounds` (line 850) | Set-sized exponent bounds \src{01, 02, 05} |
-| Theorem | `odg:thm:commondivisor` (line 863) | Common monomial divisibility \src{01, 02, 05} |
-| Corollary | `odg:cor:Pglobal` (line 886) | The purely infinite ideal \src{01, 02, 05} |
-| Corollary | `odg:cor:nilpotent` (line 919) | Nilpotent tests \src{02} |
-| Proposition | `odg:prop:irreduciblect` (line 936) | Irreducibles \src{01, 02, 05} |
-| Theorem | `odg:thm:fractions` (line 968) | Global monomial clearing \src{01, 02, 05} |
-| Corollary | `odg:cor:projectiveclear` (line 990) | Projective clearing and common multiples \src{01, 02, 05} |
-| Proposition | `odg:prop:division` (line 1015) | Ordered division \src{01, 02, 05} |
-| Theorem | `odg:thm:nogcd` (line 1043) | Pairs without a gcd \src{02}, generalizing \src{01} |
-| Proposition | `odg:prop:notnormal` (line 1082) | Chains and integral closure \src{01, 02, 05} |
-| Theorem | `odg:thm:transfer` (line 1123) | Retraction theorem for equations \src{01, 02, 05} |
-| Corollary | `odg:cor:H10` (line 1165) | Hilbert's tenth problem \src{01, 02, 05} |
-| Proposition | `odg:prop:notdiophantine` (line 1197) | Retraction closure \src{01, 02, 05} |
-| Theorem | `odg:thm:smith` (line 1223) | Smith normal form over the omnific integers \src{01, 02, 05} |
-| Theorem | `odg:thm:linear` (line 1248) | Ordinary right-hand sides \src{05} |
-| Lemma | `odg:lem:constantproduct` (line 1282) | Constant products \src{01, 02, 05} |
-| Theorem | `odg:thm:decomposable` (line 1296) | Exact fibers of decomposable equations \src{02}; case (b) \src{01} |
-| Theorem | `odg:thm:binary` (line 1365) | Binary-form rigidity \src{05}, generalizing \src{01, 02} |
-| Corollary | `odg:cor:thue` (line 1391) | Thue levels and equal powers \src{01, 02, 05} |
-| Corollary | `odg:cor:pell` (line 1409) | Pell rigidity \src{01, 02, 05} |
-| Proposition | `odg:prop:zeropell` (line 1450) | The zero Pell fiber \src{01} |
-| Corollary | `odg:cor:conics` (line 1461) | Nonsingular central conics \src{05} |
-| Theorem | `odg:thm:norm` (line 1496) | Norm-form rigidity \src{01, 02} |
-| Lemma | `odg:lem:derivation` (line 1570) | Euler derivations \src{05} |
-| Lemma | `odg:lem:detection` (line 1591) | Detection of nonconstants \src{05} |
-| Lemma | `odg:lem:wronskian` (line 1613) | A strict Wronskian bound \src{05} |
-| Theorem | `odg:thm:separated` (line 1630) | Separated-power rigidity \src{05} |
-| Corollary | `odg:cor:mordell` (line 1701) | Mordell and Fermat curves \src{05} |
-| Lemma | `odg:lem:pairwise` (line 1751) | Pairwise comaximality \src{05} |
-| Theorem | `odg:thm:unimodularfermat` (line 1764) | Unimodular Fermat rigidity \src{05} |
-| Corollary | `odg:cor:flt` (line 1836) | An omnific form of Fermat's Last Theorem \src{05} |
-| Theorem | `odg:thm:quadclassification` (line 1862) | Quadratic-level dichotomy \src{01}; case (iii) also \src{02} |
-| Lemma | `odg:lem:transvection` (line 1891) | A nilpotent quadratic isometry \src{01, 02} |
-| Lemma | `odg:lem:nullchoices` (line 1952) | An isotropic direction visible from a nonzero point \src{01, 02} |
-| Corollary | `odg:cor:unipotent` (line 2055) | An invisible unipotent subgroup \src{02} |
-| Proposition | `odg:prop:squaresbound` (line 2103) | Positive bounds \src{01, 05} |
-| Theorem | `odg:thm:bounded` (line 2118) | Bounded semialgebraic rigidity \src{02} |
-| Corollary | `odg:cor:definite` (line 2135) | Definite levels \src{01, 02} |
-| Corollary | `odg:cor:orthogonal` (line 2154) | Euclidean orthogonal group \src{01, 02} |
-| Corollary | `odg:cor:symmetric` (line 2175) | Symmetric matrix rigidity \src{01} |
-| Theorem | `odg:thm:infinity` (line 2190) | Leading-homogeneous obstruction \src{01} |
-| Lemma | `odg:lem:pellsequence` (line 2230) | Pell witnesses \src{01, 05} |
-| Lemma | `odg:lem:pellgap` (line 2252) | A three-square gap below a Pell coordinate \src{01} |
-| Theorem | `odg:thm:guard` (line 2286) | Uniform quartic integrality guard \src{01} |
-| Theorem | `odg:thm:standarddef` (line 2317) | A quartic definition of $\Z$ \src{05} |
-| Corollary | `odg:cor:definablect` (line 2378) | Definability of $\ct$ and $\Pi$ \src{01, 05} |
-| Theorem | `odg:thm:induction` (line 2422) | A failed existential induction instance \src{05} |
-| Proposition | `odg:prop:polylift` (line 2475) | Finite polynomial lifting \src{01, 02, 05} |
-| Theorem | `odg:thm:cone` (line 2506) | Homogeneous cone criterion \src{01}; part (b) \src{02} |
-| Proposition | `odg:prop:pythagoras` (line 2572) | Infinite unimodular Pythagorean triples \src{01, 05} |
-| Theorem | `odg:thm:realray` (line 2601) | Rationality of primitive constant directions \src{01} |
-| Lemma | `odg:lem:specialization` (line 2635) | Finite ordered specialization \src{05} |
-| Theorem | `odg:thm:specialization` (line 2657) | Finite-support solutions specialize to arcs \src{05} |
-| Theorem | `odg:thm:quadraticformula` (line 2709) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 2745) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 2776) | A two-term root obstruction \src{05} |
+| Proposition | `odg:prop:ring` (line 480) | Rings and retraction \src{01, 02, 05} |
+| Lemma | `odg:lem:degree` (line 525) | Degree \src{01, 02, 05} |
+| Proposition | `odg:prop:units` (line 546) | Units and finite elements \src{01, 02, 05} |
+| Lemma | `odg:lem:workspace` (line 578) | Set-sized workspaces \src{05} |
+| Theorem | `odg:thm:floor` (line 610) | Integer-part formula \src{01, 02, 05} |
+| Proposition | `odg:prop:univariate` (line 647) | One-variable rigidity \src{02, 05} |
+| Theorem | `odg:thm:finitequotients` (line 672) | Ordinary moduli \src{01, 02, 05} |
+| Proposition | `odg:prop:finitedivisors` (line 707) | Divisors of integers \src{05} |
+| Corollary | `odg:cor:mixedgcd` (line 716) | Ordinary primes and mixed gcds \src{02, 05} |
+| Corollary | `odg:cor:charideals` (line 735) | Positive-characteristic quotients \src{01, 02, 05} |
+| Proposition | `odg:prop:canonicalct` (line 776) | Uniqueness of the retraction \src{01} |
+| Lemma | `odg:lem:setbounds` (line 851) | Set-sized exponent bounds \src{01, 02, 05} |
+| Theorem | `odg:thm:commondivisor` (line 864) | Common monomial divisibility \src{01, 02, 05} |
+| Corollary | `odg:cor:Pglobal` (line 887) | The purely infinite ideal \src{01, 02, 05} |
+| Corollary | `odg:cor:nilpotent` (line 920) | Nilpotent tests \src{02} |
+| Proposition | `odg:prop:irreduciblect` (line 937) | Irreducibles \src{01, 02, 05} |
+| Theorem | `odg:thm:fractions` (line 969) | Global monomial clearing \src{01, 02, 05} |
+| Corollary | `odg:cor:projectiveclear` (line 991) | Projective clearing and common multiples \src{01, 02, 05} |
+| Proposition | `odg:prop:division` (line 1016) | Ordered division \src{01, 02, 05} |
+| Theorem | `odg:thm:nogcd` (line 1044) | Pairs without a gcd \src{02}, generalizing \src{01} |
+| Proposition | `odg:prop:notnormal` (line 1083) | Chains and integral closure \src{01, 02, 05} |
+| Theorem | `odg:thm:transfer` (line 1124) | Retraction theorem for equations \src{01, 02, 05} |
+| Corollary | `odg:cor:H10` (line 1166) | Hilbert's tenth problem \src{01, 02, 05} |
+| Proposition | `odg:prop:notdiophantine` (line 1198) | Retraction closure \src{01, 02, 05} |
+| Theorem | `odg:thm:smith` (line 1224) | Smith normal form over the omnific integers \src{01, 02, 05} |
+| Theorem | `odg:thm:linear` (line 1249) | Ordinary right-hand sides \src{05} |
+| Lemma | `odg:lem:constantproduct` (line 1283) | Constant products \src{01, 02, 05} |
+| Theorem | `odg:thm:decomposable` (line 1297) | Exact fibers of decomposable equations \src{02}; case (b) \src{01} |
+| Theorem | `odg:thm:binary` (line 1366) | Binary-form rigidity \src{05}, generalizing \src{01, 02} |
+| Corollary | `odg:cor:thue` (line 1392) | Thue levels and equal powers \src{01, 02, 05} |
+| Corollary | `odg:cor:pell` (line 1410) | Pell rigidity \src{01, 02, 05} |
+| Proposition | `odg:prop:zeropell` (line 1451) | The zero Pell fiber \src{01} |
+| Corollary | `odg:cor:conics` (line 1462) | Nonsingular central conics \src{05} |
+| Theorem | `odg:thm:norm` (line 1497) | Norm-form rigidity \src{01, 02} |
+| Lemma | `odg:lem:derivation` (line 1571) | Euler derivations \src{05} |
+| Lemma | `odg:lem:detection` (line 1592) | Detection of nonconstants \src{05} |
+| Lemma | `odg:lem:wronskian` (line 1614) | A strict Wronskian bound \src{05} |
+| Theorem | `odg:thm:separated` (line 1631) | Separated-power rigidity \src{05} |
+| Corollary | `odg:cor:mordell` (line 1702) | Mordell and Fermat curves \src{05} |
+| Lemma | `odg:lem:pairwise` (line 1752) | Pairwise comaximality \src{05} |
+| Theorem | `odg:thm:unimodularfermat` (line 1765) | Unimodular Fermat rigidity \src{05} |
+| Corollary | `odg:cor:flt` (line 1837) | An omnific form of Fermat's Last Theorem \src{05} |
+| Theorem | `odg:thm:quadclassification` (line 1875) | Quadratic-level dichotomy \src{01}; case (iii) also \src{02} |
+| Lemma | `odg:lem:transvection` (line 1904) | A nilpotent quadratic isometry \src{01, 02} |
+| Lemma | `odg:lem:nullchoices` (line 1965) | An isotropic direction visible from a nonzero point \src{01, 02} |
+| Corollary | `odg:cor:unipotent` (line 2086) | An invisible unipotent subgroup \src{02} |
+| Proposition | `odg:prop:squaresbound` (line 2134) | Positive bounds \src{01, 05} |
+| Theorem | `odg:thm:bounded` (line 2151) | Bounded semialgebraic rigidity \src{02} |
+| Corollary | `odg:cor:definite` (line 2189) | Definite levels \src{01, 02} |
+| Corollary | `odg:cor:orthogonal` (line 2214) | Euclidean orthogonal group \src{01, 02} |
+| Corollary | `odg:cor:symmetric` (line 2242) | Symmetric matrix rigidity \src{01} |
+| Theorem | `odg:thm:infinity` (line 2265) | Leading-homogeneous obstruction \src{01} |
+| Lemma | `odg:lem:pellsequence` (line 2310) | Pell witnesses \src{01, 05} |
+| Lemma | `odg:lem:pellgap` (line 2332) | A three-square gap below a Pell coordinate \src{01} |
+| Theorem | `odg:thm:guard` (line 2366) | Uniform quartic integrality guard \src{01} |
+| Theorem | `odg:thm:standarddef` (line 2397) | A quartic definition of $\Z$ \src{05} |
+| Corollary | `odg:cor:definablect` (line 2458) | Definability of $\ct$ and $\Pi$ \src{01, 05} |
+| Theorem | `odg:thm:induction` (line 2502) | A failed existential induction instance \src{05} |
+| Proposition | `odg:prop:polylift` (line 2555) | Finite polynomial lifting \src{01, 02, 05} |
+| Theorem | `odg:thm:cone` (line 2586) | Homogeneous cone criterion \src{01}; part (b) \src{02} |
+| Proposition | `odg:prop:pythagoras` (line 2652) | Infinite unimodular Pythagorean triples \src{01, 05} |
+| Theorem | `odg:thm:realray` (line 2681) | Rationality of primitive constant directions \src{01} |
+| Lemma | `odg:lem:specialization` (line 2715) | Finite ordered specialization \src{05} |
+| Theorem | `odg:thm:specialization` (line 2737) | Finite-support solutions specialize to arcs \src{05} |
+| Theorem | `odg:thm:quadraticformula` (line 2789) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 2825) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 2856) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 

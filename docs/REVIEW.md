@@ -2440,6 +2440,54 @@ passes 13,135 declarations with only `propext`, `Classical.choice` and
 `Quot.sound`. The source-label and 51-report inventory audits still pass,
 and all 1,308 local Markdown destinations resolve.
 
+## Omnific quadratic levels and bounded geometry
+
+The next pass reads Sections 8–9 of the
+[Diophantine article](surreal/omnific-diophantine-geometry/article.tex),
+comparing source 01's quadratic classification, transvection, positive-bound,
+orthogonal, symmetric-matrix and leading-homogeneous proofs, and source 02's
+bounded-set and nilpotent-isometry arguments. It makes the polarization
+`q(x) = B(x,x)` explicit, including half-integral mixed coefficients, and
+expands the isotropic spanning and nondegenerate-complement construction.
+The free isometry parameter is distinguished from the fixed infinitesimal
+monomial used to reverse exponents. The notation guide also distinguishes
+this quadratic normalization from Hahn–Tate's energy with a factor `½`.
+
+The inverse matrix formula gives an additional consequence: along the
+quadratic orbit, the coordinate ideal equals the starting integer tuple's
+ordinary gcd ideal. Primitive integer points therefore yield unimodular
+omnific families. The degenerate affine family also has proper-class size.
+The definite-form argument extends finite integer isometry groups beyond the
+standard Euclidean signed-permutation case.
+
+The bounded-set proof previously passed from truth in `No` to a small field
+without spelling out what happens to quantifiers. The expanded argument
+constructs set-sized real closed subfields and proves agreement by induction
+on finite ordered-ring formulas: an existential witness lies in a larger
+set-sized field, and model completeness descends the assertion. The classical
+inputs were checked against [Marker, Theorem 3.5 and Proposition 4.1](https://library.slmath.org/books/Book39/files/marker.pdf),
+now cited in the bibliography. The proof applies the ordinary theorem only
+between set-sized fields. It does not verify the imported real-closedness of
+`No` or the normal-form foundations.
+
+Empty definite levels, the explicit positive coordinate bound and zero-size
+matrices are handled explicitly. A nonsymmetric nilpotent matrix with an
+infinite entry shows why a constant characteristic polynomial alone gives no
+entry bound. Two equivalent polynomial systems with different top-form zero
+sets show why the leading-homogeneous criterion concerns the displayed
+generators. Their elementary identities were checked symbolically.
+
+All 67 standard results, 159 labels and label numbers are preserved. Only the
+bounded-set statement's wording changes, to specify the ordered-ring language;
+its scope is unchanged. Main Sections 10–14 remain byte-identical. The article
+and catalogue have clean three-pass PDFs of 57 and 28 pages, respectively;
+changed pages were visually checked. The source-01 and source-02 SymPy 1.14.0
+verifiers pass, differing from delivery output only in the Python version
+(3.13.5 versus 3.13.14). Source-label, full statement-index and local Markdown
+link audits pass, as does `git diff --check`. No Lean source or coverage is
+added by this review. Sections 10 onward, remaining imports, source
+reconciliation and the placed companions remain pending.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
