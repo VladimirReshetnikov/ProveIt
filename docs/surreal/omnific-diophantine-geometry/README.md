@@ -1,6 +1,6 @@
 # Omnific Integers and Omnific–Diophantine Geometry
 
-**Retractions, rigidity, definability, and infinite families**  
+**Retractions, rigidity, definability, and infinite families**\
 Research article dated September 22, 2026, prepared for the Surreal project.
 
 ## Contents

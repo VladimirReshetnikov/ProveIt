@@ -1,11 +1,11 @@
 # Source, novelty, and proof audit
 
-Article: **The Universal Set-Sized Quotient of the Omnific Integers**  
+Article: **The Universal Set-Sized Quotient of the Omnific Integers**\
 Research snapshot: 22 September 2026.
 
 ## 1. Repository scope
 
-Repository: https://github.com/VladimirReshetnikov/Surreal  
+Repository: https://github.com/VladimirReshetnikov/Surreal\
 Pinned commit: `a5c2a97df4b545dfe7f4cb8c11e4efed83101f6e`.
 
 The GitHub connector was used to inspect repository metadata, the root

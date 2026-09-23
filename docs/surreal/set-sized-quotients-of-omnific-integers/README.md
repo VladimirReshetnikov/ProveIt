@@ -1,7 +1,7 @@
 # The Universal Set-Sized Quotient of the Omnific Integers
 
-**Cardinal thresholds, surcomplex representations, and homological obstructions**  
-Research article prepared for Vladimir Reshetnikov, 22 September 2026.  
+**Cardinal thresholds, surcomplex representations, and homological obstructions**\
+Research article prepared for Vladimir Reshetnikov, 22 September 2026.\
 Author: OpenAI ChatGPT. The compiled article has 25 PDF pages.
 
 ## Main results

@@ -25,11 +25,18 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 49 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 51 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
+
+The complex cosine fold now has its exact infinitesimal root classification,
+real and imaginary branch behavior, half-valuation law, and complete strong
+inverse-sine expansion. The displayed cubic factor has an exact finite
+fourth-order remainder. Fine derivatives and the order-two collision series
+are verified; the bridge to the manuscript's polynomial definition of angular
+multiplicity remains pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term

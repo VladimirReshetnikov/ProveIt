@@ -4,7 +4,7 @@ Date: 22 September 2026.
 
 ## Repository snapshot
 
-Repository: https://github.com/VladimirReshetnikov/Surreal  
+Repository: https://github.com/VladimirReshetnikov/Surreal\
 Pinned commit: `37eefca1a309a967d8c8237606ccf6290475adfa`.
 
 The repository was accessed through the connected GitHub tools. Material
