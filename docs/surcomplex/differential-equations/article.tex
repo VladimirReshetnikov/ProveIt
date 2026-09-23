@@ -5967,9 +5967,9 @@ two frames without the translation $\derT=-\omega\der$.
 \label{diff:rs:sub:class}
 
 For $\Gamma\subseteq\R$ we keep the least-exponent valuation $v$ of
-\cref{diff:sec:laurent} and the two subrings $K_{\Gamma}^{\geq0}$ and
-$K_{\Gamma}^{>0}$ of \cref{diff:rs:lem:euler}; in the embedding into $\SC$,
-their elements are finite, respectively infinitesimal.
+\cref{diff:sec:laurent}, the valuation ring $K_{\Gamma}^{\geq0}$ and its
+maximal ideal $K_{\Gamma}^{>0}$ from \cref{diff:rs:lem:euler}. In the
+embedding into $\SC$, their elements are finite, respectively infinitesimal.
 
 \begin{definition}[Power-Hahn regular-singular system]
 \label{diff:rs:def:class}
@@ -6035,16 +6035,21 @@ or $\Phi$. The operator $y\mapsto\derT y-Ay$ is written out; the source's name
 $\mathcal D_{A}$ for it is the first-integral derivation of
 \cref{diff:sub:matresonance} here.
 \end{itemize}
-For a differential subfield $E\subseteq\SC$ and $G\in\GL_{n}(E)$, the
-substitution $y=Gz$ carries \cref{diff:rs:eq:system} to
+For a $\derT$-stable subfield $\C\subseteq E\subseteq\SC$ with
+$A\in\Mat_{n}(E)$ and $G\in\GL_{n}(E)$, the substitution $y=Gz$ carries \cref{diff:rs:eq:system} to
 \begin{equation}\label{diff:rs:eq:gauge}
  \derT z=A^{G}z,\qquad A^{G}=G^{-1}AG-G^{-1}\derT G .
 \end{equation}
-Multiplying by $-t$ shows that this is exactly \cref{diff:eq:matgauge} for the
-$\der$-coefficient $-tA$: $E$-gauge equivalence of $\derT$-systems is
-$E$-gauge equivalence of the corresponding $\der$-systems. A morphism from a
-system $B'$ to a system $A$, of possibly different sizes, is a rectangular $X$
-with $\derT X=AX-XB'$; all morphism spaces are $\C$-vector spaces.
+Multiplying by $-t$ gives \cref{diff:eq:matgauge} for the
+$\der$-coefficient $-tA$ as an identity in $\SC$. If $t\in E$, then $E$
+is stable under both derivations, and $E$-gauge equivalence of the two
+systems is the same in either frame. Without this hypothesis the
+$\derT$-system can be defined over $E$ while its $\der$-coefficient
+lies outside $E$: for $E=K_{\Z\sqrt2}$, the equation $\derT y=y$
+has coefficient $1\in E$ but its translated coefficient $-t$ is not in $E$.
+A morphism from a system $B'$ to a system $A$, of possibly different sizes,
+is a rectangular $X$ over the stated field with $\derT X=AX-XB'$.
+Because the field contains $\C$, these morphism spaces are $\C$-vector spaces.
 \end{convention}
 
 \begin{warning}[Residual frequencies are not phases]
@@ -6118,15 +6123,27 @@ The first two assertions are \cref{diff:lem:neumann}, proved in
 $s_{j}\geq\varepsilon$.
 \end{proof}
 
-Member~12 proves the first two assertions by a second, Higman-free route that
-is available only for real exponents: a sequence in $S^{k}$ has a
-componentwise nondecreasing subsequence, so infinitely many distinct words of
-one length $k$ with one sum would give a nondecreasing sequence of constant
-sum, hence a constant one; the length bound leaves finitely many $k$. The same
-extraction applied to bounded-length word representations of a strictly
-decreasing sequence in $S^{*}$ gives the well-ordering. The length bound uses
-the Archimedean property of $\R$ and has no analogue at higher rank
-(\cref{diff:warn:summability}).
+Here is member~12's second, Higman-free proof for real exponents. If
+$S=\varnothing$, only the empty word occurs and $S^{*}=\{0\}$. Otherwise
+put $\varepsilon=\min S>0$. Every sequence in $S$ has an infinite
+nondecreasing subsequence, as proved in \cref{diff:sub:app:twofacts}.
+Applying this extraction successively to the $k$ coordinates gives a
+componentwise nondecreasing subsequence of any sequence in $S^{k}$.
+If infinitely many distinct words of length $k$ had one sum, this
+subsequence would be constant: increasing any coordinate strictly would
+increase the sum. This contradicts distinctness. The length bound leaves
+only finitely many possible $k$, proving finiteness at each weight.
+
+For well-ordering, suppose $r_{1}>r_{2}>\cdots$ were word sums. They are
+nonnegative, and all chosen representing words have length at most
+$\lfloor r_{1}/\varepsilon\rfloor$. Some length occurs infinitely often;
+coordinatewise extraction at that length makes the corresponding sums
+nondecreasing, a contradiction. The argument uses the Archimedean
+property of $\R$. At higher rank, $k\varepsilon\leq r$ need not bound
+$k$: in $\Z\oplus_{\mathrm{lex}}\Z$, take $\varepsilon=(0,1)$ and
+$r=(1,0)$. The general finite-word lemma still gives finitely many
+representations of each weight; this numerical length estimate does not
+replace it (\cref{diff:warn:summability}).
 
 \begin{corollary}[Products, geometric inverses, and well-founded recursion]
 \label{diff:rs:cor:support}
@@ -6164,13 +6181,22 @@ expression is defined by the well-founded recursion of
 \cref{diff:rs:cor:support}.
 \end{lemma}
 \begin{proof}
-The union of the words with sums in the finite set $R$ is finite by
-\cref{diff:rs:lem:words}. Expanding a recursively defined coefficient into
-input matrices labels its terms by ordered words whose sums equal that
-coefficient's weight. The expansion terminates: along any branch the number of
-input letters is at most the total weight divided by $\min S$, and each step
-has only finitely many predecessors. Fixed linear operators change neither the
-weight nor the letters.
+If $S=\varnothing$, there are no positive-weight inputs and
+$S_{\crit}(R)=\varnothing$. Otherwise the union of the words with sums
+in the finite set $R$ is finite by \cref{diff:rs:lem:words}, so their
+letters form a finite set.
+
+To expand a coefficient of weight $r$, replace each recursively defined
+factor by its defining expression. Every product splits its weight into
+two positive members of $S^{*}$, each at least $\varepsilon=\min S$.
+Thus following either factor decreases the remaining weight by at least
+$\varepsilon$. A dependency branch has at most
+$\lfloor r/\varepsilon\rfloor$ such steps, and at each step there are
+only finitely many predecessor pairs. The entire dependency tree is
+therefore finite. Addition and fixed linear operators introduce no new
+input letters or weights. At its leaves, every term is labelled by an
+ordered word of input letters summing to $r$, so if $r\in R$ those
+letters all belong to $S_{\crit}(R)$.
 \end{proof}
 
 \subsection{The homological operator and the normalized resonant form}
@@ -6203,6 +6229,25 @@ $\Hom(V_{\mu},V_{\lambda})$ with $\gamma=\lambda-\mu\in\R_{>0}$. The whole
 block is retained, not only the kernel of $\mathcal H_{\gamma}$ on it; on the
 other blocks $\mathcal H_{\gamma}$ is invertible by \cref{diff:rs:eq:hinverse}.
 
+The distinction matters for a nonsemisimple residual matrix. Take
+\[
+ A_{0}^{\circ}=\begin{pmatrix}1&1&0\\0&1&0\\0&0&0\end{pmatrix},
+ \qquad A=A_{0}^{\circ}+tE_{23},
+\]
+where $E_{23}$ has its only nonzero entry, equal to $1$, in row $2$,
+column $3$. On the resonant block
+$\Hom(V_{0},V_{1})\cong\C^{2}$ at weight $1$, write a column as
+$u=(u_{1},u_{2})^{\mathsf T}$. Then
+$\mathcal H_{1}u=(-u_{2},0)^{\mathsf T}$ and
+$\Ker\mathcal H_{1}=\C(1,0)^{\mathsf T}$.
+If the retained coefficient $b$ were required to lie only in this kernel,
+the equation
+$\mathcal H_{1}u=(0,1)^{\mathsf T}-b$ would be impossible in its
+second coordinate. Retaining the whole block and setting $u=0$ gives
+$b=(0,1)^{\mathsf T}$. This normalization does not claim the smallest
+possible resonant representative; it specifies a unique one by fixing the
+whole resonant gauge block to zero.
+
 \begin{theorem}[Normalized resonant form]
 \label{diff:rs:thm:normal}
 There is a unique pair
@@ -6232,8 +6277,9 @@ coefficient of $t^{\gamma}$ in \cref{diff:rs:eq:normalidentity} is
  R_{\gamma}=A_{\gamma}+\sum_{\substack{\alpha+\beta=\gamma\\ \alpha,\beta>0}}
  \bigl(A_{\alpha}G_{\beta}-G_{\alpha}A^{\natural}_{\beta}\bigr),
 \end{equation}
-where the sum is finite and every coefficient on the right has smaller weight
-(\cref{diff:rs:cor:support}). On resonant blocks impose $G_{\gamma}=0$, which
+where $\alpha,\beta$ range over $S^{*}_{>0}$. The sum is finite,
+and every recursively constructed coefficient on the right has smaller
+weight (\cref{diff:rs:cor:support}); $A_{\gamma}$ is given input. On resonant blocks impose $G_{\gamma}=0$, which
 forces the corresponding part of $A^{\natural}_{\gamma}$ to equal $R_{\gamma}$;
 on the other blocks impose $A^{\natural}_{\gamma}=0$ and invert
 $\mathcal H_{\gamma}$:
@@ -6251,7 +6297,16 @@ the identity coefficient by coefficient and uniqueness under the stated
 normalization. Since $G_{\natural}-I$ has strictly positive support in $S^{*}$,
 the geometric series for its inverse is strongly summable and stays in $S^{*}$.
 Finally $\pr_{\gamma}=0$ unless $\gamma\in\Lev(A_{0})$, a finite set.
+If $S=\varnothing$, the construction is simply
+$G_{\natural}=I$ and $A^{\natural}=A_{0}^{\circ}$.
 \end{proof}
+
+Already at this stage, if $S\subseteq\Gamma$ for an additive subgroup
+$\Gamma\subseteq\R$, then $S^{*}\subseteq\Gamma$ and the gauge, its
+inverse and the normalized coefficient all lie over $K_{\Gamma}$.
+There is no need for $1\in\Gamma$ in the Euler frame. The later
+real-monomial shear can require additional exponents, as recorded in
+\cref{diff:rs:thm:workspace,diff:rs:rem:notbackwards}.
 
 \begin{remark}[Where the difficulty lies]
 \label{diff:rs:rem:difficulty}
@@ -6285,7 +6340,9 @@ $\lfloor r/\varepsilon\rfloor$. In particular, replacing $A$ by
 does not change $A^{\natural}$.
 \end{theorem}
 \begin{proof}
-Give $A_{s}$ the input weight $s$.
+When $S=\varnothing$, both systems in the assertion are
+$A_{0}^{\circ}$ and there is no positive coefficient to compute.
+Otherwise put $\varepsilon=\min S$ and give $A_{s}$ the input weight $s$.
 \Cref{diff:rs:eq:recursion,diff:rs:eq:explicit} build $G_{\gamma}$ and
 $A^{\natural}_{\gamma}$ by addition, weight-preserving fixed linear operators
 and weight-adding products, so each positive-weight coefficient is a
@@ -6310,9 +6367,18 @@ $\Lev(A_{0})\cap S^{*}=\varnothing$ then $A^{\natural}=A_{0}^{\circ}$.
 \end{corollary}
 \begin{proof}
 If $G_{\natural}$ and $G_{\natural}^{\crit}$ normalize the two systems to the
-same $A^{\natural}$, then $G_{\natural}(G_{\natural}^{\crit})^{-1}$ is a gauge
-from $A^{\crit}$ to $A$. The general assertion has the same proof, and if no
-Levelt resonance lies in $S^{*}$ every projection in the recursion vanishes.
+same $A^{\natural}$, put $X=G_{\natural}(G_{\natural}^{\crit})^{-1}$.
+Differentiating the inverse gives
+\[
+ \derT X=AX-XA^{\crit},
+\]
+since the two terms containing $A^{\natural}$ cancel. Thus $y=Xz$
+carries the $A^{\crit}$-system to the $A$-system. These matrices are in
+the common residual Jordan basis fixed above; conjugation by $G_{0}$
+returns the statement to the original basis. The general assertion has
+the same proof. The gauge also lies in $K_{\Gamma}$ whenever the
+common support container lies in $\Gamma$. If no Levelt resonance lies
+in $S^{*}$, every projection used in the recursion vanishes.
 \end{proof}
 
 \begin{corollary}[A useful but weaker cutoff statement]

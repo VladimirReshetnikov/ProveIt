@@ -434,6 +434,24 @@ distinction to explain nonconstant zero-derivative functions. The
 (`phys:tab:derivatives`) states explicitly which operation is used for its
 fields on ordinary spacetime.
 
+In the regular-singular part of the differential-equations report,
+`t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
+The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`
+for ordinary real `γ`. It preserves every `K_Γ` with `Γ ⊆ ℝ`,
+whereas `∂ = −t∂_τ` preserves that field exactly when `Γ = {0}`
+or `1 ∈ Γ`. Multiplying an Euler gauge identity by `−t` always gives
+an identity in `No[i]`; interpreting both systems over the same smaller
+field also requires that their coefficients and derivations stay there.
+
+The regular-singular residual matrix `A₀` is the exponent-zero coefficient
+of the Euler coefficient `A`; the corresponding `∂`-coefficient is `−tA`
+and its exponent-one coefficient is `−A₀`. A Levelt resonance is a
+positive real eigenvalue difference of `A₀`. Its block projection retains
+the entire space of maps between the corresponding generalized eigenspaces,
+not just the kernel of the homological operator. These resonances differ
+from integer relations among differential phases and from the scalar
+resonant coefficient at `t¹` discussed earlier in that report.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period

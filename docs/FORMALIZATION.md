@@ -605,6 +605,15 @@ This records corrected prose and hypotheses, not new Lean coverage.
   leading term `−2 τ₁² τ₂⁻³` from lattice index `(−1,1)`, so the higher
   rows cannot be discarded. The displayed finite expansion of `ξ` remains
   valid, since the difference has positive first-coordinate valuation.
+- **Clarified in source** (`diff:rs:conv:alphabet`, in
+  [differential equations](surcomplex/differential-equations/article.tex)):
+  a gauge field is explicitly Euler-stable and contains `ℂ`. Translation
+  by `∂ = −t∂_τ` always gives an identity in `No[i]`, but a system over
+  a smaller Euler-stable field need not translate to a system over that
+  field. For `E = K_(ℤ√2)`, the Euler equation `∂_τ y = y` has
+  coefficient in `E`, whereas its intrinsic coefficient `−t` is outside
+  `E`. The source now distinguishes this from the same-field equivalence
+  when `t ∈ E`. No additional Lean coverage is claimed.
 - **Corrected in source** (`diff:rs:lem:euler`, in
   [differential equations](surcomplex/differential-equations/article.tex)):
   `∂ = -t∂_T` preserves `K_Γ` exactly when `Γ = {0}` or `1 ∈ Γ`.
@@ -1178,69 +1187,69 @@ Hermitian matrix theory; formal Hahn scalar calculus is not a substitute.
 | Lemma | `diff:lem:saturated` (line 5644) | The lattice is saturated |
 | Theorem | `diff:thm:torus` (line 5657) | The diagonal phase torus |
 | Lemma | `diff:rs:lem:euler` (line 5887) | The Euler derivation on real-exponent Hahn fields |
-| Lemma | `diff:rs:lem:words` (line 6108) | Finite words at a fixed weight, with a length bound |
-| Corollary | `diff:rs:cor:support` (line 6131) | Products, geometric inverses, and well-founded recursion |
-| Lemma | `diff:rs:lem:critical` (line 6157) | Finite dependence at finitely many weights |
-| Theorem | `diff:rs:thm:normal` (line 6206) | Normalized resonant form |
-| Theorem | `diff:rs:thm:finite` (line 6270) | Finite resonance theorem |
-| Corollary | `diff:rs:cor:replacement` (line 6303) | Gauge-equivalent finite coefficient replacement |
-| Corollary | `diff:rs:cor:cutoff` (line 6318) | A useful but weaker cutoff statement |
-| Theorem | `diff:rs:thm:constantform` (line 6350) | Constant frequency-and-nilpotent form |
-| Lemma | `diff:rs:lem:eulermode` (line 6394) | Euler modes |
-| Theorem | `diff:rs:thm:selection` (line 6431) | Spectral selection and explicit solution envelope |
-| Corollary | `diff:rs:cor:invariance` (line 6468) | Perturbation invariance in the specified sector |
-| Corollary | `diff:rs:cor:real` (line 6480) | Real systems |
-| Theorem | `diff:rs:thm:Kclass` (line 6510) | Classification over the power-Hahn field |
-| Corollary | `diff:rs:cor:HomK` (line 6540) | Exact morphism dimensions over $\KR$ |
-| Theorem | `diff:rs:thm:SCclass` (line 6556) | Classification over the whole surcomplex field |
-| Corollary | `diff:rs:cor:tensor` (line 6591) | Solution dimensions of tensor products |
-| Proposition | `diff:rs:prop:phasespectrum` (line 6613) | An explicit non-Hermitian sector of the phase spectrum |
-| Theorem | `diff:rs:thm:Hahnsol` (line 6676) | The Hahn solution space |
-| Lemma | `diff:rs:lem:tautrans` (line 6694) | The logarithm is transcendental over $\KR$ |
-| Theorem | `diff:rs:thm:minlog` (line 6711) | Minimal logarithmic repair |
-| Theorem | `diff:rs:thm:forced` (line 6766) | Exact Hahn obstruction sequence |
-| Theorem | `diff:rs:thm:workspace` (line 6929) | Finite-monomial and one-logarithm envelope |
-| Proposition | `diff:rs:prop:boundary` (line 6998) | Infinitesimal coefficient, zero residue, no solution |
-| Lemma | `diff:aut:lem:small` (line 7229) | Finite coordinates have infinitesimal derivatives |
-| Lemma | `diff:aut:lem:evaluation` (line 7247) | Formal evaluation and the chain rule |
-| Lemma | `diff:aut:lem:implicit` (line 7279) | Formal implicit uniqueness in a monad |
-| Lemma | `diff:aut:lem:log` (line 7300) | Strip logarithms, for every normalized derivation |
-| Theorem | `diff:aut:thm:main` (line 7368) | Autonomous realization classification |
-| Lemma | `diff:aut:lem:projective` (line 7404) | Reduction of projective points |
-| Lemma | `diff:aut:lem:zero` (line 7436) | A nonconstant trajectory reduces to a zero |
-| Lemma | `diff:aut:lem:eigen` (line 7457) | Constant-coefficient eigenvectors |
-| Proposition | `diff:aut:prop:simple` (line 7480) | Linearization and all simple-zero solutions |
-| Lemma | `diff:aut:lem:leading` (line 7529) | The leading scale is forced |
-| Proposition | `diff:aut:prop:multiple` (line 7556) | Existence, uniqueness and completeness at a multiple zero |
-| Theorem | `diff:aut:thm:scales` (line 7639) | Uniform finite-scale localization |
-| Corollary | `diff:aut:cor:independent` (line 7688) | A continuum of independent solutions inside two scales |
-| Theorem | `diff:aut:thm:independence` (line 7717) | Derivation-independent autonomous sector |
-| Corollary | `diff:aut:cor:scalarbound` (line 7754) | Uniform scalar bound |
-| Corollary | `diff:aut:cor:realindep` (line 7772) | Real autonomous equations |
-| Corollary | `diff:aut:cor:earlier` (line 7783) | Two earlier corollaries hold for every normalized derivation |
-| Corollary | `diff:aut:cor:realbranches` (line 7822) | Exact real branch count |
-| Proposition | `diff:aut:prop:contraction` (line 7900) | Infinitesimal contraction |
-| Corollary | `diff:aut:cor:dual` (line 7915) | Holomorphic dual obstruction |
-| Theorem | `diff:aut:thm:hyperelliptic` (line 7929) | Squarefree hyperelliptic obstruction |
-| Lemma | `diff:aut:lem:formallog` (line 7986) | Normalized formal-group logarithm |
-| Proposition | `diff:aut:prop:abeliansplit` (line 8017) | Global splitting through the identity monad |
-| Theorem | `diff:aut:thm:abelianimage` (line 8056) | Abelian logarithmic-derivative image |
-| Corollary | `diff:aut:cor:abeliancriterion` (line 8113) | Finite-primitive criterion for abelian motion; surjective $\Dn$ |
-| Corollary | `diff:aut:cor:speeds` (line 8138) | Sharp one-power speed threshold; $\Dn=\der$ |
-| Theorem | `diff:thm:coherentlinear` (line 8395) | Positive-perturbation fundamental matrix |
-| Corollary | `diff:cor:coherentinhom` (line 8460) | Inhomogeneous coherent systems |
-| Corollary | `diff:cor:determinant` (line 8478) | Liouville determinant identity |
-| Proposition | `diff:prop:negativecoherent` (line 8495) | A negative leading exponent forbids a coherent scalar exponential |
-| Lemma | `diff:lem:nonlinear` (line 8562) | Admissibility of nonlinear evaluation |
-| Theorem | `diff:thm:ivp` (line 8592) | Support-certified positive-support initial-value problem |
-| Theorem | `diff:thm:monodromy` (line 8787) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
-| Proposition | `diff:prop:formalrecursion` (line 8919) | Formal existence over any characteristic-zero field |
-| Lemma | `diff:lem:finiteincoming` (line 8972) | Finite incoming contributions |
-| Theorem | `diff:thm:coefderivation` (line 8986) | Differentiation preserves common-domain coherence |
-| Theorem | `diff:thm:totalchainhalo` (line 9035) | Total intrinsic derivative of an evaluation |
-| Corollary | `diff:cor:naturality` (line 9100) | Coefficientwise linear naturality |
-| Lemma | `diff:lem:twosupports` (line 10628) | Sum of two supports |
-| Lemma | `diff:lem:higman` (line 10657) | Finite-word lemma |
+| Lemma | `diff:rs:lem:words` (line 6113) | Finite words at a fixed weight, with a length bound |
+| Corollary | `diff:rs:cor:support` (line 6148) | Products, geometric inverses, and well-founded recursion |
+| Lemma | `diff:rs:lem:critical` (line 6174) | Finite dependence at finitely many weights |
+| Theorem | `diff:rs:thm:normal` (line 6251) | Normalized resonant form |
+| Theorem | `diff:rs:thm:finite` (line 6325) | Finite resonance theorem |
+| Corollary | `diff:rs:cor:replacement` (line 6360) | Gauge-equivalent finite coefficient replacement |
+| Corollary | `diff:rs:cor:cutoff` (line 6384) | A useful but weaker cutoff statement |
+| Theorem | `diff:rs:thm:constantform` (line 6416) | Constant frequency-and-nilpotent form |
+| Lemma | `diff:rs:lem:eulermode` (line 6460) | Euler modes |
+| Theorem | `diff:rs:thm:selection` (line 6497) | Spectral selection and explicit solution envelope |
+| Corollary | `diff:rs:cor:invariance` (line 6534) | Perturbation invariance in the specified sector |
+| Corollary | `diff:rs:cor:real` (line 6546) | Real systems |
+| Theorem | `diff:rs:thm:Kclass` (line 6576) | Classification over the power-Hahn field |
+| Corollary | `diff:rs:cor:HomK` (line 6606) | Exact morphism dimensions over $\KR$ |
+| Theorem | `diff:rs:thm:SCclass` (line 6622) | Classification over the whole surcomplex field |
+| Corollary | `diff:rs:cor:tensor` (line 6657) | Solution dimensions of tensor products |
+| Proposition | `diff:rs:prop:phasespectrum` (line 6679) | An explicit non-Hermitian sector of the phase spectrum |
+| Theorem | `diff:rs:thm:Hahnsol` (line 6742) | The Hahn solution space |
+| Lemma | `diff:rs:lem:tautrans` (line 6760) | The logarithm is transcendental over $\KR$ |
+| Theorem | `diff:rs:thm:minlog` (line 6777) | Minimal logarithmic repair |
+| Theorem | `diff:rs:thm:forced` (line 6832) | Exact Hahn obstruction sequence |
+| Theorem | `diff:rs:thm:workspace` (line 6995) | Finite-monomial and one-logarithm envelope |
+| Proposition | `diff:rs:prop:boundary` (line 7064) | Infinitesimal coefficient, zero residue, no solution |
+| Lemma | `diff:aut:lem:small` (line 7295) | Finite coordinates have infinitesimal derivatives |
+| Lemma | `diff:aut:lem:evaluation` (line 7313) | Formal evaluation and the chain rule |
+| Lemma | `diff:aut:lem:implicit` (line 7345) | Formal implicit uniqueness in a monad |
+| Lemma | `diff:aut:lem:log` (line 7366) | Strip logarithms, for every normalized derivation |
+| Theorem | `diff:aut:thm:main` (line 7434) | Autonomous realization classification |
+| Lemma | `diff:aut:lem:projective` (line 7470) | Reduction of projective points |
+| Lemma | `diff:aut:lem:zero` (line 7502) | A nonconstant trajectory reduces to a zero |
+| Lemma | `diff:aut:lem:eigen` (line 7523) | Constant-coefficient eigenvectors |
+| Proposition | `diff:aut:prop:simple` (line 7546) | Linearization and all simple-zero solutions |
+| Lemma | `diff:aut:lem:leading` (line 7595) | The leading scale is forced |
+| Proposition | `diff:aut:prop:multiple` (line 7622) | Existence, uniqueness and completeness at a multiple zero |
+| Theorem | `diff:aut:thm:scales` (line 7705) | Uniform finite-scale localization |
+| Corollary | `diff:aut:cor:independent` (line 7754) | A continuum of independent solutions inside two scales |
+| Theorem | `diff:aut:thm:independence` (line 7783) | Derivation-independent autonomous sector |
+| Corollary | `diff:aut:cor:scalarbound` (line 7820) | Uniform scalar bound |
+| Corollary | `diff:aut:cor:realindep` (line 7838) | Real autonomous equations |
+| Corollary | `diff:aut:cor:earlier` (line 7849) | Two earlier corollaries hold for every normalized derivation |
+| Corollary | `diff:aut:cor:realbranches` (line 7888) | Exact real branch count |
+| Proposition | `diff:aut:prop:contraction` (line 7966) | Infinitesimal contraction |
+| Corollary | `diff:aut:cor:dual` (line 7981) | Holomorphic dual obstruction |
+| Theorem | `diff:aut:thm:hyperelliptic` (line 7995) | Squarefree hyperelliptic obstruction |
+| Lemma | `diff:aut:lem:formallog` (line 8052) | Normalized formal-group logarithm |
+| Proposition | `diff:aut:prop:abeliansplit` (line 8083) | Global splitting through the identity monad |
+| Theorem | `diff:aut:thm:abelianimage` (line 8122) | Abelian logarithmic-derivative image |
+| Corollary | `diff:aut:cor:abeliancriterion` (line 8179) | Finite-primitive criterion for abelian motion; surjective $\Dn$ |
+| Corollary | `diff:aut:cor:speeds` (line 8204) | Sharp one-power speed threshold; $\Dn=\der$ |
+| Theorem | `diff:thm:coherentlinear` (line 8461) | Positive-perturbation fundamental matrix |
+| Corollary | `diff:cor:coherentinhom` (line 8526) | Inhomogeneous coherent systems |
+| Corollary | `diff:cor:determinant` (line 8544) | Liouville determinant identity |
+| Proposition | `diff:prop:negativecoherent` (line 8561) | A negative leading exponent forbids a coherent scalar exponential |
+| Lemma | `diff:lem:nonlinear` (line 8628) | Admissibility of nonlinear evaluation |
+| Theorem | `diff:thm:ivp` (line 8658) | Support-certified positive-support initial-value problem |
+| Theorem | `diff:thm:monodromy` (line 8853) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
+| Proposition | `diff:prop:formalrecursion` (line 8985) | Formal existence over any characteristic-zero field |
+| Lemma | `diff:lem:finiteincoming` (line 9038) | Finite incoming contributions |
+| Theorem | `diff:thm:coefderivation` (line 9052) | Differentiation preserves common-domain coherence |
+| Theorem | `diff:thm:totalchainhalo` (line 9101) | Total intrinsic derivative of an evaluation |
+| Corollary | `diff:cor:naturality` (line 9166) | Coefficientwise linear naturality |
+| Lemma | `diff:lem:twosupports` (line 10694) | Sum of two supports |
+| Lemma | `diff:lem:higman` (line 10723) | Finite-word lemma |
 
 ### dynamics-and-normal-forms
 
