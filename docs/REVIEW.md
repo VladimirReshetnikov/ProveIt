@@ -1697,6 +1697,15 @@ spatial degree six. These finite exact checks do not establish the infinite
 or analytic claims. The independent 49-source audit still checks 2,465
 statements without issues, and all 2,726 cited source labels resolve.
 
+The sync merged `43b8bad`, adding circle chords, directed and interior
+inscribed angles and cyclic Ptolemy equality. No manuscript source changed.
+The combined `LEAN_NUM_THREADS=2 lake build` passed 4,030 jobs; the default
+axiom audit accepted 7,925 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The independent inventory remains at
+49 sources and 2,465 standard statements; all 2,728 cited source labels and
+1,080 local Markdown destinations resolve. These incoming implementation
+mappings remain distinct from the source-10 mathematical review.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
