@@ -439,6 +439,15 @@ reconciliation still require review.
 The independent index audit checks 2,030 statement entries across all 44
 current report texts; all 820 local Markdown destinations in 93 files resolve.
 
+The final sync merged `70683e3`, including nine Lean modules from
+`8924f58` for Taylor differentiation and related calculus rules. The
+combined build passed 3,882 jobs and audited 5,965 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. The differential-equations
+source and PDF were unchanged by that merge. The source index still checks
+2,030 statements, and all 829 local Markdown destinations in 93 files
+resolve. The incoming formalization mappings retain their stated scope;
+they do not formalize this report's autonomous examples or obstruction.
+
 ## Collection-wide work
 
 The [reader map](README.md) and statement index now cover all 44 main texts,
