@@ -45,7 +45,7 @@ No row below certifies every claim in an entire report.
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Read the shared support tools and Part I inner-product, automatic-adjoint, defect, normal-spectrum, inverse-smooth, coercivity, completeness, duality and norm-attainment proofs. Reconstructed the norm over arbitrary value groups, then removed the unused Part I divisibility restriction after tracing every root operation. Proved closedness of the coercive range at every rank using the continuous defect projection, retaining the original metric argument under its rank-one hypothesis. Added the positive-scale guard to the backward-shift example, distinguished valuation zero from metric distance one, and aligned the two inner-product conventions, summaries and hypothesis ledger. A subsequent Part II pass read the algebra, homogeneous diagonalization, normalization, synthesis, commutant, resolvent, walk, stability, finite-section, example and transport proofs. Corrected strict diagonal-coherence claims at finite index sets and trivial groups; supplied a coherent diagonal with incoherent inverse. Distinguished vectorwise Hahn projection additivity from classical strong-operator additivity, checked against Williams Definition 5.1, and gave a rank-one counterexample to pointwise valuation convergence. Expanded the sharp boundary coefficient’s formal root-comparison step and supplied its positive-length guard. Other imported classical results, priority and source-claim reconciliation remain outside this review. |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
-| [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed Sections 2–14. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Expanded Gibbs minimization, finite path consistency, adapted optional stopping and Bernoulli variance. Corrected the posterior-support claim after smoothing and the leading coefficient for a general infinitesimal scale. Added nonseparable logistic and non-stopping-time counterexamples and explicit zero-horizon cases. Expanded strong geometric regrouping, common-support coefficient measures, normalized hierarchy support and conditional shadows, real-observable dominated convergence and product Fubini, and the countable-support integration boundary. Distinguished uniform bounds from leading-component essential bounds. Expanded posterior coefficient measurability and added an explicit failure of coefficient integrability before density cancellation; checked the ordinary disintegration input against Kallenberg Theorem 8.5. Expanded the coin coefficient-variation bounds, polynomial-sign argument for relative field embeddings, ultrapower positivity, parity nonuniqueness and the finite compactness models. Replaced the logit change-of-variable shortcut with original Hahn leading data; distinguished finite-support permutations from unrestricted invariance. Checked the cited fine-ideal and fine-ultrafilter construction inputs. Expanded the rare-regime likelihood, martingale and full-observation conditional expectation calculations, supplied a fourth-moment proof of the component strong laws, and separated coefficientwise limits from the nowhere order-Cauchy conclusion. Sections 15 onward and remaining imports are pending. |
+| [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed main text, Sections 2–17. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Expanded Gibbs minimization, finite path consistency, adapted optional stopping and Bernoulli variance. Corrected the posterior-support claim after smoothing and the leading coefficient for a general infinitesimal scale. Added nonseparable logistic and non-stopping-time counterexamples and explicit zero-horizon cases. Expanded strong geometric regrouping, common-support coefficient measures, normalized hierarchy support and conditional shadows, real-observable dominated convergence and product Fubini, and the countable-support integration boundary. Distinguished uniform bounds from leading-component essential bounds. Expanded posterior coefficient measurability and added an explicit failure of coefficient integrability before density cancellation; checked the ordinary disintegration input against Kallenberg Theorem 8.5. Expanded the coin coefficient-variation bounds, polynomial-sign argument for relative field embeddings, ultrapower positivity, parity nonuniqueness and the finite compactness models. Replaced the logit change-of-variable shortcut with original Hahn leading data; distinguished finite-support permutations from unrestricted invariance. Checked the cited fine-ideal and fine-ultrafilter construction inputs. Expanded the rare-regime likelihood, martingale and full-observation conditional expectation calculations, supplied a fourth-moment proof of the component strong laws, and separated coefficientwise limits from the nowhere order-Cauchy conclusion. Expanded shadow continuity, internal-algebra measure extension and an explicit Poisson ultraproduct with diagonal saturation. Added a logarithm error bound, a measurable ordinary count and a Markov check for escaped mass. Aligned model weights, exponential hypotheses, notation and dependency claims in the final sections. Remaining imports and source/provenance reconciliation are pending. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -1100,6 +1100,53 @@ All 2,545 cited source labels, 2,298 indexed entries in 48 sources and 972
 local Markdown destinations in 108 files pass their checks. The reviewed
 probability source and 51-page PDF are unchanged by this integration.
 
+The eighth finite-probability pass reviews Sections 15–17 and aligns the
+introductory and appendix dependency notes. The shadow-continuity theorem
+now proves real finite additivity first, expands both directions of continuity
+from above, and distinguishes real tolerances from arbitrary surreal ones.
+The Loeb construction specifies its internal event algebra and probability,
+uses saturation on internal remainders to prove the premeasure property,
+and distinguishes the unique real measure extension from its completion.
+An ordered embedding fixing the reals preserves that real measure but does
+not provide its internal events or preserve internal exponentiation.
+
+The Poisson model is now a defined ultraproduct of finite product experiments.
+Its internal probability is well-defined, and a diagonal selection proves the
+countable saturation needed for Loeb extension. A quantitative real logarithm
+bound gives the fixed-count limit, including the empty-product case. The
+ordinary finite-count event is Loeb measurable and has measure one; the
+resulting ordinary nonnegative integer-valued variable has the exact Poisson
+law. A separate Markov estimate shows that no mass escapes to infinite counts.
+The written infinite arguments are distinct from computations at finite sample
+sizes. Loeb's publisher text remains unavailable in this pass; the historical
+metadata-only citation boundary is retained, while the finite-probability
+construction is spelled out from saturation and ordinary measure extension.
+
+The implementation interface now permits nonnegative weights with positive
+total, retaining exact zeros; strictly positive weights describe regular laws.
+It places Brier scoring in the ordered-field layer and names the exponential
+isomorphism and scalar inequalities needed for the logarithmic results.
+Dependency notes now record the Bernoulli strong laws as proved here, while
+product-law existence and real disintegration remain imported. The scope
+section corrects an overstatement about full fine countable additivity:
+finite-support laws do satisfy it by eventual stabilization. What is absent
+is a general infinite sampling theory under that rule. The notation guide
+separates the internal and Loeb probabilities and the internal and ordinary
+counts, and distinguishes the two local meanings of `H`.
+
+Validation: baseline and revised PDFs build in three warning-free passes at
+51 and 53 pages, with changed pages visually inspected. All 114 label numbers
+and the five historical audit/code/data files are preserved. The copied
+verifier reproduces 2,145 assertions with JSON unchanged except Python version.
+Another 7,269 exact rational checks cover binomial normalization, means,
+factorization, Markov tails and independent enumeration of word probabilities.
+They do not implement an infinite ultrafilter, saturation or Loeb extension.
+The independent index checks 2,298 entries in 48 sources, all 2,545 cited
+source labels resolve, and all 972 local Markdown destinations in 108 files
+resolve. This completes the Sections 2–17 main-text review; remaining imports
+and source/provenance reconciliation still require work. No new probability
+Lean formalization is claimed.
+
 ## Remaining scope
 
 The placement `7b5f934` adds two manuscripts,
@@ -1126,7 +1173,8 @@ The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/
 [field automorphisms](surcomplex/surcomplex-field-automorphisms/) reports
 are now written and catalogued, but await proof review.
 [Finite probability](surreal/finite-surreal-probability/) has received the
-Sections 2–14 review recorded above; its later proof chains remain pending. The measures and
+Sections 2–17 main-text review recorded above; remaining imports and
+source/provenance reconciliation are pending. The measures and
 trigonometry expansions are also assembled; their new claims remain outside
 the earlier review scopes. Delivered verification and source-audit artifacts
 remain historical evidence, not a substitute for that review.

@@ -287,6 +287,17 @@ coefficient and order convergence of the Hahn values are different notions:
 on typical common-regime paths the posterior tends coefficientwise to zero,
 yet its consecutive differences always exceed the fixed order tolerance `t²`.
 
+In the Loeb bridge, `I` is the ordinary index set of finite experiments,
+`𝓘` is their internal event algebra, `ν` is the internal hyperreal probability,
+and `ν_L` is its completed real Loeb measure. The algebra `𝓘` need not be
+closed under ordinary countable unions. The Poisson count `S` is internal;
+the union of its ordinary fixed-count events is Loeb measurable and has
+measure one. Defining the ordinary count `Z` on the remaining null set
+completes an ordinary measurable random variable. Here `H` denotes the
+internal sample size, distinct from the binary latent label used earlier.
+An ordered embedding fixing `ℝ` preserves standard parts but supplies no
+internal events or preservation of exponential operations.
+
 The word **finite** has several other explicit uses: a finite-dimensional
 algebra, a finite map, finitely many terms, and finite birthday. The
 [graph report](surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex)
