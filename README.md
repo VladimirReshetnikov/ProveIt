@@ -47,8 +47,13 @@ constant coefficient must be an ordinary integer. Constant extraction is a
 surjective ring homomorphism onto `ℤ`; its kernel is the purely infinite
 ideal, and the quotient is exactly `ℤ`. The real and complex support rings
 likewise retract onto `ℝ` and `ℂ`. The purely infinite real ideal is also
-proved to be a vector space over `ℝ`. Higher Diophantine and set-sized quotient results
-remain pending; source review is distinct from checked formalization.
+proved to be a vector space over `ℝ`. Degree is identified with the greatest
+normal-form exponent and adds under multiplication. The units of the real
+and complex support rings are exactly their nonzero ordinary constants;
+the omnific units are `1` and `-1`. An omnific integer bounded by an ordinary
+real is an ordinary integer, and `1` is the least positive omnific integer.
+Higher Diophantine and set-sized quotient results remain pending; source
+review is distinct from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
