@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 56 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 57 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -63,6 +63,14 @@ controls the endpoint margin and gives all three valuation bounds under
 `v(ε)>2v(sin θ)`. At equality, explicit infinitesimal-angle examples reach
 the endpoint or move the target above one, proving the strict threshold
 is necessary for a uniform guarantee.
+
+Finite Laurent sums now have a verified polynomial algebraization and the
+`2N` root bound on finite real angles modulo ordinary periods. Over an
+algebraically closed field, the cleared polynomial has exactly `2N` nonzero
+roots counted with multiplicity when both endpoint coefficients are nonzero.
+Ordinary-angle values determine all actual surcomplex Fourier coefficients;
+real-valuedness is equivalent to conjugate symmetry. The full strip theorem
+and the general angular-series multiplicity bridge remain pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term

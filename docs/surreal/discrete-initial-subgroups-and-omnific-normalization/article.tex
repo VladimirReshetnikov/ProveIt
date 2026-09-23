@@ -1,0 +1,1808 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem,booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{soft}{HTML}{F2F5F8}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Discrete Initial Groups and Omnific Normalization},
+ pdfauthor={AI-assisted research draft prepared for the Surreal project},
+ pdfsubject={Sign-tree surgery and a proposed solution of an Ehrlich--Kaplan question}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Discrete initial groups}}
+\fancyhead[R]{\small\textsc{Omnific normalization}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\setlist[enumerate]{leftmargin=*,itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Imported fact}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{maintheorem}{Theorem}
+\renewcommand{\themaintheorem}{\Alph{maintheorem}}
+\crefname{maintheorem}{Theorem}{Theorems}
+\newcommand{\No}{\ensuremath{\mathbf{No}}}
+\newcommand{\Oz}{\ensuremath{\mathbf{Oz}}}
+\newcommand{\On}{\ensuremath{\mathbf{On}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Pred}{\operatorname{Pred}}
+\newcommand{\Rs}{\operatorname{R}_{s}}
+\newcommand{\Ls}{\operatorname{L}_{s}}
+\newcommand{\len}{\ell}
+\newcommand{\cat}{\mathbin{\frown}}
+\newcommand{\plus}{\langle+\rangle}
+\newcommand{\minus}{\langle-\rangle}
+\newcommand{\emp}{\varnothing}
+\newcommand{\pr}{\mathrel{\prec}}
+\newcommand{\pre}{\mathrel{\preccurlyeq}}
+\newcommand{\Hahn}[2]{\mathcal{H}_{#1}(#2)}
+\newcommand{\Rect}{\mathcal{N}_{\alpha,n}}
+\newcommand{\tht}{\Theta_{\alpha}}
+\newcommand{\psiA}{\Psi_{\alpha}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\hdeg}{\operatorname{deg}_{H}}
+\newcommand{\lex}{\mathbin{\overrightarrow{\times}}}
+\newcommand{\source}[1]{\textup{\cite{#1}}}
+\newtcolorbox{statusbox}{colback=soft,colframe=ink,boxrule=0.5pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\color{ink}\Large\textsc{Surreal numbers / ordered algebra}}\par
+\vspace{8mm}
+{\color{ink}\huge\bfseries Discrete Initial Groups\\[3mm]
+and Omnific Normalization\par}
+\vspace{5mm}
+{\Large Sign-tree surgery, a sharp image classification,\\
+and an Ehrlich--Kaplan question\par}
+\vspace{10mm}
+{\large AI-assisted research draft prepared for the Surreal project\par}
+\vspace{2mm}
+23 September 2026
+\vspace{10mm}
+\begin{abstract}
+We give an explicit construction proposed as an affirmative solution of
+Ehrlich and Kaplan's question whether every discretely ordered initial
+subgroup of the surreal numbers is order-isomorphic to an initial subgroup
+of the omnific integers. The construction is not ordinary multiplication
+by the reciprocal of the least positive element. Instead, a sign-sequence
+operation moves the minimum exponent to zero, while preserving all
+right-ancestor relations away from that minimum; a separate rescaling
+changes only the bottom coefficient group to the ordinary integers.
+The Ehrlich--Kaplan characterization of initial Hahn subgroups then
+establishes initiality of the image.
+
+The argument yields more than existence. For a prescribed least positive
+element $2^{-n}\omega^{-\alpha}$, we characterize the images exactly by
+containment of an explicit dyadic-spine subgroup $K_\alpha\subseteq\Oz$.
+We identify the smallest and largest initial groups with that least
+positive element, give sharp cardinality consequences, construct an
+initial realization of the quotient by the least positive cyclic subgroup,
+and extend the additive normalization to rectangular surcomplex modules.
+All normal-form transports preserve leading truncations and set-indexed
+strong summability. Counterexamples explain why scalar normalization,
+exponent translation, and unrestricted inversion do not suffice.
+\end{abstract}
+\vspace{5mm}
+\begin{statusbox}
+\textbf{Status and scope.} This is an unrefereed research manuscript with
+full proposed proofs, not an independently certified resolution or a
+claim of established priority. The principal external mathematical input
+is explicitly identified. Finite regression checks accompany the text;
+they do not certify the transfinite argument. No new Lean formalization
+is claimed. A targeted literature and repository review found the cited
+question and its motivating example, but did not establish exhaustive
+novelty.
+\end{statusbox}
+\vfill
+{\small\textbf{Keywords:} surreal numbers; omnific integers; initial
+subgroups; sign sequences; Hahn series; ordered abelian groups.\par
+\textbf{Mathematical focus:} additive and simplicity-theoretic structure,
+not multiplicative or exponential equivalence.}
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The problem and the main results}\label{sec:intro}
+
+\subsection{A specific published question}
+An additive subgroup of $\No$ is \emph{initial} when it contains every
+proper sign-sequence prefix of each of its members. This is a much stronger
+requirement than being an ordered subgroup. An initial subgroup is
+\emph{discrete} when it is nonzero and has a least positive element.
+Throughout, ``isomorphism'' of ordered groups preserves addition and
+order; it need not preserve the ambient simplicity relation.
+
+Ehrlich and Kaplan ask:
+\begin{quote}
+``Is every discrete initial subgroup of $\No$ isomorphic to an initial
+subgroup of $\Oz$?''
+\end{quote}
+This is Question~2 in Section~9 of the explicitly versioned preprint
+\cite{EK}, printed page~18. The journal article appeared in 2018
+\cite{EKjournal}. We use the preprint's numbering throughout to avoid
+mixing versions. The question also appears in Kaplan's thesis
+\cite{Kaplan}.
+
+The distinction between a group and a ring matters. A discrete initial
+subgroup can contain $1/2$ or a nonzero infinitesimal, whereas an omnific
+integer has neither a nonintegral constant coefficient nor a negative
+normal-form exponent. The task is therefore to change the initial
+\emph{realization} of the ordered group, not to prove that its original
+realization already lies in $\Oz$.
+
+The paper addresses precisely this existence question and several
+structural refinements. It does not claim a classification of all ordered
+abelian groups admitting initial embeddings, nor a solution of the
+separate initial-monoid problem.
+
+\subsection{Normalization and its exact range}
+Write $\N=\{0,1,2,\ldots\}$ and $\D=\Z[1/2]$. If $\alpha$ is an ordinal, let
+\[
+ p_\alpha=-\alpha=\minus^{\alpha},
+ \qquad q_\beta=\plus\cat\minus^{\beta}\quad(\beta\in\On).
+\]
+Here $\cat$ means concatenation of sign sequences, not surreal addition.
+For example, $q_0=1$, $q_1=1/2$, and $q_m=2^{-m}$ for finite $m$.
+Define the finite-support additive subgroup
+\begin{equation}\label{eq:Kintro}
+ K_\alpha=\Z\oplus\bigoplus_{\beta<\alpha}\D\,\omega^{q_\beta}
+ \ \subseteq\Oz.
+\end{equation}
+The direct sum means that each element has only finitely many nonzero
+summands. In particular, $K_0=\Z$.
+
+\begin{maintheorem}[Omnific normalization]\label{thm:A}
+Let $A\subseteq\No$ be a nonzero discrete initial additive subgroup.
+There are unique $\alpha\in\On$ and $n\in\N$ such that its least positive
+element is
+\[
+ \varepsilon=2^{-n}\omega^{-\alpha}.
+\]
+An explicitly defined map $\Rect$ restricts to an order-preserving group
+isomorphism
+\[
+ \Rect:A\longrightarrow H,
+ \qquad H\subseteq\Oz\text{ initial},\qquad \Rect(\varepsilon)=1.
+\]
+The map extends to a real-linear order-isomorphism between the full
+normal-form spaces supported in $[-\alpha,\infty)$ and $[0,\infty)$.
+This extension preserves support order types, all leading truncations,
+and set-indexed strong summability in both directions.
+\end{maintheorem}
+
+\begin{maintheorem}[Sharp image classification]\label{thm:B}
+Fix $\alpha\in\On$ and $n\in\N$. Under the same explicit map $\Rect$,
+the initial groups with least positive element
+$2^{-n}\omega^{-\alpha}$ correspond bijectively, with inclusions
+preserved and reflected, to the initial groups $H\subseteq\Oz$ satisfying
+\[
+ K_\alpha\subseteq H.
+\]
+The inverse is explicit. Thus the dyadic-spine condition is both necessary
+and sufficient, not merely an artifact of a sufficient construction.
+\end{maintheorem}
+
+\begin{maintheorem}[Removing the bottom cyclic layer]\label{thm:C}
+For every group $A$ in \cref{thm:A}, the subgroup $\Z\varepsilon$ is
+convex, and the ordered quotient $A/\Z\varepsilon$ has an explicit
+initial realization in $\No$. The corresponding short exact sequence
+splits as an additive group, with a canonical splitting relative to the
+given Conway normal forms. Equivalently,
+\[
+ A\cong B\lex\Z
+\]
+for an explicitly constructed initial subgroup $B\subseteq\No$, where
+the first coordinate is dominant in the lexicographic order.
+\end{maintheorem}
+
+The main construction is in \cref{sec:surgery,sec:transport}; the proofs
+of the three theorems are completed in
+\cref{sec:normalization,sec:classification,sec:quotient}, respectively.
+Theorem~B contains more information than Theorem~A: it identifies exactly
+which normalized realizations can be moved to any prescribed least
+positive scale by this construction.
+
+\subsection{Why a change of exponents is necessary}
+Multiplication by $\varepsilon^{-1}$ certainly gives an ordered-group
+isomorphism. Initiality, however, refers to sign prefixes rather than
+numerical intervals, and multiplication does not generally preserve it.
+Even $A=\frac12\Z+\Z\omega$ is an initial group for which
+$2A=\Z+2\Z\omega$ is not initial: $2\omega$ belongs to the image but
+its simpler predecessor $\omega$ does not.
+
+Our operation treats two different issues separately. First, it relocates
+the minimum of the \emph{exponent tree} to zero. Second, it rescales only
+the real coefficient at that minimum. No claim of multiplicativity is
+made, and none is needed for the published ordered-group question.
+
+\section{Foundations and the imported initiality criterion}\label{sec:background}
+
+\subsection{Sets, classes, signs, and two orders}
+We work in NBG with global choice, in the conventional class-sized
+formulation of surreal numbers. Every individual surreal is a
+set-length sign sequence. Every individual normal form has set support.
+All strongly summable families considered below are indexed by sets.
+Statements about families of class-sized groups are understood as
+correspondence statements about class parameters, not as assertions that
+a class of all classes exists.
+
+For sign sequences $u,v$, write $u\pr v$ for a proper prefix and
+$u\pre v$ for a prefix allowing equality. Their ordinary numerical order
+is determined at the first disagreement, with
+\[
+ -\ <\ \text{undefined}\ <\ +.
+\]
+The empty sequence is the number $0$. Put
+\[
+ \Pred(x)=\{y:y\pr x\},\qquad
+ \Rs(x)=\{y\pr x:x<y\},\qquad
+ \Ls(x)=\{y\pr x:y<x\}.
+\]
+In sign language, a prefix obtained by stopping just before a minus sign
+is a right ancestor; stopping just before a plus sign gives a left
+ancestor. Each of these ancestor collections is a set.
+
+A subclass $E\subseteq\No$ is initial precisely when
+$\Pred(x)\subseteq E$ for every $x\in E$. This does not mean that $E$
+is downward closed in the numerical order. For instance, $\No_{\ge0}$
+is initial as a sign tree but is a numerical final segment.
+
+If $u$ and $v$ have lengths $\lambda$ and $\mu$, then
+$u\cat v$ has length $\lambda+_{\mathrm{ord}}\mu$. All additions of
+\emph{lengths} in this paper are ordinal additions. Concatenation is
+associative and preserves comparison between tails sharing the same
+prefix. At a limit ordinal there is no last sign to remove: ``remove the
+first sign'' or ``remove a specified concatenated block'' always means
+restricting to the appropriate interval and taking its order type.
+These conventions agree with the sign-sequence framework of
+\cite{BagHoeven}.
+
+\subsection{Hahn spaces without an exponent group}
+For an ordered subclass $E\subseteq\No$, denote by $\Hahn{\R}{E}$
+the additive space of formal expressions
+\begin{equation}\label{eq:nf}
+ x=\sum_{\gamma\in S} r_\gamma\omega^\gamma,
+ \qquad r_\gamma\in\R\setminus\{0\},
+\end{equation}
+where $S\subseteq E$ is a set reverse-well-ordered by $<$.
+Conway normal forms identify these expressions with the corresponding
+surreal numbers. The ordering is the sign of the coefficient at the
+greatest exponent of a nonzero difference. For $x\ne0$, write
+\[
+ \hdeg(x)=\max\supp(x),\qquad
+ \lc(x)=r_{\hdeg(x)}.
+\]
+We do not assert that $E$ is an additive group. Accordingly,
+$\Hahn{\R}{E}$ is used here as an additive, real-linear Hahn space, not
+necessarily as a ring. This distinction permits nonadditive exponent
+reindexings.
+
+Suppose $S=\{\gamma_\xi:\xi<\lambda\}$ is enumerated in strictly
+decreasing order. A leading truncation of $x$ is
+\[
+ x_{<\eta}=\sum_{\xi<\eta}r_{\gamma_\xi}\omega^{\gamma_\xi}
+ \quad(\eta\le\lambda).
+\]
+``Truncation closed'' will always refer to these leading truncations,
+including those at limit indices, not to closure under arbitrary
+subseries. The normal-form and monomial facts used here are part of the
+standard theory summarized in \cite{EK}; we never choose a noncanonical
+Hahn embedding of an arbitrary ordered group.
+
+\begin{definition}[Strong summability]\label{def:strong}
+A set-indexed family $(x_i)_{i\in I}$ in a Hahn space is strongly
+summable if $\bigcup_i\supp(x_i)$ is reverse-well-ordered and each
+exponent occurs in only finitely many supports. Its sum is the normal
+form obtained by the finite coefficient sum at each exponent, with zero
+coefficients discarded.
+\end{definition}
+
+For a subgroup $G\subseteq\Hahn{\R}{E}$, set
+\[
+ G_\gamma=\{r\in\R:r\omega^\gamma\in G\}.
+\]
+It is \emph{cross-sectional on $E$} when $\omega^\gamma\in G$ for
+every $\gamma\in E$.
+
+\begin{fact}[Ehrlich--Kaplan, concrete form]\label{fact:EK}
+An initial subgroup of $\No$ is a truncation-closed, cross-sectional
+Hahn subgroup on its initial exponent class
+$\Gamma(G)=\{\gamma:\omega^\gamma\in G\}$. Its nonzero coefficient
+groups are initial subgroups of $\R$, and
+\begin{equation}\label{eq:dyadic}
+ \gamma,\eta\in\Gamma(G),\quad \eta\in\Rs(\gamma)
+ \quad\Longrightarrow\quad \D\subseteq G_\eta.
+\end{equation}
+Conversely, these conditions imply that the canonical normal-form image
+is initial in $\No$.
+\end{fact}
+
+This is the form of \cite[Theorem~1 and its proof]{EK} needed here.
+The last sentence is important: the sufficiency proof establishes
+initiality of the \emph{specified canonical image}, not just existence of
+some other initial embedding.
+
+\begin{fact}[Real coefficient groups]\label{fact:real}
+A nonzero initial additive subgroup of $\R$ either contains $\D$ or is
+$2^{-m}\Z$ for an integer $m\ge0$ \cite[Lemma~3]{EK}.
+In particular, a discrete one has least positive element $2^{-m}$.
+\end{fact}
+
+No proof in the present paper replaces \cref{fact:EK} by the weaker
+assertion that initiality of the exponent set alone is sufficient. The
+coefficient groups and the right-ancestor condition are essential.
+
+\subsection{Omnific integers and coefficient isolation}
+We use the normal-form description
+\begin{equation}\label{eq:Oz}
+ \Oz=\left\{\sum_{\gamma>0}r_\gamma\omega^\gamma+m:
+           m\in\Z\right\},
+\end{equation}
+with set reverse-well-ordered positive support and arbitrary real
+coefficients. This is Conway's canonical integer part, as recalled in
+\cite[Section~6.2]{Kaplan}. It is an initial additive subgroup: apply
+\cref{fact:EK} to $E=\No_{\ge0}$, coefficient group $\Z$ at zero and
+$\R$ at every positive exponent. Zero is never a right ancestor of a
+nonnegative number, so the exceptional coefficient group causes no
+violation of \eqref{eq:dyadic}. Every positive element of \Oz is at
+least $1$.
+
+\begin{lemma}[Isolating a normal-form term]\label{lem:isolate}
+Let $G$ be an additive subgroup closed under leading truncations. If
+$x\in G$ has a nonzero coefficient $r_\gamma$ at exponent $\gamma$,
+then $r_\gamma\omega^\gamma\in G$.
+\end{lemma}
+\begin{proof}
+If $\gamma=\gamma_\eta$ in the decreasing enumeration of the support,
+subtract the truncation at $\eta$ from the truncation at $\eta+1$.
+Both belong to $G$. This also works when $\eta$ is a limit ordinal.
+\end{proof}
+
+This lemma permits removing a specified individual term. It does not
+license an arbitrary infinite subseries of an element of $G$.
+
+\section{Locating the least positive scale}\label{sec:bottom}
+
+\begin{lemma}[A minimum in an initial tree]\label{lem:min-tree}
+If a nonempty initial subclass $E\subseteq\No$ has a numerical minimum
+$p$, then $p=-\alpha$ for a unique ordinal $\alpha$.
+Moreover, the cone $C_\alpha=\{x\in\No:x\ge-\alpha\}$ is initial.
+\end{lemma}
+\begin{proof}
+A plus sign in $p$ would give a proper prefix smaller than $p$.
+Initiality would place that prefix in $E$, contradicting minimality.
+Thus every sign in $p$ is minus.
+
+For the second assertion, let $p=-\alpha$, $x\ge p$, and $v\pr x$.
+If $v<p$, then at the first disagreement with the all-minus sequence $p$
+one would have to find either a sign smaller than minus, which is
+impossible, or a minus sign after $p$ has ended. The latter would force
+$x$ itself to be below $p$. Hence $v\ge p$.
+\end{proof}
+
+\begin{proposition}[Bottom coefficient structure]\label{prop:bottom}
+Let $A$ be a nonzero discrete initial subgroup with least positive
+member $\varepsilon$. There are unique $\alpha\in\On$, $n\in\N$
+such that, writing $p=-\alpha$ and $c=2^{-n}$,
+\begin{equation}\label{eq:bottomdata}
+ \varepsilon=c\omega^p,\qquad
+ \min\Gamma(A)=p,\qquad A_p=c\Z.
+\end{equation}
+Every support of every member of $A$ lies in $C_\alpha$.
+\end{proposition}
+\begin{proof}
+By \cref{fact:EK}, $A$ is truncation closed. Write the leading term of
+$\varepsilon$ as $r\omega^p$ with $r>0$. This term belongs to $A$.
+If the remaining tail $t$ were nonzero, then $|t|\in A$ and
+$0<|t|<\varepsilon$, since the leading exponent of $t$ is strictly
+smaller than $p$. This contradicts the choice of $\varepsilon$.
+Consequently $\varepsilon=r\omega^p$.
+
+The exponent $p$ lies in $\Gamma(A)$ by the cross-sectional normal-form
+description. If $\gamma<p$ belonged to $\Gamma(A)$, then
+$0<\omega^\gamma<r\omega^p=\varepsilon$, another contradiction.
+Thus $p$ is the minimum of $\Gamma(A)$. By \cref{lem:min-tree},
+$p=-\alpha$ for a unique ordinal $\alpha$.
+
+The real coefficient group $A_p$ has least positive element $r$.
+By \cref{fact:real}, it is $2^{-n}\Z$ for a unique $n\in\N$, and
+$r=2^{-n}$. All supports lie in $\Gamma(A)$, proving the last assertion.
+\end{proof}
+
+The shape of the least positive element is consistent with
+\cite[Proposition~9 and its proof]{EK}; the argument above also records
+the support and coefficient data needed later.
+
+\begin{corollary}[Forced ancestors]\label{cor:forced}
+Under \eqref{eq:bottomdata}, for every $\beta<\alpha$ one has
+\[
+ -\beta\in\Gamma(A),\qquad \D\omega^{-\beta}\subseteq A.
+\]
+\end{corollary}
+\begin{proof}
+The number $-\beta$ is a right ancestor of $-\alpha$.
+Initiality gives the exponent, and \eqref{eq:dyadic} gives all dyadic
+coefficients there.
+\end{proof}
+
+The bottom coefficient group can be discrete, but all these ancestors
+must carry dyadically divisible coefficient groups. This is the information
+that survives normalization as the subgroup $K_\alpha$.
+
+\section{Moving a minimum to zero in the sign tree}\label{sec:surgery}
+
+\subsection{Definition and inverse}
+Fix $\alpha\in\On$, put $p=-\alpha$, and keep
+$C_\alpha=[p,\infty)$. Every $x\in C_\alpha$ belongs to exactly one of
+the following cases: $x=p$; $x=p\cat\plus\cat u$ for a unique tail
+$u$; or $p$ is not a prefix of $x$.
+Indeed, an extension through $p\cat\minus$ would lie below the cone.
+
+\begin{definition}[Root relocation]\label{def:theta}
+Define $\tht:C_\alpha\to\No_{\ge0}$ by
+\begin{equation}\label{eq:theta}
+ \tht(x)=
+ \begin{cases}
+  0, & x=p,\\
+  \plus\cat p\cat u, & x=p\cat\plus\cat u,\\
+  \plus\cat x, & p\not\pre x.
+ \end{cases}
+\end{equation}
+The inverse candidate $\psiA:\No_{\ge0}\to C_\alpha$ is
+\begin{equation}\label{eq:psi}
+ \psiA(0)=p,\qquad
+ \psiA(\plus\cat v)=
+ \begin{cases}
+  p\cat\plus\cat u,&v=p\cat u,\\
+  v,&p\not\pre v.
+ \end{cases}
+\end{equation}
+\end{definition}
+
+The symbols in these formulas are sign blocks. For $\alpha=0$, the block
+$p$ is empty and both maps are the identity. For $\alpha>0$, one may
+picture the operation as deleting the old minimum node, moving its
+right subtree into the vacated position, and adding a new common root.
+The formulas, not this picture, govern limit-length cases.
+
+\begin{lemma}[The inverse is well-defined]\label{lem:inverse}
+The maps \eqref{eq:theta} and \eqref{eq:psi} are inverse bijections
+between $C_\alpha$ and $\No_{\ge0}$.
+\end{lemma}
+\begin{proof}
+Every nonempty image under $\tht$ begins with plus and is therefore
+positive. Conversely, let $y=\plus\cat v>0$. If $p\pre v$, the
+specified preimage extends $p$ through plus and is greater than $p$.
+If $p\not\pre v$, then $v>p$: a sequence below an all-minus word must
+extend that entire word through minus, contrary to the assumption.
+Thus $\psiA$ takes values in the cone.
+
+If $x=p$, the composite $\psiA\tht$ returns $p$. If
+$x=p\cat\plus\cat u$, removing the first sign of
+$\plus\cat p\cat u$ leaves $p\cat u$, and the first inverse case
+returns $x$. In the remaining case, removing the first sign leaves
+$x$, to which the second inverse case applies. The same two cases for
+$v$ prove $\tht\psiA(y)=y$ for positive $y$, and zero is immediate.
+Uniqueness of tails follows from the order types of the corresponding
+ordinal intervals, so none of these steps requires a successor length.
+\end{proof}
+
+\begin{lemma}[Order preservation]\label{lem:thetaorder}
+The bijection $\tht$ is strictly increasing.
+\end{lemma}
+\begin{proof}
+The minimum $p$ maps to the minimum $0$. On the block
+\[
+ U=\{p\cat\plus\cat u:u\in\No\},
+\]
+comparison is comparison of the tails $u$, before and after the map.
+On the remaining class $V=C_\alpha\setminus(U\cup\{p\})$, adding
+one common initial plus sign also preserves comparison.
+
+It remains to compare the two blocks. Every member of $U$ is smaller
+than every member $v$ of $V$: before the end of $p$, such a $v$ either
+stops or first has plus where $p$ has minus. In both cases $v$ is greater
+than every extension of $p$. After applying $\tht$, cancel the common
+initial plus sign. One then compares an extension $p\cat u$ of $p$
+with $v$, and the same first disagreement proves the same inequality.
+When $\alpha=0$, the block $V$ is empty. This covers all cases.
+\end{proof}
+
+\subsection{The exact predecessor identity}
+The following identity is the central combinatorial statement.
+It makes the exception at the old minimum completely explicit.
+
+\begin{theorem}[Predecessor and right-ancestor transport]\label{thm:tree}
+For every $x\in C_\alpha$ with $x>p$,
+\begin{equation}\label{eq:predidentity}
+ \Pred(\tht(x))=\tht\bigl[\Pred(x)\cup\{p\}\bigr].
+\end{equation}
+Consequently,
+\begin{align}
+ \Rs(\tht(x))&=\tht[\Rs(x)],\label{eq:rightidentity}\\
+ \Ls(\tht(x))&=\tht[\Ls(x)\cup\{p\}].\label{eq:leftidentity}
+\end{align}
+At $x=p$ the image has no proper ancestors, while
+\begin{equation}\label{eq:lost}
+ \Rs(p)=\Pred(p)=\{-\beta:\beta<\alpha\},\qquad
+ \tht[\Rs(p)]=\{q_\beta:\beta<\alpha\}.
+\end{equation}
+For $x,y>p$, simplicity is preserved and reflected:
+\[
+ x\pr y\quad\Longleftrightarrow\quad\tht(x)\pr\tht(y).
+\]
+\end{theorem}
+\begin{proof}
+First suppose $p\not\pre x$. No prefix $v\pre x$ can equal or extend
+$p$; otherwise $p\pre x$. Thus $\tht(v)=\plus\cat v$ for all
+proper prefixes $v$ of $x$. The proper prefixes of $\plus\cat x$ are
+exactly the empty word, together with these $\plus\cat v$.
+The empty word is $\tht(p)$, proving \eqref{eq:predidentity} in this
+case.
+
+Now suppose $x=p\cat\plus\cat u$. The proper prefixes of $x$ are
+\[
+ \{-\beta:\beta\le\alpha\}
+ \ \cup\ \{p\cat\plus\cat v:v\pr u\}.
+\]
+Under $\tht$ these become, respectively,
+\[
+ \{q_\beta:\beta<\alpha\}\cup\{0\},
+ \qquad \{\plus\cat p\cat v:v\pr u\}.
+\]
+These are precisely the proper prefixes of $\plus\cat p\cat u$.
+When $u$ is empty the second collection is empty; when $u$ has limit
+length it includes exactly its proper ordinal restrictions. This proves
+\eqref{eq:predidentity} without a missing limit case.
+
+Filter \eqref{eq:predidentity} according to numerical comparison with
+$\tht(x)$. By \cref{lem:thetaorder}, comparison of images is comparison
+of preimages. Since $p<x$, the extra element $\tht(p)=0$ is a left
+ancestor, never a right ancestor. This gives
+\eqref{eq:rightidentity} and \eqref{eq:leftidentity}.
+Formula \eqref{eq:lost} follows directly from the all-minus word $p$.
+Finally, if $x,y>p$, membership of $\tht(x)$ in the predecessor set of
+$\tht(y)$ is, by injectivity and \eqref{eq:predidentity}, exactly
+membership of $x$ in $\Pred(y)$.
+\end{proof}
+
+\begin{remark}[A stronger identity that would be false]\label{rem:exception}
+For $\alpha>0$ one must not assert \eqref{eq:rightidentity} at $x=p$.
+Already $p=-1$ has right ancestor $0$, whose image is $1$, while
+$\tht(p)=0$ has no ancestors at all. The missing relations at precisely
+this one point account for the extra condition in \cref{thm:B}.
+\end{remark}
+
+\begin{corollary}[Initiality of the image]\label{cor:initialimage}
+If $\Gamma$ is initial and has minimum $p=-\alpha$, then
+$\tht[\Gamma]$ is initial and has minimum $0$.
+\end{corollary}
+\begin{proof}
+The minimum assertion follows from the order-isomorphism. The image of
+$p$ has no predecessors. For $x>p$ in $\Gamma$, the right side of
+\eqref{eq:predidentity} lies in $\tht[\Gamma]$, because both
+$\Pred(x)$ and $p$ lie in $\Gamma$.
+\end{proof}
+
+\begin{proposition}[The exact inverse obstruction]\label{prop:inversetree}
+Let $\Delta\subseteq\No_{\ge0}$ be nonempty and initial. Put
+\[
+ \Lambda_\alpha=\{0\}\cup\{q_\beta:\beta<\alpha\}.
+\]
+Then $\psiA[\Delta]$ is initial if and only if
+$\Lambda_\alpha\subseteq\Delta$.
+\end{proposition}
+\begin{proof}
+The empty word $0$ belongs to $\Delta$, so $p$ belongs to the inverse
+image. If the inverse image is initial, it contains every $-\beta$ with
+$\beta<\alpha$; applying $\tht$ gives $q_\beta\in\Delta$.
+
+Conversely, suppose $\Lambda_\alpha\subseteq\Delta$. All predecessors
+of $p$ are then in the inverse image. For any other inverse-image element
+$x=\psiA(y)$, where $y>0$, \eqref{eq:predidentity} gives
+\[
+ \Pred(x)\cup\{p\}=\psiA[\Pred(y)]\subseteq\psiA[\Delta].
+\]
+Hence every inverse-image element has all its predecessors in that image.
+\end{proof}
+
+\subsection{Exponent lengths and a finite picture}
+\begin{proposition}[An exponent-birthday bound]\label{prop:length}
+For every $x\in C_\alpha$,
+\[
+ \len(\tht(x))\le 1+_{\mathrm{ord}}\len(x).
+\]
+In particular, an infinite exponent length never increases.
+\end{proposition}
+\begin{proof}
+At $x=p$ the image length is zero. In the outside case the length is
+exactly $1+\len(x)$. In the inside case, if $\len(u)=\mu$, the source
+length is $\alpha+1+\mu$, and the image length is $1+\alpha+\mu$.
+Monotonicity of ordinal addition gives
+$1+\alpha+\mu\le1+\alpha+1+\mu$. Finally, $1+\lambda=\lambda$ for
+any infinite ordinal $\lambda$: write $\lambda$ as a nonzero limit
+ordinal followed by a finite tail.
+\end{proof}
+
+This is a bound for \emph{exponents}. It is not a theorem bounding the
+birthday of the entire transformed surreal normal form.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small},
+                    x=1.30cm,y=1.0cm]
+\node (a) at (0,0) {$0$};
+\node (b) at (-1,-1) {$-1$};
+\node (c) at (1,-1) {$1$};
+\node (d) at (-0.5,-2) {$-\tfrac12$};
+\node (e) at (0.6,-2) {$\tfrac12$};
+\draw (a)--(b);\draw(a)--(c);\draw(b)--(d);\draw(c)--(e);
+\node at (0,-2.65) {Source: a finite part of $C_1$};
+\node (r) at (5,0) {$0$};
+\node (s) at (5,-1) {$1$};
+\node (t) at (6,-2) {$2$};
+\node (u) at (4,-2) {$\tfrac12$};
+\node (v) at (5.6,-3) {$\tfrac32$};
+\draw(r)--(s);\draw(s)--(t);\draw(s)--(u);\draw(t)--(v);
+\draw[->,thick] (1.8,-0.7)--node[above]{$\Theta_1$}(3.2,-0.7);
+\node at (5,-3.55) {Image and its prefix relations};
+\end{tikzpicture}
+\end{center}
+Here $-1\mapsto0$, $0\mapsto1$, $1\mapsto2$,
+$-\tfrac12\mapsto\tfrac12$, and
+$\tfrac12\mapsto\tfrac32$. The numerical labels are exponents, not
+the monomials with those exponents.
+
+\section{Strong transport of normal forms}\label{sec:transport}
+
+\begin{definition}[Bottom-normalized transport]\label{def:normalization}
+For $\alpha\in\On$, $n\in\N$, $p=-\alpha$, and $c=2^{-n}$, define
+\begin{equation}\label{eq:N}
+ \Rect\left(\sum_{\gamma\ge p}r_\gamma\omega^\gamma\right)
+   =c^{-1}r_p+
+     \sum_{\gamma>p}r_\gamma\omega^{\tht(\gamma)}.
+\end{equation}
+A coefficient not in the support is interpreted as zero. The inverse is
+\begin{equation}\label{eq:Ninv}
+ \Rect^{-1}\left(s_0+\sum_{\delta>0}s_\delta\omega^\delta\right)
+   =c s_0\omega^p+
+     \sum_{\delta>0}s_\delta\omega^{\psiA(\delta)}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Ambient transport]\label{thm:transport}
+The formulas above define inverse real-linear order-isomorphisms
+\[
+ \Rect:\Hahn{\R}{C_\alpha}
+       \longrightarrow\Hahn{\R}{\No_{\ge0}}.
+\]
+They preserve support cardinality and decreasing support order type,
+commute with every leading truncation, and preserve and reflect strong
+summability of set-indexed families. For every such strongly summable
+family,
+\begin{equation}\label{eq:strongtransport}
+ \Rect\left(\sum_{i\in I}x_i\right)
+       =\sum_{i\in I}\Rect(x_i).
+\end{equation}
+For a nonzero $x$,
+\begin{equation}\label{eq:leadingtransport}
+ \hdeg(\Rect(x))=\tht(\hdeg(x)),
+ \qquad
+ \lc(\Rect(x))=
+ \begin{cases}
+  c^{-1}\lc(x),&\hdeg(x)=p,\\
+  \lc(x),&\hdeg(x)>p.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+An order-isomorphism takes a reverse-well-ordered support to a
+reverse-well-ordered support and preserves its order type. The support is
+still a set: it is the image of a set under a definable class function.
+Every coefficient is multiplied by a nonzero real number, so no support
+point is lost and no new point is created. These observations show that
+both displayed formulas are legitimate normal forms. Their inverse
+identities follow coefficient by coefficient from
+\cref{lem:inverse}.
+
+Both addition of normal forms and the proposed map are coefficientwise,
+with the same fixed multiplier $c^{-1}$ at the bottom point. Hence the
+map is real-linear. The greatest nonzero coefficient retains its sign,
+because all multipliers are positive. Thus the map and its inverse
+preserve order. This proves \eqref{eq:leadingtransport} as well.
+
+A leading truncation is specified by an initial segment of the decreasing
+support enumeration. The same enumeration indices specify the
+corresponding truncation of the transported support. Applying the map
+therefore commutes with truncation, including at a limit index.
+
+For a set-family $(x_i)$, one has the exact equality
+\[
+ \bigcup_i\supp(\Rect(x_i))
+ =\tht\left[\bigcup_i\supp(x_i)\right].
+\]
+Reverse well-ordering of these unions is equivalent in both directions.
+For each $\gamma$, the index set of family members contributing at
+$\gamma$ is exactly the index set contributing at $\tht(\gamma)$ after
+transport. The point-finiteness requirement is therefore also equivalent.
+When it holds, coefficient extraction reduces \eqref{eq:strongtransport}
+to a finite real sum, through which the fixed coefficient multiplier
+commutes. This proves the entire assertion without invoking convergence
+in an order topology.
+\end{proof}
+
+\begin{remark}[No implicit completion of a subgroup]
+The ambient Hahn spaces in \cref{thm:transport} are full spaces. A
+particular initial subgroup $A$ need not be closed under all strong sums
+or all infinite subseries. We define its image as the actual set or class
+$\Rect[A]$, not as the space of all series with the same coefficient
+groups. If a strongly summable family in $A$ has sum outside $A$,
+\eqref{eq:strongtransport} still holds in the ambient spaces, but is not
+an assertion of an internal summation operation on $A$.
+\end{remark}
+
+\begin{remark}[What is and is not preserved]
+The map preserves the ordered chain of Archimedean classes, with their
+exponents reindexed by $\tht$. It is not a homomorphism of additive
+\emph{exponent} groups. Consequently \eqref{eq:leadingtransport} should
+not be described as preservation of a multiplicative valuation with the
+same value-group structure.
+\end{remark}
+
+\section{Proof of omnific normalization}\label{sec:normalization}
+
+We now prove \cref{thm:A}. Let $A$ be as there, and obtain
+$\alpha,n,p,c$ from \cref{prop:bottom}. Write
+\[
+ \Gamma=\Gamma(A),\qquad \Delta=\tht[\Gamma],
+ \qquad H=\Rect[A].
+\]
+The ambient transport restricts to an ordered-group isomorphism onto
+$H$. It remains to prove that this actual image is an initial subgroup
+of $\Oz$.
+
+\begin{lemma}[Transported coefficients]\label{lem:coefficients}
+The group $H$ is truncation closed and cross-sectional on $\Delta$,
+and its coefficient groups are
+\begin{equation}\label{eq:coefftransport}
+ H_0=\Z,\qquad H_{\tht(\gamma)}=A_\gamma\quad(\gamma>p).
+\end{equation}
+Its exponent class is exactly $\Delta$.
+\end{lemma}
+\begin{proof}
+Truncation closure follows from \cref{thm:transport}. For
+$\gamma>p$, one has
+$\Rect(\omega^\gamma)=\omega^{\tht(\gamma)}$. At the bottom,
+$\Rect(c\omega^p)=1$. Thus all the leaders on $\Delta$ belong to $H$.
+No image element can have a support point outside $\Delta$.
+
+The formula at a positive image exponent leaves its coefficient
+unchanged, and the inverse formula has the same property. This proves
+both inclusions in the second identity of \eqref{eq:coefftransport}.
+At zero the coefficient group is $c^{-1}A_p=\Z$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:A}]
+By \cref{cor:initialimage}, $\Delta$ is initial with minimum zero.
+By \cref{lem:coefficients}, the image is truncation closed and
+cross-sectional, and all its coefficient groups are initial real
+subgroups.
+
+Consider an obligation in the dyadic right-ancestor condition for $H$:
+let $\delta,\eta\in\Delta$ and $\eta\in\Rs(\delta)$.
+The point $\delta$ cannot be zero. Write $\delta=\tht(\gamma)$
+with $\gamma>p$. By \eqref{eq:rightidentity}, there exists
+$\xi\in\Rs(\gamma)$ with $\eta=\tht(\xi)$. Since $\xi>\gamma>p$,
+its coefficient group was not rescaled. The initiality of $A$ gives
+\[
+ \D\subseteq A_\xi=H_\eta.
+\]
+Every target obligation is therefore satisfied. The concrete sufficiency
+in \cref{fact:EK} proves that $H$ is initial in $\No$.
+
+All exponents of $H$ are nonnegative and its zero coefficient is an
+integer. Hence $H\subseteq\Oz$ by \eqref{eq:Oz}. Its minimum positive
+element is $1$, either by order-isomorphism or directly from its normal
+forms. Finally, $\Rect(\varepsilon)=1$, and all support and summability
+claims are the restrictions of \cref{thm:transport}. Uniqueness of
+$\alpha,n$ was established in \cref{prop:bottom}.
+\end{proof}
+
+\begin{corollary}[The cited existence question]\label{cor:answer}
+Every discrete initial subgroup of $\No$ is isomorphic, as an ordered
+abelian group, to an initial subgroup of $\Oz$.
+\end{corollary}
+
+\begin{remark}[An initial image is not a simplicity isomorphism]
+The conclusion is exactly an ordered-group isomorphism to an initial
+image. For example, on $A=\frac12\Z$ the map $\mathcal N_{0,1}$
+sends $1$ to $2$ and $1/2$ to $1$. Although $1\pr1/2$, one does not
+have $2\pr1$. Thus the normalization is not generally an isomorphism
+of the full simplicity-enriched structures. Any initial cyclic subgroup
+of $\Oz$ is $\Z$, and the order-isomorphism from $\frac12\Z$ to
+$\Z$ is forced. Thus this example rules out a generally
+simplicity-preserving version. The published question does not demand
+that stronger conclusion.
+\end{remark}
+
+\section{Exact images, extremal groups, and admissible scales}\label{sec:classification}
+
+\subsection{The compulsory dyadic spine}
+\begin{lemma}[The spine group is initial]\label{lem:K}
+For every ordinal $\alpha$, the group $K_\alpha$ of
+\eqref{eq:Kintro} is initial in $\No$, has least positive element $1$,
+and lies in $\Oz$. Its exponent class is $\Lambda_\alpha$.
+\end{lemma}
+\begin{proof}
+The proper prefixes of $q_\beta$ are $0$ and the $q_\eta$ with
+$\eta<\beta$. Thus $\Lambda_\alpha$ is initial. The finite-support
+group on this class is cross-sectional and truncation closed. Its
+coefficient group is $\Z$ at zero and $\D$ at every other point.
+Any right ancestor lies among those positive spine points, where the
+required dyadic containment holds. Apply \cref{fact:EK}. The remaining
+claims follow from its normal forms.
+\end{proof}
+
+\begin{proposition}[Necessary image data]\label{prop:Knecessary}
+If $A$ has least positive element $2^{-n}\omega^{-\alpha}$ and is
+initial, then $K_\alpha\subseteq\Rect[A]$.
+\end{proposition}
+\begin{proof}
+The image contains $1$. For each $\beta<\alpha$, \cref{cor:forced}
+gives $\D\omega^{-\beta}\subseteq A$. These terms are above the
+bottom exponent, so their coefficients are unchanged, and
+$\tht(-\beta)=q_\beta$. Thus the image contains every generating
+summand of $K_\alpha$ and hence all their finite sums.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:B}]
+Necessity has just been proved. Conversely, let $H\subseteq\Oz$ be
+initial with $K_\alpha\subseteq H$, and put $A=\Rect^{-1}[H]$.
+Since $H$ contains $1$, it has least positive element $1$ and $H_0=\Z$.
+Let $\Delta=\Gamma(H)$. The inclusion of $K_\alpha$ implies
+$\Lambda_\alpha\subseteq\Delta$, so
+$\Gamma=\psiA[\Delta]$ is initial by \cref{prop:inversetree}.
+Its minimum is $p$.
+
+By ambient transport, $A$ is an additive, truncation-closed Hahn subgroup.
+Its bottom coefficient group is $c\Z$, which contains $1$ since
+$c=2^{-n}$; all other coefficient groups are inherited from $H$.
+It is therefore cross-sectional and has initial real coefficient groups.
+
+We check the source right-ancestor condition. If $x\in\Gamma$ satisfies
+$x>p$ and $y\in\Rs(x)$, then
+$\tht(y)\in\Rs(\tht(x))$. The coefficient group at $y$ is unchanged
+from that at $\tht(y)$, so it contains $\D$ by the initiality of $H$.
+If instead $x=p$, its right ancestors are exactly the $-\beta$ for
+$\beta<\alpha$. The hypothesis $K_\alpha\subseteq H$ says that all
+coefficient groups at their images $q_\beta$ contain $\D$; again these
+coefficients are unchanged. This checks the only obligations not already
+covered by \eqref{eq:rightidentity}.
+
+The criterion \cref{fact:EK} now proves $A$ initial. Its least positive
+element is $\Rect^{-1}(1)=c\omega^p$, since the inverse is increasing.
+The inverse identities show uniqueness, and a fixed bijection preserves
+and reflects inclusion of its images. This proves the correspondence.
+\end{proof}
+
+\subsection{Smallest and largest initial realizations at a fixed scale}
+Define
+\begin{align}
+ L_{\alpha,n}
+   &=c\Z\omega^p\ \oplus\!
+     \bigoplus_{\beta<\alpha}\D\omega^{-\beta},\label{eq:L}\\
+ M_{\alpha,n}
+   &=\{x\in\Hahn{\R}{C_\alpha}:[\omega^p]x\in c\Z\}.
+   \label{eq:M}
+\end{align}
+Here $[\omega^p]x$ denotes coefficient extraction. The direct sum in
+\eqref{eq:L} again permits only finite supports; the class in
+\eqref{eq:M} permits every set reverse-well-ordered support in the cone.
+
+\begin{theorem}[Extremal groups]\label{thm:extremal}
+The groups $L_{\alpha,n}$ and $M_{\alpha,n}$ are initial with least
+positive element $c\omega^p$. Every initial group $A$ with that least
+positive element satisfies
+\[
+ L_{\alpha,n}\subseteq A\subseteq M_{\alpha,n}.
+\]
+Moreover,
+\begin{equation}\label{eq:extremalimages}
+ \Rect[L_{\alpha,n}]=K_\alpha,
+ \qquad \Rect[M_{\alpha,n}]=\Oz,
+ \qquad M_{\alpha,n}=c\omega^p\Oz.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The first two identities in \eqref{eq:extremalimages} follow directly
+from the formulas: every positive image coefficient is unrestricted in
+$M$, whereas precisely the finite dyadic spine terms occur for $L$.
+By \cref{thm:B}, the inverse images of $K_\alpha$ and $\Oz$ are
+initial and have the required minimum. The lower bound on $A$ follows
+from \cref{cor:forced} and $A_p=c\Z$; the upper bound follows from
+\cref{prop:bottom}.
+
+For the last identity, ordinary multiplication by $c\omega^p$ sends a
+normal form on $[0,\infty)$ to one on $[p,\infty)$ by the arithmetic
+translation $\delta\mapsto p+\delta$. Its bottom coefficient belongs
+to $c\Z$, and the other coefficients range over all of $\R$ because
+multiplication by $c\ne0$ is a bijection of $\R$. Conversely, translate
+any support in the cone back by $-p$ and divide its coefficients by $c$.
+The resulting series belongs to $\Oz$.
+\end{proof}
+
+The equality $M_{\alpha,n}=\varepsilon\Oz$ does not make the theorem
+trivial. It concerns the \emph{largest} group, whose higher coefficients
+are all real and whose support class is the full cone. Arithmetic
+translation can destroy initiality for smaller initial subgroups, even
+though it behaves correctly for this maximal one.
+
+\begin{corollary}[Sharp size obstruction]\label{cor:size}
+Every set-sized initial group $A$ with least positive element
+$2^{-n}\omega^{-\alpha}$ satisfies
+\[
+ |A|\ge\max(\aleph_0,|\alpha|).
+\]
+For every ordinal $\alpha$ and every $n\in\N$ this bound is attained
+by $L_{\alpha,n}$. In particular, a countable initial group can have
+such a least positive element only when $\alpha$ is countable.
+\end{corollary}
+\begin{proof}
+The group contains the countably infinite cyclic subgroup generated by
+its least positive member and contains distinct terms $\omega^{-\beta}$
+for $\beta<\alpha$. This gives the lower bound. The finite-support
+sum defining $L_{\alpha,n}$ has countable coefficient groups and an
+index set of size $|\alpha|+1$, giving exactly the displayed cardinality.
+Its initiality and minimum follow from \cref{thm:extremal}.
+\end{proof}
+
+This is a restriction on a specified initial realization. The ordinal
+$\alpha$ is not an invariant of the abstract ordered group under arbitrary
+isomorphisms: normalization itself changes the least positive element
+to $1$.
+
+\subsection{Dyadic depth and the spectrum of inverse scales}
+\begin{definition}[Dyadic-spine depth]
+Let $H\subseteq\Oz$ be a nonzero initial subgroup. If there exists an
+ordinal $\beta$ such that $\D\omega^{q_\beta}\not\subseteq H$, let
+$d(H)$ be the least such $\beta$. Otherwise write $d(H)=\On$ as a
+formal unbounded-depth marker, not as a surreal or a set ordinal.
+\end{definition}
+
+\begin{corollary}[Admissible scales]\label{cor:depth}
+If $d(H)$ is an ordinal, then for every $\alpha\in\On$ and every
+$n\in\N$,
+\[
+ \Rect^{-1}[H]\text{ is initial}
+ \quad\Longleftrightarrow\quad \alpha\le d(H).
+\]
+If $d(H)=\On$, every ordinal $\alpha$ is allowed. Whenever the inverse
+is initial, its least positive member is $2^{-n}\omega^{-\alpha}$.
+The parameter $n$ imposes no further obstruction.
+\end{corollary}
+\begin{proof}
+By \cref{thm:B}, the condition is exactly that all
+$\D\omega^{q_\beta}$ for $\beta<\alpha$ lie in $H$. This holds
+precisely through the first missing index, inclusively, and fails at all
+larger indices. In the unbounded case there is no missing index.
+\end{proof}
+
+For example, $d(K_\alpha)=\alpha$, since the exponent $q_\alpha$
+is absent while all the earlier required dyadic terms are present.
+Thus the endpoint in \cref{cor:depth} can be a limit ordinal and must
+not be replaced with a strict inequality. For a set-sized $H$, a first
+missing index exists: the distinct monomials $\omega^{q_\beta}$
+cannot all belong to a set. The subgroup
+$\bigcup_{\alpha\in\On}K_\alpha$, interpreted as the class of all
+finite dyadic-spine sums with an integer constant, is an example with
+unbounded depth. It is initial by \cref{fact:EK}, but is much smaller
+than $\Oz$, for example it does not contain $\omega^2$.
+
+\section{The quotient by the least positive cyclic subgroup}\label{sec:quotient}
+
+\subsection{Convexity and an actual splitting}
+Fix $A$, $p$, $c$, and $\varepsilon=c\omega^p$ as before. Define
+\[
+ \pi_p:A\longrightarrow\Z,
+ \qquad \pi_p(x)=c^{-1}[\omega^p]x,
+ \qquad A^{>p}=\ker\pi_p.
+\]
+Although its notation emphasizes the higher exponents, $A^{>p}$ also
+contains zero.
+
+\begin{lemma}[Bottom-layer decomposition]\label{lem:split}
+The map $\pi_p$ is a surjective additive homomorphism,
+$\pi_p(m\varepsilon)=m$, and
+\[
+ A=A^{>p}\oplus\Z\varepsilon
+\]
+as additive groups. The subgroup $\Z\varepsilon$ is convex. Every
+nonzero positive element of $A^{>p}$ dominates all integer multiples of
+$\varepsilon$.
+\end{lemma}
+\begin{proof}
+Coefficient extraction is additive, and $A_p=c\Z$. This proves all
+assertions about $\pi_p$. Given $x\in A$, the term
+$\pi_p(x)\varepsilon$ belongs to $A$ and subtraction produces an element
+of $A^{>p}$. The intersection of the two displayed summands is zero.
+
+A nonzero element of $A^{>p}$ has greatest exponent strictly above $p$.
+Its absolute value therefore exceeds $m\varepsilon$ for every positive
+integer $m$. If $0\le x\le m\varepsilon$ in $A$ for some integer
+$m\ge0$, its component in $A^{>p}$ must consequently be zero; thus
+$x\in\Z\varepsilon$. Translation and sign reversal prove convexity.
+\end{proof}
+
+The summand $A^{>p}$ need not itself be initial as a concrete subclass
+of $\No$. For example, with $A=\Z+\Z\omega$, it is $\Z\omega$,
+which omits the proper prefix $1$ of $\omega$. A second exponent operation
+is needed for an \emph{initial} quotient realization.
+
+\subsection{Deleting a positive root}
+Every positive surreal exponent has a unique form $\plus\cat v$.
+Define
+\[
+ \rho:\No_{>0}\longrightarrow\No,\qquad
+ \rho(\plus\cat v)=v.
+\]
+Unlike $\tht$, this map has no exceptional point inside its domain.
+It preserves comparison and preserves and reflects prefix relations
+between positive source points.
+
+\begin{lemma}[Positive-root deletion]\label{lem:rho}
+If $\Delta\subseteq\No_{\ge0}$ is initial, then
+$E=\rho[\Delta\setminus\{0\}]$ is initial, possibly empty. For
+$\delta>0$,
+\[
+ \Rs(\rho(\delta))=\rho[\Rs(\delta)].
+\]
+\end{lemma}
+\begin{proof}
+If $v\pr\rho(\delta)$, then $\plus\cat v\pr\delta$ is a positive
+prefix and lies in $\Delta$. Its image is $v$, establishing initiality.
+Every proper prefix of $\delta=\plus\cat u$ is either $0$, which is
+smaller than $\delta$, or $\plus\cat v$ with $v\pr u$.
+Comparisons of the latter with $\delta$ are comparisons of $v$ with $u$.
+This proves the right-ancestor identity.
+\end{proof}
+
+Let $H=\Rect[A]\subseteq\Oz$ and
+\[
+ H^+=\{h\in H:\ct(h)=0\}.
+\]
+The superscript $+$ here means ``strictly positive exponents,'' not
+``positive elements.'' To avoid any order-cone interpretation, define
+its transported group explicitly by
+\begin{equation}\label{eq:Bquotient}
+ B=\left\{\sum_{\delta>0}s_\delta\omega^{\rho(\delta)}:
+              \sum_{\delta>0}s_\delta\omega^\delta\in H^+\right\}.
+\end{equation}
+
+\begin{proposition}[An initial model of the quotient]\label{prop:quotient}
+The class $B$ in \eqref{eq:Bquotient} is an initial additive subgroup of
+$\No$. The normal-form map in that formula induces ordered-group
+isomorphisms
+\[
+ A/\Z\varepsilon\cong H/\Z\cong H^+\cong B.
+\]
+\end{proposition}
+\begin{proof}
+The first isomorphism is induced by $\Rect$. Since constants of $H$
+are integers and all integers lie in $H$, every coset in $H/\Z$ has a
+unique representative with zero constant coefficient. The quotient
+ordering agrees with the ordering of those representatives, because a
+nonzero positive-exponent term dominates all integers.
+
+The group $H^+$ is truncation closed and cross-sectional on
+$\Delta\setminus\{0\}$. Its coefficient groups at those points are
+the same as those of $H$. Reindexing by the order-isomorphism $\rho$
+produces a truncation-closed, cross-sectional subgroup with the same
+coefficient groups. Its exponent class is initial by \cref{lem:rho}.
+The right-ancestor identity in that lemma transfers every dyadic
+obligation from $H$ to $B$. Hence $B$ is initial by \cref{fact:EK}.
+If there are no positive exponents, the group is $\{0\}$ and the same
+conclusion is immediate.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:C}]
+Combine \cref{lem:split,prop:quotient}. The explicit isomorphism sends
+$x\in A$ to
+\[
+ \left(\rho_*\left(\Rect(x)-\pi_p(x)\right),\ \pi_p(x)\right),
+\]
+where $\rho_*$ denotes the normal-form reindexing of
+\eqref{eq:Bquotient}. The higher component determines the sign whenever
+it is nonzero; otherwise the sign is the sign of the integer component.
+This is precisely the indicated lexicographic order.
+\end{proof}
+
+\begin{corollary}[Finite iteration]\label{cor:iteration}
+Starting with an initial group, repeatedly quotient by its least positive
+cyclic subgroup whenever the current quotient is nonzero and discrete.
+At every finite stage reached in this way, the quotient has an explicit
+initial realization in $\No$.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:C} at the first stage and then apply it to the initial
+realization just constructed at each subsequent stage. This is ordinary
+finite induction and makes no assertion at a limit stage.
+\end{proof}
+
+\subsection{The converse construction: adjoining an integer bottom layer}
+There is also an explicit converse to the lexicographic decomposition.
+For an initial subgroup $B\subseteq\No$, including $B=\{0\}$, put
+\[
+ \sigma(\gamma)=\plus\cat\gamma,
+ \qquad
+ \sigma_*\left(\sum_\gamma r_\gamma\omega^\gamma\right)
+      =\sum_\gamma r_\gamma\omega^{\sigma(\gamma)},
+ \qquad J(B)=\Z\oplus\sigma_*[B].
+\]
+The map $\sigma_*$ changes exponents but not coefficients. Its image has
+no constant term, and each nonzero image element dominates every ordinary
+integer in absolute value.
+
+\begin{theorem}[Integer-bottom suspension]\label{thm:suspension}
+The construction $B\mapsto J(B)$ gives an inclusion-preserving and
+inclusion-reflecting correspondence between initial subgroups of $\No$
+and nonzero initial subgroups of $\Oz$. Its inverse sends $H$ to the
+initial group obtained by deleting the leading plus sign from every
+positive exponent of $\ker(\ct|_H)$.
+Moreover, $J(B)\cong B\lex\Z$ as ordered abelian groups.
+\end{theorem}
+\begin{proof}
+For nonzero $B$, let $E=\Gamma(B)$. The exponent class of $J(B)$ is
+$\{0\}\cup\sigma[E]$. It is initial: the prefixes of
+$\plus\cat\gamma$ are zero and $\plus\cat v$ for $v\pr\gamma$.
+The group is truncation closed and cross-sectional. Its coefficient
+group at zero is $\Z$, while the coefficient group at
+$\sigma(\gamma)$ is $B_\gamma$. Every right ancestor of
+$\sigma(\gamma)$ has the form $\sigma(v)$ with $v\in\Rs(\gamma)$,
+so its coefficient group contains $\D$. The criterion
+\cref{fact:EK} proves initiality. For $B=\{0\}$, the construction
+is simply $J(B)=\Z$.
+
+Conversely, if $H\subseteq\Oz$ is initial and nonzero, it contains
+$\Z$ and each constant coefficient of $H$ is integral. Thus
+$H=\Z\oplus\ker(\ct|_H)$. By \cref{prop:quotient}, deleting the
+initial plus sign on the positive exponents of that kernel gives an
+initial group $B$. Reattaching the sign recovers the kernel exactly,
+including its actual infinite-support membership conditions. Hence
+$J(B)=H$, and the two constructions are inverse. Inclusions are
+preserved and reflected because both operations are fixed reindexings
+of the nonconstant normal forms. Finally,
+$(b,m)\mapsto\sigma_*(b)+m$ is additive and has the stated
+lexicographic order.
+\end{proof}
+
+\begin{corollary}[A relative criterion for discrete ordered groups]
+Let $G$ be a nonzero discrete ordered abelian group with least positive
+member $e$. Then $G$ admits an initial realization in $\No$ if and only
+if $G/\Z e$ admits an initial realization and the exact sequence
+\[
+ 0\longrightarrow\Z e\longrightarrow G
+   \longrightarrow G/\Z e\longrightarrow0
+\]
+splits as a sequence of abelian groups.
+\end{corollary}
+\begin{proof}
+If $G$ admits an initial realization, the least positive element is
+carried to the least positive element there. Apply
+\cref{thm:C} and transport its splitting and quotient realization back.
+For any discrete ordered group, $\Z e$ is convex: finite induction
+shows that $[0,me]$ consists of $0,e,\ldots,me$ for $m\in\N$.
+Conversely, a group-theoretic splitting identifies $G$ with
+$(G/\Z e)\lex\Z$ as an ordered group: a lift of a nonzero positive
+quotient element lies above every element of $\Z e$, by convexity.
+Choose an initial realization $B$ of the quotient and apply
+\cref{thm:suspension}.
+\end{proof}
+
+This criterion is relative: it reduces initial realizability to the
+quotient together with a splitting condition, rather than deciding
+initial realizability of every possible quotient.
+
+No result here states that every convex quotient of every initial group
+has an initial realization. The cyclic least-positive case is special
+because it has a normal-form coefficient projection and the exact
+root-deletion operation above.
+
+\section{Surcomplex and linear-algebraic consequences}\label{sec:complex}
+
+\subsection{Complex normal forms and rectangular modules}
+Let $\No[i]=\No\oplus i\No$ with $i^2=-1$. Combining the real and
+imaginary supports gives a normal form with complex coefficients and
+surreal exponents; the union of the two reverse-well-ordered supports is
+again reverse-well-ordered. Conjugation acts coefficientwise.
+Define the Gaussian omnific module
+\[
+ \Oz[i]=\{a+ib:a,b\in\Oz\}.
+\]
+For an additive group $A\subseteq\No$, put
+$A[i]=A\oplus iA$. It is a $\Z[i]$-module because multiplication by
+$i$ sends $(a,b)$ to $(-b,a)$.
+
+\begin{definition}[Rectangular initiality]
+A rectangular subclass $A+iA$ is coordinatewise initial if $A$ is
+initial in $\No$. This is a deliberately coordinate-dependent notion;
+no canonical single sign-tree order on $\No[i]$ is being postulated.
+\end{definition}
+
+\begin{theorem}[Surcomplex additive normalization]\label{thm:complex}
+Let $A$ be a nonzero discrete initial subgroup and $H=\Rect[A]$.
+The map
+\[
+ \Rect^{\C}(a+ib)=\Rect(a)+i\Rect(b)
+\]
+is a $\Z[i]$-linear isomorphism
+\[
+ A[i]\longrightarrow H[i]\subseteq\Oz[i].
+\]
+It commutes with conjugation and has a complex-linear extension to the
+full complex-coefficient Hahn spaces on $C_\alpha$ and
+$\No_{\ge0}$. That extension preserves and reflects set-indexed strong
+summability and commutes with its sums. The image is coordinatewise
+initial. For fixed $\alpha,n$, its exact possible rectangular images
+are the $H[i]$ with $H\subseteq\Oz$ initial and $K_\alpha\subseteq H$.
+\end{theorem}
+\begin{proof}
+Additivity and multiplication by $i$ commute with the coordinatewise
+map, so it is $\Z[i]$-linear. The inverse is coordinatewise
+$\Rect^{-1}$. Conjugation negates the imaginary coordinate, and
+additivity gives the asserted compatibility.
+
+In complex normal forms, the map is exactly
+\[
+ \sum_{\gamma\ge p}z_\gamma\omega^\gamma
+ \ \longmapsto\ c^{-1}z_p+
+      \sum_{\gamma>p}z_\gamma\omega^{\tht(\gamma)}.
+\]
+The coefficient multiplier $c^{-1}$ is real. It commutes with every
+complex scalar and with conjugation. The support argument in
+\cref{thm:transport} is unchanged; there is no additional infinite sum
+of constants because strong summability remains point-finite.
+Coordinatewise initiality follows from the initiality of $H$, and the
+range assertion is exactly \cref{thm:B} applied to the real factor.
+\end{proof}
+
+\subsection{What linear systems can be transported}
+\begin{corollary}[Exact transport of integral linear equations]
+Let $M\in\Z^{r\times s}$, let $b\in A^r$, and apply $\Rect$
+coordinatewise. Then
+\[
+ Mx=b\quad\Longleftrightarrow\quad M\Rect(x)=\Rect(b).
+\]
+The corresponding statement holds for $M\in\Z[i]^{r\times s}$ and
+$b\in A[i]^r$ under $\Rect^{\C}$. In the real case, coordinatewise
+inequalities are preserved as well.
+\end{corollary}
+\begin{proof}
+Every row is a finite integer or Gaussian-integer linear combination.
+The relevant module isomorphism commutes with each such combination,
+and its injectivity gives the reverse implication. The real order
+assertion follows from the ordered-group isomorphism.
+\end{proof}
+
+The right-hand side is transported too. In general $\Rect(1)\ne1$,
+so this corollary must not be rewritten as preservation of equations
+with every ordinary constant fixed. Nor does it apply to nonlinear
+polynomials, arbitrary surreal scalar matrices, norms, or inner products.
+
+\section{Examples and failure modes}\label{sec:examples}
+
+\subsection{The motivating two-level example}
+Ehrlich and Kaplan's example in the paragraph preceding their question
+is
+\[
+ A=\D+\Z\omega^{-1},\qquad \varepsilon=\omega^{-1}.
+\]
+Our construction has $\alpha=1,n=0$, $\Theta_1(-1)=0$, and
+$\Theta_1(0)=1$. It gives
+\[
+ d+m\omega^{-1}\longmapsto d\omega+m,
+ \qquad H=\D\omega+\Z=K_1.
+\]
+Thus the proposed general construction specializes to their known map,
+rather than treating that map as a new result \cite[Section~9]{EK}.
+
+\subsection{Rescale the bottom coefficient, not the whole series}
+Consider
+\[
+ A=\tfrac12\Z+\Z\omega.
+\]
+The exponent class $\{0,1\}$ is initial, there are no right-ancestor
+dyadic obligations, and its coefficient groups $\frac12\Z$ and $\Z$
+are initial. Hence $A$ is initial by \cref{fact:EK}. Its least positive
+element is $1/2$.
+
+Scalar multiplication by $2$ yields $\Z+2\Z\omega$, which omits
+$\omega$ despite containing $2\omega$. Equivalently, its coefficient
+group at exponent $1$ is not initial in $\R$. By contrast,
+\[
+ \mathcal N_{0,1}(a/2+b\omega)=a+b\omega
+\]
+has initial image $\Z+\Z\omega$. Only the bottom coefficient changes.
+
+\subsection{An exponent translation fails at the first infinite branch}
+Let
+\[
+ \Gamma=\{-1\}\cup\N\cup\{\omega\}
+\]
+be an exponent class, and let $A$ be the finite-support group with
+coefficient $\Z$ at $-1$, coefficient $\D$ at $0$, and coefficient
+$\Z$ at every positive member of $\Gamma$. This exponent class is
+initial: $-1$ contributes the prefix $0$, and the ordinal $\omega$
+contributes all finite ordinals. Its only right-ancestor obligation is
+at $-1$, forcing the chosen dyadic group at zero. Thus $A$ is initial,
+with least positive element $\omega^{-1}$.
+
+Multiplication by $\omega$ replaces the support class by
+\[
+ \Gamma+1=\{0,1,2,\ldots\}\cup\{\omega+1\}.
+\]
+This class is not initial because it contains $\omega+1$ but omits
+its prefix $\omega$. The resulting group is not initial. In contrast,
+root relocation satisfies
+\[
+ \Theta_1(-1)=0,\qquad
+ \Theta_1(k)=k+1\ (k<\omega),\qquad
+ \Theta_1(\omega)=\omega.
+\]
+The last identity uses $\plus\cat\plus^\omega=\plus^\omega$;
+it is precisely where ordinal concatenation differs from arithmetic
+translation. The correct image has exponent class
+$\N\cup\{\omega\}$, coefficient $\Z$ at zero, $\D$ at one,
+and $\Z$ at the other exponents. It is initial.
+
+\subsection{A genuine limit-support example}
+Take $\alpha=\omega$, $n=0$, and consider the group of all series
+\begin{equation}\label{eq:limitexample}
+ x=\sum_{k<\omega}a_k\omega^{-k}+m\omega^{-\omega},
+ \qquad a_k\in\D,\quad m\in\Z.
+\end{equation}
+Zeros in this expression are ignored. The allowed support is a subset
+of the reverse-well-ordered sequence
+$0,-1,-2,\ldots,-\omega$. The exponent class is initial, its ancestor
+coefficients are dyadic, and its bottom coefficient is integral, so the
+full group \eqref{eq:limitexample} is initial.
+
+Since $\Theta_\omega(-k)=q_k=2^{-k}$ for finite $k$ and
+$\Theta_\omega(-\omega)=0$, normalization gives the exact strong-sum
+identity
+\begin{equation}\label{eq:limitimage}
+ \mathcal N_{\omega,0}(x)
+   =\sum_{k<\omega}a_k\omega^{2^{-k}}+m.
+\end{equation}
+For example, when $a_k=1$ for every $k$ and $m=1$, the source and image
+have support order type $\omega+1$. The decreasing exponents
+$1,1/2,1/4,\ldots,0$ are a legitimate reverse-well-ordered support;
+no analytic limiting process is involved.
+
+The finite-support minimal group $L_{\omega,0}$ is a proper subgroup of
+the group in \eqref{eq:limitexample}. Its image $K_\omega$ consists
+only of finite sums of the positive terms appearing in
+\eqref{eq:limitimage}, together with an integer constant. The full
+limit-support example therefore illustrates why the image cannot be
+reconstructed from its coefficient groups alone.
+
+\subsection{Inverse initiality needs the whole dyadic spine}
+Let $H=\Z$ and $\alpha=1,n=0$. The inverse formula produces
+\[
+ \mathcal N_{1,0}^{-1}[\Z]=\Z\omega^{-1},
+\]
+which is not initial: $1$ is simpler than $\omega^{-1}$ but is missing.
+Here $K_1\not\subseteq H$, so \cref{thm:B} correctly rules out
+initiality.
+
+There is also a purely coefficient-level obstruction. Let
+$H=\Z+\Z\omega$ and keep $\alpha=1,n=0$. Its exponent class contains
+$\Lambda_1=\{0,1\}$, so the inverse exponent class is initial.
+Nevertheless, the inverse group is
+\[
+ \Z+\Z\omega^{-1},
+\]
+which is not initial: its monomial $\omega^{-1}$ forces every dyadic
+constant through \eqref{eq:dyadic}, but its constant group is only
+$\Z$. Equivalently, $1/2$ is a missing prefix of $\omega^{-1}$.
+Thus the exponent condition in \cref{prop:inversetree} alone does not
+suffice for the group-level inverse.
+
+\subsection{Multiplication and ordinary constants are not preserved}
+For $A=\D+\Z\omega^{-1}$, one has $1\in A$ and
+$\mathcal N_{1,0}(1)=\omega$. The product $1\cdot1$ also belongs to
+$A$, but
+\[
+ \mathcal N_{1,0}(1\cdot1)=\omega
+ \ne\omega^2=
+ \mathcal N_{1,0}(1)\mathcal N_{1,0}(1).
+\]
+Even on products that happen to stay in the source, multiplicativity
+fails. The surcomplex extension inherits this limitation. In particular,
+no preservation of the complex modulus or of multiplication by general
+surcomplex scalars follows from its Gaussian-linearity.
+
+\section{Verification, provenance, and a formalization route}\label{sec:audit}
+
+\subsection{The exact dependency chain}
+The proof separates into three kinds of input. Standard surreal
+normal forms identify the ambient additive spaces. The established
+Ehrlich--Kaplan criterion decides when a specified canonical Hahn image
+is initial. Everything connecting the original discrete group to the
+normalized image is then given by the explicit formulas and proofs in
+this manuscript.
+
+The essential chain is
+\begin{gather*}
+ \text{bottom coefficient structure}
+ \ \longrightarrow\ \text{root relocation}\\
+ \ \longrightarrow\ \text{strong Hahn transport}
+ \ \longrightarrow\ \text{initiality of the image}.
+\end{gather*}
+For the inverse classification, the additional chain is
+\begin{gather*}
+ \text{missing ancestors of }p
+ \ \longrightarrow\ \text{spine exponents}\\
+ \ \longrightarrow\ \text{forced dyadic coefficients}
+ \ \longrightarrow\ K_\alpha\subseteq H.
+\end{gather*}
+The sign-sequence proof is independent of the arithmetic of exponents.
+In particular, no unproved assertion that $\tht$ preserves addition of
+exponents occurs in the chain.
+
+\subsection{Finite regression checks supplied with the article}
+The accompanying Python program \texttt{verify.py} uses only the standard
+library, exact rational arithmetic, and a fixed random seed. Its recorded
+run performs \textbf{450,862 assertions}, all passing. The tests cover
+finite sign words through length seven for all relevant finite cone
+minima; every prefix-closed subset of the binary tree through depth
+three, including the empty tree; inverse-spine tests on a further family
+of nonnegative initial trees; and 1,500 random pairs of finite rational
+normal forms.
+
+The count of prefix-closed trees is independently specified by
+\[
+ T_{-1}=1,\qquad T_d=1+T_{d-1}^2,
+\]
+so $T_0=2$, $T_1=5$, $T_2=26$, and $T_3=677$.
+The recurrence counts the empty tree, or a root with independently
+chosen initial left and right subtrees. This makes the finite-tree
+coverage exhaustive at the stated depth, rather than a random sample.
+
+Tests check inverse identities, order preservation, the exact predecessor
+identity, the right-ancestor
+identity away from the minimum, loss of the minimum's right ancestors,
+initiality of transported trees, the exact inverse exponent criterion,
+and the source dyadic obligations recovered by adjoining the spine.
+The series tests check inverse transport, additivity, order, truncations,
+and integrality of the bottom coefficient. Separate negative tests reject
+the false global right-ancestor identity and unrestricted inversion.
+
+The program does not represent arbitrary ordinals, arbitrary real
+coefficients, or infinite Hahn supports. It does not check the imported
+characterization theorem or establish absence of a transfinite proof gap.
+Its role is regression testing of the finite combinatorics and coefficient
+formulas. The written proofs, not these experiments, carry the general
+claims.
+
+\subsection{Relationship to the Surreal repository}
+The repository review examined the public README, the introductory
+coverage and dependency ledger, and targeted searches for overlap
+\cite{Repo}. Those materials describe extensive sign-sequence, canonical
+cut, normal-form, Hahn-summation, and algebraic infrastructure. They also
+explicitly distinguish source manuscripts from checked Lean declarations.
+The present argument is designed to fit that distinction.
+
+The review took place while the repository was changing. The initially
+inspected README and ledger had blob hashes
+\begin{center}\small\ttfamily
+391afd7c64cebd48b47fbe43dae26c27e8ee8047\\
+6a89497cb1de3e5c7a346201f7fc006d85082426.
+\end{center}
+A later metadata read reported commit
+\begin{center}\small\ttfamily
+173eb522fdf5d4bf201c097f76b38273eb4f95e1.
+\end{center}
+The initially returned recursive-tree hash is not used as a commit
+identifier. This manuscript does not claim to have reviewed every
+repository article or every companion archive, and no repository result
+is silently promoted from ``pending'' to ``proved.''
+
+A sound implementation would first formalize the following mathematical
+interfaces; the names are proposed work units, not declarations claimed
+to exist:
+\begin{enumerate}
+\item \emph{Cone root relocation.} Define the three-way sign split,
+      the inverse, the order equivalence, and
+      \eqref{eq:predidentity} for ordinal-length sequences.
+\item \emph{Hahn reindexing with one coefficient multiplier.} Prove
+      support transport, real-linearity, order preservation, truncation
+      compatibility, and strong-sum interchange.
+\item \emph{Concrete initial-subgroup criterion.} Supply a checked
+      version of \cref{fact:EK}, including both its coefficient and
+      right-ancestor conditions, before claiming the final theorem.
+\item \emph{Normalization and exact inverse.} Instantiate the criterion
+      for the transformed groups; then derive the spine classification,
+      quotient realization, and complex-coordinate extension.
+\end{enumerate}
+
+The largest imported proof obligation is the third item. A checked
+conditional theorem using that criterion would be valuable, but would
+not by itself constitute a checked theorem about every actual initial
+subgroup of $\No$. This package supplies no Lean file with that
+obligation hidden as an axiom or an unfinished proof.
+
+\subsection{Novelty and literature status}
+The new contributions claimed provisionally here are the explicit
+root-relocation map together with its exact predecessor identity, its
+use in omnific normalization, and the sharp dyadic-spine image
+classification. The extremal, quotient, and surcomplex statements are
+derived refinements of that construction. The known two-level example,
+the general initial-Hahn-subgroup characterization, and the classification
+of initial real coefficient groups are not claimed as new.
+
+The literature check recovered the stated question in the original
+preprint, thesis, and workshop account \cite{EK,Kaplan,Workshop}, and
+examined adjacent sign-concatenation work \cite{BagHoeven}. Targeted
+searches did not locate a prior resolution or the specific root-relocation
+argument. That negative search result is limited evidence: it does not
+exclude an unindexed paper, unpublished proof, or a reformulation already
+known to a specialist. Neither mathematical correctness nor priority is
+certified by the absence of a search result.
+
+\section{Further questions and exact boundaries}\label{sec:further}
+
+The construction establishes an additive normal form while deliberately
+relinquishing several stronger kinds of compatibility. The following
+questions isolate possible further work without asserting that each is
+a previously published open problem.
+
+\begin{question}[Other convex quotients]
+Which convex subgroups $C$ of an initial group $A\subseteq\No$ admit
+an explicit initial realization of $A/C$ by a normal-form transport?
+\end{question}
+The proof here handles $C=\Z\varepsilon$. For a larger convex subgroup,
+one would need to identify the removed exponent region and determine
+whether its boundary can be relocated without creating unmet dyadic
+obligations. A numerical quotient of exponent chains alone would not
+settle the simplicity condition.
+
+\begin{question}[Limit iteration]
+When an iterated removal of discrete bottom layers continues through
+infinitely many stages, which hypotheses give a coherent initial
+realization at a limit stage?
+\end{question}
+Finite iteration follows from \cref{cor:iteration}; limit iteration
+requires a separate control of supports and of the changing sign-tree
+presentations. No commutation with such an unproved transfinite limit
+is used in the present manuscript.
+
+\begin{question}[Multiplicative compatibility on restricted classes]
+For which special initial groups does some normalization to \Oz also
+preserve products wherever those products are part of a specified
+algebraic structure?
+\end{question}
+The counterexample with $1\cdot1$ rules out a general claim for our
+normalization. Any useful positive result must impose additional
+conditions on exponent addition and coefficient rescaling, not merely
+on the order of supports.
+
+\begin{question}[Formal certification and uniqueness principles]
+Can the root-relocation proof and the concrete initiality criterion be
+fully verified in the repository's foundational model, and what natural
+extra conditions single out this normalization among the possible
+ordered-group isomorphisms to initial omnific groups?
+\end{question}
+Our formulas are canonical relative to the given sign model, normal
+forms, and least positive scale. They are not asserted to be invariant
+under arbitrary abstract group isomorphisms. The uniqueness in
+\cref{thm:B} concerns the inverse under the fixed map, not uniqueness of
+all possible initial embeddings.
+
+\section{Conclusion}
+The obstruction in the Ehrlich--Kaplan question is not the numerical
+size of the least positive element. Scalar multiplication removes that
+size immediately. The obstruction is the interaction of the exponent
+tree with coefficient groups forced by right ancestors.
+
+The explicit map $\Theta_\alpha$ moves the minimum exponent to zero
+and preserves all right-ancestor relations away from it. The coefficient
+map then normalizes the discrete bottom group without disturbing the
+higher groups. This gives the proposed affirmative proof. The relations
+lost at the minimum are exactly those recorded by the dyadic spine,
+which yields a necessary-and-sufficient image criterion rather than
+only a sufficient construction.
+
+The resulting theory is additive but strong: it transports arbitrary
+set-supported normal forms without changing their support order types,
+commutes with strong sums, identifies extremal initial groups at each
+least positive scale, and produces initial models of the bottom cyclic
+quotients and rectangular surcomplex modules. The remaining obligations
+are independent mathematical review, a more exhaustive priority check,
+and a complete formal verification of the identified dependency chain.
+
+\appendix
+\section{A compact proof for independent checking}\label{app:compact}
+
+This appendix compresses the main existence argument without changing
+its hypotheses. The full case analysis and support arguments are in the
+body of the paper.
+
+Let $A$ be a discrete initial subgroup. Its least positive member has a
+single normal-form term: otherwise a nonzero tail in $A$ would be a
+smaller positive element after taking absolute value. Write that term
+as $c\omega^p$. The exponent class has minimum $p$, which, being the
+minimum of an initial tree, is all-minus, say $p=-\alpha$.
+The bottom real coefficient group is discrete and initial, hence
+$c\Z$ with $c=2^{-n}$.
+
+On $[p,\infty)$ define
+\[
+ p\mapsto0,\qquad
+ p\cat\plus\cat u\mapsto\plus\cat p\cat u,\qquad
+ x\mapsto\plus\cat x\quad(p\not\pre x).
+\]
+The inverse removes the initial plus and reinserts a plus immediately
+after the block $p$ whenever the remaining word starts with $p$.
+The two maps are increasing inverse bijections. For $x>p$,
+\[
+ \Pred(\Theta_\alpha x)
+   =\Theta_\alpha[\Pred(x)\cup\{p\}],
+ \qquad
+ \Rs(\Theta_\alpha x)=\Theta_\alpha[\Rs(x)].
+\]
+Therefore an initial exponent class with minimum $p$ maps to an initial
+one with minimum zero, and every new right-ancestor obligation comes
+from an old one above $p$.
+
+Transport each nonbottom term $r\omega^\gamma$ to
+$r\omega^{\Theta_\alpha\gamma}$, and transport the bottom term
+$r\omega^p$ to $r/c$. This is a real-linear order-isomorphism on the
+ambient Hahn spaces. Its image of $A$ is truncation closed and
+cross-sectional, has coefficient group $\Z$ at zero, and has unchanged
+initial real coefficient groups at positive exponents. The right-ancestor
+identity preserves all required dyadic containments. By the concrete
+Ehrlich--Kaplan criterion, the image is initial. It lies in \Oz because
+all exponents are nonnegative and the constant coefficient is integral.
+
+For the inverse classification, only the ancestors of the old minimum
+were discarded. They are $-\beta$ for $\beta<\alpha$, and their images
+are $q_\beta=\plus\cat\minus^\beta$. Initial inversion requires
+those exponents, while the right-ancestor condition at $p$ requires all
+their dyadic coefficients. Together these requirements are exactly
+$K_\alpha\subseteq H$.
+
+\section{Proof-review checklist}\label{app:checklist}
+An independent review can focus on the following specific potential
+failure points rather than checking experimental output as though it
+were a proof.
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Issue & Location and required check\\
+\midrule
+\endhead
+Concrete versus existential initiality &
+\Cref{fact:EK}: the imported sufficiency statement must apply to the
+specified canonical image, not only to an unspecified isomorphic copy.\\[4pt]
+Minimum exponent &
+\Cref{prop:bottom}: truncation and subtraction isolate a nonzero tail;
+its absolute value is smaller than the positive leading monomial.\\[4pt]
+Limit sign lengths &
+\Cref{lem:inverse,thm:tree}: concatenated tails use ordinal interval
+order types. No subtraction of ordinal lengths or removal of a last
+limit sign is permitted.\\[4pt]
+Exceptional old minimum &
+\Cref{thm:tree,rem:exception}: the right-ancestor equality excludes
+$x=p$. Its failure is used, not ignored, in the inverse classification.\\[4pt]
+Coefficient group scaling &
+\Cref{lem:coefficients}: only the bottom coefficient is rescaled;
+all right-ancestor obligations in the target are at unchanged groups.\\[4pt]
+Infinite subgroup membership &
+\Cref{sec:transport}: transport the actual subgroup. Never replace it
+with all normal forms allowed by its coefficient groups.\\[4pt]
+Sharp inverse criterion &
+\Cref{thm:B}: inverse exponent initiality is not enough; the missing
+minimum's ancestors must carry all dyadic coefficients.\\[4pt]
+Quotient order &
+\Cref{lem:split,prop:quotient}: higher nonzero terms dominate the cyclic
+bottom group, and positive-root deletion supplies an initial image.\\[4pt]
+Class-sized scope &
+All supports and summation indices are sets; correspondences of
+class-sized groups are expressed with class parameters.\\[4pt]
+Surcomplex scope &
+\Cref{thm:complex}: the conclusion is Gaussian-linear and coordinatewise
+initial, not a field isomorphism or a new canonical complex simplicity
+relation.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{EK}
+P.~Ehrlich and E.~Kaplan,
+\emph{Number systems with simplicity hierarchies: a generalization of
+Conway's theory of surreal numbers II},
+arXiv:1512.04001v1, 13 December 2015.
+\url{https://arxiv.org/abs/1512.04001v1}.
+The version explicitly used for theorem numbering: Lemma~3,
+Theorem~1 and its concrete sufficiency proof, Proposition~9,
+and Section~9, Question~2.
+
+\bibitem{EKjournal}
+P.~Ehrlich and E.~Kaplan,
+\emph{Number systems with simplicity hierarchies: a generalization of
+Conway's theory of surreal numbers II},
+The Journal of Symbolic Logic \textbf{83} (2018), no.~2, 617--633.
+\url{https://doi.org/10.1017/jsl.2017.9}.
+Publisher metadata checked; the arXiv version above supplies the cited
+internal numbering.
+
+\bibitem{Kaplan}
+E.~Kaplan,
+\emph{Initial Embeddings in the Surreal Number Tree},
+Honors thesis, Ohio University, 2015.
+OhioLINK accession \texttt{ouhonors1429615758}.
+\url{https://etd.ohiolink.edu/acprod/odb_etd/ws/send_file/send?accession=ouhonors1429615758&disposition=inline}.
+See Sections~6.2 and~7.1 for omnific integers and the group question.
+
+\bibitem{Workshop}
+\emph{Mini-Workshop: Surreal Numbers, Surreal Analysis, Hahn Fields
+and Derivations}, Oberwolfach Report 60/2016,
+workshop account containing the initial-subgroup question and the
+concrete Hahn criterion, especially printed pages 3355--3356.
+\url{https://ems.press/content/serial-article-files/46663}.
+
+\bibitem{BagHoeven}
+V.~Bagayoko and J.~van der Hoeven,
+\emph{Surreal substructures}, author-hosted manuscript,
+first version 8 June 2019, corrected version 16 April 2022.
+\url{https://www.texmacs.org/joris/sss/sss.html}.
+See the sign-sequence conventions and concatenation operations.
+
+\bibitem{Repo}
+V.~Reshetnikov,
+\emph{Surreal}, public research and Lean-formalization repository,
+reviewed 23 September 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal}.
+Reviewed entry points: \texttt{README.md} and
+\texttt{docs/FORMALIZATION.md}; precise read identifiers and the scope
+of the review are recorded in \cref{sec:audit} and the accompanying
+\texttt{source\_audit.md}.
+\end{thebibliography}
+\end{document}

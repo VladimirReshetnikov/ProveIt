@@ -2833,6 +2833,30 @@ package configuration or toolchain, so the 4,315-job build and
 13,458-declaration axiom audit above remain applicable. The full document
 review, source reconciliation and formalization goals remain incomplete.
 
+## Final synchronization: the 57th report and Laurent root counts
+
+A further fetch brought `c6359e4` and `b895e86`. The placement adds one
+main text on discrete initial subgroups and omnific normalization, plus
+eight companions for five existing reports. The reader map and catalogue
+now include the 57th report; the ledger indexes its 26 standard statements
+and separately records its three custom main theorems. Its guide now uses
+the placed file paths and attributes the delivered PDF checks correctly:
+no maintained PDF was placed, and no independent proof review is claimed.
+The eight new companions remain to integrate.
+
+The ledger merge preserves the completed Section 12 review and the incoming
+Laurent algebraization, finite-angle root-count and Fourier-uniqueness
+implementation mapping. No already-mapped manuscript changed. The independent
+inventory audit passes 3,297 standard rows across 57 main texts; all 3,797
+cited labels and 1,413 local Markdown destinations resolve. The expanded
+catalogue builds cleanly in three passes to 29 pages; the new entry and
+adjacent family transition and final page were inspected. The reviewed
+Diophantine source and its 119-page PDF are unchanged in this synchronization.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,318 jobs. The audit accepts
+13,506 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The full review and formalization goals remain incomplete.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

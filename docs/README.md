@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **56 research reports in five families**. Start with the
+This collection has **57 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -37,8 +37,10 @@ Placement `a4dcb91` supplied
 [omnific notations](foundations-and-computation/omnific-notations/), and
 [Hahn–Hilbert geometry](surcomplex/hahn-hilbert-geometry/). They now
 incorporate their four companions and have maintained PDFs. Their proof
-review and formalization remain pending. New archives in `5610500` and
-`21016dc` still require placement and reconciliation.
+review and formalization remain pending. The nine archives in `5610500` and `21016dc` were placed in `c6359e4`: a
+new [discrete-initial-subgroup and normalization report](surreal/discrete-initial-subgroups-and-omnific-normalization/)
+and eight companions to five existing reports. The new report is an
+unreviewed source; those companions await integration.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -97,7 +99,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: twenty reports
+## Surreal numbers: twenty-one reports
 
 | Report | Question or main subject |
 |---|---|
@@ -121,6 +123,7 @@ not extend their earlier proof-review scope.
 | [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; sixteen-source assembly; relation modules, ordinary-output loci and normalization fibres added; proof review pending |
 | [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Convex-scale stabilizers, definable constants, nondefinable monomials and algebraic-parameter rigidity; four-source assembly, review pending |
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups, elementary kernels and missing lattice minima over omnific integers; three-source assembly, review pending |
+| [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | Sign-tree normalization, image classification and removal of a bottom cyclic layer; placed source, independent proof review and formalization pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows

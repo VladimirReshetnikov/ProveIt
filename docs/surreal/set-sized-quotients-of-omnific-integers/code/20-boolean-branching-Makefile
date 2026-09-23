@@ -1,0 +1,12 @@
+.PHONY: all check clean
+
+all: article.pdf
+
+article.pdf: article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	python3 verify.py
+
+clean:
+	latexmk -c article.tex

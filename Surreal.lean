@@ -522,3 +522,6 @@ import Surreal.Algebra.CirclePerturbation
 import Surreal.Surcomplex.ConditionedCosineExpansion
 import Surreal.Surcomplex.ConditionedCosineValuation
 import Surreal.Surcomplex.ConditionedCosineSharpness
+import Surreal.Algebra.LaurentAlgebraization
+import Surreal.Surcomplex.TrigonometricPolynomialRootCount
+import Surreal.Surcomplex.TrigonometricPolynomialUniqueness

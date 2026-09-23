@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **56 main texts** with **3271**
+The canonical inventory below identifies **57 main texts** with **3297**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -62,8 +62,11 @@ and lattices, assembled from four and three manuscripts in `9b80a30` and
 companions: definable surreals and omnific integers (`337d4a4`), omnific
 notations (`600397e`), and Hahn–Hilbert geometry (`e118d89`). The two
 Diophantine companions (08–09) and three quotient companions (17–19) are
-also integrated. The inventory indexes these maintained texts; new archives
-in `5610500` and `21016dc` still require placement and reconciliation. These additions remain within the
+also integrated. The inventory indexes these maintained texts; the nine archives
+in `5610500` and `21016dc` are placed in `c6359e4`. This adds the
+discrete-initial-subgroup and omnific-normalization report and eight
+companions to five existing reports. The new report is indexed as pending;
+those eight companions still require integration and review. These additions remain within the
 goal; placement, assembly and proof review add no Lean coverage.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
@@ -404,6 +407,7 @@ remaining clauses of a partially mapped statement.
 | Full `trigonometry:thm:stability`, `trigonometry:eq:stabilitythreshold`, `trigonometry:eq:stabilityfirst`, `trigonometry:eq:stabilitysecond` | `arctanFunction_cubic_remainder` in [InverseTrigonometricTaylor.lean](../Surreal/Surcomplex/InverseTrigonometricTaylor.lean); `angularCayleyInverse`, `angularCayleyCoordinate`, `finitePhase_angularCayleyInverse`, `angularCayleyInverse_coordinate`, `valuation_angularCayleyInverse`, `valuation_angularCayleyCoordinate`, `angularCayleyInverse_cubic_remainder`, `angularCayleyInverse_correction_bound` in [CayleyAngularBounds.lean](../Surreal/Surcomplex/CayleyAngularBounds.lean); `trigonometricCayley_inverse`, `trigonometricCayley_coordinate`, `trigonometric_angular_root_bounds` in [TrigonometricAngularStability.lean](../Surreal/Surcomplex/TrigonometricAngularStability.lean); `trigonometricFunction`, `trigonometricFunction_add`, `fineHasDerivAt_trigonometricFunction`, `trigonometricFourierDerivative_ne_zero_of_simple_numerator` in [TrigonometricPolynomialDerivative.lean](../Surreal/Surcomplex/TrigonometricPolynomialDerivative.lean); `trigonometric_root_stability` in [TrigonometricRootStability.lean](../Surreal/Surcomplex/TrigonometricRootStability.lean) | The functions are real parts of Mathlib Laurent polynomials evaluated at actual finite-angle phases, covering every real-valued Laurent presentation. Their ambient zero extensions agree on all finite angles, and coefficient addition is proved to realize function addition. At every finite angle the formal Fourier sum is the native fine derivative, by the exact rational chart and fine chain/quotient rules. Given a zero at finite `a`, native fine derivative `A` with `v(A)=κ≥0`, finite coefficients of `p` and perturbation coefficients of valuation at least `σ>2κ`, there is exactly one actual surreal displacement `h` in the entire neighborhood `v(h)>κ` for which the perturbed function vanishes at `a+h`. Its native fine derivative is nonzero. The inverse chart `h=2 arctan(x/2)` and forward chart `x=2 tan(h/2)` are mutually inverse on infinitesimals and preserve valuation, including zero. The finite cubic chart remainder preserves the second exponent, proving `v(h)≥σ−κ` and `v(h+g(a)/A)≥2σ−3κ`. A finite frequency bound is obtained internally; neither the statement nor uniqueness fixes a Hahn workspace or restricts exponent rank. **Proved for every clause of the theorem and displayed bounds**. The separate optimality proposition `trigonometry:prop:sharp` is proved in the next row. Build and axiom audit pass. |
 | Full `trigonometry:prop:sharp` | `SineSquare.function`, `slope`, `fineHasDerivAt_function`, `valuation_slope`, `quadratic_remainder` in [SineSquareExpansion.lean](../Surreal/Surcomplex/SineSquareExpansion.lean); `perturbation`, `perturbed_root`, `exact_error_valuations`, `threshold_no_root`, `threshold_valuation` in [SineSquareStabilityErrors.lean](../Surreal/Surcomplex/SineSquareStabilityErrors.lean); `fourier`, `trigonometricFunction_fourier`, `fineHasDerivAt_fourier`, `fourier_finite`, `constant`, `constant_coefficient_valuation` in [SineSquareLaurent.lean](../Surreal/Surcomplex/SineSquareLaurent.lean); `monomialAngle`, `exists_exact_stability_errors`, `exists_threshold_counterexample` in [TrigonometricStabilitySharpness.lean](../Surreal/Surcomplex/TrigonometricStabilitySharpness.lean) | Uses the source's sine-square family with actual native fine derivatives and an explicit three-frequency Mathlib Laurent polynomial. For infinitesimal angles `a,h`, the exact expansion has `sin²(a+h)=sin²(a)+A h+h² Q`, where `A=sin(2a)` and `Q` is finite with standard part one. Thus if `v(a)=κ<v(h)=r`, the constant `d=sin²(a)-sin²(a+h)` has valuation `κ+r`, and `v(h+d/A)=2r−κ`. Choosing actual monomial angles of valuations `κ` and `σ−κ` proves, for every positive surreal `κ` and every `σ>2κ`, witnesses satisfying the full stability hypotheses and attaining `v(h)=σ−κ` and `v(h+g(a)/A)=2σ−3κ`. The Fourier coefficient bound is proved at every integer frequency, and the constant coefficient attains `σ` exactly. At `σ=2κ`, adding `sin²(a)` to `sin²(θ)-sin²(a)` removes every root from `v(θ-a)>κ`; the original root has a nonzero fine derivative of valuation `κ`. This proves failure at equality and attainment of both bounds without a rank-one restriction. The proof parametrizes the perturbed root by its displacement instead of solving for an arbitrary prescribed perturbation or asserting the manuscript's full radical expansion. **Proved for every assertion of the proposition**. Build and axiom audit pass. |
 | Full `trigonometry:thm:conditioned`, `trigonometry:eq:condition`, `trigonometry:eq:inversecos` | `CirclePerturbation.endpoint_margin`, `perturbed_mem_Ioo`, `reciprocal_height_expansion` in [CirclePerturbation.lean](../Surreal/Algebra/CirclePerturbation.lean); `ConditionedCosine.perturbed_mem_Ioo`, `normalized_expansion` in [ConditionedCosineExpansion.lean](../Surreal/Surcomplex/ConditionedCosineExpansion.lean); `valuation_normalized`, `infinitesimal_normalized`, `expansion_valuation`, `conditioned_inversion` in [ConditionedCosineValuation.lean](../Surreal/Surcomplex/ConditionedCosineValuation.lean); `exists_threshold_counterexample` in [ConditionedCosineSharpness.lean](../Surreal/Surcomplex/ConditionedCosineSharpness.lean) | For every actual finite angle strictly between zero and pi, with cosine `c`, positive sine `s`, `v(s)=κ` and `v(ε)=σ>2κ`, the perturbed coordinate remains strictly between minus one and one. Its inverse-cosine displacement is exactly `-ε/s-c ε²/(2s³)+R`, with `v(R)≥3σ−5κ`, `v(h)=σ−κ` and `v(h+ε/s)≥2σ−3κ`. Nonzero perturbation follows from the finite valuation; nonnegative `κ` follows from finite sine. The proof first treats arbitrary finite upper-semicircle coordinates: the exact signed half-angle formula and the inverse-tangent cubic remainder give `h=-s u-c s u²/2+s u³ H`, with `u=ε/s²` infinitesimal and `H` finite. This avoids needing a separate formal inverse-series construction and imposes no restriction on exponent rank. For every positive surreal `κ`, an actual positive infinitesimal monomial angle has sine valuation `κ`; its positive infinitesimal cosine defect and twice that defect both have valuation `2κ`. The former reaches one, and the latter exceeds one and admits no real finite-angle cosine solution. Thus the strict threshold cannot uniformly be replaced by equality. **Proved for the complete theorem and displayed bounds**. The formal all-orders inversion argument in its proof is not asserted by these declarations. Build and axiom audit pass. |
+| Finite algebraization and real-angle bounds of `trigonometry:thm:polyroots`, `trigonometry:eq:algebraization`; coefficient assertions surrounding the theorem | `LaurentAlgebraization.polynomial`, `coeff_polynomial`, `polynomial_eq_zero_iff`, `natDegree_le`, `natDegree_eq`, `eval_polynomial`, `isRoot_iff`, `nonzeroRoots`, `count_nonzeroRoots`, `card_nonzeroRoots_le`, `card_nonzeroRoots_exact`, `card_nonzeroRoots_eq` in [LaurentAlgebraization.lean](../Surreal/Algebra/LaurentAlgebraization.lean); `trigonometricPolynomial_eq_laurentSum`, `card_laurentSum_roots_le`, `sum_laurentSum_rootMultiplicities_le`, `card_laurentSum_roots_mod_period_le`, `card_trigonometricPolynomial_roots_le` in [TrigonometricPolynomialRootCount.lean](../Surreal/Surcomplex/TrigonometricPolynomialRootCount.lean); `laurentSum_coeff_eq_of_ordinary_angles`, `conj_laurentSum`, `laurentSum_real_iff`, `trigonometricPolynomial_eq_of_ordinary_angles`, `exists_ordinary_angle_trigonometricPolynomial_ne_zero`, `trigonometricPolynomial_real_iff` in [TrigonometricPolynomialUniqueness.lean](../Surreal/Surcomplex/TrigonometricPolynomialUniqueness.lean) | Over any field, the literal cleared polynomial has coefficient `c(j-N)` for `j≤2N` and zero otherwise, degree at most `2N`, and value `u^N` times the Laurent sum for nonzero `u`. Its nonzero-root multiset carries Mathlib polynomial multiplicities and has cardinality at most `2N`; over an algebraically closed field the cardinality is degree minus multiplicity at zero, and is exactly `2N` when both endpoint coefficients are nonzero. At actual finite surreal angles, the native Laurent evaluation is identified with the finite coefficient sum. Any finite collection of roots with distinct phases, equivalently inequivalent modulo ordinary full turns, has cardinality at most `2N`; the sum of native polynomial multiplicities over such a collection has the same bound. Ordinary-angle values alone determine all native Laurent coefficients, so a nonzero polynomial cannot vanish at every ordinary angle. Real-valuedness at every finite angle is equivalent to conjugate symmetry at every integer frequency. These clauses are **Proved**, with arbitrary actual surcomplex coefficients. The whole root-count theorem has **Prerequisites proved**: the global strip exponential, its root-class bijection, identification with orders of all actual local angular series, and the sine-family sharpness witness remain pending. Build and axiom audit pass. |
 | Factorization clauses of `polynomial:thm:fta`, `polynomial:eq:factorization`, `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_root`, `factorization`, `factorization_grouped`, `exists_unique_factorization`, `factorization_unique`, `sum_rootMultiplicities`, `logarithmic_derivative`, `logarithmic_derivative_grouped` in [Polynomial.lean](../Surreal/Algebra/Polynomial.lean) | Root existence, unique scalar/multiset factorization, grouped multiplicities and both logarithmic-derivative formulas. Existence assumes algebraic closedness; uniqueness holds over every field. The rational identities require a nonroot evaluation point. The fixed-Hahn closedness instance and explicit factorization specialization are now constructed below; transfer to the actual surcomplex field remains pending. **Prerequisites proved**; build and axiom audit pass. |
 | Division, gcd and ideal clauses of `polynomial:thm:fta`; gcd formula in `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_unique_division`, `exists_monic_gcd`, `gcd_bezout`, `ideal_principal`, `ideal_pair_eq_span_gcd`, `squarefree_iff_gcd_derivative_eq_one`, `gcd_derivative_rootMultiplicity`, `gcd_derivative_eq_prod` in [PolynomialDivision.lean](../Surreal/Algebra/PolynomialDivision.lean) | Unique division, normalized monic Bézout gcds and principal ideals over every field. The squarefree criterion assumes perfectness (supplied by characteristic zero); derivative multiplicities use characteristic zero. The grouped gcd product assumes a nonzero split polynomial and does not need monicity of the input. **Prerequisites proved**; build and axiom audit pass. |
 | Multiplicity and Taylor clauses of `polynomial:thm:fta` | `Surreal.FinitePolynomial.multiplicity_eq_iff_derivatives`, `multiplicity_isLeast_nonzero_derivative`, `derivative_rootMultiplicity`, `multiple_root_iff`, `taylor_coeff_eq_derivative`, `taylor_eq_sum_derivatives`, `eq_sum_derivatives`, `eval_add_eq_sum_derivatives` in [PolynomialMultiplicity.lean](../Surreal/Algebra/PolynomialMultiplicity.lean) | The least nonvanishing derivative, derivative multiplicity and finite Taylor formulas over characteristic-zero fields. The least-index characterization explicitly excludes the zero polynomial. **Prerequisites proved**; build and axiom audit pass. |
@@ -697,9 +701,9 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The inventory covers all 56 main texts
+custom environments are not included. The inventory covers all 57 main texts
 present in the repository; two are not named `article.tex`. The reader map
-and typeset catalogue cover the same 56 reports. The two reports placed in
+and typeset catalogue cover the same 57 reports. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in
 `a4dcb91` are indexed from their assembled texts, including their companions.
 Their proof review and formalization remain pending. The report placed in `e4f8848` and
@@ -777,7 +781,8 @@ remain pending unless a precise implementation mapping states otherwise.
 | [foundations-and-computation/definable-surreals-and-omnific-integers/article.tex](foundations-and-computation/definable-surreals-and-omnific-integers/article.tex) | 24 | 11 | 19 | 12 | 66 |
 | [foundations-and-computation/omnific-notations/article.tex](foundations-and-computation/omnific-notations/article.tex) | 34 | 13 | 16 | 13 | 76 |
 | [surcomplex/hahn-hilbert-geometry/article.tex](surcomplex/hahn-hilbert-geometry/article.tex) | 17 | 5 | 13 | 12 | 47 |
-| **Total** | 1298 | 668 | 677 | 628 | **3271** |
+| [surreal/discrete-initial-subgroups-and-omnific-normalization/article.tex](surreal/discrete-initial-subgroups-and-omnific-normalization/article.tex) | 5 | 8 | 5 | 8 | 26 |
+| **Total** | 1303 | 676 | 682 | 636 | **3297** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1035,7 +1040,7 @@ an integer radicand for a one-witness existential ideal and six-witness
 existential graph. This further combined consequence remains **Pending**
 in Lean, as do the original claims. New material in Sections 6 and 10,
 Sections 13, 15 and 17–18, and remaining source reconciliation still need review.
-The two Diophantine companions and twelve quotient companions from the earlier
+The four Diophantine companions and fifteen quotient companions from the earlier
 placements are now assembled; the entire-function rectification addition is
 also written. These assemblies are distinct from proof review and formalization.
 
@@ -5125,3 +5130,42 @@ review and formalization remain pending.
 | Theorem | `hgeo:thm:class` (line 2587) | Class extension and set support of adjoints \src{03, 06} |
 | Corollary | `hgeo:cor:globalgeometry` (line 2664) | Global geometric classification and persistent defects \src{06} |
 | Proposition | `hgeo:prop:globalnets` (line 2707) | Set-sized discreteness in the fine topology \src{03, 06} |
+
+### discrete-initial-subgroups-and-omnific-normalization
+
+Source: [surreal/discrete-initial-subgroups-and-omnific-normalization/article.tex](surreal/discrete-initial-subgroups-and-omnific-normalization/article.tex).
+
+Indexed from the current text through `c6359e4`. Every result is **Pending**
+in Lean; source assembly and source-level proof review are separate from formalization.
+
+The three custom `maintheorem` statements `thm:A`, `thm:B` and `thm:C`
+are also in scope, outside the standard-environment count.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:isolate` (line 385) | Isolating a normal-form term |
+| Lemma | `lem:min-tree` (line 401) | A minimum in an initial tree |
+| Proposition | `prop:bottom` (line 418) | Bottom coefficient structure |
+| Corollary | `cor:forced` (line 451) | Forced ancestors |
+| Lemma | `lem:inverse` (line 503) | The inverse is well-defined |
+| Lemma | `lem:thetaorder` (line 525) | Order preservation |
+| Theorem | `thm:tree` (line 550) | Predecessor and right-ancestor transport |
+| Corollary | `cor:initialimage` (line 611) | Initiality of the image |
+| Proposition | `prop:inversetree` (line 622) | The exact inverse obstruction |
+| Proposition | `prop:length` (line 645) | An exponent-birthday bound |
+| Theorem | `thm:transport` (line 707) | Ambient transport |
+| Lemma | `lem:coefficients` (line 798) | Transported coefficients |
+| Corollary | `cor:answer` (line 845) | The cited existence question |
+| Lemma | `lem:K` (line 865) | The spine group is initial |
+| Proposition | `prop:Knecessary` (line 880) | Necessary image data |
+| Theorem | `thm:extremal` (line 936) | Extremal groups |
+| Corollary | `cor:size` (line 974) | Sharp size obstruction |
+| Corollary | `cor:depth` (line 1006) | Admissible scales |
+| Lemma | `lem:split` (line 1047) | Bottom-layer decomposition |
+| Lemma | `lem:rho` (line 1086) | Positive-root deletion |
+| Proposition | `prop:quotient` (line 1115) | An initial model of the quotient |
+| Corollary | `cor:iteration` (line 1153) | Finite iteration |
+| Theorem | `thm:suspension` (line 1179) | Integer-bottom suspension |
+| Corollary | Line 1212 (unlabeled) | A relative criterion for discrete ordered groups |
+| Theorem | `thm:complex` (line 1265) | Surcomplex additive normalization |
+| Corollary | Line 1303 (unlabeled) | Exact transport of integral linear equations |
