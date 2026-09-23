@@ -1161,6 +1161,15 @@ across 44 reports, and all 879 local Markdown destinations in 93 files
 resolve. Sections 41–42, remaining imports and source reconciliation are
 still pending.
 
+The final sync merged `84e51b5`'s finite trigonometric sign, monotonicity
+and inequality proofs. The combined Lean build passed 3,903 jobs and
+audited 6,092 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The differential-equations source and PDF were unchanged
+by the merge. The independent index still checks all 2,114 statements,
+and all 882 local Markdown destinations in 93 files resolve. The incoming
+analytic results retain their stated scope and do not supply Lean proofs
+for the critical-potential field constructions.
+
 ## Re-running the source verifiers
 
 The programs in `code/` are the originals. **Run them on a copy.** Several
