@@ -236,6 +236,16 @@ This is distinct in type from scalar standard part. The
 (`global:sub:conventions`) intentionally reserves `red` and `st` for these
 two maps. Neither operation is a contour or local residue.
 
+The [finite-probability report](surreal/finite-surreal-probability/article.tex)
+uses **limited** for this same bounded-magnitude notion. Its finite-range
+random variables have finitely many values, which may themselves be infinite.
+Their expectations are finite sums in the scalar field. A point-weight vector
+presupposes the full event algebra; for a smaller finite algebra, use its
+measurable atoms. Regularity means positive mass on every nonempty measurable
+event. Conditional identities are pointwise on positive-mass atoms and hold
+up to arbitrary constant versions on null atoms; scalar expectations remain
+independent of those choices.
+
 The word **finite** has several other explicit uses: a finite-dimensional
 algebra, a finite map, finitely many terms, and finite birthday. The
 [graph report](surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex)
