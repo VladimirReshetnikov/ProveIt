@@ -1,0 +1,1926 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,xurl,needspace}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Vector and Tensor Fields over the Surreal Numbers},pdfauthor={Research exposition prepared for the Surreal project},pdfsubject={An n-dimensional theory of admissible calculus, geometry, and multiscale equations}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Surreal vector and tensor fields}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setlist{leftmargin=2em,itemsep=0.2em,topsep=0.35em}
+\clubpenalty=10000\widowpenalty=10000\displaywidowpenalty=10000
+\setcounter{tocdepth}{2}\numberwithin{equation}{section}\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\crefname{proposition}{proposition}{propositions}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\A}{\mathscr A}\newcommand{\OO}{\mathcal O}\newcommand{\mm}{\mathfrak m}
+\newcommand{\supp}{\operatorname{supp}}\newcommand{\st}{\operatorname{st}}
+\newcommand{\id}{\operatorname{id}}\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Ric}{\operatorname{Ric}}\newcommand{\Scal}{\operatorname{Scal}}
+\newcommand{\grad}{\operatorname{grad}}\newcommand{\Div}{\operatorname{div}}
+\newcommand{\vol}{\operatorname{vol}}\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\End}{\operatorname{End}}\newcommand{\Hess}{\operatorname{Hess}}
+\newcommand{\Lie}{\mathcal L}\newcommand{\HH}{\mathcal H}
+\newcommand{\ev}{\operatorname{Ev}}\newcommand{\jet}{\operatorname{J}}
+\newcommand{\halo}[1]{#1^{\mathrm h}}
+\newcommand{\abs}[1]{\lvert#1\rvert}\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\vH}{v_{\!H}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\repoSHA}{d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.25in}
+{\large\scshape An $n$-dimensional mathematical framework\par}
+\vspace{0.5in}
+{\Huge\bfseries Vector and Tensor Fields\par over the Surreal Numbers\par}
+\vspace{0.3in}
+{\Large Admissible calculus, differential geometry,\par and multiscale field equations\par}
+\vspace{0.3in}
+{\large September 22, 2026\par}
+\vspace{0.35in}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+\noindent
+Surreal coefficients extend finite-dimensional tensor algebra without changing
+its algebraic identities, but they do not determine a calculus on their own.
+This article constructs a theory for every finite dimension $n$ by separating
+three settings: finite algebra over a set-sized surreal field; smooth real
+spaces with Hahn-valued tensor coefficients; and genuine surreal-coordinate
+neighborhoods obtained by support-controlled Taylor prolongation and scale
+charts. The principal construction is a sheaf of locally Hahn-supported smooth
+fields. We prove that its multivariable Taylor prolongation is well-defined,
+respects composition, and identifies coefficient differentiation with the
+intrinsic ordered-field derivative on finite halos. Analyticity of the real
+coefficient functions is not required.
+
+Within these specified calculi we develop tensors, exterior forms, Lie
+brackets, admissible metrics, Levi--Civita connections, curvature, Hodge
+operators, divergence, integration and variational equations. Support-preserving
+Poincar\'e and Stokes theorems give a compact de Rham base-change theorem. Regular
+standard-part reduction commutes with metric geometry; a complementary example
+shows that a pointwise invertible metric can have no smooth Hahn inverse and can
+carry infinite curvature. Finally, positive-support recursions construct
+near-real flows and solutions of nonlinear differential equations whenever a
+specified real linearization is invertible. All infinite operations carry
+explicit support hypotheses. The framework represents exact hierarchies of
+scales, not an automatic regularization of singularities or a transfer of all
+real analytic existence theorems.
+\end{abstract}
+\end{minipage}
+\vfill
+{\small Prepared in relation to the \texttt{VladimirReshetnikov/Surreal} project.\par
+A mathematical exposition with proofs and finite symbolic checks;\par
+not a claim of a completed Lean formalization.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage\pagenumbering{arabic}
+
+\section{Scope and the central choices}\label{sec:scope}
+
+An $n$-dimensional vector with surreal components is an element of $\No^n$,
+understood class-theoretically. A vector \emph{field} requires more: its base
+space, allowed functions, derivative, coordinate transformations, and any
+integration operation must be specified. The two natural questions are
+\[
+ X:U\subseteq\R^n\longrightarrow\No^n,
+ \qquad
+ X:W\subseteq\No^n\longrightarrow\No^n.
+\]
+They are different questions. This article treats both, without identifying
+the usual topology of the real domain with a topology inherited from all
+surreals.
+
+Throughout, $n\ge1$ is an ordinary finite integer. Indices run from $1$ to
+$n$, and repeated upper/lower indices are summed. Tensor rank is finite as
+well. The default metric is Euclidean; arbitrary nondegenerate signatures are
+introduced explicitly. No step depends on three dimensions unless it is
+labeled as such.
+
+\subsection{Three complementary models}
+
+\begin{center}\small
+\begin{tabular}{P{0.17\textwidth}P{0.28\textwidth}P{0.43\textwidth}}
+\toprule
+Model & Base and coefficients & What it supplies\\
+\midrule
+Finite algebra & $K^n$, with $K\subset\No$ a set-sized real closed field &
+Tensors, metrics at a point, contractions, determinants, orthogonal algebra;
+no infinite analysis is implicit.\\
+Smooth Hahn geometry & An ordinary smooth $n$-manifold $M$, with locally
+Hahn-supported smooth coefficients & Coordinate-independent differential
+calculus, real-chain integration, global topology and scale-by-scale
+geometric equations.\\
+Intrinsic coordinate geometry & Open subsets of $K^n$, with rational or
+support-certified Taylor--Hahn functions & Actual derivatives with respect
+to surreal coordinates, finite halos, arbitrary-center scale charts and
+algebraic integration.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The main bridge is \cref{thm:prolongation}: a smooth Hahn field has a canonical
+Taylor--Hahn realization on a nearstandard open subset of $K^n$. The second
+model therefore is not merely symbolic bookkeeping. Its differential
+identities become genuine intrinsic ordered-field identities on that subset.
+It is nevertheless only one specified class of intrinsic functions.
+
+\subsection{Relation to the repository and the literature}
+
+The repository's current documentation distinguishes finite algebra,
+set-sized Hahn workspaces, common-domain coefficient rings, strong summability,
+fine differentiation, and the Berarducci--Mantova scalar derivation
+\cite{Repo,RepoAnalysis,RepoFound}. We retain those distinctions. In particular,
+the one-complex-variable coherent calculus is a precedent for our evaluation
+construction; the present treatment extends its \emph{method} to several real
+variables, smooth coefficients, tensor sheaves, and geometric equations.
+
+Conway normal forms and real closedness are background results
+\cite{Gonshor,vdDE,Poonen93}; the support lemma is classical Hahn--Neumann
+algebra \cite{Neumann,Poonen26}. Differential calculus over non-real topological
+fields already has a broad theory \cite{BGN}. The tensor identities themselves
+are classical differential geometry \cite{Lee,Petersen,Warner}. We give direct
+arguments for the support-sensitive extensions rather than claiming that
+ordinary completeness or compactness transfers to $K$.
+
+Our contribution is a unified construction with explicit sufficient hypotheses
+and proofs of its compatibility results. No claim of priority for every
+result, resolution of a named open problem, or exhaustive novelty search is
+made. Repository observations are pinned in \cref{sec:audit}; no code in that
+repository is modified.
+
+\section{Scalars, size, and admissible infinite sums}\label{sec:scalars}
+
+\subsection{A fixed real closed Hahn workspace}
+
+Write a surreal normal form in increasing-exponent notation as
+\begin{equation}\label{eq:normal}
+ a=\sum_{\gamma\in S}a_\gamma t^\gamma,
+ \qquad a_\gamma\in\R,\qquad t^\gamma:=\omega^{-\gamma},
+\end{equation}
+where $S\subset\No$ is a well-ordered \emph{set}. Here $\omega^{-\gamma}$
+denotes Conway's monomial map, not an unannounced identification with the
+Gonshor exponential $\exp(-\gamma\log\omega)$. The relevant law is
+$t^{\gamma+\eta}=t^\gamma t^\eta$.
+
+Fix a nonzero, set-sized, divisible ordered additive subgroup
+$\Gamma\subset\No$, and put
+\begin{equation}\label{eq:workspace}
+ K=K_\Gamma=\R((t^\Gamma)).
+\end{equation}
+The normal-form embedding identifies this field with a subfield of $\No$.
+The Hahn-field algebraic-closure theorem applied to $\C((t^\Gamma))=K[i]$
+implies that $K$ is real closed \cite{Poonen93}. Thus positive square roots,
+finite orthogonal algebra and signature are available in $K$.
+
+\begin{proposition}[Localization of set-sized scalar data]\label[proposition]{prop:localize}
+Every set-sized collection of surreal numbers is contained in a workspace
+of the form \eqref{eq:workspace}.
+\end{proposition}
+\begin{proof}
+Take the union of the normal-form supports of the given numbers. It is a set.
+Its rational additive span in $\No$, enlarged by a nonzero exponent if
+necessary, is a set-sized divisible ordered subgroup $\Gamma$. Every original
+normal form is a Hahn series over $\Gamma$.
+\end{proof}
+
+This proposition localizes scalar data, not arbitrary regularity claims about
+functions. It does not assert that every set-valued field has smooth Hahn
+coefficients. Nor does it assert that a selected workspace is closed under
+every additional scalar derivation.
+
+\subsection{Valuation, order, and standard part}
+
+For $a\ne0$ define $v(a)=\min\supp(a)$, and set $v(0)=+\infty$. Then
+\[
+ v(ab)=v(a)+v(b),\qquad v(a+b)\ge\min(v(a),v(b)).
+\]
+The order of $K$ is the sign of the first nonzero real coefficient. Define
+\[
+ \OO_K=\{a:v(a)\ge0\},\qquad \mm_K=\{a:v(a)>0\}.
+\]
+These are, respectively, the finite elements and the infinitesimals relative
+to $\R$. Every $a\in\OO_K$ has a unique decomposition
+\[
+ a=\st(a)+h,\qquad \st(a)\in\R,\quad h\in\mm_K,
+\]
+and coefficient extraction at exponent zero gives a ring homomorphism
+$\st:\OO_K\to\R$ with kernel $\mm_K$. Infinite elements have no standard
+part under this definition.
+
+\begin{definition}[Strong summability]
+A family $(a_j)_{j\in J}$ of Hahn series is strongly summable when the union
+of its supports is well ordered and every exponent occurs in the support of
+only finitely many $a_j$. Its sum is obtained by finite coefficientwise
+addition. The same definition applies to coefficients in any real algebra,
+or in a real vector space when only addition is used.
+\end{definition}
+
+\begin{lemma}[Classical support lemma]\label[lemma]{lem:neumann}
+If $S,T$ are well-ordered subsets of an ordered abelian group, then $S+T$ is
+well ordered and a fixed group element has only finitely many representations
+$s+t$, with $s\in S,t\in T$. If $T\subset\Gamma_{>0}$ is well ordered, the
+additive monoid
+\[
+ \langle T\rangle=\{0\}\cup\{\tau_1+\cdots+\tau_r:r\ge1,\ \tau_i\in T\}
+\]
+is well ordered. Every exponent has only finitely many word representations
+from $T$, counting all lengths. Consequently, $S+\langle T\rangle$ is well
+ordered and all the corresponding coefficient contributions are finite.
+\end{lemma}
+
+This is the support theorem imported from Hahn--Neumann theory
+\cite{Neumann,Poonen26}. Its last assertion follows by first applying the
+finite-pair statement to $S$ and $\langle T\rangle$, then the finite-word
+statement to the second summand. We will name these supports whenever a
+Taylor substitution, inverse, or nonlinear recursion is used.
+
+\begin{corollary}[Geometric inversion]\label[corollary]{cor:geometric}
+If $H$ is a scalar or finite square matrix of Hahn series and the union of
+its entry supports is strictly positive, then
+\[
+ (I-H)^{-1}=\sum_{r\ge0}H^r.
+\]
+The sum is strong, including all matrix-index choices. The result is an exact
+Hahn identity, not a claim about convergence of ordinary partial sums.
+\end{corollary}
+\begin{proof}
+There are finitely many matrix entries. Apply \cref{lem:neumann} to their
+support union. At any fixed exponent, only finitely many lengths and index
+words contribute. The finite identity
+$(I-H)\sum_{r=0}^{N}H^r=I-H^{N+1}$ therefore gives the asserted identity at
+each exponent once all words contributing there have been included.
+\end{proof}
+
+\subsection{Strong sums are not ordinary limits}
+
+For example, $\sum_{m\ge1}t^{m/(m+1)}$ is a Hahn series over $\Q$.
+Its tails have valuations below $1$, so its finite partial sums do not
+converge to that series in the valuation topology. Likewise, if
+$0<\eta\ll\lambda$ in $\Gamma$, meaning $m\eta<\lambda$ for every
+positive integer $m$, then $\sum_{m\ge0}t^{m\eta}$ is strongly summable but
+its partial sums are not cofinal in valuation precision. A support argument,
+not the phrase ``the terms become small,'' is the justification for our sums.
+
+\section{Finite-dimensional vectors and tensors}\label{sec:algebra}
+
+\subsection{Tensor spaces and transformation laws}
+
+Let $V=K^n$, with basis $e_i$ and dual basis $e^i$. A tensor of type $(r,s)$ is
+\[
+ T\in T^r_s(V):=V^{\otimes r}\otimes_K(V^*)^{\otimes s},
+ \qquad \dim_K T^r_s(V)=n^{r+s}.
+\]
+Equivalently, it is a multilinear map on $r$ covector inputs and $s$ vector
+inputs. Its components are
+\[
+ T=T^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+ e_{i_1}\otimes\cdots\otimes e_{i_r}
+ \otimes e^{j_1}\otimes\cdots\otimes e^{j_s}.
+\]
+Contraction, tensor product, symmetrization, antisymmetrization and permutation
+of slots use only finite sums and products. They are therefore valid over
+$K$ and, for any given finite data, over the full surreal field.
+
+If $e'_a=e_iP^i{}_a$, with $P\in\GL_n(K)$, then
+\begin{equation}\label{eq:transform}
+ T'^{a_1\cdots a_r}{}_{b_1\cdots b_s}
+ =(P^{-1})^{a_1}{}_{i_1}\cdots(P^{-1})^{a_r}{}_{i_r}
+ P^{j_1}{}_{b_1}\cdots P^{j_s}{}_{b_s}
+ T^{i_1\cdots i_r}{}_{j_1\cdots j_s}.
+\end{equation}
+Coordinate transformations $y=\Phi(x)$ instead give vector components
+$X_y^a=(\partial y^a/\partial x^i)X_x^i$ and covector components
+$\alpha_{y,a}=(\partial x^i/\partial y^a)\alpha_{x,i}$. Distinguishing a
+basis change from a coordinate map prevents an inverse-Jacobian ambiguity.
+
+\subsection{Metrics and norms at a point}
+
+A metric at a point is a symmetric nondegenerate bilinear form
+$g:V\times V\to K$. Sylvester's law of inertia holds over a real closed
+field: in a suitable basis,
+\[
+ g(u,u)=u_1^2+\cdots+u_p^2-u_{p+1}^2-\cdots-u_n^2,
+ \qquad p+q=n.
+\]
+This follows by symmetric Gaussian elimination and rescaling nonzero diagonal
+entries by positive square roots; the numbers of positive and negative terms
+are intrinsic by the ordinary finite-dimensional intersection argument.
+
+For positive-definite $g$, put $\norm{u}_g=\sqrt{g(u,u)}\in K_{\ge0}$.
+For $v\ne0$, positivity of
+$g(u-av,u-av)$ at $a=g(u,v)/g(v,v)$ proves
+\[
+ g(u,v)^2\le g(u,u)g(v,v).
+\]
+Consequently the triangle inequality and Gram--Schmidt orthonormalization
+hold. These are ordered-field inequalities. The norm is $K$-valued, not a
+real-valued Banach norm. No completeness theorem is being asserted.
+
+The metric identifies vectors and covectors by
+$X^\flat_i=g_{ij}X^j$ and $\alpha^{\sharp i}=g^{ij}\alpha_j$.
+A surreal infinitesimal is not nilpotent: for nonzero $\eps$, every finite
+power $\eps^m$ is nonzero. Dropping higher powers therefore changes an exact
+tensor into a truncation and must be indicated.
+
+\subsection{Which component scales are invariant?}
+
+The coordinate minimum $v_V(X)=\min_i v(X^i)$ depends on a chosen lattice
+$\OO_K^n\subset K^n$. If $P\in\GL_n(\OO_K)$, where the inverse also has
+entries in $\OO_K$, both $P$ and $P^{-1}$ cannot lower this minimum. Thus
+\[
+ v_V(PX)=v_V(X).
+\]
+The same argument applies to the minimum component valuation of any fixed
+finite tensor type. Under arbitrary $\GL_n(K)$ changes this is false:
+$e'_1=t^\eta e_1$ changes the first component of $e_1$ to $t^{-\eta}$.
+Invariant scale claims should refer either to a specified integral lattice or
+to scalar contractions such as $g(X,X)$, $\tr(T^2)$ and curvature invariants.
+
+\section{The sheaf of smooth Hahn fields}\label{sec:sheaf}
+
+\subsection{A common-domain algebra}
+
+For an ordinary open $U\subseteq\R^n$ define
+\begin{equation}\label{eq:A}
+ \A_\Gamma(U)=C^\infty(U)((t^\Gamma))
+ =\left\{\sum_{\gamma\in S}f_\gamma t^\gamma:
+ S\subset\Gamma\text{ well ordered},\ f_\gamma\in C^\infty(U)\right\}.
+\end{equation}
+Support means the exponents with coefficient function not identically zero.
+Evaluation at any real $x\in U$ is a well-defined map into $K$.
+The representation as a function $U\to K$ is injective: equality at every
+$x$ forces equality of each real coefficient function.
+
+\begin{proposition}[Differential algebra]\label[proposition]{prop:diffalgebra}
+The algebra \eqref{eq:A} is a commutative $K$-algebra. The operators
+\[
+ D_i\left(\sum_\gamma f_\gamma t^\gamma\right)
+   =\sum_\gamma(\partial_i f_\gamma)t^\gamma
+\]
+are commuting $K$-linear derivations. They preserve strong summability and
+never enlarge support. Pullback along an ordinary smooth map is a strongly
+linear algebra homomorphism and satisfies the ordinary chain rule.
+\end{proposition}
+\begin{proof}
+Products have support in $S+T$. By \cref{lem:neumann}, each coefficient is a
+finite sum of products of real smooth functions. Differentiating that finite
+sum gives Leibniz's rule. Mixed derivatives commute coefficientwise, and
+restriction, differentiation and real pullback can only delete exponents.
+All the other assertions reduce to finite coefficient operations and the
+real smooth chain rule.
+\end{proof}
+
+This definition does \emph{not} mean that $U\to K$ is continuous when $U$
+has its usual topology and $K$ its intrinsic order topology. It is the chosen
+smooth coefficient structure. The intrinsic realization is supplied later.
+
+\subsection{Why local support is necessary}
+
+The presheaf $U\mapsto\A_\Gamma(U)$ need not be a sheaf for arbitrary open
+covers. On disjoint intervals $U_m$ one can prescribe the constant section
+$t^{1/m}$. Each local section is admissible, but the union of the exponents
+$\{1/m:m\ge1\}$ is not well ordered. The glued function has no single
+representation \eqref{eq:A} on $\bigcup_mU_m$.
+
+Define $\A^{\mathrm{loc}}_\Gamma$ to consist of functions that admit such a
+representation near every real base point. This is a sheaf. Uniqueness of
+coefficient extraction makes gluing unambiguous. All local algebra and
+calculus statements apply to it. On a smooth manifold, use real coordinate
+charts and the pullbacks of \cref{prop:diffalgebra}.
+
+On a compact real manifold there is no global support defect. A finite
+subcover of local presentations gives a finite union of well-ordered
+supports, hence one well-ordered set. Coefficient functions, or coefficient
+tensors, agree on overlaps and glue to global smooth objects. The analogous
+statement holds for a section restricted to a neighborhood of a compact set
+after a finite localization.
+
+\subsection{Not every nonzero field is a unit}\label{subsec:units}
+
+A sufficient local unit condition is
+\begin{equation}\label{eq:unit}
+ f=t^\lambda(a+h),\qquad a\in C^\infty(U),\quad a(x)\ne0\text{ on }U,
+ \quad \supp(h)\subset\Gamma_{>0}.
+\end{equation}
+Then
+\[
+ f^{-1}=t^{-\lambda}a^{-1}
+       \sum_{m\ge0}(-a^{-1}h)^m\in\A_\Gamma(U).
+\]
+If $a>0$, divisibility of $\Gamma$ also gives
+\[
+ \sqrt f=t^{\lambda/2}\sqrt a
+   \sum_{m\ge0}\binom{1/2}{m}(h/a)^m.
+\]
+All these supports are translates of positive generated monoids.
+
+\begin{example}[A pointwise inverse outside the smooth Hahn algebra]
+Fix $\eps=t^\eta$, $\eta>0$, and set $f(x)=x^2+\eps^2$ on a real interval
+around zero. Every $f(x)$ is positive and invertible in $K$. Nevertheless,
+$f^{-1}$ is not in $\A^{\mathrm{loc}}_\Gamma$ at zero.
+
+Indeed, at $x=0$ its coefficient at exponent $-2\eta$ is $1$. At every
+nonzero real $x$ the exact expansion is
+\[
+ \frac1{x^2+\eps^2}=\sum_{m\ge0}(-1)^m x^{-2m-2}\eps^{2m},
+\]
+so that same coefficient is zero. It could not be a continuous real
+coefficient function on a neighborhood of zero. This example will distinguish
+pointwise nondegeneracy from an admissible metric inverse.
+\end{example}
+
+\section{Intrinsic derivatives and Taylor--Hahn prolongation}\label{sec:prolong}
+
+\subsection{The topology that is actually used}
+
+Give $K$ its \emph{intrinsic} order topology, whose radii lie in $K_{>0}$.
+On $K^n$ use the equivalent coordinate maximum norm
+$\norm{x}_\infty=\max_i|x^i|$. A derivative of $F:W\subseteq K^n\to K^m$
+at $y$ is a $K$-linear map $L$ satisfying
+\begin{equation}\label{eq:fineder}
+ \forall\epsilon\in K_{>0}\ \exists\rho\in K_{>0}\quad
+ 0<\norm{k}_\infty<\rho\ \Longrightarrow\
+ \norm{F(y+k)-F(y)-Lk}_\infty<\epsilon\norm{k}_\infty,
+\end{equation}
+with a ball about $y$ contained in $W$. The linear map is unique: test the
+difference of two candidates on small multiples of each coordinate vector.
+Polynomial and rational functions are differentiable on their denominator
+nonzero domains by finite algebraic remainder identities.
+
+The topology inherited by a set-sized $K\subset\No$ from the \emph{full}
+surreal fine topology is different: it is discrete. To see the underlying
+obstruction, let $S$ be any set of surreals and fix $x$. There is a positive
+surreal smaller than every nonzero distance $|s-x|$, $s\in S$, by the
+small-cut property. A sufficiently small ball isolates $x$ from $S\setminus
+\{x\}$. Every set-sized subset is thus closed and discrete. In particular,
+ordinary real-parameter curves into full $\No$ that are continuous in that
+fine topology must be constant. These size-sensitive facts are also emphasized
+in the repository \cite{RepoFound}. We never give $K$ that inherited topology
+when using \eqref{eq:fineder}.
+
+\subsection{Prolongation of arbitrary smooth coefficients}
+
+For a real open $U\subset\R^n$ put
+\[
+ \halo U=\{a+h:a\in U,\ h\in\mm_K^n\}\subset K^n.
+\]
+It is intrinsically open. The decomposition $a=\st(y)$, $h=y-a$ is unique.
+For $F=\sum_\gamma f_\gamma t^\gamma\in\A_\Gamma(U)$ define
+\begin{equation}\label{eq:eval}
+ (\ev F)(a+h)=
+ \sum_{\gamma\in\supp(F)}\ \sum_{\alpha\in\N^n}
+ \frac{\partial^\alpha f_\gamma(a)}{\alpha!}\,t^\gamma h^\alpha.
+\end{equation}
+This is a Taylor-\emph{jet} construction. It does not assert convergence of a
+real Taylor series to a real smooth function on an ordinary neighborhood.
+
+\begin{theorem}[Multivariable smooth prolongation]\label{thm:prolongation}
+Formula \eqref{eq:eval} is strongly summable and defines an injective
+$K$-algebra homomorphism into functions on $\halo U$. It extends evaluation
+on real points. Its values are intrinsically $C^\infty$ in the sense of
+iterated \eqref{eq:fineder}, and
+\begin{equation}\label{eq:derbridge}
+ \partial_{y^i}(\ev F)=\ev(D_iF).
+\end{equation}
+For every ordinary smooth map $\Phi:U\to V$,
+\begin{equation}\label{eq:natural}
+ \ev(\Phi^*F)=(\ev F)\circ(\ev\Phi),
+\end{equation}
+where $\ev\Phi$ is componentwise prolongation. These statements localize to
+$\A^{\mathrm{loc}}_\Gamma$.
+\end{theorem}
+\begin{proof}
+Let $S=\supp(F)$, and let $T$ be the union of the nonzero coordinate supports
+of $h$. It is a finite union of well-ordered positive sets. Every summand of
+\eqref{eq:eval} has support in $S+\langle T\rangle$. A fixed exponent has
+only finitely many choices of $\gamma$, word length, monomials from the
+coordinates of $h$, and multiindex: this is \cref{lem:neumann}, with the
+finite coordinate labels attached to each word. Thus the displayed double
+sum is strong. Evaluation at $h=0$ gives the asserted restriction and proves
+injectivity by coefficient extraction on all real points.
+
+For each $a$, taking the full Taylor jet
+$\jet_a:C^\infty(U)\to\R[[Z_1,\ldots,Z_n]]$ is an algebra homomorphism.
+Leibniz's formula proves this degree by degree. Substitution of positive-order
+$h$ into these jets is a homomorphism by the same support lemma. This proves
+additivity, multiplicativity and compatibility with $K$ constants.
+
+We give the derivative estimate, since it is the important additional step.
+Fix $y=a+h$. For $k\in\mm_K^n$, formal Taylor translation and strong
+regrouping yield
+\begin{equation}\label{eq:remainder}
+ \ev F(y+k)=\ev F(y)+\sum_i\ev(D_iF)(y)k^i
+             +\sum_{i,j}k^ik^j R_{ij}(h,k).
+\end{equation}
+The remainders are evaluations of formal real series with Hahn supports in
+$S+\langle T_h\cup T_k\rangle$. If $F\ne0$ and $\beta=\min S$, every
+$R_{ij}$ has valuation at least $\beta$, independently of the small $k$.
+This follows by removing two of the $k$ factors from terms of $k$-degree at
+least two; the remaining factors all have nonnegative valuation. In
+particular,
+\[
+ v\left(\ev F(y+k)-\ev F(y)-\sum_i\ev(D_iF)(y)k^i\right)
+ \ge\beta+2v(\norm{k}_\infty).
+\]
+Given $\epsilon>0$, choose $\rho=t^\theta$ with $\theta>0$ and
+$\beta+\theta>v(\epsilon)$. For $0<\norm{k}_\infty<\rho$, the
+remainder divided by $\norm{k}_\infty$ has valuation strictly greater than
+$v(\epsilon)$ and hence absolute value less than $\epsilon$. The ball stays
+in the same halo. This proves \eqref{eq:derbridge}. Applying the same argument
+to every $D^\alpha F$ proves existence of all iterated derivatives; its
+first-order difference estimate proves their continuity.
+
+Finally, the ordinary smooth chain rule in every finite jet degree gives the
+formal identity
+\[
+ \jet_a(f\circ\Phi)=
+ (\jet_{\Phi(a)}f)\circ\bigl(\jet_a\Phi-\Phi(a)\bigr).
+\]
+The inner series have zero constant terms and evaluate to infinitesimals.
+The common positive-support certificate justifies every regrouping, proving
+\eqref{eq:natural}. Agreement of local representatives proves localization.
+\end{proof}
+
+\begin{remark}[Smooth is not analytic]
+If $f(x)=e^{-1/x^2}$ for $x\ne0$ and $f(0)=0$, then $\ev f$ vanishes on
+the whole halo $\mm_K$ of zero, because its jet there is zero. It still agrees
+with $f$ at every nonzero real point. This is a well-defined smooth
+prolongation, not an identity theorem for analytic functions.
+\end{remark}
+
+\subsection{Nonuniqueness outside the chosen class}
+
+On $\halo\R=\OO_K$, the functions $y\mapsto y$ and $y\mapsto\st(y)$
+agree at every real point. The first has derivative $1$; the second is locally
+constant on each open halo and has derivative $0$. Thus restriction to real
+points plus intrinsic smoothness does not determine an extension. Theorem
+\ref{thm:prolongation} chooses the extension by all real Taylor jets.
+The kernel of the derivative is constants on a connected \emph{real base}
+inside our Hahn class; it is much larger among all intrinsic smooth functions.
+
+\subsection{Surreal-valued coordinate changes}
+
+Let $\Phi_0:U\to V$ be real smooth and let $H\in\A_\Gamma(U)^m$ have
+strictly positive support. Write $\Phi=\Phi_0+H$. For
+$F=\sum_\sigma f_\sigma t^\sigma\in\A_\Gamma(V)$ define
+\begin{equation}\label{eq:nonrealpull}
+ \Phi^*F=\sum_{\sigma,\alpha}
+ \frac{(\partial^\alpha f_\sigma)\circ\Phi_0}{\alpha!}
+ t^\sigma H^\alpha.
+\end{equation}
+The support is contained in $\supp(F)+\langle\supp(H)\rangle$.
+The proof of \cref{thm:prolongation} applies verbatim to show that pullback is
+an algebra map, obeys the chain rule, and realizes actual composition on halos.
+
+\begin{proposition}[Lifting coordinate diffeomorphisms]\label[proposition]{prop:diffeo}
+If $\Phi_0$ is a real diffeomorphism and $H$ has positive support, then
+$\ev\Phi:\halo U\to\halo V$ is a bijection with an inverse of the same
+Taylor--Hahn type. The correction to $\Phi_0^{-1}$ has support in
+$\langle\supp(H)\rangle\setminus\{0\}$.
+\end{proposition}
+\begin{proof}
+Write $\Psi=\Phi_0^{-1}+Q$. At exponent $\gamma>0$, the equation
+$\Phi\circ\Psi=\id$ is a linear equation for $Q_\gamma$ with coefficient
+matrix $D\Phi_0\circ\Phi_0^{-1}$. This matrix has a smooth real inverse.
+All remaining terms depend on strictly smaller positive exponents. The
+support lemma makes their number finite at each exponent. Transfinite
+recursion over the generated monoid constructs a unique $Q$. Construct a
+left inverse in the same way. A left inverse and a right inverse coincide by
+associativity of the already certified compositions, proving both the formal
+and realized statements.
+\end{proof}
+
+\section{Genuinely surreal-coordinate neighborhoods}\label{sec:charts}
+
+\subsection{Arbitrary centers and scales}
+
+The finite halo is not all of $K^n$. To work near arbitrary $a\in K^n$, choose
+nonzero scales $r_1,\ldots,r_n\in K$ and coordinates
+\[
+ z^i=\frac{x^i-a^i}{r_i},\qquad z\in\mm_K^n.
+\]
+One may evaluate every element of
+\begin{equation}\label{eq:formalhahn}
+ \R[[Z_1,\ldots,Z_n]]((t^\Gamma))
+\end{equation}
+at such a $z$: its outer Hahn support is fixed, while the coefficient at
+each exponent is an arbitrary real formal series. The support proof and the
+remainder proof of \cref{thm:prolongation} still apply. In these coordinates
+\[
+ \partial_{x^i}=r_i^{-1}\partial_{z^i}.
+\]
+These scale factors matter: an infinitesimal spatial scale can turn a modest
+coordinate gradient into an infinite physical-coordinate gradient.
+
+Polynomials and rational functions over $K$ are available independently of
+this presentation. Near a point where a rational denominator is nonzero,
+shrink a $K$-radius so that its relative change has positive valuation, then
+use geometric inversion. Such rational germs are covered by sufficiently
+small scale charts even when they fail to be smooth Hahn fields over a large
+real base, as in \cref{subsec:units}.
+
+\subsection{An important exclusion}
+
+An arbitrary element of $K[[Z]]$ is not promised to evaluate on the whole
+infinitesimal halo. For example,
+\[
+ \sum_{m\ge0}t^{-m^2\eta}Z^m
+ \quad\text{at}\quad Z=t^\eta
+\]
+has proposed exponents $(-m^2+m)\eta$, not a well-ordered support.
+The uniform outer support in \eqref{eq:formalhahn} is a sufficient hypothesis
+that excludes this example. Other, larger analytic classes are possible,
+but they need their own support certificates or domains. A formal inverse
+function theorem alone is not a convergence theorem on a specified domain.
+
+An intrinsic $n$-dimensional atlas may now be built from such open subsets of
+$K^n$, requiring every transition and its inverse to belong to an explicitly
+admitted calculus. Real diffeomorphism prolongations, their positive-support
+perturbations, affine scale changes, and rational local coordinate changes
+provide concrete examples. Tensor and connection formulas below apply in
+any such atlas once its chain rule and closure hypotheses have been checked.
+Global integration and cohomology statements will continue to name the real
+base or algebraic chains to which they apply.
+
+\section{Vector fields, tensor fields, and exterior calculus}\label{sec:fields}
+
+\subsection{Modules of geometric fields}
+
+On a real coordinate domain write $\A=\A^{\mathrm{loc}}_\Gamma$ and define
+\[
+ \mathfrak X_\A(U)=\bigoplus_{i=1}^n\A(U)D_i,
+ \qquad
+ \Omega^1_\A(U)=\bigoplus_{i=1}^n\A(U)\dd x^i.
+\]
+These glue under the real Jacobian laws. Tensor fields are sections of the
+corresponding finite tensor powers. For an ordinary bundle $E\to M$, its
+Hahn extension has locally the same construction; globally a section has
+locally well-ordered sums of real sections. We do not identify these
+geometric fields with every possible algebraic derivation of a huge function
+ring without a locality or strong-linearity condition.
+
+A vector field acts by $X(F)=X^iD_iF$. Its Lie bracket is
+\begin{equation}\label{eq:bracket}
+ [X,Y]^i=X^jD_jY^i-Y^jD_jX^i.
+\end{equation}
+Because it is the commutator of derivations, the bracket is antisymmetric and
+satisfies Jacobi. Coordinate invariance follows from the chain rule and
+cancellation of the symmetric second derivatives of a coordinate change.
+It is $K$-bilinear, but not $\A$-bilinear:
+$[X,fY]=f[X,Y]+X(f)Y$.
+
+\subsection{Forms, exterior derivative, and Cartan calculus}
+
+Define
+\[
+ \Omega^p_\A=\bigwedge^p_\A\Omega^1_\A,
+ \qquad \operatorname{rank}_\A\Omega^p_\A=\binom np.
+\]
+For increasing multiindices $I$, set
+\[
+ d\left(\sum_I\alpha_I\dd x^I\right)
+   =\sum_{I,j}D_j\alpha_I\dd x^j\wedge\dd x^I.
+\]
+Alternation and commutation of the $D_i$ prove $d^2=0$. For homogeneous
+$\alpha$ of degree $p$,
+\[
+ d(\alpha\wedge\beta)=d\alpha\wedge\beta+(-1)^p\alpha\wedge d\beta.
+\]
+Insertion is $(\iota_X\alpha)(X_2,\ldots,X_p)=\alpha(X,X_2,\ldots,X_p)$.
+Define the Lie derivative on forms by Cartan's formula
+\begin{equation}\label{eq:cartan}
+ \Lie_X=d\iota_X+\iota_Xd.
+\end{equation}
+It follows algebraically that $[\Lie_X,d]=0$,
+$[\Lie_X,\iota_Y]=\iota_{[X,Y]}$ and
+$[\Lie_X,\Lie_Y]=\Lie_{[X,Y]}$. To verify these identities directly, note
+that both sides are graded derivations and agree on functions and coordinate
+one-forms, which generate the exterior algebra. No flow theorem is needed
+for this definition.
+
+For a tensor $T$ of type $(r,s)$ the component formula is
+\begin{align}\label{eq:lietensor}
+ (\Lie_XT)^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+ &=X^kD_kT^{i_1\cdots i_r}{}_{j_1\cdots j_s}\notag\\
+ &\quad-\sum_{a=1}^r(D_kX^{i_a})
+ T^{i_1\cdots k\cdots i_r}{}_{j_1\cdots j_s}
+ +\sum_{b=1}^s(D_{j_b}X^k)
+ T^{i_1\cdots i_r}{}_{j_1\cdots k\cdots j_s}.
+\end{align}
+Its signs express the contravariant and covariant transformation laws.
+Theorem \ref{thm:prolongation} transports all these identities to halo
+realizations, and the intrinsic atlas construction transports them to any
+admitted coordinate domain.
+
+\section{Admissible metrics and their Levi--Civita connections}\label{sec:metric}
+
+\subsection{Pointwise versus differential nondegeneracy}
+
+A symmetric matrix $g_{ij}\in\A(U)$ may be nondegenerate at every real
+point without its inverse belonging to $\A(U)$. For a \emph{metric in this
+calculus}, we require $\det g$ to be a unit of the chosen local coefficient
+algebra. When a volume form is used, its square root is required in that
+algebra as well. This is an admissibility condition, not an extra condition
+on finite-dimensional metric algebra at one point.
+
+A particularly useful class is
+\begin{equation}\label{eq:regularmetric}
+ g=g_0+h,\qquad g_0\text{ a real smooth nondegenerate metric},
+ \quad\supp(h)\subset\Gamma_{>0}.
+\end{equation}
+Finite matrix inversion gives the exact formula
+\begin{equation}\label{eq:metricinverse}
+ g^{-1}=\sum_{m\ge0}(-g_0^{-1}h)^m g_0^{-1}.
+\end{equation}
+Its support is in $\langle\supp(h)\rangle$. The signature is that of $g_0$:
+locally diagonalize the real metric smoothly, use nonzero real principal
+minors there, and observe that infinitesimal changes cannot alter their signs.
+The same argument holds at every point of the prolonged halo.
+
+More generally, constant scale factors are allowed. If $B\in\GL_n(K)$ is
+constant and $g=B^T(g_0+h)B$, its inverse remains admissible. This includes
+strongly anisotropic metrics not having a nondegenerate real standard part.
+
+\subsection{Construction and uniqueness}
+
+An affine connection satisfies
+\[
+ \nabla_{fX}Y=f\nabla_XY,\qquad
+ \nabla_X(fY)=X(f)Y+f\nabla_XY.
+\]
+Its coefficients are $\nabla_{D_i}D_j=\Gamma^k{}_{ij}D_k$.
+The torsion is $T(X,Y)=\nabla_XY-\nabla_YX-[X,Y]$.
+
+\begin{theorem}[Levi--Civita construction in the admissible algebra]
+For every admissible metric there is a unique torsion-free, metric-compatible
+connection. It is given by
+\begin{equation}\label{eq:christoffel}
+ \Gamma^k{}_{ij}=\frac12g^{k\ell}
+ (D_i g_{j\ell}+D_j g_{i\ell}-D_\ell g_{ij}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The inverse metric and its derivatives lie in the chosen algebra, so the
+formula is defined. It is symmetric in $i,j$, hence torsion-free. Multiplying
+by $g_{mk}$ and adding the appropriate permutations gives
+$D_i g_{jk}=g_{\ell k}\Gamma^\ell{}_{ij}
++g_{j\ell}\Gamma^\ell{}_{ik}$, which is metric compatibility.
+Conversely those three permuted equations, together with symmetry in the
+lower indices, force \eqref{eq:christoffel}. This proves uniqueness.
+Coordinate independence can either be checked with the chain rule or read
+from the coordinate-free Koszul identity
+\begin{align*}
+ 2g(\nabla_XY,Z)&=Xg(Y,Z)+Yg(Z,X)-Zg(X,Y)\\
+ &\quad-g(X,[Y,Z])+g(Y,[Z,X])+g(Z,[X,Y]).
+\end{align*}
+Every term is an operation already established in the differential algebra.
+\end{proof}
+
+On general tensors the connection is determined by the product rule and
+contraction compatibility:
+\begin{align}\label{eq:covtensor}
+ (\nabla_kT)^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+ &=D_kT^{i_1\cdots i_r}{}_{j_1\cdots j_s}\notag\\
+ &\quad+\sum_{a=1}^r\Gamma^{i_a}{}_{k\ell}
+ T^{i_1\cdots\ell\cdots i_r}{}_{j_1\cdots j_s}
+ -\sum_{b=1}^s\Gamma^\ell{}_{kj_b}
+ T^{i_1\cdots i_r}{}_{j_1\cdots\ell\cdots j_s}.
+\end{align}
+Metric compatibility makes raising and lowering indices commute with
+$\nabla$. For a function,
+$\Hess_g f{}_{ij}=D_iD_jf-\Gamma^k{}_{ij}D_kf$; the Hessian is symmetric
+because the connection has no torsion.
+
+\subsection{Parallel transport and geodesic equations}
+
+Along an admitted curve $x(s)$, parallel transport and geodesics satisfy
+\[
+ \frac{dY^k}{ds}+\Gamma^k{}_{ij}(x(s))\dot x^iY^j=0,
+ \qquad
+ \ddot x^k+\Gamma^k{}_{ij}(x(s))\dot x^i\dot x^j=0.
+\]
+These are well-defined differential equations in an admitted calculus, not
+yet universal existence assertions. Metric compatibility and the product
+rule imply
+\[
+ \frac{d}{ds}g(Y,Z)=0,\qquad
+ \frac{d}{ds}g(\dot x,\dot x)=0
+\]
+for parallel fields and geodesics, respectively. These quantities are constant
+in the coefficientwise calculus on a connected real parameter interval, and
+therefore on its Taylor--Hahn prolongation. In a bare intrinsic calculus,
+zero derivative alone is not a global constancy theorem; the example in
+Section~5.3 explains the distinction. Existence for positive-support
+perturbations of real trajectories is proved in \cref{sec:flows}; exact
+polynomial solutions may also be available outside that class.
+
+\section{Curvature and geometric identities}\label{sec:curvature}
+
+Fix the convention
+\[
+ R(X,Y)Z=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z,
+ \qquad R(D_i,D_j)D_k=R^\ell{}_{kij}D_\ell.
+\]
+Then
+\begin{equation}\label{eq:curvature}
+ R^\ell{}_{kij}=D_i\Gamma^\ell{}_{jk}-D_j\Gamma^\ell{}_{ik}
+ +\Gamma^\ell{}_{im}\Gamma^m{}_{jk}
+ -\Gamma^\ell{}_{jm}\Gamma^m{}_{ik}.
+\end{equation}
+In particular $R$ is a tensor although $\Gamma$ is not. Define
+\[
+ \Ric_{kj}=R^i{}_{kij},\qquad \Scal=g^{kj}\Ric_{kj},\qquad
+ G_{ij}=\Ric_{ij}-\tfrac12\Scal\,g_{ij}.
+\]
+
+\begin{proposition}[Bianchi identities and conservation]
+For an admissible Levi--Civita connection, the first and second Bianchi
+identities and the contracted identity hold:
+\[
+ R(X,Y)Z+R(Y,Z)X+R(Z,X)Y=0,
+\]
+\[
+ (\nabla_XR)(Y,Z)+(\nabla_YR)(Z,X)+(\nabla_ZR)(X,Y)=0,
+ \qquad \nabla^iG_{ij}=0.
+\]
+The curvature has the usual metric symmetries, and $\Ric$ is symmetric.
+\end{proposition}
+\begin{proof}
+Insert \eqref{eq:curvature} into the cyclic sum. Derivative terms cancel
+because $\Gamma^\ell{}_{ij}=\Gamma^\ell{}_{ji}$, and the product terms
+cancel in pairs. For the second identity, write the connection matrix
+$\Gamma=\Gamma_i\dd x^i$ and curvature matrix
+$\Omega=d\Gamma+\Gamma\wedge\Gamma$. Direct expansion, using $d^2=0$,
+gives
+\[
+ d\Omega+\Gamma\wedge\Omega-\Omega\wedge\Gamma=0.
+\]
+This is the covariant second Bianchi identity. Differentiating
+$g(Z,W)$ twice and commuting derivatives gives antisymmetry in the two
+metric-paired slots; combining it with the first identity gives pair
+symmetry and symmetry of Ricci. Contracting the second identity twice and
+using $\nabla g=0$ yields
+$\nabla^i\Ric_{ij}=\tfrac12D_j\Scal$, hence the last equation.
+All operations are finite tensor contractions in the admissible algebra.
+\end{proof}
+
+In dimension two $G$ vanishes identically. In dimensions at least three it
+need not. Flatness means $R=0$, not that the coefficients happen to be small.
+A nonzero infinitesimal curvature is still nonzero curvature.
+
+\subsection{First-order metric response with an exact remainder}
+
+Let $g=g_0+t^\eta h$, $\eta>0$, with $h$ a real symmetric tensor. The
+coefficient at $t^\eta$ of the connection difference is the tensor
+\begin{equation}\label{eq:variationGamma}
+ C^k{}_{ij}=\tfrac12g_0^{k\ell}
+ (\nabla^0_i h_{j\ell}+\nabla^0_j h_{i\ell}-\nabla^0_\ell h_{ij}).
+\end{equation}
+Subtracting the metric-compatibility equations for the two connections and
+extracting the first coefficient proves this formula. Substitution into
+\eqref{eq:curvature} gives
+\begin{equation}\label{eq:variationR}
+ R^\ell{}_{kij}(g)=R^\ell{}_{kij}(g_0)
+ +t^\eta(\nabla^0_i C^\ell{}_{jk}-\nabla^0_j C^\ell{}_{ik})
+ +E^\ell{}_{kij},\qquad \vH(E)\ge2\eta.
+\end{equation}
+Here $\vH$ is the minimum nonzero \emph{coefficient-function} exponent in
+a fixed local real frame. The remainder is a genuine Hahn tensor. Formula
+\eqref{eq:variationR} is an exact decomposition, rather than an equality in
+a ring where $(t^\eta)^2$ is zero.
+
+For $h=\Lie_Vg_0$, naturality under the prolonged diffeomorphisms implies
+that the first curvature response is $\Lie_VR(g_0)$. This identifies the
+usual infinitesimal coordinate freedom and explains why solving geometric
+field equations requires a treatment of gauge, not just componentwise
+inversion of a linear operator.
+
+\section{Volume, Hodge duality, and vector calculus in every dimension}\label{sec:hodge}
+
+\subsection{Volume and the Hodge star}
+
+For an oriented admissible metric of signature $(p,q)$ set
+\[
+ \mu_g=\sqrt{|\det g|},\qquad
+ \vol_g=\mu_g\dd x^1\wedge\cdots\wedge\dd x^n.
+\]
+For \eqref{eq:regularmetric}, the square root is obtained by the positive
+binomial expansion after factoring $|\det g_0|$. The induced inner product
+on forms is the determinant pairing. Define $*$ by
+\begin{equation}\label{eq:star}
+ \alpha\wedge *\beta=\langle\alpha,\beta\rangle_g\vol_g,
+ \qquad *:\Omega^k_\A\to\Omega^{n-k}_\A.
+\end{equation}
+An oriented pseudo-orthonormal basis gives
+\begin{equation}\label{eq:star2}
+ *^2\alpha=(-1)^{k(n-k)+q}\alpha.
+\end{equation}
+Indeed the two permutations contribute $(-1)^{k(n-k)}$, and the product of
+all metric signs is $(-1)^q$. This proves the formula without a positivity
+assumption.
+
+\subsection{Gradient, divergence, and Laplacians}
+
+The definitions and their coordinate formulas are
+\begin{align}
+ \grad_g f&=(df)^\sharp=g^{ij}D_jf\,D_i,\label{eq:grad}\\
+ \Lie_X\vol_g&=(\Div_gX)\vol_g,
+ &\Div_gX&=\mu_g^{-1}D_i(\mu_gX^i)=\nabla_iX^i,\label{eq:div}\\
+ \Delta_gf&=\Div_g\grad_gf
+ =\mu_g^{-1}D_i(\mu_g g^{ij}D_jf).\label{eq:lap}
+\end{align}
+For \eqref{eq:div}, use Cartan's formula and expand
+$d\iota_X\vol_g$. Equality with the connection trace follows from
+$D_i\det g=(\det g)\tr(g^{-1}D_i g)$ and
+$\Gamma^j{}_{ji}=D_i\log\mu_g$, with the latter notation meaning the
+algebraic quotient $\mu_g^{-1}D_i\mu_g$, whether or not a logarithm has
+been selected in the function ring.
+
+On $k$-forms define the codifferential by
+\begin{equation}\label{eq:codiff}
+ \delta_g=(-1)^{n(k+1)+q+1}*d*,\qquad
+ \Delta_H=d\delta_g+\delta_gd.
+\end{equation}
+The sign follows by integrating $d(\alpha\wedge*\beta)$ on real compact
+chains, or by the equivalent local algebraic identity. On functions
+$\Delta_H=-\Delta_g$. This distinguishes the nonnegative real Riemannian
+Hodge-Laplacian convention from the positive-coordinate-second-derivative
+convention in \eqref{eq:lap}.
+
+\subsection{What replaces curl?}
+
+The dimension-independent vorticity is the two-form
+\[
+ \mathcal W_X=d(X^\flat).
+\]
+Its dual $*\mathcal W_X$ has degree $n-2$. It is a scalar in dimension two,
+a one-form (hence a vector after raising an index) in dimension three, and a
+two-form in dimension four. In dimension one it vanishes. Thus a vector-valued
+curl is not a dimension-independent operation.
+
+Similarly, the metric and orientation give an $(n-1)$-ary cross product
+\[
+ X_1\times\cdots\times X_{n-1}
+ =\bigl(*(X_1^\flat\wedge\cdots\wedge X_{n-1}^\flat)\bigr)^\sharp.
+\]
+It is the familiar binary cross product only when $n=3$. Extra exceptional
+algebraic structures in other dimensions are not supplied by merely changing
+the scalar field.
+
+The identities $d^2=0$ and $\delta_g^2=0$ replace the usual ``curl of a
+gradient'' and ``divergence of a curl'' formulas. In a flat constant metric,
+\[
+ \delta_gd(X^\flat)=d(\Div_gX)-\Delta_g(X^\flat),
+\]
+where the final Laplacian is taken componentwise. For a variable metric the
+Hodge identity remains valid, while rewriting it using a rough covariant
+Laplacian introduces the usual Ricci curvature term. The flat formula must
+not be transplanted unchanged to curved coordinates or a curved metric.
+
+\section{Integration, Stokes, and local potentials}\label{sec:integration}
+
+\subsection{Integration on real chains is coefficientwise}
+
+For a smooth real oriented compact $p$-chain $C$ and a Hahn $p$-form defined
+near it, use a finite localization and define
+\begin{equation}\label{eq:integral}
+ \int_C^{H}\sum_\gamma\alpha_\gamma t^\gamma
+ =\sum_\gamma\left(\int_C\alpha_\gamma\right)t^\gamma.
+\end{equation}
+The sum is well defined because its support is a subset of a single
+well-ordered support. Real integration happens \emph{inside each coefficient}
+first. Formula \eqref{eq:integral} is not defined as a fine limit of
+surreal-valued Riemann sums. It is independent of finite real chart choices
+and is $K$-linear by the finite-pair support lemma.
+
+\begin{theorem}[Hahn Stokes theorem]\label{thm:stokes}
+For $C$ a smooth real compact oriented $p$-chain and
+$\alpha\in\Omega^{p-1}_\A$ defined near it,
+\[
+ \int_C^{H}d\alpha=\int_{\partial C}^{H}\alpha.
+\]
+\end{theorem}
+\begin{proof}
+Every coefficient form satisfies real Stokes. Taking those equalities as the
+coefficients of one Hahn series proves the identity. No exchange of an
+uncertified infinite integral with an infinite sum is involved: the integral
+was defined coefficientwise on a common support.
+\end{proof}
+
+For a real domain with smooth compact boundary this yields
+\[
+ \int_\Omega^{H}\Div_gX\,\vol_g
+ =\int_{\partial\Omega}^{H}\iota_X\vol_g,
+\]
+provided the metric, inverse, density and field are admissible near the
+closure. The flux form is the primary definition; a unit-normal expression
+requires the corresponding induced metric and square roots.
+
+\begin{proposition}[Positivity for smooth common-support integrands]
+Let $M$ be a nonempty compact real manifold without boundary, with a positive
+real smooth density $\nu$. If $f\in\A_\Gamma(M)$ is pointwise nonnegative
+at every real point and is not the zero field, then $\int_M^H f\nu>0$.
+\end{proposition}
+\begin{proof}
+Let $\gamma_0$ be the least exponent whose smooth coefficient function is
+not identically zero. Pointwise nonnegativity forces
+$f_{\gamma_0}(x)\ge0$ everywhere: wherever it is nonzero it is the leading
+coefficient of $f(x)$. It is positive on a nonempty real open set. Hence its
+real integral is positive, and this is the leading coefficient of the Hahn
+integral. The same argument works for compact domains with interior whenever
+the nonzero smooth field is detected there.
+\end{proof}
+
+This result concerns smooth common-support densities on real domains. It is
+not a statement about arbitrary Hahn-valued measures or a change from
+coefficientwise to strong countable additivity.
+
+\subsection{A support-preserving Poincar\'e lemma}
+
+Suppose $U\subset\R^n$ is star-shaped about zero. For a real $p$-form,
+$p\ge1$, define the radial homotopy
+\[
+ (H\alpha)_x(v_1,\ldots,v_{p-1})
+ =\int_0^1 s^{p-1}\alpha_{sx}(x,v_1,\ldots,v_{p-1})\dd s.
+\]
+Extend it coefficientwise to Hahn forms, and put $H=0$ on functions.
+
+\begin{theorem}[Support-preserving local exactness]\label{thm:poincare}
+For common-support forms in $\Omega^p(U;\R)((t^\Gamma))$, the homotopy
+never enlarges Hahn support and satisfies
+\[
+ dH+Hd=\id-e_0^*,
+\]
+where $e_0:U\to U$ is the constant map. Consequently every closed positive-
+degree common-support Hahn form on $U$ is exact with a primitive having
+no additional exponents. This proves local exactness for the sheaf as well. A Hahn function with all $D_i f=0$ is constant on every connected
+real domain.
+\end{theorem}
+\begin{proof}
+For the dilation $r_s(x)=sx$, differentiating $r_s^*\alpha$ in $s$ and
+using Cartan's identity gives a total derivative whose integral from $0$ to
+$1$ is $\alpha-e_0^*\alpha$. This is the displayed real homotopy identity;
+each coefficient is smooth at $s=0$ because the factor $s^{p-1}$ is
+nonnegative-degree. Applying the identity coefficientwise proves it for
+Hahn forms. For a positive-degree form $e_0^*\alpha=0$. Finally, a real
+coefficient function with zero gradient is constant on a connected real
+open set, and the same conclusion holds at every Hahn exponent.
+\end{proof}
+
+In particular, a curl-free field has a scalar potential locally precisely
+when $d(X^\flat)=0$; ``curl-free'' here means the two-form condition in every
+dimension. A divergence-free field satisfies
+$d(\iota_X\vol_g)=0$ and locally has an $(n-2)$-form potential when $n\ge2$.
+These are differential-form statements, not a special three-dimensional
+vector-potential ansatz.
+
+\subsection{Integration on surreal-coordinate simplices}
+
+There is a second, algebraic integration theory that does not require a real
+base. For polynomial forms over $K$ on an oriented affine $p$-simplex with
+vertices in $K^n$, pull back to barycentric coordinates
+$\lambda_0+\cdots+\lambda_p=1$ and define its moments by
+\begin{equation}\label{eq:simplex}
+ \int_{\Delta^p}^{\mathrm{alg}}
+ \lambda_0^{a_0}\cdots\lambda_p^{a_p}
+ \dd\lambda_1\cdots\dd\lambda_p
+ =\frac{a_0!\cdots a_p!}{(p+a_0+\cdots+a_p)!}.
+\end{equation}
+Extend by $K$-linearity and the oriented affine pullback. Polynomial Stokes
+holds. One proof applies the polynomial fundamental theorem successively in
+simplex coordinates. Another observes that, at each fixed degree, both sides
+are polynomial expressions in the coefficients and vertices with rational
+coefficients; their equality for all real data is a polynomial identity and
+hence remains true over $K$.
+
+A support-certified formal form on an infinitesimal scaled simplex can also
+be integrated termwise by these moments. The same positive-support proof
+justifies its sums. This supplies exact small-scale integrals, but neither
+construction defines a countably additive Lebesgue theory on every subset of
+$K^n$. Classical global integral theorems require the chain category stated
+in their hypotheses.
+
+\section{Global cohomology and a precise Hodge theorem}\label{sec:cohomology}
+
+Let $M$ be a compact smooth real manifold without boundary. Denote by
+$\Omega_H^p(M)$ the global sections of the Hahn form sheaf. Compactness of
+the \emph{real} base gives
+\[
+ \Omega_H^p(M)=\Omega^p(M;\R)((t^\Gamma)).
+\]
+This is a statement about supports of real coefficient forms, not compactness
+of the much larger halo in its intrinsic topology.
+
+\begin{theorem}[Compact de Rham base change]\label{thm:derham}
+There is a canonical isomorphism of graded $K$-algebras
+\begin{equation}\label{eq:cohom}
+ H^\bullet(\Omega_H^\bullet(M),d)
+ \cong H^\bullet_{\mathrm{dR}}(M;\R)\otimes_\R K.
+\end{equation}
+In particular, the dimension in degree $p$ is the ordinary real Betti number
+$b_p(M)$.
+\end{theorem}
+\begin{proof}
+The real cohomology in each degree is finite-dimensional. Choose real closed
+forms $\theta_1,\ldots,\theta_b$ representing a basis. Choose real linear
+coordinate maps on closed forms and a linear choice of primitive for exact
+forms; such a choice exists by a vector-space splitting. Let $P$ apply that
+primitive choice after subtracting the selected cohomology representative.
+Thus every closed
+real form has an identity
+\[
+ \alpha=\sum_{j=1}^b c_j(\alpha)\theta_j+dP\alpha,
+\]
+where each $c_j$ and $P$ is real linear. Apply these fixed operators to every
+coefficient of a closed Hahn form. They cannot add exponents. We obtain
+\[
+ \alpha=\sum_{j=1}^b a_j\theta_j+d\beta,
+ \qquad a_j\in K,\quad\beta\in\Omega_H^{p-1}(M).
+\]
+This proves surjectivity of the canonical map from the right side of
+\eqref{eq:cohom}. If a finite $K$-linear combination of the $\theta_j$ is
+exact, coefficient extraction gives a real exact combination at every
+exponent. Real independence forces all its coefficients to vanish, proving
+injectivity. The map itself sends scalar-extended real cohomology classes to
+the same representative forms, so it is independent of the auxiliary
+splittings. Products agree because wedge products have finite coefficient
+convolutions.
+\end{proof}
+
+For an oriented compact $M$ choose an ordinary real Riemannian metric $g_0$.
+The classical real Hodge theorem \cite{Warner} supplies harmonic projection
+$P_0$ and Green operator $G_0$ on smooth forms, with
+\[
+ \id=P_0+d\delta_0G_0+\delta_0dG_0.
+\]
+Every operator in this identity extends coefficientwise without enlarging
+support. We immediately obtain the following exact, but carefully scoped,
+Hodge theorem.
+
+\begin{corollary}[Coefficientwise Hodge decomposition]\label[corollary]{cor:hodge}
+For the real metric $g_0$,
+\[
+ \Omega_H^p(M)=d\Omega_H^{p-1}(M)
+ \oplus\delta_0\Omega_H^{p+1}(M)
+ \oplus\bigl(\HH_{g_0}^p(M;\R)\otimes_\R K\bigr).
+\]
+The summands are orthogonal for the $K$-valued pairing
+$\int_M^H\alpha\wedge *_0\beta$. This pairing is positive definite.
+Every Hahn cohomology class has a unique harmonic representative.
+\end{corollary}
+\begin{proof}
+Extend the real operator identities and orthogonality coefficientwise.
+Uniqueness follows by applying the real projections at each exponent.
+For positivity, the leading coefficient of the pointwise squared norm of a
+nonzero form is the real squared norm of its leading nonzero coefficient
+form; its integral is positive. Finite dimensionality of the harmonic space
+identifies its Hahn extension with tensoring by $K$.
+\end{proof}
+
+This does not claim an unrestricted Hodge theorem for every surreal metric,
+every intrinsic $K$-manifold, or a completed infinite-dimensional normed
+space. The fixed real elliptic theory is the input. Establishing a different
+metric's global Green operator requires a separate argument.
+
+For example, on the real $n$-torus,
+$\dim_K H_H^p=\binom np$. On a circle, $a\dd\theta$ has period $2\pi a$
+and is nonexact for every $a\in K\setminus\{0\}$, even when $a$ is
+infinitesimal. Scales enrich the coefficients of topological classes; in this
+model they do not create extra Betti numbers. This cohomology is not asserted
+to be singular cohomology of the halo with its fine, highly disconnected
+topology.
+
+\section{Standard-part geometry and scale stability}\label{sec:reduction}
+
+Let $\A_{\ge0}$ be the subalgebra with no negative exponents, and
+$\A_{>0}$ its ideal of positive-support sections. Coefficient extraction
+extends standard part to
+\[
+ \st:\A_{\ge0}\to C^\infty(M),\qquad
+ \ker\st=\A_{>0}.
+\]
+The maps $D_i$ commute with it because they act only on coefficient functions.
+
+\begin{theorem}[Regular reduction of tensor geometry]\label{thm:reduction}
+Suppose $g\in\A_{\ge0}$ is symmetric and $g_0=\st(g)$ is a real smooth
+nondegenerate metric. For tensor fields with nonnegative support,
+standard part commutes with tensor products, contractions, exterior
+products, $d$, Lie brackets and Lie derivatives. Moreover,
+\[
+ \st(g^{-1})=g_0^{-1},\quad
+ \st(\Gamma(g))=\Gamma(g_0),\quad
+ \st(R(g))=R(g_0),\quad
+ \st(\Ric(g))=\Ric(g_0),
+\]
+and similarly for scalar curvature, volume density, Hodge star,
+gradient and divergence. Coefficientwise real-chain integrals commute with
+standard part whenever the integrand has nonnegative support.
+\end{theorem}
+\begin{proof}
+All finite polynomial expressions commute with the ring homomorphism $\st$,
+and it commutes with $D_i$. Formula \eqref{eq:metricinverse} shows that
+$g^{-1}$ has no negative exponents and has constant coefficient $g_0^{-1}$.
+The binomial density formula has constant coefficient
+$\sqrt{|\det g_0|}$. Substituting into the explicit formulas for connection,
+curvature, star and divergence proves every assertion. Integration commutes
+by its definition. At a halo point $a+h$, positive powers of $h$ disappear
+under standard part, so these reductions take place at the real base point
+$a$.
+\end{proof}
+
+\begin{proposition}[A quantitative support threshold]\label[proposition]{prop:threshold}
+If $g=g_0+h$ and $\supp(h)\subseteq[\eta,\infty)$ for some $\eta>0$,
+then the differences from the corresponding real quantities for $g^{-1}$,
+$\Gamma$, $R$, $\Ric$, $\Scal$ and the volume density all have support in
+$[\eta,\infty)$, locally in real coordinates.
+\end{proposition}
+\begin{proof}
+Differentiation does not lower coefficient exponents. Multiplication by real
+smooth coefficients does not change them. In every difference expansion,
+including the inverse and binomial expansions, each term contains at least
+one factor of $h$ or one of its real derivatives. It therefore has exponent
+at least $\eta$. The expansions are strong by the positive-support lemma.
+\end{proof}
+
+The hypothesis is a support bound on a field and its chosen smooth
+coefficient representation, not merely smallness of its values at a few
+points. It also uses a nondegenerate real leading metric. If
+$g=\operatorname{diag}(t^{2\eta},1,\ldots,1)$, the metric is perfectly
+nondegenerate over $K$, but its standard part is degenerate and its inverse
+contains $t^{-2\eta}$. The theorem intentionally excludes this situation.
+
+\section{Examples at finite, infinitesimal, and infinite scales}\label{sec:examples}
+
+\subsection{Anisotropic flat geometry}
+
+For constant $\lambda_i\in\Gamma$ let
+\[
+ g=\sum_{i=1}^n t^{2\lambda_i}(\dd x^i)^2.
+\]
+It has
+\[
+ g^{-1}=\operatorname{diag}(t^{-2\lambda_i}),\quad
+ \mu_g=t^{\lambda_1+\cdots+\lambda_n},\quad
+ \Gamma=0,\quad R=0,
+\]
+and
+\[
+ \grad_g f=\sum_i t^{-2\lambda_i}D_i f\,D_i,
+ \qquad \Delta_g f=\sum_i t^{-2\lambda_i}D_i^2f.
+\]
+The coordinate change $y^i=t^{\lambda_i}x^i$ makes the metric Euclidean
+over $K$. It is generally not an ordinary real coordinate change. Different
+component scales can be an exact change of units or frame, without creating
+curvature.
+
+\subsection{A smooth intrinsic metric with infinite curvature}\label{subsec:warped}
+
+For $n\ge2$ and $\eps=t^\eta>0$ consider, on genuine $K$ coordinates,
+\begin{equation}\label{eq:warped}
+ g_\eps=(\dd x)^2+(x^2+\eps^2)(\dd y)^2
+          +\sum_{j=3}^n(\dd z^j)^2.
+\end{equation}
+It is positive definite at every point. Its coefficients and inverse are
+intrinsically smooth rational functions. The only nonzero Christoffel
+coefficients in the two-dimensional factor are
+\[
+ \Gamma^x{}_{yy}=-x,\qquad
+ \Gamma^y{}_{xy}=\Gamma^y{}_{yx}=\frac{x}{x^2+\eps^2}.
+\]
+Our curvature convention gives
+\begin{equation}\label{eq:warpedcurv}
+ \mathcal K_\eps=-\frac{\eps^2}{(x^2+\eps^2)^2},\qquad
+ \Scal(g_\eps)=-\frac{2\eps^2}{(x^2+\eps^2)^2}.
+\end{equation}
+The extra flat factors do not change the scalar curvature. These formulas
+follow directly from \eqref{eq:curvature}; the supplied symbolic program
+checks the calculation independently.
+
+At $x=0$, the sectional curvature is $-\eps^{-2}$, an infinite surreal.
+At every fixed nonzero real $x$, it has leading term $-\eps^2/x^4$.
+The inverse coefficient $(x^2+\eps^2)^{-1}$ has no smooth Hahn expansion
+on a real neighborhood crossing zero. Thus this is an intrinsic metric, not
+an admissible metric over that whole real base in the algebra
+\eqref{eq:A}. There is no contradiction between those conclusions.
+
+The inner coordinate $x=\eps X$ gives the two-dimensional factor
+\[
+ \eps^2\bigl((\dd X)^2+(1+X^2)(\dd y)^2\bigr),
+ \qquad \mathcal K_\eps=-\eps^{-2}(1+X^2)^{-2}.
+\]
+A scale chart resolves the transition and exposes its curvature scale.
+Replacing a small real parameter by a nonzero infinitesimal removes a zero
+of this particular metric coefficient, but does not make the curvature
+finite. Nondegeneracy, regular standard part and bounded invariants are
+three different requirements.
+
+\subsection{Radial fields and scale-independent flux}
+
+In Euclidean $K^n$ let $r=(\sum_i(x^i)^2)^{1/2}$ and, away from $r=0$, set
+\[
+ X^i=c\,x^i r^{-n},\qquad c\in K.
+\]
+The local algebraic derivative of the positive square root gives
+$D_i r=x^i/r$. Consequently
+\[
+ \Div X=c\left(nr^{-n}-nr^{-n-2}\sum_i(x^i)^2\right)=0.
+\]
+For $n\ne2$ this is the gradient of $c\,r^{2-n}/(2-n)$.
+For $n=2$ a local logarithmic primitive may be chosen on an admitted positive
+radius chart; no unrestricted global trigonometric or logarithmic function
+is needed for the divergence calculation.
+
+On the sphere parametrized by $x=R\theta$, $R\in K_{>0}$ and
+$\theta\in S^{n-1}(\R)$, the pulled-back flux form is exactly
+$c$ times the real unit-sphere area form: the factor $R^{1-n}$ in the field
+cancels $R^{n-1}$ in the area. Define this parametric integral by its smooth
+Hahn coefficients. Its value is
+\[
+ c\,\operatorname{area}(S^{n-1}),
+\]
+for infinitesimal, finite or infinite $R$. This is an explicit admissible
+parametric calculation, not a claim that $\theta\mapsto R\theta$ is a
+nonconstant fine-continuous map from a usual real sphere into full $\No^n$.
+The central singularity at $r=0$ has not been assigned a value.
+
+\section{Flows and parallel transport by positive-support recursion}\label{sec:flows}
+
+Let $X_0$ be a real smooth vector field on an open $U\subset\R^n$. Suppose
+its real flow $\phi_0(s,a)$ is defined smoothly for $(s,a)$ in a fixed real
+flow domain containing $s=0$, and stays in $U$. Consider
+\[
+ X=X_0+\sum_{\gamma\in S}t^\gamma X_\gamma,
+ \qquad S\subset\Gamma_{>0}\text{ well ordered},
+\]
+with all coefficient fields smooth on $U$.
+
+\begin{theorem}[Near-real Hahn flows]\label{thm:flow}
+There is a solution of
+\[
+ \partial_s\phi=(\ev X)(\phi),\qquad \phi(0,a)=a,
+\]
+of the form
+\[
+ \phi(s,a)=\phi_0(s,a)+\sum_{\gamma\in\langle S\rangle\setminus\{0\}}
+ t^\gamma u_\gamma(s,a).
+\]
+Each coefficient is real smooth on the same real flow domain, the support is
+well ordered, and the equation holds exactly in the Taylor--Hahn calculus.
+The solution is unique among positive-support Hahn corrections with the
+specified initial condition. The realized flow maps satisfy the local flow
+composition law wherever all terms are defined.
+\end{theorem}
+\begin{proof}
+Expand each coefficient vector field by its Taylor jet at $\phi_0$.
+At exponent $\gamma$, the unknown $u_\gamma$ occurs only in the linear term
+from $X_0$. Every other occurrence contains a strictly positive lower
+exponent, either from $X-X_0$ or another correction. Thus
+\[
+ \partial_s u_\gamma
+ =DX_0(\phi_0)u_\gamma+F_\gamma,
+ \qquad u_\gamma(0,a)=0,
+\]
+where $F_\gamma$ is a finite expression in already constructed coefficients
+and real derivatives. Finiteness even across all Taylor orders is
+\cref{lem:neumann}. The ordinary inhomogeneous linear variational equation
+has a unique smooth solution on the given real flow domain, by its
+fundamental-matrix formula. This defines the coefficients by transfinite
+recursion over $\langle S\rangle$.
+
+The family is Hahn-supported by construction. Substitution back into the
+Taylor--Hahn equation is strong and yields equality at every exponent.
+For uniqueness against a second solution, take the union of the two positive
+supports and the forcing support and apply the same least-differing-exponent
+linear equation. The coefficient at that exponent must agree, a contradiction.
+Finally, composing two flow maps is admissible by \eqref{eq:nonrealpull};
+the usual autonomous equation and matching initial data, followed by this
+uniqueness, prove the local flow law. The identities can be prolonged in the
+initial coordinates by \cref{thm:prolongation}.
+\end{proof}
+
+The real flow domain is deliberately part of the hypothesis. This result
+asserts neither completeness of arbitrary real fields nor existence of an
+all-real-time flow for a field with infinite leading coefficients.
+For example $X=t^{-\eta}D_1$ has the exact intrinsic solution
+$x^1(s)=a^1+s t^{-\eta}$, which leaves the finite halo for nonzero real $s$.
+The rescaled time $s=t^\eta\tau$ makes this motion finite.
+
+For $n\ge2$, the field
+\[
+ X=t^\eta(x^1D_1-x^2D_2)
+\]
+has the exact flow
+\[
+ x^1(s)=a^1\sum_{m\ge0}\frac{(s t^\eta)^m}{m!},\qquad
+ x^2(s)=a^2\sum_{m\ge0}\frac{(-s t^\eta)^m}{m!}.
+\]
+Its Jacobian determinant is $1$, by the strong exponential addition identity;
+the other coordinates are fixed. This illustrates an exact infinitesimal
+strain with exact volume conservation.
+
+The same recursion proves parallel transport for a connection that is a
+positive-support perturbation of a real connection along a near-real curve.
+Geodesics reduce to a first-order system on the position--velocity space,
+so \cref{thm:flow} applies near any real geodesic on its specified real
+existence interval. Metric conservation then holds coefficientwise and on
+the intrinsic realizations.
+
+\section{Nonlinear field equations and a support-controlled lifting theorem}\label{sec:PDE}
+
+The preceding ODE construction generalizes to a large class of equations for
+scalar, vector or tensor fields. The point is not to assume that every real
+PDE is solvable. It is to identify the exact real solvability input and then
+prove the Hahn extension.
+
+Let $E,F$ be real vector spaces of smooth sections with specified boundary,
+normalization or gauge conditions. Suppose a finite-degree polynomial
+differential operator has an expansion at a real field $u_0$,
+\begin{equation}\label{eq:nonlinear}
+ \mathcal P(u_0+w)=\mathcal P(u_0)+Lw+
+       \sum_{r=2}^d B_r(w,\ldots,w),
+\end{equation}
+where $L:E\to F$ is real linear and each $B_r:E^r\to F$ is real multilinear.
+The finite differential order is absorbed into these maps.
+
+\begin{theorem}[Regular nonlinear Hahn lifting]\label{thm:lifting}
+Assume $L:E\to F$ is bijective, with a fixed inverse taking the prescribed
+real data to smooth sections with the prescribed conditions. Given a Hahn
+forcing
+\[
+ f=\mathcal P(u_0)+\sum_{\gamma\in S}f_\gamma t^\gamma,
+ \qquad S\subset\Gamma_{>0}\text{ well ordered},
+\]
+there is a unique solution $u=u_0+w$, with $w$ of positive Hahn support,
+to the coefficientwise equation $\mathcal P(u)=f$. The correction $w$ has
+support contained in $\langle S\rangle\setminus\{0\}$.
+\end{theorem}
+\begin{proof}
+At $\gamma\in\langle S\rangle\setminus\{0\}$ define
+\begin{equation}\label{eq:recursion}
+ w_\gamma=L^{-1}\left(f_\gamma-
+ \sum_{r=2}^d\ \sum_{\gamma_1+\cdots+\gamma_r=\gamma}
+ B_r(w_{\gamma_1},\ldots,w_{\gamma_r})\right),
+\end{equation}
+where all $\gamma_i>0$ and missing forcing coefficients are zero. Every
+$\gamma_i<\gamma$, so the recursion is well founded. Each inner sum is
+finite by the support lemma. Since $L^{-1}$ maps real coefficient data to
+real coefficient solutions, it cannot introduce Hahn exponents.
+This constructs a Hahn family on the stated support; substitution and
+finite coefficient comparison prove the equation.
+
+For uniqueness, the union of two proposed positive supports is well ordered.
+At the least exponent where the solutions differ, expand each nonlinear
+difference as a telescoping sum of multilinear terms. Every such term
+contains a difference of coefficients at a strictly smaller exponent and
+therefore vanishes. The difference equation is $Lz=0$. Bijectivity gives
+$z=0$, a contradiction.
+\end{proof}
+
+If $L$ has only a specified right inverse, the same recursion constructs a
+solution with each correction in that right inverse's image. Uniqueness then
+holds only with that normalization. A nontrivial cokernel creates compatibility
+conditions. Gauge kernels and conservation identities in geometric PDEs
+must be handled before applying the theorem.
+
+\subsection{An exact nonlinear example in dimension \texorpdfstring{$n$}{n}}
+
+On the ordinary flat torus $\mathbb T^n=(\R/2\pi\Z)^n$, take
+\[
+ \mathcal P(u)=(1-\Delta)u+u^2,
+ \qquad f=\eps\cos x^1,\qquad \eps=t^\eta.
+\]
+The real operator $L=1-\Delta$ is bijective on smooth periodic functions:
+its Fourier multiplier on mode $k\in\Z^n$ is $1+|k|^2$, and division by
+it preserves rapid Fourier decay. The theorem gives an exact Hahn solution
+$u=\sum_{m\ge1}u_m\eps^m$, with
+\[
+ u_1=L^{-1}\cos x^1,\qquad
+ u_m=-L^{-1}\sum_{a+b=m}u_au_b\quad(m\ge2).
+\]
+The first terms are
+\begin{align}\label{eq:examplePDE}
+ u={}&\frac{\eps}{2}\cos x^1
+ -\eps^2\left(\frac18+\frac1{40}\cos 2x^1\right)\notag\\
+ &+\eps^3\left(\frac{11}{160}\cos x^1+
+                   \frac1{800}\cos 3x^1\right)
+ +\sum_{m\ge4}u_m\eps^m.
+\end{align}
+The supplied program computes six coefficients and verifies the residual
+through that order with exact rational Fourier arithmetic. The all-orders
+existence and uniqueness are furnished by the theorem, not by that finite
+check. The solution is exact even in value groups where the sequence
+$m\eta$ is not cofinal and ordinary partial-sum convergence fails.
+
+\subsection{Tensor and constrained systems}
+
+For tensor equations the real spaces $E,F$ may be smooth tensor sections and
+$B_r$ can include contractions and covariant derivatives of a fixed real
+background. For equations containing $g^{-1}$, the positive-support inverse
+expansion gives an infinite Taylor nonlinearity rather than a polynomial.
+The same coefficient recursion works when those multilinear terms have the
+Neumann finite-word certificate. This additional certificate must be checked,
+as must the invertibility of the gauge-fixed real linearization. The theorem
+does not, by itself, establish global Einstein evolution, Navier--Stokes
+regularity, or a singularity-removal result.
+
+\section{Variational calculus and gauge-valued fields}\label{sec:variation}
+
+\subsection{A scalar action and its Euler--Lagrange equation}
+
+Let a real compact domain have an admissible metric and density, and let
+$V$ be a polynomial potential with coefficients in $K$. For an admissible
+scalar field set
+\[
+ \mathcal S[\phi]=\int^H
+ \left(\tfrac12g^{ij}D_i\phi D_j\phi+V(\phi)\right)\vol_g.
+\]
+For a compactly supported variation $\psi$, take the coefficient of the
+ordinary formal variation parameter $s$ in $\mathcal S[\phi+s\psi]$.
+Leibniz's rule and Hahn Stokes give
+\[
+ \delta\mathcal S[\phi](\psi)
+ =\int^H\bigl(-\Delta_g\phi+V'(\phi)\bigr)\psi\vol_g.
+\]
+The fundamental lemma remains valid in this setting: if this integral is zero
+for every real smooth compactly supported $\psi$, then each coefficient of
+the admissible residual density has zero integral against every real test
+function, so each is zero by the real fundamental lemma. Hence stationarity
+is equivalent to
+\[
+ -\Delta_g\phi+V'(\phi)=0.
+\]
+This is a precise formal-coefficient variational problem; its stationary
+points and their existence are separate questions.
+
+Define the stress tensor
+\[
+ T_{ij}=D_i\phi D_j\phi-
+ g_{ij}\left(\tfrac12g^{ab}D_a\phi D_b\phi+V(\phi)\right).
+\]
+Metric compatibility, Hessian symmetry and the product rule yield
+\[
+ \nabla^iT_{ij}=(\Delta_g\phi-V'(\phi))D_j\phi.
+\]
+Thus the field equation implies covariant stress conservation exactly,
+including all infinitesimal orders. This identity makes no positivity claim
+when the metric has indefinite signature.
+
+\subsection{Finite-rank gauge fields}
+
+Let $A$ be a matrix-valued admissible one-form acting on a finite-rank
+$K$-bundle. Its curvature and covariant exterior derivative are
+\[
+ F_A=dA+A\wedge A,\qquad
+ d_A\beta=d\beta+A\wedge\beta-(-1)^{\deg\beta}\beta\wedge A.
+\]
+Direct expansion gives $d_AF_A=0$ and $d_A^2\beta=[F_A,\beta]$ in the
+graded sense. Under an admissible frame transformation $P$ with admissible
+inverse,
+\[
+ A'=P^{-1}AP+P^{-1}dP,\qquad F_{A'}=P^{-1}F_AP.
+\]
+The derivative of $P^{-1}P=I$ proves the transformation law. Positive-support
+transformations $P=P_0(I+H)$ with real invertible $P_0$ are a concrete
+admissible class.
+
+In any dimension, the Yang--Mills-type equation $d_A(*F_A)=0$ is therefore
+well defined whenever the metric star and products are admissible. As with
+the scalar action, finite-rank algebra and variational identities do not
+supply an automatic global existence theorem. Surcomplex coefficients can
+be introduced by $K[i]$, with conjugation and Hermitian pairings specified
+separately; they do not alter the real-coordinate support arguments.
+
+\section{The independent scalar derivation}\label{sec:BM}
+
+Spatial differentiation in this article fixes every $K$ constant. In
+particular,
+\[
+ D_i\omega=0.
+\]
+The Berarducci--Mantova derivation $\partial$ on surreal scalars instead has
+$\partial\omega=1$ and is strongly additive on summable normal forms
+\cite{BM}. It describes differential-field structure, not the variation of
+a constant scalar field across space. These two derivatives must not be
+substituted for one another. The infinite-argument function and composition
+calculus of omega-series \cite{BMGerms,Mantova26} is also additional structure,
+not a universal replacement for coordinate calculus.
+
+There is a compatible mixed construction when it is useful. For a given
+Hahn field with smooth real coefficient functions, define
+\[
+ \partial F=\sum_\gamma f_\gamma\,\partial(t^\gamma).
+\]
+Strong additivity of the scalar derivation provides a well-ordered support
+union and finite contributions. Coefficients are finite real linear
+combinations of the $f_\gamma$, so they are smooth. The image may require a
+larger workspace containing the derivative supports. On such admissible
+expressions,
+\[
+ [D_i,\partial]F=0,
+\]
+because the $D_i$ act only on the real coefficient functions, while
+$\partial$ acts only on the monomials.
+
+An additional connection direction can be written
+$\nabla_\partial=\partial+B$, with the semilinear Leibniz rule
+$\nabla_\partial(aY)=\partial(a)Y+a\nabla_\partial Y$.
+Together with $\nabla_i=D_i+\Gamma_i$ its mixed curvature is
+\[
+ [\nabla_\partial,\nabla_i]
+ =\partial\Gamma_i-D_iB+[B,\Gamma_i].
+\]
+This is a differential-module extension of the theory. Interpreting it as an
+extra physical time or scale direction would be a further modeling choice;
+it is not forced by the definition of a surreal-valued tensor field.
+
+\section{Computation, proof boundaries, and implementation}\label{sec:implementation}
+
+\subsection{Representations and exactness}
+
+A practical implementation should keep four objects separate: finite tensors
+over an exact scalar field; sparse finite Hahn truncations; support-certified
+infinite Hahn expressions; and coefficient operators on smooth or formal
+real functions. A truncation is not an exact infinite series unless its tail
+is separately represented or certified.
+
+For a grid generated by positive exponents $\eta_1,\ldots,\eta_m$, a useful
+normal form records a finite exponent vector, a real symbolic coefficient,
+and a support certificate for allowed sums. Negative initial shifts are
+stored separately. At arbitrary ordered-group rank, a cutoff $\gamma<B$
+need not leave finitely many terms: for $0<\eta\ll B$, all $m\eta$ lie
+below $B$. Algorithms must therefore use an explicit finite set of target
+coefficients, a degree bound, or a proved left-finiteness condition. This
+restriction is consistent with the repository's distinction between exact
+denotation and effective support access \cite{Repo}.
+
+\subsection{A minimal implementation architecture}
+
+A suitable dependency order is: finite tensor algebra over an abstract real
+closed field; Hahn support and strong evaluation; smooth coefficient
+operators; the prolongation bridge; admissible inverses and metrics; tensor
+calculus and curvature; coefficientwise chain integration; and finally
+support-controlled equation solvers. A theorem about a metric inverse should
+consume a unit certificate. A theorem about a substitution should consume a
+joint support certificate. These are mathematical data, not comments that a
+simplifier may silently discard.
+
+For Lean, the finite part can be formulated over an abstract ordered field,
+with additional square-root or real-closed hypotheses where needed. The Hahn
+part should be proved separately and then instantiated through a verified
+normal-form bridge. A global class of all surreals should not be forced into
+a smaller universe by asserting that all its cuts or all its coefficients
+form a set. Our proofs describe this layering; no new Lean implementation or
+kernel verification is claimed here.
+
+\subsection{Included finite verification program}
+
+The archive includes \path{code/verify.py}. It independently checks the
+warped-metric curvature, first-order metric inverse, the Lie-bracket Jacobi
+identity for sample polynomial fields, $d^2=0$ for polynomial forms,
+Hodge-star-square signs over dimensions $1$ through $6$ and every diagonal
+signature, a radial homotopy identity, and six coefficients of the nonlinear
+periodic example. All seven check groups passed, with 5,533 exact assertions.
+The tested environment and outputs are recorded in \path{data/verification.txt}.
+
+These checks are exact finite arithmetic and symbolic identities. They do
+not prove real closedness, the support lemma, the all-orders recursion,
+global cohomology, or the derivative bridge. Those are proved or explicitly
+imported in the text. Conversely, successful typesetting of this article
+has no bearing on mathematical correctness.
+
+\section{What the theory establishes, and what it leaves as choices}\label{sec:conclusion}
+
+The resulting theory has three genuine strengths. It accommodates every
+finite tensor type in every finite dimension with exact infinite and
+infinitesimal scalar values. It provides a coordinate-compatible calculus
+with certified infinite operations, including actual intrinsic derivatives
+on a large class of surreal-coordinate domains. And it converts specified
+real linear solvability into exact nonlinear multiscale solutions without
+requiring ordinary convergence of perturbation series.
+
+Its boundaries are equally concrete. A bare map into $\No^n$ is not a
+smooth field. Pointwise nondegeneracy is not a certificate that an inverse
+belongs to a particular function algebra. The intrinsic topology of a fixed
+workspace is not the topology inherited from the full proper class.
+Coefficientwise integration is not an unrestricted measure theory on all
+surreal subsets. Standard part preserves regular geometry but can destroy
+rank in a multiscale metric. A field derivation on scalars is not a spatial
+partial derivative. None of these distinctions disappears when $n$ is
+specialized to three or four.
+
+Several further developments can now be stated as precise mathematical
+projects rather than undefined analogies: characterize larger intrinsic
+function classes admitting coordinate gluing and integration; prove Hodge
+and elliptic results for genuinely surreal leading metrics; classify scale
+charts around rank-changing real limits; establish support certificates for
+specific gauge-fixed nonlinear systems; and formalize the prolongation and
+unit-admissibility interfaces. The constructions already proved here give a
+working foundation for those projects, while retaining a sharp distinction
+between exact scale representation and analytic or physical regularization.
+
+\appendix
+\section{Notation and hypothesis ledger}
+
+\begin{longtable}{P{0.24\textwidth}P{0.68\textwidth}}
+\toprule
+Symbol or phrase & Meaning and scope\\
+\midrule\endhead
+$\No$ & The proper class of Conway surreal numbers; not a set-sized scalar type without a universe qualification.\\
+$\Gamma$ & A nonzero set-sized divisible ordered additive subgroup of $\No$.\\
+$t^\gamma$ & Conway monomial $\omega^{-\gamma}$, not an implicit use of surreal exponentiation.\\
+$K$ & The real closed Hahn workspace $\R((t^\Gamma))$, with its intrinsic topology when derivatives are taken.\\
+$\A_\Gamma(U)$ & Smooth real coefficient functions on one common real domain, with one well-ordered outer Hahn support.\\
+$\A^{\mathrm{loc}}_\Gamma$ & The sheaf of local such presentations; globally uniform support is not assumed on noncompact bases.\\
+$v$, $\vH$ & Minimum exponent of a scalar; minimum exponent of a nonzero coefficient function in a local field presentation.\\
+$\halo U$ & $\st^{-1}(U)\subset K^n$; a nearstandard open set, not all of $K^n$.\\
+$D_i$ & Coefficientwise spatial differentiation, fixing every constant in $K$.\\
+$\partial_{y^i}$ & Intrinsic ordered-field derivative of a realized function; agrees with $\ev D_i$ only where the bridge applies.\\
+$\partial$ & The optional Berarducci--Mantova scalar derivation, not a spatial derivative.\\
+Admissible metric & Symmetric metric whose inverse lies in the chosen coefficient algebra; its density is also required when used.\\
+Regular metric & $g=g_0+h$ with real nondegenerate $g_0$ and positive-support $h$.\\
+$\Delta_g$, $\Delta_H$ & Divergence--gradient scalar Laplacian; $d\delta+\delta d$. On functions $\Delta_H=-\Delta_g$.\\
+$\int^H$, $\int^{\mathrm{alg}}$ & Coefficientwise integration over real chains; polynomial moment integration on affine $K$-simplices.\\
+Strong sum & Well-ordered support union and finitely many nonzero contributions at every exponent; no ordinary convergence assertion.\\
+\bottomrule
+\end{longtable}
+
+\section{Repository and source audit}\label{sec:audit}
+
+The repository was inspected read-only at commit
+\begin{center}\small\texttt{\repoSHA}.\end{center}
+The targeted review used the root \path{README.md}, \path{docs/README.md},
+the opening scope of
+\path{docs/foundations-and-computation/foundations/article.tex}, and the
+normal-form, workspace, function-class, derivative and support conventions in
+\path{docs/surcomplex/analysis/article.tex}. The documentation catalogue was
+used to identify the nearby contours, differential-equations, spectral and
+physics reports. This was not a line-by-line audit of every manuscript or a
+local rebuild of the Lean project. The catalogue's report count is not used
+as a claim that the entire repository, including newly added material, was
+exhaustively surveyed.
+
+The points carried forward are the use of increasing Hahn exponents,
+set-sized divisible workspaces, common domains, strong summability, the
+separation of scalar and coordinate derivations, and explicit statements of
+formalization scope. The present article's tensor and PDE developments are
+proved independently above. The repository itself describes its manuscripts
+as research drafts with theorem-specific, rather than blanket, Lean coverage.
+
+The external literature check included the original Berarducci--Mantova
+paper, the general-base-field calculus of Bertram--Gl\"ockner--Neeb, the
+van den Dries--Ehrlich paper, Poonen's discussion of Hahn units, and classical
+smooth and de Rham geometry sources. Two sources relevant to the cutoff date
+are Poonen's January 2026 revision on units and Mantova's January 2026
+Taylor-approximation preprint. Their roles are identified in the bibliography;
+neither is represented as a theorem about all tensor fields on all of
+$\No^n$.
+
+\section{A proof-dependency summary}
+
+The support-sensitive claims have short, explicit dependency chains.
+The field and size setup uses normal forms and the classical Hahn-field
+closure theorem. Differential algebra uses the finite-pair support lemma.
+Prolongation adds positive-support substitution and a valuation remainder
+estimate. Metrics add only a certified geometric inverse and a certified
+square root. Curvature identities are finite differential-algebra identities.
+Stokes and Poincar\'e use fixed real coefficient operators. Compact de Rham
+base change uses finite real cohomology and support-preserving linear
+splittings; the Hodge refinement imports the real Hodge theorem. Nonlinear
+lifting uses a specified real linear inverse plus positive-support recursion.
+No circular reliance on the desired surreal existence theorem occurs in
+these constructions.
+
+\begin{thebibliography}{99}
+\small
+\bibitem{Repo}
+Vladimir Reshetnikov, \emph{Surreal}, repository documentation, inspected at
+commit \texttt{\repoSHA}, September 22, 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal}.
+The root README and \path{docs/README.md} give the implementation and
+manuscript scope; these are project sources, not a blanket verification claim.
+
+\bibitem{RepoFound}
+\emph{Foundations for Surreal and Surcomplex Mathematics}, Surreal project,
+\path{docs/foundations-and-computation/foundations/article.tex}, same pinned
+revision as \cite{Repo}. Targeted use: sizes, workspaces and the fine-topology
+warning.
+
+\bibitem{RepoAnalysis}
+\emph{Surcomplex Analysis}, Surreal project,
+\path{docs/surcomplex/analysis/article.tex}, same pinned revision as
+\cite{Repo}. Targeted use: monomials, coherent coefficient fields,
+summability and the distinction between derivative operators.
+
+\bibitem{Gonshor}
+Harry Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110, Cambridge University
+Press, 1986.
+\url{https://www.cambridge.org/core/books/an-introduction-to-the-theory-of-surreal-numbers/312AE504A3E88E804054BFB390446374}.
+Background for normal forms and surreal algebra.
+
+\bibitem{vdDE}
+Lou van den Dries and Philip Ehrlich, ``Fields of surreal numbers and
+exponentiation,'' \emph{Fundamenta Mathematicae} 167 (2001), 173--188.
+DOI: \href{https://doi.org/10.4064/fm167-2-3}{10.4064/fm167-2-3}.
+See also their published erratum, \emph{Fundamenta Mathematicae} 168 (2001).
+Used as background, not as an unrestricted transfer theorem for our calculus.
+
+\bibitem{Poonen93}
+Bjorn Poonen, ``Maximally complete fields,'' \emph{L'Enseignement
+Math\'ematique} (2) 39 (1993), 87--106.
+\url{https://math.mit.edu/~poonen/papers/amsval.pdf}.
+Used for the algebraic-closure theorem for Hahn fields with algebraically
+closed residue field and divisible value group.
+
+\bibitem{Neumann}
+B. H. Neumann, ``On ordered division rings,'' \emph{Transactions of the
+American Mathematical Society} 66 (1949), 202--252.
+Classical source for the well-ordered support and positive-word finiteness
+arguments.
+
+\bibitem{Poonen26}
+Bjorn Poonen, ``Units in Hahn--Mal'cev--Neumann rings,'' author manuscript,
+January 14, 2026.
+\url{https://math.mit.edu/~poonen/papers/malcev.pdf}.
+Theorems 1.1 and 4.1 give the positive-support unit theorem and its explicit
+geometric-series form.
+
+\bibitem{BGN}
+Wolfgang Bertram, Helge Gl\"ockner and Karl-Hermann Neeb,
+``Differential calculus, manifolds and Lie groups over arbitrary infinite
+fields,'' preprint, 2003, arXiv:math/0303300.
+\url{https://arxiv.org/abs/math/0303300}.
+A general framework showing why calculus over a non-real field requires an
+explicit differentiability theory.
+
+\bibitem{Lee}
+John M. Lee, \emph{Introduction to Smooth Manifolds}, second edition,
+Graduate Texts in Mathematics 218, Springer, 2013.
+DOI: \href{https://doi.org/10.1007/978-1-4419-9982-5}{10.1007/978-1-4419-9982-5}.
+Background for real smooth jets, tensor bundles, forms and Stokes.
+
+\bibitem{Petersen}
+Peter Petersen, \emph{Manifolds, Transversality, and de Rham Cohomology},
+author lecture notes, accessed September 22, 2026, especially Chapters 6--7.
+\url{https://www.math.ucla.edu/~petersen/manifolds.pdf}.
+Background for real tensor calculus and de Rham arguments.
+
+\bibitem{Warner}
+Frank W. Warner, \emph{Foundations of Differentiable Manifolds and Lie
+Groups}, Graduate Texts in Mathematics 94, Springer, 1983, Chapter 6.
+DOI: \href{https://doi.org/10.1007/978-1-4757-1799-0}{10.1007/978-1-4757-1799-0}.
+The real compact-manifold Hodge theorem is the imported analytic input to
+\cref{cor:hodge}.
+
+\bibitem{BM}
+Alessandro Berarducci and Vincenzo Mantova, ``Surreal numbers, derivations
+and transseries,'' \emph{Journal of the European Mathematical Society} 20
+(2018), 339--390. DOI: \href{https://doi.org/10.4171/JEMS/769}{10.4171/JEMS/769}.
+\url{https://arxiv.org/abs/1503.00315}.
+Used only for the optional scalar-derivation direction.
+
+\bibitem{BMGerms}
+Alessandro Berarducci and Vincenzo Mantova, ``Transseries as germs of surreal
+functions,'' arXiv:1703.01995.
+\url{https://arxiv.org/abs/1703.01995}.
+A separate infinite-argument composition calculus, not a claim about arbitrary
+surreal-coordinate tensor fields.
+
+\bibitem{Mantova26}
+Vincenzo Mantova, ``Monotonicity and a Taylor approximation theorem for
+transseries,'' preprint, January 12, 2026, arXiv:2601.07747.
+\url{https://arxiv.org/abs/2601.07747}.
+Recent context for omega-series composition and its Taylor theory; not used
+in the proof of the smooth finite-halo prolongation theorem.
+\end{thebibliography}
+\end{document}
