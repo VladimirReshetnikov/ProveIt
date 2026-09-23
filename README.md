@@ -407,6 +407,13 @@ transports homogeneous addition to direction multiplication. Infinite surreal
 parameters give precisely the affine directions infinitesimally close to `-1`,
 while never equaling the projective point itself. This includes the explicit
 parameter `omega`.
+Inverse sine and cosine are defined and uniquely invert their actual closed
+angle intervals, including inputs infinitesimally close to either endpoint.
+Inverse tangent is an increasing bijection from all surreal slopes onto its
+finite open angle interval, with the square-root coordinate formulas and
+positive-input reciprocal complement identity. The inverse-sine half-angle
+formula holds at both endpoints. Tangent has fine derivative `1+tan^2`;
+fine derivatives of the inverse functions remain pending.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
