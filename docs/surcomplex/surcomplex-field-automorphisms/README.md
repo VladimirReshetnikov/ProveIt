@@ -13,7 +13,7 @@ delivery had no code and no data.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 36 pages (title, two contents pages, 33 numbered pages)
+article.pdf   the compiled report, 37 pages (title, two contents pages, 34 numbered pages)
 README.md     this guide
 ```
 
@@ -76,7 +76,8 @@ Section and theorem numbers are those of the build.
 - **Topology (Propositions 7.1, 7.2; Section 7.2).** Valued automorphisms are
   fine homeomorphisms; set-sized subsets are closed and discrete; an explicit
   fine-continuous real-axis-preserving automorphism fails to preserve a Hahn
-  sum.
+  sum. The finite observations also show non-density of strong maps in the
+  pointwise-equality topology on both `Aut(No)` and `Aut(K)`.
 - **Derivatives (Theorems 8.1, 8.2; Corollary 8.3).** A field automorphism
   with a fine derivative somewhere has the same derivative everywhere, and a
   nonzero one forces the identity; `S_a` (`a > 1`) has derivative 0
@@ -105,7 +106,7 @@ Section and theorem numbers are those of the build.
 - **Questions (Section 14):** the image of exponential automorphisms in the
   value group (the rigidity report's Question 13.1); omega-map compatibility
   (KKS Questions 5.6, 5.7); effective descriptions inside `U`; real-form and
-  continuity classifications. All open.
+  continuity classifications. Unresolved in this report.
 
 ## What the report does not claim
 
@@ -113,8 +114,10 @@ Section 15.3 keeps the source's non-claims in place and collects them in a
 ledger of 33 items: 28 from the source and 5 added when the report joined the
 collection. In brief:
 
-- Not refereed; no theorem here is Lean-verified and no Lean code
-  accompanies it; no independent build of the repository. No complete
+- Not refereed; no new Lean code or dedicated `saut:` mappings accompany it.
+  Existing generic proofs cover the ordered displacement and value-fixing
+  exponential rigidity arguments, as detailed below. The delivery did not
+  independently build the repository. No complete
   classification of `Aut(K)`; priority not certified; no exhaustive
   nonduplication claim.
 - The exponential results of Section 11 and the answer to KKS Question 5.4
@@ -181,13 +184,23 @@ automorphisms preserving every modulus are `id` and `c`.
 `Surreal/HahnSeries/ComplexNumbers.lean` (`coefficientEquiv`, the case
 `M_{ρ,id,1}` in a workspace) are interfaces; `Surreal/Algebra/SigmaDerivation.lean`
 proves valued-field forms of the rigidity report's displacement results, while
-its ordered `lem:amplify` is pending. No statement of this report is covered.
+the ordered displacement lemma is now proved by `displacement_cofinal` in
+`Surreal/Algebra/ExponentialProfile.lean`. That module's `eq_id_of_commute`
+also proves the generic value-fixing exponential rigidity implication.
+These existing mappings use the rigidity report's labels; this review adds
+no dedicated `saut:` mapping. The actual surreal exponential instantiation,
+rational non-lifting and the actual surcomplex logarithmic-modulus
+classification remain pending.
 
 "Rigidity" here (Theorems 2.3, 11.2; Section 11.1) is not `f:thm-rigidity` of
 analysis nor the scalar rigidity of gamma-functions; "phase" is a coefficient
 multiplier, not an argument or the trigonometry/differential-equations phase;
 "real form" is a real closed `F` with `K = F(i)`, not the real-coefficient
-versions in entire-functions or analytic-geometry.
+versions in entire-functions or analytic-geometry. A strong automorphism
+is determined by its action on both coefficients and monomials; monomial
+images alone suffice for strongly `C`-linear maps. The strong Taylor motions
+fix every monomial while moving coefficients, so strongness alone cannot
+remove the coefficient data.
 
 Two later reports use conjugation on `No[i]`.
 [surreal-fields-across-universes](../../foundations-and-computation/surreal-fields-across-universes/)
@@ -232,7 +245,22 @@ Six symbols were renamed so that each has one meaning: `E_{ρ,τ} → M_{ρ,τ}`
 Puiseux field `P → 𝒫`, the automorphism `τ → ψ` in Section 7.2, and cut sides
 `(L,R) → (𝓛,𝓡)`; `Aut(K,L)` is written `Aut_L(K)`. `Γ = (No,+,<)` is a proper
 class here, departing from `NOTATION.md`'s set-sized `Γ`. No mathematical
-statement was changed.
+statement was changed at placement.
+
+The subsequent main-text review covers Sections 1–15 and the conjugacy
+criterion. It makes class-map conventions and set-stage choices explicit,
+reduces finite-group assertions to ordinary invariant algebraically closed
+subfields, and constructs the real closure through compatible ordered
+embeddings. It corrects the rational-cut and monomial-determination
+explanations, expands the additive value-group decomposition, and supplies
+the finite-observation obstruction for the full `Aut(K)`. The derivative
+statement now excludes every `K`-valued derivative, including infinite
+values, using explicit neighborhood thresholds. The generic exponential
+proof uses the actual valuation image, and current Lean status is separated
+from the pinned inspection. See the
+[collection review record](../../REVIEW.md#field-automorphism-main-text-review).
+Remaining imported-result, source reconciliation and priority checks are
+separate from this main-text review.
 
 ## Build
 

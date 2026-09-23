@@ -2178,6 +2178,80 @@ changed upstream. The combined `LEAN_NUM_THREADS=2 lake build` passed all
 source labels and 1,156 local Markdown destinations resolve; the inventory
 remains 2,535 standard statements in 49 reports.
 
+## Field-automorphism main-text review
+
+Reviewed Sections 1–15 and Appendix B of the field-automorphism report in
+dependency order: real-axis stabilizers and norm/circle rigidity, support
+control, monomial and coefficient-motion constructions, valued and additive
+decompositions, topology and derivatives, class homogeneity and real forms,
+then exponential rigidity and the stated applications. Independent readings
+of Sections 7–11 and the class arguments found no false theorem under the
+stated full-field hypotheses. This review does not complete original-source
+reconciliation or certify historical priority.
+
+Corrected the rational-cut explanation to refer to irrational ordinary reals;
+rationals are fixed already, and real algebraic constants are fixed by their
+polynomial and order data. Clarified that a strong field map is determined
+by both coefficient and monomial images. Strongness alone does not remove
+coefficient data: the Taylor motions fix every monomial but move constants.
+Defined strong additivity for general additive maps, so its use for the
+fixed-shift derivation is explicit. Added the coefficient-motion valuation
+bound, the automatic identity `d(i)=0`, the correctly reindexed character
+in the valued factorization, and the rational-comparison proof of the
+additive decomposition's leading coefficient. Corrected the Cayley comparison
+to exclude division by zero and give the missing `x=0` value separately.
+
+The finite-observation non-density proof now names `Aut(No)` and then proves
+the assertion for all `Aut(K)`: fixing `t` sends each rational power to that
+power times an ordinary root of unity, so a strong image of the chosen sum
+cannot acquire its new `ω`-exponent. This is an added source-level argument,
+still pending in Lean. The derivative theorem now excludes every `K`-valued
+derivative for `0<a<1`, removing the ambiguous word “finite.” Its proof uses
+an explicit increment beyond any proposed valuation threshold, without a
+set-indexed cofinal net. Injectivity justifies the inverse derivative's
+punctured limit and the failure of local constancy.
+
+Class-map collections, pointwise fixed-field predicates, and finite indexed
+actions now have distinct foundational interpretations. The back-and-forth
+proof fixes a set-like global well-order, makes both extension steps at each
+successor, and defines its class graph from compatible set-length recursions.
+The finite-group theorem is reduced to ordinary algebraically closed,
+invariant set subfields containing witnesses for faithfulness. Directed
+unions of their real fixed fields give the class real form; the explicit
+two-coordinate identity gives its complexification. The real closure of
+`No(T)` uses unique compatible ordered embeddings and least representatives
+of stage-element pairs, avoiding proper-class equivalence classes as elements.
+The set-cut conjugacy criterion retains both empty cut sides.
+
+The generic exponential proof now identifies the image of `w ∘ E` with
+`w(Fˣ)`, without silently assuming surjectivity onto a larger codomain.
+Current generic `ExponentialProfile` proofs are distinguished from dedicated
+`saut:` mappings and from the actual surreal exponential instantiation.
+The older `SigmaDerivation` ledger row now points to the later generic
+ordered results instead of incorrectly listing them as pending. No new Lean
+code or implementation mapping is introduced by this review.
+
+Targeted primary checks inspected the four-factor decomposition in
+[Kuhlmann–Serra, Theorem 3.7.1](https://arxiv.org/html/2107.03362v3), and the
+kernel/skeleton decomposition and canonical lifts in
+[their Hahn-group paper, Section 3.2](https://arxiv.org/html/2302.06290v2).
+The ordinary Puiseux input is stated in the introduction of
+[Paran–Vo](https://arxiv.org/abs/2311.17544); real closedness follows by
+complexification. [Conrad, Theorem 3.1 and Section 4](https://kconrad.math.uconn.edu/blurbs/galoistheory/artinschreier.pdf)
+supplies the set-field Artin–Schreier input, while
+[Hamkins's global-choice equivalences](https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/)
+justify the set-like global well-order. The manuscript supplies the passages
+to its class setting. These checks do not re-audit the pinned KKS questions
+or establish a complete external-literature review.
+
+Validation against `076b1fa`: three LaTeX passes produced a 37-page PDF
+without diagnostics; all 37 rendered pages were inspected for layout.
+All 86 source labels and their result numbers are preserved. Of the 26
+standard statements, only `saut:thm:zeroderiv` changes wording, as described
+above. The installed PDF matches the compiled source. All 2,872 cited source
+labels resolve, and the inventory still contains 2,535 standard statements
+in 49 reports. No verification code or data accompanied this report.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -2206,10 +2280,12 @@ all nine manuscripts are now represented in the two written sources. Their
 proof review and source-claim reconciliation for these two assembled reports
 remain pending.
 
-The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
-[three-space](surreal/euclidean-three-space/) and
-[field automorphisms](surcomplex/surcomplex-field-automorphisms/) reports
-are now written and catalogued, but await proof review.
+The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/)
+and [three-space](surreal/euclidean-three-space/) reports are now written and
+catalogued, but await proof review. The
+[field-automorphism report](surcomplex/surcomplex-field-automorphisms/)
+has received the Sections 1–15 and Appendix B main-text review above;
+remaining imports, original-source reconciliation and priority remain separate.
 [Finite probability](surreal/finite-surreal-probability/) has received the
 Sections 2–17 main-text review recorded above; remaining imports and
 source/provenance reconciliation are pending. The measures and
