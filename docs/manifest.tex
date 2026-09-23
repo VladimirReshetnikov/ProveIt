@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of fifty-seven research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of fifty-eight research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,7 +59,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Fifty-six mathematical research packages,\\
+ {\large Fifty-eight mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -70,11 +70,11 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the fifty-seven research packages stored under
+This document catalogues the fifty-eight research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Twenty
+The collection divides in five, and so does the directory tree.  Twenty-one
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
@@ -96,9 +96,10 @@ the duals of Hahn vector spaces, the automorphisms of the field, cardinally
 bounded Hahn fields, what one dilation defines, the Gamma and zeta functions,
 hidden negative directions of Hermitian forms, and Hahn--Hilbert geometry.  One, under \dir{docs/surquaternions}, leaves
 commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
-$\No$.  One, under \dir{docs/physics}, is the only report here whose subject is
-not mathematics: it asks what surreal scalars do and do not buy in general
-relativity, and answers negatively.  The last seven, under
+$\No$.  Two, under \dir{docs/physics}, address physical models: the first asks what
+surreal scalars do and do not buy in general relativity; the new second
+treats quantum operations and finite gauge models. Neither claims an
+experimental prediction.  The last seven, under
 \dir{docs/foundations-and-computation}, stand outside all of these: they are
 about the subject rather than inside it, asking in what foundation this
 mathematics legally lives, how one computes with it exactly, which surreal
@@ -113,8 +114,9 @@ That is why an entry may refer to a merge, a duplicate sweep or a delivery
 number: those describe how the report reached its present form, and the
 record is kept rather than rewritten.
 
-Each directory holds a \LaTeX{} source and a \texttt{README.md}; the three bases
-placed in a4dcb91 await PDFs, while the other reports have typeset articles.
+Each directory holds a \LaTeX{} source and a \texttt{README.md}; the newly
+placed quantum/gauge base awaits a maintained PDF, while the other main
+reports have typeset articles.
 Most include verification code and its recorded output. The omnific reports
 are partially integrated or still placed bases, as their entries specify.
 Source manuscripts for merged reports remain in Git history; their
@@ -152,9 +154,9 @@ each arrived as a pair of archives and were merged; the exponential-automorphism
 report later absorbed two independent re-derivations of its own theorem, and
 the measures report merges five manuscripts, the vector-field report three
 and the three-space report three; the others are single manuscripts.
-The Diophantine report assembles seven manuscripts, including its two
-fraction companions; the quotient report assembles sixteen, including
-its three relation, polynomial and normalization companions. The preserving
+The Diophantine report assembles twelve manuscripts, including fractions
+and curve rigidity; the quotient report assembles seventeen, including
+relation, polynomial and normalization companions and Boolean branching. The preserving
 automorphism report merges four sources and the groups and lattices report
 three. Assembly, independent proof review and Lean coverage are separate.
 
@@ -619,32 +621,33 @@ refereed, no Lean verification, priority not certified.}
 
 \entry{Omnific integers and omnific--Diophantine geometry}
 {surreal/omnific-diophantine-geometry}
-{article.pdf}{seven manuscripts assembled; fraction companions included}
+{article.pdf}{twelve manuscripts assembled; curve rigidity added}
 {Arithmetic and Diophantine geometry over Conway's omnific integers:
 constant-term retraction, equational transfer, finite quotients, linear
 systems, binary and norm-form rigidity, quadratic levels and Diophantine
-definitions of ordinary integers. The seven-source assembly adds fraction and denominator-ideal results, definability
+definitions of ordinary integers. The twelve-source assembly adds curve rigidity, fraction and denominator-ideal results, definability
 of the purely infinite ideal and reconstruction of coefficients and the field.
 The proof review covers the original material in Sections 1--10 and current
-Sections 14 and 16: support and class-quotient conventions, complex separated-power
+Sections 14 and 19: support and class-quotient conventions, complex separated-power
 rigidity, quadratic coordinate ideals, quantified bounded-set transfer,
 induction domains, finite-support specialization and finite-factorization
 root obstructions. Omnific and finite-surreal residue lifting are distinguished.
 The new Sections 11--13 have proof reviews of the degree, Pell,
 definability and reconstruction arguments, including detector witnesses,
 number-field ideal predicates and logical consequences. New material in Sections 6 and 10,
-Sections 15.8--15.12 and 17--18, and remaining
-source reconciliation await review. Sections 15.1--15.7 now have a proof
-review of denominator ideals, rational-function and curve applications,
-congruence orbits and density, with explicit projective topology. No new Lean coverage is claimed.}
+new Sections 16--18, pointers in Sections 6, 7 and 14, Sections 20--21
+and remaining source reconciliation await review. Section 15 now has a proof review
+throughout, including localization, scale defects and Gaussian fractions.
+The two residues can agree outside $\mathbb Q$; the scale defect has
+infinite module length despite finite real dimension. No new Lean coverage is claimed.}
 
 \entry{The universal set-sized quotient of the omnific integers}
 {surreal/set-sized-quotients-of-omnific-integers}
-{article.pdf}{sixteen manuscripts assembled}
+{article.pdf}{seventeen manuscripts assembled; Boolean branching added}
 {Every unital ring map from the omnific integers to a set-sized ring is
 claimed to factor through the constant term. The report studies Gaussian
 variants, small-target rigidity, cardinal and homological thresholds,
-tensors and gaps at fresh scales. The maintained article assembles sixteen
+tensors and gaps at fresh scales. The maintained article assembles seventeen
 manuscripts, including relation modules, ordinary-output loci and
 normalization fibres. Its proof review and
 formalization remain pending.}
@@ -669,12 +672,12 @@ Its proof review and formalization remain pending.}
 
 \entry{Discrete initial subgroups and omnific normalization}
 {surreal/discrete-initial-subgroups-and-omnific-normalization}
-{article.tex}{one manuscript placed in c6359e4}
+{article.pdf}{normalization and convex factors assembled in 3d9dbe9}
 {A proposed sign-tree normalization of discrete initial additive subgroups,
 an exact image classification, and removal of the bottom cyclic layer.
-The report includes strong-sum and surcomplex additive extensions, with
-explicit limitations. It is an unreviewed placed source, with no maintained
-PDF yet; independent proof review, priority review and formalization remain pending.}
+The report includes strong-sum and surcomplex additive extensions and
+convex factors, with explicit limitations. Independent proof review,
+priority review and formalization remain pending.}
 
 \section{The surcomplex plane}
 
@@ -1777,10 +1780,10 @@ the prefix \texttt{squat:}.  It makes no claim about any empirical subject.}
 
 \section{Physics}
 
-One report, and the only one in the collection whose subject is not
-mathematics.  It is filed on its own because its entire value is a firewall
-between what is proved and what is proposed, and because its conclusion is
-negative.
+Two reports distinguish mathematical models from physical evidence.
+The relativity report identifies limitations of changing scalars; the
+new quantum/gauge base treats finite operational models and scale separation.
+Its companion manuscripts await integration.
 
 \entry{Surreal scalars in theoretical physics: black-hole singularities, asymptotic structure, and the limits of replacing the scalar field}
 {physics/surreal-scalars-and-spacetime}
@@ -1819,6 +1822,16 @@ thirds, all three independently rebuilding the static-spherical connection and
 the full Riemann tensor and re-deriving the same Schwarzschild quantities from
 the metric alone.}  No priority claim; not refereed.}
 
+
+\entry{Surreal scales in quantum theory and gauge models}
+{physics/quantum-and-gauge-scale-reductions}
+{article.tex}{base and three companions placed in 66d7e55}
+{Rare conditional states, success-weighted trace distance, exact elimination
+of separated virtual sectors, quaternionic simulation and finite gauge
+curvature. The current main text is the scales-in-physics base; its
+observable-limits, holonomy and quantum-operations companions await
+integration. Independent proof review and formalization remain pending.
+No new experimental prediction is claimed.}
 
 \section{Foundations and computation}
 

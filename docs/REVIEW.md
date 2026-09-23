@@ -3050,6 +3050,126 @@ All 3,799 cited source labels resolve and the 3,297-row inventory still
 passes; both reviewed PDFs match their validated builds byte for byte.
 The local Markdown check resolves 1,430 destinations in 153 files.
 
+## Omnific localization, scale defects and Gaussian fractions: Sections 15.8–15.12
+
+The [Diophantine article](surreal/omnific-diophantine-geometry/article.tex)
+now has a manuscript proof review throughout Section 15. The
+[reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+records comparison with source 08's Sections 8–13 and source 09's
+monomial, workspace and Gaussian discussion, using the archived texts
+recovered in the preceding passes. The sibling report's finite-support
+core and unit-forcing localization statements were checked for the
+comparisons made here; their full proofs remain imported dependencies.
+The equational flatness criterion and Tor exact-sequence facts were
+checked against the primary Stacks Project sources, [Tag 00HK](https://stacks.math.columbia.edu/tag/00HK)
+and [Section 10.75](https://stacks.math.columbia.edu/tag/00LY), on
+23 September 2026. The existing bibliography entry now includes both.
+
+The previous claim that standard part and rational residue agree only
+on `ℚ` was false. For positive `t ∈ Π`, the nonzero infinitesimal
+`t/(t+1)²` has both residues zero. The revised text proves the exact
+agreement locus `ℚ ⊕ (ker st ∩ ker res)` additively. It also uses a
+positive element with negative rational residue to establish failure
+of weak order preservation. The localization proof identifies the
+nonunits, unique maximal ideal and fraction field. Quotient language
+uses ordinary residue pairs as representatives, avoiding set-valued
+proper-class cosets.
+
+Polynomial division proves the one-parameter intersection, and the
+generator count uses cardinalities of finite integer linear combinations.
+The scale-defect proof gives the module map, its truncated representatives
+and its real coefficient dimension. A proved combined consequence
+distinguishes that finite dimension from infinite module length: the
+top layer contains `ℤ ⊊ (1/2)ℤ ⊊ (1/4)ℤ ⊊ …` as submodules.
+The integrality and non-finiteness arguments are expanded. Nonflatness
+computes both relation modules, and the Tor proof identifies the new
+relations modulo the image of the old ones through right exactness.
+It does not assume that the tensor of the original kernel injects.
+
+The fixed-workspace example now proves both localization inclusions
+and gives the coefficient recurrences excluding the two nonrational
+series. Gaussian evaluation, normalization, Bézout transport, non-set
+generation and the no-gcd argument are explicit. The constant-direction
+proof permutes a nonzero coordinate into the denominator position before
+using the affine theorem. The complex standard part and Gaussian-rational
+residue have consistent names and coordinatewise finiteness domains.
+Shared notation and the collection guides reflect these distinctions;
+the root README highlights the manuscript results separately from Lean
+coverage and uses the two-thread build command.
+
+All 143 standard statement texts, 310 labels and result numbers are
+unchanged. Section 16 onward is byte-identical except for the expanded
+Stacks bibliography entry. Three-pass pdfLaTeX builds give a clean
+125-page article and 29-page catalogue, without warnings, unresolved
+references or box diagnostics. Visual inspection covers article PDF
+pages 5, 11, 68, 83–91 and 125, and catalogue page 9. The independent
+inventory verifies 3,297 standard results in 57 main texts, and all
+3,800 cited source labels resolve. Local Markdown link checks pass.
+
+The source-08 and source-09 finite verifiers pass 833 and 92 assertions
+under SymPy 1.14.0. The first reproduces its recorded JSON exactly; the
+second differs only in timestamp and Python version. Neither verifies
+the class-sized arguments or full Tor theorem. Delivered scripts and
+recorded verification data are unchanged. These manuscript results,
+including the two explicit combined consequences, remain **Pending**
+in Lean.
+
+The branch was synchronized through `0fffc26` and fetched again at the
+user's request, then fast-forwarded to `d8ce588`. No incoming manuscript
+changed. The combined `LEAN_NUM_THREADS=2 lake build` passes all 4,346
+jobs; its audit accepts 13,755 declarations with only `propext`,
+`Classical.choice` and `Quot.sound`. This validates the merged Lean
+library; it does not formalize the manuscript revisions. Sections 17–18,
+added material in Sections 6 and 10, companions, imported foundations
+and remaining source reconciliation still require review.
+
+## Combined validation after the batch-28 and new-manuscript merge
+
+The fraction review was committed as `b2a8686`. A pre-push fetch found
+eleven incoming commits through `6f47cf9`; merging them preserves the
+reviewed Section 15 and incorporates the new curve/differential material
+in Sections 16–18. The old Sections 16–18 are now 19–21. The combined
+article has 194 standard statements and 405 labels; all 143 preceding
+statement texts and all 310 preceding labels survive. Result numbers
+through Section 15 are unchanged, and the body of that section from its
+conventions subsection to the next section is byte-identical to `b2a8686`.
+The new curve material, its pointers and additions remain outside the
+completed proof review. Earlier review records use their then-current
+section numbers and counts.
+
+Three-pass pdfLaTeX builds produce a clean 163-page article and 29-page
+catalogue. The source-label and independent inventory audits pass after
+updating renamed normalization labels and indexing the current assemblies:
+3,428 standard statements in 58 main texts, with 3,934 cited labels
+resolved. Existing statement texts referenced by the Lean implementation
+table do not change in this incoming merge. All incoming files are under
+`docs/`, so the successful 4,346-job Lean build and 13,755-declaration
+audit at `d8ce588` remain the relevant build validation; no additional
+Lean build is needed for this merge.
+
+The inventory and reader map now include the newly placed quantum/gauge
+base. Its local guide distinguishes the actual repository paths from
+the delivered package's filenames. The catalogue and root README reflect
+the current assemblies and preserve their pending review status. The
+companions placed in `66d7e55` and the nine archives in `190d301` still
+need integration or placement and reconciliation; indexing the main
+texts does not establish coverage of those separate manuscripts.
+
+## Combined validation with Fejér–Riesz uniqueness and coefficient bounds
+
+After the documentation merge `e8dcd56`, the next fetch found four commits
+through `cfd1c89`. Their README and coverage-inventory refresh were
+reconciled with the manuscript review, preserving the updated 58-report
+inventory and the distinction between written and Lean-checked results.
+No manuscript source changed in this merge, so the clean combined PDFs
+remain current. The source-label, independent inventory and Markdown
+link audits pass: 3,934 cited labels, 3,428 indexed statements and 58
+main texts. `LEAN_NUM_THREADS=2 lake build` passes all 4,353 jobs, and
+the audit accepts 13,813 declarations with only `propext`,
+`Classical.choice` and `Quot.sound`. The incoming formalization completes
+normalized Fejér–Riesz uniqueness and adds actual-field Fourier coefficient
+bounds. It does not change the pending Lean status of the omnific results.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
