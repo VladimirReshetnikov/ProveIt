@@ -344,6 +344,17 @@ coefficient on a countably separated space. Positivity of the full Hahn value
 does not mean positivity of every coefficient measure: later signed
 coefficients may be negative while the leading nonzero coefficient is positive.
 
+For normalized probability hierarchies, **coefficientwise convergence** means
+ordinary real convergence at each fixed exponent; it need not imply intrinsic
+valuation or fine convergence. Bounds for the real-observable expectation use
+a uniform real bound (or a bound valid almost everywhere for every component),
+not an essential bound for the leading real shadow alone. Countable common
+support and integrable coefficients preserve positivity when integrating a
+Hahn-valued function against an ordinary positive finite measure; uncountable
+common support alone does not. Finite-hierarchy posterior coefficients are
+measurable on a common well-ordered support, but need not be integrable until
+the observation density is multiplied in and cancels the denominator.
+
 The [Hahn–Herglotz report](surcomplex/hahn-herglotz-positivity/article.tex)
 uses real coefficientwise measures on the ordinary circle. Its moments are
 Fourier moments `c_n = ∫ ζ^(−n) dμ` and its Toeplitz convention is

@@ -29,7 +29,7 @@ expansions integrated through `66dd6bc`, plus batch 19: four new reports and
 further expansions of four existing reports, integrated from `7657737`.
 Batch 20 (placed in `5fe7f8d`, written in `fb182ea`) adds four reports and
 expands the measures and trigonometry reports; all are indexed in their
-written form. The finite-probability review now covers Sections 2–9; later
+written form. The finite-probability review now covers Sections 2–11; later
 sections, the other new reports and the expansions remain pending within the
 review scopes recorded separately. Batch 21 (placed in `d4e71b7`, written in
 `3a2d35d`) adds two reports merged from nine manuscripts, with 136 indexed
@@ -272,7 +272,8 @@ remaining clauses of a partially mapped statement.
 | `found:eq:rationalcircle`; affine clauses of `trigonometry:thm:cayley` | `Surreal.Complexify.normSq_circleParam`, `circleParam_ne_neg_one`, `circleCoord_circleParam`, `circleParam_circleCoord`, `circleParam_injective`, `circleEquiv` in [Circle.lean](../Surreal/Algebra/Circle.lean) | The rational affine chart and its inverse give an equivalence over any ordered field. The projective extension and direction multiplication are mapped below. The actual surreal specialization and half-angle identity are proved in the full Cayley theorem mapped below. **Proved**; build and axiom audit pass. |
 | Projective and algebraic multiplication clauses of `trigonometry:thm:cayley`, `trigonometry:eq:cayley`, `trigonometry:eq:projectiveaddition` | `Surreal.Complexify.projectiveCircleEquiv`, `projectiveCircleEquiv_mk`, `circleParam_eq_fraction`, `projective_add_pair_ne_zero`, `projectiveAdd_mk`, `circleParam_mul`, `circleParam_mul_eq_neg_one_iff`, `projectiveAdd_infty_infty` in [ProjectiveCircle.lean](../Surreal/Algebra/ProjectiveCircle.lean) | Mathlib's actual projectivization of `Fin 2 → F` is equivalent to the norm-square-one circle over any ordered field. The chart has the homogeneous quotient formula and transports direction multiplication to `[ps+qr:qs-pr]`, whose output pair is proved nonzero. The affine rule applies exactly off its zero denominator; zero denominator gives `-1`, and two points at infinity give affine zero. Associativity and commutativity are also proved. The actual surreal specialization, tangent/half-angle relation and infinitesimal proximity claim are proved in the full Cayley theorem mapped below. **Proved**; build and axiom audit pass. |
 | Full `trigonometry:thm:cayley`, `trigonometry:eq:cayley`, `trigonometry:eq:projectiveaddition` | `cayley`, `cayleyCoord`, `cayley_eq_fraction`, `modulus_cayley`, `cayley_ne_neg_one`, `cayleyCoord_cayley`, `cayley_cayleyCoord`, `cayleyEquiv`, `projectiveCayleyEquiv`, `projectiveCayleyEquiv_mk`, `projectiveCayleyEquiv_infty`, `projectiveCayleyEquiv_coe`, `projectiveCayleyEquiv_add`, `cayley_mul`, `cayley_mul_eq_neg_one_iff`, `cayleyCoord_finitePhase`, `cayley_finiteTan_half` in [Cayley.lean](../Surreal/Surcomplex/Cayley.lean); `infinitesimal_inv_iff_not_finite` in [SignSequenceFiniteUnits.lean](../Surreal/Foundations/SignSequenceFiniteUnits.lean); `standardPart_cayley`, `cayley_inv`, `standardPart_cayley_of_not_finite`, `infinitesimal_cayley_add_one_iff`, `infinitesimal_cayley_omega_add_one` in [CayleyInfinitesimal.lean](../Surreal/Surcomplex/CayleyInfinitesimal.lean), together with the homogeneous addition formulas mapped above | The rational chart is a bijection from all actual surreal scalars onto the native unit circle punctured at `-1`, with the stated inverse. Mathlib's actual projective line maps bijectively onto the full native unit circle; its point at infinity maps to `-1`. The generic homogeneous rule `[ps+qr:qs-pr]`, including its nonzero output and infinity cases, specializes to this equivalence and gives multiplication of actual directions. The affine formula retains its denominator restriction; zero denominator gives exactly `-1`. Every finite phase has half-angle tangent as its chart coordinate, and the coordinate reconstructs the phase when the phase is not `-1`, in particular for the source's principal representative. Standard part commutes with the chart at finite scalar inputs. An actual scalar input is infinite if and only if its Cayley value differs infinitesimally from `-1`; the omega example is explicit. Such affine values never equal the projective half-turn. **Proved for every clause**; build and axiom audit pass. |
-| Existence, uniqueness, order and coordinate clauses of `trigonometry:thm:inverse`; exact reciprocal identity in `trigonometry:eq:ataninfty`; tangent derivative following `trigonometry:eq:smallseries` | `existsUnique_cos_angle`, `arccos`, `arccos_mem`, `finiteCos_arccos`, `arccos_finiteCos`, `arccos_strictAnti`, `existsUnique_sin_angle`, `arcsin`, `arcsin_mem`, `arcsin_mem_Ioo`, `finiteSin_arcsin`, `arcsin_finiteSin`, `finiteCos_arcsin`, `arcsinOrderIso`, `arccos_eq_pi_div_two_sub_arcsin`, `normalizedSlope_mem_Ioo`, `arctan`, `arctan_mem`, `finiteSin_arctan`, `finiteCos_arctan`, `finiteTan_arctan`, `arctan_finiteTan`, `finiteTan_strictMonoOn`, `arctanOrderIso`, `existsUnique_tan_angle`, `arcsin_eq_two_mul_arctan`, `arctan_neg`, `arctan_inv_of_pos` in [InverseTrigonometry.lean](../Surreal/Surcomplex/InverseTrigonometry.lean); `tanFunction`, `tanFunction_eq_finiteTan`, `fineHasDerivAt_tanFunction` in [TrigonometricFineDerivative.lean](../Surreal/Surcomplex/TrigonometricFineDerivative.lean) | Inverse cosine and inverse sine are defined on the entire actual surreal closed interval `[-1,1]` with values in the prescribed finite angle intervals. Circle representatives and strict trigonometric order prove existence, both inverse identities and uniqueness at each input; inverse cosine reverses order and inverse sine is an order isomorphism onto its closed angle interval. Inverse tangent is defined at every actual surreal slope, including infinite ones, and is an order isomorphism onto the central open finite-angle interval. Its sine and cosine are exactly `t/sqrt(1+t^2)` and `1/sqrt(1+t^2)`. The inverse-sine half-angle formula and complementary inverse-cosine formula include both endpoints. Inverse tangent is odd and obeys the exact positive-input reciprocal complement identity. Tangent has the native fine derivative `1+tan^2` at every finite angle with nonzero cosine, by the quotient rule. **Prerequisites proved** for the full inverse theorem: its three inverse-function fine derivatives, the asymptotic and strong-series expansions, and endpoint derivative/ramification assertions remain pending. Build and axiom audit pass. |
+| Existence, uniqueness, order and coordinate clauses of `trigonometry:thm:inverse`; exact reciprocal identity in `trigonometry:eq:ataninfty`; tangent derivative following `trigonometry:eq:smallseries` | `existsUnique_cos_angle`, `arccos`, `arccos_mem`, `finiteCos_arccos`, `arccos_finiteCos`, `arccos_strictAnti`, `existsUnique_sin_angle`, `arcsin`, `arcsin_mem`, `arcsin_mem_Ioo`, `finiteSin_arcsin`, `arcsin_finiteSin`, `finiteCos_arcsin`, `arcsinOrderIso`, `arccos_eq_pi_div_two_sub_arcsin`, `normalizedSlope_mem_Ioo`, `arctan`, `arctan_mem`, `finiteSin_arctan`, `finiteCos_arctan`, `finiteTan_arctan`, `arctan_finiteTan`, `finiteTan_strictMonoOn`, `arctanOrderIso`, `existsUnique_tan_angle`, `arcsin_eq_two_mul_arctan`, `arctan_neg`, `arctan_inv_of_pos` in [InverseTrigonometry.lean](../Surreal/Surcomplex/InverseTrigonometry.lean); `tanFunction`, `tanFunction_eq_finiteTan`, `fineHasDerivAt_tanFunction` in [TrigonometricFineDerivative.lean](../Surreal/Surcomplex/TrigonometricFineDerivative.lean) | Inverse cosine and inverse sine are defined on the entire actual surreal closed interval `[-1,1]` with values in the prescribed finite angle intervals. Circle representatives and strict trigonometric order prove existence, both inverse identities and uniqueness at each input; inverse cosine reverses order and inverse sine is an order isomorphism onto its closed angle interval. Inverse tangent is defined at every actual surreal slope, including infinite ones, and is an order isomorphism onto the central open finite-angle interval. Its sine and cosine are exactly `t/sqrt(1+t^2)` and `1/sqrt(1+t^2)`. The inverse-sine half-angle formula and complementary inverse-cosine formula include both endpoints. Inverse tangent is odd and obeys the exact positive-input reciprocal complement identity. Tangent has the native fine derivative `1+tan^2` at every finite angle with nonzero cosine, by the quotient rule. **Proved for these clauses**; the full inverse theorem, including its three fine derivatives, is completed in the next row. The subsequent asymptotic and strong-series expansions and endpoint derivative/ramification assertions remain pending. Build and axiom audit pass. |
+| Full `trigonometry:thm:inverse`, `trigonometry:eq:inversederivatives` | The inverse-function constructions and identities mapped above; `Surreal.FineHasDerivAt.of_local_rightInverse` in [FineDerivativeRules.lean](../Surreal/Algebra/FineDerivativeRules.lean); `arctanValueOrderIso`, `arcsinValueOrderIso`, `arctanFunction`, `arcsinFunction`, `arccosFunction`, `arcsinFunction_eq`, `arccosFunction_eq`, `continuous_arctanFunction`, `continuousOn_arcsinFunction`, `continuousAt_arcsinFunction`, `fineHasDerivAt_arctanFunction`, `fineHasDerivAt_arcsinFunction`, `fineHasDerivAt_arccosFunction` in [InverseTrigonometricDerivative.lean](../Surreal/Surcomplex/InverseTrigonometricDerivative.lean) | The general fine inverse rule applies over a topological field to a continuous local right inverse at a nonzero derivative; the continuous completed slope proves it without a norm or an Archimedean assumption. Native surreal interval order isomorphisms and Mathlib's order-isomorphism continuity theorem supply the required inverse continuity. Inverse tangent has fine derivative `1/(1+t^2)` at every actual surreal input, including infinite inputs. Inverse sine and cosine have derivatives `1/sqrt(1-x^2)` and `-1/sqrt(1-x^2)` throughout the actual open interval `(-1,1)`, including infinitesimal distances from either endpoint. The ambient functions agree with the existing finite-valued inverse maps on their prescribed domains; the local derivative proofs retain those domain conditions. Together with existence, both inverse identities, uniqueness, ranges, order and coordinate formulas in the preceding row, **every clause of the inverse theorem is proved**. Subsequent strong-series, infinite-slope asymptotic and endpoint assertions remain separate. Build and axiom audit pass. |
 | Factorization clauses of `polynomial:thm:fta`, `polynomial:eq:factorization`, `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_root`, `factorization`, `factorization_grouped`, `exists_unique_factorization`, `factorization_unique`, `sum_rootMultiplicities`, `logarithmic_derivative`, `logarithmic_derivative_grouped` in [Polynomial.lean](../Surreal/Algebra/Polynomial.lean) | Root existence, unique scalar/multiset factorization, grouped multiplicities and both logarithmic-derivative formulas. Existence assumes algebraic closedness; uniqueness holds over every field. The rational identities require a nonroot evaluation point. The fixed-Hahn closedness instance and explicit factorization specialization are now constructed below; transfer to the actual surcomplex field remains pending. **Prerequisites proved**; build and axiom audit pass. |
 | Division, gcd and ideal clauses of `polynomial:thm:fta`; gcd formula in `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_unique_division`, `exists_monic_gcd`, `gcd_bezout`, `ideal_principal`, `ideal_pair_eq_span_gcd`, `squarefree_iff_gcd_derivative_eq_one`, `gcd_derivative_rootMultiplicity`, `gcd_derivative_eq_prod` in [PolynomialDivision.lean](../Surreal/Algebra/PolynomialDivision.lean) | Unique division, normalized monic Bézout gcds and principal ideals over every field. The squarefree criterion assumes perfectness (supplied by characteristic zero); derivative multiplicities use characteristic zero. The grouped gcd product assumes a nonzero split polynomial and does not need monicity of the input. **Prerequisites proved**; build and axiom audit pass. |
 | Multiplicity and Taylor clauses of `polynomial:thm:fta` | `Surreal.FinitePolynomial.multiplicity_eq_iff_derivatives`, `multiplicity_isLeast_nonzero_derivative`, `derivative_rootMultiplicity`, `multiple_root_iff`, `taylor_coeff_eq_derivative`, `taylor_eq_sum_derivatives`, `eq_sum_derivatives`, `eval_add_eq_sum_derivatives` in [PolynomialMultiplicity.lean](../Surreal/Algebra/PolynomialMultiplicity.lean) | The least nonvanishing derivative, derivative multiplicity and finite Taylor formulas over characteristic-zero fields. The least-index characterization explicitly excludes the zero polynomial. **Prerequisites proved**; build and axiom audit pass. |
@@ -515,7 +516,7 @@ merge nine manuscripts and are indexed from their written sources; their
 review remains pending.
 The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
 their labels; they are indexed here. The finite-probability review covers
-Sections 2–9; its later sections and the other three reports await review.
+Sections 2–11; its later sections and the other three reports await review.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping states otherwise.
 
@@ -3339,11 +3340,11 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 Source: [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex).
 
-Written in `fb182ea`. The proof review now covers Sections 2–9: scalar
+Written in `fb182ea`. The proof review now covers Sections 2–11: scalar
 workspaces, residue algebra, finite probability, conditional shadows and
 Bayesian updates, logits, softmax, finite information theory, Gibbs laws,
-smoothing, logistic separation and finite stochastic processes; Sections 10
-onward remain pending. The point-weight
+smoothing, logistic separation, finite stochastic processes, infinite addition,
+normalized hierarchies and integration; Sections 12 onward remain pending. The point-weight
 representation in Section 3 now explicitly assumes
 the full event algebra. On a smaller finite algebra only its atom masses are
 uniquely determined. Standard-part division requires limited numerator and
@@ -3364,35 +3365,42 @@ corrects smoothing to require a positive joint likelihood normalizer for
 successive updates and includes the leading coefficient of the chosen scale.
 Gibbs minimization, finite path consistency, adapted optional stopping and
 Bernoulli variance have expanded proofs, with the zero-horizon cases explicit.
+Sections 10–11 now expand common-support and total-variation arguments,
+conditional residues and the countable-support positivity boundary. The
+expectation bound uses a uniform real bound, rather than only the leading
+component's essential bound. Componentwise dominated convergence and product
+Fubini are separated from fine convergence and arbitrary Hahn-valued
+integration. Posterior coefficients are measurable with a common well-ordered
+support, but can fail integrability before density cancellation.
 Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `fsp:lem:workspace` (line 663) | Local exponential workspace |
-| Proposition | `fsp:prop:st` (line 701) | Residue algebra |
-| Theorem | `fsp:thm:finitebounds` (line 873) | Variance, Cauchy--Schwarz, and tail bounds |
-| Theorem | `fsp:thm:skeleton` (line 1053) | Conditional leading-scale skeleton |
-| Theorem | `fsp:thm:compression` (line 1102) | Signed-row lexicographic compression |
-| Theorem | `fsp:thm:scalebayes` (line 1177) | Minimum-plus Bayes with coefficient tie breaking |
-| Theorem | `fsp:thm:stability` (line 1259) | Absolute and valuation-sensitive conditioning stability |
-| Proposition | Line 1363 (unlabeled) | Logit coordinates |
-| Proposition | `fsp:prop:softbound` (line 1465) | Normalization and perturbation bounds |
-| Theorem | `fsp:thm:multisoft` (line 1508) | Finite multiscale softmax limit |
-| Theorem | `fsp:thm:kl` (line 1580) | Finite Gibbs inequality and entropy bounds |
-| Theorem | `fsp:thm:dataprocessing` (line 1671) | Finite data processing |
-| Theorem | `fsp:thm:gibbs` (line 1797) | Surreal finite Gibbs principle |
-| Proposition | `fsp:prop:separation` (line 1910) | No attained logistic optimum under strict separation |
-| Proposition | Line 1994 (unlabeled) | Bounded finite-horizon optional stopping |
-| Proposition | `fsp:prop:fine` (line 2079) | Set-indexed fine convergence is eventually constant |
-| Theorem | `fsp:thm:hierarchy` (line 2178) | Normalized hierarchy of real probability laws |
-| Theorem | `fsp:thm:integrationfailure` (line 2295) | An uncountable-support positivity failure |
-| Theorem | `fsp:thm:rarecoin` (line 2411) | A repeated infinitesimal success probability |
-| Theorem | `fsp:thm:faircoin` (line 2437) | A repeated infinitesimal perturbation of a fair coin |
-| Lemma | `fsp:lem:embedding` (line 2491) | Set-sized relative field embedding |
-| Theorem | `fsp:thm:extension` (line 2596) | All-subsets regular extension after field enlargement |
-| Corollary | `fsp:cor:coinextension` (line 2640) | The two coin models do have regular finite-additive laws |
-| Proposition | `fsp:prop:tailfailure` (line 2713) | Finite-update shadows need not recover rare tail conditioning |
-| Theorem | `fsp:thm:shadowcountable` (line 2761) | A continuity test for the shadow |
+| Lemma | `fsp:lem:workspace` (line 666) | Local exponential workspace |
+| Proposition | `fsp:prop:st` (line 704) | Residue algebra |
+| Theorem | `fsp:thm:finitebounds` (line 876) | Variance, Cauchy--Schwarz, and tail bounds |
+| Theorem | `fsp:thm:skeleton` (line 1056) | Conditional leading-scale skeleton |
+| Theorem | `fsp:thm:compression` (line 1105) | Signed-row lexicographic compression |
+| Theorem | `fsp:thm:scalebayes` (line 1180) | Minimum-plus Bayes with coefficient tie breaking |
+| Theorem | `fsp:thm:stability` (line 1262) | Absolute and valuation-sensitive conditioning stability |
+| Proposition | Line 1366 (unlabeled) | Logit coordinates |
+| Proposition | `fsp:prop:softbound` (line 1468) | Normalization and perturbation bounds |
+| Theorem | `fsp:thm:multisoft` (line 1511) | Finite multiscale softmax limit |
+| Theorem | `fsp:thm:kl` (line 1583) | Finite Gibbs inequality and entropy bounds |
+| Theorem | `fsp:thm:dataprocessing` (line 1674) | Finite data processing |
+| Theorem | `fsp:thm:gibbs` (line 1800) | Surreal finite Gibbs principle |
+| Proposition | `fsp:prop:separation` (line 1913) | No attained logistic optimum under strict separation |
+| Proposition | Line 1997 (unlabeled) | Bounded finite-horizon optional stopping |
+| Proposition | `fsp:prop:fine` (line 2082) | Set-indexed fine convergence is eventually constant |
+| Theorem | `fsp:thm:hierarchy` (line 2215) | Normalized hierarchy of real probability laws |
+| Theorem | `fsp:thm:integrationfailure` (line 2375) | An uncountable-support positivity failure |
+| Theorem | `fsp:thm:rarecoin` (line 2533) | A repeated infinitesimal success probability |
+| Theorem | `fsp:thm:faircoin` (line 2559) | A repeated infinitesimal perturbation of a fair coin |
+| Lemma | `fsp:lem:embedding` (line 2613) | Set-sized relative field embedding |
+| Theorem | `fsp:thm:extension` (line 2718) | All-subsets regular extension after field enlargement |
+| Corollary | `fsp:cor:coinextension` (line 2762) | The two coin models do have regular finite-additive laws |
+| Proposition | `fsp:prop:tailfailure` (line 2835) | Finite-update shadows need not recover rare tail conditioning |
+| Theorem | `fsp:thm:shadowcountable` (line 2883) | A continuity test for the shadow |
 
 ### vector-and-tensor-fields
 
