@@ -99,6 +99,9 @@
 \newcommand{\res}{\operatorname{res}}
 \newcommand{\kk}{\mathbf k}\newcommand{\PP}{\mathbb P}
 \DeclareMathOperator{\Pdir}{Pdir}\DeclareMathOperator{\Adm}{Adm}
+\newcommand{\Oz}{\mathbf{Oz}}\newcommand{\Ed}{\mathcal E_{\Gamma,d}}
+\newcommand{\Kle}{K_\Gamma^{\le0}}\DeclareMathOperator{\Jac}{Jac}
+\newcounter{entrcsaveeq}
 \newcommand{\inner}[2]{\langle#1,#2\rangle}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
@@ -190,7 +193,18 @@ homogeneous-block summation, the ordinary complex directions along which a
 new dominating scale can be crossed are exactly the proper countable unions
 of projective algebraic sets.
 
-This report is the union of six manuscripts. Two were written
+In $d\ge2$ variables and countable cofinality, every radially finite
+configuration of points can be carried into a coordinate line by an entire
+automorphism exactly when $\Gamma$ has an order unit. Without one,
+configurations with polynomial-part coordinates, among them omnific ones,
+still can be, but an escaping sequence of infinitesimal simplices cannot,
+because every entire automorphism and its inverse reduce to mutually inverse
+polynomial maps along an exhaustion by convex subgroups. On rectifiable
+configurations the fat-point ideals have explicit generators,
+$\binom{\bar m+d-1}{d-1}$ of them for maximal multiplicity $\bar m$, and are
+not finitely generated when the multiplicities are unbounded.
+
+This report is the union of seven manuscripts. Two were written
 independently and proved the same engine; a third, written against their
 merge, answered the question about the interpolation image that the merge
 had left open; a fourth, written in parallel against a snapshot in which
@@ -198,12 +212,16 @@ that question was still open, proved the same image theorem independently by
 a different construction and
 added the ideal-theoretic refinements above; a fifth answered the
 scalar-extension clause of the several-variable question; a sixth described
-the prime ideals above a product with one simple node per shell. The
+the prime ideals above a product with one simple node per shell; a seventh
+proved the rectification dichotomy and the fat-point ideals in several
+variables. The
 arbitrary-rank
 classifications, the explicit non-B\'ezout construction, the exact shellwise
 image and its ideal theory, the universal extension domain and its
-several-variable replacement, and the analytic prime fibres with their
-splitting under cofinal extension are proposed original contributions, not a
+several-variable replacement, the analytic prime fibres with their
+splitting under cofinal extension, and the rectification dichotomy with its
+reduction obstruction and fat-point ideals are proposed original
+contributions, not a
 claimed solution of any named published conjecture. Classical Hahn-field
 inputs and rank-one antecedents are identified and credited, and so is the
 classical ultraproduct and valuation-domain mechanism behind the prime
@@ -247,7 +265,7 @@ problem that fails.
 
 \subsection{The analytic category}
 Throughout, except in \cref{ent:sec:multivariable}, which states its own
-weaker hypotheses, $\Gamma$ is a \emph{set-sized divisible ordered abelian
+hypotheses (weaker ones in its first eight subsections), $\Gamma$ is a \emph{set-sized divisible ordered abelian
 group}, written additively. Except where the degenerate case $\Gamma=0$ is
 explicitly discussed, assume $\Gamma\ne0$. Put
 \[
@@ -543,6 +561,29 @@ field --- and keeps two summation conventions apart; only the whole-family
 one is called entire. It answers the ``In particular'' clause of
 \cref{ent:q:several} and no other part of that question.
 
+\paragraph{Rectification and fat points.}
+The closing subsections of \cref{ent:sec:multivariable}, the seventh
+source's, answer part of two further clauses of \cref{ent:q:several}, for
+configurations of points. For $d\ge2$ and $\cf(\Gamma)=\aleph_0$, every
+radially finite subset of $\K^d$ is carried into a coordinate line by some
+entire automorphism if and only if $\Gamma$ has an order unit
+(\cref{ent:rc:thm:main}). Without an order unit, configurations with
+polynomial-part coordinates are still rectifiable, which covers omnific
+configurations (\cref{ent:rc:thm:omnific-main}), while an escaping sequence
+of infinitesimal simplices is not (\cref{ent:rc:thm:obstruction}): every
+entire automorphism and its inverse eventually have coefficients integral for
+the convex subgroups of an exhaustion, and reduce there to mutually inverse
+polynomial maps (\cref{ent:rc:thm:reduction,ent:rc:cor:automorphism-reduction}).
+On a rectifiable configuration with multiplicities, the fat-point ideal has
+explicit generators and exactly $\binom{\bar m+d-1}{d-1}$ minimal generators
+when the multiplicities are bounded with maximum $\bar m$, and it is not
+finitely generated when they are unbounded (\cref{ent:rc:thm:fat-main}); the
+values taken on such a configuration are described exactly by the
+one-variable image theorem (\cref{ent:rc:cor:evaluation}). Preparation, GCD
+and B\'ezout theory, positive-dimensional divisors, and ideals of
+configurations that are not line-rectifiable remain open in several
+variables.
+
 \subsection{Relationship to the repository and the literature}
 \label{ent:subsec:repo}
 A note on how this report grew. Its first two source manuscripts were
@@ -599,6 +640,23 @@ simple-node interpolation theorem for dependency control, by the argument of
 the first route (\cref{ent:ps:rem:route}), so that proof is printed once.
 Its sequence ring, convex subgroups and several other letters collide with
 this report's and are renamed (\cref{ent:subsec:notation}).
+
+A \emph{seventh} manuscript was written against a snapshot taken after the
+sixth source had been merged; this report's directory is identical at that
+pin and at the base of the seventh merge. It proves the rectification
+dichotomy, the reduction obstruction and the fat-point ideal theory of
+\crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits}. It credits the
+coefficient criterion, canonical products and division, order-unit
+interpolation and the image theorem to this report, and reproves the part it
+needs for dependency control; that part is printed once, by citation. It
+described its problem as different from the several-variable question here;
+it is a partial answer to the ideal-theory and interpolation clauses of
+\cref{ent:q:several} and is placed accordingly. It did not cite the
+one-variable polynomial-reduction lemma of the holonomic-rigidity report, or
+this report's coarsened residue map and restricted-unit argument, which are
+antecedents of its reduction theorem; the merge credits them
+(\cref{ent:rc:subsec:reduction}). Its letters are renamed where they collide
+(\cref{ent:subsec:notation}).
 
 The repository supplied with the question already contains a rank-one report
 over $\C((t^\R))$, including preparation, zero counting, zero-free rigidity
@@ -676,9 +734,19 @@ valuation-domain mechanism for primes of product rings to Finocchiaro,
 Frisch and Windisch \cite{FFW} and the valuation-domain prime correspondence
 to the standard literature \cite{StacksValuation}, and it does not reclaim
 the interpolation quotient, the maximal ideals or the maximal spectrum.
-\Cref{ent:sec:scope,ent:app:sources} state the limits in full; every
-limitation recorded by any of the six source manuscripts is preserved
-there.
+The seventh source proposes the order-unit rectification dichotomy, the
+eventual polynomial reductions of an entire automorphism and its inverse, the
+escaping-simplex obstruction, polynomial-part and omnific rectification
+without an order unit, and the fat-point generator formula with its sharp
+count. It states that the projection-and-shear strategy is classical and the
+jet counting elementary, that its novelty assessment is a bounded search and
+not a priority claim, and it cites Rosay and Rudin \cite{RosayRudin},
+Winkelmann \cite{Winkelmann}, Cherry \cite{CherryLectures},
+Mantova and Matusinski \cite{MantovaMatusinski} and L'Innocente and Mantova
+\cite{LInnocenteMantova} for the classical and omnific background.
+\Cref{ent:sec:scope,ent:app:sources} state the limits in full, with the
+seventh source's also in \cref{ent:rc:subsec:limits}; every limitation
+recorded by any of the seven source manuscripts is preserved there.
 
 \section{Hahn supports, the surreal interpretation, and the algebra chain}
 \label{ent:sec:support}
@@ -813,14 +881,14 @@ engine of \cref{ent:sec:units}.
 \subsection{Notation: radii live in \texorpdfstring{$\Gamma$}{Gamma}, nodes
 live in \texorpdfstring{$\K$}{K}}
 \label{ent:subsec:notation}
-Six manuscripts are merged here, and four of them arrived with letters
+Seven manuscripts are merged here, and five of them arrived with letters
 that collide with this report's. The third arrived with the opposite
 convention for the two letters that matter most. Its $\rho_n$ was a positive
 element of the \emph{value group} and its $a_{n,j}$ was a point of the
 \emph{field}. This report keeps the convention of the first two throughout,
 in which $\rho$ always names a point of $\K$ and $\gamma$ always names an
-element of $\Gamma$. Every statement taken from the third, fourth, fifth or
-sixth manuscript has been rewritten in the convention below; the tables are
+element of $\Gamma$. Every statement taken from the third, fourth, fifth,
+sixth or seventh manuscript has been rewritten in the convention below; the tables are
 recorded so that a reader comparing the texts is not misled by a symbol that
 typesets identically and means something else.
 
@@ -986,6 +1054,63 @@ as in the first table\\[0.3em]
 $\Delta_\Q=\bigoplus_{q\in\Q_{\ge0}}\Q e_q$ & rational-indexed
 enlargement of $\Gamma_\infty$ & $\bigoplus\Q f_q$, $f_j=e_j$ & our $f$ is
 \eqref{ent:eq:f-explicit}\\[0.3em]
+$\No[i]$ & surcomplex numbers & $\No(i)$ & collection notation\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The seventh manuscript's letters are used only in
+\crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits}. Its order unit,
+cofinality, strong summability, whole-family entireness and $\Gamma_\infty$
+agree with ours, and its weighted Gauss value has the same sign as ours; the
+following are renamed.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.2\textwidth}P{0.3\textwidth}P{0.17\textwidth}Y@{}}
+\toprule
+Symbol here & Meaning & In the seventh manuscript & Note\\\midrule
+$\Ed$, $\E$, $\K$, $\kk$ & whole-family entire ring, one-variable ring,
+$\kk((t^\Gamma))$, $\R$ or $\C$ & $\mathcal E_d$, $\mathcal E_1$, $K$, $k$ &
+our $k$ is an index\\[0.3em]
+$m_\gamma(F)$ & weighted Gauss valuation & $w_\gamma(F)$ & same sign, unlike
+the third and fourth manuscripts\\[0.3em]
+$v(p)$, $B^d_\gamma$ & $\min_jv(p_j)$, valuation polydisk & $r(p)$, polydisk
+& $r$ is reserved here for roots and jet polynomials\\[0.3em]
+$\mathcal X$, $p_i$ & configuration, its points & $D$, $a_i$ & our $D$ is a
+divisor and $a_n$ are coefficients\\[0.3em]
+$\rho_i$, $\beta_i$ & nodes, their radii $-v(\rho_i)$ & $z_i$, $\eta_i$ &
+$\beta_i$ as in \cref{ent:prop:kernel-direct}\\[0.3em]
+$\widehat P_i$, $\varpi_i$ & node cofactor, its value at $\rho_i$ & $P_i$,
+$d_i$ & $d$ is the number of variables\\[0.3em]
+$c_i$ & integer bounding a loss & $C_i$ & our $C_n$ are corrections\\[0.3em]
+$\delta$ & shift scale of \cref{ent:rc:lem:shift} & $\beta$ & \\[0.3em]
+$\Kle$ & polynomial-part ring $\kk((t^{\Gamma_{\le0}}))$ & $\mathcal A_\Gamma$
+& our $\A$ is $\C[X]((t^\Gamma))$\\[0.3em]
+$g_c$, $\Psi$ & constant linear map, triangular shear & $L$, $S$ & \\[0.3em]
+$V_H$, $\mathfrak q_H$, $\kappa_H$, $\red_H$ & coarsened ring, its maximal
+ideal, residue field, residue map & $\mathcal O_H$, $\mathfrak m_H$, $K_H$,
+$\red_n$ & our $\mm$ is the maximal ideal of $\OO$; $V_{H_\gamma}=V_\gamma$\\[0.3em]
+$\gamma_n$, $H_n$ & separated scales, $H_n=H_{\gamma_n}$ & $\eta_n$, $H_n$ &
+the same convex subgroups\\[0.3em]
+$\mathbf u_j$, $\mathbf w$ & coordinate vectors, a vector in
+\cref{ent:rc:lem:taylor-remainder} & $e_j$, $u$ & our $e_j$ span
+$\Gamma_\infty$; our $u_j$ are units\\[0.3em]
+$\vartheta_n$ & perturbation exponent & $\theta_n$ & our $\theta_n$ is a real
+radius\\[0.3em]
+$\Jac\Phi$ & Jacobian matrix & $J_\Phi$ & our $J_{n,j}$ are prescribed
+jets\\[0.3em]
+$X'$ & transverse variables $(X_2,\ldots,X_d)$ & $Y$ & our $Y_m$ are
+prescribed algebraic sets\\[0.3em]
+$P_{\langle r\rangle}$, $D_{\langle r\rangle}$ & product and divisor of the
+reduced multiplicities $(m_i-r)_+$ & $P_r$ & our $P_n$ are shell
+polynomials\\[0.3em]
+$\bar m$, $\mathsf h_i$ & maximal multiplicity, leading Taylor part & $M$,
+$\tau_i$ & our $M_n$ are shell totals, our $\tau_n$ normalizers\\[0.3em]
+$N_1$, $N_3$, $P_{N_1}$, $P_{N_3}$ & node sets and their products & $L$,
+$H$, $Q_L$, $Q_H$ & our $H$ is a convex subgroup, our $Q_n$ is
+\eqref{ent:eq:Qn}\\[0.3em]
+$\Gamma\subseteq\No$ with \eqref{ent:eq:embedding} & surreal reading &
+$\iota:\Gamma\hookrightarrow\No$ & \\[0.3em]
 $\No[i]$ & surcomplex numbers & $\No(i)$ & collection notation\\
 \bottomrule
 \end{tabularx}
@@ -4069,8 +4194,8 @@ the B\'ezout obstruction under every cofinal extension
 (\cref{ent:cor:no-repair}). See \cref{ent:sec:collection}.
 \end{remark}
 
-\section{Several ordinary variables: exact extension domains and
-exceptional directions}
+\section{Several ordinary variables: extension domains, exceptional
+directions, rectification and fat points}
 \label{ent:sec:multivariable}
 
 This section is the fifth source's contribution, together with the
@@ -4096,11 +4221,22 @@ closedness, and the inclusion $f(\Dom)\subseteq\Dom$ of
 \Cref{ent:mv:subsec:blocks} studies a second, explicitly different
 convention, homogeneous-block evaluation. It is never called entire, and a
 statement about one convention is not a statement about the other.
-\item \emph{Notation.} The fifth source's letters are translated by the last
-table of \cref{ent:subsec:notation}. In particular its homogeneous block
+\item \emph{Notation.} The fifth source's letters are translated by the
+fifth manuscript's table in \cref{ent:subsec:notation}. In particular its homogeneous block
 $H_n$ is written $F_{(n)}$ here, because $H_n$ is the convex subgroup of
 \cref{ent:def:coarse}.
 \end{enumerate}
+
+The last seven subsections,
+\crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits}, are the seventh
+source's contribution and state their own hypotheses
+(\cref{ent:rc:conv:standing}): divisible $\Gamma$ and $\kk\in\{\R,\C\}$.
+Warning (1) does not apply to them, and the three warnings above were written
+for the first eight subsections. They re-scope the sentence above: for
+configurations of points that an entire automorphism carries into a
+coordinate line, the ideal theory and the interpolation of values are settled
+there, while preparation, positive-dimensional divisors and GCD or B\'ezout
+theory remain open (\cref{ent:mv:subsec:limits}).
 
 \subsection{Setting}
 \label{ent:mv:subsec:setting}
@@ -4937,7 +5073,15 @@ for the whole-family convention. The preparation, interpolation, divisor
 and ideal-theoretic clauses are not settled; no several-variable GCD or
 B\'ezout classification is asserted, and a positive-dimensional zero set
 cannot be replaced by the one-variable finite root divisor of
-\cref{ent:sec:products}.
+\cref{ent:sec:products}. \emph{Re-scoped by the seventh source}
+(\crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits}): for configurations
+of points that an entire automorphism carries into a coordinate line, the
+ideal-theoretic clause is settled by explicit fat-point generators, their
+sharp number and non-finite generation for unbounded multiplicities, and the
+interpolation of values reduces exactly to the one-variable image theorem
+(\cref{ent:rc:thm:fat-main,ent:rc:cor:evaluation}). Preparation, divisors
+with positive-dimensional support, GCD and B\'ezout classification, and ideals
+of configurations that are not line-rectifiable remain unsettled.
 \item The full homogeneous-block domain at an arbitrary tuple of new-field
 coordinates is not classified. \Cref{ent:mv:thm:rays} covers rays whose
 direction is defined over the old field, and new-field direction ratios can
@@ -4960,6 +5104,1336 @@ complex directions.
 choice is used for lattice bases, coefficient bounds and algebraically
 independent coordinates.
 \end{itemize}
+
+% ---------------------------------------------------------------------------
+% Seventh source (file prefix 10-entire-rectification), labels ent:rc:.
+% Displayed equations in these subsections are numbered (R1), (R2), ... so
+% that the numbers of all later equations of the report are unchanged.
+% ---------------------------------------------------------------------------
+\begingroup
+\setcounter{entrcsaveeq}{\value{equation}}%
+\setcounter{equation}{0}%
+\renewcommand{\theequation}{R\arabic{equation}}%
+\renewcommand{\theHequation}{entrc.\arabic{equation}}%
+
+\subsection{Rectification and fat points: setting and main results}
+\label{ent:rc:subsec:setting}
+
+This subsection and the six after it are the seventh source's contribution,
+the manuscript \emph{Entire Automorphisms at Surreal Scales: an order-unit
+dichotomy, omnific rectification, and exact fat-point ideals} (file prefix
+\texttt{10-entire-rectification}); their labels carry \texttt{ent:rc:}. They
+ask when an infinite configuration of points of $\K^d$ can be carried into a
+coordinate line by an invertible entire change of coordinates, and what the
+ideals of points with multiplicities look like once it has been. Against this
+report they answer part of the ideal-theory and interpolation clauses of
+\cref{ent:q:several}, for configurations of points that are line-rectifiable
+in the sense below; the extent is recorded after that question. The source
+itself described its problem as ``a different several-variable global
+problem''; that was accurate as a description of its question and is
+superseded here by the placement against \cref{ent:q:several}. Four warnings
+govern these subsections.
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2em]
+\item \emph{Hypotheses.} Warning (1) at the head of this section does not
+apply here; the standing hypotheses are \cref{ent:rc:conv:standing}. In
+particular $\Gamma$ is divisible, as in the rest of the report, and the
+coefficient field is $\R$ or $\C$. Uncountability of the coefficient field is
+used once, in \cref{ent:rc:lem:projection}. Algebraic closedness,
+preparation and root counts are not used.
+\item \emph{Printed once.} For dependency control the seventh source reproved
+the analytic tools it needs: the finite-variable coefficient criterion,
+canonical products with multiplicities, division by a linear factor and by an
+escaping product, a sufficient value-interpolation condition, and the
+countability of radially finite sets. These are
+\cref{ent:thm:multi-criterion,ent:thm:product,ent:lem:linear-division,ent:cor:gcd,ent:prop:kernel-direct,ent:thm:image,ent:thm:interpolation,ent:lem:divisor-countable},
+and the source credits this report for them. They are printed once, by
+citation, in \cref{ent:rc:subsec:calculus}; the one proof kept as a second
+route is the source's explicit interpolation series
+(\cref{ent:rc:lem:interpolation}).
+\item \emph{Words.} ``Entire'' means whole-family entire
+(\cref{ent:mv:def:entire}); homogeneous-block evaluation plays no role. An
+\emph{ideal} is an algebraic ideal: a generating set permits finite linear
+combinations only, and no analytic closure is substituted for ideal
+generation.
+\item \emph{Letters.} Several of the source's letters collide with this
+report's and are renamed; the last table of \cref{ent:subsec:notation} gives
+the translation. The three collisions that matter are these. The source's
+$\mathcal A_\Gamma$ is a ring of polynomial parts, written $\Kle$ here,
+because our $\A$ is $\C[X]((t^\Gamma))$. Its denominators $d_i$ are written
+$\varpi_i$, because $d$ is the number of variables. Its $e_j$ denoted both the
+basis vectors of $\Gamma_\infty$ and the coordinate vectors of $\K^d$ (the
+source flags this); here $e_j$ always denotes the former, and the coordinate
+vectors are $\mathbf u_1,\ldots,\mathbf u_d$, which are not the units $u_j$
+of \cref{ent:mv:lem:twist}.
+\end{enumerate}
+
+\begin{convention}[Standing hypotheses of the seventh source's subsections]
+\label{ent:rc:conv:standing}
+$\Gamma\ne0$ is a set-sized divisible ordered abelian group. The coefficient
+field $\kk$ is $\R$ or $\C$ with the trivial valuation, and
+$\K=\kk((t^\Gamma))$; for $\kk=\R$ the one-variable ring $\E$ is the real
+form of \cref{ent:prop:real-form}. The number $d\ge1$ of variables is finite,
+$\Ed$ is the ring of \cref{ent:mv:def:entire}, and $\E=\mathcal E_{\Gamma,1}$
+is written in the variable $Z$. For $p=(p_1,\ldots,p_d)\in\K^d$ put
+\[
+ v(p)=\min_{1\le j\le d}v(p_j),\qquad v(0)=+\infty,\qquad
+ B^d_\gamma=\{p\in\K^d:v(p)\ge\gamma\}\quad(\gamma\in\Gamma),
+\]
+so that $B^1_\gamma$ is the ball $B_\gamma$ of \cref{ent:sec:zeros}. For
+$F=\sum_\alpha a_\alpha X^\alpha\in\Ed$ and $\gamma\in\Gamma$, the weighted
+Gauss valuation is
+\begin{equation}\label{ent:rc:eq:gauss}
+ m_\gamma(F)=\min_{\alpha}\{v(a_\alpha)+|\alpha|\gamma\},
+ \qquad m_\gamma(0)=+\infty,
+\end{equation}
+which for $d=1$ is \eqref{ent:eq:weighted}; the source's $w_\gamma$ is this
+$m_\gamma$, with the same sign. ``Tends to $+\infty$'' always means cofinally
+in $\Gamma$, not merely increasingly.
+\end{convention}
+
+The minimum in \eqref{ent:rc:eq:gauss} exists: choose one nonzero
+coefficient; by \cref{ent:thm:multi-criterion}(iii) only finitely many
+coefficients have weighted valuation at most its own, and these finitely
+many include the minimum. The value bounds $v(F(z))$ from below on all of
+$B^d_\gamma$.
+
+\begin{definition}[Radially finite and line-rectifiable configurations]
+\label{ent:rc:def:rectifiable}
+A subset $\mathcal X\subseteq\K^d$ is \emph{radially finite} if
+$\mathcal X\cap B^d_\gamma$ is finite for every $\gamma\in\Gamma$. An
+\emph{entire map} $\K^d\to\K^s$ has coordinates in $\Ed$. An \emph{entire
+automorphism} of $\K^d$ is an entire map $\Phi$ with an entire map
+$\Phi^{-1}$ such that $\Phi^{-1}\circ\Phi$ and $\Phi\circ\Phi^{-1}$ are the
+identity. A subset $\mathcal X$ is \emph{line-rectifiable} if some entire
+automorphism maps it into the coordinate line $\K\times\{0\}^{d-1}$.
+\end{definition}
+
+For $d=1$ the radially finite subsets are the supports of the radially finite
+divisors of \cref{ent:def:radial} with all multiplicities one. Radial
+finiteness is a condition on the valuation polydisks of the one fixed
+workspace $\K^d$; it is not discreteness in the fine surreal topology, which
+is weaker and is not a substitute (\cref{ent:rc:subsec:limits}). The order
+unit is \cref{ent:def:order-unit}; the source uses the same definition and
+notes that it is weaker than asking $\Gamma$ to be Archimedean, since smaller
+Archimedean classes may lie below the largest one.
+
+\Needspace{14\baselineskip}
+\begin{theorem}[Rectification dichotomy]\label{ent:rc:thm:main}
+Suppose $d\ge2$ and $\cf(\Gamma)=\aleph_0$. The following are equivalent:
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=2em]
+\item $\Gamma$ has an order unit;
+\item every radially finite subset of $\K^d$ is line-rectifiable.
+\end{enumerate}
+When an order unit exists, an affine change of coordinates followed by one
+triangular entire shear suffices. When no order unit exists, there is a
+radially finite $\mathcal X$ such that, for every entire automorphism $\Phi$,
+every sufficiently late block of $d+1$ specified points of
+$\Phi(\mathcal X)$ is affinely independent. In particular no
+$\Phi(\mathcal X)$ lies in an affine hyperplane.
+\end{theorem}
+
+The positive half is \cref{ent:rc:prop:positive}, the negative half
+\cref{ent:rc:thm:obstruction}; the proof is assembled after the latter. The
+hypothesis $\cf(\Gamma)=\aleph_0$ cannot be dropped: if
+$\cf(\Gamma)>\aleph_0$, every radially finite set is finite
+(\cref{ent:rc:lem:countable}), hence polynomially line-rectifiable, while no
+order unit exists, since an order unit forces countable cofinality
+(\cref{ent:rem:one-name}). The three cases are tabulated at the end of
+\cref{ent:rc:subsec:obstruction}. There is a substantial positive class on
+the negative side of the dichotomy. Put
+\begin{equation}\label{ent:rc:eq:Kle}
+ \Kle=\{a\in\K:\supp(a)\subseteq\Gamma_{\le0}\},
+\end{equation}
+the Hahn polynomial-part ring; it is a subring of $\K$, not a field.
+
+\begin{theorem}[Polynomial-part and omnific rectification]
+\label{ent:rc:thm:omnific-main}
+For every $\Gamma$ as in \cref{ent:rc:conv:standing}, every radially finite
+subset of $(\Kle)^d$ is line-rectifiable, again by an affine change of
+coordinates followed by one triangular entire shear. For a divisible ordered
+subgroup $\Gamma\subseteq\No$ and the embedding \eqref{ent:eq:embedding},
+this applies to the omnific integers
+$\Z+\R((t^{\Gamma_{<0}}))$ of the real workspace and, after
+complexification, to the Gaussian omnific integers
+$\Z[i]+\C((t^{\Gamma_{<0}}))$ of the complex one; see
+\eqref{ent:rc:eq:omnific-real}--\eqref{ent:rc:eq:omnific-complex}. The
+ambient automorphism is not asserted to preserve either ring.
+\end{theorem}
+
+Here $\kk((t^{\Gamma_{<0}}))$ denotes the set of Hahn series supported in
+$\Gamma_{<0}$, not a field. In particular the negative examples of
+\cref{ent:rc:thm:main} need genuine infinitesimal tails: they cannot lie in
+$(\Kle)^d$. The contrast is sharper than a statement that some discrete sets
+happen to interpolate and others do not.
+
+For $a\in\K^d$ and $F\in\Ed$, $\ord_aF$ is the least total degree of a
+nonzero term of the Taylor expansion of $F$ at $a$
+(\cref{ent:rc:lem:composition}), with $\ord_a0=+\infty$; multiplicities below
+are total multiplicities in all coordinates. For an ideal $I$, $\mu(I)$ is the
+least cardinality of an algebraic generating set.
+
+\Needspace{12\baselineskip}
+\begin{theorem}[Sharp fat-point generator count]\label{ent:rc:thm:fat-main}
+Let $d\ge2$, let $\mathcal X=\{p_i\}$ be a nonempty, radially finite,
+line-rectifiable subset of $\K^d$, and prescribe positive integers $m_i$.
+The ideal
+\[
+ I_{\mathbf m}(\mathcal X)=\{F\in\Ed:\ord_{p_i}F\ge m_i\text{ for all }i\}
+\]
+is finitely generated if and only if the $m_i$ are bounded. If
+$\bar m=\max_im_i<\infty$, then
+\begin{equation}\label{ent:rc:eq:mu-main}
+ \mu\bigl(I_{\mathbf m}(\mathcal X)\bigr)=\binom{\bar m+d-1}{d-1},
+\end{equation}
+with explicit generators in \cref{ent:rc:thm:fat-generators}. For $m_i=1$
+the vanishing ideal is generated by a regular sequence of length $d$. In
+dimension one these ideals are principal, even for unbounded multiplicities.
+\end{theorem}
+
+\paragraph{Relation to classical tameness.}
+Rosay and Rudin studied discrete subsets of ordinary $\C^d$ that a
+holomorphic automorphism carries onto $\N\times\{0\}^{d-1}$
+\cite{RosayRudin}; related notions, including the extension of injective
+self-maps, appear in Winkelmann's treatment \cite{Winkelmann}. The source
+uses the distinct term \emph{line-rectifiable}: the image is required to lie
+in the line, not to be a prescribed set there, and no equivalence with those
+stronger properties is assumed. Over a trivially valued coefficient field
+$\N$ itself is valuation-bounded, so it is not the model escaping sequence
+here. The projection-and-shear strategy has a classical precedent; the
+source's novelty claim concerns the arbitrary-rank dichotomy and its
+valuation-scale obstruction, not the strategy in isolation. The classical
+comparison suggests questions but is not a transfer principle; there may be
+several inequivalent notions of tameness in an arbitrary-rank entire
+category, and the dichotomy is proved only for being sent into a coordinate
+line.
+
+\subsection{The several-variable calculus, and what is cited}
+\label{ent:rc:subsec:calculus}
+
+\paragraph{The coefficient criterion.} The seventh source's all-scale
+criterion is \cref{ent:thm:multi-criterion}, proved there by the same
+descending-leading-exponent argument, and is printed once. The source adds
+two remarks, kept here: the criterion tests the individual monomials, not only
+their homogeneous block sums; and a countable family whose valuations tend
+cofinally to $+\infty$ is strongly summable, which is
+\cref{ent:lem:cofinal-tails} and \cref{ent:mv:lem:tails}(a).
+
+\begin{lemma}[Gauss values and faithful evaluation]\label{ent:rc:lem:gauss}
+The ring $\Ed$ is an integral domain, and for $F,G\in\Ed$ and
+$\gamma\in\Gamma$
+\[
+ m_\gamma(FG)=m_\gamma(F)+m_\gamma(G),\qquad
+ m_\gamma(F+G)\ge\min\{m_\gamma(F),m_\gamma(G)\}.
+\]
+A nonzero element of $\Ed$ is nonzero at some point of $\K^d$.
+\end{lemma}
+\begin{proof}
+The inequality for sums is immediate. For products, fix $\gamma$. A term of
+the Cauchy product has weighted valuation the sum of the two weighted input
+valuations; both input families are bounded below and tend to $+\infty$, so
+only finitely many pairs fall below any threshold, all coefficient
+regroupings are legitimate, and $FG\in\Ed$ by
+\cref{ent:thm:multi-criterion}. Substitute $X=t^\gamma U$ and multiply $F$ by
+$t^{-m_\gamma(F)}$: the coefficients acquire nonnegative valuation, and only
+finitely many have valuation zero, so the reduction modulo positive valuation
+is a nonzero polynomial $\inpol_\gamma(F)\in\kk[U_1,\ldots,U_d]$. The product
+of two nonzero such polynomials is nonzero, and it is the reduction for $FG$;
+this gives the equality. Since $\kk$ is infinite, choose $c\in\kk^d$ with
+$\inpol_\gamma(F)(c)\ne0$; then $F(t^\gamma c)$ has valuation exactly
+$m_\gamma(F)$ and is nonzero. The domain property follows from the inclusion
+in $\K[[X_1,\ldots,X_d]]$.
+\end{proof}
+
+In one variable the multiplicativity is \eqref{ent:eq:gauss-mult} and the
+faithfulness is \cref{ent:cor:units} (over $\R$,
+\cref{ent:sm:rem:real}); \cref{ent:thm:multi-unit} uses the same regrouping.
+
+\begin{lemma}[All-disk summation]\label{ent:rc:lem:sum}
+Let $F_n\in\Ed$. If $m_\gamma(F_n)\to+\infty$ for every $\gamma\in\Gamma$,
+then $\sum_nF_n$ is a well-defined element of $\Ed$, it may be evaluated and
+differentiated termwise, and its weighted value at $\gamma$ is at least any
+common lower bound for the $m_\gamma(F_n)$. More generally, if a formal series
+$H$ is the coefficientwise limit of $H_N\in\Ed$ and, for every $\gamma$,
+all weighted coefficients of $H-H_N$ at $\gamma$ are bounded below by some
+$B_{N,\gamma}$ that tends to $+\infty$ with $N$, then $H\in\Ed$.
+\end{lemma}
+\begin{proof}
+For a fixed coefficient, the contributions of the $F_n$ have valuations
+tending to $+\infty$, so their Hahn sum exists (\cref{ent:lem:cofinal-tails}).
+Fix $\gamma$ and a threshold $b$. All but finitely many summands have every
+weighted coefficient above $b$, and in each of the remaining finitely many
+summands only finitely many coefficients fail that inequality; so the sum
+satisfies \cref{ent:thm:multi-criterion}(iii), with the asserted lower
+bound. The limit assertion follows by choosing one sufficiently accurate
+$H_N$. Evaluation obeys the same estimates on every polydisk. A Hasse
+derivative of multi-order $\beta$ replaces $a_\alpha$ by
+$\binom\alpha\beta a_\alpha$, a nonzero integer multiple of valuation
+$v(a_\alpha)$, and lowers the weight by $|\beta|\gamma$; so the criterion and
+the uniform estimates survive differentiation, which justifies termwise
+differentiation.
+\end{proof}
+
+In one variable this is \cref{ent:sm:lem:entire-sum}.
+
+\begin{lemma}[Composition and Taylor expansion]\label{ent:rc:lem:composition}
+Entire series are closed under substitution of entire series, including
+substitutions with nonzero constant terms, and evaluation commutes with
+substitution. Translations and invertible affine maps induce automorphisms of
+$\Ed$. The usual Taylor and chain rules hold, with the coefficients in $\K$
+held constant.
+\end{lemma}
+\begin{proof}
+On the polydisk of weight $\gamma$ let $\nu$ be a common lower bound for the
+weighted values of the inner series $G_1,\ldots,G_s$. For an outer series
+$F=\sum a_\alpha U^\alpha$, \cref{ent:rc:lem:gauss} gives
+$m_\gamma(a_\alpha G^\alpha)\ge v(a_\alpha)+|\alpha|\nu$, and the right side
+tends to $+\infty$. Apply \cref{ent:rc:lem:sum} to the polynomial partial sums
+of $F(G)$; all nested coefficient sums can be regrouped because only finitely
+many contributions remain below each threshold (\cref{ent:mv:lem:tails}). The
+chain rule holds for polynomials, and passes to these limits by the derivative
+estimate of \cref{ent:rc:lem:sum}. Translation is a special case, with inverse
+the opposite translation; Taylor coefficients are the Hasse derivatives at the
+centre, and the same bounds justify the expansion. Affine inversion is
+polynomial.
+\end{proof}
+
+In one variable this is \cref{ent:prop:operations}.
+
+\begin{remark}[A forbidden shortcut]\label{ent:rc:rem:shortcut}
+The source records the trap that \cref{ent:lem:neumann} and
+\cref{ent:ex:ranktwo-unit} already isolate: a positive $\lambda\in\Gamma$ need
+not have cofinal multiples, so $v(q)>0$ does not imply $q^n\to0$ in the
+valuation topology, and Hahn summability of a geometric series is not
+convergence of its partial sums. The infinite constructions below are
+controlled by cofinal sequences of node radii instead, and no diskwise
+expression $1+q$ is assumed to have a cofinally convergent geometric inverse.
+\end{remark}
+
+\paragraph{One-variable products and division, cited.}
+Let $D$ be a radially finite divisor on $\K$ whose support consists of
+nonzero points. Its canonical product $P_D$ is entire with divisor exactly
+$D$ and constant coefficient $1$, for arbitrary, possibly unbounded,
+multiplicities (\cref{ent:thm:product}); a zero of $f\in\E$ can be divided
+out, repeatedly up to its order (\cref{ent:lem:linear-division}); and
+$f\in P_D\E$ if and only if $\ord_\rho f\ge D(\rho)$ at every node
+(\cref{ent:cor:gcd}, and without preparation \cref{ent:prop:kernel-direct}).
+The seventh source proves these three statements for itself. Its division
+proof, by finite partial quotients $f/P_N$ and an inverse-tail estimate uniform
+in the degree, is the argument of \cref{ent:prop:kernel-direct} and is not
+printed twice; its observation that a purely formal quotient by an infinite
+product is not automatically entire is the remark after
+\cref{ent:thm:factorization}.
+
+\begin{remark}[The real coefficient field]\label{ent:rc:rem:real}
+Everything cited in this subsection holds over $\R((t^\Gamma))$ with nodes and
+data there. \Cref{ent:thm:multi-criterion} is stated over any trivially valued
+field; the constructions of \cref{ent:thm:product,ent:lem:linear-division}
+use only the support calculus and units of the Hahn algebra with initial
+polynomial~$1$, as the sixth source's use of them over $\R$ already requires;
+\cref{ent:prop:kernel-direct} uses neither preparation nor algebraic
+closedness; and \cref{ent:thm:image,ent:cor:order-unit-image} hold over $\R$ by
+\cref{ent:prop:real-form}. The seventh source proves its own versions over
+$\kk\in\{\R,\C\}$ directly. This remark is the merge's bookkeeping.
+\end{remark}
+
+\paragraph{Value interpolation at escaping nodes.}
+Let $(\rho_i)$ be distinct nonzero points of $\K$ forming a radially finite
+set, with
+\begin{equation}\label{ent:rc:eq:nodes}
+ \beta_i=-v(\rho_i)>0 ,
+\end{equation}
+enumerated, when infinite, with $\beta_1\le\beta_2\le\cdots$; each value
+occurs finitely often and $\beta_i\to+\infty$ (\cref{ent:lem:divisor-countable}).
+These are the $\beta_i$ of \cref{ent:prop:kernel-direct}. Let $P$ be the
+canonical product of $\sum_i[\rho_i]$, and put
+\begin{equation}\label{ent:rc:eq:cofactor}
+ \widehat P_i=\prod_{j\ne i}\Bigl(1-\frac Z{\rho_j}\Bigr),\qquad
+ \varpi_i=\widehat P_i(\rho_i)\ne0 ,
+\end{equation}
+the node cofactor and its value, the canonical product of the divisor with
+$\rho_i$ removed; for one node per shell, $\widehat P_i$ is the cofactor
+$\widehat P_n$ of \cref{ent:sm:subsec:cardinal} and $\varpi_i$ is the class
+$\varpi_n$ there.
+
+\begin{lemma}[The exact denominator valuation]\label{ent:rc:lem:denominator}
+With the nondecreasing enumeration,
+\begin{equation}\label{ent:rc:eq:denominator}
+ v(\varpi_i)=\sum_{\substack{j\ne i\\ \beta_j\le\beta_i}}
+ \bigl(v(\rho_j-\rho_i)+\beta_j\bigr),
+\end{equation}
+a finite sum. If every $\rho_i$ lies in $\Kle$ and
+$s_i=\#\{j\ne i:\beta_j\le\beta_i\}$, then
+\begin{equation}\label{ent:rc:eq:denom-bound}
+ -s_i\beta_i\le v(\varpi_i)\le s_i\beta_i .
+\end{equation}
+\end{lemma}
+\begin{proof}
+The sum is finite by radial finiteness. Write $\widehat P_i$ as the finite
+product over $j\ne i$ with $\beta_j\le\beta_i$ times the tail product $T_i$
+over $\beta_j>\beta_i$ (\cref{ent:thm:product}); evaluation at $\rho_i$ is
+multiplicative. The coefficient $c_k$ of $Z^k$ in $T_i$ is a strong sum of
+signed products of $k$ distinct $1/\rho_j$ with $\beta_j>\beta_i$, so
+$v(c_k\rho_i^k)>0$ for $k\ge1$, and $T_i(\rho_i)=1+\sum_{k\ge1}c_k\rho_i^k$
+has valuation $0$: a strong sum of terms of positive valuation has positive
+valuation. Each remaining factor
+contributes $v(1-\rho_i/\rho_j)=v(\rho_j-\rho_i)-v(\rho_j)$, which gives
+\eqref{ent:rc:eq:denominator}. If both nodes lie in $\Kle$, their nonzero
+difference lies there too and has valuation at most $0$, while the
+ultrametric inequality gives $v(\rho_j-\rho_i)\ge-\beta_i$ when
+$\beta_j\le\beta_i$. Each term of \eqref{ent:rc:eq:denominator} therefore lies
+between $\beta_j-\beta_i\ge-\beta_i$ and $\beta_j\le\beta_i$, which proves
+\eqref{ent:rc:eq:denom-bound}.
+\end{proof}
+
+\begin{lemma}[Scale-moderate value interpolation]\label{ent:rc:lem:interpolation}
+Let $(\rho_i)$ be as in \eqref{ent:rc:eq:nodes} and let $b_i\in\K$. Suppose
+that for all but finitely many $i$ there is an integer $c_i\ge0$ with
+\begin{equation}\label{ent:rc:eq:moderate}
+ v(b_i/\varpi_i)\ge-c_i\beta_i .
+\end{equation}
+Then some $G\in\E$ satisfies $G(\rho_i)=b_i$ for every $i$.
+\end{lemma}
+\begin{proof}[Proof, as a special case of \cref{ent:thm:image}; the merge's]
+A finite set of nodes is handled by Lagrange interpolation. Otherwise the
+divisor $D=\sum_i[\rho_i]$ is infinite and radially finite with empty finite
+part, since $v(\rho_i)<0$. Take its shells (\cref{ent:lem:shells}): radii
+$\gamma_n$, nodes $\rho_{n,j}=\tau_n\xi_{n,j}$ with $\xi_{n,j}$ units of $\OO$.
+For value data the normalized shell Hermite polynomial of
+\eqref{ent:eq:normalizedjets} is the Lagrange polynomial
+\[
+ R_n(T)=\sum_j\frac{b_{n,j}}{\varpi^\circ_{n,j}}\prod_{k\ne j}(T-\xi_{n,k}),
+ \qquad \varpi^\circ_{n,j}=\prod_{k\ne j}(\xi_{n,j}-\xi_{n,k}),
+\]
+whose products have coefficients in $\OO\subseteq V_n$. For the node
+$\rho_i=\rho_{n,j}$, the terms of \eqref{ent:rc:eq:denominator} with
+$\beta_l<\gamma_n$ are $\beta_l-\gamma_n$, of absolute value at most $\gamma_n$,
+and those with $\beta_l=\gamma_n$ are $v(\rho_{n,k}-\rho_{n,j})+\gamma_n=
+v(\xi_{n,k}-\xi_{n,j})$. Hence $v(\varpi_i)=v(\varpi^\circ_{n,j})+h_i$ with
+$|h_i|\le s_i\gamma_n$, and \eqref{ent:rc:eq:moderate} gives
+$v(b_{n,j}/\varpi^\circ_{n,j})\ge-(c_i+s_i)\gamma_n$, that is,
+$b_{n,j}/\varpi^\circ_{n,j}\in V_n$. So $R_n\in V_n[T]$ on every shell that contains
+no exceptional node, which is all but finitely many shells, and
+\cref{ent:thm:image} supplies $G$; over $\R$ use \cref{ent:prop:real-form}.
+\end{proof}
+\begin{proof}[Second proof: the seventh source's explicit series]
+Put $N_i=2c_i+2$ for the nonexceptional $i$ and
+\begin{equation}\label{ent:rc:eq:cardinal}
+ G(Z)=\sum_{i\text{ exceptional}}\frac{b_i}{\varpi_i}\widehat P_i(Z)
+ +\sum_{i\text{ not exceptional}}
+ \frac{b_i}{\varpi_i}\,\widehat P_i(Z)\Bigl(\frac Z{\rho_i}\Bigr)^{N_i}.
+\end{equation}
+Fix $\gamma$. Once $\beta_i+\gamma>0$, the factor $1-Z/\rho_i$ has weighted
+value $0$, so $m_\gamma(\widehat P_i)=m_\gamma(P)=:A_\gamma$ by
+\cref{ent:rc:lem:gauss}. Once also $\beta_i>2\abs\gamma$, the $i$th summand has
+weighted value at least
+\[
+ A_\gamma-c_i\beta_i+(2c_i+2)(\beta_i+\gamma)
+ \ \ge\ A_\gamma-c_i\beta_i+(c_i+1)\beta_i=A_\gamma+\beta_i ,
+\]
+which tends to $+\infty$. \Cref{ent:rc:lem:sum} makes $G$ entire and allows
+termwise evaluation. At $\rho_j$ every summand with $i\ne j$ vanishes and the
+$j$th equals $b_j$.
+\end{proof}
+
+The exponent $N_i$ may grow without bound with $i$; no fixed Archimedean
+class need contain all the losses, only an integer multiple of each node's
+own scale. For one node per shell, \eqref{ent:rc:eq:cardinal} is the
+cardinal series of \cref{ent:sm:rem:simple-cardinal}; with several nodes on a
+shell it corrects node by node, rather than shell by shell as
+\cref{ent:sm:subsec:cardinal} does. As the source says, the lemma is a
+sufficient value-interpolation condition with an explicit construction, not
+the exact image theorem for arbitrary infinite jets; the exact image is
+\cref{ent:thm:image}.
+
+\begin{corollary}[Two sufficient conditions]\label{ent:rc:cor:interp-cases}
+In \cref{ent:rc:lem:interpolation} the data $b_i$ can be arbitrary if all
+sufficiently late $\beta_i$ are order units. Without an order unit, they can
+be interpolated whenever every $\rho_i$ lies in $\Kle$ and
+$v(b_i)\ge-\beta_i$ for all $i$; one may take $c_i=s_i+1$.
+\end{corollary}
+\begin{proof}
+An order unit bounds the absolute value of each fixed element of $\Gamma$ by
+an integer multiple of itself, hence bounds each loss $-v(b_i/\varpi_i)$
+separately; the first assertion is also \cref{ent:cor:order-unit-image}. For
+the second, \eqref{ent:rc:eq:denom-bound} gives
+$v(b_i/\varpi_i)\ge-\beta_i-s_i\beta_i$.
+\end{proof}
+
+\subsection{Projections, shears and omnific rectification}
+\label{ent:rc:subsec:rectification}
+
+\begin{lemma}[Radial finiteness forces countability]\label{ent:rc:lem:countable}
+An infinite radially finite subset of $\K^d$ is countable and forces
+$\cf(\Gamma)=\aleph_0$. If $\cf(\Gamma)>\aleph_0$, every radially finite set
+is finite and $\Ed=\K[X_1,\ldots,X_d]$.
+\end{lemma}
+\begin{proof}
+This is the argument of \cref{ent:lem:divisor-countable} with $v(p)$ in place
+of $v(\rho)$. Choose distinct nonzero $p_n$ in the set. If
+$\{-v(p_n)\}$ had an upper bound $B$, the polydisk $B^d_{-B}$ would contain
+all of them; so it is a countable cofinal subset of $\Gamma$. The polydisks
+$B^d_{v(p_n)}$ cover $\K^d$ and each meets the set finitely, so the set is
+countable. The polynomial assertion is the last sentence of
+\cref{ent:thm:multi-criterion}.
+\end{proof}
+
+\begin{lemma}[Boundedness under entire maps]\label{ent:rc:lem:boundedness}
+An entire map sends every valuation polydisk into some valuation polydisk.
+An entire automorphism $\Phi$ preserves and reflects radial finiteness:
+$\mathcal X$ is radially finite if and only if $\Phi(\mathcal X)$ is.
+\end{lemma}
+\begin{proof}
+For $v(p)\ge\gamma$ each coordinate satisfies $v(F_j(p))\ge m_\gamma(F_j)$,
+since $v(a_\alpha p^\alpha)\ge v(a_\alpha)+|\alpha|\gamma$; take the minimum of
+these finitely many values. The points of $\mathcal X$ whose images lie in
+$B^d_\gamma$ are mapped by $\Phi^{-1}$ into one polydisk, so there are finitely
+many when $\mathcal X$ is radially finite and $\Phi$ is injective. Apply the
+same argument to $\Phi^{-1}$.
+\end{proof}
+
+\begin{lemma}[A simultaneous valuation-preserving projection]
+\label{ent:rc:lem:projection}
+Let $\mathcal X\subseteq\K^d$ be countable. There is $c\in\kk$ such that the
+$\kk$-linear functional $\ell_c(X)=X_1+cX_2+\cdots+c^{d-1}X_d$ satisfies
+\begin{equation}\label{ent:rc:eq:project}
+ v(\ell_c(p))=v(p)\quad(p\in\mathcal X\setminus\{0\}),\qquad
+ v(\ell_c(p)-\ell_c(q))=v(p-q)\quad(p\ne q\text{ in }\mathcal X).
+\end{equation}
+In particular $\ell_c$ is injective on $\mathcal X$, and it is the first
+coordinate of $g_c(X)=(\ell_c(X),X_2,\ldots,X_d)$, which lies in
+$\operatorname{GL}_d(\kk)$ with determinant $1$.
+\end{lemma}
+\begin{proof}
+For a nonzero $w\in\K^d$ with $\lambda=v(w)$, the coefficients of $t^\lambda$
+in its coordinates form a nonzero vector $\lc(w)\in\kk^d$, and
+$v(\ell(w))=\lambda$ for a $\kk$-linear $\ell$ exactly when
+$\ell(\lc(w))\ne0$. For $\ell=\ell_c$ this is the nonvanishing
+at $c$ of a nonzero polynomial of degree less than $d$, which excludes finitely
+many $c$. Apply this to the countably many nonzero points of $\mathcal X$ and
+nonzero differences of two of its points; the union of the excluded sets is
+countable, and $\kk$ is uncountable.
+\end{proof}
+
+This uses only the uncountability of the constant field, not a probabilistic
+choice or a compactness argument. Avoiding the leading coefficients of the
+\emph{differences} matters when two points share a shell.
+
+\begin{lemma}[All projected nodes beyond one scale]\label{ent:rc:lem:shift}
+Let $\mathcal X$ be radially finite, take $g_c$ from
+\cref{ent:rc:lem:projection}, and let $\delta\in\Gamma$ be positive. After
+$g_c$ and a translation of the first coordinate, each $p\in\mathcal X$ becomes
+a point
+\[
+ (\rho_p,b_{p,2},\ldots,b_{p,d}),\qquad
+ \beta_p=-v(\rho_p)\ge\delta,\qquad v(b_{p,j})\ge-\beta_p ,
+\]
+with the $\rho_p$ distinct and nonzero. The set $\{\rho_p\}$ is radially
+finite, so when $\mathcal X$ is infinite it can be enumerated as in
+\eqref{ent:rc:eq:nodes}. If $\mathcal X\subseteq(\Kle)^d$, all these
+coordinates lie in $\Kle$.
+\end{lemma}
+\begin{proof}
+Replace $\ell_c(p)$ by $\rho_p=\ell_c(p)+c't^{-\delta}$ with $c'\in\kk^\times$.
+Only finitely many points of $\mathcal X$ have $v(p)=-\delta$; choose $c'$ so
+that none of their leading coefficients cancels. Then, for every $p$ including
+$p=0$, $v(\rho_p)=\min\{v(p),-\delta\}$, which is at most $-\delta$; so
+$\rho_p\ne0$, and the untouched coordinates $b_{p,j}=p_j$ have valuation at
+least $v(p)\ge-\beta_p$. The translation preserves injectivity. Since
+$\{p:-\beta_p\ge\gamma\}\subseteq\mathcal X\cap B^d_\gamma$, the nodes are
+radially finite. Finally $\Kle$ is closed under $\kk$-linear combinations and
+contains $c't^{-\delta}$.
+\end{proof}
+
+\begin{proposition}[Rectification by a single shear]\label{ent:rc:prop:positive}
+If $\Gamma$ has an order unit, every radially finite subset of $\K^d$ is
+line-rectifiable. Without that assumption, every radially finite subset of
+$(\Kle)^d$ is line-rectifiable. In both cases an invertible affine map
+followed by one triangular entire shear suffices.
+\end{proposition}
+\begin{proof}
+A finite set is separated by a constant projection, and finite Lagrange
+polynomials in the first coordinate interpolate its remaining coordinates; the
+corresponding polynomial shear straightens it. Assume the set infinite, hence
+countable (\cref{ent:rc:lem:countable}), and choose the coordinates of
+\cref{ent:rc:lem:shift}. In the order-unit case take $\delta$ to be an order
+unit; then every $\beta_p\ge\delta$ is an order unit, and the first assertion
+of \cref{ent:rc:cor:interp-cases} supplies, for $j=2,\ldots,d$, entire $G_j$
+with $G_j(\rho_p)=b_{p,j}$. In the polynomial-part case use the second
+assertion of \cref{ent:rc:cor:interp-cases}, with the bounds of
+\cref{ent:rc:lem:shift}. The map
+\begin{equation}\label{ent:rc:eq:shear}
+ \Psi(X_1,X_2,\ldots,X_d)=\bigl(X_1,\ X_2-G_2(X_1),\ \ldots,\
+ X_d-G_d(X_1)\bigr)
+\end{equation}
+is an entire automorphism, with inverse obtained by changing each minus sign
+to a plus sign, and it sends each point to $(\rho_p,0,\ldots,0)$. Compose it
+with the affine map.
+\end{proof}
+
+\begin{corollary}[Distinct-radius configurations]
+\label{ent:rc:cor:distinct-radii}
+Suppose $\mathcal X$ is radially finite and all but finitely many of its
+points have pairwise distinct values of $v(p)$. Then $\mathcal X$ is
+line-rectifiable, even if its coordinates have infinitesimal tails and
+$\Gamma$ has no order unit.
+\end{corollary}
+\begin{proof}
+Choose the coordinates of \cref{ent:rc:lem:shift} for some $\delta>0$. Then
+$\beta_p=\max\{-v(p),\delta\}$, so the finitely many points with
+$v(p)\ge-\delta$ collapse to the radius $\delta$; together with the finitely
+many points whose radius is not distinct and the finitely many whose radius
+equals one of theirs, they form a finite exceptional set $E$. For
+$p\notin E$, every other node $\rho_q$ with $\beta_q\le\beta_p$ has
+$\beta_q<\beta_p$, so $v(\rho_q-\rho_p)=-\beta_p$ and the corresponding term of
+\eqref{ent:rc:eq:denominator} is $\beta_q-\beta_p<0$. Thus
+$v(\varpi_p)\le0$, and $v(b_{p,j}/\varpi_p)\ge v(b_{p,j})\ge-\beta_p$: take
+$c_p=1$. The nodes in $E$ are the finitely many exceptions allowed by
+\cref{ent:rc:lem:interpolation}, which supplies the $G_j$; the shear
+\eqref{ent:rc:eq:shear} applies.
+\end{proof}
+
+The source's proof says that after the shift ``the late nodes have distinct
+radii''; the collapse of the points with $v(p)\ge-\delta$ onto one radius is
+covered by the exceptions allowed in \cref{ent:rc:lem:interpolation}, and the
+proof above makes that step explicit. The corollary locates the obstruction:
+escaping points alone do not cause the failure without an order unit, but
+sufficiently small \emph{clusters on one shell} do. In one variable that is
+the lesson of \cref{ent:thm:close-pair}.
+
+\paragraph{Translation to surreal and omnific numbers.}
+Let $\Gamma\subseteq\No$ be a divisible ordered subgroup and apply
+\eqref{ent:eq:embedding}, $t^\gamma\mapsto\omega^{-\gamma}$: the real workspace
+$K_{\R}=\R((t^\Gamma))$ becomes a normal-form subfield of $\No$, the complex
+one its complexification in $\No[i]$. This is the standard Hahn reading of
+normal forms \cite{Conway,Gonshor,MantovaMatusinski}, not a new construction.
+An omnific integer is a normal form whose exponents are nonnegative and whose
+constant term is an integer, $\Oz=\Pi\oplus\Z$ with $\Pi$ the purely infinite
+normal forms (\texttt{found:eq:omnific}, \texttt{odg:def:rings}). Exponent
+$y=-\gamma\ge0$ means $\gamma\le0$, so inside the embedded fields
+\begin{align}
+ \Oz\cap K_{\R}&=\Z+\R((t^{\Gamma_{<0}})),\label{ent:rc:eq:omnific-real}\\
+ (\Oz+i\Oz)\cap K_{\C}&=\Z[i]+\C((t^{\Gamma_{<0}})).
+ \label{ent:rc:eq:omnific-complex}
+\end{align}
+This is the polynomial-part framework of the factorization literature
+\cite{LInnocenteMantova}; the ring $\Oz+i\Oz$ is what the omnific
+Diophantine-geometry report calls the Gaussian omnific integers, and
+$\R\oplus\Pi$ intersected with $K_{\R}$ is the real $\Kle$, the ring that
+report writes $\mathcal B_{\R,H}$ for a workspace (\texttt{odg:lem:workspace}).
+Both rings in \eqref{ent:rc:eq:omnific-real}--\eqref{ent:rc:eq:omnific-complex}
+lie in the corresponding $\Kle$, so \cref{ent:rc:prop:positive} proves
+\cref{ent:rc:thm:omnific-main}.
+
+\begin{remark}[Three indispensable restrictions]\label{ent:rc:rem:restrictions}
+First, radial finiteness is measured inside the chosen workspace: the ordinary
+integers, although omnific, form an infinite valuation-bounded set and are not
+radially finite. Second, the affine projection may use real or complex
+constants and the shear may have arbitrary Hahn coefficients, so the ambient
+automorphism need not preserve the omnific ring. Third, these results concern
+coordinate changes of $\K^d$, not ring automorphisms of $\Oz$ or field
+automorphisms of $\No$.
+\end{remark}
+
+\subsection{Eventual polynomial reduction of entire automorphisms}
+\label{ent:rc:subsec:reduction}
+
+The negative half of \cref{ent:rc:thm:main} rests on a restriction that every
+fixed entire map eventually satisfies: increasing valuation rank does not give
+one map unlimited local freedom at every new scale.
+
+\paragraph{Coarsened valuation rings.}
+For a convex subgroup $H\subsetneq\Gamma$ put
+\[
+ V_H=\{x\in\K:v(x)\ge h\text{ for some }h\in H\},\qquad
+ \mathfrak q_H=\{x\in\K:v(x)>h\text{ for every }h\in H\},
+\]
+with $0$ in both. As in \cref{ent:lem:coarse-residue}, whose proof uses only
+the convexity of $H_\gamma$, $V_H$ is the valuation ring of $v$ coarsened by
+$H$, with maximal ideal $\mathfrak q_H$, and restriction of the Hahn support
+to $H$ is a surjective ring map
+\[
+ \red_H:V_H\longrightarrow\kappa_H=\kk((t^H))
+\]
+with kernel $\mathfrak q_H$; for $H=H_\gamma$ these are $V_\gamma$,
+$\mathfrak q_\gamma$ and $\kappa_\gamma$ of \cref{ent:def:coarse}. Both $V_H$
+and $\mathfrak q_H$ are closed under strong sums: a nonzero strong sum has
+valuation at least the least valuation of a term, and that least valuation is
+attained. Reduction is applied coefficientwise to series and coordinatewise to
+points and matrices.
+
+\begin{theorem}[Eventual polynomial reduction]\label{ent:rc:thm:reduction}
+Let $H_1\subseteq H_2\subseteq\cdots$ be proper convex subgroups of $\Gamma$
+with $\bigcup_nH_n=\Gamma$, and let $\mathcal F\subseteq\Ed$ be finite. For
+all sufficiently large $n$:
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item every coefficient of every $F\in\mathcal F$ lies in $V_{H_n}$;
+\item all but finitely many of them lie in $\mathfrak q_{H_n}$, so that
+coefficientwise reduction gives a polynomial
+$\overline F_n\in\kappa_{H_n}[X_1,\ldots,X_d]$;
+\item for every $p\in V_{H_n}^d$, $F(p)\in V_{H_n}$ and
+\begin{equation}\label{ent:rc:eq:reduce-eval}
+ \red_{H_n}\bigl(F(p)\bigr)=\overline F_n\bigl(\red_{H_n}p\bigr);
+\end{equation}
+\item (a)--(c) hold, for the same $n$, for every Hasse derivative of every
+$F\in\mathcal F$, and reduction commutes with Hasse derivatives.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For nonzero $F$, $m_0(F)=\min_\alpha v(a_\alpha)$ exists; let $L$ be the least of
+these values over $\mathcal F$. Once $L\in H_n$, every coefficient lies in
+$V_{H_n}$. Fix such an $n$. Since $H_n$ is proper and convex, there is
+$\eta\in\Gamma$ with $\eta>H_n$, and by \cref{ent:thm:multi-criterion}(iii)
+at $\gamma=0$ only finitely many coefficients have valuation at most $\eta$;
+the others lie in $\mathfrak q_{H_n}$ and reduce to $0$. For $p\in
+V_{H_n}^d$, split the strongly summable family $(a_\alpha p^\alpha)_\alpha$
+into the finitely many terms with $v(a_\alpha)\le\eta$ and the rest
+(\cref{ent:mv:lem:tails}(b)). Every term lies in $V_{H_n}$, and every term of
+the rest lies in the ideal $\mathfrak q_{H_n}$; by closure under strong sums,
+the rest sums into $\mathfrak q_{H_n}$ and $F(p)\in V_{H_n}$. Since $\red_{H_n}$
+is a ring map, \eqref{ent:rc:eq:reduce-eval} follows from the finite part. A
+Hasse derivative multiplies $a_\alpha$ by a nonzero integer, which does not
+change its valuation, and shifts the index; its coefficients therefore obey
+the same bounds $L$ and $\eta$, and its reduction is the corresponding Hasse
+derivative of $\overline F_n$.
+\end{proof}
+
+The degree of $\overline F_n$ may grow with $n$: the theorem asserts a
+polynomial reduction at each sufficiently late scale, not one polynomial for
+all scales. No coefficient outside $H_n$ is moved into $H_n$; such exponents
+vanish under the residue map. The source's proof of (c) also chooses an
+auxiliary element $\varrho\in H_n$ below the coordinate valuations of $p$;
+closure of $\mathfrak q_{H_n}$ under strong sums makes that step unnecessary,
+and it is omitted here.
+
+\paragraph{Antecedents.} The device is not new to this collection. In one
+variable, the necessity half of \cref{ent:thm:units} reduces a restricted
+series modulo a proper convex subgroup to a polynomial over the coarsened
+residue field, and \cref{ent:thm:multi-unit} does the same in finitely many
+variables; \cref{ent:lem:coarse-residue} is the residue map. The report
+\emph{Holonomic Rigidity for Entire Hahn Functions} proves the one-variable
+entire case, \texttt{hol:cf:lem:reduction} \cite{RepoHolonomic}: an entire
+series with coefficients in the coarsened ring of a proper convex subgroup
+reduces to a polynomial. \Cref{ent:rc:thm:reduction} is the several-variable
+form of that lemma, with the evaluation compatibility (c), Hasse derivatives,
+and a finite family treated at once; its application below to an automorphism
+together with its inverse is the seventh source's. The seventh source cites
+none of these antecedents; the credit is the merge's.
+
+\begin{corollary}[Inverse polynomial reductions]
+\label{ent:rc:cor:automorphism-reduction}
+Let $\Phi$ be an entire automorphism of $\K^d$ and let $(H_n)$ be as in
+\cref{ent:rc:thm:reduction}. For all sufficiently large $n$, $\Phi$ and
+$\Phi^{-1}$ map $V_{H_n}^d$ into itself and reduce to mutually inverse
+polynomial automorphisms of $\kappa_{H_n}^d$, and for every
+$p\in V_{H_n}^d$
+\begin{equation}\label{ent:rc:eq:J-unit}
+ \Jac\Phi(p)\in\operatorname{GL}_d(V_{H_n}),
+\end{equation}
+where $\Jac\Phi$ is the Jacobian matrix $(\partial\Phi_i/\partial X_j)$.
+\end{corollary}
+\begin{proof}
+Apply \cref{ent:rc:thm:reduction} to the $2d$ coordinates of $\Phi$ and
+$\Phi^{-1}$. By (c), both maps preserve $V_{H_n}^d$, and reducing
+$\Phi^{-1}(\Phi(p))=p$ and $\Phi(\Phi^{-1}(p))=p$ gives the two composite
+polynomial identities at every residue point, since $\red_{H_n}$ is surjective.
+The residue field is infinite, so these are identities of polynomials. By (d),
+the entries of $\Jac\Phi(p)$ and of $\Jac\Phi^{-1}(\Phi(p))$ lie in
+$V_{H_n}$, and by the chain rule (\cref{ent:rc:lem:composition}) the second
+matrix is the inverse of the first.
+\end{proof}
+
+\begin{lemma}[Integral Taylor remainder]\label{ent:rc:lem:taylor-remainder}
+Let $F:\K^d\to\K^d$ be an entire map with all coefficients in $V_H$ for a
+proper convex subgroup $H$. For $p,\mathbf w\in V_H^d$ and
+$\varepsilon\in\mathfrak q_H$ there is $R\in V_H^d$ with
+\begin{equation}\label{ent:rc:eq:taylor}
+ F(p+\varepsilon\mathbf w)=F(p)+\varepsilon\,\Jac F(p)\,\mathbf w
+ +\varepsilon^2R .
+\end{equation}
+\end{lemma}
+\begin{proof}
+By \cref{ent:rc:lem:composition}, $F_i(p+Y)=\sum_\beta c_{i,\beta}Y^\beta$ with
+$c_{i,\beta}$ the Hasse derivatives of $F_i$ at $p$. Each $c_{i,\beta}$ is a
+strong sum of products of elements of $V_H$, so lies in $V_H$. The family
+$(c_{i,\beta}\varepsilon^{|\beta|}\mathbf w^\beta)_\beta$ is strongly summable;
+group it by $|\beta|=0$, $|\beta|=1$ and $|\beta|\ge2$
+(\cref{ent:mv:lem:tails}(b)). Dividing the last group termwise by the fixed
+nonzero $\varepsilon^2$ (the case $\varepsilon=0$ is trivial) shifts all
+supports by one element, so it remains strongly summable, and its terms
+$c_{i,\beta}\varepsilon^{|\beta|-2}\mathbf w^\beta$ lie in $V_H$; so does their
+sum $R_i$.
+\end{proof}
+
+\begin{proposition}[Infinitesimal simplices survive good reduction]
+\label{ent:rc:prop:simplex}
+Let $H\subsetneq\Gamma$ be convex, and let $\Phi$ be an entire automorphism
+such that $\Phi$ and $\Phi^{-1}$ have all coefficients in $V_H$. For every
+$p\in V_H^d$ and every nonzero $\varepsilon\in\mathfrak q_H$ the $d+1$ points
+\[
+ \Phi(p),\quad\Phi(p+\varepsilon\mathbf u_1),\quad\ldots,\quad
+ \Phi(p+\varepsilon\mathbf u_d)
+\]
+are affinely independent. More precisely,
+\begin{equation}\label{ent:rc:eq:simplexdet}
+ \det\bigl[\Phi(p+\varepsilon\mathbf u_j)-\Phi(p)\bigr]_{j=1}^d
+ =\varepsilon^du,\qquad u\in V_H^\times .
+\end{equation}
+\end{proposition}
+\begin{proof}
+By \cref{ent:rc:lem:taylor-remainder}, the matrix of the differences divided by
+$\varepsilon$ is $\Jac\Phi(p)+\varepsilon R$ with $R$ integral, and its
+reduction is that of $\Jac\Phi(p)$. As in the proof of
+\cref{ent:rc:cor:automorphism-reduction}, which uses only the integrality of
+the coefficients of $\Phi$ and $\Phi^{-1}$, $\Jac\Phi(p)$ is invertible over
+$V_H$; so the determinant of $\Jac\Phi(p)+\varepsilon R$ is a unit $u$ of
+$V_H$. Multiplying each of the $d$ columns by $\varepsilon$ gives
+\eqref{ent:rc:eq:simplexdet}, which is nonzero.
+\end{proof}
+
+The \emph{inverse} is essential here. Integrality of the forward map alone
+would not make its Jacobian a coarsened unit, and bijectivity in some
+unrelated function category would not supply the integral inverse series.
+The obstruction below uses from \cref{ent:rc:thm:reduction} only the
+integrality clause (a) and the Jacobian consequence
+\eqref{ent:rc:eq:J-unit}; the polynomiality of the reductions describes what a
+fixed automorphism looks like at a late scale and is not needed for the
+determinant. That dependency remark is the merge's.
+
+\subsection{The escaping-simplex obstruction and the dichotomy}
+\label{ent:rc:subsec:obstruction}
+
+\paragraph{Scales.} Suppose $\cf(\Gamma)=\aleph_0$ and $\Gamma$ has no order
+unit. \Cref{ent:lem:escaping-classes} gives a positive cofinal sequence with
+$\gamma_{n+1}\ggA\gamma_n$. Put $H_n=H_{\gamma_n}$ (\cref{ent:def:coarse}).
+Each $H_n$ is a convex subgroup, proper because $\gamma_n$ is not an order
+unit; the $H_n$ increase and exhaust $\Gamma$ because $(\gamma_n)$ is
+cofinal; and $\gamma_{n+1}>H_n$, since $\gamma_{n+1}$ exceeds every integer
+multiple of $\gamma_n$. The seventh source proves this as its own lemma on
+separated cofinal scales; it is printed once, here.
+
+\begin{theorem}[A universal escaping-simplex obstruction]
+\label{ent:rc:thm:obstruction}
+With these scales let
+\begin{equation}\label{ent:rc:eq:Dexplicit}
+ p_n=t^{-\gamma_n}\mathbf u_1,\qquad\varepsilon_n=t^{\gamma_{n+1}},\qquad
+ \mathcal X=\bigcup_{n\ge1}\{p_n,\ p_n+\varepsilon_n\mathbf u_1,\ \ldots,\
+ p_n+\varepsilon_n\mathbf u_d\}.
+\end{equation}
+Then $\mathcal X$ is radially finite, and for every entire automorphism
+$\Phi$ all sufficiently late blocks of $\Phi(\mathcal X)$ are affinely
+independent. Neither $\mathcal X$ nor any cofinite subset of it can be carried
+into an affine hyperplane by an entire automorphism.
+\end{theorem}
+\begin{proof}
+Every point of the $n$th block has $v=-\gamma_n$: the first coordinate has
+leading term $t^{-\gamma_n}$, and each perturbation has positive valuation.
+The $\gamma_n$ increase cofinally, so a fixed polydisk meets finitely many
+blocks, each finite; distinct blocks are disjoint because their valuations
+differ, and the $d+1$ points of a block are distinct. For a fixed $\Phi$,
+\cref{ent:rc:thm:reduction}(a) applied to the exhaustion $(H_n)$ gives an
+$n_0$ such that $\Phi$ and $\Phi^{-1}$ have coefficients in $V_{H_n}$ for
+$n\ge n_0$. The point $p_n$ lies in $V_{H_n}^d$ since
+$-\gamma_n\in H_n$, and $\varepsilon_n$ is a nonzero element of
+$\mathfrak q_{H_n}$ since $\gamma_{n+1}>H_n$. \Cref{ent:rc:prop:simplex}
+applies. An affine hyperplane contains no $d+1$ affinely independent points,
+and deleting finitely many points leaves every sufficiently late block intact.
+\end{proof}
+
+\begin{proof}[Proof of \cref{ent:rc:thm:main}]
+If $\Gamma$ has an order unit, \cref{ent:rc:prop:positive} applies. If not,
+\cref{ent:rc:thm:obstruction} gives a radially finite counterexample; for
+$d\ge2$ a coordinate line lies in an affine hyperplane, so it is not
+line-rectifiable. This proves the equivalence and the stronger negative
+assertion.
+\end{proof}
+
+\paragraph{An explicit surreal realization.}
+In the group $\Gamma_\infty=\bigoplus_{j\ge0}\Q e_j$, $e_j=\omega^j$, of
+\eqref{ent:eq:concrete-group}, every $e_{j+1}$ dominates every multiple of
+$e_j$, and no element is an order unit. The proof of
+\cref{ent:rc:thm:obstruction} needs only $p_n\in V_{H_n}^d$ and
+$\varepsilon_n\in\mathfrak q_{H_n}\setminus\{0\}$, so the perturbation
+exponent need not be the next centre scale. The seventh source takes the
+centre scales $e_{2n}$ and perturbation exponents $\vartheta_n=e_{2n+1}$. Under
+$t^\gamma=\omega^{-\gamma}$ its points are
+\begin{equation}\label{ent:rc:eq:surreal-D}
+ p_n=\omega^{\omega^{2n}}\mathbf u_1,\qquad
+ \varepsilon_n=\omega^{-\omega^{2n+1}},\qquad
+ p_n,\ p_n+\varepsilon_n\mathbf u_1,\ \ldots,\ p_n+\varepsilon_n\mathbf u_d ,
+\end{equation}
+where $\mathbf u_j$ are coordinate vectors and the exponents are already
+surreal. Each centre is an omnific integer in its nonzero coordinate. The
+added $\varepsilon_n$ is a genuine infinitesimal, with a negative normal-form
+exponent, so the perturbed points leave the polynomial-part ring. The centres
+alone lie on a line; the arbitrarily small full-dimensional clusters cannot all
+be made collinear by any entire automorphism of this workspace.
+
+\begin{corollary}[Rectifiability is not stable under cluster refinement]
+\label{ent:rc:cor:refinement}
+In $K_{\Gamma_\infty}^d$, $d\ge2$, a line-rectifiable sequence of omnific
+centres admits finite infinitesimal refinements, all on the same centre
+shells, whose union is not line-rectifiable and cannot be sent into an affine
+hyperplane by an entire automorphism.
+\end{corollary}
+\begin{proof}
+The centres $p_n$ of \eqref{ent:rc:eq:surreal-D} already lie on the first
+coordinate line. The refinement \eqref{ent:rc:eq:surreal-D} satisfies the
+hypotheses of the proof of \cref{ent:rc:thm:obstruction} with
+$H_n=H_{e_{2n}}$, since $e_{2n+1}>H_n$, and that proof applies verbatim.
+\end{proof}
+
+The source states this corollary without a label or proof; the two-line proof
+is the merge's. It concerns refinement by \emph{clusters}, not replacement of
+each centre by a single perturbed point; that single-node situation can stay
+rectifiable by \cref{ent:rc:cor:distinct-radii}.
+
+\begin{remark}[The one-variable shadow of the simplex; the merge's]
+\label{ent:rc:rem:close-pair}
+With the theorem's own choice $\gamma_n=e_n$ in $\Gamma_\infty$, the first two
+points of the $n$th block of \eqref{ent:rc:eq:Dexplicit} lie on the first
+coordinate axis at $\rho_n=\omega^{\omega^n}$ and
+$\sigma_n=\omega^{\omega^n}+\omega^{-\omega^{n+1}}$, the close pair
+\eqref{ent:eq:surreal-roots} behind \cref{ent:thm:no-bezout}. In one variable
+the close pair defeats interpolation (\cref{ent:thm:close-pair}); in $d\ge2$
+the full simplex on the same shells defeats rectification. The mechanisms are
+different --- a valuation bound on values, and a coarsened Jacobian unit ---
+and neither result is derived from the other.
+\end{remark}
+
+\paragraph{The three cases.} The first row is finite geometry together with
+coefficient collapse (\cref{ent:rc:lem:countable}); the distinction the seventh
+source adds is between the second and third rows. The same three rows govern
+the one-variable trichotomy of \cref{ent:thm:main}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.4\textwidth}@{}}
+\toprule
+Value group & Radially finite sets & Entire rectification in $d\ge2$\\
+\midrule
+$\cf(\Gamma)>\aleph_0$ & every such set is finite & polynomial
+rectification always exists\\[3pt]
+an order unit exists & infinite escaping sets occur & every radially finite
+set is rectifiable\\[3pt]
+$\cf(\Gamma)=\aleph_0$, no order unit & infinite escaping sets occur &
+polynomial-part sets are rectifiable; escaping infinitesimal simplices
+obstruct every entire automorphism\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Fat-point ideals on rectifiable configurations}
+\label{ent:rc:subsec:ideals}
+
+The rectification theorems turn a geometric configuration into an explicit
+algebraic ideal. Let $\mathcal X=\{p_i\}$ be nonempty, radially finite and
+line-rectifiable. By \cref{ent:rc:lem:boundedness} its image on the
+coordinate line is radially finite, and a translation of the first coordinate
+as in \cref{ent:rc:lem:shift} makes the first coordinates nonzero with
+positive radii. By \cref{ent:rc:lem:order-invariant} below it therefore
+suffices to treat
+\begin{equation}\label{ent:rc:eq:line-D}
+ p_i=(\rho_i,0,\ldots,0),\qquad\beta_i=-v(\rho_i)>0 ,
+\end{equation}
+with the nodes as in \eqref{ent:rc:eq:nodes}; finite configurations use the
+same notation and finite products. Write $X'=(X_2,\ldots,X_d)$ for the
+transverse variables and $X'^\alpha$, $\alpha\in\N^{d-1}$, for their
+monomials. Assign positive integers $m_i$, and for $r\in\N$ let
+$P_{\langle r\rangle}$ be the canonical product (\cref{ent:thm:product}) of
+the divisor
+\begin{equation}\label{ent:rc:eq:Pr}
+ D_{\langle r\rangle}=\sum_i(m_i-r)_+[\rho_i],\qquad(u)_+=\max\{u,0\},
+\end{equation}
+with $P_{\langle r\rangle}=1$ when that divisor is zero. It is entire even
+for unbounded multiplicities, and
+$\ord_{\rho_i}P_{\langle r\rangle}=(m_i-r)_+$.
+
+\begin{lemma}[Transverse coefficient criterion]\label{ent:rc:lem:transverse}
+Write $F\in\Ed$ uniquely as
+\[
+ F=\sum_{\alpha\in\N^{d-1}}f_\alpha(X_1)X'^\alpha .
+\]
+Each $f_\alpha$ is entire, and the following are equivalent:
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=2em]
+\item $\ord_{p_i}F\ge m_i$ for all $i$;
+\item $\ord_{\rho_i}f_\alpha\ge(m_i-|\alpha|)_+$ for all $\alpha$ and $i$;
+\item $f_\alpha\in P_{\langle|\alpha|\rangle}\E$ for every $\alpha$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Selecting the coefficients with a fixed transverse index $\alpha$ preserves
+\cref{ent:thm:multi-criterion}(iii), after subtracting the constant weight
+$|\alpha|\gamma$; so $f_\alpha$ is entire. The Taylor expansion of $F$ at
+$(\rho_i,0)$ has coefficients indexed by pairs $(q,\alpha)$, of total degree
+$q+|\alpha|$, namely the Hasse jets of $f_\alpha$ at $\rho_i$; distinct pairs
+do not interact. Vanishing in all total degrees below $m_i$ is therefore (ii).
+The equivalence of (ii) and (iii) is the division statement cited in
+\cref{ent:rc:subsec:calculus}, applied to each $f_\alpha$ and the divisor
+$D_{\langle|\alpha|\rangle}$.
+\end{proof}
+
+\begin{lemma}[Entire changes preserve local order]
+\label{ent:rc:lem:order-invariant}
+If $\Phi$ is an entire automorphism, then
+$\ord_a(F\circ\Phi)=\ord_{\Phi(a)}F$ for all $F\in\Ed$ and $a\in\K^d$.
+Consequently pullback by $\Phi$ is a ring automorphism of $\Ed$ that maps the
+fat-point ideal of $\Phi(\mathcal X)$ onto that of $\mathcal X$, with the same
+multiplicities, and preserves minimal numbers of generators.
+\end{lemma}
+\begin{proof}
+The Taylor expansion of $\Phi(a+U)-\Phi(a)$ has no constant term and has the
+invertible linear part $\Jac\Phi(a)$ (chain rule for $\Phi^{-1}\circ\Phi$). If
+the first nonzero homogeneous part of $F$ at $\Phi(a)$ has degree $m$, its
+composite with that linear part is nonzero of degree $m$, and all other terms
+have higher order; so the order cannot drop, and applying the argument to
+$\Phi^{-1}$ shows it cannot rise. Pullback is a ring automorphism by
+\cref{ent:rc:lem:composition}, so algebraic generating sets correspond.
+\end{proof}
+
+\begin{theorem}[The fat-point generators]\label{ent:rc:thm:fat-generators}
+Suppose $\bar m=\max_im_i<\infty$. In the coordinates \eqref{ent:rc:eq:line-D},
+\begin{equation}\label{ent:rc:eq:ideal-generators}
+ I_{\mathbf m}(\mathcal X)=\bigl(P_{\langle|\alpha|\rangle}(X_1)\,X'^\alpha:
+ \alpha\in\N^{d-1},\ |\alpha|\le\bar m\bigr).
+\end{equation}
+This family is minimal in cardinality, and
+$\mu(I_{\mathbf m}(\mathcal X))=\binom{\bar m+d-1}{d-1}$. For a configuration
+rectified by $\Phi$, pull the generators back through $\Phi$.
+\end{theorem}
+\begin{proof}
+Each displayed generator has order $(m_i-|\alpha|)_++|\alpha|\ge m_i$ at
+$p_i$, since orders add under products. Conversely let $F\in
+I_{\mathbf m}(\mathcal X)$ and write
+\begin{equation}\label{ent:rc:eq:transverse-truncate}
+ F=\sum_{|\alpha|<\bar m}f_\alpha(X_1)X'^\alpha
+ +\sum_{|\beta|=\bar m}X'^\beta H_\beta,\qquad H_\beta\in\Ed ,
+\end{equation}
+assigning each monomial of transverse degree at least $\bar m$ to one fixed
+degree-$\bar m$ divisor $X'^\beta$ of it by any deterministic rule; after
+division by that monomial the selected coefficient family has its weights
+shifted by $-\bar m\gamma$, so it is entire, and there are finitely many
+$\beta$. Thus \eqref{ent:rc:eq:transverse-truncate} holds in $\Ed$, not only
+formally. By \cref{ent:rc:lem:transverse}, each $f_\alpha$ with
+$|\alpha|<\bar m$ is divisible by $P_{\langle|\alpha|\rangle}$, and the
+high-degree terms use the generators with $|\beta|=\bar m$, for which
+$P_{\langle\bar m\rangle}=1$. This proves \eqref{ent:rc:eq:ideal-generators}.
+
+For minimality choose $i$ with $m_i=\bar m$, and for $F$ in the ideal let
+$\mathsf h_i(F)$ be the homogeneous degree-$\bar m$ part of its Taylor
+expansion at $p_i$, all lower parts being zero. For $H\in\Ed$,
+\begin{equation}\label{ent:rc:eq:leading-module}
+ \mathsf h_i(HF)=H(p_i)\,\mathsf h_i(F).
+\end{equation}
+The generator indexed by $\alpha$ has $\mathsf h_i$ a nonzero multiple of
+$(X_1-\rho_i)^{\bar m-|\alpha|}X'^\alpha$; as $\alpha$ ranges over
+$|\alpha|\le\bar m$ these are all the monomials of degree $\bar m$ in $d$
+variables, a basis of a space of dimension $\binom{\bar m+d-1}{d-1}$. By
+\eqref{ent:rc:eq:leading-module}, the image of an ideal generated by $q$
+elements is spanned by $q$ vectors, so $q$ is at least that dimension, which is
+the size of the displayed family.
+\end{proof}
+
+\begin{corollary}[Simple points form an explicit complete intersection]
+\label{ent:rc:cor:ci}
+Let $P=P_{\langle0\rangle}$ for $m_i=1$, that is, $P=\prod_i(1-X_1/\rho_i)$.
+Then
+\begin{equation}\label{ent:rc:eq:simple-ideal}
+ I(\mathcal X)=\{F:F(p_i)=0\ \forall i\}=(P,X_2,\ldots,X_d).
+\end{equation}
+The sequence $X_2,\ldots,X_d,P$ is regular, its common zero set in $\K^d$ is
+exactly $\mathcal X$, and
+\begin{equation}\label{ent:rc:eq:quotient}
+ \Ed/I(\mathcal X)\cong\E/(P).
+\end{equation}
+The least number of generators is $d$.
+\end{corollary}
+\begin{proof}
+Take $\bar m=1$ in \cref{ent:rc:thm:fat-generators}. Setting the last
+variable to zero identifies $\mathcal E_{\Gamma,k}/(X_k)$ with
+$\mathcal E_{\Gamma,k-1}$ (a series vanishing on $X_k=0$ is $X_k$ times an
+entire series, by \cref{ent:thm:multi-criterion}), and each of these is a
+domain (\cref{ent:rc:lem:gauss}). The quotient before $P$ is imposed is $\E$,
+in which the nonzero $P$ is not a zero divisor, and the final ideal is proper,
+since evaluation at a node annihilates it. The zero set comes from the exact
+divisor of $P$ and the equations $X_j=0$; substitution $X'=0$ gives
+\eqref{ent:rc:eq:quotient}; minimality is the case $\bar m=1$.
+\end{proof}
+
+The source adds a warning, kept here: the evaluation map from $\E/(P)$ to
+$\prod_i\K$ is injective but need not be surjective without an order unit, so
+\eqref{ent:rc:eq:quotient} asserts no unrestricted Chinese remainder theorem for
+infinitely many nodes. The complete-intersection calculation uses vanishing
+and division, not interpolation of arbitrary value sequences. The next
+corollary combines \eqref{ent:rc:eq:quotient} with this report's image
+theorem.
+
+\begin{corollary}[Evaluation and interpolation on a rectifiable
+configuration; the merge's]\label{ent:rc:cor:evaluation}
+Let $\mathcal X=\{p_i\}\subseteq\K^d$ be nonempty, radially finite and
+line-rectifiable, and let $\Phi$ be an entire automorphism with
+$\Phi(p_i)=(\rho_i,0,\ldots,0)$, the $\rho_i$ as in \eqref{ent:rc:eq:nodes}.
+Put $D=\sum_i[\rho_i]$.
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item $\Ed/I(\mathcal X)\cong\E/(P_D)$, through
+$F\mapsto(F\circ\Phi^{-1})(Z,0,\ldots,0)$; for infinite $\mathcal X$ this is
+the restricted product $\RD$ of \cref{ent:thm:quotient}.
+\item A family $(b_i)$ in $\K$ is $(F(p_i))_i$ for some $F\in\Ed$ if and only
+if some $G\in\E$ has $G(\rho_i)=b_i$ for all $i$, that is, if and only if the
+value prescription $(b_i)$ at the nodes $\rho_i$ satisfies the shellwise
+condition \eqref{ent:eq:maincondition}.
+\item If $\Gamma$ has an order unit, arbitrary values on an arbitrary radially
+finite subset of $\K^d$ are taken by some entire function.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(b) For $F\in\Ed$, $f(Z)=(F\circ\Phi^{-1})(Z,0,\ldots,0)$ is entire
+(\cref{ent:rc:lem:composition}) and $f(\rho_i)=F(p_i)$; conversely, if $G$ is
+given, $F=G\circ\Phi_1$ is entire and $F(p_i)=G(\rho_i)$. The shellwise
+description is \cref{ent:thm:image} for values, over $\R$ by
+\cref{ent:prop:real-form}. (a) Pullback by $\Phi$ carries
+$I(\Phi(\mathcal X))$ onto $I(\mathcal X)$ (\cref{ent:rc:lem:order-invariant}),
+and \eqref{ent:rc:eq:quotient} with $P=P_D$ and \cref{ent:thm:quotient} give
+the rest. (c) An order unit forces $\cf(\Gamma)=\aleph_0$, so for $d\ge2$,
+$\mathcal X$ is line-rectifiable by \cref{ent:rc:thm:main} (a finite
+$\mathcal X$ needs only Lagrange interpolation), and after a translation along the line the nodes are
+as in \eqref{ent:rc:eq:nodes}; by \cref{ent:cor:order-unit-image}
+condition \eqref{ent:eq:maincondition} is empty, and (b) applies. For $d=1$
+this is \cref{ent:thm:interpolation}.
+\end{proof}
+
+Part (a) is a \emph{restricted} product description, as \cref{ent:thm:quotient}
+is; it is not the unrestricted product description that the source disclaims.
+The corollary concerns values only: interpolation of higher jets in several
+variables is not treated.
+
+\begin{corollary}[Constant multiplicity gives an ordinary ideal power]
+\label{ent:rc:cor:powers}
+If $m_i=\bar m$ for every node, then
+$I_{\mathbf m}(\mathcal X)=I(\mathcal X)^{\bar m}$ and
+$\mu(I(\mathcal X)^{\bar m})=\binom{\bar m+d-1}{d-1}$.
+\end{corollary}
+\begin{proof}
+Here $P_{\langle r\rangle}=P^{\bar m-r}$ for $0\le r\le\bar m$, so the
+generators \eqref{ent:rc:eq:ideal-generators} are exactly the degree-$\bar m$
+products of $P,X_2,\ldots,X_d$; minimality is
+\cref{ent:rc:thm:fat-generators}.
+\end{proof}
+
+\begin{theorem}[Unbounded multiplicities prevent finite generation]
+\label{ent:rc:thm:unbounded}
+Suppose $d\ge2$ and the $m_i$ are unbounded. Then $I_{\mathbf m}(\mathcal X)$
+is a nonzero ideal that is not finitely generated; a generating set of finite
+cardinality $q$ would satisfy
+\begin{equation}\label{ent:rc:eq:local-lower}
+ q\ge\binom{m_i+d-1}{d-1}\qquad\text{for every }i .
+\end{equation}
+In dimension one the ideal is $P_{\langle0\rangle}\E$, whatever the
+multiplicities.
+\end{theorem}
+\begin{proof}
+The nonzero $P_{\langle0\rangle}$ lies in the ideal, and so does
+$P_{\langle|\alpha|\rangle}X'^\alpha$ for every $\alpha$. Fix $i$. The members
+with $|\alpha|\le m_i$ have degree-$m_i$ Taylor parts at $p_i$ equal to nonzero
+multiples of $(X_1-\rho_i)^{m_i-|\alpha|}X'^\alpha$, so the degree-$m_i$
+Taylor image of the ideal at $p_i$ is the whole space of forms of that degree,
+on which multiplication acts through evaluation of the multiplier, as in
+\eqref{ent:rc:eq:leading-module}. Finitely many generators span at most $q$
+dimensions, which gives \eqref{ent:rc:eq:local-lower}; its right side is
+unbounded for $d\ge2$. For $d=1$ the vanishing conditions are divisibility by
+$P_{\langle0\rangle}$, by the division statement of
+\cref{ent:rc:subsec:calculus}.
+\end{proof}
+
+No assertion of countable generation is implicit here. Although the functions
+$P_{\langle|\alpha|\rangle}X'^\alpha$ are countably many, an infinite convergent
+expansion in them is not a finite algebraic combination; the proof establishes
+non-finite generation and does not replace it by a stronger classification.
+
+\begin{proposition}[Radical and zero set]\label{ent:rc:prop:radical}
+For any multiplicities,
+\begin{equation}\label{ent:rc:eq:radical}
+ \sqrt{I_{\mathbf m}(\mathcal X)}=
+ \bigl\{F\in\Ed:\exists N\ge1\ \forall i,\ N\ord_{p_i}F\ge m_i\bigr\}.
+\end{equation}
+The common zero set of $I_{\mathbf m}(\mathcal X)$ in $\K^d$ is exactly
+$\mathcal X$. If the multiplicities are bounded, the radical is
+$I(\mathcal X)$; if they are unbounded, it is strictly smaller than
+$I(\mathcal X)$, although the zero sets agree.
+\end{proposition}
+\begin{proof}
+Leading homogeneous parts multiply without vanishing, so
+$\ord_a(F^N)=N\ord_aF$, and \eqref{ent:rc:eq:radical} is the definition of the
+radical. Every node is a common zero. If $x$ is none of the $\rho_i$, then
+$P_{\langle0\rangle}(x)\ne0$ excludes every point above $x$. If the first
+coordinate is $\rho_i$ and some transverse coordinate $y_j$ is nonzero, take
+an integer $r\ge m_i$: the member $P_{\langle r\rangle}(X_1)X_j^r$ of the ideal
+is nonzero there, since $\rho_i$ is not a zero of $P_{\langle r\rangle}$. If
+all $m_i\le\bar m$, every $F\in I(\mathcal X)$ has $F^{\bar m}$ in the ideal,
+and every element of the radical vanishes on $\mathcal X$. For unbounded
+multiplicities, $P=\prod_i(1-X_1/\rho_i)$ lies in $I(\mathcal X)$ with order
+exactly one at every node, so no power of it lies in the ideal.
+\end{proof}
+
+\begin{proof}[Proof of \cref{ent:rc:thm:fat-main}]
+Rectify, apply \cref{ent:rc:thm:fat-generators,ent:rc:thm:unbounded} in the
+line coordinates \eqref{ent:rc:eq:line-D}, and transfer back with
+\cref{ent:rc:lem:order-invariant}. Simple points are
+\cref{ent:rc:cor:ci}; the dimension-one clause is the last sentence of
+\cref{ent:rc:thm:unbounded}. Finite configurations use finite products.
+\end{proof}
+
+\begin{example}[Multiplicity one or three in the plane]
+\label{ent:rc:ex:planar}
+Let $d=2$, split the nodes into disjoint sets $N_1$ and $N_3\ne\varnothing$,
+assign multiplicity one on $N_1$ and three on $N_3$, and let $P_{N_1}$ and
+$P_{N_3}$ be the canonical products of $\sum_{i\in N_1}[\rho_i]$ and
+$\sum_{i\in N_3}[\rho_i]$. Then
+\begin{equation}\label{ent:rc:eq:example13}
+ I_{\mathbf m}=\bigl(P_{N_1}P_{N_3}^3,\ P_{N_3}^2X_2,\ P_{N_3}X_2^2,\
+ X_2^3\bigr),
+\end{equation}
+and exactly four generators are necessary: at a multiplicity-three node their
+degree-three Taylor parts are nonzero multiples of $U^3,U^2X_2,UX_2^2,X_2^3$,
+where $U=X_1-\rho_i$. This holds without an order unit; arbitrary infinite
+value interpolation is not needed.
+\end{example}
+
+\begin{example}[Double points in three variables]\label{ent:rc:ex:double}
+For constant multiplicity two and $d=3$,
+$I_2=(P^2,PX_2,PX_3,X_2^2,X_2X_3,X_3^2)=I(\mathcal X)^2$, and the minimal
+number of generators is $\binom42=6$, not the ambient dimension three: the six
+quadratic jets at any node are independent.
+\end{example}
+
+\begin{example}[Increasing multiplicity on an already straight line]
+\label{ent:rc:ex:increasing}
+Take any escaping sequence of nonzero nodes, for example
+$\rho_i=\omega^{\omega^{2i}}=t^{-e_{2i}}$ in $K_{\Gamma_\infty}$, and
+$m_i=i+1$. The product $\prod_{i\ge1}(1-X_1/\rho_i)^{i+1}$ is entire and
+nonzero, and in every dimension $d\ge2$ the fat-point ideal of the points
+$(\rho_i,0,\ldots,0)$ is not finitely generated. Its zero set is that of the
+finitely generated simple-point ideal, but the radicals differ. Unbounded local
+complexity, not geometric nonrectifiability, already forces the failure of
+finite generation.
+\end{example}
+
+\subsection{Workspace dependence, and what these subsections do not settle}
+\label{ent:rc:subsec:limits}
+
+\paragraph{Surreal scales, not class-global assertions.}
+Every result of \crefrange{ent:rc:subsec:setting}{ent:rc:subsec:ideals}
+concerns one fixed $\K=\kk((t^\Gamma))$. The embedding \eqref{ent:eq:embedding}
+turns its elements into surreal or surcomplex numbers, and
+\eqref{ent:rc:eq:surreal-D} uses such numbers directly. But a set cofinal in a
+set-sized exponent workspace is never cofinal in the proper class of all
+surreal exponents, and a larger workspace can introduce polydisks containing
+all the old nodes: adjoin a positive exponent $\delta$ above every element of
+$\Gamma$, and all the old centres $t^{-\gamma_n}$ lie in the one disk
+$v(x)\ge-\delta$, so an infinite old configuration is no longer radially
+finite there. ``Radially finite'' and ``entire'' keep their workspace
+subscripts even when the notation suppresses them. This is consistent with,
+and distinct from, the scalar-extension analysis of \cref{ent:sec:extension}.
+The omnific Diophantine-geometry report's lemma that every set-sized family of
+normal forms lies in one set-sized workspace (\texttt{odg:lem:workspace}) is
+consistent with this: it locates a workspace, and radial finiteness is then
+measured inside the chosen one.
+
+\paragraph{The coefficient field.}
+Constant coefficients carry the trivial valuation, and no infinite summation
+of nonzero constants at one Hahn exponent is allowed: an ordinary complex
+entire function such as $\exp(X)$, read as a series with constant coefficients,
+is not in $\mathcal E_{\Gamma,1}$, because at $X=1$ its terms all have
+exponent zero. These maps are not ordinary holomorphic maps tensored with a
+Hahn field. Rank-one non-Archimedean function theory supplies the vocabulary
+\cite{CherryLectures}; the proofs are written with ordered-group inequalities
+so that no real-valued norm is imported into higher rank. Uncountability of
+$\kk$ is used in \cref{ent:rc:lem:projection}; the analytic lemmas, the
+division statements, the reduction obstruction and the line-coordinate ideal
+calculations do not need it in the same way, but the positive rectification
+theorems are not inferred for a countable constant field.
+
+\paragraph{What the negative theorem does not forbid.}
+The simplex configuration can be collapsed by noninvertible maps, for example
+the projection to the first axis, and it satisfies many nonzero entire
+equations: a canonical product in $X_1$ over the first coordinates of all its
+points (finitely many on each shell) vanishes on it. The theorem forbids only
+its inclusion in a hyperplane after an invertible entire change of all
+coordinates, which is stronger than finding equations and different from an
+interpolation impossibility. The obstruction is eventually uniform over the
+blocks for each fixed map, but the threshold depends on the map; no threshold
+is asserted that works for all entire automorphisms at once.
+
+\paragraph{Dimension one and finite configurations.}
+In dimension one every set already lies in the coordinate line, so
+rectification is empty, and the ideal theorem has the principal exception of
+\cref{ent:rc:thm:unbounded}. Every finite configuration in every dimension is
+polynomially line-rectifiable. This is compatible with
+\cref{ent:rc:thm:obstruction}: any finite union of its blocks is straightened
+by a polynomial automorphism whose bad reduction occurs at one of those
+finitely many scales, but no one entire automorphism can keep doing so along
+a cofinal sequence of new scales.
+
+\paragraph{Limits recorded by the seventh source.}
+The following are retained without weakening.
+\begin{itemize}[leftmargin=1.4em]
+\item Every result is relative to one fixed Hahn workspace; there is no
+class-global entire theory on $\No$ or $\No[i]$, the fine topology on $\No$ or
+$\No[i]$ is not the topology used for the infinite sums, and topological
+discreteness is weaker than radial finiteness and not a substitute for it.
+\item Ordinary analytic convergence is not extended by summing infinitely many
+constant coefficients at one Hahn exponent.
+\item The results are stated for $\kk=\R$ or $\C$ only; no countable-field
+version is claimed, and no descent of a rectifying automorphism to a
+prescribed smaller Hahn workspace is asserted.
+\item There is no classification of all ideals of $\Ed$, of all entire
+automorphisms, of all nonrectifiable sets, or of all entire functions on the
+full surreal or surcomplex class.
+\item Line-rectifiability is not claimed equivalent to Rosay--Rudin tameness or
+to Winkelmann's extension properties; the classical comparison is not a
+transfer principle, and several inequivalent notions of tameness may exist in
+this category.
+\item The rectifying automorphism is not claimed to preserve $\Oz$ or the
+Gaussian omnific integers; nothing concerns ring automorphisms of $\Oz$ or
+field automorphisms of $\No$; ordinary integers are not radially finite; it
+is not claimed that arbitrary bijections or injections of omnific
+configurations extend to entire automorphisms.
+\item No omnific factorization, refinement or irreducibility question
+\cite{LInnocenteMantova} is settled; the only omnific input is the normal-form
+description \eqref{ent:rc:eq:omnific-real}--\eqref{ent:rc:eq:omnific-complex}.
+The Berarducci--Mantova derivation is neither used nor strengthened: the
+coordinate derivatives here keep the Hahn coefficients fixed
+\cite{MantovaMatusinski}.
+\item The obstruction detects full-dimensional infinitesimal simplices; it is
+not shown to be the only obstruction. No threshold uniform over all entire
+automorphisms is asserted.
+\item The value-interpolation lemma is a sufficient condition, not an exact
+image theorem for arbitrary jets.
+\item No countable generation is implied, and infinite analytic sums are never
+used as algebraic ideal generation; the generator lower bound assumes no
+Noetherianity, coherence or Nakayama lemma for an unproved local analytic ring.
+\item The evaluation map $\E/(P)\to\prod_i\K$ is not claimed surjective without
+an order unit, and no unrestricted product description of the infinite
+evaluation quotient is given without an order unit.
+\item The unbounded-multiplicity radical and zero-set distinction is a
+consequence in this ring, not a claim that such non-Noetherian phenomena are
+new in general.
+\item The projection-and-shear strategy is classical and the local jet count
+is elementary commutative algebra; neither is claimed as a new method. The
+novelty assessment concerns their consequences in Hahn workspaces and the
+coarsening obstruction; ``proposed'' means only that no matching result was
+located in the inspected sources, after a bounded search that cannot rule out
+a statement under different terminology or in an unindexed source.
+\item No named published conjecture is claimed settled. The manuscript is an
+AI-assisted, unrefereed research draft, not Lean-verified; it supplies no Lean
+source and no claim that its results were added to or checked by the
+repository's Lean build. Its finite symbolic program is a sanity check only:
+it does not verify the infinite Hahn summation arguments, the universal
+quantifiers over entire automorphisms, or novelty.
+\end{itemize}
+
+\setcounter{equation}{\value{entrcsaveeq}}%
+\endgroup
 
 \section{Prime spectra above a one-node-per-shell product}
 \label{ent:ps:sec:spectrum}
@@ -5003,7 +6477,8 @@ construction, and it certifies none of them against the whole literature
 \item \emph{Words and letters.} \emph{Spectrum} means prime spectrum
 $\Spec$ throughout this section; the maximal spectrum is written
 $\operatorname{Max}$, as in \cref{ent:sm:thm:beta}. The sixth source's
-letters are translated by the last table of \cref{ent:subsec:notation}. In
+letters are translated by the sixth manuscript's table in
+\cref{ent:subsec:notation}. In
 particular its sequence ring $\mathcal A$ is written $\RD$ here, because our
 $\A$ is the Hahn algebra of \cref{ent:sec:growth}; its convex subgroups $C$
 and $D$ are written $\mathcal C$ and $\mathcal C'$, because our $C_n$ are
@@ -6244,6 +7719,13 @@ GCD, not B\'ezout; two-generated proper ideal with no common zero\\
 \end{tabular}
 \end{center}
 
+The same three rows govern rectification in $d\ge2$ variables: only finite,
+hence polynomially rectifiable, radially finite sets in the first; every
+radially finite set line-rectifiable in the second; and in the third,
+polynomial-part configurations rectifiable but escaping infinitesimal
+simplices not (\cref{ent:rc:thm:main,ent:rc:thm:omnific-main}, and the table
+at the end of \cref{ent:rc:subsec:obstruction}).
+
 \section{Explicit higher-rank and surreal examples}
 \label{ent:sec:examples}
 
@@ -6524,7 +8006,7 @@ invariant at work.
 \section{Relation to other reports in this collection}
 \label{ent:sec:collection}
 
-This report is a merge of six manuscripts, each prepared against a pinned
+This report is a merge of seven manuscripts, each prepared against a pinned
 snapshot of the same repository, and each states explicitly which of its
 neighbours' results it does \emph{not} claim. Those statements are preserved
 here, and the cross-references are reciprocal.
@@ -6693,6 +8175,32 @@ the separation of conventions in \cref{ent:mv:subsec:blocks}. No theorem is
 shared: that report proves D-finite rigidity, not an extension domain. The
 locus $\Pdir(F)$ is written so to avoid the nonabelian-support report's
 $\operatorname{Pol}$, which denotes a normalized polar factor.
+Its coarsening-descent subsection does share one step with the seventh
+source: \texttt{hol:cf:lem:reduction} reduces a one-variable entire series with
+coefficients in the coarsened ring of a proper convex subgroup to a
+polynomial, and \cref{ent:rc:thm:reduction} is the several-variable form of
+that lemma, with evaluation compatibility and Hasse derivatives, applied to
+an automorphism together with its inverse. The seventh source does not cite
+it; the credit is the merge's. That report itself describes its polynomial
+half as a coefficient-field form of this report's obstruction for noncofinal
+extensions, and both descend from the coarsened reduction in the proof of
+\cref{ent:thm:units}.
+
+\paragraph{Omnific integers --- a shared normal form, no shared theorem.}
+At its pin the seventh source could not compare with the collection's
+omnific-integer reports, which were placed later, both in
+\texttt{docs/surreal/}: \emph{Omnific Integers and Omnific--Diophantine
+Geometry} and the report on set-sized quotients of the omnific integers. Its
+only omnific input, $\Oz=\Pi\oplus\Z$ with $\Pi$ the purely infinite normal
+forms, read in a Hahn workspace as
+\eqref{ent:rc:eq:omnific-real}--\eqref{ent:rc:eq:omnific-complex}, agrees with
+the foundations report (\texttt{found:eq:omnific}) and with the former's
+rings (\texttt{odg:def:rings}), and its workspace-relative radial finiteness
+is consistent with the former's set-sized workspaces
+(\texttt{odg:lem:workspace}); \cref{ent:rc:subsec:limits} explains why radial
+finiteness does not transfer to a larger workspace. No theorem is shared: the
+rectifying maps are coordinate changes of $\K^d$ and are not asserted to
+preserve $\Oz$, while those reports study the arithmetic of $\Oz$ itself.
 
 \section{What the results do and do not establish}
 \label{ent:sec:scope}
@@ -6759,7 +8267,10 @@ there. The Hahn--Neumann support lemmas
 inputs, not proved here. \Cref{ent:sec:multivariable} alone works without
 divisibility and over an arbitrary trivially valued coefficient field, under
 its own statement of hypotheses, and none of the divisible-group results of
-the other sections is transferred to it.
+the other sections is transferred to it. Its closing subsections
+\crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits}, the seventh source's,
+are the exception: they keep divisibility, take $\kk\in\{\R,\C\}$, use the
+uncountability of $\kk$ once, and use no algebraic closedness.
 
 \paragraph{Categories excluded.}
 Outside \cref{ent:sec:multivariable} the ring is one-variable and
@@ -6769,7 +8280,11 @@ not a ring of arbitrary fine-local surcomplex germs, and not a
 several-variable analytic algebra; \cref{ent:sec:multivariable} treats
 finitely many variables only for coefficient and unit criteria, extension
 domains and exceptional directions, with no preparation, divisor or ideal
-theory. The arbitrary-rank preparation theorem is
+theory. The seventh source's closing subsections of that section add,
+for configurations of points only, fat-point ideals and value interpolation on
+line-rectifiable configurations; they give no preparation, no
+positive-dimensional divisor theory and no GCD theory. The arbitrary-rank
+preparation theorem is
 proved in $\C[X]((t^\Gamma))$, not asserted in a larger power-series
 coefficient ring. There is no contour integral here, no global surcomplex
 exponential at unrestricted imaginary arguments, and nothing about the
@@ -6890,6 +8405,18 @@ multiplicities only for prime spaces and dimension; in the order-unit case
 only the quotient, not $\E$, is claimed zero-dimensional; and no change of
 zeros under extension is asserted.
 
+\paragraph{Limits recorded by the seventh source.}
+They are listed in full in \cref{ent:rc:subsec:limits}. In summary: every
+result is relative to one fixed workspace, and radial finiteness is not fine
+discreteness and does not survive enlargement of the workspace; $\kk$ is $\R$
+or $\C$, with no countable-field or descent statement; nothing classifies all
+ideals, automorphisms, nonrectifiable sets or entire functions on the class;
+line-rectifiability is not claimed equivalent to classical tameness; the
+rectifying maps are not claimed to preserve $\Oz$, and no omnific
+factorization question is settled; the obstruction is not shown to be the
+only one; ideal generation is algebraic, and no unrestricted product
+description of the evaluation quotient is given without an order unit.
+
 \paragraph{What is and is not claimed about priority and verification.}
 The results of this report are self-declared proposed original contributions,
 not a solution of any named published conjecture. The first two source
@@ -6907,7 +8434,7 @@ credited to the repository, as recorded in \cref{ent:rem:rigidity-credit}.
 One source's audit further notes that Lazard was checked bibliographically
 only and that Conway and Gonshor were not re-audited in full; its repository
 review was a targeted read of four files, not a line-by-line proof audit or
-an independent build. None of the six manuscripts was independently
+an independent build. None of the seven manuscripts was independently
 refereed and none was machine-checked: one records
 \texttt{formal\_verification false},
 \texttt{independent\_peer\_review false} and \texttt{priority\_certified
@@ -6941,7 +8468,17 @@ the compared sources'' after a targeted comparison, not a priority
 certification, that its review concentrated on this report and the
 catalogue at its pin and is not a complete verification of the repository;
 its build record gives the verification boundary as written proofs and
-finite sanity checks, with no peer review or Lean verification claimed.
+finite sanity checks, with no peer review or Lean verification claimed. The
+seventh describes itself as an AI-assisted, unrefereed research draft with
+explicit proofs and finite symbolic checks, not Lean-verified; it supplies no
+Lean source and makes no claim that its results were added to or checked by
+the repository's Lean build; it claims to settle no named published
+conjecture; its ``proposed'' means only that no matching result was located in
+the inspected sources, after searches whose coverage it calls necessarily
+incomplete and unable to rule out a statement under different terminology; it
+calls the projection-and-shear strategy classical and the jet counting
+elementary; and its build record sets formal mathematical verification and
+independent peer review to false.
 No theorem below depends for its validity on the
 correctness of an unrefereed repository report. The repository's Lean modules
 on finite algebra and Hahn supports are plausible \emph{prerequisites} for a
@@ -6951,9 +8488,10 @@ mathematical problem. No repository files under \texttt{code/} or
 \texttt{data/} have been modified.
 
 \paragraph{What the finite checks do not do.}
-See \cref{ent:app:checks} for the full statement. In summary: the six
+See \cref{ent:app:checks} for the full statement. In summary: the first six
 delivered suites verify $831$, $664$, $1958$, $1876$, $1072$ and $10889$
-finite exact assertions respectively, and they prove \emph{no} infinite
+finite exact assertions respectively, the seventh runs five groups of exact
+symbolic checks without an aggregate count, and they prove \emph{no} infinite
 theorem. The first
 three articles and their READMEs state that the finite truncations of the
 counterexample pair \emph{are} coprime polynomials and \emph{do} satisfy
@@ -6981,7 +8519,10 @@ inequalities in finite-support rational vectors, finite multiplicity tests
 and Smith reductions over $\Z_{(2)}$; it does not establish strong
 summability, construct a nonprincipal ultrafilter, enumerate convex
 subgroups, prove the continuum-chain assertions, treat a proper-class
-construction, certify entireness from finite data or certify novelty.
+construction, certify entireness from finite data or certify novelty. The
+seventh checks polynomial and rational instances only; it does not verify the
+infinite Hahn summation arguments, the universal quantifiers over entire
+automorphisms, or novelty.
 
 \subsection{Questions opened by the classification}
 \label{ent:subsec:questions}
@@ -7025,6 +8566,13 @@ decision procedure for any natural class of finitely encoded inputs?
 The first two are genuinely open here; \cref{ent:lem:shells} is what fails in
 each case. The several-variable results of \cref{ent:sec:multivariable}
 concern extension domains, not interpolation, and do not bear on the second.
+\emph{Re-scoped by the seventh source:} the closing subsections of
+\cref{ent:sec:multivariable} now bear on the second for values. On a
+configuration of points that an entire automorphism carries into a coordinate
+line, the values taken by entire functions are exactly those allowed by
+\cref{ent:thm:image} at the image nodes (\cref{ent:rc:cor:evaluation}, the
+merge's corollary of the seventh source's results); jets in several
+variables and configurations that are not line-rectifiable remain open.
 The third is discussed in \cref{ent:subsec:scope-limits}: the
 construction behind \cref{ent:thm:image} is finite-step relative to exact
 field operations and valuation-bound certificates, and is not by itself an
@@ -7141,6 +8689,26 @@ B\'ezout obstruction and the ideal theory extend, and which local
 preparation statements retain support certificates, in several variables.
 The cofinality criterion does extend (\cref{ent:thm:multi-criterion}).
 
+\emph{The ideal-theory clause, and interpolation of values, are partly
+answered by the seventh source,} for configurations of points, not
+positive-dimensional zero sets, and only for configurations that an entire
+automorphism carries into a coordinate line. On such a configuration with
+bounded multiplicities, the fat-point ideal has the explicit generators of
+\cref{ent:rc:thm:fat-generators} and exactly $\binom{\bar m+d-1}{d-1}$ minimal
+generators; for simple points it is a complete intersection with
+$\Ed/I\cong\E/(P_D)$ (\cref{ent:rc:cor:ci}); for unbounded multiplicities and
+$d\ge2$ it is not finitely generated (\cref{ent:rc:thm:unbounded}); and the
+values taken there are described exactly by \cref{ent:thm:image}
+(\cref{ent:rc:cor:evaluation}). Which configurations qualify is decided by the
+order unit: all radially finite ones when $\Gamma$ has an order unit, and
+without one a large class (\cref{ent:rc:thm:omnific-main,ent:rc:cor:distinct-radii})
+but not all (\cref{ent:rc:thm:obstruction}). Still open after the seventh
+source: whether the B\'ezout obstruction extends and what replaces the GCD
+theory in several variables; which local preparation statements retain
+support certificates; divisors with positive-dimensional support; ideals of
+configurations that are not line-rectifiable (\cref{ent:rc:q:ideals}); and
+jet interpolation in several variables.
+
 The fifth source adds two questions, suggested by its results; like the
 others, they are not claims that any publication lists them as open.
 
@@ -7199,6 +8767,51 @@ is one sufficient condition (\cref{ent:ps:cor:unique-extension}), but it does
 not exhaust the conceivable cases.
 \end{question}
 
+The seventh source adds five questions, suggested by
+\crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits}; it calls them natural
+continuation problems, not assertions of known published open status.
+
+\begin{question}[Rectifiability without an order unit]\label{ent:rc:q:criterion}
+When $\cf(\Gamma)=\aleph_0$ and $\Gamma$ has no order unit, which radially
+finite subsets of $\K^d$, $d\ge2$, are line-rectifiable? The polynomial-part
+and distinct-radius classes are rectifiable
+(\cref{ent:rc:thm:omnific-main,ent:rc:cor:distinct-radii}), and
+full-dimensional infinitesimal simplices are an obstruction
+(\cref{ent:rc:thm:obstruction}), which is not shown to be the only one. A
+criterion might combine the shellwise geometry of finite residue
+configurations with the compatibility of coordinate interpolation.
+\end{question}
+
+\begin{question}[Lower-dimensional targets]\label{ent:rc:q:targets}
+For $1<r<d$, when is a radially finite set carried into an $r$-dimensional
+affine subspace by an entire automorphism? The simplex example obstructs every
+proper affine subspace; a hierarchy of sharp lower-dimensional cluster
+criteria remains to be developed.
+\end{question}
+
+\begin{question}[Ideals of nonrectifiable configurations]\label{ent:rc:q:ideals}
+Is every radially finite simple-point ideal of $\Ed$ finitely generated? Does
+the configuration of \cref{ent:rc:thm:obstruction} have a similarly explicit
+minimal generating family? \Cref{ent:rc:thm:fat-generators} is restricted to
+line-rectifiable configurations.
+\end{question}
+
+\begin{question}[Extension of prescribed maps]\label{ent:rc:q:extension}
+Which bijections or injections between radially finite configurations, for
+instance omnific ones, extend to entire automorphisms? The shear of
+\cref{ent:rc:prop:positive} straightens a set while keeping the
+first-coordinate labels of a projection; that is where analogues of the
+stronger classical notions of tameness should be investigated, rather than
+assumed from line-rectifiability.
+\end{question}
+
+\begin{question}[Countable coefficient fields and descent]
+\label{ent:rc:q:descent}
+Can the uncountability of $\kk$ used in \cref{ent:rc:lem:projection} be
+removed, or replaced by an exact field-of-definition criterion? Can a
+rectifying automorphism be chosen over a prescribed smaller Hahn workspace?
+\end{question}
+
 \subsection{A proof-assistant route}
 The research statement does not require a formalization of the entire proper
 class $\No$. A first formal development can work over a set-sized divisible
@@ -7224,6 +8837,16 @@ convex-subgroup prime correspondence and the interval
 \eqref{ent:ps:eq:Cmin}--\eqref{ent:ps:eq:Cmax}); and ultraproducts, combining
 these and specializing the explicit example. It is a suggestion, not code or
 a claim about Mathlib coverage.
+For \crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits} the seventh
+source suggests a coefficient-controlled entire-series structure over a valued
+field with the Hahn summation property, weighted Gauss multiplicativity,
+finite-variable Taylor expansion and coarsening by a convex subgroup; the
+simplex obstruction then reduces to matrices over a valuation ring, the
+generator lower bound to finite-dimensional homogeneous polynomials and the
+leading-order multiplication law, and only the omnific corollary needs the
+normal-form bridge to actual surreal numbers. Its finite regression program
+cannot replace a proof of the support conditions or of the normal-form
+embedding. This too is a suggestion, not code.
 
 \section{Conclusion}
 \label{ent:sec:conclusion}
@@ -7276,6 +8899,20 @@ nodes and the Stone base stay fixed while the second layer can refine, and
 the rational-indexed enlargement of $\Gamma_\infty$ realizes this inside
 surreal and surcomplex Hahn workspaces: preserving zeros is not the same as
 preserving the prime spectrum of an entire divisor.
+
+In several variables the order unit returns as the threshold for a geometric
+property. With countable cofinality, it decides whether every radially finite
+configuration can be straightened by an entire automorphism. Without it, the
+eventual polynomial reductions of any one automorphism preserve sufficiently
+fine full-dimensional simplices at escaping scales, yet polynomial-part
+coordinates, and so the omnific configurations of a workspace, exclude the
+denominator losses behind that obstruction and admit an explicit
+rectification. Once a configuration is straightened, total multiplicity
+conditions have an exact global description: bounded multiplicities give a
+finite minimal generating family indexed by a simplex of transverse monomials,
+and unbounded ones force non-finite generation in dimension at least two. All
+of this stays inside one fixed Hahn workspace, not the full surreal or
+surcomplex class.
 
 \appendix
 \section{Proof-dependency and hypothesis audit}
@@ -7360,6 +8997,33 @@ valuation-domain prime correspondence. Algebraic closedness enters only
 through the type of the residue fields $L_\Ucal$, quoted from
 \cref{ent:sm:cor:boundary-fields}.
 
+The seventh source's subsections
+\crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits} form a fourth branch,
+inside \cref{ent:sec:multivariable} but under the standing divisibility and
+with $\kk\in\{\R,\C\}$; the sentence above that the section uses no
+divisibility refers to its first eight subsections. The source records three
+chains. The positive one is the coefficient criterion, all-disk summation,
+cardinal interpolation with the denominator bound, and a projection followed
+by a shear; through \cref{ent:rc:lem:interpolation} it uses
+\cref{ent:thm:image} (first proof) or \cref{ent:thm:product} and
+\cref{ent:rc:lem:sum} (second proof). The negative one is the coefficient
+criterion, eventual reduction of a map and its inverse, an integral Taylor
+remainder and a nonzero simplex determinant; it uses neither the image theorem
+nor any classification of ideals or automorphisms. The fat-point chain is
+division by escaping products (\cref{ent:prop:kernel-direct}), transverse
+Taylor expansion, finite transverse-degree truncation and the dimension of a
+space of homogeneous jets; its lower bound assumes no Noetherianity, coherence
+or Nakayama lemma. None of the three uses preparation, root counts or
+algebraic closedness. The source lists the failure modes its proofs guard
+against: increasing valuations confused with cofinal ones; an infinite product
+inverted diskwise rather than through quotients by finite products; a generic
+projection that cancels leading terms of points or of differences; an integral
+reduction assumed polynomial without a coefficient tail beyond the convex
+subgroup; a Jacobian called a coarsened unit without the inverse map in the
+finite family; infinite analytic sums used as algebraic generation; and a
+generator lower bound not tied to an explicit finite-dimensional jet quotient
+at a node of maximal multiplicity.
+
 \subsection{Where an attained minimum is load-bearing}
 \paragraph{Attained minima.}
 The proof of \cref{ent:thm:criterion} uses a minimum attained at an ordinary
@@ -7401,11 +9065,12 @@ can genuinely fail.
 
 \section{Reproducible finite checks}
 \label{ent:app:checks}
-Six independent exact-arithmetic suites accompany this report, one from
+Seven independent exact-arithmetic suites accompany this report, one from
 each source manuscript, preserved unmodified in \texttt{code/} and
-\texttt{data/} under the file names given below. All six use only the
+\texttt{data/} under the file names given below. The first six use only the
 Python standard library, with exact integer and \texttt{fractions.Fraction}
-arithmetic and no floating point. The first four represent group elements as
+arithmetic and no floating point; the seventh uses exact rational arithmetic
+in SymPy. The first four represent group elements as
 tuples of rational coordinates ordered by the largest nonzero coordinate;
 the fifth needs no ordered-group tuples beyond integer relation vectors; the
 sixth uses finitely supported rational vectors with rational indices, ordered
@@ -7563,9 +9228,41 @@ should name a scratch path. For this merge it was re-run with \texttt{--json}
 pointing outside the repository and reproduced the delivered record exactly,
 up to platform line endings.
 
+\paragraph{Suite G (five groups of symbolic checks).}
+\texttt{code/10-entire-rectification-verify.py} accompanies the seventh source
+and \crefrange{ent:rc:subsec:setting}{ent:rc:subsec:limits}; it needs Python
+3.10 or later and SymPy, pinned in
+\texttt{data/10-entire-rectification-requirements.txt} to version $1.14.0$.
+It checks the padded cardinal series \eqref{ent:rc:eq:cardinal} at four
+rational nodes with padding degrees $2,4,6,8$ ($4$ node values); the
+coefficient formula for division by one linear factor; for two triangular
+polynomial automorphisms, in dimensions two and three, that the Jacobian
+determinant is $1$ and that the normalized simplex determinant of
+\eqref{ent:rc:eq:simplexdet} is $1$ plus a polynomial multiple of
+$\varepsilon$; the monomial count behind
+\cref{ent:rc:thm:fat-generators} in $40$ cases ($d=2,\ldots,6$,
+$\bar m=1,\ldots,8$); and two finite polynomial fat-point ideals over $\Q$, in
+$d=2$ with nodes $1,2,4$ and multiplicities $1,3,2$ and in $d=3$ with nodes
+$1,2$ and multiplicities $1,2$, where every proposed generator satisfies every
+prescribed jet ($40$ and $30$ equalities), the finite jet map has the expected
+rank ($10$ and $5$), and a Gr\"obner basis of the generators reduces every
+kernel basis vector to zero ($35$ and $51$). The record
+\texttt{data/10-entire-rectification-verification-results.json} reports every
+group passed and states its scope as finite symbolic sanity checks, not formal
+verification. \texttt{data/10-entire-rectification-BUILD\_REPORT.json} records
+the source's own $25$-page build, its pin and the flags for formal
+verification and peer review, both false; that article is not shipped. Without
+\texttt{--output}, the script writes \texttt{verification-results.json} next
+to itself; the source's documented command therefore rewrites its delivered
+record in place, and in this directory it would add a new file to
+\texttt{code/}. A re-run should name a scratch path, on a copy. For this merge
+it was run on a copy with \texttt{--output} outside the repository, on Python
+$3.14.4$ with SymPy $1.14.0$; its output is identical to the delivered record
+except the recorded Python version ($3.13.5$ there).
+
 \paragraph{What the checks cannot do.}
-All six suites print their own scope disclaimers, and all six are correct
-to do so.
+All seven suites print or record their own scope disclaimers, and all seven
+are correct to do so.
 The counts are counts of finite assertions, not confidence scores for any
 infinite theorem. No suite can prove cofinality statements, Hahn support
 well-ordering for every permitted group, any infinite product identity, the
@@ -7584,7 +9281,7 @@ coefficient. Everything else rests on the proofs in the body.
 
 \section{Source and novelty ledger}
 \label{ent:app:sources}
-The first two of this report's six source manuscripts are both dated
+The first two of this report's seven source manuscripts are both dated
 21 September 2026, and each pinned the repository at its own snapshot: one at commit
 \texttt{4896a2808ce30e01b1c8\allowbreak 6ae3ba2295a64762d246} and the other at
 \texttt{aa846271b4dcae2c055b\allowbreak 216126a87210292ec19b}. The first re-read four
@@ -7739,6 +9436,79 @@ primes for unbounded multiplicities are not maximal (the remark after
 \cref{ent:ps:thm:multiplicity}). Its finite checks are Suite~F of
 \cref{ent:app:checks}.
 
+A seventh manuscript, \emph{Entire Automorphisms at Surreal Scales: An
+order-unit dichotomy, omnific rectification, and exact fat-point ideals},
+dated 23 September 2026, pinned the repository at
+\texttt{71e9606d297c9b98c732\allowbreak 070dc462682cc6948981}, after the sixth
+source had been merged; this report's directory and that of the
+holonomic-rigidity report are identical at that pin and at the base of the
+seventh merge. It read the root README, the report inventory, and this
+report's README and relevant source passages. Its statements about this
+report --- that it contains the all-scale coefficient criterion, canonical
+products and division, the order-unit interpolation case, finer
+restricted-product interpolation results, and several-variable coefficient and
+scalar-extension results --- were checked and hold
+(\cref{ent:thm:multi-criterion,ent:thm:product,ent:thm:factorization,ent:thm:interpolation,ent:thm:image}
+and \cref{ent:sec:multivariable}). Its statement that a repository search for
+``rectification'' returned no match was true at its pin; the word now occurs
+only in its own placed files, and ``rectifiable'' elsewhere only for curves.
+Its description of its problem as different from this report's
+several-variable question is corrected by the placement: it partly answers
+\cref{ent:q:several}. At its pin the collection had no omnific-integer
+report; it now has two, recorded in \cref{ent:sec:collection}. Its literature
+comparison covered Rosay and Rudin, Winkelmann, Cherry's lectures, Mantova and
+Matusinski, and L'Innocente and Mantova; it searched combinations of
+``Hahn'', ``entire automorphisms'', ``tame discrete sets'' and ``fat point'',
+found the classical tameness literature and standard Hahn and omnific
+background but not the precise classification, and calls its coverage
+necessarily incomplete. For this merge the journal data of L'Innocente and
+Mantova and the Winkelmann reference were not re-verified.
+
+Its own contribution table, kept here in prose, reads as follows. The
+coefficient criterion and escaping products with division are existing
+mathematics of this report, reproved with explicit arbitrary-rank bounds, with
+no novelty claim. Projection and triangular shear are a classical strategy;
+the simultaneous valuation-preserving projection and its application are
+proved there. The order-unit dichotomy is proposed as a new classification
+for Hahn and surcomplex workspaces, its positive half using moderate
+interpolation and its negative half coarsened polynomial reduction. The
+eventual polynomial reductions of an automorphism and its inverse are a
+proposed structural result, with the finite residue-polynomial argument and
+the Jacobian-unit consequence proved directly. The escaping-simplex
+obstruction is a proposed explicit construction. Polynomial-part and omnific
+rectification without an order unit is a proposed application of the
+denominator bound, concerning ambient coordinate changes, not arithmetic
+automorphisms of omnific integers. The fat-point generators and sharp count
+are a proposed arbitrary-rank global formulation whose local lower bound is
+elementary commutative algebra, not a new method. The unbounded-multiplicity
+radical distinction is a consequence in this ring, not a claim that such
+non-Noetherian phenomena are new.
+
+Where the two texts prove the same statement it is printed once: its
+criterion, canonical products, linear division, escaping division, separated
+scales and countability lemma are
+\cref{ent:thm:multi-criterion,ent:thm:product,ent:lem:linear-division,ent:prop:kernel-direct,ent:lem:escaping-classes,ent:lem:divisor-countable},
+and its interpolation theorem is a special case of \cref{ent:thm:image} and,
+with order units, of \cref{ent:thm:interpolation}; its explicit series is kept
+as the second proof of \cref{ent:rc:lem:interpolation}. Where the merge had
+to choose: the material was placed as the closing subsections of
+\cref{ent:sec:multivariable} rather than as a new section, so that no existing
+section, theorem, question or equation number changed, and its displayed
+equations are numbered (R1), (R2), \ldots; its letters were renamed
+(\cref{ent:subsec:notation}), above all its polynomial-part ring, its
+denominators and its coordinate vectors; an auxiliary step in its proof of
+\cref{ent:rc:thm:reduction}(c) was replaced by closure under strong sums; the
+proof of \cref{ent:rc:cor:distinct-radii} makes explicit the collapse of the
+points of one disk onto the shift radius, which the source's proof leaves
+implicit; and its unnumbered corollary on cluster refinement is
+\cref{ent:rc:cor:refinement}. The following are the merge's and are marked
+where they occur: the first proof of \cref{ent:rc:lem:interpolation},
+\cref{ent:rc:rem:real}, the credit of the antecedents of
+\cref{ent:rc:thm:reduction}, the dependency remark after
+\cref{ent:rc:prop:simplex}, the proof of \cref{ent:rc:cor:refinement},
+\cref{ent:rc:rem:close-pair} and \cref{ent:rc:cor:evaluation}. Its finite
+checks are Suite~G of \cref{ent:app:checks}.
+
 The strongest proposed original statements of the first two sources are
 \cref{ent:thm:no-bezout} and its use in \cref{ent:thm:main}, together with
 \cref{ent:thm:extension,ent:thm:zero-conservation,ent:thm:no-continuation}
@@ -7884,6 +9654,26 @@ higher rank, \emph{Journal of the London Mathematical Society} (2)
 \textbf{107} (2023), no.~4, 1450--1481.
 \href{https://doi.org/10.1112/jlms.12716}{doi:10.1112/jlms.12716}.
 
+\bibitem{RosayRudin}
+J.-P. Rosay and W. Rudin, Holomorphic maps from $\C^n$ to $\C^n$,
+\emph{Transactions of the American Mathematical Society} \textbf{310} (1988),
+47--86. \url{https://www.jstor.org/stable/2001110}.
+
+\bibitem{Winkelmann}
+J. Winkelmann, Rosay--Rudin-spaces, tame sets and Danielewski surfaces,
+arXiv:2309.07678v1, 2023. \url{https://arxiv.org/abs/2309.07678}.
+
+\bibitem{MantovaMatusinski}
+V. Mantova and M. Matusinski, Surreal numbers with derivation, Hardy fields
+and transseries: a survey, arXiv:1608.03413v2.
+\url{https://arxiv.org/abs/1608.03413}.
+
+\bibitem{LInnocenteMantova}
+S. L'Innocente and V. Mantova, A factorisation theory for generalised power
+series and omnific integers, \emph{Advances in Mathematics} (2024), article
+109513, \href{https://doi.org/10.1016/j.aim.2024.109513}{doi:10.1016/j.aim.2024.109513};
+author version arXiv:1710.07304v5.
+
 \bibitem{RepoRoot}
 V. Reshetnikov, \emph{Surreal}: repository README and reported
 formalization scope, inspected 21 September 2026.
@@ -7933,7 +9723,8 @@ $\sum t^{\pm n^2}z^n$ discussed in
 \emph{Surreal} repository,
 \texttt{docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions/}. Its
 Lemma \texttt{hol:lem:generic} is the countable-field device used in
-\cref{ent:mv:thm:exceptional}.
+\cref{ent:mv:thm:exceptional}, and its Lemma \texttt{hol:cf:lem:reduction} is
+the one-variable antecedent of \cref{ent:rc:thm:reduction}.
 \end{thebibliography}
 \endgroup
 \end{document}
