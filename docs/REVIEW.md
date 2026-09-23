@@ -2277,16 +2277,55 @@ The axiom audit passed for 12,648 declarations using only `propext`,
 local Markdown destinations resolve. The independent inventory remains
 2,535 standard statements in 49 reports, and `git diff --check` passes.
 
+## Omnific Diophantine geometry: elementary algebra and source integration
+
+The [Diophantine article](surreal/omnific-diophantine-geometry/article.tex)
+now has a Sections 1–4 main-text review and a
+[source reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+for the elementary algebra in companion manuscripts 02 and 05, recovered
+from the archives in `f0b7f43`. This extends base 01 with four results:
+a common set-sized Hahn workspace, mixed gcds with an ordinary integer,
+a nilpotent-image test, and a common multiple of every ordinary power in
+a set-sized family. Their proofs use support localization, ordinary Bézout,
+idempotence of the infinite-part ideal, and monomial clearing respectively.
+
+The exposition distinguishes the constant-coefficient kernel in the real
+and complex rings, its failure to preserve order, its difference from
+standard part, and the reversal between growth degree and valuation.
+Quotients by class ideals are explained through congruence maps; completion
+systems use ordinary residue rings. The common-divisor and clearing arguments
+explicitly allow enlargement of the input exponent group. The shorter
+`√2` witness to failure of integral closure supplements the base witness.
+
+All 77 base labels are preserved with the prefix `odg:`; all 41 original
+standard statements are unchanged after this renaming. The four additions
+bring this article to 45 statements. Sections 5 onward are byte-identical
+apart from the prefix changes; their proof review and source comparison
+remain pending. The README now uses actual build and verifier paths,
+and historical delivery scripts and outputs remain unchanged.
+
+Validation: three pdfLaTeX passes produce a 31-page article with no final
+warnings or over/underfull boxes. The three preserved SymPy 1.14.0 verifiers
+pass; outputs match the delivery except for Python version metadata in
+sources 01 and 02. Those finite checks do not establish the new general
+support arguments. The independent inventory now has 2,614 standard
+statements in 51 sources (1,026 theorems, 519 lemmas, 561 propositions,
+508 corollaries). All 31 article pages and the eight changed catalogue pages
+were visually checked. The catalogue remains 28 pages with no diagnostics;
+its other pages have unchanged extracted text and pagination. All 1,287
+local Markdown destinations resolve. This update adds no Lean coverage.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
 `be06fc8`, which was merged after the field-automorphism build. This is a
 documentation-only merge: no existing mapped manuscript or Lean source
-changed. The two new reports currently contain only their base manuscripts,
-01 and 06. Their other nine manuscripts still need integration from Git
-history; their delivered READMEs and build commands retain old filenames,
-and no current PDFs are installed. The reader map, catalogue and ledger
-now identify this placement status. The two base texts contribute 75
+changed. At that placement, the two new reports contained only base
+manuscripts 01 and 06, with nine companions still to integrate, obsolete
+build filenames and no current PDFs. The elementary Diophantine update
+above now supplies a partial integration and maintained PDF; the quotient
+report and the later Diophantine comparison remain pending. At placement
+the reader map, catalogue and ledger recorded 75
 standard statements, bringing the inventory to 2,610 in 51 reports; the
 quotient base's three `maintheorem` statements are additional claims outside
 the standard-environment count. Proof review and formalization are pending.

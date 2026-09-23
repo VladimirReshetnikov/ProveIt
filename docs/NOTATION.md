@@ -37,6 +37,36 @@ class is not one such workspace. `∞` in a valuation is an added symbol with
 `v(0) = ∞`, not a surreal number. Natural numbers are ordinary finite integers;
 write `ℕ = {0,1,2,…}` and `n ≥ 1` where division by `n` is intended.
 
+## Omnific integers and the constant coefficient
+
+The [Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
+writes `A = Oz = ℤ ⊕ J`; the
+[set-sized quotient report](surreal/set-sized-quotients-of-omnific-integers/article.tex)
+uses `I` for the infinite-part ideal. The decomposition is additive, not a
+product of unital rings. In growth notation `ω^γ`, every exponent of `Oz`
+is nonnegative and the coefficient at zero is an ordinary integer.
+`J` consists of the forms with strictly positive support, including zero.
+Its nonzero elements can have either sign. In `t^γ = ω^(−γ)` notation these
+conditions become nonpositive and strictly negative support, respectively.
+They constrain **every** exponent, not only the leading exponent.
+
+Constant coefficient `ct` is a ring retraction on these support-restricted
+rings. It is not a ring homomorphism on all of `No`, since `ω · ω⁻¹ = 1`,
+and it is not order preserving: `ω − 1 > 0` but `ct(ω − 1) = −1`.
+The ring of finite surreals has the opposite growth-support condition;
+its standard-part homomorphism has a different domain. In the complex
+nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
+For a nonzero form, growth degree is the largest supported exponent and
+satisfies `v = −deg` under the reversed valuation convention.
+
+For the full proper class, `Oz/J ≅ ℤ` and `Oz/nOz ≅ ℤ/nℤ` describe quotient
+maps and ordinary representatives; proper-class cosets are not elements of
+a set. Similarly, `Frac(Oz) = No` asserts representation by fractions
+inside `No`. Common support bounds for set-sized families may require a
+larger exponent group than the input workspace. These class statements
+must be distinguished from the corresponding assertions in any fixed Hahn
+field or fixed universe.
+
 ## Monomials, support orientation, and valuation
 
 The common Hahn convention is

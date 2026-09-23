@@ -1,80 +1,67 @@
-# Omnific Integers and Omnific–Diophantine Geometry
+# Omnific integers and omnific–Diophantine geometry
 
-**Retractions, rigidity, definability, and infinite families**\
-Research article dated September 22, 2026, prepared for the Surreal project.
+[Read the article](article.pdf) · [LaTeX source](article.tex) ·
+[Source reconciliation](RECONCILIATION.md)
 
-## Contents
+The article studies the normal-form ring `Oz = ℤ ⊕ J`, ordinary residues,
+common monomial divisors and denominator clearing, followed by equational
+transfer, binary and norm-form rigidity, quadratic levels, and a quartic
+definition of ordinary integer tuples with five auxiliary variables.
 
-- `omnific_integers.pdf` — the typeset article, with proofs, examples, bibliography, and source audit.
-- `omnific_integers.tex` — complete, self-contained LaTeX source; bibliography is included in the source.
-- `verification.py` — supplementary finite symbolic and integer checks.
-- `verification_report.json` — actual output of the included verification script.
-- `requirements.txt` — the tested SymPy version.
-- `build.sh` and `build.ps1` — PDF build commands for a Unix-like shell and PowerShell, respectively.
+The current text starts from manuscript 01. Sections 1–4 have been reviewed
+and compared with the elementary algebra in manuscripts 02 and 05, adding
+a common Hahn workspace, mixed gcds with ordinary integers, common multiples
+of all ordinary powers in a set-sized family, and a nilpotent-image test.
+The later Diophantine and differential material is not yet fully reconciled.
+See the reconciliation for the precise boundary and archive provenance.
+No Lean coverage or independent referee review is claimed by this update.
+The [coverage ledger](../../FORMALIZATION.md) records formalization separately.
 
-## Main mathematical results
+## Build
 
-The article proves the constant-term retraction and equational transfer;
-classifies finite quotients; solves integer-coefficient linear systems;
-proves nonzero binary-form and number-field norm rigidity; classifies the
-presence of infinite points on represented nonzero quadratic levels;
-and constructs a single quartic equation defining the ordinary integers
-inside the omnific integers, with five auxiliary variables independently
-of tuple length.
+From this directory, with a standard TeX Live or MiKTeX installation:
 
-It also treats global common monomial divisors, denominator clearing,
-non-atomic factorization, an explicit pair without a gcd, failure of
-Euclidean termination, infinite unimodular Pythagorean triples, and
-primitive representatives of real projective directions.
-
-## Build the article
-
-A TeX distribution with `latexmk`, pdfLaTeX, Latin Modern, AMS packages,
-`microtype`, `hyperref`, `cleveref`, `aliascnt`, `booktabs`, `enumitem`, and `fancyhdr`
-is required. These are standard TeX Live / MiKTeX packages.
-
-From this directory:
-
-```text
-latexmk -pdf -interaction=nonstopmode -halt-on-error omnific_integers.tex
+```sh
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-Alternatively run `./build.sh` or `./build.ps1`. No bibliography processor,
-external figures, nonstandard font files, or network access is required
-once the TeX packages are installed. The scripts will write build
-intermediates into this directory.
+The bibliography is included in the source; no bibliography processor or
+external figures are needed. The preserved `code/01-diophantine-geometry-build.*`
+scripts use delivery filenames and are historical artifacts; use the command
+above for the maintained article.
 
-## Reproduce the finite checks
+## Finite checks
 
-Python 3.9 or newer and SymPy are required:
+Use Python 3.9 or newer and SymPy 1.14.0. From this directory:
 
-```text
-python -m pip install -r requirements.txt
-python verification.py --output verification_report.json
+```sh
+python -m pip install -r data/01-diophantine-geometry-requirements.txt
+python code/01-diophantine-geometry-verification.py --output /tmp/omnific-checks.json
+python code/02-diophantine-verify_examples.py
+python code/05-diophantine-rigidity-verify_examples.py --standard-radius 40
 ```
 
-The actual Python and SymPy versions used for the supplied report appear
-in `verification_report.json`. The checks cover scalar identities,
-20 quadratic-isometry matrix cases, Pell indices 0 through 30, and
-256 square-gap / quartic-guard witnesses.
+Choose a writable output path on your platform. The scripts check ordinary
+polynomial identities and finite examples. Source 01 checks 20 quadratic
+isometry matrices, 31 Pell pairs, and 256 quartic-guard witnesses. Source 02
+checks symbolic identities and finite supported products. Source 05 checks
+separated-power products, Fermat Wronskians, geometric telescoping, truncated
+binomial roots, quartic witnesses for integers from −40 to 40, and five
+Mordell-curve points. Its guard uses four squares, whereas source 01's
+stronger five-auxiliary-variable guard uses three squares.
 
-**These checks are not proof-assistant verification of the article.**
-They do not implement arbitrary surreal normal forms and do not establish
-the general statements by finite sampling. The manuscript contains the
-mathematical proofs; the classical three-square theorem, normal-form
-foundations, and MRDP theorem are explicitly cited imports.
+These programs do not implement arbitrary surreal normal forms, certify
+support bounds for all surreal exponents, or establish completeness of
+Diophantine solution sets. Passing them does not verify the article in Lean.
+The delivered output files under `data/` retain their historical contents.
 
-## Scope and provenance
+## Provenance
 
-Repository snapshot inspected:
-`VladimirReshetnikov/Surreal`, commit
-`2cb9c0200af749fbbd27796c97d017e7f16fbf33`.
-
-This was a focused read of the tree, READMEs, documentation index, and
-trigonometry source-audit material through the GitHub connector, not a
-repository checkout or build. The article separates fixed Hahn-workspace
-results from theorems using the full surreal class. It makes no claim of
-independent peer review, complete historical novelty, or Lean verification.
-
-A current refinement-conjecture announcement is recorded only as a dated,
-qualified announcement; none of the mathematical results here depends on it.
+Commit `be06fc8` placed three manuscripts from the archives preserved in
+`f0b7f43`; only source 01 was initially installed as `article.tex`. The
+[reconciliation](RECONCILIATION.md) records the present partial integration.
+The manuscript's original repository snapshot and dated source audit remain
+historical records, not an inspection of the current Lean implementation.
+The delivery [provenance](02-diophantine-PROVENANCE.md) and
+[build note](05-diophantine-rigidity-BUILD.md) describe their original packages
+and filenames. Current build and verification paths are those above.
