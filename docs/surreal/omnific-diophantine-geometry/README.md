@@ -166,7 +166,12 @@ the symmetric clause now explicitly requires positive degree. The proof
 also yields the proper singular case with globally generated Kähler
 differentials, and tangent detection is shown equivalent to tautological
 semiampleness for smooth projective schemes. Imported geometric foundations
-are identified separately. Sections 17–18, the pointers added in Sections 6, 7
+are identified separately. The next pass reviews Sections 17.1–17.2: positive
+genus, the smooth affine classification, logarithmic differentials and all smooth
+curves. It distinguishes the real circle's two conjugate punctures from a form
+of the affine line, supplies descent across arbitrary field extensions and
+explains why the logarithmic valuation centre is a closed boundary point.
+Sections 17.3 onward and 18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to

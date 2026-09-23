@@ -832,3 +832,63 @@ and all 416 labels are preserved. All Section 16 results and the new
 prose consequences remain **Pending** in Lean. Section 17's curve proofs,
 Section 18, their earlier pointers and later additions remain unreviewed.
 No finite verifier is claimed to validate the geometric argument.
+
+## Smooth curves, geometric punctures and coefficient descent
+
+This pass reviews Sections 17.1–17.2, Lemma 17.1 through Corollary 17.10,
+including the intervening one-form argument. The canonical-bundle proof
+now specifies closed points and finishes the passage from nonzero fiber
+evaluations to global generation by Nakayama and the support of the cokernel.
+The one-form proof evaluates differentials in the ambient Hahn field; it
+does not assume that Euler derivations preserve the embedded curve function
+field. The puncture lemma explicitly uses a finite set of closed points.
+
+The real-circle sentence incorrectly attached C13's full descent argument
+to its affine-line-form subcase. The projective circle has two conjugate
+geometric boundary points, `[1:i:0]` and `[1:-i:0]`. Its complexification is
+a projective line minus two points, so the puncture lemma and coefficient
+descent imply rigidity. A form of the affine line instead has just one
+geometric boundary point, which is rational over the perfect coefficient
+field. The hyperbola example now distinguishes all constant Hahn-support-ring
+points `(c,c⁻¹)` from the two points with real omnific integer coordinates.
+
+Descent across an arbitrary extension `L/k` now uses invariance of genus
+and of the degree of the finite étale boundary. It does not assume that
+`L` embeds into an algebraic closure of `k`. The polynomial-arc equivalence
+uses dominance and injectivity of monomial substitution. The nonzero
+exponent-group hypothesis is needed for nonconstant witnesses; a zero
+group gives the coefficient field itself.
+
+The logarithmic dimension lemma explicitly assumes an integral curve and
+a closed point for its local parameter. Its proof explains the generator
+`du` and the simple-pole coefficient. In the logarithmic rigidity proof,
+the centre is closed and in fact lies on the boundary: a centre in the
+affine curve would put every coordinate in both support rings and hence
+in `k`. Locality sends the parameter to the maximal ideal, and the function
+field embedding makes it nonzero. The logarithmic derivative need only be
+in the valuation ring, not in its maximal ideal. Every nonzero polynomial
+differential on the affine line has pole order at least two at infinity.
+The subalgebra corollary now checks its nonzero-group prerequisite and
+explains the nonnormal cusp counterexample. The final classification
+separates the affine, positive-genus proper and genus-zero proper cases.
+
+Targeted source comparison used C14's canonical and curve-classification
+proofs, including `lem:formA1`, from `omnific_curve_rigidity/article.tex`
+in `c6359e4^:docs/new/omnific_curve_rigidity (2).zip`; C12's geometric tools,
+local logarithmic calculation and affine classification from the same member
+name in `c6359e4^:docs/new/omnific_curve_rigidity (1).zip`; and C13's curve
+proofs through `cor:allcurves`, from
+`omnific_differential_rigidity/omnific_differential_rigidity.tex` in
+`c6359e4^:docs/new/omnific_differential_rigidity.zip`. In particular, C13's
+original circle paragraph refers to the full real-descent proof, so the
+misleading association arose in the assembly. These comparisons do not
+constitute full reconciliation of C10–C15.
+
+The [curve compactification and affineness results](https://stacks.math.columbia.edu/tag/0A22)
+and the [genus-zero characterization](https://stacks.math.columbia.edu/tag/0C6L)
+were checked for the required hypotheses and cited explicitly. Riemann–Roch,
+flat base change and the uniqueness of the smooth projective model remain
+imported foundations. This proof review adds no Lean coverage: all results
+of Sections 17.1–17.2 remain **Pending**. Arithmetic fibers in Section 17.3,
+later applications, earlier curve pointers and the remaining source
+reconciliation still require review.

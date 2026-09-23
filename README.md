@@ -187,9 +187,13 @@ topology are proved non-Hausdorff: the closure of zero is precisely that
 ideal, and two omnific integers are topologically indistinguishable exactly
 when their integer constant terms agree. Their separation quotients are
 ring-isomorphic to `ℤ`, with constant extraction as the canonical map.
-The profinite completion, completion homeomorphisms, higher Diophantine and
-general set-sized quotient results remain pending; source review is distinct
-from checked formalization.
+The profinite ring isomorphism is also proved: the inverse limit over all
+positive ordinary moduli is exactly the ordinary profinite integer ring,
+and its canonical map again has the purely infinite ideal as its kernel.
+The construction satisfies Mathlib's limit universal property, and every
+finite-index omnific ideal occurs in the diagram. Completion homeomorphisms,
+higher Diophantine and general set-sized quotient results remain pending;
+source review is distinct from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
@@ -202,7 +206,11 @@ splitting arguments, with boundary examples explaining the hypotheses.
 The review now covers squarefree and Weierstrass rigidity and the abstract
 two-ring differential principle, including tangent detection and inheritance.
 It corrects differential normalization and hypotheses and makes the
-geometric pullback argument explicit.
+geometric pullback argument explicit. The smooth-curve classification now also
+has a manuscript proof review: over any characteristic-zero coefficient field,
+only the affine and projective lines admit nonconstant points in the nonnegative
+Hahn support ring when the exponent group is nonzero. The proof explains descent
+and the role of geometric punctures; its Lean formalization remains pending.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

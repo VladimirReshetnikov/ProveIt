@@ -3488,6 +3488,75 @@ are unchanged by this sync, so the 178/32-page build and visual checks
 remain applicable. Section 17 and subsequent manuscript work remain
 outside the completed review.
 
+## Smooth-curve classification and geometric boundary review
+
+The Diophantine review now covers Sections 17.1–17.2, from the canonical
+bundle lemma through the classification of all smooth curves. The proof
+supplies closed-point evaluation and Nakayama, explains ambient-field
+contractions without derivation-stable function fields, and makes the
+finite geometric boundary explicit. Descent of an affine-line isomorphism
+across any field extension uses genus and the degree of the finite étale
+boundary; no embedding of that extension into an algebraic closure is needed.
+
+The real unit circle has two conjugate boundary points and belongs to the
+two-puncture case after complexification. The assembly had misleadingly
+attached this example to the one-boundary-point affine-line-form argument.
+C13's original paragraph referred to its full real-descent proof. The
+hyperbola paragraph now distinguishes its constant coefficient-field points
+from its two real omnific-integer points. In the logarithmic proof the
+valuation centre is closed and lies on the boundary, the local parameter
+has nonzero image in the maximal ideal, and both contractions refer to
+the same rational differential. The local expression, affine-line pole
+order and nonnormal cusp example are spelled out.
+
+The targeted comparisons with C12, C13 and C14, including archive members,
+are recorded in the report's reconciliation file. The Stacks curve
+compactification, affineness and genus-zero results were checked for the
+needed hypotheses and cited. This is manuscript proof review, not new
+Lean coverage. Sections 17.1–17.2 remain **Pending** in Lean; arithmetic
+fibers, subsequent geometric applications and full source reconciliation
+remain outside this pass.
+
+The article retains 200 standard results and all 416 labels and their
+existing numbers. Only two standard statement texts change:
+`odg:cr:lem:punctures` specifies a finite set of closed points, and
+`odg:cr:lem:logdim` specifies integrality and a closed point for the local
+parameter. The other 198 standard statements are unchanged. Three-pass
+article and catalogue builds produce 178 and 32 pages with no warnings,
+unresolved references or bad boxes. Article PDF pages 106–110 and catalogue
+page 9 were inspected visually. The independent index audit checks
+3,650 results in 60 reports; the source audit resolves 4,189 references,
+and the Markdown audit finds no broken local destinations. No finite
+verifier is claimed to validate these geometric arguments. No Lean source
+changed in this review.
+
+## Synchronization after the smooth-curve review
+
+The merge through `1ab41af` brings in the first four batch-30 report writes
+and `2f32ce4`'s Lean congruence topologies. The latter defines the ordinary
+congruence topology from positive-modulus ideals and the prime-adic topology
+using Mathlib's ideal-adic construction. For both, the closure of zero is
+the purely infinite ideal, indistinguishability means equality of constant
+terms, and the actual separation quotient is ring-isomorphic to `ℤ`.
+The source paragraph following `odg:eq:profinite` and the incoming mappings
+were checked. Completion homeomorphisms, topological identifications with
+integers carrying arithmetic topologies, and the profinite inverse limit
+remain **Pending**.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,416 jobs and the
+axiom audit covers 14,910 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. No other Lean build was active when
+this validation began. This build validates the merged library; it does
+not formalize the reviewed curve arguments.
+
+The four report expansions retain all previously mapped theorem and
+equation texts in those reports. Their new material remains unreviewed
+and pending in Lean. The current index is refreshed to 3,730 results in
+60 reports, with 3,711 labeled and 19 unlabeled entries; 109 use typed
+labels. The renamed autonomous-dilation labels now use `adr:`. All 4,269
+cited source references resolve. The nine archives placed in `39fe674`
+are incoming material, not reviewed or indexed maintained articles.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
