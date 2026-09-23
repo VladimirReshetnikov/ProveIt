@@ -151,6 +151,13 @@ globally well-ordered positive support:
    through a walk that leaves the section and returns; the order `2r+2`
    finite-section threshold is sharp for one-scale locally finite graphs.
 
+The coefficient and Hahn algebra statements hold for every nonempty `I`.
+The closing zero-divisor assertion of `ihs:rf:prop:algebra` requires two
+distinct indices: the constant matrix units `E_ii` and `E_jj` are nonzero
+with product zero. For a singleton `I`, the algebra is the Hahn field `K`.
+This bounded correction leaves the broader Drazin and Fredholm proof review
+pending.
+
 ## What Part III claims
 
 For any nonzero unital complex algebra `𝔄` (no norm, no normality) and any
@@ -255,8 +262,13 @@ operators with positive valuation that need not commute with `T`:
 - Part IV's local clusters do **not** assemble into a global
   bounded-coefficient spectral theorem; its counterexample concerns bounded
   coefficients only, not Part II's algebra or unbounded frameworks.
-- The proofs have not been independently refereed or checked by a proof
-  assistant.
+- Independent refereeing is not certified. Lean covers the row- and
+  column-finite algebra lemma `ihs:rf:lem:rcf` and the algebra, action,
+  involution and order-inequality clauses of `ihs:rf:prop:algebra`, together
+  with its conditional zero-divisor assertion. The singleton identification
+  has no separately mapped Lean equivalence, and the spectral theorems remain
+  unformalized; see [the formalization ledger](../../FORMALIZATION.md) for
+  the precise scope.
 - The four programs check finite algebraic identities only. They do not
   establish Baire category, arbitrary support well-ordering, an infinite
   cokernel dimension, the spectral formulas, the Volterra or block halos,
@@ -304,6 +316,13 @@ The reviewed build has 97 pages, zero errors, zero undefined references and
 citations, zero multiply defined labels and zero duplicate PDF destinations.
 It retains the baseline underfull box in the novelty table. The title and
 status note are on the first page and the abstract on the second.
+
+For the bounded zero-divisor correction, baseline and revised sources each
+completed three `pdflatex` passes with those same diagnostics. All 404 source
+labels and their numbering were preserved. A rendered comparison of all
+97 pages found only physical page 38 changed; that page and its neighbours
+were visually checked. The 20 historical code, data and provenance files
+were unchanged, and no verification script was rerun for this correction.
 
 To rerun the checks, copy this directory and run the scripts in `code/` on
 the copy: the Part II script writes `data/verification.json` in the directory above `code/`,

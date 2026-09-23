@@ -121,6 +121,17 @@ infinitely many supported exponents to one value; it need not produce a
 Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
 makes this distinction explicit.
 
+The nonlinear holonomic argument keeps the scaled lowest-valuation layer
+as a polynomial `φ_δ(X)`. Its coefficient Gauss value `γ_δ` need not equal
+the valuation of the evaluated sum: `φ_δ(1)` may vanish even though the
+polynomial is nonzero. The selected corner has integer data `(d_P,w_P)`;
+its residue polynomial is `χ_P ∈ k[T]`, while its full-coefficient polynomial
+is `I_P ∈ k((t^Γ))[T]`. Integer roots of `I_P` are roots of `χ_P`, but the
+converse can fail. The degree cutoff `κ_P` is an ordinary rational number;
+the exclusion scale `δ₀` is an element of `Γ`. Computing the former does
+not divide elements of `Γ`. The coordinate derivative `D_z` kills the Hahn
+coefficient field, including all monomials `t^γ`.
+
 The [hidden-negative-directions report](surcomplex/hidden-negative-hermitian-directions/article.tex)
 uses `𝒫_Γ` for complex Hahn series supported in some finitely generated
 additive subgroup of `Γ`; “finite-lattice support” permits infinite supports

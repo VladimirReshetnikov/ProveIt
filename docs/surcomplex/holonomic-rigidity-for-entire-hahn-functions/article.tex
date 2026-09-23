@@ -150,10 +150,11 @@ which states it.
 \begin{minipage}{0.94\textwidth}
 \small
 \textbf{Status.} An AI-assisted research report; priority and independent
-refereeing are not certified. Lean covers the positive-support word lemma,
-escape mechanism, bounded-cost exclusion and formal exponential domain; the
-main classifications, the torsion argument and the nonlinear and
-coefficient-field parts are unformalized. The variable derivative is not the
+refereeing are not certified. Lean covers support and escape lemmas,
+exponential and partial-theta domains, polynomial-orbit valuations,
+constant-point avoidance, inward stability and torsion covariance.
+The full classifications and the nonlinear and coefficient-field theorem
+packages remain pending. The variable derivative is not the
 Berarducci--Mantova derivation on surreal coefficients.
 \end{minipage}
 \end{titlepage}
@@ -468,8 +469,8 @@ root-extraction argument of the source manuscripts.
 
 The nonlinear part,
 Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, uses no
-divisibility anywhere: its only divisions are of ordinary integers in $\Q$
-(the degree cutoff \eqref{hol:nl:eq:kappa}), and its exclusion bounds are
+divisibility of $\Gamma$ anywhere: the degree cutoff
+\eqref{hol:nl:eq:kappa} divides ordinary integers in $\Q$, and its exclusion bounds are
 chosen from finitely many strict inequalities with positive integer
 multipliers.
 
@@ -2392,26 +2393,46 @@ identity with its exact domain and attained exclusion boundary.
 Part~(2) of Lemma~\ref{hol:lem:support} is mapped separately to
 \path{Surreal/HahnSeries/NeumannWords.lean}.
 
-The next dependencies are integer valuation stabilization and the unit-orbit
-residue-polynomial argument, followed by the operator-to-recurrence
-conversions and the differential and dilation classifications.
-The refined periodic threshold, the complete support certificates, the
-new inward-stability lemma, the strengthened torsion equivalence and the
-generic-line extension remain unformalized. The several-variable proof also
-needs countable polynomial avoidance and restriction of a rational
-differential system.
+\path{Surreal/HahnSeries/PartialThetaDomain.lean} covers both sufficient
+criteria of Lemma~\ref{hol:lem:certificate}, the scale-subgroup facts,
+the exact partial-theta domain and the theta identities. It also proves
+\textup{(ii)}$\Rightarrow$\textup{(i)} of Theorem~\ref{hol:main:q}
+and \textup{(i)}$\Rightarrow$\textup{(ii)} of
+Corollary~\ref{hol:cor:detect}; the converse implications remain pending.
 
-Nothing in the nonlinear part,
-Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, or in the
-coefficient-field part,
-Sections~\ref{hol:cf:sec:setting}--\ref{hol:cf:sec:families}, is formalized.
-For the latter source~12 suggests the order: valuation-rank inequality,
-proper-convex-subgroup obstruction, formal coefficient recurrence, all-order
-differential corollary; the mixed statements would also need a formal
-theorem implying the zero-set lemma for nondegenerate exponential
-polynomials. The build and axiom audit cover only imported declarations
-recorded in the ledger. The Python checks are finite checks of formulas and examples; they
-do not establish any remaining infinite statement.
+\path{Surreal/HahnSeries/UnitOrbitPolynomials.lean} covers integer
+valuation stabilization, eventually affine geometric-orbit valuations,
+the unit-orbit theorem and the bivariate index--dilation lemma.
+\path{Surreal/Algebra/GenericConstantPoint.lean} proves
+Lemma~\ref{hol:lem:generic}, including its least-exponent reduction, for
+uncountable constants. \path{Surreal/HahnSeries/TorsionCovariance.lean}
+covers inward stability, all of Proposition~\ref{hol:prop:torsion},
+and the preservation half of Lemma~\ref{hol:lem:support}\,(3).
+These results require no divisibility of the value group.
+
+The remaining dependencies include the refined periodic threshold,
+part~(1) and the reflection half of part~(3) of
+Lemma~\ref{hol:lem:support}, finite-block grouping in
+Lemma~\ref{hol:lem:certificate}, Proposition~\ref{hol:prop:closure},
+and the several-variable strong-domain definition. The operator-to-recurrence
+conversions and full differential and dilation classifications remain
+pending. For the several-variable classification, constant-point avoidance
+is proved; generic-line restriction, restriction of a rational
+differential system, and the resulting D-finiteness argument are pending.
+
+The nonlinear rigidity theorems in
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}
+and the coefficient-field theorem package in
+Sections~\ref{hol:cf:sec:setting}--\ref{hol:cf:sec:families}
+remain unformalized; the shared support and inward-stability prerequisites
+above do not prove them. For the latter source~12 suggests the order:
+valuation-rank inequality, proper-convex-subgroup obstruction, formal
+coefficient recurrence, all-order differential corollary; the mixed
+statements would also need a formal theorem implying the zero-set lemma
+for nondegenerate exponential polynomials. The build and axiom audit cover
+only imported declarations recorded in the ledger. The Python checks are
+finite checks of formulas and examples; they do not establish any remaining
+infinite statement.
 
 %======================================================================
 % Nonlinear part: source 10 (nonlinear rigidity). Labels use hol:nl:.
@@ -2567,7 +2588,11 @@ Proposition~\ref{hol:prop:closure}. For strongly summable $(b_\alpha)$ and
 $(c_\epsilon)$ a fixed exponent has finitely many representations as a sum of
 two support exponents, each carried by finitely many indices, so the double
 family $(b_\alpha c_\epsilon)$ is strongly summable, and regrouping by
-$\alpha+\epsilon$ gives the Cauchy product. Source~10 proves this over $k$ by
+$\alpha+\epsilon$ gives the Cauchy product: regrouping can remove supported
+exponents by cancellation, but cannot introduce new ones or new contributors
+at a fixed exponent. A scalar is a one-member Hahn family, so the same
+argument gives scalar multiplication; a finite union handles addition.
+Source~10 proves this over $k$ by
 the same two-coordinate sequence argument; like the Hahn-field construction
 itself, that argument uses ordinary set-theoretic choice. A formal derivative
 or an Euler operator with coefficients in $k$ reindexes a subfamily and
@@ -2600,7 +2625,9 @@ For nonzero $F,G\in\Sfam_m$,
 \begin{proof}
 Normalize both factors and apply Lemma~\ref{hol:nl:lem:algebra}. The product
 of the two nonzero residues is nonzero because $k[X]$ is an integral domain,
-so some coefficient of $t^{-\gamma(F)-\gamma(G)}FG$ has valuation exactly zero.
+so some coefficient of $t^{-\gamma(F)-\gamma(G)}FG$ has valuation exactly zero,
+and none has negative valuation. This proves the asserted minimum. Taking
+the residue of that normalization then gives the initial-polynomial identity.
 \end{proof}
 
 \subsection{Scaled initial polynomials}\label{hol:nl:sub:scaled}
@@ -2620,12 +2647,25 @@ For $f\ne0$ put
 The \emph{active} indices are the $n$ attaining $\gamma_\delta$; there are
 finitely many, $N_\delta$ is the largest, and $A_\delta=\lc(\phi_\delta)\in
 k^\times$.
+More explicitly,
+\[
+ \phi_\delta(X)=
+ \sum_{v(a_n)-n\delta=\gamma_\delta}\lc(a_n)X^n.
+\]
+Here only nonzero $a_n$ are included. Each active index contributes at the
+same Hahn exponent $\gamma_\delta$ in the scaled coefficient family, so
+local finiteness makes this sum finite. Distinct indices remain distinct
+powers of $X$; their nonzero leading coefficients cannot cancel as a
+polynomial.
 
 The element $\gamma_\delta$ is a \emph{coefficient Gauss value}. It need not
 equal $v(f(t^{-\delta}))$: $\phi_\delta(1)$ can vanish although
 $\phi_\delta\ne0$. The proofs below use identities in $\Sfam_1$ and in $k[X]$
 only, never an identification of these two quantities, and never replace the
 initial polynomial by its value at~$1$.
+For example, with $\eta>0$ the finite family
+$F(X)=1-X+t^\eta X^2$ has $\gamma(F)=0$ and $\inpoly(F)=1-X$,
+but $F(1)=t^\eta$ has valuation $\eta>0$.
 
 \begin{lemma}[Exact derivative scaling]\label{hol:nl:lem:derivatives}
 For every $j\ge0$,
@@ -2658,7 +2698,10 @@ Choose $\delta_1>0$ with
 \end{equation}
 There are finitely many inequalities, and they need no division in $\Gamma$:
 take $\delta_1$ positive and larger than the absolute values of all right-hand
-sides, since each multiplier $m-n$ is a positive integer. They persist for
+sides, since each multiplier $m-n$ is a positive integer. Such an element
+exists: add any positive element of the nonzero ordered group to the maximum
+of zero and those finitely many absolute values. This also covers an empty
+list of low-index coefficients. The inequalities persist for
 $\delta\ge\delta_1$ and say that each such low-index term has scaled valuation
 $v(a_n)-n\delta$ strictly larger than that of the $m$th term. The last
 assertion is the definition of $\gamma_\delta$.
@@ -2726,7 +2769,9 @@ In particular $\chi_P(N)\ne0$ implies $\Omega_\phi\ne0$.
 
 \begin{proof}
 Each corner summand has degree at most
-$k_\nu+\sum_jm_{\nu j}(N-j)=d_PN+w_P$, and its coefficient in that degree is
+$k_\nu+\sum_jm_{\nu j}(N-j)=d_PN+w_P$. This common degree is a nonnegative
+integer because $N\ge s\ge j$ and $k_\nu,m_{\nu j}\ge0$, even if $w_P<0$.
+The coefficient of the summand in that degree is
 $\bar c_\nu A^{d_P}\prod_j\fall Nj^{m_{\nu j}}$. Summing gives the formula.
 \end{proof}
 
@@ -2779,8 +2824,10 @@ of all right-hand sides satisfies them, as does every larger $\delta$.
 
 Suppose $t^{-\delta}\in\Dom(f)$ for such a $\delta$, and form
 $\gamma=\gamma_\delta$, $g=g_\delta$, $\phi=\phi_\delta$, $N=N_\delta$ as in
-\eqref{hol:nl:eq:gaussdata}. By \eqref{hol:nl:eq:cert1} and
-Lemma~\ref{hol:nl:lem:active},
+\eqref{hol:nl:eq:gaussdata}. Each inequality in \eqref{hol:nl:eq:cert1}
+puts that low-index term strictly above the $m$th term in scaled valuation.
+Thus no index at most $n_\ast$ is active, by the comparison in the proof of
+Lemma~\ref{hol:nl:lem:active}, and
 \begin{equation}\label{hol:nl:eq:hbound}
  N>n_\ast,\qquad \gamma\le v(a_m)-m\delta.
 \end{equation}
@@ -2804,8 +2851,11 @@ integer $d_\nu-d_P$ reverses it and gives the lower bound
  v(c_\nu)-\beta_P-(d_P-d_\nu)v(a_m)
  +\bigl((d_P-d_\nu)m+w_P-w_\nu\bigr)\delta>0
 \]
-by \eqref{hol:nl:eq:cert3}. So the normalized identity lies in $\Sfam_1^+$,
-and only the corner summands survive the residue map. Applying $\rho$ to the
+by \eqref{hol:nl:eq:cert3}. Every polynomial product of the $g^{(j)}$ has
+coefficients of nonnegative valuation. Multiplication by a positive-valuation
+scalar makes its residue zero, including when the product itself is zero.
+Thus the normalized identity lies in $\Sfam_1^+$, and only corner summands
+can survive the residue map. Applying $\rho$ to the
 formal identity gives
 \begin{equation}\label{hol:nl:eq:residualequation}
  0=\sum_{\nu\in\mathcal C_P}\bar c_\nu X^{k_\nu}
@@ -2844,7 +2894,8 @@ $t^{-\delta}$ for a cofinal set of $\delta\in\Gamma_{>0}$ is a polynomial.
 \end{corollary}
 
 \begin{proof}
-A cofinal subset meets the final segment excluded by
+If $d_P=0$, then $P$ is a nonzero polynomial in $z$ alone and has no formal
+solution. Otherwise a cofinal subset meets the final segment excluded by
 Theorem~\ref{hol:nl:thm:certificate} for a nonpolynomial solution.
 \end{proof}
 
@@ -2884,7 +2935,10 @@ Theorem~\ref{hol:nl:thm:certificate} give polynomiality and the exclusion
 statement, with $\delta_0$ as in \eqref{hol:nl:eq:deltazero}. A nonzero
 algebraic relation between $f$ and $D_zf$ over $\KK(z)$ becomes a nonzero
 polynomial of the form \eqref{hol:nl:eq:firstP} after denominators are
-cleared, which gives the independence statement.
+cleared. Multiplication by a common nonzero denominator preserves both the
+nonzero relation and its vanishing in $\KK((z))$, even if that denominator
+vanishes at $z=0$. Thus the polynomiality conclusion contradicts
+nonpolynomiality of $f$, proving the independence statement.
 \end{proof}
 
 The uniqueness of a corner term for fixed $j$ is a structural fact of order
@@ -3067,8 +3121,10 @@ Archimedean convergence of $n\,v(u)$ is used.) If $v(u)=0$, every $cu^n$ has
 the nonzero coefficient $\lc(u)^n$ at exponent $\lambda$, so local finiteness
 fails. If $v(u)<0$, the leading exponents $\lambda+nv(u)$ strictly decrease.
 At $x=0$ only one member is nonzero. This proves
-\eqref{hol:nl:eq:riccatidomain}. Given $\delta$, choose $\lambda>\delta$;
-then $v(t^{-\delta})+\lambda=\lambda-\delta>0$.
+\eqref{hol:nl:eq:riccatidomain}. Given $\delta$, choose
+$\lambda=\delta+\epsilon$ with any $\epsilon\in\Gamma_{>0}$, available
+because $\Gamma\ne0$; no order unit is required. Then
+$v(t^{-\delta})+\lambda=\lambda-\delta=\epsilon>0$.
 \end{proof}
 
 There is no conflict with Theorem~\ref{hol:nl:thm:certificate}, whose
@@ -3121,7 +3177,7 @@ empty. Constant solutions can always be checked by substitution.
 \begin{proof}
 Polynomiality is Theorem~\ref{hol:nl:thm:certificate}. For degree $n\ge s$
 every derivative leading-term formula of Lemma~\ref{hol:nl:lem:corner} applies,
-and if also $n>\kappa_P$ the top coefficient of $P[f]$ is
+and if also $n>\kappa_P$ the coefficient of $z^{d_Pn+w_P}$ in $P[f]$ is
 $\lc(f)^{d_P}I_P(n)$, which must vanish; $I_P\ne0$ because $\chi_P\ne0$.
 Degrees below $s$, where derivative leading terms can vanish, are listed
 separately.
@@ -3195,7 +3251,17 @@ conclusion.
 
 The corner is also not an invariant of the solution set. Multiplying an
 equation by another differential polynomial, or passing to a differential
-consequence, can change the corner data. The criterion $\chi_P\ne0$ is a
+consequence, can change the corner data. For a concrete example put
+\[
+ Q=z^2Y_0Y_2+zY_0Y_1-z^2Y_1^2,\qquad
+ P=Y_1,\qquad \widetilde P=Y_1(1+zQ).
+\]
+For every formal $f$, the factor $1+zQ[f]$ has constant coefficient one and
+is a unit of $\KK[[z]]$. Hence $P[f]=0$ and $\widetilde P[f]=0$ have exactly
+the same solutions, the constants. But $\chi_P(T)=T$, whereas the degree-three
+corner of $\widetilde P$ gives
+$\chi_{\widetilde P}(T)=T\bigl(T(T-1)+T-T^2\bigr)=0$.
+The criterion $\chi_P\ne0$ is a
 sufficient condition on the displayed combined polynomial: when $\chi_P=0$
 another equation satisfied by the same function may have a nonzero corner, or
 a logarithmic-derivative reduction as in
@@ -3219,8 +3285,11 @@ $\wt(\alpha)=q\cdot\alpha$ for $\alpha\in\N^m$, and let
  \vartheta_q=\sum_{\nu=1}^mq_\nu x_\nu\frac{\partial}{\partial x_\nu},
  \qquad \vartheta_qx^\alpha=\wt(\alpha)x^\alpha.
 \]
-Only finitely many multi-indices have weight at most a given integer; this,
-with the eigenvalue identity, is the essential feature of positive weights.
+For $N\ge0$, a multi-index of weight at most $N$ satisfies
+$0\le\alpha_\nu\le\lfloor N/q_\nu\rfloor$ in each coordinate. Thus at most
+$\prod_\nu(1+\lfloor N/q_\nu\rfloor)$ multi-indices have that bound. This
+finiteness, with the eigenvalue identity, is the essential feature of
+positive weights.
 Write a nonzero equation in combined-monomial form
 \begin{equation}\label{hol:nl:eq:eulerP}
  P(x,Y,Z)=\sum_{\nu\in J}c_\nu x^{\alpha_\nu}Y^{i_\nu}Z^{j_\nu},
@@ -3351,7 +3420,11 @@ notes that a single differential equation in several variables cannot force
 polynomiality in general, since it may ignore variables; the zero-weight
 example above is an instance. Theorem~\ref{hol:nl:thm:euler} instead assumes
 one algebraic relation between $f$ and $\vartheta_qf$ with all weights
-positive, and no finite-dimensional span. Neither theorem implies the other.
+positive, with no finite-dimensional-span hypothesis. These are different
+input criteria and different proof routes. Within the strongly entire class,
+each criterion forces a polynomial, which then satisfies both criteria:
+its mixed derivatives span a finite-dimensional space, and the relation
+$Y-f(x)=0$ is an algebraic Euler relation.
 
 \section{Nonlinear consequences, hypotheses and predecessors}
 \label{hol:nl:sec:consequences}
@@ -3496,7 +3569,7 @@ important, and no invention of differential Newton polygons is claimed.
 
 Non-Archimedean value distribution already restricts nonlinear functional
 and differential equations. Hu and Luan work over a complete algebraically
-closed field with a nontrivial non-Archimedean absolute value and prove
+closed field of characteristic zero with a nontrivial non-Archimedean absolute value and prove
 Clunie-, Malmquist- and Mokhon'ko-type results~\cite{huluan}; source~10
 consulted the parsed text of that paper for its field hypotheses and
 Theorems~1.1, 1.3 and~1.5, reports that a remote screenshot service failed so
@@ -3550,9 +3623,9 @@ Section~\ref{hol:cf:sub:continuum}.) Source~10 cited the quadratic-exponent seri
 this report and in the catalogue; within the collection it occurs as the
 rank-one-Berkovich example~\cite{reporankone}, as
 \texttt{found:ex:internal}~\cite{repofoundations}, and as a case of
-\eqref{hol:eq:theta}. Since that pin the collection has gained this nonlinear
-part itself; no other report now contains a nonlinear rigidity theorem for
-$D_z$, and the Riccati statement \texttt{diff:cor:riccati} of the
+\eqref{hol:eq:theta}. This is the targeted comparison recorded at the pin,
+not an absence claim about every report in the current collection. The
+Riccati statement \texttt{diff:cor:riccati} of the
 differential-equations report concerns a scalar derivation (compare
 Proposition~\ref{hol:nl:prop:riccati}).
 
@@ -3574,8 +3647,9 @@ to a repository question, which is not a named historical conjecture; it is
 not a certified first discovery of nonlinear non-Archimedean rigidity. The
 written proofs are the evidence. The finite checks of
 Section~\ref{hol:sec:verification} establish no arbitrary-support theorem;
-no Lean formalization of the nonlinear part exists, and no independent human
-referee has checked it.
+the main nonlinear rigidity theorems remain unmapped in the current
+implementation ledger. No independent human referee report accompanies the
+delivered source package.
 
 \section{The five finite check suites}\label{hol:sec:verification}
 
@@ -3955,9 +4029,11 @@ Named published open conjecture & None claimed solved; the nonlinear question,
 answered in order one and, without an order unit, in all orders, is a
 question of this report, not a historical conjecture.\\[4pt]
 Priority, peer review, formal verification & Priority and independent
-refereeing are not certified. The support word lemma, escape mechanism and
-formal exponential domain have Lean coverage; the main classifications and
-the whole nonlinear and coefficient-field parts remain unformalized.\\
+refereeing are not certified. Lean covers support and escape lemmas,
+exponential and partial-theta domains, polynomial-orbit valuations,
+constant-point avoidance, inward stability and torsion covariance.
+The full classifications and the nonlinear and coefficient-field theorem
+packages remain pending.\\
 \bottomrule
 \end{longtable}
 
@@ -4041,8 +4117,8 @@ line-by-line audit of every report, Lean file, archive, branch or the Git
 history, and no absence claim rests on a truncated preview.
 \item The answered question is a question of this report, not a named
 historical conjecture.
-\item No Lean formalization and no independent refereeing of the nonlinear
-part exists. The 2{,}113 finite checks are program checks, not theorems; they
+\item Source~10 supplied no Lean formalization or independent referee report
+for the nonlinear part. The 2{,}113 finite checks are program checks, not theorems; they
 do not test infinite supports, cofinality, all Hahn elements, nonexistence of
 annihilating equations or novelty, and no infinite surreal sum is numerically
 approximated. A successful PDF build is not a proof check.
@@ -5996,11 +6072,12 @@ own non-claims are listed in Section~\ref{hol:nl:sub:nonclaims}, while the
 no-order-unit results keep the non-claims of
 Section~\ref{hol:cf:sub:nonclaims}; no complete algorithm for arbitrary
 surreal comparisons or cofinality decisions is claimed; the finite checks
-prove no infinite theorem. The main theorem package, the nonlinear and
-coefficient-field parts included, has no Lean verification or independent
-refereeing; the existing
-support, escape and exponential-domain coverage is recorded in the
-formalization ledger.
+prove no infinite theorem. The full classifications and the nonlinear and coefficient-field theorem
+packages remain without Lean verification or independent refereeing.
+The formalization ledger records the proved support and escape lemmas,
+exponential and partial-theta domains, polynomial-orbit valuations,
+constant-point avoidance, inward stability and torsion covariance,
+including the partial-theta directions of the dilation classification.
 
 \section{Reproducing the document and the finite checks}
 \label{hol:app:reproduce}

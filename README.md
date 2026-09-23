@@ -583,9 +583,10 @@ families are strongly summable exactly when their block sums are. When the
 constants are uncountable, countably many nonzero polynomials are all nonzero
 at one constant point, the unit-orbit and affine valuation lemmas and the torsion
 covariance of entire Hahn functions hold for every value group, and the
-exponential profile theorem holds for every ordered field with a valuation.
+exponential profile theorem holds over any ordered field equipped with an
+ordered exponential and a nontrivial convex valuation.
 Admissible exponent sets form cones with the period-inequality criterion,
 the bounded-orbit locus of an expanding polynomial is exact, and a
-compressed resolvent family determines a unique row-Laplacian generator.
+stochastic compressed resolvent family determines a unique row-Laplacian generator.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
