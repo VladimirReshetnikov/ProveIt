@@ -591,6 +591,13 @@ This records corrected prose and hypotheses, not new Lean coverage.
   in the general coefficient field). At `u = 0` both bilateral coordinate
   families are identically zero and strongly summable although `0 ∉ U_q`.
   The report now explains this exception; the README and catalogue agree.
+- **Corrected in source** (discussion of `tate:eq:circlelayers` in
+  [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/article.tex)):
+  the rank-one circle quotient is `(H_α/H_α^-)/ℤᾱ`. The full quotient
+  `H_α/ℤα` retains kernel `H_α^-`, even when the rank-one value group is
+  `ℝ`. The example `Γ = ℝ ⊕lex ℝ`, `α = (1,0)` makes that kernel explicit.
+  The introductory description now also distinguishes the kernels of
+  `v mod H_α^-` on `K_{H_α}` and `v mod H_α` on `K_Γ`.
 - **Corrected in source** (`diff:rs:lem:euler`, in
   [differential equations](surcomplex/differential-equations/article.tex)):
   `∂ = -t∂_T` preserves `K_Γ` exactly when `Γ = {0}` or `1 ∈ Γ`.
@@ -2499,75 +2506,75 @@ Mappings cover only the hypotheses and clauses they state.
 | Kind | Source label or line | Heading |
 |---|---|---|
 | Theorem | `tate:thm:main` (line 251) | Exact-domain Hahn--Tate uniformization |
-| Theorem | `tate:thm:arithmetic-main` (line 307) | Exact arithmetic and scalar extension |
-| Corollary | `tate:cor:surcomplex-main` (line 329) | Surcomplex elliptic curves |
-| Lemma | `tate:lem:neumann` (line 543) | Positive-support calculus |
-| Lemma | `tate:node:lem:implicit` (line 599) | Formal inverse and implicit function |
-| Lemma | `tate:lem:normalize` (line 649) | Finite normalization |
-| Theorem | `tate:thm:theta` (line 730) | Theta domain |
-| Proposition | `tate:prop:theta-product` (line 781) | Product and zeros |
-| Theorem | `tate:thm:coordinates` (line 839) | Coordinate domain and support certificate |
-| Proposition | `tate:prop:tail` (line 884) | Exact finite-tail bound |
-| Proposition | `tate:prop:discriminant` (line 909) | Discriminant and modular invariant |
-| Proposition | `tate:prop:differential` (line 941) | Differential and inversion identities |
-| Lemma | `tate:lem:coarse-eval` (line 1004) | Unrestricted coarse formal evaluation |
-| Lemma | `tate:lem:rank-one` (line 1071) | Completeness of the residue workspace |
-| Theorem | `tate:thm:classical` (line 1116) | Tate; external classical input |
-| Lemma | `tate:lem:formal-identity` (line 1147) | A universal formal parameter |
-| Lemma | `tate:lem:agreement` (line 1226) | Agreement of Taylor and Hahn evaluation |
-| Proposition | `tate:prop:identityfiber` (line 1349) | The whole coarse identity fiber |
-| Corollary | `tate:cor:diagram` (line 1405) | Reduction and infinitesimal lifting |
-| Proposition | `tate:node:prop:annulus` (line 1539) | Summability on the wide annulus |
-| Theorem | `tate:node:thm:node` (line 1629) | Explicit formal smoothing coordinates |
-| Proposition | `tate:node:prop:coefficients` (line 1663) | First inverse coefficients |
-| Theorem | `tate:node:thm:nodalsurj` (line 1685) | Nodal inverse over a Hahn field |
-| Lemma | `tate:node:lem:nodalnormalization` (line 1714) | Normalization of the special cubic |
-| Proposition | `tate:node:prop:smooth` (line 1731) | Smooth-residue inverse |
-| Lemma | `tate:node:lem:infinityvalues` (line 1774) | The valuation pattern at infinity |
-| Proposition | `tate:node:prop:infinity` (line 1795) | Formal inverse at infinity |
-| Theorem | `tate:node:thm:surjectivity` (line 1837) | Constructive surjectivity |
-| Lemma | `tate:node:lem:generic` (line 1904) | Tate's generic-pair lemma |
-| Theorem | `tate:node:thm:group` (line 1923) | Group uniformization |
-| Theorem | `tate:node:thm:main` (line 1942) | Theorem~\ref{tate:thm:main} over any coefficient field of characteristic zero |
-| Theorem | `tate:node:thm:support` (line 1977) | Equality of generated support monoids |
-| Corollary | `tate:node:cor:monoidal` (line 1996) | Exact monoidal descent |
-| Lemma | `tate:node:lem:isometry` (line 2027) | Valuation isometry |
-| Corollary | `tate:node:cor:bidisk` (line 2055) | The node chart on the infinitesimal bidisk |
-| Theorem | `tate:node:thm:moving` (line 2065) | Two-period comparison |
-| Corollary | `tate:node:cor:fixedmetric` (line 2081) | Fixed-period distance and coordinate size |
-| Corollary | `tate:node:cor:periodsensitivity` (line 2100) | Exact period sensitivity |
-| Theorem | `tate:thm:extension` (line 2152) | Exponent embeddings preserve uniformization |
-| Theorem | `tate:thm:tropical` (line 2207) | The valuation quotient |
-| Proposition | `tate:node:prop:residue` (line 2306) | Fine residue sequence |
-| Theorem | `tate:node:thm:obstruction` (line 2323) | No full-domain extension with the same kernel |
-| Theorem | `tate:thm:recover` (line 2371) | Unique, support-preserving recovery |
-| Corollary | `tate:cor:negativej` (line 2409) | Negative-$j$ uniformization |
-| Lemma | `tate:lem:radical` (line 2440) | A single radical extension |
-| Theorem | `tate:thm:torsion` (line 2481) | The complete torsion field |
-| Corollary | `tate:cor:lattice` (line 2525) | A finite-lattice degree formula |
-| Theorem | `tate:thm:surcomplex` (line 2571) | Surcomplex uniformization |
-| Corollary | `tate:node:cor:real` (line 2615) | Real surreal case and transferred refinements |
-| Theorem | `tate:theta:thm:positive` (line 2935) | Finite positive generation |
-| Lemma | `tate:theta:lem:acute` (line 2956) | Finite acute generating families |
-| Lemma | `tate:theta:lem:allocation` (line 2989) | Distributing lower-level coefficients |
-| Lemma | `tate:theta:lem:shift` (line 3004) | A shift dominates every fixed mixed term |
-| Lemma | `tate:theta:lem:latticeprojection` (line 3107) | Untitled |
-| Lemma | `tate:theta:lem:onelevel` (line 3126) | One-level quadratic criterion |
-| Theorem | `tate:theta:thm:flag` (line 3173) | Exact flag criterion |
-| Corollary | `tate:theta:cor:domain` (line 3225) | The exact linear domain |
-| Lemma | `tate:theta:lem:shuffle` (line 3257) | A finite interleaving bound |
-| Theorem | `tate:theta:thm:ordinal` (line 3273) | Exact ordinal support law |
-| Corollary | `tate:theta:cor:surrealordinal` (line 3313) | Actual surreal support lengths |
-| Theorem | `tate:theta:thm:units` (line 3343) | Exact domain and unit robustness |
-| Corollary | `tate:theta:cor:norepair` (line 3392) | No repair by units or ordered scalar extension |
-| Corollary | `tate:theta:cor:rankone` (line 3409) | One-dimensional and diagonal domains |
-| Theorem | `tate:theta:thm:certificate` (line 3472) | Finite minimum certificate |
-| Corollary | `tate:theta:cor:voronoi` (line 3504) | Finite higher-rank Voronoi inequalities |
-| Theorem | `tate:theta:thm:minimizers` (line 3530) | Finite minimizer geometry |
-| Corollary | `tate:theta:cor:BFS` (line 3561) | Complete finite enumeration after one minimum |
-| Lemma | `tate:theta:lem:implicit` (line 3603) | Implicit substitution with a Hahn certificate |
-| Theorem | `tate:theta:thm:zerolift` (line 3653) | Smooth initial zeros lift |
-| Corollary | `tate:theta:cor:notentire` (line 3830) | Untitled |
+| Theorem | `tate:thm:arithmetic-main` (line 309) | Exact arithmetic and scalar extension |
+| Corollary | `tate:cor:surcomplex-main` (line 331) | Surcomplex elliptic curves |
+| Lemma | `tate:lem:neumann` (line 548) | Positive-support calculus |
+| Lemma | `tate:node:lem:implicit` (line 604) | Formal inverse and implicit function |
+| Lemma | `tate:lem:normalize` (line 654) | Finite normalization |
+| Theorem | `tate:thm:theta` (line 735) | Theta domain |
+| Proposition | `tate:prop:theta-product` (line 786) | Product and zeros |
+| Theorem | `tate:thm:coordinates` (line 844) | Coordinate domain and support certificate |
+| Proposition | `tate:prop:tail` (line 889) | Exact finite-tail bound |
+| Proposition | `tate:prop:discriminant` (line 914) | Discriminant and modular invariant |
+| Proposition | `tate:prop:differential` (line 946) | Differential and inversion identities |
+| Lemma | `tate:lem:coarse-eval` (line 1009) | Unrestricted coarse formal evaluation |
+| Lemma | `tate:lem:rank-one` (line 1076) | Completeness of the residue workspace |
+| Theorem | `tate:thm:classical` (line 1121) | Tate; external classical input |
+| Lemma | `tate:lem:formal-identity` (line 1152) | A universal formal parameter |
+| Lemma | `tate:lem:agreement` (line 1231) | Agreement of Taylor and Hahn evaluation |
+| Proposition | `tate:prop:identityfiber` (line 1354) | The whole coarse identity fiber |
+| Corollary | `tate:cor:diagram` (line 1410) | Reduction and infinitesimal lifting |
+| Proposition | `tate:node:prop:annulus` (line 1544) | Summability on the wide annulus |
+| Theorem | `tate:node:thm:node` (line 1634) | Explicit formal smoothing coordinates |
+| Proposition | `tate:node:prop:coefficients` (line 1668) | First inverse coefficients |
+| Theorem | `tate:node:thm:nodalsurj` (line 1690) | Nodal inverse over a Hahn field |
+| Lemma | `tate:node:lem:nodalnormalization` (line 1719) | Normalization of the special cubic |
+| Proposition | `tate:node:prop:smooth` (line 1736) | Smooth-residue inverse |
+| Lemma | `tate:node:lem:infinityvalues` (line 1779) | The valuation pattern at infinity |
+| Proposition | `tate:node:prop:infinity` (line 1800) | Formal inverse at infinity |
+| Theorem | `tate:node:thm:surjectivity` (line 1842) | Constructive surjectivity |
+| Lemma | `tate:node:lem:generic` (line 1909) | Tate's generic-pair lemma |
+| Theorem | `tate:node:thm:group` (line 1928) | Group uniformization |
+| Theorem | `tate:node:thm:main` (line 1947) | Theorem~\ref{tate:thm:main} over any coefficient field of characteristic zero |
+| Theorem | `tate:node:thm:support` (line 1982) | Equality of generated support monoids |
+| Corollary | `tate:node:cor:monoidal` (line 2001) | Exact monoidal descent |
+| Lemma | `tate:node:lem:isometry` (line 2032) | Valuation isometry |
+| Corollary | `tate:node:cor:bidisk` (line 2060) | The node chart on the infinitesimal bidisk |
+| Theorem | `tate:node:thm:moving` (line 2070) | Two-period comparison |
+| Corollary | `tate:node:cor:fixedmetric` (line 2086) | Fixed-period distance and coordinate size |
+| Corollary | `tate:node:cor:periodsensitivity` (line 2105) | Exact period sensitivity |
+| Theorem | `tate:thm:extension` (line 2157) | Exponent embeddings preserve uniformization |
+| Theorem | `tate:thm:tropical` (line 2212) | The valuation quotient |
+| Proposition | `tate:node:prop:residue` (line 2327) | Fine residue sequence |
+| Theorem | `tate:node:thm:obstruction` (line 2344) | No full-domain extension with the same kernel |
+| Theorem | `tate:thm:recover` (line 2392) | Unique, support-preserving recovery |
+| Corollary | `tate:cor:negativej` (line 2434) | Negative-$j$ uniformization |
+| Lemma | `tate:lem:radical` (line 2477) | A single radical extension |
+| Theorem | `tate:thm:torsion` (line 2518) | The complete torsion field |
+| Corollary | `tate:cor:lattice` (line 2571) | A finite-lattice degree formula |
+| Theorem | `tate:thm:surcomplex` (line 2619) | Surcomplex uniformization |
+| Corollary | `tate:node:cor:real` (line 2663) | Real surreal case and transferred refinements |
+| Theorem | `tate:theta:thm:positive` (line 2991) | Finite positive generation |
+| Lemma | `tate:theta:lem:acute` (line 3012) | Finite acute generating families |
+| Lemma | `tate:theta:lem:allocation` (line 3045) | Distributing lower-level coefficients |
+| Lemma | `tate:theta:lem:shift` (line 3060) | A shift dominates every fixed mixed term |
+| Lemma | `tate:theta:lem:latticeprojection` (line 3163) | Untitled |
+| Lemma | `tate:theta:lem:onelevel` (line 3182) | One-level quadratic criterion |
+| Theorem | `tate:theta:thm:flag` (line 3229) | Exact flag criterion |
+| Corollary | `tate:theta:cor:domain` (line 3281) | The exact linear domain |
+| Lemma | `tate:theta:lem:shuffle` (line 3313) | A finite interleaving bound |
+| Theorem | `tate:theta:thm:ordinal` (line 3329) | Exact ordinal support law |
+| Corollary | `tate:theta:cor:surrealordinal` (line 3369) | Actual surreal support lengths |
+| Theorem | `tate:theta:thm:units` (line 3399) | Exact domain and unit robustness |
+| Corollary | `tate:theta:cor:norepair` (line 3448) | No repair by units or ordered scalar extension |
+| Corollary | `tate:theta:cor:rankone` (line 3465) | One-dimensional and diagonal domains |
+| Theorem | `tate:theta:thm:certificate` (line 3528) | Finite minimum certificate |
+| Corollary | `tate:theta:cor:voronoi` (line 3560) | Finite higher-rank Voronoi inequalities |
+| Theorem | `tate:theta:thm:minimizers` (line 3586) | Finite minimizer geometry |
+| Corollary | `tate:theta:cor:BFS` (line 3617) | Complete finite enumeration after one minimum |
+| Lemma | `tate:theta:lem:implicit` (line 3659) | Implicit substitution with a Hahn certificate |
+| Theorem | `tate:theta:thm:zerolift` (line 3709) | Smooth initial zeros lift |
+| Corollary | `tate:theta:cor:notentire` (line 3886) | Untitled |
 
 ### holonomic-rigidity-for-entire-hahn-functions
 

@@ -297,12 +297,14 @@ works with $\C$ replaced by an arbitrary field of characteristic zero
 (\cref{tate:node:thm:main}); in particular it gives the real surreal case
 (\cref{tate:node:cor:real}). The first route yields in addition the coarse
 reduction diagram of \cref{tate:cor:diagram}, which the second does not.
-The generality of the coefficient field is confined to
+The generality of the coefficient field applies to
 \cref{tate:thm:main}, to the material of
 \cref{tate:node:sec:second,tate:node:sec:metric,tate:node:sec:filtration},
-and to \cref{tate:node:cor:real};
-the torsion, modular-inversion and classification results below are stated,
-and needed, over $\C$.
+to the modular inversion in \cref{tate:thm:recover},
+and to \cref{tate:node:cor:real}.
+The torsion-field and negative-$j$ classification statements below retain
+their hypotheses over $\C$; classification also assumes a divisible
+exponent group.
 
 \begin{theorem}[Exact arithmetic and scalar extension]\label{tate:thm:arithmetic-main}
 For an integer $n\ge2$, let
@@ -383,9 +385,12 @@ explicitly declines to attempt, carried out on a different object. We
 take the obstruction as binding rather than as an obstacle to be argued
 away: the real-valued coarsening used below in \cref{tate:lem:rank-one}
 is applied only inside $K_{H_\alpha}$, where $\alpha$ is an order unit,
-and it is never presented as a faithful image of $\Gamma$ itself. The
-valuations discarded by that coarsening are exactly the ones recovered
-in \cref{tate:sec:coarse} by formal evaluation, not by a norm.
+and it is never presented as a faithful image of $\Gamma$ itself.
+The rank-one valuation forgets $H_\alpha^-$, but the base field
+$K_{H_\alpha}$ still contains series at those finer scales. The later
+coarse lifting uses the different quotient $w=v\bmod H_\alpha$:
+formal evaluation at $w$-positive inputs lifts from $K_{H_\alpha}$ to
+$K_\Gamma$. These two quotients have different kernels and roles.
 
 Tate's original proof explicitly starts with a nontrivial real-valued
 absolute value and proves uniformization over any complete field with
@@ -2181,8 +2186,8 @@ $|\gamma|\le N\alpha$, proving \eqref{tate:eq:Hpullback}. The exact-domain
 theorems over $\Gamma'$ give the last assertion.
 \end{proof}
 
-This theorem has a useful asymmetric meaning. An old admissible
-parameter never becomes inadmissible under an ordered exponent embedding.
+This theorem has a useful asymmetric meaning. An old parameter is admissible after an ordered exponent embedding if
+and only if it was admissible before, by \eqref{tate:eq:Hpullback}.
 But the assertion ``every nonzero parameter is admissible'' may fail
 after enlargement: new valuations can lie outside the old $q$-scale.
 The curve acquires new points, yet its correct, enlarged admissible
@@ -2243,21 +2248,37 @@ There is a second exact sequence of additive groups
  (H_\alpha/H_\alpha^-)/\Z\bar\alpha\longrightarrow0.
  \label{tate:eq:circlelayers}
 \end{equation}
-Indeed $H_\alpha^-\cap\Z\alpha=0$, and the kernel computation is
-immediate. This separates infinitesimal value directions from the
-rank-one circular quotient.
+The first map sends $h$ to $h+\Z\alpha$ and is injective because
+$H_\alpha^-\cap\Z\alpha=0$. If the image of $h+\Z\alpha$ in the last
+term vanishes, then $h-m\alpha\in H_\alpha^-$ for some $m\in\Z$; hence
+that class comes from the first map. Surjectivity follows from the
+quotient map $H_\alpha\to H_\alpha/H_\alpha^-$. This proves exactness.
 
-When the relevant rank-one value group is all of $\R$, this value
-quotient is the familiar real circle of length $v_1(q)$. Over a complete
-algebraically closed rank-one field it agrees with the value-circle
-description of the Tate curve skeleton \cite{BPR}.
+It is the \emph{last} term of \eqref{tate:eq:circlelayers} that becomes
+the real circle $\R/v_1(q)\Z$ when the rank-one group
+$H_\alpha/H_\alpha^-$ is all of $\R$ under the chosen embedding.
+The full quotient $H_\alpha/\Z\alpha$ still retains the kernel
+$H_\alpha^-$. For example, with
+$\Gamma=\R\oplus_{\mathrm{lex}}\R$ and $\alpha=(1,0)$, the map
+\[
+ (\R\oplus_{\mathrm{lex}}\R)/\Z(1,0)\longrightarrow\R/\Z,\qquad
+ [(a,b)]\longmapsto a+\Z
+\]
+has kernel $\{[(0,b)]:b\in\R\}$. A positive class $[(0,b)]$ remains
+before $[(1/2,0)]$ after every positive integer multiple, in the
+normalized circular order. An ordinary real circle has no such
+nonzero infinitesimal direction.
+
+When $H_\alpha^-=0$, the full quotient embeds in the real circle and
+equals it if the embedded value group is $\R$. Over a complete
+algebraically closed rank-one field, Tate's analytic skeleton is the
+whole real circle; the values of field-rational parameters give its
+value-group subgroup, which can be proper if the value group is smaller
+than $\R$ \cite[Remark~4.24]{BPR}.
 At arbitrary rank, \eqref{tate:eq:tropical-seq} is an \emph{algebraic and
-circular-order} assertion. It does not claim the existence of an ordinary
-real-metric Berkovich skeleton with all of $H_\alpha$ as its distance
-set. Higher-rank analytifications require their own definitions
-\cite{FR}. The quotient $H_\alpha/\Z\alpha$ may itself have many proper
-convex subgroups, and it is not identified with a classical real circle
-unless additional hypotheses provide a real-valued interpretation.
+circular-order} assertion. It does not construct an ordinary real-metric
+Berkovich skeleton retaining all the infinitesimal value directions.
+Higher-rank analytifications require their own definitions \cite{FR}.
 
 The sequence \eqref{tate:eq:tropical-seq} has a log-geometric precedent.
 In the Tate-curve example of Molcho and Wise \cite[\S5.1]{MW}, the
@@ -2369,7 +2390,8 @@ $Q(J)\in J\Z[[J]]$. Its first terms are
 The notation $Q$ here denotes a formal series, not the rational field.
 
 \begin{theorem}[Unique, support-preserving recovery]\label{tate:thm:recover}
-Given $j\in K_\Gamma$ with $v(j)<0$, there is a unique $q\in K_\Gamma$
+Let $k$ be a field of characteristic zero and $\KK=k((t^\Gamma))$.
+Given $j\in\KK$ with $v(j)<0$, there is a unique $q\in\KK$
 with $v(q)>0$ and $j(q)=j$. It is $q=Q(j^{-1})$ and satisfies
 $v(q)=-v(j)$. If $G(a)$ denotes the additive subgroup of $\Gamma$
 generated by $\supp(a)$, then
@@ -2402,7 +2424,10 @@ $G(q)$, giving $G(j)\subseteq G(q)$.
 The inverse modular expansion is classical. The support equality is the
 useful extra statement in a symbolic or nondivisible Hahn workspace:
 one need not pass to the divisible hull merely to recover the elliptic
-period parameter.
+period parameter. All the series used here have integral coefficients,
+so this recovery needs neither algebraic closedness of $k$ nor complex
+coefficients. Those are separate issues in classifying curves with that
+$j$-invariant.
 
 \subsection{Which elliptic curves this covers}
 
@@ -2416,7 +2441,7 @@ $E(K_\Gamma)$ is parametrized by $U_q/q^\Z$.
 \begin{proof}
 A Hahn field with algebraically closed coefficient field of
 characteristic zero and divisible exponent group is algebraically
-closed \cite{Poonen}. Elliptic curves over an algebraically closed field
+closed \cite[Corollary~4]{Poonen}. Elliptic curves over an algebraically closed field
 of characteristic zero with the same $j$-invariant are isomorphic
 \cite{SilvermanArithmetic}. Apply this to $E$ and $E_q$.
 \end{proof}
@@ -2427,7 +2452,19 @@ does not remove the usual sign ambiguity of an elliptic isomorphism.
 For nondivisible $\Gamma$, \cref{tate:thm:recover} still holds, while a
 curve with the same $j$ can be a nontrivial twist; we do not silently
 identify all such twists with the split Tate curve over the original
-field. Curves with $v(j)\ge0$ are outside this positive-$q$ theorem.
+field. For a concrete example take $\Gamma=\Z$ and $q=t$. Put $E_t$
+in short Weierstrass form $Y^2=X^3+AX+B$ over $\C((t))$.
+Since $v(j(E_t))=-1$, its invariant is neither $0$ nor $1728$, so
+$A,B\ne0$. Its quadratic twist
+\[
+ E^{(t)}:\quad Y^2=X^3+t^2AX+t^3B
+\]
+has the same $j$ but is not isomorphic to $E_t$ over $\C((t))$.
+Indeed, an isomorphism of these short Weierstrass models would give a
+scaling $a\in\C((t))^\times$ with $a^4=t^2$ and $a^6=t^3$,
+hence $a^2=t$, contradicting $2v(a)=1$. The recovered period is still
+$t$; the missing datum is the twist. Curves with $v(j)\ge0$ are outside
+this positive-$q$ theorem.
 
 \section{Torsion fields and exact exponent ramification}\label{tate:sec:torsion}
 
@@ -2479,7 +2516,9 @@ which is the displayed order in $\Gamma/n\Gamma$.
 \subsection{A primitive torsion point}
 
 \begin{theorem}[The complete torsion field]\label{tate:thm:torsion}
-Under the hypotheses of \cref{tate:lem:radical}, the $n^2$ points
+Under the hypotheses of \cref{tate:lem:radical}, fix a primitive $n$th
+root of unity $\zeta_n\in\C$ and one root $r=q^{1/n}$, and write
+$q^{b/n}=r^b$. Then the $n^2$ points
 \begin{equation}
  \Phi_q(\zeta_n^a q^{b/n}),\qquad 0\le a,b<n,\label{tate:eq:torsionpts}
 \end{equation}
@@ -2501,9 +2540,16 @@ points coincide, injectivity modulo $q^\Z$ gives
 \]
 for some integer $m$. Comparing valuations gives $b-b'=nm$; the chosen
 ranges force $m=0$ and $b=b'$, and then $a=a'$. Thus there are $n^2$
-distinct points. In characteristic zero an elliptic curve has exactly
-$n^2$ geometric $n$-torsion points, proving completeness of the list.
-They all have coordinates in $K_\Lambda$ by strong evaluation.
+distinct points, all with coordinates in $K_\Lambda$ by strong evaluation.
+
+For exhaustiveness, work in the algebraically closed Hahn field
+$K_{\Gamma\otimes_\Z\Q}$ \cite[Corollary~4]{Poonen}, which contains an
+algebraic closure of $K_\Gamma$. Every geometric torsion point is
+represented there by some $u\in U_q$. If $n\Phi_q(u)=O$, the kernel
+theorem gives $u^n=q^m$. Write $m=n\ell+b$ with $0\le b<n$.
+Then $(u/(q^\ell q^{b/n}))^n=1$, so this quotient is $\zeta_n^a$
+for some $0\le a<n$. Periodicity gives exactly the list
+\eqref{tate:eq:torsionpts}; no separate torsion-count theorem is needed.
 
 To prove the stronger primitive assertion, let
 $L=K_\Gamma(q^{1/n})=K_\Lambda$ and let $\sigma\in\Gal(L/K_\Gamma)$
@@ -2532,8 +2578,10 @@ order, and $\alpha$ has coordinates $(a_1,\dots,a_r)$, then
 \end{corollary}
 
 \begin{proof}
-The order of $(a_1,\ldots,a_r)$ in $(\Z/n\Z)^r$ is the least $d>0$
-for which $n$ divides every $da_i$. This is the displayed integer.
+Put $g=\gcd(n,a_1,\ldots,a_r)$. The integer $d=n/g$ makes every
+$da_i$ divisible by $n$. Conversely, if $n$ divides every $ea_i$,
+a B\'ezout expression of $g$ as an integer combination of $n,a_1,\ldots,a_r$
+shows that $n$ divides $eg$. Hence $n/g$ divides $e$, proving minimality.
 \end{proof}
 
 For example, $n=12$ and $\alpha=(6,4)$ give degree $6$; $n=4$ and
@@ -2641,6 +2689,14 @@ the inputs are real. The group law and every finite comparison can be
 checked in a common workspace containing the finitely many inputs.
 Coherence makes the resulting class function independent of this choice.
 All support and valuation assertions transfer literally.
+
+For the extension obstruction, the group argument can be applied directly
+to the class map. If a homomorphism $\Psi$ extends the canonical values,
+choose $a=\omega^{-\omega\alpha}$ outside the admissible domain.
+Surjectivity supplies an admissible $d$ with $\Phi_q(d)=\Psi(a)$.
+Then $ad^{-1}\in\ker\Psi$ still has valuation outside $H_\alpha$, so it
+cannot belong to $q^\Z$. This is a finite witness to the obstruction and
+requires no set of all class-sized cosets.
 \end{proof}
 
 The real case is not covered by the first route as written, which works
@@ -4302,8 +4358,9 @@ into an arbitrary-rank setting.
 The principal classical inputs of Part~I are Tate's complete rank-one
 uniformization theorem, the formal Tate curve and its discriminant,
 Jacobi's product, algebraic closedness of divisible Hahn fields over
-$\C$, and standard finite torsion and $j$-classification of elliptic
-curves. The second route replaces the first input by Tate's universal
+$\C$, and the standard $j$-classification of elliptic curves.
+The torsion list is classical; its exhaustiveness here is derived directly
+from the uniformization kernel over the divisible Hahn extension. The second route replaces the first input by Tate's universal
 integral identities (the curve equation and the cleared secant identities)
 and Tate's generic-pair lemma, together with the finite algebraic group law
 on a nonsingular Weierstrass cubic. The bounded-period quotient and its

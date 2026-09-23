@@ -173,6 +173,13 @@ Over the lexicographic group `ℤ ⊕ ℤ` with
 `H = {0} ⊕ ℤ`, substituting `z = t^(0,1)` into
 `Σₙ t^(0,−n) Zⁿ` makes every term `1` and fails strong summability.
 
+Distinguish the circularly ordered quotient `H_α/ℤα` from its rank-one
+quotient `(H_α/H_α^-)/ℤᾱ`: the kernel of the map between them is `H_α^-`.
+Even if `H_α/H_α^-` is the real line, the full quotient can retain
+infinitesimal directions. A classical real circle describes the last
+quotient in that case. It describes the full value quotient when
+`H_α^- = 0` and the embedded value group is all of `ℝ`.
+
 In the same report's node chart, the vector valuation is
 `𝐯(x,y) = min{v(x),v(y)}`, with `v(0) = ∞`. The word “isometry” means equality
 of these ordered-group values for differences in the chosen coordinates;
