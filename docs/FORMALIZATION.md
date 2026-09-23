@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **60 main texts** with **3730**
+The canonical inventory below identifies **61 main texts** with **3759**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -58,8 +58,13 @@ quotients `odg:cor:charideals` and canonical constant extraction
 isomorphisms of `odg:eq:profinite`, their canonical maps and kernels are
 also **Proved**, using Mathlib's compatible sections and ring-limit universal
 property for the profinite case, and its adic completion and p-adic integers
-for the p-adic case. Both congruence topologies are **Proved** non-Hausdorff, with zero closure equal
-to the purely infinite ideal and separation quotient ring `ℤ`. The remaining
+for the p-adic case. The profinite isomorphism is also **Proved** to be a
+homeomorphism of compact Hausdorff totally disconnected topological rings,
+with a dense canonical map inducing the original congruence topology. Both
+congruence topologies are **Proved** non-Hausdorff, with zero closure equal
+to the purely infinite ideal. Their separated quotients are ring-isomorphic
+and homeomorphic to `ℤ` with the corresponding congruence or ideal-adic
+topology. The p-adic completion homeomorphism remains **Pending**. The remaining
 Diophantine and quotient statements, including the batch-28 additions,
 remain **Pending** unless individually mapped.
 
@@ -79,11 +84,19 @@ These additions are **Pending** in Lean. Placement `66d7e55` adds a physics
 main text and further companions. The nine archives from `190d301` are now
 placed in `21375f8`, adding the large-cardinal and autonomous-dilation main
 texts and companions to three existing reports. The first four batch-30 writes
-through `1ab41af` integrate the dilation, nonabelian-support, omnific-automorphism
-and holonomic companions; their current statements are indexed. Remaining
+through `1ab41af` write the single-source dilation report and integrate the
+nonabelian-support, omnific-automorphism and holonomic companions; their
+current statements are indexed. Remaining
 companion integration, proof review and claim reconciliation remain pending.
 These additions remain within the
 goal; placement, assembly and proof review add no Lean coverage.
+
+The latest placement adds [independent surreal copies](surreal/independent-surreal-copies/article.tex),
+now indexed as the 61st main text, and companions on polynomial composition,
+theta hierarchies, single scales, unit dilation, Newton rigidity, singular
+curves, automatic summability and finite tests. These new results remain
+**Pending** in Lean; placing companion audits and verification code does not
+by itself integrate or formalize their mathematics.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -607,13 +620,15 @@ remaining clauses of a partially mapped statement.
 | Full `odg:prop:univariate` and the following infinite-omnific transcendence assertion | `Surcomplex.complex_polynomial_root_iff`, `real_polynomial_root_iff` in [ConstantPolynomialRoots.lean](../Surreal/Surcomplex/ConstantPolynomialRoots.lean), reusing `FinitePolynomial.root_mem_range` and Mathlib's `IsAlgClosed.splits`; `Surcomplex.nonnegativeSupport_polynomial_root_iff`, `SignSequence.nonnegativeSupport_polynomial_root_iff`, `omnific_real_polynomial_root_iff`, `omnific_int_polynomial_root_iff`, `omnific_eval_ne_zero_of_not_finite`, `omnific_transcendental_of_not_finite` in [OmnificPolynomialRoots.lean](../Surreal/Foundations/OmnificPolynomialRoots.lean) | A nonzero polynomial over ordinary complex constants has exactly its ordinary complex roots in the entire actual surcomplex field; the real-axis restriction proves the analogous statement for real polynomials throughout the actual surreal field. These stronger results specialize to the real and complex support rings. A root of a nonzero real polynomial in the omnific ring must be an ordinary integer; an integer polynomial has exactly its ordinary integer roots there, in both directions. Every infinite omnific integer is transcendental over the ordinary reals, using Mathlib's `Transcendental` with the actual real embedding as its explicitly specified algebra structure. All polynomial-nonzero hypotheses and coefficient maps are retained. **Proved** for the full source proposition and the stated transcendence consequence; no algebraic independence of tuples is asserted. Build and axiom audit pass. |
 | Full `odg:thm:finitequotients`, `odg:eq:nA`, `odg:eq:nOz` and `odg:eq:divkernel` | `CoefficientPullback.sectionMap_dvd_iff` in [CoefficientPullbackDivisibility.lean](../Surreal/Algebra/CoefficientPullbackDivisibility.lean); `SignSequence.omnific_int_dvd_iff`, `omnific_int_dvd_of_purelyInfinite`, `omnific_int_dvd_iff_purelyInfinite_add`, `omnificResidue`, `omnificResidue_surjective`, `ker_omnificResidue`, `omnificQuotientIntEquiv`, `omnificQuotientIntEquiv_mk`, `omnificQuotientZModEquiv`, `omnific_prime_pow_dvd_iff`, `omnific_prime_pow_dvd_iff_le`, `omnific_dvd_all_prime_powers_iff`, `omnific_dvd_all_pos_int_iff`, `iInf_omnific_int_multiples`, `iInf_omnific_prime_pow_multiples` in [OmnificResidues.lean](../Surreal/Foundations/OmnificResidues.lean) | A generic split retraction onto a field proves divisibility by nonzero embedded constants exactly when the coefficient is divisible in the coefficient subring. In the actual omnific ring this gives `n ∣ x ↔ n ∣ ct(x)` for every nonzero ordinary integer, including negative moduli, and the exact membership formulation of `n Oz = Pi + n Z`. Reduction of the integer constant term is surjective with kernel the principal ideal generated by `n`; its quotient is ring-isomorphic to `Z/nZ` and `ZMod n.natAbs`, with the class map explicitly identified. The intersections over all positive ordinary moduli and over all positive powers of each ordinary prime are literally the purely infinite ideal. Mathlib's `padicValInt` gives the exact greatest divisibility exponent when the constant term is nonzero, while every prime power divides elements with zero constant term. No assertion about arbitrary omnific moduli is made. **Proved** for the entire ordinary-modulus theorem. Build and axiom audit pass. |
 | Full `odg:prop:finitedivisors` | `SignSequence.omnific_dvd_int_iff` in [OmnificIntegerDivisors.lean](../Surreal/Foundations/OmnificIntegerDivisors.lean), reusing the real support-ring unit and finite-omnific classifications | An actual omnific integer divides a nonzero ordinary integer exactly when it is an ordinary integer divisor. The nonzero target is a unit in the real support ring, so its divisor is a unit there and hence finite; the integer constant retraction identifies the ordinary divisibility relation. Both directions and the nonzero hypothesis are explicit. **Proved** for the entire proposition. Ordinary primality, mixed gcds and Chinese remainders are proved in the next row; the remaining Diophantine results remain pending. Build and axiom audit pass. |
-| Full `odg:cor:mixedgcd` | `SignSequence.omnific_prime_span_isMaximal`, `omnific_prime`, `omnific_span_pair_eq_constants`, `omnific_span_pair_eq_gcd`, `omnific_mixed_gcd`, `omnific_int_spans_isCoprime`, `omnificChineseRemainder`, `omnificChineseRemainder_mk`, `iInf_omnific_coprime_int_spans`, `omnificChineseRemainderProduct` in [OmnificOrdinaryArithmetic.lean](../Surreal/Foundations/OmnificOrdinaryArithmetic.lean) | Every ordinary natural prime is prime in the actual omnific ring and generates a maximal ideal, by the established quotient equivalence and Mathlib's ordinary prime quotient field. For each nonzero integer `n` and omnific integer `x`, removing the purely infinite part preserves the generated ideal; mapping the ordinary Bézout ideal identity proves `(n,x) = gcd(n,ct(x)) Oz`. The generator divides both inputs and every common divisor divides it, without assuming a global gcd structure on `Oz`. Pairwise coprime ordinary moduli generate pairwise comaximal ideals. For any finite family of nonzero ordinary moduli, the Chinese remainder isomorphism identifies the quotient by their ideal intersection with the product of the ordinary integer residue rings, with the component map explicitly the constant-term residue. The ideal intersection equals the ideal generated by the product of the moduli, supplying the product-modulus isomorphism too. Negative moduli, units and empty families are allowed by the precise hypotheses. **Proved** for the entire corollary. Classification of ideals containing nonzero ordinary integers and finite-target homomorphisms is proved in the next row; the p-adic ring completion is proved below, and the profinite ring completion is proved below too; completion homeomorphisms and later obligations remain pending. Build and axiom audit pass. |
-| Full `odg:cor:charideals` | `SignSequence.omnific_purelyInfinite_le_of_int_mem`, `omnific_mem_ideal_iff_constant`, `omnific_nat_span_injective`, `omnific_ideal_existsUnique_modulus`, `omnific_nat_span_isPrime_iff`, `omnific_hom_intCast`, `omnific_finite_hom_kills_purelyInfinite`, `omnific_finite_hom_eq_constant`, `omnific_finite_hom_factors`, `omnific_finite_quotient_classification` in [OmnificFiniteQuotients.lean](../Surreal/Foundations/OmnificFiniteQuotients.lean) | An ideal containing a nonzero ordinary integer contains the purely infinite ideal, so membership is detected by the integer constant. Pulling back along the integer section and applying Mathlib's ordinary integer-ideal generator theorem yields a unique natural modulus at least two for every such proper ideal. For nonzero natural moduli the corresponding omnific ideal is prime exactly when the modulus is prime. Every unital homomorphism to any finite ring, in any target universe and without assuming commutativity or nontriviality of that target, kills the purely infinite ideal and equals integer casting composed with the actual constant-term map; the factorization is unique. The proof uses the nonzero characteristic of a finite ring. Every nontrivial finite quotient by an actual omnific ideal is ring-isomorphic to `ZMod n` for some `n ≥ 2`. **Proved** for the entire corollary. Non-residual-finiteness is proved below with an explicit nonzero witness; the p-adic ring completion is proved below; the congruence-topology assertions are proved below too. The profinite ring completion is proved below; completion homeomorphisms and the later set-sized-target results remain pending. Build and axiom audit pass. |
+| Full `odg:cor:mixedgcd` | `SignSequence.omnific_prime_span_isMaximal`, `omnific_prime`, `omnific_span_pair_eq_constants`, `omnific_span_pair_eq_gcd`, `omnific_mixed_gcd`, `omnific_int_spans_isCoprime`, `omnificChineseRemainder`, `omnificChineseRemainder_mk`, `iInf_omnific_coprime_int_spans`, `omnificChineseRemainderProduct` in [OmnificOrdinaryArithmetic.lean](../Surreal/Foundations/OmnificOrdinaryArithmetic.lean) | Every ordinary natural prime is prime in the actual omnific ring and generates a maximal ideal, by the established quotient equivalence and Mathlib's ordinary prime quotient field. For each nonzero integer `n` and omnific integer `x`, removing the purely infinite part preserves the generated ideal; mapping the ordinary Bézout ideal identity proves `(n,x) = gcd(n,ct(x)) Oz`. The generator divides both inputs and every common divisor divides it, without assuming a global gcd structure on `Oz`. Pairwise coprime ordinary moduli generate pairwise comaximal ideals. For any finite family of nonzero ordinary moduli, the Chinese remainder isomorphism identifies the quotient by their ideal intersection with the product of the ordinary integer residue rings, with the component map explicitly the constant-term residue. The ideal intersection equals the ideal generated by the product of the moduli, supplying the product-modulus isomorphism too. Negative moduli, units and empty families are allowed by the precise hypotheses. **Proved** for the entire corollary. Classification of ideals containing nonzero ordinary integers and finite-target homomorphisms is proved in the next row; the p-adic ring completion is proved below, and the profinite ring completion is proved below too; the profinite homeomorphism is proved below; the p-adic homeomorphism and later obligations remain pending. Build and axiom audit pass. |
+| Full `odg:cor:charideals` | `SignSequence.omnific_purelyInfinite_le_of_int_mem`, `omnific_mem_ideal_iff_constant`, `omnific_nat_span_injective`, `omnific_ideal_existsUnique_modulus`, `omnific_nat_span_isPrime_iff`, `omnific_hom_intCast`, `omnific_finite_hom_kills_purelyInfinite`, `omnific_finite_hom_eq_constant`, `omnific_finite_hom_factors`, `omnific_finite_quotient_classification` in [OmnificFiniteQuotients.lean](../Surreal/Foundations/OmnificFiniteQuotients.lean) | An ideal containing a nonzero ordinary integer contains the purely infinite ideal, so membership is detected by the integer constant. Pulling back along the integer section and applying Mathlib's ordinary integer-ideal generator theorem yields a unique natural modulus at least two for every such proper ideal. For nonzero natural moduli the corresponding omnific ideal is prime exactly when the modulus is prime. Every unital homomorphism to any finite ring, in any target universe and without assuming commutativity or nontriviality of that target, kills the purely infinite ideal and equals integer casting composed with the actual constant-term map; the factorization is unique. The proof uses the nonzero characteristic of a finite ring. Every nontrivial finite quotient by an actual omnific ideal is ring-isomorphic to `ZMod n` for some `n ≥ 2`. **Proved** for the entire corollary. Non-residual-finiteness is proved below with an explicit nonzero witness; the p-adic ring completion is proved below; the congruence-topology assertions are proved below too. The profinite ring completion is proved below; the profinite homeomorphism is proved below; the p-adic homeomorphism and the later set-sized-target results remain pending. Build and axiom audit pass. |
 | Full `odg:prop:canonicalct` and its following noninjective-endomorphism example | `SignSequence.omnific_int_hom_kills_purelyInfinite`, `omnific_int_hom_eq_constant`, `omnific_endomorphism_constant`, `omnific_endomorphism_purelyInfinite_iff`, `omnific_endomorphism_comap_purelyInfinite`, `omnificConstantEndomorphism`, `omnificConstantEndomorphism_idempotent`, `omnificConstantEndomorphism_not_injective`, `omnificConstantEndomorphism_ne_id` in [OmnificConstantRigidity.lean](../Surreal/Foundations/OmnificConstantRigidity.lean) | Every unital homomorphism from the actual omnific ring to ordinary integers kills the purely infinite ideal: its image is divisible by every power of two, and Mathlib's integer p-adic bound forces zero. Decomposition then identifies the homomorphism with the integer constant-term map. Every omnific endomorphism preserves that map and has exactly the purely infinite ideal as its inverse image of the ideal, in particular preserving it forward. Constant extraction followed by integer inclusion is a concrete idempotent endomorphism, proved noninjective and unequal to the identity using a positive monomial. **Proved** for the entire proposition and the stated example. Build and axiom audit pass. |
 | Non-residual-finiteness assertion following `odg:eq:profinite` | `SignSequence.omnificMonomial`, `omnificToSurreal_monomial`, `omnificMonomial_ne_zero`, `omnificMonomial_mem_purelyInfinite`, `omnificPurelyInfiniteIdeal_ne_bot`, `omnific_exists_nonzero_killed_by_finite_rings`, `omnific_not_residually_finite` in [OmnificConstantRigidity.lean](../Surreal/Foundations/OmnificConstantRigidity.lean) | Every positive-growth Conway monomial is constructed as an actual nonzero omnific integer with zero constant coefficient. The exponent-one witness proves the purely infinite ideal nonzero and is killed by every finite-target unital ring homomorphism. The theorem explicitly negates separation of all nonzero elements by finite-ring homomorphisms; it is polymorphic in the target universe and includes arbitrary rings, not just commutative targets. **Proved** for the ring-theoretic non-residual-finiteness assertion. The p-adic ring isomorphism, its canonical map and kernel are proved in the next row. The non-Hausdorff congruence-topology assertions are proved in the topology row below. The profinite ring inverse-limit identification and its canonical map and kernel are proved in the profinite row below. Build and axiom audit pass. |
-| The p-adic ring-isomorphism clause of `odg:eq:profinite`, its completion map and kernel | `SignSequence.omnificPadicIdeal`, `omnificPadicQuotientEquiv`, `omnificPadicQuotientEquiv_mk`, `omnificPadicQuotientEquiv_compatible`, `OmnificPadicCompletion`, `omnificPadicProjection`, `omnificPadicProjection_compatible`, `omnificCompletionToPadic`, `toZModPow_omnificCompletionToPadic`, `padicToOmnificCompletion`, `omnificPadicProjection_padicToOmnificCompletion`, `omnificPadicCompletionEquiv`, `omnificPadicCompletionEquiv_of`, `omnific_padic_completion_eq_zero_iff` in [OmnificPadicCompletion.lean](../Surreal/Foundations/OmnificPadicCompletion.lean) | For every ordinary natural prime `p`, Mathlib's `AdicCompletion` of the actual omnific ring at the principal ideal `(p)` is ring-isomorphic to Mathlib's p-adic integers `ℤ_[p]`. The proof identifies every ideal-power quotient, including exponent zero, with `ZMod (p^k)` and verifies compatibility with reduction. The universal properties of both constructions give inverse ring homomorphisms preserving all residue projections. Under this isomorphism Mathlib's canonical completion map is exactly integer constant extraction followed by the ordinary integer embedding in `ℤ_[p]`; its kernel is exactly the purely infinite ideal. **Proved** for this ring-level completion clause, canonical map and kernel. The non-Hausdorff congruence-topology assertions are proved below. The profinite ring inverse limit is proved below; completion continuity/homeomorphism assertions remain **Pending**. Build and axiom audit pass. |
-| Congruence-topology and separated-quotient assertions following `odg:eq:profinite` | `Surreal.IdealCongruenceTopology.basis`, `topology`, `isTopologicalRing`, `hasBasis_nhds`, `hasBasis_nhds_zero`, `closure_zero_of_hasBasis`, `closure_zero`, `inseparable_iff`, `t2Space_iff`, `separationQuotientEquiv`, `separationQuotientEquiv_mk` in [IdealCongruenceTopology.lean](../Surreal/Algebra/IdealCongruenceTopology.lean); `SignSequence.omnificCongruenceIdeal`, `omnificCongruenceIdeal_directed`, `omnificCongruenceTopology`, `omnificCongruenceTopology_isTopologicalRing`, `omnificCongruenceTopology_hasBasis`, `omnificCongruenceTopology_closure_zero`, `omnificCongruenceTopology_inseparable_iff`, `omnificCongruenceTopology_not_t2Space`, `iInf_omnificPadicIdeal_pow`, `omnificPadicTopology`, `omnificPadicTopology_isTopologicalRing`, `omnificPadicTopology_hasBasis_zero`, `omnificPadicTopology_closure_zero`, `omnificPadicTopology_inseparable_iff`, `omnificPadicTopology_not_t2Space`, `omnificCongruenceSeparationEquiv`, `omnificCongruenceSeparationEquiv_mk`, `omnificPadicSeparationEquiv`, `omnificPadicSeparationEquiv_mk` in [OmnificCongruenceTopology.lean](../Surreal/Foundations/OmnificCongruenceTopology.lean) | A generic directed nonempty family of ideals defines a topological ring via Mathlib's subgroup-basis construction, with closure of zero equal to the ideal intersection. For the actual omnific ring the positive ordinary-modulus ideals supply this family; the explicit neighborhood basis consists of congruence classes. For each ordinary prime the topology is Mathlib's ideal-adic topology at `(p)`, with its prime-power neighborhood basis. In both topologies zero has closure exactly the purely infinite ideal, and Mathlib's `Inseparable x y` is equivalent to equality of integer constant terms. The nonzero purely infinite ideal proves failure of `T2Space` in each case. Mathlib's actual `SeparationQuotient` in each topology is ring-isomorphic to `ℤ`, and the image of each omnific integer is its integer constant. Topologies are explicit and do not change the existing order topology. **Proved** for the non-Hausdorff topology assertions and separated-quotient ring identification. The profinite ring inverse limit is proved below. A homeomorphism to integers with their respective arithmetic topologies and completion homeomorphisms remain **Pending**. Build and axiom audit pass. |
-| The profinite ring-isomorphism clause of `odg:eq:profinite`, its completion map and kernel | `Surreal.IntegerCongruenceLimit.Modulus`, `ideal`, `ideal_le`, `diagram`, `Completion`, `projection`, `compatible`, `of`, `projection_of`, `ext`, `of_eq_zero_iff`, `cone`, `isLimit`, `congr`, `projection_congr` in [IntegerCongruenceLimit.lean](../Surreal/Algebra/IntegerCongruenceLimit.lean); `SignSequence.omnificCongruenceQuotientEquiv`, `omnificCongruenceQuotientEquiv_mk`, `omnificCongruenceQuotientEquiv_compatible`, `omnificCongruenceQuotient_finite`, `omnific_finite_ideal_in_congruence_diagram`, `OmnificProfiniteCompletion`, `ProfiniteInteger`, `omnificProfiniteCompletionEquiv`, `projection_omnificProfiniteCompletionEquiv`, `omnificProfiniteMap`, `omnificProfiniteCompletionEquiv_of`, `omnificProfiniteMap_eq_zero_iff`, `ker_omnificProfiniteMap` in [OmnificProfiniteCompletion.lean](../Surreal/Foundations/OmnificProfiniteCompletion.lean) | For every commutative ring, positive ordinary moduli ordered by reverse divisibility give a diagram of quotient rings with the usual reduction maps. Mathlib's ring of compatible sections supplies the inverse-limit carrier; its canonical cone satisfies `CategoryTheory.Limits.IsLimit` in `CommRingCat`. Compatible quotient isomorphisms induce a ring isomorphism of these limits, including between different universes. At the actual omnific ring each quotient is finite and every finite-index ideal occurs, including the unit ideal at modulus one. Constant extraction identifies every component with the ordinary integer quotient and respects all transition maps, yielding the inverse-limit ring isomorphism with the ordinary profinite integers defined as `lim ℤ/nℤ`. The canonical map is integer constant extraction followed by the ordinary integer completion map; its kernel is exactly the purely infinite ideal. **Proved** for the profinite ring-isomorphism clause, the canonical map and kernel, with precisely the source's positive-modulus diagram. Topologies on the inverse-limit carriers and completion homeomorphisms remain **Pending**. Build and axiom audit pass. |
+| The p-adic ring-isomorphism clause of `odg:eq:profinite`, its completion map and kernel | `SignSequence.omnificPadicIdeal`, `omnificPadicQuotientEquiv`, `omnificPadicQuotientEquiv_mk`, `omnificPadicQuotientEquiv_compatible`, `OmnificPadicCompletion`, `omnificPadicProjection`, `omnificPadicProjection_compatible`, `omnificCompletionToPadic`, `toZModPow_omnificCompletionToPadic`, `padicToOmnificCompletion`, `omnificPadicProjection_padicToOmnificCompletion`, `omnificPadicCompletionEquiv`, `omnificPadicCompletionEquiv_of`, `omnific_padic_completion_eq_zero_iff` in [OmnificPadicCompletion.lean](../Surreal/Foundations/OmnificPadicCompletion.lean) | For every ordinary natural prime `p`, Mathlib's `AdicCompletion` of the actual omnific ring at the principal ideal `(p)` is ring-isomorphic to Mathlib's p-adic integers `ℤ_[p]`. The proof identifies every ideal-power quotient, including exponent zero, with `ZMod (p^k)` and verifies compatibility with reduction. The universal properties of both constructions give inverse ring homomorphisms preserving all residue projections. Under this isomorphism Mathlib's canonical completion map is exactly integer constant extraction followed by the ordinary integer embedding in `ℤ_[p]`; its kernel is exactly the purely infinite ideal. **Proved** for this ring-level completion clause, canonical map and kernel. The non-Hausdorff congruence-topology assertions are proved below. The profinite ring inverse limit is proved below; the p-adic completion continuity/homeomorphism assertions remain **Pending**. The profinite topological assertions are proved below. Build and axiom audit pass. |
+| Congruence-topology and separated-quotient assertions following `odg:eq:profinite` | `Surreal.IdealCongruenceTopology.basis`, `topology`, `isTopologicalRing`, `hasBasis_nhds`, `hasBasis_nhds_zero`, `closure_zero_of_hasBasis`, `closure_zero`, `inseparable_iff`, `t2Space_iff`, `separationQuotientEquiv`, `separationQuotientEquiv_mk` in [IdealCongruenceTopology.lean](../Surreal/Algebra/IdealCongruenceTopology.lean); `SignSequence.omnificCongruenceIdeal`, `omnificCongruenceIdeal_directed`, `omnificCongruenceTopology`, `omnificCongruenceTopology_isTopologicalRing`, `omnificCongruenceTopology_hasBasis`, `omnificCongruenceTopology_closure_zero`, `omnificCongruenceTopology_inseparable_iff`, `omnificCongruenceTopology_not_t2Space`, `iInf_omnificPadicIdeal_pow`, `omnificPadicTopology`, `omnificPadicTopology_isTopologicalRing`, `omnificPadicTopology_hasBasis_zero`, `omnificPadicTopology_closure_zero`, `omnificPadicTopology_inseparable_iff`, `omnificPadicTopology_not_t2Space`, `omnificCongruenceSeparationEquiv`, `omnificCongruenceSeparationEquiv_mk`, `omnificPadicSeparationEquiv`, `omnificPadicSeparationEquiv_mk` in [OmnificCongruenceTopology.lean](../Surreal/Foundations/OmnificCongruenceTopology.lean) | A generic directed nonempty family of ideals defines a topological ring via Mathlib's subgroup-basis construction, with closure of zero equal to the ideal intersection. For the actual omnific ring the positive ordinary-modulus ideals supply this family; the explicit neighborhood basis consists of congruence classes. For each ordinary prime the topology is Mathlib's ideal-adic topology at `(p)`, with its prime-power neighborhood basis. In both topologies zero has closure exactly the purely infinite ideal, and Mathlib's `Inseparable x y` is equivalent to equality of integer constant terms. The nonzero purely infinite ideal proves failure of `T2Space` in each case. Mathlib's actual `SeparationQuotient` in each topology is ring-isomorphic to `ℤ`, and the image of each omnific integer is its integer constant. Topologies are explicit and do not change the existing order topology. **Proved** for the non-Hausdorff topology assertions and separated-quotient ring identification. The profinite ring inverse limit is proved below. The profinite completion homeomorphism is proved below. The homeomorphisms of the separated quotients to integers with their respective arithmetic topologies are proved below; the p-adic completion homeomorphism remains **Pending**. Build and axiom audit pass. |
+| The profinite ring-isomorphism clause of `odg:eq:profinite`, its completion map and kernel | `Surreal.IntegerCongruenceLimit.Modulus`, `ideal`, `ideal_le`, `diagram`, `Completion`, `projection`, `compatible`, `of`, `projection_of`, `ext`, `of_eq_zero_iff`, `cone`, `isLimit`, `congr`, `projection_congr` in [IntegerCongruenceLimit.lean](../Surreal/Algebra/IntegerCongruenceLimit.lean); `SignSequence.omnificCongruenceQuotientEquiv`, `omnificCongruenceQuotientEquiv_mk`, `omnificCongruenceQuotientEquiv_compatible`, `omnificCongruenceQuotient_finite`, `omnific_finite_ideal_in_congruence_diagram`, `OmnificProfiniteCompletion`, `ProfiniteInteger`, `omnificProfiniteCompletionEquiv`, `projection_omnificProfiniteCompletionEquiv`, `omnificProfiniteMap`, `omnificProfiniteCompletionEquiv_of`, `omnificProfiniteMap_eq_zero_iff`, `ker_omnificProfiniteMap` in [OmnificProfiniteCompletion.lean](../Surreal/Foundations/OmnificProfiniteCompletion.lean) | For every commutative ring, positive ordinary moduli ordered by reverse divisibility give a diagram of quotient rings with the usual reduction maps. Mathlib's ring of compatible sections supplies the inverse-limit carrier; its canonical cone satisfies `CategoryTheory.Limits.IsLimit` in `CommRingCat`. Compatible quotient isomorphisms induce a ring isomorphism of these limits, including between different universes. At the actual omnific ring each quotient is finite and every finite-index ideal occurs, including the unit ideal at modulus one. Constant extraction identifies every component with the ordinary integer quotient and respects all transition maps, yielding the inverse-limit ring isomorphism with the ordinary profinite integers defined as `lim ℤ/nℤ`. The canonical map is integer constant extraction followed by the ordinary integer completion map; its kernel is exactly the purely infinite ideal. **Proved** for the profinite ring-isomorphism clause, the canonical map and kernel, with precisely the source's positive-modulus diagram. The inverse-limit topologies and profinite homeomorphism are proved in the next row; the p-adic completion homeomorphism remains **Pending**. Build and axiom audit pass. |
+| The profinite topological isomorphism and canonical-map topology in `odg:eq:profinite` | `Surreal.IntegerCongruenceLimit.completionTopology`, `completionIsTopologicalRing`, `completionT2Space`, `completionTotallyDisconnectedSpace`, `continuous_projection`, `continuous_iff`, `hasBasis_nhds`, `denseRange_of`, `isClosed_sections`, `completionCompactSpace`, `continuous_congr`, `continuous_congr_symm`, `congrHomeomorph`, `congrHomeomorph_apply` in [IntegerCongruenceLimitTopology.lean](../Surreal/Algebra/IntegerCongruenceLimitTopology.lean); `SignSequence.omnificProfiniteCompletionCompactSpace`, `profiniteIntegerCompactSpace`, `omnificProfiniteHomeomorph`, `omnificProfiniteHomeomorph_apply`, `omnificProfiniteHomeomorph_of`, `denseRange_omnificProfiniteMap`, `denseRange_profiniteInteger_of`, `continuous_omnificProfiniteMap`, `isInducing_omnificProfiniteMap`, `isDenseInducing_omnificProfiniteMap` in [OmnificProfiniteTopology.lean](../Surreal/Foundations/OmnificProfiniteTopology.lean) | Both completions carry the subspace topology in the product of discrete ordinary-modulus quotient rings. The generic inverse-limit ring is Hausdorff and totally disconnected, with continuous ring operations and residue projections. Its compatibility conditions are closed; finite residue rings therefore give compactness. Fixing finitely many residues is a neighborhood basis. The original ring has dense image because a residue at the product of finitely many moduli supplies a simultaneous representative. Component isomorphisms induce a homeomorphism, with exactly the function of the earlier ring isomorphism. At the actual omnific ring and ordinary integers these are compact Hausdorff totally disconnected topological rings. The canonical omnific map is continuous, has dense image, and induces exactly the previously constructed ordinary congruence topology, expressed as Mathlib's `IsDenseInducing`; no injectivity is claimed, and its kernel remains the purely infinite ideal. **Proved** for the full profinite topological ring identification and these canonical-map properties. The topological identifications of separated quotients with the arithmetic integer topologies are proved below. The p-adic completion homeomorphism and a separate comparison with uniform-space completion remain **Pending**. Build and axiom audit pass. |
+| The separated-quotient topological identifications following `odg:eq:profinite` | `Surreal.IdealCongruenceTopology.isInducing_of_hasBasis`, `separationHomeomorph` in [IdealCongruenceTopology.lean](../Surreal/Algebra/IdealCongruenceTopology.lean); `SignSequence.integerCongruenceIdeal`, `integerCongruenceIdeal_directed`, `integerCongruenceTopology`, `integerCongruenceTopology_isTopologicalRing`, `isInducing_omnificConstantCoeff_congruence`, `omnificCongruenceSeparationHomeomorph`, `omnificCongruenceSeparationHomeomorph_apply`, `omnificCongruenceSeparationHomeomorph_mk`, `integerPadicTopology`, `integerPadicTopology_isTopologicalRing`, `isInducing_omnificConstantCoeff_padic`, `omnificPadicSeparationHomeomorph`, `omnificPadicSeparationHomeomorph_apply`, `omnificPadicSeparationHomeomorph_mk` in [OmnificSeparationTopology.lean](../Surreal/Foundations/OmnificSeparationTopology.lean) | Ordinary integers carry the topology generated by positive-modulus ideals, or Mathlib's ideal-adic topology at an ordinary prime. Constant extraction induces exactly the respective omnific topology, proved by comparing ideal-coset neighborhood bases with the existing ordinary-divisibility criterion. A generic separation-quotient construction turns an inducing surjective ring map and its separation ring equivalence into a homeomorphism. Applied here, both previously proved ring equivalences from the actual Mathlib separation quotients to `ℤ` are homeomorphisms, with exactly the same underlying functions and integer constant extraction as the canonical map. All topologies are explicit parameters. **Proved** for the separated-quotient topological identifications. The p-adic completion homeomorphism remains **Pending**. Build and axiom audit pass. |
 
 ## Dependency order
 
@@ -754,7 +769,7 @@ cannot replace strong Hahn summability.
 custom environments are not included. A label inside a nested equation
 labels that equation, not the enclosing theorem or proposition; an
 environment without its own label is indexed by its source line.
-The inventory covers all 60 maintained main texts
+The inventory covers all 61 maintained main texts
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in
@@ -829,6 +844,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/gonshor-product-birthdays/surreal_product_birthdays.tex](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex) | 3 | 4 | 5 | 2 | 14 |
 | [surreal/hahn-evaluation-at-omega/article.tex](surreal/hahn-evaluation-at-omega/article.tex) | 7 | 9 | 5 | 2 | 23 |
 | [surreal/hahn-valued-measures-and-probability/article.tex](surreal/hahn-valued-measures-and-probability/article.tex) | 37 | 17 | 18 | 27 | 99 |
+| [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex) | 9 | 9 | 4 | 7 | 29 |
 | [surreal/markov-generators-at-every-scale/article.tex](surreal/markov-generators-at-every-scale/article.tex) | 9 | 5 | 3 | 3 | 20 |
 | [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-scaling-at-surreal-scales/article.tex) | 7 | 3 | 2 | 4 | 16 |
 | [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex) | 72 | 42 | 38 | 48 | 200 |
@@ -838,7 +854,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
 | [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 9 | 8 | 3 | 10 | 30 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 1477 | 770 | 752 | 731 | **3730** |
+| **Total** | 1486 | 779 | 756 | 738 | **3759** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1187,7 +1203,16 @@ and finite-puncture hypotheses explicit, corrects the circle's two conjugate
 boundary points, and supplies descent across arbitrary field extensions.
 The logarithmic proof identifies a closed boundary centre and compares the same
 contraction in both support rings. These results remain **Pending** in Lean;
-arithmetic fibers in Section 17.3 and subsequent applications still await review.
+arithmetic fibers in Section 17.3 and subsequent applications were outside that
+pass. The next pass reviews Section 17.3, from `odg:cr:thm:arith` through
+`odg:cr:thm:descent`, including closed affine presentations, nonflat models,
+denominator clearing and injectivity of integer polynomial arcs. It separates
+set-sized workspace fibers from proper-class fibers and proves in prose that
+integer-coefficient arcs still parametrize the entire purely infinite fiber.
+The congruence criterion gives an empty or countably infinite ordinary point
+set once a rational parametrization is supplied. These results and the
+torsion-free-algebra extension remain **Pending** in Lean; projective
+coordinates and later applications still await review.
 
 ### Synchronization of the September 23 expansions
 
@@ -1240,6 +1265,16 @@ congruence-topology claims following `odg:eq:profinite`, with their exact
 scope recorded in the implementation table above.
 
 ## Main-report statement index
+
+Placement `9d28e28` adds the independent-copies base and eight companions.
+The base's 29 standard results bring the inventory to 3,759; its three
+separately styled main theorems are recorded as additional obligations in its
+entry. The companions still require integration and review. The incoming
+profinite completion `5edd752` proves the remaining ring-isomorphism clause
+of `odg:eq:profinite`, its canonical map and kernel. Subsequent Lean work
+proves the profinite completion homeomorphism and both separated-quotient
+homeomorphisms; the p-adic completion homeomorphism remains pending as
+specified in the implementation table.
 
 Every entry below is pending unless explicitly mapped to a checked declaration
 in a later status update. Titles are copied from the LaTeX optional heading;
@@ -4777,66 +4812,66 @@ The separately styled cited theorem
 | Proposition | `odg:frac:prop:gaussianfrac` (line 6443) | Gaussian fractions \src{08}; \src{09} |
 | Theorem | `odg:frac:thm:gaussian` (line 6467) | Gaussian representation dichotomy \src{08} |
 | Corollary | `odg:frac:cor:gaussiandirections` (line 6506) | Constant directions over $\Z$ and $\Z{[i]}$ \src{08, 14} |
-| Lemma | `odg:cr:lem:rings` (line 6685) | Intersections, units and degree \src{C14; also C10--C13, C15} |
-| Lemma | `odg:cr:lem:euler` (line 6755) | Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15} |
-| Lemma | `odg:cr:lem:separation` (line 6805) | Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15} |
-| Corollary | `odg:cr:cor:algclosed` (line 6826) | Relatively algebraically closed constants \src{C10, C14, C15} |
-| Lemma | `odg:cr:lem:division` (line 6841) | Differential division \src{C14; also C10, C11, C12, C13, C15} |
-| Theorem | `odg:cr:thm:squarefree` (line 6873) | Squarefree superelliptic rigidity \src{C12, C13, C15; also C10, C11, C14} |
-| Proposition | `odg:cr:prop:cubic` (line 6927) | A cubic certificate \src{C10, C11, C12, C13, C14, C15} |
-| Corollary | `odg:cr:cor:weierstrass` (line 6978) | Nonsingular short Weierstrass equations \src{C10, C11, C12, C13, C14, C15} |
-| Corollary | `odg:cr:cor:generalweierstrass` (line 7007) | General Weierstrass equations \src{C13}, for every $\Bbbk$ |
-| Proposition | `odg:cr:prop:singular` (line 7040) | Singular cubics \src{C10, C11, C12, C14, C15} |
-| Lemma | `odg:cr:lem:separated` (line 7109) | Equality from an ambient field \src{C10, C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:annihilation` (line 7122) | Two-ring annihilation \src{C13}; one-forms \src{C10, C11, C12, C14} |
-| Lemma | `odg:cr:lem:constantpoint` (line 7191) | From vanishing tangents to a constant point \src{C13, C14; also C10, C11, C12} |
-| Theorem | `odg:cr:thm:proper` (line 7211) | Proper differential rigidity \src{C14; also C10, C11, C12, C13} |
-| Corollary | `odg:cr:cor:hahnproper` (line 7235) | Hahn realization \src{C14; also C10, C11, C12, C13} |
-| Theorem | `odg:cr:thm:symmetric` (line 7274) | Symmetric-differential rigidity \src{C13, C15} |
-| Corollary | `odg:cr:cor:semiample` (line 7290) | A semiample tautological bundle \src{C13}; ample case also \src{C15} |
-| Proposition | `odg:cr:prop:inherit` (line 7332) | Inheritance \src{C13; also C10, C11, C14, C15} |
-| Lemma | `odg:cr:lem:canonical` (line 7378) | Canonical forms have no common zero \src{C13, C14; also C10, C11, C12} |
-| Theorem | `odg:cr:thm:positivegenus` (line 7400) | Positive-genus curves \src{C11, C13, C14; also C10, C12} |
-| Lemma | `odg:cr:lem:punctures` (line 7441) | Two punctures force constancy \src{C10, C11, C13, C14, C15} |
-| Lemma | `odg:cr:lem:formA1` (line 7462) | Forms of the affine line \src{C14}; real case \src{C10, C11, C13} |
-| Theorem | `odg:cr:thm:affine` (line 7488) | Smooth affine curves \src{C14; also C10, C11, C12, C13, C15} |
-| Lemma | `odg:cr:lem:logdim` (line 7561) | Logarithmic forms \src{C12, C15} |
-| Theorem | `odg:cr:thm:logroute` (line 7581) | The logarithmic route \src{C12; also C15}, closed centre \mergetag |
-| Corollary | `odg:cr:cor:subalgebra` (line 7627) | Curve subalgebras \src{C11, C12} |
-| Corollary | `odg:cr:cor:allcurves` (line 7648) | All smooth curves \src{C13; also C15}, for every $\Bbbk$ |
-| Theorem | `odg:cr:thm:arith` (line 7672) | Exact fibers over an arbitrary coefficient ring \src{C11}, for every $\Bbbk$ |
-| Corollary | `odg:cr:cor:omnific` (line 7710) | Omnific points on smooth affine curves \src{C10, C11, C13, C14} |
-| Lemma | `odg:cr:lem:arcs` (line 7761) | Integer polynomial arcs \src{C14} |
-| Proposition | `odg:cr:prop:congruence` (line 7786) | A congruence criterion \src{C14} |
-| Corollary | `odg:cr:cor:polywitness` (line 7813) | Polynomial witnesses \src{C13}; also \src{C12} |
-| Theorem | `odg:cr:thm:descent` (line 7847) | Descent for separated models \src{C12} |
-| Theorem | `odg:cr:thm:unimodular` (line 7887) | Unimodular coordinates \src{C14}; for $\mathfrak o=\Bbbk$ \src{C10, C13} |
-| Lemma | `odg:cr:lem:coordinatepoint` (line 7903) | Invertible coordinate ideals \src{C12} |
-| Theorem | `odg:cr:thm:ideals` (line 7918) | Coordinate ideals on rigid targets \src{C12} |
-| Theorem | `odg:cr:thm:ozideal` (line 7931) | Omnific coordinate ideals \src{C12} |
-| Corollary | `odg:cr:cor:projectiveQ` (line 7951) | Rational projective points \src{C14; also C10, C12, C13, C15} |
-| Lemma | `odg:cr:lem:invariant` (line 8073) | Invariant differentials \src{C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:abelian` (line 8087) | Abelian varieties \src{C10, C11, C13, C14, C15; also C12} |
-| Lemma | `odg:cr:lem:torus` (line 8106) | Tori \src{C14; also C10, C11, C12, C13, C15} |
-| Theorem | `odg:cr:thm:semiabelian` (line 8125) | Semiabelian varieties \src{C10, C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:quasifinite` (line 8142) | Quasi-finite maps \src{C11, C15; also C10, C12, C14} |
-| Theorem | `odg:cr:thm:groupkernel` (line 8163) | The nonconstant part of a commutative group \src{C13}, for every $\Bbbk$ |
-| Lemma | `odg:cr:lem:reducedinjective` (line 8236) | Coefficientwise separation \src{C11} |
-| Theorem | `odg:cr:thm:reduced` (line 8247) | Reduced coefficient algebras \src{C11} |
-| Lemma | `odg:cr:lem:tangent` (line 8278) | Square-zero lifts \src{C11} |
-| Theorem | `odg:cr:thm:dualdefect` (line 8290) | The dual-number defect \src{C11} |
-| Proposition | `odg:cr:prop:char2` (line 8321) | An elliptic point in characteristic two \src{C11, C14, C15} |
-| Proposition | `odg:cr:prop:charp` (line 8352) | Squarefree rigidity fails in characteristic $p$ \src{C13} |
-| Theorem | `odg:cr:thm:dor` (line 8383) | A discretely ordered ring with no omnific copy \src{C11} |
-| Lemma | `odg:log:lem:valuation` (line 8511) | The valuation-ring side \src{C15} |
-| Theorem | `odg:log:thm:annihilation` (line 8544) | Logarithmic annihilation \src{C15} |
-| Corollary | `odg:log:cor:criterion` (line 8592) | The logarithmic tangent criterion \src{C15} |
-| Theorem | `odg:log:thm:descent` (line 8660) | Descent over any coefficient ring \src{C15} |
-| Corollary | `odg:log:cor:omnific` (line 8684) | Omnific points on logarithmic complements \src{C15} |
-| Proposition | `odg:log:prop:products` (line 8712) | Finite products \src{C15} |
-| Theorem | `odg:thm:quadraticformula` (line 8749) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 8810) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 8852) | A two-term root obstruction \src{05} |
+| Lemma | `odg:cr:lem:rings` (line 6686) | Intersections, units and degree \src{C14; also C10--C13, C15} |
+| Lemma | `odg:cr:lem:euler` (line 6756) | Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15} |
+| Lemma | `odg:cr:lem:separation` (line 6806) | Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15} |
+| Corollary | `odg:cr:cor:algclosed` (line 6827) | Relatively algebraically closed constants \src{C10, C14, C15} |
+| Lemma | `odg:cr:lem:division` (line 6842) | Differential division \src{C14; also C10, C11, C12, C13, C15} |
+| Theorem | `odg:cr:thm:squarefree` (line 6874) | Squarefree superelliptic rigidity \src{C12, C13, C15; also C10, C11, C14} |
+| Proposition | `odg:cr:prop:cubic` (line 6928) | A cubic certificate \src{C10, C11, C12, C13, C14, C15} |
+| Corollary | `odg:cr:cor:weierstrass` (line 6979) | Nonsingular short Weierstrass equations \src{C10, C11, C12, C13, C14, C15} |
+| Corollary | `odg:cr:cor:generalweierstrass` (line 7008) | General Weierstrass equations \src{C13}, for every $\Bbbk$ |
+| Proposition | `odg:cr:prop:singular` (line 7041) | Singular cubics \src{C10, C11, C12, C14, C15} |
+| Lemma | `odg:cr:lem:separated` (line 7110) | Equality from an ambient field \src{C10, C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:annihilation` (line 7123) | Two-ring annihilation \src{C13}; one-forms \src{C10, C11, C12, C14} |
+| Lemma | `odg:cr:lem:constantpoint` (line 7192) | From vanishing tangents to a constant point \src{C13, C14; also C10, C11, C12} |
+| Theorem | `odg:cr:thm:proper` (line 7212) | Proper differential rigidity \src{C14; also C10, C11, C12, C13} |
+| Corollary | `odg:cr:cor:hahnproper` (line 7236) | Hahn realization \src{C14; also C10, C11, C12, C13} |
+| Theorem | `odg:cr:thm:symmetric` (line 7275) | Symmetric-differential rigidity \src{C13, C15} |
+| Corollary | `odg:cr:cor:semiample` (line 7291) | A semiample tautological bundle \src{C13}; ample case also \src{C15} |
+| Proposition | `odg:cr:prop:inherit` (line 7333) | Inheritance \src{C13; also C10, C11, C14, C15} |
+| Lemma | `odg:cr:lem:canonical` (line 7379) | Canonical forms have no common zero \src{C13, C14; also C10, C11, C12} |
+| Theorem | `odg:cr:thm:positivegenus` (line 7401) | Positive-genus curves \src{C11, C13, C14; also C10, C12} |
+| Lemma | `odg:cr:lem:punctures` (line 7442) | Two punctures force constancy \src{C10, C11, C13, C14, C15} |
+| Lemma | `odg:cr:lem:formA1` (line 7463) | Forms of the affine line \src{C14}; real case \src{C10, C11, C13} |
+| Theorem | `odg:cr:thm:affine` (line 7489) | Smooth affine curves \src{C14; also C10, C11, C12, C13, C15} |
+| Lemma | `odg:cr:lem:logdim` (line 7562) | Logarithmic forms \src{C12, C15} |
+| Theorem | `odg:cr:thm:logroute` (line 7582) | The logarithmic route \src{C12; also C15}, closed centre \mergetag |
+| Corollary | `odg:cr:cor:subalgebra` (line 7628) | Curve subalgebras \src{C11, C12} |
+| Corollary | `odg:cr:cor:allcurves` (line 7649) | All smooth curves \src{C13; also C15}, for every $\Bbbk$ |
+| Theorem | `odg:cr:thm:arith` (line 7680) | Exact fibers over an arbitrary coefficient ring \src{C11}, for every $\Bbbk$ |
+| Corollary | `odg:cr:cor:omnific` (line 7734) | Omnific points on smooth affine curves \src{C10, C11, C13, C14} |
+| Lemma | `odg:cr:lem:arcs` (line 7793) | Integer polynomial arcs \src{C14} |
+| Proposition | `odg:cr:prop:congruence` (line 7831) | A congruence criterion \src{C14} |
+| Corollary | `odg:cr:cor:polywitness` (line 7871) | Polynomial witnesses \src{C13}; also \src{C12} |
+| Theorem | `odg:cr:thm:descent` (line 7915) | Descent for separated models \src{C12} |
+| Theorem | `odg:cr:thm:unimodular` (line 7961) | Unimodular coordinates \src{C14}; for $\mathfrak o=\Bbbk$ \src{C10, C13} |
+| Lemma | `odg:cr:lem:coordinatepoint` (line 7977) | Invertible coordinate ideals \src{C12} |
+| Theorem | `odg:cr:thm:ideals` (line 7992) | Coordinate ideals on rigid targets \src{C12} |
+| Theorem | `odg:cr:thm:ozideal` (line 8005) | Omnific coordinate ideals \src{C12} |
+| Corollary | `odg:cr:cor:projectiveQ` (line 8025) | Rational projective points \src{C14; also C10, C12, C13, C15} |
+| Lemma | `odg:cr:lem:invariant` (line 8147) | Invariant differentials \src{C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:abelian` (line 8161) | Abelian varieties \src{C10, C11, C13, C14, C15; also C12} |
+| Lemma | `odg:cr:lem:torus` (line 8180) | Tori \src{C14; also C10, C11, C12, C13, C15} |
+| Theorem | `odg:cr:thm:semiabelian` (line 8199) | Semiabelian varieties \src{C10, C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:quasifinite` (line 8216) | Quasi-finite maps \src{C11, C15; also C10, C12, C14} |
+| Theorem | `odg:cr:thm:groupkernel` (line 8237) | The nonconstant part of a commutative group \src{C13}, for every $\Bbbk$ |
+| Lemma | `odg:cr:lem:reducedinjective` (line 8310) | Coefficientwise separation \src{C11} |
+| Theorem | `odg:cr:thm:reduced` (line 8321) | Reduced coefficient algebras \src{C11} |
+| Lemma | `odg:cr:lem:tangent` (line 8352) | Square-zero lifts \src{C11} |
+| Theorem | `odg:cr:thm:dualdefect` (line 8364) | The dual-number defect \src{C11} |
+| Proposition | `odg:cr:prop:char2` (line 8395) | An elliptic point in characteristic two \src{C11, C14, C15} |
+| Proposition | `odg:cr:prop:charp` (line 8426) | Squarefree rigidity fails in characteristic $p$ \src{C13} |
+| Theorem | `odg:cr:thm:dor` (line 8457) | A discretely ordered ring with no omnific copy \src{C11} |
+| Lemma | `odg:log:lem:valuation` (line 8585) | The valuation-ring side \src{C15} |
+| Theorem | `odg:log:thm:annihilation` (line 8618) | Logarithmic annihilation \src{C15} |
+| Corollary | `odg:log:cor:criterion` (line 8666) | The logarithmic tangent criterion \src{C15} |
+| Theorem | `odg:log:thm:descent` (line 8734) | Descent over any coefficient ring \src{C15} |
+| Corollary | `odg:log:cor:omnific` (line 8758) | Omnific points on logarithmic complements \src{C15} |
+| Proposition | `odg:log:prop:products` (line 8786) | Finite products \src{C15} |
+| Theorem | `odg:thm:quadraticformula` (line 8823) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 8884) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 8926) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 
@@ -5795,8 +5830,8 @@ Placed in `21375f8` from source 07. This is the critical-point-defects base; sou
 
 Source: [surcomplex/autonomous-dilation-relations/article.tex](surcomplex/autonomous-dilation-relations/article.tex).
 
-Placed in `21375f8` as a single-source base and expanded in `260c143` by the
-batch-30 assembly. It concerns constant-coefficient algebraic relations
+Placed in `21375f8` as a single-source base and written in `260c143` without
+merging a second source. It concerns constant-coefficient algebraic relations
 between a Hahn series and its exponent dilates, with characteristic and
 support hypotheses. The current `adr:` labels replace the base's unprefixed
 labels. All claims are **Pending** in Lean; proof and source review remain pending.
@@ -5829,3 +5864,46 @@ labels. All claims are **Pending** in Lean; proof and source review remain pendi
 | Proposition | `adr:prop:rank-bounds` (line 1475) | Bounds from the rational rank of finite support |
 | Theorem | `adr:thm:finite-polynomials` (line 1546) | Finitely many bounded polynomial shapes |
 | Theorem | `adr:thm:decidable` (line 1579) | Decidable nonconstant omnific solvability |
+
+### independent-surreal-copies
+
+Source: [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex).
+
+Placed in `9d28e28` as a single-source base. Its prescribed independent copies
+use a set-sized divisible Hahn core and NBG with Global Choice for the class
+construction. The 29 standard environments are indexed below. The separately
+styled main theorems `main:copies`, `main:fractions` and `main:join` are additional
+obligations outside that count. All claims are **Pending** in Lean; mathematical
+proof review and source reconciliation remain pending.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:avoid` (line 393) | A cut avoiding a set |
+| Lemma | `lem:extend` (line 407) | Ordered one-point extension with avoidance |
+| Theorem | `thm:group` (line 447) | Independent group copies over any set-sized base |
+| Corollary | `cor:groupintersection` (line 501) | Untitled |
+| Theorem | `thm:lift` (line 526) | Monomial lift |
+| Proposition | `prop:arithmeticlift` (line 558) | What the lift remembers |
+| Proposition | `prop:classification` (line 602) | Classification within the monomial-preserving class |
+| Lemma | `lem:slice` (line 646) | Slice linearity and separation |
+| Lemma | `lem:matrix` (line 661) | A finite separating matrix |
+| Theorem | `thm:sliceddisjoint` (line 681) | Full Hahn fields are disjoint over their full intersection |
+| Corollary | `cor:joint` (line 711) | Independence of any finite number of full Hahn fields |
+| Corollary | `cor:relations` (line 731) | Polynomial-relation descent |
+| Corollary | `cor:parameters` (line 766) | Fixing every element of a prescribed set |
+| Theorem | `thm:intersectionclassification` (line 786) | Exact classification of set-sized intersections in this class |
+| Theorem | `thm:boolean` (line 814) | Boolean meet realization |
+| Corollary | `cor:choices` (line 847) | Independent choices and absence of new relations |
+| Lemma | `lem:compression` (line 885) | Compression of the surreal order |
+| Theorem | `thm:explicit` (line 934) | An explicit independent ordinal family |
+| Lemma | `lem:iterated` (line 984) | Re-expansion at separated scales |
+| Lemma | `lem:finitecoeff` (line 1024) | Finite coefficient-field control |
+| Theorem | `thm:joinobstruction` (line 1043) | A coefficient-transcendence obstruction |
+| Lemma | `lem:denominator` (line 1139) | Common denominators for a set of surreals |
+| Proposition | `prop:uniform` (line 1161) | Separate uniform denominators, no shared uniform one |
+| Proposition | `prop:boundedfrac` (line 1212) | Identification of the fraction fields |
+| Lemma | `lem:gapscale` (line 1243) | Cofinal sequences with polynomial gaps |
+| Theorem | `thm:cofinalgap` (line 1280) | One transcendental series over all bounded-support fractions |
+| Corollary | `cor:factorial` (line 1335) | The factorial witness |
+| Corollary | `cor:noshareddenom` (line 1365) | Failure witnessed by the denominator equation |
+| Theorem | `thm:setversion` (line 1402) | Independent embeddings in a saturated ordered group |

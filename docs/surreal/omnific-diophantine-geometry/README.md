@@ -14,7 +14,7 @@ Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 178 pages
+article.pdf                        the compiled report, 179 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -171,7 +171,13 @@ genus, the smooth affine classification, logarithmic differentials and all smoot
 curves. It distinguishes the real circle's two conjugate punctures from a form
 of the affine line, supplies descent across arbitrary field extensions and
 explains why the logarithmic valuation centre is a closed boundary point.
-Sections 17.3 onward and 18, the pointers added in Sections 6, 7
+Section 17.3 now also has a proof review of exact arithmetic fibers, integer
+polynomial arcs, the finite congruence criterion and separated-model descent.
+It makes equation descent through injective coefficient maps explicit, allows
+nonflat integral models, and distinguishes set-sized workspace fibers from
+proper-class fibers. Clearing denominators preserves the entire purely infinite
+fiber; finite-support witnesses can be chosen with integer coefficients.
+Section 17.4 onward and 18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to

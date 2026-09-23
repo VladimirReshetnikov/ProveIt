@@ -7,12 +7,12 @@ dependent results, reusing mathlib constructions.
 
 ## What the repository contains
 
-- **Research reports.** [`docs/`](docs/README.md) holds 60 reports in five
-  families: the surreal field `No` (21, including five on Conway's omnific
+- **Research reports.** [`docs/`](docs/README.md) holds 61 reports in five
+  families: the surreal field `No` (22, including five on Conway's omnific
   integers `Oz`), the surcomplex numbers `No[i]` (28), surquaternions (1),
   physics (2), and foundations and computation (8). Each has a LaTeX source,
   a README stating what it claims and what it does not, and usually finite
-  verification code; all but the two most recently placed have a typeset PDF.
+  verification code. Some newly placed reports still await a typeset PDF.
   Start with the [reader's guide](docs/README.md) and the
   [typeset catalogue](docs/manifest.pdf); the [notation guide](docs/NOTATION.md)
   reconciles local conventions, and the [formalization ledger](docs/FORMALIZATION.md)
@@ -132,7 +132,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 60 maintained main texts
+The [source inventory](docs/FORMALIZATION.md) covers 61 maintained main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -186,14 +186,24 @@ infinite ideal. Both the ordinary congruence topology and each `p`-adic
 topology are proved non-Hausdorff: the closure of zero is precisely that
 ideal, and two omnific integers are topologically indistinguishable exactly
 when their integer constant terms agree. Their separation quotients are
-ring-isomorphic to `ℤ`, with constant extraction as the canonical map.
+ring-isomorphic and homeomorphic to `ℤ` with the corresponding ordinary
+congruence or ideal-adic topology. Constant extraction induces each omnific
+topology and is the canonical map to its separated quotient.
 The profinite ring isomorphism is also proved: the inverse limit over all
 positive ordinary moduli is exactly the ordinary profinite integer ring,
 and its canonical map again has the purely infinite ideal as its kernel.
 The construction satisfies Mathlib's limit universal property, and every
-finite-index omnific ideal occurs in the diagram. Completion homeomorphisms,
-higher Diophantine and general set-sized quotient results remain pending;
-source review is distinct from checked formalization.
+finite-index omnific ideal occurs in the diagram. With the inverse-limit
+topology this isomorphism is also a homeomorphism of compact Hausdorff,
+totally disconnected topological rings. The canonical map has dense image
+and induces exactly the omnific congruence topology. The `p`-adic completion
+homeomorphism, higher Diophantine and general set-sized quotient results
+remain pending; source review is distinct from checked formalization.
+
+The new [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
+proposes strong surreal self-embeddings with prescribed common Hahn cores,
+and transcendental gaps in arithmetic intersections and ordinary composita.
+Its class constructions and proofs remain pending in Lean.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
@@ -210,7 +220,10 @@ geometric pullback argument explicit. The smooth-curve classification now also
 has a manuscript proof review: over any characteristic-zero coefficient field,
 only the affine and projective lines admit nonconstant points in the nonnegative
 Hahn support ring when the exponent group is nonzero. The proof explains descent
-and the role of geometric punctures; its Lean formalization remains pending.
+and the role of geometric punctures. The arithmetic review shows that an
+integer polynomial parametrization covers each entire exceptional fiber,
+including infinite-support points; a finite-support witness can always be
+chosen in the same fiber. These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta
