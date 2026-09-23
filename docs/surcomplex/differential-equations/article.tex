@@ -7854,7 +7854,9 @@ $c_{m+1}u^{m+1}(1+\mm_{\C})\neq0$. So a solution of $\Dn u=f(u)$ satisfies
 \begin{equation}\label{diff:aut:eq:timeconstant}
  \mathfrak t(u)=\omega+C\qquad\text{for exactly one }C\in\C,
 \end{equation}
-because the constant field is $\C$.
+because the constant field is $\C$. Here uniqueness of $C$ is for
+the chosen strip logarithm in $\mathfrak t$; changing that choice
+can relabel $C$. The scale argument below is independent of the choice.
 
 \begin{lemma}[The leading scale is forced]
 \label{diff:aut:lem:leading}
@@ -7862,13 +7864,24 @@ Every nonzero infinitesimal solution satisfies $u\sim\beta\,\omega^{-1/m}$ for
 exactly one $\beta\in\C^{\times}$ with $\beta^{m}=c_{\ast}$.
 \end{lemma}
 \begin{proof}
-Every term of \cref{diff:aut:eq:time} other than $c_{\ast}u^{-m}$ is negligible
-relative to $u^{-m}$: this is immediate for the other negative powers and for
-$g(u)$, and it is \cref{diff:aut:lem:log} for $\Log u$. So
-\cref{diff:aut:eq:timeconstant} gives $c_{\ast}u^{-m}\sim\omega$, that is
-$(u/x_{m})^{m}\sim c_{\ast}$ with $x_{m}=\omega^{-1/m}$. Taking moduli shows that
-$u/x_{m}$ is a finite unit; its standard part $\beta$ satisfies $\beta^{m}=c_{\ast}$
-and is unique.
+Divide the remaining terms of \cref{diff:aut:eq:time} by
+$u^{-m}$. The negative powers give multiples of $u^{m-r}$ with
+$m-r>0$; the regular part gives $u^mg(u)$; all are infinitesimal.
+The logarithmic term is infinitesimal after this division by
+\cref{diff:aut:lem:log} with $q=m$. Thus
+$\mathfrak t(u)=c_*u^{-m}(1+\eta)$ for some $\eta\in\mm_\C$.
+Since $(\omega+C)/\omega=1+C/\omega$ also has residue $1$,
+\cref{diff:aut:eq:timeconstant} implies
+$c_*u^{-m}/\omega\in1+\mm_\C$. Inverting this unit gives
+\[
+ (u/x_m)^m\in c_*(1+\mm_\C),\qquad x_m=\omega^{-1/m}.
+\]
+Writing $v=u/x_m$, the positive number $|v|^m$ has ordinary
+residue $|c_*|>0$. Hence $|v|$ is bounded above and below by
+positive ordinary real numbers: an infinite or infinitesimal $|v|$
+would make $|v|^m$ infinite or infinitesimal. Therefore $v$ is a
+finite unit. Its unique standard part $\beta\in\C^\times$ satisfies
+$\beta^m=c_*$, and $v/\beta\in1+\mm_\C$, proving the claim.
 \end{proof}
 
 Fix $\beta^{m}=c_{\ast}$ and an ordinary logarithm $\log\beta$, and put
@@ -7882,6 +7895,14 @@ $\omega=x_{m}^{-m}$ and using the last formula of \cref{diff:aut:lem:log} gives
  +x_{m}^{m}\bigl(\varrho\log\beta+\varrho\Lmm(W)+g(\beta x_{m}W)-C\bigr),
 \end{equation}
 all powers and logarithms of $W$ being expanded at $W=1$.
+In particular, the logarithmic contribution is
+\[
+ x_m^m\varrho\Log(\beta x_mW)
+ =-\frac{\varrho}{m}y_\omega
+   +x_m^m\varrho\bigl(\log\beta+\Lmm(W)\bigr),
+\]
+which fixes the sign and the factor $1/m$ in
+\cref{diff:aut:eq:implicit}.
 
 \begin{proposition}[Existence, uniqueness and completeness at a multiple zero]
 \label{diff:aut:prop:multiple}
@@ -7893,19 +7914,63 @@ solution of $\Dn u=f(u)$, and once the logarithm of each $\beta$ is fixed every
 such solution equals exactly one $u_{\beta,C}$.
 \end{proposition}
 \begin{proof}
-With $W=1+U$ the right side of \cref{diff:aut:eq:implicit} is a formal series in
-$(X,Y,U)$ with zero constant term and $U$-coefficient $-m\neq0$ at the origin;
-\cref{diff:aut:lem:implicit} constructs the unique formal solution and proves
-unique evaluated solvability in the monad of $1$. Evaluation is legitimate by
-\cref{diff:aut:lem:evaluation}, reversing the algebra gives
-$\mathfrak t(u_{\beta,C})=\omega+C$, and differentiation gives $\Dn u_{\beta,C}=f(u_{\beta,C})$;
-the leading term $\beta x_{m}$ makes the solution nonzero. Conversely
-\cref{diff:aut:lem:leading} fixes $\beta$ for a given solution,
-\cref{diff:aut:eq:timeconstant} fixes $C$, and $u/(\beta x_{m})$ solves the same
-evaluated implicit equation in $1+\mm_{\C}$, so the uniqueness part of
-\cref{diff:aut:lem:implicit} gives equality. Different $\beta$ have different
-leading coefficients and different $C$ different values of $\mathfrak t$.
+Put $W=1+U$. The negative powers of $1+U$ and
+$\Lmm(1+U)$ are ordinary formal series in $U$, and the argument
+$\beta X(1+U)$ of $g$ has zero constant term. Thus the right side
+of \cref{diff:aut:eq:implicit} defines a series in $(X,Y,U)$.
+Every term except $(1+U)^{-m}-1$ contains $X$ or $Y$, since
+$m-r\geq1$ and $m\geq1$. Its constant term is zero and its
+$U$-derivative at the origin is exactly $-m\neq0$.
+The formal implicit lemma gives a unique zero-constant
+$U_{\beta,C}(X,Y)$, hence $w_{\beta,C}=1+U_{\beta,C}$.
+
+Both $x_m$ and $y_\omega$ are infinitesimal, so the evaluation
+lemma gives a root in $1+\mm_\C$. Reversing the algebra yields
+$\mathfrak t(u_{\beta,C})=\omega+C$. Differentiation gives
+$\Dn u_{\beta,C}/f(u_{\beta,C})=1$; the denominator is nonzero
+and the leading term of $u_{\beta,C}$ is $\beta x_m$, so this is
+a nonzero solution of $\Dn u=f(u)$.
+
+Conversely, for any nonzero infinitesimal solution the leading-scale
+lemma fixes $\beta$, and the time identity fixes $C$ after the
+logarithm of that $\beta$ has been fixed. Its quotient
+$u/(\beta x_m)$ solves the same evaluated implicit equation.
+Uniqueness in the entire monad of $1$ identifies it with the
+constructed value, regardless of its support. This step uses the
+unit divided difference from \cref{diff:aut:lem:implicit}; it does
+not assume that formal evaluation is injective. Distinct $\beta$
+have different leading coefficients, and distinct $C$ have different
+values of $\mathfrak t$. Finally $c_*\neq0$ and characteristic zero
+give exactly $m$ distinct roots of $\beta^m=c_*$ in $\C$.
 \end{proof}
+
+The time parameter also has an exact first-order separation. On one
+fixed branch, let $C\neq C'$ and set
+$W_C=u_{\beta,C}/(\beta x_m)$ and
+$W_{C'}=u_{\beta,C'}/(\beta x_m)$. Subtracting the two implicit
+equations gives
+\[
+ (-m+\eta)(W_C-W_{C'})=(C-C')x_m^m,
+ \qquad \eta\in\mm_\C.
+\]
+Indeed, only the term $-Cx_m^m$ depends explicitly on $C$, and the
+divided difference in $W$ has residue $-m$. Consequently
+\[
+ u_{\beta,C}-u_{\beta,C'}
+ \sim-\frac{\beta}{m}(C-C')\,\omega^{-1-1/m}.
+\]
+Thus the constant distinguishes solutions at a specified next scale.
+
+When $f(\sigma)=c_{m+1}\sigma^{m+1}$ exactly, all $e_r$, $\varrho$
+and $g$ vanish, and the implicit solution has the explicit form
+\[
+ w_{\beta,C}(X,Y)=(1+CX^m)^{-1/m},\qquad
+ u_{\beta,C}=\beta\omega^{-1/m}(1+C/\omega)^{-1/m}.
+\]
+The fractional power is the formal binomial series with constant
+term $1$, evaluated at the infinitesimal $C/\omega$. Its inverse
+$m$th power is $1+C/\omega$, so it gives the time identity
+$c_*u_{\beta,C}^{-m}=\omega+C$ directly, for all $m\geq1$.
 
 \begin{remark}[No hidden solutions at another scale]
 \label{diff:aut:rem:nohidden}
@@ -7919,12 +7984,21 @@ parameter.
 
 \begin{remark}[Coordinate and branch choices]
 \label{diff:aut:rem:choices}
-A change of local parameter transports the solutions by an invertible ordinary
-formal series, and a change of $\log\beta$ adds an ordinary constant to
-$\mathfrak t$ and translates $C$. The parametrizations are therefore not
-canonical; the number of branches, the family of points and the existence
-criterion are. The leading coefficient $\beta$ is coordinate-dependent at a
-multiple zero, and no invariance of it is asserted.
+A change of local parameter transports the solutions by an invertible
+ordinary formal series. If
+$\widetilde\sigma=a\sigma+O(\sigma^2)$, $a\in\C^\times$, then
+$\widetilde c_{m+1}=a^{-m}c_{m+1}$, so
+$\widetilde c_*=a^mc_*$ and the corresponding leading coefficient is
+$\widetilde\beta=a\beta$. The number $m$ of branches is unchanged.
+
+On a fixed coordinate branch, replacing $\log\beta$ by
+$\log\beta+2\pi i k$ adds $2\pi i k\varrho$ to $\mathfrak t$ and
+relabels the same solution by $C'=C+2\pi i k\varrho$.
+The combination $\varrho\log\beta-C$ in the implicit equation is
+unchanged. Thus the parametrizations depend on the choices, while
+the family of points and the existence criterion do not; in
+particular the leading coefficient $\beta$ is not a coordinate
+invariant.
 \end{remark}
 
 \begin{proof}[Proof of \cref{diff:aut:thm:main}]
@@ -7935,10 +8009,13 @@ exactly the local lists. Conversely, evaluate the completed local coordinate map
 of $\mathcal X$ at each listed nonzero infinitesimal: the point is nonconstant,
 hence generic, and $\Dn\sigma=f(\sigma)$ with the chain rule and the rule for
 inverses gives $\Dn g(\mathbf y)=(\xi g)(\mathbf y)$ for every rational function
-$g$. A nonzero Laurent series with ordinary coefficients evaluated at a nonzero
-infinitesimal $u$ is $a u^{r}(1+\varepsilon)$ with $a\neq0$ and cannot vanish, so
-the construction gives a field embedding and not only an assignment of
-coordinates. A constant point has zero derivative and solves the equation
+$g$. To check injectivity directly, a nonzero local Laurent
+expansion factors as $a\sigma^r(1+\sigma q(\sigma))$ with
+$a\in\C^\times$, $r\in\Z$ and $q\in\C[[\sigma]]$.
+At a nonzero infinitesimal $u$ its value is
+$au^r(1+u q(u))\neq0$, since the last factor has residue $1$.
+Thus no nonzero rational function is killed, and the construction
+gives a field embedding, not only an assignment of coordinates. A constant point has zero derivative and solves the equation
 exactly when $\xi$ is regular and vanishes there.
 \end{proof}
 

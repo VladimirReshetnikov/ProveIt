@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 169 pages, built from ten manuscripts. Everything in
+A merged research report, 170 pages, built from ten manuscripts. Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 169-page report
+article.pdf                        the compiled 170-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the ten
@@ -30,13 +30,16 @@ The revisions expand the proof steps, distinguish the derivative frames
 and field extensions, illustrate the normalizations, and prove the forced
 degree bound sharp. The finite procedure now states its effective
 coefficient requirements; complex algebraic coefficients suffice.
-The autonomous review now covers normalized derivations, formal evaluation,
-projective reduction and simple zeros (Section 29 and Sections 30.1–30.3).
-It expands the support and local uniqueness arguments, makes the
-properness comparison set-sized, and gives an explicit quadratic
-linearizer. Multiple zeros, later autonomous proofs, remaining imports
-and source reconciliation are still pending; scope and validation are
-recorded in the collection's [review record](../../REVIEW.md).
+The autonomous review now covers Sections 29–30: normalized derivations,
+formal evaluation, projective reduction, simple and multiple zeros, and
+completeness of the curve-realization list. It expands the support,
+local uniqueness and forced-scale arguments, makes the properness
+comparison set-sized, and gives explicit quadratic and pure monomial
+formulas. Branch choices and the time parameter's first differing scale
+are stated explicitly. Uniform localization, derivation independence,
+later autonomous proofs, remaining imports and source reconciliation
+are still pending; scope and validation are recorded in the collection's
+[review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -774,6 +777,20 @@ build passed 3,872 jobs and the 5,880-declaration axiom audit. The primary
 comparison checked NPT arXiv v1 Lemma 6.1(i) and Stacks Tag 0BX5;
 the multiple-zero classification and later autonomous arguments remain
 for review.
+
+The second autonomous pass reviewed the multiple-zero classification and
+completeness proof in Section 30.4. The report rebuilt in three passes at
+170 pages without warnings or box issues, against a clean 169-page
+baseline; the changed proof pages were inspected. The unchanged member-11
+verifier again passed ten checks and matched the historical record except
+for the Python version. Separate exact checks covered pure monomial zeros
+of orders two through six, their parameter-separation coefficients, and
+a triple-zero example with nonzero logarithmic residue. All 48 historical
+files remain byte-identical. The full Lean build passed 3,872 jobs and
+the 5,880-declaration axiom audit. These finite calculations support the
+examples; they do not prove the general classification or complete its
+Lean formalization. Sections 29–30 are now reviewed; later autonomous
+arguments, other imports and source reconciliation remain pending.
 
 ## Re-running the source verifiers
 

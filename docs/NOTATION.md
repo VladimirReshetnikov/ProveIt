@@ -481,6 +481,17 @@ is unchanged by a change of local parameter. The normalized linearizer
 has `h_p(σ) = σ + O(σ²)`; its formal derivative is distinct from `ð`,
 with the evaluation chain rule connecting them.
 
+At a multiple zero of order `m+1`, `x_m = ω^(−1/m)` and
+`y_ω = (log ω)/ω` are actual infinitesimals; `X,Y` are formal
+variables before evaluation. The series `w_{β,C}(X,Y)` has constant
+term one, and `u_{β,C} = β x_m w_{β,C}(x_m,y_ω)` is the solution.
+Here `β^m = −1/(m c_{m+1})` and `C ∈ ℂ` is the ordinary constant
+in the time primitive `𝔱(u) = ω+C`, after choosing `log β`.
+Replacing `log β` by `log β + 2πik` relabels the same solution by
+`C + 2πik ϱ`, where `ϱ` is the coefficient of `σ⁻¹` in `1/f(σ)`.
+Changing the local parameter to `aσ + O(σ²)` rescales `β` to `aβ`.
+Neither constant is an invariant independent of these choices.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period
