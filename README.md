@@ -479,6 +479,10 @@ Euler's center-distance identity gives `|O-I|^2 = R*(R-2r)`.
 The radius inequality `2r ≤ R` and the sharp area bound
 `area ≤ s^2/(3*sqrt(3))` have equality exactly for equilateral triangles,
 at arbitrary positive surreal scales.
+Interior cevians satisfy the exact side-weighted sine ratio, which
+uniquely characterizes the internal bisector. Trigonometric Ceva gives
+an equivalence between concurrence of the three actual affine lines and
+the product of their positive split-angle sine ratios being one.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
