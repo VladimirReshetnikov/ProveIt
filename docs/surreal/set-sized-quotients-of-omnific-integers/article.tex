@@ -1,0 +1,1652 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.02in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={The Universal Set-Sized Quotient of the Omnific Integers},
+ pdfauthor={OpenAI ChatGPT},pdfsubject={Surreal numbers, omnific integers, cardinal thresholds and homological algebra}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{plain}
+\newtheorem{maintheorem}{Theorem}
+\renewcommand{\themaintheorem}{\Alph{maintheorem}}
+\crefname{maintheorem}{Theorem}{Theorems}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{section}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{example}{Example}{Examples}
+\crefname{question}{Question}{Questions}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\On}{\mathbf{On}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\SC}{\No[i]}
+\newcommand{\GOz}{\Oz[i]}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\I}{\mathcal I}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Hahn}{\mathscr H}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Der}{\operatorname{Der}}
+\newcommand{\pd}{\operatorname{pd}}
+\newcommand{\fd}{\operatorname{fd}}
+\newcommand{\gen}{\operatorname{gen}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\sm}{\mathrm{sm}}
+\newcommand{\repoSHA}{\texttt{a5c2a97df4b545dfe7f4cb8c11e4efed83101f6e}}
+\DeclareMathOperator{\diag}{diag}
+\setlist[enumerate]{label=(\roman*),leftmargin=2.1em,itemsep=2pt,topsep=5pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.15em}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Universal set-sized quotients of omnific integers}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.25in}
+{\large SURREAL AND SURCOMPLEX ALGEBRA\par}
+\vspace{0.28in}
+{\LARGE\bfseries The Universal Set-Sized Quotient\par}
+\vspace{0.1in}
+{\LARGE\bfseries of the Omnific Integers\par}
+\vspace{0.3in}
+{\Large Cardinal thresholds, surcomplex representations,\par
+and homological obstructions\par}
+\vspace{0.35in}
+{\large OpenAI ChatGPT\par}
+\vspace{0.1in}
+{Prepared for Vladimir Reshetnikov\par}
+\vspace{0.18in}
+{22 September 2026\par}
+\vspace{0.28in}
+\begin{minipage}{0.88\textwidth}
+\begin{abstract}
+Write an omnific integer uniquely as a purely infinite normal form plus an
+ordinary integer, and let $c_0:\Oz\to\Z$ extract that integer. We prove that
+every unital homomorphism from $\Oz$ into any set-sized ring, even a
+noncommutative ring with nilpotents, is $x\mapsto c_0(x)1$. More strongly,
+every action of $\Oz$ on a set-sized abelian group factors through $c_0$.
+The proof uses scaled copies of arbitrarily large fields inside the purely
+infinite ideal and a finite multiplicative identity; it requires no
+continuity or preservation of infinite sums.
+
+We classify all set-sized quotient rings, identify the profinite quotient,
+and obtain the Gaussian omnific analogue. An application of an existing
+primality theorem gives a nonzero proper-class domain with no nonzero
+set-sized unital representations. Explicit real-closed Hahn subfields
+produce set-sized integer parts with prescribed lower cardinal thresholds.
+Under $\kappa^{<\kappa}=\kappa$, the threshold is exactly $\kappa$, both for
+detecting any nonzero purely infinite element and for detecting certain
+first and second extension classes. Their purely infinite ideals are flat
+and idempotent but nonprojective, while the quotient has flat dimension one.
+The new theorem package is separated from standard Hahn-field facts and
+from the literature's primality result. No claim of peer review or Lean
+verification is made.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Research status.} This is a proof-bearing research draft. The main
+quotient theorem and the combined cardinal--homological construction are
+proposed original results: they were not located in the sources inspected,
+but the literature and repository searches do not establish priority.
+The article does not claim to settle a named factorisation conjecture.
+\end{minipage}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction and main results}\label{sec:intro}
+
+The omnific integers form a discretely ordered subring of the surreal
+field, but their ring-theoretic size is not an incidental feature.
+An individual element has a set-sized normal form, whereas the supply of
+scales available below any positive surreal exponent is a proper class.
+We show that these two facts together force an unexpectedly rigid answer
+to a basic representation question:
+\begin{center}
+\emph{What can an ordinary, set-sized ring or module see of an omnific integer?}
+\end{center}
+The answer is exactly its ordinary integer coefficient. This is much
+stronger than the familiar observation that a proper-class field cannot
+embed in a set. The source here is a ring, not a field; its maps have large
+kernels, and targets with zero divisors are allowed. Nor is the result a
+mere consequence of divisibility: a rationally divisible ideal can act
+nontrivially on many infinite set-sized modules.
+
+\subsection{The class theorem}
+An omnific integer has the form
+\begin{equation}\label{eq:ozform}
+ x=n+\sum_{g\in S}r_g\omega^g,
+ \qquad n\in\Z,\quad r_g\in\R,\quad S\subset\No^{>0},
+\end{equation}
+where $S$ is a set and is reverse well ordered. Put $c_0(x)=n$ and
+$\I=\ker c_0$. The adjective \emph{purely infinite} describes support in
+strictly positive exponents, not the sign of the element.
+
+\begin{maintheorem}[The universal set-sized quotient]\label[maintheorem]{main:class}
+For every set-sized unital ring $S$, there is exactly one unital ring
+homomorphism $\Oz\to S$, namely
+\[
+                 x\longmapsto c_0(x)1_S.
+\]
+For every set-sized unital $\Oz$-module $M$, one has $\I M=0$.
+Thus $\Z$-module structures and set-sized $\Oz$-module structures correspond
+uniquely by restriction and inflation along $c_0$.
+
+For Gaussian omnific integers the corresponding universal quotient is
+$\GOz\to\Z[i]$. In particular, unital maps $\GOz\to S$ correspond
+exactly to elements $j\in S$ satisfying $j^2=-1_S$.
+\end{maintheorem}
+
+The last assertion concerns ring maps, not necessarily maps of complex
+algebras: the image of $i$ is part of the data. A source ring that is
+commutative can map into a noncommutative ring; its image is, of course,
+commutative. Full proofs appear in \cref{sec:collision,sec:universal}.
+
+One consequence illustrates the force of the theorem. L'Innocente and
+Mantova proved that
+\begin{equation}\label{eq:qintro}
+                  q=\omega^{\sqrt2}+\omega+1
+\end{equation}
+is prime in $\Oz$ \cite{LM}. We do not reprove or claim that primality
+result. We instead prove that the nonzero domain $\Oz/(q)$ has no unital
+map into any nonzero set-sized ring, and no nonzero set-sized unital
+module. The explanation is that $c_0(q)=1$. This application separates
+primality from the existence of set-sized residue representations.
+
+\subsection{Set-sized models and a sharp threshold}
+There is a quantitative counterpart with no class-ring homological
+algebra. Let $\kappa$ be an uncountable regular cardinal. In
+\cref{sec:cardinal} we construct an explicit divisible subgroup
+$\Gamma_\kappa\subset\No$ of cardinality $\kappa$, a real-closed Hahn
+subfield $K_\kappa\subset\No$, and its omnific integer part
+\[
+       R_\kappa=K_\kappa\cap\Oz=\Z+I_\kappa.
+\]
+All these objects are sets. Supports in $K_\kappa$ have cardinality
+strictly less than $\kappa$.
+
+\begin{maintheorem}[Cardinal detection threshold]\label[maintheorem]{main:cardinal}
+For every uncountable regular $\kappa$, the ring $R_\kappa$ above satisfies:
+\begin{enumerate}
+\item Every homomorphism $R_\kappa\to S$ with $|S|<\kappa$ factors
+through $c_0:R_\kappa\to\Z$.
+\item Every $R_\kappa$-module $M$ with $|M|<\kappa$ is annihilated by
+$I_\kappa$.
+\item $I_\kappa^2=I_\kappa$, and the least cardinality of a generating
+set of $I_\kappa$ as an ideal is $\kappa$.
+\end{enumerate}
+If additionally $\kappa^{<\kappa}=\kappa$, then $|R_\kappa|=\kappa$.
+For each $0\ne x\in I_\kappa$, the least cardinality of a ring target
+admitting a homomorphism that does not kill $x$ is exactly $\kappa$.
+The least cardinality of a module on which $x$ acts nontrivially is also
+exactly $\kappa$.
+\end{maintheorem}
+
+The last two minima are over set-sized targets. The lower bounds hold
+without the displayed cardinal-arithmetic hypothesis; that hypothesis
+makes the explicit source itself a matching upper-bound witness.
+The real closedness of bounded-support Hahn fields is not a novelty
+claim. What matters here is the choice of a two-sided scale group,
+combined with the small-target obstruction.
+
+\subsection{Homological detection can require the same cardinal}
+Write $R=R_\kappa$, $I=I_\kappa$ and $D=R/I=\Z$ in the next theorem.
+All dimensions, resolutions, tensor products and extension groups are
+ordinary constructions over the set-sized ring $R$.
+
+\begin{maintheorem}[Homological reflection and hidden obstructions]
+\label[maintheorem]{main:homological}
+The ideal $I$ is flat, idempotent, and nonprojective. Moreover
+\[
+       \fd_R D=1,\qquad \pd_R D\ge2.
+\]
+For arbitrary $D$-modules $N,M$, inflated to $R$-modules,
+\[
+ \Tor_n^R(D,N)=0\quad(n>0),\qquad
+ \Ext_R^n(N,M)\cong\Ext_D^n(N,M)\quad(n\ge0).
+\]
+In particular, $\Ext_R^n(D,M)=0$ for every $n>0$ whenever $|M|<\kappa$.
+Nevertheless,
+\[
+ \Ext_R^1(D,I)\ne0,
+\]
+and there is an explicitly presented module $J$ with
+$\Ext_R^2(D,J)\ne0$. If $\kappa^{<\kappa}=\kappa$, both $I$ and $J$
+have cardinality $\kappa$. Consequently $\kappa$ is the exact least
+size of a coefficient module detecting a nonzero extension in degree
+one, and also in degree two, from $D$.
+\end{maintheorem}
+
+This does not give the exact projective dimension of $D$. It gives a
+sharp size bound on two kinds of witnesses to its nonprojectivity.
+The distinction is substantive: all smaller coefficient modules see
+vanishing, but larger modules detect nonsplit extensions.
+
+\subsection{Relation to the repository and literature}\label{sec:provenance}
+The repository comparison is pinned at
+\begin{center}\repoSHA.\end{center}
+The inspected catalogue and selected report descriptions are cited in
+\cite{RepoCatalogue,RepoRotation,RepoKappa}. This was a targeted
+comparison, not a proof audit of every file or every historical source.
+
+The rotation-group report already studies universal set-sized quotients
+in a different algebraic setting \cite{RepoRotation}. Thus the
+\emph{idea} of asking for such a quotient is not presented as new to the
+repository. Our proofs use scaled fields inside an ideal, rather than
+commutator calculations. The first-$\kappa$-coefficients report already
+treats closure and approximation for bounded-support Hahn fields,
+including singular support bounds \cite{RepoKappa}. Our regularity
+assumption is used for simultaneous support gaps and generation bounds,
+not as a purported necessary condition for field closure.
+
+The external inputs are deliberately limited. Conway normal forms,
+set-sized cuts, and the Hahn support calculus are standard; a convenient
+account is \cite{Berarducci}. The algebraic closedness of divisible-group
+Hahn fields is used in the form of \cite[Corollary 4]{Poonen}.
+The primality of \eqref{eq:qintro} is imported from \cite{LM}.
+For homological algebra, we give the needed arguments explicitly, with
+the standard filtered-colimit flatness fact cited from \cite{StacksFlat}.
+Neither numerical tests nor a successful PDF build constitute a proof
+of the transfinite or homological assertions.
+
+\section{Normal forms, coefficients, and size conventions}\label{sec:normal}
+
+\subsection{Foundation and meaning of a class quotient}
+We work in G\"odel--Bernays set theory with global choice, or an equivalent
+set/class framework adequate for the usual surreal construction.
+Every surreal and every individual series support is a set. The carriers
+$\No$, $\Oz$, and some rings used below are proper classes. Their
+operations and homomorphisms are class functions.
+
+Statements about all homomorphisms from a class ring are understood as
+statements about each such class function, not as a claim that a set of
+all these functions exists. Likewise, a quotient of a class ring by a
+class ideal may be represented by Scott codes: for each equivalence
+class, take its representatives of least set-theoretic rank. These form
+a nonempty set and give a set-valued code. Alternatively, every quotient
+statement below can be read as a statement about a kernel and the
+associated universal property. No class of all subclasses is required.
+
+The only cardinality contradictions used in the class arguments are
+ordinary set contradictions. Given a target set $S$, choose a cardinal
+$\lambda>|S|$, explicitly construct $\lambda$ many source elements, and
+force an injection of that set into $S$. This avoids assigning a
+``cardinality'' to a proper class.
+
+\subsection{Large-monomial Hahn notation}
+Let $k$ be a set-sized field and let $G$ be a divisible ordered abelian
+group, either a set or the class $\No$. We write
+\[
+ k((X^G))
+\]
+for series with coefficients in $k$ and \emph{set-sized, reverse-well-ordered}
+support in $G$. Thus $X$ is a large-monomial symbol and
+$X^{g+h}=X^gX^h$. It is not an ordinary real variable and does not denote
+a choice of surreal exponential. The usual small-monomial convention
+is recovered by $t^g=X^{-g}$.
+
+Addition is coefficientwise and multiplication is finite convolution at
+each exponent. The Hahn support lemma ensures that these operations are
+well defined. If $f=cX^g(1+u)$ with $\supp u<0$, its inverse is
+\[
+ f^{-1}=c^{-1}X^{-g}\sum_{n\ge0}(-u)^n.
+\]
+The sum is a formal Hahn sum. All this is standard support calculus,
+including for a class exponent group because each calculation uses only
+a set of exponents \cite[Sections 8--10]{Berarducci}.
+
+For real coefficients and $G=\No$, Conway's normal-form theorem
+identifies $\R((X^{\No}))$ with $\No$ under $X^g\mapsto\omega^g$.
+For complex coefficients the same identification, applied to the real
+and imaginary coefficients, gives
+\[
+          \C((X^{\No}))\cong\No[i].
+\]
+A union of two reverse-well-ordered supports remains reverse well
+ordered. Therefore the coefficientwise complexification is exact, not
+an enlargement requiring additional supports.
+
+\subsection{A uniform coefficient ring}
+For a unital subring $D\subset k$, define
+\begin{equation}\label{eq:generalring}
+ \I_k(G)=\{f\in k((X^G)):\supp f\subset G^{>0}\},
+ \qquad A_{D,k}(G)=D+\I_k(G).
+\end{equation}
+The zero series is included. Abbreviate $\I_k=\I_k(\No)$ and
+$A_{D,k}=A_{D,k}(\No)$ when the exponent group is the full surreal class.
+The two principal examples are
+\[
+ A_{\Z,\R}=\Oz,\qquad A_{\Z[i],\C}=\GOz.
+\]
+The notation $A_{D,k}(G)$ alone imposes no support-cardinality bound
+other than set-sizedness. A strict bound will be written explicitly in
+\cref{sec:cardinal}.
+
+\begin{lemma}[Constant coefficient]\label[lemma]{lem:c0}
+The map $c_0:A_{D,k}(G)\to D$ is a surjective ring homomorphism, with
+kernel $\I_k(G)$ and with the constant-series inclusion as a section.
+\end{lemma}
+\begin{proof}
+All exponents in the ring are nonnegative. A sum $g+h$ of two such
+exponents is zero exactly when both are zero. Hence the constant
+coefficient of a product is the product of the constant coefficients.
+Additivity and the asserted kernel and section follow directly from
+\eqref{eq:generalring}.
+\end{proof}
+
+\begin{remark}[Not the standard-part map]
+The map $c_0$ here is defined on a ring of generally infinite elements.
+It is not the standard-part homomorphism on the valuation ring of finite
+surreals. Constant coefficient extraction is not multiplicative on all
+of $\No$: both $\omega$ and $\omega^{-1}$ have zero constant coefficient,
+but their product is $1$.
+\end{remark}
+
+\begin{example}
+Both $3\omega^\omega-\sqrt2\omega^{1/7}+5$ and
+$-\omega+5$ map to $5$. Also,
+\[
+ f=\sum_{n\ge1}\omega^{1/n}\in\I,
+ \qquad c_0(f)=0.
+\]
+There is no smallest positive real exponent in this support, but the
+support has a positive surreal lower bound. This distinction is central
+to the argument that follows.
+\end{example}
+
+\subsection{Uniform gaps below set supports}
+\begin{lemma}[A positive gap below a set]\label[lemma]{lem:gap}
+For every set $T\subset\No^{>0}$ there is $a\in\No$ such that
+$0<a<t$ for every $t\in T$. Every set of surreal numbers also has a
+strict upper and a strict lower bound in $\No$.
+\end{lemma}
+\begin{proof}
+For nonempty $T$, the cut $\{0\mid T\}$ is a separated set-sized cut,
+and its value is a suitable $a$. For empty $T$, use $a=1$.
+For an arbitrary set $U$, the cuts $\{U\mid\varnothing\}$ and
+$\{\varnothing\mid U\}$ give strict upper and lower bounds. We use here
+the standard set-cut existence theorem \cite[Section 3]{Berarducci}.
+\end{proof}
+
+\begin{proposition}[Common monomial divisibility]\label[proposition]{prop:common}
+Every set-sized family $\mathcal F\subset\I_k$ admits a positive
+$a\in\No$ such that
+\[
+          \mathcal F\subset X^a\I_k\subset X^aA_{D,k}.
+\]
+Consequently $\I_k^2=\I_k$, and $\I_k$ is not generated as an ideal
+of $A_{D,k}$ by any set.
+\end{proposition}
+\begin{proof}
+The union of the supports of the members of $\mathcal F$ is a set of
+positive surreals. Choose a strict positive lower bound $a$ by
+\cref{lem:gap}. Translation of each support by $-a$ leaves only positive
+exponents, so $X^{-a}f\in\I_k$ for every $f\in\mathcal F$.
+In particular, each $f\in\I_k$ is a product of two members of $\I_k$,
+namely $X^a$ and $X^{-a}f$. The reverse inclusion $\I_k^2\subset\I_k$
+is automatic.
+
+If a set $\mathcal F$ generated $\I_k$, the first part would place the
+generated ideal inside $X^aA_{D,k}$. But $X^{a/2}\in\I_k$ is not in
+that principal ideal, since its unique quotient by $X^a$ in the ambient
+field is $X^{-a/2}$, which has a negative exponent.
+\end{proof}
+
+This proposition alone does not prove the main theorem. An idempotent
+ideal may act nontrivially on a small module. The additional obstruction
+comes from the number of multiplicatively related elements available
+below a single scale.
+
+\section{Scaled fields and the collision identity}\label{sec:collision}
+
+\subsection{The finite algebraic mechanism}
+\begin{lemma}[Scaled-field collision]\label[lemma]{lem:collision}
+Let $A$ be a commutative subring of a field $F$, let $L\subset F$ be a
+subfield, and let $0\ne m\in F$ satisfy $mL\subset A$.
+\begin{enumerate}
+\item For any ring homomorphism $\phi:A\to S$, if $\phi(m^2)\ne0$,
+then $x\mapsto\phi(mx)$ is injective on $L$.
+\item For any unital $A$-module $M$ and $v\in M$, if $m^2v\ne0$,
+then $x\mapsto(mx)v$ is injective on $L$.
+\end{enumerate}
+The same conclusions hold on any chosen subset of $L$. The target ring
+$S$ need not be commutative or reduced.
+\end{lemma}
+\begin{proof}
+Since $1\in L$, we have $m\in A$. For distinct $x,y\in L$, the element
+$m/(x-y)$ belongs to $A$, and the following is an identity in $A$:
+\begin{equation}\label{eq:collision}
+           (mx-my)\frac{m}{x-y}=m^2.
+\end{equation}
+If $\phi(mx)=\phi(my)$, applying $\phi$ to this identity gives
+$\phi(m^2)=0$. This proves the first assertion without cancellation in
+$S$. For the second assertion, apply $m/(x-y)$ to the equality
+$(mx)v=(my)v$. Commutativity in the source makes the resulting equality
+$m^2v=0$.
+\end{proof}
+
+\begin{corollary}[Cardinal version]\label[corollary]{cor:collisioncard}
+If $B\subset L$ is a set with $|B|>|S|$, then every homomorphism
+$\phi:A\to S$ kills $m^2$. If $|B|>|M|$, then $m^2M=0$.
+\end{corollary}
+
+The module version is worth retaining rather than deriving it through
+$\End_{\Z}(M)$. That endomorphism ring can be much larger than $M$,
+whereas \cref{cor:collisioncard} depends on the size of $M$ itself.
+
+\subsection{A proper-class field below each exponent scale}
+For positive $a\in\No$, set
+\begin{equation}\label{eq:Ha}
+ H_a=\{h\in\No:n|h|<a\text{ for every integer }n\ge1\}.
+\end{equation}
+We write $h\ll a$ for $h>0$ satisfying the displayed inequalities.
+The comparison takes place in the additive exponent group. Thus
+$h\ll a$ is an assertion about exponents, not about a ratio of the outer
+monomials $X^h$ and $X^a$.
+
+\begin{lemma}\label[lemma]{lem:Ha}
+The class $H_a$ is a divisible convex subgroup of $(\No,+)$. The Hahn
+class field $L_a=k((X^{H_a}))$ satisfies
+\[
+                     X^aL_a\subset\I_k.
+\]
+For every set cardinal $\lambda$, the field $L_a$ contains at least
+$\lambda$ distinct elements.
+\end{lemma}
+\begin{proof}
+If $h,h'\in H_a$, then for every positive integer $n$,
+$2n|h|<a$ and $2n|h'|<a$, so $n|h+h'|<a$.
+Negation, rational division, and convexity follow immediately from
+\eqref{eq:Ha}. Hence $H_a$ is a divisible convex subgroup. The usual
+Hahn inversion remains within this subgroup, so $L_a$ is a field.
+For every $h\in H_a$, one has $a+h>0$; translating a support by $a$
+therefore proves $X^aL_a\subset\I_k$.
+
+For ordinals $\alpha$, put
+\[
+             b_\alpha=\frac{a}{\omega^{\alpha+1}}.
+\]
+These are distinct positive elements of $H_a$: each denominator exceeds
+every positive integer. The monomials $X^{b_\alpha}$ are distinct
+members of $L_a$. Restriction to $\alpha<\lambda$ supplies the required
+set of elements.
+\end{proof}
+
+Here $\omega^{\alpha+1}$ in the definition of $b_\alpha$ is the Conway
+monomial in the \emph{exponent field} $\No$. The outer symbol $X$ is
+kept separate to make this double use of surreal scales explicit.
+
+\subsection{An explicit countable witness}\label{subsec:explicit}
+The field language in \cref{lem:Ha} is conceptually useful, but the
+contradiction needs much less. Let $0<c<b\ll a$, and put $d=b-c>0$.
+Then
+\begin{equation}\label{eq:geometricwitness}
+ q_{b,c}=\frac{X^a}{X^b-X^c}
+        =\sum_{n\ge0}X^{a-b-nd}\in\I_k.
+\end{equation}
+Indeed, $b+nd\le(n+1)b<a$ for each $n$, so every exponent on the right is
+positive. They strictly decrease with $n$. The family is a valid Hahn
+sum with countable support, not a convergent series in any assumed
+ordinary topology. Multiplication yields
+\begin{equation}\label{eq:explicitcollision}
+       (X^{a+b}-X^{a+c})q_{b,c}=X^{2a}.
+\end{equation}
+For arbitrary distinct $b,c\ll a$, exchange them and change sign as
+necessary. Thus every collision between the images of two of the
+monomials $X^{a+b}$ forces the image of $X^{2a}$ to vanish.
+
+A useful finite version, also checked by the supplied program, is
+\begin{align}
+ q_{b,c}^{(N)}&=\sum_{n=0}^N X^{a-b-nd},\notag\\
+ (X^{a+b}-X^{a+c})q_{b,c}^{(N)}
+      &=X^{2a}-X^{2a-(N+1)d}.\label{eq:finitewitness}
+\end{align}
+The nonzero remainder explains why replacing the source by a ring of
+finite-support series would invalidate this proof.
+
+\begin{remark}[No illicit interchange]
+We never apply a target homomorphism term by term to
+\eqref{eq:geometricwitness}. The series first denotes a single element
+of the source ring. Only the finite multiplicative identity
+\eqref{eq:explicitcollision} is then mapped to the target. Hence no
+continuity, valuation preservation, strong additivity, or measurable
+structure is assumed of the homomorphism.
+\end{remark}
+
+\section{The universal quotient and all set-sized modules}\label{sec:universal}
+
+\begin{theorem}[Coefficient-ring form of the main theorem]
+\label{thm:universal}
+Let $D\subset k$ be a unital subring of a set field, and put
+$A=A_{D,k}$ and $I=\I_k$. For every set-sized unital ring $S$, restriction
+to $D$ and composition with $c_0$ give mutually inverse correspondences
+\[
+             \Hom_1(A,S)\ \longleftrightarrow\ \Hom_1(D,S).
+\]
+Every set-sized unital $A$-module is annihilated by $I$. Its $A$-action is
+uniquely determined by the restricted $D$-action.
+\end{theorem}
+\begin{proof}
+Fix $g>0$, let $a=g/2$, and put $m=X^a$. By \cref{lem:Ha},
+$mL_a\subset A$ and $L_a$ contains a set of more than $|S|$ elements.
+The cardinal collision lemma therefore implies
+\[
+                       \phi(X^g)=\phi(m^2)=0.
+\]
+This holds for every positive exponent $g$.
+
+For arbitrary $f\in I$, \cref{prop:common} supplies $g>0$ and $h\in I$
+with $f=X^gh$. Multiplicativity now gives $\phi(f)=0$. Thus $\phi$
+factors through the kernel quotient $A/I=D$, and its factor is exactly
+its restriction to the constant series. Conversely, a ring map
+$D\to S$ composed with $c_0$ is plainly a ring map. Both constructions
+preserve the identity element and are inverse.
+
+For a set-sized module $M$, use instead a set of more than $|M|$
+elements of $L_a$ and the module part of \cref{cor:collisioncard}.
+It gives $X^gM=0$ for every $g>0$. Monomial divisibility then gives
+$IM=0$. Finally, writing $f=c_0(f)+(f-c_0(f))$ proves
+$fv=c_0(f)v$ for every $v\in M$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{main:class}]
+Take $(D,k)=(\Z,\R)$ and $(\Z[i],\C)$ in
+\cref{thm:universal}. There is one unital map $\Z\to S$, given by
+$n\mapsto n1_S$. A unital map $\Z[i]\to S$ is exactly a choice of
+$j\in S$ with $j^2=-1_S$, because $\Z[i]=\Z[T]/(T^2+1)$.
+\end{proof}
+
+\subsection{The module correspondence is genuinely complete}
+For sets $M,N$ equipped with $D$-module structures, inflate the actions
+along $c_0$. An additive map $M\to N$ is $A$-linear exactly when it is
+$D$-linear. Thus the correspondence also preserves all module maps.
+For $D=\Z$, it identifies the set-sized representation theory of $\Oz$
+with ordinary abelian-group theory.
+
+This phrasing is not an assertion that unrestricted module theories over
+$\Oz$ and $\Z$ are Morita equivalent. The regular module $\Oz$ has a
+proper-class carrier and is not among the objects considered.
+Likewise, the ideal $\I$ carries a nontrivial class-sized action. The
+small-target condition is essential, not a removable technicality.
+
+\begin{corollary}[No faithful set-sized action]\label[corollary]{cor:nofaithful}
+No nonzero purely infinite omnific integer can act nontrivially on any
+set-sized unital $\Oz$-module. In particular, no set-sized faithful
+unital representation of $\Oz$ exists. For every set-sized abelian group
+$M$, the only unital ring map $\Oz\to\End_{\Z}(M)$ is the integer-scalar
+map induced by $c_0$.
+\end{corollary}
+
+\begin{remark}[Nonunital maps]
+The proof killing $I$ does not use preservation of $1$. Hence every
+possibly nonunital map $\Oz\to S$ is $x\mapsto c_0(x)e$ for an
+idempotent $e\in S$. Conversely, each idempotent defines such a map.
+The universal quotient theorem is therefore not an artifact of the
+unital convention, although statements about quotient rings and modules
+below use that convention.
+\end{remark}
+
+\subsection{Localization and the full fields}
+\begin{proposition}[The full field is a monomial localization]
+\label[proposition]{prop:localization}
+Let $\mathcal U=\{X^a:a\in\No^{>0}\}\cup\{1\}$. Then, as class rings,
+\[
+ \mathcal U^{-1}A_{D,k}=k((X^{\No})).
+\]
+In particular, $\Frac(\Oz)=\No$ and $\Frac(\GOz)=\SC$.
+Neither full field admits a unital map to a nonzero set-sized ring, or a
+nonzero set-sized unital module.
+\end{proposition}
+\begin{proof}
+For any nonzero series $f$, its support is a set. Choose $a>0$ such that
+$a+g>0$ for every $g\in\supp f$, using \cref{lem:gap} on the negatives
+of its exponents. Then $X^af\in I$, so
+$f=(X^af)/X^a$ belongs to the indicated localization. The reverse
+inclusion is immediate from the ambient field.
+
+A homomorphism of the full field, restricted to $A$, kills every $X^a$
+by \cref{thm:universal}. But $X^a$ is invertible in the full field, so its
+image cannot be zero unless $1_S=0$. The same argument applied to a
+module shows that an invertible scalar would both annihilate the module
+and act bijectively, forcing that module to be zero.
+\end{proof}
+
+\section{Quotients, finite congruences, and prime domains}\label{sec:quotients}
+
+\subsection{All quotients that have set-sized carriers}
+\begin{theorem}[Quotients and their universal small images]
+\label{thm:quotients}
+Let $A=A_{D,k}$, $I=\I_k$, and let $J$ be any class ideal of $A$. Set
+$j=c_0(J)\subset D$. The induced map
+\[
+              A/J\longrightarrow D/j
+\]
+is the universal map from $A/J$ to a set-sized ring. Its kernel is
+$(I+J)/J$. Moreover, $A/J$ has a set-sized carrier if and only if
+$I\subset J$; in that event
+\[
+              J=c_0^{-1}(j),\qquad A/J\cong D/j.
+\]
+\end{theorem}
+\begin{proof}
+Surjectivity of $c_0$ shows that $j$ is an ideal of $D$.
+Every map $A/J\to S$ to a set-sized ring, composed with the quotient
+map, is by \cref{thm:universal} a map through $D$. Since it kills $J$,
+the induced map on $D$ kills $j$ and therefore factors uniquely through
+$D/j$. The preimage of $j$ under $c_0$ is $I+J$: if $c_0(a)=c_0(b)$
+for some $b\in J$, then $a-b\in I$.
+
+If $A/J$ itself is a set, apply \cref{thm:universal} to the quotient
+map $A\to A/J$ to get $I\subset J$. Conversely, if $I\subset J$,
+the constant coefficient identifies the quotient with $D/j$.
+\end{proof}
+
+For $\Oz$, this gives a complete list without any factorisation theory.
+
+\begin{corollary}[The set-sized quotients of $\Oz$]\label[corollary]{cor:smallquot}
+The ideals of $\Oz$ with set-sized quotient are exactly
+\[
+               \I\quad\text{and}\quad n\Oz\quad(n\ge1).
+\]
+Their quotients are respectively $\Z$ and $\Z/n\Z$.
+Among these ideals, the prime ideals are $\I$ and $p\Oz$ for ordinary
+positive primes $p$; the maximal ones are $p\Oz$.
+\end{corollary}
+\begin{proof}
+The ideals of $\Z$ are $n\Z$ for integers $n\ge0$.
+For $n=0$ its inverse image is $\I$. For $n>0$, division of every
+nonconstant coefficient by $n$ is allowed in $\I$, so
+\[
+                   n\Oz=n\Z+\I=c_0^{-1}(n\Z).
+\]
+The statements about prime and maximal ideals follow from the
+corresponding elementary facts for $\Z$.
+\end{proof}
+
+The distinction between $n=0$ and $n>0$ matters: $0\Oz=0$, not $\I$.
+The corollary classifies \emph{only} ideals with set-sized quotients.
+It does not classify all prime or maximal class ideals of $\Oz$.
+
+\begin{corollary}[Profinite completion]\label[corollary]{cor:profinite}
+All finite unital quotient rings of $\Oz$ are $\Z/n\Z$. The inverse
+limit of these finite quotients is canonically $\widehat{\Z}$, and the
+canonical map
+\[
+                \Oz\longrightarrow\widehat{\Z}
+\]
+has kernel $\I$ and image the diagonal copy of $\Z$.
+In particular,
+\[
+                       \bigcap_{n\ge1}n\Oz=\I.
+\]
+\end{corollary}
+\begin{proof}
+Use \cref{cor:smallquot} and the usual divisibility transition maps.
+An element maps to zero in every quotient exactly when its integer
+constant coefficient is divisible by every positive integer, hence is
+zero. The map factors through $c_0$, so its image is precisely $\Z$,
+not all of $\widehat{\Z}$.
+\end{proof}
+
+The finite-congruence observation is elementary and is not by itself a
+strong novelty claim. The main theorem explains why passing from finite
+rings to \emph{arbitrary} set-sized rings reveals nothing further.
+
+\subsection{A prime quotient with no nonzero set-sized representations}
+\begin{corollary}[A domain invisible to nonzero set rings]
+\label[corollary]{cor:primeexample}
+Let $q=\omega^{\sqrt2}+\omega+1$. Then $B=\Oz/(q)$ is a nonzero
+proper-class integral domain of characteristic zero. It has no unital
+map into any nonzero set-sized ring and no nonzero set-sized unital
+module.
+\end{corollary}
+\begin{proof}
+The imported primality theorem of L'Innocente--Mantova \cite{LM}
+says that $q$ is a prime element of $\Oz$. Hence $(q)$ is proper and
+prime, and $B$ is a nonzero domain.
+Because $c_0(q)=1$, \cref{thm:quotients} gives the zero ring as its
+universal set-sized quotient. A unital map from the zero ring to a ring
+$S$ can exist only when $S$ is also zero.
+
+For the module assertion, inflate a set-sized $B$-module to a
+$\Oz$-module. The main theorem makes $q$ act as $c_0(q)=1$, but the
+quotient makes it act as zero. Thus the module is zero. If $B$ were a
+set, its identity map would contradict the ring assertion, so its
+carrier is a proper class.
+
+Finally, no nonzero ordinary integer $n$ belongs to $(q)$.
+Otherwise $n=qa$ would force $a=n/q$ in $\No$. This is a nonzero
+infinitesimal and so cannot be omnific. Thus $\Z$ injects into $B$,
+which proves characteristic zero.
+\end{proof}
+
+This is not a contradiction to familiar existence theorems for maximal
+ideals of set rings. The source quotient is not a set. Nor does the
+corollary state that a particular class maximal ideal does not exist.
+It states that no quotient or representation into a nonzero set ring
+can exist.
+
+\begin{proposition}[The same obstruction without primality]
+\label[proposition]{prop:unitconstant}
+If $J$ is a class ideal of $\Oz$ containing an element with constant
+coefficient $1$, then $\Oz/J$ has no nonzero set-sized unital module.
+If $J$ is proper, the quotient is a nonzero proper-class ring.
+\end{proposition}
+\begin{proof}
+The element of constant coefficient $1$ acts simultaneously as the
+identity, by \cref{main:class}, and as zero, by the quotient relation.
+\end{proof}
+
+For example, $\omega+1$ is not a unit: its reciprocal is infinitesimal.
+Thus $(\omega+1)$ is proper, and its quotient already gives a nonzero
+class-ring example. The benefit of the more sophisticated $q$ above is
+the additional conclusion that the quotient is a domain.
+
+\subsection{What non-arithmetic prime quotients must contain}
+\begin{proposition}[A scaled field in every non-arithmetic residue field]
+\label[proposition]{prop:primereservoir}
+Let $P$ be a prime class ideal of $A=A_{D,k}$ such that $I\not\subset P$.
+There exists $a>0$ for which the class field $L_a=k((X^{H_a}))$ embeds
+in $\Frac(A/P)$.
+\end{proposition}
+\begin{proof}
+Choose $f\in I\setminus P$ and write $f=X^gh$ with $g>0$ and
+$h\in I$. Then $X^g\notin P$. Let $a=g/2$ and $m=X^a$. Primality
+ensures $\bar m\ne0$ in $A/P$. Since $mL_a\subset A$, define
+\[
+         \iota(x)=\frac{\overline{mx}}{\bar m}
+         \qquad(x\in L_a).
+\]
+Additivity and preservation of $1$ are immediate. Multiplicativity
+follows by reducing the source identity
+$(mx)(my)=m(mxy)$ and dividing by $\bar m^2$.
+For $x\ne0$, the identity $(mx)(m/x)=m^2$ shows that
+$\overline{mx}\ne0$. Thus the unital field homomorphism $\iota$ is
+injective.
+\end{proof}
+
+The conclusion is more informative than merely saying that the residue
+field is large. It contains a specific Hahn field based on all exponent
+scales infinitesimal relative to one positive $a$. This proposition
+still does not classify those prime ideals or assert that every field
+of this form is a residue field.
+
+\section{Gaussian omnific integers and algebraic tests}\label{sec:complex}
+
+\subsection{All set-sized representations of the Gaussian ring}
+Every element of $\GOz$ is uniquely $a+ib$ with $a,b\in\Oz$. In terms
+of normal forms it has complex coefficients at positive exponents and
+a Gaussian integer coefficient at zero.
+For a set ring $S$ and $j\in S$ with $j^2=-1_S$, the corresponding map
+is
+\begin{equation}\label{eq:gaussmap}
+       a+ib\longmapsto c_0(a)1_S+c_0(b)j.
+\end{equation}
+All such maps are obtained this way by \cref{thm:universal}.
+
+\begin{proposition}[Finite matrix representations]\label[proposition]{prop:matrices}
+Let $n\ge1$.
+\begin{enumerate}
+\item The only unital map $\Oz\to M_n(\C)$ is
+$x\mapsto c_0(x)I_n$.
+\item Up to conjugacy in $\mathrm{GL}_n(\C)$, the unital maps
+$\GOz\to M_n(\C)$ are indexed by $p=0,\ldots,n$, with
+\[
+           i\longmapsto\diag(iI_p,-iI_{n-p}).
+\]
+\item A unital map $\GOz\to M_n(\R)$ exists exactly when $n$ is even.
+For even $n$ there is one conjugacy class, represented by $n/2$ blocks
+$\begin{psmallmatrix}0&-1\\1&0\end{psmallmatrix}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The first assertion is \cref{main:class}. For the second, a map is
+specified by a matrix $J$ with $J^2=-I_n$. Its minimal polynomial divides
+$(T-i)(T+i)$, which has distinct roots over $\C$, so $J$ is diagonalizable
+with eigenvalues $i$ and $-i$. Their multiplicities determine and are
+determined by the conjugacy class.
+
+Over $\R$, the matrix $J$ makes $\R^n$ a complex vector space by
+$(u+iv)v_0=uv_0+vJv_0$. Hence its real dimension is even. A complex
+basis gives the indicated real block matrix. Conversely those blocks
+satisfy $J^2=-I_n$ and define the representation.
+\end{proof}
+
+No analytic hypothesis, norm bound, or finite-dimensional assumption
+was used to kill the purely infinite coefficients. Finite dimensionality
+enters only the final classification of the possible images of $i$.
+For set-sized infinite-dimensional vector spaces, the same reduction to
+an operator $J$ with $J^2=-1$ remains valid.
+
+\subsection{Gaussian quotient rings}
+\begin{corollary}
+The ideals of $\GOz$ with set-sized quotient are exactly the inverse
+images under $c_0$ of the ideals of $\Z[i]$. The quotient by the purely
+infinite ideal is $\Z[i]$. Every other proper set-sized quotient is
+finite and is a quotient of $\Z[i]$ by a nonzero Gaussian principal
+ideal.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:quotients} with $D=\Z[i]$. For nonzero $d\in\Z[i]$,
+complex coefficient division gives
+$d\GOz=d\Z[i]+\I_\C$. Finally, $\Z[i]$ is a Euclidean domain and
+its quotient by $(d)$ has $|d|^2$ elements, as follows by the determinant
+of multiplication by $d$ on the lattice $\Z^2$.
+\end{proof}
+
+\subsection{Polynomial equations tested in set rings}
+Let $A=A_{D,k}$ and let
+\[
+       B=A[T_1,\ldots,T_n]/(f_\nu:\nu\in E),
+\]
+where $n$ is finite and $E$ is a set. Apply $c_0$ to coefficients and put
+\[
+       B_0=D[T_1,\ldots,T_n]/(c_0(f_\nu):\nu\in E).
+\]
+The latter is a set-sized ring.
+
+\begin{theorem}[Coefficient reduction for all set-algebra tests]
+\label{thm:polynomialtests}
+For every commutative set-sized unital ring $S$, composition with the
+coefficient-reduction map gives a natural bijection
+\[
+                    \Hom_1(B_0,S)\cong\Hom_1(B,S).
+\]
+\end{theorem}
+\begin{proof}
+A map $B\to S$ restricts on $A$ to a map through $D$, by
+\cref{thm:universal}. Once that restriction is fixed, a choice of the
+images of $T_1,\ldots,T_n$ satisfies $f_\nu=0$ exactly when it satisfies
+the coefficient-reduced relation $c_0(f_\nu)=0$. This identifies both
+sets of maps, and the construction commutes with maps of targets.
+\end{proof}
+
+For example, an omnific coefficient relation $\omega T=1$ reduces to
+$0=1$ and consequently has no solution in a nonzero set ring under any
+unital representation of its coefficient ring. Nevertheless it has the
+solution $T=\omega^{-1}$ in the full surreal field. The theorem thus
+pinpoints a failure of set-sized algebraic tests to detect certain
+class-algebra phenomena. It does not assert that a scheme with a
+proper-class coordinate ring is an ordinary scheme.
+
+\section{Derivations: vanishing on small modules, not internally}
+\label{sec:derivations}
+
+The representation theorem has a first-order algebraic consequence,
+but it is important not to overinterpret it. A derivation
+$d:A\to M$ means an additive class function into an $A$-module satisfying
+$d(xy)=x\,d(y)+y\,d(x)$.
+
+\begin{proposition}[Reduction of derivations]\label[proposition]{prop:derivations}
+Let $A=A_{D,k}$ and let $M$ be a set-sized unital $A$-module. Every
+derivation $A\to M$ vanishes on $I=\I_k$. Restriction and composition
+with $c_0$ give inverse correspondences
+\[
+                        \Der(A,M)\cong\Der(D,M).
+\]
+In particular, every derivation $\Oz\to M$ is zero.
+\end{proposition}
+\begin{proof}
+The main theorem gives $IM=0$, and \cref{prop:common} gives $I=I^2$.
+If $x\in I$, express it as a finite sum of products of members of $I$
+(in fact a single product suffices here). Leibniz's rule makes the
+derivative of every such product zero. Thus $d(I)=0$, so the additive
+map factors through $D$. Its factor is a derivation because the action
+on $M$ also factors through $D$. Conversely a derivation on $D$ composed
+with $c_0$ satisfies Leibniz's rule on $A$. A derivation on $\Z$ vanishes:
+first $d(1)=2d(1)$, and then additivity gives $d(n)=0$ for every integer.
+\end{proof}
+
+For $\GOz$, a derivation into a set module is determined by $u=d(i)$,
+subject to $2iu=0$, equivalently $2u=0$. Every such $u$ defines a
+derivation of $\Z[i]$ by $d(a+bi)=bu$; direct multiplication verifies
+the condition. Hence there can be nonzero derivations in $2$-torsion
+targets. There are none in targets with no nonzero $2$-torsion.
+
+\subsection{A nonzero proper-class-valued derivation}
+Let
+\[
+                 \chi:\No\longrightarrow\R
+\]
+extract the coefficient of $\omega^0$ from the normal form of its input.
+On all of $\No$ it is additive, although not multiplicative, and
+$\chi(1)=1$. Use it as an additive weight on the \emph{exponents} of an
+outer normal form.
+
+\begin{proposition}[An internal Euler-type derivation]\label[proposition]{prop:euler}
+The formula
+\begin{equation}\label{eq:euler}
+ \mathcal D\left(\sum_g r_g\omega^g\right)
+             =\sum_g \chi(g)r_g\omega^g
+\end{equation}
+defines a derivation $\No\to\No$. It restricts to a derivation
+$\Oz\to\I$ and satisfies $\mathcal D(\omega)=\omega\ne0$.
+Coefficientwise complexification gives the analogous derivation of
+$\SC$ and $\GOz$.
+\end{proposition}
+\begin{proof}
+The output support is a subset of the input support, so the formula
+always defines a surreal. Additivity is coefficientwise. At each fixed
+exponent $u$, the coefficient of a product is a finite sum over pairs
+$g+h=u$. Since $\chi(g+h)=\chi(g)+\chi(h)$, multiplying this coefficient
+by $\chi(u)$ gives exactly the coefficient of
+$\mathcal D(f)h+f\mathcal D(h)$. This proves Leibniz's rule.
+For an omnific input no negative exponent is introduced, and the
+constant coefficient is killed because $\chi(0)=0$.
+Finally, \eqref{eq:euler} applied to $\omega^1$ gives $\omega$.
+The complex argument is identical.
+\end{proof}
+
+There is no contradiction with \cref{prop:derivations}: the codomain
+$\I$ here is a proper-class module with its internal multiplication
+action. This diagonal Hahn derivation is not asserted to be the
+Berarducci--Mantova derivation, nor to be compatible with surreal
+exponentiation. No conclusion that all class-valued differentials
+vanish follows from the small-module theorem.
+
+\section{An explicit family of cardinal-sized integer parts}
+\label{sec:cardinal}
+
+We now replace the proper-class supply of scales by $\kappa$ scales,
+and replace arbitrary set supports by supports of size less than
+$\kappa$. The resulting statements are about sets inside ordinary ZFC.
+
+\subsection{The two-sided exponent group}
+Fix an uncountable regular cardinal $\kappa$. Within the additive group
+of $\No$ define
+\begin{equation}\label{eq:Gamma}
+ h_\alpha=\omega^{\alpha+1},\qquad
+ \epsilon_\alpha=\omega^{-(\alpha+1)}\quad(\alpha<\kappa),
+ \qquad
+ \Gamma_\kappa=\Span_\Q\{h_\alpha,\epsilon_\alpha:\alpha<\kappa\}.
+\end{equation}
+The span consists of \emph{finite} rational linear combinations. Its
+generators are distinct Conway monomials and are linearly independent
+over $\Q$. Thus $\Gamma_\kappa$ is a divisible ordered abelian group of
+cardinality $\kappa$.
+
+For $\alpha<\beta$ one has
+\[
+       \epsilon_\beta\ll\epsilon_\alpha\ll h_\alpha\ll h_\beta.
+\]
+Here $u\ll v$ means $nu<v$ for every positive integer $n$. This notation
+continues to refer to the group of \emph{outer exponents}.
+
+\begin{lemma}[Simultaneous upper and lower scales]\label[lemma]{lem:kappagap}
+For every $T\subset\Gamma_\kappa$ of cardinality less than $\kappa$
+there is $\beta<\kappa$ such that
+\[
+       \epsilon_\beta\ll |t|\ll h_\beta
+             \qquad(t\in T\setminus\{0\}).
+\]
+\end{lemma}
+\begin{proof}
+Every $t$ has a unique finite rational expression in the generators of
+\eqref{eq:Gamma}. The union of the index sets occurring in these
+expressions has size less than $\kappa$. Regularity bounds it below some
+$\beta<\kappa$, chosen strictly beyond every occurring index.
+The greatest monomial in each nonzero finite expression determines its
+Archimedean size. Every generator in that expression lies strictly
+between the Archimedean scales of $\epsilon_\beta$ and $h_\beta$.
+A nonzero rational multiple or a finite sum with that leading monomial
+has the same Archimedean size. The two required inequalities follow.
+\end{proof}
+
+Using both families in \eqref{eq:Gamma} is deliberate. The
+$\epsilon_\alpha$ provide smaller positive gaps, while the $h_\alpha$
+allow an entire support to be shifted above zero. A one-sided family
+would not automatically establish the fraction-field assertion below.
+
+\subsection{The bounded-support fields and integer parts}
+For $k=\R$ or $\C$, let
+\begin{equation}\label{eq:Kkappa}
+ K_{\kappa,k}=
+ \left\{f\in k((X^{\Gamma_\kappa})):
+                          |\supp f|<\kappa\right\}.
+\end{equation}
+Write $K_\kappa=K_{\kappa,\R}$ and
+\begin{equation}\label{eq:Rkappa}
+ I_\kappa=\{f\in K_\kappa:\supp f\subset\Gamma_\kappa^{>0}\},
+ \qquad R_\kappa=\Z+I_\kappa.
+\end{equation}
+Map $X^g$ to $\omega^g$ to regard these as actual substructures of the
+surreal and surcomplex fields.
+
+\begin{proposition}[Field closure and integer parts]\label[proposition]{prop:fieldclosure}
+The structures $K_{\kappa,\R}$ and $K_{\kappa,\C}$ are respectively
+real closed and algebraically closed fields, with
+$K_{\kappa,\C}=K_{\kappa,\R}[i]$. Furthermore,
+\[
+ R_\kappa=K_\kappa\cap\Oz,\qquad
+ \Frac(R_\kappa)=K_\kappa.
+\]
+The ring $R_\kappa$ is a discretely ordered integer part of $K_\kappa$.
+\end{proposition}
+\begin{proof}
+For a single nonzero series, factor its leading term and invert its
+near-one factor by the Hahn geometric series. If the original support
+has cardinality $\mu<\kappa$, the support of the inverse is contained
+in a translate of the additive monoid generated by at most
+$\max(\mu,\aleph_0)$ elements. That monoid has cardinality at most
+$\max(\mu,\aleph_0)<\kappa$. Sums and products also preserve the strict
+support bound, proving field closure.
+
+Here is a short localization proof of the closedness assertions, given
+to separate them from the new cardinal claims. The coefficients of a
+finite polynomial use a union $T$ of fewer than $\kappa$ exponents.
+Let $\Delta=\Span_\Q(T)$. Then $|\Delta|<\kappa$, and the full Hahn
+field $\C((X^\Delta))$ is algebraically closed by the standard
+closedness theorem for divisible value groups
+\cite[Corollary 4]{Poonen}. Every support in $\Delta$ has size below
+$\kappa$, so this entire field lies inside $K_{\kappa,\C}$. The
+polynomial therefore splits there. The real field has its leading-term
+order, and its complexification is the algebraically closed field just
+obtained. Hence it is real closed. The complexification assertion uses
+only the union of the real and imaginary supports.
+
+The equality with $K_\kappa\cap\Oz$ follows directly from normal forms.
+For $f\in K_\kappa$, use \cref{lem:kappagap} on its support and choose
+$\beta$ with $|g|<h_\beta$ for every support exponent. Then
+$X^{h_\beta}f\in I_\kappa$, and $f$ is a quotient of two members of
+$R_\kappa$.
+
+Finally write $f=f_++r+f_-$ by positive, zero, and negative exponents.
+Here $r\in\R$, $f_+\in I_\kappa$, and $f_-$ is infinitesimal.
+Normally $z=f_++\lfloor r\rfloor$ satisfies $z\le f<z+1$.
+The sole adjustment is when $r\in\Z$ and $f_-<0$: then take
+$z=f_++r-1$. A noninteger real fractional part is separated from both
+$0$ and $1$ by positive real amounts, so an infinitesimal cannot change
+its interval. There are no elements of $R_\kappa$ strictly between $0$
+and $1$: a nonzero positive-exponent leading term dominates every real,
+and the remaining case is an ordinary integer. This proves both the
+integer-part property and discreteness.
+\end{proof}
+
+The support-closure argument for one field operation uses only that
+$\kappa$ is uncountable; the simultaneous gap lemma uses regularity.
+This distinction prevents an incorrect inference that singular
+bounded-support fields must fail to be fields.
+
+\subsection{The small-target theorem at \texorpdfstring{$\kappa$}{kappa}}
+\begin{theorem}[Ring and module bounds]\label{thm:kappasmall}
+Every homomorphism $R_\kappa\to S$ with $|S|<\kappa$ kills $I_\kappa$.
+Every unital $R_\kappa$-module $M$ with $|M|<\kappa$ is annihilated by
+$I_\kappa$. The same assertions hold for $R_\kappa[i]$, with the
+Gaussian purely infinite ideal and quotient $\Z[i]$.
+\end{theorem}
+\begin{proof}
+Fix $g>0$ in $\Gamma_\kappa$ and put $a=g/2$. For all sufficiently large
+$\alpha<\kappa$, one has $\epsilon_\alpha\ll a$, by inspecting the
+finite expression for $a$. Thus there are $\kappa$ many choices of
+$b=\epsilon_\alpha$ with $b\ll a$.
+For distinct choices $b,c$, the geometric witness
+\eqref{eq:geometricwitness} uses only countably many exponents from
+$\Gamma_\kappa$, all positive. Since $\kappa$ is uncountable, that
+witness belongs to $I_\kappa$. The identity
+\eqref{eq:explicitcollision} therefore holds inside $R_\kappa$.
+
+If $\phi(X^g)\ne0$, the $\kappa$ elements $X^{a+b}$ have pairwise
+distinct images in $S$, contrary to $|S|<\kappa$. For modules, if
+$X^gv\ne0$, the $\kappa$ vectors $(X^{a+b})v$ are pairwise distinct,
+contrary to $|M|<\kappa$. Thus every positive monomial is killed, or
+annihilates $M$, respectively.
+
+For $f\in I_\kappa$, \cref{lem:kappagap} gives a positive
+$\epsilon_\beta$ below its entire support. Hence
+$f=X^{\epsilon_\beta}h$ with $h\in I_\kappa$, finishing both arguments.
+They use no property of the coefficient field beyond what is shared
+by the real and complex versions.
+\end{proof}
+
+\subsection{Generation of the purely infinite ideal}
+\begin{proposition}[An increasing chain of principal ideals]
+\label[proposition]{prop:kappachain}
+One has the strictly increasing union
+\begin{equation}\label{eq:chain}
+ I_\kappa=\bigcup_{\alpha<\kappa}X^{\epsilon_\alpha}R_\kappa.
+\end{equation}
+The ideal is idempotent and its least number of generators is $\kappa$.
+\end{proposition}
+\begin{proof}
+For $\alpha<\beta$, the difference
+$\epsilon_\alpha-\epsilon_\beta$ is positive, so
+$X^{\epsilon_\alpha}R_\kappa\subset X^{\epsilon_\beta}R_\kappa$.
+The inclusion is strict because the reverse quotient of the generators
+has a negative exponent. Every term of the union lies in $I_\kappa$.
+Conversely, for $f\in I_\kappa$, a strict gap
+$\epsilon_\alpha<\supp f$ makes $f/X^{\epsilon_\alpha}$ a member of
+$I_\kappa$, proving \eqref{eq:chain}. This factorization also gives
+$I_\kappa^2=I_\kappa$ and supplies a generating family of size $\kappa$.
+
+Suppose $\mathcal F\subset I_\kappa$ has size less than $\kappa$.
+Regularity makes the union of its supports have size less than $\kappa$.
+Choose a positive $a\in\Gamma_\kappa$ strictly below this union.
+Then the ideal generated by $\mathcal F$ is contained in
+$X^aR_\kappa$, which does not contain $X^{a/2}\in I_\kappa$.
+Thus no smaller family generates the ideal.
+\end{proof}
+
+\subsection{Exact cardinality under a stated hypothesis}
+\begin{proposition}[Sharpness]\label[proposition]{prop:sharp}
+If $\kappa^{<\kappa}=\kappa$, then
+\[
+ |K_{\kappa,\R}|=|K_{\kappa,\C}|=|R_\kappa|=|I_\kappa|=\kappa.
+\]
+For every $0\ne x\in I_\kappa$, the exact minimum sizes of a ring
+representation detecting $x$ and of a module on which $x$ acts
+nontrivially are both $\kappa$.
+\end{proposition}
+\begin{proof}
+The hypothesis implies $2^{\aleph_0}\le\kappa$. A series is specified
+by a subset of $\Gamma_\kappa$ of size $\mu<\kappa$ and a function from
+that subset to $\R$ or $\C$. The total number of possibilities is at
+most
+\[
+          \sum_{\mu<\kappa}\kappa^\mu\kappa^\mu=\kappa.
+\]
+The $\kappa$ distinct positive monomials already give the reverse
+inequality even for $I_\kappa$. The lower detection bounds are
+\cref{thm:kappasmall}. For the upper bounds, the identity map on
+$R_\kappa$ detects $x$, and the regular module $R_\kappa$ detects it by
+$x\cdot1=x$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{main:cardinal}]
+Combine \cref{prop:fieldclosure,thm:kappasmall,prop:kappachain,prop:sharp}.
+\end{proof}
+
+\begin{example}[The first uncountable threshold under CH]
+Under the continuum hypothesis, $\kappa=\aleph_1$ satisfies
+$\kappa^{<\kappa}=\kappa$. Indeed every exponent below $\aleph_1$ has
+countable cardinality, and
+$(2^{\aleph_0})^{\aleph_0}=2^{\aleph_0}$.
+The constructed integer part then has size $\aleph_1$. Every action on
+a countable abelian group is an ordinary integer action, but its regular
+module of size $\aleph_1$ sees all its purely infinite elements. Without
+CH, the lower-bound theorem at $\aleph_1$ remains valid; the asserted
+size of this particular ring need not be $\aleph_1$.
+\end{example}
+
+\section{Flat ideals and homological reflection}\label{sec:homological}
+
+In this section $R=R_\kappa$, $I=I_\kappa$, and $D=R/I=\Z$.
+Everything is set-sized. We do not form a class-sized free resolution
+and then silently apply the standard derived-functor machinery to it.
+
+\subsection{Flat, idempotent, and nonprojective}
+\begin{lemma}[Projective ideals of rank one]\label[lemma]{lem:projectiveideal}
+A nonzero projective ideal of a commutative domain is finitely generated.
+\end{lemma}
+\begin{proof}
+Let $J$ be such an ideal and fix $0\ne a\in J$.
+For any $R$-linear map $f:J\to R$ and any $x\in J$, linearity gives
+\[
+                      a f(x)=f(ax)=x f(a).
+\]
+As the ring is a domain, $f(a)=0$ implies $f=0$.
+A projective module has a dual basis: elements $u_s\in J$ and linear
+maps $f_s:J\to R$ such that
+$x=\sum_s f_s(x)u_s$, with only finitely many nonzero terms for each
+$x$. For $x=a$, only finitely many $f_s(a)$ are nonzero. Every other
+$f_s$ is identically zero by the preceding observation. Consequently
+that finite set of $u_s$ generates $J$.
+\end{proof}
+
+\begin{proposition}\label[proposition]{prop:flatideal}
+The ideal $I$ is flat and idempotent but not projective.
+\end{proposition}
+\begin{proof}
+By \cref{prop:kappachain}, it is the directed union of the principal
+ideals $X^{\epsilon_\alpha}R$. Each is a free rank-one $R$-module because
+$R$ is a domain. A filtered colimit of flat modules is flat
+\cite[Lemma 10.39.3]{StacksFlat}, so $I$ is flat.
+Idempotence was proved in \cref{prop:kappachain}.
+The same proposition shows that $I$ is not finitely generated.
+\Cref{lem:projectiveideal} therefore excludes projectivity.
+\end{proof}
+
+The quotient sequence
+\begin{equation}\label{eq:flatresolution}
+                  0\longrightarrow I\longrightarrow R
+                    \overset{c_0}{\longrightarrow}D\longrightarrow0
+\end{equation}
+is thus a flat resolution of length one, but not a projective resolution
+of length one.
+
+\subsection{Tensor products and extension groups}
+\begin{lemma}\label[lemma]{lem:tensorzero}
+If $N$ is a $D$-module, inflated along $c_0$, then
+\[
+                      I\otimes_RN=0.
+\]
+Consequently $\Tor_n^R(D,N)=0$ for every $n>0$.
+\end{lemma}
+\begin{proof}
+Since $IN=0$, the tensor product factors through the quotient of $I$
+by $I^2$:
+\[
+       I\otimes_RN\cong(I/I^2)\otimes_DN=0.
+\]
+For completeness, the first isomorphism sends
+$x\otimes n$ to $(x+I^2)\otimes n$. Products $ab$ with $a,b\in I$
+are sent to zero already in the original tensor product, because
+$(ab)\otimes n=b\otimes an=0$; this makes the inverse map well defined.
+Applying the flat resolution \eqref{eq:flatresolution} now computes
+all positive Tor groups as zero.
+\end{proof}
+
+\begin{theorem}[Derived reflection on quotient modules]
+\label{thm:extreflection}
+For all $D$-modules $N,M$ and all $n\ge0$, inflation induces a natural
+isomorphism
+\[
+                    \Ext_R^n(N,M)\cong\Ext_D^n(N,M).
+\]
+\end{theorem}
+\begin{proof}
+Choose a projective $R$-resolution $P_\bullet\to N$.
+The complex $D\otimes_RP_\bullet$ has degree-zero homology $N$ and
+higher homology $\Tor_n^R(D,N)=0$ by \cref{lem:tensorzero}.
+Its terms are projective $D$-modules: tensoring a direct-summand
+presentation of an $R$-projective module gives a direct summand of a
+free $D$-module. It is therefore a projective $D$-resolution of $N$.
+Degreewise adjunction yields an isomorphism of cochain complexes
+\[
+ \Hom_R(P_\bullet,M)
+       \cong\Hom_D(D\otimes_RP_\bullet,M).
+\]
+Taking cohomology proves the assertion. The usual comparison of
+projective resolutions makes the resulting isomorphism natural.
+\end{proof}
+
+Equivalently, the surjection $R\to D$ is a homological ring epimorphism:
+$D\otimes_RD=D$ and all higher self-Tor groups vanish. This terminology
+is optional; the content needed here is completely contained in the
+two preceding proofs.
+
+\begin{corollary}[Small coefficient modules see no obstruction]
+\label[corollary]{cor:smallext}
+For every $R$-module $M$ with $|M|<\kappa$ and every $n>0$,
+\[
+                         \Ext_R^n(D,M)=0.
+\]
+More generally, for any two $R$-modules of size less than $\kappa$, their
+extension groups are the corresponding extension groups of their
+underlying abelian groups.
+\end{corollary}
+\begin{proof}
+The small-target theorem gives $IM=0$, and similarly for the other
+module when present. Apply \cref{thm:extreflection}. For the first
+assertion, $D$ is free over itself, so its positive Ext groups over
+$D$ vanish.
+\end{proof}
+
+The extension group in the last assertion is computed in the \emph{full}
+category of $R$-modules, not merely by restricting intermediate terms
+to small modules. That is why \cref{thm:extreflection} is useful: it is
+an ambient derived-functor statement, not just an equivalence of small
+module categories.
+
+\subsection{Exact flat dimension and nontrivial large witnesses}
+\begin{proposition}[Flat dimension]\label[proposition]{prop:dimensions}
+One has $\fd_RD=1$ and $\pd_RD\ge2$. For every nonzero $x\in I$,
+\[
+                       \Tor_1^R(D,R/xR)\cong D.
+\]
+\end{proposition}
+\begin{proof}
+The flat resolution \eqref{eq:flatresolution} gives $\fd_RD\le1$.
+Because $R$ is a domain, multiplication by $x$ gives the free resolution
+\[
+             0\longrightarrow R\overset{x}{\longrightarrow}R
+                      \longrightarrow R/xR\longrightarrow0.
+\]
+After tensoring with $D$, its first map is zero since $x\in I$.
+This proves the displayed nonzero Tor group and hence $\fd_RD=1$.
+If $\pd_RD\le1$, the kernel of the free surjection $R\to D$ would be
+projective, by the usual comparison of length-one projective
+resolutions (or Schanuel's lemma). That kernel is $I$, contradicting
+\cref{prop:flatideal}. Thus $\pd_RD\ge2$.
+\end{proof}
+
+The nonzero Tor group does not contradict \cref{lem:tensorzero}:
+$R/xR$ is not a $D$-module. Indeed $I$ is not contained in $xR$.
+Otherwise a gap below the support of $x$ would show that $xR$ misses a
+still smaller positive monomial in $I$. Under the cardinal-arithmetic
+hypothesis its carrier must have size at least $\kappa$, by the
+small-module theorem.
+
+\begin{proposition}[A degree-one witness]\label[proposition]{prop:extone}
+The sequence \eqref{eq:flatresolution} is nonsplit. In particular,
+\[
+                         \Ext_R^1(D,I)\ne0.
+\]
+\end{proposition}
+\begin{proof}
+Suppose $s:D\to R$ were an $R$-linear section of $c_0$ and put $r=s(1)$.
+Then $c_0(r)=1$. For nonzero $x\in I$, linearity and the quotient action
+give $xr=s(x\cdot1)=s(0)=0$. Since $R$ is a domain, this forces $r=0$,
+contradicting $c_0(r)=1$. Thus the extension represents a nonzero
+Yoneda class.
+\end{proof}
+
+\begin{proposition}[An explicit degree-two witness]\label[proposition]{prop:exttwo}
+Let
+\begin{equation}\label{eq:Jpresentation}
+ F=\bigoplus_{\alpha<\kappa}Re_\alpha,
+ \qquad \pi:F\longrightarrow I,
+ \qquad \pi(e_\alpha)=X^{\epsilon_\alpha},
+ \qquad J=\ker\pi.
+\end{equation}
+Then $\pi$ is surjective and $\Ext_R^2(D,J)\ne0$.
+\end{proposition}
+\begin{proof}
+Surjectivity follows from \eqref{eq:chain}. The exact sequence
+$0\to J\to F\to I\to0$ is nonsplit, since a splitting would make $I$
+a direct summand of a free module and hence projective.
+It gives a nonzero class in $\Ext_R^1(I,J)$.
+Applying $\Hom_R(-,J)$ to \eqref{eq:flatresolution}, and using that
+$R$ is projective, yields the dimension-shifting isomorphism
+\[
+                     \Ext_R^1(I,J)\cong\Ext_R^2(D,J).
+\]
+Equivalently the nonzero degree-two class is represented by the spliced
+sequence
+\[
+                  0\longrightarrow J\longrightarrow F
+                    \longrightarrow R\longrightarrow D
+                    \longrightarrow0.
+\]
+\end{proof}
+
+\begin{theorem}[Exact size of cohomological witnesses]
+\label{thm:extthreshold}
+Assume $\kappa^{<\kappa}=\kappa$. For each $n\in\{1,2\}$,
+\[
+ \min\{|M|:M\text{ is an }R_\kappa\text{-module and }
+                  \Ext_{R_\kappa}^{n}(\Z,M)\ne0\}=\kappa.
+\]
+\end{theorem}
+\begin{proof}
+The lower bound is \cref{cor:smallext}. The module $I$ in
+\cref{prop:extone} has size $\kappa$ by \cref{prop:sharp}.
+For degree two, $F$ in \eqref{eq:Jpresentation} is a direct sum of
+$\kappa$ copies of a ring of size $\kappa$, so $|F|=\kappa$ and
+$|J|\le\kappa$. Nonvanishing in \cref{prop:exttwo} and the lower bound
+force $|J|=\kappa$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{main:homological}]
+Combine \cref{prop:flatideal,lem:tensorzero,thm:extreflection,cor:smallext,prop:dimensions,prop:extone,prop:exttwo,thm:extthreshold}.
+\end{proof}
+
+\subsection{The Gaussian variant}
+The entire set-sized homological argument also works with
+$R=R_\kappa[i]$, its complex purely infinite ideal $I$, and
+$D=\Z[i]$. The domain property, principal-ideal chain, idempotence,
+nonprojectivity proof, tensor calculation, and dimension shifting are
+unchanged. In particular the quotient again has flat dimension one and
+projective dimension at least two, and under
+$\kappa^{<\kappa}=\kappa$ the degree-one and degree-two detection
+thresholds are again $\kappa$.
+The notation $\Ext_D^n$ in that variant means extensions of Gaussian
+integer modules, not ordinary abelian-group extensions.
+
+\section{Interpretation, boundaries, and further questions}
+\label{sec:boundaries}
+
+\subsection{What the quotient theorem does and does not say}
+The content can be summarized by a contrast. As an internal ring,
+$\Oz$ has all surreal scales available through its fraction field, has
+a nonzero proper-class ideal $\I$, admits nonzero internal derivations,
+and has non-arithmetic prime quotients. As a source of representations
+on sets, it has no more scalar information than $\Z$.
+The gap is caused not by ignoring limits but by finite identities that
+become available once the source contains the appropriate Hahn sums.
+
+In particular, neither $\Oz$ nor $\GOz$ can be faithfully realized as
+ordinary set-sized matrix rings, rings of endomorphisms of a set,
+or rings of functions on a set with values in a set ring. Such target
+rings are sets, however large their cardinalities. This does not
+preclude working in a sufficiently large set-sized Hahn subfield for a
+specified problem. The rings $R_\kappa$ quantify precisely how much the
+answer can depend on the permitted target size.
+
+There is also an elementary categorical lesson. The map $c_0$ is
+universal relative to set-sized targets, but it is not injective, and
+it does not identify the class ring itself with its quotient. The
+regular class representation lies outside the test category. The
+set-sized construction shows a parallel phenomenon without classes:
+a quotient can look homologically projective against every small
+coefficient module while failing projectivity in the ambient category.
+
+\subsection{Hypotheses that must remain visible}
+The proofs use four different size restrictions, each for a different
+reason. Individual surreal supports are sets so that a common positive
+gap can be chosen. The full class of smaller exponent scales supplies
+an arbitrarily large collision family. In the set-sized analogue,
+$\kappa>\aleph_0$ admits the countable geometric witness, while
+regularity bounds the union of fewer than $\kappa$ supports. Finally,
+$\kappa^{<\kappa}=\kappa$ is used only to match the lower threshold with
+an upper witness of exactly that cardinality.
+
+Dropping one of these restrictions requires a new argument. In
+particular, finite-support series do not contain the witness
+\eqref{eq:geometricwitness}; arbitrary full supports in a fixed set
+group need not have a positive gap; singular support bounds may preserve
+field closure but not the simultaneous gap property used here.
+
+The theorem gives no description of all automorphisms of $\Oz$, all
+class ideals, or all factorisation patterns. It neither uses nor claims
+to resolve a current refinement, GCD, or unique-factorisation conjecture.
+Its only primality input is explicitly attributed. No first-order
+elementarity assertion about $R_\kappa\subset\Oz$ is made, and no
+ordinary set-theoretic compactness argument is applied to a proper-class
+theory.
+
+\subsection{Questions opened by this construction}
+The following are questions arising from the present results, not
+assertions that they are recognized longstanding open problems.
+
+\begin{question}[Higher projective dimension]
+For the explicit $R_\kappa$, what is the exact value of
+$\pd_{R_\kappa}\Z$? Can the relationship between the cofinality of the
+principal-ideal chain and higher projective dimensions be computed
+uniformly in $\kappa$?
+\end{question}
+The current proof gives only a lower bound of two and exact
+flat dimension one. Higher syzygies would be needed to claim more.
+
+\begin{question}[Cardinal arithmetic without the matching hypothesis]
+For an arbitrary uncountable regular $\kappa$, what is the least size
+of a target detecting a fixed nonzero $x\in I_\kappa$ when
+$\kappa^{<\kappa}>\kappa$? Is there a different integer-part
+construction of size exactly $\kappa$ with the same lower-bound
+property under weaker hypotheses?
+\end{question}
+The identity representation only gives an upper bound of
+$|R_\kappa|$ in that situation. The theorem does not collapse the two
+cardinals without an argument.
+
+\begin{question}[Which non-arithmetic residue fields occur?]
+Which class fields can occur as $\Frac(\Oz/P)$ for prime class ideals
+$P$ not containing $\I$? Can the embedded field from
+\cref{prop:primereservoir} be used to distinguish such primes?
+\end{question}
+The scaled-field embedding gives a necessary structural condition,
+not an existence or classification theorem.
+
+\subsection{Verification boundary and a formalization route}
+A proof-assistant implementation can isolate the decisive algebra in a
+small interface. First formalize \cref{lem:collision} for a subring of
+a field and a scaled subfield, with a separate direct module version.
+Then formalize the countable geometric witness in a Hahn-series ring
+and the two inequalities ensuring all its exponents stay positive.
+The cardinal step is an injection contradiction. Monomial divisibility
+then finishes the universal factorization.
+
+The class theorem needs an explicit universe or class interface, while
+the $R_\kappa$ construction can be carried out entirely with set types
+and cardinal bounds. The homological part should come last, after
+proving the principal-ideal chain and avoiding any reliance on a
+class-sized category of modules. None of these implementation steps was
+executed here. The repository's previously checked support lemmas may
+be useful prerequisites, but they are not a certificate for the
+new results in this article.
+
+\appendix
+\section{A compact direct proof for omnific integers}
+\label{app:direct}
+For reference, here is a self-contained version of the main argument
+once Conway normal forms and set-cut existence are granted.
+
+Let $\phi:\Oz\to S$ be a ring homomorphism into a set. Fix $g>0$ and
+write $a=g/2$. Choose a cardinal $\lambda>|S|$. For $\alpha<\lambda$
+let $b_\alpha=a/\omega^{\alpha+1}$ and
+$u_\alpha=\omega^{a+b_\alpha}$. Distinct $b_\alpha$ are positive and
+infinitesimal relative to $a$. The $\lambda$ images $\phi(u_\alpha)$
+cannot all be distinct, so choose $\alpha\ne\beta$ with the same image.
+Reorder the two indices so that $b=b_\alpha>c=b_\beta$, and put
+\[
+              q=\sum_{n\ge0}\omega^{a-b-n(b-c)}.
+\]
+Its support is strictly decreasing and positive, since
+$b+n(b-c)\le(n+1)b<a$. Hence $q\in\Oz$, and direct Hahn multiplication
+gives $(u_\alpha-u_\beta)q=\omega^g$. Thus $\phi(\omega^g)=0$.
+
+Now take any purely infinite $f$. Its positive exponent support is a
+set, so choose $0<h<\supp f$. Then
+$f=\omega^h(\omega^{-h}f)$, with the second factor still omnific.
+Therefore $\phi(f)=0$. Finally $x-c_0(x)$ is purely infinite for every
+$x\in\Oz$, so $\phi(x)=c_0(x)\phi(1)$. For a unital map this is the
+asserted formula. Replacing images of $u_\alpha$ by vectors
+$u_\alpha v$ gives the module proof with the same identities.
+
+\section{Exact finite checks and reproducibility}\label{app:checks}
+The archive includes \texttt{verify.py}, using only Python's standard
+library and exact rational arithmetic. It does not implement all
+surreals, class functions, uncountable supports, projective resolutions,
+or a theorem prover. It checks algebraic components that are susceptible
+to indexing and sign errors.
+
+The program represents a finite Hahn sum as a dictionary from
+lexicographically ordered rational exponent vectors to rational
+coefficients. It checks the finite identity \eqref{eq:finitewitness}
+for many positive scales with $0<c<b\ll a$, verifies that each truncated
+witness has positive decreasing support, checks multiplicativity of
+constant coefficient on nonnegative supports, checks a diagonal Euler
+Leibniz identity, and verifies the real complex-structure matrix blocks.
+The generated \texttt{verification.json} records exact assertion counts.
+
+The infinite witness is justified in the mathematical proof by its
+support and the exact cancellation identity, not by extrapolating a
+finite test. The cardinal contradictions and the nonvanishing extension
+classes likewise rest on the written arguments.
+
+The article is standalone LaTeX with an internal bibliography. Build it
+with
+\begin{verbatim}
+latexmk -pdf -halt-on-error -interaction=nonstopmode article.tex
+python3 verify.py
+\end{verbatim}
+The supplied \texttt{Makefile} offers the same commands. The archive's
+source audit identifies inspected material, imported statements,
+limitations of the search, and the distinction between proposed novelty
+and certified priority.
+
+\begin{thebibliography}{20}
+\raggedright
+
+\bibitem{Berarducci}
+Alessandro Berarducci,
+\emph{Surreal numbers, exponentiation and derivations},
+arXiv:2008.06878v1, 2020.
+Sections 3, 8--10 give the cut and normal-form background used here.
+\url{https://arxiv.org/abs/2008.06878}.
+
+\bibitem{LM}
+Sonia L'Innocente and Vincenzo Mantova,
+\emph{A factorisation theory for generalised power series and omnific integers},
+arXiv:1710.07304v5, 22 January 2024.
+The paper proves the primality of $\omega^{\sqrt2}+\omega+1$.
+Related publication DOI: \texttt{10.1016/j.aim.2024.109513}.
+\url{https://arxiv.org/abs/1710.07304}.
+
+\bibitem{Poonen}
+Bjorn Poonen,
+\emph{Maximally complete fields},
+L'Enseignement Math\'ematique \textbf{39} (1993), 87--106.
+Corollary 4 is the Hahn-field algebraic-closedness input.
+\url{https://math.mit.edu/~poonen/papers/amsval.pdf}.
+
+\bibitem{StacksFlat}
+The Stacks Project Authors,
+\emph{Flat modules and flat ring maps}, Section 10.39, Tag 00H9,
+especially Lemma 10.39.3. Accessed 22 September 2026.
+\url{https://stacks.math.columbia.edu/tag/00H9}.
+
+\bibitem{RepoCatalogue}
+Vladimir Reshetnikov, \emph{Surreal} repository,
+\texttt{docs/README.md}, report catalogue and verification conventions.
+Snapshot \repoSHA, inspected 22 September 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a5c2a97df4b545dfe7f4cb8c11e4efed83101f6e/docs/README.md}{Pinned repository catalogue}.
+
+\bibitem{RepoRotation}
+\emph{Euclidean Three-Space over the Surreal Numbers},
+\path{docs/surreal/euclidean-three-space/README.md},
+especially its description of Part III, universal set-sized quotients of
+rotation groups. AI-assisted repository report; read at the same snapshot.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a5c2a97df4b545dfe7f4cb8c11e4efed83101f6e/docs/surreal/euclidean-three-space/README.md}{Pinned rotation-report README}.
+
+\bibitem{RepoKappa}
+\emph{The First-$\kappa$ Coefficients: Omitted types, singular compression,
+and completion in surreal and surcomplex Hahn fields},
+\path{docs/surcomplex/first-kappa-coefficients/README.md},
+especially the stated support-field closure result. AI-assisted repository
+report; read at the same snapshot.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a5c2a97df4b545dfe7f4cb8c11e4efed83101f6e/docs/surcomplex/first-kappa-coefficients/README.md}{Pinned first-kappa-report README}.
+
+\end{thebibliography}
+\end{document}

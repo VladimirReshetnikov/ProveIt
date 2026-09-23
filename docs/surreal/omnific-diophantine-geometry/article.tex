@@ -1,0 +1,1974 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,aliascnt}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Omnific Integers and Omnific--Diophantine Geometry},
+ pdfauthor={OpenAI ChatGPT},pdfsubject={Arithmetic, rigidity, definability, and infinite solutions over the omnific integers}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Omnific integers and Diophantine geometry}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\J}{\mathcal J}
+\newcommand{\BR}{\mathcal B_{\R}}
+\newcommand{\BC}{\mathcal B_{\C}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\ddeg}{\operatorname{deg}_{\omega}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\Int}{\operatorname{Int}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\OO}{\operatorname O}
+\newcommand{\V}{\operatorname V}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\newcommand{\pin}{\texttt{2cb9c0200af749fbbd27796c97d017e7f16fbf33}}
+\newcommand{\status}[1]{\par\smallskip\noindent\textit{Provenance.} #1\par\smallskip}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{16mm}
+{\Large Research article for the Surreal project\par}
+\vspace{13mm}
+{\huge\bfseries Omnific Integers and\\[3mm] Omnific--Diophantine Geometry\par}
+\vspace{8mm}
+{\Large Retractions, rigidity, definability,\\ and infinite families\par}
+\vspace{14mm}
+{\large September 22, 2026\par}
+\vspace{10mm}
+\begin{minipage}{0.91\textwidth}
+\begin{abstract}
+The omnific integers form a discretely ordered subring of the surreal field,
+but their arithmetic is neither ordinary integer arithmetic nor a routine
+nonstandard enlargement of it. We organize their theory around the split
+ring homomorphism that takes a normal form to its constant coefficient.
+This gives a precise transfer theorem for polynomial equations with ordinary
+integer coefficients, a classification of finite quotients, and a complete
+solution criterion for linear systems.
+
+The main Diophantine results distinguish existence from the structure of
+solutions. Nonzero fibers of nondegenerate binary forms and number-field
+norm forms have no new omnific points. In particular, Pell equations admit
+only ordinary-integer solutions. In contrast, every represented nonzero
+level of an indefinite nondegenerate quadratic form in at least three
+variables has explicit infinite polynomial families through each integer
+point. We prove the resulting quadratic-level dichotomy.
+
+Combining Pell rigidity with the classical three-square theorem produces
+a single quartic polynomial, with five auxiliary variables independent of
+the tuple length, defining exactly the ordinary integers inside the omnific
+integers. Further results concern non-atomic factorization, a common-divisor
+phenomenon peculiar to the full surreal class, projective denominator
+clearing, primitive Pythagorean triples, homogeneous cones, and obstructions
+at infinity. All central deductions receive proofs. Historical background,
+imported theorems, proposed contributions, and unverified formalization work
+are explicitly separated.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+Prepared with OpenAI ChatGPT. This is a mathematical research draft, not a
+claim of peer review or proof-assistant verification. The included program
+checks finite identities and examples, not the entire theory. Repository
+inspection is pinned to the commit recorded in Appendix~\ref{app:audit}.
+\end{minipage}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Scope, results, and mathematical conventions}\label{sec:scope}
+
+Omnific integers are the surreal numbers with no negative exponents in
+Conway normal form and with an ordinary integer constant coefficient.
+The definition is classical, as are their discreteness and integer-part
+property \cite{Conway,Gonshor,LM}. This article develops their arithmetic
+with a particular emphasis on polynomial equations.
+
+Three questions must be kept separate. Does an equation have any solution?
+Does it have a genuinely infinite solution? Does it have such a solution
+with a primitivity condition? For example, every system of equations over
+$\Z$ has an omnific solution exactly when it has an ordinary integer
+solution. Nevertheless, the equation $X^n+Y^n=Z^n$ has positive infinite
+omnific solutions for every ordinary $n\geq2$. There is no contradiction:
+the constant coefficients of these solutions are all zero.
+
+We write $A=\Oz$. The ideal $\J$ consists of the normal forms supported on
+strictly positive exponents; coefficients in $\J$ may have either sign.
+The central decomposition is
+\begin{equation}\label{eq:splitintro}
+ A=\Z\oplus\J,\qquad \ct:A\longrightarrow\Z,
+ \qquad \ct(a+b)=\ct(a)+\ct(b),\quad \ct(ab)=\ct(a)\ct(b).
+\end{equation}
+It is a splitting of additive groups and a ring retraction, not a direct
+product decomposition of rings. In particular, $\J$ has no identity.
+
+\subsection{Principal results}
+
+The structural results in Sections~\ref{sec:basic}--\ref{sec:class} explain
+why ordinary congruences see only the constant coefficient, although the
+fraction field of the full class $A$ is all of $\No$. The main Diophantine
+statements are the following.
+
+\begin{enumerate}[label=\textup{(\arabic*)},leftmargin=*,itemsep=3pt]
+\item \textbf{Equational transfer.} For every finite system over $\Z$,
+$\V(A)$ is nonempty exactly when $\V(\Z)$ is nonempty
+(\cref{thm:transfer}). This does not include inequations or order
+conditions.
+\item \textbf{Constant-product rigidity.} A nonzero constant product of
+normal forms with no negative exponents has only constant factors. This
+forces all omnific points on nonzero binary-form and number-field norm
+fibers to be ordinary integer points
+(\cref{thm:binary,thm:norm}).
+\item \textbf{Quadratic-level dichotomy.} For $q\in\Z[X_1,\ldots,X_n]$
+quadratic homogeneous and $0\ne c\in\Z$, all solutions are ordinary in
+the nondegenerate definite case and in nondegenerate dimension at most two.
+In every other case, each integer point lifts to an injectively
+parameterized infinite family (\cref{thm:quadclassification}).
+\item \textbf{A quartic definition of $\Z^n$.} The equation
+\[
+ (U^2-2V^2-1)^2+
+ \left(U-\sum_{i=1}^{n}X_i^2-W_1^2-W_2^2-W_3^2\right)^2=0
+\]
+with five existentially quantified auxiliary variables defines exactly
+$\Z^n$ inside $A^n$ (\cref{thm:guard}).
+\item \textbf{Primitive and projective phenomena.} There are infinite
+unimodular Pythagorean triples. On the other hand, a constant real
+projective direction has a primitive omnific representative precisely when
+it is rational (\cref{prop:pythagoras,thm:realray}).
+\end{enumerate}
+
+These statements are proved here, but proving a statement here is not a
+claim that nobody has previously proved it. The constant-term formalism is
+classical; several consequences are natural applications of it. The
+quadratic classification and explicit quartic guard are the most distinctive
+constructions developed in this article. The inspected sources did not
+provide these statements in this form. No exhaustive historical-priority
+claim is made.
+
+\subsection{Class size and finite algebra}
+
+The full surreal field and $A$ are proper classes. We work in a customary
+class-theoretic setting, such as NBG with the usual background for surreal
+normal forms. Each individual surreal has a \emph{set-sized} support.
+Every polynomial, system, matrix, or tuple in this article has ordinary
+finite size. Quantifiers over $A$ are understood as class quantifiers
+expressed through their defining set-theoretic formulas, not as an appeal
+to a set containing all surreals.
+
+Most proofs can instead be carried out in a fixed set-sized Hahn field.
+We explicitly identify the arguments that need the stronger fact that
+\emph{every set} of surreal exponents has upper bounds and every set of
+positive surreal exponents has a strictly positive lower bound. One must
+not silently assume these properties for a fixed ordered exponent group.
+
+The notation $\omega^\gamma$ always means the Conway monomial. Its
+multiplication is $\omega^\gamma\omega^\delta=\omega^{\gamma+\delta}$,
+where $+$ is surreal addition, not ordinary ordinal addition. Exponent
+supports are reverse well ordered. In the frequent Hahn convention
+$t=\omega^{-1}$, all exponent signs are reversed.
+
+\subsection{Relationship with the repository and literature}
+
+The repository's documentation distinguishes normal-form algebra, fixed
+Hahn workspaces, and the full surreal carrier. Its existing trigonometry
+material already uses the omnific integer part and residue arithmetic
+\cite{Repo}. We retain those distinctions and develop a separate
+Diophantine treatment rather than identifying $A$ with a finite-surreal
+valuation ring.
+
+The main external sources are Conway and Gonshor for the construction and
+normal forms \cite{Conway,Gonshor}, L'Innocente--Mantova for modern
+factorization theory \cite{LM}, Ehrlich--Kaplan for the initial integer-part
+context \cite{EK}, and Je\v r\'abek for the general residue theory of
+$\Z$-groups \cite{Jerabek}. The three-square theorem and MRDP theorem are
+imported with explicit attribution at their points of use.
+
+\section{The normal-form ring and its integer-part structure}\label{sec:basic}
+
+\subsection{Normal forms and three related rings}
+
+We use the standard normal-form theorem: each surreal has a unique
+expression
+\begin{equation}\label{eq:nf}
+ x=\sum_{\gamma\in S}r_\gamma\omega^\gamma,
+ \qquad r_\gamma\in\R\setminus\{0\},
+\end{equation}
+where $S\subseteq\No$ is a reverse-well-ordered set. Conversely such a
+normal form represents a surreal. Addition is coefficientwise,
+multiplication is the well-defined Hahn convolution, and the sign of a
+nonzero normal form is the sign of its leading coefficient
+\cite{Conway,Gonshor}.
+
+\begin{definition}\label{def:rings}
+Let
+\begin{align*}
+ \J&=\{x\in\No:\supp(x)\subseteq\No^{>0}\},\\
+ \BR&=\R\oplus\J,\\
+ A=\Oz&=\Z\oplus\J,\\
+ \BC&=\BR[i]\subseteq\No(i).
+\end{align*}
+The zero series belongs to $\J$. For an element of any of these rings,
+$\ct(x)$ denotes its coefficient at exponent zero. For
+$x=a+ib\in\BC$, this is $\ct(a)+i\ct(b)$.
+\end{definition}
+
+Thus $\sqrt2\,\omega$, $\omega/17$, $-\omega^\omega+3$, and
+$\sum_{k\geq1}\omega^{1/k}$ are omnific integers. The numbers
+$\omega+\tfrac12$ and $\omega+\omega^{-1}$ are not. The word ``integer''
+restricts the constant coefficient and excludes infinitesimal tails; it
+does not require all coefficients to lie in $\Z$.
+
+For every positive surreal exponent $\gamma$, even an infinitesimal one,
+the Conway monomial $\omega^\gamma$ exceeds every ordinary positive
+real number. This is a normal-form order fact about the omega-map;
+replacing that map by an unstated analytic notion of exponentiation would
+invalidate the support arguments below.
+
+\begin{proposition}\label{prop:ring}
+$\BR$, $\BC$, and $A$ are integral domains. The class $\J$ is an ideal
+of $\BR$ and $A$, and is an $\R$-vector space. Constant-coefficient
+extraction is a surjective ring homomorphism from $\BR$ to $\R$, from
+$\BC$ to $\C$, and from $A$ to $\Z$. In the last case its kernel is
+$\J$, and the inclusion $\Z\hookrightarrow A$ is a section.
+\end{proposition}
+\begin{proof}
+Nonnegative exponents remain nonnegative under addition of exponents. A
+strictly positive exponent plus a nonnegative exponent is strictly
+positive. These observations and Hahn convolution prove the ring and ideal
+claims. In a product of two supported normal forms, exponent zero can
+arise only as $0+0$. Therefore $\ct(xy)=\ct(x)\ct(y)$. The additive
+claim is immediate. Surjectivity and the section are supplied by constant
+series. All rings embed in the relevant field, so have no zero divisors.
+\end{proof}
+
+\begin{remark}[A frequently misleading analogy]\label{rem:notvaluation}
+The map $\ct$ is not a ring homomorphism on all of $\No$:
+$\ct(\omega)=\ct(\omega^{-1})=0$ but $\ct(1)=1$. Also $\BR$ is not
+the ring of finite surreals. The latter permits negative exponents but no
+positive exponents; $\BR$ has the opposite support restriction. In
+particular, taking standard part of a finite element and taking constant
+coefficient of an omnific integer are different constructions, although
+both are multiplicative on their own respective domains.
+\end{remark}
+
+\subsection{Leading degree, units, and finite elements}
+
+For nonzero $x\in\BC$, combine real and imaginary coefficients and put
+\[
+ \ddeg(x)=\max\supp(x),\qquad \lc(x)=[\omega^{\ddeg(x)}]x.
+\]
+The degree lies in $\No^{\geq0}$. It is not an ordinal and not a birthday.
+
+\begin{lemma}\label{lem:degree}
+For nonzero $x,y\in\BC$,
+\[
+ \ddeg(xy)=\ddeg(x)+\ddeg(y),\qquad
+ \lc(xy)=\lc(x)\lc(y).
+\]
+An element of $\BC$ of degree zero is an ordinary complex constant.
+\end{lemma}
+\begin{proof}
+If $\gamma$ and $\delta$ are the respective largest exponents, every
+contributing exponent is at most $\gamma+\delta$. Equality requires both
+exponents to be largest: making either smaller makes their sum smaller.
+Thus the coefficient at $\gamma+\delta$ is the nonzero product of leading
+coefficients. Finally, support in $[0,0]$ contains only zero.
+\end{proof}
+
+\begin{proposition}\label{prop:units}
+The unit groups are
+\[
+ \BR^\times=\R^\times,\qquad
+ \BC^\times=\C^\times,\qquad A^\times=\{1,-1\}.
+\]
+Moreover, the omnific integers bounded in absolute value by some ordinary
+real number are exactly the ordinary integers. Consequently $A$ is
+discretely ordered, with least positive element $1$.
+\end{proposition}
+\begin{proof}
+If $xy=1$ in $\BC$, nonnegativity and additivity of degree force both
+degrees to be zero. This gives the first two unit statements; in $A$ the
+constant units are precisely the units of $\Z$.
+
+A nonconstant element of $A$ has positive leading exponent, so its
+absolute value exceeds every positive real number by normal-form order.
+A constant element of $A$ is an integer. Hence no element lies strictly
+between $0$ and $1$, and every positive element is at least $1$.
+\end{proof}
+
+Notice that $\omega/2$ is an omnific integer even though $1/2$ is not.
+This is no conflict with discreteness: $\omega/2$ is infinite, and
+there are still no omnific integers in the interval $(0,1)$.
+
+\subsection{The exact omnific floor}
+
+Every surreal admits a unique decomposition
+\[
+ x=P+r+\varepsilon,
+ \qquad P\in\J,\quad r\in\R,\quad
+ \supp(\varepsilon)\subseteq\No^{<0}.
+\]
+Here $\varepsilon$ is infinitesimal, possibly zero.
+
+\begin{theorem}[Integer-part formula]\label{thm:floor}
+There is exactly one $a\in A$ such that $a\leq x<a+1$. It is
+\begin{equation}\label{eq:floor}
+ \lfloor x\rfloor_A=
+ \begin{cases}
+ P+\lfloor r\rfloor,&r\notin\Z\text{ or }\varepsilon\geq0,\\
+ P+r-1,&r\in\Z\text{ and }\varepsilon<0.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $r\notin\Z$, its distances from the two adjacent integers are
+strictly positive real numbers. The infinitesimal $\varepsilon$ cannot
+cross either boundary. If $r$ is an integer, the sign of $\varepsilon$
+determines on which side of $r$ the number lies, and its magnitude is
+less than $1$. This proves the displayed inequalities. Two possible
+floors would differ by an omnific integer strictly between $-1$ and $1$,
+so would coincide by discreteness.
+\end{proof}
+
+For example,
+\[
+ \lfloor\omega-\omega^{-1}\rfloor_A=\omega-1,
+ \qquad \lfloor\omega+\tfrac13-\omega^{-1}\rfloor_A=\omega.
+\]
+Merely discarding negative exponents gives the wrong answer at a negative
+infinitesimal displacement from an integer.
+
+\status{The integer-part assertion is classical. Ehrlich--Kaplan prove the
+stronger initiality characterization: for an initial subfield $K$ of
+$\No$, $\Oz\cap K$ is its unique initial integer part
+\cite[Lemma 11.1]{EK}. No alternative integer part is being introduced here.}
+
+\section{Divisibility, residues, and finite quotients}\label{sec:residues}
+
+\subsection{Division by ordinary integers}
+
+\begin{theorem}\label{thm:finitequotients}
+For every nonzero ordinary integer $n$,
+\begin{equation}\label{eq:nA}
+ nA=\J+n\Z,\qquad
+ n\mid a\ \Longleftrightarrow\ n\mid\ct(a),\qquad
+ A/nA\cong\Z/n\Z.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:divkernel}
+ \bigcap_{n\geq1}nA=\J,
+ \qquad \bigcap_{k\geq1}p^kA=\J
+ \quad\text{for every ordinary prime }p.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Multiplication by a nonzero real scalar preserves $\J$ and is invertible
+on $\J$. Thus $n\J=\J$. If $a=m+j$, then $a/n=m/n+j/n$ lies in
+$A$ exactly when $m/n$ is an integer. Reduction of $m$ modulo $n$ gives
+the quotient isomorphism. Finally, the only ordinary integer divisible by
+all positive integers, or by every power of one prime, is zero.
+\end{proof}
+
+This theorem solves every ordinary congruence. For instance,
+$\sqrt2\,\omega+14$ is even and is congruent to $2$ modulo $3$.
+The whole infinite part is invisible to these tests.
+
+The statement does \emph{not} extend to arbitrary omnific divisors.
+For example, $\ct(\omega+2)$ divides $\ct(2)$ in $\Z$, but $\omega+2$
+does not divide $2$ in $A$. A product equal to the nonzero constant $2$
+can have only constant factors by \cref{lem:degree}.
+
+\begin{corollary}\label{cor:charideals}
+Every proper ideal $I\subset A$ whose quotient has positive characteristic
+is $nA$ for a unique ordinary $n\geq2$. Such an ideal is prime exactly
+when $n$ is an ordinary prime. Every nonzero finite quotient of $A$ is
+therefore a ring $\Z/n\Z$.
+\end{corollary}
+\begin{proof}
+If $m\cdot1\in I$ with $m\ne0$, then $\J=m\J\subseteq I$.
+Thus $I$ is the inverse image of an ideal of $A/\J=\Z$.
+Its image is $n\Z$ for some positive $n$, and properness gives $n\geq2$.
+Equation~\eqref{eq:nA} identifies its inverse image with $nA$.
+Primality is equivalent to primality of $n\Z$. A finite nonzero unital
+ring has positive characteristic, so the last assertion follows.
+\end{proof}
+
+More generally, every unital homomorphism from $A$ to a finite ring kills
+$\J$: if the target has characteristic $m$, write $j=m(j/m)$. Its image
+is therefore the cyclic subring generated by $1$. This describes maps
+into finite rings as well as finite quotients.
+
+\subsection{Completions and canonicality}
+
+All finite-index ideals have just been classified, so the profinite
+completion, interpreted as the set-sized inverse limit of these quotients,
+is
+\begin{equation}\label{eq:profinite}
+ \widehat A\cong\varprojlim_n\Z/n\Z=\widehat\Z.
+\end{equation}
+The completion map is the composite $A\xrightarrow{\ct}\Z\to\widehat\Z$,
+with kernel $\J$. Similarly,
+\[
+ \varprojlim_k A/p^kA\cong\Z_p
+\]
+has kernel $\J$. Thus these congruence topologies on $A$ are not
+Hausdorff. The corresponding separated quotient is $A/\J=\Z$;
+completion does not preserve the infinite part.
+
+\begin{proposition}\label{prop:canonicalct}
+The constant-term map is the unique unital ring homomorphism $A\to\Z$.
+Every unital endomorphism $f:A\to A$ preserves $\J$ and satisfies
+$\ct\circ f=\ct$.
+\end{proposition}
+\begin{proof}
+For a homomorphism $h:A\to\Z$, the integer $h(j)$ is divisible by every
+positive integer whenever $j\in\J$. Hence $h(j)=0$. Since $h$ fixes
+ordinary integers, $h=\ct$. An endomorphism preserves divisibility by
+each ordinary integer, so preserves their common divisibility kernel
+\eqref{eq:divkernel}. It fixes $\Z$ pointwise, which proves the final
+identity.
+\end{proof}
+
+\status{The divisible-kernel and residue-map perspective belongs to
+classical $\Z$-group theory; see \cite[Sections 2 and 4]{Jerabek}.
+Here it has an especially concrete ring-theoretic realization because
+$\ct$ is multiplicative. The finite-quotient and completion statements
+above are proved directly rather than imported as additional assumptions.}
+
+\section{Global algebra: common divisors and the full fraction field}\label{sec:class}
+
+The next results use all surreal exponents, not merely the exponents in one
+fixed Archimedean or finite-rank group. This is an important source of
+arithmetic differences between full omnific integers and restricted series
+rings.
+
+\subsection{One monomial divides a whole set}
+
+\begin{lemma}[Set-sized exponent bounds]\label{lem:setbounds}
+If $E\subset\No^{>0}$ is a set, there is a surreal $\epsilon>0$ such
+that $\epsilon<e$ for every $e\in E$. Every set of surreals also has a
+strict upper bound.
+\end{lemma}
+\begin{proof}
+A surreal separating the small cut $\{0\mid E\}$ gives the first
+assertion. A separator of $\{E\mid\varnothing\}$ gives the second.
+The assertions also hold for the empty set. These are applications of the
+standard set-cut property, not an assertion of an infimum or supremum.
+\end{proof}
+
+\begin{theorem}[Common monomial divisibility]\label{thm:commondivisor}
+For every set $S\subseteq\J$ there is $\epsilon>0$ such that
+\[
+ \omega^\epsilon\mid s\quad\text{and}\quad
+ s/\omega^\epsilon\in\J\qquad(s\in S).
+\]
+In particular, each nonzero element of $\J$ is a product of two nonunits
+of $A$.
+\end{theorem}
+\begin{proof}
+The union of the supports of the elements of $S$ is a set $E$ of strictly
+positive surreal exponents. Choose $\epsilon$ as in
+\cref{lem:setbounds}. Dividing by $\omega^\epsilon$ shifts every exponent
+$e$ to $e-\epsilon>0$, preserving the support order and its set size.
+The quotient is therefore in $\J$. For a nonzero $s$, both factors are
+nonzero elements with positive degree, and neither is a unit.
+\end{proof}
+
+Even the series $\sum_{k\geq1}\omega^{1/k}$ has such a divisor. The
+positive number $\epsilon$ may be infinitesimal relative to every real
+$1/k$. This explains why the proof cannot just be copied into a Hahn
+ring with exponent group $\R$.
+
+\begin{corollary}\label{cor:Jglobal}
+The ideal $\J$ is idempotent, $\J^2=\J$, and it is not generated as an
+ideal by any set of elements. Also, no nonzero element of $\J$ is a
+finite product of irreducibles of $A$.
+\end{corollary}
+\begin{proof}
+The inclusion $\J^2\subseteq\J$ follows from the ideal property. For
+$j\ne0$, the factorization in \cref{thm:commondivisor} has both factors
+in $\J$, proving the reverse inclusion.
+
+Suppose a set $S\subseteq\J$ generated $\J$. Choose $\epsilon>0$
+strictly below every exponent in its supports. Each finite $A$-linear
+combination of elements of $S$ has support strictly above $\epsilon$:
+multiplication by an element of $A$ only adds nonnegative exponents.
+But $\omega^{\epsilon/2}\in\J$ cannot have such a support. This is a
+contradiction.
+
+Finally, if $j=p_1\cdots p_k\ne0$ and every $p_i$ were irreducible,
+then $0=\ct(j)=\prod_i\ct(p_i)$ would put some $p_i$ in $\J$.
+That factor would be reducible by \cref{thm:commondivisor}.
+\end{proof}
+
+This is an explicit failure of atomic factorization, not merely a
+failure of uniqueness of factorization. It leaves room for nonconstant
+prime elements having nonzero constant coefficient. For example,
+L'Innocente--Mantova prove that
+$\omega^{\sqrt2}+\omega+1$ is prime \cite[Theorem B]{LM}. That theorem
+is not needed in any subsequent proof here.
+
+\begin{proposition}[A necessary residue condition for irreducibility]\label{prop:irreduciblect}
+The constant irreducibles of $A$ are exactly the ordinary signed primes.
+Every nonconstant irreducible has constant coefficient $1$ or $-1$.
+The latter condition is not sufficient for irreducibility.
+\end{proposition}
+\begin{proof}
+A factorization of a nonzero ordinary integer has only constant factors
+by degree additivity, so ordinary primality decides constant
+irreducibility. If a nonconstant element $a$ has $|\ct(a)|>1$, choose
+an ordinary prime $p$ dividing its constant coefficient. Then
+$a=p(a/p)$ is a factorization into two nonunits: the second factor
+remains nonconstant. If $\ct(a)=0$, the factorization $a=2(a/2)$
+has the same property. This leaves only constant coefficients $\pm1$.
+Finally, $(\omega+1)^2$ has constant coefficient $1$ and is reducible.
+\end{proof}
+
+The factorization $j=2(j/2)$ already proves that a nonzero $j\in\J$
+is reducible, even in a fixed exponent workspace. The stronger content of
+\cref{thm:commondivisor} is the existence of a common \emph{infinite
+monomial} divisor for an entire set, with all quotients still in $\J$.
+
+\subsection{Clearing arbitrary set-sized families of denominators}
+
+\begin{theorem}[Global monomial clearing]\label{thm:fractions}
+For every set $S\subseteq\No$ there is $h>0$ such that
+\[
+ \omega^h\in\J,\qquad \omega^h x\in\J\quad(x\in S).
+\]
+Consequently $\Frac(A)=\No$, where the equality means that every surreal
+is a quotient of two omnific integers with nonzero denominator.
+\end{theorem}
+\begin{proof}
+Take the set $E$ obtained by uniting the supports of all elements of $S$.
+Choose $h>0$ strictly greater than every $-e$ for $e\in E$.
+Multiplication by $\omega^h$ shifts every exponent to $h+e>0$.
+All shifted normal forms belong to $\J$. Applying this to $S=\{x\}$
+gives $x=(\omega^h x)/\omega^h$. The reverse inclusion in the fraction
+field identity holds because $A$ is a subring of $\No$.
+\end{proof}
+
+For example, a support unbounded below in a chosen real exponent group is
+still a set of surreal exponents and can be shifted above zero by a new,
+larger surreal exponent. The theorem does not assert that the required
+monomial lies in the original fixed Hahn workspace.
+
+\begin{corollary}\label{cor:projectiveclear}
+Every point of $\mathbb P^n(\No)$ has homogeneous coordinates in
+$\J^{n+1}$. More generally, any fixed set-sized collection of coordinate
+tuples can be cleared by a single positive monomial.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:fractions} to the set of all coordinates and multiply
+all tuples by the resulting nonzero scalar.
+\end{proof}
+
+This is projective \emph{representability}, not primitivity. In fact the
+coordinates in this construction always have a common nonunit divisor.
+Section~\ref{sec:primitive} will show that some real projective directions
+have no primitive omnific representative at all.
+
+\subsection{Division with remainder is not a terminating Euclidean algorithm}
+
+\begin{proposition}\label{prop:division}
+For $a,b\in A$ with $b>0$, there are unique $q,r\in A$ such that
+\[
+ a=bq+r,\qquad 0\leq r<b.
+\]
+\end{proposition}
+\begin{proof}
+Take $q=\lfloor a/b\rfloor_A$ from \cref{thm:floor} and
+$r=a-bq$. The floor inequalities give the required remainder bounds.
+Conversely those bounds force $q\leq a/b<q+1$, so floor uniqueness
+determines $q$ and then $r$.
+\end{proof}
+
+Thus the familiar division step exists. Termination of repeated division
+is the missing ingredient: the positive order on $A$ is not well founded.
+For an explicit example, start with
+\[
+ r_0=\sqrt2\,\omega,\qquad r_1=\omega,
+ \qquad \alpha=\sqrt2-1\in(0,1).
+\]
+The first quotient is $1$ and the first remainder is
+$r_2=\alpha\omega$. Every subsequent quotient is $2$, and
+\[
+ r_k=\alpha^{k-1}\omega\qquad(k\geq1).
+\]
+Indeed, $1/\alpha=\sqrt2+1$ has ordinary floor $2$, and
+$1-2\alpha=\alpha^2$. Every displayed remainder is positive and
+infinite, so the ordinary finite Euclidean procedure never terminates.
+
+\begin{proposition}[An explicit pair without a gcd]\label{prop:nogcd}
+The elements $\sqrt2\,\omega$ and $\omega$ have no greatest common
+divisor in $A$, in the divisibility sense. In particular, $A$ is not a
+gcd domain or a B\'ezout domain.
+\end{proposition}
+\begin{proof}
+Let $d\ne0$ be a common divisor and put $\delta=\ddeg(d)$.
+Degree additivity gives $0\leq\delta\leq1$. If $\delta=1$, both
+quotients $\sqrt2\,\omega/d$ and $\omega/d$ are degree-zero
+omnific integers, hence nonzero ordinary integers. Their ratio would make
+$\sqrt2$ rational. Therefore $\delta<1$.
+
+Put $\eta=(\delta+1)/2$, so $\delta<\eta<1$. The element
+$\omega^\eta$ is also a common divisor, since both quotients have
+strictly positive exponent $1-\eta$. But $\omega^\eta$ cannot divide
+$d$ in $A$, as its degree is larger than $\delta$. Thus no proposed
+common divisor is divisible by every common divisor, as a gcd would be.
+A B\'ezout domain would supply a gcd for each pair, so that possibility
+is excluded as well.
+\end{proof}
+
+\subsection{Non-Noetherian and non-normal behavior}
+
+The strictly increasing chain
+\[
+ (\omega)\subsetneq(\omega^{1/2})\subsetneq
+ (\omega^{1/4})\subsetneq\cdots
+\]
+already witnesses a failure of the ascending chain condition on ideals.
+The inclusions hold because the quotients of consecutive generators have
+positive exponents. They are strict because the reverse quotients have
+negative exponents and are not in $A$.
+
+\begin{proposition}\label{prop:notnormal}
+The full ring $A$ is not integrally closed in its fraction field.
+\end{proposition}
+\begin{proof}
+Since $\No$ is real closed, let $r=\sqrt{\omega^2+1}>0$.
+By \cref{thm:fractions}, $r\in\Frac(A)$, and it is integral over $A$
+because it satisfies the monic equation $T^2-(\omega^2+1)=0$.
+If $r\in A$, then
+\[
+ (r-\omega)(r+\omega)=1.
+\]
+Both factors would be units of $A$, hence would lie in $\{1,-1\}$.
+Their difference $2\omega$ would then be an ordinary integer, a
+contradiction. Thus $r\notin A$.
+\end{proof}
+
+In particular, the full omnific ring is not a UFD or a PID. Its
+factorization theory cannot be replaced by an ordinary Euclidean algorithm
+or by an unstated gcd assumption. The modern theory in \cite{LM} is
+substantially subtler. The refinement property is different from
+integral closedness or atomicity; none of the preceding arguments refutes
+it. Appendix~\ref{app:audit} records why we make no current open-status
+claim concerning Conway's refinement problem.
+
+\section{Equational transfer and linear Diophantine equations}\label{sec:transfer}
+
+\subsection{Existence is exactly ordinary existence}
+
+For a finite family of polynomials $F_1,\ldots,F_r$ over a ring $R$, write
+$\V_R(F_1,\ldots,F_r)$ for its simultaneous zero set in $R^n$.
+
+\begin{theorem}[Retraction theorem for equations]\label{thm:transfer}
+Let $F_1,\ldots,F_r\in\Z[X_1,\ldots,X_n]$. Coordinatewise constant
+coefficient gives a retraction
+\[
+ \V_A(F_1,\ldots,F_r)\longrightarrow
+ \V_\Z(F_1,\ldots,F_r).
+\]
+In particular,
+\begin{equation}\label{eq:existencetransfer}
+ \V_A(F_1,\ldots,F_r)\ne\varnothing
+ \quad\Longleftrightarrow\quad
+ \V_\Z(F_1,\ldots,F_r)\ne\varnothing.
+\end{equation}
+The same equivalence holds for positive existential formulas in the ring
+language, evaluated at ordinary integer parameters.
+\end{theorem}
+\begin{proof}
+For every polynomial $F$ over $\Z$ and $\mathbf x\in A^n$,
+\[
+ \ct(F(\mathbf x))=F(\ct(x_1),\ldots,\ct(x_n)),
+\]
+because $\ct$ is a ring homomorphism fixing all coefficients. Thus the
+constant tuple of an omnific solution is an integer solution. Conversely,
+an integer solution is already an omnific solution, and applying $\ct$
+to it does nothing.
+
+A positive existential formula is built from equalities using finite
+conjunction, finite disjunction, and existential quantification. Ring
+homomorphisms preserve such formulas, as follows directly by induction on
+their formation; witnesses are mapped coordinatewise. Apply this first to
+$\ct$, and then to the inclusion of $\Z$ in $A$.
+\end{proof}
+
+The theorem answers a question about existence, not cardinalities or
+complete solution sets. For $Y=X^2$, the fiber of the retraction above
+$(0,0)$ already contains $(t,t^2)$ for every $t\in\J$.
+
+\begin{corollary}[Hilbert's tenth problem]\label{cor:H10}
+There is no algorithm deciding, from an ordinary integer polynomial,
+whether it has a zero in $A$. The yes-instances are exactly the
+ordinary-integer yes-instances of Hilbert's tenth problem, and form a
+computably enumerable complete set under the usual computable reductions.
+\end{corollary}
+\begin{proof}
+Equation~\eqref{eq:existencetransfer} identifies the two decision problems
+on exactly the same finite inputs. The undecidability and completeness
+of the ordinary problem are the Davis--Putnam--Robinson--Matiyasevich
+(MRDP) theorem and its standard consequences \cite{Matiyasevich}.
+Enumerating ordinary integer tuples semidecides the omnific yes-instances
+as well; no enumeration of the proper class $A$ is involved.
+\end{proof}
+
+This corollary concerns \emph{ordinary integer coefficients}. A decision
+problem allowing arbitrary omnific coefficients requires an explicit
+finite representation scheme, and is a different question.
+
+\subsection{Why signs and nonvanishing do not transfer}
+
+Consider
+\[
+ (X+1)^2-2(Y+1)^2=0.
+\]
+It has no solution in $\N^2$, since $X+1$ and $Y+1$ would be positive
+integers with rational ratio $\sqrt2$. However,
+\[
+ X=\sqrt2\,\omega-1,\qquad Y=\omega-1
+\]
+is a solution with both coordinates positive in $A$. Its constant tuple
+is $(-1,-1)$, an ordinary solution of the equation without positivity
+constraints.
+
+\begin{proposition}\label{prop:notdiophantine}
+With ordinary integer parameters, none of the subsets
+\[
+ A\setminus\{0\},\qquad A^{>0},\qquad A^{\geq0}
+\]
+is definable by a positive existential ring formula over $A$.
+\end{proposition}
+\begin{proof}
+Every such definable subset must be stable under $\ct$ by the
+homomorphism argument in \cref{thm:transfer}. But $\omega$ is nonzero
+and positive while $\ct(\omega)=0$. Also $\omega-1>0$ whereas
+$\ct(\omega-1)=-1<0$.
+\end{proof}
+
+Thus ``nonzero'' cannot be harmlessly added to an equational transfer
+statement. Encoding nonvanishing by $XY=1$ would restrict $X$ to
+$\{1,-1\}$, not to all nonzero omnific integers.
+
+\subsection{A complete solution criterion for linear systems}
+
+\begin{theorem}[Smith normal form over the omnific integers]\label{thm:smith}
+Let $M\in\Z^{m\times n}$ and $\mathbf b\in A^m$. Choose unimodular
+integer matrices $U,V$ with
+\[
+ UMV=D=\diag(d_1,\ldots,d_r,0),\qquad d_i>0,
+\]
+in the rectangular Smith normal form, and put $\mathbf c=U\mathbf b$.
+Then $M\mathbf x=\mathbf b$ is solvable in $A^n$ if and only if
+\begin{equation}\label{eq:smithcriterion}
+ d_i\mid\ct(c_i)\quad(1\leq i\leq r),
+ \qquad c_i=0\quad(r<i\leq m).
+\end{equation}
+All solutions are $\mathbf x=V\mathbf y$, where
+\[
+ y_i=c_i/d_i\quad(1\leq i\leq r),
+ \qquad y_{r+1},\ldots,y_n\in A\text{ are arbitrary}.
+\]
+\end{theorem}
+\begin{proof}
+Unimodular integer matrices and their inverses act on omnific tuples.
+The substitution $\mathbf x=V\mathbf y$ transforms the system into
+$D\mathbf y=\mathbf c$. For each nonzero diagonal entry, division is
+possible precisely under \cref{thm:finitequotients}. Zero rows require
+the full equation $c_i=0$, not merely its constant coefficient. The
+remaining coordinates are unconstrained.
+\end{proof}
+
+For ordinary $\mathbf b$, a useful equivalent description is
+\[
+ \mathbf x=\mathbf a+\mathbf u,
+ \qquad \mathbf a\in\Z^n,\quad M\mathbf a=\mathbf b,
+ \quad \mathbf u\in\J^n,\quad M\mathbf u=0.
+\]
+If $M$ has full column rank, all solutions are ordinary. For a concrete
+one-equation example, every solution to $2x+3y=1$ is
+\[
+ x=-1+3t,\qquad y=1-2t,\qquad t\in A.
+\]
+The same formulas as over $\Z$ work, but the parameter class is larger.
+
+\section{Rigidity of constant-product and norm equations}\label{sec:rigidity}
+
+\subsection{The constant-product principle}
+
+\begin{lemma}\label{lem:constantproduct}
+If $b_1,\ldots,b_s\in\BC$ and
+$b_1\cdots b_s=c\in\C^\times$, then every $b_i$ belongs to
+$\C^\times$.
+\end{lemma}
+\begin{proof}
+Each $b_i$ has inverse $c^{-1}\prod_{j\ne i}b_j$ in $\BC$.
+Apply \cref{prop:units}. Equivalently, their nonnegative degrees have
+sum zero, so every degree is zero.
+\end{proof}
+
+The importance of $\BC$ is that linear factors may have irrational or
+complex coefficients. They need not themselves be omnific integers.
+They do, however, have no negative exponents, so the unit argument applies.
+
+\begin{theorem}[Decomposable polynomial fibers]\label{thm:decomposable}
+Let
+\[
+ F(\mathbf X)=\lambda\prod_{j=1}^{s}L_j(\mathbf X),
+ \qquad \lambda\in\C^\times,
+\]
+where the $L_j$ are affine-linear polynomials over $\C$. Suppose the
+matrix of their linear parts has column rank $n$. If
+$\mathbf x\in\BC^n$ and $F(\mathbf x)=c\in\C^\times$, then
+$\mathbf x\in\C^n$. In particular, any such point in $A^n$ lies in
+$\Z^n$.
+\end{theorem}
+\begin{proof}
+By \cref{lem:constantproduct}, every $L_j(\mathbf x)$ is constant.
+Select $n$ rows whose linear coefficient matrix is invertible over
+$\C$. Subtract the constant terms and solve this ordinary linear system.
+All coordinates of $\mathbf x$ are complex constants. Its intersection
+with $A^n$ is $\Z^n$.
+\end{proof}
+
+The rank hypothesis is essential. The equation $X^d=1$ in two variables
+forces $X$ to be constant but says nothing about $Y$.
+
+\subsection{Binary forms, Pell equations, and power differences}
+
+\begin{theorem}[Binary-form rigidity]\label{thm:binary}
+Let $F\in\Z[X,Y]$ be a nonzero homogeneous binary form having at least
+two distinct projective linear factors over $\C$. For each
+$c\in\Z\setminus\{0\}$,
+\[
+ \{(x,y)\in A^2:F(x,y)=c\}
+ =\{(x,y)\in\Z^2:F(x,y)=c\}.
+\]
+\end{theorem}
+\begin{proof}
+Factor $F$ into linear forms over $\C$, keeping their multiplicities.
+Two distinct projective factors have linearly independent coefficient
+vectors. The rank in \cref{thm:decomposable} is therefore two.
+\end{proof}
+
+This theorem includes the nonzero fibers of every irreducible binary form
+of degree at least two over $\Q$. For irreducible forms of degree at least
+three these are the usual Thue equations; the conclusion here is about
+the absence of additional omnific solutions, not a new proof of ordinary
+finiteness or an algorithm for the ordinary solutions.
+
+\begin{corollary}[Pell rigidity]\label{cor:pell}
+For ordinary integers $D\ne0$ and $c\ne0$, every solution in $A^2$ of
+\[
+ x^2-Dy^2=c
+\]
+is an ordinary integer solution. In particular,
+\[
+ \{(u,v)\in A^2:u^2-2v^2=1\}
+ =\{(u,v)\in\Z^2:u^2-2v^2=1\}.
+\]
+\end{corollary}
+\begin{proof}
+Over $\C$, the two factors $X-\sqrt D\,Y$ and $X+\sqrt D\,Y$
+are distinct because $D\ne0$. Apply \cref{thm:binary}.
+\end{proof}
+
+The classical Pell equation has ordinary solutions of arbitrarily large
+finite size. It nevertheless has no single infinite omnific solution.
+This distinction is a first warning against treating $A$ as an elementary
+extension of ordinary integer arithmetic.
+
+In the full surreal field, the contrast is visible without solving a
+recurrence. For $D>0$, $c\ne0$, and $s\in\No^\times$,
+\[
+ x=\frac{s+c/s}{2},\qquad
+ y=\frac{s-c/s}{2\sqrt D}
+\]
+satisfy $x^2-Dy^2=c$. Taking $s=\omega$ produces negative-exponent
+terms, so neither coordinate is an omnific integer. Discarding those
+terms changes the norm from $c$ to zero. A surreal solution cannot be
+turned into an omnific solution by unverified truncation.
+
+\begin{proposition}[The zero Pell fiber]\label{prop:zeropell}
+If $D$ is a positive nonsquare ordinary integer, all solutions of
+$x^2-Dy^2=0$ in $A^2$ are exactly
+\[
+ (x,y)=(\sqrt D\,t,t)\quad\text{or}\quad(-\sqrt D\,t,t),
+ \qquad t\in\J.
+\]
+\end{proposition}
+\begin{proof}
+Factor in $\No$ to obtain $x=\pm\sqrt D\,y$. Write
+$y=m+j$ with $m\in\Z$ and $j\in\J$. The constant coefficient of
+$x$ is $\pm\sqrt D\,m$, which is an integer only if $m=0$.
+Conversely, multiplication of $\J$ by a real scalar preserves $\J$,
+so all displayed pairs belong to $A^2$ and solve the equation.
+\end{proof}
+
+Thus changing the right side from a nonzero constant to zero changes the
+answer completely.
+
+\begin{corollary}[Power-difference rigidity]\label{cor:powers}
+Let $m,n\geq2$ be ordinary integers with $d=\gcd(m,n)>1$, and let
+$0\ne c\in\Z$. Every omnific solution of $x^m-y^n=c$ is ordinary.
+\end{corollary}
+\begin{proof}
+Set $X=x^{m/d}$ and $Y=y^{n/d}$. The binary form $X^d-Y^d$ has at
+least two distinct complex factors, so $X,Y$ are ordinary by
+\cref{thm:binary}. If a positive ordinary power of an element of $A$
+is an ordinary constant, that element is ordinary: for a nonzero element
+this follows from degree additivity, and for a zero power value the
+integral domain property suffices.
+\end{proof}
+
+No conclusion for coprime exponents is being smuggled into this statement.
+The argument does not classify equations such as $x^2-y^3=1$.
+
+\subsection{Number-field norm equations}
+
+\begin{theorem}[Norm-form rigidity]\label{thm:norm}
+Let $K/\Q$ be a number field of degree $d$, let $e_1,\ldots,e_d$ be a
+$\Q$-basis, and let
+\[
+ N(\mathbf X)=N_{K/\Q}\left(\sum_{j=1}^d e_jX_j\right).
+\]
+For every nonzero rational constant $c$, every solution
+$\mathbf x\in A^d$ of $N(\mathbf x)=c$ has all coordinates in
+$\Z$. In particular, with an integral basis this applies to the usual
+integer-coefficient norm equations.
+\end{theorem}
+\begin{proof}
+The $d$ embeddings $\sigma_1,\ldots,\sigma_d:K\to\C$ give
+\[
+ N(\mathbf X)=\prod_{i=1}^{d}
+ \left(\sum_{j=1}^{d}\sigma_i(e_j)X_j\right).
+\]
+The embedding matrix $(\sigma_i(e_j))$ is invertible. To verify this,
+choose a primitive element $\theta$ of the separable extension $K/\Q$.
+For the power basis $1,\theta,\ldots,\theta^{d-1}$ the matrix is
+Vandermonde in the distinct conjugates of $\theta$, so has nonzero
+determinant. A basis change over $\Q$ preserves invertibility.
+The result now follows from \cref{thm:decomposable}.
+\end{proof}
+
+For example, consider the norm form for $K=\Q(\sqrt[3]{2})$:
+\[
+ N(X+Y\sqrt[3]{2}+Z\sqrt[3]{4})
+ =X^3+2Y^3+4Z^3-6XYZ.
+\]
+Every omnific solution of
+\[
+ X^3+2Y^3+4Z^3-6XYZ=1
+\]
+is an ordinary integer triple. This is a genuinely three-variable
+rigidity result, unlike the indefinite quadratic forms in the next
+section.
+
+\subsection{An algebraic-geometric formulation}
+
+Let $V$ be an affine complex variety whose coordinate ring $\C[V]$ is
+generated, as a $\C$-algebra, by units. Every $\BC$-point of $V$ is
+then a constant $\C$-point. Indeed, a $\C$-algebra map
+$\C[V]\to\BC$ sends each generating unit to an element of
+$\BC^\times=\C^\times$, so its entire image lies in $\C$.
+This includes closed subvarieties of an algebraic torus, in their
+very-affine coordinate presentation.
+
+The statement supplies a conceptual explanation of the norm argument:
+a nonzero product relation forces its factors into a constant torus.
+It is not a claim that every affine variety is constant over $\BC$.
+The affine line, for example, has the full class $\BC$ of points.
+
+\section{A complete dichotomy for nonzero quadratic levels}\label{sec:quadratic}
+
+Binary Pell rigidity might suggest that a nonzero constant quadratic level
+never contains infinite points. This is false as soon as there is enough
+indefinite dimension. The following result gives a precise classification.
+
+\begin{theorem}[Quadratic-level dichotomy]\label{thm:quadclassification}
+Let $n\geq1$, let $q\in\Z[X_1,\ldots,X_n]$ be a homogeneous quadratic
+form, and let $c\in\Z\setminus\{0\}$. Write
+\[
+ V_A=\{\mathbf x\in A^n:q(\mathbf x)=c\},\qquad
+ V_\Z=\{\mathbf a\in\Z^n:q(\mathbf a)=c\}.
+\]
+If $V_\Z$ is empty, so is $V_A$. Otherwise the following alternatives
+are exhaustive.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item If $q$ is nondegenerate and is either definite or of dimension at
+most two, then $V_A=V_\Z$.
+\item If $q$ is degenerate, every $\mathbf a\in V_\Z$ lies on an
+injective affine-linear family $\mathbf a+t\mathbf v$, $t\in\J$,
+in $V_A$, with every $t\ne0$ giving an infinite point.
+\item If $q$ is nondegenerate, indefinite, and $n\geq3$, every
+$\mathbf a\in V_\Z$ lies on an injective quadratic polynomial family
+$\mathbf a+t\mathbf v+t^2\mathbf w$, $t\in\J$, in $V_A$, again
+with every $t\ne0$ giving an infinite point.
+\end{enumerate}
+In alternatives \textup{(ii)} and \textup{(iii)}, the constant tuple of
+every point in the family is $\mathbf a$.
+\end{theorem}
+
+We first prove the geometric construction required for the indefinite
+case. All vectors and bilinear forms in its statement are ordinary real
+objects; only the parameter is later allowed to be surreal.
+
+\begin{lemma}[A polynomial quadratic isometry]\label{lem:transvection}
+Let $B$ be a symmetric bilinear form over $\R$, with $q(x)=B(x,x)$.
+Suppose $e,u$ satisfy
+\[
+ q(e)=0,\qquad B(e,u)=0,\qquad k=q(u)\ne0.
+\]
+For a scalar parameter $t$ define
+\begin{equation}\label{eq:transvection}
+ T_t(x)=x+t\bigl(B(x,e)u-B(x,u)e\bigr)
+       -\frac{k}{2}t^2B(x,e)e.
+\end{equation}
+Over every field extension of $\R$,
+\[
+ q(T_t(x))=q(x),\qquad T_sT_t=T_{s+t},\qquad T_t^{-1}=T_{-t}.
+\]
+If $\alpha=B(a,e)\ne0$, the curve $t\mapsto T_t(a)$ is injective.
+\end{lemma}
+\begin{proof}
+Put $\alpha=B(x,e)$ and $\beta=B(x,u)$. In
+\eqref{eq:transvection}, the added vector is
+\[
+ t\alpha u-\left(t\beta+\frac{k}{2}t^2\alpha\right)e.
+\]
+Its scalar product with $x$, multiplied by two, is
+$-kt^2\alpha^2$, because the two linear terms cancel. Its own quadratic
+value is $kt^2\alpha^2$, since $e$ is isotropic and orthogonal to $u$.
+Their sum is zero, proving preservation of $q$.
+
+For the group law, set $N(x)=B(x,e)u-B(x,u)e$. Then
+\[
+ N^2(x)=-kB(x,e)e,\qquad N^3=0,
+ \qquad T_t=\id+tN+\frac{t^2}{2}N^2.
+\]
+Multiplying these finite polynomials in $N$ gives $T_sT_t=T_{s+t}$,
+and hence the inverse formula.
+
+Finally, for $\alpha=B(a,e)\ne0$ and $\beta=B(a,u)$,
+\[
+ T_t(a)=a+t v+t^2 w,
+ \quad v=\alpha u-\beta e,
+ \quad w=-\frac{k\alpha}{2}e.
+\]
+The real vectors $v,w$ are linearly independent: $w$ is a nonzero
+multiple of $e$, whereas $v$ has nonzero $u$-component, and $u,e$ are
+independent. Their independence persists over a field extension because
+some $2\times2$ real minor is nonzero. If $T_s(a)=T_t(a)$ and $s\ne t$,
+then $v+(s+t)w=0$, contradicting that independence.
+\end{proof}
+
+\begin{lemma}\label{lem:nullchoices}
+If $q$ is a nondegenerate indefinite real quadratic form of dimension at
+least three and $q(a)\ne0$, there exist $e,u$ as in
+\cref{lem:transvection} with $B(a,e)\ne0$.
+\end{lemma}
+\begin{proof}
+The real isotropic vectors span the entire space. To see this, use a
+real basis in which $q$ has positive unit vectors $p_i$ and negative
+unit vectors $n_j$. Both types exist by indefiniteness, and each
+$p_i+n_j$ and $p_i-n_j$ is isotropic. Taking sums and differences
+recovers every basis direction. Since the nonzero functional $B(a,-)$
+cannot vanish on a spanning set, some isotropic $e$ has $B(a,e)\ne0$.
+
+Nondegeneracy gives $f_0$ with $B(e,f_0)=1$. Replacing it by
+$f=f_0-\tfrac12q(f_0)e$ makes $q(f)=0$ while retaining $B(e,f)=1$.
+The plane spanned by $e,f$ is nondegenerate. Its orthogonal complement
+is nondegenerate and has dimension $n-2\geq1$, so it contains $u$ with
+$q(u)\ne0$. This $u$ is orthogonal to $e$, as required.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:quadclassification}]
+The empty-set assertion is \cref{thm:transfer}.
+
+Suppose first that $q$ is definite and $\mathbf x\in V_A$ has an
+infinite coordinate. Let $\gamma>0$ be the largest of the leading
+exponents of its nonzero coordinates. Let $r_i$ be the coefficient of
+$\omega^\gamma$ in $x_i$, using zero when that exponent is absent.
+The real vector $\mathbf r$ is nonzero. The coefficient of
+$\omega^{2\gamma}$ in $q(\mathbf x)$ is exactly $q(\mathbf r)$,
+which is nonzero by definiteness. This contradicts $q(\mathbf x)=c$.
+Thus every coordinate is finite and hence an ordinary integer.
+In dimension two, nondegeneracy means that the binary quadratic has
+two distinct linear factors over $\C$, so \cref{thm:binary} applies.
+A nondegenerate one-dimensional form is definite. This proves (i).
+
+For (ii), choose a nonzero real vector $v\in\rad(B)$. For every $t$,
+$q(a+tv)=q(a)=c$. If $t\in\J$, the coordinates of $tv$ belong to
+$\J$, so $a+tv\in A^n$ with constant tuple $a$. The map is injective
+because $v\ne0$. For $t\ne0$, some coordinate has positive degree.
+
+For (iii), choose $e,u$ by \cref{lem:nullchoices} and use
+\cref{lem:transvection}. Each coordinate of $T_t(a)$ is an integer
+constant plus a real multiple of $t$ plus a real multiple of $t^2$.
+Thus it belongs to $A$ and has constant coefficient $a_i$ for
+$t\in\J$. Injectivity has already been proved. If $t\ne0$, its
+leading degree is positive. In a coordinate where $w_i\ne0$, the
+quadratic term has degree $2\ddeg(t)$, strictly larger than the linear
+term's degree, and cannot cancel. Therefore the point is infinite.
+\end{proof}
+
+\subsection{An explicit infinite hyperboloid family}
+
+For positive ordinary integers $D,E$ and $t\in\J$, set
+\begin{equation}\label{eq:hyperboloid}
+ x=1+\frac E2t^2,\qquad
+ y=\frac{E}{2\sqrt D}t^2,\qquad z=t.
+\end{equation}
+All three coordinates are omnific integers, and a direct expansion gives
+\[
+ x^2-Dy^2-Ez^2=1.
+\]
+Indeed, the two quartic terms cancel, as do the two quadratic terms.
+For $t\ne0$ every coordinate is infinite. Nevertheless the tuple is
+unimodular, since
+\begin{equation}\label{eq:hyperunimodular}
+ 1=x-\left(\frac E2t\right)z,
+ \qquad \frac E2t\in A.
+\end{equation}
+This illustrates a particularly sharp contrast:
+\[
+ x^2-Dy^2=1\ \text{has only ordinary points},
+ \qquad x^2-Dy^2-Ez^2=1\ \text{has infinite unimodular points}.
+\]
+There is no appeal to convergence, analytic continuation, or infinite
+iteration in this construction; every expression is a finite polynomial.
+
+\subsection{What the classification does and does not say}
+
+The classification concerns the presence of genuinely new points on a
+\emph{represented nonzero level}. It does not decide whether the
+integer level is represented in the first place. Nor does it classify all
+infinite points: a displayed curve is a rigorously constructed subset of
+the full fiber.
+
+For zero levels, homogeneity gives a different mechanism. An indefinite
+real quadratic form has real isotropic directions, and multiplying any
+such direction by an element of $\J$ produces omnific points with zero
+constant tuple. Such points can exist even when there is no nonzero
+ordinary integer isotropic vector.
+
+\section{Defining the ordinary integers by one quartic equation}\label{sec:guard}
+
+The retraction $\ct$ detects ordinary coefficients but is not a symbol
+in the ring language. We now show that the embedded copy of $\Z$ can be
+detected by a single explicit polynomial equation with existential
+auxiliary variables.
+
+\subsection{Pell solutions as finite bounds}
+
+Define ordinary positive Pell solutions by
+\begin{equation}\label{eq:pellsequence}
+ u_k+v_k\sqrt2=(3+2\sqrt2)^k,\qquad k\geq0.
+\end{equation}
+Then $u_k,v_k\in\Z$, $u_k^2-2v_k^2=1$, and $u_k$ tends to infinity
+in the ordinary real sense. The inverse of $3+2\sqrt2$ is
+$3-2\sqrt2\in(0,1)$, so
+\[
+ u_k=\frac{(3+2\sqrt2)^k+(3-2\sqrt2)^k}{2}.
+\]
+The recurrence
+\[
+ u_0=1,\quad u_1=3,\quad u_{k+2}=6u_{k+1}-u_k
+\]
+implies
+\begin{equation}\label{eq:pellmod8}
+ u_{2j}\equiv1\pmod8,\qquad
+ u_{2j+1}\equiv3\pmod8.
+\end{equation}
+Both parity subsequences are unbounded.
+
+We use the classical Legendre--Gauss three-square theorem: a nonnegative
+ordinary integer $N$ is a sum of three integer squares if and only if
+it is not of the form $4^a(8b+7)$, with $a,b\geq0$. This theorem is
+imported, not reproved here; see the mathematical exposition in
+\cite{Shiu} and the formal development in \cite{ThreeSquares}.
+
+\begin{lemma}[A three-square gap below a Pell coordinate]\label{lem:pellgap}
+For every ordinary nonnegative integer $S$, there are ordinary integers
+$u,v,w_1,w_2,w_3$ such that
+\[
+ u^2-2v^2=1,\qquad u=S+w_1^2+w_2^2+w_3^2.
+\]
+\end{lemma}
+\begin{proof}
+Choose the residue of $u$ modulo $8$ according to the following table.
+Each choice is realized by an unbounded subsequence in
+\eqref{eq:pellsequence}.
+\begin{center}
+\begin{tabular}{c*{8}{r}}
+\toprule
+$S\bmod8$&0&1&2&3&4&5&6&7\\
+chosen $u\bmod8$&1&3&3&1&1&3&1&1\\
+$(u-S)\bmod8$&1&2&1&6&5&6&3&2\\
+\bottomrule
+\end{tabular}
+\end{center}
+Take a sufficiently large $u$ in that subsequence so that $N=u-S>0$.
+Its residue is one of $1,2,3,5,6$. Hence it is neither divisible by $4$
+nor congruent to $7$ modulo $8$, so it cannot be $4^a(8b+7)$.
+The three-square theorem supplies the $w_j$. The corresponding Pell
+coordinate supplies $v$.
+\end{proof}
+
+\subsection{The uniform five-auxiliary-variable guard}
+
+For each ordinary $n\geq1$, define the integer polynomial
+\begin{equation}\label{eq:guardpoly}
+ \begin{split}
+ G_n(\mathbf X,U,V,\mathbf W)
+ ={}&(U^2-2V^2-1)^2\\
+ &+\left(U-\sum_{i=1}^nX_i^2-
+                   W_1^2-W_2^2-W_3^2\right)^2.
+ \end{split}
+\end{equation}
+It has total degree four and $n+5$ variables.
+
+\begin{theorem}[Uniform quartic integrality guard]\label{thm:guard}
+For every $\mathbf x\in A^n$,
+\begin{equation}\label{eq:guarddef}
+ \mathbf x\in\Z^n
+ \quad\Longleftrightarrow\quad
+ \exists u,v,w_1,w_2,w_3\in A\quad
+ G_n(\mathbf x,u,v,w_1,w_2,w_3)=0.
+\end{equation}
+In fact, every coordinate of every zero of $G_n$ in $A^{n+5}$ is an
+ordinary integer. The number of auxiliary variables is five,
+independently of $n$.
+\end{theorem}
+\begin{proof}
+Suppose $G_n=0$ in $A$. A sum of two squares in an ordered field can
+vanish only when both squares vanish. Thus
+\begin{equation}\label{eq:guardrelations}
+ u^2-2v^2=1,
+ \qquad u=\sum_i x_i^2+w_1^2+w_2^2+w_3^2.
+\end{equation}
+By Pell rigidity, $u,v\in\Z$. The second equation gives $u\geq0$
+and bounds the square of each $x_i$ and $w_j$ by the ordinary number
+$u$. Consequently every $x_i,w_j$ is finite. By
+\cref{prop:units}, each is an ordinary integer.
+
+Conversely, suppose $\mathbf x\in\Z^n$ and put
+$S=\sum_i x_i^2\in\N$. Choose an ordinary Pell solution and three
+squares from \cref{lem:pellgap}. They satisfy both equations in
+\eqref{eq:guardrelations}, and hence make $G_n$ vanish.
+\end{proof}
+
+The theorem is uniform in tuple length, but does not claim that five
+auxiliary variables are optimal. A slightly simpler version using four
+square variables instead of three follows from Lagrange's four-square
+theorem and arbitrary sufficiently large Pell coordinates; the modular
+argument above removes one auxiliary variable.
+
+For $x=1$, one witness is $u=3$, $v=2$, and
+$(w_1,w_2,w_3)=(1,1,0)$. For $x=2$, a witness is $u=17$, $v=12$,
+and $(w_1,w_2,w_3)=(3,2,0)$. The assertions for all integers rely on
+\cref{lem:pellgap}, not on these examples or on a finite computation.
+
+\subsection{Definability consequences and a logical distinction}
+
+Let $\Int(x)$ abbreviate the existential formula obtained from $G_1$.
+Then $\Int(A)=\Z$. Thus ordinary integer arithmetic is present not
+only as the quotient $A/\J$ but as an existentially definable subring of
+$A$ itself.
+
+There is no conflict with \cref{prop:notdiophantine}. The copy of $\Z$
+is stable under $\ct$, whereas the full positive cone and the nonzero
+locus are not. Nor does this make $A$ an elementary extension of $\Z$:
+the formula $\Int(x)$ holds for every element of $\Z$ but fails for
+$\omega$ in $A$.
+
+\begin{corollary}\label{cor:Jdefinable}
+The ideal $\J$ and the graph of $\ct$ are first-order definable in the
+pure ring structure of $A$, with no nonstandard parameters. Explicitly,
+\begin{align*}
+ j\in\J\quad\Longleftrightarrow\quad
+ &\forall n\,
+  \bigl((\Int(n)\land n\ne0)\ \Longrightarrow\
+                 \exists y\ (j=ny)\bigr),\\
+ m=\ct(x)\quad\Longleftrightarrow\quad
+ &\Int(m)\land(x-m\in\J).
+\end{align*}
+\end{corollary}
+\begin{proof}
+The first formula restricts the divisor variable to the ordinary nonzero
+integers, then applies \eqref{eq:divkernel}. The second expresses the
+unique decomposition $x=m+j$ with $m\in\Z$, $j\in\J$.
+\end{proof}
+
+The displayed definition of $\J$ uses a universal quantifier and an
+implication. We do not claim that it is an existential or Diophantine
+definition of $\J$.
+
+There is also a concrete failure of a familiar arithmetic sentence. The
+positive omnific integer $\omega-1$ is not a sum of any fixed finite
+number of omnific squares. Applying $\ct$ to such a proposed identity
+would give
+\[
+ -1=m_1^2+\cdots+m_r^2\qquad(m_i\in\Z),
+\]
+which is impossible. In particular, the ordinary assertion that every
+nonnegative integer is a sum of four squares fails for $A$'s full
+nonnegative cone. This is compatible with the classical fact that
+integer parts of real closed fields satisfy Open Induction
+\cite{Shepherdson,LM}; Open Induction is not full ordinary arithmetic.
+
+\subsection{A reusable abstract principle}
+
+The proof of \cref{thm:guard} needs less than all surreal numbers.
+Let $D$ be any discretely ordered ring containing $\Z$, and suppose
+that every solution in $D$ of $U^2-2V^2=1$ is ordinary. Every element
+of $D$ bounded by an ordinary integer is itself ordinary: discreteness
+and a finite comparison with the integers in the bounding interval prove
+this. The identical proof therefore shows that $G_n$ defines $\Z^n$
+in $D^n$. Our contribution is an explicit guard under a transparent
+Pell-rigidity hypothesis, together with a proof that the omnific rings
+under consideration satisfy that hypothesis.
+
+\section{Infinite families, primitivity, and projective points}\label{sec:primitive}
+
+\subsection{Polynomial curves through integer points}
+
+\begin{proposition}[Finite polynomial lifting]\label{prop:polylift}
+Let $F_1,\ldots,F_r\in\R[X_1,\ldots,X_n]$, and let
+$P_1(T),\ldots,P_n(T)\in\R[T]$ satisfy
+\[
+ F_j(P_1(T),\ldots,P_n(T))=0\quad(1\leq j\leq r),
+ \qquad P_i(0)\in\Z\quad(1\leq i\leq n).
+\]
+Then $\mathbf P(t)\in A^n$ solves the system for every $t\in\J$, with
+constant tuple $\mathbf P(0)$. If some $P_i$ is nonconstant, every
+$t\in\J\setminus\{0\}$ produces an infinite point.
+\end{proposition}
+\begin{proof}
+Every nonconstant term of $P_i(t)$ lies in $\J$, so the constant
+coefficient is exactly the integer $P_i(0)$. Polynomial identities hold
+under substitution into any field extension. If $P_i$ has degree $d>0$
+and $\ddeg(t)=\gamma>0$, its top term has degree $d\gamma$, strictly
+larger than every other term's degree, so cannot cancel.
+\end{proof}
+
+The finiteness of the polynomials matters. Evaluating an infinite real
+power series at an infinite omnific argument is not licensed by this
+proposition. For instance, the Taylor expansion of $\sqrt{1+T}$ at
+zero is not an admissible way to assert that $\sqrt{1+\omega}$ lies
+in $A$.
+
+\subsection{Infinite solutions of homogeneous equations}
+
+\begin{theorem}[Homogeneous cone criterion]\label{thm:cone}
+Let $F_1,\ldots,F_r\in\R[X_1,\ldots,X_n]$ be homogeneous polynomials
+of positive degrees. Their common zero locus has a nonzero point in
+$A^n$ if and only if it has a nonzero point in $\R^n$.
+\end{theorem}
+\begin{proof}
+A real nonzero common zero $\mathbf a$ gives the omnific common zero
+$\omega\mathbf a\in\J^n$ by homogeneity.
+
+Conversely, take a nonzero common zero $\mathbf x\in A^n$. If every
+coordinate is constant, it is already a real point. Otherwise let
+$\gamma>0$ be the maximum of the coordinates' leading degrees and let
+$r_i=[\omega^\gamma]x_i$. The vector $\mathbf r\in\R^n$ is nonzero.
+For a homogeneous $F_j$ of degree $d_j$, the coefficient at
+$\omega^{d_j\gamma}$ in $F_j(\mathbf x)$ is $F_j(\mathbf r)$: a
+product can attain that exponent only by taking the exponent $\gamma$
+in every factor. Since $F_j(\mathbf x)=0$, this coefficient vanishes.
+Thus $\mathbf r$ is a nonzero real common zero.
+\end{proof}
+
+For example, for every ordinary integer $n\geq2$,
+\begin{equation}\label{eq:fermatscaling}
+ x=t,
+ \qquad y=t,
+ \qquad z=2^{1/n}t,
+ \qquad 0<t\in\J
+\end{equation}
+gives a positive infinite solution of $x^n+y^n=z^n$. The irrational
+real coefficient of $t$ is permitted by the omnific definition.
+All three constant coefficients are zero, so these families carry no
+nonzero ordinary integer solution under the retraction.
+
+All coordinates in \eqref{eq:fermatscaling} are divisible by $2$ in
+$A$, since they belong to $\J$. By \cref{thm:commondivisor}, they
+also have a common infinite monomial divisor. Hence these are
+not primitive solutions. One must not cite them as resolving a primitive
+Fermat problem.
+
+\subsection{Primitive versus unimodular tuples}
+
+\begin{definition}\label{def:primitive}
+A nonzero tuple over $A$ is \emph{primitive} if it has no common
+nonunit divisor. It is \emph{unimodular} if its coordinates generate the
+unit ideal, equivalently if an $A$-linear combination of them is $1$.
+\end{definition}
+
+Unimodularity implies primitivity. The converse is not being assumed in
+this non-PID ring. We use explicit identities whenever a tuple is claimed
+to be unimodular.
+
+\begin{proposition}[Infinite unimodular Pythagorean triples]\label{prop:pythagoras}
+For every $t\in\J$, put
+\[
+ x=t^2-1,\qquad y=2t,\qquad z=t^2+1.
+\]
+Then $x^2+y^2=z^2$ and the tuple is unimodular. For $t\ne0$ it is a
+genuinely infinite triple.
+\end{proposition}
+\begin{proof}
+The identity is the ordinary polynomial identity
+$(t^2-1)^2+4t^2=(t^2+1)^2$. Put $a=t^2/2\in\J\subseteq A$.
+Then
+\begin{equation}\label{eq:pythbezout}
+ a z-(a+1)x=\frac{t^2}{2}(z-x)-x=t^2-(t^2-1)=1.
+\end{equation}
+Thus even the pair $(x,z)$ generates the unit ideal. Positive leading
+degree gives the assertion about infinite size.
+\end{proof}
+
+The constant tuple is $(-1,0,1)$, not the zero tuple. That is exactly
+where the common-divisor obstruction for $\J^3$ ceases to apply.
+
+\subsection{Which real projective directions have primitive representatives?}
+
+A point $[r_0:\cdots:r_n]\in\mathbb P^n(\R)$ is \emph{rational} if
+it has homogeneous coordinates in $\Q$, equivalently a nonzero integer
+coordinate tuple.
+
+\begin{theorem}[Rationality of primitive constant directions]\label{thm:realray}
+For a real projective point $p=[r_0:\cdots:r_n]$, the following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item $p$ is rational;
+\item $p$ has a unimodular representative in $A^{n+1}$;
+\item $p$ has a primitive representative in $A^{n+1}$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For (i)$\Rightarrow$(ii), choose an integer representative whose ordinary
+integer gcd is one. The usual integer B\'ezout identity makes the tuple
+unimodular over $A$ as well. Implication (ii)$\Rightarrow$(iii) follows
+from the definition.
+
+For (iii)$\Rightarrow$(i), write a primitive representative as
+$z_i=\lambda r_i$ with $\lambda\in\No^\times$. Choose $r_j\ne0$.
+Since $z_j\in A\subseteq\BR$ and division by the nonzero real scalar
+$r_j$ preserves $\BR$, we have $\lambda\in\BR$.
+Put $c=\ct(\lambda)\in\R$. Then
+\[
+ \ct(z_i)=c r_i\in\Z\qquad(0\leq i\leq n).
+\]
+If $c=0$, every $z_i$ belongs to $\J$, so $2$ divides every
+coordinate in $A$, contradicting primitivity. Hence $c\ne0$, and $(cr_0,\ldots,cr_n)$ is a nonzero
+integer representative of $p$.
+\end{proof}
+
+For example, $[\sqrt2:1]$ has omnific representatives such as
+$(\sqrt2\,\omega,\omega)$, but has no primitive omnific
+representative. In contrast, each rational real direction has an ordinary
+coprime integer representative. The theorem concerns real projective
+points; it is not a classification of all points of $\mathbb P^n(\No)$.
+
+\section{Obstructions from leading terms and bounded geometry}\label{sec:obstructions}
+
+\subsection{Initial equations are necessary, not sufficient}
+
+Let $F(\mathbf X)=\sum_{\alpha}a_\alpha\mathbf X^\alpha$ be a
+nonzero polynomial over $A$, and suppose all coordinates of a proposed
+solution $\mathbf x\in A^n$ are nonzero. For nonzero coefficients put
+\[
+ \lambda_\alpha=\ddeg(a_\alpha),\quad
+ c_\alpha=\lc(a_\alpha),\quad
+ \gamma_i=\ddeg(x_i),\quad r_i=\lc(x_i).
+\]
+The largest possible exponent in $F(\mathbf x)$ is
+\[
+ M=\max_\alpha\left(\lambda_\alpha+
+                                \sum_i\alpha_i\gamma_i\right).
+\]
+If $F(\mathbf x)=0$, at least two monomials must attain $M$, and
+\begin{equation}\label{eq:initial}
+ \sum_{\lambda_\alpha+\sum_i\alpha_i\gamma_i=M}
+ c_\alpha\prod_i r_i^{\alpha_i}=0.
+\end{equation}
+This follows by extracting the coefficient at $M$. Variables assigned
+zero can first be substituted out of the polynomial.
+
+For standard coefficients this is the usual leading-weight obstruction,
+now with surreal weights. It must be used together with the
+constant-coefficient equations. Neither set of necessary conditions is
+sufficient in general.
+
+For example, $Y^2=\omega^2+1$ passes the constant test
+$\ct(Y)^2=1$ and the leading test $\gamma_Y=1$, $r_Y=\pm1$.
+Nevertheless, there is no solution in $A$, by the unit argument in
+\cref{prop:notnormal}. The missing information resides in the full tail
+of a potential root.
+
+\subsection{No real point at infinity implies rigidity}
+
+\begin{theorem}[Leading-homogeneous obstruction]\label{thm:infinity}
+Let $F_1,\ldots,F_r\in\Z[X_1,\ldots,X_n]$ be nonconstant polynomials,
+and let $H_j$ be the top homogeneous part of $F_j$. If the $H_j$ have
+no common nonzero real zero, then every common zero of the $F_j$ in
+$A^n$ lies in $\Z^n$.
+\end{theorem}
+\begin{proof}
+Suppose a common zero has an infinite coordinate. Choose its maximum
+coordinate degree $\gamma>0$ and nonzero leading vector
+$\mathbf r$ as in \cref{thm:cone}. If $d_j=\deg F_j$, the coefficient
+at $d_j\gamma$ in $F_j(\mathbf x)$ is $H_j(\mathbf r)$.
+Every term of lower ordinary total degree has exponent strictly less
+than $d_j\gamma$, and therefore cannot affect that coefficient.
+Thus every $H_j(\mathbf r)$ is zero, contrary to the hypothesis.
+All coordinates are consequently finite and hence ordinary integers.
+\end{proof}
+
+The hypothesis can be viewed as a sufficient absence-of-real-directions-
+at-infinity condition for the chosen system. Its converse is false.
+A Pell equation has real directions at infinity when $D>0$, but its
+nonzero fibers are rigid by factorization. Initial-form obstructions and
+constant-product obstructions detect different mechanisms.
+
+\subsection{Positive bounds and orthogonal matrices}
+
+\begin{proposition}\label{prop:squaresbound}
+If $a_1,\ldots,a_n$ are positive ordinary real numbers,
+$x_1,\ldots,x_n\in A$, and
+\[
+ \sum_i a_i x_i^2=C\in\R,
+\]
+then every $x_i$ is an ordinary integer. In particular, an omnific point
+on a sphere of ordinary finite radius is an ordinary integer point.
+\end{proposition}
+\begin{proof}
+Each $a_i x_i^2$ is nonnegative and at most $C$. If $C<0$ there is no
+solution; otherwise this gives an ordinary real bound on each $|x_i|$.
+Use \cref{prop:units}.
+\end{proof}
+
+\begin{corollary}\label{cor:orthogonal}
+The orthogonal matrices over $A$ are exactly the ordinary signed
+permutation matrices. Thus $\OO_n(A)$ is the finite group of order
+$2^n n!$, and the determinant-one subgroup consists of its signed
+permutation matrices of determinant one.
+\end{corollary}
+\begin{proof}
+For an orthogonal matrix, the sum of the squares in each row is $1$.
+Every entry is therefore ordinary. An integer row of squared norm one
+has exactly one nonzero entry, equal to $1$ or $-1$. Orthogonality of
+different rows forces those entries into different columns. Conversely,
+each signed permutation matrix is orthogonal.
+\end{proof}
+
+By contrast, $\GL_2(A)$ contains all the infinite unipotent matrices
+\[
+ \begin{pmatrix}1&t\\0&1\end{pmatrix},\qquad t\in A.
+\]
+The Euclidean orthogonal group is rigid because of positivity, not because
+all matrix groups over $A$ are finite or constant.
+
+\begin{corollary}[Symmetric matrix rigidity]\label{cor:symmetric}
+Let $M$ be a symmetric matrix over $A$. If $\tr(M^2)$ is an ordinary
+real constant, then every entry of $M$ is an ordinary integer. In
+particular, this holds if its characteristic polynomial has ordinary
+integer coefficients.
+\end{corollary}
+\begin{proof}
+For symmetric $M$,
+\[
+ \tr(M^2)=\sum_i m_{ii}^2+2\sum_{i<j}m_{ij}^2,
+\]
+so \cref{prop:squaresbound} applies. The first two characteristic
+coefficients give
+$\tr(M^2)=(\tr M)^2-2e_2(M)$ when the size is at least two;
+for size one the assertion is immediate. Hence a constant characteristic
+polynomial makes this trace constant.
+\end{proof}
+
+\subsection{Representative equations}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{p{0.34\textwidth}p{0.56\textwidth}}
+\toprule
+Equation or constraint & Exact conclusion over $A$\\
+\midrule
+$2x+3y=1$ & $x=-1+3t$, $y=1-2t$, $t\in A$.\\
+$x^2+y^2=N\in\Z$ & Only ordinary integer solutions.\\
+$x^2-Dy^2=c$, $Dc\ne0$ & Only ordinary integer solutions.\\
+$x^2-Dy^2=0$, $D>0$ nonsquare & $(x,y)=(\pm\sqrt D\,t,t)$, $t\in\J$.\\
+$x^4-y^6=c\ne0$ & Only ordinary integer solutions.\\
+$x^2-y^2-z^2=1$ & Infinite unimodular family from \eqref{eq:hyperboloid}.\\
+$x^2+y^2=z^2$ & Infinite unimodular family from \cref{prop:pythagoras}.\\
+$x^n+y^n=z^n$, $n\geq2$ & Positive infinite solutions in \eqref{eq:fermatscaling}; these are not primitive.\\
+$y^2=\omega^2+1$ & No solution, despite consistent constant and leading tests.\\
+$Q^\mathsf{T}Q=I$ & $Q$ is an ordinary signed permutation matrix.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Fixed Hahn workspaces and possible formalization}\label{sec:formal}
+
+\subsection{Which results are local in the exponent group?}
+
+For a set-sized ordered abelian group $\Gamma$, work in a Hahn field
+whose monomials are written $\omega^\gamma$ with reverse-well-ordered
+supports, and define
+\[
+ A_\Gamma=\Z+
+ \left\{\sum_{\gamma>0}r_\gamma\omega^\gamma\right\},
+ \qquad
+ B_\Gamma=\R+
+ \left\{\sum_{\gamma>0}r_\gamma\omega^\gamma\right\}.
+\]
+The displayed sums mean elements of the ambient Hahn field with the
+specified support restrictions. This notation is a convention, not an
+identification of every abstract group element with a surreal exponent.
+When an appropriate ordered group embedding into $\No$ has been fixed,
+it gives the corresponding surreal normal-form workspace.
+
+The retraction, finite quotients, equational transfer, Smith criterion,
+constant-product rigidity, norm rigidity, quadratic constructions, and
+quartic guard all apply to $A_\Gamma$. Their proofs use finite algebra,
+leading exponents, and real coefficients, not the availability of a new
+exponent outside $\Gamma$. If $\Gamma\ne0$, its positive cone provides
+nonconstant parameters for the infinite-family statements. The case
+$\Gamma=0$ is simply $A_\Gamma=\Z$.
+
+By contrast, the common-divisor theorem for an arbitrary set of purely
+infinite elements and the monomial clearing theorem for an arbitrary set
+of full-field elements require bounds that may not exist in $\Gamma$.
+For instance, in $\Gamma=\R$, the set $\{1/k:k\geq1\}$ has no
+strictly positive real lower bound. In the full surreal group it does.
+
+One must therefore distinguish a proof that stays inside a fixed workspace
+from a proof that enlarges it. In particular, the equality
+$\Frac(A)=\No$ and the no-set-of-generators statement for $\J$ are
+full-class conclusions. They are not asserted for every $A_\Gamma$.
+
+\subsection{A dependency-oriented formalization plan}
+
+The repository already has normal-form and Hahn algebra infrastructure,
+coefficient extraction, and a carefully stated boundary between concrete
+surreal results and workspace results \cite{Repo}. The following is a
+\emph{proposed} extension plan. The names below are suggested module
+names, not claims that corresponding files or declarations already exist.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{0.34\textwidth}p{0.55\textwidth}}
+\toprule
+Proposed module & Main obligation and dependency\\
+\midrule
+\texttt{Omnific.Basic} & Define the nonnegative-exponent subring and the integer-constant subring; prove the retraction and finite-element criterion.\\
+\texttt{Omnific.Residue} & Prove $nA=\J+n\Z$, finite quotients, and preservation of $\J$.\\
+\texttt{Omnific.Rigidity} & Prove units of the real and complex support rings are constants; derive product, binary-form, and norm rigidity.\\
+\texttt{Omnific.Quadratic} & Verify the finite bilinear identity for $T_t$, the isotropic-vector choices, and the level classification.\\
+\texttt{Omnific.IntegralityGuard} & Combine Pell rigidity, ordinary Pell residues, and an explicitly imported three-square theorem.\\
+\texttt{Omnific.Global} & Use the genuine small-cut theorem for support bounds, common monomial divisibility, and global denominator clearing.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A useful separation is to prove the finite algebraic identities first over
+arbitrary suitable fields, then instantiate them in a normal-form model.
+The transvection identity, for example, is finite bilinear algebra; it has
+no dependence on surreal birthday recursion. The only difficult
+number-theoretic input to the guard is the classical three-square theorem,
+not an unproved claim about omnific factorization.
+
+No Lean files are included here because this manuscript has not been
+formalized or checked against a built repository. A proposed module map
+must not be confused with a completed formal verification.
+
+\section{Further questions and conclusions}\label{sec:questions}
+
+\subsection{Questions not settled by this article}
+
+The following are precise continuation problems. They are not all claimed
+to be open in the literature; the point is to isolate what the present
+proofs do not decide.
+
+\paragraph{Primitive higher-degree Fermat fibers.}
+The scaled solutions in \eqref{eq:fermatscaling} are never primitive.
+For a fixed $n\geq3$, classify primitive or unimodular omnific solutions
+of $X^n+Y^n=Z^n$ with all coordinates nonzero. The binary nonzero-fiber
+theorem does not directly answer a three-variable homogeneous question.
+
+\paragraph{Coprime exponent equations and affine curves.}
+Determine which curves such as $Y^2=X^3+1$ have genuinely infinite
+omnific points. The leading equation gives only a necessary condition;
+it does not decide whether an algebraic expansion has an inadmissible
+negative tail. A satisfactory criterion should separate polynomial
+parametrization, torus rigidity, and genuinely algebraic branches.
+
+\paragraph{The arithmetic of the pure-infinite ideal.}
+We have given a first-order definition of $\J$, but not an existential
+one. Is there an existential definition over $\Z$? More generally,
+which fibers or subideals of $\J$ are Diophantine? Retraction stability
+is necessary for such definitions but far from sufficient.
+
+\paragraph{Complexity of the integrality guard.}
+Can one reduce the number of auxiliary variables below five, retain a
+single quartic equation, or prove a meaningful lower bound? The present
+construction establishes an explicit upper bound only. The role of the
+three-square theorem suggests testing other rigid arithmetic families as
+finite bounds.
+
+\paragraph{Infinite coefficients and effective fragments.}
+For polynomials with finitely represented omnific coefficients, what can
+be decided about roots in a chosen support class? The equation
+$Y^2=\omega^2+1$ shows why a solver needs more than constant and leading
+conditions. Any effective claim must specify coefficients, exponent
+representations, and whether workspace enlargement is permitted.
+
+\subsection{Synthesis}
+
+The arithmetic of $A$ is governed by three simultaneous facts:
+\[
+ A/\J=\Z,\qquad A^\times=\{\pm1\},\qquad\Frac(A)=\No.
+\]
+The first makes ordinary congruences and equation-existence questions
+look classical. The second imposes powerful rigidity on nonzero product
+fibers. The third makes projective representation extraordinarily flexible,
+while saying little about primitive representatives.
+
+The difference between a Pell conic and a three-variable indefinite
+quadric is therefore structural, not a matter of choosing a sufficiently
+large number. Binary factorization forces constants; an additional
+indefinite dimension supports finite polynomial isometries. The quartic
+guard uses the rigid side of this dichotomy to recover ordinary integers
+from the much larger omnific ring. These mechanisms provide a workable
+starting theory of omnific--Diophantine geometry without assuming unique
+factorization, a Euclidean termination principle, or full transfer from
+ordinary arithmetic.
+
+\appendix
+\section{Proof dependencies and verification boundaries}\label{app:dependencies}
+
+The foundation imported from surreal theory is the existence, uniqueness,
+order, and multiplication of set-supported Conway normal forms, the
+set-cut property, and real closedness of $\No$. All other main deductions
+are proved from these and ordinary finite algebra, except where an
+external number-theoretic theorem is explicitly cited.
+
+The principal dependency chains are:
+\begin{align*}
+ &\text{normal forms}\ \Longrightarrow\ \ct\text{ is a retraction}
+ \ \Longrightarrow\ \text{equational transfer and finite quotients};\\
+ &\text{normal forms}\ \Longrightarrow\ \text{constant units in }\BC
+ \ \Longrightarrow\ \text{binary and norm rigidity};\\
+ &\text{Pell rigidity} + \text{ordinary three-square theorem}
+ \ \Longrightarrow\ \text{quartic integrality guard};\\
+ &\text{real quadratic linear algebra} + \text{finite support-ring algebra}
+ \ \Longrightarrow\ \text{quadratic-level dichotomy};\\
+ &\text{normal forms} + \text{set-cut bounds}
+ \ \Longrightarrow\ \text{global common divisors and denominator clearing}.
+\end{align*}
+
+The included \texttt{verification.py} checks the cubic norm identity,
+Pythagorean and hyperboloid identities, B\'ezout certificates, finite
+matrix instances of the quadratic isometry identity, Pell residue
+patterns, and finitely many three-square guard witnesses. It is a
+supplement, not a proof of statements involving all normal forms or all
+ordinary integers. It does not implement the full class of surreal numbers.
+
+The paper's claims have been reviewed by algebraic derivation and the
+finite checks just listed. No independent referee report or proof-assistant
+verification is claimed.
+
+\section{Repository and source audit}\label{app:audit}
+
+\subsection{Repository snapshot}
+
+The inspected repository was \repo, pinned to
+\begin{center}\small\pin\end{center}
+The GitHub connector was used to retrieve the repository tree, root README,
+documentation index, trigonometry directory listing, and
+\texttt{21-period-arithmetic-source\_audit.md}. The inspected documentation
+already discusses normal forms, integer parts, coefficient extraction,
+Hahn workspaces, and finite residue arithmetic. These are credited as
+background rather than presented as discoveries of this article.
+
+This was a focused source inspection, not a repository checkout, build,
+or exhaustive review of every manuscript and Lean declaration. A missing
+search match in a large returned tree is not treated as proof that the
+repository contains no related result. The article's mathematical proofs
+stand on their stated hypotheses, not on an inference from an incomplete
+repository search.
+
+\subsection{Primary mathematical sources}
+
+The 2024 L'Innocente--Mantova article was inspected through its arXiv text,
+with its opening PDF page also checked as an image. Its normal-form
+conventions and distinction between ordinary factorization and generalized
+series factorization were especially relevant. Ehrlich--Kaplan's initial
+integer-part lemma and Je\v r\'abek's residue-kernel discussion were
+checked in the available article text.
+
+For the classical three-square theorem, the primary mathematical paper
+\cite{Shiu} and the Archive of Formal Proofs entry \cite{ThreeSquares}
+were consulted. For undecidability, the author-hosted text accompanying
+Matiyasevich's monograph was consulted \cite{Matiyasevich}. The standard
+books of Conway and Gonshor are background references; they were not
+newly read in full for this task.
+
+\subsection{A dated factorization announcement}
+
+A September 18, 2026 announcement reports a Lean proof of Conway's
+refinement conjecture \cite{RefinementAnnouncement}. Its author explicitly
+qualifies the independent-verification status. We did not audit that code
+or use the announced result. Accordingly, this article does not repeat
+older literature's description of the refinement conjecture as a verified
+\emph{currently open} problem, and does not claim that this manuscript
+settles it. None of our proofs depends on its present status.
+
+\subsection{Novelty and attribution}
+
+The strongest proposed contributions of this manuscript are the explicit
+quadratic-level classification, the uniform five-auxiliary-variable
+quartic guard, and the organization of rigidity and primitive-point
+obstructions into an omnific--Diophantine framework. Familiar mechanisms
+such as coefficient retractions, unit arguments, polynomial
+parametrizations, and nilpotent quadratic isometries are not claimed as
+new inventions. A focused search and source review do not establish
+historical priority; that would require broader expert review.
+
+\begin{thebibliography}{99}
+\small\raggedright
+
+\bibitem{Conway}
+John H. Conway.
+\emph{On Numbers and Games}.
+Academic Press, 1976; second edition, A K Peters, 2001.
+
+\bibitem{Gonshor}
+Harry Gonshor.
+\emph{An Introduction to the Theory of Surreal Numbers}.
+London Mathematical Society Lecture Note Series 110.
+Cambridge University Press, 1986.
+
+\bibitem{LM}
+Sonia L'Innocente and Vincenzo Mantova.
+A factorisation theory for generalised power series and omnific integers.
+\emph{Advances in Mathematics} \textbf{442} (2024), 109513.
+\href{https://doi.org/10.1016/j.aim.2024.109513}{doi:10.1016/j.aim.2024.109513}.
+\href{https://arxiv.org/abs/1710.07304}{arXiv:1710.07304}, version 5,
+January 22, 2024.
+
+\bibitem{EK}
+Philip Ehrlich and Elliot Kaplan.
+Surreal ordered exponential fields.
+\emph{Journal of Symbolic Logic} \textbf{86}(3) (2021), 1066--1115.
+\href{https://doi.org/10.1017/jsl.2021.59}{doi:10.1017/jsl.2021.59}.
+\href{https://arxiv.org/abs/2002.07739}{arXiv:2002.07739}.
+
+\bibitem{Jerabek}
+Emil Je\v r\'abek.
+Rigid models of Presburger arithmetic.
+\emph{Mathematical Logic Quarterly} \textbf{65}(1) (2019), 108--115.
+\href{https://doi.org/10.1002/malq.201800019}{doi:10.1002/malq.201800019}.
+\href{https://arxiv.org/abs/1803.05797}{arXiv:1803.05797}.
+
+\bibitem{Shepherdson}
+John C. Shepherdson.
+A non-standard model for a free variable fragment of number theory.
+\emph{Bulletin de l'Acad\'emie Polonaise des Sciences}
+\textbf{12} (1964), 79--86.
+
+\bibitem{Matiyasevich}
+Yuri V. Matiyasevich.
+\emph{Hilbert's Tenth Problem}.
+MIT Press, 1993.
+Author-hosted supplementary text, especially Section 5.7:
+\url{https://logic.pdmi.ras.ru/~yumat/H10Pbook/par_5_7.htm}.
+
+\bibitem{Shiu}
+Peter Shiu.
+The three-square theorem of Gauss and Legendre.
+\emph{The Mathematical Gazette} \textbf{104}(560) (2020), 209--214.
+\href{https://doi.org/10.1017/mag.2020.42}{doi:10.1017/mag.2020.42}.
+
+\bibitem{ThreeSquares}
+Anna Danilkin and Lo\"ic Chevalier.
+Three Squares Theorem.
+\emph{Archive of Formal Proofs}, May 3, 2023.
+\url{https://isa-afp.org/entries/Three_Squares.html}.
+
+\bibitem{Repo}
+Vladimir Reshetnikov and contributors.
+\emph{Surreal}: repository and research documentation.
+\url{https://github.com/VladimirReshetnikov/Surreal}.
+Snapshot \pin.
+See root \texttt{README.md}, \texttt{docs/README.md}, and the
+trigonometry source-audit file identified in Appendix~\ref{app:audit}.
+
+\bibitem{RefinementAnnouncement}
+\emph{How I Vibed a Proof of Conway's Conjecture}.
+Author's announcement on \emph{overreacted}, September 18, 2026.
+\url{https://overreacted.io/how-i-vibed-a-proof-of-conways-conjecture/}.
+Cited only for the existence and qualified status of the announcement;
+not used as a mathematical premise.
+
+\end{thebibliography}
+\end{document}
