@@ -472,3 +472,11 @@ import Surreal.HahnSeries.LatticeEstimate
 import Surreal.HahnSeries.DifferentialRigidity
 import Surreal.HahnSeries.TateExtension
 import Surreal.Surcomplex.ActualStrongMeasures
+import Surreal.Algebra.ComplexTrigSeries
+import Surreal.Algebra.ComplexArcsinSeries
+import Surreal.Surcomplex.InfinitesimalSquare
+import Surreal.Surcomplex.InfinitesimalTrigonometry
+import Surreal.Surcomplex.CosineFold
+import Surreal.Surcomplex.StrongReindex
+import Surreal.Surcomplex.CosineFoldSeries
+import Surreal.Surcomplex.CosineFoldDerivative
