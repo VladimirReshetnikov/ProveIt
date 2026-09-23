@@ -125,6 +125,12 @@ uses prime-denominator tails as the exponent-side counterpart over a
 finite-lattice-supported base (`hnd:thm:independence`); for `Γ = Q` the two
 bases do not contain each other.
 
+The holonomic-rigidity report now proves all-order differential transcendence
+of every nonpolynomial strongly entire series when the value group has no
+order unit, and a continuum-sized differentially independent family
+(`hol:cf:thm:continuum`). Nothing transfers between those derivations and this
+report's.
+
 ## What was checked when this was fitted into the collection
 
 The headline claim — `dtrdeg_{B_0} H_0 = 2^{ℵ_0}` with the explicit `ξ_α` —

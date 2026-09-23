@@ -1,5 +1,5 @@
 % Merged research report. Standalone: no external graphics, no BibTeX run.
-% Built from four manuscripts (local source numbers 10, 11, 15, 16); see Section 1.4.
+% Built from five manuscripts (local source numbers 10, 11, 15, 16, 17); see Section 1.4.
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -79,6 +79,9 @@
 \newcommand{\repo}{\path{VladimirReshetnikov/Surreal}}
 \newcommand{\pin}{\path{4cf691c7d951e037739d32d9f5c387dcce724f3c}}
 \newcommand{\pinb}{\path{d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0}}
+\newcommand{\pinc}{\path{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}}
+\newcommand{\Zh}{\widehat Z}
+\newcommand{\Erow}{\mathcal E_{p^0}}
 \newcommand{\src}[1]{\textsf{[#1]}}
 \newcommand{\Kc}{K_{\mathrm c}}
 \newcommand{\intc}{\mathop{\int}\nolimits^{\mathrm{coef}}}
@@ -100,7 +103,7 @@
 {\Large Strong atomicity, coefficientwise extension,\\[3pt]
 and hidden negative mass}\par
 \vspace{0.14in}
-{\large Merged research report from four manuscripts\quad\textperiodcentered\quad 22 September 2026}\par
+{\large Merged research report from five manuscripts\quad\textperiodcentered\quad 22 September 2026}\par
 \vspace{0.14in}
 \begin{minipage}{0.97\textwidth}
 \begin{abstract}
@@ -135,11 +138,12 @@ and positive Gaussian quadratures at non-Archimedean nodes.
 \emph{Coefficientwise class.} A transfinite null-ideal criterion decides
 positivity, and two exponents already allow positive cylinders with a negative
 singleton. Independent Bernoulli coordinates perturbed by infinitesimals on one
-common well-ordered exponent set extend exactly under a weighted $\ell^2$
-condition on every exponent row around baselines uniformly separated from $0$
-and $1$, and under an $\ell^1$ condition at deterministic baselines, positively
-on all Borel sets; an i.i.d.\ Bernoulli law extends if and only if its bias is
-real. The threshold $\omega+1$ and the finite real shadow hold in the strong
+common well-ordered exponent set extend exactly when every exponent row lies
+in $\ell^1+\ell^2\bigl(1/(p_j^0(1-p_j^0))\bigr)$ around arbitrary real baselines
+$0<p_j^0<1$ (a weighted $\ell^2$ condition when the baselines are uniformly
+separated from $0$ and $1$), and under an $\ell^1$ condition at deterministic
+baselines, positively on all Borel sets; an i.i.d.\ Bernoulli law extends if
+and only if its bias is real. The threshold $\omega+1$ and the finite real shadow hold in the strong
 class only (Section~\ref{meas:sub:traps}).
 
 \emph{Countably many exponents.} With a countable exponent set a
@@ -155,7 +159,7 @@ class.
 \begin{minipage}{0.97\textwidth}
 \small
 \textbf{Status.} A merged AI-assisted research report with written
-mathematical proofs and four exact finite check suites. The
+mathematical proofs and five exact finite check suites. The
 strong-class classification, the extension criteria, the threshold and the
 coefficientwise product thresholds are offered as proposed original
 contributions, not as certified priority; the countable-scale theory is
@@ -243,9 +247,12 @@ exponents, a real control measure, decompositions, integration of Hahn-valued
 functions, products and conditioning (source~16,
 Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary}). Source~16 also
 adds a third reading of countable addition, by limits in the surreal order, to
-Part~\ref{meas:part:axioms} (Section~\ref{meas:cw:sub:orderlimits}).
-Part~\ref{meas:part:scope} collects the scope, the non-claims of all four
-sources, the open questions, the four check suites and the provenance.
+Part~\ref{meas:part:axioms} (Section~\ref{meas:cw:sub:orderlimits}). Part~\ref{meas:part:coef}
+ends with source~17's exact product criterion at arbitrary, not uniformly
+separated, interior baselines
+(Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples}).
+Part~\ref{meas:part:scope} collects the scope, the non-claims of all five
+sources, the open questions, the five check suites and the provenance.
 
 \subsection{Principal results}\label{meas:sub:results}
 
@@ -294,7 +301,8 @@ exactly under a weighted $\ell^2$ row condition at interior baselines
 (Theorem~\ref{meas:thm:interior}), an $\ell^1$ row condition at deterministic
 baselines (Theorem~\ref{meas:thm:boundary}), and their combination
 (Theorem~\ref{meas:thm:mixed}); an i.i.d.\ Bernoulli law extends if and only
-if its bias is real (Corollary~\ref{meas:cor:iid}).
+if its bias is real (Corollary~\ref{meas:cor:iid}). Item~F removes the
+separation of the interior baselines.
 \item \textbf{Countably many scales} (source 16). A coefficientwise measure with a
 countable exponent set has a Hahn-valued density $\theta$ with respect to one finite
 real control, and is positive exactly when $\theta\ge0$ almost everywhere
@@ -315,11 +323,27 @@ class (Example~\ref{meas:cw:ex:conditional-fail}) but not in a bounded
 unit-leading class (Theorem~\ref{meas:cw:thm:unit-conditional}). Additivity by
 limits in the surreal order allows only finitely many nonzero masses
 (Corollary~\ref{meas:cw:cor:orderlimits}).
+\item \textbf{Arbitrary interior baselines} (source 17). For real baselines
+$0<p_j^0<1$ with no uniform separation from $0$ and $1$, the finite Bernoulli
+laws have a coefficientwise signed extension exactly when every exponent row
+satisfies $\sum_j\min\{\abs{a_{j,\gamma}},\abs{a_{j,\gamma}}^2/(p_j^0q_j^0)\}<\infty$, that
+is, lies in $\ell^1+\ell^2(1/(p_j^0q_j^0))$ (Theorem~\ref{meas:nb:thm:hahn}). The
+extension is then unique, dominated by the baseline product law, positive, with
+exactly its null sets; the complex version holds without positivity. This answers
+Question~\ref{meas:q:nearboundary}. The proof rests on an exact first-order
+criterion (Theorem~\ref{meas:nb:thm:first}) and entire complex likelihoods
+(Theorem~\ref{meas:nb:thm:entire}); one imaginary parameter detects the criterion
+for real rows (Theorem~\ref{meas:nb:thm:imaginary}); pure power laws have the exact
+threshold of Theorem~\ref{meas:nb:thm:power}; and a rank-two example fails at the
+scale $\omega^{-\omega}$ although every lower integer scale passes
+(Example~\ref{meas:nb:ex:ranktwo}). Combining it with deterministic coordinates,
+the merge proves the mixed criterion at arbitrary baselines
+(Theorem~\ref{meas:nb:thm:mixed}).
 \end{enumerate}
 
 \subsection{Sources, and where the merge had to choose}\label{meas:sub:provenance}
 
-The report is built from four manuscripts, all dated 22 September 2026. Three
+The report is built from five manuscripts, all dated 22 September 2026. Three
 (sources 10, 11 and 15) were written independently against the same repository
 snapshot
 \begin{center}\small\pin\end{center}
@@ -329,8 +353,14 @@ are kept as source numbers. The fourth, source~16, arrived in a later delivery
 the later snapshot \pinb{} and read this report as it then stood (the version
 built from sources 10, 11 and 15, 64 pages), so it is not independent of them;
 it attributes the strong/coefficientwise distinction, the strong atomicity
-results and the null-ideal criterion to this report. The programs and data files
-in this directory carry the source numbers as prefixes.
+results and the null-ideal criterion to this report. The fifth, source~17,
+arrived in a still later delivery (its manuscript~01) and continues the local
+numbering. It was written against the snapshot \pinc{}, at which this report was
+the version built from sources 10, 11, 15 and 16 (86 pages, identical to the
+text into which source~17 is merged), so it is not independent of them either;
+it presents its theorem as a strengthening of Theorem~\ref{meas:thm:interior}
+and Proposition~\ref{meas:prop:general-l1}. The programs, data files and audit
+records in this directory carry the source numbers as prefixes.
 
 \begin{center}
 \small
@@ -373,7 +403,17 @@ Lebesgue decomposition; convergence theorems and counterexamples; products,
 Fubini, Cauchy--Schwarz; leading-scale conditioning, the worked two-atom law,
 Borel--Cantelli; conditional expectation, its domain obstruction and the bounded
 unit-leading class; surreal masses and charts; numerosity probability; the
-countability boundary; a framework comparison.\\
+countability boundary; a framework comparison.\\[3pt]
+17 & \emph{Beyond the Square-Summability Barrier: Exact Bernoulli Product
+Extension at Surreal Scales} &
+The admissible row space and its modular; the first-order criterion and its
+measure form; the simultaneous split, entire likelihood lifting, coefficient
+bounds, analytic characterization and imaginary product test; the exact product
+theorem at arbitrary interior baselines, with its complex version; the two
+regimes of the row space and the constant-row corollary; the square-integrability
+boundary, block independence, null events, exponent enlargement and a direct
+strong-additivity obstruction; the power-law threshold; four examples; the surreal
+and surcomplex realization.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -461,6 +501,43 @@ Theorem~\ref{meas:cw:thm:product} is a second route to the positivity in
 Theorem~\ref{meas:thm:mixed} when $S$ is countable. Source~16's proofs were
 reread for hidden uses of countability before any was attached to a statement
 of this report; none is attached to an uncountable exponent set.
+\item \emph{Placement of source 17.} Its material forms
+Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples}, at the end of
+Part~\ref{meas:part:coef}, with the label sub-prefix \path{meas:nb:}. It belongs
+logically after Section~\ref{meas:sec:coef-complex}, but it is placed last so that
+Sections~1--31 and every theorem number in them stay unchanged: source~17 itself
+cites Theorem~20.1 and Example~23.3 by number. The sections of
+Part~\ref{meas:part:scope} moved from 32--36 to 35--39. Unnumbered forward
+pointers were added after Theorems~\ref{meas:thm:interior} and~\ref{meas:thm:mixed},
+Propositions~\ref{meas:prop:general-l1} and~\ref{meas:prop:complex}, and
+Example~\ref{meas:ex:near-boundary}; the statements themselves are unchanged.
+\item \emph{Notation of source 17.} Its $p_j$ and $q_j$ are a real baseline and a
+perturbed bias, where this report writes $p_j^0$ and $p_j$ and reserves $q_j^0$ for
+$1-p_j^0$; its $P$, $M$, $w_j$, row space $\mathcal X_p$, scores $Y_j$ and a
+number of proof symbols collide with symbols used here. All are renamed in
+Convention~\ref{meas:nb:conv:notation}. Its macro for the pinned commit named a
+different snapshot from this report's \verb|\pin|; its snapshot is written \pinc.
+\item \emph{Duplicates of source 17 printed once.} The Neumann lemma in its
+all-word-length form is Lemma~\ref{meas:lem:neumann}; the normal-form bridge is
+Convention~\ref{meas:conv:surreal}; its finite likelihood and coefficient densities
+are \eqref{meas:eq:likelihood} and \eqref{meas:eq:H-finite}; its finite-partition
+variation bound is the necessity half of Theorem~\ref{meas:thm:extension}; its
+positivity from domination is Corollary~\ref{meas:cor:dominated}. Its re-derivations
+of Theorem~\ref{meas:thm:interior}, Proposition~\ref{meas:prop:general-l1} and the
+interior case of Corollary~\ref{meas:cor:iid} are recorded as consequences
+(Section~\ref{meas:nb:sub:relation}); the earlier statements and proofs are kept,
+since they give more in their settings (the $L^2$ chaos bounds of
+Section~\ref{meas:sec:interior}) or cover cases source~17 excludes
+($q\in\{0,1\}$ in Corollary~\ref{meas:cor:iid}). The necessity proofs are genuinely
+different at the first-order step (the fourth-power bound of
+Lemma~\ref{meas:lem:L1lower} against symmetrization), and both are kept. Its
+direct strong-additivity obstruction is kept as a second route to what
+Corollary~\ref{meas:cor:coefficient-test} gives (Proposition~\ref{meas:nb:prop:notstrong}).
+\item \emph{Mixed baselines.} Theorem~\ref{meas:thm:mixed} assumes interior
+baselines in $[\eta,1-\eta]$, and source~17 does not treat deterministic
+coordinates. The merge proves the combination at arbitrary baselines,
+Theorem~\ref{meas:nb:thm:mixed}, with a full proof, and marks it as added in the
+merge; Theorem~\ref{meas:thm:mixed} is kept as stated.
 \end{enumerate}
 
 \subsection{Position relative to the collection}\label{meas:sub:collection}
@@ -587,6 +664,29 @@ extension theorems of Part~\ref{meas:part:products} and equally for the
 coefficientwise extension theorems of Part~\ref{meas:part:coef}. (Source~10
 made this attribution; source~15 did not cite Ludkovsky and Khrennikov, and
 the attribution is extended to its theorems here.)
+
+Source~17 credits classical independent-series theory for the split of each row
+into a linearly and a quadratically controlled part, and cites
+Lata\l a~\cite{Latala} for moment estimates of sums of independent variables as
+context only; rather than import a general estimate with unverified endpoint
+hypotheses, it proves the Bernoulli statement it needs
+(Theorem~\ref{meas:nb:thm:first}), and it claims neither the scalar first-order
+phenomenon nor symmetrization as new; the Neumann support lemma, ordinary product
+probability, uniqueness of finite signed measures from cylinder values and the
+normal-form embedding are background for it as well. Kakutani's theorem~\cite{Kakutani} concerns
+equivalence or singularity of ordinary product laws; source~17's problem asks
+whether prescribed infinitesimal coefficients are finite signed measures, ordinary
+product measures always exist for ordinary coordinate probabilities, and the two
+theorems neither coincide nor conflict (the factors in
+Theorem~\ref{meas:nb:thm:imaginary} are sums of absolute values, not Hellinger
+affinities). Its bounded search (titles and keywords on nonuniform Bernoulli
+products, total-variation differentiability of product measures,
+independent-series moment estimates and Hahn-valued probability; some publisher
+full texts were not retrievable) found no exact published match for the
+all-exponent theorem; that is neither a proof of absence nor a priority
+certificate. Because non-Archimedean probability theories use different addition
+axioms, it does not describe its theorem as a first non-Archimedean extension
+theorem.
 
 Source~16 adds a targeted, not exhaustive, comparison
 (Section~\ref{meas:cw:sec:boundary}): elementary numerosities~\cite{BBDN},
@@ -3035,7 +3135,9 @@ This localization uses neither a set of all surreals nor a proper-class sum.
 
 Sections~\ref{meas:sec:coef-extension}--\ref{meas:sec:coef-complex} of this part
 are source~15's; Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary},
-on countably many exponents, are source~16's. Every measure in it is a coefficientwise Hahn measure
+on countably many exponents, are source~16's;
+Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples}, on interior baselines
+without uniform separation, are source~17's. Every measure in it is a coefficientwise Hahn measure
 (Definition~\ref{meas:def:coefficientwise}) and, unless it is proved, is
 \emph{not} strong. Leading coefficients may be diffuse, standard parts may have
 infinitely many atoms, and two exponents suffice for hidden negative mass. Here
@@ -3283,6 +3385,13 @@ is $P_0$, and
 Its null Borel events are exactly the $P_0$-null events. No bound on
 $\norm{b_\gamma}_2$ uniform in $\gamma$ is required.
 \end{theorem}
+
+\paragraph{Forward pointer (source 17).} Theorem~\ref{meas:nb:thm:hahn} removes the
+hypothesis $p_j^0\in[\eta,1-\eta]$: for arbitrary baselines $0<p_j^0<1$ the exact row
+condition is $a_\gamma\in\ell^1+\ell^2(1/(p_j^0q_j^0))$, which under uniform separation is
+condition (ii) above (Corollary~\ref{meas:nb:cor:regimes}). The theorem above and its
+proof are kept; its $L^2$ densities are additional information in its setting
+(Section~\ref{meas:nb:sub:relation}).
 
 \subsection{Orthogonal multilinear coefficients}
 
@@ -3609,6 +3718,10 @@ coefficientwise positivity lemma (Lemma~\ref{meas:lem:coefpositive}) gives
 $\mu(A)\ge0$. Flipping back preserves positivity.
 \end{proof}
 
+\paragraph{Forward pointer (added in the merge).} Theorem~\ref{meas:nb:thm:mixed}
+removes the hypothesis $p_j^0\in[\eta,1-\eta]$ on the interior coordinates, with the
+row condition of Theorem~\ref{meas:nb:thm:hahn} on $J_{\mathrm{int}}$.
+
 \section{Consequences, sharp examples, and the boundary of the theorems}
 \label{meas:sec:coef-examples}
 
@@ -3715,6 +3828,12 @@ gives positivity as in Corollary~\ref{meas:cor:dominated}, and scalar uniqueness
 gives uniqueness.
 \end{proof}
 
+\paragraph{Forward pointer (source 17).} Proposition~\ref{meas:prop:general-l1} is
+contained in Theorem~\ref{meas:nb:thm:hahn}, which gives the exact condition at
+arbitrary interior baselines, $a_\gamma\in\ell^1+\ell^2(1/(p_j^0q_j^0))$ for every
+$\gamma$, and whose necessity proof uses no bound on $\E_0Z_j^4$
+(Theorem~\ref{meas:nb:thm:first}).
+
 \begin{example}[Failure of unrestricted weighted-$\ell^2$ necessity; source 15]
 \label{meas:ex:near-boundary}
 Let $p_j^0=2^{-4j}$ and $\epsilon_j=2^{-j}t^\alpha$. The row is in $\ell^1$, so
@@ -3723,6 +3842,11 @@ $\sum_j2^{-2j}/(2^{-4j}(1-2^{-4j}))=\sum_j2^{2j}/(1-2^{-4j})=+\infty$. The
 equivalence of Theorem~\ref{meas:thm:interior} is false without its uniform
 interior hypothesis.
 \end{example}
+
+\paragraph{Forward pointer (source 17).} Here $\sum_jp_j^0q_j^0<\infty$, so the exact
+row space of Theorem~\ref{meas:nb:thm:hahn} is $\ell^1$
+(Corollary~\ref{meas:nb:cor:regimes}(ii)), and the example is an instance of that
+theorem.
 
 \subsection{No ordinary continuity in the field order}
 
@@ -3758,6 +3882,11 @@ absolutely in the Banach space of finite complex measures with the same bound,
 and the first-order total variation is $\sum_j\abs{a_{j,\gamma}}+\abs{\sum_ja_{j,\gamma}}$.
 Uniqueness is the complex case of Theorem~\ref{meas:thm:extension}.
 \end{proof}
+
+\paragraph{Forward pointer (source 17).} The interior clause extends to arbitrary
+baselines $0<p_j^0<1$: by the complex part of Theorem~\ref{meas:nb:thm:hahn} a
+coefficientwise complex extension exists exactly when every row lies in complex
+$\ell^1+\ell^2(1/(p_j^0q_j^0))$, again without a positivity assertion.
 
 \begin{proposition}[Conditioning on infinitesimal events; source 15]
 \label{meas:prop:conditioning}
@@ -4995,6 +5124,1062 @@ diffuse integration, exact finite counting, geometric measure on a
 non-Archimedean domain, or another feature comes first, and no construction makes
 these choices disappear.
 
+\section{Arbitrary interior baselines: first order and entire likelihoods}
+\label{meas:nb:sec:first}
+
+Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples} are source~17's,
+except where a statement is marked as added in the merge. They remove the
+uniform separation hypothesis $p_j^0\in[\eta,1-\eta]$ of
+Theorem~\ref{meas:thm:interior}. Source~17 read this report at a third
+repository snapshot, \pinc, at which it was the version built from sources 10,
+11, 15 and 16, and it answers Question~\ref{meas:q:nearboundary}: for arbitrary
+real baselines $0<p_j^0<1$ a coefficientwise extension exists exactly when every
+exponent row lies in the sum space $\ell^1+\ell^2(\varpi^{-1})$ of
+Definition~\ref{meas:nb:def:rows} (Theorem~\ref{meas:nb:thm:hahn}). This section
+solves the first-order problem and constructs entire complex likelihoods;
+Section~\ref{meas:nb:sec:hahn} lifts both to every Hahn exponent; and
+Section~\ref{meas:nb:sec:examples} collects consequences, thresholds, examples and
+the surreal and surcomplex realization. Every measure here is a coefficientwise
+Hahn measure (Definition~\ref{meas:def:coefficientwise}) and none is strong
+(Proposition~\ref{meas:nb:prop:notstrong}).
+
+\begin{convention}[Notation of
+Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples}; renamed from
+source~17]\label{meas:nb:conv:notation}
+The setting is that of Section~\ref{meas:sec:interior} without the constant
+$\eta$: $\Omega=\{0,1\}^{\N}$ with its Borel $\sigma$-algebra $\B$ and coordinates
+$X_j$, $\mathcal F_n=\sigma(X_1,\ldots,X_n)$, real baselines $0<p_j^0<1$ with
+$q_j^0=1-p_j^0$, one well-ordered $S\subseteq\Gamma_{>0}$ for all coordinates, and
+perturbed biases $p_j=p_j^0+\epsilon_j$ as in \eqref{meas:eq:perturbation}. $P_0$ is
+the ordinary product law with biases $p_j^0$, $P_n$ is the finite law
+\eqref{meas:eq:finite-intro} with the perturbed biases, and $S^*$ is the monoid of
+Lemma~\ref{meas:lem:neumann}. Source~17 wrote the same objects differently.
+\begin{enumerate}[label=(\alph*)]
+\item Its $p_j$ is the \emph{baseline} $p_j^0$ here, and its $q_j$ is the
+\emph{perturbed} bias $p_j$ here. In this report $q_j^0$ is always the real
+baseline failure probability $1-p_j^0$, never a perturbed probability; reading
+source~17's $q_j$ as $q_j^0$ would confuse the two.
+\item Its baseline product law $P$ is $P_0$; its monoid
+$M=\langle S\rangle_{\N_0}$ is $S^*$; its coordinates $B_j$ are $X_j$; its
+perturbations $\varepsilon_j$ and entries $a_{j\gamma}$ are $\epsilon_j$ and
+$a_{j,\gamma}$; the row at $\gamma$ is $a_\gamma=(a_{j,\gamma})_{j\ge1}$ as in
+Section~\ref{meas:sec:interior}.
+\item Its weight $w_j=p_j(1-p_j)$ is $\varpi_j=p_j^0q_j^0$, the variance of $X_j$
+under $P_0$, because $w_x$ and $w_I$ already denote point and path weights
+\eqref{meas:eq:path-weight}. Its row space $\mathcal X_p=\ell^1+\ell^2(w^{-1})$ is the
+\emph{admissible row space} $\Erow$ of Definition~\ref{meas:nb:def:rows}, because
+$X$ and $X_j$ denote sample spaces and coordinates; its modular $\Phi_p$ is
+$\Phi_{p^0}$.
+\item Its score $Y_j=(B_j-p_j)/w_j$ is $\Zh_j=(X_j-p_j^0)/\varpi_j=Z_j/\sqrt{\varpi_j}$,
+where $Z_j$ is the unit-variance score of Section~\ref{meas:sec:interior}, because
+$Y$ denotes a second sample space. Its first-order sums $S_n(a)$ are $U_n(a)$,
+because $S$ is the exponent set.
+\item Its formal likelihood $D_n(t)$ and coefficient densities $H_{\gamma,n}$ are
+the $L_n$ and $H_{\rho,n}$ of \eqref{meas:eq:likelihood} and
+\eqref{meas:eq:H-finite}: $1+\epsilon_j\Zh_j=1+Z_j\sum_\gamma b_{j,\gamma}t^\gamma$, so
+the objects coincide. Its limit densities $F_\gamma$ are written $H_\rho$, as in
+\eqref{meas:eq:density-measure}. Its complex-parameter likelihoods $D_n(z)$, $D(z)$
+and Taylor coefficients $G_{k,n}$, $G_k$ are $\Lambda_n(z)$, $\Lambda(z)$,
+$\Lambda_{k,n}$, $\Lambda_k$, because $D$ is the set of finite-success paths and
+$G$ a group.
+\item Its coordinate partitions $\N=J\sqcup I$ are written $\N=J_1\sqcup J_2$,
+where $J_1$ is always the block of large amplitudes controlled in $\ell^1$ and
+$J_2$ the block controlled in $\ell^2(\varpi^{-1})$. Source~17 used $I$ and $J$
+with these two roles exchanged between two of its proofs, and $I$ denotes a
+finite set of successes here.
+\item Its exponents $\eta$ and $\xi$ in the examples are $\alpha$ and $\beta$,
+because $\eta$ is the separation constant of Theorem~\ref{meas:thm:interior}. Its
+product constant $\kappa$ is $c_*$ and its random sum $Q$ is $\Psi$, because
+$\kappa$ is an ordinal or a Jacobi coefficient and $Q_n$ is the multilinear sum
+\eqref{meas:eq:Q}. Its Bernoulli selectors $\delta_j$ are $\chi_j$, because
+$\delta$ denotes point masses; its split norms $b_r,c_r$ and bounds $A(z)$, $V(z)$
+are $\norm{a^{(r)}}_{1;J_1}$, $\norm{a^{(r)}}_{2;J_2}$, $\Theta_1(z)$ and
+$\Theta_2(z)$, because $b_{j,\gamma}$, $A$ and $V_\gamma(n)$ have other meanings.
+Likewise its combined amplitudes $\alpha_j(z)$, likelihood factors $L_{J,n}$,
+$L_{I,n}$ and complex measures $\lambda_z$ are $a_j(z)$, $\Lambda^{(1)}_n$,
+$\Lambda^{(2)}_n$ and $\Lambda(z)P_0$; its letters $\delta_1,\ldots,\delta_m$ and set
+$\mathcal K_\gamma$ are $s_1,\ldots,s_m$ and $\mathcal K_\rho$, as in
+Lemma~\ref{meas:lem:neumann}; its set $I(a)$ is $J_1(a)$; its blocks $J,I$ in the
+block-independence statement are $J',J''$, and its exponent pairs $(\delta,\eta)$
+there are $(\alpha,\beta)$; in the first-order proof its $c_j=\abs{a_j}/w_j$, bound
+$K$, symmetrized sum $T_n$ and Rademacher sum $R$ are $\bar a_j$, $c_1$,
+$\widetilde T_n$ and $\Upsilon$; its increments $d_j$ in the imaginary test are
+$\psi_j$. The polydisc radii $R_r$ carry one index; remainders $R_{\rho,n}$ carry
+two.
+\item Total variation is $\norm{\nu}_\TV=\abs\nu(\Omega)$, without a factor
+$1/2$, in source~17 as in this report.
+\end{enumerate}
+The word \emph{mixed} keeps the meaning of Theorem~\ref{meas:thm:mixed}:
+coordinates of two kinds, interior and deterministic. A row that lies in
+$\Erow$ but in neither $\ell^1$ nor $\ell^2(\varpi^{-1})$, which source~17 calls a
+genuinely mixed row, is called a \emph{two-regime row} here.
+\end{convention}
+
+\subsection{The admissible row space}\label{meas:nb:sub:rows}
+
+Under $P_0$ the unnormalized scores
+\begin{equation}\label{meas:nb:eq:score}
+ \Zh_j=\frac{X_j-p_j^0}{\varpi_j}
+ =\begin{cases}1/p_j^0,&X_j=1,\\-1/q_j^0,&X_j=0,\end{cases}
+ \qquad \varpi_j=p_j^0q_j^0,
+\end{equation}
+are independent, and
+\begin{equation}\label{meas:nb:eq:score-moments}
+ \E_0\Zh_j=0,\qquad \E_0\Zh_j^2=1/\varpi_j,\qquad \E_0\abs{\Zh_j}=2.
+\end{equation}
+On $X_j=1$ the one-coordinate likelihood ratio is $p_j/p_j^0=1+\epsilon_j\Zh_j$, and on
+$X_j=0$ it is $(1-p_j)/q_j^0=1+\epsilon_j\Zh_j$. So on $\mathcal F_n$ the prescribed law
+has density $L_n=\prod_{j\le n}(1+\epsilon_j\Zh_j)$ relative to $P_0$, and every
+coefficient calculation reduces to ordinary random variables of finitely many
+coordinates. No lower bound on $p_j^0$ or $q_j^0$ is imposed anywhere in
+Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples}.
+
+\begin{definition}[Admissible rows; source 17]\label{meas:nb:def:rows}
+For real or complex sequences $a=(a_j)_{j\ge1}$ put
+\[
+ \ell^2(\varpi^{-1})=\Bigl\{a:\sum_j\abs{a_j}^2/\varpi_j<\infty\Bigr\},
+ \qquad
+ \Erow=\ell^1+\ell^2(\varpi^{-1}),
+ \qquad
+ \Phi_{p^0}(a)=\sum_{j\ge1}\min\Bigl\{\abs{a_j},\frac{\abs{a_j}^2}{\varpi_j}\Bigr\}.
+\]
+The sum is algebraic: $a\in\Erow$ means $a=a'+a''$ with $a'\in\ell^1$ and
+$a''\in\ell^2(\varpi^{-1})$. Real and complex versions are both used.
+\end{definition}
+
+\begin{lemma}[Concrete modular test; source 17]\label{meas:nb:lem:modular}
+For a real or complex sequence $a$ the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $a\in\Erow$;
+\item $\Phi_{p^0}(a)<\infty$;
+\item with $J_1(a)=\{j:\abs{a_j}>\varpi_j\}$,
+\begin{equation}\label{meas:nb:eq:canonical-split}
+ \sum_{j\in J_1(a)}\abs{a_j}<\infty,
+ \qquad
+ \sum_{j\notin J_1(a)}\abs{a_j}^2/\varpi_j<\infty.
+\end{equation}
+\end{enumerate}
+The modular may equivalently be replaced by $\sum_j\abs{a_j}^2/(\varpi_j+\abs{a_j})$.
+\end{lemma}
+\begin{proof}
+(ii) and (iii) agree after splitting the sum at $\abs{a_j}=\varpi_j$, and (iii)
+gives a decomposition of $a$ with disjoint supports, hence (i). Conversely, if
+$a=a'+a''$, then for each $j$ either $\abs{a_j'}\ge\abs{a_j}/2$ or
+$\abs{a_j''}\ge\abs{a_j}/2$, so
+\[
+ \min\{\abs{a_j},\abs{a_j}^2/\varpi_j\}\le2\abs{a_j'}+4\abs{a_j''}^2/\varpi_j ,
+\]
+and summation gives (ii). Finally, for $r\ge0$ and $w>0$,
+$r^2/(w+r)\le\min\{r,r^2/w\}\le2r^2/(w+r)$.
+\end{proof}
+
+The threshold $\varpi_j$ in the split is a normalization, not a parameter:
+replacing it by a fixed positive multiple of $\varpi_j$ gives the same membership
+condition, by comparison of the two summands.
+
+\subsection{The exact first-order obstruction}\label{meas:nb:sub:first}
+
+For a real or complex sequence $a$ put
+\begin{equation}\label{meas:nb:eq:first-sum}
+ U_n(a)=\sum_{j=1}^na_j\Zh_j .
+\end{equation}
+The proof below is written out, as in source~17, so that it uses neither a
+uniform-integrability hypothesis nor the fourth-power bound of
+Lemma~\ref{meas:lem:L1lower}: $\E_0Z_j^4=\varpi_j^{-1}-3$ is unbounded when
+$p_j^0\to0$.
+
+\begin{theorem}[First-order criterion; source 17]\label{meas:nb:thm:first}
+For a real or complex sequence $a$,
+\begin{equation}\label{meas:nb:eq:first-equivalence}
+ \sup_n\norm{U_n(a)}_{L^1(P_0)}<\infty
+ \quad\Longleftrightarrow\quad a\in\Erow .
+\end{equation}
+When these hold, $U_n(a)$ converges in $L^1(P_0)$; its limit is written $U(a)$.
+\end{theorem}
+\begin{proof}
+\emph{Sufficiency and convergence.} Let $a=a'+a''$ with $a'\in\ell^1$ and
+$a''\in\ell^2(\varpi^{-1})$. By \eqref{meas:nb:eq:score-moments},
+$\sum_j\norm{a_j'\Zh_j}_1=2\sum_j\abs{a_j'}<\infty$, so the $a'$ series converges
+absolutely in $L^1$. The independent centred summands $a_j''\Zh_j$ are orthogonal
+in $L^2$, and $\norm{\sum_{m<j\le n}a_j''\Zh_j}_2^2=\sum_{m<j\le n}\abs{a_j''}^2/\varpi_j\to0$,
+so the $a''$ series converges in $L^2$, hence in $L^1$. This proves sufficiency and
+$L^1$ convergence, with
+\begin{equation}\label{meas:nb:eq:first-upper}
+ \sup_n\norm{U_n(a)}_1\le2\norm{a'}_{\ell^1}+\norm{a''}_{\ell^2(\varpi^{-1})}.
+\end{equation}
+
+\emph{A symmetrized square function.} Let $a$ be real and
+$\sup_n\E_0\abs{U_n(a)}\le c_1<\infty$. Take independent copies $X_j'$ of the
+coordinates and put $\widetilde T_n=\sum_{j\le n}(a_j/\varpi_j)(X_j-X_j')$; the
+triangle inequality gives $\E\abs{\widetilde T_n}\le2c_1$. Each $X_j-X_j'$ equals $1$
+and $-1$ with probability $\varpi_j$ each and $0$ otherwise, so $\widetilde T_n$ has
+the law of
+\begin{equation}\label{meas:nb:eq:symmetry-law}
+ \sum_{j=1}^n\bar a_j\chi_jr_j,\qquad \bar a_j=\abs{a_j}/\varpi_j,
+\end{equation}
+with independent Bernoulli selectors $\chi_j$ of parameter $2\varpi_j$, independent
+symmetric signs $r_j$, and the two families independent. For deterministic real
+$u_1,\ldots,u_n$ put $\Upsilon=\sum_ju_jr_j$ and $V_u=\sum_ju_j^2$. Then $\E\Upsilon^2=V_u$
+and $\E\Upsilon^4\le3V_u^2$, and H\"older's inequality
+$\norm\Upsilon_2\le\norm\Upsilon_1^{1/3}\norm\Upsilon_4^{2/3}$ gives
+\begin{equation}\label{meas:nb:eq:khintchine}
+ \E\abs\Upsilon\ge3^{-1/2}\sqrt{V_u}.
+\end{equation}
+Conditioning \eqref{meas:nb:eq:symmetry-law} on the selectors gives
+$\E\sqrt{\sum_{j\le n}\bar a_j^2\chi_j}\le2\sqrt3\,c_1$, and monotone convergence shows
+that
+\begin{equation}\label{meas:nb:eq:Psi}
+ \Psi=\sum_{j\ge1}\bar a_j^2\chi_j\quad\text{satisfies}\quad\E\sqrt\Psi<\infty ;
+\end{equation}
+in particular $\Psi<\infty$ almost surely.
+
+\emph{Small amplitudes are square summable.} Let $J_2=\{j:\bar a_j\le1\}$. For a
+finite $F\subseteq J_2$, independence gives
+$\E\exp(-\sum_{j\in F}\bar a_j^2\chi_j)=\prod_{j\in F}\{1-2\varpi_j(1-e^{-\bar a_j^2})\}$.
+Since $1-e^{-u}\ge(1-e^{-1})u$ for $0\le u\le1$ and $1-v\le e^{-v}$, divergence of
+$\sum_{j\in J_2}\varpi_j\bar a_j^2$ would drive these expectations to zero along an
+exhaustion of $J_2$, and dominated convergence would give $\E e^{-\Psi_{J_2}}=0$ for
+$\Psi_{J_2}=\sum_{j\in J_2}\bar a_j^2\chi_j$. But $\Psi_{J_2}<\infty$ almost surely, so
+$e^{-\Psi_{J_2}}>0$ almost surely and its expectation is positive. Hence
+\begin{equation}\label{meas:nb:eq:small-sum}
+ \sum_{j\in J_2}\varpi_j\bar a_j^2=\sum_{\abs{a_j}\le\varpi_j}\abs{a_j}^2/\varpi_j<\infty .
+\end{equation}
+
+\emph{Large amplitudes are absolutely summable.} Let $J_1=\{j:\bar a_j>1\}$. Since
+$\Psi<\infty$ almost surely, only finitely many events $\{\chi_j=1\}$ with $j\in J_1$
+occur, so the second Borel--Cantelli lemma gives $\sum_{j\in J_1}2\varpi_j<\infty$.
+As $0<2\varpi_j\le\frac12$, the product $c_*=\prod_{j\in J_1}(1-2\varpi_j)$ is
+positive. For $j\in J_1$ the event that $\chi_j=1$ and $\chi_k=0$ for every other
+$k\in J_1$ has probability at least $2c_*\varpi_j$; these events are disjoint, and
+on the $j$th of them $\sqrt\Psi\ge\bar a_j$. Hence
+\[
+ \E\sqrt\Psi\ge2c_*\sum_{j\in J_1}\varpi_j\bar a_j=2c_*\sum_{\abs{a_j}>\varpi_j}\abs{a_j},
+\]
+which is finite. With \eqref{meas:nb:eq:small-sum} and
+Lemma~\ref{meas:nb:lem:modular} this proves the real case.
+
+\emph{Complex rows.} Boundedness of $\norm{U_n(a)}_1$ bounds the same norms for the
+real and imaginary parts of $a$; the real case puts both in their real sum spaces,
+and combining the decompositions puts $a$ in the complex one. Sufficiency was
+proved for complex rows.
+\end{proof}
+
+\begin{corollary}[First-order extension and domination; source 17]
+\label{meas:nb:cor:firstmeasure}
+There is a finite signed (or complex) measure $\nu$ on $\Omega$ whose restriction to
+$\mathcal F_n$ has density $U_n(a)$ relative to $P_0$ for every $n$ if and only if
+$a\in\Erow$. Such a $\nu$ is unique and equals $U(a)P_0$.
+\end{corollary}
+\begin{proof}
+If $\nu$ exists, the atoms of $\mathcal F_n$ have positive $P_0$-mass, so
+$\norm{U_n(a)}_1=\sum_{C}\abs{\nu(C)}\le\norm\nu_\TV$, the sum over the atoms $C$ of
+$\mathcal F_n$; Theorem~\ref{meas:nb:thm:first} gives $a\in\Erow$. Conversely, $L^1$
+convergence and independence give $\E_0[U(a)\mid\mathcal F_n]=U_n(a)$, which are the
+cylinder identities for $U(a)P_0$. Finite signed or complex measures that agree on
+cylinders agree on $\B$.
+\end{proof}
+
+The hypothesis does not include $\nu\ll P_0$; absolute continuity is a
+consequence. A singular component cannot repair a failed first-order
+coefficient.
+
+\subsection{Entire complex likelihoods}\label{meas:nb:sub:entire}
+
+The first-order criterion alone does not justify the higher coefficients: an
+$L^1$ score need not have an integrable square. Arbitrary $L^1$ limits are
+therefore never multiplied. Independence permits a product construction, and a
+complex parameter extracts its coefficients.
+
+\begin{lemma}[Simultaneous split; source 17]\label{meas:nb:lem:split}
+For finitely many real or complex rows $a^{(1)},\ldots,a^{(m)}\in\Erow$ there is a
+partition $\N=J_1\sqcup J_2$ such that, for every $r$,
+\begin{equation}\label{meas:nb:eq:split-norms}
+ \norm{a^{(r)}}_{1;J_1}:=\sum_{j\in J_1}\abs{a_j^{(r)}}<\infty,
+ \qquad
+ \norm{a^{(r)}}_{2;J_2}:=\Bigl(\sum_{j\in J_2}\frac{\abs{a_j^{(r)}}^2}{\varpi_j}\Bigr)^{1/2}<\infty .
+\end{equation}
+The same partition serves every linear combination of these rows.
+\end{lemma}
+\begin{proof}
+Let $J_1^{(r)}=\{j:\abs{a_j^{(r)}}>\varpi_j\}$ and $J_1=\bigcup_rJ_1^{(r)}$.
+Lemma~\ref{meas:nb:lem:modular} gives $\sum_{J_1^{(r)}}\abs{a_j^{(r)}}<\infty$ and
+$\sum_{\N\setminus J_1^{(r)}}\abs{a_j^{(r)}}^2/\varpi_j<\infty$; also
+$\sum_{J_1^{(r)}}\varpi_j<\infty$, so $\sum_{J_1}\varpi_j<\infty$. For fixed $r$,
+Cauchy--Schwarz gives
+$\sum_{J_1\setminus J_1^{(r)}}\abs{a_j^{(r)}}\le
+(\sum_{j\notin J_1^{(r)}}\abs{a_j^{(r)}}^2/\varpi_j)^{1/2}(\sum_{J_1}\varpi_j)^{1/2}<\infty$,
+which with the $J_1^{(r)}$ part proves the first bound. Since
+$J_2\subseteq\N\setminus J_1^{(r)}$ for every $r$, the second follows. Linear
+combinations follow from the triangle inequalities.
+\end{proof}
+
+For $z=(z_1,\ldots,z_m)\in\C^m$ write
+\begin{equation}\label{meas:nb:eq:Lambda}
+ a_j(z)=\sum_{r=1}^mz_ra_j^{(r)},\qquad
+ \Lambda_n(z)=\prod_{j=1}^n\bigl(1+a_j(z)\Zh_j\bigr),
+\end{equation}
+polynomials in $z$ with values in complex $L^1(P_0)$.
+
+\begin{theorem}[Entire likelihood lifting; source 17]\label{meas:nb:thm:entire}
+Let $a^{(1)},\ldots,a^{(m)}\in\Erow$. Then $\Lambda_n$ converges in $L^1(P_0)$, uniformly
+on compact subsets of $\C^m$, to an entire map $\Lambda$, and
+\begin{equation}\label{meas:nb:eq:entire-martingale}
+ \E_0\Lambda(z)=1,\qquad \E_0[\Lambda(z)\mid\mathcal F_n]=\Lambda_n(z).
+\end{equation}
+For a split as in Lemma~\ref{meas:nb:lem:split} put
+$\Theta_1(z)=\sum_r\abs{z_r}\norm{a^{(r)}}_{1;J_1}$ and
+$\Theta_2(z)=\sum_r\abs{z_r}\norm{a^{(r)}}_{2;J_2}$. Then
+\begin{equation}\label{meas:nb:eq:entire-bound}
+ \norm{\Lambda(z)}_1\le\exp\bigl(2\Theta_1(z)+\Theta_2(z)^2/2\bigr).
+\end{equation}
+The finite complex measure $\Lambda(z)P_0$ is the unique finite complex measure with
+cylinder masses
+\begin{equation}\label{meas:nb:eq:complex-cylinders}
+ \bigl(\Lambda(z)P_0\bigr)(X_1=x_1,\ldots,X_n=x_n)
+ =\prod_{j=1}^n\bigl(p_j^0+a_j(z)\bigr)^{x_j}\bigl(q_j^0-a_j(z)\bigr)^{1-x_j},
+\end{equation}
+and its total variation is
+\begin{equation}\label{meas:nb:eq:tv-product}
+ \norm{\Lambda(z)P_0}_\TV=\prod_{j\ge1}\bigl(\abs{p_j^0+a_j(z)}+\abs{q_j^0-a_j(z)}\bigr)<\infty .
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $\Lambda_n=\Lambda_n^{(1)}\Lambda_n^{(2)}$, the products over $j\le n$ in $J_1$ and in
+$J_2$; the two factors are independent. On $J_1$, expanding a tail product and
+using $\E_0\abs{\Zh_j}=2$ gives, for $n<N$,
+\begin{align*}
+ \norm{\Lambda_N^{(1)}-\Lambda_n^{(1)}}_1
+ &\le\prod_{j\in J_1,\,j\le n}(1+2\abs{a_j(z)})
+ \Bigl(\prod_{j\in J_1,\,n<j\le N}(1+2\abs{a_j(z)})-1\Bigr)\\
+ &\le e^{2\Theta_1(z)}\Bigl(e^{2\sum_{j\in J_1,\,j>n}\abs{a_j(z)}}-1\Bigr),
+\end{align*}
+and the tail tends to zero uniformly on bounded parameter sets; so
+$\Lambda_n^{(1)}\to\Lambda^{(1)}$ in $L^1$ with $\norm{\Lambda^{(1)}}_1\le e^{2\Theta_1(z)}$. On $J_2$,
+$\E_0\abs{1+a_j(z)\Zh_j}^2=1+\abs{a_j(z)}^2/\varpi_j$ and
+$\sum_{j\in J_2}\abs{a_j(z)}^2/\varpi_j\le\Theta_2(z)^2$, and independence gives the exact
+tail identity
+\begin{equation}\label{meas:nb:eq:L2-tail}
+ \norm{\Lambda_N^{(2)}-\Lambda_n^{(2)}}_2^2
+ =\norm{\Lambda_n^{(2)}}_2^2\Bigl(\prod_{j\in J_2,\,n<j\le N}\bigl(1+\abs{a_j(z)}^2/\varpi_j\bigr)-1\Bigr),
+\end{equation}
+because the tail product has mean one. This proves locally uniform $L^2$
+convergence to $\Lambda^{(2)}$ with $\norm{\Lambda^{(2)}}_2\le e^{\Theta_2(z)^2/2}$. The two
+limits are measurable for independent coordinate $\sigma$-algebras, so
+$\Lambda=\Lambda^{(1)}\Lambda^{(2)}$ is integrable and
+\[
+ \norm{\Lambda^{(1)}\Lambda^{(2)}-\Lambda_n^{(1)}\Lambda_n^{(2)}}_1
+ \le\norm{\Lambda^{(1)}-\Lambda_n^{(1)}}_1\norm{\Lambda^{(2)}}_1
+ +\norm{\Lambda_n^{(1)}}_1\norm{\Lambda^{(2)}-\Lambda_n^{(2)}}_1 .
+\]
+This proves locally uniform $L^1$ convergence and \eqref{meas:nb:eq:entire-bound}.
+Independence is essential here; there is no general multiplication
+$L^1\times L^1\to L^1$.
+
+A locally uniform limit of Banach-space-valued polynomials is entire: on a closed
+polydisc one passes to the limit in the iterated Cauchy integrals, and the
+resulting coefficient bounds give convergent Taylor series on every smaller
+polydisc which represent the limit. No pointwise convergence of the random
+products is claimed.
+
+Each $\Lambda_N(z)$ has mean one and $\E_0[\Lambda_N(z)\mid\mathcal F_n]=\Lambda_n(z)$ for
+$N\ge n$; conditional expectation is an $L^1$ contraction, so
+\eqref{meas:nb:eq:entire-martingale} survives the limit. On an atom of $\mathcal F_n$,
+$P_0(X_j=x)(1+a_j\Zh_j(x))=(p_j^0+a_j)^x(q_j^0-a_j)^{1-x}$ gives
+\eqref{meas:nb:eq:complex-cylinders}, and uniqueness is cylinder uniqueness for finite
+complex measures. Finally
+$\norm{\Lambda_n(z)}_1=\prod_{j\le n}\E_0\abs{1+a_j(z)\Zh_j}
+=\prod_{j\le n}(\abs{p_j^0+a_j(z)}+\abs{q_j^0-a_j(z)})$, and the $L^1$ limit gives
+\eqref{meas:nb:eq:tv-product}; each factor is at least $1$, so the infinite product
+has its monotone meaning.
+\end{proof}
+
+\paragraph{Coefficient extraction and bounds.} For
+$k=(k_1,\ldots,k_m)\in\Z_{\ge0}^m$ let
+\begin{equation}\label{meas:nb:eq:Taylor}
+ \Lambda_{k,n}=[z_1^{k_1}\cdots z_m^{k_m}]\Lambda_n(z),\qquad
+ \Lambda_k=[z_1^{k_1}\cdots z_m^{k_m}]\Lambda(z),
+\end{equation}
+Taylor coefficients, without factorials. The Cauchy integral formula and
+Theorem~\ref{meas:nb:thm:entire} give
+\begin{equation}\label{meas:nb:eq:coefficient-L1}
+ \Lambda_{k,n}\longrightarrow\Lambda_k\ \text{in }L^1(P_0),\qquad
+ \Lambda_0=1,\qquad \E_0\Lambda_k=0\quad(k\ne0),
+\end{equation}
+and, for arbitrary radii $R_1,\ldots,R_m>0$,
+\begin{equation}\label{meas:nb:eq:cauchy-bound}
+ \norm{\Lambda_k}_1\le
+ \frac{\exp\bigl(2\sum_rR_r\norm{a^{(r)}}_{1;J_1}
+       +\frac12(\sum_rR_r\norm{a^{(r)}}_{2;J_2})^2\bigr)}{\prod_rR_r^{k_r}} .
+\end{equation}
+These bound actual finite-variation coefficient measures; no bound uniform over
+Hahn exponents is implied. For fixed radii put
+$\Theta_1=\sum_rR_r\norm{a^{(r)}}_{1;J_1}$, $\Theta_2=\sum_rR_r\norm{a^{(r)}}_{2;J_2}$ and
+the tails
+$\Theta_{1,n}=\sum_rR_r\sum_{j\in J_1,\,j>n}\abs{a_j^{(r)}}$,
+$\Theta_{2,n}=\sum_rR_r(\sum_{j\in J_2,\,j>n}\abs{a_j^{(r)}}^2/\varpi_j)^{1/2}$. The proof
+above gives, for $\abs{z_r}\le R_r$,
+\begin{equation}\label{meas:nb:eq:uniform-tail}
+ \norm{\Lambda(z)-\Lambda_n(z)}_1\le e^{2\Theta_1+\Theta_2^2/2}
+ \Bigl(e^{2\Theta_{1,n}}-1+\sqrt{e^{\Theta_{2,n}^2}-1}\Bigr),
+\end{equation}
+and the same right side divided by $\prod_rR_r^{k_r}$ bounds
+$\norm{\Lambda_k-\Lambda_{k,n}}_1$. For one row with split norms
+$\theta_1=\norm a_{1;J_1}$, $\theta_2=\norm a_{2;J_2}$ and $k\ge1$, the bound
+$R^{-k}e^{2\theta_1R+\theta_2^2R^2/2}$ is minimized at
+$R=k/(\theta_1+\sqrt{\theta_1^2+\theta_2^2k})$ when the denominator is nonzero
+($R=k/(2\theta_1)$ when $\theta_2=0<\theta_1$); when $\theta_1=\theta_2=0$ every
+positive-degree coefficient vanishes. (Source~17's printed form of
+\eqref{meas:nb:eq:cauchy-bound} had a typesetting defect in the factor $\frac12$;
+the merge restores it, Section~\ref{meas:sub:stale}.)
+
+\begin{corollary}[Total-variation analytic tangent rows; source 17]
+\label{meas:nb:cor:analytic}
+For a real or complex row $a$ the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $a\in\Erow$;
+\item $\prod_{j\le n}(1+za_j\Zh_j)$ converges in $L^1(P_0)$, locally uniformly on
+$\C$, to an entire map;
+\item on some neighbourhood of $0$ there is a total-variation-holomorphic family of
+finite complex measures with cylinder marginals
+$\operatorname{Bernoulli}(p_j^0+za_j)$.
+\end{enumerate}
+Domination by $P_0$ is not assumed in (iii).
+\end{corollary}
+\begin{proof}
+Theorem~\ref{meas:nb:thm:entire} gives (i)$\Rightarrow$(ii)$\Rightarrow$(iii). For
+(iii)$\Rightarrow$(i), differentiate the family at $0$: evaluation at a Borel set is a
+bounded linear functional on the Banach space of finite complex measures, so the
+derivative $\nu$ is a finite complex measure, and its density on $\mathcal F_n$ is
+$U_n(a)$. Corollary~\ref{meas:nb:cor:firstmeasure} gives (i).
+\end{proof}
+
+This characterizes holomorphic continuation of the likelihood, not the existence
+of ordinary real product probabilities: $p_j^0+za_j$ can leave $[0,1]$ for some $j$
+at every nonzero real $z$ while the entire complex family exists
+(Example~\ref{meas:nb:ex:noreal}).
+
+\begin{theorem}[Imaginary product test for real rows; source 17]
+\label{meas:nb:thm:imaginary}
+Let $a$ be real. Then $a\in\Erow$ if and only if there is a finite complex measure
+whose finite-coordinate marginals are $\operatorname{Bernoulli}(p_j^0+ia_j)$;
+equivalently,
+\begin{equation}\label{meas:nb:eq:imaginary-product}
+ \prod_{j\ge1}\Bigl(\sqrt{(p_j^0)^2+a_j^2}+\sqrt{(q_j^0)^2+a_j^2}\Bigr)<\infty .
+\end{equation}
+The measure is then $\Lambda(i)P_0$ from Theorem~\ref{meas:nb:thm:entire}.
+\end{theorem}
+\begin{proof}
+Write $r=\abs{a_j}$, $p=p_j^0$, $q=q_j^0$, $w=pq=\varpi_j$ and
+\[
+ \psi_j=\sqrt{p^2+r^2}+\sqrt{q^2+r^2}-1
+ =\frac{r^2}{\sqrt{p^2+r^2}+p}+\frac{r^2}{\sqrt{q^2+r^2}+q}.
+\]
+Then $\psi_j\le2r$ and $\psi_j\le r^2/(2w)$. For a lower bound exchange $p,q$ so that
+$p\le q$; then $w\le p\le2w$ and $\sqrt{p^2+r^2}+p\le2p+r\le4w+r$, so
+$\psi_j\ge r^2/(4w+r)$, and treating $r\le w$ and $r\ge w$ separately,
+\begin{equation}\label{meas:nb:eq:imaginary-comparison}
+ \tfrac15\min\{r,r^2/w\}\le\psi_j\le2\min\{r,r^2/w\}.
+\end{equation}
+If the measure $\nu$ exists, its variation on the partition into length-$n$
+cylinders is $\prod_{j\le n}(1+\psi_j)\le\norm\nu_\TV$. For nonnegative $\psi_j$
+bounded products are equivalent to $\sum_j\psi_j<\infty$ (discard the finitely many
+$\psi_j>1$ and use $\log(1+\psi)\ge\psi/2$ on $[0,1]$), which by
+\eqref{meas:nb:eq:imaginary-comparison} is $\Phi_{p^0}(a)<\infty$. Conversely,
+$a\in\Erow$ and Theorem~\ref{meas:nb:thm:entire} construct $\Lambda(i)P_0$, and
+\eqref{meas:nb:eq:tv-product} gives the rest.
+\end{proof}
+
+For complex rows a single imaginary evaluation can turn the perturbation into a
+real one, and existence at one point no longer tests analytic differentiability at
+zero. The restriction to real $a$ is therefore essential here, while
+Corollary~\ref{meas:nb:cor:analytic} holds for complex rows. The local factors in
+\eqref{meas:nb:eq:imaginary-product} are sums of absolute values measuring total
+variation of a complex product, not Hellinger affinities; the test is not
+Kakutani's theorem.
+
+\section{The exact product theorem at arbitrary interior baselines}
+\label{meas:nb:sec:hahn}
+
+\subsection{Statement}
+
+\begin{theorem}[Exact extension at arbitrary interior baselines; source 17]
+\label{meas:nb:thm:hahn}
+Let $0<p_j^0<1$ be arbitrary real numbers, with no uniform separation from $0$ and
+$1$; let $\Gamma$ be any set-sized ordered abelian group and $S\subseteq\Gamma_{>0}$
+well ordered; and let the coefficients $a_{j,\gamma}$ in \eqref{meas:eq:perturbation}
+be real. The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item the finite laws $P_n$ admit a coefficientwise signed Hahn extension;
+\item $a_\gamma\in\Erow$ for every $\gamma\in S$;
+\item for every $\gamma\in S$,
+\begin{equation}\label{meas:nb:eq:main-modular}
+ \sum_{j\ge1}\min\Bigl\{\abs{a_{j,\gamma}},\frac{\abs{a_{j,\gamma}}^2}{p_j^0(1-p_j^0)}\Bigr\}<\infty .
+\end{equation}
+\end{enumerate}
+When they hold the extension $\mu$ is unique, its coefficients are supported in
+$S^*$, and
+\begin{equation}\label{meas:nb:eq:hahn-density}
+ \mu_0=P_0,\qquad \mu_\rho=H_\rho P_0,\qquad H_\rho\in L^1(P_0)\quad(\rho\in S^*).
+\end{equation}
+It is a coefficientwise Hahn probability, and
+\begin{equation}\label{meas:nb:eq:null-equivalence}
+ \mu(A)=0\quad\Longleftrightarrow\quad P_0(A)=0\qquad(A\in\B).
+\end{equation}
+For each $\rho$ the finite coefficient densities $H_{\rho,n}$ of
+\eqref{meas:eq:H-finite} converge to $H_\rho$ in $L^1(P_0)$; equivalently, their
+density measures converge in total variation.
+
+With complex coefficients and finite complex coefficient measures, the
+equivalence, uniqueness, support, domination, convergence and total mass one
+assertions hold as well; no order or positivity is asserted, and
+\eqref{meas:nb:eq:null-equivalence} holds as equality to zero.
+\end{theorem}
+
+In (i) neither domination by $P_0$, nor positivity, nor support in $S^*$ is
+assumed; the theorem derives all three in the real case. No estimate uniform in
+$\gamma$, no countability of $S$ and no analytic parameter controlling all rows at
+once is required.
+
+\subsection{Proof}
+
+\paragraph{Sufficiency: a finite problem at each exponent.} Assume every row lies
+in $\Erow$. The coefficient support of $L_n=\prod_{j\le n}(1+\epsilon_j\Zh_j)$ lies in
+$S^*$. Fix $\rho\in S^*\setminus\{0\}$. By Lemma~\ref{meas:lem:neumann} only finitely
+many letters of $S$ occur in words summing to $\rho$; list them as
+$s_1,\ldots,s_m$. The set
+\begin{equation}\label{meas:nb:eq:K-rho}
+ \mathcal K_\rho=\Bigl\{k\in\Z_{\ge0}^m:\sum_{r=1}^mk_rs_r=\rho\Bigr\}
+\end{equation}
+is finite by the same lemma. Apply Theorem~\ref{meas:nb:thm:entire} to the rows
+$a_{s_1},\ldots,a_{s_m}$. Expanding the finite products gives the exact identity
+\begin{equation}\label{meas:nb:eq:finite-dependence}
+ H_{\rho,n}=\sum_{k\in\mathcal K_\rho}\Lambda_{k,n}:
+\end{equation}
+putting $z_r=t^{s_r}$ only groups the finitely many coefficient choices of total
+exponent $\rho$; no surreal parameter is substituted into an ordinary complex
+function. Define
+\begin{equation}\label{meas:nb:eq:H-construction}
+ H_0=1,\qquad H_\rho=\sum_{k\in\mathcal K_\rho}\Lambda_k,\qquad \mu_\rho=H_\rho P_0,
+\end{equation}
+and $\mu_\rho=0$ for $\rho\notin S^*$. By \eqref{meas:nb:eq:coefficient-L1} and
+\eqref{meas:nb:eq:finite-dependence}, $H_{\rho,n}\to H_\rho$ in $L^1(P_0)$; the limit is
+unique, so $H_\rho$ does not depend on the finite list of rows used. Each $\mu_\rho$ is
+a finite signed or complex measure and $S^*$ is well ordered, so these coefficients
+form a coefficientwise Hahn measure. For an atom $C$ of $\mathcal F_N$, specified by
+$x$, and $n\ge N$, integrating the finite likelihood over the coordinates beyond $N$
+gives
+\[
+ \int_CH_{\rho,n}\,dP_0=\coef{\rho}{\prod_{j=1}^Np_j^{x_j}(1-p_j)^{1-x_j}},
+\]
+and the $L^1$ limit gives the prescribed cylinder values; $C=\Omega$ gives
+$\mu_0(\Omega)=1$ and $\mu_\rho(\Omega)=0$ for $\rho>0$. In the real case every
+positive-exponent coefficient is absolutely continuous with respect to $P_0$, and
+Corollary~\ref{meas:cor:dominated} gives positivity on every Borel set and
+\eqref{meas:nb:eq:null-equivalence}. With complex coefficients the nonzero
+exponent-zero coefficient $P_0(A)$ still prevents $\mu(A)=0$ when $P_0(A)>0$, and
+domination gives $\mu(A)=0$ when $P_0(A)=0$.
+
+\paragraph{Necessity: the least failed row cannot be cancelled.} Let a
+coefficientwise signed or complex extension $\mu$ exist. At every exponent its
+restriction to $\mathcal F_n$ has density $H_{\gamma,n}$, fixed by the cylinder values,
+and since every atom of $\mathcal F_n$ has positive $P_0$-mass,
+\begin{equation}\label{meas:nb:eq:variation-bound}
+ \norm{H_{\gamma,n}}_1=\sum_{C\text{ atom of }\mathcal F_n}\abs{\mu_\gamma(C)}\le\norm{\mu_\gamma}_\TV ,
+\end{equation}
+which is the bound $V_\gamma(n)\le\norm{\mu_\gamma}_\TV$ of
+Theorem~\ref{meas:thm:extension} ($\mu_\gamma=0$ if the support of $\mu$ omits
+$\gamma$). Suppose some row is not in $\Erow$ and let $\gamma\in S$ be the least such.
+A coefficient choice of total exponent $\gamma$ is either the single letter $\gamma$ or
+a word of length at least two, all of whose letters are strictly smaller than
+$\gamma$. Hence, as in \eqref{meas:eq:least-bad},
+\begin{equation}\label{meas:nb:eq:least-bad}
+ H_{\gamma,n}=U_n(a_\gamma)+R_{\gamma,n},
+\end{equation}
+where $R_{\gamma,n}$ involves finitely many earlier rows, all in $\Erow$, and finitely
+many multi-indices (Lemma~\ref{meas:lem:neumann}). Theorem~\ref{meas:nb:thm:entire},
+applied to those rows, shows that $R_{\gamma,n}$ converges in $L^1(P_0)$, so its norms
+are bounded, and \eqref{meas:nb:eq:variation-bound} bounds
+$\sup_n\norm{U_n(a_\gamma)}_1$. Theorem~\ref{meas:nb:thm:first} gives $a_\gamma\in\Erow$,
+a contradiction. Coefficients at larger exponents do not contribute at $\gamma$, and
+products of smaller exponents already form a convergent correction; neither can
+repair a failed row.
+
+\paragraph{Uniqueness and the end of the proof.} At each exponent two candidate
+coefficient measures agree on cylinders and hence on $\B$; a coefficient at
+$\gamma\notin S^*$ vanishes on every cylinder and is zero, and $\mu_0=P_0$. The
+construction of the sufficiency part, available once necessity is proved, supplies
+the remaining assertions, including domination and total-variation convergence.
+Lemma~\ref{meas:nb:lem:modular} gives (ii)$\Leftrightarrow$(iii).\hfill$\square$
+
+\begin{remark}[No uncountable intersection is hidden; source 17]
+\label{meas:nb:rem:uncountable}
+For uncountable $S$ the densities $H_\rho$ are $L^1$ equivalence classes, each
+integrated separately; no common full-measure set of good representatives is
+needed. Well ordering of $S^*$ makes $\sum_\rho(\int_AH_\rho\,dP_0)t^\rho$ a Hahn series for
+every $A$, and positivity comes from the single exponent-zero coefficient. If $S$
+is countable, so is $S^*$, representatives can be chosen on one full-measure set,
+and there $1+\sum_{\rho>0}H_\rho(x)t^\rho$ is a positive Hahn series; this pointwise
+description (compare the density $\theta$ of Section~\ref{meas:cw:sec:control}) is
+supplementary, not a premise.
+\end{remark}
+
+\subsection{Relation to Sections~\ref{meas:sec:interior}--\ref{meas:sec:coef-complex}}
+\label{meas:nb:sub:relation}
+
+\begin{corollary}[The two regimes of the row space; source 17]
+\label{meas:nb:cor:regimes}
+For arbitrary interior baselines
+\[
+ \ell^1\subseteq\Erow\subseteq\ell^2,\qquad \ell^2(\varpi^{-1})\subseteq\Erow .
+\]
+\begin{enumerate}[label=(\roman*)]
+\item If $\inf_jp_j^0q_j^0>0$, then $\Erow=\ell^2(\varpi^{-1})=\ell^2$.
+\item If $\sum_jp_j^0q_j^0<\infty$, then $\Erow=\ell^1$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+The two inclusions into $\Erow$ are the definition. Since $\varpi_j\le\frac14$,
+$\ell^2(\varpi^{-1})\subseteq\ell^2$, and $\ell^1\subseteq\ell^2$, so $\Erow\subseteq\ell^2$.
+Under (i) the two quadratic norms are equivalent and $\ell^1\subseteq\ell^2$ adds
+nothing. Under (ii), Cauchy--Schwarz gives
+$\sum_j\abs{c_j}\le(\sum_j\abs{c_j}^2/\varpi_j)^{1/2}(\sum_j\varpi_j)^{1/2}$ for
+$c\in\ell^2(\varpi^{-1})$, so $\ell^2(\varpi^{-1})\subseteq\ell^1$.
+Example~\ref{meas:nb:ex:tworegime} gives a row in neither summand.
+\end{proof}
+
+Case (ii) is not a statement about coordinates with $p_j^0\in\{0,1\}$, which are
+excluded throughout Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples}; a rapid
+approach to the endpoints gives the same $\ell^1$ threshold while every finite
+baseline cylinder keeps positive mass. The earlier results of this part stand as
+stated and relate to Theorem~\ref{meas:nb:thm:hahn} as follows.
+\begin{itemize}
+\item \emph{Theorem~\ref{meas:thm:interior}.} Under $p_j^0\in[\eta,1-\eta]$, condition
+(ii) there, $b_\gamma\in\ell^2$, is $a_\gamma\in\ell^2(\varpi^{-1})=\Erow$ by
+Corollary~\ref{meas:nb:cor:regimes}(i); so Theorem~\ref{meas:nb:thm:hahn} recovers its
+equivalence, uniqueness, constant coefficient and null events, and removes its
+separation hypothesis. Theorem~\ref{meas:thm:interior} gives more in its setting:
+densities in $L^2(P_0)$ with the chaos bound \eqref{meas:eq:H-limit}, where
+Theorem~\ref{meas:nb:thm:hahn} gives $L^1$ densities. By uniqueness the two
+constructions give the same $H_\rho$.
+\item \emph{Proposition~\ref{meas:prop:general-l1}} is the case
+$a_\gamma\in\ell^1\subseteq\Erow$ of Theorem~\ref{meas:nb:thm:hahn}; its direct
+distinct-coordinate expansion, with the bound
+$\frac{2^k}{k!}\prod_r\norm{a_{\gamma_r}}_1$ for each exponent word, is kept as the proof
+in that case.
+\item \emph{Example~\ref{meas:ex:near-boundary}} ($p_j^0=2^{-4j}$) has
+$\sum_j\varpi_j<\infty$, so $\Erow=\ell^1$ by Corollary~\ref{meas:nb:cor:regimes}(ii),
+and the row $(2^{-j})$ lies in it; the example is consistent with, and explained
+by, Theorem~\ref{meas:nb:thm:hahn}.
+\item \emph{Proposition~\ref{meas:prop:complex}.} Its interior clause, proved under
+$p_j^0\in[\eta,1-\eta]$, is extended to arbitrary interior baselines by the complex
+part of Theorem~\ref{meas:nb:thm:hahn}: rows in complex $\Erow$, with no positivity
+assertion.
+\item \emph{Corollary~\ref{meas:cor:iid} and the table of
+Section~\ref{meas:sec:coef-examples}.} For $0<q<1$ the corollary is re-derived by
+Corollary~\ref{meas:nb:cor:constant}; its cases $q\in\{0,1\}$ use
+Theorem~\ref{meas:thm:boundary} and are not covered by source~17. The table's
+interior rows ($p_j^0=\frac12$) agree with the case $r=0$ of
+Theorem~\ref{meas:nb:thm:power}.
+\end{itemize}
+
+\begin{corollary}[No fixed nonzero row; source 17]\label{meas:nb:cor:constant}
+Every row satisfying \eqref{meas:nb:eq:main-modular} tends to zero as
+$j\to\infty$. In particular a nonzero constant row at any exponent prevents
+extension, and an i.i.d.\ Bernoulli law with a fixed interior real standard part
+and a nonzero infinitesimal bias has no coefficientwise signed extension.
+\end{corollary}
+\begin{proof}
+$\Erow\subseteq\ell^2$ and Theorem~\ref{meas:nb:thm:hahn}. For a nonzero common bias
+the row at its least exponent is a nonzero constant.
+\end{proof}
+
+\subsection{Mixed baselines without separation (added in the merge)}
+\label{meas:nb:sub:mixed}
+
+Theorem~\ref{meas:thm:mixed} combines interior baselines in $[\eta,1-\eta]$ with
+deterministic ones. Its proof uses three properties of the interior extension
+$\tau$: it has the prescribed interior marginals, its exponents lie in $S^*$, and
+it is positive on every Borel set. Theorem~\ref{meas:nb:thm:hahn} supplies all three
+at arbitrary interior baselines, and the necessity half needs only the interior
+criterion for a coordinate subsequence. The following theorem and its proof are
+added in the merge; source~17 does not state them.
+
+\begin{theorem}[Mixed criterion at arbitrary baselines; added in the merge]
+\label{meas:nb:thm:mixed}
+Let $p_j=p_j^0+\sum_{\gamma\in S}a_{j,\gamma}t^\gamma$ with arbitrary real $p_j^0\in[0,1]$,
+real $a_{j,\gamma}$, a common well-ordered $S\subseteq\Gamma_{>0}$, and $0\le p_j\le1$ in
+$\KR$. Put $J_{\mathrm{int}}=\{j:0<p_j^0<1\}$ and $J_{\mathrm{bd}}=\{j:p_j^0\in\{0,1\}\}$.
+The finite independent laws admit a coefficientwise signed extension if and only
+if, for each $\gamma\in S$,
+\begin{equation}\label{meas:nb:eq:mixed}
+ \sum_{j\in J_{\mathrm{int}}}\min\Bigl\{\abs{a_{j,\gamma}},
+ \frac{\abs{a_{j,\gamma}}^2}{p_j^0(1-p_j^0)}\Bigr\}<\infty
+ \qquad\text{and}\qquad
+ \sum_{j\in J_{\mathrm{bd}}}\abs{a_{j,\gamma}}<\infty .
+\end{equation}
+The extension is then unique and is a coefficientwise Hahn probability, with
+exponent support in $S^*$.
+\end{theorem}
+\begin{proof}
+\emph{Reductions.} Replacing $X_j$ by $1-X_j$ for every $j$ with $p_j^0=1$ turns
+its baseline into $0$ and its success bias into $1-p_j\ge0$; its row changes sign
+and keeps its $\ell^1$ norm, and the flip is a Borel automorphism of $\Omega$ mapping
+cylinders to cylinders, so it preserves existence, uniqueness and positivity of
+extensions. Assume therefore that every boundary baseline is $0$; then
+$p_j=\epsilon_j\ge0$ for $j\in J_{\mathrm{bd}}$, and $0<p_j<1$ holds automatically for
+$j\in J_{\mathrm{int}}$. Restriction of coordinates identifies $\Omega$ with
+$\Omega_{\mathrm{int}}\times\Omega_{\mathrm{bd}}$, where
+$\Omega_{\mathrm{int}}=\{0,1\}^{J_{\mathrm{int}}}$ and
+$\Omega_{\mathrm{bd}}=\{0,1\}^{J_{\mathrm{bd}}}$; this is a Borel isomorphism under which a
+cylinder of $\Omega$ is a product of a cylinder of each factor, and the prescribed
+weight of a cylinder is the product of the prescribed weights of its two factors.
+
+\emph{Necessity.} Let $\mu$ be a coefficientwise signed extension. Its pushforward
+to $\Omega_{\mathrm{int}}$ has finite signed coefficient measures (pushforward does not
+increase total variation) with the same well-ordered exponent set, and its
+cylinder values are the prescribed interior weights, since an interior cylinder
+pulls back to a cylinder of $\Omega$. If $J_{\mathrm{int}}$ is infinite, enumerate it
+increasingly; Theorem~\ref{meas:nb:thm:hahn}, (i)$\Rightarrow$(iii), gives the first
+condition in \eqref{meas:nb:eq:mixed}. The same argument on $\Omega_{\mathrm{bd}}$ with
+Theorem~\ref{meas:thm:boundary} gives the second when $J_{\mathrm{bd}}$ is infinite.
+Finite index sets satisfy the conditions trivially.
+
+\emph{The two factors.} Assume \eqref{meas:nb:eq:mixed}. If $J_{\mathrm{int}}$ is
+infinite, Theorem~\ref{meas:nb:thm:hahn} gives a coefficientwise Hahn probability
+$\tau=\sum_\alpha\tau_\alpha t^\alpha$ on $\Omega_{\mathrm{int}}$ with the interior weights,
+exponents in $S^*$, and $\tau(E)\ge0$ for every Borel $E$. If $J_{\mathrm{bd}}$ is
+infinite, Theorem~\ref{meas:thm:boundary} gives a coefficientwise Hahn probability
+$\beta=\sum_\delta\beta_\delta t^\delta$ on $\Omega_{\mathrm{bd}}$ with exponents in $S^*$,
+every coefficient concentrated on the countable set $D$ of finite-success paths,
+and atomic masses $\beta_\delta(\{I\})=\coef\delta{w_I}$ with $w_I\ge0$, supports in
+$S^*$ and $\sum_I\abs{\coef\delta{w_I}}\le\norm{\beta_\delta}_\TV$, by
+\eqref{meas:eq:positive-weights} and \eqref{meas:eq:atomic-coefs}. A finite factor is
+the finite product law: on a finite interior block every point has a positive
+weight, a product of the Hahn series $p_j>0$ and $1-p_j>0$, and on a finite boundary
+block (all of whose paths are finite-success paths) the weights
+$w_I=\prod_{i\in I}p_i\prod_{j\notin I}(1-p_j)\ge0$ are finite products; in both cases
+the exponents lie in $S^*$ and the properties just listed hold. An empty block is a
+one-point space with mass $1$.
+
+\emph{Existence and uniqueness.} Define on $\Omega_{\mathrm{int}}\times\Omega_{\mathrm{bd}}$
+\[
+ \mu_\rho=\sum_{\substack{\alpha,\delta\in S^*\\\alpha+\delta=\rho}}\tau_\alpha\otimes\beta_\delta,
+ \qquad
+ \norm{\mu_\rho}_\TV\le\sum_{\alpha+\delta=\rho}\norm{\tau_\alpha}_\TV\norm{\beta_\delta}_\TV<\infty,
+\]
+a finite sum by Lemma~\ref{meas:lem:neumann}, with $\mu_\rho=0$ for $\rho\notin S^*$;
+$S^*$ is well ordered, so $\mu$ is a coefficientwise Hahn measure. For a cylinder
+$C=C_{\mathrm{int}}\times C_{\mathrm{bd}}$ the coefficients of $\mu(C)$ are those of the
+Hahn product $\tau(C_{\mathrm{int}})\beta(C_{\mathrm{bd}})$, which is the product of the
+prescribed weights; so $\mu$ has the prescribed finite laws and $\mu(\Omega)=1$.
+Uniqueness is Theorem~\ref{meas:thm:extension}.
+
+\emph{Positivity.} Fix a Borel set $A$ and write $A_I=\{x:(x,I)\in A\}$ for its
+section at a boundary path $I$. Since $\beta_\delta$ is the absolutely summable
+combination $\sum_{I\in D}\coef\delta{w_I}\,\delta_I$ of point masses, Fubini's theorem
+for the finite signed measures $\tau_\alpha$ and $\beta_\delta$ (applied to their Jordan
+parts) gives $(\tau_\alpha\otimes\beta_\delta)(A)=\sum_{I\in D}\coef\delta{w_I}\,\tau_\alpha(A_I)$.
+Summing over the finitely many pairs with $\alpha+\delta=\rho$,
+\[
+ \mu_\rho(A)=\sum_{I\in D}\ \sum_{\alpha+\delta=\rho}\coef\alpha{\tau(A_I)}\,\coef\delta{w_I}
+ =\sum_{I\in D}\coef\rho{w_I\,\tau(A_I)},
+\]
+because both factors have supports in $S^*$; the sum over $I$ converges absolutely,
+being bounded by $\sum_{\alpha+\delta=\rho}\norm{\tau_\alpha}_\TV\norm{\beta_\delta}_\TV$. So
+$\mu(A)=\csum_{I\in D}w_I\,\tau(A_I)$, which is \eqref{meas:eq:mixed-sections}. Each
+summand $w_I\tau(A_I)$ is a product of two nonnegative Hahn series and has support in
+$S^*$, and $D$ is countable, so Lemma~\ref{meas:lem:coefpositive} gives
+$\mu(A)\ge0$. Flipping back preserves positivity.
+\end{proof}
+
+With the convention $\abs a^2/0=+\infty$ for $a\ne0$ (and $0$ for $a=0$), both
+conditions of \eqref{meas:nb:eq:mixed} are the single modular
+$\sum_j\min\{\abs{a_{j,\gamma}},\abs{a_{j,\gamma}}^2/(p_j^0(1-p_j^0))\}<\infty$ over all
+coordinates. Theorem~\ref{meas:nb:thm:mixed} contains Theorem~\ref{meas:thm:mixed}
+(by Corollary~\ref{meas:nb:cor:regimes}(i) on the interior block) and
+Theorems~\ref{meas:thm:boundary} and~\ref{meas:nb:thm:hahn}. It is stated for real
+coefficients only; a complex mixed analogue, and a statement about the null
+events of the mixed extension, are not claimed here.
+
+\section{Consequences, thresholds and examples at arbitrary interior baselines}
+\label{meas:nb:sec:examples}
+
+Throughout this section $\mu$ is the extension of Theorem~\ref{meas:nb:thm:hahn}.
+
+\subsection{Structure of the extension}
+
+\begin{proposition}[Square-integrability boundary; source 17]\label{meas:nb:prop:L2}
+For $a\in\Erow$,
+\begin{equation}\label{meas:nb:eq:L2-score}
+ U(a)\in L^2(P_0)\quad\Longleftrightarrow\quad\sum_j\abs{a_j}^2/\varpi_j<\infty,
+\end{equation}
+and then $\norm{U(a)}_2^2=\sum_j\abs{a_j}^2/\varpi_j$.
+\end{proposition}
+\begin{proof}
+The reverse implication and the identity are orthogonality. Conversely
+$\E_0[U(a)\mid\mathcal F_n]=U_n(a)$, and conditional expectation is an $L^2$
+contraction, so $\sum_{j\le n}\abs{a_j}^2/\varpi_j=\norm{U_n(a)}_2^2\le\norm{U(a)}_2^2$.
+\end{proof}
+
+So finite-variation coefficients of every order can exist while the first density
+has infinite second moment (Example~\ref{meas:nb:ex:infinitequadratic}). A proof that
+first demands a finite quadratic score norm, such as the chaos bound behind
+Theorem~\ref{meas:thm:interior}, misses this region; nor may the coefficients be built
+from expressions such as $U(a)^2$ without checking their integrability.
+
+\begin{proposition}[Disjoint coordinate blocks; source 17]\label{meas:nb:prop:blocks}
+Let $J',J''\subseteq\N$ be disjoint, $A\in\sigma(X_j:j\in J')$ and
+$B\in\sigma(X_j:j\in J'')$. Then $\mu(A\cap B)=\mu(A)\mu(B)$, also for the complex
+extension, and by induction for finitely many disjoint blocks.
+\end{proposition}
+\begin{proof}
+At a fixed exponent $\rho$ only finitely many pairs $(\alpha,\beta)\in S^*\times S^*$ have
+$\alpha+\beta=\rho$ (Lemma~\ref{meas:lem:neumann}), and the claim is
+$\mu_\rho(A\cap B)=\sum_{\alpha+\beta=\rho}\mu_\alpha(A)\mu_\beta(B)$. It holds for cylinder
+events of the two blocks by the prescribed finite product law. For a fixed cylinder
+$A$ both sides are finite signed or complex measures in $B$, so cylinder uniqueness
+extends the identity to the $J''$-block $\sigma$-algebra; then fix such a $B$ and
+argue in $A$.
+\end{proof}
+
+\begin{corollary}[No new null events; source 17]\label{meas:nb:cor:null}
+An event of baseline probability $0$ has $\mu$-probability exactly $0$, and one of
+baseline probability $1$ has $\mu$-probability exactly $1$. In particular the
+zero--one law for the baseline tail $\sigma$-algebra holds exactly, not only after
+taking standard parts.
+\end{corollary}
+\begin{proof}
+The first case is \eqref{meas:nb:eq:null-equivalence}; the second follows by finite
+additivity and normalization, and the tail statement from the classical zero--one
+law for $P_0$.
+\end{proof}
+
+This is a limitation as well as a theorem: these laws do not give positive
+infinitesimal probability to every nonempty null event, and they are not regular,
+finitely additive probabilities on all subsets. (For i.i.d.\ coin data such
+finitely additive laws on all subsets are a different object, given by
+\path{fsp:cor:coinextension} of the finite surreal-probability
+report~\cite{repofsp}.)
+
+Permuting the coordinates preserves $\Phi_{p^0}$ and transports the extension; passing
+to a coordinate subsequence preserves admissibility, since the modular's summands
+are nonnegative. No preferred enumeration is used beyond countability.
+
+\begin{corollary}[Ordered exponent enlargement cannot repair failure; source 17]
+\label{meas:nb:cor:enlargement}
+Let $\iota:\Gamma\hookrightarrow\Gamma'$ be an injective order-preserving homomorphism
+and relabel the data by $t^\gamma\mapsto u^{\iota(\gamma)}$. They admit a coefficientwise
+extension over $\Gamma'$ if and only if they admit one over $\Gamma$, even when the
+extension over $\Gamma'$ may use additional exponents.
+\end{corollary}
+\begin{proof}
+The row criterion is unchanged. Directly: a coefficient outside $\iota(S^*)$ vanishes
+on all cylinders and is zero, and the coefficient at $\iota(\gamma)$ obeys the same
+variation bound \eqref{meas:nb:eq:variation-bound} and first-order obstruction.
+\end{proof}
+
+This concerns the specified coefficient-preserving relabeling, not arbitrary
+non-monomial field embeddings or another definition of countable addition; and the
+impossibility of singular corrections refers to ordinary finite signed or complex
+coefficient measures (Definition~\ref{meas:def:coefficientwise}). It is the
+coefficientwise, arbitrary-baseline counterpart of Proposition~\ref{meas:prop:enlarge}
+in the strong class and of the remark after Corollary~\ref{meas:cor:iid}.
+
+\begin{proposition}[A direct strong-additivity obstruction; source 17]
+\label{meas:nb:prop:notstrong}
+With infinitely many interior coordinates the extension is not a strong Hahn
+measure, even when every perturbation is zero.
+\end{proposition}
+\begin{proof}
+Let $A_n$ be the event that the first success is at coordinate $n$. These events are
+disjoint and $\coef0{\mu(A_n)}=P_0(A_n)=p_n^0\prod_{j<n}q_j^0>0$ for every $n$, so
+infinitely many members of $(\mu(A_n))_n$ contribute at exponent $0$, contrary to
+\eqref{meas:eq:SH}. Coefficientwise addition permits the ordinary convergent sum
+$\sum_nP_0(A_n)$.
+\end{proof}
+
+Corollary~\ref{meas:cor:coefficient-test} gives the same conclusion, since $P_0$
+charges infinitely many disjoint cylinders and so is not a finite combination of
+point masses. The argument through an atomless leading coefficient, used for the
+table of Section~\ref{meas:sec:coef-examples}, does not apply to every baseline here:
+when $\sum_j\varpi_j<\infty$ the law $P_0$ is purely atomic, with infinitely many
+atoms. (This comparison is added in the merge.)
+
+\subsection{An exact power-law threshold}
+
+\begin{theorem}[Power-law threshold; source 17]\label{meas:nb:thm:power}
+Let $r\ge0$, $s>0$ and $0<c<1$, and put $p_j^0=c(j+1)^{-r}$ and
+$a_{j,\alpha}=(j+1)^{-s}$. For every $\alpha\in\Gamma_{>0}$ the laws with
+$p_j=p_j^0+a_{j,\alpha}t^\alpha$ extend coefficientwise if and only if
+\begin{equation}\label{meas:nb:eq:power-threshold}
+ s>\min\{1,(r+1)/2\}.
+\end{equation}
+The boundary case fails for these pure powers.
+\end{theorem}
+\begin{proof}
+$\varpi_j$ is bounded above and below by constant multiples of $(j+1)^{-r}$, so the
+modular summand is comparable to $\min\{(j+1)^{-s},(j+1)^{r-2s}\}$. If $s<r$ the
+first term is the smaller, and summability means $s>1$; if $s\ge r$ it means
+$2s-r>1$. For $r<1$ the union of the two regions is $s>(r+1)/2$; for $r\ge1$ it is
+$s>1$. At the boundary the controlling series is harmonic.
+Theorem~\ref{meas:nb:thm:hahn} concludes.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Baseline decay & Exact threshold & Weighted $\ell^2$ condition alone\\
+\midrule
+$r=0$ & $s>1/2$ & $s>1/2$\\
+$0<r<1$ & $s>(r+1)/2$ & $s>(r+1)/2$\\
+$r=1$ & $s>1$ & $s>1$\\
+$r>1$ & $s>1$ & $s>(r+1)/2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For rapidly vanishing baselines the admissible strip $1<s\le(r+1)/2$, invisible to
+the weighted $\ell^2$ condition, can be arbitrarily wide. The threshold is strict
+for pure powers; logarithmic corrections at a boundary must be tested with the
+modular, not with this table.
+
+\subsection{Examples}
+
+\begin{example}[All orders exist, the first score is not square integrable;
+source 17]\label{meas:nb:ex:infinitequadratic}
+Let $p_j^0=\frac1{4(j+1)^2}$, $a_{j,\alpha}=(j+1)^{-3/2}$ and $p_j=p_j^0+a_{j,\alpha}t^\alpha$.
+The row is in $\ell^1$, so the full coefficientwise Hahn probability exists with every
+coefficient of finite variation. But $\abs{a_{j,\alpha}}^2/\varpi_j$ is comparable to
+$(j+1)^{-1}$, so by Proposition~\ref{meas:nb:prop:L2} the first density
+$H_\alpha=U(a_\alpha)$ is not in $L^2(P_0)$. Theorem~\ref{meas:nb:thm:entire} nevertheless
+gives every coefficient; for instance
+\[
+ H_{2\alpha}=L^1\text{-}\lim_n\sum_{1\le i<j\le n}a_{i,\alpha}a_{j,\alpha}\Zh_i\Zh_j
+\]
+exists. This must not be justified through integrability of $U(a_\alpha)^2$, which
+fails here; the finite identity writing the double sum as a difference of squares
+has terms whose separate limits are not legitimate in $L^1$.
+\end{example}
+
+\begin{example}[A two-regime row; source 17]\label{meas:nb:ex:tworegime}
+For $j\ge1$ let
+\[
+ p_{2j}^0=\frac1{4j^4},\quad a_{2j,\alpha}=j^{-2},\qquad
+ p_{2j-1}^0=\frac1{4j^{1/2}},\quad a_{2j-1,\alpha}=j^{-9/10}.
+\]
+All baselines tend to $0$. On even coordinates $\sum_j\abs{a_{2j,\alpha}}<\infty$ but
+$\abs{a_{2j,\alpha}}^2/\varpi_{2j}$ is bounded below by a positive constant; on odd
+coordinates $\sum_j\abs{a_{2j-1,\alpha}}=\infty$ but
+$\abs{a_{2j-1,\alpha}}^2/\varpi_{2j-1}$ is comparable to $j^{-13/10}$. Thus
+$a_\alpha\notin\ell^1$, $a_\alpha\notin\ell^2(\varpi^{-1})$ and $a_\alpha\in\Erow$, and the
+law $p_j=p_j^0+a_{j,\alpha}t^\alpha$ extends. Even the union of the two sufficient
+classes (Proposition~\ref{meas:prop:general-l1} and the sufficiency half of the
+weighted $\ell^2$ condition) does not give the exact answer; their sum space is
+strictly larger.
+\end{example}
+
+\begin{example}[A later row defeats all lower tests; source 17]
+\label{meas:nb:ex:ranktwo}
+Let $\Gamma=\Z^2$ ordered lexicographically, $\alpha=(0,1)$ and $\beta=(1,0)$, so
+$n\alpha<\beta$ for every integer $n\ge1$, as in the higher-rank examples of
+Section~\ref{meas:sec:coef-examples}. Let
+\begin{equation}\label{meas:nb:eq:ranktwo-input}
+ p_j=\frac1{4(j+1)^2}+(j+1)^{-3/2}t^\alpha+(j+1)^{-1}t^\beta .
+\end{equation}
+The row at $\alpha$ is good, and the system without the $t^\beta$ term has a
+coefficientwise law; so every coefficient of the proposed law below $\beta$ extends,
+since only multiples of $\alpha$ occur there. The row at $\beta$ is bad:
+$\sum_j\varpi_j<\infty$ gives $\Erow=\ell^1$ (Corollary~\ref{meas:nb:cor:regimes}), and
+$\sum_j(j+1)^{-1}=\infty$. No finite sum of copies of $\alpha$ equals $\beta$, so
+$\coef\beta{L_n}=\sum_{j\le n}(j+1)^{-1}\Zh_j$, whose $L^1$ norms are unbounded by
+Theorem~\ref{meas:nb:thm:first}. There is no coefficientwise extension, although every
+coefficient below $\beta$ is valid and every finite-coordinate probability is
+positive.
+\end{example}
+
+The failure is not one of finite coefficient dependence, which holds at every
+exponent. Checking every integer multiple of one scale does not inspect a higher
+Archimedean scale of a non-Archimedean value group (compare
+Remark~\ref{meas:rem:cofinal}).
+
+\begin{example}[No ordinary real parameter interval; source 17]
+\label{meas:nb:ex:noreal}
+For $j\ge1$ let $p_{2j}^0=p_{2j-1}^0=\frac1{4(j+1)^2}$, $a_{2j,\alpha}=(j+1)^{-3/2}$ and
+$a_{2j-1,\alpha}=-(j+1)^{-3/2}$. The row is in $\ell^1$. For real $z>0$ eventually
+$p_{2j-1}^0+za_{2j-1,\alpha}<0$, and for real $z<0$ eventually $p_{2j}^0+za_{2j,\alpha}<0$;
+so $z=0$ is the only real parameter at which every $p_k^0+za_{k,\alpha}$ is an ordinary
+probability. Yet the entire family $\Lambda(z)P_0$ exists for all complex $z$, and
+$p_k=p_k^0+a_{k,\alpha}t^\alpha$ defines a coefficientwise Hahn probability for every
+$\alpha>0$: the infinitesimal correction cannot change the positive real leading
+coefficient of $p_k$ or $1-p_k$.
+\end{example}
+
+Existence of an ordinary real probability family, of an entire complex measure
+family, and of a positive infinitesimal Hahn deformation are three different
+assertions and are not used interchangeably.
+
+\subsection{Surreal and surcomplex realization}\label{meas:nb:sub:surreal}
+
+The theorems are proved in set-sized Hahn fields and transported by
+Convention~\ref{meas:conv:surreal}, with a specified order-preserving additive
+embedding $\iota:\Gamma\to\No$ and $t^\gamma\mapsto\omega^{-\iota(\gamma)}$; the minus sign is
+essential. The embedding is supplied, not chosen uniformly, and this bridge is not
+claimed by source~17. The image of $\mu(A)$ is a surreal number for every Borel $A$,
+nonnegative in the real case. Countable additivity still means ordinary summation
+at each normal-form coefficient, not convergence in the surreal order topology, and
+Proposition~\ref{meas:nb:prop:notstrong} remains an obstruction to the strong
+reading.
+
+For $\Gamma=\Z$ and $\iota(n)=n$, Example~\ref{meas:nb:ex:infinitequadratic} gives a
+surreal-valued coefficientwise probability with coordinate probabilities
+$p_j=\frac1{4(j+1)^2}+(j+1)^{-3/2}\omega^{-1}$, every positive-degree coefficient a
+finite signed measure although the first coefficient density has infinite second
+moment. For Example~\ref{meas:nb:ex:ranktwo} the embedding $\iota(n,m)=n\omega+m$
+respects the lexicographic order and addition, so $t^\alpha=\omega^{-1}$ and
+$t^\beta=\omega^{-\omega}$: the obstruction sits at a scale smaller than $\omega^{-n}$ for
+every integer $n$, and all tests at those lower scales pass while the
+$\omega^{-\omega}$ coefficient fails to be a finite measure.
+
+With complex coefficients, applying \eqref{meas:eq:surreal-map} to real and imaginary
+parts gives values in $\No[i]$; this is the surcomplex version of
+Theorem~\ref{meas:nb:thm:hahn}, with its exact hypotheses: real baselines $0<p_j^0<1$,
+complex rows in complex $\Erow$, finite complex coefficient measures, and no order
+or positivity. The construction commutes with complex conjugation, since $P_0$ and
+the scores $\Zh_j$ are real: conjugating all rows conjugates the finite likelihood
+coefficients, their limits and all event values, and for real rows
+$\overline{\Lambda(z)P_0}=\Lambda(\bar z)P_0$. Surcomplex event values are finite complex
+measures coefficient by coefficient, not ordered probabilities.
+Theorem~\ref{meas:nb:thm:imaginary} links the two settings: a finite complex product
+at one imaginary parameter detects exactly which real infinitesimal rows admit a
+positive coefficientwise Hahn law.
+
+All sample spaces, $\sigma$-algebras, value groups and supports here are sets; after
+\eqref{meas:eq:surreal-map} the codomain is a specified set-sized subfield of $\No$ or
+its complexification. No measure on the class of all surreals is constructed and no
+class-indexed product or integral is used; an uncountable $S$ is still a set, and the
+coordinates are countably many.
+
+\subsection{Scope of Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples}}
+\label{meas:nb:sub:scope}
+
+The theorems treat strictly interior real baselines, countably many independent
+coordinates, one common positive well-ordered exponent set, and finite variation at
+every coefficient. Exact endpoint coordinates cannot be inserted into
+$1/(p_j^0q_j^0)$; they need the separate mechanism of
+Theorem~\ref{meas:thm:boundary}, and the combination is
+Theorem~\ref{meas:nb:thm:mixed}, which is the merge's and not source~17's. Markov or
+other dependent coordinates, growing alphabets or finite alphabets without lower
+bounds on the atom probabilities, uncountably many coordinates, and coefficient
+measures of infinite variation are not treated
+(Question~\ref{meas:nb:q:alphabets}). The criterion is existential unless the input
+comes with certified summability bounds: a program enumerating coefficients does not
+decide membership in $\Erow$. When explicit linear and quadratic tail bounds are
+available, \eqref{meas:nb:eq:uniform-tail} and Cauchy extraction give effective
+finite-variation error bounds for any specified coefficient whose finite exponent
+decompositions can be determined. Neither the theorems nor source~17's program solve
+the representation or equality problem for surreal numbers.
+
 \part{Scope, questions, verification, and provenance}\label{meas:part:scope}
 
 \section{What is settled, and what is not claimed}\label{meas:sec:scope}
@@ -5028,7 +6213,12 @@ a positive Borel extension (Example~\ref{meas:ex:negative}). For independent
 perturbations on a common well-ordered exponent set the exact sequence-space
 conditions are identified, and positivity is proved rather than assumed, by
 domination in the interior and by nonnegative exact path weights at the
-boundary (Theorems~\ref{meas:thm:interior}--\ref{meas:thm:mixed}).
+boundary (Theorems~\ref{meas:thm:interior}--\ref{meas:thm:mixed}). Source~17
+removes the uniform separation of the interior baselines: the exact row space is
+$\ell^1+\ell^2(1/(p_j^0q_j^0))$ at every exponent, every signed extension is
+automatically dominated and positive, and no condition on higher coefficients is
+needed (Theorem~\ref{meas:nb:thm:hahn}). With deterministic coordinates added, the
+merge proves the corresponding mixed criterion (Theorem~\ref{meas:nb:thm:mixed}).
 
 \paragraph{Countably many scales (source 16).} With a countable exponent set, and
 finite real coefficient variation, the class has a coherent measure theory with
@@ -5179,7 +6369,8 @@ Thm.~\ref{meas:thm:extension}, Sec.~\ref{meas:sec:audit}\\
 15.3 & Not Lean-verified, not peer reviewed; no named historical conjecture
 resolved. & Title page\\
 15.4 & Uniform interior separation is needed for $\ell^2$ necessity. &
-Ex.~\ref{meas:ex:near-boundary}\\
+Ex.~\ref{meas:ex:near-boundary}; the exact condition without it is
+Thm.~\ref{meas:nb:thm:hahn}\\
 15.5 & No order or valuation continuity is supplied. &
 Sec.~\ref{meas:sec:coef-examples}\\
 15.6 & Not a classification of all non-Archimedean measures. &
@@ -5197,7 +6388,8 @@ all-event positivity. & Sec.~\ref{meas:sec:verification}\\
 Conv.~\ref{meas:conv:terms}\\
 15.11 & The results do not silently cover near-boundary baselines, several vanishing
 residues, Markov dependence, or definitions without a global well-ordered
-support. & Sec.~\ref{meas:sec:questions}\\
+support. & Sec.~\ref{meas:sec:questions}; near-boundary baselines are now
+source~17's (Sec.~\ref{meas:nb:sec:hahn})\\
 15.12 & ``Candidate'' qualifies originality, not a hidden omitted hypothesis. &
 Sec.~\ref{meas:sec:audit}\\
 15.13 & Nothing contradicts classical exchangeability theory. &
@@ -5277,7 +6469,66 @@ of delivery, not regenerated. & Sec.~\ref{meas:sec:verification}\\
 16.25 & Not independently refereed; no certified novelty or priority, also for the
 combination; no published conjecture resolved; the literature comparison is
 targeted, and related formulations in the literature are not excluded. & Title
-page, Sec.~\ref{meas:sub:literature}\\
+page, Sec.~\ref{meas:sub:literature}\\[3pt]
+\multicolumn{3}{@{}l}{\emph{Source 17}}\\
+17.1 & The all-scale criterion at arbitrary interior baselines is a proposed
+strengthening of the inspected report; no named published conjecture is solved;
+historical priority is not certified; the literature search was bounded and some
+publisher full texts were inaccessible. & Title page,
+Sec.~\ref{meas:sub:literature}\\
+17.2 & The linear/quadratic split and symmetrization are classical
+independent-series methods, not claimed original; the Neumann lemma, ordinary
+product probability, cylinder uniqueness of finite measures and the normal-form
+embedding are background; Kakutani's theorem is a different problem and is not
+contradicted. & Secs.~\ref{meas:sub:literature},~\ref{meas:nb:sub:first},
+\ref{meas:nb:sub:surreal}\\
+17.3 & Not described as a first non-Archimedean extension theorem. &
+Sec.~\ref{meas:sub:literature}\\
+17.4 & No external referee; no Lean or other proof-assistant verification. & Title
+page, Secs.~\ref{meas:sec:verification},~\ref{meas:sec:audit}\\
+17.5 & Its 4,670 finite checks are not proofs of the infinite theorems; they do not
+establish $L^1$ convergence, the Neumann lemma, countable additivity, novelty or the
+correctness of the manuscript, and the power-law checks test the algebraic case
+split at finitely many rational parameters only. &
+Sec.~\ref{meas:sec:verification}\\
+17.6 & The criterion is existential unless certified summability bounds are
+supplied; it is not a decision procedure for input rows; the representation and
+equality problems for surreal numbers are not solved. &
+Sec.~\ref{meas:nb:sub:scope}\\
+17.7 & The measure is coefficientwise only: not strongly Hahn countably additive,
+not additive by convergence in the fine or order topology of $\No$; sample space
+and value group are sets; no measure on the class of all surreals and no
+class-indexed product or integral. & Prop.~\ref{meas:nb:prop:notstrong},
+Sec.~\ref{meas:nb:sub:surreal}\\
+17.8 & The imaginary-parameter test is for real rows only; the complex version
+asserts no positivity; surcomplex event values are not ordered probabilities. &
+Thm.~\ref{meas:nb:thm:imaginary}, Sec.~\ref{meas:nb:sub:surreal}\\
+17.9 & Not treated: deterministic coordinates (they cannot be inserted into
+$1/(p_j^0q_j^0)$), Markov or dependent coordinates, growing alphabets or finite
+alphabets without lower bounds on atom probabilities, uncountably many
+coordinates, coefficient measures of infinite variation; its next problems are
+separate research problems, not unstated conclusions. &
+Sec.~\ref{meas:nb:sub:scope}, Question~\ref{meas:nb:q:alphabets}\\
+17.10 & The enlargement corollary concerns the specified coefficient-preserving
+relabeling, not arbitrary field embeddings or another definition of countable
+addition; excluded singular corrections are finite signed or complex coefficient
+measures. & After Cor.~\ref{meas:nb:cor:enlargement}\\
+17.11 & The laws give no positive infinitesimal probability to baseline-null
+events and are not regular finitely additive probabilities on all subsets. & After
+Cor.~\ref{meas:nb:cor:null}\\
+17.12 & The analytic characterization concerns holomorphic continuation of the
+likelihood, not ordinary real product probabilities; real, entire complex and
+infinitesimal Hahn families are not interchangeable. & After
+Cor.~\ref{meas:nb:cor:analytic}, after Ex.~\ref{meas:nb:ex:noreal}\\
+17.13 & The normal-form realization needs a supplied embedding, with no uniform
+definable choice, and the bridge is standard, not new. &
+Sec.~\ref{meas:nb:sub:surreal}\\
+17.14 & Its audit is not a read of every historical revision or unrelated proof,
+and does not assert that no later commit, unpublished draft or other conversation
+contains related work. & Sec.~\ref{meas:sec:audit}\\
+17.15 & Its formalization route is a proposal; the repository's Hahn summability
+infrastructure is not claimed to formalize the new theorem or its analytic
+dependencies. & Sec.~\ref{meas:sec:audit}\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -5295,13 +6546,23 @@ comparisons of source~16's results with Example~\ref{meas:ex:hahn-integrand},
 Theorem~\ref{meas:thm:extension} and Theorem~\ref{meas:thm:mixed}, which the
 merge added to relate source~16 to the earlier sources. Source~16's own
 reliance on classical scalar theorems was checked only against their standard
-statements.
+statements. For source~17, Theorem~\ref{meas:nb:thm:mixed}, the comparison after
+Proposition~\ref{meas:nb:prop:notstrong}, the list in
+Section~\ref{meas:nb:sub:relation} and the forward pointers in
+Sections~\ref{meas:sec:interior}--\ref{meas:sec:coef-complex} were added in the
+merge; Theorem~\ref{meas:nb:thm:mixed} is a new statement with its own proof, which
+combines Theorem~\ref{meas:nb:thm:hahn} with the proof of
+Theorem~\ref{meas:thm:mixed}, and it has had no review beyond the merge.
+Source~17's proofs were reread for hidden uses of uniform separation before its
+theorems were related to the earlier ones; none was found.
 
 \section{Open questions}\label{meas:sec:questions}
 
-The questions below were formulated by the four sources, not taken from a named
+The questions below were formulated by the five sources, not taken from a named
 list of open problems. Source~16 answers none of the earlier questions; it adds
-Questions~\ref{meas:cw:q:conditional} and~\ref{meas:cw:q:uncountable}. Where a question is answered in part, the answer and its
+Questions~\ref{meas:cw:q:conditional} and~\ref{meas:cw:q:uncountable}. Source~17
+answers Question~\ref{meas:q:nearboundary} and adds
+Question~\ref{meas:nb:q:alphabets}. Where a question is answered in part, the answer and its
 source are recorded and the question stays open, re-scoped.
 
 \begin{question}[Standard Borel alphabets; source 10]\label{meas:q:borel}
@@ -5372,7 +6633,15 @@ remains the exact abstract answer, but the weighted-$\ell^2$ condition of
 Theorem~\ref{meas:thm:interior} is no longer necessary
 (Example~\ref{meas:ex:near-boundary}). Find an intrinsic sequence-space description
 distinguishing rare large scores from uniformly nondegenerate ones and controlling
-all nonlinear coefficient terms. Open.
+all nonlinear coefficient terms. \emph{Answered} by source~17: the description is
+the sum space $\ell^1+\ell^2(1/(p_j^0q_j^0))$, equivalently the modular
+\eqref{meas:nb:eq:main-modular} at every exponent, in which amplitudes above
+$p_j^0q_j^0$ are controlled linearly and those below it quadratically, and the
+nonlinear coefficient terms are controlled through entire complex likelihoods
+(Theorems~\ref{meas:nb:thm:hahn} and~\ref{meas:nb:thm:entire}). With deterministic
+coordinates as well, the answer is Theorem~\ref{meas:nb:thm:mixed}, added in the
+merge. The analogue for finite alphabets whose atom probabilities approach $0$
+continues as Question~\ref{meas:nb:q:alphabets}.
 \end{question}
 
 \begin{question}[Several vanishing residues; source 15]\label{meas:q:residues}
@@ -5423,7 +6692,18 @@ integral with a Radon--Nikodym theorem? (Formulated in the merge from source~16'
 stated boundary.) Open.
 \end{question}
 
-\section{The four check suites}\label{meas:sec:verification}
+\begin{question}[Small atoms and dependence; source 17]\label{meas:nb:q:alphabets}
+Find a sharp criterion, comparable to Theorem~\ref{meas:nb:thm:hahn}, for independent
+coordinates with finite alphabets and no lower bound on the atom probabilities, and
+a dependent analogue with conditional scores. Source~17 names the steps that would
+have to be replaced, the exact two-point symmetrization of
+Theorem~\ref{meas:nb:thm:first} and the higher-coefficient estimates of
+Theorem~\ref{meas:nb:thm:entire}, and supplies neither result. The first problem is
+the near-boundary form of Question~\ref{meas:q:residues}, the second a
+coefficientwise case of Question~\ref{meas:q:markov}. Open.
+\end{question}
+
+\section{The five check suites}\label{meas:sec:verification}
 
 Each source delivered a standard-library Python program using exact rational
 arithmetic; they are kept byte-identical under \path{code/}, with their recorded
@@ -5432,12 +6712,13 @@ mistakes. They do not prove any infinite statement, cannot establish that a supp
 is well ordered or that infinitely many widths are bounded, and certify neither
 novelty nor Lean correctness.
 
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}r>{\raggedright\arraybackslash}X@{}}
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}r
+                    >{\raggedright\arraybackslash}p{0.5\textwidth}@{}}
 \toprule
 Program & Assertions & What it checks\\
 \midrule
+\endhead
 \path{10-strong-hahn-measures-verify.py} & 5{,}135 & The scalar nonvanishing
 probability bound behind the randomized selection (30); finite coefficient trees,
 width monotonicity and reconstruction (3{,}600); finite independent products and
@@ -5474,10 +6755,22 @@ coefficients of Example~\ref{meas:cw:ex:worked} (2); the fibre cancellation,
 opposite $t^2$-coefficients and harmonic term of
 Example~\ref{meas:cw:ex:conditional-fail} for $n\le40$ (120). The 40 checks named
 \path{RN support obstruction} only multiply two hard-coded monomials, so are
-tautological. Integer exponents only.\\
+tautological. Integer exponents only.\\[3pt]
+\path{17-bernoulli-extension-verify.py} & 4{,}670 & Exact rationals, seed
+\texttt{22092026}: score means, variances and absolute moments (350 each);
+symmetrized amplitudes (350); the sum-space modular bound and the equivalence with
+the smooth modular of Lemma~\ref{meas:nb:lem:modular} (350 each); Rademacher second
+and fourth moments and the $L^1$ lower bound \eqref{meas:nb:eq:khintchine} (72 each);
+first-order orthogonality, the split upper bound \eqref{meas:nb:eq:first-upper} and
+the symmetrization upper bound (30 each); the finite density identity (756),
+marginalization (720), coordinate marginals (126), normalization (36) and
+two-coordinate independence (210) on small coordinate sets; and the case split of
+Theorem~\ref{meas:nb:thm:power} on a finite rational grid (416). Finite Hahn
+calculations use lexicographic integer-pair exponents, including two generators in
+different Archimedean classes.\\
 \bottomrule
-\end{tabularx}
-\end{center}
+\end{longtable}
+\endgroup
 
 The programs of sources 10, 11 and 15 were rerun on a scratch copy of this
 directory when the report was first written (Python 3.14.4). All assertions passed with the recorded counts; the
@@ -5502,6 +6795,20 @@ of its own 29-page build; no program generates either.
 When source~16 was merged, all four programs were rerun on a scratch copy under
 Python 3.14.4. They passed 5{,}135, 682, 1{,}009 and 1{,}722 assertions; source~16's
 output agrees with its delivered record except for the recorded Python version.
+
+When source~17 was merged, \path{17-bernoulli-extension-verify.py} was rerun on a
+scratch copy under Python 3.14.4 and passed 4{,}670 assertions with the recorded
+counts per category; its output agrees in content with the delivered record
+\path{17-bernoulli-extension-verification_results.json}. It always writes
+\path{verification_results.json} (unprefixed) into the \path{data/} directory next to
+its own \path{code/} directory, with no option to change this, so run it on a copy.
+The delivered scripts \path{17-bernoulli-extension-build.sh} and
+\path{17-bernoulli-extension-build.ps1} refer to the source package's own layout
+(\path{code/verify.py}, its own \path{article.tex}) and do not build this report;
+\path{17-bernoulli-extension-build_validation.json} is source~17's record of its own
+24-page build, and its \path{article_sha256} is the hash of that PDF, which is not
+shipped. The checks share the limits stated at the start of this section, and
+non-claim~17.5.
 
 \paragraph{Maintained review rerun.}
 The three unchanged programs were run on temporary copies under Python
@@ -5546,6 +6853,17 @@ it read is the report of sources 10, 11 and 15 as printed here, before the merge
 Its audit is a section of its article and is summarized here and in
 Section~\ref{meas:sub:stale}; no separate audit file was delivered.
 
+Source~17 was pinned to the snapshot \pinc. Its audit record,
+\path{17-bernoulli-extension-RESEARCH_AUDIT.md}, is kept as delivered: it inspected
+the root README, the repository tree, the catalogue, and this report with its
+README, concentrating on the coefficientwise product sections, and recorded
+Theorem~\ref{meas:thm:interior}, Proposition~\ref{meas:prop:general-l1} and
+Example~\ref{meas:ex:near-boundary} accurately, by the numbers they still carry. It
+lists twelve delicate points of its own proofs that it rechecked. Between its pin and
+the placement of source~17 this report's directory did not change. The source
+states that its audit is not a read of every historical revision or unrelated proof
+(non-claim~17.14).
+
 \subsection{Stale statements corrected}\label{meas:sub:stale}
 
 \begin{enumerate}[label=(\arabic*)]
@@ -5575,8 +6893,9 @@ coefficientwise criterion is withdrawn (Remark~\ref{meas:rem:selection}).
 ``a first non-Archimedean Kolmogorov theorem'' is extended to source~15's extension
 theorems (Section~\ref{meas:sub:literature}).
 \item Source~16 describes this report as 64 pages, with Theorem~19.2 as its canonical
-null-ideal criterion. Both were correct at its pin \pinb; the report now has 86
-pages, and Theorem~\ref{meas:thm:nullideal} keeps the number 19.2.
+null-ideal criterion. Both were correct at its pin \pinb; the report had 86 pages
+after source~16 was merged and has 106 after source~17 was merged, and
+Theorem~\ref{meas:thm:nullideal} keeps the number 19.2.
 \item Source~16 says that the repository ``has separately recorded checked results for
 portions of its existing strong theory''. At its pin the Lean ledger
 \path{docs/FORMALIZATION.md} already recorded as proved, besides the strong
@@ -5598,6 +6917,20 @@ that report (Section~\ref{meas:cw:sub:numerosity}, non-claim 10.13).
 \item Source~16 could not refer to \path{surreal/finite-surreal-probability}, placed in
 the same delivery; its uncountable-support integration example is now cited
 (Section~\ref{meas:cw:sec:boundary}).
+\item Source~17 describes this report by the numbers Theorem~20.1, Proposition 23.2
+and Example~23.3; they are unchanged. Its description of the report
+(``the report already contains endpoint and mixed endpoint/interior results'') was
+correct at its pin; the merge now also contains the mixed criterion without
+separation (Theorem~\ref{meas:nb:thm:mixed}).
+\item Source~17 cites the Neumann support lemma as recorded in the root README. It is
+Lemma~\ref{meas:lem:neumann} here and \path{found:sub:positivesupport} in the
+foundations report, and \path{docs/FORMALIZATION.md} records it as proved in Lean
+for all word lengths; source~17's statement that the repository does not formalize
+its new theorem or its analytic dependencies remains correct.
+\item In source~17's printed Cauchy coefficient bound the factor $\frac12$ was
+typeset as the letters ``frac12'' (a control character had replaced a backslash).
+The merge prints the intended factor in \eqref{meas:nb:eq:cauchy-bound}; the
+surrounding derivation fixes it.
 \end{enumerate}
 
 \subsection{A result-by-result attribution ledger}
@@ -5659,6 +6992,16 @@ Leading-scale conditioning, conditional expectation, bounded unit-leading class 
 16; conditioning on an event also 15.\\[3pt]
 Numerosity probability, field embedding & Standard type~\cite{BHW,BBDN}; classical
 embedding~\cite{Conway,Gonshor}; presented by 16.\\[3pt]
+Admissible row space, first-order criterion, entire likelihood lifting,
+imaginary product test (Sections~\ref{meas:nb:sec:first}) & 17; the linear/quadratic
+split is classical independent-series theory, not claimed.\\[3pt]
+Exact product theorem at arbitrary interior baselines and its consequences,
+power-law threshold, examples (Sections~\ref{meas:nb:sec:hahn}
+and~\ref{meas:nb:sec:examples}) & Candidate contributions of 17, priority not
+certified; the Neumann lemma and normal forms are background.\\[3pt]
+Mixed criterion at arbitrary baselines (Theorem~\ref{meas:nb:thm:mixed}) & Added in
+the merge; it combines Theorems~\ref{meas:nb:thm:hahn} and~\ref{meas:thm:boundary}
+along the proof of Theorem~\ref{meas:thm:mixed}.\\[3pt]
 Named open conjecture; priority; refereeing & None claimed.\\
 \bottomrule
 \end{longtable}
@@ -5700,13 +7043,25 @@ nonnegative reals of an existing scalar measure structure, and checking the reus
 library interfaces at implementation time. The null-ideal declarations above
 formalize the coefficient-by-coefficient positivity criterion, not the sign lemma
 or the density.
+Source~17's proposed order separates finite algebra from limits: finite identities
+for arbitrary finite sets of Bernoulli coordinates with an exact total-variation
+convention; then the symmetrized law, the conditional Rademacher estimate, the
+Laplace-product contradiction and the single-large-jump bound, giving
+Theorem~\ref{meas:nb:thm:first}; then the simultaneous split and the independent
+$L^1/L^2$ product estimates, with Banach-valued Cauchy extraction or a direct
+estimate for finite distinct-coordinate products; and only then the Hahn layer,
+importing the all-word-length Neumann lemma (already formalized, as recorded above)
+and \eqref{meas:nb:eq:finite-dependence}. The least-failed-row argument is
+well-founded reasoning on $S$, not induction on an integer degree. None of
+Sections~\ref{meas:nb:sec:first}--\ref{meas:nb:sec:examples} is formalized, and the
+finite checks imply no Lean result.
 
 \section{Reproducing the document and the checks}\label{meas:sec:reproduce}
 
 The directory contains this standalone \LaTeX{} source with an embedded
-bibliography, its compiled PDF, a README, the four delivered programs and build
+bibliography, its compiled PDF, a README, the five delivered programs and build
 scripts under \path{code/}, their recorded outputs and build records under
-\path{data/}, and the two delivered audit records. No source manuscript is
+\path{data/}, and the three delivered audit records. No source manuscript is
 redistributed. From a copy of the directory:
 \begin{verbatim}
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
@@ -5716,7 +7071,9 @@ python code/15-infinite-products-of-probabilities-verify.py \
     --output rerun-15.json
 python code/16-coefficientwise-measure-theory-verify_examples.py \
     --output rerun-16.json
+python code/17-bernoulli-extension-verify.py
 \end{verbatim}
+The last program writes \path{data/verification_results.json} in the copy.
 Python 3.10 or later suffices; only the standard library is used.
 
 \clearpage
@@ -5764,6 +7121,13 @@ S. Kakutani,
 Annals of Mathematics (2) \textbf{49} (1948), 214--224.
 \href{https://doi.org/10.2307/1969123}{doi:10.2307/1969123}.
 
+\bibitem{Latala}
+R. Lata\l a,
+\emph{Estimation of moments of sums of independent real random variables},
+Annals of Probability \textbf{25} (1997), 1502--1513.
+\href{https://doi.org/10.1214/aop/1024404522}{doi:10.1214/aop/1024404522}.
+Cited by source 17 for context only.
+
 \bibitem{Schmudgen}
 K. Schm\"udgen,
 \emph{Ten lectures on the moment problem}, preprint (2020),
@@ -5810,8 +7174,10 @@ Section 2.3 on Hahn fields and normal forms.
 V. Reshetnikov, \emph{Surreal}, GitHub repository, snapshot \pin, consulted by
 sources 10, 11 and 15 on 22 September 2026,
 \url{https://github.com/VladimirReshetnikov/Surreal/tree/4cf691c7d951e037739d32d9f5c387dcce724f3c};
-and snapshot \pinb, consulted by source 16 on the same day,
-\url{https://github.com/VladimirReshetnikov/Surreal/tree/d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0}.
+snapshot \pinb, consulted by source 16 on the same day,
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0};
+and snapshot \pinc, consulted by source 17 on the same day,
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}.
 
 \bibitem{repofound}
 \repo\ project, \emph{Foundations}, report

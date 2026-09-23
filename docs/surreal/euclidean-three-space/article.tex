@@ -12,7 +12,7 @@
 \hypersetup{%
   pdftitle={Euclidean Three-Space over the Surreal Numbers},%
   pdfauthor={Merged research report prepared for Vladimir Reshetnikov},%
-  pdfsubject={Coordinate geometry, spherical trigonometry and the rotation group SO(3,No)}}
+  pdfsubject={Coordinate geometry, spherical trigonometry, the rotation group SO(3,No), and its valuation cuts}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Euclidean three-space over the surreal numbers}
 \fancyhead[R]{\small\thepage}
@@ -105,6 +105,12 @@
 \newcommand{\comm}[2]{\left(#1,#2\right)}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Un}{\operatorname{U}}
+\newcommand{\coef}{\operatorname{coef}}
+\newcommand{\nc}[1]{\langle\!\langle #1\rangle\!\rangle}
+\newcommand{\commset}[2]{\{\comm{x}{y}:x\in #1,\ y\in #2\}}
 
 \begin{document}
 \hypersetup{pageanchor=false}
@@ -123,8 +129,8 @@ and the rotation group $\SO(3,\No)$\par}
 \begin{minipage}{0.94\textwidth}
 \begin{abstract}
 \noindent
-We develop Euclidean geometry in $\No^3$ in two parts. Every construction is
-carried out in a set-sized real closed subfield of $\No$, or in a set-sized
+We develop Euclidean geometry in $\No^3$ in three parts. Every construction of
+Parts~I and~II is carried out in a set-sized real closed subfield of $\No$, or in a set-sized
 real-closed Hahn field when analytic evaluation is needed. Distances, areas,
 volumes and sphere radii may be infinite or infinitesimal. Angles between
 directions always have canonical finite surreal representatives, so spatial
@@ -148,21 +154,31 @@ and logarithm maps and the valuation-graded cross-product algebra. For the
 global rotation exponential we give its fibers and differential; its critical
 radii are $2\pi\Oz$. Finally, three topologies are separated.
 
-The rotation algebra shared by the two parts is printed once in Part~I: axes,
+Part~III refines Part~II over a real closed field with its natural valuation.
+Single commutators of two valuation-cut subgroups fill exactly the cut
+subgroup of the summed cut, and the normal closure of an infinitesimal rotation
+is the full subgroup of its depth. Hence the proper normal subgroups of
+$\SO(3,F)$ are classified by valuation cuts. Principal subgroups have an explicit
+perfect residual, which is trivial exactly at order units. Over the full class
+$\No$, every class homomorphism from $\SO(3,\No)$, from $\SO(n,\No)$ with
+$n\ge3$, or from $\SU(n,\No[i])$ with $n\ge2$ to a set-sized group factors
+through standard part. For the circle this fails.
+
+The rotation algebra shared by Parts~I and~II is printed once in Part~I: axes,
 Rodrigues, quaternions, and the Cayley chart. The quaternion double cover is
 cited from the collection's surquaternion report.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.94\textwidth}\small
-\textbf{Status and provenance.} An AI-assisted research report merged from two
-manuscripts of 22 September 2026 (sources~04 and~09 of the batch that placed
-them); see \cref{e3:sub:provenance}. It has not been refereed, and no statement
-in it has a Lean formalization. Classical identities, the Bays--Peterzil
-perfectness precedent and imported analytic foundations are credited, not
-claimed. No priority claim or resolution of a named open problem is made. The
-accompanying symbolic checks test selected finite identities only.
-Repository pin of this merge: \texttt{50cb709}.
+\textbf{Status and provenance.} An AI-assisted research report built from three
+manuscripts of 22 September 2026: sources~04 and~09, merged at
+\texttt{50cb709}, and source~10, added as Part~III at \texttt{7b5f934}; see
+\cref{e3:sub:provenance}. It has not been refereed, and no statement in it has a
+Lean formalization. Classical identities, the Bays--Peterzil perfectness
+precedent and imported analytic foundations are credited, not claimed. No
+priority claim or resolution of a named open problem is made. The accompanying
+symbolic checks test selected finite identities only.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -214,11 +230,23 @@ standard parts agree. A small rotation can move an infinitely distant point by
 a finite or infinite distance. Ordinary real paths, compactness arguments, and
 power-series convergence cannot simply be imported into the full fine topology.
 
-\subsection{Two manuscripts, one report}\label{e3:sub:provenance}
+Part~III asks which normal subgroups the rotation group has, and what an
+arbitrary set-sized group can see of it. Over a real closed field $F\supseteq\R$
+with its natural valuation, single commutators and normal closures in $G(F)$
+are computed exactly in terms of valuation cuts. The resulting classification
+of normal subgroups and of perfect residuals is a statement about convex
+subgroups of the value group. For the full class $\No$, a further size argument
+shows that standard part is the universal set-sized quotient of $\SO(3,\No)$.
 
-This report is merged from two manuscripts, both dated 22 September 2026 and
+\subsection{Three manuscripts, one report}\label{e3:sub:provenance}
+
+This report is built from three manuscripts, all dated 22 September 2026 and
 written independently against different commits of the repository \repo.
-The source numbers are those of the batch in which they arrived.
+Sources~04 and~09 were merged into Parts~I and~II. Source~10 arrived later, as
+manuscript~03 of a later batch, and was added as Part~III. Sources~04 and~09
+carry their numbers in the batch in which they arrived; the addition is numbered
+10 here, after the highest existing file prefix, so that numbers do not
+collide.
 
 {\small
 \begin{longtable}{L{0.07\textwidth}L{0.32\textwidth}L{0.09\textwidth}L{0.38\textwidth}}
@@ -242,17 +270,40 @@ Source & Manuscript & Pin & Contribution here\\
  algebraic-angle, spin-lift, bounds and Cayley-chart statements of
  \cref{e3:sec:rotations}; \cref{e3:sub:impl09,e3:sub:lean09}. Files prefixed
  \texttt{09-so3-}.\\
+10 & \emph{Valuation Cuts and the Universal Set-Sized Quotient of Surreal
+ Rotation Groups: exact commutators, normal subgroups, perfect residuals, and
+ surcomplex special unitary groups} (24 pages) & \texttt{465a54b} &
+ All of Part~III (\crefrange{e3:cut:sec:setting}{e3:cut:sec:examples});
+ \cref{e3:cut:sub:lean,e3:cut:sub:recipes}, the source~10 paragraph of
+ \cref{e3:sub:checks}, \cref{e3:cut:sub:nonclaims10}, the last part of
+ \cref{e3:sec:conclusion} with \cref{e3:cut:sub:open}, and
+ \cref{e3:cut:sub:ledger10}. Files prefixed
+ \texttt{10-rotation-quotients-}.\\
 \bottomrule
 \end{longtable}}
 
-\textbf{Why one report.} The two manuscripts overlap in the finite algebra of
+\textbf{Why one report.} Sources~04 and~09 overlap in the finite algebra of
 rotations and are otherwise complementary. Source~04 is a geometry of points,
 lines, spheres and spherical triangles, for which rotations are one tool;
 source~09 is a structure theory of the rotation group. Source~04 is the base: it
 is the wider development and fixes the scalar conventions. Source~09 forms
 Part~II, after the geometry.
 
-\textbf{Printed once.} The following results are proved in both sources and
+\textbf{Why source~10 is an addition.} Source~09's conclusion names
+``normal-subgroup classification compatible with convex valuations'' as a
+direction of further work (\cref{e3:sec:conclusion}). Source~10 supplies it for
+subgroups normal in the full group, and it sharpens two statements of Part~II:
+the inclusion of filtration levels in \cref{e3:so:thm:graded} becomes an
+equality of single-commutator images (\cref{e3:cut:rem:gradedequality}), and the
+sentence that the kernel is ``perfect rather than residually nilpotent'' receives
+its exact perfect residual (\cref{e3:cut:rem:residualforward}). It builds
+directly on \cref{e3:so:thm:split,e3:so:thm:perfect,e3:so:thm:graded} and their
+proofs. Its main object is $\SO(3,\No)$, so it belongs to Part~II's report
+rather than to the surquaternion report; the circle, where its main theorem
+fails, is cross-referenced to the trigonometry report.
+
+\textbf{Printed once.} The following results are proved in both sources~04
+and~09 and
 appear once here. We say which source's statement and proof are printed.
 \begin{enumerate}[label=(\alph*)]
 \item The finite phase theorem, \cref{e3:thm:phase}: source~04's statement
@@ -291,6 +342,21 @@ appear once here. We say which source's statement and proof are printed.
  \cref{e3:so:lem:positiveroot} used the same eigenvector argument and now
  refers to it.
 \end{enumerate}
+Source~10 recalls several results of Part~II. They are cited, not repeated:
+the standard-part splitting and kernel (\cref{e3:so:thm:split}), the spin map
+and its surjectivity (\cref{e3:thm:spin}), the canonical near-one lift and the
+Cayley chart on $K$ with its product law
+(\cref{e3:so:thm:cayley,e3:so:prop:kernelchart}), the $\SU(2)$ matrix model
+(\cref{e3:so:eq:su2}), and the perfectness of $K$ (\cref{e3:so:thm:perfect}),
+which is also the case $\Delta=\{0\}$ of \cref{e3:cut:thm:perfectcuts}. Two
+statements appear once with a second proof. The elementwise commutator bound
+\cref{e3:cut:lem:bound} is \cref{e3:so:eq:commbound}; Part~II proves it by BCH in
+a Hahn workspace, and source~10's finite matrix proof is kept as a marked second
+route. The scalar identity displayed in the proof of \cref{e3:so:thm:perfect} is
+the orthogonal-axis case of \cref{e3:cut:lem:scalarcomm}, whose general form and
+proof are source~10's. The simplicity of $\SO(3,\R)$
+(\cref{e3:cut:lem:realsimple}) is classical and is printed with source~10's
+proof because the classification uses it.
 
 \textbf{Where the merge had to choose.} Symbols were renamed only where the
 two sources, or a source and the rest of the collection, used one symbol for
@@ -301,10 +367,14 @@ it for the order topology of one set-sized workspace, source~09 for the full
 surreal topology. Here \emph{fine} always has the second meaning, in agreement
 with the surquaternion and foundations reports. Source~04's usage is written
 \emph{intrinsic}. Labels from source~04 carry the prefix \texttt{e3:}, and
-labels from source~09 carry \texttt{e3:so:}. Text written for the merge is confined to this section, the framing of
-\cref{e3:sec:rotations}, \cref{e3:sec:nonclaims}, the ledgers, and short
-cross-reference remarks. It adds no mathematical claim
-(\cref{e3:sub:nonclaimsmerge}).
+labels from source~09 carry \texttt{e3:so:}, and labels from source~10 carry
+\texttt{e3:cut:}. Source~10's symbols were renamed where they collided with
+Parts~I and~II or with \path{docs/NOTATION.md}; \cref{e3:cut:sub:notation}
+lists each renaming. Text written for the merge and the addition is confined to
+this section, the framing of \cref{e3:sec:rotations} and of Part~III,
+\cref{e3:sec:nonclaims}, the ledgers, and short cross-reference remarks
+(among them \cref{e3:cut:rem:gradedequality,e3:cut:rem:residualforward}). It adds
+no mathematical claim (\cref{e3:sub:nonclaimsmerge}).
 
 \subsection{Relation to the collection}\label{e3:sub:collection}
 
@@ -320,6 +390,16 @@ Ehrlich--Kaplan phase of \cref{e3:so:sec:angles} is its
 \texttt{trigonometry:def:globaltrig} and \texttt{trigonometry:thm:globalexp}. A
 treatment of $\SO(2,\No)$ is being added to that report at the same time as this
 merge. This report cites only labels present at its pin \texttt{50cb709}.
+That treatment is now the trigonometry report's Section~18
+(\texttt{trigonometry:rot:sec:main}; numbering at \texttt{7b5f934}). Part~III,
+added at \texttt{7b5f934}, cites its canonical circle splitting
+(\texttt{trigonometry:thm:polar}, Theorem~4.2 there, with
+\texttt{trigonometry:eq:circlesplit}) and its layer isomorphism
+\texttt{trigonometry:rot:thm:graded} for the circle counterexample
+\cref{e3:cut:prop:circlecounter}; both labels were present at source~10's pin
+\texttt{465a54b}. The ledger maps \texttt{trigonometry:thm:polar} to Lean
+declarations on the actual surcomplex field; the circle character of
+\cref{e3:cut:prop:circlecounter} has no such mapping.
 
 \textbf{Surquaternions.} The report \emph{Surquaternions}
 (\path{docs/surquaternions/surquaternions}) \cite{RepoQuaternion} already
@@ -369,7 +449,8 @@ nonnegative square roots, for labels of the trigonometry report
 \cite{RepoGeometry}. It explicitly distinguishes these field-valued lengths from
 the real-valued distances used by conventional metric-space interfaces. The repository contains no three-dimensional Euclidean or
 rotation-group Lean development, and no label of this report is mapped to a
-Lean declaration.
+Lean declaration. Both statements still hold at \texttt{7b5f934}, and they
+apply to Part~III as well.
 
 \textbf{Vector and tensor fields.} The report
 \path{docs/surreal/vector-and-tensor-fields}, placed in the same commit as
@@ -416,6 +497,16 @@ Hahn workspace. Global infinite angles use the specific Ehrlich--Kaplan
 normalization. Semialgebraic homotopy statements are made over set-sized real
 closed fields. These are different hypotheses; none is silently substituted for
 another.
+
+Source~10 adds two more. Its valuation statements
+(\crefrange{e3:cut:sec:setting}{e3:cut:sec:lattice}) use a set-sized real closed
+field $F\supseteq\R$ with its \emph{natural} valuation; the finite-integer ratio
+property \cref{e3:cut:eq:naturalratio} is essential, and the lattice
+reconstruction of \cref{e3:cut:sec:lattice} needs $F$ to be a set. Its universal
+quotient theorems (\crefrange{e3:cut:sec:class}{e3:cut:sec:unitary}) concern the
+full class $\No$ in an NBG-style set/class foundation, with class homomorphisms
+into a group that is a set in the same foundation. Only the circle
+counterexample of \cref{e3:cut:sub:torus} uses infinitesimal Hahn exp/log.
 
 \subsection{Notation, and the renamings made by the merge}\label{e3:sub:notation}
 
@@ -468,6 +559,9 @@ Hahn monomial variable in $t^\gamma$; the vector $\vv t$, or $t\in F^3$ in
 Part~II, is a Cayley coordinate. $\Exp_P,\Log_P$ with a point subscript are the
 exponential map of a sphere and its inverse, while $\Exp_{\mm},\Log_{\mm}$ are
 the strong matrix exponential and logarithm.
+
+Part~III keeps these conventions. Its own symbols, and the renamings of source~10
+that avoid the letters above, are listed in \cref{e3:cut:sub:notation}.
 
 \section{Scalar foundations and canonical finite trigonometry}\label{e3:sec:scalars}
 
@@ -2946,6 +3040,11 @@ construction. The two factors generally live at a \emph{larger infinitesimal
 magnitude} than their commutator. There is no contradiction with the abelian
 leading layers established in \cref{e3:so:sec:filtration}.
 
+Source~10 (Part~III) replaces the balanced fourth-root parameters by two
+prescribed depths: every $U\ne I$ of depth $\delta$ is a commutator of factors of
+depths $\alpha$ and $\delta-\alpha$ for any $0<\alpha<\delta$ in the value group
+(\cref{e3:cut:thm:mixed}), using the unequal-parameter identity displayed above.
+
 The whole group \(G(F)\) likewise has commutator width one. Choose an algebraic
 square root \(B\) of a rotation \(A\) around the same axis, and let \(H\) be a
 half-turn about a perpendicular axis. Then \(HBH^{-1}=B^{-1}\), so
@@ -3302,6 +3401,21 @@ with vector notation for the coefficients. A leading bracket can vanish when
 the leading vectors are parallel; the theorem deliberately gives an inclusion
 of filtration levels, not equality of valuations in every case.
 
+\begin{remark}[Source~10: the inclusion is an equality of images]\label{e3:cut:rem:gradedequality}
+The statement of \cref{e3:so:thm:graded} is unchanged. For subgroups,
+source~10 shows that \cref{e3:so:eq:commbound} is an equality, and in a
+stronger form: over a set-sized real closed field $F\supseteq\R$ with its
+natural valuation, and over $\No$, the \emph{set} of single commutators
+$\commset{K_{\ge\alpha}}{K_{\ge\beta}}$ already equals $K_{\ge\alpha+\beta}$
+(\cref{e3:cut:thm:mixed}). More generally
+$\commset{K_{\mathcal C}}{K_{\mathcal D}}=\comm{K_{\mathcal C}}{K_{\mathcal D}}
+=K_{\mathcal C+\mathcal D}$ for arbitrary upper segments of the value group
+(\cref{e3:cut:thm:cuts}). This concerns the filtration levels only. It does not
+contradict the vanishing of a leading bracket for parallel leading vectors: the
+factors realizing a given commutator are chosen for it and have orthogonal
+leading axes.
+\end{remark}
+
 The quaternion form of this grading is \texttt{squat:thm:graded} (Theorem~8.6 of
 the surquaternion report), where the graded bracket of leading imaginary
 coefficients is \(2X\times Y\). The two statements agree: the leading
@@ -3329,6 +3443,20 @@ whole \(K\) is a pronilpotent group in an unspecified topology. In particular,
 one fixed sequence of multiples \(n\gamma\) need not exhaust all valuation
 scales, and the whole group is perfect rather than residually nilpotent in the
 sense of its ordinary lower central series.
+
+\begin{remark}[Source~10: the exact perfect residual]\label{e3:cut:rem:residualforward}
+The preceding paragraph is made exact in Part~III. For a principal subgroup
+$K_{\ge\gamma}$ the lower central and derived series are
+$\Lambda_n(K_{\ge\gamma})=K_{\ge n\gamma}$ and
+$K_{\ge\gamma}^{(r)}=K_{\ge2^r\gamma}$ (\cref{e3:cut:thm:series}). Both stabilize
+at stage $\omega$ at the perfect subgroup $K_{\gg\gamma}$ of rotations deeper than
+every $n\gamma$, which is the largest perfect subgroup of $K_{\ge\gamma}$
+(\cref{e3:cut:thm:residual}). Hence $K_{\ge\gamma}$ is residually nilpotent
+exactly when $\gamma$ is an order unit of the value group
+(\cref{e3:cut:thm:universalrn}); over $\No$ this never happens
+(\cref{e3:cut:cor:norn}). ``One fixed sequence of multiples $n\gamma$ need not
+exhaust all valuation scales'' is thus the failure of the order-unit condition.
+\end{remark}
 
 \subsection{An imported structural perspective}
 
@@ -3862,13 +3990,1249 @@ part is \(H_0\), and conjugation by \(C^{-1}\in K\) restores the ordinary
 real group. The multiplication table is unchanged; the coordinate realization
 has been deformed at several infinitesimal scales.
 
+\part{Valuation cuts and the universal set-sized quotient}\label{e3:cut:part}
+
+Part~III is source~10, \emph{Valuation Cuts and the Universal Set-Sized
+Quotient of Surreal Rotation Groups: exact commutators, normal subgroups,
+perfect residuals, and surcomplex special unitary groups}. It takes up the
+direction ``normal-subgroup classification compatible with convex valuations''
+named at the end of source~09 (\cref{e3:sec:conclusion}), and it builds
+directly on \cref{e3:so:thm:split}, on \cref{e3:so:thm:perfect} with the
+unequal-parameter identity recorded in its proof, and on
+\cref{e3:so:thm:graded}. Material that source~10 recalls from Part~II is cited,
+not repeated.
+
+The infinitesimal rotations of surreal three-space are a meeting point of
+ordered-field algebra, group theory and size-sensitive foundations. The
+rotation group has the ordinary real rotations as its standard-part image, but
+its infinitesimal kernel is nonabelian and perfect (\cref{e3:so:thm:perfect}),
+while a first-order approximation sees an abelian three-dimensional layer
+(\cref{e3:so:thm:graded}). Both statements are true. To reconcile them
+quantitatively one keeps track of the valuation depth at which a commutator is
+formed. Part~III answers three questions in the precise senses below. How much
+valuation depth is lost or gained in an \emph{exact}, not leading-order,
+commutator? Which infinitesimal scales can an abstract normal subgroup contain?
+Can a set-sized group retain any infinitesimal information from the
+\emph{full} surreal rotation group? The last answer is genuinely
+proper-class and has no counterpart for one fixed set-sized field.
+
+In the notation fixed in \cref{e3:cut:sub:notation}, the principal
+conclusions are
+\[
+ \commset{K_{\ge\alpha}}{K_{\ge\beta}}=K_{\ge\alpha+\beta},
+ \qquad
+ \nc{U}_{G}=K_{\ge v(U-I)}\quad(I\ne U\in K),
+\]
+where the left side of the first formula is the image of one word map, not
+merely the subgroup it generates (\cref{e3:cut:thm:mixed,e3:cut:thm:normalclosure}).
+Consequently the proper normal subgroups of $G(F)$ are classified by valuation
+cuts (\cref{e3:cut:thm:normalclass}). For a principal subgroup
+$K_{\ge\alpha}$,
+\[
+ \bigcap_{n\ge1}\Lambda_n(K_{\ge\alpha})
+ =\bigcap_{n\ge0}K_{\ge\alpha}^{(n)}
+ =K_{\gg\alpha}
+ :=\{I\}\cup\{U\in K:v(U-I)>n\alpha\text{ for every }n\ge1\},
+\]
+a perfect subgroup which is the largest perfect subgroup of $K_{\ge\alpha}$;
+thus $K_{\ge\alpha}$ is residually nilpotent exactly when $\alpha$ is an order
+unit (\cref{e3:cut:thm:residual,e3:cut:thm:universalrn}). For the full surreal
+class,
+\[
+ \begin{gathered}
+ \varphi:\SO(3,\No)\to\mathcal T\ \text{a class homomorphism},\quad
+ \mathcal T\ \text{a set-sized group}\\
+ \Longrightarrow\quad
+ \varphi=\bar\varphi\circ\st,\qquad
+ \bar\varphi:\SO(3,\R)\to\mathcal T\ \text{unique}
+ \end{gathered}
+\]
+(\cref{e3:cut:thm:smallquotient}). Continuity is not among the hypotheses.
+The same holds for $\SO(n,\No)$, $n\ge3$, and for $\SU(n,\No[i])$, $n\ge2$
+(\cref{e3:cut:thm:allranks}), and fails for the circle and for
+$\Un(n,\No[i])$ (\cref{e3:cut:prop:circlecounter}). The main results use finite
+quaternion and matrix algebra, not convergence, unrestricted trigonometry, or
+a global surreal exponential.
+
+\section{Setting, inheritance, and notation for Part III}\label{e3:cut:sec:setting}
+
+\subsection{Scalar hypotheses and the natural valuation}\label{e3:cut:sub:scalars}
+
+Until \cref{e3:cut:sec:class}, $F$ is a \emph{set-sized} real closed field
+containing $\R$. We normally assume $F\ne\R$ so that positive valuation depths
+exist; the Archimedean case is the degenerate case $K=\{I\}$. The finite
+elements $\OO=\OO_F$, the infinitesimals $\mm=\mm_F$ and the standard part
+$\st:\OO\to\R$ are those of \cref{e3:sec:scalars}. We use the natural additive
+valuation
+\[
+ v:F^\times\longrightarrow\Gamma=F^\times/\OO^\times,\qquad v(0)=\infty,
+\]
+with $v(x)>0$ exactly when $x$ is infinitesimal. Every nonzero real constant has
+value zero. Real closedness makes $\Gamma$ divisible: positive roots divide
+arbitrary values by every positive integer. On a Hahn workspace
+$F=\R((t^\Gamma))$ of \cref{e3:eq:hahn} this is the valuation of
+\cref{e3:sec:scalars}, with the same exponent group $\Gamma$. For all of
+$\No$ the value group is the class $(\No,+)$, with $v(\omega^{-\gamma})=\gamma$;
+it is written $\No$ and never $\Gamma$, since \path{docs/NOTATION.md} reserves
+$\Gamma$ for a set-sized group.
+
+One elementary property is essential:
+\begin{equation}\label{e3:cut:eq:naturalratio}
+ v(t)\ge v(s),\quad s,t>0
+ \quad\Longleftrightarrow\quad t/s\in\OO
+ \quad\Longleftrightarrow\quad t/s\le M
+ \text{ for some integer }M\ge1.
+\end{equation}
+The final bound is by an \emph{ordinary finite integer}. It is why the
+normal-generation proof of \cref{e3:cut:thm:normalclosure} works for the
+natural valuation. Replacing this valuation silently by an arbitrary
+coarsening would invalidate that argument.
+
+For a vector $u\in F^r$ write $v(u)=\min_jv(u_j)$ and
+$\norm u=\bigl(\sum_ju_j^2\bigr)^{1/2}$. Then, for $u\ne0$,
+\begin{equation}\label{e3:cut:eq:normvalue}
+ v(\norm u)=v(u).
+\end{equation}
+Indeed, divide all coordinates by a coordinate of minimal value. The residues
+are real and at least one is nonzero, so the sum of their squared residues is
+strictly positive: no cancellation of leading squares is possible. This is
+where the positive-definite form enters.
+
+\subsection{Depth and the infinitesimal kernel}\label{e3:cut:sub:depth}
+
+Let $G=G(F)=\SO(3,F)$ and let $K=K_F$ be the kernel of standard part, so that
+$G=K\rtimes\SO(3,\R)$ and $U\in K$ exactly when $U-I\in M_3(\mm)$
+(\cref{e3:so:thm:split}; source~10 recalls this splitting and notes that its
+entrywise argument proves it directly). For a matrix $A$ put
+$v(A)=\min_{ij}v(A_{ij})$. Matrix multiplication satisfies
+$v(AB)\ge v(A)+v(B)$. Since a rotation and its inverse have entries in $\OO$,
+conjugation by $G$ preserves matrix valuation exactly, as noted for vectors
+before \cref{e3:so:eq:filtration}. The \emph{depth} of $U\in K$ is $v(U-I)$, with
+$v(0)=\infty$ for the identity. It follows that
+\begin{equation}\label{e3:cut:eq:depthbasic}
+ \begin{split}
+ v(U^{-1}-I)&=v(U-I),\\
+ v(AUA^{-1}-I)&=v(U-I)\quad(A\in G),\\
+ v(UV-I)&\ge\min\bigl(v(U-I),v(V-I)\bigr)\quad(U,V\in K).
+ \end{split}
+\end{equation}
+If $U,V\in K$ have unequal finite depths, the last inequality is an equality:
+in $UV-I=(U-I)+(V-I)+(U-I)(V-I)$ the unique summand of smaller depth cannot be
+cancelled by the other two.
+
+The spin map $p:\Sp(1,F)\to G$ is that of \cref{e3:thm:spin}; for a unit
+quaternion $q=(a,u)$,
+$p(q)=(a^2-u\cdot u)I+2uu\transpose+2a\widehat u$ by \cref{e3:eq:quatrotation},
+so $\tr p(q)=4a^2-1$. The group $G$ acts transitively on unit vectors
+(\cref{e3:so:sec:frames}).
+
+\begin{lemma}[Canonical infinitesimal lift]\label{e3:cut:lem:lift}
+Every $U\in K$ has exactly one unit quaternion lift $q_U=(a,u)$ with
+$\st(q_U)=1$. It has $a>0$, $a-1\in\mm$ and $u\in\mm^3$. For $U\ne I$,
+\begin{equation}\label{e3:cut:eq:liftdepth}
+ v(U-I)=v(u)=v(\norm u),\qquad v(1-a)=2v(U-I).
+\end{equation}
+Moreover, two such lifts with the same scalar part are conjugate by a unit
+quaternion, and their rotations are conjugate in $G$.
+\end{lemma}
+\begin{proof}
+Existence and uniqueness of the lift are the last clause of
+\cref{e3:so:prop:kernelchart}; source~10's argument is the trace formula: if
+$U$ is near $I$, the two lifts have scalar parts with standard parts $1$ and
+$-1$, and the positive one has infinitesimal imaginary coordinates by its
+unit-norm equation.
+
+Set $\delta=v(u)>0$. The identity $1-a=(u\cdot u)/(1+a)$ gives value
+$2\delta$. In $p(q_U)-I$ the linear term $2a\widehat u$ has value $\delta$,
+while all remaining terms have value at least $2\delta$. Thus
+$v(U-I)=\delta$. Alternatively, $p(q)-p(q)\transpose=4a\widehat u$ prevents
+cancellation. \Cref{e3:cut:eq:normvalue} finishes the value assertions.
+
+Equal scalar parts imply equal imaginary norms. For nonzero imaginary parts, a
+rotation carries one normalized direction to the other, and a unit lift of
+that rotation (\cref{e3:thm:spin}) conjugates the quaternions. The zero case
+is the identity.
+\end{proof}
+
+All identities so far are valid over the ordinary reals and over arbitrary real
+closed fields. Nothing has yet involved a Hahn expansion or a topology.
+
+\subsection{What Part III inherits and what it adds}\label{e3:cut:sub:inherited}
+
+Source~10 inspected this report at commit
+\texttt{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}; the report directory is
+unchanged between that commit and the commit at which Part~III was added, so
+its references to Part~II (``especially Sections~16--19 and~23'', that is
+\crefrange{e3:so:sec:frames}{e3:so:sec:perfect} and \cref{e3:so:sec:filtration})
+are accurate as printed. Part~II already gives the quaternion
+model, the standard-part splitting, unique divisibility, the single-commutator
+theorem for $K$ and the graded cross-product bracket. The proof of
+\cref{e3:so:thm:perfect} even records the unequal-parameter scalar identity on
+which the exact valuation refinement below rests. That identity, the spin double
+cover and the perfectness of the entire kernel are not new here.
+
+D'Andrea and Maffei prove local openness of the commutator map for compact
+semisimple Lie groups \cite[Theorem~2.5]{DM}. Bays and Peterzil explicitly
+record commutator width one for the infinitesimal $\SO(3)$ group in their proof
+of Claim~3.3 \cite{BP}. Their Theorem~1.1 also recovers a real closed convexly
+valued field, with parameters, from the infinitesimal group; that is stronger
+than an abstract recovery of the value group. The normal-lattice
+reconstruction of \cref{e3:cut:prop:compact} is a concrete elementary
+realization, not a claim to have first discovered field recoverability.
+Source~10 grades its own contributions as follows.
+
+\begin{center}\small
+\begin{tabular}{L{0.3\textwidth}L{0.6\textwidth}}
+\toprule
+Statement or ingredient & Treatment in Part~III\\
+\midrule
+Spin, standard part, perfectness of $K$ & Established background, reproved
+only as needed; credited to Part~II and to published work.\\
+Exact mixed-depth image and arbitrary-cut formula & A refinement of the
+existing quaternion construction, with full proof and explicit scope.\\
+Normal closures and cut classification & An elementary structural theorem
+proved here; no general historical priority is asserted.\\
+Perfect residual and stage-$\omega$ stabilization & Exact consequences of the
+cut calculus, including the order-unit criterion.\\
+Universal set-sized quotient and fixed-rank extensions & The main
+candidate-original surreal-specific contribution of source~10.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source comparison used the repository catalogue, this report's README and
+relevant source sections, and the trigonometry report's README. The online
+literature check concentrated on the primary works just cited and on
+surreal-field background \cite{BG}. It was not an exhaustive review of the
+literature on anisotropic algebraic groups. Broader searches for
+normal-subgroup and surreal-quotient terminology were inconclusive, and
+unrelated hits were not used as evidence. Failure to locate an identical
+statement is not a proof of priority; the mathematical content rests on the
+proofs below.
+
+\subsection{Notation, and the renamings made for Part III}\label{e3:cut:sub:notation}
+
+The group commutator is $\comm UV=UVU^{-1}V^{-1}$, as in Part~II. For
+subgroups $A,B$, $\comm AB$ denotes the subgroup generated by such
+commutators, whereas
+\[
+ \commset AB
+\]
+is the \emph{set} of single commutators; the two are kept distinct. Square
+brackets remain Lie brackets (\cref{e3:so:eq:liecross}). An \emph{upper
+segment} is a subset $\mathcal C\subseteq\Gamma_{>0}$ with $\gamma\in\mathcal C$
+and $\eta\ge\gamma$ implying $\eta\in\mathcal C$; the empty segment is allowed.
+Values in $\Gamma_{>0}$ are denoted $\alpha,\beta,\gamma,\delta,\eta,\eps$; in
+Part~I the letters $\alpha,\beta,\gamma$ are spherical angles, while Part~II
+already uses $\gamma$ for valuations. The normal closure of $U$ in $G$ is
+$\nc U_G$, the subgroup of finite products of conjugates of $U^{\pm1}$. The
+following symbols of source~10 were changed so that each has one meaning in
+this report.
+\begin{center}\small
+\begin{longtable}{L{0.27\textwidth}L{0.25\textwidth}L{0.38\textwidth}}
+\toprule
+Here & Source~10 & Reason\\
+\midrule
+\endhead
+depth $v(U-I)$ & $\mathrm d(g)$ & $d=\sqrt D$ is the Gram quantity of
+\cref{e3:sub:notation}; Part~II already writes $v(U-I)$
+(\cref{e3:so:eq:valcay})\\
+$\comm UV$, $\comm AB$, $\commset AB$ & $[g,h]$, $[A,B]$ & square brackets are
+Lie brackets\\
+$K_{\ge\alpha}$, $K_{>\alpha}$, $K_{\mathcal C}$ & $K_\alpha$, $K_{>\alpha}$,
+$K_C$ & $K_{\ge\gamma}$ is Part~II's notation (\cref{e3:so:eq:filtration});
+segments are calligraphic because $K_F$ carries a field subscript\\
+$\mathfrak a_{\mathcal C}$ & $I_C$ & $I$ is the identity matrix\\
+$K_{>\Delta}$, $K_{\gg\alpha}$ & $P_\Delta$, $P_\alpha$ & $P$ is the positive
+matrix of \cref{e3:so:lem:positiveroot}\\
+$\Lambda_n$ (lower central series) & $\gamma_n$ & $\gamma$ is a valuation\\
+$\mathcal T$, $\mathcal T_0$ (target groups) & $H$, $T$, $H_0$ & $H_n$ is a
+half-turn, $H$ and $H_0$ are finite subgroups in Part~II, $T_n$ an axis
+torus\\
+$p(q)$, spin map & $R(q)$ & $R$ is a sphere radius; $p$ as in
+\cref{e3:thm:spin}\\
+$U_\gamma=\cay(\omega^{-\gamma}e_1)$ & $r_\gamma=\mathrm{Cay}(\omega^{-\gamma}e_1)$ &
+$U$ denotes elements of $K$\\
+$\No[i]$, and $F(i)$ for a general $F$ & $\No(i)$, $F(i)$ &
+$\mathbf{SC}=\No[i]$ in \path{docs/NOTATION.md}; $F(i)=F[i]$ as in Part~II\\
+$\TT(\No)$, $\Un(n,\cdot)$ & $U(1,\No(i))$, $U(n)$ & italic $U$ is an element
+of $K$; $\TT$ as in \cref{e3:sub:notation} and the trigonometry report\\
+$\widetilde K_F$ & $M_F$ & $M_3(F)$ is the matrix algebra\\
+$\ell_{\mm}(u)$ & $\ell(u)$ & the trigonometry report's name
+(\texttt{trigonometry:rot:eq:ellm}); $\ell_\gamma$ is the layer map of
+\cref{e3:so:thm:graded}\\
+$\coef_\eta$ & $c_\eta$ & $c$ is the cosine coordinate of $\Rot(n;c,s)$\\
+a set $\mathcal X$, a set-sized field $k$ & $X$, $E$ & $X$ is a Lie algebra
+element, $E$ the spherical excess\\
+$W$ (a Givens block) & $B$ & $B$ is a real rotation in \cref{e3:so:thm:split}\\
+\bottomrule
+\end{longtable}
+\end{center}
+The Cayley map is the same in both texts: source~10's $\mathrm{Cay}(x)$ is
+$\cay(x)$ of \cref{e3:so:eq:cayley}, with canonical lift
+$(1,x)/\sqrt{1+x\cdot x}$, and its product law is
+\cref{e3:so:eq:cayleyproduct}. No normalization changes. The factor
+$\tfrac12$ of the surjectivity argument of \cref{e3:so:thm:graded} belongs to
+the layer map, not to the chart: $\ell_\gamma(\cay(\tfrac12\omega^{-\gamma}a))=a$,
+so $\ell_\gamma(U_\gamma)=2e_1$. Source~10's $\Delta_\alpha$ is kept
+(\cref{e3:cut:eq:deltaalpha}); it is the subgroup that
+\path{docs/NOTATION.md} writes $H_\alpha$ in its Hahn--Tate entry, a name not
+used here because $H_n$ is a half-turn. The depth condition defining
+$K_{\gg\alpha}$ is the value condition of the error ideal $I_\kappa$ of the
+expanding-dynamics report, also recorded in that file. The letter $\Delta$ is also a planar area in
+\cref{e3:eq:heron} and $\chi_A$ a characteristic polynomial in
+\cref{e3:sec:rotations}; both uses are local to Part~I. \emph{Order unit} has
+the meaning of \path{docs/NOTATION.md}. The stage index $\omega$ of a
+transfinite series is the first infinite ordinal, which is also the surreal
+$\omega$.
+
+\section{Exact commutators at prescribed valuation depths}\label{e3:cut:sec:comm}
+
+\begin{lemma}[The scalar commutator identity]\label{e3:cut:lem:scalarcomm}
+For unit quaternions $q_1=(a,u)$ and $q_2=(b,w)$,
+\begin{equation}\label{e3:cut:eq:scalarcomm}
+ \re\comm{q_1}{q_2}=1-2\norm{u\times w}^2.
+\end{equation}
+For arbitrary, not necessarily unit, quaternions,
+\begin{equation}\label{e3:cut:eq:unnormalized}
+ \re\bigl(q_1q_2\overline{q_1}\,\overline{q_2}\bigr)=N(q_1)N(q_2)-2\norm{u\times w}^2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Quaternion multiplication gives $q_1q_2-q_2q_1=(0,2u\times w)$. For units,
+\[
+ \comm{q_1}{q_2}-1=(q_1q_2-q_2q_1)q_1^{-1}q_2^{-1},\qquad
+ N\bigl(\comm{q_1}{q_2}-1\bigr)=4\norm{u\times w}^2.
+\]
+For any unit quaternion $r$, $N(r-1)=2(1-\re r)$. This proves
+\cref{e3:cut:eq:scalarcomm}. Multiplying by $N(q_1)N(q_2)$ after normalization
+proves \cref{e3:cut:eq:unnormalized} for nonzero factors, and a zero factor is
+immediate.
+\end{proof}
+
+The identity displayed in the proof of \cref{e3:so:thm:perfect} is the case
+$u=se_1$, $w=te_2$ of \cref{e3:cut:eq:unnormalized}.
+
+\begin{lemma}[The depth bound]\label{e3:cut:lem:bound}
+If $U,V\in K$, then
+\begin{equation}\label{e3:cut:eq:commbound}
+ v\bigl(\comm UV-I\bigr)\ge v(U-I)+v(V-I).
+\end{equation}
+\end{lemma}
+\begin{proof}
+This is the elementwise form of \cref{e3:so:eq:commbound}, proved there by a
+formal BCH computation in a Hahn workspace. Source~10's proof is a finite
+second route, valid over every real closed $F\supseteq\R$: the identity
+\[
+ \comm UV-I=\bigl((U-I)(V-I)-(V-I)(U-I)\bigr)U^{-1}V^{-1}
+\]
+and the bounded entries of $U^{-1},V^{-1}$ give the assertion. An identity
+factor is read with value $\infty$.
+\end{proof}
+
+\begin{theorem}[Exact mixed-depth commutator image]\label{e3:cut:thm:mixed}
+For all $\alpha,\beta\in\Gamma_{>0}$,
+\begin{equation}\label{e3:cut:eq:mixed}
+ \commset{K_{\ge\alpha}}{K_{\ge\beta}}=K_{\ge\alpha+\beta}.
+\end{equation}
+More precisely, if $U\ne I$ has depth $\delta\ge\alpha+\beta$, then
+$U=\comm VW$ with $v(V-I)=\alpha$ and $v(W-I)=\delta-\alpha\ge\beta$.
+\end{theorem}
+\begin{proof}
+The inclusion $\subseteq$ is \cref{e3:cut:lem:bound}. Let $(c,z)$ be the
+canonical lift of $U$. Then $0<c<1$ and $v(1-c)=2\delta$. Put
+\[
+ \xi=\sqrt{\frac{1-c}{2}},\qquad v(\xi)=\delta.
+\]
+Choose any positive $x\in F$ with $v(x)=\alpha$, and set $y=\xi/x$. Both are
+infinitesimal, since $v(y)=\delta-\alpha\ge\beta>0$. Therefore
+\[
+ q_1=\bigl(\sqrt{1-x^2},\,xe_1\bigr),\qquad
+ q_2=\bigl(\sqrt{1-y^2},\,ye_2\bigr)
+\]
+are unit quaternions near one. By \cref{e3:cut:eq:scalarcomm},
+\[
+ \re\comm{q_1}{q_2}=1-2x^2y^2=1-2\xi^2=c.
+\]
+The commutator is near one and has the same scalar part as $(c,z)$. By
+\cref{e3:cut:lem:lift}, a unit quaternion $h$ conjugates it to $(c,z)$. Then
+\[
+ U=\comm{p(hq_1h^{-1})}{p(hq_2h^{-1})}.
+\]
+Conjugation preserves depth, so by \cref{e3:cut:eq:liftdepth} the two depths
+are $\alpha$ and $\delta-\alpha$. The identity target uses two identity
+factors.
+\end{proof}
+
+This is an exact construction: no error term remains and no iterative lifting is
+needed. The nonlinearity is handled by matching a conjugacy invariant, the
+scalar part of a unit lift. The balanced fourth-root construction in the proof
+of \cref{e3:so:thm:perfect} is the special case in which both depths are
+$\delta/2$.
+
+\subsection{Arbitrary upper segments and valuation ideals}
+
+For an upper segment $\mathcal C\subseteq\Gamma_{>0}$ define
+\begin{equation}\label{e3:cut:eq:cuts}
+ \mathfrak a_{\mathcal C}=\{0\}\cup\{x\in\mm:v(x)\in\mathcal C\},\qquad
+ K_{\mathcal C}=\{I\}\cup\{U\in K:v(U-I)\in\mathcal C\}.
+\end{equation}
+The first is an ideal of $\OO$ and the second a normal subgroup of $G$, by
+\cref{e3:cut:eq:depthbasic}. Thus $K_{\ge\alpha}=K_{[\alpha,\infty)}$ and
+$K_{>\alpha}=K_{(\alpha,\infty)}$ are Part~II's subgroups
+\cref{e3:so:eq:filtration}. For upper segments $\mathcal C,\mathcal D$ the
+Minkowski sum
+$\mathcal C+\mathcal D=\{\alpha+\beta:\alpha\in\mathcal C,\ \beta\in\mathcal D\}$
+is again upper (if $\gamma\ge\alpha+\beta$, increase the first summand to
+$\gamma-\beta$), and it is empty if either input is empty.
+
+\begin{theorem}[Exact cut arithmetic]\label{e3:cut:thm:cuts}
+For every pair of upper segments,
+\begin{equation}\label{e3:cut:eq:cutcomm}
+ \commset{K_{\mathcal C}}{K_{\mathcal D}}=\comm{K_{\mathcal C}}{K_{\mathcal D}}
+ =K_{\mathcal C+\mathcal D}.
+\end{equation}
+Also $\mathfrak a_{\mathcal C}\mathfrak a_{\mathcal D}=\mathfrak a_{\mathcal C+\mathcal D}$,
+where the left side is the usual ideal product.
+\end{theorem}
+\begin{proof}
+For nonidentity factors, \cref{e3:cut:lem:bound} gives a depth at least a sum of
+one value in $\mathcal C$ and one in $\mathcal D$, hence a value in
+$\mathcal C+\mathcal D$. Conversely, if a target has depth
+$\delta\in\mathcal C+\mathcal D$, write $\delta=\alpha+\beta$ with
+$\alpha\in\mathcal C$, $\beta\in\mathcal D$ and apply \cref{e3:cut:thm:mixed}.
+This proves equality of the commutator image with the subgroup
+$K_{\mathcal C+\mathcal D}$, and therefore equality with the generated
+subgroup.
+
+The ideal-product inclusion follows from valuations of products and finite
+sums. For the reverse inclusion, an element of value $\delta=\alpha+\beta$ can
+be divided by a positive element of value $\alpha$; the quotient has value
+$\beta$. Thus it is already one product, not just a sum of products.
+\end{proof}
+
+For example,
+\[
+ \comm{K_{\ge\alpha}}{K_{>\beta}}=K_{>\alpha+\beta},\qquad
+ \comm{K_{>\alpha}}{K_{>\beta}}=K_{>\alpha+\beta}.
+\]
+Divisibility of $\Gamma$ lets one split any positive excess between the two
+strict thresholds. The open and closed endpoints matter: replacing all cuts by
+principal closed ones loses actual subgroup information.
+
+\section{Normal generation and the classification of normal subgroups}\label{e3:cut:sec:normal}
+
+The arguments of this section concern conjugation by the \emph{full} group
+$G$. Conjugating only by $K$ does not allow an arbitrary real change of axis;
+this distinction is essential throughout.
+
+\begin{lemma}[Two conjugates fill a definite scalar interval]\label{e3:cut:lem:two}
+Let $A=p(a,se_1)$, where $a^2+s^2=1$, $s>0$ and $a\ge0$. If a unit quaternion
+$(b,w)$ satisfies
+\begin{equation}\label{e3:cut:eq:twointerval}
+ 1-2s^2\le b\le1,
+\end{equation}
+then $p(b,w)$ is a product of two $G$-conjugates of $A$.
+\end{lemma}
+\begin{proof}
+Set $z=(a^2-b)/s^2$. The inequalities say exactly $-1\le z\le1$. Choose unit
+vectors $u=e_1$ and $u'=ze_1+\sqrt{1-z^2}\,e_2$. The unit quaternions
+$(a,su)$ and $(a,su')$ are conjugates of $(a,se_1)$, and their product has
+scalar part $a^2-s^2z=b$. Its imaginary norm equals $\norm w$. Conjugating the
+product to $(b,w)$, and conjugating both factors at the same time, proves the
+result. If that norm is zero, the two quaternions with scalar part $b=\pm1$
+already coincide.
+\end{proof}
+
+\begin{lemma}[Finite powers enlarge the leading coefficient]\label{e3:cut:lem:powers}
+Let $q=(a,su)$ be a unit quaternion near one, with $s>0$ and $\norm u=1$. For
+every ordinary integer $m\ge1$ write $q^m=(a_m,s_mu)$. Then
+\begin{equation}\label{e3:cut:eq:powers}
+ \st(s_m/s)=m,\qquad s_m>0,\qquad v(s_m)=v(s).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The scalar $a$ commutes with $su$, so the ordinary finite binomial expansion is
+valid. The coefficient of $u$ is
+\[
+ s_m=\sum_{j=0}^{\lfloor(m-1)/2\rfloor}(-1)^j\binom m{2j+1}a^{m-2j-1}s^{2j+1}.
+\]
+After division by $s$, the term with $j=0$ has standard part $m$ and every other
+term is infinitesimal. Positivity and the value equality follow.
+\end{proof}
+
+\begin{theorem}[Normal closure of one infinitesimal rotation]\label{e3:cut:thm:normalclosure}
+For $I\ne U\in K$ of depth $\delta$,
+\begin{equation}\label{e3:cut:eq:normalclosure}
+ \nc U_G=K_{\ge\delta}.
+\end{equation}
+In fact every $V\in K_{\ge\delta}$ is a product of two $G$-conjugates of a
+suitable ordinary positive power $U^m$.
+\end{theorem}
+\begin{proof}
+Normality of $K_{\ge\delta}$ proves one inclusion. For the other, take canonical
+unit lifts of $U,V$ and let $s,t$ be their imaginary norms. An identity $V$ is
+immediate, so assume $t>0$. Since $v(t)\ge v(s)$, \cref{e3:cut:eq:naturalratio}
+provides an integer $M$ with $t/s\le M$. Choose an integer $m>2M$. By
+\cref{e3:cut:lem:powers}, the imaginary norm $s_m$ of the canonical lift of
+$U^m$ satisfies $s_m/s>m/2>M$. Thus $t<s_m$.
+
+If $(b,w)$ is the canonical lift of $V$, then $b>0$ and
+\[
+ 1-b=\frac{t^2}{1+b}\le t^2<s_m^2<2s_m^2.
+\]
+So $b$ lies in the scalar interval of \cref{e3:cut:lem:two}, applied to $U^m$.
+Hence $V$ is a product of two conjugates of $U^m$, and belongs to the normal
+closure of $U$.
+\end{proof}
+
+\begin{proposition}[No uniform finite normal-generation width]\label{e3:cut:prop:width}
+Fix $I\ne U\in K$. Although its normal closure is $K_{\ge v(U-I)}$, there is
+no integer $L$ such that every member of this normal closure is a product of
+at most $L$ conjugates of $U$ or $U^{-1}$.
+\end{proposition}
+\begin{proof}
+Let $q$ be the canonical lift of $U$. The Euclidean quaternion norm satisfies
+\[
+ \norm{q_1\cdots q_L-1}\le\sum_{j=1}^L\norm{q_j-1}
+\]
+for unit quaternions, by telescoping and multiplicativity of the norm.
+Conjugates of $q$ and $q^{-1}$ all have the same distance from one. Finite
+products of such near-one lifts remain near one, so they are the canonical lifts
+of the corresponding matrix products. For any ordinary $m\ge1$,
+\cref{e3:cut:lem:powers} and $\norm{q-1}^2=2s^2/(1+a)$ show
+\[
+ \st\!\left(\frac{\norm{q^m-1}}{\norm{q-1}}\right)=m.
+\]
+Taking $m>L$ violates the preceding norm bound for a product of at most $L$
+conjugates. Therefore $U^m$ cannot be such a product.
+\end{proof}
+
+\subsection{The full normal-subgroup classification}
+
+\begin{lemma}[Abstract simplicity of the real rotation group]\label{e3:cut:lem:realsimple}
+The abstract group $\SO(3,\R)$ is simple.
+\end{lemma}
+\begin{proof}
+This is classical; source~10 proves it with the lemmas above. Let a normal
+subgroup contain a nonidentity rotation, with unit lift $(a,su)$, $a\ge0$,
+$s>0$. By \cref{e3:cut:lem:two}, it contains all rotations whose positive lift
+scalar $b$ is sufficiently close to one. An arbitrary real rotation has a real
+axis and an ordinary real angle $\theta$. For a sufficiently large ordinary
+integer $m$, the same-axis rotation by $\theta/m$ lies in this small interval,
+and the original rotation is its $m$-th power. Only ordinary real trigonometry
+appears in this real-field lemma.
+\end{proof}
+
+\begin{theorem}[All proper normal subgroups]\label{e3:cut:thm:normalclass}
+The proper normal subgroups of $G=\SO(3,F)$ are exactly the subgroups
+$K_{\mathcal C}$, for upper segments $\mathcal C\subseteq\Gamma_{>0}$.
+Distinct segments give distinct subgroups. In particular, the proper normal
+subgroups form a chain, and $K$ is the unique largest proper normal subgroup
+of $G$.
+\end{theorem}
+\begin{proof}
+Suppose first that $N\trianglelefteq G$ and $N\subseteq K$. Let $\mathcal C$
+be the set of depths of nonidentity elements of $N$. If $\delta\in\mathcal C$,
+\cref{e3:cut:thm:normalclosure} gives $K_{\ge\delta}\subseteq N$, so every
+value at least $\delta$ also belongs to $\mathcal C$. Every positive value is
+attained by a rotation: take a near-one unit quaternion whose imaginary
+coordinate has that value. Thus $\mathcal C$ is upper and $N=K_{\mathcal C}$.
+The same observation proves that distinct segments give distinct subgroups.
+
+Now suppose $N$ contains $A\notin K$. Choose a unit lift $(a,su)$ with $a\ge0$.
+The scalar $s$ is not infinitesimal; otherwise $A$ would have standard part
+$I$. For every $V\in K$ with canonical lift $(b,w)$, $1-b$ is infinitesimal
+while $2s^2$ has positive standard part, so $1-b<2s^2$. By
+\cref{e3:cut:lem:two}, every $V\in K$ belongs to $N$. Hence $K\subseteq N$,
+and $\st(N)$ is a nontrivial normal subgroup of $\SO(3,\R)$. By
+\cref{e3:cut:lem:realsimple}, $\st(N)=\SO(3,\R)$. Together with
+$K\subseteq N$ this gives $N=G$.
+\end{proof}
+
+\begin{remark}[What is not classified]\label{e3:cut:rem:notclassified}
+\Cref{e3:cut:thm:normalclass} classifies subgroups normal in $G$. It does not
+classify all abstract subgroups of $G$, nor all subgroups normal only in $K$;
+those problems are not settled by this argument. The non-claim of Part~II that
+abstract subgroups are not classified (S21 in \cref{e3:sub:nonclaims09})
+therefore stands. In particular, the results of \cref{e3:cut:sec:class} about
+homomorphisms of the full class group must not be asserted for arbitrary
+homomorphisms defined only on its infinitesimal kernel.
+\end{remark}
+
+\subsection{An exact quotient chart}
+
+By \cref{e3:so:prop:kernelchart}, the Cayley chart is a bijection
+$\mm^3\to K$ with canonical lift $(1,x)/\sqrt{1+x\cdot x}$, inverse
+\cref{e3:so:eq:cayleyinvcoords} and transported product
+$x\star y=(x+y+x\times y)/(1-x\cdot y)$; all denominators are units of $\OO$.
+
+\begin{proposition}[Coordinates on every cut quotient]\label{e3:cut:prop:quotient}
+For every upper segment $\mathcal C$, the quotient $K/K_{\mathcal C}$ has the
+exact coordinate model $(\mm/\mathfrak a_{\mathcal C})^3$ with multiplication
+induced by $\star$. The induced map is an isomorphism of groups, not just a
+bijection of underlying sets.
+\end{proposition}
+\begin{proof}
+The condition $UK_{\mathcal C}=VK_{\mathcal C}$ is equivalent to all entries
+of $U-V$ belonging to $\mathfrak a_{\mathcal C}$, because multiplication by
+the bounded matrices $U^{-1}$ and $U$ preserves that ideal condition. The
+Cayley formula and its inverse, with unit denominators, show that this is
+equivalent to coordinatewise congruence of the parameters modulo
+$\mathfrak a_{\mathcal C}$. The product law then descends, and its
+denominator remains invertible in $\OO/\mathfrak a_{\mathcal C}$.
+\end{proof}
+
+Thus the classification records actual nonlinear quotient groups, not merely a
+filtration whose successive vector-space layers happen to be known.
+
+\section{Perfect cut subgroups, the lower central series, and the perfect residual}\label{e3:cut:sec:perfect}
+
+\begin{definition}\label{e3:cut:def:convexcut}
+For a convex subgroup $\Delta\le\Gamma$ put
+\[
+ \mathcal C_\Delta=\{\gamma>0:\gamma\notin\Delta\},\qquad
+ K_{>\Delta}=K_{\mathcal C_\Delta}.
+\]
+Convexity means that $0\le\gamma\le\delta\in\Delta$ implies $\gamma\in\Delta$.
+In particular a positive element outside $\Delta$ is larger than every
+positive element of $\Delta$.
+\end{definition}
+
+\begin{theorem}[Classification of perfect ambient-normal subgroups]\label{e3:cut:thm:perfectcuts}
+For an upper segment $\mathcal C\subseteq\Gamma_{>0}$ the following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $K_{\mathcal C}$ is perfect;
+\item $\mathcal C+\mathcal C=\mathcal C$;
+\item $\gamma\in\mathcal C$ implies $\gamma/2\in\mathcal C$;
+\item $\mathcal C=\mathcal C_\Delta$ for a convex subgroup $\Delta\le\Gamma$.
+\end{enumerate}
+The subgroup $\Delta$ in \textup{(iv)} is unique. Every such perfect subgroup
+has commutator width one, including the trivial group by convention.
+\end{theorem}
+\begin{proof}
+The equivalence of (i) and (ii), and the commutator-width assertion, follow from
+\cref{e3:cut:thm:cuts} and the injectivity of $\mathcal C\mapsto K_{\mathcal C}$.
+If $\mathcal C+\mathcal C=\mathcal C$ and $\gamma=a+b$ with
+$a,b\in\mathcal C$, one of $a,b$ is at most $\gamma/2$, so upward closure puts
+$\gamma/2$ in $\mathcal C$. Conversely, (iii) writes every $\gamma\in\mathcal C$
+as $\gamma/2+\gamma/2\in\mathcal C+\mathcal C$; the reverse inclusion holds for
+every upper $\mathcal C$.
+
+Assume (iii), and define
+\[
+ \Delta=\{0\}\cup\{\gamma>0:\gamma\notin\mathcal C\}
+ \cup\{-\gamma:\gamma>0,\ \gamma\notin\mathcal C\}.
+\]
+It is symmetric and convex. To prove additive closure, take nonnegative $a,b$
+outside $\mathcal C$ and let $M=\max(a,b)$. If $a+b\in\mathcal C$, upward
+closure would give $2M\in\mathcal C$, and (iii) would give $M\in\mathcal C$, a
+contradiction. Thus the sum stays outside $\mathcal C$. The inequality
+$|x+y|\le|x|+|y|$ handles arbitrary signs. Hence $\Delta$ is a convex subgroup,
+uniquely determined by its positive part. Finally, if $\Delta$ is a convex
+subgroup and $\gamma>0$ lies outside it, then $\gamma/2$ cannot lie in it,
+since a subgroup is closed under doubling. Thus $\mathcal C_\Delta$ satisfies
+(iii).
+\end{proof}
+
+The extreme cases are informative. For $\Delta=\{0\}$ the subgroup is all of
+$K$, which recovers \cref{e3:so:thm:perfect}. For $\Delta=\Gamma$ it is
+trivial. Between them, perfect normal subgroups are indexed by proper
+coarsenings of the natural valuation: in the ordered quotient $\Gamma/\Delta$ a
+value has positive image exactly when it belongs to $\mathcal C_\Delta$.
+Consequently $K_{>\Delta}$ is the rotation congruence kernel at the maximal
+ideal of that coarsened valuation, a concrete subgroup interpretation of the
+convex rank structure.
+
+\subsection{Lower central and derived series}
+
+Fix $\alpha>0$. The lower central and derived series of $K_{\ge\alpha}$ are
+\[
+ \Lambda_1=K_{\ge\alpha},\quad \Lambda_{n+1}=\comm{K_{\ge\alpha}}{\Lambda_n};
+ \qquad
+ K_{\ge\alpha}^{(0)}=K_{\ge\alpha},\quad
+ K_{\ge\alpha}^{(r+1)}=\comm{K_{\ge\alpha}^{(r)}}{K_{\ge\alpha}^{(r)}},
+\]
+with $\Lambda_n=\Lambda_n(K_{\ge\alpha})$. At a limit ordinal either
+transfinite series is defined by intersection of its preceding terms.
+
+\begin{theorem}[Exact finite terms]\label{e3:cut:thm:series}
+For all ordinary $n\ge1$ and $r\ge0$,
+\begin{equation}\label{e3:cut:eq:series}
+ \Lambda_n(K_{\ge\alpha})=K_{\ge n\alpha},\qquad
+ K_{\ge\alpha}^{(r)}=K_{\ge2^r\alpha}.
+\end{equation}
+For every integer $m\ge2$, $K_{\ge\alpha}/K_{\ge m\alpha}$ is nilpotent of class
+exactly $m-1$. The group $K_{\ge\alpha}$ itself is neither nilpotent nor
+solvable.
+\end{theorem}
+\begin{proof}
+Induct on $n$ and $r$ using \cref{e3:cut:thm:mixed}. Every positive value is
+attained, so $K_{\ge(n+1)\alpha}$ is a proper subgroup of $K_{\ge n\alpha}$ and
+$K_{\ge2^{r+1}\alpha}$ a proper subgroup of $K_{\ge2^r\alpha}$. All these
+subgroups contain nonidentity rotations. The quotient by $K_{\ge m\alpha}$
+therefore kills the $m$-th lower central term but not the $(m-1)$-st. Neither
+infinite sequence reaches the identity at a finite step.
+\end{proof}
+
+This is the exact form of the nilpotence of finite jets discussed after
+\cref{e3:so:thm:graded}. Define
+\begin{equation}\label{e3:cut:eq:deltaalpha}
+ \Delta_\alpha=\{\gamma\in\Gamma:|\gamma|\le n\alpha
+ \text{ for some integer }n\ge1\},
+\end{equation}
+the convex subgroup generated by $\alpha$, and put
+$K_{\gg\alpha}=K_{>\Delta_\alpha}$. A value outside $\Delta_\alpha$ is larger
+than every $n\alpha$, so this agrees with the formula for $K_{\gg\alpha}$ at
+the start of Part~III.
+
+\begin{theorem}[The perfect residual and stage-$\omega$ stabilization]\label{e3:cut:thm:residual}
+For $\alpha>0$,
+\begin{equation}\label{e3:cut:eq:residual}
+ \Lambda_\omega(K_{\ge\alpha})=K_{\ge\alpha}^{(\omega)}=K_{\gg\alpha}.
+\end{equation}
+This is a perfect subgroup of commutator width one. Moreover
+$\comm{K_{\ge\alpha}}{K_{\gg\alpha}}=K_{\gg\alpha}$, so both transfinite series
+stabilize at their $\omega$-th term. The subgroup $K_{\gg\alpha}$ contains every
+perfect subgroup of $K_{\ge\alpha}$.
+\end{theorem}
+\begin{proof}
+The integer multiples $n\alpha$ and the subsequence $2^r\alpha$ are cofinal in
+each other. \Cref{e3:cut:eq:series} gives the two intersections as precisely the
+elements of depth at least every $n\alpha$. This is equivalent to depth
+strictly greater than every $n\alpha$, by increasing $n$ by one, and thus gives
+$K_{\gg\alpha}$.
+
+Perfectness follows from \cref{e3:cut:thm:perfectcuts}. For the mixed
+commutator assertion let $\mathcal C=\mathcal C_{\Delta_\alpha}$. If
+$\delta\in\mathcal C$, then $\delta-\alpha\in\mathcal C$, since
+$\delta>(n+1)\alpha$ for every $n$. Therefore
+$[\alpha,\infty)+\mathcal C=\mathcal C$, and \cref{e3:cut:thm:cuts} applies;
+this also covers $\mathcal C=\varnothing$.
+
+If $Q\le K_{\ge\alpha}$ is perfect, induction gives $Q\le K_{\ge\alpha}^{(r)}$
+for all $r$: from $Q\le K_{\ge\alpha}^{(r)}$ one has
+$Q=\comm QQ\le K_{\ge\alpha}^{(r+1)}$. Thus $Q\le K_{\gg\alpha}$. No normality
+assumption on $Q$ is needed.
+\end{proof}
+
+\begin{definition}\label{e3:cut:def:rn}
+A group $\mathcal T$ is \emph{residually nilpotent} when
+$\bigcap_{n\ge1}\Lambda_n(\mathcal T)=\{1\}$. A positive value $\alpha$ is an
+\emph{order unit} of $\Gamma$ when $\Delta_\alpha=\Gamma$.
+\end{definition}
+
+\begin{theorem}[The universal residually nilpotent quotient]\label{e3:cut:thm:universalrn}
+The quotient $K_{\ge\alpha}/K_{\gg\alpha}$ is residually nilpotent. Every
+homomorphism from $K_{\ge\alpha}$ to a residually nilpotent group annihilates
+$K_{\gg\alpha}$ and therefore factors uniquely through that quotient. In
+particular,
+\begin{equation}\label{e3:cut:eq:orderunit}
+ K_{\ge\alpha}\text{ is residually nilpotent}
+ \quad\Longleftrightarrow\quad
+ \alpha\text{ is an order unit of }\Gamma.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $K_{\gg\alpha}$ lies in every lower central term,
+$\Lambda_n(K_{\ge\alpha}/K_{\gg\alpha})=K_{\ge n\alpha}/K_{\gg\alpha}$, and
+the intersection of these is trivial by \cref{e3:cut:thm:residual}. For a
+homomorphism $f:K_{\ge\alpha}\to\mathcal T$, the image $f(K_{\gg\alpha})$ is
+perfect. Any perfect subgroup $Q$ of $\mathcal T$ lies in every lower central
+term of $\mathcal T$: if $Q\le\Lambda_n(\mathcal T)$, then
+$Q=\comm QQ\le\comm{\mathcal T}{\Lambda_n(\mathcal T)}=\Lambda_{n+1}(\mathcal T)$.
+Residual nilpotence therefore forces $f(K_{\gg\alpha})=1$. Finally
+$K_{\gg\alpha}$ is trivial exactly when there are no positive values outside
+$\Delta_\alpha$, because each such value is realized by a rotation.
+\end{proof}
+
+There is also an exact separation statement. The intersection of the kernels
+of all homomorphisms from $K_{\ge\alpha}$ into nilpotent groups is
+$K_{\gg\alpha}$, and the same holds with ``solvable'' in place of
+``nilpotent''. The explicit quotients $K_{\ge\alpha}/K_{\ge n\alpha}$, which are
+nilpotent and hence solvable, separate every element outside $K_{\gg\alpha}$;
+conversely any image of the perfect subgroup $K_{\gg\alpha}$ in a solvable
+group is trivial.
+
+This resolves the apparent conflict between finite nilpotent jets and a perfect
+infinitesimal group. The full kernel has no least positive depth, so its
+commutator factors may move to half the target depth. A fixed principal
+subgroup forbids that move below its threshold. In higher rank, some deeper
+scales nevertheless remain beyond every finite multiple of that threshold, and
+those scales form the surviving perfect residual.
+
+\section{Recovering the value group from the normal-subgroup lattice}\label{e3:cut:sec:lattice}
+
+This section uses that $F$ is set-sized, so that the collection of subgroups of
+$G$ is itself a set. Let $\mathcal L$ be the complete lattice of normal
+subgroups of $G$ contained in $K$, ordered by inclusion. By
+\cref{e3:cut:thm:normalclass} it is the lattice of upper segments of
+$\Gamma_{>0}$. Arbitrary joins are unions, since in a chain of subgroups every
+union is a subgroup. An element $A$ of a complete lattice is \emph{compact} if
+whenever $A\le\bigvee_{j\in J}B_j$, some finite subfamily already has a join
+above $A$; this is a lattice-theoretic notion, not a topological one.
+
+\begin{proposition}[Intrinsic principal depths]\label{e3:cut:prop:compact}
+The nontrivial compact elements of $\mathcal L$ are exactly the principal
+subgroups $K_{\ge\alpha}$, $\alpha>0$. On these elements
+\begin{equation}\label{e3:cut:eq:latticeadd}
+ \comm{K_{\ge\alpha}}{K_{\ge\beta}}=K_{\ge\alpha+\beta},\qquad
+ K_{\ge\alpha}\subseteq K_{\ge\beta}\ \Longleftrightarrow\ \alpha\ge\beta.
+\end{equation}
+Consequently the abstract group $G$ determines its ordered value group
+$\Gamma$ up to ordered-group isomorphism.
+\end{proposition}
+\begin{proof}
+If $K_{\ge\alpha}$ lies in a union of cut subgroups, a rotation of depth
+exactly $\alpha$ belongs to one member, and that member contains
+$K_{\ge\alpha}$ by \cref{e3:cut:thm:normalclosure}. Thus $K_{\ge\alpha}$ is
+compact. If a nonempty upper segment $\mathcal C$ has no least element, then
+$K_{\mathcal C}=\bigcup_{\alpha\in\mathcal C}K_{\ge\alpha}$, but no finite
+subfamily has union $K_{\mathcal C}$, since a finite subfamily has a least
+selected value and $\mathcal C$ contains a smaller one. Hence $K_{\mathcal C}$
+is not compact. This proves the characterization, and
+\cref{e3:cut:eq:latticeadd} follows from the cut calculus; it reverses the
+order on the positive cone.
+
+The subgroup $K$ is intrinsic to $G$: by \cref{e3:cut:thm:normalclass} it is
+the unique largest proper normal subgroup. An abstract isomorphism of two such
+groups therefore preserves $K$, its normal lattice, the compact elements and
+their commutator operation. It recovers an order-preserving additive bijection
+of the positive value cones. The group completion of this cancellative cone is
+$\Gamma$. The case $\Gamma=0$ is recognized by the absence of nontrivial
+compact elements.
+\end{proof}
+
+This is a second-order invariant built from the whole normal-subgroup lattice.
+It should not be confused with a first-order interpretation without parameters,
+nor with a classification of fields by value group; different real closed fields
+can have the same value group. The stronger bi-interpretability theorem of
+Bays--Peterzil \cite[Theorem~1.1]{BP}, recalled in
+\cref{e3:so:sec:filtration}, has a different logical content; the proposition
+supplies an explicit normal-closure and commutator description of the value
+arithmetic.
+
+\section{The full surreal class and the universal set-sized quotient}\label{e3:cut:sec:class}
+
+\subsection{Foundational conventions}\label{e3:cut:sub:foundations}
+
+We now work in a standard set/class foundation such as NBG, as allowed in
+\cref{e3:sec:scalars}. Every surreal number is a set-coded sign sequence, and
+the collection $\No$ of all of them is a proper class. A fixed finite matrix
+over $\No$ is a set, so $\SO(n,\No)$ is a legitimate class group. A
+\emph{class homomorphism} is a class function satisfying the group equation.
+Its target in the theorems below is a set in the \emph{same} foundation. The
+real-closed-field structure of $\No$, its real subfield and its Conway normal
+forms are established background (\cref{e3:sec:scalars}; see also
+\cite[Sections~2.2--2.3]{BG}). The natural value group is identified with
+$(\No,+)$ by $v(\omega^{-\gamma})=\gamma$. These are Conway monomials, not
+values of an unrestricted analytic power function; a nonzero normal form has a
+leading monomial, and its value is the negative of the leading exponent.
+
+Every result of
+\crefrange{e3:cut:sec:setting}{e3:cut:sec:perfect} stated for individual
+elements or individual class subgroups has the same finite proof over $\No$. In
+particular the normal closure of $U$ means the class of finite products of
+conjugates of $U^{\pm1}$, not an intersection quantified over a hypothetical set
+of all class subgroups. No ``class of all classes'' of subgroups is formed; the
+complete-lattice construction of \cref{e3:cut:sec:lattice} was deliberately
+restricted to set-sized fields. For class groups, the finite-depth formulas
+followed by the constant value $K_{\gg\alpha}$ at every stage from $\omega$
+onward define the stabilized series directly; no recursion theorem for
+arbitrary sequences of classes is assumed.
+
+Let $G_{\No}=\SO(3,\No)$ and $K_{\No}=\ker\st$, with standard part defined
+entrywise as before. Writing $G_{\No}/K_{\No}\cong\SO(3,\R)$ is convenient
+shorthand. It should not be read as forming a set whose elements are
+proper-class cosets: the quotient equivalence relation is \emph{represented} by
+the set-valued map $\st$.
+
+\subsection{Proper classes inside every positive value interval}
+
+\begin{lemma}[Large bounded value intervals]\label{e3:cut:lem:largeinterval}
+For every positive surreal $\delta$, the interval
+$\{\gamma\in\No:0<\gamma<\delta\}$ is a proper class. More explicitly,
+\begin{equation}\label{e3:cut:eq:ordinalinjection}
+ \lambda\longmapsto\frac{\delta}{\lambda+2}\qquad(\lambda\in\Ord)
+\end{equation}
+is an injective class map into that interval, where the ordinals are embedded in
+$\No$ and the displayed addition and division are field operations.
+\end{lemma}
+\begin{proof}
+The embedded ordinals are strictly increasing. Adding the field element $2$,
+taking reciprocals and multiplying by $\delta>0$ gives a strictly decreasing
+family of distinct values, all positive and at most $\delta/2<\delta$. If the
+interval were a set, its Hartogs ordinal would contradict the restriction of
+this injection to that ordinal.
+\end{proof}
+
+For $\gamma>0$ define the explicit small rotation
+\begin{equation}\label{e3:cut:eq:ugamma}
+ U_\gamma=\cay(\omega^{-\gamma}e_1).
+\end{equation}
+Then $v(U_\gamma-I)=\gamma$, and, for $\gamma\ne\eta$,
+\begin{equation}\label{e3:cut:eq:separation}
+ v\bigl(U_\gamma U_\eta^{-1}-I\bigr)=\min(\gamma,\eta)
+\end{equation}
+by the unequal-depth equality after \cref{e3:cut:eq:depthbasic}. These rotations
+all have the \emph{same axis}; no complicated configuration is needed to obtain
+a proper class of distinguishable scales.
+
+\begin{theorem}[Universal set-sized quotient of surreal rotations]\label{e3:cut:thm:smallquotient}
+Let $\mathcal T$ be a set-sized group and $\varphi:G_{\No}\to\mathcal T$ a
+class homomorphism. Then $K_{\No}\subseteq\ker\varphi$, and there is a unique
+ordinary group homomorphism $\bar\varphi:\SO(3,\R)\to\mathcal T$ such that
+$\varphi=\bar\varphi\circ\st$.
+\end{theorem}
+\begin{proof}
+Suppose, for a contradiction, that $U\in K_{\No}$ has $\varphi(U)\ne1$, and put
+$\delta=v(U-I)>0$. Let $N=\ker\varphi\cap K_{\No}$, a class subgroup normal in
+$G_{\No}$. It contains no nonidentity element of depth at most $\delta$.
+Indeed, if $V\in N$ had such a depth $\eps$, \cref{e3:cut:thm:normalclosure},
+with its identical class proof, would give $K_{\ge\eps}\subseteq\ker\varphi$
+and hence $U\in\ker\varphi$.
+
+For distinct $\gamma,\eta\in(0,\delta)$, \cref{e3:cut:eq:separation} shows that
+$U_\gamma U_\eta^{-1}\notin N$. Thus $\varphi(U_\gamma)\ne\varphi(U_\eta)$.
+Combining \cref{e3:cut:eq:ordinalinjection,e3:cut:eq:ugamma} gives an injection
+from every ordinal into the set $\mathcal T$. Restricting to the Hartogs
+ordinal of $\mathcal T$ gives a contradiction. Consequently $K_{\No}$ is
+annihilated.
+
+Define $\bar\varphi$ by restricting $\varphi$ to the constant real rotations.
+For every $A\in G_{\No}$, $A\st(A)^{-1}\in K_{\No}$, so
+$\varphi(A)=\bar\varphi(\st(A))$. Surjectivity of standard part gives
+uniqueness.
+\end{proof}
+
+The argument uses set/class size only at its last contradiction. Before that
+point it is finite quaternion algebra and normal generation. In particular the
+theorem is not an automatic-continuity result disguised by a topological
+assumption. No global choice is used: the injection
+\cref{e3:cut:eq:ordinalinjection} is explicit, and the Hartogs contradiction is
+choice-free.
+
+\begin{corollary}[Only one nontrivial set-sized image]\label{e3:cut:cor:onlyimage}
+Every nontrivial set-sized homomorphic image of $G_{\No}$ is isomorphic to
+$\SO(3,\R)$. More precisely, the kernel of a nontrivial class homomorphism from
+$G_{\No}$ to a set-sized group is exactly $K_{\No}$.
+\end{corollary}
+\begin{proof}
+The factor $\bar\varphi$ of \cref{e3:cut:thm:smallquotient} is trivial or
+injective, by \cref{e3:cut:lem:realsimple}. In the nontrivial case its kernel
+is trivial, so the original kernel is $K_{\No}$ and the image is isomorphic to
+$\SO(3,\R)$.
+\end{proof}
+
+\begin{corollary}[Set actions and set-field representations]\label{e3:cut:cor:actions}
+Every class action of $G_{\No}$ on a set factors through $\st$. Every
+finite-dimensional representation of $G_{\No}$ over a set-sized field factors
+through $\st$. In particular no such action or representation is faithful.
+\end{corollary}
+\begin{proof}
+An action on a set $\mathcal X$ gives a class homomorphism to the set-sized group
+$\Sym(\mathcal X)$. A representation of finite dimension $d$ over a set-sized
+field $k$ gives one to $\GL(d,k)$, which is also a set. Apply
+\cref{e3:cut:thm:smallquotient}. The kernel $K_{\No}$ is nontrivial.
+\end{proof}
+
+The faithful geometric action on $\No^3$ does not contradict this corollary: its
+acted-on space is a proper class. Likewise the defining three-dimensional
+representation over $\No$ does not have a set-sized coefficient field. The
+result draws a sharp distinction between a finite dimension and a set-sized
+carrier. The layer maps $\ell_\gamma$ of \cref{e3:so:thm:graded} are
+homomorphisms to the set $(\R^3,+)$, but they are defined only on
+$K_{\ge\gamma}$; the theorem makes no assertion about such maps
+(\cref{e3:cut:rem:notclassified}).
+
+\subsection{The cardinal obstruction in a fixed field}
+
+There is a set-sized precursor. Suppose $F$ is a set-sized real closed
+extension of $\R$ and $\varphi:\SO(3,F)\to\mathcal T$ does not annihilate a
+member of $K$ of depth $\delta$. Choose, for each $\gamma\in(0,\delta)_\Gamma$,
+a positive field element of value $\gamma$ and its one-axis Cayley rotation.
+The same proof shows that their images are distinct. Therefore
+\begin{equation}\label{e3:cut:eq:cardbound}
+ |\mathcal T|\ge|(0,\delta)_\Gamma|.
+\end{equation}
+Choice here is only ordinary set choice. This inequality does not in general
+force the kernel to contain $K$: the identity map of $\SO(3,F)$ is a set-sized
+counterexample. Passing to the full $\No$ changes every nonempty bounded open
+value interval from a set to a proper class. That, not merely
+non-Archimedeanness, produces the universal factorization.
+
+\subsection{A perfect residual beyond every principal surreal threshold}
+
+\begin{corollary}[No principal surreal infinitesimal group is residually nilpotent]\label{e3:cut:cor:norn}
+For every $\alpha\in\No_{>0}$, the group $K_{\ge\alpha}\le G_{\No}$ has a
+nontrivial perfect residual $K_{\gg\alpha}$. Its lower central and derived
+series stabilize at that residual at stage $\omega$.
+\end{corollary}
+\begin{proof}
+The value $\gamma=\omega\alpha$, a surreal product, satisfies $\gamma>n\alpha$
+for every ordinary positive integer $n$. Thus $U_\gamma\ne I$ belongs to
+$K_{\gg\alpha}$. Apply \cref{e3:cut:thm:residual,e3:cut:thm:universalrn},
+whose finite and countable-intersection arguments apply to these class
+subgroups as well.
+\end{proof}
+
+This result concerns principal congruence subgroups. It does not conflict with
+the fact that the full $K_{\No}$ is perfect (\cref{e3:so:thm:perfect}). Nor
+does \cref{e3:cut:thm:smallquotient} assert that every homomorphism defined
+\emph{only} on $K_{\ge\alpha}$ or on $K_{\No}$ factors through a real group.
+
+\section{Surcomplex special unitary groups and higher-dimensional rotations}\label{e3:cut:sec:unitary}
+
+For any real closed $F$ write $F(i)=F\oplus iF$ with $i^2=-1$ and the
+conjugation $\overline{x+iy}=x-iy$; for $F=\No$ this is the surcomplex class
+$\No[i]$. Put
+\[
+ \SU(n,F(i))=\{V\in M_n(F(i)):V^*V=I,\ \det V=1\}.
+\]
+All real and imaginary coordinates of a unitary matrix are bounded, so standard
+part gives $\st:\SU(n,\No[i])\to\SU(n,\C)$. These groups are studied with this
+designated real form and conjugation, not with an arbitrary automorphic image of
+the surreal real axis.
+
+\subsection{The spin bridge for \texorpdfstring{$\SU(2)$}{SU(2)}}
+
+The representation \cref{e3:so:eq:su2} identifies unit quaternions over $F$
+with $\SU(2,F(i))$; conversely a determinant-one unitary $2\times2$ matrix has
+that form, by equating its adjugate inverse with its conjugate transpose. With
+\cref{e3:thm:spin} this gives an exact central double cover
+\[
+ 1\longrightarrow\{\pm I\}\longrightarrow\SU(2,F(i))\longrightarrow\SO(3,F)
+ \longrightarrow1.
+\]
+Let $\widetilde K_F=\ker\bigl(\st:\SU(2,F(i))\to\SU(2,\C)\bigr)$. The spin map
+restricts to an isomorphism $\widetilde K_F\cong K_F$, because every small
+rotation has its unique near-one lift (\cref{e3:cut:lem:lift}) and $-I$ is not
+near $I$. In particular $\widetilde K_F$ is perfect. Over the full surreal
+class the same holds for $\widetilde K_{\No}$.
+
+\begin{theorem}[The universal quotient for surcomplex $\SU(2)$]\label{e3:cut:thm:su2}
+Every class homomorphism from $\SU(2,\No[i])$ to a set-sized group annihilates
+$\widetilde K_{\No}$ and factors uniquely through standard part onto
+$\SU(2,\C)$.
+\end{theorem}
+\begin{proof}
+Let $\psi$ be such a homomorphism and $\mathcal T_0$ its image, a subset of the
+set-sized target. The image $Z_0=\psi(\{\pm I\})$ is central in
+$\mathcal T_0$. Composing with $\mathcal T_0\to\mathcal T_0/Z_0$ gives a
+homomorphism that factors through the spin quotient $\SO(3,\No)$. By
+\cref{e3:cut:thm:smallquotient} this induced homomorphism annihilates
+$K_{\No}$. Hence $\psi(\widetilde K_{\No})\subseteq Z_0$. But
+$\widetilde K_{\No}$ is perfect and $Z_0$ is abelian, so the image is trivial.
+Restriction to the constant complex matrices and surjectivity of standard part
+give the unique factorization.
+\end{proof}
+
+Both ingredients are necessary: the finite central quotient passes to
+rotations, and perfectness removes the possible central image left over after
+that passage.
+
+\subsection{Finite near-identity elimination}
+
+\begin{lemma}[Near-identity Givens factorizations]\label{e3:cut:lem:givens}
+Fix an ordinary finite integer $n\ge2$ and a real closed $F\supseteq\R$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every $A\in\SO(n,F)$ with $\st(A)=I$ is a product of at most $n(n-1)/2$
+near-identity coordinate-plane rotations.
+\item Every $V\in\SU(n,F(i))$ with $\st(V)=I$ is a product of at most
+$n(n-1)/2$ near-identity embedded coordinate $\SU(2)$ matrices.
+\end{enumerate}
+The same finite statements hold over the full surreal class.
+\end{lemma}
+\begin{proof}
+For the real case, work down the columns, using rows $j,k$ with $k>j$ to
+eliminate the entry below the pivot. The current pivot $a$ is near one and the
+entry $b$ to be eliminated is infinitesimal. Set
+\[
+ r=\sqrt{a^2+b^2},\qquad
+ W=\frac1r\begin{pmatrix}a&b\\-b&a\end{pmatrix}.
+\]
+This determinant-one orthogonal block is near $I$ and sends
+$(a,b)\transpose$ to $(r,0)\transpose$. Embedding it in rows $j,k$ does not
+change already cleared columns. Since the current matrix remains near $I$, all
+subsequent pivots have the same property. After $n(n-1)/2$ such blocks the
+matrix is upper triangular and orthogonal, hence diagonal with entries $\pm1$.
+Its standard part is $I$, so it is exactly $I$. Inverting the elementary factors
+gives the asserted product.
+
+In the complex case use
+\begin{equation}\label{e3:cut:eq:complexgivens}
+ r=\sqrt{|a|^2+|b|^2},\qquad
+ W=\frac1r\begin{pmatrix}\bar a&\bar b\\-b&a\end{pmatrix}.
+\end{equation}
+Then $W^*W=I$, $\det W=1$ and $W(a,b)\transpose=(r,0)\transpose$, and the block
+is near $I$. Use a block for each pair $j<k$, even if $b=0$: in that case it
+normalizes the phase of the pivot. As before the result is upper triangular and
+unitary, hence diagonal. Its first $n-1$ diagonal entries are positive real
+numbers of modulus one, hence equal to one, and the last is one by the
+determinant condition. Reversing all blocks proves (ii).
+\end{proof}
+
+There is no infinite elimination, no limit of products and no analytic
+inverse-function theorem in this lemma. Positivity ensures that every pivot
+normalization has a nonzero denominator.
+
+\begin{theorem}[Universal set-sized quotients in fixed finite rank]\label{e3:cut:thm:allranks}
+For every fixed ordinary $n\ge3$, every class homomorphism
+$\SO(n,\No)\to\mathcal T$ into a set-sized group factors uniquely through
+$\st:\SO(n,\No)\to\SO(n,\R)$. For every fixed ordinary $n\ge2$, every class
+homomorphism $\SU(n,\No[i])\to\mathcal T$ into a set-sized group factors
+uniquely through $\st:\SU(n,\No[i])\to\SU(n,\C)$.
+\end{theorem}
+\begin{proof}
+In the orthogonal case, restrict the homomorphism to any coordinate copy of
+$\SO(3,\No)$. By \cref{e3:cut:thm:smallquotient}, every near-identity element of
+that copy is killed. Each coordinate-plane rotation in
+\cref{e3:cut:lem:givens}(i) belongs to such a copy, by choosing any third
+coordinate distinct from its two coordinates; this is where $n\ge3$ is used.
+Therefore every matrix in the kernel of standard part is a finite product of
+killed elements. In the unitary case, restrict to each coordinate
+$\SU(2,\No[i])$ and apply \cref{e3:cut:thm:su2}; part (ii) of the elimination
+lemma again shows that the entire kernel of standard part is killed. In both
+cases the real or complex constant inclusion is a section of standard part, and
+restriction to that section gives the unique factor.
+\end{proof}
+
+\begin{corollary}\label{e3:cut:cor:allranksactions}
+For these dimensions, every class action of $\SO(n,\No)$ or $\SU(n,\No[i])$ on
+a set, and every finite-dimensional representation over a set-sized field,
+factors through the corresponding ordinary compact group. No continuity or
+definability hypothesis is required.
+\end{corollary}
+\begin{proof}
+Use the set-sized targets $\Sym(\mathcal X)$ and $\GL(d,k)$, as in
+\cref{e3:cut:cor:actions}.
+\end{proof}
+
+Part~III does not classify the normal subgroups of these higher-rank groups;
+finite centers and products of simple factors introduce additional structure.
+The theorem concerns the universal standard-part factorization, and the finite
+generator argument suffices for that.
+
+\section{Examples, sharp boundaries, and the circle}\label{e3:cut:sec:examples}
+
+\subsection{A rank-one workspace}
+
+Let $F=\R((t^{\Q}))$, with $v(t^q)=q$; real closedness of these Hahn
+workspaces is established background (\cref{e3:sec:scalars};
+\cite[Corollary~2.1]{BG}). Every $\alpha>0$ is an order unit of $\Q$, so
+$K_{\gg\alpha}=\{I\}$ and $K_{\ge\alpha}$ is residually nilpotent. Nevertheless
+$K_{\ge\alpha}$ is neither nilpotent nor solvable, its quotients
+$K_{\ge\alpha}/K_{\ge m\alpha}$ have every finite nilpotency class as $m$ varies,
+and the entire kernel $K$ is perfect. The principal groups become residually
+nilpotent by fixing a minimum allowed depth, not by making their commutators
+vanish. For instance, with $\alpha=1$ a rotation of depth $7/2$ is visible in
+$K_{\ge1}/K_{\ge4}$ but not in a quotient whose cutoff is at most $7/2$. Every
+nonidentity member is visible in some finite nilpotent quotient because its
+rational depth is bounded above by an integer: the order-unit condition in
+concrete form.
+
+\subsection{A rank-two workspace with two principal behaviours}
+
+Take $\Gamma=\Q\oplus_{\mathrm{lex}}\Q$, with the first coordinate dominant, and
+$F=\R((t^\Gamma))$. For $\alpha=(0,1)$,
+\[
+ \Delta_\alpha=\{0\}\oplus\Q,\qquad
+ K_{\gg\alpha}=\{I\}\cup\{U\in K:v(U-I)=(a,b),\ a>0\}.
+\]
+This residual is nontrivial and perfect. A rotation of depth $(1,-100)$, for
+example, lies beyond every $(0,n)$ and survives every term of the lower central
+series of $K_{\ge(0,1)}$; its second coordinate does not change that. On the
+other hand $\beta=(1,0)$ is an order unit: for any $(a,b)$, an ordinary integer
+$n>a$ gives $(a,b)<(n,0)$. Therefore $K_{\ge(1,0)}$ is residually nilpotent. The
+same field supports both behaviours: residual nilpotence is a property of the
+chosen principal scale, not merely of the rank of the field.
+
+\subsection{No largest Archimedean scale}
+
+Let $\Gamma=\bigoplus_{j\ge0}\Q e_j$ with finite supports and the largest nonzero
+index dominant. Given any positive $\alpha$, all its multiples have support
+below some index $r$, and $e_{r+1}$ exceeds every $n\alpha$. Thus no positive
+value is an order unit, and every principal $K_{\ge\alpha}$ has a nontrivial
+perfect residual. The full surreal value group has a stronger version of this
+behaviour: $\omega\alpha$ exceeds all ordinary multiples of any fixed
+$\alpha>0$, and every interval $(0,\delta)$ contains a proper class of values.
+These are separate facts. The first causes nontrivial perfect residuals
+(\cref{e3:cut:cor:norn}); the second prevents any set-sized image of the full
+rotation group from retaining a nonzero infinitesimal
+(\cref{e3:cut:thm:smallquotient}).
+
+\subsection{The abelian boundary: the theorem fails for the circle}\label{e3:cut:sub:torus}
+
+The dimensional restrictions of \cref{e3:cut:thm:allranks} cannot simply be
+removed. The circle $\SO(2,\No)\cong\TT(\No)=\Un(1,\No[i])$ has a different
+answer. This uses one additional established construction: the canonical
+splitting \texttt{trigonometry:eq:circlesplit} of
+\texttt{trigonometry:thm:polar} in the trigonometry report \cite{RepoTrig},
+\begin{equation}\label{e3:cut:eq:torussplit}
+ \TT(\No)\cong\TT(\R)\times(\mm_{\R},+),\qquad
+ u\longmapsto\bigl(u_0,\ \ell_{\mm}(u)\bigr),\quad
+ u_0=\st(u),\quad \ell_{\mm}(u)=-i\log(u/u_0).
+\end{equation}
+Here $\mm_{\R}$ is the class of real infinitesimal surreals. The second
+coordinate is the infinitesimal angle; it is defined without choosing an
+ordinary argument. The logarithm is the infinitesimal Hahn logarithm
+$\log(1+z)=\sum_{m\ge1}(-1)^{m+1}z^m/m$, not a logarithm at an arbitrary
+surcomplex input. Source~10 recalls the proof: the supports of the powers of an
+infinitesimal are strongly summable by the positive-support lemma
+(\cref{e3:sec:scalars}), so formal exp/log identities evaluate in a set-sized
+Hahn workspace containing the finitely many inputs. Conjugation commutes with
+these sums. Since $\overline{u/u_0}=(u/u_0)^{-1}$, the logarithm is purely
+imaginary. Formal logarithmic addition in this commutative group makes
+$\ell_{\mm}$ a homomorphism to $(\mm_{\R},+)$, inverse on that factor to the
+infinitesimal circle exponential. This is a support-based statement, not
+convergence in the full surreal fine topology.
+
+Fix a positive surreal $\eta$. For $x\in\mm_{\R}$ let $\coef_\eta(x)\in\R$ be the
+coefficient of the Conway monomial $\omega^{-\eta}$ in its normal form. Normal-form
+addition is coefficientwise \cite[Theorem~2.6]{BG}, so $\coef_\eta$ is
+additive.
+
+\begin{proposition}[A set-valued circle character detecting infinitesimals]\label{e3:cut:prop:circlecounter}
+The map
+\begin{equation}\label{e3:cut:eq:circlechar}
+ \chi_\eta:\TT(\No)\longrightarrow(\R,+),\qquad
+ \chi_\eta(u)=\coef_\eta\bigl(\ell_{\mm}(u)\bigr)
+\end{equation}
+is a class homomorphism, vanishes on the ordinary unit circle, and is nonzero on
+the infinitesimal kernel. Consequently standard part is not the universal
+set-sized quotient of $\SO(2,\No)$ or $\Un(1,\No[i])$. The analogous
+factorization also fails for $\Un(n,\No[i])$ for every $n\ge1$.
+\end{proposition}
+\begin{proof}
+The composition in \cref{e3:cut:eq:circlechar} is additive by the two preceding
+facts. For a constant ordinary unit, $u/u_0=1$, so it vanishes. For
+$u=\exp(i\omega^{-\eta})$, evaluated by the infinitesimal series,
+$\ell_{\mm}(u)=\omega^{-\eta}$ and $\chi_\eta(u)=1$. For $\Un(n)$, compose
+$\chi_\eta$ with the determinant and test it on $\diag(u,1,\ldots,1)$.
+\end{proof}
+
+This counterexample is a consequence of the already available torus splitting
+and normal forms, not an independent priority claim. Restricted to
+$\{u\in\TT(\No):v(u-1)\ge\eta\}$, the character $\chi_\eta$ induces the
+canonical layer isomorphism of \texttt{trigonometry:rot:thm:graded} (Section~18
+of the trigonometry report), the planar counterpart of the layer maps of
+\cref{e3:so:thm:graded}. The proposition observes that for the abelian circle
+this coefficient extends to a homomorphism on the whole group. It shows why semisimple directions behave differently: infinitesimal
+torus angles have additive coefficient functionals, whereas ambient normal
+generation in three-dimensional rotations forces a whole proper class of depth
+layers to survive whenever one survives. This is also the only part of Part~III
+that needs infinitesimal formal exp/log; the universal quotient theorem and all
+exact commutator and normal-generation results are proved without it.
+
 \part{Computation, limits, and provenance}\label{e3:part:limits}
 
 \section{Exact computation and formalization routes}\label{e3:sec:implementation}
 
-The two sources give complementary implementation plans, one for the geometry
-and one for the rotation group. Both are printed; neither describes existing
-software.
+Sources~04 and~09 give complementary implementation plans, one for the
+geometry and one for the rotation group. Source~10 adds a formalization plan
+and constructive recipes for Part~III (\cref{e3:cut:sub:lean,e3:cut:sub:recipes}).
+All are printed; none describes existing software.
 
 \subsection{A coordinate-to-invariants algorithm (source 04)}\label{e3:sub:impl04}
 
@@ -4010,10 +5374,65 @@ it cannot be obtained merely by substituting surreal symbols into a theorem
 whose hypotheses require a real Banach space. Semialgebraic fundamental groups
 are a further, independent formalization layer.
 
+\subsection{A formalization plan for Part III (source 10)}\label{e3:cut:sub:lean}
+
+A formalization of Part~III can separate four layers. The first is finite
+quaternion and matrix algebra over a real closed field: norm, spin, conjugacy,
+the near-identity lift, and the two-conjugate interval. The second is abstract
+natural-valuation algebra: finite ratios, depth invariance, ideals, upper
+segments, and the exact word-map image. The third is group structure: normal
+closures, cut classification, and the lower central and derived series. The
+last is explicitly size-sensitive: either NBG-style classes or a relative
+universe theorem with a stated large-interval hypothesis.
+
+The proper-class theorem must not be translated into the false assertion that a
+large Lean type has no identity homomorphism into a set-sized group in a higher
+universe. A correct universe-relative version would say: if every relevant
+bounded interval contains more elements than the permitted target size, then
+any homomorphism to such a target kills the infinitesimal kernel. The cardinal
+inequality \cref{e3:cut:eq:cardbound} is the clean bridge. The ambient universe
+and the permitted target universe must be named.
+
+At source~10's pin this report recorded no Lean mapping for its Part~II rotation
+statements, and none exists at \texttt{7b5f934} (\cref{e3:sub:collection}). The
+finite algebra of Part~III can therefore be an additional formalization track;
+source~10 does not claim that existing repository code certifies its results.
+An implementation should also retain the distinction between the image of the
+commutator word map and the subgroup generated by that image; silently weakening
+the former would lose the constructive theorem.
+
+\subsection{Constructive recipes from Part III (source 10)}\label{e3:cut:sub:recipes}
+
+\emph{Factoring a target commutator.} Given a target $U$ of depth
+$\delta\ge\alpha+\beta$, extract its positive unit lift $(c,z)$, compute
+$\xi=\sqrt{(1-c)/2}$, choose any positive $x$ of value $\alpha$, and set
+$y=\xi/x$. Form the two orthogonal-axis unit quaternions of
+\cref{e3:cut:thm:mixed}, calculate their commutator, and rotate its imaginary
+axis to $z/\norm z$. Conjugating both factors by that same rotation finishes the
+exact factorization. The choices are algebraic; the recipe is not a claim that
+arbitrary surreal inputs have a computable finite encoding or a decidable
+valuation.
+
+\emph{A finite normal-generation certificate.} For $U,V\in K$ with
+$v(V-I)\ge v(U-I)$, extract the imaginary norms $s,t$ of their canonical lifts.
+Find an ordinary integer $M$ with $t/s\le M$, and choose $m>2M$. The positive
+imaginary norm $s_m$ of $U^m$ exceeds $t$. If $b$ is the positive scalar lift of
+$V$, choose the relative axis dot product $z=(a_m^2-b)/s_m^2\in[-1,1]$. The two
+factors of \cref{e3:cut:lem:two}, followed by one simultaneous conjugation,
+express $V$ as two conjugates of $U^m$, hence as at most $2m$ conjugates of $U$.
+The integer $m$ must be allowed to depend on the target, by
+\cref{e3:cut:prop:width}.
+
+\emph{Separating an element by a nilpotent quotient.} For
+$V\in K_{\ge\alpha}\setminus K_{\gg\alpha}$, find an ordinary $m$ with
+$v(V-I)<m\alpha$. Then $V$ survives in $K_{\ge\alpha}/K_{\ge m\alpha}$, a
+nilpotent group of class $m-1$. No such integer exists when
+$V\in K_{\gg\alpha}$; the obstruction is exact, not an implementation failure.
+
 \subsection{The companion checks}\label{e3:sub:checks}
 
-Each source came with an exact SymPy script. Both are kept byte-identical, under
-the prefixed names given here.
+Each source came with an exact SymPy script. All three are kept byte-identical,
+under the prefixed names given here.
 
 \texttt{code/04-three-space-verify\_identities.py} (source~04) checks selected
 identities and expansions: the vector and Gram identities, the
@@ -4045,10 +5464,40 @@ scripts were rerun with Python~3.14.4 and SymPy~1.14.0. The rerun reproduced
 19/19 groups and 24/24 checks; only the version line and the timing line
 differ. Neither script writes a file.
 
+\texttt{code/10-rotation-quotients-verify.py} (source~10) runs 39 named exact
+checks: 12 groups of general polynomial or rational identities, eight
+ordinary-power specializations, 16 one-parameter commutator-depth examples, and
+three unitary Givens identities. The general identities include quaternion norm
+multiplicativity, \cref{e3:cut:eq:unnormalized}, the spin matrix's scaled
+orthogonality, determinant and multiplication law, the hat-matrix bracket, and
+the Cayley inverse and product numerator. The one-parameter tests use rational
+unit quaternions with Cayley parameters $t^a$ and $t^b$ for $1\le a,b\le4$;
+exact orders at $t=0$ give imaginary commutator depth $a+b$ and scalar-defect
+depth $2(a+b)$, as \cref{e3:cut:lem:bound,e3:cut:lem:lift} predict. No
+floating-point threshold is involved. Its recorded run,
+\texttt{data/10-rotation-quotients-verification.json} (Python~3.13.5,
+SymPy~1.14.0; requirements in
+\texttt{data/10-rotation-quotients-requirements.txt}), passed all 39 checks. For
+this addition the script was rerun on a copy with Python~3.14.4 and
+SymPy~1.14.0; it passed 39/39, and its report differs from the recorded one only
+in the Python version field. Unlike the other two scripts, it writes a JSON
+report, by default \texttt{verification.json} in the current directory, so it
+should be run with \texttt{--output} pointing elsewhere or on a copy. The
+delivered helpers \texttt{code/10-rotation-quotients-build.sh} and
+\texttt{.ps1} call the unprefixed names \texttt{verify.py} and
+\texttt{article.tex} in their own directory and overwrite their outputs in
+place; they do not run from the placed layout and are kept only as delivered.
+These tests can detect sign errors and algebraic slips. They do not establish a
+theorem for all cuts or all ordered fields, and they do not verify the
+finite-power bound for every integer, the subgroup classification, the
+transfinite intersections, the Hartogs argument or the universal
+factorization; those are proved in the text.
+
 \section{Non-claims and limits, by source}\label{e3:sec:nonclaims}
 
-A merged report must not silently upgrade either source. This section records
-every limitation, disclaimer and priority caveat stated by either manuscript.
+A merged report must not silently upgrade any source. This section records
+every limitation, disclaimer and priority caveat stated by any of the three
+manuscripts.
 Most also appear at the point of use.
 
 \subsection{Source 04 (Part I)}\label{e3:sub:nonclaims04}
@@ -4181,6 +5630,86 @@ Most also appear at the point of use.
  repository file.
 \end{enumerate}
 
+\subsection{Source 10 (Part III)}\label{e3:cut:sub:nonclaims10}
+\begin{enumerate}[label=\textup{C\arabic*.},leftmargin=2.6em]
+\item The proofs are mathematical proofs in an AI-assisted, unrefereed
+ manuscript, not machine-checked proofs. No Lean proof and no independent
+ referee check has been performed.
+\item Commutator width one of the whole kernel $K$ is already in the literature
+ (Bays--Peterzil, proof of Claim~3.3 \cite{BP}) and in this report
+ (\cref{e3:so:thm:perfect}). The spin double cover, the standard-part
+ splitting, the perfectness of $K$ and the unequal-parameter scalar identity are
+ not presented as new. D'Andrea--Maffei's local openness of the commutator map
+ \cite[Theorem~2.5]{DM} is cited for historical comparison.
+\item No named historical open problem is claimed solved, and priority for the
+ new formulations is not certified. No identical formulation of the universal
+ quotient theorem was located in the sources inspected, but this is not an
+ exhaustive priority certification; failure to locate an identical statement is
+ not a proof of priority.
+\item The literature check concentrated on the primary works cited and on
+ surreal-field background; it was not an exhaustive review of anisotropic
+ algebraic groups. Broader searches were inconclusive, unrelated hits were not
+ used as evidence, and no claim is made about the scope or non-applicability of
+ general papers on orthogonal groups over rings that were surfaced without a
+ content check.
+\item \Cref{e3:cut:thm:normalclass} classifies subgroups normal in the full
+ $G$, not all abstract subgroups and not subgroups normal only in $K$. The
+ universal factorization has the same domain restriction: nothing is claimed
+ for homomorphisms defined only on $K_{\ge\alpha}$ or on $K_{\No}$
+ (\cref{e3:cut:rem:notclassified}).
+\item The normal closure theorem and the cut classification are elementary
+ structural theorems proved here; no general historical priority is asserted.
+\item The value-group recovery \cref{e3:cut:prop:compact} is a concrete
+ elementary realization, not a first discovery of valued-field recoverability;
+ Bays--Peterzil's Theorem~1.1 is stronger. It uses the whole subgroup lattice,
+ not a first-order formula without parameters, is not a classification of
+ fields by value group, and is restricted to set-sized fields.
+\item The circle and $\Un(n)$ counterexample
+ (\cref{e3:cut:prop:circlecounter}) is a consequence of the established torus
+ splitting and normal-form coefficient extraction, not an independent priority
+ claim. It is a support-based statement, not convergence in the fine topology,
+ and it is the only part that uses infinitesimal formal exp/log.
+\item The 39 checks are finite polynomial and rational identities and
+ one-parameter examples. They do not verify arbitrary real closed fields, all
+ cuts, the finite-power bound for every integer, the classification, the
+ transfinite series, the Hartogs argument, the universal factorization, or any
+ Lean formalization (\cref{e3:sub:checks}).
+\item The class theorems use NBG-style foundations. ``Set-sized'' means a set in
+ the same foundation, not a higher-universe type. A Lean version must be
+ universe-relative with a stated large-interval hypothesis and named
+ universes; it must never assert that a large type has no homomorphism into a
+ higher universe (\cref{e3:cut:sub:lean}).
+\item No class of all classes is formed. $G_{\No}/K_{\No}\cong\SO(3,\R)$ is
+ shorthand for representation by $\st$, and the stabilized series over $\No$ are
+ defined directly; no recursion theorem for sequences of classes is assumed.
+\item The universal quotient theorem is not an automatic-continuity result, and
+ it does not say that infinitesimals have no geometric effect: the faithful
+ action on the proper class $\No^3$ and the defining representation over $\No$
+ remain.
+\item The set-sized cardinal bound \cref{e3:cut:eq:cardbound} does not force the
+ kernel to contain $K$; the identity map is a counterexample. Only ordinary set
+ choice is used there, and no global choice is used in the class theorem.
+\item The natural valuation is essential. Replacing it by an arbitrary
+ coarsening would invalidate the normal-generation argument.
+\item Only $\SO(n,\No)$, $n\ge3$, and $\SU(n,\No[i])$, $n\ge2$, for a fixed
+ ordinary $n$ and the designated conjugation, are treated. The normal subgroups
+ of these higher-rank groups are not classified, no uniform reductive
+ classification is claimed, and the higher-rank factorization gives no
+ higher-rank commutator width one at prescribed depths.
+\item The constructive recipes of \cref{e3:cut:sub:recipes} are algebraic. They
+ do not claim that arbitrary surreal inputs have a computable finite encoding or
+ a decidable valuation.
+\item The repository was read at \texttt{465a54b} through a connector; no clone
+ or local build was made. The comparison was targeted, not line-by-line: this
+ 71-page report was not read in full, and the trigonometry report's theorem
+ inventory was read through its README. Source~10 does not claim that
+ repository code certifies its results.
+\item The questions of \cref{e3:cut:sub:open} are left open: $K$-normal
+ subgroups and the set-sized images of $K$ itself, exact word images in other
+ anisotropic groups, a uniform reductive classification, and first-order
+ accessibility of the lattice reconstruction.
+\end{enumerate}
+
 \subsection{The merge}\label{e3:sub:nonclaimsmerge}
 \begin{enumerate}[label=\textup{M\arabic*.},leftmargin=2.6em]
 \item The merge adds no mathematical result. Each statement comes from one of
@@ -4195,11 +5724,24 @@ Most also appear at the point of use.
  Its proof there is outside the scope of this report's review.
 \item The report has not been refereed. None of its labels is mapped to a Lean
  declaration.
+\item The addition of source~10 adds no mathematical result. Part~III is
+ source~10's; the recalls it shared with Part~II are cited instead of printed
+ (\cref{e3:sub:provenance}). The remarks
+ \cref{e3:cut:rem:gradedequality,e3:cut:rem:residualforward}, the pointer after
+ \cref{e3:so:thm:perfect}, and the comparisons with the trigonometry report in
+ \cref{e3:cut:sub:torus} relate statements; they change no statement or label of
+ Parts~I and~II.
+\item The renamings of \cref{e3:cut:sub:notation} change symbols, not
+ statements. The status paragraph in \cref{e3:sec:conclusion} re-scopes a
+ direction of further work; it does not claim that any other direction has been
+ addressed.
 \end{enumerate}
 
 \section{Conclusion and directions}\label{e3:sec:conclusion}
 
-The first two paragraphs are source~04's conclusion, and the rest is source~09's.
+The first two paragraphs are source~04's conclusion, the next five are
+source~09's, one status paragraph is written for the addition, and the rest is
+source~10's.
 
 Three-dimensional surreal geometry has a large, rigorous core that is
 both familiar and genuinely more informative than its real standard-part
@@ -4248,12 +5790,73 @@ contradicts the others.
 
 Further work should therefore specify a category before posing a problem.
 Substantial directions include normal-subgroup classification compatible with
-convex valuations; effective multi-scale rotation algorithms with support and
+convex valuations (now answered for subgroups normal in the full group; see the
+next paragraph); effective multi-scale rotation algorithms with support and
 conditioning certificates; integration of the finite proofs into the
 repository's Lean development; and comparison of semialgebraic, valued-field,
 and fine analytic representation theories. We do not claim to classify all
 abstract subgroups or automorphisms, construct a Haar measure on the full class,
 or obtain a physical model merely from a change of scalars.
+
+\emph{Status of the first direction after source~10.} For subgroups normal in
+the full group $G(F)$, over a set-sized real closed field $F\supseteq\R$ with its
+natural valuation, the classification is \cref{e3:cut:thm:normalclass}: the
+proper normal subgroups are the cut subgroups $K_{\mathcal C}$, and the perfect
+ones correspond exactly to convex subgroups of the value group
+(\cref{e3:cut:thm:perfectcuts}). What remains open is re-scoped as follows:
+subgroups normal only in $K$, abstract subgroups of $G(F)$ and automorphisms
+(the non-claim above stands), normal subgroups of $\SO(n)$ and $\SU(n)$ in
+higher rank, and the other directions listed, which source~10 does not address.
+
+The exact identity
+$\commset{K_{\mathcal C}}{K_{\mathcal D}}=K_{\mathcal C+\mathcal D}$ turns
+infinitesimal rotation theory into a calculus of valuation cuts. Normal
+generation makes those cuts intrinsic to the ambient abstract group, and convex
+subgroups identify exactly which cuts are perfect. Principal groups retain a
+perfect residual precisely beyond all finite multiples of their initial scale.
+These statements make precise the difference between nilpotent finite jets,
+residual nilpotence in one scale, and perfectness across arbitrarily larger
+infinitesimal magnitudes.
+
+For the full surreal class an additional size mechanism appears. A normal kernel
+that misses even one infinitesimal rotation must distinguish a proper class of
+smaller valuation depths, which a set-sized target cannot do. Standard part is
+therefore universal among all set-sized group images of the stated surreal and
+surcomplex semisimple matrix groups. This is an algebraic obstruction, not a
+choice of topology and not a statement that infinitesimals have no geometric
+effect; their full nontrivial action remains available on proper-class spaces
+and over proper-class scalar systems.
+
+\subsection{Questions left open by source 10}\label{e3:cut:sub:open}
+
+\emph{Normal subgroups of the infinitesimal group itself.} Part~III classifies
+$G$-normal subgroups inside $K$, not all $K$-normal subgroups. The leading-axis
+action of an infinitesimal conjugator is much more restricted than that of a
+macroscopic rotation. A full intrinsic normal lattice of $K$, and a
+corresponding analysis of its own arbitrary set-sized images, require
+additional ideas; the universal quotient theorem for $G$ does not answer them.
+
+\emph{Exact word images in other anisotropic groups.} The quaternion scalar
+identity reduces an exact commutator equation in $\SO(3)$ to one real scalar
+constraint. It is natural to ask for exact mixed-cut word images in other
+compact real forms, not merely inclusion bounds or local openness. The
+higher-dimensional universal factorization needed only generation by rank-one
+blocks, and does not itself provide higher-dimensional commutator width one at
+prescribed depths.
+
+\emph{A uniform reductive classification.}
+\Cref{e3:cut:thm:smallquotient,e3:cut:thm:allranks}, together with
+\cref{e3:cut:prop:circlecounter}, suggest a structural distinction between
+semisimple and toral factors of compact real algebraic groups. A general
+statement must account for finite central overlaps, specify the real form, and
+state its class foundation. Only the orthogonal and special unitary cases above
+are proved, not a theorem about every reductive class group.
+
+\emph{Which quotient information is first-order accessible?} The compact
+elements of the whole normal-subgroup lattice recover value addition, by a
+construction that quantifies over subgroups. Relating this reconstruction to
+definable data, without replacing it by the already stronger published
+field-interpretation theorem, is a separate model-theoretic task.
 
 \appendix
 \section{Formula and convention reference for Part II}\label{e3:so:app:formulas}
@@ -4308,12 +5911,23 @@ Source 04 files & \texttt{code/04-three-space-verify\_identities.py},
 Source 09 files & \texttt{code/09-so3-verify.py},
  \texttt{data/09-so3-verification.txt},
  \texttt{data/09-so3-requirements.txt}\\
+Source 10 pin & \texttt{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}\\
+Placement of source 10 & \texttt{7b5f934} (files only; this article unchanged)\\
+Part~III written at & \texttt{7b5f934}\\
+Source 10 files & \texttt{code/10-rotation-quotients-verify.py},
+ \texttt{code/10-rotation-quotients-build.sh},
+ \texttt{code/10-rotation-quotients-build.ps1},
+ \texttt{data/10-rotation-quotients-verification.json},
+ \texttt{data/10-rotation-quotients-requirements.txt},
+ \texttt{10-rotation-quotients-SOURCE\_AUDIT.md}\\
 \bottomrule
 \end{tabular}
 \end{center}
 The manuscripts themselves, their PDFs, READMEs and source~09's checksum list
 are not shipped. The code and data files are byte-identical to the delivered
-ones.
+ones. Source~10 delivered no checksum list; its source and novelty audit is
+shipped verbatim as \texttt{10-rotation-quotients-SOURCE\_AUDIT.md}. That file
+names the delivered article and files by their unprefixed names.
 
 \subsection{Source 04: inspected sources and dependencies}
 
@@ -4362,6 +5976,37 @@ Rotation exponential differential & Fine variable derivatives and local Taylor r
 Full fine discreteness & Full surreal cut property; small index sets & Direct separating-radius proof.\\
 Semialgebraic homotopy & Set-sized real closed field & Imported comparison theorem \cite{BO} and explicit spin branches.\\
 Machine formalization & A compiled proof assistant development & Not supplied; no such verification is claimed.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Source 10: inspected sources and dependency ledger}\label{e3:cut:sub:ledger10}
+
+At its pin \texttt{465a54b}, source~10 read, through a connector and without a
+clone or build, the repository and documentation catalogues, this report's
+README with its theorem inventory, provenance and limitations, the source
+sections of Part~II on quaternions and conjugacy, the infinitesimal kernel,
+unique divisibility and the commutator-width-one proof (article lines 2650--2780
+and 2830--3030 at that pin), and the trigonometry report's README, including the
+statement of its Theorem~4.2. The \path{docs/new} directory then held only its
+procedural README. Published sources inspected were \cite{DM,BP,BG}.
+
+\begin{longtable}{L{0.26\textwidth}L{0.3\textwidth}L{0.35\textwidth}}
+\toprule
+Result & Main input & Essential boundary\\
+\midrule
+\endfirsthead
+\toprule Result & Main input & Essential boundary\\\midrule
+\endhead
+Mixed-depth image & Quaternion scalar identity; equal-scalar conjugacy & Positive depths; real closedness; natural valuation fixed throughout.\\
+Normal closure & Two conjugates; ordinary powers & Natural finite-ratio property; conjugation by the full $G$.\\
+All proper normals & Normal closure; real simplicity & Subgroups normal in $G$, not merely in $K$.\\
+Perfect-cut classification & Exact Minkowski-sum law & Upper segments; divisible ordered value group.\\
+Perfect residual & Finite series formulas; convex subgroup $\Delta_\alpha$ & Principal threshold $\alpha>0$; stage $\omega$ is an intersection.\\
+Value reconstruction & Compact normal-lattice elements & Set-sized field; whole subgroup lattice, not a claimed first-order formula.\\
+Universal set quotient & Normal closure; proper-class value interval & Full $\No$; class homomorphism; target a set in the same foundation.\\
+Surcomplex $\SU(2)$ & Spin quotient; perfect small kernel & Fixed conjugation; finite central image removed explicitly.\\
+Higher fixed ranks & Near-identity finite Givens products & $\SO(n)$, $n\ge3$; $\SU(n)$, $n\ge2$; ordinary finite $n$.\\
+Circle counterexample & Canonical infinitesimal logarithm; normal-form coefficient & Additional established strong-summation construction; not used by the main theorem.\\
 \bottomrule
 \end{longtable}
 
@@ -4440,6 +6085,22 @@ Quarterly Journal of Mathematics \textbf{61}, no.~3 (2010), 275--289.
 \href{https://doi.org/10.1093/qmath/hap011}{doi:10.1093/qmath/hap011}.
 \url{https://arxiv.org/abs/0810.0365}.
 
+\bibitem{DM}
+A. D'Andrea and A. Maffei,
+\emph{Commutators of small elements in compact semisimple groups and Lie
+algebras},
+Journal of Lie Theory \textbf{26} (2016), no.~3, 683--690.
+\url{https://www.heldermann-verlag.de/jlt/jlt26/andla2e.pdf}.
+Source~10 uses Theorem~2.5 for historical comparison.
+
+\bibitem{BG}
+O. Bournez and Q. Guilmant,
+\emph{Surreal fields stable under exponential and logarithmic functions},
+arXiv:2201.08199v1 (2022).
+\url{https://arxiv.org/abs/2201.08199}.
+Source~10 uses Sections~2.2--2.3, Corollary~2.1 and Theorem~2.6 for the
+real-closed-field, Hahn and normal-form background.
+
 \bibitem{RepoTrig}
 \repo,
 \emph{Trigonometry on the Surcomplex Plane: Canonical Phases,
@@ -4449,7 +6110,11 @@ Source~04 inspected it at
 \href{https://github.com/VladimirReshetnikov/Surreal/blob/d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0/docs/surcomplex/trigonometry/article.tex}{\texttt{d22a5b35d5b3}};
 source~09 identified it through the documentation index at
 \href{https://github.com/VladimirReshetnikov/Surreal/tree/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/docs/surcomplex/trigonometry}{\texttt{dcf86662b574}}.
-Labels cited here are those present at \texttt{50cb709}.
+Labels cited in Parts~I and~II are those present at \texttt{50cb709}.
+Source~10 read its README at \texttt{465a54b}; Part~III cites
+\texttt{trigonometry:thm:polar}, \texttt{trigonometry:eq:circlesplit} and
+\texttt{trigonometry:rot:thm:graded}, present at \texttt{465a54b} and at
+\texttt{7b5f934}.
 
 \bibitem{RepoGeometry}
 \repo,

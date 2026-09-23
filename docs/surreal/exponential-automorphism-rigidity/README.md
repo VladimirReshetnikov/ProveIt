@@ -208,6 +208,13 @@ nothing but the natural-valuation value read through `ν = w∘E`; it is not a
 Hardy-field or germ order, and not a scale of function growth. The three
 rigidity statements have different objects and hypotheses.
 
+The canonical Hahn lift of the dilation `T_q` is studied as a field
+automorphism in
+[single-dilation-hahn-support](../../surcomplex/single-dilation-hahn-support/):
+its centralizer among all field automorphisms (`dsup:thm:centralizer`) and the
+non-conjugacy of distinct rational dilations (`dsup:thm:nonconjugate`). Question
+13.1 is untouched there.
+
 ## What it does NOT claim
 
 - **Rigidity here means faithfulness, not triviality.** The article states
