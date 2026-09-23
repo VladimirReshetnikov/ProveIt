@@ -538,3 +538,6 @@ import Surreal.Surcomplex.TrigonometricFrequencyDerivative
 import Surreal.Surcomplex.TrigonometricStationaryAngles
 import Surreal.Algebra.NonnegativePolynomialRoots
 import Surreal.Algebra.NonnegativePolynomialDegree
+import Surreal.Algebra.ConjugatePolynomialFactor
+import Surreal.Algebra.NonnegativePolynomialNorm
+import Surreal.Surcomplex.NonnegativePolynomialFactorization
