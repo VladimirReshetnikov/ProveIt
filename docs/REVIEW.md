@@ -668,6 +668,52 @@ and all 882 local Markdown destinations in 93 files resolve. The incoming
 analytic results retain their stated scope and do not supply Lean proofs
 for the critical-potential field constructions.
 
+The fourth critical-potential pass reviewed Sections 41–42, completing the
+Part VII main-text pass. It expands exponent-coset independence for arbitrary
+Hahn coefficients, verifies the Borel substitutions and their inverses as
+rational-field automorphisms, and records the composition convention,
+additive subgroup and explicit noncommutativity. Schwarzian reconstruction
+now states the algebraic square-root choice, invertible constant change of
+basis and nonzero-denominator argument. The subcritical quotient's sign and
+the first-limit finite-span calculation are explicit. The dependency table
+now includes the actual angular primitive and the Schwarzian hypotheses.
+The formalization route starts with finite differential-field algebra,
+then Hahn support, then the intrinsic surreal interface.
+
+The source comparisons check Krüger–Teschl's Section 2, equation (2.5) and
+Corollary 2.3 with the potential sign reversed; the first-limit primitive in
+Berarducci–Mantova's Theorem 8.4; and ADH's predicate with this report's
+normalization `Ω(4Q)`. Versioned preprint links now match the cited versions.
+This does not complete the other import or source-claim reconciliation.
+
+Validation: the PDF rebuilt in three passes at 198 pages, versus 197 in the
+baseline, with no warnings or overfull/underfull boxes in either final log;
+changed proof and dependency-table pages were visually inspected. The copied
+member-13 verifier reproduces all 70 delivered checks after removing only
+the Python-version line. Separate exact symbolic checks cover the Borel
+composition, inverse and conjugation, Möbius derivative and Schwarzian
+invariance, and finite geometric/prefix identities of lengths 1–8. These
+finite checks do not prove the transfinite or Picard–Vessiot assertions.
+All 51 historical code/data/source artifacts remain byte-for-byte unchanged.
+The independent index audit finds all 2,114 entries in 44 reports, and all
+882 local Markdown destinations in 93 files resolve. Before the incoming
+trigonometric-expansion merge, the full build passed 3,903 jobs and the axiom
+audit checked 6,092 declarations using only `propext`, `Classical.choice`
+and `Quot.sound`. The intrinsic Part VII results remain pending in Lean.
+
+The final integration merged `465a54b`, including the exact infinitesimal
+trigonometric expansions and normalization proof, through `ce1dcca`.
+The incoming source mappings distinguish finite normalized remainders,
+valuation identities and infinitesimal relative errors from sequence limits;
+the fine-derivative and intrinsic-derivation boundary remains unchanged.
+The combined build passed 3,906 jobs, and the axiom audit checked 6,127
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,114 indexed statements in 44 reports remain correctly catalogued,
+and all 887 local Markdown destinations in 93 files resolve. The merge
+left the reviewed differential-equations source and 198-page PDF unchanged.
+This integration does not establish Lean coverage for its intrinsic
+Picard–Vessiot or Schwarzian results.
+
 ## Remaining scope
 
 The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
@@ -685,8 +731,8 @@ this review: [three duals](surcomplex/three-duals-of-hahn-vector-spaces/),
 [transcendence over bounded support](surreal/transcendence-over-bounded-support/)
 and [matrix scaling](surreal/matrix-scaling-at-surreal-scales/).
 Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral
-theory additions also remain pending. The critical-potential review has
-now covers Sections 35–40; Sections 41–42 remain pending.
+theory additions also remain pending. The critical-potential main-text review now
+covers Sections 35–42; remaining imports and source reconciliation are pending.
 Their inclusion in the statement index does not extend an earlier proof-review
 scope or establish Lean coverage.
 
@@ -696,7 +742,7 @@ spectral theory and Sections 2–21 of Hahn–Tate uniformization. This does not
 complete the imported-result and source-reconciliation work.
 The expanded differential-equations report has now also received a
 main-text review of the complete regular-singular part, Sections 23–28.
-The autonomous pass now covers the normalized-derivation foundations, curve-realization classification, finite-scale localization, derivation independence and worked equations (Sections 29–32), plus the holomorphic-differential and hyperelliptic obstructions (Section 33.1). The formal-group and abelian proofs of Sections 33.2–33.4 are now also reviewed, including the speed threshold for every normalized derivation. Section 34's scope, input contracts and formalization comparisons have now also been reviewed, completing the Part VI main-text pass. The critical-potential review now covers Sections 35–40, including the tower, Euler classification, earlier-scale precision and three differential Hahn fields. Sections 41–42 and the remaining imports and source reconciliation still require review.
+The autonomous pass now covers the normalized-derivation foundations, curve-realization classification, finite-scale localization, derivation independence and worked equations (Sections 29–32), plus the holomorphic-differential and hyperelliptic obstructions (Section 33.1). The formal-group and abelian proofs of Sections 33.2–33.4 are now also reviewed, including the speed threshold for every normalized derivation. Section 34's scope, input contracts and formalization comparisons have now also been reviewed, completing the Part VI main-text pass. The critical-potential main-text review now covers Sections 35–42, including the tower, Euler classification, earlier-scale precision, three differential Hahn fields, Borel group and Schwarzian coordinates. Remaining imports and source reconciliation still require review.
 The new sections in dynamics, entire functions, nonabelian support,
 spectral theory and exponential automorphism rigidity remain outside the
 earlier review scopes, apart from explicitly recorded integration corrections.
@@ -709,8 +755,8 @@ as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The
 differential-equations row covers the earlier proof chains, targeted scope
 corrections, and the regular-singular and autonomous main text; the
-critical-potential Sections 41–42, remaining imports and source reconciliation are
-still separate.
+critical-potential main text is also reviewed, while remaining imports and
+source reconciliation are still separate.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain

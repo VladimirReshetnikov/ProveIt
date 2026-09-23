@@ -1,0 +1,1702 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xurl}
+\usepackage{xcolor,fancyhdr,needspace}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{354E42}
+\definecolor{pale}{HTML}{F1F2E9}
+\hypersetup{pdftitle={Forcing, Omitted Cuts, and Old Surreal Fields},
+ pdfauthor={Research article prepared with ChatGPT},
+ pdfsubject={External saturation, ordinal sequences, surcomplex conjugation, and Boolean completions}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\scshape Forcing and old surreal fields}
+\fancyhead[R]{\small Set theory and model theory}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\setlist{leftmargin=1.7em,itemsep=2pt,topsep=5pt}
+\clubpenalty=10000\widowpenalty=10000
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\bd}{\operatorname{b}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\acl}{\operatorname{acl}}
+\newcommand{\rcl}{\operatorname{rcl}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\res}{\mathbin{\upharpoonright}}
+\newcommand{\NS}{\mathsf{NS}}
+\newcommand{\RCF}{\mathsf{RCF}}
+\newcommand{\ACF}{\mathsf{ACF}_0}
+\newcommand{\Lang}{\mathcal L}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\cut}[2]{\left\{\,#1\;\middle|\;#2\,\right\}}
+\newcommand{\seq}[1]{\langle#1\rangle}
+\newcommand{\shorthash}{\texttt{4f2645599121}}
+\newcommand{\fullhash}{\texttt{4f264559\allowbreak 9121fa87\allowbreak 2c710499\allowbreak 5e47f86f\allowbreak 0382351f}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.35in}
+{\large\scshape Research article with complete written proofs\par}
+\vspace{0.45in}
+{\Huge\bfseries\color{ink} Forcing, Omitted Cuts,\par and Old Surreal Fields\par}
+\vspace{0.2in}
+{\Large Ordinal-sequence spectra, surcomplex conjugation,\par and a Boolean completion of reverse simplicity\par}
+\vspace{0.35in}
+{\large Prepared with ChatGPT\par}
+{22 September 2026\par}
+\vspace{0.3in}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+Let $M\subseteq N$ be transitive universes of ZFC with the same ordinals,
+with the ground universe available as a definable predicate, and let
+$K=\No^M$ be the old surreal field viewed from $N$. We prove that, for every
+uncountable cardinal $\kappa$ of $N$, the ordered field $K$ is
+$\kappa$-saturated in $N$ exactly when $N$ has no new ordinal-valued sequences
+of length less than $\kappa$ over $M$. In fact, the latter condition is
+equivalent to interpolation for every set-sized cut with just one side of
+size less than $\kappa$. The converse is established by a set-sized,
+arbitrarily branching tree of nested surreal intervals with an explicit
+branch decoder. A first new sequence of length $\delta$ produces a gap of
+exact cofinality pair $(\delta,\delta)$; $\delta$ is regular in both universes.
+
+The countable boundary is different: $K$ is $\omega$-saturated exactly when
+no new reals are added. In contrast, the pure algebraically closed field
+$K[i]$ remains saturated over every set of parameters, regardless of new
+sequences. Naming conjugation restores precisely the saturation spectrum
+of $K$. We also prove a sharp preservation criterion for bounded-birthday
+fields, explain Cohen, closed-forcing and Prikry examples, and show why
+these new order gaps do not produce nonconstant set-indexed Cauchy nets.
+Finally, we explicitly construct a set-complete class Boolean algebra in
+which the reverse-simplicity order on surreal signs is dense, answering
+a precisely interpreted question in Berenbeim's 2020 notes. Completeness
+for all subclasses is ruled out under Global Choice.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Status and priority.} The principal spectrum and decoding results
+are proposed contributions with proofs, not a claim of certified historical
+priority. They were not located in the consulted sources or the specified
+repository review. Classical surreal facts, quantifier elimination, and
+standard forcing facts are attributed separately. No Lean verification or
+independent referee review is claimed. Repository snapshot: \shorthash.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\setcounter{tocdepth}{2}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+
+\section{The questions and the answers}\label{sec:overview}
+
+Forcing preserves ordinals, but it can add new functions on old ordinals.
+Consequently, it can add new surreal sign sequences without changing the
+ordinal labels used for birthdays. This observation raises a more delicate
+question than whether new surreal numbers exist:
+\begin{quote}
+How much of the old surreal field's ability to realize cuts and first-order
+types survives when the surrounding universe acquires new sets?
+\end{quote}
+An old field can remain an elementary subfield of a larger surreal field
+while losing saturation. Elementarity tests individual first-order formulas
+with finitely many parameters. Saturation additionally tests entire sets of
+formulas, and those sets themselves can be new.
+
+Throughout the main argument, $M\subseteq N$ have the same ordinals, and
+\[
+ K=\No^M,\qquad K^+=\No^N,\qquad C=K[i],\qquad C^+=K^+[i].
+\]
+All cardinalities, types, and set-sized families called \emph{external}
+are computed in $N$. They are not computed in a still larger metatheory.
+Section~\ref{sec:foundations} makes the class conventions precise.
+
+For an infinite cardinal $\kappa$ of $N$, write
+\begin{equation}\label{eq:NSdef}
+ \NS_{<\kappa}(M,N)
+ \quad\Longleftrightarrow\quad
+ ({}^\lambda\theta)^N\subseteq M
+ \quad\text{for all ordinals }\lambda<\kappa\text{ and }\theta.
+\end{equation}
+Every ordinal-valued sequence has bounded range, so this is exactly the
+absence of new ordinal-valued sequences of length less than $\kappa$.
+The range bound $\theta$ is \emph{not} required to be below $\kappa$.
+
+\begin{theorem}[Main spectrum theorem]\label{thm:main-summary}
+For every infinite cardinal $\kappa$ of $N$, the following are equivalent.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item $\NS_{<\kappa}(M,N)$ holds.
+\item Every pair of $N$-sets $L,R\subseteq K$ with $L<R$ and
+$\min(\abs L,\abs R)<\kappa$ has a separator in $K$.
+\item Every such cut with $\abs{L\cup R}<\kappa$ has a separator in $K$.
+\end{enumerate}
+For uncountable $\kappa$, these are also equivalent to $\kappa$-saturation
+of $K$ in the ordered-field language, as evaluated in $N$.
+\end{theorem}
+
+Condition (ii) is stronger in appearance than the usual small-cut condition:
+the other side can be an arbitrarily large set. Neither side may be a proper
+class. An especially useful special case is that a cut is always filled if
+one side is an actual ground-model set.
+
+\begin{theorem}[First loss and language sensitivity]\label{thm:package-summary}
+Suppose $M\ne N$. Let $\delta$ be the least ordinal length of a new
+ordinal-valued sequence. Then:
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item $\delta$ is an infinite regular cardinal in both $M$ and $N$.
+\item The order $K$ has a gap with set-sized cofinal and coinitial witnesses
+of exact cofinality pair $(\delta,\delta)$. No such gap has either
+cofinality smaller than $\delta$.
+\item For uncountable $N$-cardinals $\kappa$, $K$ is $\kappa$-saturated
+exactly when $\kappa\leq\delta$.
+\item $K$ is $\omega$-saturated exactly when $\R^M=\R^N$.
+\item $C$ in the pure field language is saturated over every $N$-set of
+parameters. The expansion $(C,c)$ by $c(a+bi)=a-bi$ has exactly the
+saturation spectrum of $K$, including at $\omega$.
+\end{enumerate}
+\end{theorem}
+
+The article also treats the set-sized field
+$F_\kappa=(\No_{<\kappa})^M$. For an uncountable regular ground cardinal
+$\kappa$ that remains a cardinal in $N$, it proves
+\begin{equation}\label{eq:bounded-summary}
+\begin{split}
+ F_\kappa\text{ is }\kappa\text{-saturated in }N
+ \quad\Longleftrightarrow\quad&
+ \cf^N(\kappa)=\kappa\ \text{ and}\\[-2pt]
+ &({}^\alpha 2)^N=({}^\alpha 2)^M\quad(\alpha<\kappa).
+\end{split}
+\end{equation}
+Thus the full-class theorem and the bounded-fragment theorem do not test
+identical preservation properties.
+
+\subsection{What is being offered as new}
+
+The proposed contributions are the exact external spectrum in
+Theorem~\ref{thm:main-summary}, its explicit arbitrary-alphabet interval
+coding, the exact gap threshold, the distinction between $\omega$- and
+$\omega_1$-saturation under no-real extensions, and the resulting
+surcomplex language comparison. Their ingredients include standard
+cut realization and quantifier elimination; those ingredients are not
+claimed as new. Several consequences are deliberately labeled consequences
+rather than independent discoveries.
+
+A separate section answers a concrete question posed in Berenbeim's
+2020 \emph{notes}, not a conjecture attributed to a peer-reviewed paper.
+Its construction is a natural direct-limit construction and may be
+folklore in class forcing. Its value here is an explicit, size-correct
+answer, not a claim that Boolean completions were previously unavailable.
+General class-forcing completion theory predates those notes
+\cite{HolyEtAl}.
+
+Berenbeim also explicitly proposes studying surreals under forcing in the
+final section of the same notes \cite[pp.~32, 34]{Berenbeim}. The present
+article develops one concrete direction of that program. It does not claim
+to settle the notes' broader suggestions about embeddings of universes.
+
+\section{Foundations, notation, and imported facts}\label{sec:foundations}
+
+\subsection{Two universes, rather than an unspecified outside observer}
+
+A precise interpretation is to work in $N\models\mathrm{ZFC}$ with a
+parameter-definable transitive inner class $M$ containing all ordinals and
+satisfying ZFC. The assertion that $M$ satisfies ZFC is an axiom scheme.
+All uses of Separation and Replacement with the predicate $M$ are then
+instances of the ordinary schemes after substituting its definition.
+Alternatively, one may use a two-universe metatheory with these closure
+properties stipulated. The forcing case $N=M[G]$ is the intended example;
+the proofs themselves use only the stated inner-model properties.
+
+The superscript in $\No^M$ means that the sign functions, their construction,
+and the operations are computed in $M$. In $N$, $K$ is a proper class:
+it contains an old all-plus sign of every ordinal length. It is not an
+additional set-sized model assumed to have a cardinality.
+
+If one instead represents $M$ and $N$ by countable transitive \emph{set}
+models in a larger universe, all claims about sets, cardinalities and
+saturation must still be interpreted internally to $N$. They are not
+claims of saturation with respect to every subset in that larger universe.
+This distinction is indispensable.
+
+We do not assume an unrestricted truth predicate for arbitrary class
+structures. In the two languages used here, quantifier elimination provides
+a uniform reduction of formulas to finite algebraic conditions. It therefore
+supplies the required satisfaction relation directly. Types are ordinary
+$N$-sets of finite syntactic expressions over set-sized parameter sets.
+This avoids the general class-satisfaction obstacle discussed, for example,
+in the foundational remarks of van den Dries--Ehrlich \cite{vdDE}.
+
+\subsection{Signs and birthdays}
+
+A surreal number is a sign function $s:\alpha\to\{-,+\}$ for an ordinal
+$\alpha$; its birthday is $\bd(s)=\alpha$. The empty function represents
+zero. At the first place where two signs differ, numerical comparison uses
+\[
+ -\ <\ \text{termination}\ <\ +.
+\]
+The simplicity relation is proper initial segment, not numerical order.
+The ordinal $\alpha$ is represented by the all-plus function of length
+$\alpha$. Its surreal successor agrees with $\alpha+1$ as an ordinal;
+arbitrary ordinal addition and surreal field addition must not be conflated.
+
+For sets $L,R$ of surreals, $L<R$ means $\ell<r$ for every
+$\ell\in L$ and $r\in R$. Empty sides are allowed. A separator means a
+\emph{strict} separator: $L<x<R$. The classical cut theorem supplies the
+unique simplest separator, denoted $\cut LR$. Standard references are
+Conway, Gonshor, and van den Dries--Ehrlich \cite{Conway,Gonshor,vdDE}.
+We use the birthday bound
+\begin{equation}\label{eq:cutbirthday}
+ \bd\!\left(\cut LR\right)
+ \leq\sup\{\bd(y)+1:y\in L\cup R\}.
+\end{equation}
+The supremum of the empty set is zero. In particular, every set-sized
+separated cut in the full surreal class has a separator.
+
+For clarity, the familiar sign criterion behind several later arguments
+is recorded explicitly.
+\begin{lemma}[The cone of a sign]\label{lem:signcone}
+For $s:\alpha\to\{-,+\}$ put
+\[
+ L_s=\{s\res\beta:\beta<\alpha,\ s(\beta)=+\},\qquad
+ R_s=\{s\res\beta:\beta<\alpha,\ s(\beta)=-\}.
+\]
+A surreal $x$ satisfies $L_s<x<R_s$ if and only if $s$ is an initial
+segment of $x$, allowing $s=x$.
+\end{lemma}
+\begin{proof}
+If $x$ extends $s$, its comparison with each prefix in the displayed sets
+is decided by the next sign of $s$, so the required strict inequalities hold.
+Conversely, if $x$ terminates at $\beta<\alpha$ while agreeing up to that
+point, then $x=s\res\beta$ violates the corresponding strict inequality.
+If it first disagrees at $\beta<\alpha$, compare $x$ with the terminating
+prefix $s\res\beta$. The opposite signs place $x$ on the wrong side of
+that prefix. These exhaust the ways in which $x$ could fail to extend $s$.
+\end{proof}
+
+The numerical bounds
+\begin{equation}\label{eq:birthbounds}
+ -\bd(x)\leq x\leq\bd(x)
+\end{equation}
+follow immediately by comparing a sign with the all-minus and all-plus
+signs of the same length. The ordinals in this formula are their surreal
+images.
+
+\subsection{Field theory and types}
+
+The full surreal field is real closed, and its extension by a square root
+of $-1$ is algebraically closed. Also, $\No_{<\lambda}$ is a real closed
+subfield whenever $\lambda$ is an epsilon number. In particular, this holds
+for every uncountable cardinal $\lambda$: all such cardinals satisfy
+$\omega^\lambda=\lambda$ in ordinal arithmetic. We use the corrected
+birthday-fragment results of van den Dries--Ehrlich and the explicit
+restatement in Bournez--Guilmant \cite{vdDE,vdDEerr,BournezGuilmant}.
+Nothing about closure under exponential functions is needed below.
+
+We use quantifier elimination for real closed fields in
+$\Lang_{\mathrm{or}}=\{0,1,+,-,\cdot,<\}$ and for algebraically closed
+fields of characteristic zero in $\Lang_{\mathrm{fld}}=\{0,1,+,-,\cdot\}$
+\cite{Marker}. Two concrete consequences are worth stating.
+First, an embedding between real closed ordered fields is elementary;
+an embedding between algebraically closed fields of the same characteristic
+is elementary. Second, over a real closed parameter subfield a nonalgebraic
+one-variable type is determined by an order cut, while over an algebraically
+closed field one-variable types are algebraic or transcendental.
+
+Our convention is that a structure is $\kappa$-saturated if every complete
+one-variable type over a parameter set of cardinality less than $\kappa$
+that is finitely satisfiable in the structure is realized there. As usual,
+this is equivalent to the finite-variable convention. One proves that
+extension by induction on the number of variables, using compactness and
+then naming each chosen realization. This induction also works for the
+class structures here: all syntactic data and parameter sets at every step
+are sets, and satisfaction is supplied by quantifier elimination.
+
+For an order, we use \emph{$\eta_\kappa$} to mean that every separated cut
+with $\abs{L\cup R}<\kappa$ has a separator. This cardinal-index notation
+is defined here to avoid the alternative convention in which $\eta_\alpha$
+is indexed by an aleph subscript.
+
+\begin{lemma}[Real closed saturation from cuts]\label{lem:RCFsat}
+For an uncountable cardinal $\kappa$, a real closed ordered field is
+$\kappa$-saturated if and only if its order is $\eta_\kappa$.
+The assertion applies also to the definable class fields used here.
+\end{lemma}
+\begin{proof}
+Saturation realizes the finitely satisfiable partial type consisting of
+the inequalities of a small cut; a complete extension exists by ordinary
+compactness applied to the set of formulas with those parameters.
+
+Conversely, let $A$ have size less than $\kappa$. The real closure $F$ of
+$\Q(A)$ inside the field is a set of cardinality at most
+$\max(\abs A,\aleph_0)<\kappa$. A complete type over $A$ can be extended
+to one over $F$ which is finitely satisfiable in the ambient field: append
+the elementary diagram on $F$ and apply compactness. If the extended type
+is algebraic, it is realized in $F$, since $F$ is real closed. Otherwise
+it declares, for every $a\in F$, exactly one of $a<X$ and $X<a$. These
+inequalities form a separated cut of size less than $\kappa$.
+A separator realizes the entire type by quantifier elimination, because
+all polynomial signs over $F$ are determined by its position relative to
+the real roots of those polynomials. Restrict back to $A$.
+\end{proof}
+
+The uncountability hypothesis cannot be dropped. Every dense order without
+endpoints has the finite-cut property $\eta_\omega$, whereas a real closed
+field need not be $\omega$-saturated.
+
+\section{Absoluteness and ground-set bounds}\label{sec:bounds}
+
+\begin{proposition}[Old arithmetic and elementary inclusions]\label{prop:absolute}
+The sign inclusion $K\subseteq K^+$ preserves birthdays, numerical order,
+addition, multiplication, and inversion. In $N$, $K$ is real closed and
+$C$ is algebraically closed. Moreover,
+\[
+ K\preccurlyeq K^+\quad\text{in }\Lang_{\mathrm{or}},\qquad
+ C\preccurlyeq C^+\quad\text{in }\Lang_{\mathrm{fld}}.
+\]
+\end{proposition}
+\begin{proof}
+Old sign functions have the same domains and entries, so birthdays and
+first-disagreement comparisons are absolute. Their canonical option sets
+consist of their proper prefixes and are identical in the two universes.
+For an old cut presentation, its simplest separator is likewise absolute.
+Indeed, its old simplest separator $s$ exists. In $N$, let $t$ be the
+newly computed simplest separator. The simplicity property of cuts says
+that $t$ is an initial segment of every separator, in particular of $s$.
+Thus $t$ is old. Since the old construction already chose the simplest
+old separator, $t=s$. Alternatively, the standard
+sign-by-sign construction of the simplest separator is a set recursion
+with the same old input and uniquely determined successive signs.
+
+Conway's addition and multiplication are defined from canonical options
+by well-founded, set-like recursion. Induction on the recursive arguments
+therefore gives the same values in the two universes. Every recursion
+needed for particular inputs has a set-sized dependency closure; no new
+class-recursion principle is being assumed. The inverse of an old nonzero
+number remains its inverse by the already absolute multiplication law
+and uniqueness.
+
+A polynomial over $K$ has finitely many old coefficients. That finite
+coefficient tuple, and hence the polynomial, belongs to $M$. In $M$,
+positive elements have square roots and odd-degree polynomials have roots.
+Those same witnesses work in $N$. Thus $K$ is externally real closed.
+The corresponding finite-polynomial argument proves external algebraic
+closedness of $C$. Quantifier elimination now gives both elementary
+inclusions.
+\end{proof}
+
+This proposition asserts elementarity of the \emph{fields}. It does not
+assert $M\preccurlyeq N$ as models of set theory, which is generally false
+for a forcing extension.
+
+\begin{lemma}[Every external set of old numbers is ground-bounded]\label{lem:groundbound}
+If $A$ is an $N$-set and $A\subseteq K$, there are an ordinal $\alpha$
+and a ground set $B\in M$ with
+\[
+ A\subseteq B=(\No_{<\alpha})^M.
+\]
+Every $N$-set of elements of $C$ is likewise contained in a ground set.
+\end{lemma}
+\begin{proof}
+In $N$ form $\alpha=\sup\{\bd(a)+1:a\in A\}$. This ordinal belongs to
+$M$, because the universes have the same ordinals. The set of all old signs
+of lengths below $\alpha$ exists in $M$ by Power Set and Replacement,
+and it contains every $a\in A$. For $C$, do the same for both coordinates
+and take the ground set of their ordered pairs.
+\end{proof}
+
+The lemma is not a covering property of a forcing notion. It holds even
+when a forcing badly fails familiar small-set covering properties. The
+containing ground set can be vastly larger than $A$.
+
+\begin{lemma}[Coding short families]\label{lem:shortold}
+Assume $\NS_{<\kappa}(M,N)$. Every $N$-set of old surreal or surcomplex
+numbers of cardinality less than $\kappa$ is a member of $M$. More generally,
+every sequence of length less than $\kappa$ with values in a fixed ground
+set is a ground sequence.
+\end{lemma}
+\begin{proof}
+For a ground set $B$, fix in $M$ an injection $e:B\to\theta$ for an
+ordinal $\theta$, using Choice in $M$. Composing a short sequence in $B$
+with $e$ gives an ordinal-valued sequence of the same length, hence an old
+one. Decoding with $e$ shows that the original sequence is old. For an
+external set $A$ of size less than $\kappa$, use Lemma~\ref{lem:groundbound}
+and choose in $N$ an enumeration of $A$ of length less than $\kappa$.
+The enumeration is old, and its range belongs to $M$.
+\end{proof}
+
+The following asymmetric fact is the efficient direction of the main theorem.
+\begin{theorem}[One old side suffices]\label{thm:oneside}
+Let $L,R$ be $N$-sets contained in $K$, with $L<R$. If either $L\in M$
+or $R\in M$, then some $x\in K$ satisfies $L<x<R$.
+\end{theorem}
+\begin{proof}
+Suppose $L\in M$. Choose a ground set $B\supseteq R$ by
+Lemma~\ref{lem:groundbound}, and define, in $M$,
+\[
+ U=\{b\in B:(\forall\ell\in L)\ \ell<b\}.
+\]
+Order is absolute, so $R\subseteq U$ and $L<U$. The ground cut
+$x=\cut L U$, constructed in $M$, satisfies $L<x<U$, and therefore
+$L<x<R$. This also covers $R=\varnothing$ and $L=\varnothing$.
+If $R\in M$, apply the proved case to $-R<-L$ and negate its separator.
+\end{proof}
+
+\begin{corollary}\label{cor:NSoneside}
+If $\NS_{<\kappa}(M,N)$ holds, every external set-sized cut with at least
+one side of size less than $\kappa$ is filled in $K$.
+\end{corollary}
+\begin{proof}
+Its small side belongs to $M$ by Lemma~\ref{lem:shortold}. Apply
+Theorem~\ref{thm:oneside}.
+\end{proof}
+
+In particular, every $N$-set of positive elements of $K$ has a positive
+lower bound in $K$: take $L=\{0\}$. Every $N$-set of old numbers also
+has an old strict upper bound, either by the theorem with $R=\varnothing$
+and the symmetric case, or directly by bounding birthdays and using a
+larger all-plus ordinal. These statements survive every extension under
+consideration, including ones that destroy countable saturation.
+
+\section{Coding a new sequence by nested old intervals}\label{sec:decoder}
+
+The converse requires more than the observation that a new binary sign
+has a new cut. A short sequence can take values in a very large ordinal.
+For example, a new countable cofinal sequence can appear while no real is
+added. Encoding it as one binary sign might require a long ordinal domain,
+which would destroy the desired cardinal bound on the cut.
+
+The construction below keeps the number of inequalities equal to the
+length of the sequence, independently of the size of its alphabet.
+
+\begin{lemma}[Arbitrarily branching interval tree]\label{lem:tree}
+Let $\theta\geq2$ be an ordinal and let $\lambda$ be a nonzero limit
+ordinal, both in $M$. In $M$ there is a set-sized table of pairs
+\[
+ (a_s,b_s)\in K^2,
+ \qquad s\in T:=\bigl({}^{<\lambda}\theta\bigr)^M,
+\]
+with these properties:
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item $a_\varnothing=0<b_\varnothing=1$.
+\item If $s$ is a proper initial segment of $t$, then
+$a_s<a_t<b_t<b_s$.
+\item The intervals belonging to distinct immediate successors of one
+node are pairwise disjoint, and are ordered by their successor labels.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Perform recursion on the set of levels below $\lambda$. Suppose an interval
+$(a_s,b_s)$ is given and write $w_s=b_s-a_s>0$. Regard $\xi$ and $\theta$
+as their all-plus surreal images and put
+\begin{equation}\label{eq:split}
+\begin{split}
+ a_{s^\frown\xi}&=a_s+w_s\frac{3\xi+1}{3\theta+3},\\
+ b_{s^\frown\xi}&=a_s+w_s\frac{3\xi+2}{3\theta+3}
+ \qquad(\xi<\theta).
+\end{split}
+\end{equation}
+Every operation in this display is \emph{surreal field arithmetic}.
+If $\xi<\eta<\theta$, the equality of ordinal and surreal successor
+implies $\xi+1\leq\eta$. Hence
+\[
+ 0<3\xi+1<3\xi+2<3\eta+1<3\eta+2<3\theta+3.
+\]
+This proves the required interior and sibling-separation properties.
+
+At a nonzero limit level $\beta<\lambda$, let $s\in({}^\beta\theta)^M$.
+The induction hypothesis gives separated ground sets
+\[
+ A_s=\{a_{s\res\gamma}:\gamma<\beta\},\qquad
+ B_s=\{b_{s\res\gamma}:\gamma<\beta\}.
+\]
+Define successively, inside $M$,
+\begin{equation}\label{eq:limitinterval}
+ a_s=\cut{A_s}{B_s},\qquad
+ b_s=\cut{A_s\cup\{a_s\}}{B_s}.
+\end{equation}
+Then $A_s<a_s<b_s<B_s$. This verifies strict nesting even at limit levels.
+Each level and its prefix data are sets in $M$; Replacement and ordinary
+set-length recursion produce the entire table in $M$. No recursion along
+all ordinals is used.
+\end{proof}
+
+\begin{theorem}[Branch decoder and omitted cut]\label{thm:decode}
+Suppose $f:\lambda\to\theta$ belongs to $N\setminus M$, where $\lambda$
+is a nonzero limit ordinal, and every proper initial segment $f\res\alpha$
+belongs to $M$. Then $K$ omits the finitely satisfiable partial type
+\begin{equation}\label{eq:branchtype}
+ p_f(X)=\{\ a_{f\res\alpha}<X<b_{f\res\alpha}:\alpha<\lambda\ \}.
+\end{equation}
+It uses at most $\abs\lambda$ parameters on each side. The left endpoints
+strictly increase, and the right endpoints strictly decrease.
+\end{theorem}
+\begin{proof}
+All indicated endpoints are old. Any finite subset of the displayed
+inequalities is satisfied by a point in its deepest interval, for example
+its midpoint, which is an old field element. Strict nesting proves both
+monotonicity assertions.
+
+Suppose, toward a contradiction, that an old $x$ realizes all inequalities.
+Using only the ground interval table and the old parameter $x$, define
+$d_x:\lambda\to\theta$ by recursion in $M$. At a successor step, having
+constructed a prefix $s$, choose the unique $\xi<\theta$ for which
+\[
+ a_{s^\frown\xi}<x<b_{s^\frown\xi},
+\]
+if such a label exists; otherwise choose $0$. At limit steps take unions
+of the previously constructed prefixes. Distinct sibling intervals are
+disjoint, so the successful choice is unique. The default value makes
+this a \emph{total ground recursion}, without presupposing that a branch
+through the intervals belongs to $M$.
+
+We prove in $N$ by induction that $d_x\res\alpha=f\res\alpha$ for every
+$\alpha<\lambda$. At the next step, $x$ lies in the interval of the true
+successor $f\res(\alpha+1)$ by the type. The unique chosen label must
+therefore be $f(\alpha)$. At limits, agreement follows by union.
+Here $\alpha+1<\lambda$ for each $\alpha<\lambda$, since $\lambda$ is
+limit, so every required successor interval is in the table. Thus
+$d_x=f$, contradicting $d_x\in M$ and $f\notin M$.
+\end{proof}
+
+The proof does not infer that an external branch is old merely because
+all its nodes are old. That inference would be false. Instead, an assumed
+\emph{old realizer} supplies a total, deterministic ground decoder for the
+entire branch. This is the step that makes the argument work.
+
+There is also no assertion that the interval widths tend to zero in the
+fine surreal topology. Section~\ref{sec:topology} proves that these widths
+actually have a common positive old lower bound.
+
+\section{The exact spectrum and its first gap}\label{sec:spectrum}
+
+\subsection{Proof of the main equivalence}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main-summary}]
+The implication (i)$\Rightarrow$(ii) is Corollary~\ref{cor:NSoneside};
+(ii)$\Rightarrow$(iii) is immediate.
+
+Suppose (i) fails. Choose the least ordinal $\lambda<\kappa$ for which
+there is a new ordinal-valued sequence of length $\lambda$. Choose one
+such sequence and bound its range by an ordinal $\theta\geq2$. No finite
+sequence of old ordinals is new. Also $\lambda$ cannot be a successor:
+a sequence at a successor stage consists of its shorter prefix and one
+old ordinal, and both would already belong to $M$. Hence $\lambda$ is
+an infinite limit ordinal, and all proper prefixes of the chosen sequence
+are old. Theorem~\ref{thm:decode} produces an unfilled cut whose two sides
+together have cardinality at most $\abs\lambda<\kappa$ in $N$. Thus
+(iii) fails. This proves (iii)$\Rightarrow$(i).
+
+For uncountable $\kappa$, Proposition~\ref{prop:absolute} and
+Lemma~\ref{lem:RCFsat} identify (iii) with the asserted saturation property.
+\end{proof}
+
+Notice that $\kappa$ need not be regular. The theorem is stated for every
+infinite $N$-cardinal; only the conversion to real closed saturation
+requires $\kappa>\omega$.
+
+\subsection{The least new sequence has regular length}
+
+\begin{definition}
+When $M\ne N$, define the \emph{first sequence length}
+\begin{equation}\label{eq:delta}
+ \delta(M,N)=\min\{\lambda:\exists\theta\ 
+ ({}^\lambda\theta)^N\not\subseteq M\}.
+\end{equation}
+\end{definition}
+
+This minimum exists. Indeed, if there were no new sets of ordinals, every
+set in $N$ could be coded there by a well-founded extensional relation on
+an ordinal, together with a distinguished point. Such a relation is itself
+coded by a set of ordinals. If the code is in $M$, its Mostowski collapse
+in $M$ agrees with the collapse in $N$, yielding the original set in $M$.
+Thus absence of all new sets of ordinals would imply $M=N$. A new set of
+ordinals gives a new characteristic sequence.
+
+\begin{proposition}\label{prop:deltaregular}
+The ordinal $\delta(M,N)$ is an infinite regular cardinal in both $M$ and $N$.
+\end{proposition}
+\begin{proof}
+Write $\delta=\delta(M,N)$ and choose a new $f:\delta\to\theta$.
+We have already observed that $\delta$ is infinite and all its proper
+prefixes are old.
+
+If $\delta$ were not an $N$-cardinal, choose in $N$ a bijection
+$e:\mu\to\delta$ with $\mu<\delta$. By minimality of $\delta$, $e\in M$.
+The sequence $f\circ e$ also has length less than $\delta$, hence belongs
+to $M$. Decoding with $e$ would give $f\in M$, a contradiction. Thus
+$\delta$ is a cardinal in $N$, and therefore also in $M$.
+
+If $\cf^N(\delta)=\mu<\delta$, choose a cofinal sequence
+$e:\mu\to\delta$. It belongs to $M$ by minimality. Every
+$f\res e(\xi)$ is old and lies in the fixed ground set
+\[
+ T=({}^{<\delta}\theta)^M.
+\]
+Well-order $T$ in $M$. The sequence of the corresponding ordinal codes
+of $f\res e(\xi)$, for $\xi<\mu$, has length less than $\delta$ and
+therefore is old. Its ground decoding and union reconstruct $f$, again a
+contradiction. Hence $\delta$ is regular in $N$. Any shorter ground
+cofinal sequence would still be cofinal in $N$, so $\delta$ is regular
+in $M$ as well.
+\end{proof}
+
+This is an elementary minimal-length fact about extensions, not a claim
+of a new characterization of regular cardinals in general.
+
+\subsection{Exact two-sided cofinalities}
+
+A \emph{gap} in the class order $K$ is a partition $(D,E)$ into a lower
+class and an upper class with $D<E$, neither having an endpoint toward the
+other. We call it a \emph{set-character gap} if $D$ has a set-sized
+cofinal subset and $E$ has a set-sized coinitial subset. Its cofinality
+pair is the least possible pair of cardinalities of such witnesses,
+computed in $N$. We never require $D$ or $E$ themselves to be sets.
+
+\begin{theorem}[First gap theorem]\label{thm:firstgap}
+Let $M\ne N$ and $\delta=\delta(M,N)$. Every set-character gap of $K$
+has both cofinalities at least $\delta$, and $K$ has one of exact
+cofinality pair $(\delta,\delta)$.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:decode} to a new sequence of minimal length
+$\delta$, and abbreviate its endpoints as $a_\alpha,b_\alpha$.
+Define in $N$
+\[
+\begin{split}
+ D&=\{x\in K:\exists\alpha<\delta\ (x\leq a_\alpha)\},\\
+ E&=\{x\in K:\exists\alpha<\delta\ (b_\alpha\leq x)\}.
+\end{split}
+\]
+All left endpoints are below all right endpoints. A point in neither
+class would satisfy every strict interval inequality, which is impossible.
+Thus $D\cup E=K$ and $D<E$. Strict monotonicity and the fact that
+$\delta$ is limit show that neither class has an endpoint toward the
+other. The displayed endpoint sequences are cofinal and coinitial
+witnesses of size $\delta$.
+
+For the lower bound, consider any set-character gap with witnesses $A$
+on the lower side and $B$ on the upper side. If either witness could have
+size less than $\delta$, Theorem~\ref{thm:main-summary}, applied at
+$\kappa=\delta$, would give an old strict separator between $A$ and $B$.
+A point of the lower class cannot lie strictly above a cofinal subset
+of that class, and a point of the upper class cannot lie strictly below
+a coinitial subset of that class. Since the two classes partition $K$,
+such a separator is impossible. Both cofinalities are therefore at least
+$\delta$, establishing equality for the constructed gap.
+\end{proof}
+
+\begin{corollary}[Recovering the sequence threshold from the order]\label{cor:recover}
+For $M\ne N$, the ordinal $\delta(M,N)$ is the least cardinal $\mu$ for
+which $K$ has an unfilled set-sized cut with both sides of size at most
+$\mu$. Equivalently, it is the least cofinality appearing on either side
+of a set-character gap of $K$.
+\end{corollary}
+\begin{proof}
+The upper bounds follow from Theorem~\ref{thm:firstgap}. A smaller
+unfilled cut contradicts the main theorem at $\delta$, and a smaller
+gap cofinality contradicts the first-gap theorem.
+\end{proof}
+
+\begin{corollary}\label{cor:spectrum}
+For uncountable $N$-cardinals $\kappa$, the old ordered field $K$ is
+$\kappa$-saturated exactly when $\kappa\leq\delta(M,N)$. If
+$\delta=\omega$, no uncountable level of saturation survives.
+\end{corollary}
+\begin{proof}
+There are no new sequences of length less than $\delta$, and there is
+one of length $\delta$. Apply the main theorem.
+\end{proof}
+
+The statement that $K$ has no smaller \emph{set-character} gap does not
+exclude cuts with proper-class cofinality on one side. Those are outside
+the invariant defined here and outside the main interpolation theorem.
+
+\section{The countable boundary: no reals is weaker}\label{sec:omega}
+
+The absence of new reals and the absence of new countable ordinal-valued
+sequences are different preservation properties. The old surreal field
+records this distinction exactly.
+
+\begin{theorem}[Finite-parameter saturation]\label{thm:omega}
+The following are equivalent:
+\[
+ K\text{ is }\omega\text{-saturated in }N
+ \quad\Longleftrightarrow\quad
+ \Pow(\omega)^M=\Pow(\omega)^N
+ \quad\Longleftrightarrow\quad
+ \R^M=\R^N.
+\]
+\end{theorem}
+\begin{proof}
+Equality of the two power sets is equivalent to equality of the reals by
+ordinary countable coding. We prove the model-theoretic equivalence.
+
+Suppose no new subsets of $\omega$ are added. Let $A$ be a finite set
+of old parameters, and let $p$ be a complete one-variable type over $A$
+which is finitely satisfiable in $K$ according to $N$. The finite set
+$A$ belongs to $M$. The set of formulas with parameters in $A$ has a
+countable enumeration in $M$. The code of $p$ under this enumeration
+is a subset of $\omega$, so $p\in M$.
+
+For each finite subset $p_0$ of $p$, the assertion that its conjunction
+has a solution is an existential ordered-field formula over finitely
+many old parameters. Proposition~\ref{prop:absolute} and quantifier
+elimination show that this assertion has the same truth value in the
+ground and external interpretations of $K$. Hence $M$ recognizes $p$
+as finitely satisfiable. In $M$, the full surreal field realizes every
+set-sized type over a set of parameters: take a set real closure of the
+parameter field, use the cut theorem, and apply the argument of
+Lemma~\ref{lem:RCFsat}. Thus $p$ has an old realization.
+
+Conversely, let $r\in\R^N\setminus\R^M$. Consider the rational-cut
+partial type
+\begin{equation}\label{eq:newrealtype}
+ \{q<X:q\in\Q,\ q<r\}
+ \ \cup\
+ \{X<q:q\in\Q,\ r<q\}.
+\end{equation}
+It is finitely satisfiable by rational numbers. Rational constants can
+be expressed without parameters in the field language: for example,
+$m/n<X$ is equivalent to $m<nX$ for $n>0$. Thus this is a partial type
+over the empty parameter set.
+
+If an old $x$ realized it, the ground set
+$\{q\in\Q:q<x\}$, formed by Separation in $M$, would be exactly the
+lower rational cut of $r$. Ground Dedekind completeness would reconstruct
+$r$ in $M$, a contradiction. For a complete omitted type, take the type of the canonical surreal
+image of $r$ in $K^+$ over the empty parameter set. This is an $N$-set
+of formulas, obtained using quantifier elimination, and it contains
+\eqref{eq:newrealtype}. Every finite part is realized in $K$ because
+$K\preccurlyeq K^+$ by Proposition~\ref{prop:absolute}. Thus $K$ is
+not $\omega$-saturated. No class compactness principle is required.
+\end{proof}
+
+\begin{corollary}\label{cor:omegaone}
+An extension which adds no reals but adds a countable ordinal-valued
+sequence leaves $K$ $\omega$-saturated and destroys
+$\omega_1^N$-saturation. It creates a $(\omega,\omega)$ set-character
+gap in $K$, but none of its omitted types can be witnessed over a fixed
+finite parameter set.
+\end{corollary}
+\begin{proof}
+The first new sequence length is $\omega$. Apply
+Theorems~\ref{thm:omega} and \ref{thm:firstgap} and
+Corollary~\ref{cor:spectrum}. The last assertion is precisely the
+surviving $\omega$-saturation.
+\end{proof}
+
+The new countable parameter family in the interval-tree construction
+carries information that cannot be coded by an old finite parameter tuple.
+This is why a bare new-real argument would miss this example.
+
+\section{Surcomplex numbers: a language-dependent dichotomy}\label{sec:complex}
+
+Write $C=K[i]$ and let $c(a+bi)=a-bi$. The repository's automorphism
+report already emphasizes the distinction between a pure algebraically
+closed field and a field with a distinguished surreal real axis
+\cite{RepoAutomorphisms}. That distinction is standard algebra and is
+not claimed as new here. The point of this section is its exact effect
+on \emph{external saturation under a change of universe}.
+
+\subsection{The pure field forgets the sequence obstruction}
+
+\begin{theorem}[Absolute set-saturation of the old pure surcomplex field]
+\label{thm:purecomplex}
+For every $N$-set $A\subseteq C$, every complete one-variable pure-field
+type over $A$ which is finitely satisfiable in $C$ is realized in $C$.
+Consequently, $C$ is $\kappa$-saturated in $N$ for every $N$-cardinal
+$\kappa$, with no assumption on new sequences or new reals.
+\end{theorem}
+\begin{proof}
+Choose a ground set $B\supseteq A$ by Lemma~\ref{lem:groundbound}.
+In $M$, let
+\[
+ E=\{z\in C:z\text{ is algebraic over }\Q(B)\}.
+\]
+This is a ground set. The polynomials over the set field $\Q(B)$ form
+a set, each nonzero polynomial has finitely many roots, and Replacement
+followed by Union collects those roots. Since $C$ is algebraically
+closed, $E$ is an algebraically closed ground subfield.
+
+Choose an old $t\in C\setminus E$. Such a choice does not require a
+class-sized transcendence basis. For instance, bound the birthdays of
+the real and imaginary coordinates of all elements of the ground set
+$E$, and take a larger all-plus ordinal. Then $t$ is transcendental over
+$\Q(B)$. This remains true in $N$, since a polynomial witnessing
+algebraicity would have a finite old coefficient tuple and would
+already be a ground polynomial. In particular, $t$ is transcendental
+over $\Q(A)$ as formed in $N$, because every finite rational expression
+in $A\subseteq B$ lies in the old field $\Q(B)$.
+
+Now let $p$ be the given complete type. If $p$ contains no equality
+$P(X)=0$ for a nonzero polynomial $P$ over $\Q(A)$, completeness and
+quantifier elimination imply that $p$ is the unique transcendental
+type over $\Q(A)$. It is realized by $t$.
+
+Otherwise choose a nonzero polynomial equation $P(X)=0$ in $p$.
+Its finitely many roots $r_1,\ldots,r_n$ all lie in $C$ by
+Proposition~\ref{prop:absolute}. If none realized $p$, choose for each
+$r_j$ a formula $\varphi_j(X)\in p$ that $r_j$ fails. Then
+\[
+ \{P(X)=0,\varphi_1(X),\ldots,\varphi_n(X)\}
+\]
+is a finite subset of $p$ with no solution in $C$, a contradiction.
+Thus one of the roots realizes $p$. This argument also covers algebraic
+parameters and any new organization of the parameter set $A$.
+\end{proof}
+
+There is no cardinal paradox. The field $C$ is a proper class in $N$;
+the statement is a scheme over set-sized parameter sets, not the claim
+that a set of cardinality $\mu$ realizes types over itself of size $\mu$.
+Nor does the theorem by itself produce a class isomorphism between $C$
+and $C^+$. A global isomorphism would require a separate class back-and-forth
+argument and appropriately stated class principles.
+
+\subsection{Naming conjugation restores the old ordered field}
+
+\begin{lemma}[Real coordinates are interpretable]\label{lem:coordinates}
+The fixed field of $c$ is definable in $(C,c)$ by $c(x)=x$. On that
+field, the order is definable by
+\begin{equation}\label{eq:orderdef}
+ x<y\quad\Longleftrightarrow\quad
+ \exists u\,\bigl(c(u)=u\ \wedge\ u\ne0\ \wedge\ u^2=y-x\bigr).
+\end{equation}
+After naming $i$, the map $z\mapsto(\operatorname{re}z,\operatorname{im}z)$
+is a definable bijection from $C$ to $K^2$, where
+\begin{equation}\label{eq:coordinates}
+ \operatorname{re}z=\frac{z+c(z)}2,\qquad
+ \operatorname{im}z=\frac{z-c(z)}{2i}.
+\end{equation}
+All field and conjugation operations translate into polynomial operations
+on these two coordinates.
+\end{lemma}
+\begin{proof}
+The fixed-point equation gives exactly the zero imaginary coordinate.
+In a real closed field the nonzero squares are exactly the positive
+numbers, proving \eqref{eq:orderdef}. The coordinate formulas are
+immediate from $i^2=-1$, and their inverse is $(a,b)\mapsto a+bi$.
+For example,
+\[
+ (a,b)(u,v)=(au-bv,av+bu),\qquad c(a,b)=(a,-b).
+\]
+Consequently quantifiers over $C$ can be replaced by pairs of quantifiers
+over $K$, and quantifiers over $K$ by quantifiers over the definable fixed
+field.
+\end{proof}
+
+\begin{theorem}[Conjugation spectrum]\label{thm:conjugation}
+For every infinite $N$-cardinal $\kappa$,
+\[
+ (C,c)\text{ is }\kappa\text{-saturated in }N
+ \quad\Longleftrightarrow\quad
+ K\text{ is }\kappa\text{-saturated in }N.
+\]
+For uncountable $\kappa$, this is equivalent to
+$\NS_{<\kappa}(M,N)$. For $\kappa=\omega$, it is equivalent to the
+absence of new reals.
+\end{theorem}
+\begin{proof}
+Naming a fixed finite tuple of constants does not alter
+$\kappa$-saturation for any infinite $\kappa$: a parameter set of size
+less than $\kappa$ stays that small after adjoining finitely many
+constants. Conversely, a type in the reduct can be extended to a type
+over the named constants by compactness, with finite satisfiability,
+and then restricted after realization. We may therefore name $i$.
+
+If $K$ is $\kappa$-saturated, translate a type in $(C,c,i)$ by
+Lemma~\ref{lem:coordinates}. A parameter set of size less than $\kappa$
+gives a set of its real and imaginary coordinates still of size less
+than $\kappa$. The translated type uses two field variables, so the
+finite-variable form of saturation of $K$ realizes it. The inverse
+coordinate map gives the desired realization in $C$.
+
+Conversely, translate a type over a small subset of $K$ into $(C,c)$
+by replacing order with \eqref{eq:orderdef}, restricting quantifiers
+to the fixed field, and adding $c(X)=X$. Its finite satisfiability is
+preserved. Saturation in $(C,c)$ yields a fixed-field realization, hence
+a realization in $K$. The last two assertions follow from the previously
+proved spectrum theorems.
+\end{proof}
+
+In particular, the interval type \eqref{eq:branchtype} remains omitted
+in the conjugation expansion when written using the definable fixed
+field and definable positive squares. In the pure field language, those
+order inequalities are unavailable; its one-variable transcendental
+type is realized by Theorem~\ref{thm:purecomplex}.
+
+\subsection{A useful nonisomorphism consequence}
+
+\begin{corollary}\label{cor:noniso}
+Assume $M\ne N$. There is no $N$-class order isomorphism from $K$ onto
+$K^+$ whose restrictions to sets have set-sized images. Consequently
+there is no such field isomorphism, and no such isomorphism
+$(C,c)\cong(C^+,c)$.
+\end{corollary}
+\begin{proof}
+The first-gap theorem supplies two $N$-sets of old endpoints with no
+separator in $K$. An isomorphism as stated would send them to separated
+$N$-sets in $K^+$, whose cut has a separator. Its inverse would give a
+separator in $K$, a contradiction. An isomorphism of real closed fields
+preserves order because positivity is definable by nonzero squares.
+An isomorphism preserving conjugation restricts to an isomorphism of
+the definable real fixed fields.
+\end{proof}
+
+The set-image condition is automatic for the ordinary definable class
+maps or class maps of GBC with Class Replacement. It is stated explicitly
+to avoid quantifying over unrestricted external graphs without an
+ambient class theory.
+
+\section{A sharp theorem for bounded birthday fields}\label{sec:fragments}
+
+The previous theorems concern all ground birthdays at once. A set-sized
+fragment has a new obstruction: its birthdays can become cofinally
+approachable by a short sequence. This can happen even if every individual
+sign of length below its birthday bound remains old.
+
+Let $\kappa$ be an uncountable regular cardinal in $M$, and assume it
+remains a cardinal in $N$. Put
+\[
+ F_\kappa=(\No_{<\kappa})^M.
+\]
+It is a real closed set field in $M$, by the classical birthday-fragment
+theorem, and remains real closed in $N$ by the finite-coefficient argument.
+Regularity in $N$ is \emph{not} assumed in advance.
+
+\begin{theorem}[Bounded-birthday preservation]\label{thm:fragments}
+The following conditions are equivalent.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item $F_\kappa$ is $\kappa$-saturated in $N$ as an ordered field.
+\item The order $F_\kappa$ has the $\eta_\kappa$ property in $N$.
+\item $\cf^N(\kappa)=\kappa$ and
+$({}^\alpha2)^N=({}^\alpha2)^M$ for every $\alpha<\kappa$.
+\item $\kappa$ is regular in $N$ and
+$F_\kappa=(\No_{<\kappa})^N$ as sets of sign sequences.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The equivalence (i)$\Leftrightarrow$(ii) is
+Lemma~\ref{lem:RCFsat}. The equivalence (iii)$\Leftrightarrow$(iv) is
+exactly the representation of surreals by binary sign sequences.
+
+Assume (iv). Let $L,R\subseteq F_\kappa$ be $N$-sets with
+$L<R$ and $\abs{L\cup R}<\kappa$. Since $\kappa$ is regular in $N$,
+\[
+ \beta=\sup\{\bd(y)+1:y\in L\cup R\}<\kappa.
+\]
+Construct the cut in $N$. By \eqref{eq:cutbirthday} its birthday is
+at most $\beta$, so its separator belongs to $(\No_{<\kappa})^N$,
+which equals $F_\kappa$. This proves (ii).
+
+For necessity, first suppose $\cf^N(\kappa)=\mu<\kappa$. A cofinal
+sequence of ordinals below $\kappa$, viewed as all-plus surreals, is
+cofinal in $F_\kappa$ by \eqref{eq:birthbounds}. It has size less than
+$\kappa$, yet has no strict upper bound in $F_\kappa$. Together with
+an empty right side it witnesses failure of (ii).
+
+Next suppose some new binary function of length less than $\kappa$
+exists. Choose one of least such length, say
+$s:\alpha\to\{-,+\}$. Its proper prefixes are all old, and they all
+have birthday less than $\kappa$. The canonical prefix sets $L_s,R_s$
+of Lemma~\ref{lem:signcone} therefore lie in $F_\kappa$ and together
+have size at most $\abs\alpha<\kappa$. Any separator, even in the
+full new surreal field, must extend $s$. An old separator cannot do so,
+since restricting its old sign function to the old ordinal $\alpha$
+would put $s$ in $M$. Thus this small cut is unfilled in $F_\kappa$,
+again contradicting (ii). This proves (iii).
+\end{proof}
+
+\begin{remark}[Why the two criteria differ]
+In the full-class theorem, $\NS_{<\kappa}$ bans short sequences with
+\emph{arbitrarily large ordinal range}. The fragment theorem bans new
+binary signs below a fixed birthday bound and separately preserves the
+cofinality of that bound. A short sequence with unbounded range at a much
+larger cardinal may be invisible to one small birthday fragment but
+visible to the full old field. Conversely, singularizing the bound itself
+can destroy fragment saturation without adding any new sign below it.
+\end{remark}
+
+\begin{proposition}[Pure complexification of a set fragment]\label{prop:setACF}
+Let $\mu=\abs{F_\kappa}^N$. If $\mu$ is uncountable, the algebraically
+closed field $F_\kappa[i]$ is $\mu$-saturated in the pure field language
+in $N$, regardless of whether the equivalent conditions of
+Theorem~\ref{thm:fragments} hold.
+\end{proposition}
+\begin{proof}
+An algebraically closed field of characteristic zero of uncountable
+cardinality $\mu$ has transcendence degree $\mu$ over $\Q$: if a
+transcendence basis had cardinality $\nu$, its algebraic closure would
+have cardinality $\max(\nu,\aleph_0)$. Over a parameter set of size
+less than $\mu$, there is still a transcendental element, and all algebraic
+types are realized by algebraic closedness. Quantifier elimination gives
+$\mu$-saturation. This is the usual dimension argument for algebraically
+closed fields, included as a consequence rather than as a new field theorem.
+\end{proof}
+
+\section{Forcing examples and distributivity}\label{sec:examples}
+
+The main theorem applies to all the inner-model pairs in its hypotheses.
+For set forcing, it translates the usual preservation of short ordinal
+sequences into a field-theoretic statement.
+
+\subsection{The forcing-theoretic formulation}
+
+Recall the convention that $\mathbb P$ is \emph{$<\kappa$-distributive}
+if the intersection of any family of fewer than $\kappa$ dense open
+subsets is dense, or equivalently that its complete Boolean algebra is
+$<\kappa$-distributive. With the usual separative interpretation, this is
+equivalent to adding no new ordinal-valued sequences of length less than
+$\kappa$ \cite{Jech}. Here ``adds no'' refers to every generic extension,
+not merely to a chosen generic filter.
+
+The forward direction can be seen by taking, for every coordinate of a
+name for a short sequence, the dense set of conditions deciding that
+coordinate. A condition in their intersection decides the entire sequence
+as a ground sequence. Conversely, in the complete Boolean algebra, choose
+maximal antichains refining the proposed dense open sets. A generic choice
+of one member of each antichain is a short ordinal-coded sequence. If
+all such sequences are ground sequences, Boolean values deciding an
+entire choice provide a dense set below all the chosen antichains,
+yielding distributivity. This is the standard Boolean form of the
+preservation equivalence, not a new forcing theorem.
+
+Thus, for an uncountable ground cardinal $\kappa$, $<\kappa$-distributive
+forcing preserves the $\kappa$-saturation of the full old surreal field.
+More exactly, whenever $\kappa$ is a cardinal in the extension, the
+criterion for that \emph{particular pair of universes} is
+$\NS_{<\kappa}(M,M[G])$. A failure of distributivity of a forcing notion
+should not be silently replaced by a claim about every one of its generic
+extensions; the theorem is formulated pair by pair to avoid this issue.
+
+\subsection{A Cohen real destroys even finite-parameter saturation}
+
+Let $N=M[g]$ be an extension adding a Cohen real. It adds a subset of
+$\omega$, so $\delta(M,N)=\omega$. The old field has a
+$(\omega,\omega)$ gap and is not even $\omega$-saturated. One can witness
+this directly by the rational-cut type \eqref{eq:newrealtype}, without
+using the general interval tree.
+
+Nevertheless, $K\preccurlyeq K^+$ remains true, and the pure field
+$C$ remains saturated over every $N$-set of parameters. Therefore neither
+loss of real closedness nor failure of elementarity explains the omitted
+type: the change lies in which countable sets of formulas are available.
+The elementary Cohen forcing facts used here are standard
+\cite{Jech,Berenbeim}.
+
+\subsection{Closed forcing can place the threshold at any regular cardinal}
+
+Fix an infinite regular cardinal $\rho$ in $M$. Let
+\[
+ \mathbb P=\operatorname{Fn}_{<\rho}(\rho,2)
+\]
+be the set of partial functions from $\rho$ to $2$ with domain of size
+less than $\rho$, ordered by reverse inclusion. For $\rho=\omega$,
+this is the usual finite-condition Cohen forcing. For uncountable
+$\rho$, it is $<\rho$-closed: the union of a descending chain of length
+less than $\rho$ is a condition, by regularity of $\rho$.
+
+For completeness, this closure prevents new ordinal-valued sequences
+of every length $\lambda<\rho$. Given a name, recursively strengthen a
+condition to decide one coordinate at a time; at limit stages and at the
+end, closure provides a common extension. Thus the sequence is decided
+by a ground condition as a ground sequence. In particular $\rho$ remains
+a cardinal and remains regular: a collapse or a shorter cofinal sequence
+would supply a new sequence of length less than $\rho$.
+
+The generic union is a new total function $g:\rho\to2$. Totality follows
+from the dense sets requiring a value at each coordinate. For every
+ground $h:\rho\to2$, the conditions disagreeing with $h$ somewhere are
+dense: choose an unused coordinate and assign the opposite value. Hence
+$g\notin M$. We have proved
+\[
+ \delta(M,M[g])=\rho.
+\]
+Consequently the old full surreal field has a gap of exact cofinality
+pair $(\rho,\rho)$ and, for uncountable extension cardinals, is saturated
+precisely through $\rho$ and not at $\rho^+$. This realizes every infinite
+regular threshold permitted by Proposition~\ref{prop:deltaregular}.
+No assertion about preservation of all larger cardinals is needed.
+
+For $\rho=\omega_1^M$, in particular, the old field remains
+$\omega_1$-saturated but loses $\omega_2^N$-saturation. There are no new
+reals in this case, so $\omega$-saturation survives as well.
+
+\subsection{Prikry forcing separates the two countable notions}
+
+Assume $M$ has a measurable cardinal $\rho$, and use ordinary Prikry
+forcing from a normal measure. Its standard properties are that it
+preserves cardinals, changes $\cf(\rho)$ to $\omega$, and adds no new
+bounded subsets of $\rho$; in particular it adds no reals
+\cite{Prikry,Benhamou}. Its generic cofinal $\omega$-sequence in $\rho$
+is a new ordinal-valued sequence. Therefore
+\[
+ \delta(M,N)=\omega,\qquad \R^M=\R^N.
+\]
+Theorem~\ref{thm:omega} and the main theorem give the strict separation
+\[
+ K\text{ is }\omega\text{-saturated},\qquad
+ K\text{ is not }\omega_1\text{-saturated}.
+\]
+The omitted countable cut obtained from the interval tree has new
+countably many parameters, even though no real is new. The alphabet
+$\theta$ in the construction must be allowed to reach $\rho$; restricting
+to binary sequences of countable length would miss precisely this example.
+
+At the singularized bound there is another instructive phenomenon:
+\[
+ (\No_{<\rho})^M=(\No_{<\rho})^N,
+\]
+because every binary sign of length below $\rho$ codes a bounded subset
+of $\rho$. Yet this identical set field is not $\rho$-saturated in $N$:
+its all-plus ordinals acquire a countable cofinal sequence. This directly
+shows why regularity is an independent clause in
+Theorem~\ref{thm:fragments}.
+
+\subsection{Comparison table}
+
+\begin{center}\small
+\begin{tabular}{@{}P{0.26\textwidth}P{0.13\textwidth}P{0.21\textwidth}P{0.28\textwidth}@{}}
+\toprule
+Extension & First length & Old ordered $K$ & Old pure $C=K[i]$\\
+\midrule
+Adds a Cohen real & $\omega$ & Not $\omega$-saturated & Saturated over every set of parameters\\[4pt]
+$\operatorname{Fn}_{<\rho}(\rho,2)$, $\rho>\omega$ regular & $\rho$ & $\kappa$-saturated exactly for uncountable $\kappa\leq\rho$ & Same unrestricted set-saturation\\[4pt]
+Prikry at a measurable $\rho$ & $\omega$ & $\omega$-saturated, not $\omega_1$-saturated & Same unrestricted set-saturation\\
+\bottomrule
+\end{tabular}
+\end{center}
+Adding conjugation to the last column changes every entry to the
+corresponding ordered-field entry. The forcing facts in the table have
+been stated with their hypotheses above; the saturation conclusions are
+applications of the proved theorems.
+
+\section{Why order gaps do not become Cauchy limits}\label{sec:topology}
+
+The native fine topology of a surreal field uses all positive surreal
+radii, not only positive real radii. Its additive uniformity has the
+entourages $\abs{x-y}<\varepsilon$ for $\varepsilon\in K_{>0}$.
+The internal degeneracy of set-indexed convergence in the full surreal
+class is already discussed and formalized in parts of the repository
+\cite{RepoFoundations,RepoCatalogue}. The following observation extends
+that phenomenon to \emph{new} sets of old numbers.
+
+\begin{proposition}[External discreteness and Cauchy rigidity]\label{prop:topology}
+In every pair $M\subseteq N$ under consideration:
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item Every $N$-set $A\subseteq K$ is uniformly discrete and closed
+in the fine topology of $K$.
+\item Every $N$-set-indexed Cauchy net in $K$ is eventually constant.
+Every convergent such net is eventually equal to its limit.
+\item The same assertions hold for $C$ with its surreal-valued modulus.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The nonzero pairwise distances between elements of $A$ form an $N$-set
+of positive old numbers. Theorem~\ref{thm:oneside}, with left side
+$\{0\}$, gives a positive old lower bound $\varepsilon$ for all of
+them. Distinct elements of $A$ are therefore uniformly separated. For
+$x\in K\setminus A$, apply the same argument to
+$\{\abs{x-a}:a\in A\}$ to obtain a neighborhood of $x$ disjoint from
+$A$. This proves closedness.
+
+The range of a set-indexed net is an $N$-set. Choose $\varepsilon>0$
+smaller than all nonzero pairwise distances in its range. The Cauchy
+condition for this one entourage makes every pair of sufficiently late
+values equal. The net is therefore eventually constant. For a convergent
+net, apply the separation argument to its range together with its limit.
+
+For $C$, the norm $\abs{a+bi}=\sqrt{a^2+b^2}$ is old for old inputs
+and lies in $K_{>0}$ away from zero. Apply the identical argument to
+its distance sets.
+\end{proof}
+
+For the interval tree, the family
+$\{b_{f\res\alpha}-a_{f\res\alpha}:\alpha<\lambda\}$ consists of
+positive old numbers and has a common positive old lower bound. The
+endpoint sequences are not Cauchy in the fine uniformity. Their omitted
+order cut is consequently not evidence of a missing fine-Cauchy limit.
+A topology that looks only at selected scales could behave differently,
+but it would be a different structure and is not used in the spectrum theorem.
+
+This also explains why elementarity, saturation, and fine completeness
+must not be treated as interchangeable notions. The old field remains
+real closed and elementary, loses specified types, and still has the
+strong set-indexed Cauchy rigidity just proved.
+
+\section{A Boolean completion of reverse simplicity}\label{sec:boolean}
+
+Berenbeim's Question 2 asks for a complete class Boolean algebra in which
+the reverse-simplicity order of surreal numbers embeds densely
+\cite[p.~32]{Berenbeim}. The answer depends on the meaning of
+``complete.'' We give an explicit positive answer for joins of sets,
+and a negative answer for joins of all subclasses under Global Choice.
+
+This is a different use of the sign tree from numerical cuts. In this
+section, \emph{stronger} means extending a sign, regardless of its numerical
+value. Under the identification of $-$ and $+$ with $0$ and $1$, the
+partial order is
+\[
+ P={}^{<\Ord}2,\qquad p\leq_P q\ \Longleftrightarrow\ q\subseteq p.
+\]
+Each condition is a set; $P$ is a proper class. It is the reverse of the
+non-strict initial-segment simplicity order.
+
+\subsection{A direct limit with set-coded elements}
+
+For each ordinal $\alpha$, let
+\[
+ B_\alpha=\Pow({}^\alpha2).
+\]
+For $\alpha\leq\beta$, define the cylinder embedding
+\begin{equation}\label{eq:cylinder}
+ j_{\alpha\beta}(A)=
+ \{s\in{}^\beta2:s\res\alpha\in A\}.
+\end{equation}
+These are injective Boolean homomorphisms, preserve arbitrary set-indexed
+unions and intersections, and satisfy
+$j_{\beta\gamma}j_{\alpha\beta}=j_{\alpha\gamma}$.
+
+Consider pairs $(\alpha,A)$ with $A\subseteq{}^\alpha2$ and identify
+two pairs when their images agree at a common later level. A literal
+proper-class equivalence class must not be made an element. Instead,
+represent each equivalence class by its unique \emph{least-level pair}.
+Such a pair exists: among the levels at most a given representative's
+level, there is a least level from which that representative is a cylinder.
+Injectivity makes its subset unique. Taking the least-level pair is a
+definable operation on the set-coded representatives.
+
+Let $B$ be the class of these canonical pairs. To perform a finite Boolean
+operation, lift its arguments to a common level, perform the ordinary
+power-set operation there, and take the canonical pair. The result is
+independent of the common level by \eqref{eq:cylinder}. Thus $B$ is a
+class Boolean algebra whose individual elements are sets.
+
+\begin{theorem}[Set-complete dense completion]\label{thm:booleanyes}
+The class Boolean algebra $B$ is complete for every set-sized family
+of its elements. The map
+\[
+ e:P\longrightarrow B\setminus\{0\},\qquad
+ e(p)=[(\bd(p),\{p\})],
+\]
+is an injective dense order embedding. In particular,
+\[
+ e(p)\leq_B e(q)\quad\Longleftrightarrow\quad q\subseteq p.
+\]
+\end{theorem}
+\begin{proof}
+Let $S$ be a set of canonical pairs, and choose an ordinal $\beta$
+at least as large as every level occurring in $S$. Lift all of them
+to $B_\beta$ and take their union. Its canonical pair is their join
+in $B$. Indeed, any alleged upper bound can be moved to a common still
+later level, where the ordinary power-set union is below it. Cylinder
+embeddings preserve that union, so the comparison remains true in $B$.
+Complements give meets as well. The empty join and meet are $0$ and $1$.
+
+A condition $p$ determines its nonempty cylinder of extensions. If $p$
+extends $q$, its cylinder is contained in the cylinder of $q$.
+If $p$ and $q$ disagree, their cylinders are disjoint. If $p$ is a proper
+prefix of $q$, the cylinder of $p$ is not contained in that of $q$:
+extend $p$ with the opposite sign at the next prescribed coordinate of
+$q$. These cases establish the displayed order equivalence and
+injectivity.
+
+Finally, let $b\ne0$ be represented by $(\alpha,A)$ with $A\ne\varnothing$.
+Choose $p\in A$. Then $e(p)\leq b$. Thus the embedding is dense.
+\end{proof}
+
+The construction answers the stated existence question when ``complete''
+means set-complete. This is the size convention in which a class Boolean
+algebra has joins for its set-sized subsets, as in the definitions of
+Holy--Krapf--L\"ucke--Njegomir--Schlicht \cite{HolyEtAl}. General existence
+and uniqueness issues for class forcing are subtle; our construction
+works directly for this particular binary tree. We make no claim that
+every class partial order admits the same construction, nor that this
+completion is the unique class completion.
+
+\subsection{Why joins of all subclasses are impossible}
+
+For the negative statement only, work in GBC with Global Choice.
+A class Boolean algebra is \emph{class-complete} if every subclass of
+its carrier has a supremum in the carrier, including proper subclasses
+in the given class universe. This is strictly stronger than the
+set-completeness just proved.
+
+\begin{lemma}[Diagonal obstruction]\label{lem:classdiag}
+A class Boolean algebra with an ordinal-indexed proper-class antichain
+of nonzero elements cannot be class-complete in GBC with Global Choice.
+\end{lemma}
+\begin{proof}
+Let $(a_\alpha)_{\alpha\in\Ord}$ be such an antichain. The carrier is a
+proper class, and Global Choice gives a class surjection
+$h:\Ord\to B$; one may use a set-like global well-order and restrict it
+to the carrier. Define the class of ordinals
+\[
+ A=\{\alpha:a_\alpha\not\leq h(\alpha)\}.
+\]
+If the subclass $\{a_\alpha:\alpha\in A\}$ had a supremum $b$, then
+\begin{equation}\label{eq:diagiff}
+ a_\alpha\leq b\quad\Longleftrightarrow\quad\alpha\in A.
+\end{equation}
+The forward implication when $\alpha\notin A$ is ruled out as follows:
+$a_\alpha$ is disjoint from every member of the subclass, so
+$\neg a_\alpha$ is an upper bound of the entire subclass. Minimality
+of its supremum gives $b\leq\neg a_\alpha$. Since $a_\alpha\ne0$,
+we cannot also have $a_\alpha\leq b$. The reverse implication in
+\eqref{eq:diagiff} follows from the definition of supremum.
+
+Choose $\beta$ with $h(\beta)=b$. The definition of $A$ now gives
+\[
+ \beta\in A\quad\Longleftrightarrow\quad
+ a_\beta\not\leq b\quad\Longleftrightarrow\quad\beta\notin A,
+\]
+a contradiction. The subclass and all comparisons used here are legitimate
+class-comprehension instances; no collection of all classes is formed.
+\end{proof}
+
+\begin{theorem}[No all-subclass completion]\label{thm:booleanno}
+In GBC with Global Choice there is no class-complete Boolean algebra
+with a dense order embedding of $P={}^{<\Ord}2$ into its nonzero part.
+\end{theorem}
+\begin{proof}
+The signs $p_\alpha=+^\alpha{}^\frown-$, for $\alpha\in\Ord$, are
+pairwise incompatible. Under a dense order embedding their images are
+pairwise disjoint. Indeed, a nonzero intersection would have a condition
+below it by density, yielding a common extension of the incompatible
+signs. Their images are therefore an ordinal-indexed proper-class
+antichain of nonzero Boolean elements. Apply Lemma~\ref{lem:classdiag}.
+\end{proof}
+
+The two answers are consistent: a set-sized family of cylinders has a
+common set-sized level at which its join can be computed; an arbitrary
+proper-class family need not. Set-completeness neither implies nor
+purports to imply all-subclass completeness. This distinction also
+prevents a misleading claim that Question 2 requires an inconsistency
+of ordinary set or class theory.
+
+\section{Scope, significance, and further targets}\label{sec:scope}
+
+\subsection{What the new information consists of}
+
+The usual statement that the full surreal class realizes every set-sized
+cut is internal to a universe. The main theorem explains exactly how it
+changes when the elements are held fixed while the allowed families of
+parameters change. Its most distinctive strengthening is the combination
+of three facts:
+\begin{enumerate}
+\item A cut with one actual ground side is filled even if its other side
+is a new and arbitrarily large set.
+\item A first new sequence can be encoded by a cut of the same cardinal
+length, no matter how large the sequence's ordinal range is.
+\item Removing the distinguished real structure by passing to the pure
+surcomplex language erases this obstruction entirely.
+\end{enumerate}
+Together they identify a concrete set-theoretic invariant inside the
+external order of the old surreal field. They also demonstrate that
+``the model theory of surcomplex numbers'' has no language-independent
+saturation answer.
+
+The interval method has a broader range of applicability. It uses only
+set-sized interpolation inside the ground order, enough room to split
+an interval into any prescribed set of pairwise disjoint subintervals,
+and a ground-set containment property for external parameter sets.
+Surreal numbers supply all three in an explicit form. It is reasonable
+to investigate other definable universal orders with the same properties;
+no claim of a classification of all such orders is made here.
+
+\subsection{Limits of the assertions}
+
+The argument does not address exponential or differential expansions of
+$\No$. Their types are not classified by real closed cuts, so the
+sufficiency proof cannot simply be copied after adding those operations.
+Even if their individual old operations were shown absolute, that would
+not automatically supply a type-realization theorem in the expanded
+language.
+
+The results also do not assert that every class function or arbitrary
+proper-class cut is available in ZFC. Set-sized data, a definable ground
+predicate, and the indicated uses of class principles are part of the
+hypotheses, not conventions to be supplied later. The all-subclass Boolean
+obstruction specifically assumes Global Choice; no optimality claim for
+that assumption is made.
+
+The article is not a consistency proof for ZFC, GBC, measurable cardinals,
+or the existence of the relevant transitive-model configurations.
+Theorems are proved under the stated hypotheses; the Prikry example is
+conditional on its measurable-cardinal assumption.
+
+No theorem in this manuscript is represented as Lean-checked. The
+repository's existing formal proofs and its source manuscripts are
+separate evidence. Ordinary written proof is what is supplied here.
+The construction of the PDF is reproducible, but successful typesetting
+is not formal mathematical verification.
+
+\subsection{A formalization route without class-sized type objects}
+
+A useful first formal target is the branch-decoder theorem. It needs a
+set ordinal $\lambda$, a set alphabet $\theta$, a table of intervals,
+and a predicate expressing which sequences are old. Abstracting the
+closure properties of that predicate isolates the logical core from
+surreal arithmetic. The proof obligations are sibling uniqueness,
+limit nesting, totality of the default decoder, and its agreement with
+a putative externally coded branch.
+
+The next target is the one-old-side theorem. Its main inputs are a
+bounded-stage cover for every external set of old elements and an
+internal cut operation. The formal theorem should quantify over actual
+set-sized sides, not attempt to encode all proper-class cuts as values
+of one type.
+
+For a universe-polymorphic proof assistant, the set-fragment theorem of
+Section~\ref{sec:fragments} is the cleanest end-to-end theorem: all
+structures, types and comparison maps can be represented in a sufficiently
+large universe, while the distinction between the two set models is
+explicit. The full-class formulations then become metatheorems or
+universe-relative schemes rather than an illicit same-universe type of
+all surreals.
+
+Finally, the surcomplex result can be separated into two reusable
+model-theoretic lemmas: a proper-class algebraically closed field with
+ground-set parameter covers has the stated external type realization;
+and the quadratic complexification with conjugation interprets the
+ordered base field through fixed squares. This separation avoids
+repeating the repository's existing quadratic-algebra development.
+
+\subsection{Questions remaining after these results}
+
+One natural next problem is to determine the external saturation spectrum
+of old surreal exponential fields. The main theorem supplies a necessary
+condition, since the ordered-field reduct must be saturated, but no
+sufficiency theorem for that expanded language is proved here.
+
+A second problem is to classify more of the external cut-cofinality
+spectrum than its first threshold. The present article proves that no
+set-character gap has a side below $\delta$ and constructs one at
+$(\delta,\delta)$. It does not characterize all pairs above that level
+or decide which asymmetrical pairs can occur for a specified forcing.
+
+A third problem is to identify weak class-theoretic assumptions under
+which one can construct an isomorphism of the two pure surcomplex class
+fields $C$ and $C^+$. The set-saturation theorem provides local
+realizations but is not itself a global class back-and-forth construction.
+Each of these questions remains distinct from the theorems proved here.
+
+\appendix
+\section{Repository and literature comparison}\label{app:audit}
+
+\subsection{Pinned source review}
+
+The repository review used the snapshot
+\[
+ \fullhash
+\]
+of \path{VladimirReshetnikov/Surreal}. The repository was read through
+the connected GitHub interface. It was not modified or independently
+built. The recursive tree response was too large to be displayed in full;
+it is not treated as evidence of a complete file-by-file audit.
+
+The file reads were pinned to this snapshot; the connector's code searches
+used its default-branch index rather than a commit-specific full-text index.
+The following records describe the useful scope of the inspection, rather
+than asserting that every theorem in every report was searched exhaustively.
+
+\begin{longtable}{@{}P{0.36\textwidth}P{0.56\textwidth}@{}}
+\toprule
+Source or search & Scope relevant to this article\\
+\midrule
+\endfirsthead
+\toprule
+Source or search & Scope relevant to this article\\
+\midrule
+\endhead
+\path{docs/README.md} & The report catalogue and reading routes. It lists forty catalogued reports plus four newly placed drafts, separating foundational, analytic, algebraic and computational directions.\\[5pt]
+\path{docs/foundations-and-computation/foundations/article.tex} & Opening 180 source lines, including the abstract and scope declarations. These cover sets, classes, universes, support and topology, rather than the external sequence spectrum proved here. This is not a claim that every later section was read.\\[5pt]
+\path{docs/surcomplex/surcomplex-field-automorphisms/article.tex} & The returned opening text: abstract, structural distinctions, real-axis stabilizer and initial conjugation discussion. The real-axis/pure-field distinction is acknowledged as existing material, not repackaged as a new observation.\\[5pt]
+Repository root \path{README.md} & Returned foundational and algebraic implementation overview. Used to avoid implying that this manuscript supplied the existing sign or quadratic-field infrastructure.\\[5pt]
+Scoped code searches & Searches for \texttt{forcing}, \texttt{saturation} and \texttt{distributivity} returned no matches. These are limited search results, not a proof that the words or equivalent results are absent from every file or past revision.\\
+\bottomrule
+\end{longtable}
+
+The proposed contribution is therefore specifically the new sequence/gap
+spectrum and its forcing-dependent language comparison, not the elementary
+facts that real closed fields have an algebraically closed quadratic
+extension or that conjugation singles out a real axis. The topological
+section explicitly starts from an internally familiar repository phenomenon
+and proves its persistence for new sets of old values.
+
+\subsection{Literature boundary}
+
+Conway and Gonshor supply the basic construction and cut theory.
+Van den Dries--Ehrlich, including their erratum, and
+Bournez--Guilmant supply the birthday-field background.
+Marker supplies the standard quantifier-elimination and saturation
+machinery. Jech supplies the forcing preservation vocabulary.
+Prikry and Benhamou supply the large-cardinal forcing example.
+Berenbeim supplies the explicit reverse-simplicity Boolean question and
+the earlier suggestion to study surreals under forcing.
+Holy and coauthors supply the surrounding class-forcing completion theory.
+
+Targeted web searches for the combination of surreal numbers, forcing,
+ground models and saturation did not locate a prior statement of the
+exact theorems proved here. Search results were not uniformly relevant,
+and the investigation is not an exhaustive mathematical bibliography.
+Accordingly, the appropriate novelty claim is:
+\begin{quote}
+These are proved candidate contributions not located in the consulted
+literature or the stated repository review, subject to independent
+mathematical checking and further priority research.
+\end{quote}
+That qualification concerns verification and priority. It does not replace
+any hypothesis or proof step in the theorems.
+
+\section{Dependency and proof-obligation ledger}\label{app:ledger}
+
+\begin{longtable}{@{}P{0.27\textwidth}P{0.34\textwidth}P{0.29\textwidth}@{}}
+\toprule
+Result & Essential inputs & Boundary checked\\
+\midrule
+\endfirsthead
+\toprule
+Result & Essential inputs & Boundary checked\\
+\midrule
+\endhead
+Old arithmetic and elementarity & Absolute signs and set-like Conway recursion; real closed and algebraically closed QE & Field elementarity is not universe elementarity.\\[5pt]
+Ground-set containment & Birthday function; common ordinals; old bounded sign sets & The containing ground set need not have the size of the external set.\\[5pt]
+One old side & Ground-set containment; ground cut theorem & Both sides are external sets; one is literally in $M$.\\[5pt]
+Interval tree and decoder & Set-length recursion; explicit successor splitting; two cuts at each limit node & Decoder has a default value and is a total function in $M$.\\[5pt]
+Main spectrum & Minimal new sequence; decoder; one-side lemma; RCF QE & The $\eta_\kappa$/saturation equivalence is used only for uncountable $\kappa$.\\[5pt]
+First gap & Minimal-length regularity; nested endpoints; one-side interpolation & Exact cofinalities are computed in $N$ and have set witnesses.\\[5pt]
+$\omega$-saturation & Countable syntax over finite old parameters; rational cuts & No new reals is not replaced by no new countable ordinal sequences.\\[5pt]
+Pure surcomplex saturation & Ground-set containment; old algebraic closures of set fields; ACF QE & No class-sized transcendence basis or global isomorphism is assumed.\\[5pt]
+Conjugation spectrum & Fixed field; order by nonzero squares; coordinate interpretation & Naming $i$ adds only one parameter; finite-variable types are used.\\[5pt]
+Bounded fragments & Classical real closedness; birthday cut bound; sign-cone lemma & Regularity in $N$ is required separately from equality of short signs.\\[5pt]
+External Cauchy rigidity & One-old-side bound on all positive distances & Fine surreal radii, not only real or countably chosen radii.\\[5pt]
+Set-complete Boolean algebra & Power-set cylinder maps; bounded levels for set families & Quotients are represented by least-level set pairs, not class objects.\\[5pt]
+No class-complete algebra & Global Choice; proper-class antichain; diagonal subclass & This is a stronger completeness requirement, with an extra stated axiom.\\
+\bottomrule
+\end{longtable}
+
+The ledger records the mathematical checks performed in assembling the
+arguments. It is not a proof-assistant log. In particular, finite numerical
+experiments would not verify the transfinite decoder or the class-size
+assertions, so none are presented as substitutes for their proofs.
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+
+\bibitem{Conway}
+J. H. Conway, \emph{On Numbers and Games}, 2nd ed., A K Peters, 2001
+(first edition, Academic Press, 1976).
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+
+\bibitem{vdDE}
+L. van den Dries and P. Ehrlich,
+``Fields of surreal numbers and exponentiation,''
+\emph{Fundamenta Mathematicae} \textbf{167} (2001), 173--188.
+\url{https://www.impan.pl/shop/en/publication/transaction/download/product/89226}.
+
+\bibitem{vdDEerr}
+L. van den Dries and P. Ehrlich,
+``Erratum to `Fields of surreal numbers and exponentiation',''
+\emph{Fundamenta Mathematicae} \textbf{168} (2001), 295--297.
+The corrected background statements used here are also restated in
+\cite[Theorems 1.1--1.2 and 3.3]{BournezGuilmant}.
+
+\bibitem{BournezGuilmant}
+O. Bournez and Q. Guilmant,
+``Surreal fields stable under exponential and logarithmic functions,''
+arXiv:2201.08199, 2022.
+\url{https://arxiv.org/abs/2201.08199}.
+
+\bibitem{Marker}
+D. Marker, \emph{Model Theory: An Introduction},
+Graduate Texts in Mathematics 217, Springer, 2002.
+\url{https://doi.org/10.1007/b98860}.
+
+\bibitem{Jech}
+T. Jech, \emph{Set Theory: The Third Millennium Edition, Revised and
+Expanded}, Springer Monographs in Mathematics, Springer, 2003.
+
+\bibitem{Prikry}
+K. L. Prikry, ``Changing measurable into accessible cardinals,''
+\emph{Dissertationes Mathematicae (Rozprawy Matematyczne)}
+\textbf{68} (1970), 55 pp.
+
+\bibitem{Benhamou}
+T. Benhamou, ``Prikry forcing and tree Prikry forcing of various filters,''
+arXiv:1801.04424, 2018; author-hosted published version, 2019.
+\url{https://arxiv.org/abs/1801.04424};
+\url{https://sites.math.rutgers.edu/~tb822/Prikry_forcing_and_Tree_Prikry.pdf}.
+
+\bibitem{Berenbeim}
+A. Berenbeim, \emph{Review of Surreal Number Construction and Forcing
+Construction}, research notes dated 8 April 2020, 35 pp.
+Question 2, p.~32; proposed further directions, p.~34.
+Listed by the author as incomplete notes.
+\url{https://www.berenbeim.com/papers};
+\url{https://www.berenbeim.com/_files/ugd/4185a9_2da51607fad1430fa1735144805340dd.pdf}.
+
+\bibitem{HolyEtAl}
+P. Holy, R. Krapf, P. L\"ucke, A. Njegomir and P. Schlicht,
+``Class forcing, the forcing theorem and Boolean completions,''
+arXiv:1710.10820, 2017.
+\url{https://arxiv.org/abs/1710.10820}.
+In particular, see the definitions of model-completeness and Boolean
+completion in the introduction; the paper also treats nonuniqueness.
+
+\bibitem{RepoCatalogue}
+V. Reshetnikov and contributors, \emph{Surreal} repository,
+\path{docs/README.md}, snapshot \shorthash.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/4f2645599121fa872c7104995e47f86f0382351f/docs/README.md}.
+
+\bibitem{RepoFoundations}
+\emph{Foundations for Surreal and Surcomplex Mathematics},
+AI-assisted research exposition in the \emph{Surreal} repository,
+\path{docs/foundations-and-computation/foundations/article.tex},
+snapshot \shorthash. The review scope is stated in
+Appendix~\ref{app:audit}.
+
+\bibitem{RepoAutomorphisms}
+\emph{Automorphisms of the Surcomplex Numbers},
+AI-assisted research exposition in the \emph{Surreal} repository,
+\path{docs/surcomplex/surcomplex-field-automorphisms/article.tex},
+snapshot \shorthash. The review scope is stated in
+Appendix~\ref{app:audit}.
+
+\end{thebibliography}
+\end{document}

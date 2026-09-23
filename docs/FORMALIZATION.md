@@ -1335,24 +1335,24 @@ Hermitian matrix theory; formal Hahn scalar calculus is not a substitute.
 | Theorem | `diff:cp:thm:fieldjump` (line 10135) | Solution dimensions zero, one and two |
 | Proposition | `diff:cp:prop:gaps` (line 10162) | An exponential gap followed by a primitive gap |
 | Lemma | `diff:cp:lem:algind` (line 10248) | Algebraic independence of the two generators |
-| Theorem | `diff:cp:thm:pv` (line 10261) | Borel differential Galois group |
-| Corollary | `diff:cp:cor:additive` (line 10305) | After the first Hahn enlargement |
-| Lemma | `diff:cp:lem:schwarzian` (line 10344) | Schwarzian and a normalized fundamental pair |
-| Corollary | `diff:cp:cor:schwarzian` (line 10367) | Transfinite Schwarzian potentials |
-| Theorem | `diff:thm:coherentlinear` (line 10612) | Positive-perturbation fundamental matrix |
-| Corollary | `diff:cor:coherentinhom` (line 10677) | Inhomogeneous coherent systems |
-| Corollary | `diff:cor:determinant` (line 10695) | Liouville determinant identity |
-| Proposition | `diff:prop:negativecoherent` (line 10712) | A negative leading exponent forbids a coherent scalar exponential |
-| Lemma | `diff:lem:nonlinear` (line 10779) | Admissibility of nonlinear evaluation |
-| Theorem | `diff:thm:ivp` (line 10809) | Support-certified positive-support initial-value problem |
-| Theorem | `diff:thm:monodromy` (line 11004) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
-| Proposition | `diff:prop:formalrecursion` (line 11136) | Formal existence over any characteristic-zero field |
-| Lemma | `diff:lem:finiteincoming` (line 11189) | Finite incoming contributions |
-| Theorem | `diff:thm:coefderivation` (line 11203) | Differentiation preserves common-domain coherence |
-| Theorem | `diff:thm:totalchainhalo` (line 11252) | Total intrinsic derivative of an evaluation |
-| Corollary | `diff:cor:naturality` (line 11317) | Coefficientwise linear naturality |
-| Lemma | `diff:lem:twosupports` (line 13020) | Sum of two supports |
-| Lemma | `diff:lem:higman` (line 13049) | Finite-word lemma |
+| Theorem | `diff:cp:thm:pv` (line 10268) | Borel differential Galois group |
+| Corollary | `diff:cp:cor:additive` (line 10340) | After the first Hahn enlargement |
+| Lemma | `diff:cp:lem:schwarzian` (line 10386) | Schwarzian and a normalized fundamental pair |
+| Corollary | `diff:cp:cor:schwarzian` (line 10438) | Transfinite Schwarzian potentials |
+| Theorem | `diff:thm:coherentlinear` (line 10719) | Positive-perturbation fundamental matrix |
+| Corollary | `diff:cor:coherentinhom` (line 10784) | Inhomogeneous coherent systems |
+| Corollary | `diff:cor:determinant` (line 10802) | Liouville determinant identity |
+| Proposition | `diff:prop:negativecoherent` (line 10819) | A negative leading exponent forbids a coherent scalar exponential |
+| Lemma | `diff:lem:nonlinear` (line 10886) | Admissibility of nonlinear evaluation |
+| Theorem | `diff:thm:ivp` (line 10916) | Support-certified positive-support initial-value problem |
+| Theorem | `diff:thm:monodromy` (line 11111) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
+| Proposition | `diff:prop:formalrecursion` (line 11243) | Formal existence over any characteristic-zero field |
+| Lemma | `diff:lem:finiteincoming` (line 11296) | Finite incoming contributions |
+| Theorem | `diff:thm:coefderivation` (line 11310) | Differentiation preserves common-domain coherence |
+| Theorem | `diff:thm:totalchainhalo` (line 11359) | Total intrinsic derivative of an evaluation |
+| Corollary | `diff:cor:naturality` (line 11424) | Coefficientwise linear naturality |
+| Lemma | `diff:lem:twosupports` (line 13127) | Sum of two supports |
+| Lemma | `diff:lem:higman` (line 13156) | Finite-word lemma |
 
 ### dynamics-and-normal-forms
 
