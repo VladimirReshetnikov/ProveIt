@@ -673,3 +673,4 @@ import Surreal.HahnSeries.QuadraticIdealBoundary
 import Surreal.Algebra.QuadraticNormRigidity
 import Surreal.HahnSeries.PellRigidity
 import Surreal.Algebra.PellTwoDivisibility
+import Surreal.Algebra.IntegerPrincipalMultiples
