@@ -8401,7 +8401,7 @@ core \emph{is} a coordinate core. If $\mathscr C$ is simplicial with rational ra
 rational linear isomorphism $\Q^d\to\Q^d$ carrying $\mathscr C\cap\Q^d$ onto $\Q_{\ge0}^d$, hence a coefficient-preserving ring isomorphism
 $A_{\mathscr C}\cong A_d$ sending the face spanned by the rays $\{v_i:i\notin U\}$ to the coordinate face that 21's quotient $\mathsf F_U$ keeps
 \merge. Under it: 26's \cref{osq:pc:cor:simplicialface} re-derives 21's \cref{osq:da:prop:faces}, and 21's \cref{osq:da:cor:exactpd} gives the
-projective dimension $d-\dim F+1$, the upper endpoint of \cref{osq:pc:cor:pdbounds}; 26's \cref{osq:pc:thm:exhaustion} for coordinate faces is
+projective dimension $d-\dim F+1$ for proper faces $F$, the upper endpoint of \cref{osq:pc:cor:pdbounds}; 26's \cref{osq:pc:thm:exhaustion} for coordinate faces is
 \cref{osq:hd:lem:faces}(i), (iii) with \cref{osq:hd:prop:pd}(i), (ii); its \cref{osq:pc:prop:cellular} for an orthant is
 \cref{osq:hd:thm:resolution}; its \cref{osq:pc:thm:homological} for $\mathfrak r_{\mathcal F}=\Pi_{\mathscr C}$ is \cref{osq:hd:cor:arithmeticTor}; its
 \cref{osq:pc:prop:scalar} is \cref{osq:hd:prop:finite}(i); and its \cref{osq:pc:thm:nonflat} for an orthant is the nonflatness of
@@ -9110,7 +9110,7 @@ the two projective bounds coincide at two, while the flat dimension is one.
 
 For $\ell_0\ge2$ the argument does not decide the endpoint, and 21's exact value for coordinate cores (\cref{osq:da:cor:exactpd}) cannot be transferred to
 nonsimplicial quotients without an additional $\Ext$ argument (26). By the isomorphism $A_{\mathscr C}\cong A_d$ for simplicial cones, the upper endpoint
-holds for every face quotient of a simplicial cone \merge.
+holds for every proper-face quotient of a simplicial cone; the identity quotient has projective dimension zero \merge.
 
 \begin{theorem}[Homological epimorphisms \src{26}]\label{osq:pc:thm:homological}
 For every $B=A_{\mathscr C}/\mathfrak r_{\mathcal F}$ and every $B$-module $N$, $B\otimes_{A_{\mathscr C}}N\cong N$ and $\Tor_j^{A_{\mathscr C}}(B,N)=0$ for $j>0$;
@@ -9175,16 +9175,48 @@ Let $Q_0$ be a positive-dimensional compact convex polytope and $Q_1$ a nonempty
 homotopy equivalent to the order complex of $\{H:\varnothing\ne H<Q_0,\ H\not\subseteq Q_1\}$.
 \end{lemma}
 \begin{proof}
-Work in the affine span, with $c\in\operatorname{relint}Q_0$ and $q\in\operatorname{relint}Q_1$. Let $\mathsf k=\{t(z-c):t\ge0,z\in Q_1\}$, a pointed convex cone,
-and let $r(v)$ be the point where the ray $c+\R_{>0}v$ meets $\partial Q_0$, so $r(v)\in Q_1$ exactly when $v\in\mathsf k\setminus\{0\}$. For
-$x\in\partial Q_0\setminus Q_1$ put
+Work in the affine span of $Q_0$, choose $c\in\operatorname{relint}Q_0$
+and $q\in\operatorname{relint}Q_1$, and translate vectors relative to $c$.
+The cone
+$\mathsf k=\{t(z-c):t\ge0,\ z\in Q_1\}$ is convex. A supporting
+functional exposing the proper face $Q_1$, normalized to have value one
+on $Q_1-c$, is strictly positive on every nonzero vector of $\mathsf k$.
+Thus $\mathsf k$ is pointed and $q-c\ne0$ belongs to it.
+
+The radial map $r$ from nonzero vectors to $\partial Q_0$ is continuous.
+Indeed, normalize the facet inequalities so that
+$Q_0-c=\{v:a_j(v)\le1\text{ for all }j\}$. For $v\ne0$,
+$\max_j a_j(v)>0$, since otherwise the whole ray through $v$ would lie
+in the bounded polytope. Therefore
+\[
+ r(v)=c+\frac{v}{\max_j a_j(v)}.
+\]
+Each ray from $c$ meets the boundary once, and this formula shows that
+$r(v)\in Q_1$ exactly when $v\in\mathsf k\setminus\{0\}$.
+For $x\in\partial Q_0\setminus Q_1$, define
 \begin{equation}\label{osq:pc:eq:contraction}
  \mathsf h_t(x)=r\bigl((1-t)(x-c)+t(c-q)\bigr),\qquad0\le t\le1 .
 \end{equation}
-The vector inside $r$ is never in $\mathsf k$: for $t<1$ membership would put $(1-t)(x-c)$ in $\mathsf k$, against $x\notin Q_1$, and for $t=1$ it is $-(q-c)$
-with $0\ne q-c\in\mathsf k$ pointed; in particular it never vanishes. So $\mathsf h$ contracts $\partial Q_0\setminus Q_1$ to $r(c-q)$. In the barycentric
-subdivision of $\partial Q_0$, whose vertices are the nonempty proper faces, a point outside $Q_1$ has positive total weight on vertices not contained in $Q_1$;
-decreasing the other weights to zero and renormalizing retracts onto the full subcomplex on those vertices, the stated order complex.
+If the vector inside $r$ belonged to $\mathsf k$ for $t<1$, adding
+$t(q-c)\in\mathsf k$ would put $(1-t)(x-c)$ in $\mathsf k$, and then
+$x\in Q_1$, a contradiction. At $t=1$ that vector is $-(q-c)$,
+which is outside $\mathsf k$ by pointedness. In particular the vector
+never vanishes. The homotopy is continuous, remains in
+$\partial Q_0\setminus Q_1$, starts at $x$ and ends at the fixed point
+$r(c-q)$. This proves contractibility, including when $Q_0$ is a segment.
+
+For the order-complex comparison, use the barycentric subdivision of
+$\partial Q_0$. Its vertices correspond to nonempty proper faces $H$.
+The subdivision of $Q_1$ is the full subcomplex on vertices with
+$H\subseteq Q_1$. For a point outside $Q_1$, write its barycentric
+weights as $\alpha_H$ and put
+$w=\sum_{H\not\subseteq Q_1}\alpha_H>0$. Multiply the weights with
+$H\subseteq Q_1$ by $1-t$, leave the others unchanged, and divide all
+weights by $w+(1-t)(1-w)>0$. The support stays in the same face chain,
+and these formulas agree on common simplices, giving a continuous
+homotopy. At $t=1$ only vertices outside $Q_1$ remain; points already
+supported there are fixed throughout. This is a strong deformation
+retraction onto their full subcomplex, precisely the stated order complex.
 \end{proof}
 
 \begin{lemma}[The outside-vertex complex \src{26}]\label{osq:pc:lem:outside}
@@ -9193,9 +9225,33 @@ face of $Q_0$. If $Q_1=\varnothing$ then $\mathsf K\simeq\partial Q_0$; if $Q_1\
 $Q_1$ both are $\{\varnothing\}$.)
 \end{lemma}
 \begin{proof}
-Send a simplex to the smallest face containing it, and a face $H$ with $\varnothing\ne H<Q_0$, $H\not\subseteq Q_1$, to its vertices outside $Q_1$ (nonempty,
-faces being spanned by vertices); the composites are below, respectively above, the identities, so the order-map homotopy of \cref{osq:pc:lem:crosscut} applies.
-For $Q_1=\varnothing$ the face poset gives the barycentric subdivision of $\partial Q_0$; otherwise use \cref{osq:pc:lem:complement}.
+First assume $Q_0$ has positive dimension. Let $\mathcal S$ be the
+poset of nonempty simplices of $\mathsf K$, and let $\mathcal P$ be
+the poset of nonempty proper faces $H$ of $Q_0$ with
+$H\not\subseteq Q_1$. Define $f:\mathcal S\to\mathcal P$ by taking
+the smallest face of $Q_0$ containing the vertices of a simplex.
+That face is proper by the definition of $\mathsf K$, and it is not
+contained in $Q_1$ since each selected vertex is outside $Q_1$.
+Define $g:\mathcal P\to\mathcal S$ by taking the vertices of $H$
+outside $Q_1$. This set is nonempty, since a face is the convex hull
+of its vertices and $H\not\subseteq Q_1$. It is a simplex of
+$\mathsf K$ because it lies in the proper face $H$.
+
+Both maps preserve inclusion. The face generated by $g(H)$ is contained
+in $H$, so $fg\le\mathrm{id}_{\mathcal P}$; every vertex of $S$ occurs
+in $g(f(S))$, so $\mathrm{id}_{\mathcal S}\le gf$. The comparable-map
+homotopies from \cref{osq:pc:lem:crosscut} make the induced maps on order
+complexes homotopy inverses. The order complex of $\mathcal S$ is the
+barycentric subdivision of $\mathsf K$. If $Q_1=\varnothing$, the
+order complex of $\mathcal P$ is the barycentric subdivision of the
+whole boundary $\partial Q_0$; if $Q_1\ne\varnothing$, it is
+contractible by \cref{osq:pc:lem:complement}.
+
+If $Q_0$ is a point, its only proper face is empty, so $Q_1=\varnothing$.
+The singleton vertex set does not lie in a proper face, whereas the
+empty subset does. Consequently $\mathsf K=\{\varnothing\}$, the
+same augmented complex as the boundary of a point. Its reduced homology
+is $K$ in degree $-1$, with the convention used above.
 \end{proof}
 
 \begin{theorem}[Face-quotient multiplicities \src{26}]\label{osq:pc:thm:facebetti}
@@ -9212,12 +9268,53 @@ the maximum including $G=\{0\}$, and $\Tor^{A_{\mathscr C}}_{\dim G}(A_{\mathscr
 In particular $\fd D=d$ and $\fd A_{\mathscr C}=0$.
 \end{theorem}
 \begin{proof}
-With $\ell$ strictly positive on $\mathscr C$, $Q_0=G\cap\{\ell=1\}$ is a polytope of dimension $\dim G-1$ whose vertices are the rays of $G$, and the active rays are
-the vertices outside $Q_1=(G\cap F)\cap\{\ell=1\}$. If $G\subseteq F$ there are no active rays and $G$ is not a label. Otherwise $\mathsf K_{<G}$ is the
-outside-vertex complex of \cref{osq:pc:lem:outside}: for $G\cap F=\{0\}$, $Q_1=\varnothing$, $G$ is a join label and $\mathsf K_{<G}$ has the homology of the
-sphere $\partial Q_0$ of dimension $\dim G-2$ (degree $-1$ for a ray); for $\{0\}<G\cap F<G$ it is contractible; and if $G$ is not a join label the active rays
-join below $G$ and their complex is a full simplex. Substitute into \eqref{osq:pc:eq:beta} and apply \cref{osq:pc:lem:cancellation,osq:pc:thm:exactfd}. For
-$F=\mathscr C$ the only disjoint face is $\{0\}$.
+Fix a nonzero face $G$, and call its rays outside $F$ active. If
+$G\subseteq F$, there are no active rays, so $G$ is not a join label
+and its multiplicities are zero by the stated extension convention.
+Otherwise at least one ray is active. Let $H_G$ be the join of all
+active rays in $G$. If $H_G<G$, no subfamily can join to $G$, so
+again $G$ is not a label and all its multiplicities are zero. In this
+case $G\cap F\ne\{0\}$: if the intersection were zero, every ray of
+$G$ would be active and their join would be $G$. The auxiliary complex
+of active subsets contained in proper faces of $G$ is then a nonempty
+full simplex, consistent with that vanishing. In particular no spurious
+degree-$-1$ class is assigned to a missing label.
+
+It remains to treat $H_G=G$, when $G\in\mathcal L$. Choose a functional
+$\ell$ strictly positive on $\mathscr C\setminus\{0\}$ and put
+\[
+ Q_0=G\cap\{\ell=1\},\qquad
+ Q_1=(G\cap F)\cap\{\ell=1\}.
+\]
+The compact polytope $Q_0$ has dimension $\dim G-1$, and its vertices
+represent the rays of $G$. Its nonempty faces correspond to the nonzero
+faces of $G$. The active rays represent exactly the vertices outside
+the proper face $Q_1$. A subset of them has join strictly below $G$
+if and only if those vertices lie in a proper face of $Q_0$.
+Thus $\mathsf K_{<G}$ is precisely the outside-vertex complex of
+\cref{osq:pc:lem:outside}.
+
+If $G\cap F=\{0\}$, then $Q_1=\varnothing$, all rays are active,
+and their join is indeed $G$. The boundary of the polytope $Q_0$ is
+a sphere of dimension $\dim G-2$, as seen by radial projection from
+an interior point when $\dim G\ge2$. Its reduced homology over $K$
+is one-dimensional in that degree and zero elsewhere. For a ray $G$,
+$Q_0$ is a point and the same assertion holds in augmented degree $-1$.
+If $\{0\}<G\cap F<G$, then $Q_1$ is nonempty and proper, so the
+outside-vertex complex is contractible and all its reduced homology
+vanishes. Substitution into \eqref{osq:pc:eq:beta} proves every case
+of \eqref{osq:pc:eq:facebetti}.
+
+The face-prime quotient is $A_{\mathscr C}(F)$ by
+\cref{osq:pc:prop:faceprime}. Apply
+\cref{osq:pc:lem:cancellation,osq:pc:thm:exactfd} to obtain the stated
+resolution, the maximum formula and each detecting $\Tor$ component.
+For proper $F$ there is a ray outside $F$, meeting it only at zero,
+so the maximum is positive. At $F=\{0\}$ all faces are disjoint from
+$F$, the maximum is $d$, and the quotient is $D$. For completeness,
+at $F=\mathscr C$ the quotient map is the identity, the only disjoint
+face is $\{0\}$, and both the displayed maximum and the flat dimension
+are zero; this case does not require a nonempty antichain.
 \end{proof}
 
 The equality involves the dimension of the disjoint face, not the number of its rays: a nonsimplicial face with many rays contributes one top class, which is
@@ -9229,9 +9326,38 @@ $C^{\mathrm{cell}}_p=\bigoplus_{\dim G=p}I_G$ ($1\le p\le d$), cellular incidenc
 $\fd_{A_{\mathscr C}}D=d$ independently of the cancellation.
 \end{proposition}
 \begin{proof}
-In degree $m\ne0$ the summands present are the nonzero faces $G\subseteq\operatorname{fc}(m)$, and the complex is the augmented cellular chain complex of the
-convex, contractible $Q_0\cap\operatorname{fc}(m)$; in degree $0$ it is $D\to D$. Tensoring with $\mathcal W_{\mathscr C,b}$ in degree $b$ leaves only $I_{\mathscr
-C}$ in degree $d$, so $\Tor_d(D,\mathcal W_{\mathscr C,b})_b=K$.
+Write $E_G=Q_0\cap G$ for the cell corresponding to a nonzero face $G$;
+its dimension is $\dim G-1$. Choose positive orientations on the vertices
+and any orientations on the higher-dimensional faces. For $p\ge2$,
+the component from $I_G$ to $I_H$, with $\dim G=p$ and $\dim H=p-1$,
+is the oriented incidence number $[E_G:E_H]$ times inclusion when
+$H<G$, and zero otherwise. In degree one use the sum of the inclusions
+from the ray ideals into $A_{\mathscr C}$. This is the augmented
+cellular incidence convention. The cellular boundary identity gives
+$d^2=0$, including at the augmentation degree of the cells, and
+$\ct\,d_1=0$ because all ray ideals lie in the tail.
+
+Fix $0\ne m\in P_{\mathscr C}$ and put $H=\operatorname{fc}(m)$.
+The degree-$m$ summands present are exactly the $I_G$ with
+$\{0\}<G\subseteq H$, each contributing $K$. These are the cells
+of the nonempty convex polytope $Q_0\cap H$, including its top cell.
+Their incidence maps form its augmented cellular chain complex, with
+cellular degree $p-1$ in homological degree $p$ and the augmentation
+copy $K=(A_{\mathscr C})_m$ in degree zero. This complex is exact
+because the polytope is contractible. At exponent zero the complex is
+$D\xrightarrow{\mathrm{id}}D$; outside $P_{\mathscr C}$ every component
+is zero. Finite supports therefore give an exact ungraded complex as
+well. Its positive terms are finite direct sums of flat face ideals,
+so it is a flat resolution of $D$ of length $d$.
+
+For the lower bound, tensor this resolution with
+$\mathcal W_{\mathscr C,b}$ and take exponent degree $b$.
+The homological degree-zero term is $(\mathcal W_{\mathscr C,b})_b=0$.
+Face isolation leaves only the single summand $I_{\mathscr C}$ in
+homological degree $d$, contributing $K$. Consequently
+$\Tor_d(D,\mathcal W_{\mathscr C,b})_b\cong K\ne0$, also as part of
+ordinary ungraded $\Tor$. This forces $\fd D\ge d$ and proves equality
+without using equal-label cancellation.
 \end{proof}
 
 For a simplicial cone the numbers of summands are $\binom d0,\dots,\binom dd$, the Boolean pattern of \cref{osq:hd:thm:resolution}; for the cone over a square
@@ -9245,9 +9371,37 @@ For an irredundant antichain $\mathcal F=\{F_1,\dots,F_r\}$ the following are eq
 \mathfrak r_{\mathcal F})=1$; $r=1$.
 \end{theorem}
 \begin{proof}
-The first two are equivalent because the nonzero quotient is not flat (\cref{osq:pc:thm:homological}), and $r=1$ gives flatness
-(\cref{osq:pc:thm:exhaustion}). If $r\ge2$, take $G$ minimal among the joins $F_i\vee F_j$, $i\ne j$; the $t\ge2$ generators inside $G$ join pairwise to $G$ and
-none equals $G$, so $\mathsf K_{<G}$ is $t$ isolated vertices, $\beta_{2,G}=t-1>0$, and the flat dimension is at least two.
+Put $J=\mathfrak r_{\mathcal F}$ and $B=A_{\mathscr C}/J$;
+the antichain is nonempty, as fixed above. The sequence
+$0\to J\to A_{\mathscr C}\to B\to0$ gives, for every module $N$,
+\[
+ \Tor_1^{A_{\mathscr C}}(J,N)
+   \cong\Tor_2^{A_{\mathscr C}}(B,N).
+\]
+Thus $J$ is flat if and only if $\fd B\le1$, by the Tor criterion for
+flat dimension. The quotient $B$ is nonzero and nonflat by
+\cref{osq:pc:thm:homological}, so this is equivalent to $\fd B=1$.
+If $r=1$, then $J=I_{F_1}$ is flat by
+\cref{osq:pc:thm:exhaustion}.
+
+Conversely, suppose $r\ge2$. Choose $G$ minimal under inclusion among
+the finitely many pairwise joins $F_i\vee F_j$ with $i\ne j$.
+Let $T=\{i:F_i\subseteq G\}$ and $t=|T|\ge2$. No $F_i$ with $i\in T$
+equals $G$: it would contain both generators of the chosen pair,
+contrary to the antichain condition. For distinct $i,j\in T$, the
+pairwise join $F_i\vee F_j$ lies below $G$ and is another member of
+the finite set in which $G$ was minimal. It must therefore equal $G$.
+Every singleton from $T$ has join strictly below $G$, and every subset
+of size at least two has join $G$. Hence $\mathsf K_{<G}$ consists of
+$t$ isolated vertices and the empty face. Its augmented degree-zero
+boundary is the sum map $K^t\to K$, with kernel of dimension $t-1$,
+and it has no degree-one chains. Consequently
+\[
+ \beta_{2,G}=\dim_K\widetilde H_0(\mathsf K_{<G};K)=t-1>0.
+\]
+By \cref{osq:pc:thm:exactfd}, this gives
+$\fd B\ge2$, excluding flatness of $J$. This proves all three
+equivalences over every allowed coefficient field.
 \end{proof}
 
 \begin{corollary}[A marked face lattice \src{26}]\label{osq:pc:cor:reconstruct}
@@ -9255,7 +9409,25 @@ Among the nonzero radical geometric monomial ideals the flat ones are exactly th
 anti-isomorphic to the face lattice and tensor product corresponds to join.
 \end{corollary}
 \begin{proof}
-\Cref{osq:pc:thm:flatclass,osq:pc:thm:products}.
+By \cref{osq:pc:thm:radical}, every nonzero radical geometric monomial
+ideal has a unique nonempty antichain of minimal faces. By
+\cref{osq:pc:thm:flatclass}, it is flat precisely when this antichain
+is a singleton. Thus $F\mapsto I_F$ is a bijection from nonzero faces
+to the indicated flat ideals. Adjoin $A_{\mathscr C}=I_{\{0\}}$:
+this is a separate convention, since the ring contains $1$ whereas
+all geometric monomial ideals under discussion lie in the tail.
+
+For nonzero faces, \cref{osq:pc:thm:products} gives
+$I_G\subseteq I_F$ if and only if $F\subseteq G$. The same equivalence
+holds when exactly one face is zero, because $A_{\mathscr C}$ contains
+every nonzero-face ideal and is contained in none of those proper tail
+ideals. If both faces are zero it is tautological. Hence the bijection reverses
+order, recovering the entire face lattice. Multiplication identifies
+$I_F\otimes_{A_{\mathscr C}}I_G$ with $I_{F\vee G}$ for nonzero
+faces; when one face is zero this is the usual unit isomorphism
+$A_{\mathscr C}\otimes I_G\cong I_G$. The claim uses the actual
+marked ideals and their inclusions, not merely their abstract module
+isomorphism classes.
 \end{proof}
 
 This reconstructs the face lattice from the ring \emph{with its geometric monomial structure marked}; it does not show that an abstract ring isomorphism of
@@ -9266,22 +9438,55 @@ The following are equivalent: (i) $\mathscr C$ is simplicial; (ii) every facet o
 (iv) $\fd A_{\mathscr C}(F)=1$ for every facet $F$.
 \end{theorem}
 \begin{proof}
-(i)$\Rightarrow$(ii) is clear, and (ii), (iii), (iv) are equivalent by \cref{osq:pc:prop:faceprime,osq:pc:thm:flatclass}. Assume (ii). Every ray $\rho$ is
-omitted by some facet, since the facets meet in $\{0\}$; that facet's functional is positive on $\rho$ and zero on the other rays, so in a linear relation among
-ray vectors the coefficient of $\rho$ vanishes. The rays are linearly independent and span $\R^d$, so there are $d$ of them.
+If $\mathscr C$ is simplicial, its $d$ ray generators form a basis of
+$\R^d$ and carry the cone to the nonnegative orthant. Its facets are
+therefore obtained by omitting one basis ray, proving (i)$\Rightarrow$(ii).
+For each facet $F$, the rays outside $F$ form the nonempty irredundant
+antichain defining $\mathfrak p_F$ by
+\cref{osq:pc:prop:faceprime}. The equivalences of
+\cref{osq:pc:thm:flatclass} then say exactly that this antichain has
+one member, that $\mathfrak p_F$ is flat, and that
+$\fd A_{\mathscr C}(F)=1$. This proves the equivalence of (ii), (iii)
+and (iv).
+
+Assume (ii), and choose one nonzero generator $v_\rho$ of each ray.
+The intersection of all facets is $\{0\}$: if all facet functionals
+vanished on $v$, both $v$ and $-v$ would satisfy the cone inequalities,
+so pointedness would force $v=0$. Consequently, for every ray $\rho$
+there is a facet $F_\rho$ not containing it. Its nonnegative supporting
+functional $\ell_\rho$ is positive on $v_\rho$ and, by (ii), zero on
+every other ray generator. Applying it to any real linear relation
+$\sum_\sigma a_\sigma v_\sigma=0$ gives
+$a_\rho\ell_\rho(v_\rho)=0$, hence $a_\rho=0$. This holds for every
+ray, so all the ray generators are linearly independent. They span
+$\R^d$ because the cone is full-dimensional; there are exactly $d$
+of them and the cone is simplicial. The argument includes $d=1$,
+whose only facet is the zero face.
 \end{proof}
 
-The criterion concerns all facets: a nonsimplicial cone can have one facet omitting a single ray (26).
+The criterion concerns all facets. For example, let $\mathscr S\subseteq\R^3$ be the cone over a square. The product
+$\mathscr S\times\R_{\ge0}$ has dimension four and five rays, so it is not simplicial. Yet its facet
+$\mathscr S\times\{0\}$ contains the four square-cone rays and omits only the last coordinate ray. Its face-prime ideal is flat,
+and its face quotient has flat dimension one (26, with this explicit example).
 
 \begin{corollary}[Simplicial face dimensions \src{26}]\label{osq:pc:cor:simplicialface}
 If $\mathscr C$ is simplicial, $\fd A_{\mathscr C}(F)=d-\dim F$ for every face $F$.
 \end{corollary}
 \begin{proof}
-The largest face disjoint from $F$ is spanned by the complementary rays; apply \cref{osq:pc:thm:facebetti}.
+Choose a basis of ray generators $v_1,\ldots,v_d$ for $\mathscr C$.
+Every face is the nonnegative span of a unique subset of these rays.
+Write $F$ for the face on an index set $S$; then $\dim F=|S|$.
+A face on $T$ meets $F$ only at zero if and only if $T\cap S$ is
+empty, since coordinates in the ray basis are unique. Thus every
+face disjoint from $F$ lies in the complementary face on $[d]\setminus S$,
+and that face itself is disjoint from $F$ and has dimension $d-|S|$.
+The maximum in \cref{osq:pc:thm:facebetti} is therefore $d-\dim F$.
+This includes $S=\varnothing$, giving the quotient $D$ of flat dimension
+$d$, and $S=[d]$, giving the identity quotient of flat dimension zero.
 \end{proof}
 
 Through $A_{\mathscr C}\cong A_d$ this is 21's $\fd\mathsf F_U=|U|$ (\cref{osq:da:prop:faces}) with $|U|=d-\dim F$, and 21's
-\cref{osq:da:cor:exactpd} adds $\pd A_{\mathscr C}(F)=d-\dim F+1$ \merge.
+\cref{osq:da:cor:exactpd} adds $\pd A_{\mathscr C}(F)=d-\dim F+1$ for $F<\mathscr C$. At $F=\mathscr C$ the module is $A_{\mathscr C}$ itself, so its projective dimension is zero \merge.
 
 \paragraph{Examples, sharpness and coefficients.} Let $\mathscr C=\{(x,y,z):z\ge|x|,\ z\ge|y|\}$, the cone over a square, with rays through
 $v_1=(1,1,1)$, $v_2=(1,-1,1)$, $v_3=(-1,-1,1)$, $v_4=(-1,1,1)$ and adjacent two-faces $F_{ij}=\rho_i\vee\rho_j$. The augmentation has the flat resolution
@@ -9302,17 +9507,62 @@ For $n\ge1$ let $\mathscr C_n=\{(x_1,\dots,x_n,z):z\ge|x_i|\ (1\le i\le n)\}$ an
 are facets, and $\fd_{A_{\mathscr C_n}}A_{\mathscr C_n}(F_+)=n$, in the omnific and in the Gaussian omnific cores.
 \end{theorem}
 \begin{proof}
-The section $z=1$ is the $n$-cube and $F_\pm$ are cones over opposite facets; $x_1=z=-x_1$ forces $z=0$ and then all $x_i=0$, so $F_+\cap F_-=\{0\}$ and
-\cref{osq:pc:thm:facebetti} gives $\ge n$; the only face of dimension $n+1$ is $\mathscr C_n$, which meets $F_+$. The embeddings are
-\cref{osq:pc:prop:embedding}.
+The inequalities imply $z\ge0$, and at $z=0$ they force every $x_i=0$.
+Thus $z$ is strictly positive on nonzero cone points, and the section
+$z=1$ is the cube $[-1,1]^n$. It has dimension $n$, so its cone has
+dimension $n+1$. The sections $x_1=\pm1$ are opposite cube facets of
+dimension $n-1$, including two points when $n=1$; their cones $F_\pm$
+are consequently facets of dimension $n$.
+
+On $F_+\cap F_-$ one has $x_1=z=-x_1$, forcing $z=0$ and hence all
+coordinates zero. The disjoint-face formula
+\cref{osq:pc:thm:facebetti} therefore gives a lower bound $n$ using
+$F_-$. For the upper bound, the only face of dimension $n+1$ is the
+whole cone, which meets the nonzero face $F_+$; every disjoint face
+has dimension at most $n$. The two bounds give equality.
+
+This reasoning holds for every unital subring $D\subseteq K$.
+Specialize to $(D,K)=(\Z,\R)$ or $(\Z[i],\C)$ and use the embeddings
+of \cref{osq:pc:prop:embedding}. They identify these rings with their
+omnific or Gaussian core images, preserving module dimensions. No
+extension of scalars to the entire ambient omnific ring is asserted.
 \end{proof}
 
-By \cref{osq:pc:thm:facebetti} a nonzero proper face quotient has flat dimension at most $d-1$, and the cube cones attain it on a facet (26). The multiplicities
-of the reduced face-labelled flat resolutions, starting with the single $A_{\mathscr C}$ in degree $0$, are: $d$-orthant and $D$: $\binom d0,\dots,\binom dd$
-($\fd=d$); square cone and $D$: $(1,4,4,1)$ ($3$); square cone and a facet: $(1,2,1)$ ($2$); square cone and a ray: $(1,3,2)$ ($2$); any cone and
-$A_{\mathscr C}/I_{\mathscr C}$: $(1,1)$ ($1$); cone over a $3$-cube and $D$: $(1,8,12,6,1)$ ($4$); cone over a $3$-cube and a facet: $(1,4,4,1)$ ($3$); cone
-over an octahedron and $D$: $(1,6,12,8,1)$ ($4$). The quotient $A_{\mathscr C}/I_{\mathscr C}$ keeps the boundary faces, usually has zero divisors, and is
-radical but not a face-prime quotient (26).
+By \cref{osq:pc:thm:facebetti}, a quotient retaining a nonzero proper face has flat dimension at most $d-1$:
+the full cone is not disjoint from that face. Cube cones attain this bound on a facet (26).
+The following table lists total summand counts by homological degree, beginning with the single $A_{\mathscr C}$ in degree zero.
+They count flat face ideals, not ranks of free modules.
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Cone & Quotient & Summand counts & Flat dimension \\
+\midrule
+$d$-orthant & $D$ & $\binom d0,\ldots,\binom dd$ & $d$ \\
+Square cone & $D$ & $1,4,4,1$ & $3$ \\
+Square cone & Facet quotient & $1,2,1$ & $2$ \\
+Square cone & Ray quotient & $1,3,2$ & $2$ \\
+Any cone & $A_{\mathscr C}/I_{\mathscr C}$ & $1,1$ & $1$ \\
+Cone over a $3$-cube & $D$ & $1,8,12,6,1$ & $4$ \\
+Cone over a $3$-cube & Facet quotient & $1,4,4,1$ & $3$ \\
+Cone over an octahedron & $D$ & $1,6,12,8,1$ & $4$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+For $D$, the counts enumerate all section faces, including the top cell, by
+\cref{osq:pc:prop:cellular}. For a face quotient they enumerate the faces
+disjoint from the retained face, by \cref{osq:pc:thm:facebetti}.
+In a cube, the faces disjoint from a fixed facet are precisely those in
+the opposite facet: a face fixes some coordinates to $\pm1$, and avoids
+$x_1=1$ exactly when it fixes $x_1=-1$. This gives $1,4,4,1$ for a
+three-cube facet quotient. The single-ideal row is the resolution
+$0\to I_{\mathscr C}\to A_{\mathscr C}\to A_{\mathscr C}/I_{\mathscr C}\to0$;
+its exact dimension is one by \cref{osq:pc:thm:flatclass}.
+
+The quotient $A_{\mathscr C}/I_{\mathscr C}$ keeps the boundary faces and is reduced. For $d\ge2$ it has
+zero divisors and is not a face-prime quotient: choose a facet $H$, a rational ray vector $u$ outside $H$ and a rational
+$v\in\operatorname{relint}H$. Both vectors lie on the boundary, but $u+v$ is interior, since every facet functional is positive on at least one of $u,v$.
+Thus $X^u,X^v$ survive and their product vanishes. For $d=1$, however, $I_{\mathscr C}=\Pi_{\mathscr C}$ and the quotient is the domain $D$, the face-prime
+quotient retaining the zero face (26, with this dimension-one qualification).
 
 \begin{corollary}[Squarefree homology survives rational roots \src{26}]\label{osq:pc:cor:squarefree}
 Let $\mathfrak q\subsetneq K[\mathbf x]=K[x_1,\dots,x_d]$ be a nonzero squarefree monomial ideal with irredundant supports $S_1,\dots,S_r$, and in $A_d$ let
@@ -16910,7 +17160,7 @@ reduced homology of finite join complexes, with explicit cap-module witnesses (\
 dimension the largest dimension of a face disjoint from $F$ (\cref{osq:pc:thm:facebetti}), so $\fd D=d$ for every cone, the cone is simplicial exactly when
 all facet quotients have flat dimension one (\cref{osq:pc:thm:simplicial}), and cube cones have facet quotients of flat dimension $d-1$
 (\cref{osq:pc:thm:cubes}). Projective dimensions are bracketed, $\max\{2,h\}\le\pd\le h+1$ (\cref{osq:pc:cor:pdbounds}), and for simplicial cones the upper
-endpoint holds, a simplicial core being $A_d$ (21's \cref{osq:da:cor:exactpd}; merge). 26 asks the same two questions (its Questions~13.1, 13.2),
+endpoint holds for proper-face quotients, a simplicial core being $A_d$ (21's \cref{osq:da:cor:exactpd}; merge). 26 asks the same two questions (its Questions~13.1, 13.2),
 merged here: for a radical geometric quotient with $h=\fd\ge2$, when is $\pd=h+1$ and can it equal $h$; is the upper endpoint universal for rational
 cones and arbitrary $D\subseteq K$; and what are $\operatorname{w.gl.dim}A_{\mathscr C}$ and $\operatorname{gl.dim}A_{\mathscr C}$ for nonsimplicial
 cones, with explicit hypotheses on $D$ and $K$? 26's comments: a plausible step is to combine the cap detector with the non-splitting of a countable

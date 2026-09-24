@@ -2217,3 +2217,192 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 5,219 source-label references and 1,857 local Markdown destinations in
 226 files pass, as does whitespace checking. No incoming TeX changed;
 the 307-page article and 34-page catalogue remain current.
+
+## Polyhedral face topology and the cellular resolution
+
+Reviewed and expanded `osq:pc:lem:complement`, `osq:pc:lem:outside`,
+`osq:pc:thm:facebetti` and `osq:pc:prop:cellular`. The boundary-complement
+proof now supplies the continuous radial map from normalized facet
+inequalities, proves that its contraction avoids the deleted face and
+zero vector, and gives the barycentric weights for a strong deformation
+retraction onto the required order complex. The outside-vertex proof
+checks the domains, nonemptiness and inequalities for both order maps.
+The point section is treated separately as the augmented empty-face
+complex, with reduced homology K in degree minus one.
+
+The multiplicity proof first separates faces with no active rays and
+faces whose active rays join strictly below them. Neither is a join
+label, so neither acquires an unintended degree-minus-one class.
+For actual labels, a positive section identifies the proper-join complex
+with the outside-vertex complex. Disjoint faces contribute their boundary
+sphere class; nonempty proper intersections give contractible complexes.
+The proof then applies cancellation and exact flat dimension, including
+D at the zero face and the free identity quotient at the whole cone.
+
+The cellular proof specifies orientations, incidence maps and both
+augmentations. Every nonzero exponent gives the augmented cellular
+complex of a nonempty convex section, with cellular degree p-1 in
+homological degree p. Finite supports give ungraded exactness. Tensoring
+with the top-face cap leaves K in degree d, a nonzero part of ordinary
+Tor, and independently proves the lower bound fd D >= d.
+
+Corrected four ancillary projective-dimension passages and the source
+comparisons: pd A_C(F) = d - dim F + 1 requires F to be proper in a
+simplicial cone. At F = C the quotient is A_C itself and pd = fd = 0.
+The nonempty-coordinate-set hypothesis in source 21 does not prove an
+endpoint for arbitrary radical geometric quotients. Shared notation now
+separates the quotient A_C/I_F by a single flat face ideal from the
+quotient A_C(F) retaining a face.
+
+Also corrected the later boundary-quotient commentary: A_C/I_C is
+reduced, but in dimension one it is the domain D and is a face-prime
+quotient. In dimension at least two, choose a facet, a ray outside it
+and a point in its relative interior. The two boundary monomials survive
+while their sum exponent is interior, giving explicit zero divisors.
+This local correction does not claim review of the later classifications
+or all the examples.
+
+Updated root README, report guide, shared notation and catalogue, and
+refreshed the ledger's source anchors. These are manuscript proofs:
+the four source results remain Pending in Lean. The flat-ideal
+classification, simpliciality criterion and full source reconciliation
+remain pending review. No finite computation is offered as a proof of
+these general topological or arbitrary-module assertions.
+
+Validation: three clean final TeX passes for the 308-page article and
+34-page catalogue, without warnings or box diagnostics; inspected the
+revised proof pages, boundary exceptions and catalogue entry. All 418
+standard/principal statements, 828 labels, 1,656 auxiliary label/number
+pairs, 66 questions, 60 remarks and 28 numbered examples are unchanged.
+All 4,626 source anchors in 63 reports, 5,219 source-label references
+and 1,857 local Markdown destinations in 226 files pass, as does whitespace
+checking. No Lean source changed locally; the 4,664-job two-thread build
+and 17,316-declaration audit remain the baseline before synchronization.
+
+## Synchronization: the explicit finitely satisfiable omitted type
+
+Merged origin/main through da91587, including 10494f3, and reviewed all
+six new modules against `odg:def:thm:saturation`. The native unary type
+contains the explicit Xi guard and all nonzero integer-polynomial
+inequalities. Signed numerals, powers and finite-sum terms have proved
+realization semantics. A finite family of integer polynomials has a
+common nonroot among zero through the sum of its degrees; its image
+works in any characteristic-zero commutative ring. The native finite-
+subset theorem handles finite collections of formulas, not merely an
+externally supplied list of polynomials.
+
+Algebraicity excludes realization of the full type. Quadratic integers
+have an explicit degree-two integer annihilator. The number-field result
+clears denominators via Mathlib's fraction-field algebraicity theorem
+and handles any injectively embedded coefficient ring; its conclusion
+is conditional on a native formula defining the coefficient image.
+Integer and Gaussian intermediate Hahn rings use their established Xi
+definitions without a constant-retraction or nontrivial-exponent-group
+hypothesis. Independent theorems apply to both actual universe-indexed
+omnific carriers.
+
+The ledger correctly records Prerequisites proved for the full source
+theorem: effective coding, computability of membership in the type,
+recursive saturation and the tailored number-field guard remain pending.
+The noncomputable polynomial representation is not used to claim an
+effective syntactic construction. The root README maintains that scope.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,670 jobs;
+the axiom audit checks 17,404 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,863 local Markdown destinations in
+226 files pass, as does whitespace checking. No incoming TeX changed;
+the 308-page article and 34-page catalogue remain current.
+
+## Synchronization retry: canonical polynomial syntax and type recognition
+
+The first push was rejected because origin/main advanced. Merged 9215b7c
+and reviewed its four modules against the computable-syntax paragraph of
+`odg:def:thm:saturation`. Nonempty signed coefficient lists with nonzero
+last entry correspond bijectively to nonzero integer polynomials, and
+the generated terms equal the previous native polynomial syntax.
+
+Structural formula equality covers bound variables. The parser extracts
+a candidate coefficient list, checks canonicity and regenerates the
+entire input formula; its correctness theorem concerns exact syntactic
+membership in the omitted type, not arbitrary logical equivalence.
+The recognizer and its exported decision procedure are computational.
+Coefficient lookup and canonical-list validity are separately proved
+primitive recursive in Mathlib's integer/list encodings.
+
+The ledger and README correctly keep the native-formula encoding and
+computability of the entire recognizer, the recursive-saturation
+consequence and the tailored number-field guard pending. Updated the
+earlier collapse row's stale blanket Pending reference to point to these
+specific mappings. No claim about encoded formula computability follows
+solely from the existence of the executable Lean decision procedure.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,677 jobs and
+its axiom audit passes for 17,524 declarations with only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors, 5,219
+source-label references and 1,867 local Markdown destinations in 226
+files pass, along with whitespace checks. No incoming TeX changed;
+the 308-page article and 34-page catalogue remain current.
+
+## Flat radical ideals, marked reconstruction and simpliciality
+
+Reviewed and expanded `osq:pc:thm:flatclass`, `osq:pc:cor:reconstruct`,
+`osq:pc:thm:simplicial`, `osq:pc:cor:simplicialface` and
+`osq:pc:thm:cubes`, with the adjacent square/cube/octahedron examples.
+The flatness proof now displays Tor dimension shifting for every module.
+For an antichain with at least two members, a minimal pairwise join G
+forces every pair of generators below G to join to G. No such generator
+can equal G. The proper-join complex is therefore t isolated vertices,
+whose augmented sum map K^t -> K has kernel dimension t-1. Nonzero
+beta_(2,G) gives flat dimension at least two over every allowed field.
+
+The reconstruction proof gives the bijection between nonzero faces and
+flat radical geometric ideals, separately adjoins the unit ideal for
+the zero face, and checks order reversal and tensor multiplication,
+including the unit cases. The reconstructed data are marked ideals and
+inclusions, not merely abstract module isomorphism classes or an
+unmarked ring.
+
+The simpliciality proof treats both directions and all equivalences.
+Facets of a simplicial cone omit one basis ray. Conversely, pointedness
+makes the common zero locus of the facet functionals trivial; a facet
+omitting a given ray has a functional isolating its coefficient in any
+linear relation among rays. All ray generators are independent and,
+by full dimensionality, form a basis. The dimension-one case is explicit.
+A square cone times a ray is a four-dimensional, five-ray counterexample
+to testing only one facet: its square-cone facet omits exactly one ray
+and has a flat face-prime ideal, though the cone is not simplicial.
+
+The simplicial face formula now identifies the unique complementary
+face in basis coordinates, including the zero and whole-cone faces.
+The cube proof verifies the positive section, dimensions and opposite
+facets, including n=1, then proves both bounds for flat dimension n.
+The omnific specializations are isomorphisms onto the finite-support
+core images; no module dimension is transferred to the whole ambient
+omnific ring.
+
+Replaced the dense example list by a table of eight flat summand-count
+patterns and explained their face counts. In a cube, a face avoids a
+fixed facet exactly when it lies in the opposite facet. The counts are
+for flat resolutions, not minimal free ranks. Clarified that the d-1
+bound concerns quotients retaining a nonzero proper face. Updated the
+root README, report guide, notation and catalogue, and refreshed source
+anchors. These five manuscript results still have no Lean proofs here;
+squarefree transfer, coefficient dependence, arithmetic modules, nonflat
+embeddings and full source reconciliation remain pending review.
+
+Validation: three clean final TeX passes for the 309-page report and
+34-page catalogue, with no warnings or box diagnostics. Inspected the
+five revised proofs, the comparison table and its explanation, and the
+catalogue entry. All 418 standard/principal statements, 828 labels,
+1,656 auxiliary label/number pairs, 66 questions, 60 remarks and 28
+numbered examples are unchanged. The delivered source-26 verifier was
+rerun unchanged in scratch: all 52,080 assertions and 70 examples match
+its recorded output, excluding elapsed time. It checks 188 face quotients,
+1,329 additional antichains, 56 cancellations and 2,457 rational cap
+calculations; these finite rational checks are not proofs of the general
+ring or characteristic-independent assertions. All 4,626 source anchors
+in 63 reports, 5,219 source-label references and 1,867 local Markdown
+destinations in 226 files pass, along with whitespace checks. No Lean
+source changed locally; the two-thread 4,677-job build and 17,524-
+declaration axiom audit remain the baseline before synchronization.
