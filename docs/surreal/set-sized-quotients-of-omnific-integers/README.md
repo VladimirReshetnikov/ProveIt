@@ -162,6 +162,15 @@ Every Gaussian endomorphism acts on constant terms by identity or
 conjugation and preserves and reflects the purely infinite ideal;
 automorphisms carry that ideal onto itself.
 
+Lean now also proves the full real conservativity proposition, including
+its inequational boundary: (√2·ω,ω) solves x²=2y² with y≠0, but no
+integer pair does. Constant extraction kills both witnesses. Gaussian
+polynomial solution sets retract onto their ordinary Gaussian solutions,
+and native positive existential formulas agree at ordinary Gaussian
+parameters. Arbitrary equation and variable families are allowed in the
+solution-set statement; the formula statement retains its parameter
+restriction. The separate computability claims remain pending.
+
 The first seven standard results of Source 22's finite-test section are
 now reviewed, from rectangular interpolation and resultant specialization
 through the real and Gaussian single-scale certificates. The proofs track

@@ -4822,3 +4822,26 @@ results, labels and numbering preserved, and only the previously recorded
 resultant example changed. Audits pass 4,626 anchors in 63 reports, 5,244
 source-label references and 2,019 local Markdown destinations in 226 files.
 Working and staged diff checks pass.
+
+
+### Conservativity sync after concurrent advance (2026-09-24)
+
+The ordinary push was rejected because origin/main advanced to 528aa9e.
+Fetched and merged it without conflict. Read both incoming modules against
+osq:prop:conservative and its surrounding observation and Gaussian
+consequence. The explicit real witnesses are sqrt(2)*omega and omega,
+with zero constants; irrationality excludes all integer witnesses with
+y nonzero. The polynomial-observation identity permits small
+noncommutative targets. Gaussian constant extraction retracts entire
+solution sets for arbitrary equation and variable families, while native
+positive existential formula transfer keeps ordinary Gaussian parameters.
+No computability claim or unrestricted-parameter transfer is inferred.
+Updated the report guide and catalogue alongside the incoming root guide
+and exact ledger mappings.
+
+LEAN_NUM_THREADS=2 lake build passes 5,068 jobs; the axiom audit accepts
+19,303 declarations with only the three permitted axioms. Three final
+catalogue TeX passes are diagnostic-free, at 37 pages; inspected pages
+14–15. Article validation remains unchanged at 357 pages. All 5,244 cited
+source labels resolve, all 2,022 local Markdown destinations in 226 files
+resolve, and both working and staged diff checks pass.

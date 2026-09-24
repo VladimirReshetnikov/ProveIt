@@ -924,3 +924,5 @@ import Surreal.Foundations.OmnificLocalizationExamples
 import Surreal.Algebra.PolynomialPresentationReflection
 import Surreal.Surcomplex.OmnificPolynomialPresentations
 import Surreal.Foundations.OmnificPresentationExamples
+import Surreal.Foundations.OmnificConservativity
+import Surreal.Surcomplex.GaussianEquationalTransfer
