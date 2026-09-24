@@ -6122,3 +6122,27 @@ normal-form construction from a separate analytic convergence theorem.
 Validation: LEAN_NUM_THREADS=2 lake build passes all 4,595 jobs. The
 axiom audit checks 16,507 declarations using only propext,
 Classical.choice and Quot.sound. No TeX source changed in that merge.
+
+## Synchronization of the degree-ten constant-term polynomial
+
+Merged 88f1cd1 and checked its three new modules against the unnumbered
+single-polynomial variant following `odg:def:thm:ctgraph`. A faithful
+ordered-ring inclusion separates the two squared equations. The resulting
+formula combines the quintic definition of ordinary integer constants
+with the quadratic test for the constant-term kernel, giving exactly the
+constant-term graph with eight witnesses. Native integer multivariate
+polynomials encode the expression and its evaluation; a variable
+retraction preserves the quintic's degree, so its square has degree ten
+and cannot cancel with the added term of degree at most four.
+The specialization covers both the actual real omnific carrier and the
+full ordered Hahn pullbacks with a coefficient square root of two.
+The ledger makes no Gaussian single-polynomial or degree-optimality claim;
+the separate quartic graph remains pending.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,598 jobs; the
+axiom audit checks 16,534 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across 63
+reports, 5,214 source-label references and 1,810 local Markdown
+destinations across 226 files pass, as does whitespace checking.
+The merge changes no TeX source, so the three-pass 287-page article and
+34-page catalogue from the Rees review remain current.

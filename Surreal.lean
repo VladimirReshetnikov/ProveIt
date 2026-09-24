@@ -726,6 +726,9 @@ import Surreal.Algebra.DetectorCertificates
 import Surreal.Foundations.OmnificReciprocalSeries
 import Surreal.Surcomplex.DetectorCertificates
 import Surreal.Algebra.QuinticPolynomial
+import Surreal.Algebra.ConstantTermPolynomial
+import Surreal.HahnSeries.ConstantTermPolynomial
+import Surreal.Surcomplex.ConstantTermPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants
 import Surreal.Foundations.OmnificQuintic

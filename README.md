@@ -439,6 +439,9 @@ witnesses: require the output to satisfy the ordinary-constant definition,
 then apply the quadratic kernel test to its difference from the input.
 Every input has exactly one output, in both actual omnific rings and the
 corresponding full Hahn pullbacks.
+For the real rings, a single integer polynomial now defines the same graph
+with eight witnesses. Its total degree is proved to be exactly ten: it is
+the squared quintic definition plus the squared quadratic kernel equation.
 The constant inclusion and kernel now form a proved definable split exact
 sequence. Both printed orders of existential and universal quantifiers for
 the constant-term graph are also proved equivalent to its existential formula.
