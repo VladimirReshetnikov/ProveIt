@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **63 main texts** with **4430**
+The canonical inventory below identifies **63 main texts** with **4473**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -136,8 +136,8 @@ by itself integrate or formalize their mathematics.
 The delivery merged through `51c1cc7` is now placed in `aa9c891`. Two new
 main texts, omnific continued fractions and exponential relations over
 omnific integers, add 26 and 34 standard results respectively. The current
-inventory has **4,430** standard results across **63** main reports after
-the first two batch-34 additions `16fc51c` and `fd91f9b`. The two new texts were written
+inventory has **4,473** standard results across **63** main reports after
+the first four batch-34 additions, through `5ca4355`. The two new texts were written
 in `68db1b5` and `fa54502` and are indexed with their `exr:` and `ocf:` labels.
 They remain **Pending** in Lean and independent proof review. Two dilation
 companions, the holonomic coefficient-observables companion and the
@@ -151,9 +151,12 @@ symmetries archive are placed in `a7a435f` as nine additions to six existing
 reports. The first two batch-34 writes integrate the rotation-equivariant
 dynamics companion (`16fc51c`, 18 new standard statements) and the
 Gaussian-omnific real-forms companion (`fd91f9b`, 14 new standard statements).
-Both are now indexed; independent proof review and Lean coverage remain
-pending. The other seven companions still await main-text integration and
-indexing; placement adds no inferred Lean coverage. The Hahn-joins archive delivered in `267b910`
+The next two writes integrate the beyond-composita companion into
+independent surreal copies (`b9f964c`, 28 new standard statements) and
+infinite simultaneous unitary straightening into Hahn–Hilbert geometry
+(`5ca4355`, 15 new standard statements). All four are now indexed;
+independent proof review and Lean coverage remain pending. The other five
+companions still await main-text integration and indexing; placement adds no inferred Lean coverage. The Hahn-joins archive delivered in `267b910`
 awaits placement, integration and indexing.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
@@ -901,7 +904,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex) | 35 | 19 | 26 | 14 | 94 |
 | [surcomplex/global-divisors/article.tex](surcomplex/global-divisors/article.tex) | 17 | 13 | 15 | 12 | 57 |
 | [surcomplex/hahn-herglotz-positivity/article.tex](surcomplex/hahn-herglotz-positivity/article.tex) | 12 | 2 | 2 | 4 | 20 |
-| [surcomplex/hahn-hilbert-geometry/article.tex](surcomplex/hahn-hilbert-geometry/article.tex) | 17 | 5 | 13 | 12 | 47 |
+| [surcomplex/hahn-hilbert-geometry/article.tex](surcomplex/hahn-hilbert-geometry/article.tex) | 23 | 6 | 16 | 17 | 62 |
 | [surcomplex/hahn-tate-uniformization/article.tex](surcomplex/hahn-tate-uniformization/article.tex) | 25 | 19 | 10 | 16 | 70 |
 | [surcomplex/hidden-negative-hermitian-directions/article.tex](surcomplex/hidden-negative-hermitian-directions/article.tex) | 10 | 4 | 4 | 6 | 24 |
 | [surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex) | 56 | 60 | 36 | 70 | 222 |
@@ -929,7 +932,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/gonshor-product-birthdays/surreal_product_birthdays.tex](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex) | 3 | 4 | 5 | 2 | 14 |
 | [surreal/hahn-evaluation-at-omega/article.tex](surreal/hahn-evaluation-at-omega/article.tex) | 7 | 9 | 5 | 2 | 23 |
 | [surreal/hahn-valued-measures-and-probability/article.tex](surreal/hahn-valued-measures-and-probability/article.tex) | 37 | 17 | 18 | 27 | 99 |
-| [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex) | 9 | 9 | 4 | 7 | 29 |
+| [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex) | 17 | 18 | 5 | 17 | 57 |
 | [surreal/markov-generators-at-every-scale/article.tex](surreal/markov-generators-at-every-scale/article.tex) | 9 | 5 | 3 | 3 | 20 |
 | [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-scaling-at-surreal-scales/article.tex) | 7 | 3 | 2 | 4 | 16 |
 | [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex) | 87 | 52 | 44 | 61 | 244 |
@@ -941,7 +944,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
 | [foundations-and-computation/exponential-relations-over-omnific-integers/article.tex](foundations-and-computation/exponential-relations-over-omnific-integers/article.tex) | 13 | 5 | 5 | 11 | 34 |
 | [surreal/omnific-continued-fractions/article.tex](surreal/omnific-continued-fractions/article.tex) | 9 | 6 | 4 | 7 | 26 |
-| **Total** | 1730 | 934 | 860 | 906 | **4430** |
+| **Total** | 1744 | 944 | 864 | 921 | **4473** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -6362,53 +6365,68 @@ review and formalization remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `hgeo:lem:support` (line 447) | Hahn--Neumann support calculus \src{06} |
-| Proposition | `hgeo:prop:inner` (line 566) | Positive-definite Hahn extension \src{03, 06} |
-| Theorem | `hgeo:thm:complete` (line 612) | Spherical completeness of the coefficient space \src{03, 06} |
-| Proposition | `hgeo:prop:c00` (line 643) | A first nonprojectable complete subspace \src{06} |
-| Proposition | `hgeo:prop:finite` (line 672) | \src{03} |
-| Proposition | `hgeo:prop:coordinates` (line 704) | Admissible surcomplex coordinate arrays \src{03, 06} |
-| Proposition | `hgeo:prop:badfunctional` (line 782) | Even strict contractions need not be representable \src{06} |
-| Theorem | `hgeo:thm:norm` (line 818) | Least field-valued bound; repository theorem \src{06} |
-| Lemma | `hgeo:lem:baire` (line 878) | A Baire support lemma \src{06} |
-| Theorem | `hgeo:thm:adjoint` (line 892) | Automatic adjoint structure; repository input \src{03, 06} |
-| Corollary | `hgeo:cor:vop` (line 929) | Valuation and automatic boundedness \src{03, 06} |
-| Proposition | `hgeo:prop:projection` (line 1006) | Projection and best approximation \src{03} |
-| Lemma | `hgeo:lem:integralproj` (line 1046) | Integral projections \src{03, 06} |
-| Corollary | `hgeo:cor:residue` (line 1072) | Closed-residue obstruction \src{03, 06} |
-| Theorem | `hgeo:thm:normalform` (line 1092) | Residue normal form \src{03, 06} |
-| Corollary | `hgeo:cor:graphchart` (line 1141) | The positive-order graph chart \src{03, 06} |
-| Proposition | `hgeo:prop:closedresidue` (line 1178) | Closed residue is not sufficient \src{06}, completed \mergetag |
-| Corollary | `hgeo:cor:orbits` (line 1222) | Unitary orbit classification \src{06} |
-| Theorem | `hgeo:thm:unitary` (line 1238) | A split unitary group and its infinitesimal logarithm \src{06} |
-| Theorem | `hgeo:thm:finite` (line 1275) | Finite orthogonal decompositions straighten simultaneously \src{06} |
-| Proposition | `hgeo:prop:graphcriterion` (line 1310) | General adjointable graph criterion \src{03} |
-| Lemma | `hgeo:lem:finitegraph` (line 1341) | Graphs of integral operators split \src{03, 06} |
-| Theorem | `hgeo:thm:threshold` (line 1357) | Exact amplification threshold \src{03} |
-| Corollary | `hgeo:cor:norepair` (line 1457) | Enlarging the scale group cannot repair this graph \src{03} |
-| Theorem | `hgeo:thm:unboundedgraph` (line 1485) | Exact infinitesimal-graph criterion \src{06} |
-| Corollary | `hgeo:cor:best` (line 1545) | Explicit absence of best approximation \src{06} |
-| Proposition | `hgeo:prop:distancecut` (line 1564) | Exact lower cut of the distances \src{06} |
-| Theorem | `hgeo:thm:relation` (line 1620) | Scaled closed relations \mergetag |
-| Corollary | `hgeo:cor:bothgraphs` (line 1673) | Both graph theorems \mergetag |
-| Proposition | `hgeo:prop:poset` (line 1716) | Orthomodular poset structure \src{03} |
-| Theorem | `hgeo:thm:lattice` (line 1745) | Exact finite-dimensional/lattice dichotomy \src{03}; one direction also \src{06} |
-| Theorem | `hgeo:thm:positivekernel` (line 1834) | An adjointable positive operator with a noncomplemented kernel \src{06} |
-| Theorem | `hgeo:thm:nojoin` (line 1886) | No countable orthogonal join at one scale \src{06} |
-| Corollary | `hgeo:cor:nosimultaneous` (line 1912) | Finite straightening has no countable analogue \src{06} |
-| Proposition | `hgeo:prop:incoherent` (line 1936) | Incoherent supports prevent simultaneous conjugation \src{06} |
-| Theorem | `hgeo:thm:metric` (line 1989) | Exact isometric rigidity threshold \src{06} |
-| Corollary | `hgeo:cor:coercivemetric` (line 2045) | Coercive equivalent norms need not be isometric \src{06} |
-| Theorem | `hgeo:thm:schur` (line 2114) | Exact finite-defect reduction \src{03} |
-| Theorem | `hgeo:thm:MP` (line 2209) | Fredholm-residue least-squares theorem \src{03} |
-| Corollary | `hgeo:cor:LS` (line 2277) | All least-squares and minimum-norm solutions \src{03} |
-| Lemma | `hgeo:lem:smith` (line 2317) | Finite diagonal reduction over the valuation ring \src{03}; = \replabel{thm:scales} |
-| Theorem | `hgeo:thm:scale` (line 2371) | Exact finite-defect amplification \src{03} |
-| Corollary | `hgeo:cor:finiteinverse` (line 2458) | Exactly when the inverse stays finite \src{03} |
-| Proposition | `hgeo:prop:extension` (line 2523) | Coherence of the constructive results \src{03, 06} |
-| Theorem | `hgeo:thm:class` (line 2587) | Class extension and set support of adjoints \src{03, 06} |
-| Corollary | `hgeo:cor:globalgeometry` (line 2664) | Global geometric classification and persistent defects \src{06} |
-| Proposition | `hgeo:prop:globalnets` (line 2707) | Set-sized discreteness in the fine topology \src{03, 06} |
+| Lemma | `hgeo:lem:support` (line 477) | Hahn--Neumann support calculus \src{06} |
+| Proposition | `hgeo:prop:inner` (line 596) | Positive-definite Hahn extension \src{03, 06} |
+| Theorem | `hgeo:thm:complete` (line 642) | Spherical completeness of the coefficient space \src{03, 06} |
+| Proposition | `hgeo:prop:c00` (line 673) | A first nonprojectable complete subspace \src{06} |
+| Proposition | `hgeo:prop:finite` (line 702) | \src{03} |
+| Proposition | `hgeo:prop:coordinates` (line 734) | Admissible surcomplex coordinate arrays \src{03, 06} |
+| Proposition | `hgeo:prop:badfunctional` (line 812) | Even strict contractions need not be representable \src{06} |
+| Theorem | `hgeo:thm:norm` (line 848) | Least field-valued bound; repository theorem \src{06} |
+| Lemma | `hgeo:lem:baire` (line 908) | A Baire support lemma \src{06} |
+| Theorem | `hgeo:thm:adjoint` (line 922) | Automatic adjoint structure; repository input \src{03, 06} |
+| Corollary | `hgeo:cor:vop` (line 959) | Valuation and automatic boundedness \src{03, 06} |
+| Proposition | `hgeo:prop:projection` (line 1036) | Projection and best approximation \src{03} |
+| Lemma | `hgeo:lem:integralproj` (line 1076) | Integral projections \src{03, 06} |
+| Corollary | `hgeo:cor:residue` (line 1102) | Closed-residue obstruction \src{03, 06} |
+| Theorem | `hgeo:thm:normalform` (line 1122) | Residue normal form \src{03, 06} |
+| Corollary | `hgeo:cor:graphchart` (line 1171) | The positive-order graph chart \src{03, 06} |
+| Proposition | `hgeo:prop:closedresidue` (line 1208) | Closed residue is not sufficient \src{06}, completed \mergetag |
+| Corollary | `hgeo:cor:orbits` (line 1252) | Unitary orbit classification \src{06} |
+| Theorem | `hgeo:thm:unitary` (line 1268) | A split unitary group and its infinitesimal logarithm \src{06} |
+| Theorem | `hgeo:thm:finite` (line 1305) | Finite orthogonal decompositions straighten simultaneously \src{06} |
+| Proposition | `hgeo:prop:graphcriterion` (line 1342) | General adjointable graph criterion \src{03} |
+| Lemma | `hgeo:lem:finitegraph` (line 1373) | Graphs of integral operators split \src{03, 06} |
+| Theorem | `hgeo:thm:threshold` (line 1389) | Exact amplification threshold \src{03} |
+| Corollary | `hgeo:cor:norepair` (line 1489) | Enlarging the scale group cannot repair this graph \src{03} |
+| Theorem | `hgeo:thm:unboundedgraph` (line 1517) | Exact infinitesimal-graph criterion \src{06} |
+| Corollary | `hgeo:cor:best` (line 1577) | Explicit absence of best approximation \src{06} |
+| Proposition | `hgeo:prop:distancecut` (line 1596) | Exact lower cut of the distances \src{06} |
+| Theorem | `hgeo:thm:relation` (line 1652) | Scaled closed relations \mergetag |
+| Corollary | `hgeo:cor:bothgraphs` (line 1705) | Both graph theorems \mergetag |
+| Proposition | `hgeo:prop:poset` (line 1748) | Orthomodular poset structure \src{03} |
+| Theorem | `hgeo:thm:lattice` (line 1777) | Exact finite-dimensional/lattice dichotomy \src{03}; one direction also \src{06} |
+| Theorem | `hgeo:thm:positivekernel` (line 1866) | An adjointable positive operator with a noncomplemented kernel \src{06} |
+| Theorem | `hgeo:thm:nojoin` (line 1918) | No countable orthogonal join at one scale \src{06} |
+| Corollary | `hgeo:cor:nosimultaneous` (line 1944) | Finite straightening has no countable analogue \src{06} |
+| Proposition | `hgeo:prop:incoherent` (line 1968) | Incoherent supports prevent simultaneous conjugation \src{06} |
+| Theorem | `hgeo:thm:metric` (line 2026) | Exact isometric rigidity threshold \src{06} |
+| Corollary | `hgeo:cor:coercivemetric` (line 2082) | Coercive equivalent norms need not be isometric \src{06} |
+| Theorem | `hgeo:thm:schur` (line 2151) | Exact finite-defect reduction \src{03} |
+| Theorem | `hgeo:thm:MP` (line 2246) | Fredholm-residue least-squares theorem \src{03} |
+| Corollary | `hgeo:cor:LS` (line 2314) | All least-squares and minimum-norm solutions \src{03} |
+| Lemma | `hgeo:lem:smith` (line 2354) | Finite diagonal reduction over the valuation ring \src{03}; = \replabel{thm:scales} |
+| Theorem | `hgeo:thm:scale` (line 2408) | Exact finite-defect amplification \src{03} |
+| Corollary | `hgeo:cor:finiteinverse` (line 2495) | Exactly when the inverse stays finite \src{03} |
+| Proposition | `hgeo:prop:extension` (line 2560) | Coherence of the constructive results \src{03, 06} |
+| Theorem | `hgeo:thm:class` (line 2624) | Class extension and set support of adjoints \src{03, 06} |
+| Corollary | `hgeo:cor:globalgeometry` (line 2701) | Global geometric classification and persistent defects \src{06} |
+| Proposition | `hgeo:prop:globalnets` (line 2744) | Set-sized discreteness in the fine topology \src{03, 06} |
+| Lemma | `hgeo:us:lem:integral` (line 3367) | Integral projections and unitaries \src{07}; see also \src{03, 06} |
+| Theorem | `hgeo:us:thm:main` (line 3463) | Exact simultaneous straightening \src{07} |
+| Corollary | `hgeo:us:cor:support` (line 3649) | No new scales \src{07} |
+| Corollary | `hgeo:us:cor:gauge` (line 3667) | Gauge classification \src{07} |
+| Corollary | `hgeo:us:cor:extension` (line 3684) | Scale enlargement cannot repair failure \src{07} |
+| Theorem | `hgeo:us:thm:jets` (line 3714) | Jetwise existence implies existence \src{07} |
+| Proposition | `hgeo:us:prop:first` (line 3748) | First-order equation \src{07} |
+| Theorem | `hgeo:us:thm:calculus` (line 3816) | Atomic calculus equivalence \src{07} |
+| Proposition | `hgeo:us:prop:joins` (line 3896) | Joins when the criterion holds \src{07} |
+| Proposition | `hgeo:us:prop:weighted` (line 3947) | Weighted reconstruction \src{07} |
+| Theorem | `hgeo:us:thm:uniform` (line 3984) | A uniformly controlled nonsynthesizable family \src{07} |
+| Theorem | `hgeo:us:thm:support` (line 4130) | Bounded columns with incoherent support \src{07} |
+| Corollary | `hgeo:us:cor:surreal` (line 4208) | Set-indexed surreal descent \src{07} |
+| Corollary | `hgeo:us:cor:classmaps` (line 4233) | Class unitaries \mergetag |
+| Theorem | `hgeo:us:thm:omnific` (line 4281) | Omnific matrix rigidity \src{07} |
 
 ### discrete-initial-subgroups-and-omnific-normalization
 
@@ -6778,35 +6796,63 @@ proof review and source reconciliation remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `isc:lem:avoid` (line 654) | A cut avoiding a set |
-| Lemma | `isc:lem:extend` (line 668) | Ordered one-point extension with avoidance |
-| Theorem | `isc:thm:group` (line 708) | Independent group copies over any set-sized base |
-| Corollary | `isc:cor:groupintersection` (line 762) | Untitled |
-| Theorem | `isc:thm:lift` (line 787) | Monomial lift |
-| Proposition | `isc:prop:arithmeticlift` (line 819) | What the lift remembers |
-| Proposition | `isc:prop:classification` (line 863) | Classification within the monomial-preserving class |
-| Lemma | `isc:lem:slice` (line 914) | Slice linearity and separation |
-| Lemma | `isc:lem:matrix` (line 929) | A finite separating matrix |
-| Theorem | `isc:thm:sliceddisjoint` (line 949) | Full Hahn fields are disjoint over their full intersection |
-| Corollary | `isc:cor:joint` (line 979) | Independence of any finite number of full Hahn fields |
-| Corollary | `isc:cor:relations` (line 999) | Polynomial-relation descent |
-| Corollary | `isc:cor:parameters` (line 1034) | Fixing every element of a prescribed set |
-| Theorem | `isc:thm:intersectionclassification` (line 1059) | Exact classification of set-sized intersections in this class |
-| Theorem | `isc:thm:boolean` (line 1094) | Boolean meet realization |
-| Corollary | `isc:cor:choices` (line 1127) | Independent choices and absence of new relations |
-| Lemma | `isc:lem:compression` (line 1165) | Compression of the surreal order |
-| Theorem | `isc:thm:explicit` (line 1220) | An explicit independent ordinal family |
-| Lemma | `isc:lem:iterated` (line 1270) | Re-expansion at separated scales |
-| Lemma | `isc:lem:finitecoeff` (line 1310) | Finite coefficient-field control |
-| Theorem | `isc:thm:joinobstruction` (line 1329) | A coefficient-transcendence obstruction |
-| Lemma | `isc:lem:denominator` (line 1425) | Common denominators for a set of surreals |
-| Proposition | `isc:prop:uniform` (line 1450) | Separate uniform denominators, no shared uniform one |
-| Proposition | `isc:prop:boundedfrac` (line 1506) | Identification of the fraction fields |
-| Lemma | `isc:lem:gapscale` (line 1548) | Cofinal sequences with polynomial gaps |
-| Theorem | `isc:thm:cofinalgap` (line 1585) | One transcendental series over all bounded-support fractions |
-| Corollary | `isc:cor:factorial` (line 1640) | The factorial witness |
-| Corollary | `isc:cor:noshareddenom` (line 1675) | Failure witnessed by the denominator equation |
-| Theorem | `isc:thm:setversion` (line 1712) | Independent embeddings in a saturated ordered group |
+| Lemma | `isc:lem:avoid` (line 675) | A cut avoiding a set |
+| Lemma | `isc:lem:extend` (line 689) | Ordered one-point extension with avoidance |
+| Theorem | `isc:thm:group` (line 729) | Independent group copies over any set-sized base |
+| Corollary | `isc:cor:groupintersection` (line 783) | Untitled |
+| Theorem | `isc:thm:lift` (line 808) | Monomial lift |
+| Proposition | `isc:prop:arithmeticlift` (line 840) | What the lift remembers |
+| Proposition | `isc:prop:classification` (line 884) | Classification within the monomial-preserving class |
+| Lemma | `isc:lem:slice` (line 935) | Slice linearity and separation |
+| Lemma | `isc:lem:matrix` (line 950) | A finite separating matrix |
+| Theorem | `isc:thm:sliceddisjoint` (line 970) | Full Hahn fields are disjoint over their full intersection |
+| Corollary | `isc:cor:joint` (line 1000) | Independence of any finite number of full Hahn fields |
+| Corollary | `isc:cor:relations` (line 1020) | Polynomial-relation descent |
+| Corollary | `isc:cor:parameters` (line 1055) | Fixing every element of a prescribed set |
+| Theorem | `isc:thm:intersectionclassification` (line 1091) | Exact classification of set-sized intersections in this class |
+| Theorem | `isc:thm:boolean` (line 1126) | Boolean meet realization |
+| Corollary | `isc:cor:choices` (line 1159) | Independent choices and absence of new relations |
+| Lemma | `isc:lem:compression` (line 1197) | Compression of the surreal order |
+| Theorem | `isc:thm:explicit` (line 1252) | An explicit independent ordinal family |
+| Lemma | `isc:lem:iterated` (line 1302) | Re-expansion at separated scales |
+| Lemma | `isc:lem:finitecoeff` (line 1342) | Finite coefficient-field control |
+| Theorem | `isc:thm:joinobstruction` (line 1366) | A coefficient-transcendence obstruction |
+| Lemma | `isc:lem:denominator` (line 1471) | Common denominators for a set of surreals |
+| Proposition | `isc:prop:uniform` (line 1496) | Separate uniform denominators, no shared uniform one |
+| Proposition | `isc:prop:boundedfrac` (line 1552) | Identification of the fraction fields |
+| Lemma | `isc:lem:gapscale` (line 1594) | Cofinal sequences with polynomial gaps |
+| Theorem | `isc:thm:cofinalgap` (line 1631) | One transcendental series over all bounded-support fractions |
+| Corollary | `isc:cor:factorial` (line 1686) | The factorial witness |
+| Corollary | `isc:cor:noshareddenom` (line 1721) | Failure witnessed by the denominator equation |
+| Theorem | `isc:thm:setversion` (line 1758) | Independent embeddings in a saturated ordered group |
+| Lemma | `isc:cp:lem:derivation` (line 2659) | Untitled |
+| Lemma | `isc:cp:lem:cfg` (line 2712) | Untitled |
+| Theorem | `isc:cp:thm:rank` (line 2744) | Finite rank and finite-rank denominators |
+| Corollary | `isc:cp:cor:finitecoeff` (line 2810) | Finite coefficient extensions |
+| Lemma | `isc:cp:lem:coeffld` (line 2836) | Coefficient extension |
+| Lemma | `isc:cp:lem:basechange` (line 2847) | Intermediate base change |
+| Lemma | `isc:cp:lem:coset` (line 2868) | Coset slices |
+| Corollary | `isc:cp:cor:transfer` (line 2901) | Independence survives both enlargements |
+| Theorem | `isc:cp:thm:lacunary` (line 2941) | Rapid coefficient-degree independence |
+| Corollary | `isc:cp:cor:continuum` (line 3057) | A continuum family in one coefficient field |
+| Corollary | `isc:cp:cor:fginsufficient` (line 3074) | Failure of the finite coefficient-field criterion |
+| Lemma | `isc:cp:lem:partial` (line 3125) | Avoiding a finitely generated coefficient field |
+| Theorem | `isc:cp:thm:generic` (line 3158) | Private coefficient blocks |
+| Corollary | `isc:cp:cor:tree` (line 3219) | Tree amplification |
+| Proposition | `isc:cp:prop:local` (line 3239) | Set-local form |
+| Corollary | `isc:cp:cor:sandwich` (line 3263) | Three distinct closure levels |
+| Theorem | `isc:cp:thm:cardinal` (line 3282) | Maximal Laurent transcendence |
+| Corollary | `isc:cp:cor:classicalexamples` (line 3326) | Untitled |
+| Corollary | `isc:cp:cor:surrealrank` (line 3428) | The exact test for these copies |
+| Theorem | `isc:cp:thm:omnific` (line 3497) | Explicit omnific differential freedom |
+| Corollary | `isc:cp:cor:threshold` (line 3562) | Countable support is the sharp cardinal threshold |
+| Lemma | `isc:cp:lem:localizeP` (line 3601) | Coefficient localization for a parameter set |
+| Lemma | `isc:cp:lem:tailcoeff` (line 3637) | A tail is independent over the localized coefficient field |
+| Theorem | `isc:cp:thm:resilience` (line 3668) | Set-parameter tail resilience |
+| Corollary | `isc:cp:cor:nosetgen` (line 3703) | No set-sized algebraic or differential generation |
+| Lemma | `isc:cp:lem:clearing` (line 3741) | Monomial denominator clearing |
+| Theorem | `isc:cp:thm:arithmetic` (line 3771) | Arithmetic failure cannot be repaired by a set |
+| Theorem | `isc:cp:thm:complex` (line 3822) | Surcomplex independence and Gaussian witnesses |
 
 ### exponential-relations-over-omnific-integers
 
