@@ -397,6 +397,11 @@ corresponding full Hahn pullbacks.
 The constant inclusion and kernel now form a proved definable split exact
 sequence. Both printed orders of existential and universal quantifiers for
 the constant-term graph are also proved equivalent to its existential formula.
+Every unital homomorphism between the coefficient-restricted rings is now
+proved to respect constant terms: integer constants are fixed, while Gaussian
+constants are uniformly fixed or conjugated according to the image of `i`.
+This holds between different exponent groups and coefficient fields containing
+`√2`, and between the actual omnific carriers at different universes.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with

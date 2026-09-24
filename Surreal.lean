@@ -710,6 +710,9 @@ import Surreal.Algebra.DefinableSplitting
 import Surreal.Algebra.ConstantTermPrenex
 import Surreal.HahnSeries.DefinableSplitting
 import Surreal.Surcomplex.DefinableSplitting
+import Surreal.Algebra.ConstantTermHomomorphisms
+import Surreal.HahnSeries.ConstantTermHomomorphisms
+import Surreal.Surcomplex.ConstantTermHomomorphisms
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants

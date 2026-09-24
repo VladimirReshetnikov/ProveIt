@@ -5745,3 +5745,31 @@ whitespace validation. No Lean or finite verifier source changed; finite
 checks were not rerun as evidence for cardinal bounds. The prior
 two-thread 4,580-job build and 16,230-declaration audit remain the Lean
 baseline for this documentation-only pass.
+
+## Synchronization of constant-term homomorphism proofs
+
+Merged c990b63, including 4ee4707, and checked its three new modules
+against `odg:def:thm:homct`. Mapping the existential graph witnesses
+proves commutation with embedded constant terms. Integer homomorphism
+uniqueness fixes the integer constants; quadratic-ring extensionality and
+the two square roots in a domain give the Gaussian identity/conjugation
+alternative. The sign of the image of i and a single action valid for
+every input occur together in each branch.
+
+The Hahn theorem allows different ordered abelian exponent groups and
+different characteristic-zero coefficient fields containing a square root
+of two, with injective Gaussian coefficient embeddings where needed.
+Actual omnific and Gaussian omnific instances allow different universes.
+No target-size bound, continuity or pointwise fixation of all ambient
+coefficients is assumed. The proof preserves equations and existential
+witnesses; it neither assumes preservation of arbitrary first-order
+formulas nor claims annihilation of the purely infinite ideal. The README
+and ledger accurately reflect this scope.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,583 jobs and the
+axiom audit checks 16,239 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across 63
+reports, 5,212 source-label references and 1,795 local Markdown
+destinations across 226 files pass. Whitespace checks pass. No TeX
+sources or PDFs changed in the merge; the 275-page article and 33-page
+catalogue builds from this review remain current.
