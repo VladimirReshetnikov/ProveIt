@@ -162,7 +162,8 @@ just sets of individual products. Constant extraction on `L(M) = M + Π`
 has value in M; it is the restriction of the coefficient map on B and
 satisfies `ct(ax) = ct(a)ct(x)`. The tensor carrier's multiplication map
 sends `(u,t)` to `u + m(t)`, with torsion embedded as `(0,ker m)`.
-This is A-torsion; the same kernel is free over D. Its annihilator is
+This is A-torsion; in the integer and Gaussian setting the same kernel
+is free over the PID D. Its annihilator is
 exactly Π only when the kernel is nonzero; the zero module has annihilator
 A. The constant inclusion into the tensor carrier is D-linear and need
 not be A-linear. Exterior degree j ≥ 2 has action through ct; symmetric
@@ -170,6 +171,14 @@ degree n ≥ 1 retains the coupled action. Zeroth powers use A.
 For class rings, each universal-property argument fixes a target class
 module and constructs a factorization by finite formulas. The ordinary
 constant tensor, exterior and symmetric modules are set-sized carriers.
+
+For the general coefficient-Tor theorem over an arbitrary unital
+`D ⊆ K`, the lattices M and N are finite free by definition, but
+`MN` and `𝒯(M,N) = ker(M ⊗_D N → K)` need not be free.
+Their ranks are dimensions after localization to `Frac(D)`.
+The kernel 𝒯 is D-torsion-free, although it is A-torsion through the
+constant-term action. The product span `V²` in the field-detection
+criterion is the `Frac(D)`-span of products, not merely their set.
 
 In the Rees algebra, T is a formal grading variable, independent of the
 monomial Xᵉ used to scale L(M) into an ideal. Presentation variables Xᵢ

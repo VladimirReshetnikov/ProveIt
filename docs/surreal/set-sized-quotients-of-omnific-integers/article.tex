@@ -6766,31 +6766,94 @@ a $D$-module of rank $rs-\rk(MN)$ (ranks are dimensions after tensoring with $\F
 whose first term is the torsion submodule of $I\otimes_AJ$ and is killed by $\Pi$.
 \end{theorem}
 \begin{proof}
-Let $m_1,\dots,m_r$ be a basis of $M$. By \cref{osq:tn:thm:syzygy}(ii) the natural presentation of $I$ is
-$0\to K_M\to A^r\to I\to0$ with $K_M=\{u\in\Pi^r:\sum_jm_ju_j=0\}$. Since $\Pi$ is an ideal of $B$ and a $K$-space, $K_M$ is a
-$B$-module and $\mu K_M=K_M$ for $0\ne\mu\in K$; as $J=X^h(N+\Pi)$ with $N\ne0$, this gives $JK_M=X^hK_M$. Tensoring the presentation
-with $A/J$ gives
+Put $F=\Frac(D)$. A lattice here is finite free by definition;
+no principal-ideal or Noetherian hypothesis on $D$ is used.
+Fix a basis $m_1,\dots,m_r$ of $M$. Scaling the presentation in
+\cref{osq:tn:thm:syzygy}(ii) by $X^g$ gives
 \[
- \Tor^A_1(I,A/J)\cong\ker\bigl(K_M/JK_M\to(A/J)^r\bigr)=(K_M\cap J^r)/X^hK_M .
+ 0\longrightarrow K_M\longrightarrow A^r
+ \xrightarrow{(a_j)\mapsto X^g\sum_jm_ja_j}I\longrightarrow0,
+ \qquad K_M=\{u\in\Pi^r:\textstyle\sum_jm_ju_j=0\}.
 \]
-Let $x\in K_M\cap J^r$ and write $x=X^hy$ with $y\in(N+\Pi)^r$, uniquely since $X^h$ is a nonzerodivisor, and $c=\ct(y)\in N^r$. From
-$\sum_jm_jy_j=0$ and $K\cap\Pi=0$ one gets $\sum_jm_jc_j=0$. The map $x\mapsto c$ is additive and onto the solutions of this equation
-in $N^r$: for such $c$, $x=X^hc$ lies in $\Pi^r\cap J^r$ and in $K_M$. Its kernel is $X^hK_M$: if $c=0$ then $y\in\Pi^r$ and
-$\sum_jm_jy_j=0$, so $y\in K_M$; conversely elements of $X^hK_M$ have $c=0$. The basis identifies $N^r$ with $M\otimes_DN$ by
-$(c_j)\mapsto\sum_jm_j\otimes c_j$, and the equation with $\ker\mathsf m_{M,N}$; a change of basis of $M$ changes both sides by the same
-invertible matrix. For $a\in A$ the constant term of $ay$ is $\ct(a)c$, which is the action. The sequence $0\to I\to A\to A/I\to0$ and
-$\Tor_{>0}(A,-)=0$ give $\Tor_2(A/I,A/J)\cong\Tor_1(I,A/J)$, and $0\to\mathcal T(M,N)\to M\otimes_DN\to MN\to0$ gives the rank.
+The kernel is a $B$-module and a $K$-vector space: multiplication
+preserves both the tail coordinates and their linear relation.
+Consequently $JK_M\subseteq X^hK_M$. For the reverse inclusion,
+choose $0\ne n\in N$. For every $u\in K_M$,
+$X^hu=(X^hn)(u/n)\in JK_M$, since $u/n\in K_M$.
+Thus $JK_M=X^hK_M$.
 
-Tensoring $0\to J\to A\to A/J\to0$ with $I$ identifies $\Tor_1(I,A/J)$ with the kernel of the multiplication $I\otimes_AJ\to I$. Its
-image is $IJ=X^{g+h}(M+\Pi)(N+\Pi)=X^{g+h}(MN+\Pi)$: products with a factor in $\Pi$ lie in $\Pi$, and $u=m(u/m)$ for $u\in\Pi$ and
-$0\ne m\in M$. The kernel is killed by $\Pi$ because $A$ acts through $\ct$, and the image, a submodule of a field, is torsion free;
-so the kernel is exactly the torsion.
+Tensor the presentation with $A/J$. Since $A^r$ is free, its
+positive $\Tor$ groups vanish, and the long exact sequence gives
+\[
+ \Tor^A_1(I,A/J)\cong
+ \ker\bigl(K_M/JK_M\longrightarrow(A/J)^r\bigr)
+ = (K_M\cap J^r)/X^hK_M.
+\]
+For $x\in K_M\cap J^r$, write $x=X^hy$ with
+$y\in(N+\Pi)^r$. This expression is unique in the ambient field.
+Cancellation of $X^h$ gives $\sum_jm_jy_j=0$.
+Use the coefficient map on $B=K\oplus\Pi$ coordinatewise to set
+$c=\ct(y)\in N^r$. The constant part of that relation is
+$\sum_jm_jc_j=0$. Conversely, every such tuple $c$ lifts to
+$x=X^hc\in K_M\cap J^r$. The kernel of $x\mapsto c$ is
+exactly $X^hK_M$: a zero constant tuple means $y\in\Pi^r$,
+and its unchanged relation then means $y\in K_M$.
+For $a\in A$, one has $\ct(ay)=\ct(a)c$, so this quotient
+map is $A$-linear when the coefficient tuples have action through $\ct$.
+
+The basis isomorphism
+\[
+ N^r\longrightarrow M\otimes_DN,\qquad
+ (c_j)\longmapsto\sum_jm_j\otimes c_j
+\]
+identifies the equation $\sum_jm_jc_j=0$ with
+$\mathcal T(M,N)$. Changes of basis give the same coefficient
+tensor. Dimension shifting in $0\to I\to A\to A/I\to0$
+now identifies $\Tor^A_2(A/I,A/J)$ with $\Tor^A_1(I,A/J)$.
+Finally, localization at $D\setminus\{0\}$ is exact. Applying it to
+\[
+ 0\longrightarrow\mathcal T(M,N)\longrightarrow M\otimes_DN
+ \xrightarrow{\mathsf m_{M,N}}MN\longrightarrow0
+\]
+gives the rank $rs-\rk(MN)$, because $M\otimes_DN\cong D^{rs}$.
+Here $MN$ is the $D$-span of the products. Over an arbitrary $D$
+this rank computation asserts neither freeness nor finite generation
+of the kernel.
+
+Tensoring $0\to J\to A\to A/J\to0$ with $I$ gives an
+injection of $\Tor^A_1(I,A/J)$ into $I\otimes_AJ$, whose image
+is the kernel of multiplication. The coefficient description sends
+$t=\sum_jm_j\otimes c_j\in\mathcal T(M,N)$ to
+\[
+ \lambda(t)=\sum_j(X^gm_j)\otimes(X^hc_j).
+\]
+Indeed, the tuple $X^hc\in K_M\cap J^r$ represents the connecting
+class just computed. There is also a direct check that this tensor
+cannot vanish when $t\ne0$. The $A$-balanced map
+\[
+ (a,b)\longmapsto\ct(X^{-g}a)\otimes_D\ct(X^{-h}b),
+ \qquad a\in I,\ b\in J,
+\]
+induces $\rho:I\otimes_AJ\to M\otimes_DN$ with
+$\rho\lambda(t)=t$. Balancing follows from the coefficient action
+through $D$ on both factors.
+
+The image of multiplication is
+$IJ=X^{g+h}(MN+\Pi)$. Products with a tail factor lie in $\Pi$;
+conversely every tail $u$ is $m(u/m)$ with $0\ne m\in M$ and
+$u/m\in\Pi\subseteq N+\Pi$. This proves the stated exact sequence.
+Its kernel is killed by $\Pi$, hence by the nonzero element $X^h$
+of the domain $A$, so every kernel element is $A$-torsion.
+Conversely any torsion tensor maps to zero in $IJ$, since $IJ$ is
+a submodule of a field. The kernel is therefore exactly the torsion
+submodule. It is nevertheless torsion free over $D$, being a
+submodule of $D^{rs}$; the two uses of torsion have different base rings.
 \end{proof}
 
 For $R^{11}_\kappa$ with uncountable $\kappa$ this is 17's theorem. Its proof uses only the properties of Setting (L) and the
 presentation of \cref{osq:tn:thm:syzygy}(ii), which is why it applies to 12's cores and to 14's $A_0=T_\Q$; that extension is the
 merge's. The exact sequence is 14's \cref{osq:tn:thm:tensor} for the class ring and for $A_0$, where the class tensor product is an
-explicit carrier; the $\Tor$ identifications are 17's. The proof shows which coefficient relations survive: a relation
+explicit carrier; the $\Tor$ identifications are 17's. The proof shows which coefficient relations survive: a nonzero relation
 $\sum_jm_j\otimes c_j$ is represented in $I\otimes_AJ$ by $\sum_j(X^gm_j)\otimes(X^hc_j)$, whose product is zero although the tensor
 is not (17). Manuscript~21, whose pin precedes 17's placement, proves the identification of $\Tor_2$ with $\mathcal T(M,N)$, the action
 through $\ct$ and the rank again, independently and by the same kernel computation, over $T_\Q$ and over the class ring in a two-universe
@@ -6803,13 +6866,42 @@ If $c^2\in D$, it is free with basis $1\otimes c-c\otimes1$ and $c\otimes c-c^2(
 $\Tor_2(A/H,A/H)\cong D\oplus D$.
 \end{corollary}
 \begin{proof}
-Apply \cref{osq:rel:thm:tor} with $N=M$. The span $M^2=D+Dc+Dc^2$ has rank $2$ exactly when $c^2\in\Frac(D)+\Frac(D)c$. If $c^2\in D$,
-the multiplication map sends $a(1\otimes1)+b(1\otimes c)+b'(c\otimes1)+d(c\otimes c)$ to $(a+dc^2)+(b+b')c$, and since $1,c$ are
-independent over $D$ its kernel is as stated.
+Put $F=\Frac(D)$ and apply \cref{osq:rel:thm:tor} with $N=M$.
+The elements $1,c$ are $F$-independent, and
+$FM^2=F+Fc+Fc^2$. Its dimension is two exactly when $c$ satisfies
+a quadratic equation over $F$; otherwise it is three, including
+both algebraic degree at least three and the transcendental case.
+Subtracting from four gives the asserted ranks.
+
+If $c^2\in D$, write a tensor in the $D$-basis
+$1\otimes1,1\otimes c,c\otimes1,c\otimes c$ as
+\[
+ t=a(1\otimes1)+b(1\otimes c)+b'(c\otimes1)+d(c\otimes c).
+\]
+Its product is $(a+dc^2)+(b+b')c$. Independence of $1,c$
+therefore makes the product zero exactly when
+$a=-dc^2$ and $b'=-b$. Equivalently,
+\[
+ t=b(1\otimes c-c\otimes1)
+   +d\bigl(c\otimes c-c^2(1\otimes1)\bigr).
+\]
+The coordinates of $1\otimes c$ and $c\otimes c$ recover $b,d$,
+so these two generators are a basis, not just a spanning family.
 \end{proof}
 
-Thus 12's hypothesis $c^2\in D$ is needed for the particular isomorphism $\Tor_2\cong D+cD$ of \cref{osq:hd:thm:fdlattice}, not for
-the nonvanishing or the rank, which \cref{osq:rel:cor:twelve} gives for every $c\notin\Frac(D)$.
+The hypothesis $c^2\in D$ supplies the displayed basis and the
+isomorphism in \cref{osq:hd:thm:fdlattice}; it is sufficient, not
+necessary. More generally, if $c^2=u+vc$ with $u,v\in D$, the same
+coordinate calculation gives the basis
+\[
+ 1\otimes c-c\otimes1,\qquad
+ c\otimes c-u(1\otimes1)-v(1\otimes c).
+\]
+For example, over $D=\Z$ the golden ratio $c=(1+\sqrt5)/2$
+has $c^2=1+c\notin\Z$, but the kernel is still free of rank two.
+Without such an integral relation, the corollary still computes the
+rank; it does not infer freeness over an arbitrary coefficient ring.
+Nonvanishing holds for every $c\notin\Frac(D)$.
 
 \begin{corollary}[The self-$\Tor$ range \src{17; 21}]\label{osq:rel:cor:selftor}
 In \cref{osq:rel:thm:tor} let $N=M$, $J=I$ and $\ell=\rk(M^2)$. Then
@@ -6819,11 +6911,32 @@ In \cref{osq:rel:thm:tor} let $N=M$, $J=I$ and $\ell=\rk(M^2)$. Then
 For $(D,k)=(\Z,\R)$ and $(\Z[i],\C)$ both ends occur for every $r\ge1$.
 \end{corollary}
 \begin{proof}
-Multiplication by a fixed nonzero element embeds $M$ in $M^2$, and $M^2$ is spanned by the $r(r+1)/2$ products $m_im_j$, $i\le j$; so
-$r\le\ell\le r(r+1)/2$. For the lower end take $M=D+D\alpha_2+\dots+D\alpha_r$ with $\alpha_2,\dots,\alpha_r\in k$ algebraically
-independent over $\Frac D$: the products are the $r(r+1)/2$ distinct monomials of degree at most two, independent over $\Frac D$. For
-the upper end take for $M$ an order of rank $r$, so that $M^2=M$: over $\Q$ the order $\Z[2^{1/r}]$ ($X^r-2$ is Eisenstein at $2$),
-over $\Q(i)$ the $\Z[i]$-order generated by a root of $X^r-(1+i)$ (Eisenstein at the Gaussian prime $1+i$).
+Choose $0\ne m\in M$. Multiplication by $m$ embeds $M$ in $M^2$,
+while the $r(r+1)/2$ products $m_im_j$ with $i\le j$ span $M^2$.
+After localization at $D\setminus\{0\}$ these give
+$r\le\ell\le r(r+1)/2$. Subtract from $r^2$ and use
+\cref{osq:rel:thm:tor}.
+
+For the lower endpoint, take
+$M=D+D\alpha_2+\cdots+D\alpha_r$ with the $\alpha_j\in k$
+algebraically independent over $F=\Frac(D)$. Such a finite family
+exists in both cases: $F$ is countable, the field generated by finitely
+many chosen elements is countable, and its algebraic elements in $k$
+form a countable set; choose the next element outside it. The products
+are precisely the distinct monomials $1,\alpha_j,\alpha_i\alpha_j$
+with $2\le i\le j\le r$, so algebraic independence gives
+$\ell=r(r+1)/2$.
+
+For the upper endpoint, use an order $M$ of rank $r$, with $1\in M$.
+Then $M^2=M$. Over $\Z$, take $M=\Z[\theta]$ with the positive
+real root $\theta=2^{1/r}$. The polynomial $X^r-2$ is Eisenstein
+at $2$, so $1,\theta,\dots,\theta^{r-1}$ is a $\Z$-basis.
+Over $\Z[i]$, choose a complex root of $X^r-(1+i)$ and use its
+powers in the same way; Eisenstein at the Gaussian prime $1+i$
+gives degree $r$ over $\Q(i)$. Monicity reduces higher powers
+to this basis, proving both finite freeness and closure under
+multiplication. For $r=1$ the independent family is empty and
+both constructions give $M=D$; both endpoints are then zero.
 \end{proof}
 
 21 proves the rank $r^2-\ell$ and the value $r(r-1)$ for orders again, independently, and splits $\Tor_2$ into alternating and
@@ -6834,9 +6947,23 @@ In \cref{osq:rel:cor:selftor} suppose $1\in M$ and put $V=\Frac(D)M$. Then $\rk 
 multiplication of $k$), if and only if $\rk\Tor^A_2(A/I,A/I)=r(r-1)$. This does not imply that $M$ itself is a ring.
 \end{proposition}
 \begin{proof}
-As $1\in V$, $V\subseteq V^2$, and equality of dimensions means that $V$ is closed under multiplication; then each $0\ne v\in V$
-acts injectively, hence surjectively, on $V$, so $vw=1$ for some $w\in V$. Conversely a field has $V^2=V$. The last equivalence is
-\cref{osq:rel:cor:selftor}. For $M=\Z+\Z/\sqrt2$ one has $1\in M$ and $\rk M^2=2$, but $(1/\sqrt2)^2=1/2\notin M$.
+Put $F=\Frac(D)$ and let $V^2$ denote the $F$-span of all products
+of elements of $V$. Thus $V^2=FM^2$, with dimensions
+$\dim_FV=r$ and $\dim_FV^2=\rk M^2$. Since $1\in V$,
+one has $V\subseteq V^2$. Equality of dimensions is therefore
+equivalent to $V=V^2$, hence to closure of $V$ under multiplication.
+If this holds and $0\ne v\in V$, the $F$-linear map
+$w\mapsto vw$ is an injective endomorphism of the finite-dimensional
+space $V$, since $V\subseteq k$ and $k$ is a field. It is surjective,
+so $vw=1$ for some $w\in V$. Thus $V$ is a field. Conversely,
+if $V$ is a field then $V^2=V$. The equivalence with the maximal
+second-$\Tor$ rank follows from \cref{osq:rel:cor:selftor}.
+
+The lattice need not be closed under multiplication. For
+$M=\Z+\Z\cdot(1/\sqrt2)$ one has $FM=\Q(\sqrt2)$ and
+$\rk M^2=2$. But $(1/\sqrt2)^2=1/2\notin M$: an equality
+$1/2=a+b/\sqrt2$ with integers $a,b$ forces $b=0$ by
+irrationality of $\sqrt2$, then the impossible equality $a=1/2$.
 \end{proof}
 
 \begin{theorem}[Rank-two moduli \src{17}]\label{osq:rel:thm:mobius}

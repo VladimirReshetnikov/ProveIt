@@ -1460,3 +1460,46 @@ All 4,626 anchors across 63 reports, 5,217 source-label references and 1,823
 local Markdown destinations across 226 files pass, as does whitespace
 checking. No TeX source changed; the 291-page article and 34-page catalogue
 remain current.
+
+## Coefficient-Tor maps, ranks and field detection
+
+Reviewed `osq:rel:thm:tor`, `osq:rel:cor:twelve`,
+`osq:rel:cor:selftor` and `osq:rel:prop:field`. All four statements
+are unchanged. The general theorem now constructs both inclusions in
+J K_M = X^h K_M, the coefficient quotient of the relation module, the
+connecting tensor and a coefficient projection detecting nonzero tensors.
+The dimension shift and localized exact sequence give the rank. The
+proof separates A-torsion, killed by a nonzero tail monomial, from
+D-torsion: the coefficient kernel is D-torsion-free. Over arbitrary D,
+lattices are finite free by definition, but no freeness or finite
+generation of their multiplication kernel is inferred from its rank.
+
+Corrected the commentary that called c squared in D necessary for the
+quadratic module isomorphism. It is sufficient. The more general relation
+c squared = u + v c, with u and v in D, also supplies an explicit free
+basis. The golden ratio is a counterexample to the claimed necessity.
+The rank calculation covers every quadratic element, higher algebraic
+degree and transcendental elements. The explanation of surviving tensors
+now requires a nonzero coefficient relation.
+
+The endpoint proof constructs the algebraically independent finite family,
+checks the monic Eisenstein orders in both real and Gaussian cases, and
+includes rank one. The field criterion defines the product span V squared
+and explains the finite-dimensional inverse argument. Its example now
+writes Z + Z times (1/sqrt(2)) unambiguously and proves that this lattice
+is not a ring, although its rational span is a field.
+
+Updated the root README, report guide, catalogue, notation and source
+anchors. Corrected a remaining guide reference to a finite presentation
+where a finite-free surjection is meant. These four results remain Pending
+in Lean. The subsequent moduli, endomorphism-order and derived results,
+and full reconciliation of the parallel sources, await review.
+
+Validation: three clean TeX passes for the 293-page article and 34-page
+catalogue, with no warnings or box diagnostics; visual checks of the four
+proofs and catalogue. All 418 standard/principal statements, 828 labels
+and 1,656 auxiliary label/number pairs are unchanged. All 4,626 anchors
+across 63 reports, 5,217 source-label references and 1,823 local Markdown
+destinations across 226 files pass, as does whitespace checking. No Lean
+source changed, so the previous two-thread 4,611-job build and
+16,740-declaration axiom audit remain the Lean baseline for this pass.

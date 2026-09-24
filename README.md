@@ -252,6 +252,14 @@ has exactly κ relations in the sense of minimal generator cardinality.
 At κ = ℵ₀ these modules are countably presented but not finitely
 presented; their projective dimension is two and that of the cyclic
 quotient is three.
+The coefficient-Tor proof now identifies the actual maps: second Tor is
+exactly the kernel of ordinary coefficient multiplication, of rank
+`rs − rank(MN)`. It is torsion over the omnific ring but torsion free over
+D; freeness over arbitrary D is not asserted. The maximal self-Tor rank
+detects a field after extending scalars, even when the coefficient lattice
+itself is not a ring. A quadratic example also corrects an unnecessary
+restriction: `c² ∈ D` suffices for the displayed free kernel, but is not
+necessary.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
