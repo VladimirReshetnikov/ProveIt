@@ -14808,13 +14808,80 @@ For a nonzero set-sized ordered abelian group $G$, with the notation of \cref{os
 For $G=\{0\}$, $\mathsf C(G)=\overline\Z_\R$.
 \end{proposition}
 \begin{proof}
-Let $I=\Pi(G)\NN(G)$ and $L=\sqrt I$. $I$ is divisible by nonzero integers, and so is $L$: if $x^m\in I$, then $(x/n)^m\in I\subseteq\NN(G)$,
-so $x/n\in\NN(G)$ by normality and then $x/n\in L$. A monic $\Pi(G)$-certificate for a nonzero integer, followed by $\ct$, would make a
-nonzero power of it vanish; so $L\cap\Z=0$, and $\mathsf C(G)$ is nonzero, reduced, torsion free and integral over $\Z$. The proof of
-\cref{osq:nf:thm:saturation} applies unchanged. A positive monomial $T=\omega^g$, $0<g\in G$, gives $\upsilon_T\in K_G$ by its binomial
-Laurent expansion, whether or not $K_G$ is real closed, with $\upsilon_T^2+1=T\upsilon_T\in I$; so the coefficient embedding and the
-spectral argument of \cref{osq:nf:lem:coefficients,osq:nf:lem:spectral,osq:nf:thm:boolean} apply. For $G=\{0\}$: $K_G=\R$, $\A(G)=\Z$
-and $\Pi(G)=0$.
+Put $A=\A(G)$, $N=\NN(G)$, $I=\Pi(G)N$ and $L=\sqrt I$,
+where the radical is taken in $N$. Write $C=N/L$ and
+$C^\Q=C\otimes_\Z\Q$. Dividing the coefficients of a finite
+ideal expression by a nonzero integer shows that $I$ is divisible
+by every such integer. If $x\in L$ and $x^m\in I$, then
+$(x/n)^m\in I\subseteq N$ for every $0\ne n\in\Z$.
+Thus $x/n\in K_G$ is integral over $N$, and normality of $N$
+in $K_G$ gives $x/n\in N$ and then $x/n\in L$.
+Consequently $L$ is divisible too. Here normality follows from
+transitivity of integrality, with no real-closedness assumption
+on $K_G$.
+
+If a nonzero integer $n$ belonged to $L$, the radical-certificate
+lemma would give $n^m+\sum_{j<m}c_jn^j=0$ with
+$c_j\in\Pi(G)$. Taking the constant coefficient gives $n^m=0$,
+a contradiction. Hence $C$ is nonzero and contains $\Z$.
+It is reduced by definition of $L$. If $nx\in L$ with
+$x\in N$ and $n\ne0$, divisibility of $L$ in the ambient field
+gives $x\in L$; thus $C$ is torsion free and embeds in $C^\Q$.
+Reducing a monic equation for $x\in N$ replaces its coefficients
+in $A$ by their integer constant coefficients, since
+$\Pi(G)\subseteq L$. Thus $C$ is integral over $\Z$, and
+$C^\Q$ is reduced and algebraic over $\Q$.
+
+The rational saturation argument can also be repeated here.
+The map $N\otimes\Q\to C^\Q$ has kernel exactly $L$, regarded
+as a subset of $K_G$: if $x/n$ maps to zero, some nonzero integer
+multiple of $x$ lies in $L$, and divisibility puts $x/n$ in $L$.
+For an element $y\in C^\Q$ integral over $C$, lift $y$ to
+$x/n$ and its monic equation to $f\in N[X]$. Then
+$c=f(x/n)\in L\subseteq N$, so $f(X)-c$ makes $x/n$ integral
+over $N$. Hence $x/n\in N$ and $y\in C$. Since $C$ is integral
+over $\Z$, this proves
+\[
+ C=\{y\in C^\Q:y\text{ is integral over }\Z\}.
+\]
+
+Now assume $G\ne0$, choose $g>0$ in $G$, and let $T=X^g$
+be the formal Hahn monomial. The Catalan expansion from
+\cref{osq:nf:prop:unit}, with $\omega$ replaced by $T$, gives
+\[
+ \upsilon_T=\sum_{n\ge0}\frac1{n+1}\binom{2n}n
+ T^{-(2n+1)}\in K_G,\qquad
+ \upsilon_T^2-T\upsilon_T+1=0.
+\]
+Its decreasing cyclic support is admissible in every ordered
+abelian $G$. The equation is monic over $A$, so
+$\upsilon_T\in N$, and
+$\upsilon_T^2+1=T\upsilon_T\in I\subseteq L$. Its residue
+$v\in C$ therefore has $v^2=-1$.
+
+The ordinary real algebraic integers are constant elements of $N$.
+For each nonzero such $a$ there are $b\in\Z[a]$ and
+$0\ne n\in\Z$ with $ab=n$, as in
+\cref{osq:nf:lem:coefficients}. Thus their residues are nonzero
+and invertible in $C^\Q$, and give an embedded field
+$k_0=\overline\Q\cap\R$. Sending $i$ to $v$ gives a unital
+map from the field $k_0(i)=\overline\Q$ into the nonzero ring
+$C^\Q$, hence an embedding. Rational saturation puts its
+algebraic integers in $C$.
+
+Apply \cref{osq:nf:lem:spectral} to $C^\Q$.
+Its idempotents satisfy $X^2-X=0$, so they already belong to $C$.
+In a spectral expression $x=\sum_j\lambda_je_j$ with nonzero
+parts, a monic integer equation for $x$ implies
+$f(\lambda_j)e_j=0$. A nonzero algebraic number is a unit in
+$C^\Q$, so every $\lambda_j$ is an algebraic integer. Conversely
+a finite sum with algebraic-integer coefficients and idempotent
+parts is integral over $\Z$, hence belongs to $C$. Equality of
+two expressions is equality of coefficients on each nonzero common
+part, by the same unit argument. This proves the finite-partition
+Boolean-power isomorphism. If $G=\{0\}$, instead $K_G=\R$,
+$A=\Z$, $\Pi(G)=0$ and $N=\overline\Z_\R$, proving the
+separate assertion.
 \end{proof}
 
 This complements \cref{osq:nf:thm:abstract}, which describes the unreduced $N_\bullet/JN_\bullet$ under the divisibility axiom (ii) that a
@@ -14829,9 +14896,30 @@ Every set-sized subring of $\mathsf B_\C$ has a uniform splitter, and \cref{osq:
 $\mathsf B_\C$.
 \end{corollary}
 \begin{proof}
-Identify $\mathsf B_\C=\mathsf B_\R\times\mathsf B_\R$ (\cref{osq:nf:thm:doubling}). For a set-sized subring $S$ let $R$ be the ring generated by
-both coordinate projections of $S$ and $e$ a splitter of $R$; the diagonal idempotent $(e,e)$ splits every nonzero pair, since some
-coordinate is nonzero. The other proofs use only uniform splitting.
+Use the integral doubling isomorphism
+$\mathsf B_\C\cong\mathsf B_\R\times\mathsf B_\R$
+of \cref{osq:nf:thm:doubling}. For a set-sized subring $S$,
+let $R$ be the unital subring of $\mathsf B_\R$ generated by
+both coordinate projections of $S$. It is a set. Choose a uniform
+splitter $e$ for $R$ and put $d=(e,e)$. If $(r,s)\in S$ is
+nonzero, at least one coordinate is nonzero. That coordinate
+survives multiplication by both $e$ and $1-e$, so both
+$(r,s)d$ and $(r,s)(1-d)$ are nonzero. Thus $d$ is a uniform
+splitter for $S$, with no requirement that both coordinates be
+nonzero.
+
+The set-length recursion and finite-atom argument of
+\cref{osq:bb:thm:free} use only this splitting property, so give
+relative Boolean freeness for $\mathsf B_\C$. Splitting the ring
+generated by one nonzero idempotent proves atomlessness. If all
+idempotents formed a set, a splitter of their generated ring would
+contradict its own complement; splitting the ring generated by a
+proposed set-sized dense family rules out that family. These are
+the same separate arguments as in \cref{osq:bb:thm:atoms}.
+Finally split the ring generated by the entries of an idempotent
+matrix and use the scalar matrix identities of
+\cref{osq:bb:cor:matrix}. These transfers introduce no class
+ultrafilter or additional global-choice hypothesis.
 \end{proof}
 
 Atomlessness does not give $\mathsf B_\R\cong\mathsf B_\R\times\mathsf B_\R$, which would need more information about the global Boolean
@@ -14847,9 +14935,35 @@ With global choice, a set of elements of a Boolean algebra (possibly a proper cl
 contained in an ultrafilter (a class).
 \end{lemma}
 \begin{proof}
-As for \cref{osq:nf:lem:classultra}, adding the prescribed set to the decisions: at stage $\alpha$ add $b_\alpha$ if the prescribed set
-and the earlier decisions together with $b_\alpha$ keep the finite intersection property, and $\neg b_\alpha$ otherwise; if both failed,
-finite meets $c,d$ from the prescribed set and the earlier decisions would satisfy $c\wedge b_\alpha=0=d\wedge\neg b_\alpha$, hence $c\wedge d=0$.
+Let $F$ be the prescribed set. The finite intersection property
+includes the empty meet $1$, so the Boolean algebra is nontrivial.
+Fix a set-like global well-order and enumerate the Boolean algebra
+as $(b_\alpha)$, over a set ordinal or over $\On$ as appropriate,
+as in \cref{osq:nf:lem:classultra}. Put $D_0=F$. At stage
+$\alpha$ adjoin $b_\alpha$ if
+$D_\alpha\cup\{b_\alpha\}$ has the finite intersection property;
+otherwise adjoin $\neg b_\alpha$. At a limit take the union.
+
+If both alternatives failed, there would be finite meets $c,d$
+of elements of $D_\alpha$ with
+$c\wedge b_\alpha=0$ and $d\wedge\neg b_\alpha=0$.
+Then $c\le\neg b_\alpha$, $d\le b_\alpha$ and
+$c\wedge d=0$, contrary to the finite intersection property.
+At a limit every finite list of decisions appears together at an
+earlier stage. Thus all stages preserve that property. Each
+$D_\alpha$ is a set, including the initial seed $F$. The decision
+test concerns finite lists of elements; the Boolean operations and
+enumeration are class parameters. Unique set-length recursion at
+each ordinal therefore gives compatible initial histories, whose
+decisions form one class $D$ by elementary comprehension.
+
+Let $U$ consist of the elements above some finite meet of members
+of $D$. This is a meet-closed, upward-closed class containing $F$
+and $1$, and excluding $0$. For every $b$, one of $b,\neg b$
+was adjoined at its enumeration stage. Hence $U$ is a proper
+filter deciding every element and is an ultrafilter. With the
+well-order fixed, the construction is uniform in the set parameter
+$F$; it never recurses with a class filter as its stage value.
 \end{proof}
 
 \begin{theorem}[An idempotent invisible to every set of small targets \src{20}]\label{osq:bb:thm:noseparating}
@@ -14858,15 +14972,77 @@ set-sized rings. There is $x\in\NN$ whose residue is a nonzero idempotent of $\m
 $\bigcap_i\ker\varphi_i\supsetneq\Pi\NN$, and $\mathsf B_\R$ does not embed in a set-indexed product of set-sized rings.
 \end{theorem}
 \begin{proof}
-The maps factor through $\mathsf B_\R$ (\cref{osq:nf:cor:small}), and together give $\psi:\mathsf B_\R\to S=\prod_iS_i$, a set. Take a
-cardinal $\kappa>|S|$ and the independent family $(e_\alpha)_{\alpha<\kappa}$ of \cref{osq:bb:thm:ordinal}; two members $e_\alpha\ne e_\beta$ have
-the same image $p$, an idempotent. Their symmetric difference $d=e_\alpha+e_\beta-2e_\alpha e_\beta=e_\alpha(1-e_\beta)+(1-e_\alpha)e_\beta$ is an
-idempotent, nonzero by independence, and $\psi(d)=2p-2p^2=0$ in every characteristic. Any lift $x\in\NN$ of $d$ works.
+By \cref{osq:nf:cor:small}, each $\varphi_i$ kills $\Pi\NN$
+and factors uniquely through $B=\mathsf B_\R$. The single class
+relation specifying the family therefore defines a map
+\[
+ \psi:B\longrightarrow S=\prod_{i\in I}S_i,
+ \qquad b\longmapsto(\bar\varphi_i(b))_{i\in I}.
+\]
+For each $b$ its tuple is a set by replacement, and $S$ is a
+set because the targets form a set-indexed family of sets.
+Choose a cardinal $\kappa>|S|$. The independent family
+$(e_\alpha)_{\alpha<\kappa}$ from
+\cref{osq:bb:thm:ordinal} consists of distinct idempotents:
+if two were equal, their mixed Boolean word would vanish.
+Two distinct members therefore have the same image $p\in S$.
+
+Put
+\[
+ d=e_\alpha(1-e_\beta)+(1-e_\alpha)e_\beta
+   =e_\alpha+e_\beta-2e_\alpha e_\beta.
+\]
+The two summands are orthogonal idempotents, each nonzero by
+independence, so their sum is a nonzero idempotent. For example,
+multiplication by the first summand recovers that summand and
+rules out $d=0$. Since $p^2=p$,
+$\psi(d)=2p-2p^2=0$, also in characteristic two. This computation
+requires no commutativity of the whole target: the elements in
+the image of the commutative ring $B$ commute.
+Choose any representative $x\in\NN$ of this one residue $d$.
+Then $x\notin\Pi\NN$ and $\varphi_i(x)=0$ for all $i$, while
+every element of $\Pi\NN$ is already in every kernel. This
+proves strict containment. An embedding of $B$ into a set-indexed
+product would give such a family by composing its projections
+with $\NN\to B$, contradicting this nonzero kernel.
 \end{proof}
 
 Each nonzero residue is detected by a map to the countable domain $\overline\Z$ (\cref{osq:nf:thm:kernel}), so in the elementwise sense of
 \cref{osq:thm:residual} $\mathsf B_\R$ is residually set-sized \merge; but no set-indexed family is jointly faithful. The obstruction
 concerns the size of the index set, not of any one target, and it exhibits a nonzero idempotent in every such common kernel (20).
+
+\paragraph{Invisible idempotents in every Boolean interval \merge.}
+The common kernel is larger in a precise local sense. With the
+induced maps on $B=\mathsf B_\R$, put
+$K=\bigcap_{i\in I}\ker\bar\varphi_i$. Then every nonzero
+idempotent $f\in B$ has a nonzero idempotent $d\in K$ with
+$d\le f$. To prove this, choose a Boolean family
+$(e_\alpha)_{\alpha<\kappa}$ free over the set-sized ring
+$\Z[f]$, where $\kappa>|\prod_iS_i|$. Two members have the
+same product image $p$. Set
+\[
+ d=f\bigl(e_\alpha(1-e_\beta)+(1-e_\alpha)e_\beta\bigr).
+\]
+Its two summands are orthogonal idempotents, and each is nonzero
+by freeness over $\Z[f]$ applied to the coefficient $f$.
+Thus $d$ is nonzero, $df=d$, and its product image is
+$\psi(f)(2p-2p^2)=0$. This proves order density of the nonzero
+idempotents in $K$, without global choice or a class ultrafilter.
+
+In ring terms $K$ meets every nonzero ideal of $B$ nontrivially,
+and $\Ann_B(K)=0$. Indeed take $0\ne x\in B$ and express it
+on a finite algebraic-integer partition. Some nonzero part $f$
+has a nonzero coefficient $\lambda$. Choose $0\ne d\le f$
+as above. Then $xd=\lambda d\in K\cap xB$, and this element
+is nonzero because $\lambda$ is a unit in $B^\Q$ and
+$B\hookrightarrow B^\Q$. For every nonzero ideal choose such
+an $x$ in it; for the annihilator assertion use the same $d$.
+Thus $K$ is an essential ideal in this explicit intersection
+sense. This concerns the induced common kernel in the fibre;
+it does not identify the common kernel with zero or form a
+collection of all class homomorphisms. Elementwise detection by
+individual branch maps remains compatible with the statement.
+
 
 \begin{theorem}[Many branches through prescribed data \src{20}]\label{osq:bb:thm:manymaps}
 Assume global choice. Fix a coefficient copy $\overline\Z\subseteq\mathsf B_\R$ and a branch map $\varphi:\mathsf B_\R\to\overline\Z$ fixing
@@ -14874,28 +15050,116 @@ it. For every set $S\subseteq\mathsf B_\R$ and every cardinal $\kappa$ there are
 on $S$.
 \end{theorem}
 \begin{proof}
-Choose finite-partition representations of the elements of $S$, let $\mathfrak E_0$ be the set-sized Boolean algebra generated by the
-parts used and $B_0=\overline\Z[\mathfrak E_0]$, a set-sized subring containing $S$ and the coefficient copy; $\varphi$ restricted to
-$\mathfrak E_0$ is an ultrafilter $U_0$. Take $(e_\alpha)_{\alpha<\kappa}$ free over $B_0$ (\cref{osq:bb:thm:free}). For
-$\eta:\kappa\to\{0,1\}$, the set $U_0\cup\{e_\alpha:\eta(\alpha)=1\}\cup\{1-e_\alpha:\eta(\alpha)=0\}$ has the finite intersection property: a
-finite meet from $U_0$ is a nonzero idempotent of $B_0$, and its product with any finite assignment word stays nonzero by relative
-freeness. Extend it to a class ultrafilter (\cref{osq:bb:lem:classultra}) and evaluate. The map selects the same part as $\varphi$ in
-every partition from $\mathfrak E_0$, so it agrees with $\varphi$ on $B_0$; different $\eta$ give maps differing on some $e_\alpha$. The
-recursion is uniform in the set parameter $\eta$, so this is a set-indexed class family of maps.
+For each element of the set $S$, choose a finite-partition
+representation. The union of the parts appearing is a set; its
+generated Boolean algebra $\mathfrak E_0$ is a set, since its
+elements are values of finite Boolean expressions. Likewise
+$B_0=\overline\Z[\mathfrak E_0]$ is a set-sized subring of
+$\mathsf B_\R$ containing $S$ and the fixed coefficient copy.
+The domain $\overline\Z$ has only the idempotents $0,1$, so
+\[
+ U_0=\{e\in\mathfrak E_0:\varphi(e)=1\}
+\]
+is an ultrafilter on $\mathfrak E_0$. Indeed the restriction
+preserves Boolean operations and the values of $e$ and $1-e$
+are complementary. In particular every finite meet of members
+of $U_0$ is nonzero.
+
+By \cref{osq:bb:thm:free}, choose
+$(e_\alpha)_{\alpha<\kappa}$ free over $B_0$. For a function
+$\eta:\kappa\to\{0,1\}$ form the set
+\[
+ F_\eta=U_0\cup\{e_\alpha:\eta(\alpha)=1\}
+                \cup\{1-e_\alpha:\eta(\alpha)=0\}.
+\]
+Any finite meet from this set is $u p$, where $u$ is a finite
+meet from $U_0$ (possibly $1$) and $p$ is a finite assignment
+word on distinct indices. Repeated factors may be deleted.
+Here $u\in B_0$ is a nonzero idempotent, and relative freeness
+gives $up\ne0$. Thus $F_\eta$ has the finite intersection
+property. Extend it by the uniform construction in
+\cref{osq:bb:lem:classultra} and denote the resulting class
+ultrafilter by $U_\eta$. Its restriction to $\mathfrak E_0$
+is exactly $U_0$, since it contains $U_0$ and both are proper
+ultrafilters there.
+
+The evaluation $\varepsilon_{U_\eta}$ is a surjective unital
+map to $\overline\Z$ fixing the coefficient copy. On every
+partition in $\mathfrak E_0$ it selects the same part as
+$\varphi$, so the two maps agree on $B_0$, hence on $S$.
+Moreover $\varepsilon_{U_\eta}(e_\alpha)=\eta(\alpha)$.
+Distinct functions therefore give distinct maps.
+
+Fix the same global enumeration for every $\eta$. The seed
+$F_\eta$ and every decision test are uniform formulas in this
+set parameter, and the set-length recursive history is unique.
+Consequently the evaluations are described by one class relation
+on triples $(\eta,x,a)$, where $a=\varepsilon_{U_\eta}(x)$.
+This is the asserted family indexed by the set $\{0,1\}^\kappa$
+of size $2^\kappa$; it is not a set whose members are class maps.
+The construction includes $\kappa=0$, when there is one empty
+assignment.
 \end{proof}
 
-Fixing the coefficient copy only removes an irrelevant automorphism of $\overline\Z$: an arbitrary characteristic-zero domain map
-can be normalized by composing with the inverse of the automorphism it induces on the copy (20).
+For a characteristic-zero domain map, the finite-partition description
+shows that its image equals the image of the coefficient copy: in each
+partition exactly one idempotent maps to $1$. The restriction to that
+copy is injective, since a nonzero algebraic integer divides a nonzero
+integer. Identifying the image with $\overline\Z$ by the inverse of
+this restriction therefore gives a coefficient-fixing branch. If the
+codomain is already $\overline\Z$, the induced embedding is an
+automorphism: it extends to an embedding of $\overline\Q$ into itself,
+whose image is algebraically closed and over which $\overline\Q$ is
+algebraic, hence is all of $\overline\Q$. Both the embedding and its
+inverse preserve algebraic integers. This explains precisely the
+normalization of branch maps used in 20; it does not require an
+automorphism of an arbitrary larger target domain.
 
 \begin{corollary}[Surcomplex maps \src{20}]\label{osq:bb:cor:complexmaps}
 \Cref{osq:bb:thm:noseparating,osq:bb:thm:manymaps} hold for $\NN_\C$, $\Pi\NN_\C$ and $\mathsf B_\C$; in the extension statement the factor of
 $\mathsf B_\C\cong\mathsf B_\R\times\mathsf B_\R$ selected by the given branch can be kept fixed.
 \end{corollary}
 \begin{proof}
-\Cref{osq:bb:cor:complex} gives uniform splitting and relative freeness in $\mathsf B_\C$, and the proof of \cref{osq:bb:thm:noseparating}
-is unchanged. A domain map out of a product selects one factor; keep it, project the prescribed set into it, and apply
-\cref{osq:bb:thm:manymaps}.
+Every small-target map from $\NN_\C$ factors through
+$B_\C=\mathsf B_\C$ by \cref{osq:nf:cor:small}.
+The proof of \cref{osq:bb:thm:noseparating} needs only an
+independent family larger than the product target.
+\Cref{osq:bb:cor:complex} supplies relative Boolean freeness,
+hence such a family in $B_\C$. Its symmetric difference again
+gives a nonzero idempotent killed by all the maps, and a lift
+belongs to $\NN_\C\setminus\Pi\NN_\C$.
+
+For extension of a given branch, write
+$B_\C\cong B\times B$ with $B=\mathsf B_\R$.
+The idempotents $(1,0)$ and $(0,1)$ are orthogonal and sum to $1$.
+A unital map to the domain $\overline\Z$ sends exactly one to
+$1$ and the other to $0$, so factors through the selected
+projection $\pi_j:B\times B\to B$.
+Let $A_0\subseteq B_\C$ be the prescribed coefficient copy.
+The map $\pi_j$ is injective on $A_0$: for any nonzero
+$a\in A_0$ there are $b\in A_0$ and $0\ne n\in\Z$ with
+$ab=n$, and $\pi_j(n)=n\ne0$ in the torsion-free ring $B$.
+Thus $\pi_j(A_0)$ is a coefficient copy of $\overline\Z$ in
+$B$, identified with the original copy by projection. The
+selected branch fixes this copy in that identification.
+
+Project the prescribed set to $\pi_j(S)$, apply
+\cref{osq:bb:thm:manymaps} in the selected factor with this
+coefficient copy, and compose the resulting maps with $\pi_j$.
+They agree with the original branch on $S$ and $A_0$, and all
+select the same factor. They remain pairwise distinct because
+$\pi_j$ is surjective. This does not assume that $A_0$ is the
+diagonal copy under the doubling isomorphism.
 \end{proof}
+
+The strengthened common-kernel conclusion holds for the Gaussian fibre
+too. For each nonzero $f\in\Idem(\mathsf B_\C)$ use the relative
+freeness of \cref{osq:bb:cor:complex} over $\Z[f]$ and repeat the
+colliding-pair construction. The Boolean-power description and the
+injection into the rationalization again show that every nonzero
+$x$ has a nonzero multiple $xd$ in the common kernel. Thus that
+kernel is essential and has zero annihilator in $\mathsf B_\C$ as well.
+
 
 $\NN\subseteq\No$ has no idempotents other than $0,1$, while $\mathsf B_\R$ has a proper class of them and contains the residue $\mathsf v$ with
 $\mathsf v^2=-1$; this is possible because $\Pi\NN$ is not convex (\cref{osq:nf:prop:unit}). The quotient is not standard part, and an

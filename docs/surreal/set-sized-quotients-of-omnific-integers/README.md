@@ -615,14 +615,35 @@ construction. The explicit ordinal family, atomlessness, absence of a
 set-sized dense core and matrix splitting have expanded proofs. One
 splitter, or any prescribed finite Boolean partition, works for a whole
 set of nonzero idempotent matrices at once. These results remain pending
-in Lean. Fixed-Hahn-fibre structure, the surcomplex transfer, small-target
-branching and later normalization proofs still await review.
+in Lean.
+
+The final six standard branching results are now reviewed, completing all
+twenty-four. The fixed-Hahn-fibre proof establishes divisibility of the
+local radical, rational saturation and the algebraic coefficient copy
+without assuming real closedness of the Hahn field. The Gaussian transfer
+tracks the selected factor and its projected coefficient copy. Class
+ultrafilters use sets of decisions at each stage, uniformly in the
+prescribed seed; the resulting maps form a class relation indexed by a
+set, not a set of class maps. The collision argument works in every
+characteristic and for noncommutative small targets.
+
+An added consequence strengthens the common-kernel obstruction. For any
+set-indexed family of small-target maps, its induced kernel K in the fibre
+contains a nonzero idempotent below each nonzero idempotent f. Use a large
+Boolean family free over ℤ[f] and multiply a colliding pair's symmetric
+difference by f. Every nonzero x then has a nonzero multiple xd in K,
+so K meets every nonzero ideal and has zero annihilator in either the real
+or Gaussian fibre. No global choice
+is needed for this obstruction; global choice is used for individual
+branch detection and the prescribed-data extensions. All six results and
+this consequence remain pending in Lean. The next proof review begins
+with ramification in a cyclic workspace.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 336 pages
+article.pdf   the compiled report, 338 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

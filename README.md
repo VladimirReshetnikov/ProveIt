@@ -445,6 +445,13 @@ set-sized subring admits a simultaneous splitter, giving free Boolean
 families of every set size and an atomless proper-class Boolean algebra
 with no set-sized order-dense core. The proof uses finite branch-algebra
 specializations and set-length recursion; these results still await Lean.
+The remaining branching proofs now distinguish individual detection from
+joint detection: each nonzero fibre element is detected by a branch map
+under global choice, yet every set-indexed family of small-target maps
+has a common kernel containing a nonzero idempotent below every nonzero
+idempotent. That kernel meets every nonzero ideal and has zero annihilator.
+Prescribed set-sized data still leave arbitrarily large families of branch
+maps. These strengthened manuscript conclusions remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

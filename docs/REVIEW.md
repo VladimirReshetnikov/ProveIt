@@ -8854,3 +8854,60 @@ still 36 pages; inspected refreshed pages 12–13. The article stays at
 336 pages, with statements, labels and numbering unchanged. Audits pass
 4,626 anchors in 63 reports, 5,234 source-label references and 1,970 local
 Markdown destinations in 226 files.
+
+### Fixed fibres, branch extensions and essential common kernels (2026-09-24)
+
+Reviewed the final six standard branching results, `osq:bb:prop:fixedboolean`
+through `osq:bb:cor:complexmaps`, completing all twenty-four standard results
+in this subsection. The fixed-Hahn proof now derives divisibility of its
+local radical and rational saturation directly, constructs a Catalan
+series with imaginary residue, and obtains the algebraic coefficient
+copy and Boolean power. The monomial is formal X^g for an abstract ordered
+exponent group; the proof needs neither real closedness of the Hahn field
+nor radicality of the original extended ideal.
+
+Expanded the Gaussian splitting transfer, the prescribed-seed ultrafilter
+construction, the small-target collision argument and the uniform family
+of prescribed-data branch maps. Set-valued decision histories, finite-meet
+tests and unique set-length recursion give a single class relation uniform
+in the set parameter; there is no set of class maps or choice among class
+ultrafilters. Rechecked the enumeration input in
+[Hamkins's global-choice exposition](https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/),
+whose equivalent formulations include a set-like global well-order and
+an ordinal enumeration of each proper class. The collision proof explicitly
+works in characteristic two and in noncommutative targets. The Gaussian
+branch extension follows the selected factor and its projected coefficient
+copy, which need not be diagonal. Corrected the following explanatory
+paragraph to identify a characteristic-zero domain image with its coefficient
+copy before discussing an automorphism; no automorphism of an arbitrary
+larger target domain is required.
+
+Added an unnumbered strengthening of the common-kernel obstruction in
+both real and Gaussian fibres. For every nonzero idempotent f, a Boolean
+family free over Z[f], larger than the product target, has a colliding
+pair whose symmetric difference multiplied by f is a nonzero idempotent
+d in the induced common kernel K with d≤f. Thus its nonzero idempotents
+are order-dense. For every nonzero x, choose a nonzero coefficient part
+f and such a d below it; then xd is nonzero, since its algebraic coefficient
+is a unit in the injective rationalization. Hence K meets every nonzero
+ideal and Ann(K)=0. This is the explicit intersection meaning of an essential
+ideal, consistent with [Stacks, Tag 08XM](https://stacks.math.columbia.edu/tag/08XM).
+The proof requires no global choice, while individual branch detection
+and prescribed-data branch extensions still use it. These assertions
+concern individual class ideals and remain pending in Lean.
+
+Updated root/report guides, notation, catalogue and coverage ledger.
+Three final diagnostic-free TeX passes give a 338-page article and 36-page
+catalogue. Inspected article PDF pages 223–227 and catalogue page 13;
+rechecked article page 227 after adding the Gaussian form of the stronger
+kernel consequence. All 418 result statements (409 standard plus nine
+maintheorems), 828 labels, 1,656 AUX number entries, 66 questions, 60 remarks
+and 28 examples remain unchanged. The byte-identical Source 20 verifier
+was run from scratch: all 6,674 assertions in five groups pass, and its
+JSON matches the historical output except Python 3.13.14 versus 3.13.5
+(SymPy 1.14.0 in both). These finite diagnostics do not verify arbitrary
+Hahn supports, integrality, class recursion or essentiality. Audits pass
+4,626 anchors in 63 reports, 5,234 source-label references and 1,970 local
+Markdown destinations in 226 files. No Lean, verifier or historical data
+file was changed in this review pass. The next review begins with the
+cyclic-workspace ramification subsection.
