@@ -15671,10 +15671,39 @@ $\nu_T(f^r)=r\nu_T(f)$; and
 \end{equation}
 \end{lemma}
 \begin{proof}
-If $L\subseteq L'$, every $\mathfrak q\mid T$ of $\mathscr B_L$ has a prime of $\mathscr B_{L'}$ above it, and with both valuations normalized at $T$ the larger
-restricts to the smaller; so the set of values gains repetitions but no new values. Compare two choices in a compositum. The inequalities hold at each
-prime of one finite field containing both elements. The ideal criterion is \eqref{osq:rm:eq:finitetest}; a positive minimum becomes at least $1$ after
-multiplication by a large integer, a zero minimum never does.
+First suppose $L\subseteq L'$. The ring $\mathscr B_{L'}$ is
+integral over $\mathscr B_L$, so every prime $\mathfrak q\mid T$
+has a prime $\mathfrak q'$ above it. In the corresponding discrete
+valuation rings let $e(\mathfrak q'/\mathfrak q)$ be the relative
+ramification index. For $0\ne x\in L$,
+\[
+ \operatorname{ord}_{\mathfrak q'}(x)
+ =e(\mathfrak q'/\mathfrak q)\operatorname{ord}_{\mathfrak q}(x).
+\]
+The same equality for $T$ shows that division by the order of $T$
+cancels the relative index. Thus $v_{\mathfrak q'}|_L=v_{\mathfrak q}$.
+Every old prime occurs, so the list of values of $f$ gains repetitions
+but its minimum is unchanged. Any two choices of field embed in their
+finite compositum; this proves independence of $L$.
+
+Now put $f$ and $g$ in one finite extension. At each prime above $T$
+the valuation inequalities give
+\[
+ v_{\mathfrak q}(f+g)\ge\min\{v_{\mathfrak q}(f),v_{\mathfrak q}(g)\},
+ \qquad v_{\mathfrak q}(fg)=v_{\mathfrak q}(f)+v_{\mathfrak q}(g).
+\]
+Taking minima proves the two inequalities in the statement.
+For a positive integer $r$, taking the minimum of
+$v_{\mathfrak q}(f^r)=r v_{\mathfrak q}(f)$ gives equality for powers.
+The zero cases use $\nu_T(0)=+\infty$.
+
+The criterion for $T^r\mathscr B$ is
+\eqref{osq:rm:eq:finitetest}. Finally
+$f\in\mathsf J=\sqrt{T\mathscr B}$ exactly when some positive
+power has minimum order at least $1$. A positive rational minimum
+has this property after multiplication by a sufficiently large
+integer; a zero minimum never does. The element $f=0$ satisfies
+both sides as well.
 \end{proof}
 
 \begin{definition}[The truncated order and its filtration \src{23}]\label{osq:rm:def:truncated}
@@ -15682,18 +15711,57 @@ For $\bar f\in\mathsf B(\Z a)$ put $\hat\nu_T(\bar f)=\min\{1,\nu_T(f)\}\in[0,1]
 $\operatorname{Fil}^r=\{x\in\mathsf B(\Z a):\hat\nu_T(x)\ge r\}$.
 \end{definition}
 
-Representatives differing by an element of $T\mathscr B$ have the same values below $1$, so $\hat\nu_T$ is well defined, and $\hat\nu_T(\bar f)=1$ exactly
-when $\bar f=0$. Moreover $\hat\nu_T(x+y)\ge\min\{\hat\nu_T(x),\hat\nu_T(y)\}$ and $\hat\nu_T(xy)\ge\min\{1,\hat\nu_T(x)+\hat\nu_T(y)\}$; the $\operatorname{Fil}^r$ are
-ideals with $\operatorname{Fil}^0=\mathsf B(\Z a)$, $\operatorname{Fil}^1=0$, $\operatorname{Fil}^r\operatorname{Fil}^s\subseteq\operatorname{Fil}^{\min(1,r+s)}$ and
-$\operatorname{Nil}(\mathsf B(\Z a))=\bigcup_{0<r\le1}\operatorname{Fil}^r$. This is a rationally indexed filtration, not a valuation: the product inequality can
-be strict because different branches realize the two minima, and nontrivial complementary idempotents (constructed below) have order $0$ while their
-product has order $1$ (23).
+To check independence of the representative, put $f,g$ and $f-g$
+in one finite extension. If $f-g\in T\mathscr B$, then every
+$v_{\mathfrak q}(f-g)\ge1$. Whenever $v_{\mathfrak q}(f)<1$,
+the valuation inequality applied in both directions forces
+$v_{\mathfrak q}(g)=v_{\mathfrak q}(f)$; if both values are at
+least $1$, truncation identifies them. Thus the truncated values
+agree at each prime and their minima agree. In particular
+$\hat\nu_T(\bar f)=1$ exactly when $\bar f=0$.
+
+The preceding lemma gives
+\[
+ \hat\nu_T(x+y)\ge\min\{\hat\nu_T(x),\hat\nu_T(y)\},\qquad
+ \hat\nu_T(xy)\ge\min\{1,\hat\nu_T(x)+\hat\nu_T(y)\}.
+\]
+Also $\hat\nu_T(-x)=\hat\nu_T(x)$. All orders are nonnegative,
+so these formulas make each $\operatorname{Fil}^r$ an ideal, with
+$\operatorname{Fil}^0=\mathsf B(\Z a)$ and
+$\operatorname{Fil}^1=0$. For rational $r,s\in[0,1]$, each product
+of a member of $\operatorname{Fil}^r$ and one of
+$\operatorname{Fil}^s$ has order at least $\min(1,r+s)$;
+the addition inequality gives the same bound for their finite sums.
+Consequently
+\[
+ \operatorname{Fil}^r\operatorname{Fil}^s
+ \subseteq\operatorname{Fil}^{\min(1,r+s)},\qquad
+ \operatorname{Nil}(\mathsf B(\Z a))
+ =\bigcup_{0<r\le1}\operatorname{Fil}^r.
+\]
+The second equality follows from the positive-order criterion for
+$\mathsf J$. This is a rationally indexed filtration, not a
+valuation: different branches can realize the two minima, so the
+product inequality can be strict. In particular the nontrivial
+complementary idempotents constructed below each have order $0$
+(an idempotent of positive order would be nilpotent and hence zero),
+whereas their product has order $1$ (23).
 
 \begin{corollary}[The index of any nilpotent \src{23}]\label{osq:rm:cor:generalindex}
 For $0\ne f\in\NN(\Z a)$ with $\nu_T(f)>0$ the residue of $f$ has nilpotency index $\lceil1/\nu_T(f)\rceil$; if $\nu_T(f)=0$ it is not nilpotent.
 \end{corollary}
 \begin{proof}
-Its $r$th power vanishes exactly when $r\nu_T(f)\ge1$, by \cref{osq:rm:thm:span} and \eqref{osq:rm:eq:nuideal}.
+For each positive integer $r$, the ideal formula
+$\mathsf I=T\mathscr B$ and \cref{osq:rm:lem:nu} give
+\[
+ \bar f^{\,r}=0
+ \iff f^r\in T\mathscr B
+ \iff r\nu_T(f)\ge1.
+\]
+For $\nu_T(f)>0$, the least such integer is
+$\lceil1/\nu_T(f)\rceil$. This includes $\nu_T(f)\ge1$:
+the residue is already zero, with index $1$ by convention.
+For $\nu_T(f)=0$ no positive power vanishes.
 \end{proof}
 
 \begin{theorem}[General refinement law \src{23}]\label{osq:rm:thm:generalrefinement}
@@ -15705,15 +15773,68 @@ equivalently $\hat\nu_U(\bar f)=\min\{1,m\hat\nu_T(\bar f)\}$ under $\mathsf B(\
 a non-nilpotent residue by none.
 \end{theorem}
 \begin{proof}
-Let $L\ni f$ be finite and $L'=L\,k(U)\subseteq K_{\Z a/m}$. The integral closures of $k[T]$ and of $k[U]$ in $L'$ coincide ($k[U]$ is integral over $k[T]$),
-every prime of $\mathscr B_L$ above $T$ extends, and the extensions are exactly the primes above $U=0$. A valuation normalized by $v(U)=1$ sends $T$ to $m$,
-so it is $m$ times the old normalization on $L$; every old prime occurs, so the minima scale by $m$. The second formula is \cref{osq:rm:thm:span} over
-$\Z a/m$ with \eqref{osq:rm:eq:nuideal}. If $\nu_T(f)>0$ take $m\ge1/\nu_T(f)$.
+Put $U=T^{1/m}$ and choose a finite $L/k(T)$ containing $f$.
+The compositum $L'=L\,k(U)$ lies in the refined Laurent field
+and is finite over both $k(T)$ and $k(U)$. Let $B'$ be its
+integral closure over $k[T]$. This is also its integral closure
+over $k[U]$: one direction uses inclusion of the coefficient rings,
+and the other uses transitivity, since $U$ satisfies $U^m-T=0$.
+In particular $B'$ is integral over $\mathscr B_L$.
+
+Every $\mathfrak q\mid T$ in $\mathscr B_L$ extends to a
+prime of $B'$ by lying over. Since $T=U^m$, the primes of
+$B'$ containing $T$ are exactly those containing $U$.
+At any such extension $\mathfrak q'$, write
+$e=e(\mathfrak q'/\mathfrak q)$. For nonzero $f$,
+\[
+ \frac{\operatorname{ord}_{\mathfrak q'}(f)}
+      {\operatorname{ord}_{\mathfrak q'}(U)}
+ =m\frac{e\operatorname{ord}_{\mathfrak q}(f)}
+          {e\operatorname{ord}_{\mathfrak q}(T)}
+ =m v_{\mathfrak q}(f).
+\]
+Every old prime occurs, so taking minima gives
+$\nu_U(f)=m\nu_T(f)$. For $f=0$ this is the convention
+$m(+\infty)=+\infty$.
+
+The refined version of \cref{osq:rm:thm:span} identifies its
+extended ideal with $U B^{\mathrm{ref}}$, where
+$B^{\mathrm{ref}}$ is the coefficient normalization in the
+refined Laurent field. Hence its membership test is
+$\nu_U(f)\ge1$, proving the second formula.
+For any $t\in\Q_{\ge0}\cup\{+\infty\}$ and $m\ge1$,
+$\min(1,mt)=\min(1,m\min(1,t))$, which gives the truncated formula.
+If $\nu_T(f)>0$, an integer $m\ge1/\nu_T(f)$ kills the residue.
+If $\nu_T(f)=0$, every refined order remains zero, so no
+refinement kills it. The zero residue is already killed at $m=1$.
 \end{proof}
 
 This is an exact finite certificate for the disappearance of a represented nilpotent: compute its positive minimum order at the finitely many branches
 over zero and take a root refinement at least its reciprocal. The bound is a threshold for ideal membership, not a ramification index or a common
 multiple of ramification indices; for $\mathsf z_n$ every branch has order $1/n$ (23).
+
+\paragraph{Exact kernels and strict filtration \merge.}
+Writing $\rho_m:\mathsf B(\Z a)\to\mathsf B(\Z a/m)$ for
+refinement, the formula just proved says
+\[
+ \ker\rho_m=\operatorname{Fil}^{1/m}.
+\]
+For a nonzero nilpotent residue, the least positive integer $m$
+that kills it equals its nilpotency index. Successive refinements
+by $m$ and $\ell$ give the same truncated order as refinement
+by $m\ell$, since
+$\min(1,\ell\min(1,mt))=\min(1,m\ell t)$.
+
+Every rational $q\in(0,1)$ occurs as a truncated order: write
+$q=p/n$ with $1\le p<n$ and use $[\mathsf z_n^p]$.
+Orders $0$ and $1$ occur at $[1]$ and $[0]$, respectively. Thus
+$\operatorname{Fil}^s\subsetneq\operatorname{Fil}^r$
+whenever $0\le r<s\le1$ are rational; an element of order
+$r$ witnesses strictness. In particular every positive filtration
+level is a proper subideal of the nilradical: choose
+$0<q<r$ for level $r>0$. Although each nilpotent eventually dies,
+no one refinement kills all of them, since $[\mathsf z_n]$
+survives refinement by $m$ whenever $n>m$.
 
 \paragraph{The bounded-denominator Puiseux limit.} For $m\mid m'$ the inclusions $K_{\Z a/m}\subseteq K_{\Z a/m'}$ form a directed system. Put
 \begin{equation}\label{osq:rm:eq:pui}
@@ -15731,12 +15852,45 @@ The ideal $\mathsf I_{\mathrm{Pui}}$ is radical, and for each $m$ the kernel of 
 $\operatorname{Nil}(\mathsf B(\Z a/m))$. Finitely many nilpotent residues are killed at one common later stage, and no finite stage is reduced.
 \end{theorem}
 \begin{proof}
-An element of $K_{\mathrm{Pui}}$ and the finitely many coefficients of an integrality equation over $\A_{\mathrm{Pui}}$ lie in a common stage; so do the finitely
-many factors of an extended-ideal expression. This gives the two unions and the colimit. If $f^r\in\mathsf I_{\mathrm{Pui}}$, move $f$ and the expression to a
-common stage $m$; the residue of $f$ in $\mathsf B(\Z a/m)$ is nilpotent, so \cref{osq:rm:thm:generalrefinement} (over $\Z a/m$) kills it at a later stage and
-$f\in\mathsf I_{\mathrm{Pui}}$. A residue that dies in the colimit dies at a finite later stage, so its minimum order was positive by \eqref{osq:rm:eq:generalrefine}
-and it was nilpotent. For finitely many residues take a common refinement above all thresholds. Each finite stage is a cyclic workspace and contains
-the family of \cref{osq:rm:thm:explicit}.
+The positive integers are directed by divisibility. Any finite
+list of stages embeds in their least-common-multiple stage.
+If $f\in\NN_{\mathrm{Pui}}$, its Laurent representative and
+the finitely many coefficients of one monic integrality equation
+lie in such a common stage. The equation then proves that $f$
+belongs to that stage's normalization. Conversely integrality
+at a stage remains integrality over $\A_{\mathrm{Pui}}$.
+This proves the first union. An extended-ideal expression is a
+finite sum of products of purely infinite coefficients and
+integral elements. Place all these factors, with their integrality
+certificates, in a common stage to obtain the second union.
+The reverse containment again follows from the inclusions.
+
+Each stage quotient maps into the displayed quotient of unions.
+These maps are compatible and jointly surjective. If two stage
+representatives have equal images, their difference has a finite
+extended-ideal expression in the union; at a common later stage
+that expression already makes their residues equal. Thus the
+quotient of unions has precisely the equality relation of the
+directed colimit, giving the stated ring isomorphism.
+
+Suppose $f^r\in\mathsf I_{\mathrm{Pui}}$ for a positive integer
+$r$ and $f\in\NN_{\mathrm{Pui}}$. Put $f$, its integrality
+certificate and the ideal expression for $f^r$ in one stage $m$.
+There $[f]$ is nilpotent. Applying
+\cref{osq:rm:thm:generalrefinement} with base monomial $T^{1/m}$
+kills it at a later stage $m\ell$, so
+$f\in\mathsf I_{\mathrm{Pui}}$. This proves radicality.
+
+Conversely, if a stage residue dies in the union quotient, its
+ideal expression places its death at a finite later stage.
+The refinement law forces its original minimum order to be
+positive (with the zero representative included), so the
+original residue was nilpotent. Every nilpotent dies by the same
+law, proving the exact kernel assertion. For finitely many such
+residues choose individual killing stages and take a common
+multiple. Nevertheless every finite stage is cyclic and contains
+$\mathsf z_n$ of exact nilpotency index $n$ for all $n\ge2$,
+by \cref{osq:rm:thm:explicit} applied at that stage.
 \end{proof}
 
 \begin{remark}[A set-sized positive case \src{23}]\label{osq:rm:rem:positivecase}
@@ -15758,8 +15912,11 @@ Boolean power $\overline\Z[\Idem(\NN_{\mathrm{Pui}}/\mathsf I_{\mathrm{Pui}})]$,
 is absolutely integrally closed and splits as the square of the real one (\cref{osq:nf:thm:saturation,osq:nf:thm:boolean,osq:nf:thm:doubling,osq:nf:cor:aic}).
 The Gaussian pair is covered too: $\Z[i]+\Pi_{\mathrm{Pui}}[i]=\A_{\mathrm{Pui}}[i]$ is integral over $\A_{\mathrm{Pui}}$, so its integral closure in $K_{\mathrm{Pui}}[i]$ is
 $\NN'$, and its extended ideal $\Pi_{\mathrm{Pui}}[i]\NN'=\Pi_{\mathrm{Pui}}\NN'$ is the ideal of \cref{osq:nf:thm:abstract}. Its Boolean algebra is atomless of
-cardinality $\mathfrak c$: an idempotent of the colimit is the residue of an idempotent of some $\mathsf B(\Z a/m)$, which \cref{osq:rm:thm:uniformsplit} (over
-$\Z a/m$) splits into two nonzero idempotents; these are not nilpotent and so survive by \cref{osq:rm:thm:pui}, and likewise the independent family of
+cardinality $\mathfrak c$: represent a nonzero idempotent of the colimit by an element at a finite stage.
+Its idempotence equation holds modulo the union ideal, so its finite ideal certificate holds at a later stage.
+There the representative is an idempotent, still nonzero because its colimit image is nonzero.
+\Cref{osq:rm:thm:uniformsplit} (over that stage $\Z a/m$)
+splits it into two nonzero idempotents; these are not nilpotent and so survive by \cref{osq:rm:thm:pui}, and likewise the independent family of
 \cref{osq:rm:thm:cardinality} survives, while $|K_{\mathrm{Pui}}|=\mathfrak c$. This is an instance of the second clause of \cref{osq:nf:q:fibre}(b):
 real-rooted lifting gives a Boolean-power fibre here, with the monomial divisibility (ii), although set-family divisibility fails ($T^{1/n}\in\Pi_{\mathrm{Pui}}$
 for all $n$ and no $T^\delta$ divides all of them in $\Pi_{\mathrm{Pui}}$). The cyclic workspace itself
@@ -15773,12 +15930,48 @@ $\mathscr B$ is a Pr\"ufer domain. For every maximal ideal $\mathfrak q\ni T$ of
 normalized by $v(T)=1$, and residue field isomorphic to $\C$, for both pairs; it has rank one and is not a discrete valuation ring.
 \end{theorem}
 \begin{proof}
-A maximal ideal $\mathfrak q$ of $\mathscr B$ contracts to a maximal ideal of $k[T]$, as $\mathscr B$ is integral over $k[T]$, and with $\mathfrak q_L=\mathfrak q\cap\mathscr B_L$
-one has $\mathscr B_{\mathfrak q}=\bigcup_L(\mathscr B_L)_{\mathfrak q_L}$, a directed union of discrete valuation rings with common fraction field $K^{\mathrm{alg}}$: for
-a nonzero element put numerator and denominator in one stage, where it or its inverse is regular. So $\mathscr B_{\mathfrak q}$ is a valuation domain. If
-$T\in\mathfrak q$, its normalized value group is a union of groups $\frac1{e_L}\Z$, so lies in $\Q$, and $v(\mathsf z_n)=1/n$ for all $n\ge2$ by
-\eqref{osq:rm:eq:zn}; so it is $\Q$, Archimedean and not discrete. The residue field is algebraic over $k$, the union of the finite residue fields; for
-$k=\R$, 20's $\varrho_0=T(1-T^{-2})^{1/2}\in\mathscr B$ has $\varrho_0^2=T^2-1$, so its residue squares to $-1$ and the residue field is $\C$.
+Let $\mathfrak q$ be any maximal ideal of $\mathscr B$.
+Since $\mathscr B$ is integral over $k[T]$, its contraction
+is maximal and nonzero. For each finite intermediate field $L$,
+put $\mathfrak q_L=\mathfrak q\cap\mathscr B_L$.
+Then $\mathfrak q_L$ is a nonzero maximal ideal and
+$V_L=(\mathscr B_L)_{\mathfrak q_L}$ is a discrete valuation
+ring with fraction field $L$. These rings form a directed system
+of local inclusions, and
+\[
+ \mathscr B_{\mathfrak q}=\bigcup_L V_L.
+\]
+Indeed a fraction on the left has numerator and denominator in
+one finite stage, with denominator outside $\mathfrak q_L$;
+the opposite inclusion is immediate. The fraction fields vary
+with $L$ and their union is $K^{\mathrm{alg}}$.
+For each nonzero $x\in K^{\mathrm{alg}}$, choose $L$ containing
+$x$. Either $x$ or $x^{-1}$ lies in $V_L$, so the union is a
+valuation domain. Thus every maximal localization of $\mathscr B$
+is a valuation domain, proving that $\mathscr B$ is Pr\"ufer
+\cite{StacksVal}.
+
+Now assume $T\in\mathfrak q$. The normalized finite-stage
+valuations agree on overlaps by \cref{osq:rm:lem:nu} and define
+one valuation on $K^{\mathrm{alg}}$. Its value group is
+$\bigcup_L\frac1{e_L}\Z\subseteq\Q$, where
+$e_L=\operatorname{ord}_{\mathfrak q_L}(T)$. The equation
+$\mathsf z_n^n=T(1+T^{n-1})$ has unit second factor at every
+such prime, so $v(\mathsf z_n)=1/n$ for all $n\ge2$.
+Together with $v(T)=1$, these values generate $\Q$.
+This ordered group is Archimedean and nonzero, giving rank one;
+it has no least positive element, so the valuation ring is not
+a discrete valuation ring.
+
+The local inclusions induce injections of residue fields, and
+the residue field of the union is their directed union. It is
+therefore algebraic over $k$. For $k=\C$, it is just $\C$.
+For $k=\R$, the element
+$\varrho_0=T(1-T^{-2})^{1/2}\in\mathscr B$ satisfies
+$\varrho_0^2=T^2-1$, so its residue squares to $-1$.
+The residue field is thus an algebraic extension of $\R$
+containing $\R(i)$; since $\R(i)\cong\C$ is algebraically
+closed, it is isomorphic to $\C$ as asserted.
 \end{proof}
 
 \begin{remark}[A real domain with a nonreal arithmetic fibre \src{23}]\label{osq:rm:rem:nonreal}
@@ -15793,15 +15986,41 @@ $\mathsf J^2=\mathsf J$, as an ideal of $\mathscr B$ and as an ideal of $\NN(\Z 
 $\mathsf B^{\mathrm{co}}(\Z a)$ is nonzero and equal to its square, and it is neither nilpotent nor finitely generated.
 \end{theorem}
 \begin{proof}
-At a maximal ideal not containing $T$ both $\mathsf J$ and $\mathsf J^2$ localize to the unit ideal. At $\mathfrak q\ni T$ the value group is $\Q$, so
-$\sqrt{T\mathscr B_{\mathfrak q}}=\mathfrak q\mathscr B_{\mathfrak q}$; for $0\ne b$ in it choose rational $0<\delta<v(b)$ and $u$ with $v(u)=\delta$, so that $b=u\cdot(b/u)$
-is a product of two elements of the maximal ideal, which is therefore idempotent. Equality of ideals is local, so $\mathsf J^2=\mathsf J$ in $\mathscr B$.
-As $\mathsf J\subseteq\NN(\Z a)$, a coefficient from $\mathscr B$ in a finite sum of products can be absorbed into one factor, which stays in $\mathsf J$; so the
-same holds over $\NN(\Z a)$. The rest is \cref{osq:rm:thm:explicit,osq:rm:cor:unbounded}.
+Localization commutes with radicals and finite ideal products.
+At a maximal ideal not containing $T$, the ideal $T\mathscr B$
+localizes to the unit ideal, as do $\mathsf J$ and $\mathsf J^2$.
+At $\mathfrak q\ni T$, put $V=\mathscr B_{\mathfrak q}$.
+Its value group is $\Q$, with $v(T)=1$. For $b\in V$,
+a power belongs to $TV$ exactly when $v(b)>0$, including zero.
+Hence $\sqrt{TV}$ is the maximal ideal of $V$.
+For nonzero $b$ in that ideal choose rational
+$0<\delta<v(b)$ and an element $u$ of the fraction field
+with $v(u)=\delta$. Both $u$ and $b/u$ have positive value,
+so belong to the maximal ideal, and $b=u(b/u)$.
+Zero is a product as well. Thus this local maximal ideal is
+idempotent. Equality of ideals can be checked at all maximal
+localizations, proving $\mathsf J^2=\mathsf J$ in $\mathscr B$.
+
+The same subset $\mathsf J$ is an ideal of $\NN(\Z a)$ by
+\cref{osq:rm:thm:residues}. For $x\in\mathsf J$, the equality
+just proved expresses $x$ as a finite sum of products of two
+members of $\mathsf J$. If coefficients from $\mathscr B$
+are used, absorb each into one factor; that factor stays in
+$\mathsf J\subseteq\NN(\Z a)$. This is also an expression
+in the ideal square computed over $\NN(\Z a)$.
+The reverse inclusion follows from the ideal property.
+
+Passing to either quotient by $T\mathscr B$ gives the same
+idempotent nilradical $\mathsf J/T\mathscr B$. It is nonzero
+by \cref{osq:rm:thm:explicit}. An idempotent nonzero ideal
+cannot be nilpotent, since all its positive powers equal itself;
+and a finitely generated nil ideal is nilpotent by the argument
+of \cref{osq:rm:cor:unbounded}. Hence it is not finitely generated.
 \end{proof}
 
 This does not conflict with Nakayama's lemma, since the ideal is not finitely generated, and an idempotent ideal need not consist of idempotents:
-here all its elements are nilpotent (23).
+here every element of the quotient ideal $\mathsf J/T\mathscr B$ is nilpotent.
+The ideal $\mathsf J$ in the domain $\mathscr B$ itself has no nonzero nilpotent elements (23).
 
 \begin{theorem}[The associated graded ring \src{23}]\label{osq:rm:thm:graded}
 For every $r\ge1$, $\mathsf I^r=T^r\mathscr B$ and $\mathsf I^r/\mathsf I^{r+1}\cong\mathsf B^{\mathrm{co}}(\Z a)$ as $\mathsf B(\Z a)$-modules, the action being through the
@@ -15812,10 +16031,45 @@ injection of \cref{osq:rm:thm:span}. Multiplication gives a graded isomorphism
 and in particular $\mathsf I/\mathsf I^2\cong\mathsf B^{\mathrm{co}}(\Z a)\ne0$ and $\Tor_1^{\NN(\Z a)}(\mathsf B(\Z a),\mathsf B(\Z a))\cong\mathsf B^{\mathrm{co}}(\Z a)$.
 \end{theorem}
 \begin{proof}
-$\mathsf I=T\mathscr B$ gives $\mathsf I^r\subseteq T^r\mathscr B$, and $T^rb=(Tb)T\cdots T$ is a product of $r$ elements of $\mathsf I$. Multiplication by $T^r$
-identifies $\mathscr B/T\mathscr B$ with $T^r\mathscr B/T^{r+1}\mathscr B$ ($\mathscr B$ is a domain), $\NN(\Z a)$ acts through its image in $\mathscr B/T\mathscr B$, and products of
-these identifications multiply classes in $\mathsf B^{\mathrm{co}}(\Z a)$. Tensoring $0\to\mathsf I\to\NN(\Z a)\to\mathsf B(\Z a)\to0$ with $\mathsf B(\Z a)$, the map
-$\mathsf I\otimes\mathsf B(\Z a)\cong\mathsf I/\mathsf I^2\to\mathsf B(\Z a)$ is zero, which gives the $\Tor_1$.
+By \cref{osq:rm:thm:span}, $\mathsf I=T\mathscr B$ as a
+subset of $\NN(\Z a)$. A product of $r$ elements of
+$\mathsf I$ lies in $T^r\mathscr B$, and so does a finite
+sum of such products. Conversely, for $b\in\mathscr B$,
+\[
+ T^r b=(Tb)\underbrace{T\cdots T}_{r-1\text{ factors}}
+\]
+is a product of $r$ elements of $\mathsf I$, including for
+$r=1$. This proves the equality of ideal powers computed in
+$\NN(\Z a)$.
+
+For each $r\ge1$ the map
+\[
+ \mathscr B/T\mathscr B\longrightarrow
+ T^r\mathscr B/T^{r+1}\mathscr B,\qquad
+ [b]\longmapsto[T^r b]
+\]
+is well defined and surjective. Its kernel is zero by cancellation
+of the nonzero $T^r$ in the domain $\mathscr B$.
+For $x\in\NN(\Z a)$ it takes $[xb]$ to $[xT^r b]$,
+so it respects the action through the injection of arithmetic
+into coefficient fibres. Products in positive degrees satisfy
+$[T^r b][T^s c]=[T^{r+s}bc]$; degree zero acts by that same
+injection. Combining the degree-zero piece
+$\NN(\Z a)/\mathsf I=\mathsf B(\Z a)$ with these positive
+pieces gives the displayed graded ring isomorphism.
+The coefficient fibre is nonzero, since $\nu_T(1)=0$ implies
+$1\notin T\mathscr B$.
+
+Finally tensor the exact sequence
+$0\to\mathsf I\to\NN(\Z a)\to\mathsf B(\Z a)\to0$
+over $\NN(\Z a)$ with $\mathsf B(\Z a)$.
+The middle ring is free over itself, so its first Tor vanishes.
+The resulting exact sequence starts with an injection of
+$\Tor_1(\mathsf B(\Z a),\mathsf B(\Z a))$ into
+$\mathsf I\otimes\mathsf B(\Z a)\cong\mathsf I/\mathsf I^2$.
+The next map to $\mathsf B(\Z a)$ is zero because every
+member of $\mathsf I$ has zero residue. Thus the injection is
+surjective as well, giving the claimed Tor identification.
 \end{proof}
 
 The conormal module is a further reason not to transfer identities from the full-class ideal, which satisfies $\Pi\NN=(\Pi\NN)^2$
@@ -15827,8 +16081,33 @@ With $\widehat{\mathscr B}=\varprojlim_r\mathscr B/T^r\mathscr B$ and $\widehat{
 $\widehat{\NN}\cong\widehat{\mathscr B}\times_{\mathsf B^{\mathrm{co}}(\Z a)}\mathsf B(\Z a)$, and $\mathscr B\to\widehat{\mathscr B}$ and $\NN(\Z a)\to\widehat{\NN}$ are injective.
 \end{corollary}
 \begin{proof}
-Since $T\mathscr B\subseteq\NN(\Z a)$, the image of $\NN(\Z a)/\mathsf I^r$ in $\mathscr B/T^r\mathscr B$ is the inverse image of $\mathsf B(\Z a)\subseteq\mathsf B^{\mathrm{co}}(\Z a)$;
-pass to the limit. A nonzero element of $\mathscr B$ has finite $\nu_T$, so lies in only finitely many $T^r\mathscr B$.
+For each $r\ge1$, the equality
+$\mathsf I^r=T^r\mathscr B\subseteq\NN(\Z a)$ gives an
+injection into $\mathscr B/T^r\mathscr B$.
+Its image is exactly the inverse image of the arithmetic fibre
+inside $\mathscr B/T\mathscr B$. Indeed, if $b\in\mathscr B$
+has the same residue modulo $T\mathscr B$ as some
+$n\in\NN(\Z a)$, then $b-n\in T\mathscr B\subseteq\NN(\Z a)$,
+so already $b\in\NN(\Z a)$. This identifies each finite quotient as
+\[
+ \NN(\Z a)/\mathsf I^r
+ \cong(\mathscr B/T^r\mathscr B)
+       \times_{\mathsf B^{\mathrm{co}}(\Z a)}\mathsf B(\Z a).
+\]
+These identifications commute with reduction in $r$.
+A compatible sequence on the right has one fixed arithmetic
+residue, and its coefficient components form an element of
+$\widehat{\mathscr B}$ with that residue. Conversely every such
+pair gives the sequence. This proves the stated pullback
+isomorphism directly, without an exactness assumption on inverse limits.
+
+For nonzero $b\in\mathscr B$, the order $\nu_T(b)$ is a
+finite rational number, computed at finitely many primes in one
+finite extension. Hence $b\notin T^r\mathscr B$ for every integer
+$r>\nu_T(b)$. Thus $\bigcap_{r\ge1}T^r\mathscr B=0$,
+which proves injectivity of $\mathscr B\to\widehat{\mathscr B}$.
+The same argument with $\mathsf I^r=T^r\mathscr B$ proves
+injectivity for $\NN(\Z a)$.
 \end{proof}
 
 \paragraph{Boolean splitting without a new scale.} For a real $c>0$ put
@@ -20794,7 +21073,7 @@ The Stacks Project Authors, \emph{The Stacks Project}, Tag 052P (blow-up algebra
 \url{https://stacks.math.columbia.edu/tag/052P}.
 
 \bibitem{StacksVal}
-The Stacks Project Authors, \emph{The Stacks Project}, Section 10.50, Tag 00I8, Lemmas 10.50.3 and
+The Stacks Project Authors, \emph{The Stacks Project}, Section 10.50, Tag 00I8, Lemmas 10.50.3, 10.50.5--6 and
 10.50.11, \url{https://stacks.math.columbia.edu/tag/00I8}.
 
 \bibitem{StacksIntClosure}

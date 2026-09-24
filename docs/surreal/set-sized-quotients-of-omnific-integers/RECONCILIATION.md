@@ -4129,3 +4129,69 @@ The article remains 341 pages and is unchanged by this merge, preserving
 all previously checked statements, labels and numbering. Audits pass
 4,626 anchors in 63 reports, 5,239 source-label references and 1,979 local
 Markdown destinations in 226 files.
+
+### Ramification filtration, Puiseux reduction and completion (2026-09-24)
+
+Reviewed the next eight standard cyclic-workspace results,
+`osq:rm:lem:nu` through `osq:rm:cor:completion`, bringing this subsection's
+review to its first eighteen results. The minimum finite-place order is
+independent of the finite extension because ramification multiplies both
+the numerator and denominator in the normalized valuation. Expanded the
+truncated-order representative argument, ideal and product properties of
+the filtration, exact power test, and zero-residue convention. Refinement
+now explicitly compares the two integral closures in one compositum,
+extends every old prime, and scales normalized orders by m.
+
+Added an unnumbered consequence: refinement by m has exact kernel
+Fil^(1/m), and the least integer refinement killing a nonzero nilpotent
+is its nilpotency index. The residues of z_n^p realize every rational
+order strictly between zero and one; together with the endpoints this
+proves every rational filtration inclusion is strict. Every positive
+level is strictly smaller than the nilradical. Each nilpotent eventually
+dies, but z_n with n>m prevents any single refinement m from killing them
+all. Successive refinements have the stated clipped multiplication law.
+These consequences remain pending in Lean.
+
+The Puiseux proof places representatives, monic equations and finite ideal
+expressions at a common denominator stage, then checks the colimit's
+exact equality relation. It proves radicality and the precise nilradical
+kernel on every stage, including simultaneous eventual death for finitely
+many residues. In the following finite-axiom remark, an idempotence equation
+now descends to a finite later stage before splitting is applied. The
+Newton–Puiseux theorem remains the cited classical input; no new proof of
+that theorem is claimed.
+
+Corrected the local-structure proof's false phrase “common fraction field”:
+the finite-stage valuation rings have fraction fields L varying inside
+K^alg, and only their union has fraction field K^alg. Expanded the
+localization union, valuation criterion, rational value group and complex
+residue-field arguments. Checked the valuation criterion and directed-union
+facts against [Stacks, Section 10.50](https://stacks.math.columbia.edu/tag/00I8),
+and included the relevant lemma numbers in the existing bibliography item.
+The radical-idempotence proof now gives the local factorization, the
+passage back to global ideals and the absorption of coefficients for the
+arithmetic normalization. Distinguished the radical ideal in the domain
+from its nilpotent quotient, also correcting the root README's description.
+
+The graded-ring proof writes each positive-degree map, proves cancellation,
+checks its scalar action and multiplication, and identifies Tor through
+the exact sequence with the vanishing adjacent maps. The completion proof
+constructs every finite-level pullback before identifying compatible
+sequences; it does not assume exactness of inverse limits. Finite minimum
+order proves separation. All eight results remain pending in Lean.
+
+Updated root/report guides, notation, catalogue and coverage ledger.
+Three final diagnostic-free TeX passes give a 343-page article and 36-page
+catalogue. Inspected article PDF pages 235–240 and catalogue page 13;
+rechecked the affected article pages after the reference-wording cleanup.
+All 418 result statements (409 standard plus nine maintheorems), 828 labels
+and 1,656 AUX number entries are unchanged. All 66 questions and 28 examples
+are unchanged; of 60 remarks, only the finite-stage idempotence explanation
+in `osq:rm:rem:puiabstract` changed. The byte-identical Source 23 verifier
+passes all 18,040 checks; its archived JSON differs only in Python 3.13.14
+versus 3.13.5 and the absent article hash in the scratch copy. These are
+finite diagnostics, not verification of arbitrary valuations or colimits.
+Audits pass 4,626 anchors in 63 reports, 5,240 source-label references and
+1,979 local Markdown destinations in 226 files. No Lean, verifier or
+historical data file changed in this review pass. The next review begins
+with quadratic branch splitting inside the fixed cyclic workspace.

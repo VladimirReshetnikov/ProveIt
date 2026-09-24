@@ -675,14 +675,35 @@ multiplication, not a unital coefficient-field copy. Constant extraction
 maps the normalization onto all of k but is not multiplicative; the
 algebraic-integer constant slice concerns elements that are themselves
 constant. All these local residues vanish in the full-class fibre.
-The ten results and this consequence remain pending in Lean. The next
-proof review starts with the ramification filtration and general refinement.
+The ten results and this consequence remain pending in Lean.
+
+The next eight standard results are now reviewed as well, through adic
+completion. Normalized finite-place orders are invariant under finite
+extension, and refinement by m scales them by m. The kernel is precisely
+Fil^(1/m); all rational truncated orders occur, making the filtration
+strictly decreasing. Each nilpotent is killed once m reaches its nilpotency
+index, but no one refinement kills every nilpotent. Finite certificates
+give the reduced bounded-denominator Puiseux colimit and its exact kernels.
+An idempotence equation also descends to a finite later stage.
+
+Each localization of the coefficient normalization at a maximal ideal is
+a directed union of valuation rings with varying finite-extension fraction
+fields, whose union is the ambient algebraic field. At primes over zero,
+these localizations have value group ℚ and residue field ℂ.
+The radical ideal is idempotent both over the coefficient normalization
+and over the arithmetic normalization. This concerns 𝖩; the nilpotent
+elements belong to the quotient ideal 𝖩/T𝓑. By contrast the original ideal
+𝖨 has powers T^r𝓑, a nonzero conormal module, and the stated coefficient-fibre
+Tor group. The completion proof constructs the pullback at every finite
+level before passing to compatible sequences. These eight results and the
+added filtration consequences remain pending in Lean. The next review
+starts with quadratic branch splitting inside a fixed cyclic workspace.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 341 pages
+article.pdf   the compiled report, 343 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

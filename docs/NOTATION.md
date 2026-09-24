@@ -599,6 +599,17 @@ any value in k, as f_λ=2λz₂ shows. The additive map λ↦[f_λ] has zero
 products and is not a unital coefficient embedding. The equality
 k𝒩(ℤa)=𝓑 means finite k-linear span, not containment of k in 𝒩(ℤa).
 The nilpotence index convention assigns index 1 to the zero residue.
+The minimum ν_T ranges over finite places above T=0; it is not itself a
+valuation, since different branches can realize minima for two factors.
+Its truncation hat-ν_T gives order 1 to zero and order 0 to every nonzero
+idempotent. Refinement by m has kernel Fil^(1/m) and scales truncated order
+by t↦min(1,mt). The Puiseux union is directed by divisibility of positive
+integer denominators, and each individual element has a common bounded
+denominator; it is smaller than the full rational-exponent Hahn field.
+Keep 𝖨=T𝓑, its radical 𝖩 in the domain, and the nilradical 𝖩/T𝓑 of the
+fibre distinct. Only the last consists of nilpotent elements. Finite-stage local
+valuation rings have fraction fields L varying inside K^alg, not a shared
+fraction field equal to K^alg.
 
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its

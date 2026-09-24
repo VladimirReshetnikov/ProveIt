@@ -453,8 +453,12 @@ idempotent. That kernel meets every nonzero ideal and has zero annihilator.
 Prescribed set-sized data still leave arbitrarily large families of branch
 maps. These strengthened manuscript conclusions remain pending in Lean.
 The cyclic-workspace review now explains the opposite local behavior:
-its extended ideal has nilpotents of every finite order, with exact
-thresholds under root refinement. An added example realizes every real
+its arithmetic fibre has nilpotents of every finite order, with exact
+thresholds under root refinement. Refinement kernels are explicit levels
+of a strictly decreasing rational filtration. Every nilpotent eventually
+vanishes in the reduced Puiseux limit, although no finite stage is reduced.
+The cyclic ideal has a nonzero conormal module, even though the nilradical
+of its fibre is idempotent. An added example realizes every real
 or complex Laurent constant coefficient on an integral element; their
 residues give an additive copy of the coefficient field with all products
 zero. These local residues disappear in the full-class fibre. The results
