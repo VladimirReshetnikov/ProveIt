@@ -170,3 +170,60 @@ The combined two-thread Lean build passes all 4,535 jobs. The audit checks
 references and 1,752 local Markdown destinations pass. The article and
 catalogue sources and PDFs did not change during this merge; their clean
 three-pass builds remain current. Whitespace checks pass.
+
+## Prime quotients, completions, localizations and positive formulas
+
+This pass reviews the seven standard results from `osq:cor:primeexample`
+through `osq:prop:conservative`, plus the adjacent localization and
+presentation examples. It completes the maintained Section 6 proof pass.
+Later module and derivation results, cardinal classifications, and full
+reconciliation of the parallel manuscripts remain pending.
+
+The prime input for q = ω^(√2)+ω+1 was checked against Theorem B on page 3
+of [L’Innocente–Mantova v5](https://arxiv.org/pdf/1710.07304v5).
+The proof still imports primality; this review does not reprove the external
+factorization theory. The quotient argument now proves characteristic zero
+by degree and invokes the explicit large residue families for its size.
+The adjacent continuum-family note has the same conditional consequence
+once its referenced primality and nonassociation are supplied; its source
+construction was not independently reviewed here. The unit-constant ideal
+proof now separates its ring, module and proper-quotient assertions.
+
+The completion proof specifies the divisibility index and all reduction
+maps, proves compatibility with constant extraction, and identifies the
+canonical coordinates and kernels. The Gaussian argument uses the cofinal
+ordinary-modulus ideals and unique pairs of ordinary residues; multiplication
+of compatible pairs gives the quadratic quotient ring without assuming that
+it is a domain. A new unnumbered paragraph proves the topological
+isomorphisms and density of the diagonal images using one common modulus.
+Strong sums are compatible with the pulled-back topologies because only
+finitely many summands contribute at exponent zero. The broader topology
+classification is still imported from the cited sibling report; checking
+its statement does not extend independent proof review to that theorem.
+
+The monomial localization proof gives its embedding in the ambient field,
+explains why shifting the lower support endpoint removes the coefficient
+restriction, and exhibits an element whose inverse is missing. The
+quotient-localization and presentation formulas now explicitly use Hom₁.
+This removes a material ambiguity: if nonunital maps were allowed, the
+zero map would contradict the empty-Hom assertion for a nonzero target.
+The proof explains zero denominators, surjectivity on fractions of constants,
+and the central inverse formula for noncommutative targets. Polynomial
+presentations use finite evaluation and explicitly set-sized relation ideals.
+The formula-conservativity proof gives the induction on equations,
+conjunctions, disjunctions and existential witnesses. Its general
+coefficient-ring and Gaussian variants are recorded as proof consequences;
+the parameter and positivity restrictions are retained.
+
+Validation: clean three-pass builds produce the 265-page article and
+33-page catalogue, with no TeX warning or box diagnostic. Changed completion
+and localization pages were inspected visually. All 828 source labels,
+1,656 auxiliary label numbers, 409 standard results and nine principal
+summaries are preserved. Four statements change only index or map-convention
+text: completions, monomial localization, quotient-localization and
+presentations. The 4,626-result index across 63 reports, 5,196 source-label
+references, 1,752 local Markdown destinations across 226 files, and whitespace
+checks pass. No Lean or shipped verifier code changed. Existing real omnific
+completion mappings retain their scope; no Gaussian completion or new
+formula-level mapping is asserted. The previous 4,535-job Lean build and
+15,895-declaration axiom audit remain the documentation-only baseline.

@@ -1968,9 +1968,11 @@ Gonshor's question \cite[p.~117]{Gonshor}; this primality is imported, not repro
 $(q)$ is a proper prime ideal and $\Oz/(q)$ is a nonzero domain. Since $\ct(q)=1$,
 \cref{osq:thm:reflection} gives the zero ring as its universal set-sized image. On a
 set-sized module, inflated to $\Oz$, $q$ acts both as $\ct(q)=1$ and as $0$, so the module is
-zero. If $\Oz/(q)$ were a set, its identity map would contradict the first assertion. No
-nonzero integer $n$ lies in $(q)$: $n=qa$ would force $a=n/q$, a nonzero infinitesimal, which
-is not omnific; so $\Z\hookrightarrow\Oz/(q)$.
+zero. More concretely, \cref{osq:prop:principal} supplies sets of pairwise distinct
+residues of every set cardinality, so the quotient has no set-sized realization. No
+nonzero integer $n$ lies in $(q)$: if $n=qa$, then $a\ne0$ and
+$0=\degw(n)=\sqrt2+\degw(a)>0$, since a nonzero omnific integer has nonnegative
+degree. Thus the map $\Z\to\Oz/(q)$ is injective and the domain has characteristic $0$.
 \end{proof}
 
 This is no contradiction with the maximal-ideal theorem for set-sized rings: the source
@@ -1993,14 +1995,19 @@ $J$ is proper, $\Oz/J$ is a nonzero proper-class ring. More generally, if $\ct(f
 small reflection of $\Oz/(f)$ is $\Z/c\Z$.
 \end{proposition}
 \begin{proof}
-The element acts as $1$ by \cref{osq:thm:universal} and as $0$ by the quotient relation.
-For a principal ideal $\ct((f))=c\Z$; apply \cref{osq:thm:reflection}.
+Write $u\in J$ for the element with $\ct(u)=1$. On a set-sized quotient module,
+inflated to $\Oz$, it acts as the identity by \cref{osq:thm:universal} and as zero
+because $u\in J$; hence the module is zero. Similarly a unital map to a set-sized
+ring sends $u$ to both $1$ and $0$, so that target is the zero ring. If $J$ is proper,
+the quotient is nonzero, and its identity map rules out a set-sized realization.
+For a principal ideal, $\ct(fa)=c\ct(a)$ and constant representatives realize every
+integer multiple of $c$, so $\ct((f))=c\Z$; apply \cref{osq:thm:reflection}.
 \end{proof}
 
 For example $\omega+1$ and $1+\omega^a$ ($a>0$) are nonunits, so $\Oz/(1+\omega^a)$ is a
 nonzero class ring with no nonzero set-sized image; \cref{osq:sec:internal} shows how much
 it contains. The benefit of $q$ in \cref{osq:cor:primeexample} is that the quotient is a
-domain (06). Under any map to a set-sized ring, $\omega^a$ becomes $0$ and $1+\omega^a$
+domain (06). Under any unital map to a set-sized ring, $\omega^a$ becomes $0$ and $1+\omega^a$
 becomes $1$, which is the arithmetic reason (07).
 
 \begin{theorem}[Arithmetic completions \src{04, 06, 07, 08, 09, 10, 11, 13, 15}]\label{osq:thm:completions}
@@ -2012,27 +2019,55 @@ All finite quotient rings of $\Oz$ are the $\Z/n\Z$, and
 The canonical maps are $\ct$ followed by the usual injections; their kernel is $\Pi$ and
 their image is the diagonal copy of $\Z$. For the Gaussian ring,
 $\widehat{\GOz}\cong\widehat{\Z[i]}=\widehat\Z[T]/(T^2+1)$ and
-$\varprojlim_n\GOz/\ell^n\GOz\cong\Z_\ell[i]=\Z_\ell[T]/(T^2+1)$ for an ordinary prime
+$\varprojlim_{r\ge1}\GOz/\ell^r\GOz\cong\Z_\ell[i]=\Z_\ell[T]/(T^2+1)$ for an ordinary prime
 $\ell$ (not necessarily a domain), with kernel $\Pi_\C$.
 \end{theorem}
 \begin{proof}
-By \cref{osq:thm:quotients} the finite quotients and their transition maps are those of
-$\Z$ (respectively $\Z[i]$), identified by $\ct$; a nonzero integer is not divisible by
-every $n$ or every $p^r$. For $\GOz$, every finite quotient has some positive
-characteristic $n$, so its kernel contains $n\GOz=n\Z[i]+\Pi_\C$; the ideals $n\Z[i]$ are
-cofinal among finite-index ideals, and the limit is free of rank two over $\widehat\Z$
-(respectively $\Z_\ell$) with $i^2=-1$.
+Index the first limit by positive integers under divisibility: for $n\mid m$ the
+transition map is reduction from modulus $m$ to modulus $n$. The maps induced by
+$\ct$ commute with these reductions and identify each $\Oz/n\Oz$ with $\Z/n\Z$.
+Conversely, \cref{osq:thm:quotients} lists every finite quotient, including the zero
+ring at $n=1$. Applying the compatible coordinate isomorphisms and their inverses
+gives the isomorphism of limits. Restricting to $p^r$ gives the second limit.
+The canonical coordinates are $\ct(x)\bmod n$, respectively $\ct(x)\bmod p^r$.
+Their common kernel is $\Pi$: a nonzero integer is not divisible by every positive
+integer, or by every power of a fixed prime. Surjectivity of $\ct$ gives exactly
+the diagonal integer image, not all of the completion.
+
+For $\GOz$, every finite quotient has positive characteristic $n$ (take $n=1$ for
+the zero ring), so its kernel contains $n\GOz=n\Z[i]+\Pi_\C$. Thus the ideals
+$n\Z[i]$ are cofinal among finite-index ideals. Each quotient $\Z[i]/n\Z[i]$ has a unique pair of
+coordinates $a+bi$ with $a,b\in\Z/n\Z$, and reduction acts on the coordinates
+separately. Compatible pairs therefore give $\widehat\Z\oplus\widehat\Z i$,
+with multiplication $(a,b)(c,d)=(ac-bd,ad+bc)$; this is precisely
+$\widehat\Z[T]/(T^2+1)$. The same coordinate argument along $\ell^r$ gives
+$\Z_\ell[T]/(T^2+1)$ without any irreducibility assumption on $T^2+1$.
+The Gaussian canonical map has coordinates $\ct(x)$ in these residue rings;
+its kernel is $\Pi_\C$ and its image is the diagonal copy of $\Z[i]$.
 \end{proof}
+
+These isomorphisms also preserve the inverse-limit topologies, since each residue
+isomorphism is a homeomorphism between finite discrete rings. The diagonal images
+are dense: finitely many profinite coordinates are simultaneously represented by
+one residue at their least common multiple, and finitely many prime-power
+coordinates by one residue at their largest power. Lift that residue to an
+ordinary integer, or to an ordinary Gaussian integer in the rank-two case.
+This density statement uses the inverse-limit topology.
 
 The finite quotient system is an ordinary set-indexed system; no inverse limit over a proper
 class of targets is formed, and $\Oz$ is not claimed to be an object of the category of small
 topological rings (08, 09). The finite-congruence topology on $\Oz$ is not Hausdorff: $\Pi$
 is the closure of $0$. (Status (batch 32): this is forced. By \nolinkurl{opa:tc:thm:oztopology} in
-\cite{RepoOpa}, every ring topology on $\Oz$ or $\GOz$ in which every Hahn-summable family with sum in the ring
+\cite{RepoOpa}, every ring topology on $\Oz$ or $\GOz$ in which every Hahn-summable family of its elements with sum in the ring
 converges to its sum along finite partial sums is pulled back along $\ct$ from a ring topology on $\Z$ or $\Z[i]$,
 and none is Hausdorff; the finite-congruence and $p$-adic topologies are such pullbacks
 (\nolinkurl{opa:tc:rem:congruence}).) It is unrelated to the fine order topology and to Hahn valuation
-topologies (07, 10, 11). Every $g\in\Pi$ is divisible in $\Oz$ by every power of $p$, but
+topologies (07, 10, 11). For the asserted compatibility with strong sums in these
+pullback topologies, only finitely many summands have a nonzero constant
+coefficient. Once those summands are included, every further finite partial sum
+has the same constant term as the Hahn sum and is therefore in every pulled-back
+neighborhood of it. This proves compatibility directly; it does not claim
+convergence in a Hahn valuation topology. Every $g\in\Pi$ is divisible in $\Oz$ by every power of $p$, but
 this does not represent $g$ as a nonzero $p$-adic integer; for example
 $\omega^\omega+\pi\omega+17$ maps to $17$ in every finite quotient and in every $\Z_p$ (07).
 The finite-quotient and completion statements were already in the Diophantine manuscripts
@@ -2044,20 +2079,24 @@ why passing from finite targets to arbitrary set-sized targets recovers nothing 
 \begin{proposition}[Adjoining one monomial inverse \src{04, 07}]\label{osq:prop:locsupport}
 For $a>0$,
 \[
- \A_{D,k}[X^{-a}]=\{x\in\hahn k\No:\ \supp x\subseteq[-Na,\infty)\text{ for some ordinary }N\},
+ \A_{D,k}[X^{-a}]=\{x\in\hahn k\No:\ \supp x\subseteq[-Na,\infty)\text{ for some }N\in\mathbb N\},
 \]
-independently of $D$. This is a proper subring of $\hahn k\No$ and not a field; it has no
-nonzero set-sized ring target (\cref{osq:cor:nofield}). In particular
+independently of $D$. This is a proper subring of $\hahn k\No$ and not a field; it admits
+no unital map to a nonzero set-sized ring (\cref{osq:cor:nofield}). In particular
 $\Oz[\omega^{-a}]$ is a nonzero class domain, not a field, with no nonzero set-sized unital
 module.
 \end{proposition}
 \begin{proof}
-An element of the localization is $fX^{-Na}$ with $f\in\A_{D,k}$, whose support is bounded
+The powers of $X^a$ are nonzero, so the localization embeds in the ambient field.
+Every fraction is $fX^{-Na}$ with $f\in\A_{D,k}$ and $N\in\mathbb N$; its support is bounded
 below by $-Na$. Conversely, if $\supp x\subseteq[-Na,\infty)$, then $X^{(N+1)a}x$ has strictly
 positive support, so $x=X^{(N+1)a}x/X^{(N+1)a}$ lies in the localization; the extra factor
 $X^a$ removes the restriction on the coefficient at the lower endpoint, which explains the
 independence from $D$. The exponent $a\omega$ exceeds every $Na$, so $X^{-a\omega}$ is not in
-the ring although $X^{a\omega}$ is; the ring is proper and not a field.
+the ring although $X^{a\omega}$ is. The missing inverse proves both properness and
+failure to be a field. The ring is a nonzero domain because it is a subring of the
+ambient field. Since $X^a\in\Pi_k$ is now invertible,
+\cref{osq:cor:nofield} gives the target and module obstructions.
 \end{proof}
 
 The same argument shows $\omega^{-\omega}\notin\Oz[1/\omega]$: $\omega^{-\omega}=a/\omega^n$
@@ -2068,20 +2107,28 @@ Let $R=\A_{D,k}$, $J$ a class ideal and $S\subseteq R$ a multiplicative class co
 Put $D_0=D/\ct(J)$ and $T=\{\ct(s)+\ct(J):s\in S\}\subseteq D_0$. For every set-sized
 commutative ring $B$,
 \[
- \Hom\bigl((R/J)[S^{-1}],B\bigr)\cong\Hom\bigl(D_0[T^{-1}],B\bigr);
+ \Homone\bigl((R/J)[S^{-1}],B\bigr)\cong\Homone\bigl(D_0[T^{-1}],B\bigr);
 \]
 if $0\in T$ the right side is empty for $B\ne0$. For $R=\Oz$, $J=0$ and $S$ a set-sized
 multiplicative subset, the same holds for noncommutative $B$, with universal formula
 $f/s\mapsto\ct(f)1_B(\ct(s)1_B)^{-1}$.
 \end{theorem}
 \begin{proof}
-A map from the left ring is a map $h:R\to B$ killing $J$ and sending each $s\in S$ to a unit.
+Here all displayed maps preserve the identity, and $S$ in the left localization
+means its image in $R/J$. A unital map from the left ring is a unital map
+$h:R\to B$ killing $J$ and sending each $s\in S$ to a unit.
 By \cref{osq:thm:universal}, $h=g\circ\ct$ uniquely, and the conditions become
 $g(\ct(J))=0$ and $g(\ct(s))\in B^\times$, which are exactly the conditions for a map
 $D_0[T^{-1}]\to B$; the sets $\ct(J)$ and $T$ are sets even when $J$ and $S$ are classes.
-The natural map to the reflection is surjective on fractions of constants. For the
-noncommutative statement, the denominators $\ct(s)1_B$ are central, so the ordinary
-universal property of localization applies (08).
+Explicitly the natural map sends $f/s$ to $[\ct(f)]/[\ct(s)]$. Every denominator
+of the target is represented by some $s\in S$, and every numerator by a constant
+$d\in D$, so the map is surjective. If $0\in T$, inverting it gives $0=1$;
+the localized target is then the zero ring, whose only unital maps are to the zero
+ring. This explains the stated empty Hom-set for nonzero $B$.
+For the noncommutative assertion the denominators $\ct(s)1_B$ are central. If they
+are units, their inverses are central too, and the fraction formula respects the
+localization relation; if any is not a unit there is no such map. Uniqueness follows
+because a map must send $s^{-1}$ to the inverse of its prescribed image (08).
 \end{proof}
 
 \begin{example}[Three effects \src{08, 11, 15}]\label{osq:ex:localizations}
@@ -2100,17 +2147,23 @@ element with unit constant term zero.
 Let $X$ be a set of commuting variables, $(f_j)_{j\in E}$ a set-indexed family in
 $\A_{D,k}[X]$, $B=\A_{D,k}[X]/(f_j)$ and $B_0=D[X]/(\ct_*f_j)$, where $\ct_*$ applies
 $\ct$ to coefficients. For every set-sized commutative ring $S$ the natural map $B\to B_0$
-induces $\Hom(B_0,S)\cong\Hom(B,S)$; thus $\Refset(B)=B_0$.
+induces $\Homone(B_0,S)\cong\Homone(B,S)$; thus $\Refset(B)=B_0$.
 \end{theorem}
 \begin{proof}
-A map $\A_{D,k}[X]\to S$ is a map on $\A_{D,k}$, which factors through $\ct$, together with
-images of the variables; for such data $f_j$ vanishes exactly when $\ct_*f_j$ does. $B_0$ is a
-set because $D$, $X$ and the relations are sets, and $B\to B_0$ is surjective.
+All maps here are unital. A map $\A_{D,k}[X]\to S$ is specified by a map on
+$\A_{D,k}$ and images of the commuting variables. Its coefficient map factors
+uniquely through $\ct$. Polynomial evaluation is a finite sum of finite products,
+so the values of $f_j$ and $\ct_*f_j$ agree for every $j$. Vanishing of these
+relations is exactly the condition to factor through the corresponding quotient;
+this gives both directions of the claimed correspondence and their uniqueness.
+The ring $D[X]$ is a set of finite polynomial expressions, and its ideal generated
+by the relations is a set, so $B_0$ is a set. The coefficient map fixes constants
+and variables, hence is surjective before and after passing to the quotients.
 \end{proof}
 
 06 states this for finitely many variables and 11 for a set of variables; 09 states the
 corresponding reduction of localization and relation problems. The relation $\omega T=1$
-reduces to $0=1$, so it has no solution in a nonzero set-sized ring under any representation
+reduces to $0=1$, so it has no solution in a nonzero set-sized ring under any unital representation
 of its coefficients, although $T=\omega^{-1}$ solves it in $\No$ (06). For
 $B=\Oz[T]/(T^2-\omega)$ one gets $\Refset(B)=\Z[T]/(T^2)$: a set-sized field sends $T$ to
 $0$ and a set-sized ring may send it to any square-zero element, while the actual root
@@ -2135,11 +2188,23 @@ fails: $\exists x\,\exists y\,(x^2=2y^2\wedge y\ne0)$ holds in $\Oz$ (take
 $x=\sqrt2\,\omega$, $y=\omega$) but not in $\Z$.
 \end{proposition}
 \begin{proof}
-Apply the homomorphisms $\ct$ and $\Z\hookrightarrow\Oz$, which preserve positive
-existential formulas (induction on their construction). A nonzero integer solution of
+Both homomorphisms $\ct$ and $\Z\hookrightarrow\Oz$ fix every integer parameter.
+They commute with evaluation of ring terms, hence preserve atomic equations.
+Conjunction and disjunction preserve this implication, and an existential witness
+is sent to its image under the homomorphism. Induction on the finite formula
+therefore proves preservation of positive existential formulas in each direction.
+For a system of equations, the forward direction simply takes the constant term
+of each coordinate and the reverse direction includes the integer solution.
+A nonzero integer solution of
 $x^2=2y^2$ would give a rational square root of $2$; $\ct$ maps the omnific witnesses to
 $x=y=0$, preserving the equation but not the inequation.
 \end{proof}
+
+The same retraction argument applies to $D\hookrightarrow\A_{D,k}\to D$ for
+every coefficient pair in the report: positive existential formulas with parameters
+in $D$ have the same truth value in the two rings. In particular it applies to
+$\Z[i]\hookrightarrow\GOz\to\Z[i]$. This is a direct consequence of the proof,
+not a statement about formulas with negations or unrestricted parameters.
 
 The parameter restriction is essential (the coefficient $\omega^\gamma+1$ of
 \cref{osq:nm:thm:invisible} is not an integer), and so is positivity (08). The sibling report

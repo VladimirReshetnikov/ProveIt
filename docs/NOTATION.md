@@ -67,6 +67,15 @@ image, whose defining kernel may strictly contain `J`. For example,
 `A/(f)` is `D/(ct(f))`. The zero ring is allowed, so “no nonzero set-sized
 image” is the appropriate statement for `Oz/(1+ω)`.
 
+The quotient-localization and polynomial-presentation mapping properties use
+`Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
+localization is the zero ring; it has no unital map to a nonzero ring, though
+it still has the nonunital zero map. Profinite inverse limits are indexed by
+positive ordinary integers under divisibility, with reduction from modulus
+`m` to `n` when `n` divides `m`. Prime-adic limits use the positive powers
+of one fixed prime. A Gaussian completion `ℤ_ℓ[i]` means
+`ℤ_ℓ[T]/(T²+1)`, without an assumption that this ring is a domain.
+
 Constant coefficient `ct` is a ring retraction on these support-restricted
 rings. It is not a ring homomorphism on all of `No`, since `ω · ω⁻¹ = 1`,
 and it is not order preserving: `ω − 1 > 0` but `ct(ω − 1) = −1`.
