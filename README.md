@@ -376,11 +376,15 @@ over its omnific ring, as are all elements over any intermediate ring.
 These rings have the full ambient field as their fraction field and complete
 integral closure. Ordinary integral closure is strictly smaller: `1/2` is
 almost integral but not integral, since a nonunit cannot gain an integral
-reciprocal. The stronger manuscript description of ordinary integral closure
-as a proper dense subring with zero conductor and no set of algebra generators
-remains pending in Lean. Uniform denominators
-make every set-generated overring closed and uniformly discrete in the
-fine topology. In the countable-support model, exactly `cf(κ)` negative
+reciprocal. For the real omnific ring, Lean also proves the full actual-field
+normalization theorem: its integral closure properly contains `Oz`, is a
+proper dense subring of `No`, has zero conductor and has no small set of
+algebra generators. The density proof constructs integral units
+`√(H²+1) − H` below every positive surreal radius and uses the omnific floor
+to approximate from below. Its generic form applies to any integer part of
+an ordered field with nonnegative square roots. The manuscript also proves
+that every set-generated overring is closed and uniformly discrete in the
+fine topology; that assertion remains pending in Lean. In the countable-support model, exactly `cf(κ)` negative
 monomials generate the ambient field over its integer part, proving the
 denominator size bound sharp. This leaves the normalization's own generator
 count open. A least negative support exponent prevents
