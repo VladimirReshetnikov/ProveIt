@@ -19702,15 +19702,62 @@ does not assert that $\Lambda$ is a set in the original universe. The coefficien
 evaluation commutes with it.
 \end{theorem}
 \begin{proof}
-The first equality is the polynomiality of preserving rational functions (\cref{osq:fs:thm:probes}; 22's Corollary~5.3 and Theorem~7.2), and the
-decomposition is \cref{osq:pm:thm:numreal,osq:pm:thm:numgaussian,osq:fs:prop:transfer}; 22 proves it as 16 does, without a basis of $\Int(D^m)$: values
-on a large ordinary box put the Newton coefficients, hence the monomial coefficients, in $F_0+\Pi_k$; constant terms at points of $D^m$ put the ordinary
-part in $\Int(D^m)$; and $f(\mathbf z+\mathbf u)-f(\mathbf z)\in\Pi_k$ for $\mathbf z\in D^m$, $\mathbf u\in\Pi_k^m$. Put $M=\Int(D^m)$. As $D$-modules
-$\Lambda=D\oplus\Pi_k$, so $\Lambda\otimes_DM\cong M\oplus(\Pi_k\otimes_DM)$. Since $D[\mathbf X]\subseteq M\subseteq F_0[\mathbf X]$ and every polynomial
-over $F_0$ has a common denominator in $D\setminus\{0\}$, localization gives $F_0\otimes_DM\cong F_0[\mathbf X]$ (injective because $M$ lies in the
-torsion-free module $F_0[\mathbf X]$); $\Pi_k$ is an $F_0$-vector space, so
-$\Pi_k\otimes_DM\cong\Pi_k\otimes_{F_0}(F_0\otimes_DM)\cong\Pi_k[\mathbf X]$. Under these identifications the multiplication map is the direct-sum map
-of the decomposition. The assertions on the constant term follow from its multiplicativity on $F_0+\Pi_k$ (\cref{osq:lem:ct}).
+Rational preservation implies polynomiality by
+\cref{osq:fs:thm:probes,osq:ft:thm:gaussrational}.
+The additive decomposition is
+\cref{osq:pm:thm:numreal,osq:pm:thm:numgaussian,osq:fs:prop:transfer}:
+ordinary grid values put every monomial coefficient in $F_0+\Pi_k$,
+and constant extraction puts its ordinary part in $\Int(D^m)$.
+Conversely, for $\mathbf z\in D^m$ and $\mathbf u\in\Pi_k^m$,
+every term of $f(\mathbf z+\mathbf u)-f(\mathbf z)$ has a purely
+infinite factor. Thus $f\in\Int(D^m)$ preserves $\Lambda$, as
+does every polynomial in $\Pi_k[\mathbf X]$. The sum is direct
+because $F_0\cap\Pi_k=0$. This is an additive direct sum with
+the usual polynomial multiplication, not a product of two rings.
+
+Put $M=\Int(D^m)$. The $D$-module splitting
+$\Lambda=D\oplus\Pi_k$ gives
+\[
+ \Lambda\otimes_D M\cong M\oplus(\Pi_k\otimes_D M).
+\]
+On the first summand the displayed multiplication map is inclusion.
+On the second it is the coefficient multiplication map
+\[
+ \theta:\Pi_k\otimes_D M\longrightarrow\Pi_k[\mathbf X].
+\]
+Here $\Pi_k$ is an $F_0$-vector space and $D[\mathbf X]\subseteq
+M\subseteq F_0[\mathbf X]$. Every monomial $\mathbf X^\nu$
+belongs to $M$, so $\theta$ is onto: a finite polynomial
+$\sum_\nu u_\nu\mathbf X^\nu$ is the image of
+$\sum_\nu u_\nu\otimes\mathbf X^\nu$.
+
+For injectivity, write a tensor as a finite sum
+$z=\sum_{\ell=1}^r u_\ell\otimes f_\ell$ and choose one
+$0\ne d\in D$ clearing all coefficients of all $f_\ell$.
+Write $df_\ell=\sum_\nu a_{\ell\nu}\mathbf X^\nu$ with
+$a_{\ell\nu}\in D$. The balancing relation gives
+\[
+ z=\sum_\ell (u_\ell/d)\otimes(df_\ell)
+  =\sum_\nu\left(\sum_\ell a_{\ell\nu}u_\ell/d\right)
+      \otimes\mathbf X^\nu.
+\]
+The inner sums are exactly the coefficients of $\theta(z)$.
+If that polynomial is zero, each inner sum is zero, hence $z=0$.
+This proves bijectivity without choosing a basis of $M$ or
+assuming that $M$ is finitely generated. Multiplication on pure
+tensors agrees with polynomial multiplication, and $1\otimes1$
+maps to $1$, so the resulting bijection is a ring isomorphism.
+All sums and denominator choices in this argument are finite.
+
+Finally all coefficients and all inputs lie in the nonnegative-support
+ring on which $\ct$ is multiplicative. Polynomial evaluation is a
+finite ring expression, giving explicitly
+\[
+ \ct\bigl(F(\mathbf x)\bigr)
+   =\ct_*(F)\bigl(\ct(x_1),\dots,\ct(x_m)\bigr).
+\]
+The kernel of $\ct_*$ is $\Pi_k[\mathbf X]$, and the ordinary
+inclusion of $M$ is its ring section.
 \end{proof}
 
 \begin{definition}[\src{22}]\label{osq:ft:def:universal}
@@ -19723,13 +19770,32 @@ A finite set $S\subseteq D^m$ is universal in a coordinate degree space if and o
 $F(S)\subseteq\Lambda$ satisfies $F(\Lambda^m)\subseteq\Lambda$.
 \end{theorem}
 \begin{proof}
-Let $S$ be universal. Its evaluation matrix on the monomials of the degree space has full column rank over $F_0$: otherwise a nonzero
-$h\in F_0[\mathbf X]$ in the space vanishes on $S$, \cref{osq:ft:lem:grid} gives $\mathbf c\in\Z^m\subseteq D^m$ with $h(\mathbf c)\ne0$, and
-$h/(2h(\mathbf c))$ is $D$-valued on $S$ but takes the value $\frac12\notin D$ at $\mathbf c$. Inverting a square invertible submatrix writes every
-coefficient of $F$ as an $F_0$-linear combination of values in $\Lambda=D\oplus\Pi_k$, so $F=f+g$ with $f\in F_0[\mathbf X]$ and
-$g\in\Pi_k[\mathbf X]$ in the same space. Constant terms at the points of $S$ give $f(S)\subseteq D$, so $f\in\Int(D^m)$, and $F$ preserves $\Lambda$ by
-\cref{osq:ft:thm:basechange}. Conversely, if $S$ tests $\Lambda$ and $f\in F_0[\mathbf X]$ has $f(S)\subseteq D$, then $f(\Lambda^m)\subseteq\Lambda$
-and $f(D^m)\subseteq\Lambda\cap F_0=D$.
+Let $S$ be universal and let $V$ be the $F_0$-vector space spanned
+by the monomials $\mathbf X^\nu$, $0\le\nu_j\le d_j$.
+Its dimension is $N=\prod_j(d_j+1)$. Evaluation on $S$ is
+injective on $V$: otherwise a nonzero $h\in V$ vanishes on $S$,
+while the grid lemma gives $\mathbf c\in\Z^m\subseteq D^m$
+with $h(\mathbf c)\ne0$. The polynomial $h/(2h(\mathbf c))$
+then takes value zero on $S$ and $1/2\notin D$ at $\mathbf c$,
+contradicting universality. In particular $|S|\ge N$.
+
+The evaluation matrix therefore has an invertible $N\times N$
+minor over $F_0$. The same minor is invertible over $E$, with
+inverse entries still in $F_0$. If $F\in E[\mathbf X]$ in
+the degree space takes $\Lambda$-values on $S$, applying that
+inverse expresses each coefficient as an $F_0$-linear combination
+of those values. Since $F_0\Lambda=F_0+\Pi_k$, all coefficients
+lie in $F_0+\Pi_k$. Thus $F=f+g$, where $f\in V$ and
+$g\in\Pi_k[\mathbf X]$ has the same degree bounds.
+
+For $\mathbf a\in S\subseteq D^m$, $g(\mathbf a)\in\Pi_k$
+and $\ct(F(\mathbf a))=f(\mathbf a)\in D$. Universality makes
+$f\in\Int(D^m)$, and \cref{osq:ft:thm:basechange} shows that
+$F$ preserves $\Lambda$. Conversely, if $S$ tests all such
+ambient-coefficient polynomials, apply it to $f\in V$ with
+$f(S)\subseteq D$. Then $f(D^m)\subseteq\Lambda\cap F_0=D$,
+which is precisely universality. This includes degree-zero spaces;
+the empty set cannot be universal, since it would miss the constant $1/2$.
 \end{proof}
 
 So among test points in the ordinary lattice $D^m$, minimal polynomial testing is the same problem before and after adjoining the purely infinite part
@@ -19748,13 +19814,43 @@ generated by $F(\Oz^m)$, the class of finite $\Oz$-linear combinations of values
 Hence for every ideal $I$ of $\Oz$, $F(\Oz^m)\subseteq I$ if and only if the finitely many box values lie in $I$.
 \end{theorem}
 \begin{proof}
-The Newton expansion writes each value $F(\mathbf x)$ as an $\Oz$-linear combination of the $c_{\mathbf k}$ (\cref{osq:pm:lem:binomial});
-\eqref{osq:pm:eq:newtoncoef} writes each $c_{\mathbf k}$ as an integral combination of box values; and box values are values.
+Let $J$ be the ideal generated by the finitely many Newton
+coefficients and $K$ the ideal generated by the box values.
+For every $\mathbf x\in\Oz^m$, the finite Newton expansion is
+\[
+ F(\mathbf x)=\sum_{\mathbf k\le\mathbf d}
+ c_{\mathbf k}\prod_j\binom{x_j}{k_j}.
+\]
+Each multiplier belongs to $\Oz$ by
+\cref{osq:pm:lem:binomial}, so every value lies in $J$ and
+$I_F\subseteq J$. Conversely the finite-difference formula
+\eqref{osq:pm:eq:newtoncoef} writes $c_{\mathbf k}$ as an
+integer linear combination of values at points
+$0\le\mu_j\le k_j\le d_j$, all inside the box. Hence
+$J\subseteq K$. Every box value is a value of $F$, so
+$K\subseteq I_F$, proving both equalities. For an arbitrary
+ideal $I$, containing all values is equivalent to containing
+$I_F=K$, and therefore equivalent to containing those finite
+generators. No infinite linear combination is used, including
+when the value class or the ideal $I$ is proper.
 \end{proof}
 
 A finite generating set avoids set-size questions about an ideal generated by a class, and no principal generator or greatest common divisor is
 assumed or inferred (22). The Gaussian version, with the box $\prod_jC_{d_j+1}$, follows in the same way from the $2m$-variable polynomial $H$ in the
 proof of \cref{osq:ft:thm:gausspoly}: the ideal of $\GOz$ generated by all values on $\GOz^m$ is generated by the finitely many box values.
+
+There is a useful ordinary image of this ideal. For either the real
+or Gaussian version put $f=\ct_*(F)$. The evaluation identity gives
+\[
+ \ct(I_F)=\bigl(f(D^m)\bigr)\subseteq D,
+\]
+because constant extraction maps all values to $f(D^m)$ and every
+ordinary tuple is itself an allowed input. Surjectivity of $\ct$
+makes the image an ideal of $D$. The finite grid generators above
+therefore compute this image from their constant terms. Since $D$
+is $\Z$ or $\Z[i]$, their ordinary gcd generates that image, up to
+a unit. This does not imply that $I_F$ itself is principal, nor
+that its purely infinite part is recovered from the ordinary image.
 
 \begin{corollary}[Arithmetic birational rigidity \src{22}]\label{osq:ft:cor:birational}
 If $\Phi,\Psi:E^m\dashrightarrow E^m$ are rational maps inverse to each other as rational maps, and both are defined on $\Lambda^m$ with values in
@@ -19762,8 +19858,18 @@ $\Lambda^m$, then all coordinates of $\Phi$ and $\Psi$ are polynomials in $\Num_
 automorphisms of $E^m$.
 \end{corollary}
 \begin{proof}
-Each coordinate preserves $\Lambda$, so it is a polynomial (\cref{osq:fs:thm:probes,osq:ft:thm:gaussrational}); the rational identities
-$\Psi\circ\Phi=\id$ and $\Phi\circ\Psi=\id$ are then polynomial identities.
+Apply rational collapse to each coordinate of each map
+(\cref{osq:fs:thm:probes,osq:ft:thm:gaussrational}).
+All are polynomials preserving $\Lambda$, hence belong to
+$\Num_m(\Lambda)$, and both maps now extend to polynomial
+maps defined on every point of $E^m$.
+Each coordinate of $\Psi\circ\Phi-\id$ and of
+$\Phi\circ\Psi-\id$ is a polynomial whose image in
+$E(X_1,\dots,X_m)$ is zero by the assumed rational inverse
+identities. The polynomial ring injects into its fraction field,
+so these coordinate polynomials are identically zero. Thus the
+polynomial extensions are inverse on all of $E^m$, not merely
+on their original rational domains or on $\Lambda^m$.
 \end{proof}
 
 The rational inverse is a hypothesis: nothing is asserted about a bijective polynomial map of $\Lambda^m$ without one, no Jacobian-conjecture claim is
@@ -19788,9 +19894,47 @@ exists if and only if $\operatorname{cvx}_\Gamma(G)\ne\Gamma$. When it exists, t
 \cref{osq:ft:thm:certificate,osq:ft:thm:gaussrational} hold in $\hahn k\Gamma$, for $\A_{D,k}(\Gamma)$ and coefficients supported in $G$.
 \end{proposition}
 \begin{proof}
-If $b>G$, then $b\notin\operatorname{cvx}_\Gamma(G)$. Conversely a positive $b\notin\operatorname{cvx}_\Gamma(G)$ satisfies $b>|g|$ for all $g\in G$,
-since $b\le|g|$ would put it in the convex subgroup. The remaining arguments use only supports, block separation, finite polynomial algebra and the
-split ring $D\oplus\Pi_k(\Gamma)$; the exponents $jb+g$ stay in $\Gamma$, and the countable union of the blocks is a legitimate support.
+Write $C=\operatorname{cvx}_\Gamma(G)$. The displayed set is a
+convex subgroup: it contains $G$, is closed under negation, and
+the inequality $|x+y|\le|x|+|y|$ proves closure under addition.
+Every convex subgroup containing $G$ contains this set, so it is
+indeed the convex subgroup generated by $G$.
+If $b>G$, no $g\in G$ can satisfy $b\le g$, so $b\notin C$.
+Conversely, if $C\ne\Gamma$, take $x\notin C$ and put
+$b=|x|$. Then $b>0$ and $b\notin C$; for any $g\in G$,
+$b\le|g|$ would imply $b\in C$, so $b>|g|\ge g$.
+
+In this abstract exponent group write $t=X^b$ and
+$K_G=\hahn kG$. For integers $j<\ell$ and $g,h\in G$,
+\[
+ (\ell b+h)-(jb+g)=(\ell-j)b+(h-g)>0.
+\]
+Thus different blocks $jb+G$ are disjoint and ordered by $j$.
+For a Laurent series $\sum_{j\le N}c_jT^j$ with $c_j\in K_G$,
+the union of the translated supports $jb+\supp c_j$ is reverse
+well ordered: any nonempty subset meets a greatest outer index,
+then has a greatest exponent in that block. A given exponent
+belongs to at most one block, so the family is summable.
+In multiplying two such series, a fixed outer index receives only
+finitely many pairs of indices, because both outer index sets are
+bounded above. Within each pair the usual Hahn product applies.
+This proves that substitution $T\mapsto X^b$ is an injective
+field map and reproduces the Laurent-block argument entirely in
+$\Gamma$, without divisibility or an embedding into $\No$.
+
+Positive-index blocks have strictly positive exponents and
+negative-index blocks have strictly negative exponents. The
+zero block retains its original coefficients. Hence the exact
+support test and the rational detector hold with
+$\A_{D,k}(\Gamma)=D\oplus\Pi_k(\Gamma)$.
+The remaining certificate proofs use finite resultants and
+interpolation. Their arithmetic step also transfers: dividing
+coefficients by nonzero ordinary integers leaves positive
+support unchanged, so the real binomial-closure argument holds
+in $\Z\oplus\Pi_\R(\Gamma)$. In the Gaussian case split into
+real and imaginary Hahn coordinates and apply that argument to
+the $2m$-variable Newton expansion. Thus both stated finite
+certificates hold whenever the required $b$ exists in $\Gamma$.
 \end{proof}
 
 For an Archimedean $\Gamma$ every nonzero $G$ is cofinal, and no fresh exponent exists in $\Gamma$; this is a failure of the method's hypothesis, not a

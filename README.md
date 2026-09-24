@@ -495,11 +495,14 @@ At every ordinary prime centre, both the local ring and its henselization
 complete to ℤ_p through nonflat maps. Their generic fibre still contains
 the complexified field, even at p=2; a local square root of −1 exists
 exactly for primes congruent to 1 modulo 4.
-The first seven finite-test proofs are also reviewed: one fresh monomial
+All twelve standard finite-test proofs are also reviewed: one fresh monomial
 and finite ordinary grids certify rational preservation, with a separate
 Gaussian arithmetic grid. A common scale serves any set of coefficient
 data, while good values outside a set force preservation everywhere.
 The resultant example now distinguishes degree loss from cancellation.
+Tensor base change and lifting of ordinary test sets now have expanded
+proofs, as do finite image-ideal generation and transfer to a fixed Hahn
+workspace with an available fresh exponent.
 These manuscript results remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
