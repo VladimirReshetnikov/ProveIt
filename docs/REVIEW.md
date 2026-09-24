@@ -3994,6 +3994,48 @@ by this review. Its thirteen geometric and coefficient-algebra results
 remain **Pending** in Lean. Sections 18.5–18.6, later scope notes and full
 source reconciliation remain outside the completed manuscript review.
 
+## Group-review synchronization and two new reports
+
+The synchronization through `f388f95` includes the nine report expansions
+through `c315ac9` and placement `aa9c891`. The former add 289 standard
+results; their new proofs remain outside the completed review scopes.
+Existing labelled standard statements change only in their source credits;
+the separate `osq:main:closure` overview gains the cyclic-workspace claims.
+None of those changed labels has an implementation mapping. All cited source
+labels still resolve. The four incoming Lean modules implement polynomial
+and positive-existential transfer, retraction closure and its definability
+obstructions. Their native ring-language fragment, integer-parameter guard
+and explicit positivity counterexample agree with the mapped Diophantine
+statements. The combined two-thread build passes 4,449 jobs and the axiom
+audit passes 15,345 declarations with only `propext`, `Classical.choice`
+and `Quot.sound`.
+
+Placement adds two main texts: continued fractions (26 standard results)
+and exponential relations over omnific integers (34). The inventory now
+includes 4,220 standard results across 63 reports. Seven companions have
+audit, code and data files placed but main-text integration remains pending.
+The catalogue, reader map and root README reflect the distinction. The new
+package instructions use the actual `code/` and `data/` locations and no
+longer advertise an omitted manifest. Their article sources and recorded
+verification data are unchanged.
+
+The missing PDFs build in three clean passes to 22 and 28 pages. Visual
+checks cover their title and contents pages, continued-fraction pages 10
+and 22, and exponential-relation pages 15 and 28. The continued-fraction
+suite passes 81,256 assertions; its entire JSON differs only in the Python
+version (3.13.5 to 3.13.14, with SymPy 1.14.0 unchanged). The exponential
+suite passes 22,074 cases with identical JSON. These finite regression
+checks are not an independent proof review of the new manuscripts.
+
+The updated catalogue builds in three passes to 32 pages without warnings,
+unresolved references or bad boxes; the opening pages, new entries and
+family transitions were visually checked. Every one of its 63 main-document
+destinations exists. The independent inventory audit passes; all 4,763
+cited source references and 1,623 local Markdown destinations resolve.
+The reviewed Diophantine source and its 201-page PDF are unchanged by this
+integration. The new reports and all unreviewed additions remain pending
+independent proof review and Lean formalization.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

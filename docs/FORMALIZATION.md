@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **61 main texts** with **4160**
+The canonical inventory below identifies **63 main texts** with **4220**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -128,11 +128,13 @@ collapse and coefficient recovery; these are now indexed too. These new results 
 **Pending** in Lean; placing companion audits and verification code does not
 by itself integrate or formalize their mathematics.
 
-The later delivery merged through `51c1cc7` adds nine archives under
-`docs/new/`. Placement, main-text integration, statement indexing and proof
-review are pending; these archives do not themselves add maintained reports
-or indexed statements. The later written expansions bring the current
-inventory to 4,160 standard results across 61 main reports.
+The delivery merged through `51c1cc7` is now placed in `aa9c891`. Two new
+main texts, omnific continued fractions and exponential relations over
+omnific integers, add 26 and 34 standard results respectively. The current
+inventory has 4,220 standard results across 63 main reports. Both new texts
+are **Pending** in Lean and await independent proof review. Seven companions
+have code and audit files placed but await main-text integration and review;
+their claims are not presumed covered by the existing report statements.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -820,7 +822,7 @@ cannot replace strong Hahn summability.
 custom environments are not included. A label inside a nested equation
 labels that equation, not the enclosing theorem or proposition; an
 environment without its own label is indexed by its source line.
-The inventory covers all 61 maintained main texts
+The inventory covers all 63 maintained main texts
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in
@@ -905,7 +907,9 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
 | [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 25 | 12 | 8 | 12 | 57 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 1643 | 867 | 813 | 837 | **4160** |
+| [foundations-and-computation/exponential-relations-over-omnific-integers/article.tex](foundations-and-computation/exponential-relations-over-omnific-integers/article.tex) | 13 | 5 | 5 | 11 | 34 |
+| [surreal/omnific-continued-fractions/article.tex](surreal/omnific-continued-fractions/article.tex) | 9 | 6 | 4 | 7 | 26 |
+| **Total** | 1665 | 878 | 822 | 855 | **4220** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1358,7 +1362,7 @@ scope recorded in the implementation table above.
 
 The final two batch-32 assemblies, merged through `81b1112`, add **73**
 standard statements in omnific groups and omnific-preserving automorphisms.
-The current inventory is **4,160** across **61** main reports. Both expanded
+That inventory was **4,160** across **61** main reports. Both expanded
 indexes are refreshed; all new statements remain **Pending** in Lean and
 independent review. Neither changed report has a mapped or cited statement
 body in the current Lean implementation.
@@ -6473,3 +6477,77 @@ proof review and source reconciliation remain pending.
 | Corollary | `isc:cor:factorial` (line 1634) | The factorial witness |
 | Corollary | `isc:cor:noshareddenom` (line 1669) | Failure witnessed by the denominator equation |
 | Theorem | `isc:thm:setversion` (line 1706) | Independent embeddings in a saturated ordered group |
+
+### exponential-relations-over-omnific-integers
+
+Source: [foundations-and-computation/exponential-relations-over-omnific-integers/article.tex](foundations-and-computation/exponential-relations-over-omnific-integers/article.tex).
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:basic` (line 278) | Untitled |
+| Proposition | `prop:division` (line 296) | Division with remainder |
+| Lemma | `lem:monomial` (line 340) | Complex coefficients on real monomials |
+| Theorem | `thm:independence` (line 366) | Finite exponential independence |
+| Corollary | `cor:injective` (line 391) | Untitled |
+| Corollary | `cor:groupalgebra` (line 402) | Faithful group algebra |
+| Theorem | `thm:toric` (line 433) | Exact toric kernel |
+| Corollary | `cor:algind` (line 467) | Independence criterion |
+| Theorem | `thm:constants` (line 490) | Constant field and linear disjointness |
+| Corollary | `cor:ozconstants` (line 522) | The omnific constant-field formula |
+| Theorem | `thm:partition` (line 563) | Balanced-partition elimination |
+| Corollary | `cor:affine` (line 592) | Affine exponential zero loci |
+| Proposition | `prop:examples` (line 615) | Untitled |
+| Lemma | `lem:rationalaffine` (line 670) | Untitled |
+| Theorem | `thm:rational` (line 686) | Rational slopes add no Presburger expressive power |
+| Lemma | `lem:split` (line 718) | Algebraic coordinate splitting |
+| Lemma | `lem:vectorQE` (line 749) | Ordered vector-space elimination |
+| Theorem | `thm:algdecision` (line 790) | Effective two-sort reduction |
+| Theorem | `thm:defsplit` (line 841) | Definable splitting |
+| Theorem | `thm:rectangles` (line 894) | Rectangular normal form |
+| Corollary | `cor:stable` (line 916) | No extra induced structure |
+| Corollary | `cor:finiteimage` (line 929) | Finite-image cross-component maps |
+| Theorem | `thm:elementary` (line 949) | Classification of elementary substructures |
+| Corollary | `cor:onescale` (line 985) | One-scale elementary cores |
+| Corollary | `cor:embeddings` (line 1009) | Classification of elementary embeddings |
+| Proposition | `prop:difference` (line 1030) | The two slope languages genuinely differ |
+| Theorem | `thm:single` (line 1075) | Single-slope decomposition |
+| Theorem | `thm:degree` (line 1121) | The theory has the degree of the slope |
+| Proposition | `prop:nonuniform` (line 1169) | Nonuniformity of arbitrary real-number names |
+| Proposition | `prop:tails` (line 1216) | A tail obstruction |
+| Theorem | `thm:undecidable` (line 1239) | A single nonlinear relation destroys decidability |
+| Theorem | `thm:fibers` (line 1285) | Ordinary-fiber criterion |
+| Corollary | `cor:ternary` (line 1315) | Positive real-base ternary equations |
+| Corollary | Line 1349 (unlabeled) | An inhomogeneous anchor removes all infinite solutions |
+
+### omnific-continued-fractions
+
+Source: [surreal/omnific-continued-fractions/article.tex](surreal/omnific-continued-fractions/article.tex).
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:floor` (line 289) | Exact floor, including the boundary correction |
+| Lemma | `lem:matrix` (line 365) | Matrix identities |
+| Proposition | `prop:cylinder` (line 395) | Cylinder description |
+| Corollary | `cor:realization` (line 426) | Realization in the full surreal field |
+| Lemma | `lem:buffer` (line 452) | Uniform two-step buffer |
+| Lemma | `lem:degrees` (line 482) | Degree and exact convergent error |
+| Theorem | `thm:fiber` (line 514) | Exact fiber |
+| Corollary | `cor:neverunique` (line 544) | No unique unrestricted surreal realization |
+| Proposition | `prop:topology` (line 563) | Order-topological obstruction |
+| Theorem | `thm:hahn` (line 589) | Hahn realization and exact uniqueness |
+| Corollary | `cor:cofinality` (line 658) | Countable cofinality threshold |
+| Corollary | Line 679 (unlabeled) | Convergence in the unique Hahn case |
+| Proposition | `prop:prescribed` (line 701) | Prescribed degree cut |
+| Theorem | `thm:prime` (line 723) | Prime precision criterion |
+| Corollary | `cor:radical` (line 759) | Radical and nilpotency index |
+| Lemma | `lem:algerror` (line 803) | Algebraic errors cannot be newly invisible |
+| Lemma | `lem:digitfield` (line 829) | What the digit field can see |
+| Theorem | `thm:algebraic` (line 865) | Exact algebraic-fiber trichotomy |
+| Theorem | `thm:periodroot` (line 934) | Period-fixed representative |
+| Theorem | `thm:periodiccriterion` (line 985) | One or countably many algebraic periodic realizations |
+| Corollary | `cor:pureperiod` (line 1029) | Pure periodicity has one algebraic representative |
+| Theorem | `thm:orderunit` (line 1048) | Periodic uniqueness detects an order unit |
+| Theorem | `thm:independence` (line 1203) | Hidden algebraic independence |
+| Theorem | `thm:complex` (line 1268) | Exact surcomplex coordinate fiber |
+| Corollary | Line 1304 (unlabeled) | Surcomplex hidden independence |
+| Proposition | `prop:mobius` (line 1322) | Precision transport |
