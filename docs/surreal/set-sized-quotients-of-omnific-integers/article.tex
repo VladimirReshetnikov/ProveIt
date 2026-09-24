@@ -8440,7 +8440,7 @@ $\operatorname{w.gl.dim},\operatorname{gl.dim}$.
 \end{itemize}
 The letters $\beta_{p,G}$, $\mu_{\mathscr C}$, $u_F$ and $\ell$ are kept. Four tempting readings are false. (1) $I_F$ is not $J_F$: $I_{\mathscr C}$ for the
 orthant is the relative-interior ideal, not $\Pi_d$ unless $d=1$, and $J_{[d]}=(X_1,\dots,X_d)$ is neither. (2) ``Core'' does not mean integer part:
-$A_{\mathscr C}$ is a subring of $\Oz$, and a partial exponent cone must not be replaced by the positive cone of the ambient order
+$A_{\mathscr C}$ embeds into $\Oz$ for $(D,K)=(\Z,\R)$, and a partial exponent cone must not be replaced by the positive cone of the ambient order
 (\cref{osq:pc:thm:nonflat}). (3) The numbers $\beta_{p,G}$ count summands of a reduced \emph{flat} resolution, not minimal free ranks, and the reduced
 resolution is not unique. (4) ``All radical monomial quotients'' means the coefficient-full geometric ones: arithmetic ideals such as $pA_{\mathscr C}$ and
 ideals restricting the coefficient at an admitted exponent are excluded.
@@ -8462,8 +8462,28 @@ $\mathscr C\setminus\{0\}$. For $(D,K)=(\Z,\R)$ the rule $c+\sum_ma_mX^m\mapsto 
 $A_{\mathscr C}\to\Oz$ preserving $\ct$; for $(D,K)=(\Z[i],\C)$ it is one into $\GOz$.
 \end{proposition}
 \begin{proof}
-The monomial law gives a homomorphism, distinct $m$ give distinct exponents, so uniqueness of finite normal forms gives injectivity; nonconstant exponents
-are positive and the constant term is in $D$. For $\C$ split coefficients into real and imaginary parts.
+First choose rational facet functionals $h_1,\dots,h_s$ with
+$\mathscr C=\{x:h_j(x)\ge0\text{ for all }j\}$. Their common kernel is
+$\mathscr C\cap(-\mathscr C)=\{0\}$, so $\ell_1=\sum_jh_j$ is strictly
+positive on $\mathscr C\setminus\{0\}$. In particular it is nonzero and
+extends to a rational dual basis. Additivity of $\lambda_\omega$ follows
+from linearity of these functionals. If $m\ne0$, at least one $\ell_j(m)$
+is nonzero; the first such coefficient is the leading coefficient of
+the finite normal form for $\lambda_\omega(m)$, so the latter is nonzero.
+This proves injectivity. If $m\in\mathscr C\setminus\{0\}$, its leading
+coefficient is already $\ell_1(m)>0$, so $\lambda_\omega(m)>0$.
+For $d=1$ this simply reads $\lambda_\omega(m)=\ell_1(m)$.
+
+Now the monomial law
+$\omega^{\lambda_\omega(m)}\omega^{\lambda_\omega(n)}
+=\omega^{\lambda_\omega(m+n)}$ makes the displayed rule a unital ring
+homomorphism. Its nonconstant exponents are distinct and positive, so
+uniqueness of finite Conway normal forms proves injectivity and preserves
+the constant term. Real coefficients at these positive exponents and an
+integer constant term give an element of $\Oz$. For $(D,K)=(\Z[i],\C)$,
+apply the same construction to real and imaginary parts. The multiplication
+rule still holds, and the two real normal forms prove injectivity into
+$\Oz+i\Oz=\GOz$ with the specified Gaussian integer constant term.
 \end{proof}
 
 This is \cref{osq:hd:lem:cores}(ii) with a lexicographic, rather than a real, functional (26).
@@ -8472,8 +8492,21 @@ This is \cref{osq:hd:lem:cores}(ii) with a lexicographic, rather than a real, fu
 $\Frac A_{\mathscr C}=\Frac K[\Q^d]$, independently of $\mathscr C$ and of $D\subseteq K$.
 \end{proposition}
 \begin{proof}
-For $0\ne u\in P_{\mathscr C}$ and $a\in K$, $(aX^u)/X^u=a$. Every $g\in\Q^d$ is $m-n$ with $m,n\in P_{\mathscr C}$: take a rational interior point $v$ and a large
-integer $N$ with $Nv,Nv+g\in\mathscr C$; then $X^g=X^m/X^n$. The reverse inclusion is $A_{\mathscr C}\subseteq K[\Q^d]$.
+Regard both fraction fields as subfields of $\Frac K[\Q^d]$ via
+$A_{\mathscr C}\subseteq K[\Q^d]$. Choose a nonzero rational point
+$u\in\mathscr C$, which exists since $\mathscr C$ is full-dimensional
+and rational. For each $a\in K$, both $aX^u$ and $X^u$ belong to
+$A_{\mathscr C}$, and $(aX^u)/X^u=a$. Thus its fraction field contains
+all of $K$, even when $D$ is a proper subring.
+
+Choose a rational interior point $v$ of $\mathscr C$. Such a point can
+be obtained by summing rational generators of all its rays. For rational
+facet functionals $h_j$, one has $h_j(v)>0$ for every $j$. Given
+$g\in\Q^d$, choose a positive integer $N$ large enough that
+$Nh_j(v)+h_j(g)>0$ for every $j$. Then $n=Nv$ and $m=Nv+g$ are rational
+points of $\mathscr C$, and $X^g=X^m/X^n$ lies in $\Frac A_{\mathscr C}$.
+This field therefore contains every finite sum in $K[\Q^d]$, and hence
+its fraction field. The reverse containment was the initial inclusion.
 \end{proof}
 
 The fraction field forgets the cone, while the face-quotient flat dimensions detect whether it is simplicial (26). All rings and modules used to compute
@@ -8490,15 +8523,43 @@ positive rational $\epsilon$; (iii) $m-\epsilon u_F\in\mathscr C$ for some posit
 \operatorname{fc}(m)$ for all small $\epsilon>0$.
 \end{lemma}
 \begin{proof}
-Write $\mathscr C=\{x:\ell_j(x)\ge0,\ j\le s\}$ with facet functionals. If $F\subseteq\operatorname{fc}(m)$ and $\ell_j(m)=0$, then $\ell_j(u_F)=0$; the
-other $\ell_j(m)$ are positive, so for small $\epsilon$ all inequalities hold with the same zero set, which gives (ii) and the last assertion. (ii)$\Rightarrow$(iii)
-is clear. If (iii) holds, $m=(m-\epsilon u_F)+\epsilon u_F$, and a face containing $m$ contains both summands, hence $u_F$ and $F$.
+Write $\mathscr C=\{x:\ell_j(x)\ge0,\ 1\le j\le s\}$ using facet
+functionals. The least face containing a point is determined by the
+facet inequalities that vanish there. Assume (i). If $\ell_j(m)=0$,
+the corresponding facet contains $\operatorname{fc}(m)$ and hence $F$,
+so $\ell_j(u_F)=0$. Consequently each index with $\ell_j(u_F)>0$ has
+$\ell_j(m)>0$. Choose a real number $\delta>0$ smaller than all the
+finitely many positive ratios
+\[
+ \frac{\ell_j(m)}{\ell_j(u_F)}\qquad\bigl(\ell_j(u_F)>0\bigr).
+\]
+This list is nonempty: otherwise $u_F$ would be in the common kernel
+of the facet functionals, contradicting pointedness and $u_F\ne0$.
+For every real $0<\epsilon<\delta$, each inequality positive at $m$
+remains positive at $m-\epsilon u_F$, while each vanishing inequality
+still vanishes. Thus the difference lies in $\mathscr C$ with the same
+least face as $m$. This proves (ii) and the final assertion.
+
+Any interval of sufficiently small positive numbers contains a rational
+number, so (ii) implies (iii).
+Conversely, in (iii) both summands of
+$m=(m-\epsilon u_F)+\epsilon u_F$ lie in the cone. The face property
+forces $\operatorname{fc}(m)$ to contain $\epsilon u_F$, whose least
+face is $F$, proving (i). Under these equivalent conditions that face
+is nonzero; therefore the sufficiently small differences just constructed
+are themselves nonzero.
 \end{proof}
 
 For a nonzero face $F$ put
 \begin{equation}\label{osq:pc:eq:IF}
  I_F=\bigoplus_{0\ne m\in P_{\mathscr C},\ F\subseteq\operatorname{fc}(m)}KX^m\subseteq A_{\mathscr C},\qquad I_{\{0\}}=A_{\mathscr C}\ \text{(a convention only)}.
 \end{equation}
+Equation~\eqref{osq:pc:eq:sumface} makes this an ideal: adding any exponent
+of $A_{\mathscr C}$ to an admitted exponent preserves the face-containment
+condition, and the coefficient space at every admitted exponent is all of
+$K$. The special convention for the zero face includes the constant ring
+$D$; applying the displayed direct-sum rule to that face instead would give
+only $\Pi_{\mathscr C}$.
 In the orthant, the face spanned by the coordinate rays in $S$ gives 12's $I_S$: the monomials positive at every index of $S$, possibly zero elsewhere (26).
 
 \begin{theorem}[Principal exhaustion and dimension one \src{26}]\label{osq:pc:thm:exhaustion}
@@ -8509,19 +8570,52 @@ For every nonzero face $F$,
 an increasing union. So $I_F$ is flat, is not finitely generated, and $\pd_{A_{\mathscr C}}I_F=1$.
 \end{theorem}
 \begin{proof}
-If $m=2^{-n}u_F+v$ with $v\in\mathscr C$, \eqref{osq:pc:eq:sumface} gives $F\subseteq\operatorname{fc}(m)$, and
-$X^{2^{-n}u_F}=(X^{2^{-n-1}u_F})^2$ makes the union increasing. Conversely, for a finite sum in $I_F$, \cref{osq:pc:lem:subtract} lets one large $n$
-subtract $2^{-n}u_F$ from every exponent with every difference nonzero; factoring out $X^{2^{-n}u_F}$ leaves a finite sum in $A_{\mathscr C}$, although its
-coefficients lie in $K$, not in $D$ (this is why every difference must be nonzero). Each principal ideal is free of rank one, $A_{\mathscr C}$ being a domain,
-so the union is flat. If finitely many elements generated $I_F$, the least value $c>0$ of a functional $\ell$ strictly positive on
-$\mathscr C\setminus\{0\}$ on their nonzero exponents would bound below the $\ell$-values of all exponents of $I_F$, but $\ell(2^{-n}u_F)\to0$. With
-$P_n=X^{2^{-n}u_F}A_{\mathscr C}$ and the inclusions $\iota_n$, the sequence
+Put $P_n=X^{2^{-n}u_F}A_{\mathscr C}$. Every exponent in an element of
+$P_n$ is $2^{-n}u_F+v$ for some $v\in P_{\mathscr C}$, so
+\eqref{osq:pc:eq:sumface} gives $P_n\subseteq I_F$. The identity
+$X^{2^{-n}u_F}=(X^{2^{-(n+1)}u_F})^2$ gives $P_n\subseteq P_{n+1}$.
+Conversely, let $f=\sum_m a_mX^m\in I_F$. By
+\cref{osq:pc:lem:subtract}, a single sufficiently large $n$ makes every
+$m-2^{-n}u_F$ in this finite support a nonzero point of $P_{\mathscr C}$.
+Hence
+\[
+ f=X^{2^{-n}u_F}\sum_m a_mX^{m-2^{-n}u_F}\in P_n.
+\]
+The nonzero differences are essential: they place the remaining sum in
+$\Pi_{\mathscr C}$, where arbitrary coefficients in $K$ are allowed,
+without requiring any $a_m$ to belong to $D$. The zero element causes
+no exception. Since $A_{\mathscr C}$ is a domain, multiplication by
+$X^{2^{-n}u_F}$ identifies $A_{\mathscr C}$ with $P_n$. Thus the displayed
+increasing union is a filtered colimit of free rank-one modules and is flat.
+
+To rule out finite generation, suppose $f_1,\dots,f_t$ generate $I_F$,
+discarding any zero generators. For a functional $\ell$ strictly positive
+on $\mathscr C\setminus\{0\}$, let $c>0$ be its minimum on the union of
+their finite supports. Multiplication by an element of $A_{\mathscr C}$
+only adds exponents on which $\ell\ge0$. Addition and cancellation cannot
+introduce a new exponent of smaller $\ell$-value. Thus every exponent
+in the generated ideal has value at least $c$, whereas
+$X^{2^{-n}u_F}\in I_F$ has value $2^{-n}\ell(u_F)<c$ for large $n$.
+
+Finally let $\iota_n:P_n\hookrightarrow P_{n+1}$ be inclusion. There is
+an exact sequence
 \begin{equation}\label{osq:pc:eq:telescope}
  0\to\bigoplus_{n\ge1}P_n\xrightarrow{\ \tau\ }\bigoplus_{n\ge1}P_n\to I_F\to0,\qquad \tau(e_nx)=e_nx-e_{n+1}\iota_n(x),
 \end{equation}
-is exact (injectivity at the least nonzero coordinate; the cokernel is the colimit), so $\pd I_F\le1$. A projective ideal of a domain is finitely
-generated: with a dual basis $(x_i,f_i)$ and $0\ne a$ in the ideal, $af_i(x)=xf_i(a)$ shows that only the finitely many $f_i$ with $f_i(a)\ne0$ are
-nonzero. So $\pd I_F=1$.
+where the last map sums the included coordinates. The least nonzero
+coordinate of a finitely supported vector survives under $\tau$, proving
+injectivity. Modulo its image each $e_nx$ equals $e_Nx$ for $N\ge n$;
+moving a finite sum to a common coordinate shows that a vector with
+augmentation zero is in the image. The augmentation is surjective by
+the union formula. Both direct sums are free, so $\pd I_F\le1$.
+
+For completeness, a nonzero projective ideal $J$ in a domain has a dual
+basis $(x_i,f_i)$: each $x\in J$ has only finitely many nonzero $f_i(x)$
+and equals $\sum_i f_i(x)x_i$. Fix $0\ne a\in J$. Linearity gives
+$a f_i(x)=f_i(ax)=x f_i(a)$; if $f_i(a)=0$, the domain property forces
+$f_i=0$. Only finitely many $f_i(a)$ are nonzero, so the corresponding
+$x_i$ generate $J$. Applying this to $I_F$, which is not finitely
+generated, rules out projectivity and proves $\pd I_F=1$.
 \end{proof}
 
 This is \cref{osq:hd:lem:faces}(i), (iii) and \cref{osq:hd:prop:pd}(i), (ii) for arbitrary faces; the dual-basis step is \cref{osq:lem:projideal}.
@@ -8534,9 +8628,33 @@ For nonzero faces $F,G$,
 In particular $I_F^2=I_F$, and $I_G\subseteq I_F$ if and only if $F\subseteq G$.
 \end{theorem}
 \begin{proof}
-The intersection is read off the supports, and a product lies in both ideals. For $aX^m\in I_{F\vee G}$ choose a small rational $q>0$ with
-$m-qu_F\in\operatorname{relint}\operatorname{fc}(m)$; then $X^{qu_F}\in I_F$ and $aX^{m-qu_F}\in I_G$. Tensoring $I_F\hookrightarrow A_{\mathscr C}$ with
-the flat $I_G$ gives an injection $I_F\otimes I_G\to I_G$, the multiplication map, with image $I_FI_G$. For the last assertion test on $X^{u_G}$.
+Because the monomials form a direct sum, membership in $I_F\cap I_G$
+means that every exponent $m$ in the support satisfies both
+$F\subseteq\operatorname{fc}(m)$ and $G\subseteq\operatorname{fc}(m)$.
+This is equivalent to $F\vee G\subseteq\operatorname{fc}(m)$, proving
+the intersection formula. Since $I_F$ and $I_G$ are ideals,
+$I_FI_G\subseteq I_F\cap I_G$.
+
+For the reverse containment it suffices to factor each $aX^m$ in
+$I_{F\vee G}$. Face subtraction supplies a positive rational $q$ such
+that $m-qu_F$ has the same nonzero least face as $m$. Then
+\[
+ aX^m=X^{qu_F}\bigl(aX^{m-qu_F}\bigr),\qquad
+ X^{qu_F}\in I_F,\quad aX^{m-qu_F}\in I_G.
+\]
+Here the entire coefficient $a\in K$ belongs to the second factor,
+whose nonzero exponent ensures that it is an element of $A_{\mathscr C}$.
+This proves the product formula without treating $a$ itself as a scalar
+in the constant ring $D$.
+
+Flatness of $I_G$ now makes the map obtained by tensoring
+$I_F\hookrightarrow A_{\mathscr C}$ injective. Under
+$A_{\mathscr C}\otimes_{A_{\mathscr C}}I_G\cong I_G$, this is
+multiplication, and its image is $I_FI_G=I_{F\vee G}$, giving the
+claimed isomorphism. Taking $G=F$ proves idempotence. If $F\subseteq G$,
+the support condition immediately gives $I_G\subseteq I_F$; conversely,
+that ideal inclusion puts $X^{u_G}$ in $I_F$, forcing
+$F\subseteq\operatorname{fc}(u_G)=G$.
 \end{proof}
 
 None of this needs $D$ to be a field, Noetherian or a principal ideal domain; the constant ring is never replaced by $K$ (26).

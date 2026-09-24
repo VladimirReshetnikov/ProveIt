@@ -281,6 +281,17 @@ means U-small underlying modules. The regular module A in V does not
 satisfy that action condition. Conjugation transports Gaussian order data
 semilinearly with respect to conjugation on D = ℤ[i].
 
+For a pointed full-dimensional rational polyhedral cone 𝒞, `A_𝒞` uses
+finite sums with constants in D and all coefficients in K at nonzero
+exponents. For a nonzero face F, `I_F` admits precisely the exponents m
+with `F ⊆ fc(m)`, where fc(m) is the least face containing m. Thus face
+inclusion reverses ideal inclusion, and the join `F ∨ G` corresponds to
+intersection, product and tensor product of the face ideals. The convention
+`I_{0} = A_𝒞` is separate: the same tail-only rule at the zero face would
+give Π_𝒞. The dyadic principal exhaustion always leaves nonzero residual
+exponents, so its factors may retain arbitrary K-coefficients. The common
+fraction field is identified inside `Frac K[ℚ^d]` by the given inclusions.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
