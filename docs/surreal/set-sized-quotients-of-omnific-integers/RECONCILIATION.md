@@ -1522,3 +1522,81 @@ Classical.choice and Quot.sound. All 4,626 anchors across 63 reports,
 5,217 source-label references and 1,824 local Markdown destinations across
 226 files pass, as does whitespace checking. No incoming TeX changed,
 so the reviewed 293-page article and 34-page catalogue remain current.
+
+## Rank-two moduli, multiplier orders and tail-annihilated tests
+
+Reviewed `osq:rel:thm:mobius`, `osq:rel:thm:order`,
+`osq:rel:cor:realize` and `osq:rel:thm:augmentation`, together with
+`osq:rel:ex:pell`. The four theorem/corollary statements are unchanged.
+A scope paragraph restores the integer/real and Gaussian/complex pairs
+before using the countable PID hypotheses; the preceding coefficient-Tor
+theorem's arbitrary-D generality is not silently carried into these results.
+
+The moduli proof writes both basis changes and the actual scalar between
+different monomial scales. It verifies nonzero denominators and preservation
+of the irrational parameter set. Counting the countable orbits gives
+continuum many classes without assuming the continuum hypothesis; coefficient
+rank two is distinguished from fraction-field rank one.
+
+The order proof checks inverse closure of the multiplier field, its finite
+degree and the vector-space dimension formula giving divisibility of the
+lattice rank. Finite freeness uses the PID hypothesis. Cayley--Hamilton
+proves integrality, and clearing the finitely many matrix denominators
+identifies the fraction field of the order exactly. The universal quotient
+uses the theorem for arbitrary unital coefficient subrings; it does not
+require that this new order be a PID. Realization now explains why
+endomorphisms may have tails while automorphism scalars cannot.
+
+The Pell example verifies the generator images, inverse and infinitely
+many distinct powers, and clarifies that the displayed pair is a basis of
+the scaled coefficient lattice, not an omnific basis of the ideal. The
+higher-degree example spells out the quadratic relation that would be
+forced by a nonconstant multiplier, and lists the Gaussian units.
+
+The augmentation proof supplies inverse tensor maps, proves annihilation
+by balancing finite sums, and separates the Tor-one injection from higher
+dimension shifts and flatness of the kernel. The class construction fixes
+one balanced map and target at a time. The follow-up discussion now
+explicitly restricts the claim about all set-sized tests to the class ring;
+a half-scale monomial shows why the quotient test in a set-sized model
+is not killed by the tail. Agreement with a free tensor functor on these
+restricted tests does not establish flatness.
+
+Updated the root README, guides, notation, catalogue and source anchors.
+These four results remain Pending in Lean. The later derived classifications
+and full source reconciliation remain pending review.
+
+Validation: three clean TeX passes for the 294-page article and 34-page
+catalogue, with no warnings or box diagnostics and visual checks of the
+four proofs, example and catalogue. All 418 standard/principal statements,
+828 labels and 1,656 auxiliary label/number pairs are unchanged; only the
+intended Pell example changes among 28 example environments. The existing
+source-17 verifier passes 347 exact finite arithmetic checks, including
+16 fractional-linear basis changes and 13 Pell matrix powers; these do
+not verify the cardinal or class arguments. All 4,626 anchors across
+63 reports, 5,217 source-label references and 1,824 local Markdown
+destinations across 226 files pass, as does whitespace checking. No Lean
+source changed; the previous two-thread 4,612-job build and
+16,769-declaration axiom audit remain the Lean baseline for this pass.
+
+## Synchronization: actual omnific automorphism rigidity
+
+Merged origin/main through c2caaca and reviewed both incoming modules
+against `odg:def:thm:autreal`. Formula transport uses the inverse ring map
+for the universal multiplier quantifier, retaining the source's distinction
+between automorphisms and nonsurjective endomorphisms. The actual fraction
+field gives the extension and its fraction formula, with uniqueness even
+among field homomorphisms agreeing on the omnific ring. The reconstructed
+coefficient field is preserved; real ring-homomorphism rigidity then fixes
+each ordinary real. Actual square roots give order preservation, and the
+existing finite-element, infinitesimal and standard-part predicates are
+preserved as claimed. The README and ledger agree with these declarations;
+the separate dilation example and Gaussian coefficient assertions remain
+outside this mapping.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,614 jobs, and the
+axiom audit checks 16,791 declarations using only propext, Classical.choice
+and Quot.sound. All 4,626 anchors across 63 reports, 5,217 source-label
+references and 1,826 local Markdown destinations across 226 files pass,
+as does whitespace checking. No incoming TeX changed; the 294-page
+article and 34-page catalogue remain current.

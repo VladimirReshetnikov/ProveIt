@@ -142,13 +142,23 @@ gives a free kernel of rank two, as illustrated by the golden ratio.
 The self-Tor endpoints include the rank-one boundary, and field detection
 concerns `Frac(D)M`, not closure of M itself under multiplication.
 
-The later moduli and derived classifications, and reconciliation of the
-parallel sources remain pending review. Exact scope
+The rank-two moduli, endomorphism orders, their realization and modules
+killed by the tail are now reviewed. The text restores the integer/Gaussian
+scope before using a countable PID. It gives both fractional-linear basis
+changes, the orbit count without assuming the continuum hypothesis, and
+the denominator-clearing argument identifying the multiplier field.
+The Pell matrix acts on an ideal generating pair, not an omnific basis.
+Tensor maps and Tor vanishing are explicit for the set-sized models;
+for the class ring the proof fixes one balanced map and target at a time.
+Its agreement with a free module on set-sized tests does not imply flatness.
+
+The later derived classifications and reconciliation of the parallel
+sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 293 pages
+article.pdf   the compiled report, 294 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
