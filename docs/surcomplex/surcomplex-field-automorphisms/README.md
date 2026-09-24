@@ -1,9 +1,10 @@
 # Automorphisms of the Surcomplex Numbers
 
 **Real forms, Hahn symmetries, valuation, rigidity, and finite symmetry descent**
-Two-source research report. Author lines: research article prepared with
+Three-source research report. Author lines: research article prepared with
 ChatGPT (source 01); research article prepared with ChatGPT for Vladimir
-Reshetnikov (source 02).
+Reshetnikov (source 02); research manuscript prepared with ChatGPT for
+Vladimir Reshetnikov (source 03).
 
 - **Source 01** (Sections 1–15, Appendices A–C.2): manuscript 07 of batch 20
   (archive `surcomplex_automorphisms`), 22 September 2026, pinned to
@@ -13,28 +14,41 @@ Reshetnikov (source 02).
   Real Forms of Gaussian Omnific Integers*, 23 September 2026, 27 pages,
   pinned to `343dc2c`, placed in commit `7d04483` as this report's first
   addition (local number 02; source 01 counts as 01).
+- **Source 03** (Sections 31–40, Appendix C.4): manuscript 03 of batch 34
+  (archive `gaussian_omnific_real_forms`), *Gaussian-Omnific Real Forms and
+  Geometric Symmetrization*, 23 September 2026, 24 pages, pinned to
+  `110efe9`, placed in commit `a7a435f` as this report's second addition
+  (local number 03). It is an independent re-derivation of source 02's main
+  results, with an explicit inverse, a characteristic-free descent and the
+  arithmetic of the fixed rings as new material.
 
-Every result, proof, example, question and limitation of both manuscripts is
-printed. A result the collection already proves is printed once, with credit;
-text added when source 02 was merged is marked `[merge]` in the article.
+Every result, proof, example, question and limitation of the three manuscripts
+is printed. A result the collection already proves is printed once, with
+credit; text added when source 02 or source 03 was merged is marked `[merge]`
+in the article.
 
 ```
 article.tex                                        the report, standalone LaTeX with an internal bibliography
-article.pdf                                        the compiled report, 68 pages (title, contents i–iii, pages 1–64)
+article.pdf                                        the compiled report, 89 pages (title, contents i–iii, pages 1–85)
 README.md                                          this guide
 02-finite-symmetry-descent-SOURCE_AND_PROOF_AUDIT.md   source 02: source and proof audit, as delivered
+03-gaussian-real-forms-SOURCES.md                  source 03: source and claim audit, as delivered
 code/
   02-finite-symmetry-descent-build.sh              source 02: delivered build helper (do not run in place; see below)
   02-finite-symmetry-descent-verify_finite.py      source 02: exact finite checks (Python 3.10+, standard library)
+  03-gaussian-real-forms-build.sh                  source 03: delivered build helper (not usable as shipped; see below)
+  03-gaussian-real-forms-verify.py                 source 03: exact finite checks (Python 3.9+, standard library)
 data/
   02-finite-symmetry-descent-build_validation.json     source 02: the delivery's build and PDF-inspection record
   02-finite-symmetry-descent-verification.json         source 02: recorded run at order 12, 3,751 assertions
   02-finite-symmetry-descent-verification_console.txt  source 02: console copy of that run (same bytes)
+  03-gaussian-real-forms-verification.json             source 03: recorded run at order 8, 457 assertions
 ```
 
 Every label in `article.tex` carries the prefix `saut:`; source 02's material
-uses the sub-prefix `saut:fs:`. Source 01's 86 labels (its 79 plus the 7 added
-at placement: `saut:sec:conventions`, `saut:sec:position`, `saut:eq:Lchain`,
+uses the sub-prefix `saut:fs:`, source 03's `saut:gr:`. Source 01's 86
+labels (its 79 plus the 7 added at placement: `saut:sec:conventions`,
+`saut:sec:position`, `saut:eq:Lchain`,
 `saut:sec:nonclaims`, `saut:app:conjugacy`, `saut:app:provenance`,
 `saut:app:pinned`) are all kept, and every one of their numbers is unchanged
 (checked against a build of the previous text). The merge of source 02 added
@@ -42,9 +56,16 @@ at placement: `saut:sec:conventions`, `saut:sec:position`, `saut:eq:Lchain`,
 after the prefix, and 20 new) and `saut:app:source02`. Not carried:
 `eq:surreal-hahn` (it is `saut:eq:hahn`, printed once) and the closing labels
 `sec:conclusion`, `app:audit`, `app:formalization` (now inside
-`saut:fs:sec:closing`). The source manuscripts, their PDFs and delivery
-READMEs are not shipped; `article.pdf` is a build of this text. The `02-`
-files are byte-identical to the delivery.
+`saut:fs:sec:closing`). The merge of source 03 (sub-prefix `saut:gr:`, unused
+before) kept all 169 labels with unchanged numbers (checked against a build of
+the committed text) and added 59, 228 in all: 58 `saut:gr:` labels and
+`saut:app:source03`. Source 03's own bare labels (`thm:overview`,
+`thm:orbit`, …) are not carried: each of its results is either mapped to an
+existing label (Section 31.2) or printed under a new one. The source
+manuscripts, their PDFs and delivery READMEs, and source 03's checksum
+manifest `SHA256SUMS.txt` (7 entries, verified), are not shipped;
+`article.pdf` is a build of this text. The `02-` and `03-` files are
+byte-identical to the delivery.
 
 ## Which automorphisms
 
@@ -212,7 +233,74 @@ coefficient, `M_ρ` the coefficientwise lift of `ρ ∈ Aut(k)`.
   (non-full and bounded-support fields, partial divisibility, infinite
   groups, added exponential/derivation/simplicity structure, non-Archimedean
   plain fixed fields, definability of the standard real form, effective
-  inversion, formal verification) are open.
+  inversion, formal verification) are open; Question 29.8 (effective
+  inversion) is **partly addressed** by source 03 (status note).
+
+### Source 03 (Sections 31–40)
+
+Source 03 re-derives Theorems 16.1–16.4 independently (its pin has source
+02's placement but not its text). Those results are printed once, in source
+02's sections; the statement map (Section 31.2) credits each of source 03's
+numbered statements. Notation: `k` is an **arbitrary** field in Sections 32–33.
+
+- **Formal inversion (Theorem 32.4, imported; Corollary 32.5).** A strongly
+  `k`-linear `𝒯` with `supp 𝒯(t^γ) > γ` has `(id + 𝒯)⁻¹ = Σ (−𝒯)^r`, strongly
+  linear (Bagayoko–Krapp–Kuhlmann–Panazzolo–Serra, Theorem 3.11 and
+  Proposition 1.45, imported, with a set-sized localization for `Γ = No`); so
+  `D_χ(id + 𝒯)` is bijective with strong inverse and preserves `𝓘` both ways
+  if `𝒯` does. Remark 32.6 [merge]: this supplies the inverse half of the
+  obstacle noted in Section 5.3.
+- **Orbit-product descent in any characteristic (Theorem 33.1, Corollaries
+  33.3, 33.5).** For a finite group of order `n` acting on `k((t^Γ))`, `Γ`
+  `n`-divisible, by valued, **strong** automorphisms stabilizing `k` (not
+  necessarily `𝓘`), the norm conjugator `𝓗` is a strong value-fixing
+  automorphism with the explicit strong inverse
+  `𝓗⁻¹ = (Σ_r (−𝒯)^r) D_{χ_𝓗}⁻¹`, `𝒯 = D_{χ_𝓗}⁻¹𝓗 − id` (33.2), and
+  `g𝓗 = 𝓗M_{g|_k}`; it preserves `𝓘` and every `A_𝔬` if `G` does.
+  Consequently a finite-order valued strongly `k`-linear automorphism is the
+  identity when `Γ` is divisible by its order. Remark 33.2 [merge] compares
+  the two routes (maximality and the pairing test versus formal inversion)
+  and records that source 02's proof uses no characteristic zero either.
+- **Gaussian involutions (Proposition 34.1; (34.2)–(34.4)).** The leading
+  character `χ_j(γ) = lc j(t^γ)` satisfies `χ_j ρ(χ_j) = 1`, and the
+  normalizer's is `χ_{𝓗_j}(γ) = χ_j(γ/2)`, a coherent Hilbert-90 solution;
+  explicit inverse `𝓗_j⁻¹ = (Σ (−𝒯_j)^r) D_{χ_{𝓗_j}}⁻¹`, all iterates
+  preserving `𝓘`; `H¹(C₂, 𝓝)` trivial as a cocycle identity.
+- **Classification route (Section 35).** Conjugacy under `C`-fixing elements
+  of `𝒢` iff equal restriction to `C` (Corollary 35.2); a direct proof that
+  `Fix(j)` is real closed and the Gaussian splitting
+  `Oz[i] = Oz[i]^j ⊕ i·Oz[i]^j` (Proposition 35.3); the integer-part
+  criterion in three forms, with the floor transported to `Oz[i]^j`
+  (Corollary 35.4).
+- **Counting and the standard form (Section 36).** Realized rational cuts
+  `Cut_Q(No_F) = F` for Archimedean `F ⊆ R` (Remark 36.1); Corollary 36.2:
+  for `j ∈ 𝒢`, conjugacy to `c` in `𝒢` ⇔ `F ≅ R` ⇔ `Oz[i]^j ≅ Oz` ⇔ the pair
+  is `(No, Oz)` ⇔ `Fix(j) ≅ No` (the last [merge], from Theorem 24.4; the
+  source needs the integer-part hypothesis), and under the integer-part
+  hypothesis ⇔ every real rational cut is realized (the hypothesis cannot be
+  dropped there: [merge] example with `F` the real closure of `R(X)`).
+- **Finite arithmetic (Propositions 37.1, 37.2).** For every real closed `F`:
+  `nR_F = nZ ⊕ 𝓘_F`, `R_F/nR_F ≅ Z/nZ`, every unital map to a finite ring
+  factors through `ct`, and a system of equations over `Z` is solvable in
+  `R_F` iff in `Z`. So the `2^𝔠` pairwise nonisomorphic integer-part fixed
+  rings share finite quotients and integer equation solvability (not
+  elementary equivalence; disequations not covered). For `F = R` these are
+  `odg:thm:finitequotients`, `odg:thm:transfer`; the factorization is a case
+  of `osq:thm:universal`(ii).
+- **Example (Proposition 38.1).** On `C((t^{Q⊕_lex Q}))`, `j = T_i c` with the
+  flows `T_s(z^a u^b) = z^a u^b exp(sau)` (those of Theorem 5.2) is a valued
+  `Z[i] + 𝓘`-preserving involution moving the real-coefficient field, with
+  normalizer `T_{i/2}`; [merge] it belongs to the same family as source 02's
+  example (26.2).
+- **Questions (Section 39).** Merged into existing questions: its Questions
+  1–2 (`opa:as:q:gaussian` with the involution clause), 4
+  (Question 29.3), 5 (`opa:as:q:otherrings`), 10 (Question 29.5), 12
+  (Question 29.9); open. Question 39.4 (which `F((t^No))` are `≅ No`,
+  non-Archimedean `F`) is **answered** (never), by Theorem 24.4. New and open:
+  39.1 (nonvalued `Oz[i]`-preserving real forms; more than `2^𝔠`?), 39.2
+  (positive characteristic), 39.3 (elementary equivalence of the `R_F`), 39.5
+  (effective normalizers with certified support bounds), 39.6 (Hermitian and
+  norm descent).
 
 ## Source 02: the merge record
 
@@ -290,12 +378,100 @@ and Appendix C.1; no mathematical statement of source 01 changed.
 **Verification.** The source's proofs were read against its statements for this
 merge (no gap found; this is not a refereeing). The suite was rerun (below).
 
+## Source 03: the merge record
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 34, no. 03, `gaussian_omnific_real_forms`, 24 pp. | `110efe9` | Sections 31–40, Appendix C.4; the verification program and its record |
+
+**Placement.** Sections 31–40 follow Section 30 (source 02's closing) and
+precede the appendices, under an unnumbered heading "Addition: Gaussian-omnific
+real forms (source 03)"; no number of sources 01 and 02 changes. Source 03's
+Section 1 → Section 31; Sections 2–4 → 32; 5 → 33; 6 → 34; 7–8 → 35; 9–10 →
+36; 11 → 37; 12 → 38; 13 → 39; 14 and Appendices A–B → 40. Numbering map of
+what is printed here: Lemma 3.1 → Remark 32.1 (route); Lemma 3.2 → second
+route in Section 32.2; Proposition 3.3 → 32.2; Remark 3.5 → 32.3; Theorem 4.1,
+Corollary 4.2 → 32.4, 32.5; Theorem 5.1, Corollary 5.2, Remark 5.3,
+Corollary 5.4 → 33.1, 33.3, 33.4, 33.5; (6.1)–(6.4) → Proposition 34.1,
+(34.1)–(34.3); the cocycle → (34.4); Remark 7.2 → 35.1; Corollary 7.4 → 35.2;
+Theorem 8.1 → Proposition 35.3 (with (16.2)); Theorem 8.4 → Corollary 35.4;
+Remark 8.5 → 35.5; Proposition 9.4 → Remark 36.1; Theorem 10.1, Remark 10.2 →
+Corollary 36.2, Remark 36.3; Propositions 11.1, 11.2 → 37.1, 37.2; Proposition
+12.1 → 38.1; Questions 3, 6, 7, 8, 9, 11 → 39.1–39.6. Everything else is
+mapped to source 02's labels in the table of Section 31.2 (Theorems 1.1, 1.2,
+3.4, 6.1, 7.3, 9.3, Lemmas 7.1, 8.3, 9.1, 9.2, Definition 8.2, Corollaries 6.2,
+8.7, 9.5, Propositions 8.6, 9.6). Remarks 32.6, 33.2 are merge additions.
+
+**Renamed symbols** (table in Section 31.1; no normalization changed).
+`No(i)`, `K` → `𝕂`; `Og`, `J` → `Oz[i]`; `P`, `P_k` → `𝓘`, `𝓘_k`; `o`,
+`R_o` → `𝔬`, `A_𝔬`; `⟨x,y⟩₀` → `ct(xy)`; the isomorphism `F`, `α`, `l` of
+Proposition 3.3 → `φ`, `ρ`, `k'`; `α = j|_C`, `α_g` → `ρ`, `ρ_g`; `α̂` → `M_ρ`;
+the conjugator `β ∈ Aut(C)` → `κ`; `H_G`, `H_j` → `𝓗`, `𝓗_j`; `h_G(γ)` →
+`m_γ`; `m = |G|` → `n`; the leading characters `b`, `b_j` and `M_b` →
+`χ_𝓗`, `χ_{𝓗_j}`, `D_{χ_𝓗}`; the remainder `T`, `T_j` → `𝒯`, `𝒯_j`; the
+exponent sets `S_n`, `Ω` → `Ω_r`, `Ω`; `N` → `𝓝`; the cocycle `u` → `ξ`;
+`E`, `F_E`, `P_E`, `I_E` → `F`, `No_F`, `𝓘_F`, `R_F`; `E₁, E₂`, `φ` → `F, F'`,
+`ψ`; `A ⊆ B₁`, `E_A`, `φ_A`, `α_A`, `j_A` → `Y`, `F_Y`, `ψ_Y`, `ρ_Y`, `j_Y`;
+the bound `β` → `δ`; the cut set `𝒟(F_E)` → `Cut_Q(No_F)`; the rationals
+`q, s` → `q, q'`; `e₀, e₁`, `x`, `s` → `(1,0)`, `(0,1)`, `z`, `u`; the
+derivation `D` → `𝒟`; the flows `U_λ` and parameters `λ, μ` → `T_s` and
+`s, r`. Reasons: this report's `P_θ`/`𝒫` (phase twists, Puiseux field), `T`
+(a transcendental) and `T_s` (flows), `S_a` (dilations), `U` (leading-term
+kernel), `D` (displacement), `E` (exponential), `ℓ` (exponent coefficient),
+`J` (an index set), and source 02's names. Tempting false readings are printed
+in Section 31.1 (characteristic-free descent is not a characteristic-free
+Gaussian application; `𝒯` is neither `T` nor `T_s`; `χ_j ≠ χ_{𝓗_j}`;
+Archimedean is not `≅ R`; equal finite quotients are not elementary
+equivalence; `Cut_Q` is external; `H¹` is shorthand).
+
+**Printed once, with credit.** The whole classification package (the map of
+Section 31.2): normalization formula, conjugacy classification, fixed pair,
+integer-part criterion and floor, reconstruction, `2^𝔠` count, absolute
+nonconjugacy, no set-sized cofinal subset — all source 02's. Its Section 3
+(reconstruction, detection, covariance, automatic strongness) is
+`opa:lem:divisible`, `odg:def:thm:multiplier`, `opa:as:thm:detect`,
+`opa:as:thm:ctiso`, `opa:as:thm:gaussian`, as the source says. Second routes
+kept: the binary-witness proof of the pairing test, the multiplier step for
+every `Γ ≠ 0`, the direct real-closedness proof, and formal inversion in
+place of maximality.
+
+**Stale in the source.** Its Appendix B says the inspected snapshot does "not
+supply the orbit-product normalizer … with its arithmetic inverse, the
+resulting classification … or the integer-part and cardinality package". At
+the pin this report's `article.tex` and README were source 01 only (as the
+source says; its `SOURCES.md` lists only those two files of this directory),
+but source 02's staged audit, placed in `7d04483` (an ancestor of the pin),
+already named the norm section `m_gamma = product_g g(t^(gamma/n))` (its line
+78) and the classification and count; source 02's text was written in
+`b8bbfee`, after the pin. The claim is printed as the source's with this
+correction (Section 40.1), not as current. Its question on abstractly surreal
+fixed fields was already answered (Theorem 24.4), and its plain-field clause is
+weaker than Theorem 24.4 (Corollary 36.2, Remark 36.3).
+
+**Merge additions** (marked `[merge]`): the statement map and conventions
+table, Remarks 32.6 and 33.2, the notes after Corollary 33.3, Proposition 34.1,
+Proposition 35.3 and Proposition 37.2, clause (v) and the example in the proof
+of Corollary 36.2, the status notes of Section 39, the assertion count of
+Section 38.1, Section 40.2 and non-claims 26–31. In the earlier text: the title
+page and abstract, Sections 1.5 and 5.3, the note after Theorem 16.1,
+Questions 29.3, 29.5, 29.8 (status: partly addressed) and 29.9, the pointer in
+Section 15.3, and Appendix C.1; no mathematical statement of sources 01 and 02
+changed. Bibliography: the two Stacks Project entries are new; the
+Bagayoko–Krapp–Kuhlmann–Panazzolo–Serra entry (`BKKS`) gained a note.
+
+**Verification.** The source's proofs were read against its statements for this
+merge; the proof of Theorem 24.4 (the omitted cut `N < F_∞`) was rechecked
+because it answers source 03's Question 8. No gap found; this is not a
+refereeing. The imported formal-inversion theorem was not rechecked. The suite
+was rerun (below).
+
 ## What the report does not claim
 
 Section 15.3 keeps source 01's non-claims in place and collects them in a
 ledger of 33 items: 28 from the source and 5 added when the report joined the
 collection. Section 30.4 collects source 02's 27: 22 from the source and 5
-added in the merge. In brief:
+added in the merge. Section 40.5 collects source 03's 31: 25 from the source
+and 6 added in the merge. In brief:
 
 - Not refereed; no new Lean code and no `saut:` or `saut:fs:` implementation
   mappings. Existing generic proofs cover ordered displacement, exponential
@@ -348,6 +524,39 @@ added in the merge. In brief:
   first-kappa-coefficients are negative or partial information, answering
   none of them; source 02's citations of Kuhlmann–Serra Definition 4.0.5,
   Poonen and Conrad were not rechecked.
+- Source 03: unrefereed; novelty and priority not certified (targeted
+  searches); classical facts (real closed coefficient fields, Galois descent,
+  Hilbert 90 for characters, constant-term retractions) not claimed new, and
+  the finite-quotient and equation results are not a new retraction theorem;
+  the collection's reconstruction and automatic strongness are reproduced
+  with attribution. Valuation preservation is **assumed**; automatic valuation
+  preservation for automorphisms (or involutions) of `Oz[i]` is unresolved;
+  the classification is complete only in the valued Gaussian sector. The
+  normalizer is canonical only relative to the monomial section; no finite
+  list of parameters classifies the coefficient fields; "geometric" means no
+  analytic limit and no surcomplex exponential. The formal-inversion theorem
+  (BKKPS Theorem 3.11 / Proposition 1.45) is **imported**; strongness is not
+  inferred from continuity. Archimedean does not mean `≅ R`;
+  `Frac(R_F) = No_F` uses the class bound on `No` and is not claimed for
+  set-sized support rings; the `2^𝔠` upper bound holds only in the valued
+  Gaussian sector (none for pure-field involutions); equal finite quotients
+  and `Z`-equation solvability do not imply elementary equivalence, and
+  disequations, order constraints and nonordinary coefficients are not
+  covered; the rational-cut invariant is not claimed first-order definable;
+  `H¹` is a reading, not a claim to originate nonabelian descent; phase shears
+  are not new; the finite checks do not test summability, class
+  constructions, transcendence bases, cardinalities or all automorphisms; no
+  Lean, repository not built or modified; questions are proposed, and no
+  published problem (none of Kaplan–Krapp–Serra's) is claimed solved.
+- Added in the merge for source 03: its "not supplied" statement is stale
+  (source 02 already had the results); the BKKPS, Conrad and Stacks citations,
+  including the characteristic-free reading and the class localization, were
+  not rechecked; the route comparison, the kernel remark, clause (v) of
+  Corollary 36.2, the rational-cut counterexample and the credits to
+  `osq`/`odg`/`dsn` are the merge's; 166 of the 457 assertions hold by
+  lexicographic order, the orbit-product formula is compared on nine
+  monomials only, and the inverse only where the remainder is nilpotent; no
+  `saut:gr:` label has a Lean mapping.
 
 ## Relation to the neighbouring reports
 
@@ -378,14 +587,28 @@ only). Its statement that no nonconjugacy is claimed for `Oz[i]`-preserving
 maps that do not preserve conjugation concerns its copies of `No`
 (`opa:as:cor:complexcopies`); for involutions, Theorem 25.2 gives `2^𝔠`
 members of `𝒢` pairwise nonconjugate under all field automorphisms. That
-report is not edited here.
+report is not edited here. Source 03 (batch 34) reproves `opa:as:thm:detect`
+(binary-witness route), `opa:as:thm:ctiso` and `opa:as:thm:gaussian` with
+credit, asks `opa:as:q:gaussian` again with an involution-only clause and a
+nonvalued counting variant (Question 39.1), and asks `opa:as:q:otherrings`
+again (the intersection `∩ n𝔬` must vanish); both stay open.
 
 **[omnific-diophantine-geometry](../../surreal/omnific-diophantine-geometry/)**
 — the reconstruction uses `odg:def:thm:multiplier` and `odg:thm:fractions`;
 its phase twist `odg:def:lem:twist` is a case of Section 26.1. Source 02 gives
 negative information, not an answer, for `odg:def:q:realform`: requiring an
 involution to preserve the valuation, summation and `Oz[i]` leaves `2^𝔠`
-pairwise nonisomorphic fixed rings.
+pairwise nonisomorphic fixed rings. Source 03 adds that these rings share all
+finite quotients and integer-equation solvability (Propositions 37.1, 37.2),
+extending its `odg:thm:finitequotients` and `odg:thm:transfer` from `Oz` to
+every `R_F`.
+
+**[set-sized-quotients-of-omnific-integers](../../surreal/set-sized-quotients-of-omnific-integers/)**,
+**[definable-surreals-and-omnific-integers](../../foundations-and-computation/definable-surreals-and-omnific-integers/)**
+— the factorization clause of Proposition 37.1 is the finite-target case of
+`osq:thm:universal`(ii) with the set field `F` and the subring `Z`;
+`dsn:thm:finite-quotients` is the same statement for the definable rings
+`I_A`. Neither report is edited.
 
 **[foundations](../../foundations-and-computation/foundations/)** —
 `found:prop:complex` (the pair field, algebraic closedness); Proposition 7.2 is
@@ -428,7 +651,8 @@ These existing mappings use the rigidity report's labels; this review adds
 no dedicated `saut:` mapping. The actual surreal exponential instantiation,
 rational non-lifting and the actual surcomplex logarithmic-modulus
 classification remain pending. Source 02's formalization interface
-(Section 30.3) is a plan; nothing of it is implemented.
+(Section 30.3) is a plan; nothing of it is implemented. Source 03 supplies
+no Lean either, and no `saut:gr:` label has an implementation mapping.
 
 "Rigidity" here (Theorems 2.3, 11.2; Section 11.1) is not `f:thm-rigidity` of
 analysis nor the scalar rigidity of gamma-functions; "phase" is a coefficient
@@ -463,7 +687,9 @@ a proper-class family of pure-field involutions agreeing with `c` on `C`, none
 conjugate to `c` (`fkc:sb:thm:involutions`); by Proposition 23.1 none lies in
 `𝒢`. The two are complementary. A note after Proposition B.1
 (`saut:prop:conjugacycriterion`) records that the non-conjugacy to `c` also
-follows from that criterion (`fkc:sb:rem:univ`). The large-cardinal report
+follows from that criterion (`fkc:sb:rem:univ`). Source 03's Question 39.3
+(elementary equivalence of the rings `R_F`) is a companion of that report's
+`fkc:sb:q:omnific` (elementary equivalence of the short omnific rings). The large-cardinal report
 ([large-cardinal-embeddings-and-normal-forms](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/))
 is a different direction: source 02's class argument uses no large cardinal.
 
@@ -509,6 +735,15 @@ Its comparison with the collection at `343dc2c` (its Section 13.2, printed as
 Section 28.2) is accurate for that tree; Section 28.4 adds the relations
 checked against the current one.
 
+Batch 34 (source 03): the "two-source" title page, the abstract, Section 1.5
+and Appendix C.1 were updated; Question 29.8 (effective inversion) received a
+status note (partly addressed: an explicit formula, no complexity bound), and
+Questions 29.3, 29.5, 29.9, Section 5.3 (the inverse half of the obstacle
+there) and the note after Theorem 16.1 received pointers. Source 03's own
+stale statement (that the collection lacked the normalizer and the
+classification) and its already-answered question are corrected in place, as
+above.
+
 The subsequent main-text review covers Sections 1–15 and the conjugacy
 criterion. It makes class-map conventions and set-stage choices explicit,
 reduces finite-group assertions to ordinary invariant algebraically closed
@@ -533,11 +768,17 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 Standard packages (`newtx`, `amsmath`, `mathtools`, `geometry`, `microtype`,
 `booktabs`, `longtable`, `enumitem`, `ragged2e`, `tocloft`, `fancyhdr`,
 `hyperref`, `cleveref`); no shell escape, no external `.bib`. The build with
-the merge (MiKTeX 26.2, pdfTeX 1.40.29) has 68 pages and no errors, no
-undefined or multiply-defined references, no duplicate PDF destinations, no
-LaTeX warnings and no overfull or underfull boxes. The previous text gives 38
-pages with this MiKTeX (the previously committed PDF, 37 pages, was built with
-pdfTeX 1.40.22). A clean compile proves nothing about the proofs. Source 01
+the merge of source 03 (MiKTeX 26.2, pdfTeX 1.40.29) has 89 pages (title, contents
+i–iii, pages 1–85; 68 before) and no errors, no undefined or multiply-defined
+references or citations, no duplicate PDF destinations, no LaTeX warnings and
+no overfull or underfull boxes, like the build of the previous text. Its log
+contains two informational lines "ignored: Infinite glue shrinkage found in
+box being split" at page breaks inside the two new long tables of Section 31;
+they are not warnings, and the same longtable message appears with source 02's
+table of Section 16.1 when it starts at other page positions (tested). With
+source 02 the build had 68 pages; the text before source 02 gives 38 pages
+with this MiKTeX (the PDF committed then, 37 pages, was built with pdfTeX
+1.40.22). A clean compile proves nothing about the proofs. Source 01
 delivered no code or data.
 
 ## Rerun source 02's checks
@@ -574,3 +815,39 @@ factors, inverse, constant coefficient), 529 multiplicativity checks, 1 + 1
 phase-unit checks, 3 + 9 sparse involution and multiplicativity checks, and
 3,047 lexicographic order comparisons. They check finite instances in
 `Q(i)[u]/(u^12)` only.
+
+## Rerun source 03's checks
+
+`code/03-gaussian-real-forms-verify.py` needs Python 3.9 or later and nothing
+else. It writes its JSON record to the path given by `--output` (default
+`verification.json` in the **current directory**) and prints the same JSON to
+standard output; options `--order` (default 8) and `--samples` (default 24).
+The record includes the Python version, so it differs between interpreters.
+The delivered helper `code/03-gaussian-real-forms-build.sh` is **not usable as
+shipped**: it changes into `code/`, runs `pdflatex` on an `article.tex` that
+is not there (it stops at once under `set -e`), and would then call
+`verify.py` under its delivery name and write `verification.json` into
+`code/`. The audit `03-gaussian-real-forms-SOURCES.md` and the delivery
+README (not shipped) use the delivery names `verify.py`, `verification.json`,
+`build.sh`, `article.tex`. Run the program on a copy:
+
+```sh
+T=$(mktemp -d)
+cp code/03-gaussian-real-forms-verify.py "$T/verify.py"
+(cd "$T" && python3 verify.py --output verification.json > console.txt)
+diff "$T/verification.json" data/03-gaussian-real-forms-verification.json
+```
+
+Rerun for this merge with Python 3.14.4 on Windows: exit code 0, status
+`passed`, 457 assertions in the same families and counts as the record; the
+written file differs from the shipped record only in the `"python"` field
+(`3.14.4` against the delivery's `3.13.5`) and in line endings (Python's
+text mode writes CRLF on Windows; the record is LF). The families: 9 each for
+the orbit-product formula, the monomial involution and the monomial
+intertwining; 24 each for flow composition, flow multiplicativity, involution,
+intertwining, normalizer multiplicativity, geometric inverse, nilpotent
+remainder, left and right inverse, conjugacy identity and leading value; and
+166 `negative_support_preservation` checks, which are lexicographic
+comparisons `(a, b + r) < (0, 0)` that hold by the order itself. They check
+finite instances in `Q(i)[z^Q][u]/(u^9)` only (the program's own names are
+`x` and `s` for `z` and `u`).
