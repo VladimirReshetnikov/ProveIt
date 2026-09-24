@@ -288,7 +288,9 @@ The Gaussian omnific ring is now constructed from Mathlib's Gaussian integers:
 its two coordinates are precisely real omnific integers. The corresponding
 fiber theorem is proved over this ring too, with ordinary Gaussian points,
 unique purely infinite complex kernel parameters, and disjoint fibers over
-distinct ordinary points.
+distinct ordinary points. The distinction between the two kernels is explicit:
+`X + iY` has zero real kernel and only ordinary real omnific solutions,
+but the Gaussian omnific point `(1 + ω, iω)` solves its level-one equation.
 The converse is proved in both rings: once an ordinary point exists at a
 nonzero level, nonordinary points exist exactly when the relevant real or
 complex kernel is nonzero. Multiplying a nonzero kernel direction by the
@@ -306,6 +308,13 @@ nonhomogeneous polynomials with those two divisors. In particular,
 nonzero integer `D` and `c`, including negative or square `D`. This rules
 out infinite omnific Pell solutions without asserting finiteness of the
 ordinary solution set.
+The zero level has a different, now proved classification: for positive
+nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
+with `t` purely infinite. Taking `t = ω` gives an infinite solution.
+The three-variable equation `(x + z)² − 2y² = 1` also has a proved exact
+parametrization: `(a + u, b, d − u)` over ordinary solutions
+`(a + d)² − 2b² = 1`, with `u` purely infinite. Its common kernel permits
+nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,

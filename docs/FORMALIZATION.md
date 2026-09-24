@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **63 main texts** with **4309**
+The canonical inventory below identifies **63 main texts** with **4473**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -136,17 +136,27 @@ by itself integrate or formalize their mathematics.
 The delivery merged through `51c1cc7` is now placed in `aa9c891`. Two new
 main texts, omnific continued fractions and exponential relations over
 omnific integers, add 26 and 34 standard results respectively. The current
-inventory has **4,398** standard results across **63** main reports after
-the coefficient-observables addition `76dd876`, discriminant addition
-`fdedce0` and three automorphism companions in `19d0b0e`. The two new texts were written
+inventory has **4,473** standard results across **63** main reports after
+the first four batch-34 additions, through `5ca4355`. The two new texts were written
 in `68db1b5` and `fa54502` and are indexed with their `exr:` and `ocf:` labels.
 They remain **Pending** in Lean and independent proof review. Two dilation
-companions, the holonomic coefficient-observables companion and the Diophantine
-discriminant companion and all three batch-33 omnific-automorphism
-companions are integrated. Their new proofs await independent review. The eight archives from `a4611ad` and the universal-
+companions, the holonomic coefficient-observables companion and the
+Diophantine constant-discriminant companion are integrated. The final batch-33
+write `19d0b0e` integrates the three remaining companions into the
+omnific-preserving automorphisms report, adding 89 standard statements on
+formal orbit fields and symmetry groups. This completes batch-33 main-text
+integration; independent proof review and Lean formalization of the new
+mathematics remain **Pending**. The eight archives from `a4611ad` and the universal-
 symmetries archive are placed in `a7a435f` as nine additions to six existing
-reports. Their main-text integration and indexing remain pending; placement
-adds no inferred Lean coverage. The Hahn-joins archive delivered in `267b910`
+reports. The first two batch-34 writes integrate the rotation-equivariant
+dynamics companion (`16fc51c`, 18 new standard statements) and the
+Gaussian-omnific real-forms companion (`fd91f9b`, 14 new standard statements).
+The next two writes integrate the beyond-composita companion into
+independent surreal copies (`b9f964c`, 28 new standard statements) and
+infinite simultaneous unitary straightening into Hahn–Hilbert geometry
+(`5ca4355`, 15 new standard statements). All four are now indexed;
+independent proof review and Lean coverage remain pending. The other five
+companions still await main-text integration and indexing; placement adds no inferred Lean coverage. The Hahn-joins archive delivered in `267b910`
 awaits placement, integration and indexing.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
@@ -673,7 +683,10 @@ remaining clauses of a partially mapped statement.
 | Full `odg:dec:cor:converse` | `Surcomplex.omnific_decomposable_nonordinary_iff`, `gaussian_decomposable_nonordinary_iff`, `omnific_split_ordinary_iff`, `gaussian_split_ordinary_iff`, `exists_nonzero_omnific_purelyInfinite`, `exists_nonzero_complex_purelyInfinite` in [DecomposableKernelCriterion.lean](../Surreal/Surcomplex/DecomposableKernelCriterion.lean); generic `ModuleKernelBasis.kernel_smul_vector`, `kernel_direction_ne_zero`, `exists_nonzero_kernel_iff` in [NonzeroModuleKernel.lean](../Surreal/Algebra/NonzeroModuleKernel.lean) | Given an ordinary integer (respectively Gaussian integer) solution at a nonzero complex level of a finite product of positive powers of complex affine forms, there exists an actual omnific (respectively Gaussian omnific) solution outside the image of all ordinary tuples iff the relevant real (respectively complex) native matrix kernel is nonzero. A nonzero scalar kernel vector multiplied by the actual positive-growth monomial omega constructs a nonzero infinite tail. Conversely, scalar matrix injectivity kills every vector-space-valued kernel vector; the exact fiber decompositions then force ordinariness. Independent split lemmas prove that an ordinary-plus-infinite tuple is ordinary exactly when its entire infinite tail is zero. The ordinary-point and nonzero-level hypotheses are explicit. **Proved** for both clauses of the full corollary. The subsequent injective-line, fiber-size and empty-fiber assertions are proved in the next row. Build and axiom audit pass. |
 | Injective-line and proper-class fiber assertions, and the empty-fiber counterexample, immediately following `odg:dec:cor:converse` | Generic `ModuleKernelBasis.direction_injective` in [KernelLines.lean](../Surreal/Algebra/KernelLines.lean); `Surcomplex.omnificPurelyInfinite_not_small`, `realPurelyInfiniteToComplex_injective`, `complexPurelyInfinite_not_small` in [PurelyInfiniteSize.lean](../Surreal/Surcomplex/PurelyInfiniteSize.lean); `omnificKernelLine_injective`, `OmnificDecomposableFiber`, `omnificDecomposableFiberEmbedding`, `omnificDecomposableFiber_not_small`, and their Gaussian analogues in [DecomposableFiberSize.lean](../Surreal/Surcomplex/DecomposableFiberSize.lean); `differenceForm_real_kernel_ne_bot`, `differenceForm_complex_kernel_ne_bot`, `omnific_difference_ne_irrational`, `gaussian_difference_ne_irrational`, `no_omnific_difference_sqrt_two`, `no_gaussian_difference_sqrt_two` in [DecomposableEmptyFiber.lean](../Surreal/Surcomplex/DecomposableEmptyFiber.lean) | For any nonzero real or complex scalar kernel direction and any ordinary point at a nonzero level, the actual affine line with arbitrary parameters in the respective purely infinite ideal is injective. Native embeddings land in the actual solution subtype with that fixed ordinary constant tuple. Neither infinite ideal is lower-universe-small: a small real ideal would generate itself from a small set, contradicting the proved common-monomial bound; its injection into the complex ideal transfers non-smallness. Each ordinary fiber with nonzero relevant kernel is therefore not `Small` in the lower universe, the established formal meaning of the proper-class assertion. The ordinary-point hypothesis is indispensable: the difference matrix has nonzero real and complex kernels, witnessed by the diagonal vector, but its square-root-of-two level has no actual omnific or Gaussian omnific point. More generally every irrational ordinary real level is excluded by constant extraction and the integral real part of a Gaussian integer. **Proved** for these prose assertions with the explicit universe-relative size convention. Build and axiom audit pass. |
 | Full `odg:thm:binary` | Generic `BinaryFormRigidity.linearForm`, `HasTwoProjectiveFactors`, `determinant_zero_iff_proportional`, `hasTwoProjectiveFactors_iff`, `linear_factor_residual`, `coordinates_constant` in [Algebra/BinaryFormRigidity.lean](../Surreal/Algebra/BinaryFormRigidity.lean); `Surcomplex.nonnegativeSupport_binary_rigidity`, `omnific_binary_rigidity`, `omnific_eval_complexification`, `omnific_integer_binary_solutions_iff` in [Surcomplex/BinaryFormRigidity.lean](../Surreal/Surcomplex/BinaryFormRigidity.lean) | Uses native two-variable `MvPolynomial` linear divisors with nonzero coefficient determinant. A proved equivalence identifies this condition with two nonproportional projective factors, with the first coefficient vector nonzero (nonproportionality also excludes a zero second vector). At any nonzero ordinary complex level, divisibility forces both evaluated factors to be units of the actual complex support ring, hence constants; the invertible determinant then forces both coordinates to be constants. The proof works even without homogeneity of the polynomial itself. For native integer polynomials with these factors after complex coefficient extension, the actual omnific equation is equivalent to an ordinary integer solution tuple and coordinatewise ordinary inclusion. **Proved** for the full binary-form theorem, with a stronger divisibility-only hypothesis. The irreducible-form and equal-power applications in `odg:cor:thue` remain separate **Pending** obligations. Build and axiom audit pass. |
-| Full `odg:cor:pell` | `Surcomplex.pellPolynomial`, `pellPolynomial_factor`, `pellPolynomial_hasTwoProjectiveFactors`, `pellPolynomial_map`, `omnific_pell_rigidity`, `omnific_pell_solutions_iff` in [PellRigidity.lean](../Surreal/Surcomplex/PellRigidity.lean) | For all nonzero ordinary integers D and c, an actual omnific pair satisfying x² − D y² = c equals its ordinary integer constant pair, which satisfies the identical integer equation. Conversely every ordinary integer pair gives an omnific solution. A square root supplied by Mathlib's algebraic closedness of the ordinary complex field factors the native binary polynomial into two projectively distinct linear factors whenever D is nonzero. Positivity and nonsquareness of D are not assumed. The standard D = 2, c = 1 instance is included by specialization. **Proved** for the full corollary. No claim of finiteness or algorithmic enumeration is made. The explicit ordinary power parametrization in `odg:ex:pell2`, the full-surreal contrast and the zero fiber `odg:prop:zeropell` remain **Pending**. Build and axiom audit pass. |
+| Full `odg:cor:pell` | `Surcomplex.pellPolynomial`, `pellPolynomial_factor`, `pellPolynomial_hasTwoProjectiveFactors`, `pellPolynomial_map`, `omnific_pell_rigidity`, `omnific_pell_solutions_iff` in [PellRigidity.lean](../Surreal/Surcomplex/PellRigidity.lean) | For all nonzero ordinary integers D and c, an actual omnific pair satisfying x² − D y² = c equals its ordinary integer constant pair, which satisfies the identical integer equation. Conversely every ordinary integer pair gives an omnific solution. A square root supplied by Mathlib's algebraic closedness of the ordinary complex field factors the native binary polynomial into two projectively distinct linear factors whenever D is nonzero. Positivity and nonsquareness of D are not assumed. The standard D = 2, c = 1 instance is included by specialization. **Proved** for the full corollary. No claim of finiteness or algorithmic enumeration is made. The explicit ordinary power parametrization in `odg:ex:pell2` and the full-surreal contrast remain **Pending**; the zero fiber is proved in the next row. Build and axiom audit pass. |
+| Full `odg:prop:zeropell` | `SignSequence.omnific_zero_norm_directions`, `omnific_zero_norm_solutions_iff`, `omnific_zero_pell_solutions_iff`, `omnific_zero_pell_purelyInfinite`, `omnific_zero_pell_exists_infinite` in [ZeroPellFiber.lean](../Surreal/Surcomplex/ZeroPellFiber.lean) | For a positive nonsquare ordinary integer D, the actual omnific solutions of x² − D y² = 0 are exactly (±√D t, t), with t in the actual purely infinite ideal. Both coordinates have zero constant coefficient. The proof first factors with any real square root of D and then uses irrational proportionality; the converse uses the existing real module on the actual ideal. Taking t = ω supplies a solution whose second coordinate is not finite, explicitly separating zero-level behavior from nonzero Pell rigidity. **Proved** for the full proposition, with no fixed Hahn-workspace assumption. Build and axiom audit pass. |
+| Real/complex kernel example and realification criterion in `odg:dec:rem:kernels` | `Surcomplex.cartesianFormMatrix`, `cartesianForm_real_kernel`, `cartesianForm_complex_kernel_iff`, `omnific_cartesian_rigidity`, `omnific_cartesian_solutions_iff`, `gaussianCartesianPoint`, `gaussianCartesianPoint_equation`, `gaussianCartesianPoint_nonordinary`, `gaussian_cartesian_omega` in [CartesianKernel.lean](../Surreal/Surcomplex/CartesianKernel.lean), together with `realKernelMatrix_mem_ker_iff` in [OmnificRealKernel.lean](../Surreal/Surcomplex/OmnificRealKernel.lean) | The form X + iY has zero real kernel and complex kernel exactly {(t, it) : t ∈ ℂ}. At every ordinary complex level, including zero, its actual real omnific solutions are exactly ordinary integer pairs with that same level. In the actual Gaussian omnific ring, (1 + t, it) solves the level-one equation for every purely infinite complex t, and the first coordinate is not any ordinary Gaussian integer whenever t ≠ 0. The explicit witness has ambient values (1 + ω, iω), with Gaussian omnific membership, equation and nonordinariness proved. The existing realification theorem identifies the real kernel of every complex coefficient matrix with the kernel of its stacked real and imaginary rows. **Proved** for the full explicit example and the realification criterion; numerical matrix-rank formulas are not separately asserted. Build and axiom audit pass. |
+| Full `odg:dec:ex:rankdeficient` | `Surcomplex.splitPellMatrix`, `splitPellMatrix_kernel_iff`, `rankDeficientPell_kernel_iff`, `rankDeficientPell_factor`, `omnific_rankDeficient_pell_solutions_iff`, `omnific_rankDeficient_pell_two_iff`, `omnific_rankDeficient_pell_omega` in [RankDeficientPell.lean](../Surreal/Surcomplex/RankDeficientPell.lean) | The real coefficient matrix of X + Z ± rY has exactly the vectors (t, 0, −t) in its kernel whenever r ≠ 0. Specializing to √2 proves the displayed common-kernel computation and real factorization. For any nonzero ordinary integers D and c, actual omnific solutions of (x + z)² − D y² = c are exactly (a + u, b, d − u), with a, b, d ordinary integers, u in the actual purely infinite ideal, and (a + d)² − D b² = c. Specialization gives the complete displayed level-one family. The actual point (3 − ω, 2, ω) satisfies the equation and has a nonfinite third coordinate. **Proved** for the full example, using the established two-variable Pell rigidity and constant decomposition. Build and axiom audit pass. |
 | Full `odg:thm:floor` and `odg:eq:floor` | `SignSequence.positiveGrowthPart`, `positiveGrowthPart_mem_purelyInfiniteIdeal`, `infinitesimalTail`, `positiveGrowth_constant_tail`, `infinitesimal_infinitesimalTail`, `coeff_infinitesimalTail`, `omnificFloor`, `omnificFloor_spec`, `omnific_integerPart_unique`, `existsUnique_omnific_integerPart`, `omnificFloor_of_noninteger_or_nonnegative_tail`, `omnificFloor_of_integer_negative_tail`, `omnificFloor_omnificToSurreal`, `omnificFloor_ofReal`, `omnificFloor_add_omnific`, `omnificFloor_of_negative_infinitesimal` in [OmnificFloor.lean](../Surreal/Foundations/OmnificFloor.lean) | The strictly positive-growth truncation of every actual surreal is an omnific integer with zero constant term. Subtracting it and the real zero-exponent coefficient leaves an infinitesimal with exactly the original negative-growth coefficients. Mathlib's real floor, corrected down by one precisely when the real coefficient is an integer and the tail is negative, constructs an actual omnific integer `a` with `a ≤ x < a+1`. Discreteness proves uniqueness for every surreal, without any finiteness restriction or fixed small workspace. Both source branches are explicit theorems. Floor fixes omnific integers, restricts to the ordinary real floor, commutes with omnific translation and sends every negative infinitesimal to minus one. **Proved** for the entire integer-part theorem and its formula. Ordinary-modulus residue arithmetic is proved below; subsequent Diophantine results remain pending. Build and axiom audit pass. |
 | Full `odg:prop:univariate` and the following infinite-omnific transcendence assertion | `Surcomplex.complex_polynomial_root_iff`, `real_polynomial_root_iff` in [ConstantPolynomialRoots.lean](../Surreal/Surcomplex/ConstantPolynomialRoots.lean), reusing `FinitePolynomial.root_mem_range` and Mathlib's `IsAlgClosed.splits`; `Surcomplex.nonnegativeSupport_polynomial_root_iff`, `SignSequence.nonnegativeSupport_polynomial_root_iff`, `omnific_real_polynomial_root_iff`, `omnific_int_polynomial_root_iff`, `omnific_eval_ne_zero_of_not_finite`, `omnific_transcendental_of_not_finite` in [OmnificPolynomialRoots.lean](../Surreal/Foundations/OmnificPolynomialRoots.lean) | A nonzero polynomial over ordinary complex constants has exactly its ordinary complex roots in the entire actual surcomplex field; the real-axis restriction proves the analogous statement for real polynomials throughout the actual surreal field. These stronger results specialize to the real and complex support rings. A root of a nonzero real polynomial in the omnific ring must be an ordinary integer; an integer polynomial has exactly its ordinary integer roots there, in both directions. Every infinite omnific integer is transcendental over the ordinary reals, using Mathlib's `Transcendental` with the actual real embedding as its explicitly specified algebra structure. All polynomial-nonzero hypotheses and coefficient maps are retained. **Proved** for the full source proposition and the stated transcendence consequence; no algebraic independence of tuples is asserted. Build and axiom audit pass. |
 | Full `odg:thm:finitequotients`, `odg:eq:nA`, `odg:eq:nOz` and `odg:eq:divkernel` | `CoefficientPullback.sectionMap_dvd_iff` in [CoefficientPullbackDivisibility.lean](../Surreal/Algebra/CoefficientPullbackDivisibility.lean); `SignSequence.omnific_int_dvd_iff`, `omnific_int_dvd_of_purelyInfinite`, `omnific_int_dvd_iff_purelyInfinite_add`, `omnificResidue`, `omnificResidue_surjective`, `ker_omnificResidue`, `omnificQuotientIntEquiv`, `omnificQuotientIntEquiv_mk`, `omnificQuotientZModEquiv`, `omnific_prime_pow_dvd_iff`, `omnific_prime_pow_dvd_iff_le`, `omnific_dvd_all_prime_powers_iff`, `omnific_dvd_all_pos_int_iff`, `iInf_omnific_int_multiples`, `iInf_omnific_prime_pow_multiples` in [OmnificResidues.lean](../Surreal/Foundations/OmnificResidues.lean) | A generic split retraction onto a field proves divisibility by nonzero embedded constants exactly when the coefficient is divisible in the coefficient subring. In the actual omnific ring this gives `n ∣ x ↔ n ∣ ct(x)` for every nonzero ordinary integer, including negative moduli, and the exact membership formulation of `n Oz = Pi + n Z`. Reduction of the integer constant term is surjective with kernel the principal ideal generated by `n`; its quotient is ring-isomorphic to `Z/nZ` and `ZMod n.natAbs`, with the class map explicitly identified. The intersections over all positive ordinary moduli and over all positive powers of each ordinary prime are literally the purely infinite ideal. Mathlib's `padicValInt` gives the exact greatest divisibility exponent when the constant term is nonzero, while every prime power divides elements with zero constant term. No assertion about arbitrary omnific moduli is made. **Proved** for the entire ordinary-modulus theorem. Build and axiom audit pass. |
@@ -883,7 +896,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surcomplex/autonomous-dilation-relations/article.tex](surcomplex/autonomous-dilation-relations/article.tex) | 27 | 15 | 4 | 13 | 59 |
 | [surcomplex/contours-and-stokes/article.tex](surcomplex/contours-and-stokes/article.tex) | 26 | 11 | 12 | 5 | 54 |
 | [surcomplex/differential-equations/article.tex](surcomplex/differential-equations/article.tex) | 64 | 37 | 35 | 39 | 175 |
-| [surcomplex/dynamics-and-normal-forms/article.tex](surcomplex/dynamics-and-normal-forms/article.tex) | 49 | 35 | 37 | 28 | 149 |
+| [surcomplex/dynamics-and-normal-forms/article.tex](surcomplex/dynamics-and-normal-forms/article.tex) | 56 | 40 | 42 | 29 | 167 |
 | [surcomplex/entire-functions-at-arbitrary-rank/article.tex](surcomplex/entire-functions-at-arbitrary-rank/article.tex) | 60 | 49 | 22 | 52 | 183 |
 | [surcomplex/expanding-polynomial-dynamics/article.tex](surcomplex/expanding-polynomial-dynamics/article.tex) | 10 | 3 | 4 | 8 | 25 |
 | [surcomplex/finite-deformations/article.tex](surcomplex/finite-deformations/article.tex) | 23 | 10 | 6 | 13 | 52 |
@@ -891,7 +904,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex) | 35 | 19 | 26 | 14 | 94 |
 | [surcomplex/global-divisors/article.tex](surcomplex/global-divisors/article.tex) | 17 | 13 | 15 | 12 | 57 |
 | [surcomplex/hahn-herglotz-positivity/article.tex](surcomplex/hahn-herglotz-positivity/article.tex) | 12 | 2 | 2 | 4 | 20 |
-| [surcomplex/hahn-hilbert-geometry/article.tex](surcomplex/hahn-hilbert-geometry/article.tex) | 17 | 5 | 13 | 12 | 47 |
+| [surcomplex/hahn-hilbert-geometry/article.tex](surcomplex/hahn-hilbert-geometry/article.tex) | 23 | 6 | 16 | 17 | 62 |
 | [surcomplex/hahn-tate-uniformization/article.tex](surcomplex/hahn-tate-uniformization/article.tex) | 25 | 19 | 10 | 16 | 70 |
 | [surcomplex/hidden-negative-hermitian-directions/article.tex](surcomplex/hidden-negative-hermitian-directions/article.tex) | 10 | 4 | 4 | 6 | 24 |
 | [surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex) | 56 | 60 | 36 | 70 | 222 |
@@ -902,7 +915,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surcomplex/rank-one-berkovich/article.tex](surcomplex/rank-one-berkovich/article.tex) | 9 | 2 | 11 | 6 | 28 |
 | [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex) | 12 | 5 | 1 | 7 | 25 |
 | [surcomplex/spectral-theory/article.tex](surcomplex/spectral-theory/article.tex) | 30 | 16 | 13 | 18 | 77 |
-| [surcomplex/surcomplex-field-automorphisms/article.tex](surcomplex/surcomplex-field-automorphisms/article.tex) | 24 | 12 | 11 | 8 | 55 |
+| [surcomplex/surcomplex-field-automorphisms/article.tex](surcomplex/surcomplex-field-automorphisms/article.tex) | 26 | 12 | 17 | 14 | 69 |
 | [surcomplex/three-duals-of-hahn-vector-spaces/article.tex](surcomplex/three-duals-of-hahn-vector-spaces/article.tex) | 16 | 4 | 5 | 4 | 29 |
 | [surcomplex/trigonometry/article.tex](surcomplex/trigonometry/article.tex) | 60 | 15 | 22 | 19 | 116 |
 | [surcomplex/wick-summability-certificates/article.tex](surcomplex/wick-summability-certificates/article.tex) | 5 | 7 | 7 | 4 | 23 |
@@ -919,7 +932,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/gonshor-product-birthdays/surreal_product_birthdays.tex](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex) | 3 | 4 | 5 | 2 | 14 |
 | [surreal/hahn-evaluation-at-omega/article.tex](surreal/hahn-evaluation-at-omega/article.tex) | 7 | 9 | 5 | 2 | 23 |
 | [surreal/hahn-valued-measures-and-probability/article.tex](surreal/hahn-valued-measures-and-probability/article.tex) | 37 | 17 | 18 | 27 | 99 |
-| [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex) | 9 | 9 | 4 | 7 | 29 |
+| [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex) | 17 | 18 | 5 | 17 | 57 |
 | [surreal/markov-generators-at-every-scale/article.tex](surreal/markov-generators-at-every-scale/article.tex) | 9 | 5 | 3 | 3 | 20 |
 | [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-scaling-at-surreal-scales/article.tex) | 7 | 3 | 2 | 4 | 16 |
 | [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex) | 87 | 52 | 44 | 61 | 244 |
@@ -931,7 +944,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
 | [foundations-and-computation/exponential-relations-over-omnific-integers/article.tex](foundations-and-computation/exponential-relations-over-omnific-integers/article.tex) | 13 | 5 | 5 | 11 | 34 |
 | [surreal/omnific-continued-fractions/article.tex](surreal/omnific-continued-fractions/article.tex) | 9 | 6 | 4 | 7 | 26 |
-| **Total** | 1721 | 929 | 849 | 899 | **4398** |
+| **Total** | 1744 | 944 | 864 | 921 | **4473** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -2159,155 +2172,173 @@ required beyond the finite-word support lemmas already checked.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `dyn:lem:neumann` (line 1211) | Positive-support lemma of Neumann, in finite-word form |
-| Corollary | `dyn:cor:ancestry` (line 1274) | Finite ancestry relative to the input support |
-| Lemma | `dyn:lem:evaluation` (line 1407) | Evaluation, inversion, isometry |
-| Proposition | `dyn:prop:eval` (line 1467) | Faithful analytic realization |
-| Lemma | `dyn:lem:faithful` (line 1500) | Faithfulness of infinitesimal evaluation |
-| Proposition | `dyn:prop:subgroup` (line 1539) | Substitution group |
-| Lemma | `dyn:lem:inverse` (line 1588) | Near-identity inverses |
-| Theorem | `dyn:thm:exp-log` (line 1618) | Same-domain exponential--logarithm correspondence |
-| Lemma | `dyn:lem:fixedderivative` (line 1707) | Derivative of the logarithmic generator at an ordinary fixed point |
-| Corollary | `dyn:cor:julia` (line 1729) | Julia equation |
-| Proposition | `dyn:prop:intertwine` (line 1738) | Conjugacy and vector fields |
-| Corollary | `dyn:cor:flow` (line 1752) | Exact flow law and admissible Hahn times |
-| Corollary | `dyn:cor:roots` (line 1785) | Unique fractional iteration; torsion-freeness |
-| Theorem | `dyn:thm:fixed-ideal` (line 1805) | Fixed-point ideal of a positive flow |
-| Theorem | `dyn:thm:centralizer` (line 1855) | The full positive centralizer in one variable |
-| Proposition | `dyn:prop:workspace` (line 1919) | Workspace invariance |
-| Lemma | `dyn:lem:radius-loss` (line 1972) | Single-step analytic loss |
-| Lemma | `dyn:lem:sharp-divisor` (line 1992) | Sharpness and analytic failure |
-| Proposition | `dyn:prop:norm` (line 2035) | A compact-disk estimate, offered only as a starting point |
-| Theorem | `dyn:thm:main` (line 2070) | Universal coefficient-category classification |
-| Proposition | `dyn:prop:linearization` (line 2129) | Support-controlled inverse; route A |
-| Theorem | `dyn:thm:lifting` (line 2173) | Support-controlled lifting; route B, drift permitted |
-| Proposition | `dyn:prop:reusable` (line 2265) | Reusable abstract form |
-| Proposition | `dyn:prop:first-weight` (line 2294) | The first-weight obstruction |
-| Corollary | `dyn:cor:entirethreshold` (line 2344) | The entire-coefficient threshold; polynomial universality |
-| Theorem | `dyn:thm:radius-depth` (line 2361) | Radius at a specified Hahn exponent |
-| Theorem | `dyn:thm:degrees` (line 2410) | Polynomial coefficient degrees |
-| Proposition | `dyn:prop:halo` (line 2456) | Actual conjugacy on a finite halo |
-| Proposition | `dyn:prop:monad` (line 2475) | The monad needs no arithmetic |
-| Lemma | `dyn:lem:multihomological` (line 2513) | Multivariable homological inverse |
-| Theorem | `dyn:thm:multilifting` (line 2529) | Multivariable support-controlled lifting |
-| Theorem | `dyn:thm:commoncoord` (line 2564) | A common coordinate for the centralizer |
-| Lemma | `dyn:esm:lem:cluster` (line 2688) | One rational cluster; sources 08 and 09 |
-| Lemma | `dyn:esm:lem:packing` (line 2719) | Divisible-subtree packing; sources 08 and 09 |
-| Theorem | `dyn:esm:thm:treebound` (line 2759) | Tree product bound; source 09 |
-| Corollary | `dyn:esm:cor:chain` (line 2782) | Strict chains and the fixed-complexity rate; sources 08 and 09 |
-| Lemma | `dyn:esm:lem:degreechain` (line 2865) | Strict degree chains; source 08 |
-| Proposition | `dyn:esm:prop:coefbound` (line 2918) | A depth-uniform exponential rate; source 08 |
-| Corollary | `dyn:esm:cor:commondomain` (line 2954) | One open polydisk for every coefficient; source 08 |
-| Theorem | `dyn:esm:thm:main` (line 2974) | Sharp common domain for an exact scalar multiplier; sources 08 and 09 |
-| Corollary | `dyn:esm:cor:sixthrow` (line 3042) | The sixth category for a scalar exact multiplier; sources 08 and 09 |
-| Proposition | `dyn:tree:prop:formula` (line 3163) | Plane-tree coefficient formula; source 09 |
-| Lemma | `dyn:tree:lem:count` (line 3192) | Polynomial tree count; source 09 |
-| Proposition | `dyn:tree:prop:estimate` (line 3211) | Finite-depth estimate for the forward coordinate; source 09 |
-| Corollary | `dyn:esm:cor:parameters` (line 3250) | Several formal parameters, one dynamical variable; source 09 |
-| Theorem | `dyn:nsc:thm:main` (line 3489) | Common-domain linearization for a nonscalar exact multiplier; source 10 |
-| Lemma | `dyn:nsc:lem:height` (line 3531) | Exponential rates and integer height; source 10 |
-| Corollary | `dyn:nsc:cor:angular` (line 3603) | Angular-rank form; source 10 |
-| Lemma | `dyn:nsc:lem:blocks` (line 3659) | Marked-block contraction; source 10 |
-| Theorem | `dyn:nsc:thm:products` (line 3717) | Rational-rank divisor-product bound; source 10 |
-| Corollary | `dyn:nsc:cor:rankone` (line 3784) | The fixed-complexity rate in angular rank one; source 10 |
-| Proposition | `dyn:nsc:prop:formal` (line 3843) | Colored tree expansion of the forward coordinate; source 10 |
-| Lemma | `dyn:nsc:lem:count` (line 3889) | Polynomial diagram count; source 10 |
-| Corollary | `dyn:nsc:cor:local` (line 3954) | Input-relative radius at a specified exponent; source 10 |
-| Corollary | `dyn:nsc:cor:parameters` (line 3985) | Rectangular polydisks and ordinary parameters; source 10 |
-| Theorem | `dyn:nsc:thm:criterion` (line 4050) | Exact criterion and rank-one sharpness; source 10 |
-| Proposition | `dyn:nsc:prop:twomode` (line 4109) | Two modes in one irrational direction; source 10 |
-| Lemma | `dyn:lem:jets` (line 4284) | Uniform reciprocal-jet estimates |
-| Theorem | `dyn:thm:collapse` (line 4314) | Exact coefficient-radius collapse; requires drift |
-| Corollary | `dyn:cor:finitefailure` (line 4379) | A finite-support instability |
-| Theorem | `dyn:thm:trichotomy` (line 4390) | The common-domain / radius-free trichotomy |
-| Theorem | `dyn:thm:multicollapse` (line 4458) | Exact multivariable radius collapse |
-| Proposition | `dyn:prop:cf` (line 4515) | Continued-fraction formula |
-| Theorem | `dyn:thm:nonbrjuno` (line 4548) | Explicit arithmetic separations |
-| Lemma | `dyn:cyc:lem:chains` (line 4665) | Pole multiplicity after collisions; source 08 |
-| Lemma | `dyn:cyc:lem:majorant` (line 4692) | Polynomial numerators at fixed parameter degree; source 08 |
-| Proposition | `dyn:cyc:prop:upper` (line 4712) | The upper bound under drift; source 08 |
-| Proposition | `dyn:cyc:prop:noncancel` (line 4748) | Collision noncancellation at convergent degrees; source 08 |
-| Theorem | `dyn:cyc:thm` (line 4778) | Sharp collapse with one cyclic exponent; \textbf{requires drift}; source 08 |
-| Corollary | `dyn:cyc:cor:classification` (line 4831) | No independent scales are needed; source 08 |
-| Corollary | `dyn:cyc:cor:onecoef` (line 4870) | One positive Hahn coefficient suffices; source 08 |
-| Lemma | `dyn:lem:nonresonant` (line 5044) | Nonresonant residue |
-| Lemma | `dyn:lem:displacement` (line 5073) | Divisible displacement: cancelling a common infinitesimal divisor |
-| Lemma | `dyn:lem:root-count` (line 5109) | Roots on the unit shell |
-| Theorem | `dyn:thm:exact` (line 5137) | Exact finite-return linearization |
-| Theorem | `dyn:thm:shell` (line 5251) | Resonant shell cycles |
-| Corollary | `dyn:cor:finite-certificate` (line 5297) | A finite obstruction certificate |
-| Theorem | `dyn:thm:stability` (line 5313) | Stability above the first return face |
-| Theorem | `dyn:thm:coherent` (line 5376) | Coherent realization of resonant linearization |
-| Proposition | `dyn:prop:leading` (line 5481) | The leading-coefficient exponential integral |
-| Proposition | `dyn:prop:noncoherent` (line 5547) | A divergent ordinary linearizer survives on the monad |
-| Theorem | `dyn:thm:workspace` (line 5594) | Workspace invariance for the finite-return package |
-| Corollary | `dyn:cor:surcomplex` (line 5623) | Transfer to the surcomplex numbers |
-| Theorem | `dyn:thm:phase` (line 5732) | Cancellation phase diagram |
-| Lemma | `dyn:lem:unit` (line 5883) | A sufficient unit criterion |
-| Theorem | `dyn:thm:common` (line 5901) | Common-domain Hahn linearization |
-| Corollary | `dyn:cor:universal` (line 5977) | Universal leading profile at a resonant scale |
-| Proposition | `dyn:prop:factorV` (line 6016) | The generator gains no new pole |
-| Lemma | `dyn:lem:residue` (line 6054) | Exact residue at a simple fixed point |
-| Proposition | `dyn:prop:firstcorrection` (line 6074) | The first correction is an explicit logarithm |
-| Corollary | `dyn:cor:factorization` (line 6094) | Separation of the branching factors |
-| Lemma | `dyn:lem:torsion` (line 6127) | An infinitesimal phase has no torsion |
-| Theorem | `dyn:thm:monodromy` (line 6148) | Exact monodromy and obstruction to finite ramification |
-| Lemma | `dyn:lem:slopes` (line 6183) | A nonlinear polynomial cannot have one slope at all its zeros |
-| Lemma | `dyn:lem:reduction` (line 6198) | Reduction of an algebraic Hahn element |
-| Lemma | `dyn:lem:essential` (line 6212) | A higher-order logarithmic pole forces transcendence |
-| Theorem | `dyn:thm:dichotomy` (line 6231) | Polynomial Euler maps: the algebraicity dichotomy |
-| Proposition | `dyn:prop:leadingalgebraic` (line 6294) | Classification of algebraic leading coordinates |
-| Proposition | `dyn:prop:recurrence` (line 6382) | Exact finite recurrence |
-| Theorem | `dyn:thm:sharp` (line 6411) | Sharp domain and valuative isometry |
-| Theorem | `dyn:thm:modelfactor` (line 6511) | All-orders factorization and finite-cover obstruction for the model |
-| Proposition | `dyn:prop:second` (line 6549) | Explicit second-order expansion |
-| Lemma | `dyn:lem:primitive` (line 6670) | Support-preserving primitives |
-| Lemma | `dyn:lem:homotopy` (line 6700) | Explicit exactness of an infinitesimal pullback |
-| Proposition | `dyn:prop:time-conjugacy` (line 6734) | Time forms under conjugacy |
-| Theorem | `dyn:thm:difference` (line 6757) | Discrete equation as a primitive problem |
-| Corollary | `dyn:cor:abel` (line 6805) | Exact global Abel criterion |
-| Theorem | `dyn:thm:exact-sequence` (line 6828) | Complete finite-dimensional discrete obstruction |
-| Lemma | `dyn:lem:displacement2` (line 6905) | Implicit displacement lemma |
-| Theorem | `dyn:thm:classification` (line 6953) | Complete period invariant and marked conjugacy |
-| Corollary | `dyn:cor:simplyconnected` (line 6994) | Simply connected domains |
-| Theorem | `dyn:thm:moduli` (line 7027) | An explicit moduli space |
-| Theorem | `dyn:thm:flat` (line 7101) | Flatly indistinguishable but globally nonconjugate |
-| Proposition | `dyn:prop:euler-residue` (line 7222) | Exact residue of the Euler time form |
-| Corollary | `dyn:cor:euler-normal` (line 7280) | A global coherent normal form for the Euler family |
-| Theorem | `dyn:thm:slowtime` (line 7359) | Common-chart Hahn lifting of the slow flow |
-| Proposition | `dyn:prop:inverse` (line 7483) | Positive near-identity maps |
-| Proposition | `dyn:prop:exp` (line 7507) | Supported Hamiltonian exponential |
-| Lemma | `dyn:lem:projection` (line 7565) | Entire action projection |
-| Theorem | `dyn:thm:homological` (line 7585) | Sharp homological criterion |
-| Theorem | `dyn:thm:normalform` (line 7633) | Exact positive-Hahn normal form |
-| Corollary | `dyn:cor:hamsurcomplex` (line 7734) | Finite surcomplex phase space |
-| Theorem | `dyn:thm:integrability` (line 7762) | Exact integrability |
-| Theorem | `dyn:thm:pcentralizer` (line 7783) | Poisson centralizer |
-| Proposition | `dyn:prop:flow` (line 7825) | Exact ordinary-time evolution |
-| Theorem | `dyn:thm:universal` (line 7863) | Sharp universal normalization criterion |
-| Proposition | `dyn:prop:explicitbad` (line 7904) | An explicit super-Liouville obstruction |
-| Theorem | `dyn:thm:rescale` (line 8019) | Compatible support-certified domains |
-| Corollary | `dyn:cor:homogeneous` (line 8091) | A degree-dependent radius |
-| Proposition | `dyn:prop:discrete` (line 8247) | Polynomial-layer linearization |
-| Lemma | `dyn:lem:qpmultiplier` (line 8395) | Subexponential Fourier multipliers |
-| Lemma | `dyn:lem:qpsubstitution` (line 8408) | Taylor substitution on the torus, with its Lipschitz estimate |
-| Theorem | `dyn:thm:flag` (line 8484) | Finite flag and one common reciprocal support |
-| Proposition | `dyn:prop:qpjets` (line 8565) | Coefficient structure of the inverse |
-| Proposition | `dyn:prop:qpvalbound` (line 8597) | An arithmetic-free valuation bound |
-| Theorem | `dyn:thm:qplinear` (line 8697) | Universal fixed-strip solvability |
-| Corollary | `dyn:cor:qpsharp` (line 8771) | The divisor loss $\kups$ is attained |
-| Corollary | `dyn:cor:qptail` (line 8795) | Higher tails do not change the arithmetic test |
-| Theorem | `dyn:thm:qpjet` (line 8842) | Arbitrary finite analytic lifting, but no full lift |
-| Theorem | `dyn:thm:qpnormalform` (line 8942) | Hahn-analytic constant normal form |
-| Lemma | `dyn:lem:qpcoordinverse` (line 9096) | Infinitesimal coordinate inverses on the torus |
-| Theorem | `dyn:thm:qpnecessity` (line 9133) | Non-linearizable perturbations beyond any prescribed valuation |
-| Corollary | `dyn:cor:qpequivalence` (line 9171) | Exact universal infinitesimal normal-form criterion |
-| Proposition | `dyn:prop:qpboundary` (line 9181) | Failure exactly at the threshold, with no zero of the slow speed |
-| Lemma | `dyn:lem:qpchangevar` (line 9227) | Formal change of variables |
-| Theorem | `dyn:thm:qpdensity` (line 9254) | Invariant density and its uniqueness |
-| Theorem | `dyn:thm:finite-order` (line 9458) | Same-domain finite-order decomposition |
-| Proposition | `dyn:prop:quadratic-scale` (line 9541) | Quadratic scaling and the boundary of the halo theorem |
-| Proposition | `dyn:prop:critical` (line 9584) | A precise rescaled-germ obstruction |
+| Lemma | `dyn:lem:neumann` (line 1260) | Positive-support lemma of Neumann, in finite-word form |
+| Corollary | `dyn:cor:ancestry` (line 1324) | Finite ancestry relative to the input support |
+| Lemma | `dyn:lem:evaluation` (line 1457) | Evaluation, inversion, isometry |
+| Proposition | `dyn:prop:eval` (line 1517) | Faithful analytic realization |
+| Lemma | `dyn:lem:faithful` (line 1550) | Faithfulness of infinitesimal evaluation |
+| Proposition | `dyn:prop:subgroup` (line 1589) | Substitution group |
+| Lemma | `dyn:lem:inverse` (line 1638) | Near-identity inverses |
+| Theorem | `dyn:thm:exp-log` (line 1668) | Same-domain exponential--logarithm correspondence |
+| Lemma | `dyn:lem:fixedderivative` (line 1757) | Derivative of the logarithmic generator at an ordinary fixed point |
+| Corollary | `dyn:cor:julia` (line 1779) | Julia equation |
+| Proposition | `dyn:prop:intertwine` (line 1788) | Conjugacy and vector fields |
+| Corollary | `dyn:cor:flow` (line 1802) | Exact flow law and admissible Hahn times |
+| Corollary | `dyn:cor:roots` (line 1835) | Unique fractional iteration; torsion-freeness |
+| Theorem | `dyn:thm:fixed-ideal` (line 1855) | Fixed-point ideal of a positive flow |
+| Theorem | `dyn:thm:centralizer` (line 1905) | The full positive centralizer in one variable |
+| Proposition | `dyn:prop:workspace` (line 1969) | Workspace invariance |
+| Lemma | `dyn:lem:radius-loss` (line 2022) | Single-step analytic loss |
+| Lemma | `dyn:lem:sharp-divisor` (line 2042) | Sharpness and analytic failure |
+| Proposition | `dyn:prop:norm` (line 2085) | A compact-disk estimate, offered only as a starting point |
+| Theorem | `dyn:thm:main` (line 2120) | Universal coefficient-category classification |
+| Proposition | `dyn:prop:linearization` (line 2179) | Support-controlled inverse; route A |
+| Theorem | `dyn:thm:lifting` (line 2223) | Support-controlled lifting; route B, drift permitted |
+| Proposition | `dyn:prop:reusable` (line 2315) | Reusable abstract form |
+| Proposition | `dyn:prop:first-weight` (line 2344) | The first-weight obstruction |
+| Corollary | `dyn:cor:entirethreshold` (line 2394) | The entire-coefficient threshold; polynomial universality |
+| Theorem | `dyn:thm:radius-depth` (line 2411) | Radius at a specified Hahn exponent |
+| Theorem | `dyn:thm:degrees` (line 2460) | Polynomial coefficient degrees |
+| Proposition | `dyn:prop:halo` (line 2506) | Actual conjugacy on a finite halo |
+| Proposition | `dyn:prop:monad` (line 2525) | The monad needs no arithmetic |
+| Lemma | `dyn:lem:multihomological` (line 2563) | Multivariable homological inverse |
+| Theorem | `dyn:thm:multilifting` (line 2579) | Multivariable support-controlled lifting |
+| Theorem | `dyn:thm:commoncoord` (line 2614) | A common coordinate for the centralizer |
+| Lemma | `dyn:esm:lem:cluster` (line 2738) | One rational cluster; sources 08 and 09 |
+| Lemma | `dyn:esm:lem:packing` (line 2769) | Divisible-subtree packing; sources 08 and 09 |
+| Theorem | `dyn:esm:thm:treebound` (line 2809) | Tree product bound; source 09 |
+| Corollary | `dyn:esm:cor:chain` (line 2832) | Strict chains and the fixed-complexity rate; sources 08 and 09 |
+| Lemma | `dyn:esm:lem:degreechain` (line 2915) | Strict degree chains; source 08 |
+| Proposition | `dyn:esm:prop:coefbound` (line 2968) | A depth-uniform exponential rate; source 08 |
+| Corollary | `dyn:esm:cor:commondomain` (line 3004) | One open polydisk for every coefficient; source 08 |
+| Theorem | `dyn:esm:thm:main` (line 3024) | Sharp common domain for an exact scalar multiplier; sources 08 and 09 |
+| Corollary | `dyn:esm:cor:sixthrow` (line 3092) | The sixth category for a scalar exact multiplier; sources 08 and 09 |
+| Proposition | `dyn:tree:prop:formula` (line 3213) | Plane-tree coefficient formula; source 09 |
+| Lemma | `dyn:tree:lem:count` (line 3242) | Polynomial tree count; source 09 |
+| Proposition | `dyn:tree:prop:estimate` (line 3261) | Finite-depth estimate for the forward coordinate; source 09 |
+| Corollary | `dyn:esm:cor:parameters` (line 3300) | Several formal parameters, one dynamical variable; source 09 |
+| Theorem | `dyn:nsc:thm:main` (line 3539) | Common-domain linearization for a nonscalar exact multiplier; source 10 |
+| Lemma | `dyn:nsc:lem:height` (line 3581) | Exponential rates and integer height; source 10 |
+| Corollary | `dyn:nsc:cor:angular` (line 3653) | Angular-rank form; source 10 |
+| Lemma | `dyn:nsc:lem:blocks` (line 3709) | Marked-block contraction; source 10 |
+| Theorem | `dyn:nsc:thm:products` (line 3767) | Rational-rank divisor-product bound; source 10 |
+| Corollary | `dyn:nsc:cor:rankone` (line 3834) | The fixed-complexity rate in angular rank one; source 10 |
+| Proposition | `dyn:nsc:prop:formal` (line 3893) | Colored tree expansion of the forward coordinate; source 10 |
+| Lemma | `dyn:nsc:lem:count` (line 3939) | Polynomial diagram count; source 10 |
+| Corollary | `dyn:nsc:cor:local` (line 4004) | Input-relative radius at a specified exponent; source 10 |
+| Corollary | `dyn:nsc:cor:parameters` (line 4035) | Rectangular polydisks and ordinary parameters; source 10 |
+| Theorem | `dyn:nsc:thm:criterion` (line 4100) | Exact criterion and rank-one sharpness; source 10 |
+| Proposition | `dyn:nsc:prop:twomode` (line 4159) | Two modes in one irrational direction; source 10 |
+| Lemma | `dyn:lem:jets` (line 4334) | Uniform reciprocal-jet estimates |
+| Theorem | `dyn:thm:collapse` (line 4364) | Exact coefficient-radius collapse; requires drift |
+| Corollary | `dyn:cor:finitefailure` (line 4429) | A finite-support instability |
+| Theorem | `dyn:thm:trichotomy` (line 4440) | The common-domain / radius-free trichotomy |
+| Theorem | `dyn:thm:multicollapse` (line 4508) | Exact multivariable radius collapse |
+| Proposition | `dyn:prop:cf` (line 4565) | Continued-fraction formula |
+| Theorem | `dyn:thm:nonbrjuno` (line 4598) | Explicit arithmetic separations |
+| Lemma | `dyn:cyc:lem:chains` (line 4715) | Pole multiplicity after collisions; source 08 |
+| Lemma | `dyn:cyc:lem:majorant` (line 4742) | Polynomial numerators at fixed parameter degree; source 08 |
+| Proposition | `dyn:cyc:prop:upper` (line 4762) | The upper bound under drift; source 08 |
+| Proposition | `dyn:cyc:prop:noncancel` (line 4798) | Collision noncancellation at convergent degrees; source 08 |
+| Theorem | `dyn:cyc:thm` (line 4828) | Sharp collapse with one cyclic exponent; \textbf{requires drift}; source 08 |
+| Corollary | `dyn:cyc:cor:classification` (line 4881) | No independent scales are needed; source 08 |
+| Corollary | `dyn:cyc:cor:onecoef` (line 4920) | One positive Hahn coefficient suffices; source 08 |
+| Lemma | `dyn:lem:nonresonant` (line 5094) | Nonresonant residue |
+| Lemma | `dyn:lem:displacement` (line 5123) | Divisible displacement: cancelling a common infinitesimal divisor |
+| Lemma | `dyn:lem:root-count` (line 5159) | Roots on the unit shell |
+| Theorem | `dyn:thm:exact` (line 5187) | Exact finite-return linearization |
+| Theorem | `dyn:thm:shell` (line 5301) | Resonant shell cycles |
+| Corollary | `dyn:cor:finite-certificate` (line 5347) | A finite obstruction certificate |
+| Theorem | `dyn:thm:stability` (line 5363) | Stability above the first return face |
+| Lemma | `dyn:rd:lem:ring` (line 5617) | The ring $\OO_{\mathsf M}$; source 11 |
+| Lemma | `dyn:rd:lem:evaluation` (line 5634) | Uniform support evaluation; source 11 |
+| Lemma | `dyn:rd:lem:divisors` (line 5698) | Equal-characteristic root-of-unity dichotomy |
+| Theorem | `dyn:rd:thm:linearization` (line 5765) | Strong linearization on the exact candidate ball; source 11 |
+| Lemma | `dyn:rd:lem:iterate` (line 5829) | Universal iterate quotient; source 11 |
+| Proposition | `dyn:rd:prop:periodfinite` (line 5854) | No hidden periods in the closed normalized ball; source 11 |
+| Proposition | `dyn:rd:prop:return` (line 5885) | The two thresholds and the two shell polynomials coincide |
+| Theorem | `dyn:rd:thm:shell` (line 5941) | The radius-shell divisor and sharp maximality; source 11 |
+| Theorem | `dyn:rd:thm:reduction` (line 6009) | First-order boundary reduction; source 11 |
+| Corollary | `dyn:rd:cor:boundaryrec` (line 6065) | A finite recurrence for the boundary series; source 11 |
+| Lemma | `dyn:rd:lem:norm` (line 6085) | Norm obstruction; source 11 |
+| Theorem | `dyn:rd:thm:algebraicity` (line 6100) | Exact algebraicity criterion for the reduction; source 11 |
+| Proposition | `dyn:rd:prop:stability` (line 6328) | Stability of the first boundary data; source 11 |
+| Theorem | `dyn:rd:thm:allperiods` (line 6365) | Infinitesimal periodic points are rotation points; source 11 |
+| Theorem | `dyn:rd:thm:allshells` (line 6402) | Exact finite shell realization; source 11 |
+| Theorem | `dyn:rd:thm:omnific` (line 6463) | Exact omnific periodic sets for rational maps; source 11 |
+| Proposition | `dyn:rd:prop:transfer` (line 6536) | Class-level interpretation without class sums; source 11 |
+| Proposition | `dyn:rd:prop:certificate` (line 6595) | Finite leading-data certificate; source 11 |
+| Theorem | `dyn:thm:coherent` (line 6638) | Coherent realization of resonant linearization |
+| Proposition | `dyn:prop:leading` (line 6743) | The leading-coefficient exponential integral |
+| Proposition | `dyn:prop:noncoherent` (line 6809) | A divergent ordinary linearizer survives on the monad |
+| Theorem | `dyn:thm:workspace` (line 6856) | Workspace invariance for the finite-return package |
+| Corollary | `dyn:cor:surcomplex` (line 6885) | Transfer to the surcomplex numbers |
+| Theorem | `dyn:thm:phase` (line 6994) | Cancellation phase diagram |
+| Lemma | `dyn:lem:unit` (line 7145) | A sufficient unit criterion |
+| Theorem | `dyn:thm:common` (line 7163) | Common-domain Hahn linearization |
+| Corollary | `dyn:cor:universal` (line 7239) | Universal leading profile at a resonant scale |
+| Proposition | `dyn:prop:factorV` (line 7278) | The generator gains no new pole |
+| Lemma | `dyn:lem:residue` (line 7316) | Exact residue at a simple fixed point |
+| Proposition | `dyn:prop:firstcorrection` (line 7336) | The first correction is an explicit logarithm |
+| Corollary | `dyn:cor:factorization` (line 7356) | Separation of the branching factors |
+| Lemma | `dyn:lem:torsion` (line 7389) | An infinitesimal phase has no torsion |
+| Theorem | `dyn:thm:monodromy` (line 7410) | Exact monodromy and obstruction to finite ramification |
+| Lemma | `dyn:lem:slopes` (line 7445) | A nonlinear polynomial cannot have one slope at all its zeros |
+| Lemma | `dyn:lem:reduction` (line 7460) | Reduction of an algebraic Hahn element |
+| Lemma | `dyn:lem:essential` (line 7474) | A higher-order logarithmic pole forces transcendence |
+| Theorem | `dyn:thm:dichotomy` (line 7493) | Polynomial Euler maps: the algebraicity dichotomy |
+| Proposition | `dyn:prop:leadingalgebraic` (line 7556) | Classification of algebraic leading coordinates |
+| Proposition | `dyn:prop:recurrence` (line 7644) | Exact finite recurrence |
+| Theorem | `dyn:thm:sharp` (line 7673) | Sharp domain and valuative isometry |
+| Theorem | `dyn:thm:modelfactor` (line 7773) | All-orders factorization and finite-cover obstruction for the model |
+| Proposition | `dyn:prop:second` (line 7811) | Explicit second-order expansion |
+| Lemma | `dyn:lem:primitive` (line 7932) | Support-preserving primitives |
+| Lemma | `dyn:lem:homotopy` (line 7962) | Explicit exactness of an infinitesimal pullback |
+| Proposition | `dyn:prop:time-conjugacy` (line 7996) | Time forms under conjugacy |
+| Theorem | `dyn:thm:difference` (line 8019) | Discrete equation as a primitive problem |
+| Corollary | `dyn:cor:abel` (line 8067) | Exact global Abel criterion |
+| Theorem | `dyn:thm:exact-sequence` (line 8090) | Complete finite-dimensional discrete obstruction |
+| Lemma | `dyn:lem:displacement2` (line 8167) | Implicit displacement lemma |
+| Theorem | `dyn:thm:classification` (line 8215) | Complete period invariant and marked conjugacy |
+| Corollary | `dyn:cor:simplyconnected` (line 8256) | Simply connected domains |
+| Theorem | `dyn:thm:moduli` (line 8289) | An explicit moduli space |
+| Theorem | `dyn:thm:flat` (line 8363) | Flatly indistinguishable but globally nonconjugate |
+| Proposition | `dyn:prop:euler-residue` (line 8484) | Exact residue of the Euler time form |
+| Corollary | `dyn:cor:euler-normal` (line 8542) | A global coherent normal form for the Euler family |
+| Theorem | `dyn:thm:slowtime` (line 8621) | Common-chart Hahn lifting of the slow flow |
+| Proposition | `dyn:prop:inverse` (line 8745) | Positive near-identity maps |
+| Proposition | `dyn:prop:exp` (line 8769) | Supported Hamiltonian exponential |
+| Lemma | `dyn:lem:projection` (line 8827) | Entire action projection |
+| Theorem | `dyn:thm:homological` (line 8847) | Sharp homological criterion |
+| Theorem | `dyn:thm:normalform` (line 8895) | Exact positive-Hahn normal form |
+| Corollary | `dyn:cor:hamsurcomplex` (line 8996) | Finite surcomplex phase space |
+| Theorem | `dyn:thm:integrability` (line 9024) | Exact integrability |
+| Theorem | `dyn:thm:pcentralizer` (line 9045) | Poisson centralizer |
+| Proposition | `dyn:prop:flow` (line 9087) | Exact ordinary-time evolution |
+| Theorem | `dyn:thm:universal` (line 9125) | Sharp universal normalization criterion |
+| Proposition | `dyn:prop:explicitbad` (line 9166) | An explicit super-Liouville obstruction |
+| Theorem | `dyn:thm:rescale` (line 9281) | Compatible support-certified domains |
+| Corollary | `dyn:cor:homogeneous` (line 9353) | A degree-dependent radius |
+| Proposition | `dyn:prop:discrete` (line 9509) | Polynomial-layer linearization |
+| Lemma | `dyn:lem:qpmultiplier` (line 9657) | Subexponential Fourier multipliers |
+| Lemma | `dyn:lem:qpsubstitution` (line 9670) | Taylor substitution on the torus, with its Lipschitz estimate |
+| Theorem | `dyn:thm:flag` (line 9746) | Finite flag and one common reciprocal support |
+| Proposition | `dyn:prop:qpjets` (line 9827) | Coefficient structure of the inverse |
+| Proposition | `dyn:prop:qpvalbound` (line 9859) | An arithmetic-free valuation bound |
+| Theorem | `dyn:thm:qplinear` (line 9959) | Universal fixed-strip solvability |
+| Corollary | `dyn:cor:qpsharp` (line 10033) | The divisor loss $\kups$ is attained |
+| Corollary | `dyn:cor:qptail` (line 10057) | Higher tails do not change the arithmetic test |
+| Theorem | `dyn:thm:qpjet` (line 10104) | Arbitrary finite analytic lifting, but no full lift |
+| Theorem | `dyn:thm:qpnormalform` (line 10204) | Hahn-analytic constant normal form |
+| Lemma | `dyn:lem:qpcoordinverse` (line 10358) | Infinitesimal coordinate inverses on the torus |
+| Theorem | `dyn:thm:qpnecessity` (line 10395) | Non-linearizable perturbations beyond any prescribed valuation |
+| Corollary | `dyn:cor:qpequivalence` (line 10433) | Exact universal infinitesimal normal-form criterion |
+| Proposition | `dyn:prop:qpboundary` (line 10443) | Failure exactly at the threshold, with no zero of the slow speed |
+| Lemma | `dyn:lem:qpchangevar` (line 10489) | Formal change of variables |
+| Theorem | `dyn:thm:qpdensity` (line 10516) | Invariant density and its uniqueness |
+| Theorem | `dyn:thm:finite-order` (line 10720) | Same-domain finite-order decomposition |
+| Proposition | `dyn:prop:quadratic-scale` (line 10803) | Quadratic scaling and the boundary of the halo theorem |
+| Proposition | `dyn:prop:critical` (line 10846) | A precise rescaled-germ obstruction |
 
 ### entire-functions-at-arbitrary-rank
 
@@ -4445,61 +4476,75 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `saut:lem:order` (line 561) | Untitled |
-| Theorem | `saut:thm:axis` (line 572) | Centralizer and stabilizer |
-| Theorem | `saut:thm:norm` (line 619) | Exact norm rigidity |
-| Theorem | `saut:thm:circle` (line 642) | Untitled |
-| Lemma | `saut:lem:support` (line 727) | Support control used below |
-| Theorem | `saut:thm:monomial` (line 761) | Monomial construction |
-| Theorem | `saut:thm:phase` (line 856) | A faithful phase action |
-| Theorem | `saut:thm:coeffflow` (line 946) | Taylor motion of coefficient constants |
-| Theorem | `saut:thm:shiftflow` (line 1018) | A fixed-shift flow |
-| Theorem | `saut:thm:decomp` (line 1090) | Four layers for surcomplex valued automorphisms |
-| Proposition | `saut:prop:continuous` (line 1256) | Untitled |
-| Proposition | `saut:prop:discrete` (line 1289) | Untitled |
-| Theorem | `saut:thm:derivative` (line 1386) | Derivative dichotomy for field automorphisms |
-| Theorem | `saut:thm:zeroderiv` (line 1406) | Exponent dilations have derivative zero |
-| Corollary | `saut:cor:bidifferentiable` (line 1437) | Untitled |
-| Theorem | `saut:thm:acfhomogeneity` (line 1471) | Class back-and-forth |
-| Theorem | `saut:thm:orderedhomogeneity` (line 1506) | Ordered surreal extension |
-| Proposition | `saut:prop:nondefinability` (line 1548) | Untitled |
-| Proposition | `saut:prop:fixedfields` (line 1587) | Untitled |
-| Theorem | `saut:thm:torsion` (line 1648) | Finite subgroups and real forms |
-| Theorem | `saut:thm:inequivalentrealform` (line 1693) | Untitled |
-| Lemma | `saut:lem:displacement` (line 1801) | Displacement cannot be globally bounded |
-| Theorem | `saut:thm:expfaithful` (line 1824) | Faithful value-group action |
-| Proposition | `saut:prop:rationalnonlift` (line 1880) | Untitled |
-| Theorem | `saut:thm:L` (line 1917) | Logarithmic-modulus automorphisms |
-| Theorem | `saut:fs:thm:main-descent` (line 2578) | Finite symmetry descent; main statement |
-| Theorem | `saut:fs:thm:main-involutions` (line 2625) | Classification of admissible involutions |
-| Theorem | `saut:fs:thm:main-ip` (line 2649) | Integer parts and the standard real form |
-| Theorem | `saut:fs:thm:main-count` (line 2665) | Maximal set-sized multiplicity |
-| Lemma | `saut:fs:lem:row-finite` (line 2814) | Row-finite uniformity |
-| Theorem | `saut:fs:thm:pairing` (line 2838) | Constant-term pairing criterion |
-| Corollary | `saut:fs:cor:ct-strong` (line 2875) | Constant-term preserving isomorphisms are strong |
-| Proposition | `saut:fs:prop:autostrong` (line 2906) | Automatic strongness; \mergetag |
-| Lemma | `saut:fs:lem:spherical` (line 2938) | Spherical completeness of full Hahn fields |
-| Lemma | `saut:fs:lem:immediate` (line 2957) | Untitled |
-| Lemma | `saut:fs:lem:local` (line 2982) | Invariant set-sized exponent closure |
-| Lemma | `saut:fs:lem:section` (line 3025) | Untitled |
-| Lemma | `saut:fs:lem:diagonal` (line 3044) | Untitled |
-| Lemma | `saut:fs:lem:embedding` (line 3074) | Untitled |
-| Corollary | `saut:fs:cor:fixed-general` (line 3150) | Fixed fields and support rings |
-| Corollary | `saut:fs:cor:lifts` (line 3177) | Conjugacy of finite lifts |
-| Corollary | `saut:fs:cor:torsion` (line 3197) | Torsion-free coefficient kernel |
-| Proposition | `saut:fs:prop:reconstruction` (line 3245) | Intrinsic support ideal and coefficient field |
-| Corollary | `saut:fs:cor:recover-pairs` (line 3305) | Untitled |
-| Proposition | `saut:fs:prop:conjugacy` (line 3356) | Untitled |
-| Proposition | `saut:fs:prop:which-F` (line 3413) | Untitled |
-| Corollary | `saut:fs:cor:finite-Gaussian` (line 3436) | Untitled |
-| Lemma | `saut:fs:lem:discrete` (line 3466) | Untitled |
-| Theorem | `saut:fs:thm:ip` (line 3478) | Exact integer-part criterion |
-| Theorem | `saut:fs:thm:No-criterion` (line 3522) | Standard-form criterion |
-| Corollary | `saut:fs:cor:standard-conj` (line 3555) | Standard conjugacy in the full plain field group |
-| Proposition | `saut:fs:prop:residue` (line 3576) | Untitled |
-| Lemma | `saut:fs:lem:coefficient-family` (line 3600) | Untitled |
-| Theorem | `saut:fs:thm:large-family` (line 3635) | Large nonconjugate family |
-| Proposition | `saut:prop:conjugacycriterion` (line 4339) | Untitled |
+| Lemma | `saut:lem:order` (line 573) | Untitled |
+| Theorem | `saut:thm:axis` (line 584) | Centralizer and stabilizer |
+| Theorem | `saut:thm:norm` (line 631) | Exact norm rigidity |
+| Theorem | `saut:thm:circle` (line 654) | Untitled |
+| Lemma | `saut:lem:support` (line 739) | Support control used below |
+| Theorem | `saut:thm:monomial` (line 773) | Monomial construction |
+| Theorem | `saut:thm:phase` (line 868) | A faithful phase action |
+| Theorem | `saut:thm:coeffflow` (line 958) | Taylor motion of coefficient constants |
+| Theorem | `saut:thm:shiftflow` (line 1030) | A fixed-shift flow |
+| Theorem | `saut:thm:decomp` (line 1105) | Four layers for surcomplex valued automorphisms |
+| Proposition | `saut:prop:continuous` (line 1271) | Untitled |
+| Proposition | `saut:prop:discrete` (line 1304) | Untitled |
+| Theorem | `saut:thm:derivative` (line 1401) | Derivative dichotomy for field automorphisms |
+| Theorem | `saut:thm:zeroderiv` (line 1421) | Exponent dilations have derivative zero |
+| Corollary | `saut:cor:bidifferentiable` (line 1452) | Untitled |
+| Theorem | `saut:thm:acfhomogeneity` (line 1486) | Class back-and-forth |
+| Theorem | `saut:thm:orderedhomogeneity` (line 1521) | Ordered surreal extension |
+| Proposition | `saut:prop:nondefinability` (line 1563) | Untitled |
+| Proposition | `saut:prop:fixedfields` (line 1602) | Untitled |
+| Theorem | `saut:thm:torsion` (line 1663) | Finite subgroups and real forms |
+| Theorem | `saut:thm:inequivalentrealform` (line 1708) | Untitled |
+| Lemma | `saut:lem:displacement` (line 1816) | Displacement cannot be globally bounded |
+| Theorem | `saut:thm:expfaithful` (line 1839) | Faithful value-group action |
+| Proposition | `saut:prop:rationalnonlift` (line 1895) | Untitled |
+| Theorem | `saut:thm:L` (line 1932) | Logarithmic-modulus automorphisms |
+| Theorem | `saut:fs:thm:main-descent` (line 2594) | Finite symmetry descent; main statement |
+| Theorem | `saut:fs:thm:main-involutions` (line 2643) | Classification of admissible involutions |
+| Theorem | `saut:fs:thm:main-ip` (line 2667) | Integer parts and the standard real form |
+| Theorem | `saut:fs:thm:main-count` (line 2683) | Maximal set-sized multiplicity |
+| Lemma | `saut:fs:lem:row-finite` (line 2832) | Row-finite uniformity |
+| Theorem | `saut:fs:thm:pairing` (line 2856) | Constant-term pairing criterion |
+| Corollary | `saut:fs:cor:ct-strong` (line 2893) | Constant-term preserving isomorphisms are strong |
+| Proposition | `saut:fs:prop:autostrong` (line 2924) | Automatic strongness; \mergetag |
+| Lemma | `saut:fs:lem:spherical` (line 2956) | Spherical completeness of full Hahn fields |
+| Lemma | `saut:fs:lem:immediate` (line 2975) | Untitled |
+| Lemma | `saut:fs:lem:local` (line 3000) | Invariant set-sized exponent closure |
+| Lemma | `saut:fs:lem:section` (line 3043) | Untitled |
+| Lemma | `saut:fs:lem:diagonal` (line 3062) | Untitled |
+| Lemma | `saut:fs:lem:embedding` (line 3092) | Untitled |
+| Corollary | `saut:fs:cor:fixed-general` (line 3168) | Fixed fields and support rings |
+| Corollary | `saut:fs:cor:lifts` (line 3195) | Conjugacy of finite lifts |
+| Corollary | `saut:fs:cor:torsion` (line 3215) | Torsion-free coefficient kernel |
+| Proposition | `saut:fs:prop:reconstruction` (line 3263) | Intrinsic support ideal and coefficient field |
+| Corollary | `saut:fs:cor:recover-pairs` (line 3323) | Untitled |
+| Proposition | `saut:fs:prop:conjugacy` (line 3374) | Untitled |
+| Proposition | `saut:fs:prop:which-F` (line 3431) | Untitled |
+| Corollary | `saut:fs:cor:finite-Gaussian` (line 3454) | Untitled |
+| Lemma | `saut:fs:lem:discrete` (line 3484) | Untitled |
+| Theorem | `saut:fs:thm:ip` (line 3496) | Exact integer-part criterion |
+| Theorem | `saut:fs:thm:No-criterion` (line 3540) | Standard-form criterion |
+| Corollary | `saut:fs:cor:standard-conj` (line 3573) | Standard conjugacy in the full plain field group |
+| Proposition | `saut:fs:prop:residue` (line 3594) | Untitled |
+| Lemma | `saut:fs:lem:coefficient-family` (line 3618) | Untitled |
+| Theorem | `saut:fs:thm:large-family` (line 3653) | Large nonconjugate family |
+| Proposition | `saut:gr:prop:ctcov` (line 4589) | Constant-term covariance |
+| Theorem | `saut:gr:thm:inverse` (line 4623) | Formal inversion; established input |
+| Corollary | `saut:gr:cor:arithinverse` (line 4659) | An arithmetic inverse |
+| Theorem | `saut:gr:thm:orbit` (line 4696) | Arithmetic orbit-product descent |
+| Corollary | `saut:gr:cor:faithful` (line 4777) | Faithfulness on coefficients |
+| Corollary | `saut:gr:cor:fixed` (line 4803) | A finite-action descent principle |
+| Proposition | `saut:gr:prop:leading` (line 4829) | The leading character and a coherent Hilbert~90 solution |
+| Corollary | `saut:gr:cor:fixedcoeff` (line 4910) | Classification with coefficients fixed |
+| Proposition | `saut:gr:prop:split` (line 4928) | Real closedness directly, and the Gaussian splitting |
+| Corollary | `saut:gr:cor:ip` (line 4960) | Exact integer-part criterion, three forms |
+| Corollary | `saut:gr:cor:standard` (line 5050) | Standard arithmetic form criterion |
+| Proposition | `saut:gr:prop:finite` (line 5100) | Uniform finite quotients |
+| Proposition | `saut:gr:prop:dio` (line 5117) | Ordinary polynomial solvability is unchanged |
+| Proposition | `saut:gr:prop:phase` (line 5168) | A phase-twisted real form |
+| Proposition | `saut:prop:conjugacycriterion` (line 5651) | Untitled |
 
 ### euclidean-three-space
 
@@ -6329,53 +6374,68 @@ review and formalization remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `hgeo:lem:support` (line 447) | Hahn--Neumann support calculus \src{06} |
-| Proposition | `hgeo:prop:inner` (line 566) | Positive-definite Hahn extension \src{03, 06} |
-| Theorem | `hgeo:thm:complete` (line 612) | Spherical completeness of the coefficient space \src{03, 06} |
-| Proposition | `hgeo:prop:c00` (line 643) | A first nonprojectable complete subspace \src{06} |
-| Proposition | `hgeo:prop:finite` (line 672) | \src{03} |
-| Proposition | `hgeo:prop:coordinates` (line 704) | Admissible surcomplex coordinate arrays \src{03, 06} |
-| Proposition | `hgeo:prop:badfunctional` (line 782) | Even strict contractions need not be representable \src{06} |
-| Theorem | `hgeo:thm:norm` (line 818) | Least field-valued bound; repository theorem \src{06} |
-| Lemma | `hgeo:lem:baire` (line 878) | A Baire support lemma \src{06} |
-| Theorem | `hgeo:thm:adjoint` (line 892) | Automatic adjoint structure; repository input \src{03, 06} |
-| Corollary | `hgeo:cor:vop` (line 929) | Valuation and automatic boundedness \src{03, 06} |
-| Proposition | `hgeo:prop:projection` (line 1006) | Projection and best approximation \src{03} |
-| Lemma | `hgeo:lem:integralproj` (line 1046) | Integral projections \src{03, 06} |
-| Corollary | `hgeo:cor:residue` (line 1072) | Closed-residue obstruction \src{03, 06} |
-| Theorem | `hgeo:thm:normalform` (line 1092) | Residue normal form \src{03, 06} |
-| Corollary | `hgeo:cor:graphchart` (line 1141) | The positive-order graph chart \src{03, 06} |
-| Proposition | `hgeo:prop:closedresidue` (line 1178) | Closed residue is not sufficient \src{06}, completed \mergetag |
-| Corollary | `hgeo:cor:orbits` (line 1222) | Unitary orbit classification \src{06} |
-| Theorem | `hgeo:thm:unitary` (line 1238) | A split unitary group and its infinitesimal logarithm \src{06} |
-| Theorem | `hgeo:thm:finite` (line 1275) | Finite orthogonal decompositions straighten simultaneously \src{06} |
-| Proposition | `hgeo:prop:graphcriterion` (line 1310) | General adjointable graph criterion \src{03} |
-| Lemma | `hgeo:lem:finitegraph` (line 1341) | Graphs of integral operators split \src{03, 06} |
-| Theorem | `hgeo:thm:threshold` (line 1357) | Exact amplification threshold \src{03} |
-| Corollary | `hgeo:cor:norepair` (line 1457) | Enlarging the scale group cannot repair this graph \src{03} |
-| Theorem | `hgeo:thm:unboundedgraph` (line 1485) | Exact infinitesimal-graph criterion \src{06} |
-| Corollary | `hgeo:cor:best` (line 1545) | Explicit absence of best approximation \src{06} |
-| Proposition | `hgeo:prop:distancecut` (line 1564) | Exact lower cut of the distances \src{06} |
-| Theorem | `hgeo:thm:relation` (line 1620) | Scaled closed relations \mergetag |
-| Corollary | `hgeo:cor:bothgraphs` (line 1673) | Both graph theorems \mergetag |
-| Proposition | `hgeo:prop:poset` (line 1716) | Orthomodular poset structure \src{03} |
-| Theorem | `hgeo:thm:lattice` (line 1745) | Exact finite-dimensional/lattice dichotomy \src{03}; one direction also \src{06} |
-| Theorem | `hgeo:thm:positivekernel` (line 1834) | An adjointable positive operator with a noncomplemented kernel \src{06} |
-| Theorem | `hgeo:thm:nojoin` (line 1886) | No countable orthogonal join at one scale \src{06} |
-| Corollary | `hgeo:cor:nosimultaneous` (line 1912) | Finite straightening has no countable analogue \src{06} |
-| Proposition | `hgeo:prop:incoherent` (line 1936) | Incoherent supports prevent simultaneous conjugation \src{06} |
-| Theorem | `hgeo:thm:metric` (line 1989) | Exact isometric rigidity threshold \src{06} |
-| Corollary | `hgeo:cor:coercivemetric` (line 2045) | Coercive equivalent norms need not be isometric \src{06} |
-| Theorem | `hgeo:thm:schur` (line 2114) | Exact finite-defect reduction \src{03} |
-| Theorem | `hgeo:thm:MP` (line 2209) | Fredholm-residue least-squares theorem \src{03} |
-| Corollary | `hgeo:cor:LS` (line 2277) | All least-squares and minimum-norm solutions \src{03} |
-| Lemma | `hgeo:lem:smith` (line 2317) | Finite diagonal reduction over the valuation ring \src{03}; = \replabel{thm:scales} |
-| Theorem | `hgeo:thm:scale` (line 2371) | Exact finite-defect amplification \src{03} |
-| Corollary | `hgeo:cor:finiteinverse` (line 2458) | Exactly when the inverse stays finite \src{03} |
-| Proposition | `hgeo:prop:extension` (line 2523) | Coherence of the constructive results \src{03, 06} |
-| Theorem | `hgeo:thm:class` (line 2587) | Class extension and set support of adjoints \src{03, 06} |
-| Corollary | `hgeo:cor:globalgeometry` (line 2664) | Global geometric classification and persistent defects \src{06} |
-| Proposition | `hgeo:prop:globalnets` (line 2707) | Set-sized discreteness in the fine topology \src{03, 06} |
+| Lemma | `hgeo:lem:support` (line 477) | Hahn--Neumann support calculus \src{06} |
+| Proposition | `hgeo:prop:inner` (line 596) | Positive-definite Hahn extension \src{03, 06} |
+| Theorem | `hgeo:thm:complete` (line 642) | Spherical completeness of the coefficient space \src{03, 06} |
+| Proposition | `hgeo:prop:c00` (line 673) | A first nonprojectable complete subspace \src{06} |
+| Proposition | `hgeo:prop:finite` (line 702) | \src{03} |
+| Proposition | `hgeo:prop:coordinates` (line 734) | Admissible surcomplex coordinate arrays \src{03, 06} |
+| Proposition | `hgeo:prop:badfunctional` (line 812) | Even strict contractions need not be representable \src{06} |
+| Theorem | `hgeo:thm:norm` (line 848) | Least field-valued bound; repository theorem \src{06} |
+| Lemma | `hgeo:lem:baire` (line 908) | A Baire support lemma \src{06} |
+| Theorem | `hgeo:thm:adjoint` (line 922) | Automatic adjoint structure; repository input \src{03, 06} |
+| Corollary | `hgeo:cor:vop` (line 959) | Valuation and automatic boundedness \src{03, 06} |
+| Proposition | `hgeo:prop:projection` (line 1036) | Projection and best approximation \src{03} |
+| Lemma | `hgeo:lem:integralproj` (line 1076) | Integral projections \src{03, 06} |
+| Corollary | `hgeo:cor:residue` (line 1102) | Closed-residue obstruction \src{03, 06} |
+| Theorem | `hgeo:thm:normalform` (line 1122) | Residue normal form \src{03, 06} |
+| Corollary | `hgeo:cor:graphchart` (line 1171) | The positive-order graph chart \src{03, 06} |
+| Proposition | `hgeo:prop:closedresidue` (line 1208) | Closed residue is not sufficient \src{06}, completed \mergetag |
+| Corollary | `hgeo:cor:orbits` (line 1252) | Unitary orbit classification \src{06} |
+| Theorem | `hgeo:thm:unitary` (line 1268) | A split unitary group and its infinitesimal logarithm \src{06} |
+| Theorem | `hgeo:thm:finite` (line 1305) | Finite orthogonal decompositions straighten simultaneously \src{06} |
+| Proposition | `hgeo:prop:graphcriterion` (line 1342) | General adjointable graph criterion \src{03} |
+| Lemma | `hgeo:lem:finitegraph` (line 1373) | Graphs of integral operators split \src{03, 06} |
+| Theorem | `hgeo:thm:threshold` (line 1389) | Exact amplification threshold \src{03} |
+| Corollary | `hgeo:cor:norepair` (line 1489) | Enlarging the scale group cannot repair this graph \src{03} |
+| Theorem | `hgeo:thm:unboundedgraph` (line 1517) | Exact infinitesimal-graph criterion \src{06} |
+| Corollary | `hgeo:cor:best` (line 1577) | Explicit absence of best approximation \src{06} |
+| Proposition | `hgeo:prop:distancecut` (line 1596) | Exact lower cut of the distances \src{06} |
+| Theorem | `hgeo:thm:relation` (line 1652) | Scaled closed relations \mergetag |
+| Corollary | `hgeo:cor:bothgraphs` (line 1705) | Both graph theorems \mergetag |
+| Proposition | `hgeo:prop:poset` (line 1748) | Orthomodular poset structure \src{03} |
+| Theorem | `hgeo:thm:lattice` (line 1777) | Exact finite-dimensional/lattice dichotomy \src{03}; one direction also \src{06} |
+| Theorem | `hgeo:thm:positivekernel` (line 1866) | An adjointable positive operator with a noncomplemented kernel \src{06} |
+| Theorem | `hgeo:thm:nojoin` (line 1918) | No countable orthogonal join at one scale \src{06} |
+| Corollary | `hgeo:cor:nosimultaneous` (line 1944) | Finite straightening has no countable analogue \src{06} |
+| Proposition | `hgeo:prop:incoherent` (line 1968) | Incoherent supports prevent simultaneous conjugation \src{06} |
+| Theorem | `hgeo:thm:metric` (line 2026) | Exact isometric rigidity threshold \src{06} |
+| Corollary | `hgeo:cor:coercivemetric` (line 2082) | Coercive equivalent norms need not be isometric \src{06} |
+| Theorem | `hgeo:thm:schur` (line 2151) | Exact finite-defect reduction \src{03} |
+| Theorem | `hgeo:thm:MP` (line 2246) | Fredholm-residue least-squares theorem \src{03} |
+| Corollary | `hgeo:cor:LS` (line 2314) | All least-squares and minimum-norm solutions \src{03} |
+| Lemma | `hgeo:lem:smith` (line 2354) | Finite diagonal reduction over the valuation ring \src{03}; = \replabel{thm:scales} |
+| Theorem | `hgeo:thm:scale` (line 2408) | Exact finite-defect amplification \src{03} |
+| Corollary | `hgeo:cor:finiteinverse` (line 2495) | Exactly when the inverse stays finite \src{03} |
+| Proposition | `hgeo:prop:extension` (line 2560) | Coherence of the constructive results \src{03, 06} |
+| Theorem | `hgeo:thm:class` (line 2624) | Class extension and set support of adjoints \src{03, 06} |
+| Corollary | `hgeo:cor:globalgeometry` (line 2701) | Global geometric classification and persistent defects \src{06} |
+| Proposition | `hgeo:prop:globalnets` (line 2744) | Set-sized discreteness in the fine topology \src{03, 06} |
+| Lemma | `hgeo:us:lem:integral` (line 3367) | Integral projections and unitaries \src{07}; see also \src{03, 06} |
+| Theorem | `hgeo:us:thm:main` (line 3463) | Exact simultaneous straightening \src{07} |
+| Corollary | `hgeo:us:cor:support` (line 3649) | No new scales \src{07} |
+| Corollary | `hgeo:us:cor:gauge` (line 3667) | Gauge classification \src{07} |
+| Corollary | `hgeo:us:cor:extension` (line 3684) | Scale enlargement cannot repair failure \src{07} |
+| Theorem | `hgeo:us:thm:jets` (line 3714) | Jetwise existence implies existence \src{07} |
+| Proposition | `hgeo:us:prop:first` (line 3748) | First-order equation \src{07} |
+| Theorem | `hgeo:us:thm:calculus` (line 3816) | Atomic calculus equivalence \src{07} |
+| Proposition | `hgeo:us:prop:joins` (line 3896) | Joins when the criterion holds \src{07} |
+| Proposition | `hgeo:us:prop:weighted` (line 3947) | Weighted reconstruction \src{07} |
+| Theorem | `hgeo:us:thm:uniform` (line 3984) | A uniformly controlled nonsynthesizable family \src{07} |
+| Theorem | `hgeo:us:thm:support` (line 4130) | Bounded columns with incoherent support \src{07} |
+| Corollary | `hgeo:us:cor:surreal` (line 4208) | Set-indexed surreal descent \src{07} |
+| Corollary | `hgeo:us:cor:classmaps` (line 4233) | Class unitaries \mergetag |
+| Theorem | `hgeo:us:thm:omnific` (line 4281) | Omnific matrix rigidity \src{07} |
 
 ### discrete-initial-subgroups-and-omnific-normalization
 
@@ -6745,35 +6805,63 @@ proof review and source reconciliation remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `isc:lem:avoid` (line 654) | A cut avoiding a set |
-| Lemma | `isc:lem:extend` (line 668) | Ordered one-point extension with avoidance |
-| Theorem | `isc:thm:group` (line 708) | Independent group copies over any set-sized base |
-| Corollary | `isc:cor:groupintersection` (line 762) | Untitled |
-| Theorem | `isc:thm:lift` (line 787) | Monomial lift |
-| Proposition | `isc:prop:arithmeticlift` (line 819) | What the lift remembers |
-| Proposition | `isc:prop:classification` (line 863) | Classification within the monomial-preserving class |
-| Lemma | `isc:lem:slice` (line 914) | Slice linearity and separation |
-| Lemma | `isc:lem:matrix` (line 929) | A finite separating matrix |
-| Theorem | `isc:thm:sliceddisjoint` (line 949) | Full Hahn fields are disjoint over their full intersection |
-| Corollary | `isc:cor:joint` (line 979) | Independence of any finite number of full Hahn fields |
-| Corollary | `isc:cor:relations` (line 999) | Polynomial-relation descent |
-| Corollary | `isc:cor:parameters` (line 1034) | Fixing every element of a prescribed set |
-| Theorem | `isc:thm:intersectionclassification` (line 1059) | Exact classification of set-sized intersections in this class |
-| Theorem | `isc:thm:boolean` (line 1094) | Boolean meet realization |
-| Corollary | `isc:cor:choices` (line 1127) | Independent choices and absence of new relations |
-| Lemma | `isc:lem:compression` (line 1165) | Compression of the surreal order |
-| Theorem | `isc:thm:explicit` (line 1220) | An explicit independent ordinal family |
-| Lemma | `isc:lem:iterated` (line 1270) | Re-expansion at separated scales |
-| Lemma | `isc:lem:finitecoeff` (line 1310) | Finite coefficient-field control |
-| Theorem | `isc:thm:joinobstruction` (line 1329) | A coefficient-transcendence obstruction |
-| Lemma | `isc:lem:denominator` (line 1425) | Common denominators for a set of surreals |
-| Proposition | `isc:prop:uniform` (line 1450) | Separate uniform denominators, no shared uniform one |
-| Proposition | `isc:prop:boundedfrac` (line 1506) | Identification of the fraction fields |
-| Lemma | `isc:lem:gapscale` (line 1548) | Cofinal sequences with polynomial gaps |
-| Theorem | `isc:thm:cofinalgap` (line 1585) | One transcendental series over all bounded-support fractions |
-| Corollary | `isc:cor:factorial` (line 1640) | The factorial witness |
-| Corollary | `isc:cor:noshareddenom` (line 1675) | Failure witnessed by the denominator equation |
-| Theorem | `isc:thm:setversion` (line 1712) | Independent embeddings in a saturated ordered group |
+| Lemma | `isc:lem:avoid` (line 675) | A cut avoiding a set |
+| Lemma | `isc:lem:extend` (line 689) | Ordered one-point extension with avoidance |
+| Theorem | `isc:thm:group` (line 729) | Independent group copies over any set-sized base |
+| Corollary | `isc:cor:groupintersection` (line 783) | Untitled |
+| Theorem | `isc:thm:lift` (line 808) | Monomial lift |
+| Proposition | `isc:prop:arithmeticlift` (line 840) | What the lift remembers |
+| Proposition | `isc:prop:classification` (line 884) | Classification within the monomial-preserving class |
+| Lemma | `isc:lem:slice` (line 935) | Slice linearity and separation |
+| Lemma | `isc:lem:matrix` (line 950) | A finite separating matrix |
+| Theorem | `isc:thm:sliceddisjoint` (line 970) | Full Hahn fields are disjoint over their full intersection |
+| Corollary | `isc:cor:joint` (line 1000) | Independence of any finite number of full Hahn fields |
+| Corollary | `isc:cor:relations` (line 1020) | Polynomial-relation descent |
+| Corollary | `isc:cor:parameters` (line 1055) | Fixing every element of a prescribed set |
+| Theorem | `isc:thm:intersectionclassification` (line 1091) | Exact classification of set-sized intersections in this class |
+| Theorem | `isc:thm:boolean` (line 1126) | Boolean meet realization |
+| Corollary | `isc:cor:choices` (line 1159) | Independent choices and absence of new relations |
+| Lemma | `isc:lem:compression` (line 1197) | Compression of the surreal order |
+| Theorem | `isc:thm:explicit` (line 1252) | An explicit independent ordinal family |
+| Lemma | `isc:lem:iterated` (line 1302) | Re-expansion at separated scales |
+| Lemma | `isc:lem:finitecoeff` (line 1342) | Finite coefficient-field control |
+| Theorem | `isc:thm:joinobstruction` (line 1366) | A coefficient-transcendence obstruction |
+| Lemma | `isc:lem:denominator` (line 1471) | Common denominators for a set of surreals |
+| Proposition | `isc:prop:uniform` (line 1496) | Separate uniform denominators, no shared uniform one |
+| Proposition | `isc:prop:boundedfrac` (line 1552) | Identification of the fraction fields |
+| Lemma | `isc:lem:gapscale` (line 1594) | Cofinal sequences with polynomial gaps |
+| Theorem | `isc:thm:cofinalgap` (line 1631) | One transcendental series over all bounded-support fractions |
+| Corollary | `isc:cor:factorial` (line 1686) | The factorial witness |
+| Corollary | `isc:cor:noshareddenom` (line 1721) | Failure witnessed by the denominator equation |
+| Theorem | `isc:thm:setversion` (line 1758) | Independent embeddings in a saturated ordered group |
+| Lemma | `isc:cp:lem:derivation` (line 2659) | Untitled |
+| Lemma | `isc:cp:lem:cfg` (line 2712) | Untitled |
+| Theorem | `isc:cp:thm:rank` (line 2744) | Finite rank and finite-rank denominators |
+| Corollary | `isc:cp:cor:finitecoeff` (line 2810) | Finite coefficient extensions |
+| Lemma | `isc:cp:lem:coeffld` (line 2836) | Coefficient extension |
+| Lemma | `isc:cp:lem:basechange` (line 2847) | Intermediate base change |
+| Lemma | `isc:cp:lem:coset` (line 2868) | Coset slices |
+| Corollary | `isc:cp:cor:transfer` (line 2901) | Independence survives both enlargements |
+| Theorem | `isc:cp:thm:lacunary` (line 2941) | Rapid coefficient-degree independence |
+| Corollary | `isc:cp:cor:continuum` (line 3057) | A continuum family in one coefficient field |
+| Corollary | `isc:cp:cor:fginsufficient` (line 3074) | Failure of the finite coefficient-field criterion |
+| Lemma | `isc:cp:lem:partial` (line 3125) | Avoiding a finitely generated coefficient field |
+| Theorem | `isc:cp:thm:generic` (line 3158) | Private coefficient blocks |
+| Corollary | `isc:cp:cor:tree` (line 3219) | Tree amplification |
+| Proposition | `isc:cp:prop:local` (line 3239) | Set-local form |
+| Corollary | `isc:cp:cor:sandwich` (line 3263) | Three distinct closure levels |
+| Theorem | `isc:cp:thm:cardinal` (line 3282) | Maximal Laurent transcendence |
+| Corollary | `isc:cp:cor:classicalexamples` (line 3326) | Untitled |
+| Corollary | `isc:cp:cor:surrealrank` (line 3428) | The exact test for these copies |
+| Theorem | `isc:cp:thm:omnific` (line 3497) | Explicit omnific differential freedom |
+| Corollary | `isc:cp:cor:threshold` (line 3562) | Countable support is the sharp cardinal threshold |
+| Lemma | `isc:cp:lem:localizeP` (line 3601) | Coefficient localization for a parameter set |
+| Lemma | `isc:cp:lem:tailcoeff` (line 3637) | A tail is independent over the localized coefficient field |
+| Theorem | `isc:cp:thm:resilience` (line 3668) | Set-parameter tail resilience |
+| Corollary | `isc:cp:cor:nosetgen` (line 3703) | No set-sized algebraic or differential generation |
+| Lemma | `isc:cp:lem:clearing` (line 3741) | Monomial denominator clearing |
+| Theorem | `isc:cp:thm:arithmetic` (line 3771) | Arithmetic failure cannot be repaired by a set |
+| Theorem | `isc:cp:thm:complex` (line 3822) | Surcomplex independence and Gaussian witnesses |
 
 ### exponential-relations-over-omnific-integers
 

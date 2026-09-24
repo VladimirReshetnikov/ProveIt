@@ -1,13 +1,14 @@
 # Surcomplex Dynamics: Linearization Thresholds, Periods, and Normal Forms
 
-**A merged research report** built from ten manuscripts: sources 01–07, dated
-21 September 2026, and sources 08–10, dated 22 September 2026. Everything in
-this directory other than `article.tex`, `article.pdf` and this README is
-preserved source material.
+**A merged research report** built from eleven manuscripts: sources 01–07,
+dated 21 September 2026; sources 08–10, dated 22 September 2026; and source
+11 (batch 34, manuscript 08), dated September 2026 and pinned to a commit of
+23 September 2026. Everything in this directory other than `article.tex`,
+`article.pdf` and this README is preserved source material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 172 pages
+article.pdf   the compiled report, 194 pages
 README.md     this guide
 08-exact-and-drifting-multipliers-SOURCE_AUDIT.md
               source 08's own source-and-claim audit, as delivered
@@ -15,22 +16,39 @@ README.md     this guide
               source 09's own provenance and scope note, as delivered
 10-nonscalar-common-domain-SOURCES.md
               source 10's own source and provenance ledger, as delivered
-code/         the ten source verification programs, and the build helpers
-              of sources 01, 03, 04, 05, 06, 08 and 09, unmodified
+11-resonant-dynamics-PROOF_AUDIT.md
+              source 11's own proof-obligation record, as delivered
+11-resonant-dynamics-SOURCE_AUDIT.md
+              source 11's own source and novelty audit, as delivered
+code/         the eleven source verification programs, and the build helpers
+              of sources 01, 03, 04, 05, 06, 08, 09 and 11, unmodified
 data/         the recorded verification, environment and build records of
-              the ten sources, unmodified
+              the eleven sources, unmodified
 ```
+
+Source 11's files are `code/11-resonant-dynamics-verify.py`,
+`code/11-resonant-dynamics-build.sh`, `code/11-resonant-dynamics-build.ps1`,
+`data/11-resonant-dynamics-BUILD_REPORT.json`,
+`data/11-resonant-dynamics-requirements.txt`,
+`data/11-resonant-dynamics-verification.json` and
+`data/11-resonant-dynamics-verification.txt`, with the two audits above.
 
 Every label in `article.tex` carries the prefix `dyn:`. Material added from
 sources 08 and 09 carries a sub-prefix: `dyn:esm:` (the exact scalar
 multiplier, §7), `dyn:tree:` (source 09's forward plane-tree route, §7.4)
 and `dyn:cyc:` (the single cyclic exponent, §8.6). Material added from
 source 10 carries the sub-prefix `dyn:nsc:` (the nonscalar diagonal
-multiplier, §§7.7–7.13, and its non-claims, §26.10). **No existing label was
-renamed or removed.** The report had 540 labels before sources 08 and 09
-were added, 610 before source 10 was added, and has 651 now; all 610 are
-still present. `docs/FORMALIZATION.md` cites existing `dyn:` labels only.
-Its statement index records source line numbers, which have moved.
+multiplier, §§7.7–7.13, and its non-claims, §26.10). Material added from
+source 11 carries the sub-prefix `dyn:rd:` (rotation-equivariant maps,
+§§9.5–9.13, Questions 25.12–25.22, and its non-claims, §26.11). **No
+existing label was renamed or removed.** The report had 540 labels before
+sources 08 and 09 were added, 610 before source 10 was added, 651 before
+source 11 was added, and has 737 now (86 `dyn:rd:` labels added). All 651
+are still present, and a build comparison of the `.aux` files shows every
+one with the same number as before: source 11's material was appended at
+the ends of §9, §25 and §26, so no existing theorem, equation, section or
+question number moved. `docs/FORMALIZATION.md` cites existing `dyn:` labels
+only. Its statement index records source line numbers, which have moved.
 
 The two shipped notes of sources 08 and 09 describe this report as it stood
 at their pin `a3124af`. The labels they cite (`dyn:q:commongerm`,
@@ -61,26 +79,42 @@ are `code/10-nonscalar-common-domain-verify.py` and
 article, PDF, README and checksum manifest are not shipped; the manifest's
 six entries were checked against the delivered files before it was dropped.
 
+Source 11's shipped audits describe the delivered package at its pin
+`9ee2dac`. At that commit `article.tex` here was byte-identical to its state
+just before source 11 was added, but source 11 did not read this report: its
+audit lists the catalogue READMEs, `docs/NOTATION.md`,
+`docs/surcomplex/analysis/README.md` and the omnific-quotient README. Its
+statement that its combined formulation was not found in the sources it
+checked is therefore accurate for those sources and stale against this
+report, which already had the exact finite-return ball and shell theorem
+(see below). The audits name the delivered files `article.tex`,
+`article.pdf`, `verify.py`, `verification.json`, `verification.txt`,
+`BUILD_REPORT.json`, `build.sh` and `build.ps1`; here the code and data are
+the prefixed `11-resonant-dynamics-*` files listed above, and the
+manuscript, its PDF and its README are **not shipped** (re-extract them
+from commit `a4611ad`, archive `Surreal_Resonant_Dynamics.zip`, if needed).
+
 ## What the report is
 
-Ten independently written manuscripts developed local and global dynamics
+Eleven independently written manuscripts developed local and global dynamics
 over complex Hahn fields `K = C((t^Gamma))` realized inside `No[i]`, with
 `Gamma` a set-sized ordered abelian group of **arbitrary valuation rank**.
 Sources 01–06 were written against the pinned repository snapshot
 `39f2be6667ade51bca2b45daa47e289d69c09764`, source 07 against
 `aa846271b4dcae2c055b216126a87210292ec19b`, sources 08 and 09 against
-`a3124af79f66b8b9c196d76b4cbc5ac3938907c4`, and source 10 against
-`048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`. This report is their **union**,
+`a3124af79f66b8b9c196d76b4cbc5ac3938907c4`, source 10 against
+`048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`, and source 11 against
+`9ee2dac0d234c90415f6b7290cbe5b4dcf4a4d3e`. This report is their **union**,
 not a selection from them.
 
 They share one body of machinery: the set-sized workspace; strong
 summability by well-ordered support plus local finiteness; Neumann's
 positive-support lemma in finite-word form; halo evaluation by
 coefficientwise double Taylor sums; and Taylor substitution with its
-near-identity inverse. Each of the ten states that machinery from scratch.
-Between 45 and 55 per cent of the combined text of sources 01–06 was the
-same theory, and sources 07–10 restate the same foundation again.
-The support lemma appears in all ten.
+near-identity inverse. Each of the eleven states that machinery from
+scratch. Between 45 and 55 per cent of the combined text of sources 01–06
+was the same theory, and sources 07–11 restate the same foundation again.
+The support lemma appears in all eleven.
 
 **Two halves, not ten treatments of one thing.** Sources 01–06 are
 germ and fixed-point dynamics — multipliers, return iterates, periods, a
@@ -116,6 +150,28 @@ universal radius is `R` at every angular rank. Only the optimal radius for
 25.1). Source 10 read this report after sources 08 and 09 were merged and
 cites their scalar theorem rather than claiming it.
 
+Source 11 also belongs to the germ half and was integrated last, as
+§§9.5–9.13, at the end of §9. It treats polynomials
+`f(z) = (zeta + e) z + sum_j a_{1+jq} z^{1+jq}` that commute with a rotation
+of order `q`, with `zeta` a primitive `q`-th root of unity and `v(e) > 0`:
+a `RES_q` family. For them it reads the exact maximal ball
+`v(z) > max_j (v(e) - v(a_{1+jq}))/(jq)` off the map's **own**
+coefficients instead of its `q`-th return. Proposition 9.24 (added in the
+merge) proves that this is the threshold of Theorem 9.5 and that the shell
+polynomial of Theorem 9.7 is `P(X) = R(X^q)`, so that part is an independent
+re-derivation, printed once. What is new to the report: every other period
+is excluded from the closed ball (Proposition 9.23); the reduced linearizer
+is algebraic iff `R` is squarefree with rational residues
+`1/(q beta R'(beta))`, and failure certifies that the full linearizer is
+transcendental (Theorems 9.27, 9.31), for Hahn-valued data; the
+infinitesimal periodic points of integral equivariant maps are exactly the
+rotation points (Theorem 9.42); finite families of periodic shells can be
+prescribed (Theorem 9.44); and reciprocal rational maps have prescribed
+Gaussian omnific periodic points such as `omega`, `-omega`, `omega^omega`,
+`-omega^omega` (Theorem 9.45, Example 9.47). It contradicts no earlier
+source. In one subcase its one-way certificate is superseded by the
+parabolic dichotomy (Remark 9.34).
+
 ## Read Section 2 first: the notion table
 
 Five **inequivalent** conditions travelled under the single word
@@ -128,6 +184,12 @@ threshold statement in the report names which variant its hypothesis uses
 and in which coefficient category it holds. Section 2.5 is a
 theorem-by-theorem tag ledger. Sources 08, 09 and 10 introduce no new
 notion; their statements are tagged `NR`, `SD_ex` (§7) and `SD_dr` (§8.6).
+Source 11 introduces none either. Its statements are tagged `RES_q`, with
+`q` the rotation order, and `SD_0`; Theorem 9.42 also allows the
+multiplier to equal `zeta` exactly, the finite-order case. For `q = 1` its
+maps satisfy `RES_1` and their normalization has the `PAR` shape; Warning
+9.13 explains why that does not violate the rule that the exact ball is
+never quoted under `PAR` alone.
 Source 10 adds an arithmetic invariant of an exact multiplier, the rational
 angular rank `r_ang = dim_Q span_Q(1, theta_1, ..., theta_d) - 1`. It is
 written `r_ang`, not source 10's `r`, because `r` already names the
@@ -197,6 +259,7 @@ exponent and reverses its threshold inequality; ordinary estimates are unchanged
 | `07-small-divisor-resonance-flag` | **The whole quasi-periodic half (§§17–19).** The headline: a frequency vector with `d` surreal components has **at most `d`** arithmetically visible divisor valuations, identified by a canonical descending flag of saturated integer resonance lattices whose ranks strictly drop, together with one explicitly constructed well-ordered set `T_Upsilon` containing the support of *every* reciprocal nonzero divisor (Theorem 17.5); the exact arithmetic criterion `SD_ss`, necessary **and** sufficient for universal solvability of the cohomological equation in a Hahn algebra all of whose coefficients are holomorphic on **one fixed** torus strip (Theorem 18.3), with the valuation loss `kappa_Upsilon` shown attained; the arbitrary-order lifting obstruction — for every `N` an entire forcing whose first `N+1` solution coefficients are analytic while the next is not even a distribution, with robustness under enlarging the value group *argued* from uniqueness of the modewise Hahn inverse rather than assumed (Theorem 18.7); the unique normalized infinitesimal mean-zero conjugacy to a constant vector field with a frequency correction, proved by **marked support words** and exact coefficient stabilization rather than by sequential valuation convergence (Theorem 19.1); necessity of the arithmetic condition even for arbitrarily high-valuation perturbations (Theorem 19.4) and a boundary example at valuation exactly `kappa_Upsilon` with an everywhere-positive slow speed (Proposition 19.6); and the canonical invariant density with its uniqueness (Theorem 19.8). Plus the arithmetic-free valuation bound (Proposition 17.9), which needs no divisor estimate of any kind |
 | `08-exact-and-drifting-multipliers` | **Base of the 08+09 merge** (weaker hypotheses: every dimension `d`; it also carries the drifted theorem). *Exact and Drifting Multipliers in Surcomplex Dynamics*. The sharp common domain for an exact **scalar** multiplier `lambda I_d` in every dimension: all coefficients of the normalized conjugacy and its inverse are holomorphic on the one polydisk of radius `R exp(-tau)`, which is optimal (Theorem 7.13, with the strict degree chains of Lemma 7.9 and the depth-uniform estimate of Proposition 7.11); the unequal-radius rescaling `R_j exp(-tau)`; the sixth-category row (Corollary 7.14); the **single-cyclic-exponent collapse** over `Z`: for `(lambda+t)z + t z^2/(1-z/R)` the coefficient of `t^m` has radius exactly `R exp(-m sigma)` (Theorem 8.15), by the collision noncancellation at convergent denominators (Proposition 8.14) and the pole-multiplicity lemma (Lemma 8.11); the fixed-group criterion `CD iff sigma=0` over any fixed nonzero `Gamma` (Corollary 8.17); one positive Hahn coefficient suffices (Corollary 8.18); the `tau = log 2` comparison `R/2` against `R/2^m` (Example 8.19); the nonscalar-boundary analysis (§7.6); the SymPy suite with the cyclic fold test; `SOURCE_AUDIT.md` |
 | `09-single-loss-linearization` | *A Single-Loss Theorem for Exact-Multiplier Surcomplex Linearization*, one variable. The **tree product bound** `prod 1/|lambda^{s_v}-1| <= (C_a n)^m e^{a n}` for positively weighted forests, with the cluster threshold `1/(4n)` (Theorem 7.5). Source 08's strict-chain bound, whose polynomial factor is `n^{3r}`, becomes the chain case of this bound (Corollary 7.6(i)) and is credited there; the forward plane-tree route, **kept as route D** (§7.4: Proposition 7.17, Lemma 7.18, Proposition 7.19), which is a second proof of Theorem 7.13 for `d = 1`; several formal parameters (Corollary 7.20); the lex `Z^2` example (Example 7.21); the hypothesis-use audit (Table 5); its limitations; `repository_scope.md` |
+| `11-resonant-dynamics` | *Sharp Linearization at Surreal Scales: Hahn summability, resonant periodic cycles, transcendental conjugacies, and omnific rational maps* (23 pp., batch 34 manuscript 08, archive `Surreal_Resonant_Dynamics`, pin `9ee2dac`; §§9.5–9.13, Questions 25.12–25.22, §26.11). For `RES_q` polynomials commuting with a rotation of order `q`: the threshold `r_eq` read off the map's own coefficients, with a direct support-controlled linearization that composes no iterate (Theorem 9.20, a second route beside Lemma 9.3); the iterate-quotient lemma (Lemma 9.22) and the exclusion of all other periods from the closed ball (Proposition 9.23); the shell count and maximality (Theorem 9.25, printed once with Theorems 9.5 and 9.7); the boundary equation `X R(X^q) H' = H` by a formal Taylor route (Theorem 9.27, printed once with (10.4)); the boundary recurrence (Corollary 9.29); the norm obstruction and the exact algebraicity criterion with its one-way transcendence certificate (Lemma 9.30, Theorem 9.31); the local-finiteness counterexample (Example 9.18); five examples including the real quintic `(-1 + t^{4 eta}) z - 2 t^{2 eta} z^3 + z^5` (Examples 9.35–9.40); stability of the boundary data (Proposition 9.41); infinitesimal periods of integral equivariant maps (Theorem 9.42); prescribed shells and omnific reciprocal maps with the two-scale example (Theorems 9.44, 9.45, Example 9.47); class-level transfer (Proposition 9.48); the finite certificate (Proposition 9.49); eleven questions; the SymPy suite; `SOURCE_AUDIT.md`, `PROOF_AUDIT.md` |
 | `10-nonscalar-common-domain` | *Common-Domain Linearization over Surcomplex Hahn Fields: a rational-rank bound for nonscalar multipliers* (§§7.7–7.13, §26.10). The nonscalar common domain: for an exact diagonal unitary nonresonant `Lambda` with `tau < infinity`, all coefficients of the normalized conjugacy and its inverse are holomorphic on the polydisk of radius `R exp(-r_ang tau)`, over every nonzero `Gamma`, with arbitrary well-ordered positive support (Theorem 7.23); the integer-minor lemma that at most `q` distinct positive exponential rates occur for a linear form in `q` variables along linearly growing integer vectors (Lemma 7.24, Corollary 7.25); marked-block contraction of colored trees, which keeps each block's divisor inside the nonlinear cone (Lemma 7.26); the product bound `limsup n^{-1} log A^Lambda_m(n) <= min(r_ang, m) tau` at fixed complexity (Theorem 7.27), with equality `tau` in rank one (Corollary 7.28); route D in several variables by colored trees, with a polynomial diagram count that has no factor `d^{n+1}` (Proposition 7.30, Lemma 7.31); the input-relative radius `R_gamma exp(-min(r_ang, ell_S(gamma)) tau)`, which improves Theorem 6.9 (Corollary 7.32); rectangular polydisks and joint holomorphy in ordinary parameters (Corollary 7.33); the exact criterion `tau < infinity` and `R exp(-r_ang tau) <= R_univ <= R exp(-tau)`, sharp for `r_ang = 1` and with `R_univ = R` at `tau = 0` in every angular rank; only the optimum for `r_ang >= 2` and `0 < tau < infinity` remains open (Theorem 7.34); the two-mode example `diag(lambda^2, lambda^3)` for an irrational rotation `lambda`, with `tau = 3 tau(lambda)` and any prescribed loss factor (Proposition 7.35); a rank-two zero-loss example (Example 7.36); the exact standard-library suite; `SOURCES.md` |
 
 Sources 08 and 09 are each written in their own convention, and the merge
@@ -205,6 +268,102 @@ had to choose between them. Source 08 uses the report's convention
 `F o H = H o (lambda .)`, so its `H` is this report's `H^{-1}`, written
 `check H` here. Every formula of source 09 was translated; for example its
 sharp first coefficient is `check h_eta = -h_eta` (Convention 7.1(iii)).
+
+## Source 11 (batch 34, manuscript 08)
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| `Surreal_Resonant_Dynamics` (inner directory `surreal_resonant_dynamics`), *Sharp Linearization at Surreal Scales*, 23 pages, "Research manuscript prepared with ChatGPT" | `9ee2dac0d234c90415f6b7290cbe5b4dcf4a4d3e` | §§9.5–9.13 (Convention 9.12 through Proposition 9.49), Questions 25.12–25.22, non-claims N126–N149 (§26.11), rows in the tag ledger (§2.5), the suite table (§24.1), item (10) of §24.2, and Appendices E–G |
+
+**Placement.** Appended as seven subsections at the end of §9, the
+finite-return section whose `RES_q` hypothesis it shares, so that every
+existing number is unchanged. The questions follow the existing ones at the
+end of §25 (under an unnumbered heading) and the non-claims close §26.
+
+**Renamed symbols** (Convention 9.12; source 11's symbol first, no
+normalization changes): rotation order `m -> q`; displacement `d -> e`
+(`lambda = zeta + e`); coefficient `a_j -> a_{1+jq}` and term count
+`r -> J`; threshold exponent `rho -> r_eq`; monomial `s = t^rho -> rho`;
+normalized coefficients `u_j -> hat a_j`; unreduced polynomial
+`P(U) -> hat R(U)` (this report's `P` is the *reduced* shell polynomial in
+`X`, and `P(X) = R(X^q)`); `R` kept, coefficients `kappa_j`; variable
+`y -> X`; `h -> H_r`, `B_n -> h_n`, `b_n -> h_n rho^{n-1}`; reduction
+`h_0 -> bar H_r`; `B(U) -> frak h(U)`; roots `r -> beta` and residues
+`alpha_r -> frak r_beta = 1/(q beta R'(beta))`; `q_k -> phi_k`;
+`T_n -> Q_n` (calligraphic), `D_psi -> D_psi` (calligraphic), ring
+`A -> sans A`, `mu -> mu_psi`; `A_S -> O_M` with `M = S^*`; in the shell and
+omnific theorems `rho_l -> r_l`, `c_l -> varsigma_l`, `b_l -> frak b_l`,
+`P(U) = prod(U - b_l) -> S(U)` (calligraphic) with coefficients `s_j`,
+`r -> N`, `sigma -> r_max`, `alpha -> vartheta`, `G -> f^vee`,
+`L -> L_cl`, `Pi -> J` (blackboard; the collection's notation guide writes
+`Pi`, which this report uses for the action projection); the collision
+example's `epsilon, gamma -> eta, theta`. The tempting false readings are
+printed beside the true ones: source 11's `rho` is an exponent and this
+section's `rho` a monomial; source 11's `P` is unreduced and in `U = X^q`.
+
+**Printed once**, credited to source 11 as an independent re-derivation:
+Neumann's lemma (Lemma 3.4, which source 11 cites from Marker's notes); the
+non-cofinality example (Warning 3.6); evaluation, inversion and isometry
+(Lemma 3.9, with source 11's extra clauses as Lemma 9.16 and Remark 9.17);
+the root count (Lemma 9.4); the maximal ball and shell count, which are the
+equivariant case of Theorems 9.5 and 9.7 (Proposition 9.24); the boundary
+equation, which is the equivariant case of (10.4) (Remark 9.28); the
+one-way specialization argument, which is that of Lemma 14.13; and the
+workspace transfer, which is the equivariant case of Theorem 12.1 and
+Corollary 12.2.
+
+**Kept as second routes**: source 11's direct cancellation in the
+recurrence of `f` itself, beside the return-map route of Lemma 9.3
+(Remark 9.21); its closed-ball iterate-quotient proof of the shell count
+(Theorem 9.25); its formal Taylor proof of the boundary equation, beside
+the transfinite common-disk recursion of Theorem 10.1 (Remark 9.28); and its
+norm-of-a-logarithmic-derivative proof of necessity, beside source 04's
+monodromy and growth arguments (Remark 9.33).
+
+**Merge additions**, marked `[merge]` in the article:
+- Proposition 9.24: the threshold of Theorem 9.5 equals `r_eq`, and the
+  shell polynomial is `P(X) = R(X^q)`, proved with the iterate quotient;
+  and the observation that `r_eq` fails for non-equivariant maps (the tuned
+  cubic gives `delta` against the true `delta/4`).
+- Remark 9.33: source 11's criterion is Proposition 14.17's first clause for
+  `V = X R(X^q)`, equivalently for `V = U R(U)` after `U = X^q`; and, as a
+  merge observation claimed by no source, the same argument decides
+  algebraicity of the leading coefficient `H_0` of Theorem 10.1 for **every**
+  `RES_q` polynomial from its shell polynomial `P`, with the same one-way
+  transcendence consequence.
+- Remark 9.34: when `e` is a constant times one monomial and every normalized
+  coefficient is an ordinary constant, `psi = zeta^{-1} F` is an Euler map
+  (for every `q`, not only `q = 1`), so Theorem 14.15 makes the full
+  linearizer **always** transcendental and Proposition 14.17 makes its first
+  correction transcendental when the reduction is algebraic. Source 11's
+  one-way certificate is superseded there and its question 25.14 is
+  answered at the first layer. Outside that subcase (Hahn-valued
+  displacement or coefficients) Theorem 9.31 is new to the report.
+- Cross-identifications: Example 9.35 at `q = 1` is the tangent binomial of
+  §13 and the universal profile of Corollary 14.5; Example 9.38 at `q = 1`
+  is Example 14.19; Example 9.37 at `q = 1` is Example 14.20 up to
+  `w -> -w`; Example 9.18 fails local finiteness where Example 3.10 fails
+  well-ordering; Remark 9.26 notes that for the model of Theorem 14.22 the
+  Taylor family fails at every shell point, which is stronger than, and
+  consistent with, source 11's disclaimer; Proposition 9.41 is legitimate on
+  the coefficients of `f` only because of Proposition 9.24 (compare Warning
+  9.11).
+- Status notes on Questions 25.12 (settled in substance by Theorems 9.5,
+  9.7 and 10.1 at source 11's own pin; the route it proposes stays open),
+  25.14 (answered in the monomial subcase) and 25.21 (partly addressed by
+  Theorem 10.1 and §14.7).
+
+**Not answered by source 11.** It answers no question of this report.
+Question 25.7 (maximal domains) concerns drifted and exact multipliers, not
+`RES_q`; the Hahn-valued case of Theorem 9.31 is near, but does not answer,
+Question 25.5 on moving fixed points.
+
+**Verification.** Rerun on a copy (`--output-dir` in scratch) with Python
+3.14.4 and SymPy 1.14.0: exit 0, `PASS`, 1,863 assertions in the recorded
+groups 173/107/325/38/24/1,196. The regenerated JSON matches
+`data/11-resonant-dynamics-verification.json` in every field except the
+Python version (the shipped run used 3.13.5), the UTC run time and the
+elapsed seconds; the text record differs only in the elapsed seconds.
 
 ## What was deduplicated, and what was kept twice
 
@@ -262,6 +421,10 @@ Printed **once**:
   `S = {1} u {2 - 1/n} u {Omega}` (Example 3.7); and the lexicographic `Z^2`
   caution (Example 7.21). Source 10's appendix restating Theorem 7.27
   without Hahn fields is the same statement and is not reprinted.
+- From source 11: see "Source 11" above. The positive-support lemma, the
+  non-cofinality example, evaluation and inversion, the root count, the
+  maximal ball and shell count, the boundary equation, the one-way
+  specialization argument and the workspace transfer are each printed once.
 
 Kept **twice or more, explicitly marked**, because the routes carry
 different resources:
@@ -298,6 +461,11 @@ different resources:
 - both instantiations of the leading-coefficient formula, since the shell
   polynomial `P` is not available under `PAR` and the global factorization
   of `V` is not available under `RES_q`;
+- source 11's routes: a support certificate by cancellation in the
+  recurrence of `f` itself (no return iterate), a closed-ball
+  iterate-quotient count, a formal Taylor proof of the boundary equation,
+  and a norm proof of the algebraicity criterion, each beside this report's
+  existing route (Remarks 9.21, 9.28, 9.33);
 - both instantiations of the coefficient-category table, since only its
   first row ("one fixed unchanged domain, rate zero") is proved on both
   divisor families. Remark 18.2 sets out which rows are **not**
@@ -437,14 +605,41 @@ See the [formalization ledger](../../FORMALIZATION.md) for exact coverage.
   because at most `r_ang` distinct positive exponential rates can occur
   (Corollary 7.25) and each distinct rate is charged at most `tau` in total.
   The prefactor is finite but not explicit, and not uniform in `m`.
+- **Theorems 9.20, 9.25 and Propositions 9.23, 9.24** (source 11; the
+  proposition 9.24 identification is a merge addition). For
+  `f(z) = (zeta + e) z + sum_j a_{1+jq} z^{1+jq}` over a divisible
+  `C((t^Gamma))`, with `zeta` a primitive `q`-th root of unity and
+  `v(e) = delta > 0`, the normalized linearizer and its inverse are strongly
+  summable inverse isometries exactly on `v(z) > r_eq`,
+  `r_eq = max_j (delta - v(a_{1+jq}))/(jq)`; this `r_eq` is the threshold of
+  Theorem 9.5 and the shell polynomial is `R(X^q)`,
+  `R(U) = 1 + sum_j res(a_{1+jq} t^{jq r_eq}/e) U^j`. Every nonzero periodic
+  point with `v(z) >= r_eq` lies on the shell, satisfies `f(z) = zeta z` and
+  has exact period `q`; there are `q deg R` of them with multiplicity.
+- **Theorems 9.27 and 9.31** (source 11). The coefficientwise reduction
+  `bar H_r` of `rho^{-1} H(rho X)` satisfies `X R(X^q) bar H_r' = bar H_r`;
+  it is algebraic over `C(X)` iff `R` is squarefree and
+  `1/(q beta R'(beta))` is rational at every root `beta`; failure proves
+  `H` transcendental over `K(z)`. Success does not prove `H` algebraic; in
+  the monomial subcase of Remark 9.34, `H` is always transcendental.
+- **Theorems 9.42, 9.44, 9.45** (source 11). Every nonzero infinitesimal
+  periodic point of an integral equivariant polynomial with residue
+  multiplier `zeta` satisfies `f(z) = zeta z`; `z(zeta + prod_l(z^q - b_l))`
+  has exactly the prescribed infinitesimal `q`-cycles; its reciprocal
+  `1/f(1/w)` has exactly the infinitely large finite periodic points
+  `omega^{r_l} vartheta^{-1}` in `Oz[i]`, with a purely infinite Gaussian
+  omnific presentation cleared by `omega^{1 + q sum r_l}`.
 
 ## What is NOT claimed
 
-Section 26 is the consolidated record: **125 numbered items covering the 123
-distinct limitations stated by the ten sources**, distributed
-11/9/10/14/12/12/10/16/12/17 across sources 01–10, each with its originating
-source named. None was merged away or softened. The limitations of sources 08
-and 09 are N81–N108 (§26.9), and those of source 10 are N109–N125 (§26.10).
+Section 26 is the consolidated record: **149 numbered items covering the 147
+distinct limitations stated by the eleven sources**, distributed
+11/9/10/14/12/12/10/16/12/17/24 across sources 01–11, each with its
+originating source named. None was merged away or softened. The limitations
+of sources 08 and 09 are N81–N108 (§26.9), those of source 10 are N109–N125
+(§26.10), and those of source 11 are N126–N149 (§26.11); three of source
+11's (N127 priority, N130 non-equivariant maps, N134 the one-way
+certificate) are annotated as re-scoped, not dropped.
 Where two overlap, both wordings are kept. Source 08's scalar-only
 limitation (N81) and source 09's nonscalar remark (N97) are kept as stated
 and annotated as re-scoped by source 10.
@@ -547,11 +742,27 @@ limitations:
   *not* justified. The flag is finite but **not automatically
   computable**: existence is separated from decidability of its
   entries.
+- **Source 11's limits.** Rotational symmetry and finite polynomial input
+  are essential; residue characteristic `p`, root-of-unity multipliers
+  (except for the period classification of Theorem 9.42) and infinite
+  coefficient families are not covered. Algebraicity of the reduction does
+  not imply algebraicity of the full linearizer. Maximality is for centered
+  balls only and does not exclude summability at individual shell points.
+  Theorem 9.44 prescribes infinitesimal periodic points only. The reciprocal
+  map is a presentation over `Oz[i]`, not a self-map of `Oz[i]`, and
+  integrality is proved for its periodic set only. Complex sharpness does
+  not give real sharpness when the shell cycles are nonreal. The
+  algebraicity test is decidable only for algebraic coefficients of `R`.
+  The finite checks are finite; there is no Lean; novelty is provisional,
+  and the repository inspection was targeted and did not include this
+  report (N126–N149).
 - **The computations prove nothing infinite.** See below.
 
-Section 25 records the eleven open questions in the categories in which
-they are open. Two of them are re-scoped by sources 08 and 09, and one of
-those again by source 10. Question 25.1 (with its first statement,
+Section 25 records the eleven open questions of sources 01–10 in the
+categories in which they are open, followed by the eleven questions raised
+by source 11 (Questions 25.12–25.22), with status notes on 25.12, 25.14 and
+25.21. Two of the first eleven are re-scoped by sources 08 and 09, and one
+of those again by source 10. Question 25.1 (with its first statement,
 Question 8.20) is now settled for every exact diagonal unitary nonresonant
 multiplier and stays open only for the **optimal radius** when `r_ang >= 2` and
 `0 < tau < infinity`; Question 25.2 is settled in one variable and stays
@@ -563,9 +774,9 @@ own hypothesis-use audit for Theorem 7.13.
 
 ## The verification programs
 
-`code/` holds the ten programs unmodified and `data/` their recorded
+`code/` holds the eleven programs unmodified and `data/` their recorded
 outputs. Totals where a script prints one: **54** (01), **1,109** (02),
-**21** (03), **2,764** (04), **245** (05), **119** (06). Source 07 prints
+**21** (03), **2,764** (04), **245** (05), **119** (06), **1,863** (11). Source 07 prints
 no total. It checks the slow-circle conjugacy through degree ten, **117**
 exact coefficient recurrences, and the stratum classification of **1,330**
 integer modes into **1,210 / 110 / 10**. Sources 08 and 09 print no single
@@ -591,18 +802,30 @@ total because their units differ:
   two-variable nonscalar example with multipliers `(3+4i)/5` and
   `(5+12i)/13` through parameter degree 3 and spatial degree 6, with 21
   nonzero divisors.
+- Source 11 uses SymPy with exact arithmetic, in six groups: formal
+  conjugacy and inverses for five equivariant test maps (**173**),
+  parameter reduction with a symbolic displacement (**107**), the boundary
+  recurrence and logarithmic derivatives (**325**), the iterate quotient
+  (**38**), shell and reciprocal-map identities (**24**), and seeded
+  lexicographic `Q^2` scale tests plus the collision samples (**1,196**).
+  Its test multipliers are not on the unit circle and its shell samples
+  specialize to rational numbers, which does not model infinitesimal
+  valuations; its scale test models the clearing exponent's `1` by `(0,1)`.
 
-All ten were re-run and all pass. When sources 08 and 09 were integrated,
+All eleven were re-run and all pass. When sources 08 and 09 were integrated,
 they were re-run on a copy with Python 3.14.4 and SymPy 1.14.0. Source 08
 reproduced its record in every field except elapsed time and Python version,
 and source 09 reproduced its record field for field. Source 10 was re-run on
 a copy with Python 3.14.4 when it was integrated; its ten printed lines
 match `data/10-nonscalar-common-domain-verification_results.txt` line for
-line, apart from line endings. Section 24.1 tabulates
+line, apart from line endings. Source 11 was re-run on a copy with Python
+3.14.4 and SymPy 1.14.0 when it was integrated: 1,863 assertions, `PASS`,
+the same six group counts, and a JSON record matching the shipped one except
+for the Python version, run time and elapsed seconds. Section 24.1 tabulates
 exactly what each suite checks and each one's own scope disclaimer. Every
 suite prints one, which is a real and unusual discipline in this material.
 
-**Run every suite on a copy, never in this tree.** Four of the ten
+**Run every suite on a copy, never in this tree.** Five of the eleven
 scripts rewrite their own evidence:
 
 - source 03's writes `data/verification.json`;
@@ -612,7 +835,11 @@ scripts rewrite their own evidence:
   resolved against the current working directory and written with an
   unconditional `write_text`: no existence check, no backup, no dry run. The
   invocation documented in its own README is exactly the one that
-  overwrites the delivered record.
+  overwrites the delivered record;
+- source 11's writes `verification.json` and `verification.txt` into
+  `--output-dir`, whose default is the script's own directory. In the
+  delivered layout that overwrote its record; here an argument-free run
+  writes the two files into `code/`, beside the script.
 
 Source 01's script prints to stdout, but its Makefile's `verify` target
 redirects that stdout over the delivered `verification.txt`. A byte-identity
@@ -640,6 +867,23 @@ Source 10 is overwrite-safe as well: its script takes no arguments, writes
 no file and prints ten lines, so `python
 code/10-nonscalar-common-domain-verify.py` can be compared directly with
 `data/10-nonscalar-common-domain-verification_results.txt`.
+
+Run source 11 on a copy with an explicit output directory, then compare:
+
+```sh
+pip install -r data/11-resonant-dynamics-requirements.txt   # sympy==1.14.0
+python code/11-resonant-dynamics-verify.py --output-dir /tmp/11-rerun
+diff /tmp/11-rerun/verification.txt data/11-resonant-dynamics-verification.txt
+```
+
+Only the elapsed-seconds line should differ, and in the JSON only the
+Python version, run time and elapsed seconds. The shipped
+`code/11-resonant-dynamics-build.sh` and `code/11-resonant-dynamics-build.ps1`
+rerun the suite and then rebuild the source manuscript with three
+`pdflatex` passes. They call `verify.py` and `article.tex` by their delivered
+names, and the manuscript is not shipped, so they do not run in this tree as
+shipped. Source 11's build report records a 23-page PDF with no warnings and
+states that the PowerShell script was not executed.
 
 **Independently checked, beyond running the suites.** The finiteness bound
 of Theorem 17.5 was verified without source 07. Writing the divisor as a
@@ -678,8 +922,8 @@ rather than repaired. Sources 08 and 09 neither ship nor promise one.
 Source 10's delivered manifest matched all six delivered files and is not
 shipped.
 
-Reproducing a suite requires Python 3.10 or later and, for five of them
-(01, 03, 05, 06, 08), SymPy; the pinned version recorded by the sources is
+Reproducing a suite requires Python 3.10 or later and, for six of them
+(01, 03, 05, 06, 08, 11), SymPy; the pinned version recorded by the sources is
 `sympy==1.14.0`. Source 10 needs only the standard library (Python 3.9 or
 later, by its own statement).
 
@@ -734,9 +978,10 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 A standard TeX Live or MiKTeX installation with the packages named in the
 preamble suffices. The recorded build is clean: 0 errors, 0 undefined
 references, 0 undefined citations, 0 multiply-defined labels, 0 duplicate
-PDF destinations, 0 LaTeX warnings and 0 package warnings, 172 pages. The
-three small overfull boxes (at most 3.2pt) and one underfull box predate
-source 10. All 651 labels carry the `dyn:` prefix.
+PDF destinations, 0 LaTeX warnings and 0 package warnings, 194 pages (172
+before source 11). The three small overfull boxes (at most 3.2pt) and one
+underfull box predate source 10; source 11's material adds none. All 737
+labels carry the `dyn:` prefix.
 
 ## Relation to the rest of the collection
 
@@ -784,3 +1029,14 @@ source 10. All 651 labels carry the `dyn:` prefix.
   and the exact-ball and shell-periodicity conclusions must not be
   transported to `C_p`. Without that note a reader will read the two
   reports' "disks" as the same object.
+- **Unrelated to** `docs/surcomplex/expanding-polynomial-dynamics/`. Source
+  11's infinitely large periodic points belong to reciprocal *rational* maps
+  `1/f(1/w)` and come from infinitesimal periodic points of `f`; the
+  expanding-polynomial report studies polynomials `q^{-1}P` with `v(q) > 0`
+  and linearizes nothing. Nothing transfers in either direction.
+- **Notation shared with** the omnific reports. `Oz = Z + J` and
+  `Oz[i] = Z[i] + (J + iJ)` are the collection's `Oz = Z + Pi` of
+  `docs/NOTATION.md`, renamed because `Pi` is the action projection here.
+  Source 11 consulted the README of
+  `docs/surreal/set-sized-quotients-of-omnific-integers/` only to avoid
+  duplicating its algebraic programme; no theorem is transferred.
