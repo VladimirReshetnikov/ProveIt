@@ -424,6 +424,11 @@ one prime ideal of the algebraic integers. Its prime quotient is either
 choice every nonzero fibre element survives in some `F̄_p`, with the prime
 allowed to vary, so the fibre has zero Jacobson radical. These consequences
 are stated for individual class ideals and remain pending in Lean.
+The support-descent review explains why an integral equation can be restricted
+to the exponent group of its element, using a linear support projection.
+In the countable-support model, the positive support gap also makes the
+extended normalization ideals radical: the small arithmetic fibres themselves
+embed in the full fibres. This added consequence remains pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

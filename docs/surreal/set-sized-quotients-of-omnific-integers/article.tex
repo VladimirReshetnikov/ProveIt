@@ -13979,21 +13979,46 @@ Let $D\subseteq C$ be an integral extension of commutative rings (sets or classe
 lies in $\sqrt{IC}$ if and only if $x^m+c_{m-1}x^{m-1}+\dots+c_0=0$ for some ordinary $m\ge1$ and $c_0,\dots,c_{m-1}\in I$.
 \end{lemma}
 \begin{proof}
-Let $x^q=\sum_{l\le r}a_lb_l$ with $a_l\in I$ and $b_l\in C$. The ring $C_0=D[x,b_1,\dots,b_r]$ is generated as a $D$-module by
-finitely many elements $c_1=1,c_2,\dots,c_s$, and $x^qc_\nu=\sum_la_l(b_lc_\nu)\in IC_0=\sum_\mu Ic_\mu$, so
-$x^qc_\nu=\sum_\mu h_{\nu\mu}c_\mu$ with all $h_{\nu\mu}\in I$. The adjugate of $x^q\mathbf 1_s-(h_{\nu\mu})$ shows that $P(x^q)=0$ for the
-characteristic polynomial $P$ of $(h_{\nu\mu})$, using $c_1=1$; the coefficient of $X^{s-j}$ in $P$ ($j\ge1$) is a sum of products of
-$j$ entries, hence in $I$. Then $P(X^q)$ is a
-monic polynomial of degree $qs$ killing $x$ whose nonleading coefficients lie in $I$ (or are $0$). Conversely the displayed
-relation gives $x^m=-\sum_jc_jx^j\in IC$. Only finitely many elements occur, so the argument applies to class rings.
+Suppose $x^q=\sum_{l=1}^r a_lb_l$ with $q\ge1$, $a_l\in I$
+and $b_l\in C$. Integrality makes
+$C_0=D[x,b_1,\ldots,b_r]$ a finitely generated $D$-module:
+powers of each generator reduce using its monic equation. Choose a
+finite generating list $u_1=1,u_2,\ldots,u_s$, without assuming
+linear independence. Since $b_lu_\nu\in C_0$, the displayed
+expression gives
+\[
+ x^q u_\nu=\sum_{\mu=1}^s h_{\nu\mu}u_\mu,
+ \qquad h_{\nu\mu}\in I.
+\]
+Write $H=(h_{\nu\mu})$ and $P(X)=\det(X\mathbf1_s-H)\in D[X]$.
+The adjugate identity applied to $(x^q\mathbf1_s-H)u=0$ gives
+$P(x^q)u_\nu=0$ for every $\nu$. Because $u_1=1$, it gives
+$P(x^q)=0$ without cancelling a possibly noninvertible determinant
+or using a free-module basis. The coefficient of $X^{s-j}$ in
+$P$, for $j\ge1$, is a sum of products of $j$ entries of $H$;
+it belongs to $I^j\subseteq I$. Thus $P(X^q)$ is monic of positive
+degree $qs$, all its nonleading coefficients belong to $I$, and
+it vanishes at $x$.
+
+Conversely a certificate as in the statement gives
+$x^m=-\sum_{j<m}c_jx^j\in IC$, hence $x\in\sqrt{IC}$.
+All lists, matrices and sums in this proof are finite. The finite
+module $C_0$ means finitely generated over $D$, not a set-sized or
+free module, so the proof applies unchanged to class rings and
+allows zero divisors.
 \end{proof}
 
 \begin{corollary}[Exact membership certificate \src{20}]\label{osq:bb:cor:certificate}
 For $x\in\NN_\bullet$: $x\in\Pi\NN_\bullet$ if and only if $x^m+\sum_{j<m}c_jx^j=0$ for some $m\ge1$ and $c_j\in\Pi$.
 \end{corollary}
 \begin{proof}
-$\NN_\bullet$ is integral over $\Oz$; apply \cref{osq:bb:lem:certificate} with $(D,C,I)=(\Oz,\NN_\bullet,\Pi)$ and the radicality
-of $\Pi\NN_\bullet$ (\cref{osq:nf:thm:radical}).
+Both $\NN$ and $\NN_\C$ are integral over $\Oz$; for the latter,
+use integrality of $\GOz$ over $\Oz$ and transitivity.
+Apply \cref{osq:bb:lem:certificate} with
+$(D,C,I)=(\Oz,\NN_\bullet,\Pi)$. It characterizes membership
+in $\sqrt{\Pi\NN_\bullet}$. This is exactly $\Pi\NN_\bullet$
+by \cref{osq:nf:thm:radical}, which is the separate input turning
+a radical certificate into an exact membership certificate.
 \end{proof}
 
 The certificate lets one project the coefficients of a vanishing relation without projecting a homomorphism or an ideal
@@ -14008,11 +14033,26 @@ For a set-sized subgroup $G\subseteq\No$ put $\operatorname{pr}_G\bigl(\sum_gr_g
 Moreover $\operatorname{pr}_G(\Oz)=\A(G)$ and $\operatorname{pr}_G(\Pi)=\Pi(G)$.
 \end{lemma}
 \begin{proof}
-A subset of a reverse well-ordered set is reverse well ordered, and additivity and the fixing are coefficientwise. A contribution to
-an exponent $h\in G$ of $yx$ comes from exponents $g$ of $y$ and $s$ of $x$ with $g+s=h$; since $s\in G$ and $G$ is a group,
-$g=h-s\in G$. So exactly the terms of $y$ kept by $\operatorname{pr}_G$ contribute to the exponents in $G$, and each coefficient of a
-Hahn product is a finite sum, so no exchange of infinite sums is needed. Selection keeps positive exponents and the constant
-coefficient, and it fixes $\A(G)$ and $\Pi(G)$.
+Selection restricts a set-sized reverse well-ordered support to a
+subset, so it defines a Hahn series. Additivity and the fact that
+$K_G[i]$ is fixed are coefficientwise. For the product formula,
+first take an exponent $h\in G$. A contributing pair of exponents
+$g\in\supp y$, $s\in\supp x$ satisfies $g+s=h$. Since
+$s\in G$ and $G$ is a subgroup, necessarily $g=h-s\in G$.
+Thus the coefficient at $h$ of $yx$ is unchanged if $y$ is replaced
+by $\operatorname{pr}_G(y)$. Each coefficient is a finite Hahn
+convolution, so no exchange of infinite sums is used. For $h\notin G$,
+the left side of \eqref{osq:bb:eq:linear} has coefficient zero by
+projection; the right side does too, since both factors are supported
+in $G$. This proves equality of all coefficients.
+
+For $y\in\Oz$, selection keeps nonnegative support and its integer
+constant coefficient, since $0\in G$, so its image lies in $\A(G)$.
+For $y\in\Pi$ it keeps strictly positive support and zero constant
+coefficient, so the image lies in $\Pi(G)$. Conversely every element
+of either local ring or ideal is fixed, giving the stated image
+equalities rather than just inclusions. The same coefficient argument
+for the product permits complex coefficients throughout.
 \end{proof}
 
 \begin{remark}[Not a ring retraction \src{20}]\label{osq:bb:rem:notretraction}
@@ -14028,13 +14068,40 @@ For set-sized subgroups $G\subseteq G'\subseteq\No$,
 \end{align}
 \end{theorem}
 \begin{proof}
-Let $x\in K_G$ satisfy $x^m+\sum_{j<m}a_jx^j=0$ with $a_j\in\Oz$. Every $x^j$ lies in $K_G$, so \eqref{osq:bb:eq:linear} gives
-$x^m+\sum_{j<m}\operatorname{pr}_G(a_j)x^j=0$ with coefficients in $\A(G)$; hence $x\in\NN(G)$. The reverse inclusion is clear, and
-the same argument with $a_j\in\A(G')$ gives $\NN(G')\cap K_G=\NN(G)$. If $x\in\Pi\NN\cap K_G$, project the certificate of
-\cref{osq:bb:cor:certificate}: its coefficients go to $\Pi(G)$, $x\in\NN(G)$ by the first part, and \cref{osq:bb:lem:certificate}
-with $(\A(G),\NN(G),\Pi(G))$ gives $x\in\sqrt{\Pi(G)\NN(G)}$. Conversely $\Pi(G)\NN(G)\subseteq\Pi\NN$, which is radical. The local
-radical equality is the same argument with \cref{osq:bb:lem:certificate} applied to $(\A(G'),\NN(G'),\Pi(G'))$ and then to
-$(\A(G),\NN(G),\Pi(G))$.
+Let $x\in K_G$ satisfy a monic equation
+$x^m+\sum_{j<m}a_jx^j=0$ over $\Oz$. All the powers $x^j$
+are supported in $G$. Apply the additive map $\operatorname{pr}_G$
+to this finite sum and use \eqref{osq:bb:eq:linear}, one term at
+a time, to get
+\[
+ x^m+\sum_{j<m}\operatorname{pr}_G(a_j)x^j=0,
+ \qquad \operatorname{pr}_G(a_j)\in\A(G).
+\]
+This is a monic equation over $\A(G)$, so $x\in\NN(G)$.
+The reverse inclusion follows from $\A(G)\subseteq\Oz$.
+With coefficients initially in $\A(G')$, the same projection
+proves $\NN(G')\cap K_G=\NN(G)$; the other inclusion uses
+$\A(G)\subseteq\A(G')$ and $K_G\subseteq K_{G'}$.
+
+Now take $x\in\Pi\NN\cap K_G$. The first equality already
+puts $x$ in $\NN(G)$. Project the exact certificate from
+\cref{osq:bb:cor:certificate}. Its coefficients lie in $\Pi$
+and their projections lie in $\Pi(G)$. Applying
+\cref{osq:bb:lem:certificate} inside the integral extension
+$\A(G)\subseteq\NN(G)$ puts $x$ in
+$\sqrt{\Pi(G)\NN(G)}$. Conversely, a power of an element of
+this local radical lies in $\Pi(G)\NN(G)\subseteq\Pi\NN$,
+and global radicality puts the element in $\Pi\NN\cap K_G$.
+
+For the local radical equality, start with
+$x\in\sqrt{\Pi(G')\NN(G')}\cap K_G$. The local integrality
+equality puts it in $\NN(G)$. Apply the general radical-certificate
+lemma over $\A(G')$, project its coefficients to $\Pi(G)$,
+and apply the same lemma over $\A(G)$. This proves one inclusion.
+For the reverse, a local power witness remains a power witness under
+$\Pi(G)\NN(G)\subseteq\Pi(G')\NN(G')$. Neither direction
+assumes radicality of either unradicalized local ideal or
+multiplicativity of support projection.
 \end{proof}
 
 \begin{corollary}[Reduced fibres embed \src{20}]\label{osq:bb:cor:localinjection}
@@ -14042,7 +14109,16 @@ For $G\subseteq G'$ inclusion induces injections $\mathsf C(G)\hookrightarrow\ma
 supports cannot annihilate a nonzero reduced-fibre class from a smaller support group.
 \end{corollary}
 \begin{proof}
-These are the contracted-ideal equalities of \cref{osq:bb:thm:descent}.
+Inclusion maps $\NN(G)$ into $\NN(G')$ and sends
+$\sqrt{\Pi(G)\NN(G)}$ into $\sqrt{\Pi(G')\NN(G')}$, so
+it induces a unital map on the reduced quotients. A class $[x]$
+is in its kernel precisely when
+$x\in\NN(G)\cap\sqrt{\Pi(G')\NN(G')}$; the contraction
+identity in \cref{osq:bb:thm:descent} identifies this with
+$\sqrt{\Pi(G)\NN(G)}$. Hence the kernel is zero. The same
+argument, using the global contraction identity, proves injectivity
+of $\mathsf C(G')\to\mathsf B_\R$. The maps take $[x]$ to
+$[x]$, so their composite is the direct inclusion-induced map.
 \end{proof}
 
 So an integrality witness using arbitrary surreal scales can be replaced by one using only the exponent group of the element: in
@@ -14061,22 +14137,74 @@ With the notation of \cref{osq:sec:closure},
 the radicals being taken in $\NN_\kappa$ and $\NN_{\kappa,\C}$.
 \end{corollary}
 \begin{proof}
-Identify $F^{03}_\kappa$ with its image in $\No$ (\cref{osq:sec:model03}): the series with countable support in the subgroup
-$\iota(G_\kappa)$. Let $x\in F^{03}_\kappa[i]$ be integral over $\Oz$, and let $G'$ be the subgroup generated by the supports of its
-real and imaginary parts. It is countable and contained in $\iota(G_\kappa)$, so every element of $K_{G'}$ has countable support in
-$\iota(G_\kappa)$: $K_{G'}\subseteq F^{03}_\kappa$ and $\A(G')\subseteq\Oz\cap F^{03}_\kappa=A^{03}_\kappa$. Projecting a monic
-equation of $x$ over $\Oz$ by $\operatorname{pr}_{G'}$ (\cref{osq:bb:lem:projection}) gives one over $\A(G')\subseteq A^{03}_\kappa$,
-so $x$ is integral over $A^{03}_\kappa$. By \eqref{osq:nm:eq:normalizations} and \eqref{osq:nm:eq:complexnormalization} (and the
-remark after it that $\NN_{\kappa,\C}$ is the integral closure of $A^{03}_\kappa$ in $F^{03}_\kappa[i]$) this proves the first and
-third equalities; the reverse inclusions hold because $A^{03}_\kappa\subseteq\Oz$. If moreover $x\in\Pi\NN_\bullet$, the
-certificate of \cref{osq:bb:cor:certificate} has coefficients in $\Pi$, and its projection has coefficients in
-$\Pi(G')\subseteq\Pi^{03}_\kappa$; \cref{osq:bb:lem:certificate}, applied to $A^{03}_\kappa$ and the ring $\NN_\kappa$ or
-$\NN_{\kappa,\C}$, which is integral over it, puts $x$ in the stated radical. Conversely
-$\Pi^{03}_\kappa\NN_\kappa\subseteq\Pi\NN$ and $\Pi^{03}_\kappa\NN_{\kappa,\C}\subseteq\Pi\NN_\C$, and these are radical.
+Identify $F^{03}_\kappa$ with its image in $\No$: these are the
+series with countable support in $\iota(G_\kappa)$
+(\cref{osq:sec:model03}). Let $x\in F^{03}_\kappa[i]$ be
+integral over $\Oz$, and let $G'$ be the subgroup generated by
+the supports of its real and imaginary parts. This is countable,
+being the group of finite integer combinations of a countable set.
+It is contained in $\iota(G_\kappa)$, so every series in the
+\emph{full} Hahn field $K_{G'}$ still has countable support in
+$\iota(G_\kappa)$. Consequently
+\[
+ K_{G'}\subseteq F^{03}_\kappa,\qquad
+ \A(G')\subseteq A^{03}_\kappa,\qquad
+ \Pi(G')\subseteq\Pi^{03}_\kappa.
+\]
+Project a monic equation for $x$ over $\Oz$ using
+$\operatorname{pr}_{G'}$. Since $x^j\in K_{G'}[i]$, the
+complex-coefficient form of \eqref{osq:bb:eq:linear} applies,
+and the projected coefficients lie in $\A(G')$. Thus $x$ is
+integral over $A^{03}_\kappa$. In the real case it belongs to
+$\NN_\kappa$, and in the complex case to $\NN_{\kappa,\C}$.
+Here the complex normalization is also the integral closure of
+$A^{03}_\kappa$, since adjoining $i$ is integral. The reverse
+inclusions follow by extending coefficients from
+$A^{03}_\kappa$ to $\Oz$ and then, if necessary, to $\GOz$.
+
+If moreover $x\in\Pi\NN_\bullet$, project its exact monic
+certificate. The new coefficients lie in
+$\Pi(G')\subseteq\Pi^{03}_\kappa$. The general certificate
+lemma over $A^{03}_\kappa$ places $x$ in the stated radical,
+using the integrality just established. Conversely the small
+extended ideal is contained in the corresponding global ideal;
+a power witness and global radicality give the reverse inclusion.
+The argument only projects to the countable group $G'$ attached
+to $x$. Projection to all of $\iota(G_\kappa)$ would not ensure
+that arbitrary projected witness coefficients have countable support.
 \end{proof}
 
 The proof uses only that $F^{03}_\kappa$ contains the full Hahn field over the subgroup generated by the support of each of its
 elements; it is a descent, not a membership test for $\NN_\kappa$.
+
+
+\paragraph{The countable-support model already has radical extended ideals \merge.}
+In this particular model the radicals in \cref{osq:bb:cor:descent03}
+can be removed. Put $J=\Pi^{03}_\kappa$ and let $N$ be either
+$\NN_\kappa$ or $\NN_{\kappa,\C}$. If
+$x^m=\sum_{j=1}^r a_jb_j$ with $a_j\in J$, $b_j\in N$
+and $m\ge1$, the union of the positive supports of the finitely
+many $a_j$ is countable. Since $\mu=\cf\kappa>\aleph_0$,
+\cref{osq:lem:twosided}(ii) supplies $h>0$ strictly below
+every exponent in that union. Set $d=X^{h/m}\in J$, using
+divisibility of $G_\kappa$. Then $a_j/d^m$ has countable,
+strictly positive support and lies in $J$. Thus
+$(x/d)^m\in N$, and integral closedness of $N$ in its ambient
+field gives $x/d\in N$. It follows that $x\in JN$, proving
+$JN$ radical in both the real and Gaussian cases. Consequently
+\[
+ \Pi\NN\cap F^{03}_\kappa=\Pi^{03}_\kappa\NN_\kappa,
+ \qquad
+ \Pi\NN_\C\cap F^{03}_\kappa[i]
+   =\Pi^{03}_\kappa\NN_{\kappa,\C}.
+\]
+The unreduced small arithmetic fibres therefore embed in the
+corresponding full fibres, and are already reduced. This uses the
+specific countable-support bound and positive-gap property of
+$G_\kappa$. It does not remove the radical for an arbitrary
+fixed full Hahn workspace, including the cyclic counterexample
+mentioned above.
+
 
 \begin{theorem}[One-scale rational functions \src{20}]\label{osq:bb:thm:rational}
 For $a>0$ and $T=\omega^a$,
@@ -14085,13 +14213,36 @@ For $a>0$ and $T=\omega^a$,
 \]
 \end{theorem}
 \begin{proof}
-A rational function of $T$ expands at infinity with support in $\Z a$, so $\R(T)\subseteq K_{\Z a}$. A reverse well-ordered subset
-of $\{na:n\ge0\}$ is finite, so $\A(\Z a)=\Z+T\R[T]$ and $\Pi(\Z a)=T\R[T]$. If $f\in\R(T)$ is integral over $\Oz$, it is integral
-over $\Z+T\R[T]\subseteq\R[T]$ by \cref{osq:bb:thm:descent}, hence lies in $\R[T]$, which is integrally closed (a monic equation for
-$p/q$ in lowest terms, multiplied by $q^m$, forces $q\mid p^m$). Evaluating the monic equation at $T=0$ makes $f(0)$ a real
-algebraic integer. Conversely $f(0)\in\overline\Z_\R\subseteq\NN$ (\cref{osq:nm:thm:realslice}) and $f-f(0)\in T\R[T]\subseteq\Pi$.
-If also $f\in\Pi\NN$, project its certificate onto $\Z a$: the coefficients lie in $T\R[T]$, and evaluation at $0$ gives
-$f(0)^m=0$. Finally $T\R[T]\subseteq\Pi\subseteq\Pi\NN$.
+Expanding a rational function at infinity gives a formal Laurent
+series in $T^{-1}$, hence an element of $K_{\Z a}$ after
+$T=\omega^a$. This is a field embedding, not an assertion about
+fine-topology convergence. A reverse well-ordered subset of
+$\{na:n\ge0\}$ is finite: its integer indices have a maximum
+and are bounded below by zero. Therefore
+\[
+ \A(\Z a)=\Z+T\R[T],\qquad \Pi(\Z a)=T\R[T].
+\]
+If $f\in\R(T)$ is integral over $\Oz$, support descent makes
+it integral over $\Z+T\R[T]$, and hence over $\R[T]$.
+Write $f=p/q$ with coprime polynomials $p,q\in\R[T]$ and
+$q\ne0$. Multiplying a monic equation of degree $m$ by $q^m$
+shows that $q$ divides $p^m$. Coprimality in the polynomial PID
+forces $q$ to be a unit, so $f\in\R[T]$. Now evaluate its
+projected monic equation, whose coefficients lie in
+$\Z+T\R[T]$, at $T=0$. It is a monic integer equation for
+$f(0)$, so $f(0)\in\overline\Z_\R$. Conversely, if the
+constant coefficient is a real algebraic integer, it lies in
+$\NN$ and the remaining polynomial belongs to $T\R[T]\subseteq\Pi$;
+their sum is integral. This proves the first equality.
+
+For $f\in\Pi\NN\cap\R(T)$, the first equality already
+makes $f$ a polynomial. Project its monic ideal certificate onto
+$\Z a$; every coefficient lies in $T\R[T]$. Polynomial
+evaluation at zero is now valid and gives $f(0)^m=0$, whence
+$f(0)=0$ and $f\in T\R[T]$. The reverse inclusion follows
+from $T\R[T]\subseteq\Pi\subseteq\Pi\NN$. In particular,
+evaluation at zero is used only after the denominator has been
+eliminated, never on the full Laurent field.
 \end{proof}
 
 \begin{example}[\src{20}]\label{osq:bb:ex:rational}
@@ -14109,11 +14260,29 @@ map $\iota_b$ of \cref{osq:fs:thm:embedding} is a field isomorphism $K_G(\!(T^{-
 In particular a coefficient in $\Pi(\widetilde G)$ is a polynomial in $t$ over $K_G$ whose value at $T=0$ lies in $\Pi(G)$.
 \end{lemma}
 \begin{proof}
-\Cref{osq:fs:thm:embedding} (16) gives an injective field homomorphism into $K_{\widetilde G}$. It is onto (20): an exponent of
-$\widetilde G$ is uniquely $g+jb$ with $g\in G$, $j\in\Z$; in a reverse well-ordered support the occurring $j$ are bounded above,
-since increasing $j$ gives larger exponents by freshness, and the part with a fixed $j$ is $\omega^{jb}$ times an element of $K_G$.
-The ring statements are \cref{osq:fs:cor:blocktest} with $D=\Z$: $\iota_b(\sum_jc_jT^j)\in\Oz$ exactly when $c_j=0$ for $j<0$ and
-$c_0\in\Oz$, and the positive-index blocks are purely infinite, so the constant term is $\ct(c_0)$.
+The map $\iota_b$ is an injective field homomorphism by
+\cref{osq:fs:thm:embedding}. To prove surjectivity, write each
+exponent of $\widetilde G$ uniquely as $g+jb$ with $g\in G$
+and $j\in\Z$. If $j<j'$, then every $g+jb$ is smaller than
+every $g'+j'b$: the difference $(j'-j)b+(g'-g)$ is positive
+because $b>G$. Thus in a nonempty reverse well-ordered support,
+the integer block indices are bounded above by the index of its
+largest exponent. The slice at a fixed $j$, translated by $-jb$,
+is a reverse well-ordered subset of $G$ and gives a coefficient
+$c_j\in K_G$. The original series is the image of the Laurent
+series $\sum_{j\le n}c_jT^j\in K_G(\!(T^{-1})\!)$.
+Each exponent belongs to exactly one block, so this regrouping
+preserves every coefficient. The zero series is immediate.
+
+If $j>0$, every exponent $g+jb$ is positive, whatever the
+coefficient support in $G$; if $j<0$, all such exponents are
+negative. For $j=0$, the support and constant coefficient are
+those of $c_0$. Consequently omnific membership requires exactly
+$c_j=0$ for $j<0$ and $c_0\in\A(G)$; purely infinite
+membership replaces the latter condition by $c_0\in\Pi(G)$.
+Only finitely many positive indices remain, since they are bounded
+above integers. These are precisely the two asserted polynomial
+block descriptions.
 \end{proof}
 
 \begin{lemma}[Independent quadratic branches \src{20}]\label{osq:bb:lem:quadratic}
@@ -14128,12 +14297,31 @@ a free $k[T]$-module with basis $1,\varrho_0,\varrho_1,\varrho_0\varrho_1$, and 
 \]
 \end{lemma}
 \begin{proof}
-The binomial series exist in characteristic $0$, and $\varrho_0^2=d_0=T^2-1$, $\varrho_1^2=d_1=T^2/4-1$. At $T=1$, $d_0$ has a simple
-zero and $d_1\ne0$; at $T=2$ the roles are reversed. So $d_0$, $d_1$ and $d_0d_1$ are not squares in $k(T)$, since a square has
-even order at every linear factor. If $d_1$ were a square $(x+y\varrho_0)^2$ in $k(T)(\varrho_0)$, then $2xy=0$, and $y=0$ or $x=0$
-would make $d_1$ or $d_0d_1$ a square in $k(T)$. Hence $[k(T)(\varrho_0,\varrho_1):k(T)]=4$. The presented algebra is free over
-$k[T]$ on the four monomials, by reduction with the two monic relations, and their images are linearly independent over $k(T)$; so
-the map is injective. The substitutions respect both relations, which defines $\sigma_\pm$.
+An ordered field has characteristic zero, so the indicated formal
+binomial series exist. Their squares are
+$d_0=T^2-1$ and $d_1=T^2/4-1$. At the linear factor $T-1$,
+$d_0$ has order one and $d_1$ order zero; at $T-2$ the roles
+are reversed. A square in $k(T)$ has even order at each linear
+factor, so $d_0,d_1,d_0d_1$ are all nonsquares.
+
+The first extension $k(T)(\varrho_0)$ has basis $1,\varrho_0$.
+If $(x+y\varrho_0)^2=d_1$ there, comparison in that basis gives
+$2xy=0$. If $y=0$, then $d_1=x^2$ in $k(T)$; if $x=0$,
+then $d_1=d_0y^2$, so $d_0d_1=(d_0y)^2$. Both contradict
+the preceding nonsquare tests. Hence adjoining $\varrho_1$ has
+degree two again, and the four root monomials are linearly
+independent over $k(T)$.
+
+Successive division by the monic polynomials $U^2-d_0$ and
+$V^2-d_1$ makes the presented quotient a free $k[T]$-module
+on $1,U,V,UV$. Mapping these generators to their Laurent
+branches is surjective onto $k[T,\varrho_0,\varrho_1]$.
+Their independence over $k(T)$ makes its kernel zero, proving
+the claimed presentation and basis. Finally the assignments
+$T\mapsto0$, $U\mapsto i$, $V\mapsto\pm i$ annihilate
+both defining relations because $i^2=-1$. They therefore give
+the two stated unital $k$-algebra homomorphisms on this quotient.
+No evaluation on a Laurent field is used.
 \end{proof}
 
 \begin{remark}[Specializations, not evaluations \src{20}]\label{osq:bb:rem:specialization}

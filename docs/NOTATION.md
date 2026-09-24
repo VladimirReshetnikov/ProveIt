@@ -557,6 +557,15 @@ of finite strict prime chains. The fibre's zero Jacobson radical is also
 pointwise: each nonzero element is avoided by some maximal class ideal.
 The prime p in its detecting field F̄_p may depend on the element.
 
+For a set-sized exponent subgroup G, K_G is the full Hahn field, 𝒩(G)
+its local normalization and 𝖢(G)=𝒩(G)/√(Π(G)𝒩(G)) its reduced fibre.
+The additive support projection pr_G is K_G[i]-linear but generally not
+multiplicative. By contrast, F_κ^03 has only countable supports in the
+two-armed exponent group. Its positive-gap property makes the extended
+normalization ideals radical, so the radicals may be omitted in that
+model's descent formulas. This does not replace 𝖢(G) by an unreduced
+quotient for arbitrary full Hahn workspaces.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though
