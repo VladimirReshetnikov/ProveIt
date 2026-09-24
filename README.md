@@ -482,6 +482,11 @@ surjective map onto a full Hahn field.
 The fraction-pair reconstruction formulas now work on both actual carriers
 as well, including a literal ring formula for the full coefficient-map graph.
 All formulas are proved invariant under changing fraction representatives.
+From the pure omnific ring, the reconstructed real coefficients now give
+checked formulas for the actual order, finite elements, infinitesimals,
+and standard part. The standard-part graph has exactly the finite inputs
+and a unique real output. The examples distinguish `ct(ω + 7) = 7` from
+`st(7 + ω⁻¹) = 7`: the first input is not finite.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with

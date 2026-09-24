@@ -1440,3 +1440,23 @@ checks 16,707 declarations and permits only propext, Classical.choice and
 Quot.sound. All 4,626 anchors across 63 reports, 5,217 source-label references
 and 1,822 local Markdown destinations across 226 files pass. No incoming TeX
 changed, so the reviewed 291-page article and 34-page catalogue remain current.
+
+## Synchronization: actual real-structure reconstruction
+
+Merged origin/main through e1859ca and compared the new module with
+`odg:def:thm:realrecovery` and its constant-term/standard-part examples.
+The interpreted coefficient predicate uses the proved omnific fraction
+representation of every actual surreal. Nonzero squares reconstruct
+positivity, and positive real bounds reconstruct the finite ring and
+infinitesimal ideal. The standard-part graph has exactly the finite inputs
+and one real output. Its examples distinguish constant extraction at
+omega + 7 from standard part at 7 + omega inverse. The README and ledger
+accurately record these literal semantic formulas; separate first-order
+syntax, the value-group quotient and automorphism theorem are not claimed.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,611 jobs; the audit
+checks 16,740 declarations using only propext, Classical.choice and Quot.sound.
+All 4,626 anchors across 63 reports, 5,217 source-label references and 1,823
+local Markdown destinations across 226 files pass, as does whitespace
+checking. No TeX source changed; the 291-page article and 34-page catalogue
+remain current.

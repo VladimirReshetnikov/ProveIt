@@ -738,6 +738,7 @@ import Surreal.Surcomplex.IdealMultipliers
 import Surreal.Surcomplex.SupportFractionFields
 import Surreal.Algebra.IdealReconstruction
 import Surreal.Surcomplex.MultiplierFormulas
+import Surreal.Foundations.RealStructureReconstruction
 import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial
