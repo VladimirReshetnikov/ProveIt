@@ -369,6 +369,15 @@ In the explicit orthant example the pair is `(a,b)`, with u=(0,1),
 v=(1,0) and `λ_ω(u−v)=1`, so z becomes ω. The full-ring obstruction
 uses only finite linear combinations of old relations.
 
+For the cone-extension question, both cones are full-dimensional pointed
+rational polyhedral cones in the same `ℚ^d`, with the same D and K.
+Every strict inclusion admits a new g with both g and −g outside the
+old cone; interior vectors u=Nh+g and v=Nh have difference g. The
+relation proof needs this incomparability, not that u and v lie on rays.
+It follows that these fixed-space core inclusions are flat exactly for
+equal cones. The statement does not cover inclusions that change the
+linear span, coefficient pair, exponent group or support convention.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
