@@ -9254,3 +9254,123 @@ Quot.sound. Three final catalogue TeX passes are diagnostic-free, still
 at 345 pages, with all previously checked statements, labels and numbering
 preserved. Audits pass 4,626 anchors in 63 reports, 5,240 cited source labels
 and 1,995 local Markdown destinations in 226 files. git diff --check passes.
+
+
+### Henselian hulls, finite branch survival and complexification (2026-09-24)
+
+Reviewed six foundational results, `osq:hb:prop:hull` through
+`osq:hb:prop:complex`, in dependency order. The opening main and factor
+summaries are not counted as fully reviewed. The quadratic-only splitter
+remark now proves its finite-algebra presentation from the nonsquare
+discriminant and carries the projected monic certificate through each
+specialization. The Laurent root is explicitly selected at infinity.
+
+The seeded hull proof separates floor closure, fraction clearing and
+factor pairs. It constructs the union first, then proves equality with the
+actual omnific intersection, real closedness of its fraction field, ideal
+idempotence and the exact cardinality without regularity assumptions.
+Replaced the abbreviated gap citation for support clearing by the precise
+fraction-clearing proposition. The local-ring proof gives the residue map
+b/s to ct(b)/ct(s), its kernel, fraction field and cardinality. Integral
+closure commutes with localization by an explicit rescaled monic equation.
+
+Finite atoms survive by clearing ideal-expression denominators, subtracting
+the purely infinite part of the denominator, then using integer-torsion
+freeness and radicality. Included the empty atom to verify that the local
+normalization fibre is nonzero. The pointed-neighbourhood discussion now
+proves uniqueness of the simple residue root and constructs mutually
+inverse henselization maps. This supplies faithful flatness over that
+neighbourhood, not merely flatness over the original local ring.
+
+For every finite root pattern, a single prime in the reduced normalization
+fibre makes all chosen roots zero while retaining the rational residue
+field. It therefore detects every denominator outside the pointed residue
+ideal at once. Every factor of the generic finite product survives, and
+faithful-flat base change embeds that product in the generic fibre.
+The affine-coordinate identity proves idempotence, and nonzero orthogonal
+atoms prove Boolean freeness. The general complexification argument checks
+the nonzero generic base change and injectivity of the field map, then
+rules out ordered targets by a negative square. The local henselization
+and its generic fibre retain their distinct roles. All six results remain
+pending in Lean; Boolean powers and exact branch counts are next.
+
+Checked the primary Stacks henselization, permanence and henselian-local-ring
+sections (0BSK, 07QL, 04GE), including faithful flatness without Noetherian
+hypotheses. These were already cited in the article. Refreshed root/report
+guides, notation, ledger anchors and catalogue. Three final TeX passes for
+each PDF are diagnostic-free: article 348 pages, catalogue 36 pages.
+Inspected article pages 249–254 and the affected catalogue pages. All 418
+result statements, 828 labels and 1,656 AUX label-number pairs are unchanged.
+All 66 questions and 28 examples are unchanged; the only changed remark
+among 60 is the intended quadratic splitter explanation.
+
+A byte-identical scratch copy of Source 27 passes all 5,760 assertions with
+SymPy 1.14.0; its JSON matches the archived result exactly. The finite
+identities do not prove transfinite support claims, prime existence or
+survival of all denominators; those arguments were reviewed separately.
+Audits pass 4,626 anchors in 63 reports, 5,240 cited source labels and 1,995
+local Markdown destinations in 226 files. No Lean source changed in this
+review. git diff --check passes.
+
+
+### Small prime and field quotients sync (2026-09-24)
+
+Merged origin/main through `13cbf68`, including implementation `6776bbd`.
+Read all three new modules against `osq:cor:smallprimes` and its proof.
+For both actual omnific rings, prime ideals with small quotient are the
+purely infinite ideal and the ordinary prime principal ideals; exactly
+the latter are maximal. Their finite residue fields have the native
+quotient equivalences and, in the Gaussian case, the exact norm cardinality.
+The purely infinite quotients are domains but not fields.
+
+Characteristic-zero small images have exactly the purely infinite kernel
+and are isomorphic to the integer or Gaussian integer ring, even when the
+target is a field. The fraction-field equivalences are separate statements.
+The real positive-characteristic range computation works for general small
+rings; the Gaussian positive-characteristic field-target result classifies
+the finite residue-field image and its size. Ordinary Gaussian injectivity
+in characteristic zero is proved from the norm identity before use on
+actual surcomplex numbers. No classification of large-quotient primes is
+claimed. Updated report guide and catalogue to match the merged README
+and precise ledger rows.
+
+`LEAN_NUM_THREADS=2 lake build` passes 5,045 jobs. The default audit accepts
+19,020 declarations using only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, still 36 pages;
+inspected the affected catalogue pages 12–14. The article remains unchanged
+by the merge at 348 pages, with its statements, labels and numbering
+preserved. Audits pass 4,626 anchors in 63 reports, 5,240 source-label
+references and 1,998 local Markdown destinations in 226 files.
+
+
+### Gaussian principal quotients and ideal generators sync (2026-09-24)
+
+The first push was rejected because origin/main advanced. Merged `44621ba`
+and read its three modules against `osq:prop:common` and
+`osq:prop:principal`. Gaussian leading growth cannot decrease under
+nonzero divisibility. Positive real monomials below a nonconstant
+Gaussian generator therefore have distinct residues; ordinal scales
+and well-ordering supply representatives for every small index type.
+Such quotients are nonzero and large. The full principal-size criterion
+now holds in the actual Gaussian ring too: exactly nonzero ordinary
+Gaussian generators give small quotients. The arbitrary-coefficient
+instance remains pending.
+
+The common real divisor supplies single-product factorization, ideal
+idempotence and a directed union of real monomial principal ideals.
+A hypothetical small generating family has a common divisor that cannot
+divide the monomial of half its exponent, excluding small generation.
+Nonzero Gaussian constants divide the ideal without leaving it, so their
+principal ideal times the purely infinite ideal is unchanged. The final
+module gives ordinary-constant unit classification, the constant-ideal
+decomposition and the small-generation criterion among small-quotient
+ideals. Updated current report/catalogue summaries to remove the now-stale
+Gaussian pending scope; earlier log entries retain their historical scope.
+
+`LEAN_NUM_THREADS=2 lake build` passes 5,048 jobs, with 19,043 declarations
+accepted by the audit using only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, now 37 pages;
+inspected pages 12–14. The article is unchanged by this merge, still
+348 pages, with the previously checked statements, labels and numbering
+preserved. Audits pass 4,626 anchors in 63 reports, 5,240 source-label
+references and 2,001 local Markdown destinations in 226 files.

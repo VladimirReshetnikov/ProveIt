@@ -619,6 +619,17 @@ D-module quotient, not a quotient ring. The coefficient fibre's periodic
 free resolution does not give an arithmetic free resolution: its
 annihilator ideals contain additional coefficient multiples.
 
+For henselian branching, B_𝔼=𝔼∩Oz is the actual omnific integer part of
+the seeded real closed field. Its augmentation localization 𝔏 has residue
+field ℚ via b/s↦ct(b)/ct(s); its maximal ideal contains ω and is not an
+order-infinitesimal ideal. In the two normalization lemmas, C₀ and C denote
+integral closures in 𝔼 before and after this localization. The lifted roots
+ũ_α belong to the local henselization; the affine idempotents ê_α and
+imaginary unit ȷ use coefficients and division in its generic fibre
+𝔼⊗_𝔏𝔏ʰ. A Boolean atom in a normalization residue ring is not the same
+element as the corresponding generic idempotent. The denominator argument
+connects the two constructions.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though

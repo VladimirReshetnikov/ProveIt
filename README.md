@@ -470,6 +470,14 @@ Tor in every degree. The analogous arithmetic complex fails to be exact;
 every coefficient outside the algebraic integers supplies an obstruction.
 The countable coefficient fragment has the Boolean algebra of clopen
 subsets of Cantor space. These conclusions also await Lean formalization.
+The henselian-branching review now explains how a prescribed set-sized seed
+fits inside a real closed subfield of No of any infinite cardinality κ
+at least the size of that seed. Its actual omnific integer part has an
+idempotent augmentation ideal.
+Every finite quadratic branch survives localization, producing a free
+Boolean family in the generic fibre. A separate quadratic forces a copy
+of the complexified field there, although the henselization remains local
+with rational residue field. These manuscript results remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

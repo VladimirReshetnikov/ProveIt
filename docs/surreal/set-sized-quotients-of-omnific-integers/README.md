@@ -82,7 +82,13 @@ monomials below its leading exponent have distinct residues. The
 quotients by ω, 2+ω and 1+ω are nonzero and large; their universal
 small images are respectively ℤ, ℤ/2ℤ and the zero ring. Among ideals
 with small quotient, only Π lacks a small generating set. The Gaussian
-and arbitrary-coefficient principal-size statements remain pending.
+principal-size statement is now proved too: exactly the nonzero ordinary
+Gaussian generators give small quotients, and nonconstant generators have
+arbitrarily large small families of distinct positive-monomial residues.
+The Gaussian purely infinite ideal is a directed union of real monomial
+principal ideals and is idempotent, yet has no small generating set.
+Multiplication by any nonzero ordinary Gaussian constant preserves it.
+The arbitrary-coefficient principal-size statement remains pending.
 
 For every real omnific ideal J, Lean now identifies its finite-congruence
 closure with J+Π, equivalently the inverse image of its integer constant
@@ -92,6 +98,16 @@ topological closure. A principal ideal is dense exactly for constant term
 Every nonconstant irreducible has this property. Even a nonunital map to
 a small ring that kills a unit-constant element must be zero; targets
 may be infinite and noncommutative.
+
+Lean now classifies prime and maximal ideals with small quotients in both
+actual omnific rings. The purely infinite ideals are prime but not maximal;
+all other small prime quotients are finite fields at ordinary integer or
+Gaussian prime moduli. Maps into small characteristic-zero rings have
+exactly the purely infinite kernel and image isomorphic to ℤ or ℤ[i].
+Those image rings are not fields; the corresponding fraction fields are
+identified separately. In positive characteristic, a small field target
+has a finite prime or Gaussian residue field as image. Ideals with large
+quotients are outside this classification.
 
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
@@ -752,13 +768,31 @@ quotient or determine the arithmetic weak global dimension. The countable
 fragment uses rational-square parameters and an explicit back-and-forth
 proof of the Cantor clopen Boolean algebra classification. These nine
 results and the new coefficient obstruction remain pending in Lean.
-The next review starts with the henselian branching results.
+
+The henselian foundations are now reviewed through forced complexification:
+six standard results, from the seeded hull to the free generic Boolean
+family and the general complexification proposition. The hull construction
+checks floor closure, fraction clearing and ideal factorization separately;
+its countable sequence preserves every infinite cardinal, including
+singular ones. The local ring has an explicit residue map b/s↦ct(b)/ct(s).
+
+The central localization proof now fixes a prime for each finite root
+pattern and uses it to show that every allowed denominator is nonzero
+on that branch. The pointed neighbourhood's own henselization is explicitly
+identified with the original henselization before faithful flatness is
+used. The quadratic-only splitter proof expands the finite-algebra
+specializations and keeps them separate from Laurent evaluation.
+The generic Boolean generators and imaginary unit use division in the
+fraction-field base change. The local henselization has no nontrivial
+idempotents and no square root of −1. These six results remain pending in Lean. The next
+review starts with the Boolean-power description and exact branch counts;
+the opening summary theorems are not yet fully reviewed.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 345 pages
+article.pdf   the compiled report, 348 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
