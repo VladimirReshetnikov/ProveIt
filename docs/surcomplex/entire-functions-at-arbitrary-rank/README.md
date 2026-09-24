@@ -1,12 +1,12 @@
 # Cofinality, Factorization and Scalar Extension for Entire Hahn Functions at Arbitrary Rank
 
-**A merged research report, 159 pages, from eight manuscripts.** Everything in
+**A merged research report, 160 pages, from eight manuscripts.** Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled 159-page report
+article.pdf   the compiled 160-page report
 README.md     this guide
 07-scale-moderate-interpolation-SOURCE_AUDIT.md   source 4: provenance, scope and novelty audit
 09-prime-spectra-SOURCE_AUDIT.md                  source 6: provenance, claim boundaries and literature
@@ -820,6 +820,15 @@ generated fat-point ideal on a straight line (Example 11.70).
   it.
 - **`surcomplex/nonabelian-support`** uses `Pol` for a normalized polar
   factor; the polynomial-direction locus is written `Pdir` here.
+- **`surreal/transcendence-over-bounded-support` — the same alternative for
+  finite extensions (batch 32).** Its Galois part proves
+  `bst:gr:thm:transition`: for an inclusion of nonzero set-sized ordered
+  groups, the smaller divisible, a cofinal inclusion keeps every finite
+  extension of the smaller complex bounded-support fraction field a field of
+  the same degree over the larger one, and a noncofinal one splits every such
+  extension completely. A paragraph after Remark 1.8 records it as the
+  algebraic counterpart of Theorem 1.7 (b), (d); the objects differ and
+  neither theorem is used for the other.
 
 ## What was run
 
@@ -856,7 +865,7 @@ generated fat-point ideal on a straight line (Example 11.70).
   `data/11-arithmetic-sampling-ARTIFACT_MANIFEST.json` match the six source-11
   files shipped here; the build report's hashes of the unshipped article and
   PDF match a fresh extraction of the delivered archive.
-- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 159
+- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 160
   pages, 0 errors, 0 undefined references or citations, 0 multiply defined
   labels, 0 duplicate PDF destinations, no overfull or underfull boxes, no
   LaTeX or package warnings (the committed 133-page baseline builds the same
@@ -867,6 +876,9 @@ generated fat-point ideal on a straight line (Example 11.70).
   406 in all; the eighth kept those 406 and added 87 (`ent:as:`), 493 in all.
   Every one of the 406 earlier labels resolves to the same number as before
   the eighth merge (compared through the `.aux` files of the two builds).
+  The batch-32 reciprocal paragraph on `bst:gr:thm:transition` (after
+  Remark 1.8, unnumbered) takes the build from 159 to 160 pages, with the
+  same clean log; it adds no label, and all 493 labels keep their numbers.
 
 The checks prove no infinite theorem. In particular the **finite truncations
 of the counterexample pair are coprime polynomials and do satisfy polynomial

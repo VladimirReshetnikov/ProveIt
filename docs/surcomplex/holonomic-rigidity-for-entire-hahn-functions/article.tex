@@ -143,8 +143,9 @@ entire series is differentially transcendental, jointly with its dilates by
 parameters whose quotients are not roots of unity; with one, a
 Chebyshev-descended theta series has minimal differential order three; for
 every $\Gamma$ no such series satisfies an equation of order $\le2$, or of
-order three and jet degree $\le3$; and linear mixed rigidity holds at unit
-dilations. $\Gamma$ is \emph{not} assumed divisible; divisibility enters only
+order three and jet degree $\le3$; linear mixed rigidity holds at unit
+dilations; and a dominant argument $f(P(z))$, $\deg P\ge2$, forces
+polynomiality for every $\Gamma$. $\Gamma$ is \emph{not} assumed divisible; divisibility enters only
 in the three threshold constructions of Section~\ref{hol:sub:divisibility},
 each of which states it.
 \end{abstract}
@@ -156,7 +157,7 @@ each of which states it.
 refereeing are not certified. Lean covers support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance.
-The full classifications and the theorem packages of the six later parts
+The full classifications and the theorem packages of the nine later parts
 remain pending. The
 variable derivative is not the
 Berarducci--Mantova derivation on surreal coefficients.
@@ -203,6 +204,9 @@ $2^{\aleph_0}$; Sections~\ref{hol:fh:sec:setting}--%
 \ref{hol:fh:sec:realizations} give, at a single order-unit scale, explicit
 series with coefficients in $\Q(t^\mu)$ that satisfy no algebraic differential
 equation at all, with their whole relation ideals.
+Sections~\ref{hol:pc:sec:setting}--\ref{hol:pc:sec:arithmetic} replace the
+dilation by a polynomial argument of degree at least two, and there rigidity
+holds for every value group, with explicit degree bounds.
 
 The answer depends decisively on which operator is used, and for dilation
 equations it depends further on whether the valuation of the particular
@@ -722,6 +726,45 @@ independent omnific codes with factorial floor profiles
 (Section~\ref{hol:fh:sec:realizations}). Differential transcendence of one such
 lacunary series is classical (Gr\"onwall, via Ostrowski~\cite{ostrowski}).
 
+The fourteenth principal theorem comes from source~15 and is proved in
+Sections~\ref{hol:pc:sec:setting}--\ref{hol:pc:sec:arithmetic}
+(Convention~\ref{hol:pc:conv:field}). For monomials $Y^{\mathbf a}$ in
+variables attached to arguments of degrees $e_1,\ldots,e_{\bar m}$, the
+\emph{composition weight} is $\operatorname{cw}(\mathbf a)=\sum_\nu a_\nu e_\nu$.
+
+\begin{maintheorem}[Polynomial-composition rigidity; source~15]
+\label{hol:pc:main:composition}
+Let $k$ be a field of characteristic zero and $\KK=k((t^\Gamma))$. Let
+$P\in\KK[z]$ have degree $d\ge2$, let $P_1,\ldots,P_{\bar m}\in\KK[z]$ be
+nonconstant of degrees $e_\nu<d$, let $L_1,\ldots,L_{\bar s}$ \textup{(}$\bar
+s\ge1$\textup{)} and $L'_1,\ldots,L'_{\bar m}$ be nonzero linear differential
+operators with coefficients in $\KK[z]$, let $0\ne c_*\in\KK[z]$, and let
+$\mathsf G\in\KK[z][Y_1,\ldots,Y_{\bar m}]$ have only monomials of composition
+weight $\operatorname{cw}(\mathbf a)<\bar sd$. Then every $f\in\EK$ with
+\[
+ c_*(z)\prod_{\ell=1}^{\bar s}L_\ell\bigl(f(P(z))\bigr)
+ =\mathsf G\bigl(z,L'_1(f(P_1(z))),\ldots,L'_{\bar m}(f(P_{\bar m}(z)))\bigr)
+\]
+is a polynomial, of degree at most an explicit integer $B_{\mathrm{cmp}}$
+computed from the degrees, the operator shifts and the integer roots of the
+exact indicial polynomials $I_{L_\ell}(dT)$ \textup{(}Theorem~\ref{hol:pc:thm:bound}\textup{)}.
+In particular, for every $\Gamma$, every strongly entire solution of a linear
+equation $\sum_{j=0}^mL_j(f(P_j(z)))=g(z)$ with $L_m\ne0$ and a unique
+argument $P_m$ of largest degree $d_m\ge2$ is a polynomial.
+\end{maintheorem}
+
+The lower arguments may be dilations $\lambda z$. So, unlike
+Theorems~\ref{hol:main:q} and~\ref{hol:ud:main:mixed}, no order unit and no
+condition on scales enters: a strictly dominant argument of degree at least
+two defeats the partial theta mechanism (Remark~\ref{hol:pc:rem:dichotomy}).
+The proof reads how a polynomial argument rescales the Gauss data of
+Section~\ref{hol:nl:sub:scaled} and compares scales by an integer convexity
+inequality. Source~15 also proves a matrix version, describes the solution
+modules of linear equations with integer data and omnific coefficients, and
+shows that every affine hypersurface over $\Q$ is the entire-solution locus of
+one equation of this class, so omnific solvability is undecidable inside it
+(Theorem~\ref{hol:pc:thm:universal}, Corollary~\ref{hol:pc:cor:undecidable}).
+
 For the linear theorems, the hypotheses separate two obstructions.
 Differential equations have bounded valuation costs after passing to their
 coefficient recurrence. Dilation
@@ -799,7 +842,10 @@ order-three-threshold part does, through Lemma~\ref{hol:ot:lem:extension}, and
 transfers its conclusions back.
 
 The theta-hierarchy part works in $\Gamma=\R$, which is divisible, and states
-it; the single-scale part uses no divisibility.
+it; the single-scale part uses no divisibility, and neither does the
+polynomial-composition part, whose degree bounds are floors of ratios of
+ordinary integers and whose convexity inequality multiplies by positive
+integers.
 
 No theorem in this report states a conclusion under
 Convention~\ref{hol:conv:group} while resting on a proof step that divides by
@@ -811,7 +857,7 @@ weaker in the constant only, not in the conclusion.
 \label{hol:sub:position}
 
 \paragraph{Provenance.}
-This report is built from eleven manuscripts, numbered as they arrived in
+This report is built from twelve manuscripts, numbered as they arrived in
 the collection. Sources~08 and~09 were written independently on 22 September 2026
 and both prove the differential rigidity theorem and the order-unit dilation
 criterion (Theorems~\ref{hol:main:ode} and~\ref{hol:main:q}); source~08 is
@@ -936,6 +982,19 @@ conclusion moves to the end. Their new questions are
 Questions~\ref{hol:th:q:spectrum}--\ref{hol:th:q:omnific}
 and~\ref{hol:fh:q:heights}--\ref{hol:fh:q:arithmetic}.
 
+Source~15 (batch~31, manuscript~01), \emph{Polynomial-Composition Rigidity at
+Surreal Scales}, was merged last of its batch. It forms the
+polynomial-composition part,
+Sections~\ref{hol:pc:sec:setting}--\ref{hol:pc:sec:arithmetic}, with
+Theorem~\ref{hol:pc:main:composition}; it consulted \texttt{bcac55a}, the pin
+of source~18, at which this report was the five-source text. What has since
+become stale in it, and one statement that was already incorrect there, are
+recorded in Section~\ref{hol:pc:sub:conventions}. The part follows
+Section~\ref{hol:fh:sec:realizations}, so that the numbering of
+Sections~1--35, of Questions~19.1--19.54 and of Theorems~A--M is unchanged;
+the conclusion moves to the end. Its new questions are
+Questions~\ref{hol:pc:q:critical}--\ref{hol:pc:q:formal}.
+
 \paragraph{The companion entire-function report.}
 The collection already contains a merged report on cofinality, factorization
 and scalar extension for entire Hahn functions at arbitrary
@@ -1021,11 +1080,13 @@ Section~\ref{hol:td:sub:predecessors}, that of source~14 in
 Section~\ref{hol:ot:sub:predecessors}, those of sources~18 and~19 in
 Sections~\ref{hol:ud:sub:predecessors} and~\ref{hol:nr:sub:predecessors}, and
 those of sources~16 and~17 in Sections~\ref{hol:th:sub:predecessors}
-and~\ref{hol:fh:sub:predecessors}. Section~\ref{hol:sec:status} and
+and~\ref{hol:fh:sub:predecessors}, and that of source~15 in
+Section~\ref{hol:pc:sub:predecessors}. Section~\ref{hol:sec:status} and
 Sections~\ref{hol:cf:sub:nonclaims}, \ref{hol:td:sub:nonclaims},
 \ref{hol:ot:sub:nonclaims}, \ref{hol:ud:sub:nonclaims},
-\ref{hol:nr:sub:nonclaims}, \ref{hol:th:sub:nonclaims}
-and~\ref{hol:fh:sub:nonclaims} record exactly what is and is not claimed.
+\ref{hol:nr:sub:nonclaims}, \ref{hol:th:sub:nonclaims},
+\ref{hol:fh:sub:nonclaims} and~\ref{hol:pc:sub:nonclaims} record exactly what
+is and is not claimed.
 
 \section{Hahn support and what evaluation means}\label{hol:sec:support}
 
@@ -4111,7 +4172,7 @@ the main nonlinear rigidity theorems remain unmapped in the current
 implementation ledger. No independent human referee report accompanies the
 delivered source package.
 
-\section{The eleven finite check suites}\label{hol:sec:verification}
+\section{The twelve finite check suites}\label{hol:sec:verification}
 
 Each source manuscript shipped an independent exact-arithmetic suite. The
 suites of sources~08 and~09 were run on copies and passed, and neither
@@ -4134,9 +4195,12 @@ the recorded interpreter version. The suites of sources~16 and~17 check
 finite facts of the theta-hierarchy and single-scale parts; both were run on
 copies for this merge, source~16's reproduced its record apart from the
 elapsed time and source~17's apart from the recorded interpreter version. The
+suite of source~15 checks finite facts of the polynomial-composition part; it
+was run on a copy for this merge and reproduced its record apart from the
+recorded interpreter version. The
 suites of sources~08, 09, 10, 12, 16 and~18 use only the Python standard
 library, integers, and \texttt{fractions.Fraction}; the suites of sources~11,
-13, 14, 17 and~19 use exact symbolic and rational arithmetic in SymPy, the
+13, 14, 15, 17 and~19 use exact symbolic and rational arithmetic in SymPy, the
 only third-party package any suite needs. None uses floating-point
 mathematics or network access; those of sources~13, 14 and~16 record their
 elapsed time.
@@ -4579,6 +4643,49 @@ error before writing anything; in the delivery layout it wrote into
 and \path{data/17-single-scale-visual_audit.json} describe the 24-page source
 manuscript, which is not shipped.
 
+\Needspace{24\baselineskip}
+\paragraph{\texttt{code/15-polynomial-composition-verify.py} --- 2{,}369 checks
+in 12 groups, 0 failures.}
+It checks finite facts of the polynomial-composition part with SymPy and exact
+rational Hahn polynomials over value groups $\Z^2$ (lexicographic), with the
+fixed seed $20260923$ (\path{data/15-polynomial-composition-requirements.txt}
+pins \texttt{sympy==1.14.0}; the record was made with Python~3.13.5 and
+SymPy~1.14.0, the merge's rerun with Python~3.14.4 and SymPy~1.14.0).
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}X r@{}}
+\toprule
+Groups in \path{data/15-polynomial-composition-verification.json} & Checks\\
+\midrule
+\path{universal_encoding}: Theorem~\ref{hol:pc:thm:universal} & 648\\
+\path{indicial_leading_terms}; \path{exact_resonance}:
+Lemma~\ref{hol:pc:lem:polyleading}, Theorem~\ref{hol:pc:thm:bound} & 445; 208\\
+\path{integer_convexity}: Lemma~\ref{hol:pc:lem:convex} & 360\\
+\path{euler_projectors}: \eqref{hol:pc:eq:projector} & 228\\
+\path{smith_certificates}: Theorem~\ref{hol:pc:thm:linarith} & 150\\
+\path{rank_two_operator_profiles}; \path{rank_two_pullback_profiles};
+\path{rank_two_gauss_products}: Propositions~\ref{hol:pc:prop:operatorexact},
+\ref{hol:pc:prop:pullback}, Corollary~\ref{hol:nl:cor:gauss} & 90; 70; 35\\
+\path{boundary_coefficient_checks}: Section~\ref{hol:pc:sub:boundaries} & 75\\
+\path{sharp_degree_family}; \path{worked_equations}:
+Section~\ref{hol:pc:sub:examples} & 48; 12\\
+\midrule
+Total & 2{,}369\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The record also lists the degree bounds $1$, $3$, $1$ and $2$ of the four
+worked equations of Section~\ref{hol:pc:sub:examples} with a bound. The
+\verb|--output| argument is optional and defaults to
+\path{verification.json} in the current directory, overwriting any file of
+that name; pass a new path. The source's
+\path{code/15-polynomial-composition-Makefile} was written for its delivery
+layout: its default target runs \texttt{pdflatex} three times on an
+\texttt{article.tex} in the current directory, rebuilding \texttt{article.pdf}
+in place, its \texttt{verify} target calls a \texttt{verify.py} there, and its
+\texttt{clean} target deletes auxiliary files with \texttt{rm -f}; do not run it
+here. \path{data/15-polynomial-composition-BUILD_REPORT.json} describes the
+24-page source manuscript, which is not shipped.
+
 \paragraph{What the checks do not do.}
 No suite proves any infinite theorem. No finite prefix can prove strong
 summability of an infinite family, cofinality of $(e_n)$, noncofinality of
@@ -4613,7 +4720,10 @@ $G_1$ is a polynomial. Source~16's suite proves no summability of infinite
 supports, no algebraic independence of the full functions, not the
 compression theorem, and no minimal order or cardinality. Source~17's suite
 tests finite windows of the band lemma and finite examples; it quantifies over
-no supports, equations or continuum families. What the suites
+no supports, equations or continuum families. Source~15's suite does not
+establish summability of arbitrary infinite supports, the weighted theorem, the
+universal encoding for all polynomials, or novelty; its Hahn profiles are
+computed for polynomials over $\Z^2$ only. What the suites
 can detect is sign,
 indexing, conversion and finite valuation-comparison mistakes. Everything else
 rests on the written arguments.
@@ -4714,6 +4824,14 @@ minors or constant extension.\\
 Exact domain in $\No[i]$, codes, floors & Leading values $\mathsf b_n+n\gamma$;
 positive support monoid; disjoint real cosets of powers of $M_\Omega$;
 discreteness of $\Oz$.\\
+Polynomial-composition rigidity (Theorem~\ref{hol:pc:main:composition}) &
+Exact pullback profile; exact operator profile at large active degrees;
+Gauss multiplicativity; integer convexity; superlinear escape.\\
+Degree bounds and coefficient loci & Exact leading term through $I_L$; finite
+integer resonance set; comparison of polynomial degrees.\\
+Omnific modules, universality, undecidability & Smith normal form and the
+constant-term retraction; Euler projectors; the MRDP theorem and Sun's theorem
+(imported).\\
 \bottomrule
 \end{longtable}
 
@@ -4722,10 +4840,14 @@ ordinary nonnegative integers. The coefficient valuation is trivial in
 characteristic zero; the coefficient field is $\C$ in
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and any
 characteristic-zero field in the nonlinear, coefficient-field, theta-descent,
-order-three-threshold, unit-dilation and Newton-rigidity parts. The
+order-three-threshold, unit-dilation, Newton-rigidity and
+polynomial-composition parts. The
 coefficient-field and unit-dilation parts import one external recurrence
 theorem without proof, the Skolem--Mahler--Lech theorem, used only for
-relations involving at least two distinct dilations or multipliers. The equations use the
+relations involving at least two distinct dilations or multipliers. The
+polynomial-composition part imports the MRDP theorem and Sun's theorem, used
+only for Corollaries~\ref{hol:pc:cor:undecidable} and~\ref{hol:pc:cor:ten}.
+The equations use the
 external formal variable derivative. None of the proofs asserts convergence in the fine topology of
 $\No[i]$, substitutes a real-valued norm for an arbitrary-rank valuation, or
 transports a fixed-workspace evaluation to every surcomplex argument.
@@ -4992,13 +5114,28 @@ placement of single-scale freedom & Added by the merge
 (Section~\ref{hol:th:sub:conventions}, Remarks~\ref{hol:th:rem:ordertwo},
 \ref{hol:th:rem:fields}, \ref{hol:th:rem:thirdroute},
 \ref{hol:fh:rem:placement}).\\[4pt]
+Complex entire Mahler lemma, Mahler's method, normal forms and the
+constant-term retraction, Smith normal forms, the MRDP theorem and Sun's
+theorem & Classical or prior (\cite{bcr,nishioka,lmfactor,matiyasevich,sun};
+\cite{repoodg}); credited, not claimed.\\[4pt]
+Strict composition-weight rigidity for every $\Gamma$
+(Theorem~\ref{hol:pc:main:composition}), exact-resonance degree bounds,
+extension-stable coefficient loci, the matrix version, linear omnific
+solution modules, the universal Euler-projector encoding and its
+undecidability consequences & Proposed by source~15; priority
+provisional.\\[4pt]
+Removal of the order-unit dichotomy by a dominant argument of degree at least
+two, identification of source~15's indicial polynomials, added Mahler
+references & Added by the merge (Remark~\ref{hol:pc:rem:dichotomy},
+Sections~\ref{hol:pc:sub:conventions} and~\ref{hol:pc:sub:predecessors}).\\[4pt]
 Priority, peer review, formal verification & Priority and independent
 refereeing are not certified. Lean covers support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance.
 The full classifications and the theorem packages of the nonlinear,
 coefficient-field, theta-descent, order-three-threshold, unit-dilation,
-Newton-rigidity, theta-hierarchy and single-scale parts remain pending.\\
+Newton-rigidity, theta-hierarchy, single-scale and polynomial-composition
+parts remain pending.\\
 \bottomrule
 \end{longtable}
 
@@ -5016,11 +5153,13 @@ claim of bibliographic priority. Independent mathematical review is still
 needed; machine-checked scope is the partial coverage recorded in
 Section~\ref{hol:sec:certificates} and the formalization ledger. The
 corresponding records for the nonlinear, coefficient-field,
-theta-descent, order-three-threshold, unit-dilation and Newton-rigidity parts,
-with their own search limits, are Sections~\ref{hol:nl:sub:predecessors},
+theta-descent, order-three-threshold, unit-dilation, Newton-rigidity,
+theta-hierarchy, single-scale and polynomial-composition parts, with their own
+search limits, are Sections~\ref{hol:nl:sub:predecessors},
 \ref{hol:cf:sub:predecessors}, \ref{hol:td:sub:predecessors},
-\ref{hol:ot:sub:predecessors}, \ref{hol:ud:sub:predecessors}
-and~\ref{hol:nr:sub:predecessors}.
+\ref{hol:ot:sub:predecessors}, \ref{hol:ud:sub:predecessors},
+\ref{hol:nr:sub:predecessors}, \ref{hol:th:sub:predecessors},
+\ref{hol:fh:sub:predecessors} and~\ref{hol:pc:sub:predecessors}.
 
 \subsection{What the nonlinear part does not claim}
 \label{hol:nl:sub:nonclaims}
@@ -5034,8 +5173,9 @@ source~13 as (T1)--(T19) in Section~\ref{hol:td:sub:nonclaims}, those of
 source~14 as (O1)--(O18) in Section~\ref{hol:ot:sub:nonclaims}, those of
 source~18 as (U1)--(U15) in Section~\ref{hol:ud:sub:nonclaims}, and those of
 source~19 as (R1)--(R16) in Section~\ref{hol:nr:sub:nonclaims}, those of
-source~16 as (Th1)--(Th16) in Section~\ref{hol:th:sub:nonclaims}, and those of
-source~17 as (F1)--(F19) in Section~\ref{hol:fh:sub:nonclaims}.
+source~16 as (Th1)--(Th16) in Section~\ref{hol:th:sub:nonclaims}, those of
+source~17 as (F1)--(F19) in Section~\ref{hol:fh:sub:nonclaims}, and those of
+source~15 as (P1)--(P18) in Section~\ref{hol:pc:sub:nonclaims}.
 \begin{enumerate}[label=\textup{(N\arabic*)}]
 \item Only the first-order case of Question~\ref{hol:q:nonlinear} is
 answered, not the unrestricted higher-order question. (Sources~11 and~12
@@ -5400,6 +5540,13 @@ operator (Question~\ref{hol:ud:q:prescribed}) or of simultaneous equations
 root-of-unity quotients (Question~\ref{hol:ud:q:torsionblocks}). The question
 stays open in those respects, and its last sentence, on root-of-unity
 quotients in $\Gamma_\infty$, is untouched.
+
+\emph{Status (batch~31, source~15).} If an equation also contains a nonzero
+operator applied to $f(P(z))$ with $\deg P\ge2$ strictly above the degrees of
+all other arguments, every strongly entire solution is a polynomial, for
+every $\Gamma$ and whatever the dilations
+(Corollary~\ref{hol:pc:cor:linear}, Remark~\ref{hol:pc:rem:dichotomy}). The
+question concerns arguments of degree one and is otherwise unaffected.
 
 The single-dilation theorem identifies the exact obstruction when only one
 scale is repeatedly added. With several dilation directions, distinct
@@ -6075,6 +6222,113 @@ $\mathfrak z_A$ in $\Oz$?
 Algebraic independence over $\mathcal F^{\mathrm{bd}}(M_\Omega)$ is not a
 factorization theorem; positive support and zero constant term interact with
 omnific divisibility in ways the field-theoretic result does not determine.
+
+The next eight questions come from source~15 (its Questions~12.1--12.8), in
+the notation of Section~\ref{hol:pc:sec:setting}; they are research questions
+formulated there, not claims of literature-wide open status.
+
+\begin{question}[Critical composition weight; source~15]
+\label{hol:pc:q:critical}
+Classify the equations \eqref{hol:pc:eq:main} in which some competing
+monomials have weight exactly $\bar sd$. Can the leading coefficient, the
+indicial factors and the next face of the coefficient Newton polygon replace
+the strict inequality in significant subclasses?
+\end{question}
+
+The proof fails at one identified place: the coefficient of $\gamma_\sigma(f)$
+in \eqref{hol:pc:eq:dominance} becomes zero, and the remaining expression must
+be controlled rather than the strict argument reused. The elementary equation
+$f(z^d)=f(z)^d$ is classified in Example~\ref{hol:pc:ex:critical}; its
+polynomial perturbations and multi-term critical identities are the natural
+next tests.
+
+\begin{question}[Several top products; source~15]
+\label{hol:pc:q:topproducts}
+If the largest-degree pullback occurs in a differential polynomial rather than
+in a single product of nonzero linear differential transforms, which explicit
+nonvanishing conditions on its indicial or initial polynomial still force an
+exact top Gauss profile?
+\end{question}
+
+The corner-cancellation issues for ordinary nonlinear equations are those of
+Sections~\ref{hol:nl:sec:first}--\ref{hol:nr:sec:boundary}; the new ingredient is
+their interaction with distinct polynomial arguments. The question is not the
+unrestricted higher-order problem.
+
+\begin{question}[Matrix differential pullbacks; source~15]
+\label{hol:pc:q:matrix}
+Does Theorem~\ref{hol:pc:thm:matrix} extend to matrix differential operators
+whose maximal-shift indicial matrix has nonzero determinant? What is the
+criterion when different rows have different shifts?
+\end{question}
+
+A promising route introduces row and column shifts, normalizes a matrix
+initial form and tracks the integer roots of its determinant; lower-shift
+couplings must be accounted for, and entrywise use of the scalar result does
+not suffice.
+
+\begin{question}[Several variables; source~15]
+\label{hol:pc:q:variables}
+For a polynomial map $P:\KK^r\to\KK^r$, can a positive weight vector and a
+strictly expanding Newton-polytope face replace the scalar degree $d$? Which
+finite-map or noncancellation assumptions make the pullback of the active
+initial polynomial injective?
+\end{question}
+
+The scalar proof uses the injective substitution $X\mapsto\bar cX^d$;
+multivariable leading forms can satisfy algebraic relations, a genuine
+obstruction.
+
+\begin{question}[Meromorphic solutions; source~15]
+\label{hol:pc:q:meromorphic}
+For a quotient of strongly entire series satisfying a differential--Mahler
+equation, when does the conclusion improve from a finite coefficient reduction
+to rationality? Can pole divisors and pullback degrees replace the single
+Gauss profile?
+\end{question}
+
+Classical Mahler theory gives a rationality precedent~\cite{bcr}; arbitrary
+rank and strong summation need a separate divisor and support argument.
+
+\begin{question}[Minimal universal encoders; source~15]
+\label{hol:pc:q:encoders}
+What are the least differential order, polynomial degree bound and number of
+pullback arguments of an undecidable omnific-coefficient subclass? Can the
+Euler projectors be replaced by a smaller sparse operator without losing an
+explicit bound?
+\end{question}
+
+The bound ten of Corollary~\ref{hol:pc:cor:ten} is inherited from a known
+integer encoding and not claimed optimal; a lower bound would have to separate
+analytic rigidity from arithmetic universality.
+
+\begin{question}[Arithmetic subclasses beyond linear equations; source~15]
+\label{hol:pc:q:arithmetic}
+Which nonlinear subclasses have decidable omnific solvability despite
+Corollary~\ref{hol:pc:cor:undecidable}? Natural targets are quadratic
+coefficient loci of fixed dimension, equations with a prescribed rational
+parametrization, and cases in which positivity forces ordinary coefficients.
+\end{question}
+
+A general algorithm must avoid the universal encoder explicitly; a finite
+degree bound alone is not such a condition.
+
+\begin{question}[Formal verification and certified solvers; source~15]
+\label{hol:pc:q:formal}
+Can the scalar weighted theorem and the universal encoder be formalized with
+the repository's Hahn summability and polynomial infrastructure? Can a solver
+emit a compact certificate of operator shifts, indicial polynomials, a degree
+bound and a verified finite coefficient system?
+\end{question}
+
+The dependency order proposed by source~15 is in
+Section~\ref{hol:pc:sub:boundaries}. Its suggested research order: first the
+matrix-indicial criterion, then critical-weight equations with one lower
+argument; the several-variable and meromorphic problems need further
+geometric infrastructure. The universal encoder supplies adversarial tests
+for symbolic solvers: a program claiming to decide all nonlinear omnific
+equations of this class must be incorrect, however well it computes degree
+bounds on examples.
 
 These questions are directions suggested by the proved statements, not claims
 that they were already posed in the published literature, and their
@@ -10487,7 +10741,7 @@ field $F$ of its Definition~3.1 & $K_0$ & $F$ is \eqref{hol:eq:explicitF};
 $K_0$ as in Theorem~\ref{hol:cf:thm:coefficients}.\\
 Theorems~4.2, 4.7, 6.4, 7.2 & Theorems~\ref{hol:ud:thm:unitvalues},
 \ref{hol:ud:thm:affine}, \ref{hol:ud:thm:rigidity},
-\ref{hol:ud:thm:dichotomy} & Theorems~A--M of this report are different
+\ref{hol:ud:thm:dichotomy} & Theorems~A--N of this report are different
 theorems; Theorem~\ref{hol:ud:main:mixed} collects the last two.\\
 \bottomrule
 \end{longtable}}
@@ -11655,7 +11909,7 @@ Theorem~\ref{hol:cf:thm:coefficients}; $p=t^\mu$.\\
 characteristic $p$ & $\mathfrak p$ & $p=t^\mu$.\\
 Theorems~A, B, C & Theorem~\ref{hol:ot:main:second}\,(a),
 Theorem~\ref{hol:nr:main:third}, Corollary~\ref{hol:nr:cor:external}
-and Theorem~\ref{hol:nr:thm:systems} & Theorems~A--M of this report are different
+and Theorem~\ref{hol:nr:thm:systems} & Theorems~A--N of this report are different
 theorems.\\
 \bottomrule
 \end{longtable}}
@@ -12514,7 +12768,7 @@ $G$, $\mu=w_0(G)$, $\overline G$ (sampling) & $g$, $\gamma_0(g)$, $\phi_0$ &
 $\phi_0$ is the initial polynomial at the scale $0$.\\
 Laurent-entire ring $\mathcal L$; $w$; $\sigma$ & $\mathcal U_\mu$;
 $\gamma^{\mathcal U}$; $\mathsf S$ & Section~\ref{hol:td:sub:laurent}.\\
-Theorems~1.1--1.3 & Theorem~\ref{hol:th:main:hierarchy} & Theorems~A--M of
+Theorems~1.1--1.3 & Theorem~\ref{hol:th:main:hierarchy} & Theorems~A--N of
 this report are different theorems.\\
 \bottomrule
 \end{longtable}}
@@ -13414,7 +13668,7 @@ polynomial height $h(n)$ & $\mathsf h(n)$ & $h$ is a root-of-unity order.\\
 $\mathfrak c=2^{\aleph_0}$ & $2^{\aleph_0}$ & $\mathfrak c$ is a theta constant.\\
 Theorems~4.2, 4.3, 5.1, 7.2 & Theorems~\ref{hol:fh:thm:numeric},
 \ref{hol:fh:thm:mixed}, \ref{hol:fh:thm:relations}, \ref{hol:fh:thm:entire} &
-Theorem~\ref{hol:fh:main:single} collects them; Theorems~A--M of this report
+Theorem~\ref{hol:fh:main:single} collects them; Theorems~A--N of this report
 are different theorems.\\
 \bottomrule
 \end{longtable}}
@@ -14271,6 +14525,934 @@ Proposition~\ref{hol:cf:prop:scalar} are the merge's; no historical priority is
 claimed for them.
 \end{enumerate}
 
+%======================================================================
+% Polynomial-composition part: source 15. Labels use hol:pc:.
+%======================================================================
+\section{Polynomial-composition rigidity: profiles and the weighted theorem}
+\label{hol:pc:sec:setting}
+
+This section and the next contain the material of source~15, delivered in
+batch~31 with sources~16--19 and merged last. The dilation theory of
+Sections~\ref{hol:sec:qnecessity}--\ref{hol:sec:mixed} and the mixed criterion
+of Theorem~\ref{hol:ud:main:mixed} concern arguments $\lambda z$ of degree one,
+and there an order unit decides everything. Source~15 replaces the dominant
+argument by a polynomial $P(z)$ of degree $d\ge2$. Then no hypothesis on
+$\Gamma$ is needed at all: a product of $\bar s$ nonzero linear differential
+transforms of $f(P(z))$ cannot be balanced by any polynomial in differential
+transforms of $f(P_\nu(z))$ with $\deg P_\nu<d$ whose monomials have
+\emph{composition weight} below $\bar sd$, unless $f$ is a polynomial
+(Theorem~\ref{hol:pc:main:composition}). The proof keeps the Gauss data of
+Section~\ref{hol:nl:sub:scaled}, reads how a polynomial argument rescales them,
+and compares scales through an integer convexity inequality. An explicit
+degree bound retains all exact indicial resonances; the linear case with
+ordinary integer data has a complete omnific solution module; and every affine
+hypersurface over $\Q$ is the entire-solution locus of one such equation,
+which makes omnific solvability undecidable inside this rigid class.
+
+\subsection{Source, conventions and the merge's choices}
+\label{hol:pc:sub:conventions}
+
+\begin{convention}[Setting of the polynomial-composition part]
+\label{hol:pc:conv:field}
+In Sections~\ref{hol:pc:sec:setting}--\ref{hol:pc:sec:arithmetic}, $k$ is an
+arbitrary field of characteristic zero with the trivial valuation, $\Gamma$ is
+as in Convention~\ref{hol:conv:group}, $\KK=k((t^\Gamma))$, and $v$, $\lc$,
+$\res$, strong summability, $\EK$, $D_z$ and the Gauss data
+$\gamma_\delta(f)$, $\operatorname{Act}_\delta(f)$, $\phi_\delta(f)$ of a nonzero
+$f\in\EK$ are as in Conventions~\ref{hol:nl:conv:field}
+and~\ref{hol:ot:conv:field}, \eqref{hol:nl:eq:gaussdata} and
+\eqref{hol:ot:eq:active}; we put $\gamma_\delta(0)=+\infty$ and
+$\vartheta=zD_z$. For nonzero $b\in\KK[z]$, $\lc_z(b)\in\KK^\times$ is its
+leading coefficient in $z$; $\lc$ remains the leading Hahn coefficient. ``For large
+$\delta$'' quantifies over a final segment of $\Gamma$ and presupposes no
+countable cofinal sequence. A nonzero linear differential operator is written
+$L=\sum_{r=0}^{R_L}b_r(z)D_z^r$ with $b_r\in\KK[z]$, the derivative acting on
+what stands to its right. $D_z$ kills $\KK$ and is not the Berarducci--Mantova
+derivation.
+\end{convention}
+
+For $k=\C$ one has $\KK=\K$ and $\EK=\E$. As for the parts before it, the
+generality in $k$ is recorded for this part.
+
+\paragraph{The source.}
+Source~15 is \emph{Polynomial-Composition Rigidity at Surreal Scales: Weighted
+nonlinear equations, finite degree bounds, and omnific Diophantine
+universality} (24 pages, US letter, 23 September 2026), delivered as the
+archive \texttt{Surreal\_Polynomial\_Composition\_Rigidity} (batch~31,
+manuscript~01). It consulted the repository at
+\begin{center}\small\texttt{bcac55ae6fd3f2b354e568ba1d2e94d496a2cc59}\end{center}
+through a connector (a container clone failed), reading the root README, the
+catalogue, this report's README and source~10's proof audit, an omnific
+Diophantine audit, and the READMEs of the quotient and lattice reports; its
+shipped file \path{15-polynomial-composition-SOURCE_AUDIT.md} lists them. At
+that pin this report was the five-source text (sources~08--12). Source~15's
+description of the project, linear rigidity, dilations, first-order nonlinear
+rigidity and ``a higher-order theorem in fields whose value group has no order
+unit'', was accurate there; the nonlinear picture has since been completed by
+Theorems~\ref{hol:td:main:boundary}, \ref{hol:ot:main:second}
+and~\ref{hol:nr:main:third}, which it does not use. Its statement that ``a
+keyword search for Mahler material returned no matches'' was not correct at its
+pin: the single-dilation report already discussed Mahler difference algebra
+and cited Faverjon and Roques on linear Mahler equations with Hahn-series
+solutions~\cite{faverjonroques,reposdhs}, and the computable-surreals report
+cited the same paper; this report mentioned only the Skolem--Mahler--Lech
+theorem. The comparison is corrected in Section~\ref{hol:pc:sub:predecessors}.
+
+\paragraph{Renamed symbols.}
+The following symbols of source~15 would collide with symbols of the earlier
+parts. They are renamed here, in the new material only. The most important
+row is the first: source~15's two indicial polynomials carry hol's names in
+\emph{reverse}.
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}
+>{\raggedright\arraybackslash}p{0.2\textwidth}
+>{\raggedright\arraybackslash}p{0.45\textwidth}@{}}
+\toprule
+Source~15 & Here & Reason\\
+\midrule
+\endhead
+exact indicial $\chi_L$; residue indicial $\bar\chi_L$ & $I_L$; $\chi_L$ &
+For the linear differential polynomial $P=L[Y]$ they are exactly $I_P$ and
+$\chi_P$ of \eqref{hol:nl:eq:chiI}: \emph{source~15's $\chi_L$ is this report's
+$I_L$, not its $\chi_L$}.\\
+shift $h_L$; $\alpha_L$ & $w_L$; $\beta_L$ & The corner weight $w_P$ and value
+$\beta_P$ of \eqref{hol:nl:eq:dw} for $P=L[Y]$.\\
+radius $\rho$; height $M_f(\rho)$; $I_f(\rho)$; $\operatorname{in}_\rho(f)$ & scale
+$\delta$; $-\gamma_\delta(f)$; $\operatorname{Act}_\delta(f)$; $\phi_\delta(f)$ &
+The Gauss data; source~15's height is the \emph{negative} of the Gauss value,
+so its inequalities are reversed here.\\
+reference radius $R$; $\mathcal T_\rho$; $\sigma$ (Proposition~2.4) &
+$\delta_{\mathrm{ref}}$; $\mathcal E^{(\delta)}$; $\delta'$ & $R$ is an order
+bound, $\mathcal T_p$ the theta descent, $\sigma$ a dilation.\\
+$\kappa=v(\lc_z P)$ & $v(\lc_z P)$ & $\kappa_P$ is the degree cutoff
+\eqref{hol:nl:eq:kappa}.\\
+leading coefficient $\operatorname{lc}(P)$ of a polynomial & $\lc_z(P)$ &
+$\lc$ is the leading Hahn coefficient of Section~\ref{hol:sub:conventions}.\\
+$A(z)$; $Q(z,Y)$; $q$ lower arguments; $s$ top factors; $T_\nu$ &
+$c_*(z)$; $\mathsf G(z,Y)$; $\bar m$; $\bar s$; $L'_\nu$ & $A[f]$, $Q_s$, $q$
+(a dilation), $s$ (an order) and $T$ (an indeterminate) have other
+meanings.\\
+composition weight $w(\boldsymbol a)$; $H$, $b$; $H_{\rm top}$, $U_{\boldsymbol
+a}$; $h_{\boldsymbol a}$, $b_{\boldsymbol a}$ & $\operatorname{cw}(\mathbf a)$;
+$w_{\mathrm{top}}$, $\beta_{\mathrm{top}}$; $\gamma_{\mathrm{top}}$,
+$\gamma_{\mathbf a}$; $w_{\mathbf a}$, $\beta_{\mathbf a}$ & $w_P$ is a corner
+weight and $\wt$ an Euler weight; $H\in\Gamma$.\\
+resonance set $\mathcal R$; bound $B$ & $\operatorname{Rsn}$;
+$B_{\mathrm{cmp}}$ & $\mathcal R$ is a set of right sides in
+Section~\ref{hol:nl:sec:first}; $B$ a threshold.\\
+$D=\Z$ or $\Z[i]$; $R_{D,\Gamma}$; $R$ & $\mathfrak o$; $\mathfrak O_{\mathfrak
+o,\Gamma}$; $\mathfrak R$ & $D_z$ is the derivative.\\
+$E_z=zD$; projectors $S_j$; $L_{d,N}$ & $\vartheta$; $\mathrm{Pr}_j$;
+$\mathrm{Ann}_{d,N}$ & $E_\eta$ is the formal exponential, $\mathsf S$ a shift.\\
+$q=\max\abs{\boldsymbol a}$, $T=\max\sum ja_j$ (encoder) & $\deg p$,
+$\operatorname{wd}(p)$ & As above.\\
+theta $F$; even series $H$; char-$p$ series $H$; rank-infinity $G$ & $\Theta_p$;
+$f_{\mathrm{ev}}$; $U$ of Example~\ref{hol:nl:ex:charp}; $G$ (kept) &
+\eqref{hol:eq:theta}; $F$ is \eqref{hol:eq:explicitF}.\\
+``Mahler equation'' & kept, with its meaning & Here it means equations in
+$f(z^{b^j})$, argument substitution; not the exponent dilation $S_d$ of the
+autonomous-dilation report~\cite{repoadr}, and not the scalar dilation of the
+single-dilation report.\\
+Theorems~5.1, 6.1, 7.1, 8.2, 9.1 & Theorem~\ref{hol:pc:main:composition} and
+Theorems~\ref{hol:pc:thm:bound}, \ref{hol:pc:thm:matrix},
+\ref{hol:pc:thm:linarith}, \ref{hol:pc:thm:universal} & Theorems~A--N of this
+report are different theorems.\\
+\bottomrule
+\end{longtable}}
+The shipped audit file \path{15-polynomial-composition-SOURCE_AUDIT.md} keeps
+the source's notation.
+
+\paragraph{Words with two meanings.}
+A \emph{pullback} is $f\mapsto f\circ P$ for a polynomial $P$; a
+\emph{dilation} is the degree-one case $P=\lambda z$. The \emph{composition
+weight} of a monomial is Definition~\eqref{hol:pc:eq:weight}; it is neither the
+corner weight $w_P$ nor the Euler weight $\wt$. An \emph{exact} resonance is an
+ordinary integer root of $I_L$, a \emph{residue} resonance one of $\chi_L$;
+Example~\ref{hol:nl:ex:resonance} shows they differ.
+
+\paragraph{Results printed once.}
+Source~15's Definition~2.1 and Lemma~2.2 are Definition~\ref{hol:def:entire} and
+Lemma~\ref{hol:lem:certificate}\,(a); its Theorem~2.3, the exact entire-support
+criterion, is Proposition~\ref{hol:cf:prop:criterion}, proved there by the same
+two-scale argument; its Proposition~2.4 is Proposition~\ref{hol:prop:closure}
+together with closure under polynomial composition, which is contained in
+\texttt{ent:prop:operations} of the entire-functions report~\cite{repoentire}
+(entire composition) and is also proved directly below; its Lemma~3.1 is
+Corollary~\ref{hol:nl:cor:gauss} with the derivative estimate of
+Lemma~\ref{hol:pc:lem:operatorupper} for $L=D_z^r$; its Proposition~3.2 is the
+residue argument of Theorem~\ref{hol:th:thm:sampling}, over any $k$ (compare
+Proposition~\ref{hol:prop:faithful}); the first half of its Lemma~3.3 is
+Lemma~\ref{hol:nl:lem:active}; its Remark~3.6, that the Gauss value is not
+$v(f(t^{-\delta}))$, is the remark after \eqref{hol:nl:eq:gaussdata}; its
+Remark~4.4, $L=zD_z-N+\varepsilon$, is Example~\ref{hol:nl:ex:resonance}; the
+conformal embedding in its Section~8.1 is \eqref{hol:eq:embedding}; the partial
+theta series, the characteristic-$p$ series, the rank-infinity series and the
+failure on the full Conway field in its Section~11 are \eqref{hol:eq:theta},
+Example~\ref{hol:nl:ex:charp}, the series $F$ of Theorem~\ref{hol:thm:explicit} (source~15
+uses $\bigoplus_{n\ge1}\R e_n$, this report $\Gamma_\infty$ of
+\eqref{hol:eq:gammainfty}), Section~\ref{hol:sub:notallsurcomplex}
+and Proposition~\ref{hol:ot:prop:fullclass}; and its remark that uncountable
+cofinality forces $\EK=\KK[z]$ is the remark in Section~\ref{hol:nr:sub:examples}.
+
+\paragraph{Where each numbered result went.}
+Proposition~3.5 (pullback profile), Lemma~3.4 (integer convexity) and the
+second half of Lemma~3.3 are Proposition~\ref{hol:pc:prop:pullback},
+Lemma~\ref{hol:pc:lem:convex} and Lemma~\ref{hol:pc:lem:superlinear};
+Lemmas~4.1, 4.3 and Proposition~4.2 are Lemmas~\ref{hol:pc:lem:operatorupper},
+\ref{hol:pc:lem:polyleading} and Proposition~\ref{hol:pc:prop:operatorexact};
+Theorem~5.1 and Corollaries~5.2, 5.3 are
+Theorem~\ref{hol:pc:main:composition} (with its proof in
+Section~\ref{hol:pc:sub:weighted}) and Corollaries~\ref{hol:pc:cor:linear},
+\ref{hol:pc:cor:newton}; Theorem~6.1, Corollary~6.2 and Proposition~6.3 are
+Theorem~\ref{hol:pc:thm:bound}, Corollary~\ref{hol:pc:cor:linearbound} and
+Proposition~\ref{hol:pc:prop:extension}; Theorem~7.1 is
+Theorem~\ref{hol:pc:thm:matrix}; Proposition~8.1 and Theorem~8.2 are
+Proposition~\ref{hol:pc:prop:ompoly} and Theorem~\ref{hol:pc:thm:linarith};
+Theorem~9.1, Remark~9.2 and Corollaries~9.3, 9.4 are
+Theorem~\ref{hol:pc:thm:universal}, Remark~\ref{hol:pc:rem:universal} and
+Corollaries~\ref{hol:pc:cor:undecidable}, \ref{hol:pc:cor:ten}; the examples
+of Sections~10 and~11 are in Sections~\ref{hol:pc:sub:examples}
+and~\ref{hol:pc:sub:boundaries}; Questions~12.1--12.8 are
+Questions~\ref{hol:pc:q:critical}--\ref{hol:pc:q:formal}; Section~13 and the
+appendices are merged into Sections~\ref{hol:pc:sub:predecessors},
+\ref{hol:pc:sub:nonclaims} and~\ref{hol:sec:verification}.
+
+\paragraph{The merge's choices.}
+The review of source~15 for this merge found its proofs correct; the worked
+equations were rechecked with SymPy. The merge adds three points, each marked.
+First, Remark~\ref{hol:pc:rem:dichotomy} states the relation to
+Theorems~\ref{hol:main:q} and~\ref{hol:ud:main:mixed}, to
+Theorem~\ref{hol:thm:mixed} and to Corollary~\ref{hol:cor:detect}: with a
+strictly dominant argument of degree at least two the order-unit dichotomy
+disappears. Second, the Gauss data are those of this report, with source~15's
+signs reversed, and its two indicial polynomials are identified with $I_P$ and
+$\chi_P$. Third, the comparison with the Mahler and omnific literature of the
+collection is completed (Section~\ref{hol:pc:sub:predecessors}). Source~15's
+theorems, proofs, examples and non-claims are otherwise printed as delivered,
+in the renamed notation.
+
+\subsection{Pullback profiles}\label{hol:pc:sub:profiles}
+
+For $\delta\in\Gamma$ let $\mathcal E^{(\delta)}$ be the set of
+$\sum_nb_nz^n\in\KK[[z]]$ with $v(b_n)-n\delta\to+\infty$ cofinally. After
+$z=t^{-\delta}X$ its elements have coefficients whose values tend cofinally to
+infinity; it is closed under products (finite convolutions, with the two
+minima normalized to zero), sums and $D_z$ (the multiplier $n$ has value zero),
+and a family $(H_n)$ in it whose minimal weighted coefficient values tend
+cofinally to infinity has a coefficientwise sum in it, which may be regrouped.
+By Proposition~\ref{hol:cf:prop:criterion}, $\EK=\bigcap_\delta\mathcal
+E^{(\delta)}$.
+
+\begin{proposition}[Polynomial composition; source~15]
+\label{hol:pc:prop:composition}
+For $f=\sum a_nz^n\in\EK$ and $P\in\KK[z]$, the series $f\circ P=\sum_na_nP^n$
+is defined coefficientwise by strongly summable families and lies in $\EK$;
+$D_z(f\circ P)$ may be computed termwise. $P$ need not vanish at $0$.
+\end{proposition}
+
+\begin{proof}
+Fix $\delta$ and put $\delta'=\max_j(j\delta-v([z^j]P))$. Every coefficient of
+$a_nP^n$, weighted at $\delta$, has value at least $v(a_n)-n\delta'$, and these
+tend cofinally to infinity by Proposition~\ref{hol:cf:prop:criterion}; so
+$\sum a_nP^n$ exists in $\mathcal E^{(\delta)}$, with coefficients independent of
+$\delta$. It lies in every $\mathcal E^{(\delta)}$. The same bounds justify
+termwise differentiation.
+\end{proof}
+
+Ordinary formal substitution into a power series needs $P(0)=0$; strong
+entireness supplies the convergence that replaces it.
+
+\begin{lemma}[Superlinear escape; source~15]\label{hol:pc:lem:superlinear}
+If $f\in\EK$ is not a polynomial, then for every integer $C$, every positive
+integer $d$ and every fixed $\kappa\in\Gamma$,
+$\gamma_{d\delta-\kappa}(f)+C\delta\to-\infty$ as $\delta\to+\infty$, that is,
+it is eventually below every element of $\Gamma$.
+\end{lemma}
+
+\begin{proof}
+Choose $m$ with $md>C$ and $a_m\ne0$. Then
+$\gamma_{d\delta-\kappa}(f)+C\delta\le v(a_m)+m\kappa-(md-C)\delta$, and positive
+integer multiples of an unbounded variable are cofinal, whether or not $\Gamma$
+has an order unit.
+\end{proof}
+
+\begin{lemma}[Integer convexity; source~15]\label{hol:pc:lem:convex}
+Let $d>e>0$ be integers and $\sigma,\tau,\delta_{\mathrm{ref}}\in\Gamma$ with
+$d\tau\le e\sigma+(d-e)\delta_{\mathrm{ref}}$. Then for every nonzero $f\in\EK$
+\begin{equation}\label{hol:pc:eq:convex}
+ d\,\gamma_\tau(f)\ge e\,\gamma_\sigma(f)+(d-e)\,\gamma_{\delta_{\mathrm{ref}}}(f).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $a_n\ne0$, $n\ge0$ gives $d(v(a_n)-n\tau)\ge e(v(a_n)-n\sigma)+(d-e)(v(a_n)-n
+\delta_{\mathrm{ref}})$, which is at least the right side of
+\eqref{hol:pc:eq:convex}; take the minimum. No division in $\Gamma$ occurs.
+\end{proof}
+
+\begin{proposition}[Exact pullback profile; source~15]
+\label{hol:pc:prop:pullback}
+Let $P=cz^d+\cdots$ have degree $d\ge1$. For all large $\delta$, depending on
+$P$ only, and every nonzero $f\in\EK$,
+\begin{equation}\label{hol:pc:eq:pullback}
+ \gamma_\delta(f\circ P)=\gamma_{d\delta-v(c)}(f),\qquad
+ \operatorname{Act}_\delta(f\circ P)=d\operatorname{Act}_{d\delta-v(c)}(f),\qquad
+ \phi_\delta(f\circ P)(X)=\phi_{d\delta-v(c)}(f)(\bar cX^d),
+\end{equation}
+with $\bar c=\res(t^{-v(c)}c)$.
+\end{proposition}
+
+\begin{proof}
+For large $\delta$ the top term uniquely attains the Gauss value of $P$:
+$v(c)-d\delta<v([z^j]P)-j\delta$ for $j<d$. With $\sigma=d\delta-v(c)$, the
+polynomial $t^\sigma P(t^{-\delta}X)$ has integral coefficients and residue
+$\bar cX^d$, and Proposition~\ref{hol:pc:prop:composition} with reduction gives
+$\res\bigl(t^{-\gamma_\sigma(f)}f(P(t^{-\delta}X))\bigr)=\phi_\sigma(f)(\bar
+cX^d)$, a nonzero polynomial with support $d\operatorname{Act}_\sigma(f)$.
+\end{proof}
+
+\subsection{Operators and their two indicial polynomials}
+\label{hol:pc:sub:operators}
+
+For $L=\sum_rb_r(z)D_z^r\ne0$ put
+\begin{equation}\label{hol:pc:eq:indicial}
+ w_L=\max_{b_r\ne0}(\deg b_r-r),\qquad
+ I_L(T)=\sum_{\deg b_r-r=w_L}\lc_z(b_r)\fall Tr,\qquad
+ \beta_L=\min_{\deg b_r-r=w_L}v(\lc_z b_r),
+\end{equation}
+and $\chi_L(T)=\sum\res(t^{-\beta_L}\lc_z b_r)\fall Tr$ over the $r$ with
+$\deg b_r-r=w_L$ and $v(\lc_z b_r)=\beta_L$. For the linear differential
+polynomial $L[Y]$ these are its corner weight $w_P$, full corner polynomial
+$I_P$, corner value $\beta_P$ and residue corner polynomial $\chi_P$
+(\eqref{hol:nl:eq:dw}, \eqref{hol:nl:eq:chiI}). Both $I_L$ and $\chi_L$ are
+nonzero, since distinct falling factorials are independent, and $\chi_L$ has
+finitely many roots in $\N$.
+
+\begin{lemma}[Uniform operator bound; source~15]
+\label{hol:pc:lem:operatorupper}
+For all large $\delta$, depending on $L$ only, and every $u\in\EK$,
+$\gamma_\delta(Lu)\ge\gamma_\delta(u)-w_L\delta+\beta_L$.
+\end{lemma}
+
+\begin{proof}
+The term $c_{rj}z^jD_z^ru$, $c_{rj}=[z^j]b_r\ne0$, has Gauss value at least
+$\gamma_\delta(u)-(j-r)\delta+v(c_{rj})$. For $j-r<w_L$ this exceeds the bound
+for large $\delta$; at $j-r=w_L$, $j=\deg b_r$ and $v(c_{rj})\ge\beta_L$.
+\end{proof}
+
+\begin{proposition}[Exact eventual operator profile; source~15]
+\label{hol:pc:prop:operatorexact}
+If $u\in\EK$ is not a polynomial, then for all large $\delta$
+\[
+ \gamma_\delta(Lu)=\gamma_\delta(u)-w_L\delta+\beta_L,\qquad
+ \phi_\delta(Lu)=\sum_{n\in\operatorname{Act}_\delta(u)}[X^n]\phi_\delta(u)\,
+ \chi_L(n)X^{n+w_L};
+\]
+in particular $Lu\ne0$.
+\end{proposition}
+
+\begin{proof}
+Take $\delta$ beyond Lemma~\ref{hol:pc:lem:operatorupper} and so large that
+every active index exceeds $R_L$ and every root of $\chi_L$ in $\N$
+(Lemma~\ref{hol:nl:lem:active}). Normalizing at the proposed value, the terms of
+smaller shift and the top-shift terms with coefficient value above $\beta_L$
+have positive value, and at input degree $n$ the surviving terms have the
+residue multiplier $\chi_L(n)\ne0$; inactive coefficients contribute nothing.
+The exponents $n+w_L$ are distinct and nonnegative.
+\end{proof}
+
+This is the corner identity of Section~\ref{hol:nl:sub:corner} for the linear
+polynomial $L[Y]$, applied at every exterior scale.
+
+\begin{lemma}[Exact polynomial leading term; source~15]
+\label{hol:pc:lem:polyleading}
+For a polynomial $u$ of degree $n$ with leading coefficient $a$,
+$\deg Lu\le n+w_L$; if $I_L(n)\ne0$ equality holds with leading coefficient
+$aI_L(n)$, and if $I_L(n)=0$ the degree is smaller or $Lu=0$.
+\end{lemma}
+
+\begin{proof}
+The coefficient at degree $n+w_L$ is the top-shift contribution of $az^n$,
+namely $aI_L(n)$; everything else has smaller degree. If $n+w_L<0$ every term
+vanishes, and the falling factorials give $I_L(n)=0$.
+\end{proof}
+
+A residue resonance $\chi_L(n)=0$ need not be an exact one
+(Example~\ref{hol:nl:ex:resonance}): residue resonance controls the exterior
+proof, exact resonance the degree bounds.
+
+\subsection{The weighted composition theorem}\label{hol:pc:sub:weighted}
+
+Fix $P$ of degree $d\ge2$, nonzero operators $L_1,\ldots,L_{\bar s}$ ($\bar
+s\ge1$), a nonzero $c_*\in\KK[z]$, and for $1\le\nu\le\bar m$ ($\bar m\ge0$)
+nonconstant $P_\nu$ of degree $e_\nu<d$ and nonzero operators $L'_\nu$. Let
+$\mathsf G(z,Y_1,\ldots,Y_{\bar m})=\sum_{\mathbf a\in\mathcal A}c_{\mathbf
+a}(z)Y^{\mathbf a}$ in collected form, with nonzero $c_{\mathbf a}\in\KK[z]$
+($\mathcal A=\varnothing$ if $\mathsf G=0$), and put
+\begin{equation}\label{hol:pc:eq:weight}
+ \operatorname{cw}(\mathbf a)=\sum_{\nu=1}^{\bar m}a_\nu e_\nu .
+\end{equation}
+The equation is
+\begin{equation}\label{hol:pc:eq:main}
+ c_*(z)\prod_{\ell=1}^{\bar s}L_\ell\bigl(f(P(z))\bigr)
+ =\mathsf G\bigl(z,L'_1(f(P_1(z))),\ldots,L'_{\bar m}(f(P_{\bar m}(z)))\bigr).
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{hol:pc:main:composition}]
+Suppose $f$ is not a polynomial. Put $\sigma=d\delta-v(\lc_z P)$ and
+$\sigma_\nu=e_\nu\delta-v(\lc_z P_\nu)$, and take $\delta$ large for the finitely
+many profiles below. By Proposition~\ref{hol:pc:prop:pullback} and
+Lemma~\ref{hol:nl:lem:active}, $f\circ P$ is not a polynomial, so
+Proposition~\ref{hol:pc:prop:operatorexact} applies to each $L_\ell(f\circ P)$,
+and by Corollary~\ref{hol:nl:cor:gauss} the left side has the exact Gauss value
+\begin{equation}\label{hol:pc:eq:top}
+ \gamma_{\mathrm{top}}(\delta)=\bar s\,\gamma_\sigma(f)-w_{\mathrm{top}}\delta
+ +\beta_{\mathrm{top}},\qquad
+ w_{\mathrm{top}}=\deg c_*+\sum_\ell w_{L_\ell},\quad
+ \beta_{\mathrm{top}}=v(\lc_z c_*)+\sum_\ell\beta_{L_\ell}.
+\end{equation}
+Choose one $\delta_{\mathrm{ref}}$ with $(d-e_\nu)\delta_{\mathrm{ref}}\ge e_\nu
+v(\lc_z P)-d\,v(\lc_z P_\nu)$ for every $\nu$; then $d\sigma_\nu\le e_\nu\sigma+
+(d-e_\nu)\delta_{\mathrm{ref}}$ identically in $\delta$, and
+Lemma~\ref{hol:pc:lem:convex} gives $d\gamma_{\sigma_\nu}(f)\ge e_\nu
+\gamma_\sigma(f)+(d-e_\nu)\gamma_{\delta_{\mathrm{ref}}}(f)$. With
+$w_{\mathbf a}=\deg c_{\mathbf a}+\sum_\nu a_\nu w_{L'_\nu}$ and
+$\beta_{\mathbf a}=v(\lc_z c_{\mathbf a})+\sum_\nu a_\nu\beta_{L'_\nu}$, the monomial
+$\mathbf a$ has, by Lemma~\ref{hol:pc:lem:operatorupper} and
+Proposition~\ref{hol:pc:prop:pullback}, Gauss value at least
+$\gamma_{\mathbf a}(\delta)=\sum_\nu a_\nu\gamma_{\sigma_\nu}(f)-w_{\mathbf
+a}\delta+\beta_{\mathbf a}$, also when a factor vanishes. Hence, with
+$\abs{\mathbf a}=\sum a_\nu$,
+\begin{equation}\label{hol:pc:eq:dominance}
+ d\bigl(\gamma_{\mathbf a}-\gamma_{\mathrm{top}}\bigr)
+ \ge-\bigl(\bar sd-\operatorname{cw}(\mathbf a)\bigr)\gamma_\sigma(f)
+ +d(w_{\mathrm{top}}-w_{\mathbf a})\delta
+ +\bigl(d\abs{\mathbf a}-\operatorname{cw}(\mathbf a)\bigr)
+ \gamma_{\delta_{\mathrm{ref}}}(f)+d(\beta_{\mathbf a}-\beta_{\mathrm{top}}).
+\end{equation}
+The coefficient $\bar sd-\operatorname{cw}(\mathbf a)$ is a positive integer, so
+by Lemma~\ref{hol:pc:lem:superlinear} the right side is eventually above every
+element of $\Gamma$. On a common final segment, then, every monomial of the right
+side has strictly larger Gauss value than the left side, which is impossible
+for an identity; if $\mathsf G=0$ the nonzero left side already contradicts it.
+\end{proof}
+
+\begin{corollary}[Mixed differential--Mahler equations; source~15]
+\label{hol:pc:cor:linear}
+Let $P_0,\ldots,P_m\in\KK[z]$ be nonconstant with $d_m=\deg P_m>\max_{j<m}\deg
+P_j$ and $d_m\ge2$, let $L_0,\ldots,L_m$ be linear differential operators over
+$\KK[z]$ with $L_m\ne0$, and $g\in\KK[z]$. Every strongly entire solution of
+\begin{equation}\label{hol:pc:eq:linear}
+ \sum_{j=0}^mL_j\bigl(f(P_j(z))\bigr)=g(z)
+\end{equation}
+is a polynomial; so is every solution with rational coefficients, after a
+common denominator is cleared.
+\end{corollary}
+
+\begin{proof}
+Move the lower terms to the right: $\bar s=1$, $P=P_m$, $c_*=1$, a linear
+$\mathsf G$ whose monomials have weights $\deg P_j<d_m$, and a forcing term of
+weight zero. Clearing denominators multiplies the identity by a polynomial and
+moves no coefficient through a derivative.
+\end{proof}
+
+With $P_j=z^{b^j}$, $b\ge2$, every strongly entire solution of a linear Mahler
+equation, or of one whose pullbacks are multiplied by finite-order
+differential operators, is a polynomial. The pure complex-analytic
+antecedent is Bell, Coons and Rowland's~\cite[Lemma~6]{bcr}; the arbitrary-rank
+mixed statement is source~15's.
+
+\begin{remark}[Degree at least two removes the order-unit dichotomy; merge]
+\label{hol:pc:rem:dichotomy}
+The lower arguments in Corollary~\ref{hol:pc:cor:linear} may be dilations
+$\lambda z$, of degree one. So every linear equation in $D_z$, finitely many
+dilations $\sigma_\lambda$, and at least one polynomial argument of degree
+$d\ge2$ strictly above the degrees of all other arguments has only polynomial
+strongly entire solutions, \emph{for every $\Gamma$}, with or without an order
+unit and whatever the valuations of the dilation parameters. By contrast,
+Theorem~\ref{hol:main:q}, Theorem~\ref{hol:ud:main:mixed} and
+Corollary~\ref{hol:cor:detect} concern equations all of whose arguments have
+degree one; there a nonpolynomial solution exists exactly when some
+(relative) dilation valuation is an order unit, and the partial theta series
+is the witness. A dominant argument of degree at least two therefore detects
+nothing about order units. Theorem~\ref{hol:thm:mixed} and
+Corollary~\ref{hol:ud:cor:unitrigidity} are the degree-one mixed statements. The
+hypothesis of a \emph{strictly} dominant degree is used:
+Section~\ref{hol:pc:sub:boundaries} shows that equal degrees of the top
+arguments, including degree one, allow nonpolynomial solutions. Nor does
+Theorem~\ref{hol:pc:main:composition} say anything about algebraic differential
+equations without a pullback, which are Theorems~\ref{hol:nl:main:first},
+\ref{hol:td:main:boundary}, \ref{hol:ot:main:second}
+and~\ref{hol:nr:main:third}.
+\end{remark}
+
+\begin{corollary}[A necessary Newton-weight condition; source~15]
+\label{hol:pc:cor:newton}
+If $f\in\EK$ is not a polynomial, every relation of the form
+\eqref{hol:pc:eq:main} that it satisfies has a monomial of weight at least
+$\bar sd$.
+\end{corollary}
+
+This restricts possible relations; it is not an algebraic or differential
+independence statement, and relations with equal weights, or with cancellation
+among several top-weight expressions, are not classified.
+
+\subsection{Degree bounds and finite coefficient loci}\label{hol:pc:sub:degree}
+
+Under the hypotheses of Theorem~\ref{hol:pc:main:composition} let
+$\operatorname{Rsn}=\{N\in\N:I_{L_\ell}(dN)=0\text{ for some }\ell\}$, a finite
+set, and
+\begin{equation}\label{hol:pc:eq:B}
+ B_{\mathrm{cmp}}=\max\Bigl(\{0\}\cup\operatorname{Rsn}\cup\Bigl\{\Bigl\lfloor
+ \frac{w_{\mathbf a}-w_{\mathrm{top}}}{\bar sd-\operatorname{cw}(\mathbf a)}
+ \Bigr\rfloor:\mathbf a\in\mathcal A\Bigr\}\Bigr)\in\N ,
+\end{equation}
+a ratio of ordinary integers, with no division in $\Gamma$.
+
+\begin{theorem}[Resonant degree bound; source~15]\label{hol:pc:thm:bound}
+Every nonzero strongly entire solution of \eqref{hol:pc:eq:main} has degree at
+most $B_{\mathrm{cmp}}$; the zero series is tested directly, and the bound need not
+be attained.
+\end{theorem}
+
+\begin{proof}
+The solution is a polynomial. If its degree $N$ exceeds $B_{\mathrm{cmp}}$, then
+$N\notin\operatorname{Rsn}$, and by Lemma~\ref{hol:pc:lem:polyleading} the left
+side has degree $\bar sdN+w_{\mathrm{top}}$ with leading coefficient
+$\lc_z(c_*)a^{\bar s}\lc_z(P)^{\bar sN}\prod_\ell I_{L_\ell}(dN)\ne0$, while the
+monomial $\mathbf a$ has degree at most $\operatorname{cw}(\mathbf a)N+w_{\mathbf
+a}$, which the definition of $B_{\mathrm{cmp}}$ makes smaller.
+\end{proof}
+
+\begin{corollary}[Linear bound; source~15]\label{hol:pc:cor:linearbound}
+For \eqref{hol:pc:eq:linear}, with $w_j=w_{L_j}$, $d=d_m$ and
+$\operatorname{Rsn}_m=\{N\in\N:I_{L_m}(dN)=0\}$, every nonzero entire solution
+has degree at most
+\[
+ B_{\mathrm{lin}}=\max\Bigl(\{0\}\cup\operatorname{Rsn}_m\cup\Bigl\{\Bigl\lfloor
+ \frac{w_j-w_m}{d-\deg P_j}\Bigr\rfloor:j<m,\ L_j\ne0\Bigr\}\cup\Bigl\{\Bigl\lfloor
+ \frac{\deg g-w_m}{d}\Bigr\rfloor:g\ne0\Bigr\}\Bigr).
+\]
+\end{corollary}
+
+Substituting $f=u_0+u_1z+\cdots+u_Bz^B$ with $B=B_{\mathrm{cmp}}$ and comparing
+coefficients gives finitely many polynomial equations in the $u_j$ over the
+field generated by the data, whose solutions in $\KK$ are exactly the entire
+solutions; linear equations give a linear system. This is the composition
+analogue of Theorem~\ref{hol:nl:thm:degrees} and
+Corollary~\ref{hol:nl:cor:locus}. It is not a decision procedure: one must
+represent the data and decide equalities, find the integer roots in
+$\operatorname{Rsn}$, and solve the finite system. For rational data the first
+two are effective; for arbitrary named surreal coefficients no algorithm is
+asserted, and over the omnific integers even integer data can be undecidable
+(Corollary~\ref{hol:pc:cor:undecidable}).
+
+\begin{proposition}[Extension-stable coefficient description; source~15]
+\label{hol:pc:prop:extension}
+For an injective field map $\KK\hookrightarrow\KK'$ between Hahn fields of the
+standing type, with the finite data transported, the same bound and the same
+finite coefficient equations describe the entire solutions over $\KK'$; no
+entire solution of higher degree appears.
+\end{proposition}
+
+\begin{proof}
+Degrees, shifts and the vanishing of $I_{L_\ell}(dN)$ are preserved and
+reflected, so $B_{\mathrm{cmp}}$ is unchanged; apply
+Theorems~\ref{hol:pc:main:composition} and~\ref{hol:pc:thm:bound} over
+$\KK'$. Polynomials are entire.
+\end{proof}
+
+This concerns the solutions of a fixed equation, which are polynomials; an
+arbitrary infinite series can lose entireness under extension
+(Section~\ref{hol:pc:sub:boundaries}).
+
+\subsection{Vector equations}\label{hol:pc:sub:matrix}
+
+For $F=(f_1,\ldots,f_r)\in\EK^r$ put $\gamma_\delta(F)=\min_i\gamma_\delta(f_i)$;
+Lemmas~\ref{hol:pc:lem:convex} and~\ref{hol:pc:lem:superlinear} hold for it,
+minimizing over components and indices.
+
+\begin{theorem}[Matrix polynomial-composition rigidity; source~15]
+\label{hol:pc:thm:matrix}
+Let $P_0,\ldots,P_m$ be nonconstant, $d_m=\deg P_m>\max_{j<m}\deg P_j=:\max
+d_j$, $d_m\ge2$, $A_0,\ldots,A_m\in\operatorname{Mat}_r(\KK[z])$ with $\det
+A_m\ne0$, and $b\in\KK[z]^r$. Every $F\in\EK^r$ with
+$\sum_{j=0}^mA_j(z)F(P_j(z))=b(z)$ is a polynomial vector. With $a=\det A_m$,
+$C_j=\operatorname{adj}(A_m)A_j$, $c=\operatorname{adj}(A_m)b$ and entry
+degrees, the largest component degree of a nonzero solution is at most
+\[
+ B_{\mathrm{mat}}=\max\Bigl(\{0\}\cup\Bigl\{\Bigl\lfloor\frac{\deg C_j-\deg a}
+ {d_m-d_j}\Bigr\rfloor:C_j\ne0\Bigr\}\cup\Bigl\{\Bigl\lfloor\frac{\deg c-\deg a}
+ {d_m}\Bigr\rfloor:c\ne0\Bigr\}\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Multiplying by the adjugate gives $aF(P_m)=c-\sum_{j<m}C_jF(P_j)$. If a component
+is nonpolynomial, the left side has Gauss value
+$\gamma_{d_m\delta-v(\lc_z P_m)}(F)-\deg(a)\delta+v(\lc_z a)$ for large $\delta$
+(componentwise, by Proposition~\ref{hol:pc:prop:pullback}), while the right
+terms are bounded below by $\gamma_{d_j\delta-v(\lc_z P_j)}(F)$ plus a fixed
+integer multiple of $\delta$ and a fixed element of $\Gamma$; the argument of
+Theorem~\ref{hol:pc:main:composition} with weights $d_j<d_m$ makes every right
+term strictly larger in value. For the degree bound compare $\deg a+d_mN$ with
+$\deg c$ and $\deg C_j+d_jN$.
+\end{proof}
+
+Nonsingularity cannot be dropped: with $A_m=\operatorname{diag}(1,0)$ and all
+other terms zero, every $(0,f)$ is a solution. Matrices of differential
+operators are not treated (Question~\ref{hol:pc:q:matrix}).
+
+\section{Omnific coefficients, universality and boundaries of composition
+rigidity}\label{hol:pc:sec:arithmetic}
+
+\subsection{Omnific coefficients and linear solution modules}
+\label{hol:pc:sub:omnific}
+
+For $(\mathfrak o,k)=(\Z,\R)$ or $(\Z[i],\C)$ put $\mathfrak O_{\mathfrak
+o,\Gamma}=\mathfrak o\oplus\Pi_{k,\Gamma}$, with
+$\Pi_{k,\Gamma}=\{\sum_{\gamma<0}a_\gamma t^\gamma\}$ (well-ordered supports) and
+the constant-term retraction $\operatorname{ct}:\mathfrak O_{\mathfrak
+o,\Gamma}\to\mathfrak o$, a ring homomorphism because $\Pi_{k,\Gamma}$ is closed
+under sums, under products and under multiplication by $\mathfrak o$, all
+supports staying negative. Through \eqref{hol:eq:embedding}, allowing all of $\No$ as exponents
+(each support a set) gives $\Oz=\Z\oplus\Pi$ and $\Oz[i]$, with the same
+retraction \cite{repoodg,lmfactor}; these are not new.
+
+\begin{proposition}[An elementary coefficient restriction; source~15]
+\label{hol:pc:prop:ompoly}
+A strongly entire series with all coefficients in $\mathfrak O_{\mathfrak
+o,\Gamma}$ is a polynomial, with no equation.
+\end{proposition}
+
+\begin{proof}
+Nonzero coefficients have value at most $0$; infinitely many would violate
+Proposition~\ref{hol:cf:prop:criterion} at $\gamma=\beta=0$.
+\end{proof}
+
+So for omnific coefficients the analytic content of
+Theorem~\ref{hol:pc:main:composition} is automatic; what an equation adds is
+its degree bound and the structure of its coefficient locus.
+
+\begin{theorem}[Linear omnific solution modules; source~15]
+\label{hol:pc:thm:linarith}
+Consider \eqref{hol:pc:eq:linear} with all arguments, operator coefficients and
+forcing in $\mathfrak o[z]$, $\mathfrak o=\Z$ or $\Z[i]$, and let $\mathfrak R$
+be $\mathfrak O_{\mathfrak o,\Gamma}$, or $\Oz$, or $\Oz[i]$, accordingly. An
+effective procedure on the data either certifies that there is no polynomial
+solution in $\mathfrak R[z]$ or gives $f_0,h_1,\ldots,h_r\in\mathfrak o[z]$
+such that the solutions are exactly $f_0+\sum_iu_ih_i$, $u_i\in\mathfrak R$,
+with unique parameters. Existence over $\mathfrak R$ is equivalent to
+existence over $\mathfrak o$, and for a fixed Hahn workspace these are also
+exactly its strongly entire solutions with coefficients in $\mathfrak R$.
+\end{theorem}
+
+\begin{proof}
+The degree argument of Lemma~\ref{hol:pc:lem:polyleading} and
+Corollary~\ref{hol:pc:cor:linearbound} is algebraic and applies to polynomials
+over $\No$ and $\No[i]$; the integer roots of $I_{L_m}(d_mT)$ are computable.
+Substituting a polynomial of degree $B_{\mathrm{lin}}$ gives $Mu=b$ over
+$\mathfrak o$. Take a Smith normal form $UMV=S$ over the principal ideal domain
+$\mathfrak o$, and put $u=Vy$, $b'=Ub$. The equations are $s_iy_i=b'_i$ and
+zero rows. A solution over $\mathfrak R$ gives one over $\mathfrak o$ by $\operatorname{ct}$,
+and conversely; so divisibility and zero-row tests decide existence. Since
+$\mathfrak R$ is a domain, the homogeneous diagonal equations force $y_i=0$ for
+$s_i\ne0$, the other $y_i$ are free, and $V$ gives the basis. The last
+assertion is Proposition~\ref{hol:pc:prop:ompoly}.
+\end{proof}
+
+For $\mathfrak o=\Z$ and $\mathfrak R=\Oz$ the linear algebra is
+\texttt{odg:thm:smith} and \texttt{odg:thm:linear} of the omnific Diophantine
+report~\cite{repoodg}, applied to the finite system produced by the degree
+bound; the Gaussian case is the same argument over $\Z[i]$. The proof uses
+neither that $\Oz$ is a principal ideal domain nor any factorization theory.
+
+\subsection{Universality and undecidability}\label{hol:pc:sub:universal}
+
+Fix $N\ge0$. For $0\le j\le N$ put
+\begin{equation}\label{hol:pc:eq:projector}
+ \mathrm{Pr}_j=N!\prod_{0\le k\le N,\,k\ne j}\frac{\vartheta-k}{j-k}
+ \in\Z[z]\langle D_z\rangle ;
+\end{equation}
+the denominator $(-1)^{N-j}j!(N-j)!$ divides $N!$, and
+$\vartheta^i=\sum_jS(i,j)z^jD_z^j$ with Stirling numbers $S(i,j)$ of the second
+kind. Each $\mathrm{Pr}_j$ has shift
+zero and $\mathrm{Pr}_jf=N!u_jz^j$ for $f=\sum_{j\le N}u_jz^j$: interpolation in
+the Euler eigenvalue.
+
+\begin{theorem}[Universal hypersurface encoding; source~15]
+\label{hol:pc:thm:universal}
+For every nonzero $p=\sum_{\mathbf a}p_{\mathbf a}U^{\mathbf a}\in\Z[U_0,\ldots,
+U_N]$ put $\operatorname{wd}(p)=\max\{\sum_jja_j:p_{\mathbf a}\ne0\}$,
+$d=\deg p+\operatorname{wd}(p)+2$ and $\mathrm{Ann}_{d,N}=\prod_{k=0}^N
+(\vartheta-dk)$. The equation
+\begin{equation}\label{hol:pc:eq:encoding}
+ \mathrm{Ann}_{d,N}\bigl(f(z^d)\bigr)=\sum_{\mathbf a}p_{\mathbf a}
+ (N!)^{\deg p-\abs{\mathbf a}}z^{\operatorname{wd}(p)-\sum_jja_j}\prod_{j=0}^N
+ (\mathrm{Pr}_jf(z))^{a_j}
+\end{equation}
+has integer data and satisfies the hypothesis of
+Theorem~\ref{hol:pc:main:composition}; over every Hahn field of the standing
+type its entire solutions are exactly $f=\sum_{j\le N}u_jz^j$ with
+$p(u_0,\ldots,u_N)=0$, and its bound \eqref{hol:pc:eq:B} is exactly $N$.
+\end{theorem}
+
+\begin{proof}
+Here $\bar s=1$ and every lower argument is $z$, so
+$\operatorname{cw}(\mathbf a)=\abs{\mathbf a}\le\deg p<d$, and the solutions are
+polynomials. $\mathrm{Ann}_{d,N}$ has shift $0$ and $I(T)=\prod_k(T-dk)$, so
+$\operatorname{Rsn}=\{0,\ldots,N\}$; the monomial shifts are at most
+$\operatorname{wd}(p)$ and $d-\abs{\mathbf a}\ge\operatorname{wd}(p)+2$, so every
+fraction in \eqref{hol:pc:eq:B} has floor $0$ and $B_{\mathrm{cmp}}=N$. For $f$ of
+degree at most $N$ the left side vanishes term by term and the right side is
+$(N!)^{\deg p}z^{\operatorname{wd}(p)}p(u_0,\ldots,u_N)$, zero exactly when
+$p(u)=0$ in characteristic zero.
+\end{proof}
+
+The margin $d=\deg p+\operatorname{wd}(p)+2$, rather than merely
+$d>\max(\deg p,\operatorname{wd}(p))$, is what makes the bound exactly $N$ in
+every case.
+
+\begin{remark}[What universality says; source~15]\label{hol:pc:rem:universal}
+After clearing denominators every affine hypersurface over $\Q$ arises. A finite
+degree certificate therefore implies neither finitely many solutions, nor a
+smooth solution set, nor a simple classification: the coefficient loci carry
+the full complexity of affine algebraic geometry.
+\end{remark}
+
+\begin{corollary}[Omnific undecidability inside the rigid class; source~15]
+\label{hol:pc:cor:undecidable}
+No algorithm decides, from the integer data of an equation of
+Theorem~\ref{hol:pc:main:composition}, whether it has a polynomial solution
+with coefficients in $\Oz$; nor, in any fixed real Hahn workspace, whether it
+has a strongly entire solution with coefficients in $\mathfrak O_{\Z,\Gamma}$.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{hol:pc:thm:universal} and the retraction $\operatorname{ct}$, the equation
+for $p$ has such a solution exactly when $p$ has a zero in $\Z^{N+1}$; the
+Davis--Putnam--Robinson--Matiyasevich theorem~\cite{matiyasevich} makes that
+undecidable.
+\end{proof}
+
+Undecidability of polynomial equations over $\Oz$ itself is
+\texttt{odg:cor:H10} of the omnific Diophantine report~\cite{repoodg}; what is
+new is the encoding into a rigid functional equation with a prescribed degree
+bound.
+
+\begin{corollary}[A fixed degree bound; source~15]\label{hol:pc:cor:ten}
+Using Sun's undecidability theorem in eleven integer unknowns~\cite{sun}, the
+undecidability persists for an effectively given subclass in which every
+entire solution has degree at most ten, the top operator has order eleven and
+every lower operator order at most ten.
+\end{corollary}
+
+\begin{proof}
+Take $N=10$ in Theorem~\ref{hol:pc:thm:universal}; $d$ varies with $p$, but the
+resonances and orders do not.
+\end{proof}
+
+This applies known Diophantine undecidability; it claims no optimal variable
+count. The linear ordinary-data subclass is decidable
+(Theorem~\ref{hol:pc:thm:linarith}), while the nonlinear subclass is already
+undecidable at a fixed degree bound.
+
+\subsection{Worked equations}\label{hol:pc:sub:examples}
+
+\paragraph{Every degree attains the linear bound (source~15).}
+For $d\ge2$ and $N\ge0$, $f(z^d)=z^{(d-1)N}f(z)$ has $B_{\mathrm{lin}}=N$;
+comparing largest and smallest degrees gives $\deg f=\operatorname{ord}_zf=N$,
+so the entire solutions are exactly $cz^N$.
+
+\paragraph{A free omnific parameter (source~15).}
+$f(z^2)-f(z)=z^2-z$ has bound one and entire solutions $z+c$, $c\in\KK$; its
+omnific solutions are $z+c$, $c\in\Oz$, the simplest module of
+Theorem~\ref{hol:pc:thm:linarith}.
+
+\paragraph{Resonances that cannot be discarded (source~15).}
+$(\vartheta-dN)f(z^d)=0$ has the solutions $cz^N$; a bound ignoring $I_L$ would
+leave only constants. For
+\[
+ (zD_z-6)f(z^2+z)+(z^2D_z+1)f(z)=-3z^5-3z^4-2z^3-6z^2-8z-5
+\]
+the top resonance is $N=3$ while the nonresonant estimate is two; for
+$f=a_0+\cdots+a_3z^3$ the left side is $-3a_3z^5+(-2a_2-3a_3)z^4+(-4a_2-2a_3)z^3
++(-3a_1-3a_2)z^2-4a_1z-5a_0$, and the unique solution is $f=z^3+2z+1$.
+
+\paragraph{Nonlinear weighted equations (source~15).}
+In $f(z^2)^2=f(z)^3+(D_zf(z))^2+z^4-z^3-z^2-3z-1$ the top weight is four, the
+right monomials have weights three and two with shifts $0$ and $-2$, and the
+forcing has weight $0$ and degree four, so $B_{\mathrm{cmp}}=1$; $f=az+b$ gives
+$a^2=1$, $a^3=1$, $2ab=3a^2b-1$, hence the unique solution $f=z+1$. Likewise
+$f(z^3)=f(z)^2+z^6-z^4-z^3-3z^2-2z$ has bound two and unique solution
+$z^2+z+1$. The total degree three of the right side of the first equation
+exceeds the two factors on the left; the weight, not the degree, is what
+matters. These solutions were rechecked with SymPy for this merge.
+
+\paragraph{A Diophantine encoder (source~15).}
+For $N=1$ and $p=U_0^2+U_1^2-m$, $m\in\Z$: $\deg p=\operatorname{wd}(p)=2$,
+$d=6$, $\mathrm{Pr}_0=1-\vartheta$, $\mathrm{Pr}_1=\vartheta$, and the equation is
+$\vartheta(\vartheta-6)f(z^6)=z^2((1-\vartheta)f)^2+(\vartheta f)^2-mz^2$. Every
+entire solution is $a+bz$ with $a^2+b^2=m$. For $m=-1$ there is no surreal
+solution; for $m=1$ there are surreal and surcomplex families, and the real
+omnific solutions are exactly $\pm1$ and $\pm z$, since $a^2+b^2=1$ forces $a,b$
+finite, hence ordinary integers (an elementary observation not needed for
+universality).
+
+\subsection{Boundaries}\label{hol:pc:sub:boundaries}
+
+\paragraph{Degree-one arguments are different (source~15).}
+Over $\Gamma=\R$ with $p=t^\gamma$, $\gamma>0$, the partial theta series
+$\Theta_p$ of \eqref{hol:eq:theta} is strongly entire and satisfies
+$\Theta_p(z)=1+z\Theta_p(pz)$: both arguments have degree one, and
+Corollary~\ref{hol:pc:cor:linear} does not apply. This is the report's own
+witness (Theorem~\ref{hol:thm:thetadomain}), used here only to delimit the
+theorem. Equal degrees also allow cancellation at higher degree: for a
+nonpolynomial strongly entire even series $f_{\mathrm{ev}}$, for instance
+$\sum_nt^{n^2}z^{2n}$ over $\R((t^\R))$, one has
+$f_{\mathrm{ev}}(z^2)-f_{\mathrm{ev}}(-z^2)=0$.
+
+\paragraph{Characteristic zero (source~15).}
+With the prime $p$ and the series $U$ of Example~\ref{hol:nl:ex:charp},
+also $D_z(U(z^{p+1}))=0$: infinitely
+many indices share a residue, and Proposition~\ref{hol:pc:prop:operatorexact}
+fails.
+
+\paragraph{Rank, cofinality and enlargement (source~15).}
+Over $\bigoplus_{n\ge1}\R e_n$ ($0<e_1\ll e_2\ll\cdots$), with no order unit,
+$G=\sum_nt^{e_n}z^n$ is strongly entire (as $F$ in
+Theorem~\ref{hol:thm:explicit}), so the theorem has
+nonpolynomial inputs to exclude at infinite rank; with uncountable
+cofinality every entire series is a polynomial and only the degree bounds and
+encodings remain informative. Adjoining $h>ne_j$ for all $n,j$ destroys the
+entireness of $G$ (Section~\ref{hol:sub:notallsurcomplex}), which does not
+contradict Proposition~\ref{hol:pc:prop:extension}, and no nonpolynomial series
+is strongly evaluable on all of $\No$ (Proposition~\ref{hol:ot:prop:fullclass}).
+
+\begin{example}[A critical-weight equation; source~15]\label{hol:pc:ex:critical}
+For $d\ge2$ the formal solutions over a field of characteristic zero of
+$f(z^d)=f(z)^d$, a weight-critical case ($\operatorname{cw}=\bar sd=d$), are
+exactly $0$ and $cz^N$ with $N\ge0$ and $c^{d-1}=1$. If $cz^N$ is the lowest
+term, degree $dN$ gives $c=c^d$; writing $f=cz^NU$ with $U(0)=1$, $U(z^d)=U(z)^d$,
+and a first nonconstant term $bz^r$ of $U$ would give $0$ on the left at degree
+$r$ and $db\ne0$ on the right. This elementary classification is the
+function-variable twin of \texttt{adr:lem:monomial} of the autonomous-dilation
+report~\cite{repoadr}, where the exponent dilation $S_d$ replaces $z\mapsto
+z^d$.
+\end{example}
+
+So the strict inequality is not necessary for every equation. It is
+sufficient only: the case $\operatorname{cw}=\bar sd$ may still be rigid, and
+several top-weight terms may carry further obstructions; no nonpolynomial
+characteristic-zero counterexample at the boundary is asserted. Algebraic
+differential equations without pullbacks, meromorphic solutions and several
+variables are separate questions.
+
+\paragraph{The formalization order proposed by source~15.}
+Restricted-series tails; finite initial polynomials; integer convexity;
+polynomial pullback; the operator residue profile; weighted domination; the
+polynomial degree bound; Euler projectors; arithmetic reduction. The infinite
+support argument and the finite algebraic certificate should stay separate,
+and no Python check replaces the former. For linear equations with rational
+or Gaussian rational data source~15 describes a certificate: the arguments and
+operator coefficients, the degrees, shifts and $I_{L_j}$, the full integer-root
+set of $I_{L_m}(d_mT)$ and $B_{\mathrm{lin}}$, and the coefficient matrix with a
+row-reduction certificate, or, for integer or Gaussian-integer solutions, a
+unimodular Smith certificate, since a rational nullspace basis need not be a
+lattice basis; for non-effective data this is a certificate format, not an
+algorithm.
+
+\subsection{Predecessors, repository comparison and priority}
+\label{hol:pc:sub:predecessors}
+
+\paragraph{Literature.}
+Bell, Coons and Rowland prove that a complex entire Mahler function is a
+polynomial~\cite[Lemma~6]{bcr}; source~15 inspected the page with that lemma,
+and does not claim the complex-analytic statement. Nishioka's
+monograph~\cite{nishioka} is the standard reference for Mahler's method
+(publisher metadata and scope only). The Hahn and omnific background is
+L'Innocente--Mantova~\cite{lmfactor}; the undecidability inputs are
+Matiyasevich~\cite{matiyasevich} (metadata and abstract) and Sun~\cite{sun}
+(its abstract, eleven unknowns). Source~15 also looked at the abstract of Bell
+and Coons's transcendence tests for Mahler functions and the Wikipedia
+article on surreal numbers, for orientation only. Its searches were not
+exhaustive. Two relevant references are missing from source~15 and are added
+by this merge: Faverjon and Roques treat linear Mahler equations with
+Hahn-series solutions algorithmically~\cite{faverjonroques}, as the
+single-dilation report records~\cite{reposdhs}; and the autonomous-dilation
+report~\cite{repoadr} records, through Nishioka--Nishioka, Mahler's 1983
+criterion for convergent power-series solutions of $P(f(z),f(z^d))=0$ with
+constant coefficients. Neither concerns strong entireness over an
+arbitrary-rank Hahn field, and neither is used here; their content was not
+rechecked by this merge.
+
+\paragraph{Repository comparison at the pin.}
+Source~15 read seven files at \texttt{bcac55a}, listed in its audit, not the
+91-page text of this report as it then stood, and compared no report theorem by
+theorem among the 57 then catalogued. Its keyword-search claim is corrected in
+Section~\ref{hol:pc:sub:conventions}. Its statements about this report were
+accurate at the pin. The universal quotient theorem of the quotient report and
+the curve and lattice classifications of the omnific
+reports~\cite{repoosq,repoodg} are not reproduced. The autonomous-dilation
+report, which now discusses autonomous Mahler equations for the exponent
+dilation, was not yet in the repository at the pin.
+
+\paragraph{Priority.}
+Not claimed: the complex entire-Mahler lemma, Mahler's method, normal forms and
+the constant-term retraction, Smith normal forms, MRDP and Sun's theorem, the
+support calculus and Gauss data of this report, and the elementary critical
+classification. The proposed contributions are strict composition-weight
+rigidity over arbitrary-rank Hahn fields, its exact-resonance degree bound and
+extension-stable coefficient loci, the matrix version, the linear omnific
+module theorem as a consequence, and the universal Euler-projector encoding
+with its undecidability consequences; priority is provisional, and the word
+``breakthrough'', which the source considered, is expressly disclaimed.
+
+\subsection{What the polynomial-composition part does not claim}
+\label{hol:pc:sub:nonclaims}
+
+Every limitation stated by source~15, in its manuscript, audit file or
+verification record, is kept.
+\begin{enumerate}[label=\textup{(P\arabic*)}]
+\item No independent referee report, no Lean formalization, no repository
+build (a container clone failed), and no certified priority; the label
+``breakthrough'' is disclaimed.
+\item Bell--Coons--Rowland's Lemma~6, Nishioka, the MRDP theorem and Sun's
+theorem are credited inputs; the variable count is not optimal, and the bound
+ten is inherited.
+\item Entireness is relative to one set-sized Hahn field; nothing is claimed
+about unrestricted surreal analytic functions or entireness on $\No$.
+\item $D_z$ is the function-variable derivative, not the Berarducci--Mantova
+derivation.
+\item The general higher-order algebraic differential rigidity problem is not
+addressed (in this report it is Theorems~\ref{hol:td:main:boundary},
+\ref{hol:ot:main:second} and~\ref{hol:nr:main:third}).
+\item Polynomiality of entire series with omnific coefficients is elementary
+(Proposition~\ref{hol:pc:prop:ompoly}).
+\item The condition $\operatorname{cw}<\bar sd$ is sufficient, not necessary; the
+critical case $\operatorname{cw}=\bar sd$ and several top products are open.
+\item Corollary~\ref{hol:pc:cor:newton} is not an independence statement.
+\item The finite coefficient locus is not a decision procedure, and no
+algorithm is given for arbitrary named surreal coefficients.
+\item The matrix theorem needs a nonsingular dominant matrix and does not treat
+matrix differential operators.
+\item Several variables and meromorphic solutions are not treated.
+\item Proposition~\ref{hol:pc:prop:extension} concerns fixed equations only.
+\item $\Oz$ is not claimed to be a principal ideal domain.
+\item The classification of $f(z^d)=f(z)^d$ is elementary.
+\item The 2{,}369 finite assertions do not cover infinite supports, all ranks or
+universal statements, and do not certify novelty.
+\item The repository comparison was limited to seven files, and the 57-report
+catalogue was not compared theorem by theorem; its statement that the
+repository contained no Mahler material was incorrect at the pin.
+\item The universal quotient theorem and the curve and lattice results of the
+omnific reports are not reproduced.
+\item \emph{[merge]} Remark~\ref{hol:pc:rem:dichotomy}, the identification of
+source~15's indicial polynomials with $I_P$ and $\chi_P$, and the added
+Mahler references are the merge's; no historical priority is claimed for
+them.
+\end{enumerate}
+
 \section{Conclusion}
 
 Strong entireness over a surreal Hahn workspace imposes a global scale
@@ -14365,6 +15547,15 @@ differential order; yet every one is differentially algebraic. At the other
 extreme a single scale already carries lacunary series with rational Taylor
 coefficients that satisfy no algebraic differential equation at all, because a
 maximal-degree band of heights cannot be cancelled.
+
+The polynomial-composition part shows how much of the order-unit phenomenon
+belongs to degree one. A polynomial argument of degree $d\ge2$ multiplies the
+scale by $d$, so a superlinearly growing Gauss profile cannot be balanced by
+arguments of lower degree unless their composition weight reaches the top
+one; then every strongly entire solution is a polynomial, for every value
+group, with a degree bound that keeps the exact indicial resonances. The
+finite coefficient locus that remains can be as complicated as any affine
+hypersurface over $\Q$, and its omnific points are undecidable in general.
 
 \appendix
 
@@ -14579,6 +15770,29 @@ Series with support bounded above; its fraction field.\\
 $\mathcal O_{\langle1\rangle}$ & $\{0\}\cup\{x\in\No[i]^\times:v(x)\ge-m\}$.\\
 $M_\Omega$, $\mathfrak z_A$, $\mathsf I_A(a)$ & $\omega^\Omega$; the omnific codes;
 the floor profile.\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Polynomial-composition part,
+Sections~\ref{hol:pc:sec:setting}--\ref{hol:pc:sec:arithmetic}}}\\
+$\lc_z(b)$ & Leading coefficient in $z$ of $0\ne b\in\KK[z]$.\\
+$\mathcal E^{(\delta)}$ & Series with $v(b_n)-n\delta\to+\infty$ cofinally.\\
+$w_L$, $\beta_L$, $I_L$, $\chi_L$ & Shift, corner value, exact and residue
+indicial polynomials of an operator \eqref{hol:pc:eq:indicial}.\\
+$\delta_{\mathrm{ref}}$ & Reference scale of Lemma~\ref{hol:pc:lem:convex}.\\
+$\bar s$, $\bar m$, $c_*$, $\mathsf G$, $L_\ell$, $L'_\nu$, $P_\nu$, $e_\nu$ &
+Data of \eqref{hol:pc:eq:main}.\\
+$\operatorname{cw}(\mathbf a)$ & Composition weight \eqref{hol:pc:eq:weight}.\\
+$w_{\mathrm{top}}$, $\beta_{\mathrm{top}}$, $w_{\mathbf a}$, $\beta_{\mathbf a}$,
+$\gamma_{\mathrm{top}}$, $\gamma_{\mathbf a}$ & Shifts, corner values and
+Gauss bounds in the proof of Theorem~\ref{hol:pc:main:composition}.\\
+$\operatorname{Rsn}$, $B_{\mathrm{cmp}}$, $B_{\mathrm{lin}}$, $B_{\mathrm{mat}}$ &
+Resonances and degree bounds (Section~\ref{hol:pc:sub:degree},
+Theorem~\ref{hol:pc:thm:matrix}).\\
+$\mathfrak o$, $\mathfrak O_{\mathfrak o,\Gamma}$, $\Pi_{k,\Gamma}$,
+$\operatorname{ct}$, $\mathfrak R$ & $\Z$ or $\Z[i]$; omnific coefficient ring;
+its negative part; constant term; a coefficient ring of
+Theorem~\ref{hol:pc:thm:linarith}.\\
+$\mathrm{Pr}_j$, $\mathrm{Ann}_{d,N}$, $\operatorname{wd}(p)$ & Euler
+projectors, annihilator and weighted degree of the encoder.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -14635,7 +15849,12 @@ continuum, a Hamel basis; its route to order three uses the Laurent ring and the
 shift with a Gauss valuation. The single-scale part uses height separation,
 polarization, Zariski density and linear algebra over $k(p,z)$, constant
 extension, and, for its realizations, the positive support monoid, the
-Berarducci--Mantova derivation and the normal-form definition of $\Oz$.
+Berarducci--Mantova derivation and the normal-form definition of $\Oz$. The
+polynomial-composition part uses the entire-support criterion, Gauss
+multiplicativity and large active degrees, then the exact pullback and
+operator profiles, integer convexity and superlinear escape; its degree bounds
+use exact leading terms, its module theorem the Smith normal form and the
+constant-term retraction, and its encoding Euler projectors.
 
 No unproved ring-theoretic conclusion from another report in this collection
 is used. The real-valued coarsening of~\cite[Lemma~9.1]{repoentire} is cited
@@ -14659,7 +15878,10 @@ product and the Tate cubic identity, as source~13 did, and uses the axiom of
 choice for a Hamel basis. The single-scale part imports the normalized
 Berarducci--Mantova derivation~\cite{bm}, the normal-form identification and
 definition of $\Oz$, and cites Gr\"onwall's single-series criterion without
-using it.
+using it. The polynomial-composition part imports the
+Davis--Putnam--Robinson--Matiyasevich theorem~\cite{matiyasevich} and Sun's
+eleven-unknown theorem~\cite{sun} for its two undecidability corollaries, and
+cites the complex entire-Mahler lemma~\cite[Lemma~6]{bcr} without using it.
 
 The potentially dangerous hypotheses, collected for review:
 \begin{itemize}
@@ -14686,7 +15908,9 @@ $k_0((z))$; that generality is used in the joint-independence criterion.
 Algebraic closedness is not used. It is $\C$ in
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and an arbitrary
 characteristic-zero field in the nonlinear, coefficient-field, theta-descent,
-order-three-threshold, unit-dilation, Newton-rigidity and single-scale parts, and $\R$ or $\C$ in the
+order-three-threshold, unit-dilation, Newton-rigidity, single-scale and
+polynomial-composition parts (with $\R$ or $\C$ for its omnific rings), and
+$\R$ or $\C$ in the
 theta-hierarchy part, which also fixes $\Gamma=\R$; the latter
 generality is not transferred to the statements of the linear theorems
 (Convention~\ref{hol:nl:conv:field}), although the unit-dilation part contains
@@ -14715,7 +15939,9 @@ series all orders are excluded at one order-unit scale (the single-scale part),
 while for $\Gamma=\R$ minimal orders are unbounded (the theta-hierarchy part).
 Linear mixed equations in
 derivatives and finitely many dilations are treated for every $\Gamma$ (the
-unit-dilation part).
+unit-dilation part), and so are equations in which one polynomial argument of
+degree at least two strictly dominates the composition weights (the
+polynomial-composition part).
 Nonlinear differential transcendence in all orders, and algebraic
 independence of derivatives at dilations with pairwise quotients that are not
 roots of unity, are proved only when $\Gamma$ has no order unit, or for a
@@ -14758,14 +15984,17 @@ keeps those of Section~\ref{hol:td:sub:nonclaims}, the
 order-three-threshold part those of Section~\ref{hol:ot:sub:nonclaims}, the
 unit-dilation part those of Section~\ref{hol:ud:sub:nonclaims}, the
 Newton-rigidity part those of Section~\ref{hol:nr:sub:nonclaims}, the
-theta-hierarchy part those of Section~\ref{hol:th:sub:nonclaims}, and the
-single-scale part those of Section~\ref{hol:fh:sub:nonclaims}; no
+theta-hierarchy part those of Section~\ref{hol:th:sub:nonclaims}, the
+single-scale part those of Section~\ref{hol:fh:sub:nonclaims}, and the
+polynomial-composition part those of Section~\ref{hol:pc:sub:nonclaims}
+(critical weights, several top products and matrix differential pullbacks are
+not treated); no
 complete algorithm for arbitrary
 surreal comparisons or cofinality decisions is claimed; the finite checks
 prove no infinite theorem. The full classifications and the nonlinear,
 coefficient-field, theta-descent, order-three-threshold, unit-dilation,
-Newton-rigidity, theta-hierarchy and single-scale theorem packages remain
-without Lean verification or independent refereeing.
+Newton-rigidity, theta-hierarchy, single-scale and polynomial-composition
+theorem packages remain without Lean verification or independent refereeing.
 The formalization ledger records the proved support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance,
@@ -14775,16 +16004,16 @@ including the partial-theta directions of the dilation classification.
 \label{hol:app:reproduce}
 
 The directory contains this standalone \LaTeX{} source, its compiled PDF, a
-README, nineteen source audit documents at the top level, twenty files under
-\texttt{code/} and thirty-one under \texttt{data/}. Of these, eighteen audit
-documents, eighteen files under \texttt{code/} (the eleven verification programs
+README, twenty source audit documents at the top level, twenty-two files under
+\texttt{code/} and thirty-two under \texttt{data/}. Of these, nineteen audit
+documents, twenty files under \texttt{code/} (the twelve verification programs
 of the sources merged here, the build scripts of sources~10, 11, 13, 17
-and~19, and the \texttt{Makefile}s of sources~12 and~16) and twenty-eight under
-\texttt{data/} (the eleven recorded outputs, the source build, layout and
-visual reports, and the requirements files of sources~11, 13, 14, 17 and~19)
-belong to the eleven sources merged into this text. The files prefixed
-\texttt{15-} belong to one further manuscript that has been placed in this
-directory but whose merge into the text is pending; the README describes
+and~19, and the \texttt{Makefile}s of sources~12, 15 and~16) and thirty-one
+under \texttt{data/} (the twelve recorded outputs, the source build, layout and
+visual reports, and the requirements files of sources~11, 13, 14, 15, 17
+and~19) belong to the twelve sources merged into this text. The files
+prefixed \texttt{20-} belong to one further manuscript that has been placed in
+this directory but whose merge into the text is pending; the README describes
 them. No source document from the
 inspected repository is redistributed, and no source manuscript is shipped. The bibliography is embedded: no BibTeX run, external
 graphics, shell escape, or repository checkout is required, and a conventional
@@ -14808,6 +16037,8 @@ python code/19-newton-rigidity-verify.py
 python code/16-theta-hierarchy-verify.py --precision 128 --output rerun-16.json
 pip install -r data/17-single-scale-requirements.txt
 python code/17-single-scale-verify.py --output rerun-17.json
+pip install -r data/15-polynomial-composition-requirements.txt
+python code/15-polynomial-composition-verify.py --output rerun-15.json
 \end{verbatim}
 
 The \verb|--output| argument is required by the scripts of sources~08, 10,
@@ -14825,8 +16056,10 @@ path given by \verb|--output|, overwriting it, and otherwise only prints.
 Source~16's writes \path{verification.json} in the current directory unless
 \verb|--output| is given, and source~17's writes
 \path{verification_results.json} beside itself in \texttt{code/}; both
-overwrite, so pass new paths. All use exact integer and rational arithmetic,
-those of sources~11, 13, 14, 17 and~19 through SymPy, and exit with a nonzero
+overwrite, so pass new paths. Source~15's, like source~16's, writes
+\path{verification.json} in the current directory unless \verb|--output| is
+given, overwriting it. All use exact integer and rational arithmetic,
+those of sources~11, 13, 14, 15, 17 and~19 through SymPy, and exit with a nonzero
 status if a check fails. The build script
 \path{code/10-nonlinear-rigidity-build.py} was written for source~10's own
 manuscript: run here it would typeset this report, leave auxiliary files in
@@ -14862,7 +16095,12 @@ manuscript, whose source and PDF, hashed there, are not shipped. Source~16's
 \path{code/17-single-scale-build.py} were written for their delivery layouts
 (Section~\ref{hol:sec:verification}); do not use them here, and the build and
 layout records of both describe their 25- and 24-page manuscripts, which are
-not shipped.
+not shipped. The same holds for source~15's
+\path{code/15-polynomial-composition-Makefile}, which would rebuild an
+\texttt{article.pdf} in the current directory and whose \texttt{clean} target
+deletes auxiliary files there, and for
+\path{data/15-polynomial-composition-BUILD_REPORT.json}, which describes its
+24-page manuscript.
 
 \clearpage
 \begin{thebibliography}{99}
@@ -15206,6 +16444,56 @@ source~13 inspected its README only.
 \texttt{docs/surreal/omnific-diophantine-geometry/}. Its definition
 \texttt{odg:def:rings} of $\Oz=\Z\oplus\Pi$ is cited by this merge for the
 omnific integers of Corollary~\ref{hol:td:cor:omnific}.
+
+\bibitem{bcr}
+J. P. Bell, M. Coons and E. Rowland,
+\emph{The rational--transcendental dichotomy of Mahler functions},
+J. Integer Seq. \textbf{16} (2013), Article~13.2.10; arXiv:1210.2070.
+\url{https://arxiv.org/abs/1210.2070}.
+Its Lemma~6 is the complex entire-Mahler lemma credited by source~15.
+
+\bibitem{nishioka}
+K. Nishioka, \emph{Mahler Functions and Transcendence}, Lecture Notes in
+Mathematics~1631, Springer, 1996. \url{https://doi.org/10.1007/BFb0093672}.
+Cited by source~15 from publisher metadata only.
+
+\bibitem{matiyasevich}
+Yu. V. Matiyasevich, \emph{Diophantine representation of enumerable
+predicates}, Math. USSR-Izv. \textbf{5} (1971), 1--28.
+\url{https://doi.org/10.1070/IM1971v005n01ABEH001004}.
+
+\bibitem{sun}
+Z.-W. Sun, \emph{Further results on Hilbert's Tenth Problem}, Sci. China
+Math. \textbf{64} (2021), 281--306; arXiv:1704.03504v7.
+\url{https://arxiv.org/abs/1704.03504}.
+Cited by source~15 only for undecidability in eleven integer unknowns.
+
+\bibitem{faverjonroques}
+C. Faverjon and J. Roques, \emph{Hahn series and Mahler equations: algorithmic
+aspects}, J. London Math. Soc. (2) \textbf{110} (2024), e12945;
+arXiv:2412.04928. \url{https://doi.org/10.1112/jlms.12945}.
+Added by this merge from the single-dilation report's bibliography; not read
+for this merge and not used.
+
+\bibitem{reposdhs}
+\repo\ project, \emph{A Single Dilation Recovers Hahn Support},
+\texttt{docs/surcomplex/single-dilation-hahn-support/}. At \texttt{bcac55a} it
+already discussed Mahler difference algebra and cited~\cite{faverjonroques}.
+
+\bibitem{repoadr}
+\repo\ project, \emph{Dilation Rigidity of Surreal Numbers and Omnific
+Integers}, \texttt{docs/surcomplex/autonomous-dilation-relations/}. Its
+\texttt{adr:lem:monomial} is the exponent-dilation twin of
+Example~\ref{hol:pc:ex:critical}, and its README records Mahler's 1983
+criterion through Nishioka--Nishioka.
+
+\bibitem{repoosq}
+\repo\ project, \emph{Set-Sized Quotients of the Omnific Integers},
+\texttt{docs/surreal/set-sized-quotients-of-omnific-integers/}, and
+\emph{Omnific Groups and Lattices},
+\texttt{docs/surreal/omnific-groups-and-lattices/}.
+Their READMEs were read by source~15 at \texttt{bcac55a}; nothing from them is
+used.
 
 \bibitem{dlmftheta}
 NIST Digital Library of Mathematical Functions, Chapter~20, \S20.5,

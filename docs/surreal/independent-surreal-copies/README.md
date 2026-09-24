@@ -253,7 +253,8 @@ Its Part III (`opa:as:`) was written in `20c4c9f`, after the pin.
     intersections.
 
 **[transcendence-over-bounded-support](../transcendence-over-bounded-support/)**
-(`bst:`), unchanged since the pin.
+(`bst:`), unchanged between the pin and batch 31; batch 32 added its Galois
+part (its Sections 11–19), which is not used here.
 
 - Section 10's one-witness gap duplicates `bst:cor:onegap`, and the
   one-series case of `bst:thm:mainintro` (`bst:thm:independent`), as the
@@ -262,7 +263,9 @@ Its Part III (`opa:as:`) was written in `20c4c9f`, after the pin.
   there; its proof is that report's tail estimate and root count.
 - The factorial witness is also used in `bst:thm:actualreal`, and, as a mere
   non-fraction, in `opa:as:ex:smallfrac`.
-- Proposition 9.3 is the localization of `bst:prop:localdensity`.
+- Proposition 9.3 is the localization of `bst:prop:localdensity`. Since
+  batch 32 that report also prints the general form, for every field `K` and
+  every unital subring `D ⊆ K`, as `bst:gr:prop:fractions`.
 - The coset slice is `bst:eq:projection`, and its linearity is
   `bst:lem:projection`. Theorem 5.4 (disjointness over the full Hahn field
   of the intersection group, with no cofinality hypothesis) is not stated

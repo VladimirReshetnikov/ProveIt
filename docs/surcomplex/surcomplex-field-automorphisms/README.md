@@ -460,8 +460,10 @@ self-embeddings of the full structure are new there. Neither addresses
 
 [first-kappa-coefficients](../first-kappa-coefficients/) receives in batch 32
 a proper-class family of pure-field involutions agreeing with `c` on `C`, none
-conjugate to `c`; by Proposition 23.1 none lies in `𝒢`. The two are
-complementary. The large-cardinal report
+conjugate to `c` (`fkc:sb:thm:involutions`); by Proposition 23.1 none lies in
+`𝒢`. The two are complementary. A note after Proposition B.1
+(`saut:prop:conjugacycriterion`) records that the non-conjugacy to `c` also
+follows from that criterion (`fkc:sb:rem:univ`). The large-cardinal report
 ([large-cardinal-embeddings-and-normal-forms](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/))
 is a different direction: source 02's class argument uses no large cardinal.
 
@@ -489,7 +491,10 @@ The rigidity report's README sentence that no other report proves its theorems
 about `Aut(No)` predates this report.
 
 Six symbols were renamed so that each has one meaning: `E_{ρ,τ} → M_{ρ,τ}`,
-`E_d → Φ_d` (so `E` is only an exponential), the derivation `D → 𝒟`, the
+`E_d → Φ_d` (so `E` never denotes a lift; otherwise it is an exponential,
+except as a local name for a set-sized subfield in `Aut(K/E)` and in the
+proofs of Proposition 9.3 and Theorem 10.1 — Section 1.4 said "only an
+exponential" before batch 32 and was corrected), the derivation `D → 𝒟`, the
 Puiseux field `P → 𝒫`, the automorphism `τ → ψ` in Section 7.2, and cut sides
 `(L,R) → (𝓛,𝓡)`; `Aut(K,L)` is written `Aut_L(K)`. `Γ = (No,+,<)` is a proper
 class here, departing from `NOTATION.md`'s set-sized `Γ`. No mathematical

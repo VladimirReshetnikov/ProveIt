@@ -11,7 +11,7 @@ drafts, not refereed and not formalized in Lean.
 
 ```
 article.tex                                    the report, standalone LaTeX with an internal bibliography
-article.pdf                                    the compiled report, 53 pages
+article.pdf                                    the compiled report, 54 pages
 README.md                                      this guide
 research_audit.md                              source 01's research audit, as delivered (see below)
 02-support-bounded-fields-SOURCE_AUDIT.md      source 02's source and proof audit, as delivered
@@ -450,7 +450,11 @@ one numbering.
   (`lce:thm:twoclosures`). Part II proves the exponential results for every
   uncountable κ, and the gap, saturation, strong-sum, nest and quotient
   results, which that report does not have. Its `h_κ = Σ ω^(−α)` and `z_κ`
-  are the series of Part II; its `p_κ` is a different series.
+  are the series of Part II; its `p_κ` is a different series. Its canonical
+  strong part (`lce:mf:thm:atomic`, no large cardinal) makes a map on `No`
+  that preserves Hahn sums of fewer than κ members agree on `K_{κ,ℝ}(No)`
+  with the strong map having its monomial values; a note after Theorem 18.2
+  records this.
 - **[set-sized-quotients-of-omnific-integers](../../surreal/set-sized-quotients-of-omnific-integers/)**:
   `osq:thm:support` (i) contains Theorem 21.3 and the Gaussian case; Part II's
   reservoir gives a third route through `osq:lem:collision`, which that report
@@ -466,7 +470,11 @@ one numbering.
   `saut:thm:inequivalentrealform` is a real form with a countable cofinal
   subset (a different obstruction). Its batch-32 addition classifies strong
   valued `Oz[i]`-preserving involutions; Part II's `τ_κ` are pure-field
-  involutions, and the two families are complementary.
+  involutions, and the two families are complementary. By
+  `saut:fs:prop:conjugacy` conjugacy there is decided on `C`, so its `2^𝔠`
+  types (`saut:fs:thm:main-count`) are seen on `C`, whereas every `τ_κ`
+  restricts to `conj` on `C` and none is valued and `Oz[i]`-preserving
+  (Remark 22.4 (3)).
 - **[surreal-fields-across-universes](../../foundations-and-computation/surreal-fields-across-universes/)**
   studies saturation and omitted cuts of the proper-class field `No^M` inside
   `No^N` for inner models. Part I answers none of its questions; Part II
@@ -477,7 +485,15 @@ one numbering.
   works over supports **bounded above in order** and explicitly excludes
   cardinal support bounds (`bst:eq:base` and its conventions list). Its
   `bst:cor:optimal` is consistent with this report. No `bst:` question is
-  answered.
+  answered. Its batch-32 question `bst:gr:q:cardinal` (its constructions in
+  fields with fewer than κ terms) bears on Proposition 2.2 and Remark 2.3:
+  the algebraic closure step works at every uncountable κ, singular
+  included; the Galois constructions are not treated here.
+- **[omnific-groups-and-lattices](../../surreal/omnific-groups-and-lattices/)**:
+  `ogl:ch:cor:support` (λ = κ, `D = Z`, `k = R`) lifts Theorem 21.3 to
+  elementary Chevalley and Steinberg groups without an `A_1` component:
+  `E_Φ(Z)` is the universal set-sized quotient of `E_Φ(Oz_{<κ})`, by the
+  constant term. A note after Corollary 21.6 records it.
 - **[three-duals-of-hahn-vector-spaces](../three-duals-of-hahn-vector-spaces/)**:
   `duals:thm:completion` (finite coefficient rank below every cut) and
   `duals:thm:cofinality-completion` (completion proper iff `cf(Γ) = ℵ_0`)
@@ -509,8 +525,8 @@ one numbering.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 53 pages (Part I pages 5–25, Part II pages 26–50,
-appendices and references 50–53) with zero errors, zero LaTeX or package
+The build gives 54 pages (Part I pages 5–25, Part II pages 26–51,
+appendices and references 51–54) with zero errors, zero LaTeX or package
 warnings, zero overfull or underfull boxes, zero undefined references or
 citations, zero multiply defined labels and zero duplicate PDF
 destinations. It needs pdfLaTeX with newtx, amsthm, mathtools, microtype,

@@ -4036,6 +4036,21 @@ The reviewed Diophantine source and its 201-page PDF are unchanged by this
 integration. The new reports and all unreviewed additions remain pending
 independent proof review and Lean formalization.
 
+The final synchronization through `8a60159` also brings the chosen-Smith-
+reduction criterion and all-solutions description. The two modules were
+checked against `odg:thm:smith`: zero rows require the whole transformed
+entry to vanish, pivots need ordinary constant-term divisibility, and the
+free coordinates remain arbitrary. The combined two-thread build passes
+4,451 jobs and the 15,361-declaration axiom audit, with the same three allowed
+axioms. The polynomial-composition integration adds 18 standard results
+and principal Theorem N; reciprocal notes in six neighbouring reports
+change no existing standard statement. The refreshed inventory has 4,238
+standard results in 63 reports. All 4,782 cited source references and 1,630
+local Markdown destinations resolve. The new universal-symmetries archive
+has eight members and passes ZIP integrity checks, but placement and review
+remain pending. The reviewed Diophantine source/PDF and the catalogue are
+unchanged by this final merge.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

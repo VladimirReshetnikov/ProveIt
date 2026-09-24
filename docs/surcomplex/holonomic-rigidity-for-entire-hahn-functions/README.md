@@ -6,22 +6,25 @@ every value group, all orders when the value group has no order unit, an
 explicit series of minimal differential order three when it has one, no
 equation of order two, nor of order three and jet degree at most three, for
 any value group, unbounded minimal orders over `C((t^R))`, lacunary series
-with no equation at one order-unit scale, and mixed differential–dilation
-equations decided by the relative scale of their dilations**
-Merged research report, 22–23 September 2026, from eleven manuscripts: 08 and
+with no equation at one order-unit scale, mixed differential–dilation
+equations decided by the relative scale of their dilations, and
+polynomial-composition equations with a dominant argument of degree at least
+two rigid for every value group**
+Merged research report, 22–23 September 2026, from twelve manuscripts: 08 and
 09, written independently on the same day; 10, which adds the nonlinear part;
 11 and 12, written independently and delivered together later, which add the
 coefficient-field part; 13, delivered later still, which adds the
-theta-descent part; 14, which adds the order-three-threshold part; and four
+theta-descent part; 14, which adds the order-three-threshold part; and five
 manuscripts of batch 31: 18 and 19, which add the unit-dilation and
-Newton-rigidity parts, and 16 and 17, which add the theta-hierarchy and
-single-scale parts. One further manuscript of batch 31 (local number 15) has
-been placed in this directory, with its audit, code and data files, but is not
-yet merged into the text; its files are listed below and marked *pending*.
+Newton-rigidity parts, 16 and 17, which add the theta-hierarchy and
+single-scale parts, and 15, which adds the polynomial-composition part. One
+further manuscript (local number 20) has been placed in this directory, with
+its audit, code and data files, but is not yet merged into the text; its files
+are listed below and marked *pending*.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 207 pages
+article.pdf   the compiled report, 225 pages
 README.md     this guide
 08-finite-recurrences-PROOF_AUDIT.md          source 08: assumptions and critical proof steps
 08-finite-recurrences-SOURCES_AND_SCOPE.md    source 08: sources, repository pin, priority limits
@@ -34,7 +37,7 @@ README.md     this guide
 13-theta-descent-PROOF_AUDIT.md               source 13: assumptions, proof dependencies, non-claims
 13-theta-descent-SOURCES_AND_SCOPE.md         source 13: repository pin, literature, priority boundary
 14-order-three-threshold-SOURCE_AUDIT.md      source 14: repository pin, prior manuscript, novelty, checkpoints
-15-polynomial-composition-SOURCE_AUDIT.md     source 15 (pending): source audit
+15-polynomial-composition-SOURCE_AUDIT.md     source 15: repository pin, files read, literature, novelty limits
 16-theta-hierarchy-PROOF_AUDIT.md             source 16: hypotheses, dependency separation, proof checks
 16-theta-hierarchy-SOURCES_AND_SCOPE.md       source 16: repository snapshot, public sources, priority limits
 17-single-scale-PROOF_AUDIT.md                source 17: core mechanism, relation ideals, base fields, boundary
@@ -42,6 +45,7 @@ README.md     this guide
 18-unit-dilation-SOURCES_AND_SCOPE.md         source 18: repository pin and blob, literature, review priorities, non-claims
 19-newton-rigidity-PROOF_AUDIT.md             source 19: assumptions, dependency chain, critical inequality, limits
 19-newton-rigidity-SOURCES_AND_SCOPE.md       source 19: repository pin, files read, literature, priority limits
+20-recurrences-SOURCE_AUDIT.md                source 20 (pending): source audit
 code/
   08-finite-recurrences-verify.py             source 08 checks (3,705)
   09-entire-hahn-holonomic-verification.py    source 09 checks (2,043)
@@ -54,8 +58,8 @@ code/
   13-theta-descent-verify.py                      source 13 checks (1,622; needs SymPy)
   13-theta-descent-build.py                       source 13's build script (see "Build and reproduce")
   14-order-three-threshold-verify.py              source 14 checks (600; needs SymPy; run on a copy)
-  15-polynomial-composition-Makefile              source 15 (pending)
-  15-polynomial-composition-verify.py             source 15 (pending)
+  15-polynomial-composition-Makefile              source 15's Makefile (see "Build and reproduce")
+  15-polynomial-composition-verify.py             source 15 checks (2,369; needs SymPy; pass --output)
   16-theta-hierarchy-Makefile                     source 16's Makefile (see "Build and reproduce")
   16-theta-hierarchy-verify.py                    source 16 checks (standard library; pass --output)
   17-single-scale-build.py                        source 17's build script (see "Build and reproduce")
@@ -63,6 +67,8 @@ code/
   18-unit-dilation-verify_finite.py               source 18 checks (16,579; standard library; pass --output)
   19-newton-rigidity-verify.py                    source 19 checks (259; needs SymPy; run on a copy)
   19-newton-rigidity-build.py                     source 19's build script (see "Build and reproduce")
+  20-recurrences-build.sh                         source 20 (pending)
+  20-recurrences-verify.py                        source 20 (pending)
 data/
   08-finite-recurrences-verification.txt, 08-finite-recurrences-build_report.txt
   09-entire-hahn-holonomic-verification_results.txt, 09-entire-hahn-holonomic-build_report.txt
@@ -80,8 +86,9 @@ data/
   14-order-three-threshold-verification.json   recorded run of the source 14 checks (through q^47)
   14-order-three-threshold-requirements.txt    sympy>=1.13,<2
   14-order-three-threshold-build_report.json   build and validation record of the 26-page A4 source 14 manuscript
-  15-polynomial-composition-BUILD_REPORT.json, 15-polynomial-composition-requirements.txt,
-  15-polynomial-composition-verification.json            source 15 (pending)
+  15-polynomial-composition-verification.json  recorded run of the source 15 checks (2,369 in 12 groups)
+  15-polynomial-composition-requirements.txt   sympy==1.14.0
+  15-polynomial-composition-BUILD_REPORT.json  build report of the 24-page source 15 manuscript
   16-theta-hierarchy-verification.json         recorded run of the source 16 checks (precision p^128)
   16-theta-hierarchy-build_audit.json          build audit of the 25-page source 16 manuscript
   17-single-scale-verification_results.json    recorded run of the source 17 checks (8,608 in 21 groups)
@@ -92,13 +99,15 @@ data/
   19-newton-rigidity-verification.json         recorded run of the source 19 checks (259 in 17 groups)
   19-newton-rigidity-requirements.txt          sympy==1.14.0
   19-newton-rigidity-build_audit.json          build and layout audit of the 24-page source 19 manuscript
+  20-recurrences-verification.txt              source 20 (pending)
 ```
 
 Every label in `article.tex` carries the prefix `hol:`; the nonlinear part
 uses the sub-prefix `hol:nl:`, the coefficient-field part `hol:cf:`, the
 theta-descent part `hol:td:`, the order-three-threshold part `hol:ot:`, the
 unit-dilation part `hol:ud:`, the Newton-rigidity part `hol:nr:`, the
-theta-hierarchy part `hol:th:` and the single-scale part `hol:fh:`.
+theta-hierarchy part `hol:th:`, the single-scale part `hol:fh:` and the
+polynomial-composition part `hol:pc:`.
 The merge of sources 11 and 12 renamed or removed no label: the report had 199 labels before it and had 274 after it,
 all 199 original labels still present. The later coefficient-field review
 adds `hol:cf:cor:meromorphicmixed`, giving 275 labels while preserving every
@@ -112,10 +121,12 @@ numbers, checked the same way. The merge of sources 18 and 19 adds 116 labels,
 labels are present and keep their numbers, checked the same way. The merge of
 sources 16 and 17 adds 116 labels, 50 with `hol:th:` and 66 with `hol:fh:`,
 giving 644; all 528 earlier labels are present and keep their numbers,
-checked the same way. The audit files and programs keep the source numbers
-`08` to `19`
-of the batches they arrived in (`15` to `19` are this report's local numbers
-for batch 31's manuscripts 01, 02, 03, 05 and 08), and the audit files keep their sources' own
+checked the same way. The merge of source 15 adds 56 labels, all with
+`hol:pc:`, giving 700; all 644 earlier labels are present and keep their
+numbers, checked the same way. The audit files and programs keep the source
+numbers `08` to `20` of the batches they arrived in (`15` to `19` are this
+report's local numbers for batch 31's manuscripts 01, 02, 03, 05 and 08), and
+the audit files keep their sources' own
 notation and theorem numbering. No source manuscript is shipped.
 
 ## Why one report
@@ -616,6 +627,69 @@ open" and Question 12.1 are stale (answered by Theorems H and I).
   (Python 3.14.4, SymPy 1.14.0) and reproduced its record apart from the
   recorded interpreter version.
 
+## Source 15: the polynomial-composition part
+
+| | Manuscript | Pin | Contributes |
+|---|---|---|---|
+| **15** | *Polynomial-Composition Rigidity at Surreal Scales: Weighted nonlinear equations, finite degree bounds, and omnific Diophantine universality* (24 pages, US letter, 23 September 2026; batch 31, manuscript 01, archive `Surreal_Polynomial_Composition_Rigidity`) | `bcac55a` | Polynomial composition in `E_Γ(k)` (Proposition 36.2); superlinear escape, integer convexity, exact pullback profile (Lemmas 36.3–36.4, Proposition 36.5); operator bound, exact operator profile, exact leading term (Lemma 36.6, Proposition 36.7, Lemma 36.8); the weighted theorem (Theorem N), mixed differential–Mahler equations, Newton-weight condition (Corollaries 36.9, 36.11); resonant degree bounds and extension-stable loci (Theorem 36.12, Corollary 36.13, Proposition 36.14); matrix rigidity (Theorem 36.15); omnific coefficients and linear solution modules (Proposition 37.1, Theorem 37.2); universal encoding and undecidability (Theorem 37.3, Remark 37.4, Corollaries 37.5–37.6); worked equations and boundaries (Sections 37.3–37.4, Example 37.7); Questions 19.55–19.62. Files `15-polynomial-composition-*`. |
+
+Let `P` have degree `d ≥ 2` and let every other argument `P_ν` have degree
+`e_ν < d`. If `c_*(z) ∏ L_ℓ(f(P(z))) = 𝖦(z, L'_ν(f(P_ν(z))))` with nonzero
+linear differential operators and every monomial `Y^𝐚` of `𝖦` of composition
+weight `Σ a_ν e_ν < s̄d`, then every strongly entire `f` is a polynomial of
+degree at most an explicit `B_cmp` that keeps the integer roots of the exact
+indicial polynomials `I_(L_ℓ)(dT)` (Theorem N, Theorem 36.12). **No order unit
+and no condition on scales enters**: the lower arguments may be dilations
+`λz`, so a strictly dominant argument of degree at least two defeats the
+partial theta mechanism of Theorems B and J (Remark 36.10, merge). With
+ordinary integer data the linear omnific solutions form an explicit
+`𝔒`-module computed by a Smith normal form (Theorem 37.2); every affine
+hypersurface over `Q` is the entire-solution locus of one equation of the
+class, so omnific solvability is undecidable there (MRDP), even with degree
+bound ten (Sun's eleven unknowns). The complex entire-Mahler lemma (Bell,
+Coons and Rowland, Lemma 6) is credited, not claimed.
+
+- **Placement.** Sections 36–37; principal theorem Theorem N; questions
+  19.55–19.62.
+- **Renamed symbols** (Section 36.1): source `χ_L` (exact) and `χ̄_L`
+  (residue) become `I_L` and `χ_L` — the names are **reversed** to match this
+  report's `I_P` and `χ_P`; `h_L, α_L → w_L, β_L`; radius `ρ`, height
+  `M_f(ρ)`, `I_f(ρ)`, `in_ρ(f)` → scale `δ`, `−γ_δ(f)`, `Act_δ(f)`, `φ_δ(f)`
+  (signs of inequalities reversed); `R → δ_ref`; `𝒯_ρ → 𝓔^(δ)`; `κ → v(lc_z P)`
+  (`lc` is the Hahn leading coefficient here, `lc_z` the leading coefficient in
+  `z`); `A, Q, q, s, T_ν → c_*, 𝖦, m̄, s̄, L'_ν`; weight `w(𝐚) → cw(𝐚)`;
+  `H, b → w_top, β_top`; resonance set `ℛ → Rsn`; `B → B_cmp`; `D, R_(D,Γ), R →
+  𝔬, 𝔒_(𝔬,Γ), 𝔑`; `E_z, S_j, L_(d,N) → ϑ, Pr_j, Ann_(d,N)`; encoder `q, T →
+  deg p, wd(p)`; theta `F → Θ_p`. "Mahler equation" is kept with its meaning
+  (argument `z^b`), which is not the exponent dilation of
+  [autonomous-dilation-relations](../autonomous-dilation-relations/). The
+  shipped audit file keeps the source's notation.
+- **Printed once:** the entire class and tails (Definition 1.2, Lemma 2.3 (a)),
+  the entire-support criterion (Proposition 20.2), closure (Proposition 2.7;
+  polynomial composition is also in `ent:prop:operations`), Gauss algebra
+  (Corollary 14.3), injective evaluation (as Theorem 33.5), large active
+  degrees (Lemma 14.5), `zD − N + ε` (Example 15.5), the embedding, the
+  partial theta series, the characteristic-`p` series (Example 17.3), the
+  rank-infinity series (Theorem 11.2), uncountable cofinality (Section 31.3)
+  and the full-class failure (Proposition 27.6).
+- **Merge additions** (marked "merge"): Remark 36.10 (degree at least two
+  removes the order-unit dichotomy; comparison with Theorems B, J, 10.2 and
+  Corollary 11.3); the identification of the two indicial polynomials; the
+  Mahler references missing from the source (Faverjon–Roques via
+  single-dilation-hahn-support, Mahler 1983 via autonomous-dilation-relations).
+- **Stale or incorrect source text.** Its description of this report (linear
+  rigidity, dilations, first order, higher order without an order unit) was
+  accurate at `bcac55a` and is superseded by Theorems H, I and K. Its statement
+  that a keyword search for Mahler material returned no matches was **not
+  correct at its pin**: single-dilation-hahn-support already discussed Mahler
+  difference algebra and cited Faverjon–Roques, as did computable-surreals.
+- **Stale text corrected in this report:** the status of Question 19.6,
+  Section 19's ledger, Section 18, the appendices and this README.
+- **Verified for this merge.** The source 15 suite was rerun on a copy
+  (Python 3.14.4, SymPy 1.14.0) and reproduced its record apart from the
+  recorded interpreter version; the worked equations were rechecked
+  separately with SymPy.
+
 ## What the report claims
 
 Let `K = C((t^Γ))` for a nonzero set-sized ordered abelian group `Γ`, **not
@@ -888,6 +962,23 @@ at one order-unit scale.
   (Theorem 35.10, Proposition 35.11); independent omnific codes
   `ω^Ω Σ ω^(−𝖻_n)` and floors `⌊𝒢_A(ω^(−1), ω^a)⌋_Oz` (Theorems 35.16, 35.18).
 
+The polynomial-composition part (source 15, Sections 36–37) works over
+`k((t^Γ))` in characteristic zero, for every `Γ`.
+
+- **Theorem N.** An equation with one product of `s̄` nonzero linear
+  differential transforms of `f(P(z))`, `deg P = d ≥ 2`, balanced by a
+  polynomial in transforms of `f(P_ν(z))`, `deg P_ν < d`, whose monomials
+  have composition weight below `s̄d`, has only polynomial strongly entire
+  solutions; in particular every linear equation with a unique argument of
+  largest degree `≥ 2` (Corollary 36.9).
+- Explicit degree bounds keeping exact indicial resonances, with
+  extension-stable finite coefficient loci (Theorem 36.12, Corollary 36.13,
+  Proposition 36.14); nonsingular matrix systems (Theorem 36.15); linear
+  omnific solution modules over `Oz`, `Oz[i]` and `𝔒_(𝔬,Γ)` (Theorem 37.2);
+  every affine hypersurface over `Q` is an entire-solution locus (Theorem
+  37.3), so omnific solvability is undecidable in the class, even with degree
+  bound ten (Corollaries 37.5–37.6).
+
 ## What the report does not claim
 
 - The arbitrary-rank classification is offered as a **proposed original
@@ -900,7 +991,8 @@ at one order-unit scale.
   direction of the dilation classification and of the order-unit detection
   equivalence. The full classifications and the nonlinear, coefficient-field,
   theta-descent, order-three-threshold, unit-dilation, Newton-rigidity,
-  theta-hierarchy and single-scale theorem packages remain pending. The detailed coverage is in Section 13.3.
+  theta-hierarchy, single-scale and polynomial-composition theorem packages
+  remain pending. The detailed coverage is in Section 13.3.
 - Classical material is credited, not claimed: Stanley's D-finite/P-recursive
   correspondence, Hahn–Neumann support lemmas and Higman's lemma, partial
   theta series and their functional identity, and the Conway normal-form
@@ -1076,13 +1168,28 @@ at one order-unit scale.
   decision procedure; no large cardinals, CH or GCH; no referee report or
   Lean, and 8,608 checks are not a theorem count; PDF bytes not reproducible;
   comparison covered three reports; floors only for real `a ≥ 0`.
+- The polynomial-composition part keeps every limitation of source 15, listed
+  as P1–P18 in Section 37.6: no referee report, Lean or repository build, and
+  "breakthrough" disclaimed; Bell–Coons–Rowland, Nishioka, MRDP and Sun are
+  credited inputs, and ten is not optimal; entireness relative to one Hahn
+  field; `D_z` is not `∂_BM`; the general higher-order problem is not
+  addressed by it; omnific polynomiality is elementary; the strict weight
+  condition is sufficient, not necessary, and critical weights and several
+  top products are open; the Newton-weight condition is not an independence
+  statement; the coefficient locus is not a decision procedure; the matrix
+  theorem needs a nonsingular dominant matrix; no several variables or
+  meromorphic solutions; extension stability for fixed equations only; `Oz`
+  not claimed a PID; the critical classification is elementary; 2,369 checks
+  certify nothing infinite; the comparison read seven files and its "no
+  Mahler material" statement was incorrect at the pin; the quotient and
+  lattice results are not reproduced.
 - The finite checks validate coefficient conversions, identities, cancellation
   examples and finite ordered-group examples. They do not establish the
   infinite support arguments, the cofinality claims, the generic-line theorem,
   the nonexistence of annihilating operators, the coefficient-field theorem,
   the descent, any independence statement, the minimal order of `𝒯_p`,
   second-order rigidity, the periodic-affine valuation theorem or the
-  Skolem–Mahler–Lech theorem, Theorem K, Theorem L or Theorem M.
+  Skolem–Mahler–Lech theorem, Theorem K, Theorem L, Theorem M or Theorem N.
 
 ## Relation to the neighbouring reports
 
@@ -1155,7 +1262,21 @@ an infinite-series equation, not a Diophantine one. Source 17's floor profile
 **[single-dilation-hahn-support](../single-dilation-hahn-support/)** also speaks
 of dilations, but there a dilation is an automorphism `t^g ↦ t^(qg)` of the
 scalar field; here it is always the argument dilation `f(z) ↦ f(λz)` with a
-fixed scalar `λ`. The two reports share the word, not a theorem.
+fixed scalar `λ`. The two reports share the word, not a theorem. That report
+already discussed Mahler difference algebra and cites Faverjon–Roques on
+linear Mahler equations with Hahn-series solutions, which source 15 missed;
+this report cites both (Section 37.5) and uses neither.
+
+**[autonomous-dilation-relations](../autonomous-dilation-relations/)** treats
+autonomous Mahler equations for the exponent dilation `S_d`; its
+`adr:lem:monomial` (`S_d w = w^d` forces a monomial) is the twin of Example
+37.7 here (`f(z^d) = f(z)^d` forces `cz^N`), and its README records Mahler's
+1983 criterion through Nishioka–Nishioka. Polynomial composition in the entire
+class is part of `ent:prop:operations` of entire-functions-at-arbitrary-rank.
+Source 15's omnific module theorem applies `odg:thm:smith` and
+`odg:thm:linear` of omnific-diophantine-geometry (with the same argument over
+`Z[i]`), and its undecidability corollary refines `odg:cor:H10` by an encoding
+into a rigid functional equation.
 
 ## Build and reproduce
 
@@ -1177,12 +1298,15 @@ python code/19-newton-rigidity-verify.py
 python code/16-theta-hierarchy-verify.py --precision 128 --output rerun-16.json
 pip install -r data/17-single-scale-requirements.txt
 python code/17-single-scale-verify.py --output rerun-17.json
+pip install -r data/15-polynomial-composition-requirements.txt
+python code/15-polynomial-composition-verify.py --output rerun-15.json
 ```
 
-The current build gives 207 pages with zero errors, zero warnings, zero
+The current build gives 225 pages with zero errors, zero warnings, zero
 overfull or underfull boxes, zero undefined references, zero multiply defined
 labels and zero duplicate PDF destinations; the build of the text before the
-merge of sources 16 and 17 gave 175 pages, that before the merge of sources 18
+merge of source 15 gave 207 pages, that before the merge of sources 16 and 17
+175 pages, that before the merge of sources 18
 and 19 137 pages, that before the merge of source 14
 118 pages, and that before the merge of source 13 91 pages, equally clean. The programs of sources 08,
 09, 10 and 12 use only the Python standard library with exact integer and
@@ -1214,6 +1338,9 @@ Python 3) writes `verification.json` in the current directory unless
 record's. `17-single-scale-verify.py` needs SymPy (`sympy==1.14.0`, Python
 3.10+) and without `--output` writes `verification_results.json` **beside
 itself** in `code/`, overwriting it; always pass a new path.
+`15-polynomial-composition-verify.py` needs SymPy (`sympy==1.14.0`, Python
+3.10+; fixed seed 20260923) and without `--output` writes `verification.json`
+in the current directory, overwriting it; pass a new path.
 The recorded runs passed 3,705 checks (08), 2,043
 checks (09), 2,113 checks (10, seed 20260922, six groups: 450 + 240 + 480 +
 500 + 360 + 83), 8,673 cases in eight groups (11; 8,136 of them binary-prefix
@@ -1230,8 +1357,12 @@ terms, 128 + 128 `p`-coefficients of the product and the order-three identity
 below `p^128`, 852 Gauss-profile cases, 65 `Q(√2)` dominance cases, the
 squarefree wedge assignment for `N = 1, …, 8`, and 81 grid candidates with 50
 nonzero jet determinants; the record gives no total) and 8,608 checks in 21
-groups (17; 7,198 of them the band lemma in finite windows), with no
-failures. For this merge the
+groups (17; 7,198 of them the band lemma in finite windows) and 2,369 checks
+in twelve groups (15: 648 universal encoding, 445 indicial leading terms, 360
+integer convexity, 228 Euler projectors, 208 exact resonance, 150 Smith
+certificates, 90 + 70 + 35 rank-two operator, pullback and Gauss profiles, 75
+boundary coefficients, 48 sharp degree family, 12 worked equations; worked
+degree bounds 1, 3, 1, 2), with no failures. For this merge the
 source 11 and 12 suites were rerun on a copy (Python 3.14.4, SymPy 1.14.0) and
 reproduced their records exactly apart from the recorded interpreter version
 (recorded runs: Python 3.13.5, SymPy 1.14.0); an earlier rerun of the source 10
@@ -1247,7 +1378,10 @@ source 19's apart from the recorded interpreter version (recorded run: Python
 endings, which a Windows run writes as CRLF. For the merge of sources 16 and
 17 both suites were rerun on a copy (Python 3.14.4, SymPy 1.14.0): source 16's
 reproduced its record apart from the elapsed time, and source 17's apart from
-the recorded interpreter version (recorded run: Python 3.13.5).
+the recorded interpreter version (recorded run: Python 3.13.5). For the merge
+of source 15 its suite was rerun on a copy (Python 3.14.4, SymPy 1.14.0) and
+reproduced its record apart from the recorded interpreter version (recorded
+run: Python 3.13.5, SymPy 1.14.0).
 
 The build helpers were written for their sources' own manuscripts and are
 kept byte-identical; do not use them here, use `latexmk` on a copy.
@@ -1292,9 +1426,15 @@ manuscript, which is not shipped. `code/17-single-scale-build.py` looks for an
 its delivery layout it wrote `.build/`, `article.pdf` and `build_audit.json`
 in place. `data/17-single-scale-build_audit.json` and
 `data/17-single-scale-visual_audit.json` describe the 24-page source 17
-manuscript, which is not shipped. The pending source's build file
-(`15-…-Makefile`) is described when that source is merged; do not run it
-here.
+manuscript, which is not shipped. `code/15-polynomial-composition-Makefile`
+runs `pdflatex` three times on an `article.tex` in the current directory,
+rebuilding `article.pdf` in place; its `verify` target calls a `verify.py`
+that is not present under that name, and its `clean` target deletes auxiliary
+files with `rm -f`. `data/15-polynomial-composition-BUILD_REPORT.json`
+describes the 24-page source 15 manuscript (TeX Live 2025/dev on Debian, no
+warnings), which is not shipped. The pending source's build file
+(`20-recurrences-build.sh`) is described when that source is merged; do not
+run it here.
 
 
 ## Subsequent proof review
@@ -1517,4 +1657,19 @@ answered by Theorem I (Remark 32.18) and its other nine questions are
 35.20) and its other ten are 19.45–19.54. The remarks after Theorem 21.20 and
 Corollary 25.7, the status of Question 19.1, Section 19's ledger, Section 18
 and the appendices were updated. Neither part has been independently refereed
+or formalized.
+
+## Merge of source 15
+
+The code, data and audit files of source 15 are byte-identical to the
+delivered package (placement `9d28e28`). Not shipped: its article source, PDF
+and delivery README. Every result of the source is printed in Sections 36–37
+or the introduction, with its proof, except the facts listed above as printed
+once; Section 36.1 maps each numbered result to its place here. Its
+description of this report was accurate at its pin, at which the report was
+the five-source text; its "no Mahler material" statement was not, and is
+corrected in Sections 36.1 and 37.5. Its Questions 12.1–12.8 are 19.55–19.62.
+The status of Question 19.6, Section 19's ledger, Section 18 and the
+appendices were updated, and the title-page count of pending theorem packages
+now names all nine later parts. The part has not been independently refereed
 or formalized.

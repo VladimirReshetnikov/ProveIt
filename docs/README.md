@@ -76,15 +76,16 @@ and [dilation rigidity](surcomplex/autonomous-dilation-relations/), and
 companions to the holonomic, nonabelian-support and omnific-preserving
 reports. The first four writes through `1ab41af` integrate those companions
 and the dilation report; `de45cee` completes the three-manuscript
-critical-point-defects assembly. Its 76 standard results are now indexed;
+critical-point-defects assembly. Its initial 76 standard results were indexed;
 independent proof review and Lean formalization remain pending.
-The automorphism assembly now has nine manuscripts and states automatic
+That automorphism assembly had nine manuscripts and states automatic
 strongness for `Oz` automorphisms; these new claims await proof review.
 
 Placement `9d28e28` adds [independent surreal copies](surreal/independent-surreal-copies/),
 a proposed construction of copies sharing a prescribed set-sized Hahn core,
 written as a single-source report in `781b19e`. Its eight companions are now
-integrated, including theta hierarchies (`1d3f503`). The nine manuscripts
+integrated, including theta hierarchies (`1d3f503`) and polynomial
+composition (`8bc7994`). The nine manuscripts
 placed in `7d04483` are also written through `c315ac9`, expanding eight
 existing reports. They add Galois rank, arithmetic sampling, finite symmetry
 descent, support-bounded fields, cyclic ramification, measurable first
@@ -98,6 +99,9 @@ Their 60 standard results are indexed and PDFs supplied. The seven companions
 to dilation, holonomic rigidity, omnific automorphisms and Diophantine geometry
 have code and audit files placed, but their main-text integration and proof
 review remain pending. Placement alone does not extend any Lean mapping.
+A further universal-symmetries and difference-equations archive arrived in
+`bbe23a3`; its ZIP integrity is checked, but placement, integration and
+review remain pending.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
@@ -190,6 +194,7 @@ not extend their earlier proof-review scope.
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups with no new omnific points; `SL_n(ℤ)` as the universal set-sized quotient of `E_n(Oz)` for `n ≥ 3`, but none in rank two; shortest vectors and missing infima in omnific lattices; four manuscripts |
 | [Omnific continued fractions](surreal/omnific-continued-fractions/) | Exact digit fibers as translates of a valuation ideal, full Hahn realizations and periodic algebraic fibers; ordinary finite indices only; proof review pending |
 | [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | A proposed affirmative answer to Ehrlich–Kaplan's question (JSL Question 9.1): every discrete initial subgroup of `No` is isomorphic to an initial subgroup of `Oz`; convex subquotients of initial groups are initially realizable; two manuscripts |
+| [Independent surreal copies](surreal/independent-surreal-copies/) | Prescribed common Hahn cores, surreal self-embeddings and transcendence gaps; class assumptions and proof review pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
@@ -312,7 +317,6 @@ quantum theory and no measurable infinitesimal.
 | [Omnific notations](foundations-and-computation/omnific-notations/) | Holonomic towers, hereditary forms and rational `ω`-terms with decidable equality and floor; raw `d`-block equality is `Π⁰₁`-complete and support validity `Π¹₁`-complete |
 | [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation |
 | [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Four manuscripts on the claimed exact support threshold for two transports, defect coefficients, and descent to the target model; proof review pending |
-
 | [Exponential relations over omnific integers](foundations-and-computation/exponential-relations-over-omnific-integers/) | Toric relations and a decidable additive language with algebraic exponential predicates; elementary cores and computability boundaries; proof review pending |
 
 A mathematical closure theorem need not supply a uniform algorithm on the
