@@ -885,6 +885,17 @@ One fixed `λ` can kill nonconstant monomials; detecting a given nonconstant
 requires choosing a suitable functional. This construction does not specify
 a derivation of the full surreal field.
 
+In that report's constant-discriminant section (`odg:disc:sub:disc`), the
+Euler family uses rational-valued functionals on `Γ_ℚ` and acts on the
+Hahn field with algebraically closed coefficients. The bar in `P̄ = ct P`
+applies the exponent-zero map to every coefficient; it is neither complex
+conjugation nor extraction of the constant coefficient in `X`. Squarefree
+for `P̄ ∈ 𝔬[X]` means squarefree over the coefficient field `𝕜`, or no
+repeated root over its algebraic closure. A nonzero discriminant in `𝔬`
+need not be a unit of `𝔬`. The unique translation `h = −(a₁ − ct a₁)/n`
+requires positive degree, but does not require `1/n ∈ 𝔬`, since the purely
+infinite ideal is a `𝕜`-vector space.
+
 In the regular-singular part of the differential-equations report,
 `t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
 The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`

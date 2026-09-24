@@ -4538,3 +4538,109 @@ hypotheses, reconstruct abbreviated arguments, inspect downstream uses of any
 correction, align terminology with the guide, and rebuild the affected document.
 A source-to-merged-claim reconciliation is still required where a report's
 provenance account alone does not establish equivalent scope.
+
+
+## Omnific Diophantine geometry — first discriminant proof review: elementary lemmas and translation
+
+This pass reviews the maintained conventions and Sections 19.4.1–19.4.3,
+from `odg:disc:lem:hahn` through `odg:disc:rem:comparison` and the following
+polynomial-parameter explanation. This covers nine standard results. It
+does not extend to the factor/Galois/resultant consequences in Section
+19.4.4, the later étale-algebra and matrix arguments, the second proof,
+C17's questions or a complete comparison against the delivered manuscript.
+The delivered source and proof audits remain unchanged.
+
+The Hahn algebraic-closedness input was checked against L'Innocente–Mantova,
+[Fact 2.1.1](https://arxiv.org/html/1710.07304v5#S2.SS1): the coefficient
+field is algebraically closed and the exponent group is divisible. The
+proof now explains the coefficientwise Leibniz rule, valuation inequality
+and detection of each nonzero exponent by a rational functional. The
+embedding lemma derives preservation of the embedded finite extension by
+differentiating its separable minimal polynomial, so existence and
+compatibility follow from restriction of the ambient derivation.
+
+The universal certificate now displays the polynomial clearing both root
+derivative denominators. The proof retains symmetry in the roots and
+homogeneity in the coefficient velocities; it does not assume that the
+nonnegative-support ring is integrally closed. The vanishing argument
+specifies all elementary symmetric functions with indices 1 through
+`m = binomial(n,2)` and evaluates the resulting polynomial `T^m` at each
+velocity. The translation proof explicitly recovers squarefreeness of the
+constant-term polynomial from its unchanged discriminant.
+
+Squarefree over the arithmetic subring now means squarefree over the
+coefficient field, rather than square-divisor factorization in an arbitrary
+subring. Corollaries 19.15–19.16 now require positive degree, as the main
+theorem does: the polynomial 1 has no unique translation when the purely
+infinite ideal is nonzero. These are the only two changed standard
+statements among the article's 244. The coefficient test and parameter
+explanation also retain positive degree. Remark 19.17 now uses the direct
+counterexample `P = ωX² + X`: its discriminant is 1, but `ct P = X`, so
+translation cannot recover its degree. The earlier `6X² + X − 1` concerns
+the nonmonic quadratic denominator, not failure of translation form.
+
+The unchanged C17 finite verifier was rerun with Python 3.13.14 and SymPy
+1.14.0, with output only in scratch space. All 1,126 assertions in 13 groups
+pass; its JSON agrees with the delivered record except for Python version.
+That run includes later finite examples but does not establish the later
+proofs or arbitrary-support theorems. All C17 results remain pending in Lean.
+
+Validation: the article builds in three passes to 226 pages with no
+warnings, unresolved references or bad boxes; all 553 labels and 1,106
+auxiliary label numbers are retained. The revised proof pages were checked
+visually. The incoming `33b17a0` snapshot changes no standard or principal
+statement in its ten modified reports. Its central-conic formalization
+was checked against `odg:cor:conics`; the full two-thread Lean build passes
+4,503 jobs and audits 15,678 declarations using only the three allowed axioms.
+The 33-page catalogue also builds cleanly in three passes. All 4,550 indexed
+standard results across 63 reports, 5,107 source references and 1,709 local
+Markdown destinations pass their checks. The index anchors were refreshed
+after the incoming reciprocal notes moved source lines.
+
+
+## Reciprocal-note synchronization after the discriminant review
+
+Merged `84c6398`, which adds cross-report notes in eight reports without
+changing their standard or principal statements. The new Diophantine
+pointers were compared with the cited floor, formal integration, formal
+fraction, quartic-collapse, exponential-fiber/decidability and uniform
+real-form arithmetic statements. The congruence pointer explicitly retains
+positive ordinary `n`. This is a statement-scope comparison, not a proof
+review of those imported results.
+
+The Diophantine PDF was rebuilt from both branches' merged source rather
+than selecting either binary version. It now has 227 pages, with no
+warnings, unresolved references or bad boxes after three passes, preserving
+all 553 source labels and 1,106 auxiliary label numbers. All 244 standard
+statements agree with the preceding review commit. The collection still
+has 4,550 standard results in 63 reports; refreshed indexes, 5,107 source
+references and 1,718 local Markdown destinations pass. This merge changes
+only documentation, so the successful 4,503-job Lean build and 15,678-
+declaration audit remain applicable.
+
+
+## Synchronization with norm forms and the final batch-34 companions
+
+Merged `5003bcc`, including the number-field norm formalization and the
+last two batch-34 companions. The norm implementation was compared with
+`odg:thm:norm`: arbitrary rational bases, nonzero rational levels and
+integer coefficients for bases of algebraic integers are all retained.
+The full two-thread Lean build passes 4,511 jobs and audits 15,697
+declarations with only the permitted axioms.
+
+The quotient report now assembles 24 manuscripts, with 415 standard
+statements and three principal summaries. Its polyhedral-cone and
+henselian-branching companions add 52 standard results. Only the principal
+summaries `osq:hd:main:cores` and `osq:main:closure` acquire new clauses;
+all earlier standard statements are unchanged. The new mathematics and
+the expanded summary clauses remain pending independent review and Lean
+formalization. All nine batch-34 companions are now integrated, contributing
+204 standard results; the separate Hahn-joins companion remains staged.
+
+The collection index and summaries now report 4,602 standard results across
+63 reports. The index conflict was confined to line anchors and resolved
+against the merged source. All 5,159 source references and 1,723 local
+Markdown destinations resolve. The catalogue was rebuilt in three passes
+to 33 pages with no warnings, unresolved references or bad boxes. The
+227-page Diophantine article and its reviewed proofs are unchanged by this
+merge; no incoming finite verifier was rerun.
