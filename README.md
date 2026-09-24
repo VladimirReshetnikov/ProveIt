@@ -475,6 +475,13 @@ the purely infinite ideal inside the native fraction field. Coefficient
 constants are exactly zero together with the invertible multipliers. The
 printed fraction-pair formulas and their invariance under changing
 representatives are proved, as is the reconstructed coefficient-map graph.
+The multiplier identities and support-ring fraction-field inclusions now
+hold for the actual surreal and surcomplex carriers too. Their proofs use
+individual monomials in canonical normal forms; they do not require a
+surjective map onto a full Hahn field.
+The fraction-pair reconstruction formulas now work on both actual carriers
+as well, including a literal ring formula for the full coefficient-map graph.
+All formulas are proved invariant under changing fraction representatives.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with

@@ -1413,3 +1413,30 @@ references and 1,816 local Markdown destinations across 226 files pass,
 as does whitespace checking. No Lean source changed, so the previous
 two-thread 4,604-job build and 16,623-declaration axiom audit remain
 the Lean baseline for this documentation pass.
+
+## Synchronization: actual multiplier and coefficient reconstruction
+
+Merged origin/main through 0bd4b88 (including 2522129) after reviewing the
+six incoming modules against `odg:def:lem:ainfrac`,
+`odg:def:thm:multiplier`, `odg:def:eq:multiplier` and
+`odg:def:cor:internal`. The transfer argument needs preimages of individual
+monomials, not surjectivity onto a full Hahn field. Actual real and complex
+support rings are the multipliers of their native purely infinite ideals;
+zero together with invertible multipliers recovers the ordinary coefficient
+fields. A nonzero augmentation-kernel element clears support-ring elements
+into the native fraction field. This inclusion alone makes no claim that
+the Gaussian omnific fraction image is the entire surcomplex field.
+
+The literal fraction-pair formulas use the quadratic ideal test in the
+original omnific rings. Their meanings and invariance under changing both
+fraction representatives are proved, including the full coefficient-map
+graph. The ledger distinguishes these semantic formulas from a separate
+first-order syntax/satisfaction development and from proper-class quotient
+objects. The different-radicand number-field extension remains outside
+this mapping. The README and coverage entries agree with that scope.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,610 jobs; the audit
+checks 16,707 declarations and permits only propext, Classical.choice and
+Quot.sound. All 4,626 anchors across 63 reports, 5,217 source-label references
+and 1,822 local Markdown destinations across 226 files pass. No incoming TeX
+changed, so the reviewed 291-page article and 34-page catalogue remain current.
