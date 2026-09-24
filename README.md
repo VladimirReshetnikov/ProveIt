@@ -315,6 +315,10 @@ The three-variable equation `(x + z)² − 2y² = 1` also has a proved exact
 parametrization: `(a + u, b, d − u)` over ordinary solutions
 `(a + d)² − 2b² = 1`, with `u` purely infinite. Its common kernel permits
 nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
+Power differences `x^m − y^n = c ≠ 0` are also proved to have exactly their
+ordinary integer solutions when both exponents are positive and their gcd
+is greater than one. A checked counterexample, `ω^0 − 0² = 1`, shows why
+the positive-exponent condition must be added to the source remark.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,

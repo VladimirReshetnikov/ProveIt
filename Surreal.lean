@@ -639,3 +639,6 @@ import Surreal.Surcomplex.PellRigidity
 import Surreal.Surcomplex.ZeroPellFiber
 import Surreal.Surcomplex.RankDeficientPell
 import Surreal.Surcomplex.CartesianKernel
+import Surreal.Algebra.PowerDifferenceFactors
+import Surreal.Foundations.OmnificPowerRigidity
+import Surreal.Surcomplex.PowerDifferenceRigidity
