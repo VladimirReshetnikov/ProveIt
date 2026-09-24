@@ -120,13 +120,25 @@ all finite presentations in the irrational-kernel case. The Gaussian
 scope now specifies the required support properties and the appropriate
 base field for ideal classes.
 
-The later relation/moduli and derived classifications, and reconciliation
-of the parallel sources remain pending review. Exact scope
+The no-set-presentation obstruction, lexicographic embeddings, exact
+relation counts and model flat dimensions are now reviewed. The class
+pullback has explicit linear sections on free bases; its chosen lift on
+all elements need not be linear. The exponent embedding and the induced
+ring-monomial embedding are distinguished. Regularity is used explicitly
+in the lower generator bound. The countable remark now says “surjection
+from a finite free module,” correcting its reference to a finite
+presentation of a module that is not finitely presented. Its exact
+projective dimensions follow from a written telescope argument. The flat
+dimensions use a concrete nonzero antisymmetric tensor and no forward
+appeal to the general coefficient-Tor calculation.
+
+The later coefficient-Tor formulas, moduli and derived classifications,
+and reconciliation of the parallel sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 290 pages
+article.pdf   the compiled report, 291 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

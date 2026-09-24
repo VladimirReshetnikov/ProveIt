@@ -193,6 +193,18 @@ For a common-scale matrix, q is the dimension of its kernel W over k,
 while ℓ is the D-rank of `W ∩ Dⁿ`. “Defined over Frac(D)” means that W
 has a k-basis with all coordinates in Frac(D).
 
+For class modules, a set-presentation uses finite-support free modules
+A^(S) and A^(T) with S,T sets; their coefficient vectors may form proper
+classes. A finite generating map Aʳ → M need not be a finite presentation:
+the latter also requires finitely many relations. In the lexicographic
+model, `gen_A(Π) = κ` counts generators, not the cardinality of Π or of a
+quotient target. The countable support-bounded model is a ring of finite
+series; its ambient finite-series collection is not asserted to be a field.
+The embedding sends the group element e_α to the surreal exponent ω^(−α),
+and the ring monomial X^(e_α) to ω^(ω^(−α)). Thus X^(e₀) maps to ω.
+The negative of an ordinal and differences between ordinal indices here
+are taken in the additive group of surreals, not by ordinal subtraction.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

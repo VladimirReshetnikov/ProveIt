@@ -244,6 +244,14 @@ from the omnific ring when the number-field degree is at least two.
 For matrices at one common monomial scale, the image is finitely presented
 exactly when the ordinary kernel is defined over ℚ (over ℚ(i) in the
 Gaussian case); then the image is free.
+The relation-count proofs now distinguish the full class rings, where
+ideals from coefficient lattices of rank at least two have no presentation
+indexed by sets,
+from set-sized lexicographic models, where every finite generating map
+has exactly κ relations in the sense of minimal generator cardinality.
+At κ = ℵ₀ these modules are countably presented but not finitely
+presented; their projective dimension is two and that of the cyclic
+quotient is three.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

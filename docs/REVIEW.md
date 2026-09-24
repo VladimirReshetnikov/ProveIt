@@ -6257,3 +6257,114 @@ Classical.choice and Quot.sound. All 4,626 statement anchors across
 destinations across 226 files pass, as does whitespace checking.
 No TeX source changed in the merge, so the reviewed 290-page article
 and 34-page catalogue remain current.
+
+## Set-presentations and exact relation counts in lexicographic models
+
+Reviewed `osq:rel:thm:presentation`, `osq:rel:lem:embedding`,
+`osq:rel:thm:kappa` and `osq:rel:prop:fd`, together with the
+countable-case remark `osq:rel:rem:alephzero`. The four standard
+statements are unchanged; the countable remark is corrected and expanded.
+
+The class-ring obstruction now constructs both sections of the pullback
+used in Schanuel's lemma. The formula choosing a preimage of each ideal
+element is only a section as a class map; applying it to the free basis
+and extending finite combinations gives the needed A-linear section.
+The other section uses finitely many lifts. Projecting the resulting
+set-generated module onto the tail contradicts its lack of set generators.
+The equational nonflatness witness is checked directly, with every proposed
+relation column in the tail and every resulting coordinate in X^g Pi.
+
+The exponent embedding is given on finite rational sums and checked by
+its leading sign. The proof distinguishes the surreal exponent omega^-alpha
+from the image omega^(omega^-alpha) of the ring monomial X^(e_alpha).
+Regularity bounds the coordinate indices of a small family and proves
+exact coinitiality, including the empty-family case. Reindexing reverse
+well-ordered support verifies the ring embedding and its exact image.
+The countable case extends the finite-support ring construction, without
+calling the ambient finite-support collection a field.
+
+The tail proof gives the strict-support factorization, idempotence,
+directed union of principal ideals, flatness and both generator bounds.
+Regularity is used explicitly for a union of fewer than kappa small
+supports. The matrix decomposition transfers to the model with its actual
+PID and coefficient-space hypotheses. Schanuel gives both bounds for the
+kernel of every surjection from a finite free module, independently of
+its generating family. These generator counts are kept separate from
+the quotient-cardinality thresholds, which are asserted only for the
+uncountable models.
+
+Corrected the countable remark's phrase “every finite presentation”:
+these modules are not finitely presented. The intended claim concerns
+every surjection from a finite free module and its countably generated
+kernel. A concrete telescope with x_n = X^(e_n) proves projective
+dimension one for the tail, two for D and the lattice module, and three
+for the cyclic quotient. The flat-dimension proof now exhibits a nonzero
+antisymmetric tensor and performs both dimension shifts directly, so it
+no longer relies on the later general coefficient-Tor formula.
+
+Updated the root README, report guide, catalogue, notation and ledger.
+The four standard results remain Pending in Lean. The later general
+coefficient-Tor formula, moduli and derived classifications, and full
+source reconciliation remain pending review. Standard directed-union
+flatness and the equational criterion were checked against Stacks
+Section 10.39, Tag 00H9; no finite computation is treated as verification
+of the cardinal or class arguments.
+
+Validation: three clean TeX passes for the article (291 pages) and
+catalogue (34 pages), with no warnings or box diagnostics and visual
+checks of the class pullback, embeddings, relation counts, countable
+remark, flat-dimension proof and catalogue. All 418 standard/principal
+statements, 828 source labels and 1,656 auxiliary label/number pairs
+are unchanged; among remark environments only the intended countable
+remark changes. All 4,626 anchors across 63 reports, 5,217 source-label
+references and 1,816 local Markdown destinations across 226 files pass,
+as does whitespace checking. No Lean source changed, so the previous
+two-thread 4,604-job build and 16,623-declaration axiom audit remain
+the Lean baseline for this documentation pass.
+
+## Synchronization: actual multiplier and coefficient reconstruction
+
+Merged origin/main through 0bd4b88 (including 2522129) after reviewing the
+six incoming modules against `odg:def:lem:ainfrac`,
+`odg:def:thm:multiplier`, `odg:def:eq:multiplier` and
+`odg:def:cor:internal`. The transfer argument needs preimages of individual
+monomials, not surjectivity onto a full Hahn field. Actual real and complex
+support rings are the multipliers of their native purely infinite ideals;
+zero together with invertible multipliers recovers the ordinary coefficient
+fields. A nonzero augmentation-kernel element clears support-ring elements
+into the native fraction field. This inclusion alone makes no claim that
+the Gaussian omnific fraction image is the entire surcomplex field.
+
+The literal fraction-pair formulas use the quadratic ideal test in the
+original omnific rings. Their meanings and invariance under changing both
+fraction representatives are proved, including the full coefficient-map
+graph. The ledger distinguishes these semantic formulas from a separate
+first-order syntax/satisfaction development and from proper-class quotient
+objects. The different-radicand number-field extension remains outside
+this mapping. The README and coverage entries agree with that scope.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,610 jobs; the audit
+checks 16,707 declarations and permits only propext, Classical.choice and
+Quot.sound. All 4,626 anchors across 63 reports, 5,217 source-label references
+and 1,822 local Markdown destinations across 226 files pass. No incoming TeX
+changed, so the reviewed 291-page article and 34-page catalogue remain current.
+
+## Synchronization: actual real-structure reconstruction
+
+Merged origin/main through e1859ca and compared the new module with
+`odg:def:thm:realrecovery` and its constant-term/standard-part examples.
+The interpreted coefficient predicate uses the proved omnific fraction
+representation of every actual surreal. Nonzero squares reconstruct
+positivity, and positive real bounds reconstruct the finite ring and
+infinitesimal ideal. The standard-part graph has exactly the finite inputs
+and one real output. Its examples distinguish constant extraction at
+omega + 7 from standard part at 7 + omega inverse. The README and ledger
+accurately record these literal semantic formulas; separate first-order
+syntax, the value-group quotient and automorphism theorem are not claimed.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,611 jobs; the audit
+checks 16,740 declarations using only propext, Classical.choice and Quot.sound.
+All 4,626 anchors across 63 reports, 5,217 source-label references and 1,823
+local Markdown destinations across 226 files pass, as does whitespace
+checking. No TeX source changed; the 291-page article and 34-page catalogue
+remain current.
