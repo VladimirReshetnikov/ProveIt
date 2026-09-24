@@ -637,6 +637,14 @@ multiple of that monomial's exponent. They contain all ordinary real or
 complex coefficients but miss monomials at infinitely lower exponents.
 Thus they are nonzero domains and proper subrings of the ambient fields,
 but are not fields and are not small in the birthday universe.
+Quotienting and localizing now commute with small-ring reflection in both
+omnific rings: every map from a localized quotient to a small ring factors
+uniquely through the corresponding localization of its ordinary constant
+quotient. This holds even for noncommutative targets and arbitrarily large
+denominator submonoids. For example, `Oz[1/(ω+2)]` has exactly the small-target
+maps of `ℤ[1/2]`. A denominator with zero constant in the constant quotient
+leaves no nonzero small ring image. The nonzero quotient `Oz/(ω+1)` also
+has only trivial small unital modules.
 Conversely, if an ideal does not contain the purely infinite ideal, explicit
 ordinal-indexed monomials provide
 arbitrarily large small families of distinct residues.
