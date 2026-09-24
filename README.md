@@ -47,7 +47,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
-| [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
+| [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`; and [`Cardinals/`](SetTheory/Cardinals/), the merged Cardinals project: exacting and cover-exacting large cardinals, with the coarse-Turing-degrees formalization and further research reports in the same package. |
 | [`Tools/`](Tools/) | Development tooling: Rocq 9.2 compatibility shims. **Leant**, the GHCi-style interactive REPL for Lean 4 that grew up here, now lives in its own repository at [VladimirReshetnikov/Leant](https://github.com/VladimirReshetnikov/Leant). |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
@@ -313,6 +313,7 @@ lake --dir Logic/PeanoArithmetic/Undecidable/Lean build
 lake --dir Logic/PresburgerArithmetic/Lean build
 lake --dir SetTheory/ZF/Lean build
 lake --dir SetTheory/ClosureAxiomatization/Lean build
+lake --dir SetTheory/Cardinals build
 lake --dir NumberTheory/RiemannHypothesis/PAStatement/Lean build
 lake --dir Computability/BusyBeaver/Lean build
 lake --dir Computability/TuringDegrees/Lean build

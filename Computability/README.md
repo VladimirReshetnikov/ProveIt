@@ -26,3 +26,9 @@ The score and time functions are distinct measures. The proved values
 
 The Lean BB2/BB3 classifications are large opt-in targets. The Lean BB4 TNF
 reduction is sound, while its exhaustive root equality remains conditional.
+
+Coarse Turing degrees (coarse equivalence, the failure of the statement C1,
+coarse hyperdegrees) are formalized in
+[`../SetTheory/Cardinals/CoarseDegrees/`](../SetTheory/Cardinals/CoarseDegrees/),
+which builds on [`TuringDegrees/`](TuringDegrees/) and shares a Lake package
+with the large-cardinal project it was developed beside.
