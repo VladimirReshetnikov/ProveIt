@@ -786,3 +786,7 @@ import Surreal.Algebra.AlgebraicOmittedType
 import Surreal.Algebra.NumberFieldOmittedType
 import Surreal.HahnSeries.AlgebraicOmittedType
 import Surreal.Surcomplex.AlgebraicOmittedType
+import Surreal.Algebra.IntegerPolynomialCode
+import Surreal.Algebra.RingFormulaEquality
+import Surreal.Algebra.IntegerPolynomialParser
+import Surreal.Algebra.IntegerPolynomialCodeComputability
