@@ -632,3 +632,30 @@ reports, 5,204 cited source labels, 1,775 local Markdown destinations across
 Finite checks were not rerun as evidence for the cardinal construction;
 the prior 4,565-job build and 16,094-declaration axiom audit remain the
 Lean baseline for this documentation-only change.
+
+## Synchronization after the controlled-field review
+
+Merged the augmentation root-detector development through 88d9334,
+including a2c9044, and checked its five new modules against
+`odg:def:thm:augdetector`, `odg:def:eq:augdetector`,
+`odg:def:eq:witness`, `odg:def:thm:detector` and
+`odg:def:eq:detector`. The generic theorem uses the full coefficient
+pullback, an ordinary polynomial without ordinary roots, a coefficient-field
+root, and divisibility of an ordinary value by each nonzero ordinary scalar.
+The explicit affine witnesses require no domain or reducedness assumption
+on the ambient algebra. The product example verifies the printed certificate
+for a zero divisor in the first-projection pullback Z times R.
+
+The Lambda specialization proves the literal two-witness detector in the
+full integer and Gaussian Hahn pullbacks and, separately, on the actual
+omnific carriers. These claims do not extend to arbitrary intermediate
+rings. Precise support bounds, degree formulas and remaining printed
+certificates are still pending. The README and implementation mappings
+accurately distinguish these scopes.
+
+Validation: the two-thread full Lean build passes all 4,570 jobs; its audit
+checks 16,126 declarations using only propext, Classical.choice and
+Quot.sound. All 4,626 statement anchors across 63 reports, 5,207 cited
+source labels, and 1,780 local Markdown destinations across 226 files pass.
+The merge changes no TeX sources or PDFs, so the clean three-pass builds
+recorded above remain current. Whitespace checks pass.

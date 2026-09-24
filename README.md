@@ -368,6 +368,12 @@ integers, or the Gaussian omnific integers. Prime-power lifting and the
 Chinese remainder theorem prove the modular assertion. Every nonzero
 Gaussian integer divides a value at an ordinary integer; an element with
 zero Gaussian constant term has no such certificate, even with omnific witnesses.
+The converse is now proved too: the single equation `a·s = Λ(t)` with two
+existential witnesses detects exactly a nonzero constant term in both actual
+omnific rings and their full Hahn coefficient pullbacks. The underlying
+augmentation theorem works even in algebras with zero divisors; only a
+nonzero coefficient-field scalar is inverted. The checked example in `ℝ × ℝ`
+gives the zero divisor `(1,0)` an explicit certificate.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
