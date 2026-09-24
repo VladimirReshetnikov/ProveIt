@@ -160,7 +160,8 @@ two quotient companions on class residue fields and semialgebraic
 preservers (`97ff204`, 53 standard results). All seven companions are now
 indexed; independent proof review and Lean coverage remain pending. Two
 companions still await main-text integration and indexing; placement adds no inferred Lean coverage. The Hahn-joins archive delivered in `267b910`
-awaits placement, integration and indexing.
+is now placed by `dec8d56` as companion 03 of independent surreal copies;
+its main-text integration, indexing and proof review remain pending.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -1463,8 +1464,8 @@ discriminants and étale units, bringing the Diophantine report to 244 and
 the collection to **4,309** in **63** reports. All 39 mapped/cited statements
 were checked: 38 are unchanged, and `odg:prop:univariate` only adds a source
 attribution in its heading. The new material remains **Pending** in Lean
-and independent proof review. The Hahn-joins archive from `267b910` awaits
-placement, integration and indexing.
+and independent proof review. The Hahn-joins archive from `267b910` is now placed
+in `dec8d56`; main-text integration and indexing remain pending.
 
 The fourth batch-33 write `76dd876` adds 11 standard results on coefficient
 observables and Noetherian compression to the holonomic report, bringing it

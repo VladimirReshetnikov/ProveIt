@@ -119,7 +119,9 @@ difference equations, class residue fields, and semialgebraic preservers.
 Their 152 new standard results bring the index to 4,550 across 63 reports.
 The other two companions await main-text integration; independent review
 of all these new claims remains pending.
-A further Hahn-joins archive arrived in `267b910` and awaits placement.
+The Hahn-joins archive from `267b910` is placed in `dec8d56` as a further
+companion to independent surreal copies. Its main-text integration and
+independent proof review remain pending.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a

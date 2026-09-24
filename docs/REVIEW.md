@@ -4397,6 +4397,17 @@ The preceding clean 225-page article and 33-page catalogue builds remain
 applicable. Pending mathematical review and source-reconciliation scopes
 are unchanged.
 
+## Hahn-joins companion placement
+
+The subsequent merge through `6ab9666` places the Hahn-joins companion in
+`dec8d56`: three build/verification artifacts under independent surreal
+copies replace the delivered ZIP. Its main text remains unintegrated and
+unreviewed. No Lean, manuscript or catalogue source changed, so the
+4,500-job build, 15,654-declaration audit and both validated PDFs remain
+applicable. All 5,106 source references and 1,701 local Markdown destinations
+still resolve. The ledger and reader map now record placement separately
+from integration and proof review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
