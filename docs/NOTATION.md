@@ -63,6 +63,11 @@ nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
 For a nonzero form, growth degree is the largest supported exponent and
 satisfies `v = −deg` under the reversed valuation convention.
 
+For an automorphism `σ` of `Oz`, preservation of constant coefficient means
+`ct ∘ σ = ct`. A claim that it fixes `ℝ` refers to its extension to `No`:
+the ordinary reals contained in `Oz` are only `ℤ`. In the omnific-automorphism
+factorization `M_{χ,τ} ∘ u`, apply `u` first, then the monomial map `M_{χ,τ}`.
+
 In the curve part of the Diophantine report, `𝒜_k(Γ)` has nonnegative
 growth support, while the valuation ring `𝒪_k(Γ)` has nonpositive growth
 support. For `Γ = 0` both are the coefficient field; the assertion that
@@ -128,6 +133,22 @@ On rational curves its earlier criterion instead tests constant-term
 specialization. For `[ω:1]`, that specialization is `[0:1]`, while projective
 standard part is `[1:0]`, computed in the reciprocal chart. The point itself
 is not rational, although its coordinate ideal is the unit ideal.
+
+For a domain `R`, **normal** means integrally closed in `Frac(R)`, not
+in every ambient Hahn field containing it. For a nonconstant point of an
+integral constant affine curve over `R = 𝒜_𝕜(Γ)`, the function field embeds
+in `Frac(R)`. Normality of `R` therefore suffices for a normalization lift.
+A square root lying outside `Frac(R)` does not obstruct this argument;
+failure of normality alone does not supply a curve point without a lift.
+The singular-curve criterion concerns existence of nonconstant points,
+not surjectivity of normalization on `R`-points.
+
+In that proof the curve function field `F` has restricted value group
+`γℤ`, although the ambient Hahn group can have any rank. An Euler
+derivation may map `F` into the larger Hahn field without preserving `F`.
+The identity `α(∂) = h∂u`, with `h ∈ F` and the chosen
+`v(∂u) = v(u) = γ`, puts the contraction's valuation in `γℤ`;
+it does not put the contraction itself in `F`.
 
 The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
 Its rational residue `res` has domain `Oz_Π`; standard part `st` has

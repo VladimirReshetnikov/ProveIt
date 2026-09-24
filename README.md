@@ -64,8 +64,9 @@ none of the results below is.
   multiplicative order has a nonpolynomial entire solution iff `|v(q)|` is
   an order unit of `Γ`. `Γ` has an order unit iff some nonpolynomial entire
   series is differentially algebraic (Theorem H); an explicit theta series
-  has differential order three. Whether order two occurs is open in the
-  written text.
+  has differential order three. The later chapters exclude order two for
+  every value group, and order three with total jet degree at most three;
+  these additions await independent proof review.
   [Report](docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions/).
 - **Exponential automorphisms of `No`.** Every exponential 1-automorphism of
   `No` is the identity, a proposed negative answer to Question 5.4 of
@@ -273,6 +274,13 @@ integer polynomial parametrization covers each entire exceptional fiber,
 including infinite-support points; a finite-support witness can always be
 chosen in the same fiber. The projective review makes the coordinate-ideal
 obstruction explicit and separates rational points from rational specialization.
+The singular-curve criterion now has a manuscript proof review as well:
+over a characteristic-zero field and a nonzero exponent group, a geometrically
+integral affine curve has nonconstant points exactly when its normalization
+is the affine line. A conductor and a discrete boundary valuation supply
+a finite derivative-order obstruction. This classifies existence without
+assuming that every point lifts to the normalization. The review corrects
+the ambient-field normality comparison and the zero-group boundary case.
 These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.

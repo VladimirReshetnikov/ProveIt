@@ -15,19 +15,22 @@ Section 16.4. The next pass covers Section 16.5 through inheritance,
 completing the maintained Section 16 proof chain. Later passes cover the curve
 classification in Sections 17.1–17.2 and the arithmetic fibers, polynomial
 witnesses and separated-model descent in Section 17.3, followed by projective
-coordinates and coordinate ideals in Section 17.4. Sections 17.5–17.6 and 18,
+coordinates and coordinate ideals in Section 17.4. The current pass covers
+Section 17.5 and Sections 17.6.1–17.6.5, through the polynomial-fiber
+corollary. Sections 17.6.6 onward and 18,
 their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the fourteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. Singular curves, group varieties and subsequent
-geometric applications remain outside these passes. The review of Section 16
+present numbering. Repeated-root singular-curve applications, group varieties
+and subsequent geometric applications remain outside these passes. The review of Section 16
 includes the two-ring principle, symmetric differentials and inheritance.
 Source C16, integrated in `1ad4ad8`, adds seventeen standard results in
 Section 17.6 and updates the earlier singular-curve status notes. Its
-normalization criterion, conductor certificates and arithmetic applications
-are indexed but remain outside the completed proof review.
+normalization criterion, conductor certificates and structural consequences
+now have the targeted proof review below; its arithmetic and repeated-root
+applications remain outside the completed review.
 
 ## Recoverable sources
 
@@ -1023,3 +1026,69 @@ source comparison, not complete reconciliation of C10–C15.
 All five standard results in Section 17.4 retain their statements, and all
 remain **Pending** in Lean. Singular curves in Section 17.5, Section 18,
 earlier curve pointers and full source reconciliation remain to be reviewed.
+
+## Singular normalization and conductor review
+
+This pass covers Section 17.5 and Sections 17.6.1–17.6.5: the criterion
+`odg:sg:thm:main`, its Seidenberg/conductor and finite-order lemmas, the
+boundary-place and one-place arguments, positive genus, descent, scale
+independence, finite birational invariance, dimension-one schemes and the
+polynomial witness in each fiber (`odg:sg:cor:fibre`). These are eleven
+standard results. The repeated-root applications in Section 17.6.6 onward,
+Section 18, remaining classical imports and full source reconciliation
+remain outside this pass.
+
+The opening normalization discussion contained two incorrect inferences.
+Failure of normality does not itself exhibit a constant-curve point with
+no lift. For a nonconstant point the coordinate map is injective, so its
+function field embeds in the fraction field of the Hahn support ring.
+Normality in that fraction field suffices for a lift. In particular,
+`𝕜[ω]` is normal; the square root of `ω²+1` lies outside `𝕜(ω)` and cannot
+obstruct that lift. Its simple zeros over the algebraic closure rule out
+a rational square. The higher-rank witness remains a valid non-normality
+example: multiplying its reverse-well-ordered negative tail by a larger
+monomial puts it in the ring. Whether every curve point lifts is a separate
+question, and the later summaries now retain that distinction.
+
+The discreteness remark incorrectly put the contracted differential in
+the curve function field. The proof itself correctly uses a derivation
+from that field into the larger Hahn field. The corrected remark derives
+commensurability of valuations from `α(∂)=h∂u`, `h∈F`, and the chosen
+`v(∂u)=v(u)=γ`. It also gives the direct higher-rank counterexample
+`a=ω^(−e)`, `ω^H a^n∈𝒜` for every ordinary `n`, with `H>ne` for all
+ordinary `n`: positive valuation alone gives no contradiction.
+
+The proof now constructs the conductor from denominators of finitely many
+module generators, explains the Leibniz coefficient computation and the
+order-zero case of the power identity, and makes independence of the
+multiplier `κ^(2ℓ+1)` from the power explicit. The one-place obstruction
+has the explicit bound `n>δ/r`; the genus argument uses a uniformizer at a
+rational smooth point and a derivation whose leading coefficient survives.
+Descent identifies the base-changed normalization via its dense integral
+open and normality. The dimension-one proof explains the minimal-prime
+step and the empty scheme, and the fiber proof checks constant terms and
+nonconstancy of the translated polynomial parameter.
+
+The nonzero exponent-group convention is now explicit throughout the
+singular subsection and in `odg:sg:thm:allcurves`. Without it, the displayed
+equivalence fails for `Γ=0` and `X=𝔸¹`: all points are constant but the
+component has affine-line normalization. No other standard statement is
+changed. Finite birational invariance concerns the affine normalization;
+it does not equate the different point sets or identify arbitrary
+birational curves such as `𝔸¹` and `𝔾ₘ`.
+
+The comparison used source C16's non-normality example, conductor and
+boundary-place proof chain and structural consequences, from
+`omnific_singular_curve_rigidity/article.tex` in
+`39fe674:docs/new/omnific_singular_curve_rigidity.zip`. The source already
+allows its derivation to take values outside the function field; the
+stronger membership assertion arose in the merged introductory remark.
+Primary checks covered [Seidenberg, Section 3, printed pages 168–169](https://msp.org/pjm/1966/16-1/pjm-v16-n1-p16-s.pdf),
+the [normalization factorization property](https://stacks.math.columbia.edu/tag/035E),
+[finite normalization of algebraic schemes](https://stacks.math.columbia.edu/tag/0BXR),
+the [valuative criterion](https://stacks.math.columbia.edu/tag/0BX5),
+[Riemann–Roch](https://stacks.math.columbia.edu/tag/0BS6), and
+[the local differential of a uniformizer, Lemma 53.12.3](https://stacks.math.columbia.edu/tag/0C1B).
+This is a targeted comparison, not a priority determination or a complete
+verification of imported algebraic geometry. The new geometric results
+remain **Pending** in Lean.
