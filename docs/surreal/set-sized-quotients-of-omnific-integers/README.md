@@ -91,13 +91,22 @@ for `D = K` and `Γ = ℚ`, every finitely generated ideal is principal,
 so that ring is coherent. The proof supplies the counterexample and
 keeps the integer and Gaussian applications intact.
 
-The later tensor normal forms, derived classifications and reconciliation
-of the parallel sources remain pending review. Exact scope
+The tensor normal forms are now reviewed through exterior and symmetric
+powers. Absorption, the two-factor inverse, and the class universal
+properties have explicit factorizations and uniqueness proofs. The
+higher-factor reduction moves only scalars belonging to A; the symmetric
+relations affect only the ordinary tensor coordinate. Torsion means
+A-torsion and is compatible with freeness over D. The exterior-power
+examples form a family of ideals with arbitrarily large nonvanishing
+degree, rather than one finitely generated ideal with all powers nonzero.
+
+The later Rees equations, homomorphism and derived classifications, and
+reconciliation of the parallel sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 283 pages
+article.pdf   the compiled report, 286 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
