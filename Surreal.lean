@@ -895,3 +895,5 @@ import Surreal.Surcomplex.GaussianSmallQuotients
 import Surreal.Surcomplex.OmnificUnitObstruction
 import Surreal.Algebra.GaussianQuotientCardinality
 import Surreal.Foundations.OmnificQuotientSize
+import Surreal.Foundations.OmnificPrincipalQuotients
+import Surreal.Foundations.OmnificPrincipalImages

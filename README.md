@@ -586,6 +586,12 @@ small unital module. This is proved for both actual fields and for native
 localizations, which need not be fields. Conversely, if an ideal does not
 contain the purely infinite ideal, explicit ordinal-indexed monomials provide
 arbitrarily large small families of distinct residues.
+The real principal quotient `Oz/(f)` is small exactly when f is a nonzero
+ordinary integer. For a nonconstant generator, all positive monomials below
+its leading exponent have distinct residues. The quotients by `ω`, `2+ω`
+and `1+ω` are all nonzero and large: the first two surject onto `ℤ` and
+`ℤ/2ℤ`, while the third has no nonzero small unital ring image. Among ideals
+with small quotient, only the purely infinite ideal lacks a small generating set.
 
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the
