@@ -40,13 +40,19 @@ and its small images, and the infinite support allowance in the finite-side
 extension criterion. The imported primality and derivation inputs remain
 identified as imports.
 
-The organizing theorem across all five models, the other three models, and full
+Source 08's controlled-field construction is now reviewed as well: every
+element uses finitely many exponent coordinates, although its support may
+be infinite. Its exact cardinality, small-target theorem, ideal generator
+count and residue-field conclusions have expanded proofs, including the
+characteristic-zero quotient in which the actual omega maps to -1.
+
+The organizing theorem across all five models, the other two models, and full
 reconciliation of the parallel sources, remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 270 pages
+article.pdf   the compiled report, 271 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

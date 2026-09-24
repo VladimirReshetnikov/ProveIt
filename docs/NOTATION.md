@@ -86,6 +86,14 @@ only finitely many supports, while common monomial divisors for fewer than
 cardinal constructions are isomorphic by reindexing their two rational
 bases, not by identifying each of their embedded surreal elements.
 
+Source 08's controlled field uses the countable real algebraic coefficient
+field `K = ℝ ∩ ℚ̄`. Each element has countable support contained in the
+rational span of **finitely many** basis coordinates. This does not mean
+finite support, nor does the field contain every countably supported
+series. Its closure stages adjoin initial-segment truncations, not arbitrary
+subseries. Use `Φ` to pass from the Hahn carrier to the actual surreal
+subfield; after this identification `X^{e₀}` is the actual `ω`.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
