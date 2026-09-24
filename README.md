@@ -343,8 +343,12 @@ The norm rigidity theorem also extends to finite products of number fields
 in arbitrary bases, even when the factors have different degrees. The
 Gaussian theorem covers finite products of extensions of ℚ or ℚ(i), and
 identifies their Gaussian omnific fibers with the ordinary Gaussian fibers.
-A general descent theorem uses only an intermediate ring’s intersection
-with the constants; closure under constant extraction is unnecessary.
+The general Hahn-ring theorem is proved for arbitrary characteristic-zero
+coefficient fields and ordered abelian exponent groups: at a nonzero constant norm level,
+every solution in an intermediate ring lies in its prescribed ring of
+constants. Closure under constant extraction is unnecessary. The proof
+extends coefficients to an algebraic closure and descends constancy; it
+requires neither divisible exponents nor a least positive exponent.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,

@@ -660,3 +660,6 @@ import Surreal.Surcomplex.CubicNormRigidity
 import Surreal.Algebra.ProductNormForm
 import Surreal.Algebra.ProductNormRigidity
 import Surreal.Surcomplex.EtaleNormRigidity
+import Surreal.HahnSeries.NonpositiveSupportUnits
+import Surreal.HahnSeries.NonpositiveCoefficientExtension
+import Surreal.HahnSeries.EtaleNormRigidity
