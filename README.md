@@ -389,6 +389,10 @@ In `ℤ + Xℚ[X]`, the quotient by `(1 + X)` is `ℚ`, so the detector rejects
 `1 + X` despite its constant term being one; the ordinary-integer definition
 still works. In `ℤ[X]`, the detector fails even though the ambient real field
 contains a root of `Λ`: this subring is smaller than the full coefficient pullback.
+Faithful polynomial evaluation now realizes both examples inside the
+integer-exponent Hahn rings, with `ω` represented by the monomial `t⁻¹`.
+The rational quotient, the integer definition, and the detector obstructions
+are all proved directly for these intermediate Hahn rings too.
 The same polynomial now classifies every ideal whose quotient has no root:
 these are exactly the ideals contained in the constant-term kernel. Thus the
 purely infinite ideal is the greatest such ideal, for both actual omnific
