@@ -624,3 +624,6 @@ import Surreal.Foundations.OmnificPurelyInfiniteCoefficients
 import Surreal.Surcomplex.DecomposableFibers
 import Surreal.Surcomplex.OmnificDecomposableFibers
 import Surreal.Surcomplex.OmnificRealKernel
+import Surreal.Surcomplex.GaussianOmnificIntegers
+import Surreal.Surcomplex.PurelyInfiniteCoefficients
+import Surreal.Surcomplex.GaussianDecomposableFibers

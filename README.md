@@ -284,6 +284,11 @@ purely infinite parameters, and each Conway coefficient vector lies in that
 same kernel. A zero real kernel forces ordinary solutions. For tuples in
 the larger complex support ring, full complex column rank forces all
 coordinates to be ordinary complex constants.
+The Gaussian omnific ring is now constructed from Mathlib's Gaussian integers:
+its two coordinates are precisely real omnific integers. The corresponding
+fiber theorem is proved over this ring too, with ordinary Gaussian points,
+unique purely infinite complex kernel parameters, and disjoint fibers over
+distinct ordinary points.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
