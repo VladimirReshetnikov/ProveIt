@@ -279,6 +279,11 @@ those of the lattice modules and their cyclic quotients. The stronger
 global-dimension bounds require `K ≠ Frac D`: for the coefficient-field
 case `A₁ = K[ℚ≥0]`, weak global dimension is exactly one even though
 `pd K = 2`.
+Over the ordered core and the universe-relative class rings, a reviewed
+flat differential graded resolution now computes every Tor group of two
+lattice quotients. The first Tor retains an interval of exponents and is
+always nonzero; the second retains only coefficient multiplication
+relations. These two invariants record different information.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

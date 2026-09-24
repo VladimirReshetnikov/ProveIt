@@ -172,13 +172,26 @@ The stronger lower bounds for global and weak global dimension require
 qualification of Question 18.12 are included. The warning about nonregular
 finite Koszul sequences now specifies the proper coefficient-subring case.
 
-The later derived classifications and reconciliation of the parallel
-sources remain pending review. Exact scope
+The flat differential graded resolution and all Tor groups of two lattice
+quotients are now reviewed over the ordered core and the class ring in its
+two-universe reading. The proof checks the product's target, associativity,
+graded commutativity and both mixed-degree Leibniz identities. Its bounded
+flatness and multiplicative augmentation justify the induced Tor product.
+The second Tor calculation writes its coefficient map and kernel explicitly;
+the first Tor calculation separates its constant, open-interval and boundary
+parts, with a D-linear splitting only. A monomial in the open interval proves
+that first Tor never vanishes, even when second Tor does. The proof now
+separates principal rank-one quotients, of flat dimension one, from those
+of rank at least two, of flat dimension two.
+
+The subsequent linear-disjointness criterion, self-Tor algebra, framed
+reconstruction, and reconciliation of the parallel sources remain pending
+review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 297 pages
+article.pdf   the compiled report, 299 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
