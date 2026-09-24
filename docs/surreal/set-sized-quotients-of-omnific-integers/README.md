@@ -113,6 +113,17 @@ and equal constant terms are precisely the pairs these observations identify. In
 has a finite prime or Gaussian residue field as image. Ideals with large
 quotients are outside this classification.
 
+The actual real and Gaussian constant-term factorizations also extend to
+any target whose nonzero elements can each be detected by a map to a small
+ring. This does not require a small family of detectors. Polynomial rings
+in arbitrary variable types over small commutative coefficients satisfy
+this condition by finite-variable projection. Neither actual omnific ring
+has a faithful small unital module. Operator representations on any small
+vector space are classified by integer constants, or in the Gaussian case
+by one operator J with J²=−id. The real matrix formula includes dimension
+zero; the Gaussian finite-dimensional conjugacy classifications remain
+pending in Lean.
+
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
 be infinite. Its exact cardinality, small-target theorem, ideal generator

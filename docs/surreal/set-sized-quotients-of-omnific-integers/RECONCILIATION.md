@@ -4530,3 +4530,32 @@ certified by the existing finite verifier. Audits pass all 4,626 anchors
 in 63 reports, 5,240 source-label references and 2,004 local Markdown
 destinations in 226 files. Refreshed root/report guides, notation, the
 ledger and catalogue. git diff --check passes.
+
+
+### Residual targets and small representations sync (2026-09-24)
+
+Origin/main advanced to `ba96483` before publication. Merged it and read
+all three new modules against `osq:thm:residual`, `osq:cor:faithful` and
+`osq:prop:matrices`. The generic residual property is elementwise: every
+nonzero element has a small detecting target, without a small family of
+all detectors. Unique factorization through a split retraction transfers
+from small to residually small targets. Finite-variable projection proves
+the native polynomial example over any small commutative coefficient ring,
+including the zero ring and arbitrary variable types.
+
+The actual real and Gaussian omnific instances kill the infinite ideals
+and factor through the ordinary constants. No smallness of the residual
+target itself is assumed. Neither actual ring admits a faithful small
+unital module. Operators on arbitrary small vector spaces satisfy the
+constant formula, with Gaussian representations equivalent to square
+roots of minus the identity. The real matrix formula includes dimension
+zero. Gaussian matrix conjugacy and the general coefficient-field source
+instance remain pending. Updated report and catalogue summaries accordingly.
+
+LEAN_NUM_THREADS=2 lake build passes 5,054 jobs; the audit accepts 19,100
+declarations using only propext, Classical.choice and Quot.sound. Three
+final catalogue TeX passes are diagnostic-free, still 37 pages; inspected
+the changed page 14. The article remains 349 pages with all numbered
+statements, labels, numbering, questions, remarks and examples unchanged.
+The renewed audits pass 4,626 anchors in 63 reports, 5,240 source references
+and 2,007 local Markdown destinations in 226 files. git diff --check passes.

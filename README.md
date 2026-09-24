@@ -597,6 +597,14 @@ exactly to pairs `(e,j)` with `e²=e`, `ej=je=j` and `j²=−e`, even when the
 target has no identity. In both omnific rings, all small unital ring maps
 identify precisely the elements with equal constant terms; the purely
 infinite ideal is their common kernel.
+The same constant-term factorization now holds when every nonzero element
+of the target can be detected by a map to a small ring. This includes
+polynomial rings over small coefficients in arbitrarily many variables:
+each nonzero polynomial survives a projection onto finitely many variables.
+Neither omnific ring has a faithful small unital module. On any small
+vector space, the real ring acts by its integer constants, while Gaussian
+representations are exactly choices of an operator whose square is minus
+the identity. No finite-dimensionality assumption is needed for these formulas.
 
 Every small quotient of the real omnific ring is now classified: it is
 `ℤ` or `ℤ/nℤ` for an ordinary positive integer n, including the zero ring
