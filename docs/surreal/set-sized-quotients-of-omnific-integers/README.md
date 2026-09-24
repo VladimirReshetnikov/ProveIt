@@ -82,13 +82,22 @@ an A-linear splitting. In the Tor formula, degree one has coefficients
 in D while higher surviving degrees have coefficients in K. Finite
 quotients and self-Tor therefore do not determine the flat dimension.
 
-The later coefficient-lattice/tensor classifications and reconciliation
+The lattice presentations and first syzygies, antisymmetric tensor
+obstruction, flat/projective dimension bounds, ordered-cone package and
+nonflat cone enlargement are now reviewed. Lattices are explicitly
+nonzero, and their D-rank is distinguished from fraction-field rank one.
+Corrected the ordered-cone noncoherence claim to require `K ≠ Frac(D)`;
+for `D = K` and `Γ = ℚ`, every finitely generated ideal is principal,
+so that ring is coherent. The proof supplies the counterexample and
+keeps the integer and Gaussian applications intact.
+
+The later tensor normal forms, derived classifications and reconciliation
 of the parallel sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 280 pages
+article.pdf   the compiled report, 283 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

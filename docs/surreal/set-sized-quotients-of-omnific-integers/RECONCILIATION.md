@@ -1010,3 +1010,61 @@ reports, 5,213 source-label references and 1,802 local Markdown
 destinations across 226 files pass. Whitespace checks pass. The merge
 changes no TeX source; this review's clean 280-page article and 34-page
 catalogue builds remain current.
+
+## Lattice presentations, dimension bounds and the coherence hypothesis
+
+Reviewed `osq:tn:thm:syzygy`, `osq:tn:prop:nonflat`,
+`osq:hd:thm:fdlattice`, `osq:hd:prop:pd`,
+`osq:hd:thm:orderedcone` and `osq:hd:thm:collapse`, with their
+immediate comparisons. Setting (L) now explicitly takes a nonzero lattice
+of rank at least one. The presentation proof constructs the kernel,
+proves the minimal generator count by passage to Frac(D), and explains
+why the module nevertheless has rank one over Frac(A). It distinguishes
+the displayed class kernel from the later theorem about all presentations.
+
+The auxiliary tensor carrier has its coupled A-action checked explicitly.
+The antisymmetric element is nonzero even in characteristic two, and its
+image in the ideal tensor square gives the multiplication-kernel
+obstruction to flatness. For flat dimension one, this yields an explicit
+nonzero self-Tor witness for the cyclic quotient. Dimension shifting,
+the quadratic coefficient calculation, telescope exactness, the
+Archimedean coinitiality of 2^(-n)g, and the projective-dimension bounds
+are expanded. The condition c² in D is used for the explicit quadratic
+self-Tor formula, not for the dimension bounds. The ideal H=(X^g,cX^g)A
+is written uniformly in both types of cone.
+
+Corrected the unconditional noncoherence clause in the ordered-cone
+theorem: the given certificate requires K not equal to Frac(D). For
+D=K and Gamma=Q, any finite family lies in K[X^(1/n)]. A polynomial
+greatest common divisor and Bezout identity show that its extended ideal
+is principal, so every finitely generated ideal of K[Q_nonnegative] is
+finitely presented and the ring is coherent. The manuscript includes
+this counterexample; the integer/real and Gaussian/complex cases still
+meet the repaired hypothesis. No complete coherence classification is
+claimed. The same theorem now states gamma>0 for its monomial Tor
+witness. The ledger flags the original statement Needs correction and
+keeps the corrected results Pending in Lean. The only other changed
+numbered statement standardizes H in the lattice-dimension theorem.
+
+The cone-enlargement proof distinguishes quotient base change, which
+needs no flatness, from preservation of ideal intersections, which does.
+The reconciliation no longer suggests that these embeddings compute the
+class ring's dimensions; its separate two-universe flatness statement
+has separate input. Later tensor normal forms, sharp derived dimensions
+and full parallel-source reconciliation remain pending review.
+
+Updated the root README, report guide, catalogue, notation and ledger.
+Validation: three clean TeX passes for the 283-page article and 34-page
+catalogue, no warnings or box diagnostics; dimension and correction pages
+were inspected visually, and the ordered-cone theorem is kept together.
+All 828 labels, 1,656 auxiliary label/number pairs, 409 standard results
+and nine principal summaries retain their numbering. The existing tensor
+verifier passes 2,189 exact assertions, including 120 finite-support
+action/balancing cases. Its additional checks of later formulas do not
+extend the manuscript review scope or provide Lean coverage. All 4,626
+anchors across 63 reports, 5,213 source-label references and 1,802 local
+Markdown destinations across 226 files pass, as does whitespace validation.
+The standard coherence and Schanuel inputs were checked against Stacks
+Tags 05CU and 00O3. No Lean or verifier source changed; the two-thread
+4,590-job build and 16,382-declaration audit remain the baseline for this
+documentation-only pass.
