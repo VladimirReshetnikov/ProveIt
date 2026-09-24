@@ -8524,3 +8524,37 @@ in 63 reports, 5,225 source-label references and 1,942 local Markdown
 destinations in 226 files. The fibre consequences added in this pass
 remain Pending in Lean; the newly proved uniform-denominator and
 complete-closure clauses are now identified separately.
+
+### Normalization and uniform-discreteness sync (2026-09-24)
+
+After the fast-forward push was rejected, merged `origin/main` through
+`84b0b26`, including `ffec4a7`. Read all six new modules against the
+small-unit, density, normalization and discreteness statements. The
+algebraic identities use a specified square root; floor existence and
+nonnegative square roots suffice for density. Unique floors supply the
+integer-part gap, giving zero conductor. The actual surreal instance
+proves both strict inclusions, fine density, zero conductor and failure
+of generation by a lower-universe-small set. The fixed countable-support
+model and its generator bound remain pending.
+
+The common positive denominator gives uniform separation of the whole
+omnific-generated algebra, even when that algebra is not small. Native
+order-topology closedness and discreteness, and a single additive
+entourage forcing equality, are proved. The resulting Cauchy-net theorem
+requires no bound on the index or range once all values lie in the same
+algebra. Added its elementary tail proof to the article, also explaining
+the small-model consequence under its generating-cardinality bound.
+Updated the report guide and catalogue to match the merged root README
+and ledger. Resolved the ledger conflict by preserving both the corrected
+Noetherian hypothesis and the new precise proved scope.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passed 5,001 jobs; all 18,489
+audited declarations use only propext, Classical.choice and Quot.sound.
+Three final TeX passes for each document were diagnostic-free, yielding
+329 article pages and 35 catalogue pages. Visually inspected article PDF
+pages 190–191 and catalogue pages 12–13. All 418 standard statements,
+828 labels, 1,656 AUX number entries, 66 questions, 60 remarks and 28
+examples remain unchanged. Refreshed and independently checked all 4,626
+statement anchors in 63 reports; all 5,227 source-label references and
+1,949 local Markdown destinations in 226 files resolve. The finite
+verification code and historical records were not changed.
