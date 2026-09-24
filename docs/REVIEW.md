@@ -5199,3 +5199,25 @@ property or Hahn summability. The 4,626-result index across 63 reports,
 5,196 source-label references, 1,752 local Markdown destinations in 226 files,
 and whitespace checks pass. No Lean or verifier source changed; the previous
 4,535-job build and 15,895-declaration axiom audit remain the baseline.
+
+## Synchronization with the three-equation definition of constants
+
+Merged `f557bf6`, including `12956d3`. Compared the incoming declarations
+with `odg:def:eq:system`, `odg:def:thm:constants` and its adjoining examples
+and caveats. The predicate uses exactly five witnesses and three native
+integer polynomials of degrees 3, 3 and 7. It defines the ordinary integer
+and Gaussian constant rings in their actual omnific rings and in arbitrary
+intermediate Hahn rings with the prescribed constant intersection. The
+intermediate proof does not assume closure under constant extraction.
+The converse supplies the stated bounded Pell index and bounded ordinary
+residue witness. The examples check 1+i, exclude ω+i in the Gaussian
+omnific ring, and prove the predicate holds everywhere in the full surreal
+and surcomplex fields. These incoming results do not establish the small-
+target module or residue universal properties reviewed in this pass.
+
+The full two-thread combined build passes 4,547 jobs. Its transitive audit
+accepts 15,954 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. The 4,626 anchors in 63 reports, 5,197 cited source labels,
+1,758 local Markdown destinations and whitespace checks pass. The article
+and catalogue sources and PDFs are unchanged by the merge, so their clean
+three-pass builds remain current.
