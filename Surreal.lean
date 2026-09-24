@@ -677,3 +677,5 @@ import Surreal.Algebra.IntegerPrincipalMultiples
 import Surreal.Algebra.IntersectivePolynomial
 import Surreal.HahnSeries.IntersectivePolynomial
 import Surreal.Surcomplex.IntersectivePolynomial
+import Surreal.Algebra.QuadraticModularLifting
+import Surreal.Algebra.IntersectivePolynomialModular

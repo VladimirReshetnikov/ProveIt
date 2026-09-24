@@ -335,6 +335,13 @@ square root in the coefficient field. For the ordinary Pell sequence, every
 positive modulus `m` divides a positive coordinate `Y_k` at an index
 `1 ≤ k ≤ m²`, with `X_k ≡ 1 mod m`; the proof uses a finite permutation.
 
+The fixed polynomial `(T² − 13)(T² − 17)(T² − 221)` now has a checked root
+modulo every positive ordinary integer, but no root in `ℚ(i)`, the omnific
+integers, or the Gaussian omnific integers. Prime-power lifting and the
+Chinese remainder theorem prove the modular assertion. Every nonzero
+Gaussian integer divides a value at an ordinary integer; an element with
+zero Gaussian constant term has no such certificate, even with omnific witnesses.
+
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
 with `t` purely infinite. Taking `t = ω` gives an infinite solution.

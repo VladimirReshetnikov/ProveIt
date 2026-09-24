@@ -31,4 +31,15 @@ theorem Surcomplex.gaussianOmnific_intersectivePolynomial_ne_zero
   rw [map_value, map_zero] at he
   exact gaussian_value_ne_zero _ he
 
+/-- A Gaussian omnific element with zero constant term has no such multiple certificate,
+even if both witnesses are allowed to be Gaussian omnific. -/
+theorem Surcomplex.gaussianOmnific_no_intersective_certificate_of_constant_zero
+    (v : Surcomplex.GaussianOmnificInteger.{u})
+    (hv : Surcomplex.gaussianOmnificConstantCoeff v = 0) :
+    ¬∃ s t : Surcomplex.GaussianOmnificInteger.{u}, v * s = value t := by
+  rintro ⟨s, t, he⟩
+  have h := congrArg Surcomplex.gaussianOmnificConstantCoeff he
+  rw [map_mul, hv, zero_mul, map_value] at h
+  exact gaussian_value_ne_zero _ h.symm
+
 end Surreal
