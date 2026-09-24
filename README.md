@@ -296,16 +296,17 @@ discriminants 8, 12 and 5 have isomorphic reductions. The review makes the
 lower-universe size restriction explicit when applying the universal
 module theorem.
 For rational polyhedral cores, reviewed proofs establish the omnific
-embeddings, the cone-independent fraction field, and flat face ideals of
-projective dimension one over any unital coefficient subring `D ⊆ K`.
+embeddings, the cone-independent fraction field, and the fact that each
+nonzero face ideal is flat of projective dimension one over any unital
+coefficient subring `D ⊆ K`.
 Radical ideals that admit all coefficients at each chosen exponent are
 classified by antichains of nonzero faces. Their quotients have finite
 flat resolutions whose summand counts are reduced homology dimensions of
 face-join complexes. Face-isolating modules now prove that the last
 nonzero degree is the exact ordinary flat dimension, bounded by the cone
-dimension. These quotients are nonflat homological ring epimorphisms:
-positive Tor vanishes against every quotient module, while the detecting
-modules lie outside that class. For a nonzero face F, `A_𝒞/I_F` has
+dimension. Quotients by nonzero such ideals are nonflat homological ring
+epimorphisms: positive Tor vanishes against every quotient module, while
+the detecting modules lie outside that class. For a nonzero face F, `A_𝒞/I_F` has
 flat dimension one and projective dimension two. A quotient that keeps
 the monomials on F has a different description: its flat dimension is
 the largest dimension of a face meeting F only at zero. An explicit
@@ -326,6 +327,11 @@ dimension. In dimensions at least two, a concrete two-monomial relation
 fails the flatness criterion when the core is enlarged to its total-order
 core or realized inside the real or Gaussian omnific ring. An explicit
 nonzero tensor in the set-sized case exhibits the failure of injectivity.
+The cone-extension question now has a written answer: in a fixed rational
+space, inclusion between full-dimensional pointed rational polyhedral
+cores with the same coefficients is flat exactly when the cones coincide.
+Two old interior monomials detect every strict enlargement; testing only
+old ray pairs can miss it, as an explicit three-dimensional example shows.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

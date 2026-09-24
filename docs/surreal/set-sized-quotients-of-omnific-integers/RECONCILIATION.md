@@ -2603,3 +2603,72 @@ anchors across 63 reports, 5,219 source-label references and 1,878 local
 Markdown destinations across 226 files, plus whitespace checks. The merge
 changes no TeX source or PDF; the three-pass article/catalogue validation
 recorded above remains applicable.
+
+### Polyhedral question review and strict cone enlargements (2026-09-24)
+
+Reviewed all ten source-26 question/status notes, `osq:pc:q:flatext`,
+`osq:pc:q:recognition`, `osq:pc:q:infinite`, `osq:pc:q:density`,
+`osq:pc:q:nonpolyhedral`, `osq:pc:q:arithmetic`, `osq:pc:q:algorithms`,
+`osq:pc:q:characteristic`, `osq:pc:q:derived` and `osq:pc:q:formal`.
+Also checked their dimension comparison against the merged core question.
+The original numbered questions and results are preserved.
+
+The cone-extension question is now answered under the section's existing
+full-dimensional, pointed, rational polyhedral hypotheses, with a fixed
+ambient rational space and coefficient pair D subset K: the inclusion of
+cores is flat if and only if the cones coincide. For a strict inclusion,
+a rational generator g of the larger cone lies outside the old cone;
+pointedness excludes -g from the old cone as well. A sufficiently large
+rational interior shift v=Nh makes u=Nh+g another old interior exponent.
+Comparing the coefficients at X^u and X^v forces both constants of every
+old relation to vanish. The new monomial X^g gives a relation with first
+coefficient one, impossible to trivialize under the compatible constant
+map. The earlier explicit nonzero tensor certificate applies too. Checked
+the equational criterion against Stacks Tag 00HK. This is a merge
+consequence, not attributed to source 26 and not claimed as a new result
+in the external literature.
+
+Added a counterexample to testing only pairs of old rays. Adjoining
+(-1,1,1) to the positive three-dimensional orthant gives a pointed cone
+with no newly comparable pair of old coordinate rays: its points are
+(a-t,b+t,c+t), all four parameters nonnegative. A negative first coordinate
+forces the other two positive. Nevertheless u=(1,2,2), v=(2,1,1) give the
+new ratio and a two-monomial nonflatness certificate. Higher syzygies are
+therefore unnecessary for strict enlargements in the stated setting,
+although restricting the test to old rays misses some cases.
+
+Added an explicit infinite-support obstruction. Under the lexicographic
+order with the first coordinate first, the exponents (1/n,n) form an
+admissible reverse-well-ordered interior support, but no positive interior
+shift can be subtracted from all of them. The cone-supported Hahn series
+therefore need not belong to the union of interior-shift principal ideals.
+This disproves that exhaustion, not flatness of an alternative completion.
+For any fixed finite antichain, maximal nonzero integer boundary minors
+also show that only finitely many primes can change its Betti numbers;
+this does not provide a smallest characteristic-sensitive example.
+
+The remaining notes separate marked reconstruction from recovery of the
+marking; directed exhaustion from a countable telescope and cap identities;
+proposed nonpolyhedral cases from established extensions; the scalar
+quotients valid for every domain from the PID module classification; rank
+computations from choices of reduced differentials; and the derived-tensor
+kernel from the quotient modules that base change retains. The small
+coefficient-extraction proof is now identified as an independent initial
+formalization target. All polyhedral results and the new manuscript
+consequences remain Pending in Lean. Internal-field results and full
+source reconciliation remain pending review.
+
+Updated the root README, report guide, shared notation, catalogue and
+coverage ledger. Corrected two abbreviated summaries to exclude the zero
+face from projective dimension one and the identity quotient from the
+nonflatness assertion. Validation: three clean final TeX passes for the
+314-page article and 35-page catalogue, no warnings or box diagnostics;
+inspected the new proof, ray-pair example, Hahn-support obstruction,
+exceptional-prime and derived notes, and catalogue summary. All 418
+standard/principal statements, 828 labels, 1,656 auxiliary numbering pairs,
+66 questions, 60 remarks and 28 numbered examples are unchanged. The new
+consequences occur in unnumbered status/proof text. All 4,626 source anchors
+across 63 reports, 5,220 source-label references and 1,878 local Markdown
+destinations across 226 files pass, with whitespace checks. No Lean source
+changed; the two-thread 4,686-job build and 17,793-declaration audit remain
+the baseline before synchronization.

@@ -5921,10 +5921,17 @@ algebra and polyhedral cores is recorded in the
 [reconciliation](surreal/set-sized-quotients-of-omnific-integers/RECONCILIATION.md).
 The polyhedral review covers all 30 standard results, the lattice-module
 comparison and the explicit nonflatness example, including arbitrary
-arithmetic modules and the dimension-one cases. The associated open-question
-and status notes, subsequent internal-field results and full source
-reconciliation remain pending review. This manuscript progress does not
-change the Pending Lean status of those source statements.
+arithmetic modules and the dimension-one cases. The ten associated
+question/status notes are reviewed. The added answer to
+`osq:pc:q:flatext` proves, for full-dimensional pointed rational polyhedral
+cones in the same rational space and the same coefficient pair, that
+flatness of the inclusion is equivalent to equality of the cones. An
+explicit three-dimensional example shows that old ray-pair tests alone
+are insufficient. This unnumbered manuscript consequence is **Pending**
+in Lean, as are the new Hahn-support counterexample and the finite
+exceptional-prime observation. Subsequent internal-field results and full
+source reconciliation remain pending review. This manuscript progress
+does not change the Pending Lean status of the polyhedral source statements.
 
 The 9 `maintheorem` statements are in scope: `osq:main:universal` (line 269), `osq:main:support` (line 280), `osq:main:thresholds` (line 290), `osq:main:fieldbound` (line 304), `osq:main:internal` (line 313), `osq:main:closure` (line 326), `osq:main:polynomial` (line 345), `osq:main:ordinal` (line 370), `osq:hd:main:cores` (line 376).
 They are not included in the literal standard-environment table below.

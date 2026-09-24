@@ -17826,8 +17826,71 @@ monotonicity over arbitrary real closed fields, the class-to-set support reducti
 For pointed cones $\mathscr C\subseteq\mathscr C'$ in the same rational space, characterize flatness of $A_{\mathscr C}\to A_{\mathscr C'}$. Which new exponent
 comparisons force the two-ray obstruction of \cref{osq:pc:thm:nonflat}?
 \end{question}
-\emph{Status.} Open. 26's comments: a necessary condition is that no newly admitted quotient of distinct old ray monomials creates the forbidden unit-constant
-relation; whether a finite set of such comparisons suffices, or higher syzygies add obstructions when all two-ray tests pass, is to be decided.
+\emph{Status (merge).} Answered for the full-dimensional rational polyhedral
+cones of \cref{osq:pc:sub:polyhedral}, with the same $D\subseteq K$ and
+ambient rational space on both sides:
+\[
+ A_{\mathscr C}\longrightarrow A_{\mathscr C'}\text{ is flat}
+ \quad\Longleftrightarrow\quad \mathscr C=\mathscr C'.
+\]
+Every strict inclusion has a two-monomial certificate, but the two old
+exponents need not lie on rays. The proof below strengthens 26's
+necessary ray-comparison test; higher syzygies are not needed in this
+setting. Cones in different linear spans, other exponent groups and
+infinite-support rings are outside this assertion.
+
+\begin{proof}[Strict cone enlargement]
+The equality case is the identity map. For a strict inclusion choose
+$g\in(\mathscr C'\setminus\mathscr C)\cap\Q^d$: some rational ray
+generator of $\mathscr C'$ lies outside $\mathscr C$, since otherwise
+their nonnegative span would lie in $\mathscr C$. Pointedness of
+$\mathscr C'$ also gives $-g\notin\mathscr C$, for otherwise both
+$g$ and $-g$ would belong to $\mathscr C'$.
+
+Choose $h\in\operatorname{int}\mathscr C\cap\Q^d$. Write
+$\mathscr C=\{x:\ell_j(x)\ge0\text{ for }1\le j\le t\}$ using
+its facet functionals; all $\ell_j(h)>0$. Choose an integer $N>0$
+with $N\ell_j(h)+\ell_j(g)>0$ for every $j$, and put
+\[
+ v=Nh,\qquad u=Nh+g.
+\]
+Both are nonzero rational interior points of the old cone, whereas
+$u-v=g$ and $v-u=-g$ lie outside it. For every old relation
+$rX^u+sX^v=0$, comparison at $X^u$ and $X^v$ gives
+\[
+ r_0+s_g=r_0=0,\qquad r_{-g}+s_0=s_0=0.
+\]
+This is the coefficient argument of \cref{osq:pc:lem:syzygy};
+being on distinct rays was only one way to ensure the two excluded
+differences. In $T=A_{\mathscr C'}$, the new monomial $z=X^g$
+gives $X^u-zX^v=0$. A finite trivialization of $(1,-z)$ by old
+relations would force $1=0$ under the compatible constant map
+$T\to D$, exactly as in \cref{osq:pc:thm:nonflat}. The equational
+criterion \cite[Tag~00HK]{StacksFlat} rules out flatness.
+Equivalently, its explicit tensor certificate
+$X^u\otimes1-X^v\otimes X^g$ is nonzero in
+$(X^u,X^v)A_{\mathscr C}\otimes_{A_{\mathscr C}}T$ and maps to
+zero under multiplication. Thus the obstruction works for every
+unital $D\subseteq K$, without a characteristic or coefficient-rank
+restriction.
+\end{proof}
+
+Testing only pairs of old rays is insufficient even in dimension three.
+Take $\mathscr C=\R_{\ge0}^3$ and enlarge it by the ray through
+$g=(-1,1,1)$. The resulting rational cone $\mathscr C'$ is pointed:
+the sum of coordinates is positive on all four generators. Every point
+of $\mathscr C'$ has the form
+\[
+ (a-t,b+t,c+t),\qquad a,b,c,t\ge0.
+\]
+If its first coordinate is negative, its other two coordinates are
+strictly positive; its second and third coordinates can never be
+negative. Hence no difference of positive vectors on two distinct old
+coordinate rays belongs to $\mathscr C'$, in either order. All old
+ray-pair tests pass, but $u=(1,2,2)$ and $v=(2,1,1)$ satisfy
+$u-v=g$, giving the nonflatness certificate above. A rational generator
+outside the old cone, together with one sufficiently large interior
+shift, therefore provides a finite certificate beyond the ray-pair tests.
 
 \begin{question}[Recognition without named monomials; 26]\label{osq:pc:q:recognition}
 Does the abstract ring $A_{\mathscr C}$, with $D$ named but no grading, determine the face lattice of $\mathscr C$? When must an isomorphism preserve the
@@ -17835,6 +17898,10 @@ geometric radical ideals?
 \end{question}
 \emph{Status.} Open. 26's comments: \cref{osq:pc:cor:reconstruct} solves only the marked version; an unmarked theorem needs an intrinsic characterization of the
 coefficient-full geometric ideals, which connects these invariants to the repository's embedding and automorphism program.
+Naming $D$ does not name the homogeneous $K$-spaces in the tail. The
+proved reconstruction uses the actual geometric ideals, their inclusion
+order and their products; it does not recover this marked collection
+from the set of all abstract radical ideals.
 
 \begin{question}[Infinite-support extensions; 26]\label{osq:pc:q:infinite}
 Which Hahn-type completions of $A_{\mathscr C}$ keep the principal exhaustion of each $I_F$, the detector formula and the finite flat resolutions?
@@ -17842,6 +17909,16 @@ Which Hahn-type completions of $A_{\mathscr C}$ keep the principal exhaustion of
 \emph{Status.} Open. 26's comments: the issue is whether one positive shift can be subtracted from all exponents of a series; finite supports allow a minimum over
 finitely many inequalities, while an infinite support can approach a boundary face with no uniform inward margin, so a theorem must impose a support
 condition excluding this or replace principal exhaustion.
+\emph{Concrete obstruction (merge).} Order $\Q^2$ lexicographically with the first coordinate
+first, using the reverse-well-ordered support convention of normal forms.
+The series $\sum_{n\ge1}X^{(1/n,n)}$ has an admissible decreasing support,
+all in the interior of $\R_{\ge0}^2$. For any interior shift $q=(a,b)$,
+choose $n>1/a$; then $(1/n,n)-q$ has negative first coordinate.
+No such monomial shift divides the series within the cone-supported
+ring. Thus even admissible Hahn supports need not lie in the union of
+the interior-shift principal ideals. This disproves that exhaustion for
+this completion; it does not by itself disprove flatness or an alternative
+resolution.
 
 \begin{question}[Exponent-density hypotheses; 26]\label{osq:pc:q:density}
 Replace $\Q^d$ by a subgroup $\Gamma\subseteq\R^d$. Which conditions on $\Gamma\cap F$ for each face are sufficient, or necessary, for flat face ideals and for
@@ -17850,13 +17927,23 @@ Replace $\Q^d$ by a subgroup $\Gamma\subseteq\R^d$. Which conditions on $\Gamma\
 \emph{Status.} Open. 26's comments: the proof uses countable sequences in relative interiors tending to zero and enough subtraction stability, not every rational
 exponent; comparison with the dense-subgroup orthant case of Geist--Miller \cite[Section~4]{GeistMiller} should separate the existence of a flat resolution
 from the telescope bound on projective dimension.
+The obligations are distinct: a directed principal-ideal exhaustion
+suffices for flatness, while the written length-one telescope uses a
+countable cofinal chain. For the face formulas one must also retain the
+face-label classification and the cap modules with their eventual
+transition identities. Density in the ambient real space alone is not
+a substitute for these facewise requirements.
 
 \begin{question}[Beyond polyhedral cones; 26]\label{osq:pc:q:nonpolyhedral}
 Can an infinite face poset give a usable analogue of the join-homology formula? How do the number of faces, the cofinality of inward shifts and homological
 dimension interact for nonpolyhedral cones?
 \end{question}
 \emph{Status.} Open. 26's comments: finite-label cancellation is no longer automatic, and finite supports do not force finitely many labels globally; locally
-polyhedral cones and increasing unions of rational cones are controlled first cases.
+polyhedral cones and increasing unions of rational cones are proposed first cases,
+not extension theorems proved here. A passage to a union would have to
+specify compatible rings, resolutions and test modules; finite support
+of individual elements alone does not supply a uniform bound on their
+homological degrees.
 
 \begin{question}[Arithmetic rings beyond principal ideal domains; 26]\label{osq:pc:q:arithmetic}
 For a general domain $D\subseteq K$, determine the flat dimensions over $A_{\mathscr C}$ of the modules acting through $D$.
@@ -17864,6 +17951,11 @@ For a general domain $D\subseteq K$, determine the flat dimensions over $A_{\mat
 \emph{Status.} Open. 26's comments: \cref{osq:pc:thm:arithmetic} uses the torsion theory and flatness of torsion-free modules over a principal ideal domain;
 over a non-Pr\"ufer domain further homology of $D$ survives, and a theorem should separate the cone contribution from the $D$-module contribution without
 simply adding dimensions where torsion removes the tail.
+One comparison survives without the principal ideal domain hypothesis:
+for every nonzero nonunit $a\in D$, the module $D/aD$ has flat and
+projective dimension one over the core by \cref{osq:pc:prop:scalar}.
+Thus an additive dimension formula must already accommodate these
+modules, for which the cone dimension contributes no extra term.
 
 \begin{question}[Efficient reduced resolutions; 26]\label{osq:pc:q:algorithms}
 Can the top join homology and a detector certificate be computed without all $2^r$ subsets of generators? Can the reduced differentials be chosen canonically
@@ -17872,12 +17964,27 @@ or functorially?
 \emph{Status.} Open. 26's comments: its program favours auditability over efficiency; for face-prime quotients the disjoint-face formula already replaces subset
 enumeration by a maximum over the face poset, and general antichains may admit discrete-Morse or interval reductions compatible with
 \cref{osq:pc:lem:cancellation}, the lcm-lattice techniques being classical \cite{GPW}.
+The two requested outputs should be separated: the multiplicities need
+only homology ranks of the diagonal blocks; a reduced differential also
+needs choices of pivots, complements and the induced off-diagonal
+corrections. The existing cancellation proof certifies those choices
+once made, but does not make them canonical.
 
 \begin{question}[Characteristic-sensitive examples; 26]\label{osq:pc:q:characteristic}
 Which finite face antichains have join complexes whose homology depends on the characteristic of $K$, and how small can such a cone and antichain be?
 \end{question}
 \emph{Status.} Open. 26's comments: \cref{osq:pc:cor:squarefree} gives a route through torsion in squarefree monomial topology; the omnific applications are in
 characteristic zero, and a minimal example would show which parts of the arbitrary-field theorem carry arithmetic information.
+\emph{Finite exceptional set (merge).} For a fixed cone and antichain, only finitely many primes can differ
+from characteristic zero. Indeed, there are finitely many integer
+boundary matrices in its augmented join complexes. For each of positive
+rational rank choose a nonzero minor of maximal size. Away from the
+prime divisors of the product of these minors every rank is unchanged;
+all larger minors vanish over $\Z$ and hence in every characteristic.
+The homology dimensions, Betti multiplicities and flat dimension are
+therefore unchanged there. Smith normal forms can determine the exact
+rank drops. This bounds the exceptional primes for a given input; it
+does not supply a smallest characteristic-sensitive input.
 
 \begin{question}[Derived structure beyond self-$\Tor$; 26]\label{osq:pc:q:derived}
 Describe the derived restriction along $A_{\mathscr C}\to A_{\mathscr C}/\mathfrak r_{\mathcal F}$, including the subcategory invisible to tensoring with the
@@ -17885,6 +17992,13 @@ quotient and any compact-generation properties.
 \end{question}
 \emph{Status.} Open. 26's comments: the homological epimorphism is proved (\cref{osq:pc:thm:homological}); a recollement or compactness statement needs more
 hypotheses and proofs, and the contrast between vanishing self-$\Tor$ and nonzero detector $\Tor$ is a starting point, not a substitute for that analysis.
+Modules killed by $\mathfrak r_{\mathcal F}$ are the quotient modules
+retained by base change: $B\otimes^{\mathbf L}_{A_{\mathscr C}}N\simeq N$
+for each such module, by the proved degree-zero identity and higher
+$\Tor$ vanishing. They are not the subcategory killed by derived tensor.
+Likewise, the finite resolution here has flat, generally nonprojective
+summands; it does not assert a resolution by finitely generated
+projectives or compactness.
 
 \begin{question}[A staged formalization; 26]\label{osq:pc:q:formal}
 Formalize the disjoint-face formula, separating finite combinatorics, filtered monomial ideals and the embedding into the surreal field.
@@ -17892,6 +18006,14 @@ Formalize the disjoint-face formula, separating finite combinatorics, filtered m
 \emph{Status.} Open. 26's plan: encode finite rational cones and joins; prove principal exhaustion; prove the simplex and cap calculations; formalize finite scalar
 cancellation; then import the normal-form embedding. The equational nonflatness theorem is a small independent target, the finite relation criterion being in
 Mathlib (\texttt{Mathlib.RingTheory.Flat.EquationalCriterion}); 26 supplies no Lean code (\cref{osq:sub:formalization}).
+For an initial independent target, coefficient extraction for two
+monomials with both exponent differences outside the old cone gives the
+nonflatness test, including the strict-enlargement answer above. This
+needs neither face homology nor a surreal embedding. The larger
+polyhedral theorem, these new manuscript consequences and their
+instantiation on actual surreal carriers remain pending in Lean; the
+Python incidence checks and the manuscript review do not discharge
+those obligations.
 
 \begin{question}[The exact Boolean algebra; 27]\label{osq:hb:q:boolean}
 For the hull of \cref{osq:hb:prop:hull}, determine $\Idem(\mathscr G)$ up to isomorphism. Is it atomless? Can $\mathsf X$ have isolated points? For
