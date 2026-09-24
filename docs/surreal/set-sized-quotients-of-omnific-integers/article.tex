@@ -9570,8 +9570,45 @@ $\mathfrak r=\sum_iI_{S_i}$. Then $\fd_{A_d}(A_d/\mathfrak r)=\pd_{K[\mathbf x]}
 multigraded Betti numbers of $K[\mathbf x]/\mathfrak q$.
 \end{corollary}
 \begin{proof}
-Both join semilattices are the unions of the $S_i$, and the lcm-lattice formula \cite{GPW} gives the Betti numbers by the same interval (crosscut) homology as
-\eqref{osq:pc:eq:beta}; take the top degree (\cref{osq:pc:thm:exactfd}).
+Put $R=K[\mathbf x]$. The minimal generators are the squarefree
+monomials $x^{S_i}=\prod_{j\in S_i}x_j$. Each $S_i$ is nonempty
+because $\mathfrak q$ is proper, and they form a nonempty antichain
+because the generators are irredundant and $\mathfrak q\ne0$.
+For a subfamily $T\subseteq[r]$, their least common multiple is
+\[
+ \operatorname{lcm}_{i\in T}x^{S_i}=x^{\bigcup_{i\in T}S_i},
+\]
+with value $1$ for $T=\varnothing$. Sending this monomial to the
+coordinate face on $\bigcup_{i\in T}S_i$ identifies the lcm-lattice,
+ordered by divisibility, with the face-join semilattice $\mathcal L$.
+The minimal label $1$ corresponds to the zero face.
+
+For every nonzero label $G$, the open interval below its lcm monomial
+therefore has the same order complex as $(\{0\},G)_{\mathcal L}$.
+The crosscut comparison \cref{osq:pc:lem:crosscut} identifies its
+reduced homology with that of $\mathsf K_{<G}$. The lcm-lattice
+formula \cite[Theorem~2.1]{GPW} now gives, for $p\ge1$,
+\[
+ \beta^R_{p,x^{S_G}}(R/\mathfrak q)
+   =\dim_K\widetilde H_{p-2}(\mathsf K_{<G};K)=\beta_{p,G},
+\]
+where $S_G$ is the coordinate-ray set of $G$. At an atom the interval
+is empty and the augmented degree-$-1$ group is $K$, giving the
+minimal generator in homological degree one. Both resolutions have
+one degree-zero summand. Multidegrees outside the lcm-lattice
+contribute nothing: the Taylor resolution has only lcm-labelled
+free summands, and tensoring it with $R/(x_1,\ldots,x_d)=K$
+computes the multigraded Tor groups.
+
+Finally, the last nonzero Betti degree is $\pd_R(R/\mathfrak q)$.
+Indeed, cancelling homogeneous scalar units gives a finite minimal
+free resolution whose maps vanish after tensoring with $K$.
+Its last term supplies a nonzero Tor group and hence a lower bound
+for every projective resolution; its length supplies the upper bound.
+The same last degree is $\fd_{A_d}(A_d/\mathfrak r)$ by
+\cref{osq:pc:thm:exactfd}. Thus both the individual multiplicities
+and the stated dimensions agree, with ordinary projective dimension
+on the polynomial side and ordinary flat dimension on the core side.
 \end{proof}
 
 Projective dimension is not preserved: for one generator the ordinary quotient has projective dimension one, the root-face quotient two
@@ -9582,7 +9619,31 @@ For fixed $\mathscr C$ and $\mathcal F$, the $\beta_{p,G}$ and $\fd(A_{\mathscr 
 only through its characteristic; the real omnific and Gaussian omnific realizations agree.
 \end{corollary}
 \begin{proof}
-The boundary matrices have entries $0,\pm1$, so their ranks depend only on the prime field, and \cref{osq:pc:thm:exactfd} holds for every unital $D\subseteq K$.
+The finite complexes $\mathsf K_{<G}$ depend only on the cone and
+its antichain of faces. Choose orientations of their simplices.
+Every augmented boundary matrix then has integer entries $0,1,-1$,
+including the map from vertices to the empty-face copy of the field.
+Let $k_0$ be the prime subfield of $K$, either $\Q$ or $\F_p$.
+The rank of such a matrix over $K$ equals its rank over $k_0$:
+a minor is nonzero over $K$ exactly when its image in $k_0$ is
+nonzero, since $k_0\hookrightarrow K$ is injective. Consequently
+\[
+ \dim_K\widetilde H_j
+ =\dim_K\widetilde C_j-\operatorname{rank}_K\partial_j
+       -\operatorname{rank}_K\partial_{j+1}
+\]
+is determined by the characteristic, in every augmented degree.
+Equation~\eqref{osq:pc:eq:beta} gives the same conclusion for all
+$\beta_{p,G}$. The ring $D$ never enters these chain matrices.
+By \cref{osq:pc:thm:exactfd}, the flat dimension is the largest
+nonzero Betti degree for every unital $D\subseteq K$, proving its
+independence of $D$ as well.
+
+For the real and Gaussian realizations, the coefficient fields are
+$\R$ and $\C$, both with prime field $\Q$; the constant rings
+$\Z$ and $\Z[i]$ may differ without changing these invariants.
+This is independence within a fixed characteristic, not an assertion
+that reduction modulo every prime preserves the ranks.
 \end{proof}
 
 \paragraph{Arithmetic modules.}
@@ -9592,8 +9653,25 @@ For $0\ne a\in D$, $aA_{\mathscr C}=aD\oplus\Pi_{\mathscr C}$ and $A_{\mathscr C
 $\fd(D/aD)=\pd(D/aD)=1$.
 \end{proposition}
 \begin{proof}
-$a\Pi_{\mathscr C}=\Pi_{\mathscr C}$ since $\Pi_{\mathscr C}$ is a $K$-space. $0\to A_{\mathscr C}\xrightarrow{a}A_{\mathscr C}\to D/aD\to0$ is a free resolution,
-and $D/aD$ is not flat, multiplication by $a$ becoming zero.
+Because $a\ne0$ in the field $K$, multiplication by $a$ is a
+bijection on the $K$-vector space $\Pi_{\mathscr C}$. The direct
+sum $A_{\mathscr C}=D\oplus\Pi_{\mathscr C}$ therefore gives
+$aA_{\mathscr C}=aD\oplus\Pi_{\mathscr C}$. Composing the constant
+map with $D\to D/aD$ is surjective and has exactly this kernel,
+proving the quotient isomorphism.
+
+The ring $A_{\mathscr C}$ is a domain, so multiplication by $a$
+is injective and gives the free resolution
+\[
+ 0\longrightarrow A_{\mathscr C}\xrightarrow{\,a\,}A_{\mathscr C}
+   \longrightarrow D/aD\longrightarrow0.
+\]
+If $a$ is not a unit of $D$, then $D/aD\ne0$. Tensoring the injection
+$a:A_{\mathscr C}\to A_{\mathscr C}$ with this module produces its
+zero endomorphism, which is not injective. Thus the quotient is not
+flat. The resolution gives $\pd\le1$, and $\fd\le\pd$ together
+with nonflatness gives both dimensions equal to one. If $a$ is a unit,
+the quotient is zero and no dimension-one assertion is made.
 \end{proof}
 
 This is 12's \cref{osq:hd:prop:finite}(i) for cones, and an elementary consequence of divisible tail coefficients, not a new finite-quotient theorem for $\Oz$
@@ -9604,16 +9682,71 @@ Let $D$ be a principal ideal domain, not a field, and $N\ne0$ a $D$-module regar
 if $N$ is torsion over $D$ and $\fd_{A_{\mathscr C}}N=d$ otherwise. This applies to $D=\Z$ and $D=\Z[i]$.
 \end{theorem}
 \begin{proof}
-Finitely generated torsion $D$-modules are finite sums of $D/aD$, so the filtered union $N_{\mathrm{tor}}$ has $\fd\le1$, and $\fd N_{\mathrm{tor}}=1$ if
-$N_{\mathrm{tor}}\ne0$ because some $a\ne0$ kills a nonzero element. If $V=N/N_{\mathrm{tor}}\ne0$, $V$ is flat over the principal ideal domain $D$, so
-tensoring \cref{osq:pc:prop:cellular} over $D$ with $V$ stays exact, $A_{\mathscr C}\otimes_DV$ is flat and $I_G\otimes_DV\cong I_G\otimes_K(K\otimes_DV)$ is a
-sum of copies of $I_G$: a flat resolution of $V$ of length $d$. With $\mathcal W=\mathcal W_{\mathscr C,b}$, degree $b$ leaves
+Write $T=N_{\mathrm{tor}}$ and $V=N/T$. Every finitely generated
+submodule of $T$ is, by the structure theorem over the principal
+ideal domain $D$, a finite direct sum of modules $D/aD$ with $a$
+nonzero and noninvertible (or the zero module). Each such summand
+has flat dimension one over $A_{\mathscr C}$ by
+\cref{osq:pc:prop:scalar}. These submodules form a filtered system
+with union $T$. Tor commutes with filtered colimits in its first
+variable, so $\Tor_j(T,M)=0$ for every module $M$ and every $j>1$;
+hence $\fd T\le1$. If $T\ne0$, choose $0\ne t\in T$ and
+$0\ne a\in D$ with $at=0$. Multiplication by $a$ is injective
+on $A_{\mathscr C}$ but not on $T$, so $T$ is not flat.
+This proves $\fd N=1$ when $N=T\ne0$.
+
+Now suppose $V\ne0$. It is torsion free: if $a(n+T)=0$ with
+$a\ne0$, some $b\ne0$ kills $an$, whence $n\in T$ since $ab\ne0$.
+Over a principal ideal domain a torsion-free module is flat, so
+$-\otimes_DV$ preserves the cellular resolution of $D$ from
+\cref{osq:pc:prop:cellular} and its augmentation onto
+$D\otimes_DV\cong V$. All its terms are flat over $A_{\mathscr C}$.
+For degree zero, this follows from
+$M\otimes_{A_{\mathscr C}}(A_{\mathscr C}\otimes_DV)\cong M\otimes_DV$.
+For a positive term, associativity gives
+\[
+ I_G\otimes_DV\cong I_G\otimes_K(K\otimes_DV).
+\]
+A $K$-basis of $K\otimes_DV$ therefore expresses $I_G\otimes_DV$
+as a possibly infinite direct sum of copies of the flat ideal $I_G$.
+Thus this is a flat resolution of $V$ of length $d$.
+
+Choose $b\in\operatorname{relint}\mathscr C\cap\Q^d$, give $V$
+degree zero, and tensor the resolution over $A_{\mathscr C}$ with
+$\mathcal W=\mathcal W_{\mathscr C,b}$. Tensor associativity
+identifies each term with the corresponding cellular term tensored
+first with $\mathcal W$ and then over $D$ with $V$. In exponent
+degree $b$, the degree-zero term vanishes because $\mathcal W_b=0$.
+Face isolation leaves just $K\otimes_DV$ in homological degree $d$.
+Consequently
 \begin{equation}\label{osq:pc:eq:arithmeticdetector}
- \Tor_d^{A_{\mathscr C}}(V,\mathcal W)_b\cong K\otimes_DV\ne0,
+ \Tor_d^{A_{\mathscr C}}(V,\mathcal W)_b\cong K\otimes_DV\ne0.
 \end{equation}
-nonzero because localizing the torsion-free $V$ at $D\setminus\{0\}$ and extending scalars to $K$ is faithful. Since $a$ acts invertibly on the $K$-space
-$\mathcal W$, $\Tor_j(D/aD,\mathcal W)=0$ for all $j\ge0$, hence for $N_{\mathrm{tor}}$, and the long exact sequence of $0\to N_{\mathrm{tor}}\to N\to V\to0$
-gives $\Tor_d(N,\mathcal W)\cong\Tor_d(V,\mathcal W)$ and the upper bound $d$.
+For nonvanishing, put $Q_D=\Frac D\subseteq K$.
+The map $V\to Q_D\otimes_DV$ is injective because $V$ is torsion
+free, and $Q_D\otimes_DV\ne0$. Extension of a nonzero vector space
+from $Q_D$ to the field $K$ remains nonzero, so
+$K\otimes_DV\cong K\otimes_{Q_D}(Q_D\otimes_DV)\ne0$.
+This homogeneous Tor group is part of ordinary ungraded Tor and
+therefore proves $\fd V=d$.
+
+It remains to transfer this lower bound to $N$, without assuming
+$0\to T\to N\to V\to0$ splits. Tensor the two-term scalar resolution
+with the $K$-vector space $\mathcal W$. Its differential is
+multiplication by $a\ne0$, a bijection on $\mathcal W$; thus
+$\Tor_j(D/aD,\mathcal W)=0$ for every $j\ge0$, including degree zero.
+Finite direct sums and filtered colimits give the same vanishing
+for $T$. The long exact Tor sequence now yields
+\[
+ \Tor_j(N,\mathcal W)\cong\Tor_j(V,\mathcal W)\qquad(j\ge1).
+\]
+Degree-zero vanishing for $T$ is what makes this valid also at $j=1$,
+so the argument covers $d=1$. The nonzero group in degree $d$ gives
+$\fd N\ge d$. Finally, for any target module $M$ and $j>d$, both
+$\Tor_j(T,M)$ and $\Tor_j(V,M)$ vanish, since $d\ge1$.
+The same long exact sequence gives $\Tor_j(N,M)=0$, hence
+$\fd N\le d$. This proves the claimed dichotomy for arbitrary
+nonzero $D$-modules, with no finite-generation assumption.
 \end{proof}
 
 All these modules have $\Tor_{>0}(D,N)=0$ (\cref{osq:pc:thm:homological}); the theorem classifies modules acting through $\ct$ only, not all modules over a core or

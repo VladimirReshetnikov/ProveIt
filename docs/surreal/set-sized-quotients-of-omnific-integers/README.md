@@ -278,13 +278,26 @@ ideal does not suffice for simpliciality. Cube facets attain flat dimension
 `d − 1`, and the square/cube/octahedron examples now have a comparison
 table of flat summand counts. All five results remain pending in Lean.
 
-The squarefree transfer, coefficient dependence, arithmetic modules,
+Squarefree transfer, coefficient dependence, scalar quotients and the
+arithmetic-module dichotomy are now reviewed. Support unions identify the
+lcm labels with coordinate faces, including the degree-one and degree-zero
+conventions. The polynomial quotient's last Betti degree is its projective
+dimension, and the same degree is flat dimension over the root core.
+Boundary-matrix minors make the dependence on characteristic explicit.
+
+For arbitrary modules acting through a principal ideal domain that
+is not a field, the proof now passes from finite torsion submodules by
+filtered colimits, tensors the cellular resolution with the torsion-free
+quotient, and explains its nonzero cap detector. Tor vanishing against
+that detector includes degree zero, so the argument covers dimension one
+and mixed modules without assuming that their torsion sequence splits.
+These four results remain pending in Lean. The lattice-module remark,
 nonflat embeddings and full source reconciliation remain pending review.
 Exact scope and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 309 pages
+article.pdf   the compiled report, 311 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
