@@ -780,3 +780,9 @@ import Surreal.Algebra.RetractionInfiniteSets
 import Surreal.Algebra.QuantifierFreeRetraction
 import Surreal.HahnSeries.QuantifierFreeObstructions
 import Surreal.Surcomplex.QuantifierFreeObstructions
+import Surreal.Algebra.IntegerPolynomialAvoidance
+import Surreal.Algebra.IntegerPolynomialFormulas
+import Surreal.Algebra.AlgebraicOmittedType
+import Surreal.Algebra.NumberFieldOmittedType
+import Surreal.HahnSeries.AlgebraicOmittedType
+import Surreal.Surcomplex.AlgebraicOmittedType

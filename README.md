@@ -420,6 +420,13 @@ define finite or cofinite sets, whereas these sets are infinite and have
 infinite complements. The explicit constant-definition formula therefore
 witnesses failure of quantifier elimination for the complete theories of
 both actual omnific rings and their integer and Gaussian Hahn counterparts.
+Both actual rings also omit an explicit parameter-free type whose every finite
+subset is realized: require the element to be an ordinary constant and to
+avoid every nonzero integer polynomial. Finitely many polynomials leave an
+ordinary natural witness at most their total degree, but every ordinary
+integer or Gaussian integer has an integer annihilator. These statements
+are proved for native ring formulas and for intermediate Hahn rings as well.
+The separate computability and recursive-saturation conclusions remain pending.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier
