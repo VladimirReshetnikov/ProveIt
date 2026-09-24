@@ -246,6 +246,13 @@ to have no greatest common divisor: every common divisor can be strictly
 enlarged. Its two-generated ideal is not principal. Thus the omnific ring
 is neither a GCD domain nor a Bézout domain.
 
+The principal ideals `(ω) ⊊ (ω^(1/2)) ⊊ (ω^(1/4)) ⊊ …` form a proved
+strictly ascending chain. The omnific ring is not Noetherian, not a principal
+ideal domain, and not integrally closed in its surreal fraction field.
+Both `√2` and `√(ω²+1)` are verified integral elements outside the ring;
+more generally, `√(w²+1)` is integral and non-omnific for every nonzero
+omnific integer `w`.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
