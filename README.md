@@ -369,6 +369,11 @@ omnific rings and their full Hahn coefficient pullbacks. The underlying
 augmentation theorem works even in algebras with zero divisors; only a
 nonzero coefficient-field scalar is inverted. The checked example in `ℝ × ℝ`
 gives the zero divisor `(1,0)` an explicit certificate.
+The same polynomial now classifies every ideal whose quotient has no root:
+these are exactly the ideals contained in the constant-term kernel. Thus the
+purely infinite ideal is the greatest such ideal, for both actual omnific
+rings and the full real and Gaussian Hahn pullbacks. Negating the detector
+also gives universal ring formulas for the kernel and equality of constant terms.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
