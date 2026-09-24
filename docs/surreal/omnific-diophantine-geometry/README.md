@@ -244,8 +244,14 @@ through Remark 19.17, together with the polynomial-parameter explanation.
 It restores positive degree in Corollaries 19.15–19.16, defines squarefree
 over the coefficient field, and replaces the misleading nonmonic comparison
 by `ωX² + X`, whose discriminant is 1 but whose residue polynomial has degree 1.
-The later consequences starting in Section 19.4.4, the étale and matrix proofs,
-the alternative splitting-algebra proof, the remaining pointers and credits
+The next pass covers Sections 19.4.4–19.4.5 through Remark 19.28: monic
+factors and their quotients, Galois restriction and irreducibility, marked
+values, coherent translations, finite-projective reduction and the finite
+étale unit theorem. It makes the nonempty family in Theorem 19.21 explicit
+and checks the generic-factor and constant-subalgebra arguments without
+assuming a global free basis. Monogenic descent in Section 19.4.6 and the
+later critical-point and matrix results, the alternative splitting-algebra
+proof, the remaining pointers and credits
 in Sections 1, 2, 5, 6, 9, 16 and 20, the status notes in Sections 18.5 and 21,
 Questions 21.31–21.40 and the appendix additions remain unreviewed, apart
 from the earlier opening-summary and sibling-translation scope checks. Section 19.4 was appended at the end of
@@ -1144,7 +1150,10 @@ claims that these are open in the literature.
 - The C17 assembly reported no proof gap; that report is not a complete independent
   review. The subsequent review through Remark 19.17 makes positive degree and
   field-theoretic squarefreeness explicit, supplies the algebraic-embedding argument,
-  and corrects the nonmonic counterexample. Later C17 proofs remain unreviewed.
+  and corrects the nonmonic counterexample. The following pass through Remark
+  19.28 supplies the generic-factor derivation and constant-subalgebra details,
+  and explicit positive-degree and nonempty-family conventions. Review of the
+  monogenic and later applications remains pending.
   Its Lemmas 2.1, 3.1 and 6.3 are printed once as Lemmas 16.1–16.3 and Corollary 16.4.
 
 **Stale repository statements.** Source 01 said the repository's

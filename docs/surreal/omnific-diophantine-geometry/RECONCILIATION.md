@@ -1496,3 +1496,61 @@ has 4,550 standard results in 63 reports; refreshed indexes, 5,107 source
 references and 1,718 local Markdown destinations pass. This merge changes
 only documentation, so the successful 4,503-job Lean build and 15,678-
 declaration audit remain applicable.
+
+
+## Discriminant consequences and finite étale units
+
+This pass reviews Sections 19.4.4–19.4.5, from `odg:disc:prop:factors`
+through `odg:disc:rem:etalenorm`. It adds ten standard results to the nine
+covered by the first C17 pass. Monogenic/arithmetic descent, critical-point
+and matrix applications, the second proof, C17's questions and full
+parallel-source reconciliation remain pending. No new Lean coverage is
+claimed, and the delivered audit and verification artifacts are unchanged.
+
+The factorization proof now descends both a monic divisor and its monic
+quotient. The Galois proof constructs the tensor-product embedding and
+explains why its finite-dimensional domain image is the compositum;
+restriction preserves the ordinary splitting field because it permutes
+the roots that generate that field. The minimal-polynomial argument also
+makes preservation of irreducibility explicit. Positive degree is stated
+in the Galois theorem; the marked-value corollary explicitly retains the
+translation theorem's setting and exhibits the nonzero polynomial it uses.
+
+The coherent-translations theorem now states `ℓ ≥ 1`. Its proof identifies
+the relative-shift polynomial as a resultant in `𝕜[T]`, checks its positive
+degree, and handles the one-polynomial case. An empty family gives no
+uniqueness constraint. Zero constant resultants still suffice for equality
+of shifts, as the existing remark says; the theorem retains its stronger
+nonzero edge hypothesis.
+
+For finite étale algebras, the review checks the general-ring inputs in
+[Stacks 00U0](https://stacks.math.columbia.edu/tag/00U0),
+[00UP](https://stacks.math.columbia.edu/tag/00UP) and
+[00U3](https://stacks.math.columbia.edu/tag/00U3). A new bibliography entry
+makes the finite-projective step precise via
+[02KB](https://stacks.math.columbia.edu/tag/02KB) and
+[00NX](https://stacks.math.columbia.edu/tag/00NX), without a Noetherian
+assumption. The proof explains why the nonzero algebra has positive rank,
+why derivations kill idempotents and preserve every generic field factor,
+and why Cayley–Hamilton for multiplication implies nilpotence of the
+multiplier itself.
+
+The constant-subalgebra proof now gives the squarefree-annihilator and
+Bézout argument, uses joint injectivity of the generic maps explicitly,
+and identifies the basis argument proving the tensor-product injection.
+Every idempotent is an algebraic constant. These facts do not assert
+surjectivity onto the augmentation fiber or full descent. The comparison
+with the earlier étale norm theorem treats the zero algebra separately
+and explains why a unit determinant supplies an inverse for the norm
+argument's element. That comparison retains characteristic zero for C17;
+the earlier norm proof's wider characteristic scope is unchanged.
+
+Validation: only three standard statements change text (Galois positive
+degree, explicit translation setting for marked values, nonempty family
+for resultants). All 244 standard results, 553 labels and 1,106 auxiliary
+label numbers are retained. The article and catalogue build cleanly in
+three passes to 227 and 33 pages; the changed proof pages were checked
+visually. The 4,602-result index, 5,159 source references and 1,723 local
+Markdown destinations pass before this review record is appended. No Lean
+source or finite verifier changed; this pass does not rerun the previously
+passing finite suite or claim that it verifies the étale proofs.

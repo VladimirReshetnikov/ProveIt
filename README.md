@@ -416,9 +416,13 @@ Its elementary lemmas and root-velocity proof have now been reviewed: for
 omnific coefficients, each integer root of the constant-term polynomial
 lifts uniquely by the same purely infinite translation. The review makes
 positive degree and squarefreeness over the coefficient field explicit,
-and corrects the example showing why monicity matters. The subsequent
-étale-algebra and matrix proofs remain unreviewed; this discriminant
-classification remains pending in Lean.
+and corrects the example showing why monicity matters. The next review
+covers factors, Galois groups, coherent translations and units of finite
+étale algebras: every such unit is algebraic over the coefficient field.
+It explains the generic field factors and why the constant subalgebra
+injects into the reduction fiber, while full descent still requires an
+additional hypothesis. Monogenic descent and the later matrix arguments
+remain unreviewed; these C17 results remain pending in Lean.
 The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
 now assembles fifteen manuscripts. Its latest parts propose formal orbit
 fields, actions of set-sized left-orderable groups with prescribed fixed
