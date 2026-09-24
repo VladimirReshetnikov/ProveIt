@@ -688,3 +688,63 @@ All 4,626 statement anchors across 63 reports, 5,209 source-label references,
 and 1,786 local Markdown destinations across 226 files pass. Whitespace
 checks pass. No TeX or PDF changes were merged; the article and catalogue
 builds from the controlled-field review remain current.
+
+## Countable-support one-arm models and residue fields
+
+Reviewed the four standard results `osq:lem:tail`, `osq:thm:barrier`,
+`osq:lem:coefffield` and `osq:thm:residue`, together with construction,
+embeddings, exact generator count and the support-bound counterexample
+`osq:rem:fstar`. The source-11 model, full organizing theorem, later
+classifications and full parallel-source reconciliation remain pending.
+
+Corrected the maintained claim that lambda^aleph_0=lambda automatically
+implies the continuum lower bound: 0 and 1 satisfy the equality too.
+Infinitude is now explicit in the construction, principal summary,
+organizing table and realized-cardinal comparison. Source 09's original
+stronger continuum lower bound was already sufficient. The ledger records
+the missing hypothesis and keeps all four reviewed results pending in Lean.
+
+The tail proof bounds the countable set of first coordinates in omega_1,
+then checks every finite multiple of a later basis vector. Only regularity
+of omega_1 is used. Cardinality bounds separately count the rational
+exponent group, supports and coefficients, and positive monomials give the
+lower bound for the ideal, ring and field. The ordered embedding uses
+ordinal multiplication/addition and distinguishes exponent coordinates
+from actual monomials; the image of the first basis monomial is omega.
+The real integer-part assertion uses the previously checked truncation
+and endpoint rule. The countable-support field-closure input is the
+already reviewed lemma, with no new external closedness input.
+
+The barrier proof displays the two injections and transports only finite
+product identities. It also handles nonunital maps and noncommutative
+targets. Quotient alternatives include the zero ring and the integer
+quotient, and the continuum example excludes all countable detecting
+targets without CH. Coefficient-field recovery now verifies the ratio's
+additivity, multiplication, restriction to D, independence of the detected
+element and uniqueness relative to the given map.
+
+The residue-field proof makes the proper-ideal and maximal-ideal steps
+explicit, identifies the positive-characteristic arithmetic ideals, checks
+the reverse-well-ordered support and cancellation in the comaximality
+identity, and explains the set-indexed maximal-ideal choices. Residue
+fields attain the exact field and module thresholds. Separate arguments
+prove that the finite residual is the nonzero purely infinite ideal while
+the Jacobson radical is zero. The increasing principal-ideal chain and
+countable-support-union obstruction give exactly aleph_1 generators.
+The unrestricted-support example explicitly produces a negative exponent
+in every proposed positive-monomial quotient. No classification of the
+unrestricted ring or of residue-field isomorphism types is added.
+
+Updated the root README, report guide, catalogue, notation guide and
+coverage ledger. Validation: three clean TeX passes for the article
+(273 pages) and catalogue (33 pages), no warnings or box diagnostics;
+the coefficient-field and residue-field pages were inspected visually.
+All 828 source labels, 1,656 auxiliary label/number pairs, 409 standard
+results and nine principal summaries are preserved. Only the principal
+summary osq:main:thresholds changes among those numbered statements.
+All 4,626 statement anchors across 63 reports, 5,211 cited source labels,
+and 1,786 local Markdown destinations across 226 files pass, as does
+whitespace validation. No Lean or finite verifier source changed; finite
+checks were not rerun as evidence for cardinal arithmetic or maximal-ideal
+existence. The prior two-thread 4,576-job build and 16,185-declaration
+axiom audit remain the Lean baseline for this documentation-only pass.

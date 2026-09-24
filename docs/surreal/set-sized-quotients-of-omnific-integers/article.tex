@@ -290,7 +290,7 @@ the criterion is 11's). (\Cref{osq:thm:finite,osq:thm:support}.)
 \begin{maintheorem}[Detection threshold equals size]\label{osq:main:thresholds}
 For each of five explicit set-sized rings $A$, namely four integer parts inside $\Oz$, of cardinality
 $\kappa^{\aleph_0}$ ($\cf\kappa>\aleph_0$; 03), $\kappa^{<\kappa}$ ($\kappa$ regular
-uncountable; 06), $\kappa$ (every infinite $\kappa$; 08) and $\lambda$ ($\lambda^{\aleph_0}=\lambda$;
+uncountable; 06), $\kappa$ (every infinite $\kappa$; 08) and $\lambda$ ($\lambda$ infinite, $\lambda^{\aleph_0}=\lambda$;
 09), and 11's lexicographic Hahn ring of cardinality $\kappa^{<\kappa}$ (coefficient field with at
 most $\max(\kappa,2^{\aleph_0})$ elements), the least cardinality of a ring target
 or module detecting any nonzero purely infinite element is exactly $|A|$, in ZFC.
@@ -801,7 +801,7 @@ files keep these statements verbatim; the README records the corrections.
 division to Proposition~8.2.1 of \cite{LM}; the displayed separated-scale factorization is
 Fact~8.0.1 (Gonshor's Theorem~8.6) with its example on p.~46, as 11 cites, while
 Proposition~8.2.1 is the truncation criterion for divisibility cited by 08
-(\cref{osq:sub:telescope}). 09's hypothesis $\lambda\ge2^{\aleph_0}$ is implied by
+(\cref{osq:sub:telescope}). For infinite $\lambda$, 09's hypothesis $\lambda\ge2^{\aleph_0}$ is implied by
 $\lambda^{\aleph_0}=\lambda$ (\cref{osq:sub:model09}). 04's remark on its $\Q\oplus_{\mathrm{lex}}\Q$
 example is true but misleading (\cref{osq:rem:04misleading}). 06's remark that
 $|A^{06}_\kappa/xA^{06}_\kappa|\ge\kappa$ ``under the cardinal-arithmetic hypothesis'' needs no
@@ -2946,7 +2946,7 @@ ring & exponent group & supports & coefficients & hypotheses & size & gen.\ of $
 $A^{03}_\kappa$ & $\bigoplus_{\kappa^{\mathrm{op}}+\kappa}\Q$, 2 arms & countable & $\R$ & $\cf\kappa>\aleph_0$ & $\kappa^{\aleph_0}$ & $\cf\kappa$\\
 $A^{06}_\kappa$ & $\Span_\Q\{\omega^{\pm(\alpha+1)}\}$, 2 arms & $<\kappa$ & $\R$ & $\kappa$ reg.\ unctbl. & $\kappa^{<\kappa}$ & $\kappa$\\
 $A^{08}_\kappa$ & $\bigoplus_{\xi<\kappa}\Q$, 1 arm & countable, controlled & $\R\cap\overline\Q$ & $\kappa$ infinite & $\kappa$ & $\cf\kappa$\\
-$A^{09}_{\lambda,D}$ & $\bigoplus_{\omega_1\times\lambda}\Q$, 1 arm & countable & $k\in\{\R,\C\}$ & $\lambda^{\aleph_0}=\lambda$ & $\lambda$ & $\aleph_1$\\
+$A^{09}_{\lambda,D}$ & $\bigoplus_{\omega_1\times\lambda}\Q$, 1 arm & countable & $k\in\{\R,\C\}$ & $\lambda\ge\aleph_0$, $\lambda^{\aleph_0}=\lambda$ & $\lambda$ & $\aleph_1$\\
 $R^{11}_{\Gamma,<\kappa}$ & $\bigoplus_{\alpha<\kappa}\Q$, 1 arm & $<\kappa$ & $|K|\le\max(\kappa,2^{\aleph_0})$ & $\kappa$ reg.\ unctbl. & $\kappa^{<\kappa}$ & $\kappa$\\
 \bottomrule
 \end{tabular}
@@ -2995,9 +2995,9 @@ is 08's and 09's for their rings and a one-line consequence for the others.
 \leavevmode
 \begin{itemize}
 \item \emph{Realized cardinals.} Since $(\kappa^{\aleph_0})^{\aleph_0}=\kappa^{\aleph_0}$, and
-conversely a cardinal $\theta$ with $\theta^{\aleph_0}=\theta$ has $\cf\theta>\aleph_0$ by
+conversely an infinite cardinal $\theta$ with $\theta^{\aleph_0}=\theta$ has $\cf\theta>\aleph_0$ by
 K\"onig's theorem (so $\kappa=\theta$ is allowed in 03), the thresholds realized by 03 are
-exactly the cardinals $\theta$ with $\theta^{\aleph_0}=\theta$; these are 09's cardinals
+exactly the infinite cardinals $\theta$ with $\theta^{\aleph_0}=\theta$; these are 09's cardinals
 $\lambda$. 06 and 11 realize $\kappa^{<\kappa}$ for regular uncountable $\kappa$. 08 realizes every
 infinite cardinal, and is the only construction reaching cardinals below $2^{\aleph_0}$ or with
 $\kappa^{\aleph_0}>\kappa$: if $rX^c$ lies in the ring for every real $r$, every target detecting $X^{2c}$ has at least
@@ -3797,9 +3797,14 @@ exponential; the isomorphism types of the residue fields are not classified.
 
 \subsection{Countable supports over a long one-armed group \texorpdfstring{\src{09}}{[09]}}\label{osq:sub:model09}
 
-Fix a cardinal $\lambda$ with $\lambda^{\aleph_0}=\lambda$; then automatically $\lambda\ge2^{\aleph_0}$,
-since $\lambda^{\aleph_0}\ge2^{\aleph_0}$ (09 states $\lambda\ge2^{\aleph_0}$ as a separate hypothesis; it is
-redundant). For example $\lambda=2^\nu$ for any infinite $\nu$. Neither regularity nor CH is assumed. Let
+Fix an infinite cardinal $\lambda$ with $\lambda^{\aleph_0}=\lambda$.
+Then $2^{\aleph_0}\le\lambda^{\aleph_0}=\lambda$, since $2\le\lambda$.
+Thus 09's separate continuum lower bound is redundant under the stated
+infinitude hypothesis. The qualification matters: $0$ and $1$ also satisfy
+$\lambda^{\aleph_0}=\lambda$ and would not give this construction.
+For example, $\lambda=2^\nu$ works for every infinite $\nu$, because
+$(2^\nu)^{\aleph_0}=2^{\nu\cdot\aleph_0}=2^\nu$.
+Neither regularity of $\lambda$ nor CH is assumed. Let
 $L_\lambda=\omega_1\times\lambda$ with the lexicographic order and
 $\Gamma^{09}_\lambda=\bigoplus_{\ell\in L_\lambda}\Q e_\ell$, the least nonzero index deciding the sign.
 
@@ -3809,21 +3814,68 @@ $e_{(\alpha,\beta)}\in U_{\Gamma}(S)$ for all $\alpha_0\le\alpha<\omega_1$ and $
 $U_\Gamma(S)$ contains $\lambda$ elements, and every countable positive set has a positive strict lower bound.
 \end{lemma}
 \begin{proof}
-The countable union of the finite index supports has first coordinates bounded below some $\alpha_0<\omega_1$;
-each $s\in S$ has its least index before every $(\alpha,\beta)$ with $\alpha\ge\alpha_0$, with positive
-coefficient there.
+Let $C$ be the set of first coordinates appearing in the finite index
+supports of elements of $S$. It is countable. Set
+$\alpha_0=\sup\{\alpha+1:\alpha\in C\}<\omega_1$, with supremum $0$
+if $C$ is empty. For $s\in S$, its least nonzero coordinate precedes every
+$(\alpha,\beta)$ with $\alpha\ge\alpha_0$, and its coefficient there is
+positive. Subtracting $n e_{(\alpha,\beta)}$ leaves that leading coordinate
+unchanged. Hence $0<n e_{(\alpha,\beta)}<s$ for every positive integer
+$n$, which is exactly the required small-exponent condition.
+The single row $\{e_{(\alpha_0,\beta)}:\beta<\lambda\}$ already gives
+$\lambda$ distinct elements, and $e_{(\alpha_0,0)}$ is a strict positive
+lower bound for $S$. Only the regularity of $\omega_1$, not of $\lambda$,
+is used here.
 \end{proof}
 
-For $k\in\{\R,\C\}$ and unital $D\subseteq k$ let $H_{\lambda,k}$ be the countable-support Hahn field over
-$\Gamma^{09}_\lambda$, $\Pi^{09}_{\lambda,k}$ its positive-support part and
-$A^{09}_{\lambda,D}=D+\Pi^{09}_{\lambda,k}$. It is a domain with units $D^\times$, the quotients of
-\cref{osq:lem:division} of its elements stay in it (countable supports), and $|A^{09}_{\lambda,D}|=\lambda$:
-there are at most $\lambda^{\aleph_0}=\lambda$ countable supports and $|k|^{\aleph_0}=2^{\aleph_0}\le\lambda$
-coefficient choices, and $\lambda$ positive basis monomials. With $j(\alpha,\beta)=\lambda\cdot\alpha+\beta$
-(ordinal operations), $\iota(\sum q_\ell e_\ell)=\sum q_\ell\omega^{-j(\ell)}$ is an ordered embedding and
-$\sum c_\gamma X^\gamma\mapsto\sum c_\gamma\omega^{\iota(\gamma)}$ embeds $H_{\lambda,\R}$ in $\No$ and
-$H_{\lambda,\C}$ in $\SC$, sending $A^{09}_{\lambda,\Z}$ into $\Oz$ and $A^{09}_{\lambda,\Z[i]}$ into $\GOz$;
-here $X^{e_\ell}\mapsto\omega^{\omega^{-j(\ell)}}$, the group coordinates describing exponents.
+For $k\in\{\R,\C\}$ and a unital subring $D\subseteq k$, let
+$H_{\lambda,k}=\Hc k{\Gamma^{09}_\lambda}$, let
+$\Pi^{09}_{\lambda,k}$ be its positive-support part, and put
+$A^{09}_{\lambda,D}=D+\Pi^{09}_{\lambda,k}$. Write $A=A^{09}_{\lambda,D}$
+and $\Pi_A=\Pi^{09}_{\lambda,k}$ throughout this subsection.
+The ambient field is closed under its field operations by
+\cref{osq:lem:hcfield}; its real version is real closed and its complex
+version is its algebraically closed complexification. The ring $A$ is a
+domain, $\ct:A\to D$ is a split surjection with kernel $\Pi_A$, and
+$A^\times=D^\times$ by \cref{osq:lem:units}. The subordinate quotients of
+\cref{osq:lem:division} remain in $\Pi_A$: their support bound is still
+countable. This is a closure assertion for those particular quotients,
+not for division by arbitrary nonzero elements of $A$.
+
+Here $|\Gamma^{09}_\lambda|=|L_\lambda|=\lambda$: finite rational
+combinations give the upper bound and the basis gives the lower bound.
+There are at most $\lambda^{\aleph_0}=\lambda$ countable supports and,
+for each one, at most $|k|^{\aleph_0}=2^{\aleph_0}\le\lambda$
+coefficient assignments. Consequently $|H_{\lambda,k}|\le\lambda$.
+The $\lambda$ distinct positive basis monomials belong to $\Pi_A$, so
+$|\Pi_A|=|A|=|H_{\lambda,k}|=\lambda$, for every allowed $D$.
+
+Regard $\lambda$ as its initial ordinal and set
+$j(\alpha,\beta)=\lambda\cdot\alpha+\beta$, using ordinal operations.
+This is an order embedding of $L_\lambda$ into the ordinals. Thus
+\[
+ \iota\Bigl(\sum_\ell q_\ell e_\ell\Bigr)
+   =\sum_\ell q_\ell\omega^{-j(\ell)}
+\]
+is an ordered additive embedding: the finite sum's leading coefficient
+is the coefficient at its least index. Reindexing normal forms by
+$\iota$ gives a field embedding
+\[
+ \Phi_\R:H_{\lambda,\R}\longrightarrow\No,\qquad
+ \sum_\gamma c_\gamma X^\gamma\longmapsto
+ \sum_\gamma c_\gamma\omega^{\iota(\gamma)}.
+\]
+The support remains reverse well ordered, and injectivity follows from
+uniqueness of normal forms. Real and imaginary parts extend this to
+$\Phi_\C:H_{\lambda,\C}\to\SC$. These embeddings send
+$A^{09}_{\lambda,\Z}$ into $\Oz$ and
+$A^{09}_{\lambda,\Z[i]}$ into $\GOz$; the former is the integer part of
+$\Phi_\R(H_{\lambda,\R})$ by the truncation and endpoint rule following
+\cref{osq:lem:hcfield}. We identify these rings with their images only
+after applying $\Phi$. In particular,
+$X^{e_\ell}\mapsto\omega^{\omega^{-j(\ell)}}$, and
+$X^{e_{(0,0)}}$ maps to the actual $\omega$; the group coordinates describe
+the exponents, not the monomials themselves.
 
 \begin{theorem}[Cardinal barrier \src{09}]\label{osq:thm:barrier}
 Let $A=A^{09}_{\lambda,D}$ and $\Pi_A=\Pi^{09}_{\lambda,k}$.
@@ -3839,10 +3891,35 @@ countably infinite, or of cardinality $2^{\aleph_0}$ (the last for every quotien
 whose countable modules are abelian groups with constant-term action.
 \end{theorem}
 \begin{proof}
-For $f\in\Pi_A$ detected by $\varphi$ or by a vector, $\supp f$ is countable, \cref{osq:lem:tail} supplies
-$\lambda$ small exponents, and \cref{osq:lem:separation} with \cref{osq:lem:division} injects them into
-$\varphi(A)$ (with the module structure given by $\varphi$ and the vector $1$) or into $M$. (iii) follows,
-and (iv) as in \cref{osq:thm:thresholds}.
+Choose $f\in\Pi_A$ with $\varphi(f)\ne0$ for (i), or $f\in\Pi_A$
+and $v\in M$ with $fv\ne0$ for (ii). Its support is countable, so
+\cref{osq:lem:tail} supplies a set $E$ of $\lambda$ positive small
+exponents. For distinct $a,b\in E$, \cref{osq:lem:division}, with the
+sign changed if necessary, gives $f=(X^a-X^b)q_{a,b}$ with
+$q_{a,b}\in\Pi_A$. Therefore
+\[
+ a\longmapsto\varphi(X^a),\qquad
+ a\longmapsto X^av
+\]
+are injective into $\varphi(A)$ and $M$, respectively, by
+\cref{osq:lem:separation}. Only a finite product identity is transported
+by $\varphi$; no infinite sum is transported. The ring argument also
+works for nonunital maps and noncommutative targets.
+
+If the target or module has size less than $\lambda$, this forces
+annihilation of all of $\Pi_A$. Since $A=D\oplus\Pi_A$ additively,
+restriction to $D$ gives the unique factorization in (iii). In (iv),
+if $\Pi_A\subseteq J$, the map $a+J\mapsto\ct(a)+\ct(J)$ is a
+well-defined ring isomorphism $A/J\to D/\ct(J)$. Otherwise the quotient
+map detects some $f\in\Pi_A$, giving $\lambda\le|A/J|\le|A|=\lambda$.
+
+For the final assertion, Cantor's theorem gives
+$\aleph_0<2^{\aleph_0}$, so countable targets and modules are below
+the threshold without CH. Every ideal of $\Z$ is $n\Z$ with $n\ge0$:
+$n=0$ gives the countably infinite quotient $\Z$, $n=1$ the zero ring,
+and $n\ge2$ the finite cyclic rings. Conversely these quotients all
+occur via $\ct$. A countable module has exactly its underlying abelian
+group action pulled back along $\ct$.
 \end{proof}
 
 When the continuum exceeds $\aleph_1$ the last statement also excludes all intermediate quotient cardinalities;
@@ -3854,9 +3931,25 @@ $\sigma:k\hookrightarrow F$ with $\varphi(rg)=\sigma(r)\varphi(g)$ for $r\in k$,
 $\sigma|_D=\varphi|_D$; in particular $F$ has characteristic $0$.
 \end{lemma}
 \begin{proof}
-Take $f\in\Pi_A$ with $\varphi(f)\ne0$ and $\sigma(r)=\varphi(rf)/\varphi(f)$ (note $rf\in\Pi_A$ even if
-$r\notin A$). It is additive and unital, $(rf)(sf)=(rsf)f$ gives multiplicativity, and it is injective as a
-map of fields. The identity $(rg)f=(rf)g$ gives the displayed formula and independence of $f$.
+Choose $f\in\Pi_A$ with $\varphi(f)\ne0$ and define
+$\sigma(r)=\varphi(rf)/\varphi(f)$. Multiplication by a coefficient
+preserves positive support, so $rf\in\Pi_A$ even when $r\notin A$.
+Additivity follows from $(r+s)f=rf+sf$, and $\sigma(1)=1$.
+The identity $(rf)(sf)=(rsf)f$ gives
+\[
+ \sigma(r)\sigma(s)
+ =\frac{\varphi((rf)(sf))}{\varphi(f)^2}
+ =\frac{\varphi(rsf)}{\varphi(f)}=\sigma(rs).
+\]
+Thus $\sigma:k\to F$ is a unital field homomorphism, hence injective.
+For $d\in D$, $\varphi(df)=\varphi(d)\varphi(f)$ gives
+$\sigma(d)=\varphi(d)$. For any $g\in\Pi_A$, apply $\varphi$ to
+$(rg)f=(rf)g$ and divide by $\varphi(f)$ to obtain
+$\varphi(rg)=\sigma(r)\varphi(g)$, including when $\varphi(g)=0$.
+Any embedding with this property must give the same ratio at the chosen
+$f$, proving uniqueness and independence of its choice. The canonical
+copy of $k$ is therefore relative to $\varphi$; it is not obtained by
+assuming that every coefficient already belongs to $A$.
 \end{proof}
 
 \begin{theorem}[Residue fields at the threshold \src{09}]\label{osq:thm:residue}
@@ -3874,26 +3967,76 @@ Consequently the least cardinality of a field (and of a module) detecting a give
 $\lambda$; and for $D=\Z$ the intersection of all finite-index ideals is $\Pi_A\ne0$ while $\Jac(A)=0$.
 \end{theorem}
 \begin{proof}
-(i) $1-f$ is a nonconstant nonunit; a maximal ideal of the set-sized ring $A$ containing it sends $f$ to $1$, so
-the residue field has size $\ge\lambda$ by \cref{osq:thm:barrier} and $\le\lambda$ as a quotient. (ii) is
-\cref{osq:thm:barrier} with \cref{osq:lem:coefffield}; (iii) uses $pA=p\Z+\Pi_A$. (iv) For $\ell<\ell'$ in
-$L_\lambda$ put $\gamma=e_\ell$, $a=e_{\ell'}$; then $na<\gamma$ for all $n$, and
-$q=-\sum_{n\ge1}X^{\gamma-na}\in\Pi_A$ satisfies $(1-X^a)q=X^\gamma$, so
-$1=(1-X^\gamma)+(1-X^a)q$: the $\lambda$ proper ideals $(1-X^{e_\ell})$ are pairwise comaximal, and maximal
-ideals above them (set-sized choice) are distinct and do not contain $\Pi_A$. For the consequences, the
-residue field of (i) is a field target and a module on which $f$ acts as the identity. Every finite target has
-size $<\lambda$, so the finite residual is $\Pi_A$; if $0\ne x=n+f$, a prime not dividing $n\ne0$, or (i) when
-$n=0$, gives a maximal ideal avoiding $x$.
+(i) Since $0\ne f\in\Pi_A$, the element $1-f$ is nonconstant, hence a
+nonunit by \cref{osq:lem:units}. The ideal $(1-f)A$ is proper. The
+ordinary maximal-ideal theorem for the set-sized ring $A$ gives a maximal
+ideal $\mathfrak m$ containing it. In the nonzero residue field, $f$ then
+has image $1$. The barrier gives $|A/\mathfrak m|\ge\lambda$, and the
+quotient upper bound gives equality.
+
+(ii) The quotient map detects an element of $\Pi_A$, so the same
+cardinality argument applies. Its canonical coefficient-field embedding
+is exactly the one constructed in \cref{osq:lem:coefffield}.
+For (iii), every nonzero integer $n$ satisfies $n\Pi_A=\Pi_A$, since
+division of its coefficients by $n$ stays in $\Pi_A$. Hence
+$pA=p\Z+\Pi_A$ and $A/pA\cong\F_p$. The ideals containing $\Pi_A$
+correspond under $\ct$ to ideals of $\Z$; their maximal members are
+precisely these $pA$. All remaining maximal ideals have the fields of
+(ii), whose embedded $\R$ forces characteristic zero.
+
+(iv) For $\ell<\ell'$ put $\gamma=e_\ell$ and $a=e_{\ell'}$.
+Then $na<\gamma$ for every positive integer $n$. The exponents
+$\gamma-na$ are positive and strictly decreasing, so they form a
+countable reverse well-ordered support. Thus
+\[
+ q=-\sum_{n\ge1}X^{\gamma-na}\in\Pi_A,\qquad
+ (1-X^a)q=X^\gamma,\qquad
+ 1=(1-X^\gamma)+(1-X^a)q.
+\]
+The product is a Hahn product: the term at $\gamma$ has coefficient
+$1$, and at each $\gamma-na$ the two contributions cancel. No passage
+of an infinite sum through a quotient map is used. The principal ideals
+$(1-X^{e_\ell})A$ are proper by the units criterion and pairwise
+comaximal by this identity. Choose one maximal ideal above each of them.
+No maximal ideal can contain two, and none can contain $\Pi_A$, because
+it would contain both $X^{e_\ell}$ and $1-X^{e_\ell}$. Since
+$|L_\lambda|=\lambda$, this gives at least $\lambda$ distinct maximal
+ideals of the required kind, using choice only for a set-indexed family.
+
+For any fixed $0\ne f\in\Pi_A$, (i) gives a field target of size
+$\lambda$ and, by restriction of scalars, an $A$-module of that size
+on which $f$ acts as the identity. Together with the barrier, this proves
+both exact minima.
+When $D=\Z$, every finite-index ideal contains $\Pi_A$ by the barrier;
+conversely, an element $n+g$ with $n\ne0$ is excluded from $pA$ by
+choosing a prime $p$ not dividing $n$. Thus the intersection of all
+finite-index ideals is exactly $\Pi_A$, which is nonzero since it
+contains the basis monomials. Finally, every nonzero $x=n+g$ is avoided
+by a maximal ideal: use such a $pA$ if $n\ne0$, and apply (i) to $g=x$
+if $n=0$. This proves $\Jac(A)=0$ despite the nonzero finite residual.
 \end{proof}
 
 All of this concerns set-sized rings and is not an application of the maximal-ideal theorem to $\Oz$. The
 distinction between finite ring probes and field probes is sharp: the extra information is carried by residue
 fields of the full workspace cardinality (09). The number of maximal ideals and the isomorphism types of the
 residue fields are not determined; distinct maximal ideals need not give nonisomorphic fields.
-$\Pi^{09}_{\lambda,k}=\bigcup_{\alpha<\omega_1}X^{e_{(\alpha,0)}}A$ is an increasing chain, and the least number of
-generators of the ideal is exactly $\aleph_1$ (the chain gives $\aleph_1$ generators; a countable family lies in
-$X^{2h}A$ for a small $h$ by \cref{osq:lem:tail}, which misses $X^h$); flatness is in
-\cref{osq:thm:homological}.
+
+The generator count is independent of $\lambda$. If $\alpha<\alpha'$, then
+$e_{(\alpha,0)}-e_{(\alpha',0)}>0$, giving inclusion of the corresponding
+principal ideals. For every $f\in\Pi_A$, \cref{osq:lem:tail} supplies
+$\alpha$ such that shifting its countable support by $-e_{(\alpha,0)}$
+still leaves positive support. Consequently
+\[
+ \Pi^{09}_{\lambda,k}
+   =\bigcup_{\alpha<\omega_1}X^{e_{(\alpha,0)}}A
+\]
+is an increasing union and gives $\aleph_1$ generators. Conversely, the
+union of the supports of a countable family in $\Pi_A$ is countable.
+Choose $h$ small relative to that union by \cref{osq:lem:tail}. Every
+member then lies in $X^{2h}A$, whereas $X^h$ does not: its only possible
+quotient is $X^{-h}$, which has negative support. No countable family
+generates $\Pi_A$, so its least number of generators is exactly
+$\aleph_1$. Flatness is treated in \cref{osq:thm:homological}.
 
 \begin{remark}[Why the support restriction is real \src{09}]\label{osq:rem:fstar}
 In the unrestricted Hahn field over $\Gamma^{09}_\lambda$ the series $f_*=\sum_{\alpha<\omega_1}X^{e_{(\alpha,0)}}$
@@ -3902,6 +4045,14 @@ enough $e_{(\alpha,0)}$ lies below any given $h>0$); it is not divisible by any 
 nonnegative-support ring and is not in $A^{09}_{\lambda,D}$. No assertion is made about the quotient
 classification of that larger unrestricted ring.
 \end{remark}
+Indeed, the support is strictly decreasing in $\alpha$, so each nonempty
+subset has a greatest element, indexed by its least ordinal. It has
+cardinality $\aleph_1$, beyond the allowed support bound. For any $h>0$,
+choose $\alpha$ greater than the first coordinate of the leading index
+of $h$. Then $0<e_{(\alpha,0)}<h$, and the coefficient of
+$X^{e_{(\alpha,0)}-h}$ in $X^{-h}f_*$ is nonzero. Hence division by
+$X^h$ produces a negative exponent; uniqueness of the quotient in the
+ambient Hahn field rules out any other nonnegative-support quotient.
 
 \subsection{Supports of size \texorpdfstring{$<\kappa$}{< kappa} over a one-armed group \texorpdfstring{\src{11}}{[11]}}\label{osq:sub:model11}
 

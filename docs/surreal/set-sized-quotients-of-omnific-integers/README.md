@@ -46,13 +46,20 @@ be infinite. Its exact cardinality, small-target theorem, ideal generator
 count and residue-field conclusions have expanded proofs, including the
 characteristic-zero quotient in which the actual omega maps to -1.
 
-The organizing theorem across all five models, the other two models, and full
+Source 09's countable-support one-arm model is also reviewed. Its cardinal
+parameter is explicitly infinite: the equation `λ^ℵ0 = λ` alone also allows
+0 and 1. The residue-field proofs exhibit the canonical coefficient-field
+embedding, pairwise comaximal ideals, exact field/module detection, and the
+distinction between a nonzero finite residual and zero Jacobson radical.
+The ideal needs exactly `ℵ1` generators, independently of `λ`.
+
+The organizing theorem across all five models, the remaining source-11 model, and full
 reconciliation of the parallel sources, remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 271 pages
+article.pdf   the compiled report, 273 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -811,7 +818,7 @@ sources' lemmas.
 - **The organizing theorem** (Theorem 10.10): for all five constructions the
   exact threshold equals the size of the ring, with the reconciliation of the
   realized cardinals in Remark 10.11 (`A^06_{ℵ1} ≅ A^03_{ℵ1}`; 03 and 09
-  realize exactly the `θ` with `θ^ℵ0 = θ`).
+  realize exactly the infinite `θ` with `θ^ℵ0 = θ`).
 - **The homological package for all five constructions** (Theorems 12.2,
   12.3), with `Ext¹` and `Ext²` thresholds equal to the size of the ring; for
   06's ring this corrects "exact `κ` under `κ^{<κ} = κ`" to "exact `κ^{<κ}` in
@@ -929,7 +936,7 @@ strictly positive set support and coefficients in `K`.
   the augmentation does not extend is 04's, 11's and 15's).
 - **Theorem C (Theorem 10.10).** For the five set-sized rings of Section 11,
   four integer parts inside `Oz` of sizes `κ^ℵ0` (03), `κ^{<κ}` (06), `κ` (08,
-  every infinite `κ`) and `λ` with `λ^ℵ0 = λ` (09), and 11's lexicographic Hahn
+  every infinite `κ`) and infinite `λ` with `λ^ℵ0 = λ` (09), and 11's lexicographic Hahn
   ring of size `κ^{<κ}`, the least ring or module detecting any nonzero purely
   infinite element has exactly the size of the ring, in ZFC. Generator counts:
   `cf κ` (03, 08), `κ` (06 and 11's ring), `ℵ1` (09); no general law is
@@ -1552,7 +1559,7 @@ strictly positive set support and coefficients in `K`.
   p. 46, as 11 cites, and Proposition 8.2.1 is the truncation criterion for
   divisibility that 08 cites (Section 4.2).
 - **Sources.** 03's source prints "C e B[i]" for `C ≠ B[i]` (Proposition 15.18);
-  09's hypothesis `λ ≥ 2^ℵ0` follows from `λ^ℵ0 = λ` (Section 11.4); 04's remark
+  09's hypothesis `λ ≥ 2^ℵ0` follows from `λ^ℵ0 = λ` for infinite `λ` (Section 11.4); 04's remark
   that its `Q ⊕_lex Q` example involves "only a countable family" is true but
   misleading (Remark 10.6); 06's remark on `|R_κ/xR_κ|` needs no cardinal
   hypothesis (Section 12). 12 assumes `c² ∈ D` for the flat dimensions `d + 1` and

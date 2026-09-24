@@ -211,7 +211,8 @@ completions, localizations, positive existential conservativity, modules and
 the finite-side standard-part theorem, support thresholds and fixed-group
 lower bounds, followed by the countable-support and regular-cardinal
 two-armed models and the controlled-field construction at every infinite
-cardinal. A large quotient can still have a nonzero small image:
+cardinal, and the countable-support one-arm model with its residue fields.
+A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
 set-sized image. More generally, the universal set-sized image of `Oz/(f)`
@@ -234,7 +235,12 @@ divisors can fail there. The controlled-field construction reaches every
 infinite `κ` by keeping each element within finitely many exponent
 coordinates. Its omnific integer part has a characteristic-zero field
 quotient of size `κ` in which the actual `ω` maps to `−1`; that map cannot
-extend to all omnific integers. These cardinal results remain pending in Lean.
+extend to all omnific integers. In the reviewed one-arm model of size
+`λ = λ^{ℵ₀}` for infinite `λ`, every nonzero purely infinite element becomes
+1 in some residue field of size `λ`. The Jacobson radical is zero even
+though every finite quotient kills the whole purely infinite ideal. That
+ideal needs exactly `ℵ₁` generators, independently of `λ`. These cardinal
+results remain pending in Lean.
 
 The actual surreal field is also proved to be a field of fractions of its
 omnific subring, using Mathlib's `IsFractionRing`. One positive Conway
