@@ -727,6 +727,10 @@ import Surreal.Foundations.OmnificReciprocalSeries
 import Surreal.Surcomplex.DetectorCertificates
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.ConstantTermPolynomial
+import Surreal.Algebra.ConstantTermQuartic
+import Surreal.HahnSeries.QuarticConstants
+import Surreal.HahnSeries.ConstantTermQuartic
+import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial
 import Surreal.Algebra.QuinticBoundary

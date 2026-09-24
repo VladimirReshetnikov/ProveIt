@@ -437,6 +437,11 @@ corresponding full Hahn pullbacks.
 For the real rings, a single integer polynomial now defines the same graph
 with eight witnesses. Its total degree is proved to be exactly ten: it is
 the squared quintic definition plus the squared quadratic kernel equation.
+Both printed seven-witness improvements are also proved: adding the squared
+kernel equation to either quartic integer definition gives a graph polynomial
+of total degree exactly four. These work on the actual omnific integers and
+the full real Hahn rings over every ordered abelian exponent group.
+The six-witness quartic graph using the three-square guard remains pending.
 The constant inclusion and kernel now form a proved definable split exact
 sequence. Both printed orders of existential and universal quantifiers for
 the constant-term graph are also proved equivalent to its existential formula.
