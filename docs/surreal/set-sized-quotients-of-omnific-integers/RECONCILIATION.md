@@ -1671,3 +1671,47 @@ and Quot.sound. All 4,626 anchors across 63 reports, 5,218 source-label
 references and 1,830 local Markdown destinations across 226 files pass,
 as does whitespace checking. No incoming TeX changed; the 296-page article
 and 34-page catalogue remain current.
+
+## Coordinate-core nonvanishing and exact projective dimensions
+
+Reviewed `osq:da:thm:injection`, `osq:da:cor:exactpd` and
+`osq:da:thm:lattice`, retaining all three statements. The injection proof
+writes the telescoping ideal containment and compares coefficients in a
+single fixed polynomial. Nonzero entries of the coefficient sequence
+force distinct monomials in that polynomial, hence finite support. The
+converse gives explicit finite solutions. This is a D-linear injection of
+the product modulo the direct sum, not a construction of infinite sums
+inside the finite-support core.
+
+The exact-dimension proof uses the nonzero constant sequence and spells
+out dimension shifting for every target module. The lattice proof fixes a
+basis, writes both shifts and their naturality, and treats the principal
+rank-one quotient separately: multiplication by its nonzero generator
+proves that the nonzero quotient cannot be flat. This includes the flat
+rank-one tail of projective dimension one.
+
+Corrected adjacent claims and the corresponding clause of
+`osq:hd:q:cores`: the stronger global and weak-global lower bounds from
+rank-two lattices require K different from Frac D. The new boundary
+calculation proves that K[Q_{>=0}] has weak global dimension exactly one,
+although its coefficient module K has projective dimension two. Finite
+families lie in one polynomial subring; gcd and Bezout give principal
+finitely generated ideals, the ideal criterion makes torsion-free modules
+flat, and a nonzero principal quotient supplies the lower bound. The
+existing Stacks flatness reference supports the criterion. The warning
+about nonregular finite Koszul sequences now specifies D different from K.
+The introduction, root README, report guide, catalogue and shared notation
+carry the same qualifications. Later derived classifications and full
+source reconciliation remain pending review; these three results remain
+Pending in Lean.
+
+Validation: three clean final TeX passes for the 297-page article and
+34-page catalogue, with no warnings or box diagnostics, and visual checks
+of all revised proofs and the catalogue. All 418 standard/principal
+statements, 828 labels and 1,656 auxiliary label/number pairs are unchanged.
+Of 66 question environments only the specified core-dimension question
+changed; all 60 remarks and 28 examples are unchanged. All 4,626 anchors
+across 63 reports, 5,218 source-label references and 1,830 local Markdown
+destinations across 226 files pass, as does whitespace checking. No Lean
+source changed; the two-thread 4,617-job build and 16,855-declaration axiom
+audit remain the Lean baseline before synchronization.

@@ -161,14 +161,24 @@ Koszul complexes are resolutions. Dualizing its countable direct sums gives
 products; the proof checks the full boundary image and the induced quotient
 map before identifying the cokernel with the first derived inverse limit.
 
-The subsequent nonvanishing, exact projective dimensions and later derived
-classifications, and reconciliation of the parallel sources, remain pending
-review. Exact scope
+The nonvanishing and exact projective-dimension proofs are now reviewed
+as well. The injection from `D^N/D^(N)` uses the finite support of a single
+polynomial; the converse explicitly solves every finitely supported
+sequence. Dimension shifting gives `pd D = d + 1`, `pd Π_d = d`, and the
+lattice dimensions, with the principal rank-one quotient handled separately.
+The stronger lower bounds for global and weak global dimension require
+`K ≠ Frac D`. The coefficient-field boundary case has
+`w.gl.dim K[ℚ≥0] = 1` but `pd K = 2`; the proof and the corresponding
+qualification of Question 18.12 are included. The warning about nonregular
+finite Koszul sequences now specifies the proper coefficient-subring case.
+
+The later derived classifications and reconciliation of the parallel
+sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 296 pages
+article.pdf   the compiled report, 297 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -1317,8 +1327,9 @@ strictly positive set support and coefficients in `K`.
   two-universe reading); it is not asserted for arbitrary subrings of `Oz`, whose
   flat dimensions are unbounded (Remark 13.16). Nothing is claimed about the
   homological dimensions of the class ring `Oz`; the global and weak global
-  dimensions of the cores are open (Question 18.12, partly answered: before
-  21, `pd_{A_d} D` for `d ≥ 2` was known only to be `d` or `d + 1`). The
+  dimensions of the general cores are open (Question 18.12, partly answered;
+  the coefficient-field core `K[ℚ≥0]` has weak global dimension one). Before
+  21, `pd_{A_d} D` for `d ≥ 2` was known only to be `d` or `d + 1`. The
   finite-support cores are outside Theorem A: the augmentation detects their
   tails (Proposition 13.2).
 - The support-threshold theorem is stated for `k ∈ {R, C}` as in 04 and 11,
@@ -1332,8 +1343,9 @@ strictly positive set support and coefficients in `K`.
   Dobbs–Papick).
 - 21's value `d + 1` concerns the set-sized cores `A_d`, not `pd Z` over `Oz`;
   it claims no exact global or weak global dimension, only the lower bounds
-  `d + 2` and `d + 1`, and its resolutions control specified modules, not all
-  ideals. Its class-ring statements are read under a two-universe convention.
+  `d + 2` and `d + 1` when `K ≠ Frac D`, and its resolutions control
+  specified modules, not all ideals. The review additionally computes weak
+  global dimension one for `d = 1`, `D = K`. Its class-ring statements are read under a two-universe convention.
   The vanishing of `Tor_2` is not `Tor`-independence (`Tor_1 ≠ 0`), and the
   decomposition of `Tor_1` is not an `A`-module splitting. Reconstruction needs
   the boundary embedding and the distinguished `1`; an abstract `Tor_2` or an
