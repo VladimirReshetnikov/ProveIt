@@ -9563,3 +9563,10 @@ inspected the affected pages. The article remains 353 pages with all
 questions/remarks/examples preserved. Audits pass 4,626 anchors in 63
 reports, 5,240 source-label references and 2,011 local Markdown destinations
 in 226 files. git diff --check passes.
+
+
+Final staged-diff cleanup: the incoming ordinary Gaussian module had one
+extra blank line at EOF, flagged by git diff --cached --check. Removed it
+without changing a declaration. LEAN_NUM_THREADS=2 lake build again passes
+5,058 jobs, replaying the 19,114-declaration audit. The full diff from the
+pre-sync review commit now passes git diff eea2255 --check.
