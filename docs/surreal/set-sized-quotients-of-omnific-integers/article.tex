@@ -2213,6 +2213,9 @@ setting.
 
 \section{Modules and derivations over the full class ring}\label{osq:sec:modules}
 
+All modules in this section and on the finite side below are unital. A derivation
+is taken relative to the specified module action, not merely to its underlying set.
+
 \begin{theorem}[Set-sized modules \src{04, 06, 07, 08, 09, 10, 11, 13, 15}]\label{osq:thm:modules}
 Let $A=\A_{D,k}$. Restriction along $D\hookrightarrow A$ and inflation along $\ct$ are mutually
 inverse equivalences between set-sized unital $A$-modules and set-sized unital $D$-modules;
@@ -2225,12 +2228,15 @@ set-sized $\GOz$-modules are exactly $\Z[i]$-modules inflated along $\ct$.
 \Cref{osq:thm:universal}(iv) gives $\Pi_kM=0$ and the action formula. Conversely, a
 $D$-module inflates along $\ct$, and restriction recovers the $D$-action because
 $\ct|_D=\id$. An additive map between two such modules is $A$-linear exactly when it is
-$D$-linear. Kernels, cokernels and exact sequences are computed on underlying groups with
-the induced actions.
+$D$-linear: if $a=d+f$, then $h(am)=h(dm)=dh(m)=ah(m)$. Restricting an
+inflated action recovers the original action, and inflating a restricted action
+recovers it by the displayed formula. Kernels and cokernels remain set-sized and
+carry the induced actions. Exactness is equality of the same underlying image
+and kernel subgroups, so the correspondence preserves and reflects exact sequences.
 \end{proof}
 
 A $\GOz$-module structure on an abelian group is the choice of an endomorphism $J$ with
-$J^2=-\id$, automatically invertible (08). Category language abbreviates the correspondence
+$J^2=-\id$, with inverse $-J$ (08). Category language abbreviates the correspondence
 of individual objects and morphisms: each action is coded by its restriction to the set
 $D\times M$, and no class of arbitrary class actions is formed (04, 08, 11). The regular
 module $A$ is a proper class on which $\Pi_k$ acts nontrivially, so there is no conflict with
@@ -2246,7 +2252,8 @@ $\Z$ carrying the action $x\cdot n=\ct(x)n$, does not split as a sequence of $\O
 although it splits as a sequence of additive groups and of rings.
 \end{proposition}
 \begin{proof}
-A module section $s$ gives $e=s(1)$ with $\ct(e)=1$ and $ue=s(u\cdot1)=s(0)=0$ for every
+The inclusion $n\mapsto n$ is an additive and unital ring section of $\ct$.
+It need not be a module section: a module section $s$ would give $e=s(1)$ with $\ct(e)=1$ and $ue=s(u\cdot1)=s(0)=0$ for every
 $u\in\Pi$. With $u=\omega$ and $\Oz$ a domain, $e=0$, a contradiction.
 \end{proof}
 
@@ -2256,11 +2263,18 @@ $\ct:\Oz\to\Z$ has no $\Oz$-linear section (\cref{osq:prop:nonsplit}). For every
 $\Hom_{\Oz}(M,\Oz)=0$.
 \end{proposition}
 \begin{proof}
-By \cref{osq:thm:modules} the set-sized modules are abelian groups, and $\Z$ is free on one generator. If
-$f:M\to\Oz$ is linear and $m\in M$, then $\omega f(m)=f(\omega m)=f(0)=0$, so $f(m)=0$ in the domain $\Oz$.
+By \cref{osq:thm:modules} the category in question is the category of abelian
+groups. Explicitly, given a surjection $g:M\to N$ in that category and a map
+$h:\Z\to N$, choose $m_1\in M$ with $g(m_1)=h(1)$. Then $n\mapsto nm_1$
+is a lift of $h$; it is $\Oz$-linear because both actions factor through $\ct$.
+This proves projectivity within the stated category. The nonsplit surjection
+$\ct:\Oz\to\Z$ lies outside it, since its domain is a proper class.
+If $f:M\to\Oz$ is linear and $m\in M$, then
+$\omega f(m)=f(\omega m)=f(0)=0$, so $f(m)=0$ in the domain $\Oz$.
 \end{proof}
 
-No nonzero free $\Oz$-module is set-sized, yet the set-sized module category has many projectives; this is a
+A nonzero free $\Oz$-module contains an injective copy of $\Oz$ on any one basis
+vector, so it cannot be set-sized. The set-sized module category nevertheless has many projectives; this is a
 warning against importing the size convention of ordinary module theory, not a Morita statement (15).
 
 \begin{theorem}[Derivations into set-sized modules \src{04, 06, 08, 09, 10, 11, 13}]\label{osq:thm:derivations}
@@ -2279,31 +2293,59 @@ module is zero, and $\Der_D(A,M)=0$.
 \begin{proof}
 $\Pi_kM=0$ by \cref{osq:thm:modules}, and each $x\in\Pi_k$ is a product $uv$ with
 $u,v\in\Pi_k$ (\cref{osq:prop:common}), so $\partial(x)=u\partial(v)+v\partial(u)=0$.
-Thus $\partial(d+x)=\partial(d)$. Conversely, for a derivation $\delta$ of $D$,
+Thus $\partial(d+x)=\partial(d)$, proving that restriction is injective. Also
+$\partial(1)=\partial(1\cdot1)=2\partial(1)$, so $\partial(1)=0$ and additivity
+forces $\partial(n)=0$ for every integer $n$. This explains the subscript $\Z$.
+Conversely, for a derivation $\delta$ of $D$,
 $\delta\circ\ct$ satisfies the Leibniz rule because $A$ acts on $M$ through $\ct$. A
-derivation of $\Z$ vanishes ($\partial(1)=2\partial(1)$). A derivation of $\Z[i]$ is
-determined by $m=\partial(i)$; differentiating $i^2+1=0$ gives $2im=0$, equivalently $2m=0$
-since $i$ acts invertibly; conversely $\partial(a+bi)=bm$ satisfies the Leibniz rule, the
-discrepancy for a product being $2bdim=0$. It kills $\Z[i]$ exactly when $m=0$. A $k$-linear
-derivation of $k$ vanishes; the finite side uses \cref{osq:thm:finite} and
-$\mm_k^2=\mm_k$ (\cref{osq:lem:midempotent}).
+derivation of $\Z$ therefore vanishes. For $\Z[i]$, write $m=\partial(i)$;
+additivity forces $\partial(a+bi)=bm$. Differentiating $i^2+1=0$ gives $2im=0$,
+equivalently $2m=0$, since $i$ acts invertibly. Conversely, if $2m=0$, then
+\[
+ (a+bi)(dm)+(c+di)(bm)=(ad+bc)m+2bd\,im=(ad+bc)m,
+\]
+which is the derivative of $(a+bi)(c+di)$ under this formula. It kills $\Z[i]$
+exactly when $m=0$. All these identifications commute with module homomorphisms,
+which gives naturality. A $D$-linear derivation kills $D$, hence kills $A$; a
+$k$-linear derivation of $k$ vanishes for the same reason. On the finite side,
+\cref{osq:thm:finite} applied to the endomorphism ring of the underlying group
+makes $\mm_k$ act by zero. Its idempotence (\cref{osq:lem:midempotent}) then
+kills every infinitesimal under a derivation, so the same argument applies.
 \end{proof}
 
 \paragraph{A second route (09).} Since $M$ is a $D$-module, the square-zero extension
 $D\ltimes M$ with $(d,m)(e,n)=(de,dn+em)$ is a set-sized ring, and $a\mapsto(\ct(a),\partial(a))$
-is a unital ring map $A\to D\ltimes M$; the universal theorem forces it to factor through
-$D$.
+is a unital ring map $A\to D\ltimes M$: additivity is componentwise, the
+Leibniz rule is exactly the second coordinate of multiplicativity, and
+$\partial(1)=0$ gives the identity $(1,0)$. The universal theorem forces this
+map to factor through $D$, so its second coordinate vanishes on $\Pi_k$.
 
 \begin{example}[The ramification at $2$ survives \src{09, 11}]\label{osq:ex:ramification}
 Give $\F_2$ the $\Z[i]$-module structure $i\mapsto1$. Then $\partial(a+bi+f)=b\bmod2$ is a
-nonzero $\Z$-derivation $\GOz\to\F_2$. The statement ``all set-valued derivations of the
+nonzero $\Z$-derivation $\GOz\to\F_2$. Indeed the coefficient action is
+$a+bi\mapsto a+b\bmod2$, which respects $i^2+1=0$ in characteristic two;
+$\partial(i)=1$ and the preceding product calculation proves Leibniz.
+The statement ``all set-valued derivations of the
 Gaussian omnific ring vanish'' is false; only the positive-support directions vanish, and
 the surviving derivation reflects ordinary ramification of $\Z[i]$ at $2$.
 \end{example}
 
 The coefficient-linearity qualification in (iii) cannot be dropped: the theorem reduces
-arbitrary derivations of $\A_{\R,\R}$ or $\OO_\R$ to derivations of $\R$ over $\Q$, which
-are not zero (04). For a set-sized commutative $D$-algebra $B$, every $D$-algebra map
+arbitrary derivations of $\A_{\R,\R}$ or $\OO_\R$ to derivations of $\R$ over
+$\Q$, and such derivations can be nonzero (04). To see this algebraically, choose
+a transcendence basis $T$ of $\R/\Q$ and $t_0\in T$. The basis is nonempty,
+since the algebraic numbers are countable and $\R$ is not. On $\Q(T)$ prescribe
+$\delta(t_0)=1$ and $\delta(t)=0$ for $t\ne t_0$, and use formal differentiation
+and the quotient rule. This derivation extends uniquely to $\R$: on adjoining a
+separable algebraic element $\alpha$ with minimal polynomial $p$, set
+$\delta(\alpha)=-(\delta_*p)(\alpha)/p'(\alpha)$. The denominator is nonzero
+in characteristic zero. Choose a polynomial representative modulo $p$ for this
+value of $\delta(\alpha)$ and use it as the derivative of the indeterminate.
+The resulting derivation on the polynomial ring preserves $(p)$ and therefore
+descends to the simple extension. Iteration handles each finite subextension, and uniqueness makes
+these extensions agree on intersections. Their union gives a derivation on
+$\R$ still satisfying $\delta(t_0)=1$. No continuity or canonical choice is asserted.
+For a set-sized commutative $D$-algebra $B$, every $D$-algebra map
 $A\to B[\varepsilon]/(\varepsilon^2)$ kills $\Pi_k$, so relative first-order deformations
 with set-sized coefficients cannot detect $\Pi_k$; no assertion about an absolute
 proper-class module of K\"ahler differentials is made (11).
@@ -2322,14 +2364,27 @@ $D_0(\omega)=\omega$. Coefficientwise complexification gives the analogous deriv
 $\SC$ and $\GOz$.
 \end{proposition}
 \begin{proof}
-The output support is a subset of the input support, so the formula defines a surreal; the
-exponent $0$ is killed because $\ell_\eta(0)=0$, and no negative exponent appears for an
-omnific input. Additivity and preservation of strong sums are coefficientwise. At a fixed
-exponent $z$ the coefficient of a product is a finite sum over pairs $x+y=z$, and
-$\ell_\eta(z)=\ell_\eta(x)+\ell_\eta(y)$; multiplying and summing gives the Leibniz rule.
-The exponent $\omega^\theta$ has coefficient $1$ at $\theta$ and $0$ elsewhere, which gives
-the displayed values and, by evaluation at the monomials $\omega^{\omega^\theta}$, linear
-independence. Finally $\ell_0(1)=1$.
+Coefficient extraction on the normal form of an exponent is additive, so
+$\ell_\eta(x+y)=\ell_\eta(x)+\ell_\eta(y)$. The output support of $D_\eta$ is a
+subset of its input support, hence remains a reverse well-ordered set. The
+exponent $0$ is killed because $\ell_\eta(0)=0$, and no negative exponent appears
+for an omnific input; this proves that the restricted image lies in $\Pi$.
+The map is $\R$-linear, since it multiplies each coefficient by a fixed real
+number. For a strongly summable family, the output support union is contained
+in the original union, and each coefficient still receives only finitely many
+contributions. Distributing $\ell_\eta(z)$ over that finite sum proves both
+summability of the differentiated family and commutation with its strong sum.
+
+For the product of two normal forms, the Hahn support condition makes the
+coefficient sum over pairs $x+y=z$ finite. At each such pair,
+$\ell_\eta(z)r_xs_y=\ell_\eta(x)r_xs_y+r_x\ell_\eta(y)s_y$; summing proves
+Leibniz without exchanging non-summable families. The exponent $\omega^\theta$
+has coefficient $1$ at $\theta$ and $0$ elsewhere, giving the displayed values.
+If $\sum_{j=1}^n c_jD_{\eta_j}=0$ with distinct $\eta_j$, evaluation at
+$\omega^{\omega^{\eta_j}}$ gives $c_j\omega^{\omega^{\eta_j}}=0$; the monomial
+is nonzero, so every $c_j=0$. Finally $\ell_0(1)=1$. For complexification,
+$D_\eta(x+iy)=D_\eta(x)+iD_\eta(y)$; expanding a product proves the complex
+Leibniz identity and gives image in $\Pi_\C$ on $\GOz$.
 \end{proof}
 
 The proposition combines three sources, none of which states all of it: 08 introduces the
@@ -2340,10 +2395,12 @@ it on $\No$, with the complex extension) and 10's exponent-weighted derivation $
 statements on $\No$ and on strong sums follow by the same coefficientwise proof. There is no conflict with
 \cref{osq:thm:derivations}: the target $\Pi$ is a proper-class module with its internal
 multiplication. Berarducci and Mantova's surreal derivation with $\partial\omega=1$
-\cite{BM}, restricted to $\Oz$ with values in $\No$, is another nonzero class-valued
+\cite[Theorem~A and the following normalization, p.~2]{BM}, restricted to $\Oz$ with values in $\No$, is another nonzero class-valued
 boundary example (09). None of the $D_\eta$ is asserted to be the Berarducci--Mantova
 derivation, a fine derivative, or compatible with surreal exponentiation (06, 08, 10), and
-no uniqueness is claimed for the established derivation (09). The word ``small'' in
+no uniqueness is claimed for the established derivation (09). In differential-field
+terminology a ``small derivation'' preserves infinitesimals \cite[Theorem~B]{BM};
+that condition does not mean its target is a set. The word ``small'' in
 \cref{osq:thm:derivations} cannot be dropped.
 
 \section{The finite side: standard part is universal}\label{osq:sec:finite}
@@ -2359,8 +2416,11 @@ Let $0\ne\varepsilon\in\mm_k$ and $a=v(\varepsilon)>0$. For $0<\gamma<\delta<a$,
 $\varepsilon/(\omega^{-\gamma}-\omega^{-\delta})\in\mm_k$.
 \end{lemma}
 \begin{proof}
-The denominator has largest exponent $-\gamma$, so valuation $\gamma$; the quotient has
-valuation $a-\gamma>0$, i.e.\ all of its exponents are negative.
+The two exponents are distinct, and $-\gamma>-\delta$, so their difference
+is nonzero with largest exponent $-\gamma$ and valuation $\gamma$. Division
+takes place in the ambient field. The quotient has valuation $a-\gamma>0$,
+i.e.\ its largest exponent is negative and therefore every supported exponent
+is negative. It consequently lies in $\mm_k$, not merely in the ambient field.
 \end{proof}
 
 \begin{theorem}[Universal set-sized residue on the finite side \src{04}]\label{osq:thm:finite}
@@ -2371,13 +2431,24 @@ a set-sized ring factors through $\st:\OO_\R\to\R$, respectively $\st:\OO_\C\to\
 \end{theorem}
 \begin{proof}
 Suppose $0\ne\varepsilon\in\mm_k$ and $\varphi(\varepsilon)\ne0$, put $a=v(\varepsilon)$
-and choose a set of exponents in $(0,a)$ of cardinality larger than $|S|$
-(\cref{osq:lem:gap}). By \cref{osq:lem:finitediff}, $\varepsilon$ is a multiple, by an element
-of $\mm_k\subseteq\B_{D,k}$, of the difference of any two of the monomials
-$\omega^{-\gamma}$, so \cref{osq:lem:separation}(i) injects the chosen set into $S$, a
-contradiction. Hence $\varphi(\mm_k)=0$ and $\varphi(d+\varepsilon)=\varphi(d)$; conversely
-$\psi\circ\st$ extends every $\psi$.
+and let $H$ be the Hartogs ordinal of the underlying set of $S$. The explicit
+exponents $\gamma_\beta=a/\omega^{\beta+1}$, $\beta<H$, are distinct and lie in
+$(0,a)$; class replacement makes this a set-indexed family
+(\cref{osq:lem:gap}). If two images $\varphi(\omega^{-\gamma_\beta})$ agreed,
+order the two exponents and apply \cref{osq:lem:finitediff}. It writes
+$\varepsilon$ as their monomial difference times an element of
+$\mm_k\subseteq\B_{D,k}$. Its image would then be zero, a contradiction.
+Thus $\beta\mapsto\varphi(\omega^{-\gamma_\beta})$ injects $H$ into $S$,
+contradicting the definition of $H$. Hence $\varphi(\mm_k)=0$ and
+$\varphi(d+\varepsilon)=\varphi(d)$. The unique factor is the restriction to
+$D$, and conversely $\psi\circ\st$ extends every $\psi$ because $\st$ fixes
+constants. This argument neither sums images of an infinite family nor imposes
+any topology on the target.
 \end{proof}
+
+The collision argument also works for a nonunital additive multiplicative map:
+it only uses additivity and one finite product identity. Such maps likewise
+factor uniquely through $\st$, with a possibly nonunital map on $D$.
 
 For a target without a specified coefficient-field structure, the induced map on $\R$ or
 $\C$ is not presumed to be the identity: the assertion is factorization through the residue
@@ -2389,16 +2460,29 @@ and part of the repository's formal infrastructure \cite{RepoBridge}.
 \begin{corollary}[Quotients, modules and derivations on the finite side \src{04}]\label{osq:cor:finitequotients}
 The kernels of $\B_{D,k}$ admitting a set-sized quotient are exactly $\mm_k+\mathfrak a$
 for ideals $\mathfrak a$ of $D$; the only nonzero set-sized quotients of $\OO_\R$ and
-$\OO_\C$ are $\R$ and $\C$, up to the residue identification. Set-sized $\B_{D,k}$-modules
-are exactly $D$-modules inflated along $\st$ (set-sized $\OO_k$-modules are $k$-vector
+$\OO_\C$ are $\R$ and $\C$, up to the residue identification. Set-sized unital $\B_{D,k}$-modules
+are exactly set-sized unital $D$-modules inflated along $\st$ (set-sized $\OO_k$-modules are $k$-vector
 spaces), no faithful set-sized module exists, and $\Der_\Z(\B_{D,k},M)\cong\Der_\Z(D,M)$ for
 set-sized $M$. For $0\ne\varepsilon\in\mm_k$, the localization $\B_{D,k}[\varepsilon^{-1}]$
-has no nonzero set-sized ring target and no nonzero set-sized module.
+admits no unital map to a nonzero set-sized ring and no nonzero set-sized unital module.
 \end{corollary}
 \begin{proof}
-Repeat the proofs of \cref{osq:thm:quotients,osq:thm:modules,osq:thm:derivations,osq:cor:nofield}
-with \cref{osq:thm:finite} and $\st$ in place of the positive-side theorem and $\ct$; for
-$D=k$ the only ideals are $0$ and $k$. Derivations use \cref{osq:lem:midempotent}.
+A set-sized quotient map kills $\mm_k$ by \cref{osq:thm:finite}. Its kernel
+is therefore the full preimage of its intersection $\mathfrak a$ with $D$,
+namely $\mm_k+\mathfrak a$; conversely $\st$ followed by $D\to D/\mathfrak a$
+realizes each such quotient. If $D=k$, the field has only the ideals $0$ and $k$,
+so its only nonzero quotient is $k$ itself.
+
+For a set-sized unital module $M$, the action is a unital map to the set-sized
+ring $\End_\Z(M)$. The finite-side theorem makes $\mm_k$ act by zero, and
+restriction and inflation recover each other exactly as on the positive side.
+The element $\omega^{-1}\ne0$ lies in $\mm_k$, so no such module is faithful.
+By \cref{osq:lem:midempotent}, every infinitesimal is a product of two
+infinitesimals; the Leibniz rule therefore kills it. Restriction of a derivation
+to $D$ and composition with $\st$ are inverse, since the action factors through
+$\st$. Finally, inverting a nonzero infinitesimal makes a killed element a unit;
+a unital map to a nonzero set-sized ring is impossible. A nonzero set-sized
+unital module would supply such a map to its nonzero endomorphism ring.
 \end{proof}
 
 \begin{lemma}[Idempotence on the finite side \src{04}]\label{osq:lem:midempotent}
@@ -2407,6 +2491,9 @@ $\mm_k^2=\mm_k$ as an ideal of $\B_{D,k}$.
 \begin{proof}
 For $0\ne\varepsilon\in\mm_k$ with $a=v(\varepsilon)$,
 $\varepsilon=\omega^{-a/2}(\omega^{a/2}\varepsilon)$ with both factors of valuation $a/2>0$.
+The zero element is $0\cdot0$, so every element lies in $\mm_k^2$. Conversely
+$\mm_k^2\subseteq\mm_k$ because $\mm_k$ is an ideal. In particular, the proof
+gives a single product for each element, which is stronger than a finite sum of products.
 \end{proof}
 
 \paragraph{Two residues that cannot be combined (04).} Every element of $\hahn k\No$ has a
@@ -13816,7 +13903,11 @@ A.~Berarducci, \emph{Surreal numbers, exponentiation and derivations}, arXiv:200
 (Sections 3 and 8--10 for cuts, normal forms and the Hahn support calculus).
 
 \bibitem{BM}
-A.~Berarducci and V.~Mantova, Surreal numbers, derivations and transseries, arXiv:1503.00315, 2015.
+A.~Berarducci and V.~Mantova, Surreal numbers, derivations and transseries,
+\emph{Journal of the European Mathematical Society} \textbf{20} (2018), 339--390,
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}; arXiv:1503.00315v3,
+30 July 2015. Theorem~A and the normalization $\partial\omega=1$ on p.~2 are
+used only for the class-valued boundary example.
 
 \bibitem{BFS}
 J.~Byszewski, M.~Fr\k aczyk and A.~Szumowicz, Simultaneous $p$-orderings and minimising volumes in number fields, arXiv:1506.02696, 2015.
