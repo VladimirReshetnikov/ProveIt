@@ -885,3 +885,7 @@ import Surreal.Foundations.OmnificScaleGaps
 import Surreal.Foundations.OmnificTelescope
 import Surreal.Foundations.OmnificSmallTargets
 import Surreal.Surcomplex.BinomialSmallTargets
+import Surreal.Surcomplex.GaussianPurelyInfiniteIdeal
+import Surreal.Surcomplex.GaussianSmallTargets
+import Surreal.Algebra.OrdinaryRingMaps
+import Surreal.Surcomplex.OmnificMapClassification

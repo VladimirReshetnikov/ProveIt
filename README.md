@@ -548,16 +548,19 @@ root `1`. This now holds for arbitrary small rings, including infinite and
 noncommutative targets. In every small image of the normalization, an
 adjoined root has mth power `1`.
 
-The universal small-target theorem is proved for the actual real omnific
-ring: every additive multiplicative map into a small ring factors uniquely
-through its integer constant term, even when the map does not preserve one.
+The universal small-target theorem is proved for both actual omnific
+rings: every additive multiplicative map into a small ring factors uniquely
+through its ordinary integer or Gaussian integer constant term, even when
+the map does not preserve one.
 Every such map defined just on the purely infinite ideal is zero. That
 ideal also annihilates every small unital module, whose action reduces to
-ordinary integer multiplication. Here “small” means small relative to the
-birthday universe of the surreal carrier. The proof constructs a countable
+the action of ordinary integer or Gaussian integer constants. Here “small”
+means small relative to the birthday universe of the surreal carrier. The proof constructs a countable
 geometric telescope inside the ideal and uses collisions among subordinate
-monomials; it requires no continuity of the target map. The coefficient-general
-and full Gaussian universal theorems remain pending.
+monomials; it requires no continuity of the target map. The version for an
+arbitrary coefficient field remains pending. Real nonunital maps are
+classified by idempotents in the target. Gaussian unital maps are classified
+by square roots of `−1`, which need not be central in the target ring.
 
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the
