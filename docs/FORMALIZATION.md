@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **61 main texts** with **3871**
+The canonical inventory below identifies **61 main texts** with **3943**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -113,17 +113,21 @@ automatic-summability and singular-curve companions are now written in
 `d4d72d7` and `1ad4ad8`, adding six and seventeen standard results respectively;
 finite tests at new scales are written in `9b463f7`, adding twelve more.
 Unit-dilation and Newton-rigidity companions are written in `2c4debb`,
-adding 33 standard results to the holonomic report; three earlier holonomic
-companions still await integration. Nine further archives arrived in
+adding 33 standard results to the holonomic report. The theta-hierarchy and
+single-scale companions are now written in `1d3f503`, adding 45 more standard
+results; only its polynomial-composition companion remains unintegrated. Nine further archives arrived in
 `aa268a4` and were placed in `7d04483` as additions to eight reports; their
-main-text integration and claim indexing remain pending. These new results remain
+bounded-support Galois companion is now written in `a0f7282`, adding 27
+standard results. The other companions still await main-text integration and
+claim indexing. These new results remain
 **Pending** in Lean; placing companion audits and verification code does not
 by itself integrate or formalize their mathematics.
 
 The later delivery merged through `51c1cc7` adds nine archives under
 `docs/new/`. Placement, main-text integration, statement indexing and proof
-review are pending; these archives do not change the 61 maintained reports
-or their 3,871-result inventory.
+review are pending; these archives do not themselves add maintained reports
+or indexed statements. The later written expansions bring the current
+inventory to 3,943 standard results across 61 main reports.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -859,7 +863,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surcomplex/hahn-hilbert-geometry/article.tex](surcomplex/hahn-hilbert-geometry/article.tex) | 17 | 5 | 13 | 12 | 47 |
 | [surcomplex/hahn-tate-uniformization/article.tex](surcomplex/hahn-tate-uniformization/article.tex) | 25 | 19 | 10 | 16 | 70 |
 | [surcomplex/hidden-negative-hermitian-directions/article.tex](surcomplex/hidden-negative-hermitian-directions/article.tex) | 10 | 4 | 4 | 6 | 24 |
-| [surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex) | 32 | 43 | 27 | 46 | 148 |
+| [surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex) | 48 | 55 | 31 | 59 | 193 |
 | [surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex) | 33 | 20 | 19 | 21 | 93 |
 | [surcomplex/nonabelian-support/article.tex](surcomplex/nonabelian-support/article.tex) | 33 | 18 | 17 | 24 | 92 |
 | [surcomplex/polynomial-algebra/article.tex](surcomplex/polynomial-algebra/article.tex) | 28 | 6 | 9 | 14 | 57 |
@@ -892,9 +896,9 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/omnific-preserving-automorphisms/article.tex](surreal/omnific-preserving-automorphisms/article.tex) | 62 | 33 | 19 | 26 | 140 |
 | [surreal/set-sized-quotients-of-omnific-integers/article.tex](surreal/set-sized-quotients-of-omnific-integers/article.tex) | 126 | 63 | 42 | 46 | 277 |
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
-| [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 9 | 8 | 3 | 10 | 30 |
+| [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 25 | 12 | 8 | 12 | 57 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 1526 | 800 | 775 | 770 | **3871** |
+| **Total** | 1558 | 816 | 784 | 785 | **3943** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1337,7 +1341,14 @@ scope recorded in the implementation table above.
 
 ## Main-report statement index
 
-The report expansions merged through `e93a06d` bring the current inventory
+The expansions merged through `fc27d87` add 45 theta-hierarchy/single-scale
+results in holonomic rigidity and 27 Galois-rank results in bounded-support
+arithmetic. The inventory now has **3,943** standard results across **61**
+main reports; both expanded statement tables are refreshed. These additions
+remain **Pending** in Lean. All 49 previously mapped or cited statement
+bodies checked in the two changed reports are unchanged.
+
+The report expansions merged through `e93a06d` brought the inventory
 to 3,871 standard statements across 61 main texts. The refreshed entries
 include large-cardinal embeddings, independent copies, automatic summability
 and singular-curve additions, plus twelve results on finite tests at new
@@ -1353,7 +1364,7 @@ separately styled main theorems are recorded as additional obligations in its
 entry. The subsequent large-cardinal assembly adds 44 standard environments,
 bringing the inventory to 3,803; automatic summability and singular curves
 add another 23, finite tests at new scales add twelve, and the two holonomic
-companions add 33, giving the current 3,871. These written additions are indexed
+companions add 33, giving 3,871 before the latest expansions. These written additions are indexed
 with their prefixed labels and remain pending proof review and Lean coverage.
 The other companions still require integration and review. The incoming
 profinite completion `5edd752` proves the remaining ring-isomorphism clause
@@ -3450,159 +3461,210 @@ Mappings cover only the hypotheses and clauses they state.
 
 Source: [surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex).
 
+The current eleven-manuscript assembly has 193 standard statements. The
+latest theta-hierarchy and single-scale sections are indexed but remain
+**Pending** in Lean and await independent proof review. The placed
+polynomial-composition manuscript is still outside the main text.
+
+
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `hol:lem:support` (line 919) | Hahn--Neumann support calculus and the positive monoid |
-| Lemma | `hol:lem:nonincreasing` (line 965) | The nonincreasing leading-exponent obstruction |
-| Lemma | `hol:lem:certificate` (line 983) | Two sufficient certificates |
-| Lemma | `hol:lem:inward` (line 1019) | Inward stability of strong evaluation |
-| Proposition | `hol:prop:closure` (line 1106) | Closure |
-| Proposition | `hol:prop:faithful` (line 1128) | Faithfulness of evaluation |
-| Lemma | `hol:lem:escape` (line 1190) | Escape chain |
-| Theorem | `hol:thm:escapeexclusion` (line 1231) | Evaluation exclusion criterion |
-| Corollary | `hol:cor:boundedcost` (line 1264) | Uniform bounded cost; no divisibility |
-| Corollary | `hol:cor:periodic` (line 1287) | Refined periodic threshold; requires $\Gamma$ divisible |
-| Lemma | `hol:lem:integer` (line 1333) | Integer evaluation |
-| Lemma | `hol:lem:affine` (line 1361) | Eventually affine valuation |
-| Theorem | `hol:thm:unitorbit` (line 1401) | Unit-orbit valuations |
-| Lemma | `hol:lem:drec` (line 1516) | Differential coefficient recurrence |
-| Proposition | `hol:prop:precursive` (line 1548) | Uniform obstruction for P-recursive coefficients |
-| Proposition | `hol:prop:expdomain` (line 1610) | Formal exponential domain |
-| Corollary | `hol:cor:algebraic` (line 1657) | Algebraic entire series |
-| Corollary | `hol:cor:systems` (line 1675) | Rational differential systems |
-| Proposition | `hol:prop:inhomogeneous` (line 1689) | Rational inhomogeneous equations |
-| Lemma | `hol:lem:generic` (line 1765) | Avoiding countably many polynomial conditions |
-| Corollary | `hol:cor:multialg` (line 1829) | Multivariate algebraic rigidity |
-| Lemma | `hol:lem:qrec` (line 1852) | Dilation coefficient recurrence |
-| Corollary | `hol:cor:unitrigid` (line 1889) | Every unit dilation is globally rigid |
-| Proposition | `hol:prop:noncofinal` (line 1919) | Noncofinal dilation scales force polynomiality |
-| Theorem | `hol:thm:coarse` (line 1979) | Coarsened exclusion |
-| Theorem | `hol:thm:thetadomain` (line 2041) | Exact partial theta domain |
-| Proposition | `hol:prop:torsion` (line 2245) | Torsion covariance |
-| Lemma | `hol:lem:bivariate` (line 2294) | Polynomial dependence on the index as well as the dilation |
-| Theorem | `hol:thm:mixed` (line 2313) | Mixed rigidity at a noncofinal nonzero scale |
-| Corollary | `hol:cor:universal` (line 2388) | Universal nontorsion dilation rigidity |
-| Theorem | `hol:thm:explicit` (line 2406) | An explicit universally nonholonomic entire series |
-| Corollary | `hol:cor:detect` (line 2539) | Detecting order units by functional equations |
-| Lemma | `hol:nl:lem:algebra` (line 2905) | Hahn-family algebra and its residue |
-| Corollary | `hol:nl:cor:gauss` (line 2950) | Gauss multiplicativity |
-| Lemma | `hol:nl:lem:derivatives` (line 3003) | Exact derivative scaling |
-| Lemma | `hol:nl:lem:active` (line 3020) | Large active degrees |
-| Lemma | `hol:nl:lem:corner` (line 3089) | The exact corner identity |
-| Theorem | `hol:nl:thm:certificate` (line 3124) | Nonlinear finite exclusion certificate |
-| Corollary | `hol:nl:cor:cofinal` (line 3224) | Cofinal scales suffice |
-| Theorem | `hol:nl:thm:degrees` (line 3292) | Finite candidate degrees |
-| Corollary | `hol:nl:cor:locus` (line 3337) | An algebraic entire-solution locus |
-| Proposition | `hol:nl:prop:riccati` (line 3383) | Two exact Riccati classifications |
-| Theorem | `hol:nl:thm:nouniform` (line 3428) | A fixed Riccati equation defeats every uniform bound |
-| Theorem | `hol:nl:thm:corner` (line 3479) | Higher-order corner criterion and its boundary |
-| Proposition | `hol:nl:prop:higherdegrees` (line 3498) | Higher-order degree candidates |
-| Proposition | `hol:nl:prop:painleve` (line 3519) | The first two Painlev\'e polynomial equations |
-| Proposition | `hol:nl:prop:degenerate` (line 3559) | Complete formal classification of the example |
-| Theorem | `hol:nl:thm:euler` (line 3656) | Positive-weight Euler rigidity |
-| Corollary | `hol:nl:cor:eulerdegrees` (line 3717) | Weighted-degree candidates |
-| Corollary | `hol:nl:cor:theta` (line 3785) | Two independent jets of the quadratic-exponent series |
-| Corollary | `hol:nl:cor:infiniterank` (line 3808) | An example without an order unit |
-| Proposition | `hol:cf:prop:criterion` (line 5848) | All-scale coefficient criterion; sources~11 and~12 |
-| Corollary | `hol:cf:cor:cofinality` (line 5892) | When the statements are nonvacuous; source~12 |
-| Proposition | `hol:cf:prop:ring` (line 5915) | Differential algebra structure; source~11 |
-| Lemma | `hol:cf:lem:min` (line 5942) | A minimum coefficient value; source~11 |
-| Lemma | `hol:cf:lem:valuerank` (line 5956) | Valuation-rank inequality; sources~11 and~12 |
-| Lemma | `hol:cf:lem:principal` (line 5984) | A principal convex bound; sources~11 and~12 |
-| Proposition | `hol:cf:prop:exterior` (line 6040) | Coarsened exterior obstruction; sources~11 and~12 |
-| Corollary | `hol:cf:cor:finitefield` (line 6065) | Finite transcendence degree; source~12 |
-| Corollary | `hol:cf:cor:cvr` (line 6086) | Necessary infinite coefficient-value rank; source~12 |
-| Lemma | `hol:cf:lem:exppoly` (line 6125) | Nondegenerate exponential polynomials; source~12 |
-| Theorem | `hol:cf:thm:coefficients` (line 6166) | Finite coefficient field; sources~11 and~12 |
-| Corollary | `hol:cf:cor:finitegen` (line 6328) | Finitely many scalar parameters; source~11 |
-| Lemma | `hol:cf:lem:reduction` (line 6354) | Polynomial reduction of an entire series; source~11 |
-| Lemma | `hol:cf:lem:rationaldescent` (line 6372) | Rationality needs no new constants; source~11 |
-| Theorem | `hol:cf:thm:descent` (line 6395) | Coarsening descent; source~11 |
-| Corollary | `hol:cf:cor:free` (line 6494) | A free differential algebra of dilates; source~12 |
-| Corollary | `hol:cf:cor:relative` (line 6514) | Relative differential-algebraic closedness; source~11 |
-| Corollary | `hol:cf:cor:systems` (line 6524) | Finite rational differential systems; source~11 |
-| Corollary | `hol:cf:cor:painleve` (line 6545) | Painlev\'e~I in the fraction field; source~11 |
-| Corollary | `hol:cf:cor:DAexterior` (line 6569) | A solution-dependent exterior certificate; source~12 |
-| Proposition | `hol:cf:prop:theta` (line 6595) | A one-generator coefficient field; source~12 |
-| Theorem | `hol:cf:thm:rankone` (line 6655) | An explicit rank-one family; source~12 |
-| Theorem | `hol:cf:thm:Fomega` (line 6686) | Full mixed-jet independence of the explicit series; source~12 |
-| Theorem | `hol:cf:thm:indcriterion` (line 6720) | Infinite independent coefficient supply; source~11 |
-| Lemma | `hol:cf:lem:monomials` (line 6752) | Independent scale monomials; source~11 |
-| Proposition | `hol:cf:prop:branchentire` (line 6780) | Source~11 |
-| Proposition | `hol:cf:prop:branchind` (line 6791) | Source~11 |
-| Theorem | `hol:cf:thm:continuum` (line 6812) | Maximal differential transcendence in one workspace; source~11 |
-| Proposition | `hol:cf:prop:scalar` (line 6863) | Independence survives extension of constants; source~12 |
-| Corollary | `hol:cf:cor:several` (line 7016) | Several multiplicatively independent dilations; merge observation |
-| Corollary | `hol:cf:cor:meromorphicmixed` (line 7058) | Mixed rigidity in the fraction field |
-| Lemma | `hol:td:lem:cheb` (line 7469) | Chebyshev identities; source~13 |
-| Proposition | `hol:td:prop:coeff` (line 7494) | Exact Taylor coefficients; source~13 |
-| Lemma | `hol:td:lem:quadratic` (line 7520) | A quadratic support certificate; source~13 |
-| Theorem | `hol:td:thm:domain` (line 7554) | Exact strong domain; source~13 |
-| Theorem | `hol:td:thm:zeros` (line 7636) | Product and complete zero set; source~13 |
-| Proposition | `hol:td:prop:local` (line 7706) | Exact linearization on the nearest-root ball; source~13 |
-| Theorem | `hol:td:thm:ode` (line 7787) | Cleared third-order equation; source~13 |
-| Proposition | `hol:td:prop:corner` (line 7921) | Corner data of the cleared equation; merge |
-| Lemma | `hol:td:lem:laurent` (line 8027) | The Laurent ring; source~13 |
-| Lemma | `hol:td:lem:substitution` (line 8073) | Substitution of $u+u^{-1}$; merge |
-| Lemma | `hol:td:lem:rational` (line 8148) | Three rational-function obstructions; source~13 |
-| Lemma | `hol:td:lem:psi3` (line 8181) | Transfer, and a global certificate for $\psi_3\ne0$; merge |
-| Theorem | `hol:td:thm:independent` (line 8239) | Three independent theta quantities; source~13 |
-| Corollary | `hol:td:cor:order` (line 8281) | Exact minimal order; source~13 |
-| Theorem | `hol:td:thm:field` (line 8315) | Differential-field presentation; source~13 |
-| Proposition | `hol:td:prop:nondfinite` (line 8364) | Non-D-finiteness; source~13 |
-| Corollary | `hol:td:cor:sharp` (line 8448) | Theorem~E is sharp; merge |
-| Corollary | `hol:td:cor:omnific` (line 8558) | Zeros next to omnific integers; source~13 |
-| Corollary | `hol:td:cor:affine` (line 8646) | Stability under affine changes; source~13 |
-| Lemma | `hol:ot:lem:extension` (line 9028) | Cofinal scalar extension; source~14 |
-| Lemma | `hol:ot:lem:localfinite` (line 9069) | Local finiteness of active indices; source~14 |
-| Lemma | `hol:ot:lem:breaks` (line 9088) | Late breaks; source~14 |
-| Lemma | `hol:ot:lem:exterior` (line 9149) | Exterior homogeneous reduction; source~14 |
-| Lemma | `hol:ot:lem:endpoints` (line 9249) | Finite endpoint spectrum; source~14 |
-| Corollary | `hol:ot:cor:threejets` (line 9315) | Three-jet transcendence; source~14 |
-| Corollary | `hol:ot:cor:systems` (line 9334) | Rational two-state systems; source~14 |
-| Corollary | `hol:ot:cor:meromorphic` (line 9362) | Polynomial-denominator meromorphic rigidity; source~14 |
-| Corollary | `hol:ot:cor:examples` (line 9394) | The explicit series of earlier parts; merge |
-| Theorem | `hol:ot:thm:gaps` (line 9466) | Third-order endpoint--gap obstruction; source~14 |
-| Corollary | `hol:ot:cor:gapcriterion` (line 9515) | A third-order rigidity certificate; source~14 |
-| Theorem | `hol:ot:thm:classification` (line 9585) | Polynomial solutions of the theta exterior equation; source~14 |
-| Theorem | `hol:ot:thm:convexity` (line 9628) | Eventual strict Newton convexity; source~14 |
-| Proposition | `hol:ot:prop:fullclass` (line 9698) | No nonpolynomial series is entire on the class; source~14 |
-| Lemma | `hol:ud:lem:words` (line 10086) | Finite-word lemma for a well-ordered alphabet; source~18 |
-| Lemma | `hol:ud:lem:period` (line 10131) | One period removes all residue torsion; source~18 |
-| Lemma | `hol:ud:lem:envelope` (line 10158) | A common support envelope for unit orbits; source~18 |
-| Theorem | `hol:ud:thm:unitvalues` (line 10198) | Eventual periodicity at unit valuation; source~18 |
-| Corollary | `hol:ud:cor:bivariate` (line 10244) | The bivariate unit-orbit estimate; source~18 |
-| Lemma | `hol:ud:lem:lines` (line 10280) | Eventually ordered affine functions; source~18 |
-| Theorem | `hol:ud:thm:affine` (line 10299) | Periodic-affine valuations of Hahn exponential polynomials; source~18 |
-| Lemma | `hol:ud:lem:operator` (line 10376) | Exact shift polynomials; source~18 |
-| Corollary | `hol:ud:cor:faithful` (line 10414) | No hidden zero operator; source~18 |
-| Theorem | `hol:ud:thm:rigidity` (line 10445) | Rigidity for noncofinal relative scales; source~18 |
-| Corollary | `hol:ud:cor:unitrigidity` (line 10513) | Mixed equations at unit valuation; source~18 |
-| Corollary | `hol:ud:cor:linind` (line 10535) | Mixed linear independence; source~18 |
-| Lemma | `hol:ud:lem:theta` (line 10558) | A mixed equation for partial theta; source~18 |
-| Theorem | `hol:ud:thm:dichotomy` (line 10575) | Exact relative-scale dichotomy; source~18 |
-| Corollary | `hol:ud:cor:cyclic` (line 10622) | Cyclic mixed equations; source~18 |
-| Proposition | `hol:ud:prop:top` (line 10655) | The top Archimedean scale; source~18 |
-| Corollary | `hol:ud:cor:surcomplex` (line 10693) | A surcomplex no-annihilator theorem; source~18 |
-| Proposition | `hol:ud:prop:finitespace` (line 10859) | The entire solution space is finite; source~18 |
-| Lemma | `hol:nr:lem:polar` (line 11283) | The double factor; source~19 |
-| Lemma | `hol:nr:lem:side` (line 11300) | An eventual side for integral roots; source~19 |
-| Proposition | `hol:nr:prop:firstpolar` (line 11322) | The first-polar criterion; source~19 |
-| Lemma | `hol:nr:lem:secant` (line 11356) | No cubic is singular along the twisted cubic; source~19 |
-| Corollary | `hol:nr:cor:factor` (line 11406) | A factor criterion beyond cubic degree; source~19 |
-| Corollary | `hol:nr:cor:external` (line 11475) | External constants; source~19 |
-| Corollary | `hol:nr:cor:surcomplex` (line 11494) | External surcomplex coefficients; source~19 |
-| Lemma | `hol:nr:lem:omnificclear` (line 11509) | Finite monomial clearance; source~19 |
-| Corollary | `hol:nr:cor:omnific` (line 11525) | Omnific differential-relation obstruction; source~19 |
-| Theorem | `hol:nr:thm:systems` (line 11546) | Algebraic two-state systems; source~19 |
-| Corollary | `hol:nr:cor:planar` (line 11570) | Rational planar systems; source~19 |
-| Theorem | `hol:nr:thm:H3` (line 11617) | Exact formal solutions of the quartic; source~19 |
-| Theorem | `hol:nr:thm:Q4` (line 11672) | Exact formal solutions of the order-four quadratic; source~19 |
-| Corollary | `hol:nr:cor:theta` (line 11726) | The theta equation and its jet degree; merge |
-| Proposition | `hol:nr:prop:family` (line 11758) | A large order-unit family; source~19 |
+| Lemma | `hol:lem:support` (line 1034) | Hahn--Neumann support calculus and the positive monoid |
+| Lemma | `hol:lem:nonincreasing` (line 1080) | The nonincreasing leading-exponent obstruction |
+| Lemma | `hol:lem:certificate` (line 1098) | Two sufficient certificates |
+| Lemma | `hol:lem:inward` (line 1134) | Inward stability of strong evaluation |
+| Proposition | `hol:prop:closure` (line 1221) | Closure |
+| Proposition | `hol:prop:faithful` (line 1243) | Faithfulness of evaluation |
+| Lemma | `hol:lem:escape` (line 1305) | Escape chain |
+| Theorem | `hol:thm:escapeexclusion` (line 1346) | Evaluation exclusion criterion |
+| Corollary | `hol:cor:boundedcost` (line 1379) | Uniform bounded cost; no divisibility |
+| Corollary | `hol:cor:periodic` (line 1402) | Refined periodic threshold; requires $\Gamma$ divisible |
+| Lemma | `hol:lem:integer` (line 1448) | Integer evaluation |
+| Lemma | `hol:lem:affine` (line 1476) | Eventually affine valuation |
+| Theorem | `hol:thm:unitorbit` (line 1516) | Unit-orbit valuations |
+| Lemma | `hol:lem:drec` (line 1631) | Differential coefficient recurrence |
+| Proposition | `hol:prop:precursive` (line 1663) | Uniform obstruction for P-recursive coefficients |
+| Proposition | `hol:prop:expdomain` (line 1725) | Formal exponential domain |
+| Corollary | `hol:cor:algebraic` (line 1772) | Algebraic entire series |
+| Corollary | `hol:cor:systems` (line 1790) | Rational differential systems |
+| Proposition | `hol:prop:inhomogeneous` (line 1804) | Rational inhomogeneous equations |
+| Lemma | `hol:lem:generic` (line 1880) | Avoiding countably many polynomial conditions |
+| Corollary | `hol:cor:multialg` (line 1944) | Multivariate algebraic rigidity |
+| Lemma | `hol:lem:qrec` (line 1967) | Dilation coefficient recurrence |
+| Corollary | `hol:cor:unitrigid` (line 2004) | Every unit dilation is globally rigid |
+| Proposition | `hol:prop:noncofinal` (line 2034) | Noncofinal dilation scales force polynomiality |
+| Theorem | `hol:thm:coarse` (line 2094) | Coarsened exclusion |
+| Theorem | `hol:thm:thetadomain` (line 2156) | Exact partial theta domain |
+| Proposition | `hol:prop:torsion` (line 2360) | Torsion covariance |
+| Lemma | `hol:lem:bivariate` (line 2409) | Polynomial dependence on the index as well as the dilation |
+| Theorem | `hol:thm:mixed` (line 2428) | Mixed rigidity at a noncofinal nonzero scale |
+| Corollary | `hol:cor:universal` (line 2503) | Universal nontorsion dilation rigidity |
+| Theorem | `hol:thm:explicit` (line 2521) | An explicit universally nonholonomic entire series |
+| Corollary | `hol:cor:detect` (line 2654) | Detecting order units by functional equations |
+| Lemma | `hol:nl:lem:algebra` (line 3020) | Hahn-family algebra and its residue |
+| Corollary | `hol:nl:cor:gauss` (line 3065) | Gauss multiplicativity |
+| Lemma | `hol:nl:lem:derivatives` (line 3118) | Exact derivative scaling |
+| Lemma | `hol:nl:lem:active` (line 3135) | Large active degrees |
+| Lemma | `hol:nl:lem:corner` (line 3204) | The exact corner identity |
+| Theorem | `hol:nl:thm:certificate` (line 3239) | Nonlinear finite exclusion certificate |
+| Corollary | `hol:nl:cor:cofinal` (line 3339) | Cofinal scales suffice |
+| Theorem | `hol:nl:thm:degrees` (line 3407) | Finite candidate degrees |
+| Corollary | `hol:nl:cor:locus` (line 3452) | An algebraic entire-solution locus |
+| Proposition | `hol:nl:prop:riccati` (line 3498) | Two exact Riccati classifications |
+| Theorem | `hol:nl:thm:nouniform` (line 3543) | A fixed Riccati equation defeats every uniform bound |
+| Theorem | `hol:nl:thm:corner` (line 3594) | Higher-order corner criterion and its boundary |
+| Proposition | `hol:nl:prop:higherdegrees` (line 3613) | Higher-order degree candidates |
+| Proposition | `hol:nl:prop:painleve` (line 3634) | The first two Painlev\'e polynomial equations |
+| Proposition | `hol:nl:prop:degenerate` (line 3674) | Complete formal classification of the example |
+| Theorem | `hol:nl:thm:euler` (line 3771) | Positive-weight Euler rigidity |
+| Corollary | `hol:nl:cor:eulerdegrees` (line 3832) | Weighted-degree candidates |
+| Corollary | `hol:nl:cor:theta` (line 3900) | Two independent jets of the quadratic-exponent series |
+| Corollary | `hol:nl:cor:infiniterank` (line 3923) | An example without an order unit |
+| Proposition | `hol:cf:prop:criterion` (line 6344) | All-scale coefficient criterion; sources~11 and~12 |
+| Corollary | `hol:cf:cor:cofinality` (line 6388) | When the statements are nonvacuous; source~12 |
+| Proposition | `hol:cf:prop:ring` (line 6411) | Differential algebra structure; source~11 |
+| Lemma | `hol:cf:lem:min` (line 6438) | A minimum coefficient value; source~11 |
+| Lemma | `hol:cf:lem:valuerank` (line 6452) | Valuation-rank inequality; sources~11 and~12 |
+| Lemma | `hol:cf:lem:principal` (line 6480) | A principal convex bound; sources~11 and~12 |
+| Proposition | `hol:cf:prop:exterior` (line 6536) | Coarsened exterior obstruction; sources~11 and~12 |
+| Corollary | `hol:cf:cor:finitefield` (line 6561) | Finite transcendence degree; source~12 |
+| Corollary | `hol:cf:cor:cvr` (line 6582) | Necessary infinite coefficient-value rank; source~12 |
+| Lemma | `hol:cf:lem:exppoly` (line 6621) | Nondegenerate exponential polynomials; source~12 |
+| Theorem | `hol:cf:thm:coefficients` (line 6662) | Finite coefficient field; sources~11 and~12 |
+| Corollary | `hol:cf:cor:finitegen` (line 6824) | Finitely many scalar parameters; source~11 |
+| Lemma | `hol:cf:lem:reduction` (line 6850) | Polynomial reduction of an entire series; source~11 |
+| Lemma | `hol:cf:lem:rationaldescent` (line 6868) | Rationality needs no new constants; source~11 |
+| Theorem | `hol:cf:thm:descent` (line 6891) | Coarsening descent; source~11 |
+| Corollary | `hol:cf:cor:free` (line 6990) | A free differential algebra of dilates; source~12 |
+| Corollary | `hol:cf:cor:relative` (line 7010) | Relative differential-algebraic closedness; source~11 |
+| Corollary | `hol:cf:cor:systems` (line 7020) | Finite rational differential systems; source~11 |
+| Corollary | `hol:cf:cor:painleve` (line 7041) | Painlev\'e~I in the fraction field; source~11 |
+| Corollary | `hol:cf:cor:DAexterior` (line 7065) | A solution-dependent exterior certificate; source~12 |
+| Proposition | `hol:cf:prop:theta` (line 7091) | A one-generator coefficient field; source~12 |
+| Theorem | `hol:cf:thm:rankone` (line 7151) | An explicit rank-one family; source~12 |
+| Theorem | `hol:cf:thm:Fomega` (line 7186) | Full mixed-jet independence of the explicit series; source~12 |
+| Theorem | `hol:cf:thm:indcriterion` (line 7220) | Infinite independent coefficient supply; source~11 |
+| Lemma | `hol:cf:lem:monomials` (line 7252) | Independent scale monomials; source~11 |
+| Proposition | `hol:cf:prop:branchentire` (line 7280) | Source~11 |
+| Proposition | `hol:cf:prop:branchind` (line 7291) | Source~11 |
+| Theorem | `hol:cf:thm:continuum` (line 7312) | Maximal differential transcendence in one workspace; source~11 |
+| Proposition | `hol:cf:prop:scalar` (line 7363) | Independence survives extension of constants; source~12 |
+| Corollary | `hol:cf:cor:several` (line 7516) | Several multiplicatively independent dilations; merge observation |
+| Corollary | `hol:cf:cor:meromorphicmixed` (line 7558) | Mixed rigidity in the fraction field |
+| Lemma | `hol:td:lem:cheb` (line 7969) | Chebyshev identities; source~13 |
+| Proposition | `hol:td:prop:coeff` (line 7994) | Exact Taylor coefficients; source~13 |
+| Lemma | `hol:td:lem:quadratic` (line 8020) | A quadratic support certificate; source~13 |
+| Theorem | `hol:td:thm:domain` (line 8054) | Exact strong domain; source~13 |
+| Theorem | `hol:td:thm:zeros` (line 8136) | Product and complete zero set; source~13 |
+| Proposition | `hol:td:prop:local` (line 8206) | Exact linearization on the nearest-root ball; source~13 |
+| Theorem | `hol:td:thm:ode` (line 8287) | Cleared third-order equation; source~13 |
+| Proposition | `hol:td:prop:corner` (line 8421) | Corner data of the cleared equation; merge |
+| Lemma | `hol:td:lem:laurent` (line 8527) | The Laurent ring; source~13 |
+| Lemma | `hol:td:lem:substitution` (line 8573) | Substitution of $u+u^{-1}$; merge |
+| Lemma | `hol:td:lem:rational` (line 8648) | Three rational-function obstructions; source~13 |
+| Lemma | `hol:td:lem:psi3` (line 8681) | Transfer, and a global certificate for $\psi_3\ne0$; merge |
+| Theorem | `hol:td:thm:independent` (line 8739) | Three independent theta quantities; source~13 |
+| Corollary | `hol:td:cor:order` (line 8781) | Exact minimal order; source~13 |
+| Theorem | `hol:td:thm:field` (line 8815) | Differential-field presentation; source~13 |
+| Proposition | `hol:td:prop:nondfinite` (line 8864) | Non-D-finiteness; source~13 |
+| Corollary | `hol:td:cor:sharp` (line 8948) | Theorem~E is sharp; merge |
+| Corollary | `hol:td:cor:omnific` (line 9058) | Zeros next to omnific integers; source~13 |
+| Corollary | `hol:td:cor:affine` (line 9146) | Stability under affine changes; source~13 |
+| Lemma | `hol:ot:lem:extension` (line 9529) | Cofinal scalar extension; source~14 |
+| Lemma | `hol:ot:lem:localfinite` (line 9570) | Local finiteness of active indices; source~14 |
+| Lemma | `hol:ot:lem:breaks` (line 9589) | Late breaks; source~14 |
+| Lemma | `hol:ot:lem:exterior` (line 9650) | Exterior homogeneous reduction; source~14 |
+| Lemma | `hol:ot:lem:endpoints` (line 9750) | Finite endpoint spectrum; source~14 |
+| Corollary | `hol:ot:cor:threejets` (line 9816) | Three-jet transcendence; source~14 |
+| Corollary | `hol:ot:cor:systems` (line 9835) | Rational two-state systems; source~14 |
+| Corollary | `hol:ot:cor:meromorphic` (line 9863) | Polynomial-denominator meromorphic rigidity; source~14 |
+| Corollary | `hol:ot:cor:examples` (line 9895) | The explicit series of earlier parts; merge |
+| Theorem | `hol:ot:thm:gaps` (line 9967) | Third-order endpoint--gap obstruction; source~14 |
+| Corollary | `hol:ot:cor:gapcriterion` (line 10016) | A third-order rigidity certificate; source~14 |
+| Theorem | `hol:ot:thm:classification` (line 10086) | Polynomial solutions of the theta exterior equation; source~14 |
+| Theorem | `hol:ot:thm:convexity` (line 10129) | Eventual strict Newton convexity; source~14 |
+| Proposition | `hol:ot:prop:fullclass` (line 10199) | No nonpolynomial series is entire on the class; source~14 |
+| Lemma | `hol:ud:lem:words` (line 10587) | Finite-word lemma for a well-ordered alphabet; source~18 |
+| Lemma | `hol:ud:lem:period` (line 10632) | One period removes all residue torsion; source~18 |
+| Lemma | `hol:ud:lem:envelope` (line 10659) | A common support envelope for unit orbits; source~18 |
+| Theorem | `hol:ud:thm:unitvalues` (line 10699) | Eventual periodicity at unit valuation; source~18 |
+| Corollary | `hol:ud:cor:bivariate` (line 10745) | The bivariate unit-orbit estimate; source~18 |
+| Lemma | `hol:ud:lem:lines` (line 10781) | Eventually ordered affine functions; source~18 |
+| Theorem | `hol:ud:thm:affine` (line 10800) | Periodic-affine valuations of Hahn exponential polynomials; source~18 |
+| Lemma | `hol:ud:lem:operator` (line 10877) | Exact shift polynomials; source~18 |
+| Corollary | `hol:ud:cor:faithful` (line 10915) | No hidden zero operator; source~18 |
+| Theorem | `hol:ud:thm:rigidity` (line 10946) | Rigidity for noncofinal relative scales; source~18 |
+| Corollary | `hol:ud:cor:unitrigidity` (line 11014) | Mixed equations at unit valuation; source~18 |
+| Corollary | `hol:ud:cor:linind` (line 11036) | Mixed linear independence; source~18 |
+| Lemma | `hol:ud:lem:theta` (line 11059) | A mixed equation for partial theta; source~18 |
+| Theorem | `hol:ud:thm:dichotomy` (line 11076) | Exact relative-scale dichotomy; source~18 |
+| Corollary | `hol:ud:cor:cyclic` (line 11123) | Cyclic mixed equations; source~18 |
+| Proposition | `hol:ud:prop:top` (line 11156) | The top Archimedean scale; source~18 |
+| Corollary | `hol:ud:cor:surcomplex` (line 11194) | A surcomplex no-annihilator theorem; source~18 |
+| Proposition | `hol:ud:prop:finitespace` (line 11360) | The entire solution space is finite; source~18 |
+| Lemma | `hol:nr:lem:polar` (line 11784) | The double factor; source~19 |
+| Lemma | `hol:nr:lem:side` (line 11801) | An eventual side for integral roots; source~19 |
+| Proposition | `hol:nr:prop:firstpolar` (line 11823) | The first-polar criterion; source~19 |
+| Lemma | `hol:nr:lem:secant` (line 11857) | No cubic is singular along the twisted cubic; source~19 |
+| Corollary | `hol:nr:cor:factor` (line 11907) | A factor criterion beyond cubic degree; source~19 |
+| Corollary | `hol:nr:cor:external` (line 11976) | External constants; source~19 |
+| Corollary | `hol:nr:cor:surcomplex` (line 11995) | External surcomplex coefficients; source~19 |
+| Lemma | `hol:nr:lem:omnificclear` (line 12010) | Finite monomial clearance; source~19 |
+| Corollary | `hol:nr:cor:omnific` (line 12026) | Omnific differential-relation obstruction; source~19 |
+| Theorem | `hol:nr:thm:systems` (line 12047) | Algebraic two-state systems; source~19 |
+| Corollary | `hol:nr:cor:planar` (line 12071) | Rational planar systems; source~19 |
+| Theorem | `hol:nr:thm:H3` (line 12118) | Exact formal solutions of the quartic; source~19 |
+| Theorem | `hol:nr:thm:Q4` (line 12173) | Exact formal solutions of the order-four quadratic; source~19 |
+| Corollary | `hol:nr:cor:theta` (line 12227) | The theta equation and its jet degree; merge |
+| Proposition | `hol:nr:prop:family` (line 12259) | A large order-unit family; source~19 |
+| Lemma | `hol:th:lem:poly` (line 12615) | Polynomial growth; source~16 |
+| Theorem | `hol:th:thm:profile` (line 12628) | Exact quadratic profile; source~16 |
+| Theorem | `hol:th:thm:growth` (line 12651) | Superlinear growth separation; source~16 |
+| Proposition | `hol:th:prop:threshold` (line 12684) | An explicit noncancellation threshold; source~16 |
+| Lemma | `hol:th:lem:kahler` (line 12741) | K\"ahler criterion; source~16 |
+| Lemma | `hol:th:lem:grid` (line 12758) | Finite-grid nonvanishing; source~16 |
+| Theorem | `hol:th:thm:compression` (line 12771) | Bounded polynomial jet compression; source~16 |
+| Corollary | `hol:th:cor:entirecompression` (line 12834) | An entire-preserving version; source~16 |
+| Lemma | `hol:th:lem:ordertrdeg` (line 12864) | Order equals transcendence degree; source~16 |
+| Corollary | `hol:th:cor:composita` (line 12882) | Finite composita; source~16 |
+| Corollary | `hol:th:cor:nobound` (line 12913) | No finite upper bound; source~16 |
+| Theorem | `hol:th:thm:exactdimension` (line 12941) | Exact order at the compositum dimension; source~16 |
+| Lemma | `hol:th:lem:hamel` (line 12975) | A positive Hamel set; source~16 |
+| Corollary | `hol:th:cor:continuum` (line 12986) | The independent family; source~16 |
+| Lemma | `hol:th:lem:card` (line 13008) | Cardinality; source~16 |
+| Theorem | `hol:th:thm:sampling` (line 13051) | Residue-polynomial sampling; source~16 |
+| Corollary | `hol:th:cor:samplingrelations` (line 13073) | No fixed relation on infinitely many integers; source~16 |
+| Corollary | `hol:th:cor:jetsampling` (line 13087) | Jet-sampling rigidity; source~16 |
+| Theorem | `hol:th:thm:seedthree` (line 13128) | Three theta coordinates; source~16 |
+| Corollary | `hol:th:cor:seedminimal` (line 13147) | Minimal order three; source~16, credited conclusion |
+| Lemma | `hol:fh:lem:sep` (line 13518) | Height separation; source~17 |
+| Corollary | `hol:fh:cor:bands` (line 13541) | Isolated bands; source~17 |
+| Lemma | `hol:fh:lem:polar` (line 13548) | Multicolour polarization; source~17 |
+| Lemma | `hol:fh:lem:density` (line 13579) | Hereditary density; source~17 |
+| Theorem | `hol:fh:thm:numeric` (line 13610) | Numerical all-order independence; source~17 |
+| Theorem | `hol:fh:thm:mixed` (line 13635) | Mixed differential independence; source~17 |
+| Corollary | `hol:fh:cor:every` (line 13658) | Every infinite subseries; source~17 |
+| Theorem | `hol:fh:thm:relations` (line 13697) | Complete relation classification; source~17 |
+| Corollary | `hol:fh:cor:jetdegree` (line 13721) | Exact finite-jet degrees; source~17 |
+| Corollary | `hol:fh:cor:alphabet` (line 13753) | Finite alphabets; source~17 |
+| Theorem | `hol:fh:thm:allscalars` (line 13764) | All scalars may enter the equation; source~17 |
+| Theorem | `hol:fh:thm:entire` (line 13804) | Entire differential freedom; source~17 |
+| Corollary | `hol:fh:cor:entirecard` (line 13853) | Maximal differential transcendence degree; source~17 |
+| Theorem | `hol:fh:thm:hermite` (line 13870) | Freedom inside every finite-jet fibre; source~17 |
+| Lemma | `hol:fh:lem:bmtriangular` (line 13903) | Triangular intrinsic jets; source~17 |
+| Theorem | `hol:fh:thm:surreal` (line 13914) | Rational-coefficient surreal differential freedom; source~17 |
+| Lemma | `hol:fh:lem:bounded` (line 13937) | Bounded-support descent; source~17, after \texttt{bst:thm:descent} |
+| Corollary | `hol:fh:cor:boundedjets` (line 13953) | All intrinsic jets over the bounded-support field; source~17 |
+| Theorem | `hol:fh:thm:domain` (line 13985) | Exact common domain; source~17 |
+| Proposition | `hol:fh:prop:domainring` (line 14005) | The domain is a valuation ring; source~17 |
+| Proposition | `hol:fh:prop:faithful` (line 14029) | Faithfulness on the domain; source~17 |
+| Lemma | `hol:fh:lem:scale` (line 14070) | The coding scale is transcendental; source~17 |
+| Theorem | `hol:fh:thm:codes` (line 14081) | Independent omnific codes; source~17 |
+| Theorem | `hol:fh:thm:floor` (line 14111) | Factorial floor profile; source~17 |
+| Proposition | `hol:fh:prop:heat` (line 14136) | A polynomial-height obstruction; source~17 |
 
 ### infinite-dimensional-hahn-spectral-theory
 
@@ -4046,6 +4108,11 @@ Mappings cover only the hypotheses and clauses they state.
 
 Source: [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex).
 
+The two-source assembly now has 57 standard statements, including the
+Galois rank dichotomy in Sections 11–19. Those 27 added statements remain
+**Pending** in Lean and outside the earlier proof-review scope below.
+
+
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
@@ -4061,36 +4128,63 @@ no Lean coverage. See [the review record](REVIEW.md).
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `bst:thm:mainintro` (line 148) | Optimal-support independence; proved in Section~\ref{bst:sec:independence} |
-| Theorem | `bst:thm:descentintro` (line 170) | Cofinal coefficient--exponent descent; proved in Section~\ref{bst:sec:descent} |
-| Lemma | `bst:lem:bounds` (line 323) | Elementary support bounds |
-| Proposition | `bst:prop:localdensity` (line 344) | Localization and density |
-| Lemma | `bst:lem:cofinality` (line 383) | Untitled |
-| Lemma | `bst:lem:projection` (line 463) | Projection identity |
-| Theorem | `bst:thm:descent` (line 495) | Simultaneous descent |
-| Corollary | `bst:cor:relations` (line 535) | Intersection, relations, and algebraic degree |
-| Corollary | `bst:cor:onescale` (line 576) | One cofinal scale |
-| Lemma | `bst:lem:skeleton` (line 655) | Existence at the exact cofinality |
-| Lemma | `bst:lem:detection` (line 709) | Support-band detection |
-| Corollary | `bst:cor:onegap` (line 773) | A one-series version |
-| Lemma | `bst:lem:coding` (line 821) | Cofinal finite-pattern realization |
-| Lemma | `bst:lem:grid` (line 861) | Integer grids detect polynomials |
-| Theorem | `bst:thm:independent` (line 880) | The sharp support theorem |
-| Corollary | `bst:cor:optimal` (line 927) | Optimal cardinality and order type |
-| Corollary | `bst:cor:perturb` (line 946) | Arbitrary bounded perturbations |
-| Corollary | `bst:cor:balls` (line 959) | Independent families in every valuation ball |
-| Corollary | `bst:cor:exactcard` (line 990) | Cardinality-matched groups |
-| Corollary | `bst:cor:realgroup` (line 1007) | Every nonzero real-exponent subgroup |
-| Theorem | `bst:thm:explicit` (line 1043) | Explicit multiplicative-parameter family |
-| Theorem | `bst:thm:fieldcriterion` (line 1150) | Absence of a highest scale |
-| Corollary | `bst:cor:closedbase` (line 1185) | Closed coefficient fields at unbounded rank |
-| Proposition | `bst:prop:toprank` (line 1231) | Top-rank presentation |
-| Proposition | `bst:prop:supimport` (line 1268) | Imported rank-one support theorem |
-| Corollary | `bst:cor:units` (line 1283) | Units see exactly the highest rank |
-| Theorem | `bst:thm:actualreal` (line 1355) | A continuum of independent actual infinitesimals |
-| Theorem | `bst:thm:kappa` (line 1410) | Arbitrarily large, explicit-support surreal families |
-| Theorem | `bst:thm:gcddescent` (line 1780) | Normalized GCD descent |
-| Lemma | `bst:lem:characters` (line 1790) | Untitled |
+| Theorem | `bst:thm:mainintro` (line 172) | Optimal-support independence; proved in Section~\ref{bst:sec:independence} |
+| Theorem | `bst:thm:descentintro` (line 194) | Cofinal coefficient--exponent descent; proved in Section~\ref{bst:sec:descent} |
+| Lemma | `bst:lem:bounds` (line 355) | Elementary support bounds |
+| Proposition | `bst:prop:localdensity` (line 376) | Localization and density |
+| Lemma | `bst:lem:cofinality` (line 415) | Untitled |
+| Lemma | `bst:lem:projection` (line 495) | Projection identity |
+| Theorem | `bst:thm:descent` (line 527) | Simultaneous descent |
+| Corollary | `bst:cor:relations` (line 567) | Intersection, relations, and algebraic degree |
+| Corollary | `bst:cor:onescale` (line 613) | One cofinal scale |
+| Lemma | `bst:lem:skeleton` (line 704) | Existence at the exact cofinality |
+| Lemma | `bst:lem:detection` (line 758) | Support-band detection |
+| Corollary | `bst:cor:onegap` (line 822) | A one-series version |
+| Lemma | `bst:lem:coding` (line 870) | Cofinal finite-pattern realization |
+| Lemma | `bst:lem:grid` (line 910) | Integer grids detect polynomials |
+| Theorem | `bst:thm:independent` (line 929) | The sharp support theorem |
+| Corollary | `bst:cor:optimal` (line 976) | Optimal cardinality and order type |
+| Corollary | `bst:cor:perturb` (line 995) | Arbitrary bounded perturbations |
+| Corollary | `bst:cor:balls` (line 1008) | Independent families in every valuation ball |
+| Corollary | `bst:cor:exactcard` (line 1039) | Cardinality-matched groups |
+| Corollary | `bst:cor:realgroup` (line 1056) | Every nonzero real-exponent subgroup |
+| Theorem | `bst:thm:explicit` (line 1092) | Explicit multiplicative-parameter family |
+| Theorem | `bst:thm:fieldcriterion` (line 1199) | Absence of a highest scale |
+| Corollary | `bst:cor:closedbase` (line 1234) | Closed coefficient fields at unbounded rank |
+| Proposition | `bst:prop:toprank` (line 1283) | Top-rank presentation |
+| Proposition | `bst:prop:supimport` (line 1320) | Imported rank-one support theorem |
+| Corollary | `bst:cor:units` (line 1335) | Units see exactly the highest rank |
+| Theorem | `bst:thm:actualreal` (line 1407) | A continuum of independent actual infinitesimals |
+| Theorem | `bst:thm:kappa` (line 1462) | Arbitrarily large, explicit-support surreal families |
+| Theorem | `bst:gr:thm:main` (line 2050) | Galois rank dichotomy |
+| Theorem | `bst:gr:thm:mainrad` (line 2079) | Explicit independent radical towers |
+| Theorem | `bst:gr:thm:mainjump` (line 2103) | One-rank absorption and renewed obstruction |
+| Proposition | `bst:gr:prop:fractions` (line 2193) | The fraction-field bridge |
+| Proposition | `bst:gr:prop:complexify` (line 2232) | Complexification |
+| Lemma | `bst:gr:lem:slices` (line 2264) | Finite slices |
+| Corollary | `bst:gr:cor:transport` (line 2310) | Exact preservation of algebraic data |
+| Lemma | `bst:gr:lem:ret` (line 2401) | Finite groups in a fixed local coordinate |
+| Theorem | `bst:gr:thm:finitegroups` (line 2431) | Finite-group realization |
+| Theorem | `bst:gr:thm:envelope` (line 2458) | Galois-envelope preservation |
+| Lemma | `bst:gr:lem:branches` (line 2486) | Separation by disjoint branch loci |
+| Theorem | `bst:gr:thm:products` (line 2516) | Continuum-sized prescribed products |
+| Corollary | `bst:gr:cor:absquotient` (line 2553) | Untitled |
+| Lemma | `bst:gr:lem:binomial` (line 2586) | Untitled |
+| Proposition | `bst:gr:prop:single` (line 2605) | Single-root degree |
+| Theorem | `bst:gr:thm:multirad` (line 2625) | Finite multiradical independence |
+| Theorem | `bst:gr:thm:radicaltower` (line 2682) | An explicit profinite quotient |
+| Theorem | `bst:gr:thm:closedness` (line 2750) | Exact closedness boundary |
+| Theorem | `bst:gr:thm:symmetric` (line 2816) | Symmetric groups at a monomial scale |
+| Proposition | `bst:gr:prop:realquad` (line 2871) | Untitled |
+| Theorem | `bst:gr:thm:dihedral` (line 2901) | Real radical symmetry |
+| Theorem | `bst:gr:thm:cardinality` (line 2925) | Size of the absolute Galois group in real rank |
+| Theorem | `bst:gr:thm:absorption` (line 2976) | Uniform monomial denominator |
+| Theorem | `bst:gr:thm:allcollapse` (line 3003) | Simultaneous splitting of every old finite extension |
+| Theorem | `bst:gr:thm:transition` (line 3055) | All-or-nothing Galois transition |
+| Proposition | `bst:gr:prop:realclosure` (line 3104) | The real counterpart |
+| Theorem | `bst:gr:thm:tower` (line 3213) | A countable tower inside the surreal field |
+| Theorem | `bst:thm:gcddescent` (line 3780) | Normalized GCD descent |
+| Lemma | `bst:lem:characters` (line 3790) | Untitled |
 
 ### matrix-scaling-at-surreal-scales
 
