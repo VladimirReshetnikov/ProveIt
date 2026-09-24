@@ -324,6 +324,11 @@ The full-surreal contrast is also checked: the usual rational parametrization
 with parameter `ω` and `D > 0` solves the nonzero Pell equation, but both coordinates
 have negative-exponent terms and are not omnific. Their actual canonical
 positive-growth truncations have norm zero, so truncation loses the solution.
+Pell rigidity also holds in every intermediate Hahn ring with its prescribed
+constant intersection, even without closure under constant extraction or a
+square root in the coefficient field. For the ordinary Pell sequence, every
+positive modulus `m` divides a positive coordinate `Y_k` at an index
+`1 ≤ k ≤ m²`, with `X_k ≡ 1 mod m`; the proof uses a finite permutation.
 
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
