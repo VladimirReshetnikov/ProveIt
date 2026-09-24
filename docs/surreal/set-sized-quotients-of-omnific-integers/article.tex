@@ -2935,7 +2935,11 @@ assumption (08). \Cref{osq:prop:fieldbound}(ii) gives the module bound directly 
 \subsection{The organizing theorem: the threshold is the size of the ring}\label{osq:sub:organizing}
 
 The five constructions of \cref{osq:sec:models} are summarized here; their notation is tagged by
-source because they are different rings.
+source because they are different rings. The first three rows use ordinary
+integer constants, with the stated Gaussian variants for 03 and 06.
+In the last two rows $D$ is a unital subring of the displayed coefficient
+field. The last column records the least size of an ideal generating set,
+not a support bound or the size of the ring.
 
 \begin{center}\footnotesize
 \setlength{\tabcolsep}{3.5pt}
@@ -2969,18 +2973,53 @@ $D/\ct(J)$ with $\Pi_A\subseteq J$ or has cardinality exactly $|A|$. The same ho
 Gaussian versions of $A^{03}_\kappa$, $A^{06}_\kappa$ and $A^{09}_{\lambda,\Z[i]}$.
 \end{theorem}
 \begin{proof}
-The identity map and the regular module detect $x$ and have cardinality $|A|$. For the lower
-bound, each construction has a divisible exponent group and the gap property: $x$ has a positive
-strict lower bound $g$ of its support (\cref{osq:lem:smallcommon,osq:lem:kappagap,osq:lem:finitecoord,osq:lem:tail}
-and, for $R^{11}_{\Gamma,<\kappa}$, $\coin(\Gamma_{>0})=\kappa$ with \cref{osq:prop:lex}). With
-$c=g/2$, \cref{osq:prop:fieldbound}(iii) shows that every ring or module detecting $x$ has at
-least $|L_c(F)|$ elements, and in each construction $|L_c(F)|=|A|$ for every $c>0$
-(\cref{osq:lem:card03,osq:lem:card06,osq:lem:tail,osq:prop:card11}; for $A^{08}_\kappa$,
-$L_c(F)\subseteq F$ has at most $\kappa$ elements and contains the $\kappa$ monomials $X^{e_\xi}$ with
-$\xi$ beyond the least index of $c$, by \cref{osq:lem:gammabounds}). A homomorphism
-into a smaller ring therefore kills $\Pi_A$ and factors through $\ct$, and a smaller module is
-annihilated. If $\Pi_A\not\subseteq J$ the quotient map detects an element of $\Pi_A$, so
-$|A/J|\ge|A|$; the reverse inequality is trivial.
+Use the ambient field $F$ and coefficient field of the chosen construction:
+the countable-support field for 03 and 09, the $<\kappa$-support field
+for 06 and 11, and the controlled field for 08. In each case
+$A=D+\Pi(F)$, $F$ contains all its exponent-group monomials, and
+$|F|=|A|$ by the size calculations in \cref{osq:sec:models}.
+We first verify that every smaller-scale field has this same size:
+\[
+ |L_c(F)|=|A|\qquad(c>0).
+\]
+For 03 this is \cref{osq:lem:card03}; for 06 it is
+\cref{osq:lem:card06}; and for 11 it is \cref{osq:prop:card11}
+together with its ambient-field upper bound. For 08, the field $L_c(F)$
+contains the $\kappa$ monomials $X^{e_\xi}$ with $\xi$ beyond the least
+nonzero coordinate of $c$, by \cref{osq:lem:gammabounds}. They lie in
+the controlled field and have exponents in $H_c$; the upper bound is
+$|F|=\kappa$. For 09, apply \cref{osq:lem:tail} to $\{c\}$.
+A single later row gives $\lambda$ distinct monomials in $L_c(F)$,
+and $|F|=\lambda$ gives the upper bound. The real and Gaussian
+coefficient choices use the same monomial families and their respective
+field-size bounds.
+
+Now fix $0\ne x\in\Pi(F)$. Each construction supplies a positive
+strict lower bound $g$ of $\supp x$: use
+\cref{osq:lem:smallcommon,osq:lem:kappagap,osq:lem:finitecoord,osq:lem:tail}
+for 03, 06, 08 and 09, respectively, and
+\cref{osq:prop:lex} with $|\supp x|<\kappa$ for 11.
+Divisibility of the group gives $c=g/2>0$. Since $F$ is a field,
+$b=X^{-2c}x\in F$; all its exponents are positive, so $b\in\Pi(F)$
+and $x=X^{2c}b$. The field bound in
+\cref{osq:prop:fieldbound}(iii) now shows that every ring target or
+module detecting $x$ has at least $|L_c(F)|=|A|$ elements. This proof
+does not require a homomorphism to preserve $1$ or the target to be
+commutative. For modules it counts the orbit of a vector directly.
+The identity map and the regular module, with vector $1$, attain both
+bounds. Thus both minima exist and equal $|A|$ for each such $x$.
+
+A homomorphism into a smaller ring therefore kills all of $\Pi(F)$.
+Writing $a=d+f$ shows that its factor through $\ct$ is exactly its
+restriction to $D$, and the section $D\to A$ makes that factor unique.
+The same decomposition supplies the unique induced $D$-action on every
+smaller module. If $\Pi(F)\subseteq J$, the assignment
+$a+J\mapsto\ct(a)+\ct(J)$ is a ring isomorphism
+$A/J\to D/\ct(J)$. If this inclusion fails, the quotient map detects
+some nonzero purely infinite element; hence
+$|A|\le|A/J|\le|A|$. These alternatives are cases determined by
+ideal containment, not necessarily disjoint lists of cardinalities.
+The zero ring and, when $J=\Pi(F)$, the quotient $D$ are included.
 \end{proof}
 
 For $A^{03}_\kappa$, $A^{08}_\kappa$ and $A^{09}_{\lambda,D}$ the theorem is proved in the
@@ -2998,11 +3037,30 @@ is 08's and 09's for their rings and a one-line consequence for the others.
 conversely an infinite cardinal $\theta$ with $\theta^{\aleph_0}=\theta$ has $\cf\theta>\aleph_0$ by
 K\"onig's theorem (so $\kappa=\theta$ is allowed in 03), the thresholds realized by 03 are
 exactly the infinite cardinals $\theta$ with $\theta^{\aleph_0}=\theta$; these are 09's cardinals
-$\lambda$. 06 and 11 realize $\kappa^{<\kappa}$ for regular uncountable $\kappa$. 08 realizes every
-infinite cardinal, and is the only construction reaching cardinals below $2^{\aleph_0}$ or with
-$\kappa^{\aleph_0}>\kappa$: if $rX^c$ lies in the ring for every real $r$, every target detecting $X^{2c}$ has at least
-$2^{\aleph_0}$ elements by \cref{osq:lem:collision} with $L=\R$, and 08 escapes this with real
-algebraic coefficients and a countable-stage closure.
+$\lambda$. The countable-cofinality obstruction is the diagonal argument
+in \cref{osq:lem:cardinalfacts}: for infinite $\theta$ of countable
+cofinality it gives $\theta^{\aleph_0}>\theta$.
+
+06 and 11 realize $\theta=\kappa^{<\kappa}$ for regular uncountable
+$\kappa$. These sizes also satisfy $\theta^{\aleph_0}=\theta$.
+Indeed, realize $\theta$ as the cardinality of
+$\bigcup_{\nu<\kappa}(\{\nu\}\times{}^\nu\kappa)$, where $\nu$
+ranges over cardinals. A countable sequence of these functions has its
+lengths bounded by some infinite $\rho<\kappa$, by regularity. For a
+fixed $\rho$, there are at most $\kappa^{\rho\cdot\aleph_0}
+=\kappa^\rho$ such sequences, including their length tags. Summing
+over fewer than or equal to $\kappa$ choices of $\rho$ gives the upper
+bound $\theta$; constant sequences give the lower bound.
+
+Thus 08 is the only one of these five families reaching an infinite size
+$\theta$ below $2^{\aleph_0}$ or with $\theta^{\aleph_0}>\theta$;
+it reaches every infinite cardinal. The continuum obstruction has an
+algebraic explanation in the real-coefficient models: if $rX^c$ lies
+in the ring for every real $r$, every target detecting $X^{2c}$ has at
+least $2^{\aleph_0}$ elements by \cref{osq:lem:collision} with $L=\R$.
+08 instead uses real algebraic coefficients and a countable-stage closure.
+The cardinal calculation above also covers 11's smaller coefficient
+fields, where this particular real-coefficient argument is unavailable.
 \item \emph{The same ring, different bounds.} $A^{06}_{\aleph_1}$ and $A^{03}_{\aleph_1}$ are
 isomorphic: both are the countable-support real Hahn integer parts over the lexicographic sum
 $\bigoplus_J\Q$ with $J$ of order type $\omega_1^{\mathrm{op}}+\omega_1$ (06's generators satisfy
@@ -3014,20 +3072,37 @@ $\aleph_1$. These agree.
 11's ring by the argument of (H3) in \cref{osq:sec:homological}) and $\aleph_1$ (09). In each case the proof exhibits a coinitial chain of monomials in the positive
 cone of the exponent group of that length; the counts differ because the constructions differ,
 and no general formula is asserted for other exponent groups or support restrictions.
+For example, 08 at $\kappa=\aleph_0$ has threshold and generator count
+$\aleph_0$, while 09 at $\lambda=2^{\aleph_0}$ has threshold
+$2^{\aleph_0}$ and generator count $\aleph_1$; equality of the latter
+two cardinals is precisely CH. The generator proof for 11 is given
+directly after \cref{osq:prop:card11}.
 \item \emph{Fraction fields.} $\Frac A=F$ is proved for 03 and 06, which use a second
 (reversed) arm to clear negative exponents; 08 explicitly does not claim it for its one-armed
 controlled field, and 09 and 11 do not address it.
-\item \emph{Hypotheses.} Regularity (06) and $\cf\kappa>\aleph_0$ (03) are used for simultaneous
-gaps below fewer than $\kappa$ (respectively countably many) full supports; 08 avoids both through
-its finite-coordinate invariant, which confines each element to finitely many coordinates.
+\item \emph{Hypotheses.} Regularity in 06 and 11 bounds the union of
+fewer than $\kappa$ supports, each of size less than $\kappa$. For 03,
+$\mu=\cf\kappa>\aleph_0$ bounds the union of fewer than $\mu$
+countable supports. In particular a single support has a gap in each
+case. In 09 a countable union of finite coordinate supports has its first
+coordinates bounded in $\omega_1$, without regularity of $\lambda$.
+08 replaces these full-support bounds with its finite-coordinate
+invariant, which confines each element to finitely many coordinates and
+works even when $\cf\kappa=\aleph_0$. These are different reasons for
+the gap property; a cardinal estimate alone does not supply it.
 \end{itemize}
 \end{remark}
 
-\section{Set-sized integer parts with exact thresholds}\label{osq:sec:models}
+\section{Set-sized rings with exact thresholds}\label{osq:sec:models}
 
-Five constructions replace the proper-class supply of scales by a cardinal. They are
-different rings and are tagged by source. Each is an explicit subring of $\Oz$ (or of
-$\GOz$), and each is a ZFC construction of sets. For every one of them
+Five constructions replace the proper-class supply of scales by a cardinal.
+They are different rings and are tagged by source; all are ZFC
+constructions of sets. The displayed real/integer models and the stated
+Gaussian versions have embeddings into $\Oz$ and $\GOz$, respectively.
+The general coefficient choices in 09 and 11 are kept as abstract Hahn
+rings; no such embedding is asserted for every coefficient field.
+For example, 11 permits $D=K=\F_p$, giving a ring of characteristic $p$,
+which cannot embed unitally in either characteristic-zero omnific ring. For every one of them
 \cref{osq:thm:thresholds} gives the exact detection threshold; this section supplies the
 constructions and the size computations it uses. Manuscript 05 (sibling report
 \cite{RepoOdg}) asked which set-sized exponent groups admit analogues of the common-divisor
@@ -4056,9 +4131,19 @@ ambient Hahn field rules out any other nonnegative-support quotient.
 
 \subsection{Supports of size \texorpdfstring{$<\kappa$}{< kappa} over a one-armed group \texorpdfstring{\src{11}}{[11]}}\label{osq:sub:model11}
 
-\Cref{osq:thm:coinitial} (11) applies to any divisible set group $\Gamma$ with $\coin(\Gamma_{>0})\ge\kappa$. The
-coinitiality condition says that every set of fewer than $\kappa$ positive elements has a positive strict lower
-bound.
+For uncountable $\kappa$, \cref{osq:thm:coinitial} (11) applies to any
+divisible ordered abelian set group $\Gamma$ with
+$\coin(\Gamma_{>0})\ge\kappa$. The coinitiality condition says that
+every set of fewer than $\kappa$ positive elements has a positive strict
+lower bound. In the one-arm example below, set
+\[
+ F_{\kappa,K}=\{f\in\hahn K\Gamma:|\supp f|<\kappa\},\qquad
+ I=\{f\in F_{\kappa,K}:\supp f\subseteq\Gamma_{>0}\},\qquad
+ A=R^{11}_{\Gamma,<\kappa}=D+I,
+\]
+where $K$ is a set field and $D\subseteq K$ a unital subring. The
+subscript on $F$ is a support-cardinality bound; arbitrary reverse
+well-ordered supports of that size are allowed.
 
 \begin{proposition}[Long lexicographic groups \src{11}]\label{osq:prop:lex}
 For $\kappa$ uncountable and regular and $\Gamma=\bigoplus_{\alpha<\kappa}\Q e_\alpha$ with the least nonzero
@@ -4067,9 +4152,23 @@ coinitiality $\kappa$, so $A^{06}_\kappa=R^{11}_{\Gamma^{06}_\kappa,<\kappa}$ wi
 of \cref{osq:thm:coinitial}.
 \end{proposition}
 \begin{proof}
-The $e_\beta$ with $\beta$ beyond the least index of a positive vector lie below it, so $(e_\beta)_{\beta<\kappa}$
-is coinitial; fewer than $\kappa$ positive vectors have boundedly many leading indices (regularity), and a later
-basis vector lies below all of them. For $\Gamma^{06}_\kappa$ use \cref{osq:lem:kappagap}.
+The group has at least $\kappa$ elements because its basis vectors are
+distinct, and at most $\kappa$ because every element is a finite
+rational linear combination of them. For $g>0$ with least nonzero
+index $\alpha$, every $\beta>\alpha$ satisfies $ne_\beta<g$ for every
+positive integer $n$: subtraction leaves the leading coefficient of
+$g$ unchanged. Hence the basis vectors form a coinitial family of
+size $\kappa$.
+
+If $S\subseteq\Gamma_{>0}$ has size less than $\kappa$, regularity
+of $\kappa$ bounds its set of leading indices below some $\beta<\kappa$.
+Then $e_\beta<s$ for every $s\in S$; in particular $S$ is not
+coinitial. This proves the reverse inequality and hence the exact
+coinitiality. For $\Gamma^{06}_\kappa$, \cref{osq:lem:kappagap}
+gives the lower bound, and the coinitial family
+$(\epsilon_\alpha)_{\alpha<\kappa}$ gives the upper bound. Substituting
+$(D,K)=(\Z,\R)$ in the definition of $R^{11}$ gives the asserted
+identity of that support-restricted ring with $A^{06}_\kappa$.
 \end{proof}
 
 11 proves sharpness under the displayed extra hypotheses $|K|\le\kappa$ and $\kappa^{<\kappa}=\kappa$: then
@@ -4085,19 +4184,82 @@ $|R^{11}_{\Gamma,<\kappa}|=\kappa^{<\kappa}$, and the least cardinality of a
 ring target or module detecting any nonzero element of the positive-support ideal is exactly $\kappa^{<\kappa}$.
 \end{proposition}
 \begin{proof}
-Exactly as in \cref{osq:lem:card06}: the series $\sum_{\alpha\in B}X^{e_\alpha}$, $B$ a subset of size $<\kappa$
-of the indices beyond the leading index of $c$, lie in $L_c$ ($e_\alpha$ decreases with $\alpha$), and the
-$<\kappa$-support series form a field because inverses have support in a monoid generated by fewer than $\kappa$
-elements. The upper bound counts supports of size $\nu<\kappa$ and coefficient functions: for infinite $\nu$,
-$|K|^\nu\le\max(\kappa^\nu,2^\nu)=\kappa^\nu$, and for finite $\nu$,
-$|K|^\nu\le\max(\kappa,2^{\aleph_0})\le\kappa^{\aleph_0}\le\kappa^{<\kappa}$; also $|D|\le|K|$, and the
-support choices number $\kappa^\nu$.
-The threshold follows from \cref{osq:prop:fieldbound}, the coinitiality gap, and the identity map.
+First $F_{\kappa,K}$ is a field. Finitely many of its series have a
+union $S$ of supports of size less than $\kappa$. The subgroup generated
+by $S$ has size at most $\max(|S|,\aleph_0)<\kappa$, so the full
+Hahn field over that subgroup contains the series and still lies in
+$F_{\kappa,K}$. It supplies their field operations and nonzero inverses.
+This argument only uses uncountability of $\kappa$, not regularity.
+Since $H_c(\Gamma)$ is a subgroup, $L_c$ is the intersection of two
+subfields and is therefore a field.
+
+Let $\alpha_0$ be the least nonzero index of $c$. The final segment
+$T=(\alpha_0,\kappa)$ has cardinality $\kappa$, and
+$e_\alpha\ll c$ for every $\alpha\in T$. Every subset $B\subseteq T$
+of size less than $\kappa$ gives
+\[
+ f_B=\sum_{\alpha\in B}X^{e_\alpha}\in L_c.
+\]
+The support is reverse well ordered, since its greatest element in a
+nonempty subset has the least ordinal index, and its size is $|B|<\kappa$.
+The coefficient $1_K\ne0$ recovers $B$, even in positive characteristic.
+Thus $B\mapsto f_B$ is injective. The subset count proved in
+\cref{osq:lem:card06}, $|[T]^{<\kappa}|=\kappa^{<\kappa}$, gives
+the lower bound without any restriction on $|K|$.
+
+Now assume $|K|\le\max(\kappa,2^{\aleph_0})$. Supports of size
+$\nu<\kappa$ have at most $\kappa^\nu$ descriptions. For infinite
+$\nu$, their coefficient assignments number at most
+\[
+ |K|^\nu\le\max(\kappa^\nu,2^\nu)=\kappa^\nu.
+\]
+All finite supports together contribute at most
+$\kappa\cdot\max(\kappa,2^{\aleph_0})
+\le\kappa^{\aleph_0}\le\kappa^{<\kappa}$ possibilities, including
+constant series. There are at most $\kappa$ possible support
+cardinalities, so $|F_{\kappa,K}|\le\kappa^{<\kappa}$.
+Multiplication by $X^c$ injects $L_c$ into $I$, by
+\cref{osq:prop:fieldbound}(i). Together with $I\subseteq A\subseteq F_{\kappa,K}$,
+this proves
+\[
+ |L_c|=|I|=|A|=|F_{\kappa,K}|=\kappa^{<\kappa}.
+\]
+
+For $0\ne x\in I$, coinitiality gives $g>0$ strictly below its
+support. Put $c=g/2$. Then $x=X^{2c}b$ for
+$b=X^{-2c}x\in I$, since translation preserves support cardinality.
+\Cref{osq:prop:fieldbound}(iii) gives the lower bound
+$|L_c|=\kappa^{<\kappa}$ for every ring target or module detecting $x$.
+The identity map and the regular module with vector $1$ attain it.
+This establishes the threshold directly, independently of the organizing
+theorem that summarizes it.
 \end{proof}
 
-So the sharpness of \cref{osq:thm:coinitial} in the lexicographic example holds without the hypothesis
-$\kappa^{<\kappa}=\kappa$ once the bound is stated as $\kappa^{<\kappa}$, which equals $\kappa$ exactly when
-$\kappa^{<\kappa}=\kappa$; the coefficient field is still assumed to satisfy $|K|\le\max(\kappa,2^{\aleph_0})$.
+Thus the exact boundary in this example is $\kappa^{<\kappa}$ under
+the stated coefficient-field bound. It specializes to 11's boundary
+$\kappa$ when $\kappa^{<\kappa}=\kappa$, and sharpens the original
+coinitiality estimate when $\kappa^{<\kappa}>\kappa$.
+
+For completeness, the ideal requires exactly $\kappa$ generators,
+regardless of $D$. The positive basis monomials give a strictly increasing
+chain with
+\[
+ I=\bigcup_{\alpha<\kappa}X^{e_\alpha}A.
+\]
+For $\alpha<\beta$, $e_\alpha-e_\beta>0$ gives the inclusion; its
+strictness follows because $X^{e_\beta-e_\alpha}$ has negative support.
+For any $f\in I$, regularity bounds the leading indices of its fewer
+than $\kappa$ support exponents, so some $e_\alpha$ lies strictly
+below all of them. The shifted series $X^{-e_\alpha}f\in I$ proves
+the union and also $I^2=I$.
+If $E\subseteq I$ has size less than $\kappa$, regularity gives
+$|\bigcup_{f\in E}\supp f|<\kappa$. A common strict lower bound
+$h>0$ then puts every member of $E$, and every finite $A$-linear
+combination of them, in $X^hA$. But $X^{h/2}\in I$ is outside that
+ideal because its unique quotient is $X^{-h/2}\notin A$.
+So no such $E$ generates $I$. The regularity used for this union of
+supports is distinct from the field-closure argument above.
+
 With $(D,K)=(\Z,\R)$ this ring is a Hahn integer part of the kind treated in this section; 11 does not
 embed it in $\No$, and no embedding is used in this section. Manuscript~17 supplies one: $e_\alpha\mapsto\omega^{-\alpha}$
 embeds $\Gamma$ in $(\No,+)$ as an ordered group, and hence $R^{11}_{\Gamma,<\kappa}$ in $\Oz$ for $(D,K)=(\Z,\R)$ and in $\GOz$
