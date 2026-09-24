@@ -518,6 +518,19 @@ constant coefficient is a real or complex algebraic integer, respectively.
 For the binomial expansions, Hahn substitution is a coefficientwise ring
 map; it does not assert convergence of partial sums in the fine topology.
 
+The arithmetic fibre is B_●=𝒩_●/Π𝒩_● (sans-serif B in the article);
+its rationalization B_●^ℚ inverts the nonzero ordinary integers. It is also the **total
+quotient ring**, obtained by inverting every non-zero-divisor, and is not
+a field of fractions. After choosing the algebraic coefficient copy,
+both rings have finite idempotent-partition descriptions, with values in
+Z̄ and Q̄ respectively. For x=Σλⱼeⱼ in the rationalization, x# means
+Σ_{λⱼ≠0}λⱼ⁻¹eⱼ and eₓ=Σ_{λⱼ≠0}eⱼ; thus xx#=eₓ and
+x²x#=x. This quasi-inverse need not belong to the integral fibre.
+The splitting-property usage of **absolutely integrally closed** in this
+subsection allows zero divisors. A real lift and its arithmetic residue
+have different order properties: the residue of the real infinitesimal
+υ_T satisfies v²=−1 (sans-serif v in the article).
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though

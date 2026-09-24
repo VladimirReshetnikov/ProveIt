@@ -483,14 +483,28 @@ constant coefficient. For the Gaussian comparison, η=(√3+i)/2 gives
 annihilator 2𝒩. This is a module quotient, not a quotient ring.
 The intermediate conductor is (𝒩[i]:𝒩_C)=2𝒩_C, distinct from the
 zero conductor (Oz[i]:𝒩_C). All these formulas hold with subscript κ.
-These manuscript consequences remain pending in Lean; arithmetic fibre,
-branching and later normalization proofs still await review.
+These manuscript consequences remain pending in Lean.
+
+The first ten arithmetic-fibre results, through the Boolean-power theorem,
+are now reviewed. The proofs distinguish ideal divisibility from torsion
+freeness of the quotient, identify the rationalization kernel explicitly,
+and explain why real-rooted lifting preserves a factorization without
+preserving distinct residues. The Catalan series selects the infinitesimal
+quadratic root; its residue squares to −1. Spectral projectors and finite
+common refinements then give the Boolean-power description without choosing
+an ultrafilter. An added consequence identifies the rationalized fibre
+with the total quotient ring of the integral fibre and gives the explicit
+componentwise quasi-inverse, support idempotent and annihilator. Thus the
+integral fibre is integrally closed in its total quotient ring, and the
+rationalized fibre is von Neumann regular. These consequences are pending
+in Lean. The remaining arithmetic-fibre, branching and later normalization
+proofs still await review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 324 pages
+article.pdf   the compiled report, 326 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

@@ -12959,13 +12959,36 @@ $\Pi\NN_\bullet\cap\Oz=\Pi$, and $\Pi\NN_\bullet$ is divisible by every nonzero 
 ring containing $\Z$, torsion free over $\Z$, and integral over $\Z$.
 \end{lemma}
 \begin{proof}
-Suppose $0\ne n\in\Z$ lies in $\Pi\NN_\bullet$, say $n=\sum_{j\le r}a_jb_j$ with $a_j\in\Pi$ and $b_j\in\NN_\bullet$. The ring
-$C=\Oz[b_1,\dots,b_r]$ is generated as an $\Oz$-module by finitely many elements $c_1=1,c_2,\dots,c_s$, and $nc_l=\sum_mh_{lm}c_m$ with all
-$h_{lm}\in\Pi$ because $n\in\Pi C$. The adjugate of $nI-(h_{lm})$ shows that $\det(nI-(h_{lm}))$ kills every $c_l$, in particular $c_1=1$;
-expanding, $n^s+j_{s-1}n^{s-1}+\dots+j_0=0$ with $j_\nu\in\Pi$, and $\ct$ gives $n^s=0$, which is absurd. If $a\in\Pi\NN_\bullet\cap\Oz$,
-then $\ct(a)=a-(a-\ct(a))\in\Pi\NN_\bullet$, so $\ct(a)=0$. Divisibility: $\sum_ja_jb_j/n=\sum_j(a_j/n)b_j$. So $nx\in\Pi\NN_\bullet$
-with $x\in\NN_\bullet$ forces $x\in\Pi\NN_\bullet$, which is torsion freeness. Reducing a monic equation of $x\in\NN_\bullet$ over $\Oz$
-modulo $\Pi\NN_\bullet$ replaces each coefficient $a$ by $\ct(a)\in\Z$.
+Both normalizations are integral over $\Oz$: in the Gaussian case use
+transitivity through $\GOz$. Suppose a nonzero $n\in\Z$ lies in
+$\Pi\NN_\bullet$, say $n=\sum_{j=1}^r a_jb_j$ with $a_j\in\Pi$ and
+$b_j\in\NN_\bullet$. The ring $C=\Oz[b_1,\dots,b_r]$ has a finite
+$\Oz$-module generating list $c_1=1,c_2,\dots,c_s$. Since $n\in\Pi C$,
+write $nc_l=\sum_m h_{lm}c_m$ with all $h_{lm}\in\Pi$. Multiplying the
+matrix equation by the adjugate of $nI-(h_{lm})$ shows that its
+determinant kills every $c_l$, including $1$. Thus
+\[
+ n^s+j_{s-1}n^{s-1}+\cdots+j_0=0,\qquad j_\nu\in\Pi.
+\]
+Every term in a nonleading determinant coefficient contains an entry of
+$(h_{lm})$. Applying $\ct:\Oz\to\Z$ gives $n^s=0$, a contradiction.
+The list need not be a basis, and $C$ need not be a set; the matrix
+calculation uses only its finitely many generators.
+
+If $a\in\Pi\NN_\bullet\cap\Oz$, then
+$\ct(a)=a-(a-\ct(a))\in\Pi\NN_\bullet\cap\Z$, so $\ct(a)=0$.
+The reverse inclusion is immediate. In particular the quotient is nonzero
+and the integer constants embed. For $0\ne n\in\Z$, divisibility of
+$\Pi$ gives
+\[
+ \frac{1}{n}\sum_j a_jb_j=\sum_j(a_j/n)b_j\in\Pi\NN_\bullet.
+\]
+Consequently, if $nx\in\Pi\NN_\bullet$ for $x\in\NN_\bullet$, this
+formula gives $z\in\Pi\NN_\bullet$ with $nz=nx$; cancellation in the
+ambient characteristic-zero field gives $z=x$. This proves torsion
+freeness. Finally, reducing a monic equation for $x\in\NN_\bullet$ over
+$\Oz$ replaces each coefficient $a$ by $\ct(a)\in\Z$, proving integrality
+of the quotient over its embedded copy of $\Z$.
 \end{proof}
 
 A large normal overring need not preserve the contraction of an ideal; the determinant argument prevents $\Pi\NN_\bullet$ from
@@ -12976,32 +12999,76 @@ If $x\in\NN_\bullet$ and $x^m\in\Pi\NN_\bullet$ for some ordinary $m\ge1$, then 
 $\mathsf B^\Q_\bullet$ are reduced, $\mathsf B_\bullet\to\mathsf B^\Q_\bullet$ is injective, and $\mathsf B^\Q_\bullet$ is algebraic over $\Q$.
 \end{theorem}
 \begin{proof}
-Write $x^m=\sum_ja_jb_j$ with $a_j\in\Pi$, $b_j\in\NN_\bullet$. By \cref{osq:prop:common}(i) there is $a>0$ with every $a_j\in\omega^a\Pi$;
-put $d=\omega^{a/m}$, so that $a_j/d^m\in\Pi$ for all $j$. Then $(x/d)^m=\sum_j(a_j/d^m)b_j\in\NN_\bullet$, so
-$x/d$ is a root of a monic polynomial over $\NN_\bullet$ and lies in $\NN_\bullet$; hence $x=d(x/d)\in\Pi\NN_\bullet$. Reducedness passes
-to the localization, injectivity is torsion freeness, and a rational multiple of an element integral over $\Z$ is algebraic.
+Write $x^m=\sum_j a_jb_j$ with $a_j\in\Pi$ and
+$b_j\in\NN_\bullet$. By \cref{osq:prop:common}(i), choose $a>0$ with
+every $a_j\in\omega^a\Pi$, and put $d=\omega^{a/m}\in\Pi$. Then
+\[
+ (x/d)^m=\sum_j(a_j/d^m)b_j\in\NN_\bullet.
+\]
+The element $x/d$ lies in the same ambient field and satisfies the monic
+equation $X^m-(x/d)^m=0$ over $\NN_\bullet$. Since an integral closure
+is integrally closed in that field, transitivity of integrality puts
+$x/d$ in $\NN_\bullet$. Hence $x=d(x/d)\in\Pi\NN_\bullet$.
+
+This is exactly radicality of the extended ideal, hence reducedness of
+the quotient. Identify rationalization with localization at
+$\Z\setminus\{0\}$; reducedness passes to this localization, and
+torsion freeness gives injectivity. Every element has the form $b/n$,
+where $b$ satisfies a monic integer polynomial $f$. Thus $f(nX)$ is a
+nonzero rational polynomial annihilating $b/n$, proving algebraicity.
 \end{proof}
 
 \begin{theorem}[Rational saturation \src{19, 20}]\label{osq:nf:thm:saturation}
 $\mathsf B_\bullet$ is integrally closed in $\mathsf B^\Q_\bullet$, and $\mathsf B_\bullet=\{y\in\mathsf B^\Q_\bullet:y\text{ is integral over }\Z\}$.
 \end{theorem}
 \begin{proof}
-Represent $y$ by $x/n$ with $x\in\NN_\bullet$ and $0\ne n\in\Z$, and let $y$ satisfy a monic equation over $\mathsf B_\bullet$; lift it to a
-monic $f\in\NN_\bullet[X]$. The kernel of $\NN_\bullet\otimes\Q\to\mathsf B^\Q_\bullet$ is the localization of $\Pi\NN_\bullet$, which is
-$\Pi\NN_\bullet$ itself by divisibility (\cref{osq:nf:lem:contraction}); so $c=f(x/n)\in\Pi\NN_\bullet$, and $x/n$ is a root of the monic
-$f(X)-c\in\NN_\bullet[X]$, hence lies in $\NN_\bullet$. Elements of $\mathsf B_\bullet$ are integral over $\Z$ by \cref{osq:nf:lem:contraction},
-and an element of $\mathsf B^\Q_\bullet$ integral over $\Z$ is integral over $\mathsf B_\bullet$.
+Regard $\NN_\bullet\otimes_\Z\Q$ as the ring of fractions $x/n$ in
+the ambient field, with $x\in\NN_\bullet$ and $0\ne n\in\Z$.
+Its map to $\mathsf B^\Q_\bullet$ has kernel exactly
+$\Pi\NN_\bullet$, viewed inside this fraction ring. Indeed, $x/n$
+maps to zero if and only if $mx\in\Pi\NN_\bullet$ for some nonzero
+integer $m$. Divisibility and cancellation, as in
+\cref{osq:nf:lem:contraction}, first put $x$ and then $x/n$ in that
+ideal. The converse follows from the quotient map.
+
+Now represent $y\in\mathsf B^\Q_\bullet$ by $x/n$ and lift a monic
+equation for $y$ over $\mathsf B_\bullet$ to a monic
+$f\in\NN_\bullet[X]$. The kernel calculation gives
+$c=f(x/n)\in\Pi\NN_\bullet\subseteq\NN_\bullet$. Thus $x/n$
+satisfies the monic polynomial $f(X)-c$ over $\NN_\bullet$ and lies
+in $\NN_\bullet$ by integral closedness. Its image $y$ therefore belongs
+to $\mathsf B_\bullet$. Finally all elements of $\mathsf B_\bullet$
+are integral over $\Z$, while an element integral over $\Z$ is also
+integral over $\mathsf B_\bullet$. This proves the second assertion.
 \end{proof}
 
 \begin{proposition}[The extended ideal \src{19}]\label{osq:nf:prop:ideal}
 $\Pi\NN_\bullet=(\Pi\NN_\bullet)^2=\bigcup_{\delta>0}\omega^\delta\NN_\bullet$, and $\Pi\NN_\bullet$ is not generated by any set of its elements.
 \end{proposition}
 \begin{proof}
-For $x=\sum_ja_jb_j$ choose a positive monomial $d$ with $a_j/d\in\Pi$ (\cref{osq:prop:common}(i)); then $x/d\in\Pi\NN_\bullet$ and $x=d\cdot(x/d)$.
-If a set $G$ generated $\Pi\NN_\bullet$, then for each $g\in G$ the class $D_g=\{\delta>0:g\in\omega^\delta\NN_\bullet\}$ is nonempty and
-downward closed, and its elements of least birthday form a set; a positive $\delta$ below the union of these sets lies in every $D_g$, so
-$G\subseteq\omega^\delta\NN_\bullet$. Then $\omega^{\delta/2}\in\Pi$ would lie in $\omega^\delta\NN_\bullet$, so $\omega^{-\delta/2}$ and hence
-$\omega^{-\delta}$ would lie in $\NN_\bullet$, and $1\in\omega^\delta\NN_\bullet\subseteq\Pi\NN_\bullet$, contrary to \cref{osq:nf:lem:contraction}.
+For $x=\sum_j a_jb_j$ choose $d=\omega^\delta$ with $\delta>0$ and
+$a_j/d\in\Pi$ by \cref{osq:prop:common}(i). Then
+$x/d\in\Pi\NN_\bullet$ and $x=d(x/d)$ belongs both to
+$\omega^\delta\NN_\bullet$ and to $(\Pi\NN_\bullet)^2$.
+The reverse inclusions follow because $\omega^\delta\in\Pi$ and
+$\Pi\NN_\bullet$ is an ideal. The union is directed: if
+$0<\epsilon\le\delta$, then
+$\omega^\delta\NN_\bullet\subseteq\omega^\epsilon\NN_\bullet$,
+since $\omega^{\delta-\epsilon}\in\Oz$.
+
+Suppose a set $G$ generates this ideal. For each $g\in G$ the class
+$D_g=\{\delta>0:g\in\omega^\delta\NN_\bullet\}$ is nonempty
+and downward closed among positive exponents. Its elements of least
+birthday form a nonempty set $S_g$, since each birthday level is a set.
+Class replacement makes $\bigcup_{g\in G}S_g$ a set of positive
+surreals. Choose $\delta>0$ below all of it by \cref{osq:lem:gap};
+downward closure gives $G\subseteq\omega^\delta\NN_\bullet$.
+Every finite ideal combination of generators then lies in this same
+principal ideal. In particular $\omega^{\delta/2}\in\Pi$ would
+equal $\omega^\delta z$ with $z\in\NN_\bullet$. Cancellation gives
+$z=\omega^{-\delta/2}$; squaring and multiplying by $\omega^\delta$
+puts $1$ in $\Pi\NN_\bullet$, contrary to
+\cref{osq:nf:lem:contraction}.
 \end{proof}
 
 19 chooses one expression per generator with global choice; the least-birthday selection makes the argument choice free. This parallels
@@ -13017,12 +13084,32 @@ satisfies $Q-P\in\Pi[X]$ and has exactly one root in each interval $\bigl((j-\fr
 positive, infinite roots, and they lie in $\NN$.
 \end{theorem}
 \begin{proof}
-Put $R_T=\prod_j(X-jT)$. At an endpoint $x=(j\pm\frac14)T$ the factor $x-jT$ has modulus $T/4$ and the others at least $3T/4$, so
-$|R_T(x)|\ge\eta_dT^d$, and $R_T$ has opposite signs at the two endpoints of the $j$th interval. Since $|x|\le(d+1)T$ and $T>1$,
-$|P(x)-x^d|\le\sum_{k<d}|a_k||x|^k\le C_dMT^{d-1}<\eta_dT^d$, so $Q$ has the sign of $R_T$ at every endpoint, and the intermediate value
-property of polynomials over the real closed field $\No$ gives a root in each of the $d$ disjoint intervals; there are no others. The
-roots exceed $\frac34T$, which is infinite; they are integral over $\NN$, hence in $\NN$. The coefficients of $R_T-X^d$ are integer
-multiples of positive powers of $T$.
+Put $R_T=\prod_{j=1}^d(X-jT)$. At an endpoint
+$x=(j\pm\frac14)T$, the factor $x-jT$ has modulus $T/4$ and each
+other factor has modulus at least $3T/4$. Therefore
+$|R_T(x)|\ge\eta_dT^d$. Only the $j$th factor changes sign between
+the two endpoints: for $k<j$ both values of $x-kT$ are positive,
+and for $k>j$ both are negative. Also $|x|\le(d+1)T$ and $T>1$, so
+\[
+ |P(x)-x^d|\le\sum_{k<d}|a_k||x|^k
+ \le dM(d+1)^{d-1}T^{d-1}
+ =C_dMT^{d-1}<\eta_dT^d.
+\]
+Thus $Q=R_T+(P-X^d)$ has the sign of $R_T$ at every endpoint.
+The polynomial intermediate value property in the real closed field
+$\No$ gives a root in each interval. The intervals are pairwise
+disjoint, so these are $d$ distinct roots of the monic degree-$d$
+polynomial $Q$. Successive division by their linear factors gives
+the full factorization; in particular there are no additional roots
+or repeated roots.
+
+Every root exceeds $3T/4$, hence is positive and infinite. The
+coefficients of $R_T-X^d$ are integer multiples of positive powers
+of $T$, so belong to $\Pi$. Thus $Q\in\NN[X]$ and $Q-P\in\Pi[X]$.
+Its roots are integral over $\NN$, hence lie in $\NN$. Such a monomial
+$T$ can always be chosen: positive surreal monomials are cofinal, so
+the displayed finite coefficient bound imposes no extra existence
+hypothesis when the theorem is applied.
 \end{proof}
 
 \begin{corollary}[Absolute integral closedness \src{19}]\label{osq:nf:cor:aic}
@@ -13030,11 +13117,21 @@ $\mathsf B_\R$, $\NN_\C$ and $\mathsf B_\C$ are absolutely integrally closed: ev
 $\NN$ itself is not, since $X^2+1$ has no root in $\NN\subseteq\No$.
 \end{corollary}
 \begin{proof}
-Lift a monic polynomial over $\mathsf B_\R$ to $\NN$, apply \cref{osq:nf:thm:rootlift} and reduce the factorization; the change of coefficients
-lies in $\Pi[X]$. Over $\NN_\C$ the roots in the algebraically closed field $\SC$ are integral, hence in $\NN_\C$; reduce for $\mathsf B_\C$.
+A degree-zero monic polynomial is $1$, with the empty factorization.
+For positive degree, lift the coefficients of a monic polynomial over
+$\mathsf B_\R$ to $\NN$, and apply \cref{osq:nf:thm:rootlift}.
+It replaces the lift by a monic polynomial whose coefficients have the
+same residues and whose linear factors all lie in $\NN[X]$.
+Reducing that factorization proves the assertion for $\mathsf B_\R$.
+Over $\NN_\C$, factor a monic polynomial in the algebraically closed
+ambient field $\SC$. Each root is integral over $\NN_\C$, hence
+belongs to $\NN_\C$ by transitivity of integrality. Lifting and then
+reducing coefficients gives the assertion for $\mathsf B_\C$.
 \end{proof}
 
 The lifted roots need not stay distinct modulo $\Pi\NN$: the lifting preserves the factorization, not the separation of residues (19).
+Here absolute integral closedness means the displayed splitting property;
+it does not include an assumption that the ring is a domain.
 
 \begin{proposition}[An infinitesimal unit whose residue squares to $-1$ \src{19}]\label{osq:nf:prop:unit}
 Let $T\in\Pi$ be a positive monomial and $\upsilon_T=\bigl(T-\sqrt{T^2-4}\bigr)/2=2/\bigl(T+\sqrt{T^2-4}\bigr)$. Then
@@ -13046,11 +13143,32 @@ $\mathsf v\in\mathsf B_\R$ satisfies $\mathsf v^2=-1$. For $T=\omega$,
 Consequently $\NN\to\mathsf B_\R$ is not compatible with any ordered-ring quotient, and $\Pi\NN$ is not convex in $\No$.
 \end{proposition}
 \begin{proof}
-The equation is the quadratic formula; it is monic over $\Oz$ and says $\upsilon_T(T-\upsilon_T)=1$. The second expression gives
-$0<\upsilon_T<2/T$, and $\Oz$ has no positive element below $1$. Modulo $\Pi\NN$, $\upsilon_T^2+1=T\upsilon_T\in\Pi\NN$. Writing
-$\upsilon_\omega=\omega^{-1}C(\omega^{-2})$ turns the equation into $C=1+zC^2$, whose solution in $\Q[[z]]$ has the Catalan coefficients;
-the substitution $z=\omega^{-2}$ is a Hahn substitution as in \cref{osq:nm:lem:binomial}, and the sum is a strong sum, not a limit of
-partial sums. Finally $0<1<T\upsilon_T=1+\upsilon_T^2$ with $T\upsilon_T\in\Pi\NN$ and $1\notin\Pi\NN$.
+Since $T$ is positive infinite, $T^2-4>0$. The quadratic formula
+gives the equation, monic over $\Oz$, and
+$\upsilon_T(T-\upsilon_T)=1$. Both factors lie in $\NN$, so
+$\upsilon_T$ is a unit there. The second expression gives
+$0<\upsilon_T<2/T$, hence it is infinitesimal and cannot lie in
+$\Oz$. Modulo $\Pi\NN$ the equation gives
+$\mathsf v^2+1=0$; in particular $\mathsf v$ is nonzero and has
+inverse $-\mathsf v$ in the nonzero quotient.
+
+For the expansion, the equation $C=1+zC^2$ has a unique solution
+in $\Q[[z]]$: its constant coefficient is $1$, and for $n\ge1$
+the coefficient satisfies $c_n=\sum_{j=0}^{n-1}c_jc_{n-1-j}$.
+The formal binomial expansion of
+$(1-\sqrt{1-4z})/(2z)$ gives
+$c_n=\frac1{n+1}\binom{2n}{n}$, the Catalan coefficients. The numerator has zero constant
+coefficient, so division by $z$ takes place in the power-series ring.
+Substitution $z=\omega^{-2}$ is a Hahn substitution as in
+\cref{osq:nm:lem:binomial}; multiplying by $\omega^{-1}$ gives an
+infinitesimal root of $X^2-\omega X+1$. The other root is infinite,
+so this series equals $\upsilon_\omega$. The sum is strong, not a
+limit of its partial sums in the fine topology.
+
+A nonzero ordered ring cannot contain a square root of $-1$.
+For the explicit failure of convexity, use
+$0<1<T\upsilon_T=1+\upsilon_T^2$ with
+$T\upsilon_T\in\Pi\NN$ and $1\notin\Pi\NN$.
 \end{proof}
 
 03's unit $u_H=\sqrt{H^2+1}-H$ with $H\in\Pi$ (\cref{osq:nm:thm:smallunits}) has a residue $\bar u_H$ with $\bar u_H^2=1$; 19's residue squares
@@ -13061,11 +13179,23 @@ inserted into the real field, and it is the quotient that loses the order (19).
 There is an embedding $\overline\Q\hookrightarrow\mathsf B^\Q_\bullet$ whose restriction to $\overline\Z$ lands in $\mathsf B_\bullet$.
 \end{lemma}
 \begin{proof}
-Real algebraic integers lie in $\NN$. A nonzero one, $a$, satisfies $ab=m$ for a real algebraic integer $b$ and some $0\ne m\in\Z$; as
-$\Z\subseteq\mathsf B_\bullet$ is torsion free, the image of $a$ is a unit of $\mathsf B^\Q_\bullet$. So the field $k_0=\overline\Q\cap\R$ of real
-algebraic numbers embeds. In the real case $X\mapsto\mathsf v$ defines $k_0[X]/(X^2+1)\to\mathsf B^\Q_\R$, injective because its source is the
-field $k_0(i)\cong\overline\Q$; in the complex case use $i\in\NN_\C$. Algebraic integers map into $\mathsf B_\bullet$ by
-\cref{osq:nf:thm:saturation}.
+Let $k_0=\overline\Q\cap\R$. Every real algebraic integer lies in
+$\NN$. If such an integer $a$ is nonzero, a monic integer polynomial
+of least degree for it has nonzero constant coefficient $c_0$;
+otherwise dividing that polynomial by $X$ contradicts minimality.
+The equation then gives $ab=-c_0\ne0$ with $b\in\Z[a]$.
+Consequently the image of $a$ is a unit in $\mathsf B^\Q_\bullet$,
+because nonzero integers are units there. The map on real algebraic
+integers is injective: an element in its kernel would kill a nonzero
+integer. Extending to fractions gives an embedding of $k_0$.
+
+In the real case the element $\mathsf v$ of \cref{osq:nf:prop:unit}
+satisfies $\mathsf v^2=-1$. Substitution defines a unital map
+$k_0[X]/(X^2+1)\to\mathsf B^\Q_\R$. Its source is the field
+$k_0(i)\cong\overline\Q$, so the map into the nonzero target is
+injective. In the complex case use the residue of the actual $i$.
+Finally every algebraic integer in this embedded field remains integral
+over $\Z$, and rational saturation puts it in $\mathsf B_\bullet$.
 \end{proof}
 
 In the real case the embedding depends on the choice of $\mathsf v$; it is an embedding of algebraic numbers into the quotient
@@ -13077,10 +13207,25 @@ $\lambda_j\in\overline\Q$ and orthogonal idempotents $e_j$ with $\sum_je_j=1$, a
 partition.
 \end{lemma}
 \begin{proof}
-Let $p$ be the squarefree part of a nonzero rational polynomial killing $x$; $p(x)$ is nilpotent, hence $0$. Factor
-$p=c\prod_j(X-\lambda_j)$ over $\overline\Q$ and put $e_j=L_j(x)$ with the Lagrange polynomials
-$L_j=\prod_{k\ne j}(X-\lambda_k)/(\lambda_j-\lambda_k)$; modulo $p$, $L_j^2\equiv L_j$, $L_jL_k\equiv0$, $\sum_jL_j\equiv1$ and
-$X\equiv\sum_j\lambda_jL_j$. For several elements multiply their partitions.
+Choose a nonzero $q\in\Q[X]$ with $q(x)=0$, and let $p$ be its
+squarefree part. For some ordinary $N\ge1$, $q$ divides $p^N$ up to
+a nonzero rational scalar, so $p(x)^N=0$. Reducedness gives $p(x)=0$.
+Since the unital coefficient field embeds, a nonzero constant cannot
+annihilate $x$; hence $p$ has positive degree. Factor
+$p=c\prod_{j=1}^r(X-\lambda_j)$ over $\overline\Q$, with distinct
+$\lambda_j$, and set
+\[
+ L_j(X)=\prod_{k\ne j}\frac{X-\lambda_k}{\lambda_j-\lambda_k},
+ \qquad e_j=L_j(x).
+\]
+Every denominator is a nonzero field element, hence a unit in $E$.
+The identities $L_j^2\equiv L_j$, $L_jL_k\equiv0$ for $j\ne k$,
+$\sum_jL_j\equiv1$ and $X\equiv\sum_j\lambda_jL_j$ modulo $p$
+follow by evaluation at its distinct roots. Substitution at $x$
+proves the required identities. Some $e_j$ may be zero and may be
+discarded. For a finite family of elements, multiply their finitely
+many idempotent partitions and discard zero products; distributivity
+shows that the resulting orthogonal parts still sum to $1$.
 \end{proof}
 
 \begin{definition}[Finite-partition Boolean powers \src{19, 20}]\label{osq:nf:def:boolean}
@@ -13099,12 +13244,27 @@ $(\lambda_j,e_j)_j\mapsto\sum_j\lambda_je_j$ gives isomorphisms
 Every finite family of elements of $\mathsf B_\bullet$ lies in a subring isomorphic to $\overline\Z^r$, embedded by an orthogonal partition of $1$.
 \end{theorem}
 \begin{proof}
-Idempotents are roots of $X^2-X$, so \cref{osq:nf:thm:saturation} puts those of $\mathsf B^\Q_\bullet$ in $\mathsf B_\bullet$. Evaluation is onto by
-\cref{osq:nf:lem:spectral} and \cref{osq:nf:thm:radical}. On a nonzero common part $e$ of two representations, equality gives $(\lambda-\mu)e=0$, and
-a nonzero $\lambda-\mu\in\overline\Q$ is a unit; so evaluation is injective. If $x=\sum_j\lambda_je_j\in\mathsf B_\bullet$ with every $e_j\ne0$ and
-$f\in\Z[X]$ is monic with $f(x)=0$, then $f(\lambda_j)e_j=0$, so $f(\lambda_j)=0$ and $\lambda_j\in\overline\Z$; conversely a finite sum of commuting
-integral elements is integral, and lies in $\mathsf B_\bullet$ by \cref{osq:nf:thm:saturation}. On a common partition with nonzero parts, the map
-from $\overline\Z^r$ is injective.
+Idempotents satisfy the monic equation $X^2-X=0$, so rational saturation
+places every idempotent of $\mathsf B^\Q_\bullet$ in
+$\mathsf B_\bullet$. Evaluation respects common refinement and ring
+operations. It is onto $\mathsf B^\Q_\bullet$ by
+\cref{osq:nf:lem:spectral,osq:nf:thm:radical}. On a nonzero common
+part $e$ of two representations, equality gives
+$(\lambda-\mu)e=0$. A nonzero $\lambda-\mu\in\overline\Q$ is a
+unit, so $\lambda=\mu$. This proves injectivity.
+
+If $x=\sum_j\lambda_je_j\in\mathsf B_\bullet$ with all $e_j\ne0$,
+take a monic $f\in\Z[X]$ with $f(x)=0$. Multiplication by $e_j$
+gives $f(\lambda_j)e_j=0$. The same unit argument yields
+$f(\lambda_j)=0$, hence $\lambda_j\in\overline\Z$. Conversely,
+if all coefficients are algebraic integers, choose monic
+$f_j\in\Z[X]$ with $f_j(\lambda_j)=0$. The product $f=\prod_jf_j$
+satisfies $f(x)=\sum_j f(\lambda_j)e_j=0$. Thus $x$ is integral
+over $\Z$ and belongs to $\mathsf B_\bullet$ by rational saturation.
+For a finite family, the common nonzero partition from the spectral
+lemma gives the unital embedding
+$\overline\Z^r\to\mathsf B_\bullet$, $(a_j)_j\mapsto\sum_j a_je_j$,
+whose image contains that family.
 \end{proof}
 
 The Boolean description gives \cref{osq:nf:cor:aic} again: refine the coefficients of a monic polynomial to one partition and split it over
@@ -13112,6 +13272,42 @@ $\overline\Z$ on each part. $\mathsf B_\bullet$ is neither one finite product of
 restriction is part of the theorem, and 19 does not determine $\Idem(\mathsf B_\R)$ (19). 20 shows that it is nontrivial,
 atomless and a proper class with explicit independent families (\cref{osq:bb:thm:ordinal,osq:bb:thm:atoms}); its isomorphism type
 is not determined.
+
+\paragraph{The total quotient ring and componentwise inverses \merge.}
+Here rationalization already inverts every non-zero-divisor:
+\[
+ \operatorname{Quot}(\mathsf B_\bullet)=\mathsf B^\Q_\bullet,
+\]
+where $\operatorname{Quot}$ denotes localization at all non-zero-divisors,
+not a field of fractions. To see this, write
+$b=\sum_j\lambda_je_j\in\mathsf B_\bullet$ on a finite partition with
+nonzero parts. If some $\lambda_j=0$, then $be_j=0$ with $e_j\ne0$,
+so multiplication by $b$ is not injective. If every $\lambda_j\ne0$, the element
+$\sum_j\lambda_j^{-1}e_j\in\mathsf B^\Q_\bullet$ is an inverse
+of $b$. Since $\mathsf B_\bullet$ embeds in its rationalization, this
+also proves that $b$ is a non-zero-divisor. All nonzero ordinary integers
+are non-zero-divisors by torsion freeness; hence the two localizations
+embed in each other and the canonical maps are inverse.
+In particular \cref{osq:nf:thm:saturation} says that the arithmetic
+fibre is integrally closed in its total quotient ring, despite having
+zero divisors.
+
+For any $x=\sum_j\lambda_je_j\in\mathsf B^\Q_\bullet$, including
+zero divisors, define
+\[
+ x^\#=\sum_{\lambda_j\ne0}\lambda_j^{-1}e_j,\qquad
+ e_x=\sum_{\lambda_j\ne0}e_j.
+\]
+These do not depend on the chosen finite partition: passing to a common
+refinement preserves coefficients on every nonzero part. Direct
+multiplication gives $xx^\#=e_x$ and $x^2x^\#=x$.
+Thus the rationalized fibre is von Neumann regular, in the explicit
+commutative-ring sense that every $x$ admits $y$ with $x^2y=x$.
+Moreover $x\mathsf B^\Q_\bullet=e_x\mathsf B^\Q_\bullet$ and
+$\Ann(x)=(1-e_x)\mathsf B^\Q_\bullet$: use $x=e_xx$ and
+$e_x=xx^\#$ for the ideal equality and the two annihilator inclusions.
+The construction uses only finite partitions; it neither selects a
+class ultrafilter nor turns the fibre into a field.
 
 \begin{theorem}[Finitely generated ideals of the fibre \src{19}]\label{osq:nf:thm:bezout}
 Every finitely generated ideal of $\overline\Z$ is principal (a classical fact \cite{Cohn}). Every finitely generated ideal $I$ of

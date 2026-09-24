@@ -8312,3 +8312,74 @@ in 226 files, with no problems. The normalization article's three-pass
 TeX build, numbering comparison and page inspections remain valid because
 the merge changes no TeX/PDF. Its added finite-support and exact Gaussian
 normalization consequences remain Pending in Lean.
+
+### Arithmetic-fibre foundations and total quotient ring (2026-09-24)
+
+Reviewed the first ten standard results of the arithmetic-fibre
+subsection, from `osq:nf:lem:contraction` through `osq:nf:thm:boolean`,
+together with the intervening finite-partition definition. The remaining
+fibre results, starting with finitely generated ideals, and subsequent
+branching proofs remain for later review. No numbered statements change.
+
+Expanded the determinant proof of contraction to account for Gaussian
+integrality through Oz[i], a finite generating list rather than a basis,
+and the coefficient ideal in the determinant. The matrix argument applies
+to a class module. Distinguished divisibility of the extended ideal from
+torsion freeness of the quotient: ambient characteristic-zero cancellation
+identifies the divided element. Radicality explicitly invokes transitivity
+of integrality after common monomial division. Rational saturation now
+calculates the localization kernel element by element before subtracting
+the lifted polynomial's error term. The extended ideal is a directed union
+of monomial principal ideals; the proof of failure of set generation
+spells out least-birthday sets, class replacement and downward closure,
+without choosing an expression for each class-ring generator.
+
+For real-rooted lifting, displayed the endpoint domination bound and
+explained why only one factor changes sign in each interval. Degree and
+distinctness give the full factorization and exhaust the roots; positive
+monomials can always exceed the coefficient bound. Absolute integral
+closedness is the monic-splitting property for rings possibly having zero
+divisors, and reduction need not preserve separation of the roots. The
+infinitesimal-unit proof now derives the Catalan coefficient recurrence,
+identifies the small quadratic branch, and distinguishes Hahn summation
+from fine convergence. Its residue is a unit with square −1, which
+prevents an ordered quotient; the displayed interval also directly
+witnesses failure of convexity of the extended ideal.
+
+The coefficient-field embedding proof supplies the nonzero integer
+multiple of each nonzero real algebraic integer. Spectral decomposition
+explains why the squarefree polynomial still annihilates the element,
+why its Lagrange denominators are units, and how to discard zero parts
+on a finite common refinement. The Boolean-power proof tests each
+nonzero part and gives an explicit product of monic annihilators for
+the converse integrality implication. No ultrafilter is needed for these
+finite-partition statements.
+
+Added an unnumbered consequence after `osq:nf:thm:boolean`: the rationalized
+fibre is exactly the total quotient ring of the integral fibre. On a
+nonzero finite partition, multiplication by b is injective exactly when
+all its coefficients are nonzero, in which case their inverses in Q̄
+give an inverse in the rationalization. Since nonzero ordinary integers
+are already non-zero-divisors, the two localizations agree. Thus rational
+saturation gives integral closedness in the total quotient ring, not
+merely in an unspecified overring. For every rationalized element x,
+invert its nonzero coefficients and put zero on the other parts to obtain
+x#, with xx#=e_x and x²x#=x. This proves von Neumann regularity directly,
+as well as xB^Q=e_xB^Q and Ann(x)=(1−e_x)B^Q. The formulas are independent
+of common refinement and need no class choice or unrestricted products.
+
+Updated the root/report guides, shared notation, catalogue and coverage
+narrative; refreshed all shifted statement anchors. These manuscript
+results and added consequences remain Pending in Lean. Validation: three
+final diagnostic-free TeX passes for the article (326 pages) and catalogue
+(35 pages); visual inspection of article PDF pages 198–203 and catalogue
+page 12. All 418 standard result statements, 828 labels, 1,656 AUX
+numbering fields, 66 questions, 60 remarks and 28 examples are preserved.
+The unchanged source 19 checker passes 253 exact finite checks, including
+216 endpoint tests in degrees 1–8; all mathematical output matches its
+historical record, with only the Python version header differing
+(3.13.14 versus 3.13.5; SymPy remains 1.14.0). These finite checks do not
+certify the class or integral-closure arguments. The independent audits
+pass for 4,626 anchors in 63 reports, 5,223 source-label references and
+1,931 local Markdown destinations in 226 files. No Lean code or historical
+verification records change.
