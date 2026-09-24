@@ -6508,3 +6508,74 @@ and Quot.sound. All 4,626 anchors across 63 reports, 5,217 source-label
 references and 1,826 local Markdown destinations across 226 files pass,
 as does whitespace checking. No incoming TeX changed; the 294-page
 article and 34-page catalogue remain current.
+
+## Face resolutions, free telescopes and the top Ext formula
+
+Reviewed `osq:da:prop:faces`, `osq:da:thm:telescope` and
+`osq:da:thm:ext`, with all three statements unchanged. The face proof
+separates the constant component, degrees outside the chosen face, and
+its contractible simplex components. Finite support lets their preimages
+assemble into a chain. The lower flat-dimension witness treats a singleton
+face separately: the coefficient map is K to K/D with kernel D, also
+when D = K. Higher faces retain K in the top Tor degree.
+
+The telescope proof makes the principal-ideal colimit and its coefficient
+scope explicit, including the singleton differential. It checks the cone
+signs, injectivity of one minus shift, and the colimit cokernel. The
+comparison with the flat face complex has a contractible kernel, with
+both terms of the contraction identity written out. Its augmentation
+sums finite stage tuples modulo the face ideal. This supplies a free
+resolution without treating the individual Koszul complexes as resolutions;
+the failure of regularity over a proper coefficient subring is verified.
+
+The top-Ext proof first checks that the inverse transition descends to
+the quotients. Duals of countable free direct sums are products, and
+arbitrary independent functional values give the entire product of the
+stage ideals as boundaries. Passing to the coordinate quotients then
+gives the displayed cokernel, naturally in the target module. The
+identification with the first derived inverse limit was checked against
+Stacks Tags 07KV and 0CQC, now included in the existing derived-functor
+bibliography entry. No Mittag--Leffler or surjectivity assumption is used.
+
+Updated README, guides, notation, catalogue and source anchors. These
+three results remain Pending in Lean. The following nonvanishing theorem,
+exact projective dimensions and later derived classifications, and full
+source reconciliation, remain pending review.
+
+Validation: three clean final TeX passes for the 296-page article and
+34-page catalogue, without warnings or box diagnostics, plus visual
+checks of all three proofs and the catalogue. All 418 standard/principal
+statements, 828 labels and 1,656 auxiliary label/number pairs are unchanged.
+All 4,626 anchors across 63 reports, 5,217 source-label references and
+1,826 local Markdown destinations across 226 files pass, as does whitespace
+checking. No Lean source changed; the previous two-thread 4,614-job build
+and 16,791-declaration axiom audit remain the Lean baseline for this pass.
+
+## Synchronization: actual exponent automorphisms and strong sums
+
+Merged origin/main through 233236d, including 5d891ce, and reviewed the
+three incoming modules against `odg:def:ex:dilation`, `prop:hahn-lift`,
+`eq:hahn-lift` and the canonical-field-lift clause of `thm:dilation`.
+Ordered additive exponent automorphisms transport lower-universe-small
+normal forms and induce actual field automorphisms. The coefficients and
+entire support are transported, real constants are fixed, and the native
+omnific subring is preserved. The restriction's fraction extension agrees
+with the constructed field map. Positive exponent scalings have reciprocal
+inverses; doubling moves omega and sends one plus omega to one plus omega
+squared.
+
+Strong summability is preserved and reflected for arbitrary index
+universes; commutation with the actual strong sum retains the small-index
+hypothesis of that sum operation. The lift transports leading exponents
+and the natural valuation, including zero's infinite value, and preserves
+the actual field order. The README and ledger accurately update the
+canonical-lift coverage while keeping unconditional exponential non-lifting
+pending construction of the global surreal exponential. No full-Hahn-field
+surjectivity or exponential-preservation claim is introduced.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,617 jobs; the
+axiom audit checks 16,855 declarations using only propext, Classical.choice
+and Quot.sound. All 4,626 anchors across 63 reports, 5,218 source-label
+references and 1,830 local Markdown destinations across 226 files pass,
+as does whitespace checking. No incoming TeX changed; the 296-page article
+and 34-page catalogue remain current.

@@ -152,13 +152,23 @@ Tensor maps and Tor vanishing are explicit for the set-sized models;
 for the class ring the proof fixes one balanced map and target at a time.
 Its agreement with a free module on set-sized tests does not imply flatness.
 
-The later derived classifications and reconciliation of the parallel
-sources remain pending review. Exact scope
+The face-quotient flat resolution, free telescope and top-Ext formula
+are now reviewed. The degreewise contraction handles constants and degrees
+outside the chosen face separately. The lower flat-dimension bound includes
+the singleton face and `D = K`. The telescope proof writes its augmentation
+and contracts the kernel of the comparison map, without assuming the finite
+Koszul complexes are resolutions. Dualizing its countable direct sums gives
+products; the proof checks the full boundary image and the induced quotient
+map before identifying the cokernel with the first derived inverse limit.
+
+The subsequent nonvanishing, exact projective dimensions and later derived
+classifications, and reconciliation of the parallel sources, remain pending
+review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 294 pages
+article.pdf   the compiled report, 296 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
