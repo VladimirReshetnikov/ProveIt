@@ -701,7 +701,7 @@ equivalence of 24's and 25's thresholds with absorption of $K_{\operatorname{cvx
 (\cref{osq:sa:rem:threshold}); $C^{\mathsf k}$ examples showing that 25's removal of exceptions needs global smoothness
 (\cref{osq:sa:rem:exceptionsnecessary}); the isomorphism of a rational simplicial cone core with $A_d$, through which 26's simplicial face dimensions are
 21's and the projective dimension of every simplicial face quotient is the upper endpoint of 26's interval (\cref{osq:pc:sub:polyhedral}); the flat
-dimensions $d$ and $d+1$ of lattice modules and their quotients over every cone core, hence weak global dimension at least $d+1$
+dimensions $d$ and $d+1$ of rank-at-least-two lattice modules and their quotients over every cone core, hence weak global dimension at least $d+1$ when $K\ne\Frac D$
 (\cref{osq:pc:rem:lattice}); the identification of 27's $\sqrt{\Pi\NN}$ with $\Pi\NN$ (\cref{osq:hb:sub:henselian}); and the comparison of the branch
 counts of 20, 23 and 27 (\cref{osq:hb:rem:counts}).
 Each follows from lemmas of the sources; none is a new method.
@@ -7501,17 +7501,57 @@ $D$-linear map has kernel exactly $D^{(\N)}$, the finitely supported sequences, 
 $D^{\N}/D^{(\N)}\hookrightarrow\Ext^{|U|+1}_A(\mathsf F_U,A)$.
 \end{theorem}
 \begin{proof}
-Suppose $(c_n)$ is in the image of $\Delta^\vee_A$, with representatives $y_n\in A$ of a preimage: $y_n-u_ny_{n+1}-c_n\in J^{(n)}_U$. Since
-$u_0\cdots u_{j-1}=p_U^{1-2^{-j}}$ and $p_U^{1-2^{-j}}J^{(j)}_U\subseteq J^{(0)}_U=J_U$, multiplying the $j$th relation by $u_0\cdots u_{j-1}$
-and adding for $j=0,\dots,N$ gives
+The constant inclusions $D\to G_n(A)$, followed by the cokernel
+map in \cref{osq:da:thm:ext}, define the stated $D$-linear map.
+Suppose a sequence $c=(c_n)$ maps to zero. Choose representatives
+$y_n\in A$ for a preimage under $\Delta^\vee_A$. Then
 \[
- y_0-\sum_{j=0}^Nc_jp_U^{1-2^{-j}}-p_U^{1-2^{-N-1}}y_{N+1}\in J_U .
+ y_n-u_ny_{n+1}-c_n\in J^{(n)}_U\qquad(n\ge0).
 \]
-Every monomial of an element of $J_U$ has some coordinate in $U$ at least $1$, and every monomial of $p_U^{1-2^{-N-1}}y_{N+1}$ has all its
-coordinates in $U$ at least $1-2^{-N-1}$. The monomials $m_j=p_U^{1-2^{-j}}$ ($j\le N$) are pairwise distinct and have all coordinates in $U$
-below $1-2^{-N-1}$; so the coefficient of $m_j$ in the single finite sum $y_0$ is $c_j$, for every $j$ (take $N\ge j$). Hence $c_j\ne0$ for
-only finitely many $j$. Conversely, for finitely supported $c$ the finite sums $y_n=\sum_{j\ge n}c_jp_U^{2^{-n}-2^{-j}}$ lie in $A$ (their
-constant term is $c_n\in D$ and their other monomials are positive on $U$), and $y_n-u_ny_{n+1}=c_n$.
+Set $m_j=p_U^{1-2^{-j}}$, including $m_0=1$. The geometric
+sum of the transition exponents gives
+$m_j=u_0\cdots u_{j-1}$ and $m_ju_j=m_{j+1}$.
+Moreover, for every $i\in U$,
+\[
+ m_jX_i^{2^{-j}}
+ =X_i p_{U\setminus\{i\}}^{1-2^{-j}}\in J_U,
+\]
+where an empty product is $1$. Multiplying the $j$th relation by
+$m_j$ and summing for $0\le j\le N$ therefore telescopes to
+\[
+ y_0-\sum_{j=0}^Nc_jm_j-m_{N+1}y_{N+1}\in J_U.
+\]
+
+Fix $j\le N$. All coordinates on $U$ of the exponent of $m_j$
+equal $1-2^{-j}<1$. Every monomial of $J_U$ has at least one
+coordinate on $U$ at least $1$, so it cannot contribute to this
+coefficient. Nor can $m_{N+1}y_{N+1}$: its coordinates on $U$
+are all at least $1-2^{-N-1}>1-2^{-j}$, since every exponent
+of $y_{N+1}$ is coordinatewise nonnegative. Finally the $m_j$
+are pairwise distinct because $U$ is nonempty. Comparing their
+coefficients gives
+\[
+ [m_j]y_0=c_j\qquad(0\le j\le N).
+\]
+The representative $y_0$ is fixed as $N$ varies. Taking $N\ge j$
+for each $j$ forces it to contain a distinct monomial for every
+nonzero $c_j$. But $A_d$ consists of finite sums. Thus $c$ is
+finitely supported. No assertion about convergence or infinite Hahn
+sums is used: the obstruction lies in a single element of $A_d$.
+
+Conversely, suppose $c$ has finite support. For each $n$ define
+the finite sum
+\[
+ y_n=\sum_{j\ge n}c_jp_U^{2^{-n}-2^{-j}}.
+\]
+The term $j=n$ is the constant $c_n\in D$, and terms with
+$j>n$ have positive exponent on $U$, so $y_n\in A$.
+Multiplication by $u_n=p_U^{2^{-n-1}}$ turns the exponent
+$2^{-n-1}-2^{-j}$ in $y_{n+1}$ into $2^{-n}-2^{-j}$.
+All terms with $j>n$ cancel, leaving
+$y_n-u_ny_{n+1}=c_n$ exactly. Their quotient classes give the
+required preimage. The kernel is therefore exactly $D^{(\N)}$,
+and passage to this quotient proves the injection.
 \end{proof}
 
 \begin{corollary}[Exact projective dimensions of the coordinate cores \src{21}]\label{osq:da:cor:exactpd}
@@ -7522,16 +7562,39 @@ For every $d\ge1$ and every nonempty $U\subseteq[d]$, $\pd_{A_d}\mathsf F_U=|U|+
 and $\Ext^{d+1}_{A_d}(D,A_d)\cong\Ext^d_{A_d}(\Pi_d,A_d)$ contains a copy of $D^{\N}/D^{(\N)}$.
 \end{corollary}
 \begin{proof}
-The constant sequence $(1,1,\dots)$ is not finitely supported, so \cref{osq:da:thm:injection} gives $\Ext^{|U|+1}_A(\mathsf F_U,A)\ne0$ and
-$\pd\mathsf F_U\ge|U|+1$; \cref{osq:da:thm:telescope} gives the reverse inequality, and \cref{osq:da:prop:faces} the flat dimension. For
-$U=[d]$, the sequence $0\to\Pi_d\to A_d\to D\to0$ gives $\Ext^j(\Pi_d,-)\cong\Ext^{j+1}(D,-)$ for $j\ge1$, hence $\pd\Pi_d=d$.
+Since $D$ is a unital subring of a field, $1\ne0$ in $D$.
+The sequence $(1,1,\dots)$ defines a nonzero element of
+$D^{\N}/D^{(\N)}$, hence a nonzero element of
+$\Ext_A^{|U|+1}(\mathsf F_U,A)$ by
+\cref{osq:da:thm:injection}. A projective resolution of length
+at most $|U|$ would make this Ext group zero, so
+$\pd_A\mathsf F_U\ge|U|+1$.
+The free telescope has length $|U|+1$, giving the opposite bound.
+The flat dimension is \cref{osq:da:prop:faces}.
+
+For $U=[d]$ the quotient is $D$, so $\pd_{A_d}D=d+1$.
+Apply $\Hom_{A_d}(-,P)$ to
+$0\to\Pi_d\to A_d\to D\to0$. Because $A_d$ is free,
+its long exact sequence gives, naturally for every target $P$,
+\[
+ \Ext_{A_d}^j(\Pi_d,P)\cong\Ext_{A_d}^{j+1}(D,P)
+ \qquad(j\ge1).
+\]
+For $j>d$ the right side vanishes for every $P$, giving
+$\pd\Pi_d\le d$. For $j=d\ge1$ and $P=A_d$, it contains
+the nonzero copy of $D^{\N}/D^{(\N)}$ already constructed.
+Thus $\pd\Pi_d\ge d$, and the same isomorphism gives the
+asserted embedding in its top Ext group. The argument includes
+$d=1$, where the tail is flat but has projective dimension one.
 \end{proof}
 
 So for every $d$ the projective dimension of the arithmetic quotient exceeds its flat dimension by exactly one, as in rank one, and the
 upper bound of \cref{osq:hd:prop:pd}(iii) is attained. For $d=2$ and $U=\{1,2\}$, a preimage of the constant sequence $1$ would need its first
 representative to contain all the monomials $1,(X_1X_2)^{1/2},(X_1X_2)^{3/4},(X_1X_2)^{7/8},\dots$, whose coordinates are below $1$; so
-$\Ext^3_{A_2}(D,A_2)\ne0$, although the flat resolution of \cref{osq:hd:thm:resolution} has length two and the finite Koszul complexes are not
-resolutions (21, its worked appendix). Every finite initial segment of the equations $y_n-u_ny_{n+1}=1$ has a solution, obtained by
+$\Ext^3_{A_2}(D,A_2)\ne0$, although the flat resolution of
+\cref{osq:hd:thm:resolution} has length two. When $D\ne K$, the
+finite Koszul complexes need not be resolutions, as the preceding
+nonregularity example shows (21, its worked appendix). Every finite initial segment of the equations $y_n-u_ny_{n+1}=1$ has a solution, obtained by
 choosing a last value and solving backwards; the obstruction is that a solution of all of them would force infinitely many monomials into
 $y_0$, so no finite computation proves it (21).
 
@@ -7547,17 +7610,84 @@ $(D^{\N}/D^{(\N)})^{r-1}$. If $K\ne\Frac D$, the global dimension of $A_d$ is at
 projective and flat dimension $1$.
 \end{theorem}
 \begin{proof}
-\Cref{osq:tn:thm:syzygy}(ii) gives $0\to\Pi_d^{r-1}\to A_d^r\to L(M)\to0$, so $\Ext^{j+1}(L(M),P)\cong\Ext^j(\Pi_d,P)^{r-1}$ for $j\ge1$;
-with $j=d$ and \cref{osq:da:cor:exactpd} this is $\Ext^{d+1}(D,P)^{r-1}$, it vanishes for $j>d$, and it is nonzero for $P=A_d$ by
-\cref{osq:da:thm:injection}. Multiplication by $X^g$ is injective, so $J\cong L(M)$, and $0\to J\to A_d\to A_d/J\to0$ shifts once more. If
-$c\in K\setminus\Frac D$, the lattice $D+Dc$ has rank two, so some module has projective dimension $d+2$. For $r=1$, $L(M)=m_1A_d$ and $J$ is
-principal and nonzero.
+Fix a $D$-basis of $M$ and use
+\cref{osq:tn:thm:syzygy}(ii):
+\[
+ 0\longrightarrow\Pi_d^{r-1}\longrightarrow A_d^r
+ \longrightarrow L(M)\longrightarrow0.
+\]
+For every target $P$, the free middle term and the sequence
+$0\to\Pi_d\to A_d\to D\to0$ give
+\[
+ \Ext_{A_d}^{j+1}(L(M),P)
+ \cong\Ext_{A_d}^{j}(\Pi_d,P)^{r-1}
+ \cong\Ext_{A_d}^{j+1}(D,P)^{r-1}
+ \qquad(j\ge1).
+\]
+These are natural in $P$ after the basis is fixed; the finite
+power comes from the displayed direct sum of syzygies.
+Since $\pd\Pi_d=d$, splicing its projective resolution with
+this presentation gives $\pd L(M)\le d+1$.
+At $j=d$ and $P=A_d$, the last group contains
+$(D^{\N}/D^{(\N)})^{r-1}$ by
+\cref{osq:da:thm:injection}. It is nonzero since $r-1\ge1$,
+so $\pd L(M)=d+1$.
+
+Multiplication by the nonzero monomial $X^g$ is an isomorphism
+$L(M)\to J$. Apply the long exact sequence to
+$0\to J\to A_d\to A_d/J\to0$. For every $j\ge1$ it gives
+\[
+ \Ext_{A_d}^{j+1}(A_d/J,P)\cong\Ext_{A_d}^j(J,P).
+\]
+The upper bound now shifts to $d+2$, while the preceding nonzero
+group shifts to degree $d+2$. This proves equality, the displayed
+natural identifications, and their copies of the coefficient-sequence
+quotient. If $K\ne\Frac D$, choose $c\in K\setminus\Frac D$.
+Then $D+Dc$ has rank two, so its cyclic ideal quotient supplies
+a module of projective dimension $d+2$, giving the global lower bound.
+
+For the separate rank-one case, write $M=Dm_1$, with $m_1\ne0$.
+Then $L(M)=m_1A_d\cong A_d$ and $J=qA_d$, where
+$q=m_1X^g$ is a nonzero nonunit: it is a tail monomial and the
+constant coefficient of every multiple of it is zero. Thus
+$A_d/J\ne0$ and
+\[
+ 0\longrightarrow A_d\xrightarrow{\,q\,}A_d
+ \longrightarrow A_d/J\longrightarrow0
+\]
+is a free resolution of length one. This quotient is not flat.
+If it were, tensoring the injection $q:A_d\to A_d$ with it
+would make multiplication by $q$ injective on $A_d/J$. That
+map is zero on a nonzero module. Hence its flat dimension is
+one, and its projective dimension is also one.
 \end{proof}
 
 21 states the theorem for a principal ideal domain $D$, which it uses only to give $M$ a basis; in Setting (L) a lattice has a basis by
 definition, and extending the statement to every unital $D\subseteq K$ is the merge's (the proof is 21's). The flat dimensions $d$ and $d+1$
-of $L(M)$ and $A_d/J$ are \cref{osq:hd:thm:fdlattice} (12, 14), which 21 proves again over $A_d$; the weak global dimension of $A_d$ is at
-least $d+1$ (\cref{osq:hd:sub:dimensions}). Neither global dimension is determined (21).
+of $L(M)$ and $A_d/J$ are \cref{osq:hd:thm:fdlattice} (12, 14),
+which 21 proves again over $A_d$. When $K\ne\Frac D$, the
+rank-two lattice used above gives the additional lower bound
+$\operatorname{w.gl.dim}A_d\ge d+1$. Without that coefficient
+hypothesis the face quotient still gives
+$\operatorname{w.gl.dim}A_d\ge d$. These bounds alone determine
+neither global dimension in the general coefficient setting.
+
+The coefficient hypothesis cannot be omitted from the stronger weak
+bound. For $d=1$ and $D=K$, one has $A_1=K[\Q_{\ge0}]$.
+Every finite family lies in a polynomial ring $K[X^{1/n}]$;
+a greatest common divisor and its B\'ezout identity show that every
+finitely generated ideal of $A_1$ is principal, as in the earlier
+coherence counterexample. If $P$ is torsion free, tensoring a
+nonzero principal ideal into $A_1$ is multiplication by its generator
+on $P$, hence injective. The finitely generated ideal criterion
+therefore makes every torsion-free module flat
+\cite[Lemma~10.39.5]{StacksFlat}. The kernel of a free presentation
+of any module is torsion free, so every module has flat dimension
+at most one. The quotient $A_1/(X)$ is nonzero and not flat,
+by the multiplication argument just given. Consequently
+$\operatorname{w.gl.dim}A_1=1$, while
+$\operatorname{pd}_{A_1}K=2$ still holds. This is a counterexample
+to an unconditional lower bound of two for weak global dimension.
 
 \begin{remark}[Consistency with the earlier bounds; (H2) cannot be dropped from \cref{osq:hd:prop:pd}(v) \merge]\label{osq:da:rem:htwo}
 \leavevmode
@@ -15508,7 +15638,7 @@ surreals or novelty. (14) No Lean formalization, no repository build, no peer re
 is answered relative to the inspected repository version, the literature search was targeted, and unintegrated companion manuscripts and
 historical sources were not exhaustively audited. (2) No major named factorization conjecture is claimed solved. (3) Arbitrary omnific
 ideals are not classified. (4) The value $d+1$ concerns the specific set-sized core $A_d$, not $\pd\Z$ over the class ring; no exact global
-or weak global dimension of $\Oz$ or of $A_d$ is claimed, only the lower bounds $d+2$ and $d+1$. (5) The class rings are read under a
+or weak global dimension of $\Oz$ or of $A_d$ is claimed by 21; the stronger core lower bounds $d+2$ and $d+1$ use $K\ne\Frac D$. (5) The class rings are read under a
 two-universe convention, not as literal proper-class rings of ordinary set theory; the core theorems and all examples are ordinary
 set-sized mathematics. (6) The finite checks do not prove the infinite $\Ext$ nonvanishing, exactness in unbounded degree or the
 normal-form foundations, and replace no proof assistant. (7) Filtered colimits of flat modules, flat models of derived tensor products,
@@ -15873,13 +16003,13 @@ exponent subgroup first, allowing integrality witnesses at larger scales, and 20
 \cite{RepoOdg}, and so does 13's question on fibers of polynomials with nonlinear factors.
 
 \begin{question}[Homological dimensions of the cores; 12, 14, 21, merge]\label{osq:hd:q:cores}
-For $d\ge2$, is $\pd_{A_d}D$ equal to $d$ or to $d+1$? What are the weak global dimensions of $A_d$ (at least $d+1$) and of
+For $d\ge2$, is $\pd_{A_d}D$ equal to $d$ or to $d+1$? When $K\ne\Frac D$, what are the weak global dimensions of $A_d$ (at least $d+1$) and of
 $A_0=A_1$ (at least $2$)? How do cores over non-simplicial cones, their arbitrary ideals and their homological
 localizations behave?
 \end{question}
 \emph{Status.} Partly answered. The first clause is answered by 21: $\pd_{A_d}D=d+1$ for every $d\ge1$ (\cref{osq:da:cor:exactpd}); in rank
 one this is the merge value $2$ of \cref{osq:hd:prop:pd}, and over every ordered-cone core $\pd D=2$. The weak global dimensions stay open,
-with lower bounds $d+1$ and $2$ (\cref{osq:hd:sub:dimensions}); 21 adds $\operatorname{gl.dim}A_d\ge d+2$ when $K\ne\Frac D$
+when $K\ne\Frac D$, with lower bounds $d+1$ and $2$ (\cref{osq:hd:sub:dimensions}); for $D=K$ the rank-one weak global dimension is $1$, as shown after \cref{osq:da:thm:lattice}. 21 adds $\operatorname{gl.dim}A_d\ge d+2$ when $K\ne\Frac D$
 (\cref{osq:da:thm:lattice}) and asks whether the bounds $\operatorname{gl.dim}A_d\ge d+2$ and $\operatorname{w.gl.dim}A_d\ge d+1$ are sharp,
 which is merged here. Cores over non-simplicial cones, arbitrary ideals and homological localizations stay open.
 

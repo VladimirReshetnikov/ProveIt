@@ -238,6 +238,16 @@ The inverse transition on `G_n(P) = P / J_U^(n)P` is multiplication by
 u_n, from stage n+1 to n. The cokernel of `y ↦ (y_n − u_n y_(n+1))`
 is the first derived inverse limit; it is not the ordinary inverse limit.
 
+In the top-Ext injection, D^ℕ is the product of all coefficient sequences
+and D^(ℕ) is its direct sum, consisting of the finitely supported sequences.
+The injection of their quotient is D-linear; it is not an assertion that
+an infinite monomial sum belongs to the finite-support core A_d.
+Projective dimension `pd_A M` and flat dimension `fd_A M` concern one
+module. Global and weak global dimension are the respective suprema over
+all A-modules. The bounds `gl.dim A_d ≥ d + 2` and
+`w.gl.dim A_d ≥ d + 1` obtained from rank-two lattices use `K ≠ Frac D`.
+For `d = 1`, `D = K`, weak global dimension is one while `pd_A K = 2`.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

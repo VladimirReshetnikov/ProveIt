@@ -272,6 +272,13 @@ The face-quotient resolutions now include an explicit free telescope:
 its kernel contracts even when the finite Koszul complexes are not
 resolutions. Dualizing gives a concrete product cokernel for the top
 Ext group, with every transition and quotient map checked.
+The nonvanishing proof now explains why a single finite polynomial would
+need infinitely many monomials. It gives exact projective dimensions
+`pd D = d + 1` and `pd Π_d = d`, and the lattice syzygies determine
+those of the lattice modules and their cyclic quotients. The stronger
+global-dimension bounds require `K ≠ Frac D`: for the coefficient-field
+case `A₁ = K[ℚ≥0]`, weak global dimension is exactly one even though
+`pd K = 2`.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
