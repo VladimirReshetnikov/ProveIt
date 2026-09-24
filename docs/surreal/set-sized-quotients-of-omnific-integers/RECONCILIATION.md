@@ -1147,3 +1147,70 @@ reports, 5,213 source-label references and 1,804 local Markdown
 destinations across 226 files pass, as does whitespace validation.
 No TeX source changed in the merge, so this review's clean 286-page
 article and 34-page catalogue remain current.
+
+## Rees presentations, first nonlinear degree and the every-degree family
+
+Reviewed `osq:tn:thm:rees`, `osq:tn:thm:degree` and
+`osq:tn:cor:alldegrees`, together with the product/scaling setup and
+immediate examples. All three numbered statements are unchanged.
+
+The Rees setup distinguishes the formal grading variable from the
+monomial used to scale a coefficient-lattice module into an ideal.
+The product law is proved by finite sums and a fixed nonzero lattice
+coefficient. The symmetric-algebra proof supplies a graded carrier,
+its multiplication and a finite reduction of every tail monomial by
+the linear relations. This proves the presentation and constant-polynomial
+injection explicitly, including the interpretation for class rings.
+The arithmetic kernel is identified degree by degree and shown to be
+all A-torsion, with its action factoring through constant extraction.
+
+Clarified that the nonlinear kernel is finitely generated as an ideal
+of the symmetric algebra. If nonzero, it is not finitely generated as
+an A-module: multiplying one nonzero homogeneous relation by arbitrary
+powers of a presentation variable gives unbounded degrees. This resolves
+the ambiguous comparison with the infinitely generated linear relation
+module, without changing a numbered assertion.
+
+The algebraic-degree proof treats nonmonic primitive polynomials,
+explains dehomogenization and Gauss divisibility, and homogenizes without
+localizing the polynomial ring. The constant-polynomial injection proves
+that the degree-d relation survives the linear quotient. The every-degree
+family uses Eisenstein irreducibility and equality of integer lattices,
+then derives the generator and kernel counts with their boundary cases.
+The added example alpha = sqrt(2)/2 shows explicitly that bounded ranks
+do not force the increasing power lattices to stabilize.
+
+Updated the root README, report guide, catalogue, shared notation and
+coverage ledger. These three results remain Pending in Lean; later Hom
+and derived classifications and full source reconciliation remain pending
+review. Standard symmetric and Rees constructions were checked against
+Stacks Tags 00DM and 052P. The existing finite tensor verifier's previous
+2,189-assertion run remains supporting evidence for its unchanged formulas;
+it was not rerun as a test of the new class-carrier arguments.
+
+Validation: three clean TeX passes for the article (287 pages) and
+catalogue (34 pages), with no warnings or box diagnostics; visual review
+of the presentation, homogenization, every-degree and catalogue pages.
+All 828 source labels, 1,656 auxiliary label/number pairs, 409 standard
+results and nine principal summaries retain their statements and
+numbering. All 4,626 statement anchors across 63 reports, 5,214 source-label
+references and 1,807 local Markdown destinations across 226 files pass,
+as does whitespace checking.
+
+## Synchronization of printed detector certificates
+
+Fast-forwarded b2cd705 to 0e4e94c, including 81c55c1, before the Rees
+review. Checked the three new modules against `odg:def:ex:certificates`
+and the preceding nonunit example. The generic polynomial identities
+and their augmentations instantiate on the actual omnific carrier:
+the printed witnesses for 1+x and 2+x have the stated constant
+coefficients, and nonzero purely infinite x makes 1+x a nonunit.
+The reciprocal-exponent example is constructed by its canonical normal
+form, with coefficient one at each positive reciprocal natural exponent,
+small reverse-well-ordered infinite support, and zero constant term.
+It is rejected by the detector. The ledger correctly distinguishes this
+normal-form construction from a separate analytic convergence theorem.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,595 jobs. The
+axiom audit checks 16,507 declarations using only propext,
+Classical.choice and Quot.sound. No TeX source changed in that merge.

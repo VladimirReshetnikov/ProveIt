@@ -5859,10 +5859,31 @@ nonzero tail (14).
 
 \subsection{Rees equations}\label{osq:tn:sub:rees}
 
-For $e>0$ the Rees algebra of $L(M)$ is $\mathcal R(L(M))=A\oplus\bigoplus_{n\ge1}L(M)^nT^n\subseteq F[T]$ ($F$ the fraction field);
-degreewise multiplication by $X^{ne}$ identifies it, and the symmetric algebra, with those of the ideal $J_e(M)$
-\cite[Tag~052P]{StacksRees}. An ideal is \emph{of linear type} if $\operatorname{Sym}\to\mathcal R$ is an isomorphism, and the
-\emph{first nonlinear degree} is the least degree of a nonzero element of the kernel after the linear relations are imposed (14).
+Write $F=\Frac(A)$. The Rees algebra of the fractional module $L(M)$ is
+\[
+ \mathcal R(L(M))=A\oplus\bigoplus_{n\ge1}L(M)^nT^n
+ \subseteq F[T].
+\]
+Here $T$ records the grading; it is independent of the monomial $X^e$
+used to place $L(M)$ inside $A$. The powers are finite sums of
+products. In fact $L(M)L(N)=L(MN)$: expanding products gives one
+inclusion, products of constants span $MN$, and any $u\in\Pi$ is
+$m_0(u/m_0)$ for a fixed nonzero $m_0\in M$, with $u/m_0\in\Pi$.
+Thus $L(M)^n=M^n+\Pi$ for $n\ge1$.
+
+For $e>0$, the degree-$n$ map $uT^n\mapsto X^{ne}uT^n$,
+with the identity in degree zero, identifies this algebra with the
+Rees algebra of $J_e(M)$ \cite[Tag~052P]{StacksRees}.
+The exponents add under multiplication, so this is a graded
+$A$-algebra isomorphism. The module isomorphism
+$L(M)\to J_e(M)$ likewise induces a graded isomorphism of symmetric
+algebras, compatible with their maps to the Rees algebras.
+An ideal is \emph{of linear type} if
+$\operatorname{Sym}\to\mathcal R$ is an isomorphism. Its
+\emph{first nonlinear degree} is the least degree of a nonzero
+element of this kernel, after the linear relations have been imposed
+(14). The polynomial variables below are presentation variables,
+distinct from the monomials in $A$.
 
 \begin{theorem}[All nonlinear Rees equations are arithmetic \src{14}]\label{osq:tn:thm:rees}
 Let $m_1,\dots,m_r$ be a basis of $M$ and $\mathfrak q_M=\ker\bigl(D[X_1,\dots,X_r]\to k[T],\ X_i\mapsto m_iT\bigr)$. The
@@ -5876,16 +5897,82 @@ $\mathfrak l_M=\bigl(hX_j-\tfrac{m_j}{m_1}hX_1:h\in\Pi,\ 2\le j\le r\bigr)\subse
 \]
 \end{theorem}
 \begin{proof}
-The symmetric algebra is presented by the linear relations of the generator map \cite[Tag~00DM]{StacksTensor}, which are those of
-\cref{osq:tn:thm:syzygy}(ii). In degree $n\ge1$, \cref{osq:tn:thm:powers}(ii) identifies the constant polynomials with
-$\operatorname{Sym}^n_DM$ and the kernel with $\ker\mathsf m_n$, the degree-$n$ part of $\mathfrak q_M$; in degree $0$ the map is the
-identity of $A$. The quotient embeds in the domain $F[T]$, so the kernel is all the torsion. A polynomial in $A[\mathbf X]$ acts on the
-kernel through its coefficientwise constant term, so generators over $D[\mathbf X]$ generate the kernel, and $D[\mathbf X]$ is
-Noetherian.
+The linear relations of the generator map are those of
+\cref{osq:tn:thm:syzygy}(ii). They give the usual symmetric-algebra
+presentation \cite[Tag~00DM]{StacksTensor}. We verify the presentation
+by a finite reduction, which also explains its meaning for the class
+rings in Setting~(L).
+
+Put $S_n=\operatorname{Sym}^n_DM$ and let
+$\mathsf m_n:S_n\to M^n$ be multiplication. By
+\cref{osq:tn:thm:powers}(ii), the positive-degree carrier is
+$G_n=\Pi\oplus S_n$; put $G_0=A$. Elements of the graded carrier
+are finite sequences of these components. For $n,m\ge1$, its
+multiplication is
+\[
+ (u,t)(v,s)=
+ \bigl(uv+u\mathsf m_m(s)+v\mathsf m_n(t),\ ts\bigr)
+ \in G_{n+m}.
+\]
+Degree zero acts by the coupled $A$-action already established.
+The identity $\mathsf m_{n+m}(ts)=\mathsf m_n(t)\mathsf m_m(s)$
+verifies associativity by expansion, and the formula agrees with
+products of symmetric tensors. Thus it realizes the symmetric algebra
+on an explicit carrier, also when $\Pi$ is a proper class.
+
+Send $X_i$ to $(0,m_i)\in G_1$. For a homogeneous polynomial $P$
+of positive degree $n$, split each coefficient into its ordinary
+constant and its tail, writing $P=P_0+P_\Pi$. Modulo
+$\mathfrak l_M$, every tail monomial reduces to
+\[
+ hX_{i_1}\cdots X_{i_n}
+ \equiv h\frac{m_{i_1}\cdots m_{i_n}}{m_1^n}X_1^n.
+\]
+Indeed, replace one variable at a time using a defining linear
+relation; every new coefficient remains in $\Pi$, since $\Pi$ is
+a $k$-vector space. Consequently
+$P\equiv P_0+(u/m_1^n)X_1^n$, where
+$u=P_\Pi(m_1,\ldots,m_r)\in\Pi$. Its image in $G_n$ is
+$(u,t_{P_0})$, with $t_{P_0}$ the element of $S_n$ represented by
+$P_0$. The ordinary symmetric monomials form a $D$-basis, so this
+image vanishes exactly when $P_0=0$ and $u=0$. Every $(u,t)\in G_n$
+has such a representative. In degree zero the map is the identity
+of $A$. This proves the first presentation and the injection of
+$D[\mathbf X]$ degree by degree. For class rings, the displayed
+quotient notation denotes this explicit carrier and kernel
+description; no quotient of a proper class is needed.
+
+In positive degree the map to the Rees algebra is
+$(u,t)\mapsto u+\mathsf m_n(t)$. Since $\Pi\cap k=0$, its kernel
+is exactly $(0,\ker\mathsf m_n)$. Under the constant-polynomial
+injection this is the degree-$n$ part of $\mathfrak q_M$.
+The latter ideal is homogeneous because $X_i\mapsto m_iT$ preserves
+degrees. It has no degree-zero or degree-one part, by injectivity
+of $D\to k$ and independence of the basis of $M$.
+
+Every kernel element is killed by $\Pi$. Conversely, any
+$A$-torsion element maps to zero because $F[T]$ is torsion-free
+over $A$. A fixed nonzero element of $\Pi$ kills the whole kernel,
+so the kernel is precisely all the $A$-torsion. Moreover, the action
+of $A[\mathbf X]$ on it factors through the coefficientwise map
+$\operatorname{ct}:A[\mathbf X]\to D[\mathbf X]$. Therefore any
+homogeneous ideal generators of $\mathfrak q_M$ generate the Rees
+kernel as an ideal of the symmetric algebra. The ring
+$D[\mathbf X]$ is Noetherian, so a finite subfamily suffices.
+Taking the inverse image of this kernel in $A[\mathbf X]$ gives
+$\mathfrak l_M+\mathfrak q_MA[\mathbf X]$, as asserted.
 \end{proof}
 
-The nonlinear kernel is finitely generated while, for $r\ge2$, the linear relation module is not finitely (set-) generated
-(\cref{osq:tn:thm:syzygy}); the two statements are compatible (14).
+The nonlinear kernel is finitely generated \emph{as an ideal of the
+symmetric algebra}. This is not finite generation as an $A$-module.
+In fact, if $0\ne q\in\mathfrak q_M$ is homogeneous, the elements
+$qX_1^j$ remain nonzero in the symmetric algebra and have unbounded
+degrees. Finitely many $A$-module generators have bounded degrees,
+since $A$ acts in degree zero, and hence cannot generate this kernel.
+For $r\ge2$, the linear relation module is itself not finitely
+(set-) generated (\cref{osq:tn:thm:syzygy}). These are statements
+about different scalar actions, and neither gives a finite
+presentation of $L(M)$ (14).
 
 \begin{theorem}[The algebraic degree is the first nonlinear degree \src{14}]\label{osq:tn:thm:degree}
 Let $\alpha\in k\setminus\Frac(D)$, $M=D+D\alpha$ and $J=(X^e,\alpha X^e)\subseteq A$.
@@ -5897,10 +5984,39 @@ $\operatorname{Sym}_AJ\to\mathcal R(J)$ is generated by $F_f$, and the first non
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-A homogeneous $G$ of degree $n$ lies in $\mathfrak q_M$ iff $G(1,\alpha)=0$. In the transcendental case $G=0$. In the algebraic case the
-minimal polynomial of $\alpha$ divides $g(Z)=G(1,Z)$ over $\Frac D$, and Gauss's lemma for the unique factorization domain $D$ and the
-primitivity of $f$ give $g=fh$ with $h\in D[Z]$, $\deg h\le n-d$; homogenizing, $G=F_f\cdot X^{n-d}h(Y/X)$. Conversely $F_f(1,\alpha)=0$.
-Apply \cref{osq:tn:thm:rees}; nonflatness and failure of finite presentation are \cref{osq:tn:prop:nonflat,osq:tn:thm:syzygy}.
+The ideal $\mathfrak q_M$ is homogeneous. For a homogeneous
+$G(X,Y)$ of degree $n$, evaluation gives
+$G(T,\alpha T)=T^nG(1,\alpha)$, so membership is equivalent to
+$g(\alpha)=0$, where $g(Z)=G(1,Z)$ has degree at most $n$.
+Dehomogenization is injective on this fixed homogeneous component:
+the coefficient of $Z^i$ in $g$ is the coefficient of $X^{n-i}Y^i$
+in $G$. Thus transcendence forces $G=0$ in every degree, and
+$\mathfrak q_M=0$.
+
+In the algebraic case, clearing denominators in the minimal
+polynomial and removing its content gives the primitive $f$ of
+degree $d$. It need not be monic; no integrality assumption on
+$\alpha$ is required. For nonzero $G\in\mathfrak q_M$, the minimal
+polynomial divides $g$ over $\Frac(D)$. Gauss's lemma over the
+unique factorization domain $D$ gives $g=fh$ with $h\in D[Z]$.
+In particular $n\ge d$ and $\deg h\le n-d$.
+
+If $f(Z)=\sum_{i=0}^d f_iZ^i$, its homogenization means the
+polynomial $F_f=\sum_{i=0}^d f_iX^{d-i}Y^i$. Similarly
+$H=X^{n-d}h(Y/X)$ is a polynomial, because $\deg h\le n-d$.
+Homogenizing the product identity gives $G=F_fH$ in $D[X,Y]$,
+without inverting $X$. Conversely $F_f(1,\alpha)=0$, so
+$\mathfrak q_M=(F_f)$. There is no nonzero component below degree
+$d$, and $F_f$ is nonzero in degree $d$.
+
+By \cref{osq:tn:thm:rees}, $F_f$ remains nonzero after imposing
+the linear relations: the constant-polynomial map into the
+symmetric algebra is injective. This proves the exact first
+nonlinear degree, as well as the presentation. Monomial scaling
+transfers the conclusion from $L(M)$ to $J$ and preserves grading.
+Finally $1,\alpha$ form a $D$-basis, so nonflatness and failure of
+finite presentation follow from
+\cref{osq:tn:prop:nonflat,osq:tn:thm:syzygy} in both cases.
 \end{proof}
 
 \begin{corollary}[A family of every degree \src{14; 17}]\label{osq:tn:cor:alldegrees}
@@ -5915,9 +6031,38 @@ for $n\ge1$
 where $\mu$ is the least number of generators. All these kernels are killed by $\Pi$.
 \end{corollary}
 \begin{proof}
-$Z^d-2$ is irreducible by Eisenstein at $2$, so $1,\alpha,\dots,\alpha^{d-1}$ are independent and higher powers reduce by $\alpha^d=2$; the
-lattice spanned by $1,\alpha,\dots,\alpha^n$ has rank $\min(n+1,d)$, and $J_d^n$ is the monomial scaling of its lattice module. Apply
-\cref{osq:tn:thm:syzygy}(i), \cref{osq:tn:thm:powers}(ii) and \cref{osq:tn:prop:higher}.
+Let $\alpha=2^{1/d}$ be the positive ordinary real root. The
+polynomial $Z^d-2$ is Eisenstein at $2$: its nonleading
+coefficients are divisible by $2$ and its constant coefficient is
+not divisible by $4$. Thus $\alpha$ has degree exactly $d$ over $\Q$,
+and \cref{osq:tn:thm:degree} gives the Rees presentation and first
+nonlinear degree.
+
+For $M=\Z+\Z\alpha$, products of $n$ basis elements give
+\[
+ M^n=\sum_{i=0}^n\Z\alpha^i
+     =\bigoplus_{i=0}^{\min(n,d-1)}\Z\alpha^i.
+\]
+The second equality holds as integer lattices, not just after
+tensoring with $\Q$: if $i=qd+r$ with $0\le r<d$, then
+$\alpha^i=2^q\alpha^r$, and the first $d$ powers are independent
+over $\Q$. The product law gives
+$J_d^n=\omega^n L(M^n)$. Its least number of generators is therefore
+$\rk_\Z M^n=\min(n+1,d)$ by \cref{osq:tn:thm:syzygy}(i).
+
+The ordinary symmetric and tensor powers of the rank-two lattice
+$M$ have ranks $n+1$ and $2^n$, respectively. Both product maps
+surject onto $M^n$. Their kernel ranks are consequently
+$n+1-\min(n+1,d)=\max(0,n-d+1)$ and
+$2^n-\min(n+1,d)$, by
+\cref{osq:tn:thm:powers}(ii) and \cref{osq:tn:prop:higher}.
+The same results identify these ordinary kernels with the kernels
+over $\Oz$ and show that $\Pi$ kills them. The $\Oz$-linear
+isomorphism given by multiplication by $\omega$ transfers these
+identifications to the tensor and symmetric powers of $J_d$.
+For $n=1$ both kernels vanish. When $d=2$, the excluded range
+$2,\ldots,d-1$ is empty and the first nonlinear equation is already
+quadratic.
 \end{proof}
 
 For $d=5$ the two-generated ideal $(\omega,2^{1/5}\omega)$ has powers needing $2,3,4,5,5,\dots$ generators, a symmetric kernel of ranks
@@ -5925,6 +6070,11 @@ $0,0,0,0,1,2,\dots$, and a nonzero antisymmetric tensor already in its tensor sq
 stages (14). Manuscript~17 proves the generator count $\min(n+1,d)$ independently, from the product law
 $J_g(M)J_h(N)=J_{g+h}(MN)$, for every $\alpha$ of degree $d$ over $\Frac(D)$, and adds that it is $n+1$ for every $n$ when $\alpha$ is
 transcendental; the lattices $M^n$ need not stabilize when their ranks do, and the count is not a reconstruction theorem (17).
+For instance, for $\alpha=\sqrt2/2$ the lattice
+$M=\Z+\Z\alpha$ has
+$M^2=\tfrac12\Z+\Z\alpha$. Every $M^n$ has rank two for
+$n\ge1$, but $\alpha^{2q}=2^{-q}$ supplies unbounded denominators,
+so this increasing chain of lattices cannot eventually stabilize.
 
 \subsection{Homomorphisms, ideal classes and duals}\label{osq:tn:sub:hom}
 
