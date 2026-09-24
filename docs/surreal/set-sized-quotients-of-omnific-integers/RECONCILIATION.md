@@ -2313,3 +2313,33 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 5,219 source-label references and 1,863 local Markdown destinations in
 226 files pass, as does whitespace checking. No incoming TeX changed;
 the 308-page article and 34-page catalogue remain current.
+
+## Synchronization retry: canonical polynomial syntax and type recognition
+
+The first push was rejected because origin/main advanced. Merged 9215b7c
+and reviewed its four modules against the computable-syntax paragraph of
+`odg:def:thm:saturation`. Nonempty signed coefficient lists with nonzero
+last entry correspond bijectively to nonzero integer polynomials, and
+the generated terms equal the previous native polynomial syntax.
+
+Structural formula equality covers bound variables. The parser extracts
+a candidate coefficient list, checks canonicity and regenerates the
+entire input formula; its correctness theorem concerns exact syntactic
+membership in the omitted type, not arbitrary logical equivalence.
+The recognizer and its exported decision procedure are computational.
+Coefficient lookup and canonical-list validity are separately proved
+primitive recursive in Mathlib's integer/list encodings.
+
+The ledger and README correctly keep the native-formula encoding and
+computability of the entire recognizer, the recursive-saturation
+consequence and the tailored number-field guard pending. Updated the
+earlier collapse row's stale blanket Pending reference to point to these
+specific mappings. No claim about encoded formula computability follows
+solely from the existence of the executable Lean decision procedure.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,677 jobs and
+its axiom audit passes for 17,524 declarations with only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors, 5,219
+source-label references and 1,867 local Markdown destinations in 226
+files pass, along with whitespace checks. No incoming TeX changed;
+the 308-page article and 34-page catalogue remain current.

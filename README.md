@@ -432,7 +432,10 @@ avoid every nonzero integer polynomial. Finitely many polynomials leave an
 ordinary natural witness at most their total degree, but every ordinary
 integer or Gaussian integer has an integer annihilator. These statements
 are proved for native ring formulas and for intermediate Hahn rings as well.
-The separate computability and recursive-saturation conclusions remain pending.
+An executable syntax checker recognizes exactly the formulas in this type;
+canonical coefficient-list validity is also proved primitive recursive.
+The connection to encoded formula computability and the recursive-saturation
+conclusion remain pending.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier
