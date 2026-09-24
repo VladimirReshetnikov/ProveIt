@@ -1,24 +1,30 @@
 # Omnific Groups and Lattices
 
-**Algebraic groups, elementary quotients, and missing lattice minima over the omnific integers**
-Merged research report, 23 September 2026, from four manuscripts written
+**Algebraic groups, elementary and Chevalley quotients, current Lie rings, and missing lattice minima over the omnific integers**
+Merged research report, 23 September 2026, from five manuscripts written
 independently on the same day: 06 (the base), 07 and 10 of batch 26 (placed in
-`f4c9504`), and 11, item 05 of batch 29 (placed in `66d7e55`), numbered here
-after its file prefix `11-`.
+`f4c9504`), 11, item 05 of batch 29 (placed in `66d7e55`), and 12, item 07 of
+batch 32 (placed in `7d04483`), each numbered here after its file prefix
+(`11-`, `12-`). Source 12 is not the source 07 of batch 26.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 70 pages
+article.pdf   the compiled report, 95 pages
 README.md     this guide
-10-shortest-vectors-provenance.md        source 10's provenance and evidence record, as delivered
-11-matrix-shadows-SOURCES_AND_SCOPE.md   source 11's repository snapshot, source roles and exclusions, as delivered
-11-matrix-shadows-PROOF_AUDIT.md         source 11's own proof review, as delivered
-11-matrix-shadows-BUILD_REPORT.md        source 11's build and rendering report, as delivered
+10-shortest-vectors-provenance.md          source 10's provenance and evidence record, as delivered
+11-matrix-shadows-SOURCES_AND_SCOPE.md     source 11's repository snapshot, source roles and exclusions, as delivered
+11-matrix-shadows-PROOF_AUDIT.md           source 11's own proof review, as delivered
+11-matrix-shadows-BUILD_REPORT.md          source 11's build and rendering report, as delivered
+12-chevalley-quotients-SOURCES_AND_SCOPE.md  source 12's repository snapshot, literature roles and non-claims, as delivered
+12-chevalley-quotients-PROOF_AUDIT.md        source 12's own proof-audit record, as delivered
+12-chevalley-quotients-BUILD_REPORT.md       source 12's build and PDF inspection record, as delivered
 code/
   06-algebraic-groups-verification.py   source 06 checks (1,108; stdout, file only with --output)
   07-matrix-dichotomy-checks.py         source 07 checks (23; always writes checks-results.json, see below)
   10-shortest-vectors-verify.py         source 10 checks (6 groups; stdout)
   11-matrix-shadows-verify.py           source 11 checks (2,111; always writes verification_results.json, see below)
+  12-chevalley-quotients-verify.py      source 12 checks (2,188; always writes verification_results.json, see below)
+  12-chevalley-quotients-Makefile       source 12's Makefile, as delivered (names its delivery files, see below)
 data/
   06-algebraic-groups-verification-results.txt   recorded run of the source 06 checks
   07-matrix-dichotomy-checks-results.json        recorded run of the source 07 checks
@@ -27,14 +33,19 @@ data/
   10-shortest-vectors-verification-output.txt    recorded run of the source 10 checks
   10-shortest-vectors-requirements.txt           sympy==1.14.0
   11-matrix-shadows-verification_results.json    recorded run of the source 11 checks
+  12-chevalley-quotients-requirements.txt        sympy==1.14.0
+  12-chevalley-quotients-verification_results.json  recorded run of the source 12 checks
 ```
 
 Every label in `article.tex` carries the prefix `ogl:`, with the sub-prefixes
 `ogl:alg:` (Part I, algebraic groups), `ogl:el:` (Part II, elementary groups),
 `ogl:ker:` (Part II, source 11's kernel structure, Steinberg groups and
-fragments, Sections 19–21, and its root-kernel lemmas in Section 9) and
-`ogl:lat:` (Part III, lattices); the report has 202 labels (168 before
-source 11 was added; none was renamed or removed). The text placed in
+fragments, Sections 19–21, and its root-kernel lemmas in Section 9),
+`ogl:lat:` (Part III, lattices) and `ogl:ch:` (Part IV, source 12's Chevalley
+groups and Lie rings, Sections 35–46); the report has 284 labels (168 before
+source 11 was added, 202 before source 12; 82 added with source 12; none was
+renamed or removed, and no earlier theorem, section or equation number
+changed, since Part IV follows the questions of Section 34). The text placed in
 `f4c9504` was source 06 with 55 bare labels; no ledger or report cited them,
 and they were renamed during the first write (for example `main:real` is
 `ogl:alg:thm:real`, `main:elementary` and `thm:invisible` are
@@ -46,9 +57,17 @@ since they list files under their original names; 11 delivered none. The three
 names: `omnific_matrix_groups.tex` and its 24-page PDF (not shipped),
 `verify.py` (shipped as `code/11-matrix-shadows-verify.py`) and
 `verification_results.json` (shipped as
-`data/11-matrix-shadows-verification_results.json`).
+`data/11-matrix-shadows-verification_results.json`). Source 12's
+`SHA256SUMS.txt` was dropped for the same reason. Its three
+`12-chevalley-quotients-*.md` files and its Makefile are verbatim and name
+files under their delivered names: `article.tex` and its 28-page PDF (source
+12's manuscript, not shipped), `verify.py` (shipped as
+`code/12-chevalley-quotients-verify.py`), `verification_results.json`
+(`data/12-chevalley-quotients-verification_results.json`), `requirements.txt`
+(`data/12-chevalley-quotients-requirements.txt`) and `SHA256SUMS.txt` (not
+shipped); the Makefile's targets therefore do not run from the shipped layout.
 
-## Four sources, one report
+## Five sources, one report
 
 | | Manuscript (pages) | Pin | Contributes |
 |---|---|---|---|
@@ -56,6 +75,7 @@ names: `omnific_matrix_groups.tex` and its 24-page PDF (not shipped),
 | **07** | *A Matrix-Size Dichotomy over the Omnific Integers* (25) | `fb5c4b5` | Base of Part II: the relative-kernel lemma, the proof of Theorem 9.1 by rescaling a set field (for maps defined only on the kernel), the collision criterion (Proposition 9.7); rank two: amalgam, free-product kernel, countable detection (Theorems 13.2, 14.1, 15.3); the trichotomy (Theorem 16.5); abelian characters (Section 17); cusp residues, non-elementary unipotents, stabilization (Section 18). Files `07-matrix-dichotomy-*`. |
 | **10** | *Shortest Vectors and Missing Infima over the Omnific Integers* (26) | `220784a` | All of Part III (Sections 22–32). Files `10-shortest-vectors-*`. |
 | **11** | *Arithmetic Shadows of Omnific Matrix Groups* (24) | `9693b28` | Theorem 9.1 again (its Theorem A), with a third proof by root-kernel reconstruction (Theorem 9.2, Corollary 9.3, Lemma 9.4); torsion-freeness, centerlessness, set-sized normal subgroups and conjugacy classes, finite subgroups, a congruence chain and common congruence elements, the profinite completion (Section 19); Steinberg groups (Section 20); set-sized fragments, cardinal and action thresholds and the exact-threshold criterion (Section 21). Files `11-matrix-shadows-*`. |
+| **12** | *Arithmetic Quotients of Omnific Chevalley Groups and Lie Rings* (28) | `7af8a30` | All of Part IV (Sections 35–46): the root-kernel ideal and set-image reconstruction for every root system without `A_1` component (Theorems 37.2, 37.4); intrinsic invisibility and the arithmetic quotient of `E_Φ` (Theorem 38.2, Corollary 38.3, Example 38.4); the ring–group equivalence (Theorem 38.5); perfectness, torsion, center, nonsimplicity (Section 39); Steinberg groups and isogeny forms (Section 40); a second proof of the amalgam theorem and the componentwise classification (Section 41); the Lie-ring classification (Section 42); the cardinal transfer (Section 43); explicit `C_2`, `G_2` matrices (Section 44); twelve questions (Section 45). Files `12-chevalley-quotients-*`. |
 
 - **Why one report.** 06 and 07 prove the same main theorem (the purely
   infinite elementary kernel for `n ≥ 3` has no set-sized images), each has a
@@ -63,7 +83,10 @@ names: `omnific_matrix_groups.tex` and its 24-page PDF (not shipped),
   rings; its ordinary backbone belongs to a surcomplex report about theta
   series, where its omnific content would be foreign. 11 proves the same main
   theorem a third time and adds structure around it, so it was added to Part II
-  rather than made a separate report.
+  rather than made a separate report. 12 generalizes Part II from `E_n` to
+  every elementary Chevalley group and answers this report's question
+  `ogl:q:roots`; it was added as Part IV, after the questions, so that no
+  earlier number changes.
 - **Printed once, three proofs kept.** Theorem 9.1 is stated in 06's generality
   (any unital `D ⊆ k`) and 07's intrinsic form (maps defined only on the
   kernel); 11 states it for `D = Z, Z[i]`, and its proof, like 07's, uses `D`
@@ -76,6 +99,25 @@ names: `omnific_matrix_groups.tex` and its 24-page PDF (not shipped),
   residual (credited at Theorem 16.4), finite-support counterexample (at
   Proposition 12.2) and action and representation corollaries (at
   Corollary 9.5, where its intertwiner statement is added) are not reprinted.
+- **Source 12, printed once** (Section 35.4). Its normal-form facts are
+  Lemma 2.1 and Proposition 2.4; its scalar theorem (its Theorem 4.3) is the
+  sibling report's `osq:thm:universal`(ii),(iii), proved by the scaled-field
+  collision (`osq:lem:collision`; its compression is Lemma 8.3's `Φ_δ`); for
+  `Φ = A_{n−1}` its main theorem is Theorem 9.1(iii) and its proof is 11's
+  third route, not a fourth independent proof. Its general statements extend,
+  and credit, `ogl:ker:thm:rootkernel`, `ogl:el:lem:normalgen`,
+  `ogl:el:rem:ring`, `ogl:ker:thm:torsionfree`, `ogl:ker:thm:center`,
+  `ogl:ker:cor:normalsets`, `ogl:ker:prop:finitesubgroups`,
+  `ogl:ker:thm:steinberg`, `ogl:ker:cor:transfer`(ii) and
+  `ogl:ker:prop:exactthreshold`. In rank one its amalgam theorem is Theorem 13.2,
+  and its leading-term proof is kept as a marked second route; its free
+  product, equivariant functional, countable detection and nonexistence of a
+  universal quotient are Theorems 14.1, 15.3, Lemma 15.1 and Corollary 15.5
+  (07) and are credited, not reprinted (its countable target is, for `D = Z`,
+  isomorphic to 07's). Its ring collision criterion is printed (Proposition
+  43.2) as `osq:lem:collision`(i) plus a factorization; its finite-support,
+  subgroup and standard-part remarks are recalled for all root systems in
+  Section 44 with the earlier sources credited.
 - **Printed by citation, not reprinted.** `O_n(Oz)` (`odg:cor:orthogonal`); the
   existence of unipotent families for `x² + y² − 3z²` (`odg:cor:unipotent`; 06's
   rational-anisotropy argument and explicit matrix are kept); from the
@@ -100,10 +142,27 @@ names: `omnific_matrix_groups.tex` and its 24-page PDF (not shipped),
   the omnific Diophantine report uses *primitive* for "no common nonunit
   divisor" (`odg:thm:realray`); further renames avoid clashes of `G`, `K`, `T`,
   `X`, `Y`, `H`, `F`, `V_j`, `D_i`.
+- **Source 12's renamed symbols** (Section 35.2 and Table 3). `Φ` is a root
+  system only; 12's exponent compression `T_δ` is Lemma 8.3's `Φ_δ` and is not
+  used in Part IV. 12's reconstruction letters `U, h, J, T(a), R_h, τ` are
+  `Σ, φ, J_φ, ϑ_φ(a), R_φ, ϑ_φ` as in Theorem 9.2 (`τ` stays the monomial
+  `ω^{2δ}` of Lemma 8.5); its rank-one `G_0, B_0, B(A)` are `G_D, C_D, B_D`;
+  its detection field `F ∈ {Q, Q(i)}` is `K_D` and its set field `F` is `L`
+  (`F` stays the ambient field); its Lie lattice `Λ`, `𝔤 = Λ⊗Q`, `L(A)` are
+  `𝔩`, `𝔩_Q`, `𝔩(A)` (`Λ` stays an ordinal or a Euclidean lattice); its basis
+  `b_i`, integers `n_{ℓij}`, target `M`, functional `λ` and `sl_2` basis
+  `e, f, h` are `𝖻_i`, `z_{lij}`, `𝔥` (fraktur H), `ϖ`, `𝖾, 𝖿, 𝗁`; its
+  appendix matrices `N, M, L, K` and `A, …, F`, `A_−`, `B_−`, `H_A`, `H_B` are
+  `𝖭_1, …, 𝖭_4`, `𝖦_1, …, 𝖦_6`, `𝖦_1^−`, `𝖦_2^−`, `𝖧_1`, `𝖧_2`; its
+  congruence subgroup `N` at `q = 1+ω` is `P_Φ⟨1+ω⟩` (`q` written out, as for
+  11); its collision data `u, v, μ` are `w, v, ν`. `P_Φ`, `P_Φ^St` extend
+  `P_n`, `P_n^St` (`P_{A_{n−1}} = P_n`). Roots are `α, β, γ` in Part IV, where
+  exponents are written `η`.
 - **Foundations.** 06 and 07 state Gödel–Bernays with global choice, 10 NBG, 11
-  allows Gödel–Bernays with global choice; no proof uses global choice (the
-  Hartogs ordinal replaces a cardinal above the target), and 11's set-sized
-  fragments give ordinary ZFC statements.
+  allows Gödel–Bernays with global choice, 12 Gödel–Bernays with a ZFC set
+  part (global choice harmless but unnecessary, no inaccessible); no proof uses
+  global choice (the Hartogs ordinal replaces a cardinal above the target), and
+  11's set-sized fragments give ordinary ZFC statements.
 
 ## Results added in the merge
 
@@ -137,6 +196,34 @@ Each is marked `[merge]` and has a complete proof.
   argument, in each ring of `osq:thm:thresholds` the least detecting group of
   every nonidentity kernel element, `n ≥ 3`, has the cardinality of the ring.
   Together with Proposition 21.12 this partly answers Question 34.4.
+- **Exact thresholds for every root system** (Corollary 43.7, batch 32): source
+  12's cardinal transfer (Theorem 43.3, Corollary 43.4), applied with Proposition
+  21.12(i) and the proof of Corollary 21.13, gives the same exact values
+  (`κ^{<κ}` in `R_{<κ}`, `𝔠` at `ℵ1`, `|A_0|` in the five models) for the
+  elementary and Steinberg kernels of every root system without `A_1`
+  component, and for perfect current Lie rings `𝔩 ⊗ Π_{<κ}`; this extends the
+  partial answer to Question 34.4.
+- **Bounded supports** (Corollary 44.1, batch 32): for uncountable `λ`, the
+  quotient theorems of Part IV hold for the rings `A^{<λ}_{D,k}` of normal forms
+  with fewer than `λ` terms (the sibling report's `osq:thm:support`(i) with
+  `D = Z` makes `Π_k^{<λ}` set-invisible, and 12's proofs use nothing else);
+  they fail for finite supports. In particular `E_Φ(Z)` is the universal
+  set-sized quotient of `E_Φ(O_κ)`, `O_κ` the omnific integers with fewer than
+  `κ` terms of the report on first `κ` coefficients.
+- **The kernel form of the classification** (Theorem 41.1(ii)): `P_Φ` is
+  set-invisible iff `Φ` has no `A_1` component; an `A_1` factor `P_2` is
+  detected by 07's countable maps. Immediate from 12's Theorem B and 07's
+  Theorem 15.3; recorded because Question 34.3 asks for the kernel.
+- **Unipotent lattices** (Remark 42.8): nilpotent Lie lattices are not
+  perfect, so their current Lie rings have no universal quotient, the Lie
+  counterpart of the characters of `UT_n(Π_k)` (Theorem 6.2); a comparison
+  only.
+
+Not results, and not marked: status notes of batch 32 on Questions 34.3
+(answered for split elementary groups), 34.4, 34.1 and 34.2, a pointer in 11's
+non-claim 11.17, a correction of the Steinberg sentence of Section 20 ("no other
+statement … in the collection"), and a pointer in Remark 9.6 to 12's
+equivalence.
 
 ## What the report claims
 
@@ -203,10 +290,32 @@ strictly positive exponents, `B_k = k ⊕ Π_k`, `A_{D,k} = D ⊕ Π_k`.
   hierarchy (Corollary 29.1), no Gauss or `δ`-LLL basis for ordinary
   `δ ∈ (1/4,1]`, Gaussian `δ ∈ (1/2,1]` (Theorems 30.3, 30.4), and a closed
   uniformly separated module without a shortest vector (Proposition 31.1).
+- **Part IV (12).** Let `Φ` be a finite reduced root system, `E_Φ` the
+  elementary subgroup of the split simply connected group, `D ⊆ k` any unital
+  subring. If `Φ` has no `A_1` component, the common kernel of the root maps of
+  any homomorphism is an ideal (Theorem 37.2; only `2Π_k = Π_k` is used, not
+  `2 ∈ A^×`), every homomorphism from `P_Φ = ker(ct : E_Φ(A_{D,k}) → E_Φ(D))` to
+  a set-sized group is trivial, and `E_Φ(D)` is the universal set-sized quotient
+  (Theorem 38.2, Corollary 38.3), including `C_2`, `G_2`, `F_4`, `E_6`, `E_7`,
+  `E_8` (Example 38.4), for Steinberg groups (Theorem 40.1) and for other split
+  isogeny forms, whose relative kernels are isomorphic to `P_Φ`
+  (Proposition 40.3). For a class ring `I` with `2I = I`, ring invisibility of
+  `I` and set-invisibility of the kernel over its Dorroh unitization are
+  equivalent (Theorem 38.5). `P_Φ` is perfect (each root element a product of
+  at most three commutators), torsion-free, centerless, without nontrivial
+  set-sized normal subgroup, and not simple (Section 39). For `D = Z, Z[i]`,
+  `E_Φ(A)` has a universal set-sized quotient iff `Φ` has no `A_1` component,
+  so `A_1 × A_1` fails (Theorem 41.1). For a Lie lattice `𝔩`, the current Lie
+  ring `𝔩 ⊗ A_{D,k}` has a universal set-sized Lie-ring quotient iff `𝔩 ⊗ Q`
+  is perfect, and it is then `𝔩 ⊗ D` (Theorems 42.3, 42.6); so
+  `sl_2(Oz) → sl_2(Z)` is universal while `E_2(Oz)` has none. For every
+  infinite `κ`, ring invisibility below `κ` transfers to groups and Lie rings,
+  with exact detecting size `κ` when `|A| = κ` (Theorem 43.3, Corollary 43.4,
+  Theorem 43.5).
 
 ## What the report does not claim
 
-- All four sources are AI-assisted, unrefereed drafts that call their main
+- All five sources are AI-assisted, unrefereed drafts that call their main
   results proposed contributions; priority is not certified, no named
   conjecture is claimed settled, and nothing is formalized:
   `docs/FORMALIZATION.md` maps none of these labels to Lean (its inventory rows
@@ -231,14 +340,37 @@ strictly positive exponents, `B_k = k ⊕ Π_k`, `A_{D,k} = D ⊕ Π_k`.
   counterexample to extending contraction, and even has a reduced basis); the
   strongest coinitiality statement fails in fixed Hahn fields; the reduction is
   not an algorithm for arbitrary surreal inputs; no surreal volume theory.
+- Source 12 (Part IV) concerns elementary, root-generated groups:
+  `E_Φ(Oz) = G_Φ(Oz)` is not asserted, and nothing is said about `SL_n(A)` or
+  elementary generation. It computes no `K_2`; its Steinberg kernel is the
+  kernel of the constant term, not of `St_Φ → E_Φ`, and is not claimed
+  torsion-free or centerless. No normal-subgroup classification, no global
+  commutator width (the bound three is per root element), no global
+  exponential group–Lie correspondence. The rank-one converse is in the
+  simply connected elementary category and for `D = Z, Z[i]` only. Subgroups of
+  invisible groups need not be invisible. The transfer uses no regularity, but
+  collision data in a Hahn fragment may need it; actions need `2^{|X|} < κ`, not
+  `|X| < κ`. No congruence-subgroup claim, Gaussian or other. Finite support
+  destroys the theorem; `ct` is not the standard part; the converse of the
+  ring–group equivalence uses only the Dorroh unitization. Root systems were
+  checked by computer only up to rank 8; the finite checks are not proofs;
+  nothing is in Lean; its repository review was targeted and its negative
+  search is not proof of absence (and is stale, see below); priority is not
+  certified and no named conjecture is claimed solved.
 - Appendix B keeps every limitation stated by a source, numbered per source:
-  06 (23 items), 07 (20), 10 (21), 11 (24), and 10 for the merge (98 in all).
-  Section 34 lists seven questions: one answered negatively within the report
-  (the rank-two question of 06, asked again by 11, answered by 07), one partly
-  answered by the merge (Question 34.4, thresholds at set-sized stages: answered
-  for `n ≥ 3` in `R_{<κ}` and in the sibling report's five models, open for other
-  exponent groups and supports), five open; `odg:q:affine` is answered here for
-  group schemes only. Its curve part is now answered in the Diophantine report
+  06 (23 items), 07 (20), 10 (21), 11 (24), 12 (28), and 15 for the merge (131
+  in all). Section 34 lists seven questions: one answered negatively within the
+  report (the rank-two question of 06, asked again by 11, answered by 07), one
+  answered by source 12 for split elementary groups (Question 34.3, other root
+  systems: exactly the systems without `A_1` component, with twisted, nonsplit
+  and full groups still open), one partly answered by the merge (Question 34.4,
+  thresholds at set-sized stages: answered in `R_{<κ}` and in the sibling
+  report's five models, for `n ≥ 3` and, since batch 32, for every root system
+  without `A_1` component; open for other exponent groups and supports), four
+  open. Section 45 lists source 12's twelve questions: one partly answered by
+  the merge (Question 45.5, as Question 34.4), eleven open (Question 45.1
+  contains Question 34.1). `odg:q:affine` is answered here for group schemes
+  only. Its curve part is now answered in the Diophantine report
   itself (status notes of batch 31 in Remark 4.6 and after Question 34.7), except
   the real case of `odg:sg:q:real`; higher dimension stays open.
 - The finite checks verify finite identities and examples only.
@@ -248,7 +380,8 @@ strictly positive exponents, `B_k = k ⊕ Π_k`, `A_{D,k} = D ⊕ Π_k`.
 Sources 06, 07 and 10 pin commits that precede the written omnific reports (at
 `220784a` and `fb5c4b5` the omnific directories held only their placed base
 manuscripts, with bare labels); source 11 pins `9693b28`, at which this report
-was already written. Appendix A.3 lists the corrections.
+was already written; source 12 pins `7af8a30`, at which it held sources 06,
+07, 10 and 11. Appendix A.3 lists the corrections.
 
 - 06's "geometric collision construction in Section 3" and 07's "scaled-field
   collision" of the quotient article are now `osq:lem:division` and
@@ -278,6 +411,18 @@ was already written. Appendix A.3 lists the corrections.
   `Oz` was added to that report later (`osq:rel:lem:embedding`). The sibling
   report's exact ring thresholds, which 11 says "motivate" its criterion,
   satisfy its hypothesis (`osq:prop:card11`, present at the pin).
+- 12 says an indexed search of the repository for "Chevalley" found no match.
+  That is false as a description of the tree: at its pin this article contains
+  the word twice (lines 3822 and 3829 there), in Question 34.3
+  (`ogl:q:roots`) and its status note, which asked for exactly 12's extension;
+  12 answers that question. Its restricted novelty statement is unaffected:
+  the tree held no theorem for root systems other than `A_{n−1}` and no current
+  Lie ring. 12 read this guide and 11's proof audit, not the article; its
+  account of the antecedents (type `A`, rank two, kernels, Steinberg groups,
+  cardinal arguments) is accurate, though it does not mention Proposition
+  21.12 or Corollary 21.13.
+- Section 20's sentence "No other statement about Steinberg groups or `K_2`
+  appears in the collection" now points to Part IV's Theorem 40.1.
 - **Citations checked for this report.** Mirzaii–Torres (arXiv:2401.06330v3):
   Corollary 3.3 (credited to Cohn) gives `E_2(R)^ab ≅ R/M` for rings universal
   for `GE_2`, Example 3.4(i) gives `R/M = R/12Z` when `R^× = {±1}`, and
@@ -288,7 +433,7 @@ was already written. Appendix A.3 lists the corrections.
   Corollary 17.25, *Introduction to Shimura Varieties* Theorem 1.16 and
   Example 1.17(c). 06's reference to Sections 22–23 of Milne's *Reductive
   Groups* was not checked, nor were 11's Bass–Milnor–Serre and Voronetsky
-  citations.
+  citations, nor 12's Geck, Hazrat–Vavilov–Zhang, Cohn and Serre citations.
 
 ## Relations to neighbouring reports
 
@@ -309,7 +454,15 @@ was already written. Appendix A.3 lists the corrections.
   Proposition 11.1 is the group form of `osq:thm:finite`; 11's fragments are
   that report's `R^{11}_κ`, and Proposition 21.12 and Corollary 21.13 transfer
   its exact thresholds (`osq:prop:card11`, `osq:thm:thresholds`) from rings to
-  groups.
+  groups. Part IV (12) uses `osq:thm:universal`(iii) as the ring input for every
+  root system without `A_1` component and for current Lie rings, proves that
+  ring and group invisibility are equivalent for Dorroh unitizations
+  (Theorem 38.5), and with `osq:prop:card11` gives Corollary 43.7.
+- [`first-kappa-coefficients`](../../surcomplex/first-kappa-coefficients/)
+  (batch 32): its omnific integers `O_κ` with fewer than `κ` terms are the
+  sibling report's `A^{<κ}_{Z,R}`, so for uncountable `κ` Corollary 44.1 makes
+  `E_Φ(Z)` the universal set-sized quotient of `E_Φ(O_κ)` for every `Φ` without
+  `A_1` component. Cited by name only (Sections 33, 44.1); nothing is imported.
 - [`euclidean-three-space`](../euclidean-three-space/), Part III: the rotation
   groups' standard-part theorems (`e3:cut:thm:smallquotient`,
   `e3:cut:thm:allranks`) are parallel; different rings, kernels and mechanisms;
@@ -337,12 +490,13 @@ auxiliary files.
 
 ## Reproducing the finite checks
 
-The first three scripts need Python 3 and SymPy (the recorded runs used Python
-3.13.5 and SymPy 1.14.0); source 11's needs only the Python standard library
-(3.10 or later). The reruns for this report used Python 3.14.4 and SymPy 1.14.0
-and passed. Run them **on a copy**, because 07's script always writes
-`checks-results.json` and 11's always overwrites `verification_results.json`
-next to themselves:
+The first three scripts and source 12's need Python 3 and SymPy (the recorded
+runs used Python 3.13.5 and SymPy 1.14.0); source 11's needs only the Python
+standard library (3.10 or later). The reruns for this report used Python 3.14.4
+and SymPy 1.14.0 and passed. Run them **on a copy**, because 07's script always
+writes `checks-results.json`, and 11's and 12's always write
+`verification_results.json`, next to themselves (so 11's and 12's overwrite
+each other's output in one directory; run 12's in a directory of its own):
 
 ```
 cp -r code data /path/to/scratch/ && cd /path/to/scratch
@@ -351,14 +505,27 @@ python code/06-algebraic-groups-verification.py            # prints; add --outpu
 python code/07-matrix-dichotomy-checks.py                  # prints; writes code/checks-results.json
 python code/10-shortest-vectors-verify.py                  # prints only
 python code/11-matrix-shadows-verify.py                    # prints; writes code/verification_results.json
+mkdir run12 && cp code/12-chevalley-quotients-verify.py run12/
+python run12/12-chevalley-quotients-verify.py              # prints; writes run12/verification_results.json
 ```
+
+Do not run 12's with `python -O`: it refuses to run without assertions. Its
+shipped Makefile (`code/12-chevalley-quotients-Makefile`) targets the delivery
+names `article.tex` and `verify.py` and does not work from the shipped layout.
 
 Expected: `TOTAL: 1108 exact checks passed.` (06); `PASS: 23 checks, including
 120 exact target-word examples.` (07; the written JSON equals
 `data/07-matrix-dichotomy-checks-results.json` except for the recorded Python
 version); `All finite checks passed.` with six `PASS` lines (10); a JSON report
 with `"status": "PASS"` and `"total_checks": 2111` in twelve families, equal in
-content to `data/11-matrix-shadows-verification_results.json` (11). The checks do not verify Hahn
+content to `data/11-matrix-shadows-verification_results.json` (11); a JSON
+report with `"status": "passed"` and `"total_checks": 2188` in twelve families
+(1,868 of them one root-reconstruction witness per root of `A_ℓ, B_ℓ, C_ℓ`,
+`2 ≤ ℓ ≤ 8`, `D_ℓ`, `4 ≤ ℓ ≤ 8`, `G_2`, `F_4`, `E_6`, `E_7`, `E_8`; 240 rank-one
+leading-term, nonvanishing and determinant checks on 80 polynomial words; 80
+matrix identities, divided powers, root counts and `sl_2` brackets), equal to
+`data/12-chevalley-quotients-verification_results.json` except for the recorded
+Python version (12; Appendix C). The checks do not verify Hahn
 summability, support gaps, class-size or cardinal arguments, algebraic-group
-structure, reduced-word arguments, or any minimization or coinitiality
-theorem; those are proved in the text.
+structure, reduced-word arguments, the coverage lemma in every rank, or any
+minimization or coinitiality theorem; those are proved in the text.

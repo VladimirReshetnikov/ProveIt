@@ -13,7 +13,7 @@
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
  urlcolor=MidnightBlue,pdftitle={Omnific Groups and Lattices},
  pdfauthor={Merged research report for the Surreal project},
- pdfsubject={Algebraic groups, elementary quotients, and lattice minima over the omnific integers}}
+ pdfsubject={Algebraic groups, elementary and Chevalley quotients, current Lie rings, and lattice minima over the omnific integers}}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \pagestyle{fancy}
 \fancyhf{}
@@ -128,20 +128,20 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{0mm}
+\vspace*{-8mm}
 {\Large Merged research report for the Surreal project\par}
-\vspace{6mm}
-{\huge\bfseries Omnific Groups and Lattices\par}
-\vspace{5mm}
-{\Large Algebraic groups, elementary quotients,\\ and missing lattice minima
-over the omnific integers\par}
-\vspace{5mm}
-{\large Built from four manuscripts dated September 23, 2026\par}
 \vspace{4mm}
+{\huge\bfseries Omnific Groups and Lattices\par}
+\vspace{3mm}
+{\large Algebraic groups, elementary and Chevalley quotients, current Lie
+rings,\\ and missing lattice minima over the omnific integers\par}
+\vspace{3mm}
+{\large Built from five manuscripts dated September 23, 2026\par}
+\vspace{2mm}
 \begin{minipage}{\textwidth}
 \begin{abstract}
 We study matrix groups and lattices over the omnific integers $\Oz$ and the
-Gaussian omnific integers $\GOz$. Three phenomena are treated, each in its
+Gaussian omnific integers $\GOz$. Four phenomena are treated, each in its
 own part and under its own hypotheses.
 
 \emph{Algebraic groups.} A real algebraic group acquires no nonconstant
@@ -183,7 +183,14 @@ no surreal infimum, their lower bounds are an explicit cut, and one monomial
 vector improves every set-sized family at once; usual Gauss and LLL reduced
 bases then do not exist.
 
-This report merges four independently written manuscripts; it states which
+\emph{Chevalley groups and Lie rings.} The result for $n\ge3$ holds for the
+elementary and Steinberg groups of every root system without an $A_1$
+component, including $G_2$ and the exceptional types; over $\Oz$ and $\GOz$ a
+universal set-sized quotient exists exactly when there is no $A_1$ component. A
+current Lie ring $\mathfrak l\otimes\Oz$ has one exactly when $\mathfrak l\otimes\Q$
+is perfect.
+
+This report merges five independently written manuscripts; it states which
 source proved each result, prints shared results once, and keeps every
 source's limitations. It is an AI-assisted draft: it has not been refereed,
 and nothing in it has been formalized in Lean.
@@ -194,7 +201,8 @@ and nothing in it has been formalized in Lean.
 \footnotesize
 Sources: manuscripts 06 (the base text) and 10, pinned to repository commit
 \texttt{220784a}, and 07, pinned to \texttt{fb5c4b5}; manuscript 11, added
-later and pinned to \texttt{9693b28}; their titles are in
+later and pinned to \texttt{9693b28}; manuscript 12, added last and pinned
+to \texttt{7af8a30}; their titles are in
 \cref{ogl:sub:provenance}. Results already printed elsewhere in the
 collection are cited, not reprinted. The provenance of every section is
 recorded in Appendix~\ref{ogl:app:provenance}; non-claims are collected in
@@ -221,12 +229,17 @@ any ordinary set, when no algebraicity or continuity is imposed on the action
 (\cref{ogl:el:part})?
 \item Does a positive-definite form on $\Oz^n$ have a shortest vector, and
 what replaces it when it does not (\cref{ogl:lat:part})?
+\item Which root systems, and which Lie lattices, carry the obstruction of (II)
+over to elementary Chevalley groups and current Lie rings
+(\cref{ogl:ch:part})?
 \end{enumerate}
 The answers reveal three distinct mechanisms: geometric rigidity controlled by
 unipotent elements; an abstract representation obstruction controlled by the
 supply of surreal exponent scales and a third matrix index; and a competition
 between the constant-term retraction and monomial vectors lying on irrational
-kernels.
+kernels. Question (IV) locates the second mechanism: the third index is an
+instance of a root system without $A_1$ component, and for Lie rings the
+condition becomes rational perfection.
 
 \subsection{Principal results}\label{ogl:sub:results}
 
@@ -328,6 +341,25 @@ there (\cref{ogl:lat:sub:tate}).
 Gauss-reduced basis and no $\delta$-LLL basis with ordinary
 $\delta\in(1/4,1]$ exists, and a Gaussian variant holds for $\delta\in(1/2,1]$
 (\cref{ogl:lat:thm:nolll,ogl:lat:thm:gaussianlll}).
+\item \textbf{Chevalley groups and current Lie rings} \src{12}. For every unital
+$D\subseteq k$ and every finite reduced root system $\Phi$ without $A_1$
+component, every homomorphism from $P_\Phi=\ker(\ct:E_\Phi(\A_{D,k})\to E_\Phi(D))$
+to a set-sized group is trivial, so $E_\Phi(D)$ is the universal set-sized
+quotient, and likewise for Steinberg groups and other isogeny forms
+(\cref{ogl:ch:thm:intrinsic,ogl:ch:cor:universal,ogl:ch:thm:steinberg,ogl:ch:prop:isogeny});
+$P_\Phi$ is perfect, torsion-free, centerless and not simple
+(\cref{ogl:ch:sec:structure}). For $D=\Z,\Z[i]$, $E_\Phi(\A_{D,k})$ has a
+universal set-sized quotient exactly when $\Phi$ has no $A_1$ component
+(\cref{ogl:ch:thm:components}). A current Lie ring $\mathfrak l\otimes\A_{D,k}$
+has one exactly when $\mathfrak l\otimes\Q$ is perfect
+(\cref{ogl:ch:thm:liepositive,ogl:ch:thm:lienegative}). Ring and group
+invisibility are equivalent for Dorroh unitizations
+(\cref{ogl:ch:thm:equivalence}), and detection thresholds transfer to every
+infinite cardinal; in the rings of \cref{ogl:ker:sec:fragments} the exact value
+$\kappa^{<\kappa}$ holds for every such $\Phi$, and countably supported
+coefficients already suffice \mergetag{}
+(\cref{ogl:ch:cor:thresholds,ogl:ch:cor:support}). This answers \cref{ogl:q:roots} for split
+elementary groups.
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a claim
@@ -358,6 +390,17 @@ which this report had already been written. Source 11 was written without
 knowledge of this report (Appendix~\ref{ogl:app:stale}); its main theorem is
 \cref{ogl:el:thm:invisible} again, and its other results are new to the
 collection.
+
+A fifth manuscript was added last. It is item 07 of the batch placed in commit
+\texttt{7d04483}, shipped under the file prefix \fn{12-chevalley-quotients-},
+and is called source 12 here, after that prefix; it is not the source 07 above.
+Its title is \emph{Arithmetic Quotients of Omnific Chevalley Groups and Lie
+Rings} (28 pages: a title page, a contents page and 26 numbered pages). It is
+dated September 23, 2026, and pins \texttt{7af8a30} (31 commits before its
+placement), at which this report already contained sources 06, 07, 10 and 11.
+It read this report's guide and source 11's proof audit, credits this report's
+type-$A$, rank-two, Steinberg and cardinal results, and extends them to all
+root systems and to current Lie rings (\cref{ogl:ch:part}).
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -393,6 +436,13 @@ congruence chain and common congruence elements, the profinite completion
 (\cref{ogl:ker:sec:structure}); Steinberg groups (\cref{ogl:ker:sec:steinberg});
 set-sized fragments, cardinal and action thresholds, and the exact-threshold
 criterion (\cref{ogl:ker:sec:fragments}).\\
+12 & \emph{Arithmetic Quotients of Omnific Chevalley Groups and Lie Rings} (28 pp.) &
+All of \cref{ogl:ch:part}: the root-kernel ideal for every root system without
+$A_1$ component, the arithmetic quotient of elementary Chevalley and Steinberg
+groups, the ring--group equivalence, the structure of the relative kernel,
+isogeny forms, the componentwise classification, the Lie-ring
+classification, the cardinal transfer, explicit rank-two matrices, and a second
+proof of the rank-two amalgam theorem.\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -439,6 +489,19 @@ manuscript 11, not source 11 here, and the ring is written $R_{<\kappa}$
 below); its ring-level facts are cited there,
 and the merge combines them with 11's exact-threshold criterion
 (\cref{ogl:ker:prop:exact}).
+\item Source 12 is added as a new \cref{ogl:ch:part} after the questions,
+with the label sub-prefix \texttt{ogl:ch:}, so that no earlier number changes.
+For $\Phi=A_{n-1}$ its theorems are those of \cref{ogl:el:part} and are not
+reprinted; its general statements are printed with the type-$A$ results
+credited at each (\cref{ogl:ch:sub:once}). Its scalar theorem is the sibling
+report's \replabel{osq:thm:universal} and is cited. Its leading-term proof of
+the rank-two amalgam theorem is kept as a second route
+(\cref{ogl:ch:sec:rankone}); its rank-two free product, additive functional and
+countable detection are 07's and are credited, not reprinted.
+\item Source 12's answer to \cref{ogl:q:roots} is recorded there, and the merge
+combines its cardinal transfer with \cref{ogl:ker:prop:exact} to extend the
+exact thresholds to every root system without $A_1$ component
+(\cref{ogl:ch:cor:thresholds}).
 \end{itemize}
 Results added by the merge carry the tag \mergetag{} and have complete proofs.
 Appendix~\ref{ogl:app:provenance} records, section by section, which source proved
@@ -453,7 +516,9 @@ used, and no proof printed here uses it. Source 11 allows G\"odel--Bernays
 class theory with global choice and uses choice only for sets (a successor
 cardinal above a target, and the equivalence of reverse well ordering with the
 absence of increasing sequences); its set-sized fragments give ordinary ZFC
-statements. Each individual surreal, normal-form
+statements. Source 12 works in G\"odel--Bernays class theory with a ZFC set
+part, notes that global choice is harmless but unnecessary, and assumes no
+inaccessible cardinal. Each individual surreal, normal-form
 support, matrix, tuple and finite word is a set. A homomorphism from a class
 group is a class function satisfying the group identities; statements about
 all such homomorphisms are read one class function at a time, and no set of
@@ -538,6 +603,11 @@ $K_j$, $L_j$, $K_F$ & Prefix kernels, their integral points $K_j\cap D^n$, scala
 $\Um(\A^n)$ & Unimodular vectors (coordinates generate the unit ideal).\\
 $\mathrm{Low}_j$ & Vectors of energy $\ll\varepsilon_j$.\\
 $\Delta_j$ & Gram--Schmidt energies.\\
+\multicolumn{2}{@{}l}{\emph{Part IV} (reserved letters in \cref{ogl:ch:sub:letters})}\\
+$\Phi$, $\alpha,\beta$ & A finite reduced root system (not the rescaling $\Phi_h$); roots.\\
+$G_\Phi$, $x_\alpha(a)$, $E_\Phi(B)$ & Split simply connected group scheme, its root elements, the elementary subgroup.\\
+$P_\Phi(A)$, $P^{\St}_\Phi(A)$ & Kernels of $\ct$ on $E_\Phi(\A_{D,k})$ and $\St_\Phi(\A_{D,k})$; $P_{A_{n-1}}=P_n$.\\
+$\mathfrak l$, $\mathfrak l_\Q$, $\mathfrak l(B)$ & A Lie lattice, $\mathfrak l\otimes\Q$, the current Lie ring $\mathfrak l\otimes B$.\\
 \bottomrule
 \end{longtable}}
 
@@ -575,7 +645,9 @@ the structure of reductive groups, Cartan's theorem, Cohn's two-row theory,
 the abelianization of $E_2$, the congruence subgroup theorem of
 Bass--Milnor--Serre, higher-rank Voronoi theory and LLL reduction) are
 attributed at their points of use, as is the precedent for recovering
-coefficient algebra from root commutators \cite{Voronetsky}.
+coefficient algebra from root commutators \cite{Voronetsky}. Part IV uses the
+integral Chevalley commutator identities \cite{Geck,HVZ} and amalgam normal
+forms \cite{Serre}.
 \section{Normal forms, constant terms, and support gaps}\label{ogl:sec:background}
 
 This section collects the facts about normal forms used in all three parts.
@@ -1208,6 +1280,8 @@ with source 06's normality, splitting, tower and boundary results inserted.
 Source 11's third proof of the main theorem is in \cref{ogl:el:sec:high}; its
 structural, Steinberg and cardinal results form the last three sections of the
 part (\cref{ogl:ker:sec:structure,ogl:ker:sec:steinberg,ogl:ker:sec:fragments}).
+\Cref{ogl:ch:part} (source 12) replaces the third index by an arbitrary root
+system without $A_1$ component.
 
 \section{Setting}\label{ogl:el:sec:setting}
 
@@ -1658,6 +1732,9 @@ and \cref{ogl:ker:lem:closure}, part (iii) of the ring theorem implies
 $k\in\{\R,\C\}$ the group theorem (iii) and the nonunital ring theorem
 \replabel{osq:thm:universal}(iii) therefore imply each other through finite
 reductions. Neither implication is an independent proof of its conclusion.
+Source 12 proves the equivalence for every class ring $I$ without unit with
+$2I=I$, its Dorroh unitization, and every root system without $A_1$ component
+(\cref{ogl:ch:thm:equivalence}).
 \end{remark}
 
 \begin{proposition}[An abstract collision criterion \src{07}]\label{ogl:el:prop:criterion}
@@ -2539,7 +2616,9 @@ fields with a real embedding (11).
 
 \section{Steinberg groups}\label{ogl:ker:sec:steinberg}
 
-No other statement about Steinberg groups or $K_2$ appears in the collection.
+Apart from its extension to all root systems without $A_1$ component in
+\cref{ogl:ch:thm:steinberg} (source 12), no other statement about Steinberg
+groups or $K_2$ appears in the collection.
 For a commutative unital ring $B$ and $n\ge3$, $\St_n(B)$ is the group with
 generating symbols $x_{ij}(a)$, $a\in B$, $i\ne j$, and the Steinberg relations
 \begin{align}
@@ -3784,6 +3863,19 @@ on countable-domain representations detecting the extended ideal, is a
 ring-level relative of the countable detection of \cref{ogl:el:sec:countable};
 manuscript 01, on relation modules $\ker(\omega^\gamma C)$, is a relative of the
 rational kernel flags of \cref{ogl:lat:part}. Neither is used here.
+\Cref{ogl:ch:part} (source 12) uses \replabel{osq:thm:universal}(iii) as the
+ring input for every root system without $A_1$ component and for current Lie
+rings, shows that ring and group invisibility are equivalent for every Dorroh
+unitization (\cref{ogl:ch:thm:equivalence}), and with
+\replabel{osq:prop:card11} and \replabel{osq:thm:thresholds} gives the exact
+thresholds of \cref{ogl:ch:cor:thresholds}.
+\item \fn{docs/surcomplex/first-kappa-coefficients} (batch 32). Its omnific
+integers $O_\kappa$ with fewer than $\kappa$ terms have the same set-sized
+quotients as $\Oz$; they are the rings $\A^{<\kappa}_{\Z,\R}$ of the sibling
+report's support threshold, and for uncountable $\kappa$
+\cref{ogl:ch:cor:support} \mergetag{} makes $E_\Phi(\Z)$ the universal
+set-sized quotient of $E_\Phi(O_\kappa)$ for every $\Phi$ without $A_1$
+component. That report is cited by name only; nothing is imported from it.
 \item \fn{docs/surreal/euclidean-three-space} (\texttt{e3:}), Part III
 (\replabel{e3:cut:part}). The standard-part theorems for $\SO(n,\No)$ and
 $\SU(n,\SC)$ are parallel to \cref{ogl:el:thm:invisible} but neither implies the
@@ -3824,7 +3916,9 @@ issue cannot be bypassed by declaring all unimodular matrices elementary, and
 one stabilization; it does not classify the remaining obstructions (07). Source
 11 asks the first part again (its Question~11.1) and notes that elementary
 generation, or an independent elimination of the unstable obstruction, would
-settle it; neither step is hidden in any proof here.
+settle it; neither step is hidden in any proof here. Source 12 asks it for
+every split semisimple group and for full rank-one points
+(\cref{ogl:ch:q:full,ogl:ch:q:rankonepoints}).
 
 \begin{question}[Rank two \src{06, 11}]\label{ogl:q:ranktwo}
 Does an analogue of kernel invisibility hold for $E_2$?
@@ -3836,19 +3930,39 @@ $E_2(\GOz)$ and their kernels (its Question~11.2), at a pin where this answer
 was already in the report: there is no universal set-sized quotient
 (\cref{ogl:el:cor:nouniversal}), finite images are arithmetic
 (\cref{ogl:el:prop:finitefactor}), and one countable group separates finite
-sets (\cref{ogl:el:thm:countable}).
+sets (\cref{ogl:el:thm:countable}). Source 12 reproves the negative answer, with
+a second proof of the amalgam theorem, and extends it to every root system with
+an $A_1$ component (\cref{ogl:ch:thm:components}).
 
 \begin{question}[Other root systems \src{07, 11}]\label{ogl:q:roots}
 For which elementary Chevalley-type groups over $\A_{D,k}$ does a collision force
 the whole relative kernel to have no set-sized images, and which low-rank systems
 keep additive specializations like \cref{ogl:el:prop:specialize}?
 \end{question}
-\emph{Status: open.} Other root systems have extra root factors and integer
+\emph{Status when first recorded: open.} Other root systems have extra root factors and integer
 structure constants in their commutator formulas, which a formal analogy does not
 control (07). Source 11 suggests the same for elementary symplectic and other
 split Chevalley groups through root-kernel reconstruction, and notes that root
 lengths and commutator constants must be addressed; it also leaves the kernel of
 $\St_n(\A_{D,k})\to E_n(\A_{D,k})$ uncomputed (\cref{ogl:ker:rem:noK}).
+\emph{Status} (batch 32): answered for split elementary groups by source 12
+(\cref{ogl:ch:part}). For every unital $D\subseteq k$ and every finite reduced
+root system $\Phi$ without $A_1$ component, a collision forces the whole relative
+kernel $P_\Phi$ of the simply connected elementary group to have no set-sized
+images (\cref{ogl:ch:thm:intrinsic}), also for the Steinberg group and for the
+relative kernels of the other split isogeny forms, which are isomorphic to
+$P_\Phi$ (\cref{ogl:ch:thm:steinberg,ogl:ch:prop:isogeny}); the extra root factors
+and the constants $2$ and $3$ are controlled by treating long roots first and
+halving only the free parameter (\cref{ogl:ch:thm:rootideal}). For $D=\Z,\Z[i]$
+this is exact: the low-rank systems that keep additive specializations like
+\cref{ogl:el:prop:specialize} are exactly those with an $A_1$ component, whose
+factor $P_2$ is detected by the countable maps of \cref{ogl:el:thm:countable},
+and then no universal set-sized quotient exists
+(\cref{ogl:ch:thm:components}). Open: twisted, nonsplit and relative-rank-one
+groups (\cref{ogl:ch:q:twisted}), non-elementary points
+(\cref{ogl:q:sln,ogl:ch:q:full}), the rank-one converse for non-simply-connected
+forms of the whole group, and the kernel of $\St_\Phi\to E_\Phi$
+(\cref{ogl:ch:q:K2}).
 
 \begin{question}[Thresholds at set-sized stages \src{07; 06}]\label{ogl:q:thresholds}
 For a given exponent group and support restriction, what is the least target
@@ -3866,7 +3980,13 @@ relative elementary matrix, $n\ge3$, is exactly $\kappa^{<\kappa}$ there, and th
 size of the ring in each of the sibling report's five set-sized models
 (\cref{ogl:ker:prop:exact,ogl:ker:cor:fivemodels}). Other exponent groups and
 support restrictions remain open, and nothing is said here about $n=2$ at
-set-sized stages.
+set-sized stages. \emph{Status} (batch 32): source 12's cardinal transfer
+(\cref{ogl:ch:thm:cardinalgroup,ogl:ch:cor:exactsize}) holds for every infinite
+cardinal and every root system without $A_1$ component, and with
+\cref{ogl:ker:prop:exact} the same exact values hold in these rings for every
+such root system, for Steinberg kernels and for perfect current Lie rings
+\mergetag{} (\cref{ogl:ch:cor:thresholds}); the question is otherwise unchanged
+(\cref{ogl:ch:q:thresholds}).
 
 \begin{question}[Arbitrary positive-definite surreal matrices \src{10}]\label{ogl:q:general}
 Classify shortest-vector existence for arbitrary positive-definite surreal
@@ -3900,6 +4020,1273 @@ all lack a real normalization preimage (\replabel{odg:sg:q:real}); it stays
 open for general affine varieties of dimension at least two
 (\cref{ogl:alg:rem:affine}).
 
+\part{Chevalley groups and current Lie rings}\label{ogl:ch:part}
+
+This part is source 12's (\cref{ogl:sub:provenance}). \Cref{ogl:el:part}
+proves, for $n\ge3$, that the purely infinite kernel of $E_n(\A_{D,k})$ has no
+set-sized images, and that the answer reverses for $n=2$. Source 12 asks which
+feature of the matrix size is responsible, and answers: the absence of a root
+component of type $A_1$. For every finite reduced root system without such a
+component, including $C_2$, $G_2$ and the exceptional types, the constant-term
+kernel of the elementary Chevalley group has no nontrivial homomorphism to a
+set-sized group; for $D=\Z,\Z[i]$ an $A_1$ component, even inside
+$A_1\times A_1$, destroys every universal set-sized quotient. For current Lie
+rings the dividing line is different: rational perfection. The part stands
+after the questions so that the numbering of the earlier parts is unchanged;
+its answer to \cref{ogl:q:roots} and its bearing on \cref{ogl:q:thresholds} are
+recorded in status notes there.
+
+\section{Conventions, results, and what is printed once}\label{ogl:ch:sec:conventions}
+
+\subsection{Standing objects}\label{ogl:ch:sub:standing}
+
+Throughout this part $k\in\{\R,\C\}$, $D\subseteq k$ is any unital subring
+(automatically a set), and $A=\A_{D,k}=D\oplus\Pi_k$ as in
+\eqref{ogl:eq:rings}; when a statement needs $D\in\{\Z,\Z[i]\}$ it says so.
+Let $\Phi$ be a nonempty finite reduced crystallographic root system, and let
+$G_\Phi$ be the split simply connected semisimple group scheme over $\Z$ with
+root system $\Phi$ and a fixed pinning, with root subgroups
+$x_\alpha:\Ga\to G_\Phi$ ($\alpha\in\Phi$). For a commutative unital ring $B$,
+\[
+ E_\Phi(B)=\langle x_\alpha(b):\alpha\in\Phi,\ b\in B\rangle\le G_\Phi(B)
+\]
+(finite words), $\St_\Phi(B)$ is the Steinberg group with symbols
+$\tilde x_\alpha(b)$, the additive relations and the Chevalley commutator
+relations for nonopposite roots, and
+\[
+ P_\Phi(A)=\ker\bigl(\ct:E_\Phi(A)\to E_\Phi(D)\bigr),\qquad
+ P^{\St}_\Phi(A)=\ker\bigl(\ct:\St_\Phi(A)\to\St_\Phi(D)\bigr),
+\]
+where $\ct$ is induced by the ring retraction $\ct:A\to D$ of
+\cref{ogl:lem:units}. Fix a faithful representation
+$G_\Phi\hookrightarrow\GL_{N,\Z}$; the entries of $x_\alpha(t)$ are polynomials in
+$t$ with integral coefficients, so $\ct$ is applied entrywise and commutes with
+the representation. \emph{$\Phi$ has no $A_1$ component} means that every
+irreducible component of $\Phi$ has rank at least two. For
+$\Phi=A_{n-1}$, $n\ge3$, one has $G_\Phi=\SL_n$, $x_{\varepsilon_i-\varepsilon_j}(a)=e_{ij}(a)$,
+$E_\Phi=E_n$, $P_\Phi(A)=P_n$, $\St_\Phi=\St_n$ and $P^{\St}_\Phi(A)=P_n^{\St}$:
+the notation of this part extends that of \cref{ogl:el:part} without changing
+it. For $\Phi=A_1$, $E_\Phi=E_2$ and $P_\Phi(A)=P_2$.
+
+\subsection{Reserved letters}\label{ogl:ch:sub:letters}
+
+Source 12's notation collides with the report's in many letters. The following
+choices hold throughout this part; the renamings are also listed in
+\cref{ogl:tab:renames}.
+\begin{itemize}[leftmargin=*]
+\item $\Phi$ is a root system only. The exponent rescaling $\Phi_h$ of
+\cref{ogl:el:lem:scale} (source 12's $T_\delta$, its ``exponent
+compression'') is not used in this part; $\Phi_h$ with a surreal subscript is
+never a root system.
+\item $\alpha,\beta,\gamma$ are roots, not exponents as in \cref{ogl:el:part};
+exponents are written $\eta$. Root elements $x_\alpha(a)$ carry a root
+subscript; the abstract root maps and Steinberg symbols $x_{ij}$ of
+\cref{ogl:el:part} carry two indices, and Steinberg symbols here are
+$\tilde x_\alpha$. Ring elements are $a,b,c,r,s,t$; no bare $x$ is a ring
+element in this part.
+\item $I$ is an abstract commutative ring without unit (as in
+\cref{ogl:el:prop:normal,ogl:ker:thm:rootkernel}); source 12 also writes $I$
+for $\Pi_k$, which is written $\Pi_k$ here.
+\item A homomorphism to a target group $H$ is $\varphi$ (source 12's $h$). The
+group generated by root maps is $\Sigma$ (its $U$), the common root kernel
+$J_\varphi$ (its $J$), the tuple map and the reconstructed ring
+$\vartheta_\varphi:I\to R_\varphi$ (its $T$, and its $\tau:I\to R_h$), exactly
+as in \cref{ogl:ker:thm:rootkernel}. Source 12's $\tau$ is not the monomial
+$\tau=\omega^{2\delta}$ of \cref{ogl:el:lem:ready}, and its $h$ is neither the
+third index nor the rescaling factor of \cref{ogl:el:part}.
+\item In rank one, $G_D=\SL_2(D)$, $C_D$ and $B_D$ are those of
+\cref{ogl:el:sec:amalgam} (source 12's $G_0$, $B_0$ and $B(A)$); $C_D$ is the
+constant upper triangular group and must not be confused with the ring
+$\Bk=k\oplus\Pi_k$. Source 12's detection field $F\in\{\Q,\Q(i)\}$ is
+$K_D=\Frac D$; $F$ remains the ambient field $\No$ or $\SC$, and source 12's
+set field $F$ of its collision data is the field $L$ of
+\cref{ogl:el:lem:compress}.
+\item A Lie lattice is $\mathfrak l$, a finite-rank free $\Z$-module with an
+integral Lie bracket (source 12's $\Lambda$); $\mathfrak l_\Q=\mathfrak l\otimes_\Z\Q$
+(its $\mathfrak g$), and $\mathfrak l(B)=\mathfrak l\otimes_\Z B$ for a commutative
+ring $B$, possibly without unit (its $L(B)$). The letter $\Lambda$ keeps its
+meanings of an ordinal (\cref{ogl:el:lem:absorb}) and of a Euclidean lattice
+(\cref{ogl:lat:sec:unimodular}); $L$ is a compressed field and $L_j$ are
+integral points. A basis of $\mathfrak l$ is $\mathsf b_1,\dots,\mathsf b_d$
+(its $b_i$), the structure integers are $z_{lij}$ (its $n_{\ell ij}$), the
+standard basis of $\mathfrak{sl}_2(\Z)$ is $\mathsf e,\mathsf f,\mathsf h$ (its
+$e,f,h$; $e_{ij}$ are elementary matrices and $e_\alpha$ basis vectors of
+$\Gamma_\kappa$), a target Lie ring is $\mathfrak H$ (its $M$), and the
+integral functional of \cref{ogl:ch:thm:lienegative} is $\varpi$ (its
+$\lambda$, a cardinal in \cref{ogl:el:part}).
+\item The matrices of the explicit rank-two identities
+(\cref{ogl:ch:sub:matrices}) are $\mathsf N_1,\dots,\mathsf N_4$ and
+$\mathsf G_1,\dots,\mathsf G_6$, $\mathsf G_1^-$, $\mathsf G_2^-$,
+$\mathsf H_1$, $\mathsf H_2$ (source 12's $N,M,L,K$; $A,\dots,F$, $A_-$, $B_-$,
+$H_A$, $H_B$), because $A$, $B$, $C$, $D$, $E$, $F$, $H$, $K$, $L$, $M$ and $N$ all
+name rings, groups, fields or subgroups here.
+\item The congruence kernel of \cref{ogl:ch:prop:nonsimple} is
+$P_\Phi\langle a\rangle$, extending $P_n\langle a\rangle$ of
+\cref{ogl:ker:sec:structure} (source 12's $N$). A cardinal below $\kappa$ is
+$\nu$ (its $\mu$).
+\end{itemize}
+Three readings must be kept apart. $2\Pi_k=\Pi_k$ does \emph{not} give
+$2\in A^\times$: $\omega/2\in\Oz$, but $1/2\notin\Oz$. ``No $A_1$ component''
+is \emph{not} ``rank at least two'': $A_1\times A_1$ has rank two and fails
+(\cref{ogl:ch:thm:components}). And $\ct$ is the constant coefficient, not the
+standard part (\cref{ogl:sub:notation}).
+
+\subsection{Results of source 12}\label{ogl:ch:sub:results}
+
+Source 12 states four principal theorems. In this report they are:
+\begin{enumerate}[label=\textup{(\Alph*)},leftmargin=*]
+\item \emph{Higher-rank arithmetic quotient} (for every unital $D\subseteq k$):
+if $\Phi$ has no $A_1$ component, every homomorphism from $P_\Phi(A)$ to a
+set-sized group is trivial, and $\ct:E_\Phi(A)\to E_\Phi(D)$ is a split
+universal set-sized quotient; the same holds for $\St_\Phi(A)\to\St_\Phi(D)$
+(\cref{ogl:ch:thm:intrinsic,ogl:ch:cor:universal,ogl:ch:thm:steinberg}). The
+root reconstruction needs only $2\Pi_k=\Pi_k$.
+\item \emph{Exact root-component boundary} (for $D\in\{\Z,\Z[i]\}$): $E_\Phi(A)$
+has a universal set-sized quotient if and only if $\Phi$ has no $A_1$
+component, and then it is $E_\Phi(D)$ (\cref{ogl:ch:thm:components}).
+\item \emph{Lie-ring classification} (for every unital $D\subseteq k$): the
+current Lie ring $\mathfrak l(A)$ has a universal set-sized Lie-ring quotient if
+and only if $\mathfrak l_\Q$ is perfect, and then it is $\mathfrak l(D)$
+(\cref{ogl:ch:thm:liepositive,ogl:ch:thm:lienegative}). In particular
+$\mathfrak{sl}_2(\Oz)\to\mathfrak{sl}_2(\Z)$ is universal although $E_2(\Oz)$
+has no universal set-sized quotient.
+\item \emph{Transfer of detection thresholds}: for a split ring $D\oplus I$
+with $2I=I$ and every infinite cardinal $\kappa$, if no nonzero ring
+homomorphism from $I$ has a target of cardinality $<\kappa$, no nonidentity
+element of $P_\Phi$ has a detecting group of cardinality $<\kappa$; if
+$|A|=\kappa$ the least detecting group of each has cardinality exactly $\kappa$
+(\cref{ogl:ch:thm:cardinalgroup,ogl:ch:cor:exactsize,ogl:ch:thm:cardinallie}).
+\end{enumerate}
+It adds a ring--group equivalence for Dorroh unitizations
+(\cref{ogl:ch:thm:equivalence}), the structure of the relative kernel
+(\cref{ogl:ch:sec:structure}), other isogeny forms
+(\cref{ogl:ch:prop:isogeny}), explicit rank-two matrices
+(\cref{ogl:ch:sub:matrices}) and twelve questions
+(\cref{ogl:ch:sec:questions}). The merge adds exact thresholds for every root
+system without $A_1$ component in the set-sized rings of
+\cref{ogl:ker:sec:fragments} (\cref{ogl:ch:cor:thresholds}), the same quotient
+theorems for countably or boundedly supported coefficients
+(\cref{ogl:ch:cor:support}), and a comparison with \cref{ogl:alg:part}
+(\cref{ogl:ch:rem:unipotent}).
+
+\subsection{Printed once, credited, and second routes}\label{ogl:ch:sub:once}
+
+Source 12 credits the report's antecedents and reproves what it uses. The
+following are not reprinted.
+\begin{itemize}[leftmargin=*]
+\item Its normal-form facts (its Propositions~3.1, 3.2 and the example
+$\omega/2\in\Oz$, $1/2\notin\Oz$) are \cref{ogl:lem:units,ogl:prop:factor}.
+\item Its scalar theorem (its Theorem~4.3: every ring homomorphism from $\Pi_k$
+to a set-sized ring is zero, and every one from $A$ factors through $\ct$) is
+\replabel{osq:thm:universal}(ii), (iii) of the sibling report for $K\in\{\R,\C\}$.
+Its proof is the scaled-field collision of that report: its exponent
+compression (its Lemma~4.1) is $\Phi_\delta$ of \cref{ogl:el:lem:scale}; its
+collision data (its Lemma~4.2: a set field $L$ with $|L|>\nu$, compressed as in
+\cref{ogl:el:lem:compress}, a positive monomial $w=\omega^{\delta M}$ with
+$wL\subseteq\Pi_\R$, and $a=w^2v$ with $v\in\Pi_k$) feed
+\replabel{osq:lem:collision}(i) with $m=w$, which kills $w^2$ and hence $a$.
+Source 07's variant (\cref{ogl:el:lem:ready}) reaches the prescribed parameter
+in one step instead of through $w^2$. Its remark that a
+fixed set-sized Hahn ring is a counterexample (its Remark~4.4, the identity
+map) is in \cref{ogl:el:sec:boundaries}.
+\item For $\Phi=A_{n-1}$, $n\ge3$, its main theorem is
+\cref{ogl:el:thm:invisible}(iii), and its proof there coincides with the third
+route of \cref{ogl:el:sec:high} (source 11): the root-kernel reconstruction
+\cref{ogl:ker:thm:rootkernel} with the ring theorem. It is therefore not a
+fourth independent proof of \cref{ogl:el:thm:invisible}. Its general
+statements extend, in order, \cref{ogl:ker:thm:rootkernel} (to
+\cref{ogl:ch:thm:rootideal,ogl:ch:thm:reconstruction}),
+\cref{ogl:el:lem:normalgen} (to \cref{ogl:ch:lem:normalclosure}),
+\cref{ogl:el:rem:ring} and source 11's converse (to
+\cref{ogl:ch:thm:equivalence}), \cref{ogl:ker:thm:torsionfree,ogl:ker:thm:center,ogl:ker:cor:normalsets,ogl:ker:prop:finitesubgroups}
+(to \cref{ogl:ch:prop:torsioncenter,ogl:ch:cor:normalclasses}),
+\cref{ogl:ker:thm:steinberg} (to \cref{ogl:ch:thm:steinberg}),
+\cref{ogl:ker:cor:transfer}(ii) and \cref{ogl:ker:prop:exactthreshold} (to
+\cref{ogl:ch:thm:cardinalgroup,ogl:ch:cor:exactsize}, now for every infinite
+cardinal).
+\item In rank one, its amalgam theorem (its Theorem~10.1) is
+\cref{ogl:el:thm:amalgam} (07); its proof, by the leading term of a reduced
+word, is genuinely different from 07's projective separation and is kept as a
+second route (\cref{ogl:ch:sec:rankone}). Its free-product description of the
+kernel (its Corollary~10.2) is \cref{ogl:el:thm:freeproduct}; its equivariant
+additive functional (its Lemma~10.3) is \cref{ogl:el:lem:functional} with
+values in $K_D$ instead of $\Q$; its residual countability and the
+nonexistence of a universal quotient in rank one (its Theorem~10.4) are
+\cref{ogl:el:thm:countable,ogl:el:cor:nouniversal}. Its countable target
+$G_D*_{C_D}(K_D\rtimes C_D)$ is, for $K_D=\Q$, isomorphic to 07's
+target \eqref{ogl:el:eq:targetamalgam}; the two routes use the same mechanism.
+\item Its ring collision criterion (its Proposition~12.2) is printed as
+\cref{ogl:ch:prop:collision}; it is \replabel{osq:lem:collision}(i) followed by
+the factorization $a=w^2v$, and \cref{ogl:el:prop:criterion} (07) is its group
+analogue.
+\item Its finite-support boundary is \cref{ogl:el:prop:finsupport} (06, 11), its
+visible subgroups are source 11's non-claim 11.16 and the characters of
+\cref{ogl:alg:sec:unipotent}, and its distinction of $\ct$ from the standard
+part is \cref{ogl:sub:notation}; they are recalled in
+\cref{ogl:ch:sec:boundaries} for all root systems.
+\end{itemize}
+Source 12's search of the repository for ``Chevalley'' is stale: the word
+occurs twice at its pin, in \cref{ogl:q:roots} and its status note, where
+sources 07 and 11 had asked for exactly this extension
+(Appendix~\ref{ogl:app:stale}).
+
+\section{Universal quotients and two obstructions}\label{ogl:ch:sec:universal}
+
+The foundations are those of \cref{ogl:sub:foundations}. Source 12 works in
+G\"odel--Bernays class theory whose set part satisfies ZFC; global choice is
+harmless but unused, no inaccessible cardinal or universe is assumed, and a
+class homomorphism may use arbitrary class parameters, so no definability is
+imposed.
+
+\begin{definition}[\src{12}]\label{ogl:ch:def:universal}
+A \emph{universal set-sized quotient} of a class group $G$ is a surjective class
+homomorphism $q:G\to Q$ onto a set-sized group such that every class
+homomorphism $f:G\to H$ into a set-sized group factors uniquely as
+$f=\bar f\circ q$. The same definition is used for rings and Lie rings. A group
+is \emph{set-invisible} if every homomorphism from it to a set-sized group is
+trivial; a ring without unit or a Lie ring is set-invisible if every
+homomorphism from it to a set-sized ring, respectively Lie ring, is zero.
+\end{definition}
+
+A universal quotient, when it exists, is unique up to a unique compatible
+isomorphism; \cref{ogl:el:thm:invisible}(iv) says that $\ct$ is one for
+$E_n(A)$, $n\ge3$. Displays $\Hom(G,H)$ with a proper-class source abbreviate
+the factorization statement; no set or class whose members are proper classes
+is formed (12).
+
+\begin{lemma}[Descent to quotients \src{12}]\label{ogl:ch:lem:descent}
+If a class group $G$ has a universal set-sized quotient and $B$ is a quotient
+of $G$ by a normal subclass $N$, then $B$ has a universal set-sized quotient.
+The same holds for Lie rings, with ideals.
+\end{lemma}
+\begin{proof}
+Let $q:G\to Q$ be universal. As $q$ is onto, $q(N)$ is normal in $Q$, and
+$B\to Q/q(N)$ is well defined and onto. A homomorphism from $B$ to a set-sized
+group pulls back to one from $G$ that kills $N$; its factor through $Q$ kills
+$q(N)$ and so factors uniquely through $Q/q(N)$.
+\end{proof}
+
+\begin{lemma}[Residual detection obstruction \src{12}]\label{ogl:ch:lem:residual}
+A proper-class group in which every nonidentity element survives some
+homomorphism to a set-sized group has no universal set-sized quotient. The
+same holds for Lie rings.
+\end{lemma}
+\begin{proof}
+The kernel of a universal quotient lies in every kernel of a map to a set-sized
+target, hence is trivial; the proper class would inject into a set, which
+replacement applied to the inverse on the image excludes.
+\end{proof}
+
+The proof of \cref{ogl:el:cor:nouniversal} (07) is this argument for $E_2(A)$.
+In the reconstructions below no family of class-sized cosets is collected into
+a set: the parameters are first mapped into a finite power of an actual set,
+the image is the carrier, and the ring operations are shown to descend to it.
+For Steinberg groups the words and Scott's trick of \cref{ogl:ker:sec:steinberg}
+are used (11, 12).
+
+\section{Root identities and the root-kernel ideal}\label{ogl:ch:sec:roots}
+
+Let $I$ be a commutative ring without unit, possibly a class, with $2I=I$, and
+let $\Sigma$ be a group generated by additive maps $x_\alpha:(I,+)\to\Sigma$,
+$\alpha\in\Phi$, satisfying the Chevalley commutator relations used below; the
+subgroup of $E_\Phi(A)$ generated by the $x_\alpha(\Pi_k)$ is the example. The
+commutator is $[x,y]=xyx^{-1}y^{-1}$ as in \cref{ogl:tab:notation}; the signs
+$\pm$ below depend on the pinning, are units, and play no role. The integral
+identities are classical \cite{Geck,HVZ}; matrix realizations of the
+nonsimply laced cases are in \cref{ogl:ch:sub:matrices}.
+
+\paragraph{Type $A_2$.} For roots $\alpha,\beta$ spanning an $A_2$ subsystem
+with $\alpha+\beta$ a root,
+\begin{equation}\label{ogl:ch:eq:A2}
+ [x_\alpha(r),x_\beta(s)]=x_{\alpha+\beta}(\pm rs),
+\end{equation}
+and no other positive combination of $\alpha,\beta$ is a root; the same holds in
+every closed $A_2$ subsystem.
+
+\paragraph{Type $B_2=C_2$.} For short roots $\alpha,\beta$ with long sum,
+\begin{equation}\label{ogl:ch:eq:B2long}
+ [x_\alpha(r),x_\beta(s)]=x_{\alpha+\beta}(\pm2rs);
+\end{equation}
+for a long root $\alpha$ and a short root $\beta$ with $\alpha+\beta$ short and
+$\alpha+2\beta$ long,
+\begin{equation}\label{ogl:ch:eq:B2short}
+ [x_\alpha(r),x_\beta(s)]=x_{\alpha+\beta}(\pm rs)\,x_{\alpha+2\beta}(\pm rs^2).
+\end{equation}
+
+\paragraph{Type $G_2$.} The long roots form a closed $A_2$ subsystem. For short
+roots $\alpha,\beta$ at angle $120^\circ$, with $\alpha+\beta$ short, the other
+positive combinations that are roots are the long roots $2\alpha+\beta$ and
+$\alpha+2\beta$, and
+\begin{equation}\label{ogl:ch:eq:G2}
+ [x_\alpha(r),x_\beta(s)]
+ =x_{\alpha+\beta}(\pm2rs)\,x_{2\alpha+\beta}(\pm3r^2s)\,x_{\alpha+2\beta}(\pm3rs^2).
+\end{equation}
+This is the short--short formula, not the longer one for a simple short root
+paired with a simple long root; all its error terms lie in long-root subgroups,
+which the $A_2$ relations handle first, and no division by $3$ is needed (12).
+
+\begin{lemma}[Coverage of all roots \src{12}]\label{ogl:ch:lem:coverage}
+Every root of an irreducible reduced root system of rank at least two is the
+target $\alpha+\beta$ of one of the configurations
+\eqref{ogl:ch:eq:A2}--\eqref{ogl:ch:eq:G2}, as follows.
+\begin{center}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{lll}
+\toprule
+Type & Roots covered by $A_2$ & Remaining configuration\\
+\midrule
+$A_\ell$, $D_\ell$, $E_6$, $E_7$, $E_8$ & all roots & none\\
+$B_\ell$, $\ell\ge3$ & long roots & \eqref{ogl:ch:eq:B2short} for short roots\\
+$C_\ell$, $\ell\ge3$ & short roots & \eqref{ogl:ch:eq:B2long} for long roots\\
+$B_2=C_2$ & none needed & long roots first, then short\\
+$F_4$ & both lengths & none\\
+$G_2$ & long roots & \eqref{ogl:ch:eq:G2} for short roots\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{lemma}
+\begin{proof}
+In a simply laced irreducible system of rank at least two, adjacent simple roots
+span an $A_2$ subsystem and the Weyl group is transitive on roots. In orthonormal
+coordinates the long roots $\pm\varepsilon_i\pm\varepsilon_j$ of $B_\ell$ lie in $A_2$
+subsystems for $\ell\ge3$, and a short root such as $\varepsilon_1$ is the sum of
+the long root $\varepsilon_1-\varepsilon_2$ and the short root $\varepsilon_2$,
+with error root $\varepsilon_1+\varepsilon_2$. In $C_\ell$ the short roots
+$\pm\varepsilon_i\pm\varepsilon_j$ lie in $A_2$ subsystems for $\ell\ge3$, and
+$2\varepsilon_1=(\varepsilon_1-\varepsilon_2)+(\varepsilon_1+\varepsilon_2)$
+is the long configuration. In rank two these are the two $B_2$ cases. The long
+roots of $F_4$ contain $D_4$; for the short roots,
+$\alpha=\frac12(\varepsilon_1+\varepsilon_2+\varepsilon_3+\varepsilon_4)$ and
+$\beta=\frac12(-\varepsilon_1-\varepsilon_2-\varepsilon_3+\varepsilon_4)$ have sum
+$\varepsilon_4$, and $\pm\alpha,\pm\beta,\pm(\alpha+\beta)$ form a closed $A_2$
+subsystem. The Weyl group is transitive on each root length. In $G_2$ the long
+roots form $A_2$, and transitivity on short roots moves the short--short
+configuration to any short root. Transporting a configuration is a statement
+about the finite root system and its identities; it does not assume that the
+kernel of a homomorphism is Weyl invariant.
+\end{proof}
+
+\begin{theorem}[Root-kernel ideal \src{12}]\label{ogl:ch:thm:rootideal}
+Let $I$ and $\Sigma$ be as above and suppose that $\Phi$ has no $A_1$ component.
+For a homomorphism $\varphi:\Sigma\to H$ put
+\[
+ J_\varphi=\{a\in I:\varphi(x_\alpha(a))=1\text{ for every }\alpha\in\Phi\}.
+\]
+Then $J_\varphi$ is an ideal of $I$.
+\end{theorem}
+\begin{proof}
+Additivity of the root maps makes $J_\varphi$ an additive subgroup. Let
+$r\in J_\varphi$ and $s\in I$; every root image of $rs$ must be shown trivial.
+\emph{$A_2$ target:} by \eqref{ogl:ch:eq:A2} the root image of $\pm rs$ is the
+image of a commutator with a trivial entry; additive inverses remove the sign.
+\emph{Long target in $B_2$:} choose $t\in I$ with $2t=s$ and apply
+\eqref{ogl:ch:eq:B2long} to $r,t$; this holds for every long root and every
+second parameter in $I$.
+\emph{Short target in $B_2$:} in \eqref{ogl:ch:eq:B2short} with parameters
+$r,s$ the commutator has trivial image, and so does its long factor, whose
+parameter is $\pm r\cdot s^2$ with $s^2\in I$, by the long case; hence so does
+the short factor.
+\emph{Long target in $G_2$:} the long-root $A_2$ subsystem kills the long root
+images of $rt$ for every $t\in I$.
+\emph{Short target in $G_2$:} choose $t$ with $2t=s$ and apply
+\eqref{ogl:ch:eq:G2} to $r,t$. The long parameters are integer multiples of
+$r(rt)$ and $r(t^2)$, killed by the long case and additivity; so the short
+factor, with parameter $\pm2rt=\pm rs$, is killed.
+By \cref{ogl:ch:lem:coverage} these cases reach every root of every component,
+so $rs\in J_\varphi$, and commutativity gives a two-sided ideal.
+\end{proof}
+
+\begin{remark}[Where divisibility is used \src{12}]\label{ogl:ch:rem:half}
+The proof never infers $r/2\in J_\varphi$ from $r\in J_\varphi$, which could fail
+when $H$ has elements of order two; it halves only the unrestricted second
+parameter, which lies in $I$. So $2I=I$ suffices and no torsion condition on $H$
+is hidden. The factor $3$ in $G_2$ multiplies parameters already killed. In the
+simply laced case no divisibility is used at all, as in
+\cref{ogl:ker:thm:rootkernel} for type $A$.
+\end{remark}
+
+\begin{theorem}[Set-image reconstruction \src{12}]\label{ogl:ch:thm:reconstruction}
+In the setting of \cref{ogl:ch:thm:rootideal}, let $H$ be a set-sized group.
+There are a set-sized commutative ring $R_\varphi$, possibly without unit, and a
+surjective ring homomorphism $\vartheta_\varphi:I\to R_\varphi$ with kernel
+$J_\varphi$ and $|R_\varphi|\le|H^\Phi|$. If every ring homomorphism from $I$ to
+a set-sized ring is zero, then $\varphi$ is trivial.
+\end{theorem}
+\begin{proof}
+Put $\vartheta_\varphi(a)=(\varphi(x_\alpha(a)))_{\alpha\in\Phi}\in H^\Phi$ and
+$R_\varphi=\vartheta_\varphi(I)$, an actual subset of the set $H^\Phi$. By
+additivity $\vartheta_\varphi(a)=\vartheta_\varphi(b)$ iff $a-b\in J_\varphi$.
+Define $\vartheta_\varphi(a)+\vartheta_\varphi(b)=\vartheta_\varphi(a+b)$,
+$\vartheta_\varphi(a)\vartheta_\varphi(b)=\vartheta_\varphi(ab)$ and
+$-\vartheta_\varphi(a)=\vartheta_\varphi(-a)$; multiplication is well defined
+because $ab-a'b'=(a-a')b+a'(b-b')\in J_\varphi$ by
+\cref{ogl:ch:thm:rootideal}, and the axioms are inherited from $I$. This
+multiplication is transported from $I$; it is not a product in the group
+$H^\Phi$. If $I$ is set-invisible, $\vartheta_\varphi=0$, so every root
+generator is killed and $\varphi$ is trivial.
+\end{proof}
+
+For $\Phi=A_{n-1}$ this is \cref{ogl:ker:thm:rootkernel} (11). The theorem turns
+an arbitrary group homomorphism into a ring obstruction without asserting that
+the homomorphism comes from a ring map (12).
+
+\section{Elementary Chevalley groups over omnific rings}\label{ogl:ch:sec:elementary}
+
+\begin{lemma}[The relative kernel is a normal closure \src{12}]\label{ogl:ch:lem:normalclosure}
+Let $B=D_0\oplus I$ be a commutative unital ring with a ring retraction onto
+$D_0$ and kernel $I$. For every $\Phi$,
+\[
+ \ker\bigl(E_\Phi(B)\to E_\Phi(D_0)\bigr)
+ =\bigl\langle\!\bigl\langle x_\alpha(a):\alpha\in\Phi,\ a\in I\bigr\rangle\!\bigr\rangle_{E_\Phi(B)} .
+\]
+\end{lemma}
+\begin{proof}
+The normal closure $N'$ lies in the kernel. Since $x_\alpha(d+a)=x_\alpha(d)x_\alpha(a)$,
+every finite word is congruent modulo $N'$ to a word in constant root elements;
+for a word in the kernel, that constant word is the identity in $E_\Phi(D_0)$,
+hence in $E_\Phi(B)$ under the split inclusion.
+\end{proof}
+
+This is \cref{ogl:el:lem:normalgen} (07, 11) for every root system, by the same
+finite-word replacement.
+
+\begin{theorem}[Intrinsic higher-rank invisibility \src{12}]\label{ogl:ch:thm:intrinsic}
+Let $D\subseteq k$ be any unital subring, $A=\A_{D,k}$, and let $\Phi$ have no
+$A_1$ component. Every class homomorphism $\varphi:P_\Phi(A)\to H$ into a
+set-sized group is trivial.
+\end{theorem}
+\begin{proof}
+Fix $g\in E_\Phi(A)$. The elements $g\,x_\alpha(a)g^{-1}$, $a\in\Pi_k$, lie in
+$P_\Phi(A)$ and satisfy the same root relations. Restrict $\varphi$ to the
+subgroup they generate and apply \cref{ogl:ch:thm:reconstruction} with
+$I=\Pi_k$: $2\Pi_k=\Pi_k$ by \cref{ogl:prop:factor} (division by $2$ keeps
+supports), and $\Pi_k$ is set-invisible by \replabel{osq:thm:universal}(iii)
+(\cref{ogl:ch:sub:once}). So the restriction is trivial for every $g$, and these
+conjugated subgroups generate $P_\Phi(A)$ by \cref{ogl:ch:lem:normalclosure}.
+Neither normality of the unconjugated root-generated subgroup nor an extension
+of $\varphi$ to $E_\Phi(A)$ is used.
+\end{proof}
+
+\begin{corollary}[Arithmetic quotient and split extension \src{12}]\label{ogl:ch:cor:universal}
+Under the hypotheses of \cref{ogl:ch:thm:intrinsic}, $\ct:E_\Phi(A)\to E_\Phi(D)$
+is a universal set-sized quotient, $E_\Phi(A)\cong P_\Phi(A)\rtimes E_\Phi(D)$,
+and for every set-sized group $H$ composition with $\ct$ is a bijection
+$\Hom(E_\Phi(D),H)\to\Hom(E_\Phi(A),H)$.
+\end{corollary}
+\begin{proof}
+A homomorphism from $E_\Phi(A)$ to $H$ kills $P_\Phi(A)$ by restriction and
+\cref{ogl:ch:thm:intrinsic}, so it factors through $\ct$, which is split by
+the constant root elements; surjectivity gives uniqueness.
+\end{proof}
+
+\begin{example}[Exceptional omnific groups \src{12}]\label{ogl:ch:ex:exceptional}
+For $\Phi\in\{G_2,F_4,E_6,E_7,E_8\}$ every abstract homomorphism
+$E_\Phi(\Oz)\to H$ into a set-sized group factors through $E_\Phi(\Z)$, and every
+one from $E_\Phi(\GOz)$ through $E_\Phi(\Z[i])$. Neither algebraicity of the
+map, linearity of $H$ nor compatibility with a valuation is assumed. These
+arithmetic groups are countable, so every set-sized image of the omnific group
+is countable, however large the target.
+\end{example}
+
+\begin{theorem}[Ring--group transfer equivalence \src{12}]\label{ogl:ch:thm:equivalence}
+Let $I$ be a commutative ring without unit, possibly a proper class, with
+$2I=I$, and let $A_I=\Z\ltimes I$ be its Dorroh unitization. For a fixed $\Phi$
+without $A_1$ component the following are equivalent:
+\begin{enumerate}
+\item every ring homomorphism from $I$ to a set-sized ring is zero;
+\item every homomorphism from $P_\Phi(A_I)=\ker\bigl(E_\Phi(A_I)\to E_\Phi(\Z)\bigr)$ to a
+set-sized group is trivial.
+\end{enumerate}
+If they hold for one such $\Phi$, they hold for all.
+\end{theorem}
+\begin{proof}
+(i)$\Rightarrow$(ii) is the proof of \cref{ogl:ch:thm:intrinsic}, which uses
+only (i), the split retraction and $2I=I$. Conversely let $f:I\to S$ be a
+nonzero ring homomorphism into a set-sized ring; replace $S$ by the
+commutative ring $f(I)$. Then $(n,a)\mapsto(n,f(a))$ is a unital ring
+homomorphism $\Z\ltimes I\to\Z\ltimes S$, and functoriality gives a homomorphism
+$E_\Phi(\Z\ltimes I)\to E_\Phi(\Z\ltimes S)$ into a set-sized group. If
+$f(a)\ne0$, the relative root element $x_\alpha((0,a))$ maps to
+$x_\alpha((0,f(a)))\ne1$, since root parametrizations are injective over every
+ring. Condition (i) does not mention $\Phi$.
+\end{proof}
+
+The converse is stated for the integral unitization on purpose: a nonunital map
+on $I$ need not be $D$-linear for a larger constant ring $D$, so extending it by
+the identity on $D$ would not be justified (12). For $\Phi=A_{n-1}$, $n\ge3$,
+and $I=\Pi_k$, the two implications are \cref{ogl:el:rem:ring} (the merge's)
+and source 11's converse recorded there; the theorem proves them for every
+class ring $I$ with $2I=I$ and every root system without $A_1$ component.
+Since $\A_{\Z,k}=\Z\oplus\Pi_k$ is the Dorroh unitization of $\Pi_k$, it applies
+to $\A_{\Z,k}$, for instance to $\Oz$; like \cref{ogl:el:rem:ring} it is a
+logical equivalence, not an independent proof of either side.
+
+\section{The relative kernel: perfectness, torsion, center and nonsimplicity}\label{ogl:ch:sec:structure}
+
+In this section $\Phi$ is nonempty without $A_1$ component and $A=\A_{D,k}$.
+
+\begin{proposition}[Perfectness and rootwise commutator bounds \src{12}]\label{ogl:ch:prop:perfect}
+The subgroup $\Sigma=\langle x_\alpha(\Pi_k):\alpha\in\Phi\rangle$ and its normal
+closure $P_\Phi(A)$ are perfect. Each root element $x_\alpha(a)$, $a\in\Pi_k$, is a
+product of at most three commutators of elements of $\Sigma$: one for an $A_2$
+target or a long $B_2$ target, two for a short $B_2$ target, three for a short
+$G_2$ target.
+\end{proposition}
+\begin{proof}
+Write $a=bc$ with $b,c\in\Pi_k$ (\cref{ogl:prop:factor}). Then \eqref{ogl:ch:eq:A2}
+gives one commutator for an $A_2$ target, and \eqref{ogl:ch:eq:B2long} with second
+parameter $c/2$ one for a long $B_2$ target. By \eqref{ogl:ch:eq:B2short} a
+short target is one commutator times the inverse of a long root element, itself
+one commutator. In $G_2$, \eqref{ogl:ch:eq:G2} with second parameter $c/2$ gives
+a short root element as one commutator times two long root elements, each one
+commutator. Signs and inverses do not change these counts. So the generators of
+$\Sigma$ lie in $[\Sigma,\Sigma]$; conjugates of a perfect subgroup are perfect,
+and they generate $P_\Phi(A)$ (\cref{ogl:ch:lem:normalclosure}), as in
+\cref{ogl:ker:lem:closure}.
+\end{proof}
+
+\begin{remark}[Rootwise, not global \src{12}]\label{ogl:ch:rem:width}
+The bound three concerns a root element, not an arbitrary element of $P_\Phi(A)$,
+which may need many conjugated root factors. No bounded commutator width and no
+bounded generation follow (\cref{ogl:ch:q:width}).
+\end{remark}
+
+\begin{proposition}[Torsion and center \src{12}]\label{ogl:ch:prop:torsioncenter}
+$P_\Phi(A)$ is torsion-free and centerless, and it is a nontrivial proper-class
+group.
+\end{proposition}
+\begin{proof}
+Use the faithful representation $G_\Phi\hookrightarrow\GL_{N,\Z}$ of
+\cref{ogl:ch:sub:standing}. If $g\in P_\Phi(A)$ has finite order, its matrix is
+diagonalizable over $\SC$, its minimal polynomial dividing some $X^m-1$, and its
+eigenvalues are ordinary roots of unity. So its characteristic polynomial has
+ordinary coefficients; these lie in $A$, hence equal their constant terms
+(\cref{ogl:lem:units}), and $\ct(g)=1$ makes the polynomial $(X-1)^N$. A
+diagonalizable matrix with this characteristic polynomial is $1$. (Since
+$\ct$ commutes with the representation, $P_\Phi(A)$ also lies in the
+constant-term kernel of $\GL_N(A)$, which is torsion-free by
+\cref{ogl:ker:thm:torsionfree}, source 11's trace argument.)
+
+Let $g$ be central. It commutes with $x_\alpha(a)$ for all $a\in\Pi_k$ and all
+$\alpha$. The entries of $g\,x_\alpha(T)-x_\alpha(T)g$ are polynomials in $T$ with
+coefficients in the field $F$ vanishing at the infinitely many points of
+$\Pi_k$, hence zero; so $g$ commutes with every root subgroup over $F$. The
+root subgroups generate $G_\Phi$, so $g$ lies in the center of $G_\Phi$, a finite
+group scheme whose points in characteristic zero have ordinary algebraic
+coordinates. Thus $g$ is an ordinary constant point, and $\ct(g)=1$ gives $g=1$.
+Finally the $x_\alpha(\omega^\eta)$, $\eta>0$, are a proper class of distinct
+elements of $P_\Phi(A)$.
+\end{proof}
+
+For $\Phi=A_{n-1}$ this is \cref{ogl:ker:thm:torsionfree,ogl:ker:thm:center}
+(11), whose center argument compares matrix entries with the $e_{ij}(p)$; the
+argument above replaces that by the center of the group scheme.
+
+\begin{corollary}[Normal subgroups, conjugacy classes, finite subgroups \src{12}]\label{ogl:ch:cor:normalclasses}
+$P_\Phi(A)$ has no nontrivial set-sized normal subgroup, the conjugacy class of
+each of its nonidentity elements is a proper class, and every finite subgroup
+of $E_\Phi(A)$ is mapped injectively by $\ct$.
+\end{corollary}
+\begin{proof}
+Conjugation on a set-sized normal subgroup $S$ is a homomorphism
+$P_\Phi(A)\to\Aut(S)$, trivial by \cref{ogl:ch:thm:intrinsic}, so $S$ is central
+and trivial. A set-sized conjugacy class would give a trivial action on it, so
+its element would be central. A finite subgroup meets the torsion-free kernel
+trivially.
+\end{proof}
+
+This is \cref{ogl:ker:cor:normalsets,ogl:ker:prop:finitesubgroups} (11) for every
+$\Phi$ without $A_1$ component.
+
+\begin{proposition}[Nonsimplicity \src{12}]\label{ogl:ch:prop:nonsimple}
+The subgroup
+\[
+ P_\Phi\langle1+\omega\rangle=P_\Phi(A)\cap\ker\bigl(G_\Phi(A)\to G_\Phi(A/(1+\omega)A)\bigr)
+\]
+is a nontrivial proper normal subgroup of $P_\Phi(A)$; in particular the
+nontrivial perfect group $P_\Phi(A)$ is not simple.
+\end{proposition}
+\begin{proof}
+Normality is clear. The subgroup contains $x_\alpha((1+\omega)\omega)\ne1$, since
+$(1+\omega)\omega\in\Pi_k\cap(1+\omega)A$. It does not contain $x_\alpha(\omega)$: if
+$\omega\in(1+\omega)A$, the quotient $\omega/(1+\omega)=1-1/(1+\omega)$ in the
+ambient field would lie in $A$, but it is finite and not an ordinary constant
+(\cref{ogl:lem:units}(iii)); and root parametrizations are injective over the
+ring $A/(1+\omega)A$, which is used only through this congruence relation, as in
+\cref{ogl:ker:sec:structure}. Only properness of this one congruence subgroup
+is proved; no ideal or normal subgroup is classified.
+\end{proof}
+
+For $\Phi=A_{n-1}$ the subgroup is $P_n\langle1+\omega\rangle$ of
+\cref{ogl:ker:thm:filtration} (11), and \cref{ogl:el:thm:tower} (06) gives a
+separating proper-class tower there.
+
+\begin{remark}[Actions, representations and finite quotients \src{12}]\label{ogl:ch:rem:actions}
+Every action of $E_\Phi(A)$ on a set factors through $E_\Phi(D)$, since
+$\Sym(X)$ is a set, and every representation on a set-sized vector space over a
+set-sized field factors through constants. There is no conflict with the
+faithful representation over $F$, whose field, space and matrix group are
+proper classes. The finite quotients and finite-index normal subgroups of
+$E_\Phi(A)$ are exactly those of $E_\Phi(D)$ composed with $\ct$, so the
+set-sized profinite completions agree; identifying this completion with a
+congruence completion is a separate arithmetic theorem about $D$ and $\Phi$,
+and no congruence subgroup claim, Gaussian or other, is made. For
+$\Phi=A_{n-1}$ these are \cref{ogl:el:cor:actions,ogl:el:thm:residuals}, and for
+$D=\Z$ the completion is identified in \cref{ogl:ker:cor:profinite} with the
+Bass--Milnor--Serre theorem.
+\end{remark}
+
+\section{Steinberg groups and other isogeny forms}\label{ogl:ch:sec:steinberg}
+
+\begin{theorem}[Steinberg arithmetic quotient \src{12}]\label{ogl:ch:thm:steinberg}
+Let $\Phi$ have no $A_1$ component and $A=\A_{D,k}$. Every homomorphism from
+$P^{\St}_\Phi(A)$ to a set-sized group is trivial, $\ct:\St_\Phi(A)\to\St_\Phi(D)$
+is a split universal set-sized quotient, and $P^{\St}_\Phi(A)$ is perfect.
+\end{theorem}
+\begin{proof}
+The constant inclusion and $\ct$ respect the Steinberg presentation and split
+each other, and the finite-word replacement of \cref{ogl:ch:lem:normalclosure}
+shows that $P^{\St}_\Phi(A)$ is the normal closure of the symbols
+$\tilde x_\alpha(a)$, $a\in\Pi_k$, as in \cref{ogl:ker:lem:stkernel}.
+Conjugated relative symbols satisfy the relations used in
+\cref{ogl:ch:thm:rootideal}, so \cref{ogl:ch:thm:reconstruction} and the ring
+theorem kill every set-sized image of each conjugated relative subgroup; these
+generate the kernel. Factorization follows as in \cref{ogl:ch:cor:universal}, and
+the proof of \cref{ogl:ch:prop:perfect} applies verbatim to the symbols.
+\end{proof}
+
+For $\Phi=A_{n-1}$ this is \cref{ogl:ker:thm:steinberg} (11).
+
+\begin{remark}[Not a computation of $K_2$ \src{12}]\label{ogl:ch:rem:K2}
+$P^{\St}_\Phi(A)$ is the kernel of the constant term, not of
+$\St_\Phi(A)\to E_\Phi(A)$, and must not be called $K_2(A)$. No torsion-freeness
+or centerlessness is claimed for it. A subgroup of a set-invisible group need
+not be set-invisible (\cref{ogl:ch:sub:subgroups}), so no statement about $K_2$
+follows by restriction (compare \cref{ogl:ker:rem:noK}).
+\end{remark}
+
+\begin{proposition}[Other split semisimple forms \src{12}]\label{ogl:ch:prop:isogeny}
+Let $G_{\mathrm{sc}}\to G$ be a central isogeny from $G_\Phi=G_{\mathrm{sc}}$ to
+another split semisimple group scheme with root system $\Phi$, and let
+$E_G(B)$ be generated by the images of the root subgroups. The relative kernel
+of $\ct:E_G(A)\to E_G(D)$ is isomorphic to $P_\Phi(A)$. If $\Phi$ has no $A_1$
+component, $\ct:E_G(A)\to E_G(D)$ is a universal set-sized quotient.
+\end{proposition}
+\begin{proof}
+$E_{\mathrm{sc}}(A)\to E_G(A)$ is onto by definition. Its kernel consists of
+points of the finite central kernel of the isogeny, whose coordinates in the
+characteristic-zero field $F$ are ordinary algebraic numbers, hence lie in $D$
+(\cref{ogl:lem:units}); such a point of $E_{\mathrm{sc}}(A)$ equals its constant
+term, which lies in $E_{\mathrm{sc}}(D)$. So this kernel lies in the constant
+subgroup and meets $P_\Phi(A)$ trivially. If $y\in E_G(A)$ has $\ct(y)=1$, lift it
+to $x\in E_{\mathrm{sc}}(A)$; then $\ct(x)$ maps to $1$, and
+$x\,\ct(x)^{-1}\in P_\Phi(A)$ still maps to $y$. So $P_\Phi(A)$ maps
+isomorphically onto the relative kernel, and \cref{ogl:ch:thm:intrinsic} gives
+the quotient as in \cref{ogl:ch:cor:universal}.
+\end{proof}
+
+The proposition concerns root-generated groups in these forms, not all points
+of the group scheme, and it asserts no rank-one converse for central quotients
+other than the simply connected one: \cref{ogl:ch:thm:components} is stated in
+the simply connected elementary category (12).
+
+\section{Rank one and the componentwise classification}\label{ogl:ch:sec:rankone}
+
+Here $(D,k)\in\{(\Z,\R),(\Z[i],\C)\}$, $A=\A_{D,k}$, and $G_D=\SL_2(D)=E_2(D)$,
+$C_D$, $B_D$, $U(a)=e_{12}(a)$ are as in \cref{ogl:el:sec:amalgam}; by
+\eqref{ogl:el:eq:Caction}, $B_D=U(\Pi_k)\rtimes C_D$, a constant upper triangular
+matrix with diagonal $u,u^{-1}$ acting by $u^2$. The rank-one theory is
+source 07's (\cref{ogl:el:sec:amalgam,ogl:el:sec:freeproduct,ogl:el:sec:countable});
+source 12 reproves it to see where the higher-rank argument breaks, with a
+different proof of the amalgam theorem.
+
+\begin{proof}[Second proof of \cref{ogl:el:thm:amalgam}: the leading term \src{12}]
+Surjectivity of $G_D*_{C_D}B_D\to E_2(A)$ is generation. For injectivity, the
+reduced-word normal form of the amalgam and $B_D=U(\Pi_k)\rtimes C_D$ bring a word
+not in $G_D$ to the form
+\begin{equation}\label{ogl:ch:eq:rankoneword}
+ g_0U(a_1)g_1U(a_2)\cdots g_{m-1}U(a_m)g_m,
+\end{equation}
+with $m\ge1$, all $a_j\in\Pi_k\setminus\{0\}$, and interior $g_j\in G_D\setminus C_D$
+($1\le j<m$), so that $(g_j)_{21}\ne0$. Expand each $U(a_j)=1+a_jE_{12}$. Since
+$E_{12}g_jE_{12}=(g_j)_{21}E_{12}$, the term using $a_jE_{12}$ from every factor is
+\begin{equation}\label{ogl:ch:eq:topword}
+ \Bigl(\prod_{j=1}^ma_j\Bigr)\Bigl(\prod_{j=1}^{m-1}(g_j)_{21}\Bigr)g_0E_{12}g_m ,
+\end{equation}
+a nonzero matrix whose entries have leading exponent
+$\sum_j\ddeg a_j>0$. Every other term omits some $a_j$, so its entries have
+strictly smaller leading exponent; the leading coefficient cannot cancel, and
+the word is not the identity. Nonidentity words in $G_D$ stay nonidentity under
+the constant inclusion.
+\end{proof}
+
+Only finitely many terms of the matrix product are expanded; the parameters may
+have arbitrary set-sized supports, and no finite-support restriction enters
+(12). 07's proof (projective separation of finite and infinite points) and this
+one share only the reduced-word normal form.
+
+\begin{theorem}[Componentwise classification \src{12}, (ii) \mergetag]\label{ogl:ch:thm:components}
+Let $(D,k)\in\{(\Z,\R),(\Z[i],\C)\}$ and $A=\A_{D,k}$.
+\begin{enumerate}
+\item $E_\Phi(A)$ has a universal set-sized group quotient if and only if $\Phi$
+has no $A_1$ component, and then $\ct:E_\Phi(A)\to E_\Phi(D)$ is that quotient.
+\item $P_\Phi(A)$ is set-invisible if and only if $\Phi$ has no $A_1$ component.
+If $\Phi$ has an $A_1$ component, every nonidentity element of that factor
+$P_2\le P_\Phi(A)$ is detected by a homomorphism from $P_\Phi(A)$ into the fixed
+countable group $\SL_2(K_D(t))$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The simply connected group is the product of those of the irreducible
+components, and $E_\Phi(A)=\prod_iE_{\Phi_i}(A)$, since root subgroups of different
+components commute and generate; likewise $P_\Phi(A)=\prod_iP_{\Phi_i}(A)$. If no
+component is $A_1$, \cref{ogl:ch:cor:universal,ogl:ch:thm:intrinsic} apply. If
+one is, projection onto that factor is a surjection $E_\Phi(A)\to E_2(A)$; a
+universal quotient of $E_\Phi(A)$ would descend to $E_2(A)$
+(\cref{ogl:ch:lem:descent}), contradicting \cref{ogl:el:cor:nouniversal}. For
+(ii), compose the projection $P_\Phi(A)\to P_2$ with the restrictions to $P_2$
+of the maps $\rho_\ell$ of \cref{ogl:el:thm:countable}.
+\end{proof}
+
+Part (i) is source 12's Theorem~B; its rank-one input is
+\cref{ogl:el:cor:nouniversal}, which source 12 reproves through
+\cref{ogl:ch:lem:residual} with the countable target $G_D*_{C_D}(K_D\rtimes C_D)$
+(\cref{ogl:ch:sub:once}). Part (ii), the kernel form, is immediate and is recorded
+by the merge because it is the form asked in \cref{ogl:q:roots}. Total rank is
+not the criterion: $E_{A_1\times A_1}(A)=E_2(A)\times E_2(A)$ has no universal
+set-sized quotient. The root-kernel reconstruction cannot be imitated in $A_1$:
+no third root direction carries the product $rs$, and the additive coefficient
+functionals survive into countable amalgam targets (12).
+
+\section{Current Lie rings}\label{ogl:ch:sec:lie}
+
+Let $\mathfrak l$ be a Lie lattice with basis $\mathsf b_1,\dots,\mathsf b_d$. For
+a class-sized ring $I$, $\mathfrak l(I)$ means the class $I^d$ with coordinatewise
+addition and the bracket
+$[\mathsf b_ia,\mathsf b_jb]=[\mathsf b_i,\mathsf b_j]ab$ determined by the finitely
+many integral structure constants; no class-sized tensor construction is used.
+Targets are arbitrary Lie rings, not necessarily rational Lie algebras, so
+torsion targets are allowed.
+
+\begin{lemma}[Clearing the bracket lattice \src{12}]\label{ogl:ch:lem:bracketlattice}
+If $\mathfrak l_\Q$ is perfect, there are a positive ordinary integer $m$ and
+integers $z_{lij}$ with
+\begin{equation}\label{ogl:ch:eq:bracketlattice}
+ m\,\mathsf b_l=\sum_{i,j}z_{lij}[\mathsf b_i,\mathsf b_j]\qquad(1\le l\le d).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Perfection writes each $\mathsf b_l$ as a rational combination of the finitely many
+brackets $[\mathsf b_i,\mathsf b_j]$; clear all denominators. Equivalently the
+subgroup generated by the brackets has full rank, and $m$ annihilates its
+finite cokernel.
+\end{proof}
+
+\begin{theorem}[Lie-kernel reconstruction \src{12}]\label{ogl:ch:thm:liereconstruction}
+Let $I$ be a commutative ring without unit with $mI=I$ for an $m$ as in
+\eqref{ogl:ch:eq:bracketlattice}, and let $\varphi:\mathfrak l(I)\to\mathfrak H$ be a
+Lie-ring homomorphism. Then $J=\{r\in I:\varphi(\mathsf b_ir)=0\text{ for all }i\}$
+is an ideal of $I$, and if $\mathfrak H$ is a set, the tuple image of
+$r\mapsto(\varphi(\mathsf b_1r),\dots,\varphi(\mathsf b_dr))\in\mathfrak H^d$ carries a
+set-sized commutative ring quotient of $I$ with kernel $J$.
+\end{theorem}
+\begin{proof}
+$J$ is an additive subgroup. For $r\in J$, $s\in I$ choose $t\in I$ with $mt=s$;
+multiplying \eqref{ogl:ch:eq:bracketlattice} by $rt$ gives
+\begin{equation}\label{ogl:ch:eq:lieideal}
+ \mathsf b_l\,rs=\sum_{i,j}z_{lij}[\mathsf b_ir,\mathsf b_jt],
+\end{equation}
+and each term on the right is killed by $\varphi$, because $\varphi(\mathsf b_ir)=0$.
+So $rs\in J$. The carrier is built as in \cref{ogl:ch:thm:reconstruction}.
+\end{proof}
+
+The identity \eqref{ogl:ch:eq:lieideal} divides by $m$ in the source ring, never
+in the target, which is why torsion targets are covered; treating $\varphi$ as
+$\Q$-linear would be an unjustified shortcut (12).
+
+\begin{theorem}[Perfect current Lie rings \src{12}]\label{ogl:ch:thm:liepositive}
+If $\mathfrak l_\Q$ is perfect, every homomorphism from $\mathfrak l(\Pi_k)$ to a
+set-sized Lie ring is zero, and for every unital $D\subseteq k$ the constant term
+$\mathfrak l(\A_{D,k})\to\mathfrak l(D)$ is a split universal set-sized Lie-ring
+quotient.
+\end{theorem}
+\begin{proof}
+Take $m$ from \cref{ogl:ch:lem:bracketlattice}; $m\Pi_k=\Pi_k$. The ring
+quotient of \cref{ogl:ch:thm:liereconstruction} is zero by
+\replabel{osq:thm:universal}(iii), so every $\varphi(\mathsf b_ir)$ vanishes, and
+these elements generate $\mathfrak l(\Pi_k)$ additively. A homomorphism from
+$\mathfrak l(\A_{D,k})$ to a set-sized Lie ring therefore kills the ideal
+$\mathfrak l(\Pi_k)$ and factors uniquely through the split quotient.
+\end{proof}
+
+\begin{corollary}[\src{12}]\label{ogl:ch:cor:lieperfect}
+If $\mathfrak l_\Q$ is perfect, $\mathfrak l(\Pi_k)$ is perfect as a Lie ring.
+\end{corollary}
+\begin{proof}
+For $a\in\Pi_k$ write $a=bc$ with $b,c\in\Pi_k$ and put $t=c/m$;
+\eqref{ogl:ch:eq:lieideal} with $r=b$, $s=c$ writes $\mathsf b_la$ as an integral
+sum of brackets.
+\end{proof}
+
+\begin{lemma}[Additive detection \src{12}]\label{ogl:ch:lem:additive}
+For every unital $D\subseteq k$, the additive group of $\A_{D,k}$, with zero
+bracket, is a proper-class abelian Lie ring in which every nonzero element is
+detected by an additive map into $\Q$.
+\end{lemma}
+\begin{proof}
+Choose one exponent (possibly $0$) with nonzero coefficient; coefficient
+extraction into the set $k$, followed by a $\Q$-linear functional $k\to\Q$
+nonzero there (extend from the rational span of that coefficient along a
+rational basis of $k$), detects the element. The positive monomials form a
+proper class.
+\end{proof}
+
+\begin{theorem}[Nonperfect obstruction \src{12}]\label{ogl:ch:thm:lienegative}
+If $\mathfrak l_\Q$ is not perfect, $\mathfrak l(\A_{D,k})$ has no universal set-sized
+Lie-ring quotient, for every unital $D\subseteq k$.
+\end{theorem}
+\begin{proof}
+A nonzero rational functional on $\mathfrak l_\Q$ vanishing on all brackets
+exists; clearing denominators and dividing by the gcd gives a surjective
+homomorphism $\varpi:\mathfrak l\to\Z$ with $\varpi([\mathfrak l,\mathfrak l])=0$.
+Its coefficientwise extension $\mathfrak l(\A_{D,k})\to(\A_{D,k},+)$ is a
+surjective Lie-ring homomorphism onto the abelian Lie ring of
+\cref{ogl:ch:lem:additive}, which has no universal set-sized quotient by
+\cref{ogl:ch:lem:residual}. \Cref{ogl:ch:lem:descent} rules one out for the
+source.
+\end{proof}
+
+Together, \cref{ogl:ch:thm:liepositive,ogl:ch:thm:lienegative} give source 12's
+Theorem~C for every unital $D\subseteq k$, not only $\Z$ and $\Z[i]$. The
+criterion is perfection, not semisimplicity: a nonsemisimple perfect rational
+Lie algebra is covered. The converse uses a genuine surjection onto the abelian
+additive class and the descent of universal quotients, not merely a nonzero
+character (12).
+
+\begin{example}[The rank-one contrast \src{12}]\label{ogl:ch:ex:sl2}
+For $\mathfrak l=\mathfrak{sl}_2(\Z)$ with $\mathsf e=E_{12}$, $\mathsf f=E_{21}$,
+$\mathsf h=\diag(1,-1)$,
+\begin{equation}\label{ogl:ch:eq:sl2}
+ [\mathsf h,\mathsf e]=2\mathsf e,\qquad [\mathsf h,\mathsf f]=-2\mathsf f,\qquad
+ [\mathsf e,\mathsf f]=\mathsf h,
+\end{equation}
+so $m=2$ works. If $r$ is killed in all three directions and $s\in\Pi_k$, then
+$\mathsf e\,rs=[\mathsf h r,\mathsf e(s/2)]$, $\mathsf f\,rs=-[\mathsf h r,\mathsf f(s/2)]$ and
+$\mathsf h\,rs=[\mathsf e r,\mathsf f s]$ are killed: the three brackets
+reconstruct multiplication in Lie rank one. Hence
+$\mathfrak{sl}_2(\Oz)\to\mathfrak{sl}_2(\Z)$ is a universal set-sized Lie-ring
+quotient, while $E_2(\Oz)$ has none (\cref{ogl:el:cor:nouniversal}). There is
+no contradiction with differentiation or exponentiation: abstract group maps
+need not differentiate, the additive directions of the amalgam keep many
+nonalgebraic maps, and no global exponential equivalence between these class
+groups and Lie rings is assumed.
+\end{example}
+
+\begin{remark}[Unipotent lattices and \cref{ogl:alg:part} \mergetag]\label{ogl:ch:rem:unipotent}
+A nilpotent Lie lattice $\mathfrak l\ne0$, for instance the strictly upper
+triangular matrices $\mathfrak n_n(\Z)$, $n\ge2$, is not perfect over $\Q$, so
+$\mathfrak n_n(\A_{D,k})$ has no universal set-sized Lie-ring quotient
+(\cref{ogl:ch:thm:lienegative}). This is the Lie counterpart of
+\cref{ogl:alg:thm:ut}: the group $\UT_n(\Pi_k)$, the constant-term kernel of the
+unitriangular group (\cref{ogl:alg:prop:bch}), has abelianization
+$(\Pi_k,+)^{n-1}$ and nonzero coefficient characters. The comparison is by
+statement only; neither result is derived from the other.
+\end{remark}
+
+\section{Cardinal transfer}\label{ogl:ch:sec:cardinals}
+
+The proper-class theorems have set-sized analogues. Source 12 states them as a
+transfer: the size argument belongs to the coefficient ideal, and the root and
+bracket reconstructions cost only a finite power of the target.
+
+\begin{definition}[\src{12}]\label{ogl:ch:def:invisiblebelow}
+Let $\kappa$ be an infinite cardinal. A commutative ring $I$ without unit is
+\emph{ring-invisible below $\kappa$} if every ring homomorphism from $I$ into a
+ring of cardinality $<\kappa$ is zero.
+\end{definition}
+
+\begin{proposition}[A ring collision criterion \src{12}]\label{ogl:ch:prop:collision}
+Let $I$ be a subring, possibly without unit, of a field $\mathbb E$. Suppose that
+for every $0\ne a\in I$ and every cardinal $\nu<\kappa$ there are a set subfield
+$L\subseteq\mathbb E$ with $|L|>\nu$, an element $w\ne0$ with $wL\subseteq I$, and
+$v\in I$ with $a=w^2v$. Then $I$ is ring-invisible below $\kappa$.
+\end{proposition}
+\begin{proof}
+For $\psi:I\to S$ with $|S|<\kappa$ take the data for $\nu=|S|$. Two of the
+$wf$, $f\in L$, have equal images; for $f\ne f'$ with
+$\psi(wf)=\psi(wf')$, $w/(f-f')\in wL\subseteq I$ and
+$\psi(w^2)=\psi(w(f-f'))\psi(w/(f-f'))=0$, so $\psi(a)=\psi(w^2)\psi(v)=0$. Every
+element used lies in $I$.
+\end{proof}
+
+This is the scaled-field collision \replabel{osq:lem:collision}(i) with $m=w$,
+followed by the factorization $a=w^2v$; \cref{ogl:el:prop:criterion} (07) is its
+group-level analogue for $n\ge3$.
+
+\begin{theorem}[Group cardinal transfer \src{12}]\label{ogl:ch:thm:cardinalgroup}
+Let $B=D_0\oplus I$ be a split commutative unital ring with $2I=I$, and suppose
+that $I$ is ring-invisible below the infinite cardinal $\kappa$. If $\Phi$ has no
+$A_1$ component, every homomorphism from $\ker\bigl(E_\Phi(B)\to E_\Phi(D_0)\bigr)$,
+or from $\ker\bigl(\St_\Phi(B)\to\St_\Phi(D_0)\bigr)$, to a group of cardinality
+$<\kappa$ is trivial.
+\end{theorem}
+\begin{proof}
+For each conjugated relative root-generated subgroup the reconstructed ring of
+\cref{ogl:ch:thm:reconstruction} is a subset of $H^\Phi$, and $|H^\Phi|<\kappa$:
+it is finite for finite $H$ and has cardinality $|H|$ for infinite $H$. So it is
+zero. Conclude as in \cref{ogl:ch:thm:intrinsic,ogl:ch:thm:steinberg}, using
+\cref{ogl:ch:lem:normalclosure} and its Steinberg form.
+\end{proof}
+
+\begin{corollary}[Exact detecting size \src{12}]\label{ogl:ch:cor:exactsize}
+If moreover $|B|=\kappa$, then for every nonidentity $g$ in either kernel the
+least cardinality of a group detecting $g$ is exactly $\kappa$.
+\end{corollary}
+\begin{proof}
+The lower bound is \cref{ogl:ch:thm:cardinalgroup}. $E_\Phi(B)$ is a set of
+finite words in finitely many root families parameterized by $B$, of cardinality
+at most $\kappa$, and its identity detects $g$; $\St_\Phi(B)$ is a quotient of the
+free group on at most $\kappa$ symbols.
+\end{proof}
+
+\begin{theorem}[Lie cardinal transfer \src{12}]\label{ogl:ch:thm:cardinallie}
+Let $\mathfrak l_\Q$ be perfect and let $m$ satisfy \eqref{ogl:ch:eq:bracketlattice}.
+If $mI=I$ and $I$ is ring-invisible below $\kappa$, every homomorphism from
+$\mathfrak l(I)$ to a Lie ring of cardinality $<\kappa$ is zero. If $|I|=\kappa$,
+every nonzero element of $\mathfrak l(I)$ has least detecting Lie-ring cardinality
+exactly $\kappa$.
+\end{theorem}
+\begin{proof}
+The reconstructed ring is a subset of $\mathfrak H^d$, of cardinality $<\kappa$;
+the upper bound is the identity of $\mathfrak l(I)$, of cardinality $\kappa$.
+\end{proof}
+
+\begin{remark}[What the transfer does not assume \src{12}]\label{ogl:ch:rem:transfer}
+No regularity of $\kappa$ is used in these transfer proofs. Regularity,
+cofinality and support-length restrictions may be needed to establish the
+collision property in a particular Hahn fragment, and must be checked there. An
+action on a set $X$ is a homomorphism to $\Sym(X)$, of cardinality $2^{|X|}$ for
+infinite $X$: the transfer gives triviality when $2^{|X|}<\kappa$, and this cannot
+be weakened to $|X|<\kappa$ without a further argument (as in
+\cref{ogl:ker:prop:actioncard}). For $\Phi=A_{n-1}$, $n\ge3$,
+\cref{ogl:ch:thm:cardinalgroup} is \cref{ogl:ker:cor:transfer}(ii), stated there
+for uncountable $\kappa$, and \cref{ogl:ch:cor:exactsize} is
+\cref{ogl:ker:prop:exactthreshold}.
+\end{remark}
+
+Source 12 states the transfer for any verified instance of its hypotheses. The
+sibling report's field bound supplies one, which the merge records.
+
+\begin{corollary}[Exact thresholds for every root system \mergetag]\label{ogl:ch:cor:thresholds}
+Let $\Phi$ be a root system without $A_1$ component, let $(D,k)$ be $(\Z,\R)$ or
+$(\Z[i],\C)$, and let $\mathfrak l$ be a Lie lattice with $\mathfrak l_\Q$ perfect.
+\begin{enumerate}
+\item Let $\kappa$ be uncountable and regular, and $R_{<\kappa}$, $\Pi_{<\kappa}$
+as in \cref{ogl:ker:sec:fragments}. Every nonidentity element of
+$P_\Phi(R_{<\kappa})=\ker\bigl(E_\Phi(R_{<\kappa})\to E_\Phi(D)\bigr)$, and every
+nonidentity element of the Steinberg kernel, has least detecting group of
+cardinality exactly $\kappa^{<\kappa}$, also for homomorphisms defined on
+$E_\Phi(R_{<\kappa})$ or $\St_\Phi(R_{<\kappa})$; every homomorphism from
+$E_\Phi(R_{<\kappa})$ to a group of cardinality $<\kappa^{<\kappa}$ factors
+uniquely through $\ct$; and every nonzero element of $\mathfrak l(\Pi_{<\kappa})$ has
+least detecting Lie-ring cardinality exactly $\kappa^{<\kappa}$. For
+$\kappa=\aleph_1$ the value is $\mathfrak c$.
+\item The same holds, with $|A_0|$ in place of $\kappa^{<\kappa}$, for each of the
+sibling report's set-sized rings $A_0=D_0\oplus\Pi(\mathbb F)$ of
+\replabel{osq:thm:thresholds} and their Gaussian versions
+(\cref{ogl:ker:cor:fivemodels}).
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(i) By \cref{ogl:ker:prop:exact}(i), $\Pi_{<\kappa}$ is ring-invisible below
+$\theta=\kappa^{<\kappa}$, an infinite cardinal, and
+$|\Pi_{<\kappa}|=|R_{<\kappa}|=\theta$. Division by an ordinary integer keeps
+supports, so $2\Pi_{<\kappa}=m\Pi_{<\kappa}=\Pi_{<\kappa}$, and
+$R_{<\kappa}=D\oplus\Pi_{<\kappa}$ is split (\cref{ogl:ker:lem:fragment}(i)).
+\Cref{ogl:ch:thm:cardinalgroup,ogl:ch:cor:exactsize} with $\kappa$ replaced by
+$\theta$, which needs no regularity, give the group statements on the kernels.
+A homomorphism on $E_\Phi(R_{<\kappa})$ not killing $g$ restricts to the kernel,
+and conversely $E_\Phi(R_{<\kappa})\le G_\Phi(R_{<\kappa})\le\GL_N(R_{<\kappa})$ has at
+most $\theta$ elements; the split decomposition
+$E_\Phi(R_{<\kappa})=P_\Phi(R_{<\kappa})\rtimes E_\Phi(D)$ gives the factorization; the
+Steinberg group has at most $\theta$ elements. The Lie statement is
+\cref{ogl:ch:thm:cardinallie} with $I=\Pi_{<\kappa}$. At $\aleph_1$ use
+\cref{ogl:ker:prop:exact}(iv).
+(ii) The proof of \cref{ogl:ker:cor:fivemodels} shows that every nonzero ring
+homomorphism from $\Pi(\mathbb F)$ has image of cardinality at least $|A_0|$ and
+that $|\Pi(\mathbb F)|=|A_0|$. As $\mathbb F$ is a field of characteristic zero and
+division by an ordinary integer keeps supports, $\Pi(\mathbb F)$ is $2$- and
+$m$-divisible. Argue as in (i).
+\end{proof}
+
+This extends \cref{ogl:ker:prop:exact,ogl:ker:cor:fivemodels} from $n\ge3$
+to every root system without $A_1$ component and to perfect current Lie rings,
+and bears on \cref{ogl:q:thresholds,ogl:ch:q:thresholds}. It rests on the
+statements of the sibling report used there (\replabel{osq:prop:card11},
+\replabel{osq:lem:collision}, and for (ii) the proof of
+\replabel{osq:thm:thresholds}).
+
+\section{Boundaries and explicit rank-two matrices}\label{ogl:ch:sec:boundaries}
+
+\subsection{Finite support}
+On the finite-support subring $A^{\mathrm{fin}}=D+\Pi_k^{\mathrm{fin}}$ of
+\cref{ogl:el:sec:boundaries}, the coefficient sum $\omega^\eta\mapsto1$ is a ring
+homomorphism to $k$, nonzero on $\Pi_k^{\mathrm{fin}}$
+(\cref{ogl:el:prop:finsupport}, 06 and 11); it induces homomorphisms from
+$E_\Phi(A^{\mathrm{fin}})$ to the set-sized group $E_\Phi(k)$ that detect positive
+root parameters, for every $\Phi$. So positivity of exponents alone does not give
+the theorem: infinite supports, and room to fit a large field into a
+positive-support multiple, are essential. The map is not extended to arbitrary
+Hahn series by any summation, which would contradict the ring theorem, and a
+finitely supported computational model must not replace $\Pi_k$ in the
+universal statements (12).
+
+Countable supports, however, suffice. For an infinite cardinal $\lambda$ let
+$\Pi_k^{<\lambda}=\{f\in\Pi_k:|\supp f|<\lambda\}$ and
+$\A^{<\lambda}_{D,k}=D+\Pi_k^{<\lambda}$, the bounded-support rings of the sibling
+report's support threshold \replabel{osq:thm:support}.
+
+\begin{corollary}[Bounded supports \mergetag]\label{ogl:ch:cor:support}
+Let $\lambda$ be an uncountable cardinal, $D\subseteq k$ unital, and $\Phi$ without
+$A_1$ component. Every homomorphism from
+$\ker\bigl(E_\Phi(\A^{<\lambda}_{D,k})\to E_\Phi(D)\bigr)$, or from the corresponding
+Steinberg kernel, to a set-sized group is trivial, so $\ct$ is a universal
+set-sized quotient of $E_\Phi(\A^{<\lambda}_{D,k})$ and of $\St_\Phi(\A^{<\lambda}_{D,k})$;
+and if $\mathfrak l_\Q$ is perfect, $\mathfrak l(\A^{<\lambda}_{D,k})\to\mathfrak l(D)$ is a
+universal set-sized Lie-ring quotient. For $\lambda=\aleph_0$ all these fail (the
+last one for $\mathfrak l\ne0$).
+\end{corollary}
+\begin{proof}
+$I=\Pi_k^{<\lambda}$ is a ring without unit with $2I=mI=I$, and
+$\A^{<\lambda}_{\Z,k}=\Z\oplus I$ is its Dorroh unitization. If $f:I\to S$ were a nonzero
+ring homomorphism into a set-sized ring, $(n,a)\mapsto(n,f(a))$ would be a unital
+homomorphism $\A^{<\lambda}_{\Z,k}\to\Z\ltimes S$ not factoring through $\ct$,
+against \replabel{osq:thm:support}(i) with $D=\Z$. So $I$ is set-invisible, and the
+proofs of \cref{ogl:ch:thm:intrinsic,ogl:ch:cor:universal,ogl:ch:thm:steinberg,ogl:ch:thm:liepositive},
+which use only this, $2I=I$ (or $mI=I$) and the split retraction
+$\A^{<\lambda}_{D,k}=D\oplus I$, apply. For $\lambda=\aleph_0$ the augmentation above
+detects $x_\alpha(\omega)$, and its Lie analogue $\mathsf b_i\omega\mapsto\mathsf b_i$ is a
+nonzero homomorphism from $\mathfrak l(\Pi_k^{<\aleph_0})$ to the set-sized Lie ring
+$\mathfrak l(k)$.
+\end{proof}
+
+The support-bounded omnific integers $O_\kappa$ of the report on first $\kappa$
+coefficients (batch 32), the omnific integers with fewer than $\kappa$ terms, are
+$\A^{<\kappa}_{\Z,\R}$; for uncountable $\kappa$ the corollary makes $E_\Phi(\Z)$ the
+universal set-sized quotient of $E_\Phi(O_\kappa)$ for every $\Phi$ without $A_1$
+component.
+
+\subsection{Subgroups can have many small images}\label{ogl:ch:sub:subgroups}
+A single root subgroup $x_\alpha(\Pi_k)\cong(\Pi_k,+)$ has nonzero coefficient
+maps to $k$ and, after rational functionals, to $\Q$. Set-invisibility of
+$P_\Phi(A)$ does not pass to subgroups: it is the interaction of root directions
+through commutators that forces multiplicativity. A subgroup resembling $K_2$
+need not inherit invisibility, a unipotent direction has nontrivial small
+representations, and an abelian subgroup of a perfect class group can have many
+set-sized quotients (11.16, 12).
+
+\subsection{The constant term and the Gaussian constant ring}
+$\ct:\Oz\to\Z$ is not the standard part: $3+\sqrt2\,\omega^{1/2}$ has constant term
+$3$ and is not finite, and its whole root-group contribution is invisible to
+set-sized groups. In $\GOz$ the coefficients at positive exponents are arbitrary
+complex numbers while the constant must lie in $\Z[i]$; the arithmetic quotient
+is Gaussian although the purely infinite part has the full complex field (12).
+
+\subsection{Elementary versus full groups}
+The theorems concern $E_\Phi(A)$ and its constant-term kernel. A matrix of
+determinant one over a non-Euclidean ring need not be elementary
+(\cref{ogl:el:thm:nonel}), so $E_\Phi(A)$ is not replaced by $G_\Phi(A)$ or even by
+$\SL_n(A)$; the quotient of full by elementary points is where algebraic
+$K$-theoretic information would enter (\cref{ogl:q:sln,ogl:ch:q:full}).
+
+\subsection{Explicit rank-two matrices}\label{ogl:ch:sub:matrices}
+Source 12 fixes signs by exact matrices. For a nilpotent integral matrix
+$\mathsf N$ with integral divided powers, $\exp(t\mathsf N)=\sum_j t^j\mathsf N^j/j!$ is a
+polynomial matrix over every commutative ring; the verifier's rational
+substitutions check identities and do not assume $1/2\in A$. In dimension three,
+$[e_{12}(r),e_{23}(s)]=e_{13}(rs)$ (\eqref{ogl:el:eq:steinberg}). In the
+standard symplectic representation of dimension four put
+\[
+ \mathsf N_1=E_{12}-E_{43},\quad \mathsf N_2=E_{14}+E_{23},\quad
+ \mathsf N_3=E_{13},\quad \mathsf N_4=E_{24};
+\]
+then
+\begin{align}
+ [\exp(r\mathsf N_1),\exp(s\mathsf N_2)]&=\exp(2rs\,\mathsf N_3),\label{ogl:ch:eq:C2long}\\
+ [\exp(r\mathsf N_4),\exp(s\mathsf N_1)]&=\exp(-rs\,\mathsf N_2)\exp(-rs^2\,\mathsf N_3),\label{ogl:ch:eq:C2short}
+\end{align}
+the two steps \eqref{ogl:ch:eq:B2long}, \eqref{ogl:ch:eq:B2short} used in
+\cref{ogl:ch:thm:rootideal}, with one long correction in the second. In dimension
+seven put
+\begin{gather*}
+ \mathsf G_1=E_{12}+2E_{34}+E_{45}+E_{67},\qquad
+ \mathsf G_2=E_{23}+E_{56},\\
+ \mathsf G_3=[\mathsf G_1,\mathsf G_2],\quad
+ \mathsf G_4=\tfrac12[\mathsf G_1,\mathsf G_3],\quad
+ \mathsf G_5=\tfrac13[\mathsf G_1,\mathsf G_4],\quad
+ \mathsf G_6=[\mathsf G_2,\mathsf G_5],
+\end{gather*}
+integral matrices, explicitly
+$\mathsf G_3=E_{13}-2E_{24}+E_{46}-E_{57}$,
+$\mathsf G_4=-2E_{14}+E_{25}+E_{36}-E_{47}$,
+$\mathsf G_5=E_{15}-E_{37}$ and $\mathsf G_6=-E_{16}-E_{27}$. With $\mathsf G_1$ a simple
+short and $\mathsf G_2$ a simple long root, $\mathsf G_1,\mathsf G_3$ is the short--short
+pair of \eqref{ogl:ch:eq:G2}, and
+\begin{align}
+ [\exp(r\mathsf G_1),\exp(s\mathsf G_3)]&=\exp(2rs\,\mathsf G_4)\exp(3r^2s\,\mathsf G_5)\exp(-3rs^2\,\mathsf G_6),\label{ogl:ch:eq:G2matrix}\\
+ [\exp(r\mathsf G_2),\exp(s\mathsf G_5)]&=\exp(rs\,\mathsf G_6),\label{ogl:ch:eq:G2matrixlong}
+\end{align}
+so the two error factors of \eqref{ogl:ch:eq:G2matrix} are long and the $3$ is
+never inverted. With $\mathsf G_1^-=E_{21}+E_{43}+2E_{54}+E_{76}$ and
+$\mathsf G_2^-=E_{32}+E_{65}$, $\mathsf H_1=[\mathsf G_1,\mathsf G_1^-]=\diag(1,-1,2,0,-2,1,-1)$ and
+$\mathsf H_2=[\mathsf G_2,\mathsf G_2^-]=\diag(0,1,-1,0,1,-1,0)$ satisfy
+$[\mathsf H_1,\mathsf G_1]=2\mathsf G_1$, $[\mathsf H_1,\mathsf G_2]=-3\mathsf G_2$,
+$[\mathsf H_2,\mathsf G_1]=-\mathsf G_1$, $[\mathsf H_2,\mathsf G_2]=2\mathsf G_2$; the
+cross brackets $[\mathsf G_1,\mathsf G_2^-]$, $[\mathsf G_2,\mathsf G_1^-]$ and
+$(\operatorname{ad}\mathsf G_1)^4\mathsf G_2$, $(\operatorname{ad}\mathsf G_2)^2\mathsf G_1$
+vanish. These finite realizations check signs; the general identities keep their
+classical proof (12).
+
+\section{Questions of source 12}\label{ogl:ch:sec:questions}
+
+Source 12 proposes these as continuations of its proofs, not as named open
+problems of the literature. Each is followed by its status in this report.
+
+\begin{question}[Full Chevalley groups \src{12}]\label{ogl:ch:q:full}
+For which split semisimple $G$ is $\ct:G(\Oz)\to G(\Z)$ a universal set-sized
+quotient? Determine the contribution of the non-elementary quotient rather than
+assuming $E_G(\Oz)=G(\Oz)$; a first step would be a stable range in which every
+set-sized image of the non-elementary part is forced to be arithmetic.
+\end{question}
+\emph{Status: open.} For $G=\SL_n$, $n\ge3$, this is \cref{ogl:q:sln}.
+
+\begin{question}[Full rank-one points \src{12}]\label{ogl:ch:q:rankonepoints}
+What are the set-sized images of $\SL_2(\Oz)$ and $\SL_2(\GOz)$ outside their
+elementary subgroups? The countable detectors are defined on $E_2$ and need not
+extend.
+\end{question}
+\emph{Status: open.} $\SL_2(\A_{D,k})\ne E_2(\A_{D,k})$ by \cref{ogl:el:thm:nonel};
+the second part of \cref{ogl:q:sln} asks the same.
+
+\begin{question}[Relative $K_2$ and central extensions \src{12}]\label{ogl:ch:q:K2}
+Determine the kernel of $\St_\Phi(\Oz)\to E_\Phi(\Oz)$ and the behaviour of its
+constant-term map. Which of its elements have set-sized detectors? Restriction of
+\cref{ogl:ch:thm:steinberg} does not answer this.
+\end{question}
+\emph{Status: open} (\cref{ogl:ker:rem:noK,ogl:ch:rem:K2}).
+
+\begin{question}[Twisted and relative root systems \src{12}]\label{ogl:ch:q:twisted}
+Extend the reconstruction to unitary, twisted and more general isotropic
+groups. Is there a relative-root criterion for the transfer of scalar
+invisibility? Nonreduced systems and relative rank one are informative: their
+extra root parameters may imitate higher-rank identities without an absolute
+$A_2$ subsystem.
+\end{question}
+\emph{Status: open.}
+
+\begin{question}[Exact set-sized thresholds \src{12}]\label{ogl:ch:q:thresholds}
+Classify the Hahn fragments satisfying the collision criterion
+\cref{ogl:ch:prop:collision}, and determine exact detecting cardinalities for all
+Chevalley types without unproved closure or regularity assumptions.
+\end{question}
+\emph{Status: partly answered} \mergetag. For the rings $R_{<\kappa}$ and the
+sibling report's five set-sized models the exact values are determined for every
+root system without $A_1$ component (\cref{ogl:ch:cor:thresholds}); other exponent
+groups and supports are open, as in \cref{ogl:q:thresholds}.
+
+\begin{question}[Normal subgroup structure \src{12}]\label{ogl:ch:q:normal}
+Describe the normal subgroups of $P_\Phi(\Oz)$ by ideals, levels or admissible
+pairs of levels for the two root lengths. A classification must account for
+proper-class congruence phenomena, not only finite quotients.
+\end{question}
+\emph{Status: open.} Known: nonsimplicity (\cref{ogl:ch:prop:nonsimple}), no
+nontrivial set-sized normal subgroup (\cref{ogl:ch:cor:normalclasses}), and for
+$\Phi=A_{n-1}$ the separating tower and the chain at $1+\omega$
+(\cref{ogl:el:thm:tower,ogl:ker:thm:filtration}).
+
+\begin{question}[Global commutator width \src{12}]\label{ogl:ch:q:width}
+Does $P_\Phi(\Oz)$ have finite commutator width, perhaps depending only on $\Phi$?
+\end{question}
+\emph{Status: open.} The rootwise bounds of \cref{ogl:ch:prop:perfect} do not
+answer it; bounded relative root generation or a class-valued obstruction would
+be a step.
+
+\begin{question}[Recovering coefficients from abstract groups \src{12}]\label{ogl:ch:q:recover}
+Can an abstract isomorphism between omnific elementary groups recover the
+coefficient ring, its constant-term ideal, or the root datum?
+\end{question}
+\emph{Status: open.} The tuple construction recovers a ring quotient from a
+homomorphism, not the source ring; recovery of coefficient algebra from root
+commutators has substantial precedent \cite{Voronetsky}.
+
+\begin{question}[Arithmetic completions \src{12}]\label{ogl:ch:q:completions}
+For each $D$ and $\Phi$, determine the profinite completion of $E_\Phi(D)$, which
+is that of $E_\Phi(\A_{D,k})$ (\cref{ogl:ch:rem:actions}); separate the cases with
+a congruence subgroup theorem from those with a nontrivial congruence kernel,
+particularly over $\Z[i]$ and in small rank.
+\end{question}
+\emph{Status: open} in general; for $\Phi=A_{n-1}$, $n\ge3$, and $D=\Z$ the
+completion is $\SL_n(\widehat\Z)$ (\cref{ogl:ker:cor:profinite}, with
+Bass--Milnor--Serre imported).
+
+\begin{question}[Homology and the Lie--group contrast \src{12}]\label{ogl:ch:q:homology}
+Compare the homology and central extensions of $P_\Phi(\Oz)$ with those of
+$\mathfrak l(\Pi_\R)$. How does the rank-one group obstruction coexist with the
+perfect $\mathfrak{sl}_2$ Lie-ring quotient? A functorial comparison must specify
+its topology or formal completion.
+\end{question}
+\emph{Status: open.}
+
+\begin{question}[Optimal divisibility hypotheses \src{12}]\label{ogl:ch:q:divisibility}
+The group reconstruction uses $2I=I$ and the Lie reconstruction $mI=I$.
+Determine optimal root-type-specific weakenings, and what replaces the theorems
+in positive characteristic and for ideals with residual $2$-torsion.
+\end{question}
+\emph{Status: open.} In simply laced types the ideal lemma uses no divisibility
+(\cref{ogl:ch:rem:half}, and \cref{ogl:ker:thm:rootkernel} for type $A$).
+
+\begin{question}[Formalization \src{12}]\label{ogl:ch:q:formalization}
+Formalize the finite root-kernel ideal lemma, the image-carrier ring and the
+bracket-lattice transfer before the class-sized support arguments; a set-sized
+form of the collision criterion is a ZFC-compatible target.
+\end{question}
+\emph{Status: open.} Nothing in this report is formalized; source 07 proposed
+\cref{ogl:el:prop:criterion} as a first target.
+
+\section{Dependencies and scope of source 12}\label{ogl:ch:sec:dependencies}
+
+The Chevalley results follow from three chains:
+\begin{align*}
+ &\text{normal forms and set cuts}\ \Longrightarrow\ \text{scaled-field collision}\\
+ &\qquad\Longrightarrow\ \text{scalar set-invisibility};\\
+ &\text{rank-two Chevalley identities}\ \Longrightarrow\ \text{the common root kernel is an ideal}\\
+ &\qquad\Longrightarrow\ \text{a small image-carrier ring};\\
+ &\text{split retraction, finite-word normal generation}\\
+ &\qquad\Longrightarrow\ \text{intrinsic kernel invisibility}\ \Longrightarrow\ \text{the arithmetic quotient}.
+\end{align*}
+The first chain is the sibling report's and \cref{ogl:el:sec:collision}; the
+second is source 12's extension to all root types
+(\cref{ogl:ch:sec:roots}); the third is the normal-closure mechanism of
+\cref{ogl:el:lem:normalgen,ogl:ker:lem:closure}, applied with the new
+reconstruction. The Lie classification uses the first chain with the integral
+relation \eqref{ogl:ch:eq:bracketlattice} in place of root geometry, and its
+converse uses an integral functional on the rational abelianization, residual
+additive detection and descent. The rank-one converse uses the amalgam and
+finite simultaneous additive detection.
+
+Source 12's classical inputs are normal forms \cite{Conway,Gonshor}, Chevalley
+groups and their integral root identities \cite{Geck,HVZ}, and amalgams and
+two-row normal forms \cite{Cohn,Serre}. Only the specific rank-two identities are
+taken from \cite{HVZ}; its general relative commutator theorems, whose hypotheses
+exclude residue fields of order two, are not invoked, since $\Oz$ has the
+quotient $\Z/2\Z$ and $2$ is not a unit of $\Oz$ (12). An encyclopedia page was
+used by source 12 for orientation only. Source 12's repository review covered
+the root README, the catalogue, selected report READMEs and source 11's proof
+audit, not this article; its novelty claim is limited to an all-root-type and
+Lie-theoretic development beyond the matrix claims it inspected. Its limitations
+are listed in Appendix~\ref{ogl:app:nonclaims} (items 12.1--12.28), its finite
+checks in Appendix~\ref{ogl:app:verification}.
+
 \appendix
 \section{Provenance}\label{ogl:app:provenance}
 
@@ -3931,7 +5318,8 @@ Part of this report & Sources and choices\\
 \Cref{ogl:ker:sec:steinberg} & 11 \S8 (Lemma~8.1, Theorem~8.2 and its remark).\\
 \Cref{ogl:ker:sec:fragments} & 11 \S10 (Lemma~10.1, Theorem~10.2 as \cref{ogl:ker:lem:fragmentring}, Theorem~10.3, Corollary~10.4, Propositions~10.5--10.7, Corollaries~10.8, 10.9, the remark on $\aleph_1$, Proposition~10.11); 11's Theorem~C. The ring is cited from the sibling report. \Cref{ogl:ker:prop:exact,ogl:ker:cor:fivemodels} are the merge's.\\
 \Cref{ogl:lat:part} & 10, all sections. The lattice-projection equivalence, the sufficiency half of the closest-point criterion, the real parity bound and the Pell example are printed by citation of the Hahn--Tate report (\cref{ogl:lat:sub:tate}); 10's proofs are kept for its converse, the non-closedness, the Gaussian bounds, arbitrary targets and all omnific statements.\\
-\Cref{ogl:sec:neighbours,ogl:sec:questions} & The merge, with the sources' questions (06 \S10.3, 07 \S12.4, 10 \S14.1, 11 \S11).\\
+\Cref{ogl:sec:neighbours,ogl:sec:questions} & The merge, with the sources' questions (06 \S10.3, 07 \S12.4, 10 \S14.1, 11 \S11); the batch-32 status notes on \cref{ogl:q:roots,ogl:q:thresholds} are the merge's, from source 12.\\
+\Cref{ogl:ch:part} & 12, all sections. \Cref{ogl:ch:sec:conventions}: 12 \S1 (Theorems~A--D) and the merge's conventions; 12 \S\S3--4 (Propositions~3.1, 3.2, Example~3.3, Lemmas~4.1, 4.2, Theorem~4.3, Remark~4.4) are credited to \cref{ogl:lem:units,ogl:prop:factor,ogl:el:lem:scale,ogl:el:lem:compress,ogl:el:lem:ready,ogl:el:sec:boundaries} and \replabel{osq:thm:universal}, not reprinted. \Cref{ogl:ch:sec:universal}: 12 \S2 (Definition~2.1, Lemmas~2.2, 2.3). \Cref{ogl:ch:sec:roots}: 12 \S\S5--6 (Lemma~5.1, Theorems~6.1, 6.3, Remark~6.2). \Cref{ogl:ch:sec:elementary}: 12 \S7 (Lemma~7.1, Theorem~7.2, Corollary~7.3, Example~7.4, Theorem~7.5). \Cref{ogl:ch:sec:structure}: 12 \S8 (Propositions~8.1, 8.3, 8.5, Remark~8.2, Corollary~8.4, \S8.1). \Cref{ogl:ch:sec:steinberg}: 12 \S9 (Theorem~9.1, Remark~9.2, Proposition~9.3). \Cref{ogl:ch:sec:rankone}: 12 \S10; its Theorem~10.1 kept as a second proof of \cref{ogl:el:thm:amalgam}, its Corollary~10.2, Lemma~10.3 and Theorem~10.4 credited to \cref{ogl:el:thm:freeproduct,ogl:el:lem:functional,ogl:el:thm:countable,ogl:el:cor:nouniversal}, its Theorem~10.5 printed (part (ii) the merge's). \Cref{ogl:ch:sec:lie}: 12 \S11 (Lemmas~11.1, 11.5, Theorems~11.2, 11.3, 11.6, Corollary~11.4, the $\mathfrak{sl}_2$ example); \cref{ogl:ch:rem:unipotent} is the merge's. \Cref{ogl:ch:sec:cardinals}: 12 \S12 (Definition~12.1, Proposition~12.2, Theorems~12.3, 12.5, Corollary~12.4); \cref{ogl:ch:cor:thresholds} is the merge's. \Cref{ogl:ch:sec:boundaries}: 12 \S13 and Appendix~A; \cref{ogl:ch:cor:support} is the merge's. \Cref{ogl:ch:sec:questions}: 12 \S14. \Cref{ogl:ch:sec:dependencies}: 12 \S15. 12's Appendices~B and C are in Appendix~\ref{ogl:app:verification} and in the non-claims.\\
 \bottomrule
 \end{longtable}}
 
@@ -3992,6 +5380,18 @@ Source & Source symbol & Here, and why\\
 11 & $B=D\oplus I$ (split ring) & $B$ in \cref{ogl:ker:lem:stkernel}, $A_0=D_0\oplus I$ in \cref{ogl:ker:prop:exactthreshold}.\\
 11 & $A_{\kappa,D}$, $\Pi_{\kappa,k}$, $N_{n,\kappa,D}$ & $R_{<\kappa}$, $\Pi_{<\kappa}$, $P_{n,<\kappa}$; the sibling report's $R^{11}_\kappa$, $\Pi^{11}_\kappa$.\\
 11 & $\omega^{\iota(\gamma)}$ (outer monomials), $q_\kappa=1+t_1$ & $X^\gamma$, as in the sibling report; $1+t_1$ written out.\\
+12 & $I$ (for the purely infinite ideal), $A_{D,k}$, $\deg$ & $\Pi_k$, $\A_{D,k}$, $\ddeg$; $I$ is an abstract ideal here.\\
+12 & $T_\delta$ (exponent compression) & $\Phi_\delta$ of \cref{ogl:el:lem:scale}; $\Phi$ is a root system in \cref{ogl:ch:part}, where the rescaling is not used.\\
+12 & $F$ (set field of the collision data; detection field $\Q$ or $\Q(i)$) & $L$; $K_D$. $F$ is the ambient field.\\
+12 & $u$, $v$, $\mu$ (collision data, cardinal) & $w$, $v$, $\nu$; $u$ is a unit and $\mu$ a minimum value elsewhere.\\
+12 & $U$, $h$, $J$, $T(a)$, $R_h$, $\tau$ (reconstruction) & $\Sigma$, $\varphi$, $J_\varphi$, $\vartheta_\varphi(a)$, $R_\varphi$, $\vartheta_\varphi$, as in \cref{ogl:ker:thm:rootkernel}; $\tau$ is the monomial $\omega^{2\delta}$ of \cref{ogl:el:lem:ready}.\\
+12 & $N$ (congruence subgroup at $1+\omega$) & $P_\Phi\langle1+\omega\rangle$, extending $P_n\langle a\rangle$.\\
+12 & $G_0$, $B_0$, $B(A)$, $e$, $c_j$, $\deg$ & $G_D$, $C_D$, $B_D$, $E_{12}$, $(g_j)_{21}$, $\ddeg$.\\
+12 & $\Lambda$, $\mathfrak g$, $L(A)$ & $\mathfrak l$, $\mathfrak l_\Q$, $\mathfrak l(A)$; $\Lambda$ is an ordinal or a Euclidean lattice, $L$ a field, $L_j$ integral points.\\
+12 & $b_i$, $n_{\ell ij}$, $M$, $\lambda$ & $\mathsf b_i$, $z_{lij}$, $\mathfrak H$, $\varpi$; $n$ is a matrix size, $M$ a module or bound, $\lambda$ a cardinal.\\
+12 & $e,f,h$ (basis of $\mathfrak{sl}_2$) & $\mathsf e,\mathsf f,\mathsf h$; $e_{ij}$ are elementary matrices, $h$ an index.\\
+12 & $N,M,L,K$; $A,\dots,F$, $A_-$, $B_-$, $H_A$, $H_B$ (appendix matrices), $X_N(t)$ & $\mathsf N_1,\dots,\mathsf N_4$; $\mathsf G_1,\dots,\mathsf G_6$, $\mathsf G_1^-$, $\mathsf G_2^-$, $\mathsf H_1$, $\mathsf H_2$; $\exp(t\mathsf N)$. These letters name rings, groups and fields here.\\
+12 & $\widetilde x_\alpha$, $P_\Phi$, $P_\Phi^{\St}$, $E_\Phi$ & unchanged; $P_{A_{n-1}}=P_n$ and $P^{\St}_{A_{n-1}}=P^{\St}_n$.\\
 \bottomrule
 \end{longtable}}
 
@@ -4061,6 +5461,37 @@ the collision argument of \cref{ogl:ker:prop:exact}.
 \item 11's descriptions of the quotient report (an unrefereed AI-assisted merge
 dated 22--23 September 2026 whose ring theorem factors every set-sized ring image
 through $\ct$) and of the catalogue (51 reports) are accurate for the pin.
+\end{enumerate}
+
+Source 12 pins \texttt{7af8a30}, at which this report contained sources 06, 07,
+10 and 11, with the batch-31 status notes. The following statements of 12 are
+corrected here, the pin being kept as provenance.
+\begin{enumerate}[leftmargin=*,resume]
+\item 12 says that an indexed search of the repository for ``Chevalley''
+returned no matching result, and calls this a limited search. As a description
+of the tree it is false: at the pin the word occurs twice in this article, in
+\cref{ogl:q:roots} (``elementary Chevalley-type groups'') and in its status note
+(source 11's suggestion for ``split Chevalley groups through root-kernel
+reconstruction''). That question asked for exactly 12's extension; 12 answers
+it (\cref{ogl:q:roots}). 12's novelty statement, which it restricts to what it
+inspected, is unaffected: the tree contained no theorem for root systems other
+than $A_{n-1}$ and no current Lie ring.
+\item 12 inspected this report's guide and source 11's proof audit, not the
+article. Its account of this report's antecedents (type-$A$ universal
+quotients, the rank-two amalgam and detection, matrix kernels, Steinberg groups,
+cardinal arguments) is accurate at the pin; they are \cref{ogl:el:thm:invisible} (type $A$),
+\cref{ogl:ker:thm:rootkernel,ogl:ker:cor:transfer} (the type-$A$ reconstruction
+and transfer), \cref{ogl:el:rem:ring} (the ring--group implication),
+\cref{ogl:el:thm:amalgam,ogl:el:thm:countable,ogl:el:cor:nouniversal} (rank two),
+\cref{ogl:ker:thm:torsionfree,ogl:ker:thm:center} (structure),
+\cref{ogl:ker:thm:steinberg} (Steinberg) and
+\cref{ogl:ker:prop:exactthreshold} (the exact-threshold criterion). It does not
+mention \cref{ogl:ker:prop:exact,ogl:ker:cor:fivemodels}; its statement that the
+repository gives exact thresholds in the scalar and matrix settings refers to
+them.
+\item 12 describes this report as merged from AI-assisted unrefereed
+manuscripts and credits the scalar theorem to the quotient report; both are
+accurate at the pin.
 \end{enumerate}
 
 \section{What this report does not claim}\label{ogl:app:nonclaims}
@@ -4249,7 +5680,8 @@ subgroup.
 \item Invisibility does not pass to arbitrary subgroups: a root subgroup has
 nonzero coefficient maps to $\R$.
 \item Other root systems do not follow by a change of notation; commutator
-constants and root lengths must be addressed.
+constants and root lengths must be addressed. (Source 12 addresses them in
+\cref{ogl:ch:part}; the non-claim describes 11.)
 \item Exact image thresholds are not claimed for the explicit fragments, neither
 $\kappa$ nor $\kappa^{<\kappa}$; any application of the exact-threshold criterion
 must verify its ring hypothesis. (The merge supplies this for $R_{<\kappa}$ in
@@ -4274,10 +5706,12 @@ manuscript's own review, not an independent referee report, and its build report
 is a rendering report, not a correctness certificate.
 \end{enumerate}
 
-\subsection{The merge (10 items)}
+\subsection{The merge (15 items)}
 \begin{enumerate}[leftmargin=*,widest=00,label=M.\arabic*]
 \item The results marked \mergetag{}
-(\cref{ogl:alg:rem:affine,ogl:el:rem:ring,ogl:el:prop:finiteside,ogl:ker:prop:exact,ogl:ker:cor:fivemodels})
+(\cref{ogl:alg:rem:affine,ogl:el:rem:ring,ogl:el:prop:finiteside,ogl:ker:prop:exact,ogl:ker:cor:fivemodels},
+and in \cref{ogl:ch:part} \cref{ogl:ch:thm:components}(ii),
+\cref{ogl:ch:rem:unipotent,ogl:ch:cor:thresholds,ogl:ch:cor:support})
 are no more refereed than the sources.
 \item \Cref{ogl:el:rem:ring} is a logical implication, not an independent proof
 of the ring theorem, and covers $K\in\{\R,\C\}$ only.
@@ -4308,15 +5742,123 @@ statements, not a new proof of either.
 integration: the proofs were re-derived for the write, 11's finite checks were
 rerun, and its Bass--Milnor--Serre and Voronetsky citations were not checked
 against the originals for this report.
+\item The answer to \cref{ogl:q:roots} is for split elementary groups: the
+simply connected form, its Steinberg group, and the relative kernels of other
+split isogeny forms; the exact converse is for $D\in\{\Z,\Z[i]\}$ in the simply
+connected elementary category. Twisted, nonsplit and relative-rank-one groups,
+the full groups $G(\A_{D,k})$, and the converse for non-simply-connected forms
+of the whole group stay open.
+\item \Cref{ogl:ch:cor:thresholds} holds only for root systems without $A_1$
+component and only in the rings named there; it rests on
+\cref{ogl:ker:prop:exact,ogl:ker:cor:fivemodels} and thus on the sibling
+report's statements listed in M.8. Nothing is said about $A_1$ components at
+set-sized stages.
+\item \Cref{ogl:ch:rem:unipotent} compares two statements; neither is derived
+from the other, and no statement about all unipotent groups is made.
+\Cref{ogl:ch:thm:components}(ii) is immediate from source 12's Theorem~B and
+07's countable detection.
+\item \Cref{ogl:ch:cor:support} rests on the sibling report's
+\replabel{osq:thm:support}(i), whose review status is that report's; it is
+stated for uncountable $\lambda$ and root systems without $A_1$ component only.
+The identification of $O_\kappa$ with $\A^{<\kappa}_{\Z,\R}$ is by definition;
+nothing is imported from the report on first $\kappa$ coefficients.
+\item The material added from source 12 was not reviewed beyond this
+integration: the proofs were re-derived for the write, its finite checks were
+rerun on a copy, and its citations of Geck, Hazrat--Vavilov--Zhang, Cohn and
+Serre were not checked against the originals for this report.
+\end{enumerate}
+
+\subsection{Source 12 (28 items)}
+\begin{enumerate}[leftmargin=*,widest=00,label=12.\arabic*]
+\item An AI-assisted, unrefereed research manuscript; its written arguments are
+conditional only on the stated classical normal-form and Chevalley-group
+background, and have not been independently refereed.
+\item The all-type transfer and the Lie classification are proposed
+contributions; priority was not established by an exhaustive literature review
+or certified, and no claim of first publication is made.
+\item No named published conjecture is claimed solved.
+\item The scalar quotient, the type-$A$ matrix theorem, the rank-one amalgam and
+countable detection, the type-$A$ Steinberg version and several matrix-kernel
+and cardinal arguments are repository antecedents, credited and not claimed as
+new; they are reproved rather than imported from an unreviewed draft, and citing
+them does not certify the repository.
+\item The Chevalley relations and integral root identities are classical
+(Geck; Hazrat--Vavilov--Zhang). The general relative commutator theorems of
+Hazrat--Vavilov--Zhang are not invoked with their small-residue-field
+hypotheses dropped: $\Oz$ has the quotient $\Z/2\Z$ and $2\notin\Oz^\times$; the
+argument divides a free parameter in $\Pi_k$, never a killed parameter or a
+target element.
+\item The main group statements concern elementary, root-generated groups, not
+every point of the Chevalley group scheme: $E_\Phi(\Oz)=G_\Phi(\Oz)$ is not
+asserted, no statement about $\SL_n(A)$ is made, and elementary generation of
+$G_\Phi(\Oz)$ is not resolved.
+\item No computation of $K_2(\Oz)$; the Steinberg constant-term kernel is not
+identified with $K_2$ and is not the kernel of $\St_\Phi(A)\to E_\Phi(A)$.
+\item The Steinberg kernel is not claimed torsion-free or centerless.
+\item No classification of normal subgroups; nonsimplicity is proved by one
+proper congruence subgroup, without classifying ideals.
+\item No global bounded commutator width or bounded generation: the bound of at
+most three commutators is per root element.
+\item The rank-one converse is stated in the simply connected elementary
+category; no rank-one converse is asserted for every central quotient, and the
+isogeny statement concerns root-generated groups in the stated forms.
+\item No global exponential correspondence between the abstract class groups
+and Lie rings is assumed; abstract group maps need not differentiate.
+\item Subgroups of set-invisible groups need not be set-invisible: a root
+subgroup has nonzero coefficient maps to $k$ and $\Q$, so no $K_2$ or other
+subgroup statement follows by restriction.
+\item The transfer proofs use no regularity of $\kappa$; regularity, cofinality
+and support restrictions may be needed to establish collision data in a
+particular Hahn fragment and must be checked there.
+\item Action thresholds use $|\Sym(X)|=2^{|X|}$ for infinite $X$, not $|X|$.
+\item Finite quotients of $E_\Phi(A)$ are those of $E_\Phi(D)$, but no
+identification of the profinite completion with a congruence completion, and no
+blanket Gaussian congruence-subgroup claim, is made.
+\item Finite supports destroy the theorem: the finite-support evaluation is not
+extended to arbitrary Hahn series, and a finitely supported model must not
+replace $\Pi_k$ in the universal statements.
+\item The constant term is not the standard part.
+\item The theorems use the full surreal exponent class; they are not statements
+about an arbitrary fixed set-sized Hahn ring, whose identity map is a
+counterexample.
+\item The converse of the ring--group equivalence uses only the Dorroh
+unitization; a nonunital map need not be linear over a larger constant ring.
+\item Checking root systems up to rank eight ($A_\ell,B_\ell,C_\ell$,
+$2\le\ell\le8$; $D_\ell$, $4\le\ell\le8$; the exceptional types) does not prove
+the coverage lemma for all ranks; that rests on its written proof.
+\item The finite checks verify polynomial matrix identities, integral divided
+powers, finite root configurations and finite leading-term examples with
+polynomial parameters; they do not verify the class-theoretic support argument,
+Hahn support closure, arbitrary homomorphisms or arbitrary supports, and the
+rational substitutions in them do not assume $1/2\in A$.
+\item No Lean formalization is supplied and no repository Lean build was run.
+\item The repository review was targeted (the root README, the catalogue,
+selected report READMEs and source 11's proof audit), not a line-by-line audit;
+no blanket assertion is made that no other file anticipates a consequence, and a
+negative search is not proof of absence.
+\item A user-provided encyclopedia page was used for orientation only;
+classical sources support the imported machinery, not the new omnific
+conclusions.
+\item Its proof audit is the manuscript's own record, not a referee report or a
+formal certificate; its build report is a layout and build review, and word
+counts of extracted text are not semantic verification.
+\item The twelve questions are proposed continuations, not an inventory of
+named open problems.
+\item $\Hom$ displays with a proper-class source abbreviate factorization
+statements; no set or class whose members are proper classes is formed, the
+faithful representation over $\No$ or $\SC$ is class-sized and is not
+contradicted, global choice, though harmless, is not used, and the exponent
+compression is an algebraic normal-form map with no asserted compatibility with
+the surreal exponential.
 \end{enumerate}
 
 \section{Verification suites}\label{ogl:app:verification}
 
-Four finite programs accompany the report, as shipped (byte-identical to the
-deliveries). The first three need Python~3 and SymPy (the recorded runs used
-Python 3.13.5 and SymPy 1.14.0); source 11's needs only the Python standard
-library (version 3.10 or later). All four were rerun for this report on copies
-in a scratch directory with Python 3.14.4 (and SymPy 1.14.0).
+Five finite programs accompany the report, as shipped (byte-identical to the
+deliveries). The first three and source 12's need Python~3 and SymPy (the
+recorded runs used Python 3.13.5 and SymPy 1.14.0); source 11's needs only the
+Python standard library (version 3.10 or later). All five were rerun for this
+report on copies in a scratch directory with Python 3.14.4 (and SymPy 1.14.0).
 \begin{itemize}[leftmargin=*]
 \item \fn{code/06-algebraic-groups-verification.py} (06): 1,108 exact checks in ten
 families (908 elementary-identity checks in ranks $3$--$6$, 18 for the two
@@ -4352,11 +5894,34 @@ always overwrites \fn{verification_results.json} next to itself (under the shipp
 name, \fn{code/verification_results.json}); the recorded run is
 \fn{data/11-matrix-shadows-verification_results.json}, and the rerun reproduced
 its content exactly.
+\item \fn{code/12-chevalley-quotients-verify.py} (12): 2,188 deterministic exact
+checks (SymPy; seed 20260923 for the rank-one words) in twelve families: the
+$A_2$ commutator (1), the $C_2$ identities \eqref{ogl:ch:eq:C2long},
+\eqref{ogl:ch:eq:C2short} and the halved substitution (3), the $G_2$ identities
+\eqref{ogl:ch:eq:G2matrix}, \eqref{ogl:ch:eq:G2matrixlong} and the halved
+substitution (3), the $G_2$ Cartan and cross relations (7) and Serre relations
+(2), integral divided powers of eight root matrices in exponents $1$--$7$ (56),
+the $\mathfrak{sl}_2$ brackets \eqref{ogl:ch:eq:sl2} (3), root-reconstruction
+witnesses (1,868), exceptional root counts (5), and, for 80 reduced rank-one
+words of length $1$--$5$ with polynomial parameters in one variable, the leading
+coefficient \eqref{ogl:ch:eq:topword}, its nonvanishing and determinant one (80
+each). The 1,868 witness checks are the roots of $A_\ell,B_\ell,C_\ell$
+($2\le\ell\le8$), $D_\ell$ ($4\le\ell\le8$), $G_2$, $F_4$, $E_6$, $E_7$, $E_8$: for
+each root the program finds a pair of roots whose positive combinations, lengths
+and root-string constant match one of the four configurations of
+\cref{ogl:ch:lem:coverage}, and it stops with an error if none exists; the count
+records one success per root. It checks root geometry, not structure constants.
+The program prints its results and always writes \fn{verification_results.json}
+next to itself (under the shipped name, \fn{code/verification_results.json});
+the recorded run is \fn{data/12-chevalley-quotients-verification_results.json},
+and the rerun reproduced it except for the recorded Python version. The shipped
+\fn{code/12-chevalley-quotients-Makefile} names the delivery files
+\fn{article.tex} (source 12's manuscript, not shipped) and \fn{verify.py}.
 \end{itemize}
 These programs check finite identities and examples. They do not verify Hahn
 summability, support gaps, class-size or cardinal arguments, algebraic-group
-structure, the reduced-word arguments, or any minimization or coinitiality
-theorem, which are proved in the text.
+structure, the reduced-word arguments, the coverage lemma in all ranks, or any
+minimization or coinitiality theorem, which are proved in the text.
 
 \clearpage
 \phantomsection
@@ -4392,9 +5957,20 @@ ordered rings are Section~8.
 \bibitem{Conway}
 J.~H. Conway, \emph{On Numbers and Games}, second edition, A~K~Peters, 2001.
 
+\bibitem{Geck}
+M.~Geck, \emph{A course on Lie algebras and Chevalley groups},
+arXiv:2404.11472v3, 2025. Cited by 12 for root groups and integral Chevalley
+constructions; not rechecked for this report.
+
 \bibitem{Gonshor}
 H.~Gonshor, \emph{An Introduction to the Theory of Surreal Numbers}, London
 Mathematical Society Lecture Note Series 110, Cambridge University Press, 1986.
+
+\bibitem{HVZ}
+R.~Hazrat, N.~Vavilov, and Z.~Zhang, \emph{Relative commutator calculus in
+Chevalley groups}, Journal of Algebra \textbf{385} (2013), 262--293;
+arXiv:1107.3009v2. Cited by 12 for the integral rank-two commutator identities
+only, not for its relative commutator theorems; not rechecked for this report.
 
 \bibitem{LLL}
 A.~K. Lenstra, H.~W. Lenstra Jr., and L.~Lov\'asz, \emph{Factoring polynomials
@@ -4432,6 +6008,10 @@ of rank two}, Proceedings of the Edinburgh Mathematical Society \textbf{68}
 \bibitem{Poonen}
 B.~Poonen, \emph{Maximally complete fields}, L'Enseignement Math\'ematique (2)
 \textbf{39} (1993), 87--106.
+
+\bibitem{Serre}
+J.-P. Serre, \emph{Trees}, translated by J.~Stillwell, Springer, 1980. Cited by
+12 for amalgam normal forms.
 
 \bibitem{Voronetsky}
 E.~Voronetsky, \emph{Groups with $\mathsf{BC}_\ell$-commutator relations}, Journal
