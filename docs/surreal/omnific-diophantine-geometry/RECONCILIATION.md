@@ -21,13 +21,15 @@ seventh-order certificate and arithmetic existence results. A further pass finis
 18.1–18.4 (groups, reduced coefficients, dual numbers and sharpness).
 The logarithmic pass now covers Sections 18.5–18.6 and all six standard
 results there. The scope pass checks Section 20 and Sections 21.1–21.6
-against the maintained statements and implementation ledger. Pointers in
-Sections 1, 6, 7 and 14, neighbouring-report comparisons in Section 21.7,
-and complete parallel-source reconciliation remain outside this review.
-It does **not** certify integration of every result in the fourteen manuscripts
+against the maintained statements and implementation ledger. A further
+pass checks the geometric pointers in Sections 1, 6, 7 and 14 and the
+statement scopes cited in Section 21.7 against the maintained neighboring
+reports. Complete parallel-source reconciliation remains outside this review.
+It does **not** certify integration of every result in the fifteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. The remaining pointers and full source reconciliation remain outside these passes. The review of Section 16
+present numbering. Later additions not explicitly covered and full source
+reconciliation remain outside these passes. The review of Section 16
 includes the two-ring principle, symmetric differentials and inheritance.
 Source C16, integrated in `1ad4ad8`, adds seventeen standard results in
 Section 17.6 and updates the earlier singular-curve status notes. Its
@@ -1347,3 +1349,57 @@ mathematical statements are preserved. The full manuscript now has 244
 standard results; this count does not extend the independent review scope.
 The route also records the separately checked Gaussian fiber and converse
 formalizations in `4037368` and `ae0210c`.
+
+
+## Geometric pointers and neighboring-statement comparison
+
+This pass reads the geometric summaries in Sections 1, 6, 7 and 14 and
+checks Section 21.7 against the currently cited statements in the other
+reports, at the `39a46b7` snapshot. It is a comparison of statement scope,
+not an independent proof review of every imported neighboring theorem.
+All 244 standard statements and all 553 labels are unchanged.
+
+The opening summary now retains nonzero ordinary levels for Pell/norm
+rigidity, characteristic zero for the cited étale theorem, and
+nondegeneracy for the indefinite quadratic unipotent corollary. It states
+that an automorphism of `Oz` fixes the real numbers through its extension
+to `No`. The curve summaries retain `Γ ≠ 0` for existence of nonconstant
+points and geometric integrality for the classification. A model over `ℤ`
+with real fiber `𝔸¹_ℝ` need not itself be `𝔸¹_ℤ`; the integer-point
+hypothesis is separate. The group summary now describes the kernel on
+points after choosing vector coordinates, rather than implying an
+algebraic splitting of the group.
+
+The earlier polynomial-lifting pointer now spells out the complete fiber
+`φ(φ⁻¹(n) + Π)`: `φ` has real polynomial coordinates, and choosing a
+monomial parameter supplies a finite-support witness without asserting
+that every point has finite support. The unit argument in Section 17.2
+is distinguished from the general torus argument: one nonconstant unit
+suffices for an integral affine curve because its specialization forces a
+nonzero prime kernel in a one-dimensional coordinate ring. Generation of
+the whole coordinate ring by units is not required in this curve argument.
+
+The neighboring-report comparison now restricts the conditional GCD input
+to its rank-one bounded-support ring. It distinguishes local Euler
+maps from maps out of the full class into set-sized modules, and records
+the nonzero 2-divisible exponent group and characteristic-zero coefficient
+field for recovery from a named dilation. The group report's updated
+`ogl:alg:rem:affine` already records the curve classification. Its remaining
+real singular arithmetic question is not settled by the geometric
+normalization criterion; the Gaussian result has a different existence
+conclusion. These points are also corrected in this report's guide.
+
+For source C17, only the positive-degree hypothesis in its introductory
+summary and the statement scopes of the canonical/rich-target comparison
+were checked. The latter needs integer-valued polynomials with more inputs
+in the relevant ordinary-output coset than their degree; discreteness
+alone does not imply translation form. Section 19.4's proofs, the remaining
+C17 summaries and questions, appendix imports and complete parallel-source
+reconciliation remain pending. No new Lean coverage is asserted.
+
+Validation: the rebuilt article has 225 pages after three passes, no
+warnings, unresolved references or bad boxes, and all 1,106 prior auxiliary
+label numbers are preserved. The changed explanations were visually checked.
+The collection's independent index, 4,950 source references and 1,680 local
+Markdown destinations pass. No Lean source or finite verification program
+changes in this pass.

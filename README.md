@@ -371,7 +371,11 @@ simple normal-crossings boundaries, spells out arithmetic descent, and
 corrects the distinction between ring retractions and common-field inclusions.
 The scope review makes the workspace restrictions and two kinds of smooth
 curve fibers explicit, and updates the formalization route to the proved
-arithmetic and linear-algebra prerequisites.
+arithmetic and linear-algebra prerequisites. The subsequent comparison
+review distinguishes an affine-line real fiber from an affine-line model
+over the integers, and retains the unresolved arithmetic existence case
+for singular real curves. It also explains why one nonconstant unit
+suffices for curve rigidity through the dimension-one argument.
 These geometric and coefficient-algebra results remain pending in Lean.
 A new manuscript in the same report treats monic polynomials with nonzero
 constant discriminant as translates of their constant-term polynomials,

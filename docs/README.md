@@ -121,7 +121,9 @@ consequences, repeated-root test and arithmetic applications now have a
 manuscript review. The review also covers the closing singular-curve scope
 notes and Sections 18.1–18.6 on groups, coefficient algebras, boundary
 examples and logarithmic applications. The workspace and question-status
-review covers Sections 20–21.6; neighbouring-report comparisons remain pending. The independent-copies report and its
+review covers Sections 20–21.6. A subsequent pass checks geometric
+pointers and the cited statement scopes in Section 21.7, correcting the
+real arithmetic boundary and stale group-report comparison. The independent-copies report and its
 class-foundation assumptions remain pending proof review and Lean formalization.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds

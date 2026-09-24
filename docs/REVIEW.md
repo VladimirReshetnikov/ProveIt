@@ -4241,6 +4241,49 @@ the preceding successful build. The delivered automorphism PDF is retained;
 its new proofs and finite verification suites have not been independently
 reviewed or rerun in this synchronization.
 
+## Geometric pointers and neighboring-report comparison
+
+At `39a46b7`, the Diophantine report's geometric summaries in Sections 1,
+6, 7 and 14 and the cited statement scopes in Section 21.7 were checked
+against the maintained theorems and neighboring reports. The opening now
+retains nonzero levels, characteristic zero and nondegeneracy where the
+cited statements require them. It explains that an `Oz` automorphism fixes
+real numbers through its fraction-field extension. The curve summaries
+retain nonzero exponent groups and geometric integrality. An affine-line
+real fiber is distinguished from an affine-line model over the integers,
+and the integer-point condition remains explicit. The commutative-group
+kernel description no longer suggests an algebraic splitting.
+
+The polynomial-arc pointer now gives the entire constant-term fiber in real
+polynomial coordinates, distinguishing monomial finite-support witnesses
+from arbitrary purely infinite parameters. The comparison of unit arguments
+explains why a curve needs only one nonconstant unit: specialization forces
+a nonzero prime kernel in its dimension-one coordinate ring. The general
+affine argument instead requires generation by units.
+
+The groups report's current remark already cites the curve classification;
+its real singular arithmetic existence question remains open even though
+the geometric normalization criterion is proved in the manuscript. The
+comparison now states this boundary. It also distinguishes the rank-one
+bounded-support GCD hypothesis from `Oz`, local Euler derivations from
+full-class maps into set-sized modules, and the named-dilation language from
+the pure-ring reconstruction. C17's translation comparison retains the
+integer-valued and more-inputs-than-degree hypotheses; discreteness alone
+is insufficient. Only this statement comparison and positive degree in
+C17's opening summary were checked, not its proofs or remaining questions.
+The guide, notation record, reader map and root README reflect these scopes.
+
+All 244 standard statements and 553 labels are unchanged. The three-pass
+article build has 225 pages, no warnings, unresolved references or bad boxes,
+and preserves all 1,106 prior auxiliary label numbers. Visual checks cover
+PDF pages 8–9, 70, 108 and 179–180. The independent inventory passes for
+4,398 standard results in 63 reports; all 4,950 source references and 1,680
+local Markdown destinations in 225 files resolve. No Lean source or finite
+verification suite changed; the applicable combined build remains 4,485
+jobs with an axiom audit of 15,573 declarations. Imported proofs, remaining
+C17 material, appendix foundations and full parallel-source reconciliation
+remain separate work.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
