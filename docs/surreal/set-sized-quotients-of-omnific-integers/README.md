@@ -184,14 +184,23 @@ that first Tor never vanishes, even when second Tor does. The proof now
 separates principal rank-one quotients, of flat dimension one, from those
 of rank at least two, of flat dimension two.
 
-The subsequent linear-disjointness criterion, self-Tor algebra, framed
-reconstruction, and reconciliation of the parallel sources remain pending
-review. Exact scope
+The compositum lemma, linear-disjointness criterion, self-Tor product and
+alternating/symmetric exact sequence are now reviewed. The field criterion
+uses the given embeddings and exact localization; torsion freeness ensures
+that localization detects vanishing. The self-product calculation tracks the
+flip of the earlier coefficient-tensor convention and the resulting sign.
+The proof of the exact sequence uses a basis to establish the alternating
+injection, then lifts every symmetric relation. No division by two is used.
+For an order the product submodule and its quotient have equal ranks;
+this does not specify a canonical splitting into symmetric tensors.
+
+The subsequent framed reconstruction and derived constant-term shadow,
+and reconciliation of the parallel sources, remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 299 pages
+article.pdf   the compiled report, 300 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

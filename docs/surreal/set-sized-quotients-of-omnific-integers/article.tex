@@ -7945,10 +7945,29 @@ Let $\mathfrak o_1,\mathfrak o_2\subset k$ be orders over $D$: unital subrings, 
 Then the $\Frac(D)$-span of the product lattice $\mathfrak o_1\mathfrak o_2$ is the compositum $K_1K_2$, so $\rk_D(\mathfrak o_1\mathfrak o_2)=[K_1K_2:\Frac D]$.
 \end{lemma}
 \begin{proof}
-The span $V$ of all products $xy$ ($x\in K_1$, $y\in K_2$) contains $K_1$ and $K_2$ (both contain $1$), is closed under multiplication and is
-finite-dimensional over $\Frac D$. As a subring of the field $k$ it is a domain, so a nonzero element acts injectively, hence surjectively, on
-$V$, and is invertible in $V$. So $V$ is a field containing $K_1,K_2$ and contained in their compositum, hence equal to it; it is also the
-span of the products of elements of $\mathfrak o_1$ and $\mathfrak o_2$.
+Put $F=\Frac D$ and let $V$ be the $F$-span in $k$ of all
+products $xy$ with $x\in K_1$ and $y\in K_2$. Products of
+finite $F$-bases of $K_1$ and $K_2$ span $V$, so it is finite
+dimensional. Since both fields contain $1$, $V$ contains $K_1$,
+$K_2$ and $1$. It is closed under multiplication: the product
+of $xy$ and $x'y'$ is $(xx')(yy')$, again a spanning product,
+and distributivity handles finite sums.
+
+For $0\ne v\in V$, multiplication by $v$ is an injective
+$F$-linear endomorphism of $V$, because $V$ lies in the field
+$k$. Finite dimensionality makes this map surjective. As
+$1\in V$, some $w\in V$ satisfies $vw=1$. Thus $V$ is a
+field containing $K_1$ and $K_2$, and so it contains their
+compositum inside $k$. Conversely every spanning product belongs
+to that compositum, giving $V=K_1K_2$.
+
+Each element of $K_i=F\mathfrak o_i$ is a finite $F$-linear
+combination of elements of $\mathfrak o_i$. Expanding both
+factors shows that $V=F(\mathfrak o_1\mathfrak o_2)$, where
+the product lattice means the $D$-span of products. It is finitely
+generated and torsion free over the principal ideal domain $D$,
+hence free. Its rank is the dimension of this $F$-span, namely
+$[K_1K_2:F]$.
 \end{proof}
 
 \begin{theorem}[Second $\Tor$ detects linear disjointness \src{21}]\label{osq:da:thm:disjoint}
@@ -7959,8 +7978,40 @@ For orders $\mathfrak o_1,\mathfrak o_2$ as in \cref{osq:da:lem:compositum} and 
 and this $\Tor_2$ vanishes if and only if $K_1$ and $K_2$ (with their given embeddings in $k$) are linearly disjoint over $\Frac D$.
 \end{theorem}
 \begin{proof}
-Combine \cref{osq:da:thm:pair}(i) with \cref{osq:da:lem:compositum}. After tensoring with $\Frac D$ the kernel becomes that of the surjection
-$K_1\otimes_{\Frac D}K_2\to K_1K_2$, whose injectivity is linear disjointness; a torsion-free module with zero localization is zero.
+Set $F=\Frac D$ and
+$T=\mathcal T(\mathfrak o_1,\mathfrak o_2)$.
+By \cref{osq:da:thm:pair}(i), the second $\Tor$ group is $T$
+for every choice of scales. The ranks of the two orders are
+$[K_1:F]$ and $[K_2:F]$, while
+\cref{osq:da:lem:compositum} computes the rank of their product
+as $[K_1K_2:F]$. Substituting these three ranks in the pair
+formula proves the displayed equality.
+
+For the vanishing criterion, localize the exact sequence
+\[
+ 0\longrightarrow T\longrightarrow
+ \mathfrak o_1\otimes_D\mathfrak o_2
+ \xrightarrow{\,\mathrm{mult}\,}\mathfrak o_1\mathfrak o_2
+ \longrightarrow0
+\]
+at $D\setminus\{0\}$. Localization is exact and commutes with
+tensor products, so it becomes
+\[
+ 0\longrightarrow F\otimes_DT\longrightarrow
+ K_1\otimes_FK_2\xrightarrow{\,\mathrm{mult}\,}K_1K_2
+ \longrightarrow0.
+\]
+The displayed multiplication map uses the given embeddings in
+$k$. Its injectivity is precisely linear disjointness in that
+common field. Thus this condition is equivalent to
+$F\otimes_DT=0$.
+
+Finally $T$ is torsion free over $D$, as a submodule of the
+finite free module $\mathfrak o_1\otimes_D\mathfrak o_2$.
+If $F\otimes_DT=0$, each $t\in T$ is killed by some nonzero
+$d\in D$; torsion freeness forces $t=0$. The converse is
+immediate. Hence localization loses no nonzero element relevant
+to this criterion, and $T=0$ exactly in the linearly disjoint case.
 \end{proof}
 
 For $\mathfrak o_1=\Z[\sqrt2]$ and $\mathfrak o_2=\Z[\sqrt3]$ this is 17's example after \cref{osq:rel:thm:augmentation} (rank zero), and for
@@ -7974,9 +8025,20 @@ $\mathsf T_1=I/I^2$ and $\mathsf T_2\cong\mathcal T(M,M)$. The boundary map
 \[
  \mathsf b:\mathsf T_1\longrightarrow M,\qquad [X^g(m+w)]\longmapsto m\quad(m\in M,\ w\in\Pi),
 \]
-is well defined because $I^2=X^{2g}(M^2+\Pi)\subseteq X^g\Pi$, and it induces $\mathsf T_1/\Pi\mathsf T_1\cong M$ because $\Pi I=X^g\Pi$. For
-the product, $\mathsf T_2$ is identified with $\mathcal T(M,M)$ by sending the surviving coefficient vector $(c_j)$ of
-\cref{osq:rel:thm:tor} to $\sum_jc_j\otimes m_j$, the flip of the convention of that proof; this fixes the sign below.
+is well defined because
+$I^2=X^{2g}(M^2+\Pi)\subseteq X^g\Pi$. It is onto, by the
+classes $[X^gm]$, and its kernel is $X^g\Pi/I^2$.
+Since $\Pi I=X^g\Pi$, this kernel is exactly
+$\Pi\mathsf T_1$, giving $\mathsf T_1/\Pi\mathsf T_1\cong M$.
+The target has the $A$-action through $\ct$.
+
+For the product we fix the identification of $\mathsf T_2$ with
+$\mathcal T(M,M)$ by sending the surviving coefficient vector
+$(c_j)$ of \cref{osq:rel:thm:tor} to
+$\sum_jc_j\otimes m_j$. This is the flip of that proof's
+$\sum_jm_j\otimes c_j$ convention. The flip preserves the
+multiplication kernel because multiplication in $k$ is commutative;
+fixing it here determines the sign in the next formula.
 
 \begin{theorem}[The self-$\Tor$ product \src{21}]\label{osq:da:thm:product}
 For $x,y\in\mathsf T_1$,
@@ -7987,11 +8049,55 @@ All products of positive degrees summing to at least three vanish, and $A$ acts 
 $\mathsf T_1$, these rules determine the graded algebra $\Tor^A(A/I,A/I)$.
 \end{theorem}
 \begin{proof}
-Compute in $\mathsf P_\bullet\otimes_AA/I$ (\cref{osq:da:thm:dga}). Degree-one classes are represented by $u,v\in A^r$ with constant vectors
-$\ct(u),\ct(v)\in D^r$; the class of $u$ corresponds to $[X^gm(u)]\in I/I^2$, so $\mathsf b([u])=m(\ct u)$, and likewise for $v$. The product
-vector $X^g(m(u)v-m(v)u)$ lies in $\mathrm{Syz}_M\cap I^r$; after division by $X^g$ its constant coefficients are
-$c_j=m(\ct u)\ct(v)_j-m(\ct v)\ct(u)_j\in M$, and $\sum_jc_j\otimes m_j=m(\ct u)\otimes m(\ct v)-m(\ct v)\otimes m(\ct u)$. The algebra is zero
-above degree two, and the action is that of \cref{osq:rel:thm:tor}.
+Use the algebra $\mathsf P_\bullet\otimes_AA/I$ from
+\cref{osq:da:thm:dga}. Its degree-one differential is zero,
+because each $X^gm_j$ belongs to $I$. Thus every vector of
+$(A/I)^r$ is a cycle, and the degree-two differential has image
+the image of $\mathrm{Syz}_M$ in $(A/I)^r$. Consequently
+\[
+ H_1=\frac{A^r}{\mathrm{Syz}_M+IA^r}
+ \xrightarrow{\ \sim\ } I/I^2,\qquad
+ [u]\longmapsto[X^gm(u)].
+\]
+Indeed, the presentation map $A^r\to I$ is onto with kernel
+$\mathrm{Syz}_M$, and it takes $IA^r$ onto $I^2$.
+This also proves the displayed map is independent of representatives.
+
+Choose lifts $u,v\in A^r$ for $x,y$, and put
+$a=m(\ct u)$ and $b=m(\ct v)$ in $M$. The boundary map
+just defined gives $\mathsf b(x)=a$, $\mathsf b(y)=b$.
+Their product is represented by
+\[
+ z=X^g\bigl(m(u)v-m(v)u\bigr).
+\]
+It belongs to $\mathrm{Syz}_M$ by the DGA calculation, and its
+coordinates lie in $I$, so it is a degree-two cycle. To apply
+the coefficient identification of \cref{osq:da:thm:pair}(i),
+divide by $X^g$ and take constants. The resulting entries are
+\[
+ c_j=a\,\ct(v)_j-b\,\ct(u)_j\in M.
+\]
+They satisfy $\sum_jm_jc_j=ab-ba=0$. Under the stipulated
+flipped identification, their tensor is
+\begin{align*}
+ \sum_jc_j\otimes m_j
+ &=\sum_j\bigl(a\,\ct(v)_j-b\,\ct(u)_j\bigr)\otimes m_j\\
+ &=a\otimes\sum_j\ct(v)_jm_j
+   -b\otimes\sum_j\ct(u)_jm_j
+ =a\otimes b-b\otimes a.
+\end{align*}
+Here the coefficients moved across the tensor sign belong to $D$.
+The formula depends only on $\mathsf b(x)$ and $\mathsf b(y)$,
+so it is unaffected by the chosen lifts. With the unflipped
+coefficient convention it would have the opposite sign.
+
+The complex has no terms above degree two, so all the stated
+higher products vanish. Its degree-zero algebra is $A/I$;
+its degree-two action factors through $\ct$ by
+\cref{osq:da:thm:pair}(i). Together with the specified
+$A/I$-module structure on $\mathsf T_1$, these actions and the
+computed degree-one product cover every pair of nonzero degrees,
+and hence determine the graded algebra.
 \end{proof}
 
 \begin{corollary}[Alternating and symmetric relations \src{21}]\label{osq:da:cor:indecomposable}
@@ -8005,12 +8111,58 @@ order ($M^2=M$) the ranks are $r(r-1)$ and $r(r-1)/2$: the products account for 
 symmetric multiplication relations.
 \end{corollary}
 \begin{proof}
-$\mathsf b$ is onto, so by \cref{osq:da:thm:product} the products span the image of the injective map $x\wedge y\mapsto x\otimes y-y\otimes x$
-of $\bigwedge^2_DM$ into $M\otimes_DM$, which lies in the kernel because multiplication in $k$ is commutative. The quotient of $M\otimes_DM$ by this image is
-$\operatorname{Sym}^2_DM$, multiplication factors through it, and every symmetric relation lifts to $\mathcal T(M,M)$. The ranks follow.
+Write $V=M\otimes_DM$ and let $\mu:V\to M^2$ be
+multiplication. The alternating bilinear map
+$(x,y)\mapsto x\otimes y-y\otimes x$ induces
+\[
+ \alpha:\bigwedge_D^2M\longrightarrow V.
+\]
+In a basis $m_1,\ldots,m_r$, the basis vector $m_i\wedge m_j$
+for $i<j$ maps to $m_i\otimes m_j-m_j\otimes m_i$.
+Its coefficient at $m_i\otimes m_j$ distinguishes it from all
+other such images. Thus $\alpha$ is injective; no division by
+two is involved. Commutativity gives $\mu\alpha=0$, so its
+image lies in $\ker\mu=\mathsf T_2$.
+
+Let $q:V\to\operatorname{Sym}_D^2M$ be the quotient map.
+Its kernel is generated by the differences
+$x\otimes y-y\otimes x$, hence equals $\operatorname{im}\alpha$.
+Multiplication factors as $\mu=\bar\mu q$, where
+$\bar\mu:\operatorname{Sym}_D^2M\to M^2$ is onto. Restricting
+$q$ to $\ker\mu$ gives a map to $\ker\bar\mu$ with kernel
+$\operatorname{im}\alpha$. This restriction is onto: if
+$w\in\ker\bar\mu$, take any lift $v\in V$ under $q$; then
+$\mu(v)=\bar\mu(w)=0$. This proves the claimed short exact
+sequence.
+
+The boundary map $\mathsf b$ is surjective, so for every pair
+$a,b\in M$ choose degree-one classes mapping to them.
+\Cref{osq:da:thm:product} says their product is
+$\alpha(a\wedge b)$. Conversely every degree-one product has
+this form. Thus the $D$-span of products is exactly
+$\operatorname{im}\alpha$, and the asserted identification of
+$\operatorname{Ind}_2$ follows from the exact sequence.
+
+The tensor and symmetric squares of the free rank-$r$ module
+have ranks $r^2$ and $r(r+1)/2$, respectively. Both multiplication
+maps are onto the rank-$\ell$ module $M^2$. Localizing their
+kernel sequences at $D\setminus\{0\}$ gives ranks
+$r^2-\ell$ and $r(r+1)/2-\ell$. For an order, its unit and
+closure under multiplication give $M^2=M$, so $\ell=r$.
+The product submodule has rank $\binom r2$, equal to the rank
+of the quotient, and their sum is $r(r-1)$, as asserted.
 \end{proof}
 
-The rank $r^2-\ell$ and its range are 17's \cref{osq:rel:cor:selftor}; new here are the product and the split into alternating and symmetric
+Here ``half'' refers to ranks. The symmetric square is the quotient
+of the tensor square by alternating differences. The right-hand term
+is a submodule of that quotient, not a chosen submodule of symmetric
+tensors. Over the principal ideal domain $D$, this relation kernel is free,
+so the displayed sequence admits a $D$-linear splitting, but the
+statement specifies no such choice. In particular it does not use
+the averaging operators $(1\pm\mathrm{flip})/2$: two is not a
+unit in $\Z$ or $\Z[i]$.
+
+The rank $r^2-\ell$ and its range are 17's \cref{osq:rel:cor:selftor}; new here are the product and the exact sequence separating alternating and symmetric
 relations (14's \cref{osq:tn:thm:powers} computes exterior and symmetric powers of $L(M)$, not a $\Tor$ product). For a lattice that is not a
 ring the symmetric half can vanish: if $M=D+D\alpha$ with $1,\alpha,\alpha^2$ independent over $\Frac D$, then $\ell=3$,
 $\mathsf T_2\cong D$ is spanned by the alternating tensor, and $\operatorname{Ind}_2=0$ (compare 17's examples $\sqrt[3]2$ and $\tau$). So the

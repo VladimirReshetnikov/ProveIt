@@ -6703,3 +6703,83 @@ the two-thread 4,622-job build and 16,927-declaration axiom audit remain
 the Lean baseline before synchronization. Existing finite verifiers do
 not establish these general DGA and support arguments and were not used
 as substitutes for the proof review.
+
+## Linear disjointness and the integral self-Tor product
+
+Reviewed `osq:da:lem:compositum`, `osq:da:thm:disjoint`,
+`osq:da:thm:product` and `osq:da:cor:indecomposable`, preserving
+all four statements. The compositum proof explains finite dimensionality,
+closure under multiplication, existence of inverses, and the equality
+with the fraction-field span of the product lattice. The disjointness
+proof writes the exact coefficient sequence before and after localization;
+torsion freeness ensures that vanishing after localization means actual
+vanishing. The common-embedding convention agrees with the
+[Stacks definition of linear disjointness](https://stacks.math.columbia.edu/tag/09IF).
+It is not a criterion for unspecified abstract embeddings or for vanishing
+of first Tor.
+
+Expanded the boundary map's surjectivity and kernel, then computed the
+self-product from actual degree-one cycles. The first-homology quotient
+is identified with I/I^2 using the presentation and its image on IA^r.
+The degree-two coefficient vector gives the displayed antisymmetrized
+tensor precisely under the specified flip of the preceding pair-Tor
+convention; using the earlier tensor order reverses the sign. Scalar
+movement across tensor factors uses coefficients in D.
+
+The alternating/symmetric proof now checks injectivity of the exterior
+map in a basis, identifies the symmetric quotient kernel, and lifts every
+symmetric relation. Surjectivity of the boundary map identifies the
+product span exactly with the exterior image. Localization gives the
+ranks. Clarified that the two halves for orders refer to ranks in an exact
+sequence: the symmetric relation module is a submodule of the symmetric
+quotient, not a selected submodule of symmetric tensors. A D-linear
+splitting exists because the quotient is free over the PID, but no choice
+is specified, and averaging by one half is not used over Z or Z[i].
+Updated root README, guide, catalogue, notation and source anchors. All
+four results remain Pending in Lean. Framed reconstruction, the derived
+constant-term shadow and full source reconciliation remain pending review.
+
+Validation: three clean final TeX passes for the 300-page article and
+34-page catalogue, without warnings or box diagnostics, and visual
+inspection of all revised proof pages and the catalogue. All 418
+standard/principal statements, 828 labels, 1,656 auxiliary label/number
+pairs, 66 questions, 60 remarks and 28 examples are unchanged. The source-21
+finite verifier exactly reproduces the delivered JSON: 1,008 finite
+Koszul/transition identities, 600 finite telescope/support checks and the
+four arithmetic examples, including the product/indecomposable ranks.
+These finite checks do not establish the general module, localization
+or infinite-support arguments. All 4,626 anchors in 63 reports, 5,219
+source-label references and 1,835 local Markdown destinations in 226
+files pass, as does whitespace checking. No Lean source changed; the
+two-thread 4,622-job build and 16,927-declaration axiom audit remain the
+Lean baseline before synchronization.
+
+## Synchronization: actual character and phase twists
+
+Merged origin/main through e6f13a0, including 4f52bfb, and reviewed all
+three incoming modules against `odg:def:lem:twist`, its preceding character
+construction, and the witnesses used by `odg:def:thm:norealaxis`.
+The generic Hahn construction multiplies coefficients by an additive
+character with nonzero values, preserves full support, and checks the
+finite convolution antidiagonals; the inverse character supplies the
+inverse. Small-support realization then gives an actual surcomplex field
+automorphism. It fixes ordinary complex constants and the zero coefficient,
+hence restricts to a Gaussian omnific automorphism fixing Gaussian integers.
+
+The phase character uses the additive zero-coefficient map on actual
+surreal exponents and only the ordinary complex exponential. Its value
+at one is i. The values on omega, inverse omega and one explicitly show
+that the additive coefficient map is not multiplicative. The twist sends
+omega to i times omega, outside the entire actual real axis, and fails
+to commute with conjugation there. Its Gaussian restriction moves the
+omnific omega outside the embedded real omnific ring. The README and ledger
+correctly distinguish these algebraic obstruction witnesses from the
+still-pending first-order nondefinability theorem. No global surreal
+exponential or unrestricted full-Hahn surjectivity is assumed.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,625 jobs; the
+axiom audit checks 16,987 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,219 source-label
+references and 1,839 local Markdown destinations in 226 files pass, as
+does whitespace checking. No incoming TeX changed; the newly verified
+300-page article and 34-page catalogue remain current.
