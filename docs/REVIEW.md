@@ -9219,3 +9219,38 @@ cardinality or homological claims, which were reviewed mathematically.
 Audits pass 4,626 source anchors in 63 reports, 5,240 cited source labels
 and 1,989 local Markdown destinations in 226 files. No Lean source changed
 in this review; the incoming Lean commit is validated separately below.
+
+
+### Principal quotient sizes, their images and ideal closure sync (2026-09-24)
+
+Merged `fa605e0` and `6891dd1` from origin/main. Read all five new modules
+against the principal-quotient and reflection statements and the ideal
+closure theorem and dense-ideal corollary. Divisibility bounds the leading
+exponent, separating the residues of positive monomials below a nonconstant
+generator. The actual real principal quotient is small exactly for a
+nonzero ordinary integer generator. Only Pi among the small-quotient
+ideals lacks a small generating set. Principal reflection is the ordinary
+residue ring of the absolute constant coefficient: quotients by omega,
+2+omega and 1+omega are nonzero and large, with small reflections Z, Z/2Z
+and zero. Gaussian and arbitrary-coefficient principal-size claims remain
+pending.
+
+The generic directed-ideal-basis theorem computes native closure of any
+ideal by its neighborhood sums. Its actual real omnific specialization is
+J+Pi, the inverse image of the integer constant ideal, including the zero
+image ideal. Density of a principal ideal is equivalent to unit constant
+term; nonconstant generators then give proper dense ideals. The result
+applies to every nonconstant irreducible. Any small-target nonunital map
+killing a unit-constant element is zero, including infinite and
+noncommutative targets. Corrected a stray plus sign in the generic module's
+heading; no proof changed.
+
+Updated the report guide and catalogue to match the incoming root README
+and exact coverage ledger. After the heading correction,
+`LEAN_NUM_THREADS=2 lake build` passes all 5,041 jobs. The axiom audit
+accepts 18,958 declarations using only propext, Classical.choice and
+Quot.sound. Three final catalogue TeX passes are diagnostic-free, still
+36 pages; inspected pages 12–13. The article is unchanged by this merge,
+at 345 pages, with all previously checked statements, labels and numbering
+preserved. Audits pass 4,626 anchors in 63 reports, 5,240 cited source labels
+and 1,995 local Markdown destinations in 226 files. git diff --check passes.

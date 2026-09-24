@@ -76,6 +76,23 @@ restrictions provide actual representatives for every small index type,
 proving the source's quotient-size alternative. The proof uses finite
 telescope certificates and a well-ordering of the index type.
 
+The real principal quotient is small exactly for a nonzero ordinary
+integer generator. For a nonconstant generator, distinct positive
+monomials below its leading exponent have distinct residues. The
+quotients by ω, 2+ω and 1+ω are nonzero and large; their universal
+small images are respectively ℤ, ℤ/2ℤ and the zero ring. Among ideals
+with small quotient, only Π lacks a small generating set. The Gaussian
+and arbitrary-coefficient principal-size statements remain pending.
+
+For every real omnific ideal J, Lean now identifies its finite-congruence
+closure with J+Π, equivalently the inverse image of its integer constant
+ideal. A generic directed-ideal-basis theorem identifies this with native
+topological closure. A principal ideal is dense exactly for constant term
+±1; nonconstant generators with this property give proper dense ideals.
+Every nonconstant irreducible has this property. Even a nonunital map to
+a small ring that kills a unit-constant element must be zero; targets
+may be infinite and noncommutative.
+
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
 be infinite. Its exact cardinality, small-target theorem, ideal generator
