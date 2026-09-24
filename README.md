@@ -259,7 +259,11 @@ entire omnific solution set onto the ordinary one; the proof even allows
 arbitrary families of equations and variable indices. Positive existential
 formulas in Mathlib's ring language also have the same truth at integer
 parameters. The separate undecidability and computable-completeness claims
-remain pending in Lean.
+remain pending in Lean. Positive existential definable sets are also proved
+closed under constant extraction. This rules out such definitions of
+nonvanishing, positivity and nonnegativity with integer parameters. The
+explicit equation `(X+1)^2 = 2(Y+1)^2` has a positive omnific solution even
+though it has no solution in ordinary natural numbers.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
