@@ -786,6 +786,23 @@ has the nonzero coefficient $c_j$ at the first newly included exponent.
 A nonzero polynomial over the field $\HH KG$ has only finitely many roots. This contradiction proves the claim.
 \end{proof}
 
+The following comparison was added in batch 31. The independent-copies report
+\cite{RepoIsc} prints the same tail estimate and root count at every cofinality
+(its \texttt{isc:thm:cofinalgap}) and claims no priority for it. Let $K$ be an arbitrary field, finite fields
+included, let $G\ne0$ be set-sized, and let $(a_\alpha)_{\alpha<\cof(G)}$ be a
+strictly increasing cofinal family in $G^{>0}$ such that, for every $d\ge1$
+and $w\in G$, eventually $a_{\alpha+1}>d a_\alpha+w$. Such a family exists
+(its \texttt{isc:lem:gapscale}). Then $1+\sum_{\alpha<\cof(G)}t^{a_\alpha}$,
+with all coefficients $1$, is transcendental over $\FF KG$.
+Corollary~\ref{bst:cor:onegap} also works over any field and allows arbitrary
+nonzero coefficients, but it is indexed by $\N$ and its hypothesis makes $(a_n)$
+cofinal, so it needs $\cof(G)=\aleph_0$. Theorem~\ref{bst:thm:independent} covers
+every cofinality but needs characteristic zero. The single-series statement at
+uncountable cofinality over a field of positive characteristic, in particular a
+finite field, is therefore not stated in this report. It does not touch the
+multivariable problem, and finite coefficient fields remain outside the
+independence theorem (Section~\ref{bst:sec:verification}).
+
 The multivariable argument needs more than this root-count observation.
 One must ensure that the top homogeneous polynomial does not vanish on all
 chosen coefficient vectors. The next section supplies exactly that
@@ -1632,6 +1649,23 @@ normal-form embedding \eqref{bst:eq:conway} is imported as a standard
 theorem here; its formal counterpart in the collection is tracked in
 \texttt{docs/NORMAL\_FORM\_BRIDGE.md} \cite{RepoBridge}.
 
+\subsection{Independent surreal copies}\label{bst:subsec:copies}
+
+This subsection was added in batch 31. The independent-copies report
+\cite{RepoIsc} compares its bounded-support section with this report. Its
+identification of $\FF kH$ with the fraction field of the omnific-type ring of
+series with negative support plus a constant in $\Z$ or $\Z[i]$, for $k=\R,\C$
+(\texttt{isc:prop:boundedfrac}) is the localization of
+Proposition~\ref{bst:prop:localdensity}, with the constant coefficient
+restricted. Its one-series theorem \texttt{isc:thm:cofinalgap} is compared with
+Corollary~\ref{bst:cor:onegap} and Theorem~\ref{bst:thm:independent} after that
+corollary. Its coset slices are the projections $\pi_r$ of
+Lemma~\ref{bst:lem:projection}. With them it proves a statement not made here
+(\texttt{isc:thm:sliceddisjoint}): the full Hahn fields on two subgroups are
+linearly disjoint over the full Hahn field on their intersection, with no
+cofinality hypothesis. Here the same projections serve descent over a cofinal
+subgroup (Theorem~\ref{bst:thm:descent}). No statement of this report changes.
+
 \section{Verification, formalization, and remaining questions}\label{bst:sec:verification}
 
 \subsection{What was checked computationally}
@@ -2065,5 +2099,12 @@ public provisional project \texttt{gaearon/conway-refinement}, 2026.
 \href{https://github.com/gaearon/conway-refinement/blob/main/ConwayRefinement/Standalone/Mathlib/HahnSeriesGCD.lean}{standalone Hahn-series GCD statement}.
 Accessed 22 September 2026. The proof build was not independently rerun in
 this audit; the stated GCD input is retained as a hypothesis.
+
+\bibitem{RepoIsc}
+\emph{Independent Surreal Copies and Arithmetic Intersections}, AI-assisted
+research report in \repo, \texttt{docs/surreal/independent-surreal-copies/},
+written in commit \texttt{781b19e} (batch 31). Labels quoted after
+Corollary~\ref{bst:cor:onegap} and in Section~\ref{bst:subsec:copies} were checked
+against its \texttt{article.tex} at that commit. Not treated as a refereed source.
 \end{thebibliography}
 \end{document}

@@ -237,8 +237,10 @@ strictly positive exponents, `B_k = k ⊕ Π_k`, `A_{D,k} = D ⊕ Π_k`.
   (the rank-two question of 06, asked again by 11, answered by 07), one partly
   answered by the merge (Question 34.4, thresholds at set-sized stages: answered
   for `n ≥ 3` in `R_{<κ}` and in the sibling report's five models, open for other
-  exponent groups and supports), five open; `odg:q:affine` is answered for group
-  schemes only.
+  exponent groups and supports), five open; `odg:q:affine` is answered here for
+  group schemes only. Its curve part is now answered in the Diophantine report
+  itself (status notes of batch 31 in Remark 4.6 and after Question 34.7), except
+  the real case of `odg:sg:q:real`; higher dimension stays open.
 - The finite checks verify finite identities and examples only.
 
 ## Corrections and stale statements
@@ -293,7 +295,13 @@ was already written. Appendix A.3 lists the corrections.
 - [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/): Part I
   answers its question `odg:q:affine` for group schemes and contains
   `odg:cor:unipotent`, `odg:cor:orthogonal`; Theorem 3.3 and `odg:thm:bounded`
-  use the same transfer and neither contains the other.
+  use the same transfer and neither contains the other. Its batch-31 curve
+  theorems (`odg:cr:thm:affine`, `odg:sg:thm:main`, `odg:sg:thm:omnific`,
+  `odg:sg:cor:gaussian`) answer the curve part of `odg:q:affine`, except over
+  `Oz` for real curves with normalization `A^1_R` whose integer points all
+  lack a real preimage (`odg:sg:q:real`); the two "open for curves" sentences
+  here are re-scoped accordingly (Remark 4.6 and the note after Question
+  34.7), and higher dimension stays open.
 - [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/):
   Theorem 9.1 strengthens `osq:thm:universal`, `osq:cor:faithful`,
   `osq:prop:matrices` to abstract group maps and uses its collision lemmas;
