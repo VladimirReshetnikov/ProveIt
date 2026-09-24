@@ -591,7 +591,16 @@ report is not edited here. Source 03 (batch 34) reproves `opa:as:thm:detect`
 (binary-witness route), `opa:as:thm:ctiso` and `opa:as:thm:gaussian` with
 credit, asks `opa:as:q:gaussian` again with an involution-only clause and a
 nonvalued counting variant (Question 39.1), and asks `opa:as:q:otherrings`
-again (the intersection `∩ n𝔬` must vanish); both stay open.
+again (the intersection `∩ n𝔬` must vanish); both stay open. Batch 34 added
+three "Related (batch 34)" paragraphs here: after Theorem 4.2, its
+`opa:es:prop:character` is the phase twist `P_{−2π}` (with `ℓ = [g]_0`) and
+also preserves `Oz[i]`, so adding that condition still does not recover the
+real axis; after Theorem 10.1, its `opa:es:thm:complexmain` and
+`opa:es:cor:classification` classify the set groups acting faithfully with
+commutation with `c` (left-orderable, or `G_0 × C_2`), rederived in
+`opa:us:sec:complex`, and the resulting finite-group bound is a special case
+of Theorem 10.1. Status notes on `opa:as:q:gaussian` and
+`opa:as:q:otherrings` in that report now point back to Section 39.
 
 **[omnific-diophantine-geometry](../../surreal/omnific-diophantine-geometry/)**
 — the reconstruction uses `odg:def:thm:multiplier` and `odg:thm:fractions`;
@@ -608,7 +617,11 @@ every `R_F`.
 — the factorization clause of Proposition 37.1 is the finite-target case of
 `osq:thm:universal`(ii) with the set field `F` and the subring `Z`;
 `dsn:thm:finite-quotients` is the same statement for the definable rings
-`I_A`. Neither report is edited.
+`I_A`. Neither report is edited. A "Related (batch 34)" paragraph after
+Theorem 9.1 notes that `osq:cr:thm:universalfield` (every set or class field
+of characteristic zero embeds in `No(i)`, extending embeddings of set-sized
+subfields) is the forth half of its back-and-forth, and `osq:cr:cor:acfiso`
+its case of prime subfields.
 
 **[foundations](../../foundations-and-computation/foundations/)** —
 `found:prop:complex` (the pair field, algebraic closedness); Proposition 7.2 is

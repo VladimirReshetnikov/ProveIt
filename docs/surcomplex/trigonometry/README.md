@@ -509,6 +509,17 @@ on twice those periods (`gz:thm:forced`, `gz:thm:gamma-tube`,
 zeta at the negative even omnific integers. Resonances, a notion different from
 periods, are treated in `gz:prop:resonance`.
 
+**[exponential-relations-over-omnific-integers](../../foundations-and-computation/exponential-relations-over-omnific-integers/)**
+(batch 33) re-derives Proposition 19.4 for `Oz` (`exr:prop:division`), adds
+exponential predicates to the resulting Presburger group (decidable with
+algebraic slopes, `exr:thm:rational`, `exr:thm:algdecision`; undecidable once
+`exp(xy) = exp(z)` is adjoined, `exr:thm:undecidable`), and proves linear
+independence of exponential values on the domain `Q̄ + Π` (`exr:def:domain`,
+`exr:thm:independence`), where every `E_χ` of Proposition 19.5 restricts to the
+same map. Two unnumbered notes, after the paragraph following Proposition 19.4
+and after Proposition 19.5, record this; they changed no number and no page
+count (96 pages).
+
 ## What was run
 
 On Python 3.14.4 with SymPy 1.14.0, each script on a copy outside this

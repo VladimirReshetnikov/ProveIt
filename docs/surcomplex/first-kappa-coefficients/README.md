@@ -459,6 +459,9 @@ one numbering.
   `osq:thm:support` (i) contains Theorem 21.3 and the Gaussian case; Part II's
   reservoir gives a third route through `osq:lem:collision`, which that report
   records as not applying to the bounded rings with its Hahn-field reservoir.
+  Its batch-34 `osq:cr:cor:acfiso` (every proper-class algebraically closed
+  field of characteristic 0 is isomorphic to `No[i]`) is the prime-subfield
+  case of Lemma 22.1, credited there; a note after Lemma 22.1 records it.
 - **[omnific-preserving-automorphisms](../../surreal/omnific-preserving-automorphisms/)**:
   its `K_{<κ}` (`opa:as:prop:kappa`, regular κ) is Part I's `K_{κ,k}`; for
   singular κ, where it claims no extension, Theorem 18.2's family shows that
@@ -474,7 +477,11 @@ one numbering.
   `saut:fs:prop:conjugacy` conjugacy there is decided on `C`, so its `2^𝔠`
   types (`saut:fs:thm:main-count`) are seen on `C`, whereas every `τ_κ`
   restricts to `conj` on `C` and none is valued and `Oz[i]`-preserving
-  (Remark 22.4 (3)).
+  (Remark 22.4 (3)). Its batch-34 `saut:gr:q:theories` (elementary
+  equivalence of its descended integer parts `R_F`, which share finite
+  quotients and polynomial solvability, `saut:gr:prop:finite`,
+  `saut:gr:prop:dio`) is the analogue of Question 24.2's ring clause; a note
+  there records it. Both stay open.
 - **[surreal-fields-across-universes](../../foundations-and-computation/surreal-fields-across-universes/)**
   studies saturation and omitted cuts of the proper-class field `No^M` inside
   `No^N` for inner models. Part I answers none of its questions; Part II

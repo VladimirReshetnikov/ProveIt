@@ -295,6 +295,13 @@ Appendix A.3 records these.
 - [`large-cardinal-embeddings-and-normal-forms`](../large-cardinal-embeddings-and-normal-forms/)
   (`lce:`). Its absoluteness lemma supplies the same-reals instance of
   Question 17.3 (Remark 17.6). The rest of this report is unchanged by it.
+- [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
+  (`saut:`). Its batch-34 `saut:gr:prop:finite` and `saut:gr:prop:dio` prove
+  the finite-quotient statement of Theorem 16.2, and the transfer of integer
+  polynomial systems through `ct`, uniformly for its integer-part rings `R_F`
+  over set-sized real closed fields (`Oz = R_R`; `2^𝔠` pairwise nonisomorphic
+  among them), and cite Theorem 16.2 for the rings `I_A`. An unnumbered note
+  after Theorem 16.2 records this; it changed no number and no page count.
 
 ## What was run
 

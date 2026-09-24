@@ -1444,7 +1444,9 @@ is new here (Remark 39.6). **[set-sized-quotients-of-omnific-integers](../../sur
 proves that every additive and multiplicative map from `Oz` to a set-sized
 ring factors through the constant term (`osq:thm:universal`); Remark 39.5
 uses it only to explain why the additive coefficient map `[ω^ω]` gives no
-contradiction. Source 17's omnific codes (Theorem 35.16) encode subsets of `N`
+contradiction. A batch-34 sentence there adds that the set-sized target is
+needed: that report's `osq:cr:thm:residually` gives unital ring
+homomorphisms `sp_a : Oz → No[i]` with `sp_a(ω^a) = −1`. Source 17's omnific codes (Theorem 35.16) encode subsets of `N`
 through algebraic independence, not through a coefficient observation.
 
 ## Build and reproduce

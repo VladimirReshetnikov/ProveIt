@@ -362,7 +362,13 @@ Theorem 5.3 characteristic zero, so the single-series case at uncountable
 cofinality in positive characteristic is not stated here. Its
 `isc:thm:sliceddisjoint` (full Hahn fields on two subgroups are linearly
 disjoint over the full Hahn field on the intersection) uses the projections
-of Lemma 3.1 and is not stated here.
+of Lemma 3.1 and is not stated here. A batch-34 sentence at the end of
+Section 9.5 notes that its coefficient-field part (`isc:cp:`) compares
+itself with Theorem 5.3: `isc:cp:thm:lacunary` and `isc:cp:thm:generic` also
+use private indices, but prove differential independence over the compositum
+`F k((t^Γ))` or a finite-generation coefficient envelope, with a
+coefficient-degree or coefficient-derivation certificate instead of a
+support gap.
 
 **Notation.** The collection's [notation guide](../../NOTATION.md) writes
 `F_Γ = R((t^Γ))`, and the tail-span report writes `B`, `B_0` for full Hahn
@@ -477,7 +483,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 or `pdflatex -interaction=nonstopmode -halt-on-error article.tex` three times.
-Last build (batch 32, MiKTeX): exit 0, **61 pages** (32 before the Galois
+Last build (batch 34, MiKTeX, after the batch-34 sentence in Section 9.5,
+which adds no label and changes no label number): exit 0, **61 pages**, as in
+batch 32 (32 before the Galois
 part, 31 before the batch-31 reciprocal remarks; every statement, section and
 equation number of Sections 1–10 and Appendices A–B unchanged), no errors, no
 LaTeX or package warnings, no undefined or multiply defined references or

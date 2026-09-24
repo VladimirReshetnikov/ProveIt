@@ -212,6 +212,15 @@ proper in the full Hahn field**, it is complete exactly when
 `cf(Γ) ≠ cf(κ)`. If every Hahn support already has fewer than `κ` terms,
 it equals the full Hahn field and is complete regardless of that test.
 
+[Independent surreal copies](../../surreal/independent-surreal-copies/)
+(`isc:cp:`, batch 34) restates the injectivity paragraph before
+Proposition 4.1 and Proposition 4.1 itself, for `V = F` a field extension
+of `k`, as parts (i)–(ii) of `isc:cp:thm:rank`. Its part (iii) tests
+membership in the fraction field of `E_Γ(F)`, and `isc:cp:ex:geometric`
+(`1/(1 − u t^g)`, `u` transcendental) is a vector of infinite coefficient
+rank in that fraction field. A "Related (batch 34)" paragraph after
+Proposition 4.1 records this; no result here uses it.
+
 ## Build
 
 ```sh

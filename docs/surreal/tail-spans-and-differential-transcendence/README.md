@@ -125,6 +125,16 @@ uses prime-denominator tails as the exponent-side counterpart over a
 finite-lattice-supported base (`hnd:thm:independence`); for `Γ = Q` the two
 bases do not contain each other.
 
+The coefficient-field part of
+[independent-surreal-copies](../independent-surreal-copies/) (`isc:cp:`,
+batch 34; a "Related (batch 34)" paragraph after Remark 7.4 here) reuses the
+binary-prefix family `A_α`: `isc:cp:cor:continuum` gives continuum many
+series `Σ_{n∈A_α} x^{n!} t^n` differentially independent over `k((t))(x)` for
+`t d/dt`, by the coefficient-degree theorem `isc:cp:thm:lacunary`, and
+`isc:cp:thm:generic`, `isc:cp:cor:tree` use independent coefficients at
+private indices and a Vandermonde step. The bases and derivations differ from
+`B_0` and `D_BM`; neither result is deduced from Theorem 7.3 or implies it.
+
 The holonomic-rigidity report now proves all-order differential transcendence
 of every nonpolynomial strongly entire series when the value group has no
 order unit, and a continuum-sized differentially independent family

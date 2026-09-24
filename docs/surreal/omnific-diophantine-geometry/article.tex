@@ -1057,6 +1057,11 @@ The factorial floor profile of the holonomic-rigidity report
 \fn{docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions}; batch 32) is
 the case of this formula with real part $0$ or $1$ and positive infinitesimal
 part.
+The omnific continued-fraction report re-derives \cref{odg:thm:floor},
+boundary correction included, as \replabel{ocf:lem:floor} of
+\fn{docs/surreal/omnific-continued-fractions} (batch 33), and uses this floor
+as the digit map $a_n=\lfloor x_n\rfloor_{\Oz}$ of its continued-fraction
+algorithm (\replabel{ocf:def:digits}).
 
 \status{The integer-part assertion is classical. Ehrlich--Kaplan prove the
 stronger initiality characterization: for an initial subfield $K$ of
@@ -1121,6 +1126,13 @@ This theorem solves every ordinary congruence. For instance,
 $\sqrt2\,\omega+14$ is even and is congruent to $2$ modulo $3$; $\omega$ is
 divisible by every positive ordinary integer and $\omega+1$ is odd. The
 whole infinite part is invisible to these tests.
+The omnific-preserving-automorphisms report uses \eqref{odg:eq:divkernel} as
+the sole structural input of automatic formal integration: every ring
+derivation $\delta$ of $\Oz$ or of $\Og$ maps the ring into its purely
+infinite part, and the unique iterative Hasse--Schmidt derivation with first
+component $\delta$ is $\delta^n/n!$, with values in the ring
+(\replabel{opa:hs:thm:integration} of
+\fn{docs/surreal/omnific-preserving-automorphisms}; batch 33).
 
 The statement does \emph{not} extend to arbitrary omnific divisors.
 For example, $\ct(\omega+2)$ divides $\ct(2)$ in $\Z$, but $\omega+2$
@@ -1416,6 +1428,15 @@ A support unbounded below in a chosen real exponent group is still a set of
 surreal exponents and can be shifted above zero by a new, larger surreal
 exponent. The theorem does not assert that the required monomial lies in the
 original fixed Hahn workspace.
+The omnific-preserving-automorphisms report applies the theorem to the
+countable coefficient set of a formal power series, obtaining
+$\Frac(\Oz[[s]])=\No((s))$ (\replabel{opa:hs:prop:formalfrac}); with formal
+square roots it shows that the parameter-free formula
+$\exists a\,\exists b\,(b\ne0\wedge a^2=(x^4+1)b^2)$, which defines exactly
+$\Oz$ in every finite polynomial ring over $\Oz$, holds for every element of
+$\Oz[[s]]$ (\replabel{opa:hs:thm:collapse} of
+\fn{docs/surreal/omnific-preserving-automorphisms}; batch 33). Its caveat on
+fixed workspaces is \replabel{opa:hs:rem:classscope}.
 
 \begin{corollary}[Projective clearing and common multiples \src{01, 02, 05}]\label{odg:cor:projectiveclear}\label{odg:cor:commonmultiples}
 Every point of $\mathbb P^n(\No)$ has homogeneous coordinates in
@@ -1549,6 +1570,19 @@ $\V_R(F_1,\ldots,F_r)$ for its simultaneous zero set in $R^n$. All
 exponents of the variables are ordinary nonnegative integers and only
 finitely many monomials occur; equations with variable exponents, surreal
 exponentiation, or class-sized sums are not polynomial systems in this sense.
+Finite exponential sums $\sum_jc_j\exp(\sum_k\lambda_{jk}x_k)$ in
+omnific-integer variables, with complex $c_j$ and real $\lambda_{jk}$, are
+treated in the exponential-relations report
+(\fn{docs/foundations-and-computation/exponential-relations-over-omnific-integers};
+batch 33). Its ordinary-fiber criterion \replabel{exr:thm:fibers} is an
+analogue of \cref{odg:thm:transfer} and of the fibers \eqref{odg:eq:fiber}:
+over each ordinary integer tuple the fiber is a finite union of real-linear
+subspaces of $\Pi^d$. Ordered additive arithmetic on $\Oz$ with the zero
+predicates of such sums, for algebraic coefficients and real algebraic
+slopes, has a decidable theory (\replabel{exr:thm:algdecision}); adjoining
+the single relation $\exp(xy)=\exp(z)$, the graph of multiplication, makes it
+undecidable (\replabel{exr:thm:undecidable}), a variant of
+\cref{odg:def:cor:arithmetic}.
 
 \begin{theorem}[Retraction theorem for equations \src{01, 02, 05}]\label{odg:thm:transfer}
 Let $F_1,\ldots,F_r\in\Z[X_1,\ldots,X_n]$. Coordinatewise constant
@@ -11987,6 +12021,13 @@ $2^{2^{\aleph_0}}$ conjugacy types, with representatives whose fixed fields are
 pairwise nonisomorphic and whose fixed rings are integer parts; so these
 structures alone do not single out the real omnific subring, even up to
 isomorphism.
+Status (batch 34): ordinary arithmetic does not separate these rings either.
+Each integer-part ring $R_F$ of that report, for a set-sized real closed
+field $F$ (with $\Oz=R_{\R}$), has $R_F/nR_F\cong\Z/n\Z$ with every finite
+quotient factoring through $\ct$, and a system of integer polynomial
+equations is solvable in $R_F$ exactly when it is solvable in $\Z$
+(\replabel{saut:gr:prop:finite}, \replabel{saut:gr:prop:dio}). This is
+further negative information, not an answer, and not elementary equivalence.
 
 \begin{question}[Infinite algebraic extensions \src{07}]\label{odg:def:q:algebraic}
 Which coefficient subrings of algebraic extensions of $\Q$ of infinite degree
