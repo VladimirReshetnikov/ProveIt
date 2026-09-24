@@ -861,3 +861,7 @@ import Surreal.Foundations.OmnificNormalizationDensity
 import Surreal.Foundations.OmnificNormalization
 import Surreal.Algebra.SeparatedSubrings
 import Surreal.Foundations.OmnificAlgebraDiscreteness
+import Surreal.Algebra.CoefficientPullbackIntegrality
+import Surreal.Algebra.GaussianIntegrality
+import Surreal.Foundations.OmnificIntegralSlices
+import Surreal.Surcomplex.GaussianIntegralSlices

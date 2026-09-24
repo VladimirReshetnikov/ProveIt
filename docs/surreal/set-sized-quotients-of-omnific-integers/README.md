@@ -486,6 +486,11 @@ to small targets. Coefficient extraction is used multiplicatively only
 on nonnegative support. The valuation proof does not assume transfinite
 linearity of its additive map, and formal Hahn substitution does not
 assert convergence in the fine topology.
+Lean now proves the actual real and Gaussian constant and nonnegative-support
+slice equalities: the constant coefficient must be an ordinary algebraic
+integer, while positive-growth coefficients are unrestricted. The real
+normalization meets the ordinary rationals exactly in the integers.
+The fixed-model slices remain pending.
 
 Two added consequences sharpen the normalization picture. A negative
 minimum of a normal-form support prevents integrality, so every nonempty

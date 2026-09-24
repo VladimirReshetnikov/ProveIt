@@ -390,11 +390,15 @@ Cauchy net inside such an algebra is eventually constant, with no bound on
 the size of its index or range. In the countable-support model, exactly `cf(κ)` negative
 monomials generate the ambient field over its integer part, proving the
 denominator size bound sharp. This leaves the normalization's own generator
-count open. A least negative support exponent prevents
+count open. Lean now gives an exact integrality test on nonnegative support:
+the real or complex constant coefficient must be an ordinary algebraic integer,
+while positive-growth coefficients are unrestricted. The real normalization
+meets the ordinary rationals exactly in the integers. A least negative support exponent prevents
 integrality, giving an exact test on finite supports. The Gaussian
 normalization has an explicit basis `1, (√3+i)/2` over the real
 normalization `𝒩`; its additive quotient by `𝒩[i]` is exactly `𝒩/2𝒩`.
-These conclusions also remain pending in Lean.
+The fixed-model, least-exponent and Gaussian-basis conclusions remain pending
+in Lean.
 The arithmetic-fibre review now reaches integral doubling and trace/norm:
 modulo the extended purely infinite ideal, the normalization becomes a
 ring of finite idempotent partitions with algebraic-integer values.

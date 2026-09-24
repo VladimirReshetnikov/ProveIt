@@ -3650,3 +3650,29 @@ examples remain unchanged. Refreshed and independently checked all 4,626
 statement anchors in 63 reports; all 5,227 source-label references and
 1,949 local Markdown destinations in 226 files resolve. The finite
 verification code and historical records were not changed.
+
+### Constant-slice sync (2026-09-24)
+
+Merged the next upstream commit, `2527349`, and read all four added
+modules against `osq:nm:thm:realslice`, `osq:nm:ex:slice` and the slice
+clauses of `osq:nm:thm:complexnormal`. The generic split-retraction
+criterion descends an integral equation to the coefficient ring and
+reconstructs integrality by adding the kernel element; injective ambient
+embeddings preserve the equivalence. Applied only on nonnegative support,
+it proves the real and complex algebraic-integer coefficient tests. The
+Gaussian conversion uses integrality of Z[i] over Z and transitivity.
+The real rational slice is exactly Z. Two examples are proved, but the
+separate pi nonintegrality assertion remains pending, as recorded upstream.
+
+Resolved the root README conflict without losing the later arithmetic-fibre
+review. Updated the report guide and catalogue with the exact newly proved
+slice scope; fixed-model clauses, least-exponent exclusion and the explicit
+Gaussian basis remain pending. No article proof changed in this sync.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passed 5,006 jobs, with 18,507
+declarations passing the axiom audit using only propext, Classical.choice
+and Quot.sound. The refreshed catalogue passed three diagnostic-free TeX
+runs and remains 35 pages; inspected page 12. The article remains 329
+pages with all statement, label and numbering checks unchanged. All 4,626
+anchors in 63 reports, 5,230 source-label references and 1,953 local
+Markdown destinations in 226 files pass their audits.
