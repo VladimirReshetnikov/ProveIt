@@ -3845,6 +3845,49 @@ all 4,382 cited source references and 1,581 local Markdown destinations
 resolve. The root README, notation guide and review boundaries agree
 with this scope. No Lean source changed in this review.
 
+## Singular-review integration and automorphism wording
+
+The singular-curve review was committed as `860b622`; the subsequent merge
+includes upstream work through `336b216`. The incoming Lean results cover
+the purely infinite ideal, its completion and nilpotent tests, and omnific
+irreducibles and failure of atomic factorization. Their mapped source
+statements were reread. The combined `LEAN_NUM_THREADS=2 lake build` passes
+all 4,432 jobs; its axiom audit passes 15,186 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`.
+
+The six incoming main-text changes preserve all their earlier labeled
+standard and principal theorem statements. The holonomic addition has 33
+new standard results and two new principal theorems. The reader map, root
+README and catalogue now reflect the written order-two obstruction,
+third-order obstruction through cubic jet degree, and relative-scale
+criterion for mixed linear equations. The latter retains the condition
+that no quotient of distinct multipliers is a root of unity and concerns
+existence of some operator, not solvability of a prescribed one. These
+chapters remain pending independent proof review and Lean formalization.
+The catalogue entry now groups the mathematics by subject instead of
+recounting each manuscript's arrival. The three unintegrated companions
+and nine newly placed manuscripts have their current status recorded.
+
+A targeted correction to `opa:as:cor:invisible` and its reciprocal status
+note at `osq:q:invisible` distinguishes an automorphism of `Oz` from its
+extension to `No`: it is the extension that fixes all ordinary reals.
+Preserving constant coefficient is written `ct ∘ σ = ct`. The same two
+passages now apply `u` before the monomial map in `M_{χ,τ} ∘ u`; the earlier
+corollary described the order in reverse. These changes match the cited
+extension and factorization theorems. They do not constitute a proof review
+of automatic strongness or the factorization theorem. The notation guide
+records both distinctions. All 316 automorphism-report labels and 551
+quotient-report labels remain in order; only that corollary's statement
+changes, and no labels or source-index line numbers move.
+
+The corrected automorphism and quotient PDFs build in three passes to 104
+and 177 pages, and the revised catalogue to 32 pages, with no warnings,
+unresolved references or bad boxes. The affected passages and catalogue
+entry were visually inspected. The independent inventory verifies all
+3,871 standard results across 61 reports; all 4,416 cited source references
+and 1,588 local Markdown destinations across 197 files resolve. This
+integration validation leaves the review boundaries stated above intact.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

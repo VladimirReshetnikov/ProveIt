@@ -64,8 +64,9 @@ none of the results below is.
   multiplicative order has a nonpolynomial entire solution iff `|v(q)|` is
   an order unit of `Γ`. `Γ` has an order unit iff some nonpolynomial entire
   series is differentially algebraic (Theorem H); an explicit theta series
-  has differential order three. Whether order two occurs is open in the
-  written text.
+  has differential order three. The later chapters exclude order two for
+  every value group, and order three with total jet degree at most three;
+  these additions await independent proof review.
   [Report](docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions/).
 - **Exponential automorphisms of `No`.** Every exponential 1-automorphism of
   `No` is the identity, a proposed negative answer to Question 5.4 of

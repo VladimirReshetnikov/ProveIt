@@ -63,6 +63,11 @@ nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
 For a nonzero form, growth degree is the largest supported exponent and
 satisfies `v = −deg` under the reversed valuation convention.
 
+For an automorphism `σ` of `Oz`, preservation of constant coefficient means
+`ct ∘ σ = ct`. A claim that it fixes `ℝ` refers to its extension to `No`:
+the ordinary reals contained in `Oz` are only `ℤ`. In the omnific-automorphism
+factorization `M_{χ,τ} ∘ u`, apply `u` first, then the monomial map `M_{χ,τ}`.
+
 In the curve part of the Diophantine report, `𝒜_k(Γ)` has nonnegative
 growth support, while the valuation ring `𝒪_k(Γ)` has nonpositive growth
 support. For `Γ = 0` both are the coefficient field; the assertion that
