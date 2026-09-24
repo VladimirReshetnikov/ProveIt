@@ -17,7 +17,7 @@ research drafts prepared with ChatGPT:
 
 ```
 article.tex         the report, standalone LaTeX with an internal bibliography
-article.pdf         the compiled report, 61 pages
+article.pdf         the compiled report, 62 pages
 README.md           this guide
 research_audit.md   source 01: repository and literature audit, as delivered
 02-galois-rank-SOURCE_AUDIT.md   source 02: source, contribution and proof audit, as delivered
@@ -369,6 +369,16 @@ use private indices, but prove differential independence over the compositum
 `F k((t^Γ))` or a finite-generation coefficient envelope, with a
 coefficient-degree or coefficient-derivation certificate instead of a
 support gap.
+A batch-35 paragraph after the remark following Corollary 5.9 notes that
+its Hahn-join part (`isc:hj:`) reaches the same cardinals over a different
+base, the ordinary compositum of two full Hahn subfields of a join: degree
+`2^κ` for explicit interleaved groups of cardinality `κ`
+(`isc:hj:main:cardinal`) and `𝔠` for dense Archimedean groups
+(`isc:hj:main:prime`), where Corollary 5.9 with `G = A + B` gives `𝔠` over
+`𝓕_G(K)` as well; the proofs use coordinate-character derivations, not
+support gaps, and neither result is deduced from the other. The `RepoIsc`
+bibliography entry now also records that these labels were checked at
+`8105a52`.
 
 **Notation.** The collection's [notation guide](../../NOTATION.md) writes
 `F_Γ = R((t^Γ))`, and the tail-span report writes `B`, `B_0` for full Hahn
@@ -483,18 +493,20 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 or `pdflatex -interaction=nonstopmode -halt-on-error article.tex` three times.
-Last build (batch 34, MiKTeX, after the batch-34 sentence in Section 9.5,
-which adds no label and changes no label number): exit 0, **61 pages**, as in
-batch 32 (32 before the Galois
+Last build (batch 35, MiKTeX, after the batch-35 paragraph following the
+remark after Corollary 5.9, which adds no label and changes no label or
+citation number; all 153 labels compared in the `.aux` files against a build
+of the committed text): exit 0, **62 pages** (61 in batches 32–34; 32 before the Galois
 part, 31 before the batch-31 reciprocal remarks; every statement, section and
 equation number of Sections 1–10 and Appendices A–B unchanged), no errors, no
 LaTeX or package warnings, no undefined or multiply defined references or
 citations, no duplicate PDF destinations, no overfull or underfull boxes. The
-log contains two informational lines "ignored: Infinite glue shrinkage found
-in box being split", one at each page break inside a `longtable` (the
-Galois-part ledger of Section 18.8 and the Appendix B table, which now
-crosses a page); a minimal `longtable` test document produces the same line
-at every page break with this TeX installation. They are not warnings.
+log contains one informational line "ignored: Infinite glue shrinkage found
+in box being split", at the page break inside the Appendix B `longtable`
+(before the batch-35 paragraph there were two, the Galois-part ledger of
+Section 18.8 then also crossing a page); a minimal `longtable` test document
+produces the same line at every page break with this TeX installation. It is
+not a warning.
 
 The delivered `code/build.py` looks for `article.tex` **beside itself**, as in
 the flat delivered package, so `python code/build.py` in this directory stops
