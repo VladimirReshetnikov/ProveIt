@@ -2,7 +2,7 @@
 
 **The universal constant-term quotient, exact cardinal thresholds, support
 thresholds, and what survives in large quotients**
-Merged research report, 23 September 2026, from twenty-two manuscripts: eight of
+Merged research report, 23 September 2026, from twenty-four manuscripts: eight of
 22 September 2026 (batch 24, placed in `be06fc8`): 06 (the base), 03, 04, 07,
 08, 09, 10 and 11; five of 23 September 2026 (batch 25, placed in `cf350b1`),
 numbered here 12 to 16 by their file prefixes; three of 23 September 2026
@@ -14,12 +14,11 @@ placed in `66d7e55`), numbered here 21 by its file prefix
 `21-derived-arithmetic-`; one of 23 September 2026 (item 09 of batch 31,
 placed in `9d28e28`), numbered here 22 by its file prefix `22-finite-tests-`;
 one of 23 September 2026 (item 01 of batch 32, placed in `7d04483`),
-numbered here 23 by its file prefix `23-omnific-ramification-`; and two of
-23 September 2026 (items 02 and 04 of batch 34, placed in `a7a435f`), numbered
-here 24 and 25 by their file prefixes `24-class-residues-` and
-`25-semialgebraic-smoothness-`. Items 06 and 07 of batch 34 are also staged in
-this directory (prefixes `26-face-topology-` and `27-henselian-branching-`);
-their manuscripts are not yet written into the text.
+numbered here 23 by its file prefix `23-omnific-ramification-`; and four of
+23 September 2026 (items 02, 04, 06 and 07 of batch 34, placed in `a7a435f`),
+numbered here 24 to 27 by their file prefixes `24-class-residues-`,
+`25-semialgebraic-smoothness-`, `26-face-topology-` and
+`27-henselian-branching-`.
 Manuscript 05 of batch 24 proves the unital universal
 theorem too; it is merged into the sibling report
 [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) and credited
@@ -27,7 +26,7 @@ here.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 233 pages
+article.pdf   the compiled report, 262 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -45,10 +44,10 @@ README.md     this guide
 24-class-residues-PROOF_SOURCE_AUDIT.md        source 24: repository pin, attributions, critical hypotheses, verification boundary
 25-semialgebraic-smoothness-PROOF_AUDIT.md     source 25: proof obligations and verification boundary
 25-semialgebraic-smoothness-SOURCE_AUDIT.md    source 25: repository pin, inspected sources, originality boundary
-26-face-topology-PROOF_AUDIT.md                staged for batch 34, item 06 (not yet written into the text)
-26-face-topology-SOURCE_AUDIT.md               staged for batch 34, item 06 (not yet written into the text)
-27-henselian-branching-PROOF_AUDIT.md          staged for batch 34, item 07 (not yet written into the text)
-27-henselian-branching-SOURCES_AND_SCOPE.md    staged for batch 34, item 07 (not yet written into the text)
+26-face-topology-PROOF_AUDIT.md                source 26: assumptions, proof obligations, claims not made
+26-face-topology-SOURCE_AUDIT.md               source 26: repository pin, inspected ranges, literature, novelty boundary
+27-henselian-branching-PROOF_AUDIT.md          source 27: dependency chain, checks against common errors, remaining uncertainty
+27-henselian-branching-SOURCES_AND_SCOPE.md    source 27: repository pins, primary sources, proposed contribution
 code/
   03-cardinality-normalization-verify_identities.py   source 03 checks (2,362; stdout)
   04-universal-residue-verify_identities.py           source 04 checks (writes verification.json, see below)
@@ -92,10 +91,10 @@ code/
   25-semialgebraic-smoothness-verify.py               source 25 checks (1,578; stdlib; writes by default, see below)
   25-semialgebraic-smoothness-build.sh                source 25's build script (original file names)
   25-semialgebraic-smoothness-build.ps1               source 25's PowerShell build script (original file names; never run by 25)
-  26-face-topology-verify.py                          staged for batch 34, item 06 (not yet written into the text)
-  26-face-topology-Makefile                           staged for batch 34, item 06
-  27-henselian-branching-verify.py                    staged for batch 34, item 07 (not yet written into the text)
-  27-henselian-branching-build.sh                     staged for batch 34, item 07
+  26-face-topology-verify.py                          source 26 checks (52,080; stdlib; always writes, see below)
+  26-face-topology-Makefile                           source 26's Makefile (original file names)
+  27-henselian-branching-verify.py                    source 27 checks (5,760; needs SymPy; writes only with --output)
+  27-henselian-branching-build.sh                     source 27's build script (original file names; overwrites a data file, see below)
 data/
   03-cardinality-normalization-verification_results.txt   recorded run of the source 03 checks
   04-universal-residue-verification.json                  recorded run of the source 04 checks
@@ -140,11 +139,11 @@ data/
   24-class-residues-build_report.json                     source 24's build and inspection record with hashes of its manuscript and PDF
   25-semialgebraic-smoothness-verification.json           recorded run of the source 25 checks
   25-semialgebraic-smoothness-build_report.json           source 25's build and inspection record with file hashes
-  26-face-topology-verification_results.json              staged for batch 34, item 06 (not yet written into the text)
-  26-face-topology-BUILD_REPORT.json                      staged for batch 34, item 06
-  27-henselian-branching-verification.json                staged for batch 34, item 07 (not yet written into the text)
-  27-henselian-branching-build_audit.json                 staged for batch 34, item 07
-  27-henselian-branching-requirements.txt                 staged for batch 34, item 07
+  26-face-topology-verification_results.json              recorded run of the source 26 checks
+  26-face-topology-BUILD_REPORT.json                      source 26's build and PDF-inspection record (no hashes)
+  27-henselian-branching-verification.json                recorded run of the source 27 checks
+  27-henselian-branching-build_audit.json                 source 27's build and page-box record (no hashes)
+  27-henselian-branching-requirements.txt                 sympy==1.14.0
 ```
 
 Every label in `article.tex` carries the prefix `osq:`. The large-quotient part
@@ -163,13 +162,15 @@ The batch-32 manuscript uses `osq:rm:` (23) in Section 15.10 and for
 Questions 18.21 to 18.27 (57 labels).
 The batch-34 manuscripts use `osq:cr:` (24) in Section 14.9 and for
 Questions 18.28 to 18.34 (61 labels) and `osq:sa:` (25) in Section 16.11 and
-for Questions 18.35 to 18.44 (57 labels).
-The report has 726 labels (608 before the eighth merge, 551 before the seventh,
+for Questions 18.35 to 18.44 (57 labels); the other two use `osq:pc:` (26) in
+Section 13.11 and for Questions 18.45 to 18.54 (63 labels) and `osq:hb:` (27)
+in Section 15.11 and for Questions 18.55 to 18.66 (39 labels).
+The report has 828 labels (726 before sources 26 and 27, 608 before the eighth
+merge, 551 before the seventh,
 521 before the sixth, 505 before the fifth, 469 before the fourth, 409 before the
 third and 334 before the second; none was renamed or removed, and no earlier
 statement was renumbered). The audit files and
-programs keep the source numbers `03` to `25` (and `26`, `27` for the staged
-items), and the audit files keep their
+programs keep the source numbers `03` to `27`, and the audit files keep their
 sources' own notation and theorem numbering. No source manuscript is shipped.
 
 The text placed in `be06fc8` was source 06 with bare labels, which
@@ -197,7 +198,7 @@ statement points to that statement):
 | `prop:unitconstant` | `osq:prop:unitconstant` | `thm:extthreshold` | `osq:thm:extthreshold` |
 | `prop:primereservoir` | `osq:if:prop:reservoir` | `prop:matrices` | `osq:prop:matrices` |
 
-## Twenty-two sources, one report
+## Twenty-four sources, one report
 
 The eight manuscripts of batch 24 answer the same question, *what can a
 set-sized ring or module see of an omnific integer?*, with the same answer:
@@ -231,9 +232,14 @@ answering the existence clause of Question 18.4, with an exact monomial cutoff,
 continuum branching and residue fields embedded in `No[i]` (Section 14.9); 25
 classifies the globally smooth semialgebraic maps preserving `Oz^r` and shows
 that finite smoothness allows non-piecewise-polynomial preservers (Section 16.11),
-answering the first clause of Question 18.20(a) for smooth maps. Two further
-batch-34 items (06, 07) are staged here and not yet written; the other five
-were placed in other reports.
+answering the first clause of Question 18.20(a) for smooth maps; 26 computes
+the flat dimensions of radical monomial quotients of cores over arbitrary
+rational polyhedral cones by the topology of their faces, answering the
+non-simplicial clause of Question 18.12 for flat dimension (Section 13.11);
+and 27 builds set-sized omnific integer parts whose henselization at the
+constant-term ideal has the maximal number `2^κ` of minimal primes although
+their completion is `Q` (Section 15.11). The other five batch-34 items were
+placed in other reports.
 
 | | Manuscript (pages) | Pin | Contributes |
 |---|---|---|---|
@@ -259,6 +265,8 @@ were placed in other reports.
 | **23** | *Ramification in Omnific Normalizations* (25) | `343dc2c` | An independent proof of 20's multiquadratic lemma (Lemma 15.69) and, for the real pair, of the first equality of 20's rational slice (Theorem 15.60), both credited; its independent family of size `2^ℵ0` in the reduced cyclic fibre had been noted by 20 (after Theorem 15.70). New (Section 15.10), for the cyclic workspace `Z + ω^a R[ω^a]` and its Gaussian counterpart: the cyclic integer part (Proposition 15.82); finite detection and the branch locus (Lemmas 15.83, 15.84, Remark 15.85); exact nilpotency index `n` of `z_n = T(1+T^{1−n})^{1/n}` modulo the extended ideal, which is therefore not radical (Theorem 15.86, Example 15.87, Corollary 15.88); exact refinement thresholds `⌈n/m⌉` (Theorem 15.89); scaling, the residue criterion, `k𝒩(Za) = 𝓑` and `𝖨 = T𝓑` (Lemma 15.90, Theorems 15.91, 15.93, Remark 15.92); rational functions with the Gaussian form (Corollary 15.94); the ramification filtration and the general refinement law (Definitions 15.95, 15.97, Lemma 15.96, Corollary 15.98, Theorem 15.99); the reduced bounded-denominator Puiseux limit (Theorem 15.100, Remark 15.101); Prüfer local structure with value group `Q` and residue field `C` (Theorem 15.103, Remark 15.104); an idempotent, non-nilpotent, non-finitely-generated nilradical (Theorem 15.105); the associated graded ring and the completion (Theorem 15.106, Corollary 15.107); splitting by fresh ramification, atomlessness, independence, cardinality and order density `2^ℵ0`, `2^(2^ℵ0)` branches (Lemma 15.108, Theorem 15.109, Corollary 15.110, Theorem 15.111, Corollary 15.112, Remark 15.113); exact annihilators and a periodic resolution over the coefficient fibre, which fails over the arithmetic fibre (Theorems 15.115, 15.116, Proposition 15.117); the Cantor fragment (Theorem 15.118); seven questions (18.21–18.27). Files `23-omnific-ramification-*`. |
 | **24** | *Beyond the Constant Term: Class Residue Fields of the Omnific Integers* (26) | `51c1cc7` | Its field core (Lemma 7.1, Theorem 7.2, Proposition 7.4) re-derives 07's in a weaker form (credited at Proposition 14.1, with 24 added as a proving source, and Lemma 14.14, Corollaries 14.10, 14.17), its dyadic Lemma 8.1 is the constant-coefficient case of 07's Theorems 14.15, 14.23 (degree proof kept, Remark 14.45), and its Corollary 9.3 is the class back-and-forth of the surcomplex-automorphism and first-κ reports (credited). New (Section 14.9), in `GBC`: maximal class extensions (Theorem 14.24), prime extensions avoiding a class (Proposition 14.26), prescribed equations (Corollary 14.27); `CMIT ⇔ GC` over `GB` (Definition 14.29, Theorem 14.30, Lemma 14.31, Remark 14.32); the arithmetic maximal ideals (Proposition 14.33); characteristic-zero maximal ideals above `1 + ω^a` and unit-constant fibres (Theorem 14.34, Corollary 14.35); the binomial quotient over `D` and over `k` (Lemma 14.36); the zero-or-unit monomial cutoff (Theorem 14.37, Example 14.39); truncation to `cvx(Za)` (Proposition 14.40, Remark 14.41); separated-scale Bézout identities and the ordinal family (Corollary 14.42); rescaling (Proposition 14.43); residue fields above the binomial (Corollary 14.44); `2^ℵ0` maximal ideals per scale and the `On × Z_2` family (Theorems 14.46, 14.48, Remark 14.49); separation (Theorem 14.50); embeddings of characteristic-zero class fields in `No[i]` (Theorem 14.51, Corollary 14.52); residual surcomplexity (Theorem 14.53, Remark 14.54); failure of strong summability (Theorem 14.55); term-closed and strongly sum-closed primes (Definition 14.56, Theorem 14.57, Corollary 14.58); seven questions (18.28–18.34), one merged into 18.5. Files `24-class-residues-*`. |
 | **25** | *Smooth Rigidity and Bounded-Scale Flexibility of Omnific-Preserving Maps* (23) | `738a390` | Its numerical-polynomial Propositions 5.3 and 9.3 are 10's (credited at Theorems 16.6, 16.7, 16.9). New (Section 16.11), over a real closed field `E` with a cofinal discretely ordered subring `B`: polynomial and reciprocal growth (Lemma 16.89, Remark 16.90), derivative and difference lemmas (Lemmas 16.91–16.94); two-tail polynomiality (Theorem 16.95) and the two-end quotient (Corollary 16.96); the smooth identity principle, one-variable classification and irreducible graphs (Lemma 16.97, Theorem 16.98, Corollary 16.99); the `C^(D·max(1,d))` threshold (Theorem 16.100); the finite-dimensional classification with total degree at most `D` (Lemma 16.101, Theorem 16.102) and its omnific form (Corollary 16.103); support fields and exact absorption (Lemma 16.104, Theorem 16.105), bounded windows (Lemma 16.106, Theorem 16.107); the square-root threshold and rational powers (Theorem 16.108, Corollary 16.109, Example 16.110); `C^k` bumps, regularity bounds and shears (Theorem 16.112, Corollaries 16.113, 16.114); surcomplex and holomorphic forms (Theorem 16.115, Corollary 16.116); no set of quadratic tests (Theorem 16.117); removal of exceptions (Corollaries 16.118, 16.119); a set-sized model and the rank-one obstruction (Propositions 16.121, 16.122); ten questions (18.35–18.44), two merged into 18.20. Files `25-semialgebraic-smoothness-*`. |
+| **26** | *Face Topology and Arithmetic Homology in Omnific Integer Rings* (30) | `7b256e0` | Its orthant cases re-derive 12's face ideals, resolution and arithmetic `Tor` vanishing (Lemma 13.3, Proposition 13.12(i), (ii), Theorem 13.4, Corollary 13.5), 12's finite targets (Proposition 13.2) and, through the isomorphism of a rational simplicial core with `A_d` (merge), 21's face quotients (Proposition 13.43); its nonflatness certificate is a second route to Theorem 13.14 (all credited). New (Section 13.11), for the core `A_𝒞` of a pointed rational polyhedral cone: omnific embeddings and the common fraction field (Propositions 13.58, 13.59); face subtraction, flat face ideals of projective dimension one, products and tensors (Lemma 13.60, Theorems 13.61, 13.62); radical ideals as face antichains, face primes (Theorem 13.63, Proposition 13.64); the simplex resolution, diagonal blocks, triangular cancellation, crosscut bound (Theorem 13.65, Lemmas 13.66–13.68); cap modules isolating a face (Theorem 13.69); the exact flat dimension by join homology (Theorem 13.70), the projective interval (Corollary 13.71), homological epimorphisms (Theorem 13.72); the disjoint-face formula (Lemmas 13.73, 13.74, Theorem 13.75), the cellular resolution of `D` (Proposition 13.76); flat radical ideals, marked reconstruction, simpliciality (Theorem 13.77, Corollary 13.78, Theorem 13.79, Corollary 13.80); cube cones, squarefree transfer, coefficient independence (Theorem 13.81, Corollaries 13.82, 13.83); arithmetic modules (Proposition 13.84, Theorem 13.85); lattice modules over every cone (Remark 13.86, merge); two-ray syzygies and nonflatness of the passage to `Oz` (Lemma 13.87, Theorem 13.88, Example 13.89); ten questions (18.45–18.54), two merged into 18.12. Files `26-face-topology-*`. |
+| **27** | *Maximal Henselian Branching at Omnific Augmentations* (24) | `fc27d87` | Its support calculus and splitter re-derive 20's (Lemmas 15.55, 15.62, 15.53, Theorems 15.65, 15.72; its quadratic proof kept, Remark 15.122), its floor and monomial operations are 03's and the report's (Lemma 15.8, Lemma 3.1, Proposition 3.3), its torsion lemma is 19's (Lemma 15.28, Theorem 15.29) (all credited). New (Section 15.11), for a seeded real closed `𝔼` of cardinality `κ`: the main and factor theorems (Theorems 15.120, 15.121); the hull and its local ring (Proposition 15.123, Corollary 15.124); atoms in the local normalization, survival of every finite generic branch, a free Boolean family (Lemmas 15.125, 15.126, Proposition 15.127); forced complexification (Proposition 15.128); Boolean powers, size, exact generic size, minimal primes (Lemmas 15.129, 15.130, Propositions 15.131, 15.132); adic invisibility and nilpotent probes (Proposition 15.133, Corollary 15.134); strict henselization and the Galois factor (Proposition 15.135, Lemma 15.136, Theorem 15.137); Gaussian localization and doubling (Proposition 15.138, Theorem 15.139); projectives, finite étale algebras, valuation components (Theorem 15.140, Proposition 15.141, Corollary 15.142); branch counts compared (Remark 15.143, merge); twelve questions (18.55–18.66). Files `27-henselian-branching-*`. |
 
 - **Base and routes.** 06's coefficient-ring theorem over any set field `K`
   (also proved by 07 and 10) is the most general statement; its scaled-field
@@ -322,8 +330,8 @@ were placed in other reports.
   (Remark 16.73), and its multivariate certificate is kept beside 16's smaller
   probe certificate (Remark 16.71). 22's Gaussian grid is the coordinate-degree
   twin of 18's simplex test (Theorem 16.78, Proposition 16.64). From the
-  seventh merge: see *Source 23* below; from the eighth, *Source 24* and
-  *Source 25*.
+  seventh merge: see *Source 23* below; from the eighth, *Source 24* to
+  *Source 27*.
 - **Printed in the sibling report, not here:** 13's exact fibers of products of
   linear forms and its étale norm and Pell theorems; 14's criterion for unimodular
   projective directions, which is the Gaussian and principal-ideal extension of
@@ -391,8 +399,8 @@ were placed in other reports.
   are `t, ωb, ω^{ωb}, a, R̃_S` (`η` is 18's translation, `R_S` 16's witness);
   and in its Section 9 its value group `Λ`, subgroup `Γ`, ring `B_Λ` and
   convex subgroup `C(Γ)` are `Γ`, `G`, `𝒜_{D,k}(Γ)` and `cvx_Γ(G)`. For
-  Section 15.10 see *Source 23* below, and for Sections 14.9 and 16.11
-  *Source 24* and *Source 25*.
+  Section 15.10 see *Source 23* below, and for Sections 13.11, 14.9, 15.11 and
+  16.11 *Source 26*, *Source 24*, *Source 27* and *Source 25*.
 - **Sign convention** (Section 2.2): large monomials, `ω^γ` infinite for
   `γ > 0`. The foundations report defines `Oz = Π ⊕ Z` (`found:eq:omnific`);
   the trigonometry report (`trigonometry:eq:split`) describes the same `Π` by
@@ -419,7 +427,11 @@ were placed in other reports.
   (Theorem 14.30); every result of Section 14.9 built on it states `GBC`, while
   its monomial cutoff, truncation and support-prime classification need no
   choice. 25 reads its proper-class support fields through set-sized divisible
-  hulls and uses no global choice.
+  hulls and uses no global choice. 26 uses set-sized rings and modules only, the
+  full class ring appearing as the target of an embedding and of a finite
+  relation. 27 uses set-sized fields, rings and spectra, set-length recursion
+  and choice for sets, with no class Zorn lemma, continuum hypothesis or large
+  cardinal.
 
 ### Source 23: ramification in a cyclic workspace
 
@@ -633,6 +645,124 @@ were placed in other reports.
 - **Verification.** 25's `verify.py` (stdlib, Python 3.10+) was rerun on a
   copy: all 1,578 assertions in 18 groups pass; see *Build and reproduce*.
 
+### Source 26: polyhedral cores and face topology
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 34, manuscript 06, local number 26; archive `omnific_face_topology`; *Face Topology and Arithmetic Homology in Omnific Integer Rings* (30 pp., 23 September 2026) | `7b256e0` (after the sixth merge, report text blob `ef7aef1`) | Section 13.11 (`osq:pc:`, 53 labels) and Questions 18.45–18.54 (10 labels); see the table above |
+
+- **What it settles.** For the core `A_𝒞 = D ⊕ ⊕_{0≠m∈𝒞∩Q^d} K X^m` of a
+  pointed full-dimensional rational polyhedral cone `𝒞 ⊆ R^d` (finite sums;
+  embedded in `Oz`, `Oz[i]` for `(D, K) = (Z, R)`, `(Z[i], C)`), every face `F`
+  gives a flat ideal `I_F` of projective dimension one, and the radical
+  coefficient-full monomial ideals are the sums over face antichains. The flat
+  dimension of the quotient is the top degree of the reduced homology of
+  finite join complexes, witnessed by cap modules (Theorem 13.70); for the
+  quotient keeping a face `F` it is the largest dimension of a face disjoint
+  from `F` (Theorem 13.75). Hence `fd D = d` for every cone, `𝒞` is simplicial
+  iff every facet quotient has flat dimension one (Theorem 13.79), cube cones
+  have facet quotients of flat dimension `d − 1` (Theorem 13.81), every radical
+  quotient is a homological epimorphism (Theorem 13.72), over a principal
+  ideal domain modules through `ct` have flat dimension 1 (torsion) or `d`
+  (Theorem 13.85), and the passage to a total-order core or to `Oz` is not
+  flat for `d ≥ 2` (Theorem 13.88). This answers the **non-simplicial clause
+  of Question 18.12 for flat dimension** of radical monomial quotients;
+  projective dimensions (only `max{2,h} ≤ pd ≤ h + 1`, Corollary 13.71),
+  arbitrary ideals, localizations and weak global dimensions stay open.
+- **Placement.** One new subsection, Section 13.11, after 21's Section 13.10 at
+  the end of Section 13; questions 18.45–18.54; its Questions 13.1 (projective
+  endpoint) and 13.2 (weak and global dimension) are merged into 18.12.
+- **Printed once.** 26 did not notice that a rational simplicial cone core is
+  isomorphic to `A_d` (coordinates in the ray basis), which the merge adds;
+  through it, 26's Corollary 13.80 is 21's Proposition 13.43, and 21's
+  Corollary 13.47 gives the projective dimension `d − dim F + 1`, the upper
+  endpoint, for every simplicial face quotient. 26's Theorem 13.61 on
+  coordinate faces is 12's Lemma 13.3(i), (iii) with Proposition 13.12(i), (ii);
+  its Proposition 13.76 for an orthant is Theorem 13.4; Theorem 13.72 for the
+  whole tail is Corollary 13.5; Proposition 13.84 is Proposition 13.2(i);
+  Theorem 13.88 for an orthant is the nonflatness of Theorem 13.14, proved there
+  by an intersection certificate and here by the equational criterion with a
+  lexicographic embedding, 26 adding the failure in `Oz` itself (second route).
+  The cellular and lcm-lattice methods (Bayer–Sturmfels, Gasharov–Peeva–Welker)
+  are credited.
+- **Renamed symbols** (Section 13.11). 26's cone `C`, field `k`, ring `A_D(C)`,
+  monoid `M = C ∩ Q^d`, tail `I_+` and face quotient `A_D(F)` are `𝒞`, `K`,
+  `A_𝒞`, `P_𝒞`, `Π_𝒞`, `A_𝒞(F)`; its face ideal **`J_F` is `I_F`** (12's `I_S`
+  for coordinate faces; `J_F = (X_i : i ∈ F)A` is 12's ideal of Section 13.3);
+  its `I_𝓕`, `P_H`, `H(m)` are `𝔯_𝓕`, `𝔭_H`, `fc(m)`; its `V_G`, `Δ_{<G}`,
+  `h(𝓕;k)` and complexes `𝒞_*`, `ℛ_*`, `E_*` are `At(G)`, `𝖪_{<G}`, `len(𝓕)`,
+  `C^𝓕_*`, `R^𝓕_*`, `C^cell_*`; its detector `N_{G,b}` with `S_G`, `L_{G,b}`,
+  `η_j` is `𝒲_{G,b}` with `K[P_G]`, `𝔷_{G,b}`, `ℓ^G_j` (12's test modules are
+  `V_F`); its embedding functional `λ` and ring `T_D(λ)` are `λ_ω` and `T_{λ_ω}`
+  (`λ` is a cardinal); its `R = k[x]`, `Q` are `K[x]`, `𝔮`; its module `E` with
+  torsion `T` and quotient `V` is `N` with `N_tor`, `N/N_tor`; its cube cones
+  `C_n` are `𝒞_n`; its `wdim`, `gldim` are `w.gl.dim`, `gl.dim`. False readings
+  printed: `I_F` is not `J_F`; a core is not an integer part; `β_{p,G}` counts
+  flat summands, not free ranks; arithmetic ideals are excluded.
+- **Merge additions** (`[merge]`): the isomorphism `A_𝒞 ≅ A_d` for simplicial
+  cones (Section 13.11 opening, after Corollaries 13.71, 13.80); lattice modules
+  over every cone have `fd L(M) = d`, `fd A_𝒞/J = d + 1`, so
+  `w.gl.dim A_𝒞 ≥ d + 1` when `K ≠ Frac D`, improving 26's `≥ d` (Remark 13.86).
+- **Stale and corrected.** Status (batch 34) notes in Question 18.12, in
+  Remark 13.16 and in 12's non-claim (4); 26's orthant re-derivations and its
+  unnoticed simplicial reduction are recorded in Section 1.4. Nothing deleted.
+- **Verification.** 26's `verify.py` (stdlib) was rerun on a copy: all 52,080
+  assertions pass with the same counts; see *Build and reproduce*.
+
+### Source 27: henselian branching
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 34, manuscript 07, local number 27; archive `surreal_henselian_branching`; *Maximal Henselian Branching at Omnific Augmentations* (24 pp., 23 September 2026) | `fc27d87` (report text blob `ef7aef1`; `feea0ee` is the blob of `20-boolean-branching-PROOF_AUDIT.md` at that commit, not a commit) | Section 15.11 (`osq:hb:`, 27 labels) and Questions 18.55–18.66 (12 labels); see the table above |
+
+- **What it settles.** For every infinite cardinal `κ` and every set of at most
+  `κ` surreals there is a real closed `𝔼 ⊆ No` of cardinality `κ` containing it,
+  with `B_𝔼 = 𝔼 ∩ Oz` an integer part, `Frac B_𝔼 = 𝔼` and an idempotent
+  constant-term ideal; the local ring `𝔏` there has residue field and
+  completion `Q`, yet its henselization has exactly `2^κ` minimal primes, each
+  with fraction field `𝔼[i]`, and generic fibre `LC(X, 𝔼[i])` with
+  `|X| = 2^κ` (Theorem 15.120); strict henselization adds a
+  `Gal(Q̄/Q)` factor and the Gaussian ring doubles the generic fibre
+  (Theorem 15.121). The key new step is that every finite generic branch
+  survives localization (Lemma 15.126). No numbered question is answered.
+- **Placement.** One new subsection, Section 15.11, after 23's Section 15.10 at
+  the end of Section 15; questions 18.55–18.66.
+- **Printed once.** 27's Lemmas 2.1, 2.2, 2.3, 2.5, 3.1, 3.2, 3.3 and
+  Proposition 3.5 are Lemma 3.1 with Proposition 3.3, Lemma 15.8, Lemmas 15.55,
+  15.62, 15.53, Lemma 15.28 with Theorem 15.29, Theorem 15.65 (the same
+  `𝗐_t`, (15.24)) and Theorem 15.72 (the same `t_α = ω^{ω^α}`); 27's proof of the
+  splitter through the quadratic subalgebra alone is kept (Remark 15.122).
+  Its hull has a near-antecedent in 08's `A^08_κ = F^08_κ ∩ Oz` (Theorem 11.16),
+  and its local ring is the set-sized analogue of the Diophantine report's
+  `Oz_Π` (`odg:frac:prop:localization`); its forced complexification is the
+  henselian counterpart of `odg:ex:hensel` (`T² − T − ω` has no root in `Oz`).
+  27 does not cite these. 27 works with `√(ΠN)`; by 19's Theorem 15.29 this is
+  `ΠN` (merge note).
+- **Renamed symbols** (Section 15.11). 27's `E, 𝒮, B, J, A, 𝔪, H, C = E[i],
+  G = E ⊗_A H` are `𝔼, S_0, B_𝔼, Π_𝔼, 𝔏, 𝔫, 𝔏^h, 𝔼[i], 𝒢`; its Stone space
+  `X` is `𝖷`; its `F_Γ, O_Γ, Π_Γ, π_Γ` are `K_G, 𝒜(G), Π(G), pr_G`; its `𝒩`,
+  `𝒦 = √(ΠN)`, `N_B`, `N_A` are `N`, `ΠN`, `IC_𝔼(B_𝔼)`, `IC_𝔼(𝔏)`; its
+  `D(T)`, `a(T)`, `w(T)` are `𝗊(T)`, `𝖺(T)`, `𝗐(T)` (so `𝗐(t) = 𝗐_t`), its `T_α`,
+  `a_α`, `w_α` are `t_α`, `𝖺_α`, `𝗐_{t_α}`; its roots `u_α`, idempotents `e_α`
+  (not 20's residues `e_α`) and `j` are `ũ_α`, `ê_α`, `ȷ`; its neighbourhoods
+  `D_0, D` with ideal `𝔫` are `𝔘_{F,0}, 𝔘_F` with `𝔲`; its minimal primes `P`
+  are `𝔔`; its hull's `d_r`, `e_x`, `R_n` are `m_r`, `f_x`, `𝔼_n`. False readings
+  printed: `𝔫` is not the ideal of infinitesimals; `𝔏^h` is local, not a product
+  of branches; `ȷ` lives in `𝒢`, not in `𝔏^h`; specializations are not
+  evaluations.
+- **Merge additions** (`[merge]`): `√(ΠN) = ΠN` for 27's certificates; the
+  branch counts of 20 (a proper class), 23 (`2^𝔠` places for a ring of size
+  `𝔠`) and 27 (`2^κ` for size `κ`) compared (Remark 15.143); pointers in 27's
+  questions to Questions 18.18, 18.22, Theorem 15.38, Theorem 6.2 and 24's
+  maximal class ideals.
+- **Stale and corrected.** 27's `SOURCES_AND_SCOPE.md` reports that a
+  repository search for "hensel" returned no match (hedged as not exhaustive);
+  at its pin the word occurs in sixteen `article.tex` files, including the
+  Diophantine report (`odg:ex:hensel`) and this report (the Kuhlmann citation).
+  Recorded in Sections 1.4 and 15.11; the audit file is kept verbatim.
+- **Verification.** 27's `verify.py` (SymPy 1.14.0) was rerun on a copy: all
+  5,760 assertions in 8 groups pass; see *Build and reproduce*.
+
 ## Results added in the merge
 
 Each is marked `[merge]` in the text and has a complete proof from the
@@ -734,7 +864,14 @@ sources' lemmas.
   contains Lemma 4.2(ii), Lemma 14.6 and 16's freshness (after Theorem 16.105);
   24's and 25's thresholds coincide with absorption of `K_{cvx(Za)}` and with
   `ω^b/(1 + ω^a) ∈ Oz` (Remark 16.111); and `½(1 − 4x²)^{𝗄+1}` shows that 25's
-  removal of exceptions needs global smoothness (Remark 16.120).
+  removal of exceptions needs global smoothness (Remark 16.120). With sources
+  26 and 27: a rational simplicial cone core is isomorphic to `A_d`, so 26's
+  simplicial face dimensions are 21's and 21's Corollary 13.47 gives the upper
+  endpoint of 26's projective interval for simplicial face quotients (Section
+  13.11); lattice modules over every cone core give weak global dimension at
+  least `d + 1` when `K ≠ Frac D` (Remark 13.86); 27's `√(ΠN)` is `ΠN` by
+  Theorem 15.29; and the branch counts of 20, 23 and 27 are compared
+  (Remark 15.143).
 
 ## What the report claims
 
@@ -798,7 +935,7 @@ strictly positive set support and coefficients in `K`.
   preserve strong summability (Theorems 14.50, 14.51, 14.53, 14.55); the term-closed, strongly sum-closed
   primes are `pA` and the support ideals `Π_k^{>H}` of convex subgroups
   (Theorem 14.57).
-- **Theorem F (Section 15, from 03, 08, 19, 20 and 23).** `Oz* = No`; the integral closure
+- **Theorem F (Section 15, from 03, 08, 19, 20, 23 and 27).** `Oz* = No`; the integral closure
   `𝒩` is proper, fine-dense, of zero conductor and not set-generated
   (Theorems 15.5, 15.12); constant slices, the complexification defect killed by
   `2` (Proposition 15.18), no finite quotients (Theorem 15.20), no nontrivial
@@ -852,7 +989,23 @@ strictly positive set support and coefficients in `K`.
   has a periodic free resolution and infinite global and weak global dimension,
   which does not transfer to the arithmetic fibre (Theorem 15.116,
   Proposition 15.117); and with algebraic coefficients the Boolean algebras are
-  the Cantor algebra (Theorem 15.118).
+  the Cantor algebra (Theorem 15.118). From 27 (Section 15.11): for every
+  infinite cardinal `κ` and every set of at most `κ` surreals there is a real
+  closed `𝔼 ⊆ No` of cardinality `κ` containing it whose integer part
+  `B_𝔼 = 𝔼 ∩ Oz` has `Frac B_𝔼 = 𝔼` and an idempotent constant-term ideal
+  (Proposition 15.123); the local ring `𝔏` at that ideal has residue field
+  `Q`, `𝔫² = 𝔫` and completion `Q`, while its henselization is reduced, local,
+  faithfully flat, of cardinality `κ`, with exactly `2^κ` minimal primes, each
+  with fraction field `𝔼[i]`, generic fibre `LC(X, 𝔼[i])` with `|X| = 2^κ` and
+  a free Boolean algebra on `κ` generators among its idempotents, and no map to
+  an ordered extension of `𝔼` (Theorem 15.120); every finite generic branch
+  survives localization (Lemma 15.126); strict henselization is
+  `𝔏^h ⊗_Q Q̄`, with generic fibre `LC(X × Gal(Q̄/Q), 𝔼[i])`, and the Gaussian
+  generic fibre is `𝒢 × 𝒢` (Theorems 15.137, 15.139); finite projectives over
+  `𝒢` are classified by locally constant ranks, `Pic = 0`,
+  `K_0 ≅ LC(X, Z)`, `FinÉt(𝔏^h) ≃ FinÉt(Q)`, and the centred Riemann–Zariski
+  space has `2^κ` components (Theorem 15.140, Proposition 15.141,
+  Corollary 15.142, the last by de Felipe–Teissier).
 - **Theorem G (Section 16, from 10, 16, 18, 22 and 25).** `Num_r(Oz) = Π[X] ⊕ Int(Z^r)` with
   universal set-sized image `Int(Z^r)` (Theorem 16.7); the Newton
   least-common-multiple criterion for congruences modulo every omnific integer
@@ -923,7 +1076,7 @@ strictly positive set support and coefficients in `K`.
   MathOverflow question 188430 (Jesse Elliott, 2014) negatively; the question's
   only answer (Eric Wofsey) concerns transcendence degree. 13 gives the same
   answer with the same two proofs (Remark 17.2).
-- **Theorem I (Section 13, from 12, 14, 17 and 21).** For the set-sized core
+- **Theorem I (Section 13, from 12, 14, 17, 21 and 26).** For the set-sized core
   `A_d = D + ⊕_{0≠α∈Q_{≥0}^d} K X^α ⊂ Oz` (coordinatewise exponent cone),
   `Tor_{>0}(D, D) = 0` but `fd D = d`, with the full multigraded
   `Tor(D, A_d/(X_i : i ∈ F))` (Theorems 13.4, 13.7, Corollary 13.8); enlarging to
@@ -970,11 +1123,26 @@ strictly positive set support and coefficients in `K`.
   relations `ker(Sym² M → M²)` by `Λ² M` (Theorem 13.54, Corollary 13.55); the
   data `(𝔬, 1, 𝒯(𝔬, 𝔬))` recover the multiplication of an order (discriminants
   8, 12, 5, −108 in the examples), while derived constant-term reduction gives
-  only the square-zero `D ⊕ M[1]` (Theorems 13.56, 13.57).
+  only the square-zero `D ⊕ M[1]` (Theorems 13.56, 13.57). From 26 (Section
+  13.11), over the core `A_𝒞` of any pointed full-dimensional rational
+  polyhedral cone `𝒞 ⊆ R^d`: face ideals are flat of projective dimension one
+  with `I_F ⊗ I_G ≅ I_{F∨G}` (Theorems 13.61, 13.62); radical coefficient-full
+  monomial ideals are sums over face antichains (Theorem 13.63), and the flat
+  dimension of their quotients is the top degree of join-complex homology, at
+  most `d`, detected by cap modules (Theorem 13.70), with
+  `max{2,h} ≤ pd ≤ h + 1` (Corollary 13.71); the quotient keeping a face `F`
+  has flat dimension the largest dimension of a face disjoint from `F`
+  (Theorem 13.75), so `fd D = d`, the cone is simplicial iff all facet
+  quotients have flat dimension one (Theorem 13.79), and cube cones have facet
+  quotients of flat dimension `d − 1` (Theorem 13.81); every such quotient is a
+  homological epimorphism (Theorem 13.72); over a principal ideal domain `D`,
+  modules through `ct` have flat dimension 1 if torsion and `d` otherwise
+  (Theorem 13.85); the passage to a total-order core or to `Oz` fails the
+  equational flatness criterion for `d ≥ 2` (Theorem 13.88).
 
 ## What the report does not claim
 
-- All twenty-two sources are AI-assisted, unrefereed drafts that call their main
+- All twenty-four sources are AI-assisted, unrefereed drafts that call their main
   results candidate original or proposed contributions; priority is not
   certified, no named conjecture (Conway's refinement problem, factorization,
   GCD) is claimed solved, and nothing is formalized: the repository has no
@@ -1106,17 +1274,38 @@ strictly positive set support and coefficients in `K`.
   the surcomplex statements are real-algebraic; its no-set theorem excludes
   coefficient-independent tests only. Nothing is claimed for arbitrary class
   functions or all polynomial automorphisms.
+- 26 computes flat dimensions of the geometric radical monomial quotients of
+  set-sized cone cores, not `pd = h + 1` for `h ≥ 2` (except for simplicial
+  cones, through 21), not any all-module weak or global dimension of the
+  cores, `Oz` or `Oz[i]`, not arbitrary ideals and not infinite Hahn supports;
+  its face-lattice reconstruction needs the marked grading; `β_{p,G}` count
+  flat summands, and the reduced resolution is not unique; arithmetic ideals
+  and restricted coefficients are excluded; Miller's real-polyhedral theory
+  and Geist–Miller's theorems are not identified or reproved; the arithmetic
+  dichotomy concerns modules through `ct` only; the nonflatness concerns the
+  displayed two-ray relation for `d ≥ 2` and denies no embedding; no
+  recollement or compact generation is claimed.
+- 27's henselizations and spectra are those of set-sized local rings, not of
+  `Oz`; `Idem(𝒢)` and `X` are not classified (atomlessness, isolated points, the
+  Cantor space for `κ = ℵ0` open); `𝔏^h` and `𝔏^h[i]` are local, not products,
+  and contain no `√−1`; the rings are non-Noetherian with no Krull dimension
+  determined; `X ≇ X ⊔ X` is not asserted; the valuation count imports de
+  Felipe–Teissier and says nothing about the components; the finite étale
+  equivalence concerns `𝔏^h`, not `B_𝔼` or `Oz`; only `K_0(𝒢)` is computed; no
+  birthday bound is given; independent checking of the support-to-localization
+  bridge is warranted.
 - Section 18.2 keeps every limitation stated by a source, numbered per source:
   03 (19 items), 04 (14), 06 (14), 07 (13), 08 (13), 09 (12), 10 (12), 11 (12),
   12 (12), 13 (10), 14 (12), 15 (11), 16 (8), 17 (12), 18 (10), 19 (12),
-  20 (14), 21 (17), 22 (18), 23 (13), 24 (20), 25 (19), and 18 for the merge
-  (315 in all). 12's item (3) carries a
+  20 (14), 21 (17), 22 (18), 23 (13), 24 (20), 25 (19), 26 (15), 27 (18), and
+  20 for the merge (350 in all). 12's item (3) carries a
   note that 21 determines the projective dimensions. 03's item (10) carries a note that
   19 classifies the domain images, 03's item (8) a note that the descent now
   holds (Corollary 15.59), 19's items (1), (2), (7) and (9) notes on what
   20 adds, and 19's item (9) and 20's item (2) notes on what 23 adds. 04's
   item (2), 07's items (3), (11), (12), 08's item (10) and 22's item (10) carry
-  notes on what 24 and 25 add (batch 34). Section 18.3 lists forty-four questions, merging
+  notes on what 24 and 25 add, and 12's item (4) a note on what 26 adds
+  (batch 34). Section 18.3 lists sixty-six questions, merging
   duplicates across sources, with their status: one answered (Question 18.2),
   one answered only for specific examples and constructions (Question 18.1,
   which also absorbs 13's and 15's cardinal-bound questions), nine partly
@@ -1128,7 +1317,8 @@ strictly positive set support and coefficients in `K`.
   Corollary 15.59 and whose fixed-subgroup clause is answered for witnesses at
   larger scales by 20 and, by a residue criterion, for cyclic groups by 23
   (status note of batch 32); Question 18.12, whose first clause, `pd_{A_d} D`, is
-  answered by 21; Question 18.14, whose part (a) is partly addressed by 18's
+  answered by 21, and whose non-simplicial clause 26 answers for flat
+  dimensions of radical monomial quotients (status note of batch 34); Question 18.14, whose part (a) is partly addressed by 18's
   tests and 22's lifting theorem and whose part (c) 22 answers for its
   single-scale rational certificates, Proposition 16.86; Question 18.15,
   answered for `κ = ℵ0`, with part (c) partly
@@ -1142,7 +1332,7 @@ strictly positive set support and coefficients in `K`.
   maps and whose certificate clause it answers negatively for
   coefficient-independent tests, with (d) partly addressed by 16's general-`D`
   results and Remark 16.88; status note of batch 34), one settled for
-  cardinal support bounds only (Question 18.8), and thirty-two open (Question
+  cardinal support bounds only (Question 18.8), and fifty-four open (Question
   18.5 is partly addressed by 24's monomial cutoff, truncation and
   comaximality, status note of batch 34; Question 18.18
   is 20's question on the isomorphism type of the Boolean algebra; Question
@@ -1157,12 +1347,23 @@ strictly positive set support and coefficients in `K`.
   verification; Questions 18.35 to 18.44 are 25's: the optimal regularity,
   vector graphs, the bounded-region ideal, multipliers for one branch, rank,
   o-minimal expansions, groups of `C^𝗄` diffeomorphisms, holomorphic
-  regularity, invisibility in `Π`, formal verification).
+  regularity, invisibility in `Π`, formal verification; Questions 18.45 to
+  18.54 are 26's: flat extensions of cones, recognition without named
+  monomials, infinite supports, exponent density, nonpolyhedral cones,
+  arithmetic rings beyond principal ideal domains, efficient reduced
+  resolutions, characteristic-sensitive examples, derived structure, a staged
+  formalization; Questions 18.55 to 18.66 are 27's: the exact Boolean algebra,
+  dependence on the hull, enlarging an integer part, normalization versus
+  henselization, specialization in the local spectrum, the valuation
+  components, mixed characteristic, finite étale algebras before
+  localization, birthday bounds, class-level geometry, higher invariants, a
+  formal verification).
   22's question on sharp Gaussian constant tests is merged into Question
   18.14(a). 24's question on the internal algebra of `Q_a` (its
   Question 12.6) is merged into Question 18.5, and 25's questions on
   coefficient-adapted certificates and on varieties (its Questions 12.7, 12.9)
-  into Question 18.20(a), (b). 19's membership
+  into Question 18.20(a), (b); 26's Questions 13.1 and 13.2 (projective endpoint,
+  weak and global dimension) are merged into Question 18.12. 19's membership
   question is merged into Question 18.11, 20's questions on fixed-workspace
   radicality and effective certificates into Question 18.17(b), (c), 23's
   questions on several ordered scales and on algorithms for algebraic Laurent
@@ -1298,7 +1499,19 @@ strictly positive set support and coefficients in `K`.
   Section 16.11. No error was found in either source's proofs. 25's
   bibliography entry for Jones–Thomas–Wilkie cites a KOPS download URL whose
   path segments `20b313d7-…-b91ab184ecc2` are repository file identifiers, not
-  Git commits.
+  Git commits. 26 (pin `7b256e0`, report blob `ef7aef1`) read this report's
+  lines 1–210 and 3300–3520 and credits 12's orthant results and 21's exact
+  projective dimension; its orthant cases re-derive 12's and 21's results
+  (credited in Section 13.11), and it does not notice that a rational simplicial
+  core is `A_d`. 27 (pin `fc27d87`, report blob `ef7aef1`) re-fetched 20's
+  `20-boolean-branching-PROOF_AUDIT.md` (blob `feea0ee`) and credits its
+  splitter; it does not cite 08's `A^08_κ` or the Diophantine report's
+  `Oz_Π` and `T² − T − ω`. *Correction:* its `SOURCES_AND_SCOPE.md` and its
+  appendix say that a repository search for "hensel" returned no match (both
+  hedge that this is not exhaustive); at its pin the word occurs in sixteen
+  `article.tex` files, among them the Diophantine report (`odg:ex:hensel`) and
+  this report (the Kuhlmann bibliography entry). No error was found in 26's or
+  27's proofs.
 - **Prior manuscripts.** 03's `SOURCE_NOTES` calls its companion draft
   (`omnific_integers(1).tex`) not redistributed, and 04's audit calls its prior
   manuscript (`omnific_integers_diophantine.tex`) absent from the pinned tree.
@@ -1404,7 +1617,24 @@ strictly positive set support and coefficients in `K`.
   own 23-page PDF and records nine SHA-256 hashes, all verified: those of
   `README.md`, `article.tex` and `article.pdf` match the delivered files (not
   shipped), the other six match the shipped files; 25's delivery README (which
-  asks for Python 3.10 or later) is not shipped).
+  asks for Python 3.10 or later) is not shipped; `26-face-topology-Makefile`
+  runs `python3 verify.py` and `latexmk` on `article.tex` in its own directory,
+  neither of which is there under that name, and `26-face-topology-verify.py`
+  always writes `verification_results.json` beside itself (here a new,
+  unshipped `code/verification_results.json`), with an elapsed-time field that
+  varies between runs; `26-face-topology-BUILD_REPORT.json` describes 26's own
+  30-page PDF and records no hashes; the audits name `verify.py`,
+  `verification_results.json` and 26's `SHA256SUMS` (verified at placement and
+  dropped); 26's delivery README (Python 3.10 or later) is not shipped;
+  `27-henselian-branching-build.sh` runs `code/verify.py --output
+  data/verification.json` and then pdfLaTeX on `article.tex`, relative to its
+  own directory, so run here it would find no `code/verify.py` beside it and
+  would name an unprefixed `data/verification.json`, not the recorded
+  `data/27-henselian-branching-verification.json`: do not run it here;
+  `27-henselian-branching-build_audit.json` describes 27's own 24-page PDF
+  with 59 labels and records no hashes; 27's README names `requirements.txt`,
+  `code/verify.py`, `data/verification.json` and `data/build_audit.json` under
+  their delivery names, and is not shipped).
 
 ## Relation to the neighbouring reports
 
@@ -1448,6 +1678,11 @@ strictly positive set support and coefficients in `K`.
   sequence (`hol:rc:thm:coding`), and notes that this does not conflict with
   Theorem 5.1 (`hol:rc:rem:quotients`): multiplicativity cannot be weakened to
   additivity (status note of batch 33 after the proof of Theorem 5.1).
+- The Diophantine report (`odg:`) also bears on 27: its `Oz_Π`
+  (`odg:frac:prop:localization`) is local with residue field `Q`, of which 27's
+  `𝔏` is a set-sized analogue, and its `odg:ex:hensel` (`T² − T − ω` has
+  simple residue roots but no root in `Oz`) is the phenomenon that 27's
+  henselization repairs with forced complex branches (Section 15.11).
 - [`hahn-evaluation-at-omega`](../hahn-evaluation-at-omega/) separates finite
   polynomial evaluation at `ω` from evaluation of unrestricted series; 12's
   embeddings of its cores use finite normal forms only.
@@ -1494,9 +1729,10 @@ strictly positive set support and coefficients in `K`.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 233 pages with no errors, warnings, undefined references,
+The build gives 262 pages with no errors, warnings, undefined references,
 multiply defined labels, duplicate destinations or overfull or underfull boxes
-(the committed text before the eighth merge gave 195 pages, before the seventh
+(the committed text before sources 26 and 27 gave 233 pages, before the eighth
+merge 195, before the seventh
 177, before the sixth 164, before the fifth 153, before the fourth 140, and
 before the third 117, also clean). Every statement, section, equation and
 citation number of the text before the eighth merge is unchanged (all 608
@@ -1504,7 +1740,13 @@ earlier labels compared in the `.aux` files against a build of the committed
 text; the new bibliography entries are appended after the old ones); the
 eighth merge's statements are Theorem 14.24 to Corollary 14.58 and equations
 (14.19) to (14.36) in Section 14.9, Lemma 16.89 to Proposition 16.122 and
-equations (16.31) to (16.42) in Section 16.11, and Questions 18.28 to 18.44.
+equations (16.31) to (16.42) in Section 16.11, and Questions 18.28 to 18.44
+(sources 24, 25), and Proposition 13.58 to Example 13.89 and equations (13.5)
+to (13.24) in Section 13.11, Theorem 15.120 to Remark 15.143 and equations
+(15.36), (15.37) in Section 15.11, and Questions 18.45 to 18.66 (sources 26,
+27). Sources 26 and 27 were written after 24 and 25 had been committed; all
+726 labels of that text keep their `.aux` numbers, and its citation numbers
+are unchanged.
 The batch-33 note after the proof of Theorem 5.1 (the holonomic report's
 coefficient coding) was added in the same step. The longer abstract moved to
 the page after the title, together with the status box (before the eighth
@@ -1541,14 +1783,22 @@ the same 12 categories, and its record differs from
 (3.14.4 for 3.13.5), in `article_tex_sha256` (`null`, because the program hashes
 an `article.tex` beside itself, which is not shipped) and in CRLF line endings
 on Windows; its printed output equals the record. For the eighth merge only
-24's and 25's programs were run, on copies with `--output` in a scratch
-directory (Python 3.14.4, standard library only): 24 passed all 133,770
+24's to 27's programs were run. 24's and 25's were run on copies with
+`--output` in a scratch directory (Python 3.14.4, standard library only): 24 passed all 133,770
 assertions in the same six groups and 25 all 1,578 in the same 18 groups; their
 records differ from `data/24-class-residues-verification.json` and
 `data/25-semialgebraic-smoothness-verification.json` only in the recorded
 Python version (3.14.4 for 3.13.5) and in CRLF line endings on Windows, both
 print exactly their records, and `data/24-class-residues-verification.txt` is
-byte-identical to the JSON record.
+byte-identical to the JSON record. 26's program (stdlib) was run on a copy:
+all 52,080 assertions pass with the same counts (188 face quotients, 1,329
+antichains, 56 cancelled pairs, 2,457 cap checks), and the record it writes
+beside itself equals `data/26-face-topology-verification_results.json` except
+for `elapsed_seconds` (1.168 for 0.722); its printed summary omits the
+examples. 27's program (SymPy 1.14.0) was run on a copy with `--output`: all
+5,760 assertions pass in the same 8 groups, and the record equals
+`data/27-henselian-branching-verification.json` up to CRLF line endings on
+Windows; its printed output equals the record.
 **Several write files by default**:
 04 always writes `verification.json` next to the script; 06, 09 and 14 do so
 unless given `--output` (14 writes `verification.json`); 07 writes
@@ -1575,9 +1825,11 @@ writes `../data/verification.json` relative to the script unless given
 `data/24-class-residues-verification.json`), and prints the record; 25 writes
 `audit/verification.json` in the parent of its directory unless given
 `--output` (here a new `audit/` directory in this report), and prints the
-record. Run them with
-an explicit output in a scratch directory, and run 04, 12, 18, 20, 21, 22, 23, 24
-and 25 on a copy:
+record; 26 always writes `verification_results.json` next to the script
+(here a new, unshipped `code/verification_results.json`) and prints a
+summary; 27 writes only with `--output` and prints the record. Run them with
+an explicit output in a scratch directory, and run 04, 12, 18, 20, 21, 22, 23, 24,
+25 and 26 on a copy:
 
 ```sh
 cd docs/surreal/set-sized-quotients-of-omnific-integers
@@ -1605,6 +1857,8 @@ cp code/22-finite-tests-verify.py "$T/" && python "$T/22-finite-tests-verify.py"
 cp code/23-omnific-ramification-verify.py "$T/" && python "$T/23-omnific-ramification-verify.py" --output "$T/23.json" > "$T/23.out"   # 18,040 assertions; stdlib
 mkdir -p "$T/24/code" && cp code/24-class-residues-verify.py "$T/24/code/" && python "$T/24/code/24-class-residues-verify.py" --output "$T/24.json" > "$T/24.out"   # 133,770 assertions; stdlib, Python 3.9+
 mkdir -p "$T/25/code" && cp code/25-semialgebraic-smoothness-verify.py "$T/25/code/" && python "$T/25/code/25-semialgebraic-smoothness-verify.py" --output "$T/25.json" > "$T/25.out"   # 1,578 assertions; stdlib, Python 3.10+
+cp code/26-face-topology-verify.py "$T/" && python "$T/26-face-topology-verify.py" > "$T/26.out"   # 52,080 assertions; stdlib; writes $T/verification_results.json
+python code/27-henselian-branching-verify.py --output "$T/27.json" > "$T/27.out"   # 5,760 assertions; needs sympy==1.14.0 (data/27-...-requirements.txt)
 ```
 
 12 and 19 require SymPy but ship no requirements file (19's README names
@@ -1613,7 +1867,9 @@ with Python 3.13.5; the reruns under 3.14.4 differ only in that field and in lin
 only the standard library, and its rerun equals the recorded JSON in content
 (on Windows the rewritten file has CRLF line endings); 23 needs only the
 standard library (Python 3.9 or later), as do 24 (Python 3.9 or later) and 25
-(Python 3.10 or later, for its type annotations). Run 12 and 21 without
+(Python 3.10 or later, for its type annotations), and 26 (Python 3.10 or
+later, by its README); 27 needs SymPy (`data/27-henselian-branching-requirements.txt`,
+`sympy==1.14.0`). Run 12 and 21 without
 Python's `-O` option (their checks are assertions). The shipped `04-…-Makefile`, `06-…-Makefile`, `10-…-Makefile`,
 `09-set-shadows-build.sh`, `11-set-sized-algebra-build.sh`,
 `12-homological-dimension-build.sh`, `14-arithmetic-tensors-build.py`,
@@ -1622,8 +1878,9 @@ Python's `-O` option (their checks are assertions). The shipped `04-…-Makefile
 `21-derived-arithmetic-build.ps1`, `22-finite-tests-build.sh`,
 `22-finite-tests-build.ps1`, `23-omnific-ramification-build.sh`,
 `23-omnific-ramification-build.ps1`, `24-class-residues-build.sh`,
-`24-class-residues-build.ps1`, `25-semialgebraic-smoothness-build.sh` and
-`25-semialgebraic-smoothness-build.ps1` use the
+`24-class-residues-build.ps1`, `25-semialgebraic-smoothness-build.sh`,
+`25-semialgebraic-smoothness-build.ps1`, `26-face-topology-Makefile` and
+`27-henselian-branching-build.sh` use the
 original package file names (`verify.py`, `article.tex`,
 `omnific_set_shadows.tex`, `omnific_homological_dimension.tex`,
 `code/check_finite_identities.py`, …) and do not run as shipped; they are kept
@@ -1672,6 +1929,14 @@ count of Corollary 16.113, and the vanishing orders behind Remark 16.120; it
 verifies no class recursion, infinite support or semialgebraic calculus.
 `24-class-residues-build.sh` and `.ps1` would also overwrite `article.pdf`
 in their own directory with a build of 24's manuscript; do not run them here.
+For sources 26 and 27, an independent exact computation (SymPy), not shipped,
+rechecked in 2,726 checks the multiplicities (13.21) and the flat dimension
+`μ_𝒞(F)` for every proper nonzero face of the cones over a square and a cube,
+by computing the reduced homology of every join complex `𝖪_{<G}` directly,
+the square-cone multiplicities of the examples, the splitter identity and the
+one-radical factorization of Remark 15.122 with its six Laurent coefficients,
+`ȷ² = −1` of Proposition 15.128 and the inverse of the Gaussian decomposition;
+it verifies no colimit, detector module or henselization.
 `19-normalization-fibres-build.sh`
 runs `python3 checks.py | tee checks.txt`, which would overwrite the recorded
 result; do not run it in this directory.
