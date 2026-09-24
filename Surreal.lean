@@ -909,3 +909,6 @@ import Surreal.Surcomplex.GaussianPrincipalQuotients
 import Surreal.Algebra.GaussianNonUnitalMaps
 import Surreal.Surcomplex.GaussianNonUnitalMaps
 import Surreal.Surcomplex.SmallRingObservations
+import Surreal.Algebra.ResiduallySmallRings
+import Surreal.Surcomplex.ResiduallySmallTargets
+import Surreal.Surcomplex.SmallRepresentations
