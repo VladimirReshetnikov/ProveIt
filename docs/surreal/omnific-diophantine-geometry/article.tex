@@ -10377,8 +10377,9 @@ zero (\cref{odg:disc:rem:etalenorm}). Labels of this subsection carry the sub-pr
 \fn{odg:disc:}. It was appended at the end of \cref{odg:sec:coefficients}, so no existing
 section, statement or equation number changed; its ten questions follow the last question
 of \cref{odg:sec:questions}. The elementary lemmas, root-velocity certificate and
-translation classification through \cref{odg:disc:rem:comparison} have been reviewed;
-the later consequences and the second proof remain outside that review, as recorded in
+translation classification, its factor/Galois/resultant consequences and the finite
+\'etale unit theorem through \cref{odg:disc:rem:etalenorm} have been reviewed;
+monogenic descent, the later applications and the second proof remain outside that review, as recorded in
 \fn{RECONCILIATION.md}.
 
 \paragraph{Conventions and renamed symbols.} As in the curve part
@@ -10761,11 +10762,15 @@ divisors of $P$ in $\mathcal R_{\mathfrak o}[X]$; in particular their monic fact
 patterns agree.
 \end{proposition}
 \begin{proof}
-One direction is substitution. If $Q$ is a monic divisor of $P$, then $Q(X+h)$ is a monic
-divisor of $\overline P$ over $\mathcal R_{\mathfrak o}$. In $\Hbar[X]$ its roots are
-roots of $\overline P$, which lie in $\bar\Bbbk$, so its coefficients lie in $\bar\Bbbk$,
-and also in $\mathcal R_{\mathfrak o}$; hence in $\mathcal R_{\mathfrak o}\cap\bar\Bbbk=
-\mathfrak o$. Translating back gives the bijection.
+Substitution $X\mapsto X-h$ carries a monic factorization of $\overline P$ over
+$\mathfrak o$ to one of $P$ over $\mathcal R_{\mathfrak o}$. Conversely write $P=QT$
+with $Q$ monic. Since $P$ is monic and the coefficient ring is a domain, $T$ is monic
+too. Translating gives $\overline P=Q(X+h)T(X+h)$. In $\Hbar[X]$ the roots of each
+factor are among the roots of $\overline P$, hence lie in $\bar\Bbbk$. Monicity then
+puts every coefficient of both factors in $\bar\Bbbk$, including when one factor is
+$1$. These coefficients also lie in $\mathcal R_{\mathfrak o}$, so they belong to
+$\mathcal R_{\mathfrak o}\cap\bar\Bbbk=\mathfrak o$. Thus the translated divisor and
+its quotient both descend. The two substitutions are inverse, giving the bijection.
 \end{proof}
 
 The word ``monic'' matters over a ring $\mathfrak o$ that is not a field: an assertion
@@ -10773,20 +10778,28 @@ about arbitrary factorizations must also account for units and leading coefficie
 \src{C17}.
 
 \begin{theorem}[Galois groups are unchanged \src{C17}]\label{odg:disc:thm:galois}
-Let $P\in\crA[X]$ be monic with $\Disc(P)\in\Bbbk^\times$, let $F=\Frac\crA$, and let
+Let $P\in\crA[X]$ be monic of positive degree with $\Disc(P)\in\Bbbk^\times$, let $F=\Frac\crA$, and let
 $L_0\subseteq\bar\Bbbk$ be the splitting field of $\overline P$ over $\Bbbk$. The splitting
 field of $P$ over $F$ in $\Hbar$ is the compositum $FL_0$, and restriction is an
 isomorphism $\Gal(FL_0/F)\cong\Gal(L_0/\Bbbk)$. An irreducible factor of $\overline P$ over
 $\Bbbk$ stays irreducible over $F$, and its translate has the same degree.
 \end{theorem}
 \begin{proof}
-The roots of $P$ are $h+c_i$ with $c_i$ the roots of $\overline P$, so adjoining them to
-$F$ adjoins the $c_i$. By \cref{odg:disc:lem:independence} a $\Bbbk$-basis of $L_0$ is
-$F$-linearly independent, so $F$ and $L_0$ are linearly disjoint over $\Bbbk$, and
-$F\otimes_\Bbbk L_0$ is the compositum, of dimension $[L_0:\Bbbk]$ over $F$. Every
-$\Bbbk$-automorphism of $L_0$ extends by the identity on $F$, and all
-$F$-automorphisms arise so. The same independence argument with $\Bbbk(c_i)$ gives the
-assertion on factors.
+By \cref{odg:disc:thm:translation} the roots of $P$ are $h+c_i$ with $h\in\crP\subset F$
+and $c_i$ the roots of $\overline P$. Thus adjoining them to $F$ adjoins the $c_i$.
+By \cref{odg:disc:lem:independence} a $\Bbbk$-basis of $L_0$ remains $F$-linearly
+independent. Hence the multiplication map $F\otimes_\Bbbk L_0\to\Hbar$ is injective.
+Its image is a finite-dimensional domain over $F$, therefore a field, and is precisely
+$FL_0$, of degree $[L_0:\Bbbk]$ over $F$.
+
+Every $\Bbbk$-automorphism of $L_0$ extends by $\mathrm{id}_F\otimes\sigma$ through
+this isomorphism. Conversely an $F$-automorphism of $FL_0$ permutes the roots of
+$\overline P\in\Bbbk[X]$, so preserves the field $L_0$ they generate over $\Bbbk$.
+Its restriction determines it because $F$ and $L_0$ generate the compositum. These
+operations are inverse. For a root $c_i$, the same basis argument for $\Bbbk(c_i)$
+gives $[F(c_i):F]=[\Bbbk(c_i):\Bbbk]$, proving that its minimal polynomial remains
+irreducible over $F$. Translation is an automorphism of $F[X]$ preserving degree,
+which proves the last assertion.
 \end{proof}
 
 For omnific polynomials the coefficient theorem descends to $\Z$, but the field of this
@@ -10794,17 +10807,20 @@ Galois statement must be specified: with $\Bbbk=\R$ the finer rational Galois gr
 $\overline P$ is lost. To keep it one uses a Hahn workspace with coefficient field $\Q$
 when the coefficients admit such a presentation, or applies ordinary splitting theory over
 $\Q$ to $\overline P$ separately. There is no claim that the rational Galois group
-survives after extending constants to $\R$ \src{C17}.
+survives after extending constants to $\R$: for example $X^2-2$ already splits over
+$\R$, although its splitting field over $\Q$ has degree two \src{C17}.
 
 \begin{corollary}[Marked-value rigidity \src{C17}]\label{odg:disc:cor:marks}
-Let $P=\overline P(X-h)$ have positive degree and nonzero constant discriminant. If
+Let $P=\overline P(X-h)$ be as in \cref{odg:disc:thm:translation}, with $h\in\crP$. If
 $a\in\crA$ and $P(a)\in\Bbbk$, then $a-h\in\Bbbk$, that is, $a=h+\ct a$. Consequently an
 ordinary coefficient of $X^{n-1}$, or an ordinary value $P(c)$ at one $c\in\Bbbk$, forces
 $h=0$ and $P=\overline P$.
 \end{corollary}
 \begin{proof}
-$\overline P(a-h)=P(a)\in\Bbbk$ makes $a-h\in\crA$ a root of a nonzero polynomial over
-$\Bbbk$, so $a-h\in\Bbbk$ by \cref{odg:cr:lem:rings}(d), and $\ct$ identifies the constant.
+$\overline P(a-h)=P(a)\in\Bbbk$ makes $a-h\in\crA$ a root of
+$\overline P(T)-P(a)\in\Bbbk[T]$. This polynomial is nonzero because $\overline P$ has
+positive degree. Thus $a-h\in\Bbbk$ by \cref{odg:cr:lem:rings}(d), and
+$\ct(a-h)=\ct a$ identifies this constant, since $\ct h=0$.
 For $a=c\in\Bbbk$ this gives $h\in\Bbbk\cap\crP=0$; the coefficient case is
 \eqref{odg:disc:eq:h}.
 \end{proof}
@@ -10815,7 +10831,7 @@ constant coefficient in $X$ must not be confused with the constant term of a ser
 \src{C17}.
 
 \begin{theorem}[Coherent translations \src{C17}]\label{odg:disc:thm:resultants}
-Let $P_1,\ldots,P_\ell\in\mathcal R_{\mathfrak o}[X]$ be monic of positive degree, each with
+Let $\ell\ge1$ and let $P_1,\ldots,P_\ell\in\mathcal R_{\mathfrak o}[X]$ be monic of positive degree, each with
 nonzero constant discriminant, and let $\mathcal G$ be a connected graph on
 $\{1,\ldots,\ell\}$ such that $\Res(P_i,P_j)$ is a nonzero constant for every edge $ij$.
 Then there is a unique $h\in\crP$ with $P_i(X)=\overline P_i(X-h)$ for all $i$.
@@ -10826,11 +10842,16 @@ $d_1,\ldots,d_b$ be the roots of $\overline P_i$ and $\overline P_j$. Then
 \[
  \Res(P_i,P_j)=\prod_{u=1}^a\prod_{v=1}^b(h_i-h_j+c_u-d_v),
 \]
-the value at $h_i-h_j$ of a monic polynomial of degree $ab$ in $\Bbbk[T]$, since it is
-separately symmetric in the two lists of roots. If $h_i\ne h_j$, then $h_i-h_j$ is a
+the value at $h_i-h_j$ of
+$G_{ij}(T)=\Res_X(\overline P_i(X-T),\overline P_j(X))\in\Bbbk[T]$.
+The displayed product shows that $G_{ij}$ is monic of degree $ab\ge1$.
+If the resultant equals $c\in\Bbbk$, then $h_i-h_j$ is a root of the nonzero
+polynomial $G_{ij}(T)-c$. If $h_i\ne h_j$, then $h_i-h_j$ is a
 nonzero element of $\crP$, transcendental over $\Bbbk$ (\cref{odg:cr:lem:rings}(d)), which
 contradicts a constant resultant. So $h_i=h_j$ along every edge, and connectedness gives a
-common $h$, unique by any one $P_i$.
+common $h$, unique by any one $P_i$. When $\ell=1$ this is the original translation
+theorem, with no edge condition. Nonemptiness is needed for uniqueness: an empty family
+places no restriction on $h$.
 \end{proof}
 
 Only the edges of a spanning tree are needed. The nonzero condition says that the marked
@@ -10843,14 +10864,19 @@ records the weaker hypothesis \src{C17}.
 \subsubsection{Finite \texorpdfstring{\'etale}{etale} algebras and their units}\label{odg:disc:sub:etale}
 
 Throughout, $\mathsf B$ is a nonzero finite \'etale $\crA$-algebra, with the usual
-commutative-algebra definition of \'etaleness \cite{StacksEtale}. It is a finite
-projective $\crA$-module, of constant rank $r$ because $\crA$ is a domain and so
+commutative-algebra definition of \'etaleness \cite{StacksEtale}. Finiteness,
+flatness and finite presentation give a finite locally free, hence finite projective,
+$\crA$-module \cite{StacksFiniteProjective}. Its rank is constant, say $r\ge1$, because
+$\crA$ is a domain and so
 $\Spec\crA$ is connected. The standard inputs are preservation under base change,
 formal \'etaleness \cite{StacksFormal}, and the description of a finite \'etale algebra over
 a field as a finite product of finite separable field extensions
 \cite{StacksEtaleField}. The generic algebra $\mathsf B_F=F\otimes_{\crA}\mathsf B$ is such
 a product. A projective module over a domain is a direct summand of a free module, hence
-torsion free, so $\mathsf B\hookrightarrow\mathsf B_F$ and $\mathsf B$ is reduced. For
+torsion free, so $\mathsf B\hookrightarrow\mathsf B_F$ and $\mathsf B$ is reduced.
+The rank cannot be zero: local freeness would then give $\mathsf B=0$.
+These statements do not require $\mathsf B$ to be a domain; its generic algebra may
+have several field factors. For
 $y\in\mathsf B$, multiplication by $y$ has a characteristic polynomial
 \begin{equation}\label{odg:disc:eq:charB}
  \operatorname{ch}_y(T)=T^r+c_1(y)T^{r-1}+\cdots+c_r(y)\in\crA[T],
@@ -10890,10 +10916,18 @@ has the form $b\mapsto b+\widetilde\partial(b)\epsilon$, and its multiplicativit
 Leibniz rule. Since $\partial(\crP)\subseteq\crP$, $\widetilde\partial$ preserves
 $\crP\mathsf B$, and its reduction is a derivation of $\mathsf B_0=\mathsf B/\crP\mathsf B$
 that vanishes on $\crA/\crP=\Bbbk$. But $\mathsf B_0$ is finite \'etale over $\Bbbk$, a
-product of finite separable extensions, and every $\Bbbk$-derivation of it is zero (by
-differentiating separable minimal polynomials, and idempotents). This is
+product of finite separable extensions. A derivation $D$ kills every idempotent $e$:
+$D(e)=2eD(e)$, and $1-2e$ is a unit with square $1$. It therefore preserves each field
+factor. In a separable field factor, differentiating a minimal polynomial $g$ over
+$\Bbbk$ gives $g'(z)D(z)=0$, hence $D(z)=0$. This proves
 \eqref{odg:disc:eq:DBideal}.
 \end{proof}
+
+The quotient rule also extends $\widetilde\partial$ to $\mathsf B_F$. The same
+idempotent calculation shows that it preserves each generic field factor, and
+\cref{odg:disc:lem:extension} makes every embedding of that factor into $\Hbar$
+compatible with the ambient Euler derivation. Thus the generic images used below
+are compatible with differentiation even when $\mathsf B$ is disconnected.
 
 \begin{proposition}[No nonconstant logarithmic derivative of a unit \src{C17}]\label{odg:disc:prop:unitD}
 For $u\in\mathsf B^\times$ and every $\lambda$, $\widetilde\partial_\lambda u=0$.
@@ -10906,7 +10940,8 @@ embedding $\sigma$ of every field factor of $\mathsf B_F$ in $\Hbar$. By
 \cref{odg:disc:lem:extension}, $\sigma(y)=\partial_\lambda\sigma(u)/\sigma(u)$, with nonzero
 denominator because $u$ is a unit, so $\sigma(y)\in\Obar$ by \eqref{odg:disc:eq:hahn}. The
 $c_j(y)$ are up to sign elementary symmetric functions of these $r$ values, so
-$c_j(y)\in\crP\cap\Obar=0$. Cayley--Hamilton gives $y^r=0$; as $\mathsf B$ is reduced,
+$c_j(y)\in\crP\cap\Obar=0$. Cayley--Hamilton gives $m_y^r=0$ for multiplication
+$m_y$ by $y$; evaluating this endomorphism at $1$ gives $y^r=0$. As $\mathsf B$ is reduced,
 $y=0$, and so $\widetilde\partial u=uy=0$.
 \end{proof}
 
@@ -10926,14 +10961,18 @@ $\crA\otimes_\Bbbk\mathsf C_{\mathsf B}\to\mathsf B$ is injective.
 \end{proposition}
 \begin{proof}
 Elements algebraic over a field form a subalgebra, since finitely many of them generate a
-finite-dimensional algebra. As $\mathsf B$ is reduced and $\Bbbk$ has characteristic
-zero, an annihilating polynomial of such an element $b$ may be replaced by its squarefree
-part $g$; then $g'(b)$ is invertible in $\Bbbk[b]$, and $0=\widetilde\partial g(b)=
-g'(b)\widetilde\partial b$ gives $\widetilde\partial b=0$. Conversely, if every
+finite-dimensional algebra. For an algebraic $b$, choose an annihilating polynomial
+and let $g\in\Bbbk[T]$ be its squarefree part. Some power of $g$ is divisible by the
+original polynomial, so $g(b)$ is nilpotent and hence zero in the reduced algebra
+$\mathsf B$. In characteristic zero, $\gcd(g,g')=1$; a B\'ezout identity evaluated at
+$b$ makes $g'(b)$ invertible in $\Bbbk[b]$. Since $\widetilde\partial$ kills $\Bbbk$,
+$0=\widetilde\partial g(b)=g'(b)\widetilde\partial b$ gives
+$\widetilde\partial b=0$. Conversely, if every
 $\widetilde\partial_\lambda$ kills $b$, then each of its finitely many generic images is
 killed by every $\partial_\lambda$ and lies in $\bar\Bbbk$ by \eqref{odg:disc:eq:hahn};
-the product of their minimal polynomials over $\Bbbk$ annihilates $b$ in $\mathsf B_F$,
-hence in $\mathsf B$.
+the product of their minimal polynomials over $\Bbbk$ vanishes in every generic
+embedding. Those embeddings jointly inject $\mathsf B_F$ into $\Hbar^{\,r}$, so this
+polynomial annihilates $b$ in $\mathsf B_F$, hence in $\mathsf B$.
 
 For $b\in\mathsf C_{\mathsf B}$ all generic images lie in $\bar\Bbbk$, so the coefficients
 of $\operatorname{ch}_b$ lie in $\crA\cap\bar\Bbbk=\Bbbk$. If moreover $b\in\crP\mathsf B$,
@@ -10945,7 +10984,9 @@ finite separable extensions, hence finite \'etale. Finally embed $\mathsf B$ in 
 of the generic splitting fields, and then in $\Hbar^{\,r}$. The images of a $\Bbbk$-basis of
 $\mathsf C_{\mathsf B}$ are $\Bbbk$-linearly independent vectors with entries in
 $\bar\Bbbk$, so they are $F$-linearly independent by the vector form of
-\cref{odg:disc:lem:independence}, hence $\crA$-linearly independent.
+\cref{odg:disc:lem:independence}, hence $\crA$-linearly independent. Since these basis
+elements also form an $\crA$-basis of $\crA\otimes_\Bbbk\mathsf C_{\mathsf B}$, this is
+exactly the asserted injectivity; it does not assert surjectivity.
 \end{proof}
 
 \begin{theorem}[Units of finite \'etale algebras \src{C17}]\label{odg:disc:thm:units}
@@ -10978,7 +11019,10 @@ connected, $\mathsf C_{\mathsf B}=\Bbbk$ and $\mathsf B^\times=\Bbbk^\times$.
 \end{corollary}
 \begin{proof}
 A finite \'etale algebra over an algebraically closed field is a product of copies of the
-field, and two or more factors give nontrivial idempotents of $\mathsf B$.
+field, and two or more factors give nontrivial idempotents of $\mathsf B$. More generally,
+every idempotent of $\mathsf B$ already belongs to $\mathsf C_{\mathsf B}$, because it
+satisfies $T^2-T=0$. Thus the constant subalgebra records all idempotents, even before
+assuming that $\Bbbk$ is algebraically closed.
 \end{proof}
 
 \paragraph{Why this is not yet a covering classification \src{C17}.} A finite \'etale
@@ -10993,10 +11037,13 @@ substantive further step, and it is not used below (\cref{odg:disc:q:etale}).
 
 \begin{remark}[The \'etale norm theorem as a constant case \mergetag]\label{odg:disc:rem:etalenorm}
 \Cref{odg:disc:thm:units} contains \cref{odg:dec:thm:etale} when $\Bbbk$ has
-characteristic zero. With $K\subseteq\Bbbk$, $E$ and $e_1,\ldots,e_r$ as there, the algebra
+characteristic zero. The coordinate conclusion is vacuous when $E=0$, so assume
+$E\ne0$. With $K\subseteq\Bbbk$, $E$ and $e_1,\ldots,e_r$ as there, the algebra
 $\mathsf B=\crA\otimes_KE$ is finite \'etale over $\crA$ of rank $r$ by base change, and
 $z=\sum_je_jx_j$ with $x_j\in A\subseteq\crA$ has norm $N(\mathbf x)=a\in K^\times$,
-so $z$ is a unit of $\mathsf B$ and lies in $\mathsf C_{\mathsf B}$. Each of the $r$
+so multiplication by $z$ has invertible determinant in the induced $\crA$-basis.
+It is therefore an invertible endomorphism; applying its inverse to $1$ gives the
+inverse of $z$. Thus $z\in\mathsf B^\times\subseteq\mathsf C_{\mathsf B}$. Each of the $r$
 maps $\sigma_\ell:E\to\bar\Bbbk$ extends to $\mathsf B\to\mathcal A_{\bar\Bbbk}(\Gamma)$,
 and $\sigma_\ell(z)=\sum_j\sigma_\ell(e_j)x_j$ is algebraic over $\Bbbk$, hence
 constant (\cref{odg:cr:cor:algclosed} over $\bar\Bbbk$). For every $\gamma\ne0$ the
@@ -15248,5 +15295,12 @@ Oblomov (Mathematics Stack Exchange user).
 \emph{Are there separable polynomials in $K[Y][X]$ with constant discriminant?}
 Question 1626152, 25 January 2016. \url{https://math.stackexchange.com/questions/1626152}.
 Cited by source C17 for the polynomial-parameter question; not rechecked.
+\bibitem{StacksFiniteProjective}
+The Stacks Project Authors.
+\emph{Finite locally free morphisms}, Lemma 29.49.2, Tag 02KB,
+\url{https://stacks.math.columbia.edu/tag/02KB};
+\emph{Finite projective modules}, Lemma 10.78.2, Tag 00NX,
+\url{https://stacks.math.columbia.edu/tag/00NX}.
+Used for the finite-projective structure without a Noetherian hypothesis.
 \end{thebibliography}
 \end{document}

@@ -896,6 +896,16 @@ need not be a unit of `𝔬`. The unique translation `h = −(a₁ − ct a₁)/
 requires positive degree, but does not require `1/n ∈ 𝔬`, since the purely
 infinite ideal is a `𝕜`-vector space.
 
+For a finite étale `𝒜_𝕜(Γ)`-algebra `𝖡`, its constants `𝖢_𝖡` are the elements
+algebraic over `𝕜`. The reduction is `𝖡₀ = 𝖡 / Π_𝕜(Γ)𝖡`; it need not be
+identified with `𝕜`. The report proves that `𝖢_𝖡 → 𝖡₀` is injective, not
+that every fiber element lifts to a constant. The generic algebra is a
+product of finite separable fields. Each individual map to the Hahn
+splitting field selects one factor and may have a kernel on that product;
+all generic maps together give an injection. The characteristic-polynomial
+argument uses finite projectivity and local bases, with no global basis
+assumption on `𝖡`.
+
 In the regular-singular part of the differential-equations report,
 `t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
 The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`
