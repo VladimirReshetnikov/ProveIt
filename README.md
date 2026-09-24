@@ -468,13 +468,13 @@ verified encoding of native formulas, including bound-variable scope checks.
 Thus both actual universe-indexed omnific rings, and every integer- or
 Gaussian-constant intermediate Hahn ring, **fail recursive saturation**:
 a computable collection of requirements can have every finite subset
-satisfiable while having no simultaneous solution. The general number-field
-coefficient case now has an explicit five-witness native guard, proved correct
-for any prime pair satisfying the source's congruence and nonsquare conditions.
-The tailored sextic is proved to have roots modulo every positive integer,
-and Dirichlet's theorem supplies admissible pairs outside any finite set of
-forbidden radicands. Completing prime selection for every number field still
-requires finiteness of its squarefree rational radicands that become squares.
+satisfiable while having no simultaneous solution. This now extends to every
+intermediate Hahn ring whose ordinary coefficients form any subring of a
+number field, without integrality or finite-generation assumptions. The proof
+constructs a parameter-free five-witness guard using a sextic with no root
+in that number field but roots modulo every positive integer. Finiteness of
+quadratic subfields, Dirichlet's theorem and quadratic reciprocity supply
+its primes, with all dependencies formally proved.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier

@@ -8,7 +8,8 @@ import Surreal.HahnSeries.Characteristic
 The number-field clause of `odg:def:thm:saturation`, given an admissible
 prime pair with nonsquare radicands. The guard is constructed explicitly,
 rather than assumed to define the coefficient ring. Existence of such a
-pair for every number field remains the prerequisite `odg:def:lem:tailored`.
+pair for every number field is proved in `NumberFieldTailoredGuard`; the
+unconditional specialization is in `NumberFieldArithmeticConstants`.
 -/
 
 namespace Surreal.HahnSeries

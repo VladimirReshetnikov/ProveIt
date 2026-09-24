@@ -57,7 +57,7 @@ theorem not_recursivelySaturated_of_algebraicType (δ : Language.ring.Formula (F
   exact homit ⟨x, (realizesAt_zero_iff _ _ _).mp hx⟩
 
 /-- A definable coefficient image from any number field prevents recursive saturation.
-The construction of the source's tailored number-field guard remains a separate obligation. -/
+The constructed guard is instantiated in `HahnSeries.NumberFieldArithmeticConstants`. -/
 theorem numberField_not_recursivelySaturated
     {A K O : Type*} [CommRing A] [CharZero A] [FirstOrder.Ring.CompatibleRing A]
     [Field K] [NumberField K] [CommRing O]

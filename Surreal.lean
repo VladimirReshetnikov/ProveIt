@@ -815,3 +815,8 @@ import Surreal.Algebra.TailoredDiophantineConstants
 import Surreal.Algebra.TailoredArithmeticGuard
 import Surreal.HahnSeries.TailoredDiophantineConstants
 import Surreal.HahnSeries.TailoredRecursiveSaturation
+import Surreal.Algebra.SquarefreeRadicands
+import Surreal.Algebra.QuadraticAdjoinCoordinates
+import Surreal.Algebra.NumberFieldSquarefreeRadicands
+import Surreal.Algebra.NumberFieldTailoredGuard
+import Surreal.HahnSeries.NumberFieldArithmeticConstants
