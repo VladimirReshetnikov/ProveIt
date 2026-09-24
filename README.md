@@ -253,6 +253,14 @@ Both `√2` and `√(ω²+1)` are verified integral elements outside the ring;
 more generally, `√(w²+1)` is integral and non-omnific for every nonzero
 omnific integer `w`.
 
+Integer-coefficient polynomial systems have omnific solutions exactly when
+they have ordinary integer solutions. Constant extraction retracts the
+entire omnific solution set onto the ordinary one; the proof even allows
+arbitrary families of equations and variable indices. Positive existential
+formulas in Mathlib's ring language also have the same truth at integer
+parameters. The separate undecidability and computable-completeness claims
+remain pending in Lean.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
