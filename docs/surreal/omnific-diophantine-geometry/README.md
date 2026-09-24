@@ -15,7 +15,7 @@ prefix `16-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 200 pages
+article.pdf                        the compiled report, 201 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -200,7 +200,10 @@ explicitly requires `Γ ≠ 0`. The application review now covers Sections 17.6.
 irreducibility hypothesis in the superelliptic theorem, expands ramification
 and the seventh-order certificate, and checks arithmetic families and the
 Gaussian existence dichotomy. A real isolated node illustrates why a real
-normalization preimage is required. Sections 17.6.9 onward and 18, the pointers added in Sections 6, 7
+normalization preimage is required. The next pass checks the closing singular-curve
+scope notes and reviews Sections 18.1–18.4: group rigidity, reduced coefficient
+algebras, the dual-number defect and the characteristic/discrete-order
+counterexamples. Sections 18.5–18.6, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to
@@ -208,7 +211,7 @@ source C15. The other batch-29 material remains outside it: Section 18.6, the cr
 source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
 appendices. Section 18.6 was appended at the end of Section 18, so no section,
 statement or equation number changed. The later batch-31 material of source C16 remains
-unreviewed: Section 17.6.9 onward, the remaining credits and status notes in Sections 1, 16, 17, 20
+unreviewed: the remaining credits and status notes in Sections 1, 16, 17, 20
 and 21, Questions 21.23–21.30 and the appendix additions. Section 17.6 was appended at the
 end of Section 17, after Section 17.5, so again no section, statement or equation number
 changed. Inserting Section 15
@@ -855,7 +858,8 @@ quantifier bounds (Question 21.5); roots with omnific coefficients (Question
 at real singular integer points without a real normalization preimage (Question 21.8,
 re-scoped); coefficient recovery of lower quantifier
 complexity (Question 21.9); structure that determines the real form of `Oz[i]`
-(Question 21.10); infinite algebraic extensions (Question 21.11); from sources
+(Question 21.10; a batch-32 status note records further negative information
+from `saut:fs:thm:main-count`, not an answer); infinite algebraic extensions (Question 21.11); from sources
 08 and 09, denominator ideals beyond one parameter (Question 21.12), the extent
 of `𝒱` (Question 21.13), orbits outside `𝒱` (Question 21.14), several parameters
 (Question 21.15) and other scale extensions (Question 21.16); and, from sources
@@ -1252,6 +1256,9 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
 - [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/):
   its Euler derivations map `ℛ_𝔬(k, Γ)` into `Π_k(Γ)` (`opa:par:prop:Euler`),
   the support inclusion used in Sections 16–17; sources C10–C14 did not cite it.
+  Its batch-32 `opa:tc:thm:oztopology` (every Hahn-compatible ring topology on
+  `Oz` is pulled back along `ct` from `Z`) shows that the non-Hausdorff
+  congruence topologies after (3.3) are forced (status note there).
 - [`hahn-tate-uniformization`](../../surcomplex/hahn-tate-uniformization/): its
   Tate points are field points of curves with nonconstant `j`-invariant, outside
   the constant-coefficient hypothesis of Section 17; like Remark 17.24 and
@@ -1259,7 +1266,17 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   constrained by the ring rigidity here.
 - [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
   constructs the phase twists and the dilations `S_a`; source 06 credits it and
-  proves that the twist of Lemma 13.9 preserves `Oz[i]`.
+  proves that the twist of Lemma 13.9 preserves `Oz[i]`. Its batch-32
+  `saut:fs:thm:main-count` (valued, summation- and `Oz[i]`-preserving
+  involutions fall into `2^𝔠` conjugacy types with nonisomorphic fixed fields)
+  is recorded as negative information on Question 21.10.
+- [`holonomic-rigidity-for-entire-hahn-functions`](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/):
+  its factorial floor profile (`hol:fh:thm:floor`) is a case of Theorem 2.7
+  (note after that theorem).
+- [`entire-functions-at-arbitrary-rank`](../../surcomplex/entire-functions-at-arbitrary-rank/):
+  `ent:as:thm:sampling` and `ent:as:thm:integer` treat entire series over a
+  fixed workspace, the case excluded by the non-claim on polynomial lifting
+  (Appendix B; pointer added there in batch 32).
 - [`single-dilation-hahn-support`](../../surcomplex/single-dilation-hahn-support/)
   defines the coefficient field and constant coefficient of a Hahn field from
   one dilation; Theorems 13.2 and 13.4 recover them from the pure ring `Oz`.
@@ -1278,8 +1295,11 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 200 pages with no errors, warnings, undefined
-references, multiply defined labels or overfull boxes. The earlier combined
+The current build gives 201 pages with no errors, warnings, undefined
+references, multiply defined labels or overfull boxes. The batch-32
+cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
+non-claim on polynomial lifting) are unnumbered and changed no label number
+(compared in the `.aux` files against a build of the text before them). The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16
 was integrated, built to 178 pages with the same MiKTeX installation and the same zero
 counts, and every label it defines has the same number in the present build. The text

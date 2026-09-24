@@ -4063,6 +4063,11 @@ $\ct(yg)=\sum_j\ct(y\widetilde\sigma(f_j))$ for every $y\in\No$, each a finite e
 \cref{opa:q:strong}; see \cref{opa:as:sub:status}.
 \end{remark}
 
+\emph{Related} (batch 32). The Kaplan--Krapp--Serra automorphism already fails a countable sum: it moves the sum of an
+$\omega$-indexed family of monomials while fixing every summand (the large-cardinal report's
+\lbl{lce:mf:rem:unrestricted}). By that report's \lbl{lce:mf:thm:spectrum}, a countably strong $k$-linear map between
+full Hahn fields over $\R$ or $\C$ that is not strong first fails on a family of measurable cardinality.
+
 \begin{corollary}[Full real Hahn pairs \src{12, 13, 14, 15}]\label{opa:as:cor:setpairs}
 Every isomorphism $F$ in \cref{opa:as:prop:setpairs} is strongly $\R$-linear with strongly
 $\R$-linear inverse. In particular, for a nonzero divisible set-sized $\Gamma$, every field
@@ -4981,6 +4986,11 @@ $\No$, and each extended image meets $\No$ in the real image; apply \cref{opa:as
 
 No nonconjugacy is claimed for automorphisms preserving $\Og$ but not conjugation, which need not fix the real axis
 pointwise, and non-conjugation-compatible surcomplex embeddings are not classified \src{11}.
+\emph{Related} (batch 32). For automorphisms rather than images, the surcomplex automorphism report's
+finite-symmetry sections give nonconjugacy without conjugation compatibility: \lbl{saut:fs:thm:large-family} and
+\lbl{saut:fs:thm:main-count} give $2^{2^{\aleph_0}}$ strong valued involutions of $\SC$ preserving $\Og$, with pairwise
+nonisomorphic fixed fields, hence pairwise nonconjugate even under arbitrary field automorphisms of $\SC$. They do not
+concern the images of \cref{opa:as:cor:complexcopies}, and the sentence above stands.
 
 \section{Boundaries of the method}\label{opa:as:sec:bound}
 
@@ -5004,6 +5014,14 @@ $(t^{g_\alpha})$ with finite pairings against every $y\in K_{<\kappa}$ (\cref{op
 support of size $\kappa$ \src{12}. For singular $\kappa$ the union argument fails, and no extension is claimed; the
 proposition identifies no birthday cutoff with a support-bounded Hahn field \src{12}. 13 records the regular case only
 inside its singular-cardinal question (\cref{opa:as:q:singular}).
+\emph{Related} (batch 32). The first-$\kappa$ coefficient report
+(\fn{docs/surcomplex/first-kappa-coefficients}) shows that for singular $\kappa$ the characterization itself fails
+(\lbl{fkc:sb:thm:sums}): a series with $\kappa$ terms and reverse well-ordered support splits along a cofinal
+sequence of length $\operatorname{cf}\kappa<\kappa$ into pieces with fewer than $\kappa$ terms and pairwise disjoint
+supports, a Hahn-summable family with fewer than $\kappa$ nonzero members whose sum has support of size $\kappa$.
+That report proves this for its class fields of surreals with support of size $<\kappa$ and notes that the
+construction works in any set-sized $K_{<\kappa}$ whose exponent group contains a strictly monotone sequence of
+length $\kappa$. It is a statement about summability, not about automorphisms.
 
 \begin{example}[Small integer parts \src{13, 14}]\label{opa:as:ex:smallfrac}
 The proof of $\Frac\Oz=\No$ uses an upper bound in $\No$ for every set of exponents, and does not transfer to set-sized
@@ -5085,7 +5103,10 @@ since the strong phase twists of \cref{opa:cm:rem:gaussian} do that \src{14}. \e
 15 asks it again (its Question~4) and notes that its topology does not help: a compatible ring topology cannot
 reconstruct the missing valuation, since on $\SC$ every one is indiscrete (\cref{opa:tc:cor:fieldcollapse});
 16 recovers $\SC$ as a coefficient field but not its conjugation (\cref{opa:cr:q:realform}). \emph{Status}
-(batch 32): open.
+(batch 32): open. The surcomplex automorphism report's finite-symmetry sections reprove \cref{opa:as:thm:gaussian}
+for valued automorphisms by the same argument (\lbl{saut:fs:rem:gaussianstrong}) and classify the valued involutions
+preserving $\Og$ up to conjugacy (\lbl{saut:fs:thm:main-involutions}); they assume the valuation throughout, so
+they do not address this question.
 
 \begin{question}[Strongness of omnific embeddings \src{11, 12, 13, 14}]\label{opa:as:q:embeddingstrong}
 Let $f:\No\hookrightarrow\No$ be a field embedding with $f^{-1}(\Oz)=\Oz$. Must $f$ be strongly additive? What
@@ -5103,6 +5124,12 @@ preserves and reflects $\Oz$ and preserves constant terms, while it sends a summ
 whose sum is not the image of the sum; so it is not strongly additive. It is not onto, so it does not conflict
 with \cref{opa:as:thm:main}. Consequently a positive answer is not provable in the base theory unless that theory
 with a measurable cardinal is inconsistent; whether a counterexample exists without large cardinals stays open.
+\emph{Status} (batch 32). The large-cardinal report sharpens this. A countably strong $k$-linear map between
+full Hahn fields over $\R$ or $\C$ that is not strong first fails on a family whose cardinality is measurable
+(\lbl{lce:mf:thm:spectrum}), and the absence of measurable cardinals is equivalent to strongness of every countably
+strong coefficient-fixing field embedding of $\No$ preserving $\Oz$ (\lbl{lce:mf:thm:equivalence}). So in a
+universe without measurable cardinals a coefficient-fixing counterexample to the first clause must already fail on
+a countable family; whether such an embedding must be countably strong is \lbl{lce:mf:q:countable}, open.
 The necessary gap restriction of \cref{opa:as:thm:classification} and the dichotomy of
 \cref{opa:as:thm:topology} remain valid without strongness, whereas the closed-image proof uses the strong
 expansion formula. The questions on dense images and on images neither closed nor discrete are not settled here
@@ -5118,7 +5145,12 @@ strong linear operators \src{13}. 14 asks which additional hypotheses make a con
 Hahn fields strong, in particular for embeddings of $\No$ preserving the integer part. The isomorphism proof fails
 exactly because a target detector need not lie in the image; at set size an adjoint of the underlying semilinear map
 suffices, and 14 proposes seeking a criterion that the image supplies all detectors needed for its families, weaker
-than surjectivity. No embedding theorem is deduced \src{14}.
+than surjectivity. No embedding theorem is deduced \src{14}. \emph{Status} (batch 32): \emph{negative under a
+measurable cardinal}. The large-cardinal report's embedding (its $J$, written $\hat\jmath$ here;
+\lbl{lce:mf:prop:J}) is coefficient-fixing and preserves and reflects $\Oz$, and the pulled-back test of
+$\omega^\kappa$ has no source multiplier representative (\lbl{lce:mf:thm:target}). This already followed from
+\cref{opa:as:thm:adjoint} and the non-strongness of $\hat\jmath$ (\cref{opa:as:q:embeddingstrong}); that report
+adds the explicit test. The version for strongly $\R$-linear embeddings is its \lbl{lce:mf:q:targetstrong}, open.
 
 \begin{question}[Coefficient-moving embeddings \src{12}; re-scoped]\label{opa:as:q:coefficientmoving}
 Which subfields $C_0\subseteq\R$ occur as $f(\No)\cap\R$ for strongly additive embeddings $f$ with
@@ -5210,7 +5242,10 @@ subfields (\cref{opa:cm:prop:workspace,opa:cm:rem:kappa}) such an automorphism s
 $K_{<\kappa}$ to a Hahn-summable family with sum the image of the sum; only the size of the union of the image
 supports remains. The question stays open. 15 asks it again for support-bounded fields (its Question~6),
 asking that any large-cardinal dependence be kept apart from its ZFC topological obstruction, which uses only
-countable sequences (\cref{opa:tc:part}). \emph{Status} (batch 32): open.
+countable sequences (\cref{opa:tc:part}). \emph{Status} (batch 32): open. The first-$\kappa$ coefficient
+report's \lbl{fkc:sb:thm:sums} bears on it (note after \cref{opa:as:prop:kappa}): for singular $\kappa$,
+summability in $K_{<\kappa}$ is not decided by the number of nonzero members and ambient summability. It does not
+answer the question, which asks about automorphisms.
 
 \begin{question}[Other rings and coefficient fields \src{12, 14}; \mergetag]\label{opa:as:q:otherrings}
 For which integer parts, truncation subrings or distinguished subrings of a real closed Hahn field can one reconstruct a
@@ -5224,7 +5259,11 @@ without valuation data the order step is missing; compare \cref{opa:sc:q:otherpa
 parts $A$ of a real closed Hahn field, and whether the full constant term is reconstructible from $A$ by the same chain;
 it suggests the checkable sufficient condition that the divisibility core of $A$ recover a negative-support complement
 whose multiplier units form the coefficient field, and asks when that condition is necessary and stable under
-conjugation \src{14}.
+conjugation \src{14}. \emph{Partial information} (batch 32): for $\Gamma=\No$, a set-sized characteristic-zero $k$
+and $\oo\in\{\Z,\Z[i]\}$ (with $i\in k$ in the second case), the surcomplex automorphism report shows that every automorphism of $\Ro$ extends to
+$\Hahn k\No$ and preserves $k$ and $\Pi$ (\lbl{saut:fs:prop:reconstruction}), and that such an automorphism is strong
+and semilinear once it is also valued (\lbl{saut:fs:rem:gaussianstrong}). The question does not assume the valuation
+and stays open.
 
 \begin{question}[Isomorphisms of small integer parts \src{13, 14}]\label{opa:as:q:smallparts}
 For which ordered groups $\Gamma,\Delta$ does every ring isomorphism $\mathcal R_\Gamma\cong\mathcal R_\Delta$ extend to
@@ -8275,9 +8314,10 @@ definable-surreals report
 \fn{docs/foundations-and-computation/definable-surreals-and-omnific-integers}
 (\lbl{dsn:}), the three-duals report \fn{docs/surcomplex/three-duals-of-hahn-vector-spaces}
 (\lbl{duals:}), the independent-copies report \fn{docs/surreal/independent-surreal-copies}
-(\lbl{isc:}), and the large-cardinal report
+(\lbl{isc:}), the large-cardinal report
 \fn{docs/foundations-and-computation/large-cardinal-embeddings-and-normal-forms}, cited by directory
-only. Part V also cites the foundations report \fn{docs/foundations-and-computation/foundations}
+only before batch 32 and by its \lbl{lce:mf:} labels in the batch-32 notes, and the first-$\kappa$ coefficient report
+\fn{docs/surcomplex/first-kappa-coefficients} (\lbl{fkc:}). Part V also cites the foundations report \fn{docs/foundations-and-computation/foundations}
 (\lbl{found:}).
 
 \end{document}

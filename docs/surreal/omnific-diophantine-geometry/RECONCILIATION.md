@@ -17,19 +17,21 @@ classification in Sections 17.1–17.2 and the arithmetic fibers, polynomial
 witnesses and separated-model descent in Section 17.3, followed by projective
 coordinates and coordinate ideals in Section 17.4. The current pass covers
 Section 17.5 and Sections 17.6.1–17.6.8, including the repeated-root test,
-seventh-order certificate and arithmetic existence results. Sections 17.6.9 onward and 18,
-their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
+seventh-order certificate and arithmetic existence results. A further pass finishes Sections 17.6.9–17.6.10 and reviews Sections
+18.1–18.4 (groups, reduced coefficients, dual numbers and sharpness).
+Sections 18.5–18.6, their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the fourteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. Group varieties and subsequent geometric applications remain outside these passes. The review of Section 16
+present numbering. Logarithmic applications and later scope notes remain outside these passes. The review of Section 16
 includes the two-ring principle, symmetric differentials and inheritance.
 Source C16, integrated in `1ad4ad8`, adds seventeen standard results in
 Section 17.6 and updates the earlier singular-curve status notes. Its
 normalization criterion, conductor certificates and structural consequences
 now have the targeted proof reviews below, together with its arithmetic and
-repeated-root applications. Its final boundaries and audit subsections remain unreviewed.
+repeated-root applications. Its final boundaries and audit subsections now
+have a targeted consistency check against the reviewed proof and source C16.
 
 ## Recoverable sources
 
@@ -1151,3 +1153,79 @@ These targeted checks do not certify priority or independently verify all
 imported algebraic geometry. The finite C16 suite is a regression check
 of identities and bounded examples, not a proof of the infinite statements.
 All six application results remain **Pending** in Lean.
+
+
+## Group varieties, coefficient algebras and sharpness review
+
+This pass checks Sections 17.6.9–17.6.10 against the reviewed singular-curve
+proof and C16's own boundaries and audit table, then reviews all thirteen
+standard results in Sections 18.1–18.4, from `odg:cr:lem:invariant` through
+`odg:cr:thm:dor`. It includes the comparison with the omnific-groups report's
+torus, real-unipotent, complex-torus and BCH statements. Sections 18.5–18.6,
+remaining scope and provenance notes, and full source reconciliation remain
+outside this pass.
+
+The invariant-form proof now identifies the algebraic inverse translation
+and explains global generation. Torus descent compares a point with its
+own constant term through an injective coefficient map. The finite-splitting-
+field argument supplies both directions of the tensor isomorphism using a
+finite coefficient basis; it is not transferred to arbitrary coefficient
+algebras. The quasi-finite proof explains the constant fiber, its finite
+coordinate algebra and the factorization of its image through the constants.
+No smoothness of that fiber or surjectivity of the original morphism is used.
+
+The commutative-group proof retains characteristic zero, applies the
+product theorem only to the connected affine subgroup, and writes the
+mutually inverse point-group maps. The resulting splitting does not claim
+an algebraic splitting of the group variety. The three Milne references
+previously recorded as unchecked were located in the 2017 book: Theorem
+8.27, Corollaries 14.33 and 16.15, printed pages 154, 289 and 329, with the
+affine convention on page 324 and characteristic-zero convention in
+Section 14(d). The statement and its generalization from real/complex
+coefficients are unchanged.
+
+For reduced coefficients the proof now writes the closed equalizer ideal
+and its vanishing under every coefficient map, including the zero-ring
+case. The former phrase “This is not faithful flatness” was ambiguous;
+the intended claim, already explicit in C11, is that the proof does not
+use a faithfully flat cover. The new example
+`Σ_{n≥1} s^n ω^(1/n)` over `k[s]` has admissible support but coefficients
+of unbounded polynomial degree, so it is outside the image of the natural
+tensor map. Failure of that map to be surjective is not a claim that it
+fails to be flat.
+
+Dual numbers are defined explicitly as `S[T]/(T²)`. The lift proof uses
+the unchanged underlying space, local derivations and gluing. The defect
+proof splits the two coefficient functions, identifies tangent addition
+modulo the square-zero ideal and tracks the ordinary dual-number subgroup
+before taking the quotient. The elliptic tangent example checks both
+smoothness and its nonconstant coefficient. These nilpotents belong to
+coefficient rings, not the actual surreal field.
+
+The characteristic-two example now explains finite coefficient incidence
+before pairing the off-diagonal terms, distinguishing the exact Hahn
+identity from finite truncations. The characteristic-p squarefree example
+remains an affine line, whereas the characteristic-two cubic has genus one.
+The discretely ordered-ring proof spells out monic division, parity of
+leading exponents, absence of cancellation and the nonzero element killed
+by a hypothetical unital embedding. It does not identify discrete order
+with absence of infinitesimal tails.
+
+The source comparison used C11's group, reduced-coefficient, nilpotent,
+positive-characteristic and discrete-order sections in
+`curve-and-abelian-rigidity/article.tex` from
+`c6359e4^:docs/new/Curve_and_Abelian_Rigidity.zip`, and C13's semiabelian,
+vector-kernel and characteristic-p arguments in
+`omnific_differential_rigidity/omnific_differential_rigidity.tex` from
+`c6359e4^:docs/new/omnific_differential_rigidity.zip`. The existing C16
+archive supplies its closing scope notes. This does not reconcile all
+parallel arguments in C10, C12, C14 and C15.
+
+Primary checks covered [invariant differentials, Stacks 39.6.3](https://stacks.math.columbia.edu/tag/047I),
+[Milne's 2008 abelian-variety notes, IV.6.4(b)](https://www.jmilne.org/math/CourseNotes/AV.pdf),
+the three cited structure statements in [Milne's 2017 algebraic-groups book](https://www.jmilne.org/math/Books/iAG2017.pdf),
+[finite zero-dimensional schemes, Stacks 33.20.2](https://stacks.math.columbia.edu/tag/06LF),
+and [the tangent-space description](https://stacks.math.columbia.edu/tag/0B28).
+These check the precise imported scope, not priority or every proof in the
+classical foundations. The van den Dries paper remains unread and no new
+comparison with it is claimed. All thirteen results remain **Pending** in Lean.

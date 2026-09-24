@@ -12,8 +12,7 @@ dependent results, reusing mathlib constructions.
   integers `Oz`), the surcomplex numbers `No[i]` (28), surquaternions (1),
   physics (2), and foundations and computation (9). Each has a LaTeX source,
   a README stating what it claims and what it does not, and usually finite
-  verification code. The 61 earlier reports have typeset PDFs; the two newly placed sources await
-  repository PDFs.
+  verification code. All 63 reports now have typeset PDFs.
   Start with the [reader's guide](docs/README.md) and the
   [typeset catalogue](docs/manifest.pdf); the [notation guide](docs/NOTATION.md)
   reconciles local conventions, and the [formalization ledger](docs/FORMALIZATION.md)
@@ -289,10 +288,14 @@ measure recovery from a defect coefficient, and criteria for the transformed
 series to belong to the target model. These are conditional research claims;
 independent proof review and Lean formalization remain pending.
 
-The newly placed reports on [omnific continued fractions](docs/surreal/omnific-continued-fractions/)
-and [exponential relations](docs/foundations-and-computation/exponential-relations-over-omnific-integers/)
-study exact realization fibers, algebraic rigidity, exponential relations and
-decidable additive fragments. Their proofs and Lean formalization remain pending.
+Two newly placed reports connect omnific arithmetic with other classical
+questions. [Continued fractions](docs/surreal/omnific-continued-fractions/)
+describes exactly which errors preserve every ordinary finite digit, with
+realization and uniqueness criteria in full Hahn fields. [Exponential relations](docs/foundations-and-computation/exponential-relations-over-omnific-integers/)
+proposes a decidable language of finite exponential equalities with algebraic
+coefficients and slopes, and locates its boundary when multiplication is
+admitted. These reports have written proofs and finite checks; independent
+proof review and Lean coverage remain pending.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
@@ -323,8 +326,11 @@ assuming that every point lifts to the normalization. The review corrects
 the ambient-field normality comparison and the zero-group boundary case. The
 application review restores the irreducibility assumption in the repeated-root
 superelliptic test and expands the singular elliptic certificate and Gaussian
-arithmetic existence proof.
-These curve and fiber results remain pending in Lean.
+arithmetic existence proof. The group and coefficient-algebra review makes
+semiabelian rigidity and the exact unipotent kernel explicit. Rigidity extends
+to reduced coefficient algebras. For dual-number coefficients, the quotient
+by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian variety `A`.
+These geometric and coefficient-algebra results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta
