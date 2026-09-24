@@ -595,6 +595,9 @@ import Surreal.Foundations.OmnificIntegralClosure
 import Surreal.Algebra.PolynomialSolutionRetraction
 import Surreal.Algebra.PositiveExistentialRetraction
 import Surreal.Foundations.OmnificEquationalTransfer
+import Surreal.Foundations.OmnificDefinabilityObstructions
+import Surreal.Algebra.MatrixSmithReduction
+import Surreal.Foundations.OmnificSmithCriterion
 import Surreal.Foundations.OmnificPurelyInfiniteIdeal
 import Surreal.Foundations.OmnificIrreducibles
 import Surreal.Algebra.IdempotentAdicCompletion
@@ -613,3 +616,14 @@ import Surreal.Foundations.OmnificProfiniteTopology
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree
+import Surreal.Algebra.ModuleKernelBasis
+import Surreal.Foundations.OmnificPurelyInfiniteModule
+import Surreal.Foundations.OmnificLinearSystems
+import Surreal.Algebra.DecomposableFibers
+import Surreal.Foundations.OmnificPurelyInfiniteCoefficients
+import Surreal.Surcomplex.DecomposableFibers
+import Surreal.Surcomplex.OmnificDecomposableFibers
+import Surreal.Surcomplex.OmnificRealKernel
+import Surreal.Surcomplex.GaussianOmnificIntegers
+import Surreal.Surcomplex.PurelyInfiniteCoefficients
+import Surreal.Surcomplex.GaussianDecomposableFibers

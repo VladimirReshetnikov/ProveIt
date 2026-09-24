@@ -159,6 +159,28 @@ Over `ℝ` a factor may be quadratic; use its degree when computing
 `deg P_odd`. The normalization parameter `T` is a function-field element
 and need not be a regular function on the singular model.
 
+In the group-variety applications, `ct:X(𝒜_k(Γ))→X(k)` is the map on
+scheme-valued points induced by the ring retraction. The splitting
+`G(𝒜_k(Γ)) ≅ G(k) ⊕ Π_k(Γ)^d` is a splitting of abelian groups of
+points; it does not assert an algebraic-group product decomposition.
+The vector coordinates on the unipotent subgroup are chosen.
+For coefficient algebras, `S[ε]` means `S[T]/(T²)`, with `ε` the class
+of `T`. This nilpotent is not a surreal infinitesimal. Finite coefficient
+bases allow the Hahn construction to commute with finite scalar extension
+and dual numbers; arbitrary coefficient algebras need not give a tensor
+product. Joint injectivity of all coefficient maps is the descent condition
+used for reduced algebras.
+
+In the logarithmic applications, `X = X̄ ∖ E` and `E` is a reduced
+simple normal-crossings boundary. A logarithmic factor contracts to
+`∂u/u`, which need only lie in the valuation ring `𝒪`, rather than its
+maximal ideal. Vanishing therefore uses `∂(𝒜) ⊆ Π` and `Π ∩ 𝒪 = 0`.
+Both contractions are compared in the ambient Hahn field. Constant
+extraction gives ring maps between `𝒜` and `𝒪`, but those maps do not
+respect their inclusions in that field when the exponent group is nonzero.
+For source C15's `t^γ = ω^(−γ)`, extend its additive functional `ℓ`
+uniquely to the rational hull: `D_ℓ` corresponds to `∂_(−ℓ)`.
+
 The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
 Its rational residue `res` has domain `Oz_Π`; standard part `st` has
 domain the finite surreals. On their common domain, the maps agree
