@@ -903,3 +903,6 @@ import Surreal.Foundations.OmnificDenseIdeals
 import Surreal.Foundations.OmnificSmallPrimes
 import Surreal.Algebra.GaussianPrimeQuotients
 import Surreal.Surcomplex.GaussianSmallPrimes
+import Surreal.Surcomplex.GaussianPrincipalGrowth
+import Surreal.Surcomplex.GaussianInfiniteGenerators
+import Surreal.Surcomplex.GaussianPrincipalQuotients

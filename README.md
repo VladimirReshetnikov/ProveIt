@@ -599,6 +599,13 @@ its leading exponent have distinct residues. The quotients by `ω`, `2+ω`
 and `1+ω` are all nonzero and large: the first two surject onto `ℤ` and
 `ℤ/2ℤ`, while the third has no nonzero small unital ring image. Among ideals
 with small quotient, only the purely infinite ideal lacks a small generating set.
+The corresponding principal-quotient classification is now proved for the
+Gaussian omnific ring: exactly the nonzero ordinary Gaussian generators
+give small quotients. Nonconstant generators have arbitrarily large small
+families of distinct monomial residues. The Gaussian purely infinite ideal
+is idempotent and is a directed union of positive real monomial principal
+ideals, yet no small family generates it. Multiplication by any nonzero
+ordinary Gaussian constant preserves this entire ideal.
 The finite-congruence closure of every omnific ideal J is now proved to be
 `J + Pi`, equivalently the inverse image of its integer constant ideal.
 This is also its closure in the native congruence topology. A principal
