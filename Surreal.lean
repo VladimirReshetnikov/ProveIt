@@ -742,6 +742,9 @@ import Surreal.Foundations.RealStructureReconstruction
 import Surreal.Foundations.NaturalValueGroup
 import Surreal.Algebra.ReconstructionAutomorphisms
 import Surreal.Foundations.OmnificAutomorphisms
+import Surreal.Foundations.NormalFormExponentAutomorphisms
+import Surreal.Foundations.OmnificExponentAutomorphisms
+import Surreal.Foundations.ExponentAutomorphismStrongSums
 import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial

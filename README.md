@@ -503,6 +503,13 @@ Every automorphism of the actual omnific ring now extends uniquely to the
 surreal field by its fraction formula. The extension preserves order, fixes
 each ordinary real number, preserves finite elements and infinitesimals,
 and commutes with standard part on finite inputs.
+These automorphisms need not be trivial: doubling every Conway exponent
+defines an actual omnific automorphism sending `ω` to `ω²`, with exponent
+halving as inverse. More generally, every ordered additive automorphism of
+the surreal exponent group lifts to an ordered field automorphism fixing
+the reals. The lift transports the natural valuation, preserves strong
+summability and commutes with every strong sum supported in the birthday
+universe. The construction retains small supports throughout.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
@@ -1430,7 +1437,9 @@ needs the full null ideal. Under Prony's finite coefficient criterion the
 moment map sends the tangent lattice onto the error ball. Strongly entire functions
 are closed under the algebra operations, dilation and differentiation, and
 the refined periodic threshold holds under divisibility. Value-group
-automorphisms have canonical Hahn lifts, while rational dilations have no
-exponential lift.
+automorphisms now have canonical lifts on the actual surreal field, preserving
+strong sums. The no-exponential-lift result for rational dilations is proved
+at the actual carrier conditionally on a global ordered exponential; its
+construction remains pending.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
