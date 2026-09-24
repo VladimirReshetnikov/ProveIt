@@ -463,7 +463,15 @@ a nonzero net converging to zero in the intrinsic order topology of the
 real model. It fails to converge after embedding in No with its fine
 topology, where a still smaller radius exists. These negative monomials
 are not integral, so the normalization's generator count remains open.
-The reviewed results and added consequences remain pending in Lean.
+Lean now proves the actual real and Gaussian uniform-denominator theorems,
+the complete-integral-closure claims for both actual fields and all
+intermediate rings, and the general reciprocal obstruction, including
+nonintegrality of 1/2 in both omnific rings. The fixed countable-support
+versions, sharp generator counts, topology and remaining normalization
+consequences remain pending. The section introduction now distinguishes
+the Noetherian equality of integral and almost integral closure from
+equality with the original ring, which also requires integral closedness;
+Z[√5] and (1+√5)/2 provide the counterexample to the former wording.
 The next eleven standard results are now reviewed too, completing the
 twenty integral-closure results before the arithmetic fibres: constant
 slices, truncation failure, the unit equation, Gaussian normalization,

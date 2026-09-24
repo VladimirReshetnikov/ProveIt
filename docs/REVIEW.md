@@ -8483,3 +8483,44 @@ pass all 4,626 statement anchors in 63 reports, 5,223 source references
 and 1,933 local Markdown destinations in 226 files. These finite checks
 do not certify the class or integrality arguments. No Lean code or
 historical verification records were changed.
+
+### Uniform-denominator sync and Noetherian-hypothesis correction (2026-09-24)
+
+Merged `origin/main` through `e001ac5` and read its four new modules
+against `osq:nm:thm:onedenominator`, `osq:nm:rem:conductor`,
+`osq:nm:thm:complete` and `osq:nm:lem:reciprocal`. The generic span
+argument extends absorption of the small integer-generated algebra to
+the whole algebra over the coefficient ring. The actual surreal and
+surcomplex instances use one positive real monomial for every polynomial
+combination, with the family small in the lower universe. Singleton
+absorption gives the native almost-integral predicate and top complete
+integral closure, also over every intermediate ring, whose ambient field
+is its fraction field. The faithful-embedding reciprocal lemma reflects
+units from the integral closure. One half supplies the actual real and
+Gaussian witnesses separating ordinary from complete integral closure.
+The countable-support model, its cardinal bounds and remaining ordinary
+normalization geometry retain their pending scope.
+
+While checking this correspondence, corrected an error in the closure
+section introduction: Noetherianity identifies integral and almost
+integral closure in the fraction field, but does not identify either
+with the original ring without integral closedness. The Noetherian domain
+Z[sqrt(5)] excludes (1+sqrt(5))/2, a root of X²−X−1. The corrected
+paragraph gives this counterexample. Confirmed the precise Noetherian
+closure equality against Mathlib's `isAlmostIntegral_iff_isIntegral`
+and `completeIntegralClosure_eq_integralClosure`. Updated the shared
+notation, report guide and ledger, and refreshed the catalogue's actual
+formalization status. This corrects introductory prose; all numbered
+statements and labels remain unchanged.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passed 4,995 jobs, with
+18,445 declarations passing the axiom audit using only propext,
+Classical.choice and Quot.sound. After the prose/status updates, rebuilt
+article and catalogue with three diagnostic-free TeX passes each, still
+329 and 35 pages. Rechecked all numbering and statement comparisons;
+inspected the corrected introduction on PDF page 184, the doubling
+pages 205–206 and updated catalogue page 12. Audits pass 4,626 anchors
+in 63 reports, 5,225 source-label references and 1,942 local Markdown
+destinations in 226 files. The fibre consequences added in this pass
+remain Pending in Lean; the newly proved uniform-denominator and
+complete-closure clauses are now identified separately.

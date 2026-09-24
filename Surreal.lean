@@ -851,3 +851,7 @@ import Surreal.HahnSeries.NaturalDiophantine
 import Surreal.Foundations.OmnificNaturalDiophantine
 import Surreal.Algebra.IntegerDiophantineImages
 import Surreal.Algebra.IntegerDiophantineSignedCoding
+import Surreal.Algebra.IdealAbsorption
+import Surreal.Algebra.IntegralReciprocal
+import Surreal.Foundations.OmnificAlgebraAbsorption
+import Surreal.Surcomplex.GaussianAlgebraAbsorption

@@ -501,8 +501,15 @@ these monomials tends to zero in the small field, but not in No.
 Convergent nets in No with a set-sized index set are eventually constant;
 initial variation is allowed.
 
-Write 𝒩 and 𝒩_C for the real and Gaussian integral closures. Their
-complexification comparison is more precise than equality after inverting
+Write 𝒩 and 𝒩_C for the real and Gaussian integral closures. Ordinary
+integral closure must be distinguished from **complete integral closure**,
+defined by one nonzero denominator for all ordinary finite powers.
+For a Noetherian domain these two closures in its fraction field agree;
+they equal the original domain only if it is integrally closed.
+The Noetherian ring Z[√5], which excludes the integral element (1+√5)/2,
+illustrates the additional hypothesis.
+
+The complexification comparison is more precise than equality after inverting
 2: with η=(√3+i)/2, one has 𝒩_C=𝒩⊕𝒩η and 𝒩[i]=𝒩⊕2𝒩η.
 The quotient 𝒩_C/𝒩[i] is an **additive module**, isomorphic to 𝒩/2𝒩;
 𝒩[i] is not an ideal of 𝒩_C. The conductor (𝒩[i]:𝒩_C)=2𝒩_C
