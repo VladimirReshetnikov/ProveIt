@@ -24,6 +24,13 @@ theorem too; it is merged into the sibling report
 [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) and credited
 here.
 
+The first independent proof pass reviews the maintained elementary arguments
+from the ring definitions through the universal quotient theorem, plus its
+unit-forcing localization consequence. It corrects integer divisibility in
+positive characteristic and the noncommutative module route in the separation
+proof. Later classifications and full reconciliation of the parallel sources
+remain pending. Exact scope and validation are in [RECONCILIATION.md](RECONCILIATION.md).
+
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
 article.pdf   the compiled report, 262 pages
@@ -1145,9 +1152,11 @@ strictly positive set support and coefficients in `K`.
 - All twenty-four sources are AI-assisted, unrefereed drafts that call their main
   results candidate original or proposed contributions; priority is not
   certified, no named conjecture (Conway's refinement problem, factorization,
-  GCD) is claimed solved, and nothing is formalized: the repository has no
-  omnific Lean module and `docs/FORMALIZATION.md` maps none of these labels. The
-  merge results are no more refereed than the sources.
+  GCD) is claimed solved. The repository now has actual omnific and Gaussian
+  omnific modules and shared support, degree, unit and ideal results, mapped
+  through the sibling report's labels in `docs/FORMALIZATION.md`. The universal
+  quotient and later cardinal classifications still need their own formal
+  proofs. The merge results are no more refereed than the sources.
 - The universal theorem is not an isomorphism `Oz ≅ Z`, does not classify class
   ideals, class modules, automorphisms or factorizations, concerns only
   multiplicative maps (additive coefficient extraction detects `ω^γ`), and fails

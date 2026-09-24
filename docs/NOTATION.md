@@ -51,6 +51,14 @@ Its nonzero elements can have either sign. In `t^γ = ω^(−γ)` notation these
 conditions become nonpositive and strictly negative support, respectively.
 They constrain **every** exponent, not only the leading exponent.
 
+For a general coefficient field `k`, multiplication by any nonzero scalar
+preserves `Π_k` bijectively. The formula `nΠ_k = Π_k` therefore requires
+the integer `n` to have nonzero image in `k`; in characteristic `p`,
+`pΠ_k = 0`. The quotient report's notation `a ≪ c` compares positive
+exponents: `na < c` for every ordinary positive integer `n`. These integer
+multiples are taken in the ordered exponent group, independently of the
+characteristic of the coefficient field. They do not say that `X^a` is small.
+
 Constant coefficient `ct` is a ring retraction on these support-restricted
 rings. It is not a ring homomorphism on all of `No`, since `ω · ω⁻¹ = 1`,
 and it is not order preserving: `ω − 1 > 0` but `ct(ω − 1) = −1`.
