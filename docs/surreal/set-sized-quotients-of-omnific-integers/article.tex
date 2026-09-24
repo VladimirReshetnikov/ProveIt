@@ -20880,18 +20880,21 @@ hypothesis, omnific factorization conjecture or published automorphism problem i
 $\Oz$ is asserted; all rings, spectra and henselizations are set-sized. (3) $\Idem(\mathscr G)$ and $\mathsf X$ are not classified: atomlessness, isolated
 points and, for $\kappa=\aleph_0$, the Cantor space are open, and ``maximal'' is a cardinal statement only. (4) $\mathfrak L^{\mathrm h}$ and
 $\mathfrak L^{\mathrm h}[i]$ are local, not products of branches; nontrivial idempotents exist only in the generic fibre. (5) The imaginary unit lives only in
-$\mathscr G$; $\mathfrak L^{\mathrm h}$ has no square root of $-1$ and residue field $\Q$. (6) The support projection is not a ring map, and the specializations
-are maps of finite algebras, not evaluations of Laurent series at zero. (7) The rings are not Noetherian and no Krull dimension is determined; no
-infinitesimal smoothness criterion applies. (8) The Gaussian decomposition does not assert $\mathsf X\not\cong\mathsf X\sqcup\mathsf X$. (9) The valuation
+$\mathscr G$ when discussing the real henselization; $\mathfrak L^{\mathrm h}$ has no square root of $-1$ and residue field $\Q$, whereas $\mathfrak L^{\mathrm h}[i]$ contains its adjoined $i$. (6) The support projection is not a ring map, and the specializations
+are maps of finite algebras, not evaluations of Laurent series at zero. (7) The rings are not Noetherian. Their exact Krull dimensions are not determined;
+\cref{osq:hb:q:spectrum} proves a positive common dimension for the local ring and its two henselizations. Formal smoothness still has its infinitesimal
+lifting definition; lack of finite presentation prevents the usual smoothness conclusion, as explained after \cref{osq:hb:cor:nilpotent}. (8) The Gaussian decomposition does not assert $\mathsf X\not\cong\mathsf X\sqcup\mathsf X$. (9) The valuation
 count imports de Felipe--Teissier \cite{DFT}; nothing is claimed about the components themselves or their topology compared with $\mathsf X$. (10) The finite
 \'etale equivalence concerns $\mathfrak L^{\mathrm h}$, not $B_{\mathbb E}$ or $\Oz$, and the rank classification over $\mathscr G$ is of isomorphism classes,
-not morphisms. (11) Only $K_0(\mathscr G)$ and finite projectives are computed; no higher $K$-theory or derived formula is asserted. (12) No birthday bound
-is asserted; seeds are contained in $\mathbb E$, but the operations of a prior workspace are not preserved without further closure. (13) The finite checks
+not morphisms. (11) The source computes $K_0(\mathscr G)$ and finite projectives; \cref{osq:hb:q:higher} adds a classification of perfect objects, not higher $K$-groups or
+arbitrary derived morphisms. (12) No prescribed birthday bound is asserted; the set-sized hull has an \emph{a posteriori} bound
+(\cref{osq:hb:q:birthday}), but the operations of a prior workspace are not preserved without further closure. (13) The finite checks
 ($5{,}760$ exact SymPy assertions, $5{,}586$ of them Boolean atoms; the count is not a measure of proof strength) prove no support, localization-denominator,
 prime-existence, transfinite, cardinality or priority statement. (14) Henselian algebra, Boolean powers and the Stacks Project results are standard, de
 Felipe--Teissier's theorem is imported, and the splitter mechanism is the repository's (20), re-derived. (15) Independent checking of the whole proof, in
-particular of the bridge from supports to localization, is warranted; the exact Stone space, atomlessness, enlargement of the hull, mixed-characteristic
-analogues and class-level geometry are not settled. (16) The repository changed during 27's inspection, so its guide reads are not a complete same-commit
+particular of the bridge from supports to localization, is warranted; the exact Stone space, atomlessness, arbitrary enlargement of the hull and class-level
+geometry are not settled. The reviewed notes below give a normalization point correspondence and partial mixed-characteristic results, without an exact
+mixed-characteristic branch count. (16) The repository changed during 27's inspection, so its guide reads are not a complete same-commit
 audit; its search for ``hensel'' was not exhaustive (and missed existing occurrences, \cref{osq:hb:sub:henselian}); its targeted literature searches found no
 primary source for the construction, which does not certify novelty. (17) No regularity of $\kappa$, continuum hypothesis, GCH or large cardinal is used.
 (18) Its twelve questions are proposed directions and may already be answered in literature 27 did not locate.
@@ -21699,90 +21702,337 @@ those obligations.
 For the hull of \cref{osq:hb:prop:hull}, determine $\Idem(\mathscr G)$ up to isomorphism. Is it atomless? Can $\mathsf X$ have isolated points? For
 $\kappa=\aleph_0$, can the construction be refined so that $\mathsf X$ is the Cantor space?
 \end{question}
-\emph{Status.} Open. 27's comments: a free subalgebra of rank $\kappa$ and $|\mathsf X|=2^\kappa$ decide none of these; a first step is to classify which further
-pointed \'etale neighbourhoods produce idempotents outside the algebra generated by the $\hat e_\alpha$. Compare \cref{osq:bb:q:structure,osq:rm:q:boolean} for
-the Boolean algebras of 20's and 23's fibres.
+\emph{Status.} The isomorphism type and atomlessness remain unresolved here,
+but the countable case reduces to one question. The free family and
+$|\mathscr G|=\kappa$ give $|\Idem(\mathscr G)|=\kappa$.
+For $\kappa=\aleph_0$, enumerate this clopen basis of $\mathsf X$.
+Its characteristic functions embed $\mathsf X$ continuously into
+$\{0,1\}^{\N}$; compactness makes the embedding a homeomorphism onto
+a closed subspace. Thus $\mathsf X$ is already compact metrizable.
+A Boolean atom is exactly a singleton clopen in its Stone space:
+if a nonempty clopen contained two points, a clopen separating them
+would split it. Consequently atomlessness is equivalent to having
+no isolated points. In the countable case it is also equivalent to
+being Cantor space, by the countable atomless Boolean-algebra
+back-and-forth used in \cref{osq:rm:thm:countable}.
+
+The free subalgebra alone cannot supply atomlessness. For example,
+let $Y=\{0,1\}^{\N}$ and fix $y_0\in Y$. The map
+$U\mapsto U\sqcup\{* : y_0\in U\}$ embeds the clopen algebra of $Y$
+unitally into that of $Y\sqcup\{*\}$, which has an isolated point.
+Both spaces have continuum many points and countable clopen algebras.
+This is an obstruction to that inference, not an example of a hull
+with an isolated point. The missing step is to split every nonzero
+idempotent, including those outside the certified free family.
+Compare \cref{osq:bb:q:structure,osq:rm:q:boolean}.
 
 \begin{question}[Dependence on the hull; 27]\label{osq:hb:q:hull}
 How far do the isomorphism type of $\mathscr G$, or the homeomorphism type of $\mathsf X$, depend on the choices of clearing and division in the hull? Is
 there a natural equivalence class of such spaces attached to a seed field?
 \end{question}
-\emph{Status.} Open. 27's comments: the theorem is existential; it keeps the cardinal and the seed but proves no canonical minimal hull or uniqueness of its
-local algebra.
+\emph{Status.} Unresolved. The construction preserves the seed and cardinal,
+but chooses clearing monomials, factor pairs and successive real closures;
+it supplies neither a canonical least hull nor a uniqueness theorem.
+For a fixed identification of the coefficient fields $\mathbb E[i]$,
+\cref{osq:hb:lem:booleanpower} reduces comparison of the generic algebras
+to comparison of their Stone spaces: a homeomorphism pulls back functions,
+and an algebra isomorphism induces a homeomorphism of spectra.
+Without that identification, an isomorphism as rings and an isomorphism
+as algebras over a specified scalar field are different requirements.
+Equality of the cardinals of the rings or their spectra is not such
+an isomorphism. A common larger hull can contain two chosen hulls,
+but containment alone does not identify their generic fibres.
 
 \begin{question}[Enlarging an integer part; 27]\label{osq:hb:q:enlargement}
 For induced omnific integer parts $B\subseteq B'$ with compatible localizations $\mathfrak L\to\mathfrak L'$, when is the map of generic henselian fibres
 injective, and when do branches merge or appear?
 \end{question}
-\emph{Status.} Open. 27's comments: the splitter atoms survive every global normalization witness, which protects the certified family but not idempotents
-created by unrelated \'etale neighbourhoods.
+\emph{Status.} There is an exact general criterion, while its application
+to arbitrary hull enlargements remains unresolved. Write
+$\psi:\mathscr G\to\mathscr G'$ for the induced unital map and
+$\psi^*:\mathsf X'\to\mathsf X$ for the map on spectra. Then
+\[
+ \psi\text{ is injective}
+ \quad\Longleftrightarrow\quad
+ \psi\text{ kills no nonzero idempotent}
+ \quad\Longleftrightarrow\quad
+ \psi^*\text{ is surjective}.
+\]
+Indeed every principal ideal of the von Neumann regular ring
+$\mathscr G$ has an idempotent generator, so a nonzero kernel
+contains a nonzero idempotent. Moreover
+$(\psi^*)^{-1}(D(e))=D(\psi(e))$.
+If $\psi^*$ is onto, a nonzero $e$ cannot be killed. Conversely,
+its image is compact and therefore closed in the Stone space
+$\mathsf X$. If it missed a point, a nonempty clopen neighbourhood
+of that point would be disjoint from the image, and its idempotent
+would be killed. This proves the criterion without choosing
+compatible imaginary units in the two generic fibres.
+
+The direction is contravariant: a new branch restricts to an old
+one. An empty fibre means an old branch is lost; several points in
+one fibre mean it has several extensions. The certified splitter
+family protects those particular idempotents, not automatically every
+idempotent introduced by an unrelated pointed \'etale neighbourhood.
+An injectivity theorem must therefore address all nonzero idempotents.
 
 \begin{question}[Normalization versus henselization; 27]\label{osq:hb:q:normalization}
 Relate the reduced normalization fibre $\IC_{\mathbb E}(\mathfrak L)/\sqrt{\mathfrak n\IC_{\mathbb E}(\mathfrak L)}$ to the Stone space $\mathsf X$. Can the
 finite-pattern argument give an explicit correspondence between normalization choices and henselian minimal primes?
 \end{question}
-\emph{Status.} Open. 27's comments: a solution should separate residue-field extensions from geometric splitting and account for the forced passage from
-$\mathbb E$ to $\mathbb E[i]$; a map on the whole normalization fibre is stronger than the finite atom survival proved. The full-class fibre
-$\NN/\Pi\NN\cong\overline\Z[\Idem]$ (\cref{osq:nf:thm:boolean}) is the class analogue of that normalization fibre \merge.
+\emph{Status.} The point correspondence is already supplied by the proof
+of the cited external theorem, and its finite-pattern compatibility can
+be checked here. Put $C=\IC_{\mathbb E}(\mathfrak L)$ and
+$D_C=C/\sqrt{\mathfrak nC}$. Since $C$ is integral over the local
+ring $\mathfrak L$, the primes containing $\mathfrak nC$ are exactly
+its maximal ideals. The proof of \cite[Corollary~4.2]{DFT} gives
+\[
+ \operatorname{Spec}D_C=\operatorname{Max}C
+ \longrightarrow\operatorname{Min}\mathfrak L^{\mathrm h},
+ \qquad
+ \mathfrak q\longmapsto
+ \ker\bigl(\mathfrak L^{\mathrm h}\to(C_{\mathfrak q})^{\mathrm h}\bigr),
+\]
+as a bijection. Together with \cref{osq:hb:prop:minimal} this
+identifies the underlying set with $\mathsf X$, so it has
+$2^\kappa$ points. This use of the normalization correspondence
+is an external import, distinct from the finite-atom proof.
+
+To verify the patterns, the residue of $\mathsf w_{t_\alpha}$ at
+$\mathfrak q$ is either zero or one. In $(C_{\mathfrak q})^{\mathrm h}$,
+the root $\tilde u_\alpha$ has residue zero, and simple-root uniqueness
+gives $\tilde u_\alpha=\mathsf w_{t_\alpha}$ in the first case and
+$\tilde u_\alpha=1-\mathsf w_{t_\alpha}$ in the second.
+The denominator $1-2\mathsf w_{t_\alpha}$ is a unit in this local
+ring. Thus the generic coordinate
+$(\tilde u_\alpha-\mathsf w_{t_\alpha})/(1-2\mathsf w_{t_\alpha})$
+is respectively zero or one, matching that normalization residue.
+
+There is also a topology on the normalization side to compare:
+$D_C$ is a reduced algebraic $\Q$-algebra. Every finite subset lies
+in a finite-dimensional reduced $\Q$-subalgebra, a product of finite
+separable fields. Hence $D_C$ is von Neumann regular and its spectrum
+is Stone. The point bijection and matching splitter coordinates do
+not, by themselves, prove a homeomorphism for the full clopen
+algebras, or an isomorphism between the two residue algebras.
+Those stronger comparisons remain to be established here.
 
 \begin{question}[Specialization in the local spectrum; 27]\label{osq:hb:q:spectrum}
 Determine the prime chains between the $2^\kappa$ minimal primes and the maximal ideal of $\mathfrak L^{\mathrm h}$. Which Krull dimensions occur among
 hulls of cardinality $\kappa$, and which specialization patterns can be prescribed?
 \end{question}
-\emph{Status.} Open. 27's comments: the generic fibre is zero-dimensional, which says nothing about the dimension of the local ring; branching and dimension
-should be studied separately.
+\emph{Status.} Exact dimensions and intermediate prime chains remain
+unresolved, but two comparisons are immediate:
+\[
+ 1\le\dim\mathfrak L
+   =\dim\mathfrak L^{\mathrm h}
+   =\dim\mathfrak L^{\mathrm{sh}}.
+\]
+The lower bound follows from the strict chain
+$(0)\subsetneq\mathfrak n$, since $\mathfrak L$ is a domain and
+$0\ne\omega\in\mathfrak n$. For the equalities, both henselization
+maps are faithfully flat and ind-\'etale. Their fibres over primes
+are filtered colimits of finite products of finite separable fields,
+and thus have no strict prime inclusions. Contraction therefore
+preserves the length of every finite strict prime chain. Conversely,
+faithful flatness gives a prime above the top of a base chain, and
+flat going down lifts the rest of the chain. Taking suprema of
+finite chain lengths proves the equalities, also when the dimension
+is infinite; compare \cite[Lemma~15.46.7]{StacksPermanence}.
+Every minimal prime of $\mathfrak L^{\mathrm h}$ is strictly below
+its maximal ideal, since it avoids $\omega$ whereas the maximal
+ideal contains it. These facts do not determine the common dimension
+or which longer specialization chains occur.
 
 \begin{question}[The valuation components; 27]\label{osq:hb:q:valuation}
 What are the value groups, residue fields and internal topologies of the connected components of $\operatorname{RZ}(\mathfrak L)$? Can valuations realizing
 all explicit Boolean assignments be built directly from the scale data?
 \end{question}
-\emph{Status.} Open. 27's comments: \cref{osq:hb:cor:rz} counts components through an external theorem; a direct valuative realization would explain how
-order-infinite elements acquire positive value at these non-order-convex centres.
+\emph{Status.} The internal valuation invariants and a direct scale-by-scale
+construction remain unresolved. There is already an existence statement
+for every Boolean assignment: \cref{osq:hb:prop:exactsize} supplies
+a generic point with those coordinates, and
+\cref{osq:hb:prop:minimal,osq:hb:cor:rz} supplies its nonempty
+valuation component. This invokes the external correspondence and
+does not construct a valuation from the assignment.
+For any valuation ring dominating $\mathfrak L$, one necessarily has
+$\nu(\omega)>0$, since $\omega\in\mathfrak n$ is nonzero.
+Thus order-infinite size and positive valuation coexist at this
+centre. The value group and residue field belong to each individual
+valuation; the present results do not say they are constant throughout
+a connected component or that the component is open or a singleton.
 
 \begin{question}[Mixed-characteristic constant-term primes; 27]\label{osq:hb:q:mixed}
 Replace $\Pi_{\mathbb E}$ by $\ct^{-1}(p\Z)\cap B_{\mathbb E}$ for an ordinary prime $p$. What remains of maximal branching, forced complexification and the
 strict Galois product, and what changes at $p=2$?
 \end{question}
-\emph{Status.} Open. 27's comments: the quadratic formulas use $2$ and $16$ as units after rationalization, and at a mixed-characteristic centre the residue
-extension and the completion differ, so the proofs do not transfer. By \cref{osq:thm:quotients} the corresponding ideal of $\Oz$ is $p\Oz=p\Z+\Pi$, which
-already contains $\Pi$ \merge.
+\emph{Status.} The residue rings, completions and generic complexification
+can already be computed for every ordinary prime, including $2$.
+Write
+\[
+ \mathfrak p_p=\ct^{-1}(p\Z)\cap B_{\mathbb E},\qquad
+ A_p=(B_{\mathbb E})_{\mathfrak p_p},\qquad
+ I_p=\Pi_{\mathbb E}A_p.
+\]
+If $u\in\Pi_{\mathbb E}$, then $u/p\in\mathbb E\cap\Pi$
+and hence lies in $\Pi_{\mathbb E}$. Splitting an element into its
+integer constant and purely infinite part gives
+$\mathfrak p_p=pB_{\mathbb E}$ and
+$B_{\mathbb E}/p^nB_{\mathbb E}\cong\Z/p^n\Z$ for every $n\ge1$.
+Localizing preserves these quotients because every allowed denominator
+has constant term prime to $p$. Thus $A_p$ is a local domain with
+maximal ideal $pA_p$, fraction field $\mathbb E$, and
+\[
+ A_p/p^nA_p\cong\Z/p^n\Z,\qquad
+ \widehat{A_p}\cong\Z_p.
+\]
+Constant extraction extends to a surjection
+$A_p\to\Z_{(p)}$ with kernel $I_p$. The latter is contained in
+every $p^nA_p$, while an element of $\Z_{(p)}$ divisible by every
+$p^n$ is zero. Therefore the completion kernel is exactly $I_p$.
+This ideal is nonzero, and multiplication by $\omega$ is injective
+on $A_p$ but zero on its completion, so the completion map is not flat.
+
+Henselization preserves the quotients by powers of the maximal ideal
+\cite[Lemma~15.46.1]{StacksPermanence}, giving
+\[
+ A_p^{\mathrm h}/p^nA_p^{\mathrm h}\cong\Z/p^n\Z,
+ \qquad \widehat{A_p^{\mathrm h}}\cong\Z_p.
+\]
+Flatness over $A_p$ keeps $\omega$ regular on $A_p^{\mathrm h}$,
+so its completion map is nonflat too. Since
+$\omega\in pA_p$ and $\omega>1/4$ in $\mathbb E$,
+\cref{osq:hb:prop:complex} applies directly: the nonzero generic
+fibre $\mathbb E\otimes_{A_p}A_p^{\mathrm h}$ contains
+$\mathbb E[i]$, for every $p$. Here division by $2$ takes place
+in the generic fibre even when $p=2$.
+
+The local square root has a different answer. For odd $p$,
+$A_p^{\mathrm h}$ contains a square root of $-1$ exactly when
+$p\equiv1\pmod4$: necessity is reduction to $\F_p$, and
+sufficiency is simple-root lifting of a square root in that field.
+The finite-field criterion follows from the cyclic group
+$\F_p^\times$. At $p=2$ there is no local square root, because
+$A_2^{\mathrm h}/4A_2^{\mathrm h}\cong\Z/4\Z$ and no square
+there is $-1$.
+What remains unresolved here is the maximal generic branch count
+and the appropriate strict arithmetic splitting description at these
+centres. The rational coefficient-section construction cannot simply
+be reused: $p$ is not a unit in $A_p$, so $A_p$ is not a $\Q$-algebra.
 
 \begin{question}[Finite \'etale algebras before localization; 27]\label{osq:hb:q:unlocalized}
 Classify finite \'etale algebras over $B_{\mathbb E}$ and compare their restrictions to the rational constant-term localization and the ordinary prime
 localizations. Is there a useful arithmetic gluing description?
 \end{question}
-\emph{Status.} Open. 27's comments: $\operatorname{Fin\acute Et}(\mathfrak L^{\mathrm h})\simeq\operatorname{Fin\acute Et}(\Q)$ is henselian local algebra, not a
-classification over $B_{\mathbb E}$ (\cref{osq:hb:prop:etale}).
+\emph{Status.} Unresolved. The equivalence
+$\operatorname{Fin\acute Et}(\mathfrak L^{\mathrm h})
+\simeq\operatorname{Fin\acute Et}(\Q)$ classifies algebras after
+henselization, not over $B_{\mathbb E}$ or even over $\mathfrak L$
+itself. The generic rank classification likewise loses descent data.
+A proposed gluing description must specify a covering and transition
+isomorphisms and prove effective descent; separate lists of algebras
+at the rational and ordinary prime centres do not supply those data.
+The calculations for \cref{osq:hb:q:mixed} give residue and completion
+rings at the ordinary centres, not a classification of their finite
+\'etale neighbourhoods or of global algebras.
 
 \begin{question}[Birthday-bounded realizations; 27]\label{osq:hb:q:birthday}
 For which ordinals $\lambda$ can the hull be built inside the surreals born before $\lambda$? How do closure requirements, regularity or large-cardinal
 hypotheses improve bounds on $\lambda$?
 \end{question}
-\emph{Status.} Open. 27's comments: one seed can have a very long sign expansion, and a fresh support bound may leave a chosen cutoff; controlled birthday
-realizations would connect the local algebra to the foundational reports without confusing cardinality with birthday.
+\emph{Status.} Prescribed or uniform cutoffs remain unresolved; an
+\emph{a posteriori} cutoff always exists. The constructed field
+$\mathbb E$ is a set, so replacement makes
+$\{b(x)+1:x\in\mathbb E\}$ a set of ordinals, where $b(x)$ is the
+birthday. Its supremum $\lambda$ satisfies $b(x)<\lambda$ for
+every $x\in\mathbb E$. This gives no bound on $\lambda$ from
+$\kappa$ alone, since even a single allowed seed may have arbitrarily
+large birthday. The substantive problem is to control the birthdays
+of floors, clearing monomials, factor pairs and algebraic roots
+inside a specified cutoff, with a bound depending on appropriate
+seed data. Cardinality preservation in the hull proof does not
+establish those closure bounds.
 
 \begin{question}[Compatible class-level geometry; 27]\label{osq:hb:q:class}
 Can the directed system of set-sized omnific augmentation rings and their henselizations be organized into a class-sized geometric object without treating
 the class of all primes as a set? Which invariants are stable?
 \end{question}
-\emph{Status.} Open. 27's comments: an answer must state its foundations and transition maps; 27 avoids class spectra and class ultrafilters. 24's maximal
-class ideals (\cref{osq:cr:thm:krull}) show one foundation, global choice, in which class ideals of $\Oz$ can be built \merge.
+\emph{Status.} A class-level spectrum and stable invariants remain
+unresolved. Finite compatibility has a precise starting point: two
+set-sized hull fields can be included in a third by applying
+\cref{osq:hb:prop:hull} with their union as seed and a sufficiently
+large infinite cardinal. Field inclusion induces inclusion of the
+actual integer parts, since each is the intersection with $\Oz$.
+It also induces a local map of augmentation localizations, preserving
+the rational residue. Functoriality of henselization then gives
+compatible local maps; uniqueness makes finite compositions agree.
+This establishes common enlargements and the transition maps needed
+for a diagram. It does not prove their injectivity on henselizations
+or generic fibres, construct a class spectrum, or replace a proper
+class of points by a set. A global construction must still specify
+its foundation and class-indexed constructions; the global-choice
+result \cref{osq:cr:thm:krull} concerns a different class-ideal problem.
 
 \begin{question}[Higher invariants and descent; 27]\label{osq:hb:q:higher}
 How far do finite-partition methods extend to higher $K$-theory, derived categories and cohomological invariants of $\mathscr G$ and
 $\mathfrak L^{\mathrm h}$? Which invariants of $\mathfrak L^{\mathrm h}$ become locally constant after passage to $\mathscr G$?
 \end{question}
-\emph{Status.} Open. 27's comments: filtered colimits and product formulas are natural starting points; only $K_0(\mathscr G)$ and the finite projectives are
-proved.
+\emph{Status.} There is a further finite-partition answer for perfect
+complexes over $\mathscr G$, while higher $K$-groups and the corresponding
+invariants over $\mathfrak L^{\mathrm h}$ remain unresolved here.
+Represent a perfect complex by a bounded complex $P^\bullet$ of
+finitely generated projectives. By \cref{osq:hb:thm:projectives},
+a common finite clopen partition makes all its terms free of constant
+finite ranks. Refine it until all the finitely many differential
+matrix entries are constant as well. On each piece this is base
+change of a bounded complex of finite-dimensional $\mathbb E[i]$-spaces.
+Splitting cycles and boundaries over that field decomposes the
+complex into its homology with zero differential and contractible
+two-term summands. The chosen decompositions and contracting maps
+assemble across the clopen pieces. Consequently
+\[
+ P^\bullet\simeq\bigoplus_n H^n(P^\bullet)[-n]
+\]
+in the derived category, with finitely many nonzero, finitely generated
+projective homology modules. The splitting need not be canonical.
+
+Thus perfect objects up to isomorphism are classified by the finitely
+supported family of locally constant rank functions
+$r_n:\mathsf X\to\N$. Conversely every such family is realized
+by a bounded zero-differential complex. Derived tensor product has
+rank functions $t_k=\sum_{n+m=k}r_ns_m$, and the $K_0$ class is
+$\sum_n(-1)^nr_n$. These are object and tensor-product statements;
+they do not compute higher $K$-groups, classify all derived morphisms,
+or extend to arbitrary unbounded complexes. No conclusion about
+perfect complexes over the local henselization follows by replacing
+it with its generic fibre.
 
 \begin{question}[Formal verification of the branch bridge; 27]\label{osq:hb:q:formal}
 Can the monic certificates, the support projection and the survival of finite branches be formalized in Lean and connected to a library construction of
 henselization and Boolean spectra?
 \end{question}
-\emph{Status.} Open. 27's plan: first \cref{osq:hb:lem:allbranches}, with its quantification over every denominator (a proof of the quadratic identity alone
-would miss the difficulty); then, in order, the finite quadratic identities, monic certificates, support projection, survival under localization, the hull,
-and henselization, spectra and cardinality, which need general commutative-algebra and topology infrastructure beyond the surreal normal-form interface
-(\cref{osq:sub:formalization}).
+\emph{Status.} Pending in Lean. The central target is
+\cref{osq:hb:lem:allbranches}, including every allowed denominator,
+but its prerequisite lemmas should be formalized first. A dependency
+order is: finite quadratic identities and Chinese remainders; monic
+radical-membership certificates; linear support projection and the
+global atom nonmembership argument; the seeded hull and localization
+of its integral closure; survival of normalization atoms; the
+prime attached to each finite root pattern and survival under every
+localization denominator; faithful flatness into henselization;
+then the Boolean-power, spectra and cardinality arguments.
+
+Keep the elementary algebra generic, with separate hypotheses for
+the ordered field and the support calculus. Instantiate those lemmas
+at actual surreal carriers only after the normal-form bridge supplies
+the required bounds and projections. A finite product calculation
+alone does not establish the localization step. Likewise the
+manuscript's completed proof review and exact finite checks do not
+constitute Lean proofs. Mathlib's henselian-ring predicates are
+available; a complete henselization and spectrum interface for this
+construction must still be supplied or connected to the library.
+The current implementation ledger, rather than the source's original
+repository snapshot, determines which prerequisites are already proved.
 
 \section{Verification record and formalization routes}\label{osq:sec:provenance}
 
@@ -21929,7 +22179,8 @@ universe (\cref{osq:cr:q:formal}). 25 would start from the cofinal tail extrapol
 absorption, with semialgebraic Rolle and monotonicity over arbitrary real closed fields, the class-to-set support reduction and the exact support of a
 rational-power Hahn expansion as the delicate obligations (\cref{osq:sa:q:formal}). 26 would encode finite rational cones and joins, principal
 exhaustion, the simplex and cap calculations and scalar cancellation before the surreal embedding, with the equational nonflatness theorem as a small
-separate target (\cref{osq:pc:q:formal}); 27 would start with the survival of every finite branch under localization (\cref{osq:hb:q:formal}). None was executed.
+separate target (\cref{osq:pc:q:formal}); 27 targets the survival of every finite branch under localization, after its finite algebra, support and hull prerequisites
+(\cref{osq:hb:q:formal}). These were proposals in the source snapshots; the current ledger records subsequent repository implementations and remaining gaps.
 
 \begingroup
 \raggedright
