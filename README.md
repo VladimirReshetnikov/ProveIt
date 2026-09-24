@@ -389,11 +389,14 @@ omnific rings and their full Hahn coefficient pullbacks. The underlying
 augmentation theorem works even in algebras with zero divisors; only a
 nonzero coefficient-field scalar is inverted. The checked example in `ℝ × ℝ`
 gives the zero divisor `(1,0)` an explicit certificate.
-In the Hahn rings, the explicit witnesses also have proved support bounds:
+In both actual omnific rings and the Hahn rings, the explicit witnesses have
+proved support bounds:
 `t` uses only the input support and zero, while `s` uses sums of at most five
 such exponents. For nonconstant input their degrees are exactly the input
 degree and five times that degree. The construction uses finite polynomial
 operations and works over exponent groups of any rank.
+For the actual carriers, these bounds use their canonical Conway supports
+and leading exponents; injective normal-form maps justify the transfer.
 Polynomial counterexamples now verify both restrictions on this detector.
 In `ℤ + Xℚ[X]`, the quotient by `(1 + X)` is `ℚ`, so the detector rejects
 `1 + X` despite its constant term being one; the ordinary-integer definition
