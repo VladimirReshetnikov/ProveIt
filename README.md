@@ -227,7 +227,11 @@ finite data misses. The lattice presentations, nonflatness witnesses and
 ordered-cone dimension comparisons now have expanded proofs too.
 The noncoherence certificate requires `K ≠ Frac(D)`: the coefficient-field
 case `K[ℚ≥0]` is coherent, so nonfinite generation of the tail alone
-does not establish noncoherence.
+does not establish noncoherence. The tensor normal forms now include
+explicit universal-property proofs for the class carriers. Their torsion
+is a free module over the ordinary constants, killed by the purely
+infinite ideal. Exterior powers of degree at least two retain only
+constants, while symmetric powers retain a tail with a coupled scalar action.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

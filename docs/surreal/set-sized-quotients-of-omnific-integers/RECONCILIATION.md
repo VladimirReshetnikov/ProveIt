@@ -1068,3 +1068,58 @@ The standard coherence and Schanuel inputs were checked against Stacks
 Tags 05CU and 00O3. No Lean or verifier source changed; the two-thread
 4,590-job build and 16,382-declaration audit remain the baseline for this
 documentation-only pass.
+
+## Tensor normal forms and universal properties through symmetric powers
+
+Reviewed `osq:tn:lem:absorption`, `osq:tn:thm:tensor`,
+`osq:tn:prop:higher` and `osq:tn:thm:powers`. All numbered
+statements are unchanged. The algebraic interface in the introduction is
+restricted to this tensor/power subsection; later homomorphism and other
+classifications are not claimed to follow from that interface alone.
+Products of lattices are explicitly D-spans of products and are nonzero
+finite free D-modules under the stated principal-ideal hypothesis.
+
+Absorption specifies which scalars lie in A and can be moved between
+factors, constructs the inverse, and proves the factorization and
+uniqueness for a fixed class-valued balanced map. The two-factor normal
+form now checks both compositions and gives a separate class carrier
+proof: H(u,t)=j_b(u)+s_b(t), with h s_b(t)=j_b(h m(t)) verifying the
+cross term required for A-linearity. The constant map is only D-linear
+on its own. Finite expressions force uniqueness, without a collection
+of all class modules or a quotient of a proper class.
+
+The multiplication kernel is identified with all A-torsion; the proof
+includes its exact annihilator when nonzero, its D-freeness and rank,
+and the zero-kernel exception. The quadratic example writes the two
+basis vectors and solves their coefficient equations. The higher-factor
+proof constructs the multilinear map and inverse and reduces every
+term containing a tail to its product, keeping all balancing scalars
+inside A. It verifies the permutation action and the empty-family
+convention separately.
+
+Exterior powers use constant extraction as an alternating universal map;
+tail terms vanish, the action factors through ct, and the exceptional
+first degree is explicit. For symmetric powers the entire relation
+module is zero in the tail coordinate and the ordinary permutation
+relation module in the constant coordinate. Only that finite free
+D-module is quotiented in the class construction. Rank and torsion
+calculations include the boundary cases. The exterior example is
+clarified as a family of ideals with arbitrarily large nonvanishing
+degree; each finite-rank member has vanishing powers above its rank.
+
+Updated the root README, report guide, catalogue, notation and ledger.
+All four results remain Pending in Lean. Rees equations, later Hom and
+derived classifications and full source reconciliation remain pending
+review. Validation: three clean TeX passes for the article (286 pages)
+and catalogue (34 pages), no warnings or box diagnostics, and visual
+inspection of the class universal-property and power pages. All 828
+labels, 1,656 auxiliary label/number pairs, 409 standard results and nine
+principal summaries retain their statements and numbering. All 4,626
+anchors across 63 reports, 5,213 source-label references and 1,802 local
+Markdown destinations across 226 files pass, as does whitespace checking.
+Standard tensor/exterior/symmetric constructions were checked against
+Stacks Section 10.13, Tag 00DM. The existing tensor verifier's unchanged
+formulas retain the previous 2,189-assertion run as finite supporting
+evidence; it was not rerun as a test of class universal properties.
+No Lean or verifier source changed, so the previous two-thread 4,590-job
+build and 16,382-declaration audit remain the Lean baseline for this pass.

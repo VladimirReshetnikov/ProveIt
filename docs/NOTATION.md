@@ -157,6 +157,20 @@ In `Π ⊕ (M ⊗_D N)`, the displayed A-action includes the cross term
 `h·m_{M,N}(t)` in the tail coordinate. The additive decomposition is
 not a decomposition into the two separate A-module actions.
 
+For tensor normal forms, MN and Mⁿ denote D-spans of products, not
+just sets of individual products. Constant extraction on `L(M) = M + Π`
+has value in M; it is the restriction of the coefficient map on B and
+satisfies `ct(ax) = ct(a)ct(x)`. The tensor carrier's multiplication map
+sends `(u,t)` to `u + m(t)`, with torsion embedded as `(0,ker m)`.
+This is A-torsion; the same kernel is free over D. Its annihilator is
+exactly Π only when the kernel is nonzero; the zero module has annihilator
+A. The constant inclusion into the tensor carrier is D-linear and need
+not be A-linear. Exterior degree j ≥ 2 has action through ct; symmetric
+degree n ≥ 1 retains the coupled action. Zeroth powers use A.
+For class rings, each universal-property argument fixes a target class
+module and constructs a factorization by finite formulas. The ordinary
+constant tensor, exterior and symmetric modules are set-sized carriers.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

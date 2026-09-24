@@ -5548,22 +5548,59 @@ to be at least~$2$; for $A_d$ it is $d+1$, one more than the flat dimension (\cr
 
 For the rest of this section (14) fix $(D,k)=(\Z,\R)$ or $(\Z[i],\C)$, and let $(A,\Pi,B)$ be either the class rings
 $(\A_{D,k},\Pi_k,\A_{k,k})$, that is $A=\Oz$ or $\GOz$, or the set-sized model $(T_\Q,\Pi^{\mathrm{fin}}_\Q,k+\Pi^{\mathrm{fin}}_\Q)$
-with $T_\Q=A_0$. Coefficient lattices are those of Setting (L). Every result below holds in both cases (14); its proofs use
-only that $D$ is a principal ideal domain in $k$, that $A=D\oplus\Pi$ with $\Pi$ a $k$-linear ideal of $B$, and that every
+with $T_\Q=A_0$. Coefficient lattices are those of Setting (L).
+The tensor and power results in this subsection hold in both cases (14).
+Their proofs use Setting (L), the principal-ideal property of $D$, and the fact that every
 $u\in\Pi$ is a product $u=ca$ with $c,a\in\Pi$ (\cref{osq:prop:common}(ii); in $T_\Q$ split off a smaller monomial). This
 interface is 14's proposal for a formalization (\cref{osq:sub:formalization}). For the class rings a tensor product means an
 explicit carrier with the balanced universal property proved by finite identities (for two lattices,
 $\Pi\times(M\otimes_DN)$); no quotient of a proper class by a class relation and no class colimit is used (14).
+
+Here $MN$ denotes the $D$-span of the products $mn$, not just the
+set of individual products. It is nonzero and finitely generated inside
+$k$, hence free over the principal ideal domain $D$; thus $L(MN)$
+is again defined. In a class universal property the target is any fixed
+class $A$-module $W$ equipped with a specified map. The proof gives
+one explicit factorization into $W$ and proves uniqueness for that map;
+it does not form a class of all class modules. Maps called balanced below
+are biadditive and satisfy
+$b(ax,y)=a\,b(x,y)=b(x,ay)$. The finite formulas also apply to the
+ordinary tensor products in the set-sized model.
 
 \begin{lemma}[Absorption \src{14}]\label{osq:tn:lem:absorption}
 For every lattice $N$ and $0\ne n_0\in N$, multiplication is an isomorphism $\Pi\otimes_AL(N)\cong\Pi$ with inverse
 $u\mapsto(u/n_0)\otimes n_0$; indeed $u\otimes v=(uv/n_0)\otimes n_0$ for $u\in\Pi$, $v\in L(N)$.
 \end{lemma}
 \begin{proof}
-Write $u=ca$ with $c,a\in\Pi$. Since $v/n_0\in B$, $b=a(v/n_0)\in\Pi\subseteq A$, and
-$u\otimes v=c\otimes av=c\otimes bn_0=cb\otimes n_0=(uv/n_0)\otimes n_0$. So every finite tensor sum is the image of its
-product, multiplication is onto ($u=(u/n_0)n_0$), and the two maps are mutually inverse. For a balanced bilinear map $b'$ into
-a class module, $u\mapsto b'(u/n_0,n_0)$ is the required factorization, unique by the same identity.
+Multiplication maps $\Pi\times L(N)$ to $\Pi$, since $L(N)\subset B$
+and $\Pi$ is an ideal of $B$, and is $A$-bilinear. Its proposed
+inverse is defined because $u/n_0\in\Pi$ for every $u\in\Pi$.
+It is $A$-linear in $u$, and multiplication after this inverse is the
+identity.
+
+To prove the other composition, write $u=ca$ with $c,a\in\Pi$.
+This includes $u=0$, for which the desired identity is already zero.
+For $v\in L(N)$, scalar stability gives $v/n_0\in B$, so
+$b=a(v/n_0)\in\Pi\subseteq A$. Only elements of $A$ are moved
+between the tensor factors in the calculation
+\[
+ u\otimes v=c\otimes av
+ =c\otimes bn_0=cb\otimes n_0
+ =(uv/n_0)\otimes n_0.
+\]
+In particular this does not move the possibly nonintegral scalar
+$v/n_0$ across a tensor sign. Pure tensors generate by finite sums,
+so the identity proves that the two maps are inverse. It also shows
+that changing the auxiliary choice $n_0$ does not change the inverse
+of multiplication.
+
+For the class interpretation, let $b':\Pi\times L(N)\to W$ be
+any specified balanced map. Define
+$H(u)=b'(u/n_0,n_0)$. This is $A$-linear, and the same sequence
+of balancing identities gives $b'(u,v)=H(uv)$. Multiplication is
+onto, since $u=(u/n_0)n_0$, so this factorization is unique.
+Thus the explicit carrier $\Pi$ has the required universal property
+without first constructing a quotient of a class of formal tensors.
 \end{proof}
 
 \begin{theorem}[Exact tensor normal form \src{14; 17}]\label{osq:tn:thm:tensor}
@@ -5577,21 +5614,88 @@ with $\mathcal T(M,N)$ embedded as $(0,\mathcal T(M,N))$. This is exactly the $A
 exactly $\Pi$, and $\rk_D\mathcal T(M,N)=\rk M\cdot\rk N-\rk(MN)$.
 \end{theorem}
 \begin{proof}
-Fix $0\ne n_0\in N$, let $j(w)=(w/n_0)\otimes n_0$ on $\Pi$ and let $s$ be induced by the constant inclusions on $M\otimes_DN$. Then
-$(u,t)\mapsto j(u)+s(t)$ is inverse to $\beta$: in an expanded pure tensor the terms with an infinite first factor reduce by
-\cref{osq:tn:lem:absorption}, a term $m\otimes v$ with $v=ca\in\Pi$ equals $cm\otimes a$, and all mixed terms become
-$j(mv+un+uv)$, while the constant term is $s(m\otimes n)$. The same finite identities give the universal property for balanced maps
-into class modules, so this carrier is the tensor product in the class case. The image of multiplication is $MN+\Pi=L(MN)$, and since
-$\Pi\cap k=0$ its kernel is $(0,\mathcal T(M,N))$, killed by $\Pi$ by \eqref{osq:tn:eq:action}; the quotient lies in a field and is
-torsion free, so the kernel is all the torsion. It is a submodule of a finite free $D$-module, hence free, and a nonzero $d\in D$
-kills none of its nonzero elements. Ranks: $M\otimes_DN\to MN$ is onto.
+Write $\mu=\mathsf m_{M,N}$ and choose $0\ne n_0\in N$.
+In the ordinary tensor product define
+$j(w)=(w/n_0)\otimes n_0$ for $w\in\Pi$, and let
+$s:M\otimes_DN\to L(M)\otimes_AL(N)$ be the $D$-linear map
+induced by the constant inclusions. Then
+\[
+ \beta(j(w))=(w,0),\qquad \beta(s(t))=(0,t).
+\]
+Consequently $\beta\psi=1$ for $\psi(u,t)=j(u)+s(t)$.
+For the other composition expand
+$(m+u)\otimes(n+v)$. The terms $u\otimes n$ and $u\otimes v$
+become $j(un)$ and $j(uv)$ by absorption. For the remaining mixed
+term, factor $v=ca$ with $c,a\in\Pi$. Balancing gives
+$m\otimes v=cm\otimes a$, whose first factor is in $\Pi$,
+so absorption gives $j(mv)$. The constant term is $s(m\otimes_Dn)$.
+Hence $\psi\beta$ is the identity on pure tensors and thus on
+every finite tensor sum. Since $\beta$ is $A$-linear, its inverse
+$\psi$ is $A$-linear too; the constant map $s$ by itself is only
+asserted to be $D$-linear.
+
+We verify the class universal property explicitly as well. For a fixed
+balanced map $b:L(M)\times L(N)\to W$, put
+$j_b(w)=b(w/n_0,n_0)$ and let $s_b:M\otimes_DN\to W$ be
+induced by the restriction of $b$ to the two constant lattices.
+This latter map uses the finite free $D$-tensor basis, so it is defined
+by finite sums even when $W$ is a class module. Define
+\[
+ H(u,t)=j_b(u)+s_b(t).
+\]
+Absorption proves $j_b$ is $A$-linear. For $h\in\Pi$, first
+on $t=m\otimes_Dn$ and then by addition, it also gives
+\[
+ h\,s_b(t)=j_b(h\mu(t)).
+\]
+Together with $D$-linearity of $s_b$, this is exactly the cross term
+needed for $H((d+h)\cdot(u,t))=(d+h)H(u,t)$ under
+\eqref{osq:tn:eq:action}. The four-term expansion just used gives
+$H\beta(x,y)=b(x,y)$. Finally the elements $(w,0)$ are the images
+of $(w/n_0,n_0)$, and $(0,m\otimes_Dn)$ are the images of
+$(m,n)$. They generate every pair by finite sums, so a factorization
+must have the displayed values and is unique. This proves the claimed
+universal property directly on $\mathsf E(M,N)$.
+
+Multiplication is $(u,t)\mapsto u+\mu(t)$ under the normal form.
+Its image is $\Pi+MN=L(MN)$. If $u+\mu(t)=0$, the first term
+lies in $\Pi$ and the second in $k$; their intersection is zero,
+so $u=0$ and $\mu(t)=0$. This proves exactness and identifies the
+kernel with $(0,\mathcal T(M,N))$. Its $A$-action is
+$(d+h)(0,t)=(0,dt)$, so $\Pi$ annihilates it. Since $\Pi$
+contains a nonzero monomial, every element of this kernel is
+$A$-torsion. Conversely, any torsion element maps to zero in the
+submodule $L(MN)$ of a field, which is torsion free over the domain
+$A$. The kernel is therefore exactly the torsion submodule.
+
+The $D$-module $M\otimes_DN$ is finite free, so its submodule
+$\mathcal T(M,N)$ is finite free as well. If it is nonzero, no
+nonzero $d\in D$ annihilates it. The formula for its action then
+shows that its annihilator in $A$ is precisely $\Pi$. If the kernel
+is zero its annihilator is all of $A$, which explains the qualification
+in the statement. Finally the surjection of finite free $D$-modules
+$M\otimes_DN\to MN$ gives
+$\rk_D\mathcal T(M,N)=\rk M\,\rk N-\rk(MN)$ by tensoring
+with $\Frac(D)$ and taking dimensions.
 \end{proof}
 
-For $M=D+D\alpha$ with $\alpha\notin\Frac D$, $\tau=1\otimes\alpha-\alpha\otimes1$ is a nonzero tensor with $h\tau=0$ for all
-$h\in\Pi$; if $\alpha^2=c\in D$, then $\tau$ and $\alpha\otimes\alpha-c(1\otimes1)$ form a $D$-basis of the multiplication kernel (14).
+For $M=D+D\alpha$ with $\alpha\notin\Frac D$, the tensor
+$\tau=1\otimes\alpha-\alpha\otimes1$ is nonzero and is killed
+by every $h\in\Pi$. If $\alpha^2=c\in D$, write a constant
+tensor in the ordered basis
+$1\otimes1,1\otimes\alpha,\alpha\otimes1,\alpha\otimes\alpha$
+with coefficients $(a,b,e,f)\in D^4$. Its product is
+$(a+cf)+(b+e)\alpha$, which vanishes exactly when $a=-cf$ and
+$e=-b$. Thus it equals
+$b\tau+f(\alpha\otimes\alpha-c(1\otimes1))$, and these two
+generators are independent by their displayed coordinates. This proves
+the stated quadratic basis, not just its rank (14).
 Manuscript~17 proves the exact sequence and the torsion statement independently over its set-sized models, as a consequence of
 its $\Tor$ identification (\cref{osq:rel:thm:tor}).
-Here ``torsion'' means $A$-torsion: $\mathcal T(M,N)$ is a free abelian group (14).
+Here ``torsion'' means $A$-torsion. The kernel is free over $D$
+and hence is also free as an abelian group in both the integer and
+Gaussian cases (14). Its annihilation by tails is compatible with the
+absence of ordinary-integer torsion.
 
 \begin{proposition}[Several factors \src{14}]\label{osq:tn:prop:higher}
 For lattices $M_1,\dots,M_n$, $\bigotimes_{j,A}L(M_j)\cong\Pi\oplus\bigotimes_{j,D}M_j$ with the action \eqref{osq:tn:eq:action} for
@@ -5599,9 +5703,68 @@ the $n$-fold product map; the torsion is its kernel, killed by $\Pi$. For equal 
 coordinate and by permuting tensor factors on the second.
 \end{proposition}
 \begin{proof}
-Expand a pure tensor: the all-constant term keeps its $D$-tensor coordinate, and every other term contains a factor from $\Pi$ and
-reduces, by repeated absorption (moving a tail scalar to an adjacent factor), to its product in one copy of $\Pi$. So the multilinear
-map has coordinates $\bigl(\prod_j(m_j+u_j)-\prod_jm_j,\ \bigotimes_jm_j\bigr)$, with inverse as in \cref{osq:tn:thm:tensor}.
+First let $n\ge1$, put $T_n=\bigotimes_{j,D}M_j$, and let
+$\mu_n:T_n\to k$ be the product map. On $\Pi\oplus T_n$ use
+\[
+ (d+h)\cdot(u,t)=((d+h)u+h\mu_n(t),dt).
+\]
+The associativity computation of \cref{osq:tn:prop:nonflat} applies
+to any $D$-linear $\mu_n$. Define on a tuple $x_j=m_j+u_j$ the map
+\[
+ \beta_n(x_1,\ldots,x_n)=
+ \left(\prod_jx_j-\prod_jm_j,\ \bigotimes_{j,D}m_j\right).
+\]
+The first coordinate is in $\Pi$, since expansion removes the
+all-constant term. This map is additive in each slot. Multiplying one
+slot by $d+h$ multiplies its constant part by $d$; the first
+coordinate becomes
+$(d+h)\prod_jx_j-d\prod_jm_j$. This is exactly the first
+coordinate of $(d+h)\cdot\beta_n(x_1,\ldots,x_n)$, proving
+$A$-multilinearity.
+
+Choose $0\ne c_j\in M_j$ and define
+\[
+ j_n(w)=\frac{w}{c_2\cdots c_n}\otimes c_2\otimes\cdots\otimes c_n,
+ \qquad \psi_n(u,t)=j_n(u)+s_n(t),
+\]
+where $s_n$ is induced by the constant inclusions. For $n=1$ the
+empty denominator is $1$, $j_1(w)=w$, and the formula is simply
+$L(M_1)=\Pi+M_1$. The map $j_n$ is $A$-linear; $s_n$ is initially
+only $D$-linear.
+
+For $n\ge2$, every term in the expansion of a pure tensor either
+has all factors constant or contains a tail. If a tail lies in a
+slot other than the first, write it as $ab$ with $a,b\in\Pi$
+and move the scalar $a\in A$ to the first slot. That first factor
+is now in $\Pi$, since $aL(M_1)\subseteq\Pi$. With a tail in
+the first slot, apply absorption to that slot and slot $j$, for
+$j=2,\ldots,n$, replacing the latter by $c_j$ and multiplying the
+first by the old factor divided by $c_j$. The first slot stays in
+$\Pi$. The result is $j_n$ of the product of the original factors.
+Thus every term with a tail reduces to its product, and the
+all-constant term is $s_n$ of its $D$-tensor. This proves
+$\psi_n\beta_n=1$, while the definitions give
+$\beta_n j_n(w)=(w,0)$ and $\beta_n s_n(t)=(0,t)$.
+
+For a specified class-valued $A$-multilinear map, the same reductions
+define its factorization: replace the displayed tensors in $j_n$ and
+$s_n$ by values of that map, extended on the finite free $D$-basis
+of $T_n$. The identity $h s_n(t)=j_n(h\mu_n(t))$ verifies
+$A$-linearity of the factorization, exactly as in the two-factor
+proof. The values on $(w,0)$ and constant pure tensors force
+uniqueness. Hence no iteration of a class quotient is needed.
+
+Multiplication is $(u,t)\mapsto u+\mu_n(t)$, with image
+$L(M_1\cdots M_n)$, where the product lattice is the $D$-span
+of all products. Its kernel is $(0,\ker\mu_n)$ because
+$\Pi\cap k=0$. The same annihilation and torsion-free-image
+argument as before identifies it with the full $A$-torsion.
+For equal factors, the two products in the first coordinate of
+$\beta_n$ are unchanged by permutation; only the order in the
+$D$-tensor coordinate changes. This proves the permutation assertion.
+With the empty-family convention, the case $n=0$ reads
+$A\cong\Pi\oplus D$ with its usual multiplication action and
+zero torsion, separately from the positive-factor construction.
 \end{proof}
 
 \begin{theorem}[Exterior and symmetric powers \src{14}]\label{osq:tn:thm:powers}
@@ -5615,16 +5778,84 @@ torsion kernel $\ker\mathsf m_n$, of rank $\binom{r+n-1}n-\rk(M^n)$, annihilated
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(i) For $u\in\Pi$ and $0\ne m\in M$, $u/m\in A$ and $u\wedge m=(u/m)m\wedge m=0$; for $u,v\in\Pi$ both are multiples of one
-$m_0$, so $u\wedge v=0$. Hence every wedge with a tail factor vanishes, $h(m_1\wedge\dots\wedge m_j)=0$ for $h\in\Pi$, the constant
-inclusion induces a surjection $\bigwedge^j_DM\to\bigwedge^j_AL(M)$, and taking constants in all factors is an alternating
-$A$-multilinear left inverse. (ii) By \cref{osq:tn:prop:higher} a permutation difference has the form $(0,t-\sigma t)$, with product
-zero, so multiplying it by an element of $\Pi$ gives zero and imposes no relation on the first coordinate; the quotient is
-$\Pi\oplus\operatorname{Sym}^n_DM$, and the kernel argument of \cref{osq:tn:thm:tensor} applies.
+(i) We first show that every wedge of at least two factors containing
+a tail vanishes. If the other factor is a nonzero constant $m\in M$,
+then $u/m\in\Pi\subset A$ and
+$u\wedge m=(u/m)(m\wedge m)=0$. If both factors $u,v$ are
+tails, choose any $0\ne m_0\in M$ and write them as
+$(u/m_0)m_0$ and $(v/m_0)m_0$, with both scalars in $A$.
+Their wedge is again zero. A zero factor gives zero directly.
+Expanding the remaining factors into constants and tails proves the
+claim in every degree $j\ge2$.
+
+It follows that every wedge is represented by constants and that
+$\Pi$ acts by zero: multiplying a constant wedge by a tail puts a
+tail in its first slot. The constant inclusion therefore induces an
+$A$-linear surjection from $\bigwedge_D^j M$, inflated through
+$\ct$, onto $\bigwedge_A^j L(M)$. In the other direction use
+\[
+ (x_1,\ldots,x_j)\longmapsto
+ \ct(x_1)\wedge_D\cdots\wedge_D\ct(x_j),
+\]
+where $\ct(m+u)=m$ on $L(M)$. This map is alternating and
+$A$-multilinear into the inflated target, because
+$\ct(ax)=\ct(a)\ct(x)$. It is inverse on constant wedges;
+the preceding expansion makes the other composition the identity.
+For a class target, every alternating multilinear map has the same
+tail-vanishing identities. It consequently factors uniquely through
+this finite free $D$-exterior carrier, which proves the class
+universal property directly.
+
+If $m_1,\ldots,m_r$ is a basis of $M$, the wedges with strictly
+increasing indices form a basis of $\bigwedge_D^jM$. Their number
+is $\binom rj$ \cite[Section~10.13]{StacksTensor}; for $j>r$ the
+module is zero. When it is nonzero, its action through $D$ and its
+$D$-freeness make the annihilator exactly $\Pi$. The exclusion of
+$j=1$ matters: the first exterior power is $L(M)$ itself and retains
+its tail.
+
+(ii) Put $T_n=M^{\otimes_D n}$ and let $R_n$ be the $D$-submodule
+generated by all $t-\sigma t$ for permutations $\sigma$.
+Then $T_n/R_n=\operatorname{Sym}_D^nM$. By the preceding
+proposition, permutation differences in the $A$-tensor power have
+the form $(0,t-\sigma t)$. Their product in $k$ is zero, so their
+$A$-multiples are
+\[
+ (d+h)\cdot(0,t-\sigma t)=(0,d(t-\sigma t)).
+\]
+Thus the entire relation submodule is exactly $0\oplus R_n$.
+In particular it imposes no relation on the tail coordinate, and the
+quotient is $\Pi\oplus\operatorname{Sym}_D^nM$ with the stated
+coupled action. In the class case this is the explicit carrier:
+the quotient by $R_n$ is taken only in the set-sized finite free
+$D$-module $T_n$. The multilinear factorization just proved descends
+to this carrier precisely when the map is symmetric, which verifies
+its universal property without a quotient of a proper class.
+
+Multiplication has image $\Pi+M^n=L(M^n)$ and kernel
+$(0,\ker\mathsf m_n)$, again by $\Pi\cap k=0$. This kernel is
+killed by $\Pi$ and is exactly the $A$-torsion, because the image
+lies in a field and $\Pi$ contains a nonzero element. The monomials
+$m_1^{a_1}\cdots m_r^{a_r}$ with $a_i\ge0$ and $\sum_i a_i=n$
+form a basis of the ordinary symmetric power; there are
+$\binom{r+n-1}{n}$ of them. The product lattice $M^n$ is nonzero
+and finite free over $D$. Tensoring its surjective product map with
+$\Frac(D)$ therefore gives the asserted kernel rank. For $n=1$
+the kernel is zero and the formula reduces to $L(M)$; for $n=0$
+the usual symmetric power is $A$, outside the displayed range.
 \end{proof}
 
-A rank-one ideal of $\Oz$ can thus have a nonzero $r$th exterior power for every $r\ge2$; these powers vanish after passing to the
-fraction field, in agreement with the field-valued rank (14).
+For each $r\ge2$, choose an integer coefficient lattice of rank
+$r$, for example the span of $1,\theta,\ldots,\theta^{r-1}$ for a
+transcendental real $\theta$, and scale its module by a positive monomial to obtain a rank-one
+ideal of $\Oz$. Its $r$th exterior power is nonzero by (i), while
+all its exterior powers above degree $r$ vanish. Thus the assertion
+is a family of examples with arbitrarily large nonvanishing degree,
+not one finitely generated ideal with nonzero exterior powers in every
+degree. After passing to the fraction field, every exterior power of
+degree at least two vanishes, in agreement with fraction-field rank
+one: each element of the exterior carrier was already killed by a
+nonzero tail (14).
 
 \subsection{Rees equations}\label{osq:tn:sub:rees}
 
