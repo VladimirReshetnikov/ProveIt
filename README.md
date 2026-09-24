@@ -645,6 +645,13 @@ denominator submonoids. For example, `Oz[1/(ω+2)]` has exactly the small-target
 maps of `ℤ[1/2]`. A denominator with zero constant in the constant quotient
 leaves no nonzero small ring image. The nonzero quotient `Oz/(ω+1)` also
 has only trivial small unital modules.
+Polynomial presentations now have the same property: all small-ring maps
+from a presented omnific algebra are determined by the presentation with
+ordinary constant coefficients, for both real and Gaussian omnific rings.
+This includes arbitrary relation ideals and noncommutative small targets.
+In the concrete ring `Oz[T]/(T²−ω)`, small commutative target maps are
+classified exactly by square-zero images of `T`; fields force `T` to zero.
+The actual nonzero omnific root `ω^(1/2)` nevertheless gives a map to `Oz`.
 Conversely, if an ideal does not contain the purely infinite ideal, explicit
 ordinal-indexed monomials provide
 arbitrarily large small families of distinct residues.

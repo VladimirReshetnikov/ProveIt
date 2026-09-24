@@ -921,3 +921,6 @@ import Surreal.Surcomplex.GaussianMonomialLocalization
 import Surreal.Algebra.LocalizationReflection
 import Surreal.Surcomplex.OmnificLocalizationCalculus
 import Surreal.Foundations.OmnificLocalizationExamples
+import Surreal.Algebra.PolynomialPresentationReflection
+import Surreal.Surcomplex.OmnificPolynomialPresentations
+import Surreal.Foundations.OmnificPresentationExamples
