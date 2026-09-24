@@ -15257,10 +15257,23 @@ $\Oz\cap K_{\Z a}=\Z+T\R[T]$ for the real pair and $\GOz\cap K_{\Z a}=\Z[i]+T\C[
 $\Frac(\A(\Z a))=k(T)$.
 \end{proposition}
 \begin{proof}
-An omnific normal form has no negative exponents and an integer constant coefficient, and a reverse well-ordered subset of $\{na:n\ge1\}$ is finite;
-so the positive part is a polynomial in $T$ without constant term (as in the proof of \cref{osq:bb:thm:rational}). The Gaussian case applies this to
-both coordinates. Finally $T$ and $cT$ lie in $\A(\Z a)$ for $c\in k$, so $c=(cT)/T\in\Frac(\A(\Z a))$ and $k(T)\subseteq\Frac(\A(\Z a))$; the reverse
-inclusion is clear.
+Identify $K_{\Z a}$ with $k(\!(T^{-1})\!)$, with growth
+exponents the integer multiples of $a$. A nonempty reverse
+well-ordered subset of the positive multiples has a largest member,
+so its integer indices are bounded above and form a finite set.
+Thus a series with no negative growth exponents is a polynomial
+in $T$. For the real pair, omnific membership requires its constant
+coefficient to lie in $\Z$; for the Gaussian pair, apply the same
+condition to both coordinates, obtaining a constant in $\Z[i]$.
+Conversely every polynomial of either stated form satisfies the
+support and constant-coefficient conditions. Requiring zero constant
+coefficient gives $\Pi(\Z a)=Tk[T]$ in both cases.
+
+Since $\A(\Z a)\subseteq k[T]$, its fraction field embeds in
+$k(T)$. For every $c\in k$, both $T$ and $cT$ belong to
+$\A(\Z a)$, and $T\ne0$, so $(cT)/T=c$ belongs to that
+fraction field. It contains $k$ and $T$, hence all of $k(T)$,
+proving equality. This does not assert $k\subseteq\A(\Z a)$.
 \end{proof}
 
 For the real pair $\A(\Z a)$ is an integer part of $K_{\Z a}$, although $K_{\Z a}$ is not real closed: keep the positive powers of $f$, round its real
@@ -15280,19 +15293,67 @@ For $f\in\mathscr B_L$ and an integer $r\ge1$,
 \end{equation}
 \end{lemma}
 \begin{proof}
-An integral element is algebraic and lies in a finite extension, and integrality over $k[T]$ is a property of the element, so $\mathscr B\cap L=\mathscr B_L$.
-Clearing the denominators of a monic equation, a nonzero polynomial multiple of any element of $K^{\mathrm{alg}}$ is integral over $k[T]$. Next,
-$f\in T^r\mathscr B$ means $f/T^r\in\mathscr B\cap L=\mathscr B_L$. A Dedekind domain is the intersection of its localizations at nonzero primes; at primes
-not above $T$ the element $T$ is a unit, and at the primes above $T$ regularity of $f/T^r$ is the stated inequality.
+An element integral over $k[T]$ is algebraic over $k(T)$,
+so it lies in a finite intermediate field. The compositum of
+finitely many such fields inside $K^{\mathrm{alg}}$ is again
+finite, and their integral closures map into its integral closure.
+This proves directedness and the union. Integrality over $k[T]$
+does not depend on which intermediate field contains the element,
+so $\mathscr B\cap L=\mathscr B_L$.
+
+For $x\in K^{\mathrm{alg}}$, take a monic equation
+$x^d+\sum_{j<d}a_jx^j=0$ with $a_j\in k(T)$, and choose
+$0\ne q\in k[T]$ clearing all its denominators. Then $qx$
+satisfies the monic equation
+\[
+ (qx)^d+\sum_{j<d}q^{d-j}a_j(qx)^j=0
+\]
+over $k[T]$. Thus $qx\in\mathscr B$, while $q\in\mathscr B$,
+and $x=(qx)/q$ belongs to $\Frac(\mathscr B)$.
+The reverse inclusion is immediate from
+$\mathscr B\subseteq K^{\mathrm{alg}}$.
+
+For $f\in\mathscr B_L$, division by the fixed nonzero $T^r$
+stays in $L$. Hence
+\[
+ f\in T^r\mathscr B
+ \iff f/T^r\in\mathscr B\cap L
+ \iff f/T^r\in\mathscr B_L.
+\]
+A Dedekind domain is the intersection, in its fraction field, of
+its localizations at nonzero prime ideals. At a prime not above
+$T$, the element $T$ is a unit and $f/T^r$ is already regular.
+At $\mathfrak q\mid T$, write
+$e_{\mathfrak q}=\operatorname{ord}_{\mathfrak q}(T)>0$.
+Regularity there is exactly
+$\operatorname{ord}_{\mathfrak q}(f)-r e_{\mathfrak q}\ge0$,
+or $v_{\mathfrak q}(f)\ge r$. This proves the test, including
+$f=0$ with valuation $+\infty$.
 \end{proof}
 
 \begin{lemma}[Finite branch locus \src{23}]\label{osq:rm:lem:branchlocus}
 A finite extension $L/k(T)$ is unramified at all but finitely many nonzero primes of $k[T]$.
 \end{lemma}
 \begin{proof}
-Multiply a primitive element by a nonzero polynomial to make it integral over $k[T]$. Its minimal polynomial is monic and separable, with nonzero
-discriminant $\Delta$. After inverting $\Delta$ the finite free algebra it generates is \'etale over $k[T][\Delta^{-1}]$, hence normal, hence the
-normalization there; only the finitely many prime divisors of $\Delta$ can ramify \cite{StacksRamification}.
+Since $k$ has characteristic zero, the extension is separable.
+Choose a primitive element and multiply it by a nonzero polynomial,
+as in \cref{osq:rm:lem:finite}, to obtain an integral primitive
+element $\theta$. Its minimal polynomial $P\in k[T][Y]$ is
+monic, and its discriminant $\Delta\in k[T]$ is nonzero by
+separability. The algebra $k[T][\theta]$ is free over $k[T]$
+on $1,\theta,\ldots,\theta^{d-1}$: monic division gives spanning,
+and minimality gives independence over $k(T)$.
+
+After inverting $\Delta$, the discriminant is a unit, so this
+finite free algebra is \'etale over $k[T][\Delta^{-1}]$.
+The base is normal, and normality is preserved by an \'etale
+extension \cite{StacksRamification}. The resulting domain has
+fraction field $L$ and is integral over the localized base.
+Any element of $L$ integral over that base is also integral over
+this normal domain, and hence belongs to it. It is therefore
+exactly the localized normalization. All its primes are unramified
+over the base. Only the finitely many irreducible factors of
+$\Delta$ can consequently be ramified in the original extension.
 \end{proof}
 
 \begin{remark}[Two unrelated valuations \src{23}]\label{osq:rm:rem:twoplaces}
@@ -15314,10 +15375,35 @@ $\mathsf z_n\in\NN(\Z a)$, $\mathsf z_n^n\in\mathsf I$, and $\mathsf z_n^j\notin
 and the residue of $\mathsf z_n$ in $\mathsf B(\Z a)$ has nilpotency index exactly $n$.
 \end{theorem}
 \begin{proof}
-\eqref{osq:rm:eq:zn} is a monic equation over $\A(\Z a)$ with right side in $\Pi(\Z a)$, so $\mathsf z_n\in\NN(\Z a)$ and $\mathsf z_n^n\in\mathsf I$. Suppose
-$\mathsf z_n^j=\sum_{\ell\le r}p_\ell b_\ell$ with $1\le j<n$, $p_\ell\in Tk[T]$ and $b_\ell\in\NN(\Z a)$. Choose a finite $L$ containing $\mathsf z_n$ and all
-$b_\ell$; each $b_\ell$ is integral over $k[T]$, hence in $\mathscr B_L$. At any $\mathfrak q\mid T$ every summand has value at least $1$, while
-$1+T^{n-1}$ is a unit and \eqref{osq:rm:eq:zn} gives $v_{\mathfrak q}(\mathsf z_n^j)=j/n<1$, a contradiction.
+The equation \eqref{osq:rm:eq:zn} is monic over
+$\A(\Z a)$, with right side in $Tk[T]=\Pi(\Z a)$.
+It gives $\mathsf z_n\in\NN(\Z a)$ and
+$\mathsf z_n^n\in\mathsf I$.
+Suppose for some $1\le j<n$ there is an ideal expression
+\[
+ \mathsf z_n^j=\sum_{\ell=1}^r p_\ell b_\ell,
+ \qquad p_\ell\in Tk[T],\quad b_\ell\in\NN(\Z a).
+\]
+Every $b_\ell$ is integral over $k[T]$, since its monic
+equation over $\A(\Z a)$ is also one over $k[T]$.
+The finitely many $b_\ell$ and $\mathsf z_n$ therefore lie
+in one finite extension $L/k(T)$ inside $K^{\mathrm{alg}}$,
+and $b_\ell\in\mathscr B_L$.
+
+There is a prime $\mathfrak q$ above $(T)$ by lying over.
+At its normalized valuation, each $p_\ell$ has value at least
+$1$, each $b_\ell$ has nonnegative value, and so their finite
+sum has value at least $1$. On the other hand
+$1+T^{n-1}$ reduces to $1$ modulo $\mathfrak q$, hence is a
+unit there. Equation \eqref{osq:rm:eq:zn} gives
+\[
+ n v_{\mathfrak q}(\mathsf z_n)=1,
+ \qquad v_{\mathfrak q}(\mathsf z_n^j)=j/n<1,
+\]
+a contradiction. Thus all the lower powers listed in the statement
+are nonzero in the quotient, proving exact index $n$. In particular
+$\mathsf z_n\notin\mathsf I$ while its $n$th power is in
+$\mathsf I$, so the ideal is not radical.
 \end{proof}
 
 This proof uses only a finite ideal expression, the normalization of one finite function field and one valuation; it does not use the identity
@@ -15335,12 +15421,51 @@ $\mathsf z_2=\omega^{a/2}\sqrt{1+\omega^a}$ with $\sqrt{1+\omega^a}\in\NN$, so $
 \merge.
 \end{example}
 
+\paragraph{Arbitrary Laurent constant coefficients \merge.}
+The preceding example permits every constant coefficient, not just
+$1/2$. For $\lambda\in k$ put $f_\lambda=2\lambda\mathsf z_2$. Then
+\[
+ f_\lambda^2=4\lambda^2(T^2+T)\in Tk[T],\qquad
+ f_\lambda\in\NN(\Z a),\qquad \ct(f_\lambda)=\lambda,
+\]
+where $\ct$ in this display means Laurent constant-coefficient
+extraction at infinity. The monic square equation proves integrality even when $\lambda$ is not
+integral over $D$. If $\lambda\ne0$, the constant
+$\lambda$ is a unit at every finite place over $T$, so
+$v_{\mathfrak q}(f_\lambda)=1/2$. The finite-ideal-expression argument
+of \cref{osq:rm:thm:explicit} shows $f_\lambda\notin\mathsf I$.
+Thus every nonzero $f_\lambda$ has a nonzero square-zero residue.
+Moreover $f_{\lambda+\mu}=f_\lambda+f_\mu$ and
+$f_\lambda f_\mu=4\lambda\mu(T^2+T)\in\mathsf I$. Consequently
+\[
+ (k,+)\longrightarrow\mathsf B(\Z a),\qquad
+ \lambda\longmapsto[f_\lambda]
+\]
+is an injective $D$-linear additive map whose image has all products
+zero. It is not a unital coefficient-field embedding, and no ideal
+property of its image is asserted. In particular Laurent constant
+extraction maps the normalization onto all of $k$ and is not
+multiplicative there: $\ct(f_\lambda^2)=0$ but $\ct(f_\lambda)^2=\lambda^2$
+for $\lambda\ne0$. This does not contradict the algebraic-integer
+constant slice, which concerns elements that are themselves constant.
+Each of these local residues maps to zero in the full-class fibre,
+by global radicality of the extended purely infinite ideal.
+
 \begin{corollary}[Unbounded nilpotence \src{23}]\label{osq:rm:cor:unbounded}
 The nilradical of $\mathsf B(\Z a)$ is not nilpotent and not finitely generated; $\mathsf B(\Z a)$ and $\NN(\Z a)$ are not Noetherian.
 \end{corollary}
 \begin{proof}
-The nilpotency indices of \cref{osq:rm:thm:explicit} are unbounded. A nil ideal generated by $x_1,\dots,x_s$ with $x_i^{d_i}=0$ has vanishing
-$(1+\sum_i(d_i-1))$th power, since every monomial of that degree contains some $x_i^{d_i}$. A quotient of a Noetherian ring is Noetherian.
+Write $J_0$ for the nilradical of $\mathsf B(\Z a)$.
+If $J_0^r=0$ for some $r\ge1$, every nilpotent element would
+have $r$th power zero. Taking $\mathsf z_n$ with $n>r$
+contradicts \cref{osq:rm:thm:explicit}. Thus $J_0$ is not
+nilpotent. If it were generated by finitely many $x_i$ with
+$x_i^{d_i}=0$, then its power of degree
+$1+\sum_i(d_i-1)$ would vanish: every monomial in the
+generators of that degree contains some $x_i^{d_i}$.
+Hence $J_0$ is not finitely generated, and the fibre is not
+Noetherian. Since it is a quotient of $\NN(\Z a)$, the
+normalization cannot be Noetherian either.
 \end{proof}
 
 \begin{theorem}[Exact order after refinement \src{23}]\label{osq:rm:thm:explicitrefinement}
@@ -15348,10 +15473,35 @@ For $n\ge2$, $m\ge1$ and $j\ge1$, $\mathsf z_n^j\in\mathsf I(\Z a/m)$ if and onl
 $\A(\Z a)\subseteq\A(\Z a/m)$, the residue of $\mathsf z_n$ has index $\lceil n/m\rceil$.
 \end{theorem}
 \begin{proof}
-At a place above $U=0$, normalized by $v(U)=1$, the relation $\mathsf z_n^n=U^m(1+U^{m(n-1)})$ gives $v(\mathsf z_n^j)=mj/n$, while every element of
-$\mathsf I(\Z a/m)$ has value at least $1$, as in \cref{osq:rm:thm:explicit}. Conversely, if $mj\ge n$, then $y=\mathsf z_n^j/U$ satisfies
-$y^n=U^{mj-n}(1+U^{m(n-1)})^j$, a polynomial with constant coefficient $0$ (if $mj>n$) or $1$ (if $mj=n$), which lies in $\A(\Z a/m)$; so $y$ is integral
-over $\A(\Z a/m)$ and $\mathsf z_n^j=Uy\in\mathsf I(\Z a/m)$.
+Put $U=\omega^{a/m}$, so $T=U^m$. The inclusions of the
+integer parts and ambient Laurent fields send integral elements
+to integral elements. They also send $Tk[T]$ into $Uk[U]$,
+so they send the extended ideal into the refined extended ideal
+and induce the stated quotient map.
+
+If $\mathsf z_n^j$ belonged to $\mathsf I(\Z a/m)$,
+put its finite ideal expression and $\mathsf z_n$ in one finite
+extension of $k(U)$, as in \cref{osq:rm:thm:explicit}.
+At a place above $U=0$, normalize by $v(U)=1$. The identity
+\[
+ \mathsf z_n^n=U^m(1+U^{m(n-1)})
+\]
+and the unit second factor give
+$v(\mathsf z_n^j)=mj/n$. Every element represented by that
+ideal expression has value at least $1$, so necessarily $mj\ge n$.
+
+Conversely suppose $mj\ge n$. The Laurent element
+$y=\mathsf z_n^j/U$ satisfies
+\[
+ y^n=U^{mj-n}(1+U^{m(n-1)})^j.
+\]
+The right side is a polynomial in $U$ with constant coefficient
+$0$ when $mj>n$, and $1$ when $mj=n$. It therefore belongs
+to $\A(\Z a/m)$ in both the real and Gaussian cases. The
+monic equation makes $y$ integral over that ring, so
+$\mathsf z_n^j=Uy\in\mathsf I(\Z a/m)$.
+The least positive integer $j$ with $mj\ge n$ is
+$\lceil n/m\rceil$; when this is $1$, the image itself is zero.
 \end{proof}
 
 For $\mathsf z_{12}$ and $m=1,2,3,4,6,12$ the indices are $12,6,4,3,2,1$; index $1$ means that the residue has become $0$. Every refined workspace still
@@ -15365,8 +15515,15 @@ lie in $\NN(\Z a)$. The following lemma accounts for them.
 $T\mathscr B\subseteq\NN(\Z a)$.
 \end{lemma}
 \begin{proof}
-If $b^d+p_{d-1}(T)b^{d-1}+\dots+p_0(T)=0$ with $p_j\in k[T]$, multiplying by $T^d$ gives
-$(Tb)^d+Tp_{d-1}(T)(Tb)^{d-1}+\dots+T^dp_0(T)=0$, a monic equation with nonleading coefficients in $Tk[T]\subseteq\A(\Z a)$.
+For $b\in\mathscr B$, choose a monic equation
+$b^d+\sum_{j<d}p_j(T)b^j=0$ over $k[T]$ with $d\ge1$.
+Multiplication by $T^d$ gives
+\[
+ (Tb)^d+\sum_{j<d}T^{d-j}p_j(T)(Tb)^j=0.
+\]
+Every nonleading coefficient has the positive power $T^{d-j}$,
+so lies in $Tk[T]\subseteq\A(\Z a)$. This is a monic
+integrality equation for $Tb$ in the same ambient Laurent field.
 \end{proof}
 
 \begin{theorem}[Residue criterion \src{23}]\label{osq:rm:thm:residues}
@@ -15374,12 +15531,40 @@ Let $k(T)\subseteq L\subseteq K^{\mathrm{alg}}$ be finite and $f\in\mathscr B_L$
 integral over $D$ for every $\mathfrak q\mid T$. In particular $\sqrt{T\mathscr B_L}\subseteq\NN(\Z a)$ and $\mathsf J\subseteq\NN(\Z a)$.
 \end{theorem}
 \begin{proof}
-If $f$ satisfies a monic equation over $\A(\Z a)$, reduce it modulo $\mathfrak q\mid T$: a coefficient $d+Tp(T)$ becomes $d\in D$. Conversely, for each of
-the finitely many $\mathfrak q\mid T$ choose a monic $Q_{\mathfrak q}\in D[Y]$ killing $f\bmod\mathfrak q$, and let $Q$ be their product; then $Q(f)\in\mathfrak q$
-for all $\mathfrak q\mid T$. With $T\mathscr B_L=\prod_{\mathfrak q\mid T}\mathfrak q^{e_{\mathfrak q}}$ and $r\ge\max e_{\mathfrak q}$, $Q(f)^r=Tb$ with
-$b\in\mathscr B_L$. By \cref{osq:rm:lem:scaling} $Tb$ is integral over $\A(\Z a)$, $Y^r-Tb$ shows that $Q(f)$ is integral over $\A(\Z a)[Tb]$, and
-$Q(Y)-Q(f)$ is monic over $\A(\Z a)[Q(f)]$ and kills $f$; transitivity gives $f\in\NN(\Z a)$. Elements of $\sqrt{T\mathscr B_L}$ have zero residues. An
-element of $\mathsf J$ lies in some $\mathscr B_L$ with a power in $T\mathscr B$, hence in $T\mathscr B_L$ by \cref{osq:rm:lem:finite}.
+If $f$ is integral over $\A(\Z a)$, reduce a monic equation
+modulo any $\mathfrak q\mid T$. Every coefficient
+$d+Tp(T)$ becomes the image of $d\in D$, so the residue of
+$f$ is integral over $D$.
+
+For the converse, the nonempty set of primes above $T$ is finite.
+For each choose a monic $Q_{\mathfrak q}\in D[Y]$ annihilating
+the corresponding residue, and put $Q=\prod_{\mathfrak q\mid T}
+Q_{\mathfrak q}$. Then $Q$ is monic and $Q(f)$ belongs to
+every prime above $T$. Factor the ideal in the Dedekind domain:
+\[
+ T\mathscr B_L=\prod_{\mathfrak q\mid T}
+ \mathfrak q^{e_{\mathfrak q}}.
+\]
+Choose an integer $r\ge\max_{\mathfrak q\mid T}e_{\mathfrak q}$.
+Since $Q(f)\in\mathfrak q$, its $r$th power belongs to
+$\mathfrak q^{e_{\mathfrak q}}$ for every such prime.
+Distinct maximal ideals are comaximal, so the intersection of
+these powers is their product. Thus $Q(f)^r=Tb$ for some
+$b\in\mathscr B_L$.
+
+By \cref{osq:rm:lem:scaling}, $Tb$ is integral over
+$\A(\Z a)$. The equation $Y^r-Tb=0$ makes $Q(f)$ integral
+over $\A(\Z a)[Tb]$. Transitivity makes $Q(f)$ integral
+over $\A(\Z a)$. Finally $Q(Y)-Q(f)$ is monic over
+$\A(\Z a)[Q(f)]$ and annihilates $f$; transitivity once more
+puts $f$ in $\NN(\Z a)$.
+
+An element of $\sqrt{T\mathscr B_L}$ has zero residue at
+every prime above $T$, so the criterion applies. If
+$f\in\mathsf J=\sqrt{T\mathscr B}$, choose a finite
+$L$ containing $f$. A power of $f$ is in $T\mathscr B$
+and therefore in $T\mathscr B_L$ by
+\cref{osq:rm:lem:finite}. This gives the final inclusion.
 \end{proof}
 
 The proof holds for every coefficient field of characteristic $0$ and every unital $D$ in it; the real and complex hypotheses enter only in
@@ -15399,12 +15584,48 @@ $k\NN(\Z a)=\mathscr B$ (finite $k$-linear span) and $\mathsf I=T\mathscr B$. He
 the two fibres have the same nilradical $\mathsf J/T\mathscr B$, and $\mathsf C(\Z a)=\NN(\Z a)/\mathsf J\hookrightarrow\mathsf C^{\mathrm{co}}(\Z a)$.
 \end{theorem}
 \begin{proof}
-Clearly $k\NN(\Z a)\subseteq\mathscr B$. Let $b\in\mathscr B_L$. By the Chinese remainder theorem $\mathscr B_L/\sqrt{T\mathscr B_L}\cong\prod_{\mathfrak q\mid T}\ell_{\mathfrak q}$,
-a finite product of copies of $\C$ (if $k=\C$) or of $\R$ and $\C$ (if $k=\R$). The coordinate vectors, together for $k=\R$ with the vector equal to
-$i$ in one complex factor and $0$ elsewhere, form a $k$-basis whose entries are integral over $D$. Lift them to $b_1,\dots,b_s\in\mathscr B_L$; they lie in
-$\NN(\Z a)$ by \cref{osq:rm:thm:residues}. Choose $c_j\in k$ with $b-\sum_jc_jb_j\in\sqrt{T\mathscr B_L}\subseteq\NN(\Z a)$; so $b\in k\NN(\Z a)$. As $T\in\NN(\Z a)$,
-$k[T]\NN(\Z a)=k\NN(\Z a)=\mathscr B$ and $\mathsf I=Tk[T]\NN(\Z a)=T\mathscr B$. The injection is immediate, $\mathsf J\subseteq\NN(\Z a)$ by
-\cref{osq:rm:thm:residues}, and nilpotence modulo $T\mathscr B$ means the same in both rings; the radical of $\mathsf I$ in $\NN(\Z a)$ is $\mathsf J\cap\NN(\Z a)=\mathsf J$.
+Every element of $\NN(\Z a)$ is integral over $k[T]$,
+and $k\subseteq\mathscr B$, so
+$k\NN(\Z a)\subseteq\mathscr B$. Conversely take
+$b\in\mathscr B_L$. The Chinese remainder theorem gives
+\[
+ \mathscr B_L/\sqrt{T\mathscr B_L}
+ \cong\prod_{\mathfrak q\mid T}\ell_{\mathfrak q}.
+\]
+If $k=\C$, each factor is $\C$, and the coordinate vectors
+with value $1$ form a $k$-basis. If $k=\R$, each factor is
+$\R$ or $\C$; use those coordinate vectors and, for each
+complex factor, the additional vector with value $i$ there and
+zero elsewhere. After identifying the residue fields over $k$,
+all entries of these vectors are integral over $D$ (they are
+$0,1$ or $i$).
+
+Lift the finitely many basis vectors to $b_1,\ldots,b_s$
+in $\mathscr B_L$. By \cref{osq:rm:thm:residues} all these
+lifts belong to $\NN(\Z a)$. Choose $c_j\in k$ matching
+the residue of $b$ on this basis. Then
+\[
+ b-\sum_jc_jb_j\in\sqrt{T\mathscr B_L}
+ \subseteq\NN(\Z a),
+\]
+so $b$ belongs to the finite $k$-linear span of $\NN(\Z a)$.
+This proves the span equality without putting arbitrary constants
+of $k$ in the normalization.
+
+Since $T\in\NN(\Z a)$, multiplying the span by polynomials
+in $T$ does not enlarge it. Hence
+\[
+ \mathsf I=Tk[T]\NN(\Z a)
+          =T\bigl(k\NN(\Z a)\bigr)=T\mathscr B.
+\]
+The inclusion $\NN(\Z a)\subseteq\mathscr B$ now induces
+an injection modulo this same ideal, which lies in both rings.
+The nilradical of $\mathscr B/T\mathscr B$ is
+$\mathsf J/T\mathscr B$. By \cref{osq:rm:thm:residues},
+$\mathsf J\subseteq\NN(\Z a)$, so precisely the same
+nilpotent elements occur in the arithmetic fibre. Quotienting
+both rings by $\mathsf J$ gives the asserted injection of
+reduced fibres and identifies $\mathsf C(\Z a)$ as stated.
 \end{proof}
 
 \begin{corollary}[Rational functions \src{23}]\label{osq:rm:cor:rational}
@@ -15412,8 +15633,24 @@ $\NN(\Z a)\cap k(T)=\overline\Z_k+Tk[T]$ and $\mathsf I\cap k(T)=Tk[T]$, where $
 Gaussian pair.
 \end{corollary}
 \begin{proof}
-$k[T]$ is integrally closed in $k(T)$, and its only place over $T$ is $T=0$, so \cref{osq:rm:thm:residues} asks exactly that $f(0)$ be integral over $D$.
-For the ideal use $\mathsf I=T\mathscr B$ and $\mathscr B\cap k(T)=k[T]$.
+An element of $\NN(\Z a)\cap k(T)$ is integral over $k[T]$.
+As $k[T]$ is integrally closed in $k(T)$, it is a polynomial.
+In the degree-one extension $L=k(T)$ the unique prime above $T$
+is $(T)$ and its residue map on $k[T]$ is polynomial evaluation
+at zero. The residue criterion therefore says exactly that the
+constant coefficient is integral over $D$. For the Gaussian pair,
+integrality over $\Z[i]$ is equivalent to integrality over $\Z$,
+since $\Z[i]$ is integral over $\Z$ and the reverse implication
+uses the same monic polynomial. This gives the stated
+$\overline\Z_k+Tk[T]$ in both cases. Evaluation is used only
+after eliminating a possible rational-function denominator.
+
+For the ideal, \cref{osq:rm:thm:span} and finite descent give
+\[
+ \mathsf I\cap k(T)
+ =T\bigl(\mathscr B\cap k(T)\bigr)=Tk[T],
+\]
+because division by $T$ keeps an element of $k(T)$ in that field.
 \end{proof}
 
 For the real pair the first equality is 20's \cref{osq:bb:thm:rational}, credited by 23 and recovered as a check on the residue criterion. 20's second
@@ -20573,6 +20810,10 @@ The Stacks Project Authors, \emph{The Stacks Project}, Lemma 10.120.18, Tag 09IG
 \bibitem{StacksRamification}
 The Stacks Project Authors, \emph{The Stacks Project}, Sections 15.113 and 15.116, Tags 0EXR and 0EXT (ramification of discrete valuation rings,
 Abhyankar's lemma), \url{https://stacks.math.columbia.edu/tag/0EXR}. Cited by 23.
+Lemma~49.3.1, Tag~0BJF (invertible discriminant and \'etaleness),
+\url{https://stacks.math.columbia.edu/tag/0BJF}, and Proposition~41.19.7,
+Tag~025P (normality under an \'etale local extension),
+\url{https://stacks.math.columbia.edu/tag/025P}, checked for the finite-branch-locus proof.
 
 \bibitem{Sutherland}
 A.~V.~Sutherland, \emph{18.785 Number Theory I, Lecture~5: Dedekind extensions}, MIT, 2017, Proposition 5.21 and Theorem 5.24,

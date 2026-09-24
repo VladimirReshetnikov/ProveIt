@@ -643,14 +643,32 @@ so K meets every nonzero ideal and has zero annihilator in either the real
 or Gaussian fibre. No global choice
 is needed for this obstruction; global choice is used for individual
 branch detection and the prescribed-data extensions. All six results and
-this consequence remain pending in Lean. The next proof review begins
-with ramification in a cyclic workspace.
+this consequence remain pending in Lean.
+
+The first ten standard cyclic-workspace results, through rational functions,
+are now reviewed. The proofs give the exact polynomial integer part and
+fraction field, directed finite normalizations, valuation tests for ideal
+membership, the discriminant argument for a finite branch locus, and exact
+nilpotence and root-refinement thresholds. The residue criterion now spells
+out the prime-power intersection and each integrality step; the coefficient
+span uses lifts of a residue-field basis before identifying 𝖨=T𝓑.
+
+An added consequence uses f_λ=2λz₂ for arbitrary λ∈k, with k=ℝ or ℂ.
+It is integral, has Laurent constant coefficient λ, and its square lies
+in 𝖨. For λ≠0 its residue is nonzero, and all products of these residues
+vanish. Thus they form an injective D-linear additive copy of k with zero
+multiplication, not a unital coefficient-field copy. Constant extraction
+maps the normalization onto all of k but is not multiplicative; the
+algebraic-integer constant slice concerns elements that are themselves
+constant. All these local residues vanish in the full-class fibre.
+The ten results and this consequence remain pending in Lean. The next
+proof review starts with the ramification filtration and general refinement.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 338 pages
+article.pdf   the compiled report, 341 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

@@ -8941,3 +8941,55 @@ still 36 pages; inspected refreshed pages 12–13. The article stays at
 338 pages, with all statements, labels and numbering unchanged. Audits
 pass 4,626 anchors in 63 reports, 5,236 source-label references and 1,972
 local Markdown destinations in 226 files.
+
+
+### Cyclic normalizations, residues and arbitrary constants (2026-09-24)
+
+Reviewed the first ten standard cyclic-workspace results, from
+`osq:rm:prop:cyclic` through `osq:rm:cor:rational`. Expanded the polynomial
+integer-part proof, fraction-field construction, directed finite descent
+and explicit denominator-clearing equation. Ideal membership is tested in
+one finite normalization, with valuations normalized by v(T)=1. The branch
+locus proof now explains the free primitive-element algebra, invertible
+discriminant, normality after localization and identification with the
+normalization. Checked the primary references
+[Stacks 0BJF](https://stacks.math.columbia.edu/tag/0BJF) and
+[Stacks 025P](https://stacks.math.columbia.edu/tag/025P), adding them to the
+existing bibliography item without changing citation numbering.
+
+The exact nilpotence proof puts every coefficient of a hypothetical ideal
+expression in one finite extension and invokes lying over before comparing
+valuations. The refinement proof constructs both the quotient map and a
+monic certificate at the threshold mj=n. Unbounded nilpotence gives the
+explicit obstruction to a finitely generated nilradical. The residue
+criterion spells out the prime-power intersection and both transitivity
+steps. The coefficient-span proof lifts an explicit real/complex residue
+basis before identifying the extended ideal with T times the coefficient
+normalization. The rational-function proof removes denominators before
+using evaluation at zero.
+
+Added an unnumbered consequence: f_lambda=2 lambda z_2 is integral for
+arbitrary lambda in the real or complex coefficient field, with Laurent
+constant coefficient lambda. Its square lies in the extended ideal, but
+its finite-place value 1/2 shows that its residue is nonzero for nonzero
+lambda. The resulting D-linear additive injection of k into the fibre has
+all products zero. It is not a unital field embedding, and no ideal
+property of its image is asserted. Laurent constant extraction on the
+normalization is surjective and not multiplicative; this is compatible with
+the algebraic-integer slice of elements that are themselves constant.
+All these residues vanish in the full-class fibre by global radicality.
+The ten results and this new consequence remain pending in Lean.
+
+Updated root/report guides, notation, catalogue and coverage ledger.
+Three final diagnostic-free TeX passes give a 341-page article and 36-page
+catalogue. Inspected article PDF pages 229–234 and catalogue page 13.
+All 418 result statements (409 standard plus nine maintheorems), 828 labels,
+1,656 AUX number entries, 66 questions, 60 remarks and 28 examples remain
+unchanged. The byte-identical Source 23 verifier passes all 18,040 finite
+checks. Its JSON agrees with the archived record except Python 3.13.14
+versus 3.13.5 and the absent article hash in the scratch directory. These
+checks verify finite identities and analogues, not the valuation,
+integrality or class arguments. Audits pass 4,626 anchors in 63 reports,
+5,237 source-label references and 1,972 local Markdown destinations in
+226 files. No Lean, verifier or historical data file was changed. The next
+review starts with the ramification filtration and general refinement law.

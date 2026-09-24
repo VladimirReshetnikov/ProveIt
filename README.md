@@ -452,6 +452,13 @@ has a common kernel containing a nonzero idempotent below every nonzero
 idempotent. That kernel meets every nonzero ideal and has zero annihilator.
 Prescribed set-sized data still leave arbitrarily large families of branch
 maps. These strengthened manuscript conclusions remain pending in Lean.
+The cyclic-workspace review now explains the opposite local behavior:
+its extended ideal has nilpotents of every finite order, with exact
+thresholds under root refinement. An added example realizes every real
+or complex Laurent constant coefficient on an integral element; their
+residues give an additive copy of the coefficient field with all products
+zero. These local residues disappear in the full-class fibre. The results
+remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

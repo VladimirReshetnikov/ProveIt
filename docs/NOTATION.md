@@ -590,6 +590,16 @@ elements are proper-class graphs. In the Gaussian product description,
 keep the chosen factor and project the coefficient copy into that factor;
 a specified coefficient copy need not be diagonal.
 
+In a cyclic workspace T=ω^a, 𝓑 is the integral closure of k[T] in the
+Laurent field, while 𝒩(ℤa) is the integral closure of D+Tk[T]. The
+finite-place valuations are normalized by v_𝔮(T)=1; the Laurent valuation
+at infinity has value −1 on T. Use finite-place residues to test
+integrality. Laurent constant extraction on the normalization can have
+any value in k, as f_λ=2λz₂ shows. The additive map λ↦[f_λ] has zero
+products and is not a unital coefficient embedding. The equality
+k𝒩(ℤa)=𝓑 means finite k-linear span, not containment of k in 𝒩(ℤa).
+The nilpotence index convention assigns index 1 to the zero residue.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though
