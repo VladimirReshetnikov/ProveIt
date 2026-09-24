@@ -284,6 +284,11 @@ flat differential graded resolution now computes every Tor group of two
 lattice quotients. The first Tor retains an interval of exponents and is
 always nonzero; the second retains only coefficient multiplication
 relations. These two invariants record different information.
+For orders, second Tor vanishes exactly when their fields are linearly
+disjoint in the chosen common field. The reviewed self-Tor product is the
+antisymmetrized tensor of the two coefficient boundaries; the quotient by
+these products consists of symmetric multiplication relations. This exact
+sequence works integrally, without dividing by two.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

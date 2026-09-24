@@ -258,6 +258,17 @@ of products MN. The three-piece decomposition is D-linear, whereas the
 preceding quotient formula is A-linear. The symbol B = k + Π remains the
 support ring, not either cyclic quotient A/I or A/J.
 
+For the self-Tor product, the identification with the coefficient kernel
+uses `Σ_j c_j ⊗ m_j`, the flip of the earlier pair calculation's
+`Σ_j m_j ⊗ c_j`. Under this convention `xy = b(x) ⊗ b(y) − b(y) ⊗ b(x)`.
+The exterior-square map sends `a ∧ b` to `a ⊗ b − b ⊗ a`, with no factor
+of one half. Sym²_D M is the quotient by these differences, not a selected
+submodule of symmetric tensors. The degree-two indecomposable quotient
+Ind₂ divides out the D-span of products, and identifies with the kernel
+of `Sym²_D M → M²`. For orders, the “two halves” are equal ranks in a
+short exact sequence, with no splitting specified. Linear disjointness
+always refers to the given embeddings of the fields into k over Frac D.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
