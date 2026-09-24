@@ -8184,29 +8184,119 @@ A $D$-module isomorphism $f:\mathfrak o\to\mathfrak o'$ between orders is a unit
 $(f\otimes f)(\mathcal T(\mathfrak o,\mathfrak o))=\mathcal T(\mathfrak o',\mathfrak o')$.
 \end{theorem}
 \begin{proof}
-The multiplication $\mathfrak o\otimes_D\mathfrak o\to\mathfrak o$ is split by $z\mapsto1\otimes z$, so for given $x,y$ exactly one $z$ puts
-$x\otimes y-1\otimes z$ in its kernel, namely $z=xy$. A unital ring isomorphism preserves the kernel. Conversely, if $z=xy$, applying $f\otimes f$
-gives $f(x)\otimes f(y)-1\otimes f(z)\in\mathcal T(\mathfrak o',\mathfrak o')$, and uniqueness in $\mathfrak o'$ gives $f(z)=f(x)f(y)$.
+Let $\mu:\mathfrak o\otimes_D\mathfrak o\to\mathfrak o$
+be multiplication and $T=\ker\mu$. The map
+$s:\mathfrak o\to\mathfrak o\otimes_D\mathfrak o$,
+$s(z)=1\otimes z$, satisfies $\mu s=\mathrm{id}$.
+For any $x,y,z\in\mathfrak o$,
+\[
+ \mu(x\otimes y-1\otimes z)=xy-z.
+\]
+Thus the displayed membership in $T$ is equivalent to $z=xy$.
+In particular there exists exactly one such $z$. To reconstruct
+the product from the framed data, use this unique element as its
+definition. The given multiplication verifies existence and
+uniqueness, so no additional choice of a quotient isomorphism is
+part of the reconstruction.
+
+Suppose first that $f$ is a unital ring isomorphism. It fixes the
+specified unit, and
+\[
+ \mu'\circ(f\otimes f)=f\circ\mu
+\]
+on pure tensors and hence on their sums. This puts
+$(f\otimes f)(T)$ in $T'=\ker\mu'$; applying the same
+argument to $f^{-1}$ gives equality. Conversely assume the two
+conditions in the statement. For $z=xy$, the tensor
+$x\otimes y-1\otimes z$ belongs to $T$. Its image is
+$f(x)\otimes f(y)-1\otimes f(z)\in T'$, since $f(1)=1$.
+The already proved membership criterion in $\mathfrak o'$
+gives $f(z)=f(x)f(y)$. The given $D$-module isomorphism is
+additive and bijective; this multiplicativity and the unit condition
+therefore make it a unital ring isomorphism.
 \end{proof}
 
-The reconstruction is elementary once the kernel is located; the substance is that this embedded relation module is the second $\Tor$ over an
-omnific ring (21). It is a different mechanism from 17's \cref{osq:rel:thm:order}, which recovers the order as the constant quotient of
-$\End_A(J_\gamma(\mathfrak o))$. Because $D$ is integrally closed and $\mathfrak o$ is integral over $D$, $\mathfrak o\cap\Frac D=D$, so $1$ extends to
-a $D$-basis $e_0=1,e_1,\dots,e_{r-1}$ of $\mathfrak o$, and
+The reconstruction uses the located submodule
+$\mathcal T(\mathfrak o,\mathfrak o)$ and the distinguished unit,
+not just the abstract isomorphism type of the second $\Tor$ group.
+It differs from \cref{osq:rel:thm:order}, which recovers the order
+as the constant quotient of $\End_A(J_\gamma(\mathfrak o))$.
+The following basis description makes the framed reconstruction
+an integral calculation.
+
+Every element of the finite free $D$-algebra $\mathfrak o$ is
+integral over $D$, for example by the characteristic polynomial
+of its multiplication matrix. Since $D$ is integrally closed,
+$\mathfrak o\cap\Frac D=D$. Consequently $\mathfrak o/D1$
+is torsion free: if $0\ne d\in D$ and $dx\in D1$, then
+$x\in\Frac D\cap\mathfrak o=D1$. This quotient is finitely
+generated over the principal ideal domain $D$, hence free.
+Lifting a basis of it, together with $e_0=1$, gives a basis
+$e_0,e_1,\ldots,e_{r-1}$ of $\mathfrak o$. In particular the
+unit is primitive in the integral lattice; a basis over the
+fraction field alone would not suffice.
+
+For this basis put
 \[
- e_i\otimes e_j-e_0\otimes(e_ie_j)\qquad(1\le i\le r-1,\ 0\le j\le r-1)
+ t_{ij}=e_i\otimes e_j-e_0\otimes(e_ie_j)
+ \qquad(1\le i\le r-1,\ 0\le j\le r-1).
 \]
-is a $D$-basis of $\mathcal T(\mathfrak o,\mathfrak o)$: each has its own pivot $e_i\otimes e_j$ with coefficient $1$, subtracting them reduces any
-tensor to some $e_0\otimes z$, and such a tensor lies in the kernel only if $z=0$. The structure constants, the traces, the trace form and
-the discriminant are then finite matrix computations. For $\Z[\sqrt m]$ ($m>0$ not a square) the basis is $e_1\otimes e_0-e_0\otimes e_1$ (up to
-sign a product of degree-one classes) and $e_1\otimes e_1-m\,e_0\otimes e_0$ (the square relation, which survives in $\operatorname{Ind}_2$); the
-trace form is $\operatorname{diag}(2,2m)$ with discriminant $4m$. So $\Z[\sqrt2]$ and $\Z[\sqrt3]$ have abstract second $\Tor$ groups both
-isomorphic to $\Z^2$, while their framed relations recover the discriminants $8$ and $12$. For $\Z[\varphi]$, $\varphi^2=\varphi+1$, the second
-relation is $e_1\otimes e_1-e_0\otimes e_1-e_0\otimes e_0$ and the discriminant is $5$. For $\Z[\sqrt[3]2]$ the rank is six, the three
-alternating tensors and $e_1\otimes e_1-e_0\otimes e_2$, $e_1\otimes e_2-2e_0\otimes e_0$, $e_2\otimes e_2-2e_0\otimes e_1$ form an integral
-basis, the trace form has rows $(3,0,0)$, $(0,0,6)$, $(0,6,0)$, and the discriminant is $-108$. Over $\Z[i]$ the order $\Z[i][\sqrt2]$ has the
-same two relations as $\Z[\sqrt2]$ and discriminant $8$; complex conjugation carries $J_g(M)$ to $J_g(\overline M)$ and transports all the maps
-coefficientwise (21).
+Each $t_{ij}$ belongs to $\ker\mu$. In the tensor basis, its
+coefficient at $e_i\otimes e_j$ is one and all its other terms
+have first index zero. These distinct coordinates prove integral
+independence. Subtracting the corresponding multiples of the
+$t_{ij}$ from any tensor removes all terms with first index
+positive, leaving $e_0\otimes z$. If the original tensor was
+in the kernel, so is this remainder, and applying $\mu$ gives
+$z=0$. Thus the $t_{ij}$ form a $D$-basis of the kernel,
+including the empty basis when $r=1$.
+
+The framed relations recover each product $e_ie_j$, hence its
+multiplication matrix. Taking traces yields the trace form
+$\bigl(\operatorname{Tr}_{\Frac(D)\mathfrak o/\Frac D}(e_ie_j)\bigr)_{ij}$
+and its determinant, the discriminant of this order in the chosen
+basis. For $\Z[\sqrt m]$ with $m>0$ a nonsquare integer, the
+two relations are
+\[
+ e_1\otimes e_0-e_0\otimes e_1,\qquad
+ e_1\otimes e_1-m\,e_0\otimes e_0.
+\]
+The first is, up to sign, a degree-one product; the second survives
+in $\operatorname{Ind}_2$. The trace form is
+$\operatorname{diag}(2,2m)$, with discriminant $4m$.
+Thus $\Z[\sqrt2]$ and $\Z[\sqrt3]$ both have abstract second
+$\Tor$ group $\Z^2$, but their framed relations recover the
+distinct discriminants $8$ and $12$.
+
+For $\Z[\varphi]$, $\varphi^2=\varphi+1$, the square relation is
+$e_1\otimes e_1-e_0\otimes e_1-e_0\otimes e_0$.
+The trace matrix is $\left(\begin{smallmatrix}2&1\\1&3\end{smallmatrix}\right)$,
+with discriminant $5$. For $\Z[\sqrt[3]2]$, use
+$e_0=1$, $e_1=\sqrt[3]2$, $e_2=(\sqrt[3]2)^2$.
+The three alternating tensors, together with
+\[
+ e_1\otimes e_1-e_0\otimes e_2,\qquad
+ e_1\otimes e_2-2e_0\otimes e_0,\qquad
+ e_2\otimes e_2-2e_0\otimes e_1,
+\]
+form an integral basis of the six-dimensional relation module.
+To check spanning integrally, use the alternating tensors to
+replace $e_1\otimes e_0$, $e_2\otimes e_0$ and
+$e_2\otimes e_1$ by their flipped tensors, then use the three
+remaining relations. Every kernel element reduces to
+$e_0\otimes z$ and hence to zero. There are six generators
+of the free rank-six kernel, so they are a basis. The trace form
+and discriminant are
+\[
+ \begin{pmatrix}3&0&0\\0&0&6\\0&6&0\end{pmatrix},
+ \qquad -108.
+\]
+Over $\Z[i]$, the order $\Z[i][\sqrt2]$ has the same two
+quadratic relations and trace matrix as above, with discriminant
+$8$. Complex conjugation takes $J_g(M)$ to
+$J_g(\overline M)$ and transports these maps coefficientwise.
+In the Gaussian case this transport is semilinear with respect
+to conjugation on $D=\Z[i]$, rather than $D$-linear (21).
 
 \begin{theorem}[The derived constant-term shadow \src{17; 21}]\label{osq:da:thm:shadow}
 Let $E$ be a $D$-module on which $A$ acts through $\ct$. Then in the derived category of $D$-modules
@@ -8217,18 +8307,71 @@ so $\Tor^A_0(A/I,E)=E$, $\Tor^A_1(A/I,E)\cong M\otimes_DE$ and $\Tor^A_n(A/I,E)=
 square-zero differential graded algebra $D\oplus M[1]$.
 \end{theorem}
 \begin{proof}
-$\Pi\otimes_AE\cong(\Pi/\Pi^2)\otimes_DE=0$, so $\mathrm{Syz}_M\otimes_AE=0$. Hence $\mathsf P_\bullet\otimes_AE$ is $E$ in degree $0$ and $E^r$ in degree
-$1$, with zero differential because its coefficients $X^gm_j$ lie in $\Pi$; the basis identifies $E^r$ with $M\otimes_DE$. For $E=D$ the degree-two
-term is zero, so all products of degree-one elements vanish.
+The action on $E$ factors through $A/\Pi=D$, so $\Pi E=0$.
+Tensor associativity and the quotient formula give
+\[
+ \Pi\otimes_AE
+ \cong(\Pi\otimes_AD)\otimes_DE
+ \cong(\Pi/\Pi^2)\otimes_DE=0,
+\]
+because $\Pi^2=\Pi$. Equivalently, writing any tail as a
+finite sum $p=\sum_\nu a_\nu b_\nu$ with
+$a_\nu,b_\nu\in\Pi$ gives
+$p\otimes e=\sum_\nu a_\nu\otimes b_\nu e=0$.
+No flatness of $E$ over $D$ is required. Since
+$\mathrm{Syz}_M\cong\Pi^{r-1}$, its tensor product with $E$
+is zero as well.
+
+Use the bounded flat resolution of \cref{osq:da:thm:dga}.
+After tensoring with $E$, it has $E$ in degree zero, $E^r$
+in degree one, and zero elsewhere. Its degree-one differential
+has entries $X^gm_j\in\Pi$, so it acts as zero on $E$.
+The chosen lattice basis gives the $D$-linear isomorphism
+\[
+ E^r\longrightarrow M\otimes_DE,\qquad
+ (v_j)\longmapsto\sum_jm_j\otimes v_j.
+\]
+Thus the tensor complex itself, not just its homology, is the
+direct sum of the two stated modules with zero differentials.
+Here $[1]$ puts the second summand in homological degree one
+(cohomological degree minus one). This proves the derived
+isomorphism and all three assertions about $\Tor$.
+
+For $E=D$, the tensor complex retains its DGA structure. The
+degree-zero multiplication and action are the usual ones on $D$
+and $M$; every product of two degree-one terms is zero because
+the degree-two term has vanished. Under the displayed basis
+identification its multiplication is therefore
+\[
+ (d,m)(d',m')=(dd',dm'+d'm),
+\]
+which is precisely the square-zero DGA $D\oplus M[1]$.
+The assertion for general $E$ is about complexes of $D$-modules;
+no algebra structure on an arbitrary $D$-module $E$ is assumed.
 \end{proof}
 
 The $\Tor$ groups are 17's \cref{osq:rel:thm:augmentation} (over $R^{11}_\kappa$), shifted by one degree; 21 proves them over $T_\Q$ and over the
 class ring in the reading above, and the square-zero model is new. Consequently all orders of one rank, for instance those of discriminants
 $8$, $12$ and $5$, have isomorphic derived constant-term shadows, although their framed self-$\Tor$ data recover them: derived constant-term
-reduction keeps the additive lattice and erases its multiplication (21). Over the class ring every set-sized module is of this kind
-(\cref{osq:thm:universal}(iv)); 21 does not need that theorem. On the finite-support core $T_\Q$ it would be false that every set-sized
-target factors through $\ct$, since the augmentation sending every monomial to $1$ is a map to $k$ (\cref{osq:hd:prop:finite}(ii)); the theorem
-concerns the specified constant-term modules only (21).
+reduction keeps the additive lattice and erases its multiplication (21).
+A $D$-module isomorphism between two rank-$r$ orders induces an
+isomorphism of these square-zero DGAs, even when it does not preserve
+the original order products. No equivalence of their other derived
+invariants is inferred.
+
+For the literal class ring, every set-sized module acts through
+$\ct$ by \cref{osq:thm:universal}(iv). In the two-universe
+reading used here, this means modules with $\mathcal U$-small
+underlying sets, as specified in \cref{osq:sub:foundations}.
+It does not mean every module formed in $\mathcal V$: the
+regular module $A$ is a set there and has $\Pi A=\Pi\ne0$.
+The shadow theorem itself only needs the stated hypothesis that
+$E$ acts through $\ct$. On the finite-support core $T_\Q$,
+even a small target need not have this property: the augmentation
+sending every monomial to $1$ is a map to $k$
+(\cref{osq:hd:prop:finite}(ii)), and gives a module on which
+the tail acts nontrivially. Thus the specified action hypothesis
+is essential in both readings (21).
 
 \subsection{Polyhedral cores: face topology and flat dimension}\label{osq:pc:sub:polyhedral}
 

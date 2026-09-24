@@ -289,6 +289,12 @@ disjoint in the chosen common field. The reviewed self-Tor product is the
 antisymmetrized tensor of the two coefficient boundaries; the quotient by
 these products consists of symmetric multiplication relations. This exact
 sequence works integrally, without dividing by two.
+The completed reconstruction proof recovers an order's multiplication from
+its embedded relation module and distinguished unit. By contrast, derived
+constant-term reduction gives only a square-zero algebra: the orders of
+discriminants 8, 12 and 5 have isomorphic reductions. The review makes the
+lower-universe size restriction explicit when applying the universal
+module theorem.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

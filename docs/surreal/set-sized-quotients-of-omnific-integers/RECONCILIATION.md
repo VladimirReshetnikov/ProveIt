@@ -1875,3 +1875,110 @@ and Quot.sound. All 4,626 source anchors in 63 reports, 5,219 source-label
 references and 1,839 local Markdown destinations in 226 files pass, as
 does whitespace checking. No incoming TeX changed; the newly verified
 300-page article and 34-page catalogue remain current.
+
+## Framed reconstruction and the derived constant-term shadow
+
+Reviewed `osq:da:thm:reconstruction` and `osq:da:thm:shadow`, retaining
+both statements. Reconstruction now writes the multiplication map and its
+unit section, proves uniqueness of the recovered product, and checks both
+directions of the isomorphism criterion, including equality of kernels
+using the inverse. It distinguishes the embedded relation module and its
+distinguished unit from the abstract second-Tor isomorphism type.
+
+Expanded the integral basis argument: integrality and integral closedness
+give o intersect Frac D = D; this makes o/D1 torsion free, hence free over
+the PID, so the unit extends to a D-basis. Distinct unit pivots and reduction
+to the first tensor row prove an integral basis of the multiplication
+kernel. The quadratic, golden-ratio and cubic examples now have separated
+relation and trace calculations. The cubic alternating-plus-square basis
+is proved to span integrally, and Gaussian conjugation is explicitly
+semilinear over Z[i]. Exact checks recompute all four delivered arithmetic
+records and verify change-of-basis determinants -1 for their combined
+bases, as well as discriminants 8, 12, -108 and 5. These determinant checks
+address integral spanning, beyond rational rank alone.
+
+The shadow proof spells out tensor associativity and idempotence of the
+tail, including a balanced-tensor argument valid for torsion coefficient
+modules. It identifies the actual two-term complex, the degree-one shift
+convention and, for E = D, the square-zero multiplication. No algebra
+structure is assigned to arbitrary coefficient modules. A lattice
+isomorphism induces a shadow isomorphism without preserving order products.
+
+Made the universe qualification explicit in the closing discussion.
+The literal class statement about all set-sized modules translates to
+lower-universe-small modules; it cannot include every module formed in
+the larger universe. The regular module is a counterexample there, since
+Pi A = Pi is nonzero. The ordered core has its separate small-target
+counterexample from the coefficient-sum augmentation. The shadow theorem
+retains its specified constant-term action hypothesis. Updated the root
+README, guide, catalogue, notation and source anchors. Both results remain
+Pending in Lean; the subsequent polyhedral-core results and full source
+reconciliation remain pending review.
+
+Validation: three clean final TeX passes for the 302-page article and
+34-page catalogue, with no warnings or box diagnostics; inspected the
+revised proofs, examples, universe qualification and catalogue. All 418
+standard/principal statements, 828 labels, 1,656 auxiliary label/number
+pairs, 66 questions, 60 remarks and 28 numbered examples are unchanged.
+All 4,626 source anchors in 63 reports, 5,219 source-label references and
+1,839 local Markdown destinations in 226 files pass, as does whitespace
+checking. No Lean source changed; the two-thread 4,625-job build and
+16,987-declaration axiom audit remain the baseline before synchronization.
+Finite example calculations do not establish the general reconstruction,
+derived-category or universe-relative assertions.
+
+## Synchronization: full first-order real-axis nondefinability
+
+Merged origin/main through b8f4328, including 4fabd72, and reviewed the
+two new modules and the phase-twist docstring update against every clause
+of `odg:def:thm:norealaxis`. The generic invariance theorem uses Mathlib's
+native parameter-set definability and formula semantics for arbitrary
+formulas. It transports both definable tuple sets and function graphs
+under automorphisms fixing the entire parameter set.
+
+The actual surcomplex structure is explicitly the ring language with a
+unary predicate for the Gaussian omnific image. The phase twist preserves
+and reflects this predicate, fixes every ordinary complex parameter, and
+is packaged as an automorphism of that language. The existing omega
+witness disproves definability of the real axis; failure to commute with
+conjugation disproves definability of its graph. Equivalent statements
+in the expanded language name every ordinary complex constant. The pure
+Gaussian omnific ring has its own language automorphism and the ordinary
+Gaussian integer parameter set; the moved omnific omega proves the real
+omnific subring is not definable there. The README and ledger now correctly
+mark the full theorem proved, including quantified formulas, rather than
+only its algebraic witnesses. The scope remains the actual universe-indexed
+carriers; no proper-class first-order structure is introduced.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,628 jobs; the
+axiom audit checks 17,035 declarations using only propext, Classical.choice
+and Quot.sound. All 4,626 anchors in 63 reports, 5,219 source-label
+references and 1,841 local Markdown destinations in 226 files pass,
+as does whitespace checking. No incoming TeX changed; the reviewed
+302-page article and 34-page catalogue remain current.
+
+## Resynchronization: native arithmetic guards and quantifier translation
+
+The first push was rejected because main advanced. Fetched and merged
+77e2ff4, then reviewed its three modules against `odg:def:cor:arithmetic`
+and the referenced integer and natural guards. Explicit native ring terms
+and formulas encode the three Xi equations with five witnesses and the
+additional four-square condition. Their semantics identify exactly the
+ordinary integer and natural images, without nonlogical parameters.
+
+The generic transformation recursively guards every universal quantifier
+and relabels its variable without capture. Formula induction proves truth
+preservation along a first-order embedding whose image has that guard;
+the embedding need not be elementary. Applied to the actual integer
+inclusion, this gives one syntactic translation valid at every carrier
+universe and for every standard free and bound assignment, including
+integer ring sentences. The README and ledger retain the precise partial
+scope: the dedicated natural-arithmetic translation, encoded computability,
+many-one reduction, undecidability and non-axiomatizability remain Pending.
+
+Validation: the repeated `LEAN_NUM_THREADS=2 lake build` passes all
+4,631 jobs, and the axiom audit checks 17,116 declarations using only
+propext, Classical.choice and Quot.sound. The final audits pass for all
+4,626 anchors in 63 reports, 5,219 source-label references and 1,844 local
+Markdown destinations in 226 files, plus whitespace. No additional TeX
+changed, so the 302-page article and 34-page catalogue remain current.
