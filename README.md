@@ -413,6 +413,13 @@ real fibres even modulo 2. The ordinary quadratic subring maps only to
 pairs congruent modulo 2; after reduction, this inclusion acquires an
 explicit square-zero kernel. The larger normalization basis explains
 why the two Gaussian factors nevertheless remain separate.
+The fibre's domain images and class ultrafilters are now reviewed as well.
+Each prime ideal of the fibre is determined by one Boolean ultrafilter and
+one prime ideal of the algebraic integers. Its prime quotient is either
+`Z̄` or `F̄_p`; strict prime chains have at most one inclusion. Under global
+choice every nonzero fibre element survives in some `F̄_p`, with the prime
+allowed to vary, so the fibre has zero Jacobson radical. These consequences
+are stated for individual class ideals and remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

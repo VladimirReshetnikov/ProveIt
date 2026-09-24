@@ -3676,3 +3676,53 @@ runs and remains 35 pages; inspected page 12. The article remains 329
 pages with all statement, label and numbering checks unchanged. All 4,626
 anchors in 63 reports, 5,230 source-label references and 1,953 local
 Markdown destinations in 226 files pass their audits.
+
+### Arithmetic-fibre targets, prime ideals and finite axioms (2026-09-24)
+
+Reviewed the final six standard fibre results, `osq:nf:cor:small` through
+`osq:nf:thm:abstract`, completing all twenty-two in that subsection.
+The factor map is now defined on quotient representatives. The domain-image
+proof uses orthogonality to select exactly one partition part in every
+characteristic; characteristic zero uses a nonzero integer multiple, while
+positive characteristic uses algebraicity to obtain inverses and lifted
+monic factorizations to obtain algebraic closedness. Field targets explicitly
+use Frac(Z̄)=Q̄ and distinguish ordinary lying over from the class-ultrafilter
+choice. The abstract theorem now tracks contraction, integer divisibility,
+radicality, saturation, endpoint lifting, coefficient embedding and integral
+doubling under the stated finite assumptions.
+
+Expanded the ultrafilter recursion using a set-like global well-order,
+set-valued histories and finite-witness tests, then explicitly constructed
+the generated proper filter and proved maximality. Common refinements prove
+that evaluation is well-defined and multiplicative. Checked the enumeration
+principle against [Hamkins's global-choice exposition](https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/)
+and lying over against [Stacks Tag 00GQ](https://stacks.math.columbia.edu/tag/00GQ).
+The latter is now included in the existing integral-closure bibliography
+entry, preserving all bibliography numbering.
+
+An added, unnumbered consequence classifies each prime class ideal P of
+the fibre B: U consists of its idempotents outside P, p=P∩Z̄, and
+P=ε_U⁻¹(p). Thus B/P≅Z̄/p, without an initial size hypothesis on B/P.
+Prime inclusions preserve U and exactly reflect inclusions of coefficient
+primes. Since nonzero primes of Z̄ are maximal with residue F̄_p, strict
+prime chains have at most one inclusion; global choice gives chains of
+length one. Given a nonzero element, select a nonzero coefficient α,
+write αβ=n≠0, choose an ordinary prime not dividing n, and use lying over.
+This gives a maximal ideal avoiding the element. Hence the fibre has zero
+Jacobson radical, pointwise, and Π𝒩_● is already the common kernel of
+surjective maps to F̄_p with p allowed to vary. The discussion forms no
+collection of class ideals and makes no assertion about all prime ideals
+of the normalization. These consequences remain Pending in Lean.
+
+Updated root/report guides, shared notation, catalogue and coverage ledger.
+Three final diagnostic-free TeX passes each yield a 331-page article and
+35-page catalogue. Visually inspected article PDF pages 207–211 and catalogue
+pages 12–13. All 418 standard result statements, 828 labels, 1,656 AUX number
+entries, 66 questions, 60 remarks and 28 examples are unchanged. The unchanged
+source-19 checker passes all 253 primary exact tests (including 216 endpoint
+tests); mathematical output matches the historical record, with only Python
+3.13.14 versus 3.13.5 differing, both using SymPy 1.14.0. These finite checks
+do not certify class recursion, prime existence or the new ideal arguments.
+Independent audits pass all 4,626 anchors in 63 reports, 5,230 source-label
+references and 1,953 local Markdown destinations in 226 files. No Lean code,
+verification code or historical output record was changed in this review.
