@@ -4346,3 +4346,60 @@ Quot.sound. Three final catalogue TeX passes are diagnostic-free, still
 at 345 pages, with all previously checked statements, labels and numbering
 preserved. Audits pass 4,626 anchors in 63 reports, 5,240 cited source labels
 and 1,995 local Markdown destinations in 226 files. git diff --check passes.
+
+
+### Henselian hulls, finite branch survival and complexification (2026-09-24)
+
+Reviewed six foundational results, `osq:hb:prop:hull` through
+`osq:hb:prop:complex`, in dependency order. The opening main and factor
+summaries are not counted as fully reviewed. The quadratic-only splitter
+remark now proves its finite-algebra presentation from the nonsquare
+discriminant and carries the projected monic certificate through each
+specialization. The Laurent root is explicitly selected at infinity.
+
+The seeded hull proof separates floor closure, fraction clearing and
+factor pairs. It constructs the union first, then proves equality with the
+actual omnific intersection, real closedness of its fraction field, ideal
+idempotence and the exact cardinality without regularity assumptions.
+Replaced the abbreviated gap citation for support clearing by the precise
+fraction-clearing proposition. The local-ring proof gives the residue map
+b/s to ct(b)/ct(s), its kernel, fraction field and cardinality. Integral
+closure commutes with localization by an explicit rescaled monic equation.
+
+Finite atoms survive by clearing ideal-expression denominators, subtracting
+the purely infinite part of the denominator, then using integer-torsion
+freeness and radicality. Included the empty atom to verify that the local
+normalization fibre is nonzero. The pointed-neighbourhood discussion now
+proves uniqueness of the simple residue root and constructs mutually
+inverse henselization maps. This supplies faithful flatness over that
+neighbourhood, not merely flatness over the original local ring.
+
+For every finite root pattern, a single prime in the reduced normalization
+fibre makes all chosen roots zero while retaining the rational residue
+field. It therefore detects every denominator outside the pointed residue
+ideal at once. Every factor of the generic finite product survives, and
+faithful-flat base change embeds that product in the generic fibre.
+The affine-coordinate identity proves idempotence, and nonzero orthogonal
+atoms prove Boolean freeness. The general complexification argument checks
+the nonzero generic base change and injectivity of the field map, then
+rules out ordered targets by a negative square. The local henselization
+and its generic fibre retain their distinct roles. All six results remain
+pending in Lean; Boolean powers and exact branch counts are next.
+
+Checked the primary Stacks henselization, permanence and henselian-local-ring
+sections (0BSK, 07QL, 04GE), including faithful flatness without Noetherian
+hypotheses. These were already cited in the article. Refreshed root/report
+guides, notation, ledger anchors and catalogue. Three final TeX passes for
+each PDF are diagnostic-free: article 348 pages, catalogue 36 pages.
+Inspected article pages 249–254 and the affected catalogue pages. All 418
+result statements, 828 labels and 1,656 AUX label-number pairs are unchanged.
+All 66 questions and 28 examples are unchanged; the only changed remark
+among 60 is the intended quadratic splitter explanation.
+
+A byte-identical scratch copy of Source 27 passes all 5,760 assertions with
+SymPy 1.14.0; its JSON matches the archived result exactly. The finite
+identities do not prove transfinite support claims, prime existence or
+survival of all denominators; those arguments were reviewed separately.
+Audits pass 4,626 anchors in 63 reports, 5,240 cited source labels and 1,995
+local Markdown destinations in 226 files. No Lean source changed in this
+review. git diff --check passes.

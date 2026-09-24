@@ -752,13 +752,31 @@ quotient or determine the arithmetic weak global dimension. The countable
 fragment uses rational-square parameters and an explicit back-and-forth
 proof of the Cantor clopen Boolean algebra classification. These nine
 results and the new coefficient obstruction remain pending in Lean.
-The next review starts with the henselian branching results.
+
+The henselian foundations are now reviewed through forced complexification:
+six standard results, from the seeded hull to the free generic Boolean
+family and the general complexification proposition. The hull construction
+checks floor closure, fraction clearing and ideal factorization separately;
+its countable sequence preserves every infinite cardinal, including
+singular ones. The local ring has an explicit residue map b/s↦ct(b)/ct(s).
+
+The central localization proof now fixes a prime for each finite root
+pattern and uses it to show that every allowed denominator is nonzero
+on that branch. The pointed neighbourhood's own henselization is explicitly
+identified with the original henselization before faithful flatness is
+used. The quadratic-only splitter proof expands the finite-algebra
+specializations and keeps them separate from Laurent evaluation.
+The generic Boolean generators and imaginary unit use division in the
+fraction-field base change. The local henselization has no nontrivial
+idempotents and no square root of −1. These six results remain pending in Lean. The next
+review starts with the Boolean-power description and exact branch counts;
+the opening summary theorems are not yet fully reviewed.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 345 pages
+article.pdf   the compiled report, 348 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
