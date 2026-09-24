@@ -354,6 +354,21 @@ tensoring the cellular resolution over D. The localization field
 cap module includes `Tor₀(T, 𝒲) = T ⊗_A 𝒲 = 0`, which is needed
 for the dimension-one case. The torsion sequence need not split.
 
+For lattice modules over a cone, `r = rank_D M` counts independent
+constants and `d = dim 𝒞` counts exponent directions. Their relation
+module is `Π_𝒞^(r−1)`. Multiplication by `X^g` identifies L(M) and
+its ideal J as ungraded modules but shifts exponent degrees. The lattice
+lower bound for weak global dimension uses `K ≠ Frac D`; the separate
+two-ray obstruction to a flat embedding requires only `d ≥ 2`.
+
+The total-order core `T_{λ_ω}` retains constants in D and allows every
+exponent g with `λ_ω(g) > 0`. Its constant map extends that on A_𝒞.
+For ordered distinct ray vectors u,v, the new ratio is `z = X^(u−v)`
+and the relation vector is `(1, −z)` for the ordered pair `(X^u, X^v)`.
+In the explicit orthant example the pair is `(a,b)`, with u=(0,1),
+v=(1,0) and `λ_ω(u−v)=1`, so z becomes ω. The full-ring obstruction
+uses only finite linear combinations of old relations.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

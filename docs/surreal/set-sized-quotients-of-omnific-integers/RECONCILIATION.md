@@ -2507,3 +2507,73 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 5,219 source-label references and 1,872 local Markdown destinations in
 226 files pass, together with whitespace checks. The 311-page article
 and 34-page catalogue remain current.
+
+## Lattice comparisons and the two-monomial nonflatness certificate
+
+Reviewed `osq:pc:rem:lattice`, `osq:pc:lem:syzygy`,
+`osq:pc:thm:nonflat` and `osq:pc:ex:pair`. Added explicit proof
+blocks after the unchanged lattice remark and example, and expanded
+the two standard proofs. The lattice argument defines L(M) in the cone
+core, writes the exact presentation with kernel Pi^(r-1), and checks
+surjectivity, coefficient independence and the A-linear tail-coordinate
+map. No PID hypothesis is imposed on D; the coefficient lattice itself
+is finite free by definition.
+
+The augmentation gives fd Pi = d-1. Splicing resolutions gives the upper
+bounds d and d+1 for the lattice and cyclic quotient, respectively.
+Two long exact Tor sequences identify their higher Tor with r-1 copies
+of the augmentation Tor. The top-face cap makes this nonzero for d >= 2.
+The comparison is stated for ordinary ungraded modules: multiplication
+by the monomial shifts exponent degree. The rank-two lattice D+Dc needs
+only c outside Frac D, with no integrality or quadratic condition.
+Dimension one is reduced to A_1 and its existing antisymmetric-tensor
+argument. Rank one is treated as a free lattice module and a nonzero
+proper principal quotient of flat dimension one.
+
+The two-ray lemma now proves separately that neither exponent difference
+is in the cone, then extracts the two relevant coefficients of an
+arbitrary finite-sum relation. In the total-order core, injectivity of the
+exponent embedding orders the chosen ray vectors and admits their new
+ratio. Every old relation has both coordinates in the tail. A hypothetical
+finite trivialization of the new relation would therefore give 1 = 0
+under the constant map. The equational criterion was checked against
+Stacks Tag 00HK.
+
+Added a concrete tensor witness for the set-sized extension. For the
+ideal I=(X^u,X^v), the old-relation lemma makes theta(rX^u+sX^v)=ct(r)
+a well-defined map to D. Pairing it with the constant map on T is balanced
+and sends eta=X^u tensor 1-X^v tensor X^(u-v) to 1. Thus eta is nonzero,
+while multiplication kills it, explicitly showing that tensoring the
+ideal inclusion loses injectivity. In the full real and Gaussian rings,
+the proof uses only the finite relation and its finite trivializations;
+it does not assume a tensor category of proper classes.
+
+The explicit pair is verified in its stated order: u=(0,1), v=(1,0),
+so u-v=(-1,1) is outside the orthant but has embedded exponent 1.
+The new ratio is omega, and a-omega*b=0 has first coefficient one,
+which cannot come from old relations. The lattice coefficient restriction
+and the independent dimension restriction for nonflatness are distinguished
+in the shared notation and summaries.
+
+The accumulated review now covers all 30 standard polyhedral results
+(13 theorems, 7 lemmas, 5 propositions and 5 corollaries), plus the lattice
+remark and explicit example. Updated root README, report guide, notation,
+catalogue and the ledger's review scope and source anchors. Condensed the
+catalogue's polyhedral summary to retain the principal conclusions and
+boundary restrictions. These are manuscript reviews; Lean proofs of the
+source statements remain Pending. The associated open-question/status
+notes, subsequent internal-field results and full source reconciliation
+remain pending review.
+
+Validation: three clean final TeX passes for the 313-page article and
+34-page catalogue, with no warnings or box diagnostics. Inspected the
+lattice proof, coefficient argument, tensor witness, explicit pair and
+condensed catalogue entry. All 418 standard/principal statements,
+828 labels, 1,656 auxiliary label/number pairs, 66 questions, 60 remarks
+and 28 numbered examples are unchanged. Every standard polyhedral label
+is now named in the accumulated reconciliation record. All 4,626 source
+anchors in 63 reports, 5,219 source-label references and 1,872 local
+Markdown destinations in 226 files pass, together with whitespace checks.
+No finite computation substitutes for these tensor and arbitrary-module
+arguments. No Lean source changed locally; the two-thread 4,680-job build
+and 17,621-declaration axiom audit remain the baseline before synchronization.

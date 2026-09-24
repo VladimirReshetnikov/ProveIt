@@ -291,13 +291,31 @@ filtered colimits, tensors the cellular resolution with the torsion-free
 quotient, and explains its nonzero cap detector. Tor vanishing against
 that detector includes degree zero, so the argument covers dimension one
 and mixed modules without assuming that their torsion sequence splits.
-These four results remain pending in Lean. The lattice-module remark,
-nonflat embeddings and full source reconciliation remain pending review.
-Exact scope and validation are in [RECONCILIATION.md](RECONCILIATION.md).
+These four results remain pending in Lean.
+
+The lattice-module comparison, two-ray syzygy lemma, nonflatness theorem
+and explicit omnific pair are now reviewed. A written presentation gives
+the relation module `Π_𝒞^(r−1)`, and two dimension shifts give lattice
+and cyclic-quotient flat dimensions d and d+1. The dimension-one and
+rank-one cases are separated; the stronger weak-global-dimension bound
+requires `K ≠ Frac D`. For two distinct rays, coefficient extraction
+forces both old relation coefficients into the tail. The total exponent
+order admits a new ratio whose relation has first coefficient one.
+A balanced map to D detects a nonzero tensor killed by multiplication.
+In the full real and Gaussian rings the same obstruction is stated
+as failure of a finite relation criterion, without tensors of classes.
+The explicit pair now has its ray ordering and exponent difference checked.
+
+This completes a manuscript proof-review pass through all 30 standard
+results of the polyhedral subsection, plus its lattice remark and explicit
+example. Their Lean proofs remain pending. The associated open-question
+and status notes, the subsequent internal-field section, and full source
+reconciliation remain pending review. Exact scope and validation are in
+[RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 311 pages
+article.pdf   the compiled report, 313 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

@@ -9763,6 +9763,72 @@ for the rays) and the cap module $\mathcal W_{\mathscr C,b}$ in place of $V_{[d]
 so $\operatorname{w.gl.dim}A_{\mathscr C}\ge d+1$ whenever $K\ne\Frac D$ (take $M=D+Dc$, $c\in K\setminus\Frac D$). This improves the lower bound $d$ of 26's
 Question~13.2, as 12 and 21 do for $A_d$ (\cref{osq:hd:sub:dimensions,osq:da:thm:lattice}). For $d=1$, $A_{\mathscr C}\cong A_1=T_\Q$.
 \end{remark}
+\begin{proof}[Details of the lattice comparison]
+Put $A=A_{\mathscr C}$ and $\Pi=\Pi_{\mathscr C}$. A coefficient
+lattice here means a finite free $D$-submodule $M\subseteq K$ with
+chosen basis $m_1,\ldots,m_r$; no principal-ideal hypothesis on $D$
+is needed. Set $L(M)=M\oplus\Pi$. Its generators $m_j$ and the
+relations between them give the exact sequence
+\[
+ 0\longrightarrow\Pi^{r-1}\xrightarrow{\ \sigma\ }A^r
+    \xrightarrow{\ \pi\ }L(M)\longrightarrow0,
+\]
+where $\pi(a_1,\ldots,a_r)=\sum_j a_jm_j$ and
+\[
+ \sigma(u_2,\ldots,u_r)
+  =\left(-\sum_{j=2}^r\frac{m_j}{m_1}u_j,u_2,\ldots,u_r\right).
+\]
+Indeed, $m_1\Pi=\Pi$ gives surjectivity. Writing $a_j=d_j+u_j$,
+a relation has constant part $\sum_jd_jm_j=0$, so independence over
+$D$ forces every $d_j=0$. Its remaining tail equation is precisely
+the displayed formula for $u_1$. The ratios $m_j/m_1$ preserve
+$\Pi$, making $\sigma$ well-defined and $A$-linear; its last
+$r-1$ coordinates give injectivity.
+
+The antichain of all rays defines $\Pi$, so
+\cref{osq:pc:thm:facebetti,osq:pc:thm:exactfd} give
+$\fd_A D=d$ and $\fd_A\Pi=d-1$. Splicing a flat resolution of
+$\Pi^{r-1}$ into the displayed sequence gives $\fd_A L(M)\le d$.
+For $0\ne g\in P_{\mathscr C}$, multiplication by $X^g$ is an
+$A$-module isomorphism $L(M)\to J$. Its image is an ideal of $A$:
+all its exponents are nonzero cone points, so even coefficients in
+$K$ remain allowed. The sequence $0\to J\to A\to A/J\to0$
+therefore gives $\fd_A(A/J)\le d+1$.
+
+For every $A$-module $N$ and $j\ge2$, the free middle terms give
+\[
+ \Tor_j^A(L(M),N)\cong\Tor_{j-1}^A(\Pi,N)^{r-1}
+   \cong\Tor_j^A(D,N)^{r-1},
+ \qquad
+ \Tor_{j+1}^A(A/J,N)\cong\Tor_j^A(L(M),N).
+\]
+These are ordinary ungraded isomorphisms; multiplication by $X^g$
+shifts exponent degrees when a grading is retained. For $d\ge2$,
+choose $N=\mathcal W_{\mathscr C,b}$ with rational
+$b\in\operatorname{relint}\mathscr C$. The group $\Tor_d^A(D,N)$
+has degree-$b$ component $K$ by \cref{osq:pc:prop:cellular}.
+Since $r-1\ge1$, the displayed comparisons supply nonzero Tor in
+degrees $d$ and $d+1$ for the two modules. This proves the matching
+lower bounds against all flat resolutions.
+
+If $K\ne\Frac D$, choose $c\in K\setminus\Frac D$. The elements
+$1,c$ are independent over $D$: a relation with nonzero coefficient
+of $c$ would express $c$ as a fraction from $D$. The rank-two lattice
+$D+Dc$ therefore gives the stated weak-global-dimension lower bound.
+No integrality or quadratic equation for $c$ is required.
+
+For $d=1$, a rational generator of the unique ray identifies
+$P_{\mathscr C}$ with $\Q_{\ge0}$ and fixes the coefficients, giving
+$A_{\mathscr C}\cong A_1=T_\Q$. The dimension-one case of
+\cref{osq:hd:thm:fdlattice}, using its antisymmetric tensor rather
+than the comparison for $j\ge2$, gives $\fd L(M)=1$ and
+$\fd(A/J)=2$. For completeness, if the lattice instead has rank one,
+then $L(M)=m_1A\cong A$ and $J=m_1X^gA$ is a nonzero proper
+principal ideal. Its quotient has flat dimension one: the principal
+free resolution gives the upper bound, and tensoring multiplication
+by $m_1X^g$ with the nonzero quotient gives a noninjective zero map.
+\end{proof}
+
 
 \paragraph{Passage to the omnific ring is not flat.} The injection $\lambda_\omega$ pulls back the order of $\No$ to a total order on $\Q^d$ whose positive
 cone contains $P_{\mathscr C}\setminus\{0\}$. Put
@@ -9775,8 +9841,20 @@ a set-sized ring with the same fraction field (\cref{osq:pc:prop:fractions}) and
 If $u,v$ are nonzero rational vectors on distinct rays and $rX^u+sX^v=0$ in $A_{\mathscr C}$, then $\ct(r)=\ct(s)=0$.
 \end{lemma}
 \begin{proof}
-Neither $u-v$ nor $v-u$ is in $\mathscr C$ (else the face of $u$ would contain $v$). The coefficient of degree $u$ in $rX^u+sX^v$ is $\ct(r)$, the degree $u-v$
-being absent from $A_{\mathscr C}$; similarly for $v$.
+Suppose $u-v\in\mathscr C$. Then $u=(u-v)+v$ is a sum of two
+cone points lying in the ray containing $u$. The face property forces
+both summands into that ray, in particular the nonzero point $v$,
+contrary to the rays being distinct. Interchanging $u$ and $v$
+excludes $v-u\in\mathscr C$ as well.
+
+Write $r=\sum_m r_mX^m$ and $s=\sum_m s_mX^m$, with finite
+supports in $P_{\mathscr C}$ and constant coefficients in $D$.
+The coefficient of $X^u$ in the relation is
+$r_0+s_{u-v}=r_0$, since $u-v$ is outside the support monoid.
+It is zero because the monomials are linearly independent in
+$K[\Q^d]$. Similarly, the coefficient of $X^v$ is
+$r_{v-u}+s_0=s_0=0$. Thus $\ct(r)=\ct(s)=0$ for arbitrary
+finite-sum coefficients $r,s$, not merely for monomial relations.
 \end{proof}
 
 \begin{theorem}[A two-monomial nonflatness certificate \src{26}]\label{osq:pc:thm:nonflat}
@@ -9784,18 +9862,85 @@ If $d\ge2$, $A_{\mathscr C}\hookrightarrow T_{\lambda_\omega}$ is not flat, and 
 the same finite equational criterion.
 \end{theorem}
 \begin{proof}
-Take $u,v$ on distinct rays with $\lambda_\omega(u)>\lambda_\omega(v)$; then $z=X^{u-v}\in T_{\lambda_\omega}$ and $X^u-zX^v=0$. If the inclusion were flat,
-the relation vector $(1,-z)$ would be a finite combination, with coefficients in $T_{\lambda_\omega}$, of relation vectors of $(X^u,X^v)$ over $A_{\mathscr C}$
-\cite[Tag~00HK]{StacksFlat}; by \cref{osq:pc:lem:syzygy} all their coordinates have constant term zero, and the zero-constant elements form an ideal of
-$T_{\lambda_\omega}$, so the first coordinate cannot be $1$. In $\Oz$, $z$ is the monomial $\omega^{\lambda_\omega(u)-\lambda_\omega(v)}$ and $\Pi$ is an ideal
-(for $\GOz$, $\Pi_\C$), so the same contradiction applies to finite combinations in the full target; this is a finite relation, with no proper-class tensor
-category.
+A full-dimensional pointed cone of dimension $d\ge2$ has at least
+two distinct rays. Choose nonzero rational vectors $u,v$ on them.
+Injectivity of $\lambda_\omega$ makes their images unequal; after
+interchanging the vectors, assume
+$\lambda_\omega(u)>\lambda_\omega(v)$. Put $T=T_{\lambda_\omega}$.
+Then $z=X^{u-v}\in T$, since its image exponent is positive, and
+\[
+ X^u\cdot1+X^v\cdot(-z)=0.
+\]
+The previous lemma shows that $u-v$ is outside $\mathscr C$, so
+$z$ is a newly admitted monomial. Every old relation
+$rX^u+sX^v=0$ has both coordinates in $\Pi_{\mathscr C}$.
+
+If $T$ were flat over $A_{\mathscr C}$, the equational criterion
+\cite[Tag~00HK]{StacksFlat} would express this new relation as
+\[
+ (1,-z)=\sum_{j=1}^m t_j(r_j,s_j),\qquad
+ t_j\in T,\quad r_j,s_j\in A_{\mathscr C},\quad
+ r_jX^u+s_jX^v=0.
+\]
+The constant map $\ct:T\to D$ extends that of the core. Its kernel
+is an ideal containing both coordinates of every old relation.
+Taking the constant coefficient of the first coordinate would give
+$1=\sum_j\ct(t_j)\ct(r_j)=0$ in the nonzero ring $D$,
+a contradiction. Thus the finite equational criterion fails.
+
+There is also an explicit tensor witness in these set-sized rings.
+Let $I=(X^u,X^v)A_{\mathscr C}$. The map
+\[
+ \theta:I\to D,\qquad \theta(rX^u+sX^v)=\ct(r),
+\]
+is well-defined by \cref{osq:pc:lem:syzygy} and is linear when
+$D$ is an $A_{\mathscr C}$-module through $\ct$.
+The balanced map $(f,t)\mapsto\theta(f)\ct(t)$ induces
+$I\otimes_{A_{\mathscr C}}T\to D$. It sends
+\[
+ \eta=X^u\otimes1-X^v\otimes z
+\]
+to $1$, so $\eta\ne0$. But multiplication
+$I\otimes_{A_{\mathscr C}}T\to T$ sends $\eta$ to zero.
+Tensoring the injection $I\hookrightarrow A_{\mathscr C}$ is
+therefore not injective, directly witnessing nonflatness.
+
+For $(D,K)=(\Z,\R)$, the embedded monomials are
+$\omega^{\lambda_\omega(u)}$ and $\omega^{\lambda_\omega(v)}$.
+Their quotient $\omega^{\lambda_\omega(u)-\lambda_\omega(v)}$
+is an omnific monomial because the exponent is positive, so the
+same relation with first coordinate $1$ holds in $\Oz$.
+Every old relation has coordinates in the purely infinite ideal,
+which remains an ideal in the whole target. Thus no finite combination
+with coefficients in $\Oz$ can have first constant coefficient $1$.
+The argument is identical for $(\Z[i],\C)$ and $\GOz$, with
+constant map to $\Z[i]$ and purely infinite ideal $\Pi_{\C}$.
+These full-ring assertions concern only the explicit finite equation
+and its possible finite trivializations; no tensor product of classes
+is needed.
 \end{proof}
 
 \begin{example}[An explicit pair in $\Oz$ \src{26}]\label{osq:pc:ex:pair}
 For the orthant $\R_{\ge0}^2$ with $\lambda_\omega(x,y)=(x+y)\omega+y$, the coordinate monomials become $b=\omega^\omega$ and $a=\omega^{\omega+1}$, and
 $a-\omega b=0$ in $\Oz$; every syzygy of the pair in the core has zero constant terms, so this relation with first coefficient $1$ does not descend.
 \end{example}
+\begin{proof}[Verification of the explicit pair]
+The first coordinate ray has $\lambda_\omega(1,0)=\omega$, and
+the second has $\lambda_\omega(0,1)=\omega+1$. Thus the pair
+$(a,b)$ in the example corresponds to $(X^{(0,1)},X^{(1,0)})$,
+in that order. Their exponent difference is $(-1,1)$, outside
+the orthant, but its $\lambda_\omega$-image is $1$. The new ratio
+is consequently the surreal monomial $\omega^1=\omega$,
+and multiplication of monomials gives
+$\omega\,\omega^\omega=\omega^{\omega+1}=a$.
+All core relations $ra+sb=0$ have $\ct(r)=\ct(s)=0$ by
+\cref{osq:pc:lem:syzygy}. Any finite combination of them with
+omnific coefficients still has both constant coefficients zero,
+whereas $(1,-\omega)$ has first constant coefficient $1$.
+This verifies the claimed failure directly, including the ordering
+of the two generators.
+\end{proof}
+
 
 For the orthant the conclusion is the nonflatness in 12's \cref{osq:hd:thm:collapse}, proved there by an intersection certificate in $T_\Gamma$ with a real
 embedding; 26's equational certificate, with a lexicographic embedding and the explicit failure in $\Oz$, is a second route. Partial exponent order creates

@@ -320,6 +320,12 @@ flat dimension in the rational-root core. For a principal ideal domain D
 that is not a field, every nonzero module acting through the constant map
 has flat dimension one if it is D-torsion, and d otherwise. This holds
 without finite generation.
+Lattices with two independent constants give cyclic quotients of flat
+dimension `d + 1` when `K ≠ Frac D`, a lower bound for weak global
+dimension. In dimensions at least two, a concrete two-monomial relation
+fails the flatness criterion when the core is enlarged to its total-order
+core or realized inside the real or Gaussian omnific ring. An explicit
+nonzero tensor in the set-sized case exhibits the failure of injectivity.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
