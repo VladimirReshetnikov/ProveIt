@@ -289,6 +289,23 @@ its two coordinates are precisely real omnific integers. The corresponding
 fiber theorem is proved over this ring too, with ordinary Gaussian points,
 unique purely infinite complex kernel parameters, and disjoint fibers over
 distinct ordinary points.
+The converse is proved in both rings: once an ordinary point exists at a
+nonzero level, nonordinary points exist exactly when the relevant real or
+complex kernel is nonzero. Multiplying a nonzero kernel direction by the
+actual monomial ω supplies the nonordinary solution.
+Each nonzero kernel direction also embeds the entire purely infinite ideal
+into the fiber over an ordinary point. These fibers are proved not small in
+the lower universe, the formalization's version of proper-class size. The
+ordinary-point hypothesis is necessary: `X − Y = √2` has a nonzero kernel
+but no solution in either omnific ring.
+
+Binary polynomials with two distinct projective linear factors now have
+proved rigidity at every nonzero constant level; the proof even allows
+nonhomogeneous polynomials with those two divisors. In particular,
+`x² − D y² = c` has exactly its ordinary integer solutions for every
+nonzero integer `D` and `c`, including negative or square `D`. This rules
+out infinite omnific Pell solutions without asserting finiteness of the
+ordinary solution set.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
