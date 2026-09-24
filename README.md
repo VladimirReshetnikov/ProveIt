@@ -336,8 +336,17 @@ A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
 set-sized image. More generally, the universal set-sized image of `Oz/(f)`
-is `ℤ/(ct(f))`. These are manuscript consequences of the universal theorem;
-later cardinal classifications and full source reconciliation remain pending review.
+is `ℤ/(ct(f))`. The reviewed internal-field proofs explain another
+consequence: whenever a nonzero purely infinite element becomes a unit,
+the nonzero target contains a field copy of all surreal numbers, or all
+surcomplex numbers in the Gaussian case. The construction first compresses
+the additive exponent group, then substitutes monomials. Its field image
+has an exact support description and is a proper subfield of the
+compressed Hahn field.
+The transfer maps agree on overlapping fields even when different
+denominators are inverted. These are manuscript proofs, pending in Lean;
+exact binomial kernels, later classifications and full source reconciliation
+remain pending review.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted
