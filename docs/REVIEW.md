@@ -4132,6 +4132,41 @@ The 4,271-result inventory passes. No TeX source or PDF changes in this last
 merge; the preceding render checks still apply. The Gaussian fiber and
 converse existence statements remain pending in Lean.
 
+## Workspace and closing-scope review
+
+The Diophantine scope pass checks Section 20 and Sections 21.1–21.6 against
+the maintained proofs and implementation ledger. It corrects the unconditional
+claim about products with the affine line, distinguishes singleton rigid-curve
+fibers from affine-line fibers, and distinguishes vanishing Euler contractions
+from vanishing differential forms. The integer-exponent workspace supplies an
+explicit counterexample to universal idempotence: `Π = ω ℝ[ω]` and
+`Π² = ω² ℝ[ω]`. The arithmetic curve summary now states its real-fiber and
+ordinary-point hypotheses. Rational-hull characters preserve original supports;
+the scalar-representation theorem retains unimodularity. The fraction synthesis
+states uniqueness up to sign, and the catalogue uses constant-term specialization
+rather than standard part for that classification.
+
+The formalization route is rewritten in dependency order at `38425db`, with
+chosen Smith reductions, the real/complex kernel distinction and the remaining
+logical and geometric obligations explicit. The proposed module table now
+breaks over pages with repeated headers and preserves later table numbering.
+The root README, notation guide and coverage records reflect this scope.
+This is a check of maintained statements and their summaries, not completion
+of parallel-source reconciliation or of imported classical foundations.
+
+All 217 standard result environments, 30 question environments, 471 source
+labels and 942 auxiliary numbering fields are preserved. Three-pass builds
+give a 203-page article and 32-page catalogue without warnings, unresolved
+references or bad boxes. Targeted visual inspection covers the changed scope
+paragraphs, both roadmap pages, the closing fiber/synthesis text and catalogue
+pages 9–10. The independent inventory passes for 4,271 results in 63 reports;
+all 4,821 source references and 1,665 local Markdown destinations resolve.
+No Lean source or finite verification program changes in this pass; the last
+combined build was 4,471 jobs and its axiom audit covered 15,460 declarations.
+Incoming synchronization is checked separately. Remaining pointers in Sections
+1, 6, 7 and 14, Section 21.7, the appendix foundations and complete source
+reconciliation remain pending.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

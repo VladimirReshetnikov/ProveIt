@@ -62,7 +62,8 @@ also covers Section 17.5 and the singular-curve criterion through Section 17.6.5
 conductor certificates, the discrete boundary place and structural consequences.
 Later passes review the repeated-root applications and groups and coefficient
 algebras and logarithmic applications through Section 18.6. Remaining curve
-pointers and later scope notes still await review, with the exact boundary in its
+pointers and neighbouring-report comparisons still await review; Section 20
+and Sections 21.1–21.6 now have a scope check, with the exact boundary in its
 [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md); its
 remaining geometric arguments and the other new reports and additions await
 review. Lean covers the omnific ring and constant-term package, degree
@@ -111,7 +112,8 @@ gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
 manuscript review. The review also covers the closing singular-curve scope
 notes and Sections 18.1–18.6 on groups, coefficient algebras, boundary
-examples and logarithmic applications; later scope notes remain unreviewed. The independent-copies report and its
+examples and logarithmic applications. The workspace and question-status
+review covers Sections 20–21.6; neighbouring-report comparisons remain pending. The independent-copies report and its
 class-foundation assumptions remain pending proof review and Lean formalization.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds

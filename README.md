@@ -347,6 +347,9 @@ by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian varie
 The logarithmic review extends the differential argument to complements of
 simple normal-crossings boundaries, spells out arithmetic descent, and
 corrects the distinction between ring retractions and common-field inclusions.
+The scope review makes the workspace restrictions and two kinds of smooth
+curve fibers explicit, and updates the formalization route to the proved
+arithmetic and linear-algebra prerequisites.
 These geometric and coefficient-algebra results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.

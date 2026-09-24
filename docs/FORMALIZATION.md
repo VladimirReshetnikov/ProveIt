@@ -1331,6 +1331,17 @@ closed equalizer, and class points are treated in set-sized workspaces.
 These six results remain **Pending** in Lean. Later pointers, scope notes,
 parallel-source reconciliation and imported foundations remain to review.
 
+The scope pass checks Section 20 and Sections 21.1–21.6 against the
+maintained statements and this ledger. It corrects the unconditional
+product-with-affine-line and smooth-fiber summaries, and distinguishes
+vanishing Euler contractions from vanishing differential forms. The fixed
+workspace `Γ = ℤ` has `Π = ω ℝ[ω]` and `Π² ≠ Π`; this counterexample is
+explained in the manuscript, not newly formalized. All standard statements
+and question environments are unchanged. The implementation route now
+records the proved arithmetic and fiber prerequisites in dependency order;
+the remaining pointers, neighbouring-report comparisons, imported
+foundations and complete parallel-source reconciliation still need review.
+
 ### Synchronization of the September 23 expansions
 
 The merge through `6f47cf9` brings in the batch-28 assemblies: discrete-initial
