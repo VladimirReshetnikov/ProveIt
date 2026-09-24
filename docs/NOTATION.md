@@ -76,6 +76,16 @@ have size `κ^{ℵ₀}`, but equal cardinality does
 not identify their field structures. The ideal's least number of generators
 is `cf(κ)`, a different cardinal invariant.
 
+In source 06's regular-cardinal model, `κ^{<κ}` means
+`sup_{ν<κ} κ^ν`, with ν a cardinal. It is the ring size and the detection
+threshold; the ideal requires κ generators. Regularity of κ alone does not
+assert `κ^{<κ} = κ`. A bound on each support remains distinct from the
+bound on the union of a family of supports: the field-closure proof uses
+only finitely many supports, while common monomial divisors for fewer than
+κ elements use regularity. At `κ = ℵ₁`, the countable-support and regular-
+cardinal constructions are isomorphic by reindexing their two rational
+bases, not by identifying each of their embedded surreal elements.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

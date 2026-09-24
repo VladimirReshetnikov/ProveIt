@@ -5390,3 +5390,89 @@ references, 1,770 local Markdown destinations across 226 files and whitespace
 checks pass. The merged changes do not touch the article or catalogue
 sources/PDFs, preserving their clean three-pass builds. This synchronization
 adds no Lean proof of the countable-support cardinal model reviewed above.
+
+## Regular-cardinal two-armed model
+
+Reviewed the five standard results `osq:lem:kappagap`,
+`osq:prop:fieldclosure`, `osq:prop:kappachain`, `osq:lem:card06` and
+`osq:thm:model06`, with the first-uncountable-cardinal example `osq:ex:CH`.
+This supplies source 06's contribution to the five-model threshold summary;
+the other three models, the full summary, later classifications and full
+parallel-source reconciliation remain pending review.
+
+Corrected a sign error in the discreteness proof: a nonzero series with a
+positive leading exponent need not exceed every real constant, since -X^g
+for g>0 is negative. The proof now specifies positive leading coefficient
+and separates ordinary positive integers from positive infinite elements.
+The field-closure proposition itself is unchanged.
+
+The simultaneous-scale proof bounds the finite coordinate expressions and
+handles zero and empty inputs. Field closure now uses one rational span of
+the finitely many input supports, whose size stays below kappa using only
+uncountability. The proof explicitly splits real/imaginary supports, identifies
+the actual omnific intersection, clears denominators and verifies that the
+floor remains within the support bound. Its hypotheses and sign convention
+were compared with `fkc:lem:workspace`, `fkc:prop:closed` and
+`fkc:rem:singular` in the first-kappa report. The imported closedness input
+was checked against [Poonen, Corollary 4, page 10](https://math.mit.edu/~poonen/papers/amsval.pdf);
+this is an input check, not a new proof of the full Hahn-field theorem.
+
+An added unnumbered counterexample explains the regularity boundary.
+At an uncountable singular kappa, the sum of X raised to the shrinking
+exponents epsilon_(alpha_xi), along a cofinal sequence of length cf(kappa),
+has support below kappa but no positive monomial divisor in the integer-part
+ring. Every proposed positive divisor exponent eventually exceeds a support
+exponent. Thus algebraic closure within the support bound does not imply
+the gap property used in the threshold and generator proofs. No extension
+of those theorems to singular kappa is claimed.
+
+The principal-ideal chain proof gives its factors and strictness, explains
+idempotence element by element, and excludes every smaller generating family
+by a missing half-scale monomial. The cardinality proof separates finite and
+infinite supports in the upper bound, codes functions by graphs to justify
+the subset count, and checks reverse well-ordering of all coded lower-bound
+supports. The smaller-scale field has exactly kappa^(<kappa) elements.
+The threshold proof now derives the ring and module bounds directly from
+it, supplies identity/regular-module attainment and the unique constant-term
+factorization, and treats the Gaussian ideal and coefficients explicitly.
+It does not rely on the unreviewed summary across all five models.
+
+The continuum example now proves its cardinal arithmetic and constructs
+the actual ordered-group reindexing between the two rational bases. This
+induces the real and Gaussian ring isomorphisms at aleph_1 and commutes
+with the constant term; it does not identify every embedded surreal element.
+The root README, catalogue and notation guide distinguish ring size,
+detection threshold, generator count, and per-element versus family support
+bounds. All reviewed cardinal results remain pending in Lean.
+
+Validation: the article (270 pages) and catalogue (33 pages) each build in
+three clean passes, with no TeX warnings or box diagnostics. The field-closure,
+singular-bound and continuum-example pages were inspected visually. All 828
+labels, 1,656 auxiliary label/number pairs, 409 standard results and nine
+principal summaries are preserved, and no numbered theorem statement changes.
+All 4,626 statement anchors in 63 reports, 5,203 cited source labels, 1,770
+local Markdown destinations across 226 files and whitespace checks pass.
+No Lean or verifier source changed. Finite computations were not rerun to
+claim evidence for these cardinal arguments; the previous 4,560-job Lean
+build and 16,059-declaration axiom audit remain the documentation-only baseline.
+
+### Synchronization after the regular-cardinal model review
+
+Merged `d33b8cf`, including `601bf05`, which formalizes source 07's
+alternative quartic `odg:def:eq:F4` and `odg:def:rem:quarticvariant`.
+Compared its literal polynomial, exact degree four, six witnesses and
+all-coordinate standardness with the manuscript. The intermediate Hahn-ring
+proof needs precisely the integer constant intersection, without closure
+under constant extraction, a square root of two in the coefficient field,
+nontrivial exponents or an Archimedean coefficient field. The actual omnific
+instance is proved separately. The printed Gaussian witnesses work for every
+Gaussian omnific integer, and omega is proved to be an accepted nonconstant
+element. The five-witness three-square guard remains pending; this merge
+adds no proof of the cardinal models reviewed here.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` succeeds with 4,565 jobs and an
+axiom audit of 16,094 declarations, using only `propext`, `Classical.choice`
+and `Quot.sound`. All 4,626 statement anchors in 63 reports, 5,204 cited
+source labels, 1,775 local Markdown destinations across 226 files and
+whitespace checks pass. The merge leaves article and catalogue sources and
+PDFs unchanged, so their clean three-pass builds remain current.

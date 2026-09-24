@@ -29,21 +29,24 @@ representations, quotients, completions, localizations, positive existential
 conservativity, modules and derivations. The review also covers the finite-side
 standard-part theorem, the support threshold, and the fixed-group lower bounds
 through the cyclic-module lemma, followed by source 03's countable-support
-two-armed model. Its ring/module detection threshold, exact ideal generator
-count and stated flatness/Tor consequences have direct proofs. Corrections
+two-armed model and source 06's regular-cardinal support model. Both have
+direct proofs of their exact ring/module detection thresholds and ideal
+generator counts; source 03's stated flatness/Tor consequences are also
+reviewed. Source 06's field closure is separated from the gap property,
+with an explicit failure of the latter at singular support bounds. Corrections
 include the matching complex fraction field in the Gaussian case, the characteristic
 restriction on integer divisibility, the distinction between a large quotient
 and its small images, and the infinite support allowance in the finite-side
 extension criterion. The imported primality and derivation inputs remain
 identified as imports.
 
-The organizing theorem across all five models, the other four models, and full
+The organizing theorem across all five models, the other three models, and full
 reconciliation of the parallel sources, remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 268 pages
+article.pdf   the compiled report, 270 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

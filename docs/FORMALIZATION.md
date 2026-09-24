@@ -5618,6 +5618,27 @@ remain **Pending** in Lean; no implementation mappings are added. The
 other four models, the organizing theorem across all five models, later
 classifications and full source reconciliation remain pending review.
 
+The next review covers source 06's five standard results
+`osq:lem:kappagap`, `osq:prop:fieldclosure`, `osq:prop:kappachain`,
+`osq:lem:card06` and `osq:thm:model06`, plus `osq:ex:CH`. The original
+discreteness proof's assertion that any nonzero series with positive
+leading exponent exceeds every real is **Needs correction**: `-X^g`
+for g>0 is negative. The corrected proof requires a positive leading
+coefficient; the proposition's statement is unchanged. Field closure uses
+one small rational span and remains valid at singular uncountable support
+bounds. An explicit series on a cofinal sequence of shrinking exponents
+shows why the positive-monomial-divisor property can fail at singular κ.
+The subset cardinality is proved by coding graphs, and the exact detection
+threshold is derived directly, with identity/regular-module attainment and
+an explicit Gaussian argument. The ℵ₁ example gives the actual exponent
+reindexing isomorphism between the two models. These results and the new
+unnumbered singular-bound counterexample remain **Pending** in Lean.
+Poonen's Corollary 4 remains the imported closedness input; the corresponding
+small-span proof in the first-kappa report was compared for notation and
+hypotheses. No implementation mappings are added. The remaining three
+models, the five-model summary, later classifications and full parallel-source
+reconciliation remain pending review.
+
 The 9 `maintheorem` statements are in scope: `osq:main:universal` (line 269), `osq:main:support` (line 280), `osq:main:thresholds` (line 290), `osq:main:fieldbound` (line 304), `osq:main:internal` (line 313), `osq:main:closure` (line 326), `osq:main:polynomial` (line 345), `osq:main:ordinal` (line 370), `osq:hd:main:cores` (line 376).
 They are not included in the literal standard-environment table below.
 
@@ -5682,356 +5703,356 @@ They are not included in the literal standard-environment table below.
 | Theorem | `osq:thm:model03` (line 3185) | Cardinal realization \src{03} |
 | Lemma | `osq:lem:cardinalfacts` (line 3264) | Cardinal facts \src{03} |
 | Lemma | `osq:lem:kappagap` (line 3304) | Simultaneous upper and lower scales \src{06} |
-| Proposition | `osq:prop:fieldclosure` (line 3320) | Field closure and integer part \src{06} |
-| Proposition | `osq:prop:kappachain` (line 3346) | A chain of principal ideals \src{06} |
-| Lemma | `osq:lem:card06` (line 3358) | Size of the ring and of every smaller-scale field \merge |
-| Theorem | `osq:thm:model06` (line 3380) | The exact threshold of $A^{06}_\kappa$ \src{06} \merge |
-| Lemma | `osq:lem:gammabounds` (line 3419) | Scale and support bounds \src{08} |
-| Lemma | `osq:lem:controlled` (line 3437) | The controlled field \src{08} |
-| Lemma | `osq:lem:finitecoord` (line 3449) | Finite-coordinate invariant \src{08} |
-| Theorem | `osq:thm:model08` (line 3477) | Sharp models at every infinite cardinal \src{08} |
-| Lemma | `osq:lem:tail` (line 3534) | A large small-exponent tail \src{09} |
-| Theorem | `osq:thm:barrier` (line 3556) | Cardinal barrier \src{09} |
-| Lemma | `osq:lem:coefffield` (line 3579) | Recovering the coefficient field \src{09} |
-| Theorem | `osq:thm:residue` (line 3590) | Residue fields at the threshold \src{09} |
-| Proposition | `osq:prop:lex` (line 3640) | Long lexicographic groups \src{11} |
-| Proposition | `osq:prop:card11` (line 3657) | Exact size and threshold \merge |
-| Lemma | `osq:lem:projideal` (line 3707) | Projective ideals of a domain \src{06} |
-| Theorem | `osq:thm:homological` (line 3717) | Homological package \src{03, 06, 09} \merge |
-| Theorem | `osq:thm:extthreshold` (line 3768) | Exact size of cohomological witnesses \src{06} \merge |
-| Lemma | `osq:hd:lem:cores` (line 3862) | Domains and embeddings \src{12; 14} |
-| Proposition | `osq:hd:prop:finite` (line 3896) | Finite targets only \src{12} |
-| Lemma | `osq:hd:lem:faces` (line 3930) | Face ideals \src{12} |
-| Theorem | `osq:hd:thm:resolution` (line 3959) | Coordinate-intersection resolution \src{12} |
-| Corollary | `osq:hd:cor:arithmeticTor` (line 3978) | Arithmetic modules are $\Tor$-acyclic \src{12} |
-| Proposition | `osq:hd:prop:etale` (line 3990) | Formal lifting and differentials \src{12; 13} |
-| Theorem | `osq:hd:thm:boolean` (line 4015) | Boolean-face $\Tor$ formula \src{12} |
-| Corollary | `osq:hd:cor:fd` (line 4050) | Exact flat dimensions \src{12} |
-| Theorem | `osq:tn:thm:syzygy` (line 4084) | Generators and the first syzygy \src{14; 12; 17} \merge |
-| Proposition | `osq:tn:prop:nonflat` (line 4129) | Antisymmetric torsion and nonflatness \src{14} \merge |
-| Theorem | `osq:hd:thm:fdlattice` (line 4160) | Lattice modules and cyclic quotients \src{12, 14} \merge |
-| Proposition | `osq:hd:prop:pd` (line 4195) | Projective dimensions \src{12} \merge |
-| Theorem | `osq:hd:thm:orderedcone` (line 4244) | Ordered-cone cores \src{12} |
-| Theorem | `osq:hd:thm:collapse` (line 4258) | Same exponent group, different dimension \src{12} |
-| Lemma | `osq:tn:lem:absorption` (line 4321) | Absorption \src{14} |
-| Theorem | `osq:tn:thm:tensor` (line 4332) | Exact tensor normal form \src{14; 17} |
-| Proposition | `osq:tn:prop:higher` (line 4359) | Several factors \src{14} |
-| Theorem | `osq:tn:thm:powers` (line 4370) | Exterior and symmetric powers \src{14} |
-| Theorem | `osq:tn:thm:rees` (line 4399) | All nonlinear Rees equations are arithmetic \src{14} |
-| Theorem | `osq:tn:thm:degree` (line 4422) | The algebraic degree is the first nonlinear degree \src{14} |
-| Corollary | `osq:tn:cor:alldegrees` (line 4438) | A family of every degree \src{14; 17} |
-| Theorem | `osq:tn:thm:hom` (line 4465) | Scalar homomorphisms and isomorphism types \src{14; 17} |
-| Theorem | `osq:tn:thm:pic` (line 4488) | Ideal classes survive torsion-free multiplication \src{14} |
-| Theorem | `osq:tn:thm:duals` (line 4512) | Uniform duals \src{14} |
-| Theorem | `osq:tn:thm:matrix` (line 4528) | Common-scale constant matrices \src{14; 17} |
-| Theorem | `osq:rel:thm:presentation` (line 4569) | No presentation by sets \src{17} |
-| Lemma | `osq:rel:lem:embedding` (line 4605) | The lexicographic models inside $\Oz$ \src{17}; \merge\ for $\kappa=\aleph_0$ |
-| Theorem | `osq:rel:thm:kappa` (line 4636) | Exact relation counts \src{17}; \merge\ for $\kappa=\aleph_0$ |
-| Proposition | `osq:rel:prop:fd` (line 4678) | Flat dimensions over the models \src{17} |
-| Theorem | `osq:rel:thm:tor` (line 4693) | $\Tor$ as coefficient multiplication \src{17; 21}; \merge\ over the cores |
-| Corollary | `osq:rel:cor:twelve` (line 4737) | 12's cyclic modules without $c^2\in D$ \merge |
-| Corollary | `osq:rel:cor:selftor` (line 4752) | The self-$\Tor$ range \src{17; 21} |
-| Proposition | `osq:rel:prop:field` (line 4770) | The maximal self-obstruction detects a field \src{17} |
-| Theorem | `osq:rel:thm:mobius` (line 4780) | Rank-two moduli \src{17} |
-| Theorem | `osq:rel:thm:order` (line 4797) | Orders from endomorphism rings \src{17} |
-| Corollary | `osq:rel:cor:realize` (line 4813) | Every order occurs \src{17} |
-| Theorem | `osq:rel:thm:augmentation` (line 4833) | Modules killed by the tail \src{17; 21} |
-| Proposition | `osq:da:prop:faces` (line 4912) | Face quotients: flat resolution and flat dimension \src{21} |
-| Theorem | `osq:da:thm:telescope` (line 4937) | A free telescope resolution \src{21} |
-| Theorem | `osq:da:thm:ext` (line 4967) | The top $\Ext$ group \src{21} |
-| Theorem | `osq:da:thm:injection` (line 4984) | A copy of $D^{\N}/D^{(\N)}$ in the top $\Ext$ group \src{21} |
-| Corollary | `osq:da:cor:exactpd` (line 5003) | Exact projective dimensions of the coordinate cores \src{21} |
-| Theorem | `osq:da:thm:lattice` (line 5024) | Lattice modules over the coordinate cores \src{21} \merge |
-| Theorem | `osq:da:thm:dga` (line 5093) | A flat DGA resolution \src{21} |
-| Theorem | `osq:da:thm:pair` (line 5115) | All $\Tor$ groups of two lattice quotients \src{17; 21} |
-| Lemma | `osq:da:lem:compositum` (line 5150) | The compositum \src{21} |
-| Theorem | `osq:da:thm:disjoint` (line 5161) | Second $\Tor$ detects linear disjointness \src{21} |
-| Theorem | `osq:da:thm:product` (line 5188) | The self-$\Tor$ product \src{21} |
-| Corollary | `osq:da:cor:indecomposable` (line 5204) | Alternating and symmetric relations \src{21} |
-| Theorem | `osq:da:thm:reconstruction` (line 5232) | Framed reconstruction \src{21} |
-| Theorem | `osq:da:thm:shadow` (line 5266) | The derived constant-term shadow \src{17; 21} |
-| Proposition | `osq:pc:prop:embedding` (line 5370) | Omnific embeddings \src{26} |
-| Proposition | `osq:pc:prop:fractions` (line 5383) | A common fraction field \src{26} |
-| Lemma | `osq:pc:lem:subtract` (line 5399) | Face subtraction \src{26} |
-| Theorem | `osq:pc:thm:exhaustion` (line 5416) | Principal exhaustion and dimension one \src{26} |
-| Theorem | `osq:pc:thm:products` (line 5441) | Intersections, products and tensors \src{26} |
-| Theorem | `osq:pc:thm:radical` (line 5459) | Radical classification \src{26} |
-| Proposition | `osq:pc:prop:faceprime` (line 5477) | Generators of a face prime \src{26} |
-| Theorem | `osq:pc:thm:cech` (line 5491) | Face-labelled simplex resolution \src{26} |
-| Lemma | `osq:pc:lem:diagonal` (line 5517) | One diagonal block \src{26} |
-| Lemma | `osq:pc:lem:cancellation` (line 5529) | Triangular cancellation \src{26} |
-| Lemma | `osq:pc:lem:crosscut` (line 5552) | Crosscut comparison \src{26} |
-| Theorem | `osq:pc:thm:isolation` (line 5573) | Isolation of one face label \src{26} |
-| Theorem | `osq:pc:thm:exactfd` (line 5587) | Join homology computes flat dimension \src{26} |
-| Corollary | `osq:pc:cor:pdbounds` (line 5609) | A one-step projective interval \src{26} |
-| Theorem | `osq:pc:thm:homological` (line 5623) | Homological epimorphisms \src{26} |
-| Lemma | `osq:pc:lem:complement` (line 5638) | Deleting a face from a polytopal boundary \src{26} |
-| Lemma | `osq:pc:lem:outside` (line 5655) | The outside-vertex complex \src{26} |
-| Theorem | `osq:pc:thm:facebetti` (line 5666) | Face-quotient multiplicities \src{26} |
-| Proposition | `osq:pc:prop:cellular` (line 5691) | The face complex resolves $D$ \src{26} |
-| Theorem | `osq:pc:thm:flatclass` (line 5708) | Only single-face ideals are flat \src{26} |
-| Corollary | `osq:pc:cor:reconstruct` (line 5718) | A marked face lattice \src{26} |
-| Theorem | `osq:pc:thm:simplicial` (line 5729) | A homological characterization of simplicial cones \src{26} |
-| Corollary | `osq:pc:cor:simplicialface` (line 5741) | Simplicial face dimensions \src{26} |
-| Theorem | `osq:pc:thm:cubes` (line 5765) | Cube cones \src{26} |
-| Corollary | `osq:pc:cor:squarefree` (line 5782) | Squarefree homology survives rational roots \src{26} |
-| Corollary | `osq:pc:cor:coefficients` (line 5795) | Coefficient independence \src{26} |
-| Proposition | `osq:pc:prop:scalar` (line 5805) | A nonzero scalar removes the tail \src{26} |
-| Theorem | `osq:pc:thm:arithmetic` (line 5817) | Arithmetic modules over a principal-ideal core \src{26} |
-| Lemma | `osq:pc:lem:syzygy` (line 5856) | Two-ray syzygies have zero constants \src{26} |
-| Theorem | `osq:pc:thm:nonflat` (line 5864) | A two-monomial nonflatness certificate \src{26} |
-| Proposition | `osq:if:prop:closed` (line 5947) | Closedness of the compressed fields \src{07, 24} |
-| Lemma | `osq:if:lem:compression` (line 6013) | Ordered additive compression \src{07} |
-| Theorem | `osq:if:thm:compression` (line 6038) | A full surreal field in every compressed field \src{07} |
-| Lemma | `osq:if:lem:gf` (line 6092) | Multiplication by a purely infinite denominator \src{07} |
-| Theorem | `osq:if:thm:transfer` (line 6106) | Localization and quotient transfer \src{07} |
-| Corollary | `osq:if:cor:unitconstant` (line 6149) | Quotients by a unit-constant perturbation \src{07} |
-| Corollary | `osq:if:cor:primefield` (line 6165) | A conditional statement about nonarithmetic primes \src{07} |
-| Proposition | `osq:if:prop:reservoir` (line 6203) | A scaled field in every non-arithmetic residue field \src{06} |
-| Lemma | `osq:if:lem:localization` (line 6279) | Localization of the binomial quotient \src{07} |
-| Theorem | `osq:if:thm:binomialkernel` (line 6328) | Exact binomial kernel \src{07} |
-| Corollary | `osq:if:cor:Ea` (line 6400) | Internal algebraically closed field \src{07} |
-| Lemma | `osq:if:lem:stage` (line 6448) | A single stage over the fixed complex field \src{07} |
-| Theorem | `osq:if:thm:cantor` (line 6491) | Cantor algebra theorem \src{07} |
-| Corollary | `osq:if:cor:boolean` (line 6567) | Boolean algebra and failure of finiteness conditions \src{07} |
-| Theorem | `osq:if:thm:complexkernel` (line 6621) | Complex exact kernels and dyadic algebra \src{07} |
-| Theorem | `osq:cr:thm:krull` (line 6811) | Maximal class extensions \src{24} |
-| Proposition | `osq:cr:prop:avoid` (line 6845) | Prime extension avoiding a multiplicative class \src{24} |
-| Corollary | `osq:cr:cor:prescribe` (line 6856) | Compatible prescribed equations \src{24} |
-| Theorem | `osq:cr:thm:equivalence` (line 6880) | Class Krull and global choice \src{24} |
-| Lemma | `osq:cr:lem:compat` (line 6890) | Finite-polynomial compatibility \src{24} |
-| Proposition | `osq:cr:prop:arithmetic` (line 6932) | The arithmetic maximal ideals \src{24} |
-| Theorem | `osq:cr:thm:binomialmax` (line 6947) | Binomial maximal extensions \src{24} |
-| Corollary | `osq:cr:cor:unitconstant` (line 6956) | Unit-constant fibres \src{24} |
-| Lemma | `osq:cr:lem:coefficients` (line 6971) | The same binomial quotient over $D$ and over $k$ \src{24} |
-| Theorem | `osq:cr:thm:cutoff` (line 6991) | Exact monomial dichotomy \src{24} |
-| Proposition | `osq:cr:prop:tails` (line 7038) | Discarding all exponents above the scale \src{24} |
-| Corollary | `osq:cr:cor:comaximal` (line 7061) | A B\'ezout identity between separated scales \src{24} |
-| Proposition | `osq:cr:prop:rescale` (line 7080) | The abstract binomial ring does not depend on $a$ \src{24} |
-| Corollary | `osq:cr:cor:properfield` (line 7104) | Residue fields above the binomial \src{24} \merge |
-| Theorem | `osq:cr:thm:cantor` (line 7144) | Continuum many maximal extensions at a fixed scale \src{24} |
-| Theorem | `osq:cr:thm:twoaxes` (line 7168) | Ordinal scales and binary branches together \src{24} |
-| Theorem | `osq:cr:thm:separation` (line 7196) | Characteristic-zero maximal separation \src{24} |
-| Theorem | `osq:cr:thm:universalfield` (line 7220) | Embedding a class field in $\SC$ \src{24} |
-| Corollary | `osq:cr:cor:acfiso` (line 7237) | Algebraically closed class fields \src{24} |
-| Theorem | `osq:cr:thm:residually` (line 7250) | Residual surcomplexity \src{24} |
-| Theorem | `osq:cr:thm:nonstrong` (line 7276) | Failure to preserve Hahn summability \src{24} |
-| Theorem | `osq:cr:thm:termprimes` (line 7307) | Support-closed primes \src{24} |
-| Corollary | `osq:cr:cor:notsupport` (line 7332) | A maximal binomial kernel is not a support ideal \src{24} |
-| Theorem | `osq:nm:thm:onedenominator` (line 7405) | One denominator for a set-generated algebra \src{03} |
-| Theorem | `osq:nm:thm:smallabsorption` (line 7439) | The bounded-size version \src{03} |
-| Theorem | `osq:nm:thm:complete` (line 7490) | Every ambient element is almost integral \src{03} |
-| Lemma | `osq:nm:lem:reciprocal` (line 7525) | An integral reciprocal was already present \src{03} |
-| Lemma | `osq:nm:lem:intpart` (line 7548) | Integer parts \src{03} |
-| Theorem | `osq:nm:thm:smallunits` (line 7586) | Small integral units \src{03} |
-| Theorem | `osq:nm:thm:density` (line 7608) | Dense normalization of an integer part \src{03} |
-| Theorem | `osq:nm:thm:discrete` (line 7643) | Set-generated intermediate algebras are uniformly discrete \src{03} |
-| Theorem | `osq:nm:thm:normalization` (line 7671) | Proper dense normalization, zero conductor, no set of generators \src{03} |
-| Theorem | `osq:nm:thm:realslice` (line 7732) | The real constant and support slices \src{03} |
-| Proposition | `osq:nm:prop:truncation` (line 7762) | Normalization is not truncation closed \src{03} |
-| Proposition | `osq:nm:prop:unitdioph` (line 7796) | A unit equation acquires solutions only after normalization \src{03} |
-| Proposition | `osq:nm:prop:complexdefect` (line 7840) | The complexification defect is killed by $2$ \src{03} |
-| Theorem | `osq:nm:thm:complexnormal` (line 7870) | Dense Gaussian normalization and its constant slice \src{03} |
-| Theorem | `osq:nm:thm:nofinite` (line 7916) | No nonzero finite ring targets \src{03} |
-| Lemma | `osq:nm:lem:orderedmap` (line 7947) | No nonzero set-valued ordered quotient of $(\No,+)$ \src{03} |
-| Theorem | `osq:nm:thm:valuation` (line 7966) | Full-class valuation obstruction \src{03} |
-| Lemma | `osq:nm:lem:binomial` (line 8009) | The binomial identity \src{08} |
-| Theorem | `osq:nm:thm:invisible` (line 8037) | Universal small-target failure of root detection \src{08} |
-| Corollary | `osq:nm:cor:notintclosed` (line 8078) | \src{08; 03} |
-| Lemma | `osq:nf:lem:contraction` (line 8135) | Contraction \src{19, 20} |
-| Theorem | `osq:nf:thm:radical` (line 8152) | Radicality \src{19, 20} |
-| Theorem | `osq:nf:thm:saturation` (line 8163) | Rational saturation \src{19, 20} |
-| Proposition | `osq:nf:prop:ideal` (line 8174) | The extended ideal \src{19} |
-| Theorem | `osq:nf:thm:rootlift` (line 8188) | Real-rooted lifting \src{19} |
-| Corollary | `osq:nf:cor:aic` (line 8206) | Absolute integral closedness \src{19} |
-| Proposition | `osq:nf:prop:unit` (line 8217) | An infinitesimal unit whose residue squares to $-1$ \src{19} |
-| Lemma | `osq:nf:lem:coefficients` (line 8238) | A coefficient copy of $\overline\Q$ \src{19, 20} |
-| Lemma | `osq:nf:lem:spectral` (line 8252) | Spectral idempotents \src{19, 20} |
-| Theorem | `osq:nf:thm:boolean` (line 8271) | The fibre is a Boolean power of the algebraic integers \src{19, 20} |
-| Theorem | `osq:nf:thm:bezout` (line 8294) | Finitely generated ideals of the fibre \src{19} |
-| Proposition | `osq:nf:prop:nilpotents` (line 8310) | Nilpotents modulo a prime \src{19} |
-| Lemma | `osq:nf:lem:rationalcomplex` (line 8319) | Rational comparison \src{19, 20} |
-| Theorem | `osq:nf:thm:doubling` (line 8336) | Integral doubling \src{19, 20} |
-| Proposition | `osq:nf:prop:idempotents` (line 8349) | The integral idempotents \src{19} |
-| Corollary | `osq:nf:cor:tracenorm` (line 8362) | Characteristic two, trace and norm \src{19} |
-| Corollary | `osq:nf:cor:small` (line 8378) | Set-sized images factor through the fibre \src{19, 20} |
-| Theorem | `osq:nf:thm:domainimages` (line 8389) | Domain images \src{19} |
-| Lemma | `osq:nf:lem:classultra` (line 8414) | Class ultrafilters \src{19, 20} |
-| Theorem | `osq:nf:thm:kernel` (line 8429) | Detection by maps to $\overline\Z$ \src{19, 20} |
-| Corollary | `osq:nf:cor:fieldtargets` (line 8441) | Field targets \src{19} |
-| Theorem | `osq:nf:thm:abstract` (line 8451) | A finite-axiom form \src{19} |
-| Lemma | `osq:bb:lem:certificate` (line 8533) | Monic radical certificates \src{20} |
-| Corollary | `osq:bb:cor:certificate` (line 8547) | Exact membership certificate \src{20} |
-| Lemma | `osq:bb:lem:projection` (line 8558) | Support projection \src{20} |
-| Theorem | `osq:bb:thm:descent` (line 8579) | Exact support descent \src{20} |
-| Corollary | `osq:bb:cor:localinjection` (line 8596) | Reduced fibres embed \src{20} |
-| Corollary | `osq:bb:cor:descent03` (line 8611) | Descent for 03's fields \merge |
-| Theorem | `osq:bb:thm:rational` (line 8637) | One-scale rational functions \src{20} |
-| Lemma | `osq:bb:lem:laurent` (line 8659) | Laurent blocks exhaust the enlarged field \src{16, 20} |
-| Lemma | `osq:bb:lem:quadratic` (line 8675) | Independent quadratic branches \src{20} |
-| Theorem | `osq:bb:thm:split` (line 8710) | One-scale uniform splitting \src{20} |
-| Theorem | `osq:bb:thm:uniform` (line 8727) | Uniform splitting \src{20} |
-| Proposition | `osq:bb:prop:candidates` (line 8749) | 03's unit splits, and the candidates are nontrivial \merge |
-| Lemma | `osq:bb:lem:multiquadratic` (line 8779) | Multiquadratic extensions \src{20, 23} |
-| Theorem | `osq:bb:thm:rank` (line 8791) | Rank extension of set-sized Hahn fibres \src{20} |
-| Theorem | `osq:bb:thm:free` (line 8828) | Relative Boolean freeness \src{20} |
-| Theorem | `osq:bb:thm:ordinal` (line 8847) | An explicit independent class \src{20} |
-| Theorem | `osq:bb:thm:atoms` (line 8859) | Atomless, a proper class, no set-sized dense core \src{20} |
-| Corollary | `osq:bb:cor:matrix` (line 8875) | Idempotent matrices split \src{20} |
-| Proposition | `osq:bb:prop:fixedboolean` (line 8897) | Reduced fibres of fixed Hahn fields \src{20} |
-| Corollary | `osq:bb:cor:complex` (line 8918) | The surcomplex fibre \src{20} |
-| Lemma | `osq:bb:lem:classultra` (line 8936) | Class ultrafilters through a prescribed set \src{19, 20} |
-| Theorem | `osq:bb:thm:noseparating` (line 8946) | An idempotent invisible to every set of small targets \src{20} |
-| Theorem | `osq:bb:thm:manymaps` (line 8962) | Many branches through prescribed data \src{20} |
-| Corollary | `osq:bb:cor:complexmaps` (line 8981) | Surcomplex maps \src{20} |
-| Proposition | `osq:rm:prop:cyclic` (line 9082) | The cyclic integer part \src{23} |
-| Lemma | `osq:rm:lem:finite` (line 9102) | Finite detection and descent \src{23} |
-| Lemma | `osq:rm:lem:branchlocus` (line 9116) | Finite branch locus \src{23} |
-| Theorem | `osq:rm:thm:explicit` (line 9139) | Exact cyclic nilpotency \src{23} |
-| Corollary | `osq:rm:cor:unbounded` (line 9165) | Unbounded nilpotence \src{23} |
-| Theorem | `osq:rm:thm:explicitrefinement` (line 9173) | Exact order after refinement \src{23} |
-| Lemma | `osq:rm:lem:scaling` (line 9191) | Scaling \src{23} |
-| Theorem | `osq:rm:thm:residues` (line 9199) | Residue criterion \src{23} |
-| Theorem | `osq:rm:thm:span` (line 9224) | Coefficient span and the extended ideal \src{23} |
-| Corollary | `osq:rm:cor:rational` (line 9237) | Rational functions \src{23} |
-| Lemma | `osq:rm:lem:nu` (line 9256) | Invariance and inequalities \src{23} |
-| Corollary | `osq:rm:cor:generalindex` (line 9282) | The index of any nilpotent \src{23} |
-| Theorem | `osq:rm:thm:generalrefinement` (line 9289) | General refinement law \src{23} |
-| Theorem | `osq:rm:thm:pui` (line 9318) | Reduction by rational scales \src{23} |
-| Theorem | `osq:rm:thm:localtype` (line 9361) | Local structure of the coefficient normalization \src{23} |
-| Theorem | `osq:rm:thm:nilideal` (line 9381) | The nilradical is idempotent \src{23} |
-| Theorem | `osq:rm:thm:graded` (line 9396) | The associated graded ring \src{23} |
-| Corollary | `osq:rm:cor:completion` (line 9415) | Adic completion as a pullback \src{23} |
-| Lemma | `osq:rm:lem:freshquad` (line 9431) | A quadratic branch splitting every zero-place branch \src{23} |
-| Theorem | `osq:rm:thm:uniformsplit` (line 9448) | Uniform relative splitting \src{23} |
-| Corollary | `osq:rm:cor:atomless` (line 9468) | Atomlessness \src{23} |
-| Theorem | `osq:rm:thm:cardinality` (line 9476) | Independent idempotents and cardinal invariants \src{23} |
-| Corollary | `osq:rm:cor:manyplaces` (line 9490) | The number of zero-place branches \src{23} |
-| Theorem | `osq:rm:thm:annC` (line 9521) | Exact annihilators in the coefficient fibre \src{23} |
-| Theorem | `osq:rm:thm:periodic` (line 9533) | A periodic resolution \src{23} |
-| Proposition | `osq:rm:prop:annR` (line 9552) | Arithmetic annihilators \src{23} |
-| Theorem | `osq:rm:thm:countable` (line 9576) | Algebraic-coefficient fragments \src{23} |
-| Theorem | `osq:hb:thm:main` (line 9693) | Maximal branching at an omnific augmentation \src{27} |
-| Theorem | `osq:hb:thm:factors` (line 9713) | Arithmetic and Gaussian factors \src{27} |
-| Proposition | `osq:hb:prop:hull` (line 9745) | A cardinal-preserving omnific hull \src{27} |
-| Corollary | `osq:hb:cor:local` (line 9765) | The local augmentation ring \src{27} |
-| Lemma | `osq:hb:lem:atoms` (line 9777) | Finite atoms survive local normalization \src{27} |
-| Lemma | `osq:hb:lem:allbranches` (line 9795) | Every finite generic branch survives localization \src{27} |
-| Proposition | `osq:hb:prop:boolean` (line 9813) | A free Boolean family in the generic fibre \src{27} |
-| Proposition | `osq:hb:prop:complex` (line 9834) | Forced complexification \src{27} |
-| Lemma | `osq:hb:lem:booleanpower` (line 9849) | Boolean powers from finite products \src{27} |
-| Lemma | `osq:hb:lem:size` (line 9865) | Size of the henselization \src{27} |
-| Proposition | `osq:hb:prop:exactsize` (line 9873) | Exact generic size \src{27} |
-| Proposition | `osq:hb:prop:minimal` (line 9883) | Henselian minimal primes \src{27} |
-| Proposition | `osq:hb:prop:completion` (line 9896) | Adic invisibility \src{27} |
-| Corollary | `osq:hb:cor:nilpotent` (line 9906) | No nilpotent local deformation \src{27} |
-| Proposition | `osq:hb:prop:strict` (line 9922) | Strict henselization by constants \src{27} |
-| Lemma | `osq:hb:lem:galois` (line 9932) | Splitting the arithmetic tensor product \src{27} |
-| Theorem | `osq:hb:thm:strict` (line 9941) | The strict generic fibre \src{27} |
-| Proposition | `osq:hb:prop:gaussloc` (line 9958) | Gaussian localization \src{27} |
-| Theorem | `osq:hb:thm:gaussian` (line 9965) | Henselization and doubling \src{27} |
-| Theorem | `osq:hb:thm:projectives` (line 9981) | Finite projectives on the generic fibre \src{27} |
-| Proposition | `osq:hb:prop:etale` (line 9993) | Finite \'etale algebras \src{27} |
-| Corollary | `osq:hb:cor:rz` (line 10007) | Centred valuation components \src{27} |
-| Lemma | `osq:pm:lem:lattice` (line 10090) | Lattice separation and cofinality \src{10} |
-| Proposition | `osq:pm:prop:type` (line 10117) | A finitely satisfiable countable congruence type \src{10} |
-| Lemma | `osq:pm:lem:binomial` (line 10156) | Omnific binomial closure \src{10; 22} |
-| Theorem | `osq:pm:thm:grid` (line 10178) | Exact finite-grid test \src{10; 16; 22} |
-| Theorem | `osq:pm:thm:numreal` (line 10223) | The real numerical-polynomial ring \src{10; 16; 18; 22} |
-| Theorem | `osq:pm:thm:numgaussian` (line 10276) | Gaussian numerical polynomials \src{10; 16; 18; 22} |
-| Theorem | `osq:pm:thm:numreflection` (line 10325) | Small-target reflection for numerical polynomials \src{10} |
-| Lemma | `osq:pm:lem:divdiff` (line 10371) | Integral divided differences of weighted binomials \src{10} |
-| Theorem | `osq:pm:thm:cp` (line 10393) | All-modulus Newton criterion \src{10} |
-| Lemma | `osq:pm:lem:padicext` (line 10477) | Continuous extension \src{10} |
-| Lemma | `osq:pm:lem:indicator` (line 10499) | Digit and indicator congruences \src{10} |
-| Theorem | `osq:pm:thm:finitelevel` (line 10532) | Exact finite-level function rings \src{10} |
-| Corollary | `osq:pm:cor:completion` (line 10567) | The $p$-adic completion \src{10} |
-| Theorem | `osq:pm:thm:characters` (line 10615) | $p$-adic classification of characters \src{10} |
-| Corollary | `osq:pm:cor:nonevaluation` (line 10656) | Most characters are not omnific evaluations \src{10} |
-| Lemma | `osq:pm:lem:rationaldiff` (line 10694) | Finite differences of a proper rational function \src{10} |
-| Theorem | `osq:pm:thm:rational` (line 10720) | Polynomiality of rational lattice self-maps \src{10; 16; 18} |
-| Lemma | `osq:pm:lem:finiteroot` (line 10768) | Finite roots and reduction \src{10} |
-| Theorem | `osq:pm:thm:localcount` (line 10801) | A bounded number of lattice preimages at every scale \src{10} |
-| Theorem | `osq:pm:thm:holes` (line 10860) | Arbitrary-scale holes in nonlinear polynomial images \src{10} |
-| Corollary | `osq:pm:cor:bijections` (line 10894) | All rational bijections of the two lattices \src{10; 16; 18} |
-| Lemma | `osq:fs:lem:fresh` (line 10931) | Fresh exponents \src{16; 22} |
-| Theorem | `osq:fs:thm:embedding` (line 10945) | Laurent blocks \src{16; 22} |
-| Corollary | `osq:fs:cor:blocktest` (line 10960) | Exact support test \src{16} |
-| Theorem | `osq:fs:thm:onepoint` (line 10969) | One fresh value forces polynomiality \src{16} |
-| Lemma | `osq:fs:lem:branches` (line 10985) | Branches of a shifted value \src{16} |
-| Theorem | `osq:fs:thm:forbidden` (line 11009) | Forbidden layers \src{16} |
-| Theorem | `osq:fs:thm:imagegap` (line 11026) | Uniform image gap \src{16} |
-| Corollary | `osq:fs:cor:diophantine` (line 11057) | Omnific non-solvability \src{16} |
-| Theorem | `osq:fs:thm:fiber` (line 11068) | Exact fresh fibers \src{16} |
-| Theorem | `osq:fs:thm:collapse` (line 11103) | Rational self-maps over any constant ring \src{16}; second route to \cref{osq:pm:thm:rational} |
-| Theorem | `osq:fs:thm:surjective` (line 11119) | Surjective rational self-maps \src{16}; second route to \cref{osq:pm:cor:bijections} |
-| Corollary | `osq:fs:cor:omitted` (line 11134) | Omitted values form a proper class \src{16} |
-| Proposition | `osq:fs:prop:transfer` (line 11154) | Constant-ring transfer \src{16}; 10 for {$D=\Z,\Z[i]$} |
-| Theorem | `osq:fs:thm:lower` (line 11171) | Optimal point tests \src{16}; 10, 18, 22 |
-| Proposition | `osq:fs:prop:gausstest` (line 11194) | A finite Gaussian test \src{16} |
-| Lemma | `osq:fs:lem:independent` (line 11207) | Independent fresh coordinates \src{16} |
-| Theorem | `osq:fs:thm:probes` (line 11220) | Coordinate-dominant probes \src{16} |
-| Corollary | `osq:fs:cor:certificates` (line 11232) | Workspace-uniform rational certificates \src{16} |
-| Theorem | `osq:fs:thm:nosmall` (line 11246) | No set-sized sample tests all rational maps \src{16; 22} |
-| Theorem | `osq:fs:thm:cosmall` (line 11260) | Co-small integrality \src{16} |
-| Proposition | `osq:fs:prop:hulls` (line 11275) | Hulls \src{16} |
-| Lemma | `osq:or:lem:discrete` (line 11309) | Discrete lattices \src{18} |
-| Lemma | `osq:or:lem:cluster` (line 11320) | Coefficient gap and one cluster \src{18} |
-| Theorem | `osq:or:thm:dichotomy` (line 11337) | Sharp ordinary-output dichotomy \src{18} |
-| Corollary | `osq:or:cor:trace` (line 11357) | \src{18} |
-| Proposition | `osq:or:prop:sharp` (line 11365) | The bound is sharp \src{18} |
-| Theorem | `osq:or:thm:canonical` (line 11377) | Canonical translation \src{18} |
-| Theorem | `osq:or:thm:eta` (line 11390) | The two highest coefficients \src{18} |
-| Theorem | `osq:or:thm:targets` (line 11411) | At most one rich target \src{18} |
-| Corollary | `osq:or:cor:targettest` (line 11433) | One test for all targets \src{18} |
-| Theorem | `osq:or:thm:composition` (line 11447) | Composition alignment \src{18} |
-| Proposition | `osq:or:prop:gausstest` (line 11468) | A Gaussian simplex test \src{18}; comparison \merge |
-| Theorem | `osq:or:thm:matrix` (line 11491) | Matrices and jets \src{18} |
-| Theorem | `osq:or:thm:rational` (line 11515) | Rational functions on discretely ordered rings \src{18} |
-| Corollary | `osq:or:cor:workspace` (line 11543) | Fixed Hahn workspaces \src{18} |
-| Lemma | `osq:ft:lem:grid` (line 11676) | Rectangular grids \src{22} |
-| Lemma | `osq:ft:lem:resultant` (line 11693) | Good specializations \src{22} |
-| Theorem | `osq:ft:thm:certificate` (line 11716) | Single-scale finite certificate \src{22} |
-| Corollary | `osq:ft:cor:common` (line 11755) | Common tests for a set of functions \src{22} |
-| Theorem | `osq:ft:thm:exceptions` (line 11793) | Removal of set-sized exceptions in several variables \src{22}; 16 for $m=1$ |
-| Theorem | `osq:ft:thm:gausspoly` (line 11827) | Gaussian coordinate-degree grid \src{22} |
-| Theorem | `osq:ft:thm:gaussrational` (line 11841) | Gaussian single-scale certificate \src{22} |
-| Theorem | `osq:ft:thm:basechange` (line 11856) | Tensor base change \src{22}; the decomposition is 10's, 16's and 18's |
-| Theorem | `osq:ft:thm:lifting` (line 11882) | Lifting constant test sets \src{22} |
-| Theorem | `osq:ft:thm:ideals` (line 11903) | Finite generators of image ideals \src{22} |
-| Corollary | `osq:ft:cor:birational` (line 11920) | Arithmetic birational rigidity \src{22} |
-| Proposition | `osq:ft:prop:relative` (line 11944) | Fresh scales in a fixed Hahn workspace \src{22} |
-| Lemma | `osq:sa:lem:growth` (line 12072) | Polynomial and reciprocal growth \src{25} |
-| Lemma | `osq:sa:lem:derivative` (line 12098) | A derivative lowers the growth \src{25} |
-| Lemma | `osq:sa:lem:differences` (line 12106) | Small high differences \src{25} |
-| Lemma | `osq:sa:lem:kernel` (line 12116) | A semialgebraic difference kernel \src{25} |
-| Lemma | `osq:sa:lem:tailmembership` (line 12125) | Tail values determine membership \src{25} |
-| Theorem | `osq:sa:thm:tails` (line 12137) | Two-tail polynomiality \src{25} |
-| Corollary | `osq:sa:cor:germs` (line 12156) | The two-end quotient \src{25} |
-| Lemma | `osq:sa:lem:identity` (line 12174) | Smooth identity principle \src{25} |
-| Theorem | `osq:sa:thm:smoothone` (line 12187) | One-variable smooth classification \src{25} |
-| Corollary | `osq:sa:cor:irreducible` (line 12194) | One irreducible graph equation \src{25} |
-| Theorem | `osq:sa:thm:degree` (line 12206) | An explicit smoothness threshold \src{25} |
-| Lemma | `osq:sa:lem:slices` (line 12229) | Uniform degree of polynomial slices \src{25} |
-| Theorem | `osq:sa:thm:smoothmany` (line 12239) | Finite-dimensional smooth classification \src{25} |
-| Corollary | `osq:sa:cor:explicit` (line 12271) | An explicit smooth omnific classification \src{25} |
-| Lemma | `osq:sa:lem:KH` (line 12289) | Real closed support fields \src{25} |
-| Theorem | `osq:sa:thm:absorption` (line 12303) | Exact support-field absorption \src{25} |
-| Lemma | `osq:sa:lem:window` (line 12322) | A bounded omnific window lies in one support field \src{25} |
-| Theorem | `osq:sa:thm:window` (line 12329) | Bounded-window absorption \src{25} |
-| Theorem | `osq:sa:thm:radical` (line 12350) | Sharp square-root threshold \src{25} |
-| Corollary | `osq:sa:cor:powers` (line 12370) | Other rational powers \src{25} |
-| Theorem | `osq:sa:thm:bumps` (line 12398) | Finite-smoothness flexibility \src{25} |
-| Corollary | `osq:sa:cor:regularity` (line 12431) | Bounds for the least regularity order \src{25} |
-| Corollary | `osq:sa:cor:shears` (line 12441) | Finite-smoothness shears \src{25} |
-| Theorem | `osq:sa:thm:complexreal` (line 12458) | Surcomplex smooth classification \src{25} |
-| Corollary | `osq:sa:cor:holomorphic` (line 12470) | Holomorphic polynomial rigidity \src{25} |
-| Theorem | `osq:sa:thm:nosettests` (line 12488) | No coefficient-independent set of quadratic tests \src{25} |
-| Corollary | `osq:sa:cor:exceptions` (line 12513) | Removal of set-sized exceptions \src{25} |
-| Corollary | `osq:sa:cor:exceptionsmany` (line 12522) | Removal of exceptions in several variables \src{25} |
-| Proposition | `osq:sa:prop:setmodel` (line 12545) | A set-sized realization \src{25} |
-| Proposition | `osq:sa:prop:rankone` (line 12556) | The rank-one obstruction to the multiplier mechanism \src{25} |
-| Theorem | `osq:thm:ordinal` (line 12613) | The ordinal quotient question \src{11, 13} |
+| Proposition | `osq:prop:fieldclosure` (line 3325) | Field closure and integer part \src{06} |
+| Proposition | `osq:prop:kappachain` (line 3393) | A chain of principal ideals \src{06} |
+| Lemma | `osq:lem:card06` (line 3422) | Size of the ring and of every smaller-scale field \merge |
+| Theorem | `osq:thm:model06` (line 3472) | The exact threshold of $A^{06}_\kappa$ \src{06} \merge |
+| Lemma | `osq:lem:gammabounds` (line 3565) | Scale and support bounds \src{08} |
+| Lemma | `osq:lem:controlled` (line 3583) | The controlled field \src{08} |
+| Lemma | `osq:lem:finitecoord` (line 3595) | Finite-coordinate invariant \src{08} |
+| Theorem | `osq:thm:model08` (line 3623) | Sharp models at every infinite cardinal \src{08} |
+| Lemma | `osq:lem:tail` (line 3680) | A large small-exponent tail \src{09} |
+| Theorem | `osq:thm:barrier` (line 3702) | Cardinal barrier \src{09} |
+| Lemma | `osq:lem:coefffield` (line 3725) | Recovering the coefficient field \src{09} |
+| Theorem | `osq:thm:residue` (line 3736) | Residue fields at the threshold \src{09} |
+| Proposition | `osq:prop:lex` (line 3786) | Long lexicographic groups \src{11} |
+| Proposition | `osq:prop:card11` (line 3803) | Exact size and threshold \merge |
+| Lemma | `osq:lem:projideal` (line 3853) | Projective ideals of a domain \src{06} |
+| Theorem | `osq:thm:homological` (line 3863) | Homological package \src{03, 06, 09} \merge |
+| Theorem | `osq:thm:extthreshold` (line 3914) | Exact size of cohomological witnesses \src{06} \merge |
+| Lemma | `osq:hd:lem:cores` (line 4008) | Domains and embeddings \src{12; 14} |
+| Proposition | `osq:hd:prop:finite` (line 4042) | Finite targets only \src{12} |
+| Lemma | `osq:hd:lem:faces` (line 4076) | Face ideals \src{12} |
+| Theorem | `osq:hd:thm:resolution` (line 4105) | Coordinate-intersection resolution \src{12} |
+| Corollary | `osq:hd:cor:arithmeticTor` (line 4124) | Arithmetic modules are $\Tor$-acyclic \src{12} |
+| Proposition | `osq:hd:prop:etale` (line 4136) | Formal lifting and differentials \src{12; 13} |
+| Theorem | `osq:hd:thm:boolean` (line 4161) | Boolean-face $\Tor$ formula \src{12} |
+| Corollary | `osq:hd:cor:fd` (line 4196) | Exact flat dimensions \src{12} |
+| Theorem | `osq:tn:thm:syzygy` (line 4230) | Generators and the first syzygy \src{14; 12; 17} \merge |
+| Proposition | `osq:tn:prop:nonflat` (line 4275) | Antisymmetric torsion and nonflatness \src{14} \merge |
+| Theorem | `osq:hd:thm:fdlattice` (line 4306) | Lattice modules and cyclic quotients \src{12, 14} \merge |
+| Proposition | `osq:hd:prop:pd` (line 4341) | Projective dimensions \src{12} \merge |
+| Theorem | `osq:hd:thm:orderedcone` (line 4390) | Ordered-cone cores \src{12} |
+| Theorem | `osq:hd:thm:collapse` (line 4404) | Same exponent group, different dimension \src{12} |
+| Lemma | `osq:tn:lem:absorption` (line 4467) | Absorption \src{14} |
+| Theorem | `osq:tn:thm:tensor` (line 4478) | Exact tensor normal form \src{14; 17} |
+| Proposition | `osq:tn:prop:higher` (line 4505) | Several factors \src{14} |
+| Theorem | `osq:tn:thm:powers` (line 4516) | Exterior and symmetric powers \src{14} |
+| Theorem | `osq:tn:thm:rees` (line 4545) | All nonlinear Rees equations are arithmetic \src{14} |
+| Theorem | `osq:tn:thm:degree` (line 4568) | The algebraic degree is the first nonlinear degree \src{14} |
+| Corollary | `osq:tn:cor:alldegrees` (line 4584) | A family of every degree \src{14; 17} |
+| Theorem | `osq:tn:thm:hom` (line 4611) | Scalar homomorphisms and isomorphism types \src{14; 17} |
+| Theorem | `osq:tn:thm:pic` (line 4634) | Ideal classes survive torsion-free multiplication \src{14} |
+| Theorem | `osq:tn:thm:duals` (line 4658) | Uniform duals \src{14} |
+| Theorem | `osq:tn:thm:matrix` (line 4674) | Common-scale constant matrices \src{14; 17} |
+| Theorem | `osq:rel:thm:presentation` (line 4715) | No presentation by sets \src{17} |
+| Lemma | `osq:rel:lem:embedding` (line 4751) | The lexicographic models inside $\Oz$ \src{17}; \merge\ for $\kappa=\aleph_0$ |
+| Theorem | `osq:rel:thm:kappa` (line 4782) | Exact relation counts \src{17}; \merge\ for $\kappa=\aleph_0$ |
+| Proposition | `osq:rel:prop:fd` (line 4824) | Flat dimensions over the models \src{17} |
+| Theorem | `osq:rel:thm:tor` (line 4839) | $\Tor$ as coefficient multiplication \src{17; 21}; \merge\ over the cores |
+| Corollary | `osq:rel:cor:twelve` (line 4883) | 12's cyclic modules without $c^2\in D$ \merge |
+| Corollary | `osq:rel:cor:selftor` (line 4898) | The self-$\Tor$ range \src{17; 21} |
+| Proposition | `osq:rel:prop:field` (line 4916) | The maximal self-obstruction detects a field \src{17} |
+| Theorem | `osq:rel:thm:mobius` (line 4926) | Rank-two moduli \src{17} |
+| Theorem | `osq:rel:thm:order` (line 4943) | Orders from endomorphism rings \src{17} |
+| Corollary | `osq:rel:cor:realize` (line 4959) | Every order occurs \src{17} |
+| Theorem | `osq:rel:thm:augmentation` (line 4979) | Modules killed by the tail \src{17; 21} |
+| Proposition | `osq:da:prop:faces` (line 5058) | Face quotients: flat resolution and flat dimension \src{21} |
+| Theorem | `osq:da:thm:telescope` (line 5083) | A free telescope resolution \src{21} |
+| Theorem | `osq:da:thm:ext` (line 5113) | The top $\Ext$ group \src{21} |
+| Theorem | `osq:da:thm:injection` (line 5130) | A copy of $D^{\N}/D^{(\N)}$ in the top $\Ext$ group \src{21} |
+| Corollary | `osq:da:cor:exactpd` (line 5149) | Exact projective dimensions of the coordinate cores \src{21} |
+| Theorem | `osq:da:thm:lattice` (line 5170) | Lattice modules over the coordinate cores \src{21} \merge |
+| Theorem | `osq:da:thm:dga` (line 5239) | A flat DGA resolution \src{21} |
+| Theorem | `osq:da:thm:pair` (line 5261) | All $\Tor$ groups of two lattice quotients \src{17; 21} |
+| Lemma | `osq:da:lem:compositum` (line 5296) | The compositum \src{21} |
+| Theorem | `osq:da:thm:disjoint` (line 5307) | Second $\Tor$ detects linear disjointness \src{21} |
+| Theorem | `osq:da:thm:product` (line 5334) | The self-$\Tor$ product \src{21} |
+| Corollary | `osq:da:cor:indecomposable` (line 5350) | Alternating and symmetric relations \src{21} |
+| Theorem | `osq:da:thm:reconstruction` (line 5378) | Framed reconstruction \src{21} |
+| Theorem | `osq:da:thm:shadow` (line 5412) | The derived constant-term shadow \src{17; 21} |
+| Proposition | `osq:pc:prop:embedding` (line 5516) | Omnific embeddings \src{26} |
+| Proposition | `osq:pc:prop:fractions` (line 5529) | A common fraction field \src{26} |
+| Lemma | `osq:pc:lem:subtract` (line 5545) | Face subtraction \src{26} |
+| Theorem | `osq:pc:thm:exhaustion` (line 5562) | Principal exhaustion and dimension one \src{26} |
+| Theorem | `osq:pc:thm:products` (line 5587) | Intersections, products and tensors \src{26} |
+| Theorem | `osq:pc:thm:radical` (line 5605) | Radical classification \src{26} |
+| Proposition | `osq:pc:prop:faceprime` (line 5623) | Generators of a face prime \src{26} |
+| Theorem | `osq:pc:thm:cech` (line 5637) | Face-labelled simplex resolution \src{26} |
+| Lemma | `osq:pc:lem:diagonal` (line 5663) | One diagonal block \src{26} |
+| Lemma | `osq:pc:lem:cancellation` (line 5675) | Triangular cancellation \src{26} |
+| Lemma | `osq:pc:lem:crosscut` (line 5698) | Crosscut comparison \src{26} |
+| Theorem | `osq:pc:thm:isolation` (line 5719) | Isolation of one face label \src{26} |
+| Theorem | `osq:pc:thm:exactfd` (line 5733) | Join homology computes flat dimension \src{26} |
+| Corollary | `osq:pc:cor:pdbounds` (line 5755) | A one-step projective interval \src{26} |
+| Theorem | `osq:pc:thm:homological` (line 5769) | Homological epimorphisms \src{26} |
+| Lemma | `osq:pc:lem:complement` (line 5784) | Deleting a face from a polytopal boundary \src{26} |
+| Lemma | `osq:pc:lem:outside` (line 5801) | The outside-vertex complex \src{26} |
+| Theorem | `osq:pc:thm:facebetti` (line 5812) | Face-quotient multiplicities \src{26} |
+| Proposition | `osq:pc:prop:cellular` (line 5837) | The face complex resolves $D$ \src{26} |
+| Theorem | `osq:pc:thm:flatclass` (line 5854) | Only single-face ideals are flat \src{26} |
+| Corollary | `osq:pc:cor:reconstruct` (line 5864) | A marked face lattice \src{26} |
+| Theorem | `osq:pc:thm:simplicial` (line 5875) | A homological characterization of simplicial cones \src{26} |
+| Corollary | `osq:pc:cor:simplicialface` (line 5887) | Simplicial face dimensions \src{26} |
+| Theorem | `osq:pc:thm:cubes` (line 5911) | Cube cones \src{26} |
+| Corollary | `osq:pc:cor:squarefree` (line 5928) | Squarefree homology survives rational roots \src{26} |
+| Corollary | `osq:pc:cor:coefficients` (line 5941) | Coefficient independence \src{26} |
+| Proposition | `osq:pc:prop:scalar` (line 5951) | A nonzero scalar removes the tail \src{26} |
+| Theorem | `osq:pc:thm:arithmetic` (line 5963) | Arithmetic modules over a principal-ideal core \src{26} |
+| Lemma | `osq:pc:lem:syzygy` (line 6002) | Two-ray syzygies have zero constants \src{26} |
+| Theorem | `osq:pc:thm:nonflat` (line 6010) | A two-monomial nonflatness certificate \src{26} |
+| Proposition | `osq:if:prop:closed` (line 6093) | Closedness of the compressed fields \src{07, 24} |
+| Lemma | `osq:if:lem:compression` (line 6159) | Ordered additive compression \src{07} |
+| Theorem | `osq:if:thm:compression` (line 6184) | A full surreal field in every compressed field \src{07} |
+| Lemma | `osq:if:lem:gf` (line 6238) | Multiplication by a purely infinite denominator \src{07} |
+| Theorem | `osq:if:thm:transfer` (line 6252) | Localization and quotient transfer \src{07} |
+| Corollary | `osq:if:cor:unitconstant` (line 6295) | Quotients by a unit-constant perturbation \src{07} |
+| Corollary | `osq:if:cor:primefield` (line 6311) | A conditional statement about nonarithmetic primes \src{07} |
+| Proposition | `osq:if:prop:reservoir` (line 6349) | A scaled field in every non-arithmetic residue field \src{06} |
+| Lemma | `osq:if:lem:localization` (line 6425) | Localization of the binomial quotient \src{07} |
+| Theorem | `osq:if:thm:binomialkernel` (line 6474) | Exact binomial kernel \src{07} |
+| Corollary | `osq:if:cor:Ea` (line 6546) | Internal algebraically closed field \src{07} |
+| Lemma | `osq:if:lem:stage` (line 6594) | A single stage over the fixed complex field \src{07} |
+| Theorem | `osq:if:thm:cantor` (line 6637) | Cantor algebra theorem \src{07} |
+| Corollary | `osq:if:cor:boolean` (line 6713) | Boolean algebra and failure of finiteness conditions \src{07} |
+| Theorem | `osq:if:thm:complexkernel` (line 6767) | Complex exact kernels and dyadic algebra \src{07} |
+| Theorem | `osq:cr:thm:krull` (line 6957) | Maximal class extensions \src{24} |
+| Proposition | `osq:cr:prop:avoid` (line 6991) | Prime extension avoiding a multiplicative class \src{24} |
+| Corollary | `osq:cr:cor:prescribe` (line 7002) | Compatible prescribed equations \src{24} |
+| Theorem | `osq:cr:thm:equivalence` (line 7026) | Class Krull and global choice \src{24} |
+| Lemma | `osq:cr:lem:compat` (line 7036) | Finite-polynomial compatibility \src{24} |
+| Proposition | `osq:cr:prop:arithmetic` (line 7078) | The arithmetic maximal ideals \src{24} |
+| Theorem | `osq:cr:thm:binomialmax` (line 7093) | Binomial maximal extensions \src{24} |
+| Corollary | `osq:cr:cor:unitconstant` (line 7102) | Unit-constant fibres \src{24} |
+| Lemma | `osq:cr:lem:coefficients` (line 7117) | The same binomial quotient over $D$ and over $k$ \src{24} |
+| Theorem | `osq:cr:thm:cutoff` (line 7137) | Exact monomial dichotomy \src{24} |
+| Proposition | `osq:cr:prop:tails` (line 7184) | Discarding all exponents above the scale \src{24} |
+| Corollary | `osq:cr:cor:comaximal` (line 7207) | A B\'ezout identity between separated scales \src{24} |
+| Proposition | `osq:cr:prop:rescale` (line 7226) | The abstract binomial ring does not depend on $a$ \src{24} |
+| Corollary | `osq:cr:cor:properfield` (line 7250) | Residue fields above the binomial \src{24} \merge |
+| Theorem | `osq:cr:thm:cantor` (line 7290) | Continuum many maximal extensions at a fixed scale \src{24} |
+| Theorem | `osq:cr:thm:twoaxes` (line 7314) | Ordinal scales and binary branches together \src{24} |
+| Theorem | `osq:cr:thm:separation` (line 7342) | Characteristic-zero maximal separation \src{24} |
+| Theorem | `osq:cr:thm:universalfield` (line 7366) | Embedding a class field in $\SC$ \src{24} |
+| Corollary | `osq:cr:cor:acfiso` (line 7383) | Algebraically closed class fields \src{24} |
+| Theorem | `osq:cr:thm:residually` (line 7396) | Residual surcomplexity \src{24} |
+| Theorem | `osq:cr:thm:nonstrong` (line 7422) | Failure to preserve Hahn summability \src{24} |
+| Theorem | `osq:cr:thm:termprimes` (line 7453) | Support-closed primes \src{24} |
+| Corollary | `osq:cr:cor:notsupport` (line 7478) | A maximal binomial kernel is not a support ideal \src{24} |
+| Theorem | `osq:nm:thm:onedenominator` (line 7551) | One denominator for a set-generated algebra \src{03} |
+| Theorem | `osq:nm:thm:smallabsorption` (line 7585) | The bounded-size version \src{03} |
+| Theorem | `osq:nm:thm:complete` (line 7636) | Every ambient element is almost integral \src{03} |
+| Lemma | `osq:nm:lem:reciprocal` (line 7671) | An integral reciprocal was already present \src{03} |
+| Lemma | `osq:nm:lem:intpart` (line 7694) | Integer parts \src{03} |
+| Theorem | `osq:nm:thm:smallunits` (line 7732) | Small integral units \src{03} |
+| Theorem | `osq:nm:thm:density` (line 7754) | Dense normalization of an integer part \src{03} |
+| Theorem | `osq:nm:thm:discrete` (line 7789) | Set-generated intermediate algebras are uniformly discrete \src{03} |
+| Theorem | `osq:nm:thm:normalization` (line 7817) | Proper dense normalization, zero conductor, no set of generators \src{03} |
+| Theorem | `osq:nm:thm:realslice` (line 7878) | The real constant and support slices \src{03} |
+| Proposition | `osq:nm:prop:truncation` (line 7908) | Normalization is not truncation closed \src{03} |
+| Proposition | `osq:nm:prop:unitdioph` (line 7942) | A unit equation acquires solutions only after normalization \src{03} |
+| Proposition | `osq:nm:prop:complexdefect` (line 7986) | The complexification defect is killed by $2$ \src{03} |
+| Theorem | `osq:nm:thm:complexnormal` (line 8016) | Dense Gaussian normalization and its constant slice \src{03} |
+| Theorem | `osq:nm:thm:nofinite` (line 8062) | No nonzero finite ring targets \src{03} |
+| Lemma | `osq:nm:lem:orderedmap` (line 8093) | No nonzero set-valued ordered quotient of $(\No,+)$ \src{03} |
+| Theorem | `osq:nm:thm:valuation` (line 8112) | Full-class valuation obstruction \src{03} |
+| Lemma | `osq:nm:lem:binomial` (line 8155) | The binomial identity \src{08} |
+| Theorem | `osq:nm:thm:invisible` (line 8183) | Universal small-target failure of root detection \src{08} |
+| Corollary | `osq:nm:cor:notintclosed` (line 8224) | \src{08; 03} |
+| Lemma | `osq:nf:lem:contraction` (line 8281) | Contraction \src{19, 20} |
+| Theorem | `osq:nf:thm:radical` (line 8298) | Radicality \src{19, 20} |
+| Theorem | `osq:nf:thm:saturation` (line 8309) | Rational saturation \src{19, 20} |
+| Proposition | `osq:nf:prop:ideal` (line 8320) | The extended ideal \src{19} |
+| Theorem | `osq:nf:thm:rootlift` (line 8334) | Real-rooted lifting \src{19} |
+| Corollary | `osq:nf:cor:aic` (line 8352) | Absolute integral closedness \src{19} |
+| Proposition | `osq:nf:prop:unit` (line 8363) | An infinitesimal unit whose residue squares to $-1$ \src{19} |
+| Lemma | `osq:nf:lem:coefficients` (line 8384) | A coefficient copy of $\overline\Q$ \src{19, 20} |
+| Lemma | `osq:nf:lem:spectral` (line 8398) | Spectral idempotents \src{19, 20} |
+| Theorem | `osq:nf:thm:boolean` (line 8417) | The fibre is a Boolean power of the algebraic integers \src{19, 20} |
+| Theorem | `osq:nf:thm:bezout` (line 8440) | Finitely generated ideals of the fibre \src{19} |
+| Proposition | `osq:nf:prop:nilpotents` (line 8456) | Nilpotents modulo a prime \src{19} |
+| Lemma | `osq:nf:lem:rationalcomplex` (line 8465) | Rational comparison \src{19, 20} |
+| Theorem | `osq:nf:thm:doubling` (line 8482) | Integral doubling \src{19, 20} |
+| Proposition | `osq:nf:prop:idempotents` (line 8495) | The integral idempotents \src{19} |
+| Corollary | `osq:nf:cor:tracenorm` (line 8508) | Characteristic two, trace and norm \src{19} |
+| Corollary | `osq:nf:cor:small` (line 8524) | Set-sized images factor through the fibre \src{19, 20} |
+| Theorem | `osq:nf:thm:domainimages` (line 8535) | Domain images \src{19} |
+| Lemma | `osq:nf:lem:classultra` (line 8560) | Class ultrafilters \src{19, 20} |
+| Theorem | `osq:nf:thm:kernel` (line 8575) | Detection by maps to $\overline\Z$ \src{19, 20} |
+| Corollary | `osq:nf:cor:fieldtargets` (line 8587) | Field targets \src{19} |
+| Theorem | `osq:nf:thm:abstract` (line 8597) | A finite-axiom form \src{19} |
+| Lemma | `osq:bb:lem:certificate` (line 8679) | Monic radical certificates \src{20} |
+| Corollary | `osq:bb:cor:certificate` (line 8693) | Exact membership certificate \src{20} |
+| Lemma | `osq:bb:lem:projection` (line 8704) | Support projection \src{20} |
+| Theorem | `osq:bb:thm:descent` (line 8725) | Exact support descent \src{20} |
+| Corollary | `osq:bb:cor:localinjection` (line 8742) | Reduced fibres embed \src{20} |
+| Corollary | `osq:bb:cor:descent03` (line 8757) | Descent for 03's fields \merge |
+| Theorem | `osq:bb:thm:rational` (line 8783) | One-scale rational functions \src{20} |
+| Lemma | `osq:bb:lem:laurent` (line 8805) | Laurent blocks exhaust the enlarged field \src{16, 20} |
+| Lemma | `osq:bb:lem:quadratic` (line 8821) | Independent quadratic branches \src{20} |
+| Theorem | `osq:bb:thm:split` (line 8856) | One-scale uniform splitting \src{20} |
+| Theorem | `osq:bb:thm:uniform` (line 8873) | Uniform splitting \src{20} |
+| Proposition | `osq:bb:prop:candidates` (line 8895) | 03's unit splits, and the candidates are nontrivial \merge |
+| Lemma | `osq:bb:lem:multiquadratic` (line 8925) | Multiquadratic extensions \src{20, 23} |
+| Theorem | `osq:bb:thm:rank` (line 8937) | Rank extension of set-sized Hahn fibres \src{20} |
+| Theorem | `osq:bb:thm:free` (line 8974) | Relative Boolean freeness \src{20} |
+| Theorem | `osq:bb:thm:ordinal` (line 8993) | An explicit independent class \src{20} |
+| Theorem | `osq:bb:thm:atoms` (line 9005) | Atomless, a proper class, no set-sized dense core \src{20} |
+| Corollary | `osq:bb:cor:matrix` (line 9021) | Idempotent matrices split \src{20} |
+| Proposition | `osq:bb:prop:fixedboolean` (line 9043) | Reduced fibres of fixed Hahn fields \src{20} |
+| Corollary | `osq:bb:cor:complex` (line 9064) | The surcomplex fibre \src{20} |
+| Lemma | `osq:bb:lem:classultra` (line 9082) | Class ultrafilters through a prescribed set \src{19, 20} |
+| Theorem | `osq:bb:thm:noseparating` (line 9092) | An idempotent invisible to every set of small targets \src{20} |
+| Theorem | `osq:bb:thm:manymaps` (line 9108) | Many branches through prescribed data \src{20} |
+| Corollary | `osq:bb:cor:complexmaps` (line 9127) | Surcomplex maps \src{20} |
+| Proposition | `osq:rm:prop:cyclic` (line 9228) | The cyclic integer part \src{23} |
+| Lemma | `osq:rm:lem:finite` (line 9248) | Finite detection and descent \src{23} |
+| Lemma | `osq:rm:lem:branchlocus` (line 9262) | Finite branch locus \src{23} |
+| Theorem | `osq:rm:thm:explicit` (line 9285) | Exact cyclic nilpotency \src{23} |
+| Corollary | `osq:rm:cor:unbounded` (line 9311) | Unbounded nilpotence \src{23} |
+| Theorem | `osq:rm:thm:explicitrefinement` (line 9319) | Exact order after refinement \src{23} |
+| Lemma | `osq:rm:lem:scaling` (line 9337) | Scaling \src{23} |
+| Theorem | `osq:rm:thm:residues` (line 9345) | Residue criterion \src{23} |
+| Theorem | `osq:rm:thm:span` (line 9370) | Coefficient span and the extended ideal \src{23} |
+| Corollary | `osq:rm:cor:rational` (line 9383) | Rational functions \src{23} |
+| Lemma | `osq:rm:lem:nu` (line 9402) | Invariance and inequalities \src{23} |
+| Corollary | `osq:rm:cor:generalindex` (line 9428) | The index of any nilpotent \src{23} |
+| Theorem | `osq:rm:thm:generalrefinement` (line 9435) | General refinement law \src{23} |
+| Theorem | `osq:rm:thm:pui` (line 9464) | Reduction by rational scales \src{23} |
+| Theorem | `osq:rm:thm:localtype` (line 9507) | Local structure of the coefficient normalization \src{23} |
+| Theorem | `osq:rm:thm:nilideal` (line 9527) | The nilradical is idempotent \src{23} |
+| Theorem | `osq:rm:thm:graded` (line 9542) | The associated graded ring \src{23} |
+| Corollary | `osq:rm:cor:completion` (line 9561) | Adic completion as a pullback \src{23} |
+| Lemma | `osq:rm:lem:freshquad` (line 9577) | A quadratic branch splitting every zero-place branch \src{23} |
+| Theorem | `osq:rm:thm:uniformsplit` (line 9594) | Uniform relative splitting \src{23} |
+| Corollary | `osq:rm:cor:atomless` (line 9614) | Atomlessness \src{23} |
+| Theorem | `osq:rm:thm:cardinality` (line 9622) | Independent idempotents and cardinal invariants \src{23} |
+| Corollary | `osq:rm:cor:manyplaces` (line 9636) | The number of zero-place branches \src{23} |
+| Theorem | `osq:rm:thm:annC` (line 9667) | Exact annihilators in the coefficient fibre \src{23} |
+| Theorem | `osq:rm:thm:periodic` (line 9679) | A periodic resolution \src{23} |
+| Proposition | `osq:rm:prop:annR` (line 9698) | Arithmetic annihilators \src{23} |
+| Theorem | `osq:rm:thm:countable` (line 9722) | Algebraic-coefficient fragments \src{23} |
+| Theorem | `osq:hb:thm:main` (line 9839) | Maximal branching at an omnific augmentation \src{27} |
+| Theorem | `osq:hb:thm:factors` (line 9859) | Arithmetic and Gaussian factors \src{27} |
+| Proposition | `osq:hb:prop:hull` (line 9891) | A cardinal-preserving omnific hull \src{27} |
+| Corollary | `osq:hb:cor:local` (line 9911) | The local augmentation ring \src{27} |
+| Lemma | `osq:hb:lem:atoms` (line 9923) | Finite atoms survive local normalization \src{27} |
+| Lemma | `osq:hb:lem:allbranches` (line 9941) | Every finite generic branch survives localization \src{27} |
+| Proposition | `osq:hb:prop:boolean` (line 9959) | A free Boolean family in the generic fibre \src{27} |
+| Proposition | `osq:hb:prop:complex` (line 9980) | Forced complexification \src{27} |
+| Lemma | `osq:hb:lem:booleanpower` (line 9995) | Boolean powers from finite products \src{27} |
+| Lemma | `osq:hb:lem:size` (line 10011) | Size of the henselization \src{27} |
+| Proposition | `osq:hb:prop:exactsize` (line 10019) | Exact generic size \src{27} |
+| Proposition | `osq:hb:prop:minimal` (line 10029) | Henselian minimal primes \src{27} |
+| Proposition | `osq:hb:prop:completion` (line 10042) | Adic invisibility \src{27} |
+| Corollary | `osq:hb:cor:nilpotent` (line 10052) | No nilpotent local deformation \src{27} |
+| Proposition | `osq:hb:prop:strict` (line 10068) | Strict henselization by constants \src{27} |
+| Lemma | `osq:hb:lem:galois` (line 10078) | Splitting the arithmetic tensor product \src{27} |
+| Theorem | `osq:hb:thm:strict` (line 10087) | The strict generic fibre \src{27} |
+| Proposition | `osq:hb:prop:gaussloc` (line 10104) | Gaussian localization \src{27} |
+| Theorem | `osq:hb:thm:gaussian` (line 10111) | Henselization and doubling \src{27} |
+| Theorem | `osq:hb:thm:projectives` (line 10127) | Finite projectives on the generic fibre \src{27} |
+| Proposition | `osq:hb:prop:etale` (line 10139) | Finite \'etale algebras \src{27} |
+| Corollary | `osq:hb:cor:rz` (line 10153) | Centred valuation components \src{27} |
+| Lemma | `osq:pm:lem:lattice` (line 10236) | Lattice separation and cofinality \src{10} |
+| Proposition | `osq:pm:prop:type` (line 10263) | A finitely satisfiable countable congruence type \src{10} |
+| Lemma | `osq:pm:lem:binomial` (line 10302) | Omnific binomial closure \src{10; 22} |
+| Theorem | `osq:pm:thm:grid` (line 10324) | Exact finite-grid test \src{10; 16; 22} |
+| Theorem | `osq:pm:thm:numreal` (line 10369) | The real numerical-polynomial ring \src{10; 16; 18; 22} |
+| Theorem | `osq:pm:thm:numgaussian` (line 10422) | Gaussian numerical polynomials \src{10; 16; 18; 22} |
+| Theorem | `osq:pm:thm:numreflection` (line 10471) | Small-target reflection for numerical polynomials \src{10} |
+| Lemma | `osq:pm:lem:divdiff` (line 10517) | Integral divided differences of weighted binomials \src{10} |
+| Theorem | `osq:pm:thm:cp` (line 10539) | All-modulus Newton criterion \src{10} |
+| Lemma | `osq:pm:lem:padicext` (line 10623) | Continuous extension \src{10} |
+| Lemma | `osq:pm:lem:indicator` (line 10645) | Digit and indicator congruences \src{10} |
+| Theorem | `osq:pm:thm:finitelevel` (line 10678) | Exact finite-level function rings \src{10} |
+| Corollary | `osq:pm:cor:completion` (line 10713) | The $p$-adic completion \src{10} |
+| Theorem | `osq:pm:thm:characters` (line 10761) | $p$-adic classification of characters \src{10} |
+| Corollary | `osq:pm:cor:nonevaluation` (line 10802) | Most characters are not omnific evaluations \src{10} |
+| Lemma | `osq:pm:lem:rationaldiff` (line 10840) | Finite differences of a proper rational function \src{10} |
+| Theorem | `osq:pm:thm:rational` (line 10866) | Polynomiality of rational lattice self-maps \src{10; 16; 18} |
+| Lemma | `osq:pm:lem:finiteroot` (line 10914) | Finite roots and reduction \src{10} |
+| Theorem | `osq:pm:thm:localcount` (line 10947) | A bounded number of lattice preimages at every scale \src{10} |
+| Theorem | `osq:pm:thm:holes` (line 11006) | Arbitrary-scale holes in nonlinear polynomial images \src{10} |
+| Corollary | `osq:pm:cor:bijections` (line 11040) | All rational bijections of the two lattices \src{10; 16; 18} |
+| Lemma | `osq:fs:lem:fresh` (line 11077) | Fresh exponents \src{16; 22} |
+| Theorem | `osq:fs:thm:embedding` (line 11091) | Laurent blocks \src{16; 22} |
+| Corollary | `osq:fs:cor:blocktest` (line 11106) | Exact support test \src{16} |
+| Theorem | `osq:fs:thm:onepoint` (line 11115) | One fresh value forces polynomiality \src{16} |
+| Lemma | `osq:fs:lem:branches` (line 11131) | Branches of a shifted value \src{16} |
+| Theorem | `osq:fs:thm:forbidden` (line 11155) | Forbidden layers \src{16} |
+| Theorem | `osq:fs:thm:imagegap` (line 11172) | Uniform image gap \src{16} |
+| Corollary | `osq:fs:cor:diophantine` (line 11203) | Omnific non-solvability \src{16} |
+| Theorem | `osq:fs:thm:fiber` (line 11214) | Exact fresh fibers \src{16} |
+| Theorem | `osq:fs:thm:collapse` (line 11249) | Rational self-maps over any constant ring \src{16}; second route to \cref{osq:pm:thm:rational} |
+| Theorem | `osq:fs:thm:surjective` (line 11265) | Surjective rational self-maps \src{16}; second route to \cref{osq:pm:cor:bijections} |
+| Corollary | `osq:fs:cor:omitted` (line 11280) | Omitted values form a proper class \src{16} |
+| Proposition | `osq:fs:prop:transfer` (line 11300) | Constant-ring transfer \src{16}; 10 for {$D=\Z,\Z[i]$} |
+| Theorem | `osq:fs:thm:lower` (line 11317) | Optimal point tests \src{16}; 10, 18, 22 |
+| Proposition | `osq:fs:prop:gausstest` (line 11340) | A finite Gaussian test \src{16} |
+| Lemma | `osq:fs:lem:independent` (line 11353) | Independent fresh coordinates \src{16} |
+| Theorem | `osq:fs:thm:probes` (line 11366) | Coordinate-dominant probes \src{16} |
+| Corollary | `osq:fs:cor:certificates` (line 11378) | Workspace-uniform rational certificates \src{16} |
+| Theorem | `osq:fs:thm:nosmall` (line 11392) | No set-sized sample tests all rational maps \src{16; 22} |
+| Theorem | `osq:fs:thm:cosmall` (line 11406) | Co-small integrality \src{16} |
+| Proposition | `osq:fs:prop:hulls` (line 11421) | Hulls \src{16} |
+| Lemma | `osq:or:lem:discrete` (line 11455) | Discrete lattices \src{18} |
+| Lemma | `osq:or:lem:cluster` (line 11466) | Coefficient gap and one cluster \src{18} |
+| Theorem | `osq:or:thm:dichotomy` (line 11483) | Sharp ordinary-output dichotomy \src{18} |
+| Corollary | `osq:or:cor:trace` (line 11503) | \src{18} |
+| Proposition | `osq:or:prop:sharp` (line 11511) | The bound is sharp \src{18} |
+| Theorem | `osq:or:thm:canonical` (line 11523) | Canonical translation \src{18} |
+| Theorem | `osq:or:thm:eta` (line 11536) | The two highest coefficients \src{18} |
+| Theorem | `osq:or:thm:targets` (line 11557) | At most one rich target \src{18} |
+| Corollary | `osq:or:cor:targettest` (line 11579) | One test for all targets \src{18} |
+| Theorem | `osq:or:thm:composition` (line 11593) | Composition alignment \src{18} |
+| Proposition | `osq:or:prop:gausstest` (line 11614) | A Gaussian simplex test \src{18}; comparison \merge |
+| Theorem | `osq:or:thm:matrix` (line 11637) | Matrices and jets \src{18} |
+| Theorem | `osq:or:thm:rational` (line 11661) | Rational functions on discretely ordered rings \src{18} |
+| Corollary | `osq:or:cor:workspace` (line 11689) | Fixed Hahn workspaces \src{18} |
+| Lemma | `osq:ft:lem:grid` (line 11822) | Rectangular grids \src{22} |
+| Lemma | `osq:ft:lem:resultant` (line 11839) | Good specializations \src{22} |
+| Theorem | `osq:ft:thm:certificate` (line 11862) | Single-scale finite certificate \src{22} |
+| Corollary | `osq:ft:cor:common` (line 11901) | Common tests for a set of functions \src{22} |
+| Theorem | `osq:ft:thm:exceptions` (line 11939) | Removal of set-sized exceptions in several variables \src{22}; 16 for $m=1$ |
+| Theorem | `osq:ft:thm:gausspoly` (line 11973) | Gaussian coordinate-degree grid \src{22} |
+| Theorem | `osq:ft:thm:gaussrational` (line 11987) | Gaussian single-scale certificate \src{22} |
+| Theorem | `osq:ft:thm:basechange` (line 12002) | Tensor base change \src{22}; the decomposition is 10's, 16's and 18's |
+| Theorem | `osq:ft:thm:lifting` (line 12028) | Lifting constant test sets \src{22} |
+| Theorem | `osq:ft:thm:ideals` (line 12049) | Finite generators of image ideals \src{22} |
+| Corollary | `osq:ft:cor:birational` (line 12066) | Arithmetic birational rigidity \src{22} |
+| Proposition | `osq:ft:prop:relative` (line 12090) | Fresh scales in a fixed Hahn workspace \src{22} |
+| Lemma | `osq:sa:lem:growth` (line 12218) | Polynomial and reciprocal growth \src{25} |
+| Lemma | `osq:sa:lem:derivative` (line 12244) | A derivative lowers the growth \src{25} |
+| Lemma | `osq:sa:lem:differences` (line 12252) | Small high differences \src{25} |
+| Lemma | `osq:sa:lem:kernel` (line 12262) | A semialgebraic difference kernel \src{25} |
+| Lemma | `osq:sa:lem:tailmembership` (line 12271) | Tail values determine membership \src{25} |
+| Theorem | `osq:sa:thm:tails` (line 12283) | Two-tail polynomiality \src{25} |
+| Corollary | `osq:sa:cor:germs` (line 12302) | The two-end quotient \src{25} |
+| Lemma | `osq:sa:lem:identity` (line 12320) | Smooth identity principle \src{25} |
+| Theorem | `osq:sa:thm:smoothone` (line 12333) | One-variable smooth classification \src{25} |
+| Corollary | `osq:sa:cor:irreducible` (line 12340) | One irreducible graph equation \src{25} |
+| Theorem | `osq:sa:thm:degree` (line 12352) | An explicit smoothness threshold \src{25} |
+| Lemma | `osq:sa:lem:slices` (line 12375) | Uniform degree of polynomial slices \src{25} |
+| Theorem | `osq:sa:thm:smoothmany` (line 12385) | Finite-dimensional smooth classification \src{25} |
+| Corollary | `osq:sa:cor:explicit` (line 12417) | An explicit smooth omnific classification \src{25} |
+| Lemma | `osq:sa:lem:KH` (line 12435) | Real closed support fields \src{25} |
+| Theorem | `osq:sa:thm:absorption` (line 12449) | Exact support-field absorption \src{25} |
+| Lemma | `osq:sa:lem:window` (line 12468) | A bounded omnific window lies in one support field \src{25} |
+| Theorem | `osq:sa:thm:window` (line 12475) | Bounded-window absorption \src{25} |
+| Theorem | `osq:sa:thm:radical` (line 12496) | Sharp square-root threshold \src{25} |
+| Corollary | `osq:sa:cor:powers` (line 12516) | Other rational powers \src{25} |
+| Theorem | `osq:sa:thm:bumps` (line 12544) | Finite-smoothness flexibility \src{25} |
+| Corollary | `osq:sa:cor:regularity` (line 12577) | Bounds for the least regularity order \src{25} |
+| Corollary | `osq:sa:cor:shears` (line 12587) | Finite-smoothness shears \src{25} |
+| Theorem | `osq:sa:thm:complexreal` (line 12604) | Surcomplex smooth classification \src{25} |
+| Corollary | `osq:sa:cor:holomorphic` (line 12616) | Holomorphic polynomial rigidity \src{25} |
+| Theorem | `osq:sa:thm:nosettests` (line 12634) | No coefficient-independent set of quadratic tests \src{25} |
+| Corollary | `osq:sa:cor:exceptions` (line 12659) | Removal of set-sized exceptions \src{25} |
+| Corollary | `osq:sa:cor:exceptionsmany` (line 12668) | Removal of exceptions in several variables \src{25} |
+| Proposition | `osq:sa:prop:setmodel` (line 12691) | A set-sized realization \src{25} |
+| Proposition | `osq:sa:prop:rankone` (line 12702) | The rank-one obstruction to the multiplier mechanism \src{25} |
+| Theorem | `osq:thm:ordinal` (line 12759) | The ordinal quotient question \src{11, 13} |
 
 ### omnific-preserving-automorphisms
 
