@@ -629,3 +629,7 @@ import Surreal.Surcomplex.PurelyInfiniteCoefficients
 import Surreal.Surcomplex.GaussianDecomposableFibers
 import Surreal.Algebra.NonzeroModuleKernel
 import Surreal.Surcomplex.DecomposableKernelCriterion
+import Surreal.Algebra.KernelLines
+import Surreal.Surcomplex.PurelyInfiniteSize
+import Surreal.Surcomplex.DecomposableFiberSize
+import Surreal.Surcomplex.DecomposableEmptyFiber
