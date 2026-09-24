@@ -793,3 +793,9 @@ import Surreal.Algebra.IntegerPolynomialCodeComputability
 import Surreal.Algebra.RingTermCode
 import Surreal.Algebra.RingTermCodeComputability
 import Surreal.Algebra.IntegerPolynomialTermComputability
+import Surreal.Algebra.RingTermScope
+import Surreal.Algebra.RingTermScopeComputability
+import Surreal.Algebra.RingFormulaCode
+import Surreal.Algebra.RingFormulaValidity
+import Surreal.Algebra.RingFormulaCodeComputability
+import Surreal.Algebra.RingFormulaFixedContext

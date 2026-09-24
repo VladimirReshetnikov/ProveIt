@@ -7485,3 +7485,29 @@ Markdown destinations in 226 files pass, together with whitespace checks.
 No finite computation substitutes for these tensor and arbitrary-module
 arguments. No Lean source changed locally; the two-thread 4,680-job build
 and 17,621-declaration axiom audit remain the baseline before synchronization.
+
+### Native formula coding synchronization (2026-09-24)
+
+Merged origin/main at 6c69b7fea93d3073d642864e239e61a21e22ee29,
+including 2214b7e, after the lattice and explicit nonflatness review.
+Read the six incoming scope/formula-coding modules against
+`odg:def:thm:saturation` and checked the updated README and coverage ledger.
+The parser checks variable bounds, matching implication contexts and the
+positive context required by universal quantification. Its two round trips
+preserve the entire accepted stream and context. The numerical context
+simulation supplies primitive-recursive validity and explicit local
+Primcodable structures for unary bounded formulas and each fixed context,
+including the outermost zero context used by the omitted type.
+
+These are coding prerequisites: primitive recursiveness of the complete
+type-membership recognizer, recursive saturation and construction of the
+tailored number-field guard remain pending. No manuscript proof-review
+status has been promoted to Lean coverage.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` completed all 4,686 jobs; the
+axiom audit passed for 17,793 declarations using only propext,
+Classical.choice and Quot.sound. The merged tree passes all 4,626 source
+anchors across 63 reports, 5,219 source-label references and 1,878 local
+Markdown destinations across 226 files, plus whitespace checks. The merge
+changes no TeX source or PDF; the three-pass article/catalogue validation
+recorded above remains applicable.
