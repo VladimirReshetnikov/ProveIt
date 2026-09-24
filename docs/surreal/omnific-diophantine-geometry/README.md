@@ -16,7 +16,7 @@ prefix `16-`), and one more dated 23 September 2026 (batch-33 manuscript 07, pla
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 226 pages
+article.pdf                        the compiled report, 227 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -237,11 +237,18 @@ The maintained Section 20 and Section 21.1–21.6 status notes, including
 Questions 21.23–21.30, are covered by the scope pass; their full parallel-source
 reconciliation is not claimed. Section 17.6 was appended at the
 end of Section 17, after Section 17.5, so again no section, statement or equation number
-changed. Apart from the positive-degree hypothesis restored in its opening summary
-and the statement-scope check of its sibling-translation comparison, the
-batch-33 material of source C17 is unreviewed: Section 19.4, its pointers and
-credits in Sections 1, 2, 5, 6, 9, 16 and 20, the status notes in Sections 18.5 and 21,
-Questions 21.31–21.40 and the appendix additions. Section 19.4 was appended at the end of
+changed. The first C17 proof review now covers the conventions and Sections
+19.4.1–19.4.3: the Hahn workspace and embedding lemmas, universal root-velocity
+certificate, translation classification, and its omnific-root corollaries
+through Remark 19.17, together with the polynomial-parameter explanation.
+It restores positive degree in Corollaries 19.15–19.16, defines squarefree
+over the coefficient field, and replaces the misleading nonmonic comparison
+by `ωX² + X`, whose discriminant is 1 but whose residue polynomial has degree 1.
+The later consequences starting in Section 19.4.4, the étale and matrix proofs,
+the alternative splitting-algebra proof, the remaining pointers and credits
+in Sections 1, 2, 5, 6, 9, 16 and 20, the status notes in Sections 18.5 and 21,
+Questions 21.31–21.40 and the appendix additions remain unreviewed, apart
+from the earlier opening-summary and sibling-translation scope checks. Section 19.4 was appended at the end of
 Section 19, after Section 19.3, and its questions after Question 21.30, so again no section,
 statement or equation number changed. Inserting Section 15
 moved the former Sections 15–17 to 16–18, and inserting Sections 16–18 moved them
@@ -301,7 +308,7 @@ Other results remain **Pending** unless individually mapped in the ledger.
 | **C14** | *Differential Rigidity of Hahn Rings: Curves, Abelian Varieties, and Omnific Diophantine Points* | `4cdeaec` | Base of Sections 16–18: the two-ring principle over any field of characteristic zero and any exponent group (Definition 16.12, Theorem 16.16, Corollary 16.17); the curve classification over every such field (Lemma 17.5, Theorem 17.6); integer polynomial arcs and the congruence criterion (Lemma 17.14, Proposition 17.15); unimodular coordinates over `ℛ_𝔬(𝕜, Γ)` and rational projective points (Theorem 17.18, Corollary 17.22); tori via `𝕜̄` (Lemma 18.3). Files prefixed `14-hahn-differential-rigidity-`. |
 | **C15** | *Geometric Rigidity over Omnific Integer Rings: Smooth curves, semiabelian varieties, and logarithmic differential certificates* | `934810a` | Section 18.6: logarithmic symmetric differentials on a smooth proper compactification with normal-crossings boundary contract into the valuation ring (Lemma 18.15) and vanish on the Euler derivations at every point (Theorem 18.16); tangent separation by them, in particular spanning by logarithmic one-forms, forces rigidity (Definition 18.17, Corollary 18.18); the abstract interface with its logarithmic hypothesis (Remark 18.19); descent over any coefficient ring (Theorem 18.20) and the omnific consequence (Corollary 18.21); finite products (Proposition 18.22). Its other results are independent proofs of statements of C10–C14 and are credited there. Files prefixed `15-logarithmic-rigidity-`. |
 | **C16** | *Singular Curves over Omnific Integers: Conductor differentials, a complete Hahn-rigidity criterion, and polynomial witnesses at every surreal scale* | `bcac55a` | Section 17.6: for every geometrically integral affine curve over a field of characteristic zero, singular or not, and every `Γ ≠ 0`, nonconstant `𝒜_𝕜(Γ)`-points exist iff the normalization is `𝔸¹`, iff there is a nonconstant polynomial map `𝔸¹ → C`, with finite-support witnesses (Theorem 17.25); Seidenberg's power identity (Lemma 17.27), the conductor certificate `κ^{2ℓ+1} α(∂)^n ∈ 𝒜_𝕜(Γ)` and the derivative-order bound (Theorem 17.28, Corollary 17.29); the place at infinity and the one-place obstruction in every characteristic (Lemma 17.30, Proposition 17.31); positive genus across singularities (Theorem 17.32); scale independence and finite birational invariance (Corollaries 17.34, 17.35); all affine schemes of dimension at most one over an algebraically closed field (Theorem 17.36); witnesses in every fiber (Corollary 17.37); the repeated-root superelliptic test (Theorem 17.38, Corollary 17.39); `Z² = X²(X³ − X + 1)` with a seventh-order certificate (Theorem 17.40); omnific and Gaussian rigidity, arithmetic families and the Gaussian dichotomy (Theorem 17.41, Proposition 17.42, Corollary 17.43); Questions 21.23–21.30. Its rings, Euler derivations, non-normality example, descent of forms of `𝔸¹` and smooth case are credited where printed. Files prefixed `16-singular-curves-`. |
-| **C17** | *Constant Discriminants and Étale Unit Rigidity over Omnific Hahn Rings: Translation classification, arithmetic descent, and normal spectral rigidity* (27 pp.) | `efc5446` (tree `aba6982`) | Section 19.4: over any field of characteristic zero and any ordered group, a monic polynomial over `𝒜_𝕜(Γ)` or `𝔬 + Π_𝕜(Γ)` with nonzero constant discriminant is `P̄(X − h)`, `h = −(a₁ − ct a₁)/n` (Theorem 19.12), by a universal root-velocity certificate (Lemma 19.9, Proposition 19.11); the parameterization and coefficient test (Corollary 19.13, (19.10)); the omnific and Gaussian forms (Corollary 19.15); factors, Galois groups, marked values and coherent translations (Proposition 19.18, Theorem 19.19, Corollary 19.20, Theorem 19.21); units of finite étale algebras are algebraic, `𝖡^× = 𝖢_𝖡^×` (Theorem 19.26); monogenic and arithmetic descent (Theorems 19.29, 19.31); the two-translation classification of critical configurations (Theorem 19.33); normal matrices `M = ct M + hI` (Theorem 19.37); five boundary examples (Examples 19.41–19.45); a second proof through a splitting algebra (Lemma 19.46); Questions 21.31–21.40. Its ring, Euler and algebraic-constant lemmas are credited where printed. Files prefixed `17-discriminant-rigidity-`. |
+| **C17** | *Constant Discriminants and Étale Unit Rigidity over Omnific Hahn Rings: Translation classification, arithmetic descent, and normal spectral rigidity* (27 pp.) | `efc5446` (tree `aba6982`) | Section 19.4: over any field of characteristic zero and any ordered group, a positive-degree monic polynomial over `𝒜_𝕜(Γ)` or `𝔬 + Π_𝕜(Γ)` with nonzero constant discriminant is `P̄(X − h)`, `h = −(a₁ − ct a₁)/n` (Theorem 19.12), by a universal root-velocity certificate (Lemma 19.9, Proposition 19.11); the parameterization and coefficient test (Corollary 19.13, (19.10)); the omnific and Gaussian forms (Corollary 19.15); factors, Galois groups, marked values and coherent translations (Proposition 19.18, Theorem 19.19, Corollary 19.20, Theorem 19.21); units of finite étale algebras are algebraic, `𝖡^× = 𝖢_𝖡^×` (Theorem 19.26); monogenic and arithmetic descent (Theorems 19.29, 19.31); the two-translation classification of critical configurations (Theorem 19.33); normal matrices `M = ct M + hI` (Theorem 19.37); five boundary examples (Examples 19.41–19.45); a second proof through a splitting algebra (Lemma 19.46); Questions 21.31–21.40. Its ring, Euler and algebraic-constant lemmas are credited where printed. Files prefixed `17-discriminant-rigidity-`. |
 
 Batch-25 item 03 is manuscript 13 of the sibling report
 [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/),
@@ -509,7 +516,7 @@ pole instead of the unit argument) is a third route to the rigid direction of Th
 (Remark 17.33), and for `Z² = X²(X³ − X + 1)` both of C16's proofs are printed, by the
 general theorem and by the explicit seventh-order certificate (Theorem 17.40). Both of
 C17's proofs of the translation theorem are printed: the universal root-velocity
-certificate (Section 19.4.3) and the route through the unit theorem and a splitting
+certificate (Section 19.4.2) and the route through the unit theorem and a splitting
 algebra of rank `n!` (Section 19.4.10). For real symmetric omnific matrices the merge
 adds a second route to Theorem 19.37 through Corollary 9.5 (Remark 19.40).
 
@@ -1134,8 +1141,11 @@ claims that these are open in the literature.
   lies in the Hahn field for every `Γ ≠ 0` (Section 17.6.9). No gap was found in C16's
   proofs, and it contradicts no other source; its one-place proposition agrees with the
   characteristic-two and characteristic-`p` examples.
-- No gap was found in source C17's proofs, and it contradicts no other source. Its
-  Lemmas 2.1, 3.1 and 6.3 are printed once as Lemmas 16.1–16.3 and Corollary 16.4.
+- The C17 assembly reported no proof gap; that report is not a complete independent
+  review. The subsequent review through Remark 19.17 makes positive degree and
+  field-theoretic squarefreeness explicit, supplies the algebraic-embedding argument,
+  and corrects the nonmonic counterexample. Later C17 proofs remain unreviewed.
+  Its Lemmas 2.1, 3.1 and 6.3 are printed once as Lemmas 16.1–16.3 and Corollary 16.4.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
@@ -1480,7 +1490,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 226 pages with no errors, warnings, undefined
+The current build gives 227 pages with no errors, warnings, undefined
 references, multiply defined labels or overfull boxes. The batch-32
 cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
 non-claim on polynomial lifting) are unnumbered and changed no label number
@@ -1489,7 +1499,7 @@ same holds for the batch-33 and batch-34 notes (after Theorems 2.7, 3.1 and 4.6,
 before Theorem 5.1 and after Question 21.10): the text before them built to 225
 pages, and all 553 labels keep their `.aux` numbers. The later batch-34
 notes on the sibling report's henselian branching (after Proposition 15.40
-and after the paragraph following Example 19.5) keep the build at 226 pages
+and after the paragraph following Example 19.5) did not change the page count (226 pages when added; 227 after a later proof-review edit)
 and change no label number (all 553 compared against a build of the
 committed text). The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of

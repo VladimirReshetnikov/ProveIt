@@ -10362,7 +10362,9 @@ with discriminant in $\Z\setminus\{0\}$ it answers \cref{odg:q:roots}
 zero (\cref{odg:disc:rem:etalenorm}). Labels of this subsection carry the sub-prefix
 \fn{odg:disc:}. It was appended at the end of \cref{odg:sec:coefficients}, so no existing
 section, statement or equation number changed; its ten questions follow the last question
-of \cref{odg:sec:questions}. It is outside every proof review recorded in
+of \cref{odg:sec:questions}. The elementary lemmas, root-velocity certificate and
+translation classification through \cref{odg:disc:rem:comparison} have been reviewed;
+the later consequences and the second proof remain outside that review, as recorded in
 \fn{RECONCILIATION.md}.
 
 \paragraph{Conventions and renamed symbols.} As in the curve part
@@ -10416,6 +10418,13 @@ series of nonpositive valuation (\cref{odg:sub:notation}): the theorems below ar
 when the support condition is weakened to a condition on the leading exponent
 (\cref{odg:disc:ex:twosided}).
 
+Here a polynomial over $\mathfrak o$ is called \emph{squarefree} when it has no repeated
+root over $\bar\Bbbk$, equivalently when it is squarefree over the field $\Bbbk$.
+This is a field-theoretic condition, not a statement about square divisors in the possibly
+nonnormal ring $\mathfrak o[X]$. The translation classification and its coefficient test
+concern positive degree: for $P=1$ every translation gives the same polynomial, so there
+is no unique $h$ when $\crP\ne0$.
+
 \subsubsection{The splitting field and the Euler family}\label{odg:disc:sub:rings}
 
 Source C17 reproves the ring facts it uses: $\crA=\Bbbk\oplus\crP$ with the retraction
@@ -10452,10 +10461,17 @@ characteristic zero and divisible exponent group is the standard criterion
 along $\Gamma\subseteq\Gamma_\Q$ preserves supports and coefficient convolutions, so
 $\crH\subseteq\Hbar$, hence $F\subseteq\Hbar$; the field $F$ need not be $\crH$ (for
 $\Gamma=\Z$, $\crA=\Bbbk[\omega]$ and $F=\Bbbk(\omega)$). The intersections compare supports,
-as in \cref{odg:cr:lem:rings}(b). The remaining assertions are
-\cref{odg:cr:lem:euler,odg:cr:lem:separation} for the coefficient field $\bar\Bbbk$ and the
-group $\Gamma_\Q$, with rational-valued $\lambda$, which already detect every nonzero
-exponent.
+as in \cref{odg:cr:lem:rings}(b). The Leibniz rule follows from additivity of $\lambda$
+on each finite coefficient convolution, as in \cref{odg:cr:lem:euler}; linearity over
+$\bar\Bbbk$ follows directly from the coefficient formula.
+Coefficientwise differentiation can only remove support
+terms, so $v(\partial_\lambda x)\ge v(x)$ and
+$v(\partial_\lambda x/x)\ge0$ when the derivative is nonzero; the zero derivative also
+lies in $\Obar$. Finally, for any nonzero $\gamma\in\Gamma_\Q$, extend $\gamma$ to a
+$\Q$-basis and choose a rational linear functional with $\lambda(\gamma)=1$.
+It detects any nonzero coefficient at $\gamma$. Thus a series killed by every
+$\partial_\lambda$ is supported only at $0$, giving the joint kernel in
+\eqref{odg:disc:eq:hahn}, with no restriction on the size of its support.
 \end{proof}
 
 These intersections do the work that a convergence or compactness argument might
@@ -10467,13 +10483,19 @@ $F$-embedding. Each $\partial_\lambda$ on $F$ has a unique extension to a deriva
 and $\sigma$ intertwines it with the coefficientwise $\partial_\lambda$ on $\Hbar$.
 \end{lemma}
 \begin{proof}
-The derivation $\partial_\lambda$ preserves $F$, since it preserves $\crA$. For $z$
-algebraic over $F$ with separable minimal polynomial $R$, any extension satisfies
-$\partial z=-R^{\partial}(z)/R'(z)$, where $R^\partial$ applies $\partial$ to the
-coefficients of $R$. This proves uniqueness, and adjoining a primitive element with this
-formula gives existence; alternatively, the formal \'etaleness of a separable field
-extension gives both. Since the coefficientwise derivation already exists on $\Hbar$,
-uniqueness gives the compatibility.
+The derivation $\partial=\partial_\lambda$ preserves $F$, since it preserves $\crA$ and
+obeys the quotient rule. For $z\in L$ let $R\in F[X]$ be its minimal polynomial.
+Differentiating $\sigma(R)(\sigma z)=0$ in $\Hbar$ gives
+\[
+ \partial(\sigma z)
+ =-\frac{\sigma(R^\partial(z))}{\sigma(R'(z))}
+ =\sigma\!\left(-\frac{R^\partial(z)}{R'(z)}\right),
+\]
+where $R^\partial$ applies $\partial$ to the coefficients and $R'(z)\ne0$ by
+separability. Hence the ambient derivation preserves $\sigma(L)$; pulling its restriction
+back through $\sigma$ gives a derivation on $L$ extending the one on $F$ and proves the
+required compatibility. Any extension must satisfy the same formula for every $z$, so
+it is unique.
 \end{proof}
 
 \begin{lemma}[Constant coefficients remain independent \src{C17}]\label{odg:disc:lem:independence}
@@ -10530,9 +10552,14 @@ linear in $b$. A direct calculation gives
  w_{ij}=\frac{\mathsf W(r_i,r_j)}{P'(r_i)P'(r_j)}.
 \end{equation}
 By the root product identity $\prod_{i=1}^nP'(r_i)=(-1)^m\Delta$ we have
-$\Delta/P'(r_i)=(-1)^m\prod_{u\ne i}P'(r_u)$, so $\Delta^2w_{ij}$ is a polynomial in the
-roots and $b$, linear in $b$, and $\Delta^{2s}e_s(w)$ is a polynomial in the roots and
-$b$, homogeneous of degree $s$ in $b$. Permuting the roots permutes the unordered edges,
+$\Delta/P'(r_i)=(-1)^m\prod_{u\ne i}P'(r_u)$. In particular the two signs cancel in
+\[
+ \Delta^2w_{ij}=\mathsf W(r_i,r_j)
+       \prod_{u\ne i}P'(r_u)\prod_{v\ne j}P'(r_v).
+\]
+This is a polynomial in the roots and $b$, linear in $b$. Its $s$th elementary symmetric
+function is $\Delta^{2s}e_s(w)$, a polynomial homogeneous of degree $s$ in $b$.
+Permuting the roots permutes the unordered edges,
 and both $w_{ij}$ and the polynomial just built respect this action, so the latter is
 symmetric in the roots. Treat the roots as indeterminates, with $a_j=(-1)^je_j(r)$ and $b$
 independent. The fundamental theorem on symmetric polynomials over $\Z[b]$ expresses the
@@ -10567,8 +10594,8 @@ $w_{ij}=\partial(r_i-r_j)/(r_i-r_j)$ lies in $\Obar$, so every $e_s(w)$ lies in 
 On the other hand $\mathcal F_{n,s}$ has positive degree in $b$ and coefficients in
 $\Z[a]\subseteq\crA$, so $\mathcal F_{n,s}(a,b)\in\crP$, and with $\Delta\in\Bbbk^\times$,
 \eqref{odg:disc:eq:certificate} gives $e_s(w)\in\crP$. By \eqref{odg:disc:eq:hahn},
-$e_s(w)=0$ for every $s\ge1$. Thus $\prod_{i<j}(T-w_{ij})=T^m$, and every $w_{ij}$ is zero
-in the field $\Hbar$.
+$e_s(w)=0$ for $1\le s\le m$. Thus $\prod_{i<j}(T-w_{ij})=T^m$; evaluating at an edge
+velocity gives $w_{ij}^m=0$. Since $m\ge1$ and $\Hbar$ is a field, every $w_{ij}$ is zero.
 \end{proof}
 
 \subsubsection{Translation classification}\label{odg:disc:sub:translation}
@@ -10600,7 +10627,8 @@ $R(X)=P(X+\mu)$ has its coefficients in $\bar\Bbbk$. They also lie in $\crA$, be
 $\mu\in\crA$, hence in $\crA\cap\bar\Bbbk=\Bbbk$. Write $\mu=\mu_0+h$ with $\mu_0=\ct\mu$
 and $h\in\crP$. Then $P(X)=R(X-\mu_0-h)$, and applying the ring homomorphism $\ct$ to the
 coefficients gives $\overline P(X)=R(X-\mu_0)$. So $P(X)=\overline P(X-h)$ and
-$h=-(a_1-\ct a_1)/n$.
+$h=-(a_1-\ct a_1)/n$. Translation preserves root differences, so
+$\Disc(\overline P)=\Disc(P)\ne0$; hence $\overline P$ is squarefree over $\Bbbk$.
 
 For general $\mathfrak o$, regard $P$ as a polynomial over $\crA$. A nonzero constant
 discriminant lies in $\mathcal R_{\mathfrak o}\cap\Bbbk=\mathfrak o$ and is a unit of
@@ -10626,7 +10654,8 @@ $X^{n-1}$ in characteristic zero.
 \end{proof}
 
 An equivalent finite coefficient test avoids computing a large discriminant \src{C17}:
-given monic $P$, compute $h$ by \eqref{odg:disc:eq:h} and expand $P(X+h)$; then $P$ has a
+given monic $P$ of positive degree, compute $h$ by \eqref{odg:disc:eq:h} and expand
+$P(X+h)$; then $P$ has a
 nonzero constant discriminant if and only if
 \begin{equation}\label{odg:disc:eq:test}
  P(X+h)=\overline P(X)\qquad\text{and}\qquad \Disc(\overline P)\ne0 .
@@ -10647,7 +10676,7 @@ finitely many monomials.
 \end{example}
 
 \begin{corollary}[Omnific and Gaussian omnific form \src{C17}]\label{odg:disc:cor:omnific}
-Let $P\in\Oz[X]$ be monic. Then $\Disc(P)\in\Z\setminus\{0\}$ if and only if
+Let $P\in\Oz[X]$ be monic of positive degree. Then $\Disc(P)\in\Z\setminus\{0\}$ if and only if
 $P=\overline P(X-h)$ with $\overline P\in\Z[X]$ squarefree and $h\in\Pi$, and $h$ is
 unique. Its roots in $\No[i]$ are $h+c_i$ with $c_i$ the complex roots of $\overline P$.
 The same holds over $\Og$, with $\overline P\in\Z[i][X]$ and $h\in\Pi_\C$.
@@ -10661,7 +10690,7 @@ The roots of $\overline P$ are algebraic over $\Q$ or $\Q(i)$.
 \end{proof}
 
 \begin{corollary}[Omnific roots at a constant discriminant \mergetag]\label{odg:disc:cor:roots}
-Let $P\in\Oz[X]$ be monic with $\Disc(P)\in\Z\setminus\{0\}$, and let $h$ be given by
+Let $P\in\Oz[X]$ be monic of positive degree with $\Disc(P)\in\Z\setminus\{0\}$, and let $h$ be given by
 \eqref{odg:disc:eq:h}. The roots of $P$ in $\Oz$ are exactly the elements $h+c$ with $c$
 an integer root of $\overline P$; in particular $P$ has a root in $\Oz$ if and only if
 $\overline P$ has one in $\Z$, and then every integer root of $\overline P$ lifts to
@@ -10685,8 +10714,11 @@ omnific root. The polynomial $T^2-T-\omega$ of \cref{odg:ex:hensel}, whose simpl
 roots $0$ and $1$ do not lift, has the nonconstant discriminant $1+4\omega$; its
 translation $h$ from \eqref{odg:disc:eq:h} is $0$, and $\overline P(X-h)=X^2-X\ne P$. So
 the constant discriminant is exactly the hypothesis that separates the two behaviours in
-these examples; the example $6x^2+x-1$ after \cref{odg:thm:quadraticformula} shows that
-monicity cannot simply be dropped either.
+these examples. Monicity cannot simply be dropped: $P(X)=\omega X^2+X$ has discriminant
+$1$ and $\overline P=X$, but no translate of $\overline P$ has degree two. In contrast,
+the ordinary polynomial $6x^2+x-1$ after \cref{odg:thm:quadraticformula} illustrates a
+different obstruction: its discriminant is a square but its roots are not omnific
+integers, because the denominator in the nonmonic quadratic formula is not harmless.
 \end{remark}
 
 \paragraph{The polynomial-parameter case \src{C17}.} For $\Gamma=\Z$ a reverse-well-ordered
@@ -10695,7 +10727,7 @@ says that a monic $P(X,Y)\in\Bbbk[Y][X]$ with nonzero constant discriminant sati
 \[
  P(X,Y)=P\bigl(X-h(Y),0\bigr),\qquad h(Y)=-\frac{a_1(Y)-a_1(0)}n .
 \]
-This is a uniform answer in all degrees and characteristic zero to a question posed on
+This is a uniform answer in all positive degrees and characteristic zero to a question posed on
 Mathematics Stack Exchange by the user Oblomov \cite{Oblomov}, and it shows why the
 familiar quadratic and cubic computations are not isolated. For several parameters,
 embed $\Bbbk[Y_1,\ldots,Y_k]$ in a Hahn ring with $Y_i=\omega^{\varepsilon_i}$ for the
@@ -12051,7 +12083,8 @@ structures alone do not single out the real omnific subring, even up to
 isomorphism.
 Status (batch 34): ordinary arithmetic does not separate these rings either.
 Each integer-part ring $R_F$ of that report, for a set-sized real closed
-field $F$ (with $\Oz=R_{\R}$), has $R_F/nR_F\cong\Z/n\Z$ with every finite
+field $F$ (with $\Oz=R_{\R}$), has $R_F/nR_F\cong\Z/n\Z$ for every positive ordinary
+integer $n$, with every finite
 quotient factoring through $\ct$, and a system of integer polynomial
 equations is solvable in $R_F$ exactly when it is solvable in $\Z$
 (\replabel{saut:gr:prop:finite}, \replabel{saut:gr:prop:dio}). This is
