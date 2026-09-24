@@ -4115,9 +4115,22 @@ catalogue has 32. Both final logs contain no warnings, unresolved references
 or bad boxes. Incoming cross-report notes change no standard statement;
 their placement does not extend the completed proof-review scope. The
 independent inventory passes, all 4,820 cited source references resolve,
-and all 1,660 local Markdown destinations resolve. The incoming finite
+and all 1,659 local Markdown destinations resolve. The incoming finite
 verification programs and recorded data are unchanged; the C15 rerun and
 its limited scope are recorded above.
+
+The final synchronization through `4d7b779` adds five modules for
+`odg:lem:constantproduct` and both clauses of `odg:thm:decomposable`.
+Their statements were checked against the manuscript: nonzero levels and
+positive multiplicities are retained, real omnific variables use the real
+kernel of the complex forms, arbitrary complex support-ring variables use
+complex column rank, and the coefficientwise description uses actual Conway
+coefficients. The combined two-thread build passes 4,471 jobs and its axiom
+audit passes 15,460 declarations with the same three allowed axioms. All
+4,821 cited source references and 1,665 local Markdown destinations resolve.
+The 4,271-result inventory passes. No TeX source or PDF changes in this last
+merge; the preceding render checks still apply. The Gaussian fiber and
+converse existence statements remain pending in Lean.
 
 ## Earlier omnific integration validation
 

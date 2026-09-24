@@ -276,6 +276,15 @@ vector. Any rational basis of the matrix kernel uniquely parametrizes that
 purely infinite part. In particular, full column rank forces every solution
 to be ordinary.
 
+Products of affine linear forms with complex coefficients now have an exact
+omnific fiber theorem at every nonzero constant level. Each solution is an
+ordinary integer solution plus a purely infinite vector in the common
+**real** kernel of the linear forms. Any real kernel basis gives unique
+purely infinite parameters, and each Conway coefficient vector lies in that
+same kernel. A zero real kernel forces ordinary solutions. For tuples in
+the larger complex support ring, full complex column rank forces all
+coordinates to be ordinary complex constants.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
