@@ -104,6 +104,18 @@ generator cardinality is `ℵ₁`. A residue field's canonical copy of the
 coefficient field depends on the quotient map: it is recovered from
 `φ(rf)/φ(f)` for a detected purely infinite f, even when r is not in A.
 
+For source 11’s one-arm example, κ is regular uncountable and
+`Γ = ⊕_{α<κ} ℚ e_α`, with the least nonzero index dominant. Keep
+`(D,K,Γ,κ)` explicit when writing `R^{11}_{Γ,<κ} = D + I`.
+K can be any set field, including a finite field,
+and D is a unital subring. The ambient `F_{κ,K}` allows supports of
+cardinality strictly below κ. Under the displayed coefficient bound its
+size and every smaller-scale field's size are `κ^{<κ}`, while I needs κ
+generators. Real/integer and complex/Gaussian specializations embed into
+the corresponding omnific rings; positive-characteristic choices do not.
+In the five-model comparison, use θ for a **realized size** when discussing
+`θ^{ℵ₀}=θ`, to distinguish it from the support parameter κ.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
