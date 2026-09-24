@@ -299,6 +299,14 @@ the lower universe, the formalization's version of proper-class size. The
 ordinary-point hypothesis is necessary: `X − Y = √2` has a nonzero kernel
 but no solution in either omnific ring.
 
+Binary polynomials with two distinct projective linear factors now have
+proved rigidity at every nonzero constant level; the proof even allows
+nonhomogeneous polynomials with those two divisors. In particular,
+`x² − D y² = c` has exactly its ordinary integer solutions for every
+nonzero integer `D` and `c`, including negative or square `D`. This rules
+out infinite omnific Pell solutions without asserting finiteness of the
+ordinary solution set.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
