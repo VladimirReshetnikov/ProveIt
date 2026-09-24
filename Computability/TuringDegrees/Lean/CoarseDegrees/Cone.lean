@@ -4,7 +4,7 @@ import CoarseDegrees.Block
 # No cone theorem for the coarse degrees
 
 Formalization of Theorem 1.5(b) of research report 10
-(`docs/coarse-degrees/research-reports/10/coarse_hyperdegrees.tex`) for the nonuniform coarse degrees: above
+(`Computability/TuringDegrees/Research/CoarseDegrees/research-reports/10/coarse_hyperdegrees.tex`) for the nonuniform coarse degrees: above
 *every* function `h` there is a function whose coarse class has a least Turing degree and a
 function whose coarse class has none.  Hence neither the set `LeastClass` of functions whose
 class has a least degree nor its complement contains a cone, and Martin's cone theorem has no

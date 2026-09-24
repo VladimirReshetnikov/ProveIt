@@ -100,7 +100,7 @@ statements.
 
 *Source.*  S. B. Cooper, *Minimal degrees and the jump operator*, J. Symb. Log. 38 (1973),
 249--271: every Turing degree `≥ 0′` is the jump of a minimal degree.  (Checked against the
-journal record on 19 September 2026; see `docs/coarse-degrees/research-plan/validation.txt`.)
+journal record on 19 September 2026; see `Computability/TuringDegrees/Research/CoarseDegrees/research-plan/validation.txt`.)
 
 *Derivation.*  Put `c₀ = deg(A ⊕ ∅′)` and `c₁ = c₀′`; both are above `0′`, and they are distinct
 because the jump is strictly increasing.  Cooper gives minimal degrees `m₀`, `m₁` with
