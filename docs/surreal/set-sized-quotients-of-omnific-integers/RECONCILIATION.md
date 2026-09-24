@@ -3295,3 +3295,73 @@ references and 1,922 Markdown destinations in 226 files, with whitespace
 checks. Incoming work changes no TeX/PDF, so the local three-pass builds
 and page inspections remain valid. The manuscript denominator, generation
 and topology consequences added in this pass remain Pending in Lean.
+
+### Constant slices, exact Gaussian defect and valuation boundary (2026-09-24)
+
+Reviewed the next eleven standard normalization results, from
+`osq:nm:thm:realslice` through `osq:nm:cor:notintclosed`, completing all
+twenty standard results before the arithmetic fibres. This covers the
+constant/support slices, truncation failure, the quadratic unit equation,
+Gaussian normalization, finite targets, ordered maps to set groups,
+valuations, formal binomial substitution and the equation invisible to
+every set-sized target. The later arithmetic-fibre and branching proofs
+remain to be reviewed.
+
+Made explicit why coefficient extraction is multiplicative only on the
+nonnegative-support ring; opposite monomials disprove multiplication on
+the full field. Added a least-exponent obstruction: if x has a negative
+minimum g₀ with coefficient c≠0, then in a monic equation of degree n the
+coefficient at ng₀ of xⁿ is cⁿ, while every lower-degree term with omnific
+coefficients has all exponents strictly above ng₀. Thus an integral
+normal form cannot have a negative minimum. Every nonempty finite
+truncation of the small integral unit is consequently nonintegral. Combined
+with the constant-slice theorems, this gives the exact finite-support test
+in both real and Gaussian cases, also in their countable-support models.
+The general infinite mixed-support question remains open; a negative term
+alone is not the obstruction. Updated its question/status note accordingly.
+
+Sharpened the Gaussian comparison with an explicit quadratic basis.
+For η=(√3+i)/2=−iζ₃, every z=x+iy in 𝒩_C has b=2y∈𝒩 and
+ a=z−bη∈𝒩_C∩No=𝒩. Imaginary parts give uniqueness, hence
+𝒩_C=𝒩⊕𝒩η=𝒩[η]≅𝒩[T]/(T²−√3T+1). Since i=2η−√3,
+𝒩[i]=𝒩⊕2𝒩η. The additive defect quotient is exactly 𝒩/2𝒩,
+with annihilator 2𝒩. It is a module quotient, not a quotient ring,
+since the proper subring 𝒩[i] contains 1. Multiplying a+2bη by η
+shows the conductor (𝒩[i]:𝒩_C)=2𝒩_C; it must not be confused
+with the zero conductor (Oz[i]:𝒩_C). All formulas hold with subscript κ.
+Also proved the fractional module (1/2)𝒩[i] is not a ring, since it
+contains 1/2 but not 1/4. Five exact symbolic checks confirm the quadratic,
+quartic, coordinate, i and conductor-product identities; these checks
+alone do not prove the integrality or module statements.
+
+Gave the explicit Gaussian zero-conductor witness u_H with
+H=|Re(a)|+|Im(a)| in the real integer part. The finite-target contradiction
+includes q≥2 in the sign check at 2 and passes through the commutative
+image even for a noncommutative target. The ordered-map obstruction uses
+surreal ordinal products only to separate a set of images; it does not
+assume w(αh)=αw(h) at infinite ordinals. Clearing x and x⁻¹ then proves
+the valuation obstruction for a set-sized value group. Checked the cited
+[Stacks Project valuation section](https://stacks.math.columbia.edu/tag/00I8):
+Lemma 10.50.3 gives normality of valuation rings, 10.50.11 separates elements
+outside a normal domain, and 10.50.12 constructs its ordered value group
+as a quotient of the fraction field's multiplicative group. These are
+set-sized results and do not supply class-valued valuation overrings.
+
+The binomial proof now records injectivity of Hahn substitution from
+distinct exponents −nγ, with finite contributions to every coefficient.
+No fine-topological convergence of partial sums is claimed. The missing
+root theorem exhausts all roots by ordinary roots of unity times its
+explicit root, then detects a noncancelling negative exponent; it does
+not need algebraic closedness of the entire surcomplex field for that step.
+
+Updated the root/report guides, notation, catalogue, coverage narrative and
+shifted anchors. Validation: three final diagnostic-free TeX passes produce
+the 324-page article and 35-page catalogue; inspected article PDF pages
+191–197 and 300 and catalogue page 12. All 418 result statements, 828 labels,
+1,656 AUX numbering fields, 66 questions, 60 remarks and 28 examples are
+unchanged. Source 08's unchanged checker passes 1,277 finite cases with
+stdout byte-identical to its historical record. All 4,626 anchors in 63
+reports, 5,223 source-label references and 1,922 Markdown destinations in
+226 files pass, with whitespace checks. No historical verification files
+or Lean implementation changed. The new manuscript consequences remain
+Pending in Lean.

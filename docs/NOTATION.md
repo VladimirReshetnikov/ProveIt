@@ -501,6 +501,23 @@ these monomials tends to zero in the small field, but not in No.
 Convergent nets in No with a set-sized index set are eventually constant;
 initial variation is allowed.
 
+Write 𝒩 and 𝒩_C for the real and Gaussian integral closures. Their
+complexification comparison is more precise than equality after inverting
+2: with η=(√3+i)/2, one has 𝒩_C=𝒩⊕𝒩η and 𝒩[i]=𝒩⊕2𝒩η.
+The quotient 𝒩_C/𝒩[i] is an **additive module**, isomorphic to 𝒩/2𝒩;
+𝒩[i] is not an ideal of 𝒩_C. The conductor (𝒩[i]:𝒩_C)=2𝒩_C
+differs from the zero conductor (Oz[i]:𝒩_C). The same formulas hold
+in the countable-support model with subscript κ. The fractional module
+(1/2)𝒩[i] is not a ring.
+
+The least-exponent obstruction concerns a **minimum** of the support,
+not its leading (largest) exponent. A negative minimum prevents
+integrality; merely having negative exponents does not. Finite-support
+elements are integral exactly when their support is nonnegative and their
+constant coefficient is a real or complex algebraic integer, respectively.
+For the binomial expansions, Hahn substitution is a coefficientwise ring
+map; it does not assert convergence of partial sums in the fine topology.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though

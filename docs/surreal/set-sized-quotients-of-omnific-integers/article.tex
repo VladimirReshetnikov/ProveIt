@@ -12480,6 +12480,12 @@ argument applies; conversely $\overline\Z_\R\subseteq\R\subseteq F^{03}_\kappa$ 
 $\Pi^{03}_\kappa\subseteq A^{03}_\kappa$.
 \end{proof}
 
+The support restriction is essential to this use of $\ct$. On the full
+field, coefficient extraction at zero is only additive:
+$\ct(\omega^h\omega^{-h})=1$ while both factors have constant
+coefficient zero, for $h>0$. In the displayed nonnegative-support ring,
+a product can contribute at zero only by multiplying two constant terms.
+
 \begin{example}[\src{03}]\label{osq:nm:ex:slice}
 The element $\pi\omega+\sqrt2$ is integral over $\Oz$, whereas $\pi\omega+\pi$ is not. The
 nature of a coefficient at a \emph{positive} exponent is irrelevant to the test; only the
@@ -12520,6 +12526,29 @@ This is stronger than the statement that some integral elements have negative ex
 their negative tails can be essential, since deleting all but the leading term destroys
 integrality. In the opposite direction, \cref{osq:nm:thm:realslice} gives a complete
 constant-term criterion when negative exponents are absent (03).
+
+\paragraph{A least negative exponent prevents integrality \merge.}
+In fact, an integral element cannot have a least support exponent
+$g_0<0$. Suppose $x$ has such an exponent, with coefficient $c\ne0$,
+and satisfies a monic equation
+$x^n+\sum_{j<n}a_jx^j=0$, $n\ge1$, $a_j\in\Oz$. The coefficient of $x^n$
+at $ng_0$ is $c^n\ne0$: a product of $n$ support exponents reaches
+$ng_0$ only when all of them equal $g_0$. Every exponent of
+$a_jx^j$ is at least $jg_0>ng_0$, because $a_j$ has nonnegative
+support and $j<n$. Thus no lower-degree term can cancel that
+coefficient, a contradiction. The argument uses only support bounds
+and a coefficient field, and works over $A^{03}_\kappa$, $\GOz$ and
+$A^{03}_\kappa[i]$ as well.
+
+Consequently every nonempty finite truncation of the displayed
+$u_H$ is nonintegral, not just its first term. More generally, a
+finite-support real element is integral precisely when all its
+exponents are nonnegative and its constant coefficient is a real
+algebraic integer, by \cref{osq:nm:thm:realslice}. The analogous
+Gaussian test uses an ordinary complex algebraic integer as constant
+coefficient, by \cref{osq:nm:thm:complexnormal} below. For infinite
+supports this is only an obstruction when a negative least exponent
+exists, not a general membership criterion.
 
 \begin{proposition}[A unit equation acquires solutions only after normalization \src{03}]\label{osq:nm:prop:unitdioph}
 Let $A$ be $\Oz$ or $A^{03}_\kappa$ and $0\ne H\in A$. The equation
@@ -12595,6 +12624,59 @@ class of $\NN_{\kappa,\C}/\NN_\kappa[i]$, and this quotient of $\NN_\kappa$-modu
 annihilated by $2$ because $2\NN_{\kappa,\C}\subseteq\NN_\kappa[i]$.
 \end{proof}
 
+The fractional module $\tfrac12\NN[i]$ is indeed not a ring:
+it contains $1/2$, but not its square $1/4$, since the latter
+membership would put $1/2$ in $\NN[i]\cap\No=\NN$.
+
+\paragraph{An explicit basis and the exact defect module \merge.}
+The defect has a sharper description. Put
+\[
+ \eta=-i\zeta=\frac{\sqrt3+i}{2}\in\NN_\C.
+\]
+Then
+\[
+ \NN_\C=\NN\oplus\NN\eta=\NN[\eta],\qquad
+ \NN_\C\cong\NN[T]/(T^2-\sqrt3\,T+1).
+\]
+Indeed, for $z=x+iy\in\NN_\C$ the preceding trace calculation
+gives $b=2y\in\NN$. The element
+$a=z-b\eta=x-\sqrt3\,y$ is real and belongs to $\NN_\C$, hence
+to $\NN$ by \eqref{osq:nm:eq:realintersection}. Thus $z=a+b\eta$.
+This representation is unique: its imaginary part is $b/2$, which
+determines $b$, and then its real part determines $a$. The relation
+$\eta^2-\sqrt3\,\eta+1=0$ and division by this monic quadratic
+give the ring presentation; a remainder $a+bT$ vanishes at $\eta$
+only when $a=b=0$. In particular the complex normalization is a free
+module of rank two over the real normalization, even though it is
+larger than $\NN[i]$.
+
+Since $i=2\eta-\sqrt3$ and $\sqrt3\in\NN$, the original inclusion
+has the exact coordinate description
+\[
+ \NN[i]=\NN\oplus2\NN\eta,\qquad
+ \NN_\C/\NN[i]\cong\NN/2\NN
+ \quad\text{as }\NN\text{-modules},
+\]
+where $a+b\eta$ maps to $b\bmod2\NN$. This is an additive-module
+quotient, not a quotient ring: $\NN[i]$ contains $1$ but is a proper
+subring of $\NN_\C$, so it is not an ideal. The module is nonzero
+and its annihilator in $\NN$ is exactly $2\NN$.
+
+The conductor of this intermediate inclusion is also explicit:
+\[
+ (\NN[i]:\NN_\C)=2\NN_\C.
+\]
+For $z=a+2b\eta\in\NN[i]$, multiplication by $\eta$ gives
+$z\eta=-2b+(a+2b\sqrt3)\eta$. This lies in $\NN[i]$ exactly
+when $a\in2\NN$, and testing $1$ and $\eta$ suffices for the
+conductor since they generate $\NN_\C$ as an $\NN$-module.
+This nonzero conductor is for $\NN[i]\subseteq\NN_\C$;
+the conductor from $\GOz$ to $\NN_\C$ is zero below.
+All the basis, presentation, quotient and conductor formulas hold
+with $\NN_\kappa,\NN_{\kappa,\C}$ in place of
+$\NN,\NN_\C$: the constants $i,\sqrt3,\zeta,\eta$ belong to
+the same countable-support ambient field.
+
 \begin{theorem}[Dense Gaussian normalization and its constant slice \src{03}]\label{osq:nm:thm:complexnormal}
 The ring $\NN_\C$ is a proper dense subring of $\SC$ for the surreal-modulus topology, its
 conductor $(\GOz:\NN_\C)$ is zero, and it cannot be generated over $\GOz$ by a set.
@@ -12620,6 +12702,9 @@ $1/2$ is excluded by \cref{osq:nm:lem:reciprocal}, which proves properness.
 
 For $0\ne a\in\GOz$ choose such a $u$ with $0<u<1/|a|$. Then $au\in\NN_\C$ and
 $0<|au|<1$, so $au\notin\GOz$ by \cref{osq:nm:lem:intpart}; thus the conductor is zero.
+One can choose the witness explicitly: write $a=p+iq$ with
+$p,q\in\Oz$ and take $H=|p|+|q|\in\Oz_{>0}$.
+Then $|a|\le H$ and $u_H<1/(2H)$ give $|a u_H|<1/2$.
 If $\NN_\C=\GOz[S]$ for a set $S$, \cref{osq:nm:thm:onedenominator} would give a nonzero
 element of the conductor; for $\NN_{\kappa,\C}$ and fewer than $\mu$ generators,
 \cref{osq:nm:thm:smallabsorption} does the same. The two absorption theorems also show
@@ -12650,7 +12735,8 @@ nonzero finite ring. In particular none of them has a proper ideal of finite ind
 Suppose such a homomorphism exists. Its image is a nonzero finite commutative ring, even
 if the target is not commutative, and a maximal ideal of the image gives a unital
 homomorphism onto a finite field $\F_q$. The ordinary monic polynomial $T^q-T-1$ is
-negative at $0$ and positive at $2$, so it has a real root $\alpha\in(0,2)$. This $\alpha$
+negative at $0$ and positive at $2$ (since $q\ge2$ and $2^q-3>0$),
+so it has a real root $\alpha\in(0,2)$. This $\alpha$
 is a real algebraic integer and belongs to all four normalizations by
 \cref{osq:nm:thm:realslice,osq:nm:thm:complexnormal}. Its image $\bar\alpha$ would satisfy
 $\bar\alpha^q-\bar\alpha-1=0$ in $\F_q$, whereas every element of $\F_q$ satisfies
@@ -12689,6 +12775,9 @@ $\beta h-\alpha h\ge h$ and, by additivity and monotonicity,
 \]
 So the $\lambda$ elements $\alpha h$ have pairwise distinct images in $\Gamma$, contradicting
 $\lambda>|\Gamma|$. Only a set of ordinals was used.
+The proof does not require $w(\alpha h)=\alpha w(h)$ for infinite
+$\alpha$; additivity is used only on the displayed difference, and
+monotonicity supplies its lower bound.
 \end{proof}
 
 \begin{theorem}[Full-class valuation obstruction \src{03}]\label{osq:nm:thm:valuation}
@@ -12760,6 +12849,11 @@ contributions, because an ordinary integer $n\ge0$ has only finitely many ordere
 decompositions into a fixed number of nonnegative integers. Hence
 $\sum_nc_nt^n\mapsto\sum_nc_n\omega^{-n\gamma}$ is a ring homomorphism
 $\Q[[t]]\to\No$, and the formal identity remains a Hahn identity.
+The exponents $-n\gamma$ are distinct because $\gamma>0$ in an
+ordered abelian group. Thus substitution also preserves coefficients
+and is injective. It uses formal coefficient identities and Hahn
+summability, with no claim that the partial sums converge in the
+fine topology of $\No$.
 \end{proof}
 
 \begin{theorem}[Universal small-target failure of root detection \src{08}]\label{osq:nm:thm:invisible}
@@ -18093,6 +18187,11 @@ The exact count $\mu$ proved after \cref{osq:nm:thm:smallabsorption}
 concerns algebra generators of the ambient field over its integer part.
 Its negative-monomial generators are not integral, so this does not
 settle the normalization's generation clause \merge.
+For finite supports the membership clause now has an exact answer:
+the consequence after \cref{osq:nm:prop:truncation} excludes every
+negative exponent, and \cref{osq:nm:thm:realslice,osq:nm:thm:complexnormal}
+then test the constant coefficient. The general infinite mixed-support
+membership question remains open.
 
 \begin{question}[Homological dimensions of the cores; 12, 14, 21, merge]\label{osq:hd:q:cores}
 For $d\ge2$, is $\pd_{A_d}D$ equal to $d$ or to $d+1$? When $K\ne\Frac D$, what are the weak global dimensions of $A_d$ (at least $d+1$) and of

@@ -464,13 +464,33 @@ real model. It fails to converge after embedding in No with its fine
 topology, where a still smaller radius exists. These negative monomials
 are not integral, so the normalization's generator count remains open.
 The reviewed results and added consequences remain pending in Lean.
-The constant-slice, Gaussian and later normalization results await review.
+The next eleven standard results are now reviewed too, completing the
+twenty integral-closure results before the arithmetic fibres: constant
+slices, truncation failure, the unit equation, Gaussian normalization,
+finite targets, set-valued valuations and the binomial equation invisible
+to small targets. Coefficient extraction is used multiplicatively only
+on nonnegative support. The valuation proof does not assume transfinite
+linearity of its additive map, and formal Hahn substitution does not
+assert convergence in the fine topology.
+
+Two added consequences sharpen the normalization picture. A negative
+minimum of a normal-form support prevents integrality, so every nonempty
+finite truncation of the small integral unit is nonintegral. Finite-support
+elements have an exact test: nonnegative support and an algebraic-integer
+constant coefficient. For the Gaussian comparison, η=(√3+i)/2 gives
+𝒩_C=𝒩⊕𝒩η and the quadratic presentation T²−√3T+1. Since
+𝒩[i]=𝒩⊕2𝒩η, the additive defect is exactly 𝒩/2𝒩 and has
+annihilator 2𝒩. This is a module quotient, not a quotient ring.
+The intermediate conductor is (𝒩[i]:𝒩_C)=2𝒩_C, distinct from the
+zero conductor (Oz[i]:𝒩_C). All these formulas hold with subscript κ.
+These manuscript consequences remain pending in Lean; arithmetic fibre,
+branching and later normalization proofs still await review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 323 pages
+article.pdf   the compiled report, 324 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
