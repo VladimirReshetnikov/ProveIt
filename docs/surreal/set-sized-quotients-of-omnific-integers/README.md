@@ -1649,7 +1649,12 @@ strictly positive set support and coefficients in `K`.
   and norm theorems and 14's unimodular-direction criterion (with its own
   rationality theorem for primitive directions), and it cites 16's image gap
   (Theorem 16.36) as the general form of its equations `x² = ω² + 1` and
-  `X^n = aω^γ + β`.
+  `X^n = aω^γ + β`. Its constant-discriminant theorems
+  (`odg:disc:thm:translation`, `odg:disc:thm:critical`) reach 18's normal
+  forms `f = ct_*(f)(X − η)` and `f = ct_*(f)(X − η) + β` for monic
+  polynomials from a nonzero constant (critical) discriminant instead of many
+  ordinary values, with no discrete order; the converses fail (status note of
+  batch 34 after the proof of Theorem 16.61).
 - [`foundations`](../../foundations-and-computation/foundations/) defines
   `Oz = Π ⊕ Z` (`found:eq:omnific`), whose notation is used here.
 - [`euclidean-three-space`](../euclidean-three-space/), Part III: every class
@@ -1718,6 +1723,13 @@ strictly positive set support and coefficients in `K`.
   omnific part are the integer-valued polynomials plus `Π`-coefficient
   polynomials (`ent:as:thm:integer`). Status note after Corollary 16.67 and
   pointers in 18's non-claim (4) and 22's non-claim (10).
+- [`dynamics-and-normal-forms`](../../surcomplex/dynamics-and-normal-forms/)
+  (`dyn:`; batch 34) builds reciprocal rational maps with exactly prescribed
+  infinitely large periodic points in `Oz[i]` and a presentation with purely
+  infinite coefficients, without claiming that they map `Oz[i]` into itself
+  (`dyn:rd:thm:omnific`), and asks which maps preserve `Oz` or `Oz[i]` while
+  realizing specified infinite cycles (`dyn:rd:q:omnific`), a dynamical
+  relative of Question 18.20(a) (batch-34 status of Question 18.20).
 - [`discrete-initial-subgroups-and-omnific-normalization`](../discrete-initial-subgroups-and-omnific-normalization/)
   (batch 28) concerns discretely ordered initial subgroups of `No` in the
   sense of Ehrlich–Kaplan; its "normalization" is not the integral closure
@@ -1764,7 +1776,12 @@ Corollary 16.67, in Section 1.4 and in two non-claims, plus the bibliography
 entry for the entire-functions report, added last) took the build from 194 to
 195 pages and changed no number: all 608 labels compared in the `.aux` files
 against a build of the committed text, and the earlier citation numbers are
-unchanged.
+unchanged. The later batch-34 cross-report notes (after the proof of Theorem
+16.61, on the Diophantine report's constant-discriminant normal forms, and in
+the batch-34 status of Question 18.20, on the dynamics report, with its
+bibliography entry appended last) keep the build at 262 pages and change no
+number: all 828 labels keep their `.aux` numbers against a build of the
+committed text, and the earlier citation numbers are unchanged.
 The finite-check
 table of Section 19.1 became a `longtable` in the sixth merge, because the row
 for 22 made it taller than a page; this changes only its layout.
