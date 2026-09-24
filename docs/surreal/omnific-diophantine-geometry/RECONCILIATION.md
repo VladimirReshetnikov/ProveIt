@@ -20,12 +20,14 @@ Section 17.5 and Sections 17.6.1–17.6.8, including the repeated-root test,
 seventh-order certificate and arithmetic existence results. A further pass finishes Sections 17.6.9–17.6.10 and reviews Sections
 18.1–18.4 (groups, reduced coefficients, dual numbers and sharpness).
 The logarithmic pass now covers Sections 18.5–18.6 and all six standard
-results there. Their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
-outside the completed proof review.
+results there. The scope pass checks Section 20 and Sections 21.1–21.6
+against the maintained statements and implementation ledger. Pointers in
+Sections 1, 6, 7 and 14, neighbouring-report comparisons in Section 21.7,
+and complete parallel-source reconciliation remain outside this review.
 It does **not** certify integration of every result in the fourteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. Later scope notes and full source reconciliation remain outside these passes. The review of Section 16
+present numbering. The remaining pointers and full source reconciliation remain outside these passes. The review of Section 16
 includes the two-ring principle, symmetric differentials and inheritance.
 Source C16, integrated in `1ad4ad8`, adds seventeen standard results in
 Section 17.6 and updates the earlier singular-curve status notes. Its
@@ -1289,3 +1291,59 @@ Primary checks used the [valuative criterion for properness](https://stacks.math
 and [the local normal-crossings definition](https://stacks.math.columbia.edu/tag/0BI9).
 These targeted checks do not certify every imported foundation, novelty or
 priority. All six standard results remain **Pending** in Lean.
+
+
+## Workspace, question-status and synthesis review
+
+This pass checks Section 20 and Sections 21.1–21.6 against the maintained
+statements, including the question-status notes, not against every original
+source in parallel. All 217 standard statements, all 30 question environments
+and all 471 labels are unchanged. It makes the following corrections and
+clarifications to the explanatory prose.
+
+- Restricting an Euler character from the rational hull leaves the original
+  exponent support unchanged; choosing the character does not require
+  enlarging the point's workspace.
+- The no-GCD example needs a nonzero purely infinite element. At `Γ = 0`
+  the ring is `ℤ`. At `Γ = ℤ`, the purely infinite ideal is `ω ℝ[ω]`, whose
+  square is `ω² ℝ[ω]`; this explicitly refutes unrestricted transfer of the
+  full-class idempotence conclusion to fixed workspaces.
+- The scalar-representation theorem retains the domain, retraction and
+  unimodularity hypotheses. The curve results retain their coefficient and
+  geometry hypotheses and use arithmetic descent to reach omnific rings.
+- Smooth rigid curves have singleton constant-term fibers; the affine-line
+  case has fibers isomorphic to `Π`. The previous closing assertion that all
+  smooth-curve fibers are copies of `Π` was false. Singular arithmetic fibers
+  are not classified by that smooth formula.
+- A product with the affine line is nonrigid when the exponent group is
+  nonzero and the other factor has a coefficient-field point. If the latter
+  has no point, the retraction makes both point sets empty. Thus the former
+  unconditional statement was false. The earlier smooth-curve summary also
+  now includes the nonzero-group and geometrically integral fiber hypotheses.
+- The synthesis distinguishes a differential from its contraction against
+  an Euler tangent: annihilation says the contraction vanishes. It does not
+  say every global differential vanishes at the point. Primitive fraction
+  presentations are unique up to an overall sign, and the definition of `Π`
+  explicitly quantifies its witness.
+
+Section 20 now describes the proved implementation in dependency order at
+`38425db`, retaining the chosen-Smith-reduction hypothesis, the real/complex
+kernel distinction and the separate status of undecidability and geometry.
+The proposed module table is still explicitly a proposal; it now breaks
+across pages with a repeated header instead of forcing a large blank area. No new Lean proof
+is claimed for the scope examples or geometric results. Remaining pointers,
+Section 21.7, the appendices' imported foundations and complete source
+reconciliation still require review.
+
+
+### Subsequent discriminant addition
+
+The merge of `fdedce0` adds source C17 as Section 19.4 (27 standard results)
+and Questions 21.31–21.40, with pointers and summary additions elsewhere.
+These additions remain outside the completed proof and scope reviews above,
+including their new text inside Sections 20–21.6. The five changes to existing
+standard statements only add C17 to their source credits. The earlier 217
+mathematical statements are preserved. The full manuscript now has 244
+standard results; this count does not extend the independent review scope.
+The route also records the separately checked Gaussian fiber and converse
+formalizations in `4037368` and `ae0210c`.
