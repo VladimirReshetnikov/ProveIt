@@ -693,7 +693,12 @@ they have ordinary integer solutions. Constant extraction retracts the
 entire omnific solution set onto the ordinary one; the proof even allows
 arbitrary families of equations and variable indices. Positive existential
 formulas in Mathlib's ring language also have the same truth at integer
-parameters. The separate undecidability and computable-completeness claims
+parameters. The same solution-set retraction and native formula transfer
+are now proved for Gaussian omnific integers over ordinary `ℤ[i]` parameters.
+One inequation breaks the real transfer: `x²=2y²` with `y≠0` has the explicit
+omnific solution `(√2·ω,ω)` but no integer solution. Both witnesses have zero
+constant term, so constant extraction preserves the equation and loses the
+inequation. The separate undecidability and computable-completeness claims
 remain pending in Lean. Positive existential definable sets are also proved
 closed under constant extraction. This rules out such definitions of
 nonvanishing, positivity and nonnegativity with integer parameters. The
