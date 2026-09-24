@@ -855,7 +855,8 @@ quantifier bounds (Question 21.5); roots with omnific coefficients (Question
 at real singular integer points without a real normalization preimage (Question 21.8,
 re-scoped); coefficient recovery of lower quantifier
 complexity (Question 21.9); structure that determines the real form of `Oz[i]`
-(Question 21.10); infinite algebraic extensions (Question 21.11); from sources
+(Question 21.10; a batch-32 status note records further negative information
+from `saut:fs:thm:main-count`, not an answer); infinite algebraic extensions (Question 21.11); from sources
 08 and 09, denominator ideals beyond one parameter (Question 21.12), the extent
 of `𝒱` (Question 21.13), orbits outside `𝒱` (Question 21.14), several parameters
 (Question 21.15) and other scale extensions (Question 21.16); and, from sources
@@ -1252,6 +1253,9 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
 - [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/):
   its Euler derivations map `ℛ_𝔬(k, Γ)` into `Π_k(Γ)` (`opa:par:prop:Euler`),
   the support inclusion used in Sections 16–17; sources C10–C14 did not cite it.
+  Its batch-32 `opa:tc:thm:oztopology` (every Hahn-compatible ring topology on
+  `Oz` is pulled back along `ct` from `Z`) shows that the non-Hausdorff
+  congruence topologies after (3.3) are forced (status note there).
 - [`hahn-tate-uniformization`](../../surcomplex/hahn-tate-uniformization/): its
   Tate points are field points of curves with nonconstant `j`-invariant, outside
   the constant-coefficient hypothesis of Section 17; like Remark 17.24 and
@@ -1259,7 +1263,17 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   constrained by the ring rigidity here.
 - [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
   constructs the phase twists and the dilations `S_a`; source 06 credits it and
-  proves that the twist of Lemma 13.9 preserves `Oz[i]`.
+  proves that the twist of Lemma 13.9 preserves `Oz[i]`. Its batch-32
+  `saut:fs:thm:main-count` (valued, summation- and `Oz[i]`-preserving
+  involutions fall into `2^𝔠` conjugacy types with nonisomorphic fixed fields)
+  is recorded as negative information on Question 21.10.
+- [`holonomic-rigidity-for-entire-hahn-functions`](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/):
+  its factorial floor profile (`hol:fh:thm:floor`) is a case of Theorem 2.7
+  (note after that theorem).
+- [`entire-functions-at-arbitrary-rank`](../../surcomplex/entire-functions-at-arbitrary-rank/):
+  `ent:as:thm:sampling` and `ent:as:thm:integer` treat entire series over a
+  fixed workspace, the case excluded by the non-claim on polynomial lifting
+  (Appendix B; pointer added there in batch 32).
 - [`single-dilation-hahn-support`](../../surcomplex/single-dilation-hahn-support/)
   defines the coefficient field and constant coefficient of a Hahn field from
   one dilation; Theorems 13.2 and 13.4 recover them from the pure ring `Oz`.
@@ -1279,7 +1293,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The current build gives 200 pages with no errors, warnings, undefined
-references, multiply defined labels or overfull boxes. The earlier combined
+references, multiply defined labels or overfull boxes. The batch-32
+cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
+non-claim on polynomial lifting) are unnumbered; the page count is unchanged
+and all 471 labels keep their numbers (compared in the `.aux` files against a
+build of the committed text). The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16
 was integrated, built to 178 pages with the same MiKTeX installation and the same zero
 counts, and every label it defines has the same number in the present build. The text

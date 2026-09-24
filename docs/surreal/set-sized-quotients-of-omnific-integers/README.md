@@ -22,7 +22,7 @@ here.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 194 pages
+article.pdf   the compiled report, 195 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -540,7 +540,10 @@ strictly positive set support and coefficients in `K`.
   Proposition 7.3). A group-level strengthening (for `n ≥ 3` every
   homomorphism from the purely infinite congruence kernel of `E_n(Oz)` to a
   set-sized group is trivial) is in
-  [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/).
+  [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/); its batch-32
+  Part IV extends it to every root system without `A_1` component, Steinberg
+  groups, Dorroh unitizations and perfect current Lie rings (status note after
+  Theorem 5.1).
 - **Theorem B (Theorems 8.2, 9.1).** Standard part is universal on `D + 𝔪_k`
   and on the finite surreal and surcomplex rings (04). Supports of size at most
   any infinite cardinal suffice for Theorem A; finite supports admit the
@@ -1081,7 +1084,13 @@ strictly positive set support and coefficients in `K`.
 - [`first-kappa-coefficients`](../../surcomplex/first-kappa-coefficients/)
   proves closedness of `<κ`-support Hahn fields for every uncountable `κ`
   (`fkc:thm:main`), which contains the closure step of Proposition 11.8; the
-  thresholds here are not about its omitted types.
+  thresholds here are not about its omitted types. Its batch-32 Part II treats
+  the class fields of surreals with fewer than `κ` terms, whose omnific parts
+  are the bounded rings of Theorem 9.1(i): its reservoir lemma gives a third
+  route to Theorem 9.1(i) (`fkc:sb:lem:reservoir`, `fkc:sb:thm:smallquotient`;
+  note in the proof), and it shows that these rings are pairwise nonisomorphic
+  for different cofinalities although their set-sized quotients agree
+  (`fkc:sb:cor:rings`; note after the proof). Pointer in Section 1.4.
 - [`hahn-evaluation-at-omega`](../hahn-evaluation-at-omega/) separates finite
   polynomial evaluation at `ω` from evaluation of unrestricted series; 12's
   embeddings of its cores use finite normal forms only.
@@ -1091,7 +1100,13 @@ strictly positive set support and coefficients in `K`.
   written concurrently) proves that for `n ≥ 3` the purely infinite congruence
   kernel of `E_n(Oz)` and of `E_n(Oz[i])` has no nontrivial homomorphism to a
   set-sized group, a group-level strengthening of Theorem 5.1 (pointer at
-  Theorem 5.1), built on this report's collision and division lemmas.
+  Theorem 5.1), built on this report's collision and division lemmas. Batch 32
+  (status note there): its Part IV extends this to `E_Φ` and `St_Φ` for every
+  `Φ` without `A_1` component (`ogl:ch:thm:intrinsic`, `ogl:ch:thm:steinberg`),
+  to Dorroh unitizations (`ogl:ch:thm:equivalence`) and to current Lie rings
+  (`ogl:ch:thm:liepositive`, `ogl:ch:thm:lienegative`), and transfers them to
+  the bounded rings of Theorem 9.1 and to exact thresholds
+  (`ogl:ch:cor:support`, `ogl:ch:cor:thresholds`).
 - [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/)
   (batch 26) holds the other batch-26 omnific items; its algebraic-parameter
   part identifies its commuting derivations `D_b` with Proposition 7.6 here
@@ -1100,7 +1115,17 @@ strictly positive set support and coefficients in `K`.
   Question 18.10: every automorphism of `Oz` fixes `ct` and `R` and extends to
   a strong automorphism `M_{χ,τ} ∘ u` of `No`, with `u` classified by
   `opa:thm:criterion`. The status of Question 18.10 records this (batch 31);
-  its first clause stays open.
+  its first clause stays open. Its batch-32 `opa:tc:thm:oztopology` shows that
+  every Hahn-compatible ring topology on `Oz` is pulled back along `ct` from
+  `Z`, so the non-Hausdorff finite-congruence topology after Theorem 6.10 is
+  forced (status note there).
+- [`entire-functions-at-arbitrary-rank`](../../surcomplex/entire-functions-at-arbitrary-rank/)
+  (`ent:`; batch 32) removes the exclusion of entire Hahn series after
+  Corollary 16.67 in a fixed workspace: dense ordinary sampling forces
+  polynomiality (`ent:as:thm:sampling`), and the entire series preserving the
+  omnific part are the integer-valued polynomials plus `Π`-coefficient
+  polynomials (`ent:as:thm:integer`). Status note after Corollary 16.67 and
+  pointers in 18's non-claim (4) and 22's non-claim (10).
 - [`discrete-initial-subgroups-and-omnific-normalization`](../discrete-initial-subgroups-and-omnific-normalization/)
   (batch 28) concerns discretely ordered initial subgroups of `No` in the
   sense of Ehrlich–Kaplan; its "normalization" is not the integral closure
@@ -1112,7 +1137,7 @@ strictly positive set support and coefficients in `K`.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 194 pages with no errors, warnings, undefined references,
+The build gives 195 pages with no errors, warnings, undefined references,
 multiply defined labels, duplicate destinations or overfull or underfull boxes
 (the committed text before the seventh merge gave 177 pages, before the sixth
 164, before the fifth 153, before the fourth 140, and before the third 117,
@@ -1122,6 +1147,13 @@ files); the seventh merge's statements are Proposition 15.82 to Remark 15.119
 and equations (15.25) to (15.35) in Section 15.10, and Questions 18.21 to
 18.27. The sixth merge's statements are Lemma 16.68 to Remark 16.88 and
 equations (16.25) to (16.30) in Section 16.10, and Questions 18.19 and 18.20.
+The batch-32 cross-report notes (parenthetical "Status (batch 32)" sentences
+after Theorems 5.1 and 6.10, in and after the proof of Theorem 9.1, after
+Corollary 16.67, in Section 1.4 and in two non-claims, plus the bibliography
+entry for the entire-functions report, added last) took the build from 194 to
+195 pages and changed no number: all 608 labels compared in the `.aux` files
+against a build of the committed text, and the earlier citation numbers are
+unchanged.
 As before the seventh merge, the title page's status box falls on the page
 after the abstract. The finite-check
 table of Section 19.1 became a `longtable` in the sixth merge, because the row

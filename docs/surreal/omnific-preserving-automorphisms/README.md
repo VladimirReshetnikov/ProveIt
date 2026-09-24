@@ -939,9 +939,13 @@ In brief:
     expectation;
   - the Gaussian results need conjugation or valuation compatibility and must
     not be merged into an unconditional classification; no nonconjugacy is
-    claimed for automorphisms preserving `Oz[i]` but not conjugation;
+    claimed for automorphisms preserving `Oz[i]` but not conjugation (for
+    involutions rather than copies, `saut:fs:thm:large-family` gives `2^𝔠` strong
+    valued `Oz[i]`-preserving involutions, pairwise nonconjugate under all field
+    automorphisms; batch-32 note after Corollary 30.5);
   - the support-bound result is for regular uncountable `κ`; no singular case and
-    no birthday cutoff;
+    no birthday cutoff (for singular `κ` the characterization fails:
+    `fkc:sb:thm:sums`, batch-32 note after Proposition 31.1);
   - the set-pair results assume an ambient isomorphism: automorphisms of a small
     integer part are not claimed to extend when its fraction field is smaller;
   - the continuum of conjugacy types is a lower bound; the annulus bounds are
@@ -1069,6 +1073,8 @@ depend on it.
     proposes `C((t^Q))`, then a rank-two lexicographic group, as first targets.
     15 notes that compatible topologies cannot help (they are indiscrete on
     `No(i)`); 16 recovers `No(i)` as a coefficient field but not its conjugation.
+    The surcomplex automorphism report's valued results (`saut:fs:rem:gaussianstrong`,
+    `saut:fs:thm:main-involutions`) assume the valuation and do not address it.
   - 32.2: must an embedding `f` of `No` with `f^{−1}(Oz) = Oz` be strong, also
     when `ct ∘ f = ct`, and what survives without strongness (12, 13, 14; 11)?
     **Negative answer under a measurable cardinal**: the large-cardinal report
@@ -1078,8 +1084,15 @@ depend on it.
     and reflects `Oz`, preserves `ct` and is not strongly additive. It is not
     onto, so it does not conflict with Theorem 23.2. Without large cardinals the
     question stays open, as do 11's clauses on dense images and images neither
-    closed nor discrete.
-  - 32.3: target tests for coefficient-fixing embeddings (13, 14).
+    closed nor discrete. Batch 32: by `lce:mf:thm:spectrum` and
+    `lce:mf:thm:equivalence`, in a universe without measurable cardinals a
+    coefficient-fixing counterexample must fail a countable sum
+    (`lce:mf:q:countable`, open).
+  - 32.3: target tests for coefficient-fixing embeddings (13, 14). **Negative
+    under a measurable cardinal** (batch 32): `lce:mf:thm:target` gives a
+    pulled-back test with no source multiplier (already implied by Theorem 25.2
+    and 32.2's status); the strong-embedding version is `lce:mf:q:targetstrong`,
+    open.
   - 32.4: which subfields of `R` occur as `f(No) ∩ R` (12). **Partly answered**
     by 11 (Proposition 29.2): in the exact-monomial strong class they are the
     real closed fixed fields of the sections, and Taylor sections give `ker d`.
@@ -1098,8 +1111,13 @@ depend on it.
   - 32.12: singular support bounds (12, 13, 15). **Partial information** (batch 31,
     Remark 35.4): the image family is Hahn summable with the right sum; only the
     size of the union of its supports remains open. 15 asks it again (batch 32).
+    `fkc:sb:thm:sums` bears on it (summability in `K_{<κ}` for singular `κ` is
+    not decided by counting members) but does not answer it.
   - 32.13: other rings and coefficient fields (12, 14, with the merge's clause on
-    general `(k, 𝔬)`).
+    general `(k, 𝔬)`). **Partial information** (batch 32): for `Γ = No` and
+    `𝔬 ∈ {Z, Z[i]}`, automorphisms of `ℛ_𝔬` preserve `k` and `Π`
+    (`saut:fs:prop:reconstruction`) and valued ones are strong
+    (`saut:fs:rem:gaussianstrong`); without the valuation it stays open.
   - 32.14: isomorphisms of small integer parts (13, 14). 14 asks the automorphism
     case with uniqueness; **uniqueness is answered** by Proposition 36.5 (merge),
     existence stays open.
@@ -1261,6 +1279,13 @@ Appendix A.3 records these.
   37.1 carry batch-32 notes; Question 32.11's first clause is marked answered.
   Pointers were added after Theorem 15.5 and in Remark 34.4. No label, number or
   earlier sentence was removed.
+- **Cross-report notes (batch 32).** Unnumbered notes record the batch-32
+  additions of three neighbouring reports: the surcomplex automorphism report's
+  finite-symmetry sections (after Corollary 30.5 and Questions 32.1 and 32.13),
+  the first-`κ` coefficient report (after Proposition 31.1 and Question 32.12) and
+  the large-cardinal report's first-failure theorems (after Remark 23.3 and
+  Questions 32.2 and 32.3). Question 32.3 is marked negative under a measurable
+  cardinal; the others stay open. No label or number changed.
 
 ## Relation to the neighbouring reports
 
@@ -1286,6 +1311,12 @@ Appendix A.3 records these.
   - Its Taylor motion `saut:thm:coeffflow` is the ambient automorphism in every
     embedding of Part III; composed with a proper exponent embedding it preserves
     and reflects `Oz` (Theorem 26.6), although alone it never preserves `Oz`.
+  - Its batch-32 finite-symmetry sections reprove Theorem 30.2 for valued
+    automorphisms (`saut:fs:rem:gaussianstrong`), classify the valued
+    `Oz[i]`-preserving involutions (`saut:fs:thm:main-involutions`) and give
+    `2^𝔠` pairwise nonconjugate ones (`saut:fs:thm:large-family`); notes after
+    Corollary 30.5 and Questions 32.1 and 32.13. Questions 32.1 and 32.13 stay
+    open.
 - [`exponential-automorphism-rigidity`](../exponential-automorphism-rigidity/).
   Every exponential 1-automorphism of `No` is the identity, so the shears are
   not exponential.
@@ -1318,11 +1349,19 @@ Appendix A.3 records these.
   32.17); its second research question is the pair version of Question 32.8
   (note after that question). Both questions stay open in general.
 - [`large-cardinal-embeddings-and-normal-forms`](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
-  (batch 30, written concurrently; cited by directory only). Under a measurable
+  (batch 30, written concurrently; cited by directory only until batch 32, then
+  by its `lce:mf:` labels). Under a measurable
   cardinal its sign-sequence embedding answers Question 32.2 negatively; it is not
   an automorphism, so Theorem 23.2 stands. Under the same hypothesis it shows that
   14's embedding question (merged into 32.2–32.3) needs hypotheses beyond
-  constant-term compatibility and preservation and reflection of `Oz`.
+  constant-term compatibility and preservation and reflection of `Oz`. Its
+  batch-32 first-failure theorems (`lce:mf:thm:spectrum`,
+  `lce:mf:thm:equivalence`, `lce:mf:thm:target`) are recorded after Remark 23.3
+  and Questions 32.2 and 32.3.
+- [`first-kappa-coefficients`](../../surcomplex/first-kappa-coefficients/)
+  (`fkc:`; batch 32). Its `fkc:sb:thm:sums` shows that Proposition 31.1's
+  summability characterization fails for singular `κ` (note after Proposition
+  31.1); it bears on Question 32.12 without answering it.
 - [`foundations`](../../foundations-and-computation/foundations/) (`found:`).
   Its `found:sub:tsum` (with `found:ex:geometric`, `found:ex:archimedean` and the
   rank-one `found:ex:boundedrankone`) shows that strong summation is not

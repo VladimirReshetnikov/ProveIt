@@ -269,6 +269,14 @@ result as a check of the pinned revision.
   with the same ordinals, every `N`-set of elements of `No^M` is closed and
   uniformly discrete, and set-indexed Cauchy nets of old numbers are
   eventually constant, although filling of small cuts can fail in `N`.
+- [omnific-preserving-automorphisms](../../surreal/omnific-preserving-automorphisms/)
+  (batch 32) proves the general form of `found:sub:tsum`: a full Hahn field
+  `k((t^Γ))` over a set-sized `Γ` has a Hausdorff ring topology realizing every
+  Hahn sum as the limit of its finite partial sums iff `Γ = 0` or `Γ ≅ Z`
+  (`opa:tc:thm:cyclicboundary`), and on `No` and `No[i]` only the indiscrete
+  topology does so (`opa:tc:cor:fieldcollapse`). An unnumbered "Related (batch
+  32)" note after `found:ex:boundedrankone` records this, citing that report by
+  title and path; the page count (95) and all label numbers are unchanged.
 
 ---
 
