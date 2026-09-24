@@ -1,3 +1,4 @@
+import Surreal.Algebra.GaussianQuotientCardinality
 import Surreal.Algebra.QuotientReflection
 import Surreal.Algebra.CoefficientPullbackDivisibility
 import Surreal.Surcomplex.GaussianSmallTargets
@@ -9,8 +10,8 @@ import Mathlib.RingTheory.PrincipalIdealDomain
 The actual Gaussian instances of `osq:thm:reflection` and the ideal
 classification in `osq:thm:quotients`. Every small quotient is exactly an
 ordinary Gaussian quotient, and nonzero ordinary Gaussian moduli generate
-its principal kernels. The separate numerical quotient-cardinality formula
-is not asserted in this module.
+its principal kernels. Every nonzero ordinary Gaussian modulus has a finite
+quotient of cardinality equal to its squared complex modulus.
 -/
 
 universe u v
@@ -126,6 +127,44 @@ theorem gaussianOmnific_small_quotient_kernel_cases (I : Ideal GaussianOmnificIn
     change I = Ideal.comap gaussianOmnificConstantCoeff.{u} ⊥
     simpa only [Ideal.span_singleton_eq_bot.mpr rfl] using hd
   · exact Or.inr ⟨d, hz, hd.trans (gaussianOmnific_comap_span d hz)⟩
+
+/-- The actual Gaussian omnific residue cardinality is the ordinary Gaussian norm. -/
+theorem gaussianOmnific_quotient_card (d : GaussianInt) (hd : d ≠ 0) :
+    Nat.card (GaussianOmnificInteger.{u} ⧸ Ideal.span {gaussianOmnificConstants.{u} d}) =
+      d.norm.natAbs :=
+  (Nat.card_congr (gaussianOmnificQuotientConstantEquiv d hd).toEquiv).trans
+    (GaussianQuotientCardinality.card_quotient d)
+
+/-- Every nonzero ordinary Gaussian modulus yields a finite actual omnific quotient. -/
+theorem gaussianOmnific_quotient_finite (d : GaussianInt) (hd : d ≠ 0) :
+    Finite (GaussianOmnificInteger.{u} ⧸ Ideal.span {gaussianOmnificConstants.{u} d}) := by
+  apply Nat.finite_of_card_ne_zero
+  rw [gaussianOmnific_quotient_card d hd]
+  exact Int.natAbs_ne_zero.mpr (GaussianInt.norm_eq_zero.not.mpr hd)
+
+/-- In complex notation the exact residue cardinality is the squared modulus of the Gaussian divisor. -/
+theorem gaussianOmnific_quotient_card_normSq (d : GaussianInt) (hd : d ≠ 0) :
+    (Nat.card (GaussianOmnificInteger.{u} ⧸ Ideal.span {gaussianOmnificConstants.{u} d}) : ℝ) =
+      Complex.normSq (GaussianInt.toComplex d) := by
+  rw [gaussianOmnific_quotient_card d hd, GaussianInt.natCast_natAbs_norm,
+    GaussianInt.intCast_real_norm]
+
+/-- The full Gaussian small-quotient classification, with exact finite sizes. -/
+theorem gaussianOmnific_small_quotient_classification (I : Ideal GaussianOmnificInteger.{u})
+    [Small.{u} (GaussianOmnificInteger.{u} ⧸ I)] :
+    (I = gaussianOmnificPurelyInfiniteIdeal.{u} ∧
+      Nonempty ((GaussianOmnificInteger.{u} ⧸ I) ≃+* GaussianInt)) ∨
+    ∃ d : GaussianInt, d ≠ 0 ∧ I = Ideal.span {gaussianOmnificConstants.{u} d} ∧
+      Finite (GaussianOmnificInteger.{u} ⧸ I) ∧
+      Nat.card (GaussianOmnificInteger.{u} ⧸ I) = d.norm.natAbs ∧
+      Nonempty ((GaussianOmnificInteger.{u} ⧸ I) ≃+* GaussianInt ⧸ Ideal.span {d}) := by
+  rcases gaussianOmnific_small_quotient_kernel_cases I with hI | ⟨d, hd, hI⟩
+  · exact Or.inl ⟨hI, ⟨(Ideal.quotEquivOfEq hI).trans
+      (gaussianOmnificConstantCoeff.quotientKerEquivOfSurjective
+        gaussianOmnificConstantCoeff_surjective)⟩⟩
+  · subst I
+    exact Or.inr ⟨d, hd, rfl, gaussianOmnific_quotient_finite d hd,
+      gaussianOmnific_quotient_card d hd, ⟨gaussianOmnificQuotientConstantEquiv d hd⟩⟩
 
 end
 end Surreal.Surcomplex
