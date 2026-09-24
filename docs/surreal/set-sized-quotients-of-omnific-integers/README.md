@@ -442,12 +442,35 @@ subgroups; the smaller-scale H_a has no set-sized cofinal subset, as
 another explicit cut proves. The unrestricted classification and reverse
 implication remain open. All reviewed statements and new consequences
 remain pending in Lean. Full source reconciliation remains pending review.
+
+The first nine standard integral-closure results are now reviewed, through
+the proper dense normalization theorem. One denominator clears the set
+ring D[S], then the entire algebra A[S]. The determinant proof of integral
+closure and transitivity uses finite generating lists even for class
+modules; freeness is unnecessary. The small unit u_|a| gives an explicit
+zero-conductor witness for any integer part of a real closed field.
+Discreteness supplies a concrete neighborhood outside a set-generated
+overring. The distinction between density and convergence is explicit:
+every convergent set-indexed net in No is eventually constant, while the
+small model has this property only for ranges of size less than μ=cf(κ).
+
+A new consequence proves that the denominator size bound is sharp. A
+cofinal sequence of reversed-arm exponents gives μ negative monomials
+generating the entire ambient field over A; no nonzero denominator clears
+even those generators. Fewer than μ generators cannot give the field,
+so its algebra generation number is exactly μ. The same monomials form
+a nonzero net converging to zero in the intrinsic order topology of the
+real model. It fails to converge after embedding in No with its fine
+topology, where a still smaller radius exists. These negative monomials
+are not integral, so the normalization's generator count remains open.
+The reviewed results and added consequences remain pending in Lean.
+The constant-slice, Gaussian and later normalization results await review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 322 pages
+article.pdf   the compiled report, 323 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

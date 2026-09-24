@@ -3182,3 +3182,116 @@ destinations in 226 files pass, with whitespace checks. Historical source
 verification records and scripts are unchanged; finite computations do not
 certify these class and support arguments. No Lean implementation changed
 in this documentation pass. Full source reconciliation remains pending.
+
+### Uniform denominators and the first normalization results (2026-09-24)
+
+Reviewed the first nine standard results of the integral-closure section,
+from `osq:nm:thm:onedenominator` through `osq:nm:thm:normalization`:
+full and bounded-size uniform denominators, complete integral closure,
+nonintegral reciprocals, integer parts, small integral units, density,
+uniform discreteness and proper dense normalization with zero conductor.
+The quantifier over powers in almost integrality is ordinary finite n,
+with one denominator for all n, and the ambient field is the fraction field.
+The floor formula retains its negative-infinitesimal endpoint correction.
+
+Expanded why D[S] is a set before choosing a clearing monomial and passing
+to the potentially proper-class algebra A[S]. Clearing S alone is weaker:
+ω² clears ω⁻¹ into Π but does not clear its third power into Oz. The bounded
+argument uses the regular uncountable μ=cf(κ), the countable supports, and
+the room above fewer than μ vectors in the reversed arm. Neither a proper-
+class algebra nor its full union of supports is treated as a set.
+
+Added an unnumbered sharpness consequence for both real and Gaussian
+countable-support models. Choose a strictly increasing cofinal sequence
+β_ξ in κ, put h_ξ=e_(p_(β_ξ)), and let S₀={X^(−h_ξ):ξ<μ}. A countable
+support has a lower bound, so a cofinal h_ξ shifts each field element into
+P and gives F=A[S₀]. For any nonzero d∈A, some h_ξ exceeds deg(d), making
+dX^(−h_ξ) a nonzero negative-support series outside A. Thus no common
+nonzero denominator clears even S₀, while fewer than μ generators cannot
+generate F by the absorption theorem. The least algebra generation number
+of F over A is exactly μ. These generators are nonintegral reciprocals;
+this result gives no upper bound for the normalization's generator number.
+The separate question/status note records that distinction.
+
+Expanded the finite-module determinant argument for integral elements and
+transitivity: a generating list need not be a basis, the adjugate identity
+annihilates the generator 1, and the finitely many integral coefficients
+first generate a module-finite coefficient ring. A finitely generated
+module over a class ring need not be a set. No Noetherian or freeness
+assumption is used. Isolated the general integer-part consequence that
+(A:IC_F(A))=0: the explicit small integral unit u_|a| makes
+0<|a u_|a||<1/2 for every nonzero a∈A. This uses integer-part geometry,
+not a normal-form or cardinality assumption. The normalization proof now
+reuses this witness. The closedness proof supplies the explicit disjoint
+radius min(r/3,|z−c|)/2.
+
+Made the net boundary precise without changing the original numbered
+remark. Every convergent set-indexed net in No is eventually constant,
+because its set range lies in a closed uniformly discrete algebra Oz[S].
+Initial variation is allowed. In the model the same proof applies to any
+range of size less than μ. The μ-indexed negative monomials above converge
+to zero in the model's intrinsic order topology by leading-degree
+comparison and are never zero. In No a surreal upper bound b on their
+embedded exponents gives a smaller radius ω^(−b) missed by every term.
+Thus the intrinsic order topology is not the topology induced by No's fine
+topology. Neither this net nor the exact ambient-field generator count
+settles the normalization's open algebra generation question.
+
+Updated root/report guides, shared notation, catalogue, coverage narrative
+and shifted source anchors. Validation: the article and catalogue pass
+three final TeX runs with no diagnostics (323 and 35 pages); inspected
+article PDF pages 185–191 and 299 and catalogue page 12. All 418 result
+statements, 828 labels, 1,656 AUX numbering fields, 66 questions, 60 remarks
+and 28 examples are unchanged. Source 03's unchanged verifier passes 2,362
+exact finite checks and its stdout is byte-identical to the recorded run;
+it does not certify infinite supports, cardinals, class algebra or topology.
+All 4,626 source anchors in 63 reports, 5,223 source-label references and
+1,914 local Markdown destinations in 226 files pass. Historical source
+records and scripts are unchanged. No Lean implementation changed; these
+reviewed statements and added consequences remain Pending in Lean. The
+later constant-slice, Gaussian, normalization and fibre proofs await review.
+
+### Reconstruction and Diophantine enumeration synchronization (2026-09-24)
+
+Merged origin/main at d19e0a51b94301e67b0be3b15938d90dc9e45904,
+including 44b0290 and d19e0a5, after the uniform-denominator review.
+Read all eight new Lean modules, the refactored numeral-two reconstruction
+API, root imports and revised coverage against `odg:def:cor:internal`,
+its number-field extension, `odg:def:thm:ce` and its characteristic-zero
+finite-system generalization. No source TeX or PDF changed in the merge.
+
+The reconstruction proofs now accept any correct ideal predicate. Native
+ring formulas substitute its unary definition with verified bound-variable
+lifting and satisfaction semantics. Multiplier, coefficient, ideal-fraction
+and graph predicates include nonzero-denominator conditions and descend
+under cross-multiplication equivalence, including both graph coordinates.
+The Hahn specialization recovers the actual embedded coefficient at zero,
+not an abstract field copy. Correctness on existing fraction pairs includes
+the trivial exponent group; coverage of every coefficient and totality on
+the support ring explicitly require a nontrivial exponent group. Outputs
+are unique as fractions, not as pairs. A nonsquare natural radicand with
+an ambient root supplies number-field reconstruction, and the tailored
+sextic root selects the fixed numeral. No square-root parameter or new
+bundled quotient-interpretation object is asserted.
+
+The enumeration layer represents finite integer-polynomial systems with
+separate free and witness tuples, including empty tuples and equation
+families. Any ring retraction to Z transfers their truth at ordinary free
+tuples in both directions without guarding auxiliary witnesses. Fixed
+polynomial evaluation and the complete finite conjunction are primitive
+recursive under the integer/finite-function encodings; a surjective
+decode-with-default enumeration and unbounded search give REPred for the
+existential projection. Thus integer traces are computably enumerable,
+both in the actual omnific carrier and in characteristic-zero integer
+Hahn pullbacks. This does not classify arbitrary ring subsets or surreal
+parameters, and does not supply the reverse MRDP implication, its standard
+free-variable guards, or a single-equation construction. The source
+biconditional remains Prerequisites proved, not Proved.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passed all 4,975 jobs; the
+axiom audit passed 18,344 declarations with only propext, Classical.choice
+and Quot.sound. Rechecked all 4,626 anchors in 63 reports, 5,223 source-label
+references and 1,922 Markdown destinations in 226 files, with whitespace
+checks. Incoming work changes no TeX/PDF, so the local three-pass builds
+and page inspections remain valid. The manuscript denominator, generation
+and topology consequences added in this pass remain Pending in Lean.
