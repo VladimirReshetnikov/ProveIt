@@ -9,7 +9,8 @@ The denominator-clearing step of `odg:def:thm:saturation`, using Mathlib's
 fraction-field algebraicity theorem. This applies to arbitrary subrings of
 number fields, without assuming integrality or finite generation. The native
 guard is an input with its defining property; constructing the tailored
-number-field guard of `odg:def:thm:numberfield` is a separate obligation.
+number-field guard of `odg:def:thm:numberfield` is carried out separately in
+`NumberFieldTailoredGuard` and `HahnSeries.NumberFieldArithmeticConstants`.
 -/
 
 namespace Surreal.AlgebraicOmittedType

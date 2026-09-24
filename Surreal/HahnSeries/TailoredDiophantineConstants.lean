@@ -6,8 +6,8 @@ import Surreal.HahnSeries.DiophantineConstants
 
 The constant-definition part of `odg:def:thm:numberfield` for any supplied
 prime pair satisfying the manuscript's arithmetic and nonsquareness conditions.
-All algebraic and native-formula bridges are proved; existence of such a pair
-for every number field is the remaining number-theoretic prerequisite.
+All algebraic and native-formula bridges are proved. The unconditional
+number-field specialization is supplied in `NumberFieldArithmeticConstants`.
 -/
 
 namespace Surreal.HahnSeries

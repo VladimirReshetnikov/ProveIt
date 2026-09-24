@@ -6,9 +6,9 @@ import Mathlib.Data.Nat.Squarefree
 # Selecting the tailored congruence primes outside a finite obstruction
 
 The Dirichlet-theorem step of `odg:def:lem:tailored`. The three radicands
-can simultaneously avoid any prescribed finite set. To finish the source's
-number-field existence assertion, one must still prove finiteness of the
-squarefree rational radicands that become squares in that number field.
+can simultaneously avoid any prescribed finite set. The number-field
+finiteness input and the unconditional existence theorem are supplied in
+`NumberFieldSquarefreeRadicands` and `NumberFieldTailoredGuard`.
 -/
 
 namespace Surreal.TailoredIntersectivePolynomial

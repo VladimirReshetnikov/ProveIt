@@ -7770,3 +7770,38 @@ references and 1,894 local Markdown destinations in 226 files pass, together
 with whitespace checks. Incoming work changes no TeX source or PDF, so the
 three-pass compilation and rendered-page review above remain applicable.
 The local manuscript improvements remain Pending in Lean.
+
+### Unconditional number-field prime choice: synchronization retry (2026-09-24)
+
+The first fast-forward push was rejected because origin/main advanced.
+Fetched and merged ebb516e3e6fd8e961c26931452f9b6192c6648be, then read all
+five new modules, dependency-docstring edits and the updated coverage rows.
+This incoming work resolves the prime-existence dependency recorded above.
+
+Squarefree natural radicands in the same rational square class are equal.
+Adjoin induction supplies rational affine coordinates a+b*x for an irrational
+square root x, including inverse closure with a nonzero norm denominator.
+Consequently distinct nontrivial squarefree radicands give distinct quadratic
+intermediate fields. Mathlib's primitive-element theorem and its finite-
+intermediate-field consequence give the required finite obstruction set;
+adding one covers rational square roots too. Combining this with Dirichlet
+avoidance and the already proved modular arithmetic completes
+`odg:def:lem:tailored` for every number field.
+
+The verified prime pair is chosen once for each field, and the guard still
+uses integer numerals with no field parameters. Primitive-recursive type
+membership is for each fixed guard; no algorithm uniform in presentations
+of number fields is claimed. The intermediate-Hahn constant definition and
+omitted type now have no supplied-prime or guard-correctness hypothesis.
+Together with the earlier integer/Gaussian and actual universe-indexed cases,
+this completes the mapped `odg:def:thm:saturation` scope. The constant clause
+of `odg:def:thm:numberfield` is complete; its tailored detector, ideal and
+constant-term graph clauses remain pending. No integrality, finite generation,
+retraction or nontrivial exponent-group assumption has been added.
+
+Validation: the repeated `LEAN_NUM_THREADS=2 lake build` passed 4,955 jobs;
+the axiom audit passed 18,066 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,221 source-label
+references and 1,900 local Markdown destinations in 226 files pass, along
+with whitespace checks. No incoming TeX or PDF changed; the three-pass
+article/catalogue validation and page inspection remain applicable.
