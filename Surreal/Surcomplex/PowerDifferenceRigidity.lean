@@ -13,8 +13,8 @@ The equal-power clause of `odg:cor:thue` and the positive-exponent form of
 `odg:rem:powers` (also `odg:cor:powers`). Mathlib's complex primitive roots
 of unity give two projective factors. The common-divisor reduction then
 uses univariate rigidity to recover the original bases. Zero exponents
-must be excluded: omega^0 - 0^2 = 1 is a counterexample to the literal
-remark with unrestricted nonnegative exponents.
+must be excluded: omega^0 - 0^2 = 1 refutes the gcd-only version. The
+maintained source now includes this positivity hypothesis and counterexample.
 -/
 
 universe u
