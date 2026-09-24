@@ -3937,6 +3937,16 @@ resolve. No Lean source changed; the preceding 4,434-job build and
 15,193-declaration axiom audit remain applicable. These six results are
 still **Pending** in Lean, and the broader proof review remains incomplete.
 
+The subsequent synchronization through `7b256e0` adds ordered omnific
+division, the nonterminating Euclidean sequence and irrational pairs without
+a gcd. Their source statements and four new modules were checked for the
+positive-divisor guard, ordinary finite iteration and divisibility meaning
+of gcd. The combined `LEAN_NUM_THREADS=2 lake build` passes 4,438 jobs;
+the axiom audit passes 15,245 declarations with only `propext`,
+`Classical.choice` and `Quot.sound`. All 4,419 cited source references and
+1,594 local Markdown destinations resolve. This merge changes no report
+source or PDF and leaves the application review's scope intact.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
