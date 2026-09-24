@@ -612,6 +612,14 @@ Neither omnific ring has a faithful small unital module. On any small
 vector space, the real ring acts by its integer constants, while Gaussian
 representations are exactly choices of an operator whose square is minus
 the identity. No finite-dimensionality assumption is needed for these formulas.
+Even when the targets are large, a small family of ring maps with specified
+nonzero kernel witnesses has one nonzero positive monomial in every kernel;
+such a family cannot jointly distinguish all omnific integers. This holds
+for both the real and Gaussian rings. The real ring admits no monotone
+unital map to a nonzero small ordered ring, and its only small unital
+subring retract is the ordinary integer subring. Every Gaussian endomorphism
+acts on constant terms by identity or conjugation, and every automorphism
+preserves the purely infinite ideal.
 
 Every small quotient of the real omnific ring is now classified: it is
 `ℤ` or `ℤ/nℤ` for an ordinary positive integer n, including the zero ring

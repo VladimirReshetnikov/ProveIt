@@ -9532,3 +9532,34 @@ Audits pass all 4,626 anchors in 63 reports, 5,240 source-label references
 and 2,007 local Markdown destinations in 226 files. No Lean source changed.
 Updated the root/report guides, notation, ledger and catalogue.
 git diff --check passes.
+
+
+### Common kernels and endomorphism rigidity sync (2026-09-24)
+
+Merged origin/main at `6a04482` before publication. Read all four added
+modules against `osq:rep:cor:kernels` and `osq:cor:rigid`. For both actual
+omnific rings, clearing inverses of a small family of nonzero elements
+produces a common positive real monomial multiple with purely infinite
+quotients. Specified nonzero kernel witnesses therefore give a nonzero
+monomial in every kernel, excluding joint injectivity. Targets may be
+large and noncommutative; only the index family is required to be small,
+and the empty family is included.
+
+The ordered-map obstruction works for nonzero small partially ordered
+rings. A small unital subring admits a pointwise retraction exactly when
+it is the ordinary integer subring. The ordinary Gaussian endomorphism
+classification reduces to the two roots of minus one; its actual-ring
+transfer strengthens the manuscript's automorphism clause to all unital
+endomorphisms for the induced constant-term action. Those maps preserve
+and reflect the purely infinite ideal; automorphisms carry it onto itself.
+The coefficient-general common-kernel instance remains pending. Updated
+the report guide and catalogue to match the merged scope.
+
+LEAN_NUM_THREADS=2 lake build passes 5,058 jobs. The axiom audit accepts
+19,114 declarations using only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, still 37 pages;
+inspected the affected pages. The article remains 353 pages with all
+418 numbered statements, 828 labels, 1,656 numbering pairs and all
+questions/remarks/examples preserved. Audits pass 4,626 anchors in 63
+reports, 5,240 source-label references and 2,011 local Markdown destinations
+in 226 files. git diff --check passes.
