@@ -370,6 +370,10 @@ with six witnesses: a Pell pair and four squares. The same six witnesses
 define ordinary integer vectors of any finite length, and every coordinate
 of every solution is proved ordinary. The polynomial has total degree exactly
 four; Pell growth and Mathlib's four-square theorem construct its witnesses.
+The alternative quartic that uses the square of the Pell coordinate is also
+proved for every integer-constant intermediate ordered Hahn ring, with no
+constant-extraction closure assumption. Its Gaussian failure is complete:
+explicit witnesses make the formula accept every Gaussian omnific integer.
 The five-witness version using the three-square theorem remains pending.
 The real omnific ring also has the proved single quintic definition with
 seven witnesses, with total degree exactly five. Its Gaussian failure is
