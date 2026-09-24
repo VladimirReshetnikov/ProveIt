@@ -685,3 +685,11 @@ import Surreal.HahnSeries.DiophantineConstants
 import Surreal.Surcomplex.DiophantineConstants
 import Surreal.Algebra.DiophantineConstantsBoundary
 import Surreal.Surcomplex.DiophantineConstantsBoundary
+import Surreal.Algebra.QuinticConstants
+import Surreal.Algebra.QuinticPolynomial
+import Surreal.Algebra.QuinticBoundary
+import Surreal.HahnSeries.QuinticConstants
+import Surreal.Foundations.OmnificQuintic
+import Surreal.Surcomplex.QuinticBoundary
+import Surreal.Algebra.NaturalNumbersDefinition
+import Surreal.Foundations.OmnificNaturalNumbersDefinition

@@ -374,3 +374,25 @@ references, 1,758 local Markdown destinations across 226 files, and whitespace
 checks pass. No Lean or verifier source changed. Existing finite checks were
 not rerun to claim evidence for cardinal arguments; the previous 4,547-job
 Lean build and 15,954-declaration audit remain the documentation-only baseline.
+
+### Synchronization after the support review
+
+Merged `31dacc2`, including `7aef1fc`, which formalizes the real quintic
+integer definition and the four-square natural-number corollary. The source
+comparison covers `odg:def:rem:quintic`, `odg:def:eq:quintic` and
+`odg:def:cor:naturals`: the exact degree-five polynomial, ordinary witnesses,
+ordered Hahn-ring and actual omnific instances, and the real/Gaussian
+boundary examples. The Gaussian witness uses a complex square root of -i;
+the ledger does not claim the particular trigonometric choice printed in
+the article. The natural-number statement includes zero and allows the
+four-square witnesses to range over the whole ordered ring. Neither the
+quartic guards nor the support-threshold arguments are claimed as proved
+by these additions.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` succeeds with 4,556 jobs. The
+axiom audit covers 16,010 declarations and uses only `propext`,
+`Classical.choice` and `Quot.sound`. All 4,626 indexed statements in 63
+reports, 5,199 cited source labels and 1,766 local Markdown destinations
+across 226 files pass their checks. The article and catalogue sources and
+PDFs are unchanged by this merge, so their clean three-pass builds remain
+current.

@@ -365,6 +365,12 @@ under constant extraction. The checked examples include a witness for
 `1+i` and the absence of any witness for `ω+i`. In the full surreal and
 surcomplex fields the predicate holds everywhere, so the ring restriction
 is essential.
+The real omnific ring also has the proved single quintic definition with
+seven witnesses, with total degree exactly five. Its Gaussian failure is
+checked on the actual nonconstant element `ω`. Any definition of the
+integer constants yields a definition of the natural constants, including
+zero, by adjoining four-square witnesses; those witnesses may range over
+the whole omnific ring.
 
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
