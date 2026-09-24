@@ -59,13 +59,15 @@
 \newcommand{\rpath}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
 \newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
 \newcommand{\wtag}{\textup{[write]}}% text added when the report joined the collection
-\newcommand{\mtag}{\textup{[merge]}}% text added when source 02 was merged (batch 34)
+\newcommand{\mtag}{\textup{[merge]}}% text added when source 02 (batch 34) or source 03 (batch 35) was merged
 \newcommand{\crk}{\operatorname{crk}}% coefficient rank (source 02)
 \newcommand{\cc}{\mathfrak c}
 \newcommand{\dtrdeg}{\operatorname{dtrdeg}}
 \newcommand{\Cfg}{\mathcal C_{\mathrm{fg}}}
 \newcommand{\ordt}{\operatorname{ord}_t}
 \newcommand{\jet}{\mathcal J}
+\newcommand{\Ord}{\operatorname{ord}}% ordinal operations (source 03)
+\newcommand{\Ad}[3]{\mathcal A^{#1}_{#2}(#3)}% D + purely infinite part (source 03)
 \numberwithin{equation}{section}
 \setlength{\parskip}{3pt}
 \setlength{\parindent}{1.15em}
@@ -84,22 +86,23 @@
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{0.05in}
-{\large\scshape Research report built from two manuscripts\par}
+{\large\scshape Research report built from three manuscripts\par}
 \vspace{0.1in}
 {\Huge\bfseries Independent Surreal Copies\par}
 \vspace{0.12in}
 {\Huge\bfseries and Arithmetic Intersections\par}
 \vspace{0.16in}
 {\Large Prescribed Hahn cores, algebraic independence,\par
-two transcendental descent obstructions, and composita\par}
+two transcendental descent obstructions, composita,\par
+and maximal transcendence of Hahn joins\par}
 \vspace{0.12in}
-{\large AI-assisted research draft\par 23 September 2026\par}
+{\large AI-assisted research draft, 23 September 2026\par}
 \vspace{0.04in}
-{\small Built from manuscripts of batches~31 and~34 of the collection,
-pinned to \texttt{bcac55a} and \texttt{7b256e0}\par}
-\vspace{0.16in}
+{\small Built from manuscripts of batches~31, 34 and~35 of the collection,
+pinned to \texttt{bcac55a}, \texttt{7b256e0}, \texttt{f388f95}\par}
+\vspace{0.1in}
 \hrule
-\vspace{0.15in}
+\vspace{0.1in}
 \begin{abstract}
 Let $H$ be any set-sized divisible additive subgroup of the surreal numbers,
 and let $L=\K{\R}{H}$ be the full Conway--Hahn field with exponents in $H$.
@@ -137,8 +140,8 @@ carry the prefix \texttt{isc:}. Conventions, the place in the collection,
 the non-claims and the provenance are in
 \cref{isc:sec:conventions,isc:sec:collection,isc:sec:nonclaims} and
 Appendix~\ref{isc:app:report}; added text is marked \wtag.
-\mtag{} Sections~15--27 add a second manuscript (prefix
-\texttt{isc:cp:}).
+\mtag{} Sections~15--27 and~28--41 add two more manuscripts
+(\texttt{isc:cp:}, \texttt{isc:hj:}).
 
 \smallskip
 \noindent\small Repository comparison is pinned to commit\par
@@ -558,6 +561,17 @@ common cores stay open. Research questions~11--22 come from that
 manuscript and are new. The relations of the addition to the three-duals,
 tail-spans, bounded-support and dilation reports are in
 \cref{isc:cp:sec:collection}.
+\mtag{} \emph{Status (batch 35).} A third manuscript, printed in
+Sections~\ref{isc:hj:sec:intro}--\ref{isc:hj:sec:verify}, answers the
+transcendence-degree part of Research questions~3
+and~\ref{isc:cp:q:amalgams} for explicit \emph{non-separated} examples
+(interleaved groups at every infinite cardinal, dense Archimedean groups,
+and a class example); the description of the compositum in the
+non-separated case, and prescribed nonzero cores, stay open
+(\cref{isc:hj:sec:answers}). Research questions~23--32 come from that
+manuscript and are new. Its relations to the tail-spans, Diophantine,
+set-sized-quotient, bounded-support and omnific-preserving reports are in
+\cref{isc:hj:sec:collection}.
 
 \section{Foundations, support, and size}\label{isc:sec:foundations}
 
@@ -1439,6 +1453,9 @@ algebraically independent over $M$, and a tail of the family stays
 independent after any set of parameters is adjoined
 (\cref{isc:cp:thm:resilience}). In the real case $S$ itself is then
 differentially transcendental over $M$ for that Euler derivation.
+\mtag{} A third manuscript gives a second proof that $S$ is transcendental
+over $M$, real and complex, by a mixed-support annihilator that needs no
+iterated coordinates (\cref{isc:hj:rem:secondroute}).
 
 \begin{remark}[Why the infinite list of coefficients matters]\label[remark]{isc:rem:infinite}
 A rational expression in the two fields can use arbitrary elements of each
@@ -1855,6 +1872,21 @@ that are not separated, prescribed nonzero common cores, infinite algebraic
 coefficient extensions, and $|k|>\cc$ with small positive $\trdeg(F/k)$
 (Research questions~\ref{isc:cp:q:amalgams}, \ref{isc:cp:q:large},
 \ref{isc:cp:q:algebraic} and~\ref{isc:cp:q:cores}).
+\mtag{} \emph{Status (batch 35): the second part is also answered for
+explicit non-separated examples.} For interleaved real closed factors
+$\K{k}{A_\kappa}$, $\K{k}{B_\kappa}$ with intersection $k$, the join has
+transcendence degree exactly $2^\kappa$ over the compositum at every
+infinite cardinal $\kappa$, with omnific witnesses
+(\cref{isc:hj:main:cardinal}); for dense Archimedean groups it is $\cc$,
+with witnesses prime in $\Oz$ and $\Oz[i]$ (\cref{isc:hj:main:prime}); a
+fixed pair of explicit class support subfields has an ordinal-indexed
+independent family and no set-sized transcendence basis
+(\cref{isc:hj:main:class}). All rest on the mixed-support criterion
+\cref{isc:hj:main:mixed}, which needs no convex separation. The first part
+(an exact description of the compositum) remains open outside the
+separated case (Research questions~\ref{isc:cp:q:amalgams}
+and~\ref{isc:hj:q:characterization}), as do prescribed nonzero cores
+(Research questions~\ref{isc:cp:q:cores} and~\ref{isc:hj:q:cores}).
 
 \begin{question}[Descent for the arithmetic intersection]
 How do integral closure, complete integral closure, and finite-type
@@ -2059,7 +2091,9 @@ refers to the delivered README, which is not shipped; its content is in the
 collection README. Items S1--S24 are the source's. Items W1--W8 were added
 when the report joined the collection. \mtag{} The limitations of the second
 manuscript (Sections~15--27) are listed separately, as items C1--C23 and
-M1--M5 of \cref{isc:cp:sub:nonclaims}.
+M1--M5 of \cref{isc:cp:sub:nonclaims}; those of the third manuscript
+(Sections~28--41) as items J1--J25 and JM1--JM6 of
+\cref{isc:hj:sub:nonclaims}.
 \begin{enumerate}[label=S\arabic*.,leftmargin=2.6em,itemsep=2pt]
 \item The common field is a \emph{full} Hahn field on a \emph{set-sized}
 divisible subgroup. It is not an arbitrary prescribed real closed or
@@ -2172,7 +2206,8 @@ no verification code, data or audit, so the report has no suite to rerun
 (\cref{isc:sec:collection}; Appendix~\ref{isc:app:files}). \mtag{} This
 holds for source~01; the second manuscript shipped a finite-check suite,
 rerun in Appendix~\ref{isc:cp:app:files}, which tests none of source~01's
-theorems.
+theorems; so did the third (Appendix~\ref{isc:hj:app:files}), which tests
+none of them either.
 \item \Cref{isc:thm:lift,isc:prop:arithmeticlift,isc:prop:classification}
 and the inner lift of \cref{isc:sec:explicit} are the real-fixing case of
 the omnific-preserving report's classification and its inner lift; no
@@ -2381,7 +2416,10 @@ infinitesimal relative to the other), copies with a prescribed nonzero
 common core $H$, infinite algebraic coefficient extensions, and $|k|>\cc$
 with small positive $\trdeg(F/k)$. These are Research
 questions~\ref{isc:cp:q:amalgams}, \ref{isc:cp:q:cores},
-\ref{isc:cp:q:algebraic} and~\ref{isc:cp:q:large}.
+\ref{isc:cp:q:algebraic} and~\ref{isc:cp:q:large}. \mtag{} Since batch~35
+the transcendence degree is also known for explicit non-separated examples
+(\cref{isc:hj:sec:answers}); the description of the compositum there is
+still open.
 \item \Cref{isc:lem:finitecoeff} is shown to be far from sufficient: one
 transcendental coefficient $x$ already gives a series with all coefficients
 in $k(x)$ that is differentially transcendental over the compositum
@@ -4132,7 +4170,8 @@ bases, derivations and tools, and the tail resilience to
 \item Research question~3 is answered only in the separated case with
 trivial core and in the cardinal cases of \cref{isc:cp:thm:cardinal}; its
 remaining part is Research questions~\ref{isc:cp:q:amalgams}
-and~\ref{isc:cp:q:cores}. No other question of this report is answered, and
+and~\ref{isc:cp:q:cores}. \mtag{} Source~03 later answers the degree part
+for explicit non-separated examples (\cref{isc:hj:sec:answers}). No other question of this report is answered, and
 no question of another report (\cref{isc:cp:sec:answers}).
 \item No \texttt{isc:cp:} label has a Lean mapping in
 \rpath{FORMALIZATION.md}. The proofs were read when the addition was
@@ -4161,6 +4200,17 @@ Hahn coefficient field?
 The obstacle is not the finite tensor argument itself, but choosing slices
 with support properties strong enough to characterize the entire join. This
 is the main part of Research question~3 left untreated.
+\mtag{} \emph{Status (batch 35): the transcendence defect is known for
+explicit examples; the image and a denominator criterion are open.} For the
+interleaved groups of \cref{isc:hj:main:cardinal} the defect is $2^\kappa$,
+for the dense Archimedean groups of \cref{isc:hj:main:prime} it is $\cc$,
+and for the class groups of \cref{isc:hj:main:class} there is no set-sized
+transcendence basis (\cref{isc:hj:sec:answers}). These groups are explicit
+subgroups, not the exponent groups of copies of $\No$ (the question allows
+any independent groups); the criterion \cref{isc:hj:main:mixed} applies to
+any pair of full Hahn fields on groups meeting its hypotheses. The smallest open dense case is Research
+question~\ref{isc:hj:q:rankone}; the image is Research
+question~\ref{isc:hj:q:characterization}.
 
 \begin{question}[Very large base fields]\label{isc:cp:q:large}
 For $|k|>\cc$ and $0<\trdeg(F/k)<|k|$, must
@@ -4195,6 +4245,12 @@ This report already constructs copies with prescribed cores
 decomposition and an independent-label family modulo the shared support
 group, not just an abstract pair of embeddings. \mtag{} Here $H$ is the
 common core of \cref{isc:main:copies}, as in the source's question.
+\mtag{} \emph{Status (batch 35): continued, not answered.} The
+mixed-support criterion \cref{isc:hj:main:mixed} allows a nonzero core
+algebraically, but no example with $H\ne0$ is constructed and no
+resilience is proved; the ordered construction is Research
+question~\ref{isc:hj:q:cores}, and full copies over a core are Research
+question~\ref{isc:hj:q:copies}.
 
 \begin{question}[Presentation-independent coefficient rank]\label{isc:cp:q:presentation}
 Which part of the finite-rank denominator criterion can be recovered from
@@ -4269,7 +4325,8 @@ for joint differential independence?
 Coefficient derivations still offer finite avoidance, but one must separate
 multivariable eigenvalue interpolation from the ordered-group support
 problem. A multidimensional Vandermonde argument alone does not settle the
-Hahn support conditions.
+Hahn support conditions. \mtag{} The algebraic counterpart for $r$ factor
+fields, without separation, is Research question~\ref{isc:hj:q:factors}.
 
 \begin{question}[Formalization of the core mechanisms]\label{isc:cp:q:formal}
 Can the coefficient-rank theorem, the coefficient-extension and coset-slice
@@ -4282,7 +4339,8 @@ coefficient-space identities first, then the set-sized Hahn statements, and
 only afterwards the class-local interface. This would test the most
 important new proofs without requiring a monolithic formalization of the
 entire report. \mtag{} It overlaps Research question~10 in the coset-slice
-kernel.
+kernel, and Research question~\ref{isc:hj:q:formal} in the coset and
+Euler-derivation kernel.
 
 \section{Finite verification and a formalization decomposition of the addition}
 \label{isc:cp:sec:verify}
@@ -4360,6 +4418,2288 @@ No unrestricted class basis should be introduced just to shorten the proof.
 \mtag{} The coset-slice and iterated-Hahn items overlap items (1)--(3)
 and~(6) of \cref{isc:sub:formal}.
 
+\section{Maximal transcendence in Hahn joins: a third manuscript}
+\label{isc:hj:sec:intro}
+
+\mtag{} \Cref{isc:hj:sec:intro,isc:hj:sec:foundations,isc:hj:sec:lemmas,isc:hj:sec:mixed,isc:hj:sec:combinatorics,isc:hj:sec:cardinal,isc:hj:sec:archimedean,isc:hj:sec:prime,isc:hj:sec:classes,isc:hj:sec:strong,isc:hj:sec:scope,isc:hj:sec:questions,isc:hj:sec:conclusion,isc:hj:sec:verify}
+print a third manuscript, written against this report. In the report's
+local numbering (Appendix~\ref{isc:hj:app:source}) it is \emph{source~03}:
+manuscript~01 of batch~35 of the collection, archive
+\texttt{Surreal\_Hahn\_Joins\_Research}, \emph{Maximal Transcendence in Hahn
+Joins: Mixed-support independence and prime omnific integers}, a 27-page
+PDF dated 23 September 2026 and pinned to repository commit
+\nolinkurl{f388f950f44664f21f50f04b8ac74dab56c8ff2f}. At that pin this
+report's \texttt{article.tex} was the blob
+\nolinkurl{7d5cfe644e7c902f2b594179c337a6c633350fc3}, the same snapshot
+against which source~02 was written. Source~03 therefore saw
+\cref{isc:sec:introduction}--\cref{isc:sec:nonclaims} (source~01) but not
+\cref{isc:cp:sec:intro}--\cref{isc:cp:sec:verify} (source~02), which were
+merged afterwards; the two later sources are independent of each other. The
+source takes Research question~3 of \cref{isc:sec:questions} as its target.
+
+Section~$n$ of the source is Section~$n+27$ here for $n=1,\ldots,13$, and
+every numbered statement keeps its position: the source's Lemma~$n.m$ is
+Lemma~$(n+27).m$ here, and likewise for theorems, propositions,
+corollaries, definitions and remarks, and for equations. The source's
+Theorems~A, B, C and~D share the lettered counter of this report's
+Theorems~A--C and are therefore printed as \cref{isc:hj:main:mixed},
+\cref{isc:hj:main:cardinal}, \cref{isc:hj:main:prime} and
+\cref{isc:hj:main:class}: its Theorem~A is Theorem~D here, B is~E, C is~F
+and D is~G. Its Questions~1--10 are Research questions~23--32. Its
+Appendices~A--C form \cref{isc:hj:sec:verify}; its Appendix~D (sources and
+provenance) is folded into Appendix~\ref{isc:hj:app:source}. Where the
+source cites this report, the citation is replaced by a cross-reference to
+the same place. Text added in the merge is marked \mtag; symbols renamed from
+the source are listed in \cref{isc:hj:sec:conventions}. Every result, proof,
+example, question and limitation of the source is printed.
+
+\subsection{Finite field operations versus Hahn summation}
+
+Suppose two additive subgroups $A,B\subseteq\No$ have been chosen. Write,
+as in \cref{isc:sec:introduction},
+\[
+ \K{k}{A}=\left\{\sum_{a\in S}c_a\omega^a:
+ c_a\in k,\ S\subseteq A\text{ reverse well ordered and set-sized}\right\},
+ \qquad k=\R,\C.
+\]
+For $k=\C$ this notation denotes the corresponding subfield of $\No(i)$.
+Every individual monomial $\omega^{a+b}$ is already a product of an
+$A$-monomial and a $B$-monomial. It does not follow that an arbitrary
+allowable sum of these products belongs to the field generated by the two
+Hahn fields. There are two distinct objects:
+\begin{equation}\label{isc:hj:eq:twoobjects}
+ M=\K{k}{A}\K{k}{B}
+ \quad\subseteq\quad
+ E=\K{k}{A+B}.
+\end{equation}
+The left-hand side is the \emph{ordinary compositum}: each of its elements
+uses only finitely many elements of the two fields and finitely many field
+operations. The right-hand side is the \emph{full Hahn join}: it allows
+every set-sized reverse-well-ordered support in $A+B$.
+
+The distinction is not a simple ``finite sum versus infinite sum''
+observation. Each factor field already contains unrestricted Hahn sums on
+its own exponent group. Moreover, a geometric series in a mixed monomial
+is the inverse of a binomial and therefore belongs to $M$. The problem is
+to distinguish genuinely new mixed sums from sums disguised as rational
+expressions in arbitrary elements of the factor fields.
+
+This report, in Research question~3 (headed \emph{An exact description of
+ordinary composita}), asks both for a characterization of $M$ inside $E$
+and for the transcendence degree of $E/M$ in natural examples. Its
+compositum-gap argument (\cref{isc:main:join,isc:thm:joinobstruction}) uses
+separated scales and infinitely many independent coefficients. Here the
+main mechanism is different: a finite differential annihilator works
+directly on the exponent group and does not require an iterated-series
+presentation. The degree question is solved in explicit families, including
+one with Archimedean, interleaved exponent groups.
+
+\subsection{Four principal statements}
+
+\begin{mainthm}[Mixed-support independence]\label{isc:hj:main:mixed}
+Let $k$ be a field of characteristic zero, $\Gamma_0,\Gamma_1$ divisible
+ordered abelian subgroups of a common ordered abelian group, and
+$H=\Gamma_0\cap\Gamma_1$. Suppose a set-indexed family
+$(a_i,b_i)_{i\in I}$ satisfies:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $a_i\in\Gamma_0$, and the classes $a_i+H$ are
+$\Q$-linearly independent;
+\item $b_i\in\Gamma_1$, and $b_i+H$ are pairwise distinct;
+\item $\{a_i+b_i:i\in I\}$ is well ordered.
+\end{enumerate}
+Let $\mathcal U$ be a family of subsets of $I$ such that, for every finite
+list of distinct $U_1,\ldots,U_s\in\mathcal U$, each
+$U_j\setminus\bigcup_{\ell\ne j}U_\ell$ is infinite. Then the series
+\[
+ F_U=\sum_{i\in U}t^{a_i+b_i}\qquad(U\in\mathcal U)
+\]
+are algebraically independent over
+$k((t^{\Gamma_0}))k((t^{\Gamma_1}))$ inside
+$k((t^{\Gamma_0+\Gamma_1}))$.
+\end{mainthm}
+
+The change from $\omega$ to $t$ in this theorem is intentional:
+$t^\gamma=\omega^{-\gamma}$, so well-ordered $t$-supports correspond to
+reverse-well-ordered Conway supports. The theorem is proved in
+\cref{isc:hj:sec:mixed}. Its hypotheses concern the exponents of the
+proposed witnesses, not the supports of the coefficients of a putative
+relation.
+
+\begin{mainthm}[The largest possible set-sized gap]\label{isc:hj:main:cardinal}
+For every infinite cardinal $\kappa$ there are explicit divisible
+subgroups $A_\kappa,B_\kappa\subseteq\No$, each of cardinality $\kappa$,
+with $A_\kappa\cap B_\kappa=0$, such that, for $k=\R,\C$,
+\[
+ \trdeg\!\left(
+ \K{k}{A_\kappa+B_\kappa}
+ \big/
+ \K{k}{A_\kappa}\K{k}{B_\kappa}
+ \right)=2^\kappa.
+\]
+The two factor fields are linearly disjoint over $k$. For $k=\R$ they
+are real closed; for $k=\C$ they are algebraically closed. There is a
+witnessing independent family of $2^\kappa$ elements of $\Oz$, valid
+simultaneously for both coefficient fields.
+\end{mainthm}
+
+All three Hahn fields in this statement have cardinality $2^\kappa$.
+Consequently the lower bound is not a cardinality comparison between a
+small base and a larger ambient field. It asserts maximal transcendence
+above a base that already has the same cardinality.
+
+\begin{mainthm}[An interleaved family of omnific primes]\label{isc:hj:main:prime}
+Let $(p_n)_{n\geq0}$ enumerate the ordinary positive primes increasingly,
+and put
+\[
+ \lambda_n=p_{2n}^{-3/2},\qquad
+ \mu_n=p_{2n+1}^{-3/2},\qquad \rho_n=\lambda_n+\mu_n,
+ \qquad A=\Span\{\lambda_n\},\quad B=\Span\{\mu_n\}.
+\]
+There is an explicit family $(\mathfrak B_\eta)_{\eta\in2^{\N}}$ of infinite,
+pairwise almost-disjoint subsets of $\N$ for which
+\begin{equation}\label{isc:hj:eq:primefamily-intro}
+ P_\eta=1+\sum_{n\in\mathfrak B_\eta}\omega^{\rho_n}
+\end{equation}
+are algebraically independent over $\K{\C}{A}\K{\C}{B}$.
+Each $P_\eta$ is prime in both $\Oz$ and $\Oz[i]$. Moreover,
+\[
+ \trdeg\bigl(\K{k}{A+B}/\K{k}{A}\K{k}{B}\bigr)=\cc
+ \quad(k=\R,\C),\qquad \cc=2^{\aleph_0}.
+\]
+Here $A+B\subseteq\R$ is Archimedean and $A\cap B=0$.
+\end{mainthm}
+
+The primality input is classical, from Pitteloud and the transfer work of
+Biljakovic--Kochetov--Kuhlmann; it is also available through the broader
+criteria of L'Innocente--Mantova \cite{Pitteloud,BKK,LM}. The proposed
+contribution in \cref{isc:hj:main:prime} is the simultaneous maximal
+algebraic independence over two entire Hahn subfields, together with the
+explicit prime realization, not a new one-row primality theorem.
+
+\begin{mainthm}[One fixed class-sized example]\label{isc:hj:main:class}
+There are explicit proper-class divisible subgroups $A_*,B_*\subseteq\No$
+with $A_*\cap B_*=0$ such that the full Hahn join
+$\K{k}{A_*+B_*}$ contains an ordinal-indexed, algebraically independent
+family of omnific integers over $\K{k}{A_*}\K{k}{B_*}$, for
+$k=\R,\C$. The extension therefore has no set-sized transcendence basis.
+For every infinite cardinal $\kappa$ it contains a set of $2^\kappa$
+algebraically independent omnific integers over that same class compositum.
+\end{mainthm}
+
+This last statement concerns explicitly defined class-sized support
+subfields. It does \emph{not} identify either factor with a full copy of
+$\No$, and does not use this report's construction of such copies
+(\cref{isc:main:copies}), which the source treats as unreviewed.
+Algebraic independence of a class always means that every finite
+subfamily is algebraically independent.
+
+\subsection{How to read the source}
+
+The essential proof is \cref{isc:hj:sec:lemmas,isc:hj:sec:mixed}. Readers
+mainly interested in concrete surreal numbers may then go directly to
+\cref{isc:hj:sec:archimedean,isc:hj:sec:prime}. Cardinal amplification and
+the class example are in
+\cref{isc:hj:sec:combinatorics,isc:hj:sec:cardinal,isc:hj:sec:classes}.
+The exact scope of the advance over this report, failure cases, and
+further questions are recorded in
+\cref{isc:hj:sec:scope,isc:hj:sec:questions}. \Cref{isc:hj:sec:verify}
+gives a proof-dependency audit, finite exact verification, and a
+formalization roadmap.
+
+\subsection{What the addition settles in this report}
+\label{isc:hj:sec:answers}
+
+\mtag{}
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Research question~\ref{isc:cp:q:amalgams}} (non-separated
+ordered amalgams) asks for the image of $\K{k}{G_0}\K{k}{G_1}$ in
+$\K{k}{G_0+G_1}$, for its transcendence defect, and for a finite-rank
+denominator criterion without an iterated Hahn coefficient field. Its
+\emph{transcendence-defect part} is answered for explicit non-separated
+examples: for the interleaved groups $A_\kappa,B_\kappa$ of
+\cref{isc:hj:main:cardinal} (neither is infinitesimal relative to the
+other: $f_0\in B_\kappa$ lies between $e_0$ and $e_1$ of $A_\kappa$, and so on)
+the defect is $2^\kappa$ at every infinite cardinal $\kappa$; for the dense
+Archimedean groups of \cref{isc:hj:main:prime} it is $\cc$; for the class
+groups of \cref{isc:hj:main:class} there is no set-sized transcendence
+basis. The image of the compositum and a denominator criterion are
+\emph{not} obtained; they remain open, and the source's own
+Research question~\ref{isc:hj:q:characterization} asks for them.
+\item \emph{Research question~3}, second part (the transcendence degree of
+the join over the compositum in natural examples), was answered in
+batch~34 in the separated case and the Laurent cardinal cases. Source~03
+adds the explicit non-separated examples just listed, with omnific and
+prime witnesses. The first part (an exact description of the compositum)
+remains answered only in the separated case (\cref{isc:cp:thm:rank}).
+\item \emph{Research question~\ref{isc:cp:q:cores}} (prescribed nonzero
+common cores) is continued, not answered. \Cref{isc:hj:main:mixed}
+allows a nonzero intersection $H=\Gamma_0\cap\Gamma_1$ algebraically
+(hypotheses (i) and~(ii) are modulo $H$), but every example constructed has
+$H=0$, and no tail resilience is proved; the ordered construction for
+$H\ne0$ is the source's Research question~\ref{isc:hj:q:cores}.
+\item \Cref{isc:main:join} receives a second route: the witness $S$ of
+\eqref{isc:eq:explicitS} is an instance of \cref{isc:hj:main:mixed} in the
+class-local form of \cref{isc:hj:lem:classlocal}
+(\cref{isc:hj:rem:secondroute}).
+\item No other question of this report is answered. Research
+questions~\ref{isc:cp:q:scales}, \ref{isc:cp:q:formal} and~10 are continued
+by Research questions~\ref{isc:hj:q:factors} and~\ref{isc:hj:q:formal};
+Research question~3 and~\ref{isc:cp:q:cores} by
+Research questions~\ref{isc:hj:q:cores} and~\ref{isc:hj:q:copies}.
+\end{enumerate}
+
+\subsection{Conventions and renamed symbols}
+\label{isc:hj:sec:conventions}
+
+\mtag{} Source~03 uses both exponent conventions of this report: the
+decreasing large-$\omega$ convention $\sum c_g\omega^g$, written $\K{k}{G}$
+as here, and the increasing small-$t$ convention $k((t^\Gamma))$ with
+well-ordered support, identified by $t^\gamma=\omega^{-\gamma}$ as in
+\cref{isc:sub:bounded,isc:cp:sec:foundations}. In
+\cref{isc:hj:sec:lemmas,isc:hj:sec:mixed} and in \cref{isc:hj:main:mixed}
+the fields are abstract $t$-series fields over an arbitrary
+characteristic-zero field $k$; from \cref{isc:hj:sec:cardinal} on they are
+subfields of $\No$ or $\SC$, with $k=\R$ or $\C$.
+
+The following symbols of the source are renamed; everything else is as in
+the source. No normalization is changed.
+\begin{center}\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.44\textwidth}@{}}
+\toprule
+Here & Source 03 & Reason\\
+\midrule
+\endhead
+$M=K_0K_1$, the ordinary compositum; $M'$, $M^{\mathrm{alg}}$, $M_*$ & $L$;
+$L'$, $L^{\mathrm{alg}}$, $L_*$ & this report writes $M$ for the ordinary
+compositum (\cref{isc:main:join}, source~02); $L$ is the common core
+$L_k=\K{k}{H}$ of \cref{isc:main:copies} and, in
+\cref{isc:cp:sec:foundations}, the field $k((t^\Gamma))$\\
+$\Gamma_0,\Gamma_1$; $K_0=k((t^{\Gamma_0}))$, $K_1=k((t^{\Gamma_1}))$;
+$K_{0,*},K_{1,*}$ & $\Gamma_1,\Gamma_2$; $K_1,K_2$; $K_{1,*},K_{2,*}$ &
+this report indexes the two factors of a join by $0,1$ ($G_0,G_1$,
+$K_0,K_1$ in \cref{isc:sec:join}); the first factor, over which the
+annihilator is solved, plays the role of the coefficient field $K_0$ there\\
+$\K{k}{G}$ & $\mathcal H_k(G)$ & the same full Hahn field; this report's
+macro\\
+$\partial_\chi$, $\partial_i$ (Euler derivations);
+$\partial_{\mathbf c}=\sum c_i\partial_i$ (the annihilator) & $D_\chi$,
+$D_i$; $D$ & $D$ is always a field in \cref{isc:cp:sec:conventions}, and
+$D_\R=\Z$, $D_\C=\Z[i]$ are rings of integers; $\partial_\chi$ is the
+Euler derivation \eqref{isc:cp:eq:euler} with weight $\lambda=\chi$\\
+$\delta$, an ordinary relative derivation (\cref{isc:hj:sec:strong}) & $D$
+& as above\\
+$\Gamma'$, a subgroup in \cref{isc:hj:lem:cosets,isc:hj:lem:euler} &
+$\Delta$ & $\Delta$ is the Euler derivation of \cref{isc:cp:sub:euler}\\
+$\PiG{k}{G}$, purely infinite series; $\A{k}{G}=D_k\oplus\PiG{k}{G}$ &
+$I_k(G)$; $R_k(G)$ & the same objects as in \cref{isc:sec:fractions}; $I$
+is an index set and $I_\alpha$ an interval here, and $R_j$ are omnific
+copies\\
+$\Ad{D}{k}{G}=D\oplus\PiG{k}{G}$ for a unital ring $D\subseteq k$, in
+particular $\Ad{k}{k}{G}$ & $S$; $T$ (\cref{isc:hj:lem:pullback}) & $S$ is
+a support set and the witness \eqref{isc:eq:explicitS}; $T$ is kept for
+the local set in \cref{isc:hj:lem:independentfamily}\\
+$\A{k}{A_\kappa}$, $\A{k}{B_\kappa}$, $\A{k}{A_\kappa+B_\kappa}$;
+$\A{k}{A_\kappa}[\A{k}{B_\kappa}]$ & $R_{A,k}$, $R_{B,k}$, $R_{E,k}$; $S_k$
+& as above; the ring generated by two rings is written as
+$R_0[R_1]$ in \cref{isc:cp:sec:arithmetic}\\
+$\mathcal T$, a transcendence basis; $\varphi:\mathcal T\to E$; $dy$,
+$y\in\mathcal T$ & $T$; $h$; $dt$, $t\in T$ & as source~02 does
+(\cref{isc:cp:lem:partial}); $h$, $h_\alpha$ are embeddings here; $t$ is
+the Hahn variable\\
+$\mathcal I_\kappa$, the index set of \cref{isc:hj:lem:independentfamily}
+& $I_\kappa$ & $I_\alpha$ is an interval of \cref{isc:sec:explicit}\\
+$\mathfrak B_\eta$, the branch sets & $B_\eta$ & $B$ is the group
+$\Span\{\mu_n\}$ in the same theorem\\
+$\Xi_U$, the omnific witnesses of \cref{isc:hj:main:cardinal} & $Z_U$ &
+$Z_\alpha=(1+i)Y_\alpha$ are source~02's Gaussian witnesses
+(\cref{isc:cp:thm:complex})\\
+$\Lambda_\alpha$, the ordinal blocks of \cref{isc:hj:sec:classes} &
+$C_\alpha$ & $C_\Theta$ is a localized coefficient field
+(\cref{isc:cp:lem:localizeP})\\
+Theorems D, E, F, G & Theorems A, B, C, D & the lettered counter
+continues this report's Theorems A--C\\
+Research questions 23--32 & Questions 1--10 & the question counter
+continues\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\paragraph{Symbols kept, and tempting false readings.}
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item $H=\Gamma_0\cap\Gamma_1$ is the common core of the two exponent groups,
+in the same role as the core $H$ of \cref{isc:main:copies}; here it is an
+arbitrary subgroup of an abstract ordered group, and all examples have
+$H=0$. $\Gamma=\Gamma_0+\Gamma_1$ is the exponent group of the join $E$,
+as $\Gamma$ is the outer group of $E=F((t^\Gamma))$ in source~02.
+\item $A,B$; $A_\kappa,B_\kappa$; $A_*,B_*$ are exponent \emph{subgroups},
+as $A,B$ are in \cref{isc:lem:iterated}. They are not the rings
+$\A{k}{H}$, $\B{k}{H}$ (calligraphic), not a parameter set $A$
+(\cref{isc:cor:parameters}), and not the index set $B$ or the labels
+$b_i$ of \cref{isc:cp:sec:generic}.
+\item $\chi$, $\chi_i$ are additive \emph{characters} $\Gamma\to k$: the
+Euler weight $\lambda$ of \cref{isc:cp:def:euler} under another name. They
+are not the characters $\chi$ of the monomial maps $M_{\chi,\tau}$ of the
+omnific-preserving report.
+\item $\lambda_n,\mu_n,\rho_n$ (\cref{isc:hj:main:prime}) are positive
+\emph{real numbers} used as exponents. $\lambda_n$ is not the Euler weight
+$\lambda$ of \cref{isc:cp:def:euler} or a coset slice $\lambda_{g,H}$ of
+\eqref{isc:eq:slice}; $\mu_n$ is not $\mu=|F|$ of
+\cref{isc:cp:thm:cardinal}; $\rho_n$ is not the embedding $\rho$ of the
+omnific-preserving classification (\cref{isc:sec:collection}). $p_n$ is
+the $n$th prime, not an evaluated partial $p_{ij}$ of
+\cref{isc:cp:thm:lacunary}.
+\item $e_\alpha=\omega^{-\iota_0(\alpha)}$, $f_\alpha=\omega^{-\iota_1(\alpha)}$
+and $r_\alpha=e_\alpha+f_\alpha$ are infinitesimal surreal \emph{exponents}
+(for $\alpha\ge1$; $e_0=1$). Here $\iota_0(\alpha)=2\cdot_{\Ord}\alpha$ is an
+\emph{ordinal} product. \emph{Tempting false reading:}
+``$e_\alpha=\omega^{-2\alpha}$ with the surreal product $2\alpha$.'' For
+infinite $\alpha$ the two differ: $2\cdot_{\Ord}\omega=\omega$, whereas the
+surreal $2\omega=\omega+\omega$.
+\emph{Tempting false reading:} ``$r_\alpha$ is a real coefficient, as
+$r_g$ in $\sum r_g\omega^g$.'' It is not; $r_\alpha$ is itself a Conway
+exponent of the witnesses $\Xi_U$ and $W_\alpha$. Nor is $e$ the generic
+exponent of \cref{isc:cp:sec:surreal}.
+\item $\iota_0(\alpha)=2\cdot_{\Ord}\alpha$ and $\iota_1(\alpha)$ are
+ordinal-index maps, not the inner lifts $\iota_{\sigma_\alpha}$ of the
+omnific-preserving report.
+\item $F_U$, $F_\eta$ are mixed sums indexed by an incidence set or a
+branch; they are not the witness $F$ of \cref{isc:main:fractions}, the
+coefficient field $F$ of source~02, or a polynomial. $P_\eta$ is a prime
+witness indexed by a binary branch; $P$ without index is a polynomial
+relation, and $P_\alpha$ are the partial sums of \cref{isc:sec:gaps}.
+$W_\alpha$ (\cref{isc:hj:eq:classwitness}) is an omnific witness, not a
+leading polynomial $W_i(X,x)$ of \cref{isc:cp:thm:lacunary}.
+\item $\eta,\theta\in2^{\N}$ are binary branches, as $\eta$ is in
+\cref{isc:cp:cor:continuum}; they are not the $\eta_\kappa$-orders of
+\cref{isc:sec:setversion}, and $\theta$ is not the inner support set
+$\Theta$. $s$ is a finite subset of $\kappa$ or a binary word, and in
+\cref{isc:hj:thm:classicalprime} $s_n$ are real $t$-exponents, not the
+coefficients $s_n=\omega^{g_n}$ of \eqref{isc:eq:explicitS}. $\delta$ is a
+derivation here, not the Taylor parameter of the omnific-preserving
+report; $\delta_{ih}$ is the Kronecker symbol. $\kappa$ is an arbitrary
+infinite cardinal, not $\cf(H)$, and $\lambda$ without index is a cardinal
+in the proofs of \cref{isc:hj:main:class,isc:hj:thm:automorphisms}.
+\item $D$ is a unital subring of $k$ in \cref{isc:hj:sec:prime}, in
+particular $D_\R=\Z$ or $D_\C=\Z[i]$ as in \cref{isc:sec:fractions}; it is
+never a derivation (source~02's rule that $D$ is a field applies to its own
+sections). $q$ is an index of the generators $u_q$ in
+\cref{isc:hj:lem:annihilator} and a prime series in
+\cref{isc:hj:sec:prime}; $g$ is a generic exponent in the proof of
+\cref{isc:hj:prop:strongrigidity}, and $\omega^{7/2}$ only in
+\cref{isc:hj:rem:secondroute}.
+\item \emph{Tempting false reading:} ``the annihilator
+$\partial_{\mathbf c}$ is a derivation of $E$ killing the compositum $M$.''
+It kills only a finitely generated subfield $K_1(u_1,\ldots,u_m)$ chosen
+after a hypothetical relation is fixed; a nonzero strong derivation
+killing all of $M$ does not exist (\cref{isc:hj:prop:strongrigidity}).
+\item \emph{Tempting false reading:} ``the automorphisms of
+\cref{isc:hj:thm:automorphisms} are automorphisms of $\No(i)$ or of
+$\Oz$.'' They are automorphisms of one set-sized complex Hahn join $E$
+fixing $M$, and nonidentity ones are not strong.
+\item \emph{Strong} means preserving Hahn summability of set-indexed
+families, as in \cref{isc:sec:conventions}; ordinal operations are written
+$\cdot_{\Ord}$, $+_{\Ord}$ as in the source.
+\end{itemize}
+
+\subsection{Place in the collection}\label{isc:hj:sec:collection}
+
+\mtag{} Source~03 cites only this report from the collection (and the
+catalogue, at its pin). Checked against the collection at the placement
+commit \texttt{dec8d56}, the following reports bear on it; none is a
+dependency of its proofs.
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{This report, source~01.} \Cref{isc:hj:prop:ld} is the case
+$H=0$ of \cref{isc:thm:sliceddisjoint} (the intersection is $k$ and the
+fields are linearly disjoint over it), by the same coefficientwise
+argument; \cref{isc:hj:lem:cosets} is the elementary coset fact behind the
+slices \eqref{isc:eq:slice}. The definitions of $\PiG{k}{G}$ and
+$\A{k}{G}$ in \cref{isc:hj:sec:foundations} are those of
+\cref{isc:sec:fractions}. The source's comparison with source~01 is
+accurate: \cref{isc:thm:joinobstruction} uses separated scales and an
+infinite independent coefficient list, and the source does not present
+that mechanism as new.
+\item \emph{This report, source~02} (\cref{isc:hj:sub:compare}). Written
+from the same snapshot, source~02 answered Research question~3 in the
+separated case; the two sources overlap in no theorem.
+\item \emph{Tail spans and differential transcendence}
+(\rpath{surreal/tail-spans-and-differential-transcendence}, prefix
+\texttt{tail:}). The binary-branch sets \eqref{isc:hj:eq:branchsets} are the
+almost disjoint family \lbl{tail:eq:Aalpha} with the coding
+\lbl{tail:eq:binarycode} shifted by one: the source's code of a word $s$ of
+length $m$ is $2^m-1+\sum_js_j2^{m-1-j}$, that report's is
+$N(s)=2^m+\sum_js_j2^{m-j}$ with $1$-based indices, so the source's code is
+$N(s)-1$. The same family serves \cref{isc:cp:cor:continuum}. The
+linear independence of square roots of distinct primes, used for the
+exponents \eqref{isc:hj:eq:realexponents}, is also the multiquadratic input
+of \lbl{tail:thm:surreal}, where the square roots are coefficients, not
+exponents. Source~03 cites neither.
+\item \emph{Omnific Diophantine geometry}
+(\rpath{surreal/omnific-diophantine-geometry}, prefix \texttt{odg:}). After
+\lbl{odg:prop:irreduciblect} that report cites the primality of
+$1+\sum_{k\ge1}\omega^{1/k}$ in $\Oz$ from the same sources (Pitteloud;
+Biljakovic--Kochetov--Kuhlmann; as reviewed in \cite[Section~1.3]{LM}).
+\Cref{isc:hj:prop:fullprime} is the same one-row input with the
+constant-term pullback written out, and the $P_\eta$ are a new explicit
+continuum subfamily of such primes. A search of the collection found no
+other nonconstant prime element of $\Oz[i]$ (the set-sized-quotients report
+treats the ideals generated by ordinary Gaussian primes such as $1+i$), so
+primality of the $P_\eta$ in $\Oz[i]$ appears here first in the collection;
+this is not a priority claim. Every $P_\eta$ has constant term $1$,
+as \lbl{odg:prop:irreduciblect} requires of a nonconstant irreducible.
+\item \emph{Set-sized quotients of omnific integers}
+(\rpath{surreal/set-sized-quotients-of-omnific-integers}, prefix
+\texttt{osq:}). \lbl{osq:cor:primeexample} uses the prime
+$\omega^{\sqrt2}+\omega+1$ (L'Innocente--Mantova's Theorem~B) to obtain a
+proper-class domain $\Oz/(q)$ with no nonzero set-sized image. Its proof
+uses only primality and $\ct(q)=1$, so each $P_\eta$ gives such a quotient;
+this is an observation of the merge, not a statement of either source.
+\item \emph{Bounded-support transcendence}
+(\rpath{surreal/transcendence-over-bounded-support}, prefix
+\texttt{bst:}). \lbl{bst:cor:exactcard} and \lbl{bst:cor:realgroup} compute
+transcendence degrees $2^\kappa$ and $\cc$ of one full Hahn field over its
+bounded-support fraction field. \Cref{isc:hj:main:cardinal,isc:hj:main:prime}
+compute the same cardinals for a join over the compositum of two full
+Hahn subfields. The bases differ, and the results are consistent: in each
+case the degree equals the cardinality of the ambient field. The
+Archimedean join $\K{k}{A+B}$ of \cref{isc:hj:main:prime} has
+$\cc$ as its degree over both bases.
+\item \emph{Omnific-preserving automorphisms} (\texttt{opa:}).
+\lbl{opa:as:thm:main} shows that every ring automorphism of $\Oz$ extends
+to a strong automorphism of $\No$, and \lbl{opa:as:cor:setpairs} that every
+automorphism of a full real Hahn field on a nonzero divisible set group
+stabilizing its omnific ring is strong. The non-strong automorphisms of
+\cref{isc:hj:thm:automorphisms} are automorphisms of a complex Hahn join,
+not of $\Oz$, and are not claimed to preserve any omnific ring, so there is
+no conflict; \cref{isc:hj:rem:omnificaut} combines the two results.
+\end{enumerate}
+No \texttt{isc:hj:} label has a Lean mapping in \rpath{FORMALIZATION.md}.
+
+\subsection{Comparison with source 02}\label{isc:hj:sub:compare}
+
+\begin{remark}[Two answers to the degree question]\label[remark]{isc:hj:rem:compare}
+\mtag{} Sources~02 and~03 were written from the same snapshot of this report
+and do not cite each other.
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=*,itemsep=2pt]
+\item \emph{Settings.} \Cref{isc:cp:thm:cardinal} extends coefficients: it
+computes $\dtrdeg=\trdeg=|F|^{\aleph_0}$ for $F((t))$ over $F k((t))$, with
+exponents in $\Z$ and the gap coming from the coefficient field $F$.
+\Cref{isc:hj:main:cardinal} mixes exponents: both factors are full Hahn
+fields over the same $k$ on interleaved groups, and the degree is
+$2^\kappa$. Both degrees are maximal, equal to the cardinality of the
+ambient field; they agree in value for $\kappa=\aleph_0$ and $|F|=\cc$.
+\item \emph{Mechanisms.} Source~03's finite-exclusive infinitude
+(\cref{isc:hj:def:exclusive}) is word for word the finite private-index
+property \cref{isc:cp:def:private}, and the private-label hypothesis of
+\cref{isc:cp:thm:generic} is its label form. Source~02 kills a finitely
+generated coefficient field with coordinate \emph{coefficient} derivations
+$d_b$ (\cref{isc:cp:lem:partial}); source~03 kills finitely many elements
+of the factor $K_0$ with a $K_0$-linear combination of exponent-coordinate
+Euler derivations $\partial_i$ (\cref{isc:hj:lem:annihilator}), which plays
+the same role. In the second route of \cref{isc:hj:rem:secondroute} the
+$\partial_i$ act on the outer coefficients $s_n=\omega^{g_n}$ of
+\eqref{isc:eq:explicitS} as $s_n\,\partial/\partial s_n$, a logarithmic form
+of the coefficient derivations $d_b$.
+\item \emph{Scope.} Source~02 proves differential independence, tail
+resilience over every set of parameters and arithmetic nonintegrality, in
+the \emph{separated} explicit join. Source~03 proves algebraic independence
+only, but without convex separation, with an exact set-sized degree,
+prime witnesses and a count of relative derivations and automorphisms.
+\item \emph{Class size.} \Cref{isc:cp:thm:omnific,isc:cp:cor:nosetgen} work
+in the join of two actual copies of $\No$ (\cref{isc:sec:explicit});
+\cref{isc:hj:main:class} works in explicit class \emph{support subfields}
+$\K{k}{A_*}$, $\K{k}{B_*}$, which are not copies of $\No$, as the source
+says.
+\item \emph{Coverage.} \Cref{isc:hj:main:mixed} as stated does not cover
+source~02's family $(Y_\alpha)$: in the labels $(\alpha,n)$ its
+$G_1$-exponents $b-ng$ do not depend on $\alpha$, so hypothesis~(ii) fails
+for the family, although each single $Y_\alpha$ satisfies it.
+\end{enumerate}
+\end{remark}
+
+\section{Conventions and foundational inputs of the third source}
+\label{isc:hj:sec:foundations}
+
+\subsection{Hahn fields and summable families}
+
+Throughout the abstract argument, $k$ is a set-sized field of
+characteristic zero and $\Gamma$ is a set-sized divisible ordered abelian
+group. Divisibility makes $\Gamma$ a $\Q$-vector space, uniquely, because
+an ordered abelian group is torsion free. Its Hahn field consists of
+formal sums
+\[
+ k((t^\Gamma))=
+ \left\{x=\sum_{\gamma\in\Gamma}x_\gamma t^\gamma:
+ x_\gamma\in k,\ \supp(x)=\{\gamma:x_\gamma\ne0\}
+ \text{ is well ordered}\right\}.
+\]
+Addition is coefficientwise and multiplication is convolution. The
+classical Hahn support theorem ensures that the sum of two well-ordered
+supports is well ordered and that each exponent has only finitely many
+representations from the two supports. It follows that every convolution
+coefficient is an ordinary finite sum. Inversion makes this a field.
+These are standard foundations, not results proposed as new here
+\cite{Hahn,Gonshor}.
+
+A set-indexed family $(x_j)$ is \emph{Hahn summable} if its union of
+supports is well ordered and every exponent belongs to only finitely many
+of the supports. Its Hahn sum is then defined coefficientwise. No
+analytic convergence or passage to a topological limit is intended.
+In particular, the families of distinct monomials in \cref{isc:hj:main:mixed}
+are summable because their total support is well ordered.
+
+The natural valuation is $v(x)=\min\supp(x)$ for $x\ne0$. It is useful for
+orientation but does not enter the annihilator argument. In particular, no
+assumption about the cofinality of the valuation group is needed.
+
+\subsection{The Conway realization and the two coefficient roles}
+
+Conway normal form identifies $\No$ with real-coefficient, set-supported
+reverse-well-ordered sums $\sum r_g\omega^g$. Sending $t^\gamma$ to
+$\omega^{-\gamma}$ identifies a Hahn field on a subgroup of $\No$ with
+a subfield of $\No$. Complex coefficients are handled through
+$\No(i)=\No\oplus i\No$. The union of the real and imaginary supports
+is again reverse well ordered, so this agrees with the formal complex
+Hahn presentation. The usual real-closedness theorem gives that
+$\K{\R}{G}$ is real closed when $G$ is divisible, and its
+complexification $\K{\C}{G}$ is algebraically closed
+\cite{Gonshor,Kaplansky}.
+
+An exponent that happens to be a real number is not a coefficient.
+For example, $\lambda_n$ in \cref{isc:hj:main:prime} is fixed when it is
+regarded as an element of the coefficient field, while the monomial
+$t^{\lambda_n}$ can have a nonzero Euler derivative. This distinction is
+essential. The derivations below are not assumed to respect a surreal
+exponential function, and are not the Berarducci--Mantova surreal
+derivation. They are additive-character derivations of a Hahn field.
+
+\subsection{Omnific and Gaussian omnific rings}
+
+For a subgroup $G\subseteq\No$ the additive group of purely infinite series
+is, as in \cref{isc:sec:fractions},
+\[
+ \PiG{k}{G}=\left\{\sum_{g\in S}c_g\omega^g\in\K{k}{G}:
+ S\subseteq G^{>0}\right\}.
+\]
+The product of two such series again has strictly positive exponents.
+Thus $k\oplus\PiG{k}{G}$ is a ring and its constant-term map to $k$ is a
+ring homomorphism. For $k=\R$ and $k=\C$ respectively,
+\[
+ \A{\R}{G}=\Z\oplus\PiG{\R}{G}=\Oz\cap\K{\R}{G},
+ \qquad
+ \A{\C}{G}=\Z[i]\oplus\PiG{\C}{G}=\Oz[i]\cap\K{\C}{G}.
+\]
+These descriptions are exact. A real surreal is omnific precisely when
+it has no negative Conway exponent and its constant coefficient is an
+ordinary integer \cite{Conway,Gonshor}.
+
+We will not use the false blanket assertion
+$\Frac(\A{k}{G})=\K{k}{G}$ for arbitrary set-sized $G$.
+Even though every surreal is a quotient of full omnific integers, this
+identity need not remain true after imposing a fixed exponent group.
+The arithmetic corollary in \cref{isc:hj:sec:arithmetic} only uses
+inclusions that follow directly from the definitions.
+\mtag{} This report proves the failure: for $H\ne0$ the field
+$\Frac\A{k}{H}$ is $\Frac\B{k}{H}$ (\cref{isc:prop:boundedfrac}), over which
+$\K{k}{H}$ is transcendental (\cref{isc:thm:cofinalgap}).
+
+\subsection{Set theory and class statements}
+
+\Cref{isc:hj:sec:foundations} through \cref{isc:hj:sec:prime} use
+ordinary set mathematics with choice. The optional class results can be
+read in a class theory such as NBG, the framework of
+\cref{isc:sec:foundations}. Every Hahn support is still a set. The class
+exponent groups used there have explicit finite-support coordinate
+descriptions, so no proper-class Hamel basis is selected. Finite linear
+algebra and finite polynomial identities over a class field have their
+usual meanings. Where a published theorem is stated for set groups, the
+application to a class ring will be localized to a set group containing all
+relevant supports.
+
+\section{Three algebraic lemmas}\label{isc:hj:sec:lemmas}
+
+Whenever the data of \cref{isc:hj:main:mixed} are used in this section, write
+$\Gamma=\Gamma_0+\Gamma_1$, $K_j=k((t^{\Gamma_j}))$,
+$E=k((t^\Gamma))$, and $H=\Gamma_0\cap\Gamma_1$.
+
+\subsection{Distinct exponent cosets cannot cancel}
+
+\begin{lemma}[Coset independence]\label[lemma]{isc:hj:lem:cosets}
+Let $\Gamma'\subseteq\Gamma$ be an additive subgroup. If
+$\beta_1,\ldots,\beta_r$ represent distinct cosets modulo $\Gamma'$, then
+$t^{\beta_1},\ldots,t^{\beta_r}$ are linearly independent over
+$k((t^{\Gamma'}))$ inside $k((t^\Gamma))$.
+\end{lemma}
+\begin{proof}
+If $c_j\in k((t^{\Gamma'}))$, then
+$\supp(c_jt^{\beta_j})\subseteq\Gamma'+\beta_j$.
+These cosets are pairwise disjoint. For a nonzero $c_j$, any exponent of
+$c_jt^{\beta_j}$ has a nonzero coefficient that cannot receive a
+contribution from another summand. Hence
+$\sum_jc_jt^{\beta_j}=0$ forces every $c_j=0$.
+\end{proof}
+
+No convexity assumption appears in this argument. Even very closely
+interleaved cosets remain disjoint as sets of exponents. This is the
+replacement for a separated-scale coefficient expansion.
+
+\begin{proposition}[Intersection and linear disjointness]\label[proposition]{isc:hj:prop:ld}
+Suppose $\Gamma_0\cap\Gamma_1=0$, and put
+$K_j=k((t^{\Gamma_j}))$. Then $K_0\cap K_1=k$, and $K_0,K_1$ are
+linearly disjoint over $k$ in $k((t^{\Gamma_0+\Gamma_1}))$.
+\end{proposition}
+\begin{proof}
+An element of the intersection has support contained in both groups,
+hence in $\{0\}$, which proves the first assertion. To prove the second,
+let $y_1,\ldots,y_r\in K_1$ be linearly independent over $k$, and assume
+$\sum_j x_jy_j=0$ with $x_j\in K_0$.
+Every exponent in $\Gamma_0+\Gamma_1$ has a unique expression $a+b$ with
+$a\in\Gamma_0$, $b\in\Gamma_1$. For a fixed $a$, the coefficients in
+the coset $a+\Gamma_1$ of the asserted relation therefore give
+\[
+ \sum_{j=1}^r (x_j)_a\,y_j=0.
+\]
+The independence of the $y_j$ implies $(x_j)_a=0$ for every $j$. As $a$
+was arbitrary, all $x_j$ vanish. This is the linear-disjointness criterion.
+\end{proof}
+
+\mtag{} This is the case $H=0$ of \cref{isc:thm:sliceddisjoint}
+(\cref{isc:hj:sec:collection}).
+
+\subsection{Coordinate Euler derivations}
+
+\begin{lemma}[An additive character gives a derivation]\label[lemma]{isc:hj:lem:euler}
+Let $\chi:\Gamma\to k$ be an additive map. Then
+\begin{equation}\label{isc:hj:eq:euler}
+ \partial_\chi\left(\sum_\gamma x_\gamma t^\gamma\right)
+ =\sum_\gamma\chi(\gamma)x_\gamma t^\gamma
+\end{equation}
+defines a $k$-linear derivation of $k((t^\Gamma))$. It preserves Hahn
+summability and commutes with Hahn sums. If $\chi$ vanishes on a subgroup
+$\Gamma'$, it annihilates $k((t^{\Gamma'}))$.
+\end{lemma}
+\begin{proof}
+The support of the output is contained in that of the input, so the
+series is well defined. Additivity and $k$-linearity are immediate.
+For a product, its coefficient at $\gamma$ is a finite convolution sum.
+Using $\chi(\alpha+\beta)=\chi(\alpha)+\chi(\beta)$ in that finite sum
+shows
+\[
+ \partial_\chi(xy)=\partial_\chi(x)y+x\partial_\chi(y).
+\]
+For a summable family, its union of supports cannot increase under
+$\partial_\chi$, and coefficientwise local finiteness cannot fail. The
+equality between differentiating the sum and summing the derivatives
+reduces to linearity in a finite coefficient sum. The last assertion
+follows from \eqref{isc:hj:eq:euler}.
+\end{proof}
+
+\mtag{} This is \cref{isc:cp:lem:derivation} for $F=k$, with the Euler
+weight $\lambda=\chi$.
+
+\begin{lemma}[Coordinate characters modulo the other group]\label[lemma]{isc:hj:lem:characters}
+Under hypotheses \textup{(i)} and \textup{(ii)} of \cref{isc:hj:main:mixed},
+for each $i\in I$ there is a $\Q$-linear map
+$\chi_i:\Gamma_0+\Gamma_1\to\Q\subseteq k$ such that
+\[
+ \chi_i\vert_{\Gamma_1}=0,\qquad \chi_i(a_h)=\delta_{ih}
+ \quad(h\in I).
+\]
+Writing $\partial_i=\partial_{\chi_i}$, one has $\partial_i(K_0)\subseteq K_0$,
+$\partial_i(K_1)=0$, and
+\begin{equation}\label{isc:hj:eq:coordinateaction}
+ \partial_i(F_U)=\begin{cases}t^{a_i+b_i}&i\in U,\\0&i\notin U.\end{cases}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The classes of the $a_h$ are linearly independent in
+$(\Gamma_0+\Gamma_1)/\Gamma_1$: a finite rational combination lying in
+$\Gamma_1$ also lies in $\Gamma_0$, hence in $H$, so all coefficients
+vanish. Extend these classes to a $\Q$-basis of the quotient, assign value
+$1$ to the class of $a_i$ and $0$ to the other basis vectors, and compose
+with the quotient map. Apply \cref{isc:hj:lem:euler}. The value on
+$a_h+b_h$ is $\delta_{ih}$, which gives \eqref{isc:hj:eq:coordinateaction}.
+\end{proof}
+
+Only hypothesis (i) is needed to construct these characters; hypothesis
+(ii) will ensure that a linear combination of the resulting nonzero
+monomial derivatives does not cancel.
+
+\subsection{Annihilating finitely many arbitrary Hahn series}
+
+\begin{lemma}[Finite differential annihilator]\label[lemma]{isc:hj:lem:annihilator}
+Let $u_1,\ldots,u_m\in K_0$, and let $J\subseteq I$ consist of exactly $m+1$
+distinct indices. There are coefficients $(c_i)_{i\in J}\in K_0^J$, not
+all zero, such that the derivation
+\begin{equation}\label{isc:hj:eq:annihilator}
+ \partial_{\mathbf c}=\sum_{i\in J}c_i\partial_i
+\end{equation}
+annihilates $K_1(u_1,\ldots,u_m)$. In addition,
+\begin{equation}\label{isc:hj:eq:noncancel}
+ \sum_{i\in J}c_i t^{a_i+b_i}\ne0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Consider the homogeneous equations
+\[
+ \sum_{i\in J}c_i\partial_i(u_q)=0\qquad(1\leq q\leq m).
+\]
+There are $m$ equations in $m+1$ unknowns over the field $K_0$, because
+$\partial_i(u_q)\in K_0$. Gaussian elimination gives a nonzero solution.
+A finite field-linear combination of derivations is again a derivation,
+so \eqref{isc:hj:eq:annihilator} is well defined. It annihilates every
+$u_q$ and all of $K_1$. The quotient rule then implies that it annihilates
+the field they generate.
+
+For \eqref{isc:hj:eq:noncancel}, write the left side as
+$\sum_{i\in J}(c_it^{a_i})t^{b_i}$.
+The cosets $b_i+\Gamma_0$ are pairwise distinct: a difference in
+$\Gamma_0$ would be in $H$, contrary to hypothesis (ii).
+The coefficients $c_it^{a_i}$ lie in $K_0$, and some are nonzero.
+Now apply \cref{isc:hj:lem:cosets}.
+\end{proof}
+
+\begin{remark}[Why arbitrary coefficient supports are harmless]\label[remark]{isc:hj:rem:finiteness}
+The $u_q$ may each have infinitely many, or uncountably many, support
+exponents. We do not choose coordinates outside all their supports. We
+choose one more differential direction than there are generators, and
+solve a finite homogeneous system over $K_0$ itself. This is the principal
+reason the proof applies to a compositum of \emph{full} Hahn fields.
+\end{remark}
+
+\section{The mixed-support independence theorem}\label{isc:hj:sec:mixed}
+
+\begin{definition}\label[definition]{isc:hj:def:exclusive}
+A family $\mathcal U$ of subsets of $I$ has the \emph{finite-exclusive
+infinitude property} if, for every finite list of distinct members
+$U_1,\ldots,U_s$ and each $j$, the set
+\[
+ U_j\setminus\bigcup_{\ell\ne j}U_\ell
+\]
+is infinite. This is a property of the incidence sets only; it says
+nothing about the order on the exponent group.
+\end{definition}
+
+\mtag{} This is the finite private-index property of
+\cref{isc:cp:def:private}, for families of subsets of an arbitrary index
+set.
+
+\begin{proof}[Proof of \cref{isc:hj:main:mixed}]
+Write $K_j=k((t^{\Gamma_j}))$, $M=K_0K_1$, and
+$E=k((t^{\Gamma_0+\Gamma_1}))$.
+The mixed exponents $a_i+b_i$ are pairwise distinct. Indeed, equality for
+two indices would give a nontrivial relation between the corresponding
+$a_i+H$. Their assumed well-ordering therefore makes every $F_U$ a
+well-defined Hahn sum.
+
+Suppose there is an algebraic relation among finitely many distinct
+$F_{U_1},\ldots,F_{U_s}$. Choose a nonzero polynomial
+\[
+ P\in M[X_1,\ldots,X_s],\qquad
+ P(F_{U_1},\ldots,F_{U_s})=0,
+\]
+of least possible total degree among nonzero relations on this tuple.
+It is not a constant polynomial. In characteristic zero, some partial
+$P_j=\partial P/\partial X_j$ is a nonzero polynomial. It has smaller
+total degree, so minimality gives
+\begin{equation}\label{isc:hj:eq:partialnonzero}
+ P_j(F_{U_1},\ldots,F_{U_s})\ne0.
+\end{equation}
+
+There are only finitely many coefficients of $P$. Each is a rational
+expression in finitely many elements of $K_0$ and $K_1$. Taking the union
+of the finite lists of $K_0$-elements used in these expressions, there
+are $u_1,\ldots,u_m\in K_0$ such that all coefficients of $P$ lie in
+$K_1(u_1,\ldots,u_m)$.
+
+Choose $m+1$ distinct indices in
+$U_j\setminus\bigcup_{\ell\ne j}U_\ell$, and call the resulting set $J$.
+Apply \cref{isc:hj:lem:annihilator} to obtain
+$\partial_{\mathbf c}=\sum_{i\in J}c_i\partial_i$.
+This derivation annihilates the coefficients of $P$. By
+\eqref{isc:hj:eq:coordinateaction}, it also annihilates each $F_{U_\ell}$
+with $\ell\ne j$, whereas
+\[
+ \partial_{\mathbf c}(F_{U_j})=\sum_{i\in J}c_it^{a_i+b_i}\ne0.
+\]
+Differentiating the polynomial identity, using the ordinary finite
+polynomial chain rule, now yields
+\[
+ 0=\partial_{\mathbf c}\bigl(P(F_{U_1},\ldots,F_{U_s})\bigr)
+  =P_j(F_{U_1},\ldots,F_{U_s})\,\partial_{\mathbf c}(F_{U_j}).
+\]
+Both factors on the right are nonzero by \eqref{isc:hj:eq:partialnonzero}
+and \cref{isc:hj:lem:annihilator}, contradicting that $E$ is a field.
+Thus no algebraic relation exists.
+\end{proof}
+
+\subsection{A finite-generator formulation}
+
+The proof has a useful quantitative form even when the exclusive sets
+are not known to be infinite.
+
+\begin{proposition}[Generator-sensitive obstruction]\label[proposition]{isc:hj:prop:quantitative}
+Fix $u_1,\ldots,u_m\in K_0$ and finite subsets
+$U_1,\ldots,U_s$ or arbitrary summable subsets of $I$. If each exclusive
+part $U_j\setminus\bigcup_{\ell\ne j}U_\ell$ has at least $m+1$
+elements, then the corresponding $F_{U_j}$ are algebraically independent
+over $K_1(u_1,\ldots,u_m)$.
+\end{proposition}
+\begin{proof}
+Choose a relation of minimal total degree over this fixed coefficient
+field. Its nonzero partial selects one $j$. The $m+1$ available exclusive
+indices give the same annihilator and contradiction as above.
+\end{proof}
+
+This statement is consistent with finite mixed sums lying in $M$:
+representing enough of them in a field $K_1(u_1,\ldots,u_m)$ requires
+enough $K_0$-generators. It does not give a bound on the expression length
+of an arbitrary Hahn series, because the choice of generators is itself
+unrestricted.
+
+\subsection{Stable variants}
+
+\begin{corollary}[Weights and finite modifications]\label[corollary]{isc:hj:cor:weights}
+In \cref{isc:hj:main:mixed}, replace $F_U$ by
+\[
+ \widetilde F_U=d_U+
+ \sum_{i\in U}r_{U,i}t^{a_i+b_i},\qquad d_U\in M,\quad
+ r_{U,i}\in k^\times.
+\]
+Then the resulting family is still algebraically independent over $M$.
+Finite changes of the supports or coefficients also preserve the
+conclusion, provided the remaining nonzero terms satisfy the same
+exclusive infinitude property.
+\end{corollary}
+\begin{proof}
+First take $d_U=0$. On an exclusive set the derivative has the form
+$\sum c_i r_{U,i}t^{a_i+b_i}$; its coefficients in the distinct cosets
+remain nonzero whenever $c_i\ne0$. The proof is unchanged. Translation
+by elements of the base field is an invertible polynomial change of
+variables. Finally, a finite sum of mixed monomials belongs to $M$, so
+finite modifications can also be absorbed into the translations.
+\end{proof}
+
+\begin{corollary}[Algebraic enlargement of the base]\label[corollary]{isc:hj:cor:algbase}
+Let $M'$ be an algebraic extension of $M$ contained in $E$. Every family
+proved independent over $M$ above remains independent over $M'$.
+In particular this applies to the relative algebraic closure of $M$ in
+$E$.
+\end{corollary}
+\begin{proof}
+For a finite tuple $\mathbf F$, the extension
+$M'(\mathbf F)/M(\mathbf F)$ is algebraic. The transcendence-degree
+formula, or the elementary exchange lemma for algebraic dependence,
+gives
+$\trdeg(M'(\mathbf F)/M')=\trdeg(M(\mathbf F)/M)$.
+Thus the degree equals the length of every finite tuple of distinct
+members, as required.
+\end{proof}
+
+When $E$ is real closed, the relative algebraic closure of $M$ in $E$
+is real closed: positive square roots and roots of odd-degree polynomials
+in $E$ are algebraic over $M$. When $E$ is algebraically closed, the
+relative algebraic closure is algebraically closed for the same reason.
+Consequently passing from the compositum to its appropriate algebraic
+closure does not eliminate the transcendental gap.
+\mtag{} \Cref{isc:cp:rem:algebraicbase} is the same observation for the
+Euler jets of source~02.
+
+\section{Families of supports of the required size}\label{isc:hj:sec:combinatorics}
+
+The differential theorem separates the algebra from the combinatorics.
+This section supplies the support families. The constructions themselves
+are elementary standard independent-family and almost-disjoint-family
+arguments; no novelty is claimed for them.
+
+\subsection{Every infinite cardinal}
+
+\begin{lemma}[A maximal independent incidence family]\label[lemma]{isc:hj:lem:independentfamily}
+For every infinite cardinal $\kappa$ there is a set $\mathcal I_\kappa$ of
+cardinality $\kappa$ and a family $(U_X)_{X\subseteq\kappa}$ of $2^\kappa$
+subsets of $\mathcal I_\kappa$ such that every finite Boolean pattern on
+distinct members is realized at $\kappa$ indices. In particular the family
+has finite-exclusive infinitude.
+\end{lemma}
+\begin{proof}
+Take
+\[
+ \mathcal I_\kappa=\{(s,T,\xi):s\in[\kappa]^{<\omega},\
+                         T\subseteq\mathcal P(s),\ \xi<\kappa\}.
+\]
+There are $\kappa$ finite subsets $s$, only finitely many choices of $T$
+for each fixed finite $s$, and $\kappa$ choices of $\xi$.
+Thus $|\mathcal I_\kappa|=\kappa$. For $X\subseteq\kappa$ define
+\[
+ U_X=\{(s,T,\xi):X\cap s\in T\}.
+\]
+Given distinct $X_1,\ldots,X_r$, choose, for each pair, an element of
+their symmetric difference. The finite set $s$ of the chosen elements
+makes all traces $X_j\cap s$ distinct. For any prescribed pattern
+$\varepsilon_j\in\{0,1\}$, choose $T$ to contain exactly those of these
+traces for which $\varepsilon_j=1$. Then every $(s,T,\xi)$, $\xi<\kappa$,
+realizes the desired pattern. This gives at least $\kappa$ witnesses,
+and there cannot be more because $|\mathcal I_\kappa|=\kappa$.
+Taking a pattern that distinguishes a pair also shows that all $U_X$
+are different.
+\end{proof}
+
+Fixing any bijection between $\mathcal I_\kappa$ and $\kappa$ transfers the
+family to subsets of an ordinal-indexed support. The exponent groups in the
+next section are explicit without this choice; the formula for the
+witnesses is explicit relative to the chosen bijection.
+
+\subsection{A concrete countable support}
+
+For a finite binary word $s=(s_0,\ldots,s_{m-1})$, set
+\[
+ \operatorname{code}(s)=2^m-1+
+            \sum_{j=0}^{m-1}s_j2^{m-1-j}.
+\]
+Words of length $m$ have codes in $[2^m-1,2^{m+1}-2]$, and words of
+different lengths have disjoint code intervals. For an infinite binary
+sequence $\eta\in2^{\N}$ let
+\begin{equation}\label{isc:hj:eq:branchsets}
+ \mathfrak B_\eta=\{\operatorname{code}(\eta\vert_m):m\geq1\}.
+\end{equation}
+These are infinite subsets of $\N$.
+
+\mtag{} With $1$-based indices this is $N(s)-1$ for the coding
+\lbl{tail:eq:binarycode} of the tail-spans report, and
+$\mathfrak B_\eta$ is its set \lbl{tail:eq:Aalpha} shifted down by one; the
+same kind of family serves \cref{isc:cp:cor:continuum}.
+
+\begin{lemma}[Binary branches give exclusive tails]\label[lemma]{isc:hj:lem:branches}
+Distinct $\mathfrak B_\eta,\mathfrak B_\theta$ have finite intersection.
+Hence the continuum sized family $(\mathfrak B_\eta)_{\eta\in2^{\N}}$ has
+finite-exclusive infinitude.
+\end{lemma}
+\begin{proof}
+Once two branches first differ, their prefixes of every larger length
+differ, and therefore so do their codes. They can share only the
+finitely many earlier prefixes. For finitely many other branches, remove
+the finite union of these finite intersections from a fixed
+$\mathfrak B_\eta$; an infinite tail remains.
+\end{proof}
+
+For example, the constantly zero and constantly one branches give
+\[
+ \mathfrak B_{000\cdots}=\{1,3,7,15,\ldots\},\qquad
+ \mathfrak B_{111\cdots}=\{2,6,14,30,\ldots\}.
+\]
+This fully specified family is used for the prime witnesses.
+
+\section{Maximal transcendence at every set cardinal}\label{isc:hj:sec:cardinal}
+
+\subsection{Two explicit independent exponent groups}
+
+It is important to distinguish ordinal operations used as indices from
+surreal arithmetic used inside the field. Define ordinal indices
+\[
+ \iota_0(\alpha)=2\cdot_{\Ord}\alpha,\qquad
+ \iota_1(\alpha)=(2\cdot_{\Ord}\alpha)+_{\Ord}1.
+\]
+Here $\cdot_{\Ord}$ and $+_{\Ord}$ are ordinary ordinal multiplication
+and addition, not Hessenberg operations. They satisfy
+\[
+ \iota_0(\alpha)<\iota_1(\alpha)<\iota_0(\beta)
+ \qquad(\alpha<\beta).
+\]
+Regard these ordinals as surreal numbers and put
+\begin{equation}\label{isc:hj:eq:innerexponents}
+ e_\alpha=\omega^{-\iota_0(\alpha)},\qquad
+ f_\alpha=\omega^{-\iota_1(\alpha)},\qquad
+ r_\alpha=e_\alpha+f_\alpha.
+\end{equation}
+Thus $e_0=1$, $f_0=\omega^{-1}$,
+$e_1=\omega^{-2}$, $f_1=\omega^{-3}$, and so on.
+The symbols $e_\alpha,f_\alpha$ are themselves surreal numbers that will
+be used as exponents in a second, outer Conway normal form.
+
+\begin{lemma}\label[lemma]{isc:hj:lem:groups}
+For any infinite cardinal $\kappa$ define
+\[
+ A_\kappa=\Span\{e_\alpha:\alpha<\kappa\},\qquad
+ B_\kappa=\Span\{f_\alpha:\alpha<\kappa\}.
+\]
+Then $A_\kappa\cap B_\kappa=0$, both groups have cardinality $\kappa$,
+and $(r_\alpha)_{\alpha<\kappa}$ is strictly decreasing and positive.
+\end{lemma}
+\begin{proof}
+All the $e_\alpha$ and $f_\alpha$ are distinct Conway monomials.
+Uniqueness of finite Conway normal form implies that they are linearly
+independent over $\R$, hence over $\Q$. This proves the intersection
+claim. A finite rational combination of $\kappa$ generators has only
+$\kappa$ possibilities, and there are $\kappa$ distinct generators, so
+the cardinalities are exactly $\kappa$.
+
+If $\alpha<\beta$, the largest Conway exponent occurring in
+$r_\alpha-r_\beta$ is $-\iota_0(\alpha)$, with coefficient $1$.
+Therefore the difference is positive. Each $r_\alpha$ is also positive.
+\end{proof}
+
+\subsection{Building the independent omnific integers}
+
+Transfer the family of \cref{isc:hj:lem:independentfamily} to a family
+$\mathcal U_\kappa\subseteq\mathcal P(\kappa)$ by a fixed bijection. Define
+\begin{equation}\label{isc:hj:eq:cardwitness}
+ \Xi_U=\sum_{\alpha\in U}\omega^{r_\alpha}
+ \qquad(U\in\mathcal U_\kappa).
+\end{equation}
+The decreasing support ensures that this is a Conway normal form. Its
+exponents are positive and its constant coefficient is zero, so it is an
+omnific integer. There are no analytic convergence conditions to check,
+even when $\kappa$ is uncountable.
+
+\begin{proof}[Proof of \cref{isc:hj:main:cardinal}]
+In \cref{isc:hj:main:mixed}, use
+\[
+ \Gamma_0=A_\kappa,\quad\Gamma_1=B_\kappa,\quad
+ a_\alpha=-e_\alpha,\quad b_\alpha=-f_\alpha.
+\]
+The classes of the $a_\alpha$ are independent modulo the zero
+intersection. The $b_\alpha$ are distinct. The mixed exponents
+$-r_\alpha$ are strictly increasing, with order type $\kappa$, so are
+well ordered. Since $t^{-r_\alpha}=\omega^{r_\alpha}$, the theorem
+proves that the $2^\kappa$ elements in \eqref{isc:hj:eq:cardwitness} are
+algebraically independent over the ordinary compositum, for $k=\R$ and
+$k=\C$.
+
+Let $\Gamma=A_\kappa+B_\kappa$. Its cardinality is $\kappa$.
+A Hahn series is determined by a function from $\Gamma$ to $k$, so
+\[
+ |\K{k}{\Gamma}|
+ \leq |k|^\kappa
+ =(2^{\aleph_0})^\kappa=2^\kappa.
+\]
+The independent family supplies the opposite bound and proves that the
+transcendence degree is exactly $2^\kappa$.
+The factors are linearly disjoint by \cref{isc:hj:prop:ld}; their real or
+algebraic closedness follows from divisibility and the classical Hahn
+closedness theorem. The witnesses have real coefficients, so exactly the
+same family works inside the complexified fields.
+\end{proof}
+
+Each factor field itself has cardinality $2^\kappa$: arbitrary subsets of
+the decreasing support $(e_\alpha)_{\alpha<\kappa}$, or of the analogous
+$f$-support, give $2^\kappa$ different series, and the preceding upper
+bound applies to each factor. The ordinary compositum also has cardinality
+$2^\kappa$, since it contains a factor and is contained in the join.
+
+\begin{corollary}\label[corollary]{isc:hj:cor:realclosuregap}
+The relative real algebraic closure of
+$\K{\R}{A_\kappa}\K{\R}{B_\kappa}$ in the real Hahn join remains
+of transcendence codimension $2^\kappa$. The relative algebraic closure
+of the complex compositum has the same property in the complex Hahn join.
+\end{corollary}
+\begin{proof}
+The independent family survives by \cref{isc:hj:cor:algbase}; the upper
+bound is unchanged.
+\end{proof}
+
+\subsection{A fraction-field consequence that does not assume descent}
+\label{isc:hj:sec:arithmetic}
+
+Let $\A{k}{A_\kappa}$, $\A{k}{B_\kappa}$ and $\A{k}{A_\kappa+B_\kappa}$ be
+as defined in \cref{isc:hj:sec:foundations}. Denote by
+$\A{k}{A_\kappa}[\A{k}{B_\kappa}]$ the subring of the join generated by
+$\A{k}{A_\kappa}$ and $\A{k}{B_\kappa}$.
+
+\begin{corollary}[Maximal arithmetic-join gap]\label[corollary]{isc:hj:cor:arithmetic}
+For $k=\R,\C$ one has
+\[
+ \trdeg\bigl(\Frac\A{k}{A_\kappa+B_\kappa}\big/
+ \Frac\bigl(\A{k}{A_\kappa}[\A{k}{B_\kappa}]\bigr)\bigr)=2^\kappa.
+\]
+The family $(\Xi_U)_{U\in\mathcal U_\kappa}$ witnesses this equality.
+\end{corollary}
+\begin{proof}
+The ring $\A{k}{A_\kappa+B_\kappa}$ contains both factor rings and every
+$\Xi_U$. Its fraction field is a subfield of the Hahn join. Also,
+\[
+ \Frac\bigl(\A{k}{A_\kappa}[\A{k}{B_\kappa}]\bigr)\subseteq
+ \K{k}{A_\kappa}\K{k}{B_\kappa}.
+\]
+Independence over the larger field implies independence over
+$\Frac(\A{k}{A_\kappa}[\A{k}{B_\kappa}])$. This gives the lower bound
+$2^\kappa$. The ambient Hahn join has cardinality $2^\kappa$, which
+supplies the upper bound.
+\end{proof}
+
+This is a failure of reconstructing the arithmetic Hahn join by finite
+ring operations and fractions from its two pieces. It is distinct from
+this report's failure of fraction-field descent for \emph{intersections}
+(\cref{isc:main:fractions}). Neither argument authorizes replacing
+fixed-support omnific fraction fields by the corresponding full Hahn fields
+without proof.
+\mtag{} It is the set-sized, non-separated counterpart of
+\cref{isc:cp:thm:arithmetic}, which obtains nonintegrality of the omnific
+join over the ring generated by two explicit separated copies, after any
+set adjunction.
+
+\section{A fully Archimedean, interleaved example}\label{isc:hj:sec:archimedean}
+
+The nested monomial example has many distinct growth scales. We now
+remove that feature. All exponent groups in this section are subgroups
+of the ordinary real numbers.
+
+\subsection{Independent real exponents approaching zero}
+
+We use the elementary multiquadratic fact that the square roots of
+distinct positive primes are linearly independent over $\Q$. One way
+to see it is to work in the finite multiquadratic extension generated by
+any finite list of those roots. Unique prime factorization makes their
+square classes independent in $\Q^\times/(\Q^\times)^2$, so adjoining
+the roots gives independent sign-changing automorphisms. Applying the
+automorphism that changes just one root's sign to a rational linear
+relation, and subtracting, forces that root's coefficient to vanish.
+Doing this for every root proves the assertion. This is ordinary
+finite Galois theory, not an assumption about infinite algebraic
+extensions.
+
+Let $p_0=2,p_1=3,p_2=5,\ldots$ and define
+\begin{equation}\label{isc:hj:eq:realexponents}
+ \lambda_n=\frac{\sqrt{p_{2n}}}{p_{2n}^{2}},\qquad
+ \mu_n=\frac{\sqrt{p_{2n+1}}}{p_{2n+1}^{2}},\qquad
+ \rho_n=\lambda_n+\mu_n.
+\end{equation}
+Since $p^{-3/2}=\sqrt p/p^2$, these are exactly the quantities in
+\cref{isc:hj:main:prime}. Set
+\[
+ A=\Span\{\lambda_n:n\geq0\},\qquad
+ B=\Span\{\mu_n:n\geq0\},\qquad \Gamma=A+B.
+\]
+
+\begin{lemma}\label[lemma]{isc:hj:lem:realgroups}
+The combined family of all $\lambda_n,\mu_n$ is $\Q$-linearly
+independent. The groups $A,B,\Gamma$ are countable and divisible,
+$A\cap B=0$, and $\rho_n$ strictly decreases to zero in $\R$.
+The group $\Gamma$ is Archimedean and has no nonzero proper convex subgroup.
+\end{lemma}
+\begin{proof}
+Each number in the combined family is a nonzero rational multiple of
+the square root of a different prime, so the preceding independence
+fact applies. The claims about cardinalities, divisibility and
+intersection follow.
+As the primes strictly increase without bound, both $(\lambda_n)$ and
+$(\mu_n)$ strictly decrease to zero; their sum does too.
+Every ordered subgroup of $\R$ is Archimedean. If a convex subgroup
+contains $g>0$, then for any $h>0$ in $\Gamma$ there is a natural number
+$m$ with $h<mg$. Convexity then puts $h$ in that subgroup. Hence a
+nonzero convex subgroup is all of $\Gamma$.
+\end{proof}
+
+Both $A$ and $B$ are dense in $\R$: each contains the rational multiples
+of a nonzero real number. Thus this is not a construction in which all
+nonzero exponents from one factor occupy a convex scale separated from
+the other. In particular, a proof depending on a nontrivial convex
+quotient of $\Gamma$ cannot be used here.
+\mtag{} In particular the iterated presentation of \cref{isc:lem:iterated},
+and with it the rank test \cref{isc:cp:cor:surrealrank}, is not available for
+this pair.
+
+\subsection{Continuum many mixed sums}
+
+For the branch sets from \eqref{isc:hj:eq:branchsets}, define
+\[
+ F_\eta=\sum_{n\in\mathfrak B_\eta}\omega^{\rho_n},\qquad P_\eta=1+F_\eta.
+\]
+Every $\mathfrak B_\eta$ is an unbounded subset of $\N$, so its increasing
+enumeration selects a subsequence of $(\rho_n)$ that still decreases to
+zero. These sums therefore have reverse-well-ordered support of type
+$\omega$; adjoining the constant term gives reverse support order type
+$\omega+1$.
+
+\begin{proposition}\label[proposition]{isc:hj:prop:archindependence}
+The family $(P_\eta)_{\eta\in2^{\N}}$ is algebraically independent over
+$\K{k}{A}\K{k}{B}$, for both $k=\R$ and $k=\C$. In either case
+\[
+ \trdeg\bigl(\K{k}{\Gamma}/\K{k}{A}\K{k}{B}\bigr)=\cc.
+\]
+\end{proposition}
+\begin{proof}
+Use $a_n=-\lambda_n$, $b_n=-\mu_n$ in \cref{isc:hj:main:mixed}.
+The mixed $t$-exponents $-\rho_n$ strictly increase to zero, hence form
+a well-ordered set of order type $\omega$. Apply \cref{isc:hj:lem:branches}
+and then \cref{isc:hj:cor:weights} to add the constant terms.
+The lower bound is $|2^{\N}|=\cc$. For the upper bound, $\Gamma$
+is countable and $|k|=\cc$, so the entire Hahn join has cardinality
+at most $\cc^{\aleph_0}=\cc$.
+\end{proof}
+
+For illustration, two members begin as
+\[
+ \begin{aligned}
+ P_{000\cdots}&=1+\omega^{\rho_1}+\omega^{\rho_3}
+                         +\omega^{\rho_7}+\omega^{\rho_{15}}+\cdots,\\
+ P_{111\cdots}&=1+\omega^{\rho_2}+\omega^{\rho_6}
+                         +\omega^{\rho_{14}}+\omega^{\rho_{30}}+\cdots.
+ \end{aligned}
+\]
+Each displayed monomial already lies in the ordinary compositum because
+\[
+ \omega^{\rho_n}=\omega^{\lambda_n}\omega^{\mu_n}.
+\]
+Nevertheless the full family of Hahn sums is algebraically independent
+over that compositum. This is the sense in which the obstruction is a
+mixed-summation obstruction rather than a missing-monomial obstruction.
+
+\section{Prime omnific and Gaussian omnific witnesses}\label{isc:hj:sec:prime}
+
+\subsection{The isolated external theorem}
+
+The following is the only specialized factorization theorem imported
+into the source. It is the one-row result of Pitteloud together
+with the transfer of Biljakovic--Kochetov--Kuhlmann, as stated in
+\cite[\S1.3]{LM}; the latter paper also gives broader primality and
+transfer criteria in Theorem~F and Proposition~8.2.9.
+
+\begin{theorem}[Classical one-row prime theorem]\label{isc:hj:thm:classicalprime}
+Let $k$ be any characteristic-zero field and let $G$ be a set-sized
+ordered abelian group containing the ordered additive group $\R$.
+If $s_0<s_1<\cdots<0$ are real numbers with supremum zero and all
+$c_n\in k$ are nonzero, then
+\[
+ q=1+\sum_{n\geq0}c_nt^{s_n}
+\]
+is prime in the ring of Hahn series with coefficients in $k$ and
+exponents in $G^{\leq0}$.
+\end{theorem}
+
+No proof of \cref{isc:hj:thm:classicalprime} is claimed here; the references
+\cite{Pitteloud,BKK,LM} supply this classical input. In particular,
+the independence argument does not reprove or replace the factorization
+theory behind it. Everything needed to pass from this input to the
+specific omnific and Gaussian statements is proved next.
+\mtag{} Checked in the merge against the arXiv text of \cite{LM}
+(version~5, Section~1.3): Pitteloud proved that $1+b$, for $b$ a sum over
+an $\omega$-sequence of real exponents increasing to $0$, is prime in
+$K((\R^{\le0}))$ for a field $K$ of characteristic zero, and
+Biljakovic--Kochetov--Kuhlmann observed that it remains prime in
+$K((G^{\le0}))$ for every $G\supseteq\R$. The statement above agrees with that
+account; the original papers were not read in the merge.
+
+\subsection{Pulling primality through the constant term}
+
+\begin{lemma}[Constant-term-one pullback]\label[lemma]{isc:hj:lem:pullback}
+Let $k$ be a field, $D\subseteq k$ a unital subring, and $G$ an ordered
+abelian group. In the $\omega$ convention consider the rings
+\[
+ \Ad{k}{k}{G}=k\oplus\PiG{k}{G},\qquad \Ad{D}{k}{G}=D\oplus\PiG{k}{G}.
+\]
+Suppose $q\in\Ad{D}{k}{G}$ is prime in $\Ad{k}{k}{G}$ and $\ct(q)=1$. Then
+$q$ is prime in $\Ad{D}{k}{G}$. More precisely, divisibility by $q$ in
+$\Ad{k}{k}{G}$ of an element of $\Ad{D}{k}{G}$ is already divisibility in
+$\Ad{D}{k}{G}$.
+\end{lemma}
+\begin{proof}
+If $x=qu$ with $x\in\Ad{D}{k}{G}$, $u\in\Ad{k}{k}{G}$, apply the
+constant-term homomorphism. It gives
+$\ct(u)=\ct(x)/\ct(q)=\ct(x)\in D$, so $u\in\Ad{D}{k}{G}$.
+Now suppose $q$ divides $xy$ in $\Ad{D}{k}{G}$. It divides the same product
+in $\Ad{k}{k}{G}$, so it divides $x$ or $y$ in $\Ad{k}{k}{G}$. The preceding
+observation descends that divisibility to $\Ad{D}{k}{G}$. Also $q$ cannot
+be a unit in $\Ad{D}{k}{G}$, since that would make it a unit in
+$\Ad{k}{k}{G}$. It is nonzero, as required for a prime element.
+\end{proof}
+
+The constant-term condition is not cosmetic. Without it a quotient
+that exists after enlarging the constant ring need not lie in the
+smaller ring. The lemma uses exactly the feature supplied by the
+constant $1$ in every $P_\eta$.
+\mtag{} For $D=D_k$ one has $\Ad{D_k}{k}{G}=\A{k}{G}$; the ring
+$\Ad{\R}{\R}{G}$ is the omnific-preserving report's
+$\mathcal A_\Gamma=\R\oplus\Pi_\Gamma$ (\cref{isc:sec:conventions}).
+
+\subsection{Localization handles the full proper-class rings}
+
+\begin{proposition}\label[proposition]{isc:hj:prop:fullprime}
+Let $r_0>r_1>\cdots>0$ be ordinary real numbers decreasing to zero.
+Then
+\[
+ q=1+\sum_{n\geq0}c_n\omega^{r_n}
+\]
+is prime in $\Oz$ when $c_n\in\R^\times$, and is prime in
+$\Oz[i]$ when $c_n\in\C^\times$.
+\end{proposition}
+\begin{proof}
+We give the complex case, with $D=\Z[i]$; the real case is identical
+with $k=\R$ and $D=\Z$. Suppose $xy=qz$ in $\Oz[i]$.
+The union of the Conway supports of $x,y,z,q$ is a set. Let $G$ be its
+$\Q$-linear span together with the whole set $\R$ inside $\No$.
+This is a set-sized ordered divisible group containing $\R$.
+All four elements belong to $\Ad{D}{k}{G}$.
+
+Under $t^g=\omega^{-g}$, the series $q$ has real exponents
+$-r_n$ increasing to zero. By \cref{isc:hj:thm:classicalprime}, it is prime
+in $\Ad{k}{k}{G}$. By \cref{isc:hj:lem:pullback} it is prime in
+$\Ad{D}{k}{G}$. Thus $q$ divides $x$ or $y$ in that set-sized ring, and
+hence in the full Gaussian omnific ring. The series is nonzero and is not a
+unit: its largest Conway exponent is positive, and the largest exponent of
+a product of two nonzero elements of $\Ad{D}{k}{\No}$ is the sum of their
+nonnegative largest exponents. Such a product cannot be $1$ if one
+factor has positive largest exponent. This proves primality in the
+full class ring without applying a set theorem directly to a proper class.
+\end{proof}
+
+\begin{proof}[Completion of the proof of \cref{isc:hj:main:prime}]
+The exponent and field assertions, and algebraic independence, are
+\cref{isc:hj:lem:realgroups,isc:hj:prop:archindependence}.
+For each branch $\eta$, enumerate $\mathfrak B_\eta$ increasingly.
+The resulting subsequence of $\rho_n$ is strictly decreasing to zero.
+Apply \cref{isc:hj:prop:fullprime} with every coefficient equal to $1$.
+This gives both primality assertions simultaneously.
+\end{proof}
+
+\begin{corollary}[Pairwise nonassociate primes]\label[corollary]{isc:hj:cor:nonassociate}
+The $P_\eta$ form continuum many pairwise nonassociate primes in
+$\Oz$, and also in $\Oz[i]$, while remaining algebraically independent
+over the respective full Hahn composita.
+\end{corollary}
+\begin{proof}
+The only units of $\Oz$ are $\pm1$, and those of $\Oz[i]$ are
+$\pm1,\pm i$. Indeed, the leading-exponent argument in
+\cref{isc:hj:prop:fullprime} forces any unit and its inverse to have only
+constant terms, and the constants must be units of $\Z$ or $\Z[i]$.
+Since every $P_\eta$ has constant term $1$, two associates would have
+to be equal. Algebraic independence implies that distinct members are
+not equal.
+\end{proof}
+
+The prime conclusion is arithmetic, whereas the independence conclusion
+is relative to a much larger field than $\Q$ or $\Q(i)$.
+One should not confuse the two: primality alone supplies no such
+relative transcendence statement. Conversely the mixed-support proof
+works for many series with constant term zero, which are not prime in
+$\Oz$ because they are divisible by every nonzero ordinary integer.
+
+\section{A fixed pair of class-sized Hahn subfields}\label{isc:hj:sec:classes}
+
+\subsection{Explicit coordinates, not a class Hamel basis}
+
+Use the exponents in \eqref{isc:hj:eq:innerexponents} for all ordinals and
+define
+\[
+ A_*=\left\{\sum_{\alpha\in F}q_\alpha e_\alpha:
+                  F\subseteq\On\text{ finite},\ q_\alpha\in\Q\right\},
+ \qquad
+ B_*=\left\{\sum_{\alpha\in F}q_\alpha f_\alpha:
+                  F\subseteq\On\text{ finite},\ q_\alpha\in\Q\right\}.
+\]
+These are proper-class divisible subgroups of $\No$ with zero
+intersection. Each exponent in $A_*+B_*$ has a unique \emph{finite}
+coordinate expression in the $e_\alpha,f_\alpha$. Consequently its
+coordinate functions are explicitly defined class maps.
+
+Let
+\[
+ K_{0,*}=\K{k}{A_*},\qquad K_{1,*}=\K{k}{B_*},\qquad
+ M_*=K_{0,*}K_{1,*},\qquad E_*=\K{k}{A_*+B_*}.
+\]
+The notation allows only set-sized Hahn supports. All field operations
+are well defined by localization: finitely many input series involve a
+set of exponent coordinates, and the relevant operations take place in
+a set-sized divisible-group Hahn field. The same observation proves real
+closedness for $k=\R$ and algebraic closedness for $k=\C$.
+The intersection and linear-disjointness proof in \cref{isc:hj:prop:ld} is
+coefficientwise and applies without change to every finite relation.
+
+For each ordinal $\alpha$, the map extracting the negative of the
+$e_\alpha$ coordinate of a $t$-exponent is an additive character,
+vanishes on $B_*$, and takes value $1$ at $-e_\alpha$.
+It therefore gives exactly the coordinate derivation used in the
+set-sized proof. No extension of a class-independent family to a class
+basis is required.
+
+\begin{lemma}[The mixed-support proof is local]\label[lemma]{isc:hj:lem:classlocal}
+The conclusion of \cref{isc:hj:main:mixed} applies to the class fields above
+for any set of the coordinate indices, with coefficients of a putative
+relation allowed anywhere in $M_*$. It also proves independence for a
+class of witnesses whenever each finite subfamily satisfies the
+exclusive infinitude condition.
+\end{lemma}
+\begin{proof}
+A polynomial relation uses finitely many witnesses and finitely many
+coefficients. Each coefficient belongs to
+$K_{1,*}(u_1,\ldots,u_m)$ for finitely many $u_q\in K_{0,*}$.
+Choose $m+1$ exclusive indices. The required characters are the explicit
+coordinate functions just described. A finite homogeneous system over
+the class field $K_{0,*}$ has a nonzero solution by the ordinary finite
+Gaussian-elimination proof; it involves only finitely many field
+operations. Coset independence is still valid, since the supports of
+each of the finitely many summands are sets in disjoint cosets.
+Every subsequent step is the finite polynomial calculation in
+\cref{isc:hj:sec:mixed}.
+\end{proof}
+
+A more general class group can be handled by set localization when
+suitable local characters exist. The explicit construction above is
+preferable here because it displays them and avoids additional
+foundational hypotheses about arbitrary class vector spaces.
+
+\subsection{An ordinal-indexed family of witnesses}
+
+For an ordinal $\alpha$, let
+\[
+ \Lambda_\alpha=\{(\omega\cdot_{\Ord}\alpha)+_{\Ord}n:n<\omega\}.
+\]
+These countably infinite ordinal blocks are pairwise disjoint. Define
+\begin{equation}\label{isc:hj:eq:classwitness}
+ W_\alpha=\sum_{n<\omega}
+   \omega^{r_{(\omega\cdot_{\Ord}\alpha)+_{\Ord}n}}.
+\end{equation}
+Each $W_\alpha$ has countable, strictly decreasing positive support, so
+is an omnific integer belonging to $E_*$.
+\mtag{} The blocks are source~02's labels
+$\beta_{\alpha,n}=\omega\cdot\alpha+n$ of \eqref{isc:cp:eq:labels},
+here with $n\ge0$ instead of $n\ge1$.
+
+\begin{proof}[Proof of \cref{isc:hj:main:class}]
+The supports $\Lambda_\alpha$ are disjoint and infinite. Apply
+\cref{isc:hj:lem:classlocal} to any finite selection of the $W_\alpha$.
+This proves algebraic independence of the ordinal-indexed family over
+$M_*$, for real or complex coefficients.
+
+In addition, fix an infinite cardinal $\kappa$ and use the family
+$\mathcal U_\kappa$ from \cref{isc:hj:sec:cardinal} on the first $\kappa$
+indices. The same local proof shows that its $2^\kappa$ witnesses remain
+independent over the \emph{full} class compositum $M_*$, not merely
+over the small compositum from that section. The coefficients of a
+relation were never restricted to the first $\kappa$ coordinates.
+
+Finally, a set-sized transcendence basis of cardinality $\lambda$ would
+bound every algebraically independent subset over $M_*$ by $\lambda$
+(for a finite basis, by its finite size). This is the ordinary exchange
+argument for algebraic dependence; it uses only finite polynomial
+relations and remains valid over a class base field. The arbitrary
+cardinal lower bounds contradict such a bound. Hence no set-sized
+transcendence basis exists.
+\end{proof}
+
+The theorem is deliberately not written as
+``$\trdeg(E_*/M_*)=\On$'': $\On$ is not a cardinal in the ordinary
+set-sized sense of transcendence degree. The precise assertions are an
+explicit independent class and independent sets of arbitrarily large
+cardinality. Also, no order-group isomorphism $A_*\cong\No$ or
+$B_*\cong\No$ has been proved or used.
+\mtag{} In the last proof $\lambda$ is a cardinal, not the Euler weight.
+
+\begin{remark}[A second route to the transcendence of $S$]\label[remark]{isc:hj:rem:secondroute}
+\mtag{} The class-local proof also applies to the explicit copies of
+\cref{isc:sec:explicit}, and gives a second proof that the witness
+\eqref{isc:eq:explicitS} is transcendental over $M=K_0K_1$ in
+$E=\K{k}{G_0+G_1}$, for $k=\R$ and $\C$. In the $t$-convention,
+$S=\sum_{n\ge1}t^{a_n+b_n}$ with
+\[
+ a_n=-g_n=-\omega^{\psi(n)}\in G_0,\qquad b_n=ng\in G_1,
+ \qquad g=\omega^{7/2}.
+\]
+Here $G_0\cap G_1=0$; the $a_n$ are distinct inner monomials, hence
+$\Q$-linearly independent; the $b_n$ are distinct; and the $t$-exponents
+increase, since consecutive differences are $g+g_n-g_{n+1}>0$ by
+\eqref{isc:eq:separated}. The singleton family $\{\N_{>0}\}$ has
+finite-exclusive infinitude. The characters are explicit, as in
+\cref{isc:hj:lem:classlocal}: for $\gamma=\gamma_0+\gamma_1$ with
+$\gamma_j\in G_j$, let $\chi_n(\gamma)$ be minus the coefficient of the inner
+monomial $\omega^{\psi(n)}$ in $\gamma_0$. It is additive with values in
+$\R\subseteq k$ (\cref{isc:hj:lem:euler} needs no more), vanishes on $G_1$,
+and $\chi_n(a_m)=\delta_{nm}$. The proof of \cref{isc:hj:lem:classlocal},
+with the class fields $K_0,K_1$ in place of $K_{0,*},K_{1,*}$, then gives
+transcendence of $S$ over $M$. This route uses neither the iterated
+coordinates of \cref{isc:lem:iterated} nor the coefficient-field bound of
+\cref{isc:lem:finitecoeff}; unlike \cref{isc:thm:joinobstruction} it needs
+characteristic zero and monomial coefficients $s_n=\omega^{g_n}$, on which
+$\partial_{\chi_n}$ acts as $s_n\,\partial/\partial s_n$. It does not give
+the differential transcendence of \cref{isc:cp:thm:omnific}. The
+observation is the merge's; the source does not apply its theorem to $S$.
+\end{remark}
+
+\section{Ordinary maps versus preservation of Hahn sums}\label{isc:hj:sec:strong}
+
+The maximal gap has a further structural consequence. This section
+uses only the set-sized fields from \cref{isc:hj:main:cardinal} or
+\cref{isc:hj:main:prime}. Put $E=\K{k}{A+B}$ and
+$M=\K{k}{A}\K{k}{B}$ as before.
+
+\subsection{The strong relative structure is rigid}
+
+\begin{definition}\label[definition]{isc:hj:def:strong}
+A field homomorphism on $E$ is \emph{strong} if it sends every Hahn
+summable family to a Hahn summable family and commutes with its sum.
+A derivation is strong under the analogous requirement. These are
+requirements on the specified Hahn presentation, not on an unspecified
+topology.
+\end{definition}
+
+\begin{proposition}[Strong relative rigidity]\label[proposition]{isc:hj:prop:strongrigidity}
+Every strong field endomorphism of $E$ fixing $M$ pointwise is the
+identity. Every strong derivation of $E$ annihilating $M$ is zero.
+\end{proposition}
+\begin{proof}
+For $g=a+b\in A+B$, one has
+$\omega^g=\omega^a\omega^b\in M$, and $k\subseteq M$.
+Every $x\in E$ is the Hahn sum of its monomial terms
+$c_g\omega^g$, each of which belongs to $M$.
+A strong endomorphism fixing those terms fixes their sum. A strong
+derivation annihilating those terms annihilates their sum.
+\end{proof}
+
+Notice that this is not automatic strongness of arbitrary field maps.
+It is rigidity \emph{conditional on} preserving all the relevant Hahn
+sums. The next results show how large the distinction can be.
+
+\subsection{Ordinary relative derivations are abundant}
+
+\begin{lemma}[Extending assignments on a transcendence basis]\label[lemma]{isc:hj:lem:derivebasis}
+Let $E/M$ be a characteristic-zero extension and let $\mathcal T$ be a
+transcendence basis. Every function $\varphi:\mathcal T\to E$ extends
+uniquely to a derivation $\delta:E\to E$ annihilating $M$.
+\end{lemma}
+\begin{proof}
+Algebraic independence of $\mathcal T$ gives a derivation on the polynomial
+ring $M[\mathcal T]$ by the finite polynomial rule $\delta(y)=\varphi(y)$,
+$y\in\mathcal T$; the quotient rule extends it uniquely to $M(\mathcal T)$.
+Since $E/M(\mathcal T)$ is algebraic and characteristic zero, every minimal
+polynomial is separable. For an algebraic element $z$ with minimal
+polynomial $p(X)=\sum_ja_jX^j$, any extension must satisfy
+\[
+ \delta(z)=-\frac{\sum_j\delta(a_j)z^j}{p'(z)}.
+\]
+The denominator is nonzero. The standard quotient-ring calculation
+shows this formula defines a derivation on each simple algebraic
+extension. Iterating over finite algebraic extensions gives compatible
+maps by uniqueness, and their union defines $\delta$ on $E$.
+\end{proof}
+
+\begin{theorem}[Maximal ordinary differential freedom]\label{isc:hj:thm:derivations}
+For the fields in \cref{isc:hj:main:cardinal},
+\[
+ |\operatorname{Der}_M(E,E)|=2^{\,2^\kappa},
+ \qquad
+ \operatorname{Der}^{\mathrm{strong}}_M(E,E)=\{0\}.
+\]
+The vector space of relative K\"ahler differentials $\Omega_{E/M}$ has
+an $E$-basis of cardinality $2^\kappa$. For the Archimedean example,
+these quantities become $2^{\cc}$ and $\cc$, respectively.
+\end{theorem}
+\begin{proof}
+A transcendence basis has cardinality $2^\kappa$ by
+\cref{isc:hj:main:cardinal}. Choosing values $0$ or $1$ independently at its
+members and applying \cref{isc:hj:lem:derivebasis} already gives
+$2^{2^\kappa}$ distinct derivations. The total number of functions
+$E\to E$ is
+$(2^\kappa)^{2^\kappa}=2^{2^\kappa}$, so this is exact.
+The strong assertion is \cref{isc:hj:prop:strongrigidity}.
+
+For completeness, the symbols $dy$, $y\in\mathcal T$, span $\Omega_{E/M}$:
+finite rational differentiation gives this for $M(\mathcal T)$, and
+differentiating a separable minimal polynomial expresses each $dz$,
+$z\in E$, in that span. They are independent because the derivations that
+assign $1$ to one basis member and $0$ to all others extract their
+individual coefficients. Hence their cardinality is the dimension.
+The Archimedean calculation uses \cref{isc:hj:prop:archindependence}
+instead.
+\end{proof}
+
+Extend the explicit independent prime family of \cref{isc:hj:main:prime}
+to a transcendence basis. The lemma then gives, for each fixed $\eta$, a
+relative derivation with $\delta(P_\eta)=1$ and $\delta(P_\theta)=0$ for
+$\theta\ne\eta$. It annihilates every individual monomial in the
+expansion of $P_\eta$ because those monomials lie in $M$. Thus it cannot
+commute with that Hahn sum. This concrete consequence is not a paradox:
+ordinary algebraic differentiation has no built-in rule for infinite
+formal sums.
+
+The finite annihilators used to prove independence are a different
+object. They annihilate only a finitely generated portion of $M$,
+chosen after a hypothetical polynomial relation is given. Attempting to
+make a nonzero strong derivation annihilate \emph{all} of $M$ at once
+would contradict \cref{isc:hj:prop:strongrigidity}.
+
+\subsection{The complex field has many non-strong automorphisms}
+
+\begin{theorem}[Hidden complex-field automorphisms]\label{isc:hj:thm:automorphisms}
+For $k=\C$ in \cref{isc:hj:main:cardinal},
+\[
+ |\operatorname{Aut}(E/M)|=2^{\,2^\kappa},
+\]
+whereas its strong subgroup is trivial. In the Archimedean example,
+$|\operatorname{Aut}(E/M)|=2^{\cc}$.
+\end{theorem}
+\begin{proof}
+Let $M^{\mathrm{alg}}$ be the relative algebraic closure of $M$ in $E$.
+It is algebraically closed. Choose a transcendence basis $\mathcal T$ of $E$
+over $M^{\mathrm{alg}}$. By \cref{isc:hj:cor:algbase},
+$|\mathcal T|=2^\kappa$. Every permutation of $\mathcal T$ defines an
+automorphism of $M^{\mathrm{alg}}(\mathcal T)$ fixing $M^{\mathrm{alg}}$.
+Such an automorphism extends to its algebraic closure $E$: the usual
+extension-by-maximality argument extends embeddings across algebraic
+elements by choosing a root of the transported minimal polynomial. The
+resulting image is algebraically closed and contains the base field, so it
+is all of $E$.
+
+An infinite set of cardinality $\lambda$ has $2^\lambda$ permutations.
+For the lower bound, partition it into $\lambda$ disjoint pairs and
+independently swap or fix each pair; the upper bound is
+$\lambda^\lambda=2^\lambda$. Thus the distinct permutations of $\mathcal T$
+produce at least $2^{2^\kappa}$ distinct extensions. There are at most
+$|E|^{|E|}=2^{2^\kappa}$ maps on $E$, giving equality.
+The strong subgroup is trivial by \cref{isc:hj:prop:strongrigidity}.
+The same proof with $|\mathcal T|=\cc$ handles the Archimedean example.
+\end{proof}
+
+These automorphisms fix both entire complex Hahn factor fields, hence
+all mixed monomials, but nonidentity ones fail to preserve Hahn sums.
+They are not claimed to preserve the chosen real part, complex
+conjugation, omnific integers, order, or surreal exponentiation.
+In particular the theorem is not an assertion about ordered
+automorphisms of $\No$, nor about the automorphism group of $\Oz$.
+Those stronger compatibility conditions are genuinely additional.
+
+\begin{remark}[Omnific rings force the identity]\label[remark]{isc:hj:rem:omnificaut}
+\mtag{} Combined with the omnific-preserving report, the rigidity of
+\cref{isc:hj:prop:strongrigidity} excludes one combination of the
+compatibilities just listed. Let $E_\R=\K{\R}{A+B}$ and $M_\R$ be the real
+join and compositum of \cref{isc:hj:main:cardinal} or
+\cref{isc:hj:main:prime}. By \lbl{opa:as:cor:setpairs}, applied with the
+nonzero divisible set group $\Gamma=A+B$ and $t^\gamma=\omega^{-\gamma}$,
+every field automorphism of $E_\R$ that stabilizes $\A{\R}{A+B}=E_\R\cap\Oz$
+is strongly $\R$-linear; if it fixes $M_\R$, it is the identity by
+\cref{isc:hj:prop:strongrigidity}. Now let $\sigma\in\operatorname{Aut}(E/M)$
+for $k=\C$ commute with complex conjugation and stabilize
+$\A{\C}{A+B}=E\cap\Oz[i]$. Then $\sigma$ maps the fixed field $E_\R$ of
+conjugation onto itself and stabilizes $E_\R\cap\Oz$, so it is the
+identity on $E_\R$; since $i\in M$, $\sigma$ is the identity. So a
+nonidentity automorphism of \cref{isc:hj:thm:automorphisms} cannot both
+commute with conjugation and preserve the Gaussian omnific ring of $E$; in
+the real joins, no nonidentity automorphism fixing $M_\R$ preserves the
+omnific ring. The argument depends on \lbl{opa:as:cor:setpairs}, an
+unrefereed result of that report, and was not in the source; it answers
+Research question~\ref{isc:hj:q:automorphisms} only for this combination
+of conditions.
+\end{remark}
+
+\section{Scope, comparison, and failure boundaries}\label{isc:hj:sec:scope}
+
+\subsection{What has been answered}
+
+At the pinned repository snapshot, Research question~3 of this report
+asks for an exact description of ordinary composita and for transcendence
+degrees of full Hahn joins over them. The results here answer its
+\emph{degree component} as follows.
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}}
+\toprule
+Setting & Answer & Witnesses and additional structure\\
+\midrule
+Every infinite set cardinal $\kappa$ & Exact degree $2^\kappa$ &
+$2^\kappa$ omnific integers; real and complex versions\\[5pt]
+Countable Archimedean exponent group & Exact degree $\cc$ &
+Explicit continuum family prime in both $\Oz$ and $\Oz[i]$\\[5pt]
+One fixed pair of class Hahn subfields & No set-sized transcendence basis &
+Explicit ordinal-indexed independent omnific family\\[5pt]
+Relative maps in the complex set examples & $2^{2^\kappa}$ automorphisms &
+Only the identity preserves all Hahn sums\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This report's one-witness separated-scale mechanism is not being
+represented as a new result. The new argument works without convex
+separation and supplies maximal-size independent families. The class
+result uses explicit finite-coordinate groups and does not invoke this
+report's independent full copies of $\No$.
+\mtag{} Since the pin, source~02 has answered the degree component in the
+separated case and the Laurent cardinal cases, also with maximal-size
+families (\cref{isc:cp:thm:cardinal}), and has given class-sized families in
+the join of two actual copies (\cref{isc:cp:thm:omnific}); the answers above
+are those for non-separated examples (\cref{isc:hj:sec:answers,isc:hj:rem:compare}).
+
+The comparison is targeted, not a certification of originality against
+every file, pending archive, or paper. The repository catalogue was
+consulted to identify neighboring topics, and this report was inspected
+for its compositum result and research question.
+Published primality was checked separately. The asserted new results
+should still receive external mathematical review and a more exhaustive
+priority check before any publication claim.
+
+\subsection{What the proof does not imply}\label{isc:hj:sub:notimply}
+
+\paragraph{An arbitrary infinite mixed sum need not be new.}
+If $u=t^a\in K_0$ and $v=t^b\in K_1$ with $a+b>0$, then
+\[
+ \sum_{n\geq0}(uv)^n=\frac1{1-uv}\in M.
+\]
+Here all $a$-directions are rationally dependent. The example explains
+why merely having infinitely many support terms cannot prove
+transcendence.
+
+\paragraph{Distinct cosets really matter.}
+If $b_i=0$ for all $i$, an admissible sum of $t^{a_i+b_i}$ belongs to
+$K_0$. More generally, a common $b$ factors out and leaves a $K_0$-series.
+The noncancellation conclusion \eqref{isc:hj:eq:noncancel} would fail without
+the distinct-coset hypothesis.
+
+\paragraph{Finite support cannot work over the full compositum.}
+A finite mixed sum already belongs to $M$. Finite-exclusive infinitude
+supplies arbitrarily many differential directions to overcome the
+unknown finite number of coefficient generators. A bound suited to only
+one fixed number of generators is not enough for the full compositum.
+
+\paragraph{Not all incidence families give independence.}
+For example, if $U_3=U_1\mathbin{\dot\cup}U_2$, then
+$F_{U_3}=F_{U_1}+F_{U_2}$. The support hypothesis is therefore a
+substantive condition. Pairwise distinctness of supports alone is not
+sufficient.
+
+\paragraph{A large independent set need not already be a basis.}
+Even when its cardinality equals the transcendence degree, it may be
+properly extendible to a transcendence basis of the same cardinality.
+The prime family is not asserted to be a basis without extension.
+
+\paragraph{Characteristic zero is used twice.}
+It supplies nontrivial coordinate characters into $k$ from a divisible
+$\Q$-vector group and ensures a nonzero partial derivative for a
+nonconstant polynomial. In characteristic $p$, every additive map from
+a divisible group to $(k,+)$ vanishes, and inseparable polynomial
+relations can have all partials zero. The present proof does not extend
+verbatim.
+
+\paragraph{Order and topology are separate structures.}
+No conclusion about order-topological convergence of partial sums, no
+continuity classification of the non-strong maps, and no commutation
+with conjugation is proved. Hahn summability is the exact infinite-sum
+notion used here. Archimedean \emph{exponent groups} do not make their
+Hahn \emph{fields} Archimedean.
+
+\paragraph{The full class of surreals is not the base field.}
+Every witness belongs to $\No$, so it cannot be transcendental over
+$\No$. The base in each theorem is the displayed ordinary compositum.
+Likewise a prime in $\Oz[i]$ is a unit in the field $\No(i)$; primality
+is always a statement in the ring specified.
+
+\subsection{Logical independence of the ingredients}
+
+The cardinal-degree results do not depend on primality, and neither the
+set-sized nor the explicit class independence proof depends on this
+report's class-embedding theorems, which the source treats as unreviewed.
+The primality corollary requires the published one-row theorem in addition
+to the independence proof. The automorphism count requires algebraic
+closedness of the complex Hahn join but not preservation of its real
+structure. These dependency distinctions are useful both for checking the
+source and for reusing only the part needed in another project.
+
+\subsection{What the addition does not claim}\label{isc:hj:sub:nonclaims}
+
+\mtag{} This list collects every limitation stated by source~03, in its
+article and delivered README, with its location here, followed by those
+added in the merge.
+\begin{enumerate}[label=J\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item The arguments are written out but have not been refereed,
+independently reviewed or checked by Lean; priority and novelty are not
+certified; no named longstanding conjecture is claimed solved (title page
+of the source; README).
+\item The contribution proposed as new is the mixed-support criterion and
+its combined maximality and arithmetic applications, not the classical
+ingredients: Hahn fields, the support theorem, the closedness theorems and
+Conway normal forms are standard foundations
+(\cref{isc:hj:sec:foundations}; title page of the source).
+\item Only the transcendence-degree part of Research question~3 is
+answered, and only for the examples constructed. No characterization of
+all ordinary composita and no membership test is given; the question is not
+settled in every case (\cref{isc:hj:sec:intro,isc:hj:sec:scope}; Research
+question~\ref{isc:hj:q:characterization}; README).
+\item Primality is imported. \Cref{isc:hj:thm:classicalprime} is credited to
+Pitteloud, Biljakovic--Kochetov--Kuhlmann and L'Innocente--Mantova; no
+proof of it is claimed, no new one-row primality theorem is claimed, and
+the independence argument does not reprove or replace the factorization
+theory behind it. Its formalization is a separate project and must not be
+accepted as checked because the independence kernel is
+(\cref{isc:hj:sec:prime,isc:hj:main:prime}; \cref{isc:hj:sub:formal}).
+\item Primality of a real element is not inferred to survive
+complexification; the Gaussian assertion is proved separately
+(\cref{isc:hj:sub:audit}).
+\item The class result concerns explicit support subfields
+$\K{k}{A_*}$, $\K{k}{B_*}$. It does not identify either with a full copy of
+$\No$, uses none of this report's copy constructions, and proves or uses no
+order-group isomorphism $A_*\cong\No$ or $B_*\cong\No$. It is not written as
+$\trdeg(E_*/M_*)=\On$. No proper-class Hamel basis is selected; algebraic
+independence of a class means independence of every finite subfamily
+(\cref{isc:hj:main:class,isc:hj:sec:classes}).
+\item The derivations are additive-character derivations of a Hahn field.
+They are not the Berarducci--Mantova derivation and are not assumed to
+respect a surreal exponential (\cref{isc:hj:sec:foundations}).
+\item The false blanket identity $\Frac(\A{k}{G})=\K{k}{G}$ is not used.
+\Cref{isc:hj:cor:arithmetic} is a failure of reconstruction by finite ring
+operations and fractions, distinct from this report's descent failure for
+intersections; neither argument authorizes replacing fixed-support omnific
+fraction fields by full Hahn fields (\cref{isc:hj:sec:foundations,isc:hj:sec:arithmetic}).
+\item The independent-family and almost-disjoint-family constructions are
+standard; no novelty is claimed for them (\cref{isc:hj:sec:combinatorics}).
+\item \Cref{isc:hj:prop:quantitative} gives no bound on the expression
+length of an arbitrary Hahn series (\cref{isc:hj:sec:mixed}).
+\item \Cref{isc:hj:prop:strongrigidity} is rigidity conditional on
+preserving Hahn sums, not automatic strongness of arbitrary field maps. No
+single strong derivation annihilates the full compositum; the finite
+annihilators kill only a finitely generated part chosen after a relation is
+given (\cref{isc:hj:sec:strong}; \cref{isc:hj:sub:audit}).
+\item The automorphisms of \cref{isc:hj:thm:automorphisms} are not claimed
+to preserve the chosen real part, complex conjugation, omnific integers,
+order or surreal exponentiation. The theorem is not about ordered
+automorphisms of $\No$ or about $\operatorname{Aut}(\Oz)$
+(\cref{isc:hj:sec:strong}).
+\item This report's one-witness separated-scale mechanism is not
+represented as new. The repository comparison was targeted, not
+exhaustive; the catalogue was consulted for neighbouring topics only.
+External review and a more exhaustive priority check are needed before any
+publication claim (\cref{isc:hj:sec:scope}; README).
+\item An arbitrary infinite mixed sum need not be new (a geometric series
+lies in $M$); the distinct-coset hypothesis is necessary; finite support
+cannot work over the full compositum; not every incidence family gives
+independence, and pairwise distinct supports are not enough
+(\cref{isc:hj:sub:notimply}).
+\item An independent set of the right cardinality need not be a
+transcendence basis; the prime family is not asserted to be one
+(\cref{isc:hj:sub:notimply}).
+\item Characteristic zero is used twice; the proof does not extend
+verbatim to characteristic $p$ (\cref{isc:hj:sub:notimply}; Research
+question~\ref{isc:hj:q:charp}).
+\item No order-topological convergence, continuity classification of the
+non-strong maps or commutation with conjugation is proved; Archimedean
+exponent groups do not make the Hahn fields Archimedean
+(\cref{isc:hj:sub:notimply}).
+\item $\No$ is not the base field; every witness lies in $\No$. A prime of
+$\Oz[i]$ is a unit in $\No(i)$; primality is a statement in the ring
+specified (\cref{isc:hj:sub:notimply}).
+\item The cardinal results depend neither on primality nor on unreviewed
+class-embedding theorems; the primality corollary needs the published
+theorem; the automorphism count needs algebraic closedness of the complex
+join (\cref{isc:hj:sec:scope}).
+\item Finite rational-rank factors are not covered: the proof needs
+infinitely many rationally independent directions, and the lower bound for
+$\K{k}{\Q+\sqrt2\Q}$ is open. Prime witnesses are obtained only for the
+countable Archimedean construction, not for uncountable $\kappa$. The
+algebraic theorem allows $H\ne0$, but no example with $H\ne0$ is
+constructed (Research questions~\ref{isc:hj:q:rankone},
+\ref{isc:hj:q:primes} and~\ref{isc:hj:q:cores}).
+\item The research questions are proposed by the arguments; they are not
+asserted to be previously published open problems. Research
+question~\ref{isc:hj:q:formal} is an implementation task
+(\cref{isc:hj:sec:questions}).
+\item The finite verification is not a proof of the infinite Hahn,
+cardinality or primality assertions and does not test primality in $\Oz$.
+The floating-point check is orientation only; monotonicity and the limit
+are proved analytically. A numeric specialization typo found during
+verification was corrected before release (\cref{isc:hj:sub:verification};
+README).
+\item No Lean source or kernel verification is claimed; the interfaces of
+\cref{isc:hj:sub:formal} are proposals, not declarations of the
+collection (\cref{isc:hj:sub:formal}).
+\item The user-supplied encyclopedia page served as orientation only; a
+publisher record for Pitteloud was consulted for bibliographic data only.
+The collection catalogue's inclusion of a report is not taken as evidence
+of correctness (Appendix~\ref{isc:hj:app:source}).
+\item Finite checks, typesetting checks and written proofs are the only
+evidence supplied; there has been no external review. The delivered
+README's PDF inspection (a contact sheet of rendered pages) does not
+verify the mathematics (Appendix~\ref{isc:hj:app:source}; README).
+\end{enumerate}
+\begin{enumerate}[label=JM\arabic*.,leftmargin=2.8em,itemsep=2pt]
+\item Research question~\ref{isc:cp:q:amalgams} is answered only in its
+transcendence-defect part and only for the explicit non-separated examples;
+the image of the compositum and a denominator criterion stay open. Research
+question~\ref{isc:cp:q:cores} is continued, not answered
+(\cref{isc:hj:sec:answers}).
+\item Source~03 cites no report of the collection except this one. Its
+finite-exclusive infinitude is \cref{isc:cp:def:private}; its branch coding
+is \lbl{tail:eq:binarycode} shifted by one; the square-root independence is
+also used in \lbl{tail:thm:surreal}; the one-row primality is cited in the
+Diophantine report; the degrees of \lbl{bst:cor:exactcard} and
+\lbl{bst:cor:realgroup} are over a different base
+(\cref{isc:hj:sec:collection}).
+\item \Cref{isc:hj:rem:secondroute,isc:hj:rem:omnificaut} and the remarks
+comparing the sources are observations of the merge, read only in the
+merge. \Cref{isc:hj:rem:omnificaut} depends on the unrefereed
+\lbl{opa:as:cor:setpairs}.
+\item The source was written against the pin, before source~02 was merged;
+its statements about this report are those of the pin. Where they are now
+incomplete (the degree question in the separated case, the exact
+membership test in the separated case, class families in actual copies),
+\mtag{} notes say so.
+\item No \texttt{isc:hj:} label has a Lean mapping in
+\rpath{FORMALIZATION.md}. The proofs were read when the addition was
+merged (Appendix~\ref{isc:hj:app:source}); that reading is not an
+independent review. The wording of \cref{isc:hj:thm:classicalprime} was
+compared with \cite[Section~1.3]{LM}; the other new references were not
+checked.
+\item The recorded run was repeated in the merge on a copy; the shipped
+\rpath{code/03-hahn-joins-build.sh} does not run unchanged under the
+shipped names, and an adapted copy would overwrite a PDF and a
+verification record in its own directory (Appendix~\ref{isc:hj:app:files}).
+\end{enumerate}
+
+\section{Research questions of the third source}\label{isc:hj:sec:questions}
+
+The questions below are proposed by the source's arguments. They are not
+asserted to be previously published open problems. The first two are
+especially direct next targets, and the final question is an
+implementation task rather than a conjecture about truth.
+\mtag{} The source's Question~$n$ is Research question~$22+n$ here.
+
+\begin{question}[Finite rational-rank factors]\label{isc:hj:q:rankone}
+Determine
+\[
+ \trdeg\bigl(\K{k}{\Q+\sqrt2\Q}/
+              \K{k}{\Q}\K{k}{\sqrt2\Q}\bigr),\qquad k=\R,\C.
+\]
+Is it $\cc$? The ambient cardinality gives that upper bound, but the
+coordinate-annihilator proof has only one rational direction from each
+factor and therefore does not prove the lower bound. A new obstruction
+that survives finite differential rank is needed.
+\end{question}
+\mtag{} This is the smallest dense case of
+Research question~\ref{isc:cp:q:amalgams}. The rank test of
+\cref{isc:cp:thm:rank} does not apply, since neither group is convex in
+the sum.
+
+\begin{question}[Exact characterization of the ordinary compositum]\label{isc:hj:q:characterization}
+Find a necessary and sufficient condition, expressed in coefficients or
+supports, for an element of $\K{k}{A+B}$ to lie in
+$\K{k}{A}\K{k}{B}$. The mixed-support criterion supplies a large
+family outside even the relative algebraic closure, but not a
+membership test. The separated coefficient-field condition discussed
+in this report (\cref{isc:lem:finitecoeff}) is a useful comparison point,
+not a replacement for such a characterization in interleaved groups.
+\end{question}
+\mtag{} Since the pin, the separated case has an exact test, the finite
+coefficient-rank denominator criterion (\cref{isc:cp:thm:rank,isc:cp:cor:surrealrank}),
+and the coefficient-field condition is known not to be sufficient
+(\cref{isc:cp:cor:fginsufficient}). For interleaved groups the question is
+the first part of Research question~\ref{isc:cp:q:amalgams}, and stays open.
+
+\begin{question}[Weaker incidence hypotheses]\label{isc:hj:q:incidence}
+Can finite-exclusive infinitude be replaced by an exact rank condition
+on the incidence functions $1_U$ modulo finitely supported functions?
+Finite linear identities among these functions already give polynomial
+relations among the series. Determine whether a suitable higher-order
+rank condition captures all algebraic relations for coordinate-
+independent mixed exponents.
+\end{question}
+
+\begin{question}[Prescribed shared Hahn cores]\label{isc:hj:q:cores}
+For $H\ne0$, give sharp sufficient conditions on
+$\Gamma_0/H$ and $\Gamma_1/H$ for the existence of a well-ordered mixed
+support satisfying \cref{isc:hj:main:mixed} with $2^\kappa$ incidence patterns.
+The algebraic theorem already allows a nontrivial intersection; the
+remaining problem is the ordered construction of enough suitable
+representatives and the corresponding optimal cardinal upper bound.
+\end{question}
+\mtag{} It continues Research questions~3 and~\ref{isc:cp:q:cores}; the
+latter asks for tail resilience over a prescribed core, which is not
+addressed here.
+
+\begin{question}[Full surreal copies rather than support subfields]\label{isc:hj:q:copies}
+For pairs of full monomial-preserving copies of $\No$ over a prescribed
+Hahn core, determine when their exponent images contain the coordinate
+configurations of \cref{isc:hj:main:mixed} at every set cardinal.
+A positive result would transfer the no-set-basis conclusion to those
+full-copy diagrams. The explicit class groups in \cref{isc:hj:sec:classes}
+resolve a different case and should not be silently substituted for
+full copies.
+\end{question}
+\mtag{} For the explicit separated copies of \cref{isc:sec:explicit}, with
+trivial core, the no-set-basis conclusion is already known by another
+route: no set generates the join over the compositum even algebraically
+(\cref{isc:cp:cor:nosetgen}); and one configuration of
+\cref{isc:hj:main:mixed} is exhibited there by \cref{isc:hj:rem:secondroute}.
+Prescribed nonzero cores remain open (Research question~\ref{isc:cp:q:cores}).
+
+\begin{question}[Uncountable prime witnesses]\label{isc:hj:q:primes}
+For $\kappa>\aleph_0$, can the $2^\kappa$ independent omnific integers
+in \cref{isc:hj:main:cardinal} be replaced by primes in $\Oz$, or in both
+$\Oz$ and $\Oz[i]$? The one-row theorem treats the countable
+real-exponent construction, not arbitrary uncountable nested supports.
+The question asks for a genuinely compatible primality mechanism, not
+merely an independent family with constant term one.
+\end{question}
+
+\begin{question}[Compatibility of the hidden complex automorphisms]\label{isc:hj:q:automorphisms}
+Which automorphisms counted in \cref{isc:hj:thm:automorphisms} can commute
+with conjugation, preserve the real Hahn subfield, or preserve its omnific
+subring? The argument by permutations of a transcendence basis imposes
+none of these constraints. A classification would measure precisely how
+much additional rigidity each distinguished structure contributes.
+\end{question}
+\mtag{} \emph{Partial status.} By \cref{isc:hj:rem:omnificaut}, which rests
+on \lbl{opa:as:cor:setpairs}, only the identity commutes with conjugation
+and preserves the Gaussian omnific ring of the join. The other combinations
+stay open.
+
+\begin{question}[More than two factor fields]\label{isc:hj:q:factors}
+Develop a mixed-support criterion for
+$K_1\cdots K_r$ inside the full Hahn field on
+$\Gamma_1+\cdots+\Gamma_r$. One can annihilate all but one coefficient
+field and finitely many generators of the remaining field; what coset
+or tensor-independence hypothesis ensures that the surviving mixed
+terms do not cancel? This formulation isolates the exact place where
+the two-field proof would have to be strengthened.
+\end{question}
+\mtag{} Here the indices $1,\ldots,r$ are the source's; they number $r$
+arbitrary factors. The question continues
+Research question~\ref{isc:cp:q:scales}, which asks the differential
+version for three or more separated copies with commuting Euler
+derivations.
+
+\begin{question}[Positive characteristic]\label{isc:hj:q:charp}
+Find an analogue using higher or iterative derivations, or identify a
+sharp obstruction caused by divisible exponent groups and Frobenius.
+A meaningful statement must treat inseparable algebraic relations and
+cannot simply replace the ground field in \cref{isc:hj:main:mixed}.
+\end{question}
+
+\begin{question}[A small formal verification kernel]\label{isc:hj:q:formal}
+Formalize the support-coset lemma, additive-character Hahn derivations,
+and the finite annihilator argument in Lean. These three pieces should
+be separated from the normal-form identification with $\No$ and from
+published primality. A verified generic Hahn theorem would already
+cover the main new mathematical mechanism; \cref{isc:hj:sub:formal} lists
+suggested interfaces.
+\end{question}
+\mtag{} It overlaps Research questions~10 and~\ref{isc:cp:q:formal} in the
+coset and Euler-derivation kernel; none of the proposed interfaces exists
+in the collection's Lean library.
+
+\section{Conclusion of the third source}\label{isc:hj:sec:conclusion}
+
+An ordinary compositum has access to arbitrary series in each factor,
+but only finitely many such series in any one algebraic expression.
+The mixed-support theorem exploits that finiteness without making a
+finiteness assumption on their supports. A finite homogeneous system
+removes the coefficient dependence, and distinct exponent cosets keep
+the desired derivative nonzero.
+
+This yields maximal transcendence gaps at every infinite set cardinal,
+a prime-witness version with interleaved real exponents, and a fixed
+class example with no set-sized transcendence basis. It also separates
+ordinary algebraic symmetries from symmetries of the Hahn presentation:
+in the complex examples the former are as numerous as possible while
+the relative strong subgroup is trivial. The finite-rank compositum
+problem and compatibility with full surreal-copy structures remain
+particularly clear next challenges.
+
+\section{Proof audit, finite verification and a formalization roadmap of the third source}
+\label{isc:hj:sec:verify}
+
+\mtag{} This section prints the source's Appendices~A, B and~C.
+
+\subsection{Dependency ledger}\label{isc:hj:sub:audit}
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.41\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}}
+\toprule
+Result & Essential dependencies & Evidence in the source\\
+\midrule
+Mixed-support independence & Hahn multiplication; set basis extension;
+finite linear algebra; characteristic zero & Full proof in
+\cref{isc:hj:sec:lemmas,isc:hj:sec:mixed}\\[4pt]
+Maximal cardinal gap & Mixed theorem; independent incidence family;
+explicit monomial coordinates & Full proof in
+\cref{isc:hj:sec:combinatorics,isc:hj:sec:cardinal}\\[4pt]
+Archimedean gap & Mixed theorem; square-root independence; binary branches &
+Full proof in \cref{isc:hj:sec:archimedean}\\[4pt]
+Omnific primality & Classical one-row prime theorem; constant-term pullback;
+set localization & External theorem isolated; application proved in
+\cref{isc:hj:sec:prime}\\[4pt]
+Class-sized example & Explicit class coordinates; finite local proof &
+Full argument in \cref{isc:hj:sec:classes}; no class basis selection\\[4pt]
+Relative derivations and complex automorphisms & Transcendence-degree
+results; separability; algebraic-closure extension & Proofs in
+\cref{isc:hj:sec:strong}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Potential failure points that have been checked}
+
+\paragraph{Support existence.}
+The abstract theorem explicitly assumes a well-ordered mixed
+$t$-support. The nested example supplies a strictly increasing negative
+$t$-support indexed by $\kappa$, and the prime example supplies an
+increasing sequence with supremum zero. A supremum is not required to
+belong to a Hahn support.
+
+\paragraph{Sign convention.}
+Positive Conway exponents are negative $t$-exponents. The candidates
+$\Xi_U$ and $P_\eta$ therefore lie on the omnific side of the support
+cut, not on the infinitesimal side.
+
+\paragraph{Coefficient-field membership.}
+Each entry $\partial_i(u_q)$ lies in $K_0$, not merely in the ambient join.
+This is why the homogeneous system can be solved with its coefficients
+$c_i$ in $K_0$ and why the final coset-independence step is valid.
+Solving over the entire join instead would not establish the needed
+noncancellation.
+
+\paragraph{Dependence of the annihilator on the relation.}
+The annihilator is chosen after all the coefficients of one polynomial
+have been placed in a finitely generated field over $K_1$.
+There is no claim that a single strong derivation annihilates the full
+compositum; \cref{isc:hj:sec:strong} proves that it cannot do so
+nontrivially.
+
+\paragraph{Nonzero polynomial partial.}
+The relation is chosen of minimal total degree over a fixed coefficient
+field. A nonzero formal partial has smaller degree, so its evaluation
+cannot vanish. Merely choosing any polynomial relation would not
+justify this step.
+
+\paragraph{Primality after complexification.}
+Primality of a real element need not survive an arbitrary ring
+extension. We do not infer the Gaussian assertion from the real one.
+Instead we apply the characteristic-zero one-row theorem separately
+with complex coefficients and then descend along the constant-term
+map to $\Z[i]$.
+
+\paragraph{Class localization.}
+Any factorization identity in the full omnific ring uses a set of
+support exponents. Enlarging that set by $\R$ still yields a set group,
+so the external theorem applies within its stated set-sized scope.
+The class independence theorem uses explicit coordinate characters and
+finite systems rather than a proper-class choice of basis.
+
+\paragraph{Cardinality and transcendence.}
+The lower bound is supplied by proved algebraic independence, not by
+counting different series. The upper bound counts all coefficient
+functions on a group of cardinality $\kappa$. No continuum hypothesis
+or assumption that $\kappa$ is regular is used.
+
+\subsection{Strengthening the multiquadratic justification}
+
+For clarity, the finite Galois fact used in \cref{isc:hj:sec:archimedean}
+can be derived without appealing to an infinite construction. If $F$ has
+characteristic not two and $d$ is not a square in $F$, then an element
+$r\in F^\times$ becomes a square in $F(\sqrt d)$ only if either $r$ or
+$r/d$ is a square in $F$. Indeed, writing a square root as $u+v\sqrt d$
+gives $2uv=0$; the two possibilities give exactly those alternatives.
+Induction shows that the kernel of
+\[
+ \Q^\times/(\Q^\times)^2\longrightarrow
+ \Q(\sqrt{p_1},\ldots,\sqrt{p_m})^\times/
+ \bigl(\Q(\sqrt{p_1},\ldots,\sqrt{p_m})^\times\bigr)^2
+\]
+is generated by the square classes of the $p_j$. Unique prime
+factorization says a new prime has a square class outside this subgroup,
+so every adjoining step doubles the degree. The finite extension has
+the expected $2^m$ monomial basis, and independently changing the signs
+of its generators preserves the multiplication relations. This supplies
+the sign-changing automorphisms used to prove linear independence of
+the square roots.
+\mtag{} In this paragraph $F$ is a field of characteristic not two, $r$ an
+element and $p_1,\ldots,p_m$ distinct primes listed afresh, not the
+enumeration $p_0<p_1<\cdots$ of \eqref{isc:hj:eq:realexponents}.
+
+\subsection{A finite exact verification model}\label{isc:hj:sub:verification}
+
+The source's program, shipped as \rpath{code/03-hahn-joins-verify.py},
+checks finite algebraic and combinatorial instances. These checks are not a
+proof of the infinite Hahn assertions and do not test primality in $\Oz$.
+Their purpose is to catch mistakes in the annihilator calculation, the
+incidence coding, and the explicit finite formulas.
+
+For a concrete annihilator, let $x_1,x_2,x_3$ be independent formal
+variables and put
+\[
+ u_1=x_1+x_2+x_3,\qquad u_2=x_1x_2+x_3^2,
+ \qquad \partial_j=x_j\frac{\partial}{\partial x_j}.
+\]
+The column vectors of the two derivative lists are
+\[
+ v=(x_1,x_2,x_3),\qquad
+ w=(x_1x_2,x_1x_2,2x_3^2).
+\]
+Their cross product gives
+\[
+ \begin{aligned}
+ c_1&=2x_2x_3^2-x_1x_2x_3,\\
+ c_2&=x_1x_2x_3-2x_1x_3^2,\\
+ c_3&=x_1x_2(x_1-x_2).
+ \end{aligned}
+\]
+Thus $\partial_{\mathbf c}=\sum c_j\partial_j$ annihilates $u_1$ and $u_2$
+exactly. If $y_1,y_2,y_3$ are additional independent variables and
+$F=x_1y_1+x_2y_2+x_3y_3$, then
+\[
+ \partial_{\mathbf c}(F)=c_1x_1y_1+c_2x_2y_2+c_3x_3y_3\ne0.
+\]
+At $(x_1,x_2,x_3)=(1,2,3)$ this becomes
+$30y_1-24y_2-6y_3$, visibly nonzero.
+This is the finite polynomial shadow of the coset argument.
+\mtag{} In this model $F$ is a polynomial, not a Hahn series.
+
+The verification script uses exact symbolic arithmetic, enumerates
+small Boolean-pattern instances, checks exclusive binary tails for
+several distinct eventually periodic branches, and verifies the displayed
+cross-product identities and quotient-rule calculation. Numerical
+approximations to the first prime exponents are included only as an
+orientation check; the monotonicity and limit are proved analytically
+above. The actual output is shipped as
+\rpath{data/03-hahn-joins-verification.txt}.
+\mtag{} Its five PASS lines are: the exact cross-product annihilator for two
+generators and a quotient; the nonvanishing mixed derivative, with the
+specialization $30y_1-24y_2-6y_3$; all $34{,}112$ Boolean patterns on up to
+four distinct subsets of a four-point universe (the finite analogue of
+\cref{isc:hj:lem:independentfamily}; the coordinate $\xi$ is not modelled);
+eight distinct eventually periodic branches through depth~32, each with at
+least $29$ exclusive nodes, and the codes $\{1,3,7,15\}$, $\{2,6,14,30\}$ of
+the two constant branches; and the decrease of the first ten exponents
+$\rho_n$ in floating point. The rerun is in Appendix~\ref{isc:hj:app:files}.
+
+\subsection{A formalization roadmap}\label{isc:hj:sub:formal}
+
+No Lean source or kernel verification is claimed for the new theorem.
+The following are proposed interfaces, not declarations alleged to
+exist in the repository.
+
+\paragraph{Hahn support layer.}
+Prove that multiplying a series supported in a subgroup $\Gamma'$ by a
+monomial of exponent $\beta$ places its support in $\Gamma'+\beta$.
+Deduce finite linear independence for monomials in distinct cosets.
+This part needs neither divisibility nor characteristic zero.
+
+\paragraph{Character derivation layer.}
+For an additive character $\chi:\Gamma\to k$, define the coefficient
+map $x_\gamma\mapsto\chi(\gamma)x_\gamma$ on Hahn series. Establish
+support containment, the coefficientwise Leibniz rule, and commutation
+with summable families. Then construct the coordinate characters from
+linear independence in $\Gamma/\Gamma_1$ using a set vector-space basis.
+
+\paragraph{Finite annihilator layer.}
+Package an $m\times(m+1)$ matrix over $K_0$ and obtain a nonzero kernel
+vector. Form the finite linear combination of derivations and prove that
+it annihilates the intermediate field generated by $K_1$ and the $u_q$.
+Keep its coefficients in $K_0$ throughout; this is a useful type-level
+invariant that prevents an invalid noncancellation step.
+
+\paragraph{Algebraic independence layer.}
+Use minimal total degree, or an equivalent separable minimal-polynomial
+argument, to formalize the contradiction. The finite-exclusive support
+condition can be abstracted as the ability to select $m+1$ indices for
+any finite relation. Cardinal amplification should be a separate theorem.
+
+\paragraph{Surreal and arithmetic bridges.}
+Only after the generic Hahn theorem is verified should one transport
+it through Conway normal form and add omnific support conditions.
+The one-row prime theorem is a distinct formalization project and must
+not be silently accepted as checked merely because the independence
+kernel is checked. The constant-term pullback lemma itself is an
+accessible independent commutative-algebra target.
+
+\mtag{} The coset layer overlaps item~(1) of \cref{isc:sub:formal} and the
+support and base-change layer of \cref{isc:cp:sub:formal}; the character
+derivation layer overlaps its derivation layer.
+
 \appendix
 \section{Provenance of this report}\label{isc:app:report}
 
@@ -4378,7 +6718,8 @@ merged and nothing was selected away: every result, proof, example,
 question and limitation of the manuscript is printed here.
 \mtag{} This subsection describes the report as written in batch~31. In
 batch~34 a second manuscript was added as source~02
-(Appendix~\ref{isc:cp:app:source}); the report is now built from two
+(Appendix~\ref{isc:cp:app:source}), and in batch~35 a third as source~03
+(Appendix~\ref{isc:hj:app:source}); the report is now built from three
 manuscripts.
 
 The package contained the article, its PDF and a README, and nothing else:
@@ -4515,7 +6856,8 @@ pdfTeX~1.40.26 and a visual inspection of rendered pages and contact
 sheets; those renderings are not shipped.
 \mtag{} This table lists the files of source~01. The seven shipped files of
 source~02, with the prefix \texttt{02-composita-}, and their rerun are in
-Appendix~\ref{isc:cp:app:files}.
+Appendix~\ref{isc:cp:app:files}; the three of source~03, with the prefix
+\texttt{03-hahn-joins-}, in Appendix~\ref{isc:hj:app:files}.
 
 \subsection{Source 02 (batch 34)}\label{isc:cp:app:source}
 
@@ -4665,6 +7007,190 @@ SymPy~1.14.0. It passed all 2,530 checks with the same 21 category counts
 as the recorded run; the only difference in the JSON record is the Python
 version (3.13.5 in the recorded run).
 
+\subsection{Source 03 (batch 35)}\label{isc:hj:app:source}
+
+\mtag{} Source~03 is manuscript~01 of batch~35 of the collection: the
+archive \nolinkurl{Surreal_Hahn_Joins_Research} (inner directory
+\nolinkurl{maximal_transcendence_hahn_joins}), delivered in commit
+\texttt{267b910} and placed in commit \texttt{dec8d56} as an addition to
+this report with local number~03. Its main file \texttt{article.tex} (a
+standalone article with an embedded bibliography) is titled
+\emph{Maximal Transcendence in Hahn Joins: Mixed-support independence and
+prime omnific integers}, dated 23 September 2026, with the author line
+``AI-assisted research manuscript''; its PDF has 27 pages (cover, contents
+and 23 numbered pages). It is pinned to commit
+\nolinkurl{f388f950f44664f21f50f04b8ac74dab56c8ff2f}, at which this
+report's \texttt{article.tex} was blob
+\nolinkurl{7d5cfe644e7c902f2b594179c337a6c633350fc3}: the same snapshot as
+source~02's pin, before source~02 was merged in \texttt{b9f964c}. The
+placement chose an addition rather than a new report because the
+manuscript takes Research question~3 as its target and answers the
+transcendence-defect part of Research question~\ref{isc:cp:q:amalgams} for
+explicit examples. Its manuscript, README and PDF are not shipped; its
+program, build script and recorded run are shipped with the prefix
+\texttt{03-hahn-joins-} (Appendix~\ref{isc:hj:app:files}).
+
+\emph{What it contributed.} The mixed-support independence criterion
+(\cref{isc:hj:main:mixed}) with its lemmas, generator-sensitive form and
+stable variants (\cref{isc:hj:sec:lemmas,isc:hj:sec:mixed}); the incidence
+and branch families (\cref{isc:hj:sec:combinatorics}); exact degree
+$2^\kappa$ for interleaved real closed and algebraically closed factors
+with omnific witnesses and the arithmetic-join gap
+(\cref{isc:hj:main:cardinal,isc:hj:cor:realclosuregap,isc:hj:cor:arithmetic});
+the Archimedean family $P_\eta$, independent and prime in $\Oz$ and $\Oz[i]$
+(\cref{isc:hj:main:prime,isc:hj:prop:archindependence,isc:hj:lem:pullback,isc:hj:prop:fullprime,isc:hj:cor:nonassociate});
+the class example (\cref{isc:hj:main:class,isc:hj:lem:classlocal}); strong
+rigidity and the counts of relative derivations and automorphisms
+(\cref{isc:hj:sec:strong}); ten research questions; a dependency audit, a
+finite verification model and a formalization roadmap.
+
+\emph{Sources and provenance, as the source states them (its Appendix~D).}
+The repository comparison is pinned to the commit above and was made on
+23 September 2026. The primary target was this report's
+\texttt{article.tex}, its question headed \emph{An exact description of
+ordinary composita} (Research question~3) being the precise starting point.
+The collection catalogue \rpath{README.md} at the pin was consulted; it
+distinguishes drafts, review and formalization status, and the source does
+not infer correctness from inclusion in it or use its unreviewed embedding
+theorems as black boxes. For the published prime input the source checked
+L'Innocente--Mantova's arXiv version~5 of 22 January 2024, especially its
+Section~1.3 and its references to Pitteloud and Biljakovic--Kochetov--Kuhlmann,
+which are distinct from the proposed new arguments; a short publisher
+record for Pitteloud was consulted to verify bibliographic data. A
+user-supplied Wikipedia page served as orientation only, not as a proof
+source. The source gives the build commands (three \texttt{pdflatex} passes,
+then \texttt{python verify.py}) and says that finite checks, typesetting
+checks, mathematical proofs and external review are separate forms of
+evidence, of which only the first three are provided.
+
+\emph{Editorial changes.}
+\begin{enumerate}[label=(\arabic*)]
+\item Every label of the source carries the prefix \texttt{isc:hj:}, with
+the source's name after it, except that \texttt{sec:arithmetic} is kept as
+\lbl{isc:hj:sec:arithmetic} on the same subsection, the appendix labels
+\texttt{app:audit}, \texttt{app:verification} and \texttt{app:formal} become
+\lbl{isc:hj:sub:audit}, \lbl{isc:hj:sub:verification} and
+\lbl{isc:hj:sub:formal}, \texttt{app:sources} becomes this appendix
+\lbl{isc:hj:app:source}, and \texttt{main:mixed}, \texttt{main:cardinal},
+\texttt{main:prime}, \texttt{main:class} become
+\lbl{isc:hj:main:mixed} etc. The merge also labels the source's unlabelled
+definitions, questions, conclusion and new subsections, and gives every
+lemma, proposition, corollary, definition and remark label a cleveref type
+hint.
+\item Symbols are renamed as in \cref{isc:hj:sec:conventions}; no
+normalization changed. The source's Theorems~A--D print as
+Theorems~D--G, and its Questions~1--10 as Research questions~23--32.
+\item The source's citations of this report are replaced by
+cross-references to the same places; its hard-coded section numbers in the
+dependency ledger and the audit are replaced by cross-references. Its
+bibliography entries \cite{Conway,Hahn,Kaplansky,Pitteloud,BKK} are added
+to this report's; its entries for Gonshor and L'Innocente--Mantova are this
+report's \cite{Gonshor,LM}; its entries for this report and for the
+catalogue at its pin are replaced by cross-references and by
+\rpath{README.md}. Only the wording of \cref{isc:hj:thm:classicalprime} was
+compared with \cite{LM} in the merge; the new entries were not checked.
+\item Text marked \mtag{} was added in the merge: in
+\cref{isc:hj:sec:intro} (the first paragraph and
+\cref{isc:hj:sec:answers,isc:hj:sec:conventions,isc:hj:sec:collection,isc:hj:sub:compare}),
+after the fraction-field sentence of \cref{isc:hj:sec:foundations}, after
+\cref{isc:hj:prop:ld,isc:hj:lem:euler,isc:hj:def:exclusive}, after
+\cref{isc:hj:cor:algbase}, after \eqref{isc:hj:eq:branchsets}, after
+\cref{isc:hj:cor:arithmetic}, after \cref{isc:hj:lem:realgroups}, after
+\cref{isc:hj:thm:classicalprime,isc:hj:lem:pullback}, after
+\eqref{isc:hj:eq:classwitness}, after the proof of \cref{isc:hj:main:class},
+\cref{isc:hj:rem:secondroute,isc:hj:rem:omnificaut}, in
+\cref{isc:hj:sec:scope} (after the table, and
+\cref{isc:hj:sub:nonclaims}), at the head of \cref{isc:hj:sec:questions}
+and after Research
+questions~\ref{isc:hj:q:rankone}, \ref{isc:hj:q:characterization},
+\ref{isc:hj:q:cores}, \ref{isc:hj:q:copies}, \ref{isc:hj:q:automorphisms},
+\ref{isc:hj:q:factors} and~\ref{isc:hj:q:formal}, in
+\cref{isc:hj:sec:verify}, and in this appendix. In the text of sources~01
+and~02, batch-35 \mtag{} notes were added to the title page, to
+\cref{isc:sec:collection} (status of the research questions), after the
+proof of \cref{isc:main:join}, after Research questions~3,
+\ref{isc:cp:q:amalgams}, \ref{isc:cp:q:cores}, \ref{isc:cp:q:scales}
+and~\ref{isc:cp:q:formal}, in item~1 of \cref{isc:cp:sec:answers}, at the
+start of \cref{isc:sec:nonclaims}, in items~W1 and~M3, and in
+Appendices~\ref{isc:app:onesource} and~\ref{isc:app:files}. The
+\mtag{} tag marks text of both merges; the notes naming source~03 are
+those of batch~35. No statement of sources~01 or~02 was changed.
+\end{enumerate}
+
+\emph{Where the merge chose.} The addition is printed after source~02's
+sections and before the appendix, so that no existing section, theorem,
+equation or question number changes; its sections keep the source's
+numbering shifted by twenty-seven, its lettered theorems continue the
+lettered counter, and its questions continue the question counter. The
+compositum is renamed $M$ and the factors are indexed $0,1$, so that the
+second route of \cref{isc:hj:rem:secondroute} reads with $\Gamma_0=G_0$,
+$\Gamma_1=G_1$ and $K_0,K_1$ as in \cref{isc:sec:join}. The source's
+$\K{k}{G}$ definitions of \cref{isc:hj:sec:intro,isc:hj:sec:foundations}
+are printed, not replaced by references, because they state the source's
+exactness claims; they agree with \cref{isc:sec:introduction,isc:sec:fractions}.
+
+\emph{Checks in the merge.} The proofs of
+\cref{isc:hj:lem:cosets,isc:hj:prop:ld,isc:hj:lem:euler,isc:hj:lem:characters,isc:hj:lem:annihilator,isc:hj:main:mixed,isc:hj:prop:quantitative,isc:hj:cor:weights,isc:hj:cor:algbase,isc:hj:lem:independentfamily,isc:hj:lem:branches,isc:hj:lem:groups,isc:hj:main:cardinal,isc:hj:cor:arithmetic,isc:hj:lem:realgroups,isc:hj:prop:archindependence,isc:hj:lem:pullback,isc:hj:prop:fullprime,isc:hj:cor:nonassociate,isc:hj:lem:classlocal,isc:hj:main:class,isc:hj:prop:strongrigidity,isc:hj:lem:derivebasis,isc:hj:thm:derivations,isc:hj:thm:automorphisms}
+were read line by line when the addition was merged; no error was found.
+The following were rechecked: the mixed exponents are pairwise distinct
+under hypothesis~(i); the cosets $b_i+\Gamma_0$ are distinct under~(ii);
+$r_\alpha-r_\beta$ has leading exponent $-\iota_0(\alpha)$ for
+$\alpha<\beta$, and $2\cdot_{\Ord}\alpha$ is strictly increasing in
+$\alpha$; the codes of words of length $m$ fill $[2^m-1,2^{m+1}-2]$, with
+$\mathfrak B_{000\cdots}=\{1,3,7,15,\ldots\}$ and
+$\mathfrak B_{111\cdots}=\{2,6,14,30,\ldots\}$; $\rho_0=2^{-3/2}+3^{-3/2}\approx
+0.5460$; the cross product and the specialization $30y_1-24y_2-6y_3$ of
+\cref{isc:hj:sub:verification}; the count
+$\sum_{r=1}^4\binom{16}{r}2^r=34{,}112$ of the recorded Boolean patterns;
+and the source's numbering (Lemma~3.1 to Theorem~10.5, Question~1) against
+a build of its text, which agrees with its delivered PDF. The interleaving
+used in \cref{isc:hj:sec:answers} was checked: $e_0=1>f_0=\omega^{-1}>
+e_1=\omega^{-2}$, so neither of $A_\kappa$, $B_\kappa$ is infinitesimal
+relative to the other. This reading is not an independent proof review.
+The source's statements about this report are those of its pin; the
+sections it used (\cref{isc:sec:join,isc:sec:questions}) are unchanged since,
+and the later source~02 is taken into account by the \mtag{} notes.
+
+\subsection{Files of source 03, and their rerun}\label{isc:hj:app:files}
+
+\mtag{} The three shipped files of source~03 are these.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Shipped path & Delivered name & Role\\
+\midrule
+\rpath{code/03-hahn-joins-verify.py} & \texttt{verify.py} & exact finite
+checks (SymPy); prints its report, writes no file\\
+\rpath{code/03-hahn-joins-build.sh} & \texttt{build.sh} & three
+\texttt{pdflatex} passes, then \texttt{python3 verify.py > verification.txt}\\
+\rpath{data/03-hahn-joins-verification.txt} & \texttt{verification.txt} &
+recorded run: five PASS lines, Python~3.13.5, SymPy~1.14.0\\
+\bottomrule
+\end{tabular}
+\end{center}
+All three are byte-identical to the delivery. The manuscript, its README
+and its PDF are not shipped. No requirements file was delivered; the
+program needs Python~3 and SymPy (the recorded run used SymPy~1.14.0).
+
+The program prints to standard output and writes no file. The delivered
+\texttt{build.sh} changes into its own directory, runs \texttt{pdflatex}
+three times on \texttt{article.tex}, overwriting \texttt{article.pdf}
+there, and then runs \texttt{python3 verify.py > verification.txt},
+rewriting that record. Under the shipped names it stops at once, as a
+test on a copy confirmed: there is no \texttt{article.tex} in
+\rpath{code/}, the first \texttt{pdflatex} run fails (leaving a
+\texttt{texput.log}), and the script runs with \texttt{set -e}, so the
+checks are never reached. An adapted copy would write \texttt{verification.txt} next
+to the script, not over the shipped data file. Rerun the checks on a copy,
+or redirect the output outside the report:
+\begin{verbatim}
+python code/03-hahn-joins-verify.py > <scratch>/verification.txt
+\end{verbatim}
+In the merge the program was run on a copy with Python~3.14.4 and
+SymPy~1.14.0. All five checks passed; apart from line endings, the output
+differs from the recorded run only in its second line, the Python version
+(3.13.5 recorded).
+
 \begin{thebibliography}{99}
 
 \bibitem{Gonshor}
@@ -4758,6 +7284,35 @@ transseries}, \emph{Journal of the European Mathematical Society}
 The Stacks Project Authors, \emph{The Stacks Project}, Section~9.27,
 ``Linearly disjoint extensions'', Tag~09IC.
 \url{https://stacks.math.columbia.edu/tag/09IC}.
+
+\bibitem{Conway}
+J.~H.~Conway, \emph{On Numbers and Games}, Academic Press, London, 1976.
+Cited by source~03.
+
+\bibitem{Hahn}
+H.~Hahn, \emph{\"Uber die nichtarchimedischen Gr\"o\ss ensysteme},
+Sitzungsberichte der Kaiserlichen Akademie der Wissenschaften,
+Mathematisch-Naturwissenschaftliche Klasse, Abteilung IIa
+\textbf{116} (1907), 601--655. Cited by source~03.
+
+\bibitem{Kaplansky}
+I.~Kaplansky, \emph{Maximal fields with valuations},
+Duke Mathematical Journal \textbf{9} (1942), 303--321. Cited by source~03.
+
+\bibitem{Pitteloud}
+D.~Pitteloud, \emph{Existence of prime elements in rings of generalized
+power series}, Journal of Symbolic Logic \textbf{66}(3) (2001), 1206--1216.
+\href{https://doi.org/10.2307/2695102}{doi:10.2307/2695102}.
+Cited by source~03 for the one-row prime theorem.
+
+\bibitem{BKK}
+D.~Biljakovic, M.~Kochetov and S.~Kuhlmann, \emph{Primes and irreducibles
+in truncation integer parts of real closed fields}, in A.~Enayat,
+I.~Kalantari and M.~Moniri (eds.), \emph{Logic in Tehran}, Lecture Notes in
+Logic 26, A K Peters, 2006, 42--64; Theorem~4.12, as cited in
+\cite[\S1.3]{LM}.
+\href{https://doi.org/10.1017/9781316755747.006}{doi:10.1017/9781316755747.006}.
+Cited by source~03 for the transfer of one-row primality.
 
 \end{thebibliography}
 \end{document}
