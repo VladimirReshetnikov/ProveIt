@@ -5773,3 +5773,72 @@ reports, 5,212 source-label references and 1,795 local Markdown
 destinations across 226 files pass. Whitespace checks pass. No TeX
 sources or PDFs changed in the merge; the 275-page article and 33-page
 catalogue builds from this review remain current.
+
+## Set-sized homological package and coefficient-module thresholds
+
+Reviewed `osq:lem:projideal`, all seven clauses of
+`osq:thm:homological`, and `osq:thm:extthreshold`, including the Ext
+clause of the principal threshold summary. The decomposition A=D⊕I is
+explicitly additive. The constant inclusion is a ring and D-linear
+section, whereas the quotient sequence does not split as A-modules.
+Making this category explicit is the only numbered-statement change.
+
+The projective-ideal argument constructs a finite generating family from
+a split free module. The homological proof now details the filtered union
+of principal ideals, tensor balancing, flat-resolution Tor computation,
+nonflatness witness, projective base change and tensor–Hom adjunction.
+Comparison maps identify the canonical inflation map and its inverse
+without assuming that D is flat over A. Schanuel's lemma and the explicit
+Yoneda splice justify the projective-dimension bound and Ext nonvanishing.
+The flat-colimit, projective-module and resolution inputs were checked
+against the Stacks Project, Tags 05UT, 05CF and 00O3 and Section 15.60.
+
+An explicit countable telescope proves pd_A D=2 when I is countably
+generated; the general conclusion remains only pd_A D≥2. Finite-support
+cardinal counting in a free presentation gives a degree-two coefficient
+module of size exactly |A|. The thresholds measure the carrier of the
+coefficient module, not the Ext group. For all five models, A/xA has size
+|A| when x is nonzero in I: a trivial I-action would force I=xA,
+contradicting nonfinite generation.
+
+Updated the root README, report guide, catalogue, notation and coverage
+ledger. All three reviewed results remain Pending in Lean; later
+core/tensor results and full parallel-source reconciliation remain pending
+review. Validation: three clean TeX passes for the article (278 pages)
+and catalogue (34 pages), with no warnings or box diagnostics; the Ext
+comparison and telescope pages were inspected visually. All 828 labels,
+1,656 auxiliary label/number pairs, 409 standard results and nine principal
+summaries are preserved. All 4,626 statement anchors across 63 reports,
+5,212 source-label references and 1,795 local Markdown destinations across
+226 files pass, as does whitespace validation. No Lean or finite-verifier
+source changed. The previous two-thread 4,583-job build and
+16,239-declaration axiom audit remain the Lean baseline for this
+documentation-only pass.
+
+## Synchronization of detector counterexamples and their Hahn realizations
+
+Merged f48869d, including 1714764 and 2113ae6, and checked the four new
+modules against `odg:def:rem:rootneeded`. Polynomial Pell rigidity uses
+an algebraic closure, constant polynomial units and descent of degree.
+For Z+X Q[X], evaluation at minus one is surjective with kernel (1+X),
+so the quotient is Q and the detector rejects an element with constant
+term one. The ordinary-integer predicate Xi still defines the integers.
+For Z[X], evaluation at minus one rules out a detector certificate even
+when the ambient real coefficient field contains a root of Lambda.
+The polynomial X/2 witnesses strict containment in the full pullback.
+
+Negative Hahn order proves faithful polynomial evaluation. The new
+bridge realizes both examples at single(-1,1) in the integer-exponent
+Hahn workspace, verifies the quotient and constant intersection, and
+transfers the detector obstruction and integer definition. The README
+and ledger keep these set-sized workspace realizations distinct from the
+class of all surreals; the hypotheses on full pullbacks and coefficient
+roots remain explicit.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,587 jobs. The
+axiom audit checks 16,337 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across 63
+reports, 5,213 source-label references and 1,799 local Markdown
+destinations across 226 files pass, as does whitespace validation.
+No TeX source changed in this merge, so the reviewed 278-page article
+and 34-page catalogue remain current.

@@ -212,7 +212,12 @@ the finite-side standard-part theorem, support thresholds and fixed-group
 lower bounds, followed by the countable-support and regular-cardinal
 two-armed models and the controlled-field construction at every infinite
 cardinal, both one-arm support models, and the organizing ring/module
-theorem across all five constructions.
+theorem across all five constructions. The set-sized homological package
+is reviewed as well: the purely infinite ideal is flat and idempotent but
+not projective, and the constant quotient has flat dimension one.
+Nonzero Ext¹ and Ext² classes first occur with coefficient modules of
+size `|A|`. The constant inclusion splits the ring retraction but is not
+an `A`-linear section.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
