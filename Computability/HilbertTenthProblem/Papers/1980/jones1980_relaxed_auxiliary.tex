@@ -1,0 +1,265 @@
+% A relaxed auxiliary norm whose integrality follows from the size bounds.
+\section{Recovering the integral auxiliary Pell sequence}
+\label{sec:relaxed-auxiliary}
+
+The auxiliary norm can be weakened while preserving the index information
+used by the doubled signed block. Starting with Theorem~\ref{thm:best99},
+replace only E16 by
+\begin{equation}\label{eq:relaxed-auxiliary-norm}
+ (ic^2)^2=D(f^2-1),\qquad D=A^2-1,\qquad A=a+4.
+\end{equation}
+The previous norm was $f^2-1=D(ic^2)^2$. The two individual equations
+are not equivalent: the new equation can admit additional rational
+Pell solutions. The existing size bounds exclude the unwanted
+solutions and recover the divisibility needed by the signed-index
+argument. At the arithmetic level, the square $(ic^2)^2$ is now
+exactly the coefficient $K=D(f^2-1)$ used by that argument, saving
+one multiplication.
+
+\subsection{A preliminary bound on the main index}
+
+Keep the definitions
+\[
+ U=wn^2,\quad Y_P=sn^2,\quad a=Y_P(U+1),\quad
+ A=a+4,\quad P=2UY_P^2+1,\quad J=2r+1.
+\]
+Before any auxiliary norm is used, the coding bootstrap supplies
+\[
+ n\ge64,\qquad n\le r<2n^3,\qquad U,Y_P\ge n^2,
+ \qquad UY_P>r+1.
+\]
+The unchanged main norm and first triangular norm give positive
+indices $p,t$ with
+\[
+ d=\chi_A(p),\quad c=\psi_A(p),\qquad
+ 2\tau+1=\chi_P(t),\quad k=\psi_P(t).
+\]
+Since $P\equiv1\pmod{UY_P}$ and $k=r+1+hUY_P$, the congruence
+for $\psi_P$ gives $t\equiv r+1\pmod{UY_P}$. Thus $t\ge r+1$.
+Also
+\[
+ P-A=UY_P(2Y_P-1)-Y_P-3>0.
+\]
+If $p\le r+1$, Pell growth would give
+\[
+ c\le(2A)^{p-1}\le(2A)^r
+  <(2P-1)^r\le k,
+\]
+contrary to $c=kY_P+\eta>k$. Consequently
+\begin{equation}\label{eq:relaxed-main-index-bound}
+ p\ge r+2\ge66,\qquad c>A^6>A D^2.
+\end{equation}
+For the second assertion, use
+$\psi_A(p)\ge(2A-1)^{p-1}$ and $D<A^2$.
+This argument uses neither the auxiliary norm, the signed index
+equation, an exponential identity, nor internal coefficient decoding.
+
+\subsection{The rank argument}
+
+\begin{lemma}\label{lem:relaxed-pell-integrality}
+Let $A>1$, $D=A^2-1$, and let
+$c=\psi_A(p)$, $d=\chi_A(p)$ for a positive index $p$.
+Suppose $c>A D^2$ and positive integers $f,i$ satisfy
+\eqref{eq:relaxed-auxiliary-norm}. Then there is a positive index $m$
+such that
+\[
+ f=\chi_A(m),\qquad p\mid m,\qquad c\mid m,
+ \qquad ic^2=D\psi_A(m).
+\]
+\end{lemma}
+\begin{proof}
+Write $D=d_0s_0^2$ with $d_0>1$ squarefree. We first justify the
+use of a fundamental unit within the integer-coefficient ring
+$\mathbb Z[\sqrt{d_0}]$. The known unit $A+s_0\sqrt{d_0}$ ensures
+that positive solutions to $x^2-d_0y^2=1$ exist. Choose the least
+positive unit
+\[
+ \varepsilon=F+y_0\sqrt{d_0}>1,
+ \qquad F,y_0\in\mathbb Z_{>0},\qquad
+ F^2-d_0y_0^2=1.
+\]
+Such a choice exists by minimizing its first coordinate. Every other
+positive integer-coefficient unit $\beta>1$ is a power of
+$\varepsilon$. Indeed, choose $j\ge0$ with
+$\varepsilon^j\le\beta<\varepsilon^{j+1}$. The quotient
+$\beta\varepsilon^{-j}$ has integer coefficients and norm one,
+because $\varepsilon^{-1}=F-y_0\sqrt{d_0}$. If it belonged to
+$(1,\varepsilon)$, both coordinates would be positive integers,
+contradicting minimality. It is therefore one. No assertion about
+the full ring of algebraic integers is needed.
+
+There is accordingly an $e\ge1$ such that
+\[
+ A=\chi_F(e),\qquad s_0=y_0S,\qquad
+ S=\psi_F(e),\qquad D=(F^2-1)S^2.
+\]
+Composition of the Pell solutions gives
+\begin{equation}\label{eq:relaxed-composed-coordinate}
+ \psi_F(ep)=Sc.
+\end{equation}
+Put $R_0=ic^2$. The relaxed equation gives
+$R_0^2=d_0s_0^2(f^2-1)$. Thus $s_0\mid R_0$, and squarefreeness
+implies $d_0\mid R_0/s_0$. The positive integer
+$y=R_0/(d_0s_0)$ satisfies $f^2-d_0y^2=1$. Hence for some
+$n_0>0$,
+\begin{equation}\label{eq:relaxed-field-coordinate}
+ f=\chi_F(n_0),\qquad
+ R_0=(F^2-1)S\psi_F(n_0).
+\end{equation}
+
+We use the strong divisibility identity
+\begin{equation}\label{eq:relaxed-strong-divisibility}
+ \gcd(\psi_F(u),\psi_F(v))=\psi_F(\gcd(u,v)).
+\end{equation}
+For completeness, the Pell norm gives
+$\gcd(\chi_F(j),\psi_F(j))=1$. The addition formula therefore
+reduces $\gcd(\psi_F(u),\psi_F(u+v))$ to
+$\gcd(\psi_F(u),\psi_F(v))$, and the Euclidean algorithm proves
+\eqref{eq:relaxed-strong-divisibility}.
+
+Let $T=(F^2-1)S$, $g=\gcd(n_0,ep)$, and
+\[
+ h=\gcd(\psi_F(n_0),\psi_F(ep))=\psi_F(g).
+\]
+Because $c^2\mid R_0=T\psi_F(n_0)$,
+\[
+ \begin{aligned}
+ \gcd(c^2,T\psi_F(ep))
+   &=\gcd(c^2,Dc)\\
+   &=c\gcd(c,D)\ge c
+ \end{aligned}
+\]
+divides $T h$. Since $T=D/S\le D$,
+\begin{equation}\label{eq:relaxed-gcd-lower-bound}
+ h\ge c/T\ge c/D.
+\end{equation}
+If $g<ep$, then $2g\le ep$, since $g$ is a proper divisor. The
+duplication identity gives
+\[
+ 2h^2<2\chi_F(g)\psi_F(g)=\psi_F(2g)
+       \le\psi_F(ep)=Sc.
+\]
+Here $S<A$, by $D=(F^2-1)S^2$ and $F\ge2$. Thus $h^2<Ac/2$,
+whereas \eqref{eq:relaxed-gcd-lower-bound} and $c>AD^2$ give
+$h^2\ge c^2/D^2>Ac$, a contradiction. Therefore $ep\mid n_0$.
+Writing $n_0=em$ proves $p\mid m$ and, by composition,
+\begin{equation}\label{eq:relaxed-integrality-restored}
+ f=\chi_A(m),\qquad R_0=D\psi_A(m).
+\end{equation}
+
+To obtain $c\mid m$, write $m=pk$. Expansion of
+$(d+c\sqrt D)^k$, followed by division of the square-root
+coefficient by $c$, gives
+\[
+ \frac{\psi_A(pk)}c\equiv k d^{k-1}\pmod c.
+\]
+As $c^2\mid D\psi_A(m)$ and $\gcd(d,c)=1$, this implies
+$c\mid Dk$. The main Pell expansion modulo $D$ also gives
+\[
+ c=\psi_A(p)\equiv pA^{p-1}\pmod D,
+ \qquad \gcd(c,D)=\gcd(p,D),
+\]
+using $\gcd(A,D)=1$. Put $g_0=\gcd(c,D)$. Then $c/g_0\mid k$
+and $g_0\mid p$, so $c\mid pk=m$.
+\end{proof}
+
+The lemma recovers precisely the integral sequence and auxiliary
+index divisibility needed below. It does not assert
+$c^2\mid\psi_A(m)$, which is stronger than necessary and is not
+an automatic consequence of the relaxed norm.
+
+\subsection{The signed index and all positive witnesses}
+
+By \eqref{eq:relaxed-main-index-bound},
+Lemma~\ref{lem:relaxed-pell-integrality} applies before the signed
+auxiliary norm. Its source polynomial remains
+\[
+ v=of-d^2,\qquad K=D(f^2-1)=(ic^2)^2,\qquad
+ v(v+1)=K(K-1)(J+jc)^2.
+\]
+For $G=2K-1$, reduction modulo $f$ still gives
+\[
+ G\equiv-\chi_A(2),\qquad
+ 2v+1\equiv-\chi_A(2p)\pmod f.
+\]
+The conclusions $f=\chi_A(m)$ and $c\mid m$ give the comparison
+bound $0<2p\le c\le m$. Also $K=(ic^2)^2$ gives
+$G\equiv-1\pmod c$ directly. The signed chi step-down and parity
+argument in the proof of Lemma~\ref{lem:doubled-main-index} therefore
+apply unchanged: they yield $J\equiv\pm p\pmod c$, exclude
+$J+p=c$, and conclude $p=J$. The old stronger divisibility of the
+second Pell coordinate is not used at this step.
+
+The exact first index, ratio estimates, common exponential witness,
+fixed-index recovery through $T_L=\psi_4(L)$, and coefficient
+decoding now proceed in the order proved for
+Theorem~\ref{thm:best99}. All their hypotheses have been recovered
+before use. This proves sufficiency of the modified system.
+
+For necessity, start with that theorem's positive witness construction.
+Its auxiliary index is the even number $m=2cJ$, and
+\[
+ f=\chi_A(m),\qquad i_{\mathrm{old}}=\psi_A(m)/c^2>0.
+\]
+Keep $f$ and set $i_{\mathrm{new}}=D i_{\mathrm{old}}>0$. Then
+\[
+ (i_{\mathrm{new}}c^2)^2
+  =D^2\psi_A(m)^2=D(f^2-1).
+\]
+The source value $K=D(f^2-1)$ has not changed. Thus the same odd
+$f$, the same $G$, and the positive $o,j$ constructed in
+Lemma~\ref{lem:doubled-main-index} still satisfy the signed norm.
+All other witnesses and fixed index components are preserved.
+
+\subsection{One multiplication is removed}
+
+Previously E16 and the shared coefficient $K$ required six
+instructions:
+\[
+ \begin{gathered}
+ z=ic^2,\quad z_2=z^2,\quad AE=Dz_2,\\
+ f_2=f^2,\quad R_{16}=AE+1,\quad K=D\,AE.
+ \end{gathered}
+\]
+The relaxed equation needs five:
+\[
+ z=ic^2,\quad K=z^2,\quad f_2=f^2,\quad
+ f_-=f_2-1,\quad R_{16}=D f_-.
+\]
+Test $K=R_{16}$ and use the already computed square $K$ in the
+signed norm. All other instructions remain unchanged.
+
+The exact triangular correction also becomes simpler. If
+\[
+ F_{16}=(ic^2)^2-D(f^2-1),\quad
+ K_s=D(f^2-1),\quad K_c=(ic^2)^2,
+\]
+then
+\[
+ F_{17}^{\mathrm{calc}}
+ =F_{17}^{\mathrm{source}}
+  -F_{16}(K_s+K_c-1)(J+jc)^2.
+\]
+The complete verifier checks this correction, the retained geometric
+and second-exponent corrections, all source residuals and primitive
+instructions, and the input domains. The Pell integrality and index
+claims are proved above, independently of the symbolic checks.
+
+\begin{theorem}\label{thm:best98-pell}
+Replacing E16 by \eqref{eq:relaxed-auxiliary-norm} in the system of
+Theorem~\ref{thm:best99} preserves its existential representation over
+34 positive integer unknowns and 22 equality tests. Its straight-line
+certificate has
+\[
+ \boxed{98=54\text{ multiplications}+44\text{ additions}}.
+\]
+Fixed numerals and supplied index parameters are free. The saving
+relative to Theorem~\ref{thm:best99} is one multiplication.
+\end{theorem}
+
+The full schedule, source polynomials and exact residual identities are
+recorded in the standalone checker
+\begin{center}\small
+\texttt{round28\_1980\_relaxed\_auxiliary\_certificate.py}
+\end{center}
+and its JSON receipt.

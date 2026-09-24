@@ -1,0 +1,1241 @@
+{
+  "status": "PASS_GEOMETRY_COMPATIBLE_UNSCALED_PELL_OBSTRUCTION",
+  "review": "Author and two independent complete proof/source/dependency reviews and fresh verification PASS; independent digit-carry calculations confirm all371 large coefficient valuations.",
+  "isolated_kernel_sources": [
+    {
+      "sign": 1,
+      "operations": 42,
+      "multiplications": 24,
+      "additions": 18,
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "s",
+        "U0",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux"
+      ],
+      "parameters": [
+        "D0",
+        "r"
+      ],
+      "positive_auxiliary_count": 16,
+      "equations": 10,
+      "dag": [
+        [
+          "sn2",
+          "*",
+          "s",
+          "D0"
+        ],
+        [
+          "UM",
+          "*",
+          "U0",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "U0"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "hpm1",
+          "*",
+          "h",
+          "UM"
+        ],
+        [
+          "R11",
+          "+",
+          "r1",
+          "hpm1"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "U0",
+          "cam2"
+        ],
+        [
+          "six_a",
+          "*",
+          6,
+          "a"
+        ],
+        [
+          "modulus",
+          "+",
+          "six_a",
+          8
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "modulus"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "discriminant",
+          "+",
+          "a_square",
+          "modulus"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "discriminant",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "discriminant",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "+",
+          "c",
+          "of"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "+",
+          "tr1",
+          "jc"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "index": 0,
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "D0**2*U0*k**2*s**2*(D0**2*U0*s**2 + 1) - tau*(tau + 1)",
+          "correction": "0"
+        },
+        {
+          "index": 1,
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "-D0*k*s + c - eta",
+          "correction": "0"
+        },
+        {
+          "index": 2,
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "index": 3,
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-D0*U0*h*s + k - r - 1",
+          "correction": "0"
+        },
+        {
+          "index": 4,
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "-D0*s*(U0 + 1) + a",
+          "correction": "0"
+        },
+        {
+          "index": 5,
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-U0 - a*c + d - ga*(6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 6,
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "index": 7,
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 8,
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j + 2*r + 1)**2)*(a**2 + 6*a + 8) - 1",
+          "correction": "(-y_aux**2 + (c*j + 2*r + 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+        },
+        {
+          "index": 9,
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j - c - f*o + 2*r + 1",
+          "correction": "0"
+        }
+      ],
+      "scope": "Only U=w*D0 is removed; U0 is a positive supplied coordinate. Y=s*D0 and every other source polynomial remain."
+    },
+    {
+      "sign": -1,
+      "operations": 42,
+      "multiplications": 24,
+      "additions": 18,
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "s",
+        "U0",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux"
+      ],
+      "parameters": [
+        "D0",
+        "r"
+      ],
+      "positive_auxiliary_count": 16,
+      "equations": 10,
+      "dag": [
+        [
+          "sn2",
+          "*",
+          "s",
+          "D0"
+        ],
+        [
+          "UM",
+          "*",
+          "U0",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "U0"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "hpm1",
+          "*",
+          "h",
+          "UM"
+        ],
+        [
+          "R11",
+          "+",
+          "r1",
+          "hpm1"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "U0",
+          "cam2"
+        ],
+        [
+          "six_a",
+          "*",
+          6,
+          "a"
+        ],
+        [
+          "modulus",
+          "+",
+          "six_a",
+          8
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "modulus"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "discriminant",
+          "+",
+          "a_square",
+          "modulus"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "discriminant",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "discriminant",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "-",
+          "of",
+          "c"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "-",
+          "jc",
+          "tr1"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "index": 0,
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "D0**2*U0*k**2*s**2*(D0**2*U0*s**2 + 1) - tau*(tau + 1)",
+          "correction": "0"
+        },
+        {
+          "index": 1,
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "-D0*k*s + c - eta",
+          "correction": "0"
+        },
+        {
+          "index": 2,
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "index": 3,
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-D0*U0*h*s + k - r - 1",
+          "correction": "0"
+        },
+        {
+          "index": 4,
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "-D0*s*(U0 + 1) + a",
+          "correction": "0"
+        },
+        {
+          "index": 5,
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-U0 - a*c + d - ga*(6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 6,
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "index": 7,
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 8,
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j - 2*r - 1)**2)*(a**2 + 6*a + 8) - 1",
+          "correction": "(-y_aux**2 + (c*j - 2*r - 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+        },
+        {
+          "index": 9,
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j + c - f*o - 2*r - 1",
+          "correction": "0"
+        }
+      ],
+      "scope": "Only U=w*D0 is removed; U0 is a positive supplied coordinate. Y=s*D0 and every other source polynomial remain."
+    }
+  ],
+  "shifted_identity": {
+    "symbolic_polynomial_identities": 24,
+    "exact_small_coefficient_valuations": 2298,
+    "finite_truncation_cases": 1152,
+    "admitted_divisibility_cases": 189,
+    "scope": "Small exact sums independently validate the shifted identity, Legendre valuations and the sufficient divisibility certificate. Failure of the sufficient condition is not asserted to imply nondivisibility."
+  },
+  "geometry_sources": {
+    "symbolic_equations": [
+      "kD=R",
+      "RH=H+q-1",
+      "RH=CZ",
+      "Rv=q",
+      "2r+1=q9+2P",
+      "r+betaP=q9"
+    ],
+    "equation_count": 6,
+    "scope": "Formal rational identities only; the concrete cases separately prove integrality and strict positivity of every defined coordinate."
+  },
+  "cases": [
+    {
+      "values": {
+        "C": 3,
+        "R": 3,
+        "A": 1,
+        "H": 10,
+        "k": 3,
+        "D": 1,
+        "Z": 10,
+        "v": 7,
+        "q": 21,
+        "D0": 794280046581,
+        "r": 397142905690,
+        "P": 2882400,
+        "betaP": 397137140891
+      },
+      "seven_exponent": 1,
+      "index_coefficient": 68891,
+      "main_index": 794285811381,
+      "three_exponent_in_scale": 9,
+      "seven_exponent_in_scale": 9,
+      "exact_Y_valuation_3": 11,
+      "shifted_coefficient_valuations_7": [
+        13,
+        13,
+        13,
+        13,
+        13,
+        12,
+        12,
+        13,
+        13
+      ],
+      "minimum_seven_certificate_margin": 4,
+      "exact_geometry_and_index_residuals": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "q_bits": 5,
+      "r_bits": 39,
+      "Y_divisible_by_scale": true,
+      "U_not_divisible_by_scale": true,
+      "even_index_and_all_kernel_bounds": true,
+      "scope": "Six exact geometry/index equations plus the complete positive isolated42 kernel. No tag fields, packing formula or content/length transports are supplied; U,Y and the Pell auxiliaries are not materialized."
+    },
+    {
+      "values": {
+        "C": 2187,
+        "R": 6561,
+        "A": 3,
+        "H": 6367776310567703142446578650678151,
+        "k": 3,
+        "D": 2187,
+        "Z": 19103328931703109427339735952034453,
+        "v": 6366805760909027985741435139224001,
+        "q": 41772612597324132614449555948448670561,
+        "D0": 387279710464119145147644935851731554936777840339005446654676379754773234843120794887727475556134747158292908501502981464525825250949435093119856465735880616244801827832263160996308820770131263731348768372523468613548967957216800019706755667641041060238660141170324701305089197660718362894071343181003286388271998409322549137578559786028641,
+        "r": 193639855232059572573822467925865786063755619245967935616496417043436855482963567579486647117225685896656483609901402998044093855548529086305669417931342405457502759499359069275765256306294693691988945861193148423957295823972953149578388563606944372942748500469719124278653498376575063381510769072384762714608563792430794179373345187522320,
+        "P": 8595366699076465212289158227166050238061403170135622909339158312317510029359149912265781181230073811539745741185063402097335101845583227488777610845921229061826314561674931414117182811845364553139725010729786423842823418429884556773626108899546215881934475097481883119520472564587769519610584065294508000,
+        "betaP": 193639855232059572573822467925865768873022221093037511038179962711336379360157227308240828438909061261636424891601578466481731395400906006814187047804538210787299068332904091720543564463836570039359822511330320189591672133243846870128367104034096687295911640700605577026435699284143299512560574108618523673663434616891754958205214598506321
+      },
+      "seven_exponent": 40,
+      "index_coefficient": 78849398407287110441440517561704247,
+      "main_index": 387279710464119145147644935851731572127511238491935871232992834086873710965927135158973294234451371793312967219802805996088187711097058172611338835862684810915005518998718138551530512612589387383977891722386296847914591647945906299156777127213888745885497000939438248557306996753150126763021538144769525429217127584861588358746690375044641,
+      "three_exponent_in_scale": 72,
+      "seven_exponent_in_scale": 360,
+      "exact_Y_valuation_3": 385,
+      "shifted_coefficient_valuations_7": [
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        382,
+        382,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        382,
+        382,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        382,
+        382,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        382,
+        382,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        382,
+        382,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        382,
+        382,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        381,
+        381,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384,
+        384,
+        384,
+        383,
+        383,
+        384,
+        384,
+        384
+      ],
+      "minimum_seven_certificate_margin": 24,
+      "exact_geometry_and_index_residuals": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "q_bits": 125,
+      "r_bits": 1124,
+      "Y_divisible_by_scale": true,
+      "U_not_divisible_by_scale": true,
+      "even_index_and_all_kernel_bounds": true,
+      "scope": "Six exact geometry/index equations plus the complete positive isolated42 kernel. No tag fields, packing formula or content/length transports are supplied; U,Y and the Pell auxiliaries are not materialized.",
+      "compatible_fixed_threshold_example": {
+        "beta": 2,
+        "a": 2,
+        "K": 9,
+        "Linit": 9,
+        "appendant_value": 3,
+        "C": 2187,
+        "scope": "Only the fixed numerical width/initial-domain thresholds of91 are checked. This is not a tag-history witness or a Neary specialization."
+      }
+    }
+  ],
+  "proof": "../1980/EXPLORATION_GEOMETRY_COMPATIBLE_UNSCALED_PELL.md",
+  "scope": "The retained3-adic geometry and exact scalar index interface do not restore the omitted U-scale divisibility or force q to be a power3. The complete91 tag system and any full90-operation deletion remain unrefuted."
+}

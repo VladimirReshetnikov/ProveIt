@@ -1,0 +1,216 @@
+% One addition saved by forcing the first Pell index to be a multiple.
+\section{Forcing a multiple of the Pell index}
+\label{sec:index-multiple}
+
+The first Pell index can be isolated with a single product in place of
+an affine congruence. Arrange that its parameter is congruent to one
+modulo the intended index. Then require its denominator to be a
+positive multiple of that index. Pell growth excludes every multiple
+after the first.
+
+Retain the fixed encoding and the shifted main parameter from
+Section~\ref{sec:main-base-four}, but change the intermediate scale to
+\[
+\begin{gathered}
+ N=n,\quad R=r,\quad U=wN^2,\quad Y_P=sN^2,\quad D=R+1,\\
+ M=DY_P,\quad a_0=M(U+1),\quad A=a_0+4,
+ \quad Q=UM^2,\quad P=2Q+1,\quad J=2R+1.
+\end{gathered}
+\]
+The supplied unknown $a$ still denotes $a_0$. Replace the old equation
+$k=R+1+hQ$ by
+\begin{equation}\label{eq:index-multiple}
+ k=h(R+1)=hD,\qquad h>0.
+\end{equation}
+Retain the triangular norm and positive interval
+\begin{equation}\label{eq:index-multiple-norm}
+ \tau(\tau+1)=Q(Q+1)k^2,\qquad
+ c=kY_P+\eta,\qquad k=\eta+\zeta,
+ \qquad \tau,\eta,\zeta>0.
+\end{equation}
+The scale $M$ is an intermediate value, so the changed scale affects
+the expanded source polynomials E9 and E12; equation
+\eqref{eq:index-multiple} changes E11. All other source polynomials
+in the supplied variables are unchanged.
+
+\subsection{Isolating the first positive multiple}
+
+The unchanged pre-Pell coding proof supplies
+\[
+ N=q^8,\quad q>4b\ge8,\quad
+ 3L\le B\le N\le R,\quad b,q\le N.
+\]
+Thus $N,R\ge64$, $U,Y_P\ge4096$, and $M\ge262144$.
+Equation~\eqref{eq:index-multiple} gives $k\ge R+1$, and the interval
+in~\eqref{eq:index-multiple-norm} gives
+\[
+ c>Y_Pk\ge Y_P(R+1)>2R+1=J.
+\]
+The generic signed Pell argument therefore gives
+$c=\psi_A(J)$ and $d=\chi_A(J)$.
+
+Put $\widehat\tau=2\tau+1$. The norm in
+\eqref{eq:index-multiple-norm} is precisely
+\[
+ \widehat\tau^2-(P^2-1)k^2=1,\qquad \widehat\tau>1.
+\]
+Hence $k=\psi_P(t)$ for a positive integer $t$.
+The new scale makes
+\[
+ P-1=2Q=2U(R+1)^2Y_P^2
+\]
+divisible by $D$. The elementary Pell congruence
+$\psi_P(t)\equiv t\pmod{P-1}$ therefore gives
+$k\equiv t\pmod D$. Equation~\eqref{eq:index-multiple} yields
+\begin{equation}\label{eq:index-positive-multiple}
+ t=mD=m(R+1),\qquad m\ge1.
+\end{equation}
+
+If $m\ge2$, then $t-1\ge2R+1$, and Pell growth gives
+\[
+ \frac ck\le\frac{(2A)^{2R}}{(2P-1)^{2R+1}}
+ <\left(\frac{2A}{2P-1}\right)^{2R}<\frac12.
+\]
+The last inequality follows from $2A/(2P-1)<1/2$; with the shifted
+parameter this is equivalent to
+\[
+ 4UM(M-1)-4M-15=4M\bigl(U(M-1)-1\bigr)-15>0.
+\]
+The initial bounds already imply it. This contradicts $c/k>Y_P$.
+Consequently
+\begin{equation}\label{eq:index-multiple-exact}
+ k=\psi_P(R+1),\qquad\widehat\tau=\chi_P(R+1).
+\end{equation}
+The conclusion uses no exponent relation or binomial rounding.
+No parity condition on the positive quotient $h$ is required.
+
+\subsection{Preserving the approximation and the encoding}
+
+At the recovered indices, the principal ratio still cancels the scale:
+\[
+ \frac{(2M(U+1))^{2R}}{(4UM^2)^R}
+ =\xi:=\frac{(U+1)^{2R}}{U^R}.
+\]
+The lower estimate of Section~\ref{sec:main-base-four} uses only
+$14Q>a_0$, which remains true. Its upper estimate uses
+\[
+ \frac{8R}{a_0}
+ =\frac{8R}{(R+1)Y_P(U+1)}
+ <\frac8{Y_P(U+1)}<\frac12.
+\]
+Thus the same growth and binomial estimates give
+\begin{equation}\label{eq:index-multiple-ratio}
+ \xi<\frac ck
+ <\xi\left(1+\frac{16R}{a_0}\right)
+ <\xi\left(1+\frac{16}{Y_P(U+1)}\right).
+\end{equation}
+In particular $\xi<Y_P+1$, so $Y_P\ge U^R$ and
+\[
+ A>a_0=(R+1)Y_P(U+1)>RU^R,
+ \qquad 0<\frac ck-\xi<\frac{32}{U+1}<\frac12.
+\]
+These are exactly the size and error bounds needed after index
+recovery in Section~\ref{sec:main-base-four}; they have been
+established here for the changed scale.
+
+Explicitly, $N,R\ge64$ and $bw\le U$ give
+\[
+ 4^{3J}\le64N^{2R}\le RU^R<A,
+ \qquad (bw)^3\le U^R<A.
+\]
+The unchanged base-four congruence yields $bw=4^J$, so $b$ is a
+power of two and $U\ge N4^J>4\cdot2^{2R}$.
+The unchanged second Pell norm, gap and index congruence give
+$\kappa=\psi_A(L)$ and $\mu=\chi_A(L)$.
+The inequalities
+\[
+ B^{3L}\le B^B\le N^N\le U^R<A,
+ \qquad q^3\le N^N\le U^R<A
+\]
+then give $q=B^L$ through the second exponent congruence.
+For $F=\lfloor\xi\rfloor$, the binomial expansion gives
+\[
+ 0<\xi-F<\frac14,\qquad
+ F\equiv\binom{2R}{R}\pmod U.
+\]
+Now $F<\xi<c/k<Y_P+1$ and
+$Y_P<c/k<\xi+1/2<F+3/4$ imply $Y_P=F$ by integrality.
+Thus $N^2\mid\binom{2R}{R}$. The unchanged no-carry and
+modular-Sidon decoding proves membership in the represented system.
+
+\subsection{Positive witnesses and the saved addition}
+
+Conversely, start with the canonical coding witnesses for a solution
+of the represented system. They determine $b,B,q,N,R$ before any Pell
+coordinates are chosen. As in Section~\ref{sec:main-base-four}, put
+\[
+ J=2R+1,\qquad w=4^J/b,\qquad U=N^2w,
+ \qquad Y_P=\lfloor\xi\rfloor,\qquad s=Y_P/N^2.
+\]
+The positive integrality of $w$ and $s$ depends only on these coding
+values and the binomial expansion, so it is unaffected by the scale
+change. Now form $M=(R+1)Y_P$, $a_0=M(U+1)$, $A=a_0+4$,
+$Q=UM^2$, $P=2Q+1$, and choose
+\[
+ c=\psi_A(J),\qquad d=\chi_A(J),\qquad k=\psi_P(R+1).
+\]
+Estimate~\eqref{eq:index-multiple-ratio} at these chosen indices
+gives $Y_P<c/k<Y_P+3/4$, so
+$\eta=c-kY_P$ and $\zeta=k-\eta$ are positive integers.
+Choose
+\[
+ \tau=\frac{\chi_P(R+1)-1}{2},\qquad h=\frac{k}{R+1}.
+\]
+The oddness of $P$ makes $\tau$ positive integral. Since
+$R+1\mid P-1$ and $\psi_P(R+1)\equiv R+1\pmod{P-1}$,
+$h$ is a positive integer and satisfies the new product equation.
+It is a supplied positive unknown; no division operation is omitted
+from the certificate.
+
+Choose the remaining dependent Pell witnesses using the generic
+constructions at this new $A$ from Section~\ref{sec:main-base-four}.
+In particular, after choosing positive $f,i$ for E16, take
+\[
+ G=1+(A+1)(f^2-1),\qquad
+ o=\frac{\chi_G(J)+d}{f},\qquad
+ j=\frac{\psi_G(J)-J}{c},
+\]
+and take $\kappa=\psi_A(L)$, $\mu=\chi_A(L)$,
+$\Delta=(\kappa-L)/(A-1)$ and $\phi=c-\kappa$.
+The same generic congruences and strict Pell growth make them positive
+integers. The exponent quotients are positive because
+\[
+ d-(A-4)c>3c>4^J,\qquad
+ \mu-(A-B)\kappa>(B-1)\kappa>B^L.
+\]
+Their moduli are positive, and the required inequalities
+$A>(4^J)^3,(B^L)^3$ were preserved above. Thus every witness is
+constructed with its required positive domain. All coding witnesses
+remain valid, while $M$ and its dependent Pell coordinates are
+recomputed; the old and new values of $h$ are not identified.
+
+\begin{theorem}\label{thm:best105}
+For each r.e.\ set, the fixed modular-Sidon encoding gives a
+membership-equivalent system in 34 positive unknowns and 22 equations
+with a straight-line certificate of \textbf{105 arithmetic instructions}:
+59 multiplications and 46 additions. Fixed numerals, supplied parameters
+and equality tests are free.
+\end{theorem}
+\begin{proof}
+The preceding arguments prove soundness and construct all positive
+witnesses for necessity. For the count, the existing instruction
+$r_1=r+1$ is moved before the computation of $M$. Replacing
+$M=rY_P$ by $M=r_1Y_P$ retains one multiplication. Replacing $hQ$
+by $hr_1$ also retains one multiplication, but the old addition
+$r_1+hQ$ disappears: the free equality now compares $k$ directly
+with $hr_1$.
+
+The other instructions retain their counts. Hence the 106-operation
+certificate loses one addition and has 59 multiplications and 46
+additions. The positive unknown and equation counts stay unchanged.
+The checker \file{round16\_1980\_index\_multiple\_certificate.py}
+verifies the three changed source residuals, every unchanged residual,
+both triangular corrections, all modified register identities, and
+the full serialized primitive certificate. Its fixed exponent is
+$L=2^{32}$.
+\end{proof}

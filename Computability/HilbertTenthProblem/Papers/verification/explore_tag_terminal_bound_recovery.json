@@ -1,0 +1,333 @@
+{
+  "status": "PASS_CONDITIONAL_TAG_TERMINAL_BOUND_RECOVERY",
+  "full_review_gates": [
+    "author",
+    "root",
+    "independent_affine"
+  ],
+  "source": {
+    "operations": 31,
+    "multiplications": 14,
+    "additions": 17,
+    "source_comparisons": 10,
+    "Boolean_fields": 10,
+    "deleted_coordinate": "alphaN",
+    "deleted_comparison": "Nfinal+alphaN=Lfinal",
+    "inherited_arithmetic_without_boundary_sums": 29,
+    "positive_remainder_identity": "H*(-K + R) + K*(Li - 2*Ni) + 2*M0*R + M1*R*(Af - 2*U - 1) + Nb*(-2*K + 2*R) + 2*R*d",
+    "dag": [
+      [
+        "radix",
+        "*",
+        81,
+        "A"
+      ],
+      [
+        "padding",
+        "*",
+        "A",
+        "H"
+      ],
+      [
+        "G",
+        "+",
+        "Q",
+        "padding"
+      ],
+      [
+        "headsum",
+        "+",
+        "S0",
+        "S1"
+      ],
+      [
+        "twice_Q",
+        "*",
+        2,
+        "Q"
+      ],
+      [
+        "marker1",
+        "+",
+        "twice_Q",
+        "S1"
+      ],
+      [
+        "lengthsum",
+        "+",
+        "M0",
+        "M1"
+      ],
+      [
+        "content_sum",
+        "+",
+        "N",
+        "Nbar"
+      ],
+      [
+        "twice_content",
+        "*",
+        2,
+        "content_sum"
+      ],
+      [
+        "content_length",
+        "+",
+        "twice_content",
+        "H"
+      ],
+      [
+        "prefix_scale",
+        "*",
+        1,
+        "H"
+      ],
+      [
+        "prefix_sum",
+        "+",
+        "E",
+        "Ebar"
+      ],
+      [
+        "prefix_tail",
+        "*",
+        3,
+        "E"
+      ],
+      [
+        "d",
+        "+",
+        "prefix_tail",
+        "S1"
+      ],
+      [
+        "n_append",
+        "*",
+        1,
+        "M1"
+      ],
+      [
+        "n_trim",
+        "-",
+        "N",
+        "d"
+      ],
+      [
+        "n_output",
+        "+",
+        "n_trim",
+        "n_append"
+      ],
+      [
+        "n_left",
+        "*",
+        "R",
+        "n_output"
+      ],
+      [
+        "n_end",
+        "*",
+        "q",
+        "Nfinal"
+      ],
+      [
+        "n_initial",
+        "-",
+        "N",
+        "Ninit"
+      ],
+      [
+        "n_shift",
+        "+",
+        "n_initial",
+        "n_end"
+      ],
+      [
+        "n_right",
+        "*",
+        9,
+        "n_shift"
+      ],
+      [
+        "l_append",
+        "*",
+        9,
+        "M1"
+      ],
+      [
+        "l_output",
+        "+",
+        "M0",
+        "l_append"
+      ],
+      [
+        "l_left",
+        "*",
+        "R",
+        "l_output"
+      ],
+      [
+        "l_end",
+        "*",
+        "q",
+        "Lfinal"
+      ],
+      [
+        "l_initial",
+        "-",
+        "L",
+        "Linit"
+      ],
+      [
+        "l_shift",
+        "+",
+        "l_initial",
+        "l_end"
+      ],
+      [
+        "l_right",
+        "*",
+        3,
+        "l_shift"
+      ],
+      [
+        "initial_bound",
+        "+",
+        "Linit",
+        "alphaI"
+      ],
+      [
+        "halt_bound",
+        "+",
+        "Lfinal",
+        "alphaH"
+      ]
+    ]
+  },
+  "histories": {
+    "fully_checked_halting_histories": 944,
+    "checked_source_rows": 2318,
+    "longer_runs_unclassified": 428,
+    "regression_step_limit": 20,
+    "new_comparisons_per_witness": 10,
+    "restored_predecessor_comparisons": 11,
+    "post_halt_witness_rows": 3,
+    "post_halt_actual_halting_time": 1
+  },
+  "unbounded_terminal_candidates": [
+    {
+      "radix_exponent": 6,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1
+      ],
+      "projector_candidates": 4096,
+      "accepted_length_words": 4,
+      "full_content_candidates": 128,
+      "integral_terminal_solutions": 4,
+      "negative_terminals": 0,
+      "accepted_full_certificates": 4,
+      "failed_recovered_bound": 0
+    },
+    {
+      "radix_exponent": 6,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0
+      ],
+      "projector_candidates": 4096,
+      "accepted_length_words": 3,
+      "full_content_candidates": 128,
+      "integral_terminal_solutions": 2,
+      "negative_terminals": 0,
+      "accepted_full_certificates": 2,
+      "failed_recovered_bound": 0
+    },
+    {
+      "radix_exponent": 6,
+      "rows": 3,
+      "beta": 2,
+      "appendant": [
+        1,
+        0
+      ],
+      "projector_candidates": 262144,
+      "accepted_length_words": 6,
+      "full_content_candidates": 1344,
+      "integral_terminal_solutions": 2,
+      "negative_terminals": 0,
+      "accepted_full_certificates": 2,
+      "failed_recovered_bound": 0
+    },
+    {
+      "radix_exponent": 7,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1
+      ],
+      "projector_candidates": 16384,
+      "accepted_length_words": 8,
+      "full_content_candidates": 640,
+      "integral_terminal_solutions": 12,
+      "negative_terminals": 0,
+      "accepted_full_certificates": 12,
+      "failed_recovered_bound": 0
+    },
+    {
+      "radix_exponent": 7,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0
+      ],
+      "projector_candidates": 16384,
+      "accepted_length_words": 4,
+      "full_content_candidates": 256,
+      "integral_terminal_solutions": 4,
+      "negative_terminals": 0,
+      "accepted_full_certificates": 4,
+      "failed_recovered_bound": 0
+    },
+    {
+      "radix_exponent": 7,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0,
+        0
+      ],
+      "projector_candidates": 16384,
+      "accepted_length_words": 1,
+      "full_content_candidates": 32,
+      "integral_terminal_solutions": 2,
+      "negative_terminals": 0,
+      "accepted_full_certificates": 2,
+      "failed_recovered_bound": 0
+    },
+    {
+      "radix_exponent": 8,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0,
+        0
+      ],
+      "projector_candidates": 65536,
+      "accepted_length_words": 2,
+      "full_content_candidates": 160,
+      "integral_terminal_solutions": 4,
+      "negative_terminals": 0,
+      "accepted_full_certificates": 4,
+      "failed_recovered_bound": 0
+    }
+  ],
+  "proof": "../1980/EXPLORATION_TAG_TERMINAL_BOUND_RECOVERY.md",
+  "scope": "Exact positive-slack extension to the conditional32 interface. No terminal upper-bound filter is used in the new candidate gate. Boolean masks, power geometry, positive word adapters and raw numerical input encoding remain unpaid; no universal arithmetic bound."
+}

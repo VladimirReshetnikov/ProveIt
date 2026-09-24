@@ -1,0 +1,356 @@
+% Continuously revised edition; last source revision 24 September 2026.
+% Every discrepancy from the printed article is explained in jones1980_editorial_notes.md;
+% a dated log of revisions and checks is ../EDITORIAL_NOTES.md.
+% Corrected transcription of James P. Jones, Bull. Amer. Math. Soc. (N.S.)
+% 3 (1980), 859--862. DOI: 10.1090/S0273-0979-1980-14832-6.
+% Prepared from the supplied scan and Mathpix OCR. See jones1980_editorial_notes.md.
+% Compile twice with: pdflatex jones1980_corrected.tex
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.82in,headheight=14pt,marginparwidth=0.55in,marginparsep=4pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{marginnote}
+\usepackage[hidelinks]{hyperref}
+% Original pagination: \origpage{n} puts the number of the Bulletin page
+% that begins on the current line into the margin (line accuracy).
+\newcommand{\origpage}[1]{\marginnote{\footnotesize\textbf{[#1]}}}
+\let\origpagemark\origpage
+\hypersetup{pdftitle={Undecidable Diophantine Equations -- corrected transcription},
+ pdfauthor={James P. Jones},pdfsubject={Corrected transcription of the 1980 article}}
+\newtheorem{theorem}{Theorem}
+\newcommand{\Matijasevic}{Matijasevi\v{c}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small JAMES P. JONES}
+\fancyhead[R]{\small UNDECIDABLE DIOPHANTINE EQUATIONS}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\parindent}{1.3em}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{1.5em}
+\setlength{\jot}{5pt}
+\title{\vspace{-1.5em}\Large\bfseries UNDECIDABLE DIOPHANTINE EQUATIONS}
+\author{\normalsize JAMES P. JONES}
+\date{}
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\vspace{-1.8em}
+\begin{center}
+\small \textit{Bulletin (New Series) of the American Mathematical Society}\\
+Volume 3, Number 2, September 1980, pp.\ 859--862\\
+\href{https://doi.org/10.1090/S0273-0979-1980-14832-6}{doi:10.1090/S0273-0979-1980-14832-6}
+\end{center}
+\vspace{-0.5em}
+\begin{quote}\footnotesize
+Corrected transcription, continuously revised: every discrepancy between the printed announcement and this edition is explained in \texttt{Papers/1980/}\allowbreak\texttt{jones1980\_editorial\_notes.md}, and a dated log of revisions and checks is \texttt{Papers/EDITORIAL\_NOTES.md}. Mathematical and bibliographic
+emendations are documented in the accompanying editorial notes. The results
+and bounds are those announced in the 1980 article, not a survey of later work.
+The margin numbers [859]--[862] mark the lines on which the pages of the
+original printing begin.
+\end{quote}
+
+% Original p. 859 (title page). OCR: distinguish Greek nu (arity) from Latin v (index).
+\origpagemark{859}In 1900 Hilbert asked for an algorithm to decide the solvability of all
+diophantine equations, $P(x_1,\ldots,x_\nu)=0$, where $P$ is a polynomial
+with integer coefficients. In special cases of Hilbert's tenth problem,
+such algorithms are known. Siegel~\cite{Siegel} gives an algorithm for all
+polynomials $P(x_1,\ldots,x_\nu)$ of degree $\leqslant 2$. From the work of
+A.~Baker~\cite{Baker} we know that there is also a decision procedure for
+the case of homogeneous polynomials in two variables, $P(x,y)=c$.
+
+An essential step toward the eventual negative solution of the entire
+(unrestricted) form of Hilbert's tenth problem was taken in 1961 by Julia
+Robinson, Martin Davis and Hilary Putnam~\cite{DPR}. They proved that every
+recursively enumerable set $W$ can be represented in exponential
+diophantine form
+\[
+ x\in W\ \Longleftrightarrow\
+ \exists x_1,\ldots,x_\mu\;
+ P(x,x_1,\ldots,x_\mu,2^{x_1},\ldots,2^{x_\mu})=0,
+\]
+where $P$ is a polynomial with integer coefficients and $x_1,\ldots,x_\mu$
+range over positive integers.
+
+In 1970 Ju.~V.~\Matijasevic~\cite{Mat70} proved that the exponential
+relation $y=2^x$ is diophantine and hence that every r.e.\ set $W$ can be
+represented in polynomial (diophantine) form
+\[
+ x\in W\ \Longleftrightarrow\
+ \exists x_1,\ldots,x_\nu\;
+ P(x,x_1,\ldots,x_\nu)=0,
+\]
+where the unknowns $x_1,\ldots,x_\nu$ range over positive integers.
+
+Since there exist r.e.\ nonrecursive sets, \Matijasevic's theorem implies
+the undecidability of Hilbert's tenth problem. There is no algorithm to
+decide whether an arbitrary diophantine equation has a solution.
+
+\Matijasevic's theorem implies also the existence of particular undecidable
+families of diophantine equations. In fact there must exist universal
+diophantine equations, polynomial analogues of the universal Turing
+machine. This follows from the well-known fact that the r.e.\ sets
+$W_1,W_2,\ldots$ can be listed in such a way that the binary relation
+$x\in W_v$ is r.e.\ Hence by~\cite{DPR,Mat70} there exists a universal
+polynomial $U(x,v,x_1,\ldots,x_\nu)$ with the property
+\[
+ x\in W_v\ \Longleftrightarrow\
+ \exists x_1,\ldots,x_\nu\;
+ U(x,v,x_1,\ldots,x_\nu)=0.
+\]
+Thus a single polynomial, of a fixed degree and a fixed number of
+unknowns, can define every r.e.\ set by mere change of a parameter $v$.
+The existence of such\origpage{860} a universal polynomial follows immediately
+from~\cite{DPR,Mat70}. However, the construction of an actual example is
+a different matter. The first example to be specifically written down
+is given in~\cite{Jones78}. More recently the author has constructed
+further examples. These are given below, without proof. (The proof uses
+the code idea of~\cite{MR75} together with new methods of \Matijasevic\
+based on E.~Kummer's theorem about divisibility of binomial coefficients
+by prime powers.)
+
+\newpage
+% Original p. 860 begins at the \origpage{860} mark above, inside the last
+% paragraph; the forced break here keeps Theorem 1 on one page. OCR: q=b^{560} -> q=b^{5^{60}}.
+\noindent\textit{Editorial index convention.} In Theorems 1--3 the triples
+$\langle z,u,y\rangle$ are admissible polynomial codes: the triples constructed
+in (4.1) of Jones's 1982 \textit{Universal Diophantine Equation}, with the
+normalization specified in its \S3. This is the class of indices for which
+the common equivalences are proved. The precise coefficient convention is
+recorded in the editorial notes (entry 1980-08); an arbitrary unrelated
+positive triple is not automatically such a code.
+
+\begin{theorem}
+In order that $x\in W_{\langle z,u,y\rangle}$, it is necessary and
+sufficient that the following system of equations have a solution in
+positive integers.
+\end{theorem}
+\[
+\begin{gathered}
+ e\ell g^2+\alpha=(b-xy)q^2,\qquad q=b^{5^{60}},\\
+ \lambda+q^4=1+\lambda b^5,\qquad \theta+2z=b^5,\\
+ \ell=u+t\theta,\qquad e=y+m\theta,\qquad b=2^w,\\[2pt]
+ \binom{g+q^3-1-b\ell+\ell}{g}
+ \binom{\theta\lambda+e+\ell q^2}{\theta\lambda}\\[2pt]
+ {}\cdot
+ \binom{b^5q-2q+2(e-z\lambda)(1+xb^5+g)^4+b^5\lambda(1+q^4)}{b^5q-2q}
+ =2\eta+1.
+\end{gathered}
+\]
+Here we consider the r.e.\ sets to be indexed by three indices, $z,u,y$,
+instead of the usual one. This is an inessential restriction. To use
+indexing with a single parameter $v$, one need only add to our equations
+the equation
+\[
+ v=\bigl((zuy)^2+u\bigr)^2+y
+\]
+and regard $z,u,y$ as unknowns instead of parameters.\footnote{Editorial
+clarification: this gives a suitable effective one-parameter indexing;
+it need not coincide numerically with a previously chosen indexing.
+The displayed coding is injective on positive-integer triples.}
+
+As stated above, our system of equations has 12 unknowns, specifically
+$b,e,g,\ell,m,q,t,w,\alpha,\eta,\theta,\lambda$, and four parameters,
+$z,u,y,x$. An exponential equation, $b=2^w$, appears, and the last line
+is a product of three binomial coefficients. In the next system the
+number of binomial coefficients is reduced to one.
+
+\begin{theorem}
+In order that $x\in W_{\langle z,u,y\rangle}$, it is necessary and
+sufficient that the following system of equations have a solution in
+positive integers.
+\end{theorem}
+\[
+\begin{gathered}
+ e\ell g^2+\alpha=(b-xy)q^2,\qquad q=b^{5^{60}},\\
+ \lambda+q^4=1+\lambda b^5,\qquad \theta+2z=b^5,\\
+ \ell=u+t\theta,\qquad e=y+m\theta,\qquad b=2^w,\qquad n=q^{16},\\
+\begin{aligned}
+ r={}&\Bigl[g+eq^3+\ell q^5\\
+     &\quad+\bigl(2(e-z\lambda)(1+xb^5+g)^4
+                   +\lambda b^5+\lambda b^5q^4\bigr)q^7\Bigr](n^2-n)\\
+     &+\Bigl[q^3-b\ell+\ell+\theta\lambda q^3+(b^5-2)q^8\Bigr](n^2-1),
+\end{aligned}\\[2pt]
+ % OCR: n n^2 -> eta n^2. It is NOT eta 2^n.
+ \eta n^2=\binom{2r}{r}.
+\end{gathered}
+\]
+Here there are fourteen unknowns,
+$b,e,g,\ell,m,n,q,r,t,w,\alpha,\eta,\theta,\lambda$, and the four parameters
+$x,z,u,y$. Only one binomial coefficient and one exponential\origpage{861} function
+appear. Next these are eliminated so that we obtain a system of purely
+polynomial equations.
+
+\newpage
+% Original p. 861 begins at the \origpage{861} mark above; the forced break
+% here keeps Theorem 3 on one page.
+\enlargethispage{4\baselineskip}
+\begin{theorem}
+In order that $x\in W_{\langle z,u,y\rangle}$, it is necessary and
+sufficient that the following system of equations have a solution in
+positive integers.\footnote{Editorial emendation: the equation for $d$
+contains $4a\gamma$, with Latin $a$, not $4\alpha\gamma$ as printed in the
+1980 article. The latter is an original typographical error, not an OCR
+error; see the accompanying notes for corroboration and the Pell-equation
+congruence that supports the correction.}
+\end{theorem}
+\[
+\begin{gathered}
+ e\ell g^2+\alpha=(b-xy)q^2,\qquad q=b^{5^{60}},\\
+ \lambda+q^4=1+\lambda b^5,\qquad \theta+2z=b^5,\\
+ \ell=u+t\theta,\qquad e=y+m\theta,\qquad n=q^{16},\\
+\begin{aligned}
+ r={}&\Bigl[g+eq^3+\ell q^5\\
+     &\quad+\bigl(2(e-z\lambda)(1+xb^5+g)^4
+                   +\lambda b^5+\lambda b^5q^4\bigr)q^7\Bigr](n^2-n)\\
+     &+\Bigl[q^3-b\ell+\ell+\theta\lambda q^3+(b^5-2)q^8\Bigr](n^2-1),
+\end{aligned}\\
+ p=2ws^2r^2n^6,\qquad p^2k^2-k^2+1=\tau^2,\\
+ 4(c-ksn^2)^2+\eta=k^2,\\
+ k=r+1+hp-h,\qquad a=(wn^2+1)rsn^2,\\
+ c=2r+1+\varphi,\qquad d=bw+ca-2c+4a\gamma-5\gamma,\\
+ d^2=(a^2-1)c^2+1,\qquad f^2=(a^2-1)i^2c^4+1,\\
+ (d+of)^2=\Bigl(\bigl(a+f^2(d^2-a)\bigr)^2-1\Bigr)(2r+1+jc)^2+1.
+\end{gathered}
+\]
+The equations of Theorem~3 have twenty-eight unknowns,
+\[
+ a,b,c,d,e,f,g,h,i,j,k,\ell,m,n,o,p,q,r,s,t,w,
+ \alpha,\gamma,\eta,\theta,\lambda,\tau,\varphi.
+\]
+The degree is $5^{60}$; however, the equation $q=b^{5^{60}}$ can be
+replaced by certain others of low degree. In fact, by introducing some
+30 additional unknowns and new equations one can reduce the degree of
+the system to 2. Then, by transposing terms to one side and summing
+squares, one can construct a universal diophantine equation in
+58 unknowns and of degree 4.
+
+Alternatively, one may try instead to reduce the total number of
+unknowns, $\nu$. In~\cite{MR75} Julia Robinson and Ju.~\Matijasevic\ showed
+that $\nu$ can be reduced universally to 13. More recently
+\Matijasevic~\cite{Mat77} has improved this to $\nu=9$. The corresponding
+value of the degree, $\delta$, is, however, very large. The following
+table gives various simultaneous possibilities for $\delta$ and $\nu$,
+sufficient for a universal equation.
+
+\begin{theorem}
+The following universal constructions are reported. The large degrees
+written in scientific notation are approximate sizes, not exact
+integer degree bounds.
+\end{theorem}
+\begin{center}
+\renewcommand{\arraystretch}{1.13}
+\begin{tabular}{@{}rr@{\qquad\qquad}rr@{}}
+\toprule
+$\nu$ & $\delta$ & $\nu$ & $\delta$\\
+\midrule
+58 & 4  & 21 & 96\\
+38 & 8  & 19 & 2668\\
+32 & 12 & 14 & $\approx 2.0\times10^5$\\
+29 & 16 & 13 & $\approx 6.6\times10^{43}$\\
+28 & 20 & 12 & $\approx 1.3\times10^{44}$\\
+26 & 24 & 11 & $\approx 4.6\times10^{44}$\\
+25 & 28 & 10 & $\approx 8.6\times10^{44}$\\
+24 & 36 & 9  & $D_9$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Here the nine-unknown degree is the expression reported in the
+later full derivation (Jones, 1982, \S3):
+\[
+ D_9=47216\cdot5^{58}+9728
+     \approx1.638134073\times10^{45}<1.7\times10^{45}.
+\]
+\noindent The printed $1.6\times10^{45}$ rounds this expression downward.
+The editorial notes (entry 1980-18) distinguish evaluation of this exact expression
+from a fresh derivation of the complete relation-combining degree.
+
+
+% Original p. 862 begins here. New pagination continues without a forced page break.
+\origpage{862}A different measure of size and complexity of a system of diophantine
+equations is the total number of indicated arithmetical operations, $o$,
+i.e.\ the number of additions, subtractions and multiplications necessary
+to evaluate or determine the correctness of a proposed solution. For the
+equations of Theorem~3, modified to do away with $q=b^{5^{60}}$, it can be
+shown that $o=100$. This number, $o$, can be given an interesting
+interpretation as a proof-theoretic complexity bound.
+
+Via G\"odel numbering, the theorems of an effectively axiomatizable theory
+$T$ become, in effect, an r.e.\ set, and the search for proofs becomes the
+search for solutions of a diophantine equation. A formal deduction is effectively recoverable from such a solution,
+but this recoverability does not assert preservation of proof length
+or computational complexity. Hence we have
+
+\begin{theorem}
+For any effectively axiomatizable theory $T$ and any proposition $P$, if
+$P$ has a proof in $T$, then $P$ has another proof consisting of
+100 additions and multiplications of integers.\footnote{Editorial
+clarification: ``another proof'' here means an arithmetic certificate
+under a fixed effective encoding of provability, not necessarily a
+100-step derivation in the original proof calculus of $T$. The count is
+of the indicated arithmetic operations on whole integers in the modified
+system; it is not a bound on the lengths of the integers, the number of
+bit operations, or the work of finding a certificate. The preceding
+operation-count definition includes subtraction. The count 100 is
+reproduced by counting every indicated sign of Theorem~3 once (powers not
+counted); that reading, and certificates under a calculator model, are
+examined in \texttt{jones1980\_theorem5\_operations.pdf} in this directory.}
+\end{theorem}
+
+For the universal equations in~\cite{Jones78} the value of $o$ was 243.
+The bound obtained here is $o=100$. As with $\nu$ and $\delta$, it would be
+interesting to know the minimum value of $o$.
+
+\begin{thebibliography}{7}
+\small
+\bibitem{Baker}
+A.~Baker, \textit{Contributions to the theory of diophantine equations. I},
+Philos.\ Trans.\ Roy.\ Soc.\ London Ser.~A \textbf{263} (1968), 173--191.
+
+\bibitem{DPR}
+Martin Davis, Hilary Putnam and Julia Robinson,
+\textit{The decision problem for exponential diophantine equations},
+Ann.\ of Math.\ (2) \textbf{74} (1961), 425--436.
+
+\bibitem{Jones78}
+J.~P.~Jones, \textit{Three universal representations of recursively
+enumerable sets}, J.\ Symbolic Logic \textbf{43} (1978), 335--351.
+
+\bibitem{Mat70}
+Ju.~V.~\Matijasevic, \textit{Enumerable sets are diophantine},
+Dokl.\ Akad.\ Nauk SSSR \textbf{191} (1970), 279--282.
+English transl.: Soviet Math.\ Doklady \textbf{11} (1970), 354--357.
+
+\bibitem{Mat77}
+Ju.~V.~\Matijasevic, \textit{Some purely mathematical results inspired by
+mathematical logic}, in \textit{Logic, Foundations of Mathematics, and
+Computability Theory} (Robert E.~Butts and Jaakko Hintikka, eds.),
+Reidel, Dordrecht, Holland, 1977, pp.\ 121--127.
+
+\bibitem{MR75}
+Ju.~V.~\Matijasevic\ and Julia Robinson,
+\textit{Reduction of an arbitrary diophantine equation to one in
+13 unknowns}, Acta Arith.\ \textbf{27} (1975), 521--553.
+
+\bibitem{Siegel}
+Carl L.~Siegel, \textit{Zur Theorie der quadratischen Formen},
+Nachr.\ Akad.\ Wiss.\ G\"ottingen Math.-Phys.\ Kl.~II 1972, 21--46.
+\end{thebibliography}
+
+\vspace{0.5em}
+\noindent\small\textsc{Department of Mathematics and Statistics,
+University of Calgary, Calgary, Alberta, Canada, T2N 1N4}
+
+\vspace{1em}
+\noindent\footnotesize
+Received by the editors March 5, 1980.\\
+\textit{AMS (MOS) subject classifications (1970).}
+Primary 02F25, 10N05; Secondary 10B15.\\
+\copyright\ 1980 American Mathematical Society. Original publication code:
+\texttt{0002-9904/80/0000-0406/\$02.00}.
+\end{document}

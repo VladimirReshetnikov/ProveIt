@@ -8,6 +8,14 @@ problem results in Rocq. Its
 [`coverage ledger`](TuringDegrees/COVERAGE.md) records theorem-by-theorem parity
 and every explicit logical or effective-enumeration hypothesis.
 
+[`HilbertTenthProblem/`](HilbertTenthProblem/README.md) holds corrected
+editions of six articles by J. P. Jones and coauthors (1974–1984) on
+Diophantine representation of recursively enumerable sets and universal
+Diophantine equations, with per-article editorial notes, and their Lean
+formalization (library `Diophantine`): MRDP in both directions, the universal
+pair `(58, 4)`, prime-representing polynomials, and the register-machine
+proof of the exponential Diophantine representation.
+
 [`CombinatoryLogic/`](CombinatoryLogic/) contains independent Lean and
 Rocq/Coq proofs that pure SK, SKI, and the one-combinator Iota calculus
 simulate closed weak untyped lambda calculus.  The checked chain includes

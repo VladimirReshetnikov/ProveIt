@@ -1,0 +1,841 @@
+% Continuously revised edition; last source revision 24 September 2026.
+% Every discrepancy from the printed article is explained in jones1978_editorial_notes.md;
+% a dated log of revisions and checks is ../EDITORIAL_NOTES.md.
+% Compile with LuaLaTeX (two passes); no image or font files are required.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm,headheight=15pt,footskip=12mm,marginparwidth=14mm,marginparsep=3pt]{geometry}
+\usepackage{marginnote}
+% Original pagination: \origpage{n} puts the number of the journal page that
+% begins on the current line into the margin (line accuracy).
+\newcommand{\origpage}[1]{\marginnote{\footnotesize\textbf{[#1]}}}
+\usepackage{fontspec}
+\usepackage{amsmath,amsthm}
+\usepackage{unicode-math}
+\setmainfont{STIXTwoText}[Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+\setmathfont{STIXTwoMath-Regular.otf}
+% Devanagari for the epigraph: Noto Serif Devanagari when installed, otherwise the
+% Windows system font Nirmala UI, so that the source builds on a stock MiKTeX/Windows
+% installation (a build change of 14 September 2026; the glyph shapes differ, the text does not).
+\IfFontExistsTF{Noto Serif Devanagari}
+  {\newfontfamily\devanagarifont{Noto Serif Devanagari}[Script=Devanagari,Renderer=HarfBuzz]}
+  {\newfontfamily\devanagarifont{Nirmala UI}[Script=Devanagari,Renderer=HarfBuzz]}
+\usepackage{microtype,booktabs,longtable,enumitem,fancyhdr,needspace}
+\usepackage[hidelinks,unicode]{hyperref}
+\hypersetup{pdftitle={Three Universal Representations of Recursively Enumerable Sets — corrected edition},pdfauthor={James P. Jones; editorial corrections documented separately}}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{3pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\setlist{nosep,leftmargin=2.4em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small James P. Jones}
+\fancyhead[R]{\small Three universal representations}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\ednote}[1]{\footnote{\textit{Editorial note.} #1}}
+\newcommand{\NN}{\mathbb{N}_0}
+\newcommand{\WW}{\widehat W}
+\newcommand{\square}{\mdlgwhtsquare}
+\newcommand{\Sq}{\square}
+\title{\LARGE\bfseries Three Universal Representations\\of Recursively Enumerable Sets}
+\author{James P. Jones}
+\date{\small\textit{The Journal of Symbolic Logic} 43, no.\ 2 (June 1978), 335--351\\
+\small DOI: \href{https://doi.org/10.2307/2272832}{10.2307/2272832}\\[6pt]
+\small Corrected and re-typeset edition · 13 September 2026}
+\begin{document}
+\maketitle
+\begin{center}\small
+Received December 8, 1975; revised August 30, 1976.
+\end{center}
+\begin{quote}\small
+\textbf{Editorial convention.} Continuously revised edition: every discrepancy between the printed article and this edition is explained, with its justification, in \texttt{Papers/\allowbreak 1978/\allowbreak jones1978\_\allowbreak editorial\_\allowbreak notes.md}; a dated log of revisions and checks is \texttt{Papers/\allowbreak EDITORIAL\_NOTES.md}. Bracketed margin numbers mark the lines on which the pages of the original printing begin. This edition retains the article's historical perspective,
+structure, and reference numbering. Corrections to the mathematics, not just OCR,
+are recorded in the accompanying editorial notes. In particular, $\WW_n$ denotes
+the nonnegative-witness enumeration used in Theorems 1 and 2; $W_n$ denotes the
+integer-witness enumeration used in Theorem 3 and most of \S3. These enumerations
+have the same range of sets but are not equal term by term. Statements about
+``best results'', open problems, and future work are statements made in 1978,
+not a survey of the literature as of the date of this edition.
+\end{quote}
+\begin{center}
+{\devanagarifont\large इहैकस्थं जगत्कृत्स्नं पश्याद्य सचराचरम् ।\\
+मम देहे गुडाकेश यच्चान्यद्द्रष्टुमिच्छसि ॥}\footnotemark[1]
+\end{center}
+\footnotetext[1]{Ihaikasthaṃ jagat kṛtsnaṃ paśyādya sa-carācaram mama dehe guḍākeśa
+  yac cānyad draṣṭum icchasi.}
+\begin{quote}\small
+Whatever you wish can be seen all at once right here. This universal form can show
+you all that you now desire. Everything is here completely.\footnotemark[2]
+\end{quote}
+\footnotetext[2]{Bhagavad-Gītā, chapter 11, verse 7. In the original this paraphrase is
+itself footnote 2, attached to the transliteration, and ends ``---Bh.G., 11, text 7.''
+The Sanskrit, the transliteration and the paraphrase are as printed, except that the
+transliteration writes the anusvāra ṃ where the original has ṁ.}
+\setcounter{footnote}{2}
+\section*{§1. Introduction} \origpage{335}In his celebrated paper of 1931 [7], Kurt Gödel proved the existence of sentences undecidable in the axiomatized theory of numbers. Gödel's proof is constructive and such a sentence may actually be written out. Of course, if we follow Gödel's original procedure the formula will be of enormous length.
+
+Forty-five years have passed since the appearance of Gödel's pioneering work. During this time enormous progress has been made in mathematical logic and recursive function theory. Many different mathematical problems have been proved recursively unsolvable. Theoretically each such result is capable of producing an explicit undecidable number theoretic predicate. We have only to carry out a suitable arithmetization. Until recently, however, techniques were not available for carrying out these arithmetizations with sufficient efficiency.
+
+In this article we construct an explicit undecidable arithmetical formula, $F(x, n)$, in prenex normal form. The formula is explicit in the sense that it is written out in its entirety with no abbreviations. The formula is undecidable in the recursive sense that there exists no algorithm to decide, for given values of $n$, whether or not $F(n, n)$ is true or false. Moreover $F(n, n)$ is undecidable in the formal (axiomatic) sense of Gödel [7]. Given any of the usual axiomatic theories to which Gödel's Incompleteness Theorem applies, there exists a value of $n$ such that $F(n, n)$ is unprovable and irrefutable. Thus Gödel's Incompleteness Theorem can be ``focused'' into the formula $F(n, n)$. Thus some substitution instance of $F(n, n)$ is undecidable in Peano arithmetic, ZF set theory, etc.
+
+The formula $F(x, n)$ is given in the following theorem, the first of our three representations of recursively enumerable sets.
+
+\paragraph{Theorem 1.}\origpage{336}
+The r.e. sets of positive integers, $\WW_1,\WW_2,\ldots$, may be represented,
+for $x,n>0$, in the form
+\[
+\begin{aligned}
+x\in\WW_n\ \Longleftrightarrow\ {}
+&\exists a\,b\;\forall i_{\le n}\;\exists s\,w\,p\,q\;\forall j\,v\;\exists e\,g\;\Bigl\{
+(s+w)^2+3w+s=2i\\
+&\quad\wedge\Bigl(\bigl([j=w\wedge v=q]\vee[j=3i\wedge v=p+q]\\
+&\qquad\vee[j=s\wedge(v=p\vee(i=n\wedge v=q+x))]\\
+&\qquad\vee[j=3i+1\wedge v=pq]\bigr)\\
+&\qquad\longrightarrow\bigl(a=v+e+ejb\wedge v+g=jb\bigr)\Bigr)\Bigr\}.
+\end{aligned}
+\]
+
+$F(x, n)$ contains 11 quantified variables. These are understood to range over the nonnegative integers. The two variables $x$ and $n$ occur free. The matrix of $F(x, n)$ will be seen to contain the logical symbols ``$\wedge$'' (and), ``$\vee$'' (or) and ``$\longrightarrow$'' (implication). However, these may be done away with so as to obtain a pure polynomial equation as matrix. This is our second representation of r.e. sets.
+
+\paragraph{Theorem 2.}
+The same r.e. sets $\WW_1,\WW_2,\ldots$ may be represented, for $x,n>0$, by
+\[
+x\in\WW_n\ \Longleftrightarrow\
+\exists a\,b\;\forall i\;\exists s\,w\,p\,q\;\forall j\,v\;\exists e\,g
+\]
+\[
+\begin{aligned}
+&(n+s+1-i)\Bigl\{\bigl((s+w)^2+3w+s-2i\bigr)^2\\
+&\quad+\Bigl(\bigl[(j-w)^2+(v-q)^2\bigr]\\
+&\qquad\cdot\bigl[(j-s)^2+(v-p)^2\bigl((i-n)^2+(v-q-x)^2\bigr)\bigr]\\
+&\qquad\cdot\bigl[(j-3i)^2+(v-p-q)^2\bigr]
+              \bigl[(j-3i-1)^2+(v-pq)^2\bigr]-e-1\Bigr)^2\\
+&\qquad\cdot\Bigl([v+e+ejb-a]^2+[v+g-jb]^2\Bigr)\Bigr\}=0.
+\end{aligned}
+\]
+
+Both formulas are in prenex normal form. In both cases the quantifier prefix is of type $\exists^{2}\forall\exists^{4}\forall^{2}\exists^{2}$. Of course this prefix is not the shortest possible. Raphael Robinson [24] showed that $\exists \forall \exists^{4}$ is a sufficient prefix. Later Yuri Matijasevič [17] improved this to $\exists\forall\exists^{2}$. In this paper we have sought to minimize the matrix and this was achieved partially at the expense of the prefix. In this connection it should be mentioned also that all quantifiers interior to $\exists a$ may be bounded.
+
+Theorems 1 and 2 are based on the solution of Hilbert's Tenth Problem by Yuri Matijasevič [14], Martin Davis, Hilary Putnam and Julia Robinson [5], and work of Julia Robinson [23]. Although it was essentially a negative result, the solution of Hilbert's Tenth Problem has also a profound positive side as well, for example the possibility of polynomial representation of the sets of prime numbers, perfect numbers, etc. (cf. [9], [10], [11], [12]). Not only can we look forward to a progression of ever shorter formulas like $F(x, n)$ with its $\exists^{2}\forall\exists^{4}\forall^{2}\exists^{2}$ prefix, we can expect explicit undecidable formulas all of whose quantifiers are existential.
+
+To see why this is so, recall that the tenth problem of Hilbert concerned Diophantine equations. Hilbert [8] asked for an algorithm to decide their solvability. A Diophantine equation is a polynomial equation in which we are interested in solutions in integers, or sometimes, nonnegative integers. With each such equation is associated in a natural way a certain set or relation. A relation $R$ is said to be Diophantine if there exists a polynomial $P$ which defines $R$ in the sense that
+
+
+\begin{equation*}
+R\left(a_{1}, \cdots, a_{\kappa}\right) \leftrightarrow \exists x_{1}, \cdots, x_{\nu} P\left(a_{1}, \cdots, a_{\kappa}, x_{1}, \cdots, x_{\nu}\right)=0 \tag{1.1}
+\end{equation*}
+
+
+\origpage{337}holds for all $a_{1}, a_{2}, \cdots, a_{\kappa}$. Here the quantified variables, $x_{1}, \cdots, x_{\nu}$ are understood to run through the nonnegative integers, although the same class of relations is obtained if we use positive integers or integers, after the appropriate change of variables.\ednote{The original reads ``although it makes no difference whether we specify nonnegative integers, positive integers or integers.'' The class of Diophantine relations is the same for the three domains, but a given polynomial may define different relations over them; hence the distinction between $\WW_n$ and $W_n$ in this edition.} The variables $a_{1}, \cdots, a_{\kappa}$ are called parameters. The variables $x_{1}, \cdots, x_{\nu}$ are called unknowns. The coefficients of $P$ are assumed to be integers. It is best for the reader to think of $P\left(a_{1}, \cdots, a_{\kappa}, x_{1}, \cdots, x_{\nu}\right)$ as a polynomial in $x_{1}, \cdots, x_{\nu}$ only. For example, when we speak of the degree of $P$, we intend that the parameters $a_{1}, \cdots, a_{\kappa}$ be treated as numerical coefficients, and thus that they do not contribute to the degree.
+
+The central result of Davis, Putnam and Robinson [5], Matijasevič [14], from which the unsolvability of Hilbert's Tenth Problem follows, is that every recursively enumerable (r.e.) set is Diophantine. This result also implies the existence of a so-called universal Diophantine equation, an analogue for polynomials of the universal Turing machine.
+
+The existence of a universal Diophantine equation follows from the fact that the r.e. sets can be enumerated in a sequence $W_{1}, W_{2}, W_{3}, \cdots$, and that this enumeration can be done effectively, i.e. in such a way that the binary relation ' $x \in W_{n}$ ' is itself r.e. Since every r.e. relation is Diophantine, there must exist a polynomial $U\left(x, n, z_{1}, \cdots, z_{\nu}\right)$ with the property that $x \in W_{n}$ if and only if the equation
+
+
+\begin{equation*}
+U\left(x, n, z_{1}, \cdots, z_{\nu}\right)=0 \tag{1.2}
+\end{equation*}
+
+
+has a solution in the unknowns $z_{1}, \cdots, z_{\nu}$.
+
+
+Thus a single equation can define every r.e. set. Moreover, since every Diophantine set is r.e. (cf. [3, p. 66]), every Diophantine equation, in any degree and any number of unknowns, is equivalent to a fixed Diophantine equation, in a fixed degree and a fixed number of unknowns. (Two Diophantine equations are said to be equivalent if they are solvable for the same values of the parameters.)
+
+How small can such a universal equation be? While this question is immensely difficult and results here are unlikely ever to be best possible, it is nevertheless interesting to see how well we can do. In this paper we will prove that the following system of equations is universal.
+
+\paragraph{Theorem 3.}
+For any positive integers $x$ and $n$, in order that $x\in W_n$, it is necessary
+and sufficient that the following system of equations have a solution in
+nonnegative integers. The system retains its original collective label (1.3);
+its 36 equations are individually numbered here for reference.
+
+\begin{align}
+2n&=(u+v)^2+3v+u \tag{1.3.01}\label{sys:01}
+\end{align}
+\begin{align}
+\alpha&=\theta\beta+\theta \tag{1.3.02}\label{sys:02}
+\end{align}
+\begin{align}
+h+h\beta+h\beta v&=x+\rho+\rho\beta+\rho\beta u \tag{1.3.03}\label{sys:03}
+\end{align}
+\begin{align}
+(h+h\beta+h\beta v-\alpha)^2+x^2+\gamma+1&=\beta \tag{1.3.04}\label{sys:04}
+\end{align}
+\begin{align}
+z&=3n+\alpha^3 \tag{1.3.05}\label{sys:05}
+\end{align}
+\begin{align}
+z^{18}(z^6+2)(r+1)^2+1&=\psi^2 \tag{1.3.06}\label{sys:06}
+\end{align}
+\begin{align}
+t+e+e\beta+e\beta s&=\alpha+q\varphi \tag{1.3.07}\label{sys:07}
+\end{align}
+\begin{align}
+p+b+b\beta+b\beta w&=\alpha+q\phi \tag{1.3.08}\label{sys:08}
+\end{align}
+\begin{align}
+&\Bigl\{[3(s+w)^2+9w+3s-2r]^2\notag\\
+&\quad+\Bigl[(1+\beta+r\beta)^2(1+(\alpha-t-p)^2)(\beta-t^2-p^2)\notag\\
+&\qquad-(\alpha-t-p)^2-(g+1)(1+\beta+r\beta)^2\Bigr]^2\Bigr\}\notag\\
+&\quad\cdot\Bigl\{[3(s+w)^2+9w+3s+2-2r]^2\notag\\
+&\qquad+\Bigl[(1+\beta+r\beta)^2(1+(\alpha-tp)^2)(\beta-t^2-p^2)\notag\\
+&\qquad\quad-(\alpha-tp)^2-(g+1)(1+\beta+r\beta)^2\Bigr]^2\Bigr\}\notag\\
+&\quad\cdot(3g+2-r)(3n+g-r)=q\pi \tag{1.3.09}\label{sys:09}
+\end{align}
+\begin{align}
+\omega&=r+q+b+e+g+s+w+f'+g'+h'+i'+j' \tag{1.3.10}\label{sys:10}
+\end{align}
+\begin{align}
+\omega^3(\omega+2)(\sigma+1)^2+1&=\delta^2 \tag{1.3.11}\label{sys:11}
+\end{align}
+\begin{align}
+\eta&=\sigma r+\sigma \tag{1.3.12}\label{sys:12}
+\end{align}
+\begin{align}
+\eta&=b+(q'+\sigma)a' \tag{1.3.13}\label{sys:13}
+\end{align}
+\begin{align}
+\eta&=e+(r'+\sigma)b' \tag{1.3.14}\label{sys:14}
+\end{align}
+\begin{align}
+\eta&=g+(s'+\sigma)c' \tag{1.3.15}\label{sys:15}
+\end{align}
+\begin{align}
+\eta&=s+(t'+\sigma)d' \tag{1.3.16}\label{sys:16}
+\end{align}
+\begin{align}
+\eta&=w+(u'+\sigma)e' \tag{1.3.17}\label{sys:17}
+\end{align}
+\begin{align}
+\eta^3(\eta+2)(\zeta+1)^2+1&=\varepsilon^2 \tag{1.3.18}\label{sys:18}
+\end{align}
+\begin{align}
+\chi&=\zeta(\eta-r)(q'+\sigma)(r'+\sigma)(s'+\sigma)(t'+\sigma)(u'+\sigma) \tag{1.3.19}\label{sys:19}
+\end{align}
+\begin{align}
+y&=q+(1+\xi)(\eta-r) \tag{1.3.20}\label{sys:20}
+\end{align}
+\begin{align}
+y&=qf'+(q'+\sigma)k' \tag{1.3.21}\label{sys:21}
+\end{align}
+\begin{align}
+y&=qg'+(r'+\sigma)l' \tag{1.3.22}\label{sys:22}
+\end{align}
+\begin{align}
+y&=qh'+(s'+\sigma)m' \tag{1.3.23}\label{sys:23}
+\end{align}
+\begin{align}
+y&=qi'+(t'+\sigma)n' \tag{1.3.24}\label{sys:24}
+\end{align}
+\begin{align}
+y&=qj'+(u'+\sigma)p' \tag{1.3.25}\label{sys:25}
+\end{align}
+\begin{align}
+(\mu^2-1)\kappa^2+1&=\nu^2 \tag{1.3.26}\label{sys:26}
+\end{align}
+\begin{align}
+(\mu^2\chi^2-1)\lambda^2+1&=\upsilon^2 \tag{1.3.27}\label{sys:27}
+\end{align}
+\begin{align}
+5(c-\kappa\lambda y)^2+\iota&=\kappa^2\lambda^2 \tag{1.3.28}\label{sys:28}
+\end{align}
+\begin{align}
+\mu&=9\eta\chi y \tag{1.3.29}\label{sys:29}
+\end{align}
+\begin{align}
+\kappa&=\eta-z+1+k(\mu-1) \tag{1.3.30}\label{sys:30}
+\end{align}
+\begin{align}
+\lambda&=z+1+l(\mu\chi-1) \tag{1.3.31}\label{sys:31}
+\end{align}
+\begin{align}
+a&=\mu\chi+\mu \tag{1.3.32}\label{sys:32}
+\end{align}
+\begin{align}
+c&=m+\eta+1 \tag{1.3.33}\label{sys:33}
+\end{align}
+\begin{align}
+d^2&=(a^2-1)c^2+1 \tag{1.3.34}\label{sys:34}
+\end{align}
+\begin{align}
+f^2&=4(a^2-1)i^2c^4+1 \tag{1.3.35}\label{sys:35}
+\end{align}
+\begin{align}
+(d+\tau f)^2&=\bigl((a+f^2(f^2-a))^2-1\bigr)(\eta+1+2jc)^2+1 \tag{1.3.36}\label{sys:36}
+\end{align}
+
+\origpage{338}(1.3) is a system of 36 equations, each of degree $\leq 38$, in 67 unknowns. Of course, if we wish these 36 equations may be combined into a single equation. We have only to transpose all terms in the equations to one side and sum the squares. The resulting single universal equation, $U(x, n, \cdots)=0$, will then be of the 76th degree.
+
+As $n$ varies through the positive integers, the system of equations (1.3) defines every recursively enumerable set. This is, to our mind, the attraction of the universal equations. At once, these few equations define primes, Fibonacci numbers, Lucas numbers, perfect numbers, theorems of ZF, or indeed theorems of any other effectively axiomatizable theory.\ednote{``Effectively'' is added here, in the paragraph on the number 243 and in Corollary 1. The original reads ``any other axiomatizable theory'' here, ``an axiomatic theory $T$'' below and ``any axiomatizable theory $T$'' in Corollary 1. The theorems of a theory form an r.e.\ set only when its axioms are effectively given.}
+
+We have already mentioned the surprising property of the universal equation vis à vis the class of all Diophantine equations, namely that each Diophantine equation is equivalent to $U$, for some choice of $n$. The universal equations (1.3) thus constitute an upper limit of sorts on complexity. There is no need to consider Diophantine equations more lengthy than these, because every system of Diophantine equations, of any size, is equivalent to these.
+
+A natural measure of the size or complexity of a system of Diophantine equations is the number of operations (additions and multiplications), necessary to write the system. If we regard subtraction as merely a special form of addition, then the system (1.3) will be seen to involve 243 operations. (Combining the 36 equations into one equation would increase this number to 350.)
+
+The number 243 has an interesting proof theoretic interpretation. Since the solution of Hilbert's Tenth Problem by Matijasevič et al. [5], [14], logicians have known that all formalized mathematical proofs are reducible to a bounded number of arithmetical operations. This follows from the fact that the assertions of an effectively axiomatizable theory $T$ may be Gödel numbered so that the theorems become in effect an r.e. set, $W_{n}$. Hence a given proposition $P$, with Gödel number $x$, is provable in a theory $T$ just in case $x \in W_{n}$. Hence from Theorem 3 we obtain an absolute epistemological upper bound on the complexity of mathematical proofs.\ednote{What Theorem 3 bounds uniformly is the number of arithmetic operations needed to check a Diophantine certificate by the fixed system (1.3); see Corollary 1. It is not a bound on the sizes of the integers, on the time needed to find them, or on the length of an ordinary formal proof.}
+
+\paragraph{Corollary 1 (certificate interpretation).} For any effectively axiomatizable theory $T$ and any proposition $P$, if $P$ has a proof in $T$, then $P$ has a Diophantine certificate verified by the fixed system (1.3), with the stated count of 243 additions and multiplications of integers.\ednote{The original calls the certificate ``another proof''. The arithmetic-operation count does not include writing or searching for the potentially enormous witnesses, or the equality checks. The count 243 is the author\textquotesingle s reported figure. Counting every indicated $+$, $-$ and $\times$ sign of (1.3) once gives 241 (the two missing signs have not been located), and the same rule reproduces the counts 87 and 100 of the companion articles exactly; whether this is the intended reading is examined in the satellite article to the 1980 announcement (\texttt{1980/jones1980\_theorem5\_operations.pdf}).}
+
+In a future paper we will show that this number, 243, may be further reduced, to 149.
+
+As a measure of complexity, the number of operations in a Diophantine equation is very closely associated with the number of symbols necessary to write down the equation. A different measure of complexity is the number of unknowns, $\nu$, and the total degree, $\delta$. How many unknowns are necessary in a universal Diophantine equation and how small a degree is possible? As we mentioned, the equation (1.3) contains 67 unknowns and would have degree 76, after summing squares. But it is possible to do much better than these values since many unknowns in (1.3) are eliminable by substitution.
+
+In considering Diophantine equations from the point of view of their degree and number of unknowns, it will be convenient to have the following definition.
+
+\origpage{339}A pair of numbers, $(\nu, \delta)$ will be said to be a universal pair if there exists a universal Diophantine equation of degree $\delta$ in $\nu$ unknowns. Equivalently, we may define a pair $(\nu, \delta)$ to be universal if every Diophantine equation is equivalent to an equation of degree $\delta$ in $\nu$ unknowns. Note that the number of parameters makes no difference here. If $U\left(x, n, z_{1}, \cdots, z_{\nu}\right)$ is universal with respect to sets (1-ary relations), then $U\left(J_{\kappa}\left(x_{1}, \cdots, x_{\kappa}\right), n, z_{1}, \cdots, z_{\nu}\right)$ is universal with respect to $\kappa$-ary relations. Here $J_{\kappa}\left(x_{1}, \cdots, x_{\kappa}\right)$ is the usual polynomial pairing function. Note that the degree goes to infinity with $2^{\kappa}$ but only in the parameters and not in the unknowns.
+
+Let us consider the problem first from the point of view of reducing the degree $\delta$. Thoralf Skolem [27] showed how to reduce the degree of any Diophantine equation at the expense of the number of variables. All that is necessary is to break up products of large degree by introducing new unknowns, and new equations of the form $z=x y$ and $z=x+y$. By this method every Diophantine equation is reducible to an equation of degree 4, because a system of equations $A_{i}=B_{i}$, of degree 2, is equivalent to the single equation $\sum_i(A_i-B_i)^2=0$ of degree 4.
+
+Thus every Diophantine equation is reducible to an equivalent equation of degree 4. It is not possible to reduce every Diophantine equation to degree 2. This follows from work of Siegel who proved [26] that equations of degree 2, in any number of unknowns, define only recursive sets. Thus the degree 3 is left as the only unsettled case. It is an open problem whether Hilbert's Tenth Problem is decidable for equations of degree 3.
+
+The problem of the minimum number of unknowns is also open. Here the gap between what is known to be sufficient and what is known to be insufficient, is much wider. The best result obtained so far is that $\nu$ may be reduced to 9. Yuri Matijasevič and Julia Robinson proved [20] that every Diophantine equation is equivalent to an equation in 13 unknowns and later this number was further reduced to 9. It is not known how far these reductions can be continued. Obviously $2 \leq \nu$. However, the question of whether $2<\nu$ is still undecided. While certain work of Alan Baker makes $\nu=2$ seem unlikely, Siegel [26] has nevertheless speculated that there may exist nonrecursive Diophantine sets definable with only 2 unknowns.
+
+Concerning the universal pairs, the existence of such pairs follows from the existence of a universal Diophantine equation. Naturally, an explicit construction of such an equation gives actual examples of such pairs. The construction of this paper yields the following universal pairs:
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$(108,4)$ & $(62,20)$ & $(47,80)$ & $(43,156)$\\
+$(80,8)$ & $(56,24)$ & $(46,84)$ & $(42,300)$\\
+$(70,12)$ & $(49,56)$ & $(45,108)$ & $(41,348)$\\
+$(65,16)$ & $(48,60)$ & $(44,144)$ & $(40,1380)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Of course these pairs are not best possible.
+
+\section*{§2. Preliminary lemmas} \origpage{340}Lower case letters represent nonnegative integers. Upper case letters represent integers. $a \perp b$ means $a$ and $b$ are relatively prime, i.e. that the g.c.d. $(a,b)=1$. The notation $E=\square$ is an abbreviation for ' $E$ is a perfect square'. We shall also use the Cantor pairing functions $J, K$ and $L$ defined by
+
+$$
+2 J(s, w)=(s+w)^{2}+3 w+s, \quad J(K(y), L(y))=y .
+$$
+
+The function $J$ is one to one and onto. Also, for all $y, K(y) \leq y$ and $L(y) \leq y$. The following two lemmas are trivial examples of 'relation combining theorems'.
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.1.} If $u$ and $v$ are positive integers and $w$ is any integer, then $u \mid v$ and $0<w$ if and only if $(\exists t)\{u v w=v+t u\}$.
+
+\noindent\textit{Proof.} If $u \mid v$ and $0<w$ then $u v w-v$ is nonnegative and divisible by $u$. Hence $t$ may be found. Conversely, if such a nonnegative $t$ exists then $u \mid v$ and $0<w$.
+
+If $u$ or $v$ may be negative, this must be stated slightly differently.
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.2.} If $u, v$ and $w$ are any integers and $u \neq 0$, then
+
+$$
+u \mid v \quad \text { and } \quad 0<w \leftrightarrow(\exists t)\left\{u^{2}\left(1+v^{2}\right) w=v^{2}+(t+1) u^{2}\right\} .
+$$
+
+Lemma 2.2 is due to Matijasevič. The proof is similar to the proof of Lemma 2.1, cf. [25].
+
+Let $(x, y)$ denote the greatest common divisor of $x$ and $y$. Another lemma of Matijasevič [16], which we shall need, is the
+
+\par\medskip\noindent\textbf{Divisor Lemma.} For $n\geq1$ and any integers $s, t_{1}, \cdots, t_{n}$ with $s \geq 0$, if $s \mid t_{1} t_{2} \cdots t_{n}$, then it is possible to find integers $p$ and $i$ such that $p|s, p| t_{i}$ and $s^{1 / n} \leq p$.\ednote{The hypothesis $n\geq1$ is added; the original begins ``For any integers $s,t_1,\cdots,t_n$, $s\geq0$, if''.}
+
+\noindent\textit{Proof.} For any integers $s, t_{1}, \cdots, t_{n},\left(t_{1} t_{2} \cdots t_{n}, s\right) \mid\left(t_{1}, s\right)\left(t_{2}, s\right) \cdots\left(t_{n}, s\right)$. Hence if $s=\left(t_{1} t_{2} \cdots t_{n}, s\right)$, then $s \leq\left(t_{1}, s\right)\left(t_{2}, s\right) \cdots\left(t_{n}, s\right)$. Thus, for some $i$, $s^{1 / n} \leq\left(t_{i}, s\right)$. We may put $p=\left(t_{i}, s\right)$. The lemma is proved.
+
+This lemma will be used to prove a version of the Bounded Quantifier Theorem (BQT). This theorem, which reduces a bounded universal quantifier to Diophantine conditions, has undergone several refinements since its original inception (cf. [5], [2]). Most importantly, Matijasevič [16] was able to eliminate the factorial function. Here we state and prove a version in which all of the binomial coefficients have the same denominator.
+
+The BQT involves a polynomial, $P\left(\tau, a_{1}, \cdots, a_{m}, y, z_{1}, \cdots, z_{n}\right)$, which we may abbreviate by $P\left(y, z_{1}, \cdots, z_{n}\right)$, (think of $\tau, a_{1}, \cdots, a_{m}$ as parameters), where $n\geq1$, and a positive integer-valued dominating function $R(z)$, defined for $z\geq1$,\ednote{The conditions $n\geq1$, $R(z)\geq1$ and $z\geq1$ are added here, in Lemma 2.3 and in its proof of necessity. The original reads ``and a dominating function, $R(z)$ which we assume'' here, ``there exist nonnegative integers $z,r,z_1,\cdots,z_n$'' in the lemma, and ``and so that $z\geq\tau$'' in the proof. The proof uses $z_1$ and powers $1/z$; replacing $R$ by $\max(1,R)$ and taking $z\geq1$ does not change the predicate (A).} which we assume has been constructed so as to satisfy the condition
+
+
+\begin{equation*}
+\text { if } y, z_{1}, z_{2}, \cdots, z_{n}<z \text {, then }\left|P\left(y, z_{1}, z_{2}, \cdots, z_{n}\right)\right| \leq R(z) \text {. } \tag{D}
+\end{equation*}
+
+
+\par\Needspace{11\baselineskip}\medskip\noindent\textbf{Lemma 2.3 (The Bounded Quantifier Theorem).} In order that the predicate
+
+
+\begin{equation*}
+(\forall y)_{<\tau}\left(\exists z_{1}, \cdots, z_{n}\right)\left\{P\left(y, z_{1}, \cdots, z_{n}\right)=0\right\} \tag{A}
+\end{equation*}
+
+
+holds, it is necessary and sufficient that there exist integers $z\geq1$ and $r,z_1,\ldots,z_n\geq0$ such that
+
+\begin{samepage}\begin{itemize}
+  \item[(i)] \origpage{341}$P\left(r, z_{1}, \cdots, z_{n}\right)\left(\tau+z_{1}-r\right) \equiv 0\left(\bmod \binom{r}{z}\right)$,
+  \item[(ii)] $\tau \leq z$,
+  \item[(iii)] $(2 z z!R(z))^{z^{n}}+z \leq r$,
+  \item[(iv)] $\binom{r}{z} \left\lvert\,\binom{z_i}{z}\right.,(i=1,2, \cdots, n)$.
+\end{itemize}\end{samepage}
+
+\noindent\textit{Proof of sufficiency.} Suppose that $z, r, z_{1}, \cdots, z_{n}$ satisfy conditions (i)--(iv) and that condition (D) holds. Fix $y, 0 \leq y<\tau$. Then $y<\tau \leq z<r$ by (ii), (iii), and therefore $r-y \left\lvert\, z!\binom{r}{z}\right.$. Hence $r-y \left\lvert\, z!\binom{z_{i}}{z}\right.$, by (iv), and so
+
+
+\begin{equation*}
+r-y \mid z_{i}\left(z_{i}-1\right) \cdots\left(z_{i}-z+1\right) . \tag{1}
+\end{equation*}
+
+
+Let $p_{0}=r-y$. Apply the Divisor Lemma to (1) to obtain $p_{1}$ such that $p_{1} \mid p_{0}$, $p_{1} \mid z_{1}-z_{1}^{\prime}$ for some $z_{1}^{\prime}<z$ and $p_{1} \geq p_{0}^{1 / z}$. Apply the Divisor Lemma again to (1) with $p_{0}$ replaced by $p_{1}$, determining $p_{2}$ such that $p_{2}\left|p_{1}, p_{2}\right| z_{2}-z_{2}^{\prime}$ for some $z_{2}^{\prime}<z$, and $p_{2} \geq p_{1}^{1 / z}$. Continue applying the Divisor Lemma to produce $p_{0}, p_{1}, \cdots, p_{n}$ and $z_{1}^{\prime}, z_{2}^{\prime}, \cdots, z_{n}^{\prime}$ satisfying $p_i\mid p_{i-1}$, $p_i\mid z_i-z_i^{\prime}$, $0\leq z_i^{\prime}<z$ and $p_i\geq p_{i-1}^{1/z}$, for $1\leq i\leq n$. Then $p_{n} \mid p_{i}$ for all $i$, so $r \equiv y\left(\bmod p_{n}\right)$ and $z_{i} \equiv z_{i}^{\prime}\left(\bmod p_{n}\right)$. Hence
+
+$$
+z!P\left(y, z_{1}^{\prime}, \cdots, z_{n}^{\prime}\right)\left(\tau+z_{1}^{\prime}-y\right) \equiv z!P\left(r, z_{1}, \cdots, z_{n}\right)\left(\tau+z_{1}-r\right)\left(\bmod p_{n}\right) .
+$$
+
+Also, since $p_{n} \left\lvert\, z!\binom{r}{z}\right.$, (i) implies
+
+
+\begin{equation*}
+z!P\left(y, z_{1}^{\prime}, \cdots, z_{n}^{\prime}\right)\left(\tau+z_{1}^{\prime}-y\right) \equiv 0\left(\bmod p_{n}\right) . \tag{2}
+\end{equation*}
+
+
+By (iii)
+
+
+\begin{equation*}
+p_{n} \geq\left(p_{n-1}\right)^{1 / z} \geq\left(p_{n-2}\right)^{1 / z^{2}} \geq \cdots \geq p_{0}^{1 / z^{n}}=(r-y)^{1 / z^{n}}>(r-z)^{1 / z^{n}} \geq 2 z z!R(z) . \tag{3}
+\end{equation*}
+
+
+Now (D) implies that the left side of (2) is less than $2 z z!R(z)$ in absolute value. Thus (2) and (3) imply that the left side of (2) is zero. Also $y<\tau$, so $\tau+z_{1}^{\prime}-y>0$. Hence we have proved that (A) holds.
+
+\noindent\textit{Proof of necessity.} Assume that (A) holds. Then, for each $y, y<\tau$, nonnegative integers $z_{y, i}, \quad(i=1, \cdots, n)$, may be found to satisfy $P\left(y, z_{y, 1}, \cdots, z_{y, n}\right)=0$. Choose $z>z_{y,i}$ for all $y,i$, with $z\geq\max(1,\tau)$. Then (ii) holds. For $y$ such that $\tau \leq y<z$, put $z_{y, i}=y-\tau$. Then the inequality $z_{y, i}<z$ continues to hold. Choose $r$ so large that (iii) holds and also so that $(z!)^{2}\mid r+1$. Then
+
+
+\begin{equation*}
+\binom{r}{z}=\frac{r(r-1) \cdots(r-z+1)}{1 \cdot 2 \cdots z}=\left(\frac{r+1}{1}-1\right)\left(\frac{r+1}{2}-1\right) \cdots\left(\frac{r+1}{z}-1\right) \tag{4}
+\end{equation*}
+
+
+and the factors of (4) are positive integers.
+
+The identity $j((r+1)/j-1)-i((r+1)/i-1)=i-j$ implies that every common divisor of two distinct factors divides $i-j$. Each factor is congruent to $-1$ modulo $z!$, since $(z!)^2\mid r+1$. Because $|i-j|\mid z!$ for $1\leq i,j\leq z$, $i\ne j$, the factors of (4) are pairwise relatively prime.\ednote{The original reads ``The identity $j(r+1/j-1)-i(r+1/i-1)=i-j$ implies that the factors of (4) are pairwise relatively prime.'' The parentheses around $r+1$ are supplied, and the two middle sentences, which complete the argument, are added.} Hence we may apply the Chinese Remainder Theorem $n$-times to obtain nonnegative integers $z_{i},(i=1, \cdots, n)$ such that the congruences
+
+
+\begin{equation*}
+z_{i} \equiv z_{y, i}\left(\bmod \frac{r+1}{y+1}-1\right), \quad r \equiv y\left(\bmod \frac{r+1}{y+1}-1\right) \tag{5}
+\end{equation*}
+
+
+\origpage{342}hold for all $y<z$. Thus we have
+
+$$
+0=P\left(y, z_{y, 1}, \cdots, z_{y, n}\right)\left(\tau+z_{y, 1}-y\right) \equiv P\left(r, z_{1}, \cdots, z_{n}\right)\left(\tau+z_{1}-r\right)\left(\bmod \frac{r+1}{y+1}-1\right)
+$$
+
+for each $y<z$. Since the factors of (4) are pairwise relatively prime, (i) holds. The fact that $0 \leq z_{y, i}<z$, together with (5), implies that
+
+
+\begin{equation*}
+z!\binom{z_{i}}{z}=z_{i}\left(z_{i}-1\right) \cdots\left(z_{i}-(z-1)\right) \equiv 0\left(\bmod \frac{r+1}{y+1}-1\right) \tag{6}
+\end{equation*}
+
+
+for each $y<z$. By the choice of $r$, the modulus of (6) is prime to $z!$. Hence
+
+
+\begin{equation*}
+\binom{z_{i}}{z} \equiv 0\left(\bmod \frac{r+1}{y+1}-1\right), \quad \text { and therefore }\binom{z_{i}}{z} \equiv 0\left(\bmod \binom{r}{z}\right), \tag{7}
+\end{equation*}
+
+
+using again the fact that the factors of (4) are pairwise relatively prime. Thus (iv) holds. The BQT is proved.
+
+The next lemma will allow us to replace the exponential size condition, (iii), by a simple Diophantine equation.
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.4.} For $2 \leq J$, the condition
+
+
+\begin{equation*}
+J^{3}(J+2)(r+1)^{2}+1=\square \tag{8}
+\end{equation*}
+
+
+implies that $J-1+J^{J-2} \leq r$. Conversely, for any positive integers $J$ and $z$, it is possible to satisfy (8) with $r$ such that $z \mid r+1$.
+
+\noindent\textit{Proof.} Cf. [11] or [20].
+
+
+To define the binomial coefficients which appear in the BQT we use partial binomial expansions as in [20]. Proofs of the next two lemmas are elementary number theory.
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.5.} For $d>0$, if $a \equiv b(\bmod d)$, then $\binom{a}{z} \equiv\binom{b}{z}(\bmod d /(d, z!))$.\ednote{The hypothesis $d>0$ is added (the original begins ``If $a\equiv b\pmod d$''), so that the modulus $d/(d,z!)$ is a positive integer.}
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.6.} For $z<N$ and $N^{z}<X$, if $Y=\left\lfloor (X+1)^N/X^z\right\rfloor$, then $Y \equiv$ $\binom{N}{z}(\bmod X)$.
+
+Now denote by U0 the following system of $n+1$ binomial conditions:
+
+
+\begin{equation*}
+q=\binom{r}{z}, \quad q \left\lvert\,\binom{ z_{i}}{z} \quad(i=1, \cdots, n) .\right. \tag{U0}
+\end{equation*}
+
+
+We show that all $n+1$ binomials are definable from a single partial binomial, B0.
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.7.} For $z!+6<r$, if $z!\mid r+1$ and U0 holds, then it is possible to satisfy conditions B0--B8. Conversely, B0--B8 imply U0. Furthermore B1--B7 and $z!+6<r$ imply $z<N, 1<Y$ and $8 N^{z}<X$.
+\begin{align*}
+Y&=\left\lfloor\frac{(X+1)^N}{X^z}\right\rfloor, \tag{B0}\\
+W&=r+q+z_1+\cdots+z_n+b_1+\cdots+b_n, \tag{B1}\\
+W^3(W+2)(\sigma+1)^2+1&=\square, \tag{B2}\\
+N&=\sigma(r+1), \tag{B3}\\
+N&\equiv z_i\pmod{\sigma+d_i}\quad(i=1,\ldots,n), \tag{B4}\\
+N^3(N+2)(\zeta+1)^2+1&=\square, \tag{B5}\\
+X&=\zeta(N-r)(\sigma+d_1)\cdots(\sigma+d_n), \tag{B6}\\
+Y&=q+(\xi+1)(N-r), \tag{B7}\\
+Y&=qb_i+c_i(\sigma+d_i)\quad(i=1,\ldots,n). \tag{B8}
+\end{align*}
+
+\noindent\textit{Proof.} \origpage{343}Suppose that B0--B8 hold. It follows from B1, B2 and Lemma 2.4 that
+
+
+\begin{gather*}
+z!q+r<\sigma, \quad z!\binom{r}{z}+r<\sigma, \\
+z!q b_{i}<\sigma \quad \text { and } \quad z!\binom{z_{i}}{z}<\sigma \quad(i=1, \cdots, n) . \tag{9}
+\end{gather*}
+
+
+Furthermore $N>\sigma$ by B3 so that the inequalities (9) imply
+
+
+\begin{equation*}
+q<\frac{N-r}{z!}, \quad\binom{r}{z}<\frac{N-r}{z!}, \quad q b_{i}<\frac{\sigma+d_{i}}{z!} \quad \text { and } \quad\binom{z_{i}}{z}<\frac{\sigma+d_{i}}{z!} . \tag{10}
+\end{equation*}
+
+
+Now B2 and B3 imply $N>\sigma>r>z+2$. So $X>\zeta$ by B6. Hence $8 N^{z}<X$ by B5 and Lemma 2.4. Therefore B0 and Lemma 2.6 imply that
+
+
+\begin{equation*}
+Y \equiv\binom{N}{z}(\bmod X) . \tag{11}
+\end{equation*}
+
+
+B6 implies that $N-r \mid X$. Hence by B7, (11) and Lemma 2.5 we have
+
+$$
+q \equiv Y \equiv\binom{N}{z} \equiv\binom{r}{z}\left(\bmod \frac{N-r}{(N-r, z!)}\right) .
+$$
+
+Therefore $q=\binom{r}{z}$ because both sides of the congruence are less than the modulus, by (10). Also, $\sigma+d_{i} \mid X$ by B6. So B4, B8, (11) and Lemma 2.5 imply
+
+$$
+q b_{i} \equiv Y \equiv\binom{N}{z} \equiv\binom{z_{i}}{z}\left(\bmod \frac{\sigma+d_{i}}{\left(\sigma+d_{i}, z!\right)}\right) \quad(i=1, \cdots, n) .
+$$
+
+As before, (10) implies $q b_{i}=\binom{z_{i}}{z}$. Therefore $q \left\lvert\,\binom{ z_{i}}{z}\right.$. Hence U0 holds.
+
+Conversely, suppose that U0 holds and $z!\mid r+1$. Choose nonnegative integers $b_{i}$ such that $q b_{i}=\binom{z_{i}}{z},(i=1, \cdots, n)$. By Lemma 2.4 we may find $W$ and $\sigma$ satisfying B1 and B2. Take $N$ as in B3. Then $N>\sigma>r>z+2$. Also $z_{i}<\sigma(i=1, \cdots, n)$ and therefore for each $i=1, \cdots, n$,
+
+$$
+\sigma\left(N-z_{i}, z!\right) \leq \sigma z!<\sigma z!+\sigma-z_{i}<\sigma r+\sigma-z_{i}=N-z_{i} .
+$$
+
+Hence for each $i=1, \cdots, n$, we may choose a nonnegative integer $d_{i}$ such that
+
+
+\begin{equation*}
+\sigma+d_{i}=\left(N-z_{i}\right) /\left(N-z_{i}, z!\right) . \tag{12}
+\end{equation*}
+
+
+Then B4 holds. (Also $N>z_{i}$ by B1, B2 and B3.) According to Lemma 2.4, we may choose $\zeta$ satisfying B5. Define $X$ as in B6. Then $N^{z}<\zeta<X$ by B5. Define $Y$ by B0. By Lemma 2.6
+
+
+\begin{equation*}
+Y \equiv\binom{N}{z}(\bmod X) . \tag{13}
+\end{equation*}
+
+
+B6 implies that $N-r \mid X$. So by Lemma 2.5 and (13) we have
+
+
+\begin{equation*}
+\origpage{344}Y \equiv\binom{N}{z} \equiv\binom{r}{z}=q\left(\bmod \frac{N-r}{(N-r, z!)}\right) . \tag{14}
+\end{equation*}
+
+
+However, $z!\mid r+1$ and $r+1 \mid N$ so $(N-r, z!)=1$. Thus $\xi$ exists satisfying B7 ( $Y>q$ by B0). Similarly, $\sigma+d_i\mid X$ by B6. Hence (12) and (13) imply
+
+$$
+Y \equiv\binom{N}{z} \equiv\binom{z_{i}}{z}=q b_{i}\left(\bmod \sigma+d_{i}\right), \quad(i=1, \cdots, n) .
+$$
+
+Therefore nonnegative integers $c_{i},(i=1, \cdots, n)$, may be found to satisfy B8 ( $Y \geq X>\sigma>q b_{i}$ by B1, B2 and B0). Thus B0--B8 are satisfiable in nonnegative integers. Lemma 2.7 is proved.
+
+The only condition in Lemma 2.7 which is not Diophantine is the partial binomial B0. Yuri Matijasevič and Julia Robinson [20] show how to define a partial binomial expansion in terms of the sequence $y=\psi_{A}(B)$, of $y$ solutions of the Pell equation $x^{2}=\left(A^{2}-1\right) y^{2}+1$. Their equations are given in the following
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.8.} For $0<Y, 4 N^{Z}<X$ and $0<Z<N$, the condition $Y=\left\lfloor (X+1)^N/X^Z\right\rfloor$ holds if and only if nonnegative integers $k, l, m, A, B, C, K, L, M$ exist satisfying T0--T9. Also T4--T9 imply that $A, B, C, K, L, M$ are all $>1$.
+\begin{align*}
+C&=\psi_A(B), \tag{T0}\\
+(M^2-1)K^2+1&=\square, \tag{T1}\\
+(M^2X^2-1)L^2+1&=\square, \tag{T2}\\
+4(C-KLY)^2&<K^2L^2, \tag{T3}\\
+M&=8N(X+Y)+2, \tag{T4}\\
+K&=N-Z+1+k(M-1), \tag{T5}\\
+L&=Z+1+l(MX-1), \tag{T6}\\
+A&=M(X+1), \tag{T7}\\
+B&=N+1, \tag{T8}\\
+C&=m+B. \tag{T9}
+\end{align*}
+
+For a proof cf. [20]. When $8 N^{Z}<X$ and $1<Y$ we may replace T3 by $5(C-K L Y)^{2} \leq K^{2} L^{2}$ and T4 by $M=9 N X Y$.
+
+The only relation above not obviously Diophantine is T0. This relation has been explicitly defined in several ways [1], [2], [4], [11], [13], [20]. Yuri Matijasevič and Julia Robinson give the following definition in [20].
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.9.} For $1<A, 0<B$ and $0<C$, the relation $C=\psi_{A}(B)$ holds if and only if there exist nonnegative integers $D, E, F, G, H, I, i, j$ such that
+\begin{align*}
+DFI&=\square,\quad F\mid H-C,\quad B\leq C, \tag{A1}\\
+D&=(A^2-1)C^2+1, \tag{A2}\\
+E&=2(i+1)DC^2e_0, \tag{A3}\\
+F&=(A^2-1)E^2+1, \tag{A4}\\
+G&=A+F(F-A), \tag{A5}\\
+H&=B+2jC, \tag{A6}\\
+I&=(G^2-1)H^2+1. \tag{A7}
+\end{align*}
+
+For a proof see [20]. The number $e_0$ in A3 may be any arbitrary positive integer.\ednote{The original writes $e$ for this multiplier, in A3, in this paragraph and in \S3 (``If we take $e=M(u)$ in A3''). It is renamed $e_0$ because $e$ is also one of the witnesses $b,e,g,s,w$ of \S3.} Since A3 and A4 imply $e_0\perp F$, we may combine another divisibility condition, say $e_0\mid Q$, with the condition $F \mid H-C$ by writing $e_0F\mid QF+e_0(H-C)$. When $1<B$ we may replace $j$ by $j+1$ in A6 so that $0 \leq H-C$. Since the unknowns $D, E, F, G, H, I$ are forced to be positive, they eliminate by substitution leaving only $i$ and $j$. Thus this definition is very economical with \origpage{345}respect to the number of unknowns needed, 3. An alternative definition of $\psi_{A}(B)=C$ is given by
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 2.10.} For $1<A$ and $0<B$, the relation $C=\psi_{A}(B)$ holds if and only if there exist nonnegative integers $D, E, F, G, H, I, i, j$ such that
+\begin{align*}
+D&\leq I,\quad F\mid I-D,\quad B\leq C, \tag{P1}\\
+D^2&=(A^2-1)C^2+1, \tag{P2}\\
+E&=2iC^2, \tag{P3}\\
+F^2&=(A^2-1)E^2+1, \tag{P4}\\
+G&=A+F^2(F^2-A), \tag{P5}\\
+H&=B+2jC, \tag{P6}\\
+I^2&=(G^2-1)H^2+1. \tag{P7}
+\end{align*}
+
+Lemma 2.10 may be proved exactly as Lemma 2.9 is proved in [20]. All that is necessary is to replace the second step down lemma for the $\psi$ sequence by the analogous lemma of the $\chi$ sequence (Lemma 2.24 of Davis [2]). (Cf. also [11] Lemma 2.5 and [12] Lemma 2.10.)
+
+With respect to the number of operations, Lemma 2.10 is more economical than Lemma 2.9. For if we express the conditions $D \leq I$ and $F \mid I-D$ by $(\exists \tau)(I=D+\tau F)$, then the unknowns $E, G, H$ and $I$ eliminate by substitution and the system P1--P7 reduces to
+\begin{align*}
+B&\leq C, \tag{Q1}\\
+D^2&=(A^2-1)C^2+1, \tag{Q2}\\
+F^2&=4(A^2-1)i^2C^4+1, \tag{Q3}\\
+(D+\tau F)^2&=\bigl((A+F^2(F^2-A))^2-1\bigr)(B+2jC)^2+1. \tag{Q4}
+\end{align*}
+
+As the condition $B\leq C$ is expressed by T9, Q1 may be dropped when
+using Q1--Q4 to define a partial binomial. Thus we need only the three equations
+Q2--Q4 to define T0. Likewise, $B\leq C$ may be omitted from A1 when using A1--A7.
+
+Readers familiar with any of the proofs of the unsolvability of Hilbert's Tenth Problem may be surprised to notice that Lemmas 2.3--2.10, more than sufficient for the proof, contain no definition of the exponential relation, $z=x^{y}$. Nowhere have we defined exponentiation. In spite of its historical importance, the exponential relation is not central to the problem.
+
+
+\section*{§3. Enumeration of Diophantine sets} Following Julia Robinson [23] we construct an effective list $W_{1}, W_{2}, \cdots$ of all Diophantine sets of positive integers. Using Putnam's familiar device [21] together with Lagrange's Four Square Theorem one can prove
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 3.1.} Each Diophantine set of positive integers, $W$, may be represented, for $x>0$, in the form $x \in W \leftrightarrow\left(\exists X_{0}, \cdots, X_{n}\right)\left(P\left(X_{0}, \cdots, X_{n}\right)=x\right)$ where $X_{0}, \cdots, X_{n}$ are integers and $P\left(X_{0}, \cdots, X_{n}\right)$ is a polynomial with integer coefficients and no constant term.
+
+Let $X_{0}, X_{1}, \cdots$ be an infinite sequence of variables. The polynomials, $P_{n}$, in these variables, with nonnegative integer coefficients and no constant term, are definable by induction
+
+$$
+\begin{aligned}
+P_0&=0,\qquad P_{3i+2}=X_i &&(i\geq0),\\
+P_{3i}&=P_{K(i)}+P_{L(i)} &&(i\geq1),\\
+P_{3i+1}&=P_{K(i)}P_{L(i)} &&(i\geq0).
+\end{aligned}
+$$
+
+The variable $X_{i}$ occurs in the polynomial $P_{k}$ only if $3 i+2 \leq k$. Therefore all \origpage{346}variables appearing in $P_{k}$ are included in the list $X_0,X_1,\ldots,X_{k-2}$ when $k\geq2$; $P_0=P_1=0$.\ednote{The index ranges of the recursion and the words ``when $k\geq2$; $P_0=P_1=0$'' are added. The original states the recursion without index ranges (for $i=0$ its rule for $P_{3i}$ would read $P_0=P_0+P_0$) and ends this sentence at $X_{k-2}$.} Whenever $k \leq m+2$ we may write $P_{k}\left(X_{0}, \cdots, X_{m}\right)$. For each positive integer $n$ we define $W_{n}$ by the condition
+
+$$
+x \in W_{n} \leftrightarrow\left(\exists X_{0}, \cdots, X_{n}\right)\left(P_{u}\left(X_{0}, \cdots, X_{n}\right)=P_{v}\left(X_{0}, \cdots, X_{n}\right)+x\right)
+$$
+
+where $u=K(n), v=L(n)$ and $X_{0}, \cdots, X_{n}$ represent integers. Equivalently we may define the sets $W_{n}$ with two indices by putting $W_{u, v}=W_{n}$ where $J(u, v)=n$. This has the advantage that the unknowns, $u$ and $v$, become parameters. Also $n$, and hence the equation $J(u, v)=n$, may be dispensed with.
+
+By Lemma 3.1 the list $W_{1}, W_{2}, \cdots$ (equivalently $W_{1,0},W_{0,1},W_{2,0},W_{1,1},\ldots$ ) includes all Diophantine sets of positive integers. By [5], [14], $W_{1}, W_{2}, \cdots$ is a list of all recursively enumerable sets.
+
+To represent finite sequences of integers we use the device of Gödel [7]. Let $M(i)=1+(1+i) \beta$ and let $S(R, \beta, i)$ denote the absolutely least residue of $R$ with respect to the modulus $M(i)$. Thus $S(R, \beta, i)=T$ just in case $R \equiv$ $T(\bmod M(i))$ and $-M(i)<2 T \leq M(i)$. For any sequence $T_{i}$ of integers $(i=0, \cdots, \tau)$, positive integers $R$ and $\beta$ may be found so that $S(R, \beta, i)=T_{i}$ $(i=0, \cdots, \tau)$. This follows from the Chinese Remainder Theorem because the moduli $M(i),(i=0, \cdots, \tau)$, are relatively prime in pairs whenever $\tau!$ divides $\beta$. $R$ and $\beta$ may be chosen arbitrarily large.
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 3.2.} For any positive integers $n$, $x$, in order that $x \in W_{n}$ it is necessary and sufficient that there exist nonnegative integers $u, v, R, \beta$ such that
+
+
+\begin{align*}
+J(u, v)= & n \wedge S(R, \beta, 0)=0 \wedge S(R, \beta, u)=S(R, \beta, v)+x \wedge \\
+& (\forall i)_{<n}[S(R, \beta, 3 i)=S(R, \beta, K(i))+S(R, \beta, L(i)) \wedge  \tag{3.2}\\
+& S(R, \beta, 3 i+1)=S(R, \beta, K(i)) \cdot S(R,\beta,L(i))] .
+\end{align*}
+
+
+\noindent\textit{Proof of sufficiency.} Suppose the condition (3.2) holds for $n>0, x>0$. Let $\tau=n-1$. Define $X_{0}=S(R, \beta, 2), X_{1}=S(R, \beta, 5), \cdots, X_{\tau}=S(R, \beta, 3 \tau+2)$. Then $S(R, \beta, k)=P_{k}\left(X_{0}, \cdots, X_{\tau}\right)$ for $k=0,1, \cdots, 3 \tau+2$, by induction. Since $u, v<3 \tau+2, P_{u}\left(X_{0}, \cdots, X_{\tau}\right)=S(R, \beta, u)=S(R, \beta, v)+x=P_{v}\left(X_{0}, \cdots, X_{\tau}\right)+x$. Hence $x \in W_{n}$.
+
+\noindent\textit{Proof of necessity.} Suppose $x \in W_{n}$. Put $u=K(n), v=L(n), \tau=n-1$. By definition of $W_{n}$, integers $X_{0}, \cdots, X_{\tau}$ may be found so that $P_{u}\left(X_{0}, \cdots, X_{\tau}\right)=$ $P_{v}\left(X_{0}, \cdots, X_{\tau}\right)+x$. Choose positive integers $R, \beta$ so that $S(R, \beta, k)=$ $P_{k}\left(X_{0}, \cdots, X_{\tau}\right), \quad(k=0,\ldots,3\tau+2)$. Then $S(R, \beta, 0)=0 \quad$ and $\quad S(R, \beta, u)=$ $S(R, \beta, v)+x$. The quantified condition of (3.2) may be shown to hold by induction on $i$. The lemma is proved. If we wish we may replace $W_{n}$ by $W_{u, v}$. The bound ``$<n$'' on the universal quantifier may then be replaced by ``$<u+v$'' and the equation $J(u, v)=n$ dropped.
+
+Lemma 3.1 is also true if the integer witnesses $X_i$ are replaced by
+nonnegative integers.\ednote{This paragraph is rewritten. The original reads:
+``Lemma 3.1 is also true if the integers $X_i$ are replaced by nonnegative
+integers. Hence 3.2 may be formulated in terms of least nonnegative residues. If
+we use the modulus $m(i)=1+i\beta$, then the condition $S(R,\beta,0)=0$ holds
+automatically and may be dropped. Also, $S(R,\beta,j)=v$ then has the simple
+definition $(\exists e,g)(R=v+e(1+j\beta)\wedge v+g=j\beta)$. Now if we let
+$s=K(i)$, $w=L(i)$, $p=S(R,\beta,s)$ and $q=S(R,\beta,w)$, then we may rewrite
+Lemma 3.2 in the form $x\in W_n\Leftrightarrow$'' (3.3). Read literally, this keeps
+the name $S$ (the absolutely least residue modulo $M(i)$) and the integer-witness
+enumeration $W_n$, and the equivalence is then false for some $n$: for $n=5$,
+$W_5$ contains every positive integer, while (3.3) holds for no $x$. The
+rewritten text names the new residue $S_+$ and the new enumeration $\WW_n$.} Let $\WW_n$ denote the resulting enumeration, defined by
+the same polynomial equation but with $X_i\in\NN$. This changes the indexing of
+sets in general; it does not change the fact that every r.e. set occurs.
+The analogue of Lemma 3.2 for $\WW_n$ uses least nonnegative residues.
+Write $S_+(R,\beta,i)$ for the least nonnegative residue modulo $m(i)=1+i\beta$.
+Then $S_+(R,\beta,0)=0$ automatically, and
+\[
+S_+(R,\beta,j)=v\ \Longleftrightarrow\
+(\exists e,g)\bigl(R=v+e(1+j\beta)\ \wedge\ v+g=j\beta\bigr).
+\]
+\origpage{347}Now put $s=K(i)$, $w=L(i)$, $p=S_+(R,\beta,s)$ and $q=S_+(R,\beta,w)$.
+The nonnegative-witness analogue of Lemma 3.2 becomes
+\begin{equation*}
+\begin{aligned}
+x\in\WW_n\ \Longleftrightarrow\ {}
+&\exists R\,\beta\;\forall i_{\leq n}\;\exists s\,w\,p\,q\;\forall j\,v\;
+\Bigl\{J(s,w)=i\\
+&\quad\wedge\Bigl(\bigl[(i=n\wedge j=s\wedge v=q+x)\\
+&\qquad\vee(j=w\wedge v=q)\vee(j=s\wedge v=p)\\
+&\qquad\vee(j=3i\wedge v=p+q)\vee(j=3i+1\wedge v=pq)\bigr]\\
+&\qquad\longrightarrow S_+(R,\beta,j)=v\Bigr)\Bigr\}.
+\end{aligned}\tag{3.3}
+\end{equation*}
+
+From (3.3) we may deduce Theorem 1 simply by distributing out the repeated term ``$j=s$'' and replacing the letters ``$R$'' and ``$\beta$'' by ``$a$'' and ``$b$'' respectively.
+
+Theorem 2 is deducible from Theorem 1 by means of the following elementary principles: $A=0 \wedge B=0 \Leftrightarrow A^{2}+B^{2}=0, A=0 \vee B=0 \Leftrightarrow AB=0$, $A=0 \rightarrow \exists e B=0 \Leftrightarrow \exists e(A=e+1 \vee B=0)$, (provided $A$ is a nonnegative polynomial and $e$ does not occur in $A$ ). Also,
+
+$$
+\forall i_{\leq n} \exists s C(i, s)=0 \Leftrightarrow \forall i \exists s\{n+s+1-i\} C(i, s)=0 .
+$$
+
+Since (3.3) would lead to a predicate with a large number of existential quantifiers in the inner group (even using Lemma 2.2), we follow instead a different line more similar in certain respects to that taken by R. M. Robinson in [25]. This will lead us to a manageable predicate with five existential quantifiers in the inner group. We now return to the integer-witness enumeration $W_n$ of Lemma 3.2 and to its centered residues.\ednote{The original reads ``We continue using Lemma 3.2. We also continue with the modulus''. The first sentence is reworded to mark the return from $\WW_n$ and $S_+$ to $W_n$ and $S$.} We continue with the modulus $M(i)=1+(1+i) \beta$ rather than $m(i)$, because the inequality $\beta<M(i)$ is useful.
+
+Let U2, U3 and U4 denote the following conditions\\
+U2. $R=\theta(1+\beta)$, U3. $M(u) \mid h M(v)-x, \quad$ U4. $\quad(h M(v)-R)^{2}+x^{2}<\beta$. Then U2 holds for some $\theta$ just in case $S(R, \beta, 0)=0$. For some $h$, if U3 and U4 hold, then $S(R, \beta, u)=S(R, \beta, v)+x$. The converse is also true, if $\beta$ is chosen sufficiently large.
+
+Let $T=R-e M(s)$ and $P=R-b M(w)$. It is best to regard $T$ and $P$ as abbreviations for polynomials (which may be negative). In terms of $T$ and $P$ define the following integer-coefficient polynomials. In their first terms, the pairing denominators are cleared as in (1.3); this does not change their zero sets:
+
+$$
+\begin{aligned}
+A(y)= & {[3(s+w)^2+9w+3s-2y]^2} \\
+& +\left[M(y)^{2}\left(1+(R-T-P)^{2}\right)\left(\beta-T^{2}-P^{2}\right)-(R-T-P)^{2}\right. \\
+& \left.-(g+1) M(y)^{2}\right]^{2},
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+B(y)= & {[3(s+w)^2+9w+3s+2-2y]^2} \\
+& +\left[M(y)^{2}\left(1+(R-T P)^{2}\right)\left(\beta-T^{2}-P^{2}\right)-(R-T P)^{2}-(g+1) M(y)^{2}\right]^{2}, \\
+C(y)= & {[3 g+2-y] . }
+\end{aligned}
+$$
+
+Using Lemma 2.2 we see that $\exists g A(y)=0$ is equivalent to the conditions $y=3 J(s, w), M(y) \mid R-T-P$ and $T^{2}+P^{2}<\beta$. These conditions imply that $S(R, \beta, 3 J(s, w))=T+P=S(R, \beta, s)+S(R, \beta, w)$. In the same way $\exists g B(y)=$ 0 asserts that $S(R, \beta, 3 J(s, w)+1)=T P=S(R, \beta, s) S(R, \beta, w)$. The converse is also true provided $\beta$ is sufficiently large. Thus from Lemma 3.2 we have
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 3.4.}\origpage{348} For any positive integers $n, x$, in order that $x \in W_{n}$ it is necessary and sufficient that there exist nonnegative integers $u, v, h, R, \beta, \theta$ such that $J(u, v)=n$ and
+
+\begin{equation*}
+(\mathrm{U2})\wedge(\mathrm{U3})\wedge(\mathrm{U4})\wedge
+(\forall y)_{<3n}(\exists b,e,g,s,w)[A(y)B(y)C(y)=0].\tag{3.4}
+\end{equation*}
+
+\noindent\textit{Remark.} Again, if we wish we may replace $W_{n}$ by $W_{u, v}$, drop the condition $J(u, v)=n$ and replace $3 n$ by $3(u+v)$ in Lemma 3.4.
+
+Next the Bounded Quantifier Theorem (BQT) will be applied to the predicate of Lemma 3.4.
+
+\par\Needspace{6\baselineskip}\medskip\noindent\textbf{Lemma 3.5.} For any positive integers $n, x$, in order that $x \in W_{n}$ it is necessary and sufficient that there exist nonnegative integers $b,e,g,h,q,r,s,u,v,w,\beta,\pi,\theta$ and integers $J, P, R, T, T_{1}, Z$ such that
+
+\begin{align*}
+q&=\binom rZ,\quad q\mid\binom bZ,\quad q\mid\binom eZ,\quad
+q\mid\binom gZ,\quad q\mid\binom sZ,\quad q\mid\binom wZ, \tag{U0}\\
+J(u,v)&=n, \tag{U1}\\
+R&=\theta(1+\beta), \tag{U2}\\
+M(u)&\mid hM(v)-x, \tag{U3}\\
+(hM(v)-R)^2+x^2&<\beta, \tag{U4}\\
+T_1&=3n,\qquad Z=T_1+R^3, \tag{U5}\\
+J&=Z^6,\qquad J^3(J+2)(r+1)^2+1=\square, \tag{U6}\\
+T&=R-eM(s),\qquad P=R-bM(w), \tag{U7}\\
+A(r)B(r)C(r)(T_1+g-r)&=q\pi. \tag{U8}
+\end{align*}
+Here the scalar $J$ in U6 is distinct from the pairing function $J(u,v)$;
+$Z$ is the lower binomial argument throughout U0.\ednote{This sentence is added. The original has no remark here; it prints the lower binomial argument in U0 as $z$ and does not list $u,v$ among the unknowns of the lemma.}
+
+\noindent\textit{Proof of sufficiency.} Suppose U0--U8 hold. We apply the BQT. U2, U3 and U4 imply that $2 \leq \beta$ and $3 \leq R$. Hence $30 \leq Z$ by U5. A rather tedious estimation shows that the inequalities $y, b, e, g, s, w<Z$, together with U5, imply $|A(y) B(y) C(y)|<Z^{90}$. Thus we may take the quantity $R$ of the BQT to be $Z^{90}$. By U6, $J=Z^{6}$. Also $2 Z Z!<Z^{Z}$ since $4<Z$. Hence
+
+\[
+\begin{aligned}
+(2ZZ!R)^{Z^5}
+&\leq (Z^Z Z^{90})^{Z^5}\leq (Z^Z Z^{3Z})^{Z^5}=(Z^4)^{Z^6}\\
+&<\left(\frac{Z^6}{2}\right)^{Z^6}=\left(\frac J2\right)^J<J^{J-2}.
+\end{aligned}
+\]
+
+Therefore $(2 Z Z!R)^{Z^{5}}+Z<r$ by Lemma 2.4 and U6. Hence all of the conditions of the BQT are satisfied. Therefore by Lemma 3.4, $x \in W_{n}$.
+
+\noindent\textit{Proof of necessity.} Assume $x \in W_{n}$. Choose $R, \beta, \theta, h, u, v$ satisfying U1 and Lemma 3.4. Then U2, U3 and U4 hold. Put $T_{1}=3 n$. Condition (3.4) asserts that for each $y<T_{1}$ numbers $b, e, g, s, w$ may be found so that $A(y)B(y)C(y)=0$. By choosing the residue code $R$ sufficiently large, these witnesses can be chosen smaller than $T_1+R^3$. Thus we may take $Z=T_{1}+R^{3}$ in the necessity proof of the BQT, for the only requirement made there on $Z=z$ was that $Z>b, e, g, s, w, \tau$. Here $\tau=T_{1}$. The only requirement made on $r$, other than that $r$ be large enough, was that $Z!^{2} \mid r+1$. But we may choose such an $r$ satisfying U6 by Lemma 2.4. The proof of the BQT shows how to find $b,e,g,s,w,T,P$ satisfying U7 and the divisibility in U8. The Chinese-remainder representative for $g$ may be increased by a multiple of $Z!q$ until $g\geq r$. This preserves the required congruences and binomial divisibilities, and makes the product in U8 nonnegative. Thus a nonnegative $\pi$ exists. The lemma is proved.\ednote{Two passages of this proof are completed. The original reads ``It is not difficult to show that these numbers, when they exist, need never be as large as $T_1+R^3$''; the bound holds for a suitable choice of $R$, since the residue code is not unique. It also reads ``The proof of the BQT shows how to find $b,e,g,s,w,\pi,T,P$ satisfying U7 and U8''; divisibility by $q$ alone does not make $\pi$ nonnegative, and the two sentences on the choice of $g$ are added.}
+
+\noindent\textit{Remark.} Even though $T$ and $P$ may be negative, they may be eliminated from U8 by substitution. A problem is posed only when using $T$ and $P$ as abbreviations in writing out U8 as was done in (1.3). Then $T$ and $P$ must either be allowed to take negative values or the equations U7 must be stated modulo $q$. The latter alternative was taken in (1.3) so that all of the unknowns there have the same range, nonnegative integers.
+
+\origpage{349}Again if we wish we may replace $x \in W_{n}$ in Lemma 3.5 by $x \in W_{u, v}$. Then U1 may be dropped. Replace $T_{1}=3 n$ by $T_{1}=3(u+v)$ in U5. With these changes $u$ and $v$ become parameters instead of unknowns, and the number of unknowns is thus reduced by 2.
+
+Collecting together all of our results, we have proved that $x \in W_{n}$ if and only if there exist nonnegative integers $b, e, g, h, i, j, k, l, m, q, r, s, u, v, w, \beta, \zeta, \theta, \xi$, $\pi, \sigma, b_{1}, \cdots, b_{5}, c_{1}, \cdots, c_{5}, d_{1}, \cdots, d_{5}$ and integers $A, B, C, D, E, F, G, H, I, J, K$, $L, M, N, P, R, T, T_{1}, W, X, Y, Z$ such that conditions U1--U8, B1--B8, T1--T9 and A1--A7 hold with $z_{1}, \cdots, z_{5}$ replaced by $b,e,g,s,w$ respectively (Lemma 2.3 singles out $z_1$ in its condition (i) only by the choice of names; in U8 that factor is carried by $g$), with $z=Z$ and $B \leq C$ dropped from A1.\ednote{The original reads ``hold with $z_1,\cdots,z_5$ replaced by $b,e,g,s,t$ respectively and $B\leq C$ dropped from A1.'' The fifth witness is $w$; the parenthesis and ``with $z=Z$'' are added.} If we take $e_0=M(u)$ in A3, then the two divisibility conditions U3 and $F \mid H-C$ may be combined into one divisibility condition. We have only to replace $F \mid H-C$ in A1 by\ednote{The first multiplier on the right is squared. The original prints only $M(u)(H-C)$, which is not an equivalent combination of the two divisibility conditions. See the editorial notes for a proof and a counterexample to the unsquared version.} $FM(u)^2\mid M(u)^2(H-C)+F(hM(v)-x)^2$. If we treat $u$ and $v$ as parameters and eliminate the integer unknowns by substitution, then 34 unknowns will remain. The remaining six square conditions, six divisibility conditions and two inequalities are Diophantine definable in six unknowns, using the Relation Combining Theorem of [20]. The original degree calculation reports a highest degree of 690 and hence the universal pair $\nu=40,\delta=1380$.\ednote{The article omits the elimination and relation-combining calculations behind its table. This edition retains the pairs as reported historical results; it does not certify those omitted calculations, or claim a fresh degree audit of the corrected combined-divisibility route. By contrast, the 36-equation system itself is audited directly: 67 unknowns and maximum degree 38.} The various other universal pairs stated in the introduction, were obtained by eliminating only a subset of the integer unknowns, and, for small values of $\delta$, introducing additional unknowns in the manner of Skolem [27]. The calculations are omitted as they are extremely tedious.
+
+The universal system (1.3), given in the introduction, was obtained by replacing the equations U7 by congruences to the modulus $q$ and replacing the Pell-sequence definition A1--A7 by the alternative definition Q2--Q4, using T9 for $B\leq C$.\ednote{The original reads ``replacing conditions A1--A7 by the equivalent equations Q2--Q4''. Q2--Q4 are equivalent to A1--A7 only together with $B\leq C$, which T9 supplies.} Then the unknowns $E$, $G, H, I$ become unnecessary but we must include a new unknown $\tau$ (for Q4), and also new unknowns $\varphi$ and $\phi$ with which to express the congruences U7. The unknowns $\psi,\delta,\varepsilon,\nu,\upsilon$ were used to express the five square conditions U6, B2, B5, T1, T2. The unknowns $\gamma, \iota$ express the inequalities U4, T3 and the unknown $\rho$ expresses the divisibility condition U3. The unknowns $a^{\prime}, b^{\prime}, c^{\prime}, d^{\prime}$, $e^{\prime}$ were introduced to define the five divisibility conditions B4. The unknowns $B, T_{1}$ and $J$ were eliminated by substitution. The letters $A, C, D, F, K, L, M, N$, $P, R, T, W, X, Y, Z$ were replaced by $a, c, d, f, \kappa, \lambda, \mu, \eta, p, \alpha, t, \omega, \chi, y, z$ respectively. The letters $b_{1}, \cdots, b_{5}, c_{1}, \cdots, c_{5}, d_{1}, \cdots, d_{5}$ were replaced by $f^{\prime}, g^{\prime}$, $h^{\prime}, i^{\prime}, j^{\prime}, k^{\prime}, l^{\prime}, m^{\prime}, n^{\prime}, p^{\prime}, q^{\prime}, r^{\prime}, s^{\prime}, t^{\prime}, u^{\prime}$ respectively. Hence the universal system (1.3) contains 67 unknowns, not including parameters $n$ and $x$. The highest degree of an equation is 38.
+
+\begin{thebibliography}{27}
+\bibitem{ref1} G. V. Čudnovskiĭ, Diophantine predicates (Russian), Uspehi Matematičeskih Nauk, vol. 25 (1970), pp. 185--186.
+
+\bibitem{ref2} Martin Davis, Hilbert's tenth problem is unsolvable, American Mathematical Monthly, vol. 80 (1973), pp. 233--269.
+
+\bibitem{ref3} Martin Davis, Computability and unsolvability, McGraw-Hill, N. Y., 1958.
+
+\bibitem{ref4} Martin Davis, An explicit Diophantine definition of the exponential function, Communications on Pure and Applied Mathematics, vol. 24 (1971), pp. 137--145.
+
+\bibitem{ref5} \origpage{350}Martin Davis, Hilary Putnam and Julia Robinson, The decision problem for exponential Diophantine equations, Annals of Mathematics, vol. 74 (1961), pp. 425--436 = Matematika, vol. 8, no. 5 (1964), pp. 69--79. MR 24 \#A3061.
+
+\bibitem{ref6} Martin Davis, Yuri Matijasevič and Julia Robinson, Hilbert's tenth problem. Diophantine equations: positive aspects of a negative solution, Proceedings of the Conference on the Hilbert Problems, DeKalb, Illinois, May 1974, American Mathematical Society, Providence, RI, 1976, pp. 323--378.
+
+\bibitem{ref7} Kurt Gödel, Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I, Monatshefte für Mathematik und Physik, vol. 38 (1931), pp. 173--198. English translations: (1) On formally undecidable propositions of Principia Mathematica and related systems (Martin Davis, Editor), The undecidable, Raven Press, 1965, pp. 5--38; (2) From Frege to Gödel (Jean Van Heijenoort, Editor), Harvard University Press, 1967, pp. 596--616.
+
+\bibitem{ref8} David Hilbert, Mathematische Probleme, Vortrag, gehalten auf dem internationalen Mathematiker-Kongress zu Paris 1900, Nachrichten der Akademie der Wissenschaften in Göttingen. II. Mathematisch-physikalische Klasse, 1900, pp. 253--297. English translation: Bulletin of the American Mathematical Society, vol. 8 (1901--1902), pp. 437--479.
+
+\bibitem{ref9} J. P. Jones, Diophantine representation of the Fibonacci numbers, Fibonacci Quarterly, vol. 13 (1975), pp. 84--88. MR 52 \#3035.
+
+\bibitem{ref10} J. P. Jones, Diophantine representation of the Lucas numbers, Fibonacci Quarterly, vol. 14 (1976), p. 134.
+
+\bibitem{ref11} J. P. Jones, D. Sato, H. Wada and D. P. Wiens, Diophantine representation of the set of prime numbers, American Mathematical Monthly, vol. 83 (1976), pp. 449--464.
+
+\bibitem{ref12} J. P. Jones, Diophantine representation of Mersenne and Fermat primes, Acta Arithmetica (in press).\ednote{``In press'' is the printed text; the paper appeared in Acta Arithmetica 35 (1979), pp. 209--221.}
+
+\bibitem{ref13} N. K. Kosovskiĭ, On Diophantine representation of the sequence of solutions of Pell's equation (Russian), Zapiski Naučnyh Seminarov Leningradskogo Otdelenija Matematičeskogo Instituta im. V. A. Steklova Akademii Nauk SSSR, vol. 20 (1971), pp. 49--59. English translation: Journal of Soviet Mathematics, vol. 1 (1973), pp. 28--35.
+
+\bibitem{ref14} Yu. V. Matijasevič, Enumerable sets are Diophantine (Russian), Doklady Akademii Nauk SSSR, vol. 191 (1970), pp. 279--282. English translation: Soviet Mathematics. Doklady, vol. 11 (1970), pp. 354--357.
+
+\bibitem{ref15} Yu. V. Matijasevič, Diophantine representation of enumerable predicates (Russian), Izvestija Akademii Nauk SSSR, Serija Matematika, vol. 35 (1971), pp. 3--30. English translation: Mathematics of the USSR-Izvestija, vol. 5 (1971), pp. 1--28.
+
+\bibitem{ref16} Yu. V. Matijasevič, Diophantine sets (Russian), Uspehi Matematičeskih Nauk, vol. 27 (1972), pp. 185--222. English translation: Russian Mathematical Surveys, vol. 27 (1972), pp. 124--164.
+
+\bibitem{ref17} Yu. V. Matijasevič, Arithmetical representation of enumerable sets with a small number of quantifiers (Russian), Zapiski Naučnyh Seminarov Leningradskogo Otdelenija Matematičeskogo Instituta im. V. A. Steklova Akademii Nauk SSSR, vol. 32 (1972), pp. 77--84.
+
+\bibitem{ref18} Yu. V. Matijasevič and Julia Robinson, Two universal 3-quantifier representations of r.e. sets (Russian), Theory of algorithms and mathematical logic, Computation Centre, Akademii Nauk SSSR, Moscow, 1974, pp. 112--123 (Volume dedicated to A. A. Markov).
+
+\bibitem{ref19} Yu. V. Matijasevič, On recursive unsolvability of Hilbert's tenth problem, Proceedings of the Fourth International Congress on Logic, Methodology and Philosophy of Science, Bucharest, 1971, North-Holland, Amsterdam, 1973, pp. 89--110.
+
+\bibitem{ref20} Yu. V. Matijasevič and Julia Robinson, Reduction of an arbitrary Diophantine equation to one in 13 unknowns, Acta Arithmetica, vol. 27 (1975), pp. 521--553.
+
+\bibitem{ref21} Hilary Putnam, An unsolvable problem in number theory, The Journal of Symbolic Logic, vol. 25 (1960), pp. 220--232 = Matematika, vol. 8 (1964), pp. 55--67.
+
+\bibitem{ref22} Julia Robinson, Existential definability in arithmetic, Transactions of the American Mathematical Society, vol. 72 (1952), pp. 437--449 = Matematika, vol. 8 (1964), pp. 3--14. MR 14, 4.
+
+\bibitem{ref23} Julia Robinson, Hilbert's tenth problem, Proceedings of Symposia in Pure Mathematics, vol. 20 (1971), pp. 191--194.
+
+\bibitem{ref24} Raphael M. Robinson, Arithmetical representation of recursively enumerable sets, The Journal of Symbolic Logic, vol. 21 (1956), pp. 162--186.
+
+\bibitem{ref25} Raphael M. Robinson, \origpage{351}Some representations of Diophantine sets, The Journal of Symbolic Logic, vol. 37 (1972), pp. 572--578.
+
+\bibitem{ref26} Carl L. Siegel, Zur Theorie der quadratischen Formen, Nachrichten der Akademie der Wissenschaften in Göttingen. II. Mathematisch-physikalische Klasse, 1972, pp. 21--46.
+
+\bibitem{ref27} Thoralf Skolem, Diophantische Gleichungen, Springer, Berlin, 1938.
+
+\end{thebibliography}
+
+\begin{flushleft}\small Department of Mathematics and Statistics\\University of Calgary\\Calgary T2N 1N4, Canada\end{flushleft}
+
+
+\end{document}

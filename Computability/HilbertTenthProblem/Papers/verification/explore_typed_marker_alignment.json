@@ -1,0 +1,82 @@
+{
+  "status": "PASS_TYPED_MARKER_ALIGNMENT7",
+  "operations": 7,
+  "multiplications": 4,
+  "additions": 3,
+  "positive_supplied_coordinates": [
+    "p",
+    "z",
+    "R",
+    "T",
+    "alpha"
+  ],
+  "source": [
+    [
+      "divisor",
+      "*",
+      "p",
+      "z"
+    ],
+    [
+      "E",
+      "*",
+      "p",
+      "p"
+    ],
+    [
+      "scaled_tail",
+      "*",
+      "K",
+      "T"
+    ],
+    [
+      "body",
+      "+",
+      "P",
+      "scaled_tail"
+    ],
+    [
+      "marked",
+      "*",
+      "E",
+      "body"
+    ],
+    [
+      "assembled",
+      "+",
+      "R",
+      "marked"
+    ],
+    [
+      "prefix_bound",
+      "+",
+      "R",
+      "alpha"
+    ]
+  ],
+  "equalities": [
+    [
+      "divisor",
+      "A"
+    ],
+    [
+      "assembled",
+      "F"
+    ],
+    [
+      "prefix_bound",
+      "E"
+    ]
+  ],
+  "source_residuals": [
+    "-A + p*z",
+    "-F + R + p**2*(K*T + P)",
+    "R + alpha - p**2"
+  ],
+  "prefix_marker_tail_cases": 247338,
+  "misaligned_cases_rejected": 198198,
+  "accepted_cases": 728,
+  "cone_checks": 6080,
+  "scope": "Conditional on Boolean radix16 F, power-of-two A, and a fixed nonzero Boolean marker P<K=16^ell. No universal compiler count.",
+  "review": "Author and independent complete scoped proof/source review PASS; fresh receipt comparison PASS."
+}

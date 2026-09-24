@@ -1,0 +1,332 @@
+% A unit baseline and a direct guard preserve the fixed-four alphabet.
+\section{A coefficient baseline of one}\label{sec:unit-center}
+
+The coefficient baseline in Theorem~\ref{thm:best99} can be reduced
+from two to one. Copies remove the negative square coefficient in
+the unit test, while a direct guard excludes a zero homogenizing
+coordinate before any copy relation is used. The resulting
+coefficient is
+\begin{equation}\label{eq:unit-center-block}
+ \Omega=\lambda-e>0,\qquad
+ S_3=\theta\lambda q-\Omega\mathcal C^2=\sigma>0,
+ \qquad\mathcal C=x+g,\quad\theta=B-4.
+\end{equation}
+The offset, geometric equation, packed upper bound and all Pell
+equations are retained. Computing $3\lambda$ directly now saves
+one addition, giving 98 operations.
+
+\subsection{Copied unit tests and a direct guard}
+
+Keep the paired primitive rows of Section~\ref{sec:half-center}:
+each multiplication, addition, copy, final equality and zero
+residual $F$ occurs together with $-F$, with targets
+$2F+\delta^2$. Operands are distinct copied coordinates, outputs
+are fresh, and circuit coordinates are distinct from $\delta$.
+
+For each unit gate $X=1$, introduce a fresh nonnegative coordinate
+$X'$ and the paired copy rows $(X-X')\delta$ and $(X'-X)\delta$.
+Replace its two unpaired unit rows by
+\begin{equation}\label{eq:unit-center-unit}
+ F_{X,1}=X\delta-\delta^2,\qquad
+ F_{X,2}=X\delta-XX'.
+\end{equation}
+All four rows still use targets $2F+\delta^2$. The negative product
+$XX'$ has distinct factors, so its divided target coefficient is
+$-1$, in place of the $-2$ of the old square $X^2$.
+
+Give the fresh guard coordinate $u$ the direct target
+\begin{equation}\label{eq:unit-center-guard}
+ G_{\mathrm g}=2u\delta-x^2+\delta^2.
+\end{equation}
+This target is not required to be $2F+\delta^2$ for an integer
+polynomial $F$. It will exclude $\delta=0$ directly. Replacing
+$x^2$ by a copied product would not do this: its homogenized copy
+equation would impose no condition when $\delta=0$.
+Keep the special target $G_0=\delta^2$ first.
+
+Every target coefficient, divided by its monomial coefficient in
+$\mathcal C(T)^2$, now belongs to
+\begin{equation}\label{eq:unit-center-alphabet}
+ \{-1,0,1\}.
+\end{equation}
+Paired primitive rows have cross-term quotients $\pm1$ and added
+$\delta^2$ coefficient $1$. The first unit target has coefficients
+$1,-1$ after division; the second has cross-term quotients $1,-1$
+and square coefficient $1$. The direct guard has cross-term quotient
+$1$, coefficient $-1$ on $x^2$, and coefficient $1$ on $\delta^2$.
+Thus all these divisions are integral.
+
+\subsection{The explicit admissible index}
+
+Apply the support construction to the entire new finite list,
+including all unit-copy coordinates and paired copy rows. Let $m$
+be the number of positive-weight coordinates and $s$ the number of
+targets. The input $x$ has weight zero and $\delta$ has weight one.
+Set
+\begin{align*}
+ v_i&=3^i\quad(0\le i<m),& M&=3^{m-1},& d_0&=4M+1,\\
+ t_j&=(s+1)d_0+2M+jd_0\quad(0\le j<s),\\
+ t_*&=2sd_0+2M,& K_0&=t_*+1,&c_*&=m+s+1.
+\end{align*}
+The special target occupies $t_0$. Include a dummy coordinate at
+every target position and choose a power of two $L>3K_0+2$.
+The complementary coefficient polynomial $\mathcal D$ has
+coefficients in \eqref{eq:unit-center-alphabet} and satisfies
+\[
+ [T^{t_j}]\,\mathcal D(T)\mathcal C(T)^2=G_j.
+\]
+The base-three monomial uniqueness and disjoint row intervals prove
+this identity exactly; $2t_0-2M>t_*$ excludes every dummy contribution.
+The support of $\mathcal D$ lies above every low coordinate and
+below $K_0$. Through $t_0$ its only term is $+T^{t_0-2}$, since
+every later row starts above $t_0$.
+
+Define
+\begin{align}
+ \ell_0(T)&=\sum_{i=0}^{m-1}T^{v_i}+\sum_{j=0}^{s-1}T^{t_j},\notag\\
+ e_0(T)&=\sum_{j=0}^{K_0-1}T^j+\mathcal D(T),&
+ V&=\ell_0(4)+e_0(4)4^L.\label{eq:unit-center-index}
+\end{align}
+The digits of $e_0$ are in $\{0,1,2\}$ and its unit digit is one.
+In particular, $e_0>0$, while the packed digit polynomial has all
+digits below four and degree below $2L$. Choose a power of two
+\begin{equation}\label{eq:unit-center-H}
+ H>\max\{2\,4^{2L+1},\ 4^{t_*+3}\,4c_*^2,\ 3L,\ 16\}.
+\end{equation}
+Finally supply $T_L=\psi_4(L)$. The admissible index is
+$(V,H,T_L)$; $L$ is the underlying exponent defining it, not an
+additional system input. Both $V$ and $H$ are rebuilt from the new
+layout and baseline. All choices depend only on the represented
+system, independently of the queried positive input $x$.
+
+\subsection{Establish the Pell hypotheses before decoding}
+
+Besides \eqref{eq:unit-center-block}, retain
+\begin{align*}
+ B&=Hb^2,& b&=x+\beta,&n&=q^8,\\
+ \lambda(B-1)&=q^2-1,&\theta+4&=B,\\
+ S_2&=\ell+eq=V+t\theta,&S_2+\alpha&=q^2,\\
+ S&=g+q^2(S_2+q^2S_3),\\
+ T+1&=q^2(1+\theta\lambda)-(b-1)\ell+\theta\ell q^4,\\
+ r&=S(n^2-n)+(T+1)(n^2-1).
+\end{align*}
+Every supplied unknown remains positive. The packed bound gives
+$e<q$ and $\ell<q^2$, and geometry gives $B\le q^2$.
+The bound on $H$ gives $q>4b\ge8$ and $3L\le B\le n$.
+Since $\Omega\ge1$, positivity of the new block gives directly
+\[
+ \mathcal C^2<\theta\lambda q<B\lambda q<3q^3<q^4.
+\]
+Thus $g<\mathcal C<q^2$ and $0<S_3<q^4$. The first-block borrow
+is fewer than $b$, while $\theta\lambda>b$, so the unchanged
+width-$(2,2,4)$ estimates give
+\begin{equation}\label{eq:unit-center-ranges}
+ 0<S<n,\quad0<T+1\le n,\quad
+ n\le r\le2n^3-2n^2<2n^3.
+\end{equation}
+These are direct bounds for the new coefficient; no comparison
+with an old value of $S_3$ is assumed.
+
+Write $U=wn^2$, $Y_P=sn^2$, $a=Y_P(U+1)$, $A=a+4$ and $J=2r+1$.
+Then $n,r\ge64$, $U,Y_P\ge n^2$, $UY_P\ge n^4>r+1$, and
+$a>n^4>J$. The first index congruence and positive interval give
+$c>J$. Thus $A>1$, $1<J<c$ and odd $J$ are available, as are
+$L\ge2$ and $3L\le B\le n\le r$.
+
+All Pell source equations of Theorem~\ref{thm:best99} are unchanged.
+Their proof therefore applies in its original order. First the
+doubled-index auxiliary norm identifies $c=\psi_A(J)$,
+$d=\chi_A(J)$. The first norm and index give
+$k=\psi_{2UY_P^2+1}(r+1)$. The lower ratio estimate gives
+$Y_P\ge U^r$ and $a>U^{r+1}$, before the first exponent equation
+yields $U=4^J$. In particular $a>4^{3J}$.
+The positive gap and the equation $\kappa=T_L+\Delta a$ now
+identify the second Pell index as $L$: its two residues
+$\psi_4(t)$ and $\psi_4(L)$ lie strictly between zero and $a$.
+The second exponent comparison uses
+\[
+ B^{3L}\le B^B\le n^n\le U^r<A,
+ \qquad q^3\le n^n\le U^r<A,
+\]
+and yields $q=B^L$. The upper ratio and binomial rounding arguments
+then give
+\begin{equation}\label{eq:unit-center-decoded-powers}
+ b,B,q\text{ are powers of two},\qquad
+ q=B^L,\qquad n^2\mid\binom{2r}{r}.
+\end{equation}
+Every internal coefficient test still awaits decoding.
+
+The weaker coefficient requires a revised post-Pell estimate. Since
+$L\ge2$ and $B>16$,
+\[
+ \lambda\ge B^{2L-1}\ge Bq>2q,
+ \qquad q=B^L\ge B^2>2B.
+\]
+Therefore $e<q$ implies $\Omega=\lambda-e>\lambda/2$, and
+\eqref{eq:unit-center-block} yields
+\begin{equation}\label{eq:unit-center-C-bound}
+ \mathcal C^2<2\theta q<2Bq<q^2,
+ \qquad g<\mathcal C<q.
+\end{equation}
+
+\subsection{Canonical codes and the smaller coefficient plateau}
+
+The first two masks, congruence and bound are unchanged. Their
+borrow-removal proof gives $d=\lfloor(b-1)\ell/q^2\rfloor=0$:
+the middle mask first implies
+$\ell\le S_2<4q^2/(B-1)+b$, which forces $(b-1)\ell<q^2$.
+The base-four evaluation lemma applies to
+\eqref{eq:unit-center-index}; it permits digits in $\{0,1,2\}$
+and does not require the digit three. Consequently
+\[
+ S_2=\ell_0(B)+e_0(B)q,\qquad
+ \ell=\ell_0(B)+a_{\mathrm{al}}q,\qquad
+ e=e_0(B)-a_{\mathrm{al}},\qquad
+ 0\le a_{\mathrm{al}}<e_0(B).
+\]
+Using \eqref{eq:unit-center-C-bound}, the first mask decodes every
+coordinate below $b$, with input $x$ at the unit position and dummy
+digits only at row positions. Thus
+\[
+ e,\mathcal C<B^{K_0},\qquad e\mathcal C^2<q,
+ \qquad A_{\mathcal C}=\mathcal C(1)^2<(c_*b)^2.
+\]
+Since $x,g>0$, one has $\mathcal C(1)\ge2$ and
+$A_{\mathcal C}\ge4$ before recovering $\delta$.
+
+Now the polynomial $\lambda\mathcal C^2$ has coefficients at most
+$J_{\mathcal C}=A_{\mathcal C}<B/4$, and its digits from $L$
+through $L+K_0$ all equal $J_{\mathcal C}$. Write
+\[
+ \lambda\mathcal C^2=qV_1+V_0,\qquad0\le V_0<q.
+\]
+Exact division gives
+\[
+ \left\lfloor\frac{S_3}{q}\right\rfloor
+ =\theta\lambda-V_1+\epsilon,\qquad
+ \epsilon=\left\lfloor
+ \frac{e\mathcal C^2-V_0}{q}\right\rfloor\in\{-1,0\}.
+\]
+There is no borrow, since the digits of $\theta\lambda$ are $B-4$
+throughout this interval. The first digit of $S_3$ in the window is
+$B-4-J_{\mathcal C}+\epsilon$, and every subsequent one is
+$B-4-J_{\mathcal C}$. Binary nonoverlap therefore bounds every
+digit of $X=(B-4)a_{\mathrm{al}}$ by
+\[
+ J_{\mathcal C}+4=A_{\mathcal C}+4\le4A_{\mathcal C}.
+\]
+For its digit polynomial $F_X$,
+\[
+ B-4\mid F_X(4),\qquad
+ 0\le F_X(4)\le
+ 4A_{\mathcal C}\frac{4^{K_0+1}-1}{3}<\frac B{12}<B-4.
+\]
+The unchanged bound \eqref{eq:unit-center-H} supplies the strict
+inequality. Hence $X=0$ and $a_{\mathrm{al}}=0$, so both codes
+are canonical before any circuit row is tested.
+
+\subsection{Recover the special coordinate before the copies}
+
+Below $K_0$, the raw coefficients of $S_3$ are now those of
+$\mathcal D(T)\mathcal C(T)^2$. Each has absolute value at most
+$A_{\mathcal C}<B/4$, so incoming carries are zero or minus one.
+At a target raw value $v$, the mask $B-4$ is equivalent to
+\begin{equation}\label{eq:unit-center-target-test}
+ 0\le v+\epsilon\le3,\qquad\epsilon\in\{-1,0\}.
+\end{equation}
+The first special target has incoming carry zero: its single
+positive coefficient precedes all later row intervals, making
+every raw coefficient through that target nonnegative and below
+$B$. Thus $0\le\delta^2\le3$, so $\delta\in\{0,1\}$.
+
+At $\delta=0$, the direct guard \eqref{eq:unit-center-guard} has
+raw value $-x^2<0$, which fails
+\eqref{eq:unit-center-target-test}. Hence $\delta=1$ without any
+copy assumption. Ordinary targets now test $F\in\{0,1\}$, and
+paired rows force $F=0$. In particular, the paired unit copies give
+$X'=X$. The two rows \eqref{eq:unit-center-unit} then impose
+\[
+ X-1\in\{0,1\},\qquad X-X^2\in\{0,1\},
+\]
+forcing $X=1$. Every original circuit gate and equality is recovered
+at the actual input. The guard is auxiliary; it is not asserted to
+be an original equation or to have zero target value.
+
+\subsection{Positive necessity and the exact saving}
+
+Given a solution of the represented system, take its circuit values,
+$\delta=1$, all unit copies $X'=X=1$, zero dummy coordinates, and
+\[
+ u=\left\lceil\frac{x^2}{2}\right\rceil.
+\]
+The direct guard then has raw value
+$2u-x^2+1=1+(x^2\bmod2)$, which is one or two and survives either
+incoming carry. All ordinary targets have raw value one, and the
+first special target has value one with carry zero. The low
+coordinate tests vanish by support separation.
+
+Choose a power-of-two $b$ larger than every coordinate and use the
+canonical codes, $B=Hb^2$, $q=B^L$ and $n=q^8$. Their positive
+slack witnesses exist as before. In particular, $e_0$ has unit
+digit one, the $\delta$ digit makes $g>0$, and the nonconstant
+polynomial $\ell_0(T)+e_0(T)T^L$ has nonnegative coefficients, so
+its value at $B$ exceeds its value at four and the congruence
+quotient $t$ is positive. Also $\Omega=\lambda-e>0$ and
+\[
+ \mathcal C^2<q\le\theta q,
+ \qquad
+ S_3=\lambda(\theta q-\mathcal C^2)+e\mathcal C^2>0.
+\]
+All three masks hold. Their newly calculated $r$ satisfies
+\eqref{eq:unit-center-ranges} and the binomial divisibility in
+\eqref{eq:unit-center-decoded-powers}.
+
+The positive Pell construction of Section~\ref{sec:composed-99}
+now applies with these new coding values. Choose $U=4^{2r+1}$,
+$w=U/n^2$, $Y_P=\lfloor(U+1)^{2r}/U^r\rfloor$, and $s=Y_P/n^2$.
+Its binomial congruence makes the latter quotient integral.
+Choose the main and first Pell coordinates and interval witnesses,
+then the second coordinates at $L$, the gap and positive exponent
+quotients. In particular
+$\Delta=(\psi_{a+4}(L)-\psi_4(L))/a$ is a positive integer.
+Finally choose the doubled-index auxiliary witnesses at the new
+main parameter. This changes no coding value. Every required
+positive unknown is therefore supplied in the same proved order.
+
+The former seven-instruction block computed $2\lambda$, then
+$3\lambda=2\lambda+\lambda$. Replace it by the six instructions
+\begin{equation}\label{eq:unit-center-six}
+ \begin{gathered}
+ U_\lambda=\theta\lambda,\qquad
+ T_{\mathrm{coef}}=U_\lambda+1,\qquad \lambda_3=3\lambda,\\
+ R_2=T_{\mathrm{coef}}+\lambda_3,\qquad
+ t_2=\lambda-e,\qquad P_2=U_\lambda q.
+ \end{gathered}
+\end{equation}
+The tests $q^2=R_2$ and $\theta+4=B$ still give exactly
+$\lambda(B-1)=q^2-1$. The new block has three multiplications and
+three additions; the old block had three multiplications and four
+additions. Every other arithmetic instruction is retained.
+
+\begin{theorem}\label{thm:best98}
+Every recursively enumerable subset of the positive integers has an
+admissible fixed index $(V,H,T_L)$ for a system with 34 positive
+unknowns and 22 equations admitting a straight-line certificate of
+98 operations: 55 multiplications and 43 additions. Here
+$T_L=\psi_4(L)$ for the underlying exponent of the rebuilt index.
+The supplied parameters are $(x,V,H,T_L)$, and fixed numerals are free.
+\end{theorem}
+\begin{proof}
+The preceding construction proves the representation in both
+directions and gives every required positive witness. Formula
+\eqref{eq:unit-center-six} saves one addition from
+Theorem~\ref{thm:best99}, giving $55+43=98$.
+The exact checker
+\texttt{round27\_1980\_unit\_center\_certificate.py} verifies all
+98 primitive instructions, all 22 source residuals, and the same
+three residual corrections as its predecessor. Only the packed
+$r$ equation and the positive-$\sigma$ and positive-$\Omega$
+equations change; geometry and every Pell source equation are
+unchanged. Its finite regressions are distinct from the universal
+proof above. No optimality is asserted.
+\end{proof}

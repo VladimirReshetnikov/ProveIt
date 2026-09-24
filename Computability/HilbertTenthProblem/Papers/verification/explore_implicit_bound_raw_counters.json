@@ -1,0 +1,2840 @@
+{
+  "status": "PASS_IMPLICIT_BOUND_RAW_COUNTERS_74_75_76",
+  "variants": [
+    {
+      "arithmetic": {
+        "status": "PASS",
+        "registers": 1,
+        "operations": 74,
+        "primitive_histogram": {
+          "+": 37,
+          "*": 37
+        },
+        "histogram": {
+          "+": 30,
+          "-": 7,
+          "*": 37
+        },
+        "parameters": [
+          "x"
+        ],
+        "positive_unknowns": [
+          "q",
+          "Jrep",
+          "W",
+          "H",
+          "v",
+          "T",
+          "F0",
+          "F1",
+          "G0",
+          "G1",
+          "FKplus",
+          "FKminus",
+          "alphaI",
+          "a",
+          "c",
+          "d",
+          "f",
+          "h",
+          "i",
+          "j",
+          "k",
+          "o",
+          "r",
+          "s",
+          "w",
+          "tau",
+          "eta",
+          "zeta",
+          "ga",
+          "y_aux"
+        ],
+        "unknown_count": 30,
+        "equations": 20,
+        "primitive_instructions": [
+          {
+            "operation": "+",
+            "left": "Jrep",
+            "right": "Jrep",
+            "result": "twice_J"
+          },
+          {
+            "operation": "+",
+            "left": "twice_J",
+            "right": 1,
+            "result": "q_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "W",
+            "right": "v",
+            "result": "geometry_product"
+          },
+          {
+            "operation": "+",
+            "left": "W_minus_one",
+            "right": 1,
+            "result": "W"
+          },
+          {
+            "operation": "*",
+            "left": "H",
+            "right": "W_minus_one",
+            "result": "head_geometry"
+          },
+          {
+            "operation": "+",
+            "left": "FKplus",
+            "right": "FKminus",
+            "result": "flag_sum"
+          },
+          {
+            "operation": "+",
+            "left": "twice_J",
+            "right": "H",
+            "result": "head_rhs"
+          },
+          {
+            "operation": "*",
+            "left": 3,
+            "right": "T",
+            "result": "top_mask"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "F1",
+            "result": "track_sum"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "T",
+            "result": "guard0"
+          },
+          {
+            "operation": "+",
+            "left": "F1",
+            "right": "T",
+            "result": "guard1"
+          },
+          {
+            "operation": "+",
+            "left": "raw_A",
+            "right": "twice_J",
+            "result": "track_sum"
+          },
+          {
+            "operation": "+",
+            "left": "delta",
+            "right": "FKminus",
+            "result": "FKplus"
+          },
+          {
+            "operation": "+",
+            "left": "x",
+            "right": "x",
+            "result": "input"
+          },
+          {
+            "operation": "+",
+            "left": "raw_A",
+            "right": "delta",
+            "result": "next_A"
+          },
+          {
+            "operation": "*",
+            "left": "W",
+            "right": "next_A",
+            "result": "time_lhs"
+          },
+          {
+            "operation": "+",
+            "left": "time_rhs",
+            "right": "input",
+            "result": "raw_A"
+          },
+          {
+            "operation": "+",
+            "left": "input",
+            "right": "alphaI",
+            "result": "input_bound"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "FKminus",
+            "result": "pack_product0"
+          },
+          {
+            "operation": "+",
+            "left": "F1",
+            "right": "pack_product0",
+            "result": "pack_sum0"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum0",
+            "result": "pack_product1"
+          },
+          {
+            "operation": "+",
+            "left": "G1",
+            "right": "pack_product1",
+            "result": "pack_sum1"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum1",
+            "result": "pack_product2"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "pack_product2",
+            "result": "pack_sum2"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum2",
+            "result": "pack_product3"
+          },
+          {
+            "operation": "+",
+            "left": "G0",
+            "right": "pack_product3",
+            "result": "pack_sum3"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum3",
+            "result": "pack_product4"
+          },
+          {
+            "operation": "+",
+            "left": "FKplus",
+            "right": "pack_product4",
+            "result": "packed"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "q",
+            "result": "q2"
+          },
+          {
+            "operation": "*",
+            "left": "q2",
+            "right": "q2",
+            "result": "q4"
+          },
+          {
+            "operation": "*",
+            "left": "q4",
+            "right": "q2",
+            "result": "D0"
+          },
+          {
+            "operation": "*",
+            "left": "w",
+            "right": "D0",
+            "result": "wn2"
+          },
+          {
+            "operation": "*",
+            "left": "s",
+            "right": "D0",
+            "result": "sn2"
+          },
+          {
+            "operation": "*",
+            "left": "wn2",
+            "right": "sn2",
+            "result": "UM"
+          },
+          {
+            "operation": "+",
+            "left": "UM",
+            "right": "sn2",
+            "result": "R12"
+          },
+          {
+            "operation": "*",
+            "left": "k",
+            "right": "sn2",
+            "result": "ksn2"
+          },
+          {
+            "operation": "*",
+            "left": "UM",
+            "right": "UM",
+            "result": "UM2"
+          },
+          {
+            "operation": "+",
+            "left": "UM2",
+            "right": "wn2",
+            "result": "scaled_norm_coefficient"
+          },
+          {
+            "operation": "*",
+            "left": "ksn2",
+            "right": "ksn2",
+            "result": "ratio_product2"
+          },
+          {
+            "operation": "*",
+            "left": "scaled_norm_coefficient",
+            "right": "ratio_product2",
+            "result": "L9"
+          },
+          {
+            "operation": "+",
+            "left": "tau",
+            "right": 1,
+            "result": "tauplus1"
+          },
+          {
+            "operation": "*",
+            "left": "tau",
+            "right": "tauplus1",
+            "result": "R9"
+          },
+          {
+            "operation": "+",
+            "left": "ksn2",
+            "right": "eta",
+            "result": "R10a"
+          },
+          {
+            "operation": "+",
+            "left": "eta",
+            "right": "zeta",
+            "result": "R10b"
+          },
+          {
+            "operation": "+",
+            "left": "r",
+            "right": 1,
+            "result": "r1"
+          },
+          {
+            "operation": "*",
+            "left": "h",
+            "right": "UM",
+            "result": "hpm1"
+          },
+          {
+            "operation": "+",
+            "left": "r1",
+            "right": "hpm1",
+            "result": "R11"
+          },
+          {
+            "operation": "+",
+            "left": "r1",
+            "right": "r",
+            "result": "tr1"
+          },
+          {
+            "operation": "*",
+            "left": "c",
+            "right": "a",
+            "result": "cam2"
+          },
+          {
+            "operation": "+",
+            "left": "wn2",
+            "right": "cam2",
+            "result": "D1"
+          },
+          {
+            "operation": "*",
+            "left": 6,
+            "right": "a",
+            "result": "six_a"
+          },
+          {
+            "operation": "+",
+            "left": "six_a",
+            "right": 8,
+            "result": "modulus"
+          },
+          {
+            "operation": "*",
+            "left": "ga",
+            "right": "modulus",
+            "result": "gam"
+          },
+          {
+            "operation": "+",
+            "left": "D1",
+            "right": "gam",
+            "result": "R14"
+          },
+          {
+            "operation": "*",
+            "left": "a",
+            "right": "a",
+            "result": "a_square"
+          },
+          {
+            "operation": "+",
+            "left": "a_square",
+            "right": "modulus",
+            "result": "discriminant"
+          },
+          {
+            "operation": "*",
+            "left": "c",
+            "right": "c",
+            "result": "c2"
+          },
+          {
+            "operation": "*",
+            "left": "discriminant",
+            "right": "c2",
+            "result": "Ac2"
+          },
+          {
+            "operation": "+",
+            "left": "Ac2",
+            "right": 1,
+            "result": "R15"
+          },
+          {
+            "operation": "*",
+            "left": "d",
+            "right": "d",
+            "result": "L15"
+          },
+          {
+            "operation": "*",
+            "left": "i",
+            "right": "c2",
+            "result": "ic2"
+          },
+          {
+            "operation": "*",
+            "left": "ic2",
+            "right": "ic2",
+            "result": "ic22"
+          },
+          {
+            "operation": "*",
+            "left": "f",
+            "right": "f",
+            "result": "L16"
+          },
+          {
+            "operation": "+",
+            "left": "f_square_minus_one",
+            "right": 1,
+            "result": "L16"
+          },
+          {
+            "operation": "*",
+            "left": "discriminant",
+            "right": "f_square_minus_one",
+            "result": "R16"
+          },
+          {
+            "operation": "*",
+            "left": "o",
+            "right": "f",
+            "result": "of"
+          },
+          {
+            "operation": "+",
+            "left": "c",
+            "right": "of",
+            "result": "aux_u_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "j",
+            "right": "c",
+            "result": "jc"
+          },
+          {
+            "operation": "+",
+            "left": "tr1",
+            "right": "jc",
+            "result": "H17"
+          },
+          {
+            "operation": "*",
+            "left": "H17",
+            "right": "H17",
+            "result": "H2"
+          },
+          {
+            "operation": "*",
+            "left": "y_aux",
+            "right": "y_aux",
+            "result": "aux_y2"
+          },
+          {
+            "operation": "+",
+            "left": "aux_square_gap",
+            "right": "aux_y2",
+            "result": "H2"
+          },
+          {
+            "operation": "*",
+            "left": "ic22",
+            "right": "aux_square_gap",
+            "result": "L17"
+          },
+          {
+            "operation": "+",
+            "left": "P17",
+            "right": "aux_y2",
+            "result": 1
+          }
+        ],
+        "equalities": [
+          [
+            "q",
+            "q_rhs"
+          ],
+          [
+            "q",
+            "geometry_product"
+          ],
+          [
+            "head_geometry",
+            "twice_J"
+          ],
+          [
+            "flag_sum",
+            "head_rhs"
+          ],
+          [
+            "top_mask",
+            "head_rhs"
+          ],
+          [
+            "G0",
+            "guard0"
+          ],
+          [
+            "G1",
+            "guard1"
+          ],
+          [
+            "time_lhs",
+            "time_rhs"
+          ],
+          [
+            "input_bound",
+            "W"
+          ],
+          [
+            "r",
+            "packed"
+          ],
+          [
+            "L9",
+            "R9"
+          ],
+          [
+            "c",
+            "R10a"
+          ],
+          [
+            "k",
+            "R10b"
+          ],
+          [
+            "k",
+            "R11"
+          ],
+          [
+            "a",
+            "R12"
+          ],
+          [
+            "d",
+            "R14"
+          ],
+          [
+            "L15",
+            "R15"
+          ],
+          [
+            "ic22",
+            "R16"
+          ],
+          [
+            "L17",
+            "P17"
+          ],
+          [
+            "H17",
+            "aux_u_rhs"
+          ]
+        ],
+        "residuals": [
+          {
+            "index": 0,
+            "equality": [
+              "q",
+              "q_rhs"
+            ],
+            "source": "-2*Jrep + q - 1",
+            "actual": "-2*Jrep + q - 1",
+            "correction": "0"
+          },
+          {
+            "index": 1,
+            "equality": [
+              "q",
+              "geometry_product"
+            ],
+            "source": "-W*v + q",
+            "actual": "-W*v + q",
+            "correction": "0"
+          },
+          {
+            "index": 2,
+            "equality": [
+              "head_geometry",
+              "twice_J"
+            ],
+            "source": "H*W - H - 2*Jrep",
+            "actual": "H*W - H - 2*Jrep",
+            "correction": "0"
+          },
+          {
+            "index": 3,
+            "equality": [
+              "flag_sum",
+              "head_rhs"
+            ],
+            "source": "FKminus + FKplus - H - 2*Jrep",
+            "actual": "FKminus + FKplus - H - 2*Jrep",
+            "correction": "0"
+          },
+          {
+            "index": 4,
+            "equality": [
+              "top_mask",
+              "head_rhs"
+            ],
+            "source": "-H - 2*Jrep + 3*T",
+            "actual": "-H - 2*Jrep + 3*T",
+            "correction": "0"
+          },
+          {
+            "index": 5,
+            "equality": [
+              "G0",
+              "guard0"
+            ],
+            "source": "-F0 + G0 - T",
+            "actual": "-F0 + G0 - T",
+            "correction": "0"
+          },
+          {
+            "index": 6,
+            "equality": [
+              "G1",
+              "guard1"
+            ],
+            "source": "-F1 + G1 - T",
+            "actual": "-F1 + G1 - T",
+            "correction": "0"
+          },
+          {
+            "index": 7,
+            "equality": [
+              "time_lhs",
+              "time_rhs"
+            ],
+            "source": "F0*W - F0 + F1*W - F1 - FKminus*W + FKplus*W - 2*Jrep*W + 2*Jrep + 2*x",
+            "actual": "F0*W - F0 + F1*W - F1 - FKminus*W + FKplus*W - 2*Jrep*W + 2*Jrep + 2*x",
+            "correction": "0"
+          },
+          {
+            "index": 8,
+            "equality": [
+              "input_bound",
+              "W"
+            ],
+            "source": "-W + alphaI + 2*x",
+            "actual": "-W + alphaI + 2*x",
+            "correction": "0"
+          },
+          {
+            "index": 9,
+            "equality": [
+              "r",
+              "packed"
+            ],
+            "source": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - G0*q - G1*q**3 + r",
+            "actual": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - G0*q - G1*q**3 + r",
+            "correction": "0"
+          },
+          {
+            "index": 10,
+            "equality": [
+              "L9",
+              "R9"
+            ],
+            "source": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+            "actual": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+            "correction": "0"
+          },
+          {
+            "index": 11,
+            "equality": [
+              "c",
+              "R10a"
+            ],
+            "source": "c - eta - k*q**6*s",
+            "actual": "c - eta - k*q**6*s",
+            "correction": "0"
+          },
+          {
+            "index": 12,
+            "equality": [
+              "k",
+              "R10b"
+            ],
+            "source": "-eta + k - zeta",
+            "actual": "-eta + k - zeta",
+            "correction": "0"
+          },
+          {
+            "index": 13,
+            "equality": [
+              "k",
+              "R11"
+            ],
+            "source": "-h*q**12*s*w + k - r - 1",
+            "actual": "-h*q**12*s*w + k - r - 1",
+            "correction": "0"
+          },
+          {
+            "index": 14,
+            "equality": [
+              "a",
+              "R12"
+            ],
+            "source": "a - q**12*s*w - q**6*s",
+            "actual": "a - q**12*s*w - q**6*s",
+            "correction": "0"
+          },
+          {
+            "index": 15,
+            "equality": [
+              "d",
+              "R14"
+            ],
+            "source": "-a*c - 6*a*ga + d - 8*ga - q**6*w",
+            "actual": "-a*c - 6*a*ga + d - 8*ga - q**6*w",
+            "correction": "0"
+          },
+          {
+            "index": 16,
+            "equality": [
+              "L15",
+              "R15"
+            ],
+            "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+            "actual": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+            "correction": "0"
+          },
+          {
+            "index": 17,
+            "equality": [
+              "ic22",
+              "R16"
+            ],
+            "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+            "actual": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+            "correction": "0"
+          },
+          {
+            "index": 18,
+            "equality": [
+              "L17",
+              "P17"
+            ],
+            "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+            "actual": "c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 + y_aux**2 - 1",
+            "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+          },
+          {
+            "index": 19,
+            "equality": [
+              "H17",
+              "aux_u_rhs"
+            ],
+            "source": "c*j - c - f*o + 2*r + 1",
+            "actual": "c*j - c - f*o + 2*r + 1",
+            "correction": "0"
+          }
+        ],
+        "exact_delta": {
+          "deleted_positive_unknown": "alpha",
+          "deleted_source_index": 5,
+          "deleted_primitive_registers": [
+            "bound_lhs",
+            "bound_rhs"
+          ],
+          "all_retained_source_polynomials": "identical to the frozen predecessor"
+        }
+      },
+      "finite_outer_and_masks": {
+        "prepower_positive_tuples": 52116,
+        "tuples_above_deleted_bound": 39189,
+        "power_scale_tuples": 18129,
+        "complete_mask_acceptances": 0,
+        "samples": [],
+        "scope": "All retained positive outer tuples in odd q<100, all possible register radices, flags, even raw inputs and track splits; no deleted-bound or native-field filter."
+      },
+      "canonical": {
+        "complete_canonical_cases": 15,
+        "samples": [
+          {
+            "outer": {
+              "x": 1,
+              "q": 531441,
+              "Jrep": 265720,
+              "W": 27,
+              "H": 20440,
+              "v": 19683,
+              "T": 183960,
+              "F0": 286133,
+              "F1": 266531,
+              "G0": 470093,
+              "G1": 450491,
+              "FKplus": 265721,
+              "FKminus": 286159,
+              "alphaI": 25
+            },
+            "packed": 12130632721175049666516147921731768,
+            "meaning": {
+              "x": 1,
+              "width": 3,
+              "height": 4,
+              "values": [
+                2,
+                3,
+                2,
+                1,
+                0
+              ],
+              "signs": [
+                1,
+                -1,
+                -1,
+                -1
+              ]
+            },
+            "restored_alpha": 244497
+          },
+          {
+            "outer": {
+              "x": 2,
+              "q": 387420489,
+              "Jrep": 193710244,
+              "W": 27,
+              "H": 14900788,
+              "v": 14348907,
+              "T": 134107092,
+              "F0": 208651855,
+              "F1": 194242526,
+              "G0": 342758947,
+              "G1": 328349618,
+              "FKplus": 193710245,
+              "FKminus": 208611031,
+              "alphaI": 23
+            },
+            "packed": 1820749482845189641036395239401028713417295563855310,
+            "meaning": {
+              "x": 2,
+              "width": 3,
+              "height": 6,
+              "values": [
+                4,
+                5,
+                4,
+                3,
+                2,
+                1,
+                0
+              ],
+              "signs": [
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ]
+            },
+            "restored_alpha": 178236352
+          }
+        ],
+        "scope": "Complete source and mask checks with unique deleted-alpha restoration; every other positive witness is unchanged. Enormous Pell witnesses follow from the frozen converse."
+      }
+    },
+    {
+      "arithmetic": {
+        "status": "PASS",
+        "registers": 2,
+        "operations": 75,
+        "primitive_histogram": {
+          "+": 37,
+          "*": 38
+        },
+        "histogram": {
+          "+": 30,
+          "-": 7,
+          "*": 38
+        },
+        "parameters": [
+          "x"
+        ],
+        "positive_unknowns": [
+          "q",
+          "Jrep",
+          "W",
+          "H",
+          "v",
+          "T",
+          "F0",
+          "F1",
+          "G0",
+          "G1",
+          "FKplus",
+          "FKminus",
+          "alphaI",
+          "R",
+          "a",
+          "c",
+          "d",
+          "f",
+          "h",
+          "i",
+          "j",
+          "k",
+          "o",
+          "r",
+          "s",
+          "w",
+          "tau",
+          "eta",
+          "zeta",
+          "ga",
+          "y_aux"
+        ],
+        "unknown_count": 31,
+        "equations": 21,
+        "primitive_instructions": [
+          {
+            "operation": "+",
+            "left": "Jrep",
+            "right": "Jrep",
+            "result": "twice_J"
+          },
+          {
+            "operation": "+",
+            "left": "twice_J",
+            "right": 1,
+            "result": "q_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "W",
+            "right": "v",
+            "result": "geometry_product"
+          },
+          {
+            "operation": "+",
+            "left": "R_minus_one",
+            "right": 1,
+            "result": "R"
+          },
+          {
+            "operation": "*",
+            "left": "H",
+            "right": "R_minus_one",
+            "result": "head_geometry"
+          },
+          {
+            "operation": "+",
+            "left": "FKplus",
+            "right": "FKminus",
+            "result": "flag_sum"
+          },
+          {
+            "operation": "+",
+            "left": "twice_J",
+            "right": "H",
+            "result": "head_rhs"
+          },
+          {
+            "operation": "*",
+            "left": 3,
+            "right": "T",
+            "result": "top_mask"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "F1",
+            "result": "track_sum"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "T",
+            "result": "guard0"
+          },
+          {
+            "operation": "+",
+            "left": "F1",
+            "right": "T",
+            "result": "guard1"
+          },
+          {
+            "operation": "+",
+            "left": "raw_A",
+            "right": "twice_J",
+            "result": "track_sum"
+          },
+          {
+            "operation": "+",
+            "left": "delta",
+            "right": "FKminus",
+            "result": "FKplus"
+          },
+          {
+            "operation": "+",
+            "left": "x",
+            "right": "x",
+            "result": "input"
+          },
+          {
+            "operation": "+",
+            "left": "raw_A",
+            "right": "delta",
+            "result": "next_A"
+          },
+          {
+            "operation": "*",
+            "left": "W",
+            "right": "next_A",
+            "result": "time_lhs"
+          },
+          {
+            "operation": "+",
+            "left": "time_rhs",
+            "right": "input",
+            "result": "raw_A"
+          },
+          {
+            "operation": "+",
+            "left": "input",
+            "right": "alphaI",
+            "result": "input_bound"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "FKminus",
+            "result": "pack_product0"
+          },
+          {
+            "operation": "+",
+            "left": "F1",
+            "right": "pack_product0",
+            "result": "pack_sum0"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum0",
+            "result": "pack_product1"
+          },
+          {
+            "operation": "+",
+            "left": "G1",
+            "right": "pack_product1",
+            "result": "pack_sum1"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum1",
+            "result": "pack_product2"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "pack_product2",
+            "result": "pack_sum2"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum2",
+            "result": "pack_product3"
+          },
+          {
+            "operation": "+",
+            "left": "G0",
+            "right": "pack_product3",
+            "result": "pack_sum3"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum3",
+            "result": "pack_product4"
+          },
+          {
+            "operation": "+",
+            "left": "FKplus",
+            "right": "pack_product4",
+            "result": "packed"
+          },
+          {
+            "operation": "*",
+            "left": "R",
+            "right": "R",
+            "result": "W_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "q",
+            "result": "q2"
+          },
+          {
+            "operation": "*",
+            "left": "q2",
+            "right": "q2",
+            "result": "q4"
+          },
+          {
+            "operation": "*",
+            "left": "q4",
+            "right": "q2",
+            "result": "D0"
+          },
+          {
+            "operation": "*",
+            "left": "w",
+            "right": "D0",
+            "result": "wn2"
+          },
+          {
+            "operation": "*",
+            "left": "s",
+            "right": "D0",
+            "result": "sn2"
+          },
+          {
+            "operation": "*",
+            "left": "wn2",
+            "right": "sn2",
+            "result": "UM"
+          },
+          {
+            "operation": "+",
+            "left": "UM",
+            "right": "sn2",
+            "result": "R12"
+          },
+          {
+            "operation": "*",
+            "left": "k",
+            "right": "sn2",
+            "result": "ksn2"
+          },
+          {
+            "operation": "*",
+            "left": "UM",
+            "right": "UM",
+            "result": "UM2"
+          },
+          {
+            "operation": "+",
+            "left": "UM2",
+            "right": "wn2",
+            "result": "scaled_norm_coefficient"
+          },
+          {
+            "operation": "*",
+            "left": "ksn2",
+            "right": "ksn2",
+            "result": "ratio_product2"
+          },
+          {
+            "operation": "*",
+            "left": "scaled_norm_coefficient",
+            "right": "ratio_product2",
+            "result": "L9"
+          },
+          {
+            "operation": "+",
+            "left": "tau",
+            "right": 1,
+            "result": "tauplus1"
+          },
+          {
+            "operation": "*",
+            "left": "tau",
+            "right": "tauplus1",
+            "result": "R9"
+          },
+          {
+            "operation": "+",
+            "left": "ksn2",
+            "right": "eta",
+            "result": "R10a"
+          },
+          {
+            "operation": "+",
+            "left": "eta",
+            "right": "zeta",
+            "result": "R10b"
+          },
+          {
+            "operation": "+",
+            "left": "r",
+            "right": 1,
+            "result": "r1"
+          },
+          {
+            "operation": "*",
+            "left": "h",
+            "right": "UM",
+            "result": "hpm1"
+          },
+          {
+            "operation": "+",
+            "left": "r1",
+            "right": "hpm1",
+            "result": "R11"
+          },
+          {
+            "operation": "+",
+            "left": "r1",
+            "right": "r",
+            "result": "tr1"
+          },
+          {
+            "operation": "*",
+            "left": "c",
+            "right": "a",
+            "result": "cam2"
+          },
+          {
+            "operation": "+",
+            "left": "wn2",
+            "right": "cam2",
+            "result": "D1"
+          },
+          {
+            "operation": "*",
+            "left": 6,
+            "right": "a",
+            "result": "six_a"
+          },
+          {
+            "operation": "+",
+            "left": "six_a",
+            "right": 8,
+            "result": "modulus"
+          },
+          {
+            "operation": "*",
+            "left": "ga",
+            "right": "modulus",
+            "result": "gam"
+          },
+          {
+            "operation": "+",
+            "left": "D1",
+            "right": "gam",
+            "result": "R14"
+          },
+          {
+            "operation": "*",
+            "left": "a",
+            "right": "a",
+            "result": "a_square"
+          },
+          {
+            "operation": "+",
+            "left": "a_square",
+            "right": "modulus",
+            "result": "discriminant"
+          },
+          {
+            "operation": "*",
+            "left": "c",
+            "right": "c",
+            "result": "c2"
+          },
+          {
+            "operation": "*",
+            "left": "discriminant",
+            "right": "c2",
+            "result": "Ac2"
+          },
+          {
+            "operation": "+",
+            "left": "Ac2",
+            "right": 1,
+            "result": "R15"
+          },
+          {
+            "operation": "*",
+            "left": "d",
+            "right": "d",
+            "result": "L15"
+          },
+          {
+            "operation": "*",
+            "left": "i",
+            "right": "c2",
+            "result": "ic2"
+          },
+          {
+            "operation": "*",
+            "left": "ic2",
+            "right": "ic2",
+            "result": "ic22"
+          },
+          {
+            "operation": "*",
+            "left": "f",
+            "right": "f",
+            "result": "L16"
+          },
+          {
+            "operation": "+",
+            "left": "f_square_minus_one",
+            "right": 1,
+            "result": "L16"
+          },
+          {
+            "operation": "*",
+            "left": "discriminant",
+            "right": "f_square_minus_one",
+            "result": "R16"
+          },
+          {
+            "operation": "*",
+            "left": "o",
+            "right": "f",
+            "result": "of"
+          },
+          {
+            "operation": "+",
+            "left": "c",
+            "right": "of",
+            "result": "aux_u_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "j",
+            "right": "c",
+            "result": "jc"
+          },
+          {
+            "operation": "+",
+            "left": "tr1",
+            "right": "jc",
+            "result": "H17"
+          },
+          {
+            "operation": "*",
+            "left": "H17",
+            "right": "H17",
+            "result": "H2"
+          },
+          {
+            "operation": "*",
+            "left": "y_aux",
+            "right": "y_aux",
+            "result": "aux_y2"
+          },
+          {
+            "operation": "+",
+            "left": "aux_square_gap",
+            "right": "aux_y2",
+            "result": "H2"
+          },
+          {
+            "operation": "*",
+            "left": "ic22",
+            "right": "aux_square_gap",
+            "result": "L17"
+          },
+          {
+            "operation": "+",
+            "left": "P17",
+            "right": "aux_y2",
+            "result": 1
+          }
+        ],
+        "equalities": [
+          [
+            "q",
+            "q_rhs"
+          ],
+          [
+            "q",
+            "geometry_product"
+          ],
+          [
+            "head_geometry",
+            "twice_J"
+          ],
+          [
+            "flag_sum",
+            "head_rhs"
+          ],
+          [
+            "top_mask",
+            "head_rhs"
+          ],
+          [
+            "G0",
+            "guard0"
+          ],
+          [
+            "G1",
+            "guard1"
+          ],
+          [
+            "time_lhs",
+            "time_rhs"
+          ],
+          [
+            "input_bound",
+            "R"
+          ],
+          [
+            "r",
+            "packed"
+          ],
+          [
+            "L9",
+            "R9"
+          ],
+          [
+            "c",
+            "R10a"
+          ],
+          [
+            "k",
+            "R10b"
+          ],
+          [
+            "k",
+            "R11"
+          ],
+          [
+            "a",
+            "R12"
+          ],
+          [
+            "d",
+            "R14"
+          ],
+          [
+            "L15",
+            "R15"
+          ],
+          [
+            "ic22",
+            "R16"
+          ],
+          [
+            "L17",
+            "P17"
+          ],
+          [
+            "H17",
+            "aux_u_rhs"
+          ],
+          [
+            "W",
+            "W_rhs"
+          ]
+        ],
+        "residuals": [
+          {
+            "index": 0,
+            "equality": [
+              "q",
+              "q_rhs"
+            ],
+            "source": "-2*Jrep + q - 1",
+            "actual": "-2*Jrep + q - 1",
+            "correction": "0"
+          },
+          {
+            "index": 1,
+            "equality": [
+              "q",
+              "geometry_product"
+            ],
+            "source": "-W*v + q",
+            "actual": "-W*v + q",
+            "correction": "0"
+          },
+          {
+            "index": 2,
+            "equality": [
+              "head_geometry",
+              "twice_J"
+            ],
+            "source": "H*R - H - 2*Jrep",
+            "actual": "H*R - H - 2*Jrep",
+            "correction": "0"
+          },
+          {
+            "index": 3,
+            "equality": [
+              "flag_sum",
+              "head_rhs"
+            ],
+            "source": "FKminus + FKplus - H - 2*Jrep",
+            "actual": "FKminus + FKplus - H - 2*Jrep",
+            "correction": "0"
+          },
+          {
+            "index": 4,
+            "equality": [
+              "top_mask",
+              "head_rhs"
+            ],
+            "source": "-H - 2*Jrep + 3*T",
+            "actual": "-H - 2*Jrep + 3*T",
+            "correction": "0"
+          },
+          {
+            "index": 5,
+            "equality": [
+              "G0",
+              "guard0"
+            ],
+            "source": "-F0 + G0 - T",
+            "actual": "-F0 + G0 - T",
+            "correction": "0"
+          },
+          {
+            "index": 6,
+            "equality": [
+              "G1",
+              "guard1"
+            ],
+            "source": "-F1 + G1 - T",
+            "actual": "-F1 + G1 - T",
+            "correction": "0"
+          },
+          {
+            "index": 7,
+            "equality": [
+              "time_lhs",
+              "time_rhs"
+            ],
+            "source": "F0*W - F0 + F1*W - F1 - FKminus*W + FKplus*W - 2*Jrep*W + 2*Jrep + 2*x",
+            "actual": "F0*W - F0 + F1*W - F1 - FKminus*W + FKplus*W - 2*Jrep*W + 2*Jrep + 2*x",
+            "correction": "0"
+          },
+          {
+            "index": 8,
+            "equality": [
+              "input_bound",
+              "R"
+            ],
+            "source": "-R + alphaI + 2*x",
+            "actual": "-R + alphaI + 2*x",
+            "correction": "0"
+          },
+          {
+            "index": 9,
+            "equality": [
+              "r",
+              "packed"
+            ],
+            "source": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - G0*q - G1*q**3 + r",
+            "actual": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - G0*q - G1*q**3 + r",
+            "correction": "0"
+          },
+          {
+            "index": 10,
+            "equality": [
+              "L9",
+              "R9"
+            ],
+            "source": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+            "actual": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+            "correction": "0"
+          },
+          {
+            "index": 11,
+            "equality": [
+              "c",
+              "R10a"
+            ],
+            "source": "c - eta - k*q**6*s",
+            "actual": "c - eta - k*q**6*s",
+            "correction": "0"
+          },
+          {
+            "index": 12,
+            "equality": [
+              "k",
+              "R10b"
+            ],
+            "source": "-eta + k - zeta",
+            "actual": "-eta + k - zeta",
+            "correction": "0"
+          },
+          {
+            "index": 13,
+            "equality": [
+              "k",
+              "R11"
+            ],
+            "source": "-h*q**12*s*w + k - r - 1",
+            "actual": "-h*q**12*s*w + k - r - 1",
+            "correction": "0"
+          },
+          {
+            "index": 14,
+            "equality": [
+              "a",
+              "R12"
+            ],
+            "source": "a - q**12*s*w - q**6*s",
+            "actual": "a - q**12*s*w - q**6*s",
+            "correction": "0"
+          },
+          {
+            "index": 15,
+            "equality": [
+              "d",
+              "R14"
+            ],
+            "source": "-a*c - 6*a*ga + d - 8*ga - q**6*w",
+            "actual": "-a*c - 6*a*ga + d - 8*ga - q**6*w",
+            "correction": "0"
+          },
+          {
+            "index": 16,
+            "equality": [
+              "L15",
+              "R15"
+            ],
+            "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+            "actual": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+            "correction": "0"
+          },
+          {
+            "index": 17,
+            "equality": [
+              "ic22",
+              "R16"
+            ],
+            "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+            "actual": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+            "correction": "0"
+          },
+          {
+            "index": 18,
+            "equality": [
+              "L17",
+              "P17"
+            ],
+            "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+            "actual": "c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 + y_aux**2 - 1",
+            "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+          },
+          {
+            "index": 19,
+            "equality": [
+              "H17",
+              "aux_u_rhs"
+            ],
+            "source": "c*j - c - f*o + 2*r + 1",
+            "actual": "c*j - c - f*o + 2*r + 1",
+            "correction": "0"
+          },
+          {
+            "index": 20,
+            "equality": [
+              "W",
+              "W_rhs"
+            ],
+            "source": "-R**2 + W",
+            "actual": "-R**2 + W",
+            "correction": "0"
+          }
+        ],
+        "exact_delta": {
+          "deleted_positive_unknown": "alpha",
+          "deleted_source_index": 5,
+          "deleted_primitive_registers": [
+            "bound_lhs",
+            "bound_rhs"
+          ],
+          "all_retained_source_polynomials": "identical to the frozen predecessor"
+        }
+      },
+      "finite_outer_and_masks": {
+        "prepower_positive_tuples": 4377,
+        "tuples_above_deleted_bound": 2895,
+        "power_scale_tuples": 3519,
+        "complete_mask_acceptances": 0,
+        "samples": [],
+        "scope": "All retained positive outer tuples in odd q<100, all possible register radices, flags, even raw inputs and track splits; no deleted-bound or native-field filter."
+      },
+      "canonical": {
+        "complete_canonical_cases": 22,
+        "samples": [
+          {
+            "outer": {
+              "x": 1,
+              "q": 282429536481,
+              "Jrep": 141214768240,
+              "R": 27,
+              "W": 729,
+              "H": 10862674480,
+              "v": 387420489,
+              "T": 97764070320,
+              "F0": 151675674755,
+              "F1": 141602720171,
+              "G0": 249439745075,
+              "G1": 239366790491,
+              "FKplus": 141229117175,
+              "FKminus": 152063093785,
+              "alphaI": 25
+            },
+            "packed": 273258945769400104190053094103640861756334769847242776814892811535212,
+            "meaning": {
+              "x": 1,
+              "registers": 2,
+              "counter_digit_width": 3,
+              "height": 4,
+              "values": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  3,
+                  1
+                ],
+                [
+                  2,
+                  0
+                ],
+                [
+                  1,
+                  1
+                ],
+                [
+                  0,
+                  0
+                ]
+              ],
+              "controls": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  -1,
+                  -1
+                ],
+                [
+                  -1,
+                  1
+                ],
+                [
+                  -1,
+                  -1
+                ]
+              ]
+            },
+            "restored_alpha": 130365909795
+          },
+          {
+            "outer": {
+              "x": 1,
+              "q": 282429536481,
+              "Jrep": 141214768240,
+              "R": 27,
+              "W": 729,
+              "H": 10862674480,
+              "v": 387420489,
+              "T": 97764070320,
+              "F0": 151690023662,
+              "F1": 141617069078,
+              "G0": 249454093982,
+              "G1": 239381139398,
+              "FKplus": 141214787951,
+              "FKminus": 152077423009,
+              "alphaI": 25
+            },
+            "packed": 273284695532517976553281361126839355743399461217580773383515505406040,
+            "meaning": {
+              "x": 1,
+              "registers": 2,
+              "counter_digit_width": 3,
+              "height": 4,
+              "values": [
+                [
+                  2,
+                  0
+                ],
+                [
+                  3,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  1,
+                  1
+                ],
+                [
+                  0,
+                  0
+                ]
+              ],
+              "controls": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  -1,
+                  1
+                ],
+                [
+                  -1,
+                  -1
+                ],
+                [
+                  -1,
+                  -1
+                ]
+              ]
+            },
+            "restored_alpha": 130337211981
+          }
+        ],
+        "scope": "Complete source and mask checks with unique deleted-alpha restoration; every other positive witness is unchanged. Enormous Pell witnesses follow from the frozen converse."
+      }
+    },
+    {
+      "arithmetic": {
+        "status": "PASS",
+        "registers": 3,
+        "operations": 76,
+        "primitive_histogram": {
+          "+": 37,
+          "*": 39
+        },
+        "histogram": {
+          "+": 30,
+          "-": 7,
+          "*": 39
+        },
+        "parameters": [
+          "x"
+        ],
+        "positive_unknowns": [
+          "q",
+          "Jrep",
+          "W",
+          "H",
+          "v",
+          "T",
+          "F0",
+          "F1",
+          "G0",
+          "G1",
+          "FKplus",
+          "FKminus",
+          "alphaI",
+          "R",
+          "a",
+          "c",
+          "d",
+          "f",
+          "h",
+          "i",
+          "j",
+          "k",
+          "o",
+          "r",
+          "s",
+          "w",
+          "tau",
+          "eta",
+          "zeta",
+          "ga",
+          "y_aux"
+        ],
+        "unknown_count": 31,
+        "equations": 21,
+        "primitive_instructions": [
+          {
+            "operation": "+",
+            "left": "Jrep",
+            "right": "Jrep",
+            "result": "twice_J"
+          },
+          {
+            "operation": "+",
+            "left": "twice_J",
+            "right": 1,
+            "result": "q_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "W",
+            "right": "v",
+            "result": "geometry_product"
+          },
+          {
+            "operation": "+",
+            "left": "R_minus_one",
+            "right": 1,
+            "result": "R"
+          },
+          {
+            "operation": "*",
+            "left": "H",
+            "right": "R_minus_one",
+            "result": "head_geometry"
+          },
+          {
+            "operation": "+",
+            "left": "FKplus",
+            "right": "FKminus",
+            "result": "flag_sum"
+          },
+          {
+            "operation": "+",
+            "left": "twice_J",
+            "right": "H",
+            "result": "head_rhs"
+          },
+          {
+            "operation": "*",
+            "left": 3,
+            "right": "T",
+            "result": "top_mask"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "F1",
+            "result": "track_sum"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "T",
+            "result": "guard0"
+          },
+          {
+            "operation": "+",
+            "left": "F1",
+            "right": "T",
+            "result": "guard1"
+          },
+          {
+            "operation": "+",
+            "left": "raw_A",
+            "right": "twice_J",
+            "result": "track_sum"
+          },
+          {
+            "operation": "+",
+            "left": "delta",
+            "right": "FKminus",
+            "result": "FKplus"
+          },
+          {
+            "operation": "+",
+            "left": "x",
+            "right": "x",
+            "result": "input"
+          },
+          {
+            "operation": "+",
+            "left": "raw_A",
+            "right": "delta",
+            "result": "next_A"
+          },
+          {
+            "operation": "*",
+            "left": "W",
+            "right": "next_A",
+            "result": "time_lhs"
+          },
+          {
+            "operation": "+",
+            "left": "time_rhs",
+            "right": "input",
+            "result": "raw_A"
+          },
+          {
+            "operation": "+",
+            "left": "input",
+            "right": "alphaI",
+            "result": "input_bound"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "FKminus",
+            "result": "pack_product0"
+          },
+          {
+            "operation": "+",
+            "left": "F1",
+            "right": "pack_product0",
+            "result": "pack_sum0"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum0",
+            "result": "pack_product1"
+          },
+          {
+            "operation": "+",
+            "left": "G1",
+            "right": "pack_product1",
+            "result": "pack_sum1"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum1",
+            "result": "pack_product2"
+          },
+          {
+            "operation": "+",
+            "left": "F0",
+            "right": "pack_product2",
+            "result": "pack_sum2"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum2",
+            "result": "pack_product3"
+          },
+          {
+            "operation": "+",
+            "left": "G0",
+            "right": "pack_product3",
+            "result": "pack_sum3"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "pack_sum3",
+            "result": "pack_product4"
+          },
+          {
+            "operation": "+",
+            "left": "FKplus",
+            "right": "pack_product4",
+            "result": "packed"
+          },
+          {
+            "operation": "*",
+            "left": "R",
+            "right": "R",
+            "result": "R2"
+          },
+          {
+            "operation": "*",
+            "left": "R2",
+            "right": "R",
+            "result": "W_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "q",
+            "right": "q",
+            "result": "q2"
+          },
+          {
+            "operation": "*",
+            "left": "q2",
+            "right": "q2",
+            "result": "q4"
+          },
+          {
+            "operation": "*",
+            "left": "q4",
+            "right": "q2",
+            "result": "D0"
+          },
+          {
+            "operation": "*",
+            "left": "w",
+            "right": "D0",
+            "result": "wn2"
+          },
+          {
+            "operation": "*",
+            "left": "s",
+            "right": "D0",
+            "result": "sn2"
+          },
+          {
+            "operation": "*",
+            "left": "wn2",
+            "right": "sn2",
+            "result": "UM"
+          },
+          {
+            "operation": "+",
+            "left": "UM",
+            "right": "sn2",
+            "result": "R12"
+          },
+          {
+            "operation": "*",
+            "left": "k",
+            "right": "sn2",
+            "result": "ksn2"
+          },
+          {
+            "operation": "*",
+            "left": "UM",
+            "right": "UM",
+            "result": "UM2"
+          },
+          {
+            "operation": "+",
+            "left": "UM2",
+            "right": "wn2",
+            "result": "scaled_norm_coefficient"
+          },
+          {
+            "operation": "*",
+            "left": "ksn2",
+            "right": "ksn2",
+            "result": "ratio_product2"
+          },
+          {
+            "operation": "*",
+            "left": "scaled_norm_coefficient",
+            "right": "ratio_product2",
+            "result": "L9"
+          },
+          {
+            "operation": "+",
+            "left": "tau",
+            "right": 1,
+            "result": "tauplus1"
+          },
+          {
+            "operation": "*",
+            "left": "tau",
+            "right": "tauplus1",
+            "result": "R9"
+          },
+          {
+            "operation": "+",
+            "left": "ksn2",
+            "right": "eta",
+            "result": "R10a"
+          },
+          {
+            "operation": "+",
+            "left": "eta",
+            "right": "zeta",
+            "result": "R10b"
+          },
+          {
+            "operation": "+",
+            "left": "r",
+            "right": 1,
+            "result": "r1"
+          },
+          {
+            "operation": "*",
+            "left": "h",
+            "right": "UM",
+            "result": "hpm1"
+          },
+          {
+            "operation": "+",
+            "left": "r1",
+            "right": "hpm1",
+            "result": "R11"
+          },
+          {
+            "operation": "+",
+            "left": "r1",
+            "right": "r",
+            "result": "tr1"
+          },
+          {
+            "operation": "*",
+            "left": "c",
+            "right": "a",
+            "result": "cam2"
+          },
+          {
+            "operation": "+",
+            "left": "wn2",
+            "right": "cam2",
+            "result": "D1"
+          },
+          {
+            "operation": "*",
+            "left": 6,
+            "right": "a",
+            "result": "six_a"
+          },
+          {
+            "operation": "+",
+            "left": "six_a",
+            "right": 8,
+            "result": "modulus"
+          },
+          {
+            "operation": "*",
+            "left": "ga",
+            "right": "modulus",
+            "result": "gam"
+          },
+          {
+            "operation": "+",
+            "left": "D1",
+            "right": "gam",
+            "result": "R14"
+          },
+          {
+            "operation": "*",
+            "left": "a",
+            "right": "a",
+            "result": "a_square"
+          },
+          {
+            "operation": "+",
+            "left": "a_square",
+            "right": "modulus",
+            "result": "discriminant"
+          },
+          {
+            "operation": "*",
+            "left": "c",
+            "right": "c",
+            "result": "c2"
+          },
+          {
+            "operation": "*",
+            "left": "discriminant",
+            "right": "c2",
+            "result": "Ac2"
+          },
+          {
+            "operation": "+",
+            "left": "Ac2",
+            "right": 1,
+            "result": "R15"
+          },
+          {
+            "operation": "*",
+            "left": "d",
+            "right": "d",
+            "result": "L15"
+          },
+          {
+            "operation": "*",
+            "left": "i",
+            "right": "c2",
+            "result": "ic2"
+          },
+          {
+            "operation": "*",
+            "left": "ic2",
+            "right": "ic2",
+            "result": "ic22"
+          },
+          {
+            "operation": "*",
+            "left": "f",
+            "right": "f",
+            "result": "L16"
+          },
+          {
+            "operation": "+",
+            "left": "f_square_minus_one",
+            "right": 1,
+            "result": "L16"
+          },
+          {
+            "operation": "*",
+            "left": "discriminant",
+            "right": "f_square_minus_one",
+            "result": "R16"
+          },
+          {
+            "operation": "*",
+            "left": "o",
+            "right": "f",
+            "result": "of"
+          },
+          {
+            "operation": "+",
+            "left": "c",
+            "right": "of",
+            "result": "aux_u_rhs"
+          },
+          {
+            "operation": "*",
+            "left": "j",
+            "right": "c",
+            "result": "jc"
+          },
+          {
+            "operation": "+",
+            "left": "tr1",
+            "right": "jc",
+            "result": "H17"
+          },
+          {
+            "operation": "*",
+            "left": "H17",
+            "right": "H17",
+            "result": "H2"
+          },
+          {
+            "operation": "*",
+            "left": "y_aux",
+            "right": "y_aux",
+            "result": "aux_y2"
+          },
+          {
+            "operation": "+",
+            "left": "aux_square_gap",
+            "right": "aux_y2",
+            "result": "H2"
+          },
+          {
+            "operation": "*",
+            "left": "ic22",
+            "right": "aux_square_gap",
+            "result": "L17"
+          },
+          {
+            "operation": "+",
+            "left": "P17",
+            "right": "aux_y2",
+            "result": 1
+          }
+        ],
+        "equalities": [
+          [
+            "q",
+            "q_rhs"
+          ],
+          [
+            "q",
+            "geometry_product"
+          ],
+          [
+            "head_geometry",
+            "twice_J"
+          ],
+          [
+            "flag_sum",
+            "head_rhs"
+          ],
+          [
+            "top_mask",
+            "head_rhs"
+          ],
+          [
+            "G0",
+            "guard0"
+          ],
+          [
+            "G1",
+            "guard1"
+          ],
+          [
+            "time_lhs",
+            "time_rhs"
+          ],
+          [
+            "input_bound",
+            "R"
+          ],
+          [
+            "r",
+            "packed"
+          ],
+          [
+            "L9",
+            "R9"
+          ],
+          [
+            "c",
+            "R10a"
+          ],
+          [
+            "k",
+            "R10b"
+          ],
+          [
+            "k",
+            "R11"
+          ],
+          [
+            "a",
+            "R12"
+          ],
+          [
+            "d",
+            "R14"
+          ],
+          [
+            "L15",
+            "R15"
+          ],
+          [
+            "ic22",
+            "R16"
+          ],
+          [
+            "L17",
+            "P17"
+          ],
+          [
+            "H17",
+            "aux_u_rhs"
+          ],
+          [
+            "W",
+            "W_rhs"
+          ]
+        ],
+        "residuals": [
+          {
+            "index": 0,
+            "equality": [
+              "q",
+              "q_rhs"
+            ],
+            "source": "-2*Jrep + q - 1",
+            "actual": "-2*Jrep + q - 1",
+            "correction": "0"
+          },
+          {
+            "index": 1,
+            "equality": [
+              "q",
+              "geometry_product"
+            ],
+            "source": "-W*v + q",
+            "actual": "-W*v + q",
+            "correction": "0"
+          },
+          {
+            "index": 2,
+            "equality": [
+              "head_geometry",
+              "twice_J"
+            ],
+            "source": "H*R - H - 2*Jrep",
+            "actual": "H*R - H - 2*Jrep",
+            "correction": "0"
+          },
+          {
+            "index": 3,
+            "equality": [
+              "flag_sum",
+              "head_rhs"
+            ],
+            "source": "FKminus + FKplus - H - 2*Jrep",
+            "actual": "FKminus + FKplus - H - 2*Jrep",
+            "correction": "0"
+          },
+          {
+            "index": 4,
+            "equality": [
+              "top_mask",
+              "head_rhs"
+            ],
+            "source": "-H - 2*Jrep + 3*T",
+            "actual": "-H - 2*Jrep + 3*T",
+            "correction": "0"
+          },
+          {
+            "index": 5,
+            "equality": [
+              "G0",
+              "guard0"
+            ],
+            "source": "-F0 + G0 - T",
+            "actual": "-F0 + G0 - T",
+            "correction": "0"
+          },
+          {
+            "index": 6,
+            "equality": [
+              "G1",
+              "guard1"
+            ],
+            "source": "-F1 + G1 - T",
+            "actual": "-F1 + G1 - T",
+            "correction": "0"
+          },
+          {
+            "index": 7,
+            "equality": [
+              "time_lhs",
+              "time_rhs"
+            ],
+            "source": "F0*W - F0 + F1*W - F1 - FKminus*W + FKplus*W - 2*Jrep*W + 2*Jrep + 2*x",
+            "actual": "F0*W - F0 + F1*W - F1 - FKminus*W + FKplus*W - 2*Jrep*W + 2*Jrep + 2*x",
+            "correction": "0"
+          },
+          {
+            "index": 8,
+            "equality": [
+              "input_bound",
+              "R"
+            ],
+            "source": "-R + alphaI + 2*x",
+            "actual": "-R + alphaI + 2*x",
+            "correction": "0"
+          },
+          {
+            "index": 9,
+            "equality": [
+              "r",
+              "packed"
+            ],
+            "source": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - G0*q - G1*q**3 + r",
+            "actual": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - G0*q - G1*q**3 + r",
+            "correction": "0"
+          },
+          {
+            "index": 10,
+            "equality": [
+              "L9",
+              "R9"
+            ],
+            "source": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+            "actual": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+            "correction": "0"
+          },
+          {
+            "index": 11,
+            "equality": [
+              "c",
+              "R10a"
+            ],
+            "source": "c - eta - k*q**6*s",
+            "actual": "c - eta - k*q**6*s",
+            "correction": "0"
+          },
+          {
+            "index": 12,
+            "equality": [
+              "k",
+              "R10b"
+            ],
+            "source": "-eta + k - zeta",
+            "actual": "-eta + k - zeta",
+            "correction": "0"
+          },
+          {
+            "index": 13,
+            "equality": [
+              "k",
+              "R11"
+            ],
+            "source": "-h*q**12*s*w + k - r - 1",
+            "actual": "-h*q**12*s*w + k - r - 1",
+            "correction": "0"
+          },
+          {
+            "index": 14,
+            "equality": [
+              "a",
+              "R12"
+            ],
+            "source": "a - q**12*s*w - q**6*s",
+            "actual": "a - q**12*s*w - q**6*s",
+            "correction": "0"
+          },
+          {
+            "index": 15,
+            "equality": [
+              "d",
+              "R14"
+            ],
+            "source": "-a*c - 6*a*ga + d - 8*ga - q**6*w",
+            "actual": "-a*c - 6*a*ga + d - 8*ga - q**6*w",
+            "correction": "0"
+          },
+          {
+            "index": 16,
+            "equality": [
+              "L15",
+              "R15"
+            ],
+            "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+            "actual": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+            "correction": "0"
+          },
+          {
+            "index": 17,
+            "equality": [
+              "ic22",
+              "R16"
+            ],
+            "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+            "actual": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+            "correction": "0"
+          },
+          {
+            "index": 18,
+            "equality": [
+              "L17",
+              "P17"
+            ],
+            "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+            "actual": "c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 + y_aux**2 - 1",
+            "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+          },
+          {
+            "index": 19,
+            "equality": [
+              "H17",
+              "aux_u_rhs"
+            ],
+            "source": "c*j - c - f*o + 2*r + 1",
+            "actual": "c*j - c - f*o + 2*r + 1",
+            "correction": "0"
+          },
+          {
+            "index": 20,
+            "equality": [
+              "W",
+              "W_rhs"
+            ],
+            "source": "-R**3 + W",
+            "actual": "-R**3 + W",
+            "correction": "0"
+          }
+        ],
+        "exact_delta": {
+          "deleted_positive_unknown": "alpha",
+          "deleted_source_index": 5,
+          "deleted_primitive_registers": [
+            "bound_lhs",
+            "bound_rhs"
+          ],
+          "all_retained_source_polynomials": "identical to the frozen predecessor"
+        }
+      },
+      "finite_outer_and_masks": {
+        "prepower_positive_tuples": 756,
+        "tuples_above_deleted_bound": 486,
+        "power_scale_tuples": 756,
+        "complete_mask_acceptances": 0,
+        "samples": [],
+        "scope": "All retained positive outer tuples in odd q<100, all possible register radices, flags, even raw inputs and track splits; no deleted-bound or native-field filter."
+      },
+      "canonical": {
+        "complete_canonical_cases": 104,
+        "samples": [
+          {
+            "outer": {
+              "x": 1,
+              "q": 150094635296999121,
+              "Jrep": 75047317648499560,
+              "R": 27,
+              "W": 19683,
+              "H": 5772870588346120,
+              "v": 7625597484987,
+              "T": 51955835295115080,
+              "F0": 80614004214368516,
+              "F1": 75253209168546140,
+              "G0": 132569839509483596,
+              "G1": 127209044463661220,
+              "FKplus": 75047610538390001,
+              "FKminus": 80819895346955239,
+              "alphaI": 25
+            },
+            "packed": 6156645296875507048723127181266522858248962334109367300188125624164063022167724613561251618725032133272,
+            "meaning": {
+              "x": 1,
+              "registers": 3,
+              "counter_digit_width": 3,
+              "height": 4,
+              "values": [
+                [
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  3,
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  0,
+                  0,
+                  0
+                ]
+              ],
+              "controls": [
+                [
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  -1,
+                  -1,
+                  -1
+                ],
+                [
+                  -1,
+                  1,
+                  1
+                ],
+                [
+                  -1,
+                  -1,
+                  -1
+                ]
+              ]
+            },
+            "restored_alpha": 69274739562584025
+          },
+          {
+            "outer": {
+              "x": 1,
+              "q": 150094635296999121,
+              "Jrep": 75047317648499560,
+              "R": 27,
+              "W": 19683,
+              "H": 5772870588346120,
+              "v": 7625597484987,
+              "T": 51955835295115080,
+              "F0": 80614286643904997,
+              "F1": 75253491598082621,
+              "G0": 132570121939020077,
+              "G1": 127209326893197701,
+              "FKplus": 75047328123202427,
+              "FKminus": 80820177762142813,
+              "alphaI": 25
+            },
+            "packed": 6156666810515544311962818365571423685355283405997542483501887568255209442908587871431322261506724560796,
+            "meaning": {
+              "x": 1,
+              "registers": 3,
+              "counter_digit_width": 3,
+              "height": 4,
+              "values": [
+                [
+                  2,
+                  0,
+                  0
+                ],
+                [
+                  3,
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  0,
+                  2
+                ],
+                [
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  0,
+                  0,
+                  0
+                ]
+              ],
+              "controls": [
+                [
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  -1,
+                  -1,
+                  1
+                ],
+                [
+                  -1,
+                  1,
+                  -1
+                ],
+                [
+                  -1,
+                  -1,
+                  -1
+                ]
+              ]
+            },
+            "restored_alpha": 69274174703511063
+          }
+        ],
+        "scope": "Complete source and mask checks with unique deleted-alpha restoration; every other positive witness is unchanged. Enormous Pell witnesses follow from the frozen converse."
+      }
+    }
+  ],
+  "proof": "../1980/EXPLORATION_IMPLICIT_BOUND_RAW_COUNTERS.md",
+  "overflow_proof": "../1980/EXPLORATION_RAW_ALPHA_OVERFLOW_LEMMA.md",
+  "scope": "Exact first-plus raw numerical zero-target components. The removed aggregate bound is derived by the full range, overflow and field-carry proofs. No universal-machine certificate is claimed."
+}

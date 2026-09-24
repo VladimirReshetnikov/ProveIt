@@ -1,0 +1,2758 @@
+{
+  "status": "PASS_LINEAR_WIDTH_RULE110_HISTORY76",
+  "source": {
+    "operations": 76,
+    "multiplications": 43,
+    "additions_subtractions": 33,
+    "positive_unknown_count": 25,
+    "positive_unknowns": [
+      "q",
+      "awidth",
+      "quot",
+      "hrow",
+      "Cw",
+      "Yw",
+      "Jrow",
+      "alphaI",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "equations": 16,
+    "outer_operations": 33,
+    "kernel_operations": 43,
+    "primitive_instructions": [
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "Q2"
+      },
+      {
+        "operation": "*",
+        "left": "Q2",
+        "right": "Q2",
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "Lbig",
+        "right": "Q2",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": 16,
+        "right": "awidth",
+        "result": "W"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "quot",
+        "result": "Wq"
+      },
+      {
+        "operation": "+",
+        "left": "Qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "+",
+        "left": "Wm1",
+        "right": 1,
+        "result": "W"
+      },
+      {
+        "operation": "*",
+        "left": "hrow",
+        "right": "Wm1",
+        "result": "row_geom"
+      },
+      {
+        "operation": "*",
+        "left": 307,
+        "right": "Cw",
+        "result": "C307"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "Yw",
+        "result": "Y4"
+      },
+      {
+        "operation": "+",
+        "left": "C307",
+        "right": "Y4",
+        "result": "local_sum"
+      },
+      {
+        "operation": "+",
+        "left": "local_sum",
+        "right": "Jrow",
+        "result": "Uw"
+      },
+      {
+        "operation": "+",
+        "left": "I",
+        "right": "alphaI",
+        "result": "Ibound"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "Yw",
+        "result": "WY"
+      },
+      {
+        "operation": "+",
+        "left": "I",
+        "right": "WY",
+        "result": "time_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "F",
+        "result": "QF"
+      },
+      {
+        "operation": "+",
+        "left": "Cw",
+        "right": "QF",
+        "result": "time_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 16,
+        "right": "Cw",
+        "result": "Bw"
+      },
+      {
+        "operation": "+",
+        "left": "Bw",
+        "right": "hrow",
+        "result": "Tword"
+      },
+      {
+        "operation": "*",
+        "left": "Q2",
+        "right": "Uw",
+        "result": "q2U"
+      },
+      {
+        "operation": "+",
+        "left": "Yw",
+        "right": "q2U",
+        "result": "Yq2U"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "Yq2U",
+        "result": "qYq2U"
+      },
+      {
+        "operation": "+",
+        "left": "Tword",
+        "right": "qYq2U",
+        "result": "packed"
+      },
+      {
+        "operation": "+",
+        "left": "q",
+        "right": 1,
+        "result": "qp1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "Q2",
+        "result": "fourQ2"
+      },
+      {
+        "operation": "+",
+        "left": "fourQ2",
+        "right": 14,
+        "result": "mask_inner"
+      },
+      {
+        "operation": "*",
+        "left": "qp1",
+        "right": "mask_inner",
+        "result": "mask_product"
+      },
+      {
+        "operation": "*",
+        "left": "Jrow",
+        "right": "mask_product",
+        "result": "mask"
+      },
+      {
+        "operation": "*",
+        "left": 15,
+        "right": "Jrow",
+        "result": "fifteenJ"
+      },
+      {
+        "operation": "+",
+        "left": "packing_gap",
+        "right": "packed",
+        "result": "Lbig"
+      },
+      {
+        "operation": "+",
+        "left": "Lm1",
+        "right": 1,
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "packing_gap",
+        "right": "Lm1",
+        "result": "r_product"
+      },
+      {
+        "operation": "+",
+        "left": "r_product",
+        "right": "mask",
+        "result": "r_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "a",
+        "result": "a4"
+      },
+      {
+        "operation": "+",
+        "left": "a4",
+        "right": 3,
+        "result": "a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "a4m5",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "a4m5",
+        "result": "A"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "aux_u_rhs",
+        "right": "c",
+        "result": "of"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "H17",
+        "right": "tr1",
+        "result": "jc"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "histogram": {
+      "+": 24,
+      "-": 9,
+      "*": 43
+    },
+    "sources": [
+      {
+        "index": 0,
+        "equality": [
+          "q",
+          "Wq"
+        ],
+        "source_sign": 1,
+        "source": "-16*awidth*quot + q",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "Qm1",
+          "row_geom"
+        ],
+        "source_sign": 1,
+        "source": "-16*awidth*hrow + hrow + q - 1",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "Ibound",
+          "awidth"
+        ],
+        "source_sign": 1,
+        "source": "I + alphaI - awidth",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "time_lhs",
+          "time_rhs"
+        ],
+        "source_sign": 1,
+        "source": "-Cw - F*q + I + 16*Yw*awidth",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "fifteenJ",
+          "Qm1"
+        ],
+        "source_sign": 1,
+        "source": "15*Jrow - q + 1",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "source_sign": 1,
+        "source": "307*Cw*q**7 + 16*Cw*q**4 - 307*Cw*q**3 - 16*Cw + Jrow*q**7 - 5*Jrow*q**3 - 4*Jrow*q**2 - 14*Jrow*q - 14*Jrow + 4*Yw*q**7 + Yw*q**5 - 4*Yw*q**3 - Yw*q + hrow*q**4 - hrow - q**8 + q**4 + r",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source_sign": 1,
+        "source": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source_sign": 1,
+        "source": "c - eta - k*q**6*s",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source_sign": 1,
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source_sign": 1,
+        "source": "-h*q**12*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source_sign": 1,
+        "source": "a - q**12*s*w - q**6*s",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source_sign": 1,
+        "source": "-a*c - 4*a*ga + d - 3*ga - q**6*w",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source_sign": 1,
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**6*i**2*j**2 - 4*c**5*i**2*j*r - 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source_sign": 1,
+        "source": "c*j + c - f*o - 2*r - 1",
+        "correction": "0"
+      }
+    ]
+  },
+  "weakened75_source": {
+    "operations": 75,
+    "multiplications": 42,
+    "additions_subtractions": 33,
+    "positive_unknown_count": 24,
+    "positive_unknowns": [
+      "q",
+      "awidth",
+      "hrow",
+      "Cw",
+      "Yw",
+      "Jrow",
+      "alphaI",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "equations": 15,
+    "outer_operations": 32,
+    "kernel_operations": 43,
+    "primitive_instructions": [
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "Q2"
+      },
+      {
+        "operation": "*",
+        "left": "Q2",
+        "right": "Q2",
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "Lbig",
+        "right": "Q2",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": 16,
+        "right": "awidth",
+        "result": "W"
+      },
+      {
+        "operation": "+",
+        "left": "Qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "+",
+        "left": "Wm1",
+        "right": 1,
+        "result": "W"
+      },
+      {
+        "operation": "*",
+        "left": "hrow",
+        "right": "Wm1",
+        "result": "row_geom"
+      },
+      {
+        "operation": "*",
+        "left": 307,
+        "right": "Cw",
+        "result": "C307"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "Yw",
+        "result": "Y4"
+      },
+      {
+        "operation": "+",
+        "left": "C307",
+        "right": "Y4",
+        "result": "local_sum"
+      },
+      {
+        "operation": "+",
+        "left": "local_sum",
+        "right": "Jrow",
+        "result": "Uw"
+      },
+      {
+        "operation": "+",
+        "left": "I",
+        "right": "alphaI",
+        "result": "Ibound"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "Yw",
+        "result": "WY"
+      },
+      {
+        "operation": "+",
+        "left": "I",
+        "right": "WY",
+        "result": "time_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "F",
+        "result": "QF"
+      },
+      {
+        "operation": "+",
+        "left": "Cw",
+        "right": "QF",
+        "result": "time_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 16,
+        "right": "Cw",
+        "result": "Bw"
+      },
+      {
+        "operation": "+",
+        "left": "Bw",
+        "right": "hrow",
+        "result": "Tword"
+      },
+      {
+        "operation": "*",
+        "left": "Q2",
+        "right": "Uw",
+        "result": "q2U"
+      },
+      {
+        "operation": "+",
+        "left": "Yw",
+        "right": "q2U",
+        "result": "Yq2U"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "Yq2U",
+        "result": "qYq2U"
+      },
+      {
+        "operation": "+",
+        "left": "Tword",
+        "right": "qYq2U",
+        "result": "packed"
+      },
+      {
+        "operation": "+",
+        "left": "q",
+        "right": 1,
+        "result": "qp1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "Q2",
+        "result": "fourQ2"
+      },
+      {
+        "operation": "+",
+        "left": "fourQ2",
+        "right": 14,
+        "result": "mask_inner"
+      },
+      {
+        "operation": "*",
+        "left": "qp1",
+        "right": "mask_inner",
+        "result": "mask_product"
+      },
+      {
+        "operation": "*",
+        "left": "Jrow",
+        "right": "mask_product",
+        "result": "mask"
+      },
+      {
+        "operation": "*",
+        "left": 15,
+        "right": "Jrow",
+        "result": "fifteenJ"
+      },
+      {
+        "operation": "+",
+        "left": "packing_gap",
+        "right": "packed",
+        "result": "Lbig"
+      },
+      {
+        "operation": "+",
+        "left": "Lm1",
+        "right": 1,
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "packing_gap",
+        "right": "Lm1",
+        "result": "r_product"
+      },
+      {
+        "operation": "+",
+        "left": "r_product",
+        "right": "mask",
+        "result": "r_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "a",
+        "result": "a4"
+      },
+      {
+        "operation": "+",
+        "left": "a4",
+        "right": 3,
+        "result": "a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "a4m5",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "a4m5",
+        "result": "A"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "aux_u_rhs",
+        "right": "c",
+        "result": "of"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "H17",
+        "right": "tr1",
+        "result": "jc"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "histogram": {
+      "+": 24,
+      "-": 9,
+      "*": 42
+    },
+    "sources": [
+      {
+        "index": 0,
+        "equality": [
+          "Qm1",
+          "row_geom"
+        ],
+        "source_sign": 1,
+        "source": "-16*awidth*hrow + hrow + q - 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "Ibound",
+          "awidth"
+        ],
+        "source_sign": 1,
+        "source": "I + alphaI - awidth",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "time_lhs",
+          "time_rhs"
+        ],
+        "source_sign": 1,
+        "source": "-Cw - F*q + I + 16*Yw*awidth",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "fifteenJ",
+          "Qm1"
+        ],
+        "source_sign": 1,
+        "source": "15*Jrow - q + 1",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "source_sign": 1,
+        "source": "307*Cw*q**7 + 16*Cw*q**4 - 307*Cw*q**3 - 16*Cw + Jrow*q**7 - 5*Jrow*q**3 - 4*Jrow*q**2 - 14*Jrow*q - 14*Jrow + 4*Yw*q**7 + Yw*q**5 - 4*Yw*q**3 - Yw*q + hrow*q**4 - hrow - q**8 + q**4 + r",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source_sign": 1,
+        "source": "k**2*q**36*s**4*w**2 + k**2*q**18*s**2*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source_sign": 1,
+        "source": "c - eta - k*q**6*s",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source_sign": 1,
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source_sign": 1,
+        "source": "-h*q**12*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source_sign": 1,
+        "source": "a - q**12*s*w - q**6*s",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source_sign": 1,
+        "source": "-a*c - 4*a*ga + d - 3*ga - q**6*w",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source_sign": 1,
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**6*i**2*j**2 - 4*c**5*i**2*j*r - 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source_sign": 1,
+        "source": "c*j + c - f*o - 2*r - 1",
+        "correction": "0"
+      }
+    ]
+  },
+  "bounds_alignment": {
+    "prepower_candidates": 160,
+    "positive_index_candidates": 10,
+    "nonpower_q_positive_index_candidates": 7,
+    "initial_low_blocks": 32752,
+    "misaligned_low_blocks_rejected": 28387
+  },
+  "histories": {
+    "candidate_T_words": 31892,
+    "misaligned_T_words": 12168,
+    "surviving_boundaries": 2107,
+    "compatible_final_words": 81993,
+    "accepted_count": 37,
+    "accepted": [
+      {
+        "m": 3,
+        "t": 1,
+        "I": 1,
+        "F": 17,
+        "positive_outer_coordinates": {
+          "q": 4096,
+          "awidth": 256,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 1,
+          "Yw": 17,
+          "Jrow": 273,
+          "alphaI": 255,
+          "r": 66694019596895249772519096063,
+          "I": 1,
+          "F": 17
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 72
+      },
+      {
+        "m": 4,
+        "t": 1,
+        "I": 1,
+        "F": 17,
+        "positive_outer_coordinates": {
+          "q": 65536,
+          "awidth": 4096,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 1,
+          "Yw": 17,
+          "Jrow": 4369,
+          "alphaI": 4095,
+          "r": 315650110624028689128905539868575133439,
+          "I": 1,
+          "F": 17
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 96
+      },
+      {
+        "m": 4,
+        "t": 1,
+        "I": 16,
+        "F": 272,
+        "positive_outer_coordinates": {
+          "q": 65536,
+          "awidth": 4096,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 16,
+          "Yw": 272,
+          "Jrow": 4369,
+          "alphaI": 4080,
+          "r": 286443440794462003208784486630883782639,
+          "I": 16,
+          "F": 272
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 96
+      },
+      {
+        "m": 4,
+        "t": 1,
+        "I": 17,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 65536,
+          "awidth": 4096,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 17,
+          "Yw": 273,
+          "Jrow": 4369,
+          "alphaI": 4079,
+          "r": 284828636471456462595431521181725880319,
+          "I": 17,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 96
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 1,
+        "F": 17,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 1,
+          "Yw": 17,
+          "Jrow": 69905,
+          "alphaI": 65535,
+          "r": 1363545614046357134504407629066564111375158669055,
+          "I": 1,
+          "F": 17
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 16,
+        "F": 272,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 16,
+          "Yw": 272,
+          "Jrow": 69905,
+          "alphaI": 65520,
+          "r": 1355705508312498389055018284201314742535747203055,
+          "I": 16,
+          "F": 272
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 17,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 17,
+          "Yw": 273,
+          "Jrow": 69905,
+          "alphaI": 65519,
+          "r": 1355272037577701948800034740994605492378206662655,
+          "I": 17,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 256,
+        "F": 4352,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 256,
+          "Yw": 4352,
+          "Jrow": 69905,
+          "alphaI": 65280,
+          "r": 1230263816570758461864788766357324841105163747055,
+          "I": 256,
+          "F": 4352
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 257,
+        "F": 4369,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 257,
+          "Yw": 4369,
+          "Jrow": 69905,
+          "alphaI": 65279,
+          "r": 1229741142855167878834829476699641549849202982655,
+          "I": 257,
+          "F": 4369
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 272,
+        "F": 4368,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 272,
+          "Yw": 4368,
+          "Jrow": 69905,
+          "alphaI": 65264,
+          "r": 1223328284814015417785052075049976838584515100655,
+          "I": 272,
+          "F": 4368
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 273,
+        "F": 4113,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 273,
+          "Yw": 4113,
+          "Jrow": 69905,
+          "alphaI": 65263,
+          "r": 1224322061771925261929680475058852246001698144255,
+          "I": 273,
+          "F": 4113
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 1,
+        "F": 17,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 1,
+          "Yw": 17,
+          "Jrow": 1118481,
+          "alphaI": 1048575,
+          "r": 5858488007146679556658068834598063033198113794835428077311,
+          "I": 1,
+          "F": 17
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 16,
+        "F": 272,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 16,
+          "Yw": 272,
+          "Jrow": 1118481,
+          "alphaI": 1048560,
+          "r": 5856383444788923056116902370499065597947363570910111920111,
+          "I": 16,
+          "F": 272
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 17,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 17,
+          "Yw": 273,
+          "Jrow": 1118481,
+          "alphaI": 1048559,
+          "r": 5856267085874565318948837436663990010913313608087465029631,
+          "I": 17,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 256,
+        "F": 4352,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 256,
+          "Yw": 4352,
+          "Jrow": 1118481,
+          "alphaI": 1048320,
+          "r": 5822710447064819047458238944915106633935359988105053404911,
+          "I": 256,
+          "F": 4352
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 257,
+        "F": 4369,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 257,
+          "Yw": 4369,
+          "Jrow": 1118481,
+          "alphaI": 1048319,
+          "r": 5822570142907635280755494513975173471585309973176698994431,
+          "I": 257,
+          "F": 4369
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 272,
+        "F": 4368,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 272,
+          "Yw": 4368,
+          "Jrow": 1118481,
+          "alphaI": 1048304,
+          "r": 5820848704435095252769200003553897241390560582942703157231,
+          "I": 272,
+          "F": 4368
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 273,
+        "F": 4113,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 273,
+          "Yw": 4113,
+          "Jrow": 1118481,
+          "alphaI": 1048303,
+          "r": 5821115469405953988156007023396542859412511453811376586751,
+          "I": 273,
+          "F": 4113
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4096,
+        "F": 69632,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4096,
+          "Yw": 69632,
+          "Jrow": 1118481,
+          "alphaI": 1044480,
+          "r": 5283942483479154908919624135571763209743302663224117161711,
+          "I": 4096,
+          "F": 69632
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4097,
+        "F": 69649,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4097,
+          "Yw": 69649,
+          "Jrow": 1118481,
+          "alphaI": 1044479,
+          "r": 5283802179321971142216879704631830047393252648295762751231,
+          "I": 4097,
+          "F": 69649
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4112,
+        "F": 69904,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4112,
+          "Yw": 69904,
+          "Jrow": 1118481,
+          "alphaI": 1044464,
+          "r": 5281697616964214641675713240532832612142502424370446594031,
+          "I": 4112,
+          "F": 69904
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4113,
+        "F": 69905,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4113,
+          "Yw": 69905,
+          "Jrow": 1118481,
+          "alphaI": 1044463,
+          "r": 5281581258049856904507648306697757025108452461547799703551,
+          "I": 4113,
+          "F": 69905
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4352,
+        "F": 69888,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4352,
+          "Yw": 69888,
+          "Jrow": 1118481,
+          "alphaI": 1044224,
+          "r": 5254154601403574193895001073792412929026512180626513198831,
+          "I": 4352,
+          "F": 69888
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4353,
+        "F": 69905,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4353,
+          "Yw": 69905,
+          "Jrow": 1118481,
+          "alphaI": 1044223,
+          "r": 5254014297246390427192256642852479766676462165698158788351,
+          "I": 4353,
+          "F": 69905
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4368,
+        "F": 65808,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4368,
+          "Yw": 65808,
+          "Jrow": 1118481,
+          "alphaI": 1044208,
+          "r": 5258422840937313960083913391274742817377726114525288071151,
+          "I": 4368,
+          "F": 65808
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 4369,
+        "F": 65553,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4369,
+          "Yw": 65553,
+          "Jrow": 1118481,
+          "alphaI": 1044207,
+          "r": 5258689605908172695470720411117388435399676985393961500671,
+          "I": 4369,
+          "F": 65553
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 4,
+        "t": 2,
+        "I": 1,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 4294967296,
+          "awidth": 4096,
+          "quot": 65536,
+          "hrow": 65537,
+          "Cw": 1114113,
+          "Yw": 17891345,
+          "Jrow": 286331153,
+          "alphaI": 4095,
+          "r": 96922034687496061820960033570416325110415366612907692317870161894369380003583,
+          "I": 1,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 192
+      },
+      {
+        "m": 5,
+        "t": 2,
+        "I": 1,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 1099511627776,
+          "awidth": 65536,
+          "quot": 1048576,
+          "hrow": 1048577,
+          "Cw": 17825793,
+          "Yw": 286261265,
+          "Jrow": 73300775185,
+          "alphaI": 65535,
+          "r": 1980732165417831145219746744901956019796474133228849041281402125934026572907942116472943934369535,
+          "I": 1,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 240
+      },
+      {
+        "m": 5,
+        "t": 2,
+        "I": 16,
+        "F": 4368,
+        "positive_outer_coordinates": {
+          "q": 1099511627776,
+          "awidth": 65536,
+          "quot": 1048576,
+          "hrow": 1048577,
+          "Cw": 285212688,
+          "Yw": 4580180240,
+          "Jrow": 73300775185,
+          "alphaI": 65520,
+          "r": 1787896143790614501093418302986647250398922287231454003670948643300592341470643323199428109463535,
+          "I": 16,
+          "F": 4368
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 240
+      },
+      {
+        "m": 5,
+        "t": 2,
+        "I": 17,
+        "F": 4113,
+        "positive_outer_coordinates": {
+          "q": 1099511627776,
+          "awidth": 65536,
+          "quot": 1048576,
+          "hrow": 1048577,
+          "Cw": 286261265,
+          "Yw": 4312793361,
+          "Jrow": 73300775185,
+          "alphaI": 65519,
+          "r": 1789348549837570964190725964136204632406388361746825692484277391993699744500947865687025482919935,
+          "I": 17,
+          "F": 4113
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 240
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 1,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 285212673,
+          "Yw": 4580179985,
+          "Jrow": 18764998447377,
+          "alphaI": 1048575,
+          "r": 36760384131009143584834193702753631222175772188301155339763495758567235469604563932217744432770772701211175850798847,
+          "I": 1,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 16,
+        "F": 4368,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 4563402768,
+          "Yw": 73282879760,
+          "Jrow": 18764998447377,
+          "alphaI": 1048560,
+          "r": 36538059346623448401394151729284346443553469698536429166628203213224867275205159109287040542628600695295533615345647,
+          "I": 16,
+          "F": 4368
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 17,
+        "F": 4113,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 4580179985,
+          "Yw": 69004689681,
+          "Jrow": 18764998447377,
+          "alphaI": 1048559,
+          "r": 36539733857441431106059555859607154515433023069690298789905959985683757616768562797596476287993160000208825467465727,
+          "I": 17,
+          "F": 4113
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 273,
+        "F": 69905,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 69004689681,
+          "Yw": 1172811288593,
+          "Jrow": 18764998447377,
+          "alphaI": 1048303,
+          "r": 33153022709885809321379919819573033304832699315247612614523270750504241636872144623765495602851798063392620836487167,
+          "I": 273,
+          "F": 69905
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 256,
+        "F": 69888,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 73014444288,
+          "Yw": 1172526076160,
+          "Jrow": 18764998447377,
+          "alphaI": 1048320,
+          "r": 32980862796452325466353480153775789985596629862300810396463522487746976164814681942395778300353848600645257848094447,
+          "I": 256,
+          "F": 69888
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 272,
+        "F": 65808,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 73282879760,
+          "Yw": 1104075034896,
+          "Jrow": 18764998447377,
+          "alphaI": 1048304,
+          "r": 33007654969540048740999946238940719135669483800762724368907630847089221629829140955346750226186797479257927482015727,
+          "I": 272,
+          "F": 65808
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 257,
+        "F": 65553,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 73299656961,
+          "Yw": 1099796844817,
+          "Jrow": 18764998447377,
+          "alphaI": 1048319,
+          "r": 33009329481045633081513936261904661987683549565299939161443363071021289359669975658028786760857333919636678178176767,
+          "I": 257,
+          "F": 65553
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      }
+    ],
+    "canonical_count": 30,
+    "canonical": [
+      {
+        "m": 4,
+        "t": 1,
+        "I": 1,
+        "F": 17,
+        "positive_outer_coordinates": {
+          "q": 65536,
+          "awidth": 4096,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 1,
+          "Yw": 17,
+          "Jrow": 4369,
+          "alphaI": 4095,
+          "r": 315650110624028689128905539868575133439,
+          "I": 1,
+          "F": 17
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 96
+      },
+      {
+        "m": 5,
+        "t": 2,
+        "I": 1,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 1099511627776,
+          "awidth": 65536,
+          "quot": 1048576,
+          "hrow": 1048577,
+          "Cw": 17825793,
+          "Yw": 286261265,
+          "Jrow": 73300775185,
+          "alphaI": 65535,
+          "r": 1980732165417831145219746744901956019796474133228849041281402125934026572907942116472943934369535,
+          "I": 1,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 240
+      },
+      {
+        "m": 6,
+        "t": 3,
+        "I": 1,
+        "F": 4113,
+        "positive_outer_coordinates": {
+          "q": 4722366482869645213696,
+          "awidth": 1048576,
+          "quot": 281474976710656,
+          "hrow": 281474993487873,
+          "Cw": 76842668927221761,
+          "Yw": 1157706583791108113,
+          "Jrow": 314824432191309680913,
+          "alphaI": 1048575,
+          "r": 229363626807113003455837764180514578007617634338556951332786365815887207005371436823894651450912357248819558434350665654539149291176967188150887623262626802077395826462617343,
+          "I": 1,
+          "F": 4113
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 432
+      },
+      {
+        "m": 7,
+        "t": 4,
+        "I": 1,
+        "F": 69905,
+        "positive_outer_coordinates": {
+          "q": 5192296858534827628530496329220096,
+          "awidth": 16777216,
+          "quot": 19342813113834066795298816,
+          "hrow": 19342813185891661101662209,
+          "Cw": 79556990356871239905981759489,
+          "Yw": 1352159351018943323676644212753,
+          "Jrow": 346153123902321841902033088614673,
+          "alphaI": 16777215,
+          "r": 490039549804181717591349017448653561005051054827819739096337096901584146282150257899718054757975780015307799931147515219427713205972434420678993030668058191806786232103513252592321328290419531971581442875258466190071414665050458638981992893850596034868118371147570933503,
+          "I": 1,
+          "F": 69905
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 672
+      },
+      {
+        "m": 11,
+        "t": 8,
+        "I": 1,
+        "F": 4312862993,
+        "positive_outer_coordinates": {
+          "q": 9173994463960286046443283581208347763186259956673124494950355357547691504353939232280074212440502746218496,
+          "awidth": 1099511627776,
+          "quot": 521481209941628438084722096232800809229175908778479680162851955034721612739414196782949728256,
+          "hrow": 521481209941658080859566850863825910098348901020882683715818543545959035037497255377451876353,
+          "Cw": 149282006818657582170220282395451183764205083129111220260534290565285384386047955482827387245703462913,
+          "Yw": 2249077011902121466471631702482918826194847030387624399568058612714309132115839030010189908926108008465,
+          "Jrow": 611599630930685736429552238747223184212417330444874966330023690503179433623595948818671614162700183081233,
+          "alphaI": 1099511627775,
+          "r": 46528043785165460088592456451872832287292421088337070431733600466856651885940642300951848164111083087897967527488518377053077573537528636637114231628057480518682036199474291465462185277576636647485178680157447654536153660054137689353245935852619577689074773373068509221182408529169569079906361319666893398010357351185346458530949794213547313078051760006404245433346019388062447343146507140630708818424211885520511863400091997179380542514430209988538180393184531230712261796834802573383274974794253426995457298096448354455172927357399075492890659814371013316813004751747121496139022856258093687800083569934185283661472355455755391567919899139537438552985859691326047674640832803172010278693974501065646663056626383805666261347789778960983647268925277260934001342294656597412879832711665422581876533971635115999087598256447155076480895193305052016383,
+          "I": 1,
+          "F": 4312862993
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 2112
+      },
+      {
+        "m": 19,
+        "t": 16,
+        "I": 1,
+        "F": 19671724340871762193,
+        "positive_outer_coordinates": {
+          "q": 1128430269653696552505663664688505519051893948117725342710709407999638941941219040912833546632301522012495604549678634617312701794930960696933850145274509219899605219518447018369658381698338332600334225533767288503097470829739413943739519714331064178097205003926859545229038622328927117691927971265095131106901145206539640038505022502031780376472027866138952425537536,
+          "awidth": 4722366482869645213696,
+          "quot": 14934650266808366570320408622852960646761673277207226330614110735087816844749013262154996078651848582108360475310915294566518312586678747717366605686086578536636834221552886243435005663333973242092786331089313457541044379412801195944591829139721685264868125480926456023345899073123938476101817799943829891958629451457234995914228056252299083776,
+          "hrow": 14934650266808366570320606281303456067287408138560244333810124269287877604528508725910959404569162612890452575429491810891566367551918248771504797231874695122416957466305510458421342309059612440040020530649960706724282148072521716923189907301370206782967016655030967442576146198176859968223238346400338919469077985848889367015752096431304867841,
+          "Cw": 17290223052633551203092508821141663937584720819886187924237162714820696176102728500692828374801181669480499037125354099482330739140230039950362407863042467431346850635219983364581662258486705750547301409349304095710873060444825173369839783888977033133590048045750748598460546371805549236936422775793020549542241806763801238863989628121958537057936486689073528833,
+          "Yw": 293790323175981102245295429491209608024093336690101278265681798214147037462909515878786878648083331254340999246304931505827412033019466124673258011531314239725658491800361326161619660591095903637332471526312720675479542023454463919367178895432013257934288642616025576389359191823503003158021218464151890618030777062274520211303842871214229969733291260438367961105,
+          "Jrow": 75228684643579770167044244312567034603459596541181689514047293866642596129414602727522236442153434800833040303311908974487513452995397379795590009684967281326640347967896467891310558779889222173355615035584485900206498055315960929582634647622070945206480333595123969681935908155261807846128531417673008740460076347102642669233668166802118691764801857742596828369169,
+          "alphaI": 4722366482869645213695,
+          "r": 2438669346782617403628907998008723145650629533617949433500821399692094218590735564123555387134114485460768526650822336742623612131637831611904620185223007769911416484191166661117758045475285966457440582615417052771118267659168407039315553560219832116422483420141665707216400106548572750521105762616182332330293676785440366873689421468308037790320491175544921593104085106826272161194710934501816413969917810368111859017479885722471328621832609371491907341201789590288360008474925195046415235721823348839275090856813626905980122656328803858967917523188814071578752483095111365175000847965529127715189058298530333019374407928462699374647757407129551880339900666226691236841241860332525875432179806365424665486401835856729946352010928032088561072395441753651610806854041433193798918202811890137796443968789640004170114376753026941630431831826078124850404175583215942056044206842470044666553536465660602601783334184634519407737796612264507229661934866312673477137935378211713875200309031343187779727490017875314196911605476230967339915990832039803893080855381352530724924358941230972129605325898843615729791678958938089855312166999447344802349374906354981598085042475865418350436330913854217944501997793667136073700000160972123730885217135344477097134124067223896923815416513483756177103393160508740551373054859728330187207083185935418461327285423739986753225526825011660475383468441320678083586505401199559441537771065822589228082853412928819184545025427077456415260832785133741912251419270666748003551039546054145549305641213533823554827401336300822131012824652984069925799536293064141977046820333110511516160130366708054766980877349687497435547044273271756319700798265057777500425273084832161456967644057614298765305190060655416106031730993383124625559637163657919498833441206507012145477241383302629598533548492007066512296604488256161803085491223989000436463127542257010426337347352017191223035599294275079442880392202853598603557483696496002185828205196668894362971291843860334490710544180894859645483466266079160559139881700300629610667510171162745414954556580143273104624508053216169940488128466279949127178995762825809916069974664436695621673850296864896360398739018107727591859152741932255812319747647623107542523657367465303129550538177000028797336566847793140713417878481561647223799456388602349116546962375938244601616920359886383962657320174201317295737148744858549772494736175438242091024294938405506097815983448794757711447692238815580980967115880812309848290191391221670078419311393394384679130030714157584628445015386241890125688639931599450171232575261197949817582194260303031404940261872331913482334325378041649062503727657913308221240202174659256958875277513622941485015329528698832931134807612284217037473444138452139241548993946587629675586727520949440930153728510740610649971984547402391069902241571664092732067834067719616053413447123296345683163414543941526426649482953078072460013324943216807356579617631999,
+          "I": 1,
+          "F": 19671724340871762193
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 7296
+      },
+      {
+        "m": 5,
+        "t": 1,
+        "I": 17,
+        "F": 273,
+        "positive_outer_coordinates": {
+          "q": 1048576,
+          "awidth": 65536,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 17,
+          "Yw": 273,
+          "Jrow": 69905,
+          "alphaI": 65519,
+          "r": 1355272037577701948800034740994605492378206662655,
+          "I": 17,
+          "F": 273
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 120
+      },
+      {
+        "m": 6,
+        "t": 2,
+        "I": 17,
+        "F": 4113,
+        "positive_outer_coordinates": {
+          "q": 281474976710656,
+          "awidth": 1048576,
+          "quot": 16777216,
+          "hrow": 16777217,
+          "Cw": 4580179985,
+          "Yw": 69004689681,
+          "Jrow": 18764998447377,
+          "alphaI": 1048559,
+          "r": 36539733857441431106059555859607154515433023069690298789905959985683757616768562797596476287993160000208825467465727,
+          "I": 17,
+          "F": 4113
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 288
+      },
+      {
+        "m": 7,
+        "t": 3,
+        "I": 17,
+        "F": 69905,
+        "positive_outer_coordinates": {
+          "q": 19342813113834066795298816,
+          "awidth": 16777216,
+          "quot": 72057594037927936,
+          "hrow": 72057594306363393,
+          "Cw": 296372884351280480273,
+          "Yw": 5037186112325427396881,
+          "Jrow": 1289520874255604453019921,
+          "alphaI": 16777199,
+          "r": 18176577122137657889971412623138878598811239345082881060937467686765616689866732201605909408679686783071561097431747334183191090957208623222530107691002729656564469550300639421973023469017104497328975871,
+          "I": 17,
+          "F": 69905
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 504
+      },
+      {
+        "m": 8,
+        "t": 4,
+        "I": 17,
+        "F": 1048593,
+        "positive_outer_coordinates": {
+          "q": 340282366920938463463374607431768211456,
+          "awidth": 268435456,
+          "quot": 79228162514264337593543950336,
+          "hrow": 79228162532711081671548469249,
+          "Cw": 5538444700635519977853029760106513,
+          "Yw": 83078096616609504194717362920882449,
+          "Jrow": 22685491128062564230891640495451214097,
+          "alphaI": 268435439,
+          "r": 166710873246523306929049163303064585428044663167297445416501684174292827307262438583804147218978733182137697117485627817222913362373004236243775845499322503241992452341906499416829487465893097398852958632794801585391402969601125067054218839250973083983144131849752696507927029579827987422780407558324339273727,
+          "I": 17,
+          "F": 1048593
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 768
+      },
+      {
+        "m": 12,
+        "t": 8,
+        "I": 17,
+        "F": 73282879505,
+        "positive_outer_coordinates": {
+          "q": 39402006196394479212279040100143613805079739270465446667948293404245721771497210611414266254884915640806627990306816,
+          "awidth": 17592186044416,
+          "quot": 139984046386112763159840142535527767382602843577165595931249318810236991948760059086304843329475444736,
+          "hrow": 139984046386113260483076552323936769829629381004690729274846099254769870219648685538816173958204751873,
+          "Cw": 603732013269061267723464099073271441187279433518010290429209740141191387054527855090988927035052419879553466385,
+          "Yw": 10258434003935834472872150091252604323475637795389222335674233651744259223911105642455034491869177705098966466833,
+          "Jrow": 2626800413092965280818602673342907587005315951364363111196552893616381451433147374094284416992327709387108532687121,
+          "alphaI": 17592186044399,
+          "r": 5388920539971393574923117705427228985278041864339066190411023600633622283311965055602518788034562695516147135578839255536763802669099617615112036142982602964816550297324507177144539631673616406815563660877309950356939774530570592316046146773147888549354146857894102386211781439476473943744278734133989664325251237659315358776693832122203645980889051748485168357686296176582934031947309663680668654155050739277179203493238143586983497525386213252804928776284693286360661415217922394124134247285566672910812744166160550790181826123261795437458365605322855130129099840755265827271384973355958830226720385981755751238383232408246171453321666004083993790536905453672781272756730525217037586594366133584262057809907409250981135136110534519596347258595787974762241543318443633657581958375913638167580789298824629994142771346752428798478020834995837072871706300957435197154898337358423751012802107137298284060720373507358294612570111,
+          "I": 17,
+          "F": 73282879505
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 2304
+      },
+      {
+        "m": 20,
+        "t": 16,
+        "I": 17,
+        "F": 296372903042709717009,
+        "positive_outer_coordinates": {
+          "q": 20815864389328798163850480654728171077230524494533409610638224700807216119346720596024478883464648369684843227908562015582767132496646929816279813211354641525848259018778440691546366699323167100945918841095379622423387354295096957733925002768876520583464697770622321657076833170056511209332449663781837603694136444406281042053396870977465916057756101739472373801429441421111406337458176,
+          "awidth": 75557863725914323419136,
+          "quot": 17218479456385750618067377696052635483579924745448689921733236816400740691241745619397484537236046173286370919031961587788584927290816661024991609882728717344659503471655990880884679896520055123906467064419056526231345685268240569209892573766037966584735183775739433978714578587782701380797240772477647874555986712746271362892227516205318914435913511141036261376,
+          "hrow": 17218479456385750618067391938845019448468087663940984715927086899305275878495144554329334436632048401370451855042715357933236777531539959779074060300976910694340133430967800428989926118405249055672218495383509715552670373256817868776453309729280646368409519824264683311011999361838022089859527084475112402596489128306087549048425568742523686469290820599692656641,
+          "Cw": 338717181434983958273630383885410924197444066295598579559666394175743462492026082785789172939145592850885221163755186756910459985496738352144638730899593632506273495236382612481901924703811001237467906061655117029849828323037076920643594205397108278625704936115079703432563336939033892119443661453331680175320370484376558351103944776630301891030049610166377865906478912859493367825,
+          "Yw": 5103090742470303183418188824394561384587561710152795853154239664320686039720426071621884515307751078193011170356938714232727602945205789115279546084930465719623522842370752598617953120810757810672593805384989274980078023144236612834964099618208128537528801948583921234587543783126695778871880240070852081895893337136257342313457913093186376024438365124169233498152484666734903558417,
+          "Jrow": 1387724292621919877590032043648544738482034966302227307375881646720481074623114706401631925564309891312322881860570801038851142166443128654418654214090309435056550601251896046103091113288211140063061256073025308161559156953006463848928333517925101372230979851374821443805122211337100747288829977585455840246275762960418736136893124731831061070517073449298158253428629428074093755830545,
+          "alphaI": 75557863725914323419119,
+          "r": 32689075922888498778245526069063076741228729930294712588512745227506321439092853950012306653919519094043614001483376494657859081852872821520394249035089399294626186878445217293570024362267543588593994115323254791613295083485709547219171927017819116771436393901786076803350766914040809764982256312659263616082048941551184249750071776682483826542635311946572430779078040243905086690885143793335293035502460874265030549510524662761322803954587351569185428531592215416760942469030536530617582823364277793319306876459024864955178667601622944579632397337027789448539322891060500150490020498603308112718477263174508254622179367644707103676924761520886763227115498380176942775275981073533747391649266064272930017668468294757101620150280971630334759908229422220696437605918248452742802970947810889378395433366105527059957971007972059940408294827277608699771495898797728449235992317221093375529956369789042994876150417330649063513899821741218142576472351657720650343392017411780756639081617620046311284002372772814857794347245695214177983759279299210093521703477150913165419431767987580294386773031437950121590655666670169539932368143882175897536762066690586317863882899814110879760942345603078262756385648058412878952482855209167271040591350103036116074022053177938156407485914042191277950531991179315468348918149845527894855483829393790777135509600294944846867844468279243919353467624183590892420147947229287969723665529424176127030052001261120977431553175280833461998415711122805846726107390139597580278526041368175212911225370577748449155520358881119099421072449096685693481917232296317821061869513843461008873543365273067565259242306902973650542625772206825243102676248864376308393261114569905501452476709286509708533742726832198481424803983407799150356287903687032189559650943069479308230112351207628343430609056026304198003196566200544858212200863174889250851715022674690045056305903289442870500115633073836970239216174482331420408268534827734524255883513040100654201317104589642630464481986083401802440501515706424940630651003152812293143193702135713653341133761822012522209241652959638064967849552055932710003013501685722967231779123637009094971369122720343487938737953975935018498298538353017204386270474743714876984727771260527565695603285053284492618963282296562316809568636204962608973584078140093660787740061536115011283373514975018834781566684318524737658668192562646403886444924542512027730166051600363430321618644355592597653381522715836537095950031700006288724723540251491314231178696030123041086179476738037633645587934671489202219444106096908906790206968649652347398033378188351098149563101208836631927057191239664930528860317121363538633723620304961070680118269673072090151634482659644976536056079172140204194073365180100963692885638545935502885469558373382668077637520699178623192689592781056630022592643645343436672676829903934282751436025077475853954791162723608544075510496115009836703588742634675477147522851023499859876956563705800120332804393896547491356085830267663553700686383694767832830602594013305028662793298376491656380078869110555974091629121400993641066495,
+          "I": 17,
+          "F": 296372903042709717009
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 7680
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 257,
+        "F": 4369,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 257,
+          "Yw": 4369,
+          "Jrow": 1118481,
+          "alphaI": 1048319,
+          "r": 5822570142907635280755494513975173471585309973176698994431,
+          "I": 257,
+          "F": 4369
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 7,
+        "t": 2,
+        "I": 257,
+        "F": 65553,
+        "positive_outer_coordinates": {
+          "q": 72057594037927936,
+          "awidth": 16777216,
+          "quot": 268435456,
+          "hrow": 268435457,
+          "Cw": 1172794507521,
+          "Yw": 17596749451537,
+          "Jrow": 4803839602528529,
+          "alphaI": 16776959,
+          "r": 674041049584588196157237808237457311193663302759609399085215104951271482474524116104097023985661575111662701542080755240065075749256959,
+          "I": 257,
+          "F": 65553
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 336
+      },
+      {
+        "m": 8,
+        "t": 3,
+        "I": 257,
+        "F": 1114385,
+        "positive_outer_coordinates": {
+          "q": 79228162514264337593543950336,
+          "awidth": 268435456,
+          "quot": 18446744073709551616,
+          "hrow": 18446744078004518913,
+          "Cw": 1209239414282646949200129,
+          "Yw": 20556774894862366668755217,
+          "Jrow": 5281877500950955839569596689,
+          "alphaI": 268435199,
+          "r": 1440131025103826146068497212707607651224587249309551592968096356730684537440987254758031862236102906000318450645475693689894690378001706899821961857232585335788054536754458941316907545452903464611752371722561731419027202344523595519,
+          "I": 257,
+          "F": 1114385
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 576
+      },
+      {
+        "m": 9,
+        "t": 4,
+        "I": 257,
+        "F": 17895441,
+        "positive_outer_coordinates": {
+          "q": 22300745198530623141535718272648361505980416,
+          "awidth": 4294967296,
+          "quot": 324518553658426726783156020576256,
+          "hrow": 324518553663149093266094385266689,
+          "Cw": 361638608418955433216299176077958316289,
+          "Yw": 5807402630404972176344105554366498345233,
+          "Jrow": 1486716346568708209435714551509890767065361,
+          "alphaI": 4294967039,
+          "r": 56725908942925257747553326819865824295731583402219337630210000294837536284310810633408452541903828279880112019959156384751101788814739820017611862845056491368666401466913716613063606540950587741604080742290554469004636877341058340886174683735030781556543793089045214751989222610216620413596216119290676800441098379734385315485501595427852138774271,
+          "I": 257,
+          "F": 17895441
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 864
+      },
+      {
+        "m": 13,
+        "t": 8,
+        "I": 257,
+        "F": 1099529457681,
+        "positive_outer_coordinates": {
+          "q": 169230328010303641331690318856389386196071598838855992136870091590247882556495704531248437872567112920983350278405979725889536,
+          "awidth": 281474976710656,
+          "quot": 37576681324381331646231689548629392438010920782533117931316655544515344401833735095419183974156299248510959616,
+          "hrow": 37576681324381339989931048614686254466992257566884218873221636608598473956040456196375208788978585626992443393,
+          "Cw": 2754397253417390108974879599386483798569614792652104747202706902045359475672916673109530986950126748650194459050201055489,
+          "Yw": 41316668038048767039420782498336559318732479793116522540491423139536753068237030260247762943852392540215067803671219671313,
+          "Jrow": 11282021867353576088779354590425959079738106589257066142458006106016525503766380302083229191504474194732223351893731981725969,
+          "alphaI": 281474976710399,
+          "r": 623841031860648110655735492283896711365781698835454475098517971481051356843867503595339239637639464184856165148582944174996802480795080613415355898861071699736434117763045314345987211336472378955894575607877252946814174803001276120040809024903240686150594473521174424723881220933751520129919265355056485473863379419033608869500163934026639763997490623918716788702417170288436276336672748065252836329051823834035490122906492870768090889206086085735934441584780781048988452573761194951340499763455790362721674696627606800492387171896520181453938161621635146695983860870410215366156925586908437864568319536028312918890266756676359307018751820729652699585988537035808641584024144271142364503073258039605407096682454226097765353104205528292807796240173314603485486323799343667702842095959239309176366217751098292350538374536863408379473162885089767411184891507962224653189037199182672875673771103060870276507917850158206637585936139836007977249327896541778405056204863432980636434196968055868073452101369599,
+          "I": 257,
+          "F": 1099529457681
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 2496
+      },
+      {
+        "m": 21,
+        "t": 16,
+        "I": 257,
+        "F": 5017518891721926119441,
+        "positive_outer_coordinates": {
+          "q": 383984923062992702193107238768305990575971314802788874095145673202075995393018055488645297669674812185833211621938100469973519720714697045576788566898683254440275883795786334484525778054071087861396060398229434719927672395650215231472663143090071728679350725089418264731278276442800414037787428461842409521168393903855600900323733353159466811689332335765898192891862061280747855198528180896166938113212416,
+          "awidth": 1208925819614629174706176,
+          "quot": 19851555241898344196176987318733378483992123121770295725477432919318405265185089679741362460579536790547221401127397552092330105301520280662803471766810075307701357859400215808435789775202910519548338738532428381369960169119927366002964976090313454230751703043577500969960053606087218484241914428502881625837456173330575029424092169740167537744289495219681142617635194226371198976,
+          "hrow": 19851555241898344196176988345034730054225862621063777208171551024815463171202871903357325757094649109844843168295464242464109539661421902282251974711791983738199051449888782831717110035036673463513659302961366718002726801392511147876002591444841406361195282238668508323685370881641604776818496200449071668966144769164865487910598137197323584361624131709764298620767135755340349441,
+          "Cw": 5859150904423619475032985286300796273531169971006434901766857016300565790100521524134100682621172409570170775726863549429959639686717915399803564307667586183784710018912348919331206502037097917565902681290114873046665031889113082881504974904192196915066216663173664791137355184794476997757306583787100384488681315967707714805992011827944678540195434007524712014054899727677618985126468758967332897025,
+          "Yw": 99605553456286372946590557833872563753432603316386378180562826289666768419081352678868561328874478600182774670986163898732779546034091802240579153634585490346164680055362685306126256919586186697229140296430784258742413664886308862613674225036464804504390839069144963352906870188197256548560729387672772608406719084137652709854552886999840663577664157149809576941141404408067357202327824195716980412689,
+          "Jrow": 25598994870866180146207149251220399371731420986852591606343044880138399692867870365909686511311654145722214108129206697998234648047646469705119237793245550296018392253052422298968385203604739190759737359881962314661844826376681015431510876206004781911956715005961217648751885096186694269185828564122827301411226260257040060021582223543964454112622155717726546192790804085383190346568545393077795874214161,
+          "alphaI": 1208925819614629174705919,
+          "r": 438408939403674014719601758305585063408035450049275907759465735803096120355355794383145051805194038852662786400424888692901471727750031706759484214697116926813499484332216595267211967667548590428644811915609324970043370009433628209362822228867566438886889990435679008504257645908765451604606313428464524631835282888903973681391341890289572340327309890037238158364983476921503421162813532214901313771504697914651988519394350625648390699956509772059809007532400288730833307319286164621528106888466845965181126873032896635009489794296673972913409520367045628231968477478405092511799496711899072168183538841412330625662164095756987850894872519977723683885070298761869152715248889830171810590357569679578772976677111485625741183697591786616341689109458342415092086746767684994948037957247836852598397148234539747077682782291221735331160636200564521823584881658560335543292061218199135211442438118580635159644540838907788140296747783701534179285863021979127497665219279943019422405361040069093913741634807235821984375524749419755135573234130976018621145590956594826601044699178122870288132860379537983212883489761485797552261108262125749841995089790440603565377403662807311308207050890370343952172721299751701992733469889308547448645371137941511915755957122621850883003525462053838606117697545923995713194463112186402588135810044406887579789562691147428925625907738844191648147692438070616056144056110865402510529027951041552017925273269732476088301413698561874942681420579051710442341268103395637210286855865105151899443046772443810654264575358350090410283086866493494381313327951676826308166684482605154094527974804798509813569964948272131240662247484745902951713871474414616392740186547373450028419476767854223566531747133379342367799856479279938555702268800355939811958376053572242072304145287544201856966551695647389889854991988480234218620441329531932489052001273728562576499310212134433732406928072962224613400289594225013571010017782782758051340670094260679572288042219607082159084328816469097008982835395475536439783074137549194501400436262641151892956020146786322344793885287131273682579516833903008124670302059369937026441100277737766184181519738179396881314571686725163824970026252332883958346829134284353797692827229566377953085459874961112699332279905808520697930943046691456298608743095946916034710602442086278269696341717940089513423771532431757263046635230752043094585426954092921664670128684196556024981292823882774701084778204332359426351198995293220207722261938134445142030248176410424290862315529371344143125832960431933607275578841196617330168062629584654377311587608050680444978327117445117656044546026837117410220104956370146923405448418326096011792444259141804937286750128486041490019363182837525982995311013970832955691598181066358139957766389790062777617898201938188785390658759183425211181991256045460232607968710475404126221433842515724431146725329121213250357779023325460238644011526067140831801255009862838973216818163833610081424500780553345717994636206774128998011701174903534178556755444215438947374245777212222616235444515295856905805943632555216040775190253488215834798520501835277188655727607183703118191166749255043952848813604223539975962570403206392696477851528497889353295843100295244137668215558831871,
+          "I": 257,
+          "F": 5017518891721926119441
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 8064
+      },
+      {
+        "m": 6,
+        "t": 1,
+        "I": 273,
+        "F": 4113,
+        "positive_outer_coordinates": {
+          "q": 16777216,
+          "awidth": 1048576,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 273,
+          "Yw": 4113,
+          "Jrow": 1118481,
+          "alphaI": 1048303,
+          "r": 5821115469405953988156007023396542859412511453811376586751,
+          "I": 273,
+          "F": 4113
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 144
+      },
+      {
+        "m": 7,
+        "t": 2,
+        "I": 273,
+        "F": 69905,
+        "positive_outer_coordinates": {
+          "q": 72057594037927936,
+          "awidth": 16777216,
+          "quot": 268435456,
+          "hrow": 268435457,
+          "Cw": 1104075030801,
+          "Yw": 18764980555793,
+          "Jrow": 4803839602528529,
+          "alphaI": 16776943,
+          "r": 674206716598772696925074173560754461170249347906853078022360798191313517121782017017494830820501465000964818826653700309347637836840959,
+          "I": 273,
+          "F": 69905
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 336
+      },
+      {
+        "m": 8,
+        "t": 3,
+        "I": 273,
+        "F": 1048593,
+        "positive_outer_coordinates": {
+          "q": 79228162514264337593543950336,
+          "awidth": 268435456,
+          "quot": 18446744073709551616,
+          "hrow": 18446744078004518913,
+          "Cw": 1289519644490331406205201,
+          "Yw": 19343126708783559546507281,
+          "Jrow": 5281877500950955839569596689,
+          "alphaI": 268435183,
+          "r": 1439743201323960292346867482872842231423939564682812450386295057349405130098721058732823772222943179147949228156364030980602504038850217105167768258591757527731392167029190238989354603745386403300718640524125239437869244179746324479,
+          "I": 273,
+          "F": 1048593
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 576
+      },
+      {
+        "m": 9,
+        "t": 4,
+        "I": 273,
+        "F": 17826065,
+        "positive_outer_coordinates": {
+          "q": 22300745198530623141535718272648361505980416,
+          "awidth": 4294967296,
+          "quot": 324518553658426726783156020576256,
+          "hrow": 324518553663149093266094385266689,
+          "Cw": 340287883736680773746715206275989242129,
+          "Yw": 5784888831226054469811156661652263276561,
+          "Jrow": 1486716346568708209435714551509890767065361,
+          "alphaI": 4294967023,
+          "r": 56744135843137190467931932451008287546836705558638178377330654202969076058387369798371834589378330220364719000833187890690773157940605626774384094284631251133725942977616760996241628595062479986611141544204807874810876419953528186277845987400621860772125225318351715773537567500516442656389930322832848659260741164330641665789150714876540625027071,
+          "I": 273,
+          "F": 17826065
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 864
+      },
+      {
+        "m": 13,
+        "t": 8,
+        "I": 273,
+        "F": 1104075030801,
+        "positive_outer_coordinates": {
+          "q": 169230328010303641331690318856389386196071598838855992136870091590247882556495704531248437872567112920983350278405979725889536,
+          "awidth": 281474976710656,
+          "quot": 37576681324381331646231689548629392438010920782533117931316655544515344401833735095419183974156299248510959616,
+          "hrow": 37576681324381339989931048614686254466992257566884218873221636608598473956040456196375208788978585626992443393,
+          "Cw": 2753727409692420981687472382938583826644175753522348954291417533207295196999009449506105481276479017128412797767474217233,
+          "Yw": 41487475590615680821032963430368712819962166460773261178095253343697818303727044855268582270767989598709805946068101238801,
+          "Jrow": 11282021867353576088779354590425959079738106589257066142458006106016525503766380302083229191504474194732223351893731981725969,
+          "alphaI": 281474976710383,
+          "r": 623839133402841488045832726698129663090846163476565951486585502399580096534524071294518868697365411226648611490398397559561663093301118627460548105490866697858906806990653189127981714839821135211346095310833110983030155231544764166346869162856824159623267965918029489936786633042679770748604843428696239111213839133472044162235899115592700962502830855350965937244746294099138089319932671985669065645478728535121379555293803216557797522759160459496331625259672657089025765789141737746482258466852601539810387217245774708203671939835751653875933800515760912796052536083108584717524571864464692974767271477787976826517209401957608387258142238632623758498787031510892102173716861563692872824254197442190420028797907238690331203131862725697795884955665575842794518490464781384997663275419264170870786260252926935986795416232527848013285629193766711004159394151801893995260491031434408294676268362837155811806191240396992347944100200870153615106299740011646179421813723248675537481585131116182476131276881919,
+          "I": 273,
+          "F": 1104075030801
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 2496
+      },
+      {
+        "m": 21,
+        "t": 16,
+        "I": 273,
+        "F": 5037186392769343521041,
+        "positive_outer_coordinates": {
+          "q": 383984923062992702193107238768305990575971314802788874095145673202075995393018055488645297669674812185833211621938100469973519720714697045576788566898683254440275883795786334484525778054071087861396060398229434719927672395650215231472663143090071728679350725089418264731278276442800414037787428461842409521168393903855600900323733353159466811689332335765898192891862061280747855198528180896166938113212416,
+          "awidth": 1208925819614629174706176,
+          "quot": 19851555241898344196176987318733378483992123121770295725477432919318405265185089679741362460579536790547221401127397552092330105301520280662803471766810075307701357859400215808435789775202910519548338738532428381369960169119927366002964976090313454230751703043577500969960053606087218484241914428502881625837456173330575029424092169740167537744289495219681142617635194226371198976,
+          "hrow": 19851555241898344196176988345034730054225862621063777208171551024815463171202871903357325757094649109844843168295464242464109539661421902282251974711791983738199051449888782831717110035036673463513659302961366718002726801392511147876002591444841406361195282238668508323685370881641604776818496200449071668966144769164865487910598137197323584361624131709764298620767135755340349441,
+          "Cw": 5883463056954133806884184074200711651113523827827479026873392914177324687830477261199205645465678521818987516370927221666712844404117178221607080788962543736297288628283827416881211163023125687250202745239642862867769804429063202775977264204058763489534747147730802038634868989458310252065478323313957636245623136487937230255172025367717106225901636629315791931481782413094055963151339941798655033617,
+          "Yw": 99995983939799273040256891862522802012287477622808364911444559000810699531198687815991110408714702119704869775585643428261574780772247524095942184163990284668466808746080195683284017019458938882097206345696648830389586108172570341148777370038586172584897709373830081240989174680284860562609558077677604367631983417634674962956531323073152972450420544639264273314533132700441601142925578021307429163025,
+          "Jrow": 25598994870866180146207149251220399371731420986852591606343044880138399692867870365909686511311654145722214108129206697998234648047646469705119237793245550296018392253052422298968385203604739190759737359881962314661844826376681015431510876206004781911956715005961217648751885096186694269185828564122827301411226260257040060021582223543964454112622155717726546192790804085383190346568545393077795874214161,
+          "alphaI": 1208925819614629174705903,
+          "r": 438397830453571984669352611333699919623983738973942565561151139104255532775464591496367931048721098997403963098139809736063345863456382578060893309940764340968129447196440770632241143503796727933770122597517114042523420969202168239615498456885908833199641705571419415261975635441228026075376744685339152785874060972942442404455440202594762907450364935197934742807628121106842630774271210380716969482535014846652349613831774672302822749996732512469948724658433025477076335211522711628611436645493313112625590237924883198969344889860132890031813845954684152835910171167655243019739923399616787476542445022391089937051226796143777184365404450025632480029641506994656245669670564646499363760256557569519567387302587809199307636349656091301807872339087873345020881873999440041693423574579504358522740519712416614521749078582879703220530240880697146412668484124409072134722935764774741705731699026245429367047949536664363463095310508641148651864486747502943538711801197941706870374860061229574361658367695177115096440492623484988726918055659789688772637495347573493834288479460800910638031524726336827564065252354765166124685596567820780470606574336698228030830874542881101008130609928698588187460227438198311743253320408703047135266362646273994402415426558158197140838781179766975529298291689499391349684118448888582187499526902017997893885740572372752600129163006535626358654594733390892755068709452490628561099410314209891129830310608459667022310077350893930342260790370925359968101771914505574231272754655532959067236438875376641696381599904733216677026094622563397112701406788023546116986450645708259255856549311576384882274769361129698084895939627330681602727031559866284073328062835800226511561267963171163239286906679457505796068520973365535424305683832315404743417373303195558148410968426828878872407235126980378934154638511810125117110721411495315105263650901122523483598497162759854021412209712638400519196130778988607904485609981268417078495216516529962667722440553612018070175944475955195214324027130457123855160363873375713960693281121786655234155017455551223940800104437222820068179136111080948789308170688594165729855065859153271039518767180058609196298521775319461596268790182335492772090083864848258138242852182090025537881773662046710265068303465213267106016348675561523324056403942377409070440918739340944179210437193975482317186720137227718647216179784341971059772960329116995856687088793107530871667051667696526990610049237958079021955385538147248190670606542179391313779492247079782843710583365095923911965702022954602905099173366032690291313897881209028408585749741571657116057339767381377890908064826708447260573887350468985658239038331099244886322144522528160127928552214750572238058186135575164677790109682082219011600707151898524477731585303564734838815803617007229519131669087719455174881814121634400535806283013783708174659602305514526060863983753045230717824499966763444551008862022462314154915173457325486397014528780793826803141356583662088398394757289459087141497930718502598945762465335115094631557777641574737532145015809831592090310323223502154066763274405637873670521983058008735579149017745644764881199272180698996284959756857238268713727017882075991656212208364083464293862517285711142856529971220774911,
+          "I": 273,
+          "F": 5037186392769343521041
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 8064
+      },
+      {
+        "m": 7,
+        "t": 1,
+        "I": 4097,
+        "F": 69649,
+        "positive_outer_coordinates": {
+          "q": 268435456,
+          "awidth": 16777216,
+          "quot": 1,
+          "hrow": 1,
+          "Cw": 4097,
+          "Yw": 69649,
+          "Jrow": 17895697,
+          "alphaI": 16773119,
+          "r": 25008313181176896939467985649055720379162206838549177729819004104447,
+          "I": 4097,
+          "F": 69649
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 168
+      },
+      {
+        "m": 8,
+        "t": 2,
+        "I": 4097,
+        "F": 1118481,
+        "positive_outer_coordinates": {
+          "q": 18446744073709551616,
+          "awidth": 268435456,
+          "quot": 4294967296,
+          "hrow": 4294967297,
+          "Cw": 299140177203201,
+          "Yw": 4803839316267025,
+          "Jrow": 1229782938247303441,
+          "alphaI": 268431359,
+          "r": 12433237616096329064900534364875092977525133345581162366425851773078699118797742256420426360817997134803143963539335461411961229702960981814499218805485311,
+          "I": 4097,
+          "F": 1118481
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 384
+      },
+      {
+        "m": 9,
+        "t": 3,
+        "I": 4097,
+        "F": 16777233,
+        "positive_outer_coordinates": {
+          "q": 324518553658426726783156020576256,
+          "awidth": 4294967296,
+          "quot": 4722366482869645213696,
+          "hrow": 4722366482938364690433,
+          "Cw": 5281877186131309891095105537,
+          "Yw": 79228242794571407806571810833,
+          "Jrow": 21634570243895115118877068038417,
+          "alphaI": 4294963199,
+          "r": 114068209609532690802540850971930397458159245838171984105282133823021340168773998520546479270394664919527396019787967773362897876901665073220757302328808842157165770642939997974089679228030760306005637878165795779635772608528329804146966097544861694190634921727,
+          "I": 4097,
+          "F": 16777233
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 648
+      },
+      {
+        "m": 10,
+        "t": 4,
+        "I": 4097,
+        "F": 285212945,
+        "positive_outer_coordinates": {
+          "q": 1461501637330902918203684832716283019655932542976,
+          "awidth": 68719476736,
+          "quot": 1329227995784915872903807060280344576,
+          "hrow": 1329227995786124798723422788966678529,
+          "Cw": 22300767795407903645665206104002226173251585,
+          "Yw": 379113031254283725118295905208005110303625233,
+          "Jrow": 97433442488726861213578988847752201310395502865,
+          "alphaI": 68719472639,
+          "r": 19309030645776144289087719929563962448822817629713017363349799883638734678462491377168232629317555267633751374943024981329638767006795825213292197461984511907193128598965411048102900380374961826707140504714906068191412204921224768439178602837143662334042434524358471776882106438361189875114611646100781117668292594842118165447296409874009547817180198848922196694241673053924855060098815,
+          "I": 4097,
+          "F": 285212945
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 960
+      },
+      {
+        "m": 14,
+        "t": 8,
+        "I": 4097,
+        "F": 17592203870481,
+        "positive_outer_coordinates": {
+          "q": 726838724295606890549323807888004534353641360687318060281490199180639288113397923326191050713763565560762521606266177933534601628614656,
+          "awidth": 4503599627370496,
+          "quot": 10086913586276986678343434265636765134100413253239154346994763111486904773503285916522052161250538404046496765518544896,
+          "hrow": 10086913586276986818327480651749530236609448014496019609006180662811576158593687509681491439143139965981726412910886913,
+          "Cw": 11830056656627254231895669172366205645308770896630758680730804380107568796834200454205863398205023698867733000009091210652407566337,
+          "Yw": 177451040233709389533866056104404863570981843549437398097127994364958624983742094584059016302847955475239083794509533423999534567441,
+          "Jrow": 48455914953040459369954920525866968956909424045821204018766013278709285874226528221746070047584237704050834773751078528902306775240977,
+          "alphaI": 4503599627366399,
+          "r": 72235857241026157326209109826495283066869872515645611440601557250431000328826599816653045591368128904704474561194030963125723040202444709639164561660014031022850947343510996085945558093413992724090919033775198060487282726754480927191617714187411916029005989162011320562274497131733623616771368633554761156474256490738170878277092506476348869444071061539178166919300268443236120336109824776413256032857950742037791959609475304431769906625503632216941257678859920461483397710202619502313921951459839590172217104214208731286709659525620803301927524737073251121249617333806746717583660843032577213951260076843496328429089843202033143129366955097314670953801215652202817722321165771796141596663245387960570268268742706033041022128203293067362107172404892356914185736048930977386232782398172402774137898095437691345339728105707990141326396146750494265245694850979131440407777832377436590009714145367077946504193861875014983060264351789543882210581010631393672725584096706142793929358266678701939835760900708697944294508089709354241909246365490903071241437331547257860370263890214252287,
+          "I": 4097,
+          "F": 17592203870481
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 2688
+      },
+      {
+        "m": 22,
+        "t": 16,
+        "I": 4097,
+        "F": 75871535218940120662289,
+        "positive_outer_coordinates": {
+          "q": 7083271603906078757501937199839970337237042072752024044272935252133021449487672037753077279976540494138725768234495819230178699615482523444525217326451885295083794903354995236859949814158861106339793498427520403285563504697437506153794873484561573759163876734171825622767620957924878367969185009358384129424236514293956457858505582263102570156257796764049361854053114869322098725721757629614488965634874516982012228724064256,
+          "awidth": 19342813113834066795298816,
+          "quot": 22887284938275379073209001944560169611929137396978668814608196807031392776549938648262339691500354539503646589633113173840851767105740132664250646048705771830098383652912755875857220772151415816628698134316768331523398899772776081053773352091912730257472439115608827157692806508708024861680712012162352175782227152815794998426659903118578601580222388253563534789792422132536641073139201456079896576,
+          "hrow": 22887284938275379073209002018512975763953794661989842982588498772550179685519725445902084050087893325670942963712897828172486623975503694061676273614788652365839273207934906608277241015991974067906552443412991394794832256662116569373915152241241157924855713938926487444866714720538645466853673750063713384550938455731376825426633244986616674562089683337270938385260609999540434167583730668132106241,
+          "Cw": 115259586888015456382356972059373823659086245079910171498906912983517574211150524832687691813000084559444407253099727969597335805676804484771363858751972247998221768858211512670094666172844777434688361311821878373899014233227012074193174665236255915063192734495734877864301345332445906652221161835559216371465688009505164131613633761144625710855787028446088610997297163204634141277644176588284395985139481913999694499841,
+          "Yw": 1736493445260278189009445495543518981424286934963853497746938413394348215052523304475237808987784358655265861954333648272651549724605157820929191215952085064444819211396980613814493948278779005260473188741420749233258584303902172113569906320930254009333420910039725991876806335179772801684892314611220901766796904870664610936288303880435245363364429719785016825807093498091335289690465818475087179189171526251994744426513,
+          "Jrow": 472218106927071917166795813322664689149136138183468269618195683475534763299178135850205151998436032942581717882299721282011913307698834896301681155096792353005586326890333015790663320943924073755986233228501360219037566979829167076919658232304104917277591782278121708184508063861658557864612333957225608628282434286263763857233705484206838010417186450936624123603540991288139915048117175307632597708991634465467481914937617,
+          "alphaI": 19342813113834066795294719,
+          "r": 5876492703058034555127825645410937524277292927319630778812176319074780277996567653040201542510960267232320250721441807656532042141695895768576674363964563900073641356299978039057864657171069872244489567637702617110457203601704366907278683940132322624250047809059638792418634623835024186936236872550961090330157331348802602422417416600649990499995931592473949823872210860743323844228871232911223782979013156033092349414574931592537151560192727545413123761941508375255281250853848094593328812689172510934122661930841193574376309368677356412802159596471726526149050449948276025636013707077637889090383370676294627064707002395082315809841409289121679584945727863720115567061869691665951917885867827465563184177215150655731965367212264025628092184733755624259533159198986251433293636927063428419547933475632690799857667003795862119250504259237335459595666514719312448045511143081290566584861078475648557383680165090751247807800663115717842287301868948708119614445262719244926532301860465908895171838477075715831978258929670549607009568367520088341829271485998208363224161177143847754543323255049079944207448211997699438446284463306676931201610087097918697705322279664711219324705612299133981418004314144317300874345469648938490209563730608597263665223767272668868517473979978391959869985077273177494946608099266998391701130752297759852841259402757001295510197684142225960412115904298311315869822420595435169476613760455791297360887228940628522462359292028055644487337015171967365699542207033562030011740300154961455241310080469519707986675531945758285584413581978502927791219938603679574035587080540113321343732900280746220699230995747424409236459745912368608485662894826119278426111551850619994091834519454268141082164480894274392851943106345731753886858719554792783116865212701106356762309280653255112706113201227614342980356562365487252697908684258789913508028769682444028917322671356717466450920818066995323690761171627587142973690984045234761624856388441744045250416664604527262948609227404717538493593811204538933424054057073853067487226859926284442066893480601138392816974617820712884145617372963073448094372088183731752787862698357039146592241260697909340960682351887697933611609004569253970603164113551494092321088200602480803735805033163766314786066747235889507706845243465236636995250716748571366533213860957103724864417228168197542875526247832133749895775356822853462393126816418576677849313194436952234606544809563757018622085761896726945076536718401992341781643985173437250583450078276076454250554570027215735170992380241461913621007573337068712397774517218675823696560248029673069246932224402713826179239532003454713142525664647211298379317776693883824780480209159156330074613609473071780515939372232372959044218426795173717259236442847298719304954576491502252912564321511480477947569956901823923548797298361020047132417926508692663763880517921261918064886232027758081296157052802025573782150448666739749578922112138209970463601810674037287969405905529567065926458094813542510554316786399755765614588964546603583828570156296470400230673175093764175078448219067643935998831494257787215343647322044598030739125015445343504547192124184271930724235063483307787222192814555463873579716166392578233179653786855811702743358331447190501984079738375134304014746190603688160994385627853799416911832003597983543967741975573109660722597129307105656910206047097898741425573269743168750097526527,
+          "I": 4097,
+          "F": 75871535218940120662289
+        },
+        "checked_outer_equations": 6,
+        "central_valuation": 8448
+      }
+    ]
+  },
+  "deleted_divisor": {
+    "positive_outer_coordinates": {
+      "q": 4294967296,
+      "awidth": 1044496,
+      "hrow": 257,
+      "Cw": 1114368,
+      "Yw": 17895680,
+      "Jrow": 286331153,
+      "alphaI": 1044240,
+      "r": 96919456642596015541029662201489051854048912785625541435593023378645200076783,
+      "I": 256,
+      "F": 69633
+    },
+    "W": 16711936,
+    "T": 17830145,
+    "U": 700024849,
+    "central_valuation": 192,
+    "index_parity": 1,
+    "impossible_endpoint_reason": "I has lowest occupied digit2; F has lowest occupied digit0.",
+    "full_positive_extension": "All sixteen remaining positive coordinates use the fixed-minus43 converse at this exact odd r and D0=q^6."
+  },
+  "proof": "../1980/EXPLORATION_LINEAR_WIDTH_RULE110_HISTORY.md",
+  "review": "Author and independent complete proof/source review pass; fresh read-only verification exactly matches the saved JSON.",
+  "scope": "Complete positive radix16 moving finite-history endpoint relation, with exactly the same numerical I,F semantics as77. No universal input/halting interface."
+}

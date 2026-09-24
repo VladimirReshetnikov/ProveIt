@@ -1,0 +1,3 @@
+import Diophantine.Common.DiophantineFunctionPolynomial
+
+#print axioms Diophantine.exists_polynomial_of_dioph_graph

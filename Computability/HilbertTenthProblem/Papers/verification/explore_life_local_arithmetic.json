@@ -1,0 +1,360 @@
+{
+  "status": "LIFE_LOCAL_ARITHMETIC_PASS",
+  "universality_status": "NOT_CLAIMED",
+  "local_operations": 18,
+  "primitive_histogram": {
+    "*": 5,
+    "+": 13
+  },
+  "schedule": [
+    {
+      "name": "N01",
+      "op": "+",
+      "left": "n0",
+      "right": "n1"
+    },
+    {
+      "name": "N012",
+      "op": "+",
+      "left": "N01",
+      "right": "n2"
+    },
+    {
+      "name": "N0123",
+      "op": "+",
+      "left": "N012",
+      "right": "n3"
+    },
+    {
+      "name": "N01234",
+      "op": "+",
+      "left": "N0123",
+      "right": "n4"
+    },
+    {
+      "name": "N012345",
+      "op": "+",
+      "left": "N01234",
+      "right": "n5"
+    },
+    {
+      "name": "N0123456",
+      "op": "+",
+      "left": "N012345",
+      "right": "n6"
+    },
+    {
+      "name": "N",
+      "op": "+",
+      "left": "N0123456",
+      "right": "n7"
+    },
+    {
+      "name": "u12",
+      "op": "+",
+      "left": "u1",
+      "right": "u2"
+    },
+    {
+      "name": "u12b",
+      "op": "-",
+      "left": "u12",
+      "right": "B"
+    },
+    {
+      "name": "m6",
+      "op": "*",
+      "left": 6,
+      "right": "u12b"
+    },
+    {
+      "name": "m7",
+      "op": "*",
+      "left": 7,
+      "right": "u3"
+    },
+    {
+      "name": "m11",
+      "op": "*",
+      "left": 11,
+      "right": "u4"
+    },
+    {
+      "name": "m14",
+      "op": "*",
+      "left": 14,
+      "right": "u5"
+    },
+    {
+      "name": "m22",
+      "op": "*",
+      "left": 22,
+      "right": "Y"
+    },
+    {
+      "name": "lhs1",
+      "op": "+",
+      "left": "N",
+      "right": "m6"
+    },
+    {
+      "name": "lhs2",
+      "op": "+",
+      "left": "lhs1",
+      "right": "m7"
+    },
+    {
+      "name": "lhs",
+      "op": "+",
+      "left": "lhs2",
+      "right": "m22"
+    },
+    {
+      "name": "rhs",
+      "op": "+",
+      "left": "m11",
+      "right": "m14"
+    }
+  ],
+  "equality": [
+    "lhs",
+    "rhs"
+  ],
+  "radix": 64,
+  "expression": "N+22Y+6(U1+U2-B)+7U3=11U4+14U5",
+  "extra_Boolean_planes": 5,
+  "inclusive_sum_predicate_operations": 11,
+  "inclusive_sum_predicate_histogram": {
+    "*": 5,
+    "+": 6
+  },
+  "inclusive_sum_schedule": [
+    {
+      "name": "u12",
+      "op": "+",
+      "left": "u1",
+      "right": "u2"
+    },
+    {
+      "name": "u3b",
+      "op": "-",
+      "left": "u3",
+      "right": "B"
+    },
+    {
+      "name": "m6",
+      "op": "*",
+      "left": 6,
+      "right": "u12"
+    },
+    {
+      "name": "m7",
+      "op": "*",
+      "left": 7,
+      "right": "u3b"
+    },
+    {
+      "name": "m11",
+      "op": "*",
+      "left": 11,
+      "right": "u4"
+    },
+    {
+      "name": "m14",
+      "op": "*",
+      "left": 14,
+      "right": "u5"
+    },
+    {
+      "name": "m22",
+      "op": "*",
+      "left": 22,
+      "right": "Y"
+    },
+    {
+      "name": "lhs1",
+      "op": "+",
+      "left": "S",
+      "right": "m6"
+    },
+    {
+      "name": "lhs2",
+      "op": "+",
+      "left": "lhs1",
+      "right": "m7"
+    },
+    {
+      "name": "lhs",
+      "op": "+",
+      "left": "lhs2",
+      "right": "m22"
+    },
+    {
+      "name": "rhs",
+      "op": "+",
+      "left": "m11",
+      "right": "m14"
+    }
+  ],
+  "inclusive_sum_expression": "S+22Y+6(U1+U2)+7(U3-B)=11U4+14U5, S=N+B",
+  "conditional_separable_aggregation_and_predicate_operations": 15,
+  "mask_fields_with_aligned_neighbors_and_given_Boolean_target": 6,
+  "count_center_output_assignments": 36,
+  "scalar_auxiliary_tests": 1152,
+  "full_neighborhood_output_auxiliary_tests": 32768,
+  "deterministic_packed_cases_and_corruptions": 72,
+  "positive_side_digit_bounds": [
+    49,
+    31
+  ],
+  "subset_sum_set": [
+    0,
+    6,
+    7,
+    11,
+    12,
+    13,
+    14,
+    17,
+    18,
+    19,
+    20,
+    21,
+    23,
+    24,
+    25,
+    26,
+    27,
+    30,
+    31,
+    32,
+    33,
+    37,
+    38,
+    44
+  ],
+  "scalar_witness_multiplicities": [
+    {
+      "count": 0,
+      "center": 0,
+      "witnesses": 1
+    },
+    {
+      "count": 0,
+      "center": 1,
+      "witnesses": 2
+    },
+    {
+      "count": 1,
+      "center": 0,
+      "witnesses": 2
+    },
+    {
+      "count": 1,
+      "center": 1,
+      "witnesses": 1
+    },
+    {
+      "count": 2,
+      "center": 0,
+      "witnesses": 1
+    },
+    {
+      "count": 2,
+      "center": 1,
+      "witnesses": 1
+    },
+    {
+      "count": 3,
+      "center": 0,
+      "witnesses": 1
+    },
+    {
+      "count": 3,
+      "center": 1,
+      "witnesses": 2
+    },
+    {
+      "count": 4,
+      "center": 0,
+      "witnesses": 1
+    },
+    {
+      "count": 4,
+      "center": 1,
+      "witnesses": 2
+    },
+    {
+      "count": 5,
+      "center": 0,
+      "witnesses": 2
+    },
+    {
+      "count": 5,
+      "center": 1,
+      "witnesses": 1
+    },
+    {
+      "count": 6,
+      "center": 0,
+      "witnesses": 1
+    },
+    {
+      "count": 6,
+      "center": 1,
+      "witnesses": 1
+    },
+    {
+      "count": 7,
+      "center": 0,
+      "witnesses": 1
+    },
+    {
+      "count": 7,
+      "center": 1,
+      "witnesses": 2
+    },
+    {
+      "count": 8,
+      "center": 0,
+      "witnesses": 2
+    },
+    {
+      "count": 8,
+      "center": 1,
+      "witnesses": 1
+    }
+  ],
+  "radix32_local_carry_collision": {
+    "low": {
+      "count": 2,
+      "center": 0,
+      "target": 1,
+      "u": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    "high": {
+      "count": 0,
+      "center": 0,
+      "target": 0,
+      "u": [
+        0,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    "residuals": [
+      32,
+      -1
+    ]
+  },
+  "scope": "A complete finite local truth-table proof and counted linear packed relation. Neighbor alignment, torus seams, periodic input repetition, Boolean masks and representation of zero auxiliary planes are not paid by these 18 operations. No optimum or universal certificate is claimed.",
+  "proof_note": "../1980/EXPLORATION_LIFE_LOCAL_ARITHMETIC.md"
+}

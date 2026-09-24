@@ -1,0 +1,1495 @@
+{
+  "status": "PASS_RULE110_CYCLIC71",
+  "radix": 128,
+  "source": {
+    "operations": 71,
+    "multiplications": 40,
+    "additions_subtractions": 31,
+    "outer_operations": 28,
+    "kernel_operations": 43,
+    "parameters": [
+      "q",
+      "P",
+      "C"
+    ],
+    "positive_unknown_count": 23,
+    "positive_unknowns": [
+      "v",
+      "Jrep",
+      "align",
+      "F",
+      "alpha",
+      "zquot",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "positive_coordinates_including_parameters": 26,
+    "equations": 16,
+    "primitive_instructions": [
+      {
+        "operation": "+",
+        "left": "qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "*",
+        "left": 127,
+        "right": "Jrep",
+        "result": "repunit"
+      },
+      {
+        "operation": "*",
+        "left": "P",
+        "right": "v",
+        "result": "Pv"
+      },
+      {
+        "operation": "+",
+        "left": "Pm1",
+        "right": 1,
+        "result": "P"
+      },
+      {
+        "operation": "*",
+        "left": 127,
+        "right": "align",
+        "result": "alignment"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "F",
+        "result": "CF"
+      },
+      {
+        "operation": "+",
+        "left": "CF",
+        "right": "alpha",
+        "result": "bounded"
+      },
+      {
+        "operation": "*",
+        "left": 5399,
+        "right": "P",
+        "result": "kp"
+      },
+      {
+        "operation": "+",
+        "left": "kp",
+        "right": 23,
+        "result": "kinner"
+      },
+      {
+        "operation": "*",
+        "left": "P",
+        "right": "kinner",
+        "result": "pk"
+      },
+      {
+        "operation": "+",
+        "left": "pk",
+        "right": 18,
+        "result": "Klocal"
+      },
+      {
+        "operation": "*",
+        "left": "Klocal",
+        "right": "C",
+        "result": "KC"
+      },
+      {
+        "operation": "*",
+        "left": "P",
+        "right": "F",
+        "result": "PF"
+      },
+      {
+        "operation": "*",
+        "left": "zquot",
+        "right": "qm1",
+        "result": "zD"
+      },
+      {
+        "operation": "+",
+        "left": "PF",
+        "right": "zD",
+        "result": "local_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "n"
+      },
+      {
+        "operation": "*",
+        "left": "n",
+        "right": "n",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "F",
+        "result": "qF"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "qF",
+        "result": "S"
+      },
+      {
+        "operation": "*",
+        "left": 36,
+        "right": "q",
+        "result": "m36q"
+      },
+      {
+        "operation": "+",
+        "left": "m36q",
+        "right": 126,
+        "result": "mask_factor"
+      },
+      {
+        "operation": "*",
+        "left": "mask_factor",
+        "right": "Jrep",
+        "result": "T"
+      },
+      {
+        "operation": "+",
+        "left": "T",
+        "right": 1,
+        "result": "Tplus"
+      },
+      {
+        "operation": "+",
+        "left": "n2mn",
+        "right": "n",
+        "result": "n2"
+      },
+      {
+        "operation": "+",
+        "left": "n2m1",
+        "right": 1,
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": "S",
+        "right": "n2mn",
+        "result": "SA"
+      },
+      {
+        "operation": "*",
+        "left": "Tplus",
+        "right": "n2m1",
+        "result": "TB"
+      },
+      {
+        "operation": "+",
+        "left": "SA",
+        "right": "TB",
+        "result": "r_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "a",
+        "result": "a4"
+      },
+      {
+        "operation": "+",
+        "left": "a4",
+        "right": 3,
+        "result": "a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "a4m5",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "a4m5",
+        "result": "A"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "aux_u_rhs",
+        "right": "c",
+        "result": "of"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "H17",
+        "right": "tr1",
+        "result": "jc"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "histogram": {
+      "+": 22,
+      "-": 9,
+      "*": 40
+    },
+    "sources": [
+      {
+        "index": 0,
+        "equality": [
+          "repunit",
+          "qm1"
+        ],
+        "source_sign": 1,
+        "source": "127*Jrep - q + 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "Pv",
+          "q"
+        ],
+        "source_sign": 1,
+        "source": "P*v - q",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "alignment",
+          "Pm1"
+        ],
+        "source_sign": 1,
+        "source": "-P + 127*align + 1",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "bounded",
+          "q"
+        ],
+        "source_sign": 1,
+        "source": "C + F + alpha - q",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "KC",
+          "local_rhs"
+        ],
+        "source_sign": 1,
+        "source": "5399*C*P**2 + 23*C*P + 18*C - F*P - q*zquot + zquot",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "source_sign": 1,
+        "source": "-C*q**4 + C*q**2 - F*q**5 + F*q**3 - 36*Jrep*q**5 - 126*Jrep*q**4 + 36*Jrep*q + 126*Jrep - q**4 + r + 1",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source_sign": 1,
+        "source": "k**2*q**24*s**4*w**2 + k**2*q**12*s**2*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source_sign": 1,
+        "source": "c - eta - k*q**4*s",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source_sign": 1,
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source_sign": 1,
+        "source": "-h*q**8*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source_sign": 1,
+        "source": "a - q**8*s*w - q**4*s",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source_sign": 1,
+        "source": "-a*c - 4*a*ga + d - 3*ga - q**4*w",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source_sign": 1,
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**6*i**2*j**2 - 4*c**5*i**2*j*r - 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source_sign": 1,
+        "source": "c*j + c - f*o - 2*r - 1",
+        "correction": "0"
+      }
+    ],
+    "kernel_sign": "fixed minus; actual packed r is odd",
+    "ledger": {
+      "geometry": 5,
+      "bound": 2,
+      "local_positive_quotient": 8,
+      "packing_including_two_powers": 13
+    }
+  },
+  "scalar": {
+    "cases": [
+      {
+        "bits": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "value": 0,
+        "accepted": true
+      },
+      {
+        "bits": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "value": 42,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "value": 23,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "value": 65,
+        "accepted": true
+      },
+      {
+        "bits": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "value": 23,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "value": 65,
+        "accepted": true
+      },
+      {
+        "bits": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "value": 46,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          1,
+          1,
+          1
+        ],
+        "value": 88,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "value": 18,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "value": 60,
+        "accepted": false
+      },
+      {
+        "bits": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "value": 41,
+        "accepted": false
+      },
+      {
+        "bits": [
+          1,
+          0,
+          1,
+          1
+        ],
+        "value": 83,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "value": 41,
+        "accepted": false
+      },
+      {
+        "bits": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "value": 83,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "value": 64,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "value": 106,
+        "accepted": false
+      }
+    ],
+    "scalar_cases": 16,
+    "maximum_value": 106,
+    "necessary_output_bound": "y <= center + right"
+  },
+  "prepower_bounds": {
+    "cases": 1152,
+    "nonpower_q_cases": 1120
+  },
+  "carry_identity": {
+    "arbitrary_word_pairs": 21343,
+    "overlapping_top_sum_cases": 10548
+  },
+  "cyclic": {
+    "cyclic_cases": 90036,
+    "accepted": 33,
+    "all_word_quotient_signs": {
+      "positive": 86019,
+      "negative": 2688,
+      "zero": 1329
+    },
+    "accepted_quotient_signs": {
+      "positive": 33
+    },
+    "accepted_outer_tuples": [
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 7,
+        "positive_outer": {
+          "q": 268435456,
+          "P": 128,
+          "C": 16513,
+          "v": 2097152,
+          "Jrep": 2113665,
+          "align": 1,
+          "F": 175513683,
+          "alpha": 92905260,
+          "zquot": 5358,
+          "r": 350687056947942293278285019620635111555769347096705
+        },
+        "central_binomial_valuation": 112
+      },
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 11,
+        "positive_outer": {
+          "q": 268435456,
+          "P": 128,
+          "C": 2097281,
+          "v": 2097152,
+          "Jrep": 2113665,
+          "align": 1,
+          "F": 175434816,
+          "alpha": 90903359,
+          "zquot": 691054,
+          "r": 350577132404272976263593856734197810961130824155265
+        },
+        "central_binomial_valuation": 112
+      },
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 13,
+        "positive_outer": {
+          "q": 268435456,
+          "P": 128,
+          "C": 2113537,
+          "v": 2097152,
+          "Jrep": 2113665,
+          "align": 1,
+          "F": 135588312,
+          "alpha": 130733607,
+          "zquot": 696430,
+          "r": 295039211607092928691338706234225180647076105568385
+        },
+        "central_binomial_valuation": 112
+      },
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 14,
+        "positive_outer": {
+          "q": 268435456,
+          "P": 128,
+          "C": 2113664,
+          "v": 2097152,
+          "Jrep": 2113665,
+          "align": 1,
+          "F": 185608659,
+          "alpha": 80713133,
+          "zquot": 696448,
+          "r": 364757399931411440874620937552951309403053791133825
+        },
+        "central_binomial_valuation": 112
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 119,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 128,
+          "C": 4432674701441,
+          "v": 562949953421312,
+          "Jrep": 567382630219905,
+          "align": 1,
+          "F": 47114095705858131,
+          "alpha": 24939065657368364,
+          "zquot": 5358,
+          "r": 131207605198943635637489640771098635384629720030647504829573951764780524980556338161781609105239064705
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 119,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 34359738368,
+          "C": 4432674701441,
+          "v": 2097152,
+          "Jrep": 567382630219905,
+          "align": 270549121,
+          "F": 47114095705858131,
+          "alpha": 24939065657368364,
+          "zquot": 392102063500684916462,
+          "r": 131207605198943635637489640771098635384629720030647504829573951764780524980556338161781609105239064705
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 187,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 128,
+          "C": 562984583692417,
+          "v": 562949953421312,
+          "Jrep": 567382630219905,
+          "align": 1,
+          "F": 47092925006670912,
+          "alpha": 24401684447564607,
+          "zquot": 691054,
+          "r": 131166477540205956774998576096130728778081953021862753095840751799098672081066212794651884233248751745
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 187,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 34359738368,
+          "C": 562984583692417,
+          "v": 2097152,
+          "Jrep": 567382630219905,
+          "align": 270549121,
+          "F": 47092925006670912,
+          "alpha": 24401684447564607,
+          "zquot": 49800048924333927560942,
+          "r": 131166477540205956774998576096130728778081953021862753095840751799098672081066212794651884233248751745
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 221,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 128,
+          "C": 567348270481409,
+          "v": 562949953421312,
+          "Jrep": 567382630219905,
+          "align": 1,
+          "F": 36396710495578584,
+          "alpha": 35093535271867943,
+          "zquot": 696430,
+          "r": 110387274344933455665711507185496802003337899197910230765431238990439725676700761492327893649495965825
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 221,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 34359738368,
+          "C": 567348270481409,
+          "v": 2097152,
+          "Jrep": 567382630219905,
+          "align": 270549121,
+          "F": 36396710495578584,
+          "alpha": 35093535271867943,
+          "zquot": 50186048509189287542766,
+          "r": 110387274344933455665711507185496802003337899197910230765431238990439725676700761492327893649495965825
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 238,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 128,
+          "C": 567382361784448,
+          "v": 562949953421312,
+          "Jrep": 567382630219905,
+          "align": 1,
+          "F": 49823945201822163,
+          "alpha": 21666266474321325,
+          "zquot": 696448,
+          "r": 136471945517366531979014811392719724982259136827974464578396142693424675883501731811893695399195590785
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 238,
+        "positive_outer": {
+          "q": 72057594037927936,
+          "P": 34359738368,
+          "C": 567382361784448,
+          "v": 2097152,
+          "Jrep": 567382630219905,
+          "align": 270549121,
+          "F": 49823945201822163,
+          "alpha": 21666266474321325,
+          "zquot": 50189064130939527591680,
+          "r": 136471945517366531979014811392719724982259136827974464578396142693424675883501731811893695399195590785
+        },
+        "central_binomial_valuation": 224
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 125,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 4432676798465,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 4730858527704222035,
+          "alpha": 4492509076473755308,
+          "zquot": 688110,
+          "r": 490299649851628338353340106428298669814986521026062989898413402217789178859339553523874763521546538700367516942465
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 159,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 562950223970433,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 1344050287506106816,
+          "alpha": 7878758799124698559,
+          "zquot": 88454894,
+          "r": 264231571907463157267182572888937100388871068062835437605057785328689284906253414337140255591842537155385112936577
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 250,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 567382630203520,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 6030709150579993025,
+          "alpha": 3192095503644579263,
+          "zquot": 89143040,
+          "r": 577064152323389800680933592969878198768868804137081876250934535645335097040277789708010049200573201289228322881665
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 318,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 72057628668215424,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 6017740137395707922,
+          "alpha": 3133574270790852462,
+          "zquot": 11322521344,
+          "r": 576198475947442290032958414465727016473696958520871587133359479604542861297353337980485476217949804615603859767425
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 335,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 72061992086552705,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 4622186411298529363,
+          "alpha": 4529123633469693740,
+          "zquot": 11323209454,
+          "r": 483045830107608101001995482741575012127996835045284302119730050049472451618067271746926320920232654467131034845313
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 423,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 72620578351104129,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 6016891136486288448,
+          "alpha": 3133860322017383231,
+          "zquot": 11410978542,
+          "r": 576141805480692131928651034593174487898017351599146753635088515915727886865780898279103066510127039895031699751041
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 467,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 72624942306295937,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 4658692980431187032,
+          "alpha": 4492054114117292839,
+          "zquot": 11411666670,
+          "r": 485482628807398952366538205098639366717912040385411734276214665132183690695876080215222905380531752144784523804801
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 489,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 72624976399695873,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 6377464314247277016,
+          "alpha": 2773282746207802919,
+          "zquot": 11411668974,
+          "r": 600209919018138300205917399873003722137871747430159149136005154286357441252070379798199210406359004921007486025857
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 500,
+        "positive_outer": {
+          "q": 9223372036854775808,
+          "P": 16384,
+          "C": 72624976666050560,
+          "v": 562949953421312,
+          "Jrep": 72624976668147841,
+          "align": 129,
+          "F": 6390892215292715219,
+          "alpha": 2759854844896010029,
+          "zquot": 11411668992,
+          "r": 601106225972909701360912549832178443664590182641446238314597267482874423678290647763691212789373280333321727918209
+        },
+        "central_binomial_valuation": 252
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 1911,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 128,
+          "C": 1189887054780978708609,
+          "v": 151115727451828646838272,
+          "Jrep": 152305615069559581065345,
+          "align": 1,
+          "F": 12647093764829669441806419,
+          "alpha": 6694529461949616374783788,
+          "zquot": 5358,
+          "r": 49090593236101840243185676907289641133796147966354194800368717526430631319536684201746897999972482334986353039658077469029742264546249398678534133661825
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 1911,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 34359738368,
+          "C": 1189887054780978708609,
+          "v": 562949953421312,
+          "Jrep": 152305615069559581065345,
+          "align": 270549121,
+          "F": 12647093764829669441806419,
+          "alpha": 6694529461949616374783788,
+          "zquot": 392102063500684916462,
+          "r": 49090593236101840243185676907289641133796147966354194800368717526430631319536684201746897999972482334986353039658077469029742264546249398678534133661825
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 1911,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 9223372036854775808,
+          "C": 1189887054780978708609,
+          "v": 2097152,
+          "Jrep": 152305615069559581065345,
+          "align": 72624976668147841,
+          "F": 12647093764829669441806419,
+          "alpha": 6694529461949616374783788,
+          "zquot": 28253931314781519370655914138795734766,
+          "r": 49090593236101840243185676907289641133796147966354194800368717526430631319536684201746897999972482334986353039658077469029742264546249398678534133661825
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 3003,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 128,
+          "C": 151125023444444123234433,
+          "v": 151115727451828646838272,
+          "Jrep": 152305615069559581065345,
+          "align": 1,
+          "F": 12641410798539509480090688,
+          "alpha": 6550277291850113191973695,
+          "zquot": 691054,
+          "r": 49075205552112155943346085010379065720883974172567958975926147407181966908721617311496198178169936416580757474860424759477691371699905110336269505806465
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 3003,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 34359738368,
+          "C": 151125023444444123234433,
+          "v": 562949953421312,
+          "Jrep": 152305615069559581065345,
+          "align": 270549121,
+          "F": 12641410798539509480090688,
+          "alpha": 6550277291850113191973695,
+          "zquot": 49800048924333927560942,
+          "r": 49075205552112155943346085010379065720883974172567958975926147407181966908721617311496198178169936416580757474860424759477691371699905110336269505806465
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 3003,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 9223372036854775808,
+          "C": 151125023444444123234433,
+          "v": 2097152,
+          "Jrep": 152305615069559581065345,
+          "align": 72624976668147841,
+          "F": 12641410798539509480090688,
+          "alpha": 6550277291850113191973695,
+          "zquot": 3588471708459777129519586952913723848430,
+          "r": 49075205552112155943346085010379065720883974172567958975926147407181966908721617311496198178169936416580757474860424759477691371699905110336269505806465
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 3549,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 128,
+          "C": 152296391697488366551041,
+          "v": 151115727451828646838272,
+          "Jrep": 152305615069559581065345,
+          "align": 1,
+          "F": 9770167578780623315462616,
+          "alpha": 9420349143355955113285159,
+          "zquot": 696430,
+          "r": 41300782642077649593472263070640932888427221118216253196331550483180347732604087233022401240814009565674850496785665660728510194883254835100937965551745
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 3549,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 34359738368,
+          "C": 152296391697488366551041,
+          "v": 562949953421312,
+          "Jrep": 152305615069559581065345,
+          "align": 270549121,
+          "F": 9770167578780623315462616,
+          "alpha": 9420349143355955113285159,
+          "zquot": 50186048509189287542766,
+          "r": 41300782642077649593472263070640932888427221118216253196331550483180347732604087233022401240814009565674850496785665660728510194883254835100937965551745
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 3549,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 9223372036854775808,
+          "C": 152296391697488366551041,
+          "v": 2097152,
+          "Jrep": 152305615069559581065345,
+          "align": 72624976668147841,
+          "F": 9770167578780623315462616,
+          "alpha": 9420349143355955113285159,
+          "zquot": 3616285909843722407725244570940873605102,
+          "r": 41300782642077649593472263070640932888427221118216253196331550483180347732604087233022401240814009565674850496785665660728510194883254835100937965551745
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 3822,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 128,
+          "C": 152305543011965274701952,
+          "v": 151115727451828646838272,
+          "Jrep": 152305615069559581065345,
+          "align": 1,
+          "F": 13374513449970144541419987,
+          "alpha": 5815994120851956979176877,
+          "zquot": 696448,
+          "r": 51060216786781430622653442419528542151412654878037342047201485814642097485411347810413225769606930443049028009329701788792655306475738810172176798335105
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 3822,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 34359738368,
+          "C": 152305543011965274701952,
+          "v": 562949953421312,
+          "Jrep": 152305615069559581065345,
+          "align": 270549121,
+          "F": 13374513449970144541419987,
+          "alpha": 5815994120851956979176877,
+          "zquot": 50189064130939527591680,
+          "r": 51060216786781430622653442419528542151412654878037342047201485814642097485411347810413225769606930443049028009329701788792655306475738810172176798335105
+        },
+        "central_binomial_valuation": 336
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 3822,
+        "positive_outer": {
+          "q": 19342813113834066795298816,
+          "P": 9223372036854775808,
+          "C": 152305543011965274701952,
+          "v": 2097152,
+          "Jrep": 152305615069559581065345,
+          "align": 72624976668147841,
+          "F": 13374513449970144541419987,
+          "alpha": 5815994120851956979176877,
+          "zquot": 3616503208292034480209496888824800442112,
+          "r": 51060216786781430622653442419528542151412654878037342047201485814642097485411347810413225769606930443049028009329701788792655306475738810172176798335105
+        },
+        "central_binomial_valuation": 336
+      }
+    ],
+    "full_packed_Pell_tuples_materialized": false
+  },
+  "pell": {
+    "main_cases": [
+      {
+        "r": 3,
+        "main_index": 7,
+        "c_bits": 175,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 7,
+        "main_index": 15,
+        "c_bits": 1695,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 15,
+        "main_index": 31,
+        "c_bits": 14911,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 31,
+        "main_index": 63,
+        "c_bits": 125055,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 65,
+        "main_index": 131,
+        "c_bits": 1124111,
+        "positive_main_quotients": true
+      }
+    ],
+    "auxiliary_cases": [
+      {
+        "A": 2,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 2,
+        "main_index": 7,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 3,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 4,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 5,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      }
+    ],
+    "scope": "Separate exact component regressions; not full enormous packed tuples"
+  },
+  "proof": "../1980/EXPLORATION_RULE110_CYCLIC_CERTIFICATE.md",
+  "universal_certificate_improvement": false,
+  "scope": "Exact positive certificate in supplied q,P,C for a nonzero Rule110 cyclic word with strides h,h+1; no raw-input/marker/target interface"
+}

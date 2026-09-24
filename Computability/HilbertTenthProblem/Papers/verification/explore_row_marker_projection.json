@@ -1,0 +1,111 @@
+{
+  "status": "PASS_CONDITIONAL_ROW_MARKER_PROJECTION",
+  "dimensions": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      6,
+      1
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      8,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      3,
+      3
+    ]
+  ],
+  "exhaustive_candidates": 5948,
+  "accepted_candidates": 160,
+  "converse_choices": 160,
+  "omission_examples": 3,
+  "dag": [
+    [
+      "threeA",
+      "*",
+      3,
+      "A"
+    ],
+    [
+      "top",
+      "*",
+      "A",
+      "H"
+    ],
+    [
+      "Qtop",
+      "+",
+      "Q",
+      "top"
+    ],
+    [
+      "headsum",
+      "+",
+      "S",
+      "Sbar"
+    ],
+    [
+      "twiceQ",
+      "*",
+      2,
+      "Q"
+    ],
+    [
+      "projected",
+      "+",
+      "twiceQ",
+      "S"
+    ]
+  ],
+  "dag_cases": 44,
+  "component_multiplications": 3,
+  "component_additions": 3,
+  "component_total": 6,
+  "already_available_quotient_total": 5,
+  "masked_words": 5,
+  "arbitrary_fixed_guard_depth": {
+    "exhaustive_candidates": 5204,
+    "accepted_candidates": 130,
+    "converse_choices": 130,
+    "dag_cases": 130,
+    "component_total": 6,
+    "masked_words": 5,
+    "scope": "Every fixed guard depth, with exact bound M_row<=R/C and the paid quotient C*A=R. Conditional nonnegative component only."
+  },
+  "scope": "Nonnegative conditional component with supplied radix geometry and Boolean words/ranges. Neither mask realization nor input, alignment, halting or positive-witness adapters are counted. No new universal operation bound."
+}

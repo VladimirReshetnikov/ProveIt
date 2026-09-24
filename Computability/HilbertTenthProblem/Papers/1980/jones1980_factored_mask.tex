@@ -1,0 +1,88 @@
+% Distributivity shortens the unchanged shifted-affine certificate.
+\section{Factoring the packed mask: 93 operations}
+\label{sec:factored-mask}
+
+The system and fixed indices of Section~\ref{sec:shifted-affine}
+admit a shorter arithmetic certificate by factoring the indicator
+code out of two terms of the packed mask. No source equation,
+encoding, admissibility condition, or positive unknown changes.
+
+\begin{theorem}\label{thm:best93}
+The universal system of Theorem~\ref{thm:best94}, with exactly
+the same admissible fixed indices and positive witnesses, admits
+a straight-line certificate of 93 operations: 50 multiplications
+and 43 additions. There remain 34 positive unknowns and 22
+equations. Its supplied parameters are $(x,V,H,T_L)$, with
+three fixed index parameters besides the positive input $x$.
+The literal numerals are $\{1,3,8,15\}$; fixed numerals and
+equality tests are free.
+\end{theorem}
+
+\begin{proof}
+The existing register $T_{\rm coef}=1+\theta\lambda$ gives
+the packed mask in the form
+\[
+ T+1=q^2T_{\rm coef}-\ell b+\theta\ell q^4.
+\]
+The 94-operation schedule evaluates this expression using four
+multiplications and two additions or subtractions:
+\[
+ \begin{aligned}
+ T_{q^4}&=T_{\rm coef}q^2,&
+ L_b&=\ell b,& T_2&=T_{q^4}-L_b,\\
+ L_{q^4}&=\ell q^4,&
+ M&=\theta L_{q^4},& T+1&=T_2+M.
+ \end{aligned}
+\]
+Replace these six instructions by the following five:
+\begin{equation}\label{eq:factored-mask-five}
+ \begin{aligned}
+ T_{q^4}&=T_{\rm coef}q^2,\qquad
+ Q_\theta=\theta q^4,\qquad G=Q_\theta-b,\\
+ I&=\ell G,\qquad T+1=T_{q^4}+I.
+ \end{aligned}
+\end{equation}
+These use three multiplications and two additions or subtractions.
+Distributivity gives the unconditional integer identity
+\begin{equation}\label{eq:factored-mask-identity}
+ q^2T_{\rm coef}+\ell(\theta q^4-b)
+   =q^2T_{\rm coef}-\ell b+\theta\ell q^4.
+\end{equation}
+Thus the retained packed output, named \texttt{T} in the
+certificate, has its old value for every integer assignment,
+before any source equation is assumed. The deleted temporary
+registers have no consumers outside this block and occur in
+none of the free equality tests.
+
+Every other instruction and equality test is retained. The
+source residuals are therefore exactly those of the 94-operation
+system. The identity map on the input parameters and all 34
+positive supplied unknowns is the positive-witness map in both
+directions. Each schedule determines its own temporary registers
+from that same tuple. Consequently the full universality,
+canonical-code, carry, unit, and Pell proof transfers without
+any changed hypothesis.
+
+The new temporary registers introduce no supplied unknown or
+domain condition. They are in fact positive on the existing
+domain: $\theta=H+b>b$, $q\ge1$, and hence
+$\theta q^4-b>0$. Each subtraction is certified by its
+reversed addition, as before. The complete count is
+\[
+ 94-1=93=50\text{ multiplications}+43\text{ additions}.
+\]
+No numeral is introduced or changed.
+\end{proof}
+
+Appendix~\ref{app:93} gives all 93 instructions and the 22
+unchanged free equality tests. The complete checker is in
+\file{../verification/}:
+\begin{center}
+\small\file{round34\_1980\_factored\_mask\_certificate.py}.
+\end{center}
+It verifies the exact six-to-five replacement, the absence of
+outside uses for deleted temporaries, equality of every retained
+register, all primitive checks, and all source residuals with
+their unchanged acyclic corrections. The shorter schedule is
+a certificate for the same proved system; 93 is an upper bound,
+with no optimality assertion.

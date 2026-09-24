@@ -1,0 +1,377 @@
+% Input section for jones1980_theorem5_operations.tex.
+% The archived 129-step certificate is preserved; this section supplies
+% independently verified improvements, culminating in the packed 120 steps.
+\section{Reducing certificate length to 120}\label{sec:optimization}
+
+We now take straight-line certificate length, rather than indicated
+operation count, as the complexity measure to minimize. The preceding
+129-instruction schedule is a useful starting point, but it is not a
+minimum. Two shared computations reduce the certificate for exactly the
+same system to 127. A positive Pell-solution gap removes a redundant
+inequality and gives an equivalent system with a 126-instruction
+certificate. Finally, changing the admissible index and packing its two
+coefficient congruences gives a universal system with a certificate of
+length 120. The last construction still has 32 positive unknowns, twenty
+equations, and three fixed index parameters besides the input~$x$.
+
+\subsection{Two savings without changing the system}
+
+Put $U=wn^2$ and $M=rsn^2$, quantities already computed in the baseline
+schedule. Equations (E8) and (E12) require
+\[
+ p=2UM^2,\qquad a=(U+1)M.
+\]
+Compute $J=UM$ once and instead check
+\[
+ a=J+M,\qquad p=2JM.
+\]
+This replaces five instructions, after $U,M$ are available, by four: one
+multiplication is saved.
+
+For the second saving, temporarily write $B=b^5$. Equations (E2), (E3)
+give the useful identity
+\begin{equation}
+ 1+\theta\lambda=\lambda+q^4-2z\lambda.\label{eq:reuse-theta}
+\end{equation}
+Compute $Z_\lambda=(2z)\lambda$, and write the coefficient
+$2(e-z\lambda)$ in the first bracket of (E7) as $2e-Z_\lambda$.
+This costs the same three instructions as before. Its second bracket
+then becomes
+\[
+ q^3(\lambda+q^4-Z_\lambda)-(b-1)\ell+(B-2)q^8.
+\]
+The quantity $\lambda+q^4$ is already available from (E2), and
+$Z_\lambda$ is now shared between the two brackets. Eight instructions
+replace the previous nine.
+
+\begin{theorem}\label{thm:127}
+The original modified system $\Sigma$ has a straight-line certificate
+with 127 instructions: 73 multiplications and 54 additions, with
+subtractions recorded as additions, followed by twenty equality tests.
+\end{theorem}
+
+\begin{proof}
+Apply the two independent savings to the archived 129-instruction
+schedule. The shared-product identities are polynomial identities. The
+second saving uses equations already checked, so its exact verification
+must record that dependence. If $F_i$ denotes the source residual, left
+side minus right side, of (Ei), the residual evaluated by the new (E7)
+schedule is
+\[
+ F_{7,\mathrm{new}}
+   =F_7+(\lambda F_3-F_2)q^3(n^2-1).
+\]
+Thus it vanishes exactly when $F_7$ does, once (E2) and (E3) have been
+checked. The companion program verifies this identity symbolically,
+along with the other nineteen residuals and the instruction count.
+\end{proof}
+
+\subsection{Removing a redundant Pell gap}
+
+The strengthened equation (E13$'$) asks for
+$c>\kappa+2r+1$. The two Pell equations already ensure that $c>\kappa$
+implies this stronger inequality. The following elementary argument does
+not need the general classification of Pell solutions.
+
+\begin{lemma}\label{lem:pellgap}
+Let $a\ge2$ and suppose positive integers $c,d,\kappa,\mu$ satisfy
+\[
+ d^2-(a^2-1)c^2=\mu^2-(a^2-1)\kappa^2=1,
+ \qquad c>\kappa.
+\]
+Then $c-\kappa\ge2a-1$.
+\end{lemma}
+
+\begin{proof}
+Write $D=a^2-1$, $t=\mu c-d\kappa$ and
+$v=d\mu-Dc\kappa$. Since
+\[
+ \frac dc=\sqrt{D+c^{-2}}<\sqrt{D+\kappa^{-2}}
+ =\frac\mu\kappa,
+\]
+the integer $t$ is positive. Also $v>0$, because
+$d>\sqrt D\,c$ and $\mu>\sqrt D\,\kappa$. Direct multiplication gives
+\[
+ v^2-Dt^2=1,\qquad c=\mu t+\kappa v.
+\]
+As $t\ge1$, the first identity implies $v\ge a$; likewise $\mu\ge a$.
+Consequently
+\[
+ c-\kappa=\mu t+\kappa(v-1)
+       \ge a+\kappa(a-1)\ge2a-1.\qedhere
+\]
+\end{proof}
+
+Let $\Sigma_{\rm flat}$ replace (E13$'$) by $c=\kappa+\varphi$,
+with $\varphi$ still positive, and retain the other nineteen equations.
+
+\begin{theorem}\label{thm:126}
+The system $\Sigma_{\rm flat}$ defines the same set of inputs as
+$\Sigma$, with an explicit bijection of their slack witnesses, and has a
+126-instruction certificate: 73 multiplications and 53 additions.
+\end{theorem}
+
+\begin{proof}
+The other equations give $b\ge2$, $q\ge2$, $n\ge2$, and
+\[
+ a=(wn^2+1)rsn^2\ge20r.
+\]
+By Lemma~\ref{lem:pellgap}, the new equation gives
+$c-\kappa\ge2a-1>2r+1$. Therefore
+\[
+ \varphi_{\rm old}=\varphi_{\rm new}-(2r+1)>0,
+ \qquad
+ \varphi_{\rm new}=\varphi_{\rm old}+2r+1
+\]
+are inverse maps between solutions. Since $2r+1$ is already computed for
+(E17), checking $c=\kappa+\varphi$ saves one addition over checking
+$c=2r+1+\kappa+\varphi$. Combine this with Theorem~\ref{thm:127}.
+\end{proof}
+
+\subsection{A larger radix supplied by the index}
+
+Put
+\[
+ L=5^{59},\qquad M=5^{58},\qquad L=5M.
+\]
+Let $(z,u,y)$ be an admissible index of the original construction and
+write $Z=2z$. Choose a power of two $H$ so large that
+\begin{equation}
+ H>\max\{2Z^{4L+1},\ Z\,60^4,\ 3L\}.
+ \label{eq:index-H}
+\end{equation}
+The new radix will be $B=Hb^4$. Constructing $H$ is part of constructing
+the index of the represented r.e.\ set. It is an explicitly declared
+fixed parameter; it is not an unrestricted existential witness supplied
+by a purported certificate. This distinction is necessary for soundness.
+
+First retain both $u$ and $y$, so the admissible index has four
+components $(Z,u,y,H)$. Define $\Sigma_{\rm rec}$ by the following
+replacements in $\Sigma$:
+\begin{align*}
+ b&=x+\beta, & e\ell g^2+\alpha&=q^2,
+       &&\text{in place of (E1)},\\
+ \theta+Z&=B, &&&&\text{in place of (E3)},\\
+ c&=\kappa+\varphi, &&&&\text{in place of (E13$'$)},\\
+ \mu&=q+\kappa(a-B)+\rho(2aB-B^2-1),
+       &&&&\text{in place of (E18)},\\
+ \kappa&=L+\Delta(a-1), &&&&\text{in place of (E20)}.
+\end{align*}
+Replace every occurrence of $b^5$ by $B=Hb^4$, and replace
+$2(e-z\lambda)$ in (E7) by $2e-Z\lambda$. All remaining equations and
+positive domains are retained, and $\beta$ is an additional positive
+unknown. Thus $\Sigma_{\rm rec}$ has 33 unknowns and 21 equations.
+
+\begin{theorem}\label{thm:123}
+For every admissible $(Z,u,y,H)$, the system $\Sigma_{\rm rec}$ defines
+the same r.e.\ set as the original index $(Z/2,u,y)$. Its certificate
+uses 123 instructions: 70 multiplications and 53 additions.
+\end{theorem}
+
+\begin{proof}
+The radix $B=Hb^4$ is computed in three multiplications, the same number
+as $b^5$. The split (E1) costs five instructions instead of seven.
+Using $Z$ directly saves the separate computation of $2z$; its occurrence
+in $2e-Z\lambda$ costs the same three instructions as the old coefficient.
+The remaining three savings are those of Theorems~\ref{thm:127}
+and~\ref{thm:126}. Hence the count is $129-2-1-2-1=123$.
+
+For the mathematical equivalence, the original proof uses $b>xy$ to
+ensure $b>x$, a sufficiently large radix for Lemma~2.9, and the coefficient
+bound needed to prevent carries. Here $b>x$ is explicit, while
+\eqref{eq:index-H} gives
+\[
+ B>2Z^{2L+1},\qquad z\,60^4b^4<B/2.
+\]
+These are the required radix and coefficient bounds. The original
+uncombined inequality $e\ell g^2<q^2$ gives $e,\ell<q^2$ and $g<q$.
+The retained congruence equations and $u,y\ge Z$ also give
+$e,\ell\ge B$, hence $q^2>e\ell g^2\ge B^2$ and $q>B$ before using the
+intended exponential relation. Therefore $\lambda=(q^4-1)/(B-1)>q^3>e$, and
+$0<D_0=z\lambda-e<z\lambda$.
+
+For completeness, the positivity of the third block can also be checked
+before invoking the exponent lemma. With $C=1+xB+g$,
+\[
+ C\le xB+q<(b+1)q,
+ \qquad (b+1)^4<6b^4\quad(b\ge2).
+\]
+Since $H>12z$, this gives
+$2C^4D_0<B\lambda q^4$, so
+\[
+ 0<S_3=-2C^4D_0+B\lambda(1+q^4)<2q^8<q^9.
+\]
+The other block bounds follow from $e,\ell<q^2$, $g<q$ and $b<B<q$.
+Thus $n=q^{16}\le r$, and $3<3L\le B<q\le n\le r$.
+The Pell gap restores (E13$'$); Lemma~\ref{lem:226} applies with base
+$B$ and exponent $L$, yielding $b\pow2$ and $q=B^L$. Since $H$ is a
+power of two, all required radices are powers of two. The original
+digit-extraction and no-carry proof now applies with the new radix and
+the same coefficient index.
+
+Conversely, choose a power-of-two bound $b$ for an actual solution and
+use its intended codes. The source estimates
+\[
+ e<2zB^L,\qquad \ell<2B^M,\qquad g<bB^M
+\]
+give $e\ell g^2<4zb^2B^{8M}<B^{10M}=q^2$, so the new
+$\alpha$ is positive; $\beta=b-x>0$. The remaining digit and Pell
+witnesses are supplied by the original necessity construction, now using
+base $B$ and exponent $L$. Positivity of its congruence multipliers and
+of the new $\varphi=c-\kappa$ follows as in Theorem~\ref{thm:sigma}.
+\end{proof}
+
+\subsection{Packing the coefficient congruences and sharing a square}
+
+There is a further useful change to the encoding. Put
+\begin{equation}
+ V=y+uZ^{2L}.\label{eq:packed-index}
+\end{equation}
+Call $(Z,V,H)$ admissible if it is obtained this way from an admissible
+$(Z/2,u,y)$ and satisfies \eqref{eq:index-H}. This restores three index
+parameters, so the complete parameter list is $x,Z,V,H$.
+
+Define $\Sigma_{\rm pack}$ from $\Sigma_{\rm rec}$ by writing
+$C=1+xB+g$, replacing its inequality equation by
+\begin{equation}
+ e\ell C^2+\alpha=q^2,\label{eq:packed-bound}
+\end{equation}
+and replacing (E4), (E5) together by
+\begin{equation}
+ e+\ell q^2=V+t\theta.\label{eq:packed-congruence}
+\end{equation}
+Delete the now-unused unknown $m$. The quantities $B,C$ are abbreviations
+whose arithmetic is charged, not free auxiliary definitions. The resulting
+system again has 32 positive unknowns and twenty equations.
+
+\begin{theorem}\label{thm:120}
+For every admissible packed index $(Z,V,H)$, the system
+$\Sigma_{\rm pack}$ defines the same recursively enumerable set as its
+original Jones index. It has a straight-line certificate with 120
+instructions: 68 multiplications and 52 additions, followed by twenty
+equality tests.
+\end{theorem}
+
+\begin{proof}
+We first establish the bounds needed to use the Pell lemmas, without
+assuming $q=B^L$. Equation~\eqref{eq:packed-bound} and positivity give
+$e,\ell<q^2$ and $C<q$. Since $b>x\ge1$ and $C>B$, we have
+$q>B>b\ge2$ and $g<q$. As before,
+$\lambda>q^3>e$ and $0<D_0=z\lambda-e<z\lambda$. Now the stronger
+bound $C<q$ directly gives
+\[
+ 2C^4D_0<2z\lambda q^4<B\lambda q^4,
+ \qquad 0<S_3<2q^8<q^9.
+\]
+The remaining block bounds are
+\begin{gather*}
+ 0<g<q^3,\qquad
+ 0<q^3-1-(b-1)\ell<q^3,\\
+ 0<e+\ell q^2<q^4,\qquad
+ 0<(B-Z)\lambda<(B-1)\lambda=q^4-1,\\
+ 0<(B-2)q<q^2<q^9.
+\end{gather*}
+For the second use $\ell<q^2$ and $b<q$; for the third use integer
+$e,\ell\le q^2-1$. Thus the three blocks lie within their widths
+$q^3,q^4,q^9$, and the definition of $r$ gives $r\ge n^2-1\ge n$.
+We obtain $3<3L\le B<q\le n\le r$ entirely from the polynomial
+equations. Lemma~\ref{lem:pellgap} restores the stronger gap needed by
+Lemma~\ref{lem:226}. The Pell lemmas therefore give $b\pow2$,
+$q=B^L$ and the central-binomial divisibility. The resulting powers of
+two allow the three no-carry conditions to be unpacked.
+
+It remains to justify that the single congruence loses none of the
+coefficient information. Let $e_0(B),\ell_0(B)$ denote the intended
+digit polynomials of (4.5)--(4.6) in \cite{J82}, and put
+\[
+ F(B)=e_0(B)+\ell_0(B)B^{2L}.
+\]
+The first summand has degree at most $L$. The second occupies positions
+$2L+5^i$ for $1\le i\le58$, all exceeding $2L$ and at most
+$2L+M<4L$. Their digit positions are disjoint, all digits lie in
+$[0,Z)$, and $F(Z)=V$.
+
+Apply \cite[Lemma~2.9]{J82} to $Y=e+\ell q^2$, digit base $Z$, and
+$m=k=4L$. Its congruence hypothesis is
+\eqref{eq:packed-congruence}; its size hypothesis follows from
+$Y<q^4=B^{4L}<ZB^{4L}$; and its mask hypothesis is precisely the second
+no-carry condition
+\[
+ \tau_2\bigl(Y,(B-Z)\lambda\bigr)=0.
+\]
+The radix hypothesis $2Z^{4L+1}\le B$ follows from
+\eqref{eq:index-H}. The lemma gives $Y=F(B)$. Both the supplied and
+the intended $e,\ell$ lie in $[0,q^2)$, so uniqueness of quotient and
+remainder upon division by $q^2$ gives $e=e_0(B)$ and
+$\ell=\ell_0(B)$. The first no-carry condition now identifies the
+witness code $g$, and the third gives the vanishing coefficient, with
+the bound $z\,60^4b^4<B/2$ preventing carries. This proves soundness.
+
+For necessity, choose a power-of-two $b$ bounding a solution, take
+$B=Hb^4$, $q=B^L$, and use the intended codes. Since $x\le b-1$,
+$1+xB\le bB\le bB^M$, and hence $C<2bB^M$. Therefore
+\[
+ e\ell C^2<16zb^2B^{L+3M}
+       =16zb^2B^{8M}<B^{8M+1}<B^{10M}=q^2.
+\]
+Here $H>16z$ and $2M>1$ justify the last two inequalities. Thus the
+new $\alpha$ is positive. The polynomial $F$ has nonnegative digits
+and positive degree, so $F(B)>F(Z)=V$; its difference is divisible by
+$B-Z$, giving the positive integer $t$ in
+\eqref{eq:packed-congruence}. All other witnesses follow from the same
+digit and Pell necessity construction.
+
+Finally, $C^2$ was already computed to obtain $C^4$ in (E7), so
+\eqref{eq:packed-bound} removes the separate squaring of $g$. Equation
+\eqref{eq:packed-congruence} needs one multiplication and one addition
+instead of the two of each in (E4), (E5); its left side was already
+computed as the second S-block. These three savings reduce 123 to 120.
+The program schedules the inequality check after $C^2$ has been
+computed, verifies all twenty residuals, and records the explicit
+dependence on (E2), (E3) for the transformed (E7).
+\end{proof}
+
+\medskip
+\noindent The progression distinguishes a shorter certificate for the
+same system from a change of slack variable and from a change of encoding:
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Construction & Multiplications & Additions & Total\\
+\midrule
+Archived certificate for $\Sigma$ &75&54&129\\
+Shared product $UM$ &74&54&128\\
+Also reuse (E2), (E3): same $\Sigma$ &73&54&127\\
+Pell gap removed: $\Sigma_{\rm flat}$ &73&53&126\\
+Radix index and split bound: $\Sigma_{\rm rec}$ &70&53&123\\
+Packed index and shared square: $\Sigma_{\rm pack}$ &68&52&120\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are proved upper bounds under Definition~\ref{def:certificate};
+no minimum is asserted. In particular, the successful reductions replace
+the earlier suggestion that algebraic rewriting cannot materially close
+the gap. The 120-operation result uses free integer numerals and
+admissible index parameters. It does not include the computation of the
+index $(Z,V,H)$, nor claim a 120-operation bound when every such integer
+must itself be generated from~$1$. If the parameters $x,Z,V,H$ remain
+supplied but the numerical constants $2,4,5,L$ must be generated from~$1$,
+the checked addition chain for $L=5^{59}$ gives eleven additional
+instructions and a total of 131.
+
+The independently executable companions are
+\begin{center}\small
+\begin{tabular}{@{}l@{}}
+\file{round4\_1980\_optimized\_certificate.py},\\
+\file{round4\_1980\_recoded\_certificate.py},\\
+\file{round4\_1980\_packed\_certificate.py}.
+\end{tabular}
+\end{center}
+The receipt of the second of these records the 126-instruction count of
+the recoding alone; the 123-instruction count of Theorem~\ref{thm:123}
+is the entry \texttt{recoded\_system\_123} of the first receipt.
+They preserve the original 129-step schedule, verify the new schedules
+by exact symbolic identities, and write their operation histograms and
+residual checks as JSON receipts.
+The positive-domain arguments above supply the mathematical implications
+that polynomial expansion alone cannot certify.

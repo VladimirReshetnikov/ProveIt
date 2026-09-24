@@ -1,0 +1,612 @@
+% Affine radix, three-digit targets, and two independent unit carries.
+% Prepared for integration after the round32 certificate and proof audits.
+\section{Affine radix scaling and a certificate of 95 operations}
+\label{sec:affine-radix}
+
+An affine radix saves one further operation. Its first mask forbids
+one fixed bit in each coordinate digit. Three coordinates with that
+bit clear represent an arbitrary nonnegative circuit value. The
+larger possible digits require three-digit target windows; reset
+positions make paired zero equations exact, and two different
+padding carries exclude every nonunit homogeneous scaling.
+
+Start with the system of Section~\ref{sec:linear-radix}, replacing
+its two positive gaps by the combined positive gap
+\begin{equation}\label{eq:affine-radix-gap}
+ \ell+e+\alpha=q.
+\end{equation}
+This preserves the two additions used for the gaps and removes
+one positive unknown and one equation. Indeed, it implies
+$\ell,e<q$ and
+\[
+ S_2=\ell+eq\le(e+1)(q-1)\le(q-1)^2<q^2.
+\]
+Conversely, the canonical codes below satisfy $\ell+e<q$.
+Now replace the radix and the first packed mask by
+\begin{equation}\label{eq:affine-radix-change}
+ H=H_0+1,\qquad B=H+b,\qquad q^2-1-b\ell,
+\end{equation}
+where $H_0$ is a sufficiently large fixed power of two. The
+supplied fixed index remains $(V,H,T_L)$; $H_0=H-1$ is not an
+additional parameter. Every Pell equation is retained.
+
+\begin{theorem}\label{thm:best95}
+Every recursively enumerable subset of the positive integers has
+an admissible fixed index $(V,H,T_L)$ for a system with 34 positive
+unknowns and 22 equations admitting a straight-line certificate of
+95 operations: 51 multiplications and 44 additions. Here
+$T_L=\psi_4(L)$ for the underlying exponent in the index
+construction. The supplied parameters are $(x,V,H,T_L)$, with
+three fixed index parameters besides the positive input $x$.
+Fixed numerals and equality tests are free.
+\end{theorem}
+
+The following proof includes the rebuilt coefficient index and
+all positive witnesses. Appendix~\ref{app:95} gives the complete
+arithmetic table. The exact source and primitive checker is in
+\file{../verification/}:
+\begin{center}
+\small\file{round32\_1980\_affine\_radix\_certificate.py}.
+\end{center}
+
+\subsection{Logical values and physical coordinates}
+
+Compile the represented finite Diophantine system into a circuit
+over nonnegative integers with actual positive input $x$,
+addition, multiplication, zero and one. Signed integer witnesses
+can first be represented by differences of nonnegative witnesses.
+Introduce a homogeneous coordinate $\delta$, retained as one
+physical coordinate. Every other logical non-input coordinate is
+the sum of three distinct nonnegative physical coordinates.
+Different logical coordinates have disjoint groups. The input $x$
+is unsplit and has weight zero.
+
+Every nonnegative integer $z$ has such a representation with the
+$H_0$ bit clear in each entry. If that bit of $z$ is zero, take
+$(z,0,0)$. If it is one, take
+\begin{equation}\label{eq:affine-radix-split}
+ (z-H_0,\ H_0/2,\ H_0/2).
+\end{equation}
+All entries are nonnegative and have the required bit clear.
+They become base-$B$ digits once $B$ exceeds these finitely many
+values. Their choice depends on $z,H_0$, not on how much larger
+$B$ is subsequently chosen. In the reverse direction, the sum
+of three decoded physical digits is a nonnegative logical value;
+no further bound on that sum is needed.
+
+Use fresh outputs and fresh square-difference copies whenever a
+product would repeat a logical factor. For multiplication,
+addition and zero equations use respectively
+\begin{equation}\label{eq:affine-radix-gates}
+ 2XY-2W\delta=0,\qquad
+ 2(X+Y-W)\delta=0,\qquad 2X\delta=0.
+\end{equation}
+A copy $X'=X$ can be imposed by
+\begin{equation}\label{eq:affine-radix-copy}
+ X'^2-X^2=0.
+\end{equation}
+Nonnegativity makes this exact. Constant-one occurrences use
+$\delta$ or a fresh logical copy of $\delta$. Whenever a use
+in \eqref{eq:affine-radix-gates} would create $\delta\delta$,
+use a fresh copy instead. Repeated operands are copied too.
+Every displayed product thus has distinct logical factors and
+expands into distinct physical factors. Final equalities may
+use square differences or distinct-factor products with
+$\delta$. Include both $F$ and $-F$ for every zero equation
+$F=0$.
+
+Introduce fresh logical coordinates $X,Y,Z,\delta',u$ with
+disjoint physical groups and include both signs of
+\begin{equation}\label{eq:affine-radix-normalization}
+ \begin{gathered}
+ X^2-x^2=0,\quad Y^2-x^2=0,\quad Z^2-x^2=0,\quad
+ \delta'^2-\delta^2=0,\\
+ 2xX-2\delta\delta'-2u\delta=0.
+ \end{gathered}
+\end{equation}
+Their exact zero tests will give
+\begin{equation}\label{eq:affine-radix-guard}
+ X=Y=Z=x,\qquad \delta'=\delta,\qquad
+ x^2=\delta^2+u\delta.
+\end{equation}
+Consequently $\delta>0$ and $\delta\le x$. Conversely, every
+positive input has the nonnegative normalization witnesses
+\begin{equation}\label{eq:affine-radix-unit-witness}
+ \delta=\delta'=1,\quad X=Y=Z=x,\quad u=x^2-1.
+\end{equation}
+
+Add three unpaired targets whose raw polynomial is $\delta^2$,
+and put them last. The first is ordinary; the second and third
+will have different padding at their preceding positions.
+
+Expand each logical row in the physical coordinates and $x$.
+Divide square coefficients by one and distinct-coordinate product
+coefficients by two. Every divided coefficient lies in
+$\{-1,0,1\}$. A square of a three-coordinate sum has diagonal
+coefficients one and cross coefficients two. Disjoint groups and
+fresh copies prevent two logical monomials from contributing to
+the same physical monomial in
+\eqref{eq:affine-radix-gates}--\eqref{eq:affine-radix-normalization}.
+The three unit targets have divided coefficient one. These rows
+and physical coordinates affect the fixed index, not the number
+of unknowns of the final system.
+
+\subsection{Support, reset positions, and the fixed index}
+
+Let $m$ count all true non-input physical coordinates, including
+the unsplit $\delta$. Assign weights
+\[
+ v_i=6\,3^i\quad(0\le i<m),\qquad M=6\,3^{m-1}.
+\]
+The input has weight zero. Quadratic monomial weights are
+multiples of six, at most $2M$, and determine their unordered
+coordinate pair, including squares and products with $x$.
+Divide by six and read the base-three digits to see this.
+
+Let $s$ count all targets, including both signs of every zero
+equation and the three final unit targets. Define
+\begin{equation}\label{eq:affine-radix-support}
+ \begin{gathered}
+ d_0=4M+6,\qquad
+ t_j=(s+1)d_0+2M+jd_0\quad(0\le j<s),\\
+ t_{\max}=t_{s-1}=2sd_0+2M,\qquad K=t_{\max}+3.
+ \end{gathered}
+\end{equation}
+All targets are multiples of six. Write
+$\tau_5=t_{s-2}$ and $\tau_7=t_{s-1}$ for the two modified
+unit targets. For a target $G_j$, place divided coefficient $a$
+of monomial weight $w$ at exponent $t_j-w$ in
+$\mathcal D_{\rm main}(T)$. The intervals $[t_j-2M,t_j]$
+are disjoint. Multiplication by the physical coordinate
+polynomial squared recovers exactly $G_j$ at $t_j$.
+
+Add the resets
+\begin{equation}\label{eq:affine-radix-resets}
+ \mathcal D_{\rm reset}(T)=\sum_j T^{t_j-3}.
+\end{equation}
+Let $\mathcal P(X)$ be the three physical indices belonging to
+logical coordinate $X$, and set
+\begin{equation}\label{eq:affine-radix-padding}
+ \begin{aligned}
+ \mathcal D_5(T)&=T^{\tau_5-1}
+       +\sum_{p\in\mathcal P(X)\cup\mathcal P(Y)}
+                                      T^{\tau_5-1-v_p},\\
+ \mathcal D_7(T)&=T^{\tau_7-1}
+       +\sum_{p\in\mathcal P(X)\cup\mathcal P(Y)\cup\mathcal P(Z)}
+                                      T^{\tau_7-1-v_p},\\
+ \mathcal D(T)&=\mathcal D_{\rm main}(T)
+       +\mathcal D_{\rm reset}(T)+\mathcal D_5(T)+\mathcal D_7(T).
+ \end{aligned}
+\end{equation}
+The three types have exponent residues zero, three, and five
+modulo six. Each padding polynomial has distinct exponents, and
+their intervals are disjoint because $\tau_7-\tau_5=d_0>M$.
+All $\mathcal D$ coefficients remain in $\{-1,0,1\}$.
+Every exponent is positive, greater than $M$, and below $K$.
+
+Allow dummy physical digits at all three tested positions
+$t_j,t_j+1,t_j+2$, and define
+\begin{equation}\label{eq:affine-radix-codes}
+ \begin{aligned}
+ \ell_0(T)&=\sum_iT^{v_i}
+              +\sum_j(T^{t_j}+T^{t_j+1}+T^{t_j+2}),\\
+ e_0(T)&=\sum_{h=0}^{K-1}T^h+\mathcal D(T).
+ \end{aligned}
+\end{equation}
+The digits of $\ell_0$ are zero or one, those of $e_0$ are zero,
+one or two, and the unit digit of $e_0$ is one. Put
+\[
+ c_*=1+m+3s,\qquad D_1=\sum_h|[T^h]\mathcal D(T)|.
+\]
+Choose a power of two $L>3K+2$. After the complete layout is
+fixed, choose a power of two $H_0$ satisfying
+\begin{equation}\label{eq:affine-radix-index}
+ \begin{gathered}
+ H_0>\max\{2\,4^{2L+1},\ 128\max(1,D_1)c_*^2,\ 3L,\ 1024\},\\
+ H=H_0+1,\qquad V=\ell_0(4)+e_0(4)4^L,\qquad T_L=\psi_4(L).
+ \end{gathered}
+\end{equation}
+These choices precede the queried input. The fixed integer $H$
+need not be a power of two.
+
+No decoded dummy contributes to
+$\mathcal D(T)\mathcal C(T)^2$ through $t_{\max}+2$.
+The least $\mathcal D$ exponent is at least $t_0-2M$, the
+least dummy weight is $t_0$, and
+\begin{equation}\label{eq:affine-radix-dummies}
+ 2t_0-2M>t_{\max}+2.
+\end{equation}
+Thus the residue analysis below involves only true coordinates
+of weight zero modulo six. This exclusion is needed because
+some dummy weights are not zero modulo six.
+
+The spacing also makes the relevant padding coefficients exact.
+At $t_j-3$ the own reset contributes $x^2$. Another reset would
+require a monomial weight of absolute value at least
+$d_0>2M$, so cannot contribute. At $\tau_5-1$, the extra terms
+give exactly $x^2+2xX+2xY$; at $\tau_7-1$, they give exactly
+$x^2+2xX+2xY+2xZ$. Other targets' preceding positions receive
+no extra term. Monomial uniqueness identifies these terms, the
+different bands are separated by more than $4M$, and the other
+parts of $\mathcal D$ have different residues modulo six.
+
+\subsection{Preliminary bounds and the Pell conclusions}
+
+The source definitions and coding equations are
+\begin{equation}\label{eq:affine-radix-packing}
+ \begin{gathered}
+ \mathcal C=x+g,\quad b=x+\beta,\quad B=H+b,\quad\theta=B-4,\\
+ \lambda(B-1)=q^2-1,\quad
+ S_2=\ell+eq=V+t\theta,\quad\ell+e+\alpha=q,\\
+ \Omega=\lambda-e>0,\quad
+ \sigma=\Omega(q-\mathcal C^2)>0,\quad n=q^8,\\
+ S=g+q^2(S_2+q^2\sigma),\\
+ T+1=q^2(1+\theta\lambda)-b\ell+\theta\ell q^4,\\
+ r=S(n^2-n)+(T+1)(n^2-1).
+ \end{gathered}
+\end{equation}
+All supplied unknowns, including $\alpha,\beta,\Omega,\sigma$,
+are positive integers. Before using any Pell conclusion or
+decoded coefficient row, positivity gives
+\begin{equation}\label{eq:affine-radix-preliminary}
+ \ell,e<q,\quad S_2<q^2,\quad\mathcal C^2<q,\quad g<q,
+ \quad0<\sigma<\lambda q<q^3.
+\end{equation}
+The combined gap even gives $S_2\le(q-1)^2$. Geometry gives
+$B\le q^2$. Since $b\ge2$ and $H>1024$, we have $q\ge6$,
+$b<B<n$, $3L\le B\le n$, and
+\[
+ \theta\lambda\ge B-4=H+b-4>b.
+\]
+Integer gaps give
+\[
+ 0<S\le q-1+q^2(q^2-1)+q^4(q^3-1)<q^7<n.
+\]
+For the other packed number,
+\begin{equation}\label{eq:affine-radix-packed-range}
+ \begin{aligned}
+ T+1&>q^2\theta\lambda-b\ell>bq^2-bq>0,\\
+ T+1&<q^4(1+\theta\ell)<Bq^5\le q^7<n.
+ \end{aligned}
+\end{equation}
+The upper bound uses $1+\theta\lambda<q^2$ and
+$1+\theta\ell\le1+(B-4)(q-1)<Bq$. Consequently
+\begin{equation}\label{eq:affine-radix-r-range}
+ n\le n^2-1\le r<2n^3.
+\end{equation}
+
+These are the packing and growth hypotheses of the retained Pell
+block. To specify the proof order, write
+\[
+ \begin{gathered}
+ U=wn^2,\quad Y_{\rm p}=s_{\rm p}n^2,\quad
+ a=Y_{\rm p}(U+1),\quad A=a+4,\\
+ D_{\rm p}=A^2-1,\quad P=2UY_{\rm p}^2+1,\quad J=2r+1.
+ \end{gathered}
+\]
+The subscripts distinguish Pell values from encoded logical
+coordinates. We have $U,Y_{\rm p}\ge n^2$,
+$UY_{\rm p}\ge n^4>r+1$, and $a>n^4>J$. The positive
+interval and first index equation imply $c>J$. Classification
+of the main and first norms, together with $P>A$, gives
+preliminary main index at least $r+2$. Thus $c>AD_{\rm p}^2$,
+as in Sections~\ref{sec:composed-97} and
+\ref{sec:relaxed-auxiliary}.
+
+The retained relaxed norm
+\[
+ (ic^2)^2=D_{\rm p}(f^2-1)
+\]
+has the required fundamental-unit and divisibility hypotheses.
+The doubled signed-index argument gives $c=\psi_A(J)$ and
+$d=\chi_A(J)$. The first-index and ratio argument gives
+$Y_{\rm p}\ge U^r$ and $a>U^{r+1}$ before either exponent
+relation is used. The common-witness exponent equation gives
+$U=4^J$. The fixed congruence $\kappa=T_L+\Delta a$
+determines the second index as $L$, and its exponent equation
+gives $q=B^L$. All exponent-size inequalities follow from
+\eqref{eq:affine-radix-r-range} and $3L\le B\le n\le r$
+as in those proofs.
+
+Since $n^2\mid U=4^J$, $q$ is a power of two; $q=B^L$ then
+makes $B$ a power of two. From $B>H_0+1$ we get $B\ge2H_0$.
+Neither $b$ nor $H$ is asserted to be a power of two, and no
+Pell step requires it. The retained upper ratio and binomial
+fractional-part argument gives
+\begin{equation}\label{eq:affine-radix-binomial}
+ n^2\mid\binom{2r}{r}.
+\end{equation}
+All these conclusions precede canonical decoding, internal
+equations, and the proof that $\delta=1$.
+
+\subsection{Canonical codes and the forbidden bit}
+
+After the Pell conclusions, $b<B<q$ and $\ell<q$, so
+\begin{equation}\label{eq:affine-radix-no-borrow}
+ q^2-1-b\ell>0.
+\end{equation}
+The exact block expansion is
+\[
+ T=(q^2-1-b\ell)+q^2\theta\lambda+q^4\theta\ell,
+\]
+with widths $(2,2,4)$ in radix $q$. The binary no-carry
+packing lemma, using \eqref{eq:affine-radix-packing},
+\eqref{eq:affine-radix-r-range}, and
+\eqref{eq:affine-radix-binomial}, gives
+\begin{equation}\label{eq:affine-radix-masks}
+ g\mathbin{\&}(q^2-1-b\ell)=0,\qquad
+ S_2\mathbin{\&}\theta\lambda=0,\qquad
+ \sigma\mathbin{\&}\theta\ell=0.
+\end{equation}
+The ampersand is bitwise intersection, used only to interpret
+the polynomial system.
+
+Since $q=B^L$ and $\theta=B-4$, the middle mask bounds each
+base-$B$ digit of $S_2$ by three. Its digit polynomial $F(T)$
+has degree less than $2L$ and $F(B)=S_2$. The source congruence
+gives $F(4)\equiv V\pmod{B-4}$. Both $F(4),V<4^{2L}$,
+whereas \eqref{eq:affine-radix-index} makes $B-4$ larger than
+their possible difference. Hence $F(4)=V$. Uniqueness of
+base-four expansion yields $S_2=\ell_0(B)+e_0(B)q$.
+Both $\ell,e<q$, and both fixed codes are below $B^K<q$;
+quotient and remainder uniqueness gives
+\begin{equation}\label{eq:affine-radix-canonical}
+ \ell=\ell_0(B),\qquad e=e_0(B).
+\end{equation}
+This removes the quotient alias without a quadratic digit bound.
+
+The integer $q^2-1$ has every base-$B$ digit equal to $B-1$.
+Subtracting $b\ell_0(B)$ causes no borrow. At indicator
+positions the resulting digit is
+\[
+ B-1-b=H-1=H_0,
+\]
+and elsewhere it is $B-1$. Since $B,H_0$ are powers of two
+with $H_0<B$, the first mask says exactly that each physical
+digit of $g$ has its $H_0$ bit clear and that digits outside
+the indicator support vanish. Every digit is nonnegative and
+below $B$. The unit position is outside the support, so $g$
+has unit digit zero. Since $x<b<B$, the unit coordinate of
+$\mathcal C=x+g$ is exactly the queried input. Write
+\[
+ \mathcal C(T)=x+\sum_i z_iT^{v_i}
+       +\sum_j(d_jT^{t_j}+d'_jT^{t_j+1}+d''_jT^{t_j+2}).
+\]
+Every physical digit, including the unsplit $\delta$, is below
+$B$. The input is below $B$ too. Therefore
+\begin{equation}\label{eq:affine-radix-coefficient-bound}
+ A_{\mathcal C}=\mathcal C(1)^2<(c_*B)^2<B^3/64.
+\end{equation}
+The last inequality follows from the fixed bound and $B\ge2H_0$.
+Every raw coefficient of $\mathcal D(T)\mathcal C(T)^2$ has
+absolute value at most $A_{\mathcal C}$: distinct exponents
+of $\mathcal D$ select distinct nonnegative coefficients of
+$\mathcal C(T)^2$, and each multiplier has absolute value at
+most one.
+
+Also $e,\mathcal C<B^K$, hence $e\mathcal C^2<q$ because
+$L>3K+2$. Through position $K-1$, the raw signed coefficients
+of $\sigma$ are those of $\mathcal D(T)\mathcal C(T)^2$.
+Indeed,
+\[
+ \sigma=(\lambda-e)q+(e-\lambda)\mathcal C^2.
+\]
+The first summand starts at $L$, and the coefficient polynomial
+of $e-\lambda$ agrees with $\mathcal D(T)$ below $K$.
+Terms starting at $K$ or $L$ cannot affect lower digits.
+This identifies the actual low digits even when some raw
+coefficients are negative.
+
+\subsection{Reset padding and exact three-digit zero tests}
+
+Use the signed carry recursion
+\begin{equation}\label{eq:affine-radix-carry}
+ \begin{gathered}
+ h_0=0,\qquad a_j=[T^j]\mathcal D(T)\mathcal C(T)^2,\\
+ h_{j+1}=\left\lfloor\frac{a_j+h_j}{B}\right\rfloor,
+ \qquad\mathrm{digit}_j=a_j+h_j-Bh_{j+1}.
+ \end{gathered}
+\end{equation}
+It computes the low base-$B$ digits of the positive integer
+$\sigma$. The coefficient bound gives $|h_j|<B^2/8$ by
+induction throughout the tested range: the induction step has
+upper bound $B^2/64+B/8+1<B^2/8$ for $B>64$.
+
+By \eqref{eq:affine-radix-dummies}, dummies do not contribute.
+Only residue classes zero, three and five modulo six can have
+nonzero raw coefficients; classes one, two and four are empty.
+Two consecutive empty positions of classes one and two reduce
+a carry of magnitude below $B^2/8$ to $-1$ or zero, since their
+combined operation is division by $B^2$ followed by the floor.
+Thus the incoming carry at every reset $t_j-3$ is in
+$\{-1,0\}$.
+
+Its raw coefficient is exactly $x^2$. Since $1\le x<B$, the
+sum with the incoming carry is nonnegative and below $B^2$.
+The carry to $t_j-2$ is a nonnegative integer below $B$.
+That position is empty, so the carry to $t_j-1$ is exactly zero.
+Except at $\tau_5,\tau_7$, the raw coefficient at $t_j-1$
+is also zero. Every ordinary target therefore receives zero
+incoming carry. Its next two raw coefficients are zero as well,
+so its three tested digits form the residue of $G_j$ modulo
+$B^3$. The third mask requires each digit to be in
+$\{0,1,2,3\}$.
+
+For a paired zero row, $|G_j|<B^3/64$. A negative nonzero
+value has residue modulo $B^3$ greater than $63B^3/64$;
+its top digit exceeds three, so it fails the mask. Both signs
+have separate resets and zero incoming carry. They can both
+pass only at zero, which passes both. Every circuit equation
+and every normalization equation is now exact, without assuming
+a unit value. In particular \eqref{eq:affine-radix-guard} holds.
+
+The first unpaired unit target also receives zero carry. At
+$\tau_5-1$ and $\tau_7-1$, the exact padding coefficients
+and the input-copy equations give $5x^2$ and $7x^2$, with
+zero incoming carry. Thus the target carries are exactly
+\begin{equation}\label{eq:affine-radix-two-carries}
+ h_5=\left\lfloor\frac{5x^2}{B}\right\rfloor,
+ \qquad h_7=\left\lfloor\frac{7x^2}{B}\right\rfloor.
+\end{equation}
+Both targets still have raw value $\delta^2$ and two empty
+following raw positions. Their tested digits are the residues
+of $\delta^2+h_5$ and $\delta^2+h_7$ modulo $B^3$.
+
+\subsection{Two different padding carries fix the unit}
+
+The guard gives $0<\delta\le x<B$; the unsplit physical
+digit bound also gives $\delta<B$ directly. Hence
+$\delta^2<B^2$. The first unit test implies
+\begin{equation}\label{eq:affine-radix-unit-digits}
+ \delta^2=kB+s,\qquad k,s\in\{0,1,2,3\}.
+\end{equation}
+Since $4\mid B$, a square cannot have $s=2$ or $3$. If $s=1$,
+then $\delta^2\le3B+3<B^2/16$ for $B\ge64$, so
+$\delta<B/4$. The roots of one modulo a power of two $B\ge8$
+are congruent to $1,B/2-1,B/2+1,B-1$; only the first lies in
+$(0,B/4)$. Thus $\delta=1$.
+
+For $\delta>1$ the only remaining case is
+\begin{equation}\label{eq:affine-radix-large-unit}
+ \delta^2=kB,\qquad1\le k\le3,\qquad x^2\ge kB.
+\end{equation}
+For $c=5,7$, write
+\[
+ h_c=m_cB+r_c,\qquad0\le r_c<B.
+\]
+Since $x<B$, we have $h_c<cB$. The tested integer is
+$(k+m_c)B+r_c<(3+c)B<B^2$. There is no reduction modulo
+$B^3$ and no overflow into its third digit. Acceptance forces
+\begin{equation}\label{eq:affine-radix-carry-digits}
+ 0\le r_5,r_7\le3,\qquad
+ 0\le m_5,m_7\le3-k\le2.
+\end{equation}
+The two floors are related. For $z=x^2/B$, using braces for
+fractional part,
+\begin{equation}\label{eq:affine-radix-floor-relation}
+ 7h_5-5h_7=5\{7z\}-7\{5z\},\qquad
+ -7<7h_5-5h_7<5.
+\end{equation}
+Thus its absolute value is less than seven. Substituting the
+quotients and remainders and using $|7r_5-5r_7|\le21$ gives
+\[
+ |B(7m_5-5m_7)|<28.
+\]
+Since $B>32$, we obtain $7m_5=5m_7$. Its nonnegative
+solutions are $(m_5,m_7)=(5h,7h)$. Bound
+\eqref{eq:affine-radix-carry-digits} forces both quotients to
+be zero. Then $h_5=r_5\le3$, whereas
+\eqref{eq:affine-radix-large-unit} gives $h_5\ge5k\ge5$,
+a contradiction. Therefore $\delta=1$.
+
+The paired circuit equations now recover the represented system
+at its actual positive input. This proves sufficiency.
+
+\subsection{Necessity and all positive supplied witnesses}
+
+Given a solution of the represented system, assign its logical
+circuit values and fresh copies, and use
+\eqref{eq:affine-radix-unit-witness} for normalization.
+Split each non-input logical value other than $\delta$ into
+three physical coordinates as above; retain $\delta=1$
+unsplit. All physical values have their $H_0$ bit clear,
+including $\delta$ since $H_0>1$. Set every dummy to zero.
+Each paired target has value zero and the three unit targets
+have value one.
+
+The fixed index was chosen before this input. With the physical
+assignment fixed, choose $B$ an arbitrarily large power of two.
+Require $B>H+x$ and $B$ larger than every physical coordinate.
+Also require every raw coefficient of
+$\mathcal D(T)\mathcal C(T)^2$ to have absolute value below
+$B/4$, and require $7x^2<B/4$. These conditions are possible
+because all those finitely many values are fixed while $B$
+grows without bound. Set
+\[
+ \begin{gathered}
+ b=B-H,\quad\beta=b-x>0,\quad
+ \ell=\ell_0(B),\quad e=e_0(B),\\
+ q=B^L,\qquad n=q^8.
+ \end{gathered}
+\]
+The sum of the two code polynomials has digits at most three,
+so $\ell+e<B^K<q$. The support margin gives
+$\mathcal C^2<q$ and $\lambda=(q^2-1)/(B-1)>e$.
+Consequently
+\[
+ \begin{gathered}
+ \alpha=q-\ell-e,\quad\Omega=\lambda-e,\quad
+ \sigma=\Omega(q-\mathcal C^2),\\
+ t=\frac{\ell+eq-V}{B-4}
+ \end{gathered}
+\]
+are positive integers. For $t$, evaluate the nonconstant
+nonnegative polynomial $\ell_0(T)+e_0(T)T^L$ at $B>4$;
+its difference from its value at four is positive and divisible
+by $B-4$. The encoded coordinate $\delta=1$ ensures $g>0$.
+
+The first mask holds because the physical digits have the
+specified bit clear; the second holds because the combined
+code digits are at most three. For the third mask, each true
+variable position lies below the least $\mathcal D$ exponent
+and has zero raw coefficient and zero carry. Every paired
+target receives zero carry from its reset and has value zero.
+The first unit target has value one. Since $7x^2<B/4$,
+both special carries vanish, so those targets also have digits
+$(1,0,0)$. All masks hold. The packing lemma supplies
+\eqref{eq:affine-radix-binomial} for the newly determined $r$;
+the preliminary bounds give its required size estimates.
+
+Construct every positive Pell witness for this $r$ as in
+Section~\ref{sec:composed-97}. Choose $U=4^J$ and
+\[
+ Y_{\rm p}=\left\lfloor\frac{(U+1)^{2r}}{U^r}\right\rfloor,
+ \qquad w=\frac U{n^2},\qquad
+ s_{\rm p}=\frac{Y_{\rm p}}{n^2},\qquad a=Y_{\rm p}(U+1).
+\]
+Take the main and first Pell coordinates at $J$ and $r+1$,
+their positive interval and first-index quotients, and the
+second Pell coordinates at $L$. That index uses the newly
+fixed $T_L=\psi_4(L)$. The retained exponent and rounding
+bounds give the positive exponential quotients. They require
+$B,q$ to be powers of two, as they are, but place no such
+requirement on $b$ or $H$.
+
+Choose the doubled-index auxiliary exponent last as
+$m_{\rm aux}=2cJ$. Set $f=\chi_A(m_{\rm aux})$,
+$i_{\rm old}=\psi_A(m_{\rm aux})/c^2>0$ and
+$i=D_{\rm p}i_{\rm old}$. The doubled-index construction
+supplies positive $o,j$. The relaxed auxiliary norm holds
+and its signed auxiliary value is unchanged. Together with
+the new positive $\beta$ and combined-bound $\alpha$, all
+34 supplied unknowns are positive integers. This proves
+necessity and completes the proof of Theorem~\ref{thm:best95}.
+
+\subsection{The complete arithmetic count}
+
+The combined-bound 96-operation schedule uses a multiplication
+for $B=Hb$ and a subtraction for $b-1$. The new definition
+$B=H+b$ uses one addition instead of one multiplication.
+Replacing $(b-1)\ell$ by $b\ell$ preserves that multiplication
+and removes the subtraction. Therefore
+\[
+ (52\text{ multiplications},44\text{ additions})
+ \longrightarrow
+ (51\text{ multiplications},44\text{ additions}),
+ \qquad 51+44=95.
+\]
+There are 34 positive unknowns and 22 source equations. The
+logical coordinates, physical triples, three-digit windows,
+resets, and both padding patterns change only the fixed integer
+index. No numeral construction is charged. Each subtraction
+can be realized by one reversed addition equation with a free
+integer intermediate.
+
+The complete arithmetic checker compares the changed radix
+and first-mask expressions with all source residuals, including
+the retained acyclic corrections for geometry, the second
+exponent, and the relaxed signed norm. The separate sparse
+encoding regression gives finite evidence for coefficient
+isolation and carries. It does not replace the universal
+support, unit, Pell, or positive-witness arguments above.
+The result is an upper bound, with no optimality assertion.

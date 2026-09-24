@@ -1,0 +1,247 @@
+% Independent Pell improvements; input by the satellite article.
+\section{Further reductions in the Pell block}\label{sec:further-pell}
+
+Two changes to the Pell block save four operations independently of the
+digit encoding: a shorter parameter in the final Pell equation saves two,
+and a pair of linear interval equations saves another two. All unknowns
+remain positive integers. Signed intermediate expressions retain the
+auxiliary domain of Definition~\ref{def:certificate}.
+
+\subsection{Factoring the final Pell parameter}
+
+Write $J=2r+1$. The remark after Lemma~2.28 of~\cite{J82} explicitly
+permits replacing the parameter $a+f^2(d^2-a)$ by
+\[
+ G_0=a+f^2(f^2-a).
+\]
+This already saves one operation: if $X=(a^2-1)(ic^2)^2$, then (E16)
+asserts $f^2=X+1$, and
+\[
+ G_0-1=(f^2-1)(f^2-a+1).
+\]
+The four instructions
+\[
+ T=f^2-(a-1),\quad G_-=XT,\quad G_+=G_-+2,
+ \quad D_G=G_-G_+
+\]
+replace five instructions for $G_0^2-1$; both $X$ and $a-1$ are already
+needed elsewhere.
+
+This replacement preserves positive witnesses constructively. Once
+$c=\psi_a(J)$ and $d=\chi_a(J)$, keep positive $f,i$ satisfying (E16).
+For either the original parameter or $G_0$, one has
+$G\equiv a\pmod f$, $G\equiv1\pmod c$, and $G\ge2a+1$.
+Set $I=\chi_G(J)$ and $H=\psi_G(J)$. The Pell recurrence polynomials give
+$I\equiv d\pmod f$, $H\equiv J\pmod c$, while growth gives $I>d$ and
+$H>J$. Thus $o=(I-d)/f$ and $j=(H-J)/c$ are positive integers.
+This explicitly supplies the required positive first coordinate; it does
+not assume that an arbitrary signed square root in Lemma~2.28 is positive.
+
+A signed congruence permits a further reduction. Replace (E17) by
+\begin{equation}\label{eq:signed-pell-new}
+ (of-d)^2=(G^2-1)(J+jc)^2+1,
+ \qquad G=1+(a+1)(f^2-1).
+\end{equation}
+The variable $o$ is positive; only the expression $of-d$ may have either
+sign.
+
+\begin{lemma}\label{lem:signed-chi-new}
+For $a>1$ and $0<k\le m$, the congruence
+$\chi_a(n)\equiv\pm\chi_a(k)\pmod{\chi_a(m)}$ implies
+$n\equiv\pm k\pmod{2m}$.
+\end{lemma}
+\begin{proof}
+The positive-sign case is the usual $\chi$ step-down lemma quoted after
+Lemma~2.28 of~\cite{J82}, with its stronger modulus $4m$. For the negative
+sign, the Pell addition identities give
+\[
+ \chi_a(n+2m)\equiv-\chi_a(n)\pmod{\chi_a(m)},
+\]
+because $\chi_a(2m)=2\chi_a(m)^2-1$ and
+$\psi_a(2m)=2\chi_a(m)\psi_a(m)$. Apply the positive-sign case at
+$n+2m$ and reduce modulo $2m$.
+\end{proof}
+
+\begin{proposition}\label{prop:signed-pell-new}\label{lem:signed-pell}
+Under $a>1$ and $1<J<c$ with $J$ odd, equations (E15), (E16), and
+\eqref{eq:signed-pell-new} are existentially equivalent to
+$c=\psi_a(J)$, with every system unknown positive.
+\end{proposition}
+\begin{proof}
+For sufficiency, write
+\[
+ d=\chi_a(k),\quad c=\psi_a(k),\qquad
+ f=\chi_a(m),\quad ic^2=\psi_a(m).
+\]
+The standard Pell divisibility fact used in the proof of Lemma~2.28,
+$\psi_a(k)^2\mid\psi_a(m)\Rightarrow\psi_a(k)\mid m$, gives $c\mid m$;
+in particular $0<k<c\le m$. Our parameter satisfies
+\[
+ G>1,\qquad G\equiv-a\pmod f,\qquad G\equiv1\pmod c.
+\]
+Put $I=|of-d|$ and $H=J+jc$. The last Pell equation gives a positive
+index $n$ with $I=\chi_G(n)$ and $H=\psi_G(n)$. Since
+$I\equiv\pm d\pmod f$ and
+$\chi_{-a}(n)=(-1)^n\chi_a(n)$, Lemma~\ref{lem:signed-chi-new} gives
+$n\equiv\pm k\pmod{2m}$, hence modulo $c$. On the other hand,
+$G\equiv1\pmod c$ gives $H\equiv n\pmod c$, so $J\equiv\pm k\pmod c$.
+The positive-sign case yields $J=k$. The other case yields $J+k=c$,
+impossible because $c=\psi_a(k)\equiv k\pmod2$ and $J$ is odd.
+
+For necessity, choose a positive Pell denominator divisible by $c^2$,
+as in the construction of Lemma~2.28 of~\cite{J82}; this supplies positive
+$f,i$ satisfying (E16). Put
+$I=\chi_G(J)$, $H=\psi_G(J)$. Since $J$ is odd,
+$I\equiv-d\pmod f$ and $H\equiv J\pmod c$. Therefore
+$o=(I+d)/f>0$ and $j=(H-J)/c>0$ supply the desired witnesses.
+\end{proof}
+
+For its certificate, compute $a_-=a-1$, $a_+=a+1$, and
+$A=a_-a_+$ in place of the three existing instructions jointly needed
+for $a^2-1$ and $a-1$. The parameter coefficient then takes only
+\[
+ G_-=a_+X,\qquad G_+=G_-+2,\qquad D_G=G_-G_+.
+\]
+Thus \eqref{eq:signed-pell-new} saves two operations relative to the
+original five-instruction parameter computation. Substituting $X=f^2-1$
+uses (E16): the verifier records the exact triangular correction
+\[
+ F_{17}^{\rm calc}=F_{17}^{\rm source}
+  +F_{16}(a+1)(G_{\rm source}+G_{\rm calc})(J+jc)^2.
+\]
+
+\subsection{Replacing the quadratic approximation by an interval}
+
+The factor $4$ in (E10) is unnecessary for these encodings, and the
+square can subsequently be removed too. The proof must establish the
+evenness used in rounding before appealing to binomial divisibility.
+We give that argument explicitly.
+
+Use the notation
+\[
+ \begin{gathered}
+ N=n,\quad R=r,\quad Y=sN^2,\quad U=wN^2,\quad M=RY,\\
+ A=a=M(U+1),\quad P=p=2UM^2,\quad K=k,\quad C=c,\quad J=2R+1.
+ \end{gathered}
+\]
+The encoding, independently of the Pell block, establishes
+\[
+ 3<3L\le B<q\le N\le R,\qquad R,N\ge8,\qquad 0<b\le N.
+\]
+Moreover $B=Hb^4$ is even because admissibility fixes an even $H$.
+This does not yet assert that $q$ or $N$ is even. Both $N=q^{16}$ and
+the shorter encoding $N=q^8$ satisfy the argument below.
+
+\begin{lemma}\label{lem:weak-pell-rounding-new}
+Replace (E10) temporarily by
+$(C-KY)^2+\eta=K^2$ with $\eta>0$, retaining the other equations.
+Then all conclusions of the original Pell block still hold, and in fact
+$|C/K-Y|<1/2$.
+\end{lemma}
+\begin{proof}
+We have $U,Y\ge64$, $M\ge512$, $A\ge33280$, and
+\begin{equation}\label{eq:weak-error-new}
+ |C/K-Y|<1.
+\end{equation}
+Equation (E11) gives $K\ge R+2$, so
+$C>(Y-1)K\ge63(R+2)>J$. Therefore either the source Pell construction
+or Proposition~\ref{prop:signed-pell-new} gives $C=\psi_A(J)$.
+By (E9), (E11), and the elementary Pell congruence,
+\[
+ K=\psi_P(R+1+v(P-1)),\qquad v\ge0.
+\]
+If $v\ge1$, Lemma~2.19 of~\cite{J82} gives
+\[
+ \frac CK\le
+ \frac{(2A)^{2R}}{(2P-1)^{R+P-1}}
+ \le\left(\frac{2A}{2P-1}\right)^{2R}<\frac12,
+\]
+contradicting $C/K>Y-1\ge63$. Hence $K=\psi_P(R+1)$.
+
+Set $\xi=(U+1)^{2R}/U^R$. The elementary estimates in the proof of
+Lemma~2.25 now apply to these exact Pell indices and give
+\begin{equation}\label{eq:pell-ratio-new}
+ \xi\left(1-\frac{R}{M(U+1)}\right)<\frac CK
+ <\xi\left(1+\frac{R}{2M^2U}\right).
+\end{equation}
+In particular
+$C/K>\xi/2>U^R/2>U^{R-1}+1$. Combining this with
+\eqref{eq:weak-error-new} yields $Y>U^{R-1}$ and therefore
+\begin{equation}\label{eq:a-growth-new}
+ A=RY(U+1)>RU^R.
+\end{equation}
+
+Put $W=bw$. We have
+$2^{3J}\le8N^{2R}\le RU^R<A$ and $W^3\le U^R<A$.
+Equation (E14), with $C=\psi_A(J)$ and $d=\chi_A(J)$, is exactly the
+$\chi$ congruence of Lemma~2.22. Thus $W=2^J$, which implies that
+$b$ is a power of two and
+\begin{equation}\label{eq:u-growth-new}
+ U=N^2w\ge Nbw=NW\ge8\cdot2^J>4\cdot2^{2R}.
+\end{equation}
+Next, $\kappa<C$, (E19), and (E20), together with $0<L<J<A$, give
+$\kappa=\psi_A(L)$ by Lemma~2.23. By \eqref{eq:a-growth-new},
+\[
+ B^{3L}\le B^B\le N^N\le U^R<A,
+ \qquad q^3\le N^N\le U^R<A.
+\]
+Equation (E18) and the $\chi$ form of Lemma~2.22 therefore give $q=B^L$.
+Since $B$ is even, $q$ and $N$ are now even. These two exponential
+arguments precede the rounding step; they do not invoke Lemma~2.26
+with a weakened hypothesis.
+
+From $\xi/2<C/K<Y+1$ we get $\xi<2Y+2<3Y$. Equation
+\eqref{eq:pell-ratio-new} therefore gives
+\[
+ \left|\frac CK-\xi\right|
+ <\frac{R\xi}{M(U+1)}
+ =\frac{\xi}{Y(U+1)}<\frac3{65}<\frac14.
+\]
+The binomial expansion of Lemma~2.24 and \eqref{eq:u-growth-new} give
+\[
+ 0\le\xi-\lfloor\xi\rfloor<\frac14,
+ \qquad \lfloor\xi\rfloor\equiv\binom{2R}{R}\pmod U.
+\]
+Hence $|Y-\lfloor\xi\rfloor|<3/2<2$. Both integers are even:
+$Y=sN^2$, $U=wN^2$, and
+$\binom{2R}{R}=2\binom{2R-1}{R-1}$. Thus $Y=\lfloor\xi\rfloor$.
+This proves $N^2\mid\binom{2R}{R}$, and the last two error estimates
+also give $|C/K-Y|<1/2$, restoring the original stronger bound.
+\end{proof}
+
+\begin{proposition}\label{prop:linear-pell-interval-new}\label{lem:linear-ratio}
+In the admissible encodings considered here, (E10) may be replaced by
+\begin{equation}\label{eq:linear-pell-interval-new}
+ c=ksn^2+\eta,\qquad k=\eta+\zeta,
+ \qquad \eta,\zeta>0.
+\end{equation}
+This replacement saves two operations and adds one positive unknown
+and one free equality test.
+\end{proposition}
+\begin{proof}
+The two equations give $0<C/K-Y<1$, so Lemma~\ref{lem:weak-pell-rounding-new}
+proves sufficiency. For necessity, an original solution satisfies the
+weaker bound too: $K^2-(C-KY)^2$ is a positive integer and supplies its
+slack. Applying that lemma gives
+$Y=\lfloor\xi\rfloor$ and $\xi<Y+1/4<2Y$. The lower estimate in
+\eqref{eq:pell-ratio-new} implies
+\[
+ \xi-\frac CK<\frac{\xi}{Y(U+1)}<\frac2{U+1}<\frac2U.
+\]
+The positive term of order $1/U$ in the binomial expansion gives
+\[
+ \xi-Y\ge\frac{\binom{2R}{R-1}}{U}
+ \ge\frac{2R}{U}>\frac2U.
+\]
+Consequently $C/K>Y$. Together with $|C/K-Y|<1/2$, this proves that
+$\eta=C-KY$ and $\zeta=K-\eta$ are positive integers.
+The certificate computes $ksn^2$, adds $\eta$, and computes
+$\eta+\zeta$: three operations in place of the previous five.
+\end{proof}
+
+The proofs above preserve the other positive witnesses; $j,o$ may be
+re-chosen for the new Pell parameter, and $\eta,\zeta$ supply the new
+interval. The residual verifier checks all changed equations and the
+two triangular identities exactly. Positivity and the equivalence of
+the encodings depend on the mathematical arguments, not on polynomial
+expansion alone.

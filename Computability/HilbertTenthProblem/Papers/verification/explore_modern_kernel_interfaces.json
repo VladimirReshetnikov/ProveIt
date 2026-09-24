@@ -1,0 +1,167 @@
+{
+  "status": "PASS_SCOPED_MODERN_KERNEL_INTERFACES",
+  "pell_index_core": {
+    "multiplications": 5,
+    "additions": 4,
+    "total": 9
+  },
+  "pell_index_rows": [
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "disc",
+      "-",
+      "a2",
+      1
+    ],
+    [
+      "am1",
+      "-",
+      "a",
+      1
+    ],
+    [
+      "offset",
+      "*",
+      "am1",
+      "t"
+    ],
+    [
+      "y",
+      "+",
+      "n",
+      "offset"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "dy2",
+      "*",
+      "disc",
+      "y2"
+    ],
+    [
+      "rhs",
+      "+",
+      "dy2",
+      1
+    ],
+    [
+      "ell2",
+      "*",
+      "ell",
+      "ell"
+    ]
+  ],
+  "wrong_index_aliases": 480,
+  "same_parity_wrong_index_aliases": 352,
+  "cubic_orbit_core": {
+    "multiplications": 8,
+    "additions": 7,
+    "total": 15
+  },
+  "cubic_rows": [
+    [
+      "x2",
+      "*",
+      "x",
+      "x"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "z2",
+      "*",
+      "z",
+      "z"
+    ],
+    [
+      "twoy",
+      "*",
+      2,
+      "y"
+    ],
+    [
+      "s",
+      "+",
+      "x",
+      "twoy"
+    ],
+    [
+      "xy2sum",
+      "+",
+      "x2",
+      "y2"
+    ],
+    [
+      "first_gap",
+      "-",
+      "xy2sum",
+      "z2"
+    ],
+    [
+      "first",
+      "*",
+      "s",
+      "first_gap"
+    ],
+    [
+      "second",
+      "*",
+      "x",
+      "y2"
+    ],
+    [
+      "twoxy",
+      "*",
+      "x",
+      "twoy"
+    ],
+    [
+      "second_gap",
+      "-",
+      "x2",
+      "twoxy"
+    ],
+    [
+      "last_gap",
+      "+",
+      "second_gap",
+      "z2"
+    ],
+    [
+      "third",
+      "*",
+      "z",
+      "last_gap"
+    ],
+    [
+      "sum12",
+      "+",
+      "first",
+      "second"
+    ],
+    [
+      "value",
+      "+",
+      "sum12",
+      "third"
+    ]
+  ],
+  "exact_cubic_identity": true,
+  "exact_cubic_recurrence_invariance": true,
+  "recurrence_triples": 80,
+  "scope": "Counts of the displayed cores only. The nine-operation Pell core omits its essential published exponential cutoff and is unsound as an exact-index predicate. The fifteen-operation cubic recognizes an orbit triple, without an exposed index, prime-power predicate, or binomial-divisibility predicate. No replacement of the proved43-operation kernel is established."
+}

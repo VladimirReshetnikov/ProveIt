@@ -1,0 +1,1485 @@
+{
+  "status": "PASS_RULE110_CYCLIC69",
+  "radix": 16,
+  "source": {
+    "operations": 69,
+    "multiplications": 38,
+    "additions_subtractions": 31,
+    "outer_operations": 26,
+    "kernel_operations": 43,
+    "parameters": [
+      "q",
+      "P",
+      "C"
+    ],
+    "positive_unknown_count": 23,
+    "positive_unknowns": [
+      "v",
+      "Jrep",
+      "align",
+      "F",
+      "alpha",
+      "zquot",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "positive_coordinates_including_parameters": 26,
+    "equations": 16,
+    "primitive_instructions": [
+      {
+        "operation": "+",
+        "left": "qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "*",
+        "left": 15,
+        "right": "Jrep",
+        "result": "repunit"
+      },
+      {
+        "operation": "*",
+        "left": "P",
+        "right": "v",
+        "result": "Pv"
+      },
+      {
+        "operation": "+",
+        "left": "Pm1",
+        "right": 1,
+        "result": "P"
+      },
+      {
+        "operation": "*",
+        "left": 15,
+        "right": "align",
+        "result": "alignment"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "C",
+        "result": "C2"
+      },
+      {
+        "operation": "+",
+        "left": "C2",
+        "right": "alpha",
+        "result": "bounded"
+      },
+      {
+        "operation": "*",
+        "left": 67,
+        "right": "P",
+        "result": "kp"
+      },
+      {
+        "operation": "+",
+        "left": "kp",
+        "right": 3,
+        "result": "kinner"
+      },
+      {
+        "operation": "*",
+        "left": "kinner",
+        "right": "C",
+        "result": "innerC"
+      },
+      {
+        "operation": "+",
+        "left": "transport_gap",
+        "right": "F",
+        "result": "innerC"
+      },
+      {
+        "operation": "*",
+        "left": "P",
+        "right": "transport_gap",
+        "result": "Pgap"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "Jrep",
+        "result": "CJ"
+      },
+      {
+        "operation": "+",
+        "left": "Pgap",
+        "right": "CJ",
+        "result": "local_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "zquot",
+        "right": "qm1",
+        "result": "local_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "Lbig",
+        "right": "q",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "F",
+        "result": "qF"
+      },
+      {
+        "operation": "+",
+        "left": "C2",
+        "right": "qF",
+        "result": "packed"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "q",
+        "result": "m4q"
+      },
+      {
+        "operation": "+",
+        "left": "m4q",
+        "right": 13,
+        "result": "mask_factor"
+      },
+      {
+        "operation": "*",
+        "left": "mask_factor",
+        "right": "Jrep",
+        "result": "mask"
+      },
+      {
+        "operation": "+",
+        "left": "gap",
+        "right": "packed",
+        "result": "Lbig"
+      },
+      {
+        "operation": "+",
+        "left": "Lm1",
+        "right": 1,
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "gap",
+        "right": "Lm1",
+        "result": "rproduct"
+      },
+      {
+        "operation": "+",
+        "left": "rproduct",
+        "right": "mask",
+        "result": "r_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "a",
+        "result": "a4"
+      },
+      {
+        "operation": "+",
+        "left": "a4",
+        "right": 3,
+        "result": "a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "a4m5",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "a4m5",
+        "result": "A"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "aux_u_rhs",
+        "right": "c",
+        "result": "of"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "H17",
+        "right": "tr1",
+        "result": "jc"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "histogram": {
+      "+": 21,
+      "-": 10,
+      "*": 38
+    },
+    "sources": [
+      {
+        "index": 0,
+        "equality": [
+          "repunit",
+          "qm1"
+        ],
+        "source_sign": 1,
+        "source": "15*Jrep - q + 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "Pv",
+          "q"
+        ],
+        "source_sign": 1,
+        "source": "P*v - q",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "alignment",
+          "Pm1"
+        ],
+        "source_sign": 1,
+        "source": "-P + 15*align + 1",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "bounded",
+          "q"
+        ],
+        "source_sign": 1,
+        "source": "2*C + alpha - q",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "local_lhs",
+          "local_rhs"
+        ],
+        "source_sign": 1,
+        "source": "67*C*P**2 + 3*C*P + C - F*P + Jrep - q*zquot + zquot",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "source_sign": 1,
+        "source": "2*C*q**2 - 2*C + F*q**3 - F*q - 4*Jrep*q - 13*Jrep - q**4 + q**2 + r",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source_sign": 1,
+        "source": "k**2*q**18*s**4*w**2 + k**2*q**9*s**2*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source_sign": 1,
+        "source": "c - eta - k*q**3*s",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source_sign": 1,
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source_sign": 1,
+        "source": "-h*q**6*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source_sign": 1,
+        "source": "a - q**6*s*w - q**3*s",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source_sign": 1,
+        "source": "-a*c - 4*a*ga + d - 3*ga - q**3*w",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source_sign": 1,
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**6*i**2*j**2 - 4*c**5*i**2*j*r - 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source_sign": 1,
+        "source": "c*j + c - f*o - 2*r - 1",
+        "correction": "0"
+      }
+    ],
+    "kernel_scale": "q^3; no square-scale assumption before power decoding",
+    "kernel_sign": "fixed minus; actual r is odd",
+    "ledger": {
+      "geometry": 5,
+      "bound_sharing_C2": 1,
+      "local_positive_quotient": 8,
+      "packing_including_two_powers_and_C2": 12
+    }
+  },
+  "scalar": {
+    "cases": [
+      {
+        "bits": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "value": 1,
+        "accepted": true
+      },
+      {
+        "bits": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "value": 5,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "value": 4,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "value": 8,
+        "accepted": true
+      },
+      {
+        "bits": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "value": 4,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "value": 8,
+        "accepted": true
+      },
+      {
+        "bits": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "value": 7,
+        "accepted": false
+      },
+      {
+        "bits": [
+          0,
+          1,
+          1,
+          1
+        ],
+        "value": 11,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "value": 2,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "value": 6,
+        "accepted": false
+      },
+      {
+        "bits": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "value": 5,
+        "accepted": false
+      },
+      {
+        "bits": [
+          1,
+          0,
+          1,
+          1
+        ],
+        "value": 9,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "value": 5,
+        "accepted": false
+      },
+      {
+        "bits": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "value": 9,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "value": 8,
+        "accepted": true
+      },
+      {
+        "bits": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "value": 12,
+        "accepted": false
+      }
+    ],
+    "scalar_cases": 16,
+    "maximum_value": 12
+  },
+  "prepower_bounds": {
+    "candidates": 3136,
+    "positive_index_cases": 1792,
+    "nonpower_q_cases": 1760,
+    "strict_packed_bound_recovered_before_kernel": true
+  },
+  "inverse_carry": {
+    "arbitrary_word_mask_pairs": 348502,
+    "overflow_cases": 174251,
+    "one_cell_field_cases": 256
+  },
+  "cyclic": {
+    "cyclic_cases": 90036,
+    "accepted": 33,
+    "all_word_quotient_signs": {
+      "positive": 86019,
+      "negative": 4017
+    },
+    "accepted_quotient_signs": {
+      "positive": 33
+    },
+    "accepted_outer_tuples": [
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 7,
+        "positive_outer": {
+          "q": 65536,
+          "P": 16,
+          "C": 273,
+          "v": 4096,
+          "Jrep": 4369,
+          "align": 1,
+          "F": 39817,
+          "alpha": 64990,
+          "zquot": 62,
+          "r": 7239252580429062143
+        },
+        "central_binomial_valuation": 48
+      },
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 11,
+        "positive_outer": {
+          "q": 65536,
+          "P": 16,
+          "C": 4113,
+          "v": 4096,
+          "Jrep": 4369,
+          "align": 1,
+          "F": 39352,
+          "alpha": 57310,
+          "zquot": 1070,
+          "r": 7370105459220217343
+        },
+        "central_binomial_valuation": 48
+      },
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 13,
+        "positive_outer": {
+          "q": 65536,
+          "P": 16,
+          "C": 4353,
+          "v": 4096,
+          "Jrep": 4369,
+          "align": 1,
+          "F": 35227,
+          "alpha": 56830,
+          "zquot": 1134,
+          "r": 8531187676297035743
+        },
+        "central_binomial_valuation": 48
+      },
+      {
+        "N": 4,
+        "h": 1,
+        "raw_word": 14,
+        "positive_outer": {
+          "q": 65536,
+          "P": 16,
+          "C": 4368,
+          "v": 4096,
+          "Jrep": 4369,
+          "align": 1,
+          "F": 47257,
+          "alpha": 56800,
+          "zquot": 1135,
+          "r": 5145043578407223293
+        },
+        "central_binomial_valuation": 48
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 119,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 16,
+          "C": 17891601,
+          "v": 268435456,
+          "Jrep": 286331153,
+          "align": 1,
+          "F": 2609486729,
+          "alpha": 4259184094,
+          "zquot": 62,
+          "r": 133537528276250317743294069019229806591
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 119,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 1048576,
+          "C": 17891601,
+          "v": 4096,
+          "Jrep": 286331153,
+          "align": 69905,
+          "F": 2609486729,
+          "alpha": 4259184094,
+          "zquot": 306876116446,
+          "r": 133537528276250317743294069019229806591
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 187,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 16,
+          "C": 269553681,
+          "v": 268435456,
+          "Jrep": 286331153,
+          "align": 1,
+          "F": 2579012024,
+          "alpha": 3755859934,
+          "zquot": 1070,
+          "r": 135951983147279889757712004798327291391
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 187,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 1048576,
+          "C": 269553681,
+          "v": 4096,
+          "Jrep": 286331153,
+          "align": 69905,
+          "F": 2579012024,
+          "alpha": 3755859934,
+          "zquot": 4623384305374,
+          "r": 135951983147279889757712004798327291391
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 221,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 16,
+          "C": 285282561,
+          "v": 268435456,
+          "Jrep": 286331153,
+          "align": 1,
+          "F": 2308671899,
+          "alpha": 3724402174,
+          "zquot": 1134,
+          "r": 157370534504326131816779596145071488991
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 221,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 1048576,
+          "C": 285282561,
+          "v": 4096,
+          "Jrep": 286331153,
+          "align": 69905,
+          "F": 2308671899,
+          "alpha": 3724402174,
+          "zquot": 4893166132718,
+          "r": 157370534504326131816779596145071488991
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 8,
+        "h": 1,
+        "raw_word": 238,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 16,
+          "C": 286265616,
+          "v": 268435456,
+          "Jrep": 286331153,
+          "align": 1,
+          "F": 3097082009,
+          "alpha": 3722436064,
+          "zquot": 1135,
+          "r": 94906250181320840520971909522591186941
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 8,
+        "h": 5,
+        "raw_word": 238,
+        "positive_outer": {
+          "q": 4294967296,
+          "P": 1048576,
+          "C": 286265616,
+          "v": 4096,
+          "Jrep": 286331153,
+          "align": 69905,
+          "F": 3097082009,
+          "alpha": 3722436064,
+          "zquot": 4910027300319,
+          "r": 94906250181320840520971909522591186941
+        },
+        "central_binomial_valuation": 96
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 125,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 17895681,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 36972304425,
+          "alpha": 68683685374,
+          "zquot": 1006,
+          "r": 10302546441110403712423365512020552744697823
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 159,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 268505361,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 11150276760,
+          "alpha": 68182466014,
+          "zquot": 17118,
+          "r": 18682273511481718670285412880585107831783423
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 250,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 286330896,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 41801056920,
+          "alpha": 68146814944,
+          "zquot": 18143,
+          "r": 8735526665455948978770573568973605424856573
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 318,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 4296085776,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 40965474690,
+          "alpha": 60127305184,
+          "zquot": 274399,
+          "r": 9006688602160360777327916389712059460222973
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 335,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 4311748881,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 35056630665,
+          "alpha": 60095978974,
+          "zquot": 275422,
+          "r": 10924218118946449498936329923958744438145023
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 423,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 4564451601,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 40845745080,
+          "alpha": 59590573534,
+          "zquot": 291550,
+          "r": 9045543082025113638984976665458196441063423
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 467,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 4580245521,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 36912597435,
+          "alpha": 59558985694,
+          "zquot": 292574,
+          "r": 10321922467105411684480052660513312476225023
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 489,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 4581232641,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 49551677595,
+          "alpha": 59557011454,
+          "zquot": 292590,
+          "r": 6220306454009285702097388189070056373485023
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 9,
+        "h": 2,
+        "raw_word": 500,
+        "positive_outer": {
+          "q": 68719476736,
+          "P": 256,
+          "C": 4581294336,
+          "v": 268435456,
+          "Jrep": 4581298449,
+          "align": 17,
+          "F": 50341620105,
+          "alpha": 59556888064,
+          "zquot": 292591,
+          "r": 5963955453190777828198471659604852867063773
+        },
+        "central_binomial_valuation": 108
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 1911,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 16,
+          "C": 1172543963409,
+          "v": 17592186044416,
+          "Jrep": 18764998447377,
+          "align": 1,
+          "F": 171015322311561,
+          "alpha": 279129888783838,
+          "zquot": 62,
+          "r": 2463332607471969659829000135523711241318423501434112696319
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 1911,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 1048576,
+          "C": 1172543963409,
+          "v": 268435456,
+          "Jrep": 18764998447377,
+          "align": 69905,
+          "F": 171015322311561,
+          "alpha": 279129888783838,
+          "zquot": 306876116446,
+          "r": 2463332607471969659829000135523711241318423501434112696319
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 1911,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 68719476736,
+          "C": 1172543963409,
+          "v": 4096,
+          "Jrep": 18764998447377,
+          "align": 4581298449,
+          "F": 171015322311561,
+          "alpha": 279129888783838,
+          "zquot": 1318025563980907277790,
+          "r": 2463332607471969659829000135523711241318423501434112696319
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 3003,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 16,
+          "C": 17665470042129,
+          "v": 17592186044416,
+          "Jrep": 18764998447377,
+          "align": 1,
+          "F": 169018132044216,
+          "alpha": 246144036626398,
+          "zquot": 1070,
+          "r": 2507871438737013146753757899320731280497529079356175941119
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 3003,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 1048576,
+          "C": 17665470042129,
+          "v": 268435456,
+          "Jrep": 18764998447377,
+          "align": 69905,
+          "F": 169018132044216,
+          "alpha": 246144036626398,
+          "zquot": 4623384305374,
+          "r": 2507871438737013146753757899320731280497529079356175941119
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 3003,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 68719476736,
+          "C": 17665470042129,
+          "v": 4096,
+          "Jrep": 18764998447377,
+          "align": 4581298449,
+          "F": 169018132044216,
+          "alpha": 246144036626398,
+          "zquot": 19857286244739676233438,
+          "r": 2507871438737013146753757899320731280497529079356175941119
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 3549,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 16,
+          "C": 18696277922049,
+          "v": 17592186044416,
+          "Jrep": 18764998447377,
+          "align": 1,
+          "F": 151301121608091,
+          "alpha": 244082420866558,
+          "zquot": 1134,
+          "r": 2902973974152744518629717190339626077813086849225302474719
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 3549,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 1048576,
+          "C": 18696277922049,
+          "v": 268435456,
+          "Jrep": 18764998447377,
+          "align": 69905,
+          "F": 151301121608091,
+          "alpha": 244082420866558,
+          "zquot": 4893166132718,
+          "r": 2902973974152744518629717190339626077813086849225302474719
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 3549,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 68719476736,
+          "C": 18696277922049,
+          "v": 4096,
+          "Jrep": 18764998447377,
+          "align": 4581298449,
+          "F": 151301121608091,
+          "alpha": 244082420866558,
+          "zquot": 21015990037291394260462,
+          "r": 2902973974152744518629717190339626077813086849225302474719
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 1,
+        "raw_word": 3822,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 16,
+          "C": 18760703414544,
+          "v": 17592186044416,
+          "Jrep": 18764998447377,
+          "align": 1,
+          "F": 202970366589081,
+          "alpha": 243953569881568,
+          "zquot": 1135,
+          "r": 1750711307231229267542478853683563868044718196095130140669
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 5,
+        "raw_word": 3822,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 1048576,
+          "C": 18760703414544,
+          "v": 268435456,
+          "Jrep": 18764998447377,
+          "align": 69905,
+          "F": 202970366589081,
+          "alpha": 243953569881568,
+          "zquot": 4910027300319,
+          "r": 1750711307231229267542478853683563868044718196095130140669
+        },
+        "central_binomial_valuation": 144
+      },
+      {
+        "N": 12,
+        "h": 9,
+        "raw_word": 3822,
+        "positive_outer": {
+          "q": 281474976710656,
+          "P": 68719476736,
+          "C": 18760703414544,
+          "v": 4096,
+          "Jrep": 18764998447377,
+          "align": 4581298449,
+          "F": 202970366589081,
+          "alpha": 243953569881568,
+          "zquot": 21088409024312991735263,
+          "r": 1750711307231229267542478853683563868044718196095130140669
+        },
+        "central_binomial_valuation": 144
+      }
+    ],
+    "full_packed_Pell_tuples_materialized": false
+  },
+  "pell": {
+    "main_cases": [
+      {
+        "r": 3,
+        "main_index": 7,
+        "c_bits": 175,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 7,
+        "main_index": 15,
+        "c_bits": 1695,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 15,
+        "main_index": 31,
+        "c_bits": 14911,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 31,
+        "main_index": 63,
+        "c_bits": 125055,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 65,
+        "main_index": 131,
+        "c_bits": 1124111,
+        "positive_main_quotients": true
+      }
+    ],
+    "auxiliary_cases": [
+      {
+        "A": 2,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 2,
+        "main_index": 7,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 3,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 4,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 5,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      }
+    ],
+    "scope": "Separate exact component regressions; not full enormous packed tuples"
+  },
+  "proof": "../1980/EXPLORATION_RULE110_CYCLIC_SHORT_MASK.md",
+  "universal_certificate_improvement": false,
+  "scope": "Exact positive radix16 certificate in supplied q,P,C for a nonzero cyclic Rule110 word; changed numerical representation from radix128; no universal input/marker/target interface"
+}

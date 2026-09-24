@@ -1,0 +1,197 @@
+{
+  "status": "PASS_RAW_QUEUE_SHARED_TRANSPORT",
+  "source": {
+    "old": {
+      "operations": 14,
+      "histogram": {
+        "M": 6,
+        "A": 8
+      },
+      "dag": [
+        [
+          "x_trim",
+          "-",
+          "X",
+          "D"
+        ],
+        [
+          "x_out",
+          "+",
+          "x_trim",
+          "U"
+        ],
+        [
+          "x_left",
+          "*",
+          "R",
+          "x_out"
+        ],
+        [
+          "x_start",
+          "-",
+          "X",
+          "x"
+        ],
+        [
+          "x_right",
+          "*",
+          3,
+          "x_start"
+        ],
+        [
+          "y_trim",
+          "-",
+          "Y",
+          "E"
+        ],
+        [
+          "y_out",
+          "+",
+          "y_trim",
+          "V"
+        ],
+        [
+          "y_left",
+          "*",
+          "R",
+          "y_out"
+        ],
+        [
+          "y_start",
+          "-",
+          "Y",
+          "L0"
+        ],
+        [
+          "y_right",
+          "*",
+          3,
+          "y_start"
+        ],
+        [
+          "l_left",
+          "*",
+          "R",
+          "T"
+        ],
+        [
+          "l_start",
+          "-",
+          "Z",
+          "Winit"
+        ],
+        [
+          "l_end",
+          "+",
+          "l_start",
+          "q"
+        ],
+        [
+          "l_right",
+          "*",
+          3,
+          "l_end"
+        ]
+      ]
+    },
+    "shared": {
+      "operations": 12,
+      "histogram": {
+        "M": 4,
+        "A": 8
+      },
+      "dag": [
+        [
+          "radix",
+          "*",
+          3,
+          "B"
+        ],
+        [
+          "x_trim",
+          "-",
+          "X",
+          "D"
+        ],
+        [
+          "x_out",
+          "+",
+          "x_trim",
+          "U"
+        ],
+        [
+          "x_left",
+          "*",
+          "B",
+          "x_out"
+        ],
+        [
+          "x_right",
+          "-",
+          "X",
+          "x"
+        ],
+        [
+          "y_trim",
+          "-",
+          "Y",
+          "E"
+        ],
+        [
+          "y_out",
+          "+",
+          "y_trim",
+          "V"
+        ],
+        [
+          "y_left",
+          "*",
+          "B",
+          "y_out"
+        ],
+        [
+          "y_right",
+          "-",
+          "Y",
+          "L0"
+        ],
+        [
+          "l_left",
+          "*",
+          "B",
+          "T"
+        ],
+        [
+          "l_start",
+          "-",
+          "Z",
+          "Winit"
+        ],
+        [
+          "l_right",
+          "+",
+          "l_start",
+          "q"
+        ]
+      ]
+    },
+    "source_residuals": [
+      "B*(-D + U + X) - X + x",
+      "B*(-E + V + Y) + L0 - Y",
+      "B*T + Winit - Z - q"
+    ],
+    "additional_comparison": "radix=R",
+    "source_corrections": 3,
+    "scope": "Conditional weighted histories; includes R=3B but excludes their selection/projection realization."
+  },
+  "finite": {
+    "complete_accepting_runs": 72,
+    "common_source_steps": 2316,
+    "largest_time_power_bits": 1975,
+    "convolution_counterexamples": 4,
+    "scope": "All weighted fields are constructed from actual accepting queue runs. No arbitrary-witness decoding or complete controller certificate is claimed."
+  },
+  "proof": "../1980/EXPLORATION_RAW_QUEUE_TRANSPORT.md",
+  "scope": "Exact two-multiplication transport saving after paying one common radix factor. Weighted products, controller, masks, bounds and positivity remain outside the subtotal.",
+  "review_status": "Author and independent root/affine_optimization full proof/source audits and fresh verify runs PASS; no findings. Publication is separate."
+}

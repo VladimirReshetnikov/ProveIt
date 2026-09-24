@@ -1,0 +1,1260 @@
+{
+  "status": "PASS_PERMUTATION_PROGRAM_ROUTING_COMPONENT",
+  "arithmetic": {
+    "operations": 66,
+    "primitive_histogram": {
+      "+": 29,
+      "*": 37
+    },
+    "histogram": {
+      "+": 24,
+      "-": 5,
+      "*": 37
+    },
+    "parameters": [
+      "q"
+    ],
+    "positive_unknowns": [
+      "H",
+      "C",
+      "V",
+      "TestC",
+      "TestV",
+      "alpha",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "equations": 16,
+    "instructions": [
+      {
+        "operation": "*",
+        "left": 717897987691852588770248,
+        "right": "H",
+        "result": "qm1"
+      },
+      {
+        "operation": "+",
+        "left": "qm1",
+        "right": 1,
+        "result": "q_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 358948993845925906963897,
+        "right": "H",
+        "result": "complement_H"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "complement_H",
+        "result": "input_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 150094921213320003,
+        "right": "H",
+        "result": "gSH"
+      },
+      {
+        "operation": "+",
+        "left": "V",
+        "right": "gSH",
+        "result": "junk_lhs"
+      },
+      {
+        "operation": "*",
+        "left": 147831357813897323572384277027169581994,
+        "right": "C",
+        "result": "routing_product"
+      },
+      {
+        "operation": "+",
+        "left": "routing_product",
+        "right": 3486784401,
+        "result": "routing_lhs"
+      },
+      {
+        "operation": "*",
+        "left": 150094635296999121,
+        "right": "q",
+        "result": "final_product"
+      },
+      {
+        "operation": "*",
+        "left": 717897987691852588770249,
+        "right": "V",
+        "result": "junk_product"
+      },
+      {
+        "operation": "+",
+        "left": "final_product",
+        "right": "junk_product",
+        "result": "routing_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "TestC",
+        "right": "TestV",
+        "result": "pair_sum"
+      },
+      {
+        "operation": "+",
+        "left": "pair_sum",
+        "right": "alpha",
+        "result": "bound_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "TestV",
+        "result": "pack0"
+      },
+      {
+        "operation": "+",
+        "left": "TestC",
+        "right": "pack0",
+        "result": "pack1"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack1",
+        "result": "pack2"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "pack2",
+        "result": "P0"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "q2"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "q2",
+        "result": "L"
+      },
+      {
+        "operation": "*",
+        "left": 9,
+        "right": "L",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": 3,
+        "right": "P0",
+        "result": "pP"
+      },
+      {
+        "operation": "+",
+        "left": "gap",
+        "right": "pP",
+        "result": "n2"
+      },
+      {
+        "operation": "+",
+        "left": "r_rhs",
+        "right": 1,
+        "result": "gap"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 6,
+        "right": "a",
+        "result": "six_a"
+      },
+      {
+        "operation": "+",
+        "left": "six_a",
+        "right": 8,
+        "result": "modulus"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "modulus",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "modulus",
+        "result": "discriminant"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "c",
+        "right": "of",
+        "result": "aux_u_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "tr1",
+        "right": "jc",
+        "result": "H17"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "residuals": [
+      {
+        "index": 0,
+        "equality": [
+          "q",
+          "q_rhs"
+        ],
+        "source": "-717897987691852588770248*H + q - 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "TestC",
+          "input_rhs"
+        ],
+        "source": "-C - 358948993845925906963897*H + TestC",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "junk_lhs",
+          "TestV"
+        ],
+        "source": "150094921213320003*H - TestV + V",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "routing_lhs",
+          "routing_rhs"
+        ],
+        "source": "147831357813897323572384277027169581994*C - 717897987691852588770249*V - 150094635296999121*q + 3486784401",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "bound_lhs",
+          "q"
+        ],
+        "source": "TestC + TestV + alpha - q",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "r",
+          "r_rhs"
+        ],
+        "source": "3*C + 3*TestC*q + 3*TestV*q**2 - 9*q**4 + r + 1",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source": "729*k**2*q**12*s**2*w*(729*q**12*s**2*w + 1) - tau*(tau + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source": "c - eta - 9*k*q**4*s",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source": "-81*h*q**8*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source": "a - 9*q**4*s*(9*q**4*w + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source": "-a*c + d - ga*(6*a + 8) - 9*q**4*w",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j + 2*r + 1)**2)*(a**2 + 6*a + 8) - 1",
+        "correction": "(-y_aux**2 + (c*j + 2*r + 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source": "c*j - c - f*o + 2*r + 1",
+        "correction": "0"
+      }
+    ],
+    "program": {
+      "f": [
+        1,
+        2,
+        0
+      ],
+      "a": [
+        2,
+        6,
+        18
+      ],
+      "d": 18,
+      "spacing": 2,
+      "g": 387420489,
+      "K": 205922513154267,
+      "S": 387421227,
+      "B": 50,
+      "W": 717897987691852588770249,
+      "initial": 0,
+      "final": 2,
+      "initial_word": 9,
+      "final_word": 387420489
+    },
+    "masked_fields": [
+      "C",
+      "TestC",
+      "TestV"
+    ]
+  },
+  "general_arithmetic": {
+    "operations": 68,
+    "primitive_histogram": {
+      "+": 30,
+      "*": 38
+    },
+    "histogram": {
+      "+": 25,
+      "-": 5,
+      "*": 38
+    },
+    "parameters": [
+      "q"
+    ],
+    "positive_unknowns": [
+      "H",
+      "C",
+      "V",
+      "TestC",
+      "TestV",
+      "alpha",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "equations": 16,
+    "instructions": [
+      {
+        "operation": "*",
+        "left": 1330279464729113309844748891857449678408,
+        "right": "H",
+        "result": "qm1"
+      },
+      {
+        "operation": "+",
+        "left": "qm1",
+        "right": 1,
+        "result": "q_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 665139732364556654922374438303127334504,
+        "right": "H",
+        "result": "complement_H"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "complement_H",
+        "result": "input_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 58149737153363462911938900,
+        "right": "H",
+        "result": "gSH"
+      },
+      {
+        "operation": "+",
+        "left": "V",
+        "right": "gSH",
+        "result": "junk_lhs"
+      },
+      {
+        "operation": "*",
+        "left": 25789063740435298372073708974888973325459647121167291879580194961,
+        "right": "C",
+        "result": "routing_product"
+      },
+      {
+        "operation": "+",
+        "left": "routing_product",
+        "right": 22876792454961,
+        "result": "routing_lhs"
+      },
+      {
+        "operation": "*",
+        "left": 150094635296999121,
+        "right": "q",
+        "result": "final_product"
+      },
+      {
+        "operation": "*",
+        "left": 1330279464729113309844748891857449678409,
+        "right": "V",
+        "result": "junk_product"
+      },
+      {
+        "operation": "+",
+        "left": "final_product",
+        "right": "junk_product",
+        "result": "routing_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "TestC",
+        "right": "TestV",
+        "result": "pair_sum"
+      },
+      {
+        "operation": "+",
+        "left": "pair_sum",
+        "right": "alpha",
+        "result": "bound_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "TestV",
+        "result": "pack0"
+      },
+      {
+        "operation": "+",
+        "left": "TestC",
+        "right": "pack0",
+        "result": "pack1"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack1",
+        "result": "pack2"
+      },
+      {
+        "operation": "+",
+        "left": "V",
+        "right": "pack2",
+        "result": "pack3"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack3",
+        "result": "pack4"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "pack4",
+        "result": "P0"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "q2"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "q2",
+        "result": "L"
+      },
+      {
+        "operation": "*",
+        "left": 9,
+        "right": "L",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": 3,
+        "right": "P0",
+        "result": "pP"
+      },
+      {
+        "operation": "+",
+        "left": "gap",
+        "right": "pP",
+        "result": "n2"
+      },
+      {
+        "operation": "+",
+        "left": "r_rhs",
+        "right": 1,
+        "result": "gap"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 6,
+        "right": "a",
+        "result": "six_a"
+      },
+      {
+        "operation": "+",
+        "left": "six_a",
+        "right": 8,
+        "result": "modulus"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "modulus",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "modulus",
+        "result": "discriminant"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "c",
+        "right": "of",
+        "result": "aux_u_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "tr1",
+        "right": "jc",
+        "result": "H17"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "residuals": [
+      {
+        "index": 0,
+        "equality": [
+          "q",
+          "q_rhs"
+        ],
+        "source": "-1330279464729113309844748891857449678408*H + q - 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "TestC",
+          "input_rhs"
+        ],
+        "source": "-C - 665139732364556654922374438303127334504*H + TestC",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "junk_lhs",
+          "TestV"
+        ],
+        "source": "58149737153363462911938900*H - TestV + V",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "routing_lhs",
+          "routing_rhs"
+        ],
+        "source": "25789063740435298372073708974888973325459647121167291879580194961*C - 1330279464729113309844748891857449678409*V - 150094635296999121*q + 22876792454961",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "bound_lhs",
+          "q"
+        ],
+        "source": "TestC + TestV + alpha - q",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "r",
+          "r_rhs"
+        ],
+        "source": "3*C + 3*TestC*q**2 + 3*TestV*q**3 + 3*V*q - 9*q**4 + r + 1",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source": "729*k**2*q**12*s**2*w*(729*q**12*s**2*w + 1) - tau*(tau + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source": "c - eta - 9*k*q**4*s",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source": "-81*h*q**8*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source": "a - 9*q**4*s*(9*q**4*w + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source": "-a*c + d - ga*(6*a + 8) - 9*q**4*w",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j + 2*r + 1)**2)*(a**2 + 6*a + 8) - 1",
+        "correction": "(-y_aux**2 + (c*j + 2*r + 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source": "c*j - c - f*o + 2*r + 1",
+        "correction": "0"
+      }
+    ],
+    "program": {
+      "f": [
+        3,
+        2,
+        3,
+        2
+      ],
+      "a": [
+        1,
+        3,
+        9,
+        27
+      ],
+      "d": 27,
+      "g": 7625597484987,
+      "S": 7625597504700,
+      "K": 19386199985945631297070572,
+      "B": 82,
+      "W": 1330279464729113309844748891857449678409,
+      "initial": 0,
+      "final": 2,
+      "initial_word": 3,
+      "final_word": 19683
+    },
+    "masked_fields": [
+      "C",
+      "V",
+      "TestC",
+      "TestV"
+    ]
+  },
+  "regression": {
+    "permutation_tables": 46,
+    "normalized_subset_target_checks": 7088,
+    "canonical_histories": 904,
+    "adversarial_subset_histories": 52352,
+    "accepted_complete_candidates": 16,
+    "scope": "All fixed-point-free permutations on 3 and 5 states for normalized target checks; all subsets of two rows on both 3-state maps and two 5-state maps, with no V mask or one-hot guard in acceptance. Full positive Pell tuples are supplied by theorem, not instantiated."
+  },
+  "general_regression": {
+    "exact_target_coefficients": 1036,
+    "canonical_histories": 96,
+    "arbitrary_source_subset_histories": 16384,
+    "accepted_complete_candidates": 16,
+    "scope": "All fixed maps on2/3 original states for target coefficients, canonical two-state histories, and all two-row source-support subsets for2-state maps. Full outer masks evaluated by independent factorial valuation; huge Pell tuples are not instantiated."
+  },
+  "proof": "../1980/EXPLORATION_PERMUTATION_PROGRAM_ROUTING.md",
+  "scope": "Complete 66-operation fixed permutation path relation and equivalent 68-operation general fixed graph path relation. Counter branches, raw input and a universal compiler remain outside these counts."
+}

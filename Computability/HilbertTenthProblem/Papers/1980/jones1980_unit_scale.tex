@@ -1,0 +1,332 @@
+% The interval scale itself suffices as the main Pell scale.
+\section{Reusing the interval scale}
+\label{sec:unit-scale}
+
+There is another way to remove an operation from the base-four
+construction. The scale $M=RY_P$ can be replaced by $M=Y_P$.
+This saves its multiplication by $R$. The larger approximation error
+is still small enough, provided it is bounded only after the
+base-four exponent relation has been proved. A previously unused
+upper bound on the packed index supplies the earlier estimates.
+
+Start from Section~\ref{sec:main-base-four}, with the same fixed
+modular-Sidon encoding and $L=2^{32}$. Set
+\[
+\begin{gathered}
+ N=n,\quad R=r,\quad U=wN^2,\quad Y_P=sN^2,\quad M=Y_P,\\
+ a_0=Y_P(U+1),\quad A=a_0+4,\quad
+ Q=UY_P^2,\quad P=2Q+1,\quad J=2R+1.
+\end{gathered}
+\]
+The supplied positive unknown $a$ continues to mean $a_0$.
+Retain the first norm, affine index equation and positive interval:
+\begin{equation}\label{eq:unit-scale-system}
+\begin{gathered}
+ \tau(\tau+1)=Q(Q+1)k^2,\qquad k=R+1+hQ,\\
+ c=kY_P+\eta,\qquad k=\eta+\zeta,
+ \qquad\tau,h,\eta,\zeta>0.
+\end{gathered}
+\end{equation}
+Only the expanded source polynomials E9, E11 and E12 change, through
+the definitions of $Q$ and $a_0$. The main parameter $A=a_0+4$,
+signed auxiliary block and both exponent congruences retain their
+forms in the supplied coordinates.
+
+\subsection{A bound from the packing and the exact indices}
+
+The pre-Pell coding proof gives
+\[
+ N=q^8,\quad q>4b\ge8,\quad 3L\le B\le N\le R,
+ \quad b,q\le N,
+ \quad0<S<N,\quad0\le T<N.
+\]
+The packed-index formula and integrality of the block values give
+the useful additional bound
+\begin{align}
+ R&=S(N^2-N)+(T+1)(N^2-1)\notag\\
+  &\le(N-1)(N^2-N)+N(N^2-1)
+   =2N^3-2N^2<2N^3.\label{eq:unit-scale-rbound}
+\end{align}
+Thus $N,R\ge64$ and $U,Y_P\ge N^2\ge4096$. In particular
+\begin{equation}\label{eq:unit-scale-initial}
+ a_0>N^4>4N^3+1>J,\qquad
+ Q\ge N^6>2N^3+1>R+1.
+\end{equation}
+These conclusions use only the coding bounds and positivity, before
+either exponent relation is known.
+
+The index equation gives $k\ge R+2$, and the interval gives
+$c>Y_Pk>J$. The signed Pell block therefore implies
+$c=\psi_A(J)$ and $d=\chi_A(J)$.
+The first norm gives the ordinary Pell equation with root
+$\widehat\tau=2\tau+1$ and parameter $P=2Q+1$, so
+$k=\psi_P(t)$ for a positive index $t$.
+The Pell congruence modulo $P-1=2Q$, reduced modulo $Q$, and
+\eqref{eq:unit-scale-initial} give
+\[
+ t=R+1+vQ,\qquad v\ge0.
+\]
+If $v\ge1$, then Pell growth yields
+\[
+ \frac ck\le\frac{(2A)^{2R}}{(2P-1)^{R+Q}}
+ \le\left(\frac{2A}{2P-1}\right)^{2R}<\frac12.
+\]
+Here $Q\ge R$, and the last inequality follows from
+\[
+ (2P-1)-4A=4Y_P\bigl(U(Y_P-1)-1\bigr)-15>0.
+\]
+This contradicts $c/k>Y_P$. Consequently
+\begin{equation}\label{eq:unit-scale-indices}
+ c=\psi_A(J),\quad d=\chi_A(J),\quad
+ k=\psi_P(R+1),\quad\widehat\tau=\chi_P(R+1).
+\end{equation}
+
+\subsection{The larger error is bounded after exponent recovery}
+
+Put $\xi=(U+1)^{2R}/U^R$. At the exact indices, the same cancellation
+of $M$ in the principal ratio gives
+\begin{equation}\label{eq:unit-scale-lower}
+ \frac ck\ge
+ \xi\left(1+\frac7{2a_0}\right)^{2R}
+     \left(1+\frac1{2Q}\right)^{-R}>\xi,
+\end{equation}
+because $14Q>a_0$. The upper growth bound gives
+\[
+ \frac ck<\xi\left(1+\frac4{a_0}\right)^{2R}.
+\]
+The packed-index bound replaces the old factor $R$ in the scale:
+\[
+ \frac{8R}{a_0}<\frac{16N^3}{N^4}
+ =\frac{16}{N}\le\frac14<\frac12.
+\]
+The elementary estimate $(1+t)^m\le(1-mt)^{-1}<1+2mt$
+therefore gives
+\begin{equation}\label{eq:unit-scale-upper}
+ \frac ck<\xi\left(1+\frac{16R}{a_0}\right).
+\end{equation}
+The interval and the strict lower bound give $\xi<Y_P+1$.
+Since $Y_P$ is integral and $\xi>U^R$, this implies
+\begin{equation}\label{eq:unit-scale-size}
+ Y_P\ge U^R,\qquad A>a_0=Y_P(U+1)>U^{R+1}.
+\end{equation}
+Also $\xi<Y_P+1<2Y_P$, so
+\begin{equation}\label{eq:unit-scale-error-unbounded}
+ 0<\frac ck-\xi<\frac{32R}{U+1}.
+\end{equation}
+At this point the right-hand side is not assumed to be less than one.
+
+Write $W=bw$. Since $W\le U$, $N\ge64$ and $U\ge4096$,
+\eqref{eq:unit-scale-size} gives
+\[
+ 4^{3J}\le64N^{2R}\le64U^R<U^{R+1}<A,
+ \qquad W^3\le U^3\le U^R<A.
+\]
+The base-four exponent congruence now proves $W=4^J$ by source
+Lemma~2.22. Hence $b$ is a power of two and
+\[
+ U=N^2w\ge Nbw=N4^J\ge64\cdot4^J>64R.
+\]
+Only now does~\eqref{eq:unit-scale-error-unbounded} yield
+\begin{equation}\label{eq:unit-scale-small-error}
+ 0<\frac ck-\xi<\frac12.
+\end{equation}
+
+The gap, second Pell norm and index congruence give
+$\kappa=\psi_A(L)$ and $\mu=\chi_A(L)$, since
+$0<L<J<A$. Furthermore
+\[
+ B^{3L}\le B^B\le N^N\le U^R<A,
+ \qquad q^3\le N^N\le U^R<A.
+\]
+The second exponent congruence therefore gives $q=B^L$.
+Since also $U\ge N4^J>4\cdot2^{2R}$, the binomial expansion has
+integer part $F=\lfloor\xi\rfloor$ with
+\[
+ 0<\xi-F<\frac14,\qquad
+ F\equiv\binom{2R}{R}\pmod U.
+\]
+The two inequalities
+$F<\xi<c/k<Y_P+1$ and
+$Y_P<c/k<\xi+1/2<F+3/4$
+force $Y_P=F$. Thus $N^2\mid\binom{2R}{R}$, and the unchanged
+no-carry and modular-Sidon decoding proves membership.
+
+\subsection{Positive witnesses and the independent count}
+
+For necessity, take the canonical coding witnesses, which determine
+$b,B,q,N,R$ and satisfy~\eqref{eq:unit-scale-rbound}. Choose
+\[
+ J=2R+1,\quad w=4^J/b,\quad U=N^2w,\quad
+ Y_P=\lfloor\xi\rfloor,\quad s=Y_P/N^2,
+\]
+and then form $a_0=Y_P(U+1)$, $A=a_0+4$, $Q=UY_P^2$,
+$P=2Q+1$, $c=\psi_A(J)$, $d=\chi_A(J)$ and
+$k=\psi_P(R+1)$.
+The positive integrality of $w,s$ follows from the same power-of-two
+and binomial arguments as in Section~\ref{sec:main-base-four}.
+The bounds~\eqref{eq:unit-scale-lower}--\eqref{eq:unit-scale-upper}
+apply at these indices, and $U\ge N4^J$ holds directly from the
+chosen $w$. Hence
+\[
+ Y_P<\xi<\frac ck<\xi+\frac12<Y_P+\frac34.
+\]
+Choose the positive integers
+\[
+ \eta=c-kY_P,\qquad \zeta=k-\eta,\qquad
+ \tau=\frac{\chi_P(R+1)-1}{2},\qquad
+ h=\frac{k-R-1}{Q}.
+\]
+The oddness of $P$ gives the integrality of $\tau$, and the Pell
+congruence modulo $2Q$ gives that of $h$. Strict Pell growth gives
+their positivity.
+
+All remaining dependent Pell witnesses are obtained by the generic
+constructions of Section~\ref{sec:main-base-four} at this new $A$.
+Explicitly, choose positive $f,i$ for E16 and put
+\[
+ G=1+(A+1)(f^2-1),\qquad
+ o=\frac{\chi_G(J)+d}{f},\qquad
+ j=\frac{\psi_G(J)-J}{c}.
+\]
+The congruences $G\equiv-A\pmod f$, $G\equiv1\pmod c$ and oddness
+of $J$ make $o,j$ positive integers. Choose
+$\kappa=\psi_A(L)$, $\mu=\chi_A(L)$,
+$\Delta=(\kappa-L)/(A-1)$ and $\phi=c-\kappa$; these are
+positive integers because $2\le L<J$.
+The exponent quotients are positive since
+\[
+ d-(A-4)c>3c>4^J,\qquad
+ \mu-(A-B)\kappa>(B-1)\kappa>B^L,
+\]
+using $A>(4^J)^3,(B^L)^3$ and $J,L\ge2$.
+Their moduli are positive. All coding witnesses remain unchanged.
+This constructs every required positive coordinate at the new scale.
+
+\begin{theorem}\label{thm:unit-scale105}
+For each r.e.\ set, reusing $Y_P$ as the Pell scale gives a
+membership-equivalent system in 34 positive unknowns and 22 equations
+with a straight-line certificate of \textbf{105 arithmetic instructions}:
+58 multiplications and 47 additions. Fixed numerals, supplied parameters
+and equality tests are free.
+\end{theorem}
+\begin{proof}
+The preceding arguments establish soundness and positive necessity.
+The predecessor already computes $Y_P=sN^2$. Delete the multiplication
+$M=RY_P$ and reuse $Y_P$ wherever $M$ was used. The three instructions
+\[
+ UY_P=U\cdot Y_P,\qquad a_0=UY_P+Y_P,
+ \qquad Q=(UY_P)Y_P
+\]
+retain their previous costs. The affine index equation retains its
+multiplication and addition. Thus exactly one multiplication disappears
+from the 106-operation certificate. The complete residual and primitive
+checks are supplied by
+\file{round18\_1980\_unit\_scale\_certificate.py}.
+\end{proof}
+
+This is independent of Theorem~\ref{thm:best105}: its saving is a
+multiplication rather than an addition. The index-multiple argument
+there cannot be applied automatically here, since $P-1=2UY_P^2$ is
+not known to be divisible by $R+1$.
+
+\subsection{Sharing the interval product with the norm}
+
+The smaller scale permits another multiplication to be removed.
+Let
+\[
+ D=UY_P,\qquad Q=DY_P=UY_P^2,\qquad H_P=Y_Pk.
+\]
+Both $D$ and $H_P$ are already computed: $D$ is needed for
+$a_0=D+Y_P$, and $H_P$ is needed for $c=H_P+\eta$.
+The polynomial identity
+\begin{equation}\label{eq:shared-pell-norm}
+ Q(Q+1)k^2
+ =(UY_P^2)(UY_P^2+1)k^2
+ =\bigl((UY_P)^2+U\bigr)(Y_Pk)^2
+ =(D^2+U)H_P^2
+\end{equation}
+allows the norm to share these two products.
+To remove the remaining use of the computed value $Q$, replace
+the index equation in~\eqref{eq:unit-scale-system} by
+\begin{equation}\label{eq:shared-pell-index}
+ k=R+1+hD,\qquad h>0.
+\end{equation}
+The norm and every other source polynomial are unchanged.
+
+We first prove that the smaller modulus still gives the exact index.
+Before exponent decoding, the bounds above give
+\[
+ D=UY_P\ge N^4>2N^3+1>R+1,\qquad A>J.
+\]
+The new equation gives $k\ge R+2$, so the interval gives $c>J$.
+The signed Pell block gives $c=\psi_A(J)$ and $d=\chi_A(J)$.
+The unchanged triangular norm gives $k=\psi_P(t)$ for some
+positive index $t$, where $P=2Q+1$. Since
+$P-1=2Q=2DY_P$ is divisible by $D$, the Pell congruence and
+\eqref{eq:shared-pell-index} imply
+\[
+ t=R+1+vD,\qquad v\ge0.
+\]
+If $v\ge1$, then $D>R$ and the same growth estimate gives
+\[
+ \frac ck\le\frac{(2A)^{2R}}{(2P-1)^{R+D}}
+ \le\left(\frac{2A}{2P-1}\right)^{2R}<\frac12,
+\]
+contradicting $c/k>Y_P$. Therefore $t=R+1$.
+This recovery uses only the preliminary coding bounds, the interval
+and the two Pell blocks.
+
+There are direct maps between the positive witnesses of this system
+and those of Theorem~\ref{thm:unit-scale105}. From an old solution,
+put $h=Y_Ph_{\rm old}$ and preserve every other witness. Then
+$hD=h_{\rm old}Q$, so the new index equation holds.
+Conversely, the recovered exact index and the stronger Pell congruence
+modulo $2Q$ show that
+\[
+ h_{\rm old}=\frac{k-R-1}{Q}
+\]
+is an integer. It is positive because $\psi_P(R+1)>R+1$.
+It restores the old index equation, preserving every other witness.
+Equivalently, the new $h$ is a positive multiple of $Y_P$ and the
+reverse map is $h_{\rm old}=h/Y_P$.
+This proves equivalence over the positive domains before invoking
+the unit-scale approximation, exponent or rounding conclusions.
+Those conclusions and the complete decoding proof therefore transfer.
+
+\begin{theorem}\label{thm:best104}
+For each r.e.\ set, the fixed modular-Sidon encoding gives a
+membership-equivalent system in 34 positive unknowns and 22 equations
+whose straight-line certificate has \textbf{104 arithmetic instructions}:
+57 multiplications and 47 additions. Fixed numerals, supplied parameters
+and equality tests are free.
+\end{theorem}
+\begin{proof}
+Positive-domain equivalence follows from the preceding witness maps
+and Theorem~\ref{thm:unit-scale105}. For the count, move the existing
+computation of $H_P=Y_Pk$ before the norm. The former five operations
+\[
+ Q=DY_P,\quad Q_+=Q+1,\quad F_Q=QQ_+,
+ \quad k_2=k^2,\quad L_9=F_Qk_2
+\]
+are replaced by four:
+\[
+ D_2=D^2,\quad F_D=D_2+U,\quad H_2=H_P^2,
+ \quad L_9=F_DH_2.
+\]
+Identity~\eqref{eq:shared-pell-norm} proves that they give the same
+norm residual. The computation of $H_P$ is moved rather than copied,
+and the root-side instructions $\tau+1$ and $\tau(\tau+1)$ are
+unchanged. Both displayed lists contain one addition; the second
+contains three multiplications rather than four.
+
+The product $h_{\rm old}Q$ is replaced by $hD$ at the same cost.
+Thus the calculated register $Q$ is no longer required anywhere in
+the certificate. Its mathematical definition in the proof introduces
+no additional supplied witness or uncharged computed register.
+The total is 57 multiplications and 47 additions. The checker
+\file{round19\_1980\_shared\_ratio\_product\_certificate.py}
+verifies the identity, the forward witness-map polynomial, all source
+residuals and primitive instructions, and the absence of the discarded
+registers. It checks explicitly that only E11 changes as a source
+polynomial.
+\end{proof}

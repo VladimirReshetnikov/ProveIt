@@ -1,4 +1,5 @@
 import PAListCoding.IterationDioph
+import PAListCoding.TetrationDiophantine
 import PAListCoding.CipherOnes
 import PAListCoding.CipherRelations
 

@@ -1,0 +1,263 @@
+% A coefficient alphabet independent of the represented set.
+\section{Fixing the coefficient digit base at four}\label{sec:fixed-four}
+
+The coefficient digit base can be fixed at $Z=4$ by expanding the
+represented equations into elementary arithmetic gates. Their number
+affects the fixed index, but not the number of unknowns in the final
+system: the additional coordinates are digits of the existing code.
+The exponent $L$ becomes a fixed index parameter in place of $Z$.
+This identifies the already supplied $\theta=B-4$ with a separately
+computed register of Theorem~\ref{thm:best102}, saving one addition.
+
+\subsection{Primitive rows with a fixed coefficient alphabet}
+
+Start with a finite polynomial system representing the desired set
+over nonnegative witnesses and a positive input $x$. Split each equation
+into an equality of polynomials with nonnegative coefficients, and
+evaluate those polynomials by finite circuits of additions,
+multiplications, copies, and constants zero and one. Every gate has a
+fresh nonnegative output coordinate. Arbitrary integer coefficients are
+implemented by finite arithmetic from one. Thus this construction
+places no bound on the coefficients of the original system.
+
+Replace repeated operands of an addition or multiplication by distinct
+copied coordinates. With a separate homogenizing coordinate $\delta$,
+the quadratic residuals have the following forms:
+\[
+\begin{array}{c|l}
+\text{gate or constraint}&\text{homogeneous residual }F\\ \hline
+\text{multiplication}&XY-W\delta\\
+\text{addition}&(X+Y-W)\delta\\
+\text{copy or equality}&(X-Y)\delta\\
+\text{zero}&X\delta\\
+\text{unit}&X\delta-\delta^2.
+\end{array}
+\]
+Here $X,Y$ may include the input $x$, but are distinct from $\delta$;
+outputs are fresh, and trivial identical equalities are omitted.
+At $\delta=1$, these rows express the original circuit exactly.
+Every solution of the original system extends by its nonnegative gate
+values. Adjoin a fresh coordinate $u$ and the guard
+$F_{\mathrm g}=u\delta-x^2$.
+
+For every ordinary row, including the guard, use the target
+\begin{equation}\label{eq:four-targets}
+ G_j=2F_j+\delta^2,
+ \qquad G_{\mathrm{special}}=\delta^2.
+\end{equation}
+For a homogeneous quadratic monomial $I$, let $c_I=1$ for a square
+and $c_I=2$ for a product of distinct coordinates. Every coefficient
+of every $G_j$, divided by $c_I$, belongs to
+\begin{equation}\label{eq:four-coefficient-alphabet}
+ \{-2,-1,0,1\}.
+\end{equation}
+Indeed, ordinary cross terms give $\pm1$, and the added $\delta^2$
+gives $1$. The unit row gives $2X\delta-\delta^2$, with divided
+coefficients $1,-1$. The guard gives
+$2u\delta-2x^2+\delta^2$, with divided coefficients $1,-2,1$.
+The special target has coefficient $1$. Distinct copied operands
+prevent a repeated positive square or coincident cross terms from
+enlarging this alphabet. The displayed orientation of the unit row
+is part of the construction.
+
+\subsection{Support and admissible indices of arbitrary finite size}
+
+Let $m$ be the number of coordinates other than the input, before
+adding dummy row coordinates. It includes $\delta$, all circuit
+coordinates, and $u$. Give $x$ weight zero, and give the remaining
+coordinates weights
+\[
+ v_i=3^i\quad(0\le i<m),\qquad v_0=1\text{ for }\delta,
+ \qquad M=3^{m-1}.
+\]
+All quadratic monomial weights are distinct. The weights are zero,
+a single $3^i$, or a sum of two such powers; their base-three digits
+recover the unordered pair, including repeated coordinates and the
+weight-zero input.
+
+Let $s$ be the total number of targets, including the guard and the
+special target. Define
+\begin{align*}
+ d_0&=4M+1,& t_0&=(s+1)d_0+2M,\\
+ t_j&=t_0+jd_0\quad(0\le j<s),&
+ t_*&=2sd_0+2M,& K&=t_*+1.
+\end{align*}
+Choose a power of two $L>3K+2$. The coefficient intervals
+$[t_j-2M,t_j]$ are disjoint and lie above $M$. Moreover
+\[
+ 2t_0-2M>t_*.
+\]
+Include a dummy coordinate at each row position $t_j$. This last
+inequality makes every contribution involving a dummy lie above all
+targets, so the dummies cannot alter a tested residual.
+
+Write $a_{j,I}$ for the coefficient of monomial $I$ in $G_j$, and set
+\begin{align*}
+ \mathcal D(B)&=\sum_{j,I}\frac{a_{j,I}}{c_I}B^{t_j-w(I)},\\
+ \ell_0(B)&=\sum_{i=0}^{m-1}B^{v_i}+\sum_{j=0}^{s-1}B^{t_j},\\
+ e_0(B)&=2\sum_{j=0}^{K-1}B^j+\mathcal D(B),&
+ V&=\ell_0(4)+e_0(4)4^L.
+\end{align*}
+Monomial uniqueness, disjoint row intervals, and the dummy inequality
+give
+\begin{equation}\label{eq:four-coefficient-identity}
+ [B^{t_j}]\,\mathcal D(B)\mathcal C(B)^2=G_j.
+\end{equation}
+They also show that the coefficients of $\mathcal D$ lie in
+\eqref{eq:four-coefficient-alphabet}. Consequently all digits of $e_0$
+belong to $\{0,1,2,3\}$. Zero digits are permitted. Since $\mathcal D$
+has no constant term, the unit digit of $e_0$ is exactly $2$; in
+particular $e_0$ and $V$ are positive.
+
+Put $c_*=m+s+1$, the number of code coordinates including the input.
+Choose a power of two
+\begin{equation}\label{eq:four-index-bound}
+ H>\max\{2\,4^{2L+1},\ 4^{t_*+3}\,4c_*^2,\ 3L,\ 16\}.
+\end{equation}
+An admissible index is a triple $(V,H,L)$ obtained by this construction
+from a finite representing system. All choices, including the circuit
+size, are made independently of the queried input $x$. The supplied
+positive parameters are exactly $(x,V,H,L)$. The variable number of
+decoded coordinates introduces no new unknown in the final system.
+
+\subsection{The fixed-four system and its preliminary bounds}
+
+In the system of Theorem~\ref{thm:best102}, set $Z=4$ and replace the
+former fixed exponent by the index parameter $L$. With the same charged
+abbreviations and positive witnesses, the coding equations become
+\begin{align*}
+ B&=Hb^2,& b&=x+\beta,& \lambda(B-1)&=q^2-1,& \theta+4&=B,\\
+ S_2&=\ell+eq=V+t\theta,& S_2+\alpha&=q^2,&
+ \Omega&=4\lambda-2e>0,&\mathcal C&=x+g,\\
+ S_3&=B\lambda q-\Omega\mathcal C^2,& \sigma&=S_3>0,&n&=q^8.
+\end{align*}
+The packing is
+\begin{align*}
+ S&=g+q^2(S_2+q^2S_3),\\
+ T+1&=q^2(1+\theta\lambda)-(b-1)\ell+\theta\ell q^4,\\
+ r&=S(n^2-n)+(T+1)(n^2-1).
+\end{align*}
+All common-witness Pell equations of Section~\ref{sec:common-witness}
+are retained. In the second exponential congruence the expression
+$a-(B-4)$ is now $a-\theta$.
+
+Before decoding, $S_2<q^2$ gives $e<q$ and $\ell<q^2$.
+The geometric equation and $H>16$ give
+$B\le q^2$, $q>4b$, and $3L\le B\le n$.
+Since $\Omega\ge1$ and $S_3>0$,
+\[
+ \mathcal C^2<B\lambda q<3q^3<q^4.
+\]
+The first block borrows fewer than $b$ units from the middle block;
+the latter remains positive because $\theta=B-4>b$.
+The width-$(2,2,4)$ argument of Section~\ref{sec:borrow-mask} therefore
+gives
+\[
+ 0<S<n,\qquad 0<T+1\le n,\qquad n\le r\le2n^3-2n^2.
+\]
+These are the hypotheses of the common-witness Pell argument. Its
+exponent comparisons use $L\ge2$ and $3L\le B\le n\le r$, which
+hold for every admissible index here. It follows that $b,B,q$ are
+powers of two, $q=B^L$, and the required central-binomial divisibility
+holds. No bound on the number of compiled rows is used in that argument.
+
+\subsection{Canonical codes, zero digits, and the target tests}
+
+Now $\lambda>q$, so $\Omega>2\lambda$. Positivity of $S_3$ gives
+$\mathcal C^2<Bq/2<q^2$, hence $g<\mathcal C<q$.
+Let $d=\lfloor(b-1)\ell/q^2\rfloor<b$. Subtracting $d$ from
+$(B-4)\lambda$ changes only its unit digit. The middle binary mask
+therefore bounds all nonunit digits of $S_2$ by three and its unit
+digit by $3+d$. Thus
+\[
+ \ell\le S_2<\frac{4q^2}{B-1}+b.
+\]
+Using $B=Hb^2$ and $H>16$ shows $(b-1)\ell<q^2$, so $d=0$.
+The canonical evaluation lemma applies to
+$\ell_0(B)+e_0(B)B^L$, whose digits are below four and whose degree
+is below $2L$. The first term of \eqref{eq:four-index-bound} supplies
+the required evaluation bound. It yields
+\[
+ S_2=\ell_0(B)+e_0(B)q,\qquad
+ \ell=\ell_0(B)+a_{\mathrm{al}}q,\qquad e=e_0(B)-a_{\mathrm{al}},
+ \qquad0\le a_{\mathrm{al}}<e_0(B).
+\]
+The quantity $a_{\mathrm{al}}$ is the temporary quotient alias.
+
+The first mask, with $g<q$, decodes the low positions specified by
+$\ell_0$. Every coordinate is below $b$, and the unit digit of
+$\mathcal C$ is $x$. Put
+\[
+ A_{\mathcal C}=\mathcal C(1)^2,
+ \qquad J_{\mathcal C}=4A_{\mathcal C}.
+\]
+There are $c_*$ coordinates, so
+$\mathcal C(1)<c_*b$ and $J_{\mathcal C}<B/4$.
+Also $e,\mathcal C<B^K$ and $L>3K+2$ give
+$2e\mathcal C^2<q$.
+
+Lemma~\ref{lem:borrow-high-window} applies with $Z=4$.
+Its coefficient plateau is $J_{\mathcal C}$: the digit of $S_3$
+at $L$ is $B-J_{\mathcal C}-1$ or $B-J_{\mathcal C}$, and the
+digits at $L+1,\ldots,L+K$ are $B-J_{\mathcal C}$.
+The high third-mask part is $X=(B-4)a_{\mathrm{al}}$, of degree at most $K$.
+No overlap bounds every digit of $X$ by $J_{\mathcal C}$.
+For its digit polynomial $F_X$, evaluation at four gives
+\[
+ B-4\mid F_X(4),\qquad
+ 0\le F_X(4)\le
+ J_{\mathcal C}\frac{4^{K+1}-1}{3}<\frac B{12}<B-4.
+\]
+The second bound on $H$ proves the strict inequality. Hence $X=0$
+and $a_{\mathrm{al}}=0$: both codes are canonical. Zero digits of $e_0$ have caused
+no change, since the evaluation lemma requires digits in $[0,4)$ and
+the high-window argument requires $e_0>0$, not positivity of each digit.
+
+Below $K$, the raw coefficients of $S_3$ are those of
+$2\mathcal D\mathcal C^2$. The non-strict coefficient bound
+$|\mathcal D_j|\le2$ is sufficient because
+\[
+ \bigl|[B^j]\,2\mathcal D\mathcal C^2\bigr|
+ \le4\mathcal C(1)^2=J_{\mathcal C}<B/4.
+\]
+All incoming carries in this range are zero or minus one.
+The mask $B-4$ permits just the digits $0,1,2,3$; a negative raw
+value plus its incoming carry normalizes to a digit greater than three.
+The special target has raw coefficient $2\delta^2$, forcing
+$\delta\in\{0,1\}$. If $\delta=0$, the guard has raw coefficient
+$-4x^2$ and fails. Thus $\delta=1$.
+Each ordinary target now has raw coefficient $4F_j+2$. With either
+possible incoming carry, it is permitted exactly when $F_j=0$.
+The original system therefore holds at the actual queried input $x$.
+
+Conversely, extend an original solution by its gate values, take
+$\delta=1$ and $u=x^2$, and choose a power-of-two $b$ larger than all
+coordinates. Use the canonical codes. The low coordinate tests vanish
+by support separation, and every ordinary or special target has raw
+coefficient $2$, hence normalized digit $1$ or $2$.
+The inequalities $e_0,\ell_0<q$ give $S_2<q^2$ and
+$\Omega>2\lambda$. Since $2K<L$, one has
+$4\mathcal C^2<Bq$, which gives $S_3>0$.
+All required positive slack witnesses therefore exist.
+The positive Pell witnesses from Section~\ref{sec:common-witness}
+complete the final system. This proves both directions.
+
+\begin{theorem}\label{thm:best101}
+For every recursively enumerable subset of the positive integers,
+there is an admissible fixed index $(V,H,L)$ such that its membership
+relation is represented by a system with 34 positive unknowns and
+22 equations admitting a straight-line certificate of 101 operations:
+56 multiplications and 45 additions. The supplied parameters are
+$(x,V,H,L)$, with three fixed index parameters. Fixed numerals are free.
+\end{theorem}
+\begin{proof}
+The preceding construction proves the representation and both
+positive-domain implications. In the 102-operation certificate,
+replace $Z$ by $4$, replace the old exponent numeral by $L$, and
+replace all uses of the separately computed $B-4$ by $\theta$.
+The already present equation $\theta+4=B$ justifies that substitution.
+It removes one subtraction, with no added arithmetic, unknown, or
+equation. The exact primitive and polynomial-residual check is recorded
+in \texttt{round23\_1980\_fixed\_four\_certificate.py} and its JSON
+receipt. Thus the count is $56+45=101$; no optimality is asserted.
+\end{proof}

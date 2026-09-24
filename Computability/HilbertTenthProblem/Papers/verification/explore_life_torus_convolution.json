@@ -1,0 +1,293 @@
+{
+  "status": "PASS_CONDITIONAL_INTERFACE",
+  "scope": "Exact torus and local-rule interface; Booleanity, power decoding, and uniform raw-target encoding are not included in operation counts.",
+  "local_truth_table_cases": 36,
+  "torus_presentations": 682,
+  "physical_cell_checks": 5506,
+  "quotient_signs": {
+    "negative": 81,
+    "zero": 20,
+    "positive": 581
+  },
+  "shapes": [
+    {
+      "width": 1,
+      "height": 1,
+      "presentations": 2
+    },
+    {
+      "width": 1,
+      "height": 2,
+      "presentations": 4
+    },
+    {
+      "width": 1,
+      "height": 3,
+      "presentations": 8
+    },
+    {
+      "width": 2,
+      "height": 1,
+      "presentations": 4
+    },
+    {
+      "width": 2,
+      "height": 2,
+      "presentations": 16
+    },
+    {
+      "width": 2,
+      "height": 3,
+      "presentations": 64
+    },
+    {
+      "width": 3,
+      "height": 1,
+      "presentations": 8
+    },
+    {
+      "width": 3,
+      "height": 2,
+      "presentations": 64
+    },
+    {
+      "width": 3,
+      "height": 3,
+      "presentations": 512
+    }
+  ],
+  "conditional_schedule": {
+    "total": 31,
+    "multiplications": 16,
+    "additions_subtractions": 15
+  },
+  "geometry": {
+    "total": 6,
+    "multiplications": 4,
+    "additions_subtractions": 2
+  },
+  "generic_positive_adapter": {
+    "subtractions": 12
+  },
+  "combined_positive_interface": {
+    "total": 49,
+    "multiplications": 20,
+    "additions_subtractions": 29
+  },
+  "boolean_words": [
+    "C",
+    "Y",
+    "U1",
+    "U2",
+    "U3",
+    "U4",
+    "U5",
+    "L",
+    "Xl",
+    "Xr",
+    "rightedge"
+  ],
+  "schedule": [
+    {
+      "target": "rightmask",
+      "operator": "*",
+      "left": "A",
+      "right": "h"
+    },
+    {
+      "target": "leftsum",
+      "operator": "+",
+      "left": "C",
+      "right": "h"
+    },
+    {
+      "target": "lefttwo",
+      "operator": "*",
+      "left": 2,
+      "right": "L"
+    },
+    {
+      "target": "leftout",
+      "operator": "+",
+      "left": "Xl",
+      "right": "lefttwo"
+    },
+    {
+      "target": "rightsum",
+      "operator": "+",
+      "left": "C",
+      "right": "rightmask"
+    },
+    {
+      "target": "rightedge",
+      "operator": "*",
+      "left": "A",
+      "right": "R"
+    },
+    {
+      "target": "righttwo",
+      "operator": "*",
+      "left": 2,
+      "right": "rightedge"
+    },
+    {
+      "target": "rightout",
+      "operator": "+",
+      "left": "Xr",
+      "right": "righttwo"
+    },
+    {
+      "target": "br",
+      "operator": "*",
+      "left": 64,
+      "right": "R"
+    },
+    {
+      "target": "edge",
+      "operator": "-",
+      "left": "L",
+      "right": "br"
+    },
+    {
+      "target": "correction",
+      "operator": "*",
+      "left": "wm1",
+      "right": "edge"
+    },
+    {
+      "target": "centerconv",
+      "operator": "*",
+      "left": 4161,
+      "right": "C"
+    },
+    {
+      "target": "horizontalnumerator",
+      "operator": "+",
+      "left": "centerconv",
+      "right": "correction"
+    },
+    {
+      "target": "W2",
+      "operator": "*",
+      "left": "W",
+      "right": "W"
+    },
+    {
+      "target": "K0",
+      "operator": "+",
+      "left": "W2",
+      "right": "W"
+    },
+    {
+      "target": "K",
+      "operator": "+",
+      "left": "K0",
+      "right": 1
+    },
+    {
+      "target": "conv",
+      "operator": "*",
+      "left": "K",
+      "right": "horizontalnumerator"
+    },
+    {
+      "target": "u12",
+      "operator": "+",
+      "left": "U1",
+      "right": "U2"
+    },
+    {
+      "target": "term12",
+      "operator": "*",
+      "left": 384,
+      "right": "u12"
+    },
+    {
+      "target": "centerthird",
+      "operator": "-",
+      "left": "C",
+      "right": "U3"
+    },
+    {
+      "target": "term7",
+      "operator": "*",
+      "left": 448,
+      "right": "centerthird"
+    },
+    {
+      "target": "termY",
+      "operator": "*",
+      "left": 1408,
+      "right": "Y"
+    },
+    {
+      "target": "term4",
+      "operator": "*",
+      "left": 704,
+      "right": "U4"
+    },
+    {
+      "target": "term5",
+      "operator": "*",
+      "left": 896,
+      "right": "U5"
+    },
+    {
+      "target": "rhs45",
+      "operator": "+",
+      "left": "term4",
+      "right": "term5"
+    },
+    {
+      "target": "v0",
+      "operator": "-",
+      "left": "rhs45",
+      "right": "termY"
+    },
+    {
+      "target": "v1",
+      "operator": "-",
+      "left": "v0",
+      "right": "term12"
+    },
+    {
+      "target": "V64",
+      "operator": "+",
+      "left": "v1",
+      "right": "term7"
+    },
+    {
+      "target": "WV64",
+      "operator": "*",
+      "left": "W",
+      "right": "V64"
+    },
+    {
+      "target": "quotient",
+      "operator": "*",
+      "left": "qm1",
+      "right": "z"
+    },
+    {
+      "target": "rhs",
+      "operator": "+",
+      "left": "WV64",
+      "right": "quotient"
+    }
+  ],
+  "equalities": [
+    [
+      "leftsum",
+      "leftout"
+    ],
+    [
+      "rightsum",
+      "rightout"
+    ],
+    [
+      "conv",
+      "rhs"
+    ]
+  ],
+  "invalid_edge_shortcut_counterexamples": 2
+}

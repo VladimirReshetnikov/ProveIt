@@ -1,0 +1,60 @@
+import Diophantine
+
+/-!
+Transitive axiom audit for the individually weighted, unsquared relation-
+combining theorem and the 1976 growth refinement. Run after the consolidated
+umbrella build. Only Lean's standard logical axioms are expected.
+-/
+
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.signFlip_rawProduct
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.expand_two_core
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.value_eq_product
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.eval_compose
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.eval_polynomial_assignment
+#print axioms Diophantine.RefinedRelationCombiningBounds.prefix_eq_range
+#print axioms Diophantine.RefinedRelationCombiningBounds.one_le_offset
+#print axioms Diophantine.RefinedRelationCombiningBounds.isSquare_of_rational_prefixSum
+#print axioms Diophantine.RefinedRelationCombiningArithmetic.sum_rational_of_factor
+#print axioms Diophantine.RefinedRelationCombiningArithmetic.factor_iff
+#print axioms Diophantine.RefinedRelationCombining.squares_of_value_zero
+#print axioms Diophantine.RefinedRelationCombining.conditions_of_value_zero
+#print axioms Diophantine.RefinedRelationCombining.exists_value_zero_of_conditions
+#print axioms Diophantine.RefinedRelationCombining.relationCombining_iff
+#print axioms JSWW1976.theorem_3_9_sufficiency_of_growth
+#print axioms JSWW1976.theorem_3_9_necessity_of_growth
+#print axioms JSWW1976.RefinedWeightBounds.pell_majorant
+#print axioms JSWW1976.RefinedWeightBounds.weights_majorant
+#print axioms JSWW1976.RefinedWeightBounds.fiveWeights_majorant
+#print axioms JSWW1976.fiveSquareRadicand_growth
+#print axioms JSWW1976.exists_fiveSquareRadicand_square
+#print axioms JSWW1976.GrowthSys39.reduced
+#print axioms JSWW1976.ReducedGrowthSys39.exists_growthSys39
+#print axioms JSWW1976.reducedGrowthSys39_iff_exists_growthSys39
+#print axioms JSWW1976.ReducedGrowthSys39.prime
+#print axioms JSWW1976.theorem_3_9_five_square
+#print axioms JSWW1976.RefinedTwelveVariable.prime_iff_positive_value
+#print axioms JSWW1976.FiveSquarePrimePolynomial.prime_iff_positive_value
+#print axioms JSWW1976.FiveSquarePrimePolynomial.exists_five_square_prime_polynomial
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.totalDegree_eval₂_le_of_expand_bound
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.twice_totalDegree_compose_le
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.totalDegree_compose_le
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.totalDegree_compose_six_le
+#print axioms Diophantine.RefinedRelationCombiningPolynomial.totalDegree_compose_five_le
+#print axioms JSWW1976.RefinedPolynomialDegrees.totalDegree_six_combined
+#print axioms JSWW1976.RefinedPolynomialDegrees.totalDegree_six_primePolynomial
+#print axioms JSWW1976.RefinedPolynomialDegrees.totalDegree_five_combined
+#print axioms JSWW1976.RefinedPolynomialDegrees.totalDegree_five_primePolynomial
+#print axioms JSWW1976.ExactDegreePrimePolynomial.original_combined_ne_zero
+#print axioms JSWW1976.ExactDegreePrimePolynomial.eval_paddedCombined_zero_iff
+#print axioms JSWW1976.ExactDegreePrimePolynomial.totalDegree_paddedCombined
+#print axioms JSWW1976.ExactDegreePrimePolynomial.totalDegree_primePolynomial
+#print axioms JSWW1976.ExactDegreePrimePolynomial.prime_iff_positive_value
+#print axioms JSWW1976.ExactDegreePrimePolynomial.exists_exact_degree_prime_polynomial
+#print axioms JSWW1976.PrimeZeroTest.exponent_eq_zero_iff
+#print axioms JSWW1976.PrimeZeroTest.zeroTestPrime_prime
+#print axioms JSWW1976.PrimeZeroTest.prime_iff_parameter_witnesses
+#print axioms JSWW1976.PrimeZeroTest.theorem_3
+
+-- The separately developed 1980 modules are included in the integrated build.
+#print axioms Jones1980.indexCode_injective
+#print axioms Jones1980.theorem_5

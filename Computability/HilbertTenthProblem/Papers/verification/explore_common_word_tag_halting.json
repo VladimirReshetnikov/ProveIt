@@ -1,0 +1,69 @@
+{
+  "status": "PASS_COMMON_WORD_TAG_HALTING_DECISION",
+  "cases": 7560,
+  "exact_predicted_halts": 5128,
+  "predicted_nonhalting_finite_regressions": 2432,
+  "nonhalting_regression_steps": 100,
+  "zero_drift_nonhalting_cases": 580,
+  "negative_drift_exact_halts": 1406,
+  "maximum_finite_halting_time": 21,
+  "decision_branches": {
+    "negative_drift": 1406,
+    "prefix": 3108,
+    "first_period": 614,
+    "nonnegative_drift": 2432
+  },
+  "deletion_numbers": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "common_word_max_length": 3,
+  "exponent_range": [
+    0,
+    1,
+    2
+  ],
+  "initial_max_length": 3,
+  "examples": [
+    {
+      "initial": "1",
+      "beta": 1,
+      "common_word": "10",
+      "powers": [
+        0,
+        1
+      ],
+      "halting_time": null,
+      "branch": "nonnegative_drift",
+      "drift": 0
+    },
+    {
+      "initial": "100",
+      "beta": 2,
+      "common_word": "100",
+      "powers": [
+        0,
+        1
+      ],
+      "halting_time": 3,
+      "branch": "negative_drift",
+      "drift": -3
+    },
+    {
+      "initial": "0110",
+      "beta": 2,
+      "common_word": "1",
+      "powers": [
+        0,
+        0
+      ],
+      "halting_time": 2,
+      "branch": "negative_drift",
+      "drift": -2
+    }
+  ],
+  "proof": "../1980/EXPLORATION_COMMON_WORD_TAG_HALTING.md",
+  "scope": "Exact general decision algorithm proved in the note. Finite runs support the implementation; absence of later halting uses the periodic-drift proof. No result for arbitrary tag appendants or new universal operation count is claimed."
+}

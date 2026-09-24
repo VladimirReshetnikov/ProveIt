@@ -1,0 +1,1770 @@
+{
+  "status": "PASS_MULTIBIT_CYCLIC70",
+  "source": {
+    "operations": 70,
+    "multiplications": 40,
+    "additions_subtractions": 30,
+    "outer_operations": 27,
+    "kernel_operations": 43,
+    "parameters": [
+      "q",
+      "P",
+      "C"
+    ],
+    "positive_unknown_count": 23,
+    "positive_unknowns": [
+      "v",
+      "Jrep",
+      "align",
+      "F",
+      "alpha",
+      "zquot",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "positive_coordinates_including_parameters": 26,
+    "equations": 16,
+    "fixed_constant_names": [
+      "B",
+      "DL",
+      "DC",
+      "DR",
+      "DY",
+      "G0",
+      "MC",
+      "MF"
+    ],
+    "fixed_numeral_aliases": {
+      "Bm1": "B-1",
+      "Kcoef": "DR+B*DY"
+    },
+    "primitive_instructions": [
+      {
+        "operation": "+",
+        "left": "qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "*",
+        "left": "Bm1",
+        "right": "Jrep",
+        "result": "repunit"
+      },
+      {
+        "operation": "*",
+        "left": "P",
+        "right": "v",
+        "result": "Pv"
+      },
+      {
+        "operation": "+",
+        "left": "Pm1",
+        "right": 1,
+        "result": "P"
+      },
+      {
+        "operation": "*",
+        "left": "Bm1",
+        "right": "align",
+        "result": "alignment"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "alpha",
+        "result": "bounded"
+      },
+      {
+        "operation": "*",
+        "left": "Kcoef",
+        "right": "P",
+        "result": "kp"
+      },
+      {
+        "operation": "+",
+        "left": "DC",
+        "right": "kp",
+        "result": "kinner"
+      },
+      {
+        "operation": "*",
+        "left": "kinner",
+        "right": "C",
+        "result": "innerC"
+      },
+      {
+        "operation": "+",
+        "left": "transport_gap",
+        "right": "F",
+        "result": "innerC"
+      },
+      {
+        "operation": "*",
+        "left": "P",
+        "right": "transport_gap",
+        "result": "Pgap"
+      },
+      {
+        "operation": "*",
+        "left": "DL",
+        "right": "C",
+        "result": "DLC"
+      },
+      {
+        "operation": "*",
+        "left": "G0",
+        "right": "Jrep",
+        "result": "GJ"
+      },
+      {
+        "operation": "+",
+        "left": "Pgap",
+        "right": "DLC",
+        "result": "local_sum"
+      },
+      {
+        "operation": "+",
+        "left": "local_sum",
+        "right": "GJ",
+        "result": "local_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "zquot",
+        "right": "qm1",
+        "result": "local_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "Lbig",
+        "right": "q",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "F",
+        "result": "qF"
+      },
+      {
+        "operation": "+",
+        "left": "C",
+        "right": "qF",
+        "result": "packed"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "MF",
+        "result": "qMF"
+      },
+      {
+        "operation": "+",
+        "left": "MC",
+        "right": "qMF",
+        "result": "mask_factor"
+      },
+      {
+        "operation": "*",
+        "left": "mask_factor",
+        "right": "Jrep",
+        "result": "mask"
+      },
+      {
+        "operation": "+",
+        "left": "gap",
+        "right": "packed",
+        "result": "Lbig"
+      },
+      {
+        "operation": "+",
+        "left": "Lm1",
+        "right": 1,
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "gap",
+        "right": "Lm1",
+        "result": "rproduct"
+      },
+      {
+        "operation": "+",
+        "left": "rproduct",
+        "right": "mask",
+        "result": "r_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "a",
+        "result": "a4"
+      },
+      {
+        "operation": "+",
+        "left": "a4",
+        "right": 3,
+        "result": "a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "a4m5",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "a4m5",
+        "result": "A"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "aux_u_rhs",
+        "right": "c",
+        "result": "of"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "H17",
+        "right": "tr1",
+        "result": "jc"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "histogram": {
+      "+": 20,
+      "-": 10,
+      "*": 40
+    },
+    "sources": [
+      {
+        "index": 0,
+        "equality": [
+          "repunit",
+          "qm1"
+        ],
+        "source_sign": 1,
+        "source": "B*Jrep - Jrep - q + 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "Pv",
+          "q"
+        ],
+        "source_sign": 1,
+        "source": "P*v - q",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "alignment",
+          "Pm1"
+        ],
+        "source_sign": 1,
+        "source": "B*align - P - align + 1",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "bounded",
+          "q"
+        ],
+        "source_sign": 1,
+        "source": "C + alpha - q",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "local_lhs",
+          "local_rhs"
+        ],
+        "source_sign": 1,
+        "source": "B*C*DY*P**2 + C*DC*P + C*DL + C*DR*P**2 - F*P + G0*Jrep - q*zquot + zquot",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "source_sign": 1,
+        "source": "C*q**2 - C + F*q**3 - F*q - Jrep*MC - Jrep*MF*q - q**4 + q**2 + r",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source_sign": 1,
+        "source": "k**2*q**18*s**4*w**2 + k**2*q**9*s**2*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source_sign": 1,
+        "source": "c - eta - k*q**3*s",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source_sign": 1,
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source_sign": 1,
+        "source": "-h*q**6*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source_sign": 1,
+        "source": "a - q**6*s*w - q**3*s",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source_sign": 1,
+        "source": "-a*c - 4*a*ga + d - 3*ga - q**3*w",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source_sign": 1,
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**6*i**2*j**2 - 4*c**5*i**2*j*r - 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source_sign": 1,
+        "source": "c*j + c - f*o - 2*r - 1",
+        "correction": "0"
+      }
+    ],
+    "kernel_scale": "q^3; no pre-power square-scale assumption",
+    "kernel_sign": "fixed minus; actual packed r is odd",
+    "ledger": {
+      "geometry": 5,
+      "bound": 1,
+      "local_positive_quotient": 10,
+      "packing": 11
+    }
+  },
+  "prepower_bounds": {
+    "candidates": 2880,
+    "positive_index_cases": 1440,
+    "nonpower_q_cases": 1296,
+    "mask_constants_tested": "MC,MF independently at1 andB-2; only range hypotheses are used"
+  },
+  "examples": [
+    {
+      "name": "one-bit singleton alphabet",
+      "state_bits": 1,
+      "allowed_four_cell_tuples": 1,
+      "clauses": 15,
+      "dummy_bits_per_cell": 14,
+      "inner_bits": 49,
+      "cell_bits": 735,
+      "fixed_constant_bit_lengths": {
+        "B": 736,
+        "DL": 42,
+        "DC": 42,
+        "DR": 42,
+        "DY": 43,
+        "G0": 46,
+        "MC": 735,
+        "MF": 46
+      },
+      "state_mask_weight": 720,
+      "field_mask_weight": 15,
+      "cyclic_cases": 1926,
+      "accepted": 63,
+      "invalid_zero_state_cases": 1863,
+      "valid_projected_state_cases": 63,
+      "genuine_transition_rejections": 0,
+      "all_zero_projected_word_cases": 63,
+      "zero_numeric_C_cases": 21,
+      "quotient_signs": {
+        "negative": 63,
+        "positive": 1863
+      },
+      "accepted_quotient_signs": {
+        "positive": 63
+      },
+      "max_q_bits": 4411,
+      "max_r_bits": 17640,
+      "samples": [
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 0,
+          "projected_word": [
+            [
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": true,
+          "quotient_sign": "negative",
+          "q_bits": 736,
+          "r_bits": 2940,
+          "z_bits": 46,
+          "C_digest": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+          "F_digest": "1a9cbea7d33703b22b98eb9bced641d66b206512287d2037705d54fbc098f943",
+          "r_digest": "1e32b21709576fe08f12c4122590ab3555000c6b68fa21fa11ae0ae756ad5167"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 1,
+          "projected_word": [
+            [
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 736,
+          "r_bits": 2940,
+          "z_bits": 2200,
+          "C_digest": "b8d74044cdfce8871b1644dfdb913c662d3635f017a254fe20440b533c7f86db",
+          "F_digest": "44cf617051f63f80702a29d10a527796351b277eea64588114635aa54cfb0fd9",
+          "r_digest": "dee3b8a699739c00c29c4a56c82ae9f2934a792802c63c8db9a9e25d9e02417f"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 2,
+          "projected_word": [
+            [
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 736,
+          "r_bits": 2940,
+          "z_bits": 2053,
+          "C_digest": "b365296ba97d6fdd408ef499f99ad7dd0b1d074faf00f4fff88bfa6d98244e83",
+          "F_digest": "26ee6c7714e989027c89e5b1c3d10bcbed6e564d3d189009e667397a51941204",
+          "r_digest": "d4af11be8d38cbd73f502117420ea5ee2d14ddea9d6b32ff3ebb1c8f6bc76777"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 0,
+          "projected_word": [
+            [
+              1
+            ]
+          ],
+          "accepted": true,
+          "all_valid_projected_states": true,
+          "zero_projected_cell": false,
+          "zero_projected_word": false,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 736,
+          "r_bits": 2940,
+          "z_bits": 1514,
+          "C_digest": "dbc1b4c900ffe48d575b5da5c638040125f65db0fe3e24494b76ea986457d986",
+          "F_digest": "8d8731d092b0a194249be5626b2f2b7703498bf7b24b1be99803e069add11e57",
+          "r_digest": "7509ed2facade379ef11c11560b1bd46678a2e9923e5a5f74c1cfdc63f4e3cd1"
+        }
+      ],
+      "directional_cases": [],
+      "full_packed_Pell_tuples_materialized": false
+    },
+    {
+      "name": "two-bit three-symbol validity relation",
+      "state_bits": 2,
+      "allowed_four_cell_tuples": 81,
+      "clauses": 175,
+      "dummy_bits_per_cell": 173,
+      "inner_bits": 708,
+      "cell_bits": 124608,
+      "fixed_constant_bit_lengths": {
+        "B": 124609,
+        "DL": 1404,
+        "DC": 1404,
+        "DR": 1404,
+        "DY": 1405,
+        "G0": 1409,
+        "MC": 124608,
+        "MF": 1409
+      },
+      "state_mask_weight": 124433,
+      "field_mask_weight": 175,
+      "cyclic_cases": 124,
+      "accepted": 79,
+      "invalid_zero_state_cases": 45,
+      "valid_projected_state_cases": 79,
+      "genuine_transition_rejections": 0,
+      "all_zero_projected_word_cases": 9,
+      "zero_numeric_C_cases": 3,
+      "quotient_signs": {
+        "negative": 3,
+        "positive": 121
+      },
+      "accepted_quotient_signs": {
+        "positive": 79
+      },
+      "max_q_bits": 373825,
+      "max_r_bits": 1495296,
+      "samples": [
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 0,
+          "projected_word": [
+            [
+              0,
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": true,
+          "quotient_sign": "negative",
+          "q_bits": 124609,
+          "r_bits": 498432,
+          "z_bits": 1409,
+          "C_digest": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+          "F_digest": "5780c36dbf3d954dac78993154473abb4f8bf8bc0a5ad6d3ad015e0e50206e71",
+          "r_digest": "f20c4bdb8be410cc2af101dbdb270f074eae8177d0a0587fd28b9670bedaf8b6"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 1,
+          "projected_word": [
+            [
+              0,
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 124609,
+          "r_bits": 498432,
+          "z_bits": 373814,
+          "C_digest": "bd732f923bfb022ef2825932a36e2e17d9a72cd14eeb8b94836ad08fdc1c1aa3",
+          "F_digest": "e2dbbfebaafff6d658cbe13666936e29fe52aa29605d6be3f418d368d8cc514e",
+          "r_digest": "94f0de010c5515095eb75949d9f8d0a55f8d97fcf4e1d96cc5048ff81e171f8b"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 2,
+          "projected_word": [
+            [
+              0,
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 124609,
+          "r_bits": 498432,
+          "z_bits": 373814,
+          "C_digest": "1a0b7505b1260f65a189cc89ab83e1e607573a3c06a6a135c0fcaded01ef9ba4",
+          "F_digest": "eb1bf505b9adc6d9ada7b04eebd89251eebb0e9dfd7264fec82890d6cbd05fdf",
+          "r_digest": "636b64a1569bc0e35012db997065297b292524ba58d65ad8cfc00c35783ba46d"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 0,
+          "projected_word": [
+            [
+              0,
+              1
+            ]
+          ],
+          "accepted": true,
+          "all_valid_projected_states": true,
+          "zero_projected_cell": false,
+          "zero_projected_word": false,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 124609,
+          "r_bits": 498432,
+          "z_bits": 251330,
+          "C_digest": "d695c280459cf64368d1629c7293aa7c3c28f3fd7a61fe14b8e921919aeecc7e",
+          "F_digest": "bdd2b00ed30832ff53b60629c9ebf05faee8890d76ed7acb5da25bb96cb6eacc",
+          "r_digest": "8e6c65aac7d82958cc9791789cbf91c35d976f60f240e0db8fae79675f4d74dc"
+        }
+      ],
+      "directional_cases": [],
+      "full_packed_Pell_tuples_materialized": false
+    },
+    {
+      "name": "two-bit directional next=left relation",
+      "state_bits": 2,
+      "allowed_four_cell_tuples": 27,
+      "clauses": 229,
+      "dummy_bits_per_cell": 227,
+      "inner_bits": 924,
+      "cell_bits": 212520,
+      "fixed_constant_bit_lengths": {
+        "B": 212521,
+        "DL": 1836,
+        "DC": 1836,
+        "DR": 1836,
+        "DY": 1836,
+        "G0": 1841,
+        "MC": 212520,
+        "MF": 1841
+      },
+      "state_mask_weight": 212291,
+      "field_mask_weight": 229,
+      "cyclic_cases": 130,
+      "accepted": 40,
+      "invalid_zero_state_cases": 45,
+      "valid_projected_state_cases": 85,
+      "genuine_transition_rejections": 45,
+      "all_zero_projected_word_cases": 9,
+      "zero_numeric_C_cases": 3,
+      "quotient_signs": {
+        "negative": 3,
+        "positive": 127
+      },
+      "accepted_quotient_signs": {
+        "positive": 40
+      },
+      "max_q_bits": 637561,
+      "max_r_bits": 2550240,
+      "samples": [
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 0,
+          "projected_word": [
+            [
+              0,
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": true,
+          "quotient_sign": "negative",
+          "q_bits": 212521,
+          "r_bits": 850080,
+          "z_bits": 1841,
+          "C_digest": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+          "F_digest": "f73098132b8788316fbff70a4121ffb476af3d01ec927edb73cc84e1e8599aae",
+          "r_digest": "a00cb9b0604311dc2b11441d3a96d5862d0a6b9aa88e43fc4324965c2e358835"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 1,
+          "projected_word": [
+            [
+              0,
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 212521,
+          "r_bits": 850080,
+          "z_bits": 637549,
+          "C_digest": "d45e28211136592195d09e90f5addc0ab2c4c42381c48ae8f32c949f2cdd4a16",
+          "F_digest": "0c0614df35e2b2f187986bbf172d5d3404cbd677d5f8e333ddc8150978267ac4",
+          "r_digest": "67608838e401d597f22fc3ffe09e744312f0d0e10d1c948bf86218be59abd6b9"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 2,
+          "projected_word": [
+            [
+              0,
+              0
+            ]
+          ],
+          "accepted": false,
+          "all_valid_projected_states": false,
+          "zero_projected_cell": true,
+          "zero_projected_word": true,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 212521,
+          "r_bits": 850080,
+          "z_bits": 637549,
+          "C_digest": "0078e5762ad3e4b251caf37da2d067da73fe8d7cf2dd1a1d576f85ed21bf3f39",
+          "F_digest": "5bc2700a1adbcbab8fed680722a5abc9c52fb22b002ef00fee785bff8317e63f",
+          "r_digest": "aa3ca373b88de82be85040e6122ad5ec9901f193485ea87af3301e94797ee66a"
+        },
+        {
+          "length": 1,
+          "stride": 1,
+          "dummy_mode": 0,
+          "projected_word": [
+            [
+              0,
+              1
+            ]
+          ],
+          "accepted": true,
+          "all_valid_projected_states": true,
+          "zero_projected_cell": false,
+          "zero_projected_word": false,
+          "zero_numeric_C": false,
+          "quotient_sign": "positive",
+          "q_bits": 212521,
+          "r_bits": 850080,
+          "z_bits": 427801,
+          "C_digest": "d030e860e2ea6487aca8f9f64dddf6b2dc820c5ebad98029db68ac6ece1a3421",
+          "F_digest": "2a03510fa5c86bc0f603e84879f7bb57202272ce70bcca70a47aafcbdf56e214",
+          "r_digest": "ab894a536a03a19f28cb763ad8c65ba1527a53296ea72fe40dc567749c01070c"
+        }
+      ],
+      "directional_cases": [
+        {
+          "stride": 1,
+          "dummy_mode": 0,
+          "accepted": true
+        },
+        {
+          "stride": 1,
+          "dummy_mode": 1,
+          "accepted": true
+        },
+        {
+          "stride": 1,
+          "dummy_mode": 2,
+          "accepted": true
+        },
+        {
+          "stride": 3,
+          "dummy_mode": 0,
+          "accepted": false
+        },
+        {
+          "stride": 3,
+          "dummy_mode": 1,
+          "accepted": false
+        },
+        {
+          "stride": 3,
+          "dummy_mode": 2,
+          "accepted": false
+        }
+      ],
+      "full_packed_Pell_tuples_materialized": false
+    }
+  ],
+  "pell": {
+    "main_cases": [
+      {
+        "r": 3,
+        "main_index": 7,
+        "c_bits": 175,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 7,
+        "main_index": 15,
+        "c_bits": 1695,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 15,
+        "main_index": 31,
+        "c_bits": 14911,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 31,
+        "main_index": 63,
+        "c_bits": 125055,
+        "positive_main_quotients": true
+      },
+      {
+        "r": 65,
+        "main_index": 131,
+        "c_bits": 1124111,
+        "positive_main_quotients": true
+      }
+    ],
+    "auxiliary_cases": [
+      {
+        "A": 2,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 2,
+        "main_index": 7,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 3,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 4,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      },
+      {
+        "A": 5,
+        "main_index": 3,
+        "positive_minus_quotients": true
+      }
+    ],
+    "scope": "Separate exact component regressions; not full enormous packed tuples"
+  },
+  "marked_extension": {
+    "source": {
+      "operations": 72,
+      "multiplications": 41,
+      "additions_subtractions": 31,
+      "positive_unknown_count": 27,
+      "positive_unknowns": [
+        "q",
+        "P",
+        "C",
+        "v",
+        "Jrep",
+        "align",
+        "F",
+        "alpha",
+        "zquot",
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "r",
+        "s",
+        "w",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux",
+        "Tmarker"
+      ],
+      "parameters": [],
+      "equations": 17,
+      "base_schedule_is_unchanged_70_prefix": true,
+      "primitive_instructions": [
+        {
+          "operation": "+",
+          "left": "qm1",
+          "right": 1,
+          "result": "q"
+        },
+        {
+          "operation": "*",
+          "left": "Bm1",
+          "right": "Jrep",
+          "result": "repunit"
+        },
+        {
+          "operation": "*",
+          "left": "P",
+          "right": "v",
+          "result": "Pv"
+        },
+        {
+          "operation": "+",
+          "left": "Pm1",
+          "right": 1,
+          "result": "P"
+        },
+        {
+          "operation": "*",
+          "left": "Bm1",
+          "right": "align",
+          "result": "alignment"
+        },
+        {
+          "operation": "+",
+          "left": "C",
+          "right": "alpha",
+          "result": "bounded"
+        },
+        {
+          "operation": "*",
+          "left": "Kcoef",
+          "right": "P",
+          "result": "kp"
+        },
+        {
+          "operation": "+",
+          "left": "DC",
+          "right": "kp",
+          "result": "kinner"
+        },
+        {
+          "operation": "*",
+          "left": "kinner",
+          "right": "C",
+          "result": "innerC"
+        },
+        {
+          "operation": "+",
+          "left": "transport_gap",
+          "right": "F",
+          "result": "innerC"
+        },
+        {
+          "operation": "*",
+          "left": "P",
+          "right": "transport_gap",
+          "result": "Pgap"
+        },
+        {
+          "operation": "*",
+          "left": "DL",
+          "right": "C",
+          "result": "DLC"
+        },
+        {
+          "operation": "*",
+          "left": "G0",
+          "right": "Jrep",
+          "result": "GJ"
+        },
+        {
+          "operation": "+",
+          "left": "Pgap",
+          "right": "DLC",
+          "result": "local_sum"
+        },
+        {
+          "operation": "+",
+          "left": "local_sum",
+          "right": "GJ",
+          "result": "local_lhs"
+        },
+        {
+          "operation": "*",
+          "left": "zquot",
+          "right": "qm1",
+          "result": "local_rhs"
+        },
+        {
+          "operation": "*",
+          "left": "q",
+          "right": "q",
+          "result": "Lbig"
+        },
+        {
+          "operation": "*",
+          "left": "Lbig",
+          "right": "q",
+          "result": "n2"
+        },
+        {
+          "operation": "*",
+          "left": "q",
+          "right": "F",
+          "result": "qF"
+        },
+        {
+          "operation": "+",
+          "left": "C",
+          "right": "qF",
+          "result": "packed"
+        },
+        {
+          "operation": "*",
+          "left": "q",
+          "right": "MF",
+          "result": "qMF"
+        },
+        {
+          "operation": "+",
+          "left": "MC",
+          "right": "qMF",
+          "result": "mask_factor"
+        },
+        {
+          "operation": "*",
+          "left": "mask_factor",
+          "right": "Jrep",
+          "result": "mask"
+        },
+        {
+          "operation": "+",
+          "left": "gap",
+          "right": "packed",
+          "result": "Lbig"
+        },
+        {
+          "operation": "+",
+          "left": "Lm1",
+          "right": 1,
+          "result": "Lbig"
+        },
+        {
+          "operation": "*",
+          "left": "gap",
+          "right": "Lm1",
+          "result": "rproduct"
+        },
+        {
+          "operation": "+",
+          "left": "rproduct",
+          "right": "mask",
+          "result": "r_lhs"
+        },
+        {
+          "operation": "*",
+          "left": "w",
+          "right": "n2",
+          "result": "wn2"
+        },
+        {
+          "operation": "*",
+          "left": "s",
+          "right": "n2",
+          "result": "sn2"
+        },
+        {
+          "operation": "*",
+          "left": "wn2",
+          "right": "sn2",
+          "result": "UM"
+        },
+        {
+          "operation": "+",
+          "left": "UM",
+          "right": "sn2",
+          "result": "R12"
+        },
+        {
+          "operation": "*",
+          "left": "k",
+          "right": "sn2",
+          "result": "ksn2"
+        },
+        {
+          "operation": "*",
+          "left": "UM",
+          "right": "UM",
+          "result": "UM2"
+        },
+        {
+          "operation": "+",
+          "left": "UM2",
+          "right": "wn2",
+          "result": "scaled_norm_coefficient"
+        },
+        {
+          "operation": "*",
+          "left": "ksn2",
+          "right": "ksn2",
+          "result": "ratio_product2"
+        },
+        {
+          "operation": "*",
+          "left": "scaled_norm_coefficient",
+          "right": "ratio_product2",
+          "result": "L9"
+        },
+        {
+          "operation": "+",
+          "left": "tau",
+          "right": 1,
+          "result": "tauplus1"
+        },
+        {
+          "operation": "*",
+          "left": "tau",
+          "right": "tauplus1",
+          "result": "R9"
+        },
+        {
+          "operation": "+",
+          "left": "ksn2",
+          "right": "eta",
+          "result": "R10a"
+        },
+        {
+          "operation": "+",
+          "left": "eta",
+          "right": "zeta",
+          "result": "R10b"
+        },
+        {
+          "operation": "+",
+          "left": "r",
+          "right": 1,
+          "result": "r1"
+        },
+        {
+          "operation": "*",
+          "left": "h",
+          "right": "UM",
+          "result": "hpm1"
+        },
+        {
+          "operation": "+",
+          "left": "r1",
+          "right": "hpm1",
+          "result": "R11"
+        },
+        {
+          "operation": "+",
+          "left": "r1",
+          "right": "r",
+          "result": "tr1"
+        },
+        {
+          "operation": "*",
+          "left": "c",
+          "right": "a",
+          "result": "cam2"
+        },
+        {
+          "operation": "+",
+          "left": "wn2",
+          "right": "cam2",
+          "result": "D1"
+        },
+        {
+          "operation": "*",
+          "left": 4,
+          "right": "a",
+          "result": "a4"
+        },
+        {
+          "operation": "+",
+          "left": "a4",
+          "right": 3,
+          "result": "a4m5"
+        },
+        {
+          "operation": "*",
+          "left": "ga",
+          "right": "a4m5",
+          "result": "gam"
+        },
+        {
+          "operation": "+",
+          "left": "D1",
+          "right": "gam",
+          "result": "R14"
+        },
+        {
+          "operation": "*",
+          "left": "a",
+          "right": "a",
+          "result": "a_square"
+        },
+        {
+          "operation": "+",
+          "left": "a_square",
+          "right": "a4m5",
+          "result": "A"
+        },
+        {
+          "operation": "*",
+          "left": "c",
+          "right": "c",
+          "result": "c2"
+        },
+        {
+          "operation": "*",
+          "left": "A",
+          "right": "c2",
+          "result": "Ac2"
+        },
+        {
+          "operation": "+",
+          "left": "Ac2",
+          "right": 1,
+          "result": "R15"
+        },
+        {
+          "operation": "*",
+          "left": "d",
+          "right": "d",
+          "result": "L15"
+        },
+        {
+          "operation": "*",
+          "left": "i",
+          "right": "c2",
+          "result": "ic2"
+        },
+        {
+          "operation": "*",
+          "left": "ic2",
+          "right": "ic2",
+          "result": "ic22"
+        },
+        {
+          "operation": "*",
+          "left": "f",
+          "right": "f",
+          "result": "L16"
+        },
+        {
+          "operation": "+",
+          "left": "f_square_minus_one",
+          "right": 1,
+          "result": "L16"
+        },
+        {
+          "operation": "*",
+          "left": "A",
+          "right": "f_square_minus_one",
+          "result": "R16"
+        },
+        {
+          "operation": "*",
+          "left": "o",
+          "right": "f",
+          "result": "of"
+        },
+        {
+          "operation": "+",
+          "left": "aux_u_rhs",
+          "right": "c",
+          "result": "of"
+        },
+        {
+          "operation": "*",
+          "left": "j",
+          "right": "c",
+          "result": "jc"
+        },
+        {
+          "operation": "+",
+          "left": "H17",
+          "right": "tr1",
+          "result": "jc"
+        },
+        {
+          "operation": "*",
+          "left": "H17",
+          "right": "H17",
+          "result": "H2"
+        },
+        {
+          "operation": "*",
+          "left": "y_aux",
+          "right": "y_aux",
+          "result": "aux_y2"
+        },
+        {
+          "operation": "+",
+          "left": "aux_square_gap",
+          "right": "aux_y2",
+          "result": "H2"
+        },
+        {
+          "operation": "*",
+          "left": "ic22",
+          "right": "aux_square_gap",
+          "result": "L17"
+        },
+        {
+          "operation": "+",
+          "left": "P17",
+          "right": "aux_y2",
+          "result": 1
+        },
+        {
+          "operation": "*",
+          "left": "B",
+          "right": "Tmarker",
+          "result": "Bmarker_tail"
+        },
+        {
+          "operation": "+",
+          "left": "CM",
+          "right": "Bmarker_tail",
+          "result": "marked_rhs"
+        }
+      ],
+      "equalities": [
+        [
+          "repunit",
+          "qm1"
+        ],
+        [
+          "Pv",
+          "q"
+        ],
+        [
+          "alignment",
+          "Pm1"
+        ],
+        [
+          "bounded",
+          "q"
+        ],
+        [
+          "local_lhs",
+          "local_rhs"
+        ],
+        [
+          "r",
+          "r_lhs"
+        ],
+        [
+          "L9",
+          "R9"
+        ],
+        [
+          "c",
+          "R10a"
+        ],
+        [
+          "k",
+          "R10b"
+        ],
+        [
+          "k",
+          "R11"
+        ],
+        [
+          "a",
+          "R12"
+        ],
+        [
+          "d",
+          "R14"
+        ],
+        [
+          "L15",
+          "R15"
+        ],
+        [
+          "ic22",
+          "R16"
+        ],
+        [
+          "L17",
+          "P17"
+        ],
+        [
+          "H17",
+          "aux_u_rhs"
+        ],
+        [
+          "C",
+          "marked_rhs"
+        ]
+      ],
+      "extra_source": "C-CM-B*Tmarker=0",
+      "marker_constant": "CM is the fixed genuine marker state code with all dummy bits zero",
+      "designated_marker_specialization": "Enc(marker)=(1,0,...,0) gives CM=2",
+      "scope": "Separate marked existence extension with q,P,C existential; constants depend on the fixed relation and marker"
+    },
+    "checks": {
+      "cases": 6,
+      "length_one_repetitions": 2,
+      "nontrivial_rotations": 2,
+      "noncanonical_dummy_marker_codes_rejected": 6,
+      "records": [
+        {
+          "state_bits": 1,
+          "original_length": 1,
+          "original_marker_position": 0,
+          "final_length": 2,
+          "stride": 1,
+          "marker_bits": 2,
+          "positive_tail_bits": 2,
+          "C_digest": "e8d4116b6bb2615fd8d428536e43e676c430d7dc4aca31447012b20c46ff8f59"
+        },
+        {
+          "state_bits": 1,
+          "original_length": 2,
+          "original_marker_position": 0,
+          "final_length": 2,
+          "stride": 1,
+          "marker_bits": 2,
+          "positive_tail_bits": 2,
+          "C_digest": "e8d4116b6bb2615fd8d428536e43e676c430d7dc4aca31447012b20c46ff8f59"
+        },
+        {
+          "state_bits": 1,
+          "original_length": 3,
+          "original_marker_position": 0,
+          "final_length": 3,
+          "stride": 1,
+          "marker_bits": 2,
+          "positive_tail_bits": 737,
+          "C_digest": "947170781c18a1d5e09d2ddc09035c5d9c35f2be6714d4aaa57b614184c8a408"
+        },
+        {
+          "state_bits": 2,
+          "original_length": 1,
+          "original_marker_position": 0,
+          "final_length": 2,
+          "stride": 1,
+          "marker_bits": 2,
+          "positive_tail_bits": 2,
+          "C_digest": "4b90df5c0a7e2cea5319e20cc41ff3fe2f0a096163ff9b16a6e587da802c8876"
+        },
+        {
+          "state_bits": 2,
+          "original_length": 2,
+          "original_marker_position": 1,
+          "final_length": 2,
+          "stride": 1,
+          "marker_bits": 2,
+          "positive_tail_bits": 710,
+          "C_digest": "18011123d8c300a57af36640e9d38ecd56307e52820e4e6686c923dceef6e501"
+        },
+        {
+          "state_bits": 2,
+          "original_length": 3,
+          "original_marker_position": 2,
+          "final_length": 3,
+          "stride": 1,
+          "marker_bits": 2,
+          "positive_tail_bits": 125318,
+          "C_digest": "80845ae9d918957302ae21579aef4442f68780690eb2ca48b540626b06f5864b"
+        }
+      ],
+      "scope": "Rotate a genuine marker to0, reset all dummy bits, repeat length1 to obtain positive tail; no giant Pell tuples"
+    }
+  },
+  "proof": "../1980/EXPLORATION_MULTIBIT_CYCLIC_CERTIFICATE.md",
+  "universal_certificate_improvement": false,
+  "scope": "Complete positive generic four-cell cyclic relation in supplied q,P,C, for the fixed multi-bit compiler and nonzero valid state codes; no marker or raw-input universal compiler"
+}

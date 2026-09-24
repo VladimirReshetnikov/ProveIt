@@ -1,0 +1,210 @@
+% Exchange the input and encoded unit positions; preserves the 110 milestone.
+\section{Putting the input in the unit position}\label{sec:input-unit}
+
+The supplied input can occupy the constant coefficient of the code.
+Exchanging its position with that of the encoded unit changes
+$\mathcal C=xB+g$ to $\mathcal C=x+g$, removing one multiplication.
+The main proof obligation is to recover the Pell conclusions without
+assuming $\mathcal C>B$. The geometric equation provides the weaker
+bound $B\le q^2$, which suffices.
+
+\subsection{Remapping the homogeneous code}
+
+Retain the homogeneous rows, guard $u\delta-x^2$, special target
+$\delta^2$, and all numerical layout constants of
+Section~\ref{sec:unit-digit}. Give $x$ weight zero and $\delta$
+weight $v_0=1$. The original coordinates retain weights
+$v_1,\ldots,v_{58}$, and $u$ retains weight $v_{59}$.
+The mask becomes
+\[
+ \ell_0(B)=\sum_{i=0}^{59}B^{v_i}
+                    +\sum_{j=0}^{1831}B^{t_j}.
+\]
+It excludes position zero, which now belongs to the input.
+There are still 1892 non-input encoded coordinates and 1893 coordinates
+including the input. The same bound $1900b$ applies to their sum.
+
+Recompute each complementary coefficient position using the new
+monomial weights. The ordinary coefficient rule is still $2a/c$.
+The special row has coefficient $1$ at $t_{1831}-2$, since
+$\delta^2$ now has weight two. The guard's two monomial weights are
+$v_{59}+1$ and zero. All 1891 homogeneous monomial weights remain
+distinct: exchanging which coordinate has weight zero does not affect
+the number of positive-weight factors or the Sidon argument.
+All support-separation bounds consequently remain valid.
+
+With the remapped signed polynomial $\mathcal D$, define
+\[
+ e_0(B)=z\sum_{h=0}^{K-1}B^h+\mathcal D(B),
+ \qquad V=\ell_0(Z)+e_0(Z)Z^L,
+\]
+and use the same admissibility bound \eqref{eq:unit-H}.
+These indices are again fixed independently of the input value.
+Make the sole arithmetic replacement
+\[
+ \mathcal C=x+g
+\]
+in the 110-operation system. In particular $Y=\ell+eq$,
+$Y+\mathcal C^2+\alpha=q^2$, $\sigma=S_3>0$, the mask
+$(B-4)\ell$, and all Pell equations remain unchanged.
+
+\subsection{The weaker bounds before the Pell step}
+
+The positive bound gives
+\[
+ 0<\ell<Y<q^2,\qquad e<q,\qquad
+ \mathcal C<q,\qquad g<q.
+\]
+The geometric equation and $\lambda\ge1$ imply
+\begin{equation}\label{eq:input-weaker-radix}
+ q^2-1=\lambda(B-1)\ge B-1,
+ \qquad B\le q^2\le n=q^8.
+\end{equation}
+Since $B=Hb^2$ and $H>16$, we already have $q>4b\ge8$.
+Put $\mathcal N=(B-Z)\lambda$. Then
+\[
+ b<B-Z\le\mathcal N<q^2-1,
+ \qquad B\lambda<2q^2.
+\]
+No inequality $\lambda>q$ is needed. The imposed positive register
+and its elementary upper bound give
+\[
+ 0<S_3<2q^3+2q^2(1+q)<5q^3<q^4.
+\]
+Thus $S=g+q^2(Y+q^2S_3)$ satisfies $0<S<n$.
+
+For completeness, the possibly negative first raw mask still has
+an exact normalized packing. Set
+\[
+ d_0=\left\lfloor\frac{(b-1)\ell}{q^2}\right\rfloor,
+ \qquad \varepsilon_0=(b-1)\ell-d_0q^2.
+\]
+Then $0\le d_0<b$, $0\le\varepsilon_0<q^2$, and
+\[
+ T=(q^2-1-\varepsilon_0)
+       +q^2(\mathcal N-d_0)+q^4(B-4)\ell.
+\]
+The first two blocks belong to $[0,q^2)$, since
+$\mathcal N>b>d_0$. By \eqref{eq:input-weaker-radix},
+the last block satisfies
+$0<(B-4)\ell<q^4$. Hence $0\le T<n$, and
+\[
+ r=S(n^2-n)+(T+1)(n^2-1)\ge n^2-1\ge n.
+\]
+This establishes all packing bounds before decoding or any conclusion
+that $B<q$.
+
+\subsection{The Pell bootstrap with \texorpdfstring{$B\le n$}{B at most n}}
+
+Here is the dependency check for the relaxed radix comparison.
+The information now available is
+\begin{equation}\label{eq:input-pell-initial}
+ 3<3L\le B\le n\le r,\qquad q,b\le n,
+ \qquad n,r\ge8.
+\end{equation}
+Moreover $B$ is even because the fixed parameter $H$ is an even
+power of two, independently of any assertion about $b$.
+
+Write $N=n$, $R=r$, $U=wN^2$, $Y_P=sN^2$,
+$M=RY_P$, $a=M(U+1)$, $X_P=2UM^2$, $P=X_P+1$, and
+$J=2R+1$. We have $U,Y_P\ge64$ and $M\ge512$.
+The index congruence gives $k\ge R+2$, and the positive interval
+$Y_P<c/k<Y_P+1$ gives $c>J$. The signed Pell block therefore
+gives $c=\psi_a(J)$ and $d=\chi_a(J)$.
+The growth and index-congruence argument of
+Section~\ref{sec:shifted-pell} gives $k=\psi_P(R+1)$ and
+\[
+ \xi\left(1-\frac{R}{a}-\frac{R}{X_P}\right)
+       <\frac ck<\xi,
+ \qquad \xi=\frac{(U+1)^{2R}}{U^R},
+ \qquad \frac{R}{a}+\frac{R}{X_P}
+       <\frac{2}{Y_P(U+1)}<\frac12.
+\]
+These arguments use the numerical lower bounds just stated, not
+a comparison between $B$ and $q$. The interval consequently gives
+$Y_P>U^{R-1}$ and $a>RU^R$.
+
+The base-two exponent argument has the same strict size bounds:
+\[
+ 2^{3J}=8\cdot8^{2R}\le8N^{2R}\le RU^R<a,
+ \qquad (bw)^3\le U^R<a.
+\]
+Here $b\le N$ gives $bw\le U$.
+Equation $E14$ and the exponent lemma yield $bw=2^J$;
+thus $b$ is a power of two and $U>4\cdot2^{2R}$.
+
+Next \eqref{eq:input-pell-initial} gives $0<L<J<a$.
+The positive gap $c>\kappa$ and equations $E19,E20$ give
+$\kappa=\psi_a(L)$ and $\mu=\chi_a(L)$. The second exponent
+argument now uses
+\begin{equation}\label{eq:input-exponent-bounds}
+ B^{3L}\le B^B\le N^N\le U^R<a,
+ \qquad q^3\le N^N\le U^R<a.
+\end{equation}
+These follow from $3L\le B\le N$, $q\le N$, and $R\ge N$.
+Also $a>N\ge B$, so the modulus in $E18$ has its required
+positive sign. Equation $E18$ therefore gives $q=B^L$.
+Only now do we infer $B<q$.
+
+As $B$ was already even, $q$ and $N$ are even. To make the final
+rounding dependency explicit, the exact-index estimates give
+\[
+ 0<\xi-c/k<6/(U+1)<1/4,
+ \qquad 0<\xi-\lfloor\xi\rfloor<1/4,
+ \qquad \lfloor\xi\rfloor\equiv\binom{2R}{R}\pmod U.
+\]
+The interval makes $|Y_P-\lfloor\xi\rfloor|<2$.
+Both integers are even, so they are equal. Since $Y_P=sN^2$
+and $N^2\mid U$, we obtain
+$N^2\mid\binom{2R}{R}$. The binomial criterion and the packing
+lemma now give $\tau_2(S,T)=0$. Thus the complete Pell conclusion
+was recovered using \eqref{eq:input-weaker-radix}, without an
+unproved early inequality $B<q$.
+
+\subsection{Decoding and positive necessity}
+
+The subsequent first-block borrow argument applies unchanged.
+It proves $d_0=0$ and decodes
+\[
+ \ell=\ell_0(B)+mq,\qquad e=e_0(B)-m,
+ \qquad 0\le m<e_0(B).
+\]
+Since $g<q$, the first mask restricts its digits to the positive
+positions of $\ell_0$. Its unit digit is zero. The inequality
+$x<b<B$ then ensures that $\mathcal C=x+g$ has exactly the supplied
+input as its unit digit, without a carry; its digit at position one
+is $\delta$.
+
+The sum of the coefficients of this digit polynomial is positive
+and less than $1900b$. All degree and coefficient estimates in
+Section~\ref{sec:unit-digit} still hold. The same high-digit window
+bounds the digits of $(B-4)m$ by $Z\mathcal C(1)^2-1$; evaluating
+its digit polynomial at four forces $m=0$. The canonical relaxed
+mask then forces every ordinary homogeneous residual and the guard
+to vanish, while its special target gives $\delta^2\in\{0,1\}$.
+The guard and $x>0$ give $\delta=1$, so all original residuals vanish.
+
+Conversely, choose genuine original coordinates, set $\delta=1$
+and $u=x^2$, and choose a power of two $b$ greater than the input
+and every encoded coordinate. The digit $\delta$ at position one
+ensures $g\ge B>0$. The canonical code has the same degree and
+coefficient bounds as before, giving positive $\alpha$, $\sigma$,
+and the packed quotient. All masks hold. In this necessity direction
+the intended code even satisfies $\mathcal C>B$, so the preceding
+Pell necessity constructions retain their stronger original bounds.
+
+\begin{theorem}\label{thm:best109}
+For each r.e.\ set, the remapped effective admissible index gives
+a membership-equivalent system in 33 positive unknowns and 21 equations
+with a straight-line certificate of \textbf{109 arithmetic instructions}:
+60 multiplications and 49 additions. Generating the fixed numerals
+from $1$ adds seven instructions, giving 116 operations.
+\end{theorem}
+\begin{proof}
+The preceding arguments establish equivalence with all domains
+preserved. Replacing $xB+g$ by $x+g$ removes exactly one multiplication
+from the 110-operation schedule. No other arithmetic instruction,
+unknown, or equality is added. The complete primitive list and all
+21 source residual identities, including the triangular corrections,
+are verified by \file{round9\_1980\_certificate.py}.
+\end{proof}

@@ -1,0 +1,539 @@
+% Linear radix scaling, paired zero tests, and two-digit reset padding.
+\section{Linear radix scaling and a certificate of 96 operations}
+\label{sec:linear-radix}
+
+The quadratic radix scale can be replaced by a linear one when the
+coefficient tests are allowed two base-$B$ digits. An explicit bound
+on the indicator code removes its quotient alias. Positive padding
+then resets the incoming carry at every ordinary target, and a
+second unit test excludes a scale of order $\sqrt B$.
+
+Starting from Section~\ref{sec:composed-97}, replace the radix and
+third packed block by
+\begin{equation}\label{eq:linear-radix-block}
+ B=Hb,\qquad \mathcal C=x+g,\qquad
+ \Omega=\lambda-e>0,\qquad
+ \sigma=\Omega(q-\mathcal C^2)>0,
+\end{equation}
+and add the positive gap equation
+\begin{equation}\label{eq:linear-radix-gap}
+ \ell+\alpha_2=q.
+\end{equation}
+Every Pell equation is retained, with $B=Hb$ wherever the radix
+occurs. The coefficient index is rebuilt below.
+
+\begin{theorem}\label{thm:best96}
+Every recursively enumerable subset of the positive integers has
+an admissible fixed index $(V,H,T_L)$ for a system with 35 positive
+unknowns and 23 equations admitting a straight-line certificate of
+96 operations: 52 multiplications and 44 additions. Here
+$T_L=\psi_4(L)$ for the underlying exponent in the index
+construction. The supplied parameters are $(x,V,H,T_L)$, with
+three fixed index parameters besides the positive input $x$.
+Fixed numerals and equality tests are free.
+\end{theorem}
+
+The following subsections prove the theorem. The complete arithmetic
+table is in Appendix~\ref{app:96}. The exact source and primitive
+checker is located in \file{../verification/}:
+\begin{center}
+\small\file{round30\_1980\_linear\_radix\_certificate.py}.
+\end{center}
+
+\subsection{The homogeneous circuit and its normalization rows}
+
+Compile the represented finite Diophantine system into an
+arithmetic circuit over nonnegative integers, using the actual
+positive input $x$, addition, multiplication, zero and one.
+Introduce a homogeneous coordinate $\delta$. Repeated operands
+are replaced by fresh copies, and every gate output is fresh.
+All circuit coordinates other than $x$ have positive weights in
+the code.
+
+For a multiplication, addition or zero equation use, respectively,
+\begin{equation}\label{eq:linear-radix-gates}
+ 2XY-2W\delta=0,\qquad
+ 2(X+Y-W)\delta=0,\qquad
+ 2X\delta=0.
+\end{equation}
+All products in these expressions have distinct factors. A copy
+$X'=X$ can instead be imposed by
+\begin{equation}\label{eq:linear-radix-copy}
+ X'^2-X^2=0.
+\end{equation}
+Nonnegativity makes this an exact copy equation. It also supplies
+arbitrarily many distinct copies of $\delta$ without introducing
+a diagonal coefficient of magnitude two. A circuit occurrence of
+the constant one is represented by $\delta$ or a copy of $\delta$.
+Whenever using $\delta$ directly would create $\delta\delta$ in
+\eqref{eq:linear-radix-gates}, use a fresh square-difference copy
+instead. Likewise give repeated gate operands distinct copies.
+Thus every product in \eqref{eq:linear-radix-gates} has distinct
+factors, including when a gate operand is the constant one. Final
+equalities can use either distinct-coordinate products with
+$\delta$ or square differences. Include both $F$ and $-F$ for
+every zero equation $F=0$ in this construction.
+
+For normalization, introduce distinct coordinates
+$X,Y,\delta',u$ and include the following equations and their
+negatives:
+\begin{equation}\label{eq:linear-radix-normalization}
+ \begin{gathered}
+ X^2-x^2=0,\qquad Y^2-x^2=0,\qquad
+ \delta'^2-\delta^2=0,\\
+ 2xX-2\delta\delta'-2u\delta=0.
+ \end{gathered}
+\end{equation}
+Once their zero tests have been decoded, these equations give
+\begin{equation}\label{eq:linear-radix-guard}
+ X=Y=x,\qquad \delta'=\delta,\qquad
+ x^2=\delta^2+u\delta.
+\end{equation}
+Thus $\delta>0$ because $x>0$, and $\delta\le x$.
+Conversely, $\delta=\delta'=1$, $X=Y=x$ and $u=x^2-1$ are
+nonnegative witnesses for every positive $x$, including $x=1$.
+
+Finally include two unpaired targets with raw polynomial
+$\delta^2$. The second will receive extra positive padding.
+These two tests force $\delta=1$ below; the argument does not
+presume an incoming carry at an unprotected special target.
+
+Divide every square coefficient of a target polynomial by one
+and every distinct-coordinate product coefficient by two. All
+results lie in $\{-1,0,1\}$. This includes
+\eqref{eq:linear-radix-gates}, \eqref{eq:linear-radix-copy},
+both signs of \eqref{eq:linear-radix-normalization}, and the
+two unit targets. The number of rows and encoded coordinates
+may depend on the represented system; they are digits of the
+integer codes, not additional unknowns of the final system.
+
+\subsection{Two-digit support and reset positions}
+
+Let $m$ count all non-input circuit and normalization coordinates.
+Give them weights
+\[
+ v_i=4\,3^i\quad(0\le i<m),\qquad M=4\,3^{m-1}.
+\]
+The input $x$ has weight zero. Quadratic monomial weights determine
+their unordered coordinate pair, including squares and products
+with $x$: divide by four and read the base-three digits. All these
+weights are multiples of four and are at most $2M$.
+
+Let $s$ be the number of targets, counting both signs of each
+zero equation and the two final unit tests. Put the unit tests
+last, and distinguish the last target $t_*$ as the additional-carry
+test. Define
+\begin{equation}\label{eq:linear-radix-support}
+ \begin{gathered}
+ d_0=4M+4,\qquad
+ t_j=(s+1)d_0+2M+jd_0\quad(0\le j<s),\\
+ t_*=t_{s-1}=2sd_0+2M,\qquad K=t_*+2.
+ \end{gathered}
+\end{equation}
+All $t_j$ are multiples of four. For a target $G_j$ and a monomial
+of weight $w$ with divided coefficient $a$, put $aT^{t_j-w}$ in
+$\mathcal D_{\rm main}(T)$. The intervals
+$[t_j-2M,t_j]$ are disjoint, so these instructions do not collide.
+Add the reset polynomial and the last-target padding:
+\begin{equation}\label{eq:linear-radix-padding}
+ \begin{aligned}
+ \mathcal D_{\rm reset}(T)&=\sum_jT^{t_j-2},\\
+ \mathcal D_{\rm extra}(T)&=T^{t_*-1}
+                  +T^{t_*-1-v_X}+T^{t_*-1-v_Y},\\
+ \mathcal D(T)&=\mathcal D_{\rm main}(T)
+                 +\mathcal D_{\rm reset}(T)
+                 +\mathcal D_{\rm extra}(T).
+ \end{aligned}
+\end{equation}
+The three parts have exponents congruent to $0$, $2$ and $3$
+modulo four, respectively. The extra exponents are distinct.
+All $\mathcal D$ coefficients therefore still lie in
+$\{-1,0,1\}$. Every exponent is positive, greater than $M$,
+and less than $K$.
+
+Include a dummy coordinate at each $t_j$ and $t_j+1$, and set
+\begin{equation}\label{eq:linear-radix-codes}
+ \begin{aligned}
+ \ell_0(T)&=\sum_iT^{v_i}+\sum_j(T^{t_j}+T^{t_j+1}),\\
+ e_0(T)&=\sum_{h=0}^{K-1}T^h+\mathcal D(T).
+ \end{aligned}
+\end{equation}
+The digits of $\ell_0$ are zero or one, and those of $e_0$ are
+zero, one or two. The unit digit of $e_0$ is one. Let $c_*$ count
+the input, all $m$ true coordinates and the $2s$ dummies, and put
+\[
+ D_1=\sum_h\bigl|[T^h]\mathcal D(T)\bigr|.
+\]
+Choose a power of two $L>3K+2$ and a power of two $H$ such that
+\begin{equation}\label{eq:linear-radix-index}
+ \begin{gathered}
+ H>\max\{2\,4^{2L+1},\ 64\max(1,D_1)c_*^2,\ 3L,\ 64\},\\
+ V=\ell_0(4)+e_0(4)4^L,\qquad T_L=\psi_4(L).
+ \end{gathered}
+\end{equation}
+These choices depend only on the represented system and precede
+the queried input $x$.
+
+No arbitrary decoded dummy value contributes to
+$\mathcal D(T)\mathcal C(T)^2$ through position $t_*+1$.
+Indeed, the least $\mathcal D$ exponent is at least $t_0-2M$,
+the least dummy weight is $t_0$, and
+\begin{equation}\label{eq:linear-radix-dummies}
+ 2t_0-2M>t_*+1.
+\end{equation}
+This matters because the dummies at $t_j+1$ are not in the zero
+residue class modulo four. Up to the last tested digit, however,
+they have no effect on the product.
+
+\subsection{Preliminary bounds and the Pell conclusions}
+
+Retain the coding equations and packing
+\begin{equation}\label{eq:linear-radix-packing}
+ \begin{aligned}
+ \mathcal C&=x+g,& b&=x+\beta,& B&=Hb,&\theta&=B-4,\\
+ \lambda(B-1)&=q^2-1,& n&=q^8,\\
+ S_2&=\ell+eq=V+t\theta,&S_2+\alpha&=q^2,\\
+ S&=g+q^2(S_2+q^2\sigma),\\
+ T+1&=q^2(1+\theta\lambda)-(b-1)\ell+\theta\ell q^4,\\
+ r&=S(n^2-n)+(T+1)(n^2-1).
+ \end{aligned}
+\end{equation}
+All supplied unknowns, including $\alpha$, $\alpha_2$,
+$\Omega$ and $\sigma$, are positive integers. Before any circuit
+row or Pell conclusion is used, positivity gives
+\begin{equation}\label{eq:linear-radix-preliminary}
+ \ell<q,\quad e<q,\quad S_2<q^2,\quad
+ \mathcal C^2<q,\quad g<q,\quad
+ 0<\sigma<\lambda q<q^3.
+\end{equation}
+The last inequality follows from
+$\lambda=(q^2-1)/(B-1)<q^2$. Geometry gives $B\le q^2$.
+Also $b\ge2$ and \eqref{eq:linear-radix-index} imply
+$q\ge6$, $b<B<n$ and $3L\le B\le n$. The former estimate
+$q>4b$ is not used or asserted for the linear radix. Moreover,
+\[
+ \theta\lambda\ge B-4=Hb-4>b.
+\]
+The integer bounds in \eqref{eq:linear-radix-preliminary} give
+$0<S<q^7<n$. For the other packed number,
+\begin{equation}\label{eq:linear-radix-packed-range}
+ \begin{aligned}
+ T+1&>q^2\theta\lambda-b\ell>bq^2-bq>0,\\
+ T+1&<q^4(1+\theta\ell)<Bq^5\le q^7<n.
+ \end{aligned}
+\end{equation}
+The upper bound uses $1+\theta\lambda<q^2$ and
+$1+\theta\ell\le1+(B-4)(q-1)<Bq$. Consequently
+\begin{equation}\label{eq:linear-radix-r-range}
+ n\le n^2-1\le r<2n^3.
+\end{equation}
+
+These are all the packing-size inputs to the main Pell and
+binomial arguments. Write
+\[
+ \begin{gathered}
+ U=wn^2,\qquad Y_{\rm p}=s_{\rm p}n^2,
+ \qquad a=Y_{\rm p}(U+1),\qquad A=a+4,\\
+ D_{\rm p}=A^2-1,\qquad P=2UY_{\rm p}^2+1,
+ \qquad J=2r+1.
+ \end{gathered}
+\]
+The notation $Y_{\rm p},s_{\rm p}$ distinguishes the Pell values
+from the encoded input copy $Y$. We have
+$U,Y_{\rm p}\ge n^2$, $UY_{\rm p}\ge n^4>r+1$ and
+$a>n^4>J$. The first index equation and positive interval give
+$c>J$. The norm classifications and $P>A$ imply that the preliminary
+main index is at least $r+2$, hence $c>AD_{\rm p}^2$, exactly as
+in Section~\ref{sec:composed-97}.
+
+The retained relaxed auxiliary norm
+\[
+ (ic^2)^2=D_{\rm p}(f^2-1)
+\]
+therefore has the same fundamental-unit and strong-divisibility
+hypotheses. It recovers the required auxiliary multiple of $c$.
+The doubled signed-index argument identifies
+$c=\psi_A(J)$ and $d=\chi_A(J)$. The first-index and ratio
+argument gives $Y_{\rm p}\ge U^r$ and $a>U^{r+1}$ before either
+exponent relation is used. The common-witness exponent equation
+then gives $U=4^J$. The retained fixed congruence
+$\kappa=T_L+\Delta a$ determines the second index as $L$, and
+the second exponent equation gives $q=B^L$.
+
+Every exponent-size hypothesis follows from
+\eqref{eq:linear-radix-r-range} and $3L\le B\le n\le r$ as
+in the preceding proof. None requires $B=Hb^2$. Since $n^2$ divides
+$U=4^J$, $q$ is a power of two; $q=B^L$ makes $B$ a power of two;
+and the fixed power of two $H$ divides $B=Hb$, so $b$ is a power
+of two. The unchanged upper ratio and binomial fractional-part
+estimates give
+\begin{equation}\label{eq:linear-radix-binomial}
+ n^2\mid\binom{2r}{r}.
+\end{equation}
+This applies the full Pell argument before any coefficient
+equation or unit value is assumed. Its necessity construction
+will be used only after the new coding witnesses have been chosen.
+
+\subsection{Canonical codes without a high-mask estimate}
+
+After the Pell conclusions, $b<B<q$ and $\ell<q$. Therefore
+\begin{equation}\label{eq:linear-radix-no-borrow}
+ q^2-1-(b-1)\ell>0.
+\end{equation}
+The packed number $T$ now has the exact three-block expansion
+\[
+ T=\bigl(q^2-1-(b-1)\ell\bigr)
+                +q^2\theta\lambda+q^4\theta\ell.
+\]
+The blocks have widths $(2,2,4)$ in radix $q$. The binary
+no-carry packing lemma, using
+\eqref{eq:linear-radix-packing}, \eqref{eq:linear-radix-r-range}
+and \eqref{eq:linear-radix-binomial}, gives
+\begin{equation}\label{eq:linear-radix-masks}
+ \begin{gathered}
+ g\mathbin{\&}\bigl(q^2-1-(b-1)\ell\bigr)=0,\\
+ S_2\mathbin{\&}\theta\lambda=0,\qquad
+ \sigma\mathbin{\&}\theta\ell=0.
+ \end{gathered}
+\end{equation}
+Here $\mathbin{\&}$ denotes bitwise intersection only in the
+proof of the polynomial system's meaning.
+
+Since $q=B^L$ and $\theta=B-4$, the middle mask restricts the
+base-$B$ digits of $S_2$ to $\{0,1,2,3\}$ in fewer than $2L$
+positions. If $F(T)$ is its digit polynomial, then $F(B)=S_2$,
+and the congruence in \eqref{eq:linear-radix-packing} gives
+$F(4)\equiv V\pmod{B-4}$. Both $F(4)$ and $V$ are less than
+$4^{2L}$, while \eqref{eq:linear-radix-index} makes $B-4$
+larger than their possible difference. Hence $F(4)=V$.
+Uniqueness of the base-four expansion gives
+\[
+ S_2=\ell_0(B)+e_0(B)q.
+\]
+Both $\ell,e$ and $\ell_0(B),e_0(B)$ are less than $q$.
+Uniqueness of quotient and remainder on division by $q$ yields
+\begin{equation}\label{eq:linear-radix-canonical}
+ \ell=\ell_0(B),\qquad e=e_0(B).
+\end{equation}
+No high-mask estimate proportional to the square of the digit
+bound is required.
+
+The first mask, together with $b$ and $B$ being powers of two,
+now bounds every coordinate digit of $g$ by $b-1$ and permits
+nonzero digits only at the indicator positions. Its unit digit
+is zero, so the unit coordinate of $\mathcal C$ is the queried
+$x$. Write
+\[
+ \mathcal C(T)=x+\sum_i z_iT^{v_i}
+              +\sum_j(d_jT^{t_j}+d'_jT^{t_j+1}).
+\]
+All decoded coordinates are nonnegative and below $b$. Put
+$A_{\mathcal C}=\mathcal C(1)^2$. Then
+\begin{equation}\label{eq:linear-radix-coefficient-bound}
+ A_{\mathcal C}<(c_*b)^2<B^2/64.
+\end{equation}
+Also $e,\mathcal C<B^K$, and $L>3K+2$ gives
+$e\mathcal C^2<q$. Through position $K-1$, the raw signed
+coefficients of $\sigma$ are those of
+$\mathcal D(T)\mathcal C(T)^2$: the $q$ terms in
+\eqref{eq:linear-radix-block} start at $L$, and the difference
+between the finite baseline and $\lambda$ starts at $K$.
+Each raw coefficient has absolute value at most $A_{\mathcal C}$,
+because the coefficients of $\mathcal D$ have absolute value
+at most one.
+
+\subsection{Reset padding and exact paired zero tests}
+
+Consider the signed base-$B$ carry recursion
+\begin{equation}\label{eq:linear-radix-carry}
+ \begin{gathered}
+ h_0=0,\qquad a_j=[T^j]\mathcal D(T)\mathcal C(T)^2,\\
+ h_{j+1}=\left\lfloor\frac{a_j+h_j}{B}\right\rfloor,
+ \qquad \mathrm{digit}_j=a_j+h_j-Bh_{j+1}.
+ \end{gathered}
+\end{equation}
+It computes the actual low digits of the positive integer
+$\sigma$. Bound \eqref{eq:linear-radix-coefficient-bound}
+gives $|h_j|<B/8$ by induction. Indeed,
+\[
+ \left|\left\lfloor\frac{a_j+h_j}{B}\right\rfloor\right|
+ \le \frac B{64}+\frac18+1<\frac B8
+\]
+when $|a_j|<B^2/64$, $|h_j|<B/8$ and $B>64$.
+
+By \eqref{eq:linear-radix-dummies}, dummies do not affect the
+tested range. All true non-input weights are zero modulo four.
+The raw coefficients can therefore be nonzero only in residue
+classes $0$, $2$ and $3$ modulo four; class $1$ is empty. The
+carry into $t_j-2$, following an empty class-$1$ position, is
+consequently either $-1$ or zero.
+
+At $t_j-2$, the raw coefficient is nonnegative and at least
+$x^2$: the row's own reset contributes $x^2$, and every other
+reset contribution is nonnegative. It is less than $B^2/64$.
+The carry into $t_j-1$ is therefore a nonnegative integer
+$\alpha_j<B/64$.
+
+At every target except $t_*$, the raw coefficient at $t_j-1$
+is zero. Only $\mathcal D_{\rm extra}$ contributes in this
+residue class, and its contributions are within distance $2M$
+of $t_*-1$; different targets are separated by $4M+4$.
+Dividing $\alpha_j<B$ at this empty position leaves exactly
+zero incoming carry at $t_j$.
+
+There is no raw coefficient at $t_j+1$. Thus the two tested
+digits at $t_j,t_j+1$ form the residue modulo $B^2$ of the raw
+target polynomial $G_j$. The third mask permits both digits
+to lie only in $\{0,1,2,3\}$.
+
+For a paired zero equation, $|G_j|<B^2/64$. A negative nonzero
+value has a residue modulo $B^2$ whose high digit exceeds three,
+so it fails the mask. Both $G_j$ and $-G_j$ have their own
+reset and zero incoming carry. They can both pass exactly when
+$G_j=0$. This proves every circuit and normalization equation
+exactly, before $\delta$ is known to be one. In particular
+\eqref{eq:linear-radix-guard} holds.
+
+The first unpaired $\delta^2$ target also receives zero incoming
+carry. The sole exception to this rule is the deliberately
+modified last target.
+
+\subsection{The last carry fixes the unit}
+
+The first unit test has raw value $\delta^2$ and zero incoming
+carry. Its two allowed digits give
+\begin{equation}\label{eq:linear-radix-unit-digits}
+ \delta^2=kB+s,\qquad k,s\in\{0,1,2,3\}.
+\end{equation}
+The guard gives $0<\delta\le x$, and the coordinate bound gives
+$\delta<b=B/H<B/4$. Since $B$ is a sufficiently large power
+of two, $s=2$ or $3$ is impossible modulo four. If $s=1$, the
+square roots of one modulo $B$ are congruent to
+$1,B/2-1,B/2+1,B-1$. The bound $\delta<B/4$ forces
+$\delta=1$. The only remaining case for $\delta>1$ is $s=0$,
+and therefore
+\begin{equation}\label{eq:linear-radix-large-unit}
+ \delta^2\ge B,\qquad x^2\ge B.
+\end{equation}
+
+At $t_*-1$, monomial uniqueness and the input-copy equations
+make the raw extra-padding coefficient exactly
+\[
+ x^2+2xX+2xY=5x^2.
+\]
+The reset at $t_*-2$ remains present and supplies a nonnegative
+carry $\alpha_*<B/64$. Thus the incoming carry at the last
+target is
+\begin{equation}\label{eq:linear-radix-unit-carry}
+ k_{\rm pad}=\left\lfloor\frac{5x^2+\alpha_*}{B}\right\rfloor
+ \ge0.
+\end{equation}
+The global coefficient bound also gives $k_{\rm pad}<B/8<B$.
+If \eqref{eq:linear-radix-large-unit} held, then
+$k_{\rm pad}\ge5$. Since $\delta^2$ is a multiple of $B$,
+the low digit at the last target would be $k_{\rm pad}$,
+between five and $B-1$, contradicting its mask. Therefore
+$\delta=1$.
+
+The circuit equations now recover the represented system at the
+actual positive input $x$. This proves sufficiency.
+
+\subsection{Necessity and all positive supplied witnesses}
+
+Given a solution of the represented system, take its circuit
+values, $\delta=\delta'=1$, $X=Y=x$, $u=x^2-1$, all fresh
+copies equal, and every dummy zero. Each paired row has value
+zero, and both unpaired unit targets have value one.
+
+The fixed index was already chosen in
+\eqref{eq:linear-radix-support}--\eqref{eq:linear-radix-index}.
+Now choose a power of two $b$ arbitrarily large relative to the
+finitely many coordinate values. Besides exceeding every
+coordinate, choose it so that every raw coefficient of
+$\mathcal D(T)\mathcal C(T)^2$ has absolute value less than
+$B/4$ for $B=Hb$, and $5x^2<B/4$. This is possible because
+the coordinates, $\mathcal D$ and their raw coefficients are
+fixed before $b$ is chosen, whereas $Hb$ grows without bound.
+
+Take the canonical codes, $q=B^L$ and $n=q^8$. The support
+margin gives $\mathcal C^2<q$, and
+$\lambda=(q^2-1)/(B-1)>e$. Hence $\Omega$ and $\sigma$ are
+positive. The values
+\[
+ \begin{gathered}
+ \alpha_2=q-\ell,\qquad
+ \alpha=q^2-(\ell+eq),\qquad \beta=b-x,\\
+ t=\frac{\ell+eq-V}{B-4}
+ \end{gathered}
+\]
+are positive integers. Positivity of $t$ follows by evaluating
+the nonconstant nonnegative polynomial
+$\ell_0(T)+e_0(T)T^L$ at $B>4$. The coordinate $\delta=1$
+ensures $g>0$.
+
+The first two masks hold by the coordinate and digit bounds.
+For the third, all variable positions and their preceding
+positions lie below the least $\mathcal D$ exponent, so their
+raw coefficients and carries are zero. Every paired target has
+zero value and receives zero incoming carry from its reset.
+The first unit target has value one. At the last target, the
+chosen small-coefficient bounds give $\alpha_*=0$ and
+$k_{\rm pad}=0$, so its tested digits are also one and zero.
+Thus all masks hold. The packing lemma gives
+\eqref{eq:linear-radix-binomial} for the newly determined $r$,
+with the required bounds already established.
+
+Construct the positive Pell witnesses at this new $r$ as in
+Section~\ref{sec:composed-97}: choose $U=4^J$,
+\[
+ Y_{\rm p}=\left\lfloor\frac{(U+1)^{2r}}{U^r}\right\rfloor,
+ \qquad w=\frac U{n^2},\qquad
+ s_{\rm p}=\frac{Y_{\rm p}}{n^2},\qquad a=Y_{\rm p}(U+1).
+\]
+Take the main and first Pell coordinates at $J$ and $r+1$,
+their positive interval and first-index quotients, and the
+second coordinates at $L$. The second index uses the newly
+fixed $T_L=\psi_4(L)$. The exponent and rounding bounds give
+every required positive quotient as in that proof.
+
+Choose the doubled-index auxiliary exponent last as
+$m_{\rm aux}=2cJ$. Set $f=\chi_A(m_{\rm aux})$ and
+$i_{\rm old}=\psi_A(m_{\rm aux})/c^2>0$; the doubled-index
+construction supplies positive $o,j$. Use
+$i=D_{\rm p}i_{\rm old}$. This gives the relaxed norm
+$(ic^2)^2=D_{\rm p}(f^2-1)$ and preserves the signed auxiliary
+value. No coding witness changes. Together with the new positive
+$\alpha_2$, all 35 supplied unknowns are positive integers.
+This proves necessity and completes the mathematical proof of
+Theorem~\ref{thm:best96}.
+
+\subsection{The complete arithmetic count}
+
+Relative to the 97-operation certificate, replacing $B=Hb^2$
+by $Hb$ removes one multiplication. Replacing
+\[
+ \sigma=\theta\lambda q-(\lambda-e)\mathcal C^2
+ \quad\hbox{by}\quad
+ \sigma=(\lambda-e)(q-\mathcal C^2)
+\]
+replaces two multiplications and one subtraction by one
+multiplication and one subtraction, removing another
+multiplication. Equation~\eqref{eq:linear-radix-gap} costs
+one addition. All normalization, padding and two-digit support
+changes belong to the fixed index rather than to the arithmetic
+of the final system. Therefore
+\[
+ 97-1-1+1=96,\qquad
+ (54\text{ multiplications},43\text{ additions})
+ \longrightarrow(52\text{ multiplications},44\text{ additions}).
+\]
+
+The standalone checker verifies all 96 primitive instructions,
+the complete 23 source residuals and their acyclic corrections.
+The geometric and second-exponent corrections depend only on
+the exact equality $\theta+4=B$. The signed auxiliary
+correction depends only on the exact relaxed auxiliary norm.
+The sparse coefficient/carry regression supplies additional
+finite evidence; it does not replace the support, carry, index
+or positive-witness arguments above. The result is an upper
+bound, not an optimality claim.

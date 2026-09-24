@@ -1,0 +1,181 @@
+% Compose the independently proved coding and Pell reductions.
+\section{A certificate of 99 operations}\label{sec:composed-99}
+
+The reductions in Sections~\ref{sec:half-center} and
+\ref{sec:doubled-index} can be applied together. Their arithmetic
+changes occupy disjoint parts of the certificate. The composition
+also preserves the order of the mathematical proof: the new packing
+first supplies the bounds for the new Pell block; that block then
+recovers the exponent and binary radix needed by the new digit tests.
+
+\begin{theorem}\label{thm:best99}
+For every recursively enumerable subset of the positive integers,
+there is an admissible fixed index $(V,H,T_L)$ such that its membership
+relation is represented by a system with 34 positive unknowns and
+22 equations admitting a straight-line certificate of 99 operations:
+55 multiplications and 44 additions. Here $T_L=\psi_4(L)$ for the
+underlying exponent of the index construction. The supplied parameters
+are $(x,V,H,T_L)$, with three fixed index parameters, and fixed numerals
+are free.
+\end{theorem}
+
+\begin{proof}
+Construct the coefficient index using the entire paired-row
+construction of Section~\ref{sec:half-center}. In particular, the
+special target $\delta^2$ comes first; multiplication, addition,
+copy, equality, and zero rows are paired with their negatives; each
+unit gate uses the two unpaired rows
+$X\delta-\delta^2$ and $X\delta-X^2$; and the guard is
+$u\delta-x^2$. Every ordinary target is $2F+\delta^2$.
+
+If there are $m$ positive-weight coordinates and $s$ targets, use
+\[
+\begin{gathered}
+ v_i=3^i\quad(0\le i<m),\qquad M=3^{m-1},\qquad d_0=4M+1,\\
+ t_j=(s+1)d_0+2M+jd_0\quad(0\le j<s),\\
+ t_*=2sd_0+2M,\qquad K_0=t_*+1,\qquad c_*=m+s+1.
+\end{gathered}
+\]
+Choose a power of two $L>3K_0+2$, form the corresponding
+$\ell_0,e_0$, and set
+\[
+ V=\ell_0(4)+e_0(4)4^L,\qquad
+ H>\max\{2\,4^{2L+1},\ 4^{t_*+3}\,4c_*^2,\ 3L,\ 16\},
+\]
+with $H$ a power of two. Finally supply $T_L=\psi_4(L)$ instead
+of $L$. Thus $V,H$ come from the new paired layout throughout;
+they are not reused from an earlier unpaired index. These choices
+are independent of the queried input $x$.
+
+Keep the coding equations and packing
+\eqref{eq:half-center-block}--\eqref{eq:half-center-packing}, with
+\[
+ \Omega=2\lambda-e>0,\qquad
+ \sigma=\theta\lambda q-\Omega\mathcal C^2>0,
+ \qquad \theta=B-4,
+\]
+and apply both Pell changes
+\eqref{eq:doubled-auxiliary} and \eqref{eq:doubled-fixed-index}.
+All other common-witness Pell equations remain unchanged.
+
+Before either code is decoded, the positive bound $S_2+\alpha=q^2$
+gives $e<q$ and $\ell<q^2$. The geometric equation gives
+$B\le q^2$, and the index bound gives $q>4b\ge8$ and
+$3L\le B\le n$. Positivity of $\Omega$ and $\sigma$ gives
+\[
+ \mathcal C^2<\theta\lambda q<3q^3<q^4.
+\]
+The preliminary borrow argument of Section~\ref{sec:half-center}
+therefore proves
+\begin{equation}\label{eq:composed99-preliminary}
+ 0<S<n,\qquad 0<T+1\le n,\qquad
+ n\le r\le2n^3-2n^2<2n^3.
+\end{equation}
+No coefficient target has been tested at this stage.
+
+Put $U=wn^2$, $Y_P=sn^2$, $a=Y_P(U+1)$, $A=a+4$, and $J=2r+1$.
+Then $U,Y_P\ge n^2$, $UY_P\ge n^4>r+1$, and the first-index
+congruence and interval give $c>J$. Also $A>n^4>J$.
+Thus every hypothesis of Lemma~\ref{lem:doubled-main-index} holds:
+$A>1$, $1<J<c$, and $J$ is odd. That lemma proves
+\[
+ c=\psi_A(J),\qquad d=\chi_A(J).
+\]
+In particular, its signed comparison does not depend on either
+coefficient decoding or an already known value of $q$.
+
+The unchanged first Pell index and lower ratio argument now give,
+with $\xi=(U+1)^{2r}/U^r$,
+\[
+ k=\psi_{2UY_P^2+1}(r+1),\qquad
+ \xi<c/k<Y_P+1,\qquad
+ Y_P\ge U^r,\qquad a>U^{r+1}.
+\]
+The first exponential congruence yields $U=4^J$. Therefore $n$ and
+$q$ are powers of two, and $a>4^{3J}$.
+The positive gap and second norm give
+$\kappa=\psi_A(t)$ for some $0<t<J$. Admissibility gives
+$L<J$. Lemma~\ref{lem:doubled-fixed-index} applies to
+$\kappa=T_L+\Delta a$: reduction modulo $a$ gives
+$\psi_4(t)\equiv\psi_4(L)$, while both values lie strictly between
+zero and $a$. It follows that $t=L$.
+
+The remaining exponent comparison uses
+\[
+ B^{3L}\le B^B\le n^n\le U^r<A,
+ \qquad q^3\le n^n\le U^r<A,
+\]
+so it yields $q=B^L$, and hence powers of two $B$ and $b$.
+The unchanged upper ratio and binomial arguments give
+\begin{equation}\label{eq:composed99-binomial}
+ n^2\mid\binom{2r}{r}.
+\end{equation}
+These conclusions precede all internal circuit tests.
+
+Now $\lambda>q$ and $e<q$, so $\Omega>\lambda$ and
+$\mathcal C^2<\theta q<Bq<q^2$. Thus $g<\mathcal C<q$.
+All post-Pell hypotheses of Section~\ref{sec:half-center} have been
+restored. Its first two masks remove the preliminary borrow and
+identify the packed coefficient polynomial, up to the quotient alias.
+The first mask bounds every coordinate by $b$. Positivity of $x,g$
+gives $\mathcal C(1)\ge2$ before $\delta$ is identified. Accordingly,
+with $A_{\mathcal C}=\mathcal C(1)^2$, the modified high-window bound
+$2A_{\mathcal C}+4\le4A_{\mathcal C}$ and the displayed bound on $H$
+remove the alias. The two codes are canonical.
+
+The first special target has incoming carry zero and forces
+$\delta\in\{0,1\}$. The guard excludes zero. At $\delta=1$, each
+ordinary row tests $F\in\{0,1\}$; its paired negative forces $F=0$,
+and the two unit rows force the unit coordinate to equal one.
+This recovers the represented system at the actual input $x$.
+
+For the converse, take a solution of that system, its circuit values,
+$\delta=1$, $u=x^2$, and zero dummy digits. Choose a power-of-two
+$b$ larger than every coordinate and use the canonical codes.
+Then $\beta,\theta,\lambda,\alpha$ and the packed-congruence quotient
+are positive integers. The half-center necessity proof gives positive
+$\Omega,\sigma$ and all three no-carry conditions. Define $r$ by
+the packing; \eqref{eq:composed99-preliminary} and
+\eqref{eq:composed99-binomial} follow.
+
+Choose $J=2r+1$, $U=4^J$, and $w=U/n^2$. This quotient is a positive
+integer since $n$ is a power of two and $n^2\le r^2<4^J$.
+Take $Y_P=\lfloor\xi\rfloor$ and $s=Y_P/n^2$, integral by the
+binomial congruence, and define $a=Y_P(U+1)$.
+The common-witness construction supplies positive
+$k,c,d,\tau,h,\eta,\zeta,\gamma,\rho$.
+Choose
+\[
+ \kappa=\psi_A(L),\quad \mu=\chi_A(L),\quad
+ \phi=c-\kappa,\quad
+ \Delta=\frac{\psi_A(L)-\psi_4(L)}{a}.
+\]
+Here $L<J$ makes $\phi>0$, and $A=a+4>4$, $L\ge2$ make
+$\Delta$ a positive integer.
+
+Finally choose the auxiliary witnesses exactly as in
+Lemma~\ref{lem:doubled-main-index}: set
+\[
+\begin{gathered}
+ m_0=2cJ,\qquad f=\chi_A(m_0),\qquad
+ i=\psi_A(m_0)/c^2,\\
+ K=(A^2-1)(f^2-1),\qquad G=2K-1,\qquad
+ I=\chi_G(J),\qquad H_0=\psi_G(J),\\
+ o=\frac{I+2d^2-1}{2f},\qquad j=\frac{H_0-J}{c}.
+\end{gathered}
+\]
+The proved divisibility, oddness of $f$, and Pell congruences make
+all four auxiliary unknowns positive integers and establish the
+doubled norm. This last choice changes no coding, interval, gap,
+or exponential witness. Thus every required positive unknown exists.
+
+For the arithmetic count, the half-center substitution saves one
+multiplication from Theorem~\ref{thm:best101}; the doubled-index
+substitution saves one addition. They change disjoint source rows and
+disjoint instruction groups. The exact checker
+\texttt{round26\_1980\_composed\_certificate.py} verifies that both
+orders give the same complete schedule and source system, together
+with all primitive instructions, 22 equality tests, and three
+triangular residual corrections. The resulting count is
+$(56-1)+(45-1)=55+44=99$.
+\end{proof}

@@ -1,0 +1,234 @@
+% Two independent successors to 109; together they give 107 instructions.
+\section{A positive coefficient and a triangular Pell equation}
+\label{sec:final-two-savings}
+
+Two independent changes remove another addition and another multiplication.
+The first uses positivity of an already computed coefficient to recover
+a bound that previously required an explicit addition. The second
+rewrites the first Pell equation using its odd root and proves that
+its index modulus can be halved. Each separately gives 108 instructions;
+together they give 107.
+
+\subsection{Removing the square from the explicit bound}
+
+Keep the fixed input-unit encoding of Section~\ref{sec:input-unit},
+with $\mathcal C=x+g$ and $Y=\ell+eq$. Replace
+\[
+ Y+\mathcal C^2+\alpha=q^2
+\]
+by the equations
+\begin{equation}\label{eq:positive-coefficient-bound}
+ Y+\alpha=q^2,\qquad \Omega=Z\lambda-2e,
+ \qquad \Omega>0.
+\end{equation}
+Here $\Omega$ is a new positive system unknown. Its defining value
+is the negative of an existing register. Reverse that subtraction and
+compute
+\[
+ P_1=(Z\lambda-2e)\mathcal C^2,
+ \qquad P_2=B\lambda(1+q),\qquad S_3=P_2-P_1.
+\]
+The value of $S_3$ is unchanged. Reversing these signs has equal
+arithmetic cost, and $\Omega$ is connected to the computed coefficient
+by a free equality test. Retain the separate positive unknown
+$\sigma=S_3$.
+
+\begin{proposition}\label{prop:positive-coefficient108}
+The replacements \eqref{eq:positive-coefficient-bound} give a
+membership-equivalent system with 108 arithmetic instructions:
+60 multiplications and 48 additions. It has 34 positive unknowns
+and 22 equations.
+\end{proposition}
+\begin{proof}
+Before decoding, the new bound gives $\ell<Y<q^2$ and $e<q$.
+The geometric equation still gives $B\le q^2$ and $q>4b\ge8$.
+Consequently
+\[
+ P_2=B\lambda(1+q)<2q^2(1+q)<3q^3.
+\]
+Since $\Omega$ and $\sigma$ are positive integers,
+\[
+ 0<S_3=P_2-\Omega\mathcal C^2<P_2,
+ \qquad \mathcal C^2<P_2/\Omega\le P_2<3q^3<q^4.
+\]
+Thus $g<\mathcal C<q^2$. This weaker bound is enough for the first
+packing block, whose width is $q^2$. Together with $Y<q^2$ and
+$S_3<q^4$, it gives $0<S<n=q^8$.
+
+The mask bounds use only $\ell<q^2$, $B\le q^2$, and
+$b<(B-Z)\lambda<q^2-1$. They are unchanged. Explicitly, if
+$d_0=\lfloor(b-1)\ell/q^2\rfloor$ and
+$\varepsilon_0=(b-1)\ell-d_0q^2$, then
+\[
+ T=(q^2-1-\varepsilon_0)
+       +q^2\bigl((B-Z)\lambda-d_0\bigr)+q^4(B-4)\ell
+\]
+has normalized blocks in $[0,q^2)$, $[0,q^2)$, and $[0,q^4)$.
+Hence $0\le T<n$ and $r\ge n^2-1\ge n$.
+The relaxed Pell bootstrap proved in Section~\ref{sec:input-unit}
+now applies: it uses $3L\le B\le n\le r$, $q,b\le n$, and the
+unchanged Pell equations, without a further bound on $g$ or
+$\mathcal C$. It gives $q=B^L$, the required powers of two,
+and $\tau_2(S,T)=0$.
+
+We recover the stronger bound before using it in digit decoding.
+Now $q=B^L>B$, so $\lambda>q$. Since $e<q$ and $Z\ge4$,
+\[
+ 2e<2q<2\lambda\le Z\lambda/2,
+ \qquad \Omega>Z\lambda/2.
+\]
+It follows that
+\[
+ \mathcal C^2<\frac{P_2}{\Omega}
+       <\frac{2B(1+q)}Z
+       \le\frac{B(1+q)}2
+       <\frac{q(q+1)}2<q^2.
+\]
+Thus $g<\mathcal C<q$ holds before the first-mask decoding and
+high-mask quotient argument require it. Those arguments now apply
+unchanged, proving canonical code recovery and membership.
+
+Conversely, take the positive witnesses constructed for the
+109-operation system. They have $e<q$, $\lambda>q$, and $S_3>0$.
+Set $\Omega=Z\lambda-2e>0$ and replace the slack by
+$\alpha=q^2-Y>0$. All other witnesses remain valid.
+
+Only the addition of $\mathcal C^2$ to $Y$ disappears.
+The coefficient subtraction, its product with $\mathcal C^2$, and
+the subtraction defining $S_3$ have the same costs as before.
+The positive unknown $\Omega$ introduces one free equality and no
+arithmetic instruction beyond these existing registers.
+The complete check is \file{round10\_1980\_certificate.py}.
+\end{proof}
+
+\subsection{Factoring the odd Pell root}
+
+For this independent change to the 109-operation system, write
+\[
+\begin{gathered}
+ N=n,\quad R=r,\quad U=wN^2,\quad Y_P=sN^2,
+ \quad M=RY_P,\\
+ a=M(U+1),\quad Q=UM^2,
+ \quad P=2Q+1,\quad J=2R+1.
+\end{gathered}
+\]
+The quantity $Q$ is already computed. The old first Pell norm
+and index equations were
+\[
+ \bigl((2Q+1)^2-1\bigr)k^2+1=\tau_{\rm old}^2,
+ \qquad k=R+1+2Qh_{\rm old}.
+\]
+Replace them by
+\begin{equation}\label{eq:triangular-pell}
+ \tau(\tau+1)=Q(Q+1)k^2,
+ \qquad k=R+1+hQ,
+ \qquad \tau,h>0.
+\end{equation}
+The mathematical Pell parameter $P=2Q+1$ need not be computed
+by the new certificate.
+
+\begin{proposition}\label{prop:triangular-pell108}
+Equations \eqref{eq:triangular-pell} give a positive-domain
+equivalent system with 108 arithmetic instructions:
+59 multiplications and 49 additions. This independent variant
+retains 33 positive unknowns and 21 equations.
+\end{proposition}
+\begin{proof}
+For necessity, $P$ is odd, and the recurrence for $\chi_P(t)$
+shows that every such coordinate is odd. The old positive norm
+has $\tau_{\rm old}>1$. Thus
+\[
+ \tau=(\tau_{\rm old}-1)/2\ge1,
+ \qquad h=2h_{\rm old}>0
+\]
+are integers satisfying \eqref{eq:triangular-pell}.
+The factored norm is simply the old norm identity divided by four.
+The certificate verifies the new polynomial equation directly;
+this witness map does not introduce an uncharged division instruction.
+
+For sufficiency, the initial coding bounds give $R\ge N\ge8$,
+so $U,Y_P\ge64$, $M\ge512$, and $Q>R+1$.
+Put $\widehat\tau=2\tau+1$. The new norm implies
+\[
+ \widehat\tau^2-(P^2-1)k^2=1,
+ \qquad \widehat\tau>1.
+\]
+The new congruence gives $k\ge R+2$. The unchanged positive
+interval gives $c>Y_Pk\ge64(R+2)>J$. The signed Pell block
+therefore gives $c=\psi_a(J)$ and $d=\chi_a(J)$.
+
+There is a positive index $t$ with
+$k=\psi_P(t)$ and $\widehat\tau=\chi_P(t)$.
+The elementary congruence $\psi_P(t)\equiv t\pmod{P-1}$
+also holds modulo $Q$. Since $0<R+1<Q$, the new index equation
+implies
+\[
+ t=R+1+vQ,\qquad v\ge0.
+\]
+If $v\ge1$, the elementary Pell growth estimates give
+\[
+ \frac ck\le
+ \frac{(2a)^{2R}}{(2P-1)^{R+Q}}
+ \le\left(\frac{2a}{2P-1}\right)^{2R}<\frac12.
+\]
+Here $Q\ge R$, and
+$2a/(2P-1)=2M(U+1)/(4UM^2+1)<1/2$ follows from
+$U\ge64$ and $M\ge512$. This contradicts $c/k>Y_P\ge64$.
+Therefore $v=0$ and $k=\psi_P(R+1)$.
+
+Applying the same Pell congruence now modulo $2Q$ gives
+$k\equiv R+1\pmod{2Q}$. Since $k-R-1=hQ$, the new positive
+integer $h$ is even. Consequently
+\[
+ h_{\rm old}=h/2>0,\qquad
+ \tau_{\rm old}=2\tau+1>0
+\]
+restore both old equations, preserving every other witness.
+This argument precedes the exponent relations and binomial rounding;
+it does not assume either of them to prove the required evenness.
+
+After $Q$ is available, the old norm block used seven operations:
+form $2Q$, add two, multiply these two values, square $k$,
+multiply, add one, and square $\tau_{\rm old}$.
+The new block uses six: form $Q+1$ and $Q(Q+1)$, square $k$,
+multiply, form $\tau+1$, and multiply $\tau(\tau+1)$.
+The index product $hQ$ has the same cost as the former $2Qh_{\rm old}$,
+so $2Q$ is no longer needed anywhere in the schedule.
+The exact saving is one multiplication, as checked by
+\file{round11\_1980\_pell\_certificate.py}.
+\end{proof}
+
+\subsection{Combining the two savings}
+
+\begin{theorem}\label{thm:best107}
+For each r.e.\ set, the fixed admissible input-unit encoding gives
+a membership-equivalent system in 34 positive unknowns and 22 equations
+whose straight-line certificate has \textbf{107 arithmetic instructions}:
+59 multiplications and 48 additions. Equality tests and supplied
+parameters are free. Generating the fixed numerals from $1$ adds
+seven instructions, giving 114 operations.
+\end{theorem}
+\begin{proof}
+Apply both replacements to the 109-operation system. Their
+necessity maps affect disjoint witnesses: the coefficient-bound
+change replaces $\alpha$ and supplies $\Omega$, while the Pell
+change replaces $\tau$ and $h$. Thus both maps preserve the
+other change's equations and positivity.
+
+For soundness, first use $\Omega,\sigma>0$ to establish the
+preliminary bounds $0<S<n$, $0\le T<n$, and $R\ge N\ge8$,
+as in Proposition~\ref{prop:positive-coefficient108}.
+The index proof in Proposition~\ref{prop:triangular-pell108}
+then restores the old positive Pell witnesses without any exponent
+or decoding assumption. The positive-coefficient proof can now
+continue with those witnesses and recover membership. This order
+establishes the equivalence without a circular appeal between the
+two changes.
+
+The combined schedule removes one addition and one multiplication
+from 109 instructions. The coefficient change supplies the sole
+extra positive unknown and free equality; the Pell change alters
+neither count. The complete primitive list and all residual
+identities are checked by \file{round12\_1980\_\allowbreak certificate.py}.
+The numeral set and exponent $L=5^{16}$ are unchanged.
+\end{proof}

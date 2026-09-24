@@ -1,0 +1,220 @@
+{
+  "status": "PASS_DUPLICATED_TAG_INPUT_LOADER",
+  "source": {
+    "deletion_two": [
+      {
+        "beta": 2,
+        "paid_length_phase": false,
+        "operations": 8,
+        "multiplications": 5,
+        "additions": 3
+      },
+      {
+        "beta": 2,
+        "paid_length_phase": true,
+        "operations": 10,
+        "multiplications": 7,
+        "additions": 3
+      }
+    ],
+    "general_schedules": [
+      {
+        "beta": 2,
+        "paid_length_phase": false,
+        "operations": 8,
+        "multiplications": 5,
+        "additions": 3
+      },
+      {
+        "beta": 2,
+        "paid_length_phase": true,
+        "operations": 10,
+        "multiplications": 7,
+        "additions": 3
+      },
+      {
+        "beta": 3,
+        "paid_length_phase": false,
+        "operations": 10,
+        "multiplications": 6,
+        "additions": 4
+      },
+      {
+        "beta": 3,
+        "paid_length_phase": true,
+        "operations": 13,
+        "multiplications": 9,
+        "additions": 4
+      },
+      {
+        "beta": 4,
+        "paid_length_phase": false,
+        "operations": 12,
+        "multiplications": 7,
+        "additions": 5
+      },
+      {
+        "beta": 4,
+        "paid_length_phase": true,
+        "operations": 16,
+        "multiplications": 11,
+        "additions": 5
+      },
+      {
+        "beta": 5,
+        "paid_length_phase": false,
+        "operations": 14,
+        "multiplications": 8,
+        "additions": 6
+      },
+      {
+        "beta": 5,
+        "paid_length_phase": true,
+        "operations": 19,
+        "multiplications": 13,
+        "additions": 6
+      },
+      {
+        "beta": 6,
+        "paid_length_phase": false,
+        "operations": 16,
+        "multiplications": 9,
+        "additions": 7
+      },
+      {
+        "beta": 6,
+        "paid_length_phase": true,
+        "operations": 22,
+        "multiplications": 15,
+        "additions": 7
+      },
+      {
+        "beta": 7,
+        "paid_length_phase": false,
+        "operations": 18,
+        "multiplications": 10,
+        "additions": 8
+      },
+      {
+        "beta": 7,
+        "paid_length_phase": true,
+        "operations": 25,
+        "multiplications": 17,
+        "additions": 8
+      }
+    ],
+    "deletion_two_dag": [
+      [
+        "L2",
+        "*",
+        "L",
+        "L"
+      ],
+      [
+        "geometric1",
+        "+",
+        1,
+        "L"
+      ],
+      [
+        "copies",
+        "*",
+        "x",
+        "geometric1"
+      ],
+      [
+        "N0",
+        "*",
+        9,
+        "copies"
+      ],
+      [
+        "marker_scale",
+        "*",
+        18,
+        "L2"
+      ],
+      [
+        "N1",
+        "+",
+        "marker_scale",
+        1
+      ],
+      [
+        "Winit",
+        "*",
+        81,
+        "L2"
+      ],
+      [
+        "input_bound",
+        "+",
+        "x",
+        "alpha"
+      ]
+    ],
+    "duplicate_only_operations": 2,
+    "initial_nonzero_coordinate_count": 2,
+    "scope": "Power-three geometry remains external; the paid phase equation is optional. Zero coordinate adapters and the complete target simulator are excluded."
+  },
+  "finite": {
+    "dimensions": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "fixed_profiles": 3,
+    "loading_cases": 9207,
+    "exact_scalar_transition_checks": 230445,
+    "loading_steps": 76815,
+    "zero_input_cases": 33,
+    "high_zero_padded_cases": 3069,
+    "paid_phase_cases": 2790,
+    "noncoprime_loss_examples": 1,
+    "coordinate_count_in_test": 3,
+    "scope": "Complete small ternary-word enumeration, not a universal-target simulation. Every prefix/body/endpoint step and its scalar coordinate identity is checked."
+  },
+  "proof": "../1980/EXPLORATION_DUPLICATED_TAG_INPUT_LOADER.md",
+  "scope": "Exact fixed combinatorial startup and radix-preserving input formulas. A universal target with the resulting startup format, full mask/geometry realization and positive adapters remain unproved here."
+}

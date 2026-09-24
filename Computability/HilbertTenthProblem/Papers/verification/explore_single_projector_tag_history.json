@@ -1,0 +1,341 @@
+{
+  "status": "PASS_CONDITIONAL_SINGLE_PROJECTOR_TAG_HISTORY",
+  "full_review_gates": [
+    "author",
+    "root",
+    "independent_affine"
+  ],
+  "source": {
+    "operations": 32,
+    "multiplications": 14,
+    "additions": 18,
+    "arithmetic_without_three_boundary_sums": 29,
+    "source_comparisons": 11,
+    "Boolean_fields": 10,
+    "dag": [
+      [
+        "radix",
+        "*",
+        81,
+        "A"
+      ],
+      [
+        "padding",
+        "*",
+        "A",
+        "H"
+      ],
+      [
+        "G",
+        "+",
+        "Q",
+        "padding"
+      ],
+      [
+        "headsum",
+        "+",
+        "S0",
+        "S1"
+      ],
+      [
+        "twice_Q",
+        "*",
+        2,
+        "Q"
+      ],
+      [
+        "marker1",
+        "+",
+        "twice_Q",
+        "S1"
+      ],
+      [
+        "lengthsum",
+        "+",
+        "M0",
+        "M1"
+      ],
+      [
+        "content_sum",
+        "+",
+        "N",
+        "Nbar"
+      ],
+      [
+        "twice_content",
+        "*",
+        2,
+        "content_sum"
+      ],
+      [
+        "content_length",
+        "+",
+        "twice_content",
+        "H"
+      ],
+      [
+        "prefix_scale",
+        "*",
+        1,
+        "H"
+      ],
+      [
+        "prefix_sum",
+        "+",
+        "E",
+        "Ebar"
+      ],
+      [
+        "prefix_tail",
+        "*",
+        3,
+        "E"
+      ],
+      [
+        "d",
+        "+",
+        "prefix_tail",
+        "S1"
+      ],
+      [
+        "n_append",
+        "*",
+        1,
+        "M1"
+      ],
+      [
+        "n_trim",
+        "-",
+        "N",
+        "d"
+      ],
+      [
+        "n_output",
+        "+",
+        "n_trim",
+        "n_append"
+      ],
+      [
+        "n_left",
+        "*",
+        "R",
+        "n_output"
+      ],
+      [
+        "n_end",
+        "*",
+        "q",
+        "Nfinal"
+      ],
+      [
+        "n_initial",
+        "-",
+        "N",
+        "Ninit"
+      ],
+      [
+        "n_shift",
+        "+",
+        "n_initial",
+        "n_end"
+      ],
+      [
+        "n_right",
+        "*",
+        9,
+        "n_shift"
+      ],
+      [
+        "l_append",
+        "*",
+        9,
+        "M1"
+      ],
+      [
+        "l_output",
+        "+",
+        "M0",
+        "l_append"
+      ],
+      [
+        "l_left",
+        "*",
+        "R",
+        "l_output"
+      ],
+      [
+        "l_end",
+        "*",
+        "q",
+        "Lfinal"
+      ],
+      [
+        "l_initial",
+        "-",
+        "L",
+        "Linit"
+      ],
+      [
+        "l_shift",
+        "+",
+        "l_initial",
+        "l_end"
+      ],
+      [
+        "l_right",
+        "*",
+        3,
+        "l_shift"
+      ],
+      [
+        "initial_bound",
+        "+",
+        "Linit",
+        "alphaI"
+      ],
+      [
+        "halt_bound",
+        "+",
+        "Lfinal",
+        "alphaH"
+      ],
+      [
+        "content_bound",
+        "+",
+        "Nfinal",
+        "alphaN"
+      ]
+    ]
+  },
+  "histories": {
+    "fully_checked_halting_histories": 944,
+    "checked_source_rows": 2318,
+    "longer_runs_unclassified": 428,
+    "regression_step_limit": 20,
+    "post_halt_witness_rows": 3,
+    "post_halt_actual_halting_time": 1
+  },
+  "complete_candidates": [
+    {
+      "radix_exponent": 6,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1
+      ],
+      "projector_candidates": 4096,
+      "valid_projectors": 25,
+      "endpoint_trials": 200,
+      "accepted_length_words": 4,
+      "nonmarker_terminal_trials": 150,
+      "full_content_candidates": 128,
+      "accepted_full_certificates": 4,
+      "post_halt_certificates": 4
+    },
+    {
+      "radix_exponent": 6,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0
+      ],
+      "projector_candidates": 4096,
+      "valid_projectors": 25,
+      "endpoint_trials": 200,
+      "accepted_length_words": 3,
+      "nonmarker_terminal_trials": 150,
+      "full_content_candidates": 128,
+      "accepted_full_certificates": 2,
+      "post_halt_certificates": 2
+    },
+    {
+      "radix_exponent": 6,
+      "rows": 3,
+      "beta": 2,
+      "appendant": [
+        1,
+        0
+      ],
+      "projector_candidates": 262144,
+      "valid_projectors": 125,
+      "endpoint_trials": 1000,
+      "accepted_length_words": 6,
+      "nonmarker_terminal_trials": 750,
+      "full_content_candidates": 1344,
+      "accepted_full_certificates": 2,
+      "post_halt_certificates": 2
+    },
+    {
+      "radix_exponent": 7,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1
+      ],
+      "projector_candidates": 16384,
+      "valid_projectors": 36,
+      "endpoint_trials": 576,
+      "accepted_length_words": 8,
+      "nonmarker_terminal_trials": 432,
+      "full_content_candidates": 640,
+      "accepted_full_certificates": 12,
+      "post_halt_certificates": 4
+    },
+    {
+      "radix_exponent": 7,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0
+      ],
+      "projector_candidates": 16384,
+      "valid_projectors": 36,
+      "endpoint_trials": 576,
+      "accepted_length_words": 4,
+      "nonmarker_terminal_trials": 432,
+      "full_content_candidates": 256,
+      "accepted_full_certificates": 4,
+      "post_halt_certificates": 2
+    },
+    {
+      "radix_exponent": 7,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0,
+        0
+      ],
+      "projector_candidates": 16384,
+      "valid_projectors": 25,
+      "endpoint_trials": 200,
+      "accepted_length_words": 1,
+      "nonmarker_terminal_trials": 150,
+      "full_content_candidates": 32,
+      "accepted_full_certificates": 2,
+      "post_halt_certificates": 2
+    },
+    {
+      "radix_exponent": 8,
+      "rows": 2,
+      "beta": 2,
+      "appendant": [
+        1,
+        0,
+        0
+      ],
+      "projector_candidates": 65536,
+      "valid_projectors": 36,
+      "endpoint_trials": 576,
+      "accepted_length_words": 2,
+      "nonmarker_terminal_trials": 432,
+      "full_content_candidates": 160,
+      "accepted_full_certificates": 4,
+      "post_halt_certificates": 2
+    }
+  ],
+  "proof": "../1980/EXPLORATION_SINGLE_PROJECTOR_TAG_HISTORY.md",
+  "scope": "Conditional encoded-word halting equivalence. Nonnegative Boolean words, power geometry, and valid encoded input are interface hypotheses. Their Diophantine realization, positive adapters, and raw numerical input conversion are not counted. No universal arithmetic bound."
+}

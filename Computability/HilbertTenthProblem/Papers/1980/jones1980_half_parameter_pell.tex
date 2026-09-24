@@ -1,0 +1,384 @@
+% Full proof of the nine-operation replacement for the signed-index block.
+\section{A smaller auxiliary Pell parameter: 92 operations}
+\label{sec:half-parameter-pell}
+
+The square $K=(ic^2)^2$ already present in the relaxed auxiliary norm
+allows a smaller Pell parameter. Replacing the ten-operation signed
+block by a nine-operation block saves one multiplication. The new
+block uses one additional positive unknown and one additional equation.
+Its positive witnesses are constructed afresh; the coefficient encoding
+and fixed index do not change.
+
+\begin{theorem}\label{thm:best92}
+Every recursively enumerable subset of the positive integers has an
+admissible fixed index $(V,H,T_L)$ for a system with 35 positive
+unknowns and 23 equations admitting a straight-line certificate of
+92 operations: 49 multiplications and 43 additions. The fixed index
+and coefficient encoding are those of Theorem~\ref{thm:best93}.
+The supplied inputs are $(x,V,H,T_L)$, with three fixed components
+besides the positive input $x$. Fixed numerals and equality tests
+are free.
+\end{theorem}
+
+\subsection{The new equations}
+
+Retain the definitions
+\begin{equation}\label{eq:half-pell-parameters}
+ J=2r+1,\qquad A=a+4,\qquad D=A^2-1,\qquad
+ R=ic^2,\qquad K=R^2.
+\end{equation}
+In particular, the relaxed auxiliary equation is retained:
+\begin{equation}\label{eq:half-pell-relaxed}
+ R^2=D(f^2-1).
+\end{equation}
+The former signed equation was
+\[
+ v(v+1)=K(K-1)(J+jc)^2,\qquad v=of-d^2.
+\]
+Replace it by
+\begin{equation}\label{eq:half-pell-linear}
+ u=J+jc,\qquad u=c+of,
+\end{equation}
+and
+\begin{equation}\label{eq:half-pell-norm}
+ K(u^2-y_{\rm aux}^2)=1-y_{\rm aux}^2.
+\end{equation}
+The quantity $u$ is an arithmetic register, not another supplied
+unknown. The old variables $o,j$ and the new variable $y_{\rm aux}$
+are positive integers. The last equation is equivalently
+\begin{equation}\label{eq:half-pell-standard-norm}
+ (Ru)^2-(R^2-1)y_{\rm aux}^2=1.
+\end{equation}
+Its ordinary Pell parameter is $R$, whereas the preceding signed
+construction used $2R^2-1$. The certificate does not have to
+construct either $Ru$ or that larger parameter.
+
+\subsection{Independent bounds before the new block}
+
+The preliminary proof of Section~\ref{sec:affine-radix}, retained
+by the subsequent arithmetic improvements, gives
+\begin{equation}\label{eq:half-pell-preliminary}
+ \begin{gathered}
+ n=q^8,\qquad n\ge64,\qquad n\le r<2n^3,\qquad 3L\le B\le n,\\
+ U=wn^2,\qquad Y_P=s_Pn^2,\qquad a=Y_P(U+1),\qquad
+ P=2UY_P^2+1,\\
+ U,Y_P\ge n^2,\qquad UY_P>r+1,\qquad a>J,\qquad c>J>1.
+ \end{gathered}
+\end{equation}
+The subscripts distinguish these Pell quantities from the encoded
+logical coordinates. These bounds use positivity, the combined gap,
+geometry, packing, and the positive interval. They precede coefficient
+decoding and any use of either auxiliary signed norm.
+
+Classification of the unchanged main and first norms gives positive
+indices $p,t$ with
+\[
+ c=\psi_A(p),\qquad d=\chi_A(p),\qquad k=\psi_P(t).
+\]
+The first-index equation implies $t\ge r+1$. Since $P>A$ and
+$c>Y_Pk>k$, the growth comparison in
+Section~\ref{sec:relaxed-auxiliary} forces
+\begin{equation}\label{eq:half-pell-large-index}
+ p\ge r+2\ge66,\qquad c>AD^2.
+\end{equation}
+The retained relaxed-norm argument therefore applies to
+\eqref{eq:half-pell-relaxed}. Its integer-coefficient fundamental-unit
+and divisibility proof supplies a positive index $m$ such that
+\begin{equation}\label{eq:half-pell-auxiliary-index}
+ f=\chi_A(m),\qquad p\mid m,\qquad c\mid m,
+ \qquad R=D\psi_A(m).
+\end{equation}
+That proof uses neither the former nor the new signed-index equation.
+Elementary Pell growth now gives
+\begin{equation}\label{eq:half-pell-comparison}
+ 0<2p\le c\le m,\qquad R=ic^2\ge c^2>A>1.
+\end{equation}
+In particular, $R$ is an integer Pell parameter greater than one.
+No exact value of $p$, no parity of $r$, no conclusion $q=B^L$,
+and no decoded circuit equation has been assumed here.
+
+\subsection{The odd-index polynomial identity}
+
+For the standard Pell sequences, write
+\[
+ \begin{gathered}
+ \chi_X(0)=1,\quad\chi_X(1)=X,\qquad
+ \psi_X(0)=0,\quad\psi_X(1)=1,\\
+ z(n+2)=2Xz(n+1)-z(n).
+ \end{gathered}
+\]
+For every $h\ge0$ there is an integer polynomial $Q_h(T)$ with
+\begin{equation}\label{eq:half-pell-Q-definition}
+ \chi_X(2h+1)=XQ_h(X^2).
+\end{equation}
+Its initial values and doubled-step recurrence are
+\begin{equation}\label{eq:half-pell-Q-recurrence}
+ \begin{gathered}
+ Q_0(T)=1,\qquad Q_1(T)=4T-3,\\
+ Q_{h+2}(T)=(4T-2)Q_{h+1}(T)-Q_h(T).
+ \end{gathered}
+\end{equation}
+The doubled recurrence follows by applying the ordinary recurrence
+twice, or from $\chi_X(2)=2X^2-1$ and the addition identities.
+Thus these formulas prove divisibility by $X$ as an integer-polynomial
+identity; they do not require division modulo an integer.
+
+The odd subsequence $\psi_A(2h+1)$ has recurrence coefficient
+$4A^2-2$ and initial values $1,4A^2-1$. Consequently
+$(-1)^h\psi_A(2h+1)$ has coefficient $2-4A^2$ and initial
+values $1,1-4A^2$. Substituting $T=1-A^2$ in
+\eqref{eq:half-pell-Q-recurrence} gives exactly these data.
+Induction proves
+\begin{equation}\label{eq:half-pell-Q-complement}
+ Q_h(1-A^2)=(-1)^h\psi_A(2h+1).
+\end{equation}
+Similarly, substitution of $T=0$ gives
+\begin{equation}\label{eq:half-pell-Q-zero}
+ Q_h(0)=(-1)^h(2h+1).
+\end{equation}
+Both identities hold for every nonnegative $h$. Their two uses below
+have different moduli.
+
+\subsection{Sufficiency: the exact main index}
+
+Suppose the new source equations have positive integer witnesses.
+By \eqref{eq:half-pell-standard-norm}, positivity, and $R>1$,
+ordinary Pell classification gives a positive index $s$ such that
+\begin{equation}\label{eq:half-pell-classification}
+ Ru=\chi_R(s),\qquad y_{\rm aux}=\psi_R(s).
+\end{equation}
+The index $s$ is odd. Indeed, the chi recurrence at $R=0$ gives
+$\chi_R(2h)\equiv(-1)^h\pmod R$. An even $s$ would make
+$R>1$ divide one, since $R$ divides the first coordinate in
+\eqref{eq:half-pell-classification}. Write $s=2h+1$.
+Equation~\eqref{eq:half-pell-Q-definition} gives the exact equality
+\begin{equation}\label{eq:half-pell-u-polynomial}
+ u=Q_h(R^2).
+\end{equation}
+
+Reduction of \eqref{eq:half-pell-relaxed} modulo $f$ gives
+\[
+ R^2=D(f^2-1)\equiv1-A^2\pmod f.
+\]
+Equations \eqref{eq:half-pell-Q-complement},
+\eqref{eq:half-pell-u-polynomial}, and the second equality in
+\eqref{eq:half-pell-linear} therefore imply
+\[
+ (-1)^h\psi_A(s)\equiv u\equiv c=\psi_A(p)\pmod f.
+\]
+Squaring and using the doubling identity
+\[
+ \chi_A(2z)=1+2D\psi_A(z)^2
+\]
+gives
+\begin{equation}\label{eq:half-pell-chi-comparison}
+ \chi_A(2s)\equiv\chi_A(2p)\pmod{\chi_A(m)}.
+\end{equation}
+
+Apply Lemma~\ref{lem:signed-chi-new}: for $A>1$ and
+$0<k\le m$, the congruence
+$\chi_A(n)\equiv\pm\chi_A(k)\pmod{\chi_A(m)}$ implies
+$n\equiv\pm k\pmod{2m}$. The positive-sign case also follows
+from the ordinary chi step-down statement with its stronger
+modulus $4m$. Here its comparison-index hypothesis is exactly
+$0<2p\le m$ from \eqref{eq:half-pell-comparison}. Hence
+\begin{equation}\label{eq:half-pell-stepdown}
+ 2s\equiv\pm2p\pmod{2m},\qquad
+ s\equiv\pm p\pmod m,\qquad s\equiv\pm p\pmod c.
+\end{equation}
+The middle implication divides an integer equality
+$2s=\pm2p+2mz$ by two. It does not assume that two is invertible
+in an even residue ring.
+
+Independently, $c\mid R$ because $R=ic^2$. Equations
+\eqref{eq:half-pell-Q-zero} and
+\eqref{eq:half-pell-u-polynomial} give
+\[
+ u\equiv(-1)^h s\pmod c.
+\]
+The first equality in \eqref{eq:half-pell-linear}, together with
+\eqref{eq:half-pell-stepdown}, now yields
+\begin{equation}\label{eq:half-pell-main-congruence}
+ J\equiv\pm p\pmod c.
+\end{equation}
+Both $J$ and $p$ lie strictly between zero and $c$, by
+\eqref{eq:half-pell-preliminary} and Pell growth. Thus either
+$J=p$ or $J+p=c$. The latter is impossible: the psi recurrence
+gives $\psi_A(p)\equiv p\pmod2$ for every integer $A$, whereas
+$J=2r+1$ is odd. Therefore $J+p$ has parity opposite to
+$c=\psi_A(p)$. We have proved
+\begin{equation}\label{eq:half-pell-main-index}
+ p=J,\qquad c=\psi_A(J),\qquad d=\chi_A(J).
+\end{equation}
+This deduction did not assume that $r$ is even. In particular, it
+does not use the subsequent binary decoding circularly.
+
+\subsection{The remaining sufficiency proof}
+
+Once \eqref{eq:half-pell-main-index} is available, the retained
+first-index and ratio arguments recover the first index $r+1$,
+prove $Y_P\ge U^r$ and $a>U^{r+1}$, and use the common-witness
+exponent equation to obtain $U=4^J$. The unchanged fixed value
+$T_L=\psi_4(L)$, gap, and second Pell equations recover the second
+index $L$ and $q=B^L$. The same bounds give
+$n^2\mid\binom{2r}{r}$.
+
+These are exactly the hypotheses and conclusions of
+Section~\ref{sec:affine-radix}. The replaced auxiliary variables
+$o,j$ occur nowhere in these later equations. Since $n^2\mid U$,
+the integers $q$ and then $B$ are powers of two. Neither $b$ nor
+$H$ is required to be a power of two. The unchanged masks recover
+the canonical codes, the three-way physical coordinates, all paired
+rows, and the unit $\delta=1$. They therefore recover the represented
+system at its actual positive input $x$.
+
+The supplied fixed index remains
+\[
+ H=H_0-3,\qquad V=\ell_0(4)+e_0(4)4^L,\qquad
+ T_L=\psi_4(L),\qquad B=H+b+4.
+\]
+The new block adds no index parameter, compiler convention, or
+support requirement.
+
+\subsection{Necessity: parity and positive auxiliary witnesses}
+
+Start with a solution of the represented Diophantine system. Choose
+its canonical physical encoding and all positive coding and Pell
+witnesses as in Section~\ref{sec:affine-radix}, translating the
+fixed index and retaining the factored mask as in
+Sections~\ref{sec:shifted-affine} and \ref{sec:factored-mask}.
+All those choices remain available.
+
+The canonical indicator has zero unit digit, so $B\mid\ell$.
+The integer $g$ also has zero unit digit, so $B\mid g$.
+Since $B$ and $q=B^L$ are even, both packed integers
+\[
+ \begin{aligned}
+ S&=g+q^2(\ell+eq+q^2\sigma),\\
+ T+1&=q^2(1+\theta\lambda)+\ell(\theta q^4-b)
+ \end{aligned}
+\]
+are even. Hence $r=S(n^2-n)+(T+1)(n^2-1)$ is even, and
+\begin{equation}\label{eq:half-pell-necessity-parity}
+ J=2r+1\equiv1\pmod4.
+\end{equation}
+
+Keep the canonical relaxed auxiliary witnesses
+\begin{equation}\label{eq:half-pell-necessity-auxiliary}
+ \begin{gathered}
+ m=2cJ,\qquad f=\chi_A(m),\qquad
+ i_{\rm old}=\frac{\psi_A(m)}{c^2}>0,\\
+ i=Di_{\rm old},\qquad R=ic^2=D\psi_A(m),\qquad K=R^2.
+ \end{gathered}
+\end{equation}
+The quotient is integral: expanding
+$(d+c\sqrt D)^{2c}$, its term with one square root contains
+$2c^2$, while every later square-root term contains at least $c^3$.
+Positivity follows from $m>0$. The Pell norm gives
+\eqref{eq:half-pell-relaxed}. Thus the same $i,f$ can be retained.
+Keep every other canonical witness except $o,j$, and define
+\begin{equation}\label{eq:half-pell-new-witnesses}
+ \begin{gathered}
+ y_{\rm aux}=\psi_R(J),\qquad
+ u=\frac{\chi_R(J)}R=Q_{(J-1)/2}(R^2),\\
+ o=\frac{u-c}{f},\qquad j=\frac{u-J}{c}.
+ \end{gathered}
+\end{equation}
+The division defining $u$ is exact by
+\eqref{eq:half-pell-Q-definition}. Equation
+\eqref{eq:half-pell-necessity-parity} makes $(J-1)/2$ even, so
+\eqref{eq:half-pell-Q-complement} and
+\eqref{eq:half-pell-Q-zero} give
+\[
+ u\equiv\psi_A(J)=c\pmod f,\qquad u\equiv J\pmod c.
+\]
+Both quotients in \eqref{eq:half-pell-new-witnesses} are therefore
+integers.
+
+They are strictly positive. For $R>1$, the positive chi sequence
+is strictly increasing, and its recurrence gives
+\[
+ \chi_R(k+1)>(2R-1)\chi_R(k)\qquad(k\ge1).
+\]
+Since $\chi_R(1)=R$ and $J\ge3$, we obtain
+\begin{equation}\label{eq:half-pell-positive-quotients}
+ \frac{\chi_R(J)}R>(2R-1)^{J-1}
+   >(2A)^{J-1}>\psi_A(J)=c>J.
+\end{equation}
+The middle inequality uses the integer bound $R\ge c^2>A$,
+which implies $2R-1>2A$; the next is the usual strict psi upper
+bound at index $J\ge3$. Thus $o,j>0$, and $y_{\rm aux}>0$ too.
+
+The Pell equation for $(\chi_R(J),\psi_R(J))$ is precisely
+\eqref{eq:half-pell-standard-norm}, hence
+\eqref{eq:half-pell-norm}. The definitions give both equalities
+in \eqref{eq:half-pell-linear}. Every other source equation is
+retained and uses none of the changed auxiliary values. All 35
+supplied unknowns are therefore positive integers. This proves
+necessity without asserting an identity map for the auxiliary
+coordinates, and shows exactly why $J\equiv1\pmod4$ was needed
+only in this direction.
+
+\subsection{The complete arithmetic count}
+
+The former signed block used ten operations:
+\[
+ \begin{aligned}
+ O&=of,& v&=O-d^2,& v_1&=v+1,& L&=vv_1,\\
+ K_1&=K-1,& K_2&=KK_1,\\
+ J_c&=jc,& u&=J+J_c,& U_2&=u^2,& P&=K_2U_2.
+ \end{aligned}
+\]
+The quantities $d^2,K,c,J$ already exist outside this block.
+Replace it by nine operations:
+\begin{equation}\label{eq:half-pell-nine-operations}
+ \begin{aligned}
+ J_c&=jc,& u&=J+J_c,& O&=of,\\
+ u_{\rm rhs}&=c+O,& U_2&=u^2,& Y_2&=y_{\rm aux}^2,\\
+ G&=U_2-Y_2,& L&=KG,& P&=1-Y_2.
+ \end{aligned}
+\end{equation}
+The free tests are $u=u_{\rm rhs}$ and $L=P$. The old block
+has six multiplications and four additions or subtractions; the new
+block has five multiplications and four additions or subtractions.
+Every other primitive remains unchanged. The complete count is
+\[
+ 93-1=92=49\text{ multiplications}+43\text{ additions}.
+\]
+The variable $d$ and its squared register remain in the main norm;
+their absence from the new auxiliary block gives no further saving.
+
+The new intermediates are ordinary integer registers. In fact $G$
+and $P$ in \eqref{eq:half-pell-nine-operations} are negative on
+solutions. Since $u=J+jc>1$, Pell index one is excluded in
+\eqref{eq:half-pell-classification}; thus $y_{\rm aux}>1$ and
+\[
+ u^2-y_{\rm aux}^2=\frac{1-y_{\rm aux}^2}{K}<0.
+\]
+These subtractions are represented by reversed addition equations.
+No positivity condition is imposed on the intermediate gaps;
+all 35 supplied unknowns, including $y_{\rm aux}$, are positive.
+
+The checker writes the source norm with $K_{\rm source}=D(f^2-1)$
+and uses the already computed $K=(ic^2)^2$ in the primitive product.
+The difference of its residuals is exactly
+\[
+ (K-K_{\rm source})(u^2-y_{\rm aux}^2).
+\]
+Its first factor is the independently exact retained equation
+\eqref{eq:half-pell-relaxed}, so this is an acyclic correction.
+It replaces the preceding signed norm's quadratic-factor correction.
+The new linear congruence check is exact, and the geometric and
+second-exponent corrections remain as before.
+
+Appendix~\ref{app:92} gives the complete table of 92 instructions
+and all 23 equality tests. The checker is in
+\file{../verification/}:
+\begin{center}
+\small\file{round35\_1980\_half\_parameter\_pell\_certificate.py}.
+\end{center}
+Its JSON receipt records the full primitive schedule, domains, source
+residuals, and remaining corrections. Those arithmetic checks and the
+positive-witness proof above establish Theorem~\ref{thm:best92}.
+The number 92 is an upper bound; no optimality assertion or new
+compiled Lean theorem is claimed.

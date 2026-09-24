@@ -1,0 +1,262 @@
+% Compose the unit coefficient baseline and relaxed auxiliary norm.
+\section{A certificate of 97 operations}\label{sec:composed-97}
+
+The unit-centered encoding of Section~\ref{sec:unit-center} and the
+relaxed auxiliary norm of Section~\ref{sec:relaxed-auxiliary} compose.
+The arithmetic substitutions are disjoint, but their mathematical
+compatibility also requires an ordered proof: the new coding bounds
+must force a sufficiently large main Pell index before the relaxed
+norm is used, and the Pell conclusions must precede digit decoding.
+
+\begin{theorem}\label{thm:best97}
+Every recursively enumerable subset of the positive integers has an
+admissible fixed index $(V,H,T_L)$ for a system with 34 positive
+unknowns and 22 equations admitting a straight-line certificate of
+97 operations: 54 multiplications and 43 additions. Here
+$T_L=\psi_4(L)$ for the underlying exponent of the index construction.
+The supplied parameters are $(x,V,H,T_L)$, with three fixed index
+parameters besides the positive input $x$. Fixed numerals and
+equality tests are free.
+\end{theorem}
+
+\begin{proof}
+Use the entire construction of Section~\ref{sec:unit-center} for
+the represented system. Compile it into nonnegative primitive
+circuit coordinates with distinct operands and fresh outputs.
+Pair multiplication, addition, copy, zero and final equality rows
+$F$ with their negatives, using targets $2F+\delta^2$. For each
+unit coordinate $X$, introduce $X'$, include the paired copy rows
+$(X-X')\delta$ and $(X'-X)\delta$, and the two unpaired unit rows
+\[
+ X\delta-\delta^2,\qquad X\delta-XX'.
+\]
+Place the special target $\delta^2$ first, and include the direct
+guard $2u\delta-x^2+\delta^2$. The actual input square is used in
+the guard, independently of any copy. Every divided target
+coefficient belongs to $\{-1,0,1\}$.
+
+With $m$ positive-weight coordinates and $s$ targets, use
+\[
+\begin{gathered}
+ v_i=3^i\quad(0\le i<m),\qquad v_0=1\text{ for }\delta,
+ \qquad M=3^{m-1},\qquad d_0=4M+1,\\
+ t_j=(s+1)d_0+2M+jd_0\quad(0\le j<s),\\
+ t_*=2sd_0+2M,\qquad K_0=t_*+1,\qquad c_*=m+s+1.
+\end{gathered}
+\]
+The input has weight zero. Include a dummy coordinate at each $t_j$.
+The complementary polynomial $\mathcal D$ satisfies
+$[T^{t_j}]\mathcal D(T)\mathcal C(T)^2=G_j$ exactly, by the proved
+monomial and row separation. Form
+\[
+ \ell_0(T)=\sum_iT^{v_i}+\sum_jT^{t_j},\qquad
+ e_0(T)=\sum_{j=0}^{K_0-1}T^j+\mathcal D(T).
+\]
+Choose a power of two $L>3K_0+2$ and a power of two
+\begin{equation}\label{eq:composed97-index}
+ \begin{gathered}
+ H>\max\{2\,4^{2L+1},\ 4^{t_*+3}\,4c_*^2,\ 3L,\ 16\},\\
+ V=\ell_0(4)+e_0(4)4^L,
+ \qquad T_L=\psi_4(L).
+ \end{gathered}
+\end{equation}
+These three index values use the complete new coordinate and target
+list. They are fixed independently of $x$; the underlying $L$ is
+not an additional supplied parameter. The digits of $e_0$ are in
+$\{0,1,2\}$, with unit digit one. The special target has no incoming
+carry by the support proof in Section~\ref{sec:unit-center}.
+
+Retain the coding equations and packing
+\begin{align*}
+ B&=Hb^2,&\mathcal C&=x+g,&b&=x+\beta,\\
+ \lambda(B-1)&=q^2-1,&\theta+4&=B,&n&=q^8,\\
+ S_2&=\ell+eq=V+t\theta,&S_2+\alpha&=q^2,\\
+ \Omega&=\lambda-e>0,&
+ S_3&=\theta\lambda q-\Omega\mathcal C^2=\sigma>0,\\
+ S&=g+q^2(S_2+q^2S_3),\\
+ T+1&=q^2(1+\theta\lambda)-(b-1)\ell+\theta\ell q^4,\\
+ r&=S(n^2-n)+(T+1)(n^2-1).
+\end{align*}
+In the Pell block write $A=a+4$ and $D=A^2-1$. Replace only its
+auxiliary norm by
+\begin{equation}\label{eq:composed97-auxiliary}
+ (ic^2)^2=D(f^2-1).
+\end{equation}
+The doubled signed norm still uses
+\begin{equation}\label{eq:composed97-signed}
+ \begin{gathered}
+ v=of-d^2,\qquad K_{\mathrm{aux}}=D(f^2-1),\qquad J=2r+1,\\
+ v(v+1)=K_{\mathrm{aux}}(K_{\mathrm{aux}}-1)(J+jc)^2.
+ \end{gathered}
+\end{equation}
+The fixed index equation remains $\kappa=T_L+\Delta a$, and every
+other Pell source equation is unchanged. The integer register $v$
+may be signed; every supplied unknown, including $o$, is positive.
+
+Before using any auxiliary Pell equation or internal target,
+the positive packed bound and geometry give
+\[
+ e<q,\quad\ell<q^2,\quad B\le q^2,\quad
+ q>4b\ge8,\quad3L\le B\le n.
+\]
+Also $\Omega\ge1$ implies
+$\mathcal C^2<\theta\lambda q<3q^3<q^4$ and $0<S_3<q^4$.
+The unit-center preliminary borrow argument consequently proves
+\begin{equation}\label{eq:composed97-ranges}
+ 0<S<n,\qquad0<T+1\le n,\qquad
+ n\le r\le2n^3-2n^2<2n^3.
+\end{equation}
+Put $U=wn^2$, $Y_P=sn^2$, $a=Y_P(U+1)$ and $P=2UY_P^2+1$.
+Then $n\ge64$, $U,Y_P\ge n^2$, $UY_P>r+1$ and $a>n^4>J$.
+The positive interval and first-index equation give $c>J$.
+
+The unchanged main norm and triangular first norm give positive
+indices $p,t$ such that
+\[
+ c=\psi_A(p),\quad d=\chi_A(p),\qquad
+ k=\psi_P(t),\quad2\tau+1=\chi_P(t).
+\]
+Since $P\equiv1\pmod{UY_P}$ and $k=r+1+hUY_P$,
+$t\equiv r+1\pmod{UY_P}$. The inequality $0<r+1<UY_P$ therefore
+gives $t\ge r+1$, without knowing the main index.
+Moreover
+\[
+ P-A=UY_P(2Y_P-1)-Y_P-3>0.
+\]
+If $p\le r+1$, then
+\[
+ c\le(2A)^{p-1}\le(2A)^r
+   <(2P-1)^r\le\psi_P(t)=k,
+\]
+contradicting $c=kY_P+\eta>k$. Thus
+\begin{equation}\label{eq:composed97-large-main-index}
+ p\ge r+2\ge66,
+ \qquad c=\psi_A(p)>A^6>A D^2.
+\end{equation}
+The growth bound $\psi_A(p)\ge(2A-1)^{p-1}$ proves the second
+inequality. Neither the relaxed norm, the signed norm nor an
+exponential equation has been used here.
+
+Lemma~\ref{lem:relaxed-pell-integrality} now applies to
+\eqref{eq:composed97-auxiliary} and
+\eqref{eq:composed97-large-main-index}. Its integer-coefficient
+fundamental-unit and strong-divisibility argument supplies an index
+$m_0$ with
+\begin{equation}\label{eq:composed97-recovered-auxiliary}
+ f=\chi_A(m_0),\qquad p\mid m_0,\qquad c\mid m_0,
+ \qquad ic^2=D\psi_A(m_0).
+\end{equation}
+These are exactly the needed conclusions; the stronger old
+divisibility $c^2\mid\psi_A(m_0)$ is not asserted.
+
+Equation \eqref{eq:composed97-auxiliary} identifies
+$K_{\mathrm{aux}}=(ic^2)^2$, so the signed auxiliary parameter
+$G=2K_{\mathrm{aux}}-1$ is $-1$ modulo $c$. In conjunction with
+\eqref{eq:composed97-recovered-auxiliary}, the doubled signed-index
+argument has all its hypotheses, including
+$0<2p\le c\le m_0$. It gives $J\equiv\pm p\pmod c$.
+Both indices lie strictly between zero and $c$. The possibility
+$J+p=c$ contradicts odd $J$ and $\psi_A(p)\equiv p\pmod2$.
+Hence $p=J$, and
+\[
+ c=\psi_A(J),\qquad d=\chi_A(J).
+\]
+
+The subsequent common-witness proof proceeds in its established
+order. It recovers the exact first index, proves $Y_P\ge U^r$ and
+$a>U^{r+1}$, and then obtains $U=4^J$ from the first exponent
+equation. The fixed value $T_L=\psi_4(L)$, reduced modulo $a$,
+determines the second Pell index as $L$: both possible residues lie
+in $(0,a)$ because $a>4^{3J}$. Its exponent comparison gives
+$q=B^L$. The necessary bounds follow from
+\eqref{eq:composed97-ranges} and $3L\le B\le n\le r$.
+Finally the unchanged upper ratio and binomial fractional-part
+estimates give
+\begin{equation}\label{eq:composed97-binomial}
+ b,B,q\text{ are powers of two},\qquad
+ q=B^L,\qquad n^2\mid\binom{2r}{r}.
+\end{equation}
+These conclusions precede coefficient decoding.
+
+Now $\lambda\ge B^{2L-1}\ge Bq>2q$ and $q\ge B^2>2B$.
+Thus $\Omega=\lambda-e>\lambda/2$ and
+\[
+ \mathcal C^2<2\theta q<2Bq<q^2,
+ \qquad g<\mathcal C<q.
+\]
+The first two masks remove their preliminary borrow and recover the
+combined coefficient polynomial up to its quotient alias. They
+also bound each decoded coordinate by $b$. Before identifying
+$\delta$, positivity of $x,g$ gives $\mathcal C(1)\ge2$.
+With $A_{\mathcal C}=\mathcal C(1)^2$, the high plateau of
+$\lambda\mathcal C^2$ has height $A_{\mathcal C}$. The high-mask
+digits of $(B-4)a_{\mathrm{al}}$ are consequently bounded by
+$A_{\mathcal C}+4\le4A_{\mathcal C}$. The bound on $H$ in
+\eqref{eq:composed97-index} and evaluation at four force the alias
+to vanish, by the complete argument in Section~\ref{sec:unit-center}.
+Both codes are canonical.
+
+The first special target has incoming carry zero and forces
+$\delta\in\{0,1\}$. The direct guard excludes zero before any
+copy equation is used. At $\delta=1$, paired rows force $F=0$;
+unit copies agree and the two unit rows force $X=1$. All original
+circuit equations therefore hold at the actual input $x$. This
+proves sufficiency of the composition.
+
+For necessity, take a solution of the represented system, its
+circuit values, $\delta=1$, unit copies $X'=X=1$, and zero dummy
+digits. Put $u=\lceil x^2/2\rceil$, so the guard target is one or
+two. Choose a power-of-two $b$ larger than every coordinate and
+use the canonical codes, $B=Hb^2$, $q=B^L$ and $n=q^8$.
+Section~\ref{sec:unit-center} supplies all positive coding witnesses,
+the three masks, \eqref{eq:composed97-ranges} and
+\eqref{eq:composed97-binomial} for the newly calculated $r$.
+
+Construct the full doubled-index Pell witnesses as in
+Section~\ref{sec:composed-99}. Choose $U=4^J$,
+$Y_P=\lfloor(U+1)^{2r}/U^r\rfloor$, $a=Y_P(U+1)$, the main and
+first Pell coordinates, positive interval witnesses, the second
+coordinates at $L$, and the positive exponent quotients. All these
+choices use the new fixed value $T_L=\psi_4(L)$. In particular
+$w=U/n^2$, $s=Y_P/n^2$ and
+$\Delta=(\psi_{a+4}(L)-\psi_4(L))/a$ are positive integers.
+Its auxiliary construction chooses
+\[
+ m_0=2cJ,\qquad f=\chi_A(m_0),\qquad
+ i_{\mathrm{old}}=\frac{\psi_A(m_0)}{c^2}>0,
+\]
+and supplies positive $o,j$ for the doubled signed norm. Replace
+only the auxiliary witness
+\[
+ i=D i_{\mathrm{old}}>0.
+\]
+Then
+\[
+ (ic^2)^2=D^2\psi_A(m_0)^2=D(f^2-1),
+\]
+while the mathematical value $K_{\mathrm{aux}}=D(f^2-1)$ is
+unchanged. Consequently the same $f,o,j$ still satisfy the signed
+equation. The witness $i$ occurs nowhere else. Every one of the
+34 unknowns has therefore received a positive integer value.
+
+For the count, the unit-centered encoding saves one addition from
+the 99-operation certificate, and the relaxed auxiliary norm saves
+one multiplication from that same certificate. The full checker
+\texttt{round29\_1980\_composed\_certificate.py} verifies that both
+orders give the same 97 primitive instructions and the same 22
+source residuals. Relative to 99, only the packed equation,
+auxiliary norm, and positive-$\sigma$ and positive-$\Omega$
+equations change. Hence the final count is $54+43=97$.
+
+The three residual corrections are acyclic: the geometric and
+second-exponent corrections use the independently exact equation
+$\theta+4=B$, while the signed norm correction is
+\[
+ -F_{16}(K_{\mathrm{source}}+K_{\mathrm{calculated}}-1)(J+jc)^2,
+ \qquad F_{16}=(ic^2)^2-D(f^2-1),
+\]
+whose auxiliary equality is checked exactly. Each subtraction is
+one reversed addition equation with a free integer intermediate.
+Thus 97 is the full addition/multiplication certificate length for
+the proved positive-domain system. No optimality is claimed.
+\end{proof}

@@ -1,0 +1,862 @@
+{
+  "status": "PASS_UNSCALED_PELL_COORDINATE_COUNTEREXAMPLES",
+  "review": "Author and two independent complete proof/source/dependency reviews and fresh verification runs pass.",
+  "sources": [
+    {
+      "sign": 1,
+      "operations": 42,
+      "multiplications": 24,
+      "additions": 18,
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "s",
+        "U0",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux"
+      ],
+      "parameters": [
+        "D0",
+        "r"
+      ],
+      "positive_auxiliary_count": 16,
+      "equations": 10,
+      "dag": [
+        [
+          "sn2",
+          "*",
+          "s",
+          "D0"
+        ],
+        [
+          "UM",
+          "*",
+          "U0",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "U0"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "hpm1",
+          "*",
+          "h",
+          "UM"
+        ],
+        [
+          "R11",
+          "+",
+          "r1",
+          "hpm1"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "U0",
+          "cam2"
+        ],
+        [
+          "six_a",
+          "*",
+          6,
+          "a"
+        ],
+        [
+          "modulus",
+          "+",
+          "six_a",
+          8
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "modulus"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "discriminant",
+          "+",
+          "a_square",
+          "modulus"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "discriminant",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "discriminant",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "+",
+          "c",
+          "of"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "+",
+          "tr1",
+          "jc"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "index": 0,
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "D0**2*U0*k**2*s**2*(D0**2*U0*s**2 + 1) - tau*(tau + 1)",
+          "correction": "0"
+        },
+        {
+          "index": 1,
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "-D0*k*s + c - eta",
+          "correction": "0"
+        },
+        {
+          "index": 2,
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "index": 3,
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-D0*U0*h*s + k - r - 1",
+          "correction": "0"
+        },
+        {
+          "index": 4,
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "-D0*s*(U0 + 1) + a",
+          "correction": "0"
+        },
+        {
+          "index": 5,
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-U0 - a*c + d - ga*(6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 6,
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "index": 7,
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 8,
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j + 2*r + 1)**2)*(a**2 + 6*a + 8) - 1",
+          "correction": "(-y_aux**2 + (c*j + 2*r + 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+        },
+        {
+          "index": 9,
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j - c - f*o + 2*r + 1",
+          "correction": "0"
+        }
+      ],
+      "scope": "Only U=w*D0 is removed; U0 is a positive supplied coordinate. Y=s*D0 and every other source polynomial remain."
+    },
+    {
+      "sign": -1,
+      "operations": 42,
+      "multiplications": 24,
+      "additions": 18,
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "s",
+        "U0",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux"
+      ],
+      "parameters": [
+        "D0",
+        "r"
+      ],
+      "positive_auxiliary_count": 16,
+      "equations": 10,
+      "dag": [
+        [
+          "sn2",
+          "*",
+          "s",
+          "D0"
+        ],
+        [
+          "UM",
+          "*",
+          "U0",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "U0"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "hpm1",
+          "*",
+          "h",
+          "UM"
+        ],
+        [
+          "R11",
+          "+",
+          "r1",
+          "hpm1"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "U0",
+          "cam2"
+        ],
+        [
+          "six_a",
+          "*",
+          6,
+          "a"
+        ],
+        [
+          "modulus",
+          "+",
+          "six_a",
+          8
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "modulus"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "discriminant",
+          "+",
+          "a_square",
+          "modulus"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "discriminant",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "discriminant",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "-",
+          "of",
+          "c"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "-",
+          "jc",
+          "tr1"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "index": 0,
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "D0**2*U0*k**2*s**2*(D0**2*U0*s**2 + 1) - tau*(tau + 1)",
+          "correction": "0"
+        },
+        {
+          "index": 1,
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "-D0*k*s + c - eta",
+          "correction": "0"
+        },
+        {
+          "index": 2,
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "index": 3,
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-D0*U0*h*s + k - r - 1",
+          "correction": "0"
+        },
+        {
+          "index": 4,
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "-D0*s*(U0 + 1) + a",
+          "correction": "0"
+        },
+        {
+          "index": 5,
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-U0 - a*c + d - ga*(6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 6,
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "index": 7,
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+          "correction": "0"
+        },
+        {
+          "index": 8,
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j - 2*r - 1)**2)*(a**2 + 6*a + 8) - 1",
+          "correction": "(-y_aux**2 + (c*j - 2*r - 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+        },
+        {
+          "index": 9,
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j + c - f*o - 2*r - 1",
+          "correction": "0"
+        }
+      ],
+      "scope": "Only U=w*D0 is removed; U0 is a positive supplied coordinate. Y=s*D0 and every other source polynomial remain."
+    }
+  ],
+  "recurrence": {
+    "exact_direct_comparisons": 256,
+    "indices": [
+      1,
+      64
+    ],
+    "scope": "Independent direct binomial sums check the modular Horner recurrence."
+  },
+  "small": {
+    "r": 28,
+    "D0": 119,
+    "scale_factorization": [
+      7,
+      17
+    ],
+    "main_index": 57,
+    "U_bits": 91,
+    "Y_bits": 2530,
+    "Y_mod_scale": 0,
+    "U_mod_scale": 48,
+    "materialized_positive_coordinates": 11,
+    "coordinate_bits": {
+      "U0": 91,
+      "s": 2523,
+      "a": 2620,
+      "c": 146773,
+      "d": 149393,
+      "k": 144244,
+      "h": 141624,
+      "ga": 144152,
+      "tau": 149393,
+      "eta": 144206,
+      "zeta": 144244
+    },
+    "exact_materialized_equations": 7,
+    "index_parity": 0,
+    "unmaterialized_positive_auxiliaries": [
+      "f",
+      "i",
+      "j",
+      "o",
+      "y_aux"
+    ],
+    "scope": "The remaining five auxiliaries follow from the exact fixed-plus canonical construction proved in the note.119 is not a ninth power; this is a kernel counterexample, not a tag-history tuple."
+  },
+  "ninth_power": {
+    "q": 6,
+    "D0": 10077696,
+    "r": 32766,
+    "main_index": 65533,
+    "index_parity": 0,
+    "Y_mod_2_power_20": 581632,
+    "exact_Y_valuation_2": 13,
+    "exact_central_valuation_3": 9,
+    "exact_Y_valuation_3": 9,
+    "Y_divisible_by_q9": true,
+    "modular_horner_steps": 32766,
+    "exact_scale_bound_checks": true,
+    "scope": "Canonical Y is not materialized. Its divisibility follows from the exact modular recurrence and Kummer/Legendre at3. All16 positive auxiliaries exist by the same canonical construction. This does not supply any tag outer tuple, compiled-width geometry or raw-input false positive."
+  },
+  "odd_ninth_power": {
+    "q": 7,
+    "D0": 40353607,
+    "r": 28824004,
+    "main_index": 57648009,
+    "index_parity": 0,
+    "Y_mod_7_power_11": 1856265922,
+    "exact_Y_valuation_7": 9,
+    "Y_divisible_by_q9": true,
+    "packed_value": 8647201,
+    "positive_bound_slack": 11529603,
+    "exact_index_offset_and_bound": true,
+    "modular_horner_steps": 28824004,
+    "native_direct_crosschecks": 448,
+    "native_python_large_crosschecks": 2,
+    "crosscheck_results": {
+      "32766_mod_2_power_20": 581632,
+      "84034_mod_7_power_8": 5411854
+    },
+    "compiler_version": "g++.EXE (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r2) 16.1.0",
+    "helper_source": "unscaled_pell_coordinate_modular.cpp",
+    "helper_sha256": "e2ed215fbefbe51c0911e45f28608b5f6f01254a427a745d7dce996e1e2d4c25",
+    "compile_command": [
+      "g++.EXE",
+      "-O3",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "Papers\\verification\\unscaled_pell_coordinate_modular.cpp",
+      "-o",
+      "tmp\\unscaled_pell_coordinate\\modular.exe"
+    ],
+    "reproduce_arguments": [
+      "28824004",
+      "7",
+      "11"
+    ],
+    "scope": "Odd ninth-power scale and the exact scalar index-offset equations are both satisfied. The full positive42 kernel exists by the same canonical formulas. No tag fields or transports are supplied; q7 violates the retained tag geometry implication3|q."
+  },
+  "proof": "../1980/EXPLORATION_UNSCALED_PELL_COORDINATE.md",
+  "scope": "Rejected isolated42-operation kernel deletion, including an even-index q9 scale. Neither the43 kernel nor the complete91 tag source is refuted."
+}

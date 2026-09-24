@@ -1,0 +1,265 @@
+% New input section; independent successor to the 120-step construction.
+\section{A coefficient normalization allowing shorter masks}
+\label{sec:short-masks}
+
+The 120-step system still pays for two powers that can be removed by
+changing the coefficient encoding. Its first coefficient code has a
+nonzero digit in position $L$, and the packing shifts the second code by
+$q^2$. We construct a quartic representation whose digit in position $L$
+is zero. Both coefficient codes can then be bounded by $q$, their packing
+uses a shift by $q$, and the block widths can be reduced to
+$q,q^2,q^5$. Their product is $q^8$; only $q^2,q^4,q^8$ need be computed.
+
+The normalization is part of the admissible index, not an assumption
+about an arbitrary polynomial. In particular, simply deleting the leading
+digit of the old code would change the coefficient being tested. The
+construction below makes that digit zero while preserving the represented
+set.
+
+\subsection{Making the leading coefficient digit vanish}
+
+Start with the quadratic-system representation underlying the universal
+pair $(58,4)$, and shift its witnesses to nonnegative coordinates. Write
+its residuals as $F_i(X,z_1,\ldots,z_{58})$, with constant coefficients
+$c_i$. Introduce a nonnegative witness $h$ and put
+\[
+ F_i^h=F_i-c_i+c_ih,
+ \qquad
+ S=\sum_i(F_i^h)^2+(Xh-X)^2.
+\]
+The polynomial $S$ has degree at most four and zero constant coefficient.
+For $X>0$, $S=0$ forces $h=1$ and hence is equivalent to the original
+system. Introduce a further nonnegative witness $\sigma$ and choose a
+power of two $z\ge4$. The polynomial to be encoded is
+\begin{equation}
+ R=24S+z(\sigma-1).\label{eq:short-normalization}
+\end{equation}
+For nonnegative integral witnesses, $R=0$ is equivalent to $S=0$ and
+$\sigma=1$: values $\sigma\ge2$ make $R$ positive, while $\sigma=0$
+would require $24S=z$, impossible because $3$ does not divide a power of
+two. Thus this remains a universal quartic representation for positive
+inputs. It now uses $\nu=60$ witness coordinates, including $h,\sigma$.
+These are coordinates encoded in $g$, not additional unknowns of the
+final twenty-equation system.
+The forced coordinate $\sigma=1$ ensures that the actual witness code
+$g$ is positive.
+
+For multiindices $I=(i_0,\ldots,i_\nu)$ of total degree at most four,
+put
+\[
+ c_I=\frac{4!}{i_0!\cdots i_\nu!(4-\sum_j i_j)!},
+ \qquad R=\sum_I c_IP_I X^{i_0}z_1^{i_1}\cdots z_\nu^{i_\nu}.
+\]
+Every $c_I$ divides 24. Consequently the contribution of $24S$ to every
+$P_I$ is integral; the new linear coefficient of $\sigma$ contributes
+$z/4$, also integral. Choose $z$ so large that the fixed contributions
+from $24S$ have absolute value less than $z$. The variable $\sigma$ is
+fresh and hence these contributions do not depend on $z$. We obtain
+\begin{equation}
+ P_{\boldsymbol0}=-z,
+ \qquad -z<P_I<z\quad(I\ne\boldsymbol0).
+ \label{eq:short-coefficients}
+\end{equation}
+The convention here encodes $R$ directly as $\sum c_IP_I$ times the
+monomials. There is no further factor of 24 in the extracted coefficient.
+
+Set
+\[
+ Z=2z,\qquad M=5^{60},\qquad L=5^{64}=625M,
+ \qquad w(I)=i_0+i_1 5+\cdots+i_\nu5^\nu.
+\]
+Then $w(I)\le4M<L$, and distinct $I$ have distinct weights by uniqueness
+of base-five digits. Define
+\begin{align*}
+ \ell_0(B)&=\sum_{j=1}^{\nu}B^{5^j},\\
+ e_0(B)&=\sum_I(z+P_I)B^{L-w(I)},\\
+ V&=e_0(Z)+\ell_0(Z)Z^L.
+\end{align*}
+The leading digit of $e_0$ vanishes by
+\eqref{eq:short-coefficients}, so $\deg e_0\le L-1$. All its other
+digits lie in $[0,Z)$; the two parts of the packed polynomial
+$e_0(B)+\ell_0(B)B^L$ have disjoint positions.
+
+Choose a power of two $H$ with
+\begin{equation}
+ H>\max\{2Z^{2L+1},\ Z(\nu+2)^4,\ 3L,\ 64\}.
+ \label{eq:short-H}
+\end{equation}
+An index $(Z,V,H)$ is now called admissible if constructed by these rules
+from a quadratic-system representation. Its three components remain
+fixed parameters. The complete parameter list is $x,Z,V,H$, as in the
+preceding packed system, although this is a different class of admissible
+indices.
+
+\subsection{The shortened system and its certificate}
+
+Keep the 32 positive unknowns of $\Sigma_{\rm pack}$ and the
+abbreviations $B=Hb^4$, $C=1+xB+g$. Replace the coding equations by
+\begin{align}
+ b&=x+\beta,& e+\ell C^4+\alpha&=q,\label{eq:short-bound}\\
+ \lambda+q^2&=1+\lambda B,&\theta+Z&=B,\label{eq:short-geometric}\\
+ e+\ell q&=V+t\theta,&n&=q^8.\label{eq:short-packed}
+\end{align}
+Use the following abbreviations in the equation defining $r$:
+\begin{align*}
+ S_3&=(2e-Z\lambda)C^4+B\lambda(1+q^2),\\
+ S&=g+q(e+\ell q+q^2S_3),\\
+ T+1&=q-(b-1)\ell+\theta\lambda q+(B-2)q^4,\\
+ r&=S(n^2-n)+(T+1)(n^2-1).
+\end{align*}
+Retain the remaining Pell equations, including $c=\kappa+\varphi$,
+and use the new fixed exponent $L$ in
+$\kappa=L+\Delta(a-1)$. The exponent-replacement congruence still uses
+base $B$. There are twenty equations; all abbreviations are charged in
+the certificate.
+
+\begin{theorem}\label{thm:short118}
+For every admissible index just defined, the shortened system represents
+the same recursively enumerable set as the quadratic system from which
+the index was constructed. It has a certificate of 118 instructions:
+65 multiplications and 53 additions, followed by twenty equality tests.
+\end{theorem}
+
+\begin{proof}
+We first verify the hypotheses needed to apply the Pell lemmas without
+assuming the exponential equation. Equation~\eqref{eq:short-bound}
+gives
+\[
+ e<q,\qquad \ell<q,\qquad C^4<q,
+ \qquad (b-1)\ell<\ell C^4<q.
+\]
+Since $C>B>b\ge2$, it follows that $q>B$ and $g<q$. Equation
+\eqref{eq:short-geometric} gives $\lambda>q$, so, writing $z=Z/2$,
+\[
+ 0<D_0=z\lambda-e<z\lambda,
+ \qquad 2C^4D_0<2z\lambda q<B\lambda q.
+\]
+The blocks therefore satisfy
+\begin{gather*}
+ 0<g<q,\qquad 0\le q-1-(b-1)\ell<q,\\
+ 0<e+\ell q<q^2,\qquad
+ 0<(B-Z)\lambda<(B-1)\lambda=q^2-1,\\
+ 0<S_3<B\lambda(1+q^2)
+      =\frac{B(q^4-1)}{B-1}<2q^4<q^5,\\
+ 0<(B-2)q<q^2<q^5.
+\end{gather*}
+Thus their respective widths are $N_1=q$, $N_2=q^2$, $N_3=q^5$;
+their product is $n=q^8$. The equation for $r$ gives $r\ge n^2-1\ge n$,
+and \eqref{eq:short-H} yields
+$3<3L\le B<q\le n\le r$. The elementary Pell gap restores the
+stronger inequality required by Lemma~\ref{lem:226}. The Pell lemmas
+now give $b\pow2$, $q=B^L$, and the central-binomial divisibility.
+Since $H$ is a power of two, the block radices are powers of two, and the
+three separate no-carry conditions follow.
+
+Apply \cite[Lemma~2.9]{J82} to $Y=e+\ell q$ with digit base $Z$ and
+$m=k=2L$. The polynomial
+\[
+ F(B)=e_0(B)+\ell_0(B)B^L
+\]
+has degree at most $L+M<2L$, digits less than $Z$, and $F(Z)=V$.
+The congruence in \eqref{eq:short-packed}, the bound $Y<q^2=B^{2L}$,
+the mask $(B-Z)\lambda$, and \eqref{eq:short-H} supply the lemma's
+hypotheses. Hence $Y=F(B)$. The supplied and intended $e,\ell$ all lie
+in $[0,q)$, so quotient-and-remainder uniqueness gives $e=e_0(B)$ and
+$\ell=\ell_0(B)$. The first mask identifies the witness digits of $g$
+and bounds them by $b$.
+
+To identify what the last mask tests, regard $B$ temporarily as a formal
+base. The coefficient of $B^L$ in
+\[
+ C^4(e_0(B)-z\lambda)
+\]
+is exactly $R$ evaluated at the encoded tuple. Indeed, the monomial
+exponent $w(I)$ in $C^4$ has coefficient $c_I$ times its monomial value;
+the complementary digit of $e_0-z\lambda$ is $P_I$. This includes
+$I=\boldsymbol0$, where that digit is $-z$, precisely the constant
+coefficient in \eqref{eq:short-normalization}.
+
+Every coefficient of $e_0-z\lambda$ has absolute value at most $z$.
+Thus every coefficient of the product has absolute value less than
+$z((\nu+2)b)^4<B/2$. Its degree is at most $2L-1+4M<3L$.
+The offset $(B/2)\lambda(1+q^2)$ supplies the digit $B/2$ at every
+position below $4L$, preventing carries throughout. The third no-carry
+condition therefore tests, by \cite[Lemma~2.8]{J82}, whether the
+coefficient $R$ is zero. The equivalence following
+\eqref{eq:short-normalization} proves soundness.
+
+Conversely, take a solution of the original quadratic system, set
+$h=\sigma=1$, and choose a power-of-two $b$ greater than the input and
+all sixty witnesses. Form the intended codes using $B=Hb^4$ and
+$q=B^L$. Their bounds are
+\[
+ e_0(B)<ZB^{L-1},\qquad \ell_0(B)<2B^M,
+ \qquad C<2bB^M.
+\]
+Because $B>2Z$, the first is less than $q/2$. Also
+\[
+ \ell C^4<32b^4B^{5M}
+       <\tfrac12 B^{5M+1}\le\tfrac12q,
+\]
+using $H>64$ and $L=625M\ge5M+1$. Consequently the new
+$\alpha=q-e-\ell C^4$ is positive. The packed polynomial $F$ has
+nonnegative digits and positive degree, so $F(B)>F(Z)$ and
+$t=(F(B)-F(Z))/(B-Z)>0$. The coordinate $\sigma=1$ ensures $g>0$.
+All remaining witnesses follow from the same digit and Pell necessity
+constructions with the new base and exponent.
+
+For the count, replace the three instructions computing $e\ell$,
+$(e\ell)C^2$ and addition of $\alpha$ by the three instructions
+computing $\ell C^4$, addition of $e$, and addition of $\alpha$.
+This exchanges one multiplication for one addition but preserves the
+length. All packing formulas retain their previous instruction counts.
+The power chain now consists only of $q^2,q^4,q^8$; the instructions
+for $q^3$ and $q^{16}$ disappear. This reduces 120 to 118.
+
+The exact verifier checks all twenty residuals. Its shared (E7)
+calculation records the adapted identity
+\[
+ F_{7,\mathrm{new}}=F_7+(\lambda F_3-F_2)q(n^2-1),
+\]
+where $F_2,F_3$ now refer to
+\eqref{eq:short-geometric}. Thus the symbolic check accounts for the
+dependence on the preceding equations as well as the operation count.
+\end{proof}
+
+\begin{corollary}\label{thm:best114}
+With the same admissible index $(Z,V,H)$, the shortened system together
+with the signed Pell replacement of Proposition~\ref{lem:signed-pell} and the
+linear ratio replacement of Proposition~\ref{lem:linear-ratio} has a
+114-instruction certificate: 63 multiplications and 51 additions,
+followed by 21 equality tests. It has 33 positive unknowns and the four
+parameters $x,Z,V,H$, and defines the same recursively enumerable set.
+\end{corollary}
+
+\begin{proof}
+Both Pell replacements apply to the shortened system: the relevant
+equations retain their form, and the bounds $q>B>b\ge2$, $n=q^8\ge2$
+and $a\ge20r$ supply their hypotheses. Their positive-domain equivalences
+therefore compose with Theorem~\ref{thm:short118}. The final certificate
+is independently checked by
+\file{round5\_1980\_certificate.py}; its exact residual checks and
+instruction histogram give the asserted 114 instructions and 21 tests.
+The linear ratio replacement adds one positive unknown and one equation.
+\end{proof}
+
+For comparison, applying the three independent changes in this order gives:
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Construction & Multiplications & Additions & Total\\
+\midrule
+Packed encoding of Theorem~\ref{thm:120} & 68 & 52 & 120\\
+Shorter masks & 65 & 53 & 118\\
+Also the signed Pell parameter & 65 & 51 & 116\\
+Also the positive interval & 63 & 51 & 114\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is a further verified upper bound, not an assertion of minimality.
+The choice $L=5^{64}$ also makes the fixed numeral inexpensive to
+generate: after $2=1+1$, $4=2+2$, $5=4+1$, six successive squarings
+give $5^2,5^4,\ldots,5^{64}$. Thus, if $x,Z,V,H$ remain supplied
+parameters while $2,4,5,L$ must be generated from $1$, nine additional
+instructions suffice, giving a total of 123.

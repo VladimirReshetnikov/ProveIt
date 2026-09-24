@@ -44,7 +44,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction; and [`SurrealNumbers/`](Algebra/SurrealNumbers/), the merged Surreal project: research reports on surreal and surcomplex numbers and omnific integers, with a Lean library for the actual surreal field. |
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities; Fabius-function definitions, exact dyadic arithmetic, and paper statements. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; an exact `4.5235` upper-bound certificate for Klarner's polyomino growth constant; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
-| [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem) and coarse Turing degrees (the failure of C1; admitting published results, see below); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
+| [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem) and coarse Turing degrees (the failure of C1; admitting published results, see below); Hilbert's tenth problem (MRDP in both directions, universal Diophantine equations, and corrected editions of six articles by J. P. Jones); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`; and [`Cardinals/`](SetTheory/Cardinals/), the merged Cardinals project: exacting and cover-exacting large cardinals (admitting published results; see below), with further research reports. |
@@ -181,6 +181,11 @@ requirement to build Lean one module at a time.
   and a conditional constructive solution of Post's problem. Its second Lean
   library, `CoarseDegrees`, refutes the coarse least-degree statement C1 three
   ways, conditional on admitted published theorems.
+- [Hilbert's tenth problem](Computability/HilbertTenthProblem/README.md):
+  MRDP in both directions (`Diophantine.mrdp`, `Diophantine.mrdp_iff`), the
+  universal pair `(58, 4)`, prime-representing polynomials, and the Jones
+  articles of 1974–1984 formalized statement by statement, next to corrected
+  editions of the six articles with editorial notes on every discrepancy.
 
 ## Lean workspace
 
@@ -294,6 +299,7 @@ lake build +BusyBeaver.Mathlib
 lake build +TuringDegrees
 lake build +TuringDegrees.Audit
 lake build CoarseDegrees          # admits published results; see "Trust and status"
+lake build Diophantine            # Hilbert's tenth problem (Jones's articles, MRDP)
 ```
 
 These projects also have project-local Lake files for focused builds:

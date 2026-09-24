@@ -1,0 +1,750 @@
+{
+  "status": "ARITHMETIC_PASS_CONDITIONAL_BASE_THREE_COMPONENT",
+  "arithmetic_status": "PASS",
+  "universality_status": "NOT_CLAIMED",
+  "operations": 49,
+  "outer_operations": 6,
+  "retained_pell_operations": 43,
+  "histogram": {
+    "+": 15,
+    "-": 5,
+    "*": 29
+  },
+  "primitive_histogram": {
+    "+": 20,
+    "*": 29
+  },
+  "core_histogram": {
+    "*": 25,
+    "+": 15,
+    "-": 3
+  },
+  "parameters": [
+    "q",
+    "P0"
+  ],
+  "positive_unknowns": [
+    "a",
+    "c",
+    "d",
+    "f",
+    "h",
+    "i",
+    "j",
+    "k",
+    "o",
+    "r",
+    "s",
+    "w",
+    "tau",
+    "eta",
+    "zeta",
+    "ga",
+    "y_aux"
+  ],
+  "unknown_count": 17,
+  "input_domains": {
+    "q": "integer >=2",
+    "P0": "integer,0<=P0<q^4",
+    "core_witnesses": "positive integers",
+    "intermediate_registers": "integers"
+  },
+  "converse_extra_hypotheses": "q is a power of three; P0 is ternary Boolean and even",
+  "source_bound_cost_included": false,
+  "parity_enforcement_cost_included": false,
+  "equations": 11,
+  "primitive_instructions": [
+    {
+      "operation": "*",
+      "left": "q",
+      "right": "q",
+      "result": "q2"
+    },
+    {
+      "operation": "*",
+      "left": "q2",
+      "right": "q2",
+      "result": "L"
+    },
+    {
+      "operation": "*",
+      "left": 9,
+      "right": "L",
+      "result": "n2"
+    },
+    {
+      "operation": "*",
+      "left": 3,
+      "right": "P0",
+      "result": "pP"
+    },
+    {
+      "operation": "+",
+      "left": "gap",
+      "right": "pP",
+      "result": "n2"
+    },
+    {
+      "operation": "+",
+      "left": "r_rhs",
+      "right": 1,
+      "result": "gap"
+    },
+    {
+      "operation": "*",
+      "left": "w",
+      "right": "n2",
+      "result": "wn2"
+    },
+    {
+      "operation": "*",
+      "left": "s",
+      "right": "n2",
+      "result": "sn2"
+    },
+    {
+      "operation": "*",
+      "left": "wn2",
+      "right": "sn2",
+      "result": "UM"
+    },
+    {
+      "operation": "+",
+      "left": "UM",
+      "right": "sn2",
+      "result": "R12"
+    },
+    {
+      "operation": "*",
+      "left": "k",
+      "right": "sn2",
+      "result": "ksn2"
+    },
+    {
+      "operation": "*",
+      "left": "UM",
+      "right": "UM",
+      "result": "UM2"
+    },
+    {
+      "operation": "+",
+      "left": "UM2",
+      "right": "wn2",
+      "result": "scaled_norm_coefficient"
+    },
+    {
+      "operation": "*",
+      "left": "ksn2",
+      "right": "ksn2",
+      "result": "ratio_product2"
+    },
+    {
+      "operation": "*",
+      "left": "scaled_norm_coefficient",
+      "right": "ratio_product2",
+      "result": "L9"
+    },
+    {
+      "operation": "+",
+      "left": "tau",
+      "right": 1,
+      "result": "tauplus1"
+    },
+    {
+      "operation": "*",
+      "left": "tau",
+      "right": "tauplus1",
+      "result": "R9"
+    },
+    {
+      "operation": "+",
+      "left": "ksn2",
+      "right": "eta",
+      "result": "R10a"
+    },
+    {
+      "operation": "+",
+      "left": "eta",
+      "right": "zeta",
+      "result": "R10b"
+    },
+    {
+      "operation": "+",
+      "left": "r",
+      "right": 1,
+      "result": "r1"
+    },
+    {
+      "operation": "*",
+      "left": "h",
+      "right": "UM",
+      "result": "hpm1"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "hpm1",
+      "result": "R11"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "r",
+      "result": "tr1"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "a",
+      "result": "cam2"
+    },
+    {
+      "operation": "+",
+      "left": "wn2",
+      "right": "cam2",
+      "result": "D1"
+    },
+    {
+      "operation": "*",
+      "left": 6,
+      "right": "a",
+      "result": "six_a"
+    },
+    {
+      "operation": "+",
+      "left": "six_a",
+      "right": 8,
+      "result": "modulus"
+    },
+    {
+      "operation": "*",
+      "left": "ga",
+      "right": "modulus",
+      "result": "gam"
+    },
+    {
+      "operation": "+",
+      "left": "D1",
+      "right": "gam",
+      "result": "R14"
+    },
+    {
+      "operation": "*",
+      "left": "a",
+      "right": "a",
+      "result": "a_square"
+    },
+    {
+      "operation": "+",
+      "left": "a_square",
+      "right": "modulus",
+      "result": "discriminant"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "c",
+      "result": "c2"
+    },
+    {
+      "operation": "*",
+      "left": "discriminant",
+      "right": "c2",
+      "result": "Ac2"
+    },
+    {
+      "operation": "+",
+      "left": "Ac2",
+      "right": 1,
+      "result": "R15"
+    },
+    {
+      "operation": "*",
+      "left": "d",
+      "right": "d",
+      "result": "L15"
+    },
+    {
+      "operation": "*",
+      "left": "i",
+      "right": "c2",
+      "result": "ic2"
+    },
+    {
+      "operation": "*",
+      "left": "ic2",
+      "right": "ic2",
+      "result": "ic22"
+    },
+    {
+      "operation": "*",
+      "left": "f",
+      "right": "f",
+      "result": "L16"
+    },
+    {
+      "operation": "+",
+      "left": "f_square_minus_one",
+      "right": 1,
+      "result": "L16"
+    },
+    {
+      "operation": "*",
+      "left": "discriminant",
+      "right": "f_square_minus_one",
+      "result": "R16"
+    },
+    {
+      "operation": "*",
+      "left": "o",
+      "right": "f",
+      "result": "of"
+    },
+    {
+      "operation": "+",
+      "left": "c",
+      "right": "of",
+      "result": "aux_u_rhs"
+    },
+    {
+      "operation": "*",
+      "left": "j",
+      "right": "c",
+      "result": "jc"
+    },
+    {
+      "operation": "+",
+      "left": "tr1",
+      "right": "jc",
+      "result": "H17"
+    },
+    {
+      "operation": "*",
+      "left": "H17",
+      "right": "H17",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "y_aux",
+      "right": "y_aux",
+      "result": "aux_y2"
+    },
+    {
+      "operation": "+",
+      "left": "aux_square_gap",
+      "right": "aux_y2",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "ic22",
+      "right": "aux_square_gap",
+      "result": "L17"
+    },
+    {
+      "operation": "+",
+      "left": "P17",
+      "right": "aux_y2",
+      "result": 1
+    }
+  ],
+  "equalities": [
+    [
+      "r",
+      "r_rhs"
+    ],
+    [
+      "L9",
+      "R9"
+    ],
+    [
+      "c",
+      "R10a"
+    ],
+    [
+      "k",
+      "R10b"
+    ],
+    [
+      "k",
+      "R11"
+    ],
+    [
+      "a",
+      "R12"
+    ],
+    [
+      "d",
+      "R14"
+    ],
+    [
+      "L15",
+      "R15"
+    ],
+    [
+      "ic22",
+      "R16"
+    ],
+    [
+      "L17",
+      "P17"
+    ],
+    [
+      "H17",
+      "aux_u_rhs"
+    ]
+  ],
+  "residuals": [
+    {
+      "index": 0,
+      "equality": [
+        "r",
+        "r_rhs"
+      ],
+      "source": "3*P0 - 9*q**4 + r + 1",
+      "actual": "3*P0 - 9*q**4 + r + 1",
+      "correction": "0"
+    },
+    {
+      "index": 1,
+      "equality": [
+        "L9",
+        "R9"
+      ],
+      "source": "531441*k**2*q**24*s**4*w**2 + 729*k**2*q**12*s**2*w - tau**2 - tau",
+      "actual": "531441*k**2*q**24*s**4*w**2 + 729*k**2*q**12*s**2*w - tau**2 - tau",
+      "correction": "0"
+    },
+    {
+      "index": 2,
+      "equality": [
+        "c",
+        "R10a"
+      ],
+      "source": "c - eta - 9*k*q**4*s",
+      "actual": "c - eta - 9*k*q**4*s",
+      "correction": "0"
+    },
+    {
+      "index": 3,
+      "equality": [
+        "k",
+        "R10b"
+      ],
+      "source": "-eta + k - zeta",
+      "actual": "-eta + k - zeta",
+      "correction": "0"
+    },
+    {
+      "index": 4,
+      "equality": [
+        "k",
+        "R11"
+      ],
+      "source": "-81*h*q**8*s*w + k - r - 1",
+      "actual": "-81*h*q**8*s*w + k - r - 1",
+      "correction": "0"
+    },
+    {
+      "index": 5,
+      "equality": [
+        "a",
+        "R12"
+      ],
+      "source": "a - 81*q**8*s*w - 9*q**4*s",
+      "actual": "a - 81*q**8*s*w - 9*q**4*s",
+      "correction": "0"
+    },
+    {
+      "index": 6,
+      "equality": [
+        "d",
+        "R14"
+      ],
+      "source": "-a*c - 6*a*ga + d - 8*ga - 9*q**4*w",
+      "actual": "-a*c - 6*a*ga + d - 8*ga - 9*q**4*w",
+      "correction": "0"
+    },
+    {
+      "index": 7,
+      "equality": [
+        "L15",
+        "R15"
+      ],
+      "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "actual": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "correction": "0"
+    },
+    {
+      "index": 8,
+      "equality": [
+        "ic22",
+        "R16"
+      ],
+      "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "actual": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "correction": "0"
+    },
+    {
+      "index": 9,
+      "equality": [
+        "L17",
+        "P17"
+      ],
+      "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+      "actual": "c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 + y_aux**2 - 1",
+      "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+    },
+    {
+      "index": 10,
+      "equality": [
+        "H17",
+        "aux_u_rhs"
+      ],
+      "source": "c*j - c - f*o + 2*r + 1",
+      "actual": "c*j - c - f*o + 2*r + 1",
+      "correction": "0"
+    }
+  ],
+  "proof": "../1980/EXPLORATION_BASE_THREE_PELL_KERNEL.md",
+  "scope": "Conditional power-of-three and central-binomial divisibility component; excludes packed-word construction/bound, parity enforcement, local computation, raw input and halting interfaces. No universal operation bound.",
+  "regression": {
+    "recurrence_cases": 2160,
+    "admissible_mask_hypothesis_cases": [
+      {
+        "q": 3,
+        "P0": 0,
+        "r": 728,
+        "D0": 729,
+        "central_binomial_valuation": 6,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 3,
+        "P0": 4,
+        "r": 716,
+        "D0": 729,
+        "central_binomial_valuation": 6,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 3,
+        "P0": 10,
+        "r": 698,
+        "D0": 729,
+        "central_binomial_valuation": 6,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 3,
+        "P0": 40,
+        "r": 608,
+        "D0": 729,
+        "central_binomial_valuation": 6,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 9,
+        "P0": 0,
+        "r": 59048,
+        "D0": 59049,
+        "central_binomial_valuation": 10,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 9,
+        "P0": 4,
+        "r": 59036,
+        "D0": 59049,
+        "central_binomial_valuation": 10,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 9,
+        "P0": 10,
+        "r": 59018,
+        "D0": 59049,
+        "central_binomial_valuation": 10,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 9,
+        "P0": 40,
+        "r": 58928,
+        "D0": 59049,
+        "central_binomial_valuation": 10,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 27,
+        "P0": 0,
+        "r": 4782968,
+        "D0": 4782969,
+        "central_binomial_valuation": 14,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 27,
+        "P0": 4,
+        "r": 4782956,
+        "D0": 4782969,
+        "central_binomial_valuation": 14,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 27,
+        "P0": 10,
+        "r": 4782938,
+        "D0": 4782969,
+        "central_binomial_valuation": 14,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      },
+      {
+        "q": 27,
+        "P0": 40,
+        "r": 4782848,
+        "D0": 4782969,
+        "central_binomial_valuation": 14,
+        "exact_preliminary_hypotheses": true,
+        "even_ternary_boolean_input": true
+      }
+    ],
+    "canonical_ratio_cases": [
+      {
+        "r": 2,
+        "J": 5,
+        "U_bits": 8,
+        "A_bits": 24,
+        "c_bits": 100,
+        "k_bits": 84,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 3,
+        "J": 7,
+        "U_bits": 12,
+        "A_bits": 45,
+        "c_bits": 273,
+        "k_bits": 240,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 4,
+        "J": 9,
+        "U_bits": 15,
+        "A_bits": 72,
+        "c_bits": 579,
+        "k_bits": 522,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 8,
+        "J": 17,
+        "U_bits": 27,
+        "A_bits": 243,
+        "c_bits": 3896,
+        "k_bits": 3681,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 16,
+        "J": 33,
+        "U_bits": 53,
+        "A_bits": 890,
+        "c_bits": 28486,
+        "k_bits": 27649,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 32,
+        "J": 65,
+        "U_bits": 104,
+        "A_bits": 3400,
+        "c_bits": 217648,
+        "k_bits": 214351,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 64,
+        "J": 129,
+        "U_bits": 205,
+        "A_bits": 13290,
+        "c_bits": 1701237,
+        "k_bits": 1688152,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 98,
+        "J": 197,
+        "U_bits": 313,
+        "A_bits": 30912,
+        "c_bits": 6058855,
+        "k_bits": 6028256,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      }
+    ],
+    "arithmetic": "Exact integer powers and cross-multiplied rational inequalities",
+    "auxiliary_witnesses_materialized": false,
+    "scope": "Canonical Pell-coordinate checks, not full packed-word component witnesses; the general proof establishes the unbounded positive converse"
+  }
+}

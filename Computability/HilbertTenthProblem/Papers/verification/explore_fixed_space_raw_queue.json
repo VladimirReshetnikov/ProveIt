@@ -1,0 +1,102 @@
+{
+  "status": "PASS_FIXED_SPACE_RAW_QUEUE",
+  "source": {
+    "operations": 4,
+    "multiplications": 3,
+    "additions": 1,
+    "dag": [
+      [
+        "L_square",
+        "*",
+        "L",
+        "L"
+      ],
+      [
+        "radix",
+        "*",
+        243,
+        "L_square"
+      ],
+      [
+        "initial_length",
+        "*",
+        3,
+        "L"
+      ],
+      [
+        "input_bound",
+        "+",
+        "x",
+        "alpha"
+      ]
+    ],
+    "comparisons": [
+      [
+        "R",
+        "radix"
+      ],
+      [
+        "Winit",
+        "initial_length"
+      ],
+      [
+        "input_bound",
+        "L"
+      ],
+      [
+        "N0",
+        "x"
+      ],
+      [
+        "N1",
+        "L"
+      ]
+    ],
+    "residuals": [
+      "-243*L**2 + R",
+      "-3*L + Winit",
+      "-L + alpha + x",
+      "N0 - x",
+      "-L + N1"
+    ],
+    "radix_only_operations": 2,
+    "radix_constant": 243,
+    "power_checks": 6,
+    "nonpower_checks": 237,
+    "scope": "Four-operation initialization/radix interface only. R divides an externally certified power of three; row geometry and the history certificate are not counted."
+  },
+  "runs": {
+    "machines": 12,
+    "compiled_states": 1647,
+    "compiled_entries": 11529,
+    "padded_inputs": 1152,
+    "normalizations": 1152,
+    "exact_tm_steps": 41436,
+    "normalizer_steps": 20880,
+    "client_steps": 20556,
+    "queue_steps": 426386,
+    "accepted": 496,
+    "rejected": 560,
+    "named_stay_cutoffs": 96,
+    "left_overflows": 192,
+    "right_overflows": 128,
+    "zero_inputs": 36,
+    "high_zero_paddings": 768,
+    "phase_length_checks": 412858,
+    "strict_radix_checks": 426386,
+    "maximum_table_append": 2,
+    "explicit_ell_zero_rejection": 1,
+    "accepting_only_after_wider_padding": 32,
+    "scope": "Cutoffs occur only for the named stationary nonhalting test. Every completed queue scan is compared with an independent bounded TM step."
+  },
+  "all_short_scans": {
+    "cases": 3834,
+    "queue_steps": 16758,
+    "left_rejections": 360,
+    "right_rejections": 360,
+    "valid_passes": 3114
+  },
+  "proof": "../1980/EXPLORATION_FIXED_SPACE_RAW_QUEUE.md",
+  "scope": "Fixed-space ordinary-input queue and existential-padding universality. The four-operation raw initialization/radix interface is exact; no total Diophantine verifier count or tag-system composition is claimed.",
+  "review_status": "Author and independent root/binary_encoding full proof/source audits and fresh verify runs PASS; no mathematical findings. Publication is separate."
+}

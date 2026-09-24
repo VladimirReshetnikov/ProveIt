@@ -1,0 +1,1621 @@
+{
+  "status": "PASS",
+  "review_status": "Author and two independent complete proof/source/dependency reviews PASS; fresh verification reproduces the saved receipt.",
+  "source": {
+    "operations": 94,
+    "multiplications": 50,
+    "additions": 44,
+    "positive_unknowns": [
+      "D",
+      "AH",
+      "H",
+      "Q",
+      "S1",
+      "Tcontent",
+      "E",
+      "Nsum",
+      "q",
+      "v",
+      "Tplus",
+      "r",
+      "pell_a",
+      "pell_c",
+      "pell_d",
+      "pell_f",
+      "pell_h",
+      "pell_i",
+      "pell_j",
+      "pell_k",
+      "pell_o",
+      "pell_s",
+      "pell_w",
+      "pell_tau",
+      "pell_eta",
+      "pell_zeta",
+      "pell_ga",
+      "pell_y_aux"
+    ],
+    "equations": 17,
+    "outer_operations": 51,
+    "kernel_operations": 43,
+    "kernel_sign": -1,
+    "primitive_instructions": [
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "D",
+        "result": "R"
+      },
+      {
+        "operation": "*",
+        "left": 2,
+        "right": "Tcontent",
+        "result": "twice_T"
+      },
+      {
+        "operation": "+",
+        "left": "twice_T",
+        "right": "S1",
+        "result": "N"
+      },
+      {
+        "operation": "+",
+        "left": "Q",
+        "right": "S1",
+        "result": "M1"
+      },
+      {
+        "operation": "+",
+        "left": "Nsum",
+        "right": "H",
+        "result": "L"
+      },
+      {
+        "operation": "*",
+        "left": "Ut",
+        "right": "M1",
+        "result": "n_app"
+      },
+      {
+        "operation": "+",
+        "left": "n_trim",
+        "right": "E",
+        "result": "Tcontent"
+      },
+      {
+        "operation": "+",
+        "left": "n_trim",
+        "right": "n_app",
+        "result": "n_output"
+      },
+      {
+        "operation": "*",
+        "left": "D",
+        "right": "n_output",
+        "result": "n_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "n_rhs",
+        "right": "Ni",
+        "result": "N"
+      },
+      {
+        "operation": "*",
+        "left": "B - 1",
+        "right": "M1",
+        "result": "l_app"
+      },
+      {
+        "operation": "+",
+        "left": "L",
+        "right": "l_app",
+        "result": "l_output"
+      },
+      {
+        "operation": "*",
+        "left": "D",
+        "right": "l_output",
+        "result": "l_lhs"
+      },
+      {
+        "operation": "*",
+        "left": 2,
+        "right": "q",
+        "result": "two_q"
+      },
+      {
+        "operation": "+",
+        "left": "l_initial",
+        "right": "Li",
+        "result": "L"
+      },
+      {
+        "operation": "+",
+        "left": "l_initial",
+        "right": "two_q",
+        "result": "l_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "H",
+        "result": "head_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "C",
+        "right": "AH",
+        "result": "compiled_product"
+      },
+      {
+        "operation": "+",
+        "left": "H",
+        "right": "qm1",
+        "result": "head_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "v",
+        "result": "q_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "q2"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "q",
+        "result": "q3"
+      },
+      {
+        "operation": "+",
+        "left": "q",
+        "right": 1,
+        "result": "qp1"
+      },
+      {
+        "operation": "*",
+        "left": "qp1",
+        "right": "Q",
+        "result": "F"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "M1",
+        "result": "X"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "N",
+        "result": "q2N"
+      },
+      {
+        "operation": "+",
+        "left": "S1",
+        "right": "X",
+        "result": "S_inner0"
+      },
+      {
+        "operation": "+",
+        "left": "S_inner0",
+        "right": "q2N",
+        "result": "S_inner1"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "S_inner1",
+        "result": "S_shift1"
+      },
+      {
+        "operation": "+",
+        "left": "E",
+        "right": "S_shift1",
+        "result": "S_inner2"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "S_inner2",
+        "result": "S_shift2"
+      },
+      {
+        "operation": "+",
+        "left": "F",
+        "right": "S_shift2",
+        "result": "packS0"
+      },
+      {
+        "operation": "+",
+        "left": "q",
+        "right": "cc",
+        "result": "W_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "W_coefficient",
+        "right": "H",
+        "result": "W_head"
+      },
+      {
+        "operation": "*",
+        "left": "qp1",
+        "right": "Nsum",
+        "result": "W_sum"
+      },
+      {
+        "operation": "+",
+        "left": "H",
+        "right": "W_sum",
+        "result": "W_marker"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "W_marker",
+        "result": "W_upper"
+      },
+      {
+        "operation": "+",
+        "left": "W_head",
+        "right": "W_upper",
+        "result": "W_inner"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "W_inner",
+        "result": "W_shift"
+      },
+      {
+        "operation": "+",
+        "left": "AH",
+        "right": "F",
+        "result": "W_low0"
+      },
+      {
+        "operation": "+",
+        "left": "W_low0",
+        "right": "X",
+        "result": "W_low1"
+      },
+      {
+        "operation": "+",
+        "left": "W_low1",
+        "right": "W_shift",
+        "result": "packW0"
+      },
+      {
+        "operation": "*",
+        "left": "q3",
+        "right": "q3",
+        "result": "n"
+      },
+      {
+        "operation": "*",
+        "left": "n",
+        "right": "n",
+        "result": "n2"
+      },
+      {
+        "operation": "+",
+        "left": "nm1",
+        "right": 1,
+        "result": "n"
+      },
+      {
+        "operation": "+",
+        "left": "packW0",
+        "right": 1,
+        "result": "Wp1"
+      },
+      {
+        "operation": "+",
+        "left": "packS0",
+        "right": "Tplus",
+        "result": "packed_bound"
+      },
+      {
+        "operation": "*",
+        "left": "n",
+        "right": "Wp1",
+        "result": "index_upper"
+      },
+      {
+        "operation": "+",
+        "left": "index_upper",
+        "right": "Tplus",
+        "result": "index_gap"
+      },
+      {
+        "operation": "*",
+        "left": "nm1",
+        "right": "index_gap",
+        "result": "r_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "pell_w",
+        "right": "n2",
+        "result": "pell_wn2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_s",
+        "right": "n2",
+        "result": "pell_sn2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_wn2",
+        "right": "pell_sn2",
+        "result": "pell_UM"
+      },
+      {
+        "operation": "+",
+        "left": "pell_UM",
+        "right": "pell_sn2",
+        "result": "pell_R12"
+      },
+      {
+        "operation": "*",
+        "left": "pell_k",
+        "right": "pell_sn2",
+        "result": "pell_ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_UM",
+        "right": "pell_UM",
+        "result": "pell_UM2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_UM2",
+        "right": "pell_wn2",
+        "result": "pell_scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ksn2",
+        "right": "pell_ksn2",
+        "result": "pell_ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_scaled_norm_coefficient",
+        "right": "pell_ratio_product2",
+        "result": "pell_L9"
+      },
+      {
+        "operation": "+",
+        "left": "pell_tau",
+        "right": 1,
+        "result": "pell_tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "pell_tau",
+        "right": "pell_tauplus1",
+        "result": "pell_R9"
+      },
+      {
+        "operation": "+",
+        "left": "pell_ksn2",
+        "right": "pell_eta",
+        "result": "pell_R10a"
+      },
+      {
+        "operation": "+",
+        "left": "pell_eta",
+        "right": "pell_zeta",
+        "result": "pell_R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "pell_r1"
+      },
+      {
+        "operation": "*",
+        "left": "pell_h",
+        "right": "pell_UM",
+        "result": "pell_hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "pell_r1",
+        "right": "pell_hpm1",
+        "result": "pell_R11"
+      },
+      {
+        "operation": "+",
+        "left": "pell_r1",
+        "right": "r",
+        "result": "pell_tr1"
+      },
+      {
+        "operation": "*",
+        "left": "pell_c",
+        "right": "pell_a",
+        "result": "pell_cam2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_wn2",
+        "right": "pell_cam2",
+        "result": "pell_D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "pell_a",
+        "result": "pell_a4"
+      },
+      {
+        "operation": "+",
+        "left": "pell_a4",
+        "right": 3,
+        "result": "pell_a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ga",
+        "right": "pell_a4m5",
+        "result": "pell_gam"
+      },
+      {
+        "operation": "+",
+        "left": "pell_D1",
+        "right": "pell_gam",
+        "result": "pell_R14"
+      },
+      {
+        "operation": "*",
+        "left": "pell_a",
+        "right": "pell_a",
+        "result": "pell_a_square"
+      },
+      {
+        "operation": "+",
+        "left": "pell_a_square",
+        "right": "pell_a4m5",
+        "result": "pell_A"
+      },
+      {
+        "operation": "*",
+        "left": "pell_c",
+        "right": "pell_c",
+        "result": "pell_c2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_A",
+        "right": "pell_c2",
+        "result": "pell_Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_Ac2",
+        "right": 1,
+        "result": "pell_R15"
+      },
+      {
+        "operation": "*",
+        "left": "pell_d",
+        "right": "pell_d",
+        "result": "pell_L15"
+      },
+      {
+        "operation": "*",
+        "left": "pell_i",
+        "right": "pell_c2",
+        "result": "pell_ic2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ic2",
+        "right": "pell_ic2",
+        "result": "pell_ic22"
+      },
+      {
+        "operation": "*",
+        "left": "pell_f",
+        "right": "pell_f",
+        "result": "pell_L16"
+      },
+      {
+        "operation": "+",
+        "left": "pell_f_square_minus_one",
+        "right": 1,
+        "result": "pell_L16"
+      },
+      {
+        "operation": "*",
+        "left": "pell_A",
+        "right": "pell_f_square_minus_one",
+        "result": "pell_R16"
+      },
+      {
+        "operation": "*",
+        "left": "pell_o",
+        "right": "pell_f",
+        "result": "pell_of"
+      },
+      {
+        "operation": "+",
+        "left": "pell_aux_u_rhs",
+        "right": "pell_c",
+        "result": "pell_of"
+      },
+      {
+        "operation": "*",
+        "left": "pell_j",
+        "right": "pell_c",
+        "result": "pell_jc"
+      },
+      {
+        "operation": "+",
+        "left": "pell_H17",
+        "right": "pell_tr1",
+        "result": "pell_jc"
+      },
+      {
+        "operation": "*",
+        "left": "pell_H17",
+        "right": "pell_H17",
+        "result": "pell_H2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_y_aux",
+        "right": "pell_y_aux",
+        "result": "pell_aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_aux_square_gap",
+        "right": "pell_aux_y2",
+        "result": "pell_H2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ic22",
+        "right": "pell_aux_square_gap",
+        "result": "pell_L17"
+      },
+      {
+        "operation": "+",
+        "left": "pell_P17",
+        "right": "pell_aux_y2",
+        "result": 1
+      }
+    ],
+    "exact_sources": [
+      {
+        "index": 0,
+        "source": "D*(-E + Tcontent + Ut*(Q + S1)) + Ni - S1 - 2*Tcontent",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 1,
+        "source": "D*(H + Nsum + (B - 1)*(Q + S1)) - H + Li - Nsum - 2*q",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 2,
+        "source": "-AH + E*q**2 - H*cc*q**2 - H*q**3 - Nsum*q**5 + Q*q + S1*q**3 + Tplus + q**5*(S1 + 2*Tcontent) - q**4*(H + Nsum) + q**4*(Q + S1) - q*(2*Q + S1) - 1",
+        "correction": "0",
+        "difference_from_binary95": "AH*q**3 - AH + E*q**2 - E*q - H*cc*q**2 + H*cc*q - H*q**4 - H*q**3 + H*q**2 + H - Nsum*q**4 + Nsum*q**2 + 2*Q*q**4 - Q*q**2 - Q*q + 2*S1*q**4 + S1*q**3 - S1*q**2 - S1*q - S1"
+      },
+      {
+        "index": 3,
+        "source": "H*(D*k - 1) - q + 1",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 4,
+        "source": "-AH*C + D*H*k",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 5,
+        "source": "D*k*v - q",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 6,
+        "source": "r - (Tplus + q**6*(AH + H*cc*q**2 + H*q**3 + Nsum*q**5 + Q + q**4*(H + Nsum) + q*(2*Q + S1) + 1))*(q**6 - 1)",
+        "correction": "0",
+        "difference_from_binary95": "AH*q**15 - AH*q**12 - AH*q**9 + AH*q**6 - H*cc*q**14 + H*cc*q**13 + H*cc*q**8 - H*cc*q**7 - H*q**16 - H*q**15 + H*q**14 + H*q**12 + H*q**10 + H*q**9 - H*q**8 - H*q**6 - Nsum*q**16 + Nsum*q**14 + Nsum*q**10 - Nsum*q**8 + 2*Q*q**16 + Q*q**15 - 2*Q*q**13 - Q*q**12 - 2*Q*q**10 - Q*q**9 + 2*Q*q**7 + Q*q**6 + S1*q**16 - S1*q**13 - S1*q**10 + S1*q**7"
+      },
+      {
+        "index": 7,
+        "source": "pell_k**2*pell_s**2*pell_w*q**36*(pell_s**2*pell_w*q**36 + 1) - pell_tau*(pell_tau + 1)",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 8,
+        "source": "pell_c - pell_eta - pell_k*pell_s*q**12",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 9,
+        "source": "-pell_eta + pell_k - pell_zeta",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 10,
+        "source": "-pell_h*pell_s*pell_w*q**24 + pell_k - r - 1",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 11,
+        "source": "pell_a - pell_s*q**12*(pell_w*q**12 + 1)",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 12,
+        "source": "-pell_a*pell_c + pell_d - pell_ga*(4*pell_a + 3) - pell_w*q**12",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 13,
+        "source": "-pell_c**2*(pell_a**2 + 4*pell_a + 3) + pell_d**2 - 1",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 14,
+        "source": "pell_c**4*pell_i**2 - (pell_f**2 - 1)*(pell_a**2 + 4*pell_a + 3)",
+        "correction": "0",
+        "difference_from_binary95": "0"
+      },
+      {
+        "index": 15,
+        "source": "pell_y_aux**2 + (pell_f**2 - 1)*(-pell_y_aux**2 + (pell_c*pell_j - 2*r - 1)**2)*(pell_a**2 + 4*pell_a + 3) - 1",
+        "correction": "(-pell_y_aux**2 + (pell_c*pell_j - 2*r - 1)**2)*(pell_c**4*pell_i**2 - (pell_f**2 - 1)*(pell_a**2 + 4*pell_a + 3))",
+        "difference_from_binary95": "-8*pell_a**2*pell_c*pell_f**2*pell_j*r - 4*pell_a**2*pell_c*pell_f**2*pell_j + 8*pell_a**2*pell_c*pell_j*r + 4*pell_a**2*pell_c*pell_j - 32*pell_a*pell_c*pell_f**2*pell_j*r - 16*pell_a*pell_c*pell_f**2*pell_j + 32*pell_a*pell_c*pell_j*r + 16*pell_a*pell_c*pell_j - 24*pell_c*pell_f**2*pell_j*r - 12*pell_c*pell_f**2*pell_j + 24*pell_c*pell_j*r + 12*pell_c*pell_j"
+      },
+      {
+        "index": 16,
+        "source": "pell_c*pell_j + pell_c - pell_f*pell_o - 2*r - 1",
+        "correction": "0",
+        "difference_from_binary95": "2*pell_c - 4*r - 2"
+      }
+    ],
+    "changed_sources": [
+      2,
+      6,
+      15,
+      16
+    ],
+    "field_permutation_from_binary95": [
+      3,
+      4,
+      1,
+      0,
+      2,
+      5
+    ]
+  },
+  "canonical": {
+    "complete_histories": 88,
+    "source_rows": 382,
+    "odd_beta_histories": 48,
+    "second_initial_bit_one_histories": 72,
+    "changed_odd_indices": 88,
+    "old_and_new_outer_comparisons_each": 7,
+    "six_AND_tests_per_new_tuple": 6,
+    "receipts": [
+      {
+        "rows": 3,
+        "valuation": 576,
+        "old_r_bits": 850,
+        "new_r_bits": 850,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 4,
+        "valuation": 864,
+        "old_r_bits": 1280,
+        "new_r_bits": 1280,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 4,
+        "valuation": 864,
+        "old_r_bits": 1280,
+        "new_r_bits": 1280,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 576,
+        "old_r_bits": 850,
+        "new_r_bits": 850,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 4,
+        "valuation": 768,
+        "old_r_bits": 1138,
+        "new_r_bits": 1138,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 8,
+        "valuation": 2016,
+        "old_r_bits": 3005,
+        "new_r_bits": 3005,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 8,
+        "valuation": 2016,
+        "old_r_bits": 3005,
+        "new_r_bits": 3005,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 8,
+        "valuation": 1920,
+        "old_r_bits": 2862,
+        "new_r_bits": 2862,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 8,
+        "valuation": 1920,
+        "old_r_bits": 2862,
+        "new_r_bits": 2862,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 4,
+        "valuation": 768,
+        "old_r_bits": 1138,
+        "new_r_bits": 1138,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 2,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 0
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "odd_index": true,
+        "beta": 3,
+        "second_initial_bit": 1
+      }
+    ],
+    "scope": "Original first-zero domain, including initial01, checks every new scale/range/valuation/odd-index hypothesis for a fresh fixed-minus43 extension. Old auxiliary values are not reused; enormous new auxiliaries are not materialized."
+  },
+  "proof": "../1980/EXPLORATION_ODD_BINARY_TAG_PACKING.md",
+  "scope": "Complete94-operation binary encoded-tag certificate on the unchanged binary95 first-zero domain, with a fixed odd43 kernel and fresh positive Pell witnesses. No initial-second-zero promise, raw-input/fixed-appendant universality or optimality claim."
+}

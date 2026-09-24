@@ -1,0 +1,1201 @@
+{
+  "status": "PASS_PACKED_BOUND_SERIAL_COMPOSITION_115",
+  "arithmetic": {
+    "operations": 115,
+    "primitive_histogram": {
+      "+": 59,
+      "*": 56
+    },
+    "positive_unknowns": [
+      "q",
+      "Jrep",
+      "W",
+      "H",
+      "v",
+      "T",
+      "F0",
+      "F1",
+      "G0",
+      "G1",
+      "FKplus",
+      "FKminus",
+      "alphaI",
+      "R",
+      "FZ",
+      "FZbar",
+      "PC",
+      "PV",
+      "PTC",
+      "PTV",
+      "PNC",
+      "PNV",
+      "PNTC",
+      "PNTV",
+      "zR",
+      "beta",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "unknown_count": 43,
+    "equations": 31,
+    "primitive_instructions": [
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "Jrep",
+        "result": "twice_J"
+      },
+      {
+        "operation": "+",
+        "left": "twice_J",
+        "right": 1,
+        "result": "q_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "v",
+        "result": "geometry_product"
+      },
+      {
+        "operation": "+",
+        "left": "R_minus_one",
+        "right": 1,
+        "result": "R"
+      },
+      {
+        "operation": "*",
+        "left": "H",
+        "right": "R_minus_one",
+        "result": "head_geometry"
+      },
+      {
+        "operation": "+",
+        "left": "FKplus",
+        "right": "FKminus",
+        "result": "flag_sum"
+      },
+      {
+        "operation": "+",
+        "left": "twice_J",
+        "right": "H",
+        "result": "head_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "top_complement",
+        "right": "T",
+        "result": "Jrep"
+      },
+      {
+        "operation": "*",
+        "left": 6,
+        "right": "top_complement",
+        "result": "top_mask"
+      },
+      {
+        "operation": "+",
+        "left": "R_minus_three",
+        "right": 2,
+        "result": "R_minus_one"
+      },
+      {
+        "operation": "+",
+        "left": "raw_D",
+        "right": "Jrep",
+        "result": "FZbar"
+      },
+      {
+        "operation": "*",
+        "left": "R_minus_three",
+        "right": "raw_D",
+        "result": "zero_spread"
+      },
+      {
+        "operation": "+",
+        "left": "FZ",
+        "right": "FZbar",
+        "result": "zero_flag_sum"
+      },
+      {
+        "operation": "+",
+        "left": "F0",
+        "right": "F1",
+        "result": "track_sum"
+      },
+      {
+        "operation": "+",
+        "left": "F0",
+        "right": "T",
+        "result": "guard0"
+      },
+      {
+        "operation": "+",
+        "left": "F1",
+        "right": "T",
+        "result": "guard1"
+      },
+      {
+        "operation": "+",
+        "left": "raw_A",
+        "right": "twice_J",
+        "result": "track_sum"
+      },
+      {
+        "operation": "+",
+        "left": "delta",
+        "right": "FKminus",
+        "result": "FKplus"
+      },
+      {
+        "operation": "+",
+        "left": "x",
+        "right": "x",
+        "result": "input"
+      },
+      {
+        "operation": "+",
+        "left": "raw_A",
+        "right": "delta",
+        "result": "next_A"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "next_A",
+        "result": "time_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "time_rhs",
+        "right": "input",
+        "result": "raw_A"
+      },
+      {
+        "operation": "+",
+        "left": "input",
+        "right": "alphaI",
+        "result": "input_bound"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "R",
+        "result": "R2"
+      },
+      {
+        "operation": "*",
+        "left": "R2",
+        "right": "R",
+        "result": "W_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 322259016199303760278108892548069872765454760812625185422455264711098295974424530944225984563274574075156167590229267601530052472644778198681043446806536216164951396488307685934895654452105099927116989953020508253881486496316757508590429695371620782708320737158,
+        "right": "H",
+        "result": "program_support"
+      },
+      {
+        "operation": "+",
+        "left": "PC",
+        "right": "Jrep",
+        "result": "program_C_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "program_support",
+        "right": "PTC",
+        "result": "program_C_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 640797815107779187191713827220517618162267807143763204392299889383165212824557139681112749818866011091492020434024180236922988027656845216400563521907400716917106830515845453878341450176692542151194081011184459582029377655535858408290638639746422151927138502769771571885993429686563387793094842006308910322755329241557756969392563595959018991789791268059650993267116109485591682049259977970390930248546762366009911237906167826797348090349894147574546358425070901477669202824459049935039679238031220160460805370413759123959076636177156319775453740868464482006937771528520900430818687917424006231778925823107149,
+        "right": "H",
+        "result": "marker_forbidden"
+      },
+      {
+        "operation": "+",
+        "left": "PV",
+        "right": "marker_forbidden",
+        "result": "program_V_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": "beta",
+        "result": "program_bound"
+      },
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "PV",
+        "result": "program_native_V"
+      },
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "PTC",
+        "result": "program_native_TC"
+      },
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "PTV",
+        "result": "program_native_TV"
+      },
+      {
+        "operation": "*",
+        "left": 35043672082151596000562013646554249747173744041549971359136253210058333463455988816491699497781669818090909810065784792552487803283621288977254260041945321239269929980724446018125644184621818685445212199208623710232952316234281228342918450553493298197325604935545954053932070630461400477219501228945784738573432441459577283733032992019102961093349785492170771920411303378560790189871980594720643222091488769067598064671716861734567502679884241457243943452684092483375397008116611623655491140333219578841019619571598558528734290592637214349766003203236442952658077698991123044904403313167815249493206747789906047239599253471494058126163254288288208796891558699455638445965056634338419854978885967666515396907053533070729,
+        "right": "zR",
+        "result": "program_R_bound"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": 1342516128928335857039074594853084685817426212510782777162554930421501325058196038925133960370269338719979579012715306458983985726354985458141260687016407127860623837761340943476649118442229087946960150626032095808801389460005425329314952431398090816773080028321878674047691946641937664215570419876012187204566415517450493375778730804504800139065637885619609775108163277366799051346138366563184343004981043576195358946178081911334020281902414794645290033701,
+        "result": "WK"
+      },
+      {
+        "operation": "+",
+        "left": "route_coeff",
+        "right": 25313984575877800498658462583800985577974442039603115135745173184623076441909527696064961198127012017865819765763700987367411872273235926445687877324856111152953081044765735116461263251916930665382479525619938398262413224836488826714294577607853696062994625347787942966705881668972755048655535624173740089,
+        "result": "WK"
+      },
+      {
+        "operation": "*",
+        "left": "route_coeff",
+        "right": "PC",
+        "result": "route_product"
+      },
+      {
+        "operation": "+",
+        "left": "raw_Kplus",
+        "right": "Jrep",
+        "result": "FKplus"
+      },
+      {
+        "operation": "*",
+        "left": 8033425966985008599519353534176993744522830759181157456061433255880585232174216541559454668669280091695537519580648073735458891822562975501456232953665882797256905097897933568665216420728674753014154900562395238676315820544774001675851771850680618951543426823537291117022048196819597449146090047137839252700948543525981738489742064629722467140209006482411855800392209719392218148659232026415330300250170510105412127661284947187398463468052689366757279014329098436940498846143361135243072259395989089286886851201959941736525346385366796920159749969021122196821208865304922125362776158961,
+        "right": "raw_Kplus",
+        "result": "sign_output"
+      },
+      {
+        "operation": "*",
+        "left": 640797815107779187191705793794550633153668287790229027398555366552406031667101078247856869233633836874950460979355510956831292490137264568326828063015578153941605374282891787995544193271594644217625415794763730907276363500635296013051962323925877377925462650997920891267041886259739850501977819958112090649364229423877217634164474896012536276127975407185675863564456346609879944464876497565787943649362049536524198616502955554051625858514453525563726985393269389929059311248239371452812982988393080651886985438339168347630115239859474216949984391960990926226141568414722979190976859790293555343046690525727921,
+        "right": "raw_D",
+        "result": "nozero_output"
+      },
+      {
+        "operation": "+",
+        "left": "PV",
+        "right": "sign_output",
+        "result": "route_junk1"
+      },
+      {
+        "operation": "+",
+        "left": "route_junk1",
+        "right": "nozero_output",
+        "result": "route_junk2"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "route_junk2",
+        "result": "route_junkW"
+      },
+      {
+        "operation": "*",
+        "left": 12082645160355022713351519878386972150079823492474156953683259957598315391059856501675784615248347480037978098650391018364882651827379393659089133470600853982423616390749762755465706870135942960393950951679186876175289113912575708771752498450297323674337629953925549602356242347013621552412193666294060735175418933327251505709263086234375338465057867863659880134261500520288711089947524113170322204829222821884417568388426192465563330940956068336228695525689,
+        "right": "twice_J",
+        "result": "route_final"
+      },
+      {
+        "operation": "+",
+        "left": "route_final",
+        "right": "route_junkW",
+        "result": "route_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "PNTV",
+        "result": "pack_product0"
+      },
+      {
+        "operation": "+",
+        "left": "PNTC",
+        "right": "pack_product0",
+        "result": "pack_sum0"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum0",
+        "result": "pack_product1"
+      },
+      {
+        "operation": "+",
+        "left": "PNV",
+        "right": "pack_product1",
+        "result": "pack_sum1"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum1",
+        "result": "pack_product2"
+      },
+      {
+        "operation": "+",
+        "left": "PNC",
+        "right": "pack_product2",
+        "result": "pack_sum2"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum2",
+        "result": "pack_product3"
+      },
+      {
+        "operation": "+",
+        "left": "FZbar",
+        "right": "pack_product3",
+        "result": "pack_sum3"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum3",
+        "result": "pack_product4"
+      },
+      {
+        "operation": "+",
+        "left": "FZ",
+        "right": "pack_product4",
+        "result": "pack_sum4"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum4",
+        "result": "pack_product5"
+      },
+      {
+        "operation": "+",
+        "left": "FKminus",
+        "right": "pack_product5",
+        "result": "pack_sum5"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum5",
+        "result": "pack_product6"
+      },
+      {
+        "operation": "+",
+        "left": "F1",
+        "right": "pack_product6",
+        "result": "pack_sum6"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum6",
+        "result": "pack_product7"
+      },
+      {
+        "operation": "+",
+        "left": "G1",
+        "right": "pack_product7",
+        "result": "pack_sum7"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum7",
+        "result": "pack_product8"
+      },
+      {
+        "operation": "+",
+        "left": "F0",
+        "right": "pack_product8",
+        "result": "pack_sum8"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum8",
+        "result": "pack_product9"
+      },
+      {
+        "operation": "+",
+        "left": "G0",
+        "right": "pack_product9",
+        "result": "pack_sum9"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum9",
+        "result": "pack_product10"
+      },
+      {
+        "operation": "+",
+        "left": "FKplus",
+        "right": "pack_product10",
+        "result": "packed"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "q2"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "q2",
+        "result": "q4"
+      },
+      {
+        "operation": "*",
+        "left": "q4",
+        "right": "q2",
+        "result": "q6"
+      },
+      {
+        "operation": "*",
+        "left": "q6",
+        "right": "q6",
+        "result": "D0"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "D0",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "D0",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 6,
+        "right": "a",
+        "result": "six_a"
+      },
+      {
+        "operation": "+",
+        "left": "six_a",
+        "right": 8,
+        "result": "modulus"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "modulus",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "modulus",
+        "result": "discriminant"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "c",
+        "right": "of",
+        "result": "aux_u_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "tr1",
+        "right": "jc",
+        "result": "H17"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "equalities": [
+      [
+        "q",
+        "q_rhs"
+      ],
+      [
+        "q",
+        "geometry_product"
+      ],
+      [
+        "head_geometry",
+        "twice_J"
+      ],
+      [
+        "flag_sum",
+        "head_rhs"
+      ],
+      [
+        "top_mask",
+        "zero_spread"
+      ],
+      [
+        "G0",
+        "guard0"
+      ],
+      [
+        "G1",
+        "guard1"
+      ],
+      [
+        "time_lhs",
+        "time_rhs"
+      ],
+      [
+        "input_bound",
+        "R"
+      ],
+      [
+        "r",
+        "packed"
+      ],
+      [
+        "L9",
+        "R9"
+      ],
+      [
+        "c",
+        "R10a"
+      ],
+      [
+        "k",
+        "R10b"
+      ],
+      [
+        "k",
+        "R11"
+      ],
+      [
+        "a",
+        "R12"
+      ],
+      [
+        "d",
+        "R14"
+      ],
+      [
+        "L15",
+        "R15"
+      ],
+      [
+        "ic22",
+        "R16"
+      ],
+      [
+        "L17",
+        "P17"
+      ],
+      [
+        "H17",
+        "aux_u_rhs"
+      ],
+      [
+        "W",
+        "W_rhs"
+      ],
+      [
+        "zero_flag_sum",
+        "head_rhs"
+      ],
+      [
+        "program_C_lhs",
+        "program_C_rhs"
+      ],
+      [
+        "PTV",
+        "program_V_rhs"
+      ],
+      [
+        "program_bound",
+        "D0"
+      ],
+      [
+        "PNC",
+        "program_C_lhs"
+      ],
+      [
+        "PNV",
+        "program_native_V"
+      ],
+      [
+        "PNTC",
+        "program_native_TC"
+      ],
+      [
+        "PNTV",
+        "program_native_TV"
+      ],
+      [
+        "R",
+        "program_R_bound"
+      ],
+      [
+        "route_product",
+        "route_rhs"
+      ]
+    ],
+    "residuals": [
+      {
+        "index": 0,
+        "equality": [
+          "q",
+          "q_rhs"
+        ],
+        "source": "-2*Jrep + q - 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "q",
+          "geometry_product"
+        ],
+        "source": "-W*v + q",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "head_geometry",
+          "twice_J"
+        ],
+        "source": "H*(R - 1) - 2*Jrep",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "flag_sum",
+          "head_rhs"
+        ],
+        "source": "FKminus + FKplus - H - 2*Jrep",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "top_mask",
+          "zero_spread"
+        ],
+        "source": "6*Jrep - 6*T - (FZbar - Jrep)*(R - 3)",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "G0",
+          "guard0"
+        ],
+        "source": "-F0 + G0 - T",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "G1",
+          "guard1"
+        ],
+        "source": "-F1 + G1 - T",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "time_lhs",
+          "time_rhs"
+        ],
+        "source": "W*(-FKminus + FKplus) + 2*x + (W - 1)*(F0 + F1 - 2*Jrep)",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "input_bound",
+          "R"
+        ],
+        "source": "-R + alphaI + 2*x",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "r",
+          "packed"
+        ],
+        "source": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - FZ*q**6 - FZbar*q**7 - G0*q - G1*q**3 - PNC*q**8 - PNTC*q**10 - PNTV*q**11 - PNV*q**9 + r",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source": "k**2*q**36*s**2*w*(q**36*s**2*w + 1) - tau*(tau + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source": "c - eta - k*q**12*s",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source": "-h*q**24*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source": "a - q**12*s*(q**12*w + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source": "-a*c + d - ga*(6*a + 8) - q**12*w",
+        "correction": "0"
+      },
+      {
+        "index": 16,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 17,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+        "correction": "0"
+      },
+      {
+        "index": 18,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j + 2*r + 1)**2)*(a**2 + 6*a + 8) - 1",
+        "correction": "(-y_aux**2 + (c*j + 2*r + 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+      },
+      {
+        "index": 19,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source": "c*j - c - f*o + 2*r + 1",
+        "correction": "0"
+      },
+      {
+        "index": 20,
+        "equality": [
+          "W",
+          "W_rhs"
+        ],
+        "source": "-R**3 + W",
+        "correction": "0"
+      },
+      {
+        "index": 21,
+        "equality": [
+          "zero_flag_sum",
+          "head_rhs"
+        ],
+        "source": "FZ + FZbar - H - 2*Jrep",
+        "correction": "0"
+      },
+      {
+        "index": 22,
+        "equality": [
+          "program_C_lhs",
+          "program_C_rhs"
+        ],
+        "source": "-322259016199303760278108892548069872765454760812625185422455264711098295974424530944225984563274574075156167590229267601530052472644778198681043446806536216164951396488307685934895654452105099927116989953020508253881486496316757508590429695371620782708320737158*H + Jrep + PC - PTC",
+        "correction": "0"
+      },
+      {
+        "index": 23,
+        "equality": [
+          "PTV",
+          "program_V_rhs"
+        ],
+        "source": "-640797815107779187191713827220517618162267807143763204392299889383165212824557139681112749818866011091492020434024180236922988027656845216400563521907400716917106830515845453878341450176692542151194081011184459582029377655535858408290638639746422151927138502769771571885993429686563387793094842006308910322755329241557756969392563595959018991789791268059650993267116109485591682049259977970390930248546762366009911237906167826797348090349894147574546358425070901477669202824459049935039679238031220160460805370413759123959076636177156319775453740868464482006937771528520900430818687917424006231778925823107149*H + PTV - PV",
+        "correction": "0"
+      },
+      {
+        "index": 24,
+        "equality": [
+          "program_bound",
+          "D0"
+        ],
+        "source": "beta - q**12 + r",
+        "correction": "0"
+      },
+      {
+        "index": 25,
+        "equality": [
+          "PNC",
+          "program_C_lhs"
+        ],
+        "source": "-Jrep - PC + PNC",
+        "correction": "0"
+      },
+      {
+        "index": 26,
+        "equality": [
+          "PNV",
+          "program_native_V"
+        ],
+        "source": "-Jrep + PNV - PV",
+        "correction": "0"
+      },
+      {
+        "index": 27,
+        "equality": [
+          "PNTC",
+          "program_native_TC"
+        ],
+        "source": "-Jrep + PNTC - PTC",
+        "correction": "0"
+      },
+      {
+        "index": 28,
+        "equality": [
+          "PNTV",
+          "program_native_TV"
+        ],
+        "source": "-Jrep + PNTV - PTV",
+        "correction": "0"
+      },
+      {
+        "index": 29,
+        "equality": [
+          "R",
+          "program_R_bound"
+        ],
+        "source": "R - 35043672082151596000562013646554249747173744041549971359136253210058333463455988816491699497781669818090909810065784792552487803283621288977254260041945321239269929980724446018125644184621818685445212199208623710232952316234281228342918450553493298197325604935545954053932070630461400477219501228945784738573432441459577283733032992019102961093349785492170771920411303378560790189871980594720643222091488769067598064671716861734567502679884241457243943452684092483375397008116611623655491140333219578841019619571598558528734290592637214349766003203236442952658077698991123044904403313167815249493206747789906047239599253471494058126163254288288208796891558699455638445965056634338419854978885967666515396907053533070729*zR",
+        "correction": "0"
+      },
+      {
+        "index": 30,
+        "equality": [
+          "route_product",
+          "route_rhs"
+        ],
+        "source": "-24165290320710045426703039756773944300159646984948313907366519915196630782119713003351569230496694960075956197300782036729765303654758787318178266941201707964847232781499525510931413740271885920787901903358373752350578227825151417543504996900594647348675259907851099204712484694027243104824387332588121470350837866654503011418526172468750676930115735727319760268523001040577422179895048226340644409658445643768835136776852384931126661881912136672457391051378*Jrep + PC*(1342516128928335857039074594853084685817426212510782777162554930421501325058196038925133960370269338719979579012715306458983985726354985458141260687016407127860623837761340943476649118442229087946960150626032095808801389460005425329314952431398090816773080028321878674047691946641937664215570419876012187204566415517450493375778730804504800139065637885619609775108163277366799051346138366563184343004981043576195358946178081911334020281902414794645290033701*R - 25313984575877800498658462583800985577974442039603115135745173184623076441909527696064961198127012017865819765763700987367411872273235926445687877324856111152953081044765735116461263251916930665382479525619938398262413224836488826714294577607853696062994625347787942966705881668972755048655535624173740089) - R*(8033425966985008599519353534176993744522830759181157456061433255880585232174216541559454668669280091695537519580648073735458891822562975501456232953665882797256905097897933568665216420728674753014154900562395238676315820544774001675851771850680618951543426823537291117022048196819597449146090047137839252700948543525981738489742064629722467140209006482411855800392209719392218148659232026415330300250170510105412127661284947187398463468052689366757279014329098436940498846143361135243072259395989089286886851201959941736525346385366796920159749969021122196821208865304922125362776158961*FKplus + 640797815107779187191705793794550633153668287790229027398555366552406031667101078247856869233633836874950460979355510956831292490137264568326828063015578153941605374282891787995544193271594644217625415794763730907276363500635296013051962323925877377925462650997920891267041886259739850501977819958112090649364229423877217634164474896012536276127975407185675863564456346609879944464876497565787943649362049536524198616502955554051625858514453525563726985393269389929059311248239371452812982988393080651886985438339168347630115239859474216949984391960990926226141568414722979190976859790293555343046690525727921*FZbar - 640797815107779187191713827220517618162267807143763204392299889383165212824557139681112749818866011091492020434024180236922988027656845216400563521907400716917106830515845453878341450176692542151194081011184459582029377655535858408290638639746422151927138502769771571885993429686563387793094842006308910246813375513924355473417175844556062257866465149250305586031596555616362356320676889775507335867510708768550613946803205724561731270642114810510914383856737442618426068527253700551249923487239224013022228510598564336719402126710676176891720917307376293023061728164692000313173680999158860265172053301886882*Jrep + PV)",
+        "correction": "0"
+      }
+    ],
+    "delta": {
+      "removed": [
+        "program_bound_sum",
+        "combined_sum"
+      ],
+      "replacement": "program_bound=r+beta; compare with D0",
+      "unchanged_source_count": 30
+    },
+    "scope": "Exact full source and primitive schedule; the mathematical decoding proof is separate."
+  },
+  "carry_lemmas": {
+    "guard_base_assignments": 446226,
+    "accepted_native_pairs": 2667,
+    "coarse_carry_extremes": 1008,
+    "nonnegative_coefficient_identities": [
+      "11*jj*rr + 78*jj + 17*rr + 126",
+      "rr**3*vv + rr**3 + 27*rr**2*vv + 27*rr**2 + 243*rr*vv + 241*rr + 729*vv + 714"
+    ],
+    "scope": "Exhaustive finite guard/base assignments plus general polynomial inequalities; not an exhaustive full-system search."
+  },
+  "canonical": [
+    {
+      "x": 1,
+      "serial_blocks": 12,
+      "counter_width": 1506,
+      "outer_residuals": 21,
+      "restored_117_outer_residuals": 21,
+      "positive_new_and_old_slacks": true,
+      "packed_bits": 343721,
+      "valuation": 216864,
+      "scope": "Full unchanged canonical path, all12 native fields, all21 new and restored outer sources, parity and kernel bounds. The proved converse supplies unmaterialized enormous Pell coordinates."
+    },
+    {
+      "x": 2,
+      "serial_blocks": 18,
+      "counter_width": 1506,
+      "outer_residuals": 21,
+      "restored_117_outer_residuals": 21,
+      "positive_new_and_old_slacks": true,
+      "packed_bits": 515581,
+      "valuation": 325296,
+      "scope": "Full unchanged canonical path, all12 native fields, all21 new and restored outer sources, parity and kernel bounds. The proved converse supplies unmaterialized enormous Pell coordinates."
+    }
+  ],
+  "proof": "../1980/EXPLORATION_PACKED_BOUND_SERIAL_COMPOSITION.md",
+  "scope": "Complete115-operation universal family; independent full proof/source audits and fresh verification pass. The established universal frontier remains90."
+}

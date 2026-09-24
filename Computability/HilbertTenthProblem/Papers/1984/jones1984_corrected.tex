@@ -1,0 +1,598 @@
+% Continuously revised edition; last source revision 24 September 2026.
+% Every discrepancy from the printed article is explained in jones1984_editorial_notes.md;
+% a dated log of revisions and checks is ../EDITORIAL_NOTES.md.
+\documentclass[11pt,leqno]{article}
+\usepackage[T2A,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper,margin=0.92in,headheight=14pt,marginparwidth=0.6in,marginparsep=4pt]{geometry}
+\usepackage{marginnote}
+% Original pagination: \origpage{n} puts the number of the journal page that
+% begins on the current line into the margin (line accuracy).
+\newcommand{\origpage}[1]{\marginnote{\footnotesize\textbf{[#1]}}}
+\usepackage{amsmath}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs,array}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Register machine proof of exponential Diophantine representation: corrected edition},pdfauthor={J. P. Jones and Y. V. Matijasevic}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Jones--Matijasevi\v{c}}
+\fancyhead[R]{\small Corrected edition}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.12em}
+\setlength{\emergencystretch}{2em}
+\setlength{\abovedisplayskip}{9pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{9pt plus 2pt minus 2pt}
+\newcommand{\ednote}[1]{\footnote{\textit{Editorial note.} #1}}
+% Russian words: T2A-encoded Tempora, the Cyrillic companion of the Times text face.
+\newcommand{\cyr}[1]{{\fontencoding{T2A}\fontfamily{Tempora-TLF}\selectfont #1}}
+\newcommand{\bibentry}[1]{\par\noindent\hangindent=1.3em\hangafter=1 #1\par\smallskip}
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\small\textsc{The Journal of Symbolic Logic}\quad49 (3), September 1984, pp. 818--829}\par
+\smallskip
+{\small Original DOI: \href{https://doi.org/10.2307/2274135}{10.2307/2274135}}\par
+\vspace{1.1em}
+{\LARGE\bfseries Register machine proof of the theorem on exponential diophantine representation of enumerable sets\par}
+\vspace{0.9em}
+{\large J. P. Jones and Y. V. Matijasevi\v{c}}\footnotemark\par
+\vspace{0.8em}
+{\small Corrected, re-typeset edition \textbullet\ 13 September 2026}\par
+\smallskip
+\begin{minipage}{0.91\linewidth}
+\small Original equation numbers (1)--(54) are retained. Continuously revised edition: every discrepancy between the printed article and this edition is explained, with its justification, in \texttt{Papers/1984/}\allowbreak\texttt{jones1984\_editorial\_notes.md}; a dated log of revisions and checks is \texttt{Papers/EDITORIAL\_NOTES.md}. Bracketed margin numbers mark the lines on which the pages of the original printing begin. Substantive interventions are also marked in the text. This is an editorial reconstruction, not a publisher-issued revised edition.
+\end{minipage}
+\end{center}
+\footnotetext{This new proof was worked out in the Steklov Mathematical Institute, Leningrad, and in the University of Calgary, Department of Mathematics and Statistics, in connection with the programs of scientific exchange of the National Academy of Sciences of the U.S.A., the Academy of Sciences of the U.S.S.R. and the Queens-Steklov Mathematical Exchange Program between Canada and the U.S.S.R. The authors wish to acknowledge also the support of the Natural Sciences and Engineering Research Council of Canada and the valuable advice of Professors Julia B. Robinson and Raphael M. Robinson of the University of California, Berkeley.}
+\noindent{\footnotesize Received September 10, 1981; revised October 28, 1981 and January 3, 1983.\par
+\noindent 1980 \textit{Mathematics Subject Classification}. Primary 03D10, 03D25, 10N05.\par
+\noindent\copyright\ 1984 Association for Symbolic Logic. Original publication code: 0022-4812/84/4903-0009/\$02.20.}
+
+\section*{\S1. Introduction} \origpage{818}The purpose of the present paper is to give a new, simple proof of the theorem of M. Davis, H. Putnam and J. Robinson [1961], which states that every recursively enumerable relation $A\left(a_{1}, \ldots, a_{n}\right)$ is exponential diophantine, i.e. can be represented in the form
+
+\begin{equation*}
+\begin{aligned}
+A(a_1,\ldots,a_n)\ \longleftrightarrow\ {}&\exists x_1,\ldots,x_m\\
+&\bigl[R(a_1,\ldots,a_n,x_1,\ldots,x_m)
+=S(a_1,\ldots,a_n,x_1,\ldots,x_m)\bigr],
+\end{aligned} \tag{1}\label{eq:1}
+\end{equation*}
+
+where $a_{1}, \ldots, a_{n}, x_{1}, \ldots, x_{m}$ range over natural numbers and $R$ and $S$ are functions built up from these variables and natural number constants by the operations of addition, $A+B$, multiplication, $A B$, and exponentiation, $A^{B}$. We refer to the variables $a_{1}, \ldots, a_{n}$ as parameters and the variables $x_{1}, \ldots, x_{m}$ as unknowns.
+
+Historically, the Davis, Putnam and Robinson theorem was one of the important steps in the eventual solution of Hilbert's tenth problem by the second author [1970], who proved that the exponential relation, $a=b^{c}$, is diophantine, and hence that the right side of (1) can be replaced by a polynomial equation. But this part will not be reproved here. Readers wishing to read about the proof of that are directed to the papers of Y. Matijasevi\v{c} [1971a], M. Davis [1973], Y. Matijasevi\v{c} and J. Robinson [1975] or C. Smory\'{n}ski [1972]. We concern ourselves here for the most part only with exponential diophantine equations until \S5 where we mention a few consequences for the class $\mathrm{NP}$ of sets computable in nondeterministic polynomial time.
+
+The original [1961] proof of the Davis, Putnam and Robinson theorem took as its starting point the theorem of M. Davis [1953] that every recursively enumerable \origpage{819}relation could be represented in the form
+
+\begin{equation*}
+\begin{aligned}
+A(a_1,\ldots,a_n)\ \longleftrightarrow\ {}&\exists y\,(\forall z\leq y)\,\exists x_1,\ldots,x_m\\
+&\bigl[P(a_1,\ldots,a_n,y,z,x_1,\ldots,x_m)=0\bigr].
+\end{aligned} \tag{2}\label{eq:2}
+\end{equation*}
+
+Here a bounded universal quantifier $\forall$ appears. It was then necessary to prove what came to be called the Bounded Quantifier Theorem, namely that you can replace the right side of (2) by an exponential diophantine equation such as appears in (1). The original proof was very complicated and underwent a series of simplifications. The various versions of the Bounded Quantifier Theorem can be found in Davis, Putnam and Robinson [1961], J. Robinson [1969], M. Davis [1973], Y. Matijasevi\v{c} [1971c], [1972] and [1974], Davis, Matijasevi\v{c} and Robinson [1976], Hirose and Iida [1973], and Jones [1978]. But we shall not need any of these here. Our new proof avoids completely the Bounded Quantifier Theorem. Also there is no need to establish first the Davis representation (2).
+
+The new proof is based on register machines (also called counter machines or program machines; see M. Minsky [1961], [1967], Z. A. Melzak [1961], J. Lambek [1961], and J. C. Shepherdson and H. E. Sturgis [1963]). A register machine is similar to a Turing machine. The main difference is that the Turing machine uses an infinite tape for storage whereas the register machine uses a finite number of registers, each containing a nonnegative integer. The registers are addressable, and the machine's instructions permit arithmetical operations to be performed on them. Of course the Turing and the register machine are equivalent. The same class of (partial recursive) functions is computable. However, using register machines we avoid the need to arithmetize words over an alphabet (necessary in Matijasevi\v{c} [1976]). Many mathematicians and logicians interested in the theory of algorithms have also come to the conclusion that the register machine provides a more natural, less awkward model of computability (cf. e.g. E. B\"{o}rger [1975]).
+
+Since the new proof presupposes very little knowledge of number theory, it would be possible to use it in a course in computer science. It can also be used as the main link in a proof that every Turing computable function is general recursive. The proof that every Turing computable function is register machine computable is very short (Minsky [1967, pp. 170--172, 204--206]).
+
+After the theorem of Davis, Putnam and Robinson was proved in 1961, improvements were made in it. In 1974 the theorem was strengthened to singlefold unary exponential diophantine representation. Singlefold (Russian \cyr{однократное}; French univoque) means that there is at most one $m$-tuple, $x_{1}, \ldots, x_{m}$, satisfying the equation. Unary (Russian, \cyr{унарное})\ednote{The original prints the Russian terms in Latin letters, \textit{odnokratnoe} and \textit{oonarnoe}; they are given here in Cyrillic. The printed \textit{oonarnoe} is a phonetic spelling of \cyr{унарное} (standard transliteration \textit{unarnoe}), `unary'.} means that the exponential equation can be built up by addition and multiplication using only one-place exponentials, $2^{x}$, rather than two-place exponentials $y^{x}$. (The original 1961 paper already established the possibility of unary representation but not singlefold.)
+
+In 1979 it was proved that every r.e. set has a singlefold exponential diophantine representation in three unknowns (Matijasevi\v{c} [1979]). In 1982 this was further improved to a singlefold three-unknown unary representation (Jones and Matijasevi\v{c} [1982]).
+
+The new register machine proof, given here in this paper, establishes singlefold unary representation but not in three unknowns.
+
+\section*{\S2. Exponential diophantine sets} \origpage{820}In this section we explain some notation and develop the necessary (minimal) number theory. All variables range over natural numbers (nonnegative integers). The notation $q$ pow 2 means that $q$ is a power of $2$; $\lfloor x\rfloor$ and $\lceil x\rceil$ are the floor and the ceiling of $x$; and $\operatorname{rem}(x,y)$ is the remainder after $x$ is divided by $y$, with $y>0$. We use $x^0=1$ (also when $x=0$), and $\binom{n}{k}=0$ when $k>n$.\ednote{The domain conventions are made explicit here.} A diophantine equation is a polynomial equation in which we are interested only in integer solutions, or, as in this paper, nonnegative integer solutions.
+
+Usually one begins with a diophantine equation and one asks about the set of solutions. However, here in this subject, as Martin Davis has remarked, the usual procedure is turned around. We begin with an interesting set or relation and ask for a diophantine equation defining it (in the sense of (1)). If so, the relation is called diophantine. If exponential functions appear, the relation is said to be exponential diophantine. A simple example of a diophantine relation is the ordinary ordering relation, <, on the natural numbers.
+
+\begin{equation*}
+a<b \leftrightarrow \exists x[a+x+1=b] . \tag{3}\label{eq:3}
+\end{equation*}
+
+Since $x$ is unique in (3), we say that $<$ is a singlefold diophantine relation. Further examples would be the relations $\leq$ (less than or equal to), $\neq$ and $\mid$ (divisibility).\ednote{Divisibility remains singlefold when zero is allowed, but the quotient equation alone needs care: $0=0q$ does not determine $q$. A uniform repair is
+$ a\mid b\ \longleftrightarrow\ \exists q,t\,[b=aq\ \land\ b=q+t]$.
+For $a>0$ the quotient is unique and $q\leq b$; for $a=b=0$ the second equation forces $q=t=0$. The two equations can be combined by (5).}
+
+Another example would be the relation of congruence (for $c>0$)
+
+\begin{equation*}
+a \equiv b(\bmod c) \leftrightarrow(\exists x)[a=b+c x \text { or } b=a+c x] . \tag{4}\label{eq:4}
+\end{equation*}
+
+A disjunction or conjunction of equations (in real numbers) can be combined into an equivalent single equation using
+
+\begin{equation*}
+\begin{aligned}
+(A=0\ \text{or}\ B=0)&\ \longleftrightarrow\ AB=0,\\
+(A=0\land B=0)&\ \longleftrightarrow\ A^2+B^2=0.
+\end{aligned} \tag{5}\label{eq:5}
+\end{equation*}
+
+These principles (5) can be used to show that the remainder function is (singlefold) diophantine. For $0<c$
+
+\begin{equation*}
+a=\operatorname{rem}(b, c) \leftrightarrow b \equiv a(\bmod c) \quad \text { and } \quad a<c . \tag{6}\label{eq:6}
+\end{equation*}
+
+Next we show that the binomial coefficient relation, $m=\binom{n}{k}$, is exponential diophantine. This was first proved by Julia Robinson [1952]. We give here a modification of her original proof, found later by the second author [1971b]. Both proofs use the fact that the binomial coefficients $\binom{n}{i}$ are defined by the binomial theorem,
+
+\begin{equation*}
+(u+1)^{n}=\sum_{i=0}^{n}\binom{n}{i} u^{i} \tag{7}\label{eq:7}
+\end{equation*}
+
+and the binomial coefficients are just the digits in the base $u$ expansion of the number $(1+u)^{n}$, when $u$ is sufficiently large, say $u>2^{n} \geq\binom{ n}{i}$. The digits of a number are unique. Hence, $m=\binom{n}{k}$ holds if and only if there exist (unique) $u, w$ and $v$ such that
+
+\begin{equation*}
+u=2^{n}+1, \quad(u+1)^{n}=w u^{k+1}+m u^{k}+v, \quad v<u^{k} \quad \text { and } \quad m<u . \tag{8}\label{eq:8}
+\end{equation*}
+
+This proves that the relation $m=\binom{n}{k}$ is singlefold exponential diophantine. The conditions (8) are not unary exponential diophantine because they contain two-place exponential functions. However the two-place exponentials can be replaced by one-place exponentials using the formula
+
+\begin{equation*}
+\operatorname{rem}\left(2^{x y^{2}}, 2^{x y}-x\right)=x^{y} \quad(1<y) . \tag{9}\label{eq:9}
+\end{equation*}
+
+\origpage{821}This idea is due essentially to Julia Robinson. Formula (9) is easy to prove using $2^{x y} \equiv x\left(\bmod 2^{x y}-x\right)$. The cases $y=0$ and $y=1$ are handled separately by $x^0=1$ and $x^1=x$; auxiliary variables belonging to an unused case may be fixed to zero to preserve singlefoldness.
+
+Next we define a new binary relation, $\preccurlyeq$ (masking). Suppose that the numbers $r$ and $s$ are written in binary (base 2) notation,
+
+$$
+r=\sum_{i=0}^{n} r_{i} 2^{i} \quad\left(0 \leq r_{i} \leq 1\right), \quad s=\sum_{i=0}^{n} s_{i} 2^{i} \quad\left(0 \leq s_{i} \leq 1\right) .
+$$
+
+\medskip\noindent\textbf{Definition.} $r \preccurlyeq s$ if and only if each binary digit of $r$ is less than or equal to the corresponding binary digit of $s$, i.e., for all $i, r_{i} \leq s_{i}$.
+
+The relation $\preccurlyeq$ has many interesting properties. It is a partial ordering, and $r \preccurlyeq s$ implies $r \leq s$. It is closely related to the operation of taking the so-called logical and of two binary numbers
+
+\begin{gather*}
+a \preccurlyeq b \leftrightarrow a\mathbin{\&}b=a,  \tag{10}\label{eq:10}\\
+a\mathbin{\&}b=c \leftrightarrow c \preccurlyeq b \text { and } b \preccurlyeq a+b-c . \tag{11}\label{eq:11}
+\end{gather*}
+
+One can also use $\preccurlyeq$ to define the set of powers of 2:
+
+\begin{equation*}
+a \text { pow } 2 \leftrightarrow a>0\ \text{ and }\ a \preccurlyeq 2 a-1 . \tag{12}\label{eq:12}
+\end{equation*}
+
+Also, two $\preccurlyeq$ conditions can always be combined into a single $\preccurlyeq$ condition. If $Q$ pow 2 and $a<Q$ and $b<Q$, then
+
+\begin{equation*}
+a \preccurlyeq b \text { and } c \preccurlyeq d \leftrightarrow a+c Q \preccurlyeq b+d Q \text {. } \tag{13}\label{eq:13}
+\end{equation*}
+
+We need to prove that the relation $\preccurlyeq$ is (singlefold unary) exponential diophantine. The following lemma proves this.
+
+\medskip\noindent\textbf{Lemma.} $r \preccurlyeq s$ if and only if $\binom{s}{r} \equiv 1(\bmod 2)$.
+
+\noindent\textit{Proof.} This is clear from E. Lucas' theorem [1878a], [1878b]
+
+\begin{equation*}
+\binom{s}{r} \equiv\binom{s_{n}}{r_{n}} \cdots\binom{s_{1}}{r_{1}}\binom{s_{0}}{r_{0}}(\bmod p), \tag{14}\label{eq:14}
+\end{equation*}
+
+where $r_{i}$ and $s_{i}$ are the $p$-ary digits of $r$ and $s$. Here it is necessary that $p$ be a prime. We take $p=2$.
+
+Lucas' theorem is usually proved by considering the coefficient of the term $x^{r}$ in the product $(1+x)^{s}$. Use the congruence $(1+x)^{p^{i}} \equiv 1+x^{p^{i}}(\bmod p)$ and work in the ring $\mathbb{Z}_p[x]$ of polynomials in $x$ with coefficients in the field $\mathbb{Z}_p$ (cf. e.g. Fine [1947]). For another, different proof of Lucas' theorem, see M. Hausner [1983].
+
+\section*{\S3. Arithmetization of register machines} The Davis, Putnam and Robinson theorem is usually stated in the form every recursively enumerable set is exponential diophantine. (The converse is obviously true. Every exponential diophantine set is recursively enumerable.) For the concept of a recursively enumerable set (r.e. set, listable set), there are many equivalent definitions from which to choose. We take here a definition formulated in terms of register machines. For additional information about recursively enumerable sets, recursive sets, recursive (computable) functions, and partial recursive functions, see the expository books and papers Davis [1958], [1973], [1974], Minsky [1967], Robinson [1969], or Jones [1974].
+
+\origpage{822}A register machine (Minsky [1961], [1967], Melzak [1961], Lambek [1961], Shepherdson and Sturgis [1963]) has a finite number of separately addressable registers $R 1, R 2, \ldots, R r$ and a program consisting of a finite list of commands considered to be written on lines labelled $L 0, L 1, \ldots, L l$. The commands are normally executed in the sequence given, but the register machine can be instructed to transfer to a different location. Each register contains a nonnegative integer. Unlike physically existing digital computers, there is no preassigned upper bound on the size of the numbers storable in a register. One also supposes that the machine is capable of inspecting the contents of any register and adding or subtracting 1 provided that this does not produce a negative number in a register. In addition to a STOP command we suppose that there are five (active) instructions:
+
+\begin{center}
+\setcounter{equation}{14}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}r p{0.40\linewidth} p{0.47\linewidth}@{}}
+\toprule
+& \textsc{Command} & \textsc{Meaning} \\
+\midrule
+\refstepcounter{equation}(\theequation)\label{eq:15} & $L i\quad\text{GO TO }L k$
+ & Proceed to the instruction at location $L k$. \\
+\refstepcounter{equation}(\theequation)\label{eq:16} & $L i\quad\text{IF }R j<R m,\ \text{GO TO }L k$
+ & If the contents of $R j$ are less than the contents of $R m$, then go to $L k$. Else go to the next instruction. \\
+\refstepcounter{equation}(\theequation)\label{eq:17} & $L i\quad R j\leftarrow R j+1$
+ & Add $1$ to the contents of $R j$. \\
+\refstepcounter{equation}(\theequation)\label{eq:18} & $L i\quad R j\leftarrow R j-1$
+ & Subtract $1$ from the contents of $R j$. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+We permit $\leq$ to occur in the conditional transfer command (16), i.e. we permit also the command
+
+\begin{equation*}
+L i \quad \text { IF } R j \leq R m \text {, GO TO } L k \text {. } \tag{19}\label{eq:19}
+\end{equation*}
+
+We permit also occurrence of numbers, 0 and 1, in place of names of registers in commands (16) and (19). So, for example, we can simulate the (double) conditional transfer command of Minsky [1967].
+
+\begin{align*}
+L i &\quad \text{IF } R j=0,\ \text{GO TO }L k, \tag{20}\label{eq:20}\\
+L(i+1) &\quad \text{ELSE } R j\leftarrow R j-1. \tag{21}\label{eq:21}
+\end{align*}
+
+Minsky permitted the subtraction command to occur only in this way (with (21) immediately after (20)), to avoid the problem of an attempted subtraction from an already zero register. We can make here a similar assumption, or we can simply suppose that the program was written in such a way that subtraction of 1 from a zero register never occurs.
+
+The following is an example of a register machine program.
+
+\medskip\noindent\textbf{Example 1.}
+\[
+\renewcommand{\arraystretch}{1.06}
+\begin{array}{@{}r@{\quad}l@{}}
+L 0 & R 2\leftarrow R 2+1 \\
+L 1 & R 2\leftarrow R 2+1 \\
+L 2 & \text{IF }R 3=0,\ \text{GO TO }L 5 \\
+L 3 & R 3\leftarrow R 3-1 \\
+L 4 & \text{GO TO }L 2 \\
+L 5 & R 3\leftarrow R 3+1,\ R 4\leftarrow R 4+1,\ R 2\leftarrow R 2-1 \\
+L 6 & \text{IF }0<R 2,\ \text{GO TO }L 5 \\
+L 7 & \origpage{823} R 2\leftarrow R 2+1,\ R 4\leftarrow R 4-1 \\
+L 8 & \text{IF }0<R 4,\ \text{GO TO }L 7 \\
+L 9 & \text{IF }R 3<R 1,\ \text{GO TO }L 5 \\
+L 10 & \text{IF }R 1<R 3,\ \text{GO TO }L 1 \\
+L 11 & \text{IF }R 2<R 1,\ \text{GO TO }L 10 \\
+L 12 & R 1\leftarrow R 1-1,\ R 2\leftarrow R 2-1,\ R 3\leftarrow R 3-1 \\
+L 13 & \text{IF }0<R 1,\ \text{GO TO }L 12 \\
+L 14 & \text{STOP}
+\end{array}
+\]
+
+Here there are $r=4$ registers and $l+1=15$ program lines, labelled $L0,\ldots,L14$, so $l=14$. To shorten the program, lines 5, 7 and 12 were written in parallel. This makes no essential difference provided we do not attempt to parallel the same register twice on one line. (Combining $L 0$ and $L 1$ into one line of code would require changes in (24), (38) and (39)). We do not try to parallelize transfer commands.
+
+To define the concept of a recursively enumerable set we take the convention that a register machine $M$ accepts a number $x$, if $M$, started at $L 0$, with $x$ in $R 1$ and zero in the other registers, eventually stops, with zero in all the registers.
+
+Minsky [1967] proved that with commands of type (15), (17), (20) and (21), already three registers are sufficient for any computation and for acceptance of r.e. sets. Minsky also proved that two registers are sufficient when one uses a different input format convention (for example $2^{x}$ in $R 1$ instead of $x$). (J. M. Barzdin' [1963] proved that some such special input format is necessary with two registers.) Minsky proved also that with additional commands and special input format encoding, one register is sufficient. Here we allow any finite number $r$ of registers.
+
+We can use digits of numbers, written to a base $Q$, to describe the work of a register machine. Let $s$ be the number of transitions in the computation before the STOP configuration (assuming the machine stops), so the configurations are indexed by $t=0,\ldots,s$. Let $r_{j, t}$ be the contents of register $R j$ at time $t(t=0,1, \ldots)$. Let $l_{j, t}$ be 1 or 0 according as at time $t$ we do or do not execute the instructions at location $j$ (i.e., on line number $j$ in the program). Let
+
+\begin{align*}
+R_j&=\sum_{t=0}^s r_{j,t}Q^t &&(0\leq r_{j,t}<Q/2), \tag{22}\label{eq:22}\\
+L_i&=\sum_{t=0}^s l_{i,t}Q^t &&(0\leq l_{i,t}\leq1). \tag{23}\label{eq:23}
+\end{align*}
+
+As a base $Q$ we can use any sufficiently large power of 2. The contents of any register at time $t$ cannot exceed $x+t$. Hence if there are $s$ steps in the program, then $r_{j, t} \leq x+s$. So any number $Q$ satisfying
+
+\begin{gather*}
+x+s<Q / 2  \tag{24}\label{eq:24}\\
+l+1<Q  \tag{25}\label{eq:25}\\
+Q \text { pow } 2 \tag{26}\label{eq:26}
+\end{gather*}
+
+will be large enough. For example we can put $Q=2^{x+s+l+2}$ (for singlefoldness).\ednote{The extra $2$ in the exponent ensures (24)--(26) even when $x=s=l=0$, the immediate-STOP case.}
+
+It will be convenient to have a number $I$ which when written to the base $Q$ has all its digits equal to 1. We can obtain such a number $I$ from the geometric series. If
+
+\begin{equation*}
+1+(Q-1) I=Q^{s+1} \tag{27}\label{eq:27}
+\end{equation*}
+
+then
+
+\begin{equation*}
+\origpage{824}I=\sum_{t=0}^{s} Q^{t} . \tag{28}\label{eq:28}
+\end{equation*}
+
+Suppose we start the machine of Example 1 with 2 in $R 1$. Then the machine will be seen to halt after $s=18$ steps with 0 in all the registers. (The set of accepted numbers is the set of primes.)
+
+\noindent\textit{Editorial invariant check.} For input $x\geq2$, the trial value $k$ in $R2$ starts at 2. Lines 2--4 clear $R3$; lines 5--8 then repeatedly add $k$ to $R3$, restoring $R2=k$ and $R4=0$ after each addition. Thus at line 9, $R3$ is a positive multiple of $k$. The first multiple at least $x$ either exceeds $x$, in which case line 10 returns to line 1, which increases $k$, or equals $x$. In the latter case a proper divisor $k<x$ traps the machine in the unchanged two-line cycle 10--11, whereas $k=x$ leads to lines 12--13, which clear all registers and stop. Every prime therefore stops, every composite reaches the proper-divisor cycle, and all subtractions on these runs are from positive registers. Inputs 0 and 1 always overshoot for $k\geq2$, so neither stops. This establishes the assertion for every nonnegative input, rather than only for the displayed trace.
+
+The work of the machine and the generated numbers $R_{1}, \ldots, R_{4}$ and $L_{0}, \ldots, L_{14}$ may be visualized as follows, time proceeding leftwards, so the numbers $R_{1}, \ldots, R_{4}$, $L_{0}, \ldots, L_{14}$ are presented as normally written, in base $Q$ notation,
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{3.4pt}
+\renewcommand{\arraystretch}{1.04}
+\begin{tabular}{@{}r*{19}{r}@{}}
+\toprule
+$t$ & 18 & 17 & 16 & 15 & 14 & 13 & 12 & 11 & 10 & 9 & 8 & 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\
+\midrule
+$R_{1}$ & 0 & 0 & 1 & 1 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 \\
+$R_{2}$ & 0 & 0 & 1 & 1 & 2 & 2 & 2 & 2 & 2 & 1 & 1 & 0 & 0 & 1 & 1 & 2 & 2 & 1 & 0 \\
+$R_{3}$ & 0 & 0 & 1 & 1 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 1 & 1 & 0 & 0 & 0 & 0 \\
+$R_{4}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 2 & 2 & 1 & 1 & 0 & 0 & 0 & 0 \\
+\midrule
+$L_{0}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+$L_{1}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+$L_{2}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+$L_{3}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{4}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{5}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\
+$L_{6}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+$L_{7}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{8}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{9}$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{10}$ & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{11}$ & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{12}$ & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{13}$ & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+$L_{14}$ & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\footnotesize Time increases to the left. The line numbers refer to the full program in Example 1;\par
+in particular, its parallel updates at $L5$, $L7$ and $L12$ are retained.
+\end{center}
+
+Now we will show how to write down conditions on $x, s, Q, I, R_{1}, \ldots, R_{r}, L_{0}, \ldots, L_{l}$ such that the conditions have a solution if and only if $M$ accepts $x$. Here $r$ and $l$ are constants, $x$ is a parameter and $s, Q, I, R_{1}, \ldots, R_{r}, L_{0}, \ldots, L_{l}$ are unknowns. The methods of \S2 then permit further translation of these conditions into exponential diophantine equations in the same unknowns and more unknowns.
+
+The first four conditions will be (24), (25), (26) and (27). To force an arbitrary natural number $R_{j}$ to have the form (22), we can make use of our binary relation $\preccurlyeq$, because the base $Q$ itself is a power of 2. Condition (22) (and also $r_{j, t}<Q / 2$ for all $t$, important in (35)) is implied by
+
+\begin{equation*}
+R_{j} \preccurlyeq(Q / 2-1) I \quad(j=1, \ldots, r) . \tag{29}\label{eq:29}
+\end{equation*}
+
+Next we want to force exactly one digit to be 1 in each column of the $L$ matrix. Since $l+1<Q$, by (25), \origpage{825}we may use for this purpose the conditions
+
+\begin{equation*}
+I=\sum_{i=0}^{l} L_{i}, \tag{30}\label{eq:30}
+\end{equation*}
+
+\noindent and\nopagebreak
+
+\begin{equation*}
+L_{i} \preccurlyeq I \quad(i=0, \ldots, l) . \tag{31}\label{eq:31}
+\end{equation*}
+
+In order to properly start the machine at location $L 0$ we stipulate as a starting condition
+
+\begin{equation*}
+1 \preccurlyeq L_{0} . \tag{32}\label{eq:32}
+\end{equation*}
+
+By means of GO TO commands we may suppose that the STOP command appears only once, say at the end of the program. Before encoding, we also replace any self-targeting conditional jump by a jump to a fresh trampoline line whose sole instruction is GO TO the original conditional line. The trampoline block is isolated from ordinary fall-through, all labels are adjusted, and the unique STOP remains last.\ednote{This normalization is necessary for the strict-comparison encoding (36) when its original target is the current line. A concrete spurious accepting computation for the printed self-target case is given in the editorial notes.} Hence the condition for stopping the machine, after $s$ steps, can be simply
+
+\begin{equation*}
+L_{l}=Q^{s} . \tag{33}\label{eq:33}
+\end{equation*}
+
+For each command of type (15), $L i$ GO TO $L k$, we include a condition of type
+
+\begin{equation*}
+Q L_{i} \preccurlyeq L_{k} . \tag{34}\label{eq:34}
+\end{equation*}
+
+This forces the machine to transfer from location $L i$ to location $L k$, whenever line $L i$ is executed.
+
+To obtain the effect of a conditional transfer command we use a pair of conditions. For example to simulate the conditional transfer command (20), $L i$ IF $R j=0$, GO TO $L k$, we use
+
+\begin{equation*}
+Q L_{i} \preccurlyeq L_{k}+L_{i+1} \quad \text { and } \quad Q L_{i} \preccurlyeq L_{i+1}+Q I-2 R_{j} . \tag{35}\label{eq:35}
+\end{equation*}
+
+This works for the general case $k \neq i+1$. If $k=i+1$ use (34). A similar remark applies to the following conditional transfer commands. After the normalization just described, and with $k\notin\{i,i+1\}$, the command (16), $L i$ IF $R j<R m$, GO TO $L k$, can be simulated by
+
+\begin{equation*}
+Q L_{i} \preccurlyeq L_{k}+L_{i+1} \quad \text { and } \quad Q L_{i} \preccurlyeq L_{k}+Q I+2 R_{j}-2 R_{m} . \tag{36}\label{eq:36}
+\end{equation*}
+
+The command (19), $L i$ IF $R j\leq R m$, GO TO $L k$, with $k\neq i+1$, can be simulated by
+
+\begin{equation*}
+Q L_{i} \preccurlyeq L_{k}+L_{i+1} \quad \text { and } \quad Q L_{i} \preccurlyeq L_{i+1}+Q I+2 R_{m}-2 R_{j} . \tag{37}\label{eq:37}
+\end{equation*}
+
+For each command of type (17) or (18) (or (21), if it is used), we must also include a condition directing the machine to take the next instruction, to execute $L i+1$ after $L i$, i.e. $Q L_{i} \preccurlyeq L_{i+1}$. When a comparison uses the constant $0$ or $1$ in place of a register, its encoded history is respectively $0$ or $I$. Finally it is necessary to include also for each register $R j$ an equation in $R_{j}$ which ensures that, at each time $t$, the $t$th $Q$-ary digit of $R_{j}$ represents exactly the contents of register $R j$. We call these register equations. They are the following:
+
+\begin{equation*}
+R_{j}=Q R_{j}+\sum_{k} Q L_{k}-\sum_{i} Q L_{i}+x \quad(\text { for } j=1), \tag{38}\label{eq:38}
+\end{equation*}
+
+\noindent and\nopagebreak
+
+\begin{equation*}
+R_{j}=Q R_{j}+\sum_{k} Q L_{k}-\sum_{i} Q L_{i} \quad(\text { for } j=2,3, \ldots, r) \tag{39}\label{eq:39}
+\end{equation*}
+
+\origpage{826}Here the $k$-sum is over all $k$ for which the program has an instruction of the type $L k \ldots R j \leftarrow R j+1 \ldots$. The $i$-sum is taken over all $i$ for which the program has an instruction of the form $L i \ldots R j \leftarrow R j-1 \ldots$ (or one of type (21)). The register equation for $R 1$ is different from that of the other registers because $R 1$ contains $x$ at the outset. In such respects the register equations can be easily modified to treat different input-output conventions. For example, in the case of computability of a function, $y=f(x)$, with input $x$ in $R1$, output $y$ in $R1$, and the remaining registers cleared at termination, the register equation for $R_{1}$ would become
+
+\begin{equation*}
+R_{1}+y Q^{s+1}=Q R_{1}+\sum_{k} Q L_{k}-\sum_{i} Q L_{i}+x . \tag{40}\label{eq:40}
+\end{equation*}
+
+This completes the proof of the Davis, Putnam and Robinson theorem.
+
+\section*{\S4. Deterministic polynomial time equivalence} While it was of course not important in the above proof, register machines, limited to the above given types of commands, cannot add or multiply in so-called polynomial time, $s \leq P(|x|)$, where $P$ is a polynomial and $|x|=\lceil\log_2(x+1)\rceil$ is the length of $x$.
+
+To obtain register machines polynomial time equivalent to Turing machines it is sufficient to include two new commands:
+
+\begin{align*}
+L n&\quad R i\leftarrow R i+R j, \tag{41}\label{eq:41}\\
+L p&\quad R j\leftarrow\lceil R j/2\rceil. \tag{42}\label{eq:42}
+\end{align*}
+
+From (41) and (42) one obtains the use of other (polynomial time) commands, e.g. $R i \leftarrow 2 R i, R i \leftarrow 0, R i \leftarrow R j, R i \leftarrow 2 R j, R i \leftarrow R k+R j$ and $R i \leftarrow R k+2 R j$. For example, to obtain $R i\leftarrow0$, iterate (42) while $R i>1$, and then subtract $1$ if $R i=1$.\ednote{Iterating ceiling-halving alone does not clear a positive register: $\lceil1/2\rceil=1$. The final conditional decrement repairs the original macro.} We think of these commands as macros. Using the following trick
+
+\begin{equation*}
+R i\equiv0\pmod2\ \Longleftrightarrow\ 2\lceil R i/2\rceil\leq R i, \tag{43}\label{eq:43}
+\end{equation*}
+
+one obtains from (19) and (42) the use of the macro
+
+\begin{equation*}
+\text { IF } R i \equiv 0(\bmod 2) \text {, GO TO } L k . \tag{44}\label{eq:44}
+\end{equation*}
+
+Then from (44) one obtains the macros quotient, $R i\leftarrow\lfloor R i/2\rfloor$, and parity, $R i \leftarrow \operatorname{rem}(R i,2)$. These are sufficient for Minsky's [1967, pp. 170--172, 204--206] simulation of Turing machines by register machines (in polynomial time). For example we can now multiply in polynomial time, $R i \leftarrow R j \cdot R k(i \neq j \neq k \neq i)$:
+
+\[
+\begin{array}{ll}
+& R i \leftarrow 0,  \tag{45}\label{eq:45}\\
+L 1 & \text { IF } R k \equiv 0(\bmod 2), \text { GO TO } L 3, \\
+& R i \leftarrow R i+R j, \\
+L 3 & R k\leftarrow\lfloor R k/2\rfloor, \\
+& R j \leftarrow R j+R j, \\
+& \text { IF } 0<R k, \text { GO TO } L 1 .
+\end{array}
+\]
+
+The multiplication macro uses $R j$ and $R k$ destructively; copy them to scratch registers first when their original values must be preserved.
+
+To simulate the new commands (41) and (42) with exponential diophantine equations, first replace (24) by
+
+\begin{equation*}
+2^{s}(x+1)<Q / 2 . \tag{46}\label{eq:46}
+\end{equation*}
+
+For polynomial-size encodings, one may take $Q=2^{s+|x|+l+3}$; this satisfies (25), (26), and (46), and has bit length $O(s+|x|+l)$.\ednote{A polynomial-bit-size choice is made explicit here; the value-based choice after (26) is not suitable for this complexity estimate.} For each command (41) or (42), also impose the fall-through condition $Q L_n\preccurlyeq L_{n+1}$ or $Q L_p\preccurlyeq L_{p+1}$, respectively.
+
+\origpage{827}For all the commands of type (41), include a sum $\sum_{n} Q M_{j, n}$ in the register equation for $R i$, where $M_{j, n}$ is a new unknown satisfying
+
+\begin{equation*}
+\begin{gathered}
+M_{j,n}\preccurlyeq R_j,\qquad M_{j,n}\preccurlyeq(Q-1)L_n,\\
+R_j\preccurlyeq(Q-1)(I-L_n)+M_{j,n}.
+\end{gathered} \tag{47}\label{eq:47}
+\end{equation*}
+
+These three conditions (47) imply that
+
+\begin{equation*}
+M_{j, n}=\sum_{t=0}^{s} r_{j, t} l_{n, t} Q^{t} . \tag{48}\label{eq:48}
+\end{equation*}
+
+For all commands of type (42), $L p R j \leftarrow R j-\lfloor R j / 2\rfloor$, include a sum $-\sum_{p} Q J_{j, p}$ in the register equation for $R j$, where each $J_{j, p}$ is a new unknown satisfying
+
+\begin{equation*}
+\begin{gathered}
+2J_{j,p}\preccurlyeq R_j,\qquad J_{j,p}\preccurlyeq(Q/2-1)L_p,\\
+R_j\preccurlyeq(Q-1)(I-L_p)+2J_{j,p}+L_p.
+\end{gathered} \tag{49}\label{eq:49}
+\end{equation*}
+
+The final term in (49) is $L_p$, not $I$.\ednote{The printed $+I$ produces carries in unselected blocks and can reject a valid computation. The replacement $+L_p$ restores the required blockwise mask; see the proof and counterexample in the editorial notes.} The three conditions (49) imply that
+
+\begin{equation*}
+J_{j, p}=\sum_{t=0}^{s}\left\lfloor r_{j, t} / 2\right\rfloor l_{p, t} Q^{t} . \tag{50}\label{eq:50}
+\end{equation*}
+
+\section*{\S5. Nondeterministic polynomial time equivalence} The new register machine proof can be applied also to the situation of nondeterministic polynomial time computation. This yields bounded diophantine characterizations of the class $\mathrm{NP}$ (first obtained by Adleman and Manders [1976]).
+
+From the foregoing and Karp [1972] it is clear that we obtain nondeterministic register machines polynomial time equivalent to nondeterministic Turing machines by adding the following nondeterministic command:
+
+\begin{equation*}
+L n \quad \text { BRANCH }(L i, L j) \tag{51}\label{eq:51}
+\end{equation*}
+
+which causes transfer to location $L i$ or $L j$.
+
+To simulate, with exponential diophantine equations, the nondeterministic command (51) when $i\neq j$, we need only write
+
+\begin{equation*}
+Q L_{n} \preccurlyeq L_{i}+L_{j} . \tag{52}\label{eq:52}
+\end{equation*}
+
+When $i=j$, use the deterministic condition $Q L_n\preccurlyeq L_i$ instead: adding a mask to itself shifts its bits, rather than duplicating the available target.\ednote{The distinct-target qualification, absent from the source, is needed in (52).}
+
+Putting $s\leq P(|x|)$, estimating the sizes of the unknowns in terms of $P(|x|)$, combining the several $\preccurlyeq$ conditions into one $\preccurlyeq$ condition using (13), replacing (24) by (46) and using Theorem 7 (about exponentiation) from Adleman and Manders [1975], one obtains the following characterization of $\mathrm{NP}$. A set $A$ of nonnegative integers belongs to $\mathrm{NP}$ if and only if $A$ can be represented in the form, $x \in A$ iff
+
+\begin{equation*}
+\left(\exists\left|x_{0}\right|, \ldots,\left|x_{n}\right| \leq P(|x|)\right)\left[x_{0}\preccurlyeq x_{1}\ \land Q\left(x, x_{0}, \ldots, x_{n}\right)=0\right] . \tag{53}\label{eq:53}
+\end{equation*}
+
+Here $P$ and $Q$ are polynomials with integer coefficients. The notation $\exists|y| \leq$ $P(|z|) \ldots$ is shorthand for $(\exists y)[|y| \leq P(|z|)\land \ldots]$.
+
+From (53), (10) and (5) one obtains also the following characterization of the class $\mathrm{NP}$. A set $A\in\mathrm{NP}$ if and only if $A$ can be represented in the form, $x \in A$ iff
+
+\begin{equation*}
+\left(\exists |x_0|,\ldots,|x_n|\leq P(|x|)\right)\!\left[F(x,x_0,\ldots,x_n)=G(x,x_0,\ldots,x_n)\right], \tag{54}\label{eq:54}
+\end{equation*}
+
+where $P$ is a polynomial and $F$ and $G$ are functions built up from $x,x_0,\ldots,x_n$ and nonnegative integer constants by the operations of addition, multiplication, and the logical ``and'' operation, \&.
+
+\section*{References\origpage{828}}
+\begingroup\small\setlength{\parskip}{0pt}\setlength{\smallskipamount}{1pt}
+\bibentry{L. Adleman and K. Manders [1975], Computational complexity of decision procedures for polynomials, 16th Annual Symposium on Foundations of Computer Science (Berkeley, California, 1975), IEEE Computer Society, Long Beach, California, 1975, pp. 169--177. MR 57 \#264.}
+
+\bibentry{L. Adleman and K. Manders [1976], Diophantine complexity, 17th Annual Symposium on Foundations of Computer Science (Houston, Texas, 1976), IEEE Computer Society, Long Beach, California, 1976, pp. 81--88. MR 56 \#7314.}
+
+\bibentry{Ja. M. Barzdin' [1963], On a certain class of Turing machines (Minsky machines), Algebra i Logika, vol. 1 (1962/63), no. 6, pp. 42--51. (Russian) MR 27 \#2415.}
+
+\bibentry{E. B\"{o}rger [1975], Recursively unsolvable algorithmic problems and related questions re-examined, $\models$ ISILC Logic Conference, Proceedings of the International Summer Institute and Logic Colloquium, Kiel, 1974 (G. H. M\"{u}ller, A. Oberschelp and K. Potthoff, editors), Lecture Notes in Mathematics, vol. 499, Springer-Verlag, Berlin, 1975, pp. 10--24. MR 58 \#10355.}
+
+\bibentry{M. Davis [1953], Arithmetical problems and recursively enumerable predicates, \textit{The Journal of Symbolic Logic}, vol. 18 (1953), pp. 33--41. MR 14, 1052.}
+
+\bibentry{M. Davis [1958], Computability and unsolvability, McGraw-Hill, New York, 1958. MR 23 \# A1525.}
+
+\bibentry{M. Davis [1973], Hilbert's tenth problem is unsolvable, American Mathematical Monthly, vol. 80 (1973), pp. 233--269. MR 47 \#6465.}
+
+\bibentry{M. Davis [1974], Computability, Lecture Notes, Courant Institute of Mathematical Sciences, New York University, New York, 1974. MR 50 \#77.}
+
+\bibentry{M. Davis, Y. V. Matijasevi\v{c} and J. Robinson [1976], Hilbert's tenth problem. Diophantine equations: positive aspects of a negative solution, Mathematical developments arising from Hilbert problems, Proceedings of Symposia in Pure Mathematics, vol. 28, American Mathematical Society, Providence, Rhode Island, 1976, pp. 323--378. MR 55 \#5522.}
+
+\bibentry{M. Davis, H. Putnam and J. Robinson [1961], The decision problem for exponential diophantine equations, Annals of Mathematics, ser. 2, vol. 74 (1961), pp. 425--436. MR 24 \# A3061.}
+
+\bibentry{N. J. Fine [1947], Binomial coefficients modulo a prime, American Mathematical Monthly, vol. 54 (1947), pp. 589--592. MR 9, 331.}
+
+\bibentry{M. Hausner [1983], Applications of a simple counting technique, American Mathematical Monthly, vol. 90 (1983), pp. 127--129.}
+
+\bibentry{K. Hirose and S. Iida [1973], A proof of negative answer to Hilbert's tenth problem, Proceedings of the Japan Academy, vol. 49 (1973), pp. 10--12. MR 58 \# 27750.}
+
+\bibentry{J. P. Jones [1974], Recursive undecidability---an exposition, American Mathematical Monthly, vol. 81 (1974), pp. 724--738. MR 50 \#9568.}
+
+\bibentry{J. P. Jones [1978], Three universal representations of recursively enumerable sets, \textit{The Journal of Symbolic Logic}, vol. 43 (1978), pp. 335--351. MR 58 \#16226.}
+
+\bibentry{J. P. Jones [1982], Universal diophantine equation, \textit{The Journal of Symbolic Logic}, vol. 47 (1982), pp. 549--571.}
+
+\bibentry{J. P. Jones and Y. V. Matijasevi\v{c} [1982], Exponential diophantine representation of recursively enumerable sets, Proceedings of the Herbrand Symposium, Logic Colloquium '81 (J. Stern, editor), Studies in Logic and the Foundations of Mathematics, vol. 107, North-Holland, Amsterdam, 1982, pp. 159--177.}
+
+\bibentry{R. M. Karp [1972], Reducibility among combinatorial problems, Complexity of computer computations (R. E. Miller and J. W. Thatcher, editors), Plenum Press, New York, 1972, pp. 85--103. MR 51 \#14644.}
+
+\bibentry{J. Lambek [1961], How to program an infinite abacus, Canadian Mathematical Bulletin, vol. 4 (1961), pp. 295--302. MR 24 \# A2532.}
+
+\bibentry{E. Lucas [1878a], Sur les congruences des nombres eul\'{e}riens et des coefficients diff\'{e}rentiels des fonctions trigonom\'{e}triques suivant un module premier, Bulletin de la Soci\'{e}t\'{e} Math\'{e}matique de France, vol. 6 (1877/78), pp. 49--54.}
+
+\bibentry{E. Lucas [1878b], Th\'{e}orie des fonctions num\'{e}riques simplement p\'{e}riodiques, American Journal of Mathematics, vol. 1 (1878), pp. 184--240; English translation available from the Fibonacci Association, San Jose University, San Jose, California, 1969.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1970], Enumerable sets are diophantine, Doklady Akademii Nauk SSSR, vol. 191 (1970), pp. 279--282; English translation with addendum, Soviet Mathematics: Doklady, vol. 11 (1970), pp. 354--357. MR 41 \#3390.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1971a], \origpage{829}Diophantine representation of enumerable predicates, Izvestija Akademii Nauk SSSR Serija Matemati\v{c}eskaja, vol. 35 (1971), pp. 3--30; English translation, Mathematics of the USSR---Izvestija, vol. 5 (1971), pp. 1--28. MR 43 \# 54.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1971b], Diophantine representation of the set of prime numbers, Doklady Akademii Nauk SSSR, vol. 196 (1971), pp. 770--773; English translation, Soviet Mathematics: Doklady, vol. 12 (1971), pp. 249--254. MR 43 \# 1921.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1971c], On recursive unsolvability of Hilbert's tenth problem, Proceedings of the Fourth International Congress for Logic, Methodology and Philosophy of Science (Bucharest, 1971), Studies in Logic and the Foundations of Mathematics, vol. 74, North-Holland, Amsterdam, 1973, pp. 89--110. MR 57 \# 5711.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1972], Diophantine sets, Uspehi Matemati\v{c}eskih Nauk, vol. 27 (1972), no. 5 (167), pp. 185--222; English translation, Russian Mathematical Surveys, vol. 27 (1972), no. 5, pp. 124--164. MR 56 \#109.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1974], The existence of noneffectizable estimates in the theory of exponential diophantine equations, Zapiski Nau\v{c}nyh Seminarov Leningradskogo Otdelenija Matemati\v{c}eskogo Instituta im. V. A. Steklova (LOMI) Akademii Nauk SSSR, vol. 40 (1974), pp. 77--93; English translation, Journal of Soviet Mathematics, vol. 8 (1977), pp. 299--311. MR 51 \#10225.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1976], A new proof of the theorem on exponential diophantine representation of enumerable sets, Zapiski Nau\v{c}nyh Seminarov Leningradskogo Otdelenija Matemati\v{c}eskogo Instituta im. V. A. Steklova (LOMI) Akademii Nauk SSSR, vol. 60 (1976), pp. 75--89; English translation, Journal of Soviet Mathematics, vol. 14 (1980), pp. 1475--1486. MR 58 \#27402.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1977], A class of primality criteria formulated in terms of the divisibility of binomial coefficients, Zapiski Nau\v{c}nyh Seminarov Leningradskogo Otdelenija Matemati\v{c}eskogo Instituta im. V. A. Steklova (LOMI) Akademii Nauk SSSR, vol. 67 (1977), pp. 167--183; English translation, Journal of Soviet Mathematics, vol. 16 (1981), pp. 874--885. MR 57 \# 3060.}
+
+\bibentry{Y. V. Matijasevi\v{c} [1979], Algorithmic unsolvability of exponential diophantine equations in three unknowns, Studies in the Theory of Algorithms and Mathematical Logic (A. A. Markov and V. I. Homi\v{c}, editors), ``Nauka'', Moscow, 1979, pp. 69--78; English translation, to appear in Selecta Mathematica Sovietica, vol. 3 (1983), no. 3. MR 81f:03055.}
+
+\bibentry{Y. Matijasevi\v{c} and J. Robinson [1975], Reduction of an arbitrary diophantine equation to one in 13 unknowns, Acta Arithmetica, vol. 27 (1975), pp. 521--553. MR 52 \#8033.}
+
+\bibentry{Z. A. Melzak [1961], An informal arithmetical approach to computability and computation, Canadian Mathematical Bulletin, vol. 4 (1961), pp. 279--293. MR 27 \# 1364.}
+
+\bibentry{M. Minsky [1961], Recursive unsolvability of Post's problem of ``tag'' and other topics in the theory of Turing machines, Annals of Mathematics, ser. 2, vol. 74 (1961), pp. 437--455. MR 25 \# 3825.}
+
+\bibentry{M. Minsky [1967], Computation: Finite and infinite machines, Prentice-Hall, Englewood Cliffs, New Jersey, 1967. MR 50 \#9050.}
+
+\bibentry{J. Robinson [1952], Existential definability in arithmetic, Transactions of the American Mathematical Society, vol. 72 (1952), pp. 437--449. MR 14, 4.}
+
+\bibentry{J. Robinson [1969], Diophantine decision problems, Studies in number theory (W. J. LeVeque, editor), MAA Studies in Mathematics, vol. 6, Mathematical Association of America, Buffalo, New York (distributed by Prentice-Hall, Englewood Cliffs, New Jersey), 1969, pp. 76--116. MR 39 \# 5364.}
+
+\bibentry{J. C. Shepherdson and H. E. Sturgis [1963], Computability of recursive functions, Journal of the Association for Computing Machinery, vol. 10 (1963), pp. 217--255. MR 27 \#1359.}
+
+\bibentry{C. Smory\'{n}ski [1972], Notes on Hilbert's tenth problem: an introduction to unsolvability. Vol. 1, Department of Mathematics, University of Illinois at Chicago Circle, Chicago, Illinois, 1972.}
+\endgroup
+
+\bigskip
+\noindent\begin{minipage}[t]{0.48\linewidth}
+\small\scshape University of Calgary\\
+Calgary, Alberta, Canada T2N 1N4
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\small\scshape Steklov Institute of Mathematics\\
+Academy of Sciences of the USSR\\
+Leningrad, USSR 191011
+\end{minipage}
+\end{document}

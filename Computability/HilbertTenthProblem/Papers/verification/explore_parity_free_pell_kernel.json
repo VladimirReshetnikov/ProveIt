@@ -1,0 +1,541 @@
+{
+  "arithmetic_status": "PASS",
+  "operations": 44,
+  "primitive_histogram": {
+    "+": 18,
+    "*": 26
+  },
+  "histogram": {
+    "+": 15,
+    "-": 3,
+    "*": 26
+  },
+  "parameters": [
+    "D0",
+    "r"
+  ],
+  "positive_auxiliaries": [
+    "a",
+    "c",
+    "d",
+    "f",
+    "h",
+    "i",
+    "j",
+    "k",
+    "o",
+    "s",
+    "w",
+    "tau",
+    "eta",
+    "zeta",
+    "ga",
+    "y_aux",
+    "u"
+  ],
+  "equations": 11,
+  "primitive_instructions": [
+    {
+      "operation": "*",
+      "left": "w",
+      "right": "D0",
+      "result": "wn2"
+    },
+    {
+      "operation": "*",
+      "left": "s",
+      "right": "D0",
+      "result": "sn2"
+    },
+    {
+      "operation": "*",
+      "left": "wn2",
+      "right": "sn2",
+      "result": "UM"
+    },
+    {
+      "operation": "+",
+      "left": "UM",
+      "right": "sn2",
+      "result": "R12"
+    },
+    {
+      "operation": "*",
+      "left": "k",
+      "right": "sn2",
+      "result": "ksn2"
+    },
+    {
+      "operation": "*",
+      "left": "UM",
+      "right": "UM",
+      "result": "UM2"
+    },
+    {
+      "operation": "+",
+      "left": "UM2",
+      "right": "wn2",
+      "result": "scaled_norm_coefficient"
+    },
+    {
+      "operation": "*",
+      "left": "ksn2",
+      "right": "ksn2",
+      "result": "ratio_product2"
+    },
+    {
+      "operation": "*",
+      "left": "scaled_norm_coefficient",
+      "right": "ratio_product2",
+      "result": "L9"
+    },
+    {
+      "operation": "+",
+      "left": "tau",
+      "right": 1,
+      "result": "tauplus1"
+    },
+    {
+      "operation": "*",
+      "left": "tau",
+      "right": "tauplus1",
+      "result": "R9"
+    },
+    {
+      "operation": "+",
+      "left": "ksn2",
+      "right": "eta",
+      "result": "R10a"
+    },
+    {
+      "operation": "+",
+      "left": "eta",
+      "right": "zeta",
+      "result": "R10b"
+    },
+    {
+      "operation": "+",
+      "left": "r",
+      "right": 1,
+      "result": "r1"
+    },
+    {
+      "operation": "*",
+      "left": "h",
+      "right": "UM",
+      "result": "hpm1"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "hpm1",
+      "result": "R11"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "r",
+      "result": "tr1"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "a",
+      "result": "cam2"
+    },
+    {
+      "operation": "+",
+      "left": "wn2",
+      "right": "cam2",
+      "result": "D1"
+    },
+    {
+      "operation": "*",
+      "left": 6,
+      "right": "a",
+      "result": "six_a"
+    },
+    {
+      "operation": "+",
+      "left": "six_a",
+      "right": 8,
+      "result": "modulus"
+    },
+    {
+      "operation": "*",
+      "left": "ga",
+      "right": "modulus",
+      "result": "gam"
+    },
+    {
+      "operation": "+",
+      "left": "D1",
+      "right": "gam",
+      "result": "R14"
+    },
+    {
+      "operation": "*",
+      "left": "a",
+      "right": "a",
+      "result": "a_square"
+    },
+    {
+      "operation": "+",
+      "left": "a_square",
+      "right": "modulus",
+      "result": "discriminant"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "c",
+      "result": "c2"
+    },
+    {
+      "operation": "*",
+      "left": "discriminant",
+      "right": "c2",
+      "result": "Ac2"
+    },
+    {
+      "operation": "+",
+      "left": "Ac2",
+      "right": 1,
+      "result": "R15"
+    },
+    {
+      "operation": "*",
+      "left": "d",
+      "right": "d",
+      "result": "L15"
+    },
+    {
+      "operation": "*",
+      "left": "i",
+      "right": "c2",
+      "result": "ic2"
+    },
+    {
+      "operation": "*",
+      "left": "ic2",
+      "right": "ic2",
+      "result": "ic22"
+    },
+    {
+      "operation": "*",
+      "left": "f",
+      "right": "f",
+      "result": "L16"
+    },
+    {
+      "operation": "+",
+      "left": "f_square_minus_one",
+      "right": 1,
+      "result": "L16"
+    },
+    {
+      "operation": "*",
+      "left": "discriminant",
+      "right": "f_square_minus_one",
+      "result": "R16"
+    },
+    {
+      "operation": "*",
+      "left": "o",
+      "right": "f",
+      "result": "of"
+    },
+    {
+      "operation": "+",
+      "left": "c2",
+      "right": "of",
+      "result": "aux_u_rhs"
+    },
+    {
+      "operation": "*",
+      "left": "j",
+      "right": "c",
+      "result": "jc"
+    },
+    {
+      "operation": "*",
+      "left": "tr1",
+      "right": "tr1",
+      "result": "J_square"
+    },
+    {
+      "operation": "+",
+      "left": "J_square",
+      "right": "jc",
+      "result": "H17"
+    },
+    {
+      "operation": "*",
+      "left": "u",
+      "right": "u",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "y_aux",
+      "right": "y_aux",
+      "result": "aux_y2"
+    },
+    {
+      "operation": "+",
+      "left": "aux_square_gap",
+      "right": "aux_y2",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "ic22",
+      "right": "aux_square_gap",
+      "result": "L17"
+    },
+    {
+      "operation": "+",
+      "left": "P17",
+      "right": "aux_y2",
+      "result": 1
+    }
+  ],
+  "equalities": [
+    [
+      "L9",
+      "R9"
+    ],
+    [
+      "c",
+      "R10a"
+    ],
+    [
+      "k",
+      "R10b"
+    ],
+    [
+      "k",
+      "R11"
+    ],
+    [
+      "a",
+      "R12"
+    ],
+    [
+      "d",
+      "R14"
+    ],
+    [
+      "L15",
+      "R15"
+    ],
+    [
+      "ic22",
+      "R16"
+    ],
+    [
+      "L17",
+      "P17"
+    ],
+    [
+      "H2",
+      "H17"
+    ],
+    [
+      "H2",
+      "aux_u_rhs"
+    ]
+  ],
+  "residuals": [
+    {
+      "index": 0,
+      "equality": [
+        "L9",
+        "R9"
+      ],
+      "source": "D0**6*k**2*s**4*w**2 + D0**3*k**2*s**2*w - tau**2 - tau",
+      "actual": "D0**6*k**2*s**4*w**2 + D0**3*k**2*s**2*w - tau**2 - tau",
+      "correction": "0"
+    },
+    {
+      "index": 1,
+      "equality": [
+        "c",
+        "R10a"
+      ],
+      "source": "-D0*k*s + c - eta",
+      "actual": "-D0*k*s + c - eta",
+      "correction": "0"
+    },
+    {
+      "index": 2,
+      "equality": [
+        "k",
+        "R10b"
+      ],
+      "source": "-eta + k - zeta",
+      "actual": "-eta + k - zeta",
+      "correction": "0"
+    },
+    {
+      "index": 3,
+      "equality": [
+        "k",
+        "R11"
+      ],
+      "source": "-D0**2*h*s*w + k - r - 1",
+      "actual": "-D0**2*h*s*w + k - r - 1",
+      "correction": "0"
+    },
+    {
+      "index": 4,
+      "equality": [
+        "a",
+        "R12"
+      ],
+      "source": "-D0**2*s*w - D0*s + a",
+      "actual": "-D0**2*s*w - D0*s + a",
+      "correction": "0"
+    },
+    {
+      "index": 5,
+      "equality": [
+        "d",
+        "R14"
+      ],
+      "source": "-D0*w - a*c - 6*a*ga + d - 8*ga",
+      "actual": "-D0*w - a*c - 6*a*ga + d - 8*ga",
+      "correction": "0"
+    },
+    {
+      "index": 6,
+      "equality": [
+        "L15",
+        "R15"
+      ],
+      "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "actual": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "correction": "0"
+    },
+    {
+      "index": 7,
+      "equality": [
+        "ic22",
+        "R16"
+      ],
+      "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "actual": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "correction": "0"
+    },
+    {
+      "index": 8,
+      "equality": [
+        "L17",
+        "P17"
+      ],
+      "source": "a**2*f**2*u**2 - a**2*f**2*y_aux**2 - a**2*u**2 + a**2*y_aux**2 + 6*a*f**2*u**2 - 6*a*f**2*y_aux**2 - 6*a*u**2 + 6*a*y_aux**2 + 8*f**2*u**2 - 8*f**2*y_aux**2 - 8*u**2 + 9*y_aux**2 - 1",
+      "actual": "c**4*i**2*u**2 - c**4*i**2*y_aux**2 + y_aux**2 - 1",
+      "correction": "-a**2*f**2*u**2 + a**2*f**2*y_aux**2 + a**2*u**2 - a**2*y_aux**2 - 6*a*f**2*u**2 + 6*a*f**2*y_aux**2 + 6*a*u**2 - 6*a*y_aux**2 + c**4*i**2*u**2 - c**4*i**2*y_aux**2 - 8*f**2*u**2 + 8*f**2*y_aux**2 + 8*u**2 - 8*y_aux**2"
+    },
+    {
+      "index": 9,
+      "equality": [
+        "H2",
+        "H17"
+      ],
+      "source": "-c*j - 4*r**2 - 4*r + u**2 - 1",
+      "actual": "-c*j - 4*r**2 - 4*r + u**2 - 1",
+      "correction": "0"
+    },
+    {
+      "index": 10,
+      "equality": [
+        "H2",
+        "aux_u_rhs"
+      ],
+      "source": "-c**2 - f*o + u**2",
+      "actual": "-c**2 - f*o + u**2",
+      "correction": "0"
+    }
+  ],
+  "preliminary_regression": {
+    "preliminary_cases": 77880,
+    "square_index_cases": 9964,
+    "minimum_scale": 81,
+    "minimum_r": 27
+  },
+  "auxiliary_only_cases": [
+    {
+      "A": 2,
+      "r": 1,
+      "J": 3,
+      "parity": 1,
+      "u_bits": 344,
+      "j_bits": 684,
+      "o_bits": 518,
+      "positive_integral_auxiliaries": true
+    },
+    {
+      "A": 2,
+      "r": 2,
+      "J": 5,
+      "parity": 0,
+      "u_bits": 15887,
+      "j_bits": 31767,
+      "o_bits": 27804,
+      "positive_integral_auxiliaries": true
+    },
+    {
+      "A": 2,
+      "r": 3,
+      "J": 7,
+      "parity": 1,
+      "u_bits": 464593,
+      "j_bits": 929174,
+      "o_bits": 851756,
+      "positive_integral_auxiliaries": true
+    },
+    {
+      "A": 3,
+      "r": 1,
+      "J": 3,
+      "parity": 1,
+      "u_bits": 1072,
+      "j_bits": 2138,
+      "o_bits": 1610,
+      "positive_integral_auxiliaries": true
+    },
+    {
+      "A": 3,
+      "r": 2,
+      "J": 5,
+      "parity": 0,
+      "u_bits": 120957,
+      "j_bits": 241903,
+      "o_bits": 211676,
+      "positive_integral_auxiliaries": true
+    },
+    {
+      "A": 4,
+      "r": 1,
+      "J": 3,
+      "parity": 1,
+      "u_bits": 2255,
+      "j_bits": 4503,
+      "o_bits": 3385,
+      "positive_integral_auxiliaries": true
+    },
+    {
+      "A": 4,
+      "r": 2,
+      "J": 5,
+      "parity": 0,
+      "u_bits": 465002,
+      "j_bits": 929991,
+      "o_bits": 813756,
+      "positive_integral_auxiliaries": true
+    }
+  ],
+  "proof": "../1980/EXPLORATION_PARITY_FREE_PELL_KERNEL.md",
+  "scope": "Conditional 44-operation general-scale ternary kernel for either parity. Scale/index construction, bounds, masks and computation interfaces are excluded. Small exact auxiliary tuples check the squared congruences only; no full huge kernel tuple is materialized."
+}

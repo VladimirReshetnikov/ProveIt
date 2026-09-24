@@ -1,0 +1,45 @@
+ALL CHECKS PASSED
+Python 3.14.4; SymPy 1.14.0
+Exact symbolic checks plus finite regression tests; not a formal proof of the whole article.
+
+PASS: Source-level polynomial identity
+  residuals: 14
+  polynomial_residual_to_theorem_equation: [1, 2, 4, 3, 5, 6, 7, 8, 11, 9, 10, 12, 13, 14]
+  total_degree: 25
+  variables: 26
+  expanded_nonzero_monomials: 917
+  negative_value: -76
+  negative_value_witness: {'a': 0, 'b': 1, 'c': 0, 'd': 0, 'e': 0, 'f': 6, 'g': 0, 'h': 1, 'i': 1, 'j': 1, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'o': 1, 'p': 1, 'q': 0, 'r': 0, 's': 0, 't': 1, 'u': 1, 'v': 1, 'w': 1, 'x': 1, 'y': 1, 'z': 1}
+PASS: Pell identity, both recurrences, Lemmas 2.1--2.2
+  cases: 620
+  ranges: 1<=a<=20, 0<=n<=30
+PASS: Lemma 2.4, including the degenerate modulus
+  cases: 2080
+  ranges: 1<=a<=10, 0<=p<=15, 0<=n<=12; 0^0=1
+PASS: Lemma 2.3 divisibility-compatible Pell witnesses
+  cases: 40
+  ranges: 1<=e<=8, 1<=t<=5
+  largest_index_used: 40
+PASS: Lemma 2.10 exact factorial bounds and remainder
+  cases: 36
+  ranges: 1<=k<=6, n=(2k)^k+{0,1,3}, p=n^k+{1,2}
+PASS: Elementary bounds (Lemmas 2.7, 2.8, 3.1--3.6)
+  cases: 2113
+  arithmetic: exact rational
+PASS: Corrected nth-prime formula and six zero-tests
+  prime_cases: 100
+  last_prime: 541
+  zero_test_cases: 1001
+  first_ten: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+PASS: Denominator clearing, corrected equation (23), equation (24)
+  identities: 4
+  domain_note: Original denominators must be nonzero. Cleared strict inequality excludes denominator zero.
+PASS: Printed strict-inequality boundary counterexamples
+  counterexamples: 2
+  details: Lemma 2.10 comparison: 3/2 = 3/2. Theorem 3.9 estimate: 5 = 5.
+
+Not independently reconstructed:
+  The historical 87-addition/multiplication checking circuit
+  The unexpanded 19-/42-/16-variable constructions mentioned in the introduction
+  The complete relation-combining polynomials and historical degree counts 148864, 13376, 6848, 13697
+  A formal proof of every existence statement or cited external theorem

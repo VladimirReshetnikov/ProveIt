@@ -1,0 +1,20 @@
+PASS (8): 294 digit-extraction cases, n=0..20, k=0..n+3.
+PASS (9): 399 cases, x=0..20, y=2..20.
+PASS (11): all 262144 triples a,b,c=0..63.
+PASS (12): a=0..4095, with explicit positivity.
+PASS (13): 21760 concatenation cases.
+PASS (14) and masking lemma: 26244 cases, primes 2,3,5,7; r,s=0..80.
+PASS base choices: 9261 basic and 44541 polynomial-bit-size cases, including zeros.
+PASS (35)--(37): 49920 three-column cases per formula, distinct branch labels.
+PASS (47): 2322 eligible witness cases, Q=4,8 and three columns.
+PASS corrected (49): 1064 eligible witness cases; unique intended witness.
+Printed (49) rejects the intended witness in 446 of the tested R,L cases.
+CONFIRMED (49) source-error counterexample: Q=32,I=1057,R=34,L=1,J=1.
+CONFIRMED (36) self-target counterexample: increment R2; IF R1<R2 GOTO itself; decrement R2; STOP.
+The true run from x=0 repeats the unchanged conditional state forever, yet the printed constraints admit [L0,L1,L2,L3].
+PASS repaired clearing macro and (43): all inputs 0..4095. Ceil-halving alone fixes 1.
+PASS (45): 10201 input pairs, including zero; source registers are destructive operands.
+PASS Example 1: all 19 configurations for x=2; 18 transitions; (24)--(39) checked exactly.
+PASS Example 1 on x=2..40: primes halt with zero registers; composites reach a repeated full state.
+No finite bounded run is used to claim nontermination at inputs 0 or 1.
+All regression assertions passed. See editorial notes for proofs and the limits of finite testing.

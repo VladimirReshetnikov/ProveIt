@@ -1,0 +1,232 @@
+% Narrow binary packing with a complete post-exponent range argument.
+\section{Narrow binary packing: 89 operations}
+\label{sec:narrow-binary-product}
+
+The binary coefficient compiler of Section~\ref{sec:binary-product}
+permits a narrower packing. A change in its lowest mask digit removes
+one multiplication from the power chain. The proof must recover the
+mask's size after exponent decoding and then exclude a possible carry
+into the fixed-code field; neither property is assumed in advance.
+
+\begin{theorem}\label{thm:best89}
+Every recursively enumerable subset of the positive integers has the
+same admissible fixed index $(V,H,T_L)$ as in Theorem~\ref{thm:best90}
+for a system with 34 positive unknowns and 22 equations admitting a
+straight-line certificate of 89 operations: 47 multiplications and
+42 additions. The supplied inputs are $(x,V,H,T_L)$, with three fixed
+components besides the positive queried input $x$. Fixed numerals and
+equality tests are free.
+\end{theorem}
+
+\subsection{The changed source and preliminary bounds}
+
+Retain the compiler, fixed index, product equation, positive bounds,
+geometry, and Pell equations of Section~\ref{sec:binary-product}.
+In particular,
+\begin{equation}\label{eq:narrow-binary-retained}
+\begin{gathered}
+ C=x+g,\qquad \sigma=(e-\ell)C^2,\qquad
+ \ell+\sigma+\alpha=q,\\
+ b=x+\beta,\qquad \theta=H+b=B-2,\qquad
+ \lambda(B-1)=q^2-1,\\
+ S_2=\ell+eq=V+t\theta.
+\end{gathered}
+\end{equation}
+All supplied unknowns are strictly positive. Replace only the packing
+definitions and their index equation by
+\begin{equation}\label{eq:narrow-binary-packing}
+\begin{aligned}
+ n&=q^4, & S&=g+q\sigma+q^2S_2,\\
+ T_+&=q^2\theta\lambda+\ell(\theta q-b), &
+ r&=S(n^2-n)+T_+(n^2-1).
+\end{aligned}
+\end{equation}
+Thus the unchanged bound gives
+\[
+ 0<g,\sigma,\ell,e<q,\qquad 0<S<q^4=n.
+\]
+Before any exponent is decoded, geometry gives $B\le q^2$ and
+$\theta\lambda>b$. Therefore
+\[
+ T_+>bq^2-b\ell>0,\qquad
+ T_+<q^4+\theta\ell q<2q^4=2n.
+\]
+Here $\theta\lambda=q^2-1-\lambda<q^2$ and
+$\theta\ell q<Bq^2\le q^4$. The fixed compiler threshold then gives
+\begin{equation}\label{eq:narrow-binary-preliminary}
+ n\ge64,\qquad n\le n^2-1\le r<3n^3,\qquad
+ 2\le L,\qquad 3L\le B\le n.
+\end{equation}
+In particular, the narrower bound $T_+<n$ has not yet been used.
+
+\subsection{Pell recovery with the wider preliminary range}
+
+Use the unchanged Pell definitions and equations
+\eqref{eq:binary-product-pell-definitions}--\eqref{eq:binary-product-second-pell}
+at this new $n$ and $r$. Their proof extends to
+\eqref{eq:narrow-binary-preliminary}. Indeed,
+\[
+ U,Y_P\ge n^2,\qquad
+ E\ge n^4>3n^3\ge r+1,\qquad
+ a>n^4>6n^3>2r+1.
+\]
+The first Pell index is at least $r+1$, the main index is at least
+$r+2$, and the relaxed auxiliary and half-parameter arguments recover
+the exact main index $J=2r+1$. The same Pell growth comparison then
+recovers the first index $r+1$.
+
+For $\xi=(U+1)^{2r}/U^r$, the lower ratio bound remains
+$c/k>\xi$. The only changed estimate in the upper bound is
+\[
+ \frac{4r}{a}<\frac{12}{n}\le\frac3{16}<\frac12.
+\]
+Consequently the same elementary estimate gives
+\[
+ \frac ck<\xi\left(1+\frac{8r}{a}\right),\qquad
+ Y_P\ge U^r,\qquad a>U^{r+1},\qquad
+ 0<\frac ck-\xi<\frac{16r}{U+1}.
+\]
+The first exponent criterion proves $U=2^{2r+1}$, independently of
+mask decoding. The positive gap $c>\kappa$ and fixed index congruence
+give the second Pell index $L$, since $0<L<J$ and both values
+$\psi_2(L),\psi_2(t_0)$ are less than $a$. Its size hypotheses are
+unchanged:
+\[
+ B^{3L}\le B^B\le n^n\le U^r<a,
+ \qquad q^3\le n^n\le U^r<a.
+\]
+Thus the second exponent criterion proves $q=B^L$. Both $B$ and $q$
+are powers of two. Exact binomial symmetry and the ratio estimate give
+the same rounding conclusion as before,
+\begin{equation}\label{eq:narrow-binary-pell-output}
+ n^2\mid\binom{2r}{r}.
+\end{equation}
+This proof applies to arbitrary positive source solutions. It has used
+neither canonical fixed codes nor nonintersection of packed fields.
+
+\subsection{Recover the packing range after exponent decoding}
+
+Now $q=B^L$ with $L\ge2$, so
+\[
+ \lambda=\frac{q^2-1}{B-1}\ge B+1>\theta.
+\]
+Using $\ell<q$ in the exact identity
+\[
+ T_+=q^4-q^2-\lambda q^2+\ell(\theta q-b)
+\]
+shows $T_+<q^4=n$. Together with $0<S<n$, the ordinary packed
+binary lemma therefore applies to \eqref{eq:narrow-binary-pell-output}:
+\begin{equation}\label{eq:narrow-binary-disjoint}
+ S\mathbin{\&}(T_+-1)=0.
+\end{equation}
+There is no appeal to that lemma outside its proved range.
+
+\subsection{A spill into the fixed-code mask is impossible}
+
+Write
+\[
+ b\ell=k_0q+r_0,\qquad 0\le r_0<q,
+ \qquad \theta\ell-1-k_0=s_0q+u_0,\qquad 0\le u_0<q.
+\]
+Since $b<B\le q$, we have $0\le k_0\le b-1$. Also
+$\theta\ell-1-k_0\ge\theta-b=H>0$, and it is less than
+$\theta q$. Hence $0\le s_0\le B-3$. The normalized mask is
+\begin{equation}\label{eq:narrow-binary-normalized}
+ T_+-1=(q-1-r_0)+qu_0+q^2(\theta\lambda+s_0).
+\end{equation}
+The last coefficient is below $q^2$, because
+$\theta\lambda=q^2-1-\lambda$ and $s_0<\lambda$.
+The corresponding fields of $S$ are $g,\sigma,S_2$, of widths
+$q,q,q^2$. Their bounds justify separate extraction from
+\eqref{eq:narrow-binary-disjoint}.
+
+The base-$B$ digits of $\theta\lambda$ are all $B-2$. If $s_0=1$,
+the unit mask digit becomes $B-1$, while the others remain $B-2$.
+Every digit of $S_2$, and therefore of $\ell$, is then Boolean, so
+\[
+ \ell\le\frac{q-1}{B-1}<\frac q{B-1},\qquad \theta\ell<q.
+\]
+This contradicts $s_0=1$. If $s_0\ge2$, the first two mask digits
+become $s_0-2,B-1$ and all later digits remain $B-2$. The unit
+digit of $\ell$ is at most $B-1$, its next digit is zero, and its
+higher digits are Boolean. Since $L\ge2$,
+\[
+ \ell\le B-1+\sum_{i=2}^{L-1}B^i
+       =\frac{q-2B+1}{B-1}<\frac q{B-1}.
+\]
+Again $\theta\ell<q$, contradicting $s_0\ge2$. Thus $s_0=0$.
+
+The unperturbed middle mask now proves that $S_2$ has a Boolean
+digit polynomial $F(T)$ of degree below $2L$. Reduction of
+$S_2=V+t(B-2)$ modulo $B-2$ gives $F(2)\equiv V\pmod{B-2}$.
+The fixed threshold \eqref{eq:binary-product-threshold} puts both
+integers below $B-2$. Binary uniqueness therefore recovers
+\begin{equation}\label{eq:narrow-binary-canonical}
+ \ell=\ell_0(B),\qquad e=e_0(B).
+\end{equation}
+The unchanged support bound $K+1<L$ implies $b\ell<q$ and
+$\theta\ell<q$. Consequently $k_0=0$, and the other two masks are
+exactly
+\begin{equation}\label{eq:narrow-binary-individual-masks}
+ g\mathbin{\&}(q-1-b\ell)=0,
+ \qquad \sigma\mathbin{\&}(\theta\ell-1)=0.
+\end{equation}
+
+\subsection{The altered low mask preserves every circuit test}
+
+The first mask in \eqref{eq:narrow-binary-individual-masks} is the
+same coordinate mask as before, with its unused high block removed.
+At an indicator position its digit is $H_0=B-1-b$, and elsewhere
+it is $B-1$. Since $g<q$, the removed high block makes no difference.
+It recovers the physical coordinate polynomial $C(B)=x+g$ exactly.
+
+The second mask differs from $\theta\ell$ only at and below the
+least indicator position $v_0=8$. Below $v_0$ its digits are $B-1$;
+at $v_0$ the digit is $B-3$ instead of $B-2$. But the unchanged
+compiler has $\min\operatorname{supp}D>M\ge v_0$. Independently of
+the values of the coordinate digits,
+\[
+ \sigma=D(B)(x+g)^2\equiv0\pmod{B^{v_0+1}}.
+\]
+Every altered digit of $\sigma$ is therefore zero. The new test is
+equivalent to the old product mask. All coefficient-isolation,
+carry-reset, helper-normalization and unit arguments of
+Section~\ref{sec:binary-product} apply unchanged. This proves the
+soundness direction for the same fixed index and the same raw input.
+
+\subsection{Positive converse and exact operation count}
+
+Given a represented input, retain the canonical coding witnesses of
+Section~\ref{sec:binary-product} at a sufficiently large power-of-two
+radix. They satisfy all unchanged bounds and give the three masks
+just proved, including the modified low product mask. Form the new
+$S,T_+,n$ by \eqref{eq:narrow-binary-packing} and define its actual
+new $r$. The packed lemma gives
+$n^2\mid\binom{2r}{r}$ and $r\ge n^2-1$.
+
+The canonical $g$ and $\ell$ have zero radix-unit digit. Thus $S$
+and $T_+$ are even, and the new $r$ is even. Apply the positive
+Pell construction of Section~\ref{sec:binary-product} afresh at this
+$n,r$: set $U=2^{2r+1}$ and
+$Y_P=\lfloor(U+1)^{2r}/U^r\rfloor$, use the main index $2r+1$,
+the first index $r+1$, and the second index $L$. The same exact
+congruences, ratio gaps and even-index half-parameter construction
+make every quotient and every remaining supplied witness positive.
+No old packed index or Pell witness is reused.
+
+Both packings still cost the same number of operations. The new
+power chain computes $q^2,q^4,n^2=q^8$ in three multiplications,
+where the old one computed $q^2,q^4,q^8,n^2=q^{16}$ in four.
+The baseline term $q^2$ formerly supplied by
+$q^2(1+\theta\lambda)$ is absent, so the reordered mask incurs no
+extra addition. This gives 47 multiplications and 42 additions,
+proving Theorem~\ref{thm:best89}.
+
+The complete source checker compares all 22 independently written
+polynomial residuals with all 89 primitive instructions, including
+the same acyclic norm and geometric corrections. The full table is
+Appendix~\ref{app:89}. The companion files
+\file{BINARY\_PRODUCT\_89\_PROOF.md} and
+\file{BASE\_TWO\_PELL\_89\_PROOF.md} state the outer and Pell proofs
+separately. Finite regression checks corroborate these arguments;
+they do not replace either unbounded positive-domain direction.

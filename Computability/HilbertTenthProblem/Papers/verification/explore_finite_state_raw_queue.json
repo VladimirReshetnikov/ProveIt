@@ -1,0 +1,54 @@
+{
+  "status": "PASS_FINITE_STATE_RAW_QUEUE",
+  "input": {
+    "operations": 2,
+    "multiplications": 1,
+    "additions": 1,
+    "initial_coordinates": [
+      "x",
+      "L"
+    ],
+    "dag": [
+      [
+        "length_output",
+        "*",
+        3,
+        "L"
+      ],
+      [
+        "input_bound",
+        "+",
+        "x",
+        "alpha"
+      ]
+    ],
+    "source_residuals": [
+      "N0 - x",
+      "-L + N1",
+      "-3*L + Winit",
+      "-L + alpha + x"
+    ],
+    "comparison": "x+alpha=L, alpha>0",
+    "geometry": "L=3^ell, ell>=1 external",
+    "optional_zero_input_length_guard": "L=3Y, Y>0 costs one extra multiplication if needed"
+  },
+  "finite": {
+    "fixed_test_machines": 11,
+    "compiled_control_states": 239,
+    "compiled_symbol_transitions": 1673,
+    "raw_padded_inputs": 1056,
+    "queue_steps_with_two_coordinate_and_length_checks": 104552,
+    "exact_simulated_Turing_steps": 8034,
+    "accepted_and_fully_drained": 624,
+    "rejected_nonempty_loops": 240,
+    "bounded_nonhalting_examples": 192,
+    "left_boundary_growths": 288,
+    "right_boundary_growths": 1770,
+    "delimiter_steps_appending_three": 1770,
+    "zero_input_examples": 33,
+    "high_zero_padding_examples": 704
+  },
+  "proof": "../1980/EXPLORATION_FINITE_STATE_RAW_QUEUE.md",
+  "review_status": "Author and independent root/binary_encoding full proof/source audits and fresh verify runs PASS; no findings. Publication is separate.",
+  "scope": "An explicit finite-state universal queue contract and counted raw initialization. No total Diophantine verifier count; finite cutoff evidence is confined to named nonhalting test machines."
+}

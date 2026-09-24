@@ -1,0 +1,247 @@
+% The binomial scale itself is the target of the base-four congruence.
+\section{A common witness for the binomial scale and exponent}
+\label{sec:common-witness}
+
+The first exponent test can use the binomial scale $U$ itself as its
+target. That value is already computed, so the separate product $bw$
+disappears. This change preserves the unit-scale norm and its index
+modulus. Combined with the coefficient encoding of
+Section~\ref{sec:borrow-mask}, it gives 102 operations.
+
+Use the fixed coefficient index of Theorem~\ref{thm:best103}, including
+its ordinary targets $4F_i^h+\delta^2$, special target $\delta^2$,
+and exponent $L=2^{32}$. Retain the notation
+\[
+\begin{gathered}
+ N=n,\quad R=r,\quad U=wN^2,\quad Y_P=sN^2,\\
+ a_0=Y_P(U+1),\quad A=a_0+4,\quad
+ D_P=UY_P,\quad Q=UY_P^2,\quad P=2Q+1,\quad J=2R+1.
+\end{gathered}
+\]
+The positive supplied unknown $a$ still means $a_0$.
+Keep the shared norm, first index equation and interval
+\begin{equation}\label{eq:common-witness-pell}
+\begin{gathered}
+ \tau(\tau+1)=(D_P^2+U)(Y_Pk)^2,\qquad
+ k=R+1+hD_P,\\
+ c=kY_P+\eta,\qquad k=\eta+\zeta,
+ \qquad\tau,h,\eta,\zeta>0.
+\end{gathered}
+\end{equation}
+Change only E14 among the supplied-coordinate Pell polynomials,
+replacing its target $bw$ by $U$:
+\begin{equation}\label{eq:common-witness-exponent}
+ d=U+c(A-4)+\gamma(8A-17).
+\end{equation}
+No parameter or witness is added. The defining identity $U=wN^2$
+and the index modulus $D_P=UY_P$ are unchanged.
+
+\subsection{Exact indices before the exponent equations}
+
+The smaller positive offset in Section~\ref{sec:borrow-mask} retains
+all preliminary coding bounds:
+\[
+\begin{gathered}
+ N=q^8,\qquad q>4b\ge8,\qquad 3L\le B\le N\le R,\\
+ 0<S<N,\quad0\le T<N,\qquad
+ R\le2N^3-2N^2<2N^3.
+\end{gathered}
+\]
+These are established without using any Pell equation. Hence
+$N,R\ge64$, $U,Y_P\ge N^2$, $a_0>N^4>J$, and
+$D_P\ge N^4>R+1$.
+
+The first index equation gives $k\ge R+2$, and the interval gives
+$c>Y_Pk>J$. The signed block therefore gives
+$c=\psi_A(J)$ and $d=\chi_A(J)$.
+The norm in~\eqref{eq:common-witness-pell} is the triangular form
+of the ordinary Pell equation with parameter $P=2Q+1$, so
+$k=\psi_P(t)$ for some positive index $t$.
+Since $P-1=2D_PY_P$ is divisible by $D_P$, the Pell congruence
+and $D_P>R+1$ imply
+\[
+ t=R+1+vD_P,\qquad v\ge0.
+\]
+If $v\ge1$, then $D_P>R$ and Pell growth gives
+\[
+ \frac ck\le\frac{(2A)^{2R}}{(2P-1)^{R+D_P}}
+ \le\left(\frac{2A}{2P-1}\right)^{2R}<\frac12.
+\]
+The last inequality follows from
+$(2P-1)-4A=4Y_P[U(Y_P-1)-1]-15>0$.
+This contradicts $c/k>Y_P$. Thus the exact indices are
+\begin{equation}\label{eq:common-witness-indices}
+ c=\psi_A(J),\quad d=\chi_A(J),\quad
+ k=\psi_P(R+1),\quad 2\tau+1=\chi_P(R+1).
+\end{equation}
+The change to E14 has not entered this argument.
+
+\subsection{Recovering the radices in the required order}
+
+Put $\xi=(U+1)^{2R}/U^R$. The unit-scale lower estimate at
+\eqref{eq:common-witness-indices} gives
+\[
+ \frac ck\ge
+ \xi\left(1+\frac7{2a_0}\right)^{2R}
+     \left(1+\frac1{2Q}\right)^{-R}>\xi,
+\]
+using $14Q>a_0$. The interval gives $\xi<Y_P+1$, so
+\begin{equation}\label{eq:common-witness-size}
+ Y_P\ge U^R,\qquad A>a_0=Y_P(U+1)>U^{R+1}.
+\end{equation}
+As in Section~\ref{sec:unit-scale}, the independent bound
+$R<2N^3$ gives $8R/a_0<16/N<1/2$. The upper growth estimate and
+$(1+t)^m\le(1-mt)^{-1}<1+2mt$ therefore yield
+\begin{equation}\label{eq:common-witness-error}
+ 0<\frac ck-\xi<\frac{32R}{U+1}.
+\end{equation}
+This error need not be bounded by an absolute constant yet.
+
+The changed exponent target satisfies
+\[
+ 4^{3J}=64\cdot4096^R
+ \le64N^{2R}\le64U^R<U^{R+1}<A,
+ \qquad U^3\le U^R<A.
+\]
+The source $\chi$ exponent criterion applied to
+\eqref{eq:common-witness-exponent} now gives
+\begin{equation}\label{eq:common-witness-power}
+ U=4^J.
+\end{equation}
+In particular $U>64R$, so~\eqref{eq:common-witness-error} is
+strictly less than $1/2$.
+
+The new first exponent conclusion determines the radices in a
+different order. Since $N^2$ divides the power of two $U=wN^2$,
+$N$ is a power of two. Since $N=q^8$, so is $q$.
+No conclusion about $b$ is needed yet.
+
+The unchanged second norm, gap and index congruence identify
+$\kappa=\psi_A(L)$ and $\mu=\chi_A(L)$, since $0<L<J<A$.
+Their exponent test has the size bounds
+\[
+ B^{3L}\le B^B\le N^N\le U^R<A,
+ \qquad q^3\le N\le R<U^R<A.
+\]
+It therefore gives $q=B^L$. Now $B$ is a power of two, because
+$q$ is a power of two and $L>0$. Finally $B=Hb^2$ implies that
+$b$ is a power of two. Thus all binary radix facts are known before
+the first-mask decoding uses them.
+
+The binomial expansion has integer part $F=\lfloor\xi\rfloor$ with
+\[
+ 0<\xi-F<\frac{2^{2R}}U<\frac14,
+ \qquad F\equiv\binom{2R}{R}\pmod U.
+\]
+The interval and the ratio bounds give
+\[
+ F<\xi<\frac ck<Y_P+1,
+ \qquad Y_P<\frac ck<\xi+\frac12<F+\frac34.
+\]
+Integrality forces $Y_P=F$. The unchanged definitions
+$U=wN^2$ and $Y_P=sN^2$ now imply
+\begin{equation}\label{eq:common-witness-binomial}
+ N^2\mid\binom{2R}{R}.
+\end{equation}
+
+\subsection{Composition with the new coefficient encoding}
+
+The conclusions just obtained are exactly those needed by
+Section~\ref{sec:borrow-mask}: $b,q,N$ are powers of two,
+$q=B^L$, and~\eqref{eq:common-witness-binomial} supplies binary
+nonoverlap of the packed blocks. Positivity of the new offset then
+gives
+\[
+ \Omega>Z\lambda/2,\qquad
+ \mathcal C^2<2Bq/Z<q^2,
+ \qquad\mathcal C=x+g.
+\]
+The first two masks recover the possible quotient ambiguity
+$\ell=\ell_0+mq$, $e=e_0-m$ and the bounds required by
+Lemma~\ref{lem:borrow-high-window}. That lemma forces $m=0$.
+The low coefficients have incoming carries in $\{-1,0\}$; the
+special row and guard force $\delta=1$, and every ordinary row
+then forces $F_i^h=0$. These decoding arguments do not use E14
+internally. They apply unchanged once its replacement has supplied
+the required exponent and binomial conclusions, proving sufficiency.
+
+For necessity, first use the new canonical coding construction of
+Section~\ref{sec:borrow-mask}. It has $\delta=1$, $u=x^2$, zero
+dummy coordinates and a sufficiently large power of two $b$.
+Its changed $\sigma$ is positive because
+\[
+ S_3=\lambda(Bq-Z\mathcal C^2)+2e\mathcal C^2>0.
+\]
+The ordinary and special target digits are one or two, so the masks
+pass. Form its resulting $S,T,R$. This supplies the packed bounds
+and~\eqref{eq:common-witness-binomial} before choosing Pell witnesses.
+
+Now set
+\[
+\begin{gathered}
+ J=2R+1,\quad U=4^J,\quad w=U/N^2,\quad
+ Y_P=\lfloor\xi\rfloor,\quad s=Y_P/N^2,\\
+ a_0=Y_P(U+1),\quad A=a_0+4,\quad Q=UY_P^2,
+ \quad P=2Q+1,\\
+ c=\psi_A(J),\quad d=\chi_A(J),\quad k=\psi_P(R+1).
+\end{gathered}
+\]
+The quotient $w$ is positive integral: canonical $N$ is a power of
+two and $N^2\le R^2\le4^R<4^J=U$. The binomial expansion and
+divisibility make $s$ positive integral. The same estimates at these
+indices give $Y_P<c/k<Y_P+3/4$, so choose the positive integers
+\[
+ \eta=c-kY_P,\quad \zeta=k-\eta,\quad
+ \tau=\frac{\chi_P(R+1)-1}{2},\quad
+ h=\frac{k-R-1}{UY_P}.
+\]
+Odd $P$ gives the positive integrality of $\tau$. The congruence
+modulo $P-1=2UY_P^2$ and strict Pell growth give that of $h$.
+This construction needs no parity condition on $R$.
+
+Choose the remaining Pell witnesses at the new $A$ by the generic
+constructions already established in Section~\ref{sec:main-base-four}.
+After choosing positive $f,i$ for E16, put
+\[
+ G=1+(A+1)(f^2-1),\qquad
+ o=\frac{\chi_G(J)+d}{f},\qquad
+ j=\frac{\psi_G(J)-J}{c},
+\]
+and take $\kappa=\psi_A(L)$, $\mu=\chi_A(L)$,
+$\Delta=(\kappa-L)/(A-1)$ and $\phi=c-\kappa$.
+Their congruences and strict growth make every required witness
+positive integral. The exponent quotients are positive because
+\[
+ d-(A-4)c>3c>U,\qquad
+ \mu-(A-B)\kappa>(B-1)\kappa>q,
+\]
+using $A>U^3,q^3$ and $J,L\ge2$; their moduli are positive.
+Thus the new E14 and every other equation hold. The coding witnesses
+are chosen first, and all dependent Pell coordinates are then chosen
+for their new packed $R$.
+
+\begin{theorem}\label{thm:best102}
+For each r.e.\ set, the fixed coefficient encoding of
+Section~\ref{sec:borrow-mask} gives a membership-equivalent system
+in 34 positive unknowns and 22 equations whose straight-line
+certificate has \textbf{102 arithmetic instructions}:
+56 multiplications and 46 additions. Fixed numerals, supplied
+parameters and equality tests are free.
+\end{theorem}
+\begin{proof}
+The preceding arguments establish the complete positive-domain
+equivalence and the order of the two constructions.
+Starting from the 104-operation schedule, the offset change deletes
+the addition $q+1$ and uses $(B\lambda)q$ in its place.
+The common-witness change deletes the product $bw$ and uses the
+existing register $U=wN^2$ directly in E14. These edits concern
+disjoint register definitions, so they remove one addition and one
+multiplication without introducing an instruction, unknown or equation.
+
+The resulting count is 56 multiplications and 46 additions.
+The rebuilt coefficient index affects only supplied constants.
+The checker \file{round22\_1980\_composed\_certificate.py}
+verifies the complete primitive list, all source residuals and both
+triangular corrections. It also checks that the two schedule edits
+commute and that both discarded registers are absent.
+\end{proof}

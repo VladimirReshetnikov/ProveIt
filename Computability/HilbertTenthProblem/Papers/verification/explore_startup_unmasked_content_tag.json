@@ -1,0 +1,1895 @@
+{
+  "status": "PASS_STARTUP_UNMASKED_CONTENT_TAG86_COUNTEREXAMPLES",
+  "sources": [
+    {
+      "leading": 0,
+      "operations": 86,
+      "multiplications": 47,
+      "additions": 39,
+      "positive_unknowns": 29,
+      "equations": 18,
+      "outer_equations": 8,
+      "kernel_equations": 10,
+      "positive_coordinates": [
+        "Q",
+        "S1",
+        "Tcontent",
+        "E",
+        "H",
+        "R",
+        "L",
+        "q",
+        "v",
+        "r",
+        "betaP",
+        "pell_a",
+        "pell_c",
+        "pell_d",
+        "pell_f",
+        "pell_h",
+        "pell_i",
+        "pell_j",
+        "pell_k",
+        "pell_o",
+        "pell_s",
+        "pell_w",
+        "pell_tau",
+        "pell_eta",
+        "pell_zeta",
+        "pell_ga",
+        "pell_y_aux",
+        "transport_scale",
+        "AH"
+      ],
+      "parameters": [
+        "Ninit",
+        "Linit"
+      ],
+      "fields": [
+        "S0",
+        "S1",
+        "Q",
+        "G",
+        "M0",
+        "M1",
+        "Ebar",
+        "E"
+      ],
+      "dag": [
+        [
+          "three_T",
+          "*",
+          3,
+          "Tcontent"
+        ],
+        [
+          "radix",
+          "*",
+          9,
+          "transport_scale"
+        ],
+        [
+          "twice_Q",
+          "*",
+          2,
+          "Q"
+        ],
+        [
+          "N",
+          "+",
+          "three_T",
+          "S1"
+        ],
+        [
+          "M1",
+          "+",
+          "twice_Q",
+          "S1"
+        ],
+        [
+          "prefix_scale",
+          "*",
+          4,
+          "H"
+        ],
+        [
+          "n_append",
+          "*",
+          1,
+          "M1"
+        ],
+        [
+          "n_trim",
+          "-",
+          "Tcontent",
+          "E"
+        ],
+        [
+          "n_output",
+          "+",
+          "n_trim",
+          "n_append"
+        ],
+        [
+          "n_left",
+          "*",
+          "transport_scale",
+          "n_output"
+        ],
+        [
+          "n_initial",
+          "-",
+          "N",
+          "Ninit"
+        ],
+        [
+          "l_append",
+          "*",
+          26,
+          "M1"
+        ],
+        [
+          "l_output",
+          "+",
+          "L",
+          "l_append"
+        ],
+        [
+          "l_left",
+          "*",
+          "transport_scale",
+          "l_output"
+        ],
+        [
+          "l_end",
+          "*",
+          "q",
+          3
+        ],
+        [
+          "l_initial",
+          "-",
+          "L",
+          "Linit"
+        ],
+        [
+          "l_shift",
+          "+",
+          "l_initial",
+          "l_end"
+        ],
+        [
+          "qm1",
+          "-",
+          "q",
+          1
+        ],
+        [
+          "head_product",
+          "*",
+          "R",
+          "H"
+        ],
+        [
+          "compiled_product",
+          "*",
+          59049,
+          "AH"
+        ],
+        [
+          "head_rhs",
+          "+",
+          "H",
+          "qm1"
+        ],
+        [
+          "radix_product",
+          "*",
+          "R",
+          "v"
+        ],
+        [
+          "q2",
+          "*",
+          "q",
+          "q"
+        ],
+        [
+          "q4",
+          "*",
+          "q2",
+          "q2"
+        ],
+        [
+          "scale",
+          "*",
+          "q4",
+          "q4"
+        ],
+        [
+          "prefix_scaled",
+          "*",
+          "qm1",
+          "E"
+        ],
+        [
+          "prefix_pair",
+          "+",
+          "prefix_scale",
+          "prefix_scaled"
+        ],
+        [
+          "marker_scaled",
+          "*",
+          "qm1",
+          "M1"
+        ],
+        [
+          "marker_pair",
+          "+",
+          "L",
+          "marker_scaled"
+        ],
+        [
+          "higher_scaled",
+          "*",
+          "q2",
+          "prefix_pair"
+        ],
+        [
+          "pack_add4",
+          "+",
+          "marker_pair",
+          "higher_scaled"
+        ],
+        [
+          "G",
+          "+",
+          "Q",
+          "AH"
+        ],
+        [
+          "qG",
+          "*",
+          "q",
+          "G"
+        ],
+        [
+          "QG_pair",
+          "+",
+          "Q",
+          "qG"
+        ],
+        [
+          "QG_shifted",
+          "*",
+          "q2",
+          "QG_pair"
+        ],
+        [
+          "flag_scaled",
+          "*",
+          "qm1",
+          "S1"
+        ],
+        [
+          "flag_pair",
+          "+",
+          "H",
+          "flag_scaled"
+        ],
+        [
+          "low_four",
+          "+",
+          "flag_pair",
+          "QG_shifted"
+        ],
+        [
+          "upper_shifted",
+          "*",
+          "q4",
+          "pack_add4"
+        ],
+        [
+          "pack_add8",
+          "+",
+          "low_four",
+          "upper_shifted"
+        ],
+        [
+          "twiceP",
+          "+",
+          "pack_add8",
+          "pack_add8"
+        ],
+        [
+          "index_rhs",
+          "+",
+          "scale",
+          "twiceP"
+        ],
+        [
+          "packed_bound",
+          "+",
+          "r",
+          "betaP"
+        ],
+        [
+          "pell_wn2",
+          "*",
+          "pell_w",
+          "scale"
+        ],
+        [
+          "pell_sn2",
+          "*",
+          "pell_s",
+          "scale"
+        ],
+        [
+          "pell_UM",
+          "*",
+          "pell_wn2",
+          "pell_sn2"
+        ],
+        [
+          "pell_R12",
+          "+",
+          "pell_UM",
+          "pell_sn2"
+        ],
+        [
+          "pell_ksn2",
+          "*",
+          "pell_k",
+          "pell_sn2"
+        ],
+        [
+          "pell_UM2",
+          "*",
+          "pell_UM",
+          "pell_UM"
+        ],
+        [
+          "pell_scaled_norm_coefficient",
+          "+",
+          "pell_UM2",
+          "pell_wn2"
+        ],
+        [
+          "pell_ratio_product2",
+          "*",
+          "pell_ksn2",
+          "pell_ksn2"
+        ],
+        [
+          "pell_L9",
+          "*",
+          "pell_scaled_norm_coefficient",
+          "pell_ratio_product2"
+        ],
+        [
+          "pell_tauplus1",
+          "+",
+          "pell_tau",
+          1
+        ],
+        [
+          "pell_R9",
+          "*",
+          "pell_tau",
+          "pell_tauplus1"
+        ],
+        [
+          "pell_R10a",
+          "+",
+          "pell_ksn2",
+          "pell_eta"
+        ],
+        [
+          "pell_R10b",
+          "+",
+          "pell_eta",
+          "pell_zeta"
+        ],
+        [
+          "pell_r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "pell_hpm1",
+          "*",
+          "pell_h",
+          "pell_UM"
+        ],
+        [
+          "pell_R11",
+          "+",
+          "pell_r1",
+          "pell_hpm1"
+        ],
+        [
+          "pell_tr1",
+          "+",
+          "pell_r1",
+          "r"
+        ],
+        [
+          "pell_cam2",
+          "*",
+          "pell_c",
+          "pell_a"
+        ],
+        [
+          "pell_D1",
+          "+",
+          "pell_wn2",
+          "pell_cam2"
+        ],
+        [
+          "pell_six_a",
+          "*",
+          6,
+          "pell_a"
+        ],
+        [
+          "pell_modulus",
+          "+",
+          "pell_six_a",
+          8
+        ],
+        [
+          "pell_gam",
+          "*",
+          "pell_ga",
+          "pell_modulus"
+        ],
+        [
+          "pell_R14",
+          "+",
+          "pell_D1",
+          "pell_gam"
+        ],
+        [
+          "pell_a_square",
+          "*",
+          "pell_a",
+          "pell_a"
+        ],
+        [
+          "pell_discriminant",
+          "+",
+          "pell_a_square",
+          "pell_modulus"
+        ],
+        [
+          "pell_c2",
+          "*",
+          "pell_c",
+          "pell_c"
+        ],
+        [
+          "pell_Ac2",
+          "*",
+          "pell_discriminant",
+          "pell_c2"
+        ],
+        [
+          "pell_R15",
+          "+",
+          "pell_Ac2",
+          1
+        ],
+        [
+          "pell_L15",
+          "*",
+          "pell_d",
+          "pell_d"
+        ],
+        [
+          "pell_ic2",
+          "*",
+          "pell_i",
+          "pell_c2"
+        ],
+        [
+          "pell_ic22",
+          "*",
+          "pell_ic2",
+          "pell_ic2"
+        ],
+        [
+          "pell_L16",
+          "*",
+          "pell_f",
+          "pell_f"
+        ],
+        [
+          "pell_f_square_minus_one",
+          "-",
+          "pell_L16",
+          1
+        ],
+        [
+          "pell_R16",
+          "*",
+          "pell_discriminant",
+          "pell_f_square_minus_one"
+        ],
+        [
+          "pell_of",
+          "*",
+          "pell_o",
+          "pell_f"
+        ],
+        [
+          "pell_aux_u_rhs",
+          "+",
+          "pell_c",
+          "pell_of"
+        ],
+        [
+          "pell_jc",
+          "*",
+          "pell_j",
+          "pell_c"
+        ],
+        [
+          "pell_H17",
+          "+",
+          "pell_tr1",
+          "pell_jc"
+        ],
+        [
+          "pell_H2",
+          "*",
+          "pell_H17",
+          "pell_H17"
+        ],
+        [
+          "pell_aux_y2",
+          "*",
+          "pell_y_aux",
+          "pell_y_aux"
+        ],
+        [
+          "pell_aux_square_gap",
+          "-",
+          "pell_H2",
+          "pell_aux_y2"
+        ],
+        [
+          "pell_L17",
+          "*",
+          "pell_ic22",
+          "pell_aux_square_gap"
+        ],
+        [
+          "pell_P17",
+          "-",
+          1,
+          "pell_aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "index": 0,
+          "equality": [
+            "radix",
+            "R"
+          ],
+          "source": "Khalf*transport_scale - R",
+          "correction": "0"
+        },
+        {
+          "index": 1,
+          "equality": [
+            "n_left",
+            "n_initial"
+          ],
+          "source": "Ninit - S1 - 3*Tcontent + transport_scale*(-E + Tcontent + Uthird*(2*Q + S1))",
+          "correction": "0"
+        },
+        {
+          "index": 2,
+          "equality": [
+            "l_left",
+            "l_shift"
+          ],
+          "source": "-L + Linit - 3*q + transport_scale*(L + (B - 1)*(2*Q + S1))",
+          "correction": "0"
+        },
+        {
+          "index": 3,
+          "equality": [
+            "head_product",
+            "head_rhs"
+          ],
+          "source": "H*R - H - q + 1",
+          "correction": "0"
+        },
+        {
+          "index": 4,
+          "equality": [
+            "head_product",
+            "compiled_product"
+          ],
+          "source": "-AH*C + H*R",
+          "correction": "0"
+        },
+        {
+          "index": 5,
+          "equality": [
+            "radix_product",
+            "q"
+          ],
+          "source": "R*v - q",
+          "correction": "0"
+        },
+        {
+          "index": 6,
+          "equality": [
+            "pell_tr1",
+            "index_rhs"
+          ],
+          "source": "-2*E*q**7 - 2*H - 2*Q*q**2 - 2*S1*q + 2*S1 - q**8 - 2*q**6*(-E + H*c) - 2*q**5*(2*Q + S1) - 2*q**4*(L - 2*Q - S1) - 2*q**3*(AH + Q) + 2*r + 1",
+          "correction": "0"
+        },
+        {
+          "index": 7,
+          "equality": [
+            "packed_bound",
+            "scale"
+          ],
+          "source": "betaP - q**8 + r",
+          "correction": "0"
+        },
+        {
+          "index": 8,
+          "equality": [
+            "pell_L9",
+            "pell_R9"
+          ],
+          "source": "pell_k**2*pell_s**4*pell_w**2*q**48 + pell_k**2*pell_s**2*pell_w*q**24 - pell_tau**2 - pell_tau",
+          "correction": "0"
+        },
+        {
+          "index": 9,
+          "equality": [
+            "pell_c",
+            "pell_R10a"
+          ],
+          "source": "pell_c - pell_eta - pell_k*pell_s*q**8",
+          "correction": "0"
+        },
+        {
+          "index": 10,
+          "equality": [
+            "pell_k",
+            "pell_R10b"
+          ],
+          "source": "-pell_eta + pell_k - pell_zeta",
+          "correction": "0"
+        },
+        {
+          "index": 11,
+          "equality": [
+            "pell_k",
+            "pell_R11"
+          ],
+          "source": "-pell_h*pell_s*pell_w*q**16 + pell_k - r - 1",
+          "correction": "0"
+        },
+        {
+          "index": 12,
+          "equality": [
+            "pell_a",
+            "pell_R12"
+          ],
+          "source": "pell_a - pell_s*pell_w*q**16 - pell_s*q**8",
+          "correction": "0"
+        },
+        {
+          "index": 13,
+          "equality": [
+            "pell_d",
+            "pell_R14"
+          ],
+          "source": "-pell_a*pell_c - 6*pell_a*pell_ga + pell_d - 8*pell_ga - pell_w*q**8",
+          "correction": "0"
+        },
+        {
+          "index": 14,
+          "equality": [
+            "pell_L15",
+            "pell_R15"
+          ],
+          "source": "-pell_a**2*pell_c**2 - 6*pell_a*pell_c**2 - 8*pell_c**2 + pell_d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "index": 15,
+          "equality": [
+            "pell_ic22",
+            "pell_R16"
+          ],
+          "source": "-pell_a**2*pell_f**2 + pell_a**2 - 6*pell_a*pell_f**2 + 6*pell_a + pell_c**4*pell_i**2 - 8*pell_f**2 + 8",
+          "correction": "0"
+        },
+        {
+          "index": 16,
+          "equality": [
+            "pell_L17",
+            "pell_P17"
+          ],
+          "source": "pell_a**2*pell_c**2*pell_f**2*pell_j**2 - pell_a**2*pell_c**2*pell_j**2 + 4*pell_a**2*pell_c*pell_f**2*pell_j*r + 2*pell_a**2*pell_c*pell_f**2*pell_j - 4*pell_a**2*pell_c*pell_j*r - 2*pell_a**2*pell_c*pell_j - pell_a**2*pell_f**2*pell_y_aux**2 + 4*pell_a**2*pell_f**2*r**2 + 4*pell_a**2*pell_f**2*r + pell_a**2*pell_f**2 + pell_a**2*pell_y_aux**2 - 4*pell_a**2*r**2 - 4*pell_a**2*r - pell_a**2 + 6*pell_a*pell_c**2*pell_f**2*pell_j**2 - 6*pell_a*pell_c**2*pell_j**2 + 24*pell_a*pell_c*pell_f**2*pell_j*r + 12*pell_a*pell_c*pell_f**2*pell_j - 24*pell_a*pell_c*pell_j*r - 12*pell_a*pell_c*pell_j - 6*pell_a*pell_f**2*pell_y_aux**2 + 24*pell_a*pell_f**2*r**2 + 24*pell_a*pell_f**2*r + 6*pell_a*pell_f**2 + 6*pell_a*pell_y_aux**2 - 24*pell_a*r**2 - 24*pell_a*r - 6*pell_a + 8*pell_c**2*pell_f**2*pell_j**2 - 8*pell_c**2*pell_j**2 + 32*pell_c*pell_f**2*pell_j*r + 16*pell_c*pell_f**2*pell_j - 32*pell_c*pell_j*r - 16*pell_c*pell_j - 8*pell_f**2*pell_y_aux**2 + 32*pell_f**2*r**2 + 32*pell_f**2*r + 8*pell_f**2 + 9*pell_y_aux**2 - 32*r**2 - 32*r - 9",
+          "correction": "(-pell_y_aux**2 + (pell_c*pell_j + 2*r + 1)**2)*(-pell_a**2*pell_f**2 + pell_a**2 - 6*pell_a*pell_f**2 + 6*pell_a + pell_c**4*pell_i**2 - 8*pell_f**2 + 8)"
+        },
+        {
+          "index": 17,
+          "equality": [
+            "pell_H17",
+            "pell_aux_u_rhs"
+          ],
+          "source": "pell_c*pell_j - pell_c - pell_f*pell_o + 2*r + 1",
+          "correction": "0"
+        }
+      ],
+      "scope": "Generic fixed-coefficient DAG. Products by constants remain counted even when a particular counterexample has constant0 or1."
+    },
+    {
+      "leading": 1,
+      "operations": 86,
+      "multiplications": 47,
+      "additions": 39,
+      "positive_unknowns": 29,
+      "equations": 18,
+      "outer_equations": 8,
+      "kernel_equations": 10,
+      "positive_coordinates": [
+        "Q",
+        "S1",
+        "Tcontent",
+        "E",
+        "H",
+        "R",
+        "L",
+        "q",
+        "v",
+        "r",
+        "betaP",
+        "pell_a",
+        "pell_c",
+        "pell_d",
+        "pell_f",
+        "pell_h",
+        "pell_i",
+        "pell_j",
+        "pell_k",
+        "pell_o",
+        "pell_s",
+        "pell_w",
+        "pell_tau",
+        "pell_eta",
+        "pell_zeta",
+        "pell_ga",
+        "pell_y_aux",
+        "transport_scale",
+        "AH"
+      ],
+      "parameters": [
+        "Ninit",
+        "Linit"
+      ],
+      "fields": [
+        "S0",
+        "S1",
+        "Q",
+        "G",
+        "M0",
+        "M1",
+        "Ebar",
+        "E"
+      ],
+      "dag": [
+        [
+          "three_T",
+          "*",
+          3,
+          "Tcontent"
+        ],
+        [
+          "radix",
+          "*",
+          9,
+          "transport_scale"
+        ],
+        [
+          "twice_Q",
+          "*",
+          2,
+          "Q"
+        ],
+        [
+          "N",
+          "-",
+          "three_T",
+          "twice_Q"
+        ],
+        [
+          "M1",
+          "+",
+          "twice_Q",
+          "S1"
+        ],
+        [
+          "prefix_scale",
+          "*",
+          4,
+          "H"
+        ],
+        [
+          "n_append",
+          "*",
+          1,
+          "M1"
+        ],
+        [
+          "n_trim",
+          "-",
+          "Tcontent",
+          "E"
+        ],
+        [
+          "n_output",
+          "+",
+          "n_trim",
+          "n_append"
+        ],
+        [
+          "n_left",
+          "*",
+          "transport_scale",
+          "n_output"
+        ],
+        [
+          "n_initial",
+          "-",
+          "N",
+          "Ninit"
+        ],
+        [
+          "l_append",
+          "*",
+          26,
+          "M1"
+        ],
+        [
+          "l_output",
+          "+",
+          "L",
+          "l_append"
+        ],
+        [
+          "l_left",
+          "*",
+          "transport_scale",
+          "l_output"
+        ],
+        [
+          "l_end",
+          "*",
+          "q",
+          3
+        ],
+        [
+          "l_initial",
+          "-",
+          "L",
+          "Linit"
+        ],
+        [
+          "l_shift",
+          "+",
+          "l_initial",
+          "l_end"
+        ],
+        [
+          "qm1",
+          "-",
+          "q",
+          1
+        ],
+        [
+          "head_product",
+          "*",
+          "R",
+          "H"
+        ],
+        [
+          "compiled_product",
+          "*",
+          59049,
+          "AH"
+        ],
+        [
+          "head_rhs",
+          "+",
+          "H",
+          "qm1"
+        ],
+        [
+          "radix_product",
+          "*",
+          "R",
+          "v"
+        ],
+        [
+          "q2",
+          "*",
+          "q",
+          "q"
+        ],
+        [
+          "q4",
+          "*",
+          "q2",
+          "q2"
+        ],
+        [
+          "scale",
+          "*",
+          "q4",
+          "q4"
+        ],
+        [
+          "prefix_scaled",
+          "*",
+          "qm1",
+          "E"
+        ],
+        [
+          "prefix_pair",
+          "+",
+          "prefix_scale",
+          "prefix_scaled"
+        ],
+        [
+          "marker_scaled",
+          "*",
+          "qm1",
+          "M1"
+        ],
+        [
+          "marker_pair",
+          "+",
+          "L",
+          "marker_scaled"
+        ],
+        [
+          "higher_scaled",
+          "*",
+          "q2",
+          "prefix_pair"
+        ],
+        [
+          "pack_add4",
+          "+",
+          "marker_pair",
+          "higher_scaled"
+        ],
+        [
+          "G",
+          "+",
+          "Q",
+          "AH"
+        ],
+        [
+          "qG",
+          "*",
+          "q",
+          "G"
+        ],
+        [
+          "QG_pair",
+          "+",
+          "Q",
+          "qG"
+        ],
+        [
+          "QG_shifted",
+          "*",
+          "q2",
+          "QG_pair"
+        ],
+        [
+          "flag_scaled",
+          "*",
+          "qm1",
+          "S1"
+        ],
+        [
+          "flag_pair",
+          "+",
+          "H",
+          "flag_scaled"
+        ],
+        [
+          "low_four",
+          "+",
+          "flag_pair",
+          "QG_shifted"
+        ],
+        [
+          "upper_shifted",
+          "*",
+          "q4",
+          "pack_add4"
+        ],
+        [
+          "pack_add8",
+          "+",
+          "low_four",
+          "upper_shifted"
+        ],
+        [
+          "twiceP",
+          "+",
+          "pack_add8",
+          "pack_add8"
+        ],
+        [
+          "index_rhs",
+          "+",
+          "scale",
+          "twiceP"
+        ],
+        [
+          "packed_bound",
+          "+",
+          "r",
+          "betaP"
+        ],
+        [
+          "pell_wn2",
+          "*",
+          "pell_w",
+          "scale"
+        ],
+        [
+          "pell_sn2",
+          "*",
+          "pell_s",
+          "scale"
+        ],
+        [
+          "pell_UM",
+          "*",
+          "pell_wn2",
+          "pell_sn2"
+        ],
+        [
+          "pell_R12",
+          "+",
+          "pell_UM",
+          "pell_sn2"
+        ],
+        [
+          "pell_ksn2",
+          "*",
+          "pell_k",
+          "pell_sn2"
+        ],
+        [
+          "pell_UM2",
+          "*",
+          "pell_UM",
+          "pell_UM"
+        ],
+        [
+          "pell_scaled_norm_coefficient",
+          "+",
+          "pell_UM2",
+          "pell_wn2"
+        ],
+        [
+          "pell_ratio_product2",
+          "*",
+          "pell_ksn2",
+          "pell_ksn2"
+        ],
+        [
+          "pell_L9",
+          "*",
+          "pell_scaled_norm_coefficient",
+          "pell_ratio_product2"
+        ],
+        [
+          "pell_tauplus1",
+          "+",
+          "pell_tau",
+          1
+        ],
+        [
+          "pell_R9",
+          "*",
+          "pell_tau",
+          "pell_tauplus1"
+        ],
+        [
+          "pell_R10a",
+          "+",
+          "pell_ksn2",
+          "pell_eta"
+        ],
+        [
+          "pell_R10b",
+          "+",
+          "pell_eta",
+          "pell_zeta"
+        ],
+        [
+          "pell_r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "pell_hpm1",
+          "*",
+          "pell_h",
+          "pell_UM"
+        ],
+        [
+          "pell_R11",
+          "+",
+          "pell_r1",
+          "pell_hpm1"
+        ],
+        [
+          "pell_tr1",
+          "+",
+          "pell_r1",
+          "r"
+        ],
+        [
+          "pell_cam2",
+          "*",
+          "pell_c",
+          "pell_a"
+        ],
+        [
+          "pell_D1",
+          "+",
+          "pell_wn2",
+          "pell_cam2"
+        ],
+        [
+          "pell_six_a",
+          "*",
+          6,
+          "pell_a"
+        ],
+        [
+          "pell_modulus",
+          "+",
+          "pell_six_a",
+          8
+        ],
+        [
+          "pell_gam",
+          "*",
+          "pell_ga",
+          "pell_modulus"
+        ],
+        [
+          "pell_R14",
+          "+",
+          "pell_D1",
+          "pell_gam"
+        ],
+        [
+          "pell_a_square",
+          "*",
+          "pell_a",
+          "pell_a"
+        ],
+        [
+          "pell_discriminant",
+          "+",
+          "pell_a_square",
+          "pell_modulus"
+        ],
+        [
+          "pell_c2",
+          "*",
+          "pell_c",
+          "pell_c"
+        ],
+        [
+          "pell_Ac2",
+          "*",
+          "pell_discriminant",
+          "pell_c2"
+        ],
+        [
+          "pell_R15",
+          "+",
+          "pell_Ac2",
+          1
+        ],
+        [
+          "pell_L15",
+          "*",
+          "pell_d",
+          "pell_d"
+        ],
+        [
+          "pell_ic2",
+          "*",
+          "pell_i",
+          "pell_c2"
+        ],
+        [
+          "pell_ic22",
+          "*",
+          "pell_ic2",
+          "pell_ic2"
+        ],
+        [
+          "pell_L16",
+          "*",
+          "pell_f",
+          "pell_f"
+        ],
+        [
+          "pell_f_square_minus_one",
+          "-",
+          "pell_L16",
+          1
+        ],
+        [
+          "pell_R16",
+          "*",
+          "pell_discriminant",
+          "pell_f_square_minus_one"
+        ],
+        [
+          "pell_of",
+          "*",
+          "pell_o",
+          "pell_f"
+        ],
+        [
+          "pell_aux_u_rhs",
+          "+",
+          "pell_c",
+          "pell_of"
+        ],
+        [
+          "pell_jc",
+          "*",
+          "pell_j",
+          "pell_c"
+        ],
+        [
+          "pell_H17",
+          "+",
+          "pell_tr1",
+          "pell_jc"
+        ],
+        [
+          "pell_H2",
+          "*",
+          "pell_H17",
+          "pell_H17"
+        ],
+        [
+          "pell_aux_y2",
+          "*",
+          "pell_y_aux",
+          "pell_y_aux"
+        ],
+        [
+          "pell_aux_square_gap",
+          "-",
+          "pell_H2",
+          "pell_aux_y2"
+        ],
+        [
+          "pell_L17",
+          "*",
+          "pell_ic22",
+          "pell_aux_square_gap"
+        ],
+        [
+          "pell_P17",
+          "-",
+          1,
+          "pell_aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "index": 0,
+          "equality": [
+            "radix",
+            "R"
+          ],
+          "source": "Khalf*transport_scale - R",
+          "correction": "0"
+        },
+        {
+          "index": 1,
+          "equality": [
+            "n_left",
+            "n_initial"
+          ],
+          "source": "Ninit + 2*Q - 3*Tcontent + transport_scale*(-E + Tcontent + Uthird*(2*Q + S1))",
+          "correction": "0"
+        },
+        {
+          "index": 2,
+          "equality": [
+            "l_left",
+            "l_shift"
+          ],
+          "source": "-L + Linit - 3*q + transport_scale*(L + (B - 1)*(2*Q + S1))",
+          "correction": "0"
+        },
+        {
+          "index": 3,
+          "equality": [
+            "head_product",
+            "head_rhs"
+          ],
+          "source": "H*R - H - q + 1",
+          "correction": "0"
+        },
+        {
+          "index": 4,
+          "equality": [
+            "head_product",
+            "compiled_product"
+          ],
+          "source": "-AH*C + H*R",
+          "correction": "0"
+        },
+        {
+          "index": 5,
+          "equality": [
+            "radix_product",
+            "q"
+          ],
+          "source": "R*v - q",
+          "correction": "0"
+        },
+        {
+          "index": 6,
+          "equality": [
+            "pell_tr1",
+            "index_rhs"
+          ],
+          "source": "-2*E*q**7 - 2*H - 2*Q*q**2 - 2*S1*q + 2*S1 - q**8 - 2*q**6*(-E + H*c) - 2*q**5*(2*Q + S1) - 2*q**4*(L - 2*Q - S1) - 2*q**3*(AH + Q) + 2*r + 1",
+          "correction": "0"
+        },
+        {
+          "index": 7,
+          "equality": [
+            "packed_bound",
+            "scale"
+          ],
+          "source": "betaP - q**8 + r",
+          "correction": "0"
+        },
+        {
+          "index": 8,
+          "equality": [
+            "pell_L9",
+            "pell_R9"
+          ],
+          "source": "pell_k**2*pell_s**4*pell_w**2*q**48 + pell_k**2*pell_s**2*pell_w*q**24 - pell_tau**2 - pell_tau",
+          "correction": "0"
+        },
+        {
+          "index": 9,
+          "equality": [
+            "pell_c",
+            "pell_R10a"
+          ],
+          "source": "pell_c - pell_eta - pell_k*pell_s*q**8",
+          "correction": "0"
+        },
+        {
+          "index": 10,
+          "equality": [
+            "pell_k",
+            "pell_R10b"
+          ],
+          "source": "-pell_eta + pell_k - pell_zeta",
+          "correction": "0"
+        },
+        {
+          "index": 11,
+          "equality": [
+            "pell_k",
+            "pell_R11"
+          ],
+          "source": "-pell_h*pell_s*pell_w*q**16 + pell_k - r - 1",
+          "correction": "0"
+        },
+        {
+          "index": 12,
+          "equality": [
+            "pell_a",
+            "pell_R12"
+          ],
+          "source": "pell_a - pell_s*pell_w*q**16 - pell_s*q**8",
+          "correction": "0"
+        },
+        {
+          "index": 13,
+          "equality": [
+            "pell_d",
+            "pell_R14"
+          ],
+          "source": "-pell_a*pell_c - 6*pell_a*pell_ga + pell_d - 8*pell_ga - pell_w*q**8",
+          "correction": "0"
+        },
+        {
+          "index": 14,
+          "equality": [
+            "pell_L15",
+            "pell_R15"
+          ],
+          "source": "-pell_a**2*pell_c**2 - 6*pell_a*pell_c**2 - 8*pell_c**2 + pell_d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "index": 15,
+          "equality": [
+            "pell_ic22",
+            "pell_R16"
+          ],
+          "source": "-pell_a**2*pell_f**2 + pell_a**2 - 6*pell_a*pell_f**2 + 6*pell_a + pell_c**4*pell_i**2 - 8*pell_f**2 + 8",
+          "correction": "0"
+        },
+        {
+          "index": 16,
+          "equality": [
+            "pell_L17",
+            "pell_P17"
+          ],
+          "source": "pell_a**2*pell_c**2*pell_f**2*pell_j**2 - pell_a**2*pell_c**2*pell_j**2 + 4*pell_a**2*pell_c*pell_f**2*pell_j*r + 2*pell_a**2*pell_c*pell_f**2*pell_j - 4*pell_a**2*pell_c*pell_j*r - 2*pell_a**2*pell_c*pell_j - pell_a**2*pell_f**2*pell_y_aux**2 + 4*pell_a**2*pell_f**2*r**2 + 4*pell_a**2*pell_f**2*r + pell_a**2*pell_f**2 + pell_a**2*pell_y_aux**2 - 4*pell_a**2*r**2 - 4*pell_a**2*r - pell_a**2 + 6*pell_a*pell_c**2*pell_f**2*pell_j**2 - 6*pell_a*pell_c**2*pell_j**2 + 24*pell_a*pell_c*pell_f**2*pell_j*r + 12*pell_a*pell_c*pell_f**2*pell_j - 24*pell_a*pell_c*pell_j*r - 12*pell_a*pell_c*pell_j - 6*pell_a*pell_f**2*pell_y_aux**2 + 24*pell_a*pell_f**2*r**2 + 24*pell_a*pell_f**2*r + 6*pell_a*pell_f**2 + 6*pell_a*pell_y_aux**2 - 24*pell_a*r**2 - 24*pell_a*r - 6*pell_a + 8*pell_c**2*pell_f**2*pell_j**2 - 8*pell_c**2*pell_j**2 + 32*pell_c*pell_f**2*pell_j*r + 16*pell_c*pell_f**2*pell_j - 32*pell_c*pell_j*r - 16*pell_c*pell_j - 8*pell_f**2*pell_y_aux**2 + 32*pell_f**2*r**2 + 32*pell_f**2*r + 8*pell_f**2 + 9*pell_y_aux**2 - 32*r**2 - 32*r - 9",
+          "correction": "(-pell_y_aux**2 + (pell_c*pell_j + 2*r + 1)**2)*(-pell_a**2*pell_f**2 + pell_a**2 - 6*pell_a*pell_f**2 + 6*pell_a + pell_c**4*pell_i**2 - 8*pell_f**2 + 8)"
+        },
+        {
+          "index": 17,
+          "equality": [
+            "pell_H17",
+            "pell_aux_u_rhs"
+          ],
+          "source": "pell_c*pell_j - pell_c - pell_f*pell_o + 2*r + 1",
+          "correction": "0"
+        }
+      ],
+      "scope": "Generic fixed-coefficient DAG. Products by constants remain counted even when a particular counterexample has constant0 or1."
+    }
+  ],
+  "witnesses": [
+    {
+      "leading": 0,
+      "appendant": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "initial": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "constants": {
+        "K": 9,
+        "Khalf": 3,
+        "B": 27,
+        "U": 3,
+        "c": 1,
+        "C": 177147,
+        "Af": 81,
+        "Cbar": 59049,
+        "Uthird": 1,
+        "leading": 0,
+        "guard_coefficient": 78732
+      },
+      "A": 729,
+      "rows": 32,
+      "width_exponent": 17,
+      "selectors": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "length_markers": [
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        729,
+        243,
+        81,
+        27,
+        9
+      ],
+      "prefix_rows": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "modular_divisibility_denominator": 14348906,
+      "modular_residues": {
+        "E": 9361532,
+        "append_term": 9933849,
+        "offset_term": 572317
+      },
+      "exact_T_numerator": 3978506372830910858950025581701182643013669714829129397850175240912097052435051010096582090026125567914505498658420144919070901217899972710241061334736579520042569976083384511676432631132867117492486418646970608266485591274305104782646651850672896261734582810,
+      "raw_T": 277268968995330435571187488558443594446410737852009721009404845283124515028187585178729450874242647342905828406599091590611221595423370444425593235800456112824390234076617723447099913480014930580246774119711329091324843251067719363597939233184250859385,
+      "raw_content": 831806906985991306713562465675330783339239933152272282205588435314633188009841763827203445045968772023496505244985651192917263454746589480754809814598470483615696554984865796507553013765381488805101309266468836777799712757613540370333487215249708003204,
+      "correct_initial_base_R_residue": 12,
+      "first_five_base_R_content_residues": [
+        12,
+        14348908,
+        73338858,
+        79893323,
+        123668291
+      ],
+      "positive_outer_coordinates": {
+        "Q": 308783849724767094955978610385717011160331640603696929633199791160801007535056843343946739059125899121204287884085805701034110200505046650130933013467882574439476293393980153007320176415291181586780627878217001960,
+        "S1": 7719596243119177373899465259642925279008291015092423240829994779020025188376421083598668476478147478030107197102145142525852755012626166253273325336697064360986907334849503825183004410382279539669515696955425049,
+        "E": 277268949671979256604703451050395869387308866388271356337656272248284742959594176450090837255471797087427053203185868701110489617972427904509100809545824023382004634246710690334648666343685537024228729826838858436740052761420955725833305724719845498602,
+        "Tcontent": 277268968995330435571187488558443594446410737852009721009404845283124515028187585178729450874242647342905828406599091590611221595423370444425593235800456112824390234076617723447099913480014930580246774119711329091324843251067719363597939233184250859385,
+        "transport_scale": 43046721,
+        "AH": 202129065876064214480231033209787484849920354767388523343305883364123697973253352623752229900620109105310034538482721479099996924847342506336099412258199984647132167253174626223111671120633518967850180094293653140286464398706810856376570255528075694192960,
+        "R": 129140163,
+        "q": 35806557355478195583511359980986743181195144446856003047318660347319669882448572873627555579187002455853790014437934000016259557029201147514032790873976312545580467646757292516792989509752173089352873867086773171616464662354225163917460927027814939226805642881,
+        "H": 277268951819018126859027480397513696639122571697377946972984750842419338783612280691018148011824566673950664661841867598216731035455888211709327040134705054385640832994752573694254692895244881986077064601225861646483490258857079364028217085772394642240,
+        "L": 2495420605017864003355751145336049518822470157511241953148186348267889774489937837133566880296482384099485627013716590247428734690949461454995962643805975075109502179953513094898611818367306288360011747312926291265007131498134166514036689726228979051082,
+        "Ninit": 12,
+        "Linit": 729,
+        "v": 277268949671979239979055624863867820742917479876930332257042763275122007414909123768316411209632765105413333065391391832270333722818679944782420561711512727032723875737692018530230517904427401794071406484803439280283893263741855149412045631596538554987,
+        "r": 1351047291128437175769254057293106624389212490010776137935469927143881221361930130525666982494520097613085750786864889453564721144029357725227882486495233640645518378150552090435616969137684971300992915671489960917674593135651294784051095565902822443810889896886164164205417311362437426185396179978821932423877097440571406361833148754988507556352431093858456987364358707493310678115647234927818865606402514075315705480314124058164702129855901047017191466295132543621634185337857766976884950667169251959845049680835761108256599262475232097987813799380085873907696635220911839008377179807680312236422600255627396494699012801405942278492020626351319879100006769900213864068858984740827602968931578432494057652291263208285574354280920843807445217337421069059558666098252886090281733957823559269813104186065476967078472654056242764084937572277353454493831367005755021455535905706742105603916910197779419006490304378990584389946583730421519167433223827316247812252748225256195921104259629806532510452823736125585417766221264652507743747382901843323033309847888944203690032214953117498128313427538607211640319983308975125001628070873398135963127185051387295611309272716985221619876988196049166392182467653704672388428124291005806111549485670332499494238125890409224912998191083546090786386341051267007838920297564277550074965003641839615504025303356028002146155615218209175074060588494915206463277982097785387556120829759926841503127087712822077564656184341177329489340169139979389256098421565430971071636817707876307705908688239936481782284158445143724080189607037798156874366333276517932204663752127521992702558897886436463570358950596232069097147580381838033828602808281956197639948350587590357025933410039740065360062885376103309766821952541747529036481869016267434836018273236166514064065933483936454607183152382652272134564678451885368344344485972678688059110722788798681606300344142315485773081957668001485818942505425104137532769981322296565597094219892923469405325280970477955012968709553973632584150653827807565032238552064028257511860105871155612919469861130880611218301402,
+        "betaP": 1351047249280967300585580355746269932822766126945900124255529730484394173222938782767632277177261422122332290218864910486175383784325884474647869210742702072659734000230397502532531227494976900976284536254584939196374366501930204673715661751511677592269348182744132864063518809992476528468580713296070345665194230038535072525544561121472780549078274265607168627525728259385090119923296111235516395246121372653321522116047459726209934938891970452502438544333956575090372691416565871136320578269323811322456205840047312536710195251342344641611477414220071596463908724189803427110970903810139021569744968833329989459638369698650742663012959616924735191033144738370255780743961379416454749730235562685258995833577738040890862461911814282716381517836565347261567714886771187936876454847152307090226429408334887504498748533667140316161445314709348867919378127029606022844503898750719476956204454533282846257058944527357730738821322159704290468748534948636254268502298622166317371767202359065348913810736184626940101043083569708312230691544428708423498420509541092755147905953506591665538307530274615963948694053962485064545477560448750018223795508694376385519854412314821610754631973601251666112986427508338282850518300949642443799661946108305256670908921367464504064433756090012097035368687902345881889057589959580143761046819947057134709454223262914835358623453348504293552646356571106033031334415303478661291945889318843210986025140160129046265538618265350708290460107297279927321565755029721849979756534465065561621899391626761690011436281569451422027132460235622706984466505299553903598003874202699986525745568489475700654399768524788237837913031242553711337511098013012840390553801731083171591712466529168787853836878225084483937796326774190009703362370453561121652346120022564700544289569513971505251526608045793932327196256700522938042507883536998722723665100106224353816336153219752438369494293477885402058488616687087320900791483810126367639243697932757177463194397142593346741370844531392906506579536991804230111444954933301762588053572639615857463013545783757583535116839
+      },
+      "retained_fields": {
+        "S0": 277268951819018126859027480397513696639114852101134827795610851377159695858333272400003055588583736679171644636653491177133132366979410064231296932937602909243114980239739947528001419569908184921716077693891012142658307254446697084488547570075439217191,
+        "S1": 7719596243119177373899465259642925279008291015092423240829994779020025188376421083598668476478147478030107197102145142525852755012626166253273325336697064360986907334849503825183004410382279539669515696955425049,
+        "Q": 308783849724767094955978610385717011160331640603696929633199791160801007535056843343946739059125899121204287884085805701034110200505046650130933013467882574439476293393980153007320176415291181586780627878217001960,
+        "G": 202129065876064214480231033209787484849920663551238248110400839342734083690264512955392833597549742305101195339490256535943340871586401632235220616546084070452833201363375131269761802053646986850424619570587047120439471718883226147558157036155953911194920,
+        "M0": 2495420605017864003355751145336049518821844870215549299780900491581858697542338165561344394013975154522385004973458100139657242544354731509275523960840701318564908106797490375432096679015033826146771807818803481455167308140893201871323458954775589622113,
+        "M1": 625287295692653367285856686031076947599671572222486282507229577100622040258490107771492146594729945720438682965273756544594073156022719466515139352272462213239939494122809809839823357240964642713230771453389428969,
+        "Ebar": 2147038870254324029347117827251813705309106590635328478594134595824018104240927310756352769586523611458655998897106241417483460307200226230588881031003636198748041883359606026551559344961848334774387003209743437497436123638194911361052549143638,
+        "E": 277268949671979256604703451050395869387308866388271356337656272248284742959594176450090837255471797087427053203185868701110489617972427904509100809545824023382004634246710690334648666343685537024228729826838858436740052761420955725833305724719845498602
+      },
+      "omitted_guard": 15914026446361194720448856420235453932534712710785966372137441014612622303463370968615024391739067476048041662780326872478152150804344424955443259680722415789708493407873499656663824598222731980758269184285237165509870692838697389957780499691723670804908129924,
+      "packed_word": 20923734937591836850773418345783223181532438006839970098329743524069495673879017352658629337745376730283999989483694668679851736625290006637876265783992892188960077293951542870821354035162354189708452510860650113316860545055167716907195572425770770857071015650070949250684980448858407733341375793379341433701018166918144293816757863503637078414125644179919315224054110279096175561846151235180140570710997091682133332165977383595481965297257376460980587984265630746960645947920282186198922720318694421920394224285773202005566443728188168192580007138721893955515554205948703137998770645333338815711148703517530321551377599807739530504713292344033431015764979041662448802662186426619348007873617530909356762583697355946184553280545531849750427860898995475605740849076702639555335626089793337388865294731289862060194551223961746128784002293287226619988074499305516003478011314323856227832248286374715679925816426825562630785358614349342344439339996771875224801544939274668528635370591798321043775749322658361568847472097756527919236567449767444669173925724271063130723262916295002948631995623845812964673245030228075255212324058869665838178505455045727430201081805432622507297398750139598020072683194768954911670681681155943769781013621411664602261472360424282217496766996875508826574460562974931353802348703156959091847391240397285540046556583393766080934852440760707115961904586715971783397153363132087470220541815258550973776346515649558783037913310599440030921349730967266333267854560545940141621405373042004648306587395885423938437846151026528573401087724944949913988482014303329938962411003088406664698480381457979591035721915629617274569642161245545855134471678624697274428253592717110471755285638753113003575509412914512812883778759666559749281353156591836076606800906759888181984982474677828272168429169903684210875681215150918301217839982667722811341287163894982095461281523701793832095058041880226944369008408315989248756085098978925260980083145971065441913942304135798932511290363038785558418001667460396798565363247461903266615769877728228157673561513841592282,
+      "scale": 2702094540409404476354834413039376557211978616956676262190999657628275394584868913293299259671781519735418041005729799939740104928355242199875751697237935713305252378380949592968148196632661872277277451926074900114048959637581499457766757317414500036080238079630297028268936121354913954653976893274892278089071327479106478887377709876461288105430705359465625614890086966878400798038943346163335260852523886728637227596361583784374637068747871499519630010629089118712006876754423638113205528936493063282301255520883073644966794513817576739599291213600157470371605359410715266119348083617819333806167569088957385954337382500056684941504980243276055070133151508270469644812820364157282352699167141117753053485869001249176436816192735126523826735173986416321126380985024074027158188804975866360039533594400364471577221187723383080246382886986702322413209494035361044300039804457461582560121364731062265263549248906348315128767905890125809636181758775952502080755046847422513292871461988871881424263559920752525518809304834360819974438927330551746531730357430036958837938168459709163666620957813223175589014037271460189547105631322148154186922693745763681131163685031806832374508961797300832505168895162042955238946425240648249911211431778637756165147047257873728977431947173558187821755028953612889727977887523857693836011823588896750213479526618942837504779068566713468626706945066021239494612397401264048848066719078770052489152227872951123830194802606528037779800276437259316577664176595152821051393352172941869327808079866698171793720440014595146107322067273420863858832838576071835802667626330221979228304466375912164224758719121020306935060611624391745166113906294969038030502152318673528617645876568908853213899763601187793704618279315937538739844239469828556488364393258731214608355502997907959858709760428446204461760935152408306386852369509677410782775822895023035422636497362067924142576251145886887877431122112191458433561465132422933236337917825680646868519678113071301754339554085366539090730190819611795143683506997330020099913678510771470382483406914638194753418241,
+      "index": 1351047291128437175769254057293106624389212490010776137935469927143881221361930130525666982494520097613085750786864889453564721144029357725227882486495233640645518378150552090435616969137684971300992915671489960917674593135651294784051095565902822443810889896886164164205417311362437426185396179978821932423877097440571406361833148754988507556352431093858456987364358707493310678115647234927818865606402514075315705480314124058164702129855901047017191466295132543621634185337857766976884950667169251959845049680835761108256599262475232097987813799380085873907696635220911839008377179807680312236422600255627396494699012801405942278492020626351319879100006769900213864068858984740827602968931578432494057652291263208285574354280920843807445217337421069059558666098252886090281733957823559269813104186065476967078472654056242764084937572277353454493831367005755021455535905706742105603916910197779419006490304378990584389946583730421519167433223827316247812252748225256195921104259629806532510452823736125585417766221264652507743747382901843323033309847888944203690032214953117498128313427538607211640319983308975125001628070873398135963127185051387295611309272716985221619876988196049166392182467653704672388428124291005806111549485670332499494238125890409224912998191083546090786386341051267007838920297564277550074965003641839615504025303356028002146155615218209175074060588494915206463277982097785387556120829759926841503127087712822077564656184341177329489340169139979389256098421565430971071636817707876307705908688239936481782284158445143724080189607037798156874366333276517932204663752127521992702558897886436463570358950596232069097147580381838033828602808281956197639948350587590357025933410039740065360062885376103309766821952541747529036481869016267434836018273236166514064065933483936454607183152382652272134564678451885368344344485972678688059110722788798681606300344142315485773081957668001485818942505425104137532769981322296565597094219892923469405325280970477955012968709553973632584150653827807565032238552064028257511860105871155612919469861130880611218301402,
+      "exact_central_valuation": 4352,
+      "index_parity": 0,
+      "checked_outer_equations": 8,
+      "checked_masks": 8,
+      "actual_nonhalting_trace": [
+        "011000",
+        "10000",
+        "0000100",
+        "001000",
+        "10000"
+      ],
+      "fixed_terminal": {
+        "content": 0,
+        "length_marker": 3
+      },
+      "startup": {
+        "first_zero": true,
+        "positive_actual_initial_prefix": true,
+        "genuine_one_event": true
+      },
+      "kernel_scope": "The exact fixed-plus43 converse supplies all sixteen fresh positive auxiliaries at this even index. These huge auxiliary integers are not materialized.",
+      "scope": "Complete false solution of the proposed86 source on its startup domain. Neither example is asserted to be a Neary compiler instance."
+    },
+    {
+      "leading": 1,
+      "appendant": [
+        1,
+        0
+      ],
+      "initial": [
+        0,
+        1,
+        1
+      ],
+      "constants": {
+        "K": 9,
+        "Khalf": 3,
+        "B": 3,
+        "U": 1,
+        "c": 1,
+        "C": 6561,
+        "Af": 9,
+        "Cbar": 2187,
+        "Uthird": 0,
+        "leading": 1,
+        "guard_coefficient": 2916
+      },
+      "A": 9,
+      "rows": 34,
+      "width_exponent": 10,
+      "selectors": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "length_markers": [
+        27,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "prefix_rows": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "modular_divisibility_denominator": 6560,
+      "modular_residues": {
+        "E": 4,
+        "append_term": 0,
+        "offset_term": 6556
+      },
+      "exact_T_numerator": 184920088401274909670693075261393007710080230491325450878997057226335404210074229146002455559071121761809541424602798739445279492445134276331756282550863175358880,
+      "raw_T": 28189037866048004522971505375212348736292718062702050438871502625965762836901559321036959688882792951495356924482133954183731629945904615294475043071777923073,
+      "raw_content": 84563295044885988410175007648580012720588763026834356980480605465612313617051608238544735544262827471191837153834631150201618641342983619794760104002765007619,
+      "correct_initial_base_R_residue": 12,
+      "first_five_base_R_content_residues": [
+        12,
+        39367,
+        37179,
+        36936,
+        36909
+      ],
+      "positive_outer_coordinates": {
+        "Q": 1909276629012579369754238528516744144695580635897168066951206142487446826534862283071761192775691647116809805885356174788124247365113044332512606284380800,
+        "S1": 477319157253144842438559632129186036173895158974292016737801535621861706633715570767940298193922911779202451471339043697031061841278261083128151571095200,
+        "E": 28184741605567138497039981978999953267475942735616401180273703479216506508414181807027990287087118367972967459606158003812842963653096456801369583532886353444,
+        "Tcontent": 28189037866048004522971505375212348736292718062702050438871502625965762836901559321036959688882792951495356924482133954183731629945904615294475043071777923073,
+        "transport_scale": 19683,
+        "AH": 253666970249768548210390569458366756250291017180456723667153985892417807235128436644484960012476586158851130012379892721393884535990760348278707999094404714650,
+        "R": 59049,
+        "q": 1664280806589814803858571371708626691451909331385734291010900950997276297957762658553727546535190828834204613885667545045874010453464713005017905547836267732294801,
+        "H": 28185218916640949801154507717596306250032335242272969296350442876935311915014270738276106668052954017650125556931099191265987170665640038697634222121600523850,
+        "L": 253666970249768548210390569458366756250291017180456723667153985892417807235128436644484960012476586158851130012379892721393884535990760348278707999094404714668,
+        "Ninit": 12,
+        "Linit": 27,
+        "v": 28184741597483696656312069157964177063996161347113995004333705075399690053307637022705338727754760094738346354479627852222290139603798760436551093970029428649,
+        "r": 29430493950551373336743236758507939560086536331783896948344943082851732101835372339922767876172964698255591431001011149036262306079897796385419915197847469305864833985425759114015442207337263403127803441199126007994636063125903340966450219521875168395787560919392357871568763762635147646373923739062167224344197933545301769021988894408908260178470407700795009067529312618755664671309264945808932882234331157265676037264889951534923332109380315209925580004128659341678615152125549006890186633379897293104055125045529429762610638691573294599116964267491327338142918512737109151784628799413388029653948476997392006004073003695960785022281482736569337838884578540051094642724402664735591420376235259722261694340535584075961078035663018484151869966607952608765885737211928144419722998922672336471129310082009831598778178984999045942192287779053359376362826979560246526052623516524530249083992513409486611951290520493966204403877931278415006707265550819938716493453023773153696394129148103592441326305742035778128731425948379861820814339171547288601307796959306243793068403288641154628933568873812393924765136985864758062665316490897325056764352347998233874984804866961957408148893321817600756642423241852286434021977191091040852137276786776110347126283350303180227166258926274671890065235259218176794618,
+        "betaP": 29428500386075988207710060440367472149980603392977221477235088446028382956162331461380979960373183395161679520267535982611048225874418268283161022965395809088979651171474452188918737564224986926574086440425270777462817959027405882015599840066134089502242509030870786973488986962532122785019025810337176260628856056547927034663813233165643855440238483061117961510051840247589759920564151790358458045700266094984028980205483294350733693700462136233221136422925526710572215577684126627065121093645678579962293532264165312141880472277110060094731926055729558631805914246892745348322602513031249350315474236223748021609093398193963657544952664460808890950601356166013150364435657119524920479199411786548564483197812281567367138105877294533389649115651799091107354566242337993044623066986320200487987720594470553337224170694130414964695796302691605274711546702232740160042568022611773845537650141577235514032329120062382102270843670179912005951618364230150391083337923553554340711076985963363420774365614861028391672253377318184063373331943825284113862561014705136564602055453310873207873646293069704312055991110629446368637934748153379335255452881224263358676997320279670313636753183251422190885574429930278324536949370534931395462020308357508183678413424528285293609103287334309187058738724772630683783
+      },
+      "retained_fields": {
+        "S0": 28184741597483696656312069157964177063996161347113995004333705075399690053307637022705338727754760094738346354479627852222290139603798760436551093970029428650,
+        "S1": 477319157253144842438559632129186036173895158974292016737801535621861706633715570767940298193922911779202451471339043697031061841278261083128151571095200,
+        "Q": 1909276629012579369754238528516744144695580635897168066951206142487446826534862283071761192775691647116809805885356174788124247365113044332512606284380800,
+        "G": 253668879526397560789760323696895272994435712761092620835220937098560294681954971506768031773669361850498246822185778077568672660238125461323040511700689095450,
+        "M0": 253662674377353269906808622421677593575965452124025955039003345678597210479768733204348048549792840852645117190316650670000611256434188843928959845730264857868,
+        "M1": 4295872415278303581947036689162674325565056430768628150640213820596755359703440136911462683745306206012822063242051393273279556571504349748153364139856800,
+        "Ebar": 477311073811304114525738596352982556392506656568116076739397718805406600088931248116380965835649677158097324941187453144207012543581896264638588714170406,
+        "E": 28184741605567138497039981978999953267475942735616401180273703479216506508414181807027990287087118367972967459606158003812842963653096456801369583532886353444
+      },
+      "omitted_guard": 739777448543369972569909075548246041238569194861238640570401503467755938211251572863556688131925988066681086953253601806734768925590400159200507285463286912927019,
+      "packed_word": 996782237692564516588159070233705052966469403337735554927318411674572836520439270893957899890651546955955366737583212607040102739764051129446116225830108442591406975653462548352321556138238276858500386927615265909052049248729475425189727870539446772525944260785449039888400051512430677448964362495481857670938498687367179087830621632202369115962319838523778738736185582952375372556577725237418267032531140823528529703328592094819204459089488352221790601566315553199787220711189912532769867109356570880796390682058810365083207231617252192519105880884353168502132922181901731013143191069339669237120386821992197489802750998563738664409137880223444141611187018972139144372772605335470588411736586848605571361651254296969964892861975381110425478076758829265585484795075687549965968176067991570794743769639130777004145434315488748245738180877050825640138663753183005027746956378201773171185916125548959480700215792051066517130549251500377823593294894162705057550109799677841526081070114510275970063587374868529586285530838878720503613861002243722617972300553614233173917665140710529961290371344806354572937617655847013690871371972860754449733386985258153903773341143547256070069283089282878424405961004054742513910278054728337628239209301081723934962887447466778577819470181351503248267222773055418,
+      "scale": 58858994336627361544453297198875411710067139724761118425580031528880115057997703801303747836546148093417270951268547131647310531954316064668580938163243278394844485156900211302934179771562250329701889881624396785457454022153309222982050059588009257898030069950263144845057750725167270431392949549399343484973053990093228803685802127574552115618708890761912970577581152866345424591873416736167390927934597252249705017470373245885657025809842451443146716427054186052250830729809675633955307727025575873066348657309694741904491110968683354693848890323220885969948832759629854500107231312444637379969422713221140027613166401889924442567234147197378228789485934706064245007160059784260511899575647046270826177538347865643328216141540313017541519082259751699873240303454266137464346065908992536959117030676480384936002349679129460906888084081744964651074373681792986686095191539136304094621642654986722125983619640556348306674721601458327012658883915050089107576790947326708037105206134066955862100671356896806520403679325698045884187671115372572715170357974011380357670458741952027836807215166882098236821128096494204431303251239050704392019805229222497233661802187241627721785646505069022947527997671782564758558926561625972247599297095133618530804696774831465520775362213608981077123973983990807478401,
+      "index": 29430493950551373336743236758507939560086536331783896948344943082851732101835372339922767876172964698255591431001011149036262306079897796385419915197847469305864833985425759114015442207337263403127803441199126007994636063125903340966450219521875168395787560919392357871568763762635147646373923739062167224344197933545301769021988894408908260178470407700795009067529312618755664671309264945808932882234331157265676037264889951534923332109380315209925580004128659341678615152125549006890186633379897293104055125045529429762610638691573294599116964267491327338142918512737109151784628799413388029653948476997392006004073003695960785022281482736569337838884578540051094642724402664735591420376235259722261694340535584075961078035663018484151869966607952608765885737211928144419722998922672336471129310082009831598778178984999045942192287779053359376362826979560246526052623516524530249083992513409486611951290520493966204403877931278415006707265550819938716493453023773153696394129148103592441326305742035778128731425948379861820814339171547288601307796959306243793068403288641154628933568873812393924765136985864758062665316490897325056764352347998233874984804866961957408148893321817600756642423241852286434021977191091040852137276786776110347126283350303180227166258926274671890065235259218176794618,
+      "exact_central_valuation": 2720,
+      "index_parity": 0,
+      "checked_outer_equations": 8,
+      "checked_masks": 8,
+      "actual_nonhalting_trace": [
+        "011",
+        "10",
+        "10"
+      ],
+      "fixed_terminal": {
+        "content": 0,
+        "length_marker": 3
+      },
+      "startup": {
+        "first_zero": true,
+        "positive_actual_initial_prefix": true,
+        "genuine_one_event": true
+      },
+      "kernel_scope": "The exact fixed-plus43 converse supplies all sixteen fresh positive auxiliaries at this even index. These huge auxiliary integers are not materialized.",
+      "scope": "Complete false solution of the proposed86 source on its startup domain. Neither example is asserted to be a Neary compiler instance."
+    }
+  ],
+  "review": "Author and two independent complete proof/source/dependency reviews and fresh verification PASS, with no findings.",
+  "proof": "../1980/EXPLORATION_STARTUP_UNMASKED_CONTENT_TAG.md",
+  "scope": "Rejected86 deletion of GN from the91 source. Both leading branches admit full positive false halts despite first-zero, positive-prefix and genuine-one startup. The valid91 and raw-input90 bounds are unchanged."
+}

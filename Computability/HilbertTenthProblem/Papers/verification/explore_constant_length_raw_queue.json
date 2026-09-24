@@ -1,0 +1,158 @@
+{
+  "status": "PASS_CONSTANT_LENGTH_RAW_QUEUE_COMPONENT",
+  "source": {
+    "operations": 14,
+    "multiplications": 7,
+    "additions_subtractions": 7,
+    "initialization_operations": 4,
+    "transport_operations": 10,
+    "instructions": [
+      [
+        "I1calc",
+        "*",
+        5,
+        "L"
+      ],
+      [
+        "Wcalc",
+        "*",
+        9,
+        "L"
+      ],
+      [
+        "Rcalc",
+        "*",
+        3,
+        "W"
+      ],
+      [
+        "input_bound",
+        "+",
+        "x",
+        "alpha"
+      ],
+      [
+        "weighted0",
+        "*",
+        "W",
+        "A0"
+      ],
+      [
+        "cut0",
+        "-",
+        "X0",
+        "D0"
+      ],
+      [
+        "append0",
+        "+",
+        "cut0",
+        "weighted0"
+      ],
+      [
+        "left0",
+        "*",
+        "W",
+        "append0"
+      ],
+      [
+        "right0",
+        "-",
+        "X0",
+        "x"
+      ],
+      [
+        "weighted1",
+        "*",
+        "W",
+        "A1"
+      ],
+      [
+        "cut1",
+        "-",
+        "X1",
+        "D1"
+      ],
+      [
+        "append1",
+        "+",
+        "cut1",
+        "weighted1"
+      ],
+      [
+        "left1",
+        "*",
+        "W",
+        "append1"
+      ],
+      [
+        "right1",
+        "-",
+        "X1",
+        "I1"
+      ]
+    ],
+    "comparisons": [
+      [
+        "I1",
+        "I1calc"
+      ],
+      [
+        "W",
+        "Wcalc"
+      ],
+      [
+        "R",
+        "Rcalc"
+      ],
+      [
+        "input_bound",
+        "L"
+      ],
+      [
+        "left0",
+        "right0"
+      ],
+      [
+        "left1",
+        "right1"
+      ]
+    ],
+    "sources": [
+      "I1 - 5*L",
+      "-9*L + W",
+      "R - 3*W",
+      "-L + alpha + x",
+      "W*(A0*W - D0 + X0) - X0 + x",
+      "I1 + W*(A1*W - D1 + X1) - X1"
+    ]
+  },
+  "runs": {
+    "machines": 7,
+    "compiled_states": 645,
+    "compiled_entries": 5805,
+    "inputs": 420,
+    "normalizations": 420,
+    "tm_steps": 9832,
+    "queue_steps": 80278,
+    "accepted": 140,
+    "rejected": 220,
+    "named_stay_cutoffs": 60,
+    "accepting_transports": 140,
+    "positive_history_tuples": 140,
+    "zero_endpoint_checks": 80278,
+    "rejecting_loop_steps": 1100,
+    "strict_padding_improvements": 20,
+    "ell_zero_rejections": 1
+  },
+  "all_short_scans": {
+    "cases": 15024,
+    "valid": 12304,
+    "left": 1360,
+    "right": 1360,
+    "queue_steps": 79200
+  },
+  "proof": "../1980/EXPLORATION_CONSTANT_LENGTH_RAW_QUEUE.md",
+  "review": "Author and two independent complete scoped proof/source reviews pass; fresh exact receipt checks pass",
+  "scope": "Universal ordinary-input machine contract and exact 14-operation initialization/transport component. No controller, masks, complete power geometry or Pell operation bound is claimed."
+}

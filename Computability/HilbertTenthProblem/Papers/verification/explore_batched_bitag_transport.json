@@ -1,0 +1,279 @@
+{
+  "status": "PASS_BATCHED_BITAG_CONDITIONAL_TRANSPORT",
+  "source": {
+    "direct": {
+      "operations": 13,
+      "histogram": {
+        "M": 6,
+        "A": 7
+      },
+      "schedule": [
+        [
+          "trim",
+          "-",
+          "N",
+          "A"
+        ],
+        [
+          "append",
+          "+",
+          "trim",
+          "U"
+        ],
+        [
+          "content_left",
+          "*",
+          "R",
+          "append"
+        ],
+        [
+          "start",
+          "-",
+          "N",
+          "n0"
+        ],
+        [
+          "end",
+          "*",
+          "nh",
+          "Q"
+        ],
+        [
+          "content_inner",
+          "+",
+          "start",
+          "end"
+        ],
+        [
+          "content_right",
+          "*",
+          "b",
+          "content_inner"
+        ],
+        [
+          "length_left",
+          "*",
+          "R",
+          "W"
+        ],
+        [
+          "length_start",
+          "-",
+          "Z",
+          "L0"
+        ],
+        [
+          "length_end",
+          "*",
+          "Lh",
+          "Q"
+        ],
+        [
+          "length_right",
+          "+",
+          "length_start",
+          "length_end"
+        ],
+        [
+          "state_left",
+          "*",
+          "R",
+          "F"
+        ],
+        [
+          "state_right",
+          "-",
+          "S",
+          "s0"
+        ]
+      ],
+      "equalities": [
+        [
+          "content_left",
+          "content_right"
+        ],
+        [
+          "length_left",
+          "length_right"
+        ],
+        [
+          "state_left",
+          "state_right"
+        ]
+      ],
+      "source_residuals": [
+        "R*(-A + N + U) - b*(N + Q*nh - n0)",
+        "L0 - Lh*Q + R*W - Z",
+        "F*R - S + s0"
+      ]
+    },
+    "paid_shared_radix": {
+      "operations": 13,
+      "histogram": {
+        "M": 6,
+        "A": 7
+      },
+      "schedule": [
+        [
+          "radix",
+          "*",
+          "b",
+          "B"
+        ],
+        [
+          "trim",
+          "-",
+          "N",
+          "A"
+        ],
+        [
+          "append",
+          "+",
+          "trim",
+          "U"
+        ],
+        [
+          "content_left",
+          "*",
+          "B",
+          "append"
+        ],
+        [
+          "start",
+          "-",
+          "N",
+          "n0"
+        ],
+        [
+          "end",
+          "*",
+          "nh",
+          "Q"
+        ],
+        [
+          "content_inner",
+          "+",
+          "start",
+          "end"
+        ],
+        [
+          "length_left",
+          "*",
+          "R",
+          "W"
+        ],
+        [
+          "length_start",
+          "-",
+          "Z",
+          "L0"
+        ],
+        [
+          "length_end",
+          "*",
+          "Lh",
+          "Q"
+        ],
+        [
+          "length_right",
+          "+",
+          "length_start",
+          "length_end"
+        ],
+        [
+          "state_left",
+          "*",
+          "R",
+          "F"
+        ],
+        [
+          "state_right",
+          "-",
+          "S",
+          "s0"
+        ]
+      ],
+      "equalities": [
+        [
+          "content_left",
+          "content_inner"
+        ],
+        [
+          "length_left",
+          "length_right"
+        ],
+        [
+          "state_left",
+          "state_right"
+        ]
+      ],
+      "source_residuals": [
+        "B*(-A + N + U) - N - Q*nh + n0",
+        "L0 - Lh*Q + R*W - Z",
+        "F*R - S + s0"
+      ]
+    },
+    "shared_additional_equality": "radix=R",
+    "symbolic_source_comparisons": 6,
+    "radix_corrections": 1
+  },
+  "local": {
+    "canonicalizations": 384,
+    "local_batches": 1080,
+    "scalar_recurrence_checks": 2160,
+    "maximum_input_length": 4,
+    "letter_count": 2,
+    "marker_states": 3
+  },
+  "histories": {
+    "deterministic_tables": 144,
+    "initial_words_per_table": 14,
+    "cases": 2016,
+    "accepting_cases": 1440,
+    "exact_cycles": 138,
+    "bounded_prefixes_without_classification": 438,
+    "batch_limit": 8,
+    "batches": 5918,
+    "expanded_microsteps": 35710,
+    "zero_batch_accepting_cases": 14,
+    "largest_time_power_bits": 178,
+    "rule_partition_and_linear_form_identities_checked": 14210
+  },
+  "separation": {
+    "weighted_product_counterexamples": [
+      {
+        "R": 27,
+        "selector": 1,
+        "length_word": 246,
+        "correct_selected_length": 3,
+        "incorrect_product": 246
+      },
+      {
+        "R": 81,
+        "selector": 1,
+        "length_word": 732,
+        "correct_selected_length": 3,
+        "incorrect_product": 732
+      },
+      {
+        "R": 243,
+        "selector": 1,
+        "length_word": 2190,
+        "correct_selected_length": 3,
+        "incorrect_product": 2190
+      },
+      {
+        "R": 729,
+        "selector": 1,
+        "length_word": 6564,
+        "correct_selected_length": 3,
+        "incorrect_product": 6564
+      }
+    ],
+    "bounded_signed_residual_vectors": 58124,
+    "decoding_hypothesis": "Every scalar residual has absolute value strictly below R."
+  },
+  "proof": "../1980/EXPLORATION_BATCHED_BITAG_TRANSPORT.md",
+  "scope": "Exact batching equivalence and 13-operation transport only. Joint rule selection, weighted selection, geometry, bounds, positive-variable conversion and raw input remain unpaid.",
+  "review_status": "Author and two independent complete scoped proof/source reviews PASS; fresh verification reproduces the saved receipt."
+}

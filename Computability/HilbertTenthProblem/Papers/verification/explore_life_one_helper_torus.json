@@ -1,0 +1,323 @@
+{
+  "status": "PASS_ONE_HELPER_TORUS_CONDITIONAL36",
+  "source": {
+    "full": {
+      "total": 36,
+      "multiplications": 21,
+      "additions": 15
+    },
+    "geometry_repunit": {
+      "total": 6,
+      "multiplications": 4,
+      "additions": 2
+    },
+    "edges": {
+      "total": 8,
+      "multiplications": 4,
+      "additions": 4
+    },
+    "convolution": {
+      "total": 13,
+      "multiplications": 8,
+      "additions": 5
+    },
+    "local": {
+      "total": 9,
+      "multiplications": 5,
+      "additions": 4
+    },
+    "combined_edges": {
+      "total": 7,
+      "multiplications": 3,
+      "additions": 4
+    },
+    "schedule": [
+      [
+        "wm1",
+        "-",
+        "W",
+        1
+      ],
+      [
+        "qm1",
+        "-",
+        "q",
+        1
+      ],
+      [
+        "hwm1",
+        "*",
+        "h",
+        "wm1"
+      ],
+      [
+        "wquot",
+        "*",
+        "W",
+        "quot"
+      ],
+      [
+        "a512",
+        "*",
+        512,
+        "A"
+      ],
+      [
+        "allones",
+        "*",
+        511,
+        "J"
+      ],
+      [
+        "Ah",
+        "*",
+        "A",
+        "h"
+      ],
+      [
+        "leftsum",
+        "+",
+        "C",
+        "h"
+      ],
+      [
+        "lefttwo",
+        "*",
+        2,
+        "L"
+      ],
+      [
+        "leftout",
+        "+",
+        "Xl",
+        "lefttwo"
+      ],
+      [
+        "rightsum",
+        "+",
+        "C",
+        "Ah"
+      ],
+      [
+        "AR",
+        "*",
+        "A",
+        "R"
+      ],
+      [
+        "righttwo",
+        "*",
+        2,
+        "AR"
+      ],
+      [
+        "rightout",
+        "+",
+        "Xr",
+        "righttwo"
+      ],
+      [
+        "br",
+        "*",
+        512,
+        "R"
+      ],
+      [
+        "edge",
+        "-",
+        "L",
+        "br"
+      ],
+      [
+        "correction",
+        "*",
+        "wm1",
+        "edge"
+      ],
+      [
+        "center",
+        "*",
+        262657,
+        "C"
+      ],
+      [
+        "horizontal",
+        "+",
+        "center",
+        "correction"
+      ],
+      [
+        "W2",
+        "*",
+        "W",
+        "W"
+      ],
+      [
+        "K0",
+        "+",
+        "W2",
+        "W"
+      ],
+      [
+        "K",
+        "+",
+        "K0",
+        1
+      ],
+      [
+        "conv",
+        "*",
+        "K",
+        "horizontal"
+      ],
+      [
+        "scaledS",
+        "*",
+        512,
+        "S"
+      ],
+      [
+        "WS",
+        "*",
+        "W",
+        "scaledS"
+      ],
+      [
+        "quotient",
+        "*",
+        "qm1",
+        "z"
+      ],
+      [
+        "rhs",
+        "+",
+        "WS",
+        "quotient"
+      ],
+      [
+        "s28",
+        "*",
+        28,
+        "S"
+      ],
+      [
+        "b2",
+        "*",
+        2,
+        "C"
+      ],
+      [
+        "y16",
+        "*",
+        16,
+        "Y"
+      ],
+      [
+        "u118",
+        "*",
+        118,
+        "U"
+      ],
+      [
+        "j41",
+        "*",
+        41,
+        "J"
+      ],
+      [
+        "v1",
+        "+",
+        "s28",
+        "b2"
+      ],
+      [
+        "v2",
+        "+",
+        "v1",
+        "y16"
+      ],
+      [
+        "v3",
+        "+",
+        "v2",
+        "u118"
+      ],
+      [
+        "Vprime",
+        "+",
+        "v3",
+        "j41"
+      ]
+    ],
+    "equalities": [
+      [
+        "hwm1",
+        "qm1"
+      ],
+      [
+        "wquot",
+        "q"
+      ],
+      [
+        "a512",
+        "W"
+      ],
+      [
+        "allones",
+        "qm1"
+      ],
+      [
+        "leftsum",
+        "leftout"
+      ],
+      [
+        "rightsum",
+        "rightout"
+      ],
+      [
+        "conv",
+        "rhs"
+      ]
+    ],
+    "symbolic_identities": 8,
+    "mixed_test": "Vprime AND(144J)=0; not a paid primitive here.",
+    "preconditions": "q power of two; relevant words Boolean;S nonnegative;0<Vprime<q."
+  },
+  "seam_alignment": {
+    "power_geometries": 504,
+    "aligned": 216,
+    "misaligned_rejected": 288,
+    "scope": "Necessary digit condition from h=Xl+2L-C; general proof in the note."
+  },
+  "torus": {
+    "tori": 682,
+    "physical_cells": 5506,
+    "wrong_outputs": 682,
+    "quotient_signs": {
+      "-1": 81,
+      "0": 20,
+      "1": 581
+    },
+    "dimensions": [
+      1,
+      2,
+      3
+    ]
+  },
+  "combined_edges": {
+    "candidate_column_pairs": 38192,
+    "accepted_exact_edges": 668,
+    "sparse_mask_threshold_cases": 6,
+    "width1_false_edge": true,
+    "merged_selector_false_edge": {
+      "radix": 16,
+      "width": 2,
+      "height": 3,
+      "L": 75776,
+      "R": 60800
+    }
+  },
+  "proof": "../1980/EXPLORATION_LIFE_ONE_HELPER_TORUS.md",
+  "review": "Author and an independent complete scoped proof/source review pass; fresh read-only verification exactly matches the saved JSON.",
+  "scope": "Exact rectangular torus and one-helper local interface; masks,pre-power bounds,positive adapters and periodic target/raw-input compiler remain separate."
+}

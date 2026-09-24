@@ -1,0 +1,114 @@
+% Translate the fixed affine-radix parameter to remove one addition.
+\section{Translating the fixed index: 94 operations}
+\label{sec:shifted-affine}
+
+The affine-radix construction permits one more saving by translating
+a fixed index parameter. This changes neither its coefficient
+encoding nor any positive witness. Let $H_{\rm old}=H_0+1$ be
+the fixed parameter of Section~\ref{sec:affine-radix}, and supply
+instead
+\begin{equation}\label{eq:shifted-affine-index}
+ H=H_{\rm old}-4=H_0-3.
+\end{equation}
+The actual radix is still
+\begin{equation}\label{eq:shifted-affine-radix}
+ B=H+b+4=H_{\rm old}+b,
+\end{equation}
+so the fixed-bit mask and every part of the encoding are unchanged.
+In particular, $B-1-b=H_0$ as before. The positive source equation
+for $\theta$ becomes
+\begin{equation}\label{eq:shifted-affine-theta}
+ \theta=H+b.
+\end{equation}
+All other source equations are obtained by replacing the former
+fixed parameter $H_{\rm old}$ by $H+4$. Every occurrence of the
+mathematical radix therefore has the value in
+\eqref{eq:shifted-affine-radix}.
+
+\begin{theorem}\label{thm:best94}
+Every recursively enumerable subset of the positive integers has
+an admissible fixed index $(V,H,T_L)$ for a system with 34 positive
+unknowns and 22 equations admitting a straight-line certificate of
+94 operations: 51 multiplications and 43 additions. Here
+$H=H_0-3$, with $H_0$ chosen by
+\eqref{eq:affine-radix-index}, and $T_L=\psi_4(L)$.
+The supplied parameters are $(x,V,H,T_L)$; fixed numerals and
+equality tests are free.
+\end{theorem}
+
+\begin{proof}
+Fix an index $(V,H_{\rm old},T_L)$ furnished by
+Theorem~\ref{thm:best95}. The translated index is
+$(V,H_{\rm old}-4,T_L)$, with a positive second component because
+$H_0>1024$. For every positive input $x$ and every tuple $\mathbf z$
+of the 34 positive supplied unknowns, define the new source
+residuals by
+\[
+ F_i^{94}(x,V,H,T_L;\mathbf z)
+   =F_i^{95}(x,V,H+4,T_L;\mathbf z),\qquad 1\le i\le22.
+\]
+This is an exact polynomial substitution. The old radix equation
+$\theta+4-(H_{\rm old}+b)=0$ simplifies to
+\eqref{eq:shifted-affine-theta}; the remaining equations are
+exactly their old values at the translated fixed index. Thus the
+identity map on $\mathbf z$ is a bijection between the positive
+solutions of the two source systems, in both directions.
+
+For sufficiency, a solution of the translated system is a solution
+of the 95-operation system at $H_{\rm old}=H+4$. Its complete
+Pell, canonical-code, carry and unit arguments recover the
+represented set at the actual input $x$. For necessity, use every
+positive witness of that construction unchanged. In particular,
+choosing a sufficiently large power of two $B$ gives
+\[
+ b=B-H-4=B-H_{\rm old},\qquad\beta=b-x>0,
+\]
+and preserves the same $\alpha$, codes, packing, and positive
+Pell witnesses. The value $H_0=H+3$ is the same fixed power of
+two, so its forbidden bit and all support bounds are identical.
+This proves the full source-system equivalence without imposing
+any new restriction on the witnesses.
+
+It remains to realize the translated source equations with one
+fewer primitive operation. In the 95-operation schedule the
+two additions
+\[
+ B_{\rm reg}=H_{\rm old}+b,\qquad L_3=\theta+4
+\]
+are followed by the free equality test $L_3=B_{\rm reg}$.
+The register $B_{\rm reg}$ has no other use in that schedule.
+All other radix-dependent expressions already use the existing
+$\theta$ registers, together with the exact source relation
+$\theta+4=B$.
+
+In the translated schedule retain just
+\[
+ \theta_{\rm sum}=H+b
+\]
+and replace the equality test by $\theta=\theta_{\rm sum}$.
+Delete the instruction for $L_3$. Renaming the retained register
+has no arithmetic cost. The new register is the value
+of $\theta$; it is not the mathematical radix, which remains
+$B=H+b+4$ and is never constructed as a separate register.
+No instruction depending on it needs correction,
+since its sole use is this equality. The other primitive
+instructions and all other equality tests are retained, giving
+\[
+ 51\text{ multiplications}+43\text{ additions}=94
+\]
+with 34 positive unknowns and 22 source equations. Translating
+the fixed integer $H_{\rm old}$ has no numeral-construction cost.
+\end{proof}
+
+Appendix~\ref{app:94} gives the complete 94-instruction table.
+
+The standalone checker is in \file{../verification/}:
+\begin{center}
+\small\file{round33\_1980\_shifted\_affine\_certificate.py}.
+\end{center}
+It checks the entire primitive schedule and all 22 translated
+source residuals, including the retained acyclic corrections.
+The unchanged coefficient construction retains the support,
+carry, unit, and positive-witness proof of
+Section~\ref{sec:affine-radix}. The number 94 is a proved upper
+bound, with no assertion of optimality.

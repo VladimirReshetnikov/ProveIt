@@ -1,0 +1,1428 @@
+{
+  "status": "PASS_LABELLED_RAW_COUNTER_COMPOSITION_132",
+  "arithmetic": {
+    "status": "PASS",
+    "operations": 132,
+    "primitive_histogram": {
+      "+": 71,
+      "*": 61
+    },
+    "histogram": {
+      "+": 60,
+      "-": 11,
+      "*": 61
+    },
+    "positive_unknowns": [
+      "q",
+      "Jrep",
+      "W",
+      "H",
+      "v",
+      "T",
+      "F0",
+      "F1",
+      "G0",
+      "G1",
+      "FKplus",
+      "FKminus",
+      "alpha",
+      "alphaI",
+      "R",
+      "Htime",
+      "FZ",
+      "FZbar",
+      "alphaT",
+      "PC",
+      "PV",
+      "PTC",
+      "PTV",
+      "alphaP",
+      "PNC",
+      "PNV",
+      "PNTC",
+      "PNTV",
+      "zR",
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "unknown_count": 46,
+    "parameters": [
+      "x"
+    ],
+    "equations": 34,
+    "primitive_instructions": [
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "Jrep",
+        "result": "twice_J"
+      },
+      {
+        "operation": "+",
+        "left": "twice_J",
+        "right": 1,
+        "result": "q_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "v",
+        "result": "geometry_product"
+      },
+      {
+        "operation": "+",
+        "left": "W_minus_one",
+        "right": 1,
+        "result": "W"
+      },
+      {
+        "operation": "+",
+        "left": "R_minus_one",
+        "right": 1,
+        "result": "R"
+      },
+      {
+        "operation": "*",
+        "left": "H",
+        "right": "R_minus_one",
+        "result": "head_geometry"
+      },
+      {
+        "operation": "+",
+        "left": "FKplus",
+        "right": "FKminus",
+        "result": "flag_sum"
+      },
+      {
+        "operation": "+",
+        "left": "twice_J",
+        "right": "H",
+        "result": "head_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "T",
+        "right": "T",
+        "result": "twice_T"
+      },
+      {
+        "operation": "*",
+        "left": 3,
+        "right": "twice_T",
+        "result": "top_mask"
+      },
+      {
+        "operation": "+",
+        "left": "head_rhs",
+        "right": "head_rhs",
+        "result": "twice_head"
+      },
+      {
+        "operation": "+",
+        "left": "R_minus_three",
+        "right": 2,
+        "result": "R_minus_one"
+      },
+      {
+        "operation": "+",
+        "left": "raw_Z",
+        "right": "Jrep",
+        "result": "FZ"
+      },
+      {
+        "operation": "*",
+        "left": "R_minus_three",
+        "right": "raw_Z",
+        "result": "zero_spread"
+      },
+      {
+        "operation": "+",
+        "left": "twice_head",
+        "right": "zero_spread",
+        "result": "top_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "twice_T",
+        "right": "alphaT",
+        "result": "top_bound"
+      },
+      {
+        "operation": "+",
+        "left": "FZ",
+        "right": "FZbar",
+        "result": "zero_flag_sum"
+      },
+      {
+        "operation": "+",
+        "left": "F0",
+        "right": "F1",
+        "result": "track_sum"
+      },
+      {
+        "operation": "+",
+        "left": "q",
+        "right": "Jrep",
+        "result": "bound_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "track_sum",
+        "right": "alpha",
+        "result": "bound_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "F0",
+        "right": "T",
+        "result": "guard0"
+      },
+      {
+        "operation": "+",
+        "left": "F1",
+        "right": "T",
+        "result": "guard1"
+      },
+      {
+        "operation": "+",
+        "left": "raw_A",
+        "right": "twice_J",
+        "result": "track_sum"
+      },
+      {
+        "operation": "+",
+        "left": "delta",
+        "right": "FKminus",
+        "result": "FKplus"
+      },
+      {
+        "operation": "+",
+        "left": "x",
+        "right": "x",
+        "result": "input"
+      },
+      {
+        "operation": "*",
+        "left": "W_minus_one",
+        "right": "raw_A",
+        "result": "history_product"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "delta",
+        "result": "control_product"
+      },
+      {
+        "operation": "+",
+        "left": "input",
+        "right": "history_product",
+        "result": "time_partial"
+      },
+      {
+        "operation": "+",
+        "left": "time_partial",
+        "right": "control_product",
+        "result": "time_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "input",
+        "right": "alphaI",
+        "result": "input_bound"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "R",
+        "result": "R2"
+      },
+      {
+        "operation": "*",
+        "left": "R2",
+        "right": "R",
+        "result": "W_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "Htime",
+        "right": "W_minus_one",
+        "result": "time_head_product"
+      },
+      {
+        "operation": "*",
+        "left": 387421227,
+        "right": "Htime",
+        "result": "program_support"
+      },
+      {
+        "operation": "+",
+        "left": "PC",
+        "right": "Jrep",
+        "result": "program_C_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "program_support",
+        "right": "PTC",
+        "result": "program_C_rhs"
+      },
+      {
+        "operation": "*",
+        "left": 589881151426658740854227725580736348849310352832644300781946246613899173590427,
+        "right": "Htime",
+        "result": "marker_forbidden"
+      },
+      {
+        "operation": "*",
+        "left": 38662196978715633273404758790074316960214213096178331055668207096692357603195911170550122145000550874883732133233265604359468693632015129010842347449553202,
+        "right": "H",
+        "result": "flag_forbidden"
+      },
+      {
+        "operation": "+",
+        "left": "PV",
+        "right": "marker_forbidden",
+        "result": "junk_forbidden"
+      },
+      {
+        "operation": "+",
+        "left": "junk_forbidden",
+        "right": "flag_forbidden",
+        "result": "program_V_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "PTC",
+        "right": "PTV",
+        "result": "program_bound_sum"
+      },
+      {
+        "operation": "+",
+        "left": "program_bound_sum",
+        "right": "alphaP",
+        "result": "program_bound"
+      },
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "PC",
+        "result": "program_native_C"
+      },
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "PV",
+        "result": "program_native_V"
+      },
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "PTC",
+        "result": "program_native_TC"
+      },
+      {
+        "operation": "+",
+        "left": "Jrep",
+        "right": "PTV",
+        "result": "program_native_TV"
+      },
+      {
+        "operation": "*",
+        "left": 14978527259308333234727142345377640223067183982471608619098108558975486681619863926983547918816717459507841524971007905412866094081182417045161149930526409590653209,
+        "right": "zR",
+        "result": "program_R_bound"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": 4295799764095625264089232629907153623788406016905182005945265933340306731349360048160399939616725855090169997337852066009405189002485941207729634341792196,
+        "result": "K_R_high"
+      },
+      {
+        "operation": "+",
+        "left": 4295799764095625264089232629907153623788406016905182005945265933340306731349360048160399939616725855090169997337852066009405189002485941207729634341792196,
+        "right": "K_R_high",
+        "result": "K_R_mid"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "K_R_mid",
+        "result": "K_R_low"
+      },
+      {
+        "operation": "+",
+        "left": 1270423474759653869734053188744054286467008281096445628487759659654018782056923219755260873128917685808,
+        "right": "K_R_low",
+        "result": "K_R"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "K_R",
+        "result": "WK"
+      },
+      {
+        "operation": "+",
+        "left": "route_coeff",
+        "right": 196627050475552913618075908526912116283103450944214766927315415537966391196809,
+        "result": "WK"
+      },
+      {
+        "operation": "*",
+        "left": "route_coeff",
+        "right": "PC",
+        "result": "route_product"
+      },
+      {
+        "operation": "+",
+        "left": "route_product",
+        "right": 1769643454279976222562683176742209046547931058497932902345838739841697520771281,
+        "result": "route_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "raw_Kplus",
+        "right": "Jrep",
+        "result": "FKplus"
+      },
+      {
+        "operation": "*",
+        "left": 11433811272836884826665874049685357613602127080237382571153151471568389249023393608050222706416077770721,
+        "right": "raw_Kplus",
+        "result": "sign_output"
+      },
+      {
+        "operation": "*",
+        "left": 38662196978715633273404758790074316960214213096178319621856934259807530937321861485192508542873470637501160980081794035970219670238407078788135931371782481,
+        "right": "raw_Z",
+        "result": "zero_output"
+      },
+      {
+        "operation": "+",
+        "left": "PV",
+        "right": "sign_output",
+        "result": "route_junk1"
+      },
+      {
+        "operation": "+",
+        "left": "route_junk1",
+        "right": "zero_output",
+        "result": "route_junk2"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "route_junk2",
+        "result": "route_junkW"
+      },
+      {
+        "operation": "*",
+        "left": 1769643454279976222562683176742209046547931058497932902345838739841697520771281,
+        "right": "q",
+        "result": "route_final"
+      },
+      {
+        "operation": "+",
+        "left": "route_final",
+        "right": "route_junkW",
+        "result": "route_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "PNTV",
+        "result": "pack_product0"
+      },
+      {
+        "operation": "+",
+        "left": "PNTC",
+        "right": "pack_product0",
+        "result": "pack_sum0"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum0",
+        "result": "pack_product1"
+      },
+      {
+        "operation": "+",
+        "left": "PNV",
+        "right": "pack_product1",
+        "result": "pack_sum1"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum1",
+        "result": "pack_product2"
+      },
+      {
+        "operation": "+",
+        "left": "PNC",
+        "right": "pack_product2",
+        "result": "pack_sum2"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum2",
+        "result": "pack_product3"
+      },
+      {
+        "operation": "+",
+        "left": "FZbar",
+        "right": "pack_product3",
+        "result": "pack_sum3"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum3",
+        "result": "pack_product4"
+      },
+      {
+        "operation": "+",
+        "left": "FZ",
+        "right": "pack_product4",
+        "result": "pack_sum4"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum4",
+        "result": "pack_product5"
+      },
+      {
+        "operation": "+",
+        "left": "FKminus",
+        "right": "pack_product5",
+        "result": "pack_sum5"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum5",
+        "result": "pack_product6"
+      },
+      {
+        "operation": "+",
+        "left": "F1",
+        "right": "pack_product6",
+        "result": "pack_sum6"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum6",
+        "result": "pack_product7"
+      },
+      {
+        "operation": "+",
+        "left": "G1",
+        "right": "pack_product7",
+        "result": "pack_sum7"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum7",
+        "result": "pack_product8"
+      },
+      {
+        "operation": "+",
+        "left": "F0",
+        "right": "pack_product8",
+        "result": "pack_sum8"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum8",
+        "result": "pack_product9"
+      },
+      {
+        "operation": "+",
+        "left": "G0",
+        "right": "pack_product9",
+        "result": "pack_sum9"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "pack_sum9",
+        "result": "pack_product10"
+      },
+      {
+        "operation": "+",
+        "left": "FKplus",
+        "right": "pack_product10",
+        "result": "packed"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "q2"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "q2",
+        "result": "q4"
+      },
+      {
+        "operation": "*",
+        "left": "q4",
+        "right": "q2",
+        "result": "q6"
+      },
+      {
+        "operation": "*",
+        "left": "q6",
+        "right": "q6",
+        "result": "D0"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "D0",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "D0",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 6,
+        "right": "a",
+        "result": "six_a"
+      },
+      {
+        "operation": "+",
+        "left": "six_a",
+        "right": 8,
+        "result": "modulus"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "modulus",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "modulus",
+        "result": "discriminant"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "discriminant",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "c",
+        "right": "of",
+        "result": "aux_u_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "tr1",
+        "right": "jc",
+        "result": "H17"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "equalities": [
+      [
+        "q",
+        "q_rhs"
+      ],
+      [
+        "q",
+        "geometry_product"
+      ],
+      [
+        "head_geometry",
+        "twice_J"
+      ],
+      [
+        "flag_sum",
+        "head_rhs"
+      ],
+      [
+        "top_mask",
+        "top_rhs"
+      ],
+      [
+        "bound_lhs",
+        "bound_rhs"
+      ],
+      [
+        "G0",
+        "guard0"
+      ],
+      [
+        "G1",
+        "guard1"
+      ],
+      [
+        "time_lhs",
+        "zero"
+      ],
+      [
+        "input_bound",
+        "R"
+      ],
+      [
+        "r",
+        "packed"
+      ],
+      [
+        "L9",
+        "R9"
+      ],
+      [
+        "c",
+        "R10a"
+      ],
+      [
+        "k",
+        "R10b"
+      ],
+      [
+        "k",
+        "R11"
+      ],
+      [
+        "a",
+        "R12"
+      ],
+      [
+        "d",
+        "R14"
+      ],
+      [
+        "L15",
+        "R15"
+      ],
+      [
+        "ic22",
+        "R16"
+      ],
+      [
+        "L17",
+        "P17"
+      ],
+      [
+        "H17",
+        "aux_u_rhs"
+      ],
+      [
+        "W",
+        "W_rhs"
+      ],
+      [
+        "time_head_product",
+        "twice_J"
+      ],
+      [
+        "top_bound",
+        "q"
+      ],
+      [
+        "zero_flag_sum",
+        "head_rhs"
+      ],
+      [
+        "program_C_lhs",
+        "program_C_rhs"
+      ],
+      [
+        "PTV",
+        "program_V_rhs"
+      ],
+      [
+        "program_bound",
+        "q"
+      ],
+      [
+        "PNC",
+        "program_native_C"
+      ],
+      [
+        "PNV",
+        "program_native_V"
+      ],
+      [
+        "PNTC",
+        "program_native_TC"
+      ],
+      [
+        "PNTV",
+        "program_native_TV"
+      ],
+      [
+        "R",
+        "program_R_bound"
+      ],
+      [
+        "route_lhs",
+        "route_rhs"
+      ]
+    ],
+    "residuals": [
+      {
+        "index": 0,
+        "equality": [
+          "q",
+          "q_rhs"
+        ],
+        "source": "-2*Jrep + q - 1",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "q",
+          "geometry_product"
+        ],
+        "source": "-W*v + q",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "head_geometry",
+          "twice_J"
+        ],
+        "source": "H*(R - 1) - 2*Jrep",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "flag_sum",
+          "head_rhs"
+        ],
+        "source": "FKminus + FKplus - H - 2*Jrep",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "top_mask",
+          "top_rhs"
+        ],
+        "source": "-2*H - 4*Jrep + 6*T - (FZ - Jrep)*(R - 3)",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "bound_lhs",
+          "bound_rhs"
+        ],
+        "source": "F0 + F1 - Jrep + alpha - q",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "G0",
+          "guard0"
+        ],
+        "source": "-F0 + G0 - T",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "G1",
+          "guard1"
+        ],
+        "source": "-F1 + G1 - T",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "time_lhs",
+          "zero"
+        ],
+        "source": "W*(-FKminus + FKplus) + 2*x + (W - 1)*(F0 + F1 - 2*Jrep)",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "input_bound",
+          "R"
+        ],
+        "source": "-R + alphaI + 2*x",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "r",
+          "packed"
+        ],
+        "source": "-F0*q**2 - F1*q**4 - FKminus*q**5 - FKplus - FZ*q**6 - FZbar*q**7 - G0*q - G1*q**3 - PNC*q**8 - PNTC*q**10 - PNTV*q**11 - PNV*q**9 + r",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source": "k**2*q**36*s**2*w*(q**36*s**2*w + 1) - tau*(tau + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source": "c - eta - k*q**12*s",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source": "-h*q**24*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source": "a - q**12*s*(q**12*w + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 16,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source": "-a*c + d - ga*(6*a + 8) - q**12*w",
+        "correction": "0"
+      },
+      {
+        "index": 17,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source": "-c**2*(a**2 + 6*a + 8) + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 18,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8)",
+        "correction": "0"
+      },
+      {
+        "index": 19,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j + 2*r + 1)**2)*(a**2 + 6*a + 8) - 1",
+        "correction": "(-y_aux**2 + (c*j + 2*r + 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 6*a + 8))"
+      },
+      {
+        "index": 20,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source": "c*j - c - f*o + 2*r + 1",
+        "correction": "0"
+      },
+      {
+        "index": 21,
+        "equality": [
+          "W",
+          "W_rhs"
+        ],
+        "source": "-R**3 + W",
+        "correction": "0"
+      },
+      {
+        "index": 22,
+        "equality": [
+          "time_head_product",
+          "twice_J"
+        ],
+        "source": "Htime*(W - 1) - 2*Jrep",
+        "correction": "0"
+      },
+      {
+        "index": 23,
+        "equality": [
+          "top_bound",
+          "q"
+        ],
+        "source": "2*T + alphaT - q",
+        "correction": "0"
+      },
+      {
+        "index": 24,
+        "equality": [
+          "zero_flag_sum",
+          "head_rhs"
+        ],
+        "source": "FZ + FZbar - H - 2*Jrep",
+        "correction": "0"
+      },
+      {
+        "index": 25,
+        "equality": [
+          "program_C_lhs",
+          "program_C_rhs"
+        ],
+        "source": "-387421227*Htime + Jrep + PC - PTC",
+        "correction": "0"
+      },
+      {
+        "index": 26,
+        "equality": [
+          "PTV",
+          "program_V_rhs"
+        ],
+        "source": "-38662196978715633273404758790074316960214213096178331055668207096692357603195911170550122145000550874883732133233265604359468693632015129010842347449553202*H - 589881151426658740854227725580736348849310352832644300781946246613899173590427*Htime + PTV - PV",
+        "correction": "0"
+      },
+      {
+        "index": 27,
+        "equality": [
+          "program_bound",
+          "q"
+        ],
+        "source": "PTC + PTV + alphaP - q",
+        "correction": "0"
+      },
+      {
+        "index": 28,
+        "equality": [
+          "PNC",
+          "program_native_C"
+        ],
+        "source": "-Jrep - PC + PNC",
+        "correction": "0"
+      },
+      {
+        "index": 29,
+        "equality": [
+          "PNV",
+          "program_native_V"
+        ],
+        "source": "-Jrep + PNV - PV",
+        "correction": "0"
+      },
+      {
+        "index": 30,
+        "equality": [
+          "PNTC",
+          "program_native_TC"
+        ],
+        "source": "-Jrep + PNTC - PTC",
+        "correction": "0"
+      },
+      {
+        "index": 31,
+        "equality": [
+          "PNTV",
+          "program_native_TV"
+        ],
+        "source": "-Jrep + PNTV - PTV",
+        "correction": "0"
+      },
+      {
+        "index": 32,
+        "equality": [
+          "R",
+          "program_R_bound"
+        ],
+        "source": "R - 14978527259308333234727142345377640223067183982471608619098108558975486681619863926983547918816717459507841524971007905412866094081182417045161149930526409590653209*zR",
+        "correction": "0"
+      },
+      {
+        "index": 33,
+        "equality": [
+          "route_lhs",
+          "route_rhs"
+        ],
+        "source": "PC*(W*(R*(4295799764095625264089232629907153623788406016905182005945265933340306731349360048160399939616725855090169997337852066009405189002485941207729634341792196*R + 4295799764095625264089232629907153623788406016905182005945265933340306731349360048160399939616725855090169997337852066009405189002485941207729634341792196) + 1270423474759653869734053188744054286467008281096445628487759659654018782056923219755260873128917685808) - 196627050475552913618075908526912116283103450944214766927315415537966391196809) - W*(11433811272836884826665874049685357613602127080237382571153151471568389249023393608050222706416077770721*FKplus + 38662196978715633273404758790074316960214213096178319621856934259807530937321861485192508542873470637501160980081794035970219670238407078788135931371782481*FZ - 38662196978715633273404758790074316960214213096178331055668207096692357603195911170550122145000550874883732133233265604359468693632015129010842347449553202*Jrep + PV) - 1769643454279976222562683176742209046547931058497932902345838739841697520771281*q + 1769643454279976222562683176742209046547931058497932902345838739841697520771281",
+        "correction": "0"
+      }
+    ],
+    "fixed_program": {
+      "m": 3,
+      "l": 2,
+      "a": [
+        2,
+        6,
+        18
+      ],
+      "d": 162,
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "signs": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          -1,
+          -1,
+          -1
+        ],
+        [
+          -1,
+          1,
+          1
+        ]
+      ],
+      "zeros": [
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1
+        ]
+      ],
+      "K": [
+        1270423474759653869734053188744054286467008281096445628487759659654018782056923219755260873128917685808,
+        4295799764095625264089232629907153623788406016905182005945265933340306731349360048160399939616725855090169997337852066009405189002485941207729634341792196,
+        4295799764095625264089232629907153623788406016905182005945265933340306731349360048160399939616725855090169997337852066009405189002485941207729634341792196
+      ],
+      "S": 387421227,
+      "g": 196627050475552913618075908526912116283103450944214766927315415537966391196809,
+      "hs": 11433811272836884826665874049685357613602127080237382571153151471568389249023393608050222706416077770721,
+      "hz": 38662196978715633273404758790074316960214213096178319621856934259807530937321861485192508542873470637501160980081794035970219670238407078788135931371782481,
+      "Zc": 589881151426658740854227725580736348849310352832644300781946246613899173590427,
+      "B": 342,
+      "Rmin": 14978527259308333234727142345377640223067183982471608619098108558975486681619863926983547918816717459507841524971007905412866094081182417045161149930526409590653209,
+      "initial": 0,
+      "final": 0,
+      "I": 9,
+      "F": 9
+    },
+    "scope": "Exact arithmetic for the fully specified frame-controller baseline; semantic proof and finite tests accompany this certificate."
+  },
+  "canonical": [
+    {
+      "x": 1,
+      "path": [
+        0,
+        1,
+        2,
+        1,
+        0
+      ],
+      "time_height": 4,
+      "counter_width": 342,
+      "outer_residuals": 24,
+      "packed_bits": 78056,
+      "valuation": 49248,
+      "zero_event_count": 4,
+      "full_positive_extension": "All outer witnesses, native masks, even index and general-scale bounds meet the complete fixed-sign43 Pell positive converse."
+    },
+    {
+      "x": 2,
+      "path": [
+        0,
+        1,
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "time_height": 6,
+      "counter_width": 342,
+      "outer_residuals": 24,
+      "packed_bits": 117084,
+      "valuation": 73872,
+      "zero_event_count": 6,
+      "full_positive_extension": "All outer witnesses, native masks, even index and general-scale bounds meet the complete fixed-sign43 Pell positive converse."
+    }
+  ],
+  "proof": "../1980/EXPLORATION_LABELLED_RAW_COUNTER_COMPOSITION.md",
+  "scope": "Complete fixed labelled-graph controller for three raw counters, including source zero tests and all shared arithmetic. No optimized universal-machine bound is asserted."
+}

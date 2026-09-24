@@ -1,0 +1,163 @@
+% A further Pell shift, independent of the direct quadratic mask improvement.
+\section{Shifting the first Pell parameter}\label{sec:shifted-pell}
+
+One more operation can be removed by shifting the first Pell parameter.
+Use the notation of Section~\ref{sec:further-pell}, and put
+\[
+ X=2UM^2=2ws^2r^2n^6,\qquad P=X+1.
+\]
+Delete the unknown $p$ and its defining equation (E8), and replace
+(E9) and (E11) by
+\begin{equation}\label{eq:shifted-pell-system}
+ X(X+2)k^2+1=\tau^2,\qquad k=r+1+hX.
+\end{equation}
+Every other equation is retained, including the positive interval
+$c=ksn^2+\eta$, $k=\eta+\zeta$.
+The mathematical parameter $P$ need not be computed: its coefficient
+is $P^2-1=X(X+2)$, and its index modulus is $P-1=X$.
+
+\begin{lemma}\label{lem:shifted-pell}
+Under the initial encoding bounds
+\[
+ 3<3L\le B<q\le N\le R,\qquad R,N\ge8,\qquad b\le N,
+\]
+with $B$ even and $N=q^8$, the replacement
+\eqref{eq:shifted-pell-system} preserves existential equivalence with
+positive witnesses. It re-chooses only $k,\tau,h,\eta,\zeta$ and removes
+or restores $p$. It applies both to $B=Hb^4$, $L=5^{64}$ and to the
+direct quadratic encoding $B=Hb^2$, $L=5^{16}$.
+\end{lemma}
+\begin{proof}
+The initial bounds give $U,Y\ge64$, $M=RY\ge512$, and
+$A=M(U+1)\ge33280$. Write $C=c$, $K=k$, $J=2R+1$ as before.
+The positive interval says $0<C/K-Y<1$. Equation
+\eqref{eq:shifted-pell-system} gives $K\ge R+2$, so
+$C>(Y-1)K>J$. Proposition~\ref{prop:signed-pell-new} therefore gives
+$C=\psi_A(J)$ and $d=\chi_A(J)$, before any approximation is used.
+The other Pell equation and its elementary index congruence give
+\[
+ K=\psi_P(R+1+vX),\qquad v\ge0.
+\]
+If $v\ge1$, the Pell growth bounds imply
+\[
+ \frac CK\le\frac{(2A)^{2R}}{(2P-1)^{R+X}}
+ \le\left(\frac{2A}{2P-1}\right)^{2R}<\frac12,
+\]
+contrary to $C/K>Y-1\ge63$. Here $X\ge R$ and
+$2A/(2P-1)=2M(U+1)/(4UM^2+1)<1/2$. Thus
+$K=\psi_P(R+1)$.
+
+Put $\xi=(U+1)^{2R}/U^R$. At these exact indices the same growth bounds
+give
+\begin{align}
+ \frac CK
+ &\le\frac{(2A)^{2R}}{(2P-1)^R}
+   =\xi\left(1+\frac1{4UM^2}\right)^{-R}<\xi,
+       \label{eq:shifted-upper}\\
+ \frac CK
+ &\ge\xi\left(1-\frac1{2A}\right)^{2R}
+             \left(1+\frac1X\right)^{-R}
+  >\xi\left(1-\frac RA-\frac RX\right).
+       \label{eq:shifted-lower}
+\end{align}
+The last inequality follows from Bernoulli's inequality, with both
+factors positive. Since $A/X=(U+1)/(2UM)<1$, the error coefficient is
+\[
+ \varepsilon=\frac RA+\frac RX
+ <\frac{2}{Y(U+1)}<\frac12.
+\]
+Consequently $C/K>\xi/2>U^R/2>U^{R-1}+1$, while $C/K<Y+1$.
+Hence $Y>U^{R-1}$ and $A>RU^R$.
+
+This last bound permits the two exponent arguments in their original
+order. First,
+\[
+ 2^{3J}\le8N^{2R}\le RU^R<A,\qquad (bw)^3\le U^R<A,
+\]
+so (E14) and the $\chi$ form of Lemma~2.22 of~\cite{J82} give
+$bw=2^J$, hence
+\begin{equation}\label{eq:shifted-u-bound}
+ U\ge Nbw\ge8\cdot2^J>4\cdot2^{2R}.
+\end{equation}
+Next, $\kappa<C$, (E19), (E20), and $0<L<J<A$ give
+$\kappa=\psi_A(L)$. The bounds
+$B^{3L},q^3\le N^N\le U^R<A$ and (E18) give $q=B^L$ by the same
+exponent lemma. Since $B$ is even already, $q$ and $N$ are now even.
+Neither argument has used parity rounding or central-binomial
+divisibility.
+
+From $\xi/2<C/K<Y+1$ we have $\xi<2Y+2<3Y$, so
+\eqref{eq:shifted-upper}--\eqref{eq:shifted-lower} imply
+\[
+ 0<\xi-C/K<\xi\varepsilon
+ <\frac6{U+1}\le\frac6{65}<\frac14.
+\]
+The binomial expansion, using \eqref{eq:shifted-u-bound}, gives
+\[
+ 0<\xi-\lfloor\xi\rfloor<\frac14,
+ \qquad \lfloor\xi\rfloor\equiv\binom{2R}{R}\pmod U.
+\]
+Thus $|Y-\lfloor\xi\rfloor|<3/2<2$. Both integers are even, since
+$Y,U$ are even and $\binom{2R}{R}$ is even. Therefore
+$Y=\lfloor\xi\rfloor$, so $N^2\mid\binom{2R}{R}$ as required.
+
+It remains to justify strict positivity when changing witnesses.
+Start with an old solution and set
+\[
+ K_{\rm new}=\psi_{X+1}(R+1),\quad
+ \tau_{\rm new}=\chi_{X+1}(R+1),\quad
+ h_{\rm new}=\frac{K_{\rm new}-R-1}{X}>0.
+\]
+The quotient is integral by the Pell congruence and positive by strict
+growth. The old solution has $Y=\lfloor\xi\rfloor$ and $\xi<2Y$.
+Thus the new ratio estimates give
+$0<\xi-C/K_{\rm new}<4/U$, whereas the positive fractional tail gives
+\[
+ \xi-Y\ge\frac{\binom{2R}{R-1}}U\ge\frac{2R}U>\frac4U.
+\]
+Consequently $Y<C/K_{\rm new}<\xi<Y+1/4$, and
+$\eta_{\rm new}=C-K_{\rm new}Y$,
+$\zeta_{\rm new}=K_{\rm new}-\eta_{\rm new}$ are positive integers.
+
+Conversely, restore $p=X$ and choose
+$K_{\rm old}=\psi_X(R+1)$, $\tau_{\rm old}=\chi_X(R+1)$, and
+$h_{\rm old}=(K_{\rm old}-R-1)/(X-1)>0$. The elementary old-base
+estimates at these exact indices give
+\[
+ \xi(1-R/A)<C/K_{\rm old}<\xi(1+R/X),
+ \qquad |C/K_{\rm old}-\xi|<2/U.
+\]
+The same positive tail yields $C/K_{\rm old}>Y$, while its upper
+bound gives $C/K_{\rm old}-Y<1/4+2/U<1$. The corresponding old
+$\eta,\zeta$ are therefore positive as well. Every other witness is
+preserved. The proof uses only the stated initial bounds and evenness
+of $B$, which were established for both encodings independently of
+the Pell block.
+\end{proof}
+
+\begin{theorem}\label{thm:best112}
+For each r.e.\ set, the effective admissible index $(Z,V,H)$ of
+Theorem~\ref{thm:best113} gives a system in 32 positive unknowns and
+20 equations such that, for positive input $x$, membership is equivalent
+to a valid straight-line certificate with \textbf{112 arithmetic
+instructions}: 62 multiplications and 50 additions. Equality tests and
+supplied parameters are free. Constructing $2,4,5,L=5^{16}$ from $1$
+adds seven instructions, giving 119 under that convention.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:shifted-pell} to the 113-operation direct quadratic
+system of Theorem~\ref{thm:best113}. The shared value $X$ was already
+computed by the old (E8) block. Replace the two instructions for
+$p^2-1$ by
+\[
+ X_+=X+2,\qquad D_P=XX_+,
+\]
+and use $hX$ in place of $h(p-1)$. This deletes one subtraction,
+the positive unknown $p$, and its free defining equality. All other
+counts are unchanged. The complete primitive schedule, equality list,
+declared domains, and exact residual checks are in
+\file{round6\_1980\_certificate.py} and its JSON receipt. The standalone
+shift and its full positive-witness proof are also recorded in
+\file{round5\_1980\_shifted\_pell\_certificate.py} and
+\file{PELL\_SHIFTED\_BASE\_PROOF.md}.
+\end{proof}

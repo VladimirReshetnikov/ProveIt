@@ -1,0 +1,114 @@
+{
+  "status": "PASS_PD0L_PHASE_BATCHING_COMPONENTS",
+  "source": {
+    "operations": 11,
+    "multiplications": 5,
+    "additions": 6,
+    "schedule": [
+      [
+        "trim",
+        "-",
+        "N",
+        "A"
+      ],
+      [
+        "append",
+        "+",
+        "trim",
+        "U"
+      ],
+      [
+        "content_left",
+        "*",
+        "R",
+        "append"
+      ],
+      [
+        "start",
+        "-",
+        "N",
+        "n0"
+      ],
+      [
+        "end",
+        "*",
+        "nh",
+        "Q"
+      ],
+      [
+        "content_inner",
+        "+",
+        "start",
+        "end"
+      ],
+      [
+        "content_right",
+        "*",
+        "B",
+        "content_inner"
+      ],
+      [
+        "length_left",
+        "*",
+        "R",
+        "W"
+      ],
+      [
+        "length_start",
+        "-",
+        "Z",
+        "L0"
+      ],
+      [
+        "length_end",
+        "*",
+        "Lh",
+        "Q"
+      ],
+      [
+        "length_right",
+        "+",
+        "length_start",
+        "length_end"
+      ]
+    ],
+    "comparisons": [
+      [
+        "content_left",
+        "content_right"
+      ],
+      [
+        "length_left",
+        "length_right"
+      ]
+    ],
+    "sources": [
+      "-B*(N + Q*nh - n0) + R*(-A + N + U)",
+      "L0 - Lh*Q + R*W - Z"
+    ],
+    "scope": "Exact transport on common actual macro rows; no field typing, rule lookup, weighted selection, geometry, positive adaptation or raw-input loading is included."
+  },
+  "batching": {
+    "local_batches": 1904,
+    "macro_histories": 24,
+    "macro_rows": 120,
+    "short_queue_exact_cycles": 32,
+    "short_queue_escapes": 32,
+    "periods": [
+      1,
+      2,
+      3
+    ]
+  },
+  "aligned": {
+    "aligned_tables": 881,
+    "valid_seed_cases": 2480,
+    "stabilized_before_alignment": 208,
+    "erasing_cases": 912,
+    "non_locally_uniform_cases": 1440,
+    "seed_counterexample": "p=1; h(1)=1,h(2)=22; seed12: first block alone misses2."
+  },
+  "proof": "../1980/EXPLORATION_PD0L_PHASE_BATCHING.md",
+  "review": "Author and two independent complete scoped proof/source reviews and fresh receipt checks PASS.",
+  "scope": "Conditional11-operation macro transport and decidability of the all-block-output-aligned PD0L subclass. No complete or universal arithmetic certificate."
+}

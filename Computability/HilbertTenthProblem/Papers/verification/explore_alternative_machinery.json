@@ -1,0 +1,216 @@
+{
+  "status": "CONDITIONAL_COMPONENTS_PASS",
+  "universality_status": "OPEN",
+  "rule110": {
+    "status": "PASS",
+    "local_assignments": 256,
+    "accepted_local_assignments": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "y": 0,
+        "auxiliary": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "y": 1,
+        "auxiliary": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "y": 1,
+        "auxiliary": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "c": 1,
+        "y": 1,
+        "auxiliary": [
+          1,
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "y": 0,
+        "auxiliary": [
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 1,
+        "y": 1,
+        "auxiliary": [
+          0,
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "y": 1,
+        "auxiliary": [
+          0,
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 1,
+        "y": 0,
+        "auxiliary": [
+          1,
+          0,
+          1,
+          0
+        ]
+      }
+    ],
+    "packed_three_cell_cases": 512,
+    "operations": 7,
+    "multiplications": 1,
+    "additions": 6,
+    "schedule": [
+      [
+        "T",
+        "+",
+        "X",
+        "D"
+      ],
+      [
+        "BC",
+        "+",
+        "B",
+        "C"
+      ],
+      [
+        "TD",
+        "+",
+        "T",
+        "D"
+      ],
+      [
+        "AD",
+        "+",
+        "A",
+        "D"
+      ],
+      [
+        "E2",
+        "*",
+        2,
+        "E"
+      ],
+      [
+        "ZE2",
+        "+",
+        "Z",
+        "E2"
+      ],
+      [
+        "YE",
+        "+",
+        "Y",
+        "E"
+      ]
+    ],
+    "hypotheses": "All eight finite planes have base-R digits 0 or 1; R>=4.",
+    "omitted_costs": "Digit restrictions, common tableau alignment, boundaries, input and halt."
+  },
+  "geometry": {
+    "status": "PASS",
+    "cases": 528,
+    "equations": [
+      "q=v*d",
+      "Q=q*q",
+      "W=v*v",
+      "Q-1=h*(W-1)"
+    ],
+    "hypotheses": "q>1 is a power of two; all variables are positive integers. The last equation excludes v=1.",
+    "conclusion": "Q=4^N, W=4^m, m divides N, and h is the row-start mask.",
+    "scope": "Geometry only; no boundary, input, halt or transition predicate."
+  },
+  "binary_tag_step": {
+    "status": "PASS",
+    "exact_word_steps": 13500,
+    "rules": [
+      "0 -> 0",
+      "1 -> fixed appendant u"
+    ],
+    "identities": [
+      "K*N_next=N-d+U*(s*Z)",
+      "K*Z_next=2*Z+(M-2)*(s*Z)",
+      "d=s+2*h"
+    ],
+    "hypotheses": "K=2^deletion, M=2^len(u), U is little-endian u, Z=2^len(word), len(word)>=deletion.",
+    "scope": "One-step identities only; tested small rules are not claimed universal."
+  },
+  "retained_pell": {
+    "status": "PASS",
+    "retained_operations": 43,
+    "histogram": {
+      "*": 25,
+      "+": 15,
+      "-": 3
+    },
+    "deleted_operations": 14,
+    "deleted_one_based_instructions": [
+      51,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90
+    ],
+    "precomputed": "n2=n*n is supplied by the outer arithmetic schedule.",
+    "proof_reference": "../1980/BASE_TWO_PELL_90_PROOF.md, sections 1-5 for soundness and applicable first-Pell parts of section 6 for positive witnesses; second index and exponent omitted.",
+    "hypotheses": "Soundness requires n>=64 and n<=r<2*n^3 before decoding. Positive necessity also requires power-of-two n, even r, and n^2 dividing the central binomial coefficient.",
+    "scope": "Counted reusable subsystem; not a 43-operation universal system."
+  },
+  "complete_system_operation_count": null,
+  "scope": "Exact component checks and inherited subsystem count only. Published universal bound remains 90."
+}

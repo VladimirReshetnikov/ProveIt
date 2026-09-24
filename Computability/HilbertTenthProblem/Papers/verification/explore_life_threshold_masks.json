@@ -1,0 +1,447 @@
+{
+  "status": "PASS_LIFE_ONE_AUXILIARY_THRESHOLD_COMPONENT",
+  "source": {
+    "local": {
+      "operations": 8,
+      "multiplications": 3,
+      "additions": 5
+    },
+    "variants": [
+      {
+        "doubled": false,
+        "radix": 32,
+        "count": {
+          "operations": 28,
+          "multiplications": 14,
+          "additions": 14
+        },
+        "comparisons": 9,
+        "schedule": [
+          [
+            "u8",
+            "*",
+            8,
+            "U"
+          ],
+          [
+            "j5",
+            "*",
+            5,
+            "J"
+          ],
+          [
+            "f0",
+            "+",
+            "S",
+            "j5"
+          ],
+          [
+            "F",
+            "+",
+            "f0",
+            "u8"
+          ],
+          [
+            "y8",
+            "*",
+            8,
+            "Y"
+          ],
+          [
+            "g0",
+            "-",
+            "F",
+            "B"
+          ],
+          [
+            "g1",
+            "-",
+            "g0",
+            "J"
+          ],
+          [
+            "G",
+            "+",
+            "g1",
+            "y8"
+          ],
+          [
+            "p3",
+            "*",
+            "q",
+            "G"
+          ],
+          [
+            "p2",
+            "+",
+            "F",
+            "p3"
+          ],
+          [
+            "p2q",
+            "*",
+            "q",
+            "p2"
+          ],
+          [
+            "p1",
+            "+",
+            "U",
+            "p2q"
+          ],
+          [
+            "p1q",
+            "*",
+            "q",
+            "p1"
+          ],
+          [
+            "P0",
+            "+",
+            "B",
+            "p1q"
+          ],
+          [
+            "q2",
+            "*",
+            "q",
+            "q"
+          ],
+          [
+            "L",
+            "*",
+            "q2",
+            "q2"
+          ],
+          [
+            "D0",
+            "*",
+            "L",
+            "q2"
+          ],
+          [
+            "jscaled",
+            "*",
+            31,
+            "J"
+          ],
+          [
+            "jcheck",
+            "+",
+            "jscaled",
+            1
+          ],
+          [
+            "lscaled",
+            "*",
+            31,
+            "lam"
+          ],
+          [
+            "lcheck",
+            "+",
+            "lscaled",
+            1
+          ],
+          [
+            "mc",
+            "*",
+            8,
+            "q2"
+          ],
+          [
+            "mi",
+            "+",
+            "mc",
+            30
+          ],
+          [
+            "M",
+            "*",
+            "lam",
+            "mi"
+          ],
+          [
+            "gap",
+            "-",
+            "L",
+            "P0"
+          ],
+          [
+            "Lm1",
+            "-",
+            "L",
+            1
+          ],
+          [
+            "prod",
+            "*",
+            "gap",
+            "Lm1"
+          ],
+          [
+            "r",
+            "+",
+            "prod",
+            "M"
+          ]
+        ],
+        "equality_tests": [
+          [
+            "jcheck",
+            "q"
+          ],
+          [
+            "lcheck",
+            "q2"
+          ]
+        ],
+        "further_predicate": "D0 divides binom(2*r,r); not a free equality or a paid kernel."
+      },
+      {
+        "doubled": true,
+        "radix": 64,
+        "count": {
+          "operations": 29,
+          "multiplications": 15,
+          "additions": 14
+        },
+        "comparisons": 10,
+        "schedule": [
+          [
+            "u8",
+            "*",
+            8,
+            "U"
+          ],
+          [
+            "j5",
+            "*",
+            5,
+            "J"
+          ],
+          [
+            "f0",
+            "+",
+            "S",
+            "j5"
+          ],
+          [
+            "F",
+            "+",
+            "f0",
+            "u8"
+          ],
+          [
+            "y8",
+            "*",
+            8,
+            "Y"
+          ],
+          [
+            "g0",
+            "-",
+            "F",
+            "B"
+          ],
+          [
+            "g1",
+            "-",
+            "g0",
+            "J"
+          ],
+          [
+            "G",
+            "+",
+            "g1",
+            "y8"
+          ],
+          [
+            "p3",
+            "*",
+            "q",
+            "G"
+          ],
+          [
+            "p2",
+            "+",
+            "F",
+            "p3"
+          ],
+          [
+            "p2q",
+            "*",
+            "q",
+            "p2"
+          ],
+          [
+            "p1",
+            "+",
+            "U",
+            "p2q"
+          ],
+          [
+            "p1q",
+            "*",
+            "q",
+            "p1"
+          ],
+          [
+            "P0",
+            "+",
+            "B",
+            "p1q"
+          ],
+          [
+            "P",
+            "*",
+            2,
+            "P0"
+          ],
+          [
+            "q2",
+            "*",
+            "q",
+            "q"
+          ],
+          [
+            "L",
+            "*",
+            "q2",
+            "q2"
+          ],
+          [
+            "D0",
+            "*",
+            "L",
+            "q2"
+          ],
+          [
+            "jscaled",
+            "*",
+            63,
+            "J"
+          ],
+          [
+            "jcheck",
+            "+",
+            "jscaled",
+            1
+          ],
+          [
+            "lscaled",
+            "*",
+            63,
+            "lam"
+          ],
+          [
+            "lcheck",
+            "+",
+            "lscaled",
+            1
+          ],
+          [
+            "mc",
+            "*",
+            16,
+            "q2"
+          ],
+          [
+            "mi",
+            "+",
+            "mc",
+            61
+          ],
+          [
+            "M",
+            "*",
+            "lam",
+            "mi"
+          ],
+          [
+            "gap",
+            "-",
+            "L",
+            "P"
+          ],
+          [
+            "Lm1",
+            "-",
+            "L",
+            1
+          ],
+          [
+            "prod",
+            "*",
+            "gap",
+            "Lm1"
+          ],
+          [
+            "r",
+            "+",
+            "prod",
+            "M"
+          ]
+        ],
+        "equality_tests": [
+          [
+            "jcheck",
+            "q"
+          ],
+          [
+            "lcheck",
+            "q2"
+          ]
+        ],
+        "further_predicate": "D0 divides binom(2*r,r); not a free equality or a paid kernel."
+      }
+    ]
+  },
+  "local": {
+    "scalar_assignments": 72,
+    "neighborhood_assignments": 2048,
+    "maxima": [
+      22,
+      28
+    ],
+    "auxiliary_boolean_planes": 1,
+    "unique_witness": "u=[n+b>=3]"
+  },
+  "arbitrary_mask": {
+    "all_masks_and_words": 87380,
+    "overflow_cases": 43435,
+    "widths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "mixed": {
+    "packed_cases": 720,
+    "zero_field_cases": 238,
+    "pre_power_bound_cases": 42,
+    "nonpower_bound_cases": 33,
+    "cells_per_word": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "proof": "../1980/EXPLORATION_LIFE_THRESHOLD_MASKS.md",
+  "review": "Author and two independent complete scoped proof/source reviews and fresh receipt checks PASS.",
+  "scope": "Local eight-operation/two-bit-test predicate and conditional28/29-operation mixed-mask sources. Geometry, input, global pre-decoding bounds, positive adapters, torus convolution and the43-operation kernel are not included."
+}

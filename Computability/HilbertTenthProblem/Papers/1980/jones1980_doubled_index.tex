@@ -1,0 +1,262 @@
+% A doubled-index auxiliary Pell norm and a Pell-valued fixed index.
+\section{A doubled-index congruence in the Pell block}
+\label{sec:doubled-index}
+
+Two changes allow the main norm coefficient to reuse the first
+exponential modulus. The auxiliary signed norm can compare doubled
+Pell indices, and the final index equation can use a fixed Pell value
+in place of the index itself. Together they remove both affine
+parameters $A-1$ and $A+1$ from the arithmetic certificate, reducing
+Theorem~\ref{thm:best101} by one addition.
+
+Retain the fixed-four encoding of Section~\ref{sec:fixed-four} and the
+common exponential witness of Section~\ref{sec:common-witness}. Write
+\[
+ A=a+4,\qquad D=A^2-1,\qquad J=2r+1,\qquad H_0=J+jc,
+\]
+where the supplied positive unknown $a$ still satisfies
+\[
+ a=Y_P(U+1),\qquad U=wn^2,\qquad Y_P=sn^2.
+\]
+The first exponential equation and its modulus remain
+\begin{equation}\label{eq:doubled-first-exponent}
+ M=8a+15=8A-17,\qquad d=U+ac+\gamma M.
+\end{equation}
+
+Replace the signed auxiliary norm by
+\begin{equation}\label{eq:doubled-auxiliary}
+ \begin{gathered}
+ v=of-d^2,\qquad K=D(f^2-1),\qquad G=2K-1,\\
+ v(v+1)=K(K-1)H_0^2.
+ \end{gathered}
+\end{equation}
+The quantities $v,K,G$ are abbreviations; $v$ is a computed integer
+and need not be positive. No unknown is added. If $L$ is the underlying
+power-of-two exponent used to construct the coefficient index, replace
+the supplied component $L$ by
+\[
+ T_L=\psi_4(L)
+\]
+and replace the final index equation by
+\begin{equation}\label{eq:doubled-fixed-index}
+ \kappa=T_L+\Delta a.
+\end{equation}
+Thus the four supplied inputs are $(x,V,H,T_L)$. The admissible index
+is constructed by choosing the same finite circuit layout and exponent
+$L$ as before, constructing $V,H$ from them, and supplying $\psi_4(L)$.
+These choices are independent of $x$. Every other source equation is
+unchanged.
+
+\subsection{Recovering the main index from doubled coordinates}
+
+\begin{lemma}\label{lem:doubled-main-index}
+Let $A>1$, let $J>1$ be odd, and suppose $c>J$. Over positive integer
+unknowns, the two norms
+\[
+ d^2-(A^2-1)c^2=1,
+ \qquad f^2-(A^2-1)(ic^2)^2=1
+\]
+together with \eqref{eq:doubled-auxiliary} imply
+$c=\psi_A(J)$ and $d=\chi_A(J)$. Conversely, when those two identities
+hold, positive $f,i,j,o$ satisfying the auxiliary equations exist.
+\end{lemma}
+\begin{proof}
+Pell classification gives positive indices $p,m$ such that
+\[
+ d=\chi_A(p),\quad c=\psi_A(p),\qquad
+ f=\chi_A(m),\quad ic^2=\psi_A(m).
+\]
+The divisibility fact used in Proposition~\ref{prop:signed-pell-new}
+gives $c\mid m$ from $c^2\mid\psi_A(m)$. The case $p=1$ is excluded
+by $c>J>1$. For $p=2$ one has $\psi_A(2)=2A\ge4$; for $p\ge3$,
+\[
+ \psi_A(p)\ge(2A-1)^{p-1}\ge3^{p-1}\ge2p.
+\]
+Consequently
+\begin{equation}\label{eq:doubled-comparison-bound}
+ 0<2p\le c\le m.
+\end{equation}
+
+Here $K>1$ and $G>1$. The new norm is exactly
+\[
+ (2v+1)^2-(G^2-1)H_0^2=1.
+\]
+Its right-hand product $K(K-1)H_0^2$ is positive, so $v\ge1$ or
+$v\le-2$. Taking $I=|2v+1|$, another application of Pell
+classification gives
+\[
+ I=\chi_G(t),\qquad H_0=\psi_G(t)
+\]
+for a positive index $t$. Reduction modulo $f$ gives
+\[
+ \begin{aligned}
+ G&=2D(f^2-1)-1\equiv-\chi_A(2),\\
+ 2v+1&=2of-2d^2+1\equiv-\chi_A(2p).
+ \end{aligned}
+\]
+The identities
+$\chi_{-z}(t)=(-1)^t\chi_z(t)$ and
+$\chi_{\chi_A(2)}(t)=\chi_A(2t)$ therefore imply
+\[
+ \chi_A(2t)\equiv\pm\chi_A(2p)\pmod{\chi_A(m)}.
+\]
+By Lemma~\ref{lem:signed-chi-new}, whose comparison hypothesis is
+\eqref{eq:doubled-comparison-bound},
+\[
+ 2t\equiv\pm2p\pmod{2m},\qquad
+ t\equiv\pm p\pmod m,\qquad t\equiv\pm p\pmod c.
+\]
+The middle implication divides an integer equality by two; it does
+not assume that two is invertible modulo $m$.
+
+Since $c\mid f^2-1$, one has $G\equiv-1\pmod c$. The recurrence for
+$\psi$ then gives
+\[
+ H_0\equiv\psi_{-1}(t)=(-1)^{t-1}t\pmod c.
+\]
+Together with $H_0=J+jc$, this proves $J\equiv\pm p\pmod c$.
+Both $J$ and $p$ lie in $(0,c)$, so $J=p$ or $J+p=c$. The latter
+contradicts $\psi_A(p)\equiv p\pmod2$ and the oddness of $J$.
+Thus $p=J$. No oddness condition on $f$ was used in this direction.
+
+For necessity, start with $c=\psi_A(J)$ and $d=\chi_A(J)$. Choose
+\[
+ m=2cJ,\qquad f=\chi_A(m),\qquad i=\frac{\psi_A(m)}{c^2}.
+\]
+The quotient is a positive integer: in
+$(d+c\sqrt D)^{2c}$ the term with one square root contains
+$(2c)c=2c^2$, and every remaining square-root term contains at least
+$c^3$. Moreover $m$ is even, so
+$f=2\chi_A(m/2)^2-1$ is odd. Put
+\[
+ K=D(f^2-1),\quad G=2K-1,\quad
+ I=\chi_G(J),\quad H_0=\psi_G(J).
+\]
+The parameter $G$ is odd and exceeds one, so $I$ is odd and greater
+than one. Because $J$ is odd,
+\[
+ I\equiv-\chi_A(2J)=1-2d^2\pmod f.
+\]
+Thus $I+2d^2-1$ is divisible by both $2$ and the odd number $f$.
+The choices
+\[
+ v=\frac{I-1}{2}>0,\qquad
+ o=\frac{I+2d^2-1}{2f}>0
+\]
+are integers and satisfy $v=of-d^2$. Also $G\equiv-1\pmod c$ and
+$J$ is odd, whence $H_0\equiv J\pmod c$. Strict Pell growth makes
+$j=(H_0-J)/c$ a positive integer. The Pell norm for $I,H_0$ gives
+\eqref{eq:doubled-auxiliary}.
+\end{proof}
+
+The required hypotheses $A>1$ and $1<J<c$ are established by the
+unchanged preliminary packing and interval arguments. Thus this lemma
+is available at the same point as the preceding signed-block lemma,
+before either exponential relation or binary decoding is used.
+
+\subsection{Encoding the fixed index by a Pell value}
+
+\begin{lemma}\label{lem:doubled-fixed-index}
+In the new system, \eqref{eq:doubled-fixed-index} and the unchanged
+second norm and gap force
+$\kappa=\psi_A(L)$ and $\mu=\chi_A(L)$.
+Conversely, those coordinates give a positive integer $\Delta$
+satisfying \eqref{eq:doubled-fixed-index}.
+\end{lemma}
+\begin{proof}
+After Lemma~\ref{lem:doubled-main-index}, the common-witness argument
+is unchanged through the first exponential equation. The ratio lower
+bound first gives $Y_P\ge U^r$ and
+$a=Y_P(U+1)>U^{r+1}$. Equation~\eqref{eq:doubled-first-exponent}
+then gives $U=4^J$. Since $r+1>3$, the modulus in the new index
+equation satisfies the stronger bound
+\begin{equation}\label{eq:doubled-modulus-growth}
+ a>U^{r+1}>4^{3J}.
+\end{equation}
+This is a bound for $a=A-4$, not merely for $A$.
+
+The unchanged second norm and $c=\kappa+\phi$ give
+\[
+ \kappa=\psi_A(t_0),\qquad \mu=\chi_A(t_0),\qquad 0<t_0<J.
+\]
+Since $A\equiv4\pmod a$, the integer polynomial recurrence for
+$\psi$ and \eqref{eq:doubled-fixed-index} yield
+\[
+ \psi_4(t_0)\equiv\psi_4(L)\pmod a.
+\]
+The underlying encoding still satisfies $3L\le B\le n\le r$,
+so $L<J$. For $1\le s<J$,
+\[
+ 0<\psi_4(s)\le8^{s-1}<4^{3J}<a.
+\]
+The two residues therefore agree as integers. Strict growth of
+$\psi_4$ gives $t_0=L$.
+
+Conversely, for the intended coordinates the quotient
+\[
+ \Delta=\frac{\psi_A(L)-\psi_4(L)}a
+\]
+is integral by the same recurrence and strictly positive because
+$A>4$ and $L\ge2$. Strict growth in the base follows, for example,
+from the positive binomial expansion of the Pell solution.
+\end{proof}
+
+Once this index is recovered, the second exponent test proves
+$q=B^L$ with the same bounds as before. The common-witness proof has
+already supplied the power-of-two radix and the requisite binomial
+divisibility. All fixed-four coefficient decoding is consequently
+unchanged. In necessity, the new fixed component $T_L$ is chosen with
+$V,H$ before querying $x$; the remaining Pell witnesses are chosen by
+the common-witness construction and the two lemmas above.
+
+\subsection{The complete count}
+
+The earlier certificate computed the norm coefficient by
+\[
+ a_-=a+3,\qquad a_+=a_-+2,\qquad D=a_-a_+.
+\]
+Neither affine value is required after the two changes. Since
+$M=8a+15$ is already computed for the first exponent test, use instead
+\[
+ a_2=a^2,\qquad D=a_2+M.
+\]
+This replaces three instructions by two. The auxiliary block has the
+same length as before: use the existing $d^2$ in $v=of-d^2$;
+replace the former root square and final addition of one by $v+1$
+and $v(v+1)$; and use the three coefficient instructions
+$K=D\,AE$, $K_-=K-1$, and $KK_-$, where the existing E16 register
+is $AE=D(ic^2)^2$. The final index equation still takes one product
+and one addition.
+
+For exact comparison with the source equations, let
+\[
+ F_{16}=f^2-AE-1,\qquad
+ K_s=D(f^2-1),\qquad K_c=D\,AE.
+\]
+The changed norm has the triangular identity
+\[
+ F_{17}^{\mathrm{calc}}
+ =F_{17}^{\mathrm{source}}
+  +D F_{16}(K_s+K_c-1)H_0^2.
+\]
+The executable certificate checks this identity, the inherited E7 and
+E18 corrections from $\theta=B-4$, every other residual, and every
+primitive instruction. The fixed-index and positive-domain conclusions
+are supplied by the proofs above, independently of these symbolic
+checks.
+
+\begin{theorem}\label{thm:best100-pell}
+For every represented set, an admissible fixed index $(V,H,T_L)$
+can be chosen such that the system described above represents it over
+34 positive integer unknowns with 22 equality tests. Its straight-line
+certificate has
+\[
+ \boxed{100=56\text{ multiplications}+44\text{ additions}}.
+\]
+Fixed numerals and supplied index parameters are free. Relative to
+Theorem~\ref{thm:best101}, the saving is one addition.
+\end{theorem}
+
+The full source equations, primitive schedule, domains and residual
+identities are recorded by
+\texttt{round24\_1980\_doubled\_pell\_certificate.py} and its JSON receipt.

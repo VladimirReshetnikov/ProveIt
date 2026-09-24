@@ -1,0 +1,222 @@
+{
+  "status": "PASS_CONDITIONAL_TAG_QUEUE_HISTORY",
+  "source": {
+    "operations": 33,
+    "multiplications": 14,
+    "additions": 19,
+    "source_comparisons": 12,
+    "Boolean_fields": 11,
+    "dag": [
+      [
+        "radix",
+        "*",
+        243,
+        "A"
+      ],
+      [
+        "guard",
+        "*",
+        "A",
+        "H"
+      ],
+      [
+        "Qsum",
+        "+",
+        "Q0",
+        "Q1"
+      ],
+      [
+        "Qguard",
+        "+",
+        "Qsum",
+        "guard"
+      ],
+      [
+        "headsum",
+        "+",
+        "S0",
+        "S1"
+      ],
+      [
+        "twiceQ0",
+        "*",
+        2,
+        "Q0"
+      ],
+      [
+        "marker0",
+        "+",
+        "twiceQ0",
+        "S0"
+      ],
+      [
+        "twiceQ1",
+        "*",
+        2,
+        "Q1"
+      ],
+      [
+        "marker1",
+        "+",
+        "twiceQ1",
+        "S1"
+      ],
+      [
+        "lengthsum",
+        "+",
+        "M0",
+        "M1"
+      ],
+      [
+        "content_sum",
+        "+",
+        "N",
+        "Nbar"
+      ],
+      [
+        "prefix_scale",
+        "*",
+        1,
+        "H"
+      ],
+      [
+        "prefix_sum",
+        "+",
+        "E",
+        "Ebar"
+      ],
+      [
+        "prefix_tail",
+        "*",
+        3,
+        "E"
+      ],
+      [
+        "d",
+        "+",
+        "prefix_tail",
+        "S1"
+      ],
+      [
+        "n_append",
+        "*",
+        1,
+        "M1"
+      ],
+      [
+        "n_trim",
+        "-",
+        "N",
+        "d"
+      ],
+      [
+        "n_output",
+        "+",
+        "n_trim",
+        "n_append"
+      ],
+      [
+        "n_left",
+        "*",
+        "R",
+        "n_output"
+      ],
+      [
+        "n_end",
+        "*",
+        "q",
+        "Nfinal"
+      ],
+      [
+        "n_initial",
+        "-",
+        "N",
+        "Ninit"
+      ],
+      [
+        "n_shift",
+        "+",
+        "n_initial",
+        "n_end"
+      ],
+      [
+        "n_right",
+        "*",
+        9,
+        "n_shift"
+      ],
+      [
+        "l_append",
+        "*",
+        9,
+        "M1"
+      ],
+      [
+        "l_output",
+        "+",
+        "M0",
+        "l_append"
+      ],
+      [
+        "l_left",
+        "*",
+        "R",
+        "l_output"
+      ],
+      [
+        "l_end",
+        "*",
+        "q",
+        "Lfinal"
+      ],
+      [
+        "l_initial",
+        "-",
+        "L",
+        "Linit"
+      ],
+      [
+        "l_shift",
+        "+",
+        "l_initial",
+        "l_end"
+      ],
+      [
+        "l_right",
+        "*",
+        3,
+        "l_shift"
+      ],
+      [
+        "initial_bound",
+        "+",
+        "Linit",
+        "alphaI"
+      ],
+      [
+        "halt_bound",
+        "+",
+        "Lfinal",
+        "alphaH"
+      ],
+      [
+        "content_bound",
+        "+",
+        "Nfinal",
+        "alphaN"
+      ]
+    ],
+    "arithmetic_without_three_boundary_sums": 30
+  },
+  "histories": {
+    "fully_checked_halting_histories": 944,
+    "checked_source_rows": 2318,
+    "longer_runs_unclassified": 428,
+    "regression_step_limit": 20,
+    "post_halt_witness_rows": 3,
+    "post_halt_actual_halting_time": 1,
+    "scope": "Only directly observed halts are classified; step-cutoff runs are left unresolved. Every observed halt receives all twelve source and eleven mask checks."
+  },
+  "proof": "../1980/EXPLORATION_TAG_QUEUE_HISTORY.md",
+  "scope": "Exact conditional encoded-word halting equivalence over nonnegative words. Boolean-mask realization, power geometry, positive adapters and raw numerical input conversion are excluded; no universal operation bound."
+}

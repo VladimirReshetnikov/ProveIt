@@ -1,0 +1,67 @@
+{
+  "status": "PASS_FIXED_FRAME_NATIVE_OPCODE_PROJECTION",
+  "operations": 7,
+  "primitive_histogram": {
+    "*": 4,
+    "+": 3
+  },
+  "increment_over_unprojected_routing": 2,
+  "symbolic": {
+    "single_flag_correction": "W*h*(-2*J + q - 1)",
+    "three_flag_correction": "W*(-2*J + q - 1)*(h0 + h1 + h2)"
+  },
+  "regression": {
+    "labelled_tables": 20,
+    "marker_and_label_subset_checks": 288,
+    "canonical_paths": 488,
+    "typed_flag_candidates": 2800,
+    "accepted_correct_flags": 488,
+    "rejected_false_flags": 2312,
+    "sample_instructions": [
+      [
+        "scaled_C",
+        "*",
+        84912973984192324198970210742,
+        "C"
+      ],
+      [
+        "left",
+        "+",
+        "scaled_C",
+        -202755595904452569706561323899384967
+      ],
+      [
+        "native_flag",
+        "*",
+        150094635296999121,
+        "Fk"
+      ],
+      [
+        "projected_junk",
+        "+",
+        "V",
+        "native_flag"
+      ],
+      [
+        "scaled_q",
+        "*",
+        -202755595904452569706560766013880807,
+        "q"
+      ],
+      [
+        "scaled_junk",
+        "*",
+        2701703435345984178,
+        "projected_junk"
+      ],
+      [
+        "right",
+        "+",
+        "scaled_q",
+        "scaled_junk"
+      ]
+    ]
+  },
+  "proof": "../1980/EXPLORATION_NATIVE_OPCODE_PROJECTION.md",
+  "scope": "Conditional fixed-frame adapter to already typed native flags; not a complete joint counter/router system or universal bound."
+}

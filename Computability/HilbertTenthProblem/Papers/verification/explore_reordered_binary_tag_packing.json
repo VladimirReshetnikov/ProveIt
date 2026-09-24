@@ -1,0 +1,1447 @@
+{
+  "status": "PASS",
+  "review_status": "Author and two independent complete proof/source/dependency reviews and fresh verification PASS, with no findings.",
+  "source": {
+    "operations": 95,
+    "multiplications": 51,
+    "additions": 44,
+    "positive_unknowns": [
+      "D",
+      "AH",
+      "H",
+      "Q",
+      "S1",
+      "Tcontent",
+      "E",
+      "Nsum",
+      "q",
+      "v",
+      "Tplus",
+      "r",
+      "pell_a",
+      "pell_c",
+      "pell_d",
+      "pell_f",
+      "pell_h",
+      "pell_i",
+      "pell_j",
+      "pell_k",
+      "pell_o",
+      "pell_s",
+      "pell_w",
+      "pell_tau",
+      "pell_eta",
+      "pell_zeta",
+      "pell_ga",
+      "pell_y_aux"
+    ],
+    "equations": 17,
+    "outer_operations": 52,
+    "kernel_operations": 43,
+    "primitive_instructions": [
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "D",
+        "result": "R"
+      },
+      {
+        "operation": "*",
+        "left": 2,
+        "right": "Tcontent",
+        "result": "twice_T"
+      },
+      {
+        "operation": "+",
+        "left": "twice_T",
+        "right": "S1",
+        "result": "N"
+      },
+      {
+        "operation": "+",
+        "left": "Q",
+        "right": "S1",
+        "result": "M1"
+      },
+      {
+        "operation": "+",
+        "left": "Nsum",
+        "right": "H",
+        "result": "L"
+      },
+      {
+        "operation": "*",
+        "left": "cc",
+        "right": "H",
+        "result": "cH"
+      },
+      {
+        "operation": "*",
+        "left": "Ut",
+        "right": "M1",
+        "result": "n_app"
+      },
+      {
+        "operation": "+",
+        "left": "n_trim",
+        "right": "E",
+        "result": "Tcontent"
+      },
+      {
+        "operation": "+",
+        "left": "n_trim",
+        "right": "n_app",
+        "result": "n_output"
+      },
+      {
+        "operation": "*",
+        "left": "D",
+        "right": "n_output",
+        "result": "n_lhs"
+      },
+      {
+        "operation": "+",
+        "left": "n_rhs",
+        "right": "Ni",
+        "result": "N"
+      },
+      {
+        "operation": "*",
+        "left": "B - 1",
+        "right": "M1",
+        "result": "l_app"
+      },
+      {
+        "operation": "+",
+        "left": "L",
+        "right": "l_app",
+        "result": "l_output"
+      },
+      {
+        "operation": "*",
+        "left": "D",
+        "right": "l_output",
+        "result": "l_lhs"
+      },
+      {
+        "operation": "*",
+        "left": 2,
+        "right": "q",
+        "result": "two_q"
+      },
+      {
+        "operation": "+",
+        "left": "l_initial",
+        "right": "Li",
+        "result": "L"
+      },
+      {
+        "operation": "+",
+        "left": "l_initial",
+        "right": "two_q",
+        "result": "l_rhs"
+      },
+      {
+        "operation": "+",
+        "left": "qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "H",
+        "result": "head_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "C",
+        "right": "AH",
+        "result": "compiled_product"
+      },
+      {
+        "operation": "+",
+        "left": "H",
+        "right": "qm1",
+        "result": "head_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "R",
+        "right": "v",
+        "result": "q_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "q2"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "q",
+        "result": "q3"
+      },
+      {
+        "operation": "+",
+        "left": "q",
+        "right": 1,
+        "result": "qp1"
+      },
+      {
+        "operation": "*",
+        "left": "qp1",
+        "right": "Q",
+        "result": "Qband"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "M1",
+        "result": "qM1"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "N",
+        "result": "q2N"
+      },
+      {
+        "operation": "+",
+        "left": "Qband",
+        "right": "q2N",
+        "result": "S_high"
+      },
+      {
+        "operation": "*",
+        "left": "q3",
+        "right": "S_high",
+        "result": "S_top"
+      },
+      {
+        "operation": "+",
+        "left": "E",
+        "right": "qM1",
+        "result": "S_low_inner"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "S_low_inner",
+        "result": "S_low_shift"
+      },
+      {
+        "operation": "+",
+        "left": "S1",
+        "right": "S_low_shift",
+        "result": "S_low"
+      },
+      {
+        "operation": "+",
+        "left": "S_low",
+        "right": "S_top",
+        "result": "packS0"
+      },
+      {
+        "operation": "+",
+        "left": "AH",
+        "right": "qM1",
+        "result": "W_inner0"
+      },
+      {
+        "operation": "+",
+        "left": "Qband",
+        "right": "W_inner0",
+        "result": "W_inner1"
+      },
+      {
+        "operation": "*",
+        "left": "q2",
+        "right": "Nsum",
+        "result": "q2Nsum"
+      },
+      {
+        "operation": "+",
+        "left": "W_inner1",
+        "right": "q2Nsum",
+        "result": "W_high"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "W_high",
+        "result": "W_shift2"
+      },
+      {
+        "operation": "+",
+        "left": "L",
+        "right": "W_shift2",
+        "result": "W_add2"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "W_add2",
+        "result": "W_shift1"
+      },
+      {
+        "operation": "+",
+        "left": "cH",
+        "right": "W_shift1",
+        "result": "W_add1"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "W_add1",
+        "result": "W_shift0"
+      },
+      {
+        "operation": "+",
+        "left": "H",
+        "right": "W_shift0",
+        "result": "packW0"
+      },
+      {
+        "operation": "*",
+        "left": "q3",
+        "right": "q3",
+        "result": "n"
+      },
+      {
+        "operation": "*",
+        "left": "n",
+        "right": "n",
+        "result": "n2"
+      },
+      {
+        "operation": "+",
+        "left": "nm1",
+        "right": 1,
+        "result": "n"
+      },
+      {
+        "operation": "+",
+        "left": "packW0",
+        "right": 1,
+        "result": "Wp1"
+      },
+      {
+        "operation": "+",
+        "left": "packS0",
+        "right": "Tplus",
+        "result": "packed_bound"
+      },
+      {
+        "operation": "*",
+        "left": "n",
+        "right": "Wp1",
+        "result": "index_upper"
+      },
+      {
+        "operation": "+",
+        "left": "index_upper",
+        "right": "Tplus",
+        "result": "index_gap"
+      },
+      {
+        "operation": "*",
+        "left": "nm1",
+        "right": "index_gap",
+        "result": "r_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "pell_w",
+        "right": "n2",
+        "result": "pell_wn2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_s",
+        "right": "n2",
+        "result": "pell_sn2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_wn2",
+        "right": "pell_sn2",
+        "result": "pell_UM"
+      },
+      {
+        "operation": "+",
+        "left": "pell_UM",
+        "right": "pell_sn2",
+        "result": "pell_R12"
+      },
+      {
+        "operation": "*",
+        "left": "pell_k",
+        "right": "pell_sn2",
+        "result": "pell_ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_UM",
+        "right": "pell_UM",
+        "result": "pell_UM2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_UM2",
+        "right": "pell_wn2",
+        "result": "pell_scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ksn2",
+        "right": "pell_ksn2",
+        "result": "pell_ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_scaled_norm_coefficient",
+        "right": "pell_ratio_product2",
+        "result": "pell_L9"
+      },
+      {
+        "operation": "+",
+        "left": "pell_tau",
+        "right": 1,
+        "result": "pell_tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "pell_tau",
+        "right": "pell_tauplus1",
+        "result": "pell_R9"
+      },
+      {
+        "operation": "+",
+        "left": "pell_ksn2",
+        "right": "pell_eta",
+        "result": "pell_R10a"
+      },
+      {
+        "operation": "+",
+        "left": "pell_eta",
+        "right": "pell_zeta",
+        "result": "pell_R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "pell_r1"
+      },
+      {
+        "operation": "*",
+        "left": "pell_h",
+        "right": "pell_UM",
+        "result": "pell_hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "pell_r1",
+        "right": "pell_hpm1",
+        "result": "pell_R11"
+      },
+      {
+        "operation": "+",
+        "left": "pell_r1",
+        "right": "r",
+        "result": "pell_tr1"
+      },
+      {
+        "operation": "*",
+        "left": "pell_c",
+        "right": "pell_a",
+        "result": "pell_cam2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_wn2",
+        "right": "pell_cam2",
+        "result": "pell_D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "pell_a",
+        "result": "pell_a4"
+      },
+      {
+        "operation": "+",
+        "left": "pell_a4",
+        "right": 3,
+        "result": "pell_a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ga",
+        "right": "pell_a4m5",
+        "result": "pell_gam"
+      },
+      {
+        "operation": "+",
+        "left": "pell_D1",
+        "right": "pell_gam",
+        "result": "pell_R14"
+      },
+      {
+        "operation": "*",
+        "left": "pell_a",
+        "right": "pell_a",
+        "result": "pell_a_square"
+      },
+      {
+        "operation": "+",
+        "left": "pell_a_square",
+        "right": "pell_a4m5",
+        "result": "pell_A"
+      },
+      {
+        "operation": "*",
+        "left": "pell_c",
+        "right": "pell_c",
+        "result": "pell_c2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_A",
+        "right": "pell_c2",
+        "result": "pell_Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_Ac2",
+        "right": 1,
+        "result": "pell_R15"
+      },
+      {
+        "operation": "*",
+        "left": "pell_d",
+        "right": "pell_d",
+        "result": "pell_L15"
+      },
+      {
+        "operation": "*",
+        "left": "pell_i",
+        "right": "pell_c2",
+        "result": "pell_ic2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ic2",
+        "right": "pell_ic2",
+        "result": "pell_ic22"
+      },
+      {
+        "operation": "*",
+        "left": "pell_f",
+        "right": "pell_f",
+        "result": "pell_L16"
+      },
+      {
+        "operation": "+",
+        "left": "pell_f_square_minus_one",
+        "right": 1,
+        "result": "pell_L16"
+      },
+      {
+        "operation": "*",
+        "left": "pell_A",
+        "right": "pell_f_square_minus_one",
+        "result": "pell_R16"
+      },
+      {
+        "operation": "*",
+        "left": "pell_o",
+        "right": "pell_f",
+        "result": "pell_of"
+      },
+      {
+        "operation": "+",
+        "left": "pell_c",
+        "right": "pell_of",
+        "result": "pell_aux_u_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "pell_j",
+        "right": "pell_c",
+        "result": "pell_jc"
+      },
+      {
+        "operation": "+",
+        "left": "pell_tr1",
+        "right": "pell_jc",
+        "result": "pell_H17"
+      },
+      {
+        "operation": "*",
+        "left": "pell_H17",
+        "right": "pell_H17",
+        "result": "pell_H2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_y_aux",
+        "right": "pell_y_aux",
+        "result": "pell_aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "pell_aux_square_gap",
+        "right": "pell_aux_y2",
+        "result": "pell_H2"
+      },
+      {
+        "operation": "*",
+        "left": "pell_ic22",
+        "right": "pell_aux_square_gap",
+        "result": "pell_L17"
+      },
+      {
+        "operation": "+",
+        "left": "pell_P17",
+        "right": "pell_aux_y2",
+        "result": 1
+      }
+    ],
+    "exact_sources": [
+      {
+        "index": 0,
+        "source": "D*(-E + Tcontent + Ut*(Q + S1)) + Ni - S1 - 2*Tcontent",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 1,
+        "source": "D*(H + Nsum + (B - 1)*(Q + S1)) - H + Li - Nsum - 2*q",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 2,
+        "source": "E*q - H*cc*q - H - Nsum*q**5 + Q*q**4 + Q*q**3 + S1 + Tplus + q**5*(S1 + 2*Tcontent) - q**4*(2*Q + S1) - q**3*(AH + Q) - q**2*(H + Nsum) + q**2*(Q + S1) - 1",
+        "correction": "0",
+        "difference_from_binary97": "AH*q**4 - AH*q**3 - E*q**2 + E*q + H*cc*q**2 - H*cc*q - H*q**2 + H*q - Nsum*q**2 + Nsum*q - Q*q**4 + Q*q**3 + Q*q**2 - Q*q - S1*q**4 + S1*q**3 + S1*q**2 - S1*q"
+      },
+      {
+        "index": 3,
+        "source": "H*(D*k - 1) - q + 1",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 4,
+        "source": "-AH*C + D*H*k",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 5,
+        "source": "D*k*v - q",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 6,
+        "source": "r - (Tplus + q**6*(H*cc*q + H + Nsum*q**5 + q**4*(2*Q + S1) + q**3*(AH + Q) + q**2*(H + Nsum) + 1))*(q**6 - 1)",
+        "correction": "0",
+        "difference_from_binary97": "AH*q**16 - AH*q**15 - AH*q**10 + AH*q**9 + H*cc*q**14 - H*cc*q**13 - H*cc*q**8 + H*cc*q**7 - H*q**14 + H*q**13 + H*q**8 - H*q**7 - Nsum*q**14 + Nsum*q**13 + Nsum*q**8 - Nsum*q**7 - Q*q**16 + Q*q**15 + Q*q**10 - Q*q**9 - S1*q**16 + S1*q**15 + S1*q**10 - S1*q**9"
+      },
+      {
+        "index": 7,
+        "source": "pell_k**2*pell_s**2*pell_w*q**36*(pell_s**2*pell_w*q**36 + 1) - pell_tau*(pell_tau + 1)",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 8,
+        "source": "pell_c - pell_eta - pell_k*pell_s*q**12",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 9,
+        "source": "-pell_eta + pell_k - pell_zeta",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 10,
+        "source": "-pell_h*pell_s*pell_w*q**24 + pell_k - r - 1",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 11,
+        "source": "pell_a - pell_s*q**12*(pell_w*q**12 + 1)",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 12,
+        "source": "-pell_a*pell_c + pell_d - pell_ga*(4*pell_a + 3) - pell_w*q**12",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 13,
+        "source": "-pell_c**2*(pell_a**2 + 4*pell_a + 3) + pell_d**2 - 1",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 14,
+        "source": "pell_c**4*pell_i**2 - (pell_f**2 - 1)*(pell_a**2 + 4*pell_a + 3)",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 15,
+        "source": "pell_y_aux**2 + (pell_f**2 - 1)*(-pell_y_aux**2 + (pell_c*pell_j + 2*r + 1)**2)*(pell_a**2 + 4*pell_a + 3) - 1",
+        "correction": "(-pell_y_aux**2 + (pell_c*pell_j + 2*r + 1)**2)*(pell_c**4*pell_i**2 - (pell_f**2 - 1)*(pell_a**2 + 4*pell_a + 3))",
+        "difference_from_binary97": "0"
+      },
+      {
+        "index": 16,
+        "source": "pell_c*pell_j - pell_c - pell_f*pell_o + 2*r + 1",
+        "correction": "0",
+        "difference_from_binary97": "0"
+      }
+    ],
+    "changed_sources": [
+      2,
+      6
+    ],
+    "field_permutation_from_binary97": [
+      0,
+      2,
+      1,
+      4,
+      3,
+      5
+    ]
+  },
+  "canonical": {
+    "complete_histories": 88,
+    "source_rows": 382,
+    "odd_beta_histories": 48,
+    "changed_even_indices": 88,
+    "old_and_new_outer_comparisons_each": 7,
+    "six_AND_tests_per_new_tuple": 6,
+    "receipts": [
+      {
+        "rows": 3,
+        "valuation": 576,
+        "old_r_bits": 850,
+        "new_r_bits": 850,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 4,
+        "valuation": 864,
+        "old_r_bits": 1280,
+        "new_r_bits": 1280,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 4,
+        "valuation": 864,
+        "old_r_bits": 1280,
+        "new_r_bits": 1280,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 576,
+        "old_r_bits": 850,
+        "new_r_bits": 850,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1200,
+        "old_r_bits": 1782,
+        "new_r_bits": 1782,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 4,
+        "valuation": 768,
+        "old_r_bits": 1138,
+        "new_r_bits": 1138,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 8,
+        "valuation": 2016,
+        "old_r_bits": 3005,
+        "new_r_bits": 3005,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 8,
+        "valuation": 2016,
+        "old_r_bits": 3005,
+        "new_r_bits": 3005,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 5,
+        "valuation": 1080,
+        "old_r_bits": 1604,
+        "new_r_bits": 1604,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 8,
+        "valuation": 1920,
+        "old_r_bits": 2862,
+        "new_r_bits": 2862,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 8,
+        "valuation": 1920,
+        "old_r_bits": 2862,
+        "new_r_bits": 2862,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 4,
+        "valuation": 768,
+        "old_r_bits": 1138,
+        "new_r_bits": 1138,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 6,
+        "valuation": 1440,
+        "old_r_bits": 2142,
+        "new_r_bits": 2142,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 10,
+        "valuation": 2520,
+        "old_r_bits": 3761,
+        "new_r_bits": 3761,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 864,
+        "old_r_bits": 1275,
+        "new_r_bits": 1275,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      },
+      {
+        "rows": 3,
+        "valuation": 792,
+        "old_r_bits": 1169,
+        "new_r_bits": 1169,
+        "changed_index": true,
+        "even_index": true
+      }
+    ],
+    "scope": "All new scale/range/valuation/even-index hypotheses for a fresh positive43 extension are checked. Old auxiliary values are not reused, and enormous new auxiliaries are not materialized."
+  },
+  "proof": "../1980/EXPLORATION_REORDERED_BINARY_TAG_PACKING.md",
+  "scope": "Complete95-operation binary encoded-tag certificate with the same promises and halting characterization as binary97/96; changed packing and fresh positive Pell witnesses. No raw-input/fixed-appendant universality or optimality claim."
+}

@@ -1,0 +1,284 @@
+% A shifted main Pell parameter shares the existing B-4 mask register.
+\section{A base-four congruence and the main Pell parameter}
+\label{sec:main-base-four}
+
+The third digit mask already computes $B-4$. This permits a useful joint
+change: replace the base-two exponent test by a base-four test, and store
+the main Pell parameter minus four. The two expressions $A-4$ and $A-B$
+then share available values, eliminating one subtraction. The altered
+Pell approximation lies strictly above its binomial expression; this
+also makes the final rounding argument independent of parity.
+
+Use the 107-operation system of Theorem~\ref{thm:best107}, with the
+fixed modular-Sidon encoding and $L=2^{32}$ from
+Section~\ref{sec:modular-support}. In this section $Y_P$ denotes
+the Pell quantity $s n^2$, to distinguish it from the packed code.
+Write
+\[
+\begin{gathered}
+ N=n,\quad R=r,\quad U=wN^2,\quad Y_P=sN^2,\quad M=RY_P,\\
+ a_0=M(U+1),\quad A=a_0+4,\quad Q=UM^2,\quad P=2Q+1,\\
+ J=2R+1,\qquad W=bw,\qquad \xi=\frac{(U+1)^{2R}}{U^R}.
+\end{gathered}
+\]
+The supplied positive unknown named $a$ in the certificate now means
+$a_0$. Equation E12 still defines $a_0=M(U+1)$. Every main Pell
+equation uses the mathematical parameter $A=a_0+4$, including
+$G=1+(A+1)(f^2-1)$ in the signed auxiliary block and the modulus
+$A-1$ in E20. The first Pell norm and index equations retain the forms
+\begin{equation}\label{eq:base-four-first-pell}
+ \tau(\tau+1)=Q(Q+1)k^2,\qquad k=R+1+hQ.
+\end{equation}
+The positive interval remains
+\begin{equation}\label{eq:base-four-interval}
+ c=kY_P+\eta,\qquad k=\eta+\zeta,
+ \qquad\eta,\zeta>0,
+ \qquad Y_P<\frac ck<Y_P+1.
+\end{equation}
+Replace E14 by
+\begin{equation}\label{eq:base-four-congruence}
+ d=W+c(A-4)+\gamma(8A-17).
+\end{equation}
+This is the source's $\chi$ exponent congruence for base four.
+The second exponent congruence retains the form
+\begin{equation}\label{eq:base-four-second-congruence}
+ \mu=q+\kappa(A-B)+\rho(2AB-B^2-1).
+\end{equation}
+
+\subsection{Exact indices and the shifted approximation}
+
+The pre-Pell part of Proposition~\ref{prop:positive-coefficient108}
+uses only the encoding equations and gives
+\[
+ N=q^8,\qquad q>4b\ge8,\qquad
+ 3L\le B\le N\le R,\qquad b,q\le N.
+\]
+In particular $N,R\ge64$, $U,Y_P\ge4096$, $M\ge262144$,
+$Q>R+1$, and $A>J>1$. These estimates precede both exponent
+relations; the stronger $N\ge64$ will be needed for base four.
+
+Since $h>0$, equation~\eqref{eq:base-four-first-pell} gives
+$k\ge R+2$. The interval gives $c>Y_P(R+2)>J$.
+The generic signed Pell argument of Proposition~\ref{lem:signed-pell}
+therefore applies with parameter $A$ and gives
+\begin{equation}\label{eq:base-four-main-index}
+ c=\psi_A(J),\qquad d=\chi_A(J).
+\end{equation}
+The triangular norm gives the ordinary Pell equation for
+$\widehat\tau=2\tau+1$ and $P=2Q+1$, so
+$k=\psi_P(t)$ for some positive index $t$. The congruence
+$\psi_P(t)\equiv t\pmod{2Q}$, reduced modulo $Q$, implies
+\[
+ t=R+1+vQ,\qquad v\ge0.
+\]
+If $v\ge1$, the elementary Pell growth bounds give
+\[
+ \frac ck\le
+ \frac{(2A)^{2R}}{(2P-1)^{R+Q}}
+ \le\left(\frac{2A}{2P-1}\right)^{2R}<\frac12.
+\]
+Here $Q\ge R$, and $2A/(2P-1)<1/2$ follows, for example, from
+\[
+ a_0<2UM,\qquad
+ 4A<8UM+16<4UM^2+1=2P-1.
+\]
+This contradicts~\eqref{eq:base-four-interval}. Consequently
+\begin{equation}\label{eq:base-four-first-index}
+ k=\psi_P(R+1),\qquad \widehat\tau=\chi_P(R+1).
+\end{equation}
+No exponent or rounding conclusion has been used to recover either
+Pell index.
+
+At these indices, the lower growth estimate gives
+\begin{align}
+ \frac ck
+ &\ge\frac{(2A-1)^{2R}}{(2P)^R}\notag\\
+ &=\xi\left(1+\frac7{2a_0}\right)^{2R}
+          \left(1+\frac1{2Q}\right)^{-R}
+ >\xi.\label{eq:base-four-lower}
+\end{align}
+Indeed $14Q>a_0$, so
+$(1+7/(2a_0))^2>1+7/a_0>1+1/(2Q)$.
+The upper growth estimate gives
+\begin{align}
+ \frac ck
+ &\le\frac{(2A)^{2R}}{(2P-1)^R}
+ <\xi\left(1+\frac4{a_0}\right)^{2R}\notag\\
+ &<\xi\left(1+\frac{16R}{a_0}\right)
+ =\xi\left(1+\frac{16}{Y_P(U+1)}\right).
+ \label{eq:base-four-upper}
+\end{align}
+For the last step, binomial coefficients give
+$(1+t)^m\le\sum_{j\ge0}(mt)^j=(1-mt)^{-1}<1+2mt$
+when $0<mt<1/2$. Here $mt=8R/a_0=8/[Y_P(U+1)]<1/2$.
+
+The lower bound and the interval imply $\xi<Y_P+1$.
+Since $\xi>U^R$, integrality gives $Y_P\ge U^R$ and hence
+\begin{equation}\label{eq:base-four-size}
+ A>a_0=RY_P(U+1)>RU^R.
+\end{equation}
+This size bound is established before invoking an exponent lemma.
+Also $\xi<Y_P+1<2Y_P$, so the upper bound yields
+\begin{equation}\label{eq:base-four-error}
+ 0<\frac ck-\xi<\frac{32}{U+1}<\frac12.
+\end{equation}
+
+\subsection{The exponent relations and rounding}
+
+Since $W=bw\le U$ and $N,R\ge64$, we have
+\[
+ 4^{3J}=64\cdot64^{2R}
+       \le64N^{2R}\le RU^R<A,
+ \qquad W^3\le U^R<A.
+\]
+The $\chi$ version of source Lemma~2.22, explicitly stated after
+that lemma, applies to~\eqref{eq:base-four-congruence} and
+\eqref{eq:base-four-main-index}. It proves
+\begin{equation}\label{eq:base-four-power}
+ bw=4^J.
+\end{equation}
+Thus $b$ is a power of two, and
+\[
+ U=N^2w\ge Nbw=N4^J>4\cdot2^{2R}.
+\]
+E13, E19 and E20 give $0<\kappa<c$, its Pell norm, and
+$\kappa\equiv L\pmod{A-1}$. Since $0<L<J<A$, source
+Lemma~2.23 gives $\kappa=\psi_A(L)$ and $\mu=\chi_A(L)$.
+Moreover
+\[
+ B^{3L}\le B^B\le N^N\le U^R<A,
+ \qquad q^3\le N^N\le U^R<A.
+\]
+The same exponent lemma, applied now to
+\eqref{eq:base-four-second-congruence}, proves $q=B^L$.
+
+Let $F=\lfloor\xi\rfloor$. Source Lemma~2.24, or its direct
+binomial expansion, gives
+\begin{equation}\label{eq:base-four-fraction}
+ 0<\xi-F<\frac{2^{2R}}U<\frac14,
+ \qquad F\equiv\binom{2R}{R}\pmod U.
+\end{equation}
+Combining the interval with~\eqref{eq:base-four-lower} and
+\eqref{eq:base-four-error} gives
+\[
+ F<\xi<\frac ck<Y_P+1,
+ \qquad Y_P<\frac ck<\xi+\frac12<F+\frac34.
+\]
+Both $F$ and $Y_P$ are integers. The first chain gives $F\le Y_P$;
+the second gives $Y_P\le F$. Thus
+\begin{equation}\label{eq:base-four-rounding}
+ Y_P=F,\qquad N^2\mid\binom{2R}{R}.
+\end{equation}
+This argument requires no parity assertion. The power-of-two facts
+for $b$ and $q$, the relation $q=B^L$, and the divisibility in
+\eqref{eq:base-four-rounding} are precisely the conclusions needed
+by the unchanged no-carry and modular-Sidon decoding proof.
+They therefore imply membership in the represented r.e.\ set.
+
+\subsection{Constructing positive witnesses}
+
+For the converse, start from a solution of the represented system
+and take its canonical modular-Sidon coding witnesses. Choose the
+usual sufficiently large power of two $b$, put $B=Hb^2$,
+$q=B^L$, $N=q^8$, and construct the unchanged packed $S,T,R$.
+Their no-carry property gives $N^2\mid\binom{2R}{R}$.
+These choices precede the Pell witnesses and supply $b\le R$
+and $R\ge N\ge64$.
+
+Put $J=2R+1$ and choose
+\[
+ w=4^J/b,\quad U=N^2w,\quad
+ Y_P=\left\lfloor\frac{(U+1)^{2R}}{U^R}\right\rfloor,
+ \quad s=Y_P/N^2.
+\]
+Writing $b=2^t$, the inequality $t\le b\le R<2J$ shows that
+$w$ is a positive integer. The binomial expansion and central-binomial
+divisibility make $s$ a positive integer. Define
+$M=RY_P$, $a_0=M(U+1)$, $A=a_0+4$, $Q=UM^2$, $P=2Q+1$, and
+\[
+ c=\psi_A(J),\qquad d=\chi_A(J),\qquad k=\psi_P(R+1).
+\]
+The ratio estimates above hold at these chosen indices.
+Here $\xi<Y_P+1$ is immediate from the definition of $Y_P$, so
+\[
+ Y_P<\xi<\frac ck<\xi+\frac12<Y_P+\frac34.
+\]
+Consequently
+\[
+ \eta=c-kY_P>0,\quad \zeta=k-\eta>0,\quad
+ \tau=\frac{\chi_P(R+1)-1}{2},\quad
+ h=\frac{k-R-1}{Q}
+\]
+are positive integers. Positivity and integrality of $\tau$ follow
+from the oddness of the $\chi$ sequence for odd $P$; those of $h$
+follow from the Pell congruence modulo $2Q$ and
+$\psi_P(R+1)>R+1$. Thus the triangular norm, index equation,
+positive interval, E12, and E15 all hold.
+
+Choose positive $f,i$ with
+$f^2-(A^2-1)(ic^2)^2=1$ using the same generic Pell divisibility
+construction as in Proposition~\ref{lem:signed-pell}. Put
+\[
+ G=1+(A+1)(f^2-1),\quad I=\chi_G(J),\quad H_J=\psi_G(J),
+ \qquad o=(I+d)/f,\quad j=(H_J-J)/c.
+\]
+Because $G\equiv-A\pmod f$, $G\equiv1\pmod c$, and $J$ is odd,
+$o$ and $j$ are integers. They are positive since $I+d>0$ and
+$\psi_G(J)>J$. These values satisfy the signed E17 with $of-d=I$.
+Next choose
+\[
+ \kappa=\psi_A(L),\quad \mu=\chi_A(L),\quad
+ \Delta=\frac{\kappa-L}{A-1},\quad \phi=c-\kappa.
+\]
+Since $J>L\ge2$, these are positive integers with the required
+Pell norm, congruence and gap.
+
+The exponent lemma supplies integer quotients $\gamma,\rho$ in
+\eqref{eq:base-four-congruence} and
+\eqref{eq:base-four-second-congruence}. To check their positivity,
+use $\chi_A(t)=A\psi_A(t)-\psi_A(t-1)$ to obtain
+\[
+ d-(A-4)c>3c>W,
+ \qquad \mu-(A-B)\kappa>(B-1)\kappa>q.
+\]
+For the last inequalities, $A>W^3,q^3$ and $J,L\ge2$ give
+$c,\kappa\ge A$. The moduli are positive because $A>B\ge2$
+and $A>4$. Hence $\gamma,\rho>0$.
+All coding witnesses, including $\Omega$ and $\sigma$, remain
+the canonical ones. This constructs every required positive witness.
+In particular the construction re-chooses $w,s,a_0$ and their
+dependent Pell coordinates; it does not preserve the predecessor's
+base-two value of $w$.
+
+\subsection{The complete arithmetic count}
+
+\begin{theorem}\label{thm:best106}
+For each r.e.\ set, the fixed modular-Sidon encoding gives a
+membership-equivalent system in 34 positive unknowns and 22 equations
+with a straight-line certificate of \textbf{106 arithmetic instructions}:
+59 multiplications and 47 additions. Equality tests and supplied
+parameters are free, as are fixed numerals.
+\end{theorem}
+\begin{proof}
+The preceding arguments prove both directions over positive integers.
+The arithmetic expressions are evaluated as
+\[
+\begin{gathered}
+ A-4=a_0,\quad A-1=a_0+3,\quad A+1=(A-1)+2,\\
+ A^2-1=(A-1)(A+1),\quad
+ 8A-17=8a_0+15,\quad A-B=a_0-(B-4).
+\end{gathered}
+\]
+The previous subtraction computing the base-two coefficient $a-2$
+disappears. The other expressions cost the same numbers of operations
+as their predecessors; in particular $B-4$ is already computed by
+the third mask, and the defining equation for $a_0$ retains its
+existing factorization. No register for $A$ itself is required.
+
+The checker \file{round14\_1980\_base\_four\_certificate.py}
+verifies all source residuals, both triangular corrections, every
+shifted-register identity, and the full primitive instruction list.
+It counts 59 multiplications and 47 additions. The positive input
+and equality counts are unchanged. Its generated schedule records
+the exponent $L=2^{32}$.
+\end{proof}

@@ -1,0 +1,885 @@
+{
+  "status": "REFUTED_WEAK_INPUT_ORDER_GEOMETRY",
+  "arithmetic_status": "PASS",
+  "semantic_status": "REFUTED",
+  "operations": 79,
+  "primitive_histogram": {
+    "+": 34,
+    "*": 45
+  },
+  "positive_unknowns": [
+    "q",
+    "W",
+    "quot",
+    "hrow",
+    "d_geom",
+    "Bw",
+    "Cw",
+    "Yw",
+    "Uw",
+    "Vw",
+    "alpha",
+    "alphaI",
+    "lam",
+    "a",
+    "c",
+    "d",
+    "f",
+    "h",
+    "i",
+    "j",
+    "k",
+    "o",
+    "r",
+    "s",
+    "w",
+    "tau",
+    "eta",
+    "zeta",
+    "ga",
+    "y_aux"
+  ],
+  "unknown_count": 30,
+  "parameters": [
+    "I",
+    "F"
+  ],
+  "equations": 20,
+  "primitive_instructions": [
+    {
+      "operation": "*",
+      "left": "q",
+      "right": "q",
+      "result": "Q2"
+    },
+    {
+      "operation": "*",
+      "left": "Q2",
+      "right": "Q2",
+      "result": "Q4"
+    },
+    {
+      "operation": "*",
+      "left": "Q4",
+      "right": "Q2",
+      "result": "Lbig"
+    },
+    {
+      "operation": "*",
+      "left": "Lbig",
+      "right": "Q4",
+      "result": "n2"
+    },
+    {
+      "operation": "*",
+      "left": "W",
+      "right": "quot",
+      "result": "vq"
+    },
+    {
+      "operation": "+",
+      "left": "Qm1",
+      "right": 1,
+      "result": "q"
+    },
+    {
+      "operation": "+",
+      "left": "Wm1",
+      "right": 1,
+      "result": "W"
+    },
+    {
+      "operation": "*",
+      "left": 7,
+      "right": "d_geom",
+      "result": "seven_geom"
+    },
+    {
+      "operation": "*",
+      "left": "hrow",
+      "right": "Wm1",
+      "result": "row_geom"
+    },
+    {
+      "operation": "*",
+      "left": 8,
+      "right": "Cw",
+      "result": "eightC"
+    },
+    {
+      "operation": "*",
+      "left": 15,
+      "right": "Bw",
+      "result": "fifteenB"
+    },
+    {
+      "operation": "*",
+      "left": 4,
+      "right": "Yw",
+      "result": "fourY"
+    },
+    {
+      "operation": "+",
+      "left": "fifteenB",
+      "right": "fourY",
+      "result": "life_lhs"
+    },
+    {
+      "operation": "*",
+      "left": 2,
+      "right": "Uw",
+      "result": "twoU"
+    },
+    {
+      "operation": "*",
+      "left": 3,
+      "right": "Vw",
+      "result": "threeV"
+    },
+    {
+      "operation": "+",
+      "left": "Cw",
+      "right": "twoU",
+      "result": "life_rhs0"
+    },
+    {
+      "operation": "+",
+      "left": "life_rhs0",
+      "right": "threeV",
+      "result": "life_rhs"
+    },
+    {
+      "operation": "+",
+      "left": "life_rhs",
+      "right": "alpha",
+      "result": "bound"
+    },
+    {
+      "operation": "+",
+      "left": "I",
+      "right": "alphaI",
+      "result": "Ibound"
+    },
+    {
+      "operation": "*",
+      "left": "W",
+      "right": "Yw",
+      "result": "WY"
+    },
+    {
+      "operation": "+",
+      "left": "I",
+      "right": "WY",
+      "result": "time_lhs"
+    },
+    {
+      "operation": "*",
+      "left": "q",
+      "right": "F",
+      "result": "QF"
+    },
+    {
+      "operation": "+",
+      "left": "Cw",
+      "right": "QF",
+      "result": "time_rhs"
+    },
+    {
+      "operation": "+",
+      "left": "Bw",
+      "right": "hrow",
+      "result": "Bh"
+    },
+    {
+      "operation": "*",
+      "left": "q",
+      "right": "Bh",
+      "result": "pack0"
+    },
+    {
+      "operation": "+",
+      "left": "Yw",
+      "right": "pack0",
+      "result": "pack1"
+    },
+    {
+      "operation": "*",
+      "left": "q",
+      "right": "pack1",
+      "result": "pack2"
+    },
+    {
+      "operation": "+",
+      "left": "Vw",
+      "right": "pack2",
+      "result": "pack3"
+    },
+    {
+      "operation": "*",
+      "left": "q",
+      "right": "pack3",
+      "result": "pack4"
+    },
+    {
+      "operation": "+",
+      "left": "Uw",
+      "right": "pack4",
+      "result": "packed"
+    },
+    {
+      "operation": "*",
+      "left": 7,
+      "right": "lam",
+      "result": "seven_lam"
+    },
+    {
+      "operation": "+",
+      "left": "seven_lam",
+      "right": 1,
+      "result": "mask_scale"
+    },
+    {
+      "operation": "+",
+      "left": "packing_gap",
+      "right": "packed",
+      "result": "Lbig"
+    },
+    {
+      "operation": "*",
+      "left": "packing_gap",
+      "right": "seven_lam",
+      "result": "r_product"
+    },
+    {
+      "operation": "*",
+      "left": 6,
+      "right": "lam",
+      "result": "six_lam"
+    },
+    {
+      "operation": "+",
+      "left": "r_product",
+      "right": "six_lam",
+      "result": "r_lhs"
+    },
+    {
+      "operation": "*",
+      "left": "w",
+      "right": "n2",
+      "result": "wn2"
+    },
+    {
+      "operation": "*",
+      "left": "s",
+      "right": "n2",
+      "result": "sn2"
+    },
+    {
+      "operation": "*",
+      "left": "wn2",
+      "right": "sn2",
+      "result": "UM"
+    },
+    {
+      "operation": "+",
+      "left": "UM",
+      "right": "sn2",
+      "result": "R12"
+    },
+    {
+      "operation": "*",
+      "left": "k",
+      "right": "sn2",
+      "result": "ksn2"
+    },
+    {
+      "operation": "*",
+      "left": "UM",
+      "right": "UM",
+      "result": "UM2"
+    },
+    {
+      "operation": "+",
+      "left": "UM2",
+      "right": "wn2",
+      "result": "scaled_norm_coefficient"
+    },
+    {
+      "operation": "*",
+      "left": "ksn2",
+      "right": "ksn2",
+      "result": "ratio_product2"
+    },
+    {
+      "operation": "*",
+      "left": "scaled_norm_coefficient",
+      "right": "ratio_product2",
+      "result": "L9"
+    },
+    {
+      "operation": "+",
+      "left": "tau",
+      "right": 1,
+      "result": "tauplus1"
+    },
+    {
+      "operation": "*",
+      "left": "tau",
+      "right": "tauplus1",
+      "result": "R9"
+    },
+    {
+      "operation": "+",
+      "left": "ksn2",
+      "right": "eta",
+      "result": "R10a"
+    },
+    {
+      "operation": "+",
+      "left": "eta",
+      "right": "zeta",
+      "result": "R10b"
+    },
+    {
+      "operation": "+",
+      "left": "r",
+      "right": 1,
+      "result": "r1"
+    },
+    {
+      "operation": "*",
+      "left": "h",
+      "right": "UM",
+      "result": "hpm1"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "hpm1",
+      "result": "R11"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "r",
+      "result": "tr1"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "a",
+      "result": "cam2"
+    },
+    {
+      "operation": "+",
+      "left": "wn2",
+      "right": "cam2",
+      "result": "D1"
+    },
+    {
+      "operation": "*",
+      "left": 4,
+      "right": "a",
+      "result": "a4"
+    },
+    {
+      "operation": "+",
+      "left": "a4",
+      "right": 3,
+      "result": "a4m5"
+    },
+    {
+      "operation": "*",
+      "left": "ga",
+      "right": "a4m5",
+      "result": "gam"
+    },
+    {
+      "operation": "+",
+      "left": "D1",
+      "right": "gam",
+      "result": "R14"
+    },
+    {
+      "operation": "*",
+      "left": "a",
+      "right": "a",
+      "result": "a_square"
+    },
+    {
+      "operation": "+",
+      "left": "a_square",
+      "right": "a4m5",
+      "result": "A"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "c",
+      "result": "c2"
+    },
+    {
+      "operation": "*",
+      "left": "A",
+      "right": "c2",
+      "result": "Ac2"
+    },
+    {
+      "operation": "+",
+      "left": "Ac2",
+      "right": 1,
+      "result": "R15"
+    },
+    {
+      "operation": "*",
+      "left": "d",
+      "right": "d",
+      "result": "L15"
+    },
+    {
+      "operation": "*",
+      "left": "i",
+      "right": "c2",
+      "result": "ic2"
+    },
+    {
+      "operation": "*",
+      "left": "ic2",
+      "right": "ic2",
+      "result": "ic22"
+    },
+    {
+      "operation": "*",
+      "left": "f",
+      "right": "f",
+      "result": "L16"
+    },
+    {
+      "operation": "+",
+      "left": "f_square_minus_one",
+      "right": 1,
+      "result": "L16"
+    },
+    {
+      "operation": "*",
+      "left": "A",
+      "right": "f_square_minus_one",
+      "result": "R16"
+    },
+    {
+      "operation": "*",
+      "left": "o",
+      "right": "f",
+      "result": "of"
+    },
+    {
+      "operation": "+",
+      "left": "c",
+      "right": "of",
+      "result": "aux_u_rhs"
+    },
+    {
+      "operation": "*",
+      "left": "j",
+      "right": "c",
+      "result": "jc"
+    },
+    {
+      "operation": "+",
+      "left": "tr1",
+      "right": "jc",
+      "result": "H17"
+    },
+    {
+      "operation": "*",
+      "left": "H17",
+      "right": "H17",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "y_aux",
+      "right": "y_aux",
+      "result": "aux_y2"
+    },
+    {
+      "operation": "+",
+      "left": "aux_square_gap",
+      "right": "aux_y2",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "ic22",
+      "right": "aux_square_gap",
+      "result": "L17"
+    },
+    {
+      "operation": "+",
+      "left": "P17",
+      "right": "aux_y2",
+      "result": 1
+    }
+  ],
+  "equalities": [
+    [
+      "q",
+      "vq"
+    ],
+    [
+      "Qm1",
+      "row_geom"
+    ],
+    [
+      "Wm1",
+      "seven_geom"
+    ],
+    [
+      "Bw",
+      "eightC"
+    ],
+    [
+      "life_lhs",
+      "life_rhs"
+    ],
+    [
+      "bound",
+      "q"
+    ],
+    [
+      "Ibound",
+      "W"
+    ],
+    [
+      "time_lhs",
+      "time_rhs"
+    ],
+    [
+      "mask_scale",
+      "Lbig"
+    ],
+    [
+      "r",
+      "r_lhs"
+    ],
+    [
+      "L9",
+      "R9"
+    ],
+    [
+      "c",
+      "R10a"
+    ],
+    [
+      "k",
+      "R10b"
+    ],
+    [
+      "k",
+      "R11"
+    ],
+    [
+      "a",
+      "R12"
+    ],
+    [
+      "d",
+      "R14"
+    ],
+    [
+      "L15",
+      "R15"
+    ],
+    [
+      "ic22",
+      "R16"
+    ],
+    [
+      "L17",
+      "P17"
+    ],
+    [
+      "H17",
+      "aux_u_rhs"
+    ]
+  ],
+  "source_residual_checks": [
+    {
+      "index": 0,
+      "equality": [
+        "q",
+        "vq"
+      ],
+      "source_sign": 1,
+      "source": "-W*quot + q",
+      "actual": "-W*quot + q",
+      "correction": "0"
+    },
+    {
+      "index": 1,
+      "equality": [
+        "Qm1",
+        "row_geom"
+      ],
+      "source_sign": 1,
+      "source": "-W*hrow + hrow + q - 1",
+      "actual": "-W*hrow + hrow + q - 1",
+      "correction": "0"
+    },
+    {
+      "index": 2,
+      "equality": [
+        "Wm1",
+        "seven_geom"
+      ],
+      "source_sign": 1,
+      "source": "W - 7*d_geom - 1",
+      "actual": "W - 7*d_geom - 1",
+      "correction": "0"
+    },
+    {
+      "index": 3,
+      "equality": [
+        "Bw",
+        "eightC"
+      ],
+      "source_sign": 1,
+      "source": "Bw - 8*Cw",
+      "actual": "Bw - 8*Cw",
+      "correction": "0"
+    },
+    {
+      "index": 4,
+      "equality": [
+        "life_lhs",
+        "life_rhs"
+      ],
+      "source_sign": 1,
+      "source": "15*Bw - Cw - 2*Uw - 3*Vw + 4*Yw",
+      "actual": "15*Bw - Cw - 2*Uw - 3*Vw + 4*Yw",
+      "correction": "0"
+    },
+    {
+      "index": 5,
+      "equality": [
+        "bound",
+        "q"
+      ],
+      "source_sign": 1,
+      "source": "Cw + 2*Uw + 3*Vw + alpha - q",
+      "actual": "Cw + 2*Uw + 3*Vw + alpha - q",
+      "correction": "0"
+    },
+    {
+      "index": 6,
+      "equality": [
+        "Ibound",
+        "W"
+      ],
+      "source_sign": 1,
+      "source": "I - W + alphaI",
+      "actual": "I - W + alphaI",
+      "correction": "0"
+    },
+    {
+      "index": 7,
+      "equality": [
+        "time_lhs",
+        "time_rhs"
+      ],
+      "source_sign": 1,
+      "source": "-Cw - F*q + I + W*Yw",
+      "actual": "-Cw - F*q + I + W*Yw",
+      "correction": "0"
+    },
+    {
+      "index": 8,
+      "equality": [
+        "mask_scale",
+        "Lbig"
+      ],
+      "source_sign": 1,
+      "source": "7*lam - q**6 + 1",
+      "actual": "7*lam - q**6 + 1",
+      "correction": "0"
+    },
+    {
+      "index": 9,
+      "equality": [
+        "r",
+        "r_lhs"
+      ],
+      "source_sign": 1,
+      "source": "7*Bw*lam*q**3 + 7*Uw*lam + 7*Vw*lam*q + 7*Yw*lam*q**2 + 7*hrow*lam*q**3 - 7*lam*q**6 - 6*lam + r",
+      "actual": "7*Bw*lam*q**3 + 7*Uw*lam + 7*Vw*lam*q + 7*Yw*lam*q**2 + 7*hrow*lam*q**3 - 7*lam*q**6 - 6*lam + r",
+      "correction": "0"
+    },
+    {
+      "index": 10,
+      "equality": [
+        "L9",
+        "R9"
+      ],
+      "source_sign": 1,
+      "source": "k**2*q**60*s**4*w**2 + k**2*q**30*s**2*w - tau**2 - tau",
+      "actual": "k**2*q**60*s**4*w**2 + k**2*q**30*s**2*w - tau**2 - tau",
+      "correction": "0"
+    },
+    {
+      "index": 11,
+      "equality": [
+        "c",
+        "R10a"
+      ],
+      "source_sign": 1,
+      "source": "c - eta - k*q**10*s",
+      "actual": "c - eta - k*q**10*s",
+      "correction": "0"
+    },
+    {
+      "index": 12,
+      "equality": [
+        "k",
+        "R10b"
+      ],
+      "source_sign": 1,
+      "source": "-eta + k - zeta",
+      "actual": "-eta + k - zeta",
+      "correction": "0"
+    },
+    {
+      "index": 13,
+      "equality": [
+        "k",
+        "R11"
+      ],
+      "source_sign": 1,
+      "source": "-h*q**20*s*w + k - r - 1",
+      "actual": "-h*q**20*s*w + k - r - 1",
+      "correction": "0"
+    },
+    {
+      "index": 14,
+      "equality": [
+        "a",
+        "R12"
+      ],
+      "source_sign": 1,
+      "source": "a - q**20*s*w - q**10*s",
+      "actual": "a - q**20*s*w - q**10*s",
+      "correction": "0"
+    },
+    {
+      "index": 15,
+      "equality": [
+        "d",
+        "R14"
+      ],
+      "source_sign": 1,
+      "source": "-a*c - 4*a*ga + d - 3*ga - q**10*w",
+      "actual": "-a*c - 4*a*ga + d - 3*ga - q**10*w",
+      "correction": "0"
+    },
+    {
+      "index": 16,
+      "equality": [
+        "L15",
+        "R15"
+      ],
+      "source_sign": 1,
+      "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+      "actual": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+      "correction": "0"
+    },
+    {
+      "index": 17,
+      "equality": [
+        "ic22",
+        "R16"
+      ],
+      "source_sign": 1,
+      "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+      "actual": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+      "correction": "0"
+    },
+    {
+      "index": 18,
+      "equality": [
+        "L17",
+        "P17"
+      ],
+      "source_sign": 1,
+      "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+      "actual": "c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 + y_aux**2 - 1",
+      "correction": "(-y_aux**2 + (c*j + 2*r + 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 4*a + 3))"
+    },
+    {
+      "index": 19,
+      "equality": [
+        "H17",
+        "aux_u_rhs"
+      ],
+      "source_sign": 1,
+      "source": "c*j - c - f*o + 2*r + 1",
+      "actual": "c*j - c - f*o + 2*r + 1",
+      "correction": "0"
+    }
+  ],
+  "counterexample": {
+    "q": 1073741824,
+    "W": 32768,
+    "hrow": 32769,
+    "quot": 32768,
+    "d_geom": 4681,
+    "Bw": 19108416,
+    "Cw": 2388552,
+    "Yw": 17039432,
+    "Uw": 151031872,
+    "Vw": 16777224,
+    "I": 29256,
+    "F": 520,
+    "alpha": 718957856,
+    "alphaI": 3512,
+    "lam": "218927934409412694051192432450044169088391303169086025",
+    "r": "2348542582773833227853167135177358162102967155292410478285981534422762447368875448588253223322288880002792950"
+  },
+  "counterexample_outer_residuals": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "packed_P": "23695639330513859234295456141971520",
+  "I_digits_low_first": [
+    0,
+    1,
+    1,
+    1,
+    7
+  ],
+  "B_digits_low_first": [
+    0,
+    0,
+    1,
+    1,
+    1,
+    7,
+    0,
+    1,
+    1,
+    0
+  ],
+  "mask_fields_Boolean_and_bounded": true,
+  "r_even": true,
+  "r_popcount": 300,
+  "binomial_valuation_threshold": 300,
+  "full_positive_Pell_extension": "Proved from exact even-r, power and binomial hypotheses; huge Pell coordinates are not instantiated.",
+  "proof_note": "../1980/EXPLORATION_WEAK_INPUT_ORDER_GEOMETRY.md",
+  "scope": "Refutes the proposed79-operation relation on arbitrary positive I,F. Does not refute a variant with separately enforced Boolean I. The valid80 source is unchanged."
+}

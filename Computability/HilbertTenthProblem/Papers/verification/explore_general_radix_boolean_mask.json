@@ -1,0 +1,547 @@
+{
+  "status": "PASS",
+  "scope": "Exact finite corroboration of a general popcount theorem, the radix-16 pre-Pell scale interface, and an 11-operation local schedule; not a full Life or universal certificate.",
+  "proof": "../1980/EXPLORATION_GENERAL_RADIX_BOOLEAN_MASK.md",
+  "general_radix_cases": [
+    {
+      "radix": 4,
+      "k": 2,
+      "N_range": [
+        1,
+        8
+      ],
+      "all_P_cases": 87380,
+      "addition_overflows": 58248,
+      "Boolean_cases": 510
+    },
+    {
+      "radix": 8,
+      "k": 3,
+      "N_range": [
+        1,
+        5
+      ],
+      "all_P_cases": 37448,
+      "addition_overflows": 32094,
+      "Boolean_cases": 62
+    },
+    {
+      "radix": 16,
+      "k": 4,
+      "N_range": [
+        1,
+        4
+      ],
+      "all_P_cases": 69904,
+      "addition_overflows": 65240,
+      "Boolean_cases": 30
+    },
+    {
+      "radix": 32,
+      "k": 5,
+      "N_range": [
+        1,
+        3
+      ],
+      "all_P_cases": 33824,
+      "addition_overflows": 32730,
+      "Boolean_cases": 14
+    }
+  ],
+  "total_predicate_cases": 228556,
+  "total_addition_overflows": 188312,
+  "direct_central_binomial_cases": 76,
+  "pre_power_bound_cases": [
+    {
+      "q": 4,
+      "power_of_two": true,
+      "P_values": [
+        "0",
+        "1",
+        "32768",
+        "65534",
+        "65535"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 7,
+      "power_of_two": false,
+      "P_values": [
+        "0",
+        "1",
+        "2882400",
+        "5764799",
+        "5764800"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 8,
+      "power_of_two": true,
+      "P_values": [
+        "0",
+        "1",
+        "8388608",
+        "16777214",
+        "16777215"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 11,
+      "power_of_two": false,
+      "P_values": [
+        "0",
+        "1",
+        "107179440",
+        "214358879",
+        "214358880"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 13,
+      "power_of_two": false,
+      "P_values": [
+        "0",
+        "1",
+        "407865360",
+        "815730719",
+        "815730720"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 16,
+      "power_of_two": true,
+      "P_values": [
+        "0",
+        "1",
+        "2147483648",
+        "4294967294",
+        "4294967295"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 17,
+      "power_of_two": false,
+      "P_values": [
+        "0",
+        "1",
+        "3487878720",
+        "6975757439",
+        "6975757440"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 31,
+      "power_of_two": false,
+      "P_values": [
+        "0",
+        "1",
+        "426445518720",
+        "852891037439",
+        "852891037440"
+      ],
+      "pre_power_bounds": "PASS"
+    },
+    {
+      "q": 32,
+      "power_of_two": true,
+      "P_values": [
+        "0",
+        "1",
+        "549755813888",
+        "1099511627774",
+        "1099511627775"
+      ],
+      "pre_power_bounds": "PASS"
+    }
+  ],
+  "power_of_two_threshold_cases": 63,
+  "admissible_field_alignment_cases": 50,
+  "schedule": {
+    "total": 11,
+    "multiplications": 8,
+    "additions_subtractions": 3,
+    "power_multiplications": 5,
+    "inputs": [
+      "q",
+      "P",
+      "lambda"
+    ],
+    "free_equality": "L_check = L",
+    "squared_scale": "D0 = q^14 = (q^7)^2",
+    "explicit_N0_register": false,
+    "symbolic_source_identity": "PASS",
+    "instructions": [
+      [
+        "q2",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "q4",
+        "*",
+        "q2",
+        "q2"
+      ],
+      [
+        "q6",
+        "*",
+        "q4",
+        "q2"
+      ],
+      [
+        "L",
+        "*",
+        "q4",
+        "q4"
+      ],
+      [
+        "D0",
+        "*",
+        "L",
+        "q6"
+      ],
+      [
+        "fifteen_lambda",
+        "*",
+        15,
+        "lambda"
+      ],
+      [
+        "L_check",
+        "+",
+        "fifteen_lambda",
+        1
+      ],
+      [
+        "gap",
+        "-",
+        "L",
+        "P"
+      ],
+      [
+        "product",
+        "*",
+        "gap",
+        "fifteen_lambda"
+      ],
+      [
+        "M",
+        "*",
+        14,
+        "lambda"
+      ],
+      [
+        "r",
+        "+",
+        "product",
+        "M"
+      ]
+    ]
+  },
+  "extended_interfaces": {
+    "interfaces": [
+      {
+        "radix": 64,
+        "selected_bit": 0,
+        "length_exponent": 6,
+        "scale_exponent": 11,
+        "power_products": [
+          [
+            "q2",
+            "q",
+            "q"
+          ],
+          [
+            "q3",
+            "q2",
+            "q"
+          ],
+          [
+            "q5",
+            "q3",
+            "q2"
+          ],
+          [
+            "L",
+            "q3",
+            "q3"
+          ],
+          [
+            "D0",
+            "L",
+            "q5"
+          ]
+        ],
+        "operations": 11,
+        "multiplications": 8,
+        "additions_subtractions": 3,
+        "pre_power_bound_samples": [
+          {
+            "q": 4,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 5,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 8,
+            "power_of_two": true,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 11,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 13,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 16,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 17,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 19,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 32,
+            "power_of_two": true,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 64,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 128,
+            "power_of_two": true,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 131,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          }
+        ],
+        "admissible_field_alignment_cases": 27,
+        "threshold_exponent_identity": "PASS"
+      },
+      {
+        "radix": 64,
+        "selected_bit": 0,
+        "length_exponent": 12,
+        "scale_exponent": 22,
+        "power_products": [
+          [
+            "q2",
+            "q",
+            "q"
+          ],
+          [
+            "q4",
+            "q2",
+            "q2"
+          ],
+          [
+            "q6",
+            "q4",
+            "q2"
+          ],
+          [
+            "q10",
+            "q6",
+            "q4"
+          ],
+          [
+            "L",
+            "q6",
+            "q6"
+          ],
+          [
+            "D0",
+            "L",
+            "q10"
+          ]
+        ],
+        "operations": 12,
+        "multiplications": 9,
+        "additions_subtractions": 3,
+        "pre_power_bound_samples": [
+          {
+            "q": 4,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 5,
+            "power_of_two": false,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 8,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 11,
+            "power_of_two": false,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 13,
+            "power_of_two": false,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 16,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 17,
+            "power_of_two": false,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 19,
+            "power_of_two": false,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 32,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 64,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 128,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 131,
+            "power_of_two": false,
+            "scale_square_before_decoding": true
+          }
+        ],
+        "admissible_field_alignment_cases": 27,
+        "threshold_exponent_identity": "PASS"
+      },
+      {
+        "radix": 128,
+        "selected_bit": 1,
+        "length_exponent": 7,
+        "scale_exponent": 13,
+        "power_products": [
+          [
+            "q2",
+            "q",
+            "q"
+          ],
+          [
+            "q3",
+            "q2",
+            "q"
+          ],
+          [
+            "q6",
+            "q3",
+            "q3"
+          ],
+          [
+            "L",
+            "q6",
+            "q"
+          ],
+          [
+            "D0",
+            "L",
+            "q6"
+          ]
+        ],
+        "operations": 11,
+        "multiplications": 8,
+        "additions_subtractions": 3,
+        "pre_power_bound_samples": [
+          {
+            "q": 4,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 8,
+            "power_of_two": true,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 16,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 32,
+            "power_of_two": true,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 64,
+            "power_of_two": true,
+            "scale_square_before_decoding": true
+          },
+          {
+            "q": 128,
+            "power_of_two": true,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 129,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          },
+          {
+            "q": 131,
+            "power_of_two": false,
+            "scale_square_before_decoding": false
+          }
+        ],
+        "admissible_field_alignment_cases": 23,
+        "threshold_exponent_identity": "PASS"
+      }
+    ],
+    "selected_bit_predicate_cases": 147168,
+    "selected_bit_overflow_cases": 125034,
+    "retained_kernel_operations": 43,
+    "scale_used_only_in": [
+      "U=w*D0",
+      "Y=s*D0"
+    ],
+    "odd_index_positive_witness_reference": "../1980/EXPLORATION_ODD_INDEX_PELL_SIGNS.md"
+  },
+  "necessity_parity_scope": "Retained positive auxiliary construction requires even P."
+}

@@ -1,0 +1,262 @@
+% Direct quadratic coefficient tests; preserves the earlier 114-operation milestone.
+\section{Testing quadratic residuals with one mask}\label{sec:quadratic-masks}
+
+The sum of squares used to obtain a quartic polynomial is not needed for
+coefficient testing. We can test the original quadratic residuals at
+separate digit positions, using the already decoded variable mask as the
+test mask. Extra digit coordinates make this possible without extra
+unknowns in the final polynomial system.
+
+\subsection{A fixed layout for all quadratic systems}
+
+Start from the quadratic-system representation in 58 existential
+variables underlying the universal pair $(58,4)$ in~\cite[\S5]{J82}.
+Shift its positive variables to nonnegative variables
+$X_1,\ldots,X_{58}$, and put $X_0=x$. The integer quadratic residuals
+have fixed coefficients for the represented r.e.\ set. Their rational
+linear span has dimension at most
+\[
+ m=\binom{61}{2}=1830,
+\]
+the number of monomials of degree at most two in 59 variables.
+Choose a basis from the original integer residuals and pad it with zero
+polynomials to obtain $F_0,\ldots,F_{m-1}$. Simultaneous vanishing is
+unchanged: every original residual is a rational linear combination of
+the chosen basis, and every chosen residual is original.
+
+Use the following fixed positions:
+\begin{align*}
+ v_i&=1+3(6729i+i^2)\quad(0\le i\le58),& v_*&=1180939,\\
+ D&=4v_*+1,& T&=(m+1)D+2v_*,\\
+ t_j&=T+jD\quad(0\le j<m),& t_*&=T+(m-1)D.
+\end{align*}
+Let $d_*=T-2v_*$. The inequalities
+\begin{equation}\label{eq:quad-layout-bounds}
+ D>2v_*,\qquad
+ d_*>\max(v_*,t_*-T),\qquad
+ L=5^{16}=152587890625>3t_*+1=51873937495
+\end{equation}
+are exact integer inequalities; the companion program checks them.
+The positions $v_i$ are for the input and the 58 actual variables.
+The positions $t_j$ are for 1830 additional, unconstrained digit
+coordinates and will also be the equation-testing positions.
+
+For a multiindex $I=(I_0,\ldots,I_{58})$ with $|I|\le2$, put
+\[
+ w(I)=\sum_{i=0}^{58}I_i v_i,
+ \qquad c_I=\frac{2!}{I_0!\cdots I_{58}!(2-|I|)!}\in\{1,2\}.
+\]
+Write $F_j=\sum_I a_{j,I}X^I$, and define
+$P_{j,I}=2a_{j,I}/c_I\in\mathbb Z$. Choose a power of two $z\ge2$
+strictly larger than every $|P_{j,I}|$, and put $Z=2z$.
+Define the polynomial with possibly negative coefficients
+\[
+ \mathcal D(B)=\sum_{j=0}^{m-1}\sum_{|I|\le2}
+        P_{j,I}B^{t_j-w(I)}.
+\]
+Its exponents are nonnegative. Within one row, distinct multiindices
+have distinct weights. Indeed $v_i\equiv1\pmod3$, so the weight
+determines the total degree, which is at most two. Degree-one weights
+are strictly increasing. For a degree-two weight $v_i+v_j$, subtracting
+$2$ and dividing by $3$ gives $6729(i+j)+i^2+j^2$. Since
+$0\le i^2+j^2\le2\cdot58^2<6729$, division by $6729$ recovers both
+$i+j$ and $i^2+j^2$. These determine the unordered pair $\{i,j\}$.
+The supports of different rows lie in disjoint intervals
+$[t_j-2v_*,t_j]$, by \eqref{eq:quad-layout-bounds}. Thus every
+coefficient of $\mathcal D$ has absolute value less than $z$, and its
+support lies in $[d_*,t_*]$.
+
+The two nonnegative digit polynomials are
+\begin{align*}
+ \ell_0(B)&=\sum_{i=1}^{58}B^{v_i}+\sum_{j=0}^{m-1}B^{t_j},\\
+ e_0(B)&=z\sum_{h=0}^{L-1}B^h+\mathcal D(B).
+\end{align*}
+Every coefficient of $e_0$ lies in $[0,Z)$, and its degree is $L-1$.
+The mask $\ell_0$ has coefficients zero or one and degree $t_*<L$.
+The admissible index is $(Z,V,H)$, where
+\begin{equation}\label{eq:quad-index}
+ V=e_0(Z)+\ell_0(Z)Z^L,\qquad
+ H>\max\{2Z^{2L+1},\ Z(1890)^2,\ 3L,\ 16\}
+\end{equation}
+and $H$ is a power of two. There are $58+1830=1888$ non-input digit
+coordinates; their number explains the factor $1890=1888+2$.
+They are encoded in one integer $g$ and are not new unknowns of the
+final polynomial system. All these choices are effective index
+construction. The certificate parameters remain $x,Z,V,H$.
+
+\subsection{The changed equations and the bounds before decoding}
+
+Retain the signed Pell parameter and the linear interval equations
+proved above. Put $B=Hb^2$ and $\mathcal C=1+xB+g$, with both
+abbreviations computed by charged instructions. Replace the bound and
+the third testing block by
+\begin{align*}
+ e+\ell\mathcal C^2+\alpha&=q,\\
+ S_3&=(2e-Z\lambda)\mathcal C^2+B\lambda(1+q^2),\\
+ T_3&=(B-2)\ell.
+\end{align*}
+The other coding equations remain
+\[
+ b=x+\beta,\quad \lambda+q^2=1+\lambda B,\quad
+ \theta+Z=B,\quad e+\ell q=V+t\theta,\quad n=q^8.
+\]
+The first two pairs of blocks are
+\[
+ S_1=g,\quad T_1=q-1-(b-1)\ell,\qquad
+ S_2=e+\ell q,\quad T_2=\theta\lambda,
+\]
+with widths $N_1=q$, $N_2=q^2$, $N_3=q^5$. Accordingly,
+\begin{align*}
+ S&=g+q(e+\ell q+q^2S_3),\\
+ T+1&=q-(b-1)\ell+\theta\lambda q+(B-2)\ell q^3,\\
+ r&=S(n^2-n)+(T+1)(n^2-1).
+\end{align*}
+
+These blocks have the required signs and widths before either
+$b$ being a power of two or $q=B^L$ is known. Indeed, positivity gives
+$e,\ell,\mathcal C^2<q$, while $\mathcal C>B>b\ge2$ gives $q>B$.
+The geometric equation yields $\lambda>q$, so
+$0<z\lambda-e<z\lambda$. Moreover
+\[
+ 2\mathcal C^2(z\lambda-e)<2z\lambda q<B\lambda q,
+ \qquad 0<S_3<B\lambda(1+q^2)<2q^4<q^5.
+\]
+Since $(b-1)\ell<\ell\mathcal C^2<q$, we have $0\le T_1<q$.
+Likewise $0<T_3=(B-2)\ell<\ell\mathcal C^2<q$.
+The familiar integer bounds give $0<S_2<q^2$ and
+$0<T_2<(B-1)\lambda=q^2-1$, while $0<g<q$.
+Consequently $r\ge n^2-1\ge n$, and admissibility gives
+\[
+ 3<3L\le B<q\le n\le r,
+ \qquad r,n\ge8,\qquad 0<b\le n.
+\]
+As $B$ is even already, the noncircular Pell and interval arguments of
+Section~\ref{sec:further-pell} apply. They give $b$ a power of two,
+$q=B^L$, and $n^2\mid\binom{2r}{r}$. Thus the three separate no-carry
+conditions follow from Lemmas~2.16 and~2.11 of~\cite{J82}.
+
+\subsection{Decoding and excluding unwanted coefficients}
+
+Apply Lemma~2.9 of~\cite{J82} to $Y=e+\ell q$, with digit base $Z$
+and $m=k=2L$. Its fixed digit polynomial is
+$e_0(B)+\ell_0(B)B^L$, of degree $L+t_*<2L$, with coefficients
+in $[0,Z)$. Equation~\eqref{eq:quad-index} supplies its value at $Z$;
+the packed congruence, $Y<q^2=B^{2L}$, the mask $\theta\lambda$, and
+$B>2Z^{2L+1}$ supply the other hypotheses. Therefore
+$e+\ell q=e_0(B)+\ell_0(B)q$. Since all four components lie in
+$[0,q)$, quotient-and-remainder uniqueness gives
+$e=e_0(B)$ and $\ell=\ell_0(B)$.
+
+The first no-carry condition now decodes
+\[
+ \mathcal C(B)=1+xB+
+       \sum_{i=1}^{58}X_i B^{v_i}
+       +\sum_{j=0}^{m-1}Y_j B^{t_j},
+ \qquad 0\le X_i,Y_j<b.
+\]
+The $Y_j$ are the unconstrained extra coordinates. They do not affect
+the equation tests. To see this, regard $B$ as a formal variable and
+write
+\[
+ e_0-z\lambda
+   =\mathcal D-z\sum_{h=L}^{2L-1}B^h.
+\]
+The tail starts above every testing position, since $t_*<L$.
+The remaining factor $\mathcal D$ starts at degree $d_*$.
+Any monomial of $\mathcal C^2$ involving a $Y_j$ has degree at least
+$T$, so its product with $\mathcal D$ has degree at least
+$T+d_*>t_*$. Thus no extra coordinate contributes to any testing
+position. Also $d_*>v_*$, so the coefficients at the low positions
+$v_i$ are automatically zero.
+
+At a high position $t_j$, a contribution from row $k$ and true-variable
+monomials $I,J$ requires
+\[
+ t_k-w(I)+w(J)=t_j.
+\]
+Both weights lie in $[0,2v_*]$, so the row spacing forces $k=j$.
+Uniqueness of the quadratic monomial weights then forces $I=J$. Therefore
+\begin{equation}\label{eq:quad-target-coefficient}
+ [B^{t_j}]\,\mathcal C(B)^2(e_0(B)-z\lambda(B))
+       =\sum_I c_I P_{j,I}X^I=2F_j(x,X_1,\ldots,X_{58}).
+\end{equation}
+This proves both kinds of separation: other rows cannot interfere,
+and the extra coordinates at the row positions cannot interfere.
+
+Every coefficient of $e_0-z\lambda$ has absolute value at most $z$.
+The sum of coefficients of $\mathcal C^2$ is less than
+$(1890b)^2$. Hence every coefficient of their product has absolute
+value less than
+\[
+ z(1890b)^2<B/2.
+\]
+Its degree is at most $2L-1+2t_*<3L$. The offset
+$(B/2)\lambda(1+q^2)$ supplies the digit $B/2$ at every position
+below $4L$, so all resulting digits lie strictly between zero and $B$.
+Now $S_3,T_3$ are even, and their third no-carry condition is equivalent
+to that for
+\[
+ \frac{S_3}{2}\quad\hbox{and}\quad
+ \frac{T_3}{2}=(B/2-1)\ell_0(B).
+\]
+The latter mask tests exactly the low positions $v_i$ and the high
+positions $t_j$. At each such position it requires the digit of
+$S_3/2$ to equal $B/2$. The low tests hold automatically; by
+\eqref{eq:quad-target-coefficient}, the high tests are equivalent to
+$F_j=0$ for every $j$. This proves soundness.
+
+\subsection{Positive witnesses and the certificate count}
+
+Conversely, choose a nonnegative solution of the quadratic system and
+assign the extra coordinates arbitrarily in $[0,b)$, with one of them
+equal to $1$. Choose the power of two $b$ larger than $x$ and all these
+coordinates. The extra value $1$ guarantees $g>0$ even if every true
+existential coordinate is zero. Take the intended $B,q,e,\ell,g$.
+Their bounds are
+\[
+ e<ZB^{L-1}<q/2,\qquad
+ \ell<2B^{t_*},\qquad
+ \mathcal C<2bB^{t_*}.
+\]
+Using $H>16$ and $L>3t_*+1$, we obtain
+\[
+ \ell\mathcal C^2<8b^2B^{3t_*}
+      <\tfrac12B^{3t_*+1}\le q/2.
+\]
+Thus $\alpha=q-e-\ell\mathcal C^2$ is positive, as is $\beta=b-x$.
+The packed quotient $t$ is a positive integer because its fixed
+nonnegative digit polynomial has positive degree and $B>Z$.
+All decoded no-carry conditions hold by the preceding coefficient
+calculation. The remaining positive witnesses follow from the Pell
+necessity constructions and the positive interval proof. This proves
+necessity with all domains preserved.
+
+\begin{theorem}\label{thm:best113}
+For each r.e.\ set, an effective admissible index $(Z,V,H)$ as above
+gives a system in 33 positive unknowns and 21 equations such that, for
+positive input $x$, membership is equivalent to a valid certificate with
+\textbf{113 arithmetic instructions}: 62 multiplications and 51 additions.
+Equality tests and supplied parameters are free. Generating the fixed
+numerals $2,4,5,L$ from $1$ adds seven instructions, giving 120 under
+that convention.
+\end{theorem}
+\begin{proof}
+Relative to the 114-instruction certificate, $B=Hb^2$ saves the
+multiplication constructing $b^4$, and $\mathcal C^2$ saves the one
+constructing $\mathcal C^4$. Computing the changed third mask in the
+packing expression costs one extra multiplication; the other counts
+are unchanged. The $T+1$ computation may be organized as
+\[
+ T+1=q(\lambda+q^2-Z\lambda)
+      +(B-2)\bigl((\ell q)q^2\bigr)-(b-1)\ell,
+\]
+using the geometric and $\theta$ equations and the already computed
+product $\ell q$. The exact schedule and
+its triangular residual corrections are verified by
+\file{round6\_1980\_quadratic\_certificate.py}.
+The source system has the same 33 positive unknowns and 21 equations;
+the additional digit coordinates are encoded inside $g$.
+The equivalence is proved above. Starting from $1$, three additions
+produce $2,4,5$ and four successive squarings of $5$ produce $L=5^{16}$,
+giving the seven-instruction numeral construction.
+\end{proof}

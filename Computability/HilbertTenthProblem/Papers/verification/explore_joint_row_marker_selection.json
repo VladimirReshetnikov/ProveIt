@@ -1,0 +1,149 @@
+{
+  "status": "PASS_JOINT_ROW_MARKER_SELECTION",
+  "source": {
+    "operations": 10,
+    "multiplications": 4,
+    "additions": 6,
+    "comparisons": 5,
+    "masked_words": 7,
+    "masks": [
+      "Q0",
+      "Q1",
+      "S0",
+      "S1",
+      "M0",
+      "M1",
+      "Qguard"
+    ],
+    "unmasked_derived_words": [
+      "L",
+      "Qsum"
+    ],
+    "dag": [
+      [
+        "radix",
+        "*",
+        3,
+        "A"
+      ],
+      [
+        "guard",
+        "*",
+        "A",
+        "H"
+      ],
+      [
+        "Qsum",
+        "+",
+        "Q0",
+        "Q1"
+      ],
+      [
+        "Qguard",
+        "+",
+        "Qsum",
+        "guard"
+      ],
+      [
+        "headsum",
+        "+",
+        "S0",
+        "S1"
+      ],
+      [
+        "twiceQ0",
+        "*",
+        2,
+        "Q0"
+      ],
+      [
+        "marker0",
+        "+",
+        "twiceQ0",
+        "S0"
+      ],
+      [
+        "twiceQ1",
+        "*",
+        2,
+        "Q1"
+      ],
+      [
+        "marker1",
+        "+",
+        "twiceQ1",
+        "S1"
+      ],
+      [
+        "lengthsum",
+        "+",
+        "M0",
+        "M1"
+      ]
+    ],
+    "source_residuals": [
+      "A*C - R",
+      "-H + S0 + S1",
+      "-M0 + 2*Q0 + S0",
+      "-M1 + 2*Q1 + S1",
+      "-L + M0 + M1"
+    ]
+  },
+  "finite": {
+    "dimensions": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "complete_candidates": 1168392,
+    "accepted": 320,
+    "converse": 320,
+    "dag_cases": 320,
+    "converse_with_zero_interval": 262,
+    "converse_with_zero_marker_channel": 160,
+    "converse_with_all_head_markers": 84
+  },
+  "omissions": {
+    "exact_omission_examples": 3,
+    "scope": "Separate failures when the shared guard, Q0, or M1 mask is omitted; no global minimality claim."
+  },
+  "proof": "../1980/EXPLORATION_JOINT_ROW_MARKER_SELECTION.md",
+  "scope": "Conditional nonnegative component: exact10 operations and7 mask words, including any fixed padding depth. Radix geometry, packed bounds, Boolean-mask implementation, positive adapters, tag input and halting remain external."
+}

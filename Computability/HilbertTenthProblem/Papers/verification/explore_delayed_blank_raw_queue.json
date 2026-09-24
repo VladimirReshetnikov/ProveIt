@@ -1,0 +1,172 @@
+{
+  "status": "PASS_DELAYED_BLANK_RAW_QUEUE_COMPONENT",
+  "source": {
+    "operations": 13,
+    "multiplications": 6,
+    "additions_subtractions": 7,
+    "initialization_operations": 3,
+    "transport_operations": 10,
+    "instructions": [
+      [
+        "Wcalc",
+        "*",
+        3,
+        "L"
+      ],
+      [
+        "Rcalc",
+        "*",
+        3,
+        "W"
+      ],
+      [
+        "input_bound",
+        "+",
+        "x",
+        "alpha"
+      ],
+      [
+        "weighted0",
+        "*",
+        "W",
+        "A0"
+      ],
+      [
+        "cut0",
+        "-",
+        "X0",
+        "D0"
+      ],
+      [
+        "append0",
+        "+",
+        "cut0",
+        "weighted0"
+      ],
+      [
+        "left0",
+        "*",
+        "W",
+        "append0"
+      ],
+      [
+        "right0",
+        "-",
+        "X0",
+        "x"
+      ],
+      [
+        "weighted1",
+        "*",
+        "W",
+        "A1"
+      ],
+      [
+        "cut1",
+        "-",
+        "X1",
+        "D1"
+      ],
+      [
+        "append1",
+        "+",
+        "cut1",
+        "weighted1"
+      ],
+      [
+        "left1",
+        "*",
+        "W",
+        "append1"
+      ],
+      [
+        "right1",
+        "-",
+        "X1",
+        "L"
+      ]
+    ],
+    "comparisons": [
+      [
+        "W",
+        "Wcalc"
+      ],
+      [
+        "R",
+        "Rcalc"
+      ],
+      [
+        "input_bound",
+        "L"
+      ],
+      [
+        "left0",
+        "right0"
+      ],
+      [
+        "left1",
+        "right1"
+      ]
+    ],
+    "sources": [
+      "-3*L + W",
+      "R - 3*W",
+      "-L + alpha + x",
+      "W*(A0*W - D0 + X0) - X0 + x",
+      "L + W*(A1*W - D1 + X1) - X1"
+    ],
+    "initial_coordinates": [
+      "x",
+      "L"
+    ],
+    "final_coordinates": [
+      0,
+      0
+    ],
+    "unpaid_geometry": "L=3^ell and q=R^t for a common finite history; controller and row masks also unpaid"
+  },
+  "exhaustive_loader": {
+    "controls": 84,
+    "entries": 756,
+    "initial_words": 1093,
+    "accepted": 363,
+    "rejected": 730,
+    "normalized": 363,
+    "queue_steps": 37724,
+    "positive_transports": 363,
+    "ell_zero_rejections": 1,
+    "ell_one_rejections": 3,
+    "high_nonzero_rejections": 726
+  },
+  "runs": {
+    "machines": 7,
+    "compiled_states": 687,
+    "compiled_entries": 6183,
+    "inputs": 420,
+    "loaded": 287,
+    "normalizations": 280,
+    "tm_steps": 6575,
+    "queue_steps": 54228,
+    "accepted": 100,
+    "rejected": 280,
+    "named_stay_cutoffs": 40,
+    "positive_transports": 100,
+    "rejecting_loop_steps": 1400,
+    "strict_padding_improvements": 20
+  },
+  "all_short_scans": {
+    "cases": 15024,
+    "valid": 12304,
+    "left": 1360,
+    "right": 1360,
+    "queue_steps": 79200
+  },
+  "dependency_canonical_lf_sha256": {
+    "1980/EXPLORATION_CONSTANT_LENGTH_RAW_QUEUE.md": "344243677bd3bfb7209a7e5c201e6297dc92882b7ab3e490ad749246c4f7570a",
+    "verification/explore_constant_length_raw_queue.py": "e63c3f8761e48ad5ad21ec9e225325a3627c07c8221853231173063308c33abc",
+    "verification/explore_constant_length_raw_queue.json": "588388e07f21549904fbe3cb7881e98bd7a5f07d265c0a1d1432f337f722ac35"
+  },
+  "proof": "../1980/EXPLORATION_DELAYED_BLANK_RAW_QUEUE.md",
+  "review": "Author and two independent complete scoped proof/source reviews pass; fresh exact receipt checks pass",
+  "scope": "Universal ordinary-input constant-length queue and exact13-operation initialization/transport component. No complete arithmetic controller, masks, power geometry or universal operation bound is claimed."
+}

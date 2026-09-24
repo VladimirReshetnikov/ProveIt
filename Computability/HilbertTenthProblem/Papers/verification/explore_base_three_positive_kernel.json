@@ -1,0 +1,1146 @@
+{
+  "status": "ARITHMETIC_PASS_CONDITIONAL_NATIVE_POSITIVE_TERNARY_COMPONENT",
+  "arithmetic_status": "PASS",
+  "universality_status": "NOT_CLAIMED",
+  "operations": 48,
+  "outer_operations": 5,
+  "retained_pell_operations": 43,
+  "histogram": {
+    "+": 16,
+    "-": 3,
+    "*": 29
+  },
+  "primitive_histogram": {
+    "+": 19,
+    "*": 29
+  },
+  "core_histogram": {
+    "*": 25,
+    "+": 15,
+    "-": 3
+  },
+  "parameters": [
+    "q",
+    "P0"
+  ],
+  "positive_unknowns": [
+    "a",
+    "c",
+    "d",
+    "f",
+    "h",
+    "i",
+    "j",
+    "k",
+    "o",
+    "r",
+    "s",
+    "w",
+    "tau",
+    "eta",
+    "zeta",
+    "ga",
+    "y_aux"
+  ],
+  "unknown_count": 17,
+  "input_domains": {
+    "q": "integer >=3",
+    "P0": "integer,q^3<=P0<q^4",
+    "core_witnesses": "positive integers",
+    "intermediate_registers": "integers"
+  },
+  "converse_extra_hypotheses": "q is a power of three; every one of the log_3(q^4) ternary digits of P0 is1 or2; P0 is even",
+  "source_bound_cost_included": false,
+  "parity_enforcement_cost_included": false,
+  "equations": 11,
+  "primitive_instructions": [
+    {
+      "operation": "*",
+      "left": "q",
+      "right": "q",
+      "result": "q2"
+    },
+    {
+      "operation": "*",
+      "left": "q2",
+      "right": "q2",
+      "result": "L"
+    },
+    {
+      "operation": "*",
+      "left": 3,
+      "right": "L",
+      "result": "n2"
+    },
+    {
+      "operation": "*",
+      "left": 3,
+      "right": "P0",
+      "result": "pP"
+    },
+    {
+      "operation": "+",
+      "left": "pP",
+      "right": 2,
+      "result": "r_rhs"
+    },
+    {
+      "operation": "*",
+      "left": "w",
+      "right": "n2",
+      "result": "wn2"
+    },
+    {
+      "operation": "*",
+      "left": "s",
+      "right": "n2",
+      "result": "sn2"
+    },
+    {
+      "operation": "*",
+      "left": "wn2",
+      "right": "sn2",
+      "result": "UM"
+    },
+    {
+      "operation": "+",
+      "left": "UM",
+      "right": "sn2",
+      "result": "R12"
+    },
+    {
+      "operation": "*",
+      "left": "k",
+      "right": "sn2",
+      "result": "ksn2"
+    },
+    {
+      "operation": "*",
+      "left": "UM",
+      "right": "UM",
+      "result": "UM2"
+    },
+    {
+      "operation": "+",
+      "left": "UM2",
+      "right": "wn2",
+      "result": "scaled_norm_coefficient"
+    },
+    {
+      "operation": "*",
+      "left": "ksn2",
+      "right": "ksn2",
+      "result": "ratio_product2"
+    },
+    {
+      "operation": "*",
+      "left": "scaled_norm_coefficient",
+      "right": "ratio_product2",
+      "result": "L9"
+    },
+    {
+      "operation": "+",
+      "left": "tau",
+      "right": 1,
+      "result": "tauplus1"
+    },
+    {
+      "operation": "*",
+      "left": "tau",
+      "right": "tauplus1",
+      "result": "R9"
+    },
+    {
+      "operation": "+",
+      "left": "ksn2",
+      "right": "eta",
+      "result": "R10a"
+    },
+    {
+      "operation": "+",
+      "left": "eta",
+      "right": "zeta",
+      "result": "R10b"
+    },
+    {
+      "operation": "+",
+      "left": "r",
+      "right": 1,
+      "result": "r1"
+    },
+    {
+      "operation": "*",
+      "left": "h",
+      "right": "UM",
+      "result": "hpm1"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "hpm1",
+      "result": "R11"
+    },
+    {
+      "operation": "+",
+      "left": "r1",
+      "right": "r",
+      "result": "tr1"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "a",
+      "result": "cam2"
+    },
+    {
+      "operation": "+",
+      "left": "wn2",
+      "right": "cam2",
+      "result": "D1"
+    },
+    {
+      "operation": "*",
+      "left": 6,
+      "right": "a",
+      "result": "six_a"
+    },
+    {
+      "operation": "+",
+      "left": "six_a",
+      "right": 8,
+      "result": "modulus"
+    },
+    {
+      "operation": "*",
+      "left": "ga",
+      "right": "modulus",
+      "result": "gam"
+    },
+    {
+      "operation": "+",
+      "left": "D1",
+      "right": "gam",
+      "result": "R14"
+    },
+    {
+      "operation": "*",
+      "left": "a",
+      "right": "a",
+      "result": "a_square"
+    },
+    {
+      "operation": "+",
+      "left": "a_square",
+      "right": "modulus",
+      "result": "discriminant"
+    },
+    {
+      "operation": "*",
+      "left": "c",
+      "right": "c",
+      "result": "c2"
+    },
+    {
+      "operation": "*",
+      "left": "discriminant",
+      "right": "c2",
+      "result": "Ac2"
+    },
+    {
+      "operation": "+",
+      "left": "Ac2",
+      "right": 1,
+      "result": "R15"
+    },
+    {
+      "operation": "*",
+      "left": "d",
+      "right": "d",
+      "result": "L15"
+    },
+    {
+      "operation": "*",
+      "left": "i",
+      "right": "c2",
+      "result": "ic2"
+    },
+    {
+      "operation": "*",
+      "left": "ic2",
+      "right": "ic2",
+      "result": "ic22"
+    },
+    {
+      "operation": "*",
+      "left": "f",
+      "right": "f",
+      "result": "L16"
+    },
+    {
+      "operation": "+",
+      "left": "f_square_minus_one",
+      "right": 1,
+      "result": "L16"
+    },
+    {
+      "operation": "*",
+      "left": "discriminant",
+      "right": "f_square_minus_one",
+      "result": "R16"
+    },
+    {
+      "operation": "*",
+      "left": "o",
+      "right": "f",
+      "result": "of"
+    },
+    {
+      "operation": "+",
+      "left": "c",
+      "right": "of",
+      "result": "aux_u_rhs"
+    },
+    {
+      "operation": "*",
+      "left": "j",
+      "right": "c",
+      "result": "jc"
+    },
+    {
+      "operation": "+",
+      "left": "tr1",
+      "right": "jc",
+      "result": "H17"
+    },
+    {
+      "operation": "*",
+      "left": "H17",
+      "right": "H17",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "y_aux",
+      "right": "y_aux",
+      "result": "aux_y2"
+    },
+    {
+      "operation": "+",
+      "left": "aux_square_gap",
+      "right": "aux_y2",
+      "result": "H2"
+    },
+    {
+      "operation": "*",
+      "left": "ic22",
+      "right": "aux_square_gap",
+      "result": "L17"
+    },
+    {
+      "operation": "+",
+      "left": "P17",
+      "right": "aux_y2",
+      "result": 1
+    }
+  ],
+  "equalities": [
+    [
+      "r",
+      "r_rhs"
+    ],
+    [
+      "L9",
+      "R9"
+    ],
+    [
+      "c",
+      "R10a"
+    ],
+    [
+      "k",
+      "R10b"
+    ],
+    [
+      "k",
+      "R11"
+    ],
+    [
+      "a",
+      "R12"
+    ],
+    [
+      "d",
+      "R14"
+    ],
+    [
+      "L15",
+      "R15"
+    ],
+    [
+      "ic22",
+      "R16"
+    ],
+    [
+      "L17",
+      "P17"
+    ],
+    [
+      "H17",
+      "aux_u_rhs"
+    ]
+  ],
+  "residuals": [
+    {
+      "index": 0,
+      "equality": [
+        "r",
+        "r_rhs"
+      ],
+      "source": "-3*P0 + r - 2",
+      "actual": "-3*P0 + r - 2",
+      "correction": "0"
+    },
+    {
+      "index": 1,
+      "equality": [
+        "L9",
+        "R9"
+      ],
+      "source": "729*k**2*q**24*s**4*w**2 + 27*k**2*q**12*s**2*w - tau**2 - tau",
+      "actual": "729*k**2*q**24*s**4*w**2 + 27*k**2*q**12*s**2*w - tau**2 - tau",
+      "correction": "0"
+    },
+    {
+      "index": 2,
+      "equality": [
+        "c",
+        "R10a"
+      ],
+      "source": "c - eta - 3*k*q**4*s",
+      "actual": "c - eta - 3*k*q**4*s",
+      "correction": "0"
+    },
+    {
+      "index": 3,
+      "equality": [
+        "k",
+        "R10b"
+      ],
+      "source": "-eta + k - zeta",
+      "actual": "-eta + k - zeta",
+      "correction": "0"
+    },
+    {
+      "index": 4,
+      "equality": [
+        "k",
+        "R11"
+      ],
+      "source": "-9*h*q**8*s*w + k - r - 1",
+      "actual": "-9*h*q**8*s*w + k - r - 1",
+      "correction": "0"
+    },
+    {
+      "index": 5,
+      "equality": [
+        "a",
+        "R12"
+      ],
+      "source": "a - 9*q**8*s*w - 3*q**4*s",
+      "actual": "a - 9*q**8*s*w - 3*q**4*s",
+      "correction": "0"
+    },
+    {
+      "index": 6,
+      "equality": [
+        "d",
+        "R14"
+      ],
+      "source": "-a*c - 6*a*ga + d - 8*ga - 3*q**4*w",
+      "actual": "-a*c - 6*a*ga + d - 8*ga - 3*q**4*w",
+      "correction": "0"
+    },
+    {
+      "index": 7,
+      "equality": [
+        "L15",
+        "R15"
+      ],
+      "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "actual": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "correction": "0"
+    },
+    {
+      "index": 8,
+      "equality": [
+        "ic22",
+        "R16"
+      ],
+      "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "actual": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "correction": "0"
+    },
+    {
+      "index": 9,
+      "equality": [
+        "L17",
+        "P17"
+      ],
+      "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+      "actual": "c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 + y_aux**2 - 1",
+      "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+    },
+    {
+      "index": 10,
+      "equality": [
+        "H17",
+        "aux_u_rhs"
+      ],
+      "source": "c*j - c - f*o + 2*r + 1",
+      "actual": "c*j - c - f*o + 2*r + 1",
+      "correction": "0"
+    }
+  ],
+  "proof": "../1980/EXPLORATION_BASE_THREE_POSITIVE_KERNEL.md",
+  "scope": "Conditional power-of-three and native-positive ternary digit component; excludes packed-word construction/bounds, parity enforcement, local computation, raw input and halting interfaces. Its scale3q^4 is not assumed square. No universal operation bound.",
+  "regression": {
+    "recurrence_cases": 2160,
+    "mask": {
+      "complete_mask_cases": 88572,
+      "accepted_mask_cases": 2046,
+      "complete_domains": [
+        {
+          "length": 1,
+          "complete_words": 3
+        },
+        {
+          "length": 2,
+          "complete_words": 9
+        },
+        {
+          "length": 3,
+          "complete_words": 27
+        },
+        {
+          "length": 4,
+          "complete_words": 81
+        },
+        {
+          "length": 5,
+          "complete_words": 243
+        },
+        {
+          "length": 6,
+          "complete_words": 729
+        },
+        {
+          "length": 7,
+          "complete_words": 2187
+        },
+        {
+          "length": 8,
+          "complete_words": 6561
+        },
+        {
+          "length": 9,
+          "complete_words": 19683
+        },
+        {
+          "length": 10,
+          "complete_words": 59049
+        }
+      ],
+      "prepower_cases": [
+        {
+          "q": 3,
+          "P0": 27,
+          "r": 83,
+          "D0": 243
+        },
+        {
+          "q": 3,
+          "P0": 54,
+          "r": 164,
+          "D0": 243
+        },
+        {
+          "q": 3,
+          "P0": 80,
+          "r": 242,
+          "D0": 243
+        },
+        {
+          "q": 4,
+          "P0": 64,
+          "r": 194,
+          "D0": 768
+        },
+        {
+          "q": 4,
+          "P0": 160,
+          "r": 482,
+          "D0": 768
+        },
+        {
+          "q": 4,
+          "P0": 255,
+          "r": 767,
+          "D0": 768
+        },
+        {
+          "q": 5,
+          "P0": 125,
+          "r": 377,
+          "D0": 1875
+        },
+        {
+          "q": 5,
+          "P0": 375,
+          "r": 1127,
+          "D0": 1875
+        },
+        {
+          "q": 5,
+          "P0": 624,
+          "r": 1874,
+          "D0": 1875
+        },
+        {
+          "q": 6,
+          "P0": 216,
+          "r": 650,
+          "D0": 3888
+        },
+        {
+          "q": 6,
+          "P0": 756,
+          "r": 2270,
+          "D0": 3888
+        },
+        {
+          "q": 6,
+          "P0": 1295,
+          "r": 3887,
+          "D0": 3888
+        },
+        {
+          "q": 7,
+          "P0": 343,
+          "r": 1031,
+          "D0": 7203
+        },
+        {
+          "q": 7,
+          "P0": 1372,
+          "r": 4118,
+          "D0": 7203
+        },
+        {
+          "q": 7,
+          "P0": 2400,
+          "r": 7202,
+          "D0": 7203
+        },
+        {
+          "q": 8,
+          "P0": 512,
+          "r": 1538,
+          "D0": 12288
+        },
+        {
+          "q": 8,
+          "P0": 2304,
+          "r": 6914,
+          "D0": 12288
+        },
+        {
+          "q": 8,
+          "P0": 4095,
+          "r": 12287,
+          "D0": 12288
+        },
+        {
+          "q": 9,
+          "P0": 729,
+          "r": 2189,
+          "D0": 19683
+        },
+        {
+          "q": 9,
+          "P0": 3645,
+          "r": 10937,
+          "D0": 19683
+        },
+        {
+          "q": 9,
+          "P0": 6560,
+          "r": 19682,
+          "D0": 19683
+        },
+        {
+          "q": 10,
+          "P0": 1000,
+          "r": 3002,
+          "D0": 30000
+        },
+        {
+          "q": 10,
+          "P0": 5500,
+          "r": 16502,
+          "D0": 30000
+        },
+        {
+          "q": 10,
+          "P0": 9999,
+          "r": 29999,
+          "D0": 30000
+        },
+        {
+          "q": 11,
+          "P0": 1331,
+          "r": 3995,
+          "D0": 43923
+        },
+        {
+          "q": 11,
+          "P0": 7986,
+          "r": 23960,
+          "D0": 43923
+        },
+        {
+          "q": 11,
+          "P0": 14640,
+          "r": 43922,
+          "D0": 43923
+        },
+        {
+          "q": 12,
+          "P0": 1728,
+          "r": 5186,
+          "D0": 62208
+        },
+        {
+          "q": 12,
+          "P0": 11232,
+          "r": 33698,
+          "D0": 62208
+        },
+        {
+          "q": 12,
+          "P0": 20735,
+          "r": 62207,
+          "D0": 62208
+        },
+        {
+          "q": 13,
+          "P0": 2197,
+          "r": 6593,
+          "D0": 85683
+        },
+        {
+          "q": 13,
+          "P0": 15379,
+          "r": 46139,
+          "D0": 85683
+        },
+        {
+          "q": 13,
+          "P0": 28560,
+          "r": 85682,
+          "D0": 85683
+        },
+        {
+          "q": 14,
+          "P0": 2744,
+          "r": 8234,
+          "D0": 115248
+        },
+        {
+          "q": 14,
+          "P0": 20580,
+          "r": 61742,
+          "D0": 115248
+        },
+        {
+          "q": 14,
+          "P0": 38415,
+          "r": 115247,
+          "D0": 115248
+        },
+        {
+          "q": 15,
+          "P0": 3375,
+          "r": 10127,
+          "D0": 151875
+        },
+        {
+          "q": 15,
+          "P0": 27000,
+          "r": 81002,
+          "D0": 151875
+        },
+        {
+          "q": 15,
+          "P0": 50624,
+          "r": 151874,
+          "D0": 151875
+        },
+        {
+          "q": 16,
+          "P0": 4096,
+          "r": 12290,
+          "D0": 196608
+        },
+        {
+          "q": 16,
+          "P0": 34816,
+          "r": 104450,
+          "D0": 196608
+        },
+        {
+          "q": 16,
+          "P0": 65535,
+          "r": 196607,
+          "D0": 196608
+        },
+        {
+          "q": 17,
+          "P0": 4913,
+          "r": 14741,
+          "D0": 250563
+        },
+        {
+          "q": 17,
+          "P0": 44217,
+          "r": 132653,
+          "D0": 250563
+        },
+        {
+          "q": 17,
+          "P0": 83520,
+          "r": 250562,
+          "D0": 250563
+        },
+        {
+          "q": 18,
+          "P0": 5832,
+          "r": 17498,
+          "D0": 314928
+        },
+        {
+          "q": 18,
+          "P0": 55404,
+          "r": 166214,
+          "D0": 314928
+        },
+        {
+          "q": 18,
+          "P0": 104975,
+          "r": 314927,
+          "D0": 314928
+        },
+        {
+          "q": 19,
+          "P0": 6859,
+          "r": 20579,
+          "D0": 390963
+        },
+        {
+          "q": 19,
+          "P0": 68590,
+          "r": 205772,
+          "D0": 390963
+        },
+        {
+          "q": 19,
+          "P0": 130320,
+          "r": 390962,
+          "D0": 390963
+        },
+        {
+          "q": 20,
+          "P0": 8000,
+          "r": 24002,
+          "D0": 480000
+        },
+        {
+          "q": 20,
+          "P0": 84000,
+          "r": 252002,
+          "D0": 480000
+        },
+        {
+          "q": 20,
+          "P0": 159999,
+          "r": 479999,
+          "D0": 480000
+        },
+        {
+          "q": 21,
+          "P0": 9261,
+          "r": 27785,
+          "D0": 583443
+        },
+        {
+          "q": 21,
+          "P0": 101871,
+          "r": 305615,
+          "D0": 583443
+        },
+        {
+          "q": 21,
+          "P0": 194480,
+          "r": 583442,
+          "D0": 583443
+        },
+        {
+          "q": 22,
+          "P0": 10648,
+          "r": 31946,
+          "D0": 702768
+        },
+        {
+          "q": 22,
+          "P0": 122452,
+          "r": 367358,
+          "D0": 702768
+        },
+        {
+          "q": 22,
+          "P0": 234255,
+          "r": 702767,
+          "D0": 702768
+        },
+        {
+          "q": 23,
+          "P0": 12167,
+          "r": 36503,
+          "D0": 839523
+        },
+        {
+          "q": 23,
+          "P0": 146004,
+          "r": 438014,
+          "D0": 839523
+        },
+        {
+          "q": 23,
+          "P0": 279840,
+          "r": 839522,
+          "D0": 839523
+        },
+        {
+          "q": 24,
+          "P0": 13824,
+          "r": 41474,
+          "D0": 995328
+        },
+        {
+          "q": 24,
+          "P0": 172800,
+          "r": 518402,
+          "D0": 995328
+        },
+        {
+          "q": 24,
+          "P0": 331775,
+          "r": 995327,
+          "D0": 995328
+        },
+        {
+          "q": 25,
+          "P0": 15625,
+          "r": 46877,
+          "D0": 1171875
+        },
+        {
+          "q": 25,
+          "P0": 203125,
+          "r": 609377,
+          "D0": 1171875
+        },
+        {
+          "q": 25,
+          "P0": 390624,
+          "r": 1171874,
+          "D0": 1171875
+        },
+        {
+          "q": 26,
+          "P0": 17576,
+          "r": 52730,
+          "D0": 1370928
+        },
+        {
+          "q": 26,
+          "P0": 237276,
+          "r": 711830,
+          "D0": 1370928
+        },
+        {
+          "q": 26,
+          "P0": 456975,
+          "r": 1370927,
+          "D0": 1370928
+        },
+        {
+          "q": 27,
+          "P0": 19683,
+          "r": 59051,
+          "D0": 1594323
+        },
+        {
+          "q": 27,
+          "P0": 275562,
+          "r": 826688,
+          "D0": 1594323
+        },
+        {
+          "q": 27,
+          "P0": 531440,
+          "r": 1594322,
+          "D0": 1594323
+        },
+        {
+          "q": 28,
+          "P0": 21952,
+          "r": 65858,
+          "D0": 1843968
+        },
+        {
+          "q": 28,
+          "P0": 318304,
+          "r": 954914,
+          "D0": 1843968
+        },
+        {
+          "q": 28,
+          "P0": 614655,
+          "r": 1843967,
+          "D0": 1843968
+        },
+        {
+          "q": 29,
+          "P0": 24389,
+          "r": 73169,
+          "D0": 2121843
+        },
+        {
+          "q": 29,
+          "P0": 365835,
+          "r": 1097507,
+          "D0": 2121843
+        },
+        {
+          "q": 29,
+          "P0": 707280,
+          "r": 2121842,
+          "D0": 2121843
+        },
+        {
+          "q": 30,
+          "P0": 27000,
+          "r": 81002,
+          "D0": 2430000
+        },
+        {
+          "q": 30,
+          "P0": 418500,
+          "r": 1255502,
+          "D0": 2430000
+        },
+        {
+          "q": 30,
+          "P0": 809999,
+          "r": 2429999,
+          "D0": 2430000
+        }
+      ],
+      "positive_converse_hypothesis_cases": [
+        {
+          "q": 3,
+          "P0": 40,
+          "r": 122,
+          "D0": 243,
+          "central_binomial_valuation": 5,
+          "even_native_positive_input": true
+        },
+        {
+          "q": 3,
+          "P0": 80,
+          "r": 242,
+          "D0": 243,
+          "central_binomial_valuation": 5,
+          "even_native_positive_input": true
+        },
+        {
+          "q": 9,
+          "P0": 3280,
+          "r": 9842,
+          "D0": 19683,
+          "central_binomial_valuation": 9,
+          "even_native_positive_input": true
+        },
+        {
+          "q": 9,
+          "P0": 6560,
+          "r": 19682,
+          "D0": 19683,
+          "central_binomial_valuation": 9,
+          "even_native_positive_input": true
+        },
+        {
+          "q": 27,
+          "P0": 265720,
+          "r": 797162,
+          "D0": 1594323,
+          "central_binomial_valuation": 13,
+          "even_native_positive_input": true
+        },
+        {
+          "q": 27,
+          "P0": 531440,
+          "r": 1594322,
+          "D0": 1594323,
+          "central_binomial_valuation": 13,
+          "even_native_positive_input": true
+        }
+      ]
+    },
+    "canonical_ratio_cases": [
+      {
+        "r": 83,
+        "J": 167,
+        "U_bits": 265,
+        "A_bits": 22234,
+        "c_bits": 3690986,
+        "k_bits": 3669017,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      },
+      {
+        "r": 84,
+        "J": 169,
+        "U_bits": 268,
+        "A_bits": 22768,
+        "c_bits": 3825190,
+        "k_bits": 3802690,
+        "exact_both_norms": true,
+        "positive_integral_tau_h_gamma": true,
+        "lower_ratio_and_upper_error": true,
+        "exact_rounding": true,
+        "fractional_tail_below_one_sixth": true,
+        "positive_interval": true,
+        "exponent_decoding_growth": true
+      }
+    ],
+    "arithmetic": "Exact integer powers and cross-multiplied rational inequalities",
+    "auxiliary_witnesses_materialized": false,
+    "scope": "The complete native mask tests and preliminary inequalities are distinct from standalone canonical ratio cases at the changed lower endpoint. No huge relaxed auxiliary tuple is materialized; the general proof establishes the unbounded positive converse."
+  }
+}

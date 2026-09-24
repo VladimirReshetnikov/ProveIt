@@ -1,0 +1,1141 @@
+% Continuously revised edition; last source revision 24 September 2026.
+% Every discrepancy from the printed article is explained in jones1976_editorial_notes.md;
+% a dated log of revisions and checks is ../EDITORIAL_NOTES.md.
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=0.8in,headheight=13pt,headsep=15pt,marginparwidth=0.55in,marginparsep=4pt]{geometry}
+\usepackage{marginnote}
+% Original pagination: \origpage{n} puts the number of the journal page that
+% begins on the current line into the margin (line accuracy).
+\newcommand{\origpage}[1]{\marginnote{\footnotesize\textbf{[#1]}}}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Diophantine Representation of the Set of Prime Numbers -- Corrected Edition},
+ pdfauthor={James P. Jones, Daihachiro Sato, Hideo Wada, Douglas Wiens},
+ pdfsubject={Corrected transcription with documented editorial emendations}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Jones--Sato--Wada--Wiens}
+\fancyhead[R]{\small Corrected edition}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{2pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+\newcommand{\Nzero}{\mathbb{Z}_{\geq 0}}
+\newcommand{\statement}[1]{\par\medskip\noindent\textbf{#1}\enspace}
+\newcommand{\ednote}[1]{\par\smallskip\noindent\textit{Editorial clarification.} #1\par\smallskip}
+\setlist{nosep,leftmargin=2.7em}
+\begin{document}
+\begin{center}
+{\Large\bfseries Diophantine Representation of the\\[3pt] Set of Prime Numbers\par}
+\vspace{8pt}
+{\scshape James P. Jones, Daihachiro Sato,\\ Hideo Wada and Douglas Wiens\par}
+\vspace{7pt}
+{\small\itshape The American Mathematical Monthly \textbf{83}, no.\ 6 (1976), 449--464\par}
+\end{center}
+\noindent\begin{minipage}{\linewidth}\small
+\textbf{About this edition.} Continuously revised edition: every discrepancy between the printed article and this edition is explained, with its justification, in \texttt{Papers/1976/}\allowbreak\texttt{jones1976\_editorial\_notes.md}; a dated log of revisions and checks is \texttt{Papers/EDITORIAL\_NOTES.md}. Bracketed margin numbers mark the lines on which the pages of the original printing begin. Corrected from the supplied scan and Mathpix transcription.
+Original theorem and local equation numbers are retained; gaps in the original numbering are intentional.
+The historical narrative and affiliations refer to 1976, not the date of this edition.
+Substantive emendations and proof clarifications are documented in those
+editorial notes. The notation $u\dotminus v=\max(u-v,0)$ denotes proper subtraction.
+\end{minipage}
+\medskip
+\section{Introduction}
+\origpage{449}Martin Davis, Yuri Matijasevič, Hilary Putnam and Julia Robinson \cite{ref4} \cite{ref8} have proven that every recursively enumerable set is Diophantine, and hence that the set of prime numbers is Diophantine. From this, and work of Putnam \cite{ref12}, it follows that the set of prime numbers is representable by a polynomial formula. In this article such a prime-representing polynomial will be exhibited in explicit form. We prove (in Section 2)
+
+\statement{Theorem 1.} The set of prime numbers is identical with the set of positive values taken on by the polynomial
+
+
+\begin{equation}
+\begin{aligned}
+(k+2)\bigl\{1
+ &-[wz+h+j-q]^2\\
+ &-[(gk+2g+k+1)(h+j)+h-z]^2\\
+ &-[2n+p+q+z-e]^2\\
+ &-[16(k+1)^3(k+2)(n+1)^2+1-f^2]^2\\
+ &-[e^3(e+2)(a+1)^2+1-o^2]^2\\
+ &-[(a^2-1)y^2+1-x^2]^2\\
+ &-[16r^2y^4(a^2-1)+1-u^2]^2\\
+ &-[((a+u^2(u^2-a))^2-1)(n+4dy)^2+1-(x+cu)^2]^2\\
+ &-[n+l+v-y]^2\\
+ &-[(a^2-1)l^2+1-m^2]^2\\
+ &-[ai+k+1-l-i]^2\\
+ &-[p+l(a-n-1)+b(2an+2a-n^2-2n-2)-m]^2\\
+ &-[q+y(a-p-1)+s(2ap+2a-p^2-2p-2)-x]^2\\
+ &-[z+pl(a-p)+t(2ap-p^2-1)-pm]^2\bigr\}.
+\end{aligned}\tag{1}\label{eq:prime-polynomial}
+\end{equation}
+
+as the variables range over the nonnegative integers.
+
+(1) is a polynomial of degree 25 in 26 variables, $a, b, c, \ldots, z$. When nonnegative integers are substituted for these variables, the positive values of (1) coincide exactly with the set of all prime numbers $2,3,5, \ldots$. The polynomial (1) also takes on negative values, e.g., -76.
+
+In 1971, Yuri Matijasevič \cite{ref10} outlined the construction of a prime-representing polynomial in 24 variables and degree 37, using the Fibonacci numbers. In the addendum to his paper, an improvement to 21 variables and degree 21 was made. (These polynomials were not written out explicitly.) Our construction here yields a polynomial in 19 variables and degree 29. It also yields a polynomial in 42 variables and degree 5. Thus we might ask what is the smallest possible degree and how few variables are actually necessary to represent primes?
+
+Let us consider first the question of the degree. We know that a prime-representing polynomial of degree 5 is possible. All that is necessary to reduce the degree to 5 is the Skolem substitution method (cf. \cite{ref3}, p. 263). However, this procedure increases the number of variables (to 42 when applied to (1)). We do not know whether there is a prime-representing polynomial of degree < 5.
+
+The question of the minimum number of variables is also open. A simple argument shows that at least 2 variables are necessary. But we do not know the minimum number. The method of proof of Theorem 1 yields a polynomial in 16 variables. To reduce the number of variables below 16 requires an entirely different construction. The best result we were able to obtain is a polynomial in 12 variables. We shall prove
+
+\statement{Theorem 2.} There exists a prime-representing polynomial in 12 variables.
+
+
+This result was reportedly known to Yuri Matijasevič in 1973, although no literature is available concerning this. Our proof uses methods developed by Yuri Matijasevič and Julia Robinson in \cite{ref11}. The construction is carried out in §3. The polynomial constructed has very large degree.
+
+The proofs of Theorems 1 and 2 are both based on Wilson's Theorem. In each case we show that the set of prime numbers is Diophantine; i.e., that there exists a Diophantine equation solvable only for prime values of a parameter. We construct a polynomial $M\left(k, x_{1}, \cdots, x_{n}\right)$ with the property that for each nonnegative integer $k$
+
+
+\begin{equation*}
+k+2 \text { is prime } \leftrightarrow M\left(k, x_{1}, \cdots, x_{n}\right)=0 \text { is solvable in nonnegative integers. } \tag{3}
+\end{equation*}
+
+
+\origpage{450}It will turn out that $M$ is a sum of squares and hence nonnegative. From such a nonnegative polynomial $M$, satisfying (3), a prime-representing polynomial $P$ is constructible by the method of Putnam \cite{ref12}. We have only to set $P$ equal to
+
+
+\begin{equation*}
+(k+2)\left\{1-M\left(k, x_{1}, \cdots, x_{n}\right)\right\} \tag{4}
+\end{equation*}
+
+
+{\footnotesize\noindent\textit{Original footnote, clarified.}
+The polynomial $P$ factors. At every substitution where $P$ is positive, however,
+$M=0$ and the factors have values $P$ and $1$; this is not a polynomial identity
+asserting $1-M\equiv1$.\par}
+
+The difficulty is of course the construction of $M$. We shall see that this requires nearly all the techniques invented to solve Hilbert's tenth problem. And there is good reason why this should be so. Several years before Hilbert's tenth problem was solved in the negative by Matijasevič \cite{ref8}, Julia Robinson \cite{ref16} proved that if the set of prime numbers was Diophantine, then every recursively enumerable set would be Diophantine. Hence Theorems 1 and 2 actually imply the unsolvability of Hilbert's tenth problem.
+
+As was mentioned previously, our polynomials take on negative values. Hence it cannot be claimed that they represent primes exactly. This is not an accidental feature of the Putnam construction. It is a limitation inherent in algebraic functions. The reader is probably familiar with the theorem that no nonconstant polynomial can take only prime values. This theorem is proved in Section 4 and the result is also extended to all algebraic functions of several variables, of which the polynomial is only a special case.
+
+To overcome the inexactness of the polynomial representation, one must leave the class of polynomials and single-branch analytic algebraic functions; a discrete zero-test provides one way to do so. Julia Robinson noticed \cite{ref4} that we may conveniently employ the function $0^{x}$ for this purpose, provided we define $0^{0}=1$. If we take $M$ as in (3) then we can prove
+
+\statement{Theorem 3.} The set of prime numbers is the exact range of a function of the form
+
+\[
+2+k \cdot 0^{M\left(k, x_{1}, \cdots, x_{n}\right)}
+\]
+
+in which $M\left(k, x_{1}, \cdots, x_{n}\right)$ is a nonnegative integer-valued polynomial, $n\leq11$, and all variables range over $\Nzero$.
+
+Here we used the function $0^{x}$ to distinguish between zero and positive integers. We may also use the proper subtraction function, absolute value function, remainder function, signum function or integer part function (but no single analytic algebraic branch; see the convention before Theorem 4.2). Define $r(y, x)$ to be the remainder after division of $y$ by $x$ (take $r(y, 0)=y$ ). Define $y\dotminus x$ to be $y-x$ for $y\geq x$ and $0$ for $y<x$. Then $y\dotminus x=(|y-x|+y-x)/2$. Any one of the following six functions may be used in Theorem 3. (The domain is the nonnegative integers.)
+
+\[
+0^{x}=1\dotminus x=\frac{|1-x|+1-x}{2}=1-r(1,1+x)=1-\operatorname{sgn}(x)=\left[\frac{1}{1+x}\right] .
+\]
+
+Indeed, using these more general functions it is easy to give a short formula for the $n$th prime, $p_{n}$. The following formula is derived in \cite{ref7}.
+
+
+\begin{equation*}
+p_n=\sum_{i=0}^{n^2}\left(1\dotminus\left(\left(\sum_{j=0}^{i}r\bigl(((j\dotminus1)!)^2,j\bigr)\right)\dotminus n\right)\right). \tag{5}
+\end{equation*}
+
+
+The $n$th prime function may also be represented by a polynomial, though not of course in one variable. We can prove
+
+\statement{Theorem 4.} There exists a polynomial $P\left(n, x_{1}, \cdots, x_{k}\right)$ such that for any positive integers $n$ and $m$,
+
+\[
+p_{n}=m \leftrightarrow\left(\exists x_{1}, \cdots, x_{k}\right)\left\{P\left(n, x_{1}, \cdots, x_{k}\right)=m\right\} .
+\]
+
+\textit{Proof.} \origpage{451}The proof is a simple elaboration on Putnam's idea, (due to Yuri Matijasevič \cite{ref9}). The binary relation $p_{n}=m$ is recursive and hence Diophantine by \cite{ref4} \cite{ref8}. Therefore there exists a polynomial $Q$ such that $p_{n}=m \leftrightarrow\left(\exists x_{1}, \cdots, x_{l}\right) Q\left(n, m, x_{1}, \cdots, x_{l}\right)=0$.
+
+We have only to put $P=x_{l+1}\left(1-Q^{2}\left(n, x_{l+1}, x_{1}, \cdots, x_{l}\right)\right)$. (It follows from the central result of \cite{ref11} that we may take $l=13$ and hence $k=14$.)
+
+The Diophantine character of the set of prime numbers has one further consequence which deserves mention. This concerns the problem of proving that a number is prime. If $p$ is a composite number, then there is a proof that $p$ is composite consisting of a single multiplication. Julia Robinson remarks in \cite{ref14} that prior to the solution of Hilbert's tenth problem in 1970, it was not known that there was a similar proof establishing primality in a bounded number of steps. Yet it follows from \cite{ref4} \cite{ref8} that this is so. And our construction permits us to compute a bound on this number.
+
+\statement{Theorem 5.} If $p$ is a prime number, then there is a proof that $p$ is prime consisting of only 87 additions and multiplications.
+
+The number is calculated from the equations of Theorem 2.12. This is an arithmetic-operation bound for checking supplied witnesses, not a bound on their bit lengths, on the cost of finding them, or on bit-level running time.
+
+\noindent\textit{Editorial verification note.} An explicit certificate with 40 additions and 47 multiplications is given in the file \texttt{jones1976\_primality87.md} of \texttt{Papers/}\allowbreak\texttt{verification/} and is checked in Lean, in \texttt{Lean/}\allowbreak\texttt{Diophantine/}\allowbreak\texttt{Paper1976/}\allowbreak\texttt{PrimalityCertificate.lean}; its fourteen equations have been checked symbolically against Theorem 2.12 and the prime polynomial. Intermediate integers are supplied with the certificate. A subtraction assignment $t=a-b$ is checked by the single addition $t+b=a$, so no subtraction primitive is needed. Equality and domain checks are not included in this arithmetic count. The candidate $N$ is compared with the already computed value $k+1$. This verifies an upper bound of 87 operations, not optimality or the authors' particular evaluation order.
+
+\section{Proof of Theorem 1} Throughout this paper, all variables are nonnegative integers, unless the contrary is explicitly stated. We shall use the notation $x=\square$ to indicate that $x$ is a perfect square. $r(a, b)$ denotes the remainder of $a$ upon division by $b$. $[x]$ denotes the greatest integer $\leq x$.
+
+We shall be concerned with the solutions of the Pell equation
+
+\[
+x^{2}-\left(a^{2}-1\right) y^{2}=1, \quad \text { for } \quad 1 \leq a .
+\]
+
+It is well known \cite{ref3}, \cite{ref16} that the solutions of this equation, $x=\chi_{a}(n), y=\psi_{a}(n)$, can be generated via Lucas sequences:
+
+\[
+\begin{array}{lll}
+\chi_{a}(0)=1, & \chi_{a}(1)=a, & \chi_{a}(n+2)=2a\chi_a(n+1)-\chi_a(n), \\
+\psi_{a}(0)=0, & \psi_{a}(1)=1, & \psi_{a}(n+2)=2 a \psi_{a}(n+1)-\psi_{a}(n) .
+\end{array}
+\]
+
+We shall need the following properties of these sequences.
+
+\statement{Lemma 2.1.} $(2 a-1)^{n} \leq \psi_{a}(n+1) \leq(2 a)^{n}$.
+
+\statement{Lemma 2.2.} $\psi_a(n)\equiv n\pmod{a-1}$ for $a\geq2$; for $a=1$, the corresponding identity is $\psi_1(n)=n$.
+
+
+These properties are immediate consequences of the definition. Proofs may be found in \cite{ref3} and \cite{ref11}. The following lemma will be used to force one unknown to be exponentially larger than another.
+
+\statement{Lemma 2.3.} For $2 \leq e$, the condition
+
+
+\begin{equation*}
+e^{3}(e+2)(n+1)^{2}+1=\square \tag{2.3}
+\end{equation*}
+
+
+implies that $e-1+e^{e-2} \leq n$. Conversely, for any positive integers $e$ and $t$, it is possible to satisfy (2.3) with $n$ such that $t \mid n+1$.
+
+\textit{Proof.} Put $a=e+1$. Then (2.3) becomes a Pell equation in $(a-1)(n+1)$, i.e.,
+
+\[
+\left(a^{2}-1\right)(a-1)^{2}(n+1)^{2}+1=\square .
+\]
+
+If $n$ is any solution of (2.3) then $(a-1)(n+1)=\psi_{a}(j)$ for some $j$. By Lemma 2.2, $a-1 \mid j$. Since $0 \neq j$, this implies that $a-1 \leq j$. Using Lemma 2.1 we find that
+
+\[
+(a-2)(a-1)+(a-1)^{a-2}<(2 a-1)^{(a-2)} \leq \psi_{a}(a-1) \leq \psi_{a}(j)=(a-1)(n+1) .
+\]
+
+Hence
+
+\[
+(a-2)+(a-1)^{a-3}<n+1,
+\]
+
+\origpage{452}which gives the result. For the converse, put $D=e(e+2)$. The positive integer $D$ is nonsquare.
+The Pell equation
+\[
+D(et)^2v^2+1=X^2
+\]
+has a nontrivial nonnegative integer solution because $D(et)^2$ is positive and nonsquare.
+Taking $n+1=tv$ gives (2.3) and $t\mid n+1$.
+Powers of a nontrivial Pell solution also give arbitrarily large choices of $n$
+(cf. \cite{ref11}, \S2).
+
+\statement{Lemma 2.4.} For any numbers $p, n$ and $a \geq 1$ we have the congruence
+
+\[
+\chi_{a}(n) \equiv p^{n}+\psi_{a}(n)(a-p)\left(\bmod 2 a p-p^{2}-1\right) .
+\]
+
+When $(a,p)=(1,1)$, the modulus is zero and the assertion is understood as the exact equality $\chi_1(n)=1$. In all other cases the modulus is nonzero. Furthermore, when $0<p^{n}<a$, the right side of the congruence is less than or equal to the left side.
+
+
+For a proof of the asserted congruence see \cite{ref16} p. 108 or \cite{ref3} p. 242. The asserted inequality is not difficult to derive using $\sqrt{a^{2}-1} \psi_{a}(n)<\chi_{a}(n)$.
+
+Next we state a Diophantine definition of the sequence $y=\psi_{a}(n)$. The set of equations is quite economical. It is difficult to assign credit accurately for these equations because they are a synthesis of collective efforts. The equations most resemble those of Julia Robinson (which appear in Theorem 3.1 of Davis \cite{ref3}). However, they are not identical with these and equation V is due to Yuri Matijasevič.
+
+\statement{Lemma 2.5.} For numbers $a,n,y$ with $n\geq1$ and $a\geq2$, in order that $y=\psi_{a}(n)$ it is necessary and sufficient that there exist numbers $b, c, d, r, s, t, u, v$ and $x$ such that
+
+\begin{align*}
+&\text{(I)}\quad x^{2}=\left(a^{2}-1\right) y^{2}+1,\\
+&\text{(II)}\quad \quad u^{2}=\left(a^{2}-1\right) v^{2}+1,\\
+&\text{(III)}\quad s^{2}=\left(b^{2}-1\right) t^{2}+1,\\
+&\text{(IV)}\quad v=4 r y^{2},\\
+&\text{(V)}\quad b=a+u^{2}\left(u^{2}-a\right),\\
+&\text{(VI)}\quad s=x+c u,\\
+&\text{(VII)}\quad t=n+4 d y,\\
+&\text{(VIII)}\quad n \leq y.
+\end{align*}
+
+The proof is virtually identical to that given by Davis in \cite{ref3} so we shall mention only the differences. Davis used positive integer unknowns in \cite{ref3}, however this is not essential. We need not replace $r$ by $r+1$ in equation IV, (to ensure that $0<v$ ), since if $v=0$ then $u=1$ by II, $b=1$ by V, $s=1$ by III, $x=1$ by I and VI, and $y=0$ by I, contradicting VIII. Also, the condition V of \cite{ref3} was used only to show that $b \equiv 1 \bmod 4 y$ and $b \equiv a \bmod u$. However, these conditions are guaranteed by II, IV and V above. In the direction that constructs the witnesses, the proof is slightly different from that given in \cite{ref3}: equation V supplies $b$ directly, so the Chinese Remainder Theorem is unnecessary. If we eliminate the unknowns $v, b, s$ and $t$ from I--VIII, by substitution, then we obtain
+
+\statement{Corollary 2.6.} For numbers $a,n,y$ with $n\geq1$ and $a\geq2$, in order that $y=\psi_{a}(n)$ it is necessary and sufficient that there exist numbers $c, d, r, u$ and $x$ such that
+
+\begin{align*}
+&\text{(I)}\quad x^{2}=\left(a^{2}-1\right) y^{2}+1,\\
+&\text{(II)}\quad u^{2}=16\left(a^{2}-1\right) r^{2} y^{4}+1,\\
+&\text{(III)}\quad (x+c u)^{2}=\left(\left(a+u^{2}\left(u^{2}-a\right)\right)^{2}-1\right)(n+4 d y)^{2}+1,\\
+&\text{(IV)}\quad n \leq y.
+\end{align*}
+
+We shall also require two basic inequalities:
+
+\statement{Lemma 2.7.} If $q\geq1$ is an integer and $0\leq\alpha<1/q$, then $1-q \alpha \leq(1-\alpha)^{q}$.
+
+\statement{Lemma 2.8.} If $0 \leq \alpha \leq \frac{1}{2}$, then $(1-\alpha)^{-1} \leq 1+2 \alpha$.
+
+The fundamental tool in both constructions is Wilson's theorem which characterizes the primes in terms of the factorial function.
+
+\statement{Lemma 2.9.} (Wilson's theorem.) For any number $k\geq1$, $k+1$ is prime if and only if
+
+\[
+k+1 \mid k!+1 .
+\]
+
+For a proof see \cite{ref6}, p. 68. The next lemma leads to a Diophantine definition of the factorial function. It is stated in \cite{ref10}, in slightly different form, without proof.
+
+\statement{Lemma 2.10.} For any positive integer $k$, if $(2 k)^{k} \leq n$ and $n^{k}<p$ then
+
+\[
+\origpage{453}k!<\frac{(n+1)^{k} p^{k}}{r\left((p+1)^{n}, p^{k+1}\right)}<k!+1 .
+\]
+
+\textit{Proof.} Using the Binomial Theorem we have
+
+\[
+(p+1)^{n}=\sum_{i=0}^{k}\binom{n}{i} p^{i}+p^{k+1} \sum_{i=k+1}^{n}\binom{n}{i} p^{i-k-1} .
+\]
+
+Now $\quad(n p)^{k+1}-1=n^{k} p^{k} n p-1 \leq(p-1) p^{k} n p-1=p p^{k} p n-p^{k} n p-1<p p^{k} p n-p p^{k}=(n p-1) p p^{k}$. Therefore
+
+\[
+\sum_{i=0}^{k}\binom{n}{i} p^{i} \leq \sum_{i=0}^{k} n^{i} p^{i}=\frac{(n p)^{k+1}-1}{n p-1}<p p^{k}
+\]
+
+so that
+
+
+\begin{equation*}
+r\left((p+1)^{n}, p p^{k}\right)=\sum_{i=0}^{k}\binom{n}{i} p^{i} \neq 0 . \tag{i}
+\end{equation*}
+
+
+First we prove that
+
+
+\begin{equation*}
+k!<\frac{(n+1)^{k} p^{k}}{\sum_{i=0}^{k}\binom{n}{i} p^{i}} . \tag{ii}
+\end{equation*}
+
+
+(ii) follows from the inequalities
+
+\[
+\begin{aligned}
+k!\left(\sum_{i=0}^{k}\binom{n}{i} p^{i}\right) & \leq k!\left(k\binom{n}{k-1} p^{k-1}+\binom{n}{k} p^{k}\right) \leq k!\left(k \frac{n^{k-1}}{(k-1)!} p^{k-1}+\frac{n^{k}}{k!} p^{k}\right) \\
+& =k!\left(\frac{k^{2} n^{k-1}}{k!} p^{k-1}+\frac{n^{k}}{k!} p^{k}\right)=k^{2} n^{k-1} p^{k-1}+n^{k} p^{k}<k n^{k} p^{k-1}+n^{k} p^{k}<k p p^{k-1}+n^{k} p^{k} \\
+& =\left(k+n^{k}\right) p^{k} \leq(1+n)^{k} p^{k}
+\end{aligned}
+\]
+
+It remains only to establish
+
+
+\begin{equation*}
+\frac{(n+1)^{k} p^{k}}{\sum_{i=0}^{k}\binom{n}{i} p^{i}}<k!+1 . \tag{iii}
+\end{equation*}
+
+
+In consequence of
+
+\[
+\frac{(n+1)^{k} p^{k}}{\sum_{i=0}^{k}\binom{n}{i} p^{i}}=\frac{(n+1)^{k}}{\sum_{i=0}^{k}\binom{n}{i} p^{i-k}}<\frac{(n+1)^{k}}{\binom{n}{k}}
+\]
+
+we see that (iii) will follow from
+
+
+\begin{equation*}
+\frac{(n+1)^{k}}{\binom{n}{k}} \leq k!+1 \tag{iv}
+\end{equation*}
+
+
+To derive (iv) we have only to use Lemmas 2.7 and 2.8, viz.
+
+\[
+\begin{aligned}
+& \frac{(n+1)^{k}}{\binom{n}{k}}\leq\frac{k!}{\frac{(n+1-k)^{k}}{(n+1)^{k}}}=\frac{k!}{\left(1-\frac{k}{n+1}\right)^{k}}<\frac{k!}{\left(1-\frac{k}{n}\right)^{k}}=k!\left(\left(1-\frac{k}{n}\right)^{k}\right)^{-1} \\
+& \quad \leq k!\left(1-\frac{k^{2}}{n}\right)^{-1} \leq k!\left(1+\frac{2 k^{2}}{n}\right) \leq k!\left(1+\frac{2 k^{2}}{(2 k)^{k}}\right) \leq k!\left(1+\frac{1}{k!}\right)
+\end{aligned}
+\]
+
+\origpage{454}Using Lemma 2.10 we may characterize the factorial function in terms of three exponential functions.
+
+\statement{Lemma 2.11.} For any positive integers $k$ and $f$, in order that $f=k!$ it is necessary and sufficient that there exist nonnegative integers $j, h, n, p, q, w$ and $z$ such that
+
+\begin{align*}
+&\text{(I)}\quad q=w z+h+j,\\
+&\text{(II)}\quad z=f(h+j)+h,\\
+&\text{(III)}\quad (2 k)^{3}(2 k+2)(n+1)^{2}+1=\square,\\
+&\text{(IV)}\quad p=(n+1)^{k},\\
+&\text{(V)}\quad q=(p+1)^{n},\\
+&\text{(VI)}\quad z=p^{k+1}.
+\end{align*}
+
+\textit{Proof. Sufficiency.} Suppose $k, f, j, h, n, p, q, w$ and $z$ satisfy conditions I--VI. By III and Lemma 2.3, $(2k)^k\leq n$; by IV, $n^k<p$. Thus Lemma 2.10 applies. By II and VI, $0<h+j\leq z$. If $h+j=z$ then I implies $z \mid q$ contrary to Lemma 2.10. Hence $h+j<z$ and so I implies $r(q, z)=h+j$. From II and Lemma 2.10 we find
+
+\[
+f \leq z /(h+j) \leq f+1 \quad \text { and } \quad k!<z /(h+j)<k!+1 .
+\]
+
+Hence $f=k!$ since $f$ and $k!$ are integers.
+
+\textit{Necessity.} Suppose $1 \leq k$ and $f=k!$. By Lemma 2.3 we may choose $n$ so that $(2 k)^{k} \leq n$ and III holds. Set $p=(n+1)^{k}, q=(p+1)^{n}$ and $z=p^{k+1}$. Then IV, V and VI hold. Finally, put $w=$ $(q-r(q, z)) / z, h=z-f r(q, z)$ and $j=r(q, z)-h$. Then I and II hold. By Lemma 2.10, $h$ and $j$ are nonnegative.
+
+Finally, we are able to give a Diophantine definition of the set of prime numbers.
+
+\statement{Theorem 2.12.} For any number $k \geq 1$, in order that $k+1$ be prime it is necessary and sufficient that there exist numbers $a, b, c, d, e, f, g, h, i, j, l, m, n, o, p, q, r, s, t, u, v, w, x, y$ and $z$ such that
+
+\begin{align*}
+&\text{(1)}\quad q=w z+h+j,\\
+&\text{(2)}\quad z=(g k+g+k) \cdot(h+j)+h,\\
+&\text{(3)}\quad (2 k)^{3}(2 k+2)(n+1)^{2}+1=f^{2},\\
+&\text{(4)}\quad e=p+q+z+2 n,\\
+&\text{(5)}\quad e^{3}(e+2)(a+1)^{2}+1=o^{2},\\
+&\text{(6)}\quad x^{2}=\left(a^{2}-1\right) y^{2}+1,\\
+&\text{(7)}\quad u^{2}=16\left(a^{2}-1\right) r^{2} y^{4}+1,\\
+&\text{(8)}\quad (x+c u)^{2}=\left(\left(a+u^{2}\left(u^{2}-a\right)\right)^{2}-1\right) \cdot(n+4 d y)^{2}+1,\\
+&\text{(9)}\quad m^{2}=\left(a^{2}-1\right) l^{2}+1,\\
+&\text{(10)}\quad l=k+i(a-1),\\
+&\text{(11)}\quad n+l+v=y,\\
+&\text{(12)}\quad m=p+l(a-n-1)+b\left(2 a(n+1)-(n+1)^{2}-1\right),\\
+&\text{(13)}\quad x=q+y(a-p-1)+s\left(2 a(p+1)-(p+1)^{2}-1\right),\\
+&\text{(14)}\quad p m=z+p l(a-p)+t\left(2 a p-p^{2}-1\right).
+\end{align*}
+
+\textit{Proof. Sufficiency.} Suppose that numbers $a, b, \cdots, z$ satisfy equations (1)--(14) and that $1 \leq k$. Equation (3), together with Lemma 2.3, implies that
+
+
+\begin{equation*}
+2\leq n,\qquad k<n.\tag{$1^\prime,2^\prime$}
+\end{equation*}
+
+
+Equations (4) and (5), together with Lemma 2.3, imply that
+
+
+\begin{equation*}
+p+q+z+2n-1+(p+q+z+2n)^{p+q+z+2n-2}\leq a.\tag{$3^\prime$}
+\end{equation*}
+Also,
+\begin{equation*}
+n<a.\tag{$4^\prime$}
+\end{equation*}
+
+
+According to Corollary 2.6, equations (6), (7), (8) and (11) imply that $y=\psi_{a}(n)$, and hence also that $x=\chi_{a}(n)$. Equation (9) implies that $m=\chi_{a}\left(k^{\prime}\right)$ and $l=\psi_{a}\left(k^{\prime}\right)$, for some number $k^{\prime}$. Equation (11) asserts that $l<y$ and hence that $k^{\prime}<n$. Therefore, by (2') and (4') we have $k^{\prime}<a-1$ and also $k<a-1$. By Lemma 2.2, and equation (10), we have $k \equiv k^{\prime}(\bmod a-1)$. Therefore $k^{\prime}=k$ so $m=\chi_{a}(k)$ and $l=\psi_{a}(k)$.
+
+From (1'), (2'), and (3') it follows that
+
+\[
+p<a, \quad(n+1)^{k}<a \quad \text { and } \quad a<2 a(n+1)-(n+1)^{2}-1 .
+\]
+
+\origpage{455}Using Lemma 2.4 and equation (12) we find that $p \equiv(n+1)^{k}\left(\bmod 2 a(n+1)-(n+1)^{2}-1\right)$. This together with the above inequalities implies that
+
+
+\begin{equation*}
+p=(n+1)^{k} . \tag{5'}
+\end{equation*}
+
+
+From (1') and (3') it follows that
+
+\[
+q<a, \quad(p+1)^{n}<a \quad \text { and } \quad a<2 a(p+1)-(p+1)^{2}-1 .
+\]
+
+Using Lemma 2.4 and equation (13) we find that $q \equiv(p+1)^{n}\left(\bmod 2 a(p+1)-(p+1)^{2}-1\right)$. This, together with the above inequalities, implies that
+
+
+\begin{equation*}
+q=(p+1)^{n} . \tag{6'}
+\end{equation*}
+
+
+From (1'), (2'), (3') and the fact that $p\geq3$ (which follows from (5')), it follows that
+
+\[
+z<a, \quad p^{k+1}<a \quad \text { and } \quad a<2 a p-p^{2}-1 .
+\]
+
+Using Lemma 2.4 and equation (14) we find that $z \equiv p^{k+1}\left(\bmod 2 a p-p^{2}-1\right)$. This, together with the above inequalities, implies that
+
+
+\begin{equation*}
+z=p^{k+1} . \tag{7'}
+\end{equation*}
+
+
+According to Lemma 2.11, conditions (1), (2), (3), (5'), (6') and (7') imply that $g k+g+k=k!$ and hence that $k!+1=(g+1)(k+1)$. Thus $k+1$ is prime by Lemma 2.9.
+
+\textit{Necessity.} Suppose that $1 \leq k$ and that $k+1$ is prime. By Lemma 2.9 we may find a number $g$ so that $k!=g k+g+k$. According to Lemma 2.11 numbers $f, h, j, n, p, q, w$ and $z$ may be chosen to satisfy equations (1), (2), (3) and also the conditions
+
+
+\begin{equation*}
+p=(n+1)^{k}, \quad q=(p+1)^{n} \quad \text { and } \quad z=p^{k+1} . \tag{8'}
+\end{equation*}
+
+
+Choose $e$ so as to satisfy equation (4). By Lemma 2.3 it is possible to choose numbers $a$ and $o$, $(a \geq 2)$, satisfying (5). Put $y=\psi_{a}(n)$. According to Corollary 2.6 we may find numbers $c, d, r, u$ and $x$ satisfying equations (6), (7) and (8). Put $m=\chi_{a}(k)$ and put $l=\psi_{a}(k)$. Then (9) holds. By Lemma 2.2 and the fact that $k \leq \psi_{a}(k)$ for $2 \leq a$, we may choose $i$ satisfying equation (10). It is trivial to show (by induction) that for $2 \leq a, n+\psi_{a}(n-1) \leq \psi_{a}(n)$. Using this, and the fact that $k<n$ (which follows from (3)), we find that $n+l \leq y$. Hence it is possible to choose a number $v$ satisfying (11). Finally, as in the proof of sufficiency, equations (4) and (5) imply that
+
+\[
+(n+1)^{k}<a, \quad(p+1)^{n}<a \quad \text { and } \quad p^{k}<a .
+\]
+
+Consequently, by Lemma 2.4 and the equations (8'), numbers $b, s$ and $t$ may be found so that equations (12), (13) and (14) are satisfied. This completes the proof of Theorem 2.12.
+
+Theorem 1 now follows immediately from Theorem 2.12. We have only to replace $k$ by $k+1$ throughout the equations of Theorem 2.12, sum the squares of the equations and employ the device of Putnam \cite{ref12}. This produces the polynomial (1).
+
+Perhaps some industrious reader will construct a shorter prime-representing polynomial.
+
+
+\section{Proof of Theorem 2} Here we show that primes are Diophantine definable in 11 unknowns. In Section 2 we used what might be called the congruence method. In this section we shall use what might be called the ratio method. This latter technique, developed by Yuri Matijasevič and Julia Robinson in \cite{ref11}, is generally more economical with respect to the number of variables.
+
+\statement{Lemma 3.1.} For an integer $q\geq1$ and real $\beta>2q$, $\left(\frac{\beta}{\beta-1}\right)^{q} \leq 1+\frac{2 q}{\beta}$.
+
+\textit{Proof.} By Lemmas 2.7 and 2.8.
+
+\statement{Lemma 3.2.} \origpage{456}For $0<n<M$ and $x\geq0$, $1-\frac{n}{M}<\left(1-\frac{1}{2M(x+1)}\right)^n$.
+
+\textit{Proof.} By Lemma 2.7.
+
+\statement{Lemma 3.3.} If $x>8 \cdot 2^{n}$ and $n>k$, then
+
+(i) $\frac{(x+1)^{n}}{x^{k}}-\left[\frac{(x+1)^{n}}{x^{k}}\right]<\frac{1}{8}$,
+
+(ii) $\left[\frac{(x+1)^{n}}{x^{k}}\right] \equiv\binom{n}{k} \bmod x$,
+
+(iii) $\binom{n}{k}<\frac{(x+1)^{n}}{x^{k}}$.
+
+\textit{Proof.}
+
+\[
+\frac{(x+1)^{n}}{x^{k}}=\sum_{i=0}^{n}\binom{n}{i} x^{i-k}=\sum_{i=0}^{k-1}\binom{n}{i} x^{i-k}+\sum_{i=k}^{n}\binom{n}{i} x^{i-k},
+\]
+
+where
+
+\[
+\sum_{i=0}^{k-1}\binom{n}{i} x^{i-k} \leq \frac{1}{x} \sum_{i=0}^{k-1}\binom{n}{i}<\frac{2^{n}}{x}<\frac{1}{8} . \quad \text { Thus } \quad\left[\frac{(x+1)^{n}}{x^{k}}\right]=\sum_{i=k}^{n}\binom{n}{i} x^{i-k} \equiv\binom{n}{k} \bmod x .
+\]
+
+(iii) follows from the assumption $k<n$.
+
+\statement{Lemma 3.4.} For $k\geq1$, $n^{k} /\binom{n}{k} \leq k!\left(1+\frac{2(k-1)^{2}}{n}\right)$ for $n>2(k-1)^{2}$.
+
+\textit{Proof.} As in the proof of Lemma 2.10, condition (iv).
+
+\statement{Lemma 3.5.} For $a\geq1$, $a\left(1+\frac{1}{10a}\right)^4<a+\frac12$.
+
+\statement{Lemma 3.6.} For $a\geq1$, $a\left(1-\frac{1}{4a}\right)^2>a-\frac12$.
+
+\statement{Definition 3.7.} $U(x, y)=(x+2)^{3}(x+4)(y+1)^{2}+1$.
+
+By Lemma 2.3, if $U(x, y)=\square$ then $x^{x}<y$. Also, for each $x$, arbitrarily large numbers $y$ may be found satisfying $U(x, y)=\square$. (This is the same function $U(x, y)$ defined in \cite{ref11}.)
+
+\statement{Lemma 3.8.} (Matijasevič-Robinson \cite{ref11}) Suppose $A>1, B>1$ and $C>0$. For any fixed auxiliary parameter $\kappa\geq0$, $\psi_A(B)=C$ if and only if the following system can be satisfied in nonnegative integers $i,j,D,E,F,G,H,I$.
+
+\begin{align*}
+&\text{(A1)}\quad DFI=\square,\quad F\mid H-C,\quad B\leq C,\\
+&\text{(A2)}\quad D=(A^2-1)C^2+1,\\
+&\text{(A3)}\quad E=2(i+1)D(\kappa+1)C^2,\\
+&\text{(A4)}\quad F=(A^2-1)E^2+1,\\
+&\text{(A5)}\quad G=A+F(F-A),\\
+&\text{(A6)}\quad H=B+2(j+1)C,\\
+&\text{(A7)}\quad I=(G^2-1)H^2+1.
+\end{align*}
+
+\statement{Theorem 3.9.} For any positive integer $k$, in order that $k+1$ be prime, it is necessary and sufficient that the following system of conditions has a solution in nonnegative integers (the rational expression in (XIV) must be defined):
+
+\begin{align*}
+&\text{(I)}\quad U(2 k, n)=\square,\\
+&\text{(II)}\quad U(2 n, x)=\square,\\
+&\text{(III)}\quad M=16 n x(w+2)+1,\\
+&\text{(IV)}\quad A=M(x+1),\\
+&\text{(V)}\quad B=n+1,\\
+&\text{(VI)}\quad C=m+B,\\
+&\text{(VII)}\quad D F I=\square, F \mid H-C,\\
+&\text{(VIII)}\quad D=\left(A^{2}-1\right) C^{2}+1,\\
+&\text{(IX)}\quad E=2(i+1) D C^{2},\\
+&\text{(X)}\quad F=\left(A^{2}-1\right) E^{2}+1,\\
+&\text{(XI)}\quad G=A+F(F-A),
+\end{align*}
+
+\begin{align*}
+ &\text{(XII)}\origpage{457}\quad H=B+2(j+1) C\\
+ &\text{(XIII)}\quad I=\left(G^{2}-1\right) H^{2}+1\\
+ &\text{(XIV)}\quad \left\{\frac{R}{\left(\frac{C}{K L}-(w+1) x\right)\left(1-\frac{R}{C}\right)^{2} L}-(S+1)\right\}^{2}<\frac{1}{4}\\
+ &\text{(XV)}\quad \quad\left(M^{2}-1\right) K^{2}+1=\square\\
+ &\text{(XVI)}\quad \quad\left(M^{2} x^{2}-1\right) L^{2}+1=\square\\
+ &\text{(XVII)}\quad \left(M^{2} n^{2} x^{2}-1\right) R^{2}+1=\square\\
+ &\text{(XVIII)}\quad K=n-k+1+p(M-1)\\
+ &\text{(XIX)}\quad L=k+1+l(M x-1)\\
+ &\text{(XX)}\quad R=k+1+r(M n x-1)\\
+ &\text{(XXI)}\quad S=(z+1)(k+1)-2
+\end{align*}
+
+\textit{Proof of sufficiency.} Let there be given a solution to the system (I)--(XXI). We must show that $k+1$ is prime. By Wilson's Theorem (Lemma 2.9) it is sufficient to show that $k+1 \mid k!+1$. According to the equation (XXI), $k+1 \mid S+2$. Hence it is sufficient to show that $S+1=k!$. Define real numbers $\sigma$ and $\beta$ by
+
+\[
+\sigma=\frac{C}{K L}, \quad \beta=\frac{R}{(\sigma-(w+1) x)\left(1-\frac{R}{C}\right)^{2} L} .
+\]
+
+According to (XIV), $|\beta-(S+1)|<\frac{1}{2}$. Hence we need only prove that
+
+
+\begin{equation*}
+\left|\beta-k!\right|<\frac12. \tag{1}
+\end{equation*}
+
+
+From (I) we have, by Lemma 2.3 and Definition 3.7,
+
+
+\begin{equation*}
+n>(2 k)^{2 k}>k, \quad \text { and } \quad n \geq 5 . \tag{2}
+\end{equation*}
+
+
+(II) implies that
+
+
+\begin{equation*}
+x>(2 n)^{2 n}>8 n^{k} . \tag{3}
+\end{equation*}
+
+
+(III) implies that
+
+
+\begin{equation*}
+M\geq32nx.\tag{4}
+\end{equation*}
+In particular,
+\begin{equation*}
+M>2n,\qquad M>160\cdot10^{10}.\tag{5}
+\end{equation*}
+
+
+From (IV), (V) and (VI), $A>1, B>1$ and $C \geq B>1$. So by Lemma 3.8 with $\kappa=0$, (VII)--(XIII) imply that
+
+
+\begin{equation*}
+C=\psi_{M(x+1)}(n+1) . \tag{6}
+\end{equation*}
+
+
+(XV), (XVIII) and Lemma 2.2 imply
+
+
+\begin{equation*}
+K=\psi_{M}\left(n-k+1+p^{\prime}(M-1)\right), \tag{7}
+\end{equation*}
+
+
+where $p^{\prime} \geq 0$, since $M-1>n-k+1$ by (5). (XVI), (XIX) and Lemma 2.2 imply that
+
+
+\begin{equation*}
+L=\psi_{M x}\left(k+1+l^{\prime}(M x-1)\right), \tag{8}
+\end{equation*}
+
+
+where $l^{\prime} \geq 0$ since $M x-1>k+1$ by (4) and (2). (XVII), (XX) and Lemma 2.2 imply that
+
+
+\begin{equation*}
+R=\psi_{M n x}\left(k+1+r^{\prime}(M n x-1)\right), \tag{9}
+\end{equation*}
+
+
+where $r^{\prime} \geq 0$ since $M n x-1 \geq k+1$.
+
+We now show by contradiction that $p^{\prime}=l^{\prime}=0$. If $p^{\prime}>0$ or $l^{\prime}>0$ then
+
+\[
+\sigma \leq \frac{(2 M(x+1))^{n}}{(2 M-1)^{n+M-k-1}(2 M x-1)^{k}} \quad \text { or } \quad \sigma \leq \frac{(2 M(x+1))^{n}}{(2 M-1)^{n-k}(2 M x-1)^{k+M x-1}} .
+\]
+
+In either case,
+
+\[
+\sigma<\frac{(2 M(x+1))^{n}}{(2 M-1)^{M}}=\frac{(2 M)^{n}}{(4 M(M-1)+1)^{n}} \cdot \frac{(x+1)^{n}}{(2 M-1)^{M-2 n}}<\frac{1}{2} .
+\]
+
+Hence $\beta<0$ \origpage{458}contradicting (XIV) (which implies that $\frac{1}{2}<\beta$ ).
+
+Thus
+\begin{equation*}
+p'=l'=0,\qquad K=\psi_M(n-k+1),\qquad L=\psi_{Mx}(k+1).\tag{10}
+\end{equation*}
+We then have
+
+\[
+\sigma \leq \frac{(2 M(x+1))^{n}}{(2 M-1)^{n-k}(2 M x-1)^{k}}<\frac{(x+1)^{n}}{x^{k}}\left(\frac{2 M}{2 M-1}\right)^{n} \leq \frac{(x+1)^{n}}{x^{k}}\left(1+\frac{n}{M}\right),
+\]
+
+by Lemmas 2.7 and 3.1. Also,
+
+\[
+\sigma \geq \frac{(2 M(x+1)-1)^{n}}{(2 M)^{n-k}(2 M x)^{k}}=\frac{(x+1)^{n}}{x^{k}}\left(1-\frac{1}{2 M(x+1)}\right)^{n}>\frac{(x+1)^{n}}{x^{k}}\left(1-\frac{n}{M}\right)
+\]
+
+by Lemma 3.2. Thus,
+
+
+\begin{equation*}
+\left|\sigma-\frac{(x+1)^{n}}{x^{k}}\right|<\frac{n}{M} \cdot \frac{(x+1)^{n}}{x^{k}}, \quad \text { and } \quad \sigma>\frac{1}{2} \frac{(x+1)^{n}}{x^{k}} . \tag{11}
+\end{equation*}
+
+
+We next derive bounds for $\sigma-(w+1) x$.
+
+Case 1: Suppose $x>\sigma-(w+1) x$. Then $(w+2) x>\sigma$. Put $\varepsilon_{1}=\left|\sigma-\frac{(x+1)^{n}}{x^{k}}\right|$. Then
+
+
+\begin{equation*}
+\sigma=\frac{(x+1)^n}{x^k}\pm\varepsilon_1
+=\left[\frac{(x+1)^n}{x^k}\right]\pm\varepsilon_1+\varepsilon_2,
+\qquad 0<\varepsilon_2<\frac18.\tag{12}
+\end{equation*}
+
+
+
+\begin{equation*}
+\sigma\equiv\binom nk\pm\varepsilon_1+\varepsilon_2\pmod x.\tag{13}
+\end{equation*}
+
+
+Here both statements follow from Lemma 3.3. From (11) and (III),
+
+\[
+0 \leq \varepsilon_{1}<\frac{(x+1)^{n}}{x^{k}} \cdot \frac{n}{M}<2 \sigma \cdot \frac{n}{M}<\frac{1}{8} .
+\]
+
+Since $k+1 \leq n$, we have
+
+\[
+\binom{n}{k}=\frac{n(n-1) \cdots(n-k+1)}{k(k-1) \cdots 2} \geq \frac{n \cdot k(k-1) \cdots 2}{k(k-1) \cdots 2}=n \geq 5, \quad \text { and } \quad\binom{n}{k} \leq n^{k}<\frac{1}{3} x .
+\]
+
+Then
+
+\[
+\sigma-(w+1) x \equiv \sigma \equiv\binom{n}{k} \pm \varepsilon_{1}+\varepsilon_{2}(\bmod x),
+\]
+
+where $0<\binom{n}{k} \pm \varepsilon_{1}+\varepsilon_{2}<\frac{1}{3} x+\frac{1}{4}<\frac{1}{2} x<x$. By (XIV), $0<\sigma-(w+1) x$. Hence both sides of the congruence are less than the modulus, so we have
+
+
+\begin{equation*}
+\sigma-(w+1) x=\binom{n}{k} \pm \varepsilon_{1}+\varepsilon_{2}<\frac{1}{2} x, \tag{14}
+\end{equation*}
+
+
+and $\sigma-(w+1) x=\binom{n}{k} \pm \varepsilon_{1}+\varepsilon_{2} \geq\binom{ n}{k}-\frac{1}{8}>4$, i.e.,
+
+
+\begin{equation*}
+4<\sigma-(w+1) x<\frac{1}{2} x . \tag{15}
+\end{equation*}
+
+
+From (9), we have $R=\psi_{M n x}\left(k+1+r^{\prime}(M n x-1)\right)$, where $r^{\prime} \geq 0$. Suppose $r^{\prime}>0$. Then
+
+\[
+R \geq \psi_{M n x}(k+M n x) \geq(2 M n x-1)^{k+M n x-1} \geq(2 M n x-1)^{M n x}
+\]
+
+\origpage{459}By (6), $C=\psi_{M(x+1)}(n+1) \leq(2 M(x+1))^{n}<(2 M n x-1)^{n}$, so $C^{3}<R$. Also, $C \geq(2 M(x+1)-1)^{n}>9$, so that $C<\frac{1}{3} R^{1 / 2}$. Thus,
+
+\[
+R /\left(\frac{R}{C}-1\right)^{2}<R /\left(3 R^{1 / 2}-1\right)^{2}<R /\left(2 R^{1 / 2}\right)^{2}=\frac{1}{4} .
+\]
+
+Since $\frac{1}{2}<\sigma-(w+1) x$ by (15),
+
+\[
+\beta=\frac{R}{(\sigma-(w+1) x)\left(1-\frac{R}{C}\right)^{2} L}<\frac{1}{4(\sigma-(w+1) x)}<\frac{1}{2},
+\]
+
+contradicting (XIV). Thus
+
+
+\begin{equation*}
+r^{\prime}=0 \quad \text { and } \quad R=\psi_{M n x}(k+1) . \tag{16}
+\end{equation*}
+
+
+It follows from this, (3) and (4) that
+
+
+\begin{equation*}
+\frac{R}{C}=\frac{\psi_{M n x}(k+1)}{\psi_{M(x+1)}(n+1)} \leq \frac{(2 M n x)^{k}}{(2 M(x+1)-1)^{n}}<\frac{(2 M x)^{k} \cdot n^{k}}{(2 M x)^{n}}<\frac{(2 M x)^{k+1}}{(2 M x)^{n}} \leq \frac{1}{(2 M x)^{2}}<\frac{1}{4} . \tag{17}
+\end{equation*}
+
+
+Also,
+
+
+\begin{equation*}
+\left(1-\frac{R}{C}\right)^{2}>1-\frac{2 R}{C}, \text { so } \frac{1}{\left(1-\frac{R}{C}\right)^{2}}<\frac{1}{1-\frac{2 R}{C}}<2,\quad\text{by (17)}.\tag{18}
+\end{equation*}
+
+
+Case 2: Suppose $\sigma-(w+1) x \geq x$. Then $\sigma-(w+1) x>\frac{1}{2}$, so $r^{\prime}=0$, as in Case 1. Also,
+
+\[
+\begin{aligned}
+\beta & =\frac{R}{(\sigma-(w+1) x)\left(1-\frac{R}{C}\right)^{2} L}<\frac{2(2 M n x)^{k}}{x(2 M x-1)^{k}}, \text { using (18), (16) and (10) } \\
+& =\frac{2 n^{k}}{x}\left(\frac{2 M x}{2 M x-1}\right)^{k} \leq \frac{2 n^{k}}{x}\left(1+\frac{k}{M x}\right) \text { by Lemma 3.1, using (3), } \\
+& <\frac{4 n^{k}}{x}<\frac{1}{2} .
+\end{aligned}
+\]
+
+Thus $\beta<\frac{1}{2}$, contradicting (XIV). Hence, Case 2 does not hold and Case 1 obtains.
+
+Now it is possible to show that $|\beta-k!|<\frac{1}{2}$. We have, from Case 1, that
+
+
+\begin{equation*}
+\sigma-(w+1) x=\binom{n}{k} \pm \varepsilon, \quad \text { where } \quad 0 \leq \varepsilon=\left| \pm \varepsilon_{1}+\varepsilon_{2}\right|<\frac{1}{4} . \tag{19}
+\end{equation*}
+
+
+Using (10), (16), (17) and (19) we have
+
+\[
+\begin{aligned}
+\beta & =\frac{R}{\left(\binom{n}{k} \pm \varepsilon\right)\left(1-\frac{R}{C}\right)^{2} L}<\frac{(2 M n x)^{k}}{\binom{n}{k}\left(1-\left(\varepsilon /\binom{n}{k}\right)\right)\left(1-\frac{1}{(2 M x)^{2}}\right)^{2}(2 M x-1)^{k}} \\
+& =\left(n^{k} /\binom{n}{k}\right)\left(\frac{2 M x}{2 M x-1}\right)^{k}\left(\frac{1}{1-\left(\varepsilon /\binom{n}{k}\right)}\right)\left(\frac{1}{1-\frac{1}{(2 M x)^{2}}}\right)^{2}
+\end{aligned}
+\]
+
+It is easily seen that
+
+\[
+\frac{1}{1-\left(\varepsilon /\binom{n}{k}\right)} \leq 1+\frac{2 \varepsilon}{\binom{n}{k}},\left(\frac{1}{1-\frac{1}{(2 M x)^{2}}}\right)^{2} \leq 1+\frac{1}{M x}, \quad \text { and } \quad\left(\frac{2 M x}{2 M x-1}\right)^{k} \leq 1+\frac{k}{M x},
+\]
+
+using \origpage{460}Lemmas 2.7, 2.8 and 3.1. By Lemma 3.4,
+
+\[
+n^{k} /\binom{n}{k} \leq k!\left(1+\frac{2(k-1)^{2}}{n}\right) .
+\]
+
+Thus
+
+\[
+\beta<k!\left(1+\frac{2 \varepsilon}{\binom{n}{k}}\right)\left(1+\frac{1}{M x}\right)\left(1+\frac{k}{M x}\right)\left(1+\frac{2(k-1)^{2}}{n}\right) .
+\]
+
+We claim
+
+
+\begin{equation*}
+\beta<k!+\frac{1}{2} . \tag{20}
+\end{equation*}
+
+
+For this, the following inequalities are sufficient, by Lemma 3.5:
+
+
+\begin{equation*}
+k!\left(2 \varepsilon /\binom{n}{k}\right)<\frac{1}{10} \quad\left(\text { since } \quad 10 k!k!2 \varepsilon<5(k!)^{2} \leq 5 k^{2 k} \leq n\leq n(n-1)\cdots(n-k+1)\right), \tag{i}
+\end{equation*}
+
+
+
+\begin{equation*}
+k!\left(\frac{k}{M x}\right)<\frac{1}{10} \quad\left(\text { since } \quad 10 k!k \leq 10 k^{k}<10 n<M x\right), \tag{ii}
+\end{equation*}
+
+
+
+\begin{equation*}
+k!\left(\frac{1}{M x}\right)<\frac{1}{10} \quad(\text { by }(\mathrm{ii})), \tag{iii}
+\end{equation*}
+
+
+
+\begin{equation*}
+\left.k!\left(\frac{2(k-1)^{2}}{n}\right)<\frac{1}{10} \quad \text { (since } \quad 20 k!(k-1)^{2} \leq 40 k^{k}<(2 k)^{2 k}<n, \quad \text { if } \quad k \geq 2\right) . \tag{iv}
+\end{equation*}
+
+
+For $k=1$, estimate (iv) is immediate because its numerator is zero. The estimates use (2)--(4) and $0\leq\varepsilon<1/4$ from (19). Thus (20) holds.
+
+Also,
+
+\[
+\begin{aligned}
+\beta & \geq \frac{(2 M n x-1)^{k}}{\binom{n}{k}\left(1+\left(\varepsilon /\binom{n}{k}\right)\right)(2 M x)^{k}} \text { by (16) and (10), } \\
+&=\frac{n^k}{\binom nk}\left(1-\frac{1}{2Mnx}\right)^k
+\left(1+\frac{\varepsilon}{\binom nk}\right)^{-1}\\
+&\geq\frac{n^k}{\binom nk}\left(1-\frac{1}{2Mnx}\right)^k
+\left(1-\frac{\varepsilon}{\binom nk}\right)\\
+& \geq k!\left(1-\frac{k}{2 M n x}\right)\left(1-\frac{\varepsilon}{\binom{n}{k}}\right)
+\end{aligned}
+\]
+
+by Lemma 2.7 and the elementary inequality $(1+t)^{-1}\geq1-t$ for $t\geq0$.
+
+We claim that
+
+
+\begin{equation*}
+\beta>k!-\frac{1}{2} . \tag{21}
+\end{equation*}
+
+
+By Lemma 3.6, the following inequalities are sufficient to establish this.
+
+
+\begin{equation*}
+1-\frac{k}{2 M n x} \geq 1-\frac{1}{4 k!} \quad\left(\text { since } \quad 4 k k!\leq 4 k^{2 k} \leq 4 n<2 M n x\right), \tag{i}
+\end{equation*}
+
+
+\begin{equation*}
+1-\frac{\varepsilon}{\binom nk}\geq1-\frac{1}{4k!},\tag{ii}
+\end{equation*}
+since $4\varepsilon(k!)^2(n-k)!<(k!)^2(n-k)!\leq k^{2k}(n-k)!\leq n(n-k)!\leq n!$.
+
+\origpage{461}Thus (21) holds. Hence (1) holds.
+
+\textit{Proof of necessity.} Suppose $k+1$ is a prime number. We must find nonnegative integers satisfying (I)--(XXI). Choose $n$ and $x$ satisfying (I), (II). Let $S=k!-1$. Then $z$ exists satisfying (XXI), by Wilson's Theorem. Define $w$ by $\left[(x+1)^{n} / x^{k}\right]=\binom{n}{k}+(w+1) x$. Let $M$ be given by (III), $A$ by (IV), $B$ by (V). Put $C=\psi_{A}(B)$, and $m=C-B$. Then (VI)--(XIII) may be satisfied by Lemma 3.8 with $\kappa=0$. Put $K=\psi_{M}(n-k+1), L=\psi_{M x}(k+1), R=\psi_{M n x}(k+1)$. Then (XV)--(XX) can be satisfied, by Lemma 2.2. It remains only to show that (XIV) holds. Define $\sigma$ and $\beta$ as before. Recall that in the proof of sufficiency it was shown that
+
+
+\begin{equation*}
+|\beta-k!|<\frac{1}{2} . \tag{22}
+\end{equation*}
+
+
+The only assumptions used in the argument establishing (22) were Lemmas 2.7, 2.8, 3.1--3.6, Definition 3.7, equations (I)--(XIII), the conditions
+
+
+\begin{align*}
+& K=\psi_{M}(n-k+1), \quad L=\psi_{M x}(k+1), \quad R=\psi_{M n x}(k+1),  \tag{i}\\
+& \sigma-(w+1) x=\binom{n}{k} \pm \varepsilon, \quad \text { where } \quad 0 \leq \varepsilon<\frac{1}{4}, \tag{ii}
+\end{align*}
+
+
+and the inequalities
+
+
+\begin{equation*}
+0<\sigma-(w+1)x,\tag{iii}
+\end{equation*}
+\begin{equation*}
+\sigma-(w+1)x<x.\tag{iv}
+\end{equation*}
+
+
+In the sufficiency proof, (XIV) was used to force (i) and the needed positivity and case selection. In the present construction these properties will instead be established directly. Now since $S+1=k!,(22)$ is actually equivalent to (XIV). Hence this same argument may be used to establish (XIV). The conditions (i) have already been satisfied by our choice of $K, L$ and $R$. In Case 1 it was shown how to derive condition (ii) using only conditions (iii) and (iv). Therefore we need only derive (iii) and (iv). (iii) is derived as follows using Lemma 3.3 (i) and (3). First
+
+
+\begin{equation*}
+\begin{aligned}
+M&=16nx(w+2)+1\\
+ &=16n\left(\left[\frac{(x+1)^n}{x^k}\right]-\binom nk+x\right)+1\\
+ &>16n\left(\frac{(x+1)^n}{x^k}-\frac18-\binom nk+x\right)
+ >16n\frac{(x+1)^n}{x^k}.
+\end{aligned}\tag{23}
+\end{equation*}
+
+
+Hence, using (11) and (23), we see that
+
+\[
+\sigma-(w+1) x=\sigma-\left[\frac{(x+1)^{n}}{x^{k}}\right]+\binom{n}{k}>-\frac{n}{M} \frac{(x+1)^{n}}{x^{k}}+\binom{n}{k}>-\frac{1}{16}+\binom{n}{k} \geq-\frac{1}{16}+5>0 .
+\]
+
+Thus (iii) holds. Next we derive (iv). Using Lemma 3.3 (i), (11), (23) and finally (3) we have
+
+\[
+\begin{aligned}
+\sigma-(w+1) x=\sigma-\left[\frac{(x+1)^{n}}{x^{k}}\right]+\binom{n}{k}<\sigma-\frac{(x+1)^{n}}{x^{k}}+\frac{1}{8}+\binom{n}{k}<\frac{n}{M} \frac{(x+1)^{n}}{x^{k}}+\frac{1}{8}+\binom{n}{k} & \\
+& <\frac{1}{16}+\frac{1}{8}+\binom{n}{k}<x .
+\end{aligned}
+\]
+
+Thus (iv) holds. This completes the proof of Theorem 3.9.
+
+The unknowns $M,A,B,C,D,E,F,G,H,I,K,L,R,S$ can be eliminated from (I)--(XXI) by substitution. This leaves 10 unknowns, $n, x, w, m, z, i, j, p, l, r$, the parameter $k$, six square conditions, one divisibility condition and one inequality. For clarity, (XIV) can be cleared of denominators without losing the nonzero-denominator requirement.
+Put
+\[
+\mathcal D=\bigl(C-(w+1)xKL\bigr)(C-R)^2,\qquad
+\mathcal N=RKC^2.
+\]
+With the other conditions in force, (XIV) is equivalent to the single polynomial inequality
+\[
+4\bigl(\mathcal N-(S+1)\mathcal D\bigr)^2<\mathcal D^2.
+\]
+This strict inequality itself excludes $\mathcal D=0$; also $C,K,L,R>0$.
+The symbols $\mathcal D,\mathcal N$ are abbreviations, not additional unknowns.
+These remaining conditions are definable with one unknown, $y$, by the relation combining theorem of \cite{ref11}. Thus we obtain a definition $M$, in 11 unknowns. Replacing $k$ by $k+1$ in $M$ we obtain a prime-representing polynomial $P=(k+2)\left(1-M^{2}\right)$ in 12 variables.
+
+A direct calculation, based on \cite{ref11}, shows that $M=M_{6}$ will have degree 148864. However, Yuri Matijasevič has recently worked out a more efficient version of the relation combining theorem. If we suppose that $1+\left|\sqrt{A_{i}}\right| \leq V_{i}$, then in $M_{q}$ we may replace $W^{i}$ by $W_{i}=V_{1} \cdot V_{2} \cdots V_{i},(i=1,2, \cdots, q)$.
+
+\origpage{462}Thus when a square condition arises from a Pell equation, $\left(\alpha^{2}-1\right) \beta^{2}+1=\square$, we may choose any $V \geq|\alpha \beta|+|\beta|+2$. Also, if the quantities $B$ and $C$ of \cite{ref11} are nonnegative, as they are here, they need not be squared in $M_{q}$. These refinements yield a polynomial $M_{6}$ of degree 13376.
+
+Matijasevič also noticed that our first two square conditions, (I) and (II), may, for the purpose of the construction, be replaced by the single square condition
+
+
+\begin{equation*}
+U(2 k, n)\left[\left((2 U(2 k, n)-1)^{2}-1\right)(n+1)^{2}(x+1)^{2} 4+1\right]=\square . \tag{24}
+\end{equation*}
+
+
+Observe that the first factor of (24) is relatively prime to the second.
+Indeed, with $T=U(2k,n)$ the second factor is
+$16T(T-1)(n+1)^2(x+1)^2+1$, which is $1$ modulo $T$.
+Thus both factors must be squares. The first gives the original lower bound on $n$.
+For the second, write
+$2(n+1)(x+1)=\psi_{2T-1}(j)$.
+Lemma 2.2 implies $2(n+1)\mid j$, since $2(n+1)\mid2(T-1)$.
+Consequently $j\geq2(n+1)$, and Lemma 2.1 gives
+\[
+2(n+1)(x+1)\geq(4T-3)^{2n+1},
+\]
+which is more than enough for $x>(2n)^{2n}$.
+Conversely, for each admissible $n$, Pell solutions with the second coordinate divisible
+by $2(n+1)$ supply arbitrarily large admissible $x$.
+Thus the proof of Theorem 3.9 still applies; pointwise satisfaction of $U(2n,x)=\square$
+is not required for this replacement. This gives a polynomial $M_{5}$ of degree 6848. Hence the degree of the 12-variable polynomial $P$ is 13697. (Recently Yuri Matijasevič has announced that he has been able to reduce the number of variables still further, from 12 to 10.)
+
+\section{Functions not formulas for primes} Many classical theorems are known concerning the impossibility of representing primes with certain sorts of functions. Since these results are negative, they, together with the previous, shed considerable light on the question of the logical complexity of prime-representing forms. The oldest result of this type is the following.
+
+\statement{Theorem 4.1.} A polynomial $P\left(z_{1}, z_{2}, \cdots, z_{k}\right)$, with complex coefficients, which takes only prime values at nonnegative integers, must be constant.
+
+\textit{Proof.} It is not difficult to show that the coefficients of an integer-valued polynomial must be rational numbers. Let $l$ be a positive common multiple of the denominators of the coefficients of $P$. We are assuming that $P(1,1, \cdots, 1)=p$ is a prime. Then, if $n_{1},n_{2},\ldots,n_{k}$ are nonnegative integers, $P\left(1+n_{1} l p, 1+\right.$ $\left.n_{2} l p, \cdots, 1+n_{k} l p\right) \equiv P(1,1, \cdots, 1) \bmod p$. Hence, for all $n_{1}, n_{2}, \cdots, n_{k}, P\left(1+n_{1} l p, 1+n_{2} l p, \cdots, 1+\right.$ $\left.n_{k} l p\right)=p$. This implies that $P$ is a polynomial of degree 0. The theorem is proved. (Cf. also \cite{ref6}, p. 18.)
+
+This result was extended to rational functions by R. C. Buck \cite{ref2}. A rational function is a special case of an algebraic function, (cf. \cite{ref1} for the definition of algebraic function). We now proceed to extend the result to all algebraic functions. We shall need
+
+\ednote{In Theorem 4.2 and Corollary 4.3, an algebraic function means a fixed analytic branch
+on a connected complex neighborhood of the nonnegative real orthant. Its values at integer
+arguments are not chosen by switching branches independently. In particular,
+$|z-1|$ on the real axis is not such an analytic branch across $z=1$.}
+
+\statement{Theorem 4.2.} An algebraic function $W(z_1,\ldots,z_k)$, analytic on a connected complex
+neighborhood of $[0,\infty)^k$ and integer-valued on $\Nzero^k$, is a polynomial.
+
+\textit{Proof.} First let $k=1$. A branch of an algebraic function has a convergent
+Puiseux expansion near infinity \cite{ref19}. If $h$ is the ramification index,
+use the local coordinate $t=z^{-1/h}$, so that $z=t^{-h}$ and $W(t^{-h})$
+has a Laurent expansion at $t=0$. Thus, along the positive real ray,
+\begin{equation*}
+W(z)=\sum_{l=0}^{\infty}a_l z^{\alpha-l\delta},\qquad
+\alpha\in\mathbb Q,\quad\delta>0.\tag{1}
+\end{equation*}
+The differences $\Delta W(z)=W(z+1)-W(z)$ and
+$\Delta^{r+1}W(z)=\Delta(\Delta^rW(z))$ are integer-valued at nonnegative integers.
+Repeated use of the fundamental theorem of calculus gives
+\begin{equation*}
+\Delta^rW(n)=\int_{[0,1]^r}
+W^{(r)}(n+x_1+\cdots+x_r)\,dx_1\cdots dx_r.\tag{2}
+\end{equation*}
+Choose a fixed integer $r>\max(\alpha,0)$. Termwise differentiation of the convergent
+Puiseux expansion gives $W^{(r)}(z)\to0$ as $z\to+\infty$.
+Hence $\Delta^rW(n)\to0$, so its integer values are zero for all sufficiently large $n$.
+Newton interpolation then supplies a polynomial $Q$ of degree less than $r$
+with $Q(n)=W(n)$ for every sufficiently large integer $n$.
+The algebraic function $W-Q$ has infinitely many zeros and must vanish identically \cite{ref17}.
+Equivalently, substitute $Q(z)$ into an irreducible defining polynomial of $W$;
+the resulting polynomial in $z$ has infinitely many zeros and hence is zero.
+\origpage{463}Analytic continuation gives $W=Q$ throughout the connected domain.
+
+For several variables, fix all but the $i$th argument at nonnegative integers.
+The preceding argument shows that
+\begin{equation*}
+W(n_1,\ldots,n_{i-1},z_i,n_{i+1},\ldots,n_k)\tag{3}
+\end{equation*}
+is a polynomial in $z_i$. These degrees are uniformly bounded: a polynomial relation
+for $W$ bounds the degrees in $z_i$ of its coefficients, and a polynomial root of such
+a relation cannot have degree exceeding that bound. If a specialization makes the relation
+identically zero, expand the coefficients in transverse variables and take a first nonzero
+coefficient; analyticity supplies a nonzero relation on that slice with the same degree bound.
+Consequently, for some integer $d_i\geq1$ independent of the fixed integers,
+\begin{equation*}
+\frac{\partial^{d_i}W(n_1,\ldots,n_{i-1},z_i,n_{i+1},\ldots,n_k)}
+{\partial z_i^{d_i}}=0.\tag{4}
+\end{equation*}
+Derivatives of algebraic functions are algebraic. If the algebraic function
+$\partial^{d_i}W/\partial z_i^{d_i}$ were nonzero, an irreducible defining polynomial
+for it would have a nonzero constant coefficient. Equation (4), evaluated on the integer
+grid, would force that coefficient polynomial to vanish on $\Nzero^k$.
+A polynomial vanishing on this grid is zero (apply the univariate root theorem successively),
+a contradiction. Therefore
+\begin{equation*}
+\frac{\partial^{d_i}W(z_1,\ldots,z_k)}{\partial z_i^{d_i}}=0
+\qquad (i=1,\ldots,k).\tag{5}
+\end{equation*}
+Expand $W$ into its multivariable Taylor series at an ordinary point of its domain.
+Equation (5) forces the degree in $z_i$ to be less than $d_i$ for every $i$;
+the series therefore terminates. Thus $W$ is a polynomial, of total degree at most
+$\sum_{i=1}^k(d_i-1)$. Analytic continuation completes the proof.
+
+\statement{Corollary 4.3.} An algebraic function $W(z_1,\ldots,z_k)$ satisfying the analytic-branch hypothesis of Theorem 4.2, and taking only prime values at nonnegative integer arguments, is constant.
+
+This corollary follows from Theorems 4.1 and 4.2. It was proved for $k=1$ by a different, $p$-adic, method in \cite{ref18}. Negative results about prime-representing exponential functions have also been obtained \cite{ref13} \cite{ref18} \cite{ref20}. We shall prove a multivariable result of this type.
+
+\statement{Theorem 4.4.} Suppose $P_{i}\left(x_{1}, \cdots, x_{n}\right)$ and $Q_{i}\left(x_{1}, \cdots, x_{n}\right) \geq 0$ are polynomials with integer coefficients and that $a_{1}, a_{2}, \cdots, a_{m}$ are positive integers. Then, if the function
+
+\[
+F\left(x_{1}, \cdots, x_{n}\right)=\sum_{i=1}^{m} P_{i}\left(x_{1}, \cdots, x_{n}\right) a_{i}^{Q_{i}\left(x_{1}, \cdots, x_{n}\right)}
+\]
+
+takes only prime values at nonnegative integers, it is constant.
+
+\textit{Proof.} First consider the case $n=1$. The passage to several variables is justified below. Now if $F(x)$ takes on infinitely many prime values $p$, then we may choose $x_{1}$ such that $F\left(x_{1}\right)=p$ is relatively prime to each $a_{i}$ (since the $a_i$'s are nonzero). By Fermat's theorem we then find that $F\left(x_{1}+k p(p-1)\right) \equiv p \bmod p$, and hence that for every $k$
+
+
+\begin{equation*}
+F\left(x_{1}+k p(p-1)\right)=p . \tag{8}
+\end{equation*}
+
+
+(Cf. Reiner \cite{ref13} or Hardy and Wright \cite{ref6}, p. 66.) On the other hand, if $F(x)$ takes on only a finite number of prime values, then one of these values is taken on infinitely many times. In either case, for some prime $p$, the equation
+
+
+\begin{equation*}
+F(x)=p \tag{9}
+\end{equation*}
+
+
+holds for infinitely many nonnegative integers $x$. To justify that (9) holds identically, write $F(x)-p$ as a finite sum
+$\sum_j A_j(x)e^{B_j(x)}$ with real polynomials $A_j,B_j$, grouping together exponents
+whose differences are constant. If the sum is not identically zero, choose the surviving
+$B_j$ that is largest for all sufficiently large real $x$. Every other exponential term,
+even after multiplication by its polynomial coefficient, is negligible relative to that term.
+Its nonzero polynomial coefficient has a fixed nonzero sign eventually. Thus $F(x)-p$
+cannot have arbitrarily large real zeros, contradicting (9). For several variables, apply the one-variable result on every coordinate line with all other arguments fixed at nonnegative integers. The value is consequently the same constant on the entire grid $\Nzero^n$. The dominant-term argument just given, which also works with real polynomial coefficients, extends this equality along the first real coordinate, then the second, and so on. Hence the entire real function, and thus its analytic extension, is constant. This completes the proof.
+
+\origpage{464}It is interesting to compare Theorem 4.4 with Theorem 3 stated in the introduction.
+
+\paragraph{Acknowledgement.} The authors wish to thank Martin Davis, Yuri Matijasevič and Julia Robinson for several helpful suggestions made during the course of this work.
+
+\begin{thebibliography}{20}
+  \bibitem{ref1} Lars V. Ahlfors, Complex Analysis, McGraw-Hill, New York, 1953, xi + 247 pp.
+  \bibitem{ref2} R. C. Buck, Prime representing functions, The American Mathematical Monthly, 53 (1946) 265.
+  \bibitem{ref3} Martin Davis, Hilbert's tenth problem is unsolvable, The American Mathematical Monthly, 80 (1973) 233--269.
+  \bibitem{ref4} Martin Davis, Hilary Putnam and Julia Robinson, The decision problem for exponential Diophantine equations, Ann. of Math., 74 (1961) 425--436.
+  \bibitem{ref5} Underwood Dudley, History of a formula for primes, The American Mathematical Monthly, 76 (1969) 23--28.
+  \bibitem{ref6} G. H. Hardy and E. M. Wright, An Introduction to the Theory of Numbers, Fourth Edition, Oxford University Press, 1960, xvi + 421 pp.
+  \bibitem{ref7} James P. Jones, Formula for the $n$th prime number, Canadian Math. Bull., 18 (1975), no. 3, 433--434.
+  \bibitem{ref8} Yuri Matijasevič, Enumerable sets are Diophantine, Doklady Akademii Nauk SSSR, 191 (1970) 279--282. English translation: Soviet Math., Doklady, 11 (1970) 354--357.
+  \bibitem{ref9} Yuri Matijasevič, Diophantine representation of enumerable predicates, Izvestija Akademii Nauk SSSR. Serija Matematičeskaja, 35 (1971) 3--30. English translation: Mathematics of the USSR-Izvestija, 5 (1971) 1--28.
+  \bibitem{ref10} Yuri Matijasevič, Diophantine representation of the set of prime numbers, Doklady Akademii Nauk SSSR, 196 (1971) 770--773. English translation with Addendum: Soviet Math., Doklady, 12 (1971) 249--254.
+  \bibitem{ref11} Yuri Matijasevič and Julia Robinson, Reduction of an arbitrary Diophantine equation to one in 13 unknowns, Acta Arithmetica, 27 (1975) 521--553.
+  \bibitem{ref12} Hilary Putnam, An unsolvable problem in number theory, Journal of Symbolic Logic, 25 (1960) 220--232.
+  \bibitem{ref13} Irving Reiner, Functions not formulas for primes, The American Mathematical Monthly, 50 (1943) 619--621.
+  \bibitem{ref14} Julia Robinson, Hilbert's tenth problem, Proc. Sympos. Pure Math., 20 (1971) 191--194.
+  \bibitem{ref15} Julia Robinson, Existential definability in arithmetic, Trans. Amer. Math. Soc., 72 (1952) 437--449.
+  \bibitem{ref16} Julia Robinson, Diophantine decision problems, M.A.A. Studies in Mathematics, 6 (1969) 76--116 (Studies in Number Theory, W. J. LeVeque, editor).
+  \bibitem{ref17} Stanislaw Saks and Antoni Zygmund, Analytic Functions, Second Edition Enlarged, Warsaw 1965, p. 276.
+  \bibitem{ref18} Daihachiro Sato and E. G. Straus, $P$-adic proof of non-existence of proper prime-representing algebraic functions and related problems, Jour. London Math. Soc., (2), 2 (1970) 45--48.
+  \bibitem{ref19} Carl L. Siegel, Topics in Complex Function Theory, Vol. 1, Interscience Tracts in Pure and Applied Mathematics, number 25, Wiley, New York, 1969, ix + 186 pp.
+  \bibitem{ref20} E. G. Straus, Functions periodic modulo each of a sequence of integers, Duke Math. Jour., 19 (1952) 379--395.
+\end{thebibliography}
+
+James P. Jones and Douglas P. Wiens, Department of Mathematics, University of Calgary, Calgary, Alberta, Canada, T2N 1N4.
+
+Daihachiro Sato, Department of Mathematics, University of Saskatchewan, Regina, Saskatchewan, Canada, S4S 0A2.
+
+Hideo Wada, Department of Mathematics, Sophia University, Kioicho, Chiyoda-Ku, Tokyo, Japan.
+
+
+\end{document}

@@ -1,0 +1,92 @@
+{
+  "status": "PASS_FIXED_SCAN_WEIGHTED_TRANSPORT",
+  "source": {
+    "materialization_operations": 9,
+    "multiplications": 5,
+    "additions": 4,
+    "dag": [
+      [
+        "U0",
+        "*",
+        "w",
+        "A0"
+      ],
+      [
+        "U1",
+        "*",
+        "w",
+        "A1"
+      ],
+      [
+        "first_twice",
+        "+",
+        "First",
+        "First"
+      ],
+      [
+        "zbase",
+        "+",
+        "H",
+        "first_twice"
+      ],
+      [
+        "Z",
+        "*",
+        "w",
+        "zbase"
+      ],
+      [
+        "last_twice",
+        "+",
+        "Last",
+        "Last"
+      ],
+      [
+        "tbase",
+        "+",
+        "H",
+        "last_twice"
+      ],
+      [
+        "full_length",
+        "*",
+        3,
+        "w"
+      ],
+      [
+        "T",
+        "*",
+        "full_length",
+        "tbase"
+      ]
+    ],
+    "content_residuals": [
+      "-3*F0*q + 3*I0 + R*(A0*w - D0 + X0) - 3*X0",
+      "-3*F1*q + 3*I1 + R*(A1*w - D1 + X1) - 3*X1"
+    ],
+    "length_residual": "3*R*w*(H + 2*Last) - 9*q*w - 3*w*(2*First + H) + 9*w",
+    "head_geometry_residual": "H*(R - 1) - q + 1",
+    "marker_boundary_residual": "-First + Last*R - q + 1",
+    "exact_content_corrections": [
+      "old_content_i-new_content_i=R*(old_Ui-w*Ai) for i=0,1"
+    ],
+    "exact_length_correction": "length_residual=3*w*(geometry+2*boundary)",
+    "supplied_scalar": "w=3L0^2; its construction is outside the nine-operation materialization",
+    "scope": "Materializes four conditional weighted words from already synchronized scan data. No control selection or full verifier cost is asserted."
+  },
+  "finite": {
+    "runs": 72,
+    "blocks": 288,
+    "empty_blocks": 72,
+    "complete_scans": 1230,
+    "checked_rows": 10314,
+    "distinct_actual_rows": 7722,
+    "marker_perturbations": 216,
+    "loader_counterexamples": 48,
+    "unsynchronized_marker_examples": 3,
+    "largest_q_bits": 5580
+  },
+  "proof": "../1980/EXPLORATION_FIXED_SCAN_WEIGHTED_TRANSPORT.md",
+  "scope": "Complete legal fixed-space scan blocks only. Raw loading, draining, partial scans, control realization and all positive adapters remain outside this conditional lemma.",
+  "review_status": "Author and independent root/binary_encoding full proof/source audits and fresh verify runs PASS; no findings. Publication is separate."
+}

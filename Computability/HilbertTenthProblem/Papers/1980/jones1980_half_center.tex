@@ -1,0 +1,362 @@
+% An independent 100-operation encoding, with all Pell equations retained.
+\section{Halving the coefficient and sharing the geometric factor}
+\label{sec:half-center}
+
+The fixed-four construction admits another saving, independent of the
+Pell change in the preceding section. Starting from
+Theorem~\ref{thm:best101}, replace its positive coefficient and third
+block by
+\begin{equation}\label{eq:half-center-block}
+ \Omega=2\lambda-e>0,\qquad
+ S_3=\theta\lambda q-\Omega\mathcal C^2=\sigma>0,
+ \qquad \mathcal C=x+g,\quad\theta=B-4.
+\end{equation}
+The factor $\theta\lambda$ can now be shared with the geometric
+equation. To accommodate the smaller coefficient, rebuild the fixed
+index by pairing ordinary equation tests and placing the special
+target first. No packed bound or Pell equation is removed.
+
+\subsection{Paired rows and a first special target}
+
+Use the finite primitive circuit construction of
+Section~\ref{sec:fixed-four}, with distinct copied operands and fresh
+outputs, all separate from the homogenizing coordinate $\delta$.
+For every multiplication, addition, copy, final equality, or zero
+residual
+\[
+ XY-W\delta,\qquad (X+Y-W)\delta,\qquad
+ (X-Y)\delta,\qquad X\delta,
+\]
+include both $F$ and $-F$ among the ordinary rows. Omit trivial
+identical equalities. Replace each unit gate $X=1$ by two unpaired
+rows
+\begin{equation}\label{eq:half-center-unit}
+ F_{X,1}=X\delta-\delta^2,\qquad
+ F_{X,2}=X\delta-X^2.
+\end{equation}
+Include the unpaired guard $F_{\mathrm g}=u\delta-x^2$, with $u$
+fresh. Every ordinary row has target
+\begin{equation}\label{eq:half-center-target}
+ G_j=2F_j+\delta^2.
+\end{equation}
+The special target $G_0=\delta^2$ is placed \emph{first}, before all
+ordinary targets.
+
+After division by the monomial coefficient in $\mathcal C(T)^2$,
+the coefficient alphabet is still $\{-2,-1,0,1\}$. Paired primitive
+rows have cross-term quotients $\pm1$ and the added square
+$\delta^2$ has quotient $1$. The two unit targets are
+\[
+ 2X\delta-\delta^2,\qquad
+ 2X\delta-2X^2+\delta^2,
+\]
+and the guard has the latter coefficient pattern. The special
+target has its single coefficient $1$. Thus the pairing does not
+enlarge the digit alphabet. At a genuine circuit solution with
+$\delta=1$, every ordinary $F_j$ is zero, including both unit rows;
+choose $u=x^2$ for the guard.
+
+\subsection{The rebuilt fixed index and the absence of an initial carry}
+
+Apply the dynamic support construction of Section~\ref{sec:fixed-four}
+to this finite list. With $m$ positive-weight coordinates and $s$
+targets, write
+\begin{align*}
+ v_i&=3^i\quad(0\le i<m),& M&=3^{m-1},& d_0&=4M+1,\\
+ t_0&=(s+1)d_0+2M,& t_j&=t_0+jd_0,& t_*&=2sd_0+2M,\\
+ K&=t_*+1,& L&>3K+2,
+\end{align*}
+where $L$ is a power of two, $x$ has weight zero, and $\delta$ has
+weight $v_0=1$. The special target is at $t_0$. Include the usual
+dummy coordinate at each $t_j$. Monomial uniqueness, separation of
+the intervals $[t_j-2M,t_j]$, and $2t_0-2M>t_*$ give
+\begin{equation}\label{eq:half-center-coefficient}
+ [T^{t_j}]\,\mathcal D(T)\mathcal C(T)^2=G_j.
+\end{equation}
+In particular, no term involving a dummy contributes to any target.
+
+Define the fixed polynomials and parameters by
+\begin{align*}
+ \ell_0(T)&=\sum_{i=0}^{m-1}T^{v_i}+\sum_{j=0}^{s-1}T^{t_j},\\
+ e_0(T)&=2\sum_{j=0}^{K-1}T^j+\mathcal D(T),&
+ V&=\ell_0(4)+e_0(4)4^L.
+\end{align*}
+The coefficients of $e_0$ are in $\{0,1,2,3\}$, with unit digit
+$2$. Put $c_*=m+s+1$, counting all code coordinates including the
+input, and choose a power of two
+\begin{equation}\label{eq:half-center-index-bound}
+ H>\max\{2\,4^{2L+1},\ 4^{t_*+3}\,4c_*^2,\ 3L,\ 16\}.
+\end{equation}
+The resulting $(V,H,L)$ is an admissible index. Its construction is
+independent of the queried input and introduces no additional
+unknown in the final system.
+
+The first target has a stronger support property than the others.
+Its sole coefficient in $\mathcal D$ is $+1$ at $t_0-2$.
+Every later row has its entire coefficient support above $t_0$,
+because
+\[
+ t_1-2M=t_0+d_0-2M>t_0.
+\]
+Consequently every raw coefficient of
+$\mathcal D(T)\mathcal C(T)^2$ through position $t_0$ is
+nonnegative. After coordinate decoding these coefficients are below
+$B$, as proved below. Hence the incoming carry at the special target
+is exactly zero. This argument assumes neither $\delta=1$ nor any
+ordinary equation.
+
+\subsection{Bounds before the Pell argument}
+
+Retain $B=Hb^2$, $b=x+\beta$, $n=q^8$, and
+\begin{equation}\label{eq:half-center-coding}
+ \lambda(B-1)=q^2-1,\quad \theta+4=B,\quad
+ S_2=\ell+eq=V+t\theta,\quad S_2+\alpha=q^2.
+\end{equation}
+All supplied unknowns, including $\Omega,\sigma,\alpha$, remain
+positive integers. Keep the packing
+\begin{align}
+ S&=g+q^2(S_2+q^2S_3),\notag\\
+ T+1&=q^2(1+\theta\lambda)-(b-1)\ell+\theta\ell q^4,\notag\\
+ r&=S(n^2-n)+(T+1)(n^2-1).\label{eq:half-center-packing}
+\end{align}
+
+The packed bound gives $e<q$ and $\ell<q^2$. Geometry and
+\eqref{eq:half-center-index-bound} give
+\[
+ B\le q^2,\qquad q>4b\ge8,\qquad 3L\le B\le n.
+\]
+Since $\Omega\ge1$ and $S_3>0$, the new offset gives
+\begin{equation}\label{eq:half-center-preliminary-C}
+ \mathcal C^2<\theta\lambda q<B\lambda q<3q^3<q^4.
+\end{equation}
+Thus $g<\mathcal C<q^2$ and $0<S_3<q^4$. The mask $T+1$ is
+unchanged; its first block borrows fewer than $b$ units from the
+middle block, which remains positive since $\theta=B-4>b$.
+The same width-$(2,2,4)$ bounds therefore give
+\begin{equation}\label{eq:half-center-packing-bounds}
+ 0<S<n,\qquad 0<T+1\le n,\qquad
+ n\le r\le2n^3-2n^2<2n^3.
+\end{equation}
+
+These bounds have been established before any Pell equation is
+used. In particular $n,r\ge64$, $U=w n^2\ge n^2$ and
+$Y_P=s n^2\ge n^2$. The main parameter satisfies
+$a=Y_P(U+1)>n^4>2r+1$, and the first index modulus satisfies
+$UY_P\ge n^4>r+1$. Moreover $L\ge2$ and
+$3L\le B\le n\le r$. Thus every preliminary hypothesis of the
+common-witness Pell proof in Section~\ref{sec:common-witness} is
+available. All its equations are retained. That proof yields powers
+of two $b,B,q$, the exact equality $q=B^L$, and
+\begin{equation}\label{eq:half-center-binomial}
+ n^2\mid\binom{2r}{r}.
+\end{equation}
+No internal target equation has entered this argument.
+
+Now $\lambda>q$ and $e<q$, so $\Omega=2\lambda-e>\lambda$.
+Positivity in \eqref{eq:half-center-block} improves the code bound to
+\begin{equation}\label{eq:half-center-post-C}
+ \mathcal C^2<\theta q<Bq<q^2,
+ \qquad g<\mathcal C<q.
+\end{equation}
+The original factor one-half in the bound for $\mathcal C^2$ is no
+longer asserted; the strict inequality $\mathcal C<q$ is what the
+subsequent decoding needs.
+
+\subsection{Canonical decoding and the revised high window}
+
+By \eqref{eq:half-center-packing-bounds} and
+\eqref{eq:half-center-binomial}, the packed binary no-carry tests
+hold. Let $d=\lfloor(b-1)\ell/q^2\rfloor<b$. Subtracting $d$
+from $(B-4)\lambda$ changes only its unit digit. The middle mask
+therefore bounds all nonunit digits of $S_2$ by three and its unit
+digit by $3+d$. It follows that
+\[
+ \ell\le S_2<\frac{4q^2}{B-1}+b.
+\]
+Together with $B=Hb^2$ and $H>16$, this forces
+$(b-1)\ell<q^2$, hence $d=0$. The base-four evaluation lemma now
+applies to the fixed polynomial defining $V$: its degree is below
+$2L$, all digits are below four, and the first term of
+\eqref{eq:half-center-index-bound} supplies the evaluation bound.
+Consequently
+\begin{equation}\label{eq:half-center-alias}
+ \begin{gathered}
+ S_2=\ell_0(B)+e_0(B)q,\\
+ \ell=\ell_0(B)+a_{\mathrm{al}}q,\qquad
+ e=e_0(B)-a_{\mathrm{al}},\qquad
+ 0\le a_{\mathrm{al}}<e_0(B).
+ \end{gathered}
+\end{equation}
+
+The first mask and $g<q$ decode the low positions specified by
+$\ell_0$. The unit digit of $g$ is zero; every coordinate is a
+nonnegative integer below $b$, and the unit digit of $\mathcal C$
+is $x$. Dummy digits occur only at row positions. Write
+\[
+ A_{\mathcal C}=\mathcal C(1)^2,
+ \qquad J_{\mathcal C}=2A_{\mathcal C}.
+\]
+Then $\mathcal C(1)<c_*b$, and
+\eqref{eq:half-center-index-bound} gives $J_{\mathcal C}<B/4$.
+Also $e,\mathcal C<B^K$ and $L>3K+2$ give $e\mathcal C^2<q$.
+Since $g>0$ and $x>0$, the decoded coefficient sum is at least two,
+so
+\begin{equation}\label{eq:half-center-coefficient-sum}
+ A_{\mathcal C}\ge4.
+\end{equation}
+This holds before identifying $\delta$, even if the nonzero digit
+of $g$ occupies a dummy position.
+
+Write
+\[
+ 2\lambda\mathcal C^2=qV_1+V_0,\qquad0\le V_0<q.
+\]
+Its polynomial coefficients are at most $J_{\mathcal C}<B$, so
+they are its base-$B$ digits. The stable convolution interval
+$L,\ldots,L+K$ has all digits equal to $J_{\mathcal C}$, because
+$L>3K+2$. Exact division of \eqref{eq:half-center-block} by $q$
+therefore gives
+\[
+ \left\lfloor\frac{S_3}{q}\right\rfloor
+ =\theta\lambda-V_1+\epsilon,\qquad
+ \epsilon=\left\lfloor
+ \frac{e\mathcal C^2-V_0}{q}\right\rfloor\in\{-1,0\}.
+\]
+Every digit of $\theta\lambda$ through position $2L-1$ is $B-4$.
+Subtracting $V_1$ creates no borrow in the window: its first digit
+$B-4-J_{\mathcal C}+\epsilon$ is positive, as are all subsequent
+digits. Thus
+\begin{equation}\label{eq:half-center-high-digits}
+ (S_3)_L=B-4-J_{\mathcal C}+\epsilon,\qquad
+ (S_3)_{L+j}=B-4-J_{\mathcal C}\quad(1\le j\le K).
+\end{equation}
+
+The high part of the third mask is
+$X=(B-4)a_{\mathrm{al}}<B^{K+1}$. Binary nonoverlap bounds each
+digit of $X$ by
+\[
+ J_{\mathcal C}+4=2A_{\mathcal C}+4\le4A_{\mathcal C},
+\]
+using \eqref{eq:half-center-coefficient-sum}. If $F_X$ is its digit
+polynomial, then $B-4\mid F_X(4)$, whereas
+\[
+ 0\le F_X(4)\le
+ 4A_{\mathcal C}\frac{4^{K+1}-1}{3}<\frac B{12}<B-4.
+\]
+The strict bound follows from
+\eqref{eq:half-center-index-bound}, without enlarging $H$.
+Therefore $F_X(4)=0$, $X=0$, and $a_{\mathrm{al}}=0$.
+Both supplied codes are canonical.
+
+\subsection{The low target tests and positive necessity}
+
+With the canonical codes, the raw coefficients of $S_3$ below $K$
+are those of $\mathcal D(T)\mathcal C(T)^2$. The positive offset
+starts at $L>K$, and the missing baseline tail starts at $K$.
+Every raw coefficient has absolute value at most
+$2A_{\mathcal C}<B/4$, so every incoming carry is zero or minus one.
+At an ordinary target put $v=2F+\delta^2$. The mask $B-4$ permits
+exactly the digits $0,1,2,3$ and is equivalent to
+\begin{equation}\label{eq:half-center-allowed}
+ 0\le v+\epsilon\le3,\qquad\epsilon\in\{-1,0\}.
+\end{equation}
+A negative value would normalize to a digit greater than three.
+
+At the first special target there is no incoming carry, by its
+support property. The target is $\delta^2$, so
+$0\le\delta^2\le3$, forcing $\delta\in\{0,1\}$. If $\delta=0$,
+the guard has $v=-2x^2<0$ and cannot pass. Thus $\delta=1$.
+For either possible carry, \eqref{eq:half-center-allowed} now says
+\[
+ 0\le2F+1+\epsilon\le3
+ \quad\Longleftrightarrow\quad F\in\{0,1\}.
+\]
+Paired rows $F$ and $-F$ force $F=0$. The unit rows give
+\[
+ X-1\in\{0,1\},\qquad X-X^2\in\{0,1\}.
+\]
+The first restricts $X$ to $\{1,2\}$, and the second restricts it
+to $\{0,1\}$, so $X=1$. The guard need not vanish in sufficiency:
+it excludes $\delta=0$, and its coordinate $u$ is absent from the
+original circuit. Every original gate and equality has now been
+recovered exactly at the input $x$. The low coordinate tests are
+automatic because $\mathcal D$ starts above their positions.
+
+Conversely, take a solution of the represented system, extend it by
+its circuit values, and choose $\delta=1$, $u=x^2$, and zero dummy
+coordinates. Choose a power-of-two $b$ larger than every coordinate
+and use the canonical codes and $q=B^L$. Every ordinary $F$ is
+zero. The special target has raw coefficient one and carry zero;
+each ordinary target has raw coefficient one and actual digit zero
+or one. These digits are allowed, and the low variable tests vanish.
+The first two masks hold as in Section~\ref{sec:fixed-four}.
+
+All positive slack witnesses exist. In particular, the unit digit
+of $e_0$ is two, the positive $\delta$ digit makes $g>0$, and
+$S_2<q^2$. The packed-congruence quotient is positive because
+$P(B)>P(4)$ for the nonconstant polynomial
+$P(T)=\ell_0(T)+e_0(T)T^L$ with nonnegative coefficients.
+Also $\Omega=2\lambda-e>\lambda>0$. Since
+$\mathcal C<B^K$ and $L>3K+2$,
+\[
+ 2\mathcal C^2<q\le\theta q,
+ \qquad
+ S_3=\lambda(\theta q-2\mathcal C^2)+e\mathcal C^2>0.
+\]
+The three masks give \eqref{eq:half-center-binomial}, and their
+packing satisfies \eqref{eq:half-center-packing-bounds}. The complete
+positive Pell witness construction of Section~\ref{sec:common-witness}
+therefore applies to the newly calculated $r$. This proves necessity
+for the rebuilt fixed index.
+
+\subsection{Seven shared instructions in place of eight}
+
+The predecessor uses eight instructions for the relevant quantities:
+\[
+ \begin{gathered}
+ L_2=\lambda+q^2,\quad \Lambda=B\lambda,\quad R_2=\Lambda+1,\\
+ z_\lambda=4\lambda,\quad e_2=2e,\quad
+ t_2=z_\lambda-e_2,\\
+ T_{\mathrm{coef}}=L_2-z_\lambda,\qquad P_2=\Lambda q.
+ \end{gathered}
+\]
+Use instead the seven instructions
+\begin{equation}\label{eq:half-center-seven}
+ \begin{gathered}
+ U_\lambda=\theta\lambda,\qquad \lambda_2=2\lambda,\qquad
+ T_{\mathrm{coef}}=U_\lambda+1,\\
+ \lambda_3=\lambda_2+\lambda,\qquad
+ R_2=T_{\mathrm{coef}}+\lambda_3,\\
+ t_2=\lambda_2-e,\qquad P_2=U_\lambda q.
+ \end{gathered}
+\end{equation}
+Test $q^2=R_2$ and $t_2=\Omega$. In conjunction with
+$\theta+4=B$, the first test is exactly
+$\lambda(B-1)=q^2-1$. All other arithmetic instructions remain,
+including the packed upper bound and $S_3=P_2-t_2\mathcal C^2$.
+
+\begin{theorem}\label{thm:best100-encoding}
+Every recursively enumerable subset of the positive integers has an
+admissible fixed index $(V,H,L)$ for a system with 34 positive unknowns
+and 22 equations admitting a straight-line certificate of 100
+operations: 55 multiplications and 45 additions. The supplied
+parameters are $(x,V,H,L)$; fixed numerals are free.
+\end{theorem}
+\begin{proof}
+The construction above proves both positive-domain implications.
+The replacement \eqref{eq:half-center-seven} has three multiplications
+and four additions, instead of four multiplications and four
+additions, and every other instruction is retained. Hence the
+101-operation certificate loses one multiplication.
+
+The exact verification is
+\texttt{round25\_1980\_half\_center\_certificate.py} and its JSON
+receipt. It checks the full 100-instruction primitive list and all
+22 polynomial residuals. If $F_3$ is the original geometric residual
+and $F_4=\theta+4-B$, the new geometric test has residual
+$F_3-\lambda F_4$. The new packing and positive-$S_3$ source equations
+use $\theta$ explicitly; they need no geometric correction.
+The existing signed Pell and second-exponent corrections are also
+verified. Thus the count concerns an explicit certificate for the
+proved system; no optimality is claimed.
+\end{proof}

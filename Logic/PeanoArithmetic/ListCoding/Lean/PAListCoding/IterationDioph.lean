@@ -1,5 +1,5 @@
 import PAListCoding.BoundedCipherDioph
-import PAListCoding.TetrationDiophantine
+import PAListCoding.ExactTrace
 
 /-!
 # Diophantine exact iteration from bounded universals

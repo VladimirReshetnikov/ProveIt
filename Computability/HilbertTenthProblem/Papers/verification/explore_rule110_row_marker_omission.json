@@ -1,0 +1,706 @@
+{
+  "status": "PASS_RULE110_ROW_MARKER_OMISSION_COUNTEREXAMPLE",
+  "source": {
+    "operations": 73,
+    "multiplications": 42,
+    "additions_subtractions": 31,
+    "equations": 16,
+    "positive_unknowns": 25,
+    "primitive_instructions": [
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "q",
+        "result": "Q2"
+      },
+      {
+        "operation": "*",
+        "left": "Q2",
+        "right": "q",
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "Lbig",
+        "right": "Q2",
+        "result": "n2"
+      },
+      {
+        "operation": "*",
+        "left": 128,
+        "right": "awidth",
+        "result": "W"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "quot",
+        "result": "Wq"
+      },
+      {
+        "operation": "+",
+        "left": "Qm1",
+        "right": 1,
+        "result": "q"
+      },
+      {
+        "operation": "+",
+        "left": "Wm1",
+        "right": 1,
+        "result": "W"
+      },
+      {
+        "operation": "*",
+        "left": "hrow",
+        "right": "Wm1",
+        "result": "row_geom"
+      },
+      {
+        "operation": "*",
+        "left": 297879,
+        "right": "Cw",
+        "result": "Ccoef"
+      },
+      {
+        "operation": "*",
+        "left": 42,
+        "right": "Yw",
+        "result": "Y42"
+      },
+      {
+        "operation": "+",
+        "left": "Ccoef",
+        "right": "Y42",
+        "result": "Uw"
+      },
+      {
+        "operation": "+",
+        "left": "I",
+        "right": "alphaI",
+        "result": "Ibound"
+      },
+      {
+        "operation": "*",
+        "left": "W",
+        "right": "Yw",
+        "result": "WY"
+      },
+      {
+        "operation": "+",
+        "left": "I",
+        "right": "WY",
+        "result": "time_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "F",
+        "result": "QF"
+      },
+      {
+        "operation": "+",
+        "left": "Cw",
+        "right": "QF",
+        "result": "time_rhs"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "Uw",
+        "result": "qU"
+      },
+      {
+        "operation": "+",
+        "left": "Yw",
+        "right": "qU",
+        "result": "YqU"
+      },
+      {
+        "operation": "*",
+        "left": "q",
+        "right": "YqU",
+        "result": "qYqU"
+      },
+      {
+        "operation": "+",
+        "left": "Cw",
+        "right": "qYqU",
+        "result": "packed"
+      },
+      {
+        "operation": "+",
+        "left": "q",
+        "right": 1,
+        "result": "qp1"
+      },
+      {
+        "operation": "*",
+        "left": 126,
+        "right": "qp1",
+        "result": "boolean_mask"
+      },
+      {
+        "operation": "*",
+        "left": 36,
+        "right": "Q2",
+        "result": "local_mask"
+      },
+      {
+        "operation": "+",
+        "left": "boolean_mask",
+        "right": "local_mask",
+        "result": "mask_factor"
+      },
+      {
+        "operation": "*",
+        "left": "Jrow",
+        "right": "mask_factor",
+        "result": "mask"
+      },
+      {
+        "operation": "*",
+        "left": 127,
+        "right": "Jrow",
+        "result": "repunit"
+      },
+      {
+        "operation": "+",
+        "left": "packing_gap",
+        "right": "packed",
+        "result": "Lbig"
+      },
+      {
+        "operation": "+",
+        "left": "Lm1",
+        "right": 1,
+        "result": "Lbig"
+      },
+      {
+        "operation": "*",
+        "left": "packing_gap",
+        "right": "Lm1",
+        "result": "r_product"
+      },
+      {
+        "operation": "+",
+        "left": "r_product",
+        "right": "mask",
+        "result": "r_lhs"
+      },
+      {
+        "operation": "*",
+        "left": "w",
+        "right": "n2",
+        "result": "wn2"
+      },
+      {
+        "operation": "*",
+        "left": "s",
+        "right": "n2",
+        "result": "sn2"
+      },
+      {
+        "operation": "*",
+        "left": "wn2",
+        "right": "sn2",
+        "result": "UM"
+      },
+      {
+        "operation": "+",
+        "left": "UM",
+        "right": "sn2",
+        "result": "R12"
+      },
+      {
+        "operation": "*",
+        "left": "k",
+        "right": "sn2",
+        "result": "ksn2"
+      },
+      {
+        "operation": "*",
+        "left": "UM",
+        "right": "UM",
+        "result": "UM2"
+      },
+      {
+        "operation": "+",
+        "left": "UM2",
+        "right": "wn2",
+        "result": "scaled_norm_coefficient"
+      },
+      {
+        "operation": "*",
+        "left": "ksn2",
+        "right": "ksn2",
+        "result": "ratio_product2"
+      },
+      {
+        "operation": "*",
+        "left": "scaled_norm_coefficient",
+        "right": "ratio_product2",
+        "result": "L9"
+      },
+      {
+        "operation": "+",
+        "left": "tau",
+        "right": 1,
+        "result": "tauplus1"
+      },
+      {
+        "operation": "*",
+        "left": "tau",
+        "right": "tauplus1",
+        "result": "R9"
+      },
+      {
+        "operation": "+",
+        "left": "ksn2",
+        "right": "eta",
+        "result": "R10a"
+      },
+      {
+        "operation": "+",
+        "left": "eta",
+        "right": "zeta",
+        "result": "R10b"
+      },
+      {
+        "operation": "+",
+        "left": "r",
+        "right": 1,
+        "result": "r1"
+      },
+      {
+        "operation": "*",
+        "left": "h",
+        "right": "UM",
+        "result": "hpm1"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "hpm1",
+        "result": "R11"
+      },
+      {
+        "operation": "+",
+        "left": "r1",
+        "right": "r",
+        "result": "tr1"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "a",
+        "result": "cam2"
+      },
+      {
+        "operation": "+",
+        "left": "wn2",
+        "right": "cam2",
+        "result": "D1"
+      },
+      {
+        "operation": "*",
+        "left": 4,
+        "right": "a",
+        "result": "a4"
+      },
+      {
+        "operation": "+",
+        "left": "a4",
+        "right": 3,
+        "result": "a4m5"
+      },
+      {
+        "operation": "*",
+        "left": "ga",
+        "right": "a4m5",
+        "result": "gam"
+      },
+      {
+        "operation": "+",
+        "left": "D1",
+        "right": "gam",
+        "result": "R14"
+      },
+      {
+        "operation": "*",
+        "left": "a",
+        "right": "a",
+        "result": "a_square"
+      },
+      {
+        "operation": "+",
+        "left": "a_square",
+        "right": "a4m5",
+        "result": "A"
+      },
+      {
+        "operation": "*",
+        "left": "c",
+        "right": "c",
+        "result": "c2"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "c2",
+        "result": "Ac2"
+      },
+      {
+        "operation": "+",
+        "left": "Ac2",
+        "right": 1,
+        "result": "R15"
+      },
+      {
+        "operation": "*",
+        "left": "d",
+        "right": "d",
+        "result": "L15"
+      },
+      {
+        "operation": "*",
+        "left": "i",
+        "right": "c2",
+        "result": "ic2"
+      },
+      {
+        "operation": "*",
+        "left": "ic2",
+        "right": "ic2",
+        "result": "ic22"
+      },
+      {
+        "operation": "*",
+        "left": "f",
+        "right": "f",
+        "result": "L16"
+      },
+      {
+        "operation": "+",
+        "left": "f_square_minus_one",
+        "right": 1,
+        "result": "L16"
+      },
+      {
+        "operation": "*",
+        "left": "A",
+        "right": "f_square_minus_one",
+        "result": "R16"
+      },
+      {
+        "operation": "*",
+        "left": "o",
+        "right": "f",
+        "result": "of"
+      },
+      {
+        "operation": "+",
+        "left": "aux_u_rhs",
+        "right": "c",
+        "result": "of"
+      },
+      {
+        "operation": "*",
+        "left": "j",
+        "right": "c",
+        "result": "jc"
+      },
+      {
+        "operation": "+",
+        "left": "H17",
+        "right": "tr1",
+        "result": "jc"
+      },
+      {
+        "operation": "*",
+        "left": "H17",
+        "right": "H17",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "y_aux",
+        "right": "y_aux",
+        "result": "aux_y2"
+      },
+      {
+        "operation": "+",
+        "left": "aux_square_gap",
+        "right": "aux_y2",
+        "result": "H2"
+      },
+      {
+        "operation": "*",
+        "left": "ic22",
+        "right": "aux_square_gap",
+        "result": "L17"
+      },
+      {
+        "operation": "+",
+        "left": "P17",
+        "right": "aux_y2",
+        "result": 1
+      }
+    ],
+    "source_comparisons": [
+      {
+        "index": 0,
+        "equality": [
+          "q",
+          "Wq"
+        ],
+        "source_sign": 1,
+        "source": "-128*awidth*quot + q",
+        "correction": "0"
+      },
+      {
+        "index": 1,
+        "equality": [
+          "Qm1",
+          "row_geom"
+        ],
+        "source_sign": 1,
+        "source": "-hrow*(128*awidth - 1) + q - 1",
+        "correction": "0"
+      },
+      {
+        "index": 2,
+        "equality": [
+          "Ibound",
+          "awidth"
+        ],
+        "source_sign": 1,
+        "source": "I + alphaI - awidth",
+        "correction": "0"
+      },
+      {
+        "index": 3,
+        "equality": [
+          "time_lhs",
+          "time_rhs"
+        ],
+        "source_sign": 1,
+        "source": "-Cw - F*q + I + 128*Yw*awidth",
+        "correction": "0"
+      },
+      {
+        "index": 4,
+        "equality": [
+          "repunit",
+          "Qm1"
+        ],
+        "source_sign": 1,
+        "source": "127*Jrow - q + 1",
+        "correction": "0"
+      },
+      {
+        "index": 5,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "source_sign": 1,
+        "source": "-Jrow*(36*q**2 + 126*q + 126) + r - (q**3 - 1)*(-Cw - Yw*q + q**3 - q**2*(297879*Cw + 42*Yw))",
+        "correction": "0"
+      },
+      {
+        "index": 6,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source_sign": 1,
+        "source": "k**2*q**15*s**2*w*(q**15*s**2*w + 1) - tau*(tau + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 7,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source_sign": 1,
+        "source": "c - eta - k*q**5*s",
+        "correction": "0"
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source_sign": 1,
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "index": 9,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source_sign": 1,
+        "source": "-h*q**10*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "index": 10,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source_sign": 1,
+        "source": "a - q**5*s*(q**5*w + 1)",
+        "correction": "0"
+      },
+      {
+        "index": 11,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source_sign": 1,
+        "source": "-a*c + d - ga*(4*a + 3) - q**5*w",
+        "correction": "0"
+      },
+      {
+        "index": 12,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source_sign": 1,
+        "source": "-c**2*(a**2 + 4*a + 3) + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "index": 13,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source_sign": 1,
+        "source": "c**4*i**2 - (f**2 - 1)*(a**2 + 4*a + 3)",
+        "correction": "0"
+      },
+      {
+        "index": 14,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source_sign": 1,
+        "source": "y_aux**2 + (f**2 - 1)*(-y_aux**2 + (c*j - 2*r - 1)**2)*(a**2 + 4*a + 3) - 1",
+        "correction": "(-y_aux**2 + (c*j - 2*r - 1)**2)*(c**4*i**2 - (f**2 - 1)*(a**2 + 4*a + 3))"
+      },
+      {
+        "index": 15,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source_sign": 1,
+        "source": "c*j + c - f*o - 2*r - 1",
+        "correction": "0"
+      }
+    ]
+  },
+  "counterexamples": [
+    {
+      "radix": 128,
+      "width_cells": 3,
+      "rows": 9,
+      "initial": 1,
+      "final": 128,
+      "binary_cell_words": {
+        "C": 32917465,
+        "Y": 37669115
+      },
+      "positive_outer_coordinates": {
+        "I": 1,
+        "F": 128,
+        "q": 784637716923335095479473677900958302012794430558004314112,
+        "awidth": 16384,
+        "quot": 374144419156711147060143317175368453031918731001856,
+        "hrow": 374144597562757805937423522627106155929064922152961,
+        "Cw": 377090438194300146613841737773090024744286194499585,
+        "Yw": 47890485831869759757839573566991996970523696830611585,
+        "Jrow": 6178249739553819649444674629141403952856649059511844993,
+        "alphaI": 16383,
+        "r": 199349187526897450645913636807576327218722937431698531225453327238830695976951223889548951238746172359480751829322237356340065151231843474874883489662680786292955161827653325302414508398869640190475846652921149383339490645659220306170192789834136582855981979823551988151579620875196484149114441070914924329781792626557942942985618777020809087
+      },
+      "index_valuation": 945,
+      "all_outer_equations": true,
+      "all_retained_masks": true,
+      "index_odd": true,
+      "original_marker_rejects": true,
+      "positive_kernel_extension": "Constructive fixed-minus43 converse at q^5; huge Pell auxiliaries not materialized."
+    },
+    {
+      "radix": 256,
+      "width_cells": 3,
+      "rows": 9,
+      "initial": 1,
+      "final": 256,
+      "binary_cell_words": {
+        "C": 32917465,
+        "Y": 37669115
+      },
+      "positive_outer_coordinates": {
+        "I": 1,
+        "F": 256,
+        "q": 105312291668557186697918027683670432318895095400549111254310977536,
+        "awidth": 65536,
+        "quot": 6277101735386680763835789423207666416102355444464034512896,
+        "hrow": 6277102109531122221293464242049138210298616033742734491649,
+        "Cw": 6301717820617782285522710005358518196285473355225125355521,
+        "Yw": 1606938044634601927714633785041710178792218125988605370302721,
+        "Jrow": 412989379092381124305560892877138950270176844708035730409062657,
+        "alphaI": 65535,
+        "r": 1266536044394786527638490805021662699320109191905288624731910177690336409099570157066750362506283237123914991467053210315081297529250836321492422177816428039284926331576285949005765134113558803887061964301020603221785260458102973261375438219216896938424911374341263975933622402960655048532104204504635108956063798381027696006961161149173478166513861457009389712601484507380660803664699391743
+      },
+      "index_valuation": 1080,
+      "all_outer_equations": true,
+      "all_retained_masks": true,
+      "index_odd": true,
+      "original_marker_rejects": true,
+      "positive_kernel_extension": "Constructive fixed-minus43 converse at q^5; huge Pell auxiliaries not materialized."
+    },
+    {
+      "radix": 512,
+      "width_cells": 3,
+      "rows": 9,
+      "initial": 1,
+      "final": 512,
+      "binary_cell_words": {
+        "C": 32917465,
+        "Y": 37669115
+      },
+      "positive_outer_coordinates": {
+        "I": 1,
+        "F": 512,
+        "q": 14134776518227074636666380005943348126619871175004951664972849610340958208,
+        "awidth": 262144,
+        "quot": 105312291668557186697918027683670432318895095400549111254310977536,
+        "hrow": 105312292453194909467259716042899073433272127868809398515390218241,
+        "Cw": 105518382258903620522381799610175154945457776240019094595472195585,
+        "Yw": 53919893335087452800811008986572742763456323717147059952513263337985,
+        "Jrow": 27661010798878815335942035236679741930762957289637870185856848552526337,
+        "alphaI": 262143,
+        "r": 7692152946200968022394229150596837306552397431960394824031147039765920235659551767700344363953925443449413812414541060355623785253939564660942185157173688704673696724609054292834762555258672985610453161762868612451652706174969524623973955645403455198103951081742822304188561073411585482472612148017447325562112900243951343296417280039569835180043248805787445227865317768347849116550492519426611607323078560337418013925467347754834703678975
+      },
+      "index_valuation": 1215,
+      "all_outer_equations": true,
+      "all_retained_masks": true,
+      "index_odd": true,
+      "original_marker_rejects": true,
+      "positive_kernel_extension": "Constructive fixed-minus43 converse at q^5; huge Pell auxiliaries not materialized."
+    }
+  ],
+  "scope": "Full false positive for replacing T=bC+H by C in history75; not a lower bound for all73 encodings.",
+  "review": "Author and independent complete scoped proof/source review PASS; immutable fresh receipt comparison PASS."
+}

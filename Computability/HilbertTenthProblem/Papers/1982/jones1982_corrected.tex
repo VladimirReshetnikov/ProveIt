@@ -1,0 +1,1268 @@
+% Continuously revised edition; last source revision 24 September 2026.
+% Every discrepancy from the printed article is explained in jones1982_editorial_notes.md;
+% a dated log of revisions and checks is ../EDITORIAL_NOTES.md.
+% Corrected reading edition of James P. Jones (1982).
+% Build: xelatex jones1982_corrected.tex (twice).
+% Emendations: jones1982_editorial_notes.md; dated log: ../EDITORIAL_NOTES.md.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,headheight=15pt,marginparwidth=14mm,marginparsep=3pt]{geometry}
+\usepackage{marginnote}
+% Original pagination: \origpage{n} puts the number of the journal page that
+% begins on the current line into the margin (line accuracy).
+\newcommand{\origpage}[1]{\marginnote{\footnotesize\textbf{[#1]}}}
+\usepackage{fontspec}
+\setmainfont{Linux Libertine O}
+\setsansfont{Lato}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{unicode-math}
+\setmathfont{latinmodern-math.otf}
+\usepackage{microtype,needspace}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{hidelinks,pdftitle={Universal Diophantine Equation — corrected reading edition},pdfauthor={James P. Jones},pdfsubject={Edited transcription with mathematical emendations}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small James P. Jones}
+\fancyhead[R]{\small Universal Diophantine Equation}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[2]
+\renewcommand{\thesection}{\S\arabic{section}}
+\begin{document}
+\begin{center}
+{\Large\bfseries UNIVERSAL DIOPHANTINE EQUATION}\par\medskip
+{\large JAMES P. JONES}\par\smallskip
+{\small\itshape The Journal of Symbolic Logic 47 (3), September 1982, pp. 549--571.}\par
+{\small DOI: \href{https://doi.org/10.2307/2273588}{10.2307/2273588}}
+\end{center}
+\begin{quote}\small
+\textbf{Corrected reading edition.} Continuously revised edition: every discrepancy between the printed article and this edition is explained, with its justification, in the editorial notes \texttt{jones1982\_editorial\_notes.md} in \texttt{Papers/1982/}; a dated log of revisions and checks is \texttt{Papers/}\allowbreak\texttt{EDITORIAL\_NOTES.md}. Bracketed margin numbers mark the lines on which the pages of the original printing begin. First prepared 13 September 2026 from the supplied
+scan and Mathpix transcription. Equation and reference numbers are retained;
+pagination is new. OCR errors, demonstrable original errors, and necessary
+domain clarifications have been emended. Historical claims refer to the
+article's 1982 context, not to the current state of the subject. Substantive
+changes and limits of verification are documented in those
+editorial notes; this edition is not author-approved.
+\end{quote}
+\section{Introduction} \origpage{549}In 1961 Martin Davis, Hilary Putnam and Julia Robinson [2] proved that every recursively enumerable set $W$ is exponential diophantine, i.e. can be represented in the form
+
+\[
+x \in W \Leftrightarrow \exists x_{1}, x_{2}, \ldots, x_{\mu} P\left(x, x_{1}, \ldots, x_{\mu}, 2^{x_{1}}, \ldots, 2^{x_{\mu}}\right)=0 .
+\]
+
+Here $P$ is a polynomial with integer coefficients and the variables range over positive integers.
+
+In 1970 Ju. V. Matijasevič used this result to establish the unsolvability of Hilbert's tenth problem. Matijasevič proved [11] that the exponential relation $y=2^{x}$ is diophantine. This together with [2] implies that every recursively enumerable set is diophantine, i.e. every r.e. set $W$ can be represented in the form
+
+\[
+x \in W \Leftrightarrow \exists z_{1}, z_{2}, \ldots, z_{\nu} P\left(x, z_{1}, z_{2}, \ldots, z_{\nu}\right)=0 .
+\]
+
+From this it follows that there does not exist an algorithm to decide solvability of diophantine equations. The nonexistence of such an algorithm follows immediately from the existence of r.e. nonrecursive sets.
+
+Now it is well known that the recursively enumerable sets $W_{1},\allowbreak  W_{2},\allowbreak  W_{3},\allowbreak  \ldots$ can be enumerated in such a way that the binary relation $x \in W_{v}$ is also recursively enumerable. Thus Matijasevič's theorem implies the existence of a diophantine equation $U$ such that for all $x$ and $v$,
+
+\[
+x \in W_{v} \Leftrightarrow \exists z_{1}, z_{2}, \ldots, z_{\nu} U\left(x, v, z_{1}, z_{2}, \ldots, z_{\nu}\right)=0 .
+\]
+
+Here $U$ is a fixed polynomial with integer coefficients. (The variables $x$ and $v$ will be referred to as parameters, the variables $z_{1},\allowbreak  z_{2},\allowbreak  \ldots,\allowbreak  z_{\nu}$ as unknowns.) By mere change of value of the parameter $v$, the index, the polynomial $U$ defines every recursively enumerable set. $U$ is thus a polynomial analogue to the universal Turing machine. So we refer to $U$ as a universal diophantine equation.
+
+While the existence of such a universal polynomial follows immediately from Matijasevič's theorem, the construction of an actual example is of course a different matter. It is not at all clear where to begin.
+
+\begingroup\renewcommand{\thefootnote}{}\footnotetext{Received May 16, 1979; revised March 9, 1981.\\
+1980 Mathematics Subject Classification. Primary 03D25, 10N05, 12L05.\\
+This paper was largely written during the author's 1975--76 sabbatical leave in the University of California, Berkeley. The author wishes to express his gratitude to Professor Julia Robinson for her generous advice and encouragement.
+}\endgroup
+
+\origpage{550}In 1971 N. K. Kosovskiǐ worked out a visualizable example of a universal diophantine equation. The universal equation of Kosovskiǐ is described in Kosovskiǐ [10] and in Matijasevič [12]. Kosovskiǐ's polynomial has an easily understood, "visualizable" structural form, but it cannot be written down without knowledge of an explicit universal unknown-degree pair $(\nu,\allowbreak  \delta)$. At that time, 1971, no such pair was known.
+
+This author's earliest efforts to write down an explicit universal diophantine equation were originally based on the word problem. This often led to whole pages of diophantine equations. It was not until 1975 that the author constructed the ten line universal equations of [7]. The starting point there was an enumeration of diophantine equations discovered by Julia Robinson [21]. The construction in [7] used also the Putnam, Davis, Robinson Bounded Quantifier Theorem [2] and Matijasevič's discovery [13] that the factorial function could be eliminated from this theorem. In the present paper we are able to do better (about 4 lines) thanks largely to new methods worked out by Ju. Matijasevič in [16], [17].
+
+As a measure of size or complexity of universal diophantine equations, different criteria may be defended. We may consider the number of printed lines, the total number of unknowns, $\nu$, the total degree $\delta$ or pairs of such numbers, $(\nu,\allowbreak  \delta)$ (called universal pairs in [7]).
+
+Much more is known today about the minimum value of the degree $\delta$ than is known about $\nu$. We know that there exist universal diophantine equations of degree 4 (cf. [3] or [4]) but none of degree 2. Diophantine equations of degree 2 are decidable and hence define only recursive sets. (This is a theorem of C. L. Siegel [22] specifically [22, Satz 7], take $n=1$ ). Thus the only open problem as regards the degree is $\delta=3$. We do not know whether Hilbert's tenth problem is decidable or undecidable for equations of degree 3.
+
+The problem of the minimum value of $\nu$, the number of unknowns, is apparently even more difficult. For example the problem of solvability of equations in two unknowns is still open. A. Baker [1] has given a decision method for a special case of this problem (homogeneous equations, $P(x,\allowbreak  y)=c$ ), but we do not yet have a decision method in the general case.
+
+The history of undecidability results for diophantine equations in $\nu$ unknowns is interesting. In the summer of 1970 only six months after he had solved Hilbert's tenth problem, Ju. V. Matijasevič announced, at the International Congress of Mathematicians in Nice, that the minimum value of $\nu$ was less than 200. Shortly afterwards Julia Robinson showed that we could take $\nu=35$. Then Julia Robinson and Ju. Matijasevič working together reduced $\nu$ to 24. Finally, at the end of 1971, $\nu$ stood at 14. By 1973 Ju. Matijasevič and Julia Robinson had succeeded in reducing the value of $\nu$ to 13. This was published in 1975 [15]. This paper [15] contained many important new ideas and greatly developed the code idea of Matijasevič [14], where potential solutions of diophantine equations were encoded as the digits of numbers written to an arbitrary base.
+
+In 1975 Ju. Matijasevič announced the possibility of further reduction of the number of unknowns, to $\nu=9$. Although this possibility is announced in Matijasevič [19], he never published even a sketch of a proof. The first published proof of the 9 unknowns theorem appears here for the first time. It is \origpage{551}essentially Dr. Matijasevič's original proof. It appears here with his expressed permission.
+
+The starting point for the reduction to 9 unknowns is the code idea of [14], [15]. However, instead of using symmetric expansions as in [15], a new technique for controlling the size of the digits (called masking) permits the use of ordinary number expansions. Another important innovation in the proof is the ingenious use of a nineteenth century theorem of E. Kummer, [23], [26], on divisibility of binomial coefficients by prime powers.
+
+These new methods based on Kummer's theorem were worked out by Matijasevič in [16], [17]. (He says that those papers contain sufficient methods for the entire proof and that the technique for avoiding use of lemmas on exponential size (cf. [15]) is implicit in Matijasevič [18].) We prove the 9 unknowns theorem here because we believe that a proof should be available somewhere, for inspection, and because the new methods permit construction of a universal diophantine equation smaller than that in Jones [7].
+
+As in [7] a system of diophantine equations is given. Such a system of equations can always be combined into an equivalent single equation. It is sufficient to transpose all terms in the equations to one side and sum their squares.
+
+We give here three universal systems of equations. The first two systems consist of equations of exponential-binomial type. That is, in addition to polynomials, exponential functions and binomial coefficients also appear. The third system contains only polynomial equations.
+
+These systems of equations are given in the following three theorems.\footnote{Editorial clarification: the indices used here are the admissible coding triples constructed in (4.1), for a normalized representing polynomial as specified in §3. The proof below establishes the stated equivalences for these triples. It does not justify treating arbitrary unrelated positive triples as encodings of such polynomials.} The format is similar to that of Jones [7] with minor differences. In [7] we indexed the r.e. sets in the usual way with a single number as index. Here we find it more convenient to employ triples of positive integers, $\langle z,\allowbreak  u,\allowbreak  y\rangle$ for this purpose. This means that here we speak of the r.e. set $W_{\langle z, u, y\rangle}$, instead of $W_{v}$. If the reader prefers the more traditional listing of r.e. sets with a single index $v$, he need only append to our equations some new equation such as
+
+\[
+v=\left((z u y)^{2}+u\right)^{2}+y
+\]
+
+which uniquely determines $z,\allowbreak  u$ and $y$ in terms of $v$. The equation $v=J(J(z,\allowbreak  u),\allowbreak  y)$ would do as well, where $J$ is the usual pairing function. If such equations are appended it is of course necessary to consider $z,\allowbreak  u$ and $y$ as additional unknowns. Another small difference between [7] and the present paper is that in [7] unknowns ranged over nonnegative integers, whereas here they range over positive integers.
+
+\noindent\textbf{Theorem 1.} In order that $x \in W_{\langle z, u, y\rangle}$, it is necessary and sufficient that the following system of equations has a solution:
+
+\[
+\begin{aligned}
+& e l g^{2}+\alpha=(b-x y) q^{2}, \quad q=b^{5^{60}}, \quad \lambda+q^{4}=1+\lambda b^{5}, \quad \theta+2 z=b^{5} \\
+& \quad l=u+t \theta, \quad e=y+m \theta, \quad b=2^{w}, \quad\binom{g+q^{3}-1-b l+l}{g}\binom{\theta \lambda+e+l q^{2}}{\theta \lambda} \\
+& \quad\binom{b^{5} q-2 q+2(e-z \lambda)\left(1+x b^{5}+g\right)^{4}+b^{5} \lambda\left(1+q^{4}\right)}{b^{5} q-2 q}=2 \eta+1
+\end{aligned}
+\]
+
+\origpage{552}The above system of equations has twelve unknowns, specifically $b,\allowbreak  e,\allowbreak  g,\allowbreak  l,\allowbreak  m,\allowbreak  q$, $t,\allowbreak  w,\allowbreak  \alpha,\allowbreak  \eta,\allowbreak  \theta,\allowbreak  \lambda$, and four parameters, $z,\allowbreak  u,\allowbreak  y$ and $x$. The exponential equation $b=2^{w}$ appears, and in the last line a product of three binomial coefficients appears. In the next system of equations the number of binomial coefficients is reduced to one.
+
+\noindent\textbf{Theorem 2.} In order that $x \in W_{\langle z, u, y\rangle}$, it is necessary and sufficient that the following system of equations has a solution:
+
+\[
+\begin{gathered}
+ e l g^{2}+\alpha=(b-xy)q^{2},\qquad q=b^{5^{60}},\qquad
+ \lambda+q^{4}=1+\lambda b^{5},\\
+ \theta+2z=b^{5},\quad l=u+t\theta,\quad e=y+m\theta,\quad
+ b=2^{w},\quad n=q^{16},\\
+\begin{aligned}
+r={}&\Bigl[g+e q^{3}+l q^{5}\\
+ &\quad+\bigl(2(e-z\lambda)(1+xb^{5}+g)^{4}
+       +\lambda b^{5}+\lambda b^{5}q^{4}\bigr)q^{7}\Bigr](n^{2}-n)\\
+ &+\Bigl[q^{3}-bl+l+\theta\lambda q^{3}+(b^{5}-2)q^{8}\Bigr](n^{2}-1),
+\end{aligned}\\
+ \eta n^{2}=\binom{2r}{r}.
+\end{gathered}
+\]
+
+In Theorem 2 there are fourteen unknowns, $b,\allowbreak  e,\allowbreak  g,\allowbreak  l,\allowbreak  m,\allowbreak  n,\allowbreak  q,\allowbreak  r,\allowbreak  t,\allowbreak  w,\allowbreak  \alpha,\allowbreak  \eta,\allowbreak  \theta,\allowbreak  \lambda$, and four parameters, $x,\allowbreak  z,\allowbreak  u,\allowbreak  y$. Here only one binomial coefficient and one exponential function appear. In the next theorem both these are eliminated so as to obtain a system of purely polynomial equations.
+
+\Needspace{19\baselineskip}\noindent\textbf{Theorem 3.} In order that $x \in W_{\langle z, u, y\rangle}$, it is necessary and sufficient that the following system of equations has a solution:
+
+\[
+\begin{gathered}
+ e l g^{2}+\alpha=(b-xy)q^{2},\quad q=b^{5^{60}},\quad
+ \lambda+q^{4}=1+\lambda b^{5},\\
+ \theta+2z=b^{5},\quad l=u+t\theta,\quad e=y+m\theta,\quad n=q^{16},\\
+\begin{aligned}
+r={}&\Bigl[g+e q^{3}+l q^{5}\\
+ &\quad+\bigl(2(e-z\lambda)(1+xb^{5}+g)^{4}
+       +\lambda b^{5}+\lambda b^{5}q^{4}\bigr)q^{7}\Bigr](n^{2}-n)\\
+ &+\Bigl[q^{3}-bl+l+\theta\lambda q^{3}+(b^{5}-2)q^{8}\Bigr](n^{2}-1),
+\end{aligned}\\
+ p=2ws^{2}r^{2}n^{6},\quad p^{2}k^{2}-k^{2}+1=\tau^{2},\quad
+ 4(c-ksn^{2})^{2}+\eta=k^{2},\\
+ k=r+1+hp-h,\quad a=(wn^{2}+1)rsn^{2},\quad c=2r+1+\phi,\\
+ d=bw+ca-2c+4a\gamma-5\gamma,\quad d^{2}=(a^{2}-1)c^{2}+1,\\
+ f^{2}=(a^{2}-1)i^{2}c^{4}+1,\\
+ (d+of)^{2}=\bigl((a+f^{2}(d^{2}-a))^{2}-1\bigr)(2r+1+jc)^{2}+1.
+\end{gathered}
+\]
+
+The equations of Theorem 3 have 28 unknowns, $a,\allowbreak  b,\allowbreak  c,\allowbreak  d,\allowbreak  e,\allowbreak  f,\allowbreak  g,\allowbreak  h,\allowbreak  i,\allowbreak  j,\allowbreak  k,\allowbreak  l,\allowbreak  m$, $n,\allowbreak  o,\allowbreak  p,\allowbreak  q,\allowbreak  r,\allowbreak  s,\allowbreak  t,\allowbreak  w,\allowbreak  \alpha,\allowbreak  \gamma,\allowbreak  \eta,\allowbreak  \theta,\allowbreak  \lambda,\allowbreak  \tau,\allowbreak  \phi$, and four parameters, $z,\allowbreak  u,\allowbreak  y$ and $x$. The degree is $5^{60}$, however the equation $q=b^{5^{60}}$ can be replaced by certain others of low degree. In fact, by introducing 30 additional unknowns and new equations one can reduce the degree of the entire system to 2 . Then, by transposing terms to one side and summing squares, one obtains a universal diophantine equation in 58 unknowns and degree 4.
+
+Alternatively one may try to reduce the number of unknowns $\nu$ at the expense of the degree $\delta$. One way to do this is to substitute unknowns which appear alone on the left side of an equation in which the right side is positive. Using substitution and other methods we have worked out a list of various degree-unknown pairs sufficient for construction of a universal diophantine equation. These are given in the following theorem.
+
+\noindent\textbf{Theorem 4.} The following pairs (unknown, degree) are universal:\footnote{Editorial clarification: the four degrees in scientific notation are the author's rounded sizes of degrees whose computation the article omits. They are marked $\approx$ here: they are approximate sizes, not exact integer degree bounds. The pairs are reported as the author states them; they have not been rederived in this edition.}
+
+\[
+\begin{array}{llll}
+(58,4)&(28,20)&(21,96)&(12,\approx 1.3\times10^{44})\\
+(38,8)&(26,24)&(19,2668)&(11,\approx 4.6\times10^{44})\\
+(32,12)&(25,28)&(14,\approx 2.0\times10^{5})&(10,\approx 8.6\times10^{44})
+\end{array}
+\]
+
+\origpage{553}Plainly apparent here is the trade-off between the number of unknowns $\nu$ and the degree $\delta$. Perhaps therefore a better measure of size and complexity of diophantine equations is to consider the total number of operations, o necessary to evaluate the polynomial. By an arithmetical operation we shall mean an addition or multiplication. We will consider subtraction as merely a signed form of addition. From the equations of Theorem 3, modified to do away with $q=b^{5^{60}}$, it can be seen that $o=100$. Thus the stated 100 arithmetical operations suffice to check a supplied Diophantine certificate of membership in any r.e. set. They do not decide membership or bound the work of finding such a certificate.
+
+This result can also be restated in a curious proof theoretical form in which number $o$ is given an interpretation as a kind of proof theoretic complexity bound. Via Gödel numbering, the theorems of an effectively axiomatizable theory $T$ become in effect an r.e. set. The search for proofs becomes the search for solutions of a diophantine equation. A formal deduction is effectively recoverable from a solution, but no preservation of its length or computational complexity is asserted. Hence from Theorem 3 we have
+
+\noindent\textbf{Theorem 5 (certificate interpretation).} For any effectively axiomatizable theory $T$ and any proposition $P$, if $P$ has a proof in $T$, then $P$ has a Diophantine certificate with the stated verification count of 100 additions and multiplications of integers.\footnote{Editorial clarification: ``another proof'' in the original means an arithmetic certificate under a fixed effective encoding, not a 100-step derivation in the original calculus of $T$. The count concerns whole-integer arithmetic (including subtraction), not equality tests, integer lengths, bit operations, or certificate search. The count 100 is reproduced by counting every indicated $+$, $-$ and $\times$ sign of the seventeen polynomial equations of Theorem~3 once (exponentiation not counted); the same rule gives 87 for the 1976 system. Whether this is the intended reading, and what the count is under a calculator model in which powers are computed by repeated multiplication, is examined in the satellite article to the 1980 announcement (\texttt{1980/jones1980\_theorem5\_operations.pdf}), which gives explicit straight-line certificates for the modified system.}
+
+In our earlier paper [7], $o=243$. Now $o$ has been reduced to $o=100$. As with $\nu$ and $\delta$, it would be interesting to know also the minimum value of $o$. One could consider also weighted combinations of $\nu,\allowbreak  \delta$ and $o$ together. We turn now to the proofs of Theorems 1, 2 and 3.
+
+\section{Preliminary lemmas} Throughout this paper lower case latin letters $a,\allowbreak  b,\allowbreak  c,\allowbreak  \ldots$ are used as variables for positive integers. A diophantine equation is considered to be solvable only if it has solutions in positive integers. Capital latin letters $A,\allowbreak  B$, $C \ldots$ usually represent integers, as in [15], however we were unable to adhere absolutely to this notational convention in every case.
+
+For the digit and carry lemmas, the arguments of $\sigma_B$ and $\tau_B$ are nonnegative integers, the base $B$ is an integer at least $2$, and ``power of $2$'' means $2^k$ with an integer $k\geq0$. In particular $\sigma_B(0)=0$. Unless a more specific domain is stated, Greek witness variables in the displayed Diophantine systems are also positive integers.
+
+The notation $A=\square$ means $A$ is a perfect square. $\operatorname{rem}(a,\allowbreak  d)$ denotes the remainder after $a$ is divided by $d$. $[\,\allowbreak \cdot\,\allowbreak ]$ denotes the integer part function. $N$ pow 2 means $N$ is a power of 2 . $a \perp b$ means numbers $a$ and $b$ are relatively prime.
+
+Preparatory to applying a theorem of Kummer we shall be concerned with the number of carries which occur during the addition of two numbers $a$ and $b$, written in base $B$ notation. We denote this number of carries by $\tau_{B}(a,\allowbreak  b)$. We shall also be concerned with the sum of the digits in the base $B$ expansion of $a$, the so-called weight of $a,\allowbreak  \sigma_{B}(a)$. When $B=2$ we write $\sigma_{2}(a)=\sigma(a)$. Matijasevič's new reduction methods exploit the following elementary properties of these functions.
+
+\noindent\textbf{Lemma 2.1.} $\sigma(a)=\tau_{2}(a,\allowbreak  a)$.
+
+\noindent\textbf{Lemma 2.2.} $\tau_{2}(a,\allowbreak  b)=\sigma(a)+\sigma(b)-\sigma(a+b)$.
+
+\noindent\textbf{Lemma 2.3.} $b$ pow $2 \Leftrightarrow \sigma(b)=1 \Leftrightarrow \tau_{2}(b,\allowbreak  b-1)=0$.
+
+\noindent\textbf{Lemma 2.4.} If $N$ pow 2 , then $\sigma(N a)=\sigma(a)$ and $\tau_{2}(a N,\allowbreak  b N)=\tau_{2}(a,\allowbreak  b)$.
+
+\noindent\textbf{Lemma 2.5.} If $N$ pow 2 and $b<N$, then $\sigma(a)+\sigma(b)=\sigma(a N+b)$.
+
+\noindent\textbf{Lemma 2.6.} If $N$ pow 2 and $a<N$, then $\sigma(N-1-a)=\sigma(N-1)-\sigma(a)$.
+
+\noindent\textbf{Lemma 2.7.} If $B$ pow $2,\allowbreak  b$ pow $2,\allowbreak  b<B$ and $0 \leq v<B$, then $v<b$ if and only if $\tau_{2}(B-b,\allowbreak  v)=0$. In particular, $v=0$ if and only if $\tau_{2}(B-1,\allowbreak  v)=0$.
+
+\noindent\textbf{Lemma 2.8.}\origpage{554} If $B\geq2$, $B$ pow 2 and $|V|<B / 2$, then $V=0$ if and only if
+
+\[
+\tau_{2}(B / 2+V, B / 2-1)=0 .
+\]
+
+\noindent\textbf{Lemma 2.9.} Let $0 \leq n \leq m \leq k$ be integers, $z\geq2$, $z$ pow $2$, $B$ pow $2$, and $2z^{m+1}\leq B$. Suppose $Y\geq0$ is an integer and $y=\sum_{i=0}^{n} y_{i} z^{i}$ $\left(0 \leq y_{i}<z\right)$. Then in order that $Y=\sum_{i=0}^{n} y_{i} B^{i}$, it is necessary and sufficient that
+
+\begin{itemize}
+  \item[(i)] $Y \equiv y(\bmod B-z)$,
+  \item[(ii)] $Y<z B^{m}$,
+  \item[(iii)] $\tau_{2}\left(Y,\allowbreak  \sum_{i=0}^{k-1}(B-z) B^{i}\right)=0$.
+\end{itemize}
+
+\noindent\emph{Proof.} The necessity of condition (i) is clear. Condition (ii) is also necessary. In fact the stronger condition $Y<z B^{n}$ is necessary. The necessity of condition (iii) follows from Lemma 2.7. Here $0 \leq Y$.
+
+For the sufficiency, suppose that $Y$ satisfies the three conditions. Then by (ii) we may suppose that $Y=\sum_{i=0}^{m} b_{i} B^{i}$ where $0 \leq b_{i}<B(i=0,\allowbreak 1,\allowbreak  \ldots,\allowbreak  m-1)$ and $0 \leq b_{m}<z$. By Lemma 2.7 condition (iii) implies $0 \leq b_{i}<z(i=0,\allowbreak 1$, $\ldots,\allowbreak  m)$. Extend the digits by $y_i=0$ for $i>n$. Now consider the number $y^{\prime}=\sum_{i=0}^{m} b_{i} z^{i}$. Then we have
+
+\[
+\left|y^{\prime}-y\right| \leq \sum_{i=0}^{m}\left|b_{i}-y_{i}\right| z^{i} \leq \sum_{i=0}^{m}(z-1) z^{i}=z^{m+1}-1<2 z^{m+1}-z \leq B-z .
+\]
+
+Hence $\left|y^{\prime}-y\right|<B-z$. Also $y^{\prime} \equiv Y \equiv y(\bmod B-z)$ by (i). So $y^{\prime} \equiv y$ $(\bmod B-z)$. Therefore $Y=\sum_{i=0}^{n} y_{i} B^{i}$. The lemma is proved.
+
+\noindent\textbf{Lemma 2.10.} If $N$ pow $2,\allowbreak 0 \leq S_{1}<N,\allowbreak  0 \leq T_{1}<N$, then $\tau_{2}\left(S_{1},\allowbreak  T_{1}\right)=0 \wedge$ $\tau_{2}\left(S_{2},\allowbreak  T_{2}\right)=0 \Leftrightarrow \tau_{2}\left(S_{1}+S_{2} N,\allowbreak  T_{1}+T_{2} N\right)=0$.
+
+\noindent\textbf{Lemma 2.11.} Suppose $N_i$ pow $2$ and
+$0\leq S_i<N_i$, $0\leq T_i<N_i$ for $i=1,\ldots,n$. Put
+\[
+ S=\sum_{i=1}^{n}S_i\prod_{j=1}^{i-1}N_j,\qquad
+ T=\sum_{i=1}^{n}T_i\prod_{j=1}^{i-1}N_j,\qquad
+ N=\prod_{i=1}^{n}N_i.
+\]
+Then
+
+\begin{itemize}
+  \item[(i)] $\bigwedge_{i=1}^{n} \tau_{2}\left(S_{i},\allowbreak T_{i}\right)=0 \Leftrightarrow \tau_{2}(S,\allowbreak  T)=0$, and
+  \item[(ii)] $S<N$ and $T<N$.
+\end{itemize}
+
+\noindent\emph{Proof.} Induction on Lemma 2.10.\\
+The digits of a number are expressible through the integer part function. If $d_{i}$ is the $i+1$st digit from the right in the base $B$ expansion of $a$, then $d_{i}$ is given by
+
+\[
+d_{i}=\operatorname{rem}\left(\left[a / B^{i}\right], B\right)=\left[a / B^{i}\right]-B\left[a / B^{i+1}\right] .
+\]
+
+The number of carries occurring during the base $B$ addition of two numbers is similarly expressible in terms of integer parts. First we express the condition that a carry occurs.
+
+\noindent\textbf{Lemma 2.12.} In the $B$-ary addition of $a$ and $b,\allowbreak  a$ carry occurs, from the ith place to the $i+1$st place, according as $\left[(a+b) / B^{i}\right]-\left[a / B^{i}\right]-\left[b / B^{i}\right]$ equals 1 or 0 .
+
+\noindent\emph{Proof.} Write $a=\left[a / B^{i}\right] B^{i}+a^{\prime},\allowbreak  b=\left[b / B^{i}\right] B^{i}+b^{\prime}$ where $0 \leq a^{\prime}<B^{i}$ and $0 \leq b^{\prime}<B^{i}$. Then always $0 \leq a^{\prime}+b^{\prime}<2 B^{i}$. A carry occurs from the $i$th to $i+1$st place if and only if $B^{i} \leq a^{\prime}+b^{\prime}$, in other words according as $\left[\left(a^{\prime}+b^{\prime}\right) / B^{i}\right]$ $=1$ or 0 . This carry condition may be rewritten in terms of $a$ and $b$ using $(a+b) / B^{i}$ $=\left[a / B^{i}\right]+\left[b / B^{i}\right]+\left(a^{\prime}+b^{\prime}\right) / B^{i}$ and hence $\left[(a+b) / B^{i}\right]=\left[a / B^{i}\right]+\left[b / B^{i}\right]+$ $\left[\left(a^{\prime}+b^{\prime}\right) / B^{i}\right]$. The lemma is proved. It yields immediately the following (finite) series formula for the number of carries.
+
+\noindent\textbf{Lemma 2.13.}
+
+\[
+\tau_{B}(a,b)=\sum_{i=1}^{\infty}\left(\left[(a+b)/B^{i}\right]-\left[a/B^{i}\right]-\left[b/B^{i}\right]\right).
+\]
+
+\noindent\emph{Remark.} \origpage{555}Though we shall not make particular use of it, we mention that the weight of a number, like the number of carries, is also expressible as a sum of integer parts.
+
+\[
+\sigma_{B}(a)=a-(B-1) \sum_{i=1}^{\infty}\left[\frac{a}{B^{i}}\right] \quad \text { and } \quad \sigma(a)=a-\sum_{i=1}^{\infty}\left[\frac{a}{2^{i}}\right] .
+\]
+
+\noindent\textbf{Theorem 2.14 (E. Kummer, 1852).} If $B$ is a prime number, then $\tau_{B}(a,\allowbreak  b)$ equals the exact multiplicity $m$ to which a power of $B,\allowbreak  B^{m}$, divides the binomial coefficient $\binom{a+b}{a}$.
+
+\noindent\emph{Proof.} According to Legendre's formula, if $B$ is a prime, then $B$ divides $n!$ to the exact multiplicity $\sum_{i=1}^{\infty}\left[n / B^{i}\right]$. Hence Theorem 2.14 follows from
+
+\[
+\binom{a+b}{a}=\frac{(a+b)!}{a!b!}
+\]
+
+and Lemma 2.13.
+
+\noindent\textbf{Lemma 2.15.} $n \leq \sigma(R)$ if and only if $2^{n} \left\lvert\,\allowbreak \binom{ 2 R}{R}\right.$.
+
+\noindent\emph{Proof.} By Lemma 2.1, Theorem 2.14 and the fact that 2 is a prime number.
+
+\noindent\textbf{Lemma 2.16.} Suppose $N$ pow $2,\allowbreak 0 \leq S<N,\allowbreak  0 \leq T<N$ and $R=S\left(N^{2}-N\right)+$ $(T+1)\left(N^{2}-1\right)$. Then $\tau_{2}(S,\allowbreak  T)=0$ if and only if $N^{2} \left\lvert\,\allowbreak \binom{2R}{R}\right.$.
+
+\noindent\emph{Proof.} Let $N=2^{\alpha}$. Plainly $\tau_{2}(S,\allowbreak  T)=0 \Leftrightarrow \tau_{2}(S,\allowbreak  T) \leq 0$ so that, by Lemma 2.2, $\tau_{2}(S,\allowbreak  T)=0 \Leftrightarrow 0 \leq \sigma(S+T)-\sigma(S)-\sigma(T)$. By Lemma 2.6 this is equivalent to
+
+\[
+\begin{aligned}
+2 \alpha & \leq \sigma(S+T)+\sigma(N-1-S)+\sigma(N-1-T) \\
+& =\sigma(S+T)+\sigma((N-1-S) N+N-1-T) \\
+& =\sigma\left((S+T) N^{2}+(N-1-S) N+N-1-T\right),
+\end{aligned}
+\]
+
+using Lemma 2.5 and $N-1-T<N$ and $N-1-T+(N-1-S) N<N^{2}$. Hence
+
+\[
+\tau_{2}(S, T)=0 \Leftrightarrow 2 \alpha \leq \sigma(R) \Leftrightarrow 2^{2 \alpha} \left\lvert\,\binom{ 2 R}{R}\right.
+\]
+
+by Lemma 2.15.
+
+\noindent\textbf{Elementary inequalities 2.17.} For any real number $\alpha$ and any nonnegative integer $n$:
+
+\[
+\begin{aligned}
+& \text { if } \alpha<1 \text {, then }(1-\alpha)^{n} \geq 1-n\alpha \text {; and } \\
+& \text { if } 0 \leq \alpha \leq \frac{1}{2} \text {, then }(1-\alpha)^{-1} \leq 1+2 \alpha \text {. }
+\end{aligned}
+\]
+
+The next lemmas concern the sequence of solutions of the Pell equation
+
+\[
+x^{2}-\left(A^{2}-1\right) y^{2}=1 \quad \text { where } 1<A .
+\]
+
+We denote the solutions by $x=\chi_{A}(n)$ and $y=\psi_{A}(n)$ as usual, with $A\geq2$, $n\geq0$, and nonnegative Pell coordinates. These sequences have the following elementary properties (cf. [25], [24], [15], [4], [18], [8] for proofs).\footnote{Editorial emendation: the printed text cites [23], [24] here and again in the proof of Lemma 2.23. Reference [23] is Kummer's 1852 paper on the reciprocity laws, which contains nothing on Pell equations, and reference [25], Julia Robinson's \emph{Existential definability in arithmetic}, the standard source for these properties, is otherwise never cited; so [23] is read as a slip for [25] in both places.}
+
+\noindent\textbf{Lemma 2.18.} $\left(A^{2}-1\right) y^{2}+1=\square$ if and only if $y=\psi_{A}(n)$ for some $n$.
+
+\noindent\textbf{Lemma 2.19.} For $A\geq2$ and $n\geq0$, $(2 A-1)^{n} \leq \psi_{A}(n+1) \leq(2 A)^{n}$.
+
+\noindent\textbf{Lemma 2.20.} $\psi_{A}(n) \equiv n(\bmod A-1)$.
+
+\noindent\textbf{Lemma 2.21.} If $0<V<A$, then $A \leq 2 A V-V^{2}-1$.
+
+\noindent\textbf{Lemma 2.22.}\origpage{556} For positive integers $V,\allowbreak B,\allowbreak W$, in order that the exponential relation $W=V^{B}$ holds, it is necessary and sufficient that there exist positive integers $A$ and $C$ such that:
+
+\begin{itemize}
+  \item[(i)] $V^{3 B}<A$,
+  \item[(ii)] $W^{3}<A$,
+  \item[(iii)] $\left(V^{2}-1\right) W C \equiv V\left(W^{2}-1\right)\left(\bmod 2 A V-V^{2}-1\right)$,
+  \item[(iv)] $C=\psi_{A}(B)$.
+\end{itemize}
+
+For a proof see [8]. This method of defining the exponential relation is due to Julia Robinson. Formerly it was necessary to use $D=\chi_{A}(B)$ as well as $C=\psi_{A}(B)$ and to replace (iii) by $D \equiv W+C(A-V)\left(\bmod 2 A V-V^{2}-1\right)$. (iii) has higher degree but uses fewer unknowns.
+
+\noindent\textbf{Lemma 2.23.} Suppose $C_1>0$, $0<B_{1} \leq B<A$ and $C=\psi_{A}(B)$. Then $C_{1}=\psi_{A}\left(B_{1}\right)$ if and only if
+
+\begin{itemize}
+  \item[(i)] $\left(A^{2}-1\right) C_{1}^{2}+1=\square$,
+  \item[(ii)] $C_{1} \equiv B_{1}(\bmod A-1)$ and
+  \item[(iii)] $C_{1} \leq C$.
+\end{itemize}
+
+\noindent\emph{Proof.} By Lemmas 2.18 and 2.20 (cf. [25], [24] or [18]).
+
+\noindent\textbf{Lemma 2.24.} If $1 \leq U$ and $1 \leq R$, then
+
+\[
+\frac{(U+1)^{2 R}}{U^{R}}=\binom{2 R}{0} \frac{1}{U^{R}}+\binom{2 R}{1} \frac{1}{U^{R-1}}+\cdots+\binom{2 R}{R-1} \frac{1}{U}
+\]
+
+
+\begin{equation*}
++\binom{2 R}{R}+\binom{2 R}{R+1} U^{1}+\cdots+\binom{2 R}{2 R} U^{R}, \tag{i}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\binom{2 R}{0} \frac{1}{U^{R}}+\binom{2 R}{1} \frac{1}{U^{R-1}}+\cdots+\binom{2 R}{R-1} \frac{1}{U}<\frac{2^{2 R}}{U} . \tag{ii}
+\end{equation*}
+
+
+\noindent\emph{Proof.} By the Binomial Theorem.
+
+\noindent\textbf{Lemma 2.25.} For $R \geq 8,\allowbreak  N \geq 8,\allowbreak  R \geq b$ and $N \geq b>0$, in order that $N^{2} \left\lvert\,\allowbreak \binom{ 2 R}{R}\right.$ and $b$ pow 2 it is necessary and sufficient that there exist positive integers $h,\allowbreak  s,\allowbreak  w,\allowbreak  \phi$ and integers $A,\allowbreak  B^{\prime},\allowbreak  C,\allowbreak  K,\allowbreak  M,\allowbreak  P,\allowbreak  U,\allowbreak  V,\allowbreak  W,\allowbreak  Y$ satisfying:
+
+
+\begin{equation*}
+P=2 M^{2} U, \tag{B1}
+\end{equation*}
+
+\begin{equation*}
+\left(P^{2}-1\right) K^{2}+1=\square, \tag{B2}
+\end{equation*}
+
+\begin{equation*}
+((C / K)-Y)^{2}<\frac{1}{4}, \tag{B3}
+\end{equation*}
+
+\begin{equation*}
+K=R+1+h(P-1), \tag{B4}
+\end{equation*}
+
+\begin{equation*}
+M=R Y, \tag{B5}
+\end{equation*}
+
+\begin{equation*}
+A=M(U+1), \tag{B6}
+\end{equation*}
+
+\begin{equation*}
+B^{\prime}=2 R+1, \tag{B7}
+\end{equation*}
+
+\begin{equation*}
+C=B^{\prime}+\phi, \tag{B8}
+\end{equation*}
+
+\begin{equation*}
+U=N^{2}w, \tag{B9}
+\end{equation*}
+
+\begin{equation*}
+Y=N^{2}s, \tag{B10}
+\end{equation*}
+
+\begin{equation*}
+W=bw, \tag{B11}
+\end{equation*}
+
+\begin{align*}
+& \origpage{557} V=2  \tag{B12}\\
+& \left(V^{2}-1\right) W C \equiv V\left(W^{2}-1\right)\left(\bmod 2 A V-V^{2}-1\right),  \tag{B13}\\
+& C=\psi_{A}\left(B^{\prime}\right) . \tag{B14}
+\end{align*}
+
+
+Furthermore the initial conditions together with (B5), (B6), (B7), (B8), (B9), (B10), (B12) imply that $1<A,\allowbreak  0<B^{\prime},\allowbreak  B^{\prime} \leq C,\allowbreak  0<V<A$ and $0<2 A V-V^{2}-1$. Also (B8) may be replaced by (B8'), $C=B^{\prime}+W+\phi$, which implies $0<\left(V^{2}-1\right) W C$ - $V\left(W^{2}-1\right)$.
+
+\noindent\emph{Remark.} The main idea of the proof is the observation that, as $M \rightarrow \infty$,
+
+\[
+\frac{C}{K}=\frac{\psi_{M(U+1)}(2R+1)}{\psi_{2M^{2}U}(R+1)} \cong \frac{(2 M(U+1))^{2 R}}{\left(4 M^{2} U\right)^{R}}=\frac{(U+1)^{2 R}}{U^{R}}
+\]
+
+Hence if $N^{2} \mid U$ and $U>2^{2 R}$, then $N^{2} \left\lvert\,\allowbreak \binom{ 2 R}{R}\right.$ just in case $N^{2} \mid Y$ where $Y$ is the integer part of $C / K$.
+
+We now proceed carefully through the details.
+
+\noindent\emph{Proof of sufficiency.} Suppose conditions (B1)-(B14) hold. (B5), (B6), (B9), (B10) and the initial conditions imply $U \geq 64,\allowbreak  Y \geq 64,\allowbreak  M \geq 512$ and $A \geq 33280$. From (B2) and (B4), $K=\psi_{2 M^{2} U}\left(R+1+K^{\prime}\left(2 M^{2} U-1\right)\right) . R+1<2 M^{2} U-1$ implies $0 \leq K^{\prime}$. If $0<K^{\prime}$, then
+
+\[
+\frac{C}{K} \leq \frac{\psi_{M(U+1)}(2 R+1)}{\psi_{2 M^{2} U}\left(R+1+2 M^{2} U-1\right)} \leq \frac{(2 M(U+1))^{2 R}}{\left(4 M^{2} U-1\right)^{2 M^{2} U+R-1}} \leq\left(\frac{2M(U+1)}{4M^{2}U-1}\right)^{2 R}<\frac{1}{2},
+\]
+
+contradicting (B3) and the bound $Y\geq64$ from (B10). Therefore $K=\psi_{2 M^{2} U}(R+1)$. Let $\rho=(U+1)^{2 R} / U^{R}$. Using Lemma 2.19 and the two elementary inequalities 2.17 we find
+
+
+\begin{equation*}
+\frac{C}{K} \leq \frac{(2 M(U+1))^{2 R}}{\left(4 M^{2} U-1\right)^{R}}=\frac{(U+1)^{2 R}}{U^{R}} \frac{1}{\left(1-1 / 4 M^{2} U\right)^{R}}<\rho\left(1+\frac{R}{2 M^{2} U}\right), \tag{1}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\frac{C}{K} \geq \frac{(2 M(U+1)-1)^{2 R}}{\left(4 M^{2} U\right)^{R}}=\frac{(U+1)^{2 R}}{U^{R}}\left(1-\frac{1}{2 M(U+1)}\right)^{2 R}>\rho\left(1-\frac{R}{M(U+1)}\right) . \tag{2}
+\end{equation*}
+
+
+From (B5) and (2) we have
+
+
+\begin{equation*}
+U^{R-1}+\frac{1}{2}<\frac{1}{2} U^{R}<\frac{1}{2} \rho<\left(1-\frac{R}{M(1+U)}\right) \rho<\frac{C}{K} . \tag{3}
+\end{equation*}
+
+
+By (B3) and (3) we get
+
+
+\begin{equation*}
+U^{R-1}<Y . \tag{4}
+\end{equation*}
+
+
+Using (B6), (B7), (B9), (4) and the initial conditions we get
+
+
+\begin{equation*}
+A=R Y(U+1)>R Y U>R U^{R}=R\left(N^{2} w\right)^{R} \geq R N^{2 R} \geq 8 \cdot 8^{2 R}=V^{3 B^{\prime}} . \tag{5}
+\end{equation*}
+
+
+By (5), (B9) and the initial conditions we have
+
+
+\begin{equation*}
+A \geq R U^{R}>U^{R}=\left(N^{2} w\right)^{R} \geq(bw)^{R}=W^{R} \geq W^{3} . \tag{6}
+\end{equation*}
+
+
+\origpage{558}Hence by (B13), (B14) and Lemma 2.22 we get $W=V^{B^{\prime}}$. Therefore (B11) implies $b w=2^{2 R+1}$. Hence $b$ pow 2. By (B9), (B11) and the initial conditions
+
+
+\begin{equation*}
+U=N^{2} w \geq N b w=N W>2 W=2 \cdot 2^{2 R+1}=4 \cdot 2^{2 R} . \tag{7}
+\end{equation*}
+
+
+Now (3) and (B3) give $\rho/2<C/K<Y+\frac12$, and hence $\rho<2Y+1$. Therefore, by (B5)
+
+
+\begin{equation*}
+\frac{R}{M(1+U)} \rho<\frac{R(2 Y+1)}{R Y(1+U)}=\frac{2 Y+1}{Y(1+U)}<\frac{3 Y}{Y \cdot 65}<\frac{1}{4} . \tag{8}
+\end{equation*}
+
+
+Also $M(U+1)<M(U+U)=2 M U<2 M^{2} U$ so (8) implies
+
+
+\begin{equation*}
+R \rho /\left(2 M^{2} U\right)<R \rho /(M(U+1))<1 / 4 . \tag{9}
+\end{equation*}
+
+
+Now (1), (2), (8) and (9) together imply $|C / K-\rho|<\frac{1}{4}$. (B3) implies $|C / K-Y|<$ $\frac{1}{2}$. Hence $|Y-\rho|<\frac{3}{4}$. Lemma 2.24 together with (7) implies $\rho-[\rho]<\frac{1}{4}$. Hence $|Y-[\rho]|<1$. Therefore $Y=[\rho]$. Lemma 2.24 also shows that $[\rho] \equiv\binom{2 R}{R}(\bmod U)$. Hence (B9) and (B10) imply that $N^{2} \left\lvert\,\allowbreak \binom{ 2 R}{R}\right.$.
+
+\noindent\emph{Proof of necessity.} Suppose $N^{2} \left\lvert\,\allowbreak \binom{ 2 R}{R}\right.,\allowbreak  b$ pow 2 and the initial conditions hold. Then $b \leq R$ implies the existence of a positive integer $w$ such that $b w=2^{2 R+1}$. Let $U,\allowbreak  V,\allowbreak  W$ be defined by (B9), (B12) and (B11). Put $\rho=(U+1)^{2 R} / U^{R}$. Since $U=$ $N^{2}w>4Nw\geq4bw=8 \cdot 2^{2 R}$, we have $2^{2 R} / U<\frac{1}{8}$. Therefore $\rho-[\rho]<\frac{1}{8}$ and so $[\rho] \equiv\binom{2 R}{R}(\bmod U)$, by Lemma 2.24. Define $Y=[\rho]$. Then $s$ may be found to satisfy (B10). Let $M,\allowbreak  A,\allowbreak  B^{\prime},\allowbreak  C$ be defined by (B5), (B6), (B7) and (B14). Then $B^{\prime} \geq 9$ so a positive integer $\phi$ may be found to satisfy (B8). In fact since $A \geq 32768$ we have
+
+\[
+B^{\prime}+W=2 R+1+2^{2 R+1}<(2 A-1)^{2 R} \leq \psi_{A}(2 R+1)=C
+\]
+
+so that $\phi$ could be found to satisfy (B8'). By Lemma 2.22 the congruence (B13) holds, since $W=V^{B^{\prime}}$. Let $P$ be defined by (B1) and put $K=\psi_{P}(R+1)$. Then (B2) holds. By Lemma 2.20 a positive integer $h$ may be found to satisfy (B4).
+
+It remains only to prove that (B3) holds for $Y=[\rho]$. We have seen that $|\rho-Y|$ $<\frac{1}{8}$. The inequalities (1) and (2) still hold because they were deduced from Lemmas 2.17, 2.19 and equations (B1), (B14), $K=\psi_{P}(R+1)$ and $\rho=(U+1)^{2 R} / U^{R}$. The inequalities (1) and (2) imply
+
+
+\begin{equation*}
+-R \rho /(M(1+U))<(C / K)-\rho<R\rho/(2M^{2}U) \tag{10}
+\end{equation*}
+
+
+since $M(1+U)<M^{2} U$, (10) and (B5) imply
+
+
+\begin{equation*}
+|C / K-\rho|<R \rho /(M(1+U))=\rho /(Y(1+U)) . \tag{11}
+\end{equation*}
+
+
+Now $1 \leq \rho$ so $\rho<[\rho]+1 \leq 2[\rho]$. Hence (11) implies
+
+
+\begin{equation*}
+\left|\frac{C}{K}-\rho\right|<\frac{\rho}{Y(1+U)}<\frac{2[\rho]}{Y(1+U)}=\frac{2}{1+U}<\frac{1}{8} . \tag{12}
+\end{equation*}
+
+
+Hence $|C / K-Y| \leq|C / K-\rho|+|\rho-Y|<\frac{1}{8}+\frac{1}{8}=\frac{1}{4}$. Therefore $((C / K)-Y)^{2}$ $<\frac{1}{16}$ and (B3) holds. Lemma 2.25 is proved.
+
+\noindent\emph{Remark.} In §5 we shall find it necessary to define as well an additional exponential relation, $Q=B^{B_{1}}$. The next lemma tells how to include a definition of $Q=B^{B_{1}}$ with the above given definition of $N^{2} \left\lvert\,\allowbreak \binom{2R}{R}\right.$ and $b$ pow 2 .
+
+\noindent\textbf{Lemma 2.26.}\origpage{559} For $R,\allowbreak N,\allowbreak b$ as in Lemma 2.25, take the new witnesses $C_1,\allowbreak D_1,\allowbreak \Delta$ to be positive integers (with $D_1$ needed only in the primed system). If $3<3 B_{1} \leq B \leq Q \leq N \leq R$, then we may define $N^{2} \left\lvert\,\allowbreak \binom{ 2 R}{R}\right.,\allowbreak  b$ pow 2 and $Q=B^{B_{1}}$ by replacing equation (B8) by $C=C_{1}+B^{\prime}+\phi$ (or $C=C_{1}+B^{\prime}+W+\phi$ ) and adjoining either of the following two groups of three conditions, (C1), (C2), (C3) or (C1'), (C2'), (C3')
+
+
+\begin{align*}
+ (B^{2}-1)QC_1&\equiv B(Q^{2}-1)\pmod{2AB-B^{2}-1},\tag{C1}\\
+ (A^{2}-1)C_1^{2}+1&=\square,\tag{C2}\\
+ C_1&=B_1+\Delta(A-1),\tag{C3}
+\end{align*}
+or
+\begin{align*}
+ D_1&\equiv Q+C_1(A-B)\pmod{2AB-B^{2}-1},\tag{C1'}\\
+ (A^{2}-1)C_1^{2}+1&=D_1^{2},\tag{C2'}\\
+ C_1&=B_1+\Delta(A-1).\tag{C3'}
+\end{align*}
+
+\noindent\emph{Proof of sufficiency.} The sufficiency proof of Lemma 2.25 shows that $N \leq U$, $U^{R}<A$ and $B^{\prime}<A$. Now $0<B_{1}<B^{\prime}<A$ and $C_{1} \leq C$ by (B8) so that $C_{1}=$ $\psi_{A}\left(B_{1}\right)$ by Lemma 2.23. Also
+
+
+\begin{equation*}
+B^{3 B_{1}} \leq B^{B} \leq N^{N} \leq U^{R}<A \quad \text { and } \quad Q^{3} \leq N^{N}<U^{R}<A . \tag{13}
+\end{equation*}
+
+
+Therefore $Q=B^{B_{1}}$ by Lemma 2.22.
+
+\noindent\emph{Proof of necessity.} Suppose $Q=B^{B_{1}}$. Put $C_{1}=\psi_{A}\left(B_{1}\right)$. Then (C1) and (C2) (or (C1') and (C2')) hold. $1<B_{1}$ implies $B_{1}<C_{1}$ so that (C3), (C3') is satisfiable. Also $\phi$ can be found to satisfy (B8) since $3 B_{1} \leq R<A$ implies that
+
+
+\begin{equation*}
+\psi_{A}\left(B_{1}\right)+2 R+1+2^{2 R+1}<\psi_{A}(2 R+1) . \tag{14}
+\end{equation*}
+
+
+The lemma is proved.
+
+\noindent\textbf{Lemma 2.27.} For $1<A,\allowbreak  1<B \leq C$ and either $2 B \leq C$ or $B$ odd. The relation $C=\psi_{A}(B)$ holds if and only if there exist positive integers $i$ and $j$ such that:
+
+
+\begin{align*}
+& D F I=\square, F \mid H-C,  \tag{A1}\\
+& D=\left(A^{2}-1\right) C^{2}+1,  \tag{A2}\\
+& E=i J D C^{2},  \tag{A3}\\
+& F=\left(A^{2}-1\right) E^{2}+1,  \tag{A4}\\
+& G=A+F(C D+1-A),  \tag{A5}\\
+& H=B+j C,  \tag{A6}\\
+& I=\left(G^{2}-1\right) H^{2}+1 . \tag{A7}
+\end{align*}
+
+
+\noindent\emph{Remark.} $J$ is an arbitrary positive integer. (A3) and (A4) imply $F \perp J$ so that we may combine $F \mid H-C$ with another divisibility condition, $J \mid Q$, by writing $J F \mid Q F+J(H-C)$. Equation (A5) is due to R. Krisnis. The proof is the same as that given in [15] except that we work modulo $C$ instead of $2 C$. If we wish to separate the square condition $D F I=\square$ into $D F=\square$ and $I=\square$, then (A5) may be replaced by $G=A+F(D-A)$. If we wish also to replace $D F=\square$ by $D=\square$ and $F=\square$, then (A3) may be replaced by $E=i J C^{2}$.
+
+\noindent\textbf{Lemma 2.28.}\origpage{560} For $1<A,\allowbreak  1<B \leq C$ and either $2 B \leq C$ or $B$ odd. The relation $C=\psi_{A}(B)$ holds if and only if there exist positive integers $D,\allowbreak  F,\allowbreak  i,\allowbreak  j$ such that:
+
+
+\begin{align*}
+& F \mid I-D,  \tag{P1}\\
+& D^{2}=\left(A^{2}-1\right) C^{2}+1,  \tag{P2}\\
+& E=i C^{2},  \tag{P3}\\
+& F^{2}=\left(A^{2}-1\right) E^{2}+1,  \tag{P4}\\
+& G=A+F^{2}\left(D^{2}-A\right),  \tag{P5}\\
+& H=B+j C,  \tag{P6}\\
+& I^{2}=\left(G^{2}-1\right) H^{2}+1 . \tag{P7}
+\end{align*}
+
+
+\noindent\emph{Remark.} The proof is similar to that in [15] except that again we work modulo $C$ instead of $2 C$. Also, instead of the $\psi$ form of the second step down lemma, one uses the $\chi$ form, i.e. $0<p \leq q$ and $\chi_{A}(r) \equiv \chi_{A}(p)\left(\bmod \chi_{A}(q)\right)$ implies $r \equiv \pm p$ $(\bmod 4 q)$ (cf. Davis [4, Lemma 2.24]). Of course (P5) may be replaced by $G=$ $A+F^{2}\left(F^{2}-A\right)$. When these equations (P1)-(P7) are used to define an exponential $W=V^{B}$ as in Lemma 2.22, then we may replace the congruence (iii) by $D\equiv W+C(A-V)\pmod{2AV-V^{2}-1}$, since $\chi_{A}(B)$ is now available in the form of $D$ (cf. Lemma 2.4 of [9]). This is also true for the following definition of $C=\psi_{A}(B)$, based on (P1)-(P7).
+
+\noindent\textbf{Corollary 2.29.} For $1<A,\allowbreak  1<B \leq C$ and either $2 B \leq C$ or $B$ odd. The relation $C=\psi_{A}(B)$ holds if and only if there exist positive integers $D,\allowbreak  F,\allowbreak  i,\allowbreak  j$ and $o$ such that:
+
+
+\begin{align*}
+& D^{2}=\left(A^{2}-1\right) C^{2}+1,  \tag{Q1}\\
+& F^{2}=\left(A^{2}-1\right) i^{2} C^{4}+1,  \tag{Q2}\\
+& (D+o F)^{2}=\left(\left(A+F^{2}\left(D^{2}-A\right)\right)^{2}-1\right)(B+j C)^{2}+1 . \tag{Q3}
+\end{align*}
+
+
+\noindent\emph{Proof.} From Lemma 2.28, by substitution.
+
+\section{Matijasevič's reduction to 9 unknowns} Let $(\nu,\allowbreak \delta)$ be a universal pair furnished by a normalized, nonnegative sum-of-squares representation, as described below. Then any r.e. set of positive integers $W$ may be represented in diophantine form
+
+
+\begin{equation*}
+x \in W \Leftrightarrow \exists z_{1}, z_{2}, \ldots, z_{\nu} P\left(x, z_{1}, z_{2}, \ldots, z_{\nu}\right)=0, \tag{3.1}
+\end{equation*}
+
+
+and equivalently in the form
+
+
+\begin{equation*}
+x \in W \Leftrightarrow \exists z_{0}, z_{1}, \ldots, z_{\nu}\left(P\left(z_{0}, z_{1}, \ldots, z_{\nu}\right)=0 \wedge x=z_{0}\right) . \tag{3.2}
+\end{equation*}
+
+
+Here $P\left(z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}\right)$ is a polynomial with integer coefficients. The variables $z_{1},\allowbreak  z_{2},\allowbreak  \ldots,\allowbreak  z_{\nu}$ range over all nonnegative numbers and $\delta$ is the total degree of the polynomial $P\left(z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}\right)$ in all the variables $z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}$. We will suppose that $\delta \geq 4$. Choose the representing polynomial to be nonnegative (a sum of squares) and normalized so that $P(x,\allowbreak 0,\allowbreak \ldots,\allowbreak 0)\neq0$ for every $x\geq0$. Then $P(x,\allowbreak 0,\allowbreak \ldots,\allowbreak 0)\geq1$, and in particular $P(0,\allowbreak \ldots,\allowbreak 0)\geq1$. Such a normalized quartic representation is supplied by the quadratic system of §5, with positive witnesses shifted to nonnegative variables; one may fix admissible indices with $u>2z$, so that its equation (D9) cannot hold when all the shifted witnesses are zero. Nonvanishing alone, without the nonnegative normalization, would not justify the displayed sign conclusion.
+
+\noindent\textit{Editorial proof-order clarification.} To avoid using the output of \S5 to justify its own starting representation, first take any nonnegative quartic sum-of-squares representation $P_0(x,\mathbf z)$ and replace it by
+\[
+ P_{\mathrm{init}}(x,\mathbf z,t)=P_0(x,\mathbf z)+(t-1)^2.
+\]
+Over nonnegative witnesses this has exactly the same represented set, and
+$P_{\mathrm{init}}(x,\mathbf0,0)=P_0(x,\mathbf0)+1\geq1$.
+It still has degree at most four. The construction of \S5 allows an arbitrary finite starting number of witnesses and reduces it to 58; the extra initial witness therefore does not increase that final bound. After that construction, the preceding (D9) argument supplies the normalized 58-witness polynomial used for the reduction to nine unknowns.
+
+We shall use the generalization to $\nu+1$ variables of the Binomial Theorem (Multinomial Theorem)
+
+
+\begin{equation*}
+\left(1+z_{0}+z_{1}+\cdots+z_{\nu}\right)^{\delta}=\sum^{*} c_{i_{0}, i_{1}, \ldots, i_{\nu}} z_{0}^{i_{0}} z_{1}^{i_{1}} \ldots z_{\nu}^{i_{\nu}} . \tag{3.3}
+\end{equation*}
+
+
+\origpage{561}The multinomial coefficients
+
+
+\begin{equation*}
+c_{i_{0}, i_{1}, \ldots, i_{\nu}}=\frac{\delta!}{i_{0}!i_{1}!\cdots i_{\nu}!\left(\delta-i_{0}-i_{1}-\cdots-i_{\nu}\right)!} \tag{3.4}
+\end{equation*}
+
+
+are divisors of $\delta!$. Therefore there exist integers $P_{i_{0}, i_{1}, \ldots, i_{\nu}}$ such that
+
+
+\begin{equation*}
+\delta!P\left(z_{0}, z_{1}, \ldots, z_{\nu}\right)=\sum^{*} c_{i_{0}, i_{1}, \ldots, i_{\nu}} P_{i_{0}, i_{1}, \ldots, i_{\nu}} z_{0}^{i_{0}} z_{1}^{i_{1}} \ldots z_{\nu}^{i_{\nu}} . \tag{3.5}
+\end{equation*}
+
+
+Here and throughout this paper we use the notation $\Sigma^{*}$ to denote a sum with the same range as (3.3): $i_0,\allowbreak \ldots,\allowbreak i_\nu\geq0$ and $i_{0}+i_{1}+\cdots+i_{\nu} \leq \delta$. Let $m^{*}=\max ^{*}\left|P_{i_{0}, i_{1}, \ldots, i_{\nu}}\right|$. Since $P(0,\allowbreak 0,\allowbreak  \ldots,\allowbreak  0)>0$ we may suppose $P_{0,0, \ldots, 0} \geq 1$. Choose an integer $\beta$ such that $2(2+\nu)^{\delta} m^{*}<\beta$ and $\beta$ pow 2 . As in [15] we put a movable ceiling $b$ on the size of a solution to (3.1). Suppose that
+
+
+\begin{equation*}
+b \text { pow } 2, \tag{3.6}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+B=\beta b^{\delta} . \tag{M1}
+\end{equation*}
+
+
+Analogous to [15], a sequence of potential solutions to (3.1), $z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}$, will be encoded as the digits of a number, $c$ in the base $B$ number notation system. A number $c$ of the form
+
+
+\begin{equation*}
+c=1+\sum_{i=0}^{\nu} z_{i} B^{(\delta+1)^{i}}, \quad\left(0 \leq z_{i}<b\right) \tag{3.7}
+\end{equation*}
+
+
+will be called a code with bound $b$. We may ensure that an arbitrary number $c$ is a code with bound $b$ and that $c$ encodes $x$ as $z_{0}\left(z_{0}=x\right)$ with four conditions:
+
+
+\begin{align*}
+& c=1+x B+g  \tag{M2}\\
+& x<b  \tag{M3}\\
+& g<2 b B^{(\delta+1)^{\nu}}  \tag{3.8}\\
+& \tau_{2}\left(g, M_{1}\right)=0 \tag{3.9}
+\end{align*}
+
+
+where $M_{1}$ is a mask, defined by
+
+
+\begin{align*}
+& M_{1}=\sum_{j=0}^{(\delta+1)^{\nu}} m_{j} B^{j},  \tag{M4}\\
+& \quad \text { where } m_{j}= \begin{cases}B-b, & \text { if } j=(\delta+1)^{i} \text { for some } i \geq 1, \\
+B-1, & \text { if not. }\end{cases}
+\end{align*}
+
+
+Here we are using Lemma 2.7 which is why it was necessary to suppose (3.6), $b$ pow 2 . We have not replaced $g$ by $g-1$ in (M2) since we are supposing that $P(x,\allowbreak  0,\allowbreak 0,\allowbreak  \ldots,\allowbreak  0) \neq 0$.
+
+Now if $c$ is a code with bound $b$, i.e. $c$ is given by (3.7), then by the Multinomial Theorem
+
+
+\begin{equation*}
+c^{\delta}=\sum^{*} c_{i_{0}, i_{1}, \ldots, i_{\nu}} z_{0}^{i_{0}} z_{1}^{i_{1}} \cdots z_{\nu}^{i_{\nu}} B^{i_{0}+i_{1}(\delta+1)+\cdots+i_{\nu}(\delta+1)^{\nu}} . \tag{3.10}
+\end{equation*}
+
+
+Let the integers $P_{i_{0}, i_{1}, \ldots, i_{\nu}}$ be as in (3.5) and consider the polynomial
+
+
+\begin{equation*}
+D_{0}=\sum^{*}P_{i_0,i_1,\ldots,i_\nu}\,B^{(\delta+1)^{\nu+1}-i_0-i_1(\delta+1)-\cdots-i_\nu(\delta+1)^\nu}. \tag{M5}
+\end{equation*}
+
+
+\origpage{562}The hypothesis $P_{0,0, \ldots, 0} \geq 1$ implies that $D_{0}$ is a positive integer. Multiplying polynomials (3.10) and (M5) we see that $c^{\delta} D_{0}$ is a polynomial in $B$ of degree at most $(2 \delta+1)(\delta+1)^{\nu}$. Moreover, and most importantly, one finds that the coefficient of $B^{(\delta+1)^{\nu+1}}$ in the polynomial $c^{\delta} D_{0}$ is exactly $\delta!P\left(z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}\right)$. By (M1) and the choice of $\beta$ all coefficients of powers of $B$ in $c^{\delta} D_{0}$ are $<B / 2$ in absolute value. Hence the polynomial $E_{0}$ defined by
+
+
+\begin{equation*}
+E_{0}=c^{\delta} D_{0}+\sum_{i=0}^{(2 \delta+1)(\delta+1)^{\nu}} \frac{B}{2} B^{i} \tag{M6}
+\end{equation*}
+
+
+has nonnegative integer coefficients $<B$. Hence the polynomial $E_{0}$ represents a number in the scale of $B$. Therefore $c$ is the code of a solution to (3.1) just in case
+
+
+\begin{equation*}
+\tau_{2}\left(E_{0},((B / 2)-1) B^{(\delta+1)^{\nu+1}}\right)=0 . \tag{3.11}
+\end{equation*}
+
+
+This follows from Lemma 2.8. By Lemma 2.4, (3.11) is equivalent to
+
+
+\begin{equation*}
+\tau_{2}\left(2 E_{0},(B-2) B^{(\delta+1)^{\nu+1}}\right)=0 . \tag{3.12}
+\end{equation*}
+
+
+The two $\tau$-conditions (3.9) and (3.12) may be combined into one by Lemma 2.10. Define
+
+
+\begin{align*}
+& S_{1}=2 E_{0},  \tag{M7}\\
+& T_{1}=(B-2) B^{(\delta+1)^{\nu+1}},  \tag{M8}\\
+& N_{1}=2B^{(2\delta+1)(\delta+1)^\nu+1}, \tag{M9}
+\end{align*}
+
+\begin{equation*}
+S_{2}=g, \tag{M10}
+\end{equation*}
+
+\begin{equation*}
+T_{2}=M_{1}, \tag{M11}
+\end{equation*}
+
+\begin{equation*}
+N_{2}=B^{(\delta+1)^{\nu+1}}, \tag{M12}
+\end{equation*}
+
+\begin{align*}
+& S=S_{1}+S_{2} N_{1},  \tag{M13}\\
+& T=T_{1}+T_{2} N_{1},  \tag{M14}\\
+& N=N_{1} N_{2} . \tag{M15}
+\end{align*}
+
+
+It follows from (M3), (3.8) and $0<D_{0}$ (with no hidden use made of (3.9) or (3.12)) that $0 \leq S_{i}<N_{i}$ and $0 \leq T_{i}<N_{i}(i=1,\allowbreak 2)$. Hence Lemma 2.10 may be applied and (3.9) and (3.12) are together equivalent to $\tau_{2}(S,\allowbreak  T)=0$. Also $0 \leq S<$ $N$ and $0 \leq T<N$ by Lemma 2.11. Hence by Lemma 2.16, if we define $R$ by
+
+
+\begin{equation*}
+R=S\left(N^{2}-N\right)+(T+1)\left(N^{2}-1\right) \tag{M16}
+\end{equation*}
+
+
+then $\tau_{2}(S,\allowbreak  T)=0$ is equivalent to the divisibility condition
+
+
+\begin{equation*}
+N^{2} \left\lvert\,\binom{ 2 R}{R} .\right. \tag{3.13}
+\end{equation*}
+
+
+By Lemma 2.25 we may define the two conditions (3.6) and (3.13) by means of conditions (B1)-(B14). Since $B^{\prime}$ is odd, condition (B14) may be replaced by conditions (A1)-(A7), by Lemma 2.27 (replace $B$ by $B^{\prime}$ in (A6)). The inequality (3.8) may be "stacked" with the inequality (B3). That is, we may replace (3.8) and (B3) \origpage{563}by the single inequality
+
+
+\begin{equation*}
+4((C / K)-Y)^{2}+g /\left(2 b B^{(\delta+1)^{\nu}}\right)<1 . \tag{B3'}
+\end{equation*}
+
+
+This possibility follows from the fact that $g<2 b B^{(\delta+1)^{\nu}}$ is sufficient whereas $g<b B^{(\delta+1)^{\nu}}$ is necessary (cf. Lemma 2.9) and the fact that in the necessity part of the proof of Lemma 2.25 we found we could make $(C / K-Y)^{2}<\frac{1}{16}$.
+
+The inequality (M3), $x<b$, can also be stacked with (B3') but since this would increase the degree we prefer to introduce a new unknown, $\varepsilon$ and replace (M3) by
+
+
+\begin{equation*}
+x+\varepsilon=b . \tag{M3'}
+\end{equation*}
+
+
+If the arbitrary quantity $J$ of Lemma 2.27 is defined by
+
+
+\begin{equation*}
+J=2 A V-V^{2}-1 \tag{M17}
+\end{equation*}
+
+
+then the two divisibility conditions (B13) and $F \mid H-C$ (this occurs in (A1)) may be combined into one divisibility condition
+
+
+\begin{equation*}
+J F \mid\left(\left(V^{2}-1\right) W C-V\left(W^{2}-1\right)\right) F+J(H-C) \tag{M18}
+\end{equation*}
+
+
+since, by (A3) and (A4), $J$ and $F$ are relatively prime. Also, as remarked after Lemma 2.25 in §2, if we replace (B8) by
+
+
+\begin{equation*}
+C=B^{\prime}+W+\phi, \tag{B8'}
+\end{equation*}
+
+
+then $0<\left(V^{2}-1\right) W C-V\left(W^{2}-1\right)$. We also have, from (A6), the inequality $0<H-C$. Hence the dividend appearing in the divisor condition (M18) is nonnegative.
+
+Thus we have proved that for any positive integer $x,\allowbreak  x \in W$ if and only if the following conditions can be satisfied: (M1), (M2), (M3'), (M4)-(M18), (B1), (B2), (B3'), (B4)-(B7), (B8'), (B9)-(B12), (A1)-(A7) with the condition $F \mid H-C$ deleted from (A1) and $B$ replaced by $B^{\prime}$ in (A6).
+
+We may eliminate by substitution all the quantities $b,\allowbreak  B,\allowbreak  c,\allowbreak  M_{1},\allowbreak  D_{0},\allowbreak  E_{0},\allowbreak  S_{i},\allowbreak  T_{i}$, $N_{i}(i=1,\allowbreak 2),\allowbreak  S,\allowbreak  T,\allowbreak  N,\allowbreak  R,\allowbreak  Y,\allowbreak  M,\allowbreak  U,\allowbreak  P,\allowbreak  K,\allowbreak  A,\allowbreak  B^{\prime},\allowbreak  W,\allowbreak  C,\allowbreak  V,\allowbreak  J,\allowbreak  D,\allowbreak  E,\allowbreak  F,\allowbreak  G,\allowbreak  H,\allowbreak  I$. We are then left with only eight unknowns, $g,\allowbreak  h,\allowbreak  i,\allowbreak  j,\allowbreak  s,\allowbreak  w,\allowbreak  \varepsilon,\allowbreak  \phi$, and four conditions: the two square conditions (B2) and (A1), the divisibility condition (M18) and the inequality (B3').
+
+According to the Relation Combining Theorem of [15], with a single new unknown $n$, we may define all four conditions (B2), (A1), (M18), (B3'). Thus it follows that there exists a polynomial $M_{2}(x,\allowbreak  g,\allowbreak  h,\allowbreak  i,\allowbreak  j,\allowbreak  s,\allowbreak  w,\allowbreak  \varepsilon,\allowbreak  \phi,\allowbreak  n)$ such that for each positive integer $x$,
+
+
+\begin{equation*}
+x \in W \Leftrightarrow \exists g, h, i, j, s, w, \varepsilon, \phi, n M_{2}(x, g, h, i, j, s, w, \varepsilon, \phi, n)=0 . \tag{3.14}
+\end{equation*}
+
+
+Hence every r.e. set $W$ is diophantine definable by a polynomial in 9 unknowns.\\
+What will be the degree of this polynomial $M_{2}$ ? Plainly, by (M4), (M5) and (M6) this degree will be a function of $\delta$ and $\nu$ and also of $(\delta+1)^{\nu}$, where $(\nu,\allowbreak  \delta)$ is a universal pair.
+
+For the value $\delta=4$ we have computed the degree of $M_{2}$ to be $47216(\delta+1)^{\nu}+$ 9728 or $47216 \cdot 5^{\nu}+9728$. In §5 of this paper, we prove that the pair $\delta=4,\allowbreak  \nu=58$ is universal. This gives the degree $47216 \times 5^{58}+9728$ or approximately $1.638\times10^{45}$.
+
+
+\section{Construction of a small universal equation} \origpage{564}We proceed initially as in §3 starting with the representation
+
+
+\begin{equation*}
+x \in W \Leftrightarrow \exists z_{0}, z_{1}, \ldots, z_{\nu}\left(P\left(z_{0}, z_{1}, \ldots, z_{\nu}\right)=0 \wedge x=z_{0}\right) \tag{4.0}
+\end{equation*}
+
+
+where $P\left(z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}\right)$ is a polynomial of degree $\delta$ in $z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}$. Suppose that $(\nu,\allowbreak  \delta)$ is a universal pair and $\delta \geq 3$. Then every r.e. set $W$ may be represented in the form (4.0). Let the integers $P_{i_{0},i_{1},\ldots,i_{\nu}}$ be determined as before, (3.5). Choose an integer $z$ so large that $z>1+\max ^{*}\left|P_{i_{0}, i_{1}, \ldots i_{\nu}}\right|$ and such that $z$ pow 2. Let $u$ and $y$ be given by
+
+
+\begin{align*}
+& u=\sum_{i=1}^{\nu}(2 z)^{(\delta+1)^{i}},  \tag{4.1}\\
+& y=\sum^{*}\left(z+P_{i_{0}, i_{1}, \ldots, i_{\nu}}\right)(2 z)^{(\delta+1)^{\nu+1}-i_{0}-i_{1}(\delta+1)-\cdots-i_{\nu}(\delta+1)^{\nu}} .
+\end{align*}
+
+
+We shall consider the triple $\langle z,\allowbreak  u,\allowbreak  y\rangle$ as the index of our r.e. set $W$. If the reader prefers a single number $v$ as index, he may regard $z,\allowbreak  u$, and $y$ as unknowns and append to the list which we shall give some equation such as
+
+
+\begin{equation*}
+v=\left((yzu)^{2}+u\right)^{2}+z \tag{U0}
+\end{equation*}
+
+
+which uniquely determines $z,\allowbreak  u$ and $y$ in terms of $v$. Still a third possibility is to begin with a universal equation (4.0) so that $z,\allowbreak  u$ and $y$ are constants, and replace $x$ by $(x+v)^{2}+x$. However we prefer to consider the triple $\langle z,\allowbreak  u,\allowbreak  y\rangle$ as the index of our r.e. set.
+
+As before the letter $b$ will be used to denote a movable ceiling on the size of a solution to (4.0). Hence we may suppose that
+
+
+\begin{equation*}
+b \text { pow } 2 \tag{4.2}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+x y<b . \tag{U1}
+\end{equation*}
+
+
+Define $B,\allowbreak  q$ and $\lambda$ by the equations
+
+
+\begin{align*}
+& B=b^{\delta+1},  \tag{U2}\\
+& q=B^{(\delta+1)^{\nu+1}},  \tag{U3}\\
+& q^{4}=1+\lambda(B-1) . \tag{U4}
+\end{align*}
+
+
+It follows that $\lambda$ is a geometric series in $B$, i.e.
+
+
+\begin{equation*}
+\lambda=\sum_{i=0}^{4(\delta+1)^{\nu+1}-1} B^{i} . \tag{4.3}
+\end{equation*}
+
+
+From (4.1), (U1), (U2) and $3 \leq \delta$ we have
+
+\[
+(2 z)(\nu+2)^{\delta}<(2 z)^{(\delta+1)^{\nu+1}}<y,
+\]
+
+and
+
+\[
+2(2 z)^{2(\delta+1)^{\nu+1}+1}<\left((2 z)^{(\delta+1)^{\nu+1}}\right)^{\delta+1} \leq y^{\delta+1}<b^{\delta+1} \leq B .
+\]
+
+\origpage{565}Therefore the hypotheses of Lemma 2.9 are satisfied with $z$ replaced by $2 z$ and $m=2(\delta+1)^{\nu+1}$. We now apply this Lemma 2.9 twice. The five conditions
+
+
+\begin{gather*}
+\theta=B-2 z  \tag{U5}\\
+e l g^{2}<q^{2}  \tag{U6}\\
+l=u+t \theta  \tag{U7}\\
+e=y+m\theta  \tag{U8}\\
+\tau_{2}\left(e+l q^{2}, \theta \lambda\right)=0 \tag{4.4}
+\end{gather*}
+
+
+imply that $e<q^{2},\allowbreak  l<q^{2},\allowbreak  l \equiv u(\bmod B-2 z)$ and $e \equiv y(\bmod B-2 z)$. Hence
+
+
+\begin{equation*}
+l=\sum_{i=1}^{\nu} B^{(\delta+1)^{i}} \tag{4.5}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+e=\sum^{*}\left(z+P_{i_{0}, i_{1}, \ldots, i_{\nu}}\right) B^{(\delta+1)^{\nu+1}-i_{0}-i_{1}(\delta+1)-i_{2}(\delta+1)^{2}-\cdots-i_{\nu}(\delta+1)^{\nu}} . \tag{4.6}
+\end{equation*}
+
+
+Conversely, $l$ and $e$ as given by (4.5) and (4.6) satisfy conditions (U7), (U8) and (4.4). Condition (U6), which also involves $g$, is verified below for an actual code. From $l$ we may obtain a usable mask $M_{1}$ by
+
+
+\begin{equation*}
+M_{1}=q^{3}-1-(b-1) l . \tag{U9}
+\end{equation*}
+
+
+This mask $M_{1}$ is "longer" than that used previously in §3, for (U9) implies
+
+\[
+M_{1}=\sum_{j=0}^{3(\delta+1)^{\nu+1}-1} m_{j} B^{j}
+\]
+
+where
+
+\[
+m_{j}= \begin{cases}B-b, & \text { if } j=(\delta+1)^{i} \quad(1\leq i\leq\nu), \\ B-1, & \text { otherwise } .\end{cases}
+\]
+
+Nevertheless, if $c$ and $g$ satisfy
+
+
+\begin{gather*}
+c=1+x B+g, \text { and }  \tag{U10}\\
+\tau_{2}\left(g, M_{1}\right)=0 \tag{4.8}
+\end{gather*}
+
+
+then (U6) implies $g<q$ so that by (4.8) and Lemma 2.7, $c$ is a code with bound $b$. By (U1) we see that $c$ encodes $x$ as $z_{0}$. Hence we may assume that $c$ is as in (3.7).
+
+Conversely, if $c$ is as in (3.7), $l$ and $e$ given by (4.5) and (4.6), then $l<2 B^{(\delta+1)^{\nu}}$, $e<2 z B^{(\delta+1)^{\nu+1}},\allowbreak  g<b B^{(\delta+1)^{\nu}}$ and $3 \leq \delta$ so that
+
+\[
+\begin{aligned} e l g^{2}&<4zb^{2}B^{(\delta+4)(\delta+1)^\nu}\\ &<B^{(\delta+4)(\delta+1)^\nu+1}\\ &<B^{2(\delta+1)^{\nu+1}}=q^{2}. \end{aligned}
+\]
+
+Here $4zb^2<B$ follows from (U1), (U2) and the size of $y$, and $1<(\delta-2)(\delta+1)^\nu$. Therefore (U6) holds.\\
+We may define a polynomial analogous to $D_{0}$ by
+
+
+\begin{equation*}
+D_{0}=z \lambda-e . \tag{U11}
+\end{equation*}
+
+
+\origpage{566}It follows from (4.3) and (4.6) that
+
+\[
+-D_{0}=\sum^{*}\left(z+P_{i_{0}, i_{1}, \ldots, i_{\nu}}\right) B^{(\delta+1)^{\nu+1}-i_{0}-i_{1}(\delta+1)^{1}-\cdots-i_{\nu}(\delta+1)^{\nu}}-\sum_{i=0}^{4(\delta+1)^{\nu+1}-1} z B^{i} .
+\]
+
+By (U6) and (4.3) we have $e<q^{2}<q^{3}<\lambda<z \lambda$ so that $0<D_{0}<z \lambda$. Now the polynomial $-c^{\delta} D_{0}$ has a much higher degree bound than before, namely $(5\delta+4)(\delta+1)^\nu-1$. Nevertheless, as before, the coefficient of $B^{(\delta+1)^{\nu+1}}$ in $-c^{\delta} D_{0}$ is again $\delta!P\left(z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}\right)$.
+
+Since each $z_{i}<b$ and $\left|P_{i_{0}, i_{1}, \ldots, i_{\nu}}\right|<z$, all coefficients of powers of $B$ in the polynomial $-c^{\delta} D_{0}$ are, in absolute value, $<z(\nu+2)^{\delta} b^{\delta}<(y / 2) b^{\delta}<B / 2$. Hence, even though $-c^{\delta} D_{0}$ has negative coefficients, the polynomial
+
+
+\begin{equation*}
+-c^{\delta} D_{0}+\sum_{i=0}^{8(\delta+1)^{\nu+1}-1} \frac{B}{2} B^{i} \tag{4.9}
+\end{equation*}
+
+
+has positive coefficients. Therefore the polynomial (4.9) represents a number in the scale of $B$. By Lemma 2.8, $c$ is the code of a solution to (4.0) just in case
+
+
+\begin{equation*}
+\tau_{2}\left(-c^{\delta} D_{0}+\frac{1}{2} B \lambda\left(1+q^{4}\right),((B / 2)-1) B^{(\delta+1)^{\nu+1}}\right)=0 . \tag{4.10}
+\end{equation*}
+
+
+By Lemma 2.4 we may multiply the arguments of (4.10) by 2 to get the equivalent condition
+
+
+\begin{equation*}
+\tau_{2}\left(-2 c^{\delta} D_{0}+B \lambda\left(1+q^{4}\right),(B-2) q\right)=0 . \tag{4.11}
+\end{equation*}
+
+
+From this point in §4 set $\delta=4$. Now define $S_{i},\allowbreak T_{i}\ (i=1,\allowbreak 2,\allowbreak 3)$ by
+
+
+\begin{align*}
+& S_{1}=g  \tag{U12}\\
+& T_{1}=M_{1}  \tag{U13}\\
+& S_{2}=e+l q^{2}  \tag{U14}\\
+& T_{2}=\theta \lambda  \tag{U15}\\
+& S_{3}=-2 c^{4} D_{0}+B \lambda\left(1+q^{4}\right)  \tag{U16}\\
+& T_{3}=(B-2) q \tag{U17}
+\end{align*}
+
+
+With $\delta=4$, (U1)-(U17) imply that $0 \leq S_{i}$ and $0 \leq T_{i}(i=1,\allowbreak 2,\allowbreak 3)$. These deductions are obvious in all cases except that of $0 \leq S_{3}$. To derive $0 \leq S_{3}$ we use $1+g \leq q$ (from (U6)) and $D_{0}<z \lambda$ (by (U11)). Then
+
+\[
+2 c^{4} D_{0}=2(1+x B+g)^{4} D_{0} \leq 2(x B+q)^{4} D_{0}<2(2 q)^{4} D_{0}<2(2 q)^{4} z \lambda \leq B \lambda\left(1+q^{4}\right) .
+\]
+
+Thus $0 \leq S_{3}$ is established. The inequalities $(\mathrm{U} 1),\allowbreak  x y<b$, and (U6), $e l g^{2}<q^{2}$, may be combined into one inequality
+
+
+\begin{equation*}
+e l g^{2}<q^{2}(b-x y) . \tag{U6'}
+\end{equation*}
+
+
+This possibility follows from (U7) and (U8) which imply
+
+\[
+e \geq y+\theta \geq 2 z+B-2 z \geq b>b-x y,
+\]
+
+and
+
+\[
+l \geq u+\theta \geq 2 z+B-2 z \geq b>b-x y,
+\]
+
+so that (U6') implies $e<q^{2},\allowbreak  l<q^{2}$ and $g<q$ as did (U6).
+
+\origpage{567}Thus we have shown that $x \in W_{\langle z, u, y\rangle}$ if and only if conditions (U2)-(U5), (U6'), (U7)-(U17) hold together with $b$ pow 2 and $\tau_{2}\left(S_{i},\allowbreak  T_{i}\right)=0,\allowbreak (i=1,\allowbreak 2,\allowbreak 3)$. By Kummer's theorem, (2.14), this latter condition is equivalent to the condition that the three binomial coefficients
+
+
+\begin{equation*}
+\binom{S_{1}+T_{1}}{S_{1}}, \quad\binom{S_{2}+T_{2}}{T_{2}}, \quad\binom{S_{3}+T_{3}}{T_{3}}, \tag{4.12}
+\end{equation*}
+
+
+are all odd or equivalently that their product is odd.\\
+Now we may prove Theorem 1. We have only to introduce new unknowns $\alpha$, $w$ and $\eta$ to express conditions (U6'), (4.2) and (4.12), respectively, eliminate the variables $B,\allowbreak  c,\allowbreak  D_{0},\allowbreak  M_{1},\allowbreak  S_{i},\allowbreak  T_{i}(i=1,\allowbreak 2,\allowbreak 3)$ by substitution, put $\delta=4$ and $\nu=58$. (We prove in §5 that $\delta=4,\allowbreak  \nu=58$ is a universal pair.)
+
+As before, in §3, we may combine all three $\tau$-conditions (4.8), (4.4), (4.11) into a single $\tau$-condition. Define
+
+
+\begin{align*}
+& N_{1}=q^{3}  \tag{U18}\\
+& N_{2}=q^{4}  \tag{U19}\\
+& N_{3}=q^{9}  \tag{U20}\\
+& S=S_{1}+S_{2} N_{1}+S_{3} N_{1} N_{2}  \tag{U21}\\
+& T=T_{1}+T_{2} N_{1}+T_{3} N_{1} N_{2} \tag{U22}
+\end{align*}
+
+
+It is straightforward to show that (U1)-(U17) imply $S_{i}<N_{i}(i=1,\allowbreak 2,\allowbreak 3)$ and $T_{i}<N_{i}(i=1,\allowbreak 2,\allowbreak 3)$. Thus by Lemma 2.11 the three $\tau$-conditions $\tau_{2}\left(S_{i},\allowbreak  T_{i}\right)=0$ are together equivalent to the single $\tau$-condition $\tau_{2}(S,\allowbreak  T)=0$.
+
+Further, by Lemma 2.16, if we define
+
+
+\begin{align*}
+& N=N_{1} N_{2} N_{3}, \text { and }  \tag{U23}\\
+& r=S\left(N^{2}-N\right)+(T+1)\left(N^{2}-1\right), \tag{U24}
+\end{align*}
+
+
+then $\tau_{2}(S,\allowbreak  T)=0$ is equivalent to $N^{2} \left\lvert\,\allowbreak \binom{ 2 r}{r}\right.$. Hence we see that $x \in W_{\langle z, u, y\rangle}$ just in case conditions (U1)-(U24), $b$ pow 2 and $N^{2} \left\lvert\,\allowbreak \binom{ 2 r}{r}\right.$ can be satisfied. Hence Theorem 2 of §1 is established, modulo only the universality of the pair $\delta=4,\allowbreak  \nu=58$.
+
+The proof of Theorem 3 of §1 parallels the application of Lemma 2.25 as in §3. The preceding defining equations and bounds imply $8 \leq r,\allowbreak  8 \leq N,\allowbreak  b \leq r$ and $0<b \leq N$. Hence Lemma 2.25 applies and gives a diophantine definition of $b$ pow 2 and $N^{2} \left\lvert\,\allowbreak \binom{ 2 r}{r}\right.$. Therefore we may replace these last two conditions by the equations (B1)-(B14) and in turn replace (B14) by equations (Q1), (Q2) and (Q3). We may also replace the congruence (B13) by the congruence $D\equiv W+C(A-V)\pmod{2AV-V^{2}-1}$ (cf. the remark following Lemma 2.28). Introducing new unknowns as before, eliminating $B,\allowbreak  c,\allowbreak  D_{0},\allowbreak  M_{1},\allowbreak  S_{i},\allowbreak  T_{i}(i=1,\allowbreak 2,\allowbreak 3),\allowbreak  S,\allowbreak  T$ by substitution and replacing $A,\allowbreak  C,\allowbreak  D,\allowbreak  F,\allowbreak  K,\allowbreak  N,\allowbreak  P$ by lower case letters yields the universal diophantine equations of Theorem 3.
+
+There remains only the proof that $\delta=4,\allowbreak  \nu=58$ is a universal pair.
+
+\section{Universal pairs} In this section we describe briefly how to construct a universal diophantine equation of degree 4 in 58 unknowns. These numbers, 4 and 58, \origpage{568}take into account the degree of occurrence of $x$ but not that of the other parameters $z,\allowbreak  u$ or $y$, although this would make little difference. Ignoring the degree of $x$ we could prove $\delta=4,\allowbreak  \nu=57$ universal.
+
+The construction is similar to that of §4 so we shall mention only the differences. Whereas in §4 we started from the pair $\delta=4,\allowbreak  \nu=58$, here we again take $\delta=4$ but require only the existence of a corresponding $\nu$. A specific value of $\nu$ such as $\nu=108$ [7] is not actually necessary. Another important difference is that whereas in §4 we permitted the enormous power $Q=B^{(\delta+1)^{\nu+1}}$ to occur among our equations, it is obviously necessary here to eliminate this power so as to prevent the appearance of $(\delta+1)^{\nu+1}$ as an exponent and therefore a degree contributor. For this purpose Lemma 2.26 was included in §2. It is only necessary to put $B_{1}=$ $(\delta+1)^{\nu+1}$, to replace $Q=B^{(\delta+1)^{\nu+1}}$ by equations $(\mathrm{C}1)-(\mathrm{C}3)$, or $\left(\mathrm{C}1^{\prime}\right)-\left(\mathrm{C}3^{\prime}\right)$, and replace (B8) by $C=C_1+B^{\prime}+\phi$.
+
+As before the code $c=1+x B+g$ but instead of $B=b^{\delta+1}$, in which the degree of $b$ is unnecessarily large, we put $B=2(2 z)^{(\delta+1)^{\nu+1}+1} b^{\delta}$. This implies $B>y$ so that we may replace $b>x y$ by $b>x$. It also proves economical to change the mask lengths and the lengths of the generating geometric series $\lambda$. With these changes our equations then become the following:
+
+
+\begin{align*}
+& b=\varepsilon+x  \tag{D1}\\
+& B=2b^{\delta}(2z)^{(\delta+1)^{\nu+1}+1},  \tag{D2}\\
+& D_{1}=Q+C_{1}(A-B)+\alpha\left(2 A B-B^{2}-1\right),  \tag{D3}\\
+& \left(A^{2}-1\right) C_{1}^{2}+1=D_{1}^{2},  \tag{D4}\\
+& C_{1}=(\delta+1)^{\nu+1}+\Delta(A-1),  \tag{D5}\\
+& c=1+x B+g,  \tag{D6}\\
+& Q=1+\lambda(B-1),  \tag{D7}\\
+& e+2 z b l+2 z B c^{\delta}<2 z Q,  \tag{D8}\\
+& l=u+t(B-2 z),  \tag{D9}\\
+& e=y+m(B-2 z),  \tag{D10}\\
+& M_{1}=Q-1-(b-1) l,  \tag{D11}\\
+& D_{0}=z(\lambda+Q)-e,  \tag{D12}\\
+& S_{1}=g, T_{1}=M_{1}, N_{1}=Q,  \tag{D13}\\
+& S_{2}=l+e Q, T_{2}=(B-2 z) \lambda(1+Q), N_{2}=2 z Q^{2},  \tag{D14}\\
+& S_{3}=-2 c^{\delta} D_{0}+B \lambda(1+Q), T_{3}=(B-2) Q, N_{3}=8 Q^{2},  \tag{D15}\\
+& S=S_{1}+S_{2} N_{1}+S_{3} N_{1} N_{2}, T=T_{1}+T_{2} N_{1}+T_{3} N_{1} N_{2} . \tag{D16}
+\end{align*}
+
+
+For each admissible coding triple $\langle z,\allowbreak u,\allowbreak y\rangle$ from (4.1), the following argument describes the coding part of the equivalence. At this stage retain the intended equation $Q=B^{(\delta+1)^{\nu+1}}$. Its replacement by (D3)--(D5) is justified only after the Pell and size conditions (D17)--(D37) have been adjoined, through Lemma 2.26. The full resulting system is equivalent to $x\in W_{\langle z,u,y\rangle}$. First check that (D1)--(D16) imply that $0 \leq S_{i}<N_{i}$ and $0 \leq T_{i}<$ $N_{i}(i=1,\allowbreak 2,\allowbreak 3)$. This is proved as follows. First (D2) implies $b<B$ and $4 z<B$. (D7) implies $B \leq Q$. (D2) and (D7) imply $\lambda<2 \lambda<Q$. (D7) implies $Q \leq B \lambda$ and $B \lambda+1<2 Q$. It is easy to see that $0<S_{i}<N_{i}$ and $0<T_{i}<N_{i}$ for $i=1,\allowbreak 2$\\
+\origpage{569}but the proof that $0<S_{3}<N_{3}$ is complicated by the possibility that $D_{0}$ may be negative. (D8) implies that $\left|D_{0}\right|<2 z Q$ and $c^{\delta}<Q / B$. Hence we have
+
+\[
+2 c^{\delta}\left|D_{0}\right|<\frac{(2 Q)(2 z Q)}{B}=\frac{4 z}{B} Q^{2}<Q^{2} \leq B \lambda Q<B \lambda(1+Q),
+\]
+
+which proves that $0<S_{3}$. For the upper bound, the same estimate gives $S_3<Q^2+B\lambda(1+Q)$, while
+
+\[
+B \lambda(1+Q) \leq(B \lambda+1)(1+Q)<2 Q(1+Q)=2 Q+2 Q^{2}<4 Q^{2} .
+\]
+Thus $S_3<5Q^2<8Q^2=N_3$.
+
+Combining $b$ pow 2 and $z$ pow 2 with (D2) and the retained equation $Q=B^{(\delta+1)^{\nu+1}}$ shows that $B,\allowbreak Q$ and $N=N_1N_2N_3$ are powers of 2. Hence by Lemma 2.11, $\tau_{2}(S,\allowbreak  T)=0$ is equivalent to $\tau_{2}\left(S_{i},\allowbreak  T_{i}\right)=0(i=1,\allowbreak 2,\allowbreak 3)$. For $i=2,\allowbreak  \tau_{2}\left(S_{2},\allowbreak  T_{2}\right)=0$ is equivalent to $\tau_{2}(l,\allowbreak (B-2 z) \lambda)=0$ and $\tau_{2}(e,\allowbreak (B-2 z) \lambda)=0$ because $l<Q$ and $e<2 z Q$ by (D8). Hence by Lemma 2.9, (D9) and (D10) imply that $l$ and $e$ are given by (4.5) and (4.6). Therefore (D6), (D11), $g<Q$ and $\tau_{2}\left(g,\allowbreak  M_{1}\right)=0$ imply that $c$ is a code with bound $b$. Finally (D12) and (4.6) imply that
+
+\[
+-D_{0}=\sum^{*}\left(z+P_{i_{0}, i_{1}, \ldots, i_{\nu}}\right) B^{(\delta+1)^{\nu+1}-i_{0}-i_{1}(\delta+1)^{1}-\cdots-i_{\nu}(\delta+1)^{\nu}}-\sum_{i=0}^{(\delta+1)^{\nu+1}} z B^{i} .
+\]
+
+Hence the coefficient of $Q$ in $-c^{\delta} D_{0}$ is again $\delta!P\left(z_{0},\allowbreak  z_{1},\allowbreak  \ldots,\allowbreak  z_{\nu}\right)$. By the choice of $B$ in (D2), and the coefficient bound on $z$ preceding (4.1), the polynomial $-c^{\delta} D_{0}+\sum_{i=0}^{2(\delta+1)^{\nu+1}-1}(B / 2) B^{i}$ has coefficients strictly between $0$ and $B$ at every position in this sum. To make the required no-carry bound explicit, put $L=(\delta+1)^{\nu+1}$ and $K=(\delta+1)^\nu$, and regard $B$ temporarily as a formal base. Every coefficient of $-D_0$ has absolute value at most $z$. If $c$ encodes $0\leq z_i<b$, the sum of the coefficients of $c^\delta$ is $(1+z_0+\cdots+z_\nu)^\delta<((\nu+2)b)^\delta$. Thus every coefficient $h_j$ of $-c^\delta D_0$ satisfies
+\[
+ |h_j|<z(\nu+2)^\delta b^\delta
+       <(2z)^{L+1}b^\delta=B/2.
+\]
+Here $\nu+2\leq2^{\nu+1}$ and $\delta(\nu+1)<L$ justify the second inequality. Also $\deg_B(-c^\delta D_0)\leq\delta K+L<2L$, so all possibly nonzero coefficients are covered by the added sum. Consequently no carries are introduced, and its digit in position $L$ is $B/2+\delta!P(z_0,\ldots,z_\nu)$. Hence by Lemma 2.8, $\tau_{2}\left(S_{3} / 2,\allowbreak  T_{3} / 2\right)=\tau_{2}\left(-c^{\delta} D_{0}+(B / 2) \lambda(1+Q),\allowbreak ((B / 2)-1) Q\right)=0$ just in case $c$ is the code of a solution to our original equation.
+
+For the necessity of the conditions we have only to observe that if $c$ is a code with bound $b$, and if $l$ and $e$ are given by (4.5) and (4.6), then (D8) can be satisfied.
+
+Therefore by Lemmas 2.16, 2.26 and 2.28 we have only to append to our previous conditions (D1)-(D16), the following conditions:
+
+\begin{align*}
+& N=N_{1} N_{2} N_{3},  \tag{D17}\\
+& R=S\left(N^{2}-N\right)+(T+1)\left(N^{2}-1\right),  \tag{D18}\\
+& P=2 M^{2} U,  \tag{D19}\\
+& \left(P^{2}-1\right) K^{2}+1=\square,  \tag{D20}\\
+& (C / K-Y)^{2}<\frac{1}{4},  \tag{D21}\\
+& K=R+1+h(P-1),  \tag{D22}\\
+& M=R Y,  \tag{D23}\\
+& A=M(U+1),  \tag{D24}\\
+& C=2 R+1+C_{1}+\phi,  \tag{D25}\\
+& U=N^{2} w,  \tag{D26}\\
+& Y=N^{2} s,  \tag{D27}\\
+& W=b w,  \tag{D28}\\
+& V=2,  \tag{D29}\\
+& D=W+C(A-V)+\gamma\left(2AV-V^{2}-1\right),  \tag{D30}\\
+& I=D+o F, \tag{D31}
+\end{align*}
+
+\begin{align*}
+& \origpage{570} D^{2}=\left(A^{2}-1\right) C^{2}+1,  \tag{D32}\\
+& E=iC^{2}, \tag{D33}\\
+& F^{2}=\left(A^{2}-1\right) E^{2}+1,  \tag{D34}\\
+& G=A+F^{2}\left(F^{2}-A\right),  \tag{D35}\\
+& H=2 R+1+j C,  \tag{D36}\\
+& I^{2}=(G^{2}-1)H^{2}+1. \tag{D37}
+\end{align*}
+
+
+Thus we find that $x \in W_{\langle z, u, y\rangle}$ if and only if there exist integers $A,\allowbreak  B,\allowbreak  C,\allowbreak  C_{1},\allowbreak  D$, $D_{0},\allowbreak  D_{1},\allowbreak  E,\allowbreak  F,\allowbreak  G,\allowbreak  H,\allowbreak  I,\allowbreak  K,\allowbreak  M,\allowbreak  M_{1},\allowbreak  N,\allowbreak  N_1,\allowbreak N_2,\allowbreak N_3,\allowbreak  P,\allowbreak  Q,\allowbreak  R,\allowbreak  S,\allowbreak  S_{1},\allowbreak  S_{2},\allowbreak  S_{3},\allowbreak  T,\allowbreak  T_{1},\allowbreak  T_{2},\allowbreak  T_{3}$, $U,\allowbreak  V,\allowbreak  W,\allowbreak  Y$, and positive integers $b,\allowbreak  c,\allowbreak  e,\allowbreak  g,\allowbreak  h,\allowbreak  i,\allowbreak  j,\allowbreak  l,\allowbreak  m,\allowbreak  o,\allowbreak  s,\allowbreak  t,\allowbreak  w,\allowbreak  \alpha,\allowbreak  \Delta,\allowbreak  \gamma,\allowbreak  \lambda,\allowbreak  \phi,\allowbreak  \varepsilon$, such that conditions (D1)--(D37) hold. The Pell square-root witnesses $C_1,\allowbreak D_1,\allowbreak D,\allowbreak F,\allowbreak I$ are taken positive; all remaining capital quantities in this system, except the possibly signed $D_0$, may also be taken positive. There are 53 variables here. We eliminate 17 by simple substitution, viz. $A,\allowbreak  b,\allowbreak  C,\allowbreak  D_{0},\allowbreak  M_{1},\allowbreak  Q,\allowbreak  V,\allowbreak  W,\allowbreak  N_{1},\allowbreak  N_{2},\allowbreak  N_{3},\allowbreak  S_{1},\allowbreak  S_{2},\allowbreak  S_{3}$, $T_{1},\allowbreak  T_{2},\allowbreak  T_{3}$. Then introducing 22 new variables, to define $\lambda B,\allowbreak  b^{2},\allowbreak  2 A B-B^{2}-1$, $A C_{1},\allowbreak  c^{2},\allowbreak  c^{4},\allowbreak <,\allowbreak  Q^{2},\allowbreak  Q^{3},\allowbreak  Q^{4},\allowbreak  c^{4} Q^{3},\allowbreak  N^{2},\allowbreak  M U,\allowbreak  P K,\allowbreak  \square,\allowbreak  Y K,\allowbreak <,\allowbreak  A C,\allowbreak  C^{2},\allowbreak  A E,\allowbreak  F^{2}$ and $G H$, allows all of our conditions to be expressed as a system of diophantine equations of degree 2 and hence by a single diophantine equation of degree 4 . In this way we obtain the universal pair $\delta=4,\allowbreak  \nu=58$. To compute the other universal pairs stated in the introduction, essentially the above equations were used for all those with $\delta<2668$. These pairs were calculated by Professor Hideo Wada of Japan, during his 1978 visit to Canada. The pairs of high degree were calculated by the author using the equations of §3. These calculations make full use of various minor unstated relation combining principles such as for example
+
+\[
+a=\square \wedge b=\square \Leftrightarrow \exists x\in\mathbb Z_{>0}\ \prod_{\epsilon,\eta\in\{-1,1\}}(x+\epsilon\sqrt a+\eta\sqrt b)=0 .
+\]
+
+The details of these calculations are omitted.
+
+\section*{References}\addcontentsline{toc}{section}{References}\small\begin{list}{}{\setlength{\leftmargin}{2.4em}\setlength{\labelwidth}{2em}\setlength{\labelsep}{.4em}\setlength{\itemsep}{.5em}}
+\item[\textup{[1]}] A. Baker, Contributions to the theory of diophantine equations. I, Philosophical Transactions of the Royal Society of London, Series A, vol. 263 (1968), pp. 173-191.
+\item[\textup{[2]}] Martin Davis, Hilary Putnam and Julia Robinson, The decision problem for exponential diophantine equations, Annals of Mathematics, vol. 74 (1961), pp. 425-436 = Matematika, vol. 8 (5) (1964), pp. 69-79.
+\item[\textup{[3]}] Martin Davis, Yuri Matijasevič and Julia Robinson, Hilbert's tenth problem. Diophantine equations : positive aspects of a negative solution, Proceedings of the Symposium on the Hilbert Problems (De Kalb, Illinois), May 1974, American Mathematical Society, Providence, R.I., 1976, pp. 323-378.
+\item[\textup{[4]}] Martin Davis, Hilbert's tenth problem is unsolvable, American Mathematical Monthly, vol. 80 (1973), pp. 233-269.
+\item[\textup{[5]}] J.P. Jones, Undecidable diophantine equations, Bulletin of the American Mathematical Society (New Series), vol. 3, no. 2 (1980), pp. 859-862.
+\item[\textup{[6]}] J.P. Jones and Ju. V. Matijasevič, A new representation for the symmetric binomial coefficient and its applications, Les Annales des Sciences Mathématiques du Québec (to appear).
+\item[\textup{[7]}] J.P. Jones, Three universal representations of recursively enumerable sets, this Journal, vol. 43 (1978), pp. 335-351. MR 58, 16226.
+\item[\textup{[8]}] J. P. Jones, Diophantine representation of Mersenne and Fermat primes, Acta Arithmetica, vol. 35 (1979), pp. 209-221.
+\item[\textup{[9]}]\origpage{571} J.P. Jones, D. Sato, H. Wada and D. Wiens, Diophantine representation of the set of prime numbers, American Mathematical Monthly, vol. 83 (1976), pp. 449-464. MR 54, 2615.
+\item[\textup{[10]}] N. K. Kosovskiǐ, On diophantine representation of the sequence of solutions of Pell's equation, Zapiski Naučnyh Seminarov Leningradskogo Otdelenija Matematičeskogo Instituta im. V.A. Steklova Akademii Nauk SSSR, vol. 20 (1971), pp.49-59 (Russian); English transl., Journal of Soviet Mathematics, vol. 1 (1973), pp. 28-35.
+\item[\textup{[11]}] Ju. V. Matijasevič, Enumerable sets are diophantine, Doklady Akademii Nauk SSSR, vol. 191 (1970), pp. 279-282 (Russian); English transl., Soviet Mathematics Doklady, vol. 11 (1970), pp. 354-357.
+\item[\textup{[12]}] Ju. V. Matijasevič, On recursive unsolvability of Hilbert's tenth problem, Proceedings of the IVth International Congress on Logic, Methodology and Philosophy of Science (Bucharest 1971), North-Holland, Amsterdam, 1973, pp. 89-110. MR 57, 5711.
+\item[\textup{[13]}] Ju. V. Matijasevič, Diophantine sets, Uspehi Matematičeskih Nauk, vol. 27 (1972), pp. 185-222 (Russian); English transl., Russian Mathematical Surveys, vol. 27 (1972), 124-164.
+\item[\textup{[14]}] Ju. V. Matijasevič, Arithmetical representation of enumerable sets with a small number of quantifiers, Zapiski Naučnyh Seminarov Leningradskogo Otdelenija Matematičeskogo Instituta im. V.A. Steklova Akademii Nauk SSSR, vol. 32 (1972), pp. 77-84 (Russian); English transl., Journal of Soviet Mathematics, vol. 6 (1976), No. 4, pp. 410-416.
+\item[\textup{[15]}] Ju. V. Matijasevič and Julia Robinson, Reduction of an arbitrary diophantine equation to one in 13 unknowns, Acta Arithmetica, vol. 27 (1975), pp. 521-553.
+\item[\textup{[16]}] Ju. V. Matijasevič, A new proof of the theorem on exponential diophantine representation of enumerable sets, Zapiski Naučnyh Seminarov Leningradskogo Otdelenija Matematičeskogo Instituta im. V.A. Steklova Akademii Nauk SSSR, vol. 60 (1976), pp. 75-89 (Russian); English translation, Journal of Soviet Mathematics, vol. 14 (1980), pp. 1475-1486.
+\item[\textup{[17]}] Ju. V. Matijasevič, A class of primality criteria formulated in terms of the divisibility of binomial coefficients, Zapiski Naučnyh Seminarov Leningradskogo Otdelenija Matematičeskogo Instituta im. V.A. Steklova Akademii Nauk SSSR, vol. 67 (1977), pp. 167-183 (Russian); English translation, Journal of Soviet Mathematics, vol. 16 (1981), pp. 874-884.
+\item[\textup{[18]}] Ju. V. Matijasevič, Primes are non-negative values of polynomial in 10 variables, Zapiski Naučnyh Seminarov Leningradskogo Otdelenija Matematičeskogo Instituta im. V.A. Steklova Akademii Nauk SSSR, vol. 68 (1977), pp. 62-82 (Russian); English translation, Journal of Soviet Mathematics, vol. 15 (1981), pp. 33-44.
+\item[\textup{[19]}] Ju. V. Matijasevič, Some purely mathematical results inspired by mathematical logic, Logic, Foundations of Mathematics, and Computability Theory (R. E. Butts and J. Hintikka, editors), D. Reidel Publishing Co., Dordrecht-Holland, 1977, pp. 121-127.
+\item[\textup{[20]}] Ju. V. Matijasevič, Algorithmic unsolvability of exponential diophantine equations in three unknowns, Studies in the theory of algorithms and mathematical logic, Nauka, Moscow, 1979, pp. 69-78; English transl. available from Department of Mathematics and Statistics, University of Calgary.
+\item[\textup{[21]}] Julia Robinson, Hilbert's tenth problem, Proceedings of the Symposium on Pure Mathematics, vol. 20, American Mathematical Society, Providence, R.I., 1971, pp. 191-194.
+\item[\textup{[22]}] Carl L. Siegel, Zur Theorie der quadratischen Formen, Nachrichten der Akademie der Wissenschaften in Göttingen. II. Mathematisch-Physikalische Klasse (1972), No. 3, pp. 21-46.
+\item[\textup{[23]}] E.E. Kummer, Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen, Journal für die Reine und Angewandte Mathematik, vol. 44 (1852), pp. 93-146.
+\item[\textup{[24]}] Julia Robinson, Diophantine decision problems, MAA Studies in Mathematics, vol. 6 (1969), [Studies in Number Theory (W.J. Leveque, editor)], pp. 76-116.
+\item[\textup{[25]}] Julia Robinson, Existential definability in arithmetic, Transactions of the American Mathematical Society, vol. 72 (1952), pp. 437-449 = Matematika, vol. 8 (5) (1964), pp. 3-14. MR 14, 4.
+\item[\textup{[26]}] D. Singmaster, Notes on binomial coefficients I, II, III, Journal of the London Mathematical Society, vol. 8 (3) (1974) pp. 545-548, 549-554, 555-560.
+
+\end{list}\normalsize\bigskip
+\noindent Department of Mathematics and Statistics\\
+University of Calgary\\
+Calgary, Alberta, Canada, T2N 1N4
+
+
+\end{document}
