@@ -212,6 +212,11 @@ Each nonzero purely infinite element therefore factors into two nonzero
 purely infinite nonunits. These arguments use bounds on the union of the
 actual normal-form supports; the new exponent can leave any previously
 chosen Hahn workspace. Smallness is explicit in the carrier's lower universe.
+Every surreal projective point now has purely infinite omnific homogeneous
+coordinates. A single positive monomial clears an entire small family of
+coordinate tuples while preserving all their homogeneous equations. Every
+small family of nonzero omnific integers also has a nonzero common multiple
+of all ordinary powers simultaneously, with purely infinite quotients.
 
 The purely infinite ideal `Π` satisfies `Π² = Π` and has no small set of
 ideal generators; in particular it is not finitely generated. Its cotangent

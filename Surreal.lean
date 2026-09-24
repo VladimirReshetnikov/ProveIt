@@ -583,6 +583,8 @@ import Surreal.Foundations.OmnificIntegerDivisors
 import Surreal.Foundations.OmnificOrdinaryArithmetic
 import Surreal.Foundations.OmnificFiniteQuotients
 import Surreal.Foundations.OmnificConstantRigidity
+import Surreal.Algebra.HomogeneousScaling
+import Surreal.Foundations.OmnificProjectiveClearing
 import Surreal.Foundations.OmnificSupportBounds
 import Surreal.Foundations.OmnificPurelyInfiniteIdeal
 import Surreal.Foundations.OmnificIrreducibles
