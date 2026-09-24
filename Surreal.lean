@@ -808,3 +808,10 @@ import Surreal.Algebra.AlgebraicTypeComputability
 import Surreal.Algebra.RecursiveSaturation
 import Surreal.HahnSeries.RecursiveSaturation
 import Surreal.Surcomplex.RecursiveSaturation
+import Surreal.Algebra.QuadraticSquareRootLifting
+import Surreal.Algebra.TailoredIntersectivePolynomial
+import Surreal.Algebra.TailoredPrimeSelection
+import Surreal.Algebra.TailoredDiophantineConstants
+import Surreal.Algebra.TailoredArithmeticGuard
+import Surreal.HahnSeries.TailoredDiophantineConstants
+import Surreal.HahnSeries.TailoredRecursiveSaturation

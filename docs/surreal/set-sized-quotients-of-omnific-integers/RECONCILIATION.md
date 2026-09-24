@@ -2827,3 +2827,38 @@ general support arguments or the new consequences. All 4,626 source anchors
 in 63 reports, 5,221 source-label references and 1,887 local Markdown
 destinations across 226 files pass, as do whitespace checks. No Lean source
 changed in this local revision; synchronization with incoming Lean follows.
+
+### Tailored number-field guard synchronization (2026-09-24)
+
+Merged origin/main at 8ea55a95819d3c72f7feb8a75f7a51081afd3b24,
+including 0d289d8, after the binomial/Cantor review. Read all seven incoming
+Lean modules against `odg:def:lem:tailored`, `odg:def:thm:numberfield` and
+`odg:def:thm:saturation`, and checked the README and coverage mappings.
+
+The exact sextic (T^2-p)(T^2-q)(T^2-pq) has a root modulo every positive
+integer when p and q satisfy the prime progression hypotheses. The proof
+uses quadratic reciprocity at q, nonsingular odd-prime lifting, the general
+one-modulo-eight square-root lemma at two, and CRT. Root representatives
+are bounded by the modulus. Three nonsquare radicands exclude field roots.
+Dirichlet supplies admissible pairs beyond any bound and outside any finite
+forbidden set. Finiteness of squarefree radicands becoming squares in each
+number field remains pending, so unconditional prime selection is not claimed.
+
+For a supplied admissible nonsquare pair, the native five-witness guard is
+constructed and proved to define the exact coefficient image in every
+intermediate Hahn ring with the stated constant intersection. Ordinary
+witnesses use positive integer multiples, bounded Pell coordinates and
+modular sextic roots. Soundness uses Pell rigidity, polynomial root exclusion
+and constant-divisor rigidity. No integrality, finite generation, retraction
+or nontrivial exponent group is required. The computable finitely satisfiable
+omitted type then proves failure of recursive saturation without an assumed
+guard-correctness theorem. The later tailored detector, ideal and constant-
+term graph clauses remain pending, as does uniform number-field prime choice.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` completed 4,950 jobs. The axiom
+audit passed for 18,015 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,221 source-label
+references and 1,894 local Markdown destinations in 226 files pass, together
+with whitespace checks. Incoming work changes no TeX source or PDF, so the
+three-pass compilation and rendered-page review above remain applicable.
+The local manuscript improvements remain Pending in Lean.
