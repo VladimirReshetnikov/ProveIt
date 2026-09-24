@@ -93,6 +93,16 @@ Every nonconstant irreducible has this property. Even a nonunital map to
 a small ring that kills a unit-constant element must be zero; targets
 may be infinite and noncommutative.
 
+Lean now classifies prime and maximal ideals with small quotients in both
+actual omnific rings. The purely infinite ideals are prime but not maximal;
+all other small prime quotients are finite fields at ordinary integer or
+Gaussian prime moduli. Maps into small characteristic-zero rings have
+exactly the purely infinite kernel and image isomorphic to ℤ or ℤ[i].
+Those image rings are not fields; the corresponding fraction fields are
+identified separately. In positive characteristic, a small field target
+has a finite prime or Gaussian residue field as image. Ideals with large
+quotients are outside this classification.
+
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
 be infinite. Its exact cardinality, small-target theorem, ideal generator

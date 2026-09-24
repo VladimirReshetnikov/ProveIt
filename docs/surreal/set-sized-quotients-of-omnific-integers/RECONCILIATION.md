@@ -4403,3 +4403,33 @@ survival of all denominators; those arguments were reviewed separately.
 Audits pass 4,626 anchors in 63 reports, 5,240 cited source labels and 1,995
 local Markdown destinations in 226 files. No Lean source changed in this
 review. git diff --check passes.
+
+
+### Small prime and field quotients sync (2026-09-24)
+
+Merged origin/main through `13cbf68`, including implementation `6776bbd`.
+Read all three new modules against `osq:cor:smallprimes` and its proof.
+For both actual omnific rings, prime ideals with small quotient are the
+purely infinite ideal and the ordinary prime principal ideals; exactly
+the latter are maximal. Their finite residue fields have the native
+quotient equivalences and, in the Gaussian case, the exact norm cardinality.
+The purely infinite quotients are domains but not fields.
+
+Characteristic-zero small images have exactly the purely infinite kernel
+and are isomorphic to the integer or Gaussian integer ring, even when the
+target is a field. The fraction-field equivalences are separate statements.
+The real positive-characteristic range computation works for general small
+rings; the Gaussian positive-characteristic field-target result classifies
+the finite residue-field image and its size. Ordinary Gaussian injectivity
+in characteristic zero is proved from the norm identity before use on
+actual surcomplex numbers. No classification of large-quotient primes is
+claimed. Updated report guide and catalogue to match the merged README
+and precise ledger rows.
+
+`LEAN_NUM_THREADS=2 lake build` passes 5,045 jobs. The default audit accepts
+19,020 declarations using only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, still 36 pages;
+inspected the affected catalogue pages 12–14. The article remains unchanged
+by the merge at 348 pages, with its statements, labels and numbering
+preserved. Audits pass 4,626 anchors in 63 reports, 5,240 source-label
+references and 1,998 local Markdown destinations in 226 files.

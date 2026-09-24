@@ -613,6 +613,12 @@ This is also its closure in the native congruence topology. A principal
 ideal is dense exactly when its generator has constant term `±1`.
 Every nonconstant irreducible therefore generates a proper dense ideal;
 even a nonunital map to a small ring that kills it must be zero.
+The prime and maximal ideals with small quotients are now classified in
+both omnific rings. The purely infinite ideals are prime but not maximal;
+all other small prime quotients are the ordinary finite residue fields at
+integer or Gaussian prime moduli. A map to a small field in characteristic
+zero has image `ℤ` or `ℤ[i]`, which is not itself a field. The corresponding
+fraction fields are identified separately.
 
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the
