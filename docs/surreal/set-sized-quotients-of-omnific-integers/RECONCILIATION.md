@@ -2774,3 +2774,56 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 226 files pass, along with whitespace checks. The merge changes no TeX
 source or PDF, so the final three-pass document validation above remains
 applicable. No local manuscript review has been promoted to Lean coverage.
+
+### Binomial kernels and the proper Cantor subalgebra (2026-09-24)
+
+Reviewed the seven standard results from `osq:if:lem:localization` through
+`osq:if:thm:complexkernel`, together with finite CRT factorizations,
+locally constant functions, point evaluation, Fourier idempotents and their
+refinement, Boolean consequences and the boundary paragraphs. This completes
+a manuscript review of all fifteen standard internal-field results before
+the class-residue subsection; it does not complete source reconciliation.
+
+Corrected the exact-kernel proof's support wording and boundary calculation.
+The obstruction is absence of a lower bound -Na for any ordinary integer N,
+not absence of a surreal lower bound. Every displayed division block lies
+above -omega*a. Choosing k=N+1 gives the strict inequality below -Na from
+the offset, while (1-k)a itself equals -Na. The localization converse uses
+an extra shift to avoid any restriction on the endpoint coefficient.
+
+Added the finite Lagrange-interpolation inverse to the Cantor isomorphism,
+including the empty-product initial stage and independence under refinement.
+Identified interpolation with the Fourier idempotents and explained how
+compactness gives a single finite quotient. Real stages start at r=1 with
+2^(r-1) coordinates over E_a; Gaussian stages start at r=0 with 2^r
+coordinates over F_a(i). The Gaussian involution acts by
+f(z) -> conjugate(f(-1-z)), as verified from the indexed roots. All root
+exponentials are ordinary complex values embedded into the coefficient field.
+
+Added an explicit partial answer to `osq:q:binomial`. The exact kernel gives
+E_a[x_(2m)] = E_a[T]/(T^m-i), with m coordinates, for every ordinary m.
+For alpha=exp(i*pi/6), epsilon=(1+x_6/alpha+(x_6/alpha)^2)/3 has coordinates
+(1,0,0). In a common 3*d stage, d=2^(r-1), epsilon depends on k modulo 3,
+whereas every dyadic stage-r element depends on k modulo d. Coprimality
+makes epsilon nonconstant on every fibre, so it lies outside every dyadic
+stage. The Cantor algebra is therefore proper even among finite rational-
+exponent blocks. Classification of all ambient idempotents, the nilradical
+and prime ideals remains open. The new argument is marked as a merged
+consequence, without a literature-priority claim.
+
+Updated the question status, root README, report guide, catalogue, shared
+notation and formalization scope/anchors. These manuscript statements and
+new unnumbered consequences remain Pending in Lean.
+
+Validation: three clean final TeX passes for the 317-page article and
+35-page catalogue, with no warnings or box diagnostics. Inspected the
+kernel, stages, interpolation, idempotents, outside indicator, Gaussian
+formula, question status and catalogue pages. All 418 standard/principal
+statements, 828 labels, 1,656 auxiliary label/number pairs, 66 questions,
+60 remarks and 28 numbered examples are unchanged. Source 07's unchanged
+verifier passed its 621 finite checks with exactly the recorded check list;
+only the Python patch version differs. That verifier does not certify the
+general support arguments or the new consequences. All 4,626 source anchors
+in 63 reports, 5,221 source-label references and 1,887 local Markdown
+destinations across 226 files pass, as do whitespace checks. No Lean source
+changed in this local revision; synchronization with incoming Lean follows.

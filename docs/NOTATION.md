@@ -393,6 +393,30 @@ overlapping fields. This image commutes with q(Oz), but is not asserted
 to lie in the centre of a noncommutative target; no target support or
 strong-sum structure is assumed.
 
+For the binomial quotient `𝒬_a = Oz/(1+ω^a)`, the localized coefficient
+map is `ι_a(f) = −q_a(ω^a f)`. A nonintegral real coefficient r is
+represented by the omnific integer −rω^a; the quotient coefficient map
+is not constant-term extraction. Localization support must be bounded
+below by −Na for some ordinary integer N. The binomial-division blocks
+escape every such bound but are still bounded below in No, for example
+by −ωa. “Unbounded below” without this qualification is incorrect.
+
+Inside the real quotient, `x_n = q_a(ω^(a/n))`, `i = x_2` denotes the
+chosen imaginary unit of `E_a = F_a[x_2]`, and `ξ_r = x_(2^r)` starts at
+r=1. Its stage has `m=2^(r−1)` coordinates over E_a, with modulus
+`T^m − i`; the next stage repeats each coordinate on its two lifts.
+The Gaussian quotient already has its coefficient imaginary unit and
+uses `T^(2^r)+1` over F_a(i), starting at r=0 with 2^r coordinates.
+Its conjugation sends a Cantor function f to `z ↦ conjugate(f(−1−z))`.
+In both cases all complex exponentials used to label roots are evaluated
+in the ordinary complex field before embedding.
+
+The dyadic Cantor algebra is a proper subalgebra of 𝒬_a. The three-root
+indicator ε in E_a[x_6] depends on k modulo 3 in the common stage
+E_a[x_(6d)], where `d=2^(r−1)`; dyadic stage-r elements depend on k
+modulo d. These are finite coordinate descriptions, with no infinite
+sum of idempotents or classification of all ambient idempotents assumed.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
