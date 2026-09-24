@@ -3888,6 +3888,15 @@ entry were visually inspected. The independent inventory verifies all
 and 1,588 local Markdown destinations across 197 files resolve. This
 integration validation leaves the review boundaries stated above intact.
 
+The final synchronization also includes `ea802cc`, formalizing projective
+clearing and simultaneous common multiples of all ordinary powers. The
+source corollary and both new modules were checked for the distinction
+between a small family and the whole proper class; homogeneous rescaling
+does not assert primitive coordinates. The combined build passes 4,434
+jobs and the axiom audit passes 15,193 declarations with the same three
+axioms. All 4,417 cited source references and 1,590 local Markdown
+destinations resolve. This merge changes no report source or PDF.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
