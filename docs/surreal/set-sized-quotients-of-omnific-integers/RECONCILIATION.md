@@ -2474,3 +2474,36 @@ The preceding pass's finite rational verifier remains unchanged and is
 not evidence for the new arbitrary-module or all-characteristic proofs.
 No Lean source changed locally; the two-thread 4,677-job build and
 17,524-declaration axiom audit remain the baseline before synchronization.
+
+## Synchronization: primitive-recursive native ring-term codes
+
+Merged origin/main through 9e70115, including d52c892, and reviewed its
+three modules against the effective-syntax step of `odg:def:thm:saturation`.
+Prefix tokens distinguish natural-number variables and all five ring
+function symbols. Stack parsing rejects missing arguments and leftover
+terms. Both round trips hold, including exact reconstruction of the
+whole input after successful decoding; malformed suffixes are not ignored.
+
+The numerical stack-height scan is proved primitive recursive and
+characterizes precisely the encoder's range. The equivalence with valid
+prefix streams supplies an explicit local Primcodable instance using
+Mathlib's existing token/list encodings. Under that instance, the native
+term code is definitionally the token-list code, and both encoding and
+decoding are proved primitive recursive. Variable, negation, addition
+and multiplication constructors have corresponding proofs. Natural and
+signed numerals, powers and finite coefficient-list polynomial terms are
+primitive recursive with these exact native constructors, rather than
+only semantically equivalent expressions.
+
+The new mapping accurately remains Prerequisites proved for the full
+omitted-type computability clause. Bounded-formula coding and variable
+scopes, the complete membership recognizer and the recursive-saturation
+consequence remain pending. The local encoding does not replace other
+Mathlib encodings globally. No incoming manuscript changed.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,680 jobs and
+the axiom audit passes for 17,621 declarations, using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,872 local Markdown destinations in
+226 files pass, together with whitespace checks. The 311-page article
+and 34-page catalogue remain current.

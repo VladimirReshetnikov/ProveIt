@@ -790,3 +790,6 @@ import Surreal.Algebra.IntegerPolynomialCode
 import Surreal.Algebra.RingFormulaEquality
 import Surreal.Algebra.IntegerPolynomialParser
 import Surreal.Algebra.IntegerPolynomialCodeComputability
+import Surreal.Algebra.RingTermCode
+import Surreal.Algebra.RingTermCodeComputability
+import Surreal.Algebra.IntegerPolynomialTermComputability
