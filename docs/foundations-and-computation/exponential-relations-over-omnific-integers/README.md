@@ -9,9 +9,9 @@ Research manuscript, 23 September 2026.
 - `article.tex`: self-contained LaTeX source, including its bibliography.
 - `SOURCE_AUDIT.md`: source provenance, claim classifications, dependency and limitation checks.
 - `code/checks.py`: exact finite checks and a reusable balanced-partition generator.
-- `check_results.json`: the actual deterministic test result, with 22,074 cases passing.
-- `Makefile`: build and check commands.
-- `MANIFEST.sha256`: checksums of the delivered files other than the manifest itself.
+- `data/check_results.json`: the actual deterministic test result, with 22,074 cases passing.
+- `code/Makefile`: build and check commands.
+The original checksum manifest remains in the delivered archive in Git history; it is not a file in this directory.
 
 No external bibliography database, image assets, proprietary software, or network connection is needed to build the article or run the checks. A normal LaTeX installation must provide the packages listed in `article.tex`.
 
@@ -62,7 +62,7 @@ The PDF was built successfully with no overfull/underfull box warnings or unreso
 Python 3.10 or newer; standard library only:
 
 ```sh
-python3 code/checks.py --output check_results.json
+python3 code/checks.py --output data/check_results.json
 ```
 
 The expected headline is `"status": "PASS"`, with `"total_cases": 22074` and seed `20260923`. A failure raises an exception, including when Python optimization is enabled. The script's size cap for direct partition enumeration is deliberate; Bell-number growth makes this a small exact prototype, not a scalable solver.
