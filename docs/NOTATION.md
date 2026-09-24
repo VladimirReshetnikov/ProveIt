@@ -128,6 +128,21 @@ comparison gives its inverse for modules annihilated by I. These Ext
 groups are computed in the full module categories. Their detection
 threshold counts the elements of M, not those of the Ext group.
 
+For the finite-support coordinate cores, `P_Λ = ℚ_{≥0}^{(Λ)}` is a
+monoid of vectors with finitely many nonzero coordinates, and each monoid
+algebra element is itself a finite sum. Coordinate rank counts independent
+exponent directions, not Archimedean scales. Distinguish the constant
+coefficient `ct` (all nonconstant monomials go to zero) from the
+coefficient-sum augmentation (all monomials go to one).
+The `p`-subset summands of the face resolution are in homological degree
+p; the empty face is in degree zero. A contraction in each exponent
+degree proves exactness, but is not an A-linear splitting. In the Boolean
+Tor formula, `K/D` is an additive D-module quotient at a singleton
+exponent, not a quotient ring. The coefficient group in homological
+degree one is D; the higher surviving face groups have coefficients K.
+Formal lifting for `A → D` is distinct from the reduced differential
+module `Ω_{A/D} ⊗_A D`, which uses the section `D → A`.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

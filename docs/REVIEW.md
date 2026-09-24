@@ -5842,3 +5842,56 @@ reports, 5,213 source-label references and 1,799 local Markdown
 destinations across 226 files pass, as does whitespace validation.
 No TeX source changed in this merge, so the reviewed 278-page article
 and 34-page catalogue remain current.
+
+## Finite-support cores, face resolutions and exact flat dimensions
+
+Reviewed eight results in dependency order: `osq:hd:lem:cores`,
+`osq:hd:prop:finite`, `osq:hd:lem:faces`, `osq:hd:thm:resolution`,
+`osq:hd:cor:arithmeticTor`, `osq:hd:prop:etale`,
+`osq:hd:thm:boolean` and `osq:hd:cor:fd`. All numbered statements
+are unchanged. Later coefficient-lattice, tensor and derived results,
+and full parallel-source reconciliation, remain pending review.
+
+The domain proof identifies finite polynomial subalgebras explicitly;
+the normal-form embeddings keep coefficient fields, coordinate rank and
+Archimedean scales distinct. The finite-target proof treats the zero ring
+and noncommutative targets, writes the module annihilation calculation,
+and identifies compatible quotient systems and the p-adic kernel.
+The coefficient-sum augmentation is distinguished from constant extraction.
+The root README restricts the finite-quotient comparison to the integer
+and Gaussian cases of the stated proposition.
+
+The face-ideal proof uses strict coordinate subtraction to keep arbitrary
+K coefficients in the tail, handles the zero element, and gives explicit
+bounds contradicting finite generation. The resolution has a written
+simplex contraction in each exponent degree. This proves exactness with
+finite-support preimages even in countable rank, without claiming an
+A-linear splitting. After tensoring, the quotient complex is computed
+anew. Its four exponent cases exhibit the signed contraction, the isolated
+higher faces, and the singleton map K to K/D whose kernel is D. The
+quotient K/D is an additive D-module, not a ring quotient. Truncation and
+dimension shifting give the two exact flat dimensions and their infinite-
+rank limits, consistently with vanishing positive self-Tor.
+
+The formal lifting proof includes existence, uniqueness and reduction of
+the lift for every nilpotent test ideal. Nonflatness and failure of finite
+presentation have separate elementary proofs. The derivation argument
+explains the universal differential conclusion and distinguishes the
+section D to A from the formally etale map A to D. The standard inputs
+were checked against the Stacks Project, Tags 05UT and 060H and
+Section 10.6; the finite-presentation argument is also written directly.
+
+Updated the root README, report guide, catalogue, notation and ledger.
+All eight results remain Pending in Lean. Validation: three clean TeX
+passes for the article (280 pages) and catalogue (34 pages), no warnings
+or box diagnostics, and visual inspection of the resolution and Boolean
+Tor pages. All 828 labels, 1,656 auxiliary label/number pairs, 409 standard
+results and nine principal summaries are preserved. The existing exact
+finite audit passes all 780 multidegrees in ranks one through four, with
+F the full coordinate set and coefficient pair Q inside Q(sqrt(2)); this
+is supporting evidence for those cases, not general proof or Lean coverage.
+All 4,626 statement anchors across 63 reports, 5,213 source-label references
+and 1,799 local Markdown destinations across 226 files pass. Whitespace
+validation passes. No Lean or verifier source changed; the previous
+two-thread 4,587-job build and 16,337-declaration axiom audit remain the
+Lean baseline for this documentation-only pass.
