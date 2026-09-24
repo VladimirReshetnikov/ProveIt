@@ -764,3 +764,6 @@ import Surreal.Foundations.OmnificQuintic
 import Surreal.Surcomplex.QuinticBoundary
 import Surreal.Algebra.NaturalNumbersDefinition
 import Surreal.Foundations.OmnificNaturalNumbersDefinition
+import Surreal.Algebra.ArithmeticGuards
+import Surreal.Algebra.FormulaRelativization
+import Surreal.Foundations.OmnificArithmeticInterpretation
