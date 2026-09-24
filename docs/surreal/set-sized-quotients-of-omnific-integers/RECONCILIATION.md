@@ -1642,3 +1642,32 @@ All 4,626 anchors across 63 reports, 5,217 source-label references and
 1,826 local Markdown destinations across 226 files pass, as does whitespace
 checking. No Lean source changed; the previous two-thread 4,614-job build
 and 16,791-declaration axiom audit remain the Lean baseline for this pass.
+
+## Synchronization: actual exponent automorphisms and strong sums
+
+Merged origin/main through 233236d, including 5d891ce, and reviewed the
+three incoming modules against `odg:def:ex:dilation`, `prop:hahn-lift`,
+`eq:hahn-lift` and the canonical-field-lift clause of `thm:dilation`.
+Ordered additive exponent automorphisms transport lower-universe-small
+normal forms and induce actual field automorphisms. The coefficients and
+entire support are transported, real constants are fixed, and the native
+omnific subring is preserved. The restriction's fraction extension agrees
+with the constructed field map. Positive exponent scalings have reciprocal
+inverses; doubling moves omega and sends one plus omega to one plus omega
+squared.
+
+Strong summability is preserved and reflected for arbitrary index
+universes; commutation with the actual strong sum retains the small-index
+hypothesis of that sum operation. The lift transports leading exponents
+and the natural valuation, including zero's infinite value, and preserves
+the actual field order. The README and ledger accurately update the
+canonical-lift coverage while keeping unconditional exponential non-lifting
+pending construction of the global surreal exponential. No full-Hahn-field
+surjectivity or exponential-preservation claim is introduced.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,617 jobs; the
+axiom audit checks 16,855 declarations using only propext, Classical.choice
+and Quot.sound. All 4,626 anchors across 63 reports, 5,218 source-label
+references and 1,830 local Markdown destinations across 226 files pass,
+as does whitespace checking. No incoming TeX changed; the 296-page article
+and 34-page catalogue remain current.
