@@ -633,3 +633,6 @@ import Surreal.Algebra.KernelLines
 import Surreal.Surcomplex.PurelyInfiniteSize
 import Surreal.Surcomplex.DecomposableFiberSize
 import Surreal.Surcomplex.DecomposableEmptyFiber
+import Surreal.Algebra.BinaryFormRigidity
+import Surreal.Surcomplex.BinaryFormRigidity
+import Surreal.Surcomplex.PellRigidity
