@@ -1,0 +1,2619 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,mathrsfs}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable,needspace}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{titlesec}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,
+            citecolor=MidnightBlue]{hyperref}
+
+\hypersetup{%
+  pdftitle={The surreal and surcomplex reports},
+  pdfauthor={Vladimir Reshetnikov},
+  pdfsubject={Catalogue of sixty-three research reports on surreal and surcomplex numbers}}
+
+\definecolor{Ink}{HTML}{16324F}
+\definecolor{Accent}{HTML}{4E5C3D}
+
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{0.7em}{}
+
+\newcounter{entrynum}
+\setcounter{entrynum}{0}
+
+\emergencystretch=1.6em
+
+\def\UrlBreaks{\do\/\do\-\do\_\do\.}
+\def\UrlBigBreaks{\do\/}
+
+% \entry{title}{directory}{main document}{source archive}{description}
+\newcommand{\entry}[5]{%
+  \par\medskip\Needspace{7\baselineskip}\noindent
+  \refstepcounter{entrynum}%
+  \textbf{\theentrynum.\; #1}\par\nopagebreak
+  \nopagebreak{\raggedright\small\color{Ink}%
+    \nolinkurl{#2/}\textbf{\nolinkurl{#3}}\par}\nopagebreak
+  \nopagebreak{\raggedright\footnotesize\color{gray}%
+    from \texttt{#4}\par}\nopagebreak
+  \smallskip\noindent #5\par}
+
+\newcommand{\dir}[1]{\texttt{#1}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\der}{\partial}
+
+
+\begin{document}
+
+\begin{center}
+ {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
+ {\large Sixty-three mathematical research packages,\\
+ on the surreal field, its algebraic closure, its quaternion algebra,\\
+ their reach into physics, and the foundations and computation of all of them}\\[10pt]
+ {\small September 2026}
+\end{center}
+
+\vspace{4pt}
+
+\section*{Scope}
+\addcontentsline{toc}{section}{Scope}
+
+This document catalogues the sixty-three research packages stored under
+\dir{docs}.  Each entry names the problem the report attacks, the result it
+claims, and the delivery it arrived in.
+
+The collection divides in five, and so does the directory tree.  Twenty-three
+reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
+its real Hahn subfields: birthdays and their behaviour under multiplication,
+the option graphs of surreal forms, genetic functions and gaps, two questions
+of Lipparini about evaluating formal sums, the rigidity of exponential
+automorphisms, Gamma functions, differential transcendence of explicit
+surreals, Hahn-valued measures and probability, Markov generators,
+transcendence over bounded-support series, diagonal matrix scaling, vector
+and tensor fields, Euclidean three-space and its rotations, and finite
+probability, independent surreal copies, and six reports on Conway's omnific integers $\Oz$: their
+Diophantine geometry, their set-sized quotients, the automorphisms that
+preserve them, their algebraic groups and lattices, and the discrete initial
+subgroups they normalize, and continued fractions with omnific digits.
+Twenty-eight, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
+the theory of holomorphic functions over it, its differential algebra, its
+rank-one analytic geometry, its finite and infinite-dimensional spectral
+theory, its local, quasi-periodic and expanding dynamics, its nonabelian
+support obstructions, its entire functions at arbitrary valuation rank and
+their holonomic rigidity, Tate curves and multiscale theta series, Herglotz
+positivity, moment reconstruction, the summability of Wick expansions,
+the duals of Hahn vector spaces, the automorphisms of the field, cardinally
+bounded Hahn fields, what one dilation defines, the Gamma and zeta functions,
+hidden negative directions of Hermitian forms, Hahn--Hilbert geometry, and
+algebraic relations between a series and its exponent dilate.  One, under
+\dir{docs/surquaternions}, leaves
+commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
+$\No$.  Two, under \dir{docs/physics}, address physical models: the first asks what
+surreal scalars do and do not buy in general relativity; the second asks the
+same of finite quantum operations and gauge models. Neither claims an
+experimental prediction.  The last nine, under
+\dir{docs/foundations-and-computation}, stand outside all of these: they are
+about the subject rather than inside it, asking in what foundation this
+mathematics legally lives, how one computes with it exactly, which surreal
+numbers are computable at all, how the surreal field of one set-theoretic
+universe looks from a larger one, which universe of hereditary sets a
+birthday cutoff remembers, which surreals and omnific integers are
+definable, how omnific integers can be named exactly, and how large-cardinal
+embeddings act on normal forms, and which restricted exponential languages
+over omnific integers are decidable.
+
+These reports were previously part of a larger collection, in a repository
+whose subject was elsewhere; they were moved here with their git history.
+That is why an entry may refer to a merge, a duplicate sweep or a delivery
+number: those describe how the report reached its present form, and the
+record is kept rather than rewritten.
+
+Each directory holds a \LaTeX{} source, a \texttt{README.md} and a typeset article.
+Most include verification code and its recorded output.
+Source manuscripts for merged reports remain in Git history; their
+provenance notes record contributions and editorial choices. These are
+AI-assisted research drafts. Some claims and prerequisites have checked Lean
+proofs, mapped precisely in \texttt{FORMALIZATION.md}; no complete verification
+of the collection is claimed. This catalogue describes the reports rather than
+certifying them. The cross-report \texttt{NOTATION.md} explains shared names
+and distinctions between local conventions.
+
+\medskip
+\noindent
+Rebuild this document with
+\begin{quote}\ttfamily
+latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
+\end{quote}
+
+\section{The surreal field}
+
+Twenty-three reports about $\No$ and its real Hahn subfields.  Two questions of
+Lipparini on evaluating formal sums; two independent halves of Gonshor's
+product-birthday conjecture, on domains neither of which contains the other;
+the subgraph question from Roughan's paper on birthday arithmetic; a genetic
+counterexample separating pointwise derivatives from differences of
+constants; a rigidity theorem for exponential automorphisms; a sharp
+convexity classification of surreal Gamma functions; differential
+transcendence of explicit surreals; Hahn-valued measures and probability;
+Markov generators at every valuation scale; transcendence over bounded-support
+series; diagonal matrix scaling; vector and tensor fields in every
+dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
+probability; and six reports on the omnific integers $\Oz$, written from
+batches 24--29: Diophantine geometry, set-sized quotients, preserving
+automorphisms, groups and lattices, and discrete initial subgroups with their
+omnific normalization, together with continued fractions. A further report proposes independent copies with
+prescribed Hahn cores and arithmetic-intersection gaps. Among the first sixteen, the first and the fourth
+each arrived as a pair of archives and were merged; the exponential-automorphism
+report later absorbed two independent re-derivations of its own theorem, and
+the measures report merges five manuscripts, the vector-field report three
+and the three-space report four; individual entries record further expansions.
+The five earlier omnific reports are merges, grown by later additions: the
+Diophantine report assembles fifteen manuscripts, the quotient report
+twenty-four, the preserving-automorphism report fifteen, the groups and lattices
+report five and the initial-subgroup report two. The continued-fraction report
+is a written single-source report. Assembly, independent proof
+review and Lean coverage are separate; the ledger maps the ring and
+constant-term package, degree laws, units, finite elements and exact
+omnific floor and ordinary polynomial-root rigidity of the Diophantine
+report to Lean.
+
+\entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
+{surreal/hahn-evaluation-at-omega}
+{article.pdf}{hahn\_evaluation\_research.zip + reversed\_hahn\_series.zip}
+{Answers Problem~7.7 (p.~38) of Lipparini (arXiv:2505.00424v2) negatively: there
+is no ring homomorphism from the field of set-supported real-coefficient Hahn
+series with strictly increasing surreal exponents into the surreals sending
+$x^a$ to $\omega^a$.  The certificate is $B\in\Q[[x]]$ with $B^2=1-x$, built by
+the recursion $b_n=-\tfrac12\sum_{k=1}^{n-1}b_kb_{n-k}$: any such map would force
+a square to equal $1-\omega<0$.  The homomorphism is applied only to the finite
+identity, so no continuity, valuation, order preservation or preservation of
+infinite sums is assumed.  Adds the exact classification of admissible images of
+the variable as the infinitesimals, the monomial classification over an
+arbitrary ordered abelian group, and order-uniqueness on the source field.
+\emph{Merged; the core certificate was identical in both originals and is proved
+once, but the two toolkits are kept --- in particular a direct
+nonnegative-coefficient semiring certificate. Restriction and extension by
+differences relate the ring and semiring maps; the two witnesses give distinct
+elementary proofs.}}
+
+\entry{Gonshor's Product-Birthday Conjecture for ordinal-support series}
+{surreal/gonshor-product-birthdays}
+{surreal\_product\_birthdays.pdf}{gonshor\_product\_birthdays\_research.zip}
+{Proves Gonshor's bound $b(xy)\le b(x)\otimes b(y)$ on the ring of Conway normal
+forms $\sum_{\alpha\in S}c_\alpha\omega^{-\alpha}$ with $S$ an arbitrary set of
+ordinals, so transfinite and uncountable supports are allowed.  Supplies an
+exact birthday formula by transfinite induction over the support with maintained
+prefix bounds and an explicit limit stage, and a complete classification of the
+equality cases.  The route is a leading-Cantor-degree gap, which also gives that
+the degree of the birthday never rises under multiplication.  The conjecture for
+arbitrary surreal numbers is not solved.  The domain is incomparable with that of the
+Laurent-series report \nolinkurl{surreal/gonshor-laurent-birthdays}: it
+excludes $\omega$ and every positive power.}
+
+\entry{A Laurent-series case of Gonshor's birthday conjecture}
+{surreal/gonshor-laurent-birthdays}
+{article.pdf}{Gonshor\_Laurent\_Birthday\_Research.zip}
+{Proves the same bound $b(xy)\le b(x)\otimes b(y)$ on the canonically embedded
+field $\R((\omega^{-1}))$, which unlike the ring of
+\nolinkurl{surreal/gonshor-product-birthdays} contains $\omega$
+and its positive powers but restricts supports to order type at most $\omega$ on
+the integer lattice.  The route is a bilinear budget: an exact splitting
+$b(x)=b(P)\oplus b(u)$ into polynomial and infinitesimal parts, three separate
+product estimates for the resulting cross terms, and a finite-jet stabilisation
+carrying the finite bound to infinite series without any continuity claim.  Also
+treats finite normal forms with arbitrary ordinal exponents, derives exact
+birthdays for finite and infinite Laurent series, and proves a reciprocal
+corollary.  Neither this theorem nor that one contains the other; on
+their common corner $\R[[\omega^{-1}]]$ the two agree and are proved twice.}
+
+\entry{Canonical forms need not be subgraphs}
+{surreal/canonical-forms-need-not-be-subgraphs}
+{surreal\_graphs.pdf}{surreal\_graphs\_research.zip + surreal\_sparse\_graphs.zip}
+{Answers negatively the question in the Figure~3 caption of Roughan,
+\emph{Surreal Birthdays and Their Arithmetic} (arXiv:1810.10373v2, p.~7):
+the canonical form of a surreal value need not be a subgraph of every other form
+of that value.  Five vertices and rank three are both least possible, and there
+are exactly sixteen five-vertex counterexamples, eight triangle-free, four of
+value $1/2$.  Adds cycle representations of $1/2$ at every admissible length,
+the exact extremal function, a planar construction of maximum degree three and
+arbitrarily large girth, classifications of which canonical graphs are
+unavoidable, and transfinite witnesses.  \emph{Merged; the two originals
+exhibited genuinely different five-vertex witnesses --- one passing through a
+vertex of value $-1$, one with no negative value at all --- and both are printed
+in full, as are two odd-cycle families, two high-girth constructions and two
+proofs of the Fibonacci bound.}}
+
+\entry{A countable genetic cut across the finite--infinite gap}
+{surreal/genetic-gaps-and-primitives}
+{article.pdf}{genetic\_gap\_counterexamples.zip}
+{With $q(t)=t/(1+t^2)$ and $B(x)=1-\{q(n-x):n\in\N\mid\;\}$ as a Conway cut,
+proves that $B$ is the indicator of the positive infinite surreals, is genetic
+under the set-sized option constructors of the cited sources, and has pointwise
+derivative zero everywhere.  Consequently $x$ and $x-B(x)$ are genetic
+primitives of $1$ agreeing at every real input that do not differ by a constant,
+the latter also an increasing bijection.  The sublevel class
+$\{x:0<x<\omega,\;B(x)\le\tfrac12\}$ is nonempty and bounded yet has no surreal
+supremum, so neither end gap supplies one.}
+
+\entry{A Number-Valued Broadcast Sum of Surreal Sequences}
+{surreal/broadcast-sum-of-surreal-sequences}
+{article.pdf}{surreal\_broadcast\_sum.zip}
+{Analyses the sign-truncation game of Lipparini (arXiv:2505.00424v2,
+Remark~7.6(3), in connection with Problem~7.5).  Proves the game always has a
+surreal-number value, that it agrees with finite surreal sums and with
+Lipparini's ordinal operation on their respective domains, and that it fails
+weak coordinatewise monotonicity, with an explicit family
+$s[n]=3\cdot2^{-n-d-1}$ on a subset $E$ and $2^{-n-d}$ off it realising the
+failure.  The underlying rule is Lipparini's; the name and the notation are
+local to the report.}
+
+\entry{Cofinal displacement and the rigidity of exponential automorphisms}
+{surreal/exponential-automorphism-rigidity}
+{article.pdf}{three manuscripts, delivered 21 and 22~September 2026}
+{Let $F$ be an ordered field with a total increasing exponential
+$E:(F,+)\to(F_{>0},\cdot)$ that is \emph{onto}, and $w$ a nontrivial convex
+valuation --- no Hahn workspace, completeness, saturation or set-size
+hypothesis.  The engine is one finite lemma: the displacement
+$D(x)=\sigma(x)-x$ of a unital field endomorphism is \emph{not} a derivation
+but obeys $D(ab)=\sigma(a)D(b)+bD(a)$, and from $D(a)=d\ne0$ the two probes
+$b=2B(1+|\sigma(a)|)/|d|$ and $ab$ force $\max\{|D(b)|,|D(ab)|\}>B$, with
+neither surjectivity nor order preservation of $\sigma$.  Through the
+surjective, additive, order-reversing map $\nu=w\circ E$, a nonidentity
+exponential automorphism stabilizing $\mathcal{O}_w$ displaces value-group
+elements cofinally and coinitially, so
+$\rho_w:\mathrm{Aut}_{\exp}(F;\mathcal{O}_w)\to\mathrm{Aut}(\Gamma,+,<)$ is
+injective; coarsening rigidity takes stabilization of $\Delta$ as an explicit
+hypothesis.  The kernel of $\nu$ is a proper convex subgroup, bounded by a
+\emph{field} element (the finite surreals by $\omega$), so on $\No$, with
+$B=\omega$, an exponential automorphism fixing every natural-valuation value
+is the identity (Theorem~5.1; the hypothesis is not to be weakened to
+preserving comparisons), hence so is every exponential 1-automorphism, with
+no strong-additivity or coefficient-fixing hypothesis, offered as a negative
+answer to Question~5.4 of Kaplan--Krapp--Serra, arXiv:2509.22374v3.
+\emph{Keep that version pinning prominent:} the reading was checked against
+that PDF on 22~September 2026, which verifies the interpretation, not
+priority, and Gonshor's exponential and the natural valuation are cited, not
+reproved.  Section~8 gives two disjoint families of value-group
+automorphisms, bounded-layer reweightings and positive rational dilations,
+that lift as ordered field automorphisms but not exponentially, so cofinal
+displacement is necessary and not sufficient; Section~9, for real closed $F$,
+gives $\mathrm{Aut}_L(F(i))\cong\mathrm{Aut}_{\exp}(F)\times C_2$ for
+$L(z)=\log\sqrt{z\bar z}$, with no complex-logarithm branch.  Two later
+manuscripts re-derived the engine and the answer by the same proof, printed
+once; merging them added the theorem that no nonzero twisted derivation of a
+nontrivially valued field has all output valuations bounded below by one
+element, at any rank and with no ordering (Theorem~3.5), rigidity from one
+visible exponential scale without surjectivity of $E$ (Theorem~4.4), an
+order-free detector (Corollary~4.5), profile rigidity on a final interval
+(Theorem~6.1), cofinal multiplicative motion and cofinal commutation defects
+of value-fixing maps, the latter not asserting that such a map exists
+(Section~7), no global bound $v(\partial y)\ge v(y)+\gamma$ for a nonzero
+$E$-compatible derivation of a nontrivially valued field, applied to the
+Berarducci--Mantova derivation (Theorem~10.3), and $\R((t))$ sharpness
+examples that are not counterexamples (Section~11).  Rigidity here means
+faithfulness, not triviality; the image of $\rho_v$ on $\No$ is not
+classified (Question~13.1); the derivation theorems exclude only global
+bounds.  The Berarducci--Mantova derivation is an object, not a theorem,
+shared with \nolinkurl{surreal/gamma-functions} and
+\nolinkurl{surreal/tail-spans-and-differential-transcendence}, and this third
+``rigidity'' is neither the all-scale polynomial rigidity of
+\nolinkurl{surcomplex/analysis} nor the scalar rigidity of
+\nolinkurl{surreal/gamma-functions}.  The staged source audit's conclusion
+that the collection lacked this report is false, as its appended correction
+says. Generic displacement, exponential-profile, logarithmic-modulus and
+valuation-kernel proofs now have Lean mappings; actual surreal exponential
+instantiations remain pending. Not refereed; no exhaustive priority claim.}
+
+\entry{Gamma functions over the surreals: a sharp convexity classification}
+{surreal/gamma-functions}
+{article.pdf}{one manuscript, delivered 21~September 2026}
+{Write $M(x)$ for the leading Conway monomial of a positive infinite surreal
+with its real coefficient stripped and $\mathrm{pp}(x)$ for the purely infinite
+part; for an arbitrary class assignment $a$ on positive infinite monomials, no
+regularity assumed, set $h_a(x)=a(M(x))\,\mathrm{pp}(x)$ and
+$L_a=L_0+h_a$ over the Taylor--Stirling log-Gamma baseline.  The main theorem
+is a two-sided sharp threshold: $L_a$ is convex on all of $\No_{>0}$
+\emph{iff} $m\,a(m)$ is finite for every positive infinite monomial $m$, and in
+that case it is \emph{strictly} convex --- pointwise in $m$, no uniform real
+bound across monomials, both signs allowed, and no merely-convex member exists.
+Every member of the family, convex or not, preserves $\Gamma_a(1)=1$, the
+recurrence $\Gamma_a(x+1)=x\Gamma_a(x)$, every finite Gauss multiplication
+formula, every normalized finite-translation germ and all positive-order fine
+derivatives of log-Gamma, so the literal surreal Bohr--Mollerup conditions
+do not give uniqueness: $a_\lambda(m)=\lambda e^{-m}$, $\lambda\in\R$, gives pairwise
+distinct strictly log-convex extensions whose logarithmic and relative differences are smaller than
+\emph{every} ordinary inverse power at \emph{every} infinite argument, the
+log-difference at $\omega$ being exactly $\lambda\,\omega e^{-\omega}$, and
+adding all ordinary-order Stirling envelopes does not restore uniqueness.
+Absolute Gamma differences need not be small: at $\omega$ the difference
+$\Gamma_1-\Gamma_0$ exceeds every ordinary power of $\omega$. The
+convexity proof uses no second derivatives and no mean value theorem: it works
+with the tangent gap $D_F(y,x)=F(y)-F(x)-F'(x)(y-x)$ through four exhaustive
+relative-scale regimes, the margin $(y-x)^2/(2x)$ being exactly what generates
+the $O(m^{-1})$ threshold, and the mechanism is then isolated as a reusable
+scale-margin gauge principle.  A positive second derivative does \emph{not}
+imply convexity in this calculus --- the gauge with value one on one monomial
+and zero elsewhere has all fine
+derivatives equal to the baseline's and a negative tangent gap --- because such
+gauges are finely locally constant and convexity cannot be decided locally.
+Compatibility with the Berarducci--Mantova derivation forces $h_a$ into
+$\ker\der=\R$ and kills every member but $a=0$, yet a different real-valued
+non-flat gauge survives, so \emph{scalar compatibility alone is not a
+uniqueness characterization}.  Closes with an exact finite-phase domain on the
+tube $\mathrm{Re}(z)>0$, $\mathrm{Im}(z)$ finite, using the finite-angle
+exponential of the imaginary log-Gamma value, distinct from choosing a
+primitive in \nolinkurl{surcomplex/differential-equations}.
+\emph{Not offered as a resolution of a named published problem}, and
+the classification is exact only for the named monomialwise family.  Its own
+audit read an earlier state of this catalogue; its eighteen-package count
+is a historical description, not the current inventory.}
+
+\entry{Tail-spans and differential transcendence in surreal and surcomplex Hahn fields}
+{surreal/tail-spans-and-differential-transcendence}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Let $M$ have characteristic zero, $\Gamma$ be a set-sized ordered abelian
+group, $(a_i)\subset M^\times$ have independent square classes with
+$r_i^2=a_i$, the exponents $\gamma_i$ be distinct with well-ordered image,
+and $v_i\in M^r$; put $Y=\sum_i t^{\gamma_i}r_iv_i$ over $B=M((t^\Gamma))$.
+The invariant is the \emph{cofinite span} $W$, the intersection of the spans
+surviving every \emph{finite} deletion, not deletion of a transfinite initial
+segment.  Theorem~5.1: $E=\{i:v_i\notin W\}$ is finite and
+$B[Y_1,\ldots,Y_r]=B_E[s_1,\ldots,s_d]$, where $d=\dim_MW$,
+$B_E=M(r_i:i\in E)((t^\Gamma))$ has degree $2^{|E|}$ over $B$ and the $s_j$
+are algebraically independent over $B_E$ --- an equality of subrings, not of
+dimensions; Theorem~5.2 splits the relation ideal of $Y$ over $B$, after base
+change to $B_E$, into $2^{|E|}$ pairwise comaximal affine planes of
+dimension~$d$.  The proof is finitary: the alternating sum of finitely many
+coefficient sign changes of a degree-$D$ relation is a mixed difference equal
+to $D!$ times its top polarization, which cofinite spanning forces to vanish
+identically.  With $t=\omega^{-1}$,
+$B_0=\Q((t^\Q))\subset H_0=\mathbb{A}_{\R}((t^\Q))\subset\No$ (real-algebraic
+coefficients) and $\xi_A=\sum_{n\in A}\sqrt{p_n}\,\omega^{-n}$, $p_n$ the
+$n$th prime: for \emph{every} infinite $A$ the Berarducci--Mantova jets
+$\der^k\xi_A$ are algebraically independent over $B_0$ (Theorem~7.1), and
+those of the explicit binary-prefix almost disjoint family
+$(\xi_\alpha)_{\alpha\in\{0,1\}^\N}$ jointly (Theorem~7.3); with a separate
+count $|H_0|\le2^{\aleph_0}$ for the upper bound,
+$\mathrm{dtrdeg}_{B_0}H_0=\mathrm{trdeg}_{B_0}H_0=2^{\aleph_0}$.  For every
+infinite $A$, all mixed jets $\partial_z^j\delta^kF_A$, $\delta=t\,d/dt$, of
+$F_A=\sum_{n\in A}t^n\sqrt{1-z/2^n}$ are independent over $\C(z)((t^\Q))$
+(Theorem~9.3), and continuum many such functions jointly on the one disk
+$|z|<1$ (Theorem~10.1).  Also a value-group-relative valuation-closure
+criterion (Theorem~12.1) and undecidability of algebraicity and differential
+algebraicity over $B_0$ for total computable coefficient streams
+(Proposition~13.1).  Cautions: the sign changes are not order-preserving and
+are not extended to $\No$; $\C(z)((t^\Q))$ is not a common-domain ring; point
+values are not claimed transcendental; $F=F_{\N_{>0}}$ satisfies
+$F(2z,t)-tF(z,t)=t\sqrt{1-z}$, so functional equations are not excluded; the
+family indexed by \emph{all} subsets is dependent,
+$\xi_{A\cup B}+\xi_{A\cap B}=\xi_A+\xi_B$ (Remark~7.4, added on fitting).
+The formula for $\der$ on $\C((t^\Q))$ is cited from
+\nolinkurl{surcomplex/differential-equations}; only the restriction to
+real-algebraic coefficients is checked here.
+\nolinkurl{surcomplex/dynamics-and-normal-forms} keeps, unweakened, its
+warning that its $H_\varepsilon$, with
+$H_\varepsilon'=\Omega_\varepsilon H_\varepsilon$, is not differentially
+transcendental; Theorem~9.3 concerns different functions.  Its 404 exact
+finite checks prove no infinite statement; priority not certified, not
+refereed. The Lean ledger records proofs of cofinite-span stabilization
+and multilinear detection; the classification and differential-independence
+theorems remain pending.}
+
+\entry{Hahn-valued measures and probability: strong atomicity, coefficientwise extension, and hidden negative mass}
+{surreal/hahn-valued-measures-and-probability}
+{article.pdf}{five manuscripts, delivered 22~September 2026}
+{Measures with values in $\R((t^\Gamma))$ and $\C((t^\Gamma))$, and through
+$t^\gamma=\omega^{-\gamma}$ in $\No$ and $\SC$, with $\Gamma$ a set-sized ordered
+abelian group \emph{not} assumed divisible except in one Gaussian quadrature
+theorem, under two meanings of countable
+additivity: a \emph{coefficientwise} Hahn measure is a Hahn series of ordinary
+finite signed or complex measures on one well-ordered exponent set, added
+exponent by exponent; a \emph{strong} one requires the masses of every
+disjoint sequence of events to be strongly Hahn summable.
+\textbf{Strong class.}  On every countably separated space a strong measure is
+$\mu(A)=\sum^{\mathrm H}_{x\in A}w_x$ for one strongly summable family
+$(w_x)$, common support and atomicity being conclusions; it extends uniquely
+to all subsets, and a strong probability has finitely supported standard part.
+Exact criteria are proved for coherent cylinder data over finite alphabets,
+for independent finite-state coordinates (finitely many random at the residue
+level, and the individual rare entries, not their aggregates, strongly
+summable), and for moments on an ordinary real sample set.  One weight pattern
+of support order type $\omega+1$ gives nonnegative Cantor-space cylinder
+masses, or a functional strictly positive on nonzero Hahn polynomials
+nonnegative on $[0,1]$, yet a negative singleton; $\omega+1$ is least.
+\textbf{Coefficientwise class.}  A transfinite null-ideal criterion decides
+positivity; two exponents already hide a negative singleton; independent
+Bernoulli perturbations on a common well-ordered exponent set extend exactly
+under weighted $\ell^2$ rows at baselines uniformly separated from $0$ and
+$1$, and $\ell^1$ rows at deterministic ones.  \emph{The threshold $\omega+1$
+and the finitely supported standard part hold in the strong class only.}  Sources 10 and
+11 proved the classification independently, and the threshold for cylinder
+and polynomial tests respectively; each is printed once, 10 as base; source 15's
+classification on compact metric spaces, with a common support
+\emph{assumed}, is recorded as a special case.  Not a first non-Archimedean
+Kolmogorov theorem (Ludkovsky--Khrennikov proved one under other axioms);
+priority not certified and not refereed.  The Lean ledger records checked
+strong atomicity and product prerequisites; the complete report is not
+formalized.
+\nolinkurl{physics/surreal-scalars-and-spacetime} asked for a summation theory,
+and this report works out two; it shows that the object refused by non-claim N75 of
+\nolinkurl{surcomplex/dynamics-and-normal-forms} cannot exist in the strong class
+for an ordinary group action with only infinite orbits,
+and states canonically the null-ideal criterion proved independently in
+\nolinkurl{surcomplex/hahn-herglotz-positivity}.  A fourth manuscript (Sections~25--31) develops the coefficientwise
+class for countably many scales: every measure has a Hahn-valued density with
+respect to one finite real control measure, positivity is positivity of that
+density almost everywhere (related exactly to the null-ideal criterion, whose
+proof it re-derives for countable exponent sets), and Hahn--Jordan,
+Radon--Nikodym, Fubini, conditional expectation and infinite masses follow.  A fifth manuscript (Sections~32--34) removes the uniform separation of the
+Bernoulli product theorem: at arbitrary interior baselines the laws extend
+exactly when every exponent row lies in $\ell^1+\ell^2(1/[p_j(1-p_j)])$,
+answering the report's near-boundary question; a mixed-baseline version is
+added by the merge and marked as such.}
+
+\entry{Surreal Markov generators at every valuation scale}
+{surreal/markov-generators-at-every-scale}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Finite Markov chains with positive Hahn rates $q_e\in F_{>0}$,
+$F=\R((t^\Gamma))$, on a strongly connected digraph with $n\ge2$ states;
+$\Gamma$ is nonzero, set-sized and \emph{divisible} throughout, read in $\No$
+through $t^\gamma\mapsto\omega^{-\gamma}$.  The object is the normalized
+resolvent $R_L(s)=s(sI+L)^{-1}$ of the row Laplacian $L$ (generator $-L$),
+defined rational-algebraically, and its residue matrix
+$K_\alpha(c)=\mathrm{res}\,R_L(ct^\alpha)$ at each scale $\alpha\in\Gamma$,
+the report's \emph{shadow}, unrelated to the shadow topology.  In-forests give
+the valuation and leading coefficient of \emph{every} resolvent entry,
+zero-residue entries included (Theorem~4.1).  There are at most $n-1$ crossover
+scales, and the plateaux form a flag of distinct stochastic idempotents
+$I=P_0,\dots,P_m=\mathbf{1}\pi_0$, $P_iP_j=P_jP_i=P_{\max(i,j)}$, of strictly
+decreasing rank (Theorem~5.2).  On the canonical stochastic retract $P=UV$,
+$VU=I$, each crossover is $U\,c(cI+G_\alpha)^{-1}V$ for a real Markov row
+Laplacian $G_\alpha=(VK_\alpha(1)U)^{-1}-I$ with semisimple zero eigenvalue,
+with no reversibility, simple-eigenvalue or unique-minimizing-forest assumption
+(Theorem~6.2).  Conversely (Theorem~7.4, Corollary~7.5), every such flag ending
+in rank one, with any compatible real effective generators, occurs at any
+prescribed scales $\alpha_1<\dots<\alpha_m$ in an irreducible Hahn row
+Laplacian, whose intermediate-scale positivity corrections add no crossover.
+Also: relative rate errors of valuation $\ge\delta$ on one fixed graph give the
+same bound for every resolvent entry, uniformly in $s>0$ (Theorem~8.1; sharp
+by Example~8.3); a real one-parameter monomial model reproduces the whole
+\emph{finite} marked-forest leading diagram, so such data cannot certify higher
+rank (Theorem~9.2); and $\det(cI_p+G_\alpha)=cD_\alpha(c)/b_{k_-}$ yields the
+leading surcomplex eigenvalue amplitudes of $L$, including tied scales and
+nonreal eigenvalues, while the forest profile is convex (Theorems~10.2--10.3).
+\emph{One manuscript; no merge}: placement collected its own limitations as
+(N1)--(N11) and added a divisibility ledger and cross-references, changing no
+theorem number.  Not treated: a global surreal exponential, path measures,
+infinite state spaces, nondivisible $\Gamma$.  Classical forest,
+stochastic-idempotent and rank-one metastability inputs are credited; priority
+is not certified; not refereed.  The Lean ledger records checked algebraic
+clauses of the resolvent identity, projection-flag construction and irreducible
+completion; residues and the remaining hierarchy theorems are pending.  The
+finite exact checks are not proofs.  Lemma~10.1 is the forest-polynomial case of the Newton rule of
+\nolinkurl{surcomplex/polynomial-algebra}; the positivity mechanism parallels
+the Cauchy--Binet identity of \nolinkurl{surcomplex/spectral-theory} for another
+matrix class; neither this report nor
+\nolinkurl{surreal/hahn-valued-measures-and-probability} depends on the other.}
+
+\entry{Transcendence over bounded-support Hahn series}
+{surreal/transcendence-over-bounded-support}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Let $G$ be a nonzero set-sized ordered abelian group, $K$ a field of
+characteristic zero, $\mathcal{B}_G(K)$ the ring of Hahn series whose support
+is bounded above, $\mathcal{F}_G(K)$ its fraction field and
+$\kappa=\mathrm{cf}(G)$, cofinality in exactly the sense of
+\nolinkurl{surcomplex/entire-functions-at-arbitrary-rank}.  There are $2^\kappa$
+elements of $K((t^G))$, with positive integer coefficients and one common
+support of order type $\kappa$, algebraically independent over
+$\mathcal{F}_G(K)$ (Theorem~5.3); no smaller support cardinality carries even
+one transcendental element (Corollary~5.4), every valuation ball contains such
+a family, and for real-exponent Hahn fields over $\R$ or $\C$ the transcendence
+degree is the continuum.  A descent theorem makes $K((t^H))$ and
+$\mathcal{F}_G(L)$ linearly disjoint over $\mathcal{F}_H(K)$ for cofinal
+$H\subseteq G$ and $K\subseteq L$ (Theorem~3.2), so relation ideals and finite
+degrees survive enlargement of coefficients and cofinal exponents.  Also: when
+$\mathcal{B}_G(K)$ is a field, its units via the highest Archimedean quotient,
+a GCD-descent theorem that stays \emph{conditional}, and Conway-normal-form
+witnesses that are actual surreal numbers.  Transcendence here comes from the
+support, not from the coefficients as in
+\nolinkurl{surreal/tail-spans-and-differential-transcendence}; the two bases
+do not contain each other, and neither report uses the other.  One
+manuscript; priority not certified, not refereed, no Lean verification.}
+
+\entry{Diagonal matrix scaling at surreal scales}
+{surreal/matrix-scaling-at-surreal-scales}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Diagonal scaling of a positive matrix to fixed row and column sums over
+$F=\R((t^\Gamma))$ and $K=\C((t^\Gamma))$, whose entries may sit at
+arbitrarily different infinitesimal scales; the local theory assumes no rank
+or divisibility for $\Gamma$.  The normalization has a unique
+support-controlled analytic branch on the whole relative infinitesimal
+polydisc.  The invariant is the \emph{spanning-tree deletion gap}: with $\tau$
+the least valuation sum over spanning trees of the bipartite support graph and
+$\tau_e^-$ the least over trees avoiding the edge $e$,
+$\kappa_e=\tau_e^--\tau$ is the exact uniform gain at entry $e$ --- an input
+change of valuation at least $\delta>0$ moves that output entry by valuation
+at least $\delta+\kappa_e$, a nonlinear two-point estimate, attained by changes
+in $e$ alone, with bridges fixed exactly.  Taylor coefficients obey the same
+bounds; evaluation at arbitrary rank needs a separate finite-generator support
+argument; along a tridiagonal bistochastic chain the gains add exactly.  The
+positive-sum mechanism is that of the forest sums of
+\nolinkurl{surreal/markov-generators-at-every-scale} and the Cauchy--Binet sums
+of \nolinkurl{surcomplex/spectral-theory}, but the maps differ: the Markov
+report's stability bound has no gain, and $\kappa_e$ is not a condition
+number.  No convergence or complexity claim for Sinkhorn iteration.  One
+manuscript; not refereed, no Lean verification, priority not certified.}
+
+\entry{Surreal vector and tensor fields in every dimension}
+{surreal/vector-and-tensor-fields}
+{article.pdf}{three manuscripts, delivered 22~September 2026}
+{Replacing $\R$ by $\No$ gives tensor algebra but no calculus.  Three
+manuscripts built the same layered theory, printed once from the
+$n$-dimensional one: finite algebra over a set-sized real-closed surreal
+subfield; a sheaf of locally Hahn-supported smooth tensor fields on ordinary
+real spaces, under one support condition that makes sums, products,
+contraction, differentiation and integration over compact real chains
+compatible; and genuine surreal-coordinate neighbourhoods reached by
+support-controlled Taylor prolongation and scale charts.  Part~I gives Lie and
+Cartan calculus, connections and curvature, Hodge theory for a real or regular
+Riemannian Hahn metric, Stokes and Poincar\'e, Hahn cohomology, standard-part
+reduction and an infinite-frequency obstruction.  Part~II, from the
+three-dimensional manuscript, is dot and cross products, integral theorems
+and multiscale continuum equations; Part~III, from the Minkowski manuscript,
+is Lorentz transformations at every scale, the Lorentzian Hodge operator,
+Maxwell and scalar fields and stress--energy, as mathematics on Minkowski
+space --- not an assessment in the sense of
+\nolinkurl{physics/surreal-scalars-and-spacetime}.  Results proved in three
+dimensions are printed in every dimension only where the proof allows, and
+nothing Lorentzian is attached to a general statement.  The complex-coefficient
+Stokes and cohomology results of \nolinkurl{surcomplex/contours-and-stokes} are
+credited, not reclaimed.  Not refereed, no Lean verification, priority not
+certified.}
+
+\entry{Euclidean three-space and the rotation group over the surreals}
+{surreal/euclidean-three-space}
+{article.pdf}{four manuscripts, delivered 22--23~September 2026}
+{Coordinate geometry of $\No^3$ inside set-sized real-closed Hahn fields,
+where lengths, areas and radii may be infinite or infinitesimal but angles
+between directions always have canonical finite representatives, so spatial
+trigonometry needs no oscillatory meaning for an infinite angle.  Part~I, the
+base: incidence, projections, skew-line distance, sphere intersections,
+quadrics, rigid motions, Rodrigues rotations, screw motions, spherical
+coordinates, and spherical trigonometry with sine and cosine laws,
+branch-correct excess, area and holonomy.  Part~II is the class group
+$\mathrm{SO}(3,\No)$: every nonidentity rotation has an axis, Rodrigues,
+Euler and Cayley coordinates stay exact, the standard part gives a split
+extension $K\rtimes\mathrm{SO}(3,\R)$ whose infinitesimal kernel is uniquely
+divisible and perfect (every element a single commutator), finite subgroups
+are conjugate to real ones, and the rotation exponential has rank-one
+critical spheres.  What both manuscripts proved (isometries, Rodrigues, the
+Cayley chart, the finite phase) is printed once; the spin double cover is
+cited from \nolinkurl{surquaternions/surquaternions}, and the plane case is
+the $\mathrm{SO}(2,\No)$ section of \nolinkurl{surcomplex/trigonometry}.  Not
+refereed, no Lean verification, priority not certified.  A third manuscript (Part~III) classifies the normal subgroups of
+$\mathrm{SO}(3,F)$ by valuation cuts, computes lower central and derived
+series, and proves that every class homomorphism from $\mathrm{SO}(3,\No)$ to a
+set-sized group factors through standard part, also for $\mathrm{SO}(n,\No)$ and
+$\mathrm{SU}(n,\SC)$.  A fourth manuscript (Part~V, 23~September) answers the
+report's question on a uniform classification for compact groups: for a
+connected real linear algebraic group $\mathsf G$ with compact connected real
+points, every class homomorphism from $\mathsf G(\No)$ to a set-sized group
+kills the infinitesimals of the derived group, a universal set-sized quotient
+exists exactly when $\mathsf G$ is semisimple and is then standard part, for
+semisimple $\mathsf G$ the infinitesimal normal subgroups are products of
+valuation-cut subgroups over the simple factors, and $|\mathrm{SO}_n(\Oz)|=2^{n-1}n!$; by contrast every
+set-sized image of $\mathrm{SL}_n(\No)$, $n\ge2$, is trivial.}
+
+\entry{Finite surreal probability, log-odds and conditioning}
+{surreal/finite-surreal-probability}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Probability with values in set-sized subfields of $\No$, with logarithmic
+odds from the surreal exponential.  On finite event algebras, where finite,
+strong and coefficientwise additivity coincide: conditioning on
+infinitesimal events and exact Bayesian updates, a leading-scale calculus with
+coefficient-sensitive tie breaking, quantitative conditioning stability,
+softmax models, relative entropy, proper scoring rules, Gibbs variational
+principles and finite-horizon processes; a conditional real shadow keeps what
+the unconditional standard part destroys.  Beyond finite algebras it gives
+regular finitely additive laws on all subsets for two coin models, a
+fine-ultrafilter law, a Loeb bridge, and a counterexample to positive
+coefficientwise integration of Hahn-valued functions.  Its coin theorems are
+the cases $p=t$ and $p=\tfrac12+t$ of the i.i.d.\ corollary of
+\nolinkurl{surreal/hahn-valued-measures-and-probability}, which it answers no
+question of.  No physical interpretation is claimed, in line with
+\nolinkurl{physics/surreal-scalars-and-spacetime}.  One manuscript; not
+refereed, no Lean verification, priority not certified.}
+
+\entry{Omnific integers and omnific--Diophantine geometry}
+{surreal/omnific-diophantine-geometry}
+{article.pdf}{fifteen manuscripts, delivered 22--23~September 2026}
+{What do Diophantine equations look like over Conway's omnific integers
+$\Oz=\Pi\oplus\Z$?  The theory is organized around the ring retraction
+$\mathrm{ct}:\Oz\to\Z$ onto the constant coefficient: an integer system has an
+omnific solution iff it has an integer one, so Hilbert's tenth problem over
+$\Oz$ is the ordinary one; the finite quotients are the $\Z/n$, and linear
+systems are solved completely.  Existence is kept apart from the structure of
+solutions.  At a nonzero level the fibers of products of linear forms are
+described exactly, so Pell equations for every $D\ne0$, binary forms with two
+distinct projective factors and norm forms of finite \'etale algebras gain no
+new omnific or Gaussian omnific points, while every represented level of a
+nondegenerate indefinite quadratic form in at least three variables carries
+injective polynomial families, in an exhaustive quadratic-level dichotomy.
+Support-preserving Euler derivations make $ax^m+by^n=c$ ($abc\ne0$,
+$m,n\ge2$) rigid, and more generally, over the one-sided ring, give only
+constant points on every smooth affine curve other than the affine line, on
+nonsingular Weierstrass cubics, abelian and semiabelian varieties, proper
+varieties with enough symmetric differentials, and logarithmic complements
+whose logarithmic forms separate tangent directions. The new singular-curve
+companion claims that a geometrically integral affine curve has nonconstant
+points exactly when its normalization is the affine line; the criterion
+now has a manuscript proof review. Pell rigidity with the
+three- or four-square theorem gives single quartic equations defining $\Z$
+in $\Oz$; $x^2=2y^2$ defines $\Pi$, one order-free system defines $\Z$ in
+$\Oz$ and $\Z[i]$ in $\Oz[i]$, and the graph of $\mathrm{ct}$ is Diophantine,
+so every homomorphism preserves constant terms.  The pure ring $\Oz$
+interprets $\No$ and its automorphisms extend to maps fixing $\R$, while a phase twist shows
+that $\Oz[i]$ does not determine the real axis.  Fractions: a point with a
+unimodular presentation has lowest terms unique up to sign or no gcd at all,
+according as its constant-term specialization is rational, and the specialization fibers are dense
+orbits of the congruence kernel of $\mathrm{SL}_2(\Oz)$.  \emph{Assembled
+from fifteen manuscripts through \texttt{fdedce0}; the report states which source proved each result and
+prints shared results once.} A manuscript proof review covers elementary
+arithmetic, fractions and differential-rigidity prerequisites, then curves
+through Section 18.6, including groups, coefficient algebras and logarithmic
+applications. It corrects
+rational specialization, normalization
+lifting and superelliptic irreducibility, and expands the conductor and
+arithmetic proofs. The exact
+scope and source comparisons are in \texttt{RECONCILIATION.md}. Sections
+20--21.6 now have a workspace and question-status review; remaining pointers,
+neighbouring-report comparisons and full source reconciliation remain pending.
+Section~19.4 treats constant discriminants, translation of positive-degree
+monic polynomials and units in finite étale algebras. Its elementary lemmas,
+root-velocity certificate and translation proof through the omnific-root
+corollaries have been reviewed, with explicit degree and squarefreeness
+conventions. A further pass covers the factor, Galois and resultant consequences
+and the finite étale unit theorem, including its constant subalgebra and
+reduction fiber. Monogenic and arithmetic descent, critical-point and normal-matrix
+applications, boundary examples and the splitting-algebra second proof are also
+reviewed. The later question/status review separates full faithfulness from descent
+existence, and gives subring inheritance and affine-conjugacy criteria.
+Full parallel-source reconciliation awaits review.
+Lean covers the ring and constant-term
+package, degree laws, units and finite elements, the exact omnific floor,
+ordinary polynomial-root rigidity, ordinary residue rings and divisors
+of nonzero ordinary integers, mixed gcds, Chinese remainders and all
+finite quotients. Not claimed: a classification of
+affine varieties of higher dimension, primitive non-unimodular
+Fermat triples, or squarefree rigidity
+in positive characteristic. Not refereed, priority not certified.}
+
+\entry{Set-sized quotients of the omnific integers}
+{surreal/set-sized-quotients-of-omnific-integers}
+{article.pdf}{twenty-four manuscripts, integrated through \texttt{ef3d112}}
+{Can the omnific integers be seen from a set?  For a unital subring $D$ of a
+set field $K$ and $\Pi_K$ the purely infinite normal forms over $K$, every
+additive multiplicative map from $D+\Pi_K$ to a set-sized ring, commutative
+or not, unital or not,
+kills $\Pi_K$ and factors uniquely through the constant term.  So the only
+unital map from $\Oz$ is $x\mapsto\mathrm{ct}(x)1$, the set-sized quotients
+are exactly the $\mathrm{ct}^{-1}(\mathfrak a)$, and every set-sized module is
+killed by $\Pi$.  The theorem fails in every fixed set-sized workspace and for
+finite supports, which admit the augmentation, while countable supports
+already suffice.  For five set-sized integer parts inside $\Oz$, the least
+ring or module detecting a purely infinite element has exactly the size of
+the ring, in ZFC.  Inverting a purely infinite element forces a copy of
+$\No$; $\Oz/(1+\omega^a)$ has no nonzero set-sized image yet contains an
+algebraically closed field over $\No[i]$ and a Cantor algebra.  The integral
+closure $\mathcal N$ is proper and fine-dense; $\mathcal N/\Pi\mathcal N$ is a
+finite-partition Boolean power of the algebraic integers whose idempotents
+form an atomless proper class, and no set of maps to set-sized rings is
+jointly faithful on it.  Integer-valued polynomials give the universal
+set-sized image $\mathrm{Int}(\Z^r)$ of the numerical polynomials;
+polynomial images have holes at every fresh scale, and rational bijections are
+affine.  Homologically, over the coordinatewise cores $A_d$ the module $D$
+has flat dimension $d$ but projective dimension $d+1$, lattice ideals $M+\Pi$ are
+not finitely presented, $\Oz$ is not coherent, and derived tensor data
+recover the multiplication of an order.  The Grothendieck ring of the
+ordinals under natural operations is not a quotient of $\Oz$, a negative
+answer to the addendum of Elliott's MathOverflow question 188430.
+All twelve standard finite-test proofs are now reviewed: rectangular
+interpolation and degree-preserving resultant specialization lead to
+single-scale real and Gaussian certificates, common tests for a set of
+functions, and removal of set-sized exceptions. The worked example now
+separates degree loss from cancellation. The tensor proof now clears
+denominators in finite sums, ordinary test sets lift by an invertible
+evaluation minor, and finite grid values generate the image ideal.
+Ordinary gcds compute its constant image without making the original
+ideal principal. Birational rigidity and fixed-workspace transfer also
+have expanded proofs; the latter checks Hahn summability without a
+divisible exponent group. These full results await Lean.
+\emph{Assembled from twenty-four manuscripts; where sources prove one theorem under different hypotheses,
+as for the cardinal thresholds, the most general form is printed and the
+agreement explained, and the source limitations are kept.} Not claimed:
+the general fixed-group threshold, the homological dimensions of $\Oz$
+itself, the isomorphism type of the Boolean algebra. The elementary arguments
+through the universal quotient theorem have been reviewed, with corrected
+characteristic assumptions for integer divisibility and a separate
+noncommutative module argument. The review now extends through representations,
+small quotients, completions, localizations, positive existential conservativity,
+modules, derivations, the finite-side standard-part theorem, support thresholds
+and the initial fixed-group bounds, followed by both two-armed models
+with their exact detection and generator counts. The Gaussian fraction field
+uses complex coefficients. An explicit singular-support example separates
+field closure from the common-monomial-divisor property. The all-cardinal
+controlled model is also reviewed: finite coordinate use preserves small
+gaps, and a characteristic-zero residue field sends the actual omega to $-1$.
+The countable-support one-arm model now has expanded residue-field and
+comaximality proofs, with its infinite-cardinal hypothesis explicit; its
+Jacobson radical is zero despite a nonzero finite residual. The source-11
+model and organizing ring/module theorem are reviewed too: the exact
+small-scale-field counts retain each support bound and coefficient field.
+The source-11 argument permits finite coefficient fields; omnific
+embeddings are asserted for the real/integer and Gaussian specializations.
+The set-sized homological package is now reviewed: a flat idempotent ideal,
+flat dimension one for the quotient, natural Ext comparison, and exact
+coefficient-module thresholds in degrees one and two. The existing ring
+section does not give an $A$-linear splitting.
+The finite-support cores are reviewed through their exact flat dimensions:
+the face resolution and Boolean $\mathrm{Tor}$ formula distinguish coordinate
+rank even when finite quotients and positive self-$\mathrm{Tor}$ agree.
+The lattice syzygies and ordered-cone comparisons are reviewed as well.
+Noncoherence now has the required coefficient-field restriction;
+$K[\mathbb Q_{\ge0}]$ is a coherent counterexample to the unrestricted claim.
+Tensor normal forms through exterior and symmetric powers now include
+explicit universal properties for the class carriers; torsion over the
+omnific ring is compatible with freeness over its ordinary constants.
+The Rees presentation and first nonlinear degree are reviewed too:
+algebraic degree gives two-generated ideals with arbitrarily late first
+nonlinear equations. Their relation ideal is finitely generated over the
+symmetric algebra, but when nonzero is not finitely generated as a module
+over the omnific ring.
+Scalar homomorphisms, ideal classes, duals and common-scale matrices are
+reviewed: coefficient lattices can remain nonisomorphic despite identical
+biduals, and a common-scale matrix has finitely presented image exactly
+when its ordinary kernel is defined over the fraction field of the
+constant ring. In that case the image is free.
+The set-presentation obstruction and exact relation counts are reviewed
+as well. In the lexicographic model of regular cardinal $\kappa$, every
+finite generating map onto an ideal from a coefficient lattice of rank
+at least two has a kernel needing exactly $\kappa$ generators. The countable model has
+projective dimensions two for the ideal and three for its cyclic quotient;
+these counts are distinct from the uncountable quotient-cardinality thresholds.
+The coefficient-$\mathrm{Tor}$ proof now gives its maps explicitly:
+second $\mathrm{Tor}$ is the kernel of ordinary coefficient multiplication.
+The maximal self-$\mathrm{Tor}$ rank detects a field after extending
+scalars, even when the lattice itself is not a ring. The quadratic
+free-kernel hypothesis is sufficient, not necessary.
+The rank-two moduli and endomorphism orders are reviewed as well:
+fractional-linear changes classify continuum many ideals, while the
+endomorphism ring recovers an ordinary order by its constant quotient.
+For the class ring, agreement with a free module on set-sized tensor
+tests is distinguished from flatness.
+The face-resolution review now reaches the free telescope and its top
+$\mathrm{Ext}$ formula: a contractible kernel proves exactness without
+regular Koszul sequences, and dualizing gives an explicit product cokernel.
+The finite-support obstruction proves nonvanishing and exact projective
+dimensions, including the lattice quotients by dimension shifting.
+The stronger global-dimension bounds require $K\ne\operatorname{Frac}D$:
+for $A_1=K[\Q_{\ge0}]$, weak global dimension is one although
+$\operatorname{pd}_{A_1}K=2$.
+The flat DGA and pair-$\mathrm{Tor}$ proofs now check the multiplication
+and differential signs, the coefficient-kernel map and the first-$\mathrm{Tor}$
+window. That window always contains a nonzero monomial, even when second
+$\mathrm{Tor}$ vanishes; its decomposition is only $D$-linear.
+The subsequent review proves the linear-disjointness criterion and checks
+the self-$\mathrm{Tor}$ product's tensor order and sign. Its alternating
+submodule and symmetric-relation quotient form an integral exact sequence;
+equal ranks for orders do not specify a canonical splitting.
+Framed reconstruction now includes an integral kernel basis and trace
+calculations. In contrast, the derived constant-term shadow is square-zero
+and forgets order multiplication. The universal module assertion is
+explicitly restricted to the lower universe in the two-universe reading;
+the regular module in the larger universe is a counterexample without it.
+All 30 standard polyhedral proofs, the lattice comparison and the explicit
+nonflatness example are reviewed. Radical coefficient-full monomial ideals
+are classified by face antichains; join homology computes their quotient's
+exact flat dimension over every unital $D\subseteq K$. Nonzero radical geometric ideals
+give nonflat homological quotient maps. Flat radical geometric ideals recover
+the marked face lattice, and simpliciality is equivalent to every facet
+quotient having flat dimension one. Cube facets can instead attain $d-1$.
+Squarefree Betti multiplicities transfer to the root core. Over a principal
+ideal domain that is not a field, nonzero arithmetic modules have flat
+dimension one if torsion and $d$ otherwise. Lattice quotients give weak
+global dimension at least $d+1$ when $K\ne\operatorname{Frac}D$.
+For $d\ge2$, a two-monomial relation obstructs flatness of the total-order
+extension and fails the same finite criterion in the full omnific rings.
+The simplicial projective formula requires a proper face; the identity
+quotient has flat and projective dimension zero. The ten question/status
+notes are reviewed: with fixed coefficients and rational space, a
+full-dimensional pointed rational polyhedral cone inclusion is flat
+exactly for equal cones. Interior monomials detect every strict enlargement,
+even when old ray-pair tests pass.
+A large quotient may still have
+small images: $\Oz/(\omega)$ surjects onto $\Z$. Internal-field proofs are
+reviewed through compression and transfer to residue fraction fields.
+Inverting a nonzero purely infinite element forces a copy of $\No$
+(or $\SC$ in the Gaussian case). The field embedding has a proper image
+with an exact support description, and denominator choices give equal transfer maps
+on overlaps. Binomial kernels and the dyadic algebras are now reviewed:
+finite interpolation gives the inverse Cantor map, and a three-root
+idempotent lies outside every dyadic stage. In Gaussian Cantor coordinates,
+conjugation acts by $f(z)\mapsto\overline{f(-1-z)}$.
+Class-residue foundations are reviewed through binomial maximal extensions
+and coefficient comparison: finite witnesses give maximal ideals under
+global choice, and the unrestricted existence principle is equivalent
+to global choice already for class domains of characteristic two.
+The cutoff, tail reduction and scale/branch families are reviewed too;
+an independent ternary tower gives continuum many maximal extensions
+of each fixed dyadic branch, without increasing the total continuum
+lower bound. The remaining class-residue proofs are reviewed:
+characteristic-zero maximal quotients separate points and embed in $\SC$,
+and binomial specializations fail to preserve Hahn summability.
+Characteristic-zero support-closed primes correspond to convex
+subgroups. Term-closedness alone suffices when the recovered
+subgroup has a set-sized cofinal subset, including principal convex
+subgroups. The unrestricted closure question and full source
+reconciliation remain open. Shared support-ring prerequisites, actual
+surreal scale gaps and the generic scaled-field collision bounds are
+formalized. The latter bound a module's own cardinality and allow
+nonunital ring maps. The universal small-target theorem is now proved for
+both actual omnific rings by the countable telescope: every additive
+multiplicative map factors uniquely through its ordinary integer or Gaussian
+integer constant, maps on the purely infinite ideal vanish, and that ideal
+annihilates every small unital module. Smallness is relative to the birthday
+universe; targets may be infinite, noncommutative and nonunital. Real
+nonunital maps correspond to idempotents; Gaussian unital maps correspond
+to square roots of $-1$, without requiring centrality. The arbitrary-coefficient
+version and large Hahn-subfield instance remain pending.
+Small quotients of the real omnific ring are now classified as $\Z$ or
+$\Z/n\Z$ for ordinary $n\ge1$; the characteristic-zero kernel is $\Pi$.
+Gaussian small quotients are their ordinary Gaussian quotients, now proved
+finite of size $|d|^2$ for each nonzero Gaussian modulus $d$.
+Prime and maximal ideals with small quotient are also classified in both
+rings: the purely infinite ideals are prime but not maximal, and all other
+small prime quotients are the finite residue fields at ordinary prime moduli.
+Characteristic-zero small images are $\Z$ or $\Z[i]$, with their fraction
+fields identified separately.
+If a real omnific ideal misses the purely infinite ideal, explicit ordinal
+monomials give arbitrarily large small families of distinct residues.
+Every large quotient
+has the same unital maps to small rings as its constant quotient.
+Making a purely infinite element invertible excludes nonzero small unital
+ring images and modules, including for both actual fields and native
+localizations. The real principal quotient is small exactly for a nonzero
+ordinary integer generator. Nonconstant generators give large nonzero
+quotients; those by $\omega$, $2+\omega$ and $1+\omega$ have universal
+small images $\Z$, $\Z/2\Z$ and zero, respectively. The finite-congruence
+closure of every real omnific ideal $J$ is now proved to be $J+\Pi$,
+also its native topological closure. A principal ideal is dense exactly
+for unit constant term. Nonconstant irreducibles generate proper dense
+ideals, and any small-target nonunital map killing such an element is zero.
+The Gaussian principal-quotient classification is now proved too: exactly
+nonzero ordinary Gaussian generators give small quotients. The Gaussian
+purely infinite ideal is an idempotent directed union of real monomial
+principal ideals with no small generating set, preserved by multiplication
+by nonzero Gaussian constants. Only the coefficient-general principal-size
+assertion remains pending. Not refereed, priority not certified.
+The initial normalization proofs are reviewed: every surreal is almost
+integral, whereas the integral closure is proper, fine-dense, has zero
+conductor and needs more than any set of algebra generators. In the
+countable-support model, exactly $\operatorname{cf}(\kappa)$ negative monomials generate
+the ambient field over its integer part, proving the denominator size
+bound sharp; the normalization's own generator count remains open.
+Lean now proves uniform algebra absorption and complete integral closure
+for the actual real and Gaussian fields, also for every intermediate ring,
+and proves the reciprocal obstruction excluding $1/2$ from ordinary integral closure.
+For both real and Gaussian omnific rings, Lean also proves the strict,
+dense normalization with zero conductor and no small generating set,
+in the fine order and surreal-modulus topologies respectively.
+Both actual normalizations are also proved to have no nonzero finite ring
+target, even noncommutative, and every proper ideal has an infinite quotient.
+Lean also proves that a valuation containing the real or Gaussian omnific
+ring is trivial when its value group is small in the birthday universe;
+such valuations give value zero to the nonintegral half.
+Injective monomial substitution and exact binomial coefficients now prove
+that all actual roots of $T^m=\omega^g+1$, $g>0$, $m\ge2$, are integral
+but outside the real or Gaussian omnific ring, respectively. Their
+small-target invisibility is now proved as well: every unital small-ring
+image solves the equation at $1$, and every image of an adjoined
+normalization root has $m$th power $1$, including in infinite and
+noncommutative targets.
+Small-generated real omnific algebras are closed and uniformly discrete,
+and every Cauchy net in one
+is eventually constant without a bound on its index or range.
+The remaining normalization results before the arithmetic fibres are
+reviewed too. A negative least support exponent prevents integrality,
+giving an exact test on finite supports. Lean now proves the actual real
+and Gaussian nonnegative-support and constant slices: their constant
+coefficient must be an ordinary algebraic integer. The real normalization's
+rational slice is exactly $\Z$. The Gaussian normalization has
+basis $1,(\sqrt3+i)/2$ over the real normalization $\mathcal N$, and
+its additive quotient by $\mathcal N[i]$ is exactly $\mathcal N/2\mathcal N$.
+The arithmetic-fibre review reaches the finite-partition Boolean-power
+description over the algebraic integers. An added consequence identifies
+its rationalization with its total quotient ring; componentwise
+quasi-inverses prove von Neumann regularity of the rationalization.
+The review also covers finitely generated ideals and integral Gaussian
+doubling. Modulo a prime the nilradical is nonzero and idempotent,
+not finitely generated. The Gaussian product survives modulo $2$,
+while the ordinary quadratic subring reduces to a dual-number algebra
+mapping onto the diagonal, with a nonzero square-zero kernel.
+All twenty-two standard arithmetic-fibre results are now reviewed.
+Each prime ideal of the fibre is determined by a Boolean ultrafilter and
+a prime of $\overline\Z$; its quotient is $\overline\Z$ or
+$\overline{\mathbb F}_p$. Strict prime chains have at most one inclusion.
+Under global choice every nonzero element survives in some
+$\overline{\mathbb F}_p$, so the fibre has zero Jacobson radical.
+These added consequences remain pending in Lean.
+The support-descent and quadratic-branch prerequisites are now reviewed.
+In the countable-support two-armed model, a positive support gap makes
+both extended normalization ideals radical, so its unreduced arithmetic
+fibres already embed in the full fibres. This consequence also awaits Lean.
+The review now also covers uniform splitting and relative Boolean freeness:
+a fresh dominant scale supplies independent choices over a smaller reduced
+fibre, and the full fibre has an atomless proper-class Boolean algebra with
+no set-sized order-dense core. Finite branch specializations prove these
+claims without evaluating Laurent series at zero. Scalar Boolean partitions
+simultaneously split any set of nonzero idempotent matrices. These results
+remain pending in Lean.
+All twenty-four standard branching proofs are now reviewed. Every
+set-indexed family of small-target maps has a common kernel in the fibre
+containing a nonzero idempotent below every nonzero idempotent. It meets
+every nonzero ideal and has zero annihilator, although individual branch
+maps detect every nonzero element under global choice. These consequences
+also remain pending in Lean.
+The cyclic-workspace proofs are now reviewed through the finite-place
+residue criterion and coefficient-span formula. Their nilpotents have
+exact root-refinement thresholds. Integral Laurent elements can have
+arbitrary constant coefficient; an explicit additive copy of $k$ in the
+local fibre has all products zero and disappears in the full-class fibre.
+The review now extends through the rational ramification filtration,
+Puiseux reduction, local valuation structure, graded ring and completion.
+Refinement kernels are exact filtration levels, every rational level is
+strict, and each nilpotent eventually dies although no finite stage is
+reduced. The radical is idempotent, whereas the original extended ideal
+has a nonzero conormal module. All twenty-seven standard cyclic-workspace
+proofs are now reviewed, including uniform splitting, continuum Boolean
+order density and exactly $2^{\mathfrak c}$ places above zero.
+The coefficient fibre has a periodic free resolution with nonzero self-Tor
+in every degree; the analogous arithmetic complex is not exact.
+Every coefficient outside the algebraic integers gives an obstruction,
+expressed by an injective additive $D$-module map from $k/\overline\Z_k$
+into the arithmetic annihilator quotient. The countable coefficient
+fragment has the Cantor clopen Boolean algebra. These claims still await Lean.
+Lean now also classifies nonunital Gaussian maps to arbitrary small
+nonunital rings by pairs $(e,j)$ with $e^2=e$, $ej=je=j$ and $j^2=-e$.
+For both actual omnific rings, the purely infinite ideal is exactly the
+intersection of all small unital observation kernels.
+The actual-ring factorizations also hold for targets detected elementwise
+by small rings, including polynomial rings in arbitrary variable types
+over small coefficients. Neither ring has a faithful small module;
+operator representations on any small vector space are classified by
+integer constants or one operator $J$ with $J^2=-\mathrm{id}$.
+Gaussian finite-dimensional conjugacy remains pending in Lean.
+Lean now gives the exact small-module correspondence for both actual rings,
+with morphisms and exactness unchanged. The real constant sequence has no
+omnific-linear section, although the integers are projective within small
+modules. Every linear map from a small module to the regular omnific module
+is zero, and nonzero free omnific modules cannot be small.
+Lean also identifies both monomial localization images by a lower bound
+on full support: they contain all ordinary coefficients but are proper
+subrings and not fields. Quotient--localization reflection now holds for
+both actual rings, even with arbitrary ideals, large denominator classes
+and small noncommutative targets. For example, inverting $\omega+2$ has
+the small-target maps of $\Z[1/2]$; the nonzero quotient by $\omega+1$
+has only trivial small unital modules. Polynomial presentations likewise
+reflect to their constant-coefficient presentations, even for small
+noncommutative targets. Maps from $\Oz[T]/(T^2-\omega)$ to small
+commutative rings correspond to square-zero images of $T$, whereas the
+actual nonzero root $\omega^{1/2}$ defines a map to $\Oz$.
+Lean also proves real conservativity with its inequation counterexample
+$(\sqrt2\,\omega,\omega)$, and Gaussian solution-set and positive
+existential transfer at ordinary Gaussian parameters.
+The coefficient-general versions remain pending.
+For both actual rings, a small family of maps with specified nonzero
+kernel witnesses has a common nonzero positive monomial in every kernel,
+even with large targets. Lean also proves the real ordered-map and
+small-retract obstructions; every Gaussian endomorphism induces identity
+or conjugation on constant terms and preserves and reflects the purely
+infinite ideal.
+Four companions add class residue fields, semialgebraic preservers,
+polyhedral-cone cores and henselian branching (105 standard results).
+Six henselian foundation proofs now cover the seeded hull, local residue
+map, survival of every finite branch through localization, Boolean
+freeness and generic complexification. Six further proofs establish the
+Boolean-power description, exact branch count and dimension, minimal-prime
+correspondence, and completion and nilpotent-target behavior. The main
+theorem is now assembled: a ring of size $\kappa$ has $2^\kappa$ minimal
+primes, yet its completion is only $\Q$. Every local map to a separated
+local $\Q$-algebra also factors through $\Q$. Formal smoothness is
+carefully distinguished from the finite-presentation smoothness criterion.
+The final eight proofs and factor summary complete the review of all
+twenty-two standard henselian results. Strict henselization adds a Galois
+factor to the generic spectrum; Gaussian extension doubles it with
+conjugate complex scalar actions. Finite arithmetic descent also treats
+non-Galois intermediate fields. Finite projective modules and finite
+\'etale algebras are classified by locally constant ranks, including zero;
+constant-rank projectives are free. The valuation-component count uses
+the cited external correspondence, without Noetherian assumptions.
+All twelve question/status notes are now reviewed too. They give a
+normalization-point/branch correspondence with matching Boolean coordinates,
+a branch-surjectivity criterion, positive equal dimensions, and
+perfect-complex object and tensor formulas. At every ordinary prime centre,
+the local ring and its henselization complete nonflatly to $\Z_p$;
+forced generic complexification persists even at $2$, while a local square
+root of $-1$ exists exactly for $p\equiv1\pmod4$. Precise mixed-characteristic
+branch counts and a prescribed birthday cutoff remain unresolved.
+These manuscript consequences remain pending in Lean.}
+
+\entry{Omnific-preserving automorphisms}
+{surreal/omnific-preserving-automorphisms}
+{article.pdf}{fifteen manuscripts, integrated through \texttt{50dde76}}
+{Which automorphisms of a Hahn field preserve its omnific integer part?  For
+$K=k((t^\Gamma))$, $k$ of characteristic zero and $\Gamma$ divisible,
+including $\Gamma=\No$ and so $\Oz$ and $\Oz[i]$, a strong $k$-linear
+1-automorphism preserves the omnific ring iff it commutes with the projections
+onto the purely infinite, constant and infinitesimal parts, iff every
+monomial is displaced only inside the Archimedean block of its exponent;
+inclusion already suffices, and necessity needs no strongness.  Homogeneous
+shears and binomial twists realize the stabilizer, which is trivial exactly
+for Archimedean $\Gamma$, contains $\Z\wr\Z$ over every set of parameters,
+and has fixed field $k((t^{B(\Gamma)}))$, $B(\Gamma)$ the bottom convex
+subgroup.  Every field automorphism preserving $\Oz$ fixes $\R$ and commutes
+with the floor.  Order, projections and floor are definable in $(\No,\Oz)$,
+but with any set of parameters the monomials, the omega-map, simplicity and
+the Gonshor exponential are not.  Part~II: root-covered rings such as $\Oz$
+have polynomial coefficient rigidity (an isomorphism
+$\Oz[X_1,\dots,X_n]\cong B[Y_1,\dots,Y_n]$ carries $\Oz$ onto $B$), no
+nontrivial gradings or torus coactions, and formal flows that no polynomial
+family realizes.  \emph{One classification proved three times, printed once
+from the most general source; a fifth manuscript adds the support-cut form.
+The proper-class correspondence between derivations and automorphisms is
+imported, and the statements depending on it are marked.} Part~III, added
+in \texttt{20c4c9f}, claims automatic strongness of every $\Oz$-automorphism
+and proper strong embeddings moving real coefficients. Strongness for
+arbitrary $\Oz[i]$-automorphisms without conjugation or valuation compatibility
+remains open in the report. Source 14 adds automatic summability criteria
+and formal-power-series covariance in Part~IV. Sources 15--16 add topological
+collapse and arbitrary-rank coefficient recovery. Sources 17--19 add formal
+orbit fields, actions of set-sized left-orderable groups with prescribed
+fixed fields, and formal integration of omnific derivations. The
+surcomplex group classification names conjugation; the formal flows use an
+indeterminate rather than an evaluated infinite series. These new claims
+await proof review and Lean formalization; not refereed, priority not certified. Source 20 adds universal symmetries and exact difference equations; its 24 new standard results also await independent review and Lean formalization.}
+
+\entry{Independent surreal copies and arithmetic intersections}
+{surreal/independent-surreal-copies}
+{article.pdf}{three manuscripts, integrated through \texttt{32bb723}}
+{Proposed strong self-embeddings with prescribed common full Hahn field on a
+set-sized divisible exponent subgroup, finite-family linear disjointness,
+and preservation and reflection of omnific integers. The report distinguishes
+intersection of fraction fields from the fraction field of intersected rings,
+and a full Hahn field from an ordinary compositum, with claimed transcendental
+gaps. Its class construction uses NBG with Global Choice. The source and PDF
+are indexed and built; mathematical proof review, source reconciliation and
+Lean formalization remain pending. The second manuscript adds exact rank tests, differential transcendence and
+omnific witnesses beyond ordinary composita. The third treats maximal
+transcendence in Hahn joins and prime omnific witnesses. Their 52 new standard
+results await independent review and Lean formalization.}
+
+\entry{Omnific groups and lattices}
+{surreal/omnific-groups-and-lattices}
+{article.pdf}{five manuscripts, delivered 23~September 2026}
+{Which algebraic groups and lattices gain omnific points?  A real algebraic
+group has no new points over $\R\oplus\Pi$ iff its identity component is
+reductive with compact real derived group, and for a closed subgroup scheme
+of $\mathrm{GL}_{N,\Z}$ this is $\mathcal G(\Oz)=\mathcal G(\Z)$; over $\C$
+the condition is that the identity component be a torus.  Otherwise $(\Pi,+)$
+embeds in the constant-term kernel, so $\mathrm{SO}_3(\Oz)$ has 24 elements
+while $\mathrm{SO}_3(\Oz[i])$ has unipotent families.  For $n\ge3$ the
+constant-term kernel of $E_n(\Oz)$ is generated by purely infinite root
+elements and is perfect, torsion-free and centerless with no nontrivial
+set-sized image, so $\mathrm{SL}_n(\Z)$ is the universal set-sized quotient of
+$E_n(\Oz)$, and with Bass--Milnor--Serre its profinite completion is
+$\mathrm{SL}_n(\hat\Z)$; Steinberg versions and exact thresholds at
+set-sized stages follow.  In rank two the kernel is a free product of copies
+of $(\Pi,+)$ and no universal set-sized quotient exists.  Part~III: in an
+omnific lattice with a separated positive energy a shortest vector exists iff
+an explicit integral kernel is nonzero; otherwise the energies have no
+surreal infimum, and Gauss and LLL reduction can fail.  \emph{Merged from five
+manuscripts; the theorem for $n\ge3$ is proved by different routes, and both
+are kept.}  Not claimed: $\mathrm{SL}_n(\Oz)$ in place of $E_n(\Oz)$, $K_2$,
+a surreal volume theory.  Proof review pending; not refereed, no Lean
+formalization, priority not certified.}
+
+\entry{Discrete initial subgroups and omnific normalization}
+{surreal/discrete-initial-subgroups-and-omnific-normalization}
+{article.pdf}{two manuscripts, delivered 23~September 2026}
+{Is every discretely ordered initial subgroup of $\No$ isomorphic to an
+initial subgroup of the omnific integers?  This question of Ehrlich and
+Kaplan (arXiv v1 Question~2; \emph{J. Symbolic Logic} 2018, Question~9.1)
+receives a proposed affirmative answer.  The least positive element is
+$2^{-n}\omega^{-\alpha}$; an explicit relocation of the sign-tree root and a
+real-linear transport of Hahn spaces carry the group onto an initial
+$H\subseteq\Oz$ with that element sent to $1$.  The possible images are
+exactly the initial subgroups of $\Oz$ containing an explicit dyadic-spine
+group; the bottom cyclic layer splits off canonically, and Gaussian-linear
+surcomplex versions hold.  The second manuscript proves every convex
+subquotient of an initially realizable group initially realizable, answering
+the report's questions on convex quotients and limit stages.  For Presburger
+groups, realizability is equivalent to the least positive element generating
+a direct summand; $2^{\aleph_0}$ rigid countable $\Z$-groups are not
+realizable, realizability is not elementary, and no nonstandard model of
+Peano arithmetic has a realizable additive group.  \emph{Each manuscript's
+proofs were checked by hand when placed; that is not refereeing.}  The
+Ehrlich--Kaplan initiality criterion is imported, not re-proved; the transport
+is neither a simplicity isomorphism nor multiplicative; the literature search
+was targeted; no other Ehrlich--Kaplan question is answered.  Not refereed,
+no Lean formalization, priority not certified.}
+
+\entry{Exact precision and algebraic rigidity of omnific continued fractions}
+{surreal/omnific-continued-fractions}
+{article.pdf}{one manuscript, placed in \texttt{aa9c891}, 23~September 2026}
+{Which surreal numbers have the same infinite sequence of omnific continued-
+fraction digits? The report describes each fiber as a translate of the
+valuation ideal $v(e)>2\deg(q_n)$ for every ordinary finite $n$, where $q_n$
+is the continuant denominator. It gives realization and uniqueness criteria
+in full Hahn fields, an algebraic-fiber classification over the digit field,
+and a distinguished realization of degree at most two for eventually
+periodic codes. Full surreal fibers contain independent families of every
+set cardinality over a prescribed set-sized coefficient field. The
+surcomplex construction is coordinatewise. Roggeman's prior nonuniqueness
+result is credited; there is no transfinite continued-fraction algorithm or
+general Lagrange converse. Independent proof review and Lean formalization
+remain pending.}
+
+\section{The surcomplex plane}
+
+Twenty-eight reports about $\SC=\No[i]$. Seven develop a common
+holomorphic-function framework. The others study differential equations,
+dynamics, support obstructions, entire functions, spectral theory, theta
+functions, positivity, reconstruction, summability, duality and automorphisms.
+Later additions extend several of these reports; their provenance sections
+identify the integrated manuscripts and the work still awaiting assembly.
+The autonomous-dilation base placed in \texttt{21375f8} is now written in
+\texttt{260c143}; its two companions are integrated in \texttt{1ef6bba},
+adding support-rank criteria and relative independence of dilation orbits.
+
+\medskip
+\noindent
+\emph{Read \dir{analysis} first.}  It is the foundation the other six
+continue. In the \emph{full fine topology}, every set-sized subset is closed
+and discrete and every convergent set-indexed net is eventually constant.
+Universe-relative formulations require smaller-universe subsets and indices.
+These conclusions do not apply to the intrinsic valuation topology of a fixed
+Hahn field: $t^n\to0$ in $\C((t^\Q))$. Strong Hahn summability is a separate
+support condition; even in rank one it need not give convergence of finite
+subsums, as the foundations report's $\sum t^{n/(n+1)}$ demonstrates.
+Contour integration in the analytic reports is defined coefficientwise on
+ordinary complex paths.
+
+\medskip
+\noindent
+\emph{Then read the ring table in \dir{analytic-geometry}, before anything
+else.}  Four coefficient rings circulate through this material under nearly
+identical notation --- the radius-free $\C\{z\}((t^\Gamma))$, the
+fixed-polydisk $\mathcal{O}(D)((t^\Gamma))$, the common-domain germ ring, and
+the formal $\C[[z]]((t^\Gamma))$. These are not an interchangeable chain.
+For $\eta>0$, the family $F(z)=\sum_{r\ge1}t^{r\eta}/(1-rz)$ lies in the
+radius-free germ ring but not the common-domain germ ring: its coefficient
+poles $1/r$ approach zero. This witnesses that particular strict inclusion.
+The report gives separate fixed-domain obstructions and explains which local
+proofs require shrinking. The remaining five reports can be read in any order.
+
+\entry{Surcomplex analysis: holomorphic functions on $\SC$}
+{surcomplex/analysis}
+{article.pdf}{surcomplex\_analysis.zip and eight companion archives}
+{One article assembled from nine manuscripts delivered on 21 September 2026.
+It develops Hahn-summed local germs, coherent sections over connected ordinary
+complex domains, preparation and finite zero clusters, contour residues,
+exponentials and logarithms, and polynomial or rational rigidity under coherence
+at every positive surreal scale. Each formal series has a sufficiently small
+realization, depending on the series; evaluation is faithful as a function germ,
+not at one fixed point. The uniform Taylor-remainder bound gives the full fine
+derivative. Canonical lifts, coherent sections and germ-analytic functions form
+strictly increasing classes; germ analyticity implies fine differentiability,
+with no converse or strictness theorem for that last inclusion here.
+Coherence supplies global identity, maximum and open-mapping principles over
+the ordinary base. Sharp Schwarz--Pick bounds require canonical lifts.
+An ordinary-real value bound and coefficientwise boundedness are incomparable:
+$tZ$ satisfies the first but not the second, while the constant $\omega$
+satisfies the second but not the first. Only the coefficientwise Liouville
+hypothesis forces constancy; one arbitrary surreal bound is always available.
+For $1/(\zeta-\varepsilon)$ with nonzero infinitesimal $\varepsilon$, the cluster
+residue at the ordinary centre $0$ is $1$, while the actual local residue at
+$0$ is $0$. Rouch\'e's halo theorem requires an ordinary margin; a bare strict
+surreal boundary inequality can miss a zero in a boundary monad.
+The global and cut-plane logarithms differ by $2\pi i$ on specified points.
+Every explicit exponential twist retains enough cofinal periods to give the
+proved value distribution of $E_\lambda(1/z)$, although their kernels need not
+be nested; this is not a general Picard theorem. Full fine topology and the
+intrinsic topology of a fixed Hahn workspace remain distinct. The nine finite
+verification programs and historical \nolinkurl{MERGE_NOTES.md} are preserved;
+the maintained README identifies corrected comparisons in that older record.}
+
+\entry{Infinitesimal analytic geometry over the surcomplex numbers}
+{surcomplex/analytic-geometry}
+{article.pdf}{Surcomplex\_Analytic\_Geometry.zip + surcomplex\_finite\_geometry.zip}
+{The ring theory of the infinitesimal neighbourhood --- the monad
+$\mathfrak{m}_K^n$ of an ordinary point --- rather than the deformation theory
+of the reports that follow.  Proves, \emph{separately of each of} the
+radius-free $A_n=\C\{z_1,\dots,z_n\}((t^\Gamma))$ and the common-domain
+$\mathscr R_n$, that it is a Noetherian Jacobson domain of dimension $n$ whose maximal
+ideals are exactly the infinitesimal evaluation ideals
+$\mathfrak{m}_a=(z_1-a_1,\dots,z_n-a_n)$ with residue field $K$, regular local
+at each, with completion $K[[X_1,\dots,X_n]]$ --- and that neither is local,
+each recording every infinitesimal point at once.  Carries Weierstrass
+division and preparation, a weak and a strong Nullstellensatz, Noether
+normalization, finite projection, contour residue duality, Hensel--Rouch\'e,
+and workspace invariance: every common zero over any larger divisible
+workspace already lies in $K_\Gamma^n$ with unchanged multiplicity, so the
+count accounts for all zeros in the whole proper class $\SC$.  The
+nonzero-value-group hypothesis is essential and not aesthetic --- for
+$\Gamma=\{0\}$ the strong Nullstellensatz fails at $I=(0)$.  \emph{This is the
+report that fixes the four-ring vocabulary and proves the inclusions strict;
+statements holding over both $A_n$ and $\mathscr R_n$ are stated twice with both
+proofs, since the two proofs use different resources and neither transfers.}}
+
+\entry{Finite Hahn deformations: division, conservation of multiplicity, residue duality}
+{surcomplex/finite-deformations}
+{article.pdf}{surcomplex\_finite\_deformations.zip, \_finite\_fibres, \_finite\_maps,
+\_intersections, \_research}
+{Five manuscripts on one theorem: an ordinary holomorphic complete
+intersection $f$ on a fixed polydisk, with the origin as its only common zero and
+colength $\mu$, keeps its entire finite geometry under any Hahn perturbation
+$F=f+E$ of well-ordered \emph{strictly positive} error support --- on the
+unshrunk domain, with an explicit support certificate
+$\mathrm{supp}\subseteq\mathrm{supp}(G)+M$, $M$ the monoid generated by the
+error support.  The remainder of division is unique; the witnesses need not
+be, their ambiguity being a Koszul syzygy carried by the same
+certificate.  Gives the integral structure $H^+_\Gamma(D)/(F)\cong(K^\circ)^\mu$
+over a valuation ring that may have high-rank value group and need not be
+Noetherian, with nothing completed; conservation of multiplicity at the
+\emph{actual} displaced surcomplex zeros rather than their standard parts,
+$\sum_\zeta\mu_\zeta=\mu$; and a coefficientwise residue $\mathrm{Res}_F$ ---
+defined by a series, not by a surcomplex contour integral --- whose Gram
+determinant is a unit even at a collision and which satisfies
+$\mathrm{Res}_F(G\cdot J_F)=\mathrm{Tr}(M_G)$. The separate
+residue formula, when all zeros are simple, is
+$\mathrm{Res}_F(G)=\sum_\zeta G(\zeta)/J_F(\zeta)$;
+for nonnegative-support $G$, individual terms can be infinite while the total
+is finite. Also Hartogs, characters and local
+algebras, spectral invariants, trace-Jacobian and B\'ezoutian, monodromy and
+stability. For $\mu=1$, the inverse-map proof constructs one uniform Hahn support before
+evaluation. The engine throughout is positive-support Neumann inversion;
+ordinary analytic convergence occurs in finite-parameter comparisons, while
+the Hahn constructions use strong support summation.}
+
+\entry{Jordan separation, Cauchy theory, and Stokes calculus on the surcomplex plane}
+{surcomplex/contours-and-stokes}
+{article.pdf}{surcomplex\_contours.zip and two same-named archives}
+{Three manuscripts whose titles differ by one word --- Stokes \emph{Calculus},
+\emph{Integration}, \emph{Formulae} --- over one body of work.  All three
+refuse to transfer the Jordan--Cauchy--Stokes package to $\SC$ as a unit, and
+all three split it the same way: a coarse Jordan separation theorem in the
+standard-part topology whose separator is the whole boundary monad rather than
+a curve; an imported semialgebraic Jordan theorem; a Hahn-coefficient de Rham
+complex with coefficientwise Stokes, extended to infinitesimally deformed
+chains; and the holomorphic consequences --- Cauchy, endpoint displacement,
+integer winding, and microscopic circle and torus realizations of the
+perturbation residue --- with an algebraic rational contour pairing
+characterized uniquely by vanishing on exact differentials and normalizing
+$dz/(z-a)$ to $2\pi i\cdot\mathrm{wind}_{\mathrm{sa}}$.  Adds a purely
+algebraic third chain category over any characteristic-zero field, a
+support-preserving Poincar\'e lemma, an order-valued ML estimate, and a
+root-of-unity/Schnirelman section.  This is where the question the
+deformation report leaves open is answered: supplying an actual surcomplex
+contour that represents the residue series.  \emph{Two thirds of each
+manuscript was the same mathematics in the same order; 82 numbered results
+became 59, by duplicate elimination only.}}
+
+\entry{Global support obstructions: moving divisors, Mittag--Leffler, and a Picard dichotomy}
+{surcomplex/global-divisors}
+{article.pdf}{surcomplex\_global\_support, \_global\_theorems, \_compact\_curves}
+{The local-to-global theory: when do infinitely many individually legitimate
+infinitesimal prescriptions admit one coherent global realization over the
+ordinary complex plane?  The sharp answer for divisors is a
+\emph{symmetric-support} criterion --- a cluster family
+$P_c(u)=u^{m_c}+\sum_{j<m_c}a_{c,j}u^j$ over a closed discrete ordinary
+$A\subset\C$ is the exact zero divisor of a nonzero global section iff
+$\bigcup_c\bigcup_j\mathrm{supp}(a_{c,j})$ is well ordered: the supports of
+the symmetric coefficients, not of separately chosen roots.  Hence the two
+discriminating examples --- $n+t^{1/n}$ alone is not realizable, its
+descending symmetric support $\{1/n\}$ failing, while \emph{all} roots of
+$(z-n)^n=t$ are, symmetric support the singleton $\{1\}$ --- and hence a
+globally principal effective divisor with a nonprincipal effective
+sub-divisor.  Also Mittag--Leffler at fixed centres and for moving poles, a
+support-restricted Chinese remainder theory with an explicit Neumann right
+inverse, an exact Cousin criterion in terms of singular support, and the
+Picard dichotomy: every ordinary-base stalk is a principal ideal domain,
+nonlocal when $\Gamma\ne0$; $\mathrm{Pic}(\C,\mathscr{H}_\Gamma)=0$ iff $\Gamma=\{0\}$ or
+$\Gamma=\mathbb{Z}\delta$, and otherwise $\dim_\C\mathrm{Pic}\ge2^{\aleph_0}$,
+with equality for countable noncyclic $\Gamma$.
+A third manuscript studies a compact connected ordinary Riemann surface $X$
+of genus $g$. Its Picard group splits into
+$H^1(X,\underline\Gamma)\oplus\mathrm{Pic}(X)\oplus
+(H^1(X,\mathcal O_X)\otimes_\C\mathfrak m_\Gamma)$.
+The valuation class is exactly the obstruction to a nonzero coherent
+meromorphic section, even in arbitrarily high degree. In the zero-valuation
+sector a finite matrix with positive-support entries computes cohomology and
+gives Riemann--Roch. A root-free Newton-sum Abel functional decides principality
+of finite signed clusters. The one-scale comparison has kernel
+$H^1(X,\mathcal O_X)\otimes_\C\bigcap_n t^{n\delta}\mathcal O_\Gamma$;
+it is injective exactly when $g=0$ or $\delta$ is cofinal in $\Gamma$.
+Any prescribed set of surreal cutoffs can be defeated after enlarging the
+workspace; all positive cutoffs detect classes in a fixed nonzero workspace.
+Coordinate charts transfer the local PID argument to $X$, but the global plane
+and compact classification theorems retain their different base hypotheses.}
+
+\entry{Surcomplex polynomial algebra: root geometry, Newton profiles, residue duality}
+{surcomplex/polynomial-algebra}
+{article.pdf}{surcomplex\_polynomial\_algebra.zip and two same-named archives}
+{Finite-degree polynomial algebra over $\SC$, worked inside set-sized
+algebraically closed Hahn workspaces and keeping two geometries deliberately
+apart throughout: the surreal-valued modulus, whose disks are ordered, and the
+natural Hahn valuation, whose balls have arbitrary ordered-group rank.  A
+Rouch\'e theorem in each.  Covers the finite polynomial algebra and the
+fundamental theorem there, CRT/Hermite jets, resultants and discriminants,
+ordered root geometry (root bounds, Gauss--Lucas, Jensen disks, a sharp
+Schoenberg second-moment inequality with its equality case), real-closed-field
+transfer with Hermite signature counting, exact root loci under coefficient
+uncertainty in both geometries, Newton profiles over an arbitrary ordered
+exponent group, image balls and branch values, exact Rolle counts and the
+finite root-cluster tree, support-controlled coprime Hensel factorization with
+a fixed-domain parameter form that shrinks no neighbourhood, and universal
+residue duality with the trace identity.  \emph{Three perturbation theorems
+with three different hypotheses are kept separate rather than collapsed, as
+are two discriminant layer formulas and two mapping theorems, with their
+agreement proved; the alternative was to lose what each source reached that
+the others did not.}}
+
+\entry{Trigonometry on the surcomplex plane}
+{surcomplex/trigonometry}
+{article.pdf}{surcomplex\_trigonometry.zip and two same-named archives}
+{Its organizing theorem is that every surcomplex direction has a \emph{finite}
+surreal angle: $\mathrm{cis}:(\mathcal{O}_\R,+)\to(T(\No),\cdot)$ is surjective
+with kernel exactly $2\pi\mathbb{Z}$, so
+$\mathcal{O}_\R/2\pi\mathbb{Z}\cong T(\No)\cong T(\R)\times(\mathfrak{m}_\R,+)$,
+and the whole of plane, spherical and hyperbolic triangle geometry is available
+at arbitrary surreal length scale without ever choosing a value for
+$\sin\omega$.  From it: canonical sine and cosine by Hahn summation, the unit
+circle with its branch conventions and projective half-angle chart, inverse
+functions on their full surreal domains, the angle-sum, cosine, sine, tangent,
+half-angle, Heron, incircle, Euler, angle-bisector, cevian, Ceva,
+inscribed-angle and Ptolemy theorems, an exact valuation dictionary between
+sides, angles and area with a quadratic triangle-inequality defect formula and
+two flat-triangle theorems, a rank-two collision-stable intersection algebra,
+the canonical complex extension to the strip where sine is surjective with
+completely determined fibres, finite Fourier inversion, Parseval and a
+surcomplex Fej\'er--Riesz factorization, and the classification of all global
+phase extensions, with the Ehrlich--Kaplan normalization placed inside that
+classification.  Two coherence obstructions close it: there is no coherent
+bounded sine of infinite frequency, and all-scale coherence forces a
+polynomial.  \emph{No mathematical disagreement was found between the three
+sources; the duplication was near-total on the first two thirds and the
+divergence near-total on the last.}  A later manuscript adds Section~18 on
+$\mathrm{SO}(2,\No)\cong\mathcal{O}/2\pi\Z\cong\mathrm{SO}(2,\R)\times(\mathfrak{m},+)$:
+isometries are automatically linear, a rational projective chart, torsion
+$\Q/\Z$, one real coordinate per valuation layer, a strongly summable
+logarithm, non-algebraic group automorphisms and the fine topology; what it
+shares with the circle-group results above is printed once.  Two further manuscripts (Section~19) study the periods of global phases:
+their profinite defect, and normalized surcomplex exponentials whose
+kernel-multiplier ring is exactly $\Z$ without being an integer part, which
+refutes one sufficiency possibility in the first Ehrlich--Kaplan robustness
+question; the question itself stays open.}
+
+
+
+\entry{Differential algebra and differential equations over the surreal and surcomplex numbers}
+{surcomplex/differential-equations}
+{article.pdf}{eleven manuscripts, delivered 21 and 22~September 2026}
+{Eleven manuscripts on the Berarducci--Mantova derivation $\der$ on $\No$,
+normalized by $\der\omega=1$, and its unique extension to $\SC$ --- unique
+because differentiating $i^2+1=0$ forces $\der i=0$.  Seven share a twelve-item
+spine, printed once; four later members each add a part.  The organizing
+identity is exact: the logarithmic-derivative image is $\No+i\mathcal{A}$,
+$\mathcal{A}=\der\mathfrak{m}=\der\mathcal{O}$, the two forms agreeing only
+through a proved lemma, so $\der y=(a+ib)y$ has a nonzero surcomplex solution
+exactly when $b$ has a \emph{finite} primitive.  $\mathcal{A}$ is a
+\emph{strict} subclass of $\mathfrak{m}$: the infinitesimal $\omega^{-1}$ has
+the infinite primitive $\log\omega$, so $\der y=i\omega^{-1}y$ has only $y=0$
+--- collapsing $\der\mathcal{O}$ to $\mathcal{O}$ would make it solvable, which
+the first eight sources all refute.  Hence no formal oscillator: $\der y=iy$ and
+$\der^2y+y=0$ have only $y=0$.  Also the purely infinite part of the
+accumulated phase as a complete gauge invariant in a four-term exact sequence;
+the sharp threshold $\min\operatorname{supp}b>1$ over real-exponent Hahn
+fields, with a counterexample pair against globalizing it by valuation;
+Picard--Vessiot extensions with diagonal phase tori; and a separate coordinate
+half with a coherent nonlinear initial-value theorem.  Part~III (member~10):
+every $\der y=Ay$, $A\in\mathrm{Mat}_n(\SC)$, is gauge equivalent to
+$i\,\mathrm{diag}(\der P_j)$, the multiset $\mathrm{Ph}(A)=\{P_j\}$ of purely
+infinite surreals being a complete invariant (Theorem~15.9), computed for
+Hermitian coefficients from the algebraic eigenvalues with no commutation or
+gap assumed (Theorem~16.5). Example~16.10 refutes extending that eigenvalue
+formula to arbitrary non-Hermitian coefficients; the abstract classification
+still covers them. The normal form and inhomogeneous existence rest on an
+imported splitting/surjectivity theorem.  Part~V (member~12): $\der y=-tAy$,
+$t=\omega^{-1}$, with ordinary complex residual matrix $A_0$ and
+positive-order power-Hahn perturbation, classified over $\C((t^\R))$ and over
+$\SC$; the solution space has dimension the algebraic multiplicity of the real
+eigenvalues of $A_0$, and, with $\lambda_j$ the eigenvalues of $A_0$,
+$\mathrm{Ph}(-tA)=\{(\mathrm{Im}\,\lambda_j)\log t\}$ is a non-Hermitian sector
+reached without that import.  Part~VI (member~11): first-order autonomous
+equations with constant coefficients on curves, classified (Theorem~30.1) with
+the same solutions for \emph{every} normalized derivation (Theorem~31.4), no
+two asserted equal on $\SC$, and the logarithmic-derivative image of a constant
+abelian variety.  \emph{Merged; the hazard was a word.}  ``Phase'' named the
+finite angle in $\mathcal{O}$, the infinitesimal residue in $\mathfrak{m}$, and
+the accumulated phase, no angle at all; one source printed two of them twenty
+lines apart.  Each gets one symbol, $\mathrm{Ph}(A)$ collects obstructions of
+the third, member~12's ``phase labels'' become residual frequencies, $J$ is
+retired, and the meaningless merged sentence is printed beside the correct one.
+Later reproofs are cited as agreements; hedges that later members answer, some
+only in part, are amended in place, wording kept.  Section~51 registers 106
+non-claim items: the derivation is imported, not reproved, and no priority,
+refereeing or proof-assistant verification is claimed.  Corollary~11.4
+strengthens in phase-independence the prior chosen-exponential obstruction of
+\nolinkurl{surcomplex/analysis}; $\mathrm{Ph}$ is not the spectrum of
+\nolinkurl{surcomplex/spectral-theory}.  Part~VII (member~13): on the log-atomic tower,
+$\der^2y+(Q_\alpha+c(\ell_\alpha'/\ell_\alpha)^2)y=0$ has a two-dimensional
+solution space for $c\le1/4$ and none for $c>1/4$ at every ordinal depth
+(Theorem~38.1); no set of earlier scales decides this (Theorem~39.2); at limit
+stages three nested Hahn fields give dimensions $0$, $1$, $2$, with a Borel
+Galois group (Theorems~40.4, 41.2).}
+
+\entry{Rank-one non-Archimedean analytic geometry inside the surcomplex numbers}
+{surcomplex/rank-one-berkovich}
+{article.pdf}{surcomplex\_rank\_one\_berkovich.zip}
+{The report devoted to intrinsic rank-one nonarchimedean analytic convergence.
+Inside the rank-one workspace $K=\C((t^\R))$ the absolute value
+$|a|_v=\exp(-v(a))$ is genuine and $K$ is spherically complete, complete and
+algebraically closed, so it is a legitimate base for Tate algebras and Berkovich
+spaces.  Proves strict inclusions among the Tate, polynomial-coefficient Hahn,
+common-domain, radius-free germ, formal-coefficient and open-disk analytic rings
+with named witnesses, extending the ring table of
+\nolinkurl{surcomplex/analytic-geometry}; gives a constructive one-variable
+preparation theorem, principal-ideal and finite-quotient results, analytic root
+counts and a valuation Rouch\'e theorem; constructs the Berkovich disk points and
+the annulus retraction; and contrasts the contractible annulus spectrum with its
+nonzero analytic de Rham class.  The worked case study is the entire series
+$F(Z)=\sum_{n\ge0}t^{n^2}Z^n$, taken from \nolinkurl{foundations-and-computation/foundations}
+and credited there: its full zero geometry is settled, and the first correction of
+the $m$th normalized root occurs at $t^{m(m+1)}$.  \emph{This does not contradict
+the no-convergence theorems of \nolinkurl{surcomplex/analysis}.}  The convergence
+here is in the intrinsic valuation topology of one fixed rank-one field, not the
+fine topology induced from $\SC$; and at $Z=t^{-\omega}$ the exponents $n^2-n\omega$
+strictly decrease, so the support is not well ordered and $F$ is not an
+all-surcomplex entire function --- the obstruction agrees with all-scale rigidity.
+The original audit credits the Berkovich \emph{comparison} in
+\nolinkurl{surcomplex/contours-and-stokes}; its development-gap claim concerns
+that inspected snapshot, not an exhaustive search of the current collection.}
+
+\entry{Surcomplex spectral theory: singular values, infinitesimal rank, multiscale stability}
+{surcomplex/spectral-theory}
+{article.pdf}{three manuscripts, delivered 21 and 22~September 2026}
+{Finite matrices over a real closed field $F$ and $F(i)$, then over set-sized
+Hahn workspaces $K_\Gamma=\C((t^\Gamma))$ inside $\SC$; every dimension is an
+ordinary finite integer, and the analytic coefficient-ring machinery is not
+needed.  The base manuscript proves the spectral theorem and the SVD
+\emph{without compactness} (classical, not claimed as new): real closedness
+suffices, the witnesses are exhibited, and Courant--Fischer and Ky Fan extrema
+are \emph{attained}; then positive square roots, polar decomposition,
+generalized Hermitian eigenproblems, Moore--Penrose inverses, least squares,
+best low-rank approximation and conditioning.  Its core identifies
+singular-value valuations with successive differences of minimum minor
+valuations $\Delta_k(A)$, and recovers them and the leading singular
+coefficients from positive Gram coefficients one scale block at a time;
+applications include an intrinsic rank filtration, root-free scale elimination,
+precision certificates, nonnormal pseudospectra, gap-sensitive projectors and
+Schur-complement corrections.  The second manuscript drops divisibility of
+$\Gamma$: Hermitian and normal descent and the SVD keep every exponent in the
+subgroup generated by the input supports, through a finite splitting tree; for
+positive semidefinite $A$ and integer $q\ge2$ the principal $q$th root, and
+equally its trace, generates the field with exponent group
+$\Gamma+\sum_{k=1}^{\operatorname{rank}A}\Z\Delta_k(A)/q$, of degree the order
+of the subgroup the $\Delta_k(A)$ generate modulo $q\Gamma$; at $q=2$,
+$\Delta_k(A)\in2\Gamma$ for $1\le k\le\operatorname{rank}A$ is the exact
+Gram-factorization criterion.  The third (Section~12) treats monic squarefree
+real-rooted $p$ over $F_\Gamma=\R((t^\Gamma))$, $\Gamma$ arbitrary: with
+$h_1,\ldots,h_n$ the leading principal minors of its Newton-sum Hankel matrix
+and $h_0=1$, the splitting field is exactly
+$F_\Gamma(\sqrt{h_1},\ldots,\sqrt{h_n})$, $p$ has
+$\#\{k:v(h_k)-v(h_{k-1})\in2\Gamma\}$ irreducible factors, and both persist
+for every monic $\tilde p$ of degree $n$ over $F_\Gamma$ with
+$v(h_k(\tilde p)-h_k(p))>v(h_k(p))$ for all $k$; applied to the squarefree
+part of $\det(XB-A)/\det B$, this gives the exact field of the generalized
+eigenvalues of a definite Hermitian pencil, not of a normalized eigenbasis.
+The pivot-class profile does not determine the factor degrees.  Shared results
+are printed once, in the earlier manuscripts' form; the third's Hensel-lifting
+proof of real principal axes is kept as a marked second route, and its section
+sits here rather than in \nolinkurl{surcomplex/polynomial-algebra}, whose
+divisible workspaces make every such invariant vanish.  Priority is not
+certified; not refereed or proof-assistant verified; the three repository
+audits were targeted and establish no absence elsewhere.
+\nolinkurl{surcomplex/prony-reconstruction-at-surreal-scales} shares only the
+classical Hankel moment identity;
+\nolinkurl{surcomplex/infinite-dimensional-hahn-spectral-theory} is the
+infinite-dimensional sibling, and no theorem of it is used here.}
+
+\entry{Surcomplex dynamics: linearization thresholds, periods, and normal forms}
+{surcomplex/dynamics-and-normal-forms}
+{article.pdf}{eleven manuscripts, integrated through \texttt{16fc51c}}
+{Local and global dynamics over complex Hahn fields $K=\C((t^\Gamma))$ realized
+inside $\SC$, with $\Gamma$ a set-sized ordered abelian group of \emph{arbitrary}
+valuation rank.  The first ten manuscripts combine nine treatments of
+germ and fixed-point dynamics with one (\S\S17--19) on the quasi-periodic half,
+a cohomological equation on a real torus whose frequency vector has
+\emph{surreal} components, with divisors $k\cdot\Upsilon$ indexed by an integer
+lattice.  \textbf{Read Section~2 first}: five inequivalent conditions travelled
+as \emph{resonance}, six as \emph{small divisor}, and two groups of sources used
+\emph{radius} with \textbf{opposite} monotonicity; each variant is named, every
+threshold states its variant and coefficient category, and Section~2.5 is a tag
+ledger.  Lattice resonance is \emph{not} frequency resonance, and visible
+divisor valuations are \emph{not} a spectrum.  Quasi-periodic results: $d$
+surreal components give \emph{at most $d$} arithmetically visible divisor
+valuations, via a canonical descending flag of saturated integer resonance
+lattices of strictly dropping rank, with one well-ordered set containing every
+reciprocal nonzero divisor's support (not a summability claim); an exact
+stratified subexponential criterion for universal solvability on one fixed
+torus strip; an arbitrary-order lifting obstruction; and, with no lattice
+resonance, under that criterion and for perturbations of valuation above the
+loss $\kappa_\Upsilon$, a unique normalized mean-zero conjugacy to a constant
+vector field with a frequency correction, by marked support words rather than
+sequential valuation convergence.  Germ results: the exact maximal centered
+valuation ball read off the finite $q$th return iterate; a five-row
+coefficient-category table, necessity witnessed per row at one exponent; an
+algebraicity dichotomy over $\C(w)((t^\Gamma))$ with monodromy and
+finite-cover obstruction; periods as a complete conjugacy invariant with
+explicit moduli; a gauge-normalized symplectic normal form with no arithmetic
+bound.  Sources~08 and~09 (\S7; source~08 also \S8.6) answer the
+common-domain question for an \emph{exact scalar} multiplier, oppositely to
+source~02's drifted answer.  For $\lambda I_d$, $\lambda=e^{2\pi i\theta}$ with
+$\theta$ irrational, any nonzero $\Gamma$, $d\ge1$, $\tau<\infty$ and input
+coefficients $f_s$ holomorphic on one polydisk of radius $R$ with $f_s(0)=0$,
+$Df_s(0)=0$, all coefficients of the normalized conjugacy and its inverse are
+holomorphic on the open polydisk of optimal universal radius $Re^{-\tau}$
+(Theorem~7.13, credited to both).  Under \emph{drift}, beyond source~02's
+$\mathrm{rad}(h_{k,1})=R\exp(-(k+1)\sigma)$ and its trichotomy, source~08
+shows that one Hahn monomial over $\Z$ already gives radii exactly
+$R\exp(-m\sigma)$ for $0<\sigma<\infty$ (Theorem~8.15); in one variable over
+any fixed nonzero $\Gamma$, every input's normalized linearizer has a common
+positive coefficient disk iff $\sigma=0$ (Corollary~8.17).  Source~08 is the
+base (every $d$, and the drifted theorem); source~09, translated from its
+forward convention (its $H$ is the report's $H^{-1}$), adds the tree product
+bound (Theorem~7.5) and a plane-tree proof for $d=1$, kept as a marked second
+route sharing the arithmetic lemmas.  Source~10 (\S\S7.7--7.13) settles the nonscalar exact case: every exact
+nonresonant diagonal unitary $\Lambda$ with $\tau<\infty$ has a common polydisk
+of radius $Re^{-r\tau}$, $r$ the rational rank of the angles (Theorem~7.23),
+sharp when $r=1$; the optimal radius for $r\ge2$ stays open (Question~25.1).
+Section~26 records the earlier sources' limitations.  Extends
+\nolinkurl{surcomplex/differential-equations}, but uses external coordinate
+derivatives, not its Berarducci--Mantova derivation; kept apart from the disks
+of \nolinkurl{surcomplex/rank-one-berkovich}.  Not refereed; priority not
+certified; Lean checks only the support lemma, the combinatorial ancestry
+bounds of Corollary~3.5 (corrected to keep the input support) and the
+counterexample to an input-independent bound, not that corollary's
+operator-summability assertion. Source 11 adds rotation-equivariant maps and a threshold extracted from the map itself; these 18 new standard results await independent proof review and Lean formalization.}
+
+\entry{Nonabelian support obstructions: a matrix Cousin criterion and the surcomplex Riemann--Hilbert problem}
+{surcomplex/nonabelian-support}
+{article.pdf}{three manuscripts, two delivered 21~September 2026 and one 22~September 2026}
+{One coefficient category, studied from two sides and then past its
+integrality boundary: matrices $I_r+\mathrm{Mat}_r(J_\Gamma)$, congruent to
+the identity modulo positive Hahn exponents over a set-sized, possibly
+non-Archimedean value group $\Gamma$, with ordinary holomorphic coefficients on
+a \emph{single fixed} ordinary complex domain ($t^\gamma=\omega^{-\gamma}$
+reads them in $\SC$ when $\Gamma\subseteq\No$).  Part~I solves a matrix Cousin
+problem on a puncture-and-disk cover of a connected open Riemann surface, with
+integral vector bundles and a Stein branch; Part~II inverts monodromy for
+near-identity representations of $\pi_1$ of a plane minus a closed discrete
+set, conversely to the forward map of
+\nolinkurl{surcomplex/differential-equations}.  \textbf{Both headline theorems
+read ``the union of the supports is well ordered'' and are \emph{not} the same
+criterion}: gluing (Theorem~6.2) tests the \emph{normalized polar factors}
+$\mathrm{Pol}(G_a)-I_r$, each transition factored independently and first, and
+well-ordering of full raw transition support is sufficient but not necessary,
+whereas raw singular-coefficient support fails in \emph{both} directions. Realizability
+(Theorem~14.2) tests the \emph{raw} monodromy matrices $\rho(\ell_d)-I_r$,
+whose support has basis- and basepoint-independent well-ordering.  The trap is printed: a
+determinant-one rank-three family over $\Gamma=\Q$ with one raw singular
+exponent and a \emph{splitting} abelianized cocycle admits no splitting; one
+added term putting the forced descending set among the raw poles
+\emph{removes} the obstruction; the true matrix logarithm is no repair, one
+coefficient off by a factor $1/2$.  Also: rank-one recovery (cited, not
+reproved) of the scalar Cousin criterion of
+\nolinkurl{surcomplex/global-divisors}, the right torsor of all splittings,
+absoluteness under ordered value-group extension, and for every $r\ge3$ a
+cocycle trivial modulo the last central subgroup yet nonsplit in full positive
+rank.  Part~III (sections 19--27), from the third manuscript, glues by finite
+exponentials $\exp(t^{\alpha_n}e^{1/(z-n)}N)$, $N$ nilpotent,
+$\alpha_1>\alpha_2>\cdots>0$, putting descending exponents before ordinary
+\emph{essential} singularities: determinant-one plane bundles, integral-trivial
+on bounded domains, whose Jordan-block members of rank $r\ge2$ stay
+indecomposable and not stably trivial over $\mathcal O((t^\Gamma))$ and even
+over $\mathrm{Mer}((t^\Gamma))$.  It computes all sections and morphisms,
+classifies this one family (for fixed $r\ge2$: profiles eventually equal
+integrally, eventually differing by one constant $\delta\in\Gamma$ after
+localization), and proves a localization-stable cyclic dichotomy, continuum
+many classes in every noncyclic group and a tensor rule; the same manuscript
+supplies Theorem~28.4: for rational binary profiles neither isomorphism nor
+nonisomorphism is semidecidable.  It does \emph{not} settle Part~I's printed
+localization question: a merge observation (Corollary~27.2) makes Part~I's
+pole-data examples and the global-divisor report's explicit plane Picard
+classes trivial over $\mathrm{Mer}((t^\Gamma))$, deciding nothing over
+$\mathcal O((t^\Gamma))$.  Shared lemmas are printed once; Part~III's labels
+are \texttt{nab:loc:}, the 169 earlier \texttt{nab:} labels intact.  Not
+refereed, no Lean code, no priority certified.  A companion placed in
+\texttt{21375f8}, on inverting a monomial for the hidden rank-three cocycle,
+awaits integration.}
+
+\entry{Cofinality, factorization and scalar extension for entire Hahn functions at arbitrary rank}
+{surcomplex/entire-functions-at-arbitrary-rank}
+{article.pdf}{seven manuscripts, delivered 21--23~September 2026}
+{Ordinary power series $\sum a_nZ^n$ over a \emph{fixed} Hahn field
+$K_\Gamma=\C((t^\Gamma))$, $\Gamma$ nonzero, set-sized, divisible and of
+arbitrary valuation rank; \emph{entire} means strongly Hahn-summable at every
+point of that one field; for $\Gamma=0$ the ring is $\C[Z]$. The first two sources, which disclaim all of $\SC$,
+proved the same engine, printed once; both payloads are kept.  \textbf{The
+trichotomy} (Theorem~1.5): $E_\Gamma$ is always a GCD domain with units
+$K_\Gamma^\times$; a polynomial PID when $\mathrm{cf}(\Gamma)>\aleph_0$;
+non-Noetherian B\'ezout with full Hermite interpolation when an \emph{order
+unit} exists, sharply so (Theorem~4.1); \textbf{not} B\'ezout when
+$\mathrm{cf}(\Gamma)=\aleph_0$ without an order unit, two canonical products
+with disjoint simple zero sets and $\gcd1$ generating a proper ideal.
+\textbf{The exact jet image} (Theorem~1.6), from the third source, answering the
+question the first merge left open: jets on an infinite radially finite divisor
+$D$ are realized iff on all late shells the shell's Hermite polynomial has
+coefficients in the ring $V_n$ that kills the Archimedean scale of the shell
+radius; so $E_\Gamma/(P_D)$ is an \emph{algebraic} restricted product, not a
+topological or adelic one, with a sharp B\'ezout criterion.  The fourth source,
+pinned before the third was merged, is recorded as an independent second proof
+of these theorems, its resolution claim stale; it adds finite-generator
+criteria, membership for one simple node per shell, the exact threshold for
+paired zeros, and, for one node per shell, all maximal ideals containing $P_D$:
+the evaluations and one per nonprincipal ultrafilter, a copy of $\beta\N$.  None
+of this is a corona theorem; several nodes per shell and prime ideals stay open.
+\textbf{Scalar extension} (Theorem~1.7): for divisible $\Gamma\subseteq\Delta$,
+all nonpolynomial entire series share one exact strong evaluation domain in
+$K_\Delta$, the valuation ring coarsened by the convex hull $H$ of $\Gamma$;
+entireness survives exactly for cofinal extensions, no new zeros appear, and
+``not entire over $K_\Delta$'' is the coarse form of that exact domain.  The
+fifth source (Section~11), without divisibility and over any trivially valued
+coefficient field, answers only the scalar-extension clause of the
+several-variable question: a whole-family entire series is strongly summable at
+a point with nonzero coordinates iff the weight image of its ordinary support is
+well ordered in $\Delta/H$; under homogeneous-block summation, never called
+entire, the polynomial-direction loci of nonpolynomial entire series are, when
+$\mathrm{cf}(\Gamma)=\aleph_0$, exactly the proper countable unions of
+projective algebraic sets.  Extends \nolinkurl{surcomplex/rank-one-berkovich},
+which lands in the B\'ezout case; the whole-class rigidity re-derives, with
+credit, a conclusion already in \nolinkurl{surcomplex/analysis} and
+\nolinkurl{foundations-and-computation/foundations}; the restricted product here
+is not that of \nolinkurl{surcomplex/global-divisors}.  Rank is not the driver:
+$\bigoplus_{\alpha<\omega_1}\Q e_\alpha$, ordered by the largest nonzero index,
+admits only polynomials.  No source was refereed or machine-checked, and
+priority is not certified.  A sixth manuscript (Section~12) classifies every prime ideal above a
+canonical product with one simple node per shell: the quotient is
+zero-dimensional exactly when $\Gamma$ has an order unit, otherwise continuum
+chains of primes appear, and a cofinal group extension can split one prime into
+a continuum-sized chain while the zeros are unchanged.  A seventh manuscript
+(Sections 11.9--11.15) proves that, for $d\ge2$ variables and
+$\mathrm{cf}(\Gamma)=\aleph_0$, every radially finite subset of $K^d$ is
+carried into a coordinate line by an entire automorphism iff $\Gamma$ has an
+order unit; without one, configurations of nonpositive support, the omnific
+integers of a workspace among them, still rectify, while explicit escaping
+infinitesimal simplices cannot be put in any hyperplane.  On rectifiable
+configurations the fat-point ideals need exactly
+$\binom{\bar m+d-1}{d-1}$ generators, and are not finitely generated when
+multiplicities are unbounded; this settles the ideal and value-interpolation
+clauses of the several-variable question for such configurations only.  This
+addition lies outside the earlier proof-review scope.}
+
+\entry{Holonomic rigidity for entire Hahn functions: a sharp order-unit criterion for dilations}
+{surcomplex/holonomic-rigidity-for-entire-hahn-functions}
+{article.pdf}{thirteen manuscripts, delivered 22--23~September 2026}
+{Power series over one fixed Hahn field $K_\Gamma=k((t^\Gamma))$, with
+$\Gamma$ a nonzero set-sized ordered abelian group, not assumed divisible.
+Entire means strongly Hahn-summable at every point of that field; entireness
+can fail after enlarging the value group. The linear base is stated over
+$k=\C$, and the later algebraic-differential and mixed parts over any
+characteristic-zero field. The variable derivative $D_z$ kills every scalar;
+it is not the Berarducci--Mantova derivation on surreal coefficients.
+\textbf{Differential rigidity.} Entire D-finite series are polynomials,
+also in several variables. More precisely, a fixed nonzero linear operator
+has a uniform degree bound for formal solutions strongly evaluable at a
+sufficiently large argument. First-order algebraic differential equations
+also have only polynomial entire solutions. If $\Gamma$ has no order unit,
+every nonpolynomial entire series is differentially transcendental in all
+orders. If $\Gamma$ has an order unit, an explicit Chebyshev--theta series
+has minimal differential order three (Theorem~H). The later chapters exclude
+order two for every value group (Theorem~I), and order three with total
+jet degree at most three. Thus order three is the exact least possible
+order when an order unit exists, but a cubic jet equation cannot attain it.
+\textbf{Dilations and mixed equations.} For a parameter $q$ of infinite
+multiplicative order, some nonzero polynomial-coefficient linear
+$q$-difference equation has a nonpolynomial entire solution exactly when
+$|v(q)|$ is an order unit. A partial theta series witnesses existence;
+its precise strong domain and the torsion boundary are also studied.
+For a finite list of multipliers with no root-of-unity quotient between
+distinct members, some mixed linear differential--dilation equation supported
+on that list has a nonpolynomial entire solution exactly when the absolute
+valuation of some quotient is an order unit. Two multipliers and first
+derivatives suffice for a witness. This answers the report's mixed
+unit-valuation question; it does not decide solvability of a prescribed
+operator or classify torsion blocks. These are distinct from the B\'ezout
+and interpolation dichotomy in the entire-functions report.
+\textbf{Scope and verification.} The report also gives coefficient-field
+recovery, mixed-jet independence, uniform exclusion bounds and explicit
+infinite-rank witnesses. The source-08/09 linear arguments and source-10--12
+nonlinear and coefficient-field parts have targeted manuscript reviews;
+the theta, low-order and newer mixed chapters await independent proof
+review. The Lean ledger maps support, evaluation, recurrence and valuation
+lemmas; it does not formalize the main classifications. Finite suites check
+identities and examples, not the infinite claims. No certified priority or
+independent refereeing is claimed. Polynomial composition, theta hierarchies,
+single scales and coefficient observables are now integrated. The latest
+recurrence chapter claims finite generation of the algebra containing
+unit-root coefficient sequences, and contrasts this with unrestricted
+single-coefficient observations; its 11 standard results and principal
+Theorem~O await independent proof review.}
+
+\entry{Hahn--Tate uniformization at arbitrary valuation rank}
+{surcomplex/hahn-tate-uniformization}
+{article.pdf}{three manuscripts, delivered 22~September 2026}
+{Tate elliptic curves over $K=\C((t^\Gamma))$, with $\Gamma$ set-sized, of
+any rank and not necessarily divisible, $q\in K$ of valuation $\alpha>0$,
+$H_\alpha$ the convex subgroup of values bounded by an ordinary integer
+multiple of $\alpha$, and $U_q=v^{-1}(H_\alpha)$.  \textbf{Theorem~1.2}: the
+bilateral theta family, and for $u\in K^\times\setminus q^\Z$ each Tate coordinate family,
+is strongly Hahn-summable \emph{exactly} on $U_q$ --- outside it the leading
+exponents contain a strictly decreasing sequence, so no cancellation
+repairs it --- yet $\Phi_q:U_q\to E_q(K)$ is a surjective homomorphism with
+kernel $q^\Z$.  Source~01 is the base; source~03, written without knowledge
+of it, proved the theorem by another route, and both proofs are kept:
+Tate's rank-one theorem in $K_{H_\alpha}$ with coarse lifting
+(Sections~5--7), and an integral node chart with $UV=q$ plus two further
+formal charts, with no rank-one completion (Section~8), valid over any
+coefficient field of characteristic zero (Theorem~8.13), hence over $\No$
+for real $q$ (Corollary~13.2).  The domain half, the value sequence
+$1\to\mathcal{O}_v^\times\to E_q(K)\to H_\alpha/\Z\alpha\to0$, the good
+coarse reduction and the $q=\omega^{-1}$ example are printed once.  Also:
+exact support and valuation identities in the node chart; if
+$H_\alpha\ne\Gamma$, no homomorphism $K^\times\to E_q(K)$ extending
+$\Phi_q$ has kernel $q^\Z$ (Theorem~10.5); recovery of $q$ from $j$ when
+$v(j)<0$ over any characteristic-zero coefficient field; and, over $\C$,
+$K(E_q[n])=K_{\Gamma+\Z\alpha/n}$. Every elliptic curve over $\SC$ with
+$v(j)<0$ is isomorphic to an $E_q$.
+Part~II, source~02, assumes monomial periods, coefficients in $\C$ and
+$\Gamma$ divisible where halves are used: every admissible lattice in a
+finite-dimensional higher-rank inner-product space has a finite positively
+generating set (Theorem~15.2), answering affirmatively Question~11.14 of
+Amini--Nicolussi \emph{as printed} in 2025; an exact flag criterion for
+quadratic lattice families, support order type $\omega^s$, the exact
+multiscale theta domain, finite minimum certificates, and lifting of smooth
+initial zeros.  \textbf{The bounded-period quotient is not new}:
+Molcho--Wise's bounded monodromy and logarithmic Tate curve are a
+precedent, correcting source~01's novelty framing, and no functorial
+comparison is proved.  No abelian variety is uniformized, $v(j)\ge0$ is not
+treated; not refereed, no Lean verification, priority not certified by the
+targeted searches.  Neighbours: \nolinkurl{surcomplex/rank-one-berkovich}
+(Tate \emph{algebras}, not Tate curves) and, for Part~II,
+\nolinkurl{surcomplex/wick-summability-certificates}.}
+
+\entry{Infinite-dimensional Hahn spectral theory: infinitesimal thickening, range defects, and algebra-relative spectra}
+{surcomplex/infinite-dimensional-hahn-spectral-theory}
+{article.pdf}{four manuscripts, delivered 22~September 2026}
+{Two manuscripts over one Hahn field $K=\C((t^\Gamma))$, printed as \emph{two
+parts}: \emph{spectrum} means different things on their two vector spaces
+and in their different operator algebras.  Section~3 sets the
+two side by side on $\mathrm{diag}(1/n)$; each part is self-contained given
+Section~2.  \textbf{Part~I}: $H$
+an ordinary complex Hilbert space, $\Gamma$ nonzero, set-sized and ordered
+abelian, without divisibility (only Section~12.1 assumes $\Gamma\subseteq\R$), and
+$H((t^\Gamma))$ with the coefficientwise-convolution inner product.  Every
+everywhere-defined adjointable operator, with no continuity assumed, is a Hahn
+series of ordinary bounded operators with one common well-ordered support
+(Theorem~6.1).  For ordinary bounded normal $T$ the failure-of-bijectivity
+spectrum is $\sigma_\C(T)\cup(\sigma_\C(T)'+\mathfrak{m}_K)$, with no new
+eigenvalues (Theorems~8.2, 8.3): accumulation points thicken into
+infinitesimal monads, isolated points do not.  An injective linear
+$S:V\to V$ keeps $\mathrm{coker}(S+E)\cong W((t^\Gamma))$, where
+$V=\mathrm{Ran}\,S\oplus W$, under every $E$ of strictly positive order
+(Theorem~7.1).  With $De_n=e_n/n$ on $\ell^2$ and $\eta>0$,
+$C=D^2+t^{2\eta}I$ is self-adjoint and coercive with the infinitesimal
+constant $t^{2\eta}$, yet its cokernel has dimension at least $2^{\aleph_0}$
+(Theorem~11.3), and at every rank its range is closed and proper with zero
+orthogonal complement (Theorem~12.2).  A least field-valued norm bound exists
+exactly when $T$ attains its ordinary norm (Theorem~13.2). \textbf{Part~II}
+also allows arbitrary ordered value groups.  In $\mathcal{A}_I=\mathrm{RCF}_I(\C)((t^\Gamma))$ acting
+on $\C^{(I)}((t^\Gamma))$, $A=\mathrm{diag}(d_i)+B$, with pairwise distinct
+ordinary real $d_i$ and $B=B^*$ of globally well-ordered positive support, has
+a unique near-identity normalized Hahn-unitary diagonalization with
+corrections in the monoid generated by $\mathrm{supp}\,B$ (Theorem~18.2,
+Corollary~18.3), exact synthesis, classified commutant and spectral
+projections, and $\sigma_{\mathcal{A}_I}(A)=\{\lambda_i\}$ even when the $d_i$
+accumulate (Theorem~20.2) --- a spectrum relative to that algebra, not a
+Banach-algebra spectrum.  Closed weighted walks control every eigenvalue
+coefficient, and the one-scale finite-section bound $(2r+2)\eta$
+(Corollary~21.5) cannot be improved in general (Theorem~21.6).
+\emph{Merged:} the Hahn--Neumann support lemma is stated once, and Part~II's
+proof of Higman's lemma is not reprinted, the identical argument being
+\texttt{spec:lem:words} and \texttt{spec:lem:neumann} of
+\nolinkurl{surcomplex/spectral-theory}. The proof review removes the
+unused divisibility assumption of Part~I and proves range closedness by its
+continuous defect projection at every rank; neither part uses a theorem of
+the other.  It supplies the first two items of
+that report's closing non-claim and the compact half of the third, compact
+meaning compact on $H$. Part~II supplies a vectorwise Hahn-additive
+projection calculus, with a rank-one counterexample to pointwise valuation
+convergence. No trace-class theory or general topological spectral-measure
+theorem is provided; \nolinkurl{surcomplex/hahn-herglotz-positivity} gives a
+separate obstruction to a positive coefficientwise circle measure.  Both suites report 218 checks, by coincidence; the
+assertions differ.  Priority not certified; not refereed; no proof-assistant
+check.  Two later manuscripts add Parts~III and~IV.  Part~III computes the
+spectrum of a constant element relative to $\mathfrak{A}((t^\Gamma))$ for any
+unital algebra $\mathfrak{A}$ through Drazin invertibility (Theorem~32.1): it is
+Part~I's adjointable spectrum for $B(H)$ and Part~II's for row- and
+column-finite matrices, and recovers only that half of Part~I's theorem.
+Part~IV, with $\Gamma$ divisible, treats compact self-adjoint operators under
+noncommuting positive-valuation perturbations: finite Hermitian clusters at
+nonzero eigenvalues, the whole monad of zero in the spectrum, and no global
+bounded-coefficient spectral theorem; its coefficientwise Fredholm
+determinant is not a trace-class theory.}
+
+\entry{Expanding polynomial dynamics over surreal and surcomplex fields: exact symbolic fibers and the order-unit obstruction}
+{surcomplex/expanding-polynomial-dynamics}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Iteration of $F=q^{-1}P$ over $K=k((t^\Gamma))$, $k=\R$ or $\C$, with
+$\Gamma\ne0$ any set-sized ordered abelian group --- no divisibility, no
+algebraic closedness --- where $\kappa=v(q)>0$, $P$ is integral of degree
+$d\ge2$, and its reduction keeps degree $d$ and has $d$ distinct roots in $k$.
+With $I_\kappa=\{h:v(h)>n\kappa\ \text{for all}\ n\in\N\}$: every word
+$s\in\{1,\dots,d\}^{\N}$ has a canonical center $x_s$ with
+$F(x_s)=x_{\sigma s}$, built by formal algebra and strong Hahn evaluation
+under one support certificate for all words; the integral nonescaping set is
+$\bigsqcup_s(x_s+I_\kappa)$; and words first differing at index $m$ give
+points at valuation distance exactly $m\kappa$.  So a word determines one
+point \emph{iff $\kappa$ is an order unit} --- a property of the scale, not
+of the rank.  The preperiodic points are exactly the centers of eventually
+periodic words, and each $F^{m+p}-F^m$ has $d^{m+p}$ simple roots in $K$.
+\textbf{Order-unit dichotomy:} for an order unit, $s\mapsto x_s$ is a
+homeomorphism from the full shift onto a compact perfect set; otherwise the
+fibers are open and the iterates uniformly equicontinuous, though the
+Hausdorff quotient of the $\kappa$-scale uniformity is still the full shift,
+and a separate compact-subsystem rigidity theorem makes every compact
+forward-invariant subset finite.  Also scalar extension
+(fibers can thicken, no new preperiodic points), deformations with exact
+leading response, the exact valuation-bounded locus, a no-order-unit
+equicontinuity criterion for all polynomials, and $F(x)=\omega(x^2-1)$ in
+$\SC$ with real centers.  One source, not a merge: nothing was selected, and
+at placement only terminology changed, and a later proof review clarified
+degree preservation, formal substitution and topology. The manuscript's
+``cofinal scale'' is an order unit here, since
+\nolinkurl{surcomplex/entire-functions-at-arbitrary-rank} reserves
+cofinality for $\mathrm{cf}(\Gamma)$.  Valuation-expanding is not repelling
+and no Julia/Fatou theory is built, so neither exclusion of
+\nolinkurl{surcomplex/dynamics-and-normal-forms} is answered.  In $\SC$ the
+set-level discreteness and compactness clauses are special cases of the
+closed-and-discrete theorem of \nolinkurl{surcomplex/analysis}; the
+substance lies in set-sized workspaces. The order-unit case has the
+classical symbolic Cantor model even at higher rank; every positive
+scale is an order unit in the field of
+\nolinkurl{surcomplex/rank-one-berkovich}; $H_\kappa$ is the $H_\alpha$ of
+\nolinkurl{surcomplex/hahn-tate-uniformization}, a shared subgroup, not a
+shared theorem.  Repeated residue roots and rational maps are not covered.
+Not refereed; priority not certified. Lean proves the scale subgroup and
+error-ideal lemma, including the valuation-ball conditions for clopenness
+and the coarsened valuation ring. The dynamical theorems remain pending;
+the 38{,}139 exact finite checks prove no infinite statement.}
+
+\entry{Positivity without a positive measure: Hahn--Herglotz normalization and strict moment hierarchies in surcomplex analysis}
+{surcomplex/hahn-herglotz-positivity}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Over $\R((t^\Gamma))$ and $\C((t^\Gamma))$, with $\Gamma$ a nonzero set-sized
+ordered abelian group, and by transport over set-sized subfields of $\SC$,
+finite Toeplitz positivity, positive real part on the halo of an ordinary
+domain, and positive-measure representation on the \emph{ordinary} circle come
+apart.  Measures are real-valued and \emph{coefficientwise}: an ordinary finite
+signed regular Borel measure at each exponent of one well-ordered support,
+additive exponent by exponent, without requiring strong summability; moments are
+Fourier moments. For divisible $\Gamma$, assumed only for the congruence
+in Theorem~3.3, a matrix coherent function with
+$\operatorname{Re}H\succeq0$ at ordinary points is, after subtracting a
+constant $iB$ with $B$ Hermitian, constant-congruent to $G\oplus0$ with
+$G(a_0)=I$, $\operatorname{Re}G_0\succ0$ and otherwise unrestricted higher
+coefficients. For every nonzero $\Gamma$, ordinary and halo positivity
+agree, kernels are constant, and Harnack holds with every ordinary $C>C_0$
+but need not with the sharp classical constant (Theorem~3.5).
+Theorem~4.2: $\sum\nu_\gamma t^\gamma$ is positive iff each $\nu_\gamma^-$
+vanishes on the common null ideal of the earlier $|\nu_\beta|$.
+Corollary~5.2 gives a strictly positive, unital, pointwise completely positive
+functional with no positive representing measure.  The moments $c_0=1$,
+$c_n=-\varepsilon$ have $\det T_N=(1+\varepsilon)^N(1-N\varepsilon)>0$ for
+every ordinary $N$, yet their unique signed measure is
+$(1+\varepsilon)m-\varepsilon\delta_1$, possible only because $\varepsilon$
+is infinitesimal; positive quadratures converge coefficientwise weak-* to it,
+the Schur parameters are $-\varepsilon/(1-n\varepsilon)$, and the Schur
+iterates have internal poles of standard part~$1$.  Theorem~7.1 separates the
+positive-measure, signed-measure, distribution, Toeplitz-only and
+halo-Herglotz classes strictly, with exponents $0,\eta$ only.  A single
+source; the main equivalence of Theorem~4.2 is proved once, in
+\nolinkurl{surreal/hahn-valued-measures-and-probability} as
+\nolinkurl{meas:thm:nullideal}, found independently by a source of that report
+in the same batch; this report proves the translation between the two forms
+and the control-measure reformulation, and keeps its source's uncountable
+example showing that the latter cannot replace the null ideal.  In that
+report's strong class $\omega+1$ is the least support order type letting
+nonnegative finite tests hide a negative event; in the coefficientwise class
+here two exponents suffice.  The halo is that
+of \nolinkurl{surcomplex/analysis}, whose \nolinkurl{c:p5:positivity} is the
+mechanism of Theorem~5.1(b); Corollary~6.5 adds only negative information to
+\nolinkurl{surcomplex/spectral-theory} and
+\nolinkurl{surcomplex/infinite-dimensional-hahn-spectral-theory}.  Among 26
+non-claims: nothing on enlarged circles, finitely additive or nonstandard
+representations, or a matrix null-ideal criterion.  A candidate contribution;
+priority not certified and not refereed. Lean proves the null-ideal and
+two-scale criteria and finite algebraic clauses of the negative-atom,
+quadrature and Schur examples; the remaining analytic and representation
+claims are pending.}
+
+\entry{Sharp moment reconstruction at surreal scales: collision geometry, optimal precision, and Hahn-supported inversion}
+{surcomplex/prony-reconstruction-at-surreal-scales}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Recovery of $n$ distinct integral nodes $a_i$ and nonzero weights $w_i$, of
+any valuation, from the power moments $m_k=\sum_iw_ia_i^k$, $0\le k<2n$, over
+$\R((t^\Gamma))$ or $\C((t^\Gamma))$ with $\Gamma$ any nontrivial ordered
+abelian group, not assumed divisible.  No measure or positivity is involved;
+since neighbouring reports use ``moment'' otherwise, the directory is named
+after Prony.  With $d_i=\sum_{j\ne i}v(a_i-a_j)$,
+$\delta_i=\max_{j\ne i}v(a_i-a_j)$, $E_i=v(w_i)+2d_i$ and
+$\Theta=\max_i(E_i+\delta_i)$, Theorem~1.1: if all $2n$ moment errors have
+valuation at least $\kappa>\Theta$, there is a unique regular $n$-node
+realization, uniquely labelled by the strict nearest-neighbour balls
+$v(\widehat a_i-a_i)>\delta_i$, with node errors of valuation
+$\ge\kappa-E_i$ and weight errors $\ge\kappa-2d_i-\delta_i>v(w_i)$;
+perturbing only $m_{2n-1}$ attains every node bound at once, and at valuation
+exactly $\Theta$ leaves no regular realization with that labelling, for \emph{every}
+configuration.  Optimality is for this labelling, not for bare existence;
+failure at $\Theta$ need not be a collision or a loss of positivity.  Also:
+exact Gauss valuations $-2d_i$ and $-2d_i-q_i$ of the inverse Hermite rows,
+with a cancellation depth $q_i$ that the separation tree does not determine;
+the $q_i$-improved weight bound, proved for the tangent map, and for the whole
+nonlinear set only under the extra finite criterion (not claimed optimal) of
+Proposition~7.2, an arbitrary-rank form of the Caruso--Roe--Vaccon
+precision-lattice principle, with Proposition~9.1 showing that the improvement
+can fail nonlinearly; a \emph{sufficient} directed-path certificate for nonuniform
+precisions, valid also for nondivisible $\Gamma$ by auxiliary scaling in
+its divisible hull and descent to the original field; and
+transfer to finite configurations in $\No$ and $\SC$.  One manuscript, not a
+merge; the only choices were editorial (title kept, labels prefixed
+\texttt{prony:}, notation aligned with
+\nolinkurl{surcomplex/polynomial-algebra}).  Remark~6.2, added on placement
+and proving no new theorem, compares
+$\Theta=\max_i((v(w_i)+d_i)+(d_i+\delta_i))$ with that report's coefficient
+threshold $T(P)=\max_i(d_i+\delta_i)$.  Only the classical Hankel identity is
+shared with \nolinkurl{surcomplex/spectral-theory}; the Prony-type lemma of
+\nolinkurl{surreal/hahn-valued-measures-and-probability} is cross-referenced,
+not merged.  Classical Prony, Hermite and precision-tracking material is
+credited, as are the $w_iP'(a_i)^2$ denominator and the last-moment direction.
+Not an unconditional algorithm on surreal inputs; confluent and infinite
+configurations are out of scope; the $10{,}052$ exact SymPy assertions check
+finite instances only. Priority is not certified; not refereed. The Lean
+ledger records classical uniqueness, cofactor orthogonality, the exact
+last-moment annihilator and algebraic local-root identities; valuation
+localization and the remaining precision estimates are pending.}
+
+\entry{Finite certificates for surcomplex Wick summability: valuation balancing, connected obstructions, and multiscale Gaussian perturbations}
+{surcomplex/wick-summability-certificates}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Formal Gaussian perturbation theory over $K=\C((t^\Gamma))$, $\Gamma\ne0$
+set-sized, \emph{divisible} and of arbitrary rank: a finite interaction
+$P=\sum_ag_ax^{\alpha^a}$, $g_a\in K^\times$,
+$\alpha^a\in\N^d\setminus\{0\}$, and a symmetric \emph{bilinear} covariance
+$C$, possibly singular and not necessarily real or positive; the
+expectation is a finite sum over pairings.  With $\lambda_a=v(g_a)$ and
+$c_{ij}=v(C_{ij})$ on nonzero entries, Theorem~6.1: the vacuum Wick diagram
+family is strongly summable iff its weight is positive on the finite Hilbert
+basis of $S=\{(m,k):Am=Dk\}$, iff some $p\in\Gamma^d$ has
+$\lambda_a+\alpha^a\cdot p>0$ and $c_{ij}-p_i-p_j>0$ (a diagonal monomial
+rescaling making all couplings and nonzero covariances
+infinitesimal), iff every observable sector, equivalently any one pairable
+sector, is summable; Hahn-unit tails are arbitrary.  The bridge is a strict
+alternative over any divisible ordered group, by Fourier--Motzkin elimination
+without real separation (Theorem~5.1); failure yields a nonnegative integer
+certificate in $S\setminus\{0\}$ of nonpositive weight, whose multiples
+obstruct.  With every valence at least~$2$ the connected vacuum diagrams
+have the same domain (Theorem~7.3; valence~$1$ fails, Example~7.5).
+Positive-definite real covariance, or diagonal covariance with nonzero
+diagonal, reduces the test to $\lambda_a+\frac12\sum_i\alpha^a_ic_{ii}>0$ per
+monomial (Theorem~8.2), giving a sharp multiscale stationary-phase threshold
+(Corollary~8.3); in a mixed quartic each interaction alone is admissible but
+the pair is not.  \textbf{Diagramwise only}: for $C=I_2$,
+$P=t^{-1}(x+iy)^4$ the order-grouped sum is $1$ while the diagram family is
+not summable, and the criterion is not invariant under general complex
+linear coordinate changes.  A Hahn value is not an integral, summability
+is not convergence of truncations in rank two (Example~9.4), and no physics
+is claimed.  Exact solver over lexicographic $\Q^r$; 7,684 finite checks at
+ranks 1--3.  Single source, not a merge; placement added Sections~1.3, 13.4
+and~13.5, and Section~13.1 corrects the source's report that a repository
+search for \emph{Gaussian} found nothing.  Where
+\nolinkurl{physics/surreal-scalars-and-spacetime} cautions that
+admissibility is not automatic, this report decides it exactly for one
+class, and answers none of that report's questions; the closest relative is
+the multiscale theta series of \nolinkurl{surcomplex/hahn-tate-uniformization},
+also decided by a finite certificate but by different mathematics;
+neither uses the other.  Classical inputs
+credited; priority provisional; not refereed. The Lean ledger covers the
+positive-support, finite-semigroup and valuation Cauchy--Schwarz lemmas;
+the main summability and connected-domain theorems remain pending.}
+
+\entry{Three duals at surreal scales: completion, strong maps and valuation continuity}
+{surcomplex/three-duals-of-hahn-vector-spaces}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{For a $k$-vector space $V$ and $V_\Gamma=V((t^\Gamma))$ over
+$k((t^\Gamma))$, three objects are kept apart: the algebraic scalar extension,
+its valuation completion, and its closure under strong Hahn summation.  The
+completion consists exactly of the series whose coefficients below each
+valuation cut span a finite-dimensional space; in infinite coefficient
+dimension it is the whole Hahn space exactly when $\Gamma\cong\Z$, and it is
+strictly larger than the algebraic extension exactly when $\Gamma$ has
+countable cofinality; a cofinal exponent enlargement preserves this and a
+noncofinal one collapses it.  Every strong linear operator is one Hahn series
+of arbitrary $k$-linear coefficient maps.  For infinite-dimensional Hilbert $H$
+and noncyclic $\Gamma$ there are three strictly nested duals ---
+inner-product-represented, strong, valuation-continuous --- the first gap being
+the Hahn extension of $H^\#/H'$; all strong maps are bounded by a positive
+real Hahn scalar; and a choice-based hyperplane has a strong bounded
+projection but zero orthogonal complement.  It works on the Hahn--Hilbert
+space of \nolinkurl{surcomplex/infinite-dimensional-hahn-spectral-theory},
+whose non-represented functional it shows to be strong, and whose
+adjointable operators sit inside its strong ones.  One manuscript; some cited
+literature was not available to its author and is attributed, not verified;
+not refereed, no Lean verification.}
+
+\entry{Hidden negative directions of Hermitian forms}
+{surcomplex/hidden-negative-hermitian-directions}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{For divisible $\Gamma\ne0$ let $\mathscr{P}_\Gamma\subset\C((t^\Gamma))$ be the
+series supported in finitely generated subgroups: an algebraically closed
+subfield containing every monomial.  For every $r\ge1$ an explicit Hermitian
+matrix of size $r+1$ is strictly positive at every nonzero vector over
+$\mathscr{P}_\Gamma$, and even over its valuation closure, yet has inertia
+$(1,r,0)$ over $\C((t^\Gamma))$; so the exponent group in the Hermitian
+spectral theorem of \nolinkurl{surcomplex/spectral-theory} cannot in general be
+replaced by a finitely generated one.  ``Positive semidefinite'' always means
+nonnegative at \emph{every} vector over the full field.  The engine is
+prime-denominator tails $\sum_pt^{\delta(1-1/p)}$: every finite-lattice
+approximant misses below valuation $\delta$, matching $N$ terms algebraically
+needs degree exactly $\prod_{j\le N}p_j$, and almost-disjoint prime sets give
+continuum many independent tails.  A second theorem characterizes positivity of
+a two-scale matrix-valued measure $M_0+\varepsilon M_1$ by scalar null ideals
+and a vector-valued absolute-continuity condition --- the two-exponent case of
+the matrix criterion that \nolinkurl{surcomplex/hahn-herglotz-positivity}
+excludes; more exponents stay open.  Transported to surreal normal forms.
+One manuscript; background inputs are named as such; not refereed, no Lean
+verification.}
+
+\entry{Automorphisms of the surcomplex field}
+{surcomplex/surcomplex-field-automorphisms}
+{article.pdf}{three manuscripts, integrated through \texttt{fd91f9b}}
+{``Automorphism of $\SC=\No(i)$'' has several inequivalent meanings, and this
+report keeps six apart: plain field, valued, value-fixing, 1-automorphisms,
+exponential, and those preserving the logarithmic modulus.  The automorphisms
+fixing $\No$ pointwise are the identity and conjugation; those preserving $\No$
+setwise form $\mathrm{Aut}(\No)\times C_2$, a proper subgroup of all field
+automorphisms, as Hahn-series phase twists show by fixing every ordinary
+complex number and every value while moving the surreal real axis.  Also the
+coefficient, character, value-group and leading-term-kernel layers of the
+valued automorphism group, automorphisms moving ordinary real constants by
+infinitesimals, zero-derivative field automorphisms and real forms.  The
+exponential results --- the amplification lemma, faithfulness, the negative
+answer to Kaplan--Krapp--Serra Question~5.4 and the logarithmic-modulus
+classification --- are reprinted with attribution from
+\nolinkurl{surreal/exponential-automorphism-rigidity}; here
+$\mathrm{Aut}_L(\SC)$ is observed to be a proper subgroup of the real-axis
+stabilizer.  Readings of the Kaplan--Krapp--Serra paper beyond Question~5.4
+are the source's and were not rechecked. Not refereed; generic Lean coverage
+uses the rigidity report's labels. The later finite-symmetry and Gaussian-omnific real-form parts expand the main text. Source 03 adds fourteen standard results and remains outside the earlier Sections 1--15 proof review.}
+
+\entry{The first-$\kappa$ coefficients: omitted types and completion in Hahn fields}
+{surcomplex/first-kappa-coefficients}
+{article.pdf}{surreal\_first\_kappa\_types.zip, delivered 22~September 2026}
+{Inside a full Hahn field $k((t^\Gamma))$, $k=\R$ or $\C$, take the series with
+fewer than $\kappa$ nonzero terms, for an uncountable and possibly singular
+cardinal $\kappa$.  Which one-variable types does the full field realize that
+this subfield omits?  Exactly those coded by the first $\kappa$ nonzero terms of
+a series: these terms determine its complete ordered-field type in the real
+case and its valued-field type in the complex case, and the least number of
+formulas witnessing omission is $\operatorname{cf}(\kappa)$, while in the pure
+complex field language all missing elements share one type.  The same
+invariant gives the approximation cut, the least empty nest of closed balls,
+the valuation completion (the subfield is complete exactly when
+$\operatorname{cf}(\Gamma)\ne\operatorname{cf}(\kappa)$, and never spherically
+complete) and the valuation loss of linear retractions; Conway normal forms
+give surreal examples at $\kappa=\aleph_\omega$.  The countable-support
+analogues in \nolinkurl{surcomplex/three-duals-of-hahn-vector-spaces} and
+\nolinkurl{surcomplex/rank-one-berkovich} are cross-referenced.  The
+constructions and quantifier-elimination inputs are established; the proposed
+contribution is the joint classification.  Not refereed, no Lean verification,
+limited priority audit.}
+
+\entry{A single dilation recovers Hahn support}
+{surcomplex/single-dilation-hahn-support}
+{article.pdf}{surreal\_dilation\_support.zip, delivered 22~September 2026}
+{Can one field automorphism make the Hahn structure of $k((t^\Gamma))$
+visible?  For every coefficient-fixing monomial automorphism
+$\sigma(t^g)=\chi(g)t^{\theta g}$ the report constructs a strong partial inverse
+of $\sigma-\lambda$, obstructed only at exponents fixed by $\theta$ where
+$\chi=\lambda$, and for finitely many commuting ones a deformation retraction
+of the Koszul complex onto its joint-resonant coefficients, computing additive
+and principal-unit multiplicative cohomology.  The main application: the single
+dilation $S_2(\sum a_gt^g)=\sum a_gt^{2g}$ defines, in the language of fields
+with one automorphism, the coefficient field, every coefficient, the canonical
+monomials, the valuation ring and truncation.  Hence its centralizer among
+\emph{all} field automorphisms is exactly the untwisted coefficient--exponent
+lifts, full monadic second-order arithmetic is interpreted (so the theory is
+undecidable, with a TP$_2$ witness), and all nonidentity rational dilations
+give the same definable data though no two are conjugate.  The dilation is the
+$S_a$ of \nolinkurl{surcomplex/surcomplex-field-automorphisms}, whose
+questions it does not answer.  Elementwise results reach $\No$ and $\No[i]$
+through Conway normal forms, with proper-class qualifications stated.  Not
+refereed, no Lean verification.}
+
+\entry{Gamma and zeta over the surcomplex numbers}
+{surcomplex/gamma-and-zeta-functions}
+{article.pdf}{six manuscripts, delivered 22~September 2026}
+{What can $\Gamma(z)$ and $\zeta(z)$ mean when $z\in\No[i]$?  Not one function:
+Taylor--Laurent evaluation at finite points, strong Hahn summation at infinity
+and the choice of a global exponential are kept apart throughout.  At finite
+points the lifts have exactly the classical zeros and poles, so their Riemann
+hypothesis is the classical one, and stability of every finite zero under
+symmetric infinitesimal deformations is equivalent to RH with all zeros
+simple.  At positive infinite real part every formal Dirichlet series is
+strongly summable, evaluation is an injective algebra map with exact Euler
+products and no zeros of zeta, every fibre $\zeta=1+u$ is described explicitly,
+and zeta jets at dilations and at real shifts are algebraically independent
+over large fields (the prime lemma being Pong's).  Stirling, a phase-free ratio
+cocycle and Hurwitz zeta at an infinite parameter follow.  With any global
+phase, Gamma, zeta and $\xi$ exist on the whole horizontal tube; reflection then
+forces Gamma poles and zeta zeros on the phase's infinite periods, and with the
+Ehrlich--Kaplan exponential zeta vanishes at the negative even omnific
+integers, while $\xi$ keeps exactly the ordinary zeros.  At infinite imaginary
+part no exponential extending the finite-phase one gives reflection anywhere
+on the vertical strip, and resonant phases obstruct a coherent continuation;
+elementary extensions instead transfer classical zero-free regions, density
+bounds and de Bruijn--Newman results.  \emph{Merged from six manuscripts on the
+same questions; each was audited alone and all were compared claim by claim.
+No two contradict each other once domain, exponential, summation notion and
+deformation class are aligned; the reconciliation is printed at each point of
+use, and fifty-three minor source errors are fixed and listed.}  Results the
+merge itself proves are marked.  No proof of classical RH, no canonical Gamma
+or zeta on all of $\No[i]$, not refereed, no Lean verification.}
+
+
+\entry{Hilbert geometry at surreal scales}
+{surcomplex/hahn-hilbert-geometry}
+{article.pdf}{three manuscripts, integrated through \texttt{5ca4355}}
+{Which closed subspaces of a Hahn--Hilbert space $H((t^\Gamma))$ have
+orthogonal complements?  Exactly the infinitesimal unitary rotations of
+ordinary closed subspaces, equivalently the graphs of positive-order
+operators; a closed residue is necessary but not sufficient.  Every unitary
+factors uniquely as an ordinary unitary times $\exp X$ with $X$ skew of
+positive order.  The graph of an amplified operator $aT$ splits iff $a=0$,
+$v(a)\ge0$ or $T$ has closed range, and explicit graphs have no nearest
+point, even after enlarging $\Gamma$.  The split projections form an
+orthomodular poset that is a lattice iff $\dim H<\infty$; countable
+orthogonal families of rank-one projections have no join, and the operator
+algebra is not Rickart.  A positive metric is isometric to the canonical one
+iff its ordinary part is bounded below by a positive constant.  For $A=T_0+E$,
+$T_0$ Fredholm and $E$ of positive valuation, kernel and range split, $A^\dagger$
+exists with an explicit valuation, and every least-squares problem has a
+minimum-norm solution.  Through scale extension the geometry, counterexamples
+and metric rigidity hold over $\No$ and $\SC$ for class maps with class
+adjoints.  \emph{The first two manuscripts share results; the base has the weaker
+hypotheses on every shared theorem.}  The adjoint theory is that of
+\nolinkurl{surcomplex/infinite-dimensional-hahn-spectral-theory}.  Not
+claimed: a spectral theorem, a splitting criterion from closed residue alone,
+a physical interpretation.  Proof review pending; not refereed, no Lean
+formalization, priority not certified. The third manuscript adds an exact criterion for infinite simultaneous unitary straightening; its fifteen new standard results await independent review and Lean formalization.}
+
+\entry{Dilation rigidity of surreal numbers and omnific integers}
+{surcomplex/autonomous-dilation-relations}
+{article.pdf}{three manuscripts, assembled through \texttt{1ef6bba}, 23~September 2026}
+{For $d\ge2$ the exponent dilation $S_d$ fixes coefficients and multiplies
+normal-form exponents by $d$; it is not $y\mapsto y^d$.  The placed manuscript
+claims that a nonconstant Hahn series satisfying a nonzero
+constant-coefficient relation $F(y,S_dy)=0$ lies in one cyclic Laurent
+subfield, with a ramification bound $\deg_YF$, and deduces that
+infinite-support omnific integers are algebraically independent from each of
+their nonidentity integer dilates. Two later manuscripts add 33 standard
+results: sufficient support rank forces independence of distinct positive
+dilates, giving exact autonomous order for finite support, with relative
+versions and infinite-support constructions. Independent proof review and
+formalization remain pending. Not
+refereed, no Lean formalization, priority not certified.}
+
+\section{Surquaternions}
+
+One report, which is where commutativity stops.  It is filed on its own
+because commutative arguments from \dir{docs/surcomplex} require review on moving to
+a division algebra: conjugation, multiplicativity of the modulus, valuation and
+leading coefficients, polynomial evaluation, matrix adjoints, exponential laws
+and every chain rule need their scalar and slice hypotheses checked. The report
+proves the additional noncommutative assertions with factor order retained.
+
+\entry{Surquaternions: algebra, infinitesimal geometry, and support-controlled analysis}
+{surquaternions/surquaternions}
+{article.pdf}{surquaternions\_article.zip + surquaternions\_article(1).zip}
+{Hamilton's quaternion division algebra over the surreals,
+$\mathbb{H}_{\No}=\No+\No i+\No j+\No k$, with central surreal coefficients, in
+three levels that are never silently mixed.  \emph{Finite algebra over an
+arbitrary real closed field}: division, conjugation, the field-valued modulus,
+complex slices and centralizers, conjugacy spheres, explicit square roots, the
+spin/rotation description with two independent surjectivity proofs, Cayley and
+stereographic presentations of one rational chart, quaternionic M\"obius maps, one-sided
+polynomials with a constructive fundamental theorem and a complete zero-class
+algorithm, and finite-dimensional Hermitian spectral theory with SVD and polar
+decomposition.  \emph{Set-sized Hahn workspaces}
+$D_\Gamma=\mathbb{H}(\R((t^\Gamma)))$: normal forms with a \textbf{noncommutative}
+residue algebra, exact multiplicative valuation and leading coefficients, the
+all-lengths Neumann support lemma proved through Higman's finite-word lemma, the
+exact geometric inverse with its truncation certificate, the infinitesimal Hahn
+exponential and logarithm, BCH at positive valuation, the filtered nonabelian
+rotation group with its graded bracket, a spectral-projector estimate at
+arbitrary surreal gap scale with a sharp two-scale example, support-controlled
+implicit lifting, and an exact square-root conditioning analysis.  \emph{The
+full surreal class}: finite angles at arbitrary radius, the Ehrlich--Kaplan
+global phase normalization, the global radial exponential with its complete
+logarithm fibres and four-coordinate differential --- rank-two critical spheres
+at positive radii in $\pi\mathbf{Oz}$, $\mathbf{Oz}$ the omnific integers, the infinite
+radius $\omega$ among them --- the
+componentwise Berarducci--Mantova derivation with a no-oscillation theorem and
+its chain-rule corollary, and coefficientwise slice, Cauchy and Fueter analysis
+on explicitly named coefficient spaces.  \textbf{Section~2 is the ledger and
+should be read first}: three exponentials and four derivative-like operators
+carry overlapping names here, each satisfying a \emph{different} law on a
+\emph{different} domain, and the section fixes one name and one symbol per
+object and tabulates which satisfies which.  It also explains why this report's
+statement that the radial exponential is \emph{not} an additive-to-multiplicative
+homomorphism is consistent with the spacetime physics report's correct claim that the
+\emph{commutative} Ehrlich--Kaplan exponential \emph{is} one: the restriction to
+any single slice is exactly that commutative exponential and the law holds
+there, and it can fail across \emph{noncommuting} arguments, where no common slice
+exists --- witness $\mathrm{Exp}(\omega i+\pi j)=1+(\pi^2/2\omega)i+O(\omega^{-2})$
+against $\mathrm{Exp}(\omega i)\mathrm{Exp}(\pi j)=-1$.  A merged sentence
+blurring the two would manufacture a false contradiction across the collection.
+\emph{Merged; roughly two thirds of the mathematics was common to both sources
+and is printed once.}  Every \texttt{\textbackslash label} in its source carries
+the prefix \texttt{squat:}.  It makes no claim about any empirical subject.}
+
+
+\section{Physics}
+
+Two reports, the only ones whose subject is not mathematics alone.  Both
+separate mathematical models from physical evidence, and both tag every claim
+as an exact identity, a conditional theorem, an assessment or an import.  The
+relativity report asks what surreal scalars do and do not buy near a
+gravitational singularity; the quantum and gauge report, merged from four
+manuscripts, asks the same of finite quantum operations and gauge models.
+Neither claims an experimental prediction.
+
+\entry{Surreal scalars in theoretical physics: black-hole singularities, asymptotic structure, and the limits of replacing the scalar field}
+{physics/surreal-scalars-and-spacetime}
+{article.pdf}{three manuscripts, delivered 21~September 2026}
+{\textbf{The sentence this report exists to refuse, in any form, is that
+surreal numbers resolve the black-hole singularity.}  Surreal and surcomplex
+scalars make the hierarchy of quantities near a gravitational singularity
+exactly representable; they do \emph{not} make the spacetime regular.  Four
+facts, each re-derived from the metric for the merge rather than copied from a
+source: the Kretschmann scalar of Schwarzschild is exactly $K=48M^2/r^6$; under
+a formal radial change $r=s^qw(s)$, with integer $q\ge1$, $w(0)\ne0$ and
+$M\ne0$, and $w\in\R[[s]]$, the pole order becomes exactly $6q$ with leading coefficient
+$48M^2w(0)^{-6}$. The recorded checks use $w(s)=1+s$, whose constant term is
+one; this normalized case preserves $48M^2$. No substitution of the stated
+form removes the pole; the proper time from rest at $R$ to
+$r=0$ is $(\pi/2)\sqrt{R^3/2M}$, which for \emph{infinitesimal} $R$ is
+infinitesimal and hence still finite, so the infall terminates either way; and
+the tidal component $2M(2M-r)/r^4$ is unlimited at infinitesimal $r$.  The exact
+identity $r^6K=48m^2$ has \emph{no} field-valued solution at $r=0$ in any
+characteristic-zero field, not merely in $\R$: evaluating at a nonzero
+infinitesimal radius names another point of a punctured domain and supplies no
+missing endpoint, no continuation law and no observable rule.  What is true, and
+is what the report is for, is that the surreal/Hahn language records the power
+\emph{and} the coefficient of every divergence exactly, keeps competing scales
+separate, and detects when an expansion has been used outside its regime --- a
+gain in representation and nothing more.  \textbf{The claim-status firewall} is
+the rest of its value: every theorem header and every substantive paragraph
+carries one of four visible tags --- exact symbolic identity, checked exactly
+and never to a tolerance, which is the entire content of what the programs
+establish; conditional theorem, with hypotheses stated in full and
+\emph{established for no physical model}, nothing in the tier machine-checked;
+assessment, meaning an argument and not a result; and imported, a provenance
+marker rather than a fourth tier.  The article's own tag counts are 53, 51, 140
+and 34.  \emph{Merged; duplication between the three sources ran to about two
+thirds, all three independently rebuilding the static-spherical connection and
+the full Riemann tensor and re-deriving the same Schwarzschild quantities from
+the metric alone.}  No priority claim; not refereed.}
+
+
+\entry{Surreal scales in quantum theory and gauge models}
+{physics/quantum-and-gauge-scale-reductions}
+{article.pdf}{four manuscripts, delivered 23~September 2026}
+{What do exact infinitesimal scales add to finite quantum operations and gauge
+models, and what do they not?  A rare branch of valuation $2r$ has a
+conditional shadow given by a leading Gram matrix intrinsic to the output;
+after postselection with success probabilities $p,q$ the trace distance is at
+most $D/\max(p,q)$, sharply, and in the classical case this halves the bound
+of \nolinkurl{surreal/finite-surreal-probability}; two states can agree modulo
+every power of an infinitesimal yet have orthogonal conditional shadows.
+Separated virtual sectors are eliminated exactly, with independently
+separated scales, support-certified block diagonalization, finite-depth
+hierarchies and Gibbs reduction, and soft-mode Schur defects are classified.
+For unit quaternions $1-\mathrm{Re}\,c=2|u_1\times u_2|^2$, so regular
+gauge-invariant probes of a small loop start at second order; optimal
+$m$-query unambiguous identification of an infinitesimal holonomy succeeds
+with probability $w_m=1-T_m(1-w)$, $T_m$ Chebyshev, and no finite test is
+perfect; a dark port heralds an exact $\mathrm{SU}(2)$ unitary; and Hahn
+Kuranishi maps give charge rigidity and action gaps for gauge fields under
+imported Hodge--Green hypotheses.  \emph{Merged from four manuscripts that
+pairwise share theorems: each shared theorem is printed once crediting every
+proving source, and the claim-tier firewall of
+\nolinkurl{physics/surreal-scalars-and-spacetime} is adopted (22 exact, 119
+conditional, 119 assessments, 20 imports).}  Not claimed: any departure from
+ordinary quantum mechanics or quantum field theory, a measurable
+infinitesimal, singularity resolution, or that $\No$ is physically necessary;
+every real specialization keeps the ordinary finite thresholds.  Not refereed,
+no Lean formalization, priority not certified.}
+
+\section{Foundations and computation}
+
+Nine reports that take the rest of the collection, or the surreal field as a
+set-theoretic object, as their object.  The first three range over the whole subject; the others emphasize set
+theory, definability and computability, including a restricted exponential
+language for omnific arithmetic.  Each of
+the first three is a merge of three manuscripts delivered together, the first
+two on 21~September 2026, and in those two the hazard was not overlap but a
+collision of near-identical names.  The next two, on universes and birthday
+cutoffs, are merges of four and five
+manuscripts delivered on 22~September 2026, each proving one spine several
+times under different hypotheses.  Two more, from batch 27, address definable
+surreals and omnific integers (two manuscripts) and omnific notations
+(three). The critical-point-defects report now integrates four manuscripts;
+the newest report treats exponential relations over omnific integers.
+
+\entry{Foundations for surreal and surcomplex mathematics}
+{foundations-and-computation/foundations}
+{article.pdf}{surreal\_surcomplex\_foundations.zip + surcomplex\_foundations.zip
++ surreal\_foundations.zip}
+{In what foundation does this mathematics legally live, and how would a proof
+assistant encode it?  Compares ZF/ZFC with definable classes, GB/GBC/NBG,
+Kelley--Morse, Grothendieck universes and TG, Feferman reflection, constructive
+set theory, dependent type theory, univalent foundations and native Lean, and
+proves the size obstructions each must respect: no unrestricted cut operation
+can accept every subclass of its own carrier, the surreals are not Dedekind
+complete, and a universe cannot cut itself.  The positive counterpart is a
+localization theorem --- every \emph{set} of surcomplex numbers already lies in
+one divisible set-sized workspace $K_\Gamma=\C((t^\Gamma))$ --- with a
+finite-algebra descent theorem explaining why a finite zero scheme gains no
+points in a larger workspace.  Carries two series over $\C((t^\Q))$ that differ
+only in the sign of an exponent and reach opposite conclusions:
+$\sum t^{-n^2}X^n$ is summable at no nonzero argument, while $\sum t^{+n^2}z^n$
+is summable everywhere and is a \emph{nonpolynomial} function coherent at every
+radius --- which does not refute the all-scale rigidity theorem of
+\nolinkurl{surcomplex/analysis}, stated for class functions on the whole $\SC$,
+but shows it does not transfer to a fixed value group.  \emph{Merged; the danger
+was aggregation.  All three manuscripts read the same Lean repository at the
+same revision on the same day, so their agreement is one act of source reading
+performed three times, not three confirmations.  The findings are printed once
+and the verification boundary has its own early section.} The original merge
+compiled three illustrative Lean files and inspected their axiom dependencies.
+Those historical checks are distinct from the later development mapped in
+\texttt{FORMALIZATION.md}. The maintained article also makes the
+universe-relative localization hypotheses explicit, expands the positive-support
+recursion proof, and separates intrinsic convergence from full fine topology.}
+
+\entry{Surreal and surcomplex numbers in symbolic computer algebra}
+{foundations-and-computation/computer-algebra}
+{article.pdf}{surreal\_surcomplex\_cas.zip and two same-named archives}
+{What can actually be computed exactly, and what only approximated or denoted?
+Separates finite exact denotation, effective coefficient access, decidable
+equality and order, and certified approximation into capability tiers, then
+works through an ordered rational-monomial core, real-algebraic closure,
+certified Hahn series, formal germs, analytic lifts, transseries, Newton
+profiles, Hensel lifting, finite quotient algebras, residues, and a proposed
+Wolfram Language architecture.  \emph{Merged; the danger was three prototypes
+with one name.}  Each manuscript ships an executable Wolfram package, two of
+them near-anagrams of each other, two exporting six identical public symbol
+names with incompatible signatures, and all three calling themselves the
+rational monomial core.  They are three different objects: coefficients $\Q$ in
+one and $\Q(i)$ in the others; exponent lattices $\Z^d$ against $\Q^r$, so a
+ramified root is representable in one and not the next; and two of them order
+their monomial variables by opposite conventions, requiring the corresponding
+translation of monomial-order inequalities.  The report never writes ``the prototype'' and tabulates the
+divergences instead.  All three check suites were rerun for this repository and
+reproduce exactly --- 34/34, 110/110 and 88/88 in Wolfram, 69/69 and 323/323 in
+Python --- but one package cannot be loaded at all as shipped: an unclosed
+bracket stops it parsing, which is why its own record submits definitions rather
+than loading the file.}
+
+\entry{Computable surreal numbers, merged and reconciled}
+{foundations-and-computation/computable-surreals}
+{article.pdf}{computable\_surreal\_numbers.zip + two same-named archives}
+{Which surreal numbers admit an algorithm, and in which representation?  Three
+manuscripts arrived with two different numerical representations of the same
+objects --- one using effective rational left-finite series with finite
+candidate covers, two using computable bounded-denominator Puiseux series ---
+and the report is one integrated development rather than a concatenation: it
+preserves the distinct representations instead of picking one, supplies an
+explicit reconciliation ledger disposing of every divergence, keeps
+complementary proofs where the two routes prove the same statement by different
+means, and separates mathematical existence from the existence of a uniform
+algorithm throughout.  \emph{Merged; and this is the one report whose source
+manuscripts were never redistributed with it in the first place.}  The ledger
+cites them by their original \TeX{} line numbers and
+\nolinkurl{data/provenance-manifest.json} records their archive identities, file
+hashes and line counts, so every disposition is traceable against a copy
+obtained elsewhere.  Four verification suites are rerun and pass --- 4{,}967
+exact comparisons, 18 named unit tests, 266 exact checks, and 4{,}366 exact
+cross-model and cover-contract checks in the updated reconciliation suite.
+The latter compare dense common-grid Puiseux
+convolution against sparse rational convolution, candidate covers with extra
+zeros and nonnested lists (including negative zero candidates in the
+geometric-series construction), the finite-jet root transformation, derivative and
+primitive identities, and finite instances of the two unbounded-denominator
+support examples.  \emph{The four units mean different things and are
+deliberately not added together.}  A finite test proves no infinite theorem, no
+real closedness, no computability classification and no undecidability
+reduction; the synthetic halting fixtures in the original programs do not
+compute the halting set; the package implements neither arbitrary computable
+reals nor arbitrary infinite surreal arithmetic; and there is no Lean-checked
+formalization and no literature-wide priority claim.}
+
+\entry{Surreal fields across set-theoretic universes}
+{foundations-and-computation/surreal-fields-across-universes}
+{article.pdf}{four manuscripts, delivered 22~September 2026}
+{How does the surreal field of an inner model look from a larger universe with
+the same ordinals?  For transitive $M\subseteq N$, the old field $\No^M$ is an
+elementary subfield of $\No^N$, yet its saturation, counted in $N$, can fail:
+for every uncountable cardinal $\kappa$ of $N$ it is externally
+$\kappa$-saturated exactly when $N$ adds no ordinal-valued sequence of length
+below $\kappa$, and one small side of a cut already suffices; at $\omega$ the
+criterion is instead that no reals are added.  A shortest new sequence, of
+regular length $\delta$, yields an explicitly decoded omitted cut of character
+$(\delta,\delta)$, and every externally set-presented gap is the trace of a
+unique fresh sign sequence all of whose proper prefixes are old.  The first new
+birthday $\beta$ satisfies $\delta\le\operatorname{cf}\beta\le\beta$, and Cohen,
+closed and Prikry forcings are computed.  The pure field $\No^M[i]$ stays
+saturated over every set of parameters and, under Global Choice, is isomorphic
+to $\No^N[i]$; naming conjugation restores the real spectrum, which gives real
+forms of one algebraically closed class field that are not conjugate to the
+standard one and have no set-sized cofinal subset.  Outer sets of old numbers
+remain closed and uniformly discrete, and a set-complete class Boolean algebra
+in which reverse simplicity is dense answers a question from Berenbeim's 2020
+notes.  \emph{Merged from four manuscripts proving one spine; the interval-tree
+and sign-block-code constructions are kept as second routes, and results under
+plain ZFC are kept apart from those using Global Choice.}  The real-form results
+continue, but do not settle, the real-form question of
+\nolinkurl{surcomplex/surcomplex-field-automorphisms}.  Three finite suites
+check sign codes and interval codes; a finite check proves no infinite theorem.
+Not refereed, no Lean verification, priority not certified.}
+
+\entry{Birthday cutoffs and hereditary sets}
+{foundations-and-computation/birthday-cutoffs-and-hereditary-sets}
+{article.pdf}{five manuscripts, delivered 22~September 2026}
+{Which set universe does a bounded piece of surreal arithmetic remember?  The
+ordered field is real closed and sees nothing, but once birthday is named, the
+surreals born below an epsilon number $\lambda$ interpret the hereditary sets
+$H_{\kappa(\lambda)}$, with $\kappa(\lambda)$ the least cardinal not below
+$\lambda$, and are bi-interpretable with $(H_{\kappa(\lambda)},\in,\lambda)$;
+already $\No_{<\varepsilon_0}$ recovers every hereditarily countable set.  Sign
+bits are read from order and birthday, a bounded ordinal pairing packs
+relations, and small certificates for Conway arithmetic avoid assuming
+Replacement in $H_\kappa$.  Consequences: an exact classification of elementary
+inclusions between cutoffs, sentences for Power Set, Replacement and worldly
+cutoffs, the exact range of the coding without Choice, new-subset detectors and
+the first new birthday of an outer model, a Prikry extension that leaves a
+birthday-enriched field unchanged while singularizing its cutoff (from a
+measurable cardinal), and, for surcomplex cutoffs with conjugation and a
+coordinate birthday, the orientation obstruction and two lifts of every real
+elementary embedding.  The full-class bi-interpretation with the set universe
+is the theorem announced by Chen--Hamkins--Yang, recorded in
+\nolinkurl{foundations-and-computation/foundations}; it is printed with a
+written proof as that announced theorem, not as a new result.  \emph{Merged
+from five manuscripts proving one spine at different cutoff classes; the most
+general is the base, and two arithmetic certificates and two set codings are
+kept as different proofs.}  Five finite suites pass; a finite check proves no
+infinite theorem.  Not refereed, no Lean verification, priority not
+certified.}
+
+
+\entry{Definable surreal numbers and omnific integers}
+{foundations-and-computation/definable-surreals-and-omnific-integers}
+{article.pdf}{two manuscripts, delivered 23~September 2026}
+{Which surreal numbers and omnific integers are definable in the set-theoretic
+universe?  For a set of parameters $A$, the $A$-definable surreals form a real
+closed field $K_A$, an elementary subfield of $\No$ closed under the
+omega-map, exponential, logarithm and omnific floor, with its omnific integers
+as an integer part and $K_A$ as their fraction field.  The ordinal-definable
+surreals are exactly $\No^{\mathrm{HOD}}$, and $V=\mathrm{HOD}$ holds iff
+every omnific integer in $(0,\omega)$ is ordinal definable, iff every monomial
+$\omega^a$ with $0<a<1$ is: parameter-free reversible codes place every
+surreal in a bounded omnific interval.  Otherwise an $\mathrm{Ord}$-indexed
+algebraically independent family lies over the definable field.  In a
+transitive model the first non-definable ordinal is an epsilon number and
+bounds the maximal initial core, an elementary exponential subfield with an
+omnific integer part; the first birthday of a non-OD surreal is the first
+ordinal with a non-HOD subset; forcing over $L$ gives the examples.
+\emph{Merged from two manuscripts; the base has the weaker hypotheses.}  Not
+claimed: codes that are ring maps or definable in the ordered field, a truth
+predicate for $V$, definability as computability.  Proof review pending; not
+refereed, no Lean formalization, priority not certified.}
+
+\entry{Notations for omnific integers}
+{foundations-and-computation/omnific-notations}
+{article.pdf}{three manuscripts, delivered 23~September 2026}
+{How can omnific integers be named exactly, and at what cost?  Three
+countable notation systems: holonomic fraction towers, whose fields have
+decidable equality and order, effective truncation, a computable floor and
+supports of order type at most $\omega^r$, with an $\varepsilon_0$-labelled
+union; hereditary Hahn forms with canonical trees and decidable omnific
+membership and floor, extended by shielding to effective coefficient rings;
+and rational $\omega$-terms with decidable validity, equality, order,
+membership in $\Oz$ and coefficients, whose ordinals are exactly those below
+$\varepsilon_0$.  For raw names with $d$ blocks, equality is
+$\Pi^0_1$-complete, there is no translator into any system with decidable
+equality, positivity is complete for the $d$-c.e.\ sets, and support
+validity is $\Pi^1_1$-complete.  \emph{Merged from three manuscripts; the
+base's hypotheses, any effective ordered coefficient field and $d$ blocks,
+are the weakest.}  Not claimed: a notation for all of $\Oz$, real closedness,
+a uniform complexity bound, an answer to a question of
+\nolinkurl{foundations-and-computation/computable-surreals}.  Proof review
+pending; not refereed, no Lean formalization, priority not certified.}
+
+\entry{Critical-point defects in surreal arithmetic}
+{foundations-and-computation/large-cardinal-embeddings-and-normal-forms}
+{article.pdf}{four manuscripts, through \texttt{fc57b61}, 23~September 2026}
+{How does an elementary embedding $j:V\to M$ with critical point $\kappa$ act
+on surreal numbers?  Applying $j$ to sign sequences and applying it termwise
+to the exponents of a Conway normal form are different maps. The report
+claims that they agree exactly on normal forms with fewer than $\kappa$ terms,
+that their difference is an explicit subseries, and that the defect of a
+Boolean mask records membership in the normal measure derived from $j$, with
+omnific and surcomplex versions. The companions add criteria for descent to
+the target model, support covers, omnific algebraic independence and
+measurable first failures. A measurable cardinal supplies an instance of the hypotheses; its existence
+is not asserted. Independent proof review and source reconciliation remain
+pending. Not refereed, no Lean formalization, priority not certified.}
+
+
+\entry{Exponential relations over omnific integers}
+{foundations-and-computation/exponential-relations-over-omnific-integers}
+{article.pdf}{one manuscript, placed in \texttt{aa9c891}, 23~September 2026}
+{Which finite exponential relations see only ordinary integers and purely
+infinite coordinates? On the domain $\overline{\Q}+J\subseteq\SC$, where
+$J$ is the purely infinite part, the report combines ordinary complex and
+Gonshor exponentials to obtain exact toric relations. With algebraic
+coefficients, algebraic shifts and real-algebraic slopes, it proposes a
+decidable additive language of exponential-equality predicates. Its
+elementary cores are $\Z+W$ for nonzero ordered vector subspaces $W\subseteq J$ over the
+real algebraic numbers. A separate fixed irrational slope has the Turing
+degree of its rational cut; admitting $\exp(xy)=\exp(z)$ gives
+undecidability. This does not define an exponential on all surcomplex
+numbers or decide the unrestricted surreal exponential field. Independent
+proof review and Lean formalization remain pending.}
+
+\end{document}

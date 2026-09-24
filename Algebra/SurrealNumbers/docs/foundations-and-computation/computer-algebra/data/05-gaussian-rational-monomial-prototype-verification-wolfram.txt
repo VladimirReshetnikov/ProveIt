@@ -1,0 +1,26 @@
+Wolfram Language validation, 2026-09-21
+
+Execution method:
+The package's executable definitions and the test body were loaded with
+Get[StringToStream[...]] in the connected Wolfram Language kernel. This
+preserves sequential package-context parsing. Documentation strings and
+comments do not affect the arithmetic tested. A preliminary direct evaluation
+also passed the same tests, but emitted namespace/documentation setup messages;
+the clean package-loading run below is the recorded final validation.
+
+Returned result:
+<|"Kernel" -> "15.0.1 for Linux x86 (64-bit) (July 2, 2026)",
+  "Tests" -> 88, "Passed" -> 88, "Failures" -> {}|>
+
+Scope:
+Exact Q(i) rational functions of finitely many independent monomials, with
+lexicographic Z^d valuations. Tests cover fraction normalization, field laws,
+rank-sensitive valuation/order, cancellation across a rank, conjugation,
+real/imaginary parts, squared modulus, standard part, and rejected operations.
+They do not implement or verify general analytic-germ, algebraic-closure,
+transseries, arbitrary-support, or contour-integration algorithms.
+
+Reproduction:
+Run code/test_HahnRational.wl in a Wolfram Language kernel. The test file loads
+code/HahnRational.wl relative to its own path when the package is not loaded.
+The randomized polynomial examples use SeedRandom[20260921].

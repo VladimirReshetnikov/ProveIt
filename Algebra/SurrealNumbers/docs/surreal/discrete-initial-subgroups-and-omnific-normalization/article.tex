@@ -1,0 +1,4035 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools,aliascnt}
+\usepackage{newtxtext,newtxmath}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem,booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{soft}{HTML}{F2F5F8}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Discrete Initial Groups and Omnific Normalization},
+ pdfauthor={AI-assisted research draft prepared for the Surreal project},
+ pdfsubject={Sign-tree surgery, a proposed solution of an Ehrlich--Kaplan question, convex factors and profinite obstructions}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Discrete initial groups}}
+\fancyhead[R]{\small\textsc{Omnific normalization}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\setlist[enumerate]{leftmargin=*,itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+% Shared counter through aliascnt, so that cleveref names each type
+% correctly (with a plain [theorem] counter every reference read "theorem").
+\newcommand{\isgthm}[3]{%
+ \newaliascnt{#1}{theorem}%
+ \newtheorem{#1}[#1]{#2}%
+ \aliascntresetthe{#1}%
+ \crefname{#1}{#3}{#3s}%
+ \Crefname{#1}{#2}{#2s}}
+\isgthm{lemma}{Lemma}{lemma}
+\isgthm{proposition}{Proposition}{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\isgthm{fact}{Imported fact}{imported fact}
+\theoremstyle{definition}
+\isgthm{definition}{Definition}{definition}
+\isgthm{example}{Example}{example}
+\theoremstyle{remark}
+\isgthm{remark}{Remark}{remark}
+\isgthm{question}{Question}{question}
+\newtheorem{maintheorem}{Theorem}
+\renewcommand{\themaintheorem}{\Alph{maintheorem}}
+\crefname{maintheorem}{Theorem}{Theorems}
+\newcommand{\No}{\ensuremath{\mathbf{No}}}
+\newcommand{\Oz}{\ensuremath{\mathbf{Oz}}}
+\newcommand{\On}{\ensuremath{\mathbf{On}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Pred}{\operatorname{Pred}}
+\newcommand{\Rs}{\operatorname{R}_{s}}
+\newcommand{\Ls}{\operatorname{L}_{s}}
+\newcommand{\len}{\ell}
+\newcommand{\cat}{\mathbin{\frown}}
+\newcommand{\plus}{\langle+\rangle}
+\newcommand{\minus}{\langle-\rangle}
+\newcommand{\emp}{\varnothing}
+\newcommand{\pr}{\mathrel{\prec}}
+\newcommand{\pre}{\mathrel{\preccurlyeq}}
+\newcommand{\Hahn}[2]{\mathcal{H}_{#1}(#2)}
+\newcommand{\Rect}{\mathcal{N}_{\alpha,n}}
+\newcommand{\tht}{\Theta_{\alpha}}
+\newcommand{\psiA}{\Psi_{\alpha}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\hdeg}{\operatorname{deg}_{H}}
+\newcommand{\lex}{\mathbin{\overrightarrow{\times}}}
+% Notation of the second source (convex factors); see isg:cf:sec:conventions.
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Zhat}{\widehat{\Z}}
+\newcommand{\IR}{\mathsf{Init}}
+\newcommand{\otp}{\operatorname{otp}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\dv}{\mathrm{div}}
+\newcommand{\cmp}[1]{\flat_{#1}}
+\newcommand{\source}[1]{\textup{\cite{#1}}}
+\newcommand{\replabel}[1]{\nolinkurl{#1}}
+\newcommand{\fn}[1]{\nolinkurl{#1}}
+\newtcolorbox{statusbox}{colback=soft,colframe=ink,boxrule=0.5pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{2mm}
+{\color{ink}\Large\textsc{Surreal numbers / ordered algebra}}\par
+\vspace{4mm}
+{\color{ink}\huge\bfseries Discrete Initial Groups\\[3mm]
+and Omnific Normalization\par}
+\vspace{4mm}
+{\Large Sign-tree surgery, a sharp image classification,\\
+an Ehrlich--Kaplan question, and convex factors\par}
+\vspace{5mm}
+{\large AI-assisted research draft prepared for the Surreal project\par}
+\vspace{2mm}
+23 September 2026 \textperiodcentered{} two-source report of the
+collection
+\vspace{4mm}
+\begin{abstract}
+We give an explicit construction proposed as an affirmative solution of
+Ehrlich and Kaplan's question whether every discretely ordered initial
+subgroup of the surreal numbers is order-isomorphic to an initial subgroup
+of the omnific integers (Question~2 of the arXiv preprint, Question~9.1 of
+the journal version). The construction is not ordinary multiplication
+by the reciprocal of the least positive element. Instead, a sign-sequence
+operation moves the minimum exponent to zero, while preserving all
+right-ancestor relations away from that minimum; a separate rescaling
+changes only the bottom coefficient group to the ordinary integers.
+The Ehrlich--Kaplan characterization of initial Hahn subgroups then
+establishes initiality of the image.
+
+The argument yields more than existence. For a prescribed least positive
+element $2^{-n}\omega^{-\alpha}$, we characterize the images exactly by
+containment of an explicit dyadic-spine subgroup $K_\alpha\subseteq\Oz$.
+We identify the smallest and largest initial groups with that least
+positive element, give sharp cardinality consequences, construct an
+initial realization of the quotient by the least positive cyclic subgroup,
+and extend the additive normalization to rectangular surcomplex modules.
+All normal-form transports preserve leading truncations and set-indexed
+strong summability. Counterexamples explain why scalar normalization,
+exponent translation, and unrestricted inversion do not suffice.
+
+A second manuscript realizes every convex subquotient of an initially
+realizable group by sign-tree compression, and shows that a Presburger
+group is initially realizable exactly when its residues in
+$\widehat{\Z}$ are ordinary integers.
+\end{abstract}
+\vspace{2mm}
+\begin{statusbox}
+\textbf{Status and scope.} This is an unrefereed research manuscript with
+full proposed proofs, not an independently certified resolution or a
+claim of established priority. The principal external mathematical input
+is explicitly identified. Finite regression checks accompany the text;
+they do not certify the transfinite argument. No new Lean formalization
+is claimed. A targeted literature and repository review found the cited
+question and its motivating example, but did not establish exhaustive
+novelty. At placement in the collection every step was checked by hand
+and no gap was found (\cref{isg:sec:provenance}); that check is not a
+refereeing, and the literature search was targeted, not exhaustive.
+The second manuscript (\cref{isg:cf:sec:intro}) has the same status.
+\end{statusbox}
+\vfill
+{\small\textbf{Keywords:} surreal numbers; omnific integers; initial
+subgroups; sign sequences; Hahn series; ordered abelian groups.\par
+\textbf{Mathematical focus:} additive and simplicity-theoretic structure,
+not multiplicative or exponential equivalence.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The problem and the main results}\label{isg:sec:intro}
+
+\subsection{A specific published question}
+An additive subgroup of $\No$ is \emph{initial} when it contains every
+proper sign-sequence prefix of each of its members. This is a much stronger
+requirement than being an ordered subgroup. An initial subgroup is
+\emph{discrete} when it is nonzero and has a least positive element.
+Throughout, ``isomorphism'' of ordered groups preserves addition and
+order; it need not preserve the ambient simplicity relation.
+
+Ehrlich and Kaplan ask:
+\begin{quote}
+``Is every discrete initial subgroup of $\No$ isomorphic to an initial
+subgroup of $\Oz$?''
+\end{quote}
+This is Question~2 in Section~9 of the explicitly versioned preprint
+\cite{EK}, printed page~18. The journal article appeared in 2018
+\cite{EKjournal}. We use the preprint's numbering throughout to avoid
+mixing versions. The question also appears in Kaplan's thesis
+\cite{Kaplan}.
+
+In the journal version the same question is Question~9.1, with the same
+wording and the same motivating example. The results of \cite{EK} used
+below are numbered differently there; the correspondence, checked when
+this report was placed in the collection against the author-hosted text
+of the journal version \cite{EKjournal}, is:
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+arXiv v1 \cite{EK} & journal version \cite{EKjournal} & use here\\
+\midrule
+Lemma~3 & Lemma~5.1 & initial subgroups of $\R$, \cref{isg:fact:real}\\
+Theorem~1 & Theorem~5.1 & the initiality criterion, \cref{isg:fact:EK}\\
+Proposition~9 & Proposition~5.2 & shape of the least positive element\\
+Question~2 & Question~9.1 & the question addressed here\\
+Question~3 & Question~9.2 & the initial-monoid problem, not addressed\\
+Theorem~6 & Theorem~8.1 & optimality with class models (source~02)\\
+Question~1 & Question~8.1 & set-model optimality, not answered\\
+\bottomrule
+\end{tabular}
+\end{center}
+Below, the arXiv numbers are used, except where the wording of the
+journal version matters (after \cref{isg:fact:EK}).
+
+The distinction between a group and a ring matters. A discrete initial
+subgroup can contain $1/2$ or a nonzero infinitesimal, whereas an omnific
+integer has neither a nonintegral constant coefficient nor a negative
+normal-form exponent. The task is therefore to change the initial
+\emph{realization} of the ordered group, not to prove that its original
+realization already lies in $\Oz$.
+
+The paper addresses precisely this existence question and several
+structural refinements. It does not claim a classification of all ordered
+abelian groups admitting initial embeddings, nor a solution of the
+separate initial-monoid problem (Question~3 of \cite{EK}, Question~9.2
+of the journal version).
+
+\subsection{Normalization and its exact range}
+Write $\N=\{0,1,2,\ldots\}$ and $\D=\Z[1/2]$. If $\alpha$ is an ordinal, let
+\[
+ p_\alpha=-\alpha=\minus^{\alpha},
+ \qquad q_\beta=\plus\cat\minus^{\beta}\quad(\beta\in\On).
+\]
+Here $\cat$ means concatenation of sign sequences, not surreal addition.
+For example, $q_0=1$, $q_1=1/2$, and $q_m=2^{-m}$ for finite $m$.
+Define the finite-support additive subgroup
+\begin{equation}\label{isg:eq:Kintro}
+ K_\alpha=\Z\oplus\bigoplus_{\beta<\alpha}\D\,\omega^{q_\beta}
+ \ \subseteq\Oz.
+\end{equation}
+The direct sum means that each element has only finitely many nonzero
+summands. In particular, $K_0=\Z$.
+
+\begin{maintheorem}[Omnific normalization]\label{isg:thm:A}
+Let $A\subseteq\No$ be a nonzero discrete initial additive subgroup.
+There are unique $\alpha\in\On$ and $n\in\N$ such that its least positive
+element is
+\[
+ \varepsilon=2^{-n}\omega^{-\alpha}.
+\]
+An explicitly defined map $\Rect$ restricts to an order-preserving group
+isomorphism
+\[
+ \Rect:A\longrightarrow H,
+ \qquad H\subseteq\Oz\text{ initial},\qquad \Rect(\varepsilon)=1.
+\]
+The map extends to a real-linear order-isomorphism between the full
+normal-form spaces supported in $[-\alpha,\infty)$ and $[0,\infty)$.
+This extension preserves support order types, all leading truncations,
+and set-indexed strong summability in both directions.
+\end{maintheorem}
+
+\begin{maintheorem}[Sharp image classification]\label{isg:thm:B}
+Fix $\alpha\in\On$ and $n\in\N$. Under the same explicit map $\Rect$,
+the initial groups with least positive element
+$2^{-n}\omega^{-\alpha}$ correspond bijectively, with inclusions
+preserved and reflected, to the initial groups $H\subseteq\Oz$ satisfying
+\[
+ K_\alpha\subseteq H.
+\]
+The inverse is explicit. Thus the dyadic-spine condition is both necessary
+and sufficient, not merely an artifact of a sufficient construction.
+\end{maintheorem}
+
+\begin{maintheorem}[Removing the bottom cyclic layer]\label{isg:thm:C}
+For every group $A$ in \cref{isg:thm:A}, the subgroup $\Z\varepsilon$ is
+convex, and the ordered quotient $A/\Z\varepsilon$ has an explicit
+initial realization in $\No$. The corresponding short exact sequence
+splits as an additive group, with a canonical splitting relative to the
+given Conway normal forms. Equivalently,
+\[
+ A\cong B\lex\Z
+\]
+for an explicitly constructed initial subgroup $B\subseteq\No$, where
+the first coordinate is dominant in the lexicographic order.
+\end{maintheorem}
+
+The main construction is in \cref{isg:sec:surgery,isg:sec:transport}; the proofs
+of the three theorems are completed in
+\cref{isg:sec:normalization,isg:sec:classification,isg:sec:quotient}, respectively.
+Theorem~B contains more information than Theorem~A: it identifies exactly
+which normalized realizations can be moved to any prescribed least
+positive scale by this construction.
+
+\subsection{Why a change of exponents is necessary}
+Multiplication by $\varepsilon^{-1}$ certainly gives an ordered-group
+isomorphism. Initiality, however, refers to sign prefixes rather than
+numerical intervals, and multiplication does not generally preserve it.
+Even $A=\frac12\Z+\Z\omega$ is an initial group for which
+$2A=\Z+2\Z\omega$ is not initial: $2\omega$ belongs to the image but
+its simpler predecessor $\omega$ does not.
+
+Our operation treats two different issues separately. First, it relocates
+the minimum of the \emph{exponent tree} to zero. Second, it rescales only
+the real coefficient at that minimum. No claim of multiplicativity is
+made, and none is needed for the published ordered-group question.
+
+\subsection{Conventions shared with the collection}\label{isg:sec:conventions}
+This report is built from two manuscripts: source~01, the normalization
+manuscript (\cref{isg:sec:intro,isg:sec:background,isg:sec:bottom,isg:sec:surgery,isg:sec:transport,isg:sec:normalization,isg:sec:classification,isg:sec:quotient,isg:sec:complex,isg:sec:examples}
+and Appendix~\ref{isg:app:compact}), and source~02, the convex-factor manuscript
+(\cref{isg:cf:sec:intro}, \cref{isg:cf:sec:cuts,isg:cf:sec:compression,isg:cf:sec:factors,isg:cf:sec:presburger,isg:cf:sec:factorial,isg:cf:sec:modeltheory,isg:cf:sec:complex,isg:cf:sec:boundaries}
+and Appendix~\ref{isg:cf:app:core}). Their provenance, the placement reviews and
+the relation to other reports are in \cref{isg:sec:provenance}. Statements
+added in the merge of the two sources, and proved here, are marked
+\textup{[merge]}. The following conventions are fixed here once; the
+notation of source~02 is fixed in \cref{isg:cf:sec:conventions}.
+\begin{enumerate}
+\item \emph{Initial} always means closed under proper sign-sequence
+      prefixes, as in the definition of the definable-surreals report
+      (\replabel{dsn:sec:foundations}). It never means an initial segment
+      of the numerical order, and it has nothing to do with the
+      \emph{initial forms} (leading forms of polynomial solutions) of the
+      Diophantine report (\replabel{odg:prop:initial}).
+\item $\Oz=\Z\oplus\Pi$, with $\Pi$ the class of purely infinite normal
+      forms, is the omnific ring of the collection
+      (\replabel{odg:def:rings}, \replabel{osq:eq:Ozdef},
+      \replabel{found:eq:omnific}); \eqref{isg:eq:Oz} below is the same
+      description. For $x\in\Oz$, $\ct(x)$ is its coefficient at
+      exponent~$0$, as there. Only the additive and order structure of
+      $\Oz$ is used; its ring structure plays no role.
+\item The symbols $\Theta_\alpha$, $\Psi_\alpha$, $q_\beta$ and
+      $\mathcal N_{\alpha,n}$ are local to this report. They are unrelated
+      to the theta series and to the nome or dilation parameter $q$ of
+      other reports.
+\end{enumerate}
+
+\subsection{Convex factors and profinite obstructions}\label{isg:cf:sec:intro}
+\Cref{isg:thm:C} removes the least positive cyclic subgroup. The second
+source of this report, \emph{Convex Factors and Profinite Obstructions for
+Initial Surreal Groups}, removes an arbitrary convex subgroup. Call an
+ordered abelian group \emph{initially realizable} if it is order-isomorphic
+to an additive subgroup of $\No$ closed under all proper sign-sequence
+prefixes, and write $G\in\IR$ for this property; the zero group is
+included. A \emph{convex factor} of $G$ is $C'/C$, where $C\subseteq C'$
+are convex subgroups of $G$ and the quotient has its usual ordered group
+structure.
+
+\begin{maintheorem}[Convex-factor closure]\label{isg:cf:main:factor}
+If $G\in\IR$ and $C\subseteq C'$ are convex subgroups of $G$, then
+$C'/C\in\IR$. For an actual initial realization $G\subseteq\No$, the
+construction is explicit: restrict normal forms to the corresponding
+convex exponent interval and compress its sign tree.
+
+Moreover, every convex subgroup sequence
+\[
+ 0\longrightarrow C\longrightarrow G\longrightarrow G/C
+ \longrightarrow0
+\]
+splits as a sequence of abelian groups. In the chosen normal-form
+realization the section is order-preserving and the decomposition is
+lexicographic. The coordinate projections and compressed factor
+realizations satisfy precise composition laws under nested restrictions.
+\end{maintheorem}
+
+The theorem concerns \emph{initial realizability}, not literal initiality
+of the original subgroup $C$ or of a selected complement. It also does
+not assert a splitting invariant under every abstract automorphism.
+The explicit splitting is attached to a chosen initial realization.
+With $C'=G$ it answers \cref{isg:q:convex}: every convex subgroup of an
+initial group has an explicit initial realization of the quotient by a
+normal-form transport, and for $C=\Z\varepsilon$ that transport is the
+construction of \cref{isg:sec:quotient}
+(\cref{isg:cf:prop:cyclic}). It also answers \cref{isg:q:limit}: no
+extra hypothesis is needed at a limit stage (\cref{isg:cf:cor:limit}).
+
+A \emph{$\Z$-group} is a discretely ordered abelian group $G$ with least
+positive element $e$ such that $G/\Z e$ is divisible. These are exactly
+the ordered-group models of additive Presburger arithmetic
+\cite{Jerabek}. Their coherent standard residues define
+\[
+ \res_G:G\longrightarrow\Zhat=\varprojlim_{n\ge1}\Z/n\Z,
+ \qquad \res_G(e)=1.
+\]
+Here $\Z$ on the right is the ordinary, diagonally embedded copy of the
+integers, not a nonstandard integer substructure.
+
+\begin{maintheorem}[Presburger initiality criterion]\label{isg:cf:main:presburger}
+For a set-sized $\Z$-group $G$, the following are equivalent:
+\[
+\begin{gathered}
+ G\in\IR;\qquad
+ G\text{ has an initial realization in }\Oz;\qquad
+ \Z e\text{ is a direct summand of }G;\\
+ \res_G(G)=\Z;\qquad
+ G\cong G^{\dv}\lex\Z,\quad G^{\dv}=\bigcap_{n\ge1}nG.
+\end{gathered}
+\]
+The group $G^{\dv}$ is divisible. In the split case its complement to
+$\Z e$ is unique.
+\end{maintheorem}
+
+This is a global compatibility condition, not a condition on any one
+finite modulus. Every $\Z$-group has the same individual quotients
+$G/nG\cong\Z/n\Z$. Initiality distinguishes whether the residues of a
+\emph{single element}, across all standard moduli, come from one ordinary
+integer.
+
+\begin{maintheorem}[Explicit countermodels]\label{isg:cf:main:models}
+There are $2^{\aleph_0}$ pairwise nonisomorphic countable rigid
+$\Z$-groups which are not initially realizable, although they are all
+elementarily equivalent to $\Z$. There are also countable densely
+ordered groups, elementarily equivalent to an explicit initial subgroup
+of $\No$, which are not initially realizable.
+
+No recursively saturated $\Z$-group, and no nonprincipal ultrapower over
+$\N$ of a $\Z$-group, is initially realizable. The ordered additive group
+completion of any nonstandard model of Peano arithmetic is likewise not
+initially realizable.
+\end{maintheorem}
+
+The proofs are in \cref{isg:cf:sec:factors} (\cref{isg:cf:main:factor}),
+\cref{isg:cf:sec:presburger} (\cref{isg:cf:main:presburger}) and
+\cref{isg:cf:sec:modeltheory} (\cref{isg:cf:main:models}). In source~02
+these three theorems are Theorems~A, B and~C; they are lettered D, E
+and~F here because source~01's Theorems~A--C keep their letters.
+
+\paragraph{What is new in source~02, and what is not.} The primary external
+structural input is again the Ehrlich--Kaplan characterization of initial
+Hahn subgroups (\cref{isg:fact:EK}). Their treatment of convex subgroups
+asks which subgroups in the \emph{given} realization are themselves
+initial. The construction of source~02 changes the realization of a
+factor and preserves its ordered additive structure. Source~01 already
+gives the normalization of \cref{isg:thm:A}, the integer-bottom suspension
+and the relative splitting criterion for discrete groups
+(\cref{isg:thm:suspension,isg:cor:relative}); its \cref{isg:sec:quotient}
+explicitly leaves arbitrary convex quotients outside its conclusions.
+Source~02 does not claim those results again as new. It replaces the
+special positive-root deletion by a compression operation valid for
+arbitrary convex exponent intervals; in particular it handles cuts with no
+endpoint and convex factors not accessible by a finite iteration of
+least-positive quotients.
+
+The profinite residue map and its divisible kernel belong to the
+classical structure theory of $\Z$-groups; see especially
+\cite[Sections~2 and~4]{Jerabek}. Likewise, the extension parameter
+$\Ext(\Q,\Z)\cong\Zhat/\Z$ is classical \cite[Example~8.27]{Strickland}.
+Source~02's arithmetic contribution is their explicit connection with
+initial surreal realizability, together with the displayed constructions
+and obstructions. The existence of rigid Presburger models is not claimed
+as a new phenomenon. The results are not announced as a resolution of the
+set-model version of Ehrlich--Kaplan's optimality question (Question~1 of
+\cite{EK}, Question~8.1 of the journal version); a precise comparison is
+in \cref{isg:cf:sec:optimality}. A targeted review found no matching
+formulation of the main convex-factor theorem, but this is not an
+exhaustive priority search.
+
+\section{Foundations and the imported initiality criterion}\label{isg:sec:background}
+
+\subsection{Sets, classes, signs, and two orders}
+We work in NBG with global choice, in the conventional class-sized
+formulation of surreal numbers. Every individual surreal is a
+set-length sign sequence. Every individual normal form has set support.
+All strongly summable families considered below are indexed by sets.
+Statements about families of class-sized groups are understood as
+correspondence statements about class parameters, not as assertions that
+a class of all classes exists.
+
+For sign sequences $u,v$, write $u\pr v$ for a proper prefix and
+$u\pre v$ for a prefix allowing equality. Their ordinary numerical order
+is determined at the first disagreement, with
+\[
+ -\ <\ \text{undefined}\ <\ +.
+\]
+The empty sequence is the number $0$. Put
+\[
+ \Pred(x)=\{y:y\pr x\},\qquad
+ \Rs(x)=\{y\pr x:x<y\},\qquad
+ \Ls(x)=\{y\pr x:y<x\}.
+\]
+In sign language, a prefix obtained by stopping just before a minus sign
+is a right ancestor; stopping just before a plus sign gives a left
+ancestor. Each of these ancestor collections is a set.
+
+A subclass $E\subseteq\No$ is initial precisely when
+$\Pred(x)\subseteq E$ for every $x\in E$. This does not mean that $E$
+is downward closed in the numerical order. For instance, $\No_{\ge0}$
+is initial as a sign tree but is a numerical final segment.
+
+If $u$ and $v$ have lengths $\lambda$ and $\mu$, then
+$u\cat v$ has length $\lambda+_{\mathrm{ord}}\mu$. All additions of
+\emph{lengths} in this paper are ordinal additions. Concatenation is
+associative and preserves comparison between tails sharing the same
+prefix. At a limit ordinal there is no last sign to remove: ``remove the
+first sign'' or ``remove a specified concatenated block'' always means
+restricting to the appropriate interval and taking its order type.
+These conventions agree with the sign-sequence framework of
+\cite{BagHoeven}.
+
+\subsection{Hahn spaces without an exponent group}
+For an ordered subclass $E\subseteq\No$, denote by $\Hahn{\R}{E}$
+the additive space of formal expressions
+\begin{equation}\label{isg:eq:nf}
+ x=\sum_{\gamma\in S} r_\gamma\omega^\gamma,
+ \qquad r_\gamma\in\R\setminus\{0\},
+\end{equation}
+where $S\subseteq E$ is a set reverse-well-ordered by $<$.
+Conway normal forms identify these expressions with the corresponding
+surreal numbers. The ordering is the sign of the coefficient at the
+greatest exponent of a nonzero difference. For $x\ne0$, write
+\[
+ \hdeg(x)=\max\supp(x),\qquad
+ \lc(x)=r_{\hdeg(x)}.
+\]
+We do not assert that $E$ is an additive group. Accordingly,
+$\Hahn{\R}{E}$ is used here as an additive, real-linear Hahn space, not
+necessarily as a ring. This distinction permits nonadditive exponent
+reindexings.
+
+Suppose $S=\{\gamma_\xi:\xi<\lambda\}$ is enumerated in strictly
+decreasing order. A leading truncation of $x$ is
+\[
+ x_{<\eta}=\sum_{\xi<\eta}r_{\gamma_\xi}\omega^{\gamma_\xi}
+ \quad(\eta\le\lambda).
+\]
+``Truncation closed'' will always refer to these leading truncations,
+including those at limit indices, not to closure under arbitrary
+subseries. The normal-form and monomial facts used here are part of the
+standard theory summarized in \cite{EK}; we never choose a noncanonical
+Hahn embedding of an arbitrary ordered group.
+
+\begin{definition}[Strong summability]\label{isg:def:strong}
+A set-indexed family $(x_i)_{i\in I}$ in a Hahn space is strongly
+summable if $\bigcup_i\supp(x_i)$ is reverse-well-ordered and each
+exponent occurs in only finitely many supports. Its sum is the normal
+form obtained by the finite coefficient sum at each exponent, with zero
+coefficients discarded.
+\end{definition}
+
+For a subgroup $G\subseteq\Hahn{\R}{E}$, set
+\[
+ G_\gamma=\{r\in\R:r\omega^\gamma\in G\}.
+\]
+It is \emph{cross-sectional on $E$} when $\omega^\gamma\in G$ for
+every $\gamma\in E$.
+
+\begin{fact}[Ehrlich--Kaplan, concrete form]\label{isg:fact:EK}
+An initial subgroup of $\No$ is a truncation-closed, cross-sectional
+Hahn subgroup on its initial exponent class
+$\Gamma(G)=\{\gamma:\omega^\gamma\in G\}$. Its nonzero coefficient
+groups are initial subgroups of $\R$, and
+\begin{equation}\label{isg:eq:dyadic}
+ \gamma,\eta\in\Gamma(G),\quad \eta\in\Rs(\gamma)
+ \quad\Longrightarrow\quad \D\subseteq G_\eta.
+\end{equation}
+Conversely, these conditions imply that the canonical normal-form image
+is initial in $\No$.
+\end{fact}
+
+This is the form of \cite[Theorem~1 and its proof]{EK} needed here.
+The last sentence is important: the sufficiency proof establishes
+initiality of the \emph{specified canonical image}, not just existence of
+some other initial embedding.
+
+The journal version states this concrete form outright. Its Theorem~5.1,
+the counterpart of \cite[Theorem~1]{EK}, says that a subgroup of $\No$ is
+initial if and only if it is isomorphic ``via the canonical isomorphism''
+to a truncation-closed, cross-sectional Hahn subgroup whose exponent
+class is an initial ordered subclass of $\No$ and whose coefficient
+groups satisfy the two conditions above \cite{EKjournal}. The canonical
+isomorphism is the normal-form identification of $\No$ with the Hahn
+group, so the journal statement is \cref{isg:fact:EK} as used here.
+The criterion is imported as a published statement. Neither the source
+manuscript nor the placement review re-proves it
+(\cref{isg:sec:provenance}).
+
+\begin{fact}[Real coefficient groups]\label{isg:fact:real}
+A nonzero initial additive subgroup of $\R$ either contains $\D$ or is
+$2^{-m}\Z$ for an integer $m\ge0$ \cite[Lemma~3]{EK}
+\textup{(}Lemma~5.1 of the journal version\textup{)}.
+In particular, a discrete one has least positive element $2^{-m}$.
+\end{fact}
+
+No proof in the present paper replaces \cref{isg:fact:EK} by the weaker
+assertion that initiality of the exponent set alone is sufficient. The
+coefficient groups and the right-ancestor condition are essential.
+
+\subsection{Omnific integers and coefficient isolation}
+We use the normal-form description
+\begin{equation}\label{isg:eq:Oz}
+ \Oz=\left\{\sum_{\gamma>0}r_\gamma\omega^\gamma+m:
+           m\in\Z\right\},
+\end{equation}
+with set reverse-well-ordered positive support and arbitrary real
+coefficients. This is Conway's canonical integer part, as recalled in
+\cite[Section~6.2]{Kaplan}, and the collection's $\Oz=\Z\oplus\Pi$
+(\cref{isg:sec:conventions}). It is an initial additive subgroup: apply
+\cref{isg:fact:EK} to $E=\No_{\ge0}$, coefficient group $\Z$ at zero and
+$\R$ at every positive exponent. Zero is never a right ancestor of a
+nonnegative number, so the exceptional coefficient group causes no
+violation of \eqref{isg:eq:dyadic}. Every positive element of \Oz is at
+least $1$; this discreteness is also \replabel{odg:prop:units} of the
+Diophantine report.
+
+\begin{lemma}[Isolating a normal-form term]\label{isg:lem:isolate}
+Let $G$ be an additive subgroup closed under leading truncations. If
+$x\in G$ has a nonzero coefficient $r_\gamma$ at exponent $\gamma$,
+then $r_\gamma\omega^\gamma\in G$.
+\end{lemma}
+\begin{proof}
+If $\gamma=\gamma_\eta$ in the decreasing enumeration of the support,
+subtract the truncation at $\eta$ from the truncation at $\eta+1$.
+Both belong to $G$. This also works when $\eta$ is a limit ordinal.
+\end{proof}
+
+This lemma permits removing a specified individual term. It does not
+license an arbitrary infinite subseries of an element of $G$.
+
+\section{Locating the least positive scale}\label{isg:sec:bottom}
+
+\begin{lemma}[A minimum in an initial tree]\label{isg:lem:min-tree}
+If a nonempty initial subclass $E\subseteq\No$ has a numerical minimum
+$p$, then $p=-\alpha$ for a unique ordinal $\alpha$.
+Moreover, the cone $C_\alpha=\{x\in\No:x\ge-\alpha\}$ is initial.
+\end{lemma}
+\begin{proof}
+A plus sign in $p$ would give a proper prefix smaller than $p$.
+Initiality would place that prefix in $E$, contradicting minimality.
+Thus every sign in $p$ is minus.
+
+For the second assertion, let $p=-\alpha$, $x\ge p$, and $v\pr x$.
+If $v<p$, then at the first disagreement with the all-minus sequence $p$
+one would have to find either a sign smaller than minus, which is
+impossible, or a minus sign after $p$ has ended. The latter would force
+$x$ itself to be below $p$. Hence $v\ge p$.
+\end{proof}
+
+\begin{proposition}[Bottom coefficient structure]\label{isg:prop:bottom}
+Let $A$ be a nonzero discrete initial subgroup with least positive
+member $\varepsilon$. There are unique $\alpha\in\On$, $n\in\N$
+such that, writing $p=-\alpha$ and $c=2^{-n}$,
+\begin{equation}\label{isg:eq:bottomdata}
+ \varepsilon=c\omega^p,\qquad
+ \min\Gamma(A)=p,\qquad A_p=c\Z.
+\end{equation}
+Every support of every member of $A$ lies in $C_\alpha$.
+\end{proposition}
+\begin{proof}
+By \cref{isg:fact:EK}, $A$ is truncation closed. Write the leading term of
+$\varepsilon$ as $r\omega^p$ with $r>0$. This term belongs to $A$.
+If the remaining tail $t$ were nonzero, then $|t|\in A$ and
+$0<|t|<\varepsilon$, since the leading exponent of $t$ is strictly
+smaller than $p$. This contradicts the choice of $\varepsilon$.
+Consequently $\varepsilon=r\omega^p$.
+
+The exponent $p$ lies in $\Gamma(A)$ by the cross-sectional normal-form
+description. If $\gamma<p$ belonged to $\Gamma(A)$, then
+$0<\omega^\gamma<r\omega^p=\varepsilon$, another contradiction.
+Thus $p$ is the minimum of $\Gamma(A)$. By \cref{isg:lem:min-tree},
+$p=-\alpha$ for a unique ordinal $\alpha$.
+
+The real coefficient group $A_p$ has least positive element $r$.
+By \cref{isg:fact:real}, it is $2^{-n}\Z$ for a unique $n\in\N$, and
+$r=2^{-n}$. All supports lie in $\Gamma(A)$, proving the last assertion.
+\end{proof}
+
+The shape of the least positive element is consistent with
+\cite[Proposition~9 and its proof]{EK} (Proposition~5.2 of the journal
+version); the argument above also records
+the support and coefficient data needed later.
+
+\begin{corollary}[Forced ancestors]\label{isg:cor:forced}
+Under \eqref{isg:eq:bottomdata}, for every $\beta<\alpha$ one has
+\[
+ -\beta\in\Gamma(A),\qquad \D\omega^{-\beta}\subseteq A.
+\]
+\end{corollary}
+\begin{proof}
+The number $-\beta$ is a right ancestor of $-\alpha$.
+Initiality gives the exponent, and \eqref{isg:eq:dyadic} gives all dyadic
+coefficients there.
+\end{proof}
+
+The bottom coefficient group can be discrete, but all these ancestors
+must carry dyadically divisible coefficient groups. This is the information
+that survives normalization as the subgroup $K_\alpha$.
+
+\section{Moving a minimum to zero in the sign tree}\label{isg:sec:surgery}
+
+\subsection{Definition and inverse}
+Fix $\alpha\in\On$, put $p=-\alpha$, and keep
+$C_\alpha=[p,\infty)$. Every $x\in C_\alpha$ belongs to exactly one of
+the following cases: $x=p$; $x=p\cat\plus\cat u$ for a unique tail
+$u$; or $p$ is not a prefix of $x$.
+Indeed, an extension through $p\cat\minus$ would lie below the cone.
+
+\begin{definition}[Root relocation]\label{isg:def:theta}
+Define $\tht:C_\alpha\to\No_{\ge0}$ by
+\begin{equation}\label{isg:eq:theta}
+ \tht(x)=
+ \begin{cases}
+  0, & x=p,\\
+  \plus\cat p\cat u, & x=p\cat\plus\cat u,\\
+  \plus\cat x, & p\not\pre x.
+ \end{cases}
+\end{equation}
+The inverse candidate $\psiA:\No_{\ge0}\to C_\alpha$ is
+\begin{equation}\label{isg:eq:psi}
+ \psiA(0)=p,\qquad
+ \psiA(\plus\cat v)=
+ \begin{cases}
+  p\cat\plus\cat u,&v=p\cat u,\\
+  v,&p\not\pre v.
+ \end{cases}
+\end{equation}
+\end{definition}
+
+The symbols in these formulas are sign blocks. For $\alpha=0$, the block
+$p$ is empty and both maps are the identity. For $\alpha>0$, one may
+picture the operation as deleting the old minimum node, moving its
+right subtree into the vacated position, and adding a new common root.
+The formulas, not this picture, govern limit-length cases.
+
+\begin{lemma}[The inverse is well-defined]\label{isg:lem:inverse}
+The maps \eqref{isg:eq:theta} and \eqref{isg:eq:psi} are inverse bijections
+between $C_\alpha$ and $\No_{\ge0}$.
+\end{lemma}
+\begin{proof}
+Every nonempty image under $\tht$ begins with plus and is therefore
+positive. Conversely, let $y=\plus\cat v>0$. If $p\pre v$, the
+specified preimage extends $p$ through plus and is greater than $p$.
+If $p\not\pre v$, then $v>p$: a sequence below an all-minus word must
+extend that entire word through minus, contrary to the assumption.
+Thus $\psiA$ takes values in the cone.
+
+If $x=p$, the composite $\psiA\tht$ returns $p$. If
+$x=p\cat\plus\cat u$, removing the first sign of
+$\plus\cat p\cat u$ leaves $p\cat u$, and the first inverse case
+returns $x$. In the remaining case, removing the first sign leaves
+$x$, to which the second inverse case applies. The same two cases for
+$v$ prove $\tht\psiA(y)=y$ for positive $y$, and zero is immediate.
+Uniqueness of tails follows from the order types of the corresponding
+ordinal intervals, so none of these steps requires a successor length.
+\end{proof}
+
+\begin{lemma}[Order preservation]\label{isg:lem:thetaorder}
+The bijection $\tht$ is strictly increasing.
+\end{lemma}
+\begin{proof}
+The minimum $p$ maps to the minimum $0$. On the block
+\[
+ U=\{p\cat\plus\cat u:u\in\No\},
+\]
+comparison is comparison of the tails $u$, before and after the map.
+On the remaining class $V=C_\alpha\setminus(U\cup\{p\})$, adding
+one common initial plus sign also preserves comparison.
+
+It remains to compare the two blocks. Every member of $U$ is smaller
+than every member $v$ of $V$: before the end of $p$, such a $v$ either
+stops or first has plus where $p$ has minus. In both cases $v$ is greater
+than every extension of $p$. After applying $\tht$, cancel the common
+initial plus sign. One then compares an extension $p\cat u$ of $p$
+with $v$, and the same first disagreement proves the same inequality.
+When $\alpha=0$, the block $V$ is empty. This covers all cases.
+\end{proof}
+
+\subsection{The exact predecessor identity}
+The following identity is the central combinatorial statement.
+It makes the exception at the old minimum completely explicit.
+
+\begin{theorem}[Predecessor and right-ancestor transport]\label{isg:thm:tree}
+For every $x\in C_\alpha$ with $x>p$,
+\begin{equation}\label{isg:eq:predidentity}
+ \Pred(\tht(x))=\tht\bigl[\Pred(x)\cup\{p\}\bigr].
+\end{equation}
+Consequently,
+\begin{align}
+ \Rs(\tht(x))&=\tht[\Rs(x)],\label{isg:eq:rightidentity}\\
+ \Ls(\tht(x))&=\tht[\Ls(x)\cup\{p\}].\label{isg:eq:leftidentity}
+\end{align}
+At $x=p$ the image has no proper ancestors, while
+\begin{equation}\label{isg:eq:lost}
+ \Rs(p)=\Pred(p)=\{-\beta:\beta<\alpha\},\qquad
+ \tht[\Rs(p)]=\{q_\beta:\beta<\alpha\}.
+\end{equation}
+For $x,y>p$, simplicity is preserved and reflected:
+\[
+ x\pr y\quad\Longleftrightarrow\quad\tht(x)\pr\tht(y).
+\]
+\end{theorem}
+\begin{proof}
+First suppose $p\not\pre x$. No prefix $v\pre x$ can equal or extend
+$p$; otherwise $p\pre x$. Thus $\tht(v)=\plus\cat v$ for all
+proper prefixes $v$ of $x$. The proper prefixes of $\plus\cat x$ are
+exactly the empty word, together with these $\plus\cat v$.
+The empty word is $\tht(p)$, proving \eqref{isg:eq:predidentity} in this
+case.
+
+Now suppose $x=p\cat\plus\cat u$. The proper prefixes of $x$ are
+\[
+ \{-\beta:\beta\le\alpha\}
+ \ \cup\ \{p\cat\plus\cat v:v\pr u\}.
+\]
+Under $\tht$ these become, respectively,
+\[
+ \{q_\beta:\beta<\alpha\}\cup\{0\},
+ \qquad \{\plus\cat p\cat v:v\pr u\}.
+\]
+These are precisely the proper prefixes of $\plus\cat p\cat u$.
+When $u$ is empty the second collection is empty; when $u$ has limit
+length it includes exactly its proper ordinal restrictions. This proves
+\eqref{isg:eq:predidentity} without a missing limit case.
+
+Filter \eqref{isg:eq:predidentity} according to numerical comparison with
+$\tht(x)$. By \cref{isg:lem:thetaorder}, comparison of images is comparison
+of preimages. Since $p<x$, the extra element $\tht(p)=0$ is a left
+ancestor, never a right ancestor. This gives
+\eqref{isg:eq:rightidentity} and \eqref{isg:eq:leftidentity}.
+Formula \eqref{isg:eq:lost} follows directly from the all-minus word $p$.
+Finally, if $x,y>p$, membership of $\tht(x)$ in the predecessor set of
+$\tht(y)$ is, by injectivity and \eqref{isg:eq:predidentity}, exactly
+membership of $x$ in $\Pred(y)$.
+\end{proof}
+
+\begin{remark}[A stronger identity that would be false]\label{isg:rem:exception}
+For $\alpha>0$ one must not assert \eqref{isg:eq:rightidentity} at $x=p$.
+Already $p=-1$ has right ancestor $0$, whose image is $1$, while
+$\tht(p)=0$ has no ancestors at all. The missing relations at precisely
+this one point account for the extra condition in \cref{isg:thm:B}.
+\end{remark}
+
+\begin{corollary}[Initiality of the image]\label{isg:cor:initialimage}
+If $\Gamma$ is initial and has minimum $p=-\alpha$, then
+$\tht[\Gamma]$ is initial and has minimum $0$.
+\end{corollary}
+\begin{proof}
+The minimum assertion follows from the order-isomorphism. The image of
+$p$ has no predecessors. For $x>p$ in $\Gamma$, the right side of
+\eqref{isg:eq:predidentity} lies in $\tht[\Gamma]$, because both
+$\Pred(x)$ and $p$ lie in $\Gamma$.
+\end{proof}
+
+\begin{proposition}[The exact inverse obstruction]\label{isg:prop:inversetree}
+Let $\Delta\subseteq\No_{\ge0}$ be nonempty and initial. Put
+\[
+ \Lambda_\alpha=\{0\}\cup\{q_\beta:\beta<\alpha\}.
+\]
+Then $\psiA[\Delta]$ is initial if and only if
+$\Lambda_\alpha\subseteq\Delta$.
+\end{proposition}
+\begin{proof}
+The empty word $0$ belongs to $\Delta$, so $p$ belongs to the inverse
+image. If the inverse image is initial, it contains every $-\beta$ with
+$\beta<\alpha$; applying $\tht$ gives $q_\beta\in\Delta$.
+
+Conversely, suppose $\Lambda_\alpha\subseteq\Delta$. All predecessors
+of $p$ are then in the inverse image. For any other inverse-image element
+$x=\psiA(y)$, where $y>0$, \eqref{isg:eq:predidentity} gives
+\[
+ \Pred(x)\cup\{p\}=\psiA[\Pred(y)]\subseteq\psiA[\Delta].
+\]
+Hence every inverse-image element has all its predecessors in that image.
+\end{proof}
+
+\subsection{Exponent lengths and a finite picture}
+\begin{proposition}[An exponent-birthday bound]\label{isg:prop:length}
+For every $x\in C_\alpha$,
+\[
+ \len(\tht(x))\le 1+_{\mathrm{ord}}\len(x).
+\]
+In particular, an infinite exponent length never increases.
+\end{proposition}
+\begin{proof}
+At $x=p$ the image length is zero. In the outside case the length is
+exactly $1+\len(x)$. In the inside case, if $\len(u)=\mu$, the source
+length is $\alpha+1+\mu$, and the image length is $1+\alpha+\mu$.
+Monotonicity of ordinal addition gives
+$1+\alpha+\mu\le1+\alpha+1+\mu$. Finally, $1+\lambda=\lambda$ for
+any infinite ordinal $\lambda$: write $\lambda$ as a nonzero limit
+ordinal followed by a finite tail.
+\end{proof}
+
+This is a bound for \emph{exponents}. It is not a theorem bounding the
+birthday of the entire transformed surreal normal form.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small},
+                    x=1.30cm,y=1.0cm]
+\node (a) at (0,0) {$0$};
+\node (b) at (-1,-1) {$-1$};
+\node (c) at (1,-1) {$1$};
+\node (d) at (-0.5,-2) {$-\tfrac12$};
+\node (e) at (0.6,-2) {$\tfrac12$};
+\draw (a)--(b);\draw(a)--(c);\draw(b)--(d);\draw(c)--(e);
+\node at (0,-2.65) {Source: a finite part of $C_1$};
+\node (r) at (5,0) {$0$};
+\node (s) at (5,-1) {$1$};
+\node (t) at (6,-2) {$2$};
+\node (u) at (4,-2) {$\tfrac12$};
+\node (v) at (5.6,-3) {$\tfrac32$};
+\draw(r)--(s);\draw(s)--(t);\draw(s)--(u);\draw(t)--(v);
+\draw[->,thick] (1.8,-0.7)--node[above]{$\Theta_1$}(3.2,-0.7);
+\node at (5,-3.55) {Image and its prefix relations};
+\end{tikzpicture}
+\end{center}
+Here $-1\mapsto0$, $0\mapsto1$, $1\mapsto2$,
+$-\tfrac12\mapsto\tfrac12$, and
+$\tfrac12\mapsto\tfrac32$. The numerical labels are exponents, not
+the monomials with those exponents.
+
+\section{Strong transport of normal forms}\label{isg:sec:transport}
+
+\begin{definition}[Bottom-normalized transport]\label{isg:def:normalization}
+For $\alpha\in\On$, $n\in\N$, $p=-\alpha$, and $c=2^{-n}$, define
+\begin{equation}\label{isg:eq:N}
+ \Rect\left(\sum_{\gamma\ge p}r_\gamma\omega^\gamma\right)
+   =c^{-1}r_p+
+     \sum_{\gamma>p}r_\gamma\omega^{\tht(\gamma)}.
+\end{equation}
+A coefficient not in the support is interpreted as zero. The inverse is
+\begin{equation}\label{isg:eq:Ninv}
+ \Rect^{-1}\left(s_0+\sum_{\delta>0}s_\delta\omega^\delta\right)
+   =c s_0\omega^p+
+     \sum_{\delta>0}s_\delta\omega^{\psiA(\delta)}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Ambient transport]\label{isg:thm:transport}
+The formulas above define inverse real-linear order-isomorphisms
+\[
+ \Rect:\Hahn{\R}{C_\alpha}
+       \longrightarrow\Hahn{\R}{\No_{\ge0}}.
+\]
+They preserve support cardinality and decreasing support order type,
+commute with every leading truncation, and preserve and reflect strong
+summability of set-indexed families. For every such strongly summable
+family,
+\begin{equation}\label{isg:eq:strongtransport}
+ \Rect\left(\sum_{i\in I}x_i\right)
+       =\sum_{i\in I}\Rect(x_i).
+\end{equation}
+For a nonzero $x$,
+\begin{equation}\label{isg:eq:leadingtransport}
+ \hdeg(\Rect(x))=\tht(\hdeg(x)),
+ \qquad
+ \lc(\Rect(x))=
+ \begin{cases}
+  c^{-1}\lc(x),&\hdeg(x)=p,\\
+  \lc(x),&\hdeg(x)>p.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+An order-isomorphism takes a reverse-well-ordered support to a
+reverse-well-ordered support and preserves its order type. The support is
+still a set: it is the image of a set under a definable class function.
+Every coefficient is multiplied by a nonzero real number, so no support
+point is lost and no new point is created. These observations show that
+both displayed formulas are legitimate normal forms. Their inverse
+identities follow coefficient by coefficient from
+\cref{isg:lem:inverse}.
+
+Both addition of normal forms and the proposed map are coefficientwise,
+with the same fixed multiplier $c^{-1}$ at the bottom point. Hence the
+map is real-linear. The greatest nonzero coefficient retains its sign,
+because all multipliers are positive. Thus the map and its inverse
+preserve order. This proves \eqref{isg:eq:leadingtransport} as well.
+
+A leading truncation is specified by an initial segment of the decreasing
+support enumeration. The same enumeration indices specify the
+corresponding truncation of the transported support. Applying the map
+therefore commutes with truncation, including at a limit index.
+
+For a set-family $(x_i)$, one has the exact equality
+\[
+ \bigcup_i\supp(\Rect(x_i))
+ =\tht\left[\bigcup_i\supp(x_i)\right].
+\]
+Reverse well-ordering of these unions is equivalent in both directions.
+For each $\gamma$, the index set of family members contributing at
+$\gamma$ is exactly the index set contributing at $\tht(\gamma)$ after
+transport. The point-finiteness requirement is therefore also equivalent.
+When it holds, coefficient extraction reduces \eqref{isg:eq:strongtransport}
+to a finite real sum, through which the fixed coefficient multiplier
+commutes. This proves the entire assertion without invoking convergence
+in an order topology.
+\end{proof}
+
+\begin{remark}[No implicit completion of a subgroup]\label{isg:rem:nocompletion}
+The ambient Hahn spaces in \cref{isg:thm:transport} are full spaces. A
+particular initial subgroup $A$ need not be closed under all strong sums
+or all infinite subseries. We define its image as the actual set or class
+$\Rect[A]$, not as the space of all series with the same coefficient
+groups. If a strongly summable family in $A$ has sum outside $A$,
+\eqref{isg:eq:strongtransport} still holds in the ambient spaces, but is not
+an assertion of an internal summation operation on $A$.
+\end{remark}
+
+\begin{remark}[What is and is not preserved]\label{isg:rem:preserved}
+The map preserves the ordered chain of Archimedean classes, with their
+exponents reindexed by $\tht$. It is not a homomorphism of additive
+\emph{exponent} groups. Consequently \eqref{isg:eq:leadingtransport} should
+not be described as preservation of a multiplicative valuation with the
+same value-group structure.
+\end{remark}
+
+\section{Proof of omnific normalization}\label{isg:sec:normalization}
+
+We now prove \cref{isg:thm:A}. Let $A$ be as there, and obtain
+$\alpha,n,p,c$ from \cref{isg:prop:bottom}. Write
+\[
+ \Gamma=\Gamma(A),\qquad \Delta=\tht[\Gamma],
+ \qquad H=\Rect[A].
+\]
+The ambient transport restricts to an ordered-group isomorphism onto
+$H$. It remains to prove that this actual image is an initial subgroup
+of $\Oz$.
+
+\begin{lemma}[Transported coefficients]\label{isg:lem:coefficients}
+The group $H$ is truncation closed and cross-sectional on $\Delta$,
+and its coefficient groups are
+\begin{equation}\label{isg:eq:coefftransport}
+ H_0=\Z,\qquad H_{\tht(\gamma)}=A_\gamma\quad(\gamma>p).
+\end{equation}
+Its exponent class is exactly $\Delta$.
+\end{lemma}
+\begin{proof}
+Truncation closure follows from \cref{isg:thm:transport}. For
+$\gamma>p$, one has
+$\Rect(\omega^\gamma)=\omega^{\tht(\gamma)}$. At the bottom,
+$\Rect(c\omega^p)=1$. Thus all the leaders on $\Delta$ belong to $H$.
+No image element can have a support point outside $\Delta$.
+
+The formula at a positive image exponent leaves its coefficient
+unchanged, and the inverse formula has the same property. This proves
+both inclusions in the second identity of \eqref{isg:eq:coefftransport}.
+At zero the coefficient group is $c^{-1}A_p=\Z$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{isg:thm:A}]
+By \cref{isg:cor:initialimage}, $\Delta$ is initial with minimum zero.
+By \cref{isg:lem:coefficients}, the image is truncation closed and
+cross-sectional, and all its coefficient groups are initial real
+subgroups.
+
+Consider an obligation in the dyadic right-ancestor condition for $H$:
+let $\delta,\eta\in\Delta$ and $\eta\in\Rs(\delta)$.
+The point $\delta$ cannot be zero. Write $\delta=\tht(\gamma)$
+with $\gamma>p$. By \eqref{isg:eq:rightidentity}, there exists
+$\xi\in\Rs(\gamma)$ with $\eta=\tht(\xi)$. Since $\xi>\gamma>p$,
+its coefficient group was not rescaled. The initiality of $A$ gives
+\[
+ \D\subseteq A_\xi=H_\eta.
+\]
+Every target obligation is therefore satisfied. The concrete sufficiency
+in \cref{isg:fact:EK} proves that $H$ is initial in $\No$.
+
+All exponents of $H$ are nonnegative and its zero coefficient is an
+integer. Hence $H\subseteq\Oz$ by \eqref{isg:eq:Oz}. Its minimum positive
+element is $1$, either by order-isomorphism or directly from its normal
+forms. Finally, $\Rect(\varepsilon)=1$, and all support and summability
+claims are the restrictions of \cref{isg:thm:transport}. Uniqueness of
+$\alpha,n$ was established in \cref{isg:prop:bottom}.
+\end{proof}
+
+\begin{corollary}[The cited existence question]\label{isg:cor:answer}
+Every discrete initial subgroup of $\No$ is isomorphic, as an ordered
+abelian group, to an initial subgroup of $\Oz$.
+\end{corollary}
+
+\begin{remark}[An initial image is not a simplicity isomorphism]\label{isg:rem:notsimplicity}
+The conclusion is exactly an ordered-group isomorphism to an initial
+image. For example, on $A=\frac12\Z$ the map $\mathcal N_{0,1}$
+sends $1$ to $2$ and $1/2$ to $1$. Although $1\pr1/2$, one does not
+have $2\pr1$. Thus the normalization is not generally an isomorphism
+of the full simplicity-enriched structures. Any initial cyclic subgroup
+of $\Oz$ is $\Z$, and the order-isomorphism from $\frac12\Z$ to
+$\Z$ is forced. Thus this example rules out a generally
+simplicity-preserving version. The published question does not demand
+that stronger conclusion.
+\end{remark}
+
+\section{Exact images, extremal groups, and admissible scales}\label{isg:sec:classification}
+
+\subsection{The compulsory dyadic spine}
+\begin{lemma}[The spine group is initial]\label{isg:lem:K}
+For every ordinal $\alpha$, the group $K_\alpha$ of
+\eqref{isg:eq:Kintro} is initial in $\No$, has least positive element $1$,
+and lies in $\Oz$. Its exponent class is $\Lambda_\alpha$.
+\end{lemma}
+\begin{proof}
+The proper prefixes of $q_\beta$ are $0$ and the $q_\eta$ with
+$\eta<\beta$. Thus $\Lambda_\alpha$ is initial. The finite-support
+group on this class is cross-sectional and truncation closed. Its
+coefficient group is $\Z$ at zero and $\D$ at every other point.
+Any right ancestor lies among those positive spine points, where the
+required dyadic containment holds. Apply \cref{isg:fact:EK}. The remaining
+claims follow from its normal forms.
+\end{proof}
+
+\begin{proposition}[Necessary image data]\label{isg:prop:Knecessary}
+If $A$ has least positive element $2^{-n}\omega^{-\alpha}$ and is
+initial, then $K_\alpha\subseteq\Rect[A]$.
+\end{proposition}
+\begin{proof}
+The image contains $1$. For each $\beta<\alpha$, \cref{isg:cor:forced}
+gives $\D\omega^{-\beta}\subseteq A$. These terms are above the
+bottom exponent, so their coefficients are unchanged, and
+$\tht(-\beta)=q_\beta$. Thus the image contains every generating
+summand of $K_\alpha$ and hence all their finite sums.
+\end{proof}
+
+\begin{proof}[Proof of \cref{isg:thm:B}]
+Necessity has just been proved. Conversely, let $H\subseteq\Oz$ be
+initial with $K_\alpha\subseteq H$, and put $A=\Rect^{-1}[H]$.
+Since $H$ contains $1$, it has least positive element $1$ and $H_0=\Z$.
+Let $\Delta=\Gamma(H)$. The inclusion of $K_\alpha$ implies
+$\Lambda_\alpha\subseteq\Delta$, so
+$\Gamma=\psiA[\Delta]$ is initial by \cref{isg:prop:inversetree}.
+Its minimum is $p$.
+
+By ambient transport, $A$ is an additive, truncation-closed Hahn subgroup.
+Its bottom coefficient group is $c\Z$, which contains $1$ since
+$c=2^{-n}$; all other coefficient groups are inherited from $H$.
+It is therefore cross-sectional and has initial real coefficient groups.
+
+We check the source right-ancestor condition. If $x\in\Gamma$ satisfies
+$x>p$ and $y\in\Rs(x)$, then
+$\tht(y)\in\Rs(\tht(x))$. The coefficient group at $y$ is unchanged
+from that at $\tht(y)$, so it contains $\D$ by the initiality of $H$.
+If instead $x=p$, its right ancestors are exactly the $-\beta$ for
+$\beta<\alpha$. The hypothesis $K_\alpha\subseteq H$ says that all
+coefficient groups at their images $q_\beta$ contain $\D$; again these
+coefficients are unchanged. This checks the only obligations not already
+covered by \eqref{isg:eq:rightidentity}.
+
+The criterion \cref{isg:fact:EK} now proves $A$ initial. Its least positive
+element is $\Rect^{-1}(1)=c\omega^p$, since the inverse is increasing.
+The inverse identities show uniqueness, and a fixed bijection preserves
+and reflects inclusion of its images. This proves the correspondence.
+\end{proof}
+
+\subsection{Smallest and largest initial realizations at a fixed scale}
+Define
+\begin{align}
+ L_{\alpha,n}
+   &=c\Z\omega^p\ \oplus\!
+     \bigoplus_{\beta<\alpha}\D\omega^{-\beta},\label{isg:eq:L}\\
+ M_{\alpha,n}
+   &=\{x\in\Hahn{\R}{C_\alpha}:[\omega^p]x\in c\Z\}.
+   \label{isg:eq:M}
+\end{align}
+Here $[\omega^p]x$ denotes coefficient extraction. The direct sum in
+\eqref{isg:eq:L} again permits only finite supports; the class in
+\eqref{isg:eq:M} permits every set reverse-well-ordered support in the cone.
+
+\begin{theorem}[Extremal groups]\label{isg:thm:extremal}
+The groups $L_{\alpha,n}$ and $M_{\alpha,n}$ are initial with least
+positive element $c\omega^p$. Every initial group $A$ with that least
+positive element satisfies
+\[
+ L_{\alpha,n}\subseteq A\subseteq M_{\alpha,n}.
+\]
+Moreover,
+\begin{equation}\label{isg:eq:extremalimages}
+ \Rect[L_{\alpha,n}]=K_\alpha,
+ \qquad \Rect[M_{\alpha,n}]=\Oz,
+ \qquad M_{\alpha,n}=c\omega^p\Oz.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The first two identities in \eqref{isg:eq:extremalimages} follow directly
+from the formulas: every positive image coefficient is unrestricted in
+$M$, whereas precisely the finite dyadic spine terms occur for $L$.
+By \cref{isg:thm:B}, the inverse images of $K_\alpha$ and $\Oz$ are
+initial and have the required minimum. The lower bound on $A$ follows
+from \cref{isg:cor:forced} and $A_p=c\Z$; the upper bound follows from
+\cref{isg:prop:bottom}.
+
+For the last identity, ordinary multiplication by $c\omega^p$ sends a
+normal form on $[0,\infty)$ to one on $[p,\infty)$ by the arithmetic
+translation $\delta\mapsto p+\delta$. Its bottom coefficient belongs
+to $c\Z$, and the other coefficients range over all of $\R$ because
+multiplication by $c\ne0$ is a bijection of $\R$. Conversely, translate
+any support in the cone back by $-p$ and divide its coefficients by $c$.
+The resulting series belongs to $\Oz$.
+\end{proof}
+
+The equality $M_{\alpha,n}=\varepsilon\Oz$ does not make the theorem
+trivial. It concerns the \emph{largest} group, whose higher coefficients
+are all real and whose support class is the full cone. Arithmetic
+translation can destroy initiality for smaller initial subgroups, even
+though it behaves correctly for this maximal one.
+
+\begin{corollary}[Sharp size obstruction]\label{isg:cor:size}
+Every set-sized initial group $A$ with least positive element
+$2^{-n}\omega^{-\alpha}$ satisfies
+\[
+ |A|\ge\max(\aleph_0,|\alpha|).
+\]
+For every ordinal $\alpha$ and every $n\in\N$ this bound is attained
+by $L_{\alpha,n}$. In particular, a countable initial group can have
+such a least positive element only when $\alpha$ is countable.
+\end{corollary}
+\begin{proof}
+The group contains the countably infinite cyclic subgroup generated by
+its least positive member and contains distinct terms $\omega^{-\beta}$
+for $\beta<\alpha$. This gives the lower bound. The finite-support
+sum defining $L_{\alpha,n}$ has countable coefficient groups and an
+index set of size $|\alpha|+1$, giving exactly the displayed cardinality.
+Its initiality and minimum follow from \cref{isg:thm:extremal}.
+\end{proof}
+
+This is a restriction on a specified initial realization. The ordinal
+$\alpha$ is not an invariant of the abstract ordered group under arbitrary
+isomorphisms: normalization itself changes the least positive element
+to $1$.
+
+\subsection{Dyadic depth and the spectrum of inverse scales}
+\begin{definition}[Dyadic-spine depth]\label{isg:def:depth}
+Let $H\subseteq\Oz$ be a nonzero initial subgroup. If there exists an
+ordinal $\beta$ such that $\D\omega^{q_\beta}\not\subseteq H$, let
+$d(H)$ be the least such $\beta$. Otherwise write $d(H)=\On$ as a
+formal unbounded-depth marker, not as a surreal or a set ordinal.
+\end{definition}
+
+\begin{corollary}[Admissible scales]\label{isg:cor:depth}
+If $d(H)$ is an ordinal, then for every $\alpha\in\On$ and every
+$n\in\N$,
+\[
+ \Rect^{-1}[H]\text{ is initial}
+ \quad\Longleftrightarrow\quad \alpha\le d(H).
+\]
+If $d(H)=\On$, every ordinal $\alpha$ is allowed. Whenever the inverse
+is initial, its least positive member is $2^{-n}\omega^{-\alpha}$.
+The parameter $n$ imposes no further obstruction.
+\end{corollary}
+\begin{proof}
+By \cref{isg:thm:B}, the condition is exactly that all
+$\D\omega^{q_\beta}$ for $\beta<\alpha$ lie in $H$. This holds
+precisely through the first missing index, inclusively, and fails at all
+larger indices. In the unbounded case there is no missing index.
+\end{proof}
+
+For example, $d(K_\alpha)=\alpha$, since the exponent $q_\alpha$
+is absent while all the earlier required dyadic terms are present.
+Thus the endpoint in \cref{isg:cor:depth} can be a limit ordinal and must
+not be replaced with a strict inequality. For a set-sized $H$, a first
+missing index exists: the distinct monomials $\omega^{q_\beta}$
+cannot all belong to a set. The subgroup
+$\bigcup_{\alpha\in\On}K_\alpha$, interpreted as the class of all
+finite dyadic-spine sums with an integer constant, is an example with
+unbounded depth. It is initial by \cref{isg:fact:EK}, but is much smaller
+than $\Oz$, for example it does not contain $\omega^2$.
+
+\section{The quotient by the least positive cyclic subgroup}\label{isg:sec:quotient}
+
+\subsection{Convexity and an actual splitting}
+Fix $A$, $p$, $c$, and $\varepsilon=c\omega^p$ as before. Define
+\[
+ \pi_p:A\longrightarrow\Z,
+ \qquad \pi_p(x)=c^{-1}[\omega^p]x,
+ \qquad A^{>p}=\ker\pi_p.
+\]
+Although its notation emphasizes the higher exponents, $A^{>p}$ also
+contains zero.
+
+\begin{lemma}[Bottom-layer decomposition]\label{isg:lem:split}
+The map $\pi_p$ is a surjective additive homomorphism,
+$\pi_p(m\varepsilon)=m$, and
+\[
+ A=A^{>p}\oplus\Z\varepsilon
+\]
+as additive groups. The subgroup $\Z\varepsilon$ is convex. Every
+nonzero positive element of $A^{>p}$ dominates all integer multiples of
+$\varepsilon$.
+\end{lemma}
+\begin{proof}
+Coefficient extraction is additive, and $A_p=c\Z$. This proves all
+assertions about $\pi_p$. Given $x\in A$, the term
+$\pi_p(x)\varepsilon$ belongs to $A$ and subtraction produces an element
+of $A^{>p}$. The intersection of the two displayed summands is zero.
+
+A nonzero element of $A^{>p}$ has greatest exponent strictly above $p$.
+Its absolute value therefore exceeds $m\varepsilon$ for every positive
+integer $m$. If $0\le x\le m\varepsilon$ in $A$ for some integer
+$m\ge0$, its component in $A^{>p}$ must consequently be zero; thus
+$x\in\Z\varepsilon$. Translation and sign reversal prove convexity.
+\end{proof}
+
+The summand $A^{>p}$ need not itself be initial as a concrete subclass
+of $\No$. For example, with $A=\Z+\Z\omega$, it is $\Z\omega$,
+which omits the proper prefix $1$ of $\omega$. A second exponent operation
+is needed for an \emph{initial} quotient realization.
+
+\subsection{Deleting a positive root}
+Every positive surreal exponent has a unique form $\plus\cat v$.
+Define
+\[
+ \rho:\No_{>0}\longrightarrow\No,\qquad
+ \rho(\plus\cat v)=v.
+\]
+Unlike $\tht$, this map has no exceptional point inside its domain.
+It preserves comparison and preserves and reflects prefix relations
+between positive source points.
+
+\begin{lemma}[Positive-root deletion]\label{isg:lem:rho}
+If $\Delta\subseteq\No_{\ge0}$ is initial, then
+$E=\rho[\Delta\setminus\{0\}]$ is initial, possibly empty. For
+$\delta>0$,
+\[
+ \Rs(\rho(\delta))=\rho[\Rs(\delta)].
+\]
+\end{lemma}
+\begin{proof}
+If $v\pr\rho(\delta)$, then $\plus\cat v\pr\delta$ is a positive
+prefix and lies in $\Delta$. Its image is $v$, establishing initiality.
+Every proper prefix of $\delta=\plus\cat u$ is either $0$, which is
+smaller than $\delta$, or $\plus\cat v$ with $v\pr u$.
+Comparisons of the latter with $\delta$ are comparisons of $v$ with $u$.
+This proves the right-ancestor identity.
+\end{proof}
+
+Let $H=\Rect[A]\subseteq\Oz$ and
+\[
+ H^+=\{h\in H:\ct(h)=0\}.
+\]
+The superscript $+$ here means ``strictly positive exponents,'' not
+``positive elements.'' To avoid any order-cone interpretation, define
+its transported group explicitly by
+\begin{equation}\label{isg:eq:Bquotient}
+ B=\left\{\sum_{\delta>0}s_\delta\omega^{\rho(\delta)}:
+              \sum_{\delta>0}s_\delta\omega^\delta\in H^+\right\}.
+\end{equation}
+
+\begin{proposition}[An initial model of the quotient]\label{isg:prop:quotient}
+The class $B$ in \eqref{isg:eq:Bquotient} is an initial additive subgroup of
+$\No$. The normal-form map in that formula induces ordered-group
+isomorphisms
+\[
+ A/\Z\varepsilon\cong H/\Z\cong H^+\cong B.
+\]
+\end{proposition}
+\begin{proof}
+The first isomorphism is induced by $\Rect$. Since constants of $H$
+are integers and all integers lie in $H$, every coset in $H/\Z$ has a
+unique representative with zero constant coefficient. The quotient
+ordering agrees with the ordering of those representatives, because a
+nonzero positive-exponent term dominates all integers.
+
+The group $H^+$ is truncation closed and cross-sectional on
+$\Delta\setminus\{0\}$. Its coefficient groups at those points are
+the same as those of $H$. Reindexing by the order-isomorphism $\rho$
+produces a truncation-closed, cross-sectional subgroup with the same
+coefficient groups. Its exponent class is initial by \cref{isg:lem:rho}.
+The right-ancestor identity in that lemma transfers every dyadic
+obligation from $H$ to $B$. Hence $B$ is initial by \cref{isg:fact:EK}.
+If there are no positive exponents, the group is $\{0\}$ and the same
+conclusion is immediate.
+\end{proof}
+
+\begin{proof}[Proof of \cref{isg:thm:C}]
+Combine \cref{isg:lem:split,isg:prop:quotient}. The explicit isomorphism sends
+$x\in A$ to
+\[
+ \left(\rho_*\left(\Rect(x)-\pi_p(x)\right),\ \pi_p(x)\right),
+\]
+where $\rho_*$ denotes the normal-form reindexing of
+\eqref{isg:eq:Bquotient}. The higher component determines the sign whenever
+it is nonzero; otherwise the sign is the sign of the integer component.
+This is precisely the indicated lexicographic order.
+\end{proof}
+
+\begin{corollary}[Finite iteration]\label{isg:cor:iteration}
+Starting with an initial group, repeatedly quotient by its least positive
+cyclic subgroup whenever the current quotient is nonzero and discrete.
+At every finite stage reached in this way, the quotient has an explicit
+initial realization in $\No$.
+\end{corollary}
+\begin{proof}
+Apply \cref{isg:thm:C} at the first stage and then apply it to the initial
+realization just constructed at each subsequent stage. This is ordinary
+finite induction and makes no assertion at a limit stage.
+\end{proof}
+
+Limit stages are treated in \cref{isg:cf:cor:limit}, which rests on
+source~02: at every stage, limit stages included, the quotient has an
+explicit initial realization, it is the one above at finite stages, and
+the realizations at different stages are related by compression.
+
+\subsection{The converse construction: adjoining an integer bottom layer}
+There is also an explicit converse to the lexicographic decomposition.
+For an initial subgroup $B\subseteq\No$, including $B=\{0\}$, put
+\[
+ \sigma(\gamma)=\plus\cat\gamma,
+ \qquad
+ \sigma_*\left(\sum_\gamma r_\gamma\omega^\gamma\right)
+      =\sum_\gamma r_\gamma\omega^{\sigma(\gamma)},
+ \qquad J(B)=\Z\oplus\sigma_*[B].
+\]
+The map $\sigma_*$ changes exponents but not coefficients. Its image has
+no constant term, and each nonzero image element dominates every ordinary
+integer in absolute value.
+
+\begin{theorem}[Integer-bottom suspension]\label{isg:thm:suspension}
+The construction $B\mapsto J(B)$ gives an inclusion-preserving and
+inclusion-reflecting correspondence between initial subgroups of $\No$
+and nonzero initial subgroups of $\Oz$. Its inverse sends $H$ to the
+initial group obtained by deleting the leading plus sign from every
+positive exponent of $\ker(\ct|_H)$.
+Moreover, $J(B)\cong B\lex\Z$ as ordered abelian groups.
+\end{theorem}
+\begin{proof}
+For nonzero $B$, let $E=\Gamma(B)$. The exponent class of $J(B)$ is
+$\{0\}\cup\sigma[E]$. It is initial: the prefixes of
+$\plus\cat\gamma$ are zero and $\plus\cat v$ for $v\pr\gamma$.
+The group is truncation closed and cross-sectional. Its coefficient
+group at zero is $\Z$, while the coefficient group at
+$\sigma(\gamma)$ is $B_\gamma$. Every right ancestor of
+$\sigma(\gamma)$ has the form $\sigma(v)$ with $v\in\Rs(\gamma)$,
+so its coefficient group contains $\D$. The criterion
+\cref{isg:fact:EK} proves initiality. For $B=\{0\}$, the construction
+is simply $J(B)=\Z$.
+
+Conversely, if $H\subseteq\Oz$ is initial and nonzero, it contains
+$\Z$ and each constant coefficient of $H$ is integral. Thus
+$H=\Z\oplus\ker(\ct|_H)$. By \cref{isg:prop:quotient}, deleting the
+initial plus sign on the positive exponents of that kernel gives an
+initial group $B$. Reattaching the sign recovers the kernel exactly,
+including its actual infinite-support membership conditions. Hence
+$J(B)=H$, and the two constructions are inverse. Inclusions are
+preserved and reflected because both operations are fixed reindexings
+of the nonconstant normal forms. Finally,
+$(b,m)\mapsto\sigma_*(b)+m$ is additive and has the stated
+lexicographic order.
+\end{proof}
+
+\begin{corollary}[A relative criterion for discrete ordered groups]\label{isg:cor:relative}
+Let $G$ be a nonzero discrete ordered abelian group with least positive
+member $e$. Then $G$ admits an initial realization in $\No$ if and only
+if $G/\Z e$ admits an initial realization and the exact sequence
+\[
+ 0\longrightarrow\Z e\longrightarrow G
+   \longrightarrow G/\Z e\longrightarrow0
+\]
+splits as a sequence of abelian groups.
+\end{corollary}
+\begin{proof}
+If $G$ admits an initial realization, the least positive element is
+carried to the least positive element there. Apply
+\cref{isg:thm:C} and transport its splitting and quotient realization back.
+For any discrete ordered group, $\Z e$ is convex: finite induction
+shows that $[0,me]$ consists of $0,e,\ldots,me$ for $m\in\N$.
+Conversely, a group-theoretic splitting identifies $G$ with
+$(G/\Z e)\lex\Z$ as an ordered group: a lift of a nonzero positive
+quotient element lies above every element of $\Z e$, by convexity.
+Choose an initial realization $B$ of the quotient and apply
+\cref{isg:thm:suspension}.
+\end{proof}
+
+This criterion is relative: it reduces initial realizability to the
+quotient together with a splitting condition, rather than deciding
+initial realizability of every possible quotient.
+
+No result of this section states that every convex quotient of every
+initial group has an initial realization; that was the extent of
+source~01. The cyclic least-positive case is special here because it has
+a normal-form coefficient projection and the exact root-deletion
+operation above. Source~02 removes the restriction:
+\cref{isg:cf:main:factor} realizes every convex factor, with the
+coefficient projection replaced by the difference of two leading
+truncations and root deletion replaced by sign-tree compression, and
+\cref{isg:cf:prop:cyclic} shows that for $\Z\varepsilon$ its construction
+is exactly the one of this section.
+
+\section{Surcomplex and linear-algebraic consequences}\label{isg:sec:complex}
+
+\subsection{Complex normal forms and rectangular modules}
+Let $\No[i]=\No\oplus i\No$ with $i^2=-1$. Combining the real and
+imaginary supports gives a normal form with complex coefficients and
+surreal exponents; the union of the two reverse-well-ordered supports is
+again reverse-well-ordered. Conjugation acts coefficientwise.
+Define the Gaussian omnific module
+\[
+ \Oz[i]=\{a+ib:a,b\in\Oz\}.
+\]
+For an additive group $A\subseteq\No$, put
+$A[i]=A\oplus iA$. It is a $\Z[i]$-module because multiplication by
+$i$ sends $(a,b)$ to $(-b,a)$.
+
+\begin{definition}[Rectangular initiality]\label{isg:def:rectangular}
+A rectangular subclass $A+iA$ is coordinatewise initial if $A$ is
+initial in $\No$. This is a deliberately coordinate-dependent notion;
+no canonical single sign-tree order on $\No[i]$ is being postulated.
+\end{definition}
+
+\begin{theorem}[Surcomplex additive normalization]\label{isg:thm:complex}
+Let $A$ be a nonzero discrete initial subgroup and $H=\Rect[A]$.
+The map
+\[
+ \Rect^{\C}(a+ib)=\Rect(a)+i\Rect(b)
+\]
+is a $\Z[i]$-linear isomorphism
+\[
+ A[i]\longrightarrow H[i]\subseteq\Oz[i].
+\]
+It commutes with conjugation and has a complex-linear extension to the
+full complex-coefficient Hahn spaces on $C_\alpha$ and
+$\No_{\ge0}$. That extension preserves and reflects set-indexed strong
+summability and commutes with its sums. The image is coordinatewise
+initial. For fixed $\alpha,n$, its exact possible rectangular images
+are the $H[i]$ with $H\subseteq\Oz$ initial and $K_\alpha\subseteq H$.
+\end{theorem}
+\begin{proof}
+Additivity and multiplication by $i$ commute with the coordinatewise
+map, so it is $\Z[i]$-linear. The inverse is coordinatewise
+$\Rect^{-1}$. Conjugation negates the imaginary coordinate, and
+additivity gives the asserted compatibility.
+
+In complex normal forms, the map is exactly
+\[
+ \sum_{\gamma\ge p}z_\gamma\omega^\gamma
+ \ \longmapsto\ c^{-1}z_p+
+      \sum_{\gamma>p}z_\gamma\omega^{\tht(\gamma)}.
+\]
+The coefficient multiplier $c^{-1}$ is real. It commutes with every
+complex scalar and with conjugation. The support argument in
+\cref{isg:thm:transport} is unchanged; there is no additional infinite sum
+of constants because strong summability remains point-finite.
+Coordinatewise initiality follows from the initiality of $H$, and the
+range assertion is exactly \cref{isg:thm:B} applied to the real factor.
+\end{proof}
+
+\subsection{What linear systems can be transported}
+\begin{corollary}[Exact transport of integral linear equations]\label{isg:cor:linear}
+Let $M\in\Z^{r\times s}$, let $b\in A^r$, and apply $\Rect$
+coordinatewise. Then
+\[
+ Mx=b\quad\Longleftrightarrow\quad M\Rect(x)=\Rect(b).
+\]
+The corresponding statement holds for $M\in\Z[i]^{r\times s}$ and
+$b\in A[i]^r$ under $\Rect^{\C}$. In the real case, coordinatewise
+inequalities are preserved as well.
+\end{corollary}
+\begin{proof}
+Every row is a finite integer or Gaussian-integer linear combination.
+The relevant module isomorphism commutes with each such combination,
+and its injectivity gives the reverse implication. The real order
+assertion follows from the ordered-group isomorphism.
+\end{proof}
+
+The right-hand side is transported too. In general $\Rect(1)\ne1$,
+so this corollary must not be rewritten as preservation of equations
+with every ordinary constant fixed. Nor does it apply to nonlinear
+polynomials, arbitrary surreal scalar matrices, norms, or inner products.
+
+\section{Examples and failure modes}\label{isg:sec:examples}
+
+\subsection{The motivating two-level example}
+Ehrlich and Kaplan's example in the paragraph preceding their question
+is
+\[
+ A=\D+\Z\omega^{-1},\qquad \varepsilon=\omega^{-1}.
+\]
+Our construction has $\alpha=1,n=0$, $\Theta_1(-1)=0$, and
+$\Theta_1(0)=1$. It gives
+\[
+ d+m\omega^{-1}\longmapsto d\omega+m,
+ \qquad H=\D\omega+\Z=K_1.
+\]
+Thus the proposed general construction specializes to their known map,
+rather than treating that map as a new result \cite[Section~9]{EK}.
+The example and the map stand in Section~9 of the journal version as
+well, immediately before its Question~9.1.
+
+\subsection{Rescale the bottom coefficient, not the whole series}
+Consider
+\[
+ A=\tfrac12\Z+\Z\omega.
+\]
+The exponent class $\{0,1\}$ is initial, there are no right-ancestor
+dyadic obligations, and its coefficient groups $\frac12\Z$ and $\Z$
+are initial. Hence $A$ is initial by \cref{isg:fact:EK}. Its least positive
+element is $1/2$.
+
+Scalar multiplication by $2$ yields $\Z+2\Z\omega$, which omits
+$\omega$ despite containing $2\omega$. Equivalently, its coefficient
+group at exponent $1$ is not initial in $\R$. By contrast,
+\[
+ \mathcal N_{0,1}(a/2+b\omega)=a+b\omega
+\]
+has initial image $\Z+\Z\omega$. Only the bottom coefficient changes.
+
+\subsection{An exponent translation fails at the first infinite branch}
+Let
+\[
+ \Gamma=\{-1\}\cup\N\cup\{\omega\}
+\]
+be an exponent class, and let $A$ be the finite-support group with
+coefficient $\Z$ at $-1$, coefficient $\D$ at $0$, and coefficient
+$\Z$ at every positive member of $\Gamma$. This exponent class is
+initial: $-1$ contributes the prefix $0$, and the ordinal $\omega$
+contributes all finite ordinals. Its only right-ancestor obligation is
+at $-1$, forcing the chosen dyadic group at zero. Thus $A$ is initial,
+with least positive element $\omega^{-1}$.
+
+Multiplication by $\omega$ replaces the support class by
+\[
+ \Gamma+1=\{0,1,2,\ldots\}\cup\{\omega+1\}.
+\]
+This class is not initial because it contains $\omega+1$ but omits
+its prefix $\omega$. The resulting group is not initial. In contrast,
+root relocation satisfies
+\[
+ \Theta_1(-1)=0,\qquad
+ \Theta_1(k)=k+1\ (k<\omega),\qquad
+ \Theta_1(\omega)=\omega.
+\]
+The last identity uses $\plus\cat\plus^\omega=\plus^\omega$;
+it is precisely where ordinal concatenation differs from arithmetic
+translation. The correct image has exponent class
+$\N\cup\{\omega\}$, coefficient $\Z$ at zero, $\D$ at one,
+and $\Z$ at the other exponents. It is initial.
+
+\subsection{A genuine limit-support example}
+Take $\alpha=\omega$, $n=0$, and consider the group of all series
+\begin{equation}\label{isg:eq:limitexample}
+ x=\sum_{k<\omega}a_k\omega^{-k}+m\omega^{-\omega},
+ \qquad a_k\in\D,\quad m\in\Z.
+\end{equation}
+Zeros in this expression are ignored. The allowed support is a subset
+of the reverse-well-ordered sequence
+$0,-1,-2,\ldots,-\omega$. The exponent class is initial, its ancestor
+coefficients are dyadic, and its bottom coefficient is integral, so the
+full group \eqref{isg:eq:limitexample} is initial.
+
+Since $\Theta_\omega(-k)=q_k=2^{-k}$ for finite $k$ and
+$\Theta_\omega(-\omega)=0$, normalization gives the exact strong-sum
+identity
+\begin{equation}\label{isg:eq:limitimage}
+ \mathcal N_{\omega,0}(x)
+   =\sum_{k<\omega}a_k\omega^{2^{-k}}+m.
+\end{equation}
+For example, when $a_k=1$ for every $k$ and $m=1$, the source and image
+have support order type $\omega+1$. The decreasing exponents
+$1,1/2,1/4,\ldots,0$ are a legitimate reverse-well-ordered support;
+no analytic limiting process is involved.
+
+The finite-support minimal group $L_{\omega,0}$ is a proper subgroup of
+the group in \eqref{isg:eq:limitexample}. Its image $K_\omega$ consists
+only of finite sums of the positive terms appearing in
+\eqref{isg:eq:limitimage}, together with an integer constant. The full
+limit-support example therefore illustrates why the image cannot be
+reconstructed from its coefficient groups alone.
+
+\subsection{Inverse initiality needs the whole dyadic spine}
+Let $H=\Z$ and $\alpha=1,n=0$. The inverse formula produces
+\[
+ \mathcal N_{1,0}^{-1}[\Z]=\Z\omega^{-1},
+\]
+which is not initial: $1$ is simpler than $\omega^{-1}$ but is missing.
+Here $K_1\not\subseteq H$, so \cref{isg:thm:B} correctly rules out
+initiality.
+
+There is also a purely coefficient-level obstruction. Let
+$H=\Z+\Z\omega$ and keep $\alpha=1,n=0$. Its exponent class contains
+$\Lambda_1=\{0,1\}$, so the inverse exponent class is initial.
+Nevertheless, the inverse group is
+\[
+ \Z+\Z\omega^{-1},
+\]
+which is not initial: its monomial $\omega^{-1}$ forces every dyadic
+constant through \eqref{isg:eq:dyadic}, but its constant group is only
+$\Z$. Equivalently, $1/2$ is a missing prefix of $\omega^{-1}$.
+Thus the exponent condition in \cref{isg:prop:inversetree} alone does not
+suffice for the group-level inverse.
+
+\subsection{Multiplication and ordinary constants are not preserved}
+For $A=\D+\Z\omega^{-1}$, one has $1\in A$ and
+$\mathcal N_{1,0}(1)=\omega$. The product $1\cdot1$ also belongs to
+$A$, but
+\[
+ \mathcal N_{1,0}(1\cdot1)=\omega
+ \ne\omega^2=
+ \mathcal N_{1,0}(1)\mathcal N_{1,0}(1).
+\]
+Even on products that happen to stay in the source, multiplicativity
+fails. The surcomplex extension inherits this limitation. In particular,
+no preservation of the complex modulus or of multiplication by general
+surcomplex scalars follows from its Gaussian-linearity.
+
+\section{Convex subgroups as exponent cuts}\label{isg:cf:sec:cuts}
+
+This section and the next seven are source~02's
+(\cref{isg:cf:sec:intro}). They extend \cref{isg:sec:quotient} from the
+least positive cyclic subgroup to every convex subgroup.
+
+\subsection{Conventions of the second source}\label{isg:cf:sec:conventions}
+All statements about arbitrary set-sized ordered groups can be read in
+ZFC. For the uniform class constructions we work, as in
+\cref{isg:sec:background}, in NBG with global choice, allowing class
+parameters. A quotient of a proper-class group is not treated as a set of
+proper-class cosets. When such notation is used, the quotient is
+represented by the explicitly constructed normal-form complement. The
+class operations restrict to set operations on every individual support.
+In particular, none of the proofs sums a proper class of terms.
+
+Signs, prefixes, $\Pred$, $\Rs$, normal forms, leading truncations,
+strong summability, $G_\gamma$ and cross-sectionality are as in
+\cref{isg:sec:background}. For two sign sequences $x,y$, let $x\wedge y$
+be their longest common prefix; if one is a prefix of the other, their
+meet is the shorter one. Source~02 uses the Ehrlich--Kaplan criterion in
+exactly the concrete form of \cref{isg:fact:EK}, including its proof that
+the canonical normal-form image is initial, and the description of initial
+real coefficient groups in \cref{isg:fact:real}; on an active exponent such
+a group is nonzero and contains $1$. It imports one more result.
+
+\begin{fact}[Ehrlich's divisible embedding]\label{isg:cf:fact:ehrlich}
+Every divisible ordered abelian group has an initial realization in
+$\No$ \cite{Ehrlich}.
+\end{fact}
+This is Ehrlich's earlier embedding theorem, also recalled in \cite{EK}.
+It is used below only for set-sized groups. Neither source re-proves
+\cref{isg:fact:EK} or \cref{isg:cf:fact:ehrlich}.
+
+\begin{remark}[Actual membership is part of the data]\label{isg:cf:rem:membership}
+A truncation-closed subgroup need not contain every series allowed by its
+individual coefficient groups. In particular it need not be closed under
+arbitrary infinite subseries or all ambient strong sums. All transported
+groups below are actual images, not silently enlarged Hahn completions.
+This is the caution of \cref{isg:rem:nocompletion}, stated by both
+sources.
+\end{remark}
+
+Several symbols of source~02 are renamed here, because the letters are
+already in use in \cref{isg:sec:intro,isg:sec:background,isg:sec:bottom,isg:sec:surgery,isg:sec:transport,isg:sec:normalization,isg:sec:classification,isg:sec:quotient,isg:sec:complex,isg:sec:examples}.
+The renaming changes no statement.
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+here & in source~02 & reason for the change\\
+\midrule
+$\res_G$ & $\rho_G$ & $\rho$ is root deletion (\cref{isg:lem:rho})\\
+$G^{\dv}$ & $D(G)$ & $\D$ is $\Z[1/2]$\\
+$\zeta,\ \zeta_*\in\Zhat$; $G_\zeta$ & $\alpha,\ \alpha_*$; $G_\alpha$ &
+ $\alpha$ is the ordinal of the bottom exponent $-\alpha$\\
+$\tau_*$ & $p_*$ & $p=-\alpha$ is the bottom exponent\\
+$W=\Q\omega^2+\Z\omega+\Q$ & $K$ & $K_\alpha$ is the spine group\\
+$\widetilde G_\zeta=G_\zeta\lex\Q$ & $H_\alpha$ & $H$ is the image in
+ \cref{isg:thm:A}\\
+$C\subseteq C'$ & $C_1\subseteq C_2$ & $C_\alpha$ is the cone
+ $[-\alpha,\infty)$\\
+$\Gamma_C$, $\Gamma^C=\Gamma\setminus\Gamma_C$ & $\Lambda_C$, $\Delta$ &
+ $\Lambda_\alpha$ is the spine exponent class\\
+$C^\natural=G[\Gamma^C]$ & $H_C$ & as for $H$\\
+$\cmp E$, $\iota_x$ & $c_E$, $e_x$ & $c=2^{-n}$; $e$ is a least positive
+ element\\
+$\pi_1$ & $\pi$ & $\pi_p$ is the bottom coefficient projection\\
+Theorems D, E, F & Theorems A, B, C & source~01's letters are kept\\
+\bottomrule
+\end{tabular}
+\end{center}
+Kept unchanged: $e$ for the least positive element of an abstract
+discrete group (as in \cref{isg:cor:relative}); $\Pi$ for the purely
+infinite normal forms, zero included (as in \cref{isg:sec:conventions});
+$J(B)$ for the suspension of \cref{isg:thm:suspension}; ``coordinatewise
+initial'' of \cref{isg:def:rectangular}, which source~02 calls
+``rectangularly initial''. In
+\cref{isg:cf:sec:presburger,isg:cf:sec:factorial,isg:cf:sec:modeltheory,isg:cf:sec:complex}
+the letter $n$ is an ordinary modulus, not the dyadic exponent of
+\cref{isg:prop:bottom}. The profinite residue $\res_G$ is the residue
+$\res_{\mathcal I}$ of the trigonometry report
+(\replabel{trigonometry:per:eq:residue}), and $G^{\dv}$ its
+$\mathcal I^{\mathrm{div}}$ (\replabel{trigonometry:per:prop:divisible}).
+
+\subsection{Exponent cuts and the canonical splitting}
+Throughout \cref{isg:cf:sec:cuts,isg:cf:sec:compression,isg:cf:sec:factors}
+let $G\subseteq\No$ be initial, with active exponent class
+$\Gamma=\Gamma(G)$. For an exponent subclass $E$ define the ambient
+coefficient restriction
+\[
+ P_E(x)=\sum_{\gamma\in\supp(x)\cap E}r_\gamma\omega^\gamma.
+\]
+It is always an ambient normal form. Its membership in $G$ needs proof.
+
+\begin{lemma}[Archimedean detection]\label{isg:cf:lem:arch}
+Let $C$ be a convex subgroup of $G$ and set
+\[
+ \Gamma_C=\{\gamma\in\Gamma:\omega^\gamma\in C\}.
+\]
+Then $\Gamma_C$ is a numerical lower segment of $\Gamma$. For nonzero
+$x\in G$, with greatest exponent $\gamma$, the following are equivalent:
+\[
+ x\in C;\qquad \gamma\in\Gamma_C;\qquad
+ \supp(x)\subseteq\Gamma_C.
+\]
+\end{lemma}
+\begin{proof}
+The numbers $|x|$ and $\omega^\gamma$ are Archimedean equivalent:
+each is bounded by a positive ordinary integer multiple of the other.
+Indeed their ratio has positive, nonzero real leading coefficient and
+an infinitesimal remainder. Convexity and subgroup closure therefore
+show that $x\in C$ exactly when $\omega^\gamma\in C$.
+If $\delta<\gamma$ lies in $\Gamma$, then
+$0<\omega^\delta<\omega^\gamma$, so membership of the latter in $C$
+forces membership of the former. This proves the lower-segment assertion
+and the support equivalence. Zero belongs to every subgroup separately.
+\end{proof}
+
+\begin{lemma}[Restriction to a convex interval]\label{isg:cf:lem:restriction}
+If $E$ is a convex subclass of the ordered class $\Gamma$, then
+$P_E(G)\subseteq G$. More precisely, $P_E$ is the difference of two
+leading-truncation projections. Its image equals
+\[
+ G[E]:=\{x\in G:\supp(x)\subseteq E\}.
+\]
+This subgroup is truncation closed and cross-sectional on $E$.
+\end{lemma}
+\begin{proof}
+There is nothing to prove when $E$ is empty. Otherwise set
+\[
+ U=\{\gamma\in\Gamma:(\exists\delta\in E)\ \delta\le\gamma\},
+ \qquad
+ V=\{\gamma\in\Gamma:(\forall\delta\in E)\ \delta<\gamma\}.
+\]
+Both are upper segments, $V\subseteq U$, and convexity gives $E=U\setminus V$.
+For every reverse-well-ordered support, restriction to an upper segment
+retains a leading segment. Truncation closure, with zero and the entire
+form admitted, gives $P_U(x),P_V(x)\in G$. Hence
+$P_E(x)=P_U(x)-P_V(x)\in G$. The image description follows from
+$P_E^2=P_E$. Leading truncations of an element supported in $E$ remain
+supported there, and every $\omega^\gamma$ with $\gamma\in E$ lies in
+the image.
+\end{proof}
+
+\begin{theorem}[Canonical splitting in a chosen realization]\label{isg:cf:thm:split}
+For a convex subgroup $C$ of $G$, put $\Gamma^C=\Gamma\setminus\Gamma_C$.
+Then
+\[
+ C=G[\Gamma_C],\qquad C^\natural:=G[\Gamma^C],\qquad G=C^\natural\oplus C.
+\]
+The map $x\mapsto P_{\Gamma^C}(x)$ realizes $G/C$ as the ordered subgroup
+$C^\natural$, and addition induces an ordered-group isomorphism
+\[
+ C^\natural\lex C\ \longrightarrow\ G,\qquad (h,c)\longmapsto h+c.
+\]
+\end{theorem}
+\begin{proof}
+The first equality is \cref{isg:cf:lem:arch}. Since $\Gamma^C$ is an
+upper segment, $P_{\Gamma^C}(x)$ is a leading truncation in $G$. The
+difference $x-P_{\Gamma^C}(x)$ is supported in $\Gamma_C$ and belongs to
+$C$. The supports of the two summands are disjoint, proving uniqueness.
+If $h\ne0$ and $c\in C$, the leading exponent of $h$ exceeds every
+exponent of $c$. Consequently $h+c$ has the sign of $h$; when $h=0$
+it has the sign of $c$. This is the lexicographic ordering.
+The kernel of $P_{\Gamma^C}$ is $C$, so it gives the stated quotient model
+and the inclusion of $C^\natural$ is an order-preserving section.
+\end{proof}
+
+For a discrete initial $A$ and $C=\Z\varepsilon$ one has
+$\Gamma_C=\{p\}$ and $C^\natural=A^{>p}$, and \cref{isg:cf:thm:split} is
+\cref{isg:lem:split} (see \cref{isg:cf:prop:cyclic}).
+
+\begin{remark}[Which projection preserves order?]\label{isg:cf:rem:projection}
+The upper projection $P_{\Gamma^C}$ is nondecreasing. The lower projection
+$P_{\Gamma_C}$ usually is not: for example, a positive element
+$\omega-1$ has negative constant projection. Splitting the abelian-group
+sequence does not make both component projections positive maps.
+\end{remark}
+
+\begin{proposition}[Convex factors and commuting projections]\label{isg:cf:prop:factorcoordinates}
+If $C\subseteq C'$ are convex in $G$, then
+$\Gamma_C\subseteq\Gamma_{C'}$ and $E=\Gamma_{C'}\setminus\Gamma_C$
+is convex in $\Gamma$. Restriction induces an order-isomorphism
+\[
+ C'/C\ \cong\ G[E].
+\]
+For arbitrary exponent subclasses $E,F$ the ambient identities are
+\begin{equation}\label{isg:cf:eq:projectionlaw}
+ P_E P_F=P_{E\cap F}=P_F P_E.
+\end{equation}
+If $E,F$ are convex intervals, all these maps preserve $G$.
+\end{proposition}
+\begin{proof}
+The lower-segment descriptions give the interval assertion. Every
+$x\in C'$ splits uniquely into its $E$-part and its $\Gamma_C$-part.
+The first is a representative of the quotient, and its leading
+coefficient determines the sign of a nonzero coset. The identities
+\eqref{isg:cf:eq:projectionlaw} are coefficientwise. Intersections of
+convex intervals are convex, so \cref{isg:cf:lem:restriction} handles
+membership.
+\end{proof}
+
+These arguments already yield an intrinsic obstruction: an ordered
+abelian group with a nonsplit convex subgroup sequence cannot be
+initially realizable. The next step shows that the explicit complements
+and interval subgroups can themselves be given initial realizations.
+
+\section{Compression of a meet-closed sign tree}\label{isg:cf:sec:compression}
+
+The central construction is elementary at the level of signs, but its
+retained positions must be indexed by their \emph{order type}, not by
+ordinary integer subtraction.
+
+\begin{definition}[Retained-ancestor compression]\label{isg:cf:def:compression}
+A nonempty subclass $E\subseteq\No$ is \emph{meet closed} if
+$x\wedge y\in E$ for all $x,y\in E$. For $x\in E$ let
+\[
+ I_E(x)=\{\beta<\len(x):x\restriction\beta\in E\},
+ \qquad \kappa_E(x)=\otp(I_E(x)).
+\]
+Let $\iota_x:\kappa_E(x)\to I_E(x)$ be the unique increasing enumeration.
+Define $\cmp E(x)$ by
+\begin{equation}\label{isg:cf:eq:compression}
+ \len(\cmp E(x))=\kappa_E(x),\qquad
+ \cmp E(x)(\xi)=x(\iota_x(\xi)).
+\end{equation}
+Thus the sign at position $\beta$ is retained exactly when its preceding
+prefix belongs to $E$.
+\end{definition}
+
+The set $I_E(x)$ is a subset of the ordinal $\len(x)$, even when $E$ is
+a proper class. The definition is therefore elementwise legitimate.
+
+\begin{lemma}[Convex intervals are meet closed]\label{isg:cf:lem:meetclosed}
+If $\Gamma$ is initial in $\No$ and $E\subseteq\Gamma$ is a nonempty
+numerically convex subclass, then $E$ is meet closed.
+\end{lemma}
+\begin{proof}
+If one of $x,y\in E$ is a prefix of the other, their meet is an endpoint.
+Otherwise, their common prefix $m=x\wedge y$ belongs to $\Gamma$ by
+initiality. At the first differing sign, one continuation is minus and
+the other plus. Thus $m$ lies strictly between $x$ and $y$ numerically,
+and convexity puts $m$ in $E$.
+\end{proof}
+
+\begin{lemma}[Retained prefix formula]\label{isg:cf:lem:retainedprefix}
+If $y=x\restriction\beta\in E$ with $\beta<\len(x)$, then
+\[
+ I_E(y)=I_E(x)\cap\beta.
+\]
+Writing $\xi=\otp(I_E(x)\cap\beta)$, one has
+\[
+ \cmp E(y)=\cmp E(x)\restriction\xi,
+ \qquad \xi<\kappa_E(x),\qquad \iota_x(\xi)=\beta.
+\]
+\end{lemma}
+\begin{proof}
+The prefixes of $y$ are exactly the prefixes of $x$ of length less than
+$\beta$. Since $\beta\in I_E(x)$, it is the next retained position after
+those earlier positions. The signs in the two compressed sequences
+agree at all earlier retained positions by definition.
+\end{proof}
+
+\begin{theorem}[Compression theorem]\label{isg:cf:thm:compression}
+For nonempty meet-closed $E\subseteq\No$, the map
+$\cmp E:E\to\No$ is an order-isomorphism onto an initial subclass
+$E^\flat:=\cmp E[E]$. For $x,y\in E$,
+\begin{align}
+ y\pr x&\quad\Longleftrightarrow\quad
+       \cmp E(y)\pr\cmp E(x),\label{isg:cf:eq:prefixreflect}\\
+ \cmp E(x\wedge y)&=\cmp E(x)\wedge\cmp E(y),\label{isg:cf:eq:meetreflect}\\
+ \Rs(\cmp E(x))&=\cmp E[\Rs(x)\cap E].\label{isg:cf:eq:rightreflect}
+\end{align}
+It also preserves and reflects left-ancestor relations.
+\end{theorem}
+\begin{proof}
+First suppose $y\pr x$. The retained prefix formula shows that
+$\cmp E(y)$ is a proper prefix of $\cmp E(x)$. At its first new
+position the compressed continuation has sign $x(\len(y))$.
+Consequently the numerical comparison between $y$ and $x$ is unchanged.
+
+Now suppose $x,y$ are incomparable by prefix and put $m=x\wedge y$.
+Meet closure gives $m\in E$. The retained positions preceding
+$\len(m)$ are identical for $x$ and $y$, and the position $\len(m)$
+itself is retained in both. Their compressed sequences therefore have
+common prefix $\cmp E(m)$ and then opposite signs. The first differing
+sign has not changed. This proves order preservation, injectivity, and
+\eqref{isg:cf:eq:meetreflect} in the incomparable case. The comparable
+case of the meet identity follows from the retained prefix formula.
+These alternatives also prove the reverse implication in
+\eqref{isg:cf:eq:prefixreflect}: incomparable points remain incomparable.
+
+Let $z$ be an arbitrary proper prefix of $\cmp E(x)$, of length
+$\xi<\kappa_E(x)$. Put $\beta=\iota_x(\xi)$ and
+$y=x\restriction\beta$. By definition $y\in E$, and the retained
+prefix formula gives $\cmp E(y)=z$. Thus $E^\flat$ is initial, at
+successor and limit prefix lengths alike. Combining this description
+of every prefix with order preservation proves
+\eqref{isg:cf:eq:rightreflect}; the left-ancestor assertion is identical
+with the inequality reversed.
+\end{proof}
+
+\begin{remark}[No unjustified limit step]\label{isg:cf:rem:limit}
+A limit ordinal $\xi<\kappa_E(x)$ still has the position $\iota_x(\xi)$.
+The proof uses that position directly. It does not assume $E$ is closed
+under limits of chains or that an infinite sequence of deletions
+converges to a surreal. This is why the construction applies to cuts
+without endpoints.
+\end{remark}
+
+\begin{proposition}[Uniqueness and nested coherence]\label{isg:cf:prop:coherence}
+The map $\cmp E$ is the unique isomorphism of the numerical and prefix
+orders from $E$ onto an initial subclass of $\No$. If $F\subseteq E$
+is nonempty and meet closed, then
+\begin{equation}\label{isg:cf:eq:coherence}
+ \cmp{\cmp E[F]}\bigl(\cmp E(x)\bigr)=\cmp F(x)
+ \qquad(x\in F).
+\end{equation}
+\end{proposition}
+\begin{proof}
+In an initial image, the proper prefixes of the image of $x$ correspond
+exactly to the proper ancestors of $x$ in $E$, in their simplicity
+order. Hence the image length must be $\kappa_E(x)$. The sign at the
+position corresponding to $y\pr x$ is plus exactly when $y<x$.
+Both the positions and signs are forced; they agree with
+\eqref{isg:cf:eq:compression}.
+
+By \eqref{isg:cf:eq:meetreflect}, the subclass $\cmp E[F]$ is meet closed.
+In a second compression, a sign of $\cmp E(x)$ is retained exactly
+when its preceding prefix is $\cmp E(y)$ for some $y\in F$.
+By the retained prefix formula and prefix reflection, these are exactly
+the original positions $\beta$ with $x\restriction\beta\in F$.
+Thus the two-stage operation retains the same well-ordered positions,
+in the same order, as direct compression by $F$. This proves
+\eqref{isg:cf:eq:coherence}.
+\end{proof}
+
+\begin{example}[Compression is not exponent translation]\label{isg:cf:ex:compression}
+Take the full finite sign tree of lengths at most two, in numerical order:
+\[
+ --\ <\ -\ <\ -+\ <\ 0\ <\ +-\ <\ +\ <\ ++.
+\]
+On the convex interval $E=\{-+,0,+-\}$, compression gives
+\[
+ -+\longmapsto -,
+ \qquad 0\longmapsto0,
+ \qquad +-\longmapsto+.
+\]
+The original exponents are $-1/2,0,1/2$, and their images are $-1,0,1$.
+On $E=\{+,++\}$ the images are $0,+$. The definition is a tree operation,
+not a uniform rule of subtracting a real or surreal endpoint.
+\end{example}
+
+\begin{example}[Meet closure cannot be omitted]\label{isg:cf:ex:badmeet}
+For $E=\{-,+\}$ neither point has a proper prefix in $E$. Both therefore
+compress to $0$, so injectivity fails. This set omits the meet $0$.
+Convexity in an initial exponent class prevents precisely this defect.
+\end{example}
+
+The compression theorem is compatible with the general viewpoint of
+surreal substructures and convex partitions in \cite{BagHoeven}.
+It does not assert that a set-sized convex interval is a copy of the
+whole proper-class structure $\No$; its target is an arbitrary initial
+subclass, often small.
+
+\section{Initial realizations of all convex factors}\label{isg:cf:sec:factors}
+
+For the empty interval we set $E^\flat=\varnothing$,
+$\mathcal F_E(G)=\{0\}$, and let $\Phi_E$ be the unique map between
+the zero Hahn spaces. This convention also covers equal convex subgroups
+in the factor statements.
+
+\begin{theorem}[Hahn transport on an interval]\label{isg:cf:thm:transport}
+Let $G\subseteq\No$ be initial with exponent class $\Gamma$, and let
+$E\subseteq\Gamma$ be a nonempty convex interval. Define
+\begin{equation}\label{isg:cf:eq:transport}
+ \Phi_E\left(\sum_{\gamma\in E}r_\gamma\omega^\gamma\right)
+  =\sum_{\gamma\in E}r_\gamma\omega^{\cmp E(\gamma)}.
+\end{equation}
+Then $\Phi_E$ is an ordered real-linear isomorphism
+$\Hahn{\R}{E}\to\Hahn{\R}{E^\flat}$. It restricts to an ordered-group
+isomorphism of $G[E]$ onto an initial subgroup $\mathcal F_E(G)$ of
+$\No$. It preserves support order types, leading coefficients, leading
+truncations, and strong summability in both directions.
+\end{theorem}
+\begin{proof}
+By \cref{isg:cf:lem:meetclosed,isg:cf:thm:compression}, the exponent map
+is an order-isomorphism with initial image. It therefore sends each
+set-sized reverse-well-ordered support to another such support, with the
+same order type. Its inverse has the same property. Coefficients are
+unchanged, so addition and real scalar multiplication commute with the
+map, and the leading coefficient retains its sign.
+
+Set $B=\Phi_E[G[E]]$. By \cref{isg:cf:lem:restriction}, the source
+subgroup is cross-sectional and truncation closed. These properties pass
+to $B$, and its coefficient group at $\cmp E(\gamma)$ is exactly
+$G_\gamma$. The latter is initial in $\R$. Every right ancestor of
+$\cmp E(\gamma)$ has the form $\cmp E(\delta)$ with
+$\delta\in\Rs(\gamma)\cap E$, by \eqref{isg:cf:eq:rightreflect}.
+The original dyadic obligation \eqref{isg:eq:dyadic} supplies the required
+coefficient group. The sufficiency direction of \cref{isg:fact:EK} now
+shows that the actual image $B$ is initial.
+
+Leading truncations retain the same initial sets of support indices
+before and after reindexing. For a set-family $(x_i)$, the union of its
+transported supports is the image under $\cmp E$ of the original union.
+Reverse well-ordering is equivalent in both directions. At any exponent,
+the set of indices contributing a nonzero coefficient is unchanged.
+Point-finiteness is therefore also equivalent. In a strongly summable
+family, every resulting coefficient is a finite real sum, and the
+transport commutes with that sum.
+\end{proof}
+
+This is the analogue, for an interval and without a rescaled bottom
+coefficient, of \cref{isg:thm:transport}; the proof has the same
+structure.
+
+\begin{proof}[Proof of \cref{isg:cf:main:factor}]
+Transport $G$ to an actual initial realization. Apply
+\cref{isg:cf:prop:factorcoordinates} to obtain
+$C'/C\cong G[\Gamma_{C'}\setminus\Gamma_C]$.
+If the exponent interval is empty, the factor is zero. Otherwise
+\cref{isg:cf:thm:transport} gives the required initial image. Splitting is
+\cref{isg:cf:thm:split}; the composition laws are
+\eqref{isg:cf:eq:projectionlaw} and \eqref{isg:cf:eq:coherence}.
+\end{proof}
+
+\begin{corollary}[Subgroups, quotients, and transfinite cuts]\label{isg:cf:cor:closure}
+The class $\IR$ is closed under convex subgroups, convex ordered
+quotients, and their subquotients. For a chain of convex subgroups
+$(C_\xi)_{\xi<\lambda}$ of an initially realizable group, any union or
+intersection which is a convex subgroup has the same conclusion for
+itself and for the corresponding quotient. No successor-stage
+restriction is necessary.
+\end{corollary}
+\begin{proof}
+The first assertions are special cases of \cref{isg:cf:main:factor}. A
+union of an increasing chain and an intersection of convex subgroups are
+convex. The theorem applies directly to their exponent cuts, rather
+than asserting that images previously chosen at earlier stages have a
+particular union or intersection.
+\end{proof}
+
+\begin{corollary}[Coherent compressed factors]\label{isg:cf:cor:coherentfactors}
+For nonempty convex intervals $F\subseteq E\subseteq\Gamma$, the direct
+map $\Phi_F$ agrees with first transporting by $\Phi_E$ and then
+compressing the interval $\cmp E[F]$. Thus the two constructions give
+the same normal forms, not just abstractly isomorphic groups.
+\end{corollary}
+\begin{proof}
+The coefficient at every retained exponent is unchanged in both
+constructions, and \eqref{isg:cf:eq:coherence} identifies the final
+exponents. Actual membership follows from the restriction and image
+definitions.
+\end{proof}
+
+\begin{remark}[Strong sums and factor projection]\label{isg:cf:rem:strongsums}
+The reindexing $\Phi_E$ preserves and reflects strong summability on its
+ambient space. The restriction $P_E$ preserves strong summability but
+need not reflect it, because terms outside $E$ are discarded. Neither
+assertion enlarges $G$ to a group closed under all ambient strong sums.
+\end{remark}
+
+\subsection{Examples with an infinite exponent cut}\label{isg:cf:sec:cutexamples}
+Let $G=\Q[\omega]$ additively, meaning finite sums
+$\sum_{j=0}^{m}q_j\omega^j$. The exponent class $\N$ consists of
+all finite all-plus sequences and is initial. There are no right-ancestor
+obligations within this class, so the criterion shows that $G$ is
+initial. The convex subgroup of degree less than $k$ has quotient
+represented by degrees at least $k$; compression sends the ordinal
+exponent $k+j$ to $j$. This recovers an initial quotient isomorphic to
+$G$.
+
+For a genuinely transfinite example, take finite-support rational forms
+on the initial exponent class of all ordinals below $\omega+\omega$.
+The lower segment of finite exponents defines a convex subgroup. On the
+upper interval $[\omega,\omega+\omega)$, compression deletes the first
+$\omega$ ancestor positions and sends $\omega+n$ to $n$. The quotient
+again has an initial rational-polynomial realization. This calculation
+uses sign sequences, not an assumption that general surreal subtraction
+preserves initiality.
+
+\subsection{The cyclic case is root relocation followed by root deletion}
+\label{isg:cf:sec:cyclic}
+The following statement, added in the merge, identifies source~02's
+construction for $C=\Z\varepsilon$ with the construction of
+\cref{isg:sec:quotient}. Neither source states it.
+
+\begin{proposition}[Compression of the bottom point; \textup{[merge]}]\label{isg:cf:prop:cyclic}
+Let $A$ be a nonzero discrete initial subgroup, with $\alpha$, $n$,
+$p=-\alpha$, $c$, $\varepsilon=c\omega^p$, $\tht$, $\Rect$, $\rho$,
+$\pi_p$, $A^{>p}$, $H$ and $B$ as in
+\cref{isg:sec:bottom,isg:sec:surgery,isg:sec:transport,isg:sec:normalization,isg:sec:quotient},
+and let $\Gamma=\Gamma(A)$ and $C=\Z\varepsilon$. Then
+$\Gamma_C=\{p\}$, $E:=\Gamma^C=\Gamma\setminus\{p\}$,
+$C^\natural=A[E]=A^{>p}$, and
+\begin{equation}\label{isg:cf:eq:cyclic}
+ \cmp E(\gamma)=\rho\bigl(\tht(\gamma)\bigr)\quad(\gamma\in E),
+ \qquad\text{that is,}\qquad
+ \cmp E(p\cat\plus\cat u)=p\cat u,\quad
+ \cmp E(x)=x\ \ (p\not\pre x).
+\end{equation}
+Consequently $\Phi_E(P_E(x))=\rho_*\bigl(\Rect(x)-\pi_p(x)\bigr)$ for every
+$x\in A$, the realization $\mathcal F_E(A)$ of $A/\Z\varepsilon$ is the
+group $B$ of \eqref{isg:eq:Bquotient}, and the splitting of
+\cref{isg:cf:thm:split} for $C=\Z\varepsilon$ is that of
+\cref{isg:lem:split,isg:thm:C}.
+\end{proposition}
+\begin{proof}
+Since $\omega^p=2^n\varepsilon\in\Z\varepsilon$ and no other monomial
+$\omega^\gamma$, $\gamma\in\Gamma$, lies in the convex subgroup
+$\Z\varepsilon$ (its positive members are the multiples of
+$c\omega^p$), $\Gamma_C=\{p\}$. By \cref{isg:cf:lem:arch}, an element of
+$A$ lies in $A[E]$ exactly when its support avoids $p$, that is, when
+$\pi_p(x)=0$; so $A[E]=A^{>p}$.
+
+\emph{First route: the formula.} By \cref{isg:prop:bottom} every
+$x\in E$ lies in the cone $C_\alpha$ and $x>p$, so, as in
+\cref{isg:sec:surgery}, either $p\not\pre x$ or $x=p\cat\plus\cat u$.
+Every proper prefix of $x$ lies in the initial class $\Gamma$, hence in
+$E$ unless it equals $p$. If $p\not\pre x$, no prefix equals $p$, every
+position is retained and $\cmp E(x)=x=\rho(\plus\cat x)=\rho(\tht(x))$.
+If $x=p\cat\plus\cat u$, the only prefix equal to $p$ is
+$x\restriction\alpha$, so exactly the plus sign at position $\alpha$ is
+deleted and $\cmp E(x)=p\cat u=\rho(\plus\cat p\cat u)=\rho(\tht(x))$.
+Positions are read as ordinal intervals, so limit lengths of $u$ need no
+separate case.
+
+\emph{Second route: uniqueness.} On $E$, the map $\rho\circ\tht$ is an
+order-isomorphism (\cref{isg:lem:thetaorder}, and $\rho$ preserves
+comparison), it preserves and reflects prefixes (\cref{isg:thm:tree} for
+points above $p$, and \cref{isg:lem:rho}), and its image
+$\rho[\tht[\Gamma]\setminus\{0\}]$ is initial
+(\cref{isg:cor:initialimage,isg:lem:rho}). By the uniqueness in
+\cref{isg:cf:prop:coherence} it equals $\cmp E$.
+
+For $x=\sum_\gamma r_\gamma\omega^\gamma\in A$, \eqref{isg:eq:N} gives
+$\Rect(x)-\pi_p(x)=\sum_{\gamma>p}r_\gamma\omega^{\tht(\gamma)}$, since the
+constant term of $\Rect(x)$ is $c^{-1}r_p=\pi_p(x)$. Deleting the root of
+each exponent gives $\sum_{\gamma\in E}r_\gamma\omega^{\rho\tht(\gamma)}$,
+which is $\Phi_E(P_E(x))$ by \eqref{isg:cf:eq:cyclic}. An element of $H$
+has zero constant coefficient exactly when it is the image of an element
+of $A^{>p}$, so $H^+=\Rect[A^{>p}]$ and
+$B=\rho_*[H^+]=\Phi_E[A[E]]=\mathcal F_E(A)$. The two splittings have the
+same complement $A^{>p}=C^\natural$ and the same cyclic summand.
+\end{proof}
+
+Thus the construction of source~02, applied to $C=\Z\varepsilon$,
+compresses away the bottom exponent and gives exactly source~01's
+$\rho\circ\tht$ on exponents, with the same coefficients. The two
+constructions also agree by the uniqueness of compression, and a finite
+computation at placement confirmed \eqref{isg:cf:eq:cyclic} on words of
+small length (\cref{isg:sec:provenance}).
+
+\subsection{Limit stages of iterated bottom-layer removal}\label{isg:cf:sec:limit}
+\Cref{isg:cor:iteration} (source~01) covers finite stages only. The
+following corollary, formulated in the merge from source~02's
+\cref{isg:cf:cor:closure,isg:cf:cor:coherentfactors} and
+\cref{isg:cf:prop:cyclic}, covers every stage.
+
+\begin{corollary}[Transfinite iteration; \textup{[merge]}]\label{isg:cf:cor:limit}
+Let $A\subseteq\No$ be initial with exponent class $\Gamma$. Define
+subgroups $C_\xi$ of $A$ by recursion: $C_0=\{0\}$; if $A/C_\xi$ is
+nonzero and discrete, $C_{\xi+1}$ is the preimage in $A$ of the least
+positive cyclic subgroup of $A/C_\xi$, and otherwise the recursion stops
+at $\xi$; at a limit $\lambda$, $C_\lambda=\bigcup_{\xi<\lambda}C_\xi$.
+Put $E_\xi=\Gamma\setminus\Gamma_{C_\xi}$. Then, at every stage $\xi$
+reached, limit stages included:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $C_\xi$ is convex, and $x+C_\xi\mapsto\Phi_{E_\xi}(P_{E_\xi}(x))$ is
+      an ordered-group isomorphism of $A/C_\xi$ onto the initial group
+      $\mathcal F_{E_\xi}(A)$;
+\item for finite $\xi$ this is the realization produced by $\xi$
+      applications of \cref{isg:thm:C}, as in \cref{isg:cor:iteration};
+\item for $\xi<\eta$ with $E_\eta\ne\varnothing$, the realization at
+      stage $\eta$ is obtained from that at stage $\xi$ by compressing
+      the interval $\cmp{E_\xi}[E_\eta]$:
+      $\Phi_{E_\eta}=\Phi_{\cmp{E_\xi}[E_\eta]}\circ\Phi_{E_\xi}$ on normal
+      forms supported in $E_\eta$.
+\end{enumerate}
+No hypothesis beyond the initiality of $A$ is needed at a limit stage.
+\end{corollary}
+\begin{proof}
+(i) The preimage of a convex subgroup under the order-preserving quotient
+map by a convex subgroup is convex, and the union of a chain of convex
+subgroups is a convex subgroup; so every $C_\xi$ is convex, and
+\cref{isg:cf:prop:factorcoordinates,isg:cf:thm:split,isg:cf:thm:transport}
+give the realization, with $\mathcal F_\varnothing(A)=\{0\}$ when $E_\xi$
+is empty. (iii) is \cref{isg:cf:cor:coherentfactors} for
+$E_\eta\subseteq E_\xi$.
+
+(ii) By induction on finite $k$. For $k=0$, $E_0=\Gamma$ is initial, so
+every position is retained and $\Phi_\Gamma$ is the identity. Suppose the
+stage-$k$ realization is $B_k=\mathcal F_{E_k}(A)$, an initial group with
+exponent class $\cmp{E_k}[E_k]$. The convex subgroup $C_{k+1}/C_k\cong\Z$
+corresponds by \cref{isg:cf:prop:factorcoordinates} to the interval
+$\Gamma_{C_{k+1}}\setminus\Gamma_{C_k}$, which is nonempty and cannot
+contain two points (their monomials would be Archimedean inequivalent in a
+cyclic group); so it is the single point $\min E_k$, and
+$E_{k+1}=E_k\setminus\{\min E_k\}$. The least positive cyclic subgroup
+of $B_k$ is the image of $C_{k+1}/C_k$, with bottom exponent
+$\cmp{E_k}(\min E_k)$. By \cref{isg:cf:prop:cyclic}, applied to $B_k$,
+\cref{isg:thm:C} realizes $B_k/(\text{that subgroup})$ by compressing
+$\cmp{E_k}[E_k]$ minus its bottom point, which is $\cmp{E_k}[E_{k+1}]$.
+By (iii) the result is $\mathcal F_{E_{k+1}}(A)$.
+\end{proof}
+
+This answers \cref{isg:q:limit}: the limit stage needs no hypothesis, its
+quotient is realized directly from the cut $\Gamma_{C_\lambda}$ rather
+than as a limit of earlier realizations, and it is coherent with every
+earlier stage. The recursion itself uses no choice: each least positive
+element is unique.
+
+\section{The residue obstruction for Presburger groups}\label{isg:cf:sec:presburger}
+
+\subsection{The bottom cyclic group and coherent residues}
+Let $G$ be a $\Z$-group with least positive element $e$. The subgroup
+$\Z e$ is convex: finite induction shows that the interval $[0,me]$
+contains exactly $0,e,\ldots,me$ for every ordinary $m\in\N$ (as in the
+proof of \cref{isg:cor:relative}). Its quotient is torsion free, as every
+ordered abelian group is. In particular $\Z e$ is pure in $G$:
+\[
+ ny\in\Z e\quad\Longrightarrow\quad y\in\Z e.
+\]
+
+\begin{lemma}[Residues]\label{isg:cf:lem:residues}
+For each ordinary $n\ge1$ and $x\in G$ there is a unique
+$r_n(x)\in\{0,\ldots,n-1\}$ such that
+$x-r_n(x)e\in nG$. The resulting homomorphisms
+$G\to\Z/n\Z$ are compatible and define $\res_G$.
+Moreover
+\[
+ \ker\res_G=\bigcap_{n\ge1}nG.
+\]
+\end{lemma}
+\begin{proof}
+Divisibility of $G/\Z e$ gives $x=ny+ke$ for some $y\in G$ and
+$k\in\Z$. Reduce $k$ modulo $n$. If two remainders worked, then
+$(r-r')e=ny$. Purity puts $y$ in $\Z e$, so $n$ divides $r-r'$ and
+the chosen range forces equality. Addition and compatibility under
+divisibility of moduli follow from the same uniqueness. The kernel
+identity is immediate from the zero remainder condition.
+\end{proof}
+
+\begin{lemma}[The divisible kernel, classical]\label{isg:cf:lem:divkernel}
+The subgroup $G^{\dv}:=\ker\res_G$ is divisible and is the largest
+divisible subgroup of $G$.
+\end{lemma}
+\begin{proof}
+Let $a\in G^{\dv}$ and fix $k\ge1$. Choose $b\in G$ with $kb=a$.
+For every $n\ge1$, the membership $a\in knG$ gives $c\in G$ such that
+$a=knc$. Torsion freeness yields $b=nc$, so $b\in nG$ for all $n$.
+Thus $b\in G^{\dv}$. Any divisible subgroup is contained in every $nG$,
+and therefore in $G^{\dv}$.
+\end{proof}
+
+This is the divisible-kernel part of
+\cite[Proposition~4.1 and Remark~4.2]{Jerabek}; the elementary proof is
+included to make the subsequent equivalences explicit.
+
+\begin{proposition}[Split bottom versus ordinary residues]\label{isg:cf:prop:residuesplit}
+For a $\Z$-group $G$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Z e$ is a direct summand of $G$;
+\item $\res_G(G)=\Z\subseteq\Zhat$;
+\item $G=G^{\dv}\oplus\Z e$.
+\end{enumerate}
+In case \textup{(iii)}, the order is $G^{\dv}\lex\Z$. Every group
+complement to $\Z e$ equals $G^{\dv}$.
+\end{proposition}
+\begin{proof}
+Assume $G=V\oplus\Z e$. The quotient map identifies $V$ with
+$G/\Z e$, so $V$ is divisible and $V\subseteq G^{\dv}$. For $v+me$
+its coherent residue is $m$. Hence $\res_G(G)=\Z$, and its kernel is
+exactly $V$.
+
+Conversely, if every coherent residue is an ordinary integer, then for
+each $x$ there is $m\in\Z$ such that $\res_G(x)=m$.
+It follows that $x-me\in G^{\dv}$. The intersection
+$G^{\dv}\cap\Z e$ is zero, since no nonzero ordinary integer is divisible
+by every positive ordinary integer. Thus (iii) holds, and implies (i).
+Convexity of $\Z e$ gives the lexicographic ordering for any complement:
+a nonzero positive quotient lift is larger than every member of
+$\Z e$. The first argument also proves uniqueness of that complement.
+\end{proof}
+
+\subsection{Initial omnific realization in the split case}
+Recall $\Oz=\Z\oplus\Pi$ from \eqref{isg:eq:Oz} and
+\cref{isg:sec:conventions}. The symbol $\Pi$ denotes purely
+\emph{infinite} forms, with zero included, not positive elements and not
+infinitesimals. Source~02 uses the integer-bottom suspension
+$J(B)=\Z\oplus\sigma_*[B]$ of \cref{isg:thm:suspension}: for initial
+$B\subseteq\No$, $J(B)$ is an initial subgroup of $\Oz$ order-isomorphic
+to $B\lex\Z$. It re-proves this from \cref{isg:fact:EK} by the argument of
+the first paragraph of the proof of \cref{isg:thm:suspension}, so that
+\cref{isg:cf:main:presburger} does not depend on source~01's separate
+normalization proof. The statement and proof are printed once, there.
+
+\begin{proof}[Proof of \cref{isg:cf:main:presburger}]
+If $G\in\IR$, convex splitting (\cref{isg:cf:thm:split}) applied to
+$\Z e$ in an initial realization makes the bottom cyclic group a direct
+summand. \Cref{isg:cf:prop:residuesplit} proves the algebraic and residue
+equivalences. Conversely, in the split case $G^{\dv}$ is divisible and
+ordered. Choose an initial realization $B$ of it by
+\cref{isg:cf:fact:ehrlich}. The suspension $J(B)$ is an initial omnific
+realization of $G$. An initial subgroup of $\Oz$ is, by the meaning of
+initial here, an initial subgroup of $\No$.
+\end{proof}
+
+Source~01's relative criterion gives the same answer by a second route.
+For a $\Z$-group the quotient $G/\Z e$ is divisible, hence initially
+realizable by \cref{isg:cf:fact:ehrlich}, so \cref{isg:cor:relative}
+reduces initial realizability of $G$ to the splitting of $\Z e$: the
+first and third conditions of \cref{isg:cf:main:presburger}.
+
+\begin{corollary}[Rigidity on the initial side]\label{isg:cf:cor:rigidityinitial}
+The only initially realizable rigid $\Z$-group is $\Z$ itself.
+\end{corollary}
+\begin{proof}
+In $G^{\dv}\lex\Z$, the map $(d,m)\mapsto(2d,m)$ is an ordered-group
+automorphism, because $G^{\dv}$ is divisible and torsion free. It is
+nontrivial unless $G^{\dv}=0$. The standard group $\Z$ has no nonidentity
+order-preserving group automorphism.
+\end{proof}
+
+\section{An explicit factorial family of nonsplit models}\label{isg:cf:sec:factorial}
+
+\subsection{Presentation inside an ordinary rational plane}
+Factorial moduli are cofinal for divisibility, so a profinite integer
+$\zeta\in\Zhat$ is specified by its compatible residues modulo $n!$.
+Let $S_n=S_n(\zeta)$ be the unique integer with
+\[
+ 0\le S_n<n!,\qquad S_n\equiv\zeta\pmod{n!},\qquad n\ge1.
+\]
+Then $S_1=0$ and
+\begin{equation}\label{isg:cf:eq:digits}
+ S_{n+1}=S_n+a_n n!,\qquad a_n\in\{0,1,\ldots,n\}.
+\end{equation}
+In the lexicographically ordered rational plane $\Q\lex\Q$, put
+\begin{equation}\label{isg:cf:eq:groupfamily}
+ e=(0,1),\qquad
+ x_n=\left(\frac1{n!},\frac{S_n}{n!}\right),\qquad
+ G_\zeta=\bigcup_{n\ge1}(\Z x_n\oplus\Z e).
+\end{equation}
+The groups in the union are nested because
+\begin{equation}\label{isg:cf:eq:transition}
+ (n+1)x_{n+1}=x_n+a_n e.
+\end{equation}
+
+\begin{proposition}[Structure of the factorial family]\label{isg:cf:prop:family}
+The group $G_\zeta$ is countable, has least positive element $e$, and
+first-coordinate projection $\pi_1$ gives an exact sequence of ordered
+groups
+\begin{equation}\label{isg:cf:eq:extension}
+ 0\longrightarrow\Z e\longrightarrow G_\zeta
+   \xrightarrow{\ \pi_1\ }\Q\longrightarrow0.
+\end{equation}
+Consequently it is a $\Z$-group. Its first generator has residue
+$\res_{G_\zeta}(x_1)=-\zeta$.
+\end{proposition}
+\begin{proof}
+Each stage is a free rank-two group, and the union is countable. Its
+first-coordinate image is $\bigcup_n(n!)^{-1}\Z=\Q$.
+If $kx_n+me$ has first coordinate zero, then $k=0$; hence the kernel is
+exactly $\Z e$. A positive element of nonzero first coordinate exceeds
+every integer multiple of $e$, and the positive elements of the kernel
+are $e,2e,\ldots$. This proves discreteness and convexity.
+The quotient is $\Q$, hence divisible. Finally,
+$n!x_n=x_1+S_ne$, so $x_1\equiv-S_n e\pmod{n!G_\zeta}$.
+Compatibility over factorial moduli gives the residue assertion.
+\end{proof}
+
+\begin{theorem}[Exact splitting test]\label{isg:cf:thm:familytest}
+For $\zeta\in\Zhat$,
+\[
+ G_\zeta\in\IR\quad\Longleftrightarrow\quad
+ \text{\eqref{isg:cf:eq:extension} splits}\quad\Longleftrightarrow\quad
+ \zeta\in\Z.
+\]
+\end{theorem}
+\begin{proof}
+A retraction $r:G_\zeta\to\Z$ with $r(e)=1$ is determined by the
+integers $b_n=r(x_n)$. The relations imply
+\begin{equation}\label{isg:cf:eq:retraction}
+ (n+1)b_{n+1}=b_n+a_n,
+ \qquad n!b_n=b_1+S_n.
+\end{equation}
+Thus $b_1+\zeta$ is zero modulo every $n!$, so $\zeta=-b_1\in\Z$.
+Conversely, when $\zeta=m\in\Z$, put
+$b_n=(S_n-m)/n!$. These are integers satisfying all transition relations.
+On each stage define $r(kx_n+le)=kb_n+l$; compatibility makes this a
+well-defined retraction on the union. The equivalence with initial
+realizability follows from \cref{isg:cf:main:presburger}.
+\end{proof}
+
+\subsection{A completely explicit noninteger parameter}
+Define
+\begin{equation}\label{isg:cf:eq:explicitparameter}
+ \zeta_* =\sum_{k=1}^{\infty}k!\quad\text{in }\Zhat,
+ \qquad S_n=\sum_{k=1}^{n-1}k!.
+\end{equation}
+For each fixed modulus, all sufficiently late factorials vanish, so
+this is a well-defined profinite sum. It is not an ordinary convergent
+real series and is not a Hahn sum of omnific integers.
+
+\begin{lemma}\label{isg:cf:lem:noninteger}
+One has $0\le S_n<n!$, $S_n\to+\infty$, and $S_n/n!\to0$ in the
+ordinary real sense. In particular $\zeta_*\notin\Z$.
+\end{lemma}
+\begin{proof}
+The first inequality is direct for $n=1,2$. If $S_n<n!$, then
+$S_{n+1}=S_n+n!<2n!\le(n+1)!$ for $n\ge1$, with the small equality
+case harmless because the first inequality is strict.
+For $n\ge3$, induction gives
+$S_n\le2(n-1)!$: it holds at $n=3$, and
+\[
+ S_{n+1}\le2(n-1)!+n!\le2n!\qquad(n\ge2).
+\]
+Hence $S_n/n!\le2/n$. Unboundedness follows from the summand
+$(n-1)!$.
+If $\zeta_*$ were a nonnegative ordinary integer $m$, its least
+residues modulo all sufficiently large $n!$ would be the fixed value
+$m$, contrary to unboundedness. If it were $-m$ with $m>0$, those
+residues would be $n!-m$, whose ratio to $n!$ tends to one, contrary to
+the proved ratio limit.
+\end{proof}
+
+For this parameter all digits $a_n$ equal $1$, and $(n+1)x_{n+1}=x_n+e$.
+The first generators are shown below. Thus the abstract obstruction has a
+presentation entirely in terms of pairs of ordinary rational numbers.
+\begin{center}\small
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $n!$ & $S_n$ & $x_n$\\
+\midrule
+1&1&0&$(1,0)$\\
+2&2&1&$(1/2,1/2)$\\
+3&6&3&$(1/6,1/2)$\\
+4&24&9&$(1/24,3/8)$\\
+5&120&33&$(1/120,11/40)$\\
+6&720&153&$(1/720,17/80)$\\
+7&5040&873&$(1/5040,97/560)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Every finite retraction problem is solvable]\label{isg:cf:rem:finite}
+Fix $N$. Taking $b_1=-S_N$ makes
+$b_n=(S_n-S_N)/n!$ integral for every $n\le N$ and satisfies every
+transition visible through stage $N$. There is nevertheless no single
+integer $b_1$ satisfying all stages. The obstruction is precisely the
+failure of this infinite compatibility problem to have a solution in
+$\Z$, although it has the profinite solution $-\zeta_*$.
+\end{remark}
+
+\subsection{Extension classes and rigidity}
+\begin{proposition}[Classical extension parameter, explicit form]\label{isg:cf:prop:extensionclasses}
+There is an isomorphism $G_\zeta\to G_\eta$ inducing the identity on
+both endpoints of \eqref{isg:cf:eq:extension} if and only if
+$\zeta-\eta\in\Z$.
+\end{proposition}
+\begin{proof}
+Such a map must send $e$ to $e$ and $x_n^\zeta$ to
+$x_n^\eta+b_ne$ with $b_n\in\Z$. Comparing $n!$ times these elements
+gives
+\[
+ n!b_n=b_1+S_n(\zeta)-S_n(\eta).
+\]
+Thus $b_1+\zeta-\eta=0$ in $\Zhat$. Conversely, if this equality
+holds for an ordinary integer $b_1$, the displayed formula defines
+integers $b_n$ satisfying the transition relations. They define compatible
+isomorphisms on the stages and hence an isomorphism on the union;
+replacing $b_n$ by $-b_n$ gives the inverse.
+\end{proof}
+
+This is the concrete presentation behind the familiar parameter
+$\Zhat/\Z$. No new computation of the functor $\Ext$ is being claimed.
+For completeness, arbitrary extensions of $\Q$ by $\Z$ admit the same
+kind of presentation: choose lifts of $1/n!$, adjust their differences
+by integers, and collect the resulting compatible residues. Only the
+explicit family and its equivalence relation are needed here.
+
+\begin{theorem}[Continuum many countable rigid countermodels]\label{isg:cf:thm:continuum}
+There are $2^{\aleph_0}$ pairwise nonisomorphic countable rigid
+$\Z$-groups not in $\IR$, among the $G_\zeta$.
+\end{theorem}
+\begin{proof}
+The profinite integers have cardinality $2^{\aleph_0}$, and each coset
+modulo $\Z$ is countable. \Cref{isg:cf:prop:extensionclasses} therefore
+gives continuum many endpoint-marked extension classes. An ordered-group
+isomorphism must preserve the least positive element and induces an
+order-preserving automorphism of $\Q$. Every such automorphism is
+multiplication by an element of $\Q_{>0}$, a countable set of choices.
+Thus one ordered-group isomorphism class can account for at most
+countably many of the marked extension classes. There remain continuum
+many ordered-group types, with only the zero extension class split.
+
+Let $\zeta\notin\Z$. If $G_\zeta^{\dv}$ were nonzero, its image in
+$\Q$ would be a nonzero divisible subgroup, hence all of $\Q$.
+The intersection $G_\zeta^{\dv}\cap\Z e$ is zero. Consequently the
+restriction of $\pi_1$ would be an isomorphism $G_\zeta^{\dv}\to\Q$,
+providing a section and contradicting \cref{isg:cf:thm:familytest}.
+Hence $G_\zeta^{\dv}=0$ and $\res_{G_\zeta}$ is injective.
+Every ordered-group automorphism preserves $e$ and all its residues,
+so injectivity of the residue map forces that automorphism to be the
+identity.
+\end{proof}
+
+The final argument is the residue-injectivity rigidity mechanism studied
+in \cite{Jerabek}. Here it also supplies a particularly explicit family
+on the noninitial side of \cref{isg:cf:main:presburger}.
+
+\section{Elementary equivalence, dense models, and omitted types}\label{isg:cf:sec:modeltheory}
+
+\subsection{Initial realizability is not elementary}
+\begin{corollary}\label{isg:cf:cor:nonelementary}
+Initial realizability is not preserved by elementary equivalence, even
+among countable $\Z$-groups. It is not first-order axiomatizable as a
+property of ordered abelian groups.
+\end{corollary}
+\begin{proof}
+The standard group $\Z$ is initial. Every $G_\zeta$ is a $\Z$-group,
+hence elementarily equivalent to $\Z$ by the characterization of
+Presburger models \cite{Jerabek}. For $\zeta\notin\Z$ it is not
+initially realizable. A first-order axiomatizable class is closed under
+elementary equivalence.
+\end{proof}
+
+The same contrast already occurs with the explicit initial nonstandard
+$\Z$-group $\Q\omega+\Z$, order-isomorphic to $\Q\lex\Z$.
+It has the same Presburger theory as every nonsplit $G_\zeta$.
+
+\begin{theorem}[Dense elementary-equivalence counterexample]\label{isg:cf:thm:dense}
+For $\zeta\notin\Z$, let $\widetilde G_\zeta=G_\zeta\lex\Q$.
+Then $\widetilde G_\zeta$ is countable and densely ordered, is not
+initially realizable, and is elementarily equivalent as an ordered group
+to the initial subgroup
+\[
+ W=\Q\omega^2+\Z\omega+\Q\subseteq\No.
+\]
+\end{theorem}
+\begin{proof}
+The final $\Q$ layer is convex and densely ordered. Between two elements
+with distinct upper coordinates one can increase the lower coordinate
+of the smaller element; with equal upper coordinates one uses density
+of $\Q$. Thus the whole group is densely ordered.
+The quotient by the bottom copy of $\Q$ is $G_\zeta$. If
+$\widetilde G_\zeta$ were initially realizable, convex-factor closure
+would make $G_\zeta$ initially realizable, a contradiction.
+
+Since $G_\zeta\equiv\Q\lex\Z$, adjoining a disjoint second sort
+interpreted as the fixed ordered group $\Q$ preserves elementary
+equivalence. This can be verified by induction on formulas: formulas
+in disjoint sorts reduce to Boolean combinations of formulas in the
+individual sorts. The Cartesian product with coordinatewise addition
+and lexicographic order is uniformly interpretable in that two-sorted
+structure. It follows that
+\[
+ \widetilde G_\zeta\equiv(\Q\lex\Z)\lex\Q\cong W.
+\]
+Finally, the exponent class $\{0,1,2\}$ is initial and has no right
+ancestors internally, and the coefficient groups $\Q,\Z,\Q$ are
+initial real groups. Finite support gives truncation closure and
+cross-sectionality, so the criterion proves that $W$ is initial.
+\end{proof}
+
+\subsection{A single recursive type witnessing the obstruction}
+With the computable integers $S_n$ of \eqref{isg:cf:eq:explicitparameter},
+consider the partial type in one variable
+\begin{equation}\label{isg:cf:eq:type}
+ \tau_*(X)=\{X\equiv S_ne\pmod{n!G}:n=1,2,\ldots\}.
+\end{equation}
+Each congruence abbreviates the first-order formula
+$\exists Y\ (X=n!Y+S_ne)$ in the ordered-group language with $e$ named.
+The least positive element is itself definable, so naming it does not
+change the substantive distinction.
+
+\begin{theorem}[An omitted computable type]\label{isg:cf:thm:type}
+The type $\tau_*$ is finitely satisfiable in every $\Z$-group and omitted
+by every initially realizable $\Z$-group. It is a recursive type under
+a fixed standard coding of these canonical formulas. Consequently no
+recursively saturated $\Z$-group is initially realizable.
+\end{theorem}
+\begin{proof}
+A finite set of congruences is satisfied by $S_Ne$ for any sufficiently
+large $N$, because $S_N\equiv S_n\pmod{n!}$ for $n\le N$.
+A realization of all congruences has coherent residue $\zeta_*$.
+That residue is not in $\Z$, by \cref{isg:cf:lem:noninteger}, whereas
+\cref{isg:cf:main:presburger} requires the entire residue image to be
+$\Z$. Thus the type is omitted in every initially realizable $\Z$-group.
+
+The sequences $n!$ and $S_n$ are computable. Using canonical integer
+numerals, the set of displayed formulas is decidable: read the modulus,
+decide whether it is a factorial, and check the corresponding residue,
+handling the duplicate modulus $1$ at the start by our convention
+$n\ge1$. Standard definitions of recursive saturation therefore apply.
+A recursively saturated model realizes every finitely satisfiable
+recursive type over finitely many parameters, contradicting the omission.
+\end{proof}
+
+\begin{corollary}[Countable saturation]\label{isg:cf:cor:saturation}
+If a $\Z$-group is countably saturated, its residue map is surjective
+onto $\Zhat$. In particular it is not initially realizable.
+\end{corollary}
+\begin{proof}
+For an arbitrary $\zeta\in\Zhat$, use its compatible residues
+$S_n(\zeta)$ instead of $S_n$ in \eqref{isg:cf:eq:type}. The resulting
+countable type is finitely satisfiable by ordinary multiples of $e$.
+Countable saturation supplies a realization. Taking $\zeta_*$ yields
+the final assertion without any assumption on the continuum hypothesis.
+\end{proof}
+
+\begin{theorem}[Every nonprincipal sequential ultrapower fails]\label{isg:cf:thm:ultrapower}
+Let $G$ be any $\Z$-group and $U$ any nonprincipal ultrafilter on $\N$.
+Then $G^\N/U$ is not initially realizable.
+\end{theorem}
+\begin{proof}
+By \L o\'s's theorem it is a $\Z$-group. In the ultrapower take
+$a=[(S_Ne)_{N\ge1}]_U$. For any fixed $n$, the congruence
+$S_Ne\equiv S_ne\pmod{n!G}$ holds for all $N\ge n$, hence on a set
+in $U$. Therefore $a$ realizes $\tau_*$. The previous theorem rules out
+an initial realization. The argument uses only cofinite sets and does
+not invoke an ultrapower saturation theorem.
+\end{proof}
+
+\subsection{An obstruction for nonstandard Peano models}\label{isg:cf:sec:PA}
+\begin{theorem}[Nonstandard arithmetic cannot have an initial additive realization]
+\label{isg:cf:thm:PA}
+Let $M$ be a nonstandard model of Peano arithmetic, and let $G(M)$ be
+the ordered abelian group completion of its additive monoid. Then
+$G(M)$ is not initially realizable in $\No$.
+\end{theorem}
+\begin{proof}
+The ordinary division algorithm, as proved in Peano arithmetic, gives
+unique division with remainder by every positive standard integer.
+Consequently $G(M)$ is a $\Z$-group with least positive element $1$.
+
+Choose a nonstandard $h\in M$. Peano arithmetic defines the factorial
+function and the primitive-recursive partial sums
+\[
+ F(h)=\sum_{k=1}^{h}k!.
+\]
+The sum here is the internally coded finite sum in $M$, not an external
+infinite group sum. For each fixed ordinary $n$, arithmetic proves
+that $n!$ divides $k!$ whenever $k\ge n$, and therefore proves
+\[
+ h\ge n\quad\Longrightarrow\quad F(h)\equiv S_n\pmod{n!}.
+\]
+This follows by induction on the finite-sum length inside the model;
+all the displayed factorial and summation recursions are provably
+total in Peano arithmetic. Since $h$ exceeds every standard $n$,
+$F(h)$ realizes the external type $\tau_*$ in $G(M)$.
+\Cref{isg:cf:thm:type} excludes initial realizability.
+\end{proof}
+
+The arithmetic infrastructure used here is standard; factorials and
+division can in fact be handled in much weaker arithmetic, as noted in
+\cite{EnayatHamkinsWcislo}. The fragment is not optimized here. The
+conclusion is stronger than merely observing that the usual
+omnific multiplication does not make the positive cone of $\Oz$ a
+nonstandard Peano model: it excludes \emph{any} such model having an
+initially realizable ordered additive group.
+
+\begin{proof}[Proof of \cref{isg:cf:main:models}]
+The discrete family and rigidity are \cref{isg:cf:thm:continuum} and
+Presburger elementary equivalence. The dense examples are
+\cref{isg:cf:thm:dense}. The remaining assertions are
+\cref{isg:cf:thm:type,isg:cf:thm:ultrapower,isg:cf:thm:PA}.
+\end{proof}
+
+\section{Omnific and surcomplex consequences}\label{isg:cf:sec:complex}
+
+\subsection{The precise residue image of omnific integers}
+\begin{proposition}\label{isg:cf:prop:omnificresidue}
+The additive group of $\Oz$ has least positive element $1$, its purely
+infinite subgroup $\Pi$ is divisible, and for every ordinary $n\ge1$
+\[
+ \Oz/n\Oz\cong\Z/n\Z,\qquad
+ \res_{\Oz}(z)=\ct(z)\in\Z\subseteq\Zhat.
+\]
+The type $\tau_*$ is finitely satisfiable in $\Oz$ and has no realization
+there.
+\end{proposition}
+\begin{proof}
+The normal form \eqref{isg:eq:Oz} gives $z=y+m$ uniquely with
+$y\in\Pi$ and $m\in\Z$. Every nonzero purely infinite form dominates
+all real constants in absolute value, proving the least-positive claim.
+For a positive ordinary $n$, dividing the real coefficients of $y$ by
+$n$ leaves its support strictly positive. Thus $\Pi$ is divisible and
+$z\equiv m\pmod{n\Oz}$. The kernel of the residue map to $\Z/n\Z$
+is exactly $n\Oz$, proving both formulas. The final assertion follows
+by the same explicit residue argument as \cref{isg:cf:thm:type}.
+\end{proof}
+
+This is a class-function statement; it does not require a set of all
+omnific integers or a set quotient by a proper-class subgroup. The
+finite quotient is represented directly by its ordinary remainder.
+
+\begin{corollary}[Unit-preserving omnific embeddings]\label{isg:cf:cor:unit}
+For a set-sized $\Z$-group $G$ with least positive element $e$, the
+following are equivalent: $G\in\IR$; there is an order-preserving
+additive embedding $f:G\to\Oz$ with $f(e)=1$; there is any additive
+homomorphism $f:G\to\Oz$ with $f(e)=1$.
+\end{corollary}
+\begin{proof}
+An initial omnific realization supplies the stated embedding and takes
+the least positive element to $1$. Conversely, for any such homomorphism,
+$\ct\circ f:G\to\Z$ is a retraction on $\Z e$. Thus the bottom cyclic
+group splits, and \cref{isg:cf:main:presburger} applies.
+\end{proof}
+
+In particular, the ordered additive completion of a nonstandard Peano
+model cannot even admit a unit-preserving additive embedding into
+$\Oz$, whether or not the image is initial. There is no contradiction
+with ordinary ordered-group embeddings that move the distinguished
+unit: the copy $(a,b)\mapsto a\omega^2+b\omega$ embeds each
+$G_\zeta$ into $\Oz$ but sends $e$ to $\omega$, not to $1$.
+
+\subsection{Period groups of surcomplex phases}\label{isg:cf:sec:periods}
+The trigonometry report studies the normalized period group
+$\mathcal I(\Psi)$ of a phase $\Psi$ on a field $F$
+(\replabel{trigonometry:per:def:periodgroup}). It is an additive integer
+part of $F$ with least positive element $1$, it sits in the exact
+sequence $0\to\Z\to\mathcal I\to\Pi_F\to0$ given by the principal part
+(\replabel{trigonometry:per:thm:dictionary}), and for set-sized $F$ it is
+a $\Z$-group (after \replabel{trigonometry:per:prop:division}). Its
+residue map $\res_{\mathcal I}$ is the map $\res_G$ of
+\cref{isg:cf:lem:residues} for $G=\mathcal I$, $e=1$
+(\replabel{trigonometry:per:eq:residue}), and its profinite defect
+$\partial_\Psi:\Pi_F\to\Zhat/\Z$
+(\replabel{trigonometry:per:thm:defect}) is that residue taken on a lift
+and read modulo $\Z$. Source~02's criterion therefore decides which
+period groups are initially realizable. The statement is the merge's.
+
+\begin{corollary}[Initially realizable period groups; \textup{[merge]}]\label{isg:cf:cor:periods}
+Let $F$ be $\No$ or one of the set-sized fields of
+\replabel{trigonometry:per:sec:phases}, and let $\Psi$ be a phase on $F$
+with normalized period group $\mathcal I=\mathcal I(\Psi)$, ordered as a
+subgroup of $F$. The following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathcal I$ is initially realizable;
+\item the profinite defect $\partial_\Psi$ vanishes;
+\item the period sequence $0\to\Z\to\mathcal I\to\Pi_F\to0$ splits.
+\end{enumerate}
+In that case $\mathcal I\cong\Pi_F\lex\Z$ as ordered groups; for
+$F=\No$ and for the initial fields $\No(\lambda)$ this is an
+order-isomorphism onto the canonical period group $\Oz\cap F$, which is
+initial.
+\end{corollary}
+\begin{proof}
+(ii)$\Leftrightarrow$(iii) is \replabel{trigonometry:per:thm:split},
+conditions (1) and (2).
+
+(i)$\Rightarrow$(iii). The element $1$ is the least positive element of
+$\mathcal I$ and $\mathcal I\cap\mathcal O_F=\Z$. An element of
+$\mathcal I$ outside $\Z$ is infinite, so its sign is the sign of its
+principal part; hence the principal part induces an ordered isomorphism
+$\mathcal I/\Z\cong\Pi_F$. If $\mathcal I$ is initially realizable, the
+convex subgroup $\Z$ is a direct summand by \cref{isg:cf:thm:split}
+(or by \cref{isg:cor:relative}), and the period sequence splits.
+
+(iii)$\Rightarrow$(i). A splitting gives $\mathcal I=V\oplus\Z$ with
+$V$ mapped isomorphically onto $\Pi_F$ by the principal part. By
+convexity of $\Z$ the order is lexicographic, and since the principal
+part preserves signs on $V$, the map $v+m\mapsto\mathrm{pr}(v)+m$ is an
+order-isomorphism $\mathcal I\to\Pi_F\oplus\Z$, the latter ordered as a
+subgroup of $F$, which is $\Pi_F\lex\Z$. For $F=\No$ the target is
+$\Pi\oplus\Z=\Oz$, and for $F=\No(\lambda)$ it is $\Oz\cap F$; both are
+initial ($\Oz$ by \eqref{isg:eq:Oz}, and an intersection of initial
+classes is initial). For a set-sized $F$, $\Pi_F$ is a divisible ordered
+group, so it has an initial realization $B$ by
+\cref{isg:cf:fact:ehrlich}, and $J(B)$ realizes $\Pi_F\lex\Z$
+(\cref{isg:thm:suspension}).
+
+Second route for set-sized $F$: $\mathcal I$ is a set-sized $\Z$-group
+with $\res_{\mathcal I}(\mathcal I)=q^{-1}(\partial_\Psi(\Pi_F))$, $q$
+the quotient map $\Zhat\to\Zhat/\Z$
+(\replabel{trigonometry:per:thm:defect}); this is $\Z$ exactly when
+$\partial_\Psi=0$, and \cref{isg:cf:main:presburger} gives
+(i)$\Leftrightarrow$(ii).
+\end{proof}
+
+So a period group is initially realizable exactly when its profinite
+defect is zero. The corollary is additive: it says nothing about
+multiplicative closure of the periods, which the trigonometry report
+shows to be independent of the defect
+(\replabel{trigonometry:per:sec:tests}), and it does not make a
+noncanonical split period group equal to $\Oz\cap F$ as a subclass. The
+nonsplit period groups are further instances of the obstruction of
+\cref{isg:cf:main:presburger}.
+
+\subsection{Rectangular surcomplex factors}
+Let $\No[i]$, $A[i]$ and coordinatewise initiality be as in
+\cref{isg:sec:complex} (\cref{isg:def:rectangular}). This is an
+explicitly coordinate-dependent notion; no single canonical sign-tree
+order on $\No[i]$ is postulated.
+
+\begin{theorem}[Rectangular convex-factor transport]\label{isg:cf:thm:complex}
+Let $G\subseteq\No$ be initial and $C\subseteq C'$ convex in $G$.
+For the interval $E=\Gamma_{C'}\setminus\Gamma_C$, the map
+\[
+ a+ib\longmapsto\Phi_E(P_Ea)+i\Phi_E(P_Eb),
+ \qquad a,b\in C',
+\]
+induces a $\Z[i]$-linear isomorphism
+\[
+ C'[i]/C[i]\ \cong\ \mathcal F_E(G)[i].
+\]
+It commutes with conjugation. The target is coordinatewise initial, and
+the ambient complex-coefficient Hahn transport preserves and reflects
+set-indexed strong summability.
+\end{theorem}
+\begin{proof}
+The real factor map has kernel $C$ in each coordinate. The induced
+map is therefore bijective on the rectangular quotient. Additivity and
+compatibility with $(a,b)\mapsto(-b,a)$ give $\Z[i]$-linearity, and
+negating the imaginary coordinate gives conjugation compatibility.
+Initiality of the real target is \cref{isg:cf:thm:transport}. A complex
+normal form is obtained by the union of the two real supports, still
+reverse well ordered. Reindexing changes neither that order nor the
+finite set of contributors at any exponent, so the strong-sum proof is
+the same coefficientwise proof as in the real case.
+\end{proof}
+
+\begin{proposition}[Gaussian omnific residues]\label{isg:cf:prop:gaussian}
+For each ordinary $n\ge1$,
+\[
+ \Oz[i]/n\Oz[i]\cong\Z[i]/n\Z[i],\qquad
+ \res_{\Oz[i]}(a+ib)=\ct(a)+i\ct(b)\in\Z[i]\subseteq\Zhat[i].
+\]
+\end{proposition}
+\begin{proof}
+Apply \cref{isg:cf:prop:omnificresidue} to both coordinates.
+Multiplication by $i$ interchanges them with a sign, so the coordinate
+residue map is $\Z[i]$-linear. Its kernel modulo $n$ is $n\Oz[i]$.
+\end{proof}
+
+These are additive and module-theoretic conclusions. The exponent
+compression need not respect addition of exponents, so it does not in
+general preserve products of normal forms. No field, ring, differential,
+or exponential equivalence is inferred from \cref{isg:cf:thm:complex}.
+
+\section{Boundaries of the convex-factor theory}\label{isg:cf:sec:boundaries}
+
+\subsection{Why these conclusions do not classify every ordered group}
+Convex splitting is necessary for initial realizability, but no
+sufficiency theorem for that condition alone is proved here. Even a
+truncation-closed cross-sectional Hahn presentation must meet the
+coefficient and right-ancestor conditions. The proof of
+\cref{isg:cf:main:presburger} succeeds because the remaining quotient is
+divisible and hence has an initial realization by an established theorem.
+For a general discrete group that quotient need not be divisible.
+
+Arbitrary subgroup closure is false. In fact the rational-coordinate
+map $(a,b)\mapsto a\omega+b$ embeds every $G_\zeta$ into the initial
+group $\Q\omega+\Q$. For $\zeta\notin\Z$ this gives a concrete
+noninitially-realizable subgroup of a two-level initial group.
+The structural theorem requires convex factors or separately verified
+coordinate restrictions.
+Likewise, a convex subgroup may fail literal initiality in its original
+position. In the initial group $\D+\Z\omega^{-1}$ of
+\cref{isg:sec:examples}, the subgroup $\Z\omega^{-1}$ is convex and does
+not contain the simpler number $1$. It nevertheless has the initial
+realization $\Z$, as the theorem predicts.
+
+\subsection{The full optimality question is still separate}\label{isg:cf:sec:optimality}
+Ehrlich and Kaplan prove an optimality theorem allowing class models,
+for theories between ordered abelian groups and divisible ordered
+abelian groups, and ask for a set-model counterpart (Section~8 of
+\cite{EK}: Theorem~6 and Question~1; in the journal version,
+Theorem~8.1 and Question~8.1 \cite{EKjournal}). The explicit dense groups
+of \cref{isg:cf:thm:dense} are set-sized noninitial examples, but are not
+a construction uniform over every proper intermediate theory.
+
+In particular, Presburger arithmetic asserts discreteness and is not a
+subtheory of divisible ordered abelian groups. Thus
+\cref{isg:cf:main:presburger,isg:cf:thm:continuum} alone cannot answer
+their full question by simply substituting Presburger arithmetic for an
+intermediate theory. The dense variant in \cref{isg:cf:thm:dense} removes
+discreteness of the whole group, but still does not establish the
+required uniformity over all intermediate theories. Source~02 makes no
+claim to have resolved that published question in its entirety.
+
+Source~02 answers none of Ehrlich and Kaplan's questions. Question~2
+(journal 9.1) is the subject of source~01 (\cref{isg:cor:answer}), and
+source~02 does not use that answer: from source~01 it takes only the
+suspension, which it re-proves. Question~3 (journal 9.2), the
+initial-monoid problem, is not touched. Question~1 (journal 8.1) is the
+one discussed here.
+
+\begin{remark}[The two formulations of the optimality theorem; \textup{[merge]}]\label{isg:cf:rem:formulations}
+The arXiv version quantifies over theories $T$ with
+$T_{\mathrm{OAG}}\subseteq T\subseteq T_{\mathrm{DOAG}}$; since
+$\mathrm{Th}(W)$ proves non-divisibility, it is not such a theory. The
+journal version, read at placement in the authors' text hosted on the
+second author's web page, states Theorem~8.1(i) for theories in the
+language $\{<,+,0\}$ \emph{containing} the theory $T_D$ of nontrivial
+densely ordered abelian groups, and Question~8.1 asks whether its ``only
+if'' part can be established in NBG with set models alone. In that
+formulation $\mathrm{Th}(W)$ is in scope, and \cref{isg:cf:thm:dense}
+gives, for every theory $T\supseteq T_D$ in that language that holds in
+$W$, a countable model of $T$ that is not initially realizable. This
+settles the set-model ``only if'' part for those theories only, as
+Ehrlich and Kaplan's own example of a $p$-divisible group does for
+others; it gives no construction for every theory lacking full
+divisibility, and the question stays open in both versions.
+\end{remark}
+
+\subsection{Product and completion pitfalls}
+The group $G_\zeta$ for $\zeta\notin\Z$ has both convex kernel
+$\Z$ and quotient $\Q$ initially realizable, but is not itself initially
+realizable. Thus closure under convex factors has no unrestricted
+converse for extensions. The missing datum is the extension class.
+
+By contrast, \cref{isg:cf:thm:split} gives an actual complement whenever
+the middle group is initial. This complement depends on the normal-form
+realization; a group automorphism can change a splitting in general.
+Only the Presburger split case has the uniqueness proved in
+\cref{isg:cf:prop:residuesplit}.
+
+The maps $P_E$ for infinitely many disjoint intervals may form an
+ambient strongly summable family when applied to one fixed normal form,
+but this does not identify an arbitrary initial group with the full
+Hahn product of its factors. Such an identification would reintroduce
+the unsupported completion assumption excluded in
+\cref{isg:cf:rem:membership}.
+
+\section{Verification, provenance, and a formalization route}\label{isg:sec:audit}
+
+Each subsection below first gives source~01's record, as delivered, and
+then source~02's; ``this manuscript'' in source~01's text means source~01.
+
+\subsection{The exact dependency chain}
+The proof separates into three kinds of input. Standard surreal
+normal forms identify the ambient additive spaces. The established
+Ehrlich--Kaplan criterion decides when a specified canonical Hahn image
+is initial. Everything connecting the original discrete group to the
+normalized image is then given by the explicit formulas and proofs in
+this manuscript.
+
+The essential chain is
+\begin{gather*}
+ \text{bottom coefficient structure}
+ \ \longrightarrow\ \text{root relocation}\\
+ \ \longrightarrow\ \text{strong Hahn transport}
+ \ \longrightarrow\ \text{initiality of the image}.
+\end{gather*}
+For the inverse classification, the additional chain is
+\begin{gather*}
+ \text{missing ancestors of }p
+ \ \longrightarrow\ \text{spine exponents}\\
+ \ \longrightarrow\ \text{forced dyadic coefficients}
+ \ \longrightarrow\ K_\alpha\subseteq H.
+\end{gather*}
+The sign-sequence proof is independent of the arithmetic of exponents.
+In particular, no unproved assertion that $\tht$ preserves addition of
+exponents occurs in the chain.
+
+\emph{Source~02.} The convex-factor theorem depends on normal forms and
+the initial Hahn criterion, then only on the proved projection and sign
+lemmas. The Presburger criterion adds the divisible initial-embedding
+theorem (\cref{isg:cf:fact:ehrlich}). The explicit nonsplit examples add
+no further structural input. The elementary-equivalence consequences use
+the classical characterization of Presburger models; the ultrapower
+statement additionally uses \L o\'s's theorem. The Peano statement uses
+the usual provably total factorial and summation recursions. The
+surcomplex module assertions are coordinatewise consequences of the real
+factor theorem. The merge statements
+\cref{isg:cf:prop:cyclic,isg:cf:cor:limit,isg:cf:cor:periods} add
+source~01's \cref{isg:sec:surgery,isg:sec:quotient} and, for the last,
+statements of the trigonometry report cited by label.
+
+\subsection{Finite regression checks supplied with the article}
+The accompanying Python program \texttt{verify.py} (shipped in this
+report as \fn{code/verify.py}) uses only the standard
+library, exact rational arithmetic, and a fixed random seed. Its recorded
+run performs \textbf{450,862 assertions}, all passing (shipped as
+\fn{data/verification_report.json}). The tests cover
+finite sign words through length seven for all relevant finite cone
+minima; every prefix-closed subset of the binary tree through depth
+three, including the empty tree; inverse-spine tests on a further family
+of nonnegative initial trees; and 1,500 random pairs of finite rational
+normal forms.
+
+The count of prefix-closed trees is independently specified by
+\[
+ T_{-1}=1,\qquad T_d=1+T_{d-1}^2,
+\]
+so $T_0=2$, $T_1=5$, $T_2=26$, and $T_3=677$.
+The recurrence counts the empty tree, or a root with independently
+chosen initial left and right subtrees. This makes the finite-tree
+coverage exhaustive at the stated depth, rather than a random sample.
+
+Tests check inverse identities, order preservation, the exact predecessor
+identity, the right-ancestor
+identity away from the minimum, loss of the minimum's right ancestors,
+initiality of transported trees, the exact inverse exponent criterion,
+and the source dyadic obligations recovered by adjoining the spine.
+The series tests check inverse transport, additivity, order, truncations,
+and integrality of the bottom coefficient. Separate negative tests reject
+the false global right-ancestor identity and unrestricted inversion.
+
+The program does not represent arbitrary ordinals, arbitrary real
+coefficients, or infinite Hahn supports. It does not check the imported
+characterization theorem or establish absence of a transfinite proof gap.
+Its role is regression testing of the finite combinatorics and coefficient
+formulas. The written proofs, not these experiments, carry the general
+claims.
+
+When this report was placed, the program was rerun on a copy of the
+directory with an explicit output file. It passed with the same 450,862
+assertions, and its JSON output was identical in content to the shipped
+record. The program's default output file is
+\fn{verification_report.json} in the current directory, and the
+delivered build script calls it with that name, so a rerun should always
+be made on a copy (the collection README gives the commands).
+
+\emph{Source~02.} Its program, shipped as
+\fn{code/02-convex-factors-verify.py} (delivered as
+\fn{code/verify.py}), uses only the Python standard library and exact
+integers and rational fractions. Its recorded run, shipped as
+\fn{data/02-convex-factors-verification.json} (delivered as
+\fn{data/verification.json}), returns \texttt{PASS}. The main coverage
+is:
+\begin{center}\small
+\begin{tabular}{@{}p{0.72\textwidth}r@{}}
+\toprule
+Check family & Count\\
+\midrule
+All nonempty convex intervals in the sign tree of lengths $\le5$ & 2,016\\
+All nonempty meet-closed subsets of the sign tree of lengths $\le2$ & 61\\
+Pairs checked for order, prefix reflection, and meet preservation & 1,398,609\\
+Nested convex interval pairs in the sign tree of lengths $\le4$ & 46,376\\
+Points checked for two-stage compression coherence & 324,632\\
+Factorial transition identities & 100\\
+Compatibility checks between factorial residues & 5,050\\
+Integer-parameter splitting identities & 1,769\\
+Finite projection composition identities & 24,300\\
+\bottomrule
+\end{tabular}
+\end{center}
+No row certifies a transfinite theorem. The program additionally checks
+initiality of every finite compressed image (145,740 prefix checks), the
+non-meet-closed collision example, the solvability of all finite
+retraction systems through sixty stages, the factorial bound used in
+\cref{isg:cf:lem:noninteger}, and additivity of interval projections
+(2,970 checks); the full counts are in the JSON record. The successful
+finite retractions are a deliberate regression case: the code must not
+mistake finite solvability for a global splitting. The tests do not
+verify the Ehrlich--Kaplan theorem, arbitrary ordinals, class
+comprehension, completeness of Presburger arithmetic, recursive
+saturation, or the Peano-model argument. Those depend on the written
+proofs and the explicitly imported results, not on the test counts.
+
+The program prints its JSON report and writes a file only when
+\texttt{--output} is given; the delivered README's rerun command names the
+delivered record as that output and would overwrite it, so it too should
+be rerun on a copy. At this write it was rerun on a copy with a scratch
+output file: it passed in about ten seconds, and the JSON content was
+identical to the shipped record.
+
+\subsection{Relationship to the Surreal repository}
+The repository review examined the public README, the introductory
+coverage and dependency ledger, and targeted searches for overlap
+\cite{Repo}. Those materials describe extensive sign-sequence, canonical
+cut, normal-form, Hahn-summation, and algebraic infrastructure. They also
+explicitly distinguish source manuscripts from checked Lean declarations.
+The present argument is designed to fit that distinction.
+
+The review took place while the repository was changing. The initially
+inspected README and ledger had blob hashes
+\begin{center}\small\ttfamily
+391afd7c64cebd48b47fbe43dae26c27e8ee8047\\
+6a89497cb1de3e5c7a346201f7fc006d85082426.
+\end{center}
+A later metadata read reported commit
+\begin{center}\small\ttfamily
+173eb522fdf5d4bf201c097f76b38273eb4f95e1.
+\end{center}
+The initially returned recursive-tree hash is not used as a commit
+identifier. This manuscript does not claim to have reviewed every
+repository article or every companion archive, and no repository result
+is silently promoted from ``pending'' to ``proved.''
+The manuscript has no pinned commit. The commit \texttt{173eb52} above
+is an ancestor of the commit \texttt{c6359e4} that placed the manuscript
+in the collection. The manuscript makes no claim about the content of
+any report, so no statement of it had to be corrected against the
+collection as it now stands.
+
+A sound implementation would first formalize the following mathematical
+interfaces; the names are proposed work units, not declarations claimed
+to exist:
+\begin{enumerate}
+\item \emph{Cone root relocation.} Define the three-way sign split,
+      the inverse, the order equivalence, and
+      \eqref{isg:eq:predidentity} for ordinal-length sequences.
+\item \emph{Hahn reindexing with one coefficient multiplier.} Prove
+      support transport, real-linearity, order preservation, truncation
+      compatibility, and strong-sum interchange.
+\item \emph{Concrete initial-subgroup criterion.} Supply a checked
+      version of \cref{isg:fact:EK}, including both its coefficient and
+      right-ancestor conditions, before claiming the final theorem.
+\item \emph{Normalization and exact inverse.} Instantiate the criterion
+      for the transformed groups; then derive the spine classification,
+      quotient realization, and complex-coordinate extension.
+\end{enumerate}
+
+The largest imported proof obligation is the third item. A checked
+conditional theorem using that criterion would be valuable, but would
+not by itself constitute a checked theorem about every actual initial
+subgroup of $\No$. This package supplies no Lean file with that
+obligation hidden as an axiom or an unfinished proof.
+
+\emph{Source~02.} Its repository review was made at commit
+\begin{center}\small\ttfamily
+9693b28c24e6fcb317ce47969a40185c5dfef402,
+\end{center}
+and included the main README, the formalization ledger, the article
+catalogue exposed there, and the guide of the omnific groups and lattices
+report; these distinguish mathematical drafts from Lean results. It did
+not constitute a claim-by-claim audit of the repository or a local Lean
+build. Source~02 read source~01 from the project library, including its
+quotient, suspension and relative splitting arguments, and recorded that
+its location in the inspected Git tree was not established, citing it as
+a preceding project draft without assigning it a repository path. That
+was correct at its pin: \texttt{9693b28} is an ancestor of the commit
+\texttt{c6359e4} that placed source~01, and the preceding draft is now
+\cref{isg:sec:intro,isg:sec:background,isg:sec:bottom,isg:sec:surgery,isg:sec:transport,isg:sec:normalization,isg:sec:classification,isg:sec:quotient,isg:sec:complex,isg:sec:examples}
+of this report (its ``Section~8'' is \cref{isg:sec:quotient}). No theorem
+of source~02 is called Lean-verified. A sensible implementation order
+would formalize the finite and transfinite sign-tree compression first,
+followed by the support projection lemmas and the transfer of the initial
+Hahn criterion. The residue and factorial-presentation arguments can be
+formalized in ordinary abelian-group and ordered-group libraries
+independently of a full implementation of omnific integers. This is a
+dependency plan, not delivered formal code.
+
+\subsection{Novelty and literature status}
+The new contributions claimed provisionally here are the explicit
+root-relocation map together with its exact predecessor identity, its
+use in omnific normalization, and the sharp dyadic-spine image
+classification. The extremal, quotient, and surcomplex statements are
+derived refinements of that construction. The known two-level example,
+the general initial-Hahn-subgroup characterization, and the classification
+of initial real coefficient groups are not claimed as new.
+
+The literature check recovered the stated question in the original
+preprint, thesis, and workshop account \cite{EK,Kaplan,Workshop}, and
+examined adjacent sign-concatenation work \cite{BagHoeven}. Targeted
+searches did not locate a prior resolution or the specific root-relocation
+argument. That negative search result is limited evidence: it does not
+exclude an unindexed paper, unpublished proof, or a reformulation already
+known to a specialist. Neither mathematical correctness nor priority is
+certified by the absence of a search result.
+
+\emph{Source~02.} The convex-factor theorem and its surreal applications
+are proposed contributions with complete proofs; neither priority nor
+independent referee certification is claimed. The Ehrlich--Kaplan
+criterion, Ehrlich's divisible embedding, Je\v r\'abek's residue theory
+and residue-injectivity rigidity mechanism \cite{Jerabek}, and
+$\Ext(\Q,\Z)\cong\Zhat/\Z$ \cite{Strickland} are classical and credited;
+no new $\Ext$ computation is claimed, and the existence of rigid
+Presburger models is not claimed as new. Bagayoko and van der Hoeven's
+surreal substructures \cite{BagHoeven} are a related viewpoint, not a
+dependency, and \cite{EnayatHamkinsWcislo} is background on internal
+arithmetic only. A targeted source review did not find a prior
+formulation of the main convex-factor theorem; the search was not
+exhaustive.
+
+\subsection{Provenance, placement review, and place in the collection}
+\label{isg:sec:provenance}
+
+\paragraph{Two sources.} This report is built from two manuscripts.
+
+\emph{Source~01} is \emph{Discrete Initial Groups and Omnific
+Normalization} (24 pages, 23~September 2026), manuscript~09 of the
+collection's batch~28. It was delivered with a README, a source audit,
+the finite checks \texttt{verify.py}, their recorded result and a build
+script. It was placed in commit \texttt{c6359e4} as this directory and
+written in \texttt{3d9dbe9}. Its LaTeX source is the basis of
+\fn{article.tex}; its source audit is shipped unchanged as
+\fn{source_audit.md}, the program and build script as \fn{code/verify.py}
+and \fn{code/build.sh}, and the record as
+\fn{data/verification_report.json}. Its delivered PDF and README are not
+shipped. It has no pinned repository commit; its read identifiers are
+those recorded above. It contributes
+\cref{isg:sec:intro,isg:sec:background,isg:sec:bottom,isg:sec:surgery,isg:sec:transport,isg:sec:normalization,isg:sec:classification,isg:sec:quotient,isg:sec:complex,isg:sec:examples},
+Appendix~\ref{isg:app:compact}, Questions
+\ref{isg:q:convex}--\ref{isg:q:formal}, non-claims
+\textup{(N1)}--\textup{(N15)} and most of the checklist of
+Appendix~\ref{isg:app:checklist}.
+
+\emph{Source~02} is \emph{Convex Factors and Profinite Obstructions for
+Initial Surreal Groups} (23 pages, 23~September 2026), manuscript~09 of
+the collection's batch~29. It was delivered with a README, a provenance
+record, the program \texttt{code/verify.py} and its record
+\texttt{data/verification.json}, and placed in commit \texttt{66d7e55}
+under the prefix \fn{02-convex-factors-}: the provenance record is shipped
+unchanged as \fn{02-convex-factors-PROVENANCE.md}, the program as
+\fn{code/02-convex-factors-verify.py} and the record as
+\fn{data/02-convex-factors-verification.json}. Its LaTeX source, PDF and
+README are not shipped; the provenance record names the delivered file
+names (\fn{code/verify.py}, \fn{data/verification.json}), which in this
+directory carry the prefix. Its repository pin is \texttt{9693b28}. It
+contributes \cref{isg:cf:sec:intro},
+\cref{isg:cf:sec:cuts,isg:cf:sec:compression,isg:cf:sec:factors,isg:cf:sec:presburger,isg:cf:sec:factorial,isg:cf:sec:modeltheory,isg:cf:sec:complex,isg:cf:sec:boundaries}
+except the statements marked \textup{[merge]}, Appendix~\ref{isg:cf:app:core},
+Questions \ref{isg:cf:q:intrinsic}--\ref{isg:cf:q:multiplicative},
+non-claims \textup{(N16)}--\textup{(N29)} and the corresponding rows of
+the checklist.
+
+\paragraph{How the merge was made (source~02).} Source~02 was placed as an
+addition because it answers two questions this report named,
+\cref{isg:q:convex,isg:q:limit}. Its material is printed as it stands,
+with these choices. Results that both sources contain are printed once:
+the Ehrlich--Kaplan criterion (\cref{isg:fact:EK}), the classification of
+initial real groups (\cref{isg:fact:real}), the caution against Hahn
+completion (\cref{isg:rem:nocompletion,isg:cf:rem:membership}), the
+integer-bottom suspension (\cref{isg:thm:suspension}; source~02 re-proves
+it from the criterion, by the same argument), the description of $\Oz$
+(\eqref{isg:eq:Oz}) and the rectangular convention
+(\cref{isg:def:rectangular}). Source~02's foundations section is replaced
+by \cref{isg:sec:background} and \cref{isg:cf:sec:conventions}; its
+symbols that collide with source~01's are renamed
+(\cref{isg:cf:sec:conventions}); its Theorems A--C are Theorems D--F. Its
+verification, repository, novelty, question and non-claim material is
+merged into the corresponding parts of
+\cref{isg:sec:audit,isg:sec:further}; its notation table is replaced by
+the renaming table of \cref{isg:cf:sec:conventions} and the definitions
+at their places, its dependency summary is in \cref{isg:sec:audit}, and
+its independent-review checks are in
+Appendix~\ref{isg:app:checklist}. Three statements are added in the merge, each
+with a complete proof and marked \textup{[merge]}:
+\cref{isg:cf:prop:cyclic} (source~02's construction for $\Z\varepsilon$
+is source~01's $\rho\circ\tht$), \cref{isg:cf:cor:limit} (limit stages of
+the iteration of \cref{isg:cor:iteration}) and \cref{isg:cf:cor:periods}
+(period groups of the trigonometry report); \cref{isg:cf:rem:formulations}
+records how the two versions of Ehrlich and Kaplan's optimality theorem
+differ. The Ehrlich--Kaplan numbering table of \cref{isg:sec:intro} gained
+the two rows for Section~8. No mathematical statement, proof or example
+of source~01 was changed. Where source~01 said that convex quotients and
+limit stages were not covered (after
+\cref{isg:cor:iteration,isg:cor:relative}, in
+\cref{isg:q:convex,isg:q:limit} and in \textup{(N10)}), the text now says
+which source proves what; the title page, abstract, status box,
+conventions, this section and the conclusion mention the second source.
+
+\paragraph{What the write changed (source~01).} Every label now carries the prefix
+\texttt{isg:}. The journal numbering of the Ehrlich--Kaplan results
+(\cref{isg:sec:intro}) and the wording of the journal version of their
+criterion (after \cref{isg:fact:EK}) were added, as were
+\cref{isg:sec:conventions}, this subsection, the shipped file names, a
+definition of $\ct$ (which the manuscript used without defining it),
+labels on formerly unlabelled statements, and the collected list of
+non-claims (\cref{isg:sec:nonclaims}). Cross-references now name each kind
+of statement correctly; in the delivered source every reference to a
+lemma, proposition, corollary, remark or imported fact printed as
+``theorem''. No mathematical statement, proof or example was changed.
+
+\paragraph{Placement review (source~01).} When source~01 was placed, every step
+of the argument was checked by hand: the bottom-coefficient structure,
+both cases of the predecessor identity \eqref{isg:eq:predidentity} and its
+failure at the old minimum, the ambient transport, every dyadic obligation
+in the proof of \cref{isg:thm:A}, both directions of \cref{isg:thm:B}
+with its two counterexamples, the extremal groups, the size and depth
+corollaries, the splitting and suspension theorems, and every example of
+\cref{isg:sec:examples}. No gap was found. The Ehrlich--Kaplan criterion
+was checked as a statement, against the arXiv text and the author-hosted
+text of the journal version: \cref{isg:fact:EK} is a faithful reading of
+\cite[Theorem~1 and its proof]{EK}, equivalently of Theorem~5.1 of
+\cite{EKjournal}, and \cref{isg:fact:real} is \cite[Lemma~3]{EK}. The
+criterion was not re-proved; the whole argument rests on it. This review
+is not a refereeing, and the solution proposed here has not been refereed.
+Its scope is source~01's material; it does not cover
+\cref{isg:cf:sec:cuts,isg:cf:sec:compression,isg:cf:sec:factors,isg:cf:sec:presburger,isg:cf:sec:factorial,isg:cf:sec:modeltheory,isg:cf:sec:complex,isg:cf:sec:boundaries}.
+
+\paragraph{Placement review (source~02).} When source~02 was placed, its
+proofs were checked by hand and no error was found: the exponent-cut
+lemmas and the canonical splitting, the compression theorem with its
+uniqueness and nested coherence, the transfer of every dyadic obligation
+in \cref{isg:cf:thm:transport} (coefficient groups are unchanged and
+every target right ancestor comes from a source one by
+\eqref{isg:cf:eq:rightreflect}), the residue lemmas and
+\cref{isg:cf:prop:residuesplit}, the factorial family (its table, the
+transitions, $n!x_n=x_1+S_ne$, $S_n\le2(n-1)!$ and the finite
+retractions), the extension classes and rigidity, the dense example
+(initiality of $W$: its exponents $0,1,2$ have no right ancestors in the
+class, and $\Q$ and $\Z$ are initial in $\R$), the omitted type, the
+ultrapower and Peano arguments, the omnific residues and the rectangular
+transport. The compression was re-implemented independently and tested
+on all 496 nonempty convex intervals of the sign tree of lengths at most
+four (order, injectivity, initial image, prefix and right-ancestor
+reflection) and for nested coherence on the tree of lengths at most
+three. The elementary equivalence in \cref{isg:cf:thm:dense} rests on a
+standard two-sorted interpretation, checked as an argument. The
+Ehrlich--Kaplan criterion and Ehrlich's embedding theorem were not
+re-proved. For the merge statements, \eqref{isg:cf:eq:cyclic} was
+confirmed by a finite computation for $\alpha\le3$ and words of length at
+most six, and the iteration in \cref{isg:cf:cor:limit} for three removal
+steps on those trees; that computation is not shipped. This review is not
+a refereeing, and it does not extend to source~01's material beyond the
+consistency statements of \cref{isg:cf:sec:cyclic,isg:cf:sec:limit}.
+
+\paragraph{Literature.} The placement review of source~01 ran targeted web
+searches (``discrete initial subgroup'', ``initial subgroup'' together
+with ``omnific integers'', and the title of \cite{EK}). They found only
+the Ehrlich--Kaplan paper, Kaplan's thesis and unrelated pages, and no
+resolution of the question. The search was targeted, not exhaustive. The
+citations of Kaplan's thesis (its Sections~6.2 and~7.1) and of the
+Oberwolfach report (printed pages 3355--3356) are the manuscript's; they
+were not re-checked at placement. For source~02 no separate literature
+search is recorded at placement; its own review was targeted and found no
+matching formulation of the convex-factor theorem. Its citations of
+Je\v r\'abek, Strickland, Enayat--Hamkins--Wcis\l o and Bagayoko--van der
+Hoeven are the manuscript's and were not re-checked. Its account of
+Ehrlich and Kaplan's Section~8 was compared with the arXiv text and the
+authors' text of the journal version at this write
+(\cref{isg:cf:rem:formulations}).
+
+\paragraph{Place in the collection.} At the placement of source~01, no
+other report named Question~2 (Question~9.1) of Ehrlich and Kaplan, and
+none treated initial subgroups: a search of the reports and of the Lean sources for
+``initial subgroup'', ``discrete initial'' and ``discretely ordered
+initial'' found nothing outside this directory. The paper \cite{EK} is
+cited as background in two reports: the foundations report cites it among
+the initial-embedding results next to its sign-tree categoricity
+(\replabel{found:sub:signtree}), and the definable-surreals report for
+the simplicity theory of simplest separators
+(\replabel{dsn:sec:foundations}). The latter's maximal initial elementary
+exponential core (\replabel{dsn:thm:core}) concerns initial
+\emph{subfields} of definable surreals; it is related in spirit and
+neither overlaps nor conflicts with the present groups. The omnific
+integers used here are those of the Diophantine and set-sized-quotient
+reports (\replabel{odg:def:rings}, \replabel{osq:eq:Ozdef}); their
+discreteness is \replabel{odg:prop:units}, and the constant coefficient
+is the additive map of \replabel{osq:lem:ct}. The Diophantine report and
+the foundations report also cite a different Ehrlich--Kaplan paper,
+\emph{Surreal ordered exponential fields}, for the initial integer part
+$\Oz\cap K$ of an initial subfield $K$ (the status note after
+\replabel{odg:thm:floor}, and \replabel{found:sub:canonicalexp}). That
+statement concerns subrings and integer parts. The groups $H\subseteq\Oz$
+here are additive subgroups and $\Rect$ is not multiplicative, so there is
+no conflict. No \texttt{isg:} statement has a Lean implementation.
+
+Source~02 adds one neighbour. The trigonometry report studies the
+normalized period groups $\mathcal I(\Psi)$ of surcomplex phases, which
+are $\Z$-groups for set-sized fields, with the same Je\v r\'abek residue
+theory: its residue $\res_{\mathcal I}$ and maximal divisible subgroup
+$\mathcal I^{\mathrm{div}}$ (\replabel{trigonometry:per:sec:defect}) are
+$\res_G$ and $G^{\dv}$ here, and its profinite defect is that residue
+modulo $\Z$. By \cref{isg:cf:cor:periods} a period group is initially
+realizable exactly when its profinite defect vanishes. There is no
+conflict: that report's initiality statements concern the kernel-multiplier
+ring (\replabel{trigonometry:per:thm:robustness}), a subring, and the
+initial integer part $\Oz\cap F$, not the realizability of period groups.
+The divisible-kernel lemma is classical in both places. The set-sized
+quotient report (\replabel{osq:eq:Ozdef}) and the Diophantine report use
+the same $\Pi$ and $\ct$ as \cref{isg:cf:prop:omnificresidue}.
+
+Related (batch 33). The exponential-relations report
+(\nolinkurl{docs/foundations-and-computation/exponential-relations-over-omnific-integers})
+reads the class-sized
+$\Oz$ formula by formula as a $\Z$-group, and so as a model of Presburger
+arithmetic in the sense of \cref{isg:cf:sec:intro}. Its division with
+remainder (\replabel{exr:prop:division}) is \cref{isg:cf:lem:residues} for
+$G=\Oz$, $e=1$, re-derived independently, and its lexicographic splitting
+$\Oz=\Pi\oplus\Z$ is the split form of \cref{isg:cf:main:presburger} with
+$G^{\dv}=\Pi$. It expands this group by the zero predicates of finite
+exponential sums with rational slopes and proves the result a definitional
+expansion of Presburger arithmetic, with $\Z$ an elementary substructure of
+$\Oz$ (\replabel{exr:thm:rational}). Nothing there concerns initiality, and
+no statement here concerns exponential predicates.
+
+\section{Further questions and exact boundaries}\label{isg:sec:further}
+
+The construction establishes an additive normal form while deliberately
+relinquishing several stronger kinds of compatibility. The following
+questions isolate possible further work without asserting that each is
+a previously published open problem.
+
+\begin{question}[Other convex quotients; answered by source~02]\label{isg:q:convex}
+Which convex subgroups $C$ of an initial group $A\subseteq\No$ admit
+an explicit initial realization of $A/C$ by a normal-form transport?
+\end{question}
+Source~01 handles $C=\Z\varepsilon$. For a larger convex subgroup,
+one would need to identify the removed exponent region and determine
+whether its boundary can be relocated without creating unmet dyadic
+obligations. A numerical quotient of exponent chains alone would not
+settle the simplicity condition.
+
+\emph{Status: answered, by source~02.} All of them.
+\Cref{isg:cf:main:factor,isg:cf:thm:transport} realize $A/C$ explicitly:
+the removed exponent region is the lower segment $\Gamma_C$
+(\cref{isg:cf:lem:arch}), the quotient is represented by the upper
+projection $P_{\Gamma^C}$, a difference of leading truncations
+(\cref{isg:cf:lem:restriction,isg:cf:thm:split}), and compression of
+$\Gamma^C$ creates no unmet dyadic obligation because it reflects right
+ancestors \eqref{isg:cf:eq:rightreflect}; it is not a numerical quotient
+of exponent chains (\cref{isg:cf:ex:compression}). For
+$C=\Z\varepsilon$ the transport is source~01's
+(\cref{isg:cf:prop:cyclic}).
+
+\begin{question}[Limit iteration; answered by source~02]\label{isg:q:limit}
+When an iterated removal of discrete bottom layers continues through
+infinitely many stages, which hypotheses give a coherent initial
+realization at a limit stage?
+\end{question}
+In source~01, finite iteration follows from \cref{isg:cor:iteration};
+limit iteration requires a separate control of supports and of the
+changing sign-tree presentations. No commutation with such an unproved
+transfinite limit is used in source~01.
+
+\emph{Status: answered, by source~02 with a corollary of the merge.} No
+hypothesis is needed. The union of the removed layers is a convex
+subgroup, whose quotient is realized directly from its exponent cut
+(\cref{isg:cf:cor:closure}), coherently with every earlier stage
+(\cref{isg:cf:cor:coherentfactors}); \cref{isg:cf:cor:limit} states this
+for the iteration of \cref{isg:cor:iteration}. The required control is
+supplied by compression, which is defined position by position and never
+as a limit of successive deletions (\cref{isg:cf:rem:limit}).
+
+\begin{question}[Multiplicative compatibility on restricted classes]\label{isg:q:multiplicative}
+For which special initial groups does some normalization to \Oz also
+preserve products wherever those products are part of a specified
+algebraic structure?
+\end{question}
+The counterexample with $1\cdot1$ rules out a general claim for our
+normalization. Any useful positive result must impose additional
+conditions on exponent addition and coefficient rescaling, not merely
+on the order of supports.
+
+\begin{question}[Formal certification and uniqueness principles]\label{isg:q:formal}
+Can the root-relocation proof and the concrete initiality criterion be
+fully verified in the repository's foundational model, and what natural
+extra conditions single out this normalization among the possible
+ordered-group isomorphisms to initial omnific groups?
+\end{question}
+Our formulas are canonical relative to the given sign model, normal
+forms, and least positive scale. They are not asserted to be invariant
+under arbitrary abstract group isomorphisms. The uniqueness in
+\cref{isg:thm:B} concerns the inverse under the fixed map, not uniqueness of
+all possible initial embeddings.
+
+The next four questions are source~02's. They mark extensions of the
+proved statements rather than prerequisites left unproved in their
+proofs, and they are not asserted to be previously published open
+problems (the second is related to the published Question~1 / 8.1 of
+Ehrlich and Kaplan, \cref{isg:cf:sec:optimality}).
+
+\begin{question}[Intrinsic characterization]\label{isg:cf:q:intrinsic}
+Which initially realizable ordered groups are characterized by intrinsic
+conditions on all convex factors and the splitting of convex extensions,
+without first choosing a Hahn presentation?
+\end{question}
+
+\begin{question}[Intermediate theories]\label{isg:cf:q:intermediate}
+Can the nonsplit convex-extension obstruction be arranged inside a
+set-sized model of every proper intermediate theory appearing in the
+Ehrlich--Kaplan optimality question?
+\end{question}
+
+\begin{question}[Arithmetic fragments]\label{isg:cf:q:fragment}
+What is the weakest arithmetic fragment whose nonstandard models have
+ordered additive group completions excluded by the factorial residue
+type? Which analogous computable residue types yield sharper bounds?
+\end{question}
+
+\begin{question}[Compression and multiplication]\label{isg:cf:q:multiplicative}
+Under what additional compatibility conditions does exponent-tree
+compression preserve a specified multiplication or a specified action
+of a coefficient domain? The unrestricted additive result provides no
+such compatibility automatically.
+\end{question}
+This is the counterpart for compression of \cref{isg:q:multiplicative},
+which asks the same for the normalization $\Rect$.
+
+\subsection{Non-claims, collected}\label{isg:sec:nonclaims}
+The limitations stated at their places in the text, in the shipped
+source audit and in the shipped provenance record of source~02 are
+collected here, so that none is lost. Each stays in force where it was
+stated. Items \textup{(N1)}--\textup{(N15)} are source~01's; in them
+``the manuscript'' means source~01. Items \textup{(N16)}--\textup{(N29)}
+are source~02's.
+\begin{enumerate}[label=\textup{(N\arabic*)},leftmargin=*]
+\item \emph{Status.} The manuscript is unrefereed. It is a proposed
+      solution with full proposed proofs, not an independently certified
+      resolution; neither correctness nor novelty is certified, and no
+      priority is claimed. The placement review
+      (\cref{isg:sec:provenance}) is not a refereeing.
+\item \emph{Literature.} The literature and repository searches were
+      targeted, not exhaustive. A negative search result is limited
+      evidence and does not exclude an unindexed paper, an unpublished
+      proof or a reformulation known to specialists. That a question was
+      posed in 2015 and 2018 does not establish that it was still
+      unresolved on the review date.
+\item \emph{Imported criterion.} \Cref{isg:fact:EK} is imported, not
+      re-proved, by the manuscript or at placement. No proof here
+      replaces it by the weaker assertion that initiality of the exponent
+      class alone suffices.
+\item \emph{Not claimed as new.} The two-level example and its map,
+      the initial-Hahn-subgroup characterization, the classification of
+      initial real groups (\cref{isg:fact:real}) and Conway normal forms
+      are imported and cited. The extremal, quotient and surcomplex
+      statements are derived refinements of the construction.
+\item \emph{Not a simplicity isomorphism.} $\Rect$ is an ordered-group
+      isomorphism onto an initial image. It need not preserve the
+      simplicity relation (\cref{isg:rem:notsimplicity}); it is not
+      multiplicative, does not preserve norms, and does not fix ordinary
+      constants: $\Rect(1)\ne1$ in general (\cref{isg:sec:examples}).
+\item \emph{No classification.} No classification of all ordered abelian
+      groups admitting initial embeddings is claimed, and the
+      initial-monoid problem (Question~3 of \cite{EK}, Question~9.2 of
+      the journal version) is not addressed.
+\item \emph{Exponent maps.} $\Theta_\alpha$ is not a homomorphism of
+      exponent groups, and \eqref{isg:eq:leadingtransport} is not
+      preservation of a multiplicative valuation
+      (\cref{isg:rem:preserved}). \Cref{isg:prop:length} bounds exponent
+      lengths, not the birthday of a transformed normal form.
+\item \emph{No internal summation.} The strong-sum statements concern the
+      ambient Hahn spaces; they give no internal summation on a subgroup
+      $A$ (\cref{isg:rem:nocompletion}), and \cref{isg:lem:isolate} does
+      not license arbitrary infinite subseries.
+\item \emph{Invariance and uniqueness.} The ordinal $\alpha$ is not an
+      invariant of the abstract ordered group. The uniqueness in
+      \cref{isg:thm:B} is relative to the fixed map, not uniqueness of all
+      initial embeddings, and the formulas are not claimed invariant under
+      abstract isomorphisms.
+\item \emph{Quotients.} It is not claimed that every convex quotient of
+      an initial group has an initial realization. Iteration is covered
+      only at finite stages (\cref{isg:cor:iteration}), with no claim at a
+      limit stage, and \cref{isg:cor:relative} is a relative criterion
+      that does not decide realizability of every quotient. (This is a
+      statement about source~01. Source~02 proves both missing
+      statements: \cref{isg:cf:main:factor} and
+      \cref{isg:cf:cor:closure,isg:cf:cor:limit}. The relative criterion
+      remains relative; \cref{isg:cf:main:presburger} decides the case of
+      $\Z$-groups.)
+\item \emph{Surcomplex scope.} \Cref{isg:thm:complex} is Gaussian-linear
+      and coordinatewise initial. It gives no field isomorphism, no
+      canonical sign-tree or simplicity relation on $\No[i]$, no
+      preservation of the modulus, and no compatibility with
+      multiplication by general surcomplex scalars. \Cref{isg:cor:linear}
+      transports the right-hand side as well and does not apply to
+      equations with ordinary constants held fixed, to nonlinear
+      polynomials, to arbitrary surreal scalar matrices, or to norms and
+      inner products.
+\item \emph{Finite checks.} The finite checks do not verify transfinite
+      concatenation or limit cases, arbitrary set-supported Hahn sums, the
+      imported criterion, or the absence of a transfinite proof gap; the
+      written proofs carry the general claims. Compiling and rendering the
+      document establish its integrity, not its correctness.
+\item \emph{No Lean.} No new Lean formalization and no Lean build are
+      claimed. The proposed formalization units of \cref{isg:sec:audit} are
+      not existing declarations, and a checked conditional theorem using
+      the imported criterion would not by itself be a checked theorem
+      about every initial subgroup of $\No$.
+\item \emph{Repository review.} The manuscript's repository review was
+      targeted: it did not review every report or archive, it treated
+      truncated metadata as neither a complete inventory nor a proof of
+      absence, it took no repository description as a certificate, and it
+      promoted no repository result from pending to proved. The argument
+      relies on no repository manuscript, and no repository Lean build was
+      run for it.
+\item \emph{Sources used only for context.} Bagayoko and van der Hoeven's
+      sign-sequence conventions are context, not a source of the
+      normalization or of its range theorem. The questions of this section
+      are not asserted to be previously published open problems, and
+      $d(H)=\On$ is a formal marker, not a surreal number or a set
+      ordinal.
+\item \emph{Status of source~02.} The convex-factor theorem and its
+      applications are proposed contributions with complete proofs.
+      Neither priority nor independent referee certification is claimed,
+      no Lean formalization or Lean build is claimed, and the placement
+      review (\cref{isg:sec:provenance}) is not a refereeing.
+\item \emph{Credited, not new.} The Ehrlich--Kaplan criterion,
+      Ehrlich's divisible embedding (\cref{isg:cf:fact:ehrlich}),
+      Je\v r\'abek's residue theory and rigidity mechanism, and
+      $\Ext(\Q,\Z)\cong\Zhat/\Z$ are classical and credited; no new
+      computation of $\Ext$ is claimed, and the existence of rigid
+      Presburger models is not claimed as a new phenomenon. The results
+      of source~01 that source~02 uses (the suspension, the relative
+      splitting criterion) are not claimed again as new.
+\item \emph{No classification.} There is no classification of initially
+      realizable groups. Convex splitting is necessary, and its
+      sufficiency is not proved (\cref{isg:cf:sec:boundaries}).
+\item \emph{Optimality question.} Source~02 does not resolve the
+      Ehrlich--Kaplan set-model optimality question (Question~1 of
+      \cite{EK}, Question~8.1 of the journal version) and gives no
+      construction uniform over the intermediate theories
+      (\cref{isg:cf:sec:optimality,isg:cf:rem:formulations}). It answers
+      none of Ehrlich and Kaplan's questions.
+\item \emph{Realization-dependent splitting.} The splitting of
+      \cref{isg:cf:thm:split} depends on the chosen realization and is not
+      invariant under abstract automorphisms; only the Presburger split
+      case has the uniqueness of \cref{isg:cf:prop:residuesplit}.
+\item \emph{Realizability, not literal initiality.} The results concern
+      initial \emph{realizability}, not literal initiality of $C$ or of a
+      complement in its original position.
+\item \emph{No Hahn product, no completion.} An initial group is not
+      identified with the full Hahn product of its factors, and no closure
+      under ambient strong sums is asserted
+      (\cref{isg:cf:rem:membership,isg:cf:rem:strongsums}).
+\item \emph{Additive only.} The results are additive and
+      module-theoretic. There is no multiplicative, field, ring,
+      differential or exponential equivalence; the compression need not
+      respect addition of exponents.
+\item \emph{Surcomplex scope of source~02.} The rectangular notion is
+      coordinate-dependent; no canonical sign tree on $\No[i]$ is
+      postulated.
+\item \emph{Finite checks of source~02.} The finite regression does not
+      verify the Ehrlich--Kaplan theorem, arbitrary ordinals, class
+      comprehension, completeness of Presburger arithmetic, recursive
+      saturation or the Peano-model argument; the successful finite
+      retractions are not a global splitting (\cref{isg:cf:rem:finite}).
+      The delivered build and rendering checks concern presentation, not
+      correctness.
+\item \emph{Arithmetic fragment.} The fragment of arithmetic used for
+      \cref{isg:cf:thm:PA} is not optimized.
+\item \emph{Repository review of source~02.} Its review, at pin
+      \texttt{9693b28}, was targeted: it was not a claim-by-claim audit
+      of the repository, and no local Lean build was run.
+\item \emph{Predecessor citation.} Source~02 cited source~01 without
+      inventing a repository path for it; the current location
+      (\cref{isg:sec:audit}) was supplied at this write.
+\item \emph{Finite solvability.} Solvability of every finite retraction
+      system is not a global splitting (\cref{isg:cf:rem:finite}).
+\end{enumerate}
+The statements marked \textup{[merge]} add no claim of priority; they are
+proved from the two sources and, for \cref{isg:cf:cor:periods}, from
+statements of the trigonometry report cited by label, whose own
+non-claims remain in force there.
+
+\section{Conclusion}\label{isg:sec:conclusion}
+The obstruction in the Ehrlich--Kaplan question is not the numerical
+size of the least positive element. Scalar multiplication removes that
+size immediately. The obstruction is the interaction of the exponent
+tree with coefficient groups forced by right ancestors.
+
+The explicit map $\Theta_\alpha$ moves the minimum exponent to zero
+and preserves all right-ancestor relations away from it. The coefficient
+map then normalizes the discrete bottom group without disturbing the
+higher groups. This gives the proposed affirmative proof. The relations
+lost at the minimum are exactly those recorded by the dyadic spine,
+which yields a necessary-and-sufficient image criterion rather than
+only a sufficient construction.
+
+The resulting theory is additive but strong: it transports arbitrary
+set-supported normal forms without changing their support order types,
+commutes with strong sums, identifies extremal initial groups at each
+least positive scale, and produces initial models of the bottom cyclic
+quotients and rectangular surcomplex modules. The remaining obligations
+are independent mathematical review, a more exhaustive priority check,
+and a complete formal verification of the identified dependency chain.
+
+Source~02's compression construction makes convex-factor closure a
+concrete normal-form theorem: retain an exponent interval, delete
+precisely the ancestor positions outside it, and invoke the initial Hahn
+criterion. It is coherent for nested intervals and works at arbitrary
+transfinite cuts; for the bottom cyclic layer it is source~01's
+$\rho\circ\tht$. At the same time, normal-form projection forces all
+convex extensions inside an initial realization to split. In additive
+arithmetic this yields a sharp boundary: a Presburger group has an
+initial surreal realization exactly when each element's coherent
+standard residues are ordinary integers. The explicit factorial family
+places continuum many countable rigid models on the other side of that
+boundary. Dense examples and omitted-type arguments show that the
+distinction survives beyond discreteness and cannot be captured by
+first-order theory alone. None of this is a certified resolution of the
+full classification problem or of Ehrlich and Kaplan's optimality
+question.
+
+\appendix
+\section{A compact proof for independent checking}\label{isg:app:compact}
+
+This appendix compresses the main existence argument without changing
+its hypotheses. The full case analysis and support arguments are in the
+body of the paper.
+
+Let $A$ be a discrete initial subgroup. Its least positive member has a
+single normal-form term: otherwise a nonzero tail in $A$ would be a
+smaller positive element after taking absolute value. Write that term
+as $c\omega^p$. The exponent class has minimum $p$, which, being the
+minimum of an initial tree, is all-minus, say $p=-\alpha$.
+The bottom real coefficient group is discrete and initial, hence
+$c\Z$ with $c=2^{-n}$.
+
+On $[p,\infty)$ define
+\[
+ p\mapsto0,\qquad
+ p\cat\plus\cat u\mapsto\plus\cat p\cat u,\qquad
+ x\mapsto\plus\cat x\quad(p\not\pre x).
+\]
+The inverse removes the initial plus and reinserts a plus immediately
+after the block $p$ whenever the remaining word starts with $p$.
+The two maps are increasing inverse bijections. For $x>p$,
+\[
+ \Pred(\Theta_\alpha x)
+   =\Theta_\alpha[\Pred(x)\cup\{p\}],
+ \qquad
+ \Rs(\Theta_\alpha x)=\Theta_\alpha[\Rs(x)].
+\]
+Therefore an initial exponent class with minimum $p$ maps to an initial
+one with minimum zero, and every new right-ancestor obligation comes
+from an old one above $p$.
+
+Transport each nonbottom term $r\omega^\gamma$ to
+$r\omega^{\Theta_\alpha\gamma}$, and transport the bottom term
+$r\omega^p$ to $r/c$. This is a real-linear order-isomorphism on the
+ambient Hahn spaces. Its image of $A$ is truncation closed and
+cross-sectional, has coefficient group $\Z$ at zero, and has unchanged
+initial real coefficient groups at positive exponents. The right-ancestor
+identity preserves all required dyadic containments. By the concrete
+Ehrlich--Kaplan criterion, the image is initial. It lies in \Oz because
+all exponents are nonnegative and the constant coefficient is integral.
+
+For the inverse classification, only the ancestors of the old minimum
+were discarded. They are $-\beta$ for $\beta<\alpha$, and their images
+are $q_\beta=\plus\cat\minus^\beta$. Initial inversion requires
+those exponents, while the right-ancestor condition at $p$ requires all
+their dyadic coefficients. Together these requirements are exactly
+$K_\alpha\subseteq H$.
+
+\clearpage
+\section{Proof-review checklist}\label{isg:app:checklist}
+An independent review can focus on the following specific potential
+failure points rather than checking experimental output as though it
+were a proof.
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Issue & Location and required check\\
+\midrule
+\endhead
+Concrete versus existential initiality &
+\Cref{isg:fact:EK}: the imported sufficiency statement must apply to the
+specified canonical image, not only to an unspecified isomorphic copy.\\[4pt]
+Minimum exponent &
+\Cref{isg:prop:bottom}: truncation and subtraction isolate a nonzero tail;
+its absolute value is smaller than the positive leading monomial.\\[4pt]
+Limit sign lengths &
+\Cref{isg:lem:inverse,isg:thm:tree}: concatenated tails use ordinal interval
+order types. No subtraction of ordinal lengths or removal of a last
+limit sign is permitted.\\[4pt]
+Exceptional old minimum &
+\Cref{isg:thm:tree,isg:rem:exception}: the right-ancestor equality excludes
+$x=p$. Its failure is used, not ignored, in the inverse classification.\\[4pt]
+Coefficient group scaling &
+\Cref{isg:lem:coefficients}: only the bottom coefficient is rescaled;
+all right-ancestor obligations in the target are at unchanged groups.\\[4pt]
+Infinite subgroup membership &
+\Cref{isg:sec:transport}: transport the actual subgroup. Never replace it
+with all normal forms allowed by its coefficient groups.\\[4pt]
+Sharp inverse criterion &
+\Cref{isg:thm:B}: inverse exponent initiality is not enough; the missing
+minimum's ancestors must carry all dyadic coefficients.\\[4pt]
+Quotient order &
+\Cref{isg:lem:split,isg:prop:quotient}: higher nonzero terms dominate the cyclic
+bottom group, and positive-root deletion supplies an initial image.\\[4pt]
+Class-sized scope &
+All supports and summation indices are sets; correspondences of
+class-sized groups are expressed with class parameters.\\[4pt]
+Surcomplex scope &
+\Cref{isg:thm:complex}: the conclusion is Gaussian-linear and coordinatewise
+initial, not a field isomorphism or a new canonical complex simplicity
+relation.\\[4pt]
+\multicolumn{2}{@{}l}{\emph{Source~02 (convex factors).}}\\[2pt]
+Actual normal-form image &
+\Cref{isg:fact:EK}: its sufficiency part must apply to the actual
+transported image $\mathcal F_E(G)$, not just to an abstract copy.\\[4pt]
+Restriction stays in $G$ &
+\Cref{isg:cf:lem:restriction}: $P_E$ is the difference of two leading
+truncations, so no infinite subseries is used.\\[4pt]
+Meet retention &
+\Cref{isg:cf:thm:compression}: compression must retain the sign at the
+meet of an incomparable pair; convexity puts the meet in $E$
+(\cref{isg:cf:lem:meetclosed,isg:cf:ex:badmeet}).\\[4pt]
+Every target right ancestor &
+\Cref{isg:cf:thm:compression,isg:cf:thm:transport}: every target right
+ancestor must be accounted for, not merely every source ancestor; this is
+the equality \eqref{isg:cf:eq:rightreflect}.\\[4pt]
+Residue sign &
+\Cref{isg:cf:prop:family}: the residue of $x_1$ is $-\zeta$, not
+$\zeta$; factorial moduli are cofinal for divisibility.\\[4pt]
+Divisible complement &
+\Cref{isg:cf:prop:residuesplit}: a complement to $\Z e$ is divisible
+because it is isomorphic to the quotient, not because every torsion-free
+subgroup is divisible.\\[4pt]
+Noninteger parameter &
+\Cref{isg:cf:lem:noninteger}: $\zeta_*$ is shown to be neither a
+nonnegative nor a negative ordinary integer.\\[4pt]
+Internal sums &
+\Cref{isg:cf:thm:PA}: the sum in a nonstandard Peano model is an
+internally coded finite sum, not an external infinite sum in $G$.\\[4pt]
+Merge statements &
+\Cref{isg:cf:prop:cyclic,isg:cf:cor:limit,isg:cf:cor:periods}: the
+identification with $\rho\circ\tht$, the one-point layers of the
+iteration, and the order of $\mathcal I/\Z\cong\Pi_F$.\\
+\bottomrule
+\end{longtable}
+
+\section{The core convex-factor proof in one place}\label{isg:cf:app:core}
+This appendix is source~02's. For independent checking, the logical chain
+can be compressed without changing its hypotheses. Let $G\subseteq\No$ be
+initial and let $C\subseteq C'$ be convex. The active exponents form an
+initial class $\Gamma$. Convexity says that membership of a nonzero
+element in $C$ or $C'$ is determined exactly by whether its leading
+monomial belongs to that subgroup. Thus each has a lower exponent segment,
+$\Gamma_C$ and $\Gamma_{C'}$.
+
+The interval $E=\Gamma_{C'}\setminus\Gamma_C$ represents $C'/C$:
+coefficient restriction to $E$ stays in $G$, because it is a difference
+of two leading truncations. The kernel on $C'$ is $C$, and the
+leading sign gives the quotient order.
+
+Any two incomparable elements of $E$ have their common prefix between
+them numerically. It is in $\Gamma$ by initiality and in $E$ by
+convexity. Thus $E$ is meet closed. In each $\gamma\in E$, retain the
+signs at precisely those positions $\beta$ for which
+$\gamma\restriction\beta\in E$. Index them by their ordinal order
+type. A source prefix in $E$ becomes a target prefix; incomparable
+points keep opposite signs at their retained meet. Every target prefix
+comes from one of the retained source prefixes. Hence the map is an
+order-isomorphism onto an initial exponent class and preserves and
+reflects right ancestry.
+
+Reindex the normal forms supported in $E$ by this map. The coefficient
+groups do not change, truncation closure and cross-sectionality persist,
+and every target dyadic right-ancestor requirement is one of the
+original requirements. The Ehrlich--Kaplan criterion makes this actual
+image an initial subgroup of $\No$. This proves the convex-factor
+assertion. Upper-exponent restriction simultaneously supplies the split
+section for each convex subgroup sequence.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\bibitem{EK}
+P.~Ehrlich and E.~Kaplan,
+\emph{Number systems with simplicity hierarchies: a generalization of
+Conway's theory of surreal numbers II},
+arXiv:1512.04001v1, 13 December 2015.
+\url{https://arxiv.org/abs/1512.04001v1}.
+The version explicitly used for theorem numbering: Lemma~3,
+Theorem~1 and its concrete sufficiency proof, Proposition~9,
+and Section~9, Question~2; for source~02 also Section~8, Theorem~6 and
+Question~1.
+
+\bibitem{EKjournal}
+P.~Ehrlich and E.~Kaplan,
+\emph{Number systems with simplicity hierarchies: a generalization of
+Conway's theory of surreal numbers II},
+The Journal of Symbolic Logic \textbf{83} (2018), no.~2, 617--633.
+\url{https://doi.org/10.1017/jsl.2017.9}.
+Publisher metadata checked; the arXiv version above supplies the cited
+internal numbering. The journal numbering given in \cref{isg:sec:intro}
+(Lemma~5.1, Theorem~5.1, Proposition~5.2, Theorem~8.1, Questions~8.1,
+9.1 and~9.2) was
+read, at placement, in the authors' text of this version hosted on the
+second author's web page; the publisher's typeset pages were not
+compared.
+
+\bibitem{Kaplan}
+E.~Kaplan,
+\emph{Initial Embeddings in the Surreal Number Tree},
+Honors thesis, Ohio University, 2015.
+OhioLINK accession \texttt{ouhonors1429615758}.
+See Sections~6.2 and~7.1 for omnific integers and the group question.
+\url{https://etd.ohiolink.edu/acprod/odb_etd/ws/send_file/send?accession=ouhonors1429615758&disposition=inline}.
+
+\bibitem{Workshop}
+\emph{Mini-Workshop: Surreal Numbers, Surreal Analysis, Hahn Fields
+and Derivations}, Oberwolfach Report 60/2016,
+workshop account containing the initial-subgroup question and the
+concrete Hahn criterion, especially printed pages 3355--3356.
+\url{https://ems.press/content/serial-article-files/46663}.
+
+\bibitem{BagHoeven}
+V.~Bagayoko and J.~van der Hoeven,
+\emph{Surreal substructures}, author-hosted manuscript,
+first version 8 June 2019, corrected version 16 April 2022.
+\url{https://www.texmacs.org/joris/sss/sss.html}.
+See the sign-sequence conventions and concatenation operations.
+Source~02 cites the arXiv version, arXiv:2305.02001 (2023),
+\url{https://arxiv.org/abs/2305.02001}, for surreal substructures and
+convex partitions, as a related viewpoint only.
+
+\bibitem{Repo}
+V.~Reshetnikov,
+\emph{Surreal}, public research and Lean-formalization repository,
+reviewed 23 September 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal}.
+Reviewed entry points: \texttt{README.md} and
+\texttt{docs/FORMALIZATION.md}; precise read identifiers and the scope
+of the review are recorded in \cref{isg:sec:audit} and the accompanying
+\texttt{source\_audit.md}. Source~02 inspected the repository at commit
+\texttt{9693b28c24e6fcb317ce47969a40185c5dfef402}, 23 September 2026
+(\cref{isg:sec:audit}); its review does not certify that every file was
+read.
+
+\bibitem{Ehrlich}
+P.~Ehrlich, \emph{Number systems with simplicity hierarchies:
+a generalization of Conway's theory of surreal numbers},
+The Journal of Symbolic Logic \textbf{66} (2001), 1231--1258;
+corrigendum, \textbf{70} (2005), 1022.
+The divisible initial-embedding theorem (\cref{isg:cf:fact:ehrlich}) is
+also recalled in \cite{EK}. Cited by source~02.
+
+\bibitem{Conway}
+J.~H.~Conway, \emph{On Numbers and Games}, 2nd ed., A K Peters, 2001.
+Cited by source~02 for normal forms.
+
+\bibitem{Gonshor}
+H.~Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986. Cited by source~02 for normal forms.
+
+\bibitem{Jerabek}
+E.~Je\v r\'abek, \emph{Rigid models of Presburger arithmetic},
+Mathematical Logic Quarterly \textbf{65} (2019), no.~1, 108--115.
+\url{https://doi.org/10.1002/malq.201800019};
+\url{https://arxiv.org/abs/1803.05797v2} (2018).
+Cited by source~02 for $\Z$-groups, their residue map, divisible kernel
+and rigidity mechanism.
+
+\bibitem{Strickland}
+N.~Strickland, \emph{Algebraic theory of abelian groups},
+\url{https://arxiv.org/abs/2001.10469} (2020),
+especially Section~8 and Example~8.27. Cited by source~02 for
+$\Ext(\Q,\Z)\cong\Zhat/\Z$.
+
+\bibitem{EnayatHamkinsWcislo}
+A.~Enayat, J.~D.~Hamkins, and B.~Wcis\l o,
+\emph{Topological models of arithmetic},
+\url{https://arxiv.org/abs/1808.01270v3} (2020).
+Used by source~02 only for background on internal arithmetic and
+factorials; the residue obstruction of \cref{isg:cf:thm:PA} is proved
+here.
+\end{thebibliography}
+\end{document}

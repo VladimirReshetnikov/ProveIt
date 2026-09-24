@@ -1,0 +1,15 @@
+.PHONY: all check clean
+
+all: omnific_automorphisms.pdf
+
+omnific_automorphisms.pdf: omnific_automorphisms.tex
+	pdflatex -interaction=nonstopmode -halt-on-error $<
+	pdflatex -interaction=nonstopmode -halt-on-error $<
+	pdflatex -interaction=nonstopmode -halt-on-error $<
+
+check:
+	python3 verify_finite_identities.py
+
+clean:
+	rm -f omnific_automorphisms.aux omnific_automorphisms.log \
+	      omnific_automorphisms.out omnific_automorphisms.toc

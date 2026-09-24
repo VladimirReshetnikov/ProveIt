@@ -1,0 +1,1282 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{Olive}{HTML}{48543A}
+\definecolor{Pale}{HTML}{F3F4ED}
+\definecolor{Ink}{HTML}{242924}
+\hypersetup{colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,
+ pdftitle={A Laurent-series case of Gonshor's birthday conjecture},
+ pdfauthor={OpenAI ChatGPT},pdfsubject={Surreal numbers, ordinal natural products, exact birthday formulae}}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{Olive}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Olive}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Surreal multiplication and ordinal length}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{nosep,leftmargin=1.6em}
+\setcounter{tocdepth}{1}
+\pretocmd{\section}{\Needspace{7\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\On}{\mathbf{On}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathbb{Z}[1/2]}
+\newcommand{\Lau}{\mathcal{L}}
+\newcommand{\Fin}{\mathcal{F}}
+\newcommand{\Pos}{\mathcal{P}}
+\newcommand{\OrdPoly}{\mathcal{O}}
+\newcommand{\bd}{\operatorname{b}}
+\newcommand{\rd}{\operatorname{d}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\tr}{\mathbin{\upharpoonright}}
+\newcommand{\ns}{\mathbin{\oplus}}
+\newcommand{\np}{\mathbin{\otimes}}
+\newcommand{\bigns}{\mathop{\bigoplus}}
+\newcommand{\co}[1]{\texttt{#1}}
+\newtcolorbox{scopebox}{colback=Pale,colframe=Olive,boxrule=0.5pt,
+ arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
+
+\begin{document}
+\begin{center}
+{\small\scshape Research article and reproducible proof audit}\par\vspace{0.8em}
+{\LARGE\bfseries\color{Olive} A Laurent-series case of\par
+Gonshor's birthday conjecture}\par\vspace{0.7em}
+{\large Exact ordinal lengths, finite products, and infinite tails}\par\vspace{0.8em}
+Prepared for Vladimir Reshetnikov\par
+OpenAI ChatGPT\quad\textbullet\quad 20 September 2026
+\end{center}
+\vspace{0.6em}
+\begin{abstract}
+Gonshor's conjecture asks whether the birthday of a product of surreal numbers
+is bounded by the natural product of their birthdays. We give a detailed proof
+of this inequality on the canonically embedded Laurent-series field
+$\R((\omega^{-1}))$. The argument first derives an exact birthday formula for
+finite Laurent polynomials. The only information required from their bounded
+part is the lowest exponent, its coefficient's birthday, and one dyadic versus
+nondyadic boundary condition. A positive-power polynomial/bounded-tail decomposition
+then proves the product estimate for finite Laurent polynomials. A finite-jet
+stabilization argument transfers this estimate to arbitrary Laurent series,
+without assuming continuity of natural ordinal multiplication. We also prove
+the conjecture for finite normal forms with ordinal exponents, determine the
+birthday of every infinite Laurent series, and obtain exact birthdays of a
+class of reciprocals. An exact-arithmetic program independently checks the
+finite formula and explores fractional dyadic exponents beyond the proved
+case.
+\end{abstract}
+
+\begin{scopebox}
+\textbf{Status and scope.} This is a partial result, not a resolution of
+Gonshor's conjecture for all surreal numbers. The proofs below use the standard
+normal-form and sign-expansion theorems, with the subsequent arguments supplied
+in detail. They have not been independently refereed or checked by a proof
+assistant. The literature search located the documented conjecture and its
+known monomial case, but did not establish priority for the Laurent-series
+restriction proved here; no novelty claim is made.
+\end{scopebox}
+
+\newpage
+\tableofcontents
+\vspace{1.2em}
+
+\section{The problem and the result}
+\label{sec:problem}
+A surreal number can be represented by a sequence of $+$ and $-$ signs indexed
+by an ordinal. Its \emph{birthday}, written $\bd(x)$, is the length of this
+sequence; in particular $\bd(0)=0$. For ordinals $\alpha,\beta$, let
+$\alpha\ns\beta$ and $\alpha\np\beta$ denote their Hessenberg natural sum and
+natural product. The problem selected for this investigation is the following.
+
+\begin{conjecture}[Gonshor's birthday product conjecture]
+\label{conj:gonshor}
+For every $x,y\in\No$,
+\begin{equation}\label{eq:conjecture}
+ \bd(xy)\leq \bd(x)\np\bd(y).
+\end{equation}
+\end{conjecture}
+
+Gonshor proposed the inequality in his 1986 book, p.~96
+\cite{Gonshor1986}. Van den Dries and Ehrlich proved it when both factors are
+single normal-form terms, $x=r\omega^a$ and $y=s\omega^b$, where $r,s$ are real
+and $a,b$ are arbitrary surreal numbers \cite[Proposition~3.6]{vdDE2001}.
+Their general estimate is the weaker bound
+\begin{equation}\label{eq:knownweak}
+ \bd(xy)\leq
+ \omega\np\bd(x)\np\bd(x)\np\bd(y)\np\bd(y)
+\end{equation}
+\cite[Corollary~4.3]{vdDE2001}. In an August 2024 discussion, Ehrlich reported
+that he knew of no improvement of the affirmative monomial case
+\cite{Ehrlich2024}. Searches conducted for this article on 20 September 2026
+did not locate a later resolution. That is evidence for selecting the problem,
+not a proof of its current worldwide research status.
+
+The principal result is a restriction of \eqref{eq:conjecture} to a familiar,
+non-Archimedean field with unrestricted real coefficients.
+
+\begin{theorem}[Laurent-series restriction]\label{thm:main}
+Let
+\begin{equation}\label{eq:field}
+ \Lau=\R((\omega^{-1}))
+ =\left\{\sum_{k\leq N}c_k\omega^k:
+     N\in\Z,\ c_k\in\R\right\}\subseteq\No,
+\end{equation}
+where the sum is interpreted as a surreal normal form. Then
+\[
+ \bd(xy)\leq\bd(x)\np\bd(y)\qquad(x,y\in\Lau).
+\]
+\end{theorem}
+
+The notation includes finite Laurent polynomials and series with infinitely
+many nonzero terms. The sums are defined by normal forms; no topological limit
+is used. Integer exponents are bounded above, so every interval
+of exponents bounded on both sides contains only finitely many possible terms.
+This discreteness is crucial to the passage from finite to infinite products.
+
+Two further results clarify the mechanism. For finite normal forms whose
+exponents are ordinals, birthdays add by natural addition term by term
+(Theorem~\ref{thm:ordinalpoly}). For an infinite Laurent series, however,
+\begin{equation}\label{eq:infinite-preview}
+ \bd(x)=\bd(x_{>0})+\omega^2,
+\end{equation}
+where the plus on the right is \emph{ordinary ordinal addition}
+(Theorem~\ref{thm:infinite}). Confusing that plus with $\oplus$ would invalidate
+a tempting direct extension of the finite proof.
+
+\subsection{A guide to the proof}
+Sections~\ref{sec:conventions}--\ref{sec:signs} establish the notation and the
+sign-expansion input. Section~\ref{sec:ordinalpoly} handles ordinal-exponent
+polynomials. Section~\ref{sec:finiteformula} computes finite Laurent birthdays
+exactly. Section~\ref{sec:finiteproduct} proves the finite product estimate by
+separating positive powers from the bounded tail. Section~\ref{sec:infinite}
+passes to infinite series by preserving a fixed bound for every finite product
+truncation. Sections~\ref{sec:examples}--\ref{sec:computation} give consequences,
+failed generalizations, and reproducible checks.
+
+\section{Three arithmetic conventions}
+\label{sec:conventions}
+The same objects occur both as surreal numbers and as ordinal lengths. We keep
+the associated operations separate.
+
+Throughout, $\bd(x)$ is the length of the canonical sign sequence of the
+\emph{value} $x$. It is not the recursively computed rank of an arbitrary
+cut expression representing that value. For example, the form
+$\{-1\mid1\}$, with canonical options, has construction rank $2$ but
+represents $0$, whose birthday is $0$. The bounds below concern canonical
+birthdays after evaluation, including any cancellations in a product.
+
+\subsection{Ordinary and natural ordinal arithmetic}
+Unadorned $+$ between birthdays denotes \emph{ordinary ordinal addition}, the
+operation corresponding to concatenation of well-ordered sequences. Thus
+\[
+ 1+\omega=\omega,\qquad
+ \omega+\omega^2=\omega^2,
+ \qquad\omega^2+\omega>\omega^2.
+\]
+The symbols $\oplus$ and $\otimes$ always mean natural operations. If
+\[
+ \alpha=\sum_i\omega^{\xi_i}a_i,\qquad
+ \beta=\sum_i\omega^{\xi_i}b_i
+ \quad(\xi_0>\xi_1>\cdots)
+\]
+are Cantor normal forms written over the same finite list of exponents,
+allowing zero coefficients, then
+\[
+ \alpha\ns\beta=\sum_i\omega^{\xi_i}(a_i+b_i).
+\]
+Natural multiplication is determined by distributivity and
+\begin{equation}\label{eq:natmonomial}
+ \omega^\xi\np\omega^\eta=\omega^{\xi\ns\eta}.
+\end{equation}
+Both operations are associative and commutative. Natural addition is strictly
+increasing in either variable, and natural multiplication is strictly increasing
+in either variable when the other is nonzero. In particular,
+\[
+ (\alpha\ns\beta)\np(\gamma\ns\delta)
+ =\alpha\np\gamma\ns\alpha\np\delta
+  \ns\beta\np\gamma\ns\beta\np\delta.
+\]
+These properties also follow from the Cantor-normal-form definitions, comparing
+the largest exponent at which two expressions differ.
+
+For ordinals below $\omega^\omega$, natural arithmetic is simply polynomial
+arithmetic in a formal $\omega$, with nonnegative integer coefficients. For
+example,
+\[
+ (\omega\cdot2+3)\np(\omega+4)
+ =\omega^2\cdot2+\omega\cdot11+12.
+\]
+In an ordinal expression, $\omega^k\cdot n$ means ordinary right multiplication
+by the finite integer $n$; it agrees with $\omega^k\otimes n$.
+
+\subsection{Surreal arithmetic and normal forms}
+In a surreal expression, such as $x+y$ or $\omega^a\omega^b$, the arithmetic
+is that of the surreal field. The omega map obeys
+\begin{equation}\label{eq:omega-field}
+ \omega^a\omega^b=\omega^{a+b},
+\end{equation}
+where the exponent sum is surreal addition. When $a,b$ are ordinals this
+surreal sum is their natural ordinal sum $a\oplus b$, not their ordinary sum.
+When they are integers it is their usual integer sum.
+
+We use the standard normal-form theorem: a surreal is represented uniquely by
+\[
+ x=\sum_{i<\lambda}r_i\omega^{a_i},
+ \qquad a_0>a_1>\cdots,
+ \qquad r_i\in\R\setminus\{0\},
+\]
+with reverse-well-ordered support. Addition and multiplication agree with Hahn
+series operations \cite{Gonshor1986,BG2022}. All subsequent infinite series have
+integer exponents bounded above; their nonzero supports have order type at most
+$\omega$ when listed in decreasing order.
+
+\subsection{A standard additive bound}
+\begin{lemma}\label{lem:add}
+For surreal $x,y$,
+\[
+ \bd(-x)=\bd(x),\qquad
+ \bd(x+y)\leq\bd(x)\ns\bd(y).
+\]
+Consequently, $\bd(\sum_{j=1}^n x_j)\leq\bigns_{j=1}^n\bd(x_j)$.
+\end{lemma}
+\begin{proof}
+Negation reverses every sign and preserves the length. For addition, use
+canonical options, whose sign sequences are proper prefixes of the number's
+sequence. Induct on $\bd(x)\oplus\bd(y)$. Every option in the defining cut for
+$x+y$ has the form $x'+y$ or $x+y'$, where the replaced factor has smaller
+birthday. By induction and strict monotonicity of natural addition, every such
+option has birthday strictly below $\bd(x)\oplus\bd(y)$. A number defined by a
+cut has birthday at most $\sup\{\bd(z)+1:z\text{ is an option}\}$:
+represent the options canonically and apply the simplicity rule to their cut.
+This is an upper bound, not an equality for every displayed cut form.
+Taking this supremum proves the claimed weak inequality. The finite version
+follows by induction on $n$.
+\end{proof}
+This is the usual additive birthday theorem, not a new result; see
+\cite[p.~96]{Gonshor1986}.
+
+\section{Real coefficients and sign-expansion tools}
+\label{sec:signs}
+\subsection{Birthdays of real numbers}
+Write $\rd(r)=\bd(r)$ for $r\in\R$. A real is \emph{dyadic} if it belongs to
+$\D=\Z[1/2]$; zero is dyadic. Nonzero dyadics have finite birthdays, whereas
+nondyadic reals have birthday $\omega$. More explicitly, for
+$r\neq0$ dyadic with reduced denominator $2^h$,
+\begin{equation}\label{eq:realbirth}
+ \rd(r)=\lceil |r|\rceil+h.
+\end{equation}
+Thus $\rd(\pm1)=1$, $\rd(\pm\tfrac12)=2$, $\rd(\pm\tfrac34)=3$, and
+$\rd(\tfrac13)=\omega$. Formula~\eqref{eq:realbirth} follows from the finite
+binary sign expansion: for positive noninteger $r$, it starts with
+$\lfloor r\rfloor+1$ plus signs and has $h$ further signs. Negation reverses
+the signs. The formula also covers integers, for which $h=0$.
+
+\begin{lemma}[Real scalar product bound]\label{lem:realproduct}
+For all real $r,s$,
+\[
+ \rd(rs)\leq\rd(r)\np\rd(s).
+\]
+\end{lemma}
+\begin{proof}
+Zero factors are immediate. If at least one nonzero factor is nondyadic, the
+right side is at least $\omega$, whereas $rs$ is real and has birthday at most
+$\omega$. Suppose both factors are dyadic. Put
+$A=\lceil|r|\rceil$, $B=\lceil|s|\rceil$, and let $2^h,2^k$ be their reduced
+denominators. Then $A,B\geq1$, the reduced denominator exponent of $rs$ is at
+most $h+k$, and $\lceil|rs|\rceil\leq AB$. Hence
+\[
+ \rd(rs)\leq AB+h+k
+ \leq(A+h)(B+k)=\rd(r)\rd(s).
+\]
+Natural multiplication of finite ordinals is ordinary integer multiplication.
+\end{proof}
+
+\subsection{The sign-expansion input}
+We use Gonshor's sign-expansion theorem in the formulation restated by Ehrlich
+\cite[Propositions~3.7--3.8]{Ehrlich2011}; see also
+\cite[Definition~2.20 and Theorem~2.21, p.~13]{BG2022}. Here is the version needed for our
+calculations.
+
+If $a$ has a sign sequence and $p_\delta$ denotes the ordinal order type of the plus signs
+strictly before its $\delta$th sign, the sequence for $\omega^a$ starts with a
+plus. For each successive sign of $a$, append a block of that sign of length
+$\omega^{p_\delta+1}$. For $r>0$, append the signs of $r$ after its first plus,
+repeating each of them $\omega^p$ times, where $p$ is the total number of pluses
+in $a$. Negative $r$ reverses the resulting signs.
+
+For a normal form $\sum_i r_i\omega^{a_i}$, first \emph{reduce} each exponent's
+sign sequence. A minus is deleted if its entire prefix, including that minus,
+already occurs in an earlier exponent. These comparisons use the original
+exponent sequences, before any deletions. There is a second rule at successor
+term indices: if the current exponent starts with the immediately preceding
+exponent followed by a minus,
+and the preceding coefficient is nondyadic, delete that additional minus.
+Compute a term block from each reduced exponent by the preceding rule, then
+concatenate the blocks. No plus signs are deleted.
+
+\begin{lemma}[Prefixes and countable unions]\label{lem:prefix}
+A normal-form truncation is a sign-sequence prefix, and therefore has birthday
+at most that of the complete normal form. If a normal form has infinitely many
+terms indexed by $\N$, then
+\begin{equation}\label{eq:prefixsup}
+ \bd\left(\sum_{i<\omega}r_i\omega^{a_i}\right)
+ =\sup_{n<\omega}\bd\left(\sum_{i<n}r_i\omega^{a_i}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The blocks for an initial normal-form segment are unchanged by later terms:
+both deletion rules look only at earlier exponents and coefficients. Thus its
+sign sequence is the corresponding initial concatenation. At a limit of such
+segments the complete sign sequence is their union, whose length is the
+supremum of their lengths.
+\end{proof}
+
+\subsection{The negative-integer block calculation}
+For an exponent consisting of $k$ minuses, with $k$ a nonnegative integer, let
+$L(k,r)$ denote the birthday of the term block with nonzero real coefficient
+$r$. Here the exponent is a \emph{reduced} exponent; it need not equal the
+original exponent of a term.
+
+\begin{lemma}\label{lem:block}
+The exact block lengths are
+\begin{equation}\label{eq:block}
+L(k,r)=
+\begin{cases}
+ \rd(r),&k=0,\\
+ \omega\cdot k+(\rd(r)-1),&k\geq1,\ r\in\D,\\
+ \omega\cdot(k+1),&k\geq1,\ r\notin\D.
+\end{cases}
+\end{equation}
+\end{lemma}
+\begin{proof}
+There are no plus signs in the exponent, so each exponent sign contributes
+$\omega$ signs, and coefficient signs contribute one sign each. If $k\geq1$,
+the initial plus is absorbed in ordinary ordinal addition:
+$1+\omega\cdot k=\omega\cdot k$. A dyadic coefficient contributes precisely
+$\rd(r)-1$ further signs. A nondyadic coefficient contributes $\omega$ further
+signs. If $k=0$, only the real coefficient's sign sequence remains. Negating
+$r$ changes no length.
+\end{proof}
+
+\section{An exact case with ordinal exponents}
+\label{sec:ordinalpoly}
+Consider the class ring
+\[
+ \OrdPoly=\left\{\sum_{i=1}^{m}r_i\omega^{\alpha_i}:
+  m<\omega,\quad\alpha_i\in\On,\quad r_i\in\R\right\}.
+\]
+Zero coefficients are omitted and equal exponents are collected. It is a ring
+because a product exponent is $\alpha_i\oplus\beta_j$, again an ordinal.
+Normal forms supported on ordinals are necessarily finite: an infinite support
+would yield an infinite strictly decreasing sequence of ordinals.
+
+\begin{theorem}[Ordinal-exponent polynomials]\label{thm:ordinalpoly}
+For $P=\sum_{i=1}^m r_i\omega^{\alpha_i}$ in decreasing normal form,
+\begin{equation}\label{eq:ordinalbirth}
+ \bd(P)=\bigns_{i=1}^m
+       \bigl(\omega^{\alpha_i}\np\rd(r_i)\bigr).
+\end{equation}
+For all $P,Q\in\OrdPoly$,
+\[
+ \bd(PQ)\leq\bd(P)\np\bd(Q).
+\]
+\end{theorem}
+\begin{proof}
+An ordinal exponent has only plus signs, so neither deletion rule applies.
+Since $\omega^\alpha$ is the corresponding ordinal, its birthday is
+$\omega^\alpha$. The coefficient part of the sign expansion gives
+\[
+ \bd(r\omega^\alpha)=
+ \begin{cases}
+  \omega^\alpha\cdot\rd(r),&r\in\D\setminus\{0\},\\
+  \omega^{\alpha+1},&r\notin\D.
+ \end{cases}
+\]
+Both cases equal $\omega^\alpha\otimes\rd(r)$.
+
+The birthday of the whole normal form is the ordinary concatenation sum of
+these ordinal monomials. Their Cantor exponents are $\alpha_i$ or
+$\alpha_i+1$. If $\alpha_i>\alpha_j$ then $\alpha_i\geq\alpha_j+1$, so those
+Cantor exponents are nonincreasing in normal-form order. Consequently the
+ordinary sum equals the natural sum, proving \eqref{eq:ordinalbirth}.
+
+For two individual terms, Lemma~\ref{lem:realproduct} and
+\eqref{eq:natmonomial} give
+\begin{align*}
+ \bd\bigl((r\omega^\alpha)(s\omega^\beta)\bigr)
+ &=\omega^{\alpha\ns\beta}\np\rd(rs)\\
+ &\leq(\omega^\alpha\np\rd(r))
+        \np(\omega^\beta\np\rd(s)).
+\end{align*}
+Expand $PQ$ into its finitely many pairwise term products and apply
+Lemma~\ref{lem:add}. Natural distributivity and
+\eqref{eq:ordinalbirth} then give the result. Possible equal exponents or
+coefficient cancellations can only improve the resulting upper bound; the
+additive lemma does not require the expanded sum to be in normal form.
+\end{proof}
+
+\begin{example}
+Let $P=3\omega^2+\tfrac13\omega-\tfrac12$. Its term birthdays are
+$\omega^2\cdot3$, $\omega^2$, and $2$, respectively. Hence
+\[
+ \bd(P)=\omega^2\cdot4+2.
+\]
+The coefficient at exponent $1$ contributes at Cantor exponent $2$ because it
+is nondyadic. This shift is why a degree estimate must distinguish dyadic and
+nondyadic leading coefficients.
+\end{example}
+
+\section{The exact finite Laurent birthday formula}
+\label{sec:finiteformula}
+Let $\Fin=\R[\omega,\omega^{-1}]$. For $x\in\Fin$, write
+\[
+ x=P+u,
+ \qquad P=x_{>0}=\sum_{k\geq1}c_k\omega^k,
+ \qquad u=x_{\leq0}=\sum_{k\leq0}c_k\omega^k.
+\]
+Both sums are finite. The term \emph{bounded} means that the element lies
+between two real numbers; for a Laurent polynomial this is equivalent to
+having no positive exponent. Put
+\begin{equation}\label{eq:H}
+ H(P)=\bigns_{k\geq1}\bigl(\omega^k\np\rd(c_k)\bigr)=\bd(P),
+\end{equation}
+where zero coefficients contribute zero.
+
+\begin{theorem}[Finite Laurent formula]\label{thm:finiteformula}
+If $x$ has no negative-exponent term, then
+\[
+ \bd(x)=H(P)\ns\rd(c_0).
+\]
+Otherwise let $-m$, $m\geq1$, be its lowest nonzero exponent and put
+$a=c_{-m}\neq0$. If $a\notin\D$, then
+\begin{equation}\label{eq:finiteND}
+ \bd(x)=H(P)+\omega\cdot(m+1).
+\end{equation}
+If $a\in\D$, define
+\[
+ \varepsilon=
+ \begin{cases}
+  1,&c_{-m+1}\notin\D,\\
+  0,&c_{-m+1}\in\D,
+ \end{cases}
+\]
+with an absent coefficient interpreted as zero. Then
+\begin{equation}\label{eq:finiteD}
+ \bd(x)=H(P)+\omega\cdot m+
+             \bigl(\rd(a)-1+\varepsilon\bigr).
+\end{equation}
+All unadorned plus signs on these right sides are ordinary ordinal additions.
+\end{theorem}
+
+\begin{proof}
+First compute the birthday of the bounded part $u$ alone. Its negative
+exponents have sign sequences consisting entirely of minuses. Suppose the
+current term is $c\omega^{-m}$ and the preceding nonzero term of the bounded
+part has exponent $-p$, where $0\leq p<m$. Its sign sequence has $p$ minuses,
+so the first deletion rule removes exactly those $p$ shared minuses. Put
+$\chi=1$ if that preceding coefficient is nondyadic and $\chi=0$ otherwise.
+The second rule removes one additional minus precisely when $\chi=1$.
+Thus the current reduced exponent has
+\begin{equation}\label{eq:gap}
+ k=m-p-\chi
+\end{equation}
+minuses. This is nonnegative because $m-p\geq1$.
+
+Before the first negative term, there may be a constant coefficient. In that
+case the same description applies with $p=0$. If there is no constant term,
+use an empty preceding part, $p=0$, $\chi=0$, and length zero.
+
+We prove the claimed bounded-part formula inductively along its nonzero
+negative terms. If the preceding coefficient is nondyadic, the preceding
+length is $\omega\cdot(p+1)$. If it is dyadic, the preceding length is
+$\omega\cdot p+t$ for a finite $t$; for an initial dyadic constant this simply
+means its finite birthday. These statements are also valid for the empty
+initial part with $p=t=0$.
+
+Suppose first that $k\geq1$. Appending the block from
+Lemma~\ref{lem:block} erases that finite $t$ and gives an $\omega$ coefficient
+of
+\[
+ (p+\chi)+k=m
+\]
+when $c$ is dyadic, or $m+1$ when $c$ is nondyadic. In the dyadic case the
+finite remainder is $\rd(c)-1$. In the nondyadic case it is zero.
+
+The exceptional case is $k=0$. Equation~\eqref{eq:gap} then forces
+$m=p+1$ and $\chi=1$: the previous coefficient is nondyadic at the immediately
+adjacent exponent. The preceding length is $\omega\cdot m$, and the current
+block has length $\rd(c)$. For dyadic $c$, the new length is therefore
+$\omega\cdot m+\rd(c)$, one larger in its finite remainder than the usual
+formula. For nondyadic $c$, it is $\omega\cdot(m+1)$. This proves the asserted
+$\varepsilon$ correction and completes the induction.
+
+It remains to restore $P$. Positive integer exponents have only plus signs.
+They neither share a minus-containing prefix with a nonpositive exponent nor
+trigger the second deletion rule across the positive/bounded boundary.
+Consequently the sign sequence of $P+u$ is the sign sequence of $P$ followed
+by exactly the same blocks as for $u$ alone. Its length is $H(P)+\bd(u)$.
+If $u$ is real, Theorem~\ref{thm:ordinalpoly} gives the stated nonnegative
+formula. Otherwise the calculation just made gives
+\eqref{eq:finiteND} and \eqref{eq:finiteD}.
+\end{proof}
+
+\begin{corollary}[Exact finite splitting]\label{cor:split}
+For finite Laurent polynomials $x=P+u$ as above,
+\begin{equation}\label{eq:split}
+ \bd(x)=\bd(P)\ns\bd(u).
+\end{equation}
+Every bounded finite Laurent polynomial has birthday below $\omega^2$. If it
+has a negative-exponent term, its birthday is at least $\omega$.
+\end{corollary}
+\begin{proof}
+The finite formula gives $\bd(u)=\omega\cdot M+\tau$ with $M,\tau$ finite,
+or a real birthday at most $\omega$. On the other hand, every nonzero Cantor
+term of $H(P)$ has exponent at least $1$. Hence concatenating $\bd(u)$ after
+$H(P)$ discards no nonzero Cantor term of $H(P)$. Ordinary addition and natural
+addition agree in this specific configuration. The other assertions follow
+immediately from the formula.
+\end{proof}
+
+\subsection{Why the boundary correction matters}
+The exact value of the coefficient immediately above the lowest exponent is
+irrelevant, except for whether it is nondyadic. For example,
+\begin{align*}
+ \bd(1+\omega^{-1})&=\omega,&
+ \bd(\tfrac13+\omega^{-1})&=\omega+1,\\
+ \bd(\tfrac13+\omega^{-2})&=\omega\cdot2,&
+ \bd(\tfrac13\omega^{-1}+\tfrac12\omega^{-2})
+ &=\omega\cdot2+2.
+\end{align*}
+In the last example, the second negative exponent is reduced to the empty
+sequence, so its coefficient contributes two signs rather than one. A rule
+that always appends $\rd(a)-1$ signs would miss this case. A gap of two or more
+integer exponents prevents this finite correction from surviving, although
+the nondyadic deletion still takes place within the intermediate calculation.
+
+\section{The finite product theorem}
+\label{sec:finiteproduct}
+The exact splitting formula reduces the problem to three products: positive
+parts with positive parts, positive parts with bounded parts, and bounded
+parts with bounded parts. The first was covered by
+Theorem~\ref{thm:ordinalpoly}.
+
+\subsection{Bounded factors}
+\begin{lemma}\label{lem:bounded}
+For bounded finite Laurent polynomials $u,v$,
+\[
+ \bd(uv)\leq\bd(u)\np\bd(v).
+\]
+If $u$ has a negative-exponent term and $v\notin\{0,1,-1\}$, this inequality
+is strict.
+\end{lemma}
+\begin{proof}
+Zero factors cause no difficulty. If both factors are real, apply
+Lemma~\ref{lem:realproduct}. If both have negative-exponent terms, then
+\[
+ \bd(uv)<\omega^2\leq\bd(u)\np\bd(v),
+\]
+since their product is still a bounded finite Laurent polynomial and both
+factor birthdays are at least $\omega$.
+
+It remains to multiply a bounded finite Laurent polynomial $u$ with a genuine
+negative term by a nonzero real $r$. Write
+\[
+ \bd(u)=\omega\cdot M+\tau,\qquad M\geq1,\quad M,\tau<\omega.
+\]
+If $r$ is nondyadic, the proposed bound is at least $\omega^2$, while
+$\bd(ru)<\omega^2$. If $r$ is dyadic, put $d=\rd(r)$. Multiplication by a
+nonzero real leaves the lowest exponent of $u$ unchanged. A dyadic lowest
+coefficient stays dyadic; a nondyadic one can stay nondyadic or become dyadic.
+By the exact formula, the leading $\omega$ coefficient of $\bd(ru)$ is thus at
+most $M$. For $d\geq2$, the proposed bound has leading coefficient $dM>M$:
+\[
+ \bd(u)\np d=\omega\cdot(dM)+d\tau.
+\]
+This proves strictness. The only nonzero reals with $d=1$ are $r=\pm1$;
+then $\bd(ru)=\bd(u)$.
+\end{proof}
+
+\subsection{A coarse upper bound with one sharp edge case}
+\begin{lemma}\label{lem:degree}
+Let $z$ be a finite Laurent polynomial with all exponents at most $n$, where
+$n\geq1$ is an integer. Then
+\[
+ \bd(z)<\omega^{n+1}\cdot2.
+\]
+More precisely, if the coefficient at exponent $n$ is dyadic, including zero,
+then $\bd(z)<\omega^{n+1}$. If it is nondyadic, then
+\[
+ \bd(z)=\omega^{n+1}+\rho
+ \qquad\text{for some }\rho<\omega^{n+1}.
+\]
+\end{lemma}
+\begin{proof}
+By Theorem~\ref{thm:finiteformula}, the positive part contributes at most one
+term at Cantor exponent $n+1$, arising only from a nondyadic coefficient at
+exponent $n$. That term has coefficient one. All remaining positive-power
+contributions have Cantor exponent at most $n$, and the bounded contribution
+is below $\omega^2$. Since $n\geq1$, their finite natural sum is below
+$\omega^{n+1}$. Here the coefficient at $n$ is the collected coefficient
+of $z$; if it vanishes after cancellation, the dyadic case applies.
+\end{proof}
+
+\begin{lemma}[Positive monomial times bounded part]\label{lem:crossmono}
+Let $n\geq1$ be an integer, $r\neq0$ real, and $u$ a bounded finite Laurent
+polynomial. Then
+\begin{equation}\label{eq:crossmono}
+ \bd(r\omega^n u)\leq
+       \bd(r\omega^n)\np\bd(u).
+\end{equation}
+If $u$ has a negative-exponent term, the inequality is strict.
+\end{lemma}
+\begin{proof}
+If $u$ is real, both factors belong to $\OrdPoly$, and
+Theorem~\ref{thm:ordinalpoly} applies. Otherwise write
+$\bd(u)=\omega\cdot M+\tau$, with $M\geq1$ and $M,\tau$ finite.
+The product $r\omega^n u$ has highest exponent at most $n$.
+
+If $r$ is nondyadic, then $\bd(r\omega^n)=\omega^{n+1}$, and the right side
+of \eqref{eq:crossmono} has leading Cantor exponent $n+2$. Lemma~\ref{lem:degree}
+bounds the left side by an ordinal with leading exponent at most $n+1$, so
+strictness follows.
+
+Suppose that $r$ is dyadic and write $d=\rd(r)$. The proposed bound is
+\begin{equation}\label{eq:crossbudget}
+ \omega^{n+1}\cdot(dM)+\omega^n\cdot(d\tau).
+\end{equation}
+If $dM\geq2$, Lemma~\ref{lem:degree} makes the left side strictly smaller
+already. Only the case $d=M=1$ remains.
+
+Here $r=\pm1$. The finite formula forces the lowest exponent of $u$ to be
+$-1$, with a nonzero dyadic coefficient $a$. Thus
+\[
+ u=c+a\omega^{-1},\qquad c\in\R,
+ \qquad a\in\D\setminus\{0\}.
+\]
+If $c$ is dyadic, the top coefficient of $r\omega^n u$ is dyadic, so the
+left side is below $\omega^{n+1}$ and the result follows. If $c$ is
+nondyadic, the boundary correction is indispensable:
+\[
+ \bd(u)=\omega+\rd(a).
+\]
+The ordinal-exponent formula gives
+\begin{align*}
+ \bd(r\omega^n u)
+   &=\omega^{n+1}+\omega^{n-1}\cdot\rd(a),\\
+ \bd(r\omega^n)\np\bd(u)
+   &=\omega^{n+1}+\omega^n\cdot\rd(a).
+\end{align*}
+Since $n\geq1$ and $\rd(a)>0$, the first is strictly smaller. This includes
+$n=1$, when the lower term on the first line is finite.
+\end{proof}
+
+\begin{corollary}\label{cor:crosspoly}
+For a positive-power polynomial $P$ and a bounded finite Laurent polynomial
+$u$,
+\[
+ \bd(Pu)\leq\bd(P)\np\bd(u).
+\]
+If $P\neq0$ and $u$ has a negative-exponent term, the inequality is strict.
+\end{corollary}
+\begin{proof}
+Expand $P$ into its finitely many nonzero terms. Apply
+Lemma~\ref{lem:add} to the products, Lemma~\ref{lem:crossmono} to each term,
+and Theorem~\ref{thm:ordinalpoly} to recombine the birthdays of $P$ by natural
+addition. For strictness, at least one strict term inequality occurs, and
+natural addition is strictly increasing.
+\end{proof}
+
+\subsection{Putting the four products together}
+\begin{theorem}[Finite Laurent product theorem]\label{thm:finiteproduct}
+For all $x,y\in\Fin$,
+\[
+ \bd(xy)\leq\bd(x)\np\bd(y).
+\]
+\end{theorem}
+\begin{proof}
+Write $x=P+u$ and $y=Q+v$ with positive-power polynomials $P,Q$ and bounded
+parts $u,v$. Expand
+\[
+ xy=PQ+Pv+Qu+uv.
+\]
+By the additive birthday lemma and the three product estimates,
+\begin{align*}
+ \bd(xy)
+ &\leq\bd(PQ)\ns\bd(Pv)\ns\bd(Qu)\ns\bd(uv)\\
+ &\leq\bigl(\bd(P)\np\bd(Q)\bigr)
+     \ns\bigl(\bd(P)\np\bd(v)\bigr)\\
+ &\hspace{1.2em}\ns\bigl(\bd(u)\np\bd(Q)\bigr)
+     \ns\bigl(\bd(u)\np\bd(v)\bigr)\\
+ &=\bigl(\bd(P)\ns\bd(u)\bigr)
+     \np\bigl(\bd(Q)\ns\bd(v)\bigr)\\
+ &=\bd(x)\np\bd(y),
+\end{align*}
+where the last equality is the exact splitting formula
+\eqref{eq:split}. This proof does not assume that any of the four product
+summands has a disjoint support from the others.
+\end{proof}
+
+\begin{corollary}[Equality with a finite negative tail]\label{cor:strict}
+If $x\in\Fin$ has a negative-exponent term, then for $y\in\Fin$,
+\[
+ \bd(xy)=\bd(x)\np\bd(y)
+ \quad\Longleftrightarrow\quad y\in\{0,1,-1\}.
+\]
+\end{corollary}
+\begin{proof}
+The three displayed values give equality directly. Otherwise, in the preceding
+proof $u$ has a negative-exponent term. If $Q\neq0$, the $Qu$ estimate is
+strict by Corollary~\ref{cor:crosspoly}. If $Q=0$, then $y=v$ is bounded and
+is not $0$ or $\pm1$, so the $uv$ estimate is strict by
+Lemma~\ref{lem:bounded}. Strict monotonicity of the finite natural sum carries
+that strictness to the complete bound.
+\end{proof}
+
+\section{Infinite Laurent series and finite jets}
+\label{sec:infinite}
+\subsection{The field and its product law}
+With $t=\omega^{-1}$, the field in \eqref{eq:field} is the usual formal Laurent
+series field $\R((t))$ embedded by normal forms. For completeness, its field
+property can be seen directly. Every nonzero element has the shape
+\[
+ c\,t^m(1+h),\qquad c\in\R\setminus\{0\},\quad
+ m\in\Z,\quad h\in t\R[[t]].
+\]
+Its inverse is the formal series
+\[
+ c^{-1}t^{-m}\sum_{j\geq0}(-h)^j.
+\]
+For any fixed power of $t$, only finitely many terms contribute, since every
+term of $h$ has exponent at least one. The coefficientwise geometric-series
+identity proves that this is an inverse.
+
+In omega-exponent notation, if $x$ and $y$ have highest exponents $N_x$ and
+$N_y$, the coefficient at exponent $k$ in their product is
+\[
+ [\omega^k](xy)=\sum_{i+j=k}c_i d_j.
+\]
+This sum is finite: the possible $i$ satisfy $k-N_y\leq i\leq N_x$.
+The argument uses formal coefficients only, not analytic convergence.
+
+At the highest possible exponent $N_x+N_y$, only the pair $(N_x,N_y)$
+contributes. Its coefficient is $c_{N_x}d_{N_y}\ne0$, so the highest exponent
+of $xy$ is exactly $N_x+N_y$. If both factors have finite support, with
+lowest exponents $m_x,m_y$, the same argument at the other end gives lowest
+exponent $m_x+m_y$ and nonzero coefficient $c_{m_x}d_{m_y}$. Thus interior
+coefficients may cancel, but the extreme coefficients cannot. In particular,
+widths of nonzero finite Laurent polynomials add under multiplication.
+
+\subsection{Exact birthdays of infinite tails}
+\begin{theorem}[Infinite Laurent birthday formula]\label{thm:infinite}
+Suppose $x\in\Lau$ has infinitely many nonzero terms. Let
+$P=x_{>0}$ and $H=\bd(P)$. Then
+\begin{equation}\label{eq:infinite}
+ \boxed{\bd(x)=H+\omega^2,}
+\end{equation}
+with ordinary ordinal addition. In particular, every bounded infinite Laurent
+series has birthday exactly $\omega^2$.
+\end{theorem}
+\begin{proof}
+The positive part is finite. List the nonzero negative exponents as
+$-m_1>-m_2>\cdots$. The positive integers $m_j$ tend to infinity, since the
+support is infinite and integer-valued. Let $x_j$ be the finite normal-form
+truncation through exponent $-m_j$.
+Theorem~\ref{thm:finiteformula} gives
+\[
+ \bd(x_j)=H+\omega\cdot M_j+\tau_j,
+\]
+where $M_j$ equals $m_j$ or $m_j+1$, and $\tau_j$ is finite. In particular,
+\[
+ H+\omega\cdot m_j\ \leq\ \bd(x_j)
+       \ <\ H+\omega\cdot(m_j+2).
+\]
+Since $m_j$ is unbounded in $\N$, these lengths are cofinal in
+$H+\omega^2$, by continuity of ordinary ordinal addition in its right
+argument. The sign sequences are nested prefixes by
+Lemma~\ref{lem:prefix}, and their union is the sign sequence of $x$.
+Taking their supremum proves \eqref{eq:infinite}.
+\end{proof}
+
+\begin{remark}[A real loss of a Cantor term]\label{rem:absorption}
+Let $x=\omega+\sum_{n\geq1}\omega^{-n}$. Then
+\[
+ \bd(x)=\omega+\omega^2=\omega^2,
+ \qquad
+ \bd(\omega)\ns\bd\left(\sum_{n\geq1}\omega^{-n}\right)
+ =\omega^2+\omega.
+\]
+Thus the finite splitting equality \eqref{eq:split} does not extend unchanged
+to infinite tails. The difference is not a notation preference: it is the
+ordinary-ordinal absorption of a genuine $\omega$ term.
+\end{remark}
+
+\subsection{Stabilization of a finite product truncation}
+For an integer $K$, define
+\[
+ x_{\geq K}=\sum_{k\geq K}c_k\omega^k.
+\]
+This is a finite normal-form truncation for every $x\in\Lau$.
+
+\begin{lemma}[Finite-jet stabilization]\label{lem:jets}
+Let $x,y\in\Lau\setminus\{0\}$ have highest exponents $N_x,N_y$.
+Fix $K\in\Z$ and choose any integer $T$ such that
+\begin{equation}\label{eq:T}
+ T\leq K-N_y,\qquad T\leq K-N_x.
+\end{equation}
+For instance, $T=\min\{K-N_y,K-N_x\}$ works.
+Then
+\begin{equation}\label{eq:jet}
+ (x_{\geq T}y_{\geq T})_{\geq K}=(xy)_{\geq K}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+A discarded term of $x$ has exponent $i<T$. Multiplied by any term of $y$,
+it has exponent $i+j<T+N_y\leq K$. Likewise, a discarded term of $y$ cannot
+contribute to exponent $K$ or above. Therefore the complete products have the
+same coefficients at every exponent at least $K$. These coefficients are
+finite sums, so there is no exchange of infinite summation operations hidden
+in the argument. Coefficient equality includes zeros caused by cancellation;
+the conclusion is about the collected normal forms, not only about possible
+support exponents.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Zero factors are immediate. Fix nonzero $x,y\in\Lau$ and put
+\[
+ B=\bd(x)\np\bd(y).
+\]
+For any integer cutoff $K$, choose $T$ as in Lemma~\ref{lem:jets}. Since normal
+truncations are sign prefixes, and since $x_{\geq T},y_{\geq T}$ are finite
+Laurent polynomials, we have
+\begin{align*}
+ \bd\bigl((xy)_{\geq K}\bigr)
+ &=\bd\bigl((x_{\geq T}y_{\geq T})_{\geq K}\bigr)\\
+ &\leq\bd(x_{\geq T}y_{\geq T})\\
+ &\leq\bd(x_{\geq T})\np\bd(y_{\geq T})\\
+ &\leq\bd(x)\np\bd(y)=B.
+\end{align*}
+The middle inequality is Theorem~\ref{thm:finiteproduct}, and the last one is
+monotonicity of natural multiplication.
+
+If $xy$ has finite support, choose $K$ below its lowest exponent, and this is
+the desired bound. If it has infinite support, the finite truncations exhaust
+its sign sequence by Lemma~\ref{lem:prefix}. Their birthdays are all bounded
+by the \emph{same} ordinal $B$, so their supremum is bounded by $B$ as well.
+Thus $\bd(xy)\leq B$ in either case.
+\end{proof}
+
+The proof deliberately does not assert a general continuity identity such as
+$\sup_n(\alpha_n\otimes\beta_n)
+=(\sup_n\alpha_n)\otimes(\sup_n\beta_n)$.
+It only keeps one fixed upper bound throughout. Even natural addition need
+not preserve a supremum in a variable: $\sup_{n<\omega}(n\oplus1)=\omega$,
+whereas $(\sup_{n<\omega}n)\oplus1=\omega+1$.
+
+\Needspace{26\baselineskip}
+\section{Examples and exact consequences}
+\label{sec:examples}
+\subsection{A table of birthdays}
+The following values follow directly from the finite and infinite formulas.
+The sums displayed here are surreal sums; every expression in the right column
+is an ordinal in Cantor normal form.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}p{0.65\textwidth}l@{}}
+\toprule
+Surreal number & Birthday\\
+\midrule
+$1+\omega^{-1}$ & $\omega$\\
+$\tfrac13+\omega^{-1}$ & $\omega+1$\\
+$\omega+\omega^{-1}$ & $\omega\cdot2$\\
+$\omega^{-m}$, $m\geq1$ & $\omega\cdot m$\\
+$\tfrac12\omega^{-m}$, $m\geq1$ & $\omega\cdot m+1$\\
+$\tfrac13\omega^{-m}$, $m\geq1$ & $\omega\cdot(m+1)$\\
+$\tfrac13\omega^{-1}+\tfrac12\omega^{-2}$ & $\omega\cdot2+2$\\
+$\sum_{n\geq1}\omega^{-n}$ & $\omega^2$\\
+$\omega+\sum_{n\geq1}\omega^{-n}$ & $\omega^2$\\
+$\omega^3+\sum_{n\geq1}\omega^{-n}$ & $\omega^3+\omega^2$\\
+$\tfrac13\omega^2+\sum_{n\geq1}\omega^{-n}$ & $\omega^3+\omega^2$\\
+$\sum_{n\geq0}\omega^{-n}/n!$ & $\omega^2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{How loose can the natural-product bound be?}
+For positive integers $m,n$,
+\[
+ \bd(\omega^{-m}\omega^{-n})=\omega\cdot(m+n),
+ \qquad
+ \bd(\omega^{-m})\np\bd(\omega^{-n})=\omega^2\cdot mn.
+\]
+The conjectured bound is therefore already very non-sharp for elementary
+infinitesimals. Cancellation can make the discrepancy larger still. If
+\[
+ x=\sum_{n\geq0}\omega^{-n},\qquad y=1-\omega^{-1},
+\]
+then $xy=1$, but
+\[
+ \bd(x)=\omega^2,\qquad\bd(y)=\omega,
+ \qquad\bd(x)\np\bd(y)=\omega^3.
+\]
+The theorem concerns a uniform complexity bound, not an estimate expected to
+be nearly an equality for typical non-Archimedean factors.
+
+\subsection{Reciprocals of finite Laurent polynomials}
+\begin{corollary}\label{cor:reciprocal}
+Let $f\in\Fin\setminus\{0\}$ have at least two nonzero terms and highest
+exponent $N\geq0$. Then
+\begin{equation}\label{eq:reciprocal}
+ \bd(f^{-1})=\omega^2.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The only units in the finite Laurent polynomial ring over a field are the
+nonzero monomials. Indeed, define the width as highest exponent minus lowest
+exponent. The extreme-coefficient calculation in Section~\ref{sec:infinite}
+shows that widths add under multiplication. A product equal to $1$ has width
+zero, forcing both factors to have width zero; conversely, a nonzero monomial
+has a monomial inverse.
+
+Thus $f^{-1}$ is not finite; it has infinitely many terms in $\Lau$. Its
+highest exponent is $-N\leq0$, so it is bounded. Apply
+Theorem~\ref{thm:infinite}.
+\end{proof}
+
+For example,
+\[
+ (\omega+1)^{-1}
+ =\omega^{-1}-\omega^{-2}+\omega^{-3}-\cdots
+=\sum_{n\geq1}(-1)^{n-1}\omega^{-n}
+\]
+where the displayed identity is coefficientwise formal multiplication; its
+birthday is $\omega^2$. Likewise, $(1+\omega^{-1})^{-1}$ and
+$(\omega^2+\omega)^{-1}$ have birthday $\omega^2$.
+The assumption $N\geq0$ cannot be silently omitted: a reciprocal with positive
+leading exponent can have a positive polynomial part that survives in
+$H+\omega^2$. For example,
+\[
+ f=\omega^{-2}-\omega^{-3},\qquad
+ f^{-1}=\sum_{k\leq2}\omega^k,\qquad
+ \bd(f^{-1})=(\omega^2+\omega)+\omega^2=\omega^2\cdot2.
+\]
+
+\subsection{The complete birthday spectrum of this field}
+\begin{corollary}\label{cor:spectrum}
+The set of birthdays realized in $\Lau$ is exactly
+\[
+ \{\alpha:\alpha<\omega^\omega\}.
+\]
+\end{corollary}
+\begin{proof}
+The finite and infinite formulas place every birthday below $\omega^\omega$.
+Conversely, every ordinal $\alpha<\omega^\omega$ has a finite Cantor normal
+form with finite exponents and nonnegative integer coefficients. It is itself
+an element of $\Lau$, and $\bd(\alpha)=\alpha$.
+\end{proof}
+
+This does not identify $\Lau$ with the entire set of surreals of birthday
+below $\omega^\omega$. For instance, $\omega^{1/2}$ has birthday $\omega^2$
+but is not in $\Lau$, because its unique normal form has a noninteger exponent.
+In particular $\Lau$ is not real closed: its positive element $\omega$ has no
+square root in $\Lau$.
+
+\section{What the proof does not extend to automatically}
+\label{sec:limits}
+\subsection{The failed termwise shortcut}
+The known monomial case might suggest expanding every product into term
+products and summing their birthday bounds. This gives
+\[
+ \bd(xy)\leq
+ \left(\bigns_i\bd(r_i\omega^{a_i})\right)
+ \np
+ \left(\bigns_j\bd(s_j\omega^{b_j})\right)
+\]
+for finite normal forms, but does not in general give the desired bound in
+terms of $\bd(x)$ and $\bd(y)$. One would need equality between a number's
+birthday and the natural sum of its term birthdays, which can fail.
+
+The simplest Laurent example is
+\[
+ \bd(1+\omega^{-1})=\omega
+ <\omega+1=\bd(1)\ns\bd(\omega^{-1}).
+\]
+Even with positive fractional exponents,
+\[
+ \bd(\omega+\omega^{1/2})=\omega^2,
+ \qquad
+ \bd(\omega)\ns\bd(\omega^{1/2})=\omega^2+\omega.
+\]
+Here $1/2$ has sign sequence $+-$, so $\omega^{1/2}$ has a first block of
+$\omega$ pluses followed by $\omega^2$ minuses. Its birthday is $\omega^2$.
+The leading $\omega$ term of the sum is absorbed in the concatenated birthday.
+
+The positive/bounded decomposition in the finite Laurent proof was chosen
+precisely to retain exact equality at the recombination step. It is not a
+claim that every normal-form decomposition has that property.
+
+\subsection{Fractional dyadic exponents}
+A natural next restriction is
+\[
+ \R[\omega^q:q\in\D],
+\]
+where each expression has finite support. The general sign-expansion algorithm
+still works with finite exponent sign sequences, so exact computations are
+feasible. What is missing is an analogue of the finite Laurent formula that
+retains the sharp birthday budget under arbitrary fractional-exponent
+products.
+
+The obstacle is structural. Positive integer exponents have no minuses, while
+negative integer exponents lie on a single all-minus branch. This made the
+reduction rule depend only on the previous negative exponent and one
+coefficient flag. A general dyadic exponent can have an arbitrary finite
+mixture of signs. An earlier, nonadjacent exponent can then delete a minus in
+a later exponent, and multiple sign-block scales can interact. The last
+exponent and its immediate predecessor no longer summarize all relevant
+information.
+
+The accompanying search found no counterexample in 100,000 random pairs from
+a specified dyadic grid, but this is not a proof of that larger restriction.
+A useful next technical target is a \emph{prefix-sensitive} bound on the reduced
+term blocks: it must account for the finite tree of shared exponent prefixes,
+rather than merely adding independent term lengths.
+
+\subsection{Infinite supports beyond the integer lattice}
+The finite-jet argument used that every cutoff $x_{\geq K}$ is finite. This is
+not true for arbitrary reverse-well-ordered supports in a dense exponent group.
+For example, the descending sequence
+\[
+ -\frac12,-\frac34,-\frac78,-\frac{15}{16},\ldots
+\]
+is a legitimate dyadic support, but all its infinitely many terms lie above
+$-1$. Thus the same numerical cutoff no longer produces a finite polynomial.
+This example does not disprove a more general approximation theorem; it marks
+the specific step that has not been justified outside the discrete Laurent
+setting.
+
+\subsection{No general solution has been obtained}
+The full conjecture permits arbitrary surreal exponents, arbitrary set-sized
+reverse-well-ordered supports, and products for which both sign reductions and
+support order types are much more complicated. Neither the polynomial theorem
+with ordinal exponents nor the Laurent-field theorem covers those cases.
+The computational search supplies evidence, not the missing argument.
+
+\section{Exact computation and reproducibility}
+\label{sec:computation}
+The archive includes \co{verify.py}, a standard-library-only Python program
+compatible with Python 3.9 or later, and the recorded results in
+\co{verification\_results.json}. Mathematical arithmetic is exact: coefficients
+and dyadic exponents use \co{fractions.Fraction}; ordinal operations use integer
+coefficient tuples. No floating-point approximation enters a birthday comparison.
+
+\subsection{Two independent routes to finite Laurent birthdays}
+The function \co{sign\_birthday} implements the general finite-exponent
+sign-expansion theorem. For each exponent it records its finite sign sequence,
+removes already-shared minus prefixes, applies the separate nondyadic
+predecessor deletion, and concatenates ordinal block lengths.
+
+The function \co{laurent\_formula} instead implements
+Theorem~\ref{thm:finiteformula}, using only positive-power term birthdays, the
+lowest exponent and coefficient, and the single boundary flag. It does not call
+the sign-expansion engine. Agreement between the two implementations is a
+check on the algebraic simplification and on edge-case handling, not an
+independent proof of Gonshor's sign-expansion theorem.
+
+For instance, the tuple $(2,4,0,1)$ represents
+$\omega^3+\omega\cdot4+2$. Natural addition is componentwise addition, natural
+multiplication is convolution, and ordinary addition discards every coefficient
+of the left operand below the leading exponent of the right operand before
+combining the leading coefficients. Implementing both additions separately
+is essential to the tests.
+
+\subsection{Recorded verification}
+The completed checks are summarized below. Their precise grids, seed, and
+sampling list are recorded in the JSON file.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{@{}p{0.52\textwidth}r p{0.22\textwidth}@{}}
+\toprule
+Check & Cases & Result\\
+\midrule
+Finite Laurent formula versus sign expansion & 117,649 & All equal\\
+Finite Laurent product inequality, ordered pairs & 15,625 & All passed\\
+Strictness with a negative tail, within those pairs & 12,200 & All strict\\
+Random dyadic-exponent product inequality & 100,000 & All passed\\
+Dyadic real length versus actual sign length & 405 & All equal\\
+Named birthday regressions & 12 & All passed\\
+Ordinal arithmetic regressions & 3 & All passed\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The formula test uses exponents $-3,-2,-1,0,1,2$ and coefficient choices
+\[
+ \{0,1,-1,\tfrac12,2,\tfrac13,-\tfrac13\},
+\]
+so it tests all $7^6=117{,}649$ patterns, including zero coefficients and
+missing-predecessor cases. The product test uses all $5^3=125$ polynomials on
+exponents $-1,0,1$ with coefficients in
+$\{0,1,-1,\tfrac12,\tfrac13\}$, and tests all ordered pairs. Exactly 881 pairs
+attain equality; the strictness test concerns the specified 12,200-pair subset.
+
+The exploratory search uses exponents $i/8$ for $-24\leq i\leq24$, one through
+seven distinct exponents per factor, and rational coefficients drawn from the
+ordered sampling list generated by
+\[
+ i/j,\qquad j\in(1,2,4,3,5),\quad i\in(-3,-2,-1,1,2,3).
+\]
+Repeated rational values in this list are intentionally retained. The random
+seed is 394230. Among its 100,000 pairs, 202 attain equality. This search is
+broader than the theorem in its allowed finite exponents, but much narrower
+in its coefficients and support sizes.
+
+\subsection{Running the checks}
+From the extracted archive directory, run
+\begin{verbatim}
+python verify.py --output verification_results.json
+\end{verbatim}
+A smaller smoke test is available as
+\begin{verbatim}
+python verify.py --quick --output quick_results.json
+\end{verbatim}
+The output records the Python version and run date. Wall-clock duration is
+machine-dependent. Reproduction should compare the mathematical counts and
+outcomes, not timestamps or timing fields.
+
+The program is not a formal verification of the proofs. It cannot quantify
+over arbitrary real coefficients, infinite series, or all ordinals. The
+argument for those cases is the mathematical one in the article, with its
+external inputs explicitly identified.
+
+\section{Proof audit and conclusion}
+\label{sec:audit}
+The proof has two nontrivial interfaces to standard surreal theory: the
+normal-form/Hahn-series correspondence, and the sign-expansion theorem with
+its two deletion rules. The additive birthday bound was recalled with its
+usual recursive proof. No instance of the conjectured general multiplicative
+bound is assumed in proving the Laurent case.
+
+The internal chain of implications is
+\[
+\begin{gathered}
+ \text{sign expansions}\ \Longrightarrow\
+ \text{exact finite Laurent birthdays}\\
+ \Longrightarrow\ \text{bounded and cross-product estimates}\\
+ \Longrightarrow\ \text{finite Laurent product bound}\\
+ \Longrightarrow\ \text{fixed-bound finite-jet argument}\\
+ \Longrightarrow\ \text{full Laurent-series product bound}.
+\end{gathered}
+\]
+
+Several potential gaps were checked explicitly. Negative coefficients reverse
+signs but not lengths. An absent coefficient is dyadic zero, so it must not
+activate the boundary correction. Adjacent nondyadic coefficients require the
+second deletion rule even though the shared-prefix rule has already been
+applied. Multiplying by a dyadic scalar can turn a nondyadic coefficient into
+a dyadic one, but cannot turn a dyadic coefficient into a nondyadic one.
+The only sharp cross-product case has a coefficient of birthday one and a
+bounded tail with leading birthday coefficient one; it was treated separately.
+Finally, infinite support was handled by a uniform bound on finite product
+truncations, not by an unproved continuity property of natural operations.
+
+The resulting affirmative restriction is the entire field
+$\R((\omega^{-1}))$, not merely a collection of monomials or rational functions.
+The exact finite and infinite birthday formulas supply additional information
+that is independent of the product inequality. In particular they expose why
+some straightforward-looking normal-form arguments lose the required bound,
+and they identify a concrete next obstacle: the shared-prefix combinatorics of
+fractional dyadic exponents. This is the extent of the result established in
+this article; the full birthday product conjecture remains beyond this proof.
+
+\appendix
+\section{Bibliographic and provenance notes}
+The research status discussion is deliberately narrower than a claim that a
+complete literature survey has proved absence of later work. The 2001 source
+contains the monomial theorem and the general weaker estimate; the 2024
+statement is first-person testimony by one of its authors. The 2011 paper and
+2022 preprint provide accessible formulations of the sign-expansion rules used
+here. No purported solution of a different conjecture bearing Gonshor's name
+was treated as a resolution of the birthday question.
+
+The original paper by van den Dries and Ehrlich has an erratum
+\cite{vdDEErratum}. The present proof does not invoke their estimates for
+additive monoids of supports, closure under inversion, or exponential-field
+constructions. The affirmative monomial theorem is cited for context; our
+restricted product proof instead uses the elementary real-coefficient lemma
+and the stated sign rules. This separation keeps the logical dependencies of
+the argument visible.
+
+The archive contains the article source and PDF, exact verification code,
+recorded finite checks, a README with build instructions, and an audit file.
+It does not include third-party books or papers, font files, or a claim of
+proof-assistant certification.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{Gonshor1986}
+H.~Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series, vol.~110,
+Cambridge University Press, 1986.
+Sign expansions: Chapter~5; birthday product conjecture: p.~96.
+
+\bibitem{vdDE2001}
+L.~van den Dries and P.~Ehrlich,
+Fields of surreal numbers and exponentiation,
+\emph{Fundamenta Mathematicae} \textbf{167} (2001), no.~2, 173--188.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}.
+
+\bibitem{vdDEErratum}
+L.~van den Dries and P.~Ehrlich,
+Erratum to ``Fields of surreal numbers and exponentiation,''
+\emph{Fundamenta Mathematicae} \textbf{168} (2001), no.~3, 295--297.
+
+\bibitem{Ehrlich2011}
+P.~Ehrlich,
+Conway names, the simplicity hierarchy and the surreal number tree,
+\emph{Journal of Logic \& Analysis} \textbf{3} (2011), article~1, 1--26.
+\href{https://doi.org/10.4115/jla.2011.3.1}{doi:10.4115/jla.2011.3.1}.
+In particular, Propositions~3.6--3.8.
+
+\bibitem{BG2022}
+O.~Bournez and Q.~Guilmant,
+Surreal fields stable under exponential and logarithmic functions,
+arXiv:2201.08199v1, 20 January 2022.
+\url{https://arxiv.org/abs/2201.08199v1}.
+In particular, Definition~2.20 and Theorem~2.21, p.~13.
+
+\bibitem{Ehrlich2024}
+P.~Ehrlich,
+Answer to ``Birthday of combinatorial game product,''
+MathOverflow, 13 August 2024.
+\url{https://mathoverflow.net/questions/476824/}.
+Accessed 20 September 2026.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,2912 @@
+# Set-Sized Quotients of the Omnific Integers
+
+**The universal constant-term quotient, exact cardinal thresholds, support
+thresholds, and what survives in large quotients**
+Merged research report, 23 September 2026, from twenty-four manuscripts: eight of
+22 September 2026 (batch 24, placed in `be06fc8`): 06 (the base), 03, 04, 07,
+08, 09, 10 and 11; five of 23 September 2026 (batch 25, placed in `cf350b1`),
+numbered here 12 to 16 by their file prefixes; three of 23 September 2026
+(items 01, 03 and 05 of batch 26, placed in `f4c9504`), numbered here 17 to 19
+by their file prefixes; one of 23 September 2026 (item 01 of batch 28,
+placed in `c6359e4`), numbered here 20 by its file prefix
+`20-boolean-branching-`; one of 23 September 2026 (item 01 of batch 29,
+placed in `66d7e55`), numbered here 21 by its file prefix
+`21-derived-arithmetic-`; one of 23 September 2026 (item 09 of batch 31,
+placed in `9d28e28`), numbered here 22 by its file prefix `22-finite-tests-`;
+one of 23 September 2026 (item 01 of batch 32, placed in `7d04483`),
+numbered here 23 by its file prefix `23-omnific-ramification-`; and four of
+23 September 2026 (items 02, 04, 06 and 07 of batch 34, placed in `a7a435f`),
+numbered here 24 to 27 by their file prefixes `24-class-residues-`,
+`25-semialgebraic-smoothness-`, `26-face-topology-` and
+`27-henselian-branching-`.
+Manuscript 05 of batch 24 proves the unital universal
+theorem too; it is merged into the sibling report
+[`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) and credited
+here.
+
+The maintained proofs have been reviewed from the ring definitions through
+representations, quotients, completions, localizations, positive existential
+conservativity, modules and derivations. The review also covers the finite-side
+standard-part theorem, the support threshold, and the fixed-group lower bounds
+through the cyclic-module lemma, followed by source 03's countable-support
+two-armed model and source 06's regular-cardinal support model. Both have
+direct proofs of their exact ring/module detection thresholds and ideal
+generator counts; source 03's stated flatness/Tor consequences are also
+reviewed. Source 06's field closure is separated from the gap property,
+with an explicit failure of the latter at singular support bounds. Corrections
+include the matching complex fraction field in the Gaussian case, the characteristic
+restriction on integer divisibility, the distinction between a large quotient
+and its small images, and the infinite support allowance in the finite-side
+extension criterion. The imported primality and derivation inputs remain
+identified as imports.
+
+Lean now proves the actual surreal scale-gap lemma, including the explicit
+ordinal family h/ω^(α+1), with smallness measured in the birthday universe.
+It also proves the scaled-field collision identity and direct cardinal
+bounds for nonunital ring maps and unital module actions. The universal
+small-target theorem is now proved for both actual omnific rings through
+the separate countable-telescope route: every additive multiplicative map
+to a birthday-universe-small ring factors uniquely through its ordinary
+integer or Gaussian integer constant. Maps defined only on the purely
+infinite ideal vanish, and that ideal annihilates every small unital module.
+The target may be infinite, noncommutative and nonunital. The telescope is
+first constructed as one source element; only its finite product identity
+is mapped, so no continuity is required. Gaussian common division clears
+both coordinates with one real monomial. Real nonunital maps are classified
+by target idempotents; Gaussian unital maps by all square roots of −1,
+without a centrality condition. The arbitrary-coefficient theorem and
+scaled large Hahn-subfield instance remain pending.
+
+Lean also classifies every small quotient of the actual real omnific ring
+as ℤ or ℤ/nℤ for an ordinary positive n, with n=1 giving the zero ring.
+The characteristic-zero kernel is Π; it is not the zero principal ideal.
+For the Gaussian ring, the corresponding ordinary Gaussian ideal is unique,
+and nonzero constant generators give the usual Gaussian quotient, with
+associates defining the same kernel. For every nonzero Gaussian modulus d,
+Lean now proves finiteness and the exact quotient size |d|². Even a large
+quotient has exactly
+the same unital maps to small rings as its ordinary constant quotient.
+Any extension making a purely infinite element invertible has no nonzero
+small unital ring image or small unital module. This includes the actual
+surreal and surcomplex fields and native localizations that need not be
+fields. All these smallness statements use the birthday universe.
+For a positive real monomial, Lean identifies both actual localization
+images exactly by support bounded below by a negative natural multiple
+of its exponent. An extra power clears the endpoint coefficient into
+strictly positive support. Thus all ordinary coefficients belong, but
+monomials at infinitely lower exponents do not; these rings are proper
+subrings, are not fields, and are not small in the birthday universe.
+
+For either actual omnific ring, every map from an arbitrary localized
+quotient to a small ring factors uniquely through the corresponding
+localization of its ordinary constant quotient. The target can be
+noncommutative, the ideal arbitrary and the denominator submonoid large.
+The generic proof uses the commutative range of the given map.
+In particular, inverting n+ω or an ordinary integer n has the small-target
+maps of ℤ[1/n]. A denominator with zero image in the constant quotient
+rules out a nonzero small unital target. The nonzero quotient by ω+1
+also has only trivial small unital modules; this module result holds for
+every principal generator with unit integer constant. The arbitrary
+coefficient-field versions remain pending.
+Polynomial presentations now have the same constant-coefficient
+reflection for both actual rings, with arbitrary relation ideals and
+small possibly noncommutative targets. Variables need be small only to
+make the ordinary reflected presentation small. In Oz[T]/(T²−ω), maps
+to small commutative rings are classified by square-zero images of T;
+small fields kill T, while the nonzero root ω^(1/2) defines a map to Oz.
+The relation ωT=1 has no nonzero small unital representation, although
+ω⁻¹ solves it in the surreal field. These classify the stated target
+maps, without recovering all class-valued solutions.
+
+When a real omnific ideal misses a purely infinite element, explicit
+monomials indexed by ordinals give pairwise distinct residues. Their
+restrictions provide actual representatives for every small index type,
+proving the source's quotient-size alternative. The proof uses finite
+telescope certificates and a well-ordering of the index type.
+
+The real principal quotient is small exactly for a nonzero ordinary
+integer generator. For a nonconstant generator, distinct positive
+monomials below its leading exponent have distinct residues. The
+quotients by ω, 2+ω and 1+ω are nonzero and large; their universal
+small images are respectively ℤ, ℤ/2ℤ and the zero ring. Among ideals
+with small quotient, only Π lacks a small generating set. The Gaussian
+principal-size statement is now proved too: exactly the nonzero ordinary
+Gaussian generators give small quotients, and nonconstant generators have
+arbitrarily large small families of distinct positive-monomial residues.
+The Gaussian purely infinite ideal is a directed union of real monomial
+principal ideals and is idempotent, yet has no small generating set.
+Multiplication by any nonzero ordinary Gaussian constant preserves it.
+The arbitrary-coefficient principal-size statement remains pending.
+
+For every real omnific ideal J, Lean now identifies its finite-congruence
+closure with J+Π, equivalently the inverse image of its integer constant
+ideal. A generic directed-ideal-basis theorem identifies this with native
+topological closure. A principal ideal is dense exactly for constant term
+±1; nonconstant generators with this property give proper dense ideals.
+Every nonconstant irreducible has this property. Even a nonunital map to
+a small ring that kills a unit-constant element must be zero; targets
+may be infinite and noncommutative.
+
+Lean now classifies prime and maximal ideals with small quotients in both
+actual omnific rings. The purely infinite ideals are prime but not maximal;
+all other small prime quotients are finite fields at ordinary integer or
+Gaussian prime moduli. Maps into small characteristic-zero rings have
+exactly the purely infinite kernel and image isomorphic to ℤ or ℤ[i].
+Those image rings are not fields; the corresponding fraction fields are
+identified separately. Lean also classifies nonunital Gaussian maps into
+any small nonunital ring by pairs (e,j) with e²=e, ej=je=j and j²=−e;
+neither parameter need be central. Both actual purely infinite ideals
+are exactly the intersections of all small unital observation kernels,
+and equal constant terms are precisely the pairs these observations identify. In positive characteristic, a small field target
+has a finite prime or Gaussian residue field as image. Ideals with large
+quotients are outside this classification.
+
+The actual real and Gaussian constant-term factorizations also extend to
+any target whose nonzero elements can each be detected by a map to a small
+ring. This does not require a small family of detectors. Polynomial rings
+in arbitrary variable types over small commutative coefficients satisfy
+this condition by finite-variable projection. Neither actual omnific ring
+has a faithful small unital module. Operator representations on any small
+vector space are classified by integer constants, or in the Gaussian case
+by one operator J with J²=−id. The real matrix formula includes dimension
+zero; the Gaussian finite-dimensional conjugacy classifications remain
+pending in Lean.
+
+Lean now gives restriction/inflation equivalences for native small module
+structures over both actual rings, with unchanged underlying linear maps,
+composition and exactness. Small real omnific actions are unique; small
+Gaussian actions correspond to small ordinary ℤ[i]-modules. The real
+constant sequence has its ring and additive section but no omnific-linear
+section. Every linear map from a small module to the regular Oz-module is
+zero, and every nonzero free Oz-module is large. The integers nevertheless
+lift through all surjections between small modules; this is projectivity
+within that category, not an unrestricted projectivity assertion.
+
+For both actual rings, Lean also constructs one nonzero positive real
+monomial in every kernel of a small family of maps with specified nonzero
+kernel witnesses; the targets themselves may be large. The family is
+therefore not jointly injective, including the empty-family case.
+The real omnific ring has no monotone unital map to a nonzero small
+ordered ring, and its only small unital subring retract is ℤ.
+Every Gaussian endomorphism acts on constant terms by identity or
+conjugation and preserves and reflects the purely infinite ideal;
+automorphisms carry that ideal onto itself.
+
+Lean now also proves the full real conservativity proposition, including
+its inequational boundary: (√2·ω,ω) solves x²=2y² with y≠0, but no
+integer pair does. Constant extraction kills both witnesses. Gaussian
+polynomial solution sets retract onto their ordinary Gaussian solutions,
+and native positive existential formulas agree at ordinary Gaussian
+parameters. Arbitrary equation and variable families are allowed in the
+solution-set statement; the formula statement retains its parameter
+restriction. The separate computability claims remain pending.
+
+The first seven standard results of Source 22's finite-test section are
+now reviewed, from rectangular interpolation and resultant specialization
+through the real and Gaussian single-scale certificates. The proofs track
+degree preservation, coprimality and the nonvanishing fresh denominator.
+One common scale tests a set of rational functions; polynomial failures
+propagate outside any prescribed set by adding purely infinite terms.
+The Gaussian arithmetic grid uses ordinary real binomials in twice as
+many variables. The worked resultant example now separates cancellation
+at Y=±1 from degree loss at Y=0. The remaining five proofs are now reviewed
+too, completing all twelve standard results. Tensor injectivity is proved
+by a common denominator in each finite tensor sum; no finite generation
+of the ordinary integer-valued polynomial module is assumed. Universal
+ordinary test sets lift by an invertible evaluation minor, and image ideals
+have finite grid generators. Their ordinary images are exactly the ideals
+generated by the constant polynomials' values; this does not make the
+original ideals principal. Birational inverse identities extend globally
+as polynomial identities. The fixed-workspace proof supplies the full
+Hahn summability and multiplication argument without a divisible exponent
+group. These manuscript reviews add no Lean coverage; questions and full
+parallel-source reconciliation remain separate review tasks.
+
+Source 08's controlled-field construction is now reviewed as well: every
+element uses finitely many exponent coordinates, although its support may
+be infinite. Its exact cardinality, small-target theorem, ideal generator
+count and residue-field conclusions have expanded proofs, including the
+characteristic-zero quotient in which the actual omega maps to -1.
+
+Source 09's countable-support one-arm model is also reviewed. Its cardinal
+parameter is explicitly infinite: the equation `λ^ℵ0 = λ` alone also allows
+0 and 1. The residue-field proofs exhibit the canonical coefficient-field
+embedding, pairwise comaximal ideals, exact field/module detection, and the
+distinction between a nonzero finite residual and zero Jacobson radical.
+The ideal needs exactly `ℵ1` generators, independently of `λ`.
+
+Source 11's model and the organizing ring/module theorem are now reviewed.
+Its field operations use a subgroup generated by fewer than κ exponents;
+regularity enters the gap and generator arguments. The exact size and
+detection threshold are `κ^{<κ}`, with κ ideal generators. The proof
+allows finite coefficient fields, so the introduction now restricts its
+omnific embedding claim to the displayed real/integer and Gaussian cases.
+The organizing proof checks all five smaller-scale fields separately and
+retains each coefficient field and support bound. The comparison explains
+why every realized size outside source 08 is fixed by countable cardinal
+exponentiation.
+
+The set-sized homological package is now reviewed too: the projective-ideal
+lemma, flatness and idempotence, Tor vanishing, nonflatness of the quotient,
+the natural inflation isomorphisms for Ext, and the explicit nonzero
+classes in degrees one and two. Nonsplitting is stated in the category of
+A-modules, consistently with the existing additive and ring section.
+A countable telescope proves projective dimension two in the countably
+generated case; no general exact projective dimension is asserted.
+The coefficient-module thresholds for Ext¹ and Ext² are exactly |A|.
+
+The finite-support cores are reviewed through the exact flat-dimension
+theorem: domains and embeddings, finite quotients and completions, flat
+face ideals, the coordinate-intersection resolution, arithmetic Tor
+vanishing, nilpotent lifting, and the Boolean-face Tor computation.
+The contraction establishes exactness degree by degree, without claiming
+an A-linear splitting. In the Tor formula, degree one has coefficients
+in D while higher surviving degrees have coefficients in K. Finite
+quotients and self-Tor therefore do not determine the flat dimension.
+
+The lattice presentations and first syzygies, antisymmetric tensor
+obstruction, flat/projective dimension bounds, ordered-cone package and
+nonflat cone enlargement are now reviewed. Lattices are explicitly
+nonzero, and their D-rank is distinguished from fraction-field rank one.
+Corrected the ordered-cone noncoherence claim to require `K ≠ Frac(D)`;
+for `D = K` and `Γ = ℚ`, every finitely generated ideal is principal,
+so that ring is coherent. The proof supplies the counterexample and
+keeps the integer and Gaussian applications intact.
+
+The tensor normal forms are now reviewed through exterior and symmetric
+powers. Absorption, the two-factor inverse, and the class universal
+properties have explicit factorizations and uniqueness proofs. The
+higher-factor reduction moves only scalars belonging to A; the symmetric
+relations affect only the ordinary tensor coordinate. Torsion means
+A-torsion and is compatible with freeness over D. The exterior-power
+examples form a family of ideals with arbitrarily large nonvanishing
+degree, rather than one finitely generated ideal with all powers nonzero.
+
+The Rees equations and every-degree family are now reviewed too. A finite
+reduction gives the presentation and its explicit class carrier. Nonlinear
+relations form a finitely generated ideal of the symmetric algebra, but
+when nonzero they are not finitely generated as an A-module. The proof
+of the first nonlinear degree treats nonmonic minimal polynomials and
+explains why the relation survives the linear quotient. The power counts
+use equality of integer lattices, with all degree-one boundary cases.
+
+The scalar Hom, ideal-class, dual and common-scale matrix results are now
+reviewed. Denominator clearing gives a scalar code for every map, also
+for class modules. The ideal-class group has its own identity when the
+number-field degree is at least two; the real quadratic example includes
+its inverse ideal and determinant obstruction to principality. The dual
+proof first establishes the permitted support, and distinguishes the
+ordinary coefficient quotient from a ring quotient. The matrix proof
+constructs the kernel decomposition and uses Schanuel's lemma to exclude
+all finite presentations in the irrational-kernel case. The Gaussian
+scope now specifies the required support properties and the appropriate
+base field for ideal classes.
+
+The no-set-presentation obstruction, lexicographic embeddings, exact
+relation counts and model flat dimensions are now reviewed. The class
+pullback has explicit linear sections on free bases; its chosen lift on
+all elements need not be linear. The exponent embedding and the induced
+ring-monomial embedding are distinguished. Regularity is used explicitly
+in the lower generator bound. The countable remark now says “surjection
+from a finite free module,” correcting its reference to a finite
+presentation of a module that is not finitely presented. Its exact
+projective dimensions follow from a written telescope argument. The flat
+dimensions use a concrete nonzero antisymmetric tensor and no forward
+appeal to the general coefficient-Tor calculation.
+
+The general coefficient-Tor theorem and its quadratic, self-Tor-range
+and field-detection consequences are now reviewed. The proof constructs
+the coefficient quotient and connecting map, with a coefficient projection
+that detects nonzero tensors. It separates A-torsion from D-torsion and
+rank from freeness over arbitrary D. The quadratic discussion corrects
+“needed” to “sufficient”: a relation `c² = u + vc` with `u,v ∈ D` also
+gives a free kernel of rank two, as illustrated by the golden ratio.
+The self-Tor endpoints include the rank-one boundary, and field detection
+concerns `Frac(D)M`, not closure of M itself under multiplication.
+
+The rank-two moduli, endomorphism orders, their realization and modules
+killed by the tail are now reviewed. The text restores the integer/Gaussian
+scope before using a countable PID. It gives both fractional-linear basis
+changes, the orbit count without assuming the continuum hypothesis, and
+the denominator-clearing argument identifying the multiplier field.
+The Pell matrix acts on an ideal generating pair, not an omnific basis.
+Tensor maps and Tor vanishing are explicit for the set-sized models;
+for the class ring the proof fixes one balanced map and target at a time.
+Its agreement with a free module on set-sized tests does not imply flatness.
+
+The face-quotient flat resolution, free telescope and top-Ext formula
+are now reviewed. The degreewise contraction handles constants and degrees
+outside the chosen face separately. The lower flat-dimension bound includes
+the singleton face and `D = K`. The telescope proof writes its augmentation
+and contracts the kernel of the comparison map, without assuming the finite
+Koszul complexes are resolutions. Dualizing its countable direct sums gives
+products; the proof checks the full boundary image and the induced quotient
+map before identifying the cokernel with the first derived inverse limit.
+
+The nonvanishing and exact projective-dimension proofs are now reviewed
+as well. The injection from `D^N/D^(N)` uses the finite support of a single
+polynomial; the converse explicitly solves every finitely supported
+sequence. Dimension shifting gives `pd D = d + 1`, `pd Π_d = d`, and the
+lattice dimensions, with the principal rank-one quotient handled separately.
+The stronger lower bounds for global and weak global dimension require
+`K ≠ Frac D`. The coefficient-field boundary case has
+`w.gl.dim K[ℚ≥0] = 1` but `pd K = 2`; the proof and the corresponding
+qualification of Question 18.12 are included. The warning about nonregular
+finite Koszul sequences now specifies the proper coefficient-subring case.
+
+The flat differential graded resolution and all Tor groups of two lattice
+quotients are now reviewed over the ordered core and the class ring in its
+two-universe reading. The proof checks the product's target, associativity,
+graded commutativity and both mixed-degree Leibniz identities. Its bounded
+flatness and multiplicative augmentation justify the induced Tor product.
+The second Tor calculation writes its coefficient map and kernel explicitly;
+the first Tor calculation separates its constant, open-interval and boundary
+parts, with a D-linear splitting only. A monomial in the open interval proves
+that first Tor never vanishes, even when second Tor does. The proof now
+separates principal rank-one quotients, of flat dimension one, from those
+of rank at least two, of flat dimension two.
+
+The compositum lemma, linear-disjointness criterion, self-Tor product and
+alternating/symmetric exact sequence are now reviewed. The field criterion
+uses the given embeddings and exact localization; torsion freeness ensures
+that localization detects vanishing. The self-product calculation tracks the
+flip of the earlier coefficient-tensor convention and the resulting sign.
+The proof of the exact sequence uses a basis to establish the alternating
+injection, then lifts every symmetric relation. No division by two is used.
+For an order the product submodule and its quotient have equal ranks;
+this does not specify a canonical splitting into symmetric tensors.
+
+Framed reconstruction and the derived constant-term shadow are now reviewed.
+The proof gives both directions of the reconstruction criterion, proves
+that the unit extends to an integral basis, and constructs a basis of the
+located multiplication kernel. The arithmetic examples include integral
+spanning checks and trace matrices; Gaussian conjugation is identified as
+semilinear over `Z[i]`. The shadow proof works for any coefficient module,
+including torsion modules, and identifies the actual zero-differential
+complex and its square-zero product when `E = D`. The shift `[1]` is in
+homological degree one. Equal-rank orders have isomorphic shadows despite
+their different framed relations. In the two-universe reading, the universal
+module claim concerns lower-universe-small modules; the regular module in
+the larger universe is an explicit counterexample to dropping that bound.
+
+The first five polyhedral-core results are now reviewed: omnific embeddings,
+the common fraction field, face subtraction, principal exhaustion and the
+intersection/product/tensor formulas. The proofs construct the positive
+functional, explain the lexicographic embedding, give a single shift for
+each finite support and preserve nonzero exponents so arbitrary coefficients
+remain in the tail. The telescope and dual-basis arguments give projective
+dimension exactly one. The ideal assignment reverses face inclusion;
+the zero-face convention `I_{0} = A_𝒞` is separate from the tail formula.
+These results allow every unital subring `D ⊆ K` and require no Noetherian
+or principal-ideal assumption. Their Lean proofs remain pending.
+
+The next six results are also reviewed: radical classification, face-prime
+generators, the simplex resolution, diagonal homology, triangular cancellation
+and crosscut comparison. The radicality proof covers all finite sums by
+intersecting prime face kernels, including the zero-face complement case.
+The resolution has an explicit signed contraction in each nonzero supported
+degree, with the constant degree treated over D. Its reduction uses legal
+A-linear scalar maps on the coefficient-full tails, without giving A a
+K-vector-space structure. The proof explains both homological shifts in
+`β_{p,G} = dim_K H̃_{p−2}(𝕂_{<G}; K)`, the empty-complex case and the
+bound on length by the cone dimension. A rerun of the delivered finite
+verifier reproduces all 52,080 exact assertions and recorded examples;
+these finite rational checks do not prove the general ring statements.
+
+The face-isolating modules, exact flat dimension, projective interval and
+homological epimorphism theorem are now reviewed as well. The tensor-colimit
+proof keeps every degree shift and transition, separates the three face
+cases and identifies an eventual system of copies of K with identity maps.
+Nonzero homogeneous Tor is shown to give ordinary ungraded Tor, obstructing
+every shorter flat resolution. The projective bound is derived through
+explicit syzygies; non-finite generation supplies its lower bound of two.
+For quotient modules the positive terms tensor to zero, whereas a killed
+monomial proves that the quotient itself is nonflat.
+
+The cap-module explanation now has exact qualifications. Such a module is
+finitely generated over A_𝒞 exactly when K is finitely generated over D,
+and is cyclic for D = K. It is a module over the radical quotient exactly
+when its face contains none of the defining antichain faces. The detecting
+labels fail that condition, but caps on other faces can satisfy it; the
+two coordinate rays give a simple example. These are manuscript proofs,
+with Lean formalization still pending.
+
+The face-quotient topology, multiplicity formula and cellular resolution
+are now reviewed. The boundary-complement proof gives a continuous radial
+map and a barycentric deformation retraction. The outside-vertex comparison
+checks both order maps, and the multiplicity proof separates missing labels,
+disjoint faces and nonempty intersections, including the augmented degree
+minus one for a ray. The cellular proof specifies orientations and incidence
+maps and proves both bounds for `fd D = d` without cancellation.
+
+Corrected the projective-dimension commentary: `d − dim F + 1` applies to
+proper faces of a simplicial cone. The whole-cone quotient is the ring
+itself, with flat and projective dimension zero. The source-21 comparison
+does not establish the upper endpoint for arbitrary radical quotients.
+The zero-face quotient is D, with flat dimension d. The four source results
+reviewed here remain pending in Lean. The later boundary-quotient commentary
+also now separates dimension one, where the quotient is the domain D, from
+dimensions at least two, where an explicit pair of boundary monomials
+gives zero divisors.
+
+The flat-ideal classification, marked face-lattice reconstruction,
+simpliciality criterion, simplicial face dimensions and cube-cone theorem
+are now reviewed. The minimal-pair-join proof computes the nonzero reduced
+H₀ explicitly; the facet-functional argument proves independence of all
+rays, including the dimension-one case. Reconstruction uses the actual
+marked ideals with their inclusions and separately adjoins the unit ideal
+for the zero face. A square cone times a ray shows why one flat facet
+ideal does not suffice for simpliciality. Cube facets attain flat dimension
+`d − 1`, and the square/cube/octahedron examples now have a comparison
+table of flat summand counts. All five results remain pending in Lean.
+
+Squarefree transfer, coefficient dependence, scalar quotients and the
+arithmetic-module dichotomy are now reviewed. Support unions identify the
+lcm labels with coordinate faces, including the degree-one and degree-zero
+conventions. The polynomial quotient's last Betti degree is its projective
+dimension, and the same degree is flat dimension over the root core.
+Boundary-matrix minors make the dependence on characteristic explicit.
+
+For arbitrary modules acting through a principal ideal domain that
+is not a field, the proof now passes from finite torsion submodules by
+filtered colimits, tensors the cellular resolution with the torsion-free
+quotient, and explains its nonzero cap detector. Tor vanishing against
+that detector includes degree zero, so the argument covers dimension one
+and mixed modules without assuming that their torsion sequence splits.
+These four results remain pending in Lean.
+
+The lattice-module comparison, two-ray syzygy lemma, nonflatness theorem
+and explicit omnific pair are now reviewed. A written presentation gives
+the relation module `Π_𝒞^(r−1)`, and two dimension shifts give lattice
+and cyclic-quotient flat dimensions d and d+1. The dimension-one and
+rank-one cases are separated; the stronger weak-global-dimension bound
+requires `K ≠ Frac D`. For two distinct rays, coefficient extraction
+forces both old relation coefficients into the tail. The total exponent
+order admits a new ratio whose relation has first coefficient one.
+A balanced map to D detects a nonzero tensor killed by multiplication.
+In the full real and Gaussian rings the same obstruction is stated
+as failure of a finite relation criterion, without tensors of classes.
+The explicit pair now has its ray ordering and exponent difference checked.
+
+This completes a manuscript proof-review pass through all 30 standard
+results of the polyhedral subsection, plus its lattice remark and explicit
+example. The ten associated question/status notes are now reviewed as well.
+Question 18.45 is answered under the section's fixed-space hypotheses:
+with the same D and K, a full-dimensional pointed rational polyhedral
+cone inclusion induces a flat core inclusion exactly when the cones are
+equal. A new rational exponent g has neither sign in the old cone;
+shifting it far into the old interior supplies two monomials with zero
+constant terms in every old relation. Their new ratio gives the same
+nonflatness certificate. The cone generated by the positive orthant and
+(-1,1,1) shows why testing only pairs of old rays misses some enlargements.
+
+The remaining notes distinguish unresolved classification problems from
+proved special cases. An admissible Hahn series with exponents (1/n,n)
+has no common interior monomial divisor, so the finite-support exhaustion
+cannot simply be reused. For each fixed face antichain, only finitely many
+primes can change its Betti multiplicities; this does not provide a
+smallest characteristic-sensitive example. The derived-tensor kernel is
+distinguished from the quotient modules that base change retains.
+
+These are manuscript consequences, pending in Lean along with the
+polyhedral results.
+
+The first eight standard internal-field results are now reviewed, through
+the scaled-field reservoir in a residue fraction field. Closedness is
+proved in a set-sized divisible support group for each polynomial; this
+includes the trivial exponent group. The additive compression Ψ_a and
+the field map Θ_a now have exact coefficient rules. Strong summability is
+both preserved and reflected, and multiplication uses the same finite
+convolution pairs. The image consists exactly of series supported in
+Ψ_a(No); the monomial `ω^(a ω^(−3))` is an explicit element of F_a outside
+it. The ambient bounds `ω^(±a)` themselves lie outside F_a, so boundedness
+in No does not produce an internal bound for the positive field elements.
+
+The transfer proof works in a commutative subring of a possibly
+noncommutative target. A new compatibility calculation proves that two
+eligible denominators give the same field map on overlaps. The unit
+hypothesis is retained: a surviving nilpotent does not suffice. Conditional
+prime quotients are distinguished from the more general residue fraction
+fields. The bounded-field and transfer remarks, explicit compression and
+nilpotent examples, and composed-embedding comparison were checked too.
+These manuscript results and added consequences remain pending in Lean.
+The next seven standard results are now reviewed as well: binomial
+localization, the exact kernel, the internal algebraically closed field,
+the fixed-field dyadic stage, the Cantor algebra, its Boolean consequences
+and the Gaussian kernel/tower. Thus all fifteen standard results before
+the class-residue subsection have a manuscript review pass.
+
+The kernel proof now distinguishes a missing lower bound by an ordinary
+multiple of a from absence of any surreal lower bound. Its separated
+blocks are bounded below by −ωa, but escape every −Na for ordinary N;
+the boundary calculation at N+1 is written explicitly. Finite interpolation
+gives the inverse Cantor map, with stage independence checked by the
+idempotent refinement. The real tower starts at r=1 with 2^(r−1)
+coordinates over E_a; the Gaussian tower starts at r=0 with 2^r
+coordinates over F_a(i). Gaussian conjugation is conjugation of values
+combined with z ↦ −1−z, not just conjugation at a fixed coordinate.
+
+The exact kernel gives a new partial answer to Question 18.5: an explicit
+three-root indicator in E_a[x_6] belongs to no dyadic stage. In a common
+stage of 3·2^(r−1) coordinates it depends on the index modulo 3, while a
+dyadic element depends only on the index modulo 2^(r−1). Thus the Cantor
+algebra is proper even before considering general infinite supports.
+The classification of all ambient idempotents, the nilradical and the
+prime ideals remains open. The new consequences remain pending in Lean.
+Source 07's unchanged verifier passes all 621 finite checks, with identical
+check names and only the Python patch version changed from the recorded run.
+It does not verify the general support proof or these new consequences.
+The first nine standard class-residue results are now reviewed, through
+the coefficient-ring comparison: maximal class extensions, prime avoidance,
+prescribed equations, the equivalence with global choice, finite-polynomial
+compatibility, arithmetic maximal ideals, binomial maximal extensions,
+unit-constant fibres and the comparison of the D- and k-coefficient quotients.
+The proofs now spell out Scott quotient codes over GB, the set-valued
+recursion and finite rejection witnesses over GBC, and denominator clearing
+in the reverse implication. “Small polynomials” need not form an ideal.
+The extraction of a global choice function uses a class of compatible
+finite partial functions, with no prior simultaneous choice.
+
+The same argument shows that maximal-ideal existence restricted to class
+domains of characteristic two already implies global choice. This does not
+settle the separate choice strength of maximal-ideal existence for omnific
+rings. The arithmetic/nonarithmetic distinction and coefficient comparison
+also retain their exact scope: the scalar embedding is a quotient feature,
+and its construction needs no maximal-ideal principle.
+Source 24's unchanged verifier passes all 133,770 finite checks; only the
+Python patch version differs from the recorded run. It does not certify
+class recursion or the equivalence with global choice. These manuscript
+results remain pending in Lean. The next seven standard results are now
+reviewed too, from the exact monomial dichotomy through the ordinal-scale
+and branch family. The cutoff includes its endpoints and an inverse
+independent of the chosen ordinary bound. Division preserves the entire
+discarded tail, giving additive decompositions of the ring and binomial
+ideal and an explicit quotient kernel argument. Rescaling transports the
+field core and branch coordinates as well as the abstract quotient.
+
+An independent ternary tower gives continuum many distinct maximal
+extensions of every fixed dyadic branch, in both coefficient cases.
+At each pair of finite depths the binary and ternary indicators intersect
+in exactly one coordinate, by coprimality. This proves compatibility of
+all the branch equations by a finite-witness argument, followed by class
+maximal extension under global choice. It proves nonuniqueness after the
+dyadic choices are fixed; it does not increase the total continuum lower
+bound at one scale or prescribe the residue field over its core.
+The new [finite refinement checker](code/verify-coprime-branch-refinements.py)
+passes [86,106 exact checks](data/coprime-branch-refinements.json) over F_3457,
+for binary depths 0–4 and ternary depths 0–3 in both root conventions.
+It checks finite identities and coordinate compatibility, not class ideals
+or infinite branches. Run it with Python; `--output PATH` optionally saves
+the printed JSON without overwriting any source-24 verification record.
+
+Corrected an overstatement in the evaluation remark: the construction
+does not show that its residue target differs from the embedded core.
+Equality with the core and abstract isomorphism to it remain separate
+open questions. The remaining seven standard class-residue results are
+now reviewed too, completing all 23. Field embeddings explicitly keep
+set-sized stages, choose least admissible witnesses and extend only a
+prescribed set-sized base. Back-and-forth puts both a source and a target
+element into each successor stage. The separation and residual
+surcomplexity proofs retain their elementwise class-family meaning.
+The failure of strong summability needs no coefficient-fixing assumption:
+the image monomials satisfy integer polynomials that split in the ordinary
+complex numbers of the target.
+
+The support-prime classification now details why coefficients can be
+removed without multiplying by a nonintegral constant in the ring, why
+strong sums preserve arithmetic divisibility, and why convex truncation
+is multiplicative. An added consequence partially answers the closure
+question: a term-closed prime meeting D only at zero is automatically
+strongly sum-closed if its recovered convex subgroup has a set-sized
+cofinal subset. One surreal cut produces a monomial in the prime dividing
+an entire supported series. This covers the zero and principal convex
+subgroups; the smaller-scale H_a has no set-sized cofinal subset, as
+another explicit cut proves. The unrestricted classification and reverse
+implication remain open. All reviewed statements and new consequences
+remain pending in Lean. Full source reconciliation remains pending review.
+
+The first nine standard integral-closure results are now reviewed, through
+the proper dense normalization theorem. One denominator clears the set
+ring D[S], then the entire algebra A[S]. The determinant proof of integral
+closure and transitivity uses finite generating lists even for class
+modules; freeness is unnecessary. The small unit u_|a| gives an explicit
+zero-conductor witness for any integer part of a real closed field.
+Discreteness supplies a concrete neighborhood outside a set-generated
+overring. The distinction between density and convergence is explicit:
+every convergent set-indexed net in No is eventually constant, while the
+small model has this property only for ranges of size less than μ=cf(κ).
+
+A new consequence proves that the denominator size bound is sharp. A
+cofinal sequence of reversed-arm exponents gives μ negative monomials
+generating the entire ambient field over A; no nonzero denominator clears
+even those generators. Fewer than μ generators cannot give the field,
+so its algebra generation number is exactly μ. The same monomials form
+a nonzero net converging to zero in the intrinsic order topology of the
+real model. It fails to converge after embedding in No with its fine
+topology, where a still smaller radius exists. These negative monomials
+are not integral, so the normalization's generator count remains open.
+Lean now proves the actual real and Gaussian uniform-denominator theorems,
+the complete-integral-closure claims for both actual fields and all
+intermediate rings, and the general reciprocal obstruction, including
+nonintegrality of 1/2 in both omnific rings. For both actual omnific rings
+it also proves the full normalization theorem: both strict inclusions,
+density in the fine order or surreal-modulus topology, zero conductor and
+the obstruction to generation by a small set. Small-generated real omnific
+algebras are closed and uniformly discrete;
+every Cauchy net in one is eventually constant, without a bound on its
+index or range. The small-unit, density and conductor arguments are
+formalized generically for integer parts with nonnegative square roots.
+The fixed countable-support versions, sharp generator counts and remaining
+explicit Gaussian basis and conductor-comparison consequences remain pending. The section
+introduction now distinguishes the Noetherian equality of integral and almost integral closure from
+equality with the original ring, which also requires integral closedness;
+Z[√5] and (1+√5)/2 provide the counterexample to the former wording.
+The next eleven standard results are now reviewed too, completing the
+twenty integral-closure results before the arithmetic fibres: constant
+slices, truncation failure, the unit equation, Gaussian normalization,
+finite targets, set-valued valuations and the binomial equation invisible
+to small targets. Coefficient extraction is used multiplicatively only
+on nonnegative support. The valuation proof does not assume transfinite
+linearity of its additive map, and formal Hahn substitution does not
+assert convergence in the fine topology.
+Lean now proves the actual real and Gaussian constant and nonnegative-support
+slice equalities: the constant coefficient must be an ordinary algebraic
+integer, while positive-growth coefficients are unrestricted. The real
+normalization meets the ordinary rationals exactly in the integers.
+The fixed-model slices remain pending.
+Lean also proves that both actual normalizations have no unital map to a
+nonzero finite ring, including noncommutative targets; every proper ideal
+has an infinite quotient. The real algebraic-integer constants already
+supply the obstruction. The named fixed-model instances remain pending.
+The full actual-field valuation obstruction is now proved too: a valuation
+whose ring contains the real or Gaussian omnific ring is trivial when its
+value group is small in the birthday universe. The nonintegral half then
+has value zero. The proof uses small-image ordered additive maps and
+monomial clearing, with no order compatibility assumed for the valuation.
+Lean now also proves the formal binomial identity and injective monomial
+substitution with exact coefficients. For every positive actual surreal g
+and ordinary m≥2, the constructed positive root of T^m=ω^g+1 is integral
+but non-omnific. Every surcomplex root is an ordinary root-of-unity multiple
+of it, and the nonzero coefficient at g/m−g excludes all Gaussian omnific
+roots as well. The specified √(ω+1) witness is proved. Small-target
+invisibility is now proved too: every unital map from either omnific ring
+to a small ring sends the equation to T^m=1, solved by 1. In every small
+image of the normalization, an adjoined root has mth power 1. These results
+include infinite and noncommutative targets; they require only finite
+identities after restriction to the real omnific ring.
+
+Two added consequences sharpen the normalization picture. A negative
+minimum of a normal-form support prevents integrality, so every nonempty
+finite truncation of the small integral unit is nonintegral. Finite-support
+elements have an exact test: nonnegative support and an algebraic-integer
+constant coefficient. For the Gaussian comparison, η=(√3+i)/2 gives
+𝒩_C=𝒩⊕𝒩η and the quadratic presentation T²−√3T+1. Since
+𝒩[i]=𝒩⊕2𝒩η, the additive defect is exactly 𝒩/2𝒩 and has
+annihilator 2𝒩. This is a module quotient, not a quotient ring.
+The intermediate conductor is (𝒩[i]:𝒩_C)=2𝒩_C, distinct from the
+zero conductor (Oz[i]:𝒩_C). All these formulas hold with subscript κ.
+These manuscript consequences remain pending in Lean.
+
+The first ten arithmetic-fibre results, through the Boolean-power theorem,
+are now reviewed. The proofs distinguish ideal divisibility from torsion
+freeness of the quotient, identify the rationalization kernel explicitly,
+and explain why real-rooted lifting preserves a factorization without
+preserving distinct residues. The Catalan series selects the infinitesimal
+quadratic root; its residue squares to −1. Spectral projectors and finite
+common refinements then give the Boolean-power description without choosing
+an ultrafilter. An added consequence identifies the rationalized fibre
+with the total quotient ring of the integral fibre and gives the explicit
+componentwise quasi-inverse, support idempotent and annihilator. Thus the
+integral fibre is integrally closed in its total quotient ring, and the
+rationalized fibre is von Neumann regular. These consequences are pending
+in Lean.
+
+The next six fibre results, from finitely generated ideals through trace
+and norm, are also reviewed. The class-number argument now explains why
+the divided ideal is an ideal and why its unit power forces equality;
+the fibre proof supplies both coefficient identities for its generator
+and refines partitions when computing the annihilator. Exact nilpotence
+indices modulo p include the nonzero-quotient check. An added consequence
+shows that the mod-p nilradical is nonzero, idempotent, non-nilpotent and
+not finitely generated. The real/imaginary decomposition of the extended
+Gaussian ideal holds before rationalization, which makes contraction
+explicit. Trace and norm descend by explicit error formulas.
+
+The earlier basis η=(√3+i)/2 gives an integral Chinese remainder proof
+of doubling: its two roots differ by the unit v, and its discriminant
+is −1. By comparison, the image of B[i] in B×B consists exactly of pairs
+congruent modulo 2, with additive cokernel B/2B and conductor 2B×2B.
+Writing R=B/2B, its reduction is the map R[ε]/(ε²) → R×R sending
+a+bε to (a,a), with nonzero square-zero kernel Rε. Here B is the real
+arithmetic fibre, and i in B[i] is the formal quadratic generator.
+These are manuscript consequences, pending in Lean.
+
+The final six standard arithmetic-fibre results are now reviewed, completing
+all twenty-two through the finite-axiom theorem. The small-target map is
+defined on quotient representatives, and orthogonality selects exactly one
+partition part in a domain in every characteristic. Positive-characteristic
+images are fields because their elements are algebraic over the prime field;
+lifting monic coefficients proves algebraic closedness. The class-ultrafilter
+proof uses a set-like global well-order and set-valued recursion states.
+Evaluation is checked by common refinement, and the field-target criterion
+separates that class choice from ordinary lying over for set rings. The
+abstract theorem now tracks each divisibility and cofinality assumption.
+
+An added consequence classifies individual prime class ideals of the fibre:
+P_(U,p)=ε_U⁻¹(p), for a Boolean ultrafilter U and a prime ideal p of Z̄.
+The quotient is Z̄/p, even if no size assumption was made on the quotient.
+Inclusions preserve U and correspond to inclusions of coefficient primes.
+Thus strict prime chains have at most one inclusion and, under global choice,
+the finite-chain Krull dimension is exactly one. Every nonzero element is
+then detected in some F̄_p, choosing a prime that avoids a nonzero integer
+multiple of its selected coefficient; the fibre's Jacobson radical is zero.
+No collection of all class ideals or class maps is formed. The statements
+concern the fibre, not all prime ideals of the normalization. These results
+remain pending in Lean.
+
+The first nine standard branching results, through independent quadratic
+branches, are now reviewed. The radical certificate uses finite module
+generators and the adjugate identity, without a basis or cancellation.
+Support projection is linear over the retained Hahn field; projecting each
+term of a monic equation proves exact integrality and radical descent.
+Quotient kernels give the reduced-fibre injections. The countable-support
+model uses the countable group generated by the element's coordinates,
+not projection to its entire exponent group. Rational-function descent
+eliminates the denominator before polynomial evaluation at zero. Dominant
+Laurent blocks are bounded above integer indices, and the two quadratic
+branches have an injective polynomial presentation by square-class
+independence. Their specializations are defined only on that algebra.
+
+An added consequence strengthens descent for the two-armed countable-support
+model: its extended normalization ideals are already radical. A positive
+gap below the finitely many countable coefficient supports gives a monomial
+d whose m-th power divides every coefficient of a power witness; integral
+closedness then puts x/d back in the normalization. Thus the radicals in
+that model's two descent formulas can be removed, and its unreduced
+arithmetic fibres embed in the full fibres. The argument requires
+cf(κ)>ℵ₀ and the model's positive-gap property; it does not apply to every
+fixed full Hahn workspace. These reviewed results and the added consequence
+remain pending in Lean.
+
+The next nine standard branching results are now reviewed too, through
+idempotent matrix splitting. Projecting a finite certificate precedes
+specialization in the branch algebra; no map on the full Laurent field
+is used. The one-radical candidate is integral before its half is reduced
+modulo the ideal. Square-class independence gives the multiquadratic
+basis and all sign assignments, which preserve every nonzero coefficient
+on every finite Boolean atom. This proves rank extension and relative
+Boolean freeness, including over rings with zero divisors. Scott codes
+and the canonical fresh scale avoid global choice in the set-length
+construction. The explicit ordinal family, atomlessness, absence of a
+set-sized dense core and matrix splitting have expanded proofs. One
+splitter, or any prescribed finite Boolean partition, works for a whole
+set of nonzero idempotent matrices at once. These results remain pending
+in Lean.
+
+The final six standard branching results are now reviewed, completing all
+twenty-four. The fixed-Hahn-fibre proof establishes divisibility of the
+local radical, rational saturation and the algebraic coefficient copy
+without assuming real closedness of the Hahn field. The Gaussian transfer
+tracks the selected factor and its projected coefficient copy. Class
+ultrafilters use sets of decisions at each stage, uniformly in the
+prescribed seed; the resulting maps form a class relation indexed by a
+set, not a set of class maps. The collision argument works in every
+characteristic and for noncommutative small targets.
+
+An added consequence strengthens the common-kernel obstruction. For any
+set-indexed family of small-target maps, its induced kernel K in the fibre
+contains a nonzero idempotent below each nonzero idempotent f. Use a large
+Boolean family free over ℤ[f] and multiply a colliding pair's symmetric
+difference by f. Every nonzero x then has a nonzero multiple xd in K,
+so K meets every nonzero ideal and has zero annihilator in either the real
+or Gaussian fibre. No global choice
+is needed for this obstruction; global choice is used for individual
+branch detection and the prescribed-data extensions. All six results and
+this consequence remain pending in Lean.
+
+The first ten standard cyclic-workspace results, through rational functions,
+are now reviewed. The proofs give the exact polynomial integer part and
+fraction field, directed finite normalizations, valuation tests for ideal
+membership, the discriminant argument for a finite branch locus, and exact
+nilpotence and root-refinement thresholds. The residue criterion now spells
+out the prime-power intersection and each integrality step; the coefficient
+span uses lifts of a residue-field basis before identifying 𝖨=T𝓑.
+
+An added consequence uses f_λ=2λz₂ for arbitrary λ∈k, with k=ℝ or ℂ.
+It is integral, has Laurent constant coefficient λ, and its square lies
+in 𝖨. For λ≠0 its residue is nonzero, and all products of these residues
+vanish. Thus they form an injective D-linear additive copy of k with zero
+multiplication, not a unital coefficient-field copy. Constant extraction
+maps the normalization onto all of k but is not multiplicative; the
+algebraic-integer constant slice concerns elements that are themselves
+constant. All these local residues vanish in the full-class fibre.
+The ten results and this consequence remain pending in Lean.
+
+The next eight standard results are now reviewed as well, through adic
+completion. Normalized finite-place orders are invariant under finite
+extension, and refinement by m scales them by m. The kernel is precisely
+Fil^(1/m); all rational truncated orders occur, making the filtration
+strictly decreasing. Each nilpotent is killed once m reaches its nilpotency
+index, but no one refinement kills every nilpotent. Finite certificates
+give the reduced bounded-denominator Puiseux colimit and its exact kernels.
+An idempotence equation also descends to a finite later stage.
+
+Each localization of the coefficient normalization at a maximal ideal is
+a directed union of valuation rings with varying finite-extension fraction
+fields, whose union is the ambient algebraic field. At primes over zero,
+these localizations have value group ℚ and residue field ℂ.
+The radical ideal is idempotent both over the coefficient normalization
+and over the arithmetic normalization. This concerns 𝖩; the nilpotent
+elements belong to the quotient ideal 𝖩/T𝓑. By contrast the original ideal
+𝖨 has powers T^r𝓑, a nonzero conormal module, and the stated coefficient-fibre
+Tor group. The completion proof constructs the pullback at every finite
+level before passing to compatible sequences. These eight results and the
+added filtration consequences remain pending in Lean.
+
+The final nine results complete the review of all twenty-seven standard
+cyclic-workspace results. Fresh finite primes prove quadratic
+irreducibility; splitting over zero preserves the Laurent expansion at
+infinity. Fewer than continuum many representatives exclude fewer than
+continuum many parameters, without any regularity assumption on the
+continuum. Finite sign assignments give continuum many independent
+idempotents, exact order density continuum, and exactly 2^(2^ℵ₀) places
+above zero. Idempotents lift uniquely across the nilradical.
+
+The coefficient fibre has exact principal annihilators and a periodic free
+resolution whose self-Tor is nonzero in every degree. The arithmetic
+complex is not exact. An added consequence identifies the kernel of the
+coefficient-to-annihilator-quotient map as Z̄_k, giving an injection of the
+additive D-module k/Z̄_k. This does not classify the whole annihilator
+quotient or determine the arithmetic weak global dimension. The countable
+fragment uses rational-square parameters and an explicit back-and-forth
+proof of the Cantor clopen Boolean algebra classification. These nine
+results and the new coefficient obstruction remain pending in Lean.
+
+The henselian foundations are now reviewed through forced complexification:
+six standard results, from the seeded hull to the free generic Boolean
+family and the general complexification proposition. The hull construction
+checks floor closure, fraction clearing and ideal factorization separately;
+its countable sequence preserves every infinite cardinal, including
+singular ones. The local ring has an explicit residue map b/s↦ct(b)/ct(s).
+
+The central localization proof now fixes a prime for each finite root
+pattern and uses it to show that every allowed denominator is nonzero
+on that branch. The pointed neighbourhood's own henselization is explicitly
+identified with the original henselization before faithful flatness is
+used. The quadratic-only splitter proof expands the finite-algebra
+specializations and keeps them separate from Laurent evaluation.
+The generic Boolean generators and imaginary unit use division in the
+fraction-field base change. The local henselization has no nontrivial
+idempotents and no square root of −1.
+
+Six further proofs now establish the Boolean-power description, henselization
+size, exact generic cardinality and dimension, minimal-prime correspondence,
+and completion and nilpotent-target behavior. Finite image subalgebras
+fix the chosen complex scalar structure throughout the residue evaluation.
+Compactness turns finite branch patterns into all Boolean assignments;
+flat going down identifies precisely the minimal primes that survive.
+The completion proof explicitly exhibits the constant inverse systems,
+the failure of flatness and the non-finitely-generated maximal ideals.
+The main theorem is now assembled from these dependencies: thirteen
+standard henselian results are reviewed and remain pending in Lean.
+
+The original blanket exclusion of infinitesimal smoothness criteria is
+corrected: formal smoothness still has its square-zero lifting definition;
+the missing finite-presentation hypothesis prevents the usual smoothness
+equivalence from applying here. No formal-smoothness conclusion is claimed.
+A new unnumbered consequence extends residue factorization to all separated
+local ℚ-algebra targets, including ℚ[[ε]], with no rational-residue-field
+requirement on the target. It too awaits Lean formalization.
+The final eight standard proofs and the factor summary are now reviewed
+too, completing all twenty-two standard henselian statements. The strict
+henselization is built from finite local extensions of the rational
+constants; its generic tensor map is explicit and Galois equivariant.
+An added finite-descent consequence identifies the fixed rings under
+Gal(ℚ̄/L) both locally and generically, even for non-Galois L. The generic
+factors are indexed by embeddings of L, without choosing an order.
+
+The Gaussian localization proof now gives both inclusions and its residue
+map. The henselization stays local with residue and completion ℚ(i);
+only its generic base change doubles, with conjugate complex scalar
+actions and explicit idempotents. Finite projectives are trivialized by
+matrices on clopen pieces; their rank semiring and K₀ ring follow directly.
+The finite étale classification makes the unit and multiplication
+coefficients constant on a finite partition and includes rank zero.
+The valuation-component count applies the external theorem with precisely
+the same domination condition and topology, without Noetherianity.
+All these results and the new finite-descent consequence remain pending
+in Lean. All twelve henselian question/status notes are now reviewed,
+with their questions preserved and several partial answers supplied.
+
+The countable Stone-space question reduces to atomlessness; the free
+subalgebra alone does not decide it. A map of generic fibres is injective
+exactly when it kills no nonzero idempotent, equivalently when the map on
+Stone spectra is onto. The proof of the cited valuation theorem already
+provides a normalization-point/minimal-prime bijection; the new argument
+checks its compatibility with every explicit Boolean coordinate. This
+identifies points without asserting an isomorphism of the full clopen or
+residue algebras. The local ring and both henselizations have the same
+positive Krull dimension, whose exact value remains unresolved.
+
+At every ordinary prime p, the local ring at pB_𝔼 and its henselization
+have all adic quotients ℤ/pⁿℤ and completion ℤ_p. Both completion maps
+are nonflat. Forced generic complexification still works at p=2;
+a square root of −1 is present in the local henselization exactly for
+p≡1 mod 4. At p=2, reduction modulo 4 rules it out locally.
+The maximal branch count and strict arithmetic splitting at those
+centres remain unresolved here.
+
+Perfect complexes on the generic fibre split into finitely many
+projective homology modules; their graded rank functions classify
+objects and convolve under derived tensor. This gives no higher K-group
+calculation or classification of general derived morphisms. The review
+also distinguishes an a posteriori birthday bound from a prescribed
+cutoff, constructs common hull enlargements and their compatible maps,
+and orders the proposed formalization by prerequisites. These added
+consequences remain pending in Lean.
+Exact scope and validation are in
+[RECONCILIATION.md](RECONCILIATION.md).
+
+```
+article.tex   the report, standalone LaTeX with an internal bibliography
+article.pdf   the compiled report, 358 pages
+README.md     this guide
+03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
+04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
+06-universal-quotient-source_audit.md          source 06: repository scope, inputs, proof checkpoints
+07-quotient-rigidity-SOURCE_AUDIT.md           source 07: repository inspection, precedents, novelty
+08-small-rings-BUILD_REPORT.md                 source 08: build and finite-check record
+08-small-rings-SOURCE_AUDIT.md                 source 08: repository pin, literature, novelty
+09-set-shadows-SOURCE_AUDIT.md                 source 09: repository pin, literature, novelty
+11-set-sized-algebra-SOURCE_AUDIT.md           source 11: repository pin, MathOverflow question, novelty
+15-set-sized-representations-SOURCE_AUDIT.md   source 15: repository pin, literature, novelty, checks
+20-boolean-branching-PROOF_AUDIT.md            source 20: proof obligations, independent checks, limitations
+20-boolean-branching-SOURCE_AUDIT.md           source 20: repository pin, antecedents, novelty boundary
+22-finite-tests-SOURCE_AUDIT.md                source 22: repository inspection, literature, novelty, verification boundary
+23-omnific-ramification-RESEARCH_AUDIT.md      source 23: repository pin, primary literature, proof checkpoints, verification boundary
+24-class-residues-PROOF_SOURCE_AUDIT.md        source 24: repository pin, attributions, critical hypotheses, verification boundary
+25-semialgebraic-smoothness-PROOF_AUDIT.md     source 25: proof obligations and verification boundary
+25-semialgebraic-smoothness-SOURCE_AUDIT.md    source 25: repository pin, inspected sources, originality boundary
+26-face-topology-PROOF_AUDIT.md                source 26: assumptions, proof obligations, claims not made
+26-face-topology-SOURCE_AUDIT.md               source 26: repository pin, inspected ranges, literature, novelty boundary
+27-henselian-branching-PROOF_AUDIT.md          source 27: dependency chain, checks against common errors, remaining uncertainty
+27-henselian-branching-SOURCES_AND_SCOPE.md    source 27: repository pins, primary sources, proposed contribution
+code/
+  03-cardinality-normalization-verify_identities.py   source 03 checks (2,362; stdout)
+  04-universal-residue-verify_identities.py           source 04 checks (writes verification.json, see below)
+  04-universal-residue-Makefile                       source 04's Makefile (original file names)
+  06-universal-quotient-verify.py                     source 06 checks (17,586)
+  06-universal-quotient-Makefile                      source 06's Makefile (original file names)
+  07-quotient-rigidity-verify_finite.py               source 07 checks (621; needs SymPy)
+  08-small-rings-finite_checks.py                     source 08 checks (1,277; stdout)
+  09-set-shadows-verify.py                            source 09 checks (597)
+  09-set-shadows-build.sh                             source 09's build script (original file names)
+  10-omnific-arithmetic-checks.py                     source 10 checks (171,395; needs SymPy; stdout)
+  10-omnific-arithmetic-Makefile                      source 10's Makefile (original file names)
+  11-set-sized-algebra-check_finite_identities.py     source 11 checks (1,858)
+  11-set-sized-algebra-build.sh                       source 11's build script (original file names)
+  12-homological-dimension-check_boolean_tor.py       source 12 checks (780 multidegrees; needs SymPy; always writes, see below)
+  12-homological-dimension-build.sh                   source 12's build script (original file names)
+  13-small-target-rigidity-verify.py                  source 13 checks (6 groups; stdout)
+  14-arithmetic-tensors-verify.py                     source 14 checks (2,189; needs SymPy; writes by default)
+  14-arithmetic-tensors-build.py                      source 14's build script (original file names)
+  15-set-sized-representations-verify_identities.py   source 15 checks (820; writes, see below)
+  16-fresh-scale-verify_finite.py                     source 16 checks (1,354; needs SymPy; writes by default)
+  17-relations-arithmetic-verify.py                   source 17 checks (347; needs SymPy; writes by default, see below)
+  18-polynomial-rigidity-verify.py                    source 18 checks (499; needs SymPy; always writes, see below)
+  18-polynomial-rigidity-build.sh                     source 18's build script (original file names)
+  19-normalization-fibres-checks.py                   source 19 checks (253; needs SymPy; stdout)
+  19-normalization-fibres-build.sh                    source 19's build script (original file names; overwrites checks.txt)
+  20-boolean-branching-verify.py                      source 20 checks (6,674; needs SymPy; always writes, see below)
+  20-boolean-branching-Makefile                       source 20's Makefile (original file names)
+  21-derived-arithmetic-verify.py                     source 21 checks (1,608; stdlib; writes by default, see below)
+  21-derived-arithmetic-build.sh                      source 21's build script (original file names)
+  21-derived-arithmetic-build.ps1                     source 21's PowerShell build script (original file names)
+  22-finite-tests-verify.py                           source 22 checks (1,776; needs SymPy; always writes, see below)
+  22-finite-tests-build.sh                            source 22's build script (original file names)
+  22-finite-tests-build.ps1                           source 22's PowerShell build script (original file names)
+  23-omnific-ramification-verify.py                   source 23 checks (18,040; stdlib; writes by default, see below)
+  23-omnific-ramification-build.sh                    source 23's build script (original file names)
+  23-omnific-ramification-build.ps1                   source 23's PowerShell build script (original file names)
+  24-class-residues-verify.py                         source 24 checks (133,770; stdlib; writes by default, see below)
+  24-class-residues-build.sh                          source 24's build script (original file names)
+  24-class-residues-build.ps1                         source 24's PowerShell build script (original file names)
+  25-semialgebraic-smoothness-verify.py               source 25 checks (1,578; stdlib; writes by default, see below)
+  25-semialgebraic-smoothness-build.sh                source 25's build script (original file names)
+  25-semialgebraic-smoothness-build.ps1               source 25's PowerShell build script (original file names; never run by 25)
+  26-face-topology-verify.py                          source 26 checks (52,080; stdlib; always writes, see below)
+  26-face-topology-Makefile                           source 26's Makefile (original file names)
+  27-henselian-branching-verify.py                    source 27 checks (5,760; needs SymPy; writes only with --output)
+  27-henselian-branching-build.sh                     source 27's build script (original file names; overwrites a data file, see below)
+data/
+  03-cardinality-normalization-verification_results.txt   recorded run of the source 03 checks
+  04-universal-residue-verification.json                  recorded run of the source 04 checks
+  04-universal-residue-build_report.json                  source 04's build report and file hashes
+  06-universal-quotient-verification.json                 recorded run of the source 06 checks
+  06-universal-quotient-build_audit.json                  source 06's build, rendering and integrity record
+  07-quotient-rigidity-verification_results.json          recorded run of the source 07 checks
+  07-quotient-rigidity-requirements.txt                   sympy==1.14.0
+  08-small-rings-finite_checks.txt                        recorded run of the source 08 checks
+  09-set-shadows-verification.json                        recorded run of the source 09 checks
+  10-omnific-arithmetic-check_results.txt                 recorded run of the source 10 checks
+  10-omnific-arithmetic-requirements.txt                  sympy==1.14.0
+  11-set-sized-algebra-finite_checks.json                 recorded run of the source 11 checks
+  12-homological-dimension-audit_results.json             recorded run of the source 12 checks
+  13-small-target-rigidity-verification.txt               recorded run of the source 13 checks
+  13-small-target-rigidity-source_manifest.json           source 13's record of inspected repository paths and sources
+  14-arithmetic-tensors-verification.json                 recorded run of the source 14 checks
+  14-arithmetic-tensors-requirements.txt                  sympy==1.14.0
+  14-arithmetic-tensors-provenance.json                   source 14's provenance and verification-scope record
+  15-set-sized-representations-finite_checks.json         recorded run of the source 15 checks
+  16-fresh-scale-verification_results.txt                 recorded run of the source 16 checks
+  16-fresh-scale-requirements.txt                         sympy==1.14.0
+  17-relations-arithmetic-verification.json               recorded run of the source 17 checks
+  17-relations-arithmetic-build_report.json               source 17's build and document-validation record
+  17-relations-arithmetic-requirements.txt                sympy==1.14.0
+  18-polynomial-rigidity-verification_results.json        recorded run of the source 18 checks
+  18-polynomial-rigidity-build_report.json                source 18's build, rendering and verification-scope record
+  18-polynomial-rigidity-requirements.txt                 sympy==1.14.0
+  19-normalization-fibres-checks.txt                      recorded run of the source 19 checks
+  20-boolean-branching-verification_results.json          recorded run of the source 20 checks
+  20-boolean-branching-BUILD_REPORT.json                  source 20's build, rendering and diagnostics record
+  20-boolean-branching-requirements.txt                   sympy==1.14.0
+  21-derived-arithmetic-verification_results.json         recorded run of the source 21 checks
+  21-derived-arithmetic-provenance.json                   source 21's pin, scope and verification metadata (no hashes)
+  22-finite-tests-verification_report.json                recorded run of the source 22 checks
+  22-finite-tests-verification_report.txt                 the same run as text
+  22-finite-tests-requirements.txt                        sympy==1.14.0
+  23-omnific-ramification-verification.json               recorded run of the source 23 checks
+  23-omnific-ramification-BUILD_REPORT.json               source 23's build and document-check record with file hashes
+  24-class-residues-verification.json                     recorded run of the source 24 checks
+  24-class-residues-verification.txt                      the same record, byte-identical to the JSON file
+  24-class-residues-build_report.json                     source 24's build and inspection record with hashes of its manuscript and PDF
+  25-semialgebraic-smoothness-verification.json           recorded run of the source 25 checks
+  25-semialgebraic-smoothness-build_report.json           source 25's build and inspection record with file hashes
+  26-face-topology-verification_results.json              recorded run of the source 26 checks
+  26-face-topology-BUILD_REPORT.json                      source 26's build and PDF-inspection record (no hashes)
+  27-henselian-branching-verification.json                recorded run of the source 27 checks
+  27-henselian-branching-build_audit.json                 source 27's build and page-box record (no hashes)
+  27-henselian-branching-requirements.txt                 sympy==1.14.0
+```
+
+Every label in `article.tex` carries the prefix `osq:`. The large-quotient part
+(Section 14) uses the sub-prefix `osq:if:`, the integral-closure part
+(Section 15) `osq:nm:`, and the polynomial-map part (Section 16) `osq:pm:`.
+The five later manuscripts use `osq:hd:` (12) and `osq:tn:` (14) in the new
+Section 13, `osq:fs:` (16) in Sections 16.6 and 16.7, `osq:rep:` (15) for its
+two printed additions and `osq:str:` (13) for the remark crediting its answer to
+Elliott's question. The three batch-26 manuscripts use `osq:rel:` (17) in
+Section 13.9, `osq:nf:` (19) in Section 15.8 and `osq:or:` (18) in Section 16.8.
+The batch-28 manuscript uses `osq:bb:` (20) in Section 15.9 and for Question 18.18.
+The batch-29 manuscript uses `osq:da:` (21) in Section 13.10.
+The batch-31 manuscript uses `osq:ft:` (22) in Section 16.10 and for
+Questions 18.19 and 18.20 (30 labels).
+The batch-32 manuscript uses `osq:rm:` (23) in Section 15.10 and for
+Questions 18.21 to 18.27 (57 labels).
+The batch-34 manuscripts use `osq:cr:` (24) in Section 14.9 and for
+Questions 18.28 to 18.34 (61 labels) and `osq:sa:` (25) in Section 16.11 and
+for Questions 18.35 to 18.44 (57 labels); the other two use `osq:pc:` (26) in
+Section 13.11 and for Questions 18.45 to 18.54 (63 labels) and `osq:hb:` (27)
+in Section 15.11 and for Questions 18.55 to 18.66 (39 labels).
+The report has 828 labels (726 before sources 26 and 27, 608 before the eighth
+merge, 551 before the seventh,
+521 before the sixth, 505 before the fifth, 469 before the fourth, 409 before the
+third and 334 before the second; none was renamed or removed, and no earlier
+statement was renumbered). The audit files and
+programs keep the source numbers `03` to `27`, and the audit files keep their
+sources' own notation and theorem numbering. No source manuscript is shipped.
+
+The text placed in `be06fc8` was source 06 with bare labels, which
+`docs/FORMALIZATION.md` indexed as **Pending** placement entries. The written
+report replaces them as follows (a label of 06 that became part of a larger
+statement points to that statement):
+
+| 06 (placed) | here | 06 (placed) | here |
+|---|---|---|---|
+| `main:class` | `osq:main:universal`, `osq:thm:universal` | `thm:polynomialtests` | `osq:thm:presentations` |
+| `main:cardinal` | `osq:thm:model06` | `prop:derivations` | `osq:thm:derivations` |
+| `main:homological` | `osq:thm:homological`, `osq:thm:extthreshold` | `prop:euler` | `osq:prop:classder` |
+| `lem:c0` | `osq:lem:ct` | `lem:kappagap` | `osq:lem:kappagap` |
+| `lem:gap` | `osq:lem:gap` | `prop:fieldclosure` | `osq:prop:fieldclosure` |
+| `prop:common` | `osq:prop:common` | `thm:kappasmall` | `osq:thm:model06` |
+| `lem:collision`, `cor:collisioncard` | `osq:lem:collision` | `prop:kappachain` | `osq:prop:kappachain` |
+| `lem:Ha` | `osq:lem:Ha` | `prop:sharp` | `osq:lem:card06`, `osq:thm:model06` |
+| `thm:universal` | `osq:thm:universal` | `lem:projectiveideal` | `osq:lem:projideal` |
+| `cor:nofaithful` | `osq:cor:faithful` | `prop:flatideal`, `lem:tensorzero` | `osq:thm:homological` (i), (ii) |
+| `prop:localization` | `osq:prop:fractions`, `osq:cor:nofield` | `thm:extreflection` | `osq:thm:homological` (iv) |
+| `thm:quotients` | `osq:thm:reflection`, `osq:thm:quotients` | `cor:smallext` | `osq:thm:extthreshold` |
+| `cor:smallquot`, unlabeled Gaussian corollary | `osq:thm:quotients`, `osq:cor:smallprimes` | `prop:dimensions` | `osq:thm:homological` (iii), (v) |
+| `cor:profinite` | `osq:thm:completions` | `prop:extone` | `osq:thm:homological` (vi) |
+| `cor:primeexample` | `osq:cor:primeexample` | `prop:exttwo` | `osq:thm:homological` (vii) |
+| `prop:unitconstant` | `osq:prop:unitconstant` | `thm:extthreshold` | `osq:thm:extthreshold` |
+| `prop:primereservoir` | `osq:if:prop:reservoir` | `prop:matrices` | `osq:prop:matrices` |
+
+## Twenty-four sources, one report
+
+The eight manuscripts of batch 24 answer the same question, *what can a
+set-sized ring or module see of an omnific integer?*, with the same answer:
+exactly the ordinary integer constant term. They then diverge. The report
+prints the common spine once (Sections 2–7) and keeps every result of every
+source. Two batch-25 manuscripts (13, 15) reprove that answer independently;
+two (12, 14) add the ordinary homological and tensor algebra of subrings of
+`Oz`; one (16) adds fresh-scale arguments for polynomial and rational maps.
+The three batch-26 manuscripts extend three sections: relation modules and
+`Tor` of coefficient-lattice ideals (17), ordinary-output rigidity of
+integer-valued polynomials (18), and the arithmetic fibre of the integral
+closure (19). The other seven batch-26 items are in
+[`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/) and
+[`omnific-groups-and-lattices`](../omnific-groups-and-lattices/). The batch-28
+manuscript (20) answers 19's question on the Boolean algebra of that fibre
+(Section 15.9); the other eight batch-28 items were placed in other reports.
+The batch-29 manuscript (21) answers the first clause of 12's and 14's
+Question 18.12: `pd_{A_d} D = d + 1` (Section 13.10); the other eight batch-29
+items were placed in other reports. The batch-31 manuscript (22) certifies
+rational functions of several variables by finitely many values at one fresh
+scale and joins the polynomial-map section (Section 16.10); about half of it
+re-derives 16's and 10's results, which it did not see; the other eight
+batch-31 items were placed in other reports. The batch-32 manuscript (23)
+decides, for cyclic exponent groups, the fixed-workspace radicality and
+atomlessness questions that 20 left open (Question 18.17(b)), with opposite
+answers, and joins the integral-closure section after 20 (Section 15.10); the
+other eight batch-32 items were placed in other reports. Two batch-34
+manuscripts go beyond set-sized targets and polynomial maps: with global
+choice, 24 finds characteristic-zero maximal class ideals above `1 + ω^a`,
+answering the existence clause of Question 18.4, with an exact monomial cutoff,
+continuum branching and residue fields embedded in `No[i]` (Section 14.9); 25
+classifies the globally smooth semialgebraic maps preserving `Oz^r` and shows
+that finite smoothness allows non-piecewise-polynomial preservers (Section 16.11),
+answering the first clause of Question 18.20(a) for smooth maps; 26 computes
+the flat dimensions of radical monomial quotients of cores over arbitrary
+rational polyhedral cones by the topology of their faces, answering the
+non-simplicial clause of Question 18.12 for flat dimension (Section 13.11);
+and 27 builds set-sized omnific integer parts whose henselization at the
+constant-term ideal has the maximal number `2^κ` of minimal primes although
+their completion is `Q` (Section 15.11). The other five batch-34 items were
+placed in other reports.
+
+| | Manuscript (pages) | Pin | Contributes |
+|---|---|---|---|
+| **06** | *The Universal Set-Sized Quotient of the Omnific Integers* (25) | `a5c2a97` | **The base.** The coefficient-ring theorem over any set field with the scaled-field collision lemma (Lemma 4.1) and the direct module argument; the model `A^06_κ` (Section 11.2); the homological package (Section 12); matrix representations (Proposition 5.7); polynomial tests (Theorem 6.14); the prime-reservoir proposition (Proposition 14.12). Files `06-universal-quotient-*`. |
+| **03** | *Cardinal Visibility and Normalization of Omnific Integers* (25) | `cd80e5e` | The smaller-scale field bound (in Proposition 10.3); the model `A^03_κ` with threshold `κ^ℵ0` (Section 11.1); integral and complete integral closure, set-generated algebras, surcomplex analogues, set-valued valuations (Section 15). Files `03-cardinality-normalization-*`. |
+| **04** | *What Set-Sized Algebra Can See of Surreal Arithmetic* (24) | `cd80e5e` | The theorem for `D + Π_k` by separation and the explicit telescope; standard part on the finite side (Section 8); the support threshold with its negative side (Theorem 9.1); fixed-group bounds; localizations, algebras, derivations. Files `04-universal-residue-*`. |
+| **07** | *Small Quotients and Large Internal Fields of the Omnific Integers* (27) | `37eefca` | The theorem over any set field by weighted certificates; completions; the embedding `No ↪ F_a`, field transfer, the exact binomial kernel and the Cantor algebra in `Oz/(1+ω^a)` (Section 14). Files `07-quotient-rigidity-*`. |
+| **08** | *What Small Rings Can See of Omnific Integers* (26) | `37eefca` | The choice-free Hartogs formulation and nonunital maps; the finite-congruence closure; the invisible equation `X^m = ω^γ + 1`; class-indexed derivations; the quantitative criterion; the model `A^08_κ` for every infinite `κ` (Section 11.3). Files `08-small-rings-*`. |
+| **09** | *Set-Sized Shadows of Omnific Integers* (20) | `37eefca` | Direct division of arbitrary elements; the model `A^09_λ` with residue fields, `≥ λ` non-arithmetic maximal ideals and `ℵ1` generators (Section 11.4); Gaussian ramification. Files `09-set-shadows-*`. |
+| **10** | *Set-Sized Shadows of Omnific Arithmetic* (26) | `a5c2a97` | The theorem over any set field including maps on `Π_K`; the quantitative bound; endomorphisms; numerical polynomials, all-modulus congruences, `p`-adic completion and characters, lattice rigidity (Sections 16.1–16.5). Files `10-omnific-arithmetic-*`. |
+| **11** | *What Set-Sized Algebra Can See of the Omnific Integers* (20) | `37eefca` | Pairwise-difference families; the localization and presentation calculus; the extension criterion (Theorem 9.1(iii)); the coinitiality theorem; residual targets; the ordinal ring and MathOverflow 188430 (Section 17). Files `11-set-sized-algebra-*`. |
+| **12** | *Arithmetic Invisibility and Homological Dimension in Omnific Integer Cores* (21) | none stated | Coordinate-cone cores `A_d ⊂ Oz`: the Boolean flat resolution (Theorem 13.4), the multigraded `Tor` (Theorem 13.7), `fd D = d` (Corollary 13.8); the noncoherence certificate (Theorem 13.9(iii)); the ordered-cone collapse (Theorems 13.13, 13.14); projective bounds and the telescope (Proposition 13.12; the bounds for `A_d` are attained, by 21's Corollary 13.47 and Theorem 13.48). Files `12-homological-dimension-*`. |
+| **13** | *Small-Target Rigidity and Arithmetic Specialization* (21) | `71e9606` | An independent proof of the universal theorem (credited at Theorem 5.1) and of the answer to Elliott's addendum (Remark 17.2). Its fiber and norm theorems are printed in the sibling report. Files `13-small-target-rigidity-*`. |
+| **14** | *Arithmetic Tensors in the Omnific Integers* (19) | `71e9606` | Coefficient-lattice modules `L(M) = M + Π`: syzygy (Theorem 13.9), nonflatness (Proposition 13.10), tensor normal form (Theorem 13.18), exterior and symmetric powers (Theorem 13.20), Rees equations (Theorems 13.21, 13.22, Corollary 13.23), Hom and isomorphism types (Theorem 13.24), ideal classes (Theorem 13.25), duals (Theorem 13.27), matrix kernels (Theorem 13.28), `fd` over `A_0` (Theorem 13.11). Files `14-arithmetic-tensors-*`. |
+| **15** | *Omnific Integers Have Only Ordinary Set-Sized Representations* (21) | `71e9606` | An independent proof of the universal theorem and its consequences (credited throughout Sections 3–9); two one-line additions (Corollary 5.5, Proposition 7.3). Files `15-set-sized-representations-*`. |
+| **16** | *Fresh-Scale Image Gaps and Rational Rigidity for Omnific Integers* (23) | `71e9606` | The image gap with forbidden layers (Theorems 16.35, 16.36), fresh fibers (Theorem 16.40), rational collapse and surjective self-maps over any constant ring (Theorems 16.42, 16.43), optimal and Gaussian finite tests (Theorem 16.46, Proposition 16.47), rational probes and certificates (Theorem 16.49, Corollary 16.50), no set-sized sample (Theorem 16.51), co-small rigidity and hulls. Files `16-fresh-scale-*`. |
+| **17** | *Proper-Class Relations and Arithmetic Endomorphisms of Omnific Ideals* (19) | `71e9606` | Independent proofs of 14's matrix, syzygy, Hom, tensor and power-growth theorems and 12's intersection (credited at Theorems 13.9, 13.18, 13.23, 13.24, 13.28). New (Section 13.9): no set-presentation and failure of the equational flatness criterion (Theorem 13.29); the embedding of the lexicographic models `R^11_{Γ,<κ}` in `Oz` (Lemma 13.30); exactly `κ` generators for the kernel of every finite-free surjection (Theorem 13.31); `Tor_1 ≅ Tor_2 ≅ ker(M ⊗ N → K)` (Theorem 13.34), the self-`Tor` range and field test (Corollary 13.36, Proposition 13.37); `GL_2(D)` moduli with `2^ℵ0` classes (Theorem 13.38); orders and their realization (Theorem 13.39, Corollary 13.40, Example 13.41); modules killed by the tail (Theorem 13.42). Files `17-relations-arithmetic-*`. |
+| **18** | *Polynomial Rigidity of Omnific Integer Lattices* (21) | `befe739` | Independent proofs of 10's and 16's classification of `Num_r`, finite tests, rational collapse and surjections (credited at Theorems 16.7, 16.9, 16.25, 16.46, Corollary 16.29). New (Section 16.8): the ordinary-output dichotomy over any discretely ordered ring (Theorem 16.56), the canonical translation and its coefficient test (Theorems 16.59, 16.60), the unique rich target (Theorem 16.61), composition alignment (Theorem 16.63), a Gaussian simplex test (Proposition 16.64), matrix and jet reductions (Theorem 16.65), rational functions on discretely ordered rings (Theorem 16.66), fixed Hahn workspaces (Corollary 16.67). Files `18-polynomial-rigidity-*`. |
+| **19** | *Normalization and Arithmetic Fibres of the Omnific Integers* (23) | `befe739` | Independent proofs of four results of 03 and of the universal theorem (credited). New (Section 15.8): contraction, radicality, saturation (Lemma 15.28, Theorems 15.29, 15.30); real-rooted lifting (Theorem 15.32); the residue with `v² = −1` (Proposition 15.34); `𝒩/Π𝒩 ≅ Z̄[Idem]` (Theorem 15.38); finitely generated ideals (Theorem 15.39); integral doubling (Theorem 15.42); domain images (Theorem 15.46); detection by maps to `Z̄` and field targets (Theorem 15.49, Corollary 15.50); a finite-axiom form (Theorem 15.51). Files `19-normalization-fibres-*`. |
+| **20** | *Proper-Class Boolean Branching in the Normalization of the Omnific Integers* (24) | `4cdeaec` | Independent proofs of 19's contraction, radicality and saturation (Lemma 15.28, Theorems 15.29, 15.30), coefficient copy, spectral idempotents and Boolean power (Lemmas 15.35, 15.36, Definition 15.37, Theorem 15.38), rational comparison and doubling (Lemma 15.41, Theorem 15.42), factorization of set-sized images, class ultrafilters and detection (Corollary 15.45, Lemma 15.48, Theorem 15.49), of most of Propositions 15.34, 15.43 and Theorem 15.46, and of the universal theorem for `Oz` (credited at Theorem 5.1). New (Section 15.9): monic radical certificates (Lemma 15.53, Corollary 15.54); support projection and exact descent (Lemma 15.55, Theorem 15.57, Corollary 15.58); one-scale rational functions (Theorem 15.60); independent quadratic branches (Lemma 15.63); uniform splitting (Theorems 15.65, 15.66); rank extension of set-sized Hahn fibres (Theorem 15.70); relative Boolean freeness, an explicit ordinal family, atomless proper-class `Idem` (Theorems 15.71–15.73); split idempotent matrices (Corollary 15.74); reduced fibres of fixed Hahn fields (Proposition 15.76); the surcomplex fibre (Corollary 15.77); no jointly faithful set of small targets (Theorem 15.79); `2^κ` branches through prescribed data (Theorem 15.80, Corollary 15.81). Files `20-boolean-branching-*`. |
+| **21** | *Exact Homological Dimensions and Arithmetic Intersections in Omnific Integer Rings* (25) | `9693b28` | Independent proofs of 17's second-`Tor` identification with its rank, the self-`Tor` rank and the `Tor` groups against modules killed by the tail (credited at Theorem 13.34, Corollary 13.36, Theorem 13.42); its flat face resolution, `fd D = d` and lattice syzygy are 12's and 14's (Theorems 13.4, 13.9, 13.11, Corollary 13.8). New (Section 13.10): flat resolutions and flat dimensions of the face quotients (Proposition 13.43); a countably generated free Koszul telescope (Theorem 13.44); the top `Ext` as a `lim¹` cokernel (Theorem 13.45) containing `D^N/D^(N)` (Theorem 13.46); `pd_{A_d} D = d + 1` and `pd` of every face quotient (Corollary 13.47); `pd L(M) = d + 1`, `pd A_d/J = d + 2` (Theorem 13.48); a flat DGA resolution (Theorem 13.50); the first-`Tor` window (Theorem 13.51); the linear-disjointness test (Lemma 13.52, Theorem 13.53); the self-`Tor` product and its alternating and symmetric parts (Theorem 13.54, Corollary 13.55); framed reconstruction of orders (Theorem 13.56); the square-zero constant-term shadow (Theorem 13.57). Files `21-derived-arithmetic-*`. |
+| **22** | *Finite Tests at New Surreal Scales* (24) | `bcac55a` | Independent proofs of 16's fresh exponent, Laurent blocks and detector, of 10's binomial closure, grid test and decomposition, of 16's optimal tests, multivariate collapse, one-variable certificate (`d + 2` values), no-set-test theorem and one-variable removal of exceptions (credited at Lemma 16.5, Theorems 16.6, 16.7, 16.9, Lemma 16.30, Theorem 16.31, Corollary 16.32, Theorem 16.33, Proposition 16.45, Theorems 16.46, 16.49, Corollary 16.50, Theorems 16.51, 16.52); all were in this report at its pin. New (Section 16.10): rectangular grids and good specializations with the resultant degree bound (Lemmas 16.68, 16.69); the single-scale certificate with at most `(d+1)^m + m(2d²+2d+1)^{m−1}` values (Theorem 16.70); common tests for a set of functions (Corollary 16.72); a second pole-free witness for Theorem 16.51, in every number of variables (Remark 16.73, Example 16.74); removal of set-sized exceptions in `m` variables (Theorem 16.75); composition of the specialization (Remark 16.76); the leading-exponent example (Example 16.77); the coordinate-degree Gaussian grid and Gaussian certificate (Theorems 16.78, 16.79); tensor base change `Λ ⊗_D Int(D^m) ≅ Num_m(Λ)` (Theorem 16.80); exact lifting of constant test sets (Definition 16.81, Theorem 16.82); finite image-ideal generators (Theorem 16.83); birational rigidity (Corollary 16.84, Example 16.85); fresh scales in a fixed Hahn workspace (Proposition 16.86); a resultant example (Example 16.87). Files `22-finite-tests-*`. |
+| **23** | *Ramification in Omnific Normalizations* (25) | `343dc2c` | An independent proof of 20's multiquadratic lemma (Lemma 15.69) and, for the real pair, of the first equality of 20's rational slice (Theorem 15.60), both credited; its independent family of size `2^ℵ0` in the reduced cyclic fibre had been noted by 20 (after Theorem 15.70). New (Section 15.10), for the cyclic workspace `Z + ω^a R[ω^a]` and its Gaussian counterpart: the cyclic integer part (Proposition 15.82); finite detection and the branch locus (Lemmas 15.83, 15.84, Remark 15.85); exact nilpotency index `n` of `z_n = T(1+T^{1−n})^{1/n}` modulo the extended ideal, which is therefore not radical (Theorem 15.86, Example 15.87, Corollary 15.88); exact refinement thresholds `⌈n/m⌉` (Theorem 15.89); scaling, the residue criterion, `k𝒩(Za) = 𝓑` and `𝖨 = T𝓑` (Lemma 15.90, Theorems 15.91, 15.93, Remark 15.92); rational functions with the Gaussian form (Corollary 15.94); the ramification filtration and the general refinement law (Definitions 15.95, 15.97, Lemma 15.96, Corollary 15.98, Theorem 15.99); the reduced bounded-denominator Puiseux limit (Theorem 15.100, Remark 15.101); Prüfer local structure with value group `Q` and residue field `C` (Theorem 15.103, Remark 15.104); an idempotent, non-nilpotent, non-finitely-generated nilradical (Theorem 15.105); the associated graded ring and the completion (Theorem 15.106, Corollary 15.107); splitting by fresh ramification, atomlessness, independence, cardinality and order density `2^ℵ0`, `2^(2^ℵ0)` branches (Lemma 15.108, Theorem 15.109, Corollary 15.110, Theorem 15.111, Corollary 15.112, Remark 15.113); exact annihilators and a periodic resolution over the coefficient fibre, which fails over the arithmetic fibre (Theorems 15.115, 15.116, Proposition 15.117); the Cantor fragment (Theorem 15.118); seven questions (18.21–18.27). Files `23-omnific-ramification-*`. |
+| **24** | *Beyond the Constant Term: Class Residue Fields of the Omnific Integers* (26) | `51c1cc7` | Its field core (Lemma 7.1, Theorem 7.2, Proposition 7.4) re-derives 07's in a weaker form (credited at Proposition 14.1, with 24 added as a proving source, and Lemma 14.14, Corollaries 14.10, 14.17), its dyadic Lemma 8.1 is the constant-coefficient case of 07's Theorems 14.15, 14.23 (degree proof kept, Remark 14.45), and its Corollary 9.3 is the class back-and-forth of the surcomplex-automorphism and first-κ reports (credited). New (Section 14.9), in `GBC`: maximal class extensions (Theorem 14.24), prime extensions avoiding a class (Proposition 14.26), prescribed equations (Corollary 14.27); `CMIT ⇔ GC` over `GB` (Definition 14.29, Theorem 14.30, Lemma 14.31, Remark 14.32); the arithmetic maximal ideals (Proposition 14.33); characteristic-zero maximal ideals above `1 + ω^a` and unit-constant fibres (Theorem 14.34, Corollary 14.35); the binomial quotient over `D` and over `k` (Lemma 14.36); the zero-or-unit monomial cutoff (Theorem 14.37, Example 14.39); truncation to `cvx(Za)` (Proposition 14.40, Remark 14.41); separated-scale Bézout identities and the ordinal family (Corollary 14.42); rescaling (Proposition 14.43); residue fields above the binomial (Corollary 14.44); `2^ℵ0` maximal ideals per scale and the `On × Z_2` family (Theorems 14.46, 14.48, Remark 14.49); separation (Theorem 14.50); embeddings of characteristic-zero class fields in `No[i]` (Theorem 14.51, Corollary 14.52); residual surcomplexity (Theorem 14.53, Remark 14.54); failure of strong summability (Theorem 14.55); term-closed and strongly sum-closed primes (Definition 14.56, Theorem 14.57, Corollary 14.58); seven questions (18.28–18.34), one merged into 18.5. Files `24-class-residues-*`. |
+| **25** | *Smooth Rigidity and Bounded-Scale Flexibility of Omnific-Preserving Maps* (23) | `738a390` | Its numerical-polynomial Propositions 5.3 and 9.3 are 10's (credited at Theorems 16.6, 16.7, 16.9). New (Section 16.11), over a real closed field `E` with a cofinal discretely ordered subring `B`: polynomial and reciprocal growth (Lemma 16.89, Remark 16.90), derivative and difference lemmas (Lemmas 16.91–16.94); two-tail polynomiality (Theorem 16.95) and the two-end quotient (Corollary 16.96); the smooth identity principle, one-variable classification and irreducible graphs (Lemma 16.97, Theorem 16.98, Corollary 16.99); the `C^(D·max(1,d))` threshold (Theorem 16.100); the finite-dimensional classification with total degree at most `D` (Lemma 16.101, Theorem 16.102) and its omnific form (Corollary 16.103); support fields and exact absorption (Lemma 16.104, Theorem 16.105), bounded windows (Lemma 16.106, Theorem 16.107); the square-root threshold and rational powers (Theorem 16.108, Corollary 16.109, Example 16.110); `C^k` bumps, regularity bounds and shears (Theorem 16.112, Corollaries 16.113, 16.114); surcomplex and holomorphic forms (Theorem 16.115, Corollary 16.116); no set of quadratic tests (Theorem 16.117); removal of exceptions (Corollaries 16.118, 16.119); a set-sized model and the rank-one obstruction (Propositions 16.121, 16.122); ten questions (18.35–18.44), two merged into 18.20. Files `25-semialgebraic-smoothness-*`. |
+| **26** | *Face Topology and Arithmetic Homology in Omnific Integer Rings* (30) | `7b256e0` | Its orthant cases re-derive 12's face ideals, resolution and arithmetic `Tor` vanishing (Lemma 13.3, Proposition 13.12(i), (ii), Theorem 13.4, Corollary 13.5), 12's finite targets (Proposition 13.2) and, through the isomorphism of a rational simplicial core with `A_d` (merge), 21's face quotients (Proposition 13.43); its nonflatness certificate is a second route to Theorem 13.14 (all credited). New (Section 13.11), for the core `A_𝒞` of a pointed rational polyhedral cone: omnific embeddings and the common fraction field (Propositions 13.58, 13.59); face subtraction, flat face ideals of projective dimension one, products and tensors (Lemma 13.60, Theorems 13.61, 13.62); radical ideals as face antichains, face primes (Theorem 13.63, Proposition 13.64); the simplex resolution, diagonal blocks, triangular cancellation, crosscut bound (Theorem 13.65, Lemmas 13.66–13.68); cap modules isolating a face (Theorem 13.69); the exact flat dimension by join homology (Theorem 13.70), the projective interval (Corollary 13.71), homological epimorphisms (Theorem 13.72); the disjoint-face formula (Lemmas 13.73, 13.74, Theorem 13.75), the cellular resolution of `D` (Proposition 13.76); flat radical ideals, marked reconstruction, simpliciality (Theorem 13.77, Corollary 13.78, Theorem 13.79, Corollary 13.80); cube cones, squarefree transfer, coefficient independence (Theorem 13.81, Corollaries 13.82, 13.83); arithmetic modules (Proposition 13.84, Theorem 13.85); lattice modules over every cone (Remark 13.86, merge); two-ray syzygies and nonflatness of the passage to `Oz` (Lemma 13.87, Theorem 13.88, Example 13.89); ten questions (18.45–18.54), two merged into 18.12. Files `26-face-topology-*`. |
+| **27** | *Maximal Henselian Branching at Omnific Augmentations* (24) | `fc27d87` | Its support calculus and splitter re-derive 20's (Lemmas 15.55, 15.62, 15.53, Theorems 15.65, 15.72; its quadratic proof kept, Remark 15.122), its floor and monomial operations are 03's and the report's (Lemma 15.8, Lemma 3.1, Proposition 3.3), its torsion lemma is 19's (Lemma 15.28, Theorem 15.29) (all credited). New (Section 15.11), for a seeded real closed `𝔼` of cardinality `κ`: the main and factor theorems (Theorems 15.120, 15.121); the hull and its local ring (Proposition 15.123, Corollary 15.124); atoms in the local normalization, survival of every finite generic branch, a free Boolean family (Lemmas 15.125, 15.126, Proposition 15.127); forced complexification (Proposition 15.128); Boolean powers, size, exact generic size, minimal primes (Lemmas 15.129, 15.130, Propositions 15.131, 15.132); adic invisibility and nilpotent probes (Proposition 15.133, Corollary 15.134); strict henselization and the Galois factor (Proposition 15.135, Lemma 15.136, Theorem 15.137); Gaussian localization and doubling (Proposition 15.138, Theorem 15.139); projectives, finite étale algebras, valuation components (Theorem 15.140, Proposition 15.141, Corollary 15.142); branch counts compared (Remark 15.143, merge); twelve questions (18.55–18.66). Files `27-henselian-branching-*`. |
+
+- **Base and routes.** 06's coefficient-ring theorem over any set field `K`
+  (also proved by 07 and 10) is the most general statement; its scaled-field
+  collision lemma, of which 03's field bound is a special case, gives the sharp
+  cardinal bounds where counting monomials does not. The proof of Theorem 5.1
+  is written in 08's choice-free Hartogs form, with 08's and 10's nonunital
+  forms and 06's direct module argument. 04's and 05's explicit telescope,
+  09's and 10's direct division, 11's pairwise-difference families and 07's
+  weighted certificates are kept as second routes. 13 (any set field, direct
+  division with the family `ε/(α+2)`) and 15 (`k ∈ {R, C}`, separating families
+  with a Hartogs ordinal, which is 08's route) are credited as further proving
+  sources; neither adds generality. So are 17 (`k ∈ {R, C}`, any set-sized
+  `D_0 ⊆ k`, by 06's scaled-field collision), 19 (`Oz`, by the explicit
+  telescope) and 20 (`Oz`, by the telescope with exponents `a/ω^{α+1}`), which
+  also add no generality.
+- **Printed once:** support gaps, common monomial divisors, clearing, fraction
+  fields (Section 3); the telescope and its finite truncation (Lemma 4.3); set-sized
+  quotients (Theorem 6.2), completions (Theorem 6.10), modules (Theorem 7.1),
+  derivations (Theorem 7.4), the invisible prime `ω^√2 + ω + 1` (Corollary 6.8,
+  primality imported from L'Innocente–Mantova, Theorem B); the support threshold
+  (Theorem 9.1: 11's formulation with 04's negative side); the finite-support
+  augmentation (03, 04, 09, 11, 15); the answer to Elliott's addendum (Theorem 17.1:
+  11's two proofs, which are also 13's). From the second merge: 14's `A_0` is 12's
+  `A_1` (Lemma 13.1(iii)); 12's two-generator syzygy is the case `r = 2` of 14's
+  (Theorem 13.9, in the common generality of both); 10's and 16's rational collapse,
+  affine self-maps, transfer and grids are printed once each, the general-`D`
+  statement with 16's fresh-scale proof and 10's statements with their
+  finite-difference and lattice proofs as a second route (Theorems 16.25, 16.42,
+  Corollary 16.29, Theorem 16.43, Proposition 16.45, Theorem 16.46). From the
+  third merge: 17's matrix kernels, lattice syzygy, Hom and isomorphism types,
+  tensor torsion and power growth under 14's labels, and its intersection
+  `(ω^γ) ∩ (αω^γ) = ω^γ Π` under 12's (Theorems 13.9, 13.18, 13.23, 13.24,
+  13.28); 18's description of `Num_r`, total-degree tests, binomial basis,
+  rational collapse and surjections under 10's and 16's (Theorems 16.7, 16.9,
+  16.25, 16.46, Corollary 16.29; 18's canonical-form proof of the surjections is
+  kept as a third route); 19's constant slices, absence of finite images and
+  complexification defect under 03's (Theorems 15.14, 15.19, 15.20,
+  Proposition 15.18; 19's witness `w_±` and its proof of the finite-image
+  statement are kept as second routes), and 17's and 19's proofs of the
+  universal theorem as further proving sources of Theorem 5.1. From the
+  fourth merge: 20's reproofs of 19's fibre theory under 19's labels (tagged
+  `[19, 20]` where 20 proves the whole statement), its proof of the universal
+  theorem at Theorem 5.1, and its dominant-scale lemma as 16's Laurent blocks
+  (Lemma 15.62 cites Theorem 16.31 and Corollary 16.32, adding 20's surjectivity
+  step); 20's class-ultrafilter lemma from a set with the finite intersection
+  property is printed beside 19's (Lemma 15.78). From the fifth merge: 21's
+  second-`Tor` identification with its rank, its self-`Tor` rank, the pair
+  `Z[√2]`, `Z[√3]` and its `Tor` groups against modules killed by the tail under
+  17's labels (tagged `[17; 21]`: Theorem 13.34, Corollary 13.36, Theorem 13.42),
+  and its flat face resolution, `fd D = d` and lattice syzygy cited as 12's and
+  14's (Theorems 13.4, 13.9, 13.11, Corollary 13.8); 21's extension of 17's
+  `Tor` formulas to the class ring in a two-universe reading is stated in
+  Theorems 13.51 and 13.57. From the sixth merge: 22's fresh exponent, Laurent
+  blocks, binomial closure, grid test, decomposition of `Num_m`, optimal
+  polynomial tests and no-set-test theorem under 10's and 16's labels (tagged
+  with 22: Lemma 16.5, Theorems 16.6, 16.7, 16.9, Lemma 16.30, Theorems 16.31,
+  16.46, 16.51), and its detector, multivariate collapse, one-variable
+  certificate and one-variable removal of exceptions credited at Corollary
+  16.32, Theorems 16.33, 16.49, Corollary 16.50 and Theorem 16.52; 22's own
+  witness `2ω^{ωb}/(2X + 2t + 1)` for Theorem 16.51 is kept as a second witness
+  (Remark 16.73), and its multivariate certificate is kept beside 16's smaller
+  probe certificate (Remark 16.71). 22's Gaussian grid is the coordinate-degree
+  twin of 18's simplex test (Theorem 16.78, Proposition 16.64). From the
+  seventh merge: see *Source 23* below; from the eighth, *Source 24* to
+  *Source 27*.
+- **Printed in the sibling report, not here:** 13's exact fibers of products of
+  linear forms and its étale norm and Pell theorems; 14's criterion for unimodular
+  projective directions, which is the Gaussian and principal-ideal extension of
+  that report's rationality theorem for primitive constant directions.
+- **Renamed symbols** (Sections 2.4, 13, 13.9, 15.8, 15.9, 15.10, 16.6, 16.8, 16.10): the purely infinite ideal is the
+  repository's `Π` (was `I`, `𝒥_k`, `𝔍`, `𝔓`, `J_k`, `𝓘_K`, `𝒫_k`); the constant
+  term is `ct` (was `c_0`, `π`, `ε_D`, `ε`); 10's shadow map `Π` is `ct_*`; 06's
+  `L_a` and 07's `𝓕_a` are `𝓕_a`; 07's localization `L_a` is `Oz[ω^{-a}]`, its
+  `B_a` is `𝒬_a` and its compression `E_a` is `Ψ_a`; 03's normalizations `B, C` are
+  `𝒩, 𝒩_C` and its `Int_F(A)` is `IC_F(A)` (`Int` is 10's integer-valued
+  polynomials); 09's `Og` and `No(i)` are `Oz[i]` and `No[i]`; the set-sized
+  constructions carry their source number (`A^03_κ`, `A^06_κ`, `A^08_κ`,
+  `A^09_λ`, `R^11_{Γ,<κ}`). In Section 13: 12's tail `M` is `Π_Λ`, its ordered-cone
+  ring `T` with monomials `t^γ` is `T_Γ` with monomials `X^γ` (here `t^g` means
+  `X^{-g}`), its test modules `N_F` are `V_F`, its cyclic module `Q` is `A/H`; 14's
+  `𝓘, B, A, F` are `Π_k, 𝒜_{k,k}, 𝒜_{D,k}, k((X^No))`, its `P, A_0, B_0` are
+  `Π^fin_Q, T_Q, k + Π^fin_Q`, its `μ_{M,N}, K(M,N), E(M,N)` are
+  `m_{M,N}, 𝒯(M,N), E(M,N)`, its multiplier ring `𝒪(M)` and orders `𝒪 ⊂ K` are
+  `𝔬(M)` and `𝔬 ⊂ K_0` (`𝒪` is the finite surreal ring). In Section 16.6: 16's
+  `ℐ_k, 𝒜_D` are `𝒜_{k,k}, 𝒜_{D,k}`, its defect `D_{ζ,c}` is `d_{ζ,c}` (`D` is the
+  constant ring), its centre `μ` is `s`, its `L_ζ, A_ζ` are `a_ζ, c_ζ`. In
+  Section 13.9: 17's positive-support ideal `𝔪` (not the infinitesimal ideal,
+  which is `𝔪_k` here) is `Π`, its lattices `L, M` are `M, N`, its ideals
+  `J_L^γ` are `J_γ(M) = X^γ L(M)`, its `E(L)`, `(M:L)`, `μ_{L,M}`, `T(L,M)` are
+  `𝔬(M)`, `(N:M)`, `m_{M,N}`, `𝒯(M,N)`, its kernel dimensions `d, r` are
+  `q, ℓ`, and its models `A_κ, 𝔪_κ` are `R^11_{Γ_κ,<κ}, Π^11_κ`. In Section 16.8:
+  18's `𝒥, A, K, k_0, Int(A)` are `Π_Λ, Λ, E, F_0, Num_1(Λ)`, its `f̄` is
+  `ct_*(f)`, its `pi(a)` is `å`, its loci `E_f, E_b(f)` are `ℒ_f, ℒ_{f,b}`. In
+  Section 15.8: 19's `𝒥, N_R, N_C, K_ε, B_ε, E_ε` are `Π, 𝒩, 𝒩_C, Π𝒩_•,
+  𝖡_•, 𝖡^Q_•`, its Boolean algebra `ℰ` is `Idem(𝖡_•)` (`ℰ` would clash with
+  07's field), its unit `u` is `υ_T` with residue `𝗏`. In Section 15.9: 20's
+  `N_R, N_C, 𝒥, K_R, B_R, E, ℰ` are as for 19; its local rings
+  `F_G, A_G, J_G, N_G, C_G` are `K_G` (16's Hahn field), `𝒜(G)`, `Π(G)`,
+  `𝒩(G)`, `𝖢(G)` (parentheses to keep them apart from 03's `𝒩_κ`; `C` is
+  03's letter); its projection `π_G` is `pr_G` (`π_b` is a detecting map in
+  Theorem 5.12); its dominant exponent `a`, group `H = G ⊕ Za` and monomial
+  `T = ω^a` are 16's fresh `b`, `G̃ = G ⊕ Zb` and `t = ω^b` (`H_a` is the scale
+  subgroup, `H` is 03's parameter in `u_H`); its branches `s_0, s_1, s_r` are
+  `ϱ_0, ϱ_1, ϱ_r`, its specializations `θ_±` are `σ_±` (`θ = κ^ℵ0` in 03's
+  construction), and its splitting element `w(T)` is `𝗐_t` (`w_±` are 19's
+  idempotents). In Section 13.10: 21's `k, 𝓘_d, L, M, M_L` are
+  `K, Π_d, M, N, L(M)`; its `t_a = ω^a` is `X^a` (here `t^g` means `X^{-g}`) and
+  its `J_{a,L}` is `J_a(M)`; its face quotient `B_U` is `𝖥_U`, its `c = |U|` is
+  `|U|`, its ideals `Q_n` are `J^{(n)}_U`, its `K_n, F, σ, 𝒯, δ_N` are
+  `Kos_n, Kos, sh, Tel, Δ^∨_P`; its `R_0, R, 𝓘` are `T_Q, 𝒜_{D,k}, Π`, its
+  `𝒦(L, M)` is `𝒯(M, N)`, its `W_L, S, T, H_j, λ, Q_2` are
+  `Syz_M, A/I, A/J, 𝖳_j, 𝖻, Ind_2`, its `C_{a,b}, 𝓗_k(0, c)` are
+  `𝖫_{g,h}, Π_{(0,e)}`, and its fields `E, F` over `F_0`, orders `O` and kernels
+  `𝒦_O` are `K_1, K_2` over `Frac D`, `𝔬` and `𝒯(𝔬, 𝔬)`. In Section 16.10:
+  22's `𝒥_R, 𝒥_C, 𝒜_k, Og` are `Π, Π_C, 𝒜_{k,k}, Oz[i]`; its `B ∈ {Oz, Oz[i]}`
+  is `Λ` (`B` is 18's discretely ordered ring, `ℬ` the ring `D + 𝔪_k`); its
+  `Int(B^m)` and `Int^R(B^m)` (surreal polynomials and rational functions
+  preserving `B`) are `Num_m(Λ)` and `Num^rat_m(Λ)`, `Int` being kept for the
+  ordinary `Int(D^m)`; its `E = Frac D` is `F_0` (`E` is the ambient field);
+  its `B_ν` are the binomial products; its coefficient group `Γ`, field
+  `K_k(Γ)`, exponent `β` with `Γ ≪ β`, monomial `T = ω^β` and embedding `ℰ_T`
+  are 16's `G`, `K_G`, fresh `b > G`, `t = ω^b` and `ι_b` (22's `Γ ≪ β` means
+  `|γ| < β` for all `γ`, not the scale relation `h ≪ a` of (2.4)); its field
+  `L` is `K` (`L` is a lower set), its `H_j` is `𝗁_j` (`H` is a group), its
+  bound `D = 2d² + 2d` is `𝖭_d` (`D` is the constant ring); its box, remote
+  grid and test set `ℬ_{m,d}, ℋ_{m,D}(T), 𝒯_{m,d}(T)` are
+  `□_{m,d}, 𝖱_{m,d}(t), 𝖳𝖾𝗌𝗍_{m,d}(t)`; its Gaussian grid `G_d` is `C_{d+1}`
+  (16's notation, an interpolation grid here, not the residue system
+  `C_{d!}`); its exceptional set `E` is `S`; its deceiver's `τ, η, A, λ, F_S`
+  are `t, ωb, ω^{ωb}, a, R̃_S` (`η` is 18's translation, `R_S` 16's witness);
+  and in its Section 9 its value group `Λ`, subgroup `Γ`, ring `B_Λ` and
+  convex subgroup `C(Γ)` are `Γ`, `G`, `𝒜_{D,k}(Γ)` and `cvx_Γ(G)`. For
+  Section 15.10 see *Source 23* below, and for Sections 13.11, 14.9, 15.11 and
+  16.11 *Source 26*, *Source 24*, *Source 27* and *Source 25*.
+- **Sign convention** (Section 2.2): large monomials, `ω^γ` infinite for
+  `γ > 0`. The foundations report defines `Oz = Π ⊕ Z` (`found:eq:omnific`);
+  the trigonometry report (`trigonometry:eq:split`) describes the same `Π` by
+  negative `t`-exponents because it writes `t = ω^{-1}`.
+- **Foundations.** NBG with choice for sets. 04, 06 and 09 (and 05) state
+  global choice; none of them uses it. 13 and 15 add a two-universe reading.
+  17 and 19 state class theory with global choice; 17's uses of it are avoided
+  (Theorem 13.29 gives a choice-free Schanuel splitting), and 19's class
+  ultrafilter (Lemma 15.48) is the only place where it is used, for the
+  detection results (Theorem 15.49, Corollary 15.50), which say so. 20 states
+  the same foundation; its splitting results need only choice for sets
+  (Remark 15.75, a merge observation), and only its extension of branch maps
+  (Theorem 15.80, with Lemma 15.78) uses class ultrafilters. 21 reads the
+  class ring in two Grothendieck universes, as 13 does; its core theorems are
+  ordinary set-sized mathematics. 22 reads its class statements in a class
+  theory carrying `No` or with a lower and an upper universe, and chooses a
+  fresh exponent only after a set of supports has been assembled. 23 uses only
+  set-sized rings and choice for sets (the maximal-ideal theorem), with no
+  continuum hypothesis and no regularity of `2^ℵ0`. 24 adds an essential use
+  of global choice: it works in `GBC` (Gödel–Bernays class theory `GB`, here
+  without choice, plus global choice), and its maximal class ideals come from a
+  recursion with set-valued stages along a global well-order (Theorem 14.24),
+  a principle that for all class rings is equivalent to global choice over `GB`
+  (Theorem 14.30); every result of Section 14.9 built on it states `GBC`, while
+  its monomial cutoff, truncation and support-prime classification need no
+  choice. 25 reads its proper-class support fields through set-sized divisible
+  hulls and uses no global choice. 26 uses set-sized rings and modules only, the
+  full class ring appearing as the target of an embedding and of a finite
+  relation. 27 uses set-sized fields, rings and spectra, set-length recursion
+  and choice for sets, with no class Zorn lemma, continuum hypothesis or large
+  cardinal.
+
+### Source 23: ramification in a cyclic workspace
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 32, manuscript 01, local number 23; archive `omnific_ramification_research`; *Ramification in Omnific Normalizations* (25 pp., 23 September 2026) | `343dc2c` (after the fifth merge `a8f35b5`, before the sixth) | Section 15.10 (`osq:rm:`, 50 labels) and Questions 18.21–18.27 (7 labels); see the table above |
+
+- **What it settles.** Fix `a > 0`, `T = ω^a` and `(k, D) = (R, Z)` or
+  `(C, Z[i])`. In the cyclic workspace `𝒜(Za) = D + T k[T]` inside
+  `K_Za = k((T^{-1}))` (20's notation, extended to the Gaussian pair), the
+  extended ideal `𝖨 = Π(Za)𝒩(Za)` is **not radical**: `z_n` has nilpotency
+  index exactly `n` (Theorem 15.86), while `Idem(𝖢(Za))` is **atomless**, of
+  cardinality and order density `2^ℵ0` (Corollary 15.110, Theorem 15.111).
+  This decides the fixed-group clause of Question 18.17(b) for every nonzero
+  cyclic group, which 20 left open, and answers the fixed-subgroup clause of
+  Question 18.11 for cyclic groups by a residue criterion (Theorems 15.91,
+  15.93), which is not an algorithm. The mechanism is the separation of two
+  places: elements are Laurent series at `T = ∞`, integrality and nilpotence
+  are decided at the algebraic places over `T = 0`.
+- **Placement.** One new subsection, Section 15.10, after 20's Section 15.9 at
+  the end of Section 15, so no earlier statement is renumbered; its questions
+  are Questions 18.21–18.27 at the end of Section 18.3.
+- **Printed once.** 20's multiquadratic lemma (Lemma 15.69, now tagged
+  `[20, 23]`). 23's Corollary 4.5 (Corollary 15.94) contains, for the real pair,
+  the first equality of 20's Theorem 15.60, which 23 credits; its Gaussian form
+  and the statement for the fixed ideal are new. 20's remark after
+  Theorem 15.70 already gave an independent family of size `2^ℵ0` in
+  `Idem(𝖢(Za))` (Theorem 15.70 with `G = {0}`); 23 does not cite it, so the
+  lower-bound half of its cardinality statement for the reduced fibre is 20's.
+  23's Puiseux radicality also follows from 19's finite-axiom theorem
+  (Theorem 15.51), which 23 does not cite; 23's refinement proof is kept as the
+  first route (Remark 15.102).
+- **Renamed symbols** (Section 15.10, with the tempting false readings printed
+  there). 23's `F, A, P, N, B, I, E` are `K_Za`, `𝒜(Za)`, `Π(Za)`, `𝒩(Za)`,
+  `𝓑` (script B: the integral closure of `k[T]` in `K_Za`, not `ℬ = D + 𝔪_k`),
+  `𝖨`, `K^alg`; its arithmetic fibre `ℛ = N/I` (not 14's Rees algebra), its
+  reduction, its coefficient fibre `𝒞 = B/TB` and that reduction are `𝖡(Za)`,
+  `𝖢(Za)` (20's reduced fibre), `𝖡^co(Za)` and `𝖢^co(Za)`; its `J` and
+  nilradical `𝔫` are `𝖩 = √(T𝓑)` and `𝖩/T𝓑`; its `B_L`, `κ(𝔮)` are `𝓑_L`,
+  `ℓ_𝔮`; its `μ_T`, `h_T`, `ℱ^r` are `ν_T`, `ν̂_T`, `Fil^r`; its `V = B_𝔮` with
+  maximal ideal `𝔪` is `𝓑_𝔮` with maximal ideal `𝔮𝓑_𝔮`; its branches `z_n`,
+  `h_c`, `e_c`, `w` are `𝗓_n`, `ς_c`, `𝗒_c` and 20's `ϱ_0`; its refined and
+  Puiseux rings are written with `Za/m` and the subscript `Pui`; its `F_Q`,
+  `A_Q`, `P_Q` are `K_Qa`, `𝒜(Qa)`, `Π(Qa)`; its `D_k^int` is `Z̄_R` or `Z̄`,
+  its fragments `k_r`, `k_c` are 19's `k_0 = Q̄ ∩ R` and `Q̄`; its module
+  `M = 𝒞/(x)` is `𝓜_n` and its graded variable `X` is `W`; `𝔠 = 2^ℵ0` and `c`
+  is a positive real parameter. Its finite extensions `L` and primes `𝔮` keep
+  their letters.
+- **Merge additions** (`[merge]`): `Π𝒩 ∩ K_Za = 𝖩`, so `𝖡(Za) → 𝖡_R` kills
+  exactly the nilradical and the radical in Theorem 15.57 cannot be removed for
+  `G = Za` (Remark 15.119), with `√(ω^{2a}+ω^a) = ω^{a/2}√(1+ω^a) ∈ Π𝒩`
+  (Example 15.87); 19's finite-axiom theorem applies to the Puiseux ring, giving
+  a second route to its radicality, the Boolean-power form, doubling and
+  absolute integral closedness of its fibre, whose Boolean algebra is atomless
+  of size `2^ℵ0` (Remark 15.102); `𝖢(Za) ≅ Z̄[𝔈]` with `𝔈` atomless of size and
+  density `2^ℵ0`, and for the real algebraic fragment the ring of locally
+  constant `Z̄`-valued functions on Cantor space (Remark 15.114); 19's `υ_T` as a
+  witness inside the cyclic workspace (Remark 15.104).
+- **Stale and corrected.** Notes re-scope the open fixed-workspace
+  statements, marked "Status (batch 32)" after Theorems 15.51 and 15.57, after
+  Proposition 15.76, in Section 18.1 and in Questions 18.11 and 18.17, and as
+  plain added sentences after Theorem 15.70 and in 19's non-claim (9) and 20's
+  non-claim (2). Nothing is deleted.
+  The finite-axiom paragraph's "failure of the argument, not a counterexample"
+  (19) concerns real-exponent Hahn integer parts and stays true; the cyclic
+  workspace, whose Laurent field is not real closed and fails axiom (ii), is a
+  genuine counterexample to the conclusion of Theorem 15.29 in a fixed
+  workspace.
+- **Verification.** 23's `verify.py` (stdlib) was rerun on a copy: all 18,040
+  assertions in 12 categories pass; see *Build and reproduce*.
+
+### Source 24: class residue fields beyond the constant term
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 34, manuscript 02, local number 24; archive `omnific_class_residues`; *Beyond the Constant Term: Class Residue Fields of the Omnific Integers* (26 pp., 23 September 2026) | `51c1cc7` (after the sixth merge `9b463f7`, before the seventh `b9cae81`; report text blob `ef7aef1`) | Section 14.9 (`osq:cr:`, 54 labels) and Questions 18.28–18.34 (7 labels); see the table above |
+
+- **What it settles.** In `GBC` every proper class ideal of a commutative class
+  ring lies in a maximal class ideal (Theorem 14.24), by a greedy recursion on
+  the *elements* along a global well-order that stores a set of accepted
+  generators at each stage and keeps finite witnesses; for all class rings
+  this principle is equivalent to global choice over `GB` (Theorem 14.30, by the
+  Hodges–Erné–Entin polynomial compatibility mechanism, Lemma 14.31), which
+  gives no lower bound for `Oz` itself (Remark 14.32). So `1 + ω^a` lies in
+  characteristic-zero maximal ideals of `Oz` and `Oz[i]` (Theorem 14.34): this
+  answers the **existence clause of Question 18.4** with global choice; the
+  classification clause stays open. In `Q_a` a monomial `ω^b`, `b ≥ 0`, is `0`
+  iff `a ≪ b` and a unit otherwise, with explicit inverse (Theorem 14.37);
+  tails above `cvx(Za)` are discarded (Proposition 14.40); separated scales are
+  comaximal (Corollary 14.42); each branch `z ∈ Z_2` of 07's dyadic tree lies
+  in its own maximal ideal, `2^ℵ0` per scale, and an `On × Z_2` family runs
+  across scales (Theorems 14.46, 14.48); characteristic-zero maximal ideals
+  separate points, their residue fields embed in `No[i]` (Theorems 14.50,
+  14.51, 14.53), and these specializations are not strongly summable
+  (Theorem 14.55); the term-closed and strongly sum-closed primes are exactly
+  `pA` and `Π_k^{>H}`, none of characteristic 0 maximal (Theorem 14.57). It
+  partly addresses Question 18.5 (the monomial cutoff, truncation,
+  comaximality, rescaling).
+- **Placement.** One new subsection, Section 14.9, after 07's Section 14.8 at
+  the end of Section 14, so no earlier statement is renumbered; questions
+  18.28–18.34 at the end of Section 18.3.
+- **Printed once.** 24's Section 7 is 07's field core in a weaker form: its
+  Lemma 7.1 is Proposition 14.1 with Lemma 4.2(iii) (24 added as a proving
+  source to Proposition 14.1), its `Θ_a` is 07's `ι_a` (Lemma 14.14(iii),
+  Corollary 14.17 and the Gaussian embedding before Theorem 14.23), and its
+  Proposition 7.4 is Corollary 14.10; the tree already had `No ↪ F_a` and
+  `No[i] ↪ E_a ⊆ Q_a` (Theorem 14.4, Corollary 14.17), which 24 does not state.
+  Its Lemma 8.1 is the constant-coefficient case of Theorems 14.15 and 14.23,
+  with 24's degree proof kept (Remark 14.45), and its idempotent tree is 07's
+  (14.17). Its Corollary 9.3 is the class back-and-forth
+  `saut:thm:acfhomogeneity` and `fkc:sb:lem:backforth` (credited; 24 does not
+  cite them). Set-sized analogues are older: `osq:thm:model08` (vi) and
+  `osq:thm:residue`. Its recursion is the mechanism of 19's and 20's class
+  ultrafilters (Lemmas 15.48, 15.78), there in Boolean-algebra form; the ring
+  form and Theorem 14.30 are new here.
+- **Renamed symbols** (Section 14.9, with the false readings printed there).
+  24's `(D, K), Π_K, A_D, B_K, Q_a` are `(D, k), Π_k, 𝒜_{D,k}, 𝒜_{k,k}, 𝒬^k_a`,
+  its classes `[x]` are `q_a(x)`; its `b ≫ a` is `a ≪ b` (the same relation,
+  opposite symbol, as in (2.4)); its `C_a` is `cvx(Za)` (not `C_j`, `C_{d+1}` or
+  `𝖢(G)`), its `J_a` is `Π_k^{≫a}`, its truncation `τ_a` is `tr_a`, its `P_H` is
+  `Π_k^{>H}`; its geometric series `q_{a,b}` is `𝗀_{a,b}` (`q_a` is the quotient
+  map), its scales `a_α = ω^α` are written out (`a_α` are the small scales of
+  (3.1)) and its `f_α` are `𝖿_α`, its `σ_{b/a}` is `sc_{b/a}`; its `F_a`, `H_a`,
+  `F_a[i]` are `F_a`, `H_a`, `F_a(i)`; its shifted embedding `Θ_a` is 07's `ι_a`
+  (**`Θ_a` here is 07's compression `No ↪ F_a`**); its `u_n = [ω^{a/2^n}]` are
+  07's `ξ_n` (07's `x_n = q_a(ω^{a/n})`), and its family `z_n = ω^{a/2^n}` in
+  Theorem 14.55 is written out; its tree `(e_s)` is 07's `(e_{r,k})`,
+  a branch `η ∈ 2^N` read as `z = Σ η_j 2^j ∈ Z_2`, and `M_{a,η}, M_{α,η}, M_x,
+  π_{β,η}` are `𝔐_{a,z}, 𝔐_{α,z}, 𝔐_x, ϖ_{β,z}`; its multiplicative class `T`
+  is `Σ`, its poset `X` with ideals `I_x` is `𝒫` with variables `v_p` and ideals
+  `I_p`; its class field `L` and subfield `E_0` are `𝕂`, `𝕂_0`; its `φ_a` is
+  `sp_a`. False readings: `a ≪ b` is not `b > a` (`q_a(ω^{2a}) = 1`); `cvx(Za)`
+  is not `H_a` (`H_a ⊊ cvx(Za)`).
+- **Merge additions** (`[merge]`): 19's and 20's class-ultrafilter lemmas are
+  the Boolean-ring case of Corollary 14.27, also for class families
+  (Remark 14.28); a second route to the cutoff through 07's localization and
+  Proposition 6.11 (Remark 14.38); a copy of `No[i]` in every residue field
+  above `1 + ω^a` (Corollary 14.44); 24's first idempotents are 07's `e_±`
+  (Remark 14.45); with global choice, 07's point evaluations on the Cantor
+  subalgebra extend to homomorphisms of all of `Q_a` onto fields containing
+  `E_a` (Remark 14.47).
+- **Stale and corrected.** Status (batch 34) notes after Corollary 6.3 (no Zorn
+  argument), after Corollary 14.10 (conditional primes), in Remark 14.21
+  (evaluation), in the paragraph *Class ideals versus set-theoretic Zorn
+  arguments* of Section 14.8, in Section 18.1, in 04's non-claim (2), 07's (3),
+  (11), (12) and 08's (10), in the foundations bullet of Section 1.3, and in
+  Questions 18.4 and 18.5; Section 2.1 records 24's use of global choice.
+  Nothing is deleted; the sources' non-claims are kept verbatim with the notes
+  added.
+- **Verification.** 24's `verify.py` (stdlib) was rerun on a copy: all 133,770
+  assertions in 6 groups pass; see *Build and reproduce*.
+
+### Source 25: semialgebraic preservers
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 34, manuscript 04, local number 25; archive `omnific_smoothness_research`; *Smooth Rigidity and Bounded-Scale Flexibility of Omnific-Preserving Maps* (23 pp., September 2026) | `738a390` (same report text as 24's pin, blob `ef7aef1`; `20b313d7…`/`b91ab184ecc2` in its bibliography are identifiers of a KOPS repository file, not commits) | Section 16.11 (`osq:sa:`, 47 labels) and Questions 18.35–18.44 (10 labels); see the table above |
+
+- **What it settles.** Over a real closed field `E` with a cofinal discretely
+  ordered subring `B`: every semialgebraic preserver of `B` is polynomial on
+  its two tails, with `SA(B)/SA_b(B) ≅ Num_1(B)^2` (Theorem 16.95,
+  Corollary 16.96); a globally `C^∞` semialgebraic map `E^r → E^{r'}` preserves
+  `B^r` iff its coordinates lie in `Num_r(B)`, and at scalar graph degree `𝖣`
+  global `C^{𝖣²}` suffices with total degree at most `𝖣` (Theorems 16.100,
+  16.102); for `Oz` this is a finite binomial expansion with omnific
+  coefficients (Corollary 16.103), for `Oz[i]` its real-coordinate form
+  (Theorem 16.115). This answers the **first clause of Question 18.20(a)** for
+  globally `C^∞` semialgebraic maps in every dimension. Below that regularity:
+  `ω^b √x ∈ Oz` for all omnific `x ∈ [0, ω^a]` iff `ω^b √(ω^a − 1) ∈ Oz` iff
+  `a ≪ b` (Theorem 16.108, the same threshold as 24's Theorem 14.37); for every
+  ordinary `𝗄` a `C^𝗄` bump maps `Oz` into `Π` and agrees with no finite family
+  of polynomials on `Oz` (Theorem 16.112), so `1 + ⌊(𝖣−2)/4⌋ ≤ 𝗌(𝖣) ≤ 𝖣²`,
+  `𝗌(1) = 1` (Corollary 16.113), with non-polynomial `C^𝗄` lattice shears
+  (Corollary 16.114). The certificate clause of 18.20(a) is answered negatively
+  for coefficient-independent samples by `ω^b √(x² + 1)`, a globally smooth
+  branch of an irreducible quadratic (Theorem 16.117); adaptive certificates
+  stay open. Set-sized exceptional sets are removable for globally smooth maps
+  (Corollaries 16.118, 16.119).
+- **Placement.** One new subsection, Section 16.11, after 22's Section 16.10 at
+  the end of Section 16; questions 18.35–18.44; its Questions 12.7 and 12.9 are
+  merged into 18.20(a), (b).
+- **Printed once.** Its Propositions 5.3 and 9.3 are 10's Theorems 16.7 (with
+  16.6) and 16.9 for `r = 1`, credited, not tagged (25 proves the additive
+  decompositions only). Its tail theorem generalizes the *Collapse* and
+  *Filling* steps of 18's Theorem 16.66 (credited); the sufficiency half of its
+  absorption theorem contains Lemma 4.2(ii), 07's Lemma 14.6 and 16's freshness
+  (Lemma 16.30); its no-set theorem refines Theorem 16.51 and Remark 16.73,
+  whose witnesses have poles in `No`; its exception removal extends
+  Theorems 16.52 and 16.75 to globally smooth semialgebraic maps.
+- **Renamed symbols** (Section 16.11). 25's `F, R` are `E, B` (18's letters);
+  its dimensions `n, m` are `r, r'`; its difference order `m` is `s`; its graph
+  degree `D` and smoothness order `k` are `𝖣`, `𝗄` (`D` is the constant ring,
+  `k` the coefficient field), so `s(D)` is `𝗌(𝖣)`; its `H_a = {|γ| ≤ na}` is
+  `cvx(Za)`, **the opposite of this report's `H_a`**; its `H^+` is `H^↑`; its
+  multiplier `L = ω^b` is written out; its bumps `B_k` are `𝔟_𝗄`; its rings
+  `ℰ_R, ℬ_R` are `SA(B), SA_b(B)`; its `G_b` is `𝗋_b`; its shears `S_k` are
+  `Sh_𝗄`; in proofs its `A(x, h)`, `M`, `ℓ_j` are `𝗎(x, h)`, `M_0`, `𝗅_j`.
+  `T = ω^a` is the actual monomial, as in Sections 15.9 and 15.10.
+- **Merge additions** (`[merge]`): the absorption theorem contains Lemma 4.2(ii),
+  Lemma 14.6 and 16's freshness (after Theorem 16.105); 24's and 25's
+  thresholds are one computation, equivalent also to absorption of
+  `K_{cvx(Za)}` and to `ω^b/(1 + ω^a) ∈ Oz` (Remark 16.111); `½(1 − 4x²)^{𝗄+1}`
+  on `|x| ≤ ½` shows that Corollary 16.118 needs global smoothness
+  (Remark 16.120).
+- **Stale and corrected.** A Status (batch 34) note in Question 18.20
+  re-scopes 22's comment on a piecewise classification (by Theorem 16.112 no
+  finite polynomial family represents a `C^𝗄` preserver, so a piecewise
+  classification with polynomial pieces exists only on tails, or with
+  algebraic branches as pieces); a note in 22's non-claim (10); the README
+  sentence on 22 (below) stays true of 22.
+- **Verification.** 25's `verify.py` (stdlib, Python 3.10+) was rerun on a
+  copy: all 1,578 assertions in 18 groups pass; see *Build and reproduce*.
+
+### Source 26: polyhedral cores and face topology
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 34, manuscript 06, local number 26; archive `omnific_face_topology`; *Face Topology and Arithmetic Homology in Omnific Integer Rings* (30 pp., 23 September 2026) | `7b256e0` (after the sixth merge, report text blob `ef7aef1`) | Section 13.11 (`osq:pc:`, 53 labels) and Questions 18.45–18.54 (10 labels); see the table above |
+
+- **What it settles.** For the core `A_𝒞 = D ⊕ ⊕_{0≠m∈𝒞∩Q^d} K X^m` of a
+  pointed full-dimensional rational polyhedral cone `𝒞 ⊆ R^d` (finite sums;
+  embedded in `Oz`, `Oz[i]` for `(D, K) = (Z, R)`, `(Z[i], C)`), every nonzero face `F`
+  gives a flat ideal `I_F` of projective dimension one, and the radical
+  coefficient-full monomial ideals are the sums over face antichains. The flat
+  dimension of the quotient is the top degree of the reduced homology of
+  finite join complexes, witnessed by cap modules (Theorem 13.70); for the
+  quotient keeping a face `F` it is the largest dimension of a face disjoint
+  from `F` (Theorem 13.75). Hence `fd D = d` for every cone, `𝒞` is simplicial
+  iff every facet quotient has flat dimension one (Theorem 13.79), cube cones
+  have facet quotients of flat dimension `d − 1` (Theorem 13.81), every radical
+  quotient is a homological epimorphism (Theorem 13.72), over a principal
+  ideal domain modules through `ct` have flat dimension 1 (torsion) or `d`
+  (Theorem 13.85), and the passage to a total-order core or to `Oz` is not
+  flat for `d ≥ 2` (Theorem 13.88). This answers the **non-simplicial clause
+  of Question 18.12 for flat dimension** of radical monomial quotients;
+  projective dimensions (only `max{2,h} ≤ pd ≤ h + 1`, Corollary 13.71),
+  arbitrary ideals, localizations and weak global dimensions stay open.
+- **Placement.** One new subsection, Section 13.11, after 21's Section 13.10 at
+  the end of Section 13; questions 18.45–18.54; its Questions 13.1 (projective
+  endpoint) and 13.2 (weak and global dimension) are merged into 18.12.
+- **Printed once.** 26 did not notice that a rational simplicial cone core is
+  isomorphic to `A_d` (coordinates in the ray basis), which the merge adds;
+  through it, 26's Corollary 13.80 is 21's Proposition 13.43, and 21's
+  Corollary 13.47 gives the projective dimension `d − dim F + 1`, the upper
+  endpoint, for every proper-face quotient of a simplicial cone. The
+  whole-cone quotient is the ring itself and has projective dimension zero. 26's Theorem 13.61 on
+  coordinate faces is 12's Lemma 13.3(i), (iii) with Proposition 13.12(i), (ii);
+  its Proposition 13.76 for an orthant is Theorem 13.4; Theorem 13.72 for the
+  whole tail is Corollary 13.5; Proposition 13.84 is Proposition 13.2(i);
+  Theorem 13.88 for an orthant is the nonflatness of Theorem 13.14, proved there
+  by an intersection certificate and here by the equational criterion with a
+  lexicographic embedding, 26 adding the failure in `Oz` itself (second route).
+  The cellular and lcm-lattice methods (Bayer–Sturmfels, Gasharov–Peeva–Welker)
+  are credited.
+- **Renamed symbols** (Section 13.11). 26's cone `C`, field `k`, ring `A_D(C)`,
+  monoid `M = C ∩ Q^d`, tail `I_+` and face quotient `A_D(F)` are `𝒞`, `K`,
+  `A_𝒞`, `P_𝒞`, `Π_𝒞`, `A_𝒞(F)`; its face ideal **`J_F` is `I_F`** (12's `I_S`
+  for coordinate faces; `J_F = (X_i : i ∈ F)A` is 12's ideal of Section 13.3);
+  its `I_𝓕`, `P_H`, `H(m)` are `𝔯_𝓕`, `𝔭_H`, `fc(m)`; its `V_G`, `Δ_{<G}`,
+  `h(𝓕;k)` and complexes `𝒞_*`, `ℛ_*`, `E_*` are `At(G)`, `𝖪_{<G}`, `len(𝓕)`,
+  `C^𝓕_*`, `R^𝓕_*`, `C^cell_*`; its detector `N_{G,b}` with `S_G`, `L_{G,b}`,
+  `η_j` is `𝒲_{G,b}` with `K[P_G]`, `𝔷_{G,b}`, `ℓ^G_j` (12's test modules are
+  `V_F`); its embedding functional `λ` and ring `T_D(λ)` are `λ_ω` and `T_{λ_ω}`
+  (`λ` is a cardinal); its `R = k[x]`, `Q` are `K[x]`, `𝔮`; its module `E` with
+  torsion `T` and quotient `V` is `N` with `N_tor`, `N/N_tor`; its cube cones
+  `C_n` are `𝒞_n`; its `wdim`, `gldim` are `w.gl.dim`, `gl.dim`. False readings
+  printed: `I_F` is not `J_F`; a core is not an integer part; `β_{p,G}` counts
+  flat summands, not free ranks; arithmetic ideals are excluded.
+- **Merge additions** (`[merge]`): the isomorphism `A_𝒞 ≅ A_d` for simplicial
+  cones (Section 13.11 opening, after Corollaries 13.71, 13.80); lattice modules
+  over every cone have `fd L(M) = d`, `fd A_𝒞/J = d + 1`, so
+  `w.gl.dim A_𝒞 ≥ d + 1` when `K ≠ Frac D`, improving 26's `≥ d` (Remark 13.86).
+  The later proof review answers Question 18.45 for full-dimensional pointed
+  rational polyhedral cones in a fixed rational space: every strict cone
+  enlargement is nonflat with the same coefficient pair. Its two interior
+  monomials also explain why old ray-pair tests alone are insufficient.
+  This answer is a merge consequence, not a claim made in source 26.
+- **Stale and corrected.** Status (batch 34) notes in Question 18.12, in
+  Remark 13.16 and in 12's non-claim (4); 26's orthant re-derivations and its
+  unnoticed simplicial reduction are recorded in Section 1.4. Nothing deleted.
+- **Verification.** 26's `verify.py` (stdlib) was rerun on a copy: all 52,080
+  assertions pass with the same counts; see *Build and reproduce*.
+
+### Source 27: henselian branching
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 34, manuscript 07, local number 27; archive `surreal_henselian_branching`; *Maximal Henselian Branching at Omnific Augmentations* (24 pp., 23 September 2026) | `fc27d87` (report text blob `ef7aef1`; `feea0ee` is the blob of `20-boolean-branching-PROOF_AUDIT.md` at that commit, not a commit) | Section 15.11 (`osq:hb:`, 27 labels) and Questions 18.55–18.66 (12 labels); see the table above |
+
+- **What it settles.** For every infinite cardinal `κ` and every set of at most
+  `κ` surreals there is a real closed `𝔼 ⊆ No` of cardinality `κ` containing it,
+  with `B_𝔼 = 𝔼 ∩ Oz` an integer part, `Frac B_𝔼 = 𝔼` and an idempotent
+  constant-term ideal; the local ring `𝔏` there has residue field and
+  completion `Q`, yet its henselization has exactly `2^κ` minimal primes, each
+  with fraction field `𝔼[i]`, and generic fibre `LC(X, 𝔼[i])` with
+  `|X| = 2^κ` (Theorem 15.120); strict henselization adds a
+  `Gal(Q̄/Q)` factor and the Gaussian ring doubles the generic fibre
+  (Theorem 15.121). The key new step is that every finite generic branch
+  survives localization (Lemma 15.126). No numbered question is answered.
+- **Placement.** One new subsection, Section 15.11, after 23's Section 15.10 at
+  the end of Section 15; questions 18.55–18.66.
+- **Printed once.** 27's Lemmas 2.1, 2.2, 2.3, 2.5, 3.1, 3.2, 3.3 and
+  Proposition 3.5 are Lemma 3.1 with Proposition 3.3, Lemma 15.8, Lemmas 15.55,
+  15.62, 15.53, Lemma 15.28 with Theorem 15.29, Theorem 15.65 (the same
+  `𝗐_t`, (15.24)) and Theorem 15.72 (the same `t_α = ω^{ω^α}`); 27's proof of the
+  splitter through the quadratic subalgebra alone is kept (Remark 15.122).
+  Its hull has a near-antecedent in 08's `A^08_κ = F^08_κ ∩ Oz` (Theorem 11.16),
+  and its local ring is the set-sized analogue of the Diophantine report's
+  `Oz_Π` (`odg:frac:prop:localization`); its forced complexification is the
+  henselian counterpart of `odg:ex:hensel` (`T² − T − ω` has no root in `Oz`).
+  27 does not cite these. 27 works with `√(ΠN)`; by 19's Theorem 15.29 this is
+  `ΠN` (merge note).
+- **Renamed symbols** (Section 15.11). 27's `E, 𝒮, B, J, A, 𝔪, H, C = E[i],
+  G = E ⊗_A H` are `𝔼, S_0, B_𝔼, Π_𝔼, 𝔏, 𝔫, 𝔏^h, 𝔼[i], 𝒢`; its Stone space
+  `X` is `𝖷`; its `F_Γ, O_Γ, Π_Γ, π_Γ` are `K_G, 𝒜(G), Π(G), pr_G`; its `𝒩`,
+  `𝒦 = √(ΠN)`, `N_B`, `N_A` are `N`, `ΠN`, `IC_𝔼(B_𝔼)`, `IC_𝔼(𝔏)`; its
+  `D(T)`, `a(T)`, `w(T)` are `𝗊(T)`, `𝖺(T)`, `𝗐(T)` (so `𝗐(t) = 𝗐_t`), its `T_α`,
+  `a_α`, `w_α` are `t_α`, `𝖺_α`, `𝗐_{t_α}`; its roots `u_α`, idempotents `e_α`
+  (not 20's residues `e_α`) and `j` are `ũ_α`, `ê_α`, `ȷ`; its neighbourhoods
+  `D_0, D` with ideal `𝔫` are `𝔘_{F,0}, 𝔘_F` with `𝔲`; its minimal primes `P`
+  are `𝔔`; its hull's `d_r`, `e_x`, `R_n` are `m_r`, `f_x`, `𝔼_n`. False readings
+  printed: `𝔫` is not the ideal of infinitesimals; `𝔏^h` is local, not a product
+  of branches; `ȷ` lives in `𝒢`, not in `𝔏^h`; specializations are not
+  evaluations.
+- **Merge additions** (`[merge]`): `√(ΠN) = ΠN` for 27's certificates; the
+  branch counts of 20 (a proper class), 23 (`2^𝔠` places for a ring of size
+  `𝔠`) and 27 (`2^κ` for size `κ`) compared (Remark 15.143); pointers in 27's
+  questions to Questions 18.18, 18.22, Theorem 15.38, Theorem 6.2 and 24's
+  maximal class ideals.
+- **Stale and corrected.** 27's `SOURCES_AND_SCOPE.md` reports that a
+  repository search for "hensel" returned no match (hedged as not exhaustive);
+  at its pin the word occurs in sixteen `article.tex` files, including the
+  Diophantine report (`odg:ex:hensel`) and this report (the Kuhlmann citation).
+  Recorded in Sections 1.4 and 15.11; the audit file is kept verbatim.
+- **Verification.** 27's `verify.py` (SymPy 1.14.0) was rerun on a copy: all
+  5,760 assertions in 8 groups pass; see *Build and reproduce*.
+
+## Results added in the merge
+
+Each is marked `[merge]` in the text and has a complete proof from the
+sources' lemmas.
+
+- **The field bound** for an arbitrary subfield of a fixed-group Hahn field
+  (Proposition 10.3), generalizing 03's theorem through 06's collision lemma.
+- **Exact fixed-group thresholds** (Examples 10.4, 10.5): in 04's example
+  `Q ⊕_lex Q` the least detecting target has exactly `2^ℵ0` elements (04's
+  question on optimal small targets, answered for its own example), and with
+  rational coefficients the exact threshold `2^ℵ0` exceeds all the monomial and
+  weighted counts of 04, 07 and 10, which shows in ZFC that 10's bound need
+  not be attained (10 asks when it is).
+- **`κ^{<κ}` in ZFC** (Lemma 11.10, Theorem 11.11, Proposition 11.23): the
+  rings of 06 and of 11's lexicographic example (coefficient field of size at
+  most `max(κ, 2^ℵ0)`, which contains 11's hypothesis `|K| ≤ κ`) have size
+  `κ^{<κ}`, and that is their exact detection threshold; 06 and 11 prove
+  exactness only under `κ^{<κ} = κ`. This answers the first half of 06's question on cardinal
+  arithmetic; 08 answers the second half (a ring of size exactly `κ`).
+- **The organizing theorem** (Theorem 10.10): for all five constructions the
+  exact threshold equals the size of the ring, with the reconciliation of the
+  realized cardinals in Remark 10.11 (`A^06_{ℵ1} ≅ A^03_{ℵ1}`; 03 and 09
+  realize exactly the infinite `θ` with `θ^ℵ0 = θ`).
+- **The homological package for all five constructions** (Theorems 12.2,
+  12.3), with `Ext¹` and `Ext²` thresholds equal to the size of the ring; for
+  06's ring this corrects "exact `κ` under `κ^{<κ} = κ`" to "exact `κ^{<κ}` in
+  ZFC".
+- 08's criterion with the field-bound hypothesis (Theorem 10.7), the
+  finite-side extension criterion (Theorem 9.1(iv)), `No ↪ Frac(Oz/P)` for
+  primes `P ⊉ Π` (Remark 14.13), and explicit elements of `𝒩 \ Oz` from 08's
+  equation (Remark 15.27).
+- **From the second merge.** The syzygy, noncoherence and nonflatness theorems
+  in the common generality of 12's rings and 14's (any unital `D ⊆ K`, any rank)
+  (Theorem 13.9, Proposition 13.10); the flat dimensions `d` and `d+1` of lattice
+  modules and cyclic quotients over every coordinate-cone core and `1`, `2` over
+  every ordered-cone core (Theorem 13.11); the exact projective dimensions
+  `pd D = 2` over `A_1` and every `T_Γ`, `pd L(M) = 2` and `pd A_0/J = 3`, and
+  `pd D = 2` for every ring satisfying the hypotheses (H1)–(H3) of Section 12 whose
+  tail is countably generated, which among the five constructions is exactly
+  `A^08_κ` with `cf κ = ℵ0` (Proposition 13.12); and the comparison of the two
+  kinds of flat-dimension statement (Remark 13.16).
+- **From the third merge.** 17's relation counts, embedding and flat
+  dimensions for `κ = ℵ0` as well (17 assumes `κ` uncountable but uses only
+  regularity), with `pd Π = 1`, `pd D = 2` and `pd L(M) = 2` there
+  (Lemma 13.30, Theorem 13.31, Remark 13.32); 17's `Tor` identification over
+  12's cores and 14's `A_0` (Theorem 13.34), which gives
+  `rank Tor_2(A/H, A/H) = 4 − rank(M²)` for 12's cyclic modules without 12's
+  hypothesis `c² ∈ D` (Corollary 13.35); the comparison of 18's and 16's
+  Gaussian tests (18's is smaller for `d ≥ 3`, Proposition 16.64); the images of
+  08's invisible roots in domain images (Remark 15.47); and the explicit
+  candidates reducing the question on `Idem(𝒩/Π𝒩)` to membership in `𝒩`
+  (Remark 15.52; that reduction is now superseded by 20).
+- **From the fourth merge.** 03's descent question answered from 20's support
+  projection: `𝒩 ∩ F^03_κ = 𝒩_κ`, `Π𝒩 ∩ F^03_κ = √(Π^03_κ 𝒩_κ)` and the
+  Gaussian forms (Corollary 15.59); 03's unit `u_H` is a one-radical uniform
+  splitter, which decides both candidates of Remark 15.52 (nontrivial; the
+  first is the second for `H = ω^{1/2}`), for every positive `H ∈ Π` supported
+  in one cyclic group `Za` (Proposition 15.68); 20's splitting results need no
+  global choice (Remark 15.75); and `𝖡_R` is residually set-sized although no
+  set-indexed family of small targets is jointly faithful (remark after
+  Theorem 15.79).
+- **From the fifth merge.** 21's projective dimensions of lattice modules over
+  `A_d` for every unital `D ⊆ K` (21 assumes a principal ideal domain only to
+  have a basis; Theorem 13.48); and the observation that the cores `A_d`, with
+  countably generated tails and (H1), (H3) but not (H2), have `pd D = d + 1`, so
+  (H2) cannot be dropped from Proposition 13.12(v) (Remark 13.49).
+- **From the sixth merge.** The comparison of 22's single-scale certificate
+  with 16's probe certificate: for `m ≥ 2` the probes with the rectangular box
+  need `(d+1)^m + m` values, fewer than 22's, but use `m + 1` fresh exponents
+  where 22 uses one, in one coordinate (Remark 16.71); the conclusion of 16's
+  no-set-test theorem for `𝒜_{D,k}` with every unital `D ≠ k`, by replacing
+  `1/2` with any `c ∈ k \ D` (Remark 16.88); and the observation that where
+  22's criterion gives no fresh exponent, 18's discrete-gap collapse still
+  holds, so what is lost there is only the finite rational certificate
+  (after Proposition 16.86).
+- **From the seventh merge.** `Π𝒩 ∩ K_Za` is the radical `𝖩` of 23's extended
+  ideal, so `𝖡(Za) → 𝖡_R` kills exactly its nilradical and the radical in
+  Theorem 15.57 cannot be removed for `G = Za` (Remark 15.119), with the
+  explicit `√(ω^{2a}+ω^a) = ω^{a/2}√(1+ω^a) ∈ Π𝒩` (Example 15.87); 19's
+  finite-axiom theorem applies to the bounded-denominator Puiseux ring, a
+  second route to 23's radicality there, with the Boolean-power form, doubling
+  and absolute integral closedness of its fibre and an atomless Boolean algebra
+  of size `2^ℵ0` (Remark 15.102); the reduced cyclic fibre is `Z̄[𝔈]` with `𝔈`
+  atomless of size and order density `2^ℵ0`, and for the real algebraic
+  fragment it is the ring of locally constant `Z̄`-valued functions on Cantor
+  space (Remark 15.114); and 19's `υ_T` is a second witness, inside the cyclic
+  workspace, for a residue squaring to `−1` (Remark 15.104).
+- **From the eighth merge.** 19's and 20's class-ultrafilter lemmas are the
+  Boolean-ring case of 24's prescribed-equation corollary, also for class
+  families with the finite intersection property (Remark 14.28); a second
+  route to 24's monomial cutoff through 07's localization and the support
+  description of `Oz[ω^{-a}]` (Remark 14.38); every residue field above
+  `1 + ω^a` contains a copy of `No[i]`, not only an algebraically closed Hahn
+  field (Corollary 14.44); 24's first idempotents are 07's `e_±`
+  (Remark 14.45); with global choice, 07's point evaluations on the Cantor
+  subalgebra extend to homomorphisms of all of `Q_a` onto fields containing
+  `E_a` (Remark 14.47); the embedded `F_a` alone does not distinguish the maximal
+  ideals above one binomial (status of Question 18.4); 25's absorption theorem
+  contains Lemma 4.2(ii), Lemma 14.6 and 16's freshness (after Theorem 16.105);
+  24's and 25's thresholds coincide with absorption of `K_{cvx(Za)}` and with
+  `ω^b/(1 + ω^a) ∈ Oz` (Remark 16.111); and `½(1 − 4x²)^{𝗄+1}` shows that 25's
+  removal of exceptions needs global smoothness (Remark 16.120). With sources
+  26 and 27: a rational simplicial cone core is isomorphic to `A_d`, so 26's
+  simplicial face dimensions are 21's and 21's Corollary 13.47 gives the upper
+  endpoint of 26's projective interval for proper-face quotients of simplicial cones (Section
+  13.11); lattice modules over every cone core give weak global dimension at
+  least `d + 1` when `K ≠ Frac D` (Remark 13.86); 27's `√(ΠN)` is `ΠN` by
+  Theorem 15.29; and the branch counts of 20, 23 and 27 are compared
+  (Remark 15.143).
+
+## What the report claims
+
+Let `K` be a set field, `D ⊆ K` a unital subring and `Π_K` the normal forms with
+strictly positive set support and coefficients in `K`.
+
+- **Theorem A (Theorem 5.1).** Every additive multiplicative map from
+  `D + Π_K` to a set-sized ring (noncommutative, nonreduced, nonunital allowed)
+  kills `Π_K` and factors uniquely through `ct`; every set-sized module is
+  annihilated by `Π_K`. For `Oz` the only unital map is `x ↦ ct(x)1`;
+  nonunital maps correspond to idempotents; unital maps from `Oz[i]` correspond
+  to square roots of `−1` (Corollaries 5.2, 5.3). Set-sized quotients are
+  exactly `ct⁻¹(𝔞)`, for `Oz` the ideals `Π` and `nOz` (Theorem 6.2); every class
+  quotient has small reflection `D/ct(J)` (Theorem 6.1). A set of maps with
+  specified nonzero kernel elements has a common nonzero monomial in all kernels,
+  and `Hom(M, Oz) = 0` for every set-sized `Oz`-module `M` (15; Corollary 5.5,
+  Proposition 7.3). A group-level strengthening (for `n ≥ 3` every
+  homomorphism from the purely infinite congruence kernel of `E_n(Oz)` to a
+  set-sized group is trivial) is in
+  [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/); its batch-32
+  Part IV extends it to every root system without `A_1` component, Steinberg
+  groups, Dorroh unitizations and perfect current Lie rings (status note after
+  Theorem 5.1).
+- **Theorem B (Theorems 8.2, 9.1).** Standard part is universal on `D + 𝔪_k`
+  and on the finite surreal and surcomplex rings (04). Supports of size at most
+  any infinite cardinal suffice for Theorem A; finite supports admit the
+  augmentation `Σ c_g ω^g ↦ Σ c_g`, and a map on the finite-support ring extends
+  to countable supports iff it factors through `ct` (the criterion is 11's; that
+  the augmentation does not extend is 04's, 11's and 15's).
+- **Theorem C (Theorem 10.10).** For the five set-sized rings of Section 11,
+  four integer parts inside `Oz` of sizes `κ^ℵ0` (03), `κ^{<κ}` (06), `κ` (08,
+  every infinite `κ`) and infinite `λ` with `λ^ℵ0 = λ` (09), and 11's lexicographic Hahn
+  ring of size `κ^{<κ}`, the least ring or module detecting any nonzero purely
+  infinite element has exactly the size of the ring, in ZFC. Generator counts:
+  `cf κ` (03, 08), `κ` (06 and 11's ring), `ℵ1` (09); no general law is
+  stated. 09 adds residue fields of size `λ`, at least `λ` non-arithmetic maximal
+  ideals and `Jac = 0` (Theorem 11.20).
+- **Theorem D (Proposition 10.3, Examples 10.4–10.5).** The field bound and the
+  exact fixed-group thresholds above.
+- **Theorem E (Section 14, from 07, one proposition of 06 and 24).** Inverting a
+  nonzero purely infinite element forces an explicit copy of `No`
+  (Theorems 14.4, 14.7); `Oz/(1+ω^a)` has no nonzero set-sized image yet
+  contains an algebraically closed field containing `No[i]`, exact cyclotomic
+  algebras (Theorem 14.15) and the Cantor algebra `LC(Z_2, E_a)`
+  (Theorem 14.19), so it is not a domain, not local and not Noetherian. From
+  24 (Section 14.9), in `GBC`: every proper class ideal of a commutative class
+  ring lies in a maximal class ideal (Theorem 14.24), and for all class rings
+  this is equivalent to global choice over `GB` (Theorem 14.30); `1 + ω^a` lies
+  in characteristic-zero maximal ideals of `Oz` and `Oz[i]` (Theorem 14.34),
+  whose residue fields are proper-class fields containing a copy of `No[i]`
+  (Corollary 14.44); in `Oz/(1 + ω^a)` a monomial `ω^b` (`b ≥ 0`) is zero iff
+  `b > na` for every ordinary `n` and a unit otherwise (Theorem 14.37), all
+  exponents outside `cvx(Za)` can be discarded (Proposition 14.40), and
+  `(1 + ω^a)`, `(1 + ω^b)` are comaximal when `a ≪ b` (Corollary 14.42); every
+  branch of the Cantor algebra lies in its own maximal ideal, so there are at
+  least `2^ℵ0` above each binomial and an `On × Z_2` family across scales
+  (Theorems 14.46, 14.48); characteristic-zero maximal ideals separate the
+  points of `Oz`, every characteristic-zero class field embeds in `No[i]`, and
+  the resulting maps `Oz → No[i]`, for instance with `ω^a ↦ −1` and
+  `ω^{a/2} ↦ i`, separate points, and those killing some `1 + ω^a` do not
+  preserve strong summability (Theorems 14.50, 14.51, 14.53, 14.55); the term-closed, strongly sum-closed
+  primes are `pA` and the support ideals `Π_k^{>H}` of convex subgroups
+  (Theorem 14.57).
+- **Theorem F (Section 15, from 03, 08, 19, 20, 23 and 27).** `Oz* = No`; the integral closure
+  `𝒩` is proper, fine-dense, of zero conductor and not set-generated
+  (Theorems 15.5, 15.12); constant slices, the complexification defect killed by
+  `2` (Proposition 15.18), no finite quotients (Theorem 15.20), no nontrivial
+  set-valued valuation of `No` containing `Oz` (Theorem 15.22); for `γ > 0` and
+  `m ≥ 2`, `X^m = ω^γ + 1` has no root in `Oz[i]` but the root `1` in every
+  set-sized image (Theorem 15.25). From 19 (Section 15.8): the extended ideal
+  `Π𝒩` is radical and `𝒩/Π𝒩` is the integral closure of `Z` in its
+  rationalization (Theorems 15.29, 15.30); every monic polynomial over `𝒩` can
+  be changed by coefficients in `Π` into one with `d` distinct positive
+  infinite roots (Theorem 15.32); `υ_T = (T − √(T² − 4))/2` is an infinitesimal
+  integral unit whose residue squares to `−1` (Proposition 15.34);
+  `𝒩/Π𝒩 ≅ Z̄[Idem]`, a finite-partition Boolean power of the ring of all
+  complex algebraic integers, semihereditary with nilpotents of every index
+  mod `p` (Theorems 15.38, 15.39, Proposition 15.40); integrally
+  `𝒩_C/Π𝒩_C ≅ (𝒩/Π𝒩)²`, also mod 2 (Theorem 15.42); every set-sized domain
+  image of `𝒩` or `𝒩_C` is `Z̄` or `F̄_p` (Theorem 15.46), and, with global
+  choice, `Π𝒩` is the common kernel of the maps to `Z̄` (Theorem 15.49).
+  From 20 (Section 15.9): for every set-sized subgroup `G ⊆ No`,
+  `𝒩 ∩ K_G = 𝒩(G)` and `Π𝒩 ∩ K_G = √(Π(G)𝒩(G))`, so integrality witnesses at
+  larger scales never help (Theorem 15.57); `𝒩 ∩ R(ω^a) = Z̄_R + ω^a R[ω^a]`
+  (Theorem 15.60); every set-sized subring of `𝒩/Π𝒩` is split by one
+  idempotent, e.g. the residue of `(1 − √(t²−1)√(t²/4−1))/2` for a fresh
+  monomial `t` (Theorems 15.65, 15.66); relative free Boolean extensions of
+  every set size, an explicit independent family `t_α = ω^{ω^α}` indexed by
+  all ordinals, and `Idem(𝒩/Π𝒩)` atomless, a proper class, with no set-sized
+  order-dense subset (Theorems 15.71–15.73), also for `𝒩_C` (Corollary 15.77);
+  one dominant coordinate adds a free Boolean family of size `|K_G|` to the
+  reduced fibre of any set-sized Hahn field (Theorem 15.70), and that reduced
+  fibre is `Z̄[Idem]` for every nonzero `G` (Proposition 15.76); no
+  set-indexed family of maps to set-sized rings is jointly faithful on
+  `𝒩/Π𝒩` (Theorem 15.79), and, with global choice, every branch map extends
+  in at least `2^κ` ways from any set of data (Theorem 15.80). With the merge:
+  `𝒩 ∩ F^03_κ = 𝒩_κ` (Corollary 15.59). From 23 (Section 15.10), for the cyclic
+  workspace `𝒜(Za) = D + ω^a k[ω^a]`, `(k, D) = (R, Z)` or `(C, Z[i])`: the
+  extended ideal `𝖨` is not radical, since `z_n = T(1+T^{1−n})^{1/n}`,
+  `T = ω^a`, has nilpotency index exactly `n` modulo it, and `⌈n/m⌉` after
+  `T = U^m` (Theorems 15.86, 15.89); an element of a finite subextension that is
+  integral over `k[T]` lies in `𝒩(Za)` iff its residues at the places over
+  `T = 0` are integral over `D`, `k𝒩(Za)` is the integral closure `𝓑` of
+  `k[T]` and `𝖨 = T𝓑` (Theorems 15.91, 15.93); the index of every nilpotent
+  and every refinement threshold is read off the minimum branch order
+  (Corollary 15.98, Theorem 15.99), and the bounded-denominator Puiseux limit
+  is reduced although no finite stage is (Theorem 15.100); `𝓑` is Prüfer with
+  local value group `Q` and residue field `C` (Theorem 15.103), the nilradical
+  `𝖩/T𝓑` is idempotent, not nilpotent and not finitely generated
+  (Theorem 15.105), and `gr_𝖨 𝒩(Za) ≅ 𝖡(Za) ⊕ W 𝖡^co(Za)[W]` (Theorem 15.106);
+  fresh ramification at unused finite places splits every subring of size
+  below `2^ℵ0`, so all four fibres have atomless Boolean algebras of
+  cardinality and order density `2^ℵ0`, with `2^(2^ℵ0)` branches over zero
+  (Theorems 15.109, 15.111, Corollaries 15.110, 15.112); the coefficient fibre
+  has a periodic free resolution and infinite global and weak global dimension,
+  which does not transfer to the arithmetic fibre (Theorem 15.116,
+  Proposition 15.117); and with algebraic coefficients the Boolean algebras are
+  the Cantor algebra (Theorem 15.118). From 27 (Section 15.11): for every
+  infinite cardinal `κ` and every set of at most `κ` surreals there is a real
+  closed `𝔼 ⊆ No` of cardinality `κ` containing it whose integer part
+  `B_𝔼 = 𝔼 ∩ Oz` has `Frac B_𝔼 = 𝔼` and an idempotent constant-term ideal
+  (Proposition 15.123); the local ring `𝔏` at that ideal has residue field
+  `Q`, `𝔫² = 𝔫` and completion `Q`, while its henselization is reduced, local,
+  faithfully flat, of cardinality `κ`, with exactly `2^κ` minimal primes, each
+  with fraction field `𝔼[i]`, generic fibre `LC(X, 𝔼[i])` with `|X| = 2^κ` and
+  a free Boolean algebra on `κ` generators among its idempotents, and no map to
+  an ordered extension of `𝔼` (Theorem 15.120); every finite generic branch
+  survives localization (Lemma 15.126); strict henselization is
+  `𝔏^h ⊗_Q Q̄`, with generic fibre `LC(X × Gal(Q̄/Q), 𝔼[i])`, and the Gaussian
+  generic fibre is `𝒢 × 𝒢` (Theorems 15.137, 15.139); finite projectives over
+  `𝒢` are classified by locally constant ranks, `Pic = 0`,
+  `K_0 ≅ LC(X, Z)`, `FinÉt(𝔏^h) ≃ FinÉt(Q)`, and the centred Riemann–Zariski
+  space has `2^κ` components (Theorem 15.140, Proposition 15.141,
+  Corollary 15.142, the last by de Felipe–Teissier).
+- **Theorem G (Section 16, from 10, 16, 18, 22 and 25).** `Num_r(Oz) = Π[X] ⊕ Int(Z^r)` with
+  universal set-sized image `Int(Z^r)` (Theorem 16.7); the Newton
+  least-common-multiple criterion for congruences modulo every omnific integer
+  (Theorem 16.14); the `p`-adic completion `C(Z_p^r, Z_p)` and its characters,
+  most not evaluations (Corollary 16.20, Theorem 16.22); rational self-maps of
+  `Oz`, `Oz[i]` are polynomial, nonlinear images have holes of every surreal
+  radius, and rational bijections are affine (Theorems 16.25, 16.28,
+  Corollary 16.29). For every unital `D ⊆ k ∈ {R, C}` (16): a polynomial `f` of
+  degree `d ≥ 2` over a set-sized Hahn field `K_G` and a fresh `t = ω^b`, `b > G`,
+  satisfy `f(D + Π_k) ∩ (f(t) + K_G) = {f(t)}`, every root of `f(Y) = f(t) + c`
+  (`c ≠ 0`) having a forbidden block of negative exponents in one of the first
+  `d − 1` layers with an explicit coefficient (Theorems 16.35, 16.36); the fresh
+  fiber is given by the rotational symmetries of the centered polynomial
+  (Theorem 16.40); rational self-maps of `D + Π_k` are polynomials and the
+  surjective ones are `uX + a`, `u ∈ D^×` (Theorems 16.42, 16.43); `Num_r` of
+  `D + Π_k` is `Int(D^r) ⊕ Π_k[X]` (Proposition 16.45); lower-set grids are optimal
+  tests (Theorem 16.46); fresh probes certify rational maps (Theorem 16.49); no
+  set-sized sample tests all rational self-maps (Theorem 16.51). The image gap
+  contains `x² = ω² + 1` and `X^n = aω^γ + β` (in the sibling report) and 08's
+  `X^m = ω^γ + 1` as special cases (Remark 16.37). From 18 (Section 16.8): a
+  polynomial of degree `d` preserving a discretely ordered ring `B` (or `B[i]`)
+  sends at most `d` inputs to `Z` (or `Z[i]`) unless it is an ordinary
+  integer-valued polynomial after a translation, sharp in every degree
+  (Theorem 16.56, Proposition 16.58); on `Oz`, `Oz[i]` the translation is a
+  unique purely infinite `η = −å_{d−1}/(d a_d)` (Theorems 16.59, 16.60); in
+  degree `≥ 2` at most one coset `b + D` has more than `d` preimages
+  (Theorem 16.61), and composites of two such polynomials keep one exactly when
+  they align (Theorem 16.63); a Gaussian test with `C(2n+d, 2n)` points
+  (Proposition 16.64); matrix and jet reductions (Theorem 16.65); rational
+  collapse for every discretely ordered ring with finitely many exceptions
+  (Theorem 16.66); all of this also in fixed Hahn workspaces (Corollary 16.67).
+  From 22 (Section 16.10): a rational function `P/Q` over `No` in `m`
+  variables with coordinate degrees at most `d`, coefficients supported in a
+  set-sized group `G` and `b > G`, preserves `Oz` iff it is defined and
+  `Oz`-valued on the box `{0,…,d}^m` and on the `m` grids
+  `{0,…,2d²+2d}^{j−1} × {ω^b} × {0,…,2d²+2d}^{m−j}`, at most
+  `(d+1)^m + m(2d²+2d+1)^{m−1}` values (14 for `m = 2`, `d = 1`), uniformly
+  over `K_G` (Theorem 16.70), with the Gaussian version on `C_{d+1}^m` plus the
+  same grids (Theorems 16.78, 16.79); every set of functions has common tests
+  (Corollary 16.72); a rational function defined and `Λ`-valued outside a set
+  of points of `Λ^m` preserves `Λ` (Theorem 16.75); `Num_m(Λ) ≅ Λ ⊗_D Int(D^m)`
+  (Theorem 16.80); a finite `S ⊆ D^m` tests `Λ` iff it tests `Int(D^m)`
+  (Theorem 16.82); the image ideal of a preserving polynomial is generated by
+  its Newton coefficients, or by its values on the box (Theorem 16.83);
+  mutually inverse rational maps preserving `Λ^m` are polynomial automorphisms
+  (Corollary 16.84); and a fixed Hahn workspace with value group `Γ` has a
+  fresh exponent over `G` iff the convex subgroup generated by `G` is proper,
+  in which case the certificates hold there (Proposition 16.86). From 25
+  (Section 16.11), over a real closed field `E` with a cofinal discretely
+  ordered subring `B`: every semialgebraic preserver of `B` is an
+  integer-valued polynomial on each tail (Theorem 16.95); a globally `C^∞`
+  semialgebraic map `E^r → E^{r'}` preserves `B^r` iff its coordinates lie in
+  `Num_r(B)`, global `C^{𝖣²}` sufficing at scalar graph degree `𝖣`
+  (Theorems 16.100, 16.102); for `Oz` the coordinates are finite binomial sums
+  with omnific coefficients, for `Oz[i]` in real coordinates, and holomorphic
+  ones are polynomials in `z` (Corollary 16.103, Theorem 16.115,
+  Corollary 16.116); `ω^b √x` is omnific on `Oz ∩ [0, ω^a]` iff
+  `ω^b √(ω^a − 1) ∈ Oz` iff `a ≪ b` (Theorem 16.108); for every ordinary `𝗄`
+  the bump `ω^b [x(T−x)]^𝗄 √(x(T−x))` (`T = ω^a`, `a ≪ b`) is `C^𝗄`, not
+  `C^{𝗄+1}`, maps `Oz` into `Π` and agrees with no finite family of polynomials
+  on `Oz` (Theorem 16.112); no set of sample points tests preservation of `Oz`,
+  even for `ω^b √(x² + 1)` (Theorem 16.117); and a globally smooth
+  semialgebraic nonpreserver fails on a proper class of inputs
+  (Corollaries 16.118, 16.119).
+- **Theorem H (Theorem 17.1, from 11 and 13).** The Grothendieck ring of the
+  ordinals under natural operations is not a quotient of `Oz` (every unital ring
+  map from `Oz` to it has image `Z`), answering the quotient addendum of
+  MathOverflow question 188430 (Jesse Elliott, 2014) negatively; the question's
+  only answer (Eric Wofsey) concerns transcendence degree. 13 gives the same
+  answer with the same two proofs (Remark 17.2).
+- **Theorem I (Section 13, from 12, 14, 17, 21 and 26).** For the set-sized core
+  `A_d = D + ⊕_{0≠α∈Q_{≥0}^d} K X^α ⊂ Oz` (coordinatewise exponent cone),
+  `Tor_{>0}(D, D) = 0` but `fd D = d`, with the full multigraded
+  `Tor(D, A_d/(X_i : i ∈ F))` (Theorems 13.4, 13.7, Corollary 13.8); enlarging to
+  the totally ordered cone of the same exponent group gives the nonflat
+  extension `A_d → T_Γ` with `fd D = 1`, `pd D = 2` (Theorems 13.13, 13.14). For a
+  coefficient lattice `M` of rank `r ≥ 2`, `L(M) = M + Π` has first syzygy
+  `Π^{r−1}` and is not finitely presented or flat; over `A_d` and `T_Γ`,
+  `fd L(M) = d`, resp. `1`, and cyclic quotients `A/J` have `fd = d + 1`, resp. `2`
+  (Theorem 13.11); `L(M) ⊗ L(N) ≅ Π ⊕ (M ⊗ N)` with torsion
+  `ker(M ⊗ N → MN)` annihilated exactly by `Π` (Theorem 13.18); the nonlinear Rees
+  equations are exactly the ordinary homogeneous relations among the generators,
+  the first one for `(ω, 2^{1/d} ω)` in degree `d` (Theorems 13.21, 13.22,
+  Corollary 13.23); `L(M) ≅ L(N)` iff `N = cM` (Theorem 13.24); invertible ideals of
+  a real order realize its Picard group under torsion-free tensor product
+  (Theorem 13.25, with `Z[√10]`); `L(M)* = Π` and `L(M)** = 𝒜_{k,k}`
+  (Theorem 13.27). From 17 (Section 13.9): over `Oz`, `L(M)` with `rank M ≥ 2`
+  (for example `(ω, √2 ω)`) has no presentation by sets, so `Oz` and `Oz[i]`
+  are neither coherent nor finite-conductor even for intersections of two
+  principal ideals (Theorem 13.29); `e_α ↦ ω^{−α}` embeds 11's lexicographic
+  rings `R^11_{Γ,<κ}` in `Oz` (Lemma 13.30), over which every finite
+  presentation of `L(M)` needs exactly `κ` relations (Theorem 13.31);
+  `Tor_1(J, A/J') ≅ Tor_2(A/J, A/J') ≅ ker(M ⊗ N → K)`, of rank
+  `rs − rank(MN)` (Theorem 13.34), the self-`Tor` rank lies between
+  `r(r−1)/2` and `r(r−1)`, the top value detecting a field (Corollary 13.36,
+  Proposition 13.37); the ideals `(ω, αω)` form `2^ℵ0` isomorphism classes,
+  the `GL_2(D)` orbits of `α` (Theorem 13.38); `End(J)/Π` is an order in a
+  field whose degree divides `rank M`, and every order occurs (Theorem 13.39,
+  Corollary 13.40). From 21 (Section 13.10): `pd_{A_d} D = d + 1` for every
+  `d ≥ 1`, one more than `fd D = d`, and `pd_{A_d} Π_d = d`; more generally the
+  quotient by the open coordinate faces in a nonempty `U ⊆ [d]` has flat
+  dimension `|U|` and projective dimension `|U| + 1`, with a countably generated
+  free Koszul telescope resolution and `D^N/D^(N) ↪ Ext^{|U|+1}` (Theorems
+  13.44–13.46, Corollary 13.47); over `A_d`, `pd L(M) = d + 1` and
+  `pd A_d/J_g(M) = d + 2` for `rank M ≥ 2`, so `gl.dim A_d ≥ d + 2` when
+  `K ≠ Frac D` (Theorem 13.48). Over `T_Q`, and over `Oz`, `Oz[i]` read in two
+  universes: the lattice quotient has a flat DGA resolution of length two
+  (Theorem 13.50); `Tor_1(A/J_g(M), A/J_h(N))` is `(𝖫 + Π)/X^e(MN + Π)`, where
+  `𝖫` is `N`, `M` or `M ∩ N` as `g < h`, `g > h` or `g = h`: a window of scales
+  below `e = min(g, h)` with boundary `k/MN`, while `Tor_2` is 17's scale-free
+  kernel and `Tor_{≥3} = 0` (Theorem 13.51); for orders `𝔬_1, 𝔬_2` with fields
+  `K_1, K_2` over `F = Frac D`, `rank Tor_2 = [K_1:F][K_2:F] − [K_1K_2:F]`, zero
+  exactly under linear disjointness (Theorem 13.53); the self-`Tor` product is
+  `xy = b(x) ⊗ b(y) − b(y) ⊗ b(x)`, and `Tor_2` is an extension of the symmetric
+  relations `ker(Sym² M → M²)` by `Λ² M` (Theorem 13.54, Corollary 13.55); the
+  data `(𝔬, 1, 𝒯(𝔬, 𝔬))` recover the multiplication of an order (discriminants
+  8, 12, 5, −108 in the examples), while derived constant-term reduction gives
+  only the square-zero `D ⊕ M[1]` (Theorems 13.56, 13.57). From 26 (Section
+  13.11), over the core `A_𝒞` of any pointed full-dimensional rational
+  polyhedral cone `𝒞 ⊆ R^d`: face ideals are flat of projective dimension one
+  with `I_F ⊗ I_G ≅ I_{F∨G}` (Theorems 13.61, 13.62); radical coefficient-full
+  monomial ideals are sums over face antichains (Theorem 13.63), and the flat
+  dimension of their quotients is the top degree of join-complex homology, at
+  most `d`, detected by cap modules (Theorem 13.70), with
+  `max{2,h} ≤ pd ≤ h + 1` (Corollary 13.71); the quotient keeping a face `F`
+  has flat dimension the largest dimension of a face disjoint from `F`
+  (Theorem 13.75), so `fd D = d`, the cone is simplicial iff all facet
+  quotients have flat dimension one (Theorem 13.79), and cube cones have facet
+  quotients of flat dimension `d − 1` (Theorem 13.81); every such quotient is a
+  homological epimorphism (Theorem 13.72); over a principal ideal domain `D`,
+  modules through `ct` have flat dimension 1 if torsion and `d` otherwise
+  (Theorem 13.85); the passage to a total-order core or to `Oz` fails the
+  equational flatness criterion for `d ≥ 2` (Theorem 13.88).
+
+## What the report does not claim
+
+- All twenty-four sources are AI-assisted, unrefereed drafts that call their main
+  results candidate original or proposed contributions; priority is not
+  certified, no named conjecture (Conway's refinement problem, factorization,
+  GCD) is claimed solved. The repository now has actual omnific and Gaussian
+  omnific modules and shared support, degree, unit and ideal results, mapped
+  through the sibling report's labels in `docs/FORMALIZATION.md`. The universal
+  quotient and later cardinal classifications still need their own formal
+  proofs. The merge results are no more refereed than the sources.
+- The universal theorem is not an isomorphism `Oz ≅ Z`, does not classify class
+  ideals, class modules, automorphisms or factorizations, concerns only
+  multiplicative maps (additive coefficient extraction detects `ω^γ`), and fails
+  verbatim over every fixed set-sized exponent group. Size alone and
+  divisibility alone do not prove it.
+- The exact thresholds are proved for the five constructions and the two
+  fixed-group examples only; the general fixed-group question (Question 18.1)
+  stays open, and no classification of exponent groups or support restrictions
+  is claimed.
+- `pd_A Z` for the five constructions is known only to be at least `2`, except
+  that it is exactly `2` when the tail is countably generated (Question 18.3,
+  partly answered; the same holds for 17's countable model, while for its
+  uncountable models the projective dimensions of `Π^11_κ` and `L(M)` and an
+  upper bound on the weak global dimension stay open, Question 18.15);
+  nonarithmetic class primes were treated conditionally and
+  their existence was not claimed (Question 18.4) before batch 34; 24 now
+  proves their existence in `GBC` (global choice), not in the report's base
+  theory (NBG with choice for sets), and they are not classified; the
+  idempotents and primes of `Oz/(1+ω^a)` are not classified either (24
+  determines its monomials, not its ideals).
+- "Flat dimension one" is a property of rings whose exponents form a totally
+  ordered cone (the five constructions, `T_Γ`, 14's `A_0`, the class ring in the
+  two-universe reading); it is not asserted for arbitrary subrings of `Oz`, whose
+  flat dimensions are unbounded (Remark 13.16). Nothing is claimed about the
+  homological dimensions of the class ring `Oz`; the global and weak global
+  dimensions of the general cores are open (Question 18.12, partly answered;
+  the coefficient-field core `K[ℚ≥0]` has weak global dimension one). Before
+  21, `pd_{A_d} D` for `d ≥ 2` was known only to be `d` or `d + 1`. The
+  finite-support cores are outside Theorem A: the augmentation detects their
+  tails (Proposition 13.2).
+- The support-threshold theorem is stated for `k ∈ {R, C}` as in 04 and 11,
+  and no Gaussian analogue of 10's congruence criterion is given. 16's
+  surjectivity rigidity is one-variable and for rational functions only.
+- 17's relation counts and `Tor` groups concern the lattice ideals `J_g(M)` and
+  constant matrices at one common scale, not arbitrary finitely generated
+  ideals or several support levels; over the class ring `Hom` means scalar
+  codes, and `Tor` and flat dimensions are taken over set-sized models only.
+  The `D + M` mechanism and the relation module `M^{n−1}` are classical (Dobbs,
+  Dobbs–Papick).
+- 21's value `d + 1` concerns the set-sized cores `A_d`, not `pd Z` over `Oz`;
+  it claims no exact global or weak global dimension, only the lower bounds
+  `d + 2` and `d + 1` when `K ≠ Frac D`, and its resolutions control
+  specified modules, not all ideals. The review additionally computes weak
+  global dimension one for `d = 1`, `D = K`. Its class-ring statements are read under a two-universe convention.
+  The vanishing of `Tor_2` is not `Tor`-independence (`Tor_1 ≠ 0`), and the
+  decomposition of `Tor_1` is not an `A`-module splitting. Reconstruction needs
+  the boundary embedding and the distinguished `1`; an abstract `Tor_2` or an
+  abstract derived equivalence is not claimed to recover an order. The DGA is
+  not claimed cofibrant or `E_∞`-formal. Modules killed by the tail have
+  `Tor_{>0}(D, E) = 0` although `pd D = d + 1`.
+- 18's dichotomy is one-variable (`XY` defeats any bound in several
+  variables); its coefficient test is relative to exact coefficient operations;
+  the Gaussian tests compared are not claimed minimal; nothing is said about
+  `No` or the finite surreals.
+- 19 does not determine `Idem(𝒩/Π𝒩)` (its size, atoms, triviality or whether
+  it is a set) and gives no membership test for `𝒩`; set-sized images with
+  zero divisors are classified only up to the factorization through `𝒩/Π𝒩`,
+  which 19 does not assert to be a set; the detection theorem uses global
+  choice; no Bézout property of `Oz` or `𝒩` is claimed, and the fibres mod `p`
+  are neither reduced nor fields.
+- 20 determines of `Idem(𝒩/Π𝒩)` that it is nontrivial, atomless and a proper
+  class with free families of every set size, not its isomorphism type (it
+  need not be free, complete or saturated; no infinite joins; no
+  `𝖡_R ≅ 𝖡_R × 𝖡_R`). Its fixed-workspace results concern reduced fibres:
+  radicality of `Π(G)𝒩(G)` and atomlessness of `Idem(𝖢(G))` in a fixed
+  workspace are not asserted (for cyclic groups 23 has since decided both:
+  not radical, atomless). Its descent is not a decision procedure, and
+  its matrix corollary computes no projective or global dimension. Its
+  specializations are maps of finite branch algebras, not evaluations of
+  Laurent series; its support projection is not a ring map. The merge's
+  decision of 03's candidates covers `H` polynomial in a fresh monomial
+  (in particular `H` supported in one `Za`), not every `H ∈ Π`.
+- 22's certificates are relative to exact field operations and exact
+  membership, not algorithms, and choosing the fresh exponent is not an
+  effective operation; neither its rational bound nor its Gaussian grid is
+  claimed optimal, and the lower bound `(d+1)^m` concerns fixed point-value
+  tests only. Its no-set-test theorem needs the full proper class and fails for
+  set-sized rings; its workspace criterion says when its method applies, and
+  its failure for Archimedean value groups is a failure of the method, not an
+  impossibility. It classifies no arbitrary, algebraic or semialgebraic maps;
+  its birational corollary assumes a rational inverse and makes no Jacobian
+  claim; image ideals are not assumed principal; its tensor isomorphisms are
+  read through finite sums or in a containing universe. The D-ring collapse
+  and the binomial basis are credited, not claimed, and its novelty list is
+  incomplete (see below).
+- 23's answers concern the cyclic groups `Za` only (real and Gaussian pairs):
+  no classification of exponent groups or support restrictions, not even of
+  groups with a discrete convex component; the Hahn field over `Qa` is open
+  (Question 18.21), and its Puiseux result concerns bounded denominators only
+  and does not identify the limit fibre with a finite-stage one. The
+  uncountable Boolean isomorphism types are not determined (no freeness,
+  completeness, infinite joins, product representation or free presentation
+  follows from the `2^(2^ℵ0)` count). The weak global and global dimensions of
+  the arithmetic fibre are open; the periodic resolution is exact over the
+  coefficient fibre only, and nothing is transferred to `Oz`. The residue
+  criterion is not a decision procedure for arbitrary coefficients or normal
+  forms. The finite checks (18,040 assertions) count assertions, not theorems,
+  and prove no integral closure, place, summability, cardinality, normal-form
+  embedding or infinite resolution. No Lean, no repository build, no referee;
+  priority not certified (targeted literature and repository comparison); no
+  named factorization conjecture or general theory of surreal supports is
+  claimed. Integral dependence, normalization of curves, valuations, square
+  classes, periodic resolutions (matrix factorizations), Newton–Puiseux, the
+  lifting of idempotents and the countable atomless Boolean algebra are
+  classical. No continuum hypothesis, no regularity of `2^ℵ0`, no class Zorn
+  lemma or measurable cardinal is used.
+- 24's results on maximal ideals hold in `GBC`; they are relative to a global
+  well-order, not canonical or choice-free, membership in the ideals may be
+  undecidable, and the recursion is not an algorithm. `CMIT ⇔ GC` concerns all
+  class rings and gives no lower bound for `Oz` (Question 18.28 asks for one).
+  The `2^ℵ0` maximal ideals per scale are a lower bound, not a spectrum; no
+  cardinality of the class of class ideals and no class Zariski space is
+  formed; the residue fields contain an algebraically closed class field and a
+  copy of `No[i]` and embed in `No[i]`, but are not claimed algebraically
+  closed (Question 18.30) or isomorphic to `No[i]`; the maps to `No[i]` preserve
+  neither order, strong sums nor exponentiation, and form a separating family,
+  not a set-indexed product or one injective map; the support-prime
+  classification needs both closure hypotheses and does not classify all
+  primes.
+- 25 classifies only globally `C^∞` (or `C^{𝖣²}` at graph degree `𝖣`)
+  semialgebraic preservers; `𝖣²` is not claimed optimal and is stated for
+  scalar graph descriptions after quantifier elimination. Finitely smooth
+  preservers are controlled on their tails only, and the bounded-region ideal
+  is open (Question 18.37); the rank-one obstruction concerns one multiplier
+  mechanism; the shears are not ring automorphisms and make no Jacobian claim;
+  the surcomplex statements are real-algebraic; its no-set theorem excludes
+  coefficient-independent tests only. Nothing is claimed for arbitrary class
+  functions or all polynomial automorphisms.
+- 26 computes flat dimensions of the geometric radical monomial quotients of
+  set-sized cone cores, not `pd = h + 1` for `h ≥ 2` (except for simplicial
+  cones, through 21), not any all-module weak or global dimension of the
+  cores, `Oz` or `Oz[i]`, not arbitrary ideals and not infinite Hahn supports;
+  its face-lattice reconstruction needs the marked grading; `β_{p,G}` count
+  flat summands, and the reduced resolution is not unique; arithmetic ideals
+  and restricted coefficients are excluded; Miller's real-polyhedral theory
+  and Geist–Miller's theorems are not identified or reproved; the arithmetic
+  dichotomy concerns modules through `ct` only; the nonflatness concerns the
+  displayed two-ray relation for `d ≥ 2` and denies no embedding; no
+  recollement or compact generation is claimed.
+- 27's henselizations and spectra are those of set-sized local rings, not of
+  `Oz`; `Idem(𝒢)` and `X` are not classified (atomlessness, isolated points, the
+  Cantor space for `κ = ℵ0` unresolved, with the equivalence now explained);
+  `𝔏^h` and `𝔏^h[i]` are local, not products. The former has no `√−1`,
+  whereas the latter contains the adjoined i. The rings are non-Noetherian;
+  their exact dimension is undetermined, but the local ring and both its
+  henselizations have the same dimension, at least one. `X ≇ X ⊔ X` is
+  not asserted. The valuation and normalization-point correspondences use
+  de Felipe–Teissier. The finite étale equivalence concerns `𝔏^h`, not
+  `B_𝔼` or `Oz`. The question review adds perfect-complex object and tensor
+  formulas, not higher K-groups or general derived morphisms. There is an
+  a posteriori birthday bound, but no prescribed uniform cutoff. The
+  mixed-characteristic notes compute completions and complexification,
+  not maximal branch counts. Independent checking of the
+  support-to-localization argument remains warranted.
+- Section 18.2 keeps every limitation stated by a source, numbered per source:
+  03 (19 items), 04 (14), 06 (14), 07 (13), 08 (13), 09 (12), 10 (12), 11 (12),
+  12 (12), 13 (10), 14 (12), 15 (11), 16 (8), 17 (12), 18 (10), 19 (12),
+  20 (14), 21 (17), 22 (18), 23 (13), 24 (20), 25 (19), 26 (15), 27 (18), and
+  20 for the merge (350 in all). 12's item (3) carries a
+  note that 21 determines the projective dimensions. 03's item (10) carries a note that
+  19 classifies the domain images, 03's item (8) a note that the descent now
+  holds (Corollary 15.59), 19's items (1), (2), (7) and (9) notes on what
+  20 adds, and 19's item (9) and 20's item (2) notes on what 23 adds. 04's
+  item (2), 07's items (3), (11), (12), 08's item (10) and 22's item (10) carry
+  notes on what 24 and 25 add, and 12's item (4) a note on what 26 adds
+  (batch 34). Section 18.3 lists sixty-six questions, merging
+  duplicates across sources, with their status: one answered (Question 18.2),
+  one answered only for specific examples and constructions (Question 18.1,
+  which also absorbs 13's and 15's cardinal-bound questions), nine partly
+  answered (Question 18.3; Question 18.4, whose existence clause 24 answers
+  with global choice (status note of batch 34); Question 18.10, whose second clause, on what an
+  automorphism of `Oz` does inside `Π`, is answered in the omnific-preserving
+  report (`opa:as:cor:invisible`; status note of batch 31); Question 18.11, whose clause on set-sized images of
+  `𝒩` is answered for domain images by 19, whose descent clause is answered by
+  Corollary 15.59 and whose fixed-subgroup clause is answered for witnesses at
+  larger scales by 20 and, by a residue criterion, for cyclic groups by 23
+  (status note of batch 32); Question 18.12, whose first clause, `pd_{A_d} D`, is
+  answered by 21, and whose non-simplicial clause 26 answers for flat
+  dimensions of radical monomial quotients (status note of batch 34); Question 18.14, whose part (a) is partly addressed by 18's
+  tests and 22's lifting theorem and whose part (c) 22 answers for its
+  single-scale rational certificates, Proposition 16.86; Question 18.15,
+  answered for `κ = ℵ0`, with part (c) partly
+  addressed by 21's framed reconstruction; Question 18.17, whose part (a) 20
+  answers and whose part (b) it answers for reduced fibres, and whose
+  fixed-workspace clause of (b) 23 decides for cyclic groups, radicality
+  negatively and atomlessness positively, with the bounded-denominator Puiseux
+  class radical, and whose part (c) 23 addresses for cyclic groups by a
+  criterion that is not an algorithm; status note of batch 32; Question 18.20,
+  22's, whose first clause of (a) 25 answers for globally smooth semialgebraic
+  maps and whose certificate clause it answers negatively for
+  coefficient-independent tests, with (d) partly addressed by 16's general-`D`
+  results and Remark 16.88; status note of batch 34), one settled for
+  cardinal support bounds only (Question 18.8), and fifty-four open (Question
+  18.5 is partly addressed by 24's monomial cutoff, truncation and
+  comaximality, status note of batch 34; Question 18.18
+  is 20's question on the isomorphism type of the Boolean algebra; Question
+  18.19 is 22's; Question 18.16(c) is not
+  addressed by 22, whose lifting theorem concerns ordinary test points only;
+  Questions 18.21 to 18.27 are 23's: the Hahn field over `Qa`, the uncountable
+  Boolean types, residue gluing, the homological dimensions of the arithmetic
+  fibre, the completed coefficient ring, non-monomial refinements and a formal
+  development; Questions 18.28 to 18.34 are 24's: choice strength for `Oz`,
+  definable kernels, algebraic closedness of the residue fields, size over
+  the Hahn core, larger same-fibre branching, one closure hypothesis, formal
+  verification; Questions 18.35 to 18.44 are 25's: the optimal regularity,
+  vector graphs, the bounded-region ideal, multipliers for one branch, rank,
+  o-minimal expansions, groups of `C^𝗄` diffeomorphisms, holomorphic
+  regularity, invisibility in `Π`, formal verification; Questions 18.45 to
+  18.54 are 26's: flat extensions of cones, recognition without named
+  monomials, infinite supports, exponent density, nonpolyhedral cones,
+  arithmetic rings beyond principal ideal domains, efficient reduced
+  resolutions, characteristic-sensitive examples, derived structure, a staged
+  formalization. The review answers 18.45 under the fixed-space,
+  full-dimensional hypotheses; the other nine remain research questions.
+  Questions 18.55 to 18.66 are 27's: the exact Boolean algebra,
+  dependence on the hull, enlarging an integer part, normalization versus
+  henselization, specialization in the local spectrum, the valuation
+  components, mixed characteristic, finite étale algebras before
+  localization, birthday bounds, class-level geometry, higher invariants, a
+  formal verification).
+  22's question on sharp Gaussian constant tests is merged into Question
+  18.14(a). 24's question on the internal algebra of `Q_a` (its
+  Question 12.6) is merged into Question 18.5, and 25's questions on
+  coefficient-adapted certificates and on varieties (its Questions 12.7, 12.9)
+  into Question 18.20(a), (b); 26's Questions 13.1 and 13.2 (projective endpoint,
+  weak and global dimension) are merged into Question 18.12. 19's membership
+  question is merged into Question 18.11, 20's questions on fixed-workspace
+  radicality and effective certificates into Question 18.17(b), (c), 23's
+  questions on several ordered scales and on algorithms for algebraic Laurent
+  input (its Questions 10.2 and 10.7) into Question 18.17(b), (c), and 21's
+  three questions (exact global and weak global dimensions of the cores,
+  several support levels, how much framing is needed) into Questions 18.12,
+  18.13 and 18.15(c).
+- The finite checks validate finite identities only; they verify no infinite
+  support, class-size, cardinal, maximal-ideal, `Ext`, flatness or priority
+  statement.
+
+## Corrections and stale statements
+
+- **Repository searches.** The audits of 06 (`06-universal-quotient-source_audit.md`,
+  §1), 08 and 11 report a repository code search for "omnific" with no hits,
+  and 09 an incomplete result; so do 13 (its §11.2) and 15 (its §13.2 and
+  `15-set-sized-representations-SOURCE_AUDIT.md`). *Correction (23 September
+  2026):* at their pins (including `71e9606` for 13–16) the repository already
+  defined `Oz = Π ⊕ Z` at `found:eq:omnific` in the foundations report and used
+  omnific integers in the trigonometry, gamma–zeta, analysis and
+  euclidean-three-space reports; what it lacked was a report on omnific
+  arithmetic. It now has two (this one and the sibling).
+- **Novelty of 13 and 15.** 13 calls the universal theorem and its answer to
+  Elliott's addendum proposed contributions, and 15 calls the universal theorem
+  candidate-original. Both results are in the eight batch-24 manuscripts, dated a
+  day earlier, which 13 and 15 could not see (their pin precedes `be06fc8`); they
+  are credited as independent re-derivations (Theorem 5.1, Remark 17.2). 13's and
+  15's questions on optimal cardinal bounds are answered by the threshold theorem
+  for the five constructions (Theorem 10.10) and are part of Question 18.1.
+- **16's repository search** for integer-valued polynomials was accurate at its
+  pin; the collection now has 10's treatment (Section 16).
+- **Third batch.** 17 (pin `71e9606`) proposes as additions the constant-matrix
+  descent criterion, the coefficient-lattice Hom and isomorphism
+  classification and the multiplication-kernel computation of `Tor`, with
+  consequences for orders and ideal powers. None was in the repository at its
+  pin, but the collection now prints the descent criterion, the Hom
+  classification, the tensor kernel and the power growth as 14's and the
+  intersection `(ω^γ) ∩ (αω^γ) = ω^γ Π` as 12's (Theorems 13.9, 13.18, 13.23,
+  13.24, 13.28); 17 is credited there as an independent second source, and its
+  "49 main texts" in the catalogue is a snapshot. 18 (pin `befe739`) reports
+  that repository searches for integer-valued polynomial and rational
+  terminology found nothing; at its pin source 10 was present only as
+  `code/10-omnific-arithmetic-checks.py`, and the collection now prints 10's and
+  16's polynomial arithmetic (Section 16). 19 (pin `befe739`) reports that the
+  catalogue lists nine omnific manuscripts awaiting integration; true at its
+  pin, since written. 18 and 19 saw only 06's text of this report, not 03's
+  normalization, 10's polynomials or batch 25.
+- **Fourth batch.** 20 (pin `4cdeaec`, which also precedes the writing of this
+  report) saw only 06's text here and cites this report under 06's title and
+  date; it read 19 as a saved draft and does not assert that 19 was in the
+  repository (it was placed later, in `f4c9504`, and is now Section 15.8). Its
+  appendix and `20-boolean-branching-SOURCE_AUDIT.md` say that the catalogue
+  separates the main reports from companions awaiting integration; true at its
+  pin. 20 proposes support-local descent and the dominant-scale branch
+  construction as new; the identification of a fresh scale with Laurent
+  blocks over the old Hahn field is 16's (Theorem 16.31, Corollary 16.32),
+  not in the repository at 20's pin, and is credited (Lemma 15.62). 20's
+  own statements are otherwise accurate; no error was found.
+- **Fifth batch.** 21 (pin `9693b28`, after the writing of the second merge
+  and before that of the third, `aae58bb`) quotes Proposition 13.12(iii) as
+  `d ≤ pd_{A_d} D ≤ d + 1` with the next paragraph leaving the value
+  undetermined, and (iv) as bounds for lattice modules; both were accurate at
+  its pin and are now settled by 21 itself (Corollary 13.47, Theorem 13.48),
+  with pointers added beside the bounds, and the stale sentences (the
+  paragraph after Proposition 13.12, Remark 13.16, Questions 18.3 and 18.12,
+  the merge's non-claim (6)) are updated. 21 presents a uniform calculation of
+  all `Tor` groups of two lattice quotients, the self-`Tor` ranks, second `Tor`
+  as a linear-disjointness test and the `Tor` groups against constant-term
+  modules as its contributions, and calls the additive second-`Tor` formula a
+  dimension-shift consequence of the report's tensor calculation. At its pin
+  the report did not contain 17's Section 13.9 (written in `aae58bb`); the
+  second-`Tor` identification with its rank, the self-`Tor` range, the pair
+  `Z[√2]`, `Z[√3]` and the `Tor` groups against modules killed by the tail are
+  17's (Theorem 13.34, Corollary 13.36, Theorem 13.42), and 21 is credited
+  there as a further source. The "quadratic self-`Tor` example" that 21 finds in
+  the report is 12's `Tor_2(A/H, A/H) ≅ D ⊕ D` (Theorem 13.11). No error was
+  found in 21's proofs.
+- **Sixth batch.** 22 (pin `bcac55a`, which contains the writing of the
+  third merge, `aae58bb`, but not of the fourth or fifth) read the repository
+  and catalogue READMEs, the openings of the Diophantine and holonomic-rigidity
+  reports and the Diophantine report's fractions audit, not this report. Its
+  introduction (Section 1.4) and `22-finite-tests-SOURCE_AUDIT.md` (§4) say that
+  the precise statements of its proposed package were not located in the
+  material inspected. *Correction:* at its pin this report already contained
+  the Laurent-block detector at one fresh scale (Theorems 16.31, 16.33),
+  workspace-uniform rational certificates with `d + 2` values in one variable
+  and fresh probes in several (Corollary 16.50), a numerator-degree-0,
+  denominator-degree-1 function with no pole on `Oz` or `Oz[i]` deceiving any
+  set (Theorem 16.51; 16's `ω^β/(X − 1/2)` is `2ω^β/(2X − 1)`, with
+  coefficients in `Oz`), the empty-or-proper-class alternative in one variable
+  (Theorem 16.52), and Gaussian tests with a one-variable lifting of ordinary
+  test sets (Propositions 16.47, 16.64). So 22's novelty list is incomplete;
+  what is new in it is listed in the table above. Its bibliographic statements
+  and proofs contain no error found in this merge; it repeats 10's and 16's
+  results without credit because it did not read this report, and they are
+  credited (Section 16.10).
+- **Seventh batch.** 23 (pin `343dc2c`, which contains the fifth merge
+  `a8f35b5` but not the sixth) read this report's normalization, fibre and
+  branching sections; its statements that Question 18.17(b) leaves
+  fixed-workspace radicality and atomlessness open and that Theorem 15.57 keeps
+  the radical are accurate, and it credits Theorem 15.60. It presents its
+  independent family of continuum size and the cardinality of the fibre as new.
+  *Correction:* at its pin this report already stated, after Theorem 15.70,
+  that one Laurent scale carries continuum many independent idempotents over
+  `Z̄_R`, which with `G = {0}` is an independent family of size `2^ℵ0` in
+  `Idem(𝖢(Za))`; so the lower-bound half of 23's cardinality statement for the
+  reduced fibre is 20's. Its Puiseux radicality also follows from 19's
+  finite-axiom theorem (Theorem 15.51), in the report at its pin (Remark 15.102).
+  Its multiquadratic lemma is 20's Lemma 15.69. What is new in 23 is listed in
+  *Source 23* above. No error was found in its proofs; its
+  `23-omnific-ramification-RESEARCH_AUDIT.md` keeps its own notation (`N`, `B`,
+  `I = TB`, `z_n`, and `R`, `C` for the two fibres) and describes itself as a
+  targeted, not exhaustive, comparison.
+- **Eighth batch.** 24 (pin `51c1cc7`) and 25 (pin `738a390`) saw the same
+  text of this report, the one after the sixth merge (blob `ef7aef1`), not 23's
+  Section 15.10. 24's statements about the report are accurate: it refrains
+  from an unqualified Zorn argument for class ideals (Section 14.8), and its
+  README at the pin, lines 610–635, says that nonarithmetic class primes are
+  treated conditionally (Question 18.4, numbered the same then). 24 credits
+  the field core and the Cantor-type subalgebra to the report. *Correction:*
+  its Section 7 is weaker than the report at its pin, which already embedded
+  `No` in `F_a` and `No[i]` in `E_a ⊆ Q_a` (Theorem 14.4, Corollary 14.17); its
+  Corollary 9.3 is the class back-and-forth of the surcomplex-automorphism
+  report (`saut:thm:acfhomogeneity`) and of the first-κ report
+  (`fkc:sb:lem:backforth`), which it does not cite; and its recursion is the
+  mechanism of 19's and 20's class ultrafilters (Lemmas 15.48, 15.78), which it
+  does not mention. 25 accurately quotes 22's non-claim on semialgebraic maps
+  (its audit's lines 9378–9403 of the pinned article are 22's non-claim (10)).
+  *Correction:* its tail theorem generalizes 18's collapse (Theorem 16.66),
+  which it credits only as "rational-collapse context", and its no-set-test and
+  exception-removal theorems refine 16's and 22's (Theorems 16.51, 16.52,
+  16.75, Remark 16.73), credited only in general terms; all are credited in
+  Section 16.11. No error was found in either source's proofs. 25's
+  bibliography entry for Jones–Thomas–Wilkie cites a KOPS download URL whose
+  path segments `20b313d7-…-b91ab184ecc2` are repository file identifiers, not
+  Git commits. 26 (pin `7b256e0`, report blob `ef7aef1`) read this report's
+  lines 1–210 and 3300–3520 and credits 12's orthant results and 21's exact
+  projective dimension; its orthant cases re-derive 12's and 21's results
+  (credited in Section 13.11), and it does not notice that a rational simplicial
+  core is `A_d`. 27 (pin `fc27d87`, report blob `ef7aef1`) re-fetched 20's
+  `20-boolean-branching-PROOF_AUDIT.md` (blob `feea0ee`) and credits its
+  splitter; it does not cite 08's `A^08_κ` or the Diophantine report's
+  `Oz_Π` and `T² − T − ω`. *Correction:* its `SOURCES_AND_SCOPE.md` and its
+  appendix say that a repository search for "hensel" returned no match (both
+  hedge that this is not exhaustive); at its pin the word occurs in sixteen
+  `article.tex` files, among them the Diophantine report (`odg:ex:hensel`) and
+  this report (the Kuhlmann bibliography entry). No error was found in 26's or
+  27's proofs.
+- **Prior manuscripts.** 03's `SOURCE_NOTES` calls its companion draft
+  (`omnific_integers(1).tex`) not redistributed, and 04's audit calls its prior
+  manuscript (`omnific_integers_diophantine.tex`) absent from the pinned tree.
+  They are manuscripts 05 and 02 of the sibling report; 14's "companion
+  manuscripts" (the same files and *Cardinal Visibility and Normalization*) are
+  manuscripts 02 and 05 of the sibling report and 03 of this one.
+- **Literature.** 09 (text and audit) credits "Proposition 8.2.1 on
+  separated-scale division" of L'Innocente–Mantova; the separated-scale
+  factorization is their Fact 8.0.1 (Gonshor's Theorem 8.6) with the example on
+  p. 46, as 11 cites, and Proposition 8.2.1 is the truncation criterion for
+  divisibility that 08 cites (Section 4.2).
+- **Sources.** 03's source prints "C e B[i]" for `C ≠ B[i]` (Proposition 15.18);
+  09's hypothesis `λ ≥ 2^ℵ0` follows from `λ^ℵ0 = λ` for infinite `λ` (Section 11.4); 04's remark
+  that its `Q ⊕_lex Q` example involves "only a countable family" is true but
+  misleading (Remark 10.6); 06's remark on `|R_κ/xR_κ|` needs no cardinal
+  hypothesis (Section 12). 12 assumes `c² ∈ D` for the flat dimensions `d + 1` and
+  `2` of its cyclic modules but needs it only for its `Tor_2` formula
+  (Theorem 13.11), and gives only bounds for projective dimensions that are exact
+  in rank one (Proposition 13.12; 21 has since determined them for every `d`,
+  Corollary 13.47, Theorem 13.48). 21 repeats 17's `Tor` results without credit
+  (it could not see them); they are credited (Section 13.10). 14 credits the sibling report's example
+  `[1:√2]` but not its rationality theorem for primitive directions, of which 14's
+  unimodular-direction criterion is the Gaussian and principal-ideal extension.
+  17 assumes `κ` uncountable for its relation counts, but its proofs use only
+  regularity, so `κ = ℵ0` is included (Remark 13.32). 19 reproves four results
+  of 03 without credit (it could not see them); they are credited
+  (Section 15.8). 18's question on minimal tests with omnific nodes is settled
+  for `Oz` by 16's optimality theorem and stays open for `Oz[i]`
+  (Question 18.16). 17 cites Dobbs (1975) for the relation module `M^{n−1}`;
+  that page-level attribution was not verified for this merge.
+  No source contains a false theorem.
+- 07's audit describes the staging directory at its pin (Gamma–zeta archives),
+  and 15's audit says `docs/new` held only its README at its pin; both are
+  snapshot statements.
+- The shipped audit files keep these statements verbatim. Several delivered
+  files name files that are not shipped: the source `.tex` and `.pdf` files
+  (`article.tex`, `omnific_small_quotients.tex`, `omnific_set_shadows.tex`,
+  `omnific_homological_dimension.tex`, and others), the hash blocks of
+  `04-universal-residue-build_report.json` and
+  `06-universal-quotient-build_audit.json`, the source packages' `SHA256SUMS.txt`
+  files, and the original script names used by the Makefiles and build scripts
+  (for the third batch: `18-polynomial-rigidity-build.sh` expects `article.tex`,
+  and `19-normalization-fibres-build.sh` expects `article.tex`, `checks.py` and
+  `checks.txt`; the build records `17-relations-arithmetic-build_report.json`
+  and `18-polynomial-rigidity-build_report.json` describe PDFs that are not
+  shipped; for the fourth batch: `20-boolean-branching-Makefile` expects
+  `article.tex` and `verify.py`, `20-boolean-branching-BUILD_REPORT.json`
+  describes 20's own 24-page PDF, and the audit files name
+  `verification_results.json` (here
+  `data/20-boolean-branching-verification_results.json`) and 20's saved copies
+  of 19 (`article(20260923-180548).tex` and its PDF), which are neither shipped
+  nor in the repository; for the fifth batch: `21-derived-arithmetic-build.sh`
+  and `21-derived-arithmetic-build.ps1` run pdfLaTeX on `article.tex` in their
+  own directory, which is not shipped there, and
+  `21-derived-arithmetic-provenance.json` describes 21's own 25-page PDF and
+  build; 21's delivered `SHA256SUMS.txt` was verified at placement and
+  dropped; for the sixth batch: `22-finite-tests-build.sh` and
+  `22-finite-tests-build.ps1` run pdfLaTeX three times on `article.tex` in
+  their own directory, which is not shipped there;
+  `22-finite-tests-SOURCE_AUDIT.md` names 22's own `verify.py`, verification
+  reports and 24-page PDF under their delivery names (here
+  `code/22-finite-tests-verify.py` and
+  `data/22-finite-tests-verification_report.{json,txt}`; the PDF is not
+  shipped); 22's delivered `MANIFEST.sha256` was verified at placement and
+  dropped; for the seventh batch: `23-omnific-ramification-build.sh` and
+  `23-omnific-ramification-build.ps1` run `verify.py` and then pdfLaTeX three
+  times on `article.tex` in their own directory, neither of which is there
+  under that name; `23-omnific-ramification-BUILD_REPORT.json` describes 23's
+  own 25-page PDF (not shipped) and records SHA-256 hashes of `article.tex`,
+  `article.pdf`, `verify.py` and `verification.json`: the last two match
+  `code/23-omnific-ramification-verify.py` and
+  `data/23-omnific-ramification-verification.json`, and the first two match
+  the delivered manuscript and PDF, which are not shipped; the audit names
+  `verify.py` under its delivery name; 23's delivery README is not shipped, and
+  its package had no checksum manifest; for the eighth batch:
+  `24-class-residues-build.sh` and `24-class-residues-build.ps1` compile
+  `article.tex` three times into `.build`, copy the result over `article.pdf`
+  and run `code/verify.py`, all relative to their own directory, where none of
+  these exists under that name (do not run them here);
+  `24-class-residues-verify.py` writes `../data/verification.json` relative to
+  itself by default, which here would be a new, unprefixed
+  `data/verification.json`; `data/24-class-residues-verification.txt` is
+  byte-identical to the JSON record; `24-class-residues-build_report.json`
+  describes 24's own 26-page PDF and records SHA-256 hashes of its
+  `article.tex` and `article.pdf`, which match the delivered manuscript and
+  PDF (not shipped); the audit and the manuscript's appendix name
+  `code/verify.py`, `data/verification.json`, `data/build_report.json` and
+  24's `SHA256SUMS.txt` (verified at placement and dropped); 24's delivery
+  README is not shipped. `25-semialgebraic-smoothness-build.sh` and
+  `25-semialgebraic-smoothness-build.ps1` run pdfLaTeX three times on
+  `article.tex` in their own directory, which is not shipped there, and 25
+  says that the PowerShell script was never executed;
+  `25-semialgebraic-smoothness-verify.py` writes
+  `<parent of its directory>/audit/verification.json` by default, which here
+  would create a new `audit/` directory in this report; 25's delivery paths
+  `audit/PROOF_AUDIT.md`, `audit/SOURCE_AUDIT.md`, `audit/verification.json`,
+  `audit/build_report.json` and `code/verify.py` are here
+  `25-semialgebraic-smoothness-PROOF_AUDIT.md`,
+  `25-semialgebraic-smoothness-SOURCE_AUDIT.md`,
+  `data/25-semialgebraic-smoothness-verification.json`,
+  `data/25-semialgebraic-smoothness-build_report.json` and
+  `code/25-semialgebraic-smoothness-verify.py`; its build report describes its
+  own 23-page PDF and records nine SHA-256 hashes, all verified: those of
+  `README.md`, `article.tex` and `article.pdf` match the delivered files (not
+  shipped), the other six match the shipped files; 25's delivery README (which
+  asks for Python 3.10 or later) is not shipped; `26-face-topology-Makefile`
+  runs `python3 verify.py` and `latexmk` on `article.tex` in its own directory,
+  neither of which is there under that name, and `26-face-topology-verify.py`
+  always writes `verification_results.json` beside itself (here a new,
+  unshipped `code/verification_results.json`), with an elapsed-time field that
+  varies between runs; `26-face-topology-BUILD_REPORT.json` describes 26's own
+  30-page PDF and records no hashes; the audits name `verify.py`,
+  `verification_results.json` and 26's `SHA256SUMS` (verified at placement and
+  dropped); 26's delivery README (Python 3.10 or later) is not shipped;
+  `27-henselian-branching-build.sh` runs `code/verify.py --output
+  data/verification.json` and then pdfLaTeX on `article.tex`, relative to its
+  own directory, so run here it would find no `code/verify.py` beside it and
+  would name an unprefixed `data/verification.json`, not the recorded
+  `data/27-henselian-branching-verification.json`: do not run it here;
+  `27-henselian-branching-build_audit.json` describes 27's own 24-page PDF
+  with 59 labels and records no hashes; 27's README names `requirements.txt`,
+  `code/verify.py`, `data/verification.json` and `data/build_audit.json` under
+  their delivery names, and is not shipped).
+
+## Relation to the neighbouring reports
+
+- [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) (sources
+  01, 02, 05 and later additions) is the sibling report, written concurrently. It
+  quotes 05's universal set-sized quotient theorem and refers here for the proof,
+  which is the explicit-telescope route of Theorem 5.1. 05's "exact size
+  boundary" question, kept there, is answered here by the constructions of
+  Section 11 and Theorem 10.10 for specific integer parts; the general version is
+  Question 18.1. The preliminaries (normal form, `ct`, support gaps,
+  `Frac Oz = No`) overlap Sections 2–3. It prints 13's exact decomposable fibers
+  and norm theorems and 14's unimodular-direction criterion (with its own
+  rationality theorem for primitive directions), and it cites 16's image gap
+  (Theorem 16.36) as the general form of its equations `x² = ω² + 1` and
+  `X^n = aω^γ + β`. Its constant-discriminant theorems
+  (`odg:disc:thm:translation`, `odg:disc:thm:critical`) reach 18's normal
+  forms `f = ct_*(f)(X − η)` and `f = ct_*(f)(X − η) + β` for monic
+  polynomials from a nonzero constant (critical) discriminant instead of many
+  ordinary values, with no discrete order; the converses fail (status note of
+  batch 34 after the proof of Theorem 16.61).
+- [`foundations`](../../foundations-and-computation/foundations/) defines
+  `Oz = Π ⊕ Z` (`found:eq:omnific`), whose notation is used here.
+- [`euclidean-three-space`](../euclidean-three-space/), Part III: every class
+  homomorphism from `SO(3, No)` to a set-sized group factors through standard
+  part (`e3:cut:thm:smallquotient`, `e3:cut:cor:onlyimage`). Theorem 8.2 here is
+  the ring analogue on the finite side; neither implies the other.
+- [`first-kappa-coefficients`](../../surcomplex/first-kappa-coefficients/)
+  proves closedness of `<κ`-support Hahn fields for every uncountable `κ`
+  (`fkc:thm:main`), which contains the closure step of Proposition 11.8; the
+  thresholds here are not about its omitted types. Its batch-32 Part II treats
+  the class fields of surreals with fewer than `κ` terms, whose omnific parts
+  are the bounded rings of Theorem 9.1(i): its reservoir lemma gives a third
+  route to Theorem 9.1(i) (`fkc:sb:lem:reservoir`, `fkc:sb:thm:smallquotient`;
+  note in the proof), and it shows that these rings are pairwise nonisomorphic
+  for different cofinalities although their set-sized quotients agree
+  (`fkc:sb:cor:rings`; note after the proof). Pointer in Section 1.4. Its class
+  back-and-forth `fkc:sb:lem:backforth` is credited at 24's Corollary 14.52.
+- [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
+  (`saut:`) proves the class back-and-forth `saut:thm:acfhomogeneity`; 24's
+  Corollary 14.52 (every proper-class algebraically closed field of
+  characteristic 0 is isomorphic to `No[i]` in `GBC`) is its case of prime
+  subfields, and 24's Theorem 14.51 the one-sided embedding version.
+- [`holonomic-rigidity-for-entire-hahn-functions`](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/)
+  (`hol:`; batch 33) shows with the additive coefficient map `x ↦ [ω^ω]x` that
+  one fixed Conway coefficient of an orbit `y_{n+1} = ω y_n` in `Π` encodes any
+  sequence (`hol:rc:thm:coding`), and notes that this does not conflict with
+  Theorem 5.1 (`hol:rc:rem:quotients`): multiplicativity cannot be weakened to
+  additivity (status note of batch 33 after the proof of Theorem 5.1).
+- The Diophantine report (`odg:`) also bears on 27: its `Oz_Π`
+  (`odg:frac:prop:localization`) is local with residue field `Q`, of which 27's
+  `𝔏` is a set-sized analogue, and its `odg:ex:hensel` (`T² − T − ω` has
+  simple residue roots but no root in `Oz`) is the phenomenon that 27's
+  henselization repairs with forced complex branches (Section 15.11).
+- [`hahn-evaluation-at-omega`](../hahn-evaluation-at-omega/) separates finite
+  polynomial evaluation at `ω` from evaluation of unrestricted series; 12's
+  embeddings of its cores use finite normal forms only.
+- [`trigonometry`](../../surcomplex/trigonometry/) uses `2πOz = Π + 2πZ` as a
+  period kernel and the same `Π` with the opposite `t`-exponent sign.
+- [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/) (batch 26,
+  written concurrently) proves that for `n ≥ 3` the purely infinite congruence
+  kernel of `E_n(Oz)` and of `E_n(Oz[i])` has no nontrivial homomorphism to a
+  set-sized group, a group-level strengthening of Theorem 5.1 (pointer at
+  Theorem 5.1), built on this report's collision and division lemmas. Batch 32
+  (status note there): its Part IV extends this to `E_Φ` and `St_Φ` for every
+  `Φ` without `A_1` component (`ogl:ch:thm:intrinsic`, `ogl:ch:thm:steinberg`),
+  to Dorroh unitizations (`ogl:ch:thm:equivalence`) and to current Lie rings
+  (`ogl:ch:thm:liepositive`, `ogl:ch:thm:lienegative`), and transfers them to
+  the bounded rings of Theorem 9.1 and to exact thresholds
+  (`ogl:ch:cor:support`, `ogl:ch:cor:thresholds`).
+- [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/)
+  (batch 26) holds the other batch-26 omnific items; its algebraic-parameter
+  part identifies its commuting derivations `D_b` with Proposition 7.6 here
+  (`osq:prop:classder`). Its Corollary 24.4 (`opa:as:cor:invisible`, from
+  `opa:as:thm:main` and `opa:as:thm:factor`) answers the second clause of
+  Question 18.10: every automorphism of `Oz` fixes `ct` and `R` and extends to
+  a strong automorphism `M_{χ,τ} ∘ u` of `No`, with `u` classified by
+  `opa:thm:criterion`. The status of Question 18.10 records this (batch 31);
+  its first clause stays open. Its batch-32 `opa:tc:thm:oztopology` shows that
+  every Hahn-compatible ring topology on `Oz` is pulled back along `ct` from
+  `Z`, so the non-Hausdorff finite-congruence topology after Theorem 6.10 is
+  forced (status note there).
+- [`entire-functions-at-arbitrary-rank`](../../surcomplex/entire-functions-at-arbitrary-rank/)
+  (`ent:`; batch 32) removes the exclusion of entire Hahn series after
+  Corollary 16.67 in a fixed workspace: dense ordinary sampling forces
+  polynomiality (`ent:as:thm:sampling`), and the entire series preserving the
+  omnific part are the integer-valued polynomials plus `Π`-coefficient
+  polynomials (`ent:as:thm:integer`). Status note after Corollary 16.67 and
+  pointers in 18's non-claim (4) and 22's non-claim (10).
+- [`dynamics-and-normal-forms`](../../surcomplex/dynamics-and-normal-forms/)
+  (`dyn:`; batch 34) builds reciprocal rational maps with exactly prescribed
+  infinitely large periodic points in `Oz[i]` and a presentation with purely
+  infinite coefficients, without claiming that they map `Oz[i]` into itself
+  (`dyn:rd:thm:omnific`), and asks which maps preserve `Oz` or `Oz[i]` while
+  realizing specified infinite cycles (`dyn:rd:q:omnific`), a dynamical
+  relative of Question 18.20(a) (batch-34 status of Question 18.20).
+- [`discrete-initial-subgroups-and-omnific-normalization`](../discrete-initial-subgroups-and-omnific-normalization/)
+  (batch 28) concerns discretely ordered initial subgroups of `No` in the
+  sense of Ehrlich–Kaplan; its "normalization" is not the integral closure
+  `𝒩` of Section 15, and its subject is unrelated to Sections 15.8 to 15.10.
+- [`independent-surreal-copies`](../independent-surreal-copies/)
+  (`isc:hj:`; batch 35) gives continuum many pairwise nonassociate primes
+  `P_η = 1 + Σ_{n∈𝔅_η} ω^{ρ_n}` of `Oz` (real `ρ_n` decreasing to 0;
+  `isc:hj:main:prime`, `isc:hj:cor:nonassociate`), with primality imported
+  from the one-row theorem of Pitteloud and Biljaković–Kochetov–Kuhlmann. The
+  proof of Corollary 6.8 uses only primality and `ct(q) = 1`, so each
+  `Oz/(P_η)` is a nonzero proper-class domain with no nonzero set-sized image
+  (batch-35 note after that corollary; the report itself records this as an
+  observation of its merge).
+
+## Build and reproduce
+
+```sh
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
+
+The build gives 262 pages with no errors, warnings, undefined references,
+multiply defined labels, duplicate destinations or overfull or underfull boxes
+(the committed text before sources 26 and 27 gave 233 pages, before the eighth
+merge 195, before the seventh
+177, before the sixth 164, before the fifth 153, before the fourth 140, and
+before the third 117, also clean). Every statement, section, equation and
+citation number of the text before the eighth merge is unchanged (all 608
+earlier labels compared in the `.aux` files against a build of the committed
+text; the new bibliography entries are appended after the old ones); the
+eighth merge's statements are Theorem 14.24 to Corollary 14.58 and equations
+(14.19) to (14.36) in Section 14.9, Lemma 16.89 to Proposition 16.122 and
+equations (16.31) to (16.42) in Section 16.11, and Questions 18.28 to 18.44
+(sources 24, 25), and Proposition 13.58 to Example 13.89 and equations (13.5)
+to (13.24) in Section 13.11, Theorem 15.120 to Remark 15.143 and equations
+(15.36), (15.37) in Section 15.11, and Questions 18.45 to 18.66 (sources 26,
+27). Sources 26 and 27 were written after 24 and 25 had been committed; all
+726 labels of that text keep their `.aux` numbers, and its citation numbers
+are unchanged.
+The batch-33 note after the proof of Theorem 5.1 (the holonomic report's
+coefficient coding) was added in the same step. The longer abstract moved to
+the page after the title, together with the status box (before the eighth
+merge the abstract shared the title page and the status box fell on the next
+page); the front matter still takes two pages. Before the eighth merge,
+every statement, section and equation number of the text before
+the seventh merge was unchanged (all 551 earlier labels compared in the `.aux`
+files); the seventh merge's statements are Proposition 15.82 to Remark 15.119
+and equations (15.25) to (15.35) in Section 15.10, and Questions 18.21 to
+18.27. The sixth merge's statements are Lemma 16.68 to Remark 16.88 and
+equations (16.25) to (16.30) in Section 16.10, and Questions 18.19 and 18.20.
+The batch-32 cross-report notes (parenthetical "Status (batch 32)" sentences
+after Theorems 5.1 and 6.10, in and after the proof of Theorem 9.1, after
+Corollary 16.67, in Section 1.4 and in two non-claims, plus the bibliography
+entry for the entire-functions report, added last) took the build from 194 to
+195 pages and changed no number: all 608 labels compared in the `.aux` files
+against a build of the committed text, and the earlier citation numbers are
+unchanged. The later batch-34 cross-report notes (after the proof of Theorem
+16.61, on the Diophantine report's constant-discriminant normal forms, and in
+the batch-34 status of Question 18.20, on the dynamics report, with its
+bibliography entry appended last) keep the build at 262 pages and change no
+number: all 828 labels keep their `.aux` numbers against a build of the
+committed text, and the earlier citation numbers are unchanged.
+The batch-35 note after Corollary 6.8 (on the independent-copies report's
+primes, with its bibliography entry appended last as [79]) likewise keeps
+262 pages and all 828 label and 78 earlier citation numbers.
+The finite-check
+table of Section 19.1 became a `longtable` in the sixth merge, because the row
+for 22 made it taller than a page; this changes only its layout.
+Build in a copy of the directory and do not commit the auxiliary files.
+
+The nineteen check programs were rerun for the six merges on copies (Python
+3.14.4, SymPy 1.14.0); all pass and reproduce the recorded outputs up to line
+endings, the recorded Python version and (18) the recorded time stamp. For
+22 the rerun passed all 1,776 assertions in the same 22 categories, and its two
+rewritten reports differ from `data/22-finite-tests-verification_report.*` only
+in the Python version (3.14.4 for 3.13.5) and in CRLF line endings on Windows;
+its printed output equals the text report. For the seventh merge only 23's
+program was run, on a copy (Python 3.14.4): it passed all 18,040 assertions in
+the same 12 categories, and its record differs from
+`data/23-omnific-ramification-verification.json` only in `python_version`
+(3.14.4 for 3.13.5), in `article_tex_sha256` (`null`, because the program hashes
+an `article.tex` beside itself, which is not shipped) and in CRLF line endings
+on Windows; its printed output equals the record. For the eighth merge only
+24's to 27's programs were run. 24's and 25's were run on copies with
+`--output` in a scratch directory (Python 3.14.4, standard library only): 24 passed all 133,770
+assertions in the same six groups and 25 all 1,578 in the same 18 groups; their
+records differ from `data/24-class-residues-verification.json` and
+`data/25-semialgebraic-smoothness-verification.json` only in the recorded
+Python version (3.14.4 for 3.13.5) and in CRLF line endings on Windows, both
+print exactly their records, and `data/24-class-residues-verification.txt` is
+byte-identical to the JSON record. 26's program (stdlib) was run on a copy:
+all 52,080 assertions pass with the same counts (188 face quotients, 1,329
+antichains, 56 cancelled pairs, 2,457 cap checks), and the record it writes
+beside itself equals `data/26-face-topology-verification_results.json` except
+for `elapsed_seconds` (1.168 for 0.722); its printed summary omits the
+examples. 27's program (SymPy 1.14.0) was run on a copy with `--output`: all
+5,760 assertions pass in the same 8 groups, and the record equals
+`data/27-henselian-branching-verification.json` up to CRLF line endings on
+Windows; its printed output equals the record.
+**Several write files by default**:
+04 always writes `verification.json` next to the script; 06, 09 and 14 do so
+unless given `--output` (14 writes `verification.json`); 07 writes
+`verification_results.json` and 15 writes `finite_checks.json` in the working
+directory unless given `--output` (15's own README runs it with
+`--output finite_checks.json`, which overwrites its recorded result); 12 always
+writes `audit_results.json` next to the script; 16 writes
+`verification_results.txt` next to the script unless given `--output`; 17
+writes `../data/verification.json` relative to the script (here an unprefixed
+`data/verification.json` in this directory) unless given `--output`; 18 always
+writes `verification_results.json` next to the script; 19 prints to standard
+output only, but its `build.sh` would overwrite `checks.txt`; 20 always writes
+`verification_results.json` next to the script (and prints it); 21 writes
+`verification_results.json` next to the script unless given `--output` (here
+that would be a new, unshipped `code/verification_results.json`); 22 always
+writes `verification_report.json` and `verification_report.txt` next to the
+script and prints the text (here that would be two new, unshipped files in
+`code/`; it takes no output option); 23 writes `verification.json` next to the
+script unless given `--output` (here that would be a new, unshipped
+`code/verification.json`, not the recorded
+`data/23-omnific-ramification-verification.json`), and prints the record; 24
+writes `../data/verification.json` relative to the script unless given
+`--output` (here a new, unprefixed `data/verification.json`, not the recorded
+`data/24-class-residues-verification.json`), and prints the record; 25 writes
+`audit/verification.json` in the parent of its directory unless given
+`--output` (here a new `audit/` directory in this report), and prints the
+record; 26 always writes `verification_results.json` next to the script
+(here a new, unshipped `code/verification_results.json`) and prints a
+summary; 27 writes only with `--output` and prints the record. Run them with
+an explicit output in a scratch directory, and run 04, 12, 18, 20, 21, 22, 23, 24,
+25 and 26 on a copy:
+
+```sh
+cd docs/surreal/set-sized-quotients-of-omnific-integers
+T=$(mktemp -d)
+python code/03-cardinality-normalization-verify_identities.py > "$T/03.txt"   # 2,362 checks; = data/03-...
+cp code/04-universal-residue-verify_identities.py "$T/" && python "$T/04-universal-residue-verify_identities.py" > /dev/null   # writes $T/verification.json
+python code/06-universal-quotient-verify.py --output "$T/06.json"             # 17,586 assertions
+pip install -r data/07-quotient-rigidity-requirements.txt                      # sympy==1.14.0, for 07, 10, 12, 14, 16
+python code/07-quotient-rigidity-verify_finite.py --output "$T/07.json"       # 621 checks
+python code/08-small-rings-finite_checks.py > "$T/08.txt"                     # 1,277 cases
+python code/09-set-shadows-verify.py --output "$T/09.json"                    # 597 assertions
+python code/10-omnific-arithmetic-checks.py > "$T/10.txt"                     # 171,395 checks, about 15 s
+python code/11-set-sized-algebra-check_finite_identities.py --output "$T/11.json"   # 1,858 checks
+cp code/12-homological-dimension-check_boolean_tor.py "$T/" && python "$T/12-homological-dimension-check_boolean_tor.py"   # 780 multidegrees; writes $T/audit_results.json
+python code/13-small-target-rigidity-verify.py > "$T/13.txt"                  # 6 groups; = data/13-...
+python code/14-arithmetic-tensors-verify.py --output "$T/14.json"             # 2,189 assertions
+python code/15-set-sized-representations-verify_identities.py --output "$T/15.json"   # 820 cases
+python code/16-fresh-scale-verify_finite.py --output "$T/16.txt"              # 1,354 assertions, about 12 s
+python code/17-relations-arithmetic-verify.py --output "$T/17.json"           # 347 checks
+cp code/18-polynomial-rigidity-verify.py "$T/" && python "$T/18-polynomial-rigidity-verify.py" > "$T/18.out"   # 499 assertions; writes $T/verification_results.json
+python code/19-normalization-fibres-checks.py > "$T/19.txt"                   # 253 primary checks; = data/19-...
+cp code/20-boolean-branching-verify.py "$T/" && python "$T/20-boolean-branching-verify.py" > "$T/20.out"   # 6,674 assertions; writes $T/verification_results.json
+cp code/21-derived-arithmetic-verify.py "$T/" && python "$T/21-derived-arithmetic-verify.py" --output "$T/21.json"   # 1,008 + 600 checks; stdlib; = data/21-... as JSON
+cp code/22-finite-tests-verify.py "$T/" && python "$T/22-finite-tests-verify.py" > "$T/22.out"   # 1,776 assertions, seed 23092026; writes $T/verification_report.{json,txt}
+cp code/23-omnific-ramification-verify.py "$T/" && python "$T/23-omnific-ramification-verify.py" --output "$T/23.json" > "$T/23.out"   # 18,040 assertions; stdlib
+mkdir -p "$T/24/code" && cp code/24-class-residues-verify.py "$T/24/code/" && python "$T/24/code/24-class-residues-verify.py" --output "$T/24.json" > "$T/24.out"   # 133,770 assertions; stdlib, Python 3.9+
+mkdir -p "$T/25/code" && cp code/25-semialgebraic-smoothness-verify.py "$T/25/code/" && python "$T/25/code/25-semialgebraic-smoothness-verify.py" --output "$T/25.json" > "$T/25.out"   # 1,578 assertions; stdlib, Python 3.10+
+cp code/26-face-topology-verify.py "$T/" && python "$T/26-face-topology-verify.py" > "$T/26.out"   # 52,080 assertions; stdlib; writes $T/verification_results.json
+python code/27-henselian-branching-verify.py --output "$T/27.json" > "$T/27.out"   # 5,760 assertions; needs sympy==1.14.0 (data/27-...-requirements.txt)
+```
+
+12 and 19 require SymPy but ship no requirements file (19's README names
+SymPy 1.14.0); 14, 16, 17, 18, 20 and 22 ship `sympy==1.14.0` (20's and 22's records were made
+with Python 3.13.5; the reruns under 3.14.4 differ only in that field and in line endings); 21 needs
+only the standard library, and its rerun equals the recorded JSON in content
+(on Windows the rewritten file has CRLF line endings); 23 needs only the
+standard library (Python 3.9 or later), as do 24 (Python 3.9 or later) and 25
+(Python 3.10 or later, for its type annotations), and 26 (Python 3.10 or
+later, by its README); 27 needs SymPy (`data/27-henselian-branching-requirements.txt`,
+`sympy==1.14.0`). Run 12 and 21 without
+Python's `-O` option (their checks are assertions). The shipped `04-…-Makefile`, `06-…-Makefile`, `10-…-Makefile`,
+`09-set-shadows-build.sh`, `11-set-sized-algebra-build.sh`,
+`12-homological-dimension-build.sh`, `14-arithmetic-tensors-build.py`,
+`18-polynomial-rigidity-build.sh`, `19-normalization-fibres-build.sh`,
+`20-boolean-branching-Makefile`, `21-derived-arithmetic-build.sh`,
+`21-derived-arithmetic-build.ps1`, `22-finite-tests-build.sh`,
+`22-finite-tests-build.ps1`, `23-omnific-ramification-build.sh`,
+`23-omnific-ramification-build.ps1`, `24-class-residues-build.sh`,
+`24-class-residues-build.ps1`, `25-semialgebraic-smoothness-build.sh`,
+`25-semialgebraic-smoothness-build.ps1`, `26-face-topology-Makefile` and
+`27-henselian-branching-build.sh` use the
+original package file names (`verify.py`, `article.tex`,
+`omnific_set_shadows.tex`, `omnific_homological_dimension.tex`,
+`code/check_finite_identities.py`, …) and do not run as shipped; they are kept
+as provenance. For the second merge an independent exact computation, not
+shipped, rechecked Theorem 13.7 in 1,626 cases (every proper subset `F`
+included) and Corollary 13.23 for `d ≤ 8`, `n ≤ 12`. For the third merge,
+independent exact computations, not shipped, rechecked 17's Pell matrix,
+multiplication kernels, self-`Tor` endpoints (`r ≤ 5`) and five `GL_2(Z)`
+cases, 18's composition obstruction (27 random cases) and `η` formula, 19's
+idempotent identities, Catalan expansion and 36 random cases of the lifting
+bound, and the sizes of the Gaussian certificates of
+Proposition 16.64 for `n ≤ 3`, `d ≤ 5`. For the fourth merge, an independent
+exact computation, not shipped, rechecked in 18 checks 20's certificate
+(15.24), the values of the specializations, the many-branch identity of
+Theorem 15.70, the simple zeros behind the square classes and the identities
+behind Proposition 15.68. For the fifth merge, an independent exact
+computation, not shipped, rechecked in 78 checks the converse formula of
+Theorem 13.46 in 12 cases, the exponent identities behind it, the Koszul
+transition identity, the `Tor_2` and `Ind_2` ranks and discriminants of the
+four orders, and the product rank for `Q(√2), Q(√3)`; neither it nor 21's
+program proves the infinite `Ext` nonvanishing, which rests on the written
+proof of Theorem 13.46. For the sixth merge, an independent exact computation,
+not shipped, rechecked in 101 checks the resultant and partial fractions of
+Example 16.87, the counts after Theorem 16.70 and the comparison of
+Remark 16.71 for `m ≤ 4`, `d ≤ 5`, the bound (16.26) in twelve random
+trivariate cases, the inverse shears of Example 16.85, the two Gaussian
+denominators and the coefficients of Example 16.74; neither it nor 22's
+program verifies an infinite support, a cut above an arbitrary set or a
+proper-class statement. For the seventh merge, an independent exact
+computation (SymPy), not shipped, rechecked in 2,642 checks, most of them the
+exponent inequality behind axiom (ii) for the Puiseux ring (Remark 15.102),
+the relations (15.28) for `n ≤ 7` and (15.33), the refinement certificates of
+Theorem 15.89, the Laurent coefficients and the full-class factorization of
+Example 15.87, the residues of the Boolean words of Theorem 15.111 modulo `T`
+for three parameters with the squarefreeness of their radicands, and the
+cancellation identity behind Theorem 15.115; like 23's program it verifies no
+integral closure, place or cardinality. For the eighth merge, an independent
+exact computation (SymPy), not shipped, rechecked in 300 checks the
+identification of 24's first idempotents with 07's modulo `ξ_2^4 + 1`
+(Remark 14.45), squarefreeness and the absence of real roots of `T^(2^n) + 1`
+for `n ≤ 5`, finite geometric remainders behind (14.26), the Boolean-ring
+criterion of Remark 14.28 for pairs of subsets of a four-element set, the
+coefficients `1/2` and `−1/8` of (16.42) for `b = 1, …, 4`, the constant of the
+`𝗄`th derivative in the proof of Theorem 16.112 for `𝗄 ≤ 6` with the degree
+count of Corollary 16.113, and the vanishing orders behind Remark 16.120; it
+verifies no class recursion, infinite support or semialgebraic calculus.
+`24-class-residues-build.sh` and `.ps1` would also overwrite `article.pdf`
+in their own directory with a build of 24's manuscript; do not run them here.
+For sources 26 and 27, an independent exact computation (SymPy), not shipped,
+rechecked in 2,726 checks the multiplicities (13.21) and the flat dimension
+`μ_𝒞(F)` for every proper nonzero face of the cones over a square and a cube,
+by computing the reduced homology of every join complex `𝖪_{<G}` directly,
+the square-cone multiplicities of the examples, the splitter identity and the
+one-radical factorization of Remark 15.122 with its six Laurent coefficients,
+`ȷ² = −1` of Proposition 15.128 and the inverse of the Gaussian decomposition;
+it verifies no colimit, detector module or henselization.
+`19-normalization-fibres-build.sh`
+runs `python3 checks.py | tee checks.txt`, which would overwrite the recorded
+result; do not run it in this directory.

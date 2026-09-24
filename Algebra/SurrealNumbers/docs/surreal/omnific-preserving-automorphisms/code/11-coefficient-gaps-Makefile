@@ -1,0 +1,12 @@
+.PHONY: all test clean
+
+all: surreal_embeddings.pdf
+
+surreal_embeddings.pdf: surreal_embeddings.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error surreal_embeddings.tex
+
+test:
+	python3 verify_finite_models.py --output verification.json
+
+clean:
+	latexmk -c surreal_embeddings.tex

@@ -1,0 +1,1925 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr,needspace}
+\definecolor{ink}{HTML}{243A35}
+\definecolor{accent}{HTML}{556B47}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent]{hyperref}
+\usepackage{xurl}
+\usepackage{aliascnt}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Gamma Functions over the Surreals},pdfauthor={Research draft prepared with ChatGPT},pdfsubject={A sharp convexity classification, flat nonuniqueness, and surcomplex phase domains}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Gamma functions over the surreals}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.22em}
+\setlength{\emergencystretch}{3em}
+\widowpenalty=10000\clubpenalty=10000\displaywidowpenalty=10000
+\setlist{itemsep=0.2em,topsep=0.35em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\crefname{theorem}{Theorem}{Theorems}
+\theoremstyle{plain}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{Example}{Examples}
+\Crefname{example}{Example}{Examples}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newaliascnt{warning}{theorem}
+\newtheorem{warning}[warning]{Warning}
+\aliascntresetthe{warning}
+\crefname{warning}{Warning}{Warnings}
+\Crefname{warning}{Warning}{Warnings}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Ocal}{\mathcal O}
+\newcommand{\mi}{\mathfrak m}
+\newcommand{\J}{\mathbb J}
+\newcommand{\Minf}{\mathfrak M_{\infty}}
+\newcommand{\pp}{\operatorname{pp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Imn}{\operatorname{Im}}
+\newcommand{\Ren}{\operatorname{Re}}
+\newcommand{\der}{\partial}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\cst}{\tfrac12\log(2\pi)}
+\newcommand{\tube}{\mathcal T}
+\newcommand{\Lt}{\mathcal L}
+\newcommand{\Gt}{\mathcal G}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\newcommand{\commit}{\nolinkurl{aa846271b4dcae2c055b216126a87210292ec19b}}
+
+\begin{document}
+\hypersetup{pageanchor=false}%
+\begin{titlepage}
+\centering
+\vspace*{0.35in}
+{\large\scshape Research article\par}
+\vspace{0.4in}
+{\LARGE\bfseries\color{ink} Gamma Functions over the Surreals\par}
+\vspace{0.22in}
+{\Large A sharp convexity classification, flat nonuniqueness,\\[0.12em]
+and surcomplex phase domains\par}
+\vspace{0.4in}
+{\large September 21, 2026\par}
+\vspace{0.4in}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+The classical Bohr--Mollerup characterization does not merely lose uniqueness
+on the surreal positive half-line: uniqueness can fail while normalization,
+strict log-convexity, every finite Gauss multiplication formula, all normalized
+finite-translation germs, and every Stirling coefficient are retained.
+We prove this by an explicit family and an exact coefficient classification.
+Let $L_0$ be the Taylor--Stirling extension of $\log\Gamma$, let $M(x)$ be the
+leading Conway monomial of a positive infinite surreal $x$, and let
+$\pp(x)$ be its purely infinite part. For a class assignment
+$a:\Minf\to\No$, set $h_a(x)=0$ at positive finite arguments and
+$h_a(x)=a(M(x))\pp(x)$ at infinite ones. Then
+\[
+ L_0+h_a\text{ is convex}
+ \quad\Longleftrightarrow\quad
+ m\,a(m)\text{ is finite for every }m\in\Minf.
+\]
+In the affirmative case it is strictly convex. The proof uses exact tangent
+inequalities across all relative scales, not a mean-value theorem or the
+insufficient assertion that a second derivative is positive.
+The choice $a(m)=\lambda e^{-m}$ gives nonzero perturbations invisible to
+all algebraic orders at infinity. We also construct surcomplex log-Gamma
+extensions and identify their exact finite-phase exponentiation domain inside
+a finite-imaginary-part tube: at infinite real part $x$, the condition is
+$y\log x$ finite. Finally, compatibility with the Berarducci--Mantova scalar
+derivation eliminates every infinitesimal locally constant gauge in the
+stated category.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Status and provenance.}
+The Taylor--Stirling construction, classical Gamma identities, restricted
+analytic transfer, and the Berarducci--Mantova derivation are established inputs.
+The sharp gauge classification and its combined consequences are proposed
+contributions proved here. No claim is made to have resolved a named published
+open problem. Their absence from all published literature is not certified;
+the targeted literature and repository audit is recorded in
+\cref{sec:provenance}. This draft has not been independently refereed or
+verified by a proof assistant. The accompanying exact symbolic checks test
+finite algebraic identities, not the full surreal theorems.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}%
+
+\tableofcontents
+\clearpage
+
+\section{The question and the results}\label{sec:introduction}
+
+\subsection{A classical characterization confronted with new scales}
+For positive real arguments, the Gamma function is uniquely characterized by
+positivity, the normalization $\Gamma(1)=1$, the recurrence
+$\Gamma(x+1)=x\Gamma(x)$, and convexity of $\log\Gamma$. This is the
+Bohr--Mollerup theorem \cite[\S5.5(iv)]{DLMF55}. We investigate its literal
+surreal analogue, with convexity required at \emph{all} positive surreal
+arguments and all surreal convex-combination parameters.
+
+The issue is not whether Gamma can be extended. Costin and Ehrlich explicitly
+include Gamma and log-Gamma in their extension theory, using Taylor expansions
+at finite arguments and transseries at infinite ones
+\cite[\S\S8,10.1(v)]{CE}. Rather, the question here is what additional
+information determines an extension, once the field contains infinitely
+separated scales. Does genuine global log-convexity remove the freedom left by
+a difference equation? Does imposing all finite multiplication identities help?
+Can agreement to every asymptotic order still conceal a nonzero discrepancy?
+
+The results below give a sharp negative answer within a concrete and quite
+large family. Their force comes from the simultaneous requirements. A generic
+periodic multiplier would usually destroy convexity or multiplication
+identities; a generic infinitesimal change would usually spoil local germs.
+The construction here avoids all those failures, and its convexity boundary is
+proved in both directions.
+
+\subsection{Overview of the main theorems}
+Every surreal number has a Conway normal form. For positive infinite $x$,
+write $M(x)$ for its leading monomial with its real coefficient removed, and
+$\pp(x)$ for the sum of its purely infinite terms. Precise conventions appear
+in \cref{sec:preliminaries}. The baseline $L_0$ is defined in
+\cref{sec:baseline}. Given any class assignment $a$ on the positive infinite
+monomials, define
+\begin{equation}\label{eq:gauge-intro}
+ h_a(x)=
+ \begin{cases}
+ 0,&0<x\in\Ocal,\\
+ a(M(x))\pp(x),&x>\R,
+ \end{cases}
+ \qquad L_a=L_0+h_a,\qquad \Gamma_a=\exp L_a.
+\end{equation}
+Here $x>\R$ means that $x$ exceeds every real number.
+
+\begin{theorem}[Sharp convexity and simultaneous invariance]\label{thm:main}
+For the family \eqref{eq:gauge-intro}, the following statements hold.
+\begin{enumerate}[label=(\roman*)]
+\item $L_a$ is convex on $\No_{>0}$ if and only if
+$m a(m)\in\Ocal$ for every positive infinite monomial $m$. Under this
+condition $L_a$ is strictly convex.
+\item For every $a$, independently of the convexity condition,
+$\Gamma_a$ agrees with $\Gamma_0$ at every positive finite argument,
+satisfies $\Gamma_a(1)=1$ and $\Gamma_a(x+1)=x\Gamma_a(x)$, and obeys
+\begin{equation}\label{eq:gauss-intro}
+ \Gamma_a(nx)=(2\pi)^{(1-n)/2}n^{nx-1/2}
+ \prod_{k=0}^{n-1}\Gamma_a(x+k/n)
+\end{equation}
+for every ordinary integer $n\ge1$ and every $x>0$.
+\item Whenever $u$ is finite and $x,x+u>0$,
+\begin{equation}\label{eq:ratio-intro}
+ \frac{\Gamma_a(x+u)}{\Gamma_a(x)}
+ =\frac{\Gamma_0(x+u)}{\Gamma_0(x)}.
+\end{equation}
+Every positive-order fine derivative of $L_a$ equals that of $L_0$.
+\item The condition
+$\abs{h_a(x)}\prec x^{-N}$ for every infinite $x>0$ and every
+$N\in\N$ is equivalent to
+$\abs{a(m)}\prec m^{-N}$ for every $m\in\Minf$ and every $N\in\N$.
+\end{enumerate}
+\end{theorem}
+
+The notation $b\prec c$, for $c>0$, means that $b/c$ is infinitesimal.
+In particular, part (iv) is stronger than equality of a finite number of
+asymptotic terms. It supplies all of them at once. Theorem
+\ref{thm:main} is proved in \cref{sec:gauges,sec:flat}, using the global tangent
+gap estimates of \cref{sec:convexity}.
+
+\begin{corollary}[Explicit strengthened nonuniqueness]\label{cor:headline}
+For each real $\lambda$, set
+\begin{equation}\label{eq:explicit-gauge}
+ a_\lambda(m)=\lambda e^{-m}.
+\end{equation}
+The resulting functions $\Gamma_\lambda$ are pairwise distinct and satisfy
+all the properties of \cref{thm:main}, including strict log-convexity and
+flatness of their logarithmic and relative differences to every algebraic
+order. At $x=\omega$,
+\begin{equation}\label{eq:omega-value}
+ \log\Gamma_\lambda(\omega)-\log\Gamma_0(\omega)
+ =\lambda\omega e^{-\omega}.
+\end{equation}
+Thus normalization, recurrence, strict log-convexity, all finite Gauss
+formulas, the finite Taylor extension, all normalized finite-translation
+germs, and the full Stirling asymptotic expansion do not jointly characterize
+a surreal Gamma function.
+\end{corollary}
+
+The surcomplex result concerns actual functions, but does not assume a
+canonical exponential for arbitrary infinite imaginary arguments. On
+\[
+ \tube=\{x+iy:x>0,\ y\in\Ocal\},
+\]
+we construct locally Hahn-analytic functions $\Lt_a$ extending $L_a$.
+Their canonical exponentiation using finite angles is available exactly on
+\begin{equation}\label{eq:omega-domain-intro}
+ \Omega=\{x+iy\in\tube:x\in\Ocal\}
+ \ \cup\
+ \{x+iy\in\tube:x>\R,\ y\log x\in\Ocal\}.
+\end{equation}
+This exact assertion and its limits are proved in
+\cref{sec:surcomplex}. A different sort of compatibility restores rigidity:
+\cref{sec:differential} shows that the Berarducci--Mantova scalar chain rule
+forces any infinitesimal locally constant log-Gamma gauge to vanish.
+
+\subsection{Why the main result is not a transfer tautology}
+All finite real identities have suitable local Taylor extensions, but the
+main theorem compares arbitrary infinite arguments, including arguments of
+different leading monomials and arguments whose relative separation is
+smaller than every prescribed inverse power. The coefficient assignment $a$
+can vary independently on different monomials. Neither its existence nor the
+sharp bound $a(m)=O(m^{-1})$ follows by replacing real variables with surreal
+ones in a first-order formula about Gamma.
+
+The new work is the compatibility between this freedom and \emph{global}
+convexity. A small second derivative, or the equality $L_a''=L_0''>0$, cannot
+supply that compatibility by itself. The proof measures the convexity margin
+at every scale and proves that it dominates precisely the allowed gauges.
+
+\section{Normal forms, summability, and derivative conventions}
+\label{sec:preliminaries}
+
+\subsection{Class and set conventions}
+We work in a classical theory of sets and classes such as NBG. The surreal
+numbers form a proper-class ordered field, and $\SC=\No[i]$ is its
+complexification. Each individual normal form and every family being summed
+here has set-sized support. A ``class assignment'' $a$ is a class function;
+no set of all class functions is formed. Explicit choices such as
+\eqref{eq:explicit-gauge} are definable without selecting one object from
+each member of a proper-class family.
+
+Every particular finite calculation, together with the supports of its
+operands and the countably many series used in it, can be carried out in a
+set-sized Hahn workspace. Such a workspace need not be invariant under every
+operation discussed in the paper. When restricted analytic transfer is used,
+one may instead choose an adequately large $\No(\varepsilon)$ with
+$\varepsilon$ an ordinal epsilon-number. Here $\No(\varepsilon)$ consists
+of the numbers of birthday less than $\varepsilon$; equipped with the
+Taylor extensions of restricted analytic functions and the surreal
+exponential, it is an elementary extension of the corresponding real
+structure \cite[Prop.~4.7]{vdDE}; see also \cite[Prop.~93]{CE}.
+The proofs do not regard a proper class as an ordinary topological space in
+ZFC, and do not invoke a proper-class sum.
+
+\subsection{Finite parts and monomial scales}
+The standard normal-form background is due to Conway and Gonshor
+\cite{Conway,Gonshor}. In our notation,
+\begin{equation}\label{eq:normal-form}
+ x=\sum_{\alpha\in S}r_\alpha\omega^\alpha,
+ \qquad r_\alpha\in\R\setminus\{0\},
+\end{equation}
+where $S$ is a reverse well-ordered set of surreal exponents. We use
+$\supp(x)=\{\omega^\alpha:\alpha\in S\}$ for the \emph{monomial}
+support, with $\supp(0)=\varnothing$; $S$ itself is the exponent support.
+In increasing-exponent formal Hahn notation $t^\gamma:=\omega^{-\gamma}$,
+the term $\omega^\alpha$ has exponent $-\alpha$. This is monomial notation,
+not exponentiation by a varying surreal exponent. We write
+\[
+ \Ocal=\{x:\abs{x}<n\text{ for some }n\in\N_{>0}\},\qquad
+ \mi=\{x:\abs{x}<1/n\text{ for all }n\in\N_{>0}\}.
+\]
+Every $x\in\Ocal$ has a unique standard part $\st(x)\in\R$ with
+$x-\st(x)\in\mi$. Define
+\[
+ \pp(x)=\sum_{\alpha>0}r_\alpha\omega^\alpha,
+ \qquad \J=\{x:\supp(x)\subseteq\{\omega^\alpha:\alpha>0\}\}.
+\]
+Then $\pp:\No\to\J$ is an $\R$-linear projection, its kernel is
+$\Ocal$, and $x-\pp(x)$ is finite. In particular,
+\begin{equation}\label{eq:pp-translation}
+ \pp(x+u)=\pp(x)\quad(u\in\Ocal).
+\end{equation}
+This is an exact equality, not an asymptotic estimate.
+
+For $x>\R$, define $M(x)=\omega^{\max S}$. Its leading real coefficient is
+positive, so $x/M(x)$ is finite with strictly positive standard part. Set
+\[
+ \Minf=\{\omega^\alpha:\alpha>0\}.
+\]
+For positive infinite $x$ and finite $u$,
+\begin{equation}\label{eq:monomial-rules}
+ M(x+u)=M(x),\qquad M(nx)=M(x),\qquad \pp(nx)=n\pp(x)
+ \quad(n\in\N_{>0}).
+\end{equation}
+The same scaling assertions hold for any positive real scalar. Distinct
+monomials have different Archimedean classes: their ratio is infinite or
+infinitesimal, not a finite appreciable number.
+
+For arbitrary surreal quantities, $f=O(g)$ means that $f/g$ is finite, and
+$f\prec g$ means that $f/g$ is infinitesimal; we apply these notations with
+$g>0$ or to absolute values. We write $f\sim g$ when $f/g=1+\epsilon$ with
+$\epsilon\in\mi$. In estimates containing several variables, all assertions
+are pointwise for the indicated surreal inputs, not statements about an
+unspecified sequential limit.
+
+\subsection{Strong sums, not topological limits}
+A family of Hahn series is strongly summable when the union of its monomial
+supports is reverse well ordered and each monomial occurs in only finitely
+many members. Its sum is then formed coefficientwise. The positive-support
+summability lemma implies the following standard fact \cite{Neumann,vdDE}:
+if $\epsilon_1,\ldots,\epsilon_d$ are infinitesimal, any formal power series
+with real or complex coefficients can be evaluated at these arguments as a
+strong sum. Formal sums, products, and substitutions with zero constant term
+then commute with evaluation.
+
+For clarity, the reason is a support statement. Reverse the order on the
+exponent group, so the supports of the infinitesimals are well-ordered
+positive sets. The additive monoid generated by their finite union is well
+ordered, and a fixed exponent has only finitely many representations by
+finite words from those positive supports. Consequently each coefficient
+in a substituted formal series receives only finitely many contributions.
+This also justifies the two-variable expansions used below. No analytic
+radius of convergence of the real coefficient sequence is required.
+
+In particular, factorially growing Bernoulli coefficients cause no obstacle
+to evaluating the Stirling series at $x^{-1}$ for positive infinite $x$.
+This fact does \emph{not} turn its ordinary partial sums into a convergent
+sequence in the fine surreal order topology. Series evaluated at surreal or
+surcomplex infinitesimals below have this strong, coefficientwise meaning.
+Ordinary real or complex analytic series and formal series in indeterminates
+are identified separately where they are used.
+
+\subsection{Fine coordinate derivatives versus a scalar derivation}
+A fine derivative is the usual epsilon--delta derivative with surreal
+positive tolerances and surreal increments. For a class function $f$ on an
+open interval, $f'(x)=d$ means that for every $\epsilon>0$ there is a
+$\delta>0$ such that
+\[
+ 0<\abs{u}<\delta\quad\Longrightarrow\quad
+ \left|\frac{f(x+u)-f(x)}u-d\right|<\epsilon.
+\]
+The complex version uses the ordered modulus on $\SC$. Class quantifiers
+are interpreted in the ambient class theory. All derivative assertions below
+are established on explicit local neighborhoods.
+
+A function constant on cosets modulo $\Ocal$ is finely locally constant:
+the neighborhood $\abs{u}<1$ stays in the same coset. Every fine derivative
+of such a function is zero, although its values on different cosets may
+change. This elementary observation is not the main theorem, but it explains
+why a proof of global convexity must use more than local derivatives.
+
+In \cref{sec:differential} the symbol $\der$ denotes instead the
+Berarducci--Mantova derivation \emph{of the field of scalar surreal numbers}.
+It does not differentiate a class function by varying its argument. The two
+operations are related only when a chain-rule compatibility statement is
+proved or explicitly imposed.
+
+\section{The Taylor--Stirling log-Gamma function}\label{sec:baseline}
+
+\subsection{Definition on the three positive regimes}
+Let $\ell(r)=\log\Gamma(r)$ for real $r>0$, and let $\gamma$ be Euler's
+constant. Put
+\begin{equation}\label{eq:coefficients}
+ c=\frac12\log(2\pi),\qquad
+ b_j=\frac{B_{2j}}{2j(2j-1)}\quad(j\ge1),
+\end{equation}
+where the Bernoulli numbers have generating function
+$t/(e^t-1)=\sum_{j\ge0}B_jt^j/j!$.
+Define $L_0:\No_{>0}\to\No$ by
+\begin{equation}\label{eq:L0-finite}
+ L_0(r+\epsilon)=\sum_{k\ge0}\frac{\ell^{(k)}(r)}{k!}\epsilon^k
+ \quad(r\in\R_{>0},\ \epsilon\in\mi),
+\end{equation}
+by
+\begin{equation}\label{eq:L0-small}
+ L_0(x)=-\log x-\gamma x+
+ \sum_{k\ge2}\frac{(-1)^k\zeta(k)}k x^k
+ \quad(0<x\in\mi),
+\end{equation}
+and by
+\begin{equation}\label{eq:L0-infinite}
+ L_0(x)=\left(x-\frac12\right)\log x-x+c+R(x),
+ \qquad
+ R(x)=\sum_{j\ge1}b_jx^{-(2j-1)}
+ \quad(x>\R).
+\end{equation}
+These regimes partition the positive surreal half-line. The coefficients and
+normalizations in \eqref{eq:L0-small} and \eqref{eq:L0-infinite} are the
+classical ones \cite[\S\S5.7,5.11]{DLMF57,DLMF511}. We define
+$\Gamma_0(x)=\exp L_0(x)$ using the usual surreal exponential.
+
+\begin{proposition}[Well-definedness and local calculus]\label{prop:baseline-calculus}
+All three definitions are well-defined strong sums. The function $L_0$ is
+finely differentiable to every finite order. On each of the three regimes,
+its derivatives are obtained by the displayed Taylor or formal Stirling
+rules, together with $(\log x)'=1/x$. In particular, for infinite $x>0$,
+\begin{align}
+ L_0'(x)&=\log x-\frac1{2x}+R'(x),\label{eq:digamma}\\
+ R(x)&=\frac1{12x}+O(x^{-3}),&
+ R'(x)&=-\frac1{12x^2}+O(x^{-4}),\label{eq:R-bounds}\\
+ L_0''(x)&=\frac1x+\frac1{2x^2}+\frac1{6x^3}+O(x^{-5}).
+\end{align}
+For positive infinitesimal $x$,
+\begin{equation}\label{eq:small-bounds}
+ L_0(x)=-\log x+O(x),\qquad L_0'(x)=-x^{-1}+O(1).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The summability statement follows by substituting $\epsilon$, $x$, or
+$x^{-1}$, respectively, into a formal power series with real coefficients.
+All three regimes are fine-open: a sufficiently small increment leaves a
+point finite appreciable, positive infinitesimal, or infinite, respectively.
+
+Here is also the needed derivative justification, rather than just a formal
+notation. In the finite appreciable case the Taylor expansion can be
+re-expanded jointly in $\epsilon$ and an infinitesimal increment $u$.
+The formal difference after subtracting its linear term is $u^2$ times a
+strongly evaluable series; on a smaller local neighborhood that series has
+a fixed finite bound. The epsilon--delta derivative follows by choosing
+$\abs u$ below the requested tolerance divided by that bound. Higher
+finite derivatives are obtained by repeating this argument.
+
+For \eqref{eq:L0-small}, take $\abs u< x/2$ and expand
+$\log(x+u)=\log x+\log(1+u/x)$, then shrink to make $u/x$
+infinitesimal. For \eqref{eq:L0-infinite}, use
+$(x+u)^{-k}=x^{-k}(1+u/x)^{-k}$ and the same logarithmic identity.
+The coefficients of the remainder may now contain fixed powers of $x$ or
+$x^{-1}$, but are still bounded by a fixed surreal quantity on a sufficiently
+small neighborhood. An epsilon--delta choice is allowed to depend on that
+quantity. The joint power series in $x^{-1}$ and $u/x$ is strongly summable,
+so regrouping is legitimate. This proves the fine derivative and its
+iterates, not just a coefficientwise derivative in an unrelated ring.
+The explicit estimates follow from the first nonzero terms.
+\end{proof}
+
+\subsection{An exact recurrence from a formal identity}
+Introduce the formal log-Laurent expression
+\[
+ S(X)=\left(X-\frac12\right)\log X-X+c+
+ \sum_{j\ge1}b_jX^{-(2j-1)}.
+\]
+Translations of $\log X$ are expanded by
+$\log(X+t)=\log X+\log(1+t/X)$ for real $t$.
+
+\begin{lemma}[Formal shift identity]\label{lem:formal-shift}
+As a formal expression at $X=+\infty$,
+\begin{equation}\label{eq:formal-shift}
+ S(X+1)-S(X)=\log X.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:baseline-recurrence}
+ L_0(x+1)-L_0(x)=\log x\qquad(x>0).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+One rigorous derivation of \eqref{eq:formal-shift} uses only classical
+asymptotic algebra. The real function $\ell$ has the complete Stirling
+expansion $S$ and satisfies $\ell(X+1)-\ell(X)=\log X$
+\cite{DLMF55,DLMF511}. To determine any fixed inverse-power coefficient of
+the difference, retain sufficiently many terms in the two real expansions
+and expand the shift by the binomial and logarithmic formulas. The remainder
+is of strictly smaller order than the coefficient under examination.
+Uniqueness of real asymptotic coefficients forces that coefficient to vanish.
+This holds at every finite order and proves the formal identity. Equivalently,
+it follows directly from the Bernoulli generating function; the supplied
+symbolic program checks the cancellation through a substantial finite order.
+
+For infinite surreal $x$, the difference in \eqref{eq:formal-shift} is an
+identity of formal power series in $x^{-1}$ after the elementary terms have
+been removed. Strong evaluation therefore gives an exact equality, with no
+unaccounted remainder. At finite appreciable $x$, use the local Taylor
+identity for the ordinary recurrence. At positive infinitesimal $x$, formula
+\eqref{eq:L0-small} is exactly the Taylor series for $\ell(1+x)-\log x$.
+These cases prove \eqref{eq:baseline-recurrence} everywhere.
+\end{proof}
+
+\subsection{All finite multiplication formulas}
+\begin{lemma}[No nonconstant periodic inverse-power series]\label{lem:periodic}
+Let $F\in X^{-1}\R[[X^{-1}]]$ and let $t\in\R\setminus\{0\}$.
+If $F(X+t)=F(X)$ formally, then $F=0$.
+\end{lemma}
+\begin{proof}
+A nonzero $F$ has a first term $dX^{-k}$ with $d\ne0$ and $k\ge1$.
+The first term of $F(X+t)-F(X)$ is $-ktdX^{-k-1}$, which is nonzero.
+\end{proof}
+
+\begin{proposition}[Exact Gauss identity for the baseline]\label{prop:gauss0}
+For every ordinary integer $n\ge1$ and every positive surreal $x$,
+\begin{equation}\label{eq:log-gauss}
+ L_0(nx)=\sum_{k=0}^{n-1}L_0(x+k/n)
+ +(nx-\tfrac12)\log n-(n-1)c.
+\end{equation}
+Exponentiating gives \eqref{eq:gauss-intro} for $a=0$.
+\end{proposition}
+\begin{proof}
+For finite arguments, extend the classical identity
+\cite[Eq.~5.5.6]{DLMF55} by the local Taylor rules, using
+\eqref{eq:L0-small} at an infinitesimal argument. For the infinite case form
+the formal defect
+\[
+ F_n(X)=\sum_{k=0}^{n-1}S(X+k/n)-S(nX)
+ +(nX-\tfrac12)\log n-(n-1)c.
+\]
+Expanding only the elementary leading terms shows that all terms involving
+$X\log X$, $X$, $\log X$, and the constant coefficient cancel; hence
+$F_n\in X^{-1}\R[[X^{-1}]]$. Under $X\mapsto X+1/n$, the difference of
+the sum is $S(X+1)-S(X)=\log X$, the difference of $-S(nX)$ is
+$-\log(nX)$, and the remaining linear term contributes $\log n$.
+Thus $F_n(X+1/n)=F_n(X)$. Lemma \ref{lem:periodic} gives $F_n=0$,
+and strong evaluation gives \eqref{eq:log-gauss}.
+\end{proof}
+
+\begin{remark}[What a formal equality does and does not decide]
+The exact definition \eqref{eq:L0-infinite} chooses the value of one
+strongly evaluated formal series. Equality of \emph{asymptotic coefficients}
+is a weaker condition: it permits additional terms smaller than every
+$x^{-N}$. The gauges below exploit this distinction. They do not contradict
+uniqueness of the strong sum of a specified family.
+\end{remark}
+
+\section{Global convexity from multiscale tangent gaps}\label{sec:convexity}
+
+\subsection{A criterion that remains valid without completeness}
+For a differentiable function $F$ on an interval in an ordered field, define
+its tangent gap by
+\begin{equation}\label{eq:tangent-gap}
+ D_F(y,x)=F(y)-F(x)-F'(x)(y-x).
+\end{equation}
+We will prove positivity of this expression directly.
+
+\begin{lemma}[Tangent support and convexity]\label{lem:tangent-convex}
+Let $I$ be an interval in an ordered field and let $F:I\to K$ be finely
+differentiable on its interior.
+If $F$ is convex, then $D_F(y,x)\ge0$ whenever $x$ is interior and $y\in I$.
+Conversely, if $D_F(y,x)>0$ for every two distinct points of an open interval,
+then $F$ is strictly convex on that interval.
+\end{lemma}
+\begin{proof}
+For the first assertion, convexity gives
+\[
+ F(x+t(y-x))-F(x)\le t(F(y)-F(x))\qquad(0<t<1).
+\]
+Dividing by $t$ and using the derivative at $x$ shows that
+$F'(x)(y-x)\le F(y)-F(x)$. This step uses only the defining
+fine epsilon--delta inequality: a strictly negative proposed gap would
+contradict that inequality for a sufficiently small positive $t$.
+No sequential convergence or supremum is needed.
+
+For the converse let $z=(1-\theta)x+\theta y$ with $x\ne y$ and
+$0<\theta<1$. Apply the strict support inequality at $z$, once with
+endpoint $x$ and once with endpoint $y$. Multiply by $1-\theta$ and
+$\theta$, respectively, and add. The derivative terms cancel, giving
+$F(z)<(1-\theta)F(x)+\theta F(y)$.
+\end{proof}
+
+Write $D_0=D_{L_0}$. The next lemma is the analytic core of the article.
+Its relative-close case is especially important: the increment need not be
+an ordinary real-sized perturbation, or even a fixed inverse power of $x$.
+
+\begin{lemma}[Infinite-argument tangent gaps]\label{lem:infinite-gaps}
+Suppose $x,y>\R$ and $x\ne y$. Put $q=y/x$. Then $D_0(y,x)>0$.
+More precisely:
+\begin{enumerate}[label=(\roman*)]
+\item If $q=1+u$ with $0\ne u\in\mi$, then
+\begin{equation}\label{eq:near-gap}
+ D_0(y,x)\sim\frac{(y-x)^2}{2x}.
+\end{equation}
+\item If $q$ is finite appreciable with $r=\st(q)\ne1$, then
+\begin{equation}\label{eq:comparable-gap}
+ D_0(y,x)\sim x\bigl(r\log r-r+1\bigr).
+\end{equation}
+\item If $q$ is positive infinite, then
+\begin{equation}\label{eq:up-gap}
+ D_0(y,x)\sim y\log q.
+\end{equation}
+\item If $q$ is positive infinitesimal, then
+\begin{equation}\label{eq:down-gap}
+ D_0(y,x)\sim x.
+\end{equation}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Substituting \eqref{eq:L0-infinite} and \eqref{eq:digamma} gives the exact
+identity
+\begin{align}
+ D_0(y,x)
+ &=x\Phi(q)+\frac12\Psi(q)+E_R(y,x),\label{eq:gap-identity}\\
+ \Phi(q)&=q\log q-q+1,\qquad
+ \Psi(q)=q-1-\log q,\label{eq:kernels}\\
+ E_R(y,x)&=R(y)-R(x)-R'(x)(y-x).
+\end{align}
+We estimate this expression in each regime.
+
+\emph{Relative-close arguments.}
+Let $q=1+u$ with $u\in\mi\setminus\{0\}$. The formal identities
+\begin{align}
+ \Phi(1+u)&=\frac{u^2}{2}-\frac{u^3}{6}+\frac{u^4}{12}-\cdots,
+ \label{eq:phi-series}\\
+ \Psi(1+u)&=\frac{u^2}{2}-\frac{u^3}{3}+\frac{u^4}{4}-\cdots
+\end{align}
+are strongly evaluable. Writing $k=2j-1$, the remainder is
+\begin{equation}\label{eq:R-gap-series}
+ E_R(y,x)=\sum_{j\ge1}b_jx^{-k}
+ \bigl((1+u)^{-k}-1+ku\bigr).
+\end{equation}
+Each bracket is divisible by $u^2$ as a formal power series, with quadratic
+coefficient $k(k+1)/2$. The joint substitution in $x^{-1}$ and $u$ is
+legitimate by positive-support summability. It gives
+$E_R(y,x)=O(x^{-1}u^2)$. Hence
+\[
+ D_0(y,x)=\frac{xu^2}{2}\bigl(1+O(u)+O(x^{-1})\bigr),
+\]
+where both error terms inside the parentheses are infinitesimal.
+This proves \eqref{eq:near-gap} even when $u$ lies below every
+$x^{-N}$: there is no discarded error independent of $u^2$.
+
+\emph{Comparable but not relative-close arguments.}
+If $r=\st(q)>0$ and $r\ne1$, the finite Taylor extension of $\log$
+gives $\Phi(q)=\Phi(r)+\epsilon$ with $\epsilon\in\mi$.
+The real number $\Phi(r)$ is strictly positive. The term $\Psi(q)$ is
+finite, and \eqref{eq:R-bounds} gives $E_R(y,x)=O(x^{-1})$.
+Thus the first term of \eqref{eq:gap-identity} dominates and yields
+\eqref{eq:comparable-gap}.
+
+\emph{An infinitely larger second argument.}
+If $q>\R$, then $\log q>\R$ and
+$\Phi(q)\sim q\log q$. Also $\Psi(q)=O(q)$ and
+\[
+ E_R(y,x)=O(y^{-1})+O(x^{-1})+O(y/x^2).
+\]
+After division by $y\log q$ all these error terms are infinitesimal,
+proving \eqref{eq:up-gap}.
+
+\emph{An infinitely smaller, but still infinite, second argument.}
+For $q\in\mi_{>0}$, $q\log q\in\mi$, so $\Phi(q)\sim1$.
+Since $y>1$, we have
+$0<\log(1/q)=\log(x/y)<\log x\prec x$.
+Thus $\Psi(q)\prec x$, while $E_R(y,x)$ is infinitesimal by
+\eqref{eq:R-bounds}. This proves \eqref{eq:down-gap}.
+
+The elementary exponential comparisons just used, such as
+$\log x\prec x$ at positive infinite $x$, hold for the usual surreal
+exponential; they also follow from the elementary exponential-field
+extension theorem \cite{vdDE}. The four cases exhaust all positive $q$.
+\end{proof}
+
+\begin{lemma}[Finite and mixed tangent gaps]\label{lem:mixed-gaps}
+For two distinct positive finite surreals $x,y$, $D_0(y,x)>0$.
+If exactly one of $x,y$ is infinite, $D_0(y,x)$ is positive infinite.
+\end{lemma}
+
+\begin{proof}
+First suppose that both arguments are finite. Choose a positive ordinary
+integer $N$ with $x,y<N$. The real function
+$A_N(t)=\log\Gamma(1+t)$ is analytic on a neighborhood of $[0,N]$;
+its restriction can be encoded as a restricted analytic function after a
+real affine change of variables. On $0<t<N$,
+\[
+ L_0(t)=A_N(t)-\log t,
+\]
+where $A_N$ is interpreted by its Taylor extension.
+The classical function $\log\Gamma$ is strictly convex, and its strict
+tangent inequality on $(0,N)$ is a first-order assertion involving $A_N$,
+its restricted analytic derivative, $\log$, and the field operations.
+The restricted analytic exponential-field transfer theorem of
+van den Dries and Ehrlich \cite{vdDE} transfers this assertion to our
+$x,y$. This use of transfer is on a fixed standard bounded interval;
+it does not assume a globally named Gamma function on $\No$.
+
+Now let $x$ be finite and $y$ infinite. If $x$ is appreciable then $L_0(x)$
+and $L_0'(x)$ are finite, so \eqref{eq:L0-infinite} gives
+\[
+ D_0(y,x)\sim y\log y>\R.
+\]
+If $x$ is positive infinitesimal, \eqref{eq:small-bounds} gives instead
+\[
+ D_0(y,x)\sim y\log y+y/x>\R.
+\]
+Indeed the errors are sums of $O(y)$, $O(\log y)$,
+$O(\abs{\log x})$, and finite terms. They are negligible relative to the
+positive displayed sum: in particular
+$\abs{\log x}\prec x^{-1}\prec y/x$.
+There is no assumption about the relative sizes of $y\log y$ and $y/x$.
+
+Finally let $x$ be infinite and $y$ finite. The infinite expansion implies
+\[
+ xL_0'(x)-L_0(x)=x+O(\log x)\sim x,
+ \qquad yL_0'(x)=O(\log x)\prec x.
+\]
+There is a fixed real constant $C$ such that
+$\log\Gamma(t)>-C$ for every positive real $t$; for example this follows
+from the positive continuous real Gamma function, its behavior at zero,
+and Stirling's expansion at infinity. The same bound holds for finite
+positive $y$, by the bounded-interval transfer argument above. Therefore
+\[
+ D_0(y,x)=L_0(y)+xL_0'(x)-L_0(x)-yL_0'(x)>x/2.
+\]
+This remains true if $L_0(y)$ itself is positive infinite because $y$ is
+extraordinarily small. All mixed cases are covered.
+\end{proof}
+
+\begin{theorem}[Global strict log-convexity of the baseline]\label{thm:baseline-convex}
+For all distinct $x,y>0$,
+\begin{equation}\label{eq:strict-support0}
+ L_0(y)>L_0(x)+L_0'(x)(y-x).
+\end{equation}
+Consequently $L_0$ is strictly convex on the entire surreal positive
+half-line, with arbitrary surreal convex-combination parameters.
+\end{theorem}
+\begin{proof}
+Combine \cref{lem:infinite-gaps,lem:mixed-gaps,lem:tangent-convex}.
+\end{proof}
+
+\subsection{The geometric meaning of the estimates}
+If $y=x+\Delta$ with $\Delta\prec x$, the baseline has a convexity margin
+of size $\Delta^2/x$. If $\Delta$ is finite, a gauge constant under finite
+translations changes nothing. If $\Delta$ is infinite, a gauge increment
+of size at most $\Delta/x$ is infinitesimal relative to that margin.
+This is the source of the sharp coefficient threshold $a(M(x))=O(x^{-1})$.
+At arguments with different leading scales the margin is already infinite,
+so any finite gauge discrepancy is harmless. These observations are made
+exact in the next section.
+
+\section{The sharp monomial-gauge classification}\label{sec:gauges}
+
+\subsection{Algebraic invariance and local invisibility}
+For an arbitrary class assignment $a:\Minf\to\No$, define $h_a,L_a$,
+and $\Gamma_a$ by \eqref{eq:gauge-intro}. No regularity of $a$ is assumed.
+
+\begin{lemma}[Gauge identities]\label{lem:gauge-identities}
+For $x,x+u>0$ and $u\in\Ocal$,
+\begin{equation}\label{eq:gauge-translation}
+ h_a(x+u)=h_a(x).
+\end{equation}
+For every positive ordinary integer $n$,
+\begin{equation}\label{eq:gauge-scaling}
+ h_a(nx)=n h_a(x).
+\end{equation}
+The function $h_a$ is finely locally constant on $\No_{>0}$; in particular
+$h_a^{(k)}=0$ for every finite $k\ge1$.
+\end{lemma}
+\begin{proof}
+A finite translation cannot change an infinite argument into a finite one or
+conversely. In the finite case both sides of
+\eqref{eq:gauge-translation} vanish. In the infinite case use
+\eqref{eq:pp-translation} and \eqref{eq:monomial-rules}.
+The same rules give \eqref{eq:gauge-scaling}; the finite case again vanishes.
+For local constancy restrict to
+$\abs u<\min(1,x/2)$. Repeated differentiation of a locally constant
+function gives zero.
+\end{proof}
+
+\begin{proposition}[Identities shared by every gauge]\label{prop:gauge-invariance}
+Every $\Gamma_a$ is positive, agrees with $\Gamma_0$ at all positive finite
+arguments, is normalized at $1$, and satisfies recurrence
+and every finite Gauss multiplication formula. It also satisfies
+\eqref{eq:ratio-intro}, and $L_a^{(k)}=L_0^{(k)}$ for all finite $k\ge1$.
+\end{proposition}
+\begin{proof}
+Positivity follows from the ordered exponential, and agreement and
+normalization follow from $h_a=0$ on positive finite inputs.
+Equation \eqref{eq:gauge-translation} with $u=1$ preserves
+\eqref{eq:baseline-recurrence}. For multiplication,
+\[
+ \sum_{k=0}^{n-1}h_a(x+k/n)=n h_a(x)=h_a(nx),
+\]
+which preserves \eqref{eq:log-gauss}. Exponentiate using
+$\exp(v+w)=\exp(v)\exp(w)$.
+For any finite $u$, subtracting $L_a(x)$ from $L_a(x+u)$ cancels the
+gauge exactly and proves the normalized ratio identity.
+The derivative assertion follows from \cref{lem:gauge-identities}.
+\end{proof}
+
+\begin{warning}[Which derivatives coincide]
+The equality just proved concerns the derivatives of \emph{log-Gamma}.
+In general $\Gamma_a^{(k)}(x)$ does not equal $\Gamma_0^{(k)}(x)$;
+on a local neighborhood it equals
+$e^{h_a(x)}\Gamma_0^{(k)}(x)$. Consequently normalized derivatives such as
+$\Gamma_a^{(k)}/\Gamma_a$ agree, while unnormalized values need not.
+\end{warning}
+
+\subsection{Sufficiency of the finite coefficient bound}
+\begin{theorem}[Convexity under the sharp bound]\label{thm:sufficiency}
+If $m a(m)\in\Ocal$ for every $m\in\Minf$, then
+\begin{equation}\label{eq:gauge-strict-support}
+ D_{L_a}(y,x)>0\qquad(x,y>0,\ x\ne y).
+\end{equation}
+In particular, $L_a$ is strictly convex.
+\end{theorem}
+
+\begin{proof}
+For an infinite $x$ with $m=M(x)$,
+\[
+ h_a(x)=(m a(m))\frac{\pp(x)}m\in\Ocal.
+\]
+Thus every gauge value is finite, although there need not be a single real
+bound working for all monomials. By local constancy,
+\begin{equation}\label{eq:perturbed-gap}
+ D_{L_a}(y,x)=D_0(y,x)+h_a(y)-h_a(x).
+\end{equation}
+
+If $x,y$ are finite, the perturbation is zero and
+\cref{lem:mixed-gaps} applies. If exactly one is infinite, the baseline gap
+is positive infinite while the perturbation is finite, so the conclusion
+again follows.
+
+Suppose both are infinite. If $M(x)\ne M(y)$, their ratio is infinite or
+infinitesimal. By \cref{lem:infinite-gaps}, the baseline gap is positive
+infinite, and a finite perturbation cannot change its sign.
+If $M(x)=M(y)=m$ but $\st(y/x)\ne1$, the same conclusion follows from
+\eqref{eq:comparable-gap}.
+
+It remains to consider $M(x)=M(y)=m$ and
+$\Delta=y-x\prec x$ with $\Delta\ne0$. If $\Delta$ is finite,
+\eqref{eq:gauge-translation} makes the perturbation exactly zero.
+If $\Delta$ is infinite, linearity of the purely infinite projection gives
+\[
+ h_a(y)-h_a(x)=a(m)\pp(\Delta),\qquad
+ \pp(\Delta)\sim\Delta.
+\]
+By \eqref{eq:near-gap},
+\[
+ \frac{\abs{h_a(y)-h_a(x)}}{D_0(y,x)}
+ \sim\frac{2\abs{a(m)}x}{\abs\Delta}\in\mi,
+\]
+unless $a(m)=0$, in which case the numerator vanishes outright.
+Here $a(m)x$ is finite because $x/m$ and $m a(m)$ are finite, whereas
+$\abs\Delta$ is infinite. Thus \eqref{eq:perturbed-gap} is strictly
+positive in the last case as well. Lemma \ref{lem:tangent-convex} proves
+strict convexity.
+\end{proof}
+
+\subsection{Necessity and an explicit violating tangent}
+\begin{theorem}[Necessity of the finite coefficient bound]\label{thm:necessity}
+If $m a(m)$ is infinite in absolute value for some $m\in\Minf$, then
+$L_a$ is not convex. In fact a violating tangent can be found using two
+positive infinite arguments having the same leading monomial $m$.
+\end{theorem}
+
+\begin{proof}
+Fix such an $m$ and abbreviate $a=a(m)\ne0$. Both $m$ and $\abs a m$
+are positive infinite. Let
+\[
+ b=\min(m,\abs a m),\qquad \delta=\pp(\sqrt b).
+\]
+Then $\delta$ is positive purely infinite, $\delta\sim\sqrt b$, and
+\begin{equation}\label{eq:delta-choice}
+ \delta\prec m,\qquad \delta\prec\abs a m.
+\end{equation}
+Set $x=m$ and $y=m-\sgn(a)\delta$. These arguments are positive infinite,
+$M(y)=m$, and $y$ is purely infinite. Therefore
+\[
+ h_a(y)-h_a(m)=-\abs a\delta.
+\]
+On the other hand, \eqref{eq:near-gap} gives
+\[
+ D_0(y,m)\sim\frac{\delta^2}{2m}\prec\abs a\delta,
+\]
+since the ratio is asymptotic to $\delta/(2\abs a m)$.
+Using $L_a'=L_0'$ in \eqref{eq:perturbed-gap}, we obtain
+$D_{L_a}(y,m)<0$. Convex differentiable functions have nonnegative tangent
+gaps by \cref{lem:tangent-convex}. Thus $L_a$ is not convex.
+\end{proof}
+
+\begin{corollary}[The exact coefficient region]\label{cor:sharp-region}
+Within the entire monomialwise family \eqref{eq:gauge-intro},
+\[
+ \boxed{\quad L_a\text{ is convex}
+ \ \Longleftrightarrow\
+ \forall m\in\Minf,\ a(m)=O(m^{-1}).\quad}
+\]
+There are no merely convex but non-strictly-convex members of this family.
+\end{corollary}
+
+The coefficient condition is pointwise in $m$. Arbitrarily different finite
+bounds at different monomials are allowed. Both positive and negative gauges
+are allowed. This is not a classification of \emph{all} surreal Gamma
+extensions or of all possible periodic gauges; it is an exact classification
+of the explicitly stated large family.
+
+\subsection{Examples at and beyond the boundary}
+\begin{example}[A non-flat boundary gauge]\label{ex:boundary}
+For a real $\lambda$, take $a(m)=\lambda/m$. Then
+\[
+ h_a(x)=\lambda\frac{\pp(x)}{M(x)}
+\]
+is finite at infinite $x$, and the theorem proves strict log-convexity.
+At $x=m$ it equals $\lambda$, so unless $\lambda=0$ this gauge changes the
+constant order of the logarithmic asymptotics. It demonstrates that the
+allowable convexity region is much larger than the flat subfamily.
+\end{example}
+
+\begin{example}[A gauge that looks locally harmless but is not convex]
+Choose one infinite monomial $m_0$, put $a(m_0)=1$, and put $a(m)=0$ at
+all other monomials. Every positive-order fine derivative of $L_a$ still
+coincides with that of $L_0$. Nevertheless, choosing
+$x=m_0$, $y=m_0-\sqrt{m_0}$ gives
+\[
+ D_0(y,x)\sim\frac12,\qquad h_a(y)-h_a(x)=-\sqrt{m_0},
+\]
+so the tangent gap is negative. This is a concrete failure of the implication
+``positive second derivative implies convexity'' for the fine calculus at
+hand. It also independently checks the orientation and size of the
+necessity construction.
+\end{example}
+
+\section{Flat families and the strengthened failure of uniqueness}\label{sec:flat}
+
+\subsection{An exact flatness criterion}
+\begin{definition}
+An assignment $a:\Minf\to\No$ is \emph{algebraically flat} if
+\[
+ \abs{a(m)}\prec m^{-N}\qquad(m\in\Minf,\ N\in\N).
+\]
+A function $h$ on $\No_{>0}$ is algebraically flat at infinite arguments if
+$\abs{h(x)}\prec x^{-N}$ for every $x>\R$ and every ordinary $N\in\N$.
+\end{definition}
+
+\begin{proposition}[Coefficient flatness equals function flatness]
+\label{prop:flat-equivalence}
+For the family $h_a$, coefficient flatness and function flatness are
+equivalent. Under either condition $L_a$ is strictly convex and
+\begin{equation}\label{eq:relative-flat}
+ \frac{\Gamma_a(x)}{\Gamma_0(x)}-1\prec x^{-N}
+ \qquad(x>\R,\ N\in\N).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $m=M(x)$. Since $x/m$ is finite appreciable and
+$\pp(x)/m$ is finite, the estimate
+$\abs{a(m)}\prec m^{-(N+1)}$ gives
+$\abs{a(m)\pp(x)}\prec x^{-N}$. This proves function flatness.
+Conversely, evaluate at $x=m$, where $h_a(m)=m a(m)$, and use the
+function estimate at order $N$ to obtain a coefficient estimate at order
+$N+1$. Together with the weaker orders this is coefficient flatness.
+
+In particular $m a(m)$ is infinitesimal, hence finite, so
+\cref{thm:sufficiency} applies. Finally $h_a(x)$ is infinitesimal and
+$\exp h_a(x)-1\sim h_a(x)$ when it is nonzero, by its strongly summable
+Taylor expansion. This gives \eqref{eq:relative-flat}; the zero case is
+immediate.
+\end{proof}
+
+Parts (i)--(iii) of \cref{thm:main} follow from
+\cref{thm:sufficiency,thm:necessity,prop:gauge-invariance}, and part (iv)
+follows from \cref{prop:flat-equivalence}. This completes its proof.
+
+\begin{warning}[Relative flatness does not bound an absolute Gamma difference]
+\label{warn:absolute-difference}
+The flat quantities are $L_a-L_0$ and $\Gamma_a/\Gamma_0-1$.
+Multiplication by $\Gamma_0$ need not preserve flatness. For example, with
+$a_1(m)=e^{-m}$, put $h=\omega e^{-\omega}$. Then
+\[
+ \Delta:=\Gamma_1(\omega)-\Gamma_0(\omega)
+ =\Gamma_0(\omega)(e^h-1)
+ \sim\Gamma_0(\omega)\omega e^{-\omega}>0.
+\]
+Since $(e^h-1)/h=1+\eta$ for an infinitesimal $\eta$, taking logarithms gives
+\[
+ \log\Delta
+ =\left(\omega+\frac12\right)\log\omega-2\omega+c+R(\omega)
+   +\log(1+\eta)
+ \sim\omega\log\omega.
+\]
+Thus $\log\Delta>N\log\omega$, and hence $\Delta>\omega^N$, for every
+ordinary $N\in\N$. The absolute difference can therefore be enormous
+despite agreement to every relative algebraic order.
+\end{warning}
+
+\subsection{Explicit families with arbitrarily many parameters}
+\begin{proof}[Proof of \cref{cor:headline}]
+For every positive infinite $m$ and ordinary $N$,
+$m^N e^{-m}\in\mi$. To see this directly, the real exponential eventually
+exceeds every prescribed positive real multiple of $t^{N+1}$; the same
+inequality holds at infinite surreal $t$ by exponential-field transfer
+\cite{vdDE}. Consequently $a_\lambda(m)=\lambda e^{-m}$ is flat for
+real $\lambda$. The main theorem gives all the asserted identities and
+strict convexity. At $x=\omega$, $M(x)=\pp(x)=\omega$, yielding
+\eqref{eq:omega-value}. Distinct real $\lambda$ give distinct logarithms
+there, and injectivity of the surreal exponential gives distinct Gamma
+functions.
+\end{proof}
+
+\begin{theorem}[Independent monomial parameters]\label{thm:independent}
+Let $S\subseteq\Minf$ be any set. To each function
+$\lambda:S\to\R$ associate the definable class assignment
+\[
+ a_\lambda(m)=
+ \begin{cases}
+ \lambda(m)e^{-m},&m\in S,\\
+ 0,&m\notin S.
+ \end{cases}
+\]
+The map $\lambda\mapsto\Gamma_{a_\lambda}$ is injective, and all its
+members have the properties of \cref{cor:headline}.
+\end{theorem}
+\begin{proof}
+Flatness is pointwise in $m$, so no boundedness of the real parameters as
+$m$ varies is needed. Distinct parameter functions differ at some $m\in S$,
+where their log-Gamma values differ by the nonzero quantity
+$(\lambda(m)-\mu(m))m e^{-m}$.
+\end{proof}
+
+Formally, this indexed family is the single class function
+$(\lambda,x)\mapsto\Gamma_{a_\lambda}(x)$ on
+$\R^S\times\No_{>0}$. ``Injective'' means that different indices are
+separated by some argument; it does not make proper classes into values of
+a set function. This gives independent parameters on sets of any size
+available in the ambient set theory, without forming a set of all class
+functions.
+
+\begin{example}[The same local data at visibly different arguments]
+For the one-parameter family and $\lambda\ne0$,
+\begin{align*}
+ h_\lambda(\omega)&=\lambda\omega e^{-\omega},\\
+ h_\lambda(\omega+17+\omega^{-1})&=\lambda\omega e^{-\omega},\\
+ h_\lambda(2\omega)&=2\lambda\omega e^{-\omega},\\
+ h_\lambda(\omega+\sqrt\omega)&=
+ \lambda(\omega+\sqrt\omega)e^{-\omega},\\
+ h_\lambda(\omega^2)&=\lambda\omega^2e^{-\omega^2}.
+\end{align*}
+The fourth line changes the gauge because the increment is infinite,
+although it is infinitesimal relative to the argument. The second line does
+not change it because the entire increment is finite. In the third line the
+exponent is still $-\omega$, not $-2\omega$: $M(2\omega)=\omega$.
+Confusing a leading monomial with a leading term would invalidate the
+multiplication identities.
+\end{example}
+
+\subsection{Even the usual signed remainder bounds survive}
+Let
+\begin{equation}\label{eq:stirling-truncation}
+ S_N(x)=\left(x-\frac12\right)\log x-x+c+
+ \sum_{j=1}^{N}b_jx^{-(2j-1)}\qquad(N\in\N).
+\end{equation}
+An empty sum is zero. The following strengthens equality of asymptotic
+coefficients by retaining the direction and size of each ordinary-order
+Stirling remainder.
+
+\begin{theorem}[Enveloping inequalities are still non-unique]
+\label{thm:enveloping}
+For every algebraically flat $a$, every $x>0$, and every ordinary $N\in\N$,
+\begin{equation}\label{eq:enveloping}
+ 0<(-1)^N\bigl(L_a(x)-S_N(x)\bigr)
+ <\abs{b_{N+1}}x^{-(2N+1)}.
+\end{equation}
+Thus adding all these inequalities to the requirements in
+\cref{cor:headline} does not restore uniqueness.
+\end{theorem}
+\begin{proof}
+For finite positive $x$, $L_a=L_0$ and the classical strict real remainder
+bounds for log-Gamma \cite[\S5.11(ii)]{DLMF511} transfer on a standard
+bounded interval, exactly as in \cref{lem:mixed-gaps}. The elementary
+terms in $S_N$ introduce only powers and logarithms. For completeness, strictness follows directly from Binet's real formula
+\cite[Eq.~5.9.10]{DLMF59}:
+\[
+ \ell(x)-S_0(x)=2\int_0^\infty
+ \frac{\arctan(t/x)}{e^{2\pi t}-1}\,dt\qquad(x\in\R_{>0}).
+\]
+The finite expansion
+\[
+ \arctan v=\sum_{k=0}^{N-1}\frac{(-1)^k v^{2k+1}}{2k+1}
+ +(-1)^N\int_0^v\frac{u^{2N}}{1+u^2}\,du
+\]
+has a signed remainder strictly between $0$ and $v^{2N+1}/(2N+1)$
+for $v>0$. Integrating against the positive Binet kernel gives the
+strict first-omitted-term bounds; the integrated polynomial coefficients
+are the $b_j$ in \eqref{eq:coefficients}. This is an ordinary real
+integral argument, used only before transfer, not a surreal integral.
+
+For infinite $x$, the coefficients $b_j$ alternate in sign, with
+$\sgn b_j=(-1)^{j+1}$. Therefore the strong-series remainder has the form
+\[
+ (-1)^N(L_0(x)-S_N(x))
+ =\abs{b_{N+1}}x^{-(2N+1)}
+  -\abs{b_{N+2}}x^{-(2N+3)}+O(x^{-(2N+5)}).
+\]
+Flatness makes $h_a(x)$ infinitesimal relative to the second displayed term.
+The remainder itself is positive because of its first term, and the
+difference from the upper bound is positive because of the second term.
+This proves both strict inequalities after adding the gauge.
+\end{proof}
+
+\subsection{What ``all orders'' means here}
+All differentiation orders, multiplication indices, and Stirling truncation
+indices in this article are ordinary nonnegative integers. A transfinite
+product, a hyperinteger-indexed recurrence scheme, or a prescription for
+summing a proper-class expansion would be a different additional structure.
+None is smuggled into \eqref{eq:gauss-intro} or \eqref{eq:enveloping}.
+
+Likewise, flatness here does not mean zero. At an infinite $x$ the ordered
+field contains nonzero elements smaller than every ordinary inverse power
+of $x$. The explicit examples use that room. Requiring equality to a chosen
+full strong sum would remove it by definition, but would be a stronger
+normalization than the classical asymptotic expansion and its usual
+finite-order error inequalities.
+
+\section{Local Gamma calculus and the failure of classical propagation}
+\label{sec:local}
+
+\subsection{Normalized germs and polygamma identities}
+For a positive argument $x$, the local multiplicative germ of $\Gamma_a$
+normalized at $x$ is
+\[
+ u\longmapsto\frac{\Gamma_a(x+u)}{\Gamma_a(x)}.
+\]
+It is exactly the baseline germ. This includes finite translations which
+are not infinitesimal, as long as positivity of the shifted argument is
+retained. In particular, all logarithmic derivatives and all normalized
+finite-order derivatives coincide.
+
+Writing $\psi=L_0'$ gives, by differentiating the already established
+identities,
+\begin{align}
+ \psi(x+1)-\psi(x)&=x^{-1},\\
+ n\psi(nx)&=\sum_{k=0}^{n-1}\psi(x+k/n)+n\log n.
+\end{align}
+Higher fine derivatives give their polygamma counterparts. At positive
+infinite $x$,
+\[
+ \psi(x)=\log x-\frac1{2x}-\frac1{12x^2}
+ +\frac1{120x^4}-\frac1{252x^6}+\cdots,
+\]
+with strong summation, and
+\[
+ (-1)^{r+1}\psi^{(r)}(x)\sim(r-1)!x^{-r}>0
+ \qquad(r\ge1).
+\]
+At finite positive arguments the same sign is obtained from the ordinary
+polygamma functions by restricted analytic transfer. These facts agree with
+the classical formulas \cite{DLMF515}, but do not distinguish any two
+members of our family.
+
+\begin{warning}[An illegitimate substitution into an ordinary sum]
+For real $x>0$, the familiar identity
+$\psi'(x)=\sum_{k\ge0}(x+k)^{-2}$ is an ordinarily convergent sum.
+At infinite surreal $x$, its summands all have the same leading monomial
+$M(x)^{-2}$, with nonzero real leading coefficient. The family is therefore
+\emph{not} strongly summable: that monomial occurs infinitely often.
+The correct expression used here is the differentiated Stirling strong
+series, not that ordinary series with an infinite number substituted into it.
+\end{warning}
+
+\subsection{Why the real uniqueness argument does not transfer wholesale}
+The unit recurrence propagates values along $x+\Z$, and finite
+multiplication formulas relate a finite number of comparable arguments.
+Neither operation moves an infinite argument to the real interval $(0,1]$.
+More strongly, our normalized germs already prescribe every finite
+translation from every starting point, and the gauge still survives.
+
+Real Bohr--Mollerup arguments eventually use the Archimedean property to
+squeeze a difference to zero through real error bounds. In the present
+field, an error smaller than $x^{-N}$ for every ordinary $N$ can be nonzero.
+Theorem \ref{thm:enveloping} makes the limitation explicit even for signed
+Stirling inequalities. The failure is not a defect in the classical theorem:
+its ambient ordered field and its globally available means of propagation
+have changed.
+
+There is no contradiction with elementary extension of the restricted
+analytic exponential structure. That language names analytic functions on
+fixed real compact boxes and the exponential. The normal-form projection
+$\pp$, the leading-monomial selector $M$, and an arbitrary class assignment
+$a$ are not silently included as definable functions in that structure.
+Our use of transfer proves bounded-regime statements about $L_0$; it does
+not claim definability or uniqueness of $L_a$ in an o-minimal expansion.
+
+\subsection{Local analyticity is not global analytic continuation}
+The functions $L_a$ have local Hahn-Taylor descriptions: near any point,
+$h_a$ is a fixed scalar and the remaining Taylor series is the baseline one.
+This does not provide a classical path joining the point to the real axis
+through a connected complex domain, nor an identity theorem that propagates
+an equality between different fine components. A local power-series
+condition on this topology is therefore intentionally distinguished from a
+single global transseries prescription.
+
+The distinction is useful for specification as well as for theory. A
+symbolic system may implement the baseline by an exact normal-form rule.
+Alternatively it may specify only a recurrence, local derivatives, and
+asymptotics. These are different interfaces: the second does not determine
+the first, even after global log-convexity and all finite multiplication
+formulas are required.
+
+\section{Surcomplex log-Gamma and an exact finite-phase tube}
+\label{sec:surcomplex}
+
+\subsection{The canonical exponential with finite imaginary part}
+For a finite surreal $b=r+\epsilon$, where $r\in\R$ and
+$\epsilon\in\mi$, define
+\begin{equation}\label{eq:cis}
+ \cis(b)=e^{ir}\sum_{k\ge0}\frac{(i\epsilon)^k}{k!}.
+\end{equation}
+The sum is strong. Formal exponential identities give
+$\cis(b+d)=\cis(b)\cis(d)$ for finite $b,d$ and
+$\abs{\cis(b)}=1$. Thus
+\begin{equation}\label{eq:finite-exp}
+ E(v+ib)=e^v\cis(b),\qquad v\in\No,\ b\in\Ocal,
+\end{equation}
+is a canonical additive-to-multiplicative homomorphism on
+$\No+i\Ocal$. It is finely complex differentiable there, with $E'=E$:
+on a sufficiently small complex neighborhood the increment has a strong
+exponential series and $E(w+u)=E(w)\sum u^k/k!$.
+
+No value for $\cis(b)$ with infinite $b$ is prescribed by
+\eqref{eq:cis}. The following construction keeps this domain restriction
+visible. In particular, an infinite imaginary part of a log-Gamma value is
+not automatically an argument at which \eqref{eq:finite-exp} may be used.
+
+\subsection{The logarithm on the right half-plane}
+For $z=x+iy$ with $x>0$, define the right-half-plane logarithm by
+\[
+ \Log z=\log\abs z+i\operatorname{Arg}(z),\qquad
+ -\pi/2<\operatorname{Arg}(z)<\pi/2.
+\]
+The angle is a finite surreal. It may be constructed without evaluating a
+trigonometric function at an infinite argument: use the Taylor extension of
+$\arctan$ at finite $y/x$, and for infinite $\abs{y/x}$ use
+$\sgn(y)\pi/2-\arctan(x/y)$. These formulas agree on their overlaps by
+real analytic identities and infinitesimal Taylor evaluation. They give
+$E(\Log z)=z$ and locally $\Log(z+u)=\Log z+\log(1+u/z)$, with the
+last logarithm evaluated at a sufficiently small infinitesimal ratio.
+Hence $\Log'(z)=1/z$.
+
+Now restrict attention to the fine-open tube
+\[
+ \tube=\{x+iy\in\SC:x>0,\ y\in\Ocal\}.
+\]
+If $x>\R$ and $y$ is finite, a particularly simple formula is
+\begin{equation}\label{eq:log-infinite-complex}
+ \Log(x+iy)=\log x+\sum_{k\ge1}
+ \frac{(-1)^{k+1}}k\left(\frac{iy}{x}\right)^k.
+\end{equation}
+
+\subsection{Definition and functional identities of complex log-Gamma}
+Let $\ell_{\C}$ be the ordinary holomorphic branch of log-Gamma on the
+complex right half-plane, chosen to equal $\log\Gamma$ on its positive
+real axis. At nonzero points of its imaginary boundary, this branch has a
+local analytic continuation, which is uniquely specified by continuation
+from the right half-plane.
+
+For finite $z\in\tube$ with $\zeta=\st(z)\ne0$, define
+$\Lt_0(z)$ by the complex Taylor series of that local branch at $\zeta$.
+Here standard part is taken componentwise. For infinitesimal $z\in\tube$,
+define
+\begin{equation}\label{eq:complex-small}
+ \Lt_0(z)=-\Log z-\gamma z+
+ \sum_{k\ge2}\frac{(-1)^k\zeta(k)}k z^k.
+\end{equation}
+For $z=x+iy\in\tube$ with $x>\R$, define
+\begin{equation}\label{eq:complex-infinite}
+ \Lt_0(z)=\left(z-\frac12\right)\Log z-z+c+
+ \sum_{j\ge1}b_jz^{-(2j-1)}.
+\end{equation}
+The inverse $z^{-1}$ is infinitesimal, so this is a well-defined strong sum.
+Finally set
+\begin{equation}\label{eq:complex-gauge}
+ \Lt_a(x+iy)=\Lt_0(x+iy)+h_a(x).
+\end{equation}
+The gauge takes values in $\No\subset\SC$, so its imaginary part is zero;
+its values need not lie in the ordinary real field $\R$.
+
+\begin{theorem}[Surcomplex logarithmic invariance]\label{thm:complex-log}
+For every assignment $a$, $\Lt_a$ is finely holomorphic on $\tube$ and
+has local strongly evaluable Taylor expansions. It restricts to $L_a$ on
+the positive real-surreal axis, and all its positive-order fine complex
+derivatives coincide with those of $\Lt_0$. Moreover,
+\begin{align}
+ \Lt_a(z+1)-\Lt_a(z)&=\Log z,\label{eq:complex-recurrence}\\
+ \Lt_a(nz)&=\sum_{k=0}^{n-1}\Lt_a(z+k/n)
+ +(nz-\tfrac12)\log n-(n-1)c\label{eq:complex-gauss}
+\end{align}
+for all $z\in\tube$ and ordinary $n\ge1$.
+\end{theorem}
+
+\begin{proof}
+Local strong summability and differentiability follow exactly as in
+\cref{prop:baseline-calculus}, with complex coefficients. At finite
+standard part one uses a small ordinary complex disk on which the chosen
+branch is analytic; at standard part zero use \eqref{eq:complex-small};
+at infinite real part use the joint expansions in $z^{-1}$ and a small
+increment divided by $z$. The extra term $h_a(\Ren z)$ is constant on
+small fine disks because the real part of a sufficiently small increment
+is finite. Hence it has zero fine complex derivatives.
+
+For finite $z$, the classical analytic recurrence and multiplication
+identities extend by these Taylor expansions. Their logarithmic constants
+are fixed by agreement on the ordinary positive real axis. The identities
+remain valid in local disks meeting a nonzero imaginary boundary point by
+ordinary analytic continuation. Near zero one uses the recurrence-based
+formula \eqref{eq:complex-small}.
+
+For infinite real part, the formal proofs of
+\cref{lem:formal-shift,prop:gauss0} evaluate at $z$ just as at $x$;
+\eqref{eq:log-infinite-complex} ensures consistent logarithmic branches,
+in particular $\Log(nz)=\log n+\Log z$. The gauge cancels because
+$h_a(x+1)=h_a(x)$ and
+$\sum_{k=0}^{n-1}h_a(x+k/n)=h_a(nx)$.
+\end{proof}
+
+\subsection{The exact phase estimate}
+The imaginary part of \eqref{eq:complex-infinite} grows at the scale
+$y\log x$, even though $y$ itself is finite. This identifies precisely when
+the canonical exponential \eqref{eq:finite-exp} is available.
+
+\begin{lemma}[Imaginary log-Gamma at infinite real part]\label{lem:phase}
+Let $x>\R$ and $y\in\Ocal$. Then
+\begin{equation}\label{eq:phase-estimate}
+ \Imn\Lt_0(x+iy)-y\log x\in\mi.
+\end{equation}
+More precisely, for $y\ne0$,
+\begin{equation}\label{eq:phase-quotient}
+ \frac{\Imn\Lt_0(x+iy)}y
+ =\log x-\frac1{2x}+O(x^{-2})+O(y^2x^{-2}).
+\end{equation}
+Consequently $\Imn\Lt_a(x+iy)$ is finite if and only if $y\log x$ is
+finite, for every $\No$-valued gauge \eqref{eq:complex-gauge}.
+\end{lemma}
+
+\begin{proof}
+Re-expand \eqref{eq:complex-infinite} around $x$ in the ratio $iy/x$.
+All Taylor coefficients at $x\in\No_{>0}$ lie in $\No$, and the imaginary part
+is the odd Taylor portion:
+\[
+ \Imn\Lt_0(x+iy)
+ =yL_0'(x)-\frac{y^3}{3!}L_0'''(x)
+ +\frac{y^5}{5!}L_0^{(5)}(x)-\cdots.
+\]
+This is an identity of strongly summable joint expansions, not an appeal to
+a real convergence disk of infinite radius. Formula \eqref{eq:digamma}
+gives $L_0'(x)=\log x-1/(2x)+O(x^{-2})$.
+The cubic and higher odd terms, after division by $y$, have total size
+$O(y^2x^{-2})$, since $L_0'''(x)=O(x^{-2})$ and each further odd
+term gains a factor of order $y^2/x^2$. Strong summability justifies the
+factorization. This proves \eqref{eq:phase-quotient}; if $y=0$ the
+imaginary part is exactly zero. Multiplication by a finite $y$ gives
+\eqref{eq:phase-estimate}. Adding $h_a(x)\in\No$ changes no imaginary
+part. A quantity and an infinitesimally close quantity are finite together.
+\end{proof}
+
+\begin{theorem}[Exact canonical finite-phase Gamma domain]
+\label{thm:phase-domain}
+Let $\Omega$ be the domain \eqref{eq:omega-domain-intro}. It is fine-open
+and invariant under $z\mapsto z+1$, $z\mapsto nz$, and
+$z\mapsto z+k/n$ for the finite positive indices occurring in the Gamma
+identities. For every assignment $a$,
+\[
+ \Lt_a(z)\in\No+i\Ocal\quad\Longleftrightarrow\quad z\in\Omega
+ \qquad(z\in\tube).
+\]
+Thus
+\begin{equation}\label{eq:complex-gamma}
+ \Gt_a(z)=E(\Lt_a(z))\qquad(z\in\Omega)
+\end{equation}
+is a well-defined finely holomorphic, nowhere-zero surcomplex function.
+It extends $\Gamma_a$ and satisfies
+\begin{align}
+ \Gt_a(z+1)&=z\Gt_a(z),\label{eq:actual-complex-recurrence}\\
+ \Gt_a(nz)&=(2\pi)^{(1-n)/2}E((nz-\tfrac12)\log n)
+ \prod_{k=0}^{n-1}\Gt_a(z+k/n).\label{eq:actual-complex-gauss}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+At finite $z$ with nonzero standard part, the imaginary part of $\Lt_0(z)$
+is a real constant plus an infinitesimal. At infinitesimal $z$, formula
+\eqref{eq:complex-small} has finite imaginary part because $\operatorname{Arg}z$
+is finite. The gauge has zero imaginary part and changes none of this.
+At infinite real part,
+\cref{lem:phase} gives exactly the condition defining $\Omega$.
+
+To see openness at an infinite $x+iy\in\Omega$, restrict a perturbation
+$u+iv$ to $\abs u<1$ and $\abs v<1/\log x$. The new real part is still
+infinite and
+$\log(x+u)-\log x=O(u/x)$. Therefore
+$(y+v)\log(x+u)$ is finite. A further shrink preserves positivity.
+The finite-real-part portion is already open. For the stated transformations,
+$\log(nx)=\log x+\log n$ and
+$\log(x+k/n)-\log x\in\mi$ at infinite $x$, while all imaginary
+parts involved remain finite. The defining finite-product condition is
+therefore preserved.
+
+The complex derivative follows from the local chain rule for strong Taylor
+expansions and $E'=E$. Nonvanishing follows from
+$\abs{E(v+ib)}=e^v>0$. Apply the homomorphism $E$ to
+\eqref{eq:complex-recurrence} and \eqref{eq:complex-gauss}; all arguments
+have finite imaginary part, including $(nz-\tfrac12)\log n$.
+Finally $E(\Log z)=z$, giving the claimed identities.
+\end{proof}
+
+\begin{example}[The boundary is a logarithmic scale]
+At real part $x=\omega$, the point
+$\omega+i/\log\omega$ lies in $\Omega$ and its log-Gamma phase is
+$1$ plus an infinitesimal. The point $\omega+i$ lies in $\tube$ but not
+in $\Omega$, because its log-Gamma phase is $\log\omega$ plus an
+infinitesimal. On the other hand, a nonzero imaginary increment much smaller
+than $1/\log\omega$ is permitted. Thus the obstruction is not simply
+whether $y$ is finite or infinitesimal: it is the product $y\log x$.
+\end{example}
+
+\begin{warning}[An exact domain for one prescription, not a maximality claim]
+Theorem \ref{thm:phase-domain} identifies exactly where the canonical
+\emph{finite-phase exponentiation of this log-Gamma} is defined within
+$\tube$. It does not prove that $\Gt_a$ has no other extension outside
+$\Omega$, or that a global exponential cannot be chosen by additional
+noncanonical phase data. Such choices define a different problem. No
+value of $\sin\omega$ or $e^{i\omega}$ is selected in this article.
+\end{warning}
+
+\section{What the scalar derivation can distinguish}\label{sec:differential}
+
+\subsection{The imported differential structure}
+Let $\der$ be the Berarducci--Mantova derivation, normalized by
+$\der\omega=1$. We use its Leibniz rule, strong additivity, exponential
+compatibility, and constant field $\ker\der=\R$, all established in
+\cite{BM}. In particular $\der\log x=\der x/x$ for $x>0$.
+These are properties of scalar surreal numbers. No differentiation of
+$M(x)$ or $\pp(x)$ as an ordinary coordinate function is assumed.
+
+\begin{proposition}[The baseline satisfies the scalar chain rule]
+\label{prop:BM-baseline}
+For every positive surreal $x$,
+\begin{equation}\label{eq:BM-chain0}
+ \der(L_0(x))=L_0'(x)\der x.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For a finite appreciable $x=r+\epsilon$, the coefficients of
+\eqref{eq:L0-finite} are real constants for $\der$, and
+$\der\epsilon=\der x$. Strong additivity and Leibniz give the
+termwise Taylor chain rule. At positive infinitesimal $x$, the same argument
+applies to the series in \eqref{eq:L0-small}, with the logarithmic term
+handled by $\der\log x=\der x/x$. At infinite $x$, apply Leibniz and
+logarithmic compatibility to the elementary terms in
+\eqref{eq:L0-infinite}, and strong additivity to the Stirling series.
+All differentiated families are summable by the strong-additivity property
+of $\der$. The resulting expressions coincide with the fine derivatives
+computed in \cref{prop:baseline-calculus}, multiplied by $\der x$.
+\end{proof}
+
+\subsection{Rigidity of infinitesimal locally constant discrepancies}
+\begin{theorem}[Scalar compatibility removes flat local gauges]
+\label{thm:BM-flat}
+Let $h:\No_{>0}\to\No$ be finely locally constant, zero at positive
+finite arguments, and infinitesimal at every positive infinite argument.
+Set $L=L_0+h$. If
+\begin{equation}\label{eq:BM-chain}
+ \der(L(x))=L'(x)\der x\qquad(x>0),
+\end{equation}
+then $h=0$ and $L=L_0$.
+In particular this conclusion applies to every algebraically flat gauge
+constructed in this article.
+\end{theorem}
+\begin{proof}
+Since $h'=0$, subtract \eqref{eq:BM-chain0} from
+\eqref{eq:BM-chain}. It follows that $\der(h(x))=0$, so $h(x)\in\R$
+for every $x$. The only real infinitesimal is zero. At infinite arguments
+$h(x)$ therefore vanishes, and at finite ones it vanishes by hypothesis.
+\end{proof}
+
+The proof uses only infinitesimality of the discrepancy, not its full
+algebraic flatness. The local-constancy hypothesis is essential to the stated
+argument: we do not conclude uniqueness among arbitrary functions with a
+scalar chain rule and a Stirling expansion.
+
+\begin{theorem}[Complete scalar rigidity inside the monomialwise family]
+\label{thm:BM-all}
+For the family $L_a$ of \eqref{eq:gauge-intro}, the scalar chain rule
+\eqref{eq:BM-chain} holds for all positive surreal arguments if and only if
+$a=0$. No convexity or flatness assumption on $a$ is required.
+\end{theorem}
+\begin{proof}
+The baseline case follows from \cref{prop:BM-baseline}. Conversely,
+\cref{lem:gauge-identities} gives $L_a'=L_0'$, so the scalar chain rule
+forces every $h_a(x)$ to be real. Fix an infinite monomial $m$ and put
+$r=h_a(m)=m a(m)\in\R$. Since $\sqrt m$ is a smaller infinite monomial,
+\[
+ h_a(m+\sqrt m)=a(m)(m+\sqrt m)=r+\frac r{\sqrt m}.
+\]
+This too must be real. Thus $r/\sqrt m$ is real and infinitesimal, hence
+zero. Therefore $r=0$ and $a(m)=0$. As $m$ was arbitrary, $a=0$.
+\end{proof}
+
+\begin{example}[An explicit derivative mismatch]
+For $h_\lambda(x)$ from \eqref{eq:explicit-gauge}, its fine coordinate
+derivative at $\omega$ is zero. In contrast, its scalar value there is
+$\lambda\omega e^{-\omega}$, and
+\begin{equation}\label{eq:BM-defect}
+ \der(h_\lambda(\omega))
+ =\lambda(1-\omega)e^{-\omega}.
+\end{equation}
+This is nonzero for $\lambda\ne0$. Consequently
+\[
+ \der(L_\lambda(\omega))-L_\lambda'(\omega)\der\omega
+ =\lambda(1-\omega)e^{-\omega}.
+\]
+The discrepancy is explicit and exactly computed. It is not an assertion
+that the two notions of derivative are inconsistent; they are different
+operations and here they fail a particular compatibility requirement.
+\end{example}
+
+\subsection{Why scalar compatibility alone is not a universal uniqueness axiom}
+The last theorem is an exact result for its named family. To make its scope
+sharp, there are other, non-flat gauges which satisfy the scalar chain rule.
+
+\begin{proposition}[A different real-valued gauge survives scalar compatibility]
+\label{prop:real-gauge}
+For $c_0\in\R$, define
+\[
+ k_{c_0}(x)=
+ \begin{cases}
+ 0,&x\text{ positive finite},\\
+ c_0\,\st\bigl(x/M(x)\bigr),&x\text{ positive infinite}.
+ \end{cases}
+\]
+Then $L_0+k_{c_0}$ is strictly convex, satisfies the logarithmic recurrence
+and every finite Gauss formula, has all the same positive-order fine
+derivatives as $L_0$, and satisfies the scalar chain rule.
+If $c_0\ne0$ it is not algebraically flat relative to $L_0$.
+\end{proposition}
+\begin{proof}
+The function is real-valued, unchanged by finite translations, and scales
+by $n$ under $x\mapsto nx$ for positive ordinary integers. Thus all the
+identity and derivative arguments apply, and
+$\der(k_{c_0}(x))=0$ because its value is real.
+For convexity, finite or mixed arguments are treated as before. At infinite
+arguments the gauge difference is finite. Whenever the baseline gap is
+positive infinite this is harmless. In the remaining case $y/x\sim1$,
+the leading monomial and leading real coefficient of $x$ and $y$ agree,
+so $k_{c_0}(y)=k_{c_0}(x)$ exactly. Hence every tangent gap remains
+positive. Finally $k_{c_0}(m)=c_0$ at an infinite monomial $m$, which is
+not flat if $c_0\ne0$.
+\end{proof}
+
+Thus two distinct conclusions should not be confused. Scalar compatibility
+eliminates every infinitesimal locally constant discrepancy, and it
+eliminates every monomialwise-linear gauge $a(M(x))\pp(x)$.
+It does not by itself eliminate every imaginable finite-valued locally
+constant discrepancy. Flatness or an equally strong normalization has a real
+role in a broader uniqueness statement.
+
+\section{A reusable convexity principle}\label{sec:general-principle}
+The proof is not restricted to the Bernoulli coefficients. It isolates an
+abstract mechanism useful for other asymptotically convex special functions.
+We state it with explicit hypotheses rather than claiming unproved
+extensions to other functions.
+
+\begin{theorem}[Scale-margin gauge principle]\label{thm:abstract}
+Let $F:\No_{>0}\to\No$ be finely differentiable and have strictly
+positive tangent gaps at distinct arguments. Suppose further that:
+\begin{enumerate}[label=(\alph*)]
+\item $D_F(y,x)$ is positive infinite whenever exactly one argument is
+infinite, or when both are infinite and $y/x\not\sim1$ (including
+infinite or infinitesimal ratios);
+\item if $x\ne y$ are positive infinite and $y/x\sim1$, then
+\[
+ D_F(y,x)\sim\kappa\frac{(y-x)^2}{x}
+\]
+for a fixed positive real $\kappa$.
+\end{enumerate}
+For the gauges $h_a$ in \eqref{eq:gauge-intro},
+$F+h_a$ is convex if and only if $m a(m)$ is finite for every
+$m\in\Minf$. In the affirmative case it is strictly convex.
+\end{theorem}
+\begin{proof}
+The proof of \cref{thm:sufficiency} uses exactly these hypotheses:
+finite gauge differences are dominated by the gaps in (a), and in (b) the
+ratio of a nonzero gauge difference to the baseline gap is asymptotic to
+$\abs{a(m)}x/(\kappa\abs{y-x})$ when the increment is infinite.
+It is infinitesimal under the proposed coefficient bound. For finite
+increments the difference vanishes.
+If the coefficient bound fails, use the same
+$\delta=\pp\sqrt{\min(m,\abs{a(m)}m)}$ as in
+\cref{thm:necessity}; the baseline gap is asymptotic to
+$\kappa\delta^2/m$ and is dominated by the negative gauge increment.
+This proves necessity and strict sufficiency.
+\end{proof}
+
+For $F=L_0$, \cref{lem:infinite-gaps,lem:mixed-gaps} verify all hypotheses
+with $\kappa=1/2$. For another function, these hypotheses need separate
+proofs, especially at extremely small relative increments. Knowing only
+$F''(x)\sim2\kappa/x$ does not automatically establish them in the fine
+surreal calculus. The abstract theorem states precisely what must be checked.
+
+\section{Provenance, limitations, and further questions}\label{sec:provenance}
+
+\subsection{Repository overlap audit}
+The original repository inspection used the tree with observed commit
+\begin{center}\small\commit\end{center}
+and the documentation catalogue \cite{Repo}. That catalogue listed eighteen
+research packages, including surreal construction and birthday questions,
+surcomplex local and global analysis, polynomial algebra, trigonometry,
+differential equations, rank-one analytic geometry, and spectral theory.
+The differential-equations article was also inspected to avoid duplicating
+its scalar-derivation and finite-phase results. This was a targeted catalogue
+and relevant-source inspection, not a line-by-line audit of every archived
+manuscript.
+
+No other Gamma-specific research package was identified in that catalogue.
+This is a historical account of that targeted inspection, not a current
+exhaustive non-overlap claim. The maintained collection has since grown;
+the original machine-readable audit in \texttt{data/source-audit.json}
+is retained as a record of the earlier inspection.
+The present contribution is therefore organized around Gamma uniqueness and
+its sharp global convexity margin, rather than reproducing the repository's
+existing general local-constancy, trigonometry, or differential-equation
+results. The finite-phase exponential and scalar-derivation distinction are
+background mechanisms; the log-Gamma phase calculation and the exact gauge
+classification are the Gamma-specific results proved here.
+
+\subsection{Published inputs and proposed contributions}
+The imported components are kept separate from the claims of this article:
+Conway normal forms and the usual surreal exponential
+\cite{Conway,Gonshor}; positive-support Hahn substitution
+\cite{Neumann}; restricted analytic and exponential transfer
+\cite{vdDE}; classical Gamma identities, expansions, and remainder bounds
+\cite{DLMF55,DLMF57,DLMF511,DLMF515}; the existing Taylor/transseries
+extension approach of Costin--Ehrlich \cite{CE}; and the scalar derivation
+of Berarducci--Mantova \cite{BM}.
+
+The proposed contribution is the combination of the all-scale tangent gap
+proof, the necessary-and-sufficient bound $m a(m)\in\Ocal$, the flat
+counterexamples retaining all the stated identities and error inequalities,
+the exact phase product criterion $y\log x\in\Ocal$, and the scalar
+rigidity statements for the specified gauges. The short rigidity deductions
+and abstract reformulation are consequences supporting the central theorem,
+not separately advertised solutions of famous open problems.
+
+The literature search included surreal Gamma extensions and
+Bohr--Mollerup/non-Archimedean uniqueness terminology. The relevant
+Costin--Ehrlich sections were read, and the classical facts were checked
+against the NIST Digital Library of Mathematical Functions. I did not locate
+this exact sharp coefficient theorem and combined invariance result in the
+sources consulted. Search results for some exact phrases were sparse or
+noisy. Accordingly, the justified status is \emph{proposed new results with
+proofs}, not a certificate of priority or an exhaustive negative claim about
+the entire literature.
+
+\subsection{Claims not made}
+No claim is made that the ordinary Gamma function has been newly constructed,
+that the original real Bohr--Mollerup theorem is false, or that the
+Costin--Ehrlich extension is internally ambiguous after its exact extension
+operator has been fixed. Nor is the coefficient theorem a classification
+of all surreal Gamma functions. We do not supply a proper-class contour
+integral, a global surcomplex exponential, or a maximal surcomplex Gamma
+domain. The asymptotic indices are ordinary integers, and the series are
+strong sums, not limits of fine-topological partial sums.
+
+The proofs have been algebraically checked in the finite computations
+described in \cref{sec:verification}, but have not been formalized in Lean
+or another proof assistant. In particular, computation does not replace the
+all-scale order comparisons or the class-theoretic support arguments.
+Independent verification of those proofs and of the scope of the novelty
+claim remains appropriate before publication.
+
+\subsection{Concrete next mathematical questions}
+The exact family considered here suggests several focused problems, none of
+which is claimed solved merely by the preceding results.
+
+\paragraph{A full gauge classification.}
+Describe all finite-translation-invariant $h$ for which $L_0+h$ is convex
+and $h(nx)=nh(x)$ for every positive ordinary integer. The monomialwise
+family and the real-valued leading-coefficient family show that there are
+at least two genuinely different mechanisms. A complete answer would have
+to describe allowable behavior on $\No/\Ocal$ rather than only on leading
+monomials.
+
+\paragraph{A minimal uniqueness package.}
+Within locally constant infinitesimal discrepancies, scalar compatibility
+is sufficient. Can it be replaced by a natural condition stated purely in
+terms of the function and normal-form truncation? Any candidate must exclude
+$\lambda\pp(x)e^{-M(x)}$ while preserving the baseline's local and
+functional identities. Simply repeating all finite-order asymptotics or
+all finite Gauss formulas cannot work.
+
+\paragraph{Beyond the finite-imaginary tube.}
+The log-Gamma construction and phase criterion here are restricted to
+$\tube$. Extending a logarithmic prescription through much larger complex
+sectors requires support control when both components are infinite. Actual
+Gamma values then additionally require a specified phase structure. These
+are two separate questions, not one unqualified request to exponentiate
+an arbitrary surcomplex value.
+
+\paragraph{Proof-assistant decomposition.}
+A realistic formalization can isolate the ordered-field tangent criterion,
+the algebraic gauge identities, and the abstract scale-margin theorem from
+the analytic baseline. The first three do not require an implementation of
+all surreal special functions. The remaining analytic obligations are
+precisely the strong substitution lemmas, the finite restricted-analytic
+transfer interface, and the four cases of the infinite tangent-gap lemma.
+No uncompiled Lean code is presented as a verified formal proof.
+
+\section{Conclusion}
+The positive surreal half-line admits enough separation between finite
+translations and infinite scales to preserve the entire local Gamma
+calculus while changing the global function. Global log-convexity does not
+remove that freedom: its exact tolerance in the monomialwise-linear family
+is $a(m)=O(m^{-1})$. Exponentially small coefficients lie far inside the
+permitted region, producing distinct normalized Gamma functions that share
+all finite multiplication identities, all finite-translation normalized
+germs, every Stirling coefficient, and every ordinary-order enveloping
+Stirling inequality.
+
+The phenomenon is not unrestricted arbitrariness. A coefficient larger than
+the sharp threshold produces an explicit negative tangent gap. The
+surcomplex logarithmic extension has a precise finite-phase condition. And
+a scalar chain rule detects discrepancies invisible to fine coordinate
+derivatives, removing all flat locally constant gauges in the specified
+category. These three boundaries---convexity scale, phase scale, and
+scalar compatibility---make the construction a controlled result rather
+than an isolated pathological example.
+
+\appendix
+\section{Exact symbolic checks and reproduction}\label{sec:verification}
+
+The archive includes \texttt{code/verify.py}, a Python program using SymPy,
+and its recorded JSON output in \texttt{data/verification.json}.
+The recorded run passed all 130 checks (Python 3.13.5 and SymPy 1.14.0;
+the precise runtime versions are also saved in the JSON record).
+The calculations use rational arithmetic and formal power series. There are
+no floating-point tests pretending to represent infinite surreal numbers.
+
+The tests check the Bernoulli normalizations, the shift cancellation
+underlying \eqref{eq:formal-shift}, several finite Gauss defects, the tangent
+kernel expansions, the quadratic divisibility of
+\eqref{eq:R-gap-series}, and finite sparse normal-form identities for
+$\pp$ and $M$. They also check the displayed derivative mismatch
+\eqref{eq:BM-defect}. The normal-form tests are finite algebraic examples,
+not a general implementation of the surreal field or its exponential.
+
+The following commands reproduce the checks and build in temporary output
+directories from the package directory, preserving the recorded evidence:
+\begin{verbatim}
+python -m pip install -r data/requirements.txt
+python code/verify.py --output /tmp/gamma-verification-rerun.json
+mkdir -p /tmp/gamma-article-build
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  -outdir=/tmp/gamma-article-build article.tex
+\end{verbatim}
+Without \texttt{latexmk}, run \texttt{pdflatex} three times with
+\texttt{-interaction=nonstopmode}, \texttt{-halt-on-error}, and
+\path|-output-directory=/tmp/gamma-article-build|.
+
+\Needspace{4\baselineskip}
+The archived build helper is \texttt{code/makefile-Makefile}; its check target overwrites the historical
+JSON record, so use the explicit temporary output path above for reruns.
+The LaTeX source has an internal bibliography and no external graphics or
+custom font files.
+
+\subsection{A transparent recurrence calculation}
+With $t=X^{-1}$ and $R_J(t)=\sum_{j=1}^Jb_jt^{2j-1}$, the formal recurrence
+defect reduces to the ordinary formal expression
+\begin{equation}\label{eq:verify-recurrence}
+ \left(t^{-1}+\frac12\right)\log(1+t)-1
+ +R_J\left(\frac{t}{1+t}\right)-R_J(t).
+\end{equation}
+Its coefficients through degree $2J+1$ vanish. The first coefficient that
+can be affected by the omitted Stirling term has degree $2J+2$.
+This finite truncation property is what the program checks. The full proof
+of \cref{lem:formal-shift} establishes cancellation at every ordinary order.
+
+\subsection{A transparent multiplication calculation}
+For $u_k=k/n$, the elementary terms in the Gauss defect reduce, after
+cancellation of $\log X$, $\log n$, and $c$, to
+\[
+ \sum_{k=0}^{n-1}\left[
+ \left(t^{-1}+u_k-\frac12\right)\log(1+u_kt)-u_k\right].
+\]
+Adding
+\[
+ \sum_{k=0}^{n-1}R_J\left(\frac{t}{1+u_kt}\right)-R_J(t/n)
+\]
+gives the truncated defect tested by the program. Its coefficients through
+degree $2J$ vanish; an omitted term of degree $2J+1$ can affect the next
+coefficient. Checking more terms is a useful regression test, but the
+periodic-series lemma is the proof at all orders.
+
+\subsection{What the checks cannot establish}
+The program does not decide positivity of arbitrary surreal functions,
+quantify over a proper class, prove Neumann's support lemma, or check
+first-order transfer. It also does not verify novelty. Its role is to expose
+coefficient, sign, indexing, or normalization mistakes in the finite algebra
+supporting the arguments. The actual proof obligations remain visible in
+the numbered lemmas and theorems.
+
+\begin{thebibliography}{99}
+
+\bibitem{Conway}
+J.~H. Conway,
+\emph{On Numbers and Games}, second edition,
+A.~K. Peters, 2001.
+
+\bibitem{Gonshor}
+H.~Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+
+\bibitem{Neumann}
+B.~H. Neumann,
+On ordered division rings,
+\emph{Transactions of the American Mathematical Society}
+\textbf{66} (1949), 202--252.
+
+\bibitem{vdDE}
+L.~van den Dries and P.~Ehrlich,
+Fields of surreal numbers and exponentiation,
+\emph{Fundamenta Mathematicae} \textbf{167} (2001), 173--188;
+erratum, \textbf{168} (2001), 295--297.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}.
+
+\bibitem{CE}
+O.~Costin and P.~Ehrlich,
+\emph{Integration on the surreals},
+arXiv:2208.14331, version 5, July 4, 2024.
+\url{https://arxiv.org/html/2208.14331v5}.
+Especially the Taylor/transseries extension construction, \S10.1(v) on
+Gamma and log-Gamma, and \S11 on set-sized fields and restricted analytic
+transfer. The coefficient convention used here is specified independently
+in \eqref{eq:coefficients}.
+
+\bibitem{BM}
+A.~Berarducci and V.~Mantova,
+Surreal numbers, derivations and transseries,
+\emph{Journal of the European Mathematical Society}
+\textbf{20} (2018), 339--390.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
+\url{https://arxiv.org/abs/1503.00315}.
+
+\bibitem{DLMF55}
+NIST Digital Library of Mathematical Functions,
+\S5.5, Functional Relations: recurrence, Gauss multiplication, and the
+Bohr--Mollerup theorem.
+\url{https://dlmf.nist.gov/5.5}.
+Consulted September 2026.
+
+\bibitem{DLMF57}
+NIST Digital Library of Mathematical Functions,
+\S5.7, Series Expansions.
+\url{https://dlmf.nist.gov/5.7}.
+Consulted September 2026.
+
+\bibitem{DLMF59}
+NIST Digital Library of Mathematical Functions,
+\S5.9, Integral Representations, especially Binet's formula 5.9.10.
+\url{https://dlmf.nist.gov/5.9}.
+Consulted September 2026.
+
+\bibitem{DLMF511}
+NIST Digital Library of Mathematical Functions,
+\S5.11, Asymptotic Expansions, including Eq.~5.11.1 and \S5.11(ii)
+on signed error bounds.
+\url{https://dlmf.nist.gov/5.11}.
+Consulted September 2026.
+
+\bibitem{DLMF515}
+NIST Digital Library of Mathematical Functions,
+\S5.15, Polygamma Functions.
+\url{https://dlmf.nist.gov/5.15}.
+Consulted September 2026.
+
+\bibitem{Repo}
+V.~Reshetnikov,
+\emph{Surreal}, GitHub repository and documentation catalogue.
+Observed tree revision \commit.
+\url{https://github.com/VladimirReshetnikov/Surreal}.
+Targeted inspection of \texttt{docs/README.md} and
+\texttt{docs/surcomplex/differential-equations/article.tex}, September 2026.
+This citation identifies the overlap audit, not a source for the new proofs.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,3264 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,multicol}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{listings}
+\definecolor{inkblue}{HTML}{17365D}
+\definecolor{muted}{HTML}{536471}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Computable Surreal Numbers: A Reconciled Theory of Structural and Numerical Computability},
+ pdfauthor={Unified synthesis of three supplied reports}}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Computable surreal numbers}}
+\fancyhead[R]{\small\textsc{Reconciled research report}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Rc}{\mathbb R_{\mathrm c}}
+\newcommand{\Cc}{\mathbb C_{\mathrm c}}
+\newcommand{\Sc}{\mathcal S_{\mathrm{str}}}
+\newcommand{\Lc}{\mathcal L_{\mathrm c}}
+\newcommand{\Pc}{\mathcal P_{\mathrm c}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\coef}[2]{[t^{#1}]#2}
+\newcommand{\cut}[2]{\left\{#1\,\middle|\,#2\right\}}
+\newcommand{\CK}{\omega_1^{\mathrm{CK}}}
+\newcommand{\Oh}{\mathcal O}
+\newcommand{\mh}{\mathfrak m}
+\DeclareMathOperator{\lcm}{lcm}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{muted},showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}%
+\begin{titlepage}
+\vspace*{0.8in}
+\noindent{\color{inkblue}\Large\textsc{Foundations and computation}}
+\vspace{0.35in}
+
+\noindent{\Huge\bfseries Computable\\[5pt] Surreal Numbers}
+\vspace{0.25in}
+
+\noindent{\LARGE Structural names, Puiseux series,\\[4pt] and effective left-finite fields}
+\vspace{0.35in}
+
+\noindent{\large A unified mathematical report with proofs,\\
+representation contracts, and a reconciliation ledger}
+\vspace{0.45in}
+
+\noindent\textbf{Merged and reconciled from three supplied reports}\\
+Prepared for the Surreal project \;\textbullet\; 21 September 2026
+
+\vfill
+\noindent\begin{minipage}{\textwidth}
+\textbf{Central distinction.}
+A program describing a well-founded surreal construction need not compute
+its real value in the ordinary numerical sense. Conversely, a coefficient
+algorithm need not reveal the finite support information needed for multiplication.
+This article develops both notions without identifying them.
+
+\medskip
+\textbf{Status.} Common material is consolidated; distinct representations and
+complementary proofs are retained. The reconciliation ledger records source
+locations, strengthened formulations, and corrections. Established results
+remain attributed to prior work; no new priority claim is made.
+The article has not been refereed or formalized in Lean. Its accompanying
+finite exact-arithmetic checks are tests, not machine-checked proofs.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}%
+
+\begin{abstract}
+This report merges three accounts of computable surreal numbers into one
+representation-sensitive theory. Hereditarily effective Conway-cut names define
+the established structural field $\Sc$, whose real trace is the hyperarithmetic
+reals. For ordinary numerical access, two different fields must be retained:
+$\Pc$, using a lower-bounded lattice with one ramification denominator per
+name, and $\Lc$, using rational left-finite supports equipped with computable
+finite candidate covers. Both are countable real-closed subfields of $\No$
+with real trace exactly $\Rc$, and $\Pc\subsetneq\Lc$. The larger field is the
+effective sequential completion of the smaller for a supplied exact valuation
+stabilization modulus; neither assertion is an unqualified classical
+completeness claim.
+
+The unified proofs give uniform ring operations, exact symbolic truncation,
+certified reciprocal and root algorithms, effective Hensel lifting, formal
+functional calculus, and finite-rank extensions. Two independent routes to
+Puiseux real closedness are preserved: a henselian valuation argument and a
+Newton--Puiseux argument with an explicit finite-jet lifting lemma. The latter
+explains why finitely many branch data suffice for a single coefficient
+algorithm, without assuming a uniform branch selector.
+
+The obstructions are equally explicit. Computable Hahn coefficients can have
+a noncomputable product, even with decidable left-finite supports; a separate
+example has every convolution fiber of size at most one. One halting oracle
+is sharp for unrestricted coefficient convolution and for several normalization
+tasks, but its output role differs in the two settings. Equality, sign,
+inversion, roots, and modulus are not silently conflated with extensional
+closure. Oracle-relative fields recover the Turing-degree ordering. A source
+crosswalk, a corrected nonzero-polynomial hypothesis, repository-specific
+implementation contracts, and independently rerun finite checks complete the
+reconciliation. None of the finite tests is a formal proof of the infinite
+mathematical statements.
+\end{abstract}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\begin{multicols}{2}
+\tableofcontents
+\end{multicols}
+\endgroup
+\newpage
+
+\section{The question and the reconciled answer}
+\label{sec:introduction}
+
+A computable real number is not a real number whose entire decimal expansion
+has already been stored. It is one for which a finite algorithm can supply
+arbitrarily accurate rational approximations with an effective error bound.
+Replacing $\R$ by $\No$ changes much more than the possible magnitude of the
+answer. A surreal has an ordinal-length sign sequence and a transfinite
+normal form. There is no single sequence of positive surreal error tolerances
+cofinal toward zero in the whole class. Moreover, the algebra of infinite
+normal forms depends on support information that individual coefficient
+queries need not provide.
+
+The appropriate conclusion is not that computation is impossible, but that
+\emph{the representation is part of the mathematical definition}. We first separate structural from numerical effectivity:
+\[
+ \Sc=\text{structurally computable surreals},\qquad
+ \Lc=\text{numerically computable left-finite surreals}.
+\]
+The first is broad and hereditary. The second is a precisely specified
+rank-one numerical workspace containing the distinct Puiseux model $\Pc$.
+None is advertised as the unique possible meaning of ``computable surreal.''
+
+
+\subsection{Source identities and the central reconciliation}
+Throughout, \textbf{A} denotes the report in
+\path{computable_surreal_numbers.zip}; \textbf{B} the report in
+\path{computable_surreal_numbers(1).zip}; and \textbf{C} the report in
+\path{computable_surreal_numbers(2).zip}. The suffixes are upload identifiers,
+not chronological or mathematical version numbers. Their source manuscripts
+are \emph{not} redistributed with this report; the accompanying provenance
+manifest records their checksums and line counts.
+Appendix~\ref{app:reconcile} provides the topic and correction crosswalk.
+
+A uses a larger effective left-finite field as its main numerical model;
+B and C use a bounded-denominator Puiseux field. They therefore do not make
+inconsistent assertions about one field. We keep both symbols and prove the
+inclusion explicitly. In particular, C's request for an effective support
+enlargement beyond Puiseux series is answered, at the left-finite level, by
+A's finite-cover construction. The question left open here concerns more
+general supports, not that already constructed enlargement.
+
+The strongest compatible statements have been selected rather than averaged:
+C's full validity classification and degree-preserving sign example; A's
+left-finite support counterexample, Hensel construction, and effective
+completion; B's sharp convolution oracle bound, algebraic-branch obstruction,
+and differential consequences; and B--C's finite-jet argument and finite-rank
+Puiseux construction. C's oracle hierarchy is extended below to both numerical
+models by the same explicit proof. These are synthesis choices, not assertions
+of independent novelty.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.17}
+\begin{tabular}{@{}P{.16\textwidth}P{.29\textwidth}P{.22\textwidth}P{.24\textwidth}@{}}
+\toprule
+Model & Information supplied by a name & Real trace & Main qualification\\
+\midrule
+$\Sc$ & Hereditary enumerations of separated cuts & Hyperarithmetic reals &
+Semantic validity is $\Pi^1_1$-complete.\\
+$\Pc$ & Uniform real coefficients on one lower-bounded rational lattice &
+$\Rc$ & Computable-modulus limits may escape the lattice.\\
+$\Lc$ & Uniform real coefficients and complete finite support covers &
+$\Rc$ & Effective completeness requires a supplied modulus.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both numerical models have uniform ring operations but not a uniform raw-name
+inverse. Neither real trace nor algebraic closedness supplies a missing
+representation converter. We do not assert a general computable translation
+between structural and numerical names.
+
+\subsection{Prior work and what is being developed}
+
+Recursive surreal numbers were studied by Harkleroad in 1990 and several
+notions were compared by Lurie in 1998 \cite{harkleroad,lurie}. Later
+presentations by Hamkins, reporting joint work with Turetsky, explicitly
+identify the hereditary structural version with hyperarithmetic sign
+sequences and establish its real closedness \cite{hamkins,hamkins2025,turetsky}.
+Those results are \emph{prior theory}, not discoveries of this article.
+
+The numerical carrier used below is equally classical: real series with
+rational, left-finite support form the Levi--Civita field. A recent primary
+source recalls this definition and its classical algebraic properties
+\cite[\S1.1]{restrepo}. Our question is which of its elements and operations
+are effective under a representation that continues to accept ordinary
+Cauchy names for real constants. The effective finite-cover requirement,
+the explicit counterexamples, and the resulting collection of closure and
+nonuniformity proofs are the focus here. We do not infer novelty merely
+from having supplied a proof; related effective valued-field formulations
+may exist under other representations or terminology.
+
+The standard background is Conway's construction and Gonshor's normal-form
+theory \cite{conway,gonshor}. Only one substantial valuation-theoretic input
+is used in the numerical real-closedness proof: a henselian finite extension
+in residue characteristic zero has degree equal to ramification index times
+residue degree. We isolate that input explicitly in
+Section~\ref{sec:realclosed}.
+
+
+The independent finite-jet proof in Section~\ref{C-sec:realclosed} instead uses
+the characteristic-zero Newton--Puiseux theorem, stated explicitly in the
+introductions of \cite{rond,kedlaya}. Its additional effective step is proved,
+not inferred from the computability of each coefficient separately. The
+user-supplied overview \cite{wiki} motivates the ordinary-real baseline;
+the report fixes fast Cauchy names rather than treating decimal, Dedekind-cut,
+and Cauchy encodings as uniformly interchangeable. Objectwise equivalence
+of computable values is weaker than a uniform conversion of names.
+
+All algorithms here are ordinary finite-time Turing computations per query.
+The ordinal length of a support is not a machine runtime. Infinitary-machine
+approaches, such as the $\kappa$-time and $\kappa$-tape framework of
+Galeotti--Nobrega \cite{galeotti}, change the computational model and are
+not counterexamples to the ordinary-computability obstructions below.
+
+\subsection{A map of the main results}
+
+The main numerical theorem, assembled from the proofs below, is as follows.
+
+\begin{theorem}[Numerically conservative effective core]
+\label{thm:main}
+Let $\Lc$ be the class of surreal normal forms with an effective left-finite
+Cauchy--Hahn name, as in Definition~\ref{def:elf}. Then:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+\item $\Lc$ is a countable real-closed subfield of $\No$, and
+$\Lc\cap\R=\Rc$. Its natural valuation has value group $\Q$ and residue
+field $\Rc$.
+\item Addition, subtraction, multiplication, rational monomial shifts,
+and coefficient extraction are computable uniformly on names.
+\item Every nonzero element has an inverse in $\Lc$. Computing an inverse
+uniformly is possible when the leading exponent is supplied, and is
+impossible on all nonzero raw names without additional information.
+\item Simple residue roots lift effectively. The computable Puiseux field
+$\Pc$ is a proper real-closed subfield of $\Lc$, and $\Lc$ is its effective
+sequential completion for exact valuation stabilization.
+\item $\Lc[i]$ is algebraically closed. Formal evaluation at infinitesimals,
+formal differentiation, and residue-free formal integration admit explicit
+algorithms.
+\end{enumerate}
+\end{theorem}
+
+This theorem does \emph{not} say that $\Lc$, with its raw representation, is
+a computable ordered field in the sense of having decidable equality and
+uniform field operations. Indeed, part (iii) rules out that interpretation.
+The distinction between an extensional algebraic closure property and a
+uniform operation on names will be maintained throughout.
+
+Two negative results explain why the qualifications in this theorem are
+substantive. Theorem~\ref{thm:badproduct} constructs computable coefficient
+functions, even with decidable supports, whose Hahn product has a
+noncomputable coefficient function. Theorem~\ref{thm:nogo} shows that
+uniform inversion already conflicts with ordinary real input and coefficient
+access on the rational-function family $a+t$.
+
+\section{Conventions, names, and three topologies}
+\label{sec:conventions}
+
+\subsection{Surreal and Hahn conventions}
+
+We work classically, for example in ZFC with definable classes, or in a
+universe arrangement in which the full surreal carrier is one universe
+larger than the small option families. Every individual support and every
+program considered here is a set. We never quantify over a purported set of
+all surreals.
+
+For small separated sets $L,R\subseteq\No$, $\cut LR$ denotes the
+\emph{simplest} surreal strictly between every member of $L$ and every
+member of $R$. It is not an ordinary supremum. The birthday $b(x)$ is the
+length of the canonical sign sequence of $x$.
+
+Fix
+\[
+ t=\omega^{-1},\qquad t^q=\omega^{-q}\quad(q\in\Q).
+\]
+Under Conway normal forms, the usual Hahn field $\R((t^\Q))$, with
+well-ordered support in the increasing exponent convention, is an ordered
+subfield of $\No$. All uses of this identification are classical consequences
+of normal-form theory \cite{conway,gonshor}; we do not claim that the
+repository already formalizes this bridge. A series is written
+\[
+ x=\sum_{q\in\Q}a_qt^q,\qquad
+ \val(x)=\min\supp(x)\quad(x\ne0),\qquad \val(0)=+\infty.
+\]
+Its sign is the sign of $a_{\val(x)}$. Larger valuation means a smaller
+non-Archimedean scale. We set $\coef qx=a_q$.
+
+A set $S\subseteq\Q$ is \emph{left-finite} if $S\cap(-\infty,B)$ is
+finite for every rational $B$. Every nonempty left-finite set is bounded
+below and has a least element: choose one member $s$, and inspect the finite
+nonempty set $S\cap(-\infty,s+1)$. The same argument applies to each nonempty
+subset of $S$, so $S$ is well ordered. An infinite left-finite support has
+order type $\omega$ and tends to $+\infty$.
+
+\subsection{What a computable real coefficient means}
+
+Write $\Rc$ for the ordinary computable reals. Our real names are functions
+$A:\N\to\Q$ satisfying
+\begin{equation}\label{eq:cauchyname}
+ |A(k)-a|\le 2^{-k}.
+\end{equation}
+For a family $a_q$ we require a \emph{single} algorithm $A(q,k)$ satisfying
+this bound jointly in the rational index $q$ and precision $k$. Saying
+merely that each $a_q$ is a computable real is weaker: the family
+$a_n=\chi_K(n)$ consists of rational numbers but is not uniformly computable.
+Here $K$ is a fixed undecidable computably enumerable halting set.
+
+A name is a finite program plus any explicitly specified finite data.
+Correctness conditions on a name are semantic promises. There is no
+assumption that an interpreter can verify totality, all error inequalities,
+or all support conditions. A \emph{uniform operation} is an algorithm which
+transforms every valid input name satisfying its stated promises into a valid
+output name. An \emph{extensional closure theorem} only asserts that every
+resulting value has some computable name.
+
+\subsection{Why full-surreal Cauchy approximation is the wrong starting point}
+
+\begin{proposition}[No small nontrivial convergence in the fine order topology]
+\label{prop:topology}
+For the full surreal class $\No$, a set-indexed net converging in the full
+order topology is eventually equal to its limit, and a set-indexed Cauchy net
+for the ordered-field uniformity is eventually constant. For a
+universe-relative carrier $\No_u$ living one universe above its admissible
+option types, both conclusions require the directed index type to be
+\emph{small in the lower universe}.
+\end{proposition}
+\begin{proof}
+For a net $(x_i)_{i\in I}$ and a proposed limit $x$, form the set
+$D=\{|x_i-x|:i\in I,\ x_i\ne x\}$ of positive distances. The small cut
+$\varepsilon=\cut 0D$ is positive and smaller than every member of $D$.
+Convergence eventually gives $|x_i-x|<\varepsilon$, forcing $x_i=x$.
+For the Cauchy assertion use instead the set of all nonzero pairwise
+distances. The Cauchy condition makes all sufficiently late pairwise
+differences zero. Empty distance sets cause no difficulty. At a fixed
+universe level, images and finite products of a lower-universe-small index
+type are still small there, so the same proof uses admissible option families.
+\end{proof}
+
+The size qualifier is necessary. On $\No_u$, index the net $x_r=r$ by all
+positive elements of that carrier, ordered in reverse numerical order. For
+any $\varepsilon>0$, the tail beyond $r=\varepsilon/2$ satisfies
+$0<x_s\le\varepsilon/2<\varepsilon$. The net converges to zero but is never
+zero. Its index is a legitimate type in the carrier's larger universe, not
+an admissible lower-universe-small type. In the full-class reading the
+analogous index is a proper class, so it is not a counterexample to the
+set-indexed statement.
+
+This is consistent with the topology results documented in the repository
+\cite{repo}. It does not prevent computation in a fixed workspace. Inside
+the Levi--Civita field, $t^n$ tends to zero for its \emph{intrinsic}
+valuation topology, since $n$ eventually exceeds every rational valuation.
+In $\No$, however, $t^n>\omega^{-\omega}$ for every integer $n$.
+Indeed, the subspace topology that the full surreal order induces on the
+rational-exponent field is discrete, whereas its intrinsic order topology
+is not.
+
+There are thus three distinct notions in play. Real coefficient errors are
+measured by the ordinary real absolute value. Valuation truncation preserves
+coefficients \emph{exactly} below an exponent bound. Full-surreal order
+neighborhoods allow all surreal scales. Our numerical names combine the
+first two; they do not make the full surreal topology an effective metric
+space. Nor are they an admissible presentation of the pure valuation metric
+with the usual Cauchy representation on constants: nonzero real constants
+all have valuation zero, however small their real magnitudes.
+
+\section{The established structural notion}
+\label{sec:structural}
+
+\subsection{Hereditary effective cuts}
+
+\begin{definition}[Structural presentation]
+\label{def:structural}
+A raw structural name is a program index $e$ whose execution enumerates two
+collections of program indices, called its left and right options. Unfold
+these indices hereditarily into a rooted option tree. The name is
+\emph{valid} if this tree is well founded and, at every node, the values of
+all left options are strictly below the values of all right options.
+Well-founded recursion assigns to the node the simplest surreal separating
+its options. The set $\Sc$ consists of the values of valid names.
+\end{definition}
+
+An enumeration may never announce that it has finished. A leaf can be a
+program that runs forever without output. Thus validity is not the same as
+termination of the enumerating program. Repetition of an option has no
+semantic effect. A finite program describes a well-founded infinite object;
+no ordinary Turing machine is asserted to execute one step at every ordinal
+stage of its birthday.
+
+The following result is an external classification, included to locate our
+work accurately rather than reproved here.
+
+\begin{theorem}[Known structural classification]
+\label{thm:known}
+For hereditary effective surreal presentations, the values are exactly the
+surreals with hyperarithmetic sign sequences, interpreted on effective
+ordinal presentations. Equivalently, with the usual sign-sequence coding,
+they are $\No\cap L_{\CK}$. This is a real-closed field. Its real slice is
+the hyperarithmetic reals, not merely $\Rc$.
+\end{theorem}
+
+The effectivization program originates in
+\cite{harkleroad,lurie}; the displayed modern characterization and
+real-closedness statement are given in \cite{hamkins,hamkins2025,turetsky}.
+The full Lurie article was not accessible during preparation; its published
+abstract and metadata were checked, while the explicit characterization
+was checked against the later authors' public statements and lecture notes.
+Here hyperarithmetic means computable by effective transfinite recursion
+below the Church--Kleene ordinal; it is strictly broader than ordinary
+Turing computability. We use Theorem~\ref{thm:known} only for the structural
+comparison, not in any proof of the numerical main theorem.
+
+\subsection{Elementary closure mechanisms}
+
+\begin{proposition}[Structural ring compilation and computable cuts]
+\label{prop:structring}
+Negation, addition, and multiplication admit uniform compilers on valid
+structural names. If $(x_n)$ and $(y_n)$ are uniformly named families with
+$x_n<y_m$ for all $n,m$, then $\cut{\{x_n:n\in\N\}}{\{y_n:n\in\N\}}$
+has a uniformly constructed valid structural name.
+\end{proposition}
+\begin{proof}
+For cuts, produce one root program which dovetails the two enumerations of
+names. Every branch below the root lies in a valid input tree; hence the
+new tree is well founded, and the promised inequalities give separation.
+
+For arithmetic use the Conway option formulas. Negation interchanges sides
+and negates each option. Addition emits $x^L+y$ and $x+y^L$ on the left,
+and $x^R+y$ and $x+y^R$ on the right. Multiplication emits
+\[
+ x^Ly+xy^L-x^Ly^L,\quad x^Ry+xy^R-x^Ry^R
+\]
+on the left, and the corresponding mixed left--right expressions on the
+right. These are finite syntactic expressions in recursively named smaller
+products. Standard effective self-reference supplies the indices of the
+recursive compilers. Well-founded induction on the input option trees,
+using the well-founded product order for pairs of operands, proves that the
+resulting finite-expression unfoldings are valid and have the intended
+values. Separation is exactly the classical Conway arithmetic theorem
+\cite{conway}. The construction never decides which of two arbitrary input
+values is larger.
+\end{proof}
+
+This proof does not give a blind reciprocal compiler. The known assertion
+that $\Sc$ is a field must not be substituted for such an algorithm. In
+particular, restrictions to positive options in classical reciprocal
+formulas cannot simply be implemented by assuming a decidable sign test.
+
+\begin{proposition}[Computable ordinals and lack of an exhaustive enumeration]
+\label{prop:structcount}
+Every computable ordinal belongs to $\Sc$. The set $\Sc$ is countable,
+but no uniform sequence of valid structural names is cofinal in it. In
+particular, no such sequence enumerates all its values.
+\end{proposition}
+\begin{proof}
+Given a computable well-order $(D,\prec)$, assign to each $d\in D$ the
+all-left name whose options are the names for $c\prec d$, and place all
+these names below a new all-left root. Induction identifies the root's value
+with the order type of $D$. The compilers are effective since $D$ and
+$\prec$ are decidable.
+
+Countability follows from countably many program indices. If $(x_n)$ is
+uniformly named, its all-left root has value $u=\cut{\{x_n:n\in\N\}}{}$
+and satisfies $u>x_n$ for every $n$. This proves the cofinality assertion
+and the enumeration obstruction.
+\end{proof}
+
+The same argument gives a positive lower bound $\cut0{\{p_n:n\in\N\}}$
+for every uniformly named family of positive values $p_n$. Neither operation
+is analogous to taking an ordinary real supremum or infimum.
+
+\subsection{A direct noncomputable real in the structural field}
+
+\begin{proposition}[A halting real with a structural name]
+\label{prop:haltingreal}
+Let $K$ be the diagonal halting set. Then
+\[
+ r_K=\sum_{e\ge0}2\chi_K(e)4^{-(e+1)}
+\]
+is a noncomputable real with a valid structural name.
+\end{proposition}
+\begin{proof}
+For each machine $e$, let a program initially enumerate no options. If
+machine $e$ halts, it enumerates one left option with value zero. The resulting
+name $h_e$ has value $0$ or $1$ according as $e\notin K$ or $e\in K$.
+The names $h_e$ are uniform even though their values are not computable
+uniformly as real numbers.
+
+Using the arithmetic compilers, construct names for
+$s_n=\sum_{e<n}2h_e4^{-(e+1)}$. Consider the structural cut
+\begin{equation}\label{eq:haltingcut}
+ \cut{\{s_n-4^{-n}:n\in\N\}}
+      {\{s_n+4^{-n}:n\in\N\}}.
+\end{equation}
+Since $0\le r_K-s_n\le\tfrac23\,4^{-n}$, every left bound is strictly
+below $r_K$ and every right bound strictly above it. The shrinking real
+intervals determine every finite dyadic comparison with $r_K$. Their
+simplest surreal separator is therefore the canonical real $r_K$: any
+other separator has all the finite sign information of $r_K$ and is no
+simpler. This is also the standard embedding of a real by its rational cuts.
+
+Finally, the base-four digits of $r_K$ are only $0$ and $2$. Once the first
+$e$ digits are known, the two possibilities for the next digit lie in
+separated intervals; the tail after that digit is at most one third of its
+nonzero contribution. Successively accurate Cauchy approximations would
+therefore decide all of $K$. Thus $r_K\notin\Rc$.
+\end{proof}
+
+The general halting-real phenomenon is already present in Hamkins's
+presentation \cite{hamkins}. The explicit margins in
+\eqref{eq:haltingcut} are included to avoid the false assumption that a cut
+may use an option equal to its proposed value.
+
+\begin{corollary}[A structural--numerical incompatibility]
+A notion which includes these uniform hereditary cut constructions and
+Conway arithmetic cannot also have exactly $\Rc$ as its real slice. In
+particular, there is no conversion of every real-valued structural name
+into an ordinary computable Cauchy name.
+\end{corollary}
+\begin{proof}
+Such a conversion would apply to \eqref{eq:haltingcut} and compute $r_K$.
+\end{proof}
+
+
+\begin{proposition}[Birthday and ordinal boundary]\label{prop:ordinal-boundary}
+Every structurally computable surreal has birthday less than $\CK$.
+The ordinals belonging to $\Sc$ are exactly the computable ordinals.
+\end{proposition}
+\begin{proof}
+Unfold a valid enumerable dependency graph into a recursive tree of paths
+carrying finite witnesses for each enumerated edge. Its well-founded
+Kleene--Brouwer order is a computable well-order, so its rank is below $\CK$
+\cite{sacks}. Induction bounds the birthday of each cut value by the rank
+of its construction. The birthday of an ordinal is that ordinal itself.
+Combine this bound with Proposition~\ref{prop:structcount}.
+\end{proof}
+This is a necessary complexity bound, not a characterization by birthday:
+all ordinary real numbers have birthday at most $\omega$, but not all are
+hyperarithmetic. Nor is a finite program carrying a semantic well-foundedness
+promise the same as an algorithm which can decide that promise.
+
+For uniformly given Boolean-valued valid structural names $b_n$, the names
+$1-b_n$ and $b_nb_m$ implement negation and conjunction, while
+$\cut{b_n-1:n\in\N}{}$ implements countable disjunction. Its value is zero
+if every $b_n=0$, and one otherwise. The empty right side matters: putting
+$1$ on that side would give $1/2$ in the true case. This elementary mechanism
+helps explain the imported hyperarithmetic classification without purporting
+to reprove it.
+
+\subsection{Validity is a genuinely higher-order promise}
+
+\begin{proposition}[Validity has full well-foundedness complexity]
+\label{prop:validity}
+For the program coding in Definition~\ref{def:structural}, the set of valid
+root indices is $\Pi^1_1$-complete under computable many-one reductions.
+\end{proposition}
+\begin{proof}
+For hardness, start with a recursive tree $T\subseteq\N^{<\N}$. At a node
+$\sigma\in T$, put the programs for its immediate successors on the left
+and nothing on the right. If $T$ is well founded, every cut is automatically
+separated and the root is valid. If $T$ has an infinite branch, the dependency
+graph is not well founded. The reduction is effective. Well-foundedness of
+recursive trees is $\Pi^1_1$-complete \cite{sacks}.
+
+For the upper bound, well-foundedness of the reachable dependency graph is
+$\Pi^1_1$. On a well-founded graph, the recursive comparison relation on
+pairs of positions is uniquely determined by
+\begin{equation}
+ a\preccurlyeq b\ \Longleftrightarrow\
+ \bigl(\forall c\in L_a\;\neg(b\preccurlyeq c)\bigr)
+ \ \land\
+ \bigl(\forall d\in R_b\;\neg(d\preccurlyeq a)\bigr).
+ \label{C-eq:comparison-rec}
+\end{equation}
+This recursion is well founded on pairs of ranks. Existence and uniqueness
+hold even before knowing that every position is a number: it is the usual
+comparison recursion for well-founded games. The assertion that a set of
+pairs satisfies \eqref{C-eq:comparison-rec} is arithmetical in that set and the
+program index. Hereditary separation is then the arithmetical requirement
+that, at every reachable node, every left option is strictly below every
+right option according to this relation.
+
+Thus, in addition to well-foundedness, require that \emph{every} set of pairs
+satisfying the recursive comparison equations satisfies hereditary
+separation. This is a universal second-order quantification over an
+arithmetical predicate. On a well-founded graph the unique comparison
+relation exists, so the assertion is equivalent to validity and is not
+vacuous. This gives a $\Pi^1_1$ definition.
+\end{proof}
+
+In particular there is no algorithm that recognizes exactly the valid
+hereditary programs and halts on all of them. A proof-carrying subclass can
+be effectively checked in a chosen proof system, but cannot exhaust the
+semantic validity predicate.
+
+
+\section{A computable order presentation can hide a noncomputable real}
+\label{sec:signtrap}
+
+A tempting alternative is to call a surreal computable when its signs are a
+computable labeling of a computably presented well-order. The phrase sounds
+like direct sign access, but it need not provide access to the sign at the
+$n$th ordinal position. A computable presentation of an order of type
+$\omega$ need not have a computable order isomorphism with the standard
+$\N$.
+
+\begin{theorem}[The signed-order presentation trap]
+\label{thm:signtrap}
+For every computably enumerable set $A\subseteq\N$, there is a decidable
+domain $D_A\subseteq\N^2$, a decidable order on $D_A$ of order type
+$\omega$, and a computable labeling by $+$ and $-$, such that the resulting
+canonical sign sequence denotes a nondyadic real $r_A$ of Turing degree
+exactly that of $A$.
+\end{theorem}
+\begin{proof}
+Choose a computable stage enumeration in which an element enters $A$ at
+most once. For every $e$, put $(e,0)$ and $(e,1)$ in $D_A$. Also put
+$(e,s+2)$ in $D_A$ exactly when $e$ first enters $A$ at stage $s$.
+Membership is decidable by simulating the enumeration through the specified
+finite stage. Order $D_A$ lexicographically. Each $e$ contributes a nonempty
+finite block of size two or three, so the order type is $\omega$.
+
+Label $(e,0)$ by $+$ and every other point by $-$. The sign sequence in
+ordinal order is the concatenation
+\begin{equation}
+ +\,-^{\,1+\chi_A(0)}\quad
+ +\,-^{\,1+\chi_A(1)}\quad
+ +\,-^{\,1+\chi_A(2)}\quad\cdots.
+ \label{C-eq:block-signs}
+\end{equation}
+Both signs occur infinitely often. Its first two signs are $+-$, and its
+successive dyadic intervals shrink to a nondyadic real in $(0,1)$.
+With oracle $A$, one computes the blocks and hence obtains an ordinary fast
+real name. Therefore $r_A\leq_T A$.
+
+Conversely, a fast name for a nondyadic real computes any prescribed finite
+initial segment of its surreal sign sequence. At each step compare with the
+relevant dyadic pivot. Equality never occurs, and eventually the approximation
+interval decides the strict comparison. After recovering sufficiently many
+signs of \eqref{C-eq:block-signs}, count the one or two minus signs following
+the $e$th plus sign. This recovers $\chi_A(e)$. Hence $A\leq_T r_A$.
+\end{proof}
+
+The theorem uses a particularly tame order: all blocks have size at most
+three. What fails is not decidability of comparison or boundedness of block
+size, but effective identification of the successor after a possibly missing
+point. Thus one cannot establish real compatibility merely by placing
+computability requirements on an abstract order and its labels.
+
+For ordinary reals, \emph{canonical} sign access and Cauchy computation agree
+at the level of computable values, with the familiar nonuniform treatment
+of terminating dyadic expansions. For transfinite sign sequences, a proposed
+representation must also specify ordinal addresses, restrictions to initial
+segments, and the navigation information needed by its algorithms. The
+coefficient representation developed next avoids this address problem
+by supplying explicit rational coefficient addresses and effective finite search data.
+
+
+\section{Why computable Hahn coefficients are insufficient}
+\label{sec:badproduct}
+
+Suppose we ask only that $q\mapsto a_q$ be computable, and that its nonzero
+support be well ordered. Mathematical Hahn multiplication is defined
+because each coefficient receives only finitely many contributions. It
+does not follow that one can find those contributions or know that the
+search for them is complete.
+
+The next construction strengthens this objection. The supports are not
+merely well ordered: they are decidable, left-finite, and have computably
+bounded numbers of points below every exponent threshold.
+
+\begin{theorem}[Decidable supports with a noncomputable product]
+\label{thm:badproduct}
+There are two rational-exponent Hahn series $A,B$, each with coefficients
+in $\{0,1\}$ and a computable exact coefficient function on $\Q$, whose
+supports are decidable and left-finite, but whose product does not have a
+uniformly Cauchy-computable coefficient function.
+\end{theorem}
+\begin{proof}
+Let $T(e)$ be the first halting stage when $e\in K$. Put
+\[
+ c_e=4^{e+1},\qquad \delta_s=\frac1{s+2},
+\]
+and define
+\begin{equation}\label{eq:badAB}
+ A=\sum_{e\in K}t^{c_e+\delta_{T(e)}},\qquad
+ B=\sum_{e\in K}t^{2c_e-\delta_{T(e)}}.
+\end{equation}
+Each support has at most one point in its $e$th block. The $A$ blocks lie
+in $(c_e,c_e+\tfrac12]$ and the $B$ blocks in
+$[2c_e-\tfrac12,2c_e)$. They are separated and tend to infinity, proving
+left-finiteness and a computable bound on the number of points below any
+rational threshold.
+
+For exact coefficient access to $A$, given $q\in\Q$, determine whether it
+lies in one of the finitely searchable intervals
+$(c_e,c_e+\tfrac12]$. If it does, compute
+$s=1/(q-c_e)-2$. A nonnegative integral value $s$ is necessary; it is then
+sufficient to simulate machine $e$ for $s$ stages and ask whether its first
+halt was exactly at that stage. All other cases give coefficient zero.
+The same algorithm for $B$ uses $s=1/(2c_e-q)-2$. This proves computability
+of the coefficient functions and decidability of the supports.
+
+We claim
+\begin{equation}\label{eq:productencodes}
+ \coef{3c_e}{(AB)}=\chi_K(e).
+\end{equation}
+A contributing pair indexed by $i,j\in K$ must satisfy
+\[
+ c_i+2c_j-3c_e=\delta_{T(j)}-\delta_{T(i)}.
+\]
+The left side is an integer divisible by four; the right side has absolute
+value less than $1/2$. Hence both sides vanish. Uniqueness of finite
+base-four expansions in
+\[
+ 4^{i+1}+2\cdot4^{j+1}=3\cdot4^{e+1}
+\]
+forces $i=j=e$: distinct indices would produce a digit $1$ and a digit $2$
+in different positions, rather than a single digit $3$. When $e\in K$,
+that one pair is present and its perturbations cancel. Otherwise no pair
+exists. This proves \eqref{eq:productencodes}.
+
+A joint Cauchy algorithm for the product coefficients, requested to error
+less than $1/4$ at $3c_e$, would distinguish zero from one and decide $K$.
+The product is nevertheless an ordinary well-defined left-finite Hahn
+series. Its failure is effective, not algebraic.
+\end{proof}
+
+The obstruction is not the impossibility of comparing real coefficients:
+all input coefficients are exact integers. Nor is it the absence of a
+cardinality bound on the finite work. The missing information is a
+\emph{complete finite list of candidate exponents}. A bound saying ``at
+most one point in this block'' does not reveal whether the point exists or
+which rational encodes its halting time.
+
+\begin{corollary}
+The class of left-finite Hahn series with uniformly computable coefficient
+functions is not, by itself, a field or even a ring under Hahn multiplication.
+Decidable support membership and computable bounds on finite-section
+cardinalities do not repair this failure.
+\end{corollary}
+
+This motivates a stronger numerical representation, but one which still
+avoids requiring an impossible exact zero test on real coefficients.
+
+\subsection{A complementary obstruction with singleton fibers}
+The preceding construction keeps \emph{both} supports left-finite. The next,
+retained from C, instead has a global bound of one on every convolution
+fiber; one factor has a bounded accumulation point. These are distinct
+strengthenings of the same negative principle, so neither is discarded.
+\begin{theorem}[Sparse Hahn multiplication can compute the halting set]
+\label{thm:singlefiber}
+There are Hahn series $F,G$ with computable coefficient functions taking values in $\{0,1\}$ and
+decidable well-ordered supports, such that $FG$ has no computable coefficient function. Every convolution
+fiber for these two supports has size at most one.
+\end{theorem}
+\begin{proof}
+For a halting machine $e$, write $s_e\geq0$ for its exact halting stage.
+Define
+\begin{equation}
+ F=\sum_{n\geq0}t^{\,1-1/(n+2)},\qquad
+ G=\sum_{e\in K}t^{\,e+1/(s_e+2)}.
+ \label{C-eq:hahn-FG}
+\end{equation}
+The support of $F$ is strictly increasing, of order type $\omega$.
+Its coefficient at $q=1$ is zero; at any other rational $q$, test whether
+$(1-q)^{-1}$ is an integer at least two. The support of $G$ contains at most
+one element in each interval $(e,e+1/2]$, so is also well ordered.
+For a rational query $q$, let $e=\lfloor q\rfloor$. Test whether $e\geq0$
+and $q-e=1/(s+2)$ for an integer $s\geq0$. If so, simulate machine $e$
+through stage $s$ and test whether this is its exact halting stage.
+This decides the coefficient of $G$. Thus both coefficient functions and
+both supports are decidable.
+
+An exponent in the product has the form
+\[
+ j+1+\frac1{s_j+2}-\frac1{n+2}.
+\]
+For fixed target exponent $q$, the integer $j$ must lie in
+$(q-3/2,q-1/2)$, since $1-1/(n+2)\in[1/2,1)$ and
+$1/(s_j+2)\in(0,1/2]$. This open interval of length one contains at most one integer. For each $j$ there is at most one support
+term of $G$, and then at most one possible $n$. Thus every fiber has at
+most one member. The ordinary Hahn product is well defined.
+
+At the integer target $q=e+1$, the only possible integer block is $j=e$:
+the difference $1/(s_j+2)-1/(n+2)$ is strictly between $-1/2$ and $1/2$,
+so it cannot compensate a nonzero integer. The target is attained exactly
+when $e$ halts and $n=s_e$. Consequently
+\begin{equation}
+ [t^{e+1}](FG)=\chi_K(e).
+ \label{C-eq:product-halting}
+\end{equation}
+A uniform approximation algorithm for the coefficients of $FG$, requested
+at these targets with error at most $1/4$, would decide $K$.
+Therefore $FG$ has no computable coefficient function.
+\end{proof}
+
+The statement is stronger than nonexistence of a uniform multiplication
+algorithm: the product of these two fixed computable coefficient functions
+is not a computable coefficient function at all. Each individual coefficient
+in \eqref{C-eq:product-halting} is of course a computable rational. It is their
+uniform recovery that fails.
+
+Classical support lemmas establish that each convolution coefficient is a
+finite sum. They do not produce an effective stopping criterion for locating
+its summands. Even a known global bound of one on their number does not
+produce such a criterion. This is the same general danger as replacing an
+unknown finite search domain by a promise that only finitely many answers
+exist.
+
+
+B uses the equivalent collision template
+$\alpha_s=1-2^{-s-1}$,
+$F_B=\sum_s t^{\alpha_s}$, and
+$G_B=\sum_{e\in K}t^{2e+2-\alpha_{s_e}}$.
+At target $2e+2$, equality of the two fractional offsets forces the same
+halting stage, and the coefficient is $\chi_K(e)$. Rational queries recover
+and check only a finite candidate stage. The singleton-fiber formulation
+above and the left-finite formulation preceding it retain the stronger
+conclusions; the dyadic offsets are an alternative fixture, not a
+conflicting definition of multiplication.
+
+\subsection{The sharp oracle cost of an unrestricted convolution}
+\begin{theorem}[One jump for coefficients, not for an ordinary output name]
+\label{thm:convolution-jump}
+Let two Hahn series with rational exponents have uniformly computable real
+coefficient functions and well-ordered supports, but no effective support
+covers. Their product coefficient function is uniformly computable in $0'$.
+The bound is sharp, already for exact rational zero--one coefficients.
+\end{theorem}
+\begin{proof}
+For a fixed rational target $q$, the set
+\[
+ E_q=\{r\in\Q:a_r b_{q-r}\ne0\}
+\]
+is computably enumerable, since a nonzero computable real is semidecidable.
+It is finite: infinitely many such $r$ would yield a strictly increasing
+sequence in the first well-ordered support and hence a strictly decreasing
+sequence $q-r$ in the second. This contradicts well-ordering.
+
+Keep a finite list $D$ of contributors already detected. A halting oracle
+decides whether the semidecision search for another member of $E_q\setminus D$
+will succeed. If it will, run that search until a witness appears and add it;
+otherwise stop. Finiteness ensures termination with exactly $E_q$.
+Compute the finite sum of the named real products to any requested precision.
+For exact rational coefficients this produces an exact rational result.
+Either counterexample above gives product coefficients which decide $K$,
+so any oracle uniformly solving this task computes $0'$.
+\end{proof}
+The witness search need not find a \emph{least} rational contributor and does
+not require a decidable support test. This formulation also covers
+Cauchy-real coefficients correctly. The resulting coefficient algorithm may
+need $0'$ anew at every target $q$; in general no ordinary computable product
+name exists. This differs from the finite normalization advice in
+Theorem~\ref{thm:jump}, after which an ordinary inverse program is returned.
+The theorem supplies coefficients, not an effective finite-cover name for
+the product. Structured positive results for special Hahn families, such as
+Mahler-equation support receptacles \cite{faverjon}, impose additional data
+and do not contradict this obstruction.
+
+\section{Effective left-finite Cauchy--Hahn names}
+\label{sec:definition}
+
+\begin{definition}[The numerical representation]\label{def:elf}
+An \emph{effective left-finite Cauchy--Hahn name} consists of a rational
+number $\ell$ and two total computable procedures $A,F$ with the following
+meaning. There is a real coefficient family $(a_q)_{q\in\Q}$ such that
+\begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2em]
+\item $a_q=0$ whenever $q<\ell$;
+\item $A(q,k)\in\Q$ and $|A(q,k)-a_q|\le2^{-k}$ for every $q,k$;
+\item for each $B\in\Q$, $F(B)$ is a finite rational set contained in
+$[\ell,B)$ and containing every $q<B$ with $a_q\ne0$.
+\end{enumerate}
+Its value is $x=\sum_qa_qt^q$, viewed in $\No$ through normal forms.
+The set $\Lc$ consists of the values of such computable names.
+\end{definition}
+
+The procedure $F$ is a \emph{finite-section cover}, not an exact support
+oracle. It may list exponents with coefficient zero, and no test for deleting
+such entries is required. Lists can always be converted effectively into
+finite sets of reduced rational numbers. They need not be nested as $B$
+increases. For $B\le\ell$ the only allowed list is empty.
+
+These small details matter. Requiring an exact nonzero-support list would
+already demand a zero test for a single arbitrary computable real constant.
+Allowing harmless zero candidates makes addition and cancellation effective.
+The name's correctness conditions remain promises; the algorithms below
+preserve them rather than attempting to decide them.
+
+\begin{proposition}[Well-definedness and the real slice]
+\label{prop:realslice}
+Every valid numerical name defines a unique left-finite Hahn series.
+The set $\Lc$ is countable, contains every rational monomial $t^q$, and
+satisfies $\Lc\cap\R=\Rc$. The inclusion of ordinary computable real
+constants into this representation is uniform.
+\end{proposition}
+\begin{proof}
+The error bounds determine each real $a_q$ uniquely. The covers imply
+left-finiteness; hence the series is a valid Hahn normal form. Its surreal
+value is unique by the normal-form theorem. Countably many programs and
+finite rational data give countably many names.
+
+For $t^q$, use lower bound $q$, coefficient one at $q$ and zero elsewhere,
+and cover $\{q\}$ exactly when $B>q$. For a Cauchy-named real $a$, use
+lower bound zero, coefficient $a$ at exponent zero and zero elsewhere,
+and cover $\{0\}$ when $B>0$. This construction is uniform even when
+$a=0$. Conversely, if the value of a name is an ordinary real, uniqueness
+of normal form says that its only possible nonzero coefficient is $a_0$.
+The algorithm $A(0,k)$ therefore computes that real.
+\end{proof}
+
+\begin{definition}[Finite jet]
+For $B\in\Q$ define the exact finite jet
+\[
+ J_Bx=\sum_{q\in F(B)}a_qt^q.
+\]
+Its data consist of a finite rational exponent list and Cauchy names for its
+real coefficients, not finite rational approximations to those coefficients.
+\end{definition}
+
+\begin{proposition}[Certified truncation]
+\label{prop:jets}
+From a numerical name and $B$ one computes a name for $J_Bx$, and
+\[
+ \val(x-J_Bx)\ge B.
+\]
+The value of $J_Bx$ is independent of the particular valid cover.
+\end{proposition}
+\begin{proof}
+All nonzero coefficients below $B$ occur in the list, and the remaining
+listed coefficients are zero. Thus the coefficients of the difference
+below $B$ vanish. Restrict the original coefficient oracle to the finite
+list to obtain a name for the jet.
+\end{proof}
+
+The series in Theorem~\ref{thm:badproduct} have no computable covers of this
+kind. For example, a cover of $A$ below $c_e+1$ would give finitely many
+candidates in its $e$th block. Its exact coefficient oracle could inspect
+them and decide whether $e\in K$.
+
+\section{Uniform ring operations and certified reciprocation}
+\label{sec:arithmetic}
+
+\subsection{Finite Cauchy arithmetic}
+
+We repeatedly use the elementary fact that finite sums and products of
+Cauchy-computable real numbers are computable uniformly. This does not
+require zero tests. A precision-zero approximation gives a computable bound
+$|a|\le |A(0)|+1$. To approximate a finite sum of products, choose a common
+input error $\eta\le1$ small enough that the sum of the estimates
+\[
+ |ab-\widetilde a\widetilde b|
+ \le \eta\bigl(|a|+|b|+1\bigr)
+\]
+is below the requested output error. All required bounds follow from coarse
+approximations. If $a\ne0$ is promised, its reciprocal is computable as an
+ordinary real: search until an approximation interval excludes zero and
+then propagate errors through division using the resulting positive lower
+bound for $|a|$.
+
+\begin{theorem}[Uniform numerical ring arithmetic]
+\label{thm:ring}
+Addition, negation, and multiplication are computable uniformly on
+numerical names. For rational $r$, the operation $x\mapsto t^rx$ is also
+uniformly computable.
+\end{theorem}
+\begin{proof}
+Negation keeps the lower bound and cover. For addition use lower bound
+$\min(\ell_x,\ell_y)$, coefficient sums, and the cover
+$F_x(B)\cup F_y(B)$. Rational shifting adds $r$ to the lower bound and
+exponents, uses $a_{q-r}$ as coefficient, and shifts $F_x(B-r)$ by $r$.
+
+For multiplication put $\ell=\ell_x+\ell_y$. At an exponent $q$ the exact
+coefficient is the finite sum
+\begin{equation}\label{eq:coeffmul}
+ \coef q{(xy)}=
+ \sum_{r\in F_x(q-\ell_y+1)} (\coef rx)(\coef{q-r}y).
+\end{equation}
+Indeed, a nonzero contribution requires $r\ge\ell_x$ and
+$q-r\ge\ell_y$, so $r\le q-\ell_y$ and lies in the indicated cover.
+Zero candidates contribute nothing. Finite Cauchy arithmetic computes this
+coefficient to any requested precision.
+
+A support cover for the product below $B$ is
+\begin{equation}\label{eq:covermul}
+ F_{xy}(B)=
+ \bigl(F_x(B-\ell_y)+F_y(B-\ell_x)\bigr)\cap[\ell,B),
+\end{equation}
+where the plus sign between finite sets denotes their pairwise sum set.
+If $r+s<B$ contributes to a nonzero coefficient, then
+$r<B-\ell_y$ and $s<B-\ell_x$. Thus \eqref{eq:covermul} contains every
+possible nonzero exponent below $B$. It is a computable finite set. This
+proves all requirements on the product name.
+\end{proof}
+
+No test for cancellation was hidden in either formula. In particular, the
+output may have a much larger true leading exponent than its supplied
+lower bound, or may be zero.
+
+\subsection{An effective positive gap}
+
+\begin{lemma}[Gap extraction without normalization]
+\label{lem:gap}
+Suppose a numerical name is promised to satisfy
+$\supp(h)\subseteq\Q_{>0}$. One can compute $\delta\in\Q_{>0}$ such that
+$\val(h)\ge\delta$, including the case $h=0$.
+\end{lemma}
+\begin{proof}
+Compute $F_h(1)$, discard its nonpositive candidates, and take
+\[
+ \delta=\min\bigl(\{1\}\cup(F_h(1)\cap\Q_{>0})\bigr).
+\]
+Every nonzero exponent of $h$ below one occurs among these positive
+candidates; every other nonzero exponent is at least one. The promise
+justifies discarding nonpositive candidates, even though their zero
+coefficients were not algorithmically recognized.
+\end{proof}
+
+Under the same promise we may replace the lower bound by zero and discard
+all nonpositive candidates in every cover. This is \emph{certified
+filtering}: a theorem about the input, rather than an equality decision,
+authorizes removal of those positions.
+
+\begin{lemma}[Effective geometric series]
+\label{lem:geom}
+For a numerically named $h$ with positive support, the series
+$G(h)=\sum_{n\ge0}h^n$ has a uniformly computable numerical name. It satisfies
+$(1-h)G(h)=1$ and, for every $N\ge0$,
+\[
+ (1-h)\sum_{n=0}^{N}h^n=1-h^{N+1}.
+\]
+\end{lemma}
+\begin{proof}
+Extract a positive gap $\delta$. Each $h^n$ is numerically computable by
+Theorem~\ref{thm:ring} and has support in $[n\delta,\infty)$. At any
+threshold $B$, only the finitely many $n$ with $n\delta<B$ can contribute.
+Use lower bound zero and the finite candidate cover
+\[
+ F_G(B)=[0,B)\cap
+ \bigcup_{\substack{n\in\N\\n\delta<B}}F_{h^n}(B).
+\]
+The intersection is part of the algorithm. The input can have a negative
+supplied lower bound and negative candidates whose coefficients are zero;
+ring operations need not remove those redundant candidates. For example,
+$h=0$ may have lower bound $-1$ and the valid cover
+$F_h(B)=\{-1/2\}$ when $B>-1/2$, empty otherwise. The unfiltered union at
+$B=2$ could retain $-1/2$ even though $G(h)=1$. Intersecting with $[0,B)$
+removes it without a coefficient-zero test. This filtering preserves every
+nonzero term because all powers have nonnegative support, and for $B\le0$
+the output cover is empty.
+
+For a queried exponent $q$, choose $N$ with $(N+1)\delta>q$ and compute
+the coefficient of the finite sum through $N$. This stabilizes the exact
+coefficient, after which its real precision is computed separately.
+
+Finite multiplication proves the displayed remainder identity. At every
+fixed coefficient, $h^{N+1}$ eventually contributes zero. Hence the
+coefficientwise Hahn identity $(1-h)G(h)=1$ follows. This reasoning takes
+place in the fixed left-finite workspace, not in the full surreal topology.
+\end{proof}
+
+\begin{theorem}[Field closure and certified inversion]
+\label{thm:inverse}
+Every nonzero $x\in\Lc$ has $x^{-1}\in\Lc$. Uniform inversion is possible
+from a numerical name supplemented by its true leading exponent
+$\lambda=\val(x)\in\Q$.
+\end{theorem}
+\begin{proof}
+The coefficient $a=\coef\lambda x$ is a nonzero computable real. With the
+nonzero promise compute its real inverse. Form
+\[
+ h=1-a^{-1}t^{-\lambda}x.
+\]
+The supplied leading-exponent certificate proves that all coefficients of
+$h$ at nonpositive exponents vanish. Lemma~\ref{lem:geom} now gives
+\begin{equation}\label{eq:inverse}
+ x^{-1}=a^{-1}t^{-\lambda}\sum_{n\ge0}h^n
+\end{equation}
+uniformly, with lower bound $-\lambda$ and covers obtained by shifting
+those of the geometric series. The exact identity follows from
+$1-h=a^{-1}t^{-\lambda}x$.
+
+For extensional closure, every particular nonzero left-finite series has a
+least support exponent, which is a rational number. That single rational
+can be hard-coded into an inverse program. This proves existence of a
+computable inverse name without claiming a uniform procedure for finding
+that rational from an arbitrary input name.
+\end{proof}
+
+This final distinction is the source of the apparent paradox: all inverse
+values are computable in the specified sense, but one cannot uniformly
+choose their names from all nonzero input names. The obstruction will be
+proved, rather than merely asserted, in Section~\ref{sec:uniformlimits}.
+
+\subsection{The valuation ring and standard part}
+
+Define
+\[
+ \Oh=\{x\in\Lc:\val(x)\ge0\},\qquad
+ \mh=\{x\in\Lc:\val(x)>0\}.
+\]
+These include zero by the convention $\val(0)=+\infty$.
+
+\begin{proposition}[Value group and effective residue]
+\label{prop:residue}
+The value group of $\Lc$ is $\Q$. The ring $\Oh$ is convex in its ordered
+field and has maximal ideal $\mh$. Coefficient extraction gives
+\[
+ \st:\Oh\longrightarrow\Rc,\qquad \st(x)=\coef0x,
+ \qquad \Oh/\mh\cong\Rc.
+\]
+This standard-part operation is computable from a numerical name with the
+promise $x\in\Oh$, without knowing $\val(x)$.
+\end{proposition}
+\begin{proof}
+Every nonzero valuation is a rational exponent, and $\val(t^q)=q$ shows
+surjectivity onto $\Q$. An element has nonnegative valuation exactly when
+it is finite as a surreal: a negative leading exponent yields magnitude
+larger than every positive integer, and a nonnegative exponent gives a real
+constant plus an infinitesimal. Thus $\Oh$ is a convex subring.
+
+For two elements of $\Oh$, only their exponent-zero terms contribute to
+the exponent-zero coefficient of their product. Hence $\st$ is a ring
+homomorphism. Its kernel is $\mh$, and constants give surjectivity. The
+quotient is a field, proving maximality. Finally, $A(0,k)$ is already an
+ordinary Cauchy name for the residue.
+\end{proof}
+
+Each finite element has the unique decomposition
+$x=\st(x)+(x-\st(x))$ with infinitesimal second summand. The algorithm
+extracts it without deciding whether that infinitesimal summand is zero.
+
+\section{Effective Hensel lifting and real closedness}
+\label{sec:realclosed}
+
+\subsection{A quantitative simple-root algorithm}
+
+For a polynomial $P\in\Oh[Z]$, denote by $\overline P\in\Rc[Z]$ its
+coefficientwise residue. A residue root $c$ is simple if
+$\overline P(c)=0$ and $\overline{P'}(c)\ne0$.
+
+\begin{theorem}[Effective simple Hensel lifting]
+\label{thm:hensel}
+Let a finite-degree polynomial $P\in\Oh[Z]$ be given by numerical names for
+its coefficients, and let $c\in\Rc$ be given by a Cauchy name. Under the
+promises
+\[
+ \overline P(c)=0,\qquad a=\overline{P'}(c)\ne0,
+\]
+one can compute a numerical name for the unique $y\in\Oh$ satisfying
+$P(y)=0$ and $y-c\in\mh$.
+More precisely, one computes a positive rational $\delta$ and numerical
+Newton iterates $y_n$ such that
+\begin{equation}\label{eq:newtonbounds}
+ \val(P(y_n))\ge2^n\delta,\qquad
+ \val(y-y_n)\ge2^n\delta.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $y_0=c$. Since $P(c)$ has positive support, the gap lemma gives
+$\delta>0$ with $\val(P(c))\ge\delta$. This also works if $P(c)=0$.
+Inductively define
+\begin{equation}\label{eq:newton}
+ y_{n+1}=y_n-P(y_n)P'(y_n)^{-1}.
+\end{equation}
+If $y_n\equiv c\pmod\mh$, then $P'(y_n)$ has residue $a\ne0$ and hence
+\emph{known} leading exponent zero. Its inverse is therefore computed by
+the certified algorithm, without a general normalization procedure.
+The correction has positive valuation, so $y_{n+1}\equiv c\pmod\mh$.
+
+All polynomial coefficients and iterates lie in $\Oh$. The finite Taylor
+identity, with $u=-P(y_n)/P'(y_n)$, gives
+\[
+ P(y_n+u)=P(y_n)+P'(y_n)u+u^2R_n,
+ \qquad R_n\in\Oh.
+\]
+The first two terms cancel. If $\val(P(y_n))\ge2^n\delta$, the unit
+$P'(y_n)$ has valuation zero, so $\val(u)\ge2^n\delta$ and
+$\val(P(y_{n+1}))\ge2^{n+1}\delta$. Induction proves these estimates
+and $\val(y_{n+1}-y_n)\ge2^n\delta$.
+
+For each $q\in\Q$, choose $n$ with $2^n\delta>\max(q,0)$ and define the
+coefficient of $y$ at $q$ to be that of $y_n$. All later iterates agree at
+that exponent, so this is consistent. It gives a uniform Cauchy coefficient
+algorithm. Set every coefficient at a negative exponent to zero, as
+justified by the invariant $y_n\in\Oh$. For a threshold $B>0$, choose
+$n$ with $2^n\delta>B$ and use $F_{y_n}(B)\cap[0,B)$ as a cover for $y$;
+for $B\le0$, use the empty set. Thus $y$ has a numerical name with lower
+bound zero, and the second inequality in \eqref{eq:newtonbounds} follows.
+
+For any fixed bound, polynomial evaluation uses only finitely many earlier
+coefficients, since all arguments and coefficients have nonnegative
+valuation. Consequently $P(y)$ agrees below that bound with $P(y_n)$ for
+sufficiently large $n$, and the first inequality in
+\eqref{eq:newtonbounds} makes those coefficients zero. Thus $P(y)=0$.
+
+For uniqueness, if $z\equiv c\pmod\mh$ is another root, the polynomial
+difference quotient gives
+\[
+ P(y)-P(z)=(y-z)U,\qquad U\equiv P'(c)\equiv a\pmod\mh.
+\]
+The factor $U$ is a unit, so $y=z$.
+\end{proof}
+
+The number of Newton rounds needed to determine an exponent jet grows
+logarithmically in $B/\delta$. This is a bound on rounds, not a polynomial
+bit-complexity claim: cover sizes, coefficient magnitudes, and real
+precision costs may grow substantially. The theorem is effective only
+under its promises; it does not claim to decide whether a proposed residue
+root is simple.
+
+\subsection{Why the computable reals are real closed}
+
+For completeness, the extensional real-algebraic fact needed below has an
+elementary proof which does not require a uniform multiplicity decision.
+
+\begin{lemma}\label{lem:Rcclosed}
+Every real root of a nonzero polynomial with coefficients in $\Rc$ belongs
+to $\Rc$. Consequently $\Rc$ is real closed.
+\end{lemma}
+\begin{proof}
+Let $r$ be a real root of multiplicity $m$ of $P$. The polynomial
+$Q=P^{(m-1)}$ has a simple root at $r$. Choose rational endpoints $u<r<v$
+and a positive rational $d$ such that $Q'$ has constant sign and
+$|Q'(x)|>d$ throughout $[u,v]$, and $r$ is the unique root there.
+These finitely many data exist by continuity and simplicity and may be
+hard-coded for this particular root.
+
+For a requested precision $k$, search through rational $q\in(u,v)$ and
+increasing computation precisions until
+$|Q(q)|<d\,2^{-k}$ is certified. Polynomial evaluation at a rational is
+Cauchy computable, and this strict inequality is semidecidable. Rationals
+arbitrarily close to $r$ ensure that the search succeeds. The mean value
+theorem then gives $|q-r|<2^{-k}$. Hence $r$ is computable.
+
+Every real element algebraic over $\Rc$ is such a root. Since $\R$ is
+real closed, positive square roots and roots of odd-degree polynomials
+exist there and therefore already lie in $\Rc$. These two properties
+characterize real-closed ordered fields.
+\end{proof}
+
+The proof chooses $m,u,v,d$ nonuniformly. This is sufficient for the
+algebraic statement and should not be mistaken for a root-isolation
+algorithm that determines multiplicities from arbitrary coefficient names.
+
+\subsection{The one external valuation theorem}
+
+We use the following standard consequence of the lemma of Ostrowski; the
+formula and the residue-characteristic-zero specialization are recorded
+explicitly in \cite[\S2.1, equation (1)]{rzepka}:
+\begin{equation}\label{eq:ostrowski}
+ [E:F]=(\val E:\val F)[Ev:Fv]
+\end{equation}
+for a finite extension of a henselian valued field $F$ of residue
+characteristic zero, with its unique extended valuation. Here $Fv$ and
+$Ev$ denote residue fields. The general formula has an additional defect
+factor, a power of the residue characteristic exponent; in characteristic
+zero that exponent is one. Henselianity, equivalently uniqueness of the
+valuation extension, is essential.
+
+\begin{lemma}[A real-closedness criterion]
+\label{lem:valuationRC}
+Let $F$ be an ordered field with a convex henselian valuation. If its value
+group is divisible and its residue field is real closed of characteristic
+zero, then $F$ is real closed.
+\end{lemma}
+\begin{proof}
+Let $E/F$ be a finite ordered algebraic extension. The convex hull in $E$
+of the valuation ring of $F$ is a convex valuation ring extending it.
+Indeed, a convex subring of an ordered field is a valuation ring: if
+$x$ does not lie in it, $|x|$ exceeds every positive element of the ring,
+so $|x^{-1}|<1$ and $x^{-1}$ lies in it. Its intersection with $F$ is the
+original convex ring. The induced residue field is ordered, extending the
+order on $Fv$. Henselianity makes this the unique extended valuation.
+
+The fundamental inequality makes both the value-group index and residue
+degree finite. A torsion-free ordered group cannot properly contain a
+divisible subgroup with finite index: for $\gamma\in\val E$, some
+$n\gamma$ lies in $\val F$; divisibility supplies $\eta\in\val F$ with
+$n\eta=n\gamma$, and torsion-freeness gives $\eta=\gamma$. Thus the
+ramification index is one. The finite ordered algebraic extension $Ev/Fv$
+is trivial because $Fv$ is real closed, so the residue degree is one.
+Equation~\eqref{eq:ostrowski} gives $[E:F]=1$.
+
+If $F$ were not real closed it would have a proper ordered algebraic
+extension, containing a proper finite subextension generated by one element.
+The preceding argument rules this out.
+\end{proof}
+
+\begin{theorem}[Real closedness of the effective core]
+\label{thm:Lcrealclosed}
+The ordered field $\Lc$ is real closed, and $\Lc[i]$ is algebraically
+closed.
+\end{theorem}
+\begin{proof}
+Field closure was proved in Theorem~\ref{thm:inverse}. The valuation is
+convex, has value group $\Q$, and has residue field $\Rc$, by
+Proposition~\ref{prop:residue}. Theorem~\ref{thm:hensel} gives the simple
+root form of Hensel's lemma, hence henselianity. The group $\Q$ is divisible,
+and Lemma~\ref{lem:Rcclosed} makes the characteristic-zero residue field
+real closed. Apply Lemma~\ref{lem:valuationRC}. The usual algebraic
+characterization of a real-closed field says that adjoining a square root
+of $-1$ gives its algebraic closure.
+\end{proof}
+
+This proves more than the existence of square roots of infinitesimal
+perturbations of one: \emph{every} odd-degree polynomial over the effective
+core has a root in that core, regardless of the scales or multiplicities
+of its roots. The general existence assertion is extensional. The uniform root algorithms proved here require stated residue data or
+a finite-jet branch certificate; neither is a blind branch selector.
+
+\begin{corollary}[Algebraic operations on individual computable surreals]
+Every real surreal root of a \emph{nonzero} polynomial over $\Lc$ belongs to $\Lc$.
+Every surcomplex root of such a polynomial belongs to $\Lc[i]$.
+\end{corollary}
+\begin{proof}
+A real-closed ordered subfield has no proper ordered algebraic extension.
+Any real surreal root generates such an extension unless it already lies
+in the field. For a surcomplex root, the polynomial already splits over
+$\Lc[i]$, which is algebraically closed, so every root in a larger field
+is one of its roots there.
+\end{proof}
+
+\section{The computable Puiseux subfield}
+\label{sec:puiseux}
+
+A particularly transparent subfield uses a fixed denominator for all
+exponents of each element, although different elements may have different
+denominators.
+
+\begin{definition}[Computable Puiseux series]
+\label{def:puiseux}
+Let $\Pc$ consist of all series
+\begin{equation}\label{eq:Puiseux}
+ x=\sum_{n\ge N}a_nt^{n/m},
+ \qquad m\in\N_{>0},\quad N\in\Z,
+\end{equation}
+with uniformly Cauchy-computable coefficients $a_n\in\Rc$. A name consists
+of $m,N$ and this joint coefficient algorithm.
+\end{definition}
+
+\begin{proposition}[Embedding and arithmetic]
+\label{prop:puiseuxarithmetic}
+Puiseux names translate uniformly to numerical names. The set $\Pc$ is a
+subfield of $\Lc$. Addition and multiplication are uniform; inversion is
+uniform when the leading integer index is supplied.
+\end{proposition}
+\begin{proof}
+Use lower bound $N/m$. At a rational exponent $q$, return $a_{mq}$ if
+$mq$ is an integer at least $N$, and zero otherwise. A cover below $B$ is
+the finite grid $\{n/m:N\le n<mB\}$. For two series pass to denominator
+$\lcm(m_1,m_2)$, inserting zero coefficients at the other grid points.
+Finite convolution computes sums and products.
+
+For a nonzero series with leading index $\nu$, write
+$x=t^{\nu/m}\sum_{j\ge0}a_{\nu+j}t^{j/m}$. Its inverse coefficients are
+computed successively from
+\begin{equation}\label{eq:inverseRecurrence}
+ b_0=a_\nu^{-1},\qquad
+ b_n=-a_\nu^{-1}\sum_{j=1}^n a_{\nu+j}b_{n-j}\quad(n\ge1),
+\end{equation}
+so $x^{-1}=t^{-\nu/m}\sum_{n\ge0}b_nt^{n/m}$. Each requested coefficient
+requires only a finite recursive computation with real Cauchy arithmetic.
+For an individual nonzero value, its integer $\nu$ can be hard-coded.
+\end{proof}
+
+\begin{theorem}[A proper real-closed subfield]
+\label{thm:puiseuxclosed}
+The field $\Pc$ is real closed and is a proper subfield of $\Lc$.
+\end{theorem}
+\begin{proof}
+For a finite polynomial over the valuation ring of $\Pc$, choose a common
+exponent denominator $m$ for its coefficients. In the simple Hensel
+construction, all Newton iterates and their inverses stay on this same
+$\frac1m\Z$ grid. The stabilized coefficients are uniformly computable,
+with lower index zero for the lifted integral root. Thus the proof of
+Theorem~\ref{thm:hensel} gives henselianity inside $\Pc$, not merely inside
+$\Lc$. Its value group is still $\Q$, since it contains every $t^q$, and
+its residue field is $\Rc$. Lemma~\ref{lem:valuationRC} proves real
+closedness.
+
+For strictness consider
+\begin{equation}\label{eq:unboundeddenoms}
+ u=\sum_{n\ge1}t^{\,n+1/(n+1)}.
+\end{equation}
+The exponent sequence is computable, strictly increasing, and unbounded.
+A coefficient query $q$ only requires testing the finitely many integers
+$1\le n<q$ for the exact equation $q=n+1/(n+1)$. A cover below $B$ is
+computed by checking $1\le n<B$. This gives a numerical name for $u$.
+But the reduced denominator of $n+1/(n+1)$ is exactly $n+1$, since
+$\gcd(n(n+1)+1,n+1)=1$. These denominators cannot all divide any fixed
+integer $m$. Uniqueness of Hahn normal form shows $u\notin\Pc$.
+\end{proof}
+
+No Newton--Puiseux algorithm was silently assumed here. Real closedness
+follows from the effective unit-root iteration plus an explicit standard
+valuation criterion. General roots may require ramification or nonuniform
+branch data; the theorem does not compute all those data blindly.
+
+\begin{example}[Explicit computable infinitesimals]
+All of
+\[
+ \frac{1}{1-t}=\sum_{n\ge0}t^n,\qquad
+ e^t=\sum_{n\ge0}\frac{t^n}{n!},\qquad
+ \sum_{n\ge0}\pi^{n^2}t^{n/3}
+\]
+belong to $\Pc$. There is no real-analytic growth condition on the
+coefficients of a formal infinitesimal series: the last example is allowed
+regardless of the radius of convergence of a related ordinary real power
+series. Its grid supplies finite exponent sections.
+\end{example}
+
+The numerical core is deliberately not closed under all small Conway
+cuts. Every element of $\Lc$ is eventually dominated in magnitude by some
+$\omega^n$, because its leading exponent is rational. Thus the uniformly
+named sequence $1,\omega,\omega^2,\ldots$ is cofinal in its positive
+magnitudes. Its all-left Conway cut is $\omega^\omega$, which cannot lie
+in $\Lc$: its normal form has exponent $-\omega$ in the $t$ convention,
+not a rational exponent. Structural computability accommodates this cut;
+our fixed rank-one numerical workspace does not. Larger scales require
+larger workspaces, not a change in the meaning of rational exponents.
+
+\section{Finite jets and real-closedness}
+\label{C-sec:realclosed}
+
+The arguments in B and C are the same finite-advice mechanism, written in
+slightly different normalizations. We retain C's explicit divided-derivative
+formulation and B's emphasis on a single fixed coefficient inverse.
+It is not enough to invoke Newton--Puiseux and observe that every root
+coefficient is a computable real. The coefficients of one root must have a
+\emph{single} algorithm. This section proves that uniformity. The proof is
+local at a simple root and needs only a finite amount of nonuniform seed
+data.
+
+For any coefficient field $k$, write
+$\PP(k)=\bigcup_{d\ge1}k((t^{1/d}))$ without an effectiveness restriction.
+Importantly, $\Pc\subsetneq\PP(\Rc)$: the series
+$\sum_{n\ge0}\chi_K(n)t^n$ has individually computable rational coefficients
+but no jointly computable coefficient function. In every Puiseux name,
+coefficients at integer exponents are uniformly readable.
+
+\subsection{The classical algebraic input}
+
+We use the characteristic-zero Newton--Puiseux theorem in the following
+standard form: if $k$ is algebraically closed of characteristic zero, then
+$\PP(k)=\bigcup_d k((t^{1/d}))$ is algebraically closed. The introductions of Rond and Kedlaya give this formulation and its relation
+to finite ramification \cite{rond,kedlaya}. This is the algebraic-existence input in this second route; the first
+route in Section~\ref{sec:puiseux} uses henselian valuation theory instead.
+
+It follows that $\PP(k)$ is real closed when $k$ is real closed. Indeed,
+$k(i)$ is algebraically closed, and
+\[
+ \PP(k)(i)=\PP(k(i))
+\]
+by separating real and imaginary coefficients at a common denominator.
+The field $\PP(k)$ is ordered by its leading coefficient, hence formally
+real, and adjoining $i$ makes it algebraically closed. Apply this with
+$k=\Rc$, using Lemma~\ref{lem:Rcclosed}.
+
+This classical statement concerns arbitrary coefficient sequences. The
+following lemma is the additional effective step.
+
+\subsection{A coefficientwise effective simple-root lemma}
+
+For a polynomial in $Y$, write $f^{[j]}=f^{(j)}/j!$ for its divided formal
+derivative. Thus
+\[
+ f(Y+H)=\sum_{j\geq0}f^{[j]}(Y)H^j,
+\]
+where the sum has only finitely many terms.
+
+\begin{lemma}[Finite-jet lifting]
+\label{C-lem:finite-jet}
+Let $f(Y)\in\Rc[[u]][Y]$ have uniformly computable coefficients as power
+series in $u$. Suppose $y\in\Rc[[u]]$ is a root, with
+$f'(y)\ne0$. Then the coefficients of $y$ are uniformly computable.
+More explicitly, they can be computed uniformly from $f$ and the finite
+seed data
+\[
+ s=v_u(f'(y)),\qquad M>s,\qquad
+ a=\sum_{j=0}^{M-1}y_j u^j,
+\]
+where the finitely many coefficients of $a$ are supplied by fast real names.
+\end{lemma}
+\begin{proof}
+Since $f$ and $y$ are integral power series, $s$ is a nonnegative integer.
+Write $y=a+u^Mz$ with $z\in\Rc[[u]]$.
+For integral arguments, polynomial evaluation is valuation nondecreasing
+with respect to their difference. In particular,
+\[
+ f'(a)-f'(y)\in u^M\Rc[[u]].
+\]
+As $M>s$, this implies $v_u(f'(a))=s$.
+Taylor expansion about the actual root gives
+\[
+ f(a)=f'(y)(a-y)+\sum_{j\geq2}f^{[j]}(y)(a-y)^j.
+\]
+The first term has valuation at least $M+s$; every other term has valuation
+at least $2M>M+s$. Therefore $v_u(f(a))\geq M+s$.
+
+Consider the transformed polynomial
+\begin{equation}
+ Q(Z)=u^{-(M+s)}f(a+u^MZ).
+ \label{C-eq:Q-transform}
+\end{equation}
+Its constant coefficient is integral by the preceding bound. Its linear
+coefficient is $u^{-s}f'(a)$, an integral unit. For $j\geq2$, the coefficient
+of $Z^j$ is
+\[
+ u^{(j-1)M-s}f^{[j]}(a),
+\]
+which is divisible by $u$ because $M>s$. Thus $Q\in\Rc[[u]][Z]$, and its
+reduction modulo $u$ is
+\begin{equation}
+ Q(Z)\bmod u=b+cZ,\qquad c\in\Rc\setminus\{0\}.
+ \label{C-eq:Q-mod}
+\end{equation}
+All coefficients of $Q$ are uniformly computable from $f$ and the finite
+seed data: the transformation consists of finite polynomial operations,
+coefficient shifts, and finite real arithmetic.
+
+There is a unique formal root $z=\sum_{n\geq0}z_nu^n$ of $Q$ in
+$\Rc[[u]]$. Its constant term must be $z_0=-b/c$. Once
+$z_0,\ldots,z_{n-1}$ are known, the coefficient of $u^n$ in $Q(z)$ has the
+form
+\begin{equation}
+ c z_n+E_n(z_0,\ldots,z_{n-1}),
+ \label{C-eq:triangular}
+\end{equation}
+where $E_n$ is a computably obtainable finite polynomial expression in those
+coefficients and finitely many coefficients of $Q$. No nonlinear term can
+introduce an additional occurrence of $z_n$ at degree $n$, since all the
+nonlinear coefficients of $Q$ are divisible by $u$. Higher terms of its
+linear coefficient also use only earlier $z_j$.
+
+Set $z_n=-c^{-1}E_n$ successively. Reciprocation of the nonzero computable
+real $c$ and every finite arithmetic operation are computable. Recursion on
+$n$ therefore supplies one algorithm for $(z_n)$, and uniqueness follows at
+the same time from \eqref{C-eq:triangular}. The previously given
+$(y-a)/u^M$ is a root, so it is this computed series. Appending the finite
+prefix $a$ recovers a uniform coefficient algorithm for $y$.
+\end{proof}
+
+\begin{remark}[Why the finite seed is legitimate]
+The hypothesis $y\in\Rc[[u]]$ says only that each coefficient individually
+is a computable real. It does not supply a uniform algorithm for the whole
+sequence. However, finitely many such coefficients can be equipped with
+finitely many programs, all hard-coded into one algorithm. Lemma~\ref{C-lem:finite-jet}
+uses exactly this finite information to compute every remaining coefficient.
+It does not hard-code infinitely many programs and does not assume the
+conclusion it is proving.
+\end{remark}
+
+\begin{corollary}[Laurent version]
+\label{C-cor:laurent-lift}
+If $f\in\Pc[Y]$ and $y\in\PP(\Rc)$ is a simple root of $f$, then
+$y\in\Pc$.
+\end{corollary}
+\begin{proof}
+Choose a common finite ramification denominator for the finitely many
+coefficients of $f$ and for $y$, and write its coordinate as $u$.
+Choose an integer $h\geq0$ making $z=u^hy$ integral. Replacing $Y$ by
+$u^{-h}Z$ in $f$ and multiplying the polynomial by a sufficiently large
+power of $u$ gives $g(Z)\in\Rc[[u]][Z]$ with uniformly computable
+coefficients. The root $z$ remains simple. Apply
+Lemma~\ref{C-lem:finite-jet}, then shift back by $u^{-h}$.
+All choices made here are finite data for the fixed polynomial and root.
+\end{proof}
+
+\subsection{Algebraic closure inside the full Puiseux field}
+
+\begin{theorem}[Real-closedness of the operational model]
+\label{C-thm:pc-realclosed}
+The field $\Pc$ is relatively algebraically closed in $\PP(\Rc)$.
+Consequently $\Pc$ is a real-closed ordered subfield of $\No$.
+Moreover, $\Pc[i]$ is algebraically closed.
+\end{theorem}
+\begin{proof}
+Let $y\in\PP(\Rc)$ be algebraic over $\Pc$. Choose its minimal polynomial
+$f\in\Pc[Y]$. This makes sense because Proposition~\ref{prop:puiseuxarithmetic} has
+already established that $\Pc$ is a field. Characteristic zero makes the
+minimal polynomial separable, so $y$ is a simple root. The finitely many
+coefficients of $f$ admit a uniformly combined finite family of Puiseux
+coefficient names. Corollary~\ref{C-cor:laurent-lift} yields $y\in\Pc$.
+This proves relative algebraic closedness.
+
+The ambient field $\PP(\Rc)$ is real closed by the classical input above.
+A positive $x\in\Pc$ has its positive square root in that ambient field;
+an odd-degree polynomial over $\Pc$ has a real root there. Each such root
+is algebraic over $\Pc$ and hence belongs to $\Pc$ by the first part.
+This is the real-closedness criterion. Finally, the standard
+characterization of real-closed fields says that adjoining a square root
+of $-1$ yields an algebraically closed field.
+\end{proof}
+
+\begin{corollary}
+Every real root in $\No$ of a nonzero polynomial with coefficients in $\Pc$
+is in $\Pc$. Every root in $\No[i]$ of a nonzero polynomial with coefficients
+in $\Pc[i]$ is in $\Pc[i]$.
+\end{corollary}
+\begin{proof}
+An ordered extension of a real-closed field has no proper algebraic ordered
+subextension, and an algebraically closed field has no proper algebraic
+extension. Alternatively, factor the polynomial over $\Pc[i]$: its full
+finite list of linear factors leaves no additional roots in a larger field.
+\end{proof}
+
+The theorem supplies much more than closure under radicals. For example,
+all five roots in $\No[i]$ of
+\[
+ Y^5-Y-(1+t)=0
+\]
+are coefficient-computable Puiseux surcomplex numbers. It does \emph{not}
+provide a uniform labeling of these roots from arbitrary coefficient names.
+Finding the appropriate finite ramification, identifying a root, and
+certifying a separating finite jet are additional algorithmic tasks.
+
+\subsection{Certificates rather than hidden zero tests}
+
+The proof suggests a precise interface for an implicit root. A
+\emph{simple-branch certificate} supplies a ramified coordinate $u$, an
+integral polynomial $f$, an integer $s$, an integer $M>s$, and a polynomial
+$a$ with computable real coefficients, with the obligations
+\begin{equation}
+ v_u(f(a))\geq M+s,\qquad v_u(f'(a))=s.
+ \label{C-eq:branch-cert}
+\end{equation}
+These conditions imply that the transform \eqref{C-eq:Q-transform} reduces
+to an affine polynomial with nonzero slope. The triangular algorithm then
+constructs the unique root in $a+u^M\Rc[[u]]$. Thus a certificate can be
+stated without first supplying an unknown full root.
+
+The original proof shows that every simple formal root has some certificate
+of this form. It does not show that all certificates can be found or
+verified uniformly over arbitrary computable real coefficient programs.
+A proof assistant may validate specific algebraic obligations, and a
+restricted exact coefficient domain may decide them; neither fact makes
+the general promise decidable.
+
+\begin{proposition}[Unit-derivative lifting]
+\label{C-prop:unit-hensel}
+Let $F(u,Y)\in\Rc[[u]][Y]$ have uniformly computable coefficients, and let
+$c\in\Rc$ satisfy
+\[
+ F(0,c)=0,\qquad F_Y(0,c)\ne0.
+\]
+Then there is a unique root $y\in\Rc[[u]]$ with constant term $c$, and its
+coefficients are uniformly computable from these names and promises.
+\end{proposition}
+\begin{proof}
+Set $y=c+\sum_{n\geq1}y_nu^n$. At degree $n\geq1$, the equation $F(u,y)=0$
+is linear in the new unknown $y_n$, with coefficient $F_Y(0,c)$.
+All other terms depend on finitely many previously computed coefficients.
+Division by the fixed nonzero computable real $F_Y(0,c)$ therefore computes
+$y_n$. Induction gives existence, uniqueness, and uniform computability.
+This is the triangular mechanism of Lemma~\ref{C-lem:finite-jet} without the
+preparatory change of scale.
+\end{proof}
+
+\begin{example}[Catalan branch]
+The equation
+\[
+ y-t-y^2=0,\qquad [t^0]y=0,
+\]
+has unit derivative at $(t,y)=(0,0)$. Its coefficient recurrence is
+\[
+ y_1=1,\qquad y_n=\sum_{j=1}^{n-1}y_jy_{n-j}\quad(n\geq2),
+\]
+so
+\[
+ y=t+t^2+2t^3+5t^4+14t^5+42t^6+\cdots
+   =\frac{1-\sqrt{1-4t}}2.
+\]
+The specified constant term chooses the branch. The other root has constant
+term one and is not an alternative output for this branch certificate.
+\end{example}
+
+\begin{example}[A derivative that is not a unit]
+Take
+\[
+ f(Y)=Y^2-u^2(1+u),\qquad a=u,
+ \qquad s=1,\quad M=2.
+\]
+Then $v_u(f(a))=3=M+s$ and $v_u(f'(a))=1=s$. The certified transform is
+\[
+ u^{-3}f(u+u^2Z)=-1+2Z+uZ^2.
+\]
+Its reduction has the unique root $Z=1/2$. Lifting yields
+\[
+ y=u+\frac12u^2-\frac18u^3+\frac1{16}u^4
+       -\frac5{128}u^5+\cdots=u\sqrt{1+u}.
+\]
+Thus the finite-jet method applies even when the original derivative has
+positive valuation. The required condition is a sufficiently accurate seed
+relative to that valuation, not an original unit derivative.
+\end{example}
+
+
+\paragraph{Coefficient-field generality.}
+The finite-jet transformation is algebraic over any characteristic-zero
+coefficient field. Its recursion uses uniform ring operations and the inverse
+of only one nonzero slope. Thus if the coefficient field itself has only
+extensional inverse closure, fix one name for that inverse as additional
+finite seed data. This observation, emphasized in B, is exactly what the
+iterated Puiseux proof needs; infinitely many independent inverse choices
+would not establish a uniform coefficient sequence.
+
+\section{Effective completion and the role of a modulus}
+\label{sec:completion}
+
+An ordinary valuation-Cauchy sequence eventually stabilizes every bounded
+initial coefficient section. To turn this into an algorithm, one must know
+\emph{when} stabilization has occurred.
+
+\begin{definition}[Effective valuation-Cauchy sequence]
+A uniformly numerically named sequence $(x_n)$ has a computable valuation
+modulus if there is a total computable function $\mu:\Q\to\N$ such that
+\begin{equation}\label{eq:modulus}
+ n,m\ge\mu(B)\quad\Longrightarrow\quad
+ \val(x_n-x_m)\ge B.
+\end{equation}
+This is an exact stabilization assertion for coefficients below $B$, not
+a bound on their ordinary real approximation errors.
+\end{definition}
+
+\begin{theorem}[Effective sequential completeness]
+\label{thm:completion}
+From a uniformly named sequence in $\Lc$ and a computable valuation
+modulus, one can compute its unique left-finite valuation limit as an
+element of $\Lc$.
+\end{theorem}
+\begin{proof}
+At exponent $q$, define the limiting coefficient by
+\begin{equation}\label{eq:limcoef}
+ a_q=\coef q{x_{\mu(q+1)}}.
+\end{equation}
+All later terms agree there, by the modulus at $q+1$. Thus this formula
+supplies a joint Cauchy coefficient algorithm.
+
+Let $n_0=\mu(0)$ and let $\ell_0$ be the supplied lower bound of $x_{n_0}$.
+Set $\ell=\min(\ell_0,0)$. Every limiting coefficient below zero agrees
+with $x_{n_0}$, so it vanishes below $\ell$. More explicitly, for any
+$q<0$, choose an index later than both $\mu(0)$ and $\mu(q+1)$; the two
+stabilization promises identify their coefficients at $q$.
+
+For a threshold $B$, take $F_{x_{\mu(B)}}(B)$, filter it to $[\ell,B)$,
+and use the resulting finite list as the limit cover. Every limiting
+coefficient below $B$ agrees with $x_{\mu(B)}$: compare both to an index
+later than $\mu(B)$ and $\mu(q+1)$. Hence the list is complete. The limit
+has a numerical name, and for $n\ge\mu(B)$ it satisfies
+$\val(x-x_n)\ge B$. Uniqueness follows by comparing every rational
+coefficient, or by taking arbitrarily large $B$ in the ultrametric
+inequality.
+\end{proof}
+
+\begin{theorem}[Effective completion characterization]
+\label{thm:completioncharacter}
+Every element of $\Lc$ is the limit of a uniformly computable sequence
+of finite Puiseux polynomials with a computable valuation modulus.
+Conversely, every such effective valuation limit of uniformly named
+$\Pc$ elements belongs to $\Lc$.
+\end{theorem}
+\begin{proof}
+Given $x\in\Lc$, take $p_n=J_nx$. Its computed exponent list is finite,
+so the least common multiple of its denominators supplies a Puiseux grid.
+The real coefficients have Cauchy names uniformly inherited from $x$.
+Proposition~\ref{prop:jets} gives $\val(x-p_n)\ge n$, hence
+$\val(p_n-p_m)\ge\min(n,m)$. Thus
+$\mu(B)=\max(0,\lceil B\rceil)$ is a modulus. The converse follows by
+translating Puiseux names to numerical names and applying
+Theorem~\ref{thm:completion}.
+\end{proof}
+
+This is the precise completion analogy with computable real numbers in the
+present theory. The finite approximants retain Cauchy-named real
+coefficients, so it is a \emph{two-layer} completion, not the completion of
+a discretely coded rational-monomial field in its valuation metric.
+Rational constants cannot approximate an arbitrary irrational constant in
+that metric, because every nonzero real difference has valuation zero.
+
+\begin{proposition}[A computable Cauchy sequence without a computable limit]
+\label{prop:nonmodulus}
+There is a uniformly computable sequence of rational polynomials in $t$
+which is valuation-Cauchy but whose left-finite limit has no numerical name.
+It has no computable valuation modulus.
+\end{proposition}
+\begin{proof}
+At stage $s$ put
+\[
+ z_s=\sum_{\substack{e\le s\\\text{machine }e\text{ halts by stage }s}}t^e.
+\]
+Each polynomial is computed by finitely many simulations. For a fixed
+threshold $B$, only finitely many integers $e<B$ matter. Each one either
+never halts or eventually has its coefficient permanently set to one.
+Hence the sequence is valuation-Cauchy, with left-finite limit
+\[
+ z=\sum_{e\ge0}\chi_K(e)t^e.
+\]
+A numerical name for $z$ would compute its zero--one coefficients and
+therefore decide $K$. If a computable modulus existed,
+Theorem~\ref{thm:completion} would produce just such a name.
+\end{proof}
+
+Even a \emph{computable} modulus does not keep a sequence inside $\Pc$:
+the finite partial sums of \eqref{eq:unboundeddenoms} have an obvious
+computable modulus and converge to $u\in\Lc\setminus\Pc$. The support
+cover, rather than a single denominator, is what survives effective
+completion.
+
+
+\subsection{A different limit theorem: coefficientwise real convergence}
+\begin{theorem}[Uniform coefficientwise limits on a fixed lattice]
+\label{thm:coefficient-limit}
+Suppose $x_j=\sum_{n\ge N}a_{j,n}u^n$, $u=t^{1/d}$, share fixed $d,N$,
+the real coefficients are uniformly computable in $(j,n)$, and a computable
+function $M(n,k)$ satisfies
+\[
+ |a_{j,n}-a_{\ell,n}|\le 2^{-k}\qquad(j,\ell\ge M(n,k)).
+\]
+Then $a_n=\lim_j a_{j,n}$ is uniformly computable, and
+$\sum_{n\ge N}a_nu^n$ has a uniformly constructed Puiseux name.
+\end{theorem}
+\begin{proof}
+For $(n,k)$ choose $j=M(n,k+1)$ and approximate $a_{j,n}$ with error
+$2^{-(k+1)}$. Its distance from the limit is at most $2^{-(k+1)}$ by real
+completeness. The combined error is at most $2^{-k}$. Fixed metadata certify
+the support of the result regardless of cancellation.
+\end{proof}
+This is not exact valuation stabilization: rational constants converging to
+an irrational real never have positive valuation error. Without a modulus,
+stagewise rational approximations to $r_K$ from
+Proposition~\ref{prop:haltingreal} converge coefficientwise to a noncomputable
+constant. Conversely, the exact-valuation example with increasingly many
+halting coefficients has eventually \emph{equal} low coefficients but no
+computable stabilization modulus. The two failures should not be identified.
+Nor should $\Lc$ be called sequentially complete without qualification: the
+computable-modulus theorem is strictly weaker than closure under every
+classically Cauchy sequence of its elements.
+
+\section{Sharp limits of uniform computation}
+\label{sec:uniformlimits}
+
+The field property and the effective algorithms already proved might suggest
+that a missing normalization subroutine is merely a technical inconvenience.
+The next results show an unavoidable obstruction.
+
+\subsection{A uniformly computable real family encoding halting}
+
+Fix a machine enumeration with halting stages numbered from one. Define
+\begin{equation}\label{eq:ae}
+ a_e=\begin{cases}
+ 2^{-s},&\text{machine }e\text{ first halts at stage }s,\\
+ 0,&\text{machine }e\text{ never halts}.
+ \end{cases}
+\end{equation}
+This is a uniformly Cauchy-computable family of nonnegative reals. To
+approximate $a_e$ to error $2^{-k}$, simulate for $k$ stages. If a halt has
+occurred, return its value; otherwise return zero. A later halt contributes
+less than $2^{-k}$.
+
+\begin{theorem}[Valuation, inversion, and sign obstructions]
+\label{thm:inversehard}
+On raw numerical names, and already on raw Puiseux names:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+\item the valuation of a nonzero element is not uniformly computable;
+\item reciprocation on nonzero inputs is not uniformly computable;
+\item strict positivity and strict negativity are not semidecidable in
+general, even on inputs promised nonzero;
+\item equality is a $\Pi^0_1$-complete promise problem on valid indices,
+although nonzeroness and disequality are semidecidable.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For (i) use the always positive nonzero family
+$x_e=a_e+t$. It has a fixed denominator-one name with support cover
+contained in $\{0,1\}$, but
+\[
+ \val(x_e)=\begin{cases}0,&e\in K,\\1,&e\notin K.\end{cases}
+\]
+Thus computing the valuation would decide halting.
+
+For (ii), the coefficient of the inverse at exponent $-1$ satisfies
+\begin{equation}\label{eq:inversehalting}
+ \coef{-1}{(a_e+t)^{-1}}=
+ \begin{cases}0,&a_e>0,\\1,&a_e=0.\end{cases}
+\end{equation}
+When $a_e=0$ the inverse is $t^{-1}$. When $a_e>0$ its formal expansion
+is $a_e^{-1}\sum_{n\ge0}(-t/a_e)^n$, which has no negative exponent.
+A hypothetical inverse compiler followed by coefficient approximation to
+error $1/8$ would decide $K$.
+
+For (iii), put $y_e=a_e-t$. This is never zero, and
+$y_e<0$ exactly when $e\notin K$. If negativity were semidecidable, the
+complement of $K$ would be computably enumerable. Applying the same
+argument to $-y_e$ excludes semidecidable positivity.
+
+For (iv), equality to zero on the constants $a_e$ would decide whether
+$e\notin K$. In contrast, to semidecide $x\ne0$, enumerate rational
+exponents and precision levels in parallel. A coefficient is certified
+nonzero whenever $|A(q,k)|>2^{-k}$. A nonzero coefficient eventually
+produces such a certificate, while a zero series never does. Applying this to a difference semidecides
+disequality ($x\ne y$). Equality is the absence of such a witness; the constants $a_e$
+give $\Pi^0_1$-hardness. This classification concerns promised valid indices,
+not the additional totality and consistency conditions for arbitrary programs.
+\end{proof}
+
+An important feature is that the inverse obstruction uses \emph{only}
+nonzero, strictly positive inputs. Supplying a Boolean assertion
+``nonzero'' or ``positive'' does not replace a leading-exponent certificate.
+
+\begin{theorem}[A representation-independent incompatibility]
+\label{thm:nogo}
+Let $F$ be any represented subfield of a Hahn field containing the real
+constants and a positive infinitesimal monomial $t$. Suppose that:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em]
+\item ordinary real Cauchy names can be mapped uniformly to constant names;
+\item $a\mapsto a+t$ is computable on those names;
+\item the coefficient at $t^{-1}$ of an output element is uniformly
+readable as a Cauchy real.
+\end{enumerate}
+Then no uniform reciprocal operation on all nonzero names can exist.
+The conclusion already holds when the input values are the degree-one
+polynomials $a+t$ with computable nonnegative real $a$.
+\end{theorem}
+\begin{proof}
+Apply (a) and (b) to the uniform family \eqref{eq:ae}. An inverse operation
+and (c), followed by \eqref{eq:inversehalting}, would decide halting.
+\end{proof}
+
+Enlarging the permitted support order types therefore cannot remove this
+particular obstruction. A successful alternative representation must change
+one of the capabilities: supply normalization data, weaken coefficient
+access, use a more informative real representation, or treat some symbolic
+operations as denotational rather than coefficient-computable.
+
+\subsection{Exactly what one halting oracle buys}
+
+\begin{theorem}[Normalization has halting degree on computable indices]
+\label{thm:jump}
+Given program indices for a valid computable numerical name, with nonzero
+value promised, the halting oracle $0'$ suffices to compute its leading
+exponent and to select an ordinary computable index for its inverse.
+Conversely, a solver for either of these uniform tasks decides the halting
+problem on computable inputs.
+\end{theorem}
+\begin{proof}
+First search, without an oracle, for a certified nonzero coefficient.
+The semidecision procedure in Theorem~\ref{thm:inversehard} terminates
+because $x\ne0$. Let $q$ be its exponent. The finite cover $F(q+1)$
+contains all nonzero coefficients at or below $q$ and only finitely many
+other candidates. For each candidate $r$, the predicate $a_r\ne0$ is
+computably enumerable uniformly from the input program index. A halting
+oracle decides all these finitely many predicates. Taking the least
+nonzero candidate yields the true leading exponent $\lambda$.
+
+Now hard-code this rational $\lambda$ into the inverse compiler of
+Theorem~\ref{thm:inverse}. The resulting inverse index needs no oracle
+when it is subsequently run. The lower bounds are the explicit reductions
+using $a_e+t$ in Theorem~\ref{thm:inversehard}.
+\end{proof}
+
+The qualification ``on computable indices'' is essential. A fixed oracle
+$0'$ does not decide the zero status of arbitrary real coefficients supplied
+by arbitrary noncomputable oracle names. In the relativized formulation,
+the corresponding jump of the input oracle is used. We are not assigning
+a more delicate Weihrauch degree to these operators here.
+
+
+\subsection{Square roots, arbitrary root selection, and modulus}
+\begin{theorem}[Root-selection obstructions]\label{thm:root-obstructions}
+Neither positive square root on all positive bare names nor selection of any
+root of every separable quadratic is uniformly computable in $\Pc$ or $\Lc$.
+The first assertion holds even when a common positive lower bound $t$ is given.
+\end{theorem}
+\begin{proof}
+For $x_e=a_e+t\ge t$, if $a_e=0$ its positive root is $t^{1/2}$.
+If $a_e>0$ its positive root is
+$\sqrt{a_e}\sum_{n\ge0}\binom{1/2}{n}(t/a_e)^n$, with integer exponents only.
+The coefficient at $t^{1/2}$ is therefore one or zero according as $e$ fails
+to halt or halts. Reading this coefficient decides halting.
+
+For the stronger branch-independent assertion from B, consider
+\[
+ Q_e(Y)=Y^2-(a_e^2+t^2).
+\]
+This polynomial is separable even when $a_e=0$. In that case its two roots
+are $\pm t$, with coefficient at $t$ equal to $\pm1$. If $a_e>0$, both roots
+are $\pm a_e(1+t^2/a_e^2)^{1/2}$ and their coefficient at $t$ is zero.
+An approximation with error less than $1/4$ to the coefficient of
+\emph{any} selected root distinguishes the cases. The same argument applies
+when the selector is allowed surcomplex outputs, since these quadratics
+already split with exactly those two real roots.
+\end{proof}
+
+\begin{proposition}[Certified square root and the extended halting threshold]
+\label{prop:root-jump}
+For a positive numerical name with known true leading exponent $\lambda$,
+positive square root is uniformly computable. On ordinary computable indices,
+$0'$ is necessary and sufficient for equality, sign, valuation on nonzero
+values, inverse on nonzero values, and positive square root on positive values.
+After selecting finite leading data, the inverse and square-root outputs
+can be ordinary computable programs.
+\end{proposition}
+\begin{proof}
+Let $a=[t^\lambda]x>0$ and $h=a^{-1}t^{-\lambda}x-1$.
+Then $h$ has positive support and a computable gap $\delta>0$, obtained
+from its finite cover below one. Set
+\[
+ \sqrt{x}=\sqrt a\,t^{\lambda/2}
+       \sum_{n\ge0}\binom{1/2}{n}h^n.
+\]
+Only finitely many powers can contribute below a given cutoff, since their
+valuations are at least $n\delta$. Finite convolution and cover unions give
+a valid numerical name. On a Puiseux grid this just doubles the denominator
+if necessary and otherwise preserves the coefficient lattice. The formal
+binomial identity proves that the result is the positive root.
+
+A halting oracle decides the nonzeroness search for a whole series and for
+any individual coefficient. Theorem~\ref{thm:jump} then finds the leading
+exponent. Its nonzero real coefficient has a computable strict sign, and
+the preceding construction gives the square root. The negative families
+already displayed prove every lower bound. No upper bound for arbitrary
+polynomial branch selection is asserted here.
+\end{proof}
+
+Leading data for two inputs do not automatically normalize their sum: leading
+coefficients may cancel. Thus ring constructors return redundant names;
+normalization is a separate task. A leading certificate is a mathematical
+promise or a checked proof in a stated proof system, not a universally
+decidable data-validation procedure.
+
+\subsection{Exact coefficient domains change the uniformity boundary}
+
+Suppose instead that coefficients lie in a computable ordered field $k$
+with a decidable exact zero test, such as $\Q$ or the real algebraic
+numbers with their usual exact descriptions. Keep the same effective
+finite-section covers, but return exact coefficient codes.
+
+\begin{proposition}[Exact coefficients permit leading-term search]
+\label{prop:exactcoeffs}
+For this exact-coefficient representation, the leading exponent and sign
+of a nonzero series are computable uniformly. Reciprocation is uniformly
+computable on nonzero names. Equality of arbitrary infinite series still
+need not be decidable.
+\end{proposition}
+\begin{proof}
+Inspect the covers $F(0),F(1),F(2),\ldots$ and their coefficients until a
+nonzero coefficient is found. Every rational exponent is eventually below
+one of these integer thresholds. At that stage, sort the finite cover and
+choose its first nonzero entry; this is the true leading exponent because
+all earlier possible nonzero positions are included. Exact order on $k$
+gives its sign, and the geometric inverse construction is now uniform.
+
+For equality, from a machine $e$ build the series whose coefficient at
+integer $s\ge1$ is one exactly when $e$ first halts at stage $s$, and whose
+other coefficients are zero. Coefficient access is a finite computation,
+and the integer grid supplies covers. The series is zero exactly when the
+machine never halts. Thus a uniform equality decider would decide halting.
+\end{proof}
+
+With $k$ equal to the real algebraic numbers the same Hensel and valuation
+arguments prove an extensionally real-closed field. What is lost is the
+uniform inclusion of arbitrary ordinary computable reals as constants,
+not just algebraic constants. With $k=\Q$ the field is not real closed,
+since a square root of the constant two cannot have rational coefficients.
+These alternatives clarify which capabilities a symbolic system is buying
+with an exact coefficient type.
+
+\subsection{Countable does not mean effectively enumerable}
+
+\begin{proposition}[A coefficient diagonal]
+\label{prop:diagonal}
+No uniformly computable sequence of valid numerical names enumerates all
+of $\Lc$, even up to equality. The same is true for $\Pc$.
+\end{proposition}
+\begin{proof}
+Let $(x_n)$ be such a sequence. Compute a rational $r_n$ within $1/8$ of
+$\coef n{x_n}$, and choose
+\[
+ b_n=\begin{cases}1,&r_n\le1/2,\\0,&r_n>1/2.\end{cases}
+\]
+In the first case the true coefficient is at most $5/8$, and in the
+second it is greater than $3/8$. Thus in either case it differs from $b_n$
+by at least $3/8$. The series $y=\sum_{n\ge0}b_nt^n$ has a computable
+Puiseux name, but $y\ne x_n$ for every $n$ by its coefficient at exponent
+$n$. This proves both claims.
+\end{proof}
+
+The diagonal uses an approximation with a safety margin, not an equality
+test on reals. It also shows why listing all programs and silently keeping
+only the valid ones is not an executable enumeration strategy.
+
+\section{Infinitesimal functional calculus and formal integration}
+\label{sec:functions}
+
+\subsection{Formal series need support bounds, not real convergence radii}
+
+\begin{theorem}[Effective infinitesimal evaluation]
+\label{thm:evaluation}
+Let $f(Z)=\sum_{n\ge0}c_nZ^n$ have uniformly Cauchy-computable real
+coefficients. If $h\in\Lc$ is numerically named with positive support,
+then the Hahn evaluation
+\[
+ f(h)=\sum_{n\ge0}c_nh^n
+\]
+has a uniformly computable numerical name. If $h\in\Pc$, the result
+belongs to $\Pc$ and its name can be computed on the same exponent grid.
+\end{theorem}
+\begin{proof}
+Extract $\delta>0$ with $\val(h)\ge\delta$. A nonzero real $c_n$ has
+valuation zero, so $\val(c_nh^n)\ge n\delta$. Below any threshold $B$,
+only terms with $n\delta<B$ can contribute. Compute their finite covers
+by the ring operations and take the union, after discarding negative
+candidates as justified by the nonnegative support. At a queried exponent
+$q$, choose $N$ with $(N+1)\delta>q$ and compute its coefficient in the
+finite sum through $N$. This gives a total joint coefficient algorithm and
+a lower bound zero. For a Puiseux input, finite sums, powers, and the
+stabilized coefficients remain on its fixed grid.
+\end{proof}
+
+In particular $\exp(h)$, $\log(1+h)$, $\sin(h)$, $\cos(h)$, and
+$(1+h)^a$ are computable whenever their formal coefficients are given by
+the usual computable real formulas. The exponent $a$ in the binomial
+series may itself be a Cauchy-computable real:
+\[
+ (1+h)^a=\sum_{n\ge0}\binom an h^n,
+ \qquad \binom an=\frac{a(a-1)\cdots(a-n+1)}{n!}.
+\]
+For each coefficient, identities between these formal series reduce to
+finite formal coefficient identities. They do not require convergence in
+the full surreal order topology.
+
+For a finite $x=r+h\in\Lc$ with $h$ infinitesimal and $r=\st(x)$,
+one can define and compute
+\[
+ \exp_{\mathrm{fin}}(x)=e^r\exp(h).
+\]
+If $x$ has positive real residue $r$, then
+$\log_{\mathrm{unit}}(x)=\log r+\log(1+(x-r)/r)$ is likewise computable
+under that promise. These formulas are local, coefficientwise extensions
+of ordinary real functions. No uniform computation of the unrestricted
+surreal exponential, logarithm, or trigonometry at arbitrary infinite
+arguments is asserted. Broader exponential and differential surreal
+subfields involve additional closure questions and representations;
+see, for example, \cite{bournez}.
+
+\begin{example}[A ramified square root with exact infinitesimal terms]
+Hensel lifting, or the formal binomial identity, gives
+\[
+ \sqrt{\omega^2+\omega}
+ =\omega+\frac12-\frac1{8\omega}
+  +\frac1{16\omega^2}-\frac5{128\omega^3}+\cdots.
+\]
+The positive branch is fixed by writing the result as
+$\omega(1+t)^{1/2}$. For any exponent threshold, only finitely many
+binomial coefficients are needed, and the remainder has a certified
+valuation bound. The omitted terms are not an unspecified real error.
+\end{example}
+
+\subsection{A computable derivation and an exact obstruction to primitives}
+
+Define a formal $t$-derivation by
+\begin{equation}\label{eq:derivation}
+ D_t\!\left(\sum_qa_qt^q\right)=\sum_q q a_qt^{q-1}.
+\end{equation}
+The coefficient field is held constant. This convention is important:
+$D_t(\omega)=-\omega^2$, whereas the usual normalized
+Berarducci--Mantova derivation has $D(\omega)=1$. We are not silently
+identifying these two derivations or claiming a new construction of the
+latter.
+
+\begin{theorem}[Effective differentiation and the formal residue obstruction]
+\label{thm:integration}
+The map $D_t:\Lc\to\Lc$ is a uniformly computable derivation, with kernel
+$\Rc$. Define
+\[
+ \res_t(x)=\coef{-1}x.
+\]
+There is a uniformly computable linear map $I_0:\Lc\to\Lc$ satisfying
+\begin{equation}\label{eq:primitiveidentity}
+ D_t I_0(x)=x-\res_t(x)t^{-1},\qquad
+ \coef0{I_0(x)}=0.
+\end{equation}
+Consequently $x$ has a primitive in $\Lc$ exactly when $\res_t(x)=0$;
+under that promise $I_0(x)$ is the unique primitive with zero constant
+coefficient. The same statements hold in $\Pc$.
+\end{theorem}
+\begin{proof}
+The coefficient at $r$ of $D_tx$ is $(r+1)a_{r+1}$. Shift a cover for $x$
+below $B+1$ down by one and use lower bound $\ell_x-1$; optional deletion
+of the exponent arising from $q=0$ is justified exactly. This is a numerical
+name. For each coefficient of a product, the convolution sum is finite.
+The identity $r+s$ for the derivative multiplier at a product term splits
+as the sum of the two derivative multipliers, proving the Leibniz rule.
+Characteristic zero implies that every coefficient at a nonzero input
+exponent must vanish in the kernel. Thus the kernel consists exactly of
+real constants in $\Lc$, namely $\Rc$.
+
+Set
+\begin{equation}\label{eq:I0}
+ I_0(x)=\sum_{q\ne-1}\frac{a_q}{q+1}t^{q+1}.
+\end{equation}
+The coefficient at exponent $r\ne0$ is $a_{r-1}/r$, and the coefficient
+at zero is set to zero. Shifting $F_x(B-1)$ by one and deleting zero
+provides a finite cover, with lower bound $\ell_x+1$. Thus the construction
+is uniform. Direct coefficient calculation gives
+\eqref{eq:primitiveidentity}.
+
+For every $y$, the coefficient at $-1$ of $D_ty$ is zero, since it could
+only come from the exponent-zero term, multiplied by zero. This proves
+necessity of the residue condition; \eqref{eq:primitiveidentity} proves
+sufficiency and the kernel statement proves uniqueness. Rational shifting
+preserves a fixed Puiseux grid, proving the final assertion.
+\end{proof}
+
+The condition $\res_t(x)=0$ is not generally decidable from a raw numerical
+name, but the operator $I_0$ itself is total and computable. Thus a useful
+interface can always return a primitive-with-obstruction pair
+$(I_0(x),\res_t(x))$ without deciding whether the obstruction vanishes.
+For $x=t^{-1}$ the obstruction is one; a primitive would require a
+logarithmic extension rather than another left-finite rational-power
+series.
+
+
+\subsection{The full residue obstruction and a differential limitation}
+\begin{corollary}[Kernel, image, and quotient of the formal derivative]
+\label{cor:differential-quotient}
+For $F=\Pc$ or $F=\Lc$, let $D=D_t$ and let $I_0$ be the zero-constant
+primitive operator omitting the exponent $-1$. Then
+\[
+ I_0Dx=x-[t^0]x,\qquad DI_0x=x-\res_t(x)t^{-1},\qquad
+ \ker D=\Rc,
+\]
+where $\res_t(x)=[t^{-1}]x$. Moreover,
+\[
+ D(F)=\ker(\res_t),\qquad F/D(F)\cong\Rc
+\]
+as $\Rc$-vector spaces. Every primitive of an integrable $x$ is $I_0x+c$,
+$c\in\Rc$. Deciding whether a primitive exists is not computable on raw names.
+\end{corollary}
+\begin{proof}
+The coefficient identities follow from $D(t^q)=qt^{q-1}$ and division by
+$q+1$ away from $q=-1$. They prove both the kernel and image descriptions;
+residue is onto since $ct^{-1}$ has residue $c$. Two primitives differ by
+a member of the kernel. Finally $ct^{-1}$ is integrable exactly when the
+computable real $c$ is zero, giving the decision obstruction.
+\end{proof}
+Here $D(F)$ denotes the additive image, not an ideal of fields; the quotient
+is a vector-space quotient. A logarithm symbol could supply a primitive of
+$t^{-1}$ in a larger differential field, but does not make that primitive
+an element of the present coefficient field.
+
+\begin{proposition}[A simple differential equation outside the workspace]
+\label{prop:ode-obstruction}
+The equation $Dy=-t^{-2}y$ has no nonzero solution in $\Pc$ or $\Lc$.
+\end{proposition}
+\begin{proof}
+For $y\ne0$, termwise differentiation gives
+$\val(Dy)\ge\val(y)-1$, allowing infinity when $Dy=0$.
+The proposed right side has valuation $\val(y)-2$, a contradiction.
+\end{proof}
+Thus real closedness and effective infinitesimal calculus do not imply
+closure under arbitrary differential equations. In a suitable larger
+exponential differential field, $\exp(t^{-1})$ is the expected kind of
+solution; it is not licensed here by the positive-support substitution rule.
+
+
+\section{Surcomplex computability}
+\label{sec:surcomplex}
+
+Define the numerically computable surcomplex field by
+\[
+ \Lc^{\mathbb C}=\Lc[i]=\{x+iy:x,y\in\Lc\}.
+\]
+A name is a pair of numerical names. Equivalently, one can use uniformly
+Cauchy-computable complex coefficients and the union of the two real support
+covers. The complex valuation is $\val(x+iy)=\min(\val(x),\val(y))$,
+with the usual zero convention.
+
+\begin{proposition}[Effective complexification]
+\label{prop:complexification}
+The two naming conventions are uniformly interconvertible. Addition,
+multiplication, conjugation, real and imaginary parts, and coefficient
+extraction are computable. The field is algebraically closed and has
+residue field $\Cc=\Rc[i]$. Reciprocation exists extensionally but remains
+nonuniform on unrestricted nonzero names.
+\end{proposition}
+\begin{proof}
+Convert between paired real oracles and complex coefficient oracles
+componentwise. Support covers are united in one direction and reused in
+the other, since a complex coefficient is zero exactly when both its real
+and imaginary parts are zero. The formulas
+\[
+ (x+iy)(u+iv)=(xu-yv)+i(xv+yu),\qquad
+ \overline{x+iy}=x-iy
+\]
+use only the uniform real ring operations. Algebraic closedness is
+Theorem~\ref{thm:Lcrealclosed}. Coefficient zero gives the complex residue
+homomorphism with residue field $\Cc$.
+For $z\ne0$, $z^{-1}=\bar z/(x^2+y^2)$ belongs to the field by
+extensional real field closure. A uniform inverse algorithm would
+restrict to the real input family $a_e+t$ and contradict
+Theorem~\ref{thm:nogo}.
+\end{proof}
+
+A supplied true leading exponent and its nonzero complex coefficient
+restore the geometric inverse algorithm: ordinary complex reciprocation
+is computable with the nonzero promise. Complex simple residue roots lift
+by precisely the Newton proof in Theorem~\ref{thm:hensel}, since the
+complex leading coefficient of each derivative remains the same nonzero
+residue. Formal evaluation and $D_t,I_0,\res_t$ extend componentwise.
+
+This gives a substantial exact surcomplex algebra, including algebraic
+solutions, infinitesimal holomorphic power series, and residue-controlled
+formal primitives. It is not a theorem that arbitrary contours or
+analytic functions on the whole surcomplex plane have effective
+representations. Such claims would require specifying function names,
+support dependencies, and contour conventions separately.
+
+
+\begin{proposition}[Squared modulus is uniform; modulus is not]
+\label{prop:modulus}
+On pair names in $\Pc[i]$ and $\Lc[i]$, $|z|^2$ is uniformly computable.
+Every $|z|$ belongs to the real base field, but the map $z\mapsto|z|$ is not
+uniformly computable, even on nonzero real inputs.
+\end{proposition}
+\begin{proof}
+For $z=x+iy$, $|z|^2=x^2+y^2$ uses ring operations. Real closedness supplies
+its nonnegative square root. For $z_e=t-a_e$, the coefficient at $t$ in
+$|z_e|$ is $1$ when $a_e=0$, and $-1$ when $a_e>0$, since then
+$|z_e|=a_e-t$. Uniformly reading that output coefficient would decide $K$.
+\end{proof}
+Certified nonzero leading data permit inverse and modulus constructions, but
+adjoining $i$ does not restore a missing normalization algorithm. Formal
+complex substitution is componentwise and support-controlled; no contour,
+global analytic continuation, or unrestricted global exponential theorem
+follows from algebraic closedness alone.
+
+\section{Beyond one scale: an iterated numerical atlas}
+\label{sec:higher}
+
+The rational-exponent core is useful but omits $\omega^\omega$ and many
+other structurally simple numbers. It can be extended without abandoning
+ordinary computable real constants. The following construction makes that
+claim precise rather than treating a higher-rank Hahn field as automatically
+effective.
+
+\subsection{An effective left-finite extension of a represented field}
+
+Suppose $k$ is a countable ordered field all of whose elements have
+computable names, with uniform named ring operations and extensional
+inverse closure. Define
+$\operatorname{ELF}(k;u)$ by series
+\[
+ X=\sum_{q\in\Q} a_q u^q,
+\]
+where a program, given $q$, returns a $k$-name for $a_q$, together with a
+rational lower bound and computable finite covers of the nonzero outer
+support. At the bottom level, returning a real name means returning an
+index for a Cauchy program. At higher levels it means returning an index
+and finite data for a name at the preceding level. Correctness and totality
+are again semantic promises.
+
+Finite sums and products use exactly the cover formulas from
+Section~\ref{sec:arithmetic}, with finite coefficient arithmetic in $k$.
+For inversion of a particular nonzero $X$, hard-code its leading rational
+exponent \emph{and a computable name for the inverse of its leading
+coefficient in $k$}. The geometric construction then works uniformly with
+those data. This extra coefficient-inverse datum cannot be omitted when
+$k$ itself has nonuniform inversion.
+
+\begin{theorem}[Iterated numerically conservative real-closed fields]
+\label{thm:iterated}
+Put $\mathcal L_0=\Rc$ and inductively
+\[
+ \mathcal L_d=\operatorname{ELF}(\mathcal L_{d-1};t_d),\qquad
+ t_d=\omega^{-\omega^{d-1}}\quad(d\ge1),
+\]
+with $t_d$ treated as an outer infinitesimal relative to $\mathcal L_{d-1}$.
+Then each $\mathcal L_d$ embeds as a countable real-closed subfield of $\No$;
+$\mathcal L_1=\Lc$; and the constant embeddings give
+\[
+ \mathcal L_0\subset \mathcal L_1\subset \mathcal L_2\subset\cdots.
+\]
+Their union $\mathcal L_{<\omega}$ is a countable real-closed subfield with
+$\mathcal L_{<\omega}\cap\R=\Rc$. It contains every
+$\omega^{\omega^{d-1}}$ for positive integer $d$.
+\end{theorem}
+\begin{proof}
+Proceed by induction on $d$. The coefficient expansion of an element of
+$\mathcal L_d$ flattens to a real Hahn series whose exponents lie in
+\[
+ \Gamma_d=\Q+\Q\omega+\cdots+\Q\omega^{d-1}\subseteq\No.
+\]
+The order on $\Gamma_d$ is lexicographic with its highest-degree
+coordinate most significant. Each outer support is well ordered, and for
+each of its exponents the inner coefficient support is well ordered.
+A nonempty subset of the flattened support has a least outer coordinate,
+then a least inner exponent. Induction gives well-ordering of the flattened
+support. Uniqueness of the coordinate decomposition in $\Gamma_d$ and
+Hahn arithmetic show that flattening is an ordered-field embedding into
+$\R((\omega^{-\Gamma_d}))\subseteq\No$.
+
+For clarity, inner exponents need not be bounded by real numbers. What
+matters is that every inner exponent is smaller in magnitude than a
+positive rational multiple of $\omega^{d-1}$. Thus $t_d$ is indeed smaller
+than every positive element of the previously constructed field, as the
+outer-series interpretation requires.
+
+The finite-cover algorithms just described give uniform ring operations
+and extensional field closure. Countability follows by induction from
+countably many program indices. For the outer valuation, the value group
+is $\Q$ and the residue field is $\mathcal L_{d-1}$, and its valuation ring is
+convex for the lexicographic order.
+
+We verify henselianity with special attention to the possible nonuniformity
+in the coefficient field. Let $P$ have integral outer coefficients and
+let $c\in \mathcal L_{d-1}$ be a simple residue root. Its derivative residue
+$a\in \mathcal L_{d-1}$ is nonzero. By the inductive field property, select once
+and for all a computable $\mathcal L_{d-1}$-name for $a^{-1}$. Every Newton
+derivative then has the same outer leading coefficient $a$. Hence every
+outer unit inverse can be computed with the same selected name for
+$a^{-1}$, and no fresh nonuniform coefficient choices are needed at later
+iterations. The positive-gap and doubling proof of
+Theorem~\ref{thm:hensel} produces uniformly named stabilized outer
+coefficients and a finite-cover algorithm for the root. This proves
+henselianity. The inductive real closedness of $\mathcal L_{d-1}$ and
+Lemma~\ref{lem:valuationRC} give real closedness of $\mathcal L_d$.
+
+The constant embedding at each stage is effective. Every finite set of
+coefficients from the union lies in some $\mathcal L_d$, where the requisite
+positive square roots and odd-degree roots exist; hence the union is real
+closed. Uniqueness of flattened Hahn normal forms shows that a real
+constant in $\mathcal L_d$ must already have been a real constant in $\mathcal L_{d-1}$.
+Induction gives the real-slice assertion. Finally $t_d^{-1}$ supplies
+$\omega^{\omega^{d-1}}$.
+\end{proof}
+
+This atlas goes beyond a single fixed rank while retaining numerical
+conservativity. It still does not cover all surreal scales or all
+structurally computable surreals. Its exponent groups are finite rational
+polynomials in $\omega$; for example, $\omega^{\omega^\omega}$ is not
+in this particular union, by normal-form uniqueness. Adding a new scale
+is a mathematical enlargement of the workspace, not an implicit
+coercion that changes the existing exponent order.
+
+The same construction works for complexifications. Each $\mathcal L_d[i]$ and
+their union are algebraically closed. No uniform reciprocal claim is
+restored by passing to this union: ordinary real inputs and the coefficient
+of the original $t_1^{-1}$ still give the obstruction of
+Theorem~\ref{thm:nogo}.
+
+
+\subsection{The parallel Puiseux hierarchy and the common oracle bound}
+Define $\mathcal P_0=\Rc$ and, with the same scales $t_d$, let
+$\mathcal P_d$ consist of lower-bounded outer Puiseux series whose coefficient
+names in $\mathcal P_{d-1}$ are generated by one total ordinary program.
+The outer denominator is fixed for each name, not for the entire level.
+Thus $\mathcal P_1=\Pc$, whereas $\mathcal L_1=\Lc$.
+
+\begin{theorem}[Two compatible finite-rank hierarchies]
+\label{thm:parallel-towers}
+For every $d\ge1$, $\mathcal P_d$ is a countable real-closed subfield of $\No$,
+with real trace $\Rc$, and there is a uniform embedding of names
+$\mathcal P_d\hookrightarrow\mathcal L_d$. This inclusion is proper.
+Both hierarchies have natural value group
+$\Gamma_d=\Q+\Q\omega+\cdots+\Q\omega^{d-1}$, or equivalently lexicographic
+$\Q^d$. Their outer valuation instead has value group $\Q$ and residue the
+preceding level. Their finite-level unions are real closed and preserve
+exactly the real trace $\Rc$.
+\end{theorem}
+\begin{proof}
+The field and embedding arguments use common outer denominators, finite
+convolution, and the reciprocal recurrence, choosing once the inverse of
+the leading lower-level coefficient. Every outer lattice supplies a finite
+cover, and induction converts its inner names. To prove real closedness,
+apply classical Newton--Puiseux over the preceding real-closed field and
+the finite-jet argument of Section~\ref{C-sec:realclosed}. A fixed finite
+jet and one named inverse slope give a uniform tail over that coefficient
+field. Separability and the minimal-polynomial argument finish the induction.
+Alternatively, the outer simple-Hensel argument stays on a common grid.
+
+Flattening and zero-coordinate extraction prove the valuation and trace
+statements exactly as in Theorem~\ref{thm:iterated}. Proper inclusion is
+witnessed at level $d$ by
+$\sum_{n\ge1}t_d^{n+1/(n+1)}$: it has effective left-finite outer covers but
+no bounded outer denominator. Inner coefficients cannot absorb a nonzero
+outer coordinate. Finally every polynomial over either union has its finitely
+many coefficients in one finite level, where the required algebraic roots
+already exist.
+\end{proof}
+
+\begin{proposition}[Finite rank does not require iterated jumps]
+\label{prop:tower-jump}
+At every finite level of either hierarchy, nonzeroness is semidecidable.
+On valid ordinary computable indices, $0'$ is necessary and sufficient for
+sign, leading exponent vector, inverse, and positive square root on their
+appropriate nonzero or positive domains. Oracle-assisted inverse and root
+construction can return ordinary programs.
+\end{proposition}
+\begin{proof}
+Dovetail searches through rational coefficient addresses down the finite
+nesting depth until a nonzero real leaf is detected. This halts precisely
+for nonzero series, so $0'$ decides zero at every level. Find any nonzero
+outer coefficient, use a finite cover to find the least such coefficient
+(or scan the discrete Puiseux grid), then descend to its leading inner
+coefficient with the same oracle. The inverse and binomial recursions use
+only finitely selected lower-level inverse or root names and uniform ring
+operations. The nesting depth decreases, so the recursion terminates; it
+does not call the jump of $0'$. The rank-one reductions embedded as constants
+or as expressions in $t_1$ give the lower bounds.
+\end{proof}
+The distinction between the outer valuation and the full natural valuation
+prevents a misleading statement that every higher-rank residue field is
+$\Rc$: only the full natural residue is $\Rc$. Finite rank enlarges the
+scale geometry, not the ordinary computational power of a name.
+
+\section{Oracle information and support geometry are independent}
+\label{sec:oracle-hierarchy}
+For an oracle $X\subseteq\N$, write $\R_X$ for the reals with $X$-computable
+fast names. Define $\mathcal P_X$ and $\mathcal L_X$ by relativizing,
+respectively, the Puiseux names and the coefficient-and-cover names to $X$.
+The oracle subscript is an oracle set, not the finite level index $d$ used
+in the preceding section. In particular $\mathcal P_{\varnothing}=\Pc$ and
+$\mathcal L_{\varnothing}=\Lc$.
+
+\begin{theorem}[Relativization and exact degree embeddings]
+\label{thm:oracle-fields}
+For every $X$, both fields are countable and real closed, have real trace
+$\R_X$, value group $\Q$, and residue field $\R_X$.
+For arbitrary oracles $X,Y$,
+\[
+ \mathcal P_X\subseteq\mathcal P_Y\iff X\le_TY,
+ \qquad
+ \mathcal L_X\subseteq\mathcal L_Y\iff X\le_TY.
+\]
+Thus equivalent Turing degrees give equal fields, and incomparable degrees
+give incomparable fields within each family.
+\end{theorem}
+\begin{proof}
+All finite arithmetic, cover, Hensel, and finite-jet algorithms relativize.
+The ordinary-real algebraic proof also relativizes: finite isolating data
+and an $X$-computable strict-inequality search compute any fixed algebraic
+real root. The field and real-closure proofs therefore apply with $\R_X$.
+Countability follows from countably many oracle program indices for fixed
+$X$, and coefficient-zero extraction proves the real-trace assertion.
+
+If $X\le_TY$, simulate each $X$ query using $Y$, including cover queries.
+Conversely the constant
+$r_X=\sum_{n\ge0}2\chi_X(n)4^{-(n+1)}$ belongs to both fields for $X$.
+Inclusion in the corresponding field for $Y$ makes $r_X$ a $Y$-computable
+real. The separated-digit argument from Proposition~\ref{prop:haltingreal}
+then recovers $X$ from $Y$. This proves both equivalences.
+\end{proof}
+Consequently each family contains strict chains indexed by
+$\varnothing,0',0'',\ldots$. The exact degree embedding was explicit for
+Puiseux fields in C; the left-finite statement here is its direct
+coefficient-and-cover analogue, with the proof given above.
+
+\begin{proposition}[Unrestricted oracle unions]
+\label{prop:oracle-unions}
+As $X$ ranges over all subsets of $\N$, the union of the $\mathcal P_X$ is
+$\PP(\R)$, the full classical real Puiseux field. The union of the
+$\mathcal L_X$ is the full classical real Levi--Civita field.
+\end{proposition}
+\begin{proof}
+For a fixed classical Puiseux series, encode a countable joint table of
+fast rational names of its real coefficients into one oracle. For a fixed
+left-finite series, additionally encode a complete finite list of its support
+below each rational cutoff and choose one rational support lower bound.
+These are countable data, so one oracle suffices. The reverse inclusions
+are immediate from the respective support conditions.
+\end{proof}
+The oracle union does not remove its support restriction. Even with unlimited
+oracle information, the Puiseux union misses the unbounded-denominator
+example in $\Lc$. Likewise no rank-one oracle change inserts $\omega^\omega$.
+Conversely enlarging supports cannot make a noncomputable real constant
+computable under unchanged ordinary Cauchy observations. Similar degree
+embeddings hold at every finite rank by the same real-trace argument.
+Matching the real trace of the structural field by allowing hyperarithmetic
+oracles does not prove equality of surreal fields or a name conversion.
+
+\subsection{General Hahn workspaces require effective decomposition data}
+
+There is another route to larger supports. Let $G$ be a computable ordered
+abelian group with a specified ordered embedding into the surreal
+exponent group. A coefficient oracle on $G$ can be supplemented by explicit
+finite \emph{decomposition covers}, rather than by left-finite initial
+sections. The next observation states exactly the extra data required for
+one important operation.
+
+\begin{proposition}[An effective Neumann interface]
+\label{prop:neumanninterface}
+Let $h=\sum_{g\in G}a_g t^g$ have well-ordered positive support and
+uniformly computable real coefficients. Suppose a procedure, given $g$,
+returns a finite set $W(g)$ of ordered finite tuples
+$(g_1,\ldots,g_n)$ with sum $g$, containing every such tuple whose entries
+all lie in $\supp(h)$. The empty tuple is included at $g=0$.
+Then for every uniformly computable real coefficient sequence $(c_n)$,
+the coefficients of $\sum_{n\ge0}c_nh^n$ are uniformly computable.
+\end{proposition}
+\begin{proof}
+Neumann's support lemma gives the mathematical Hahn summability for
+well-ordered positive support \cite{neumann}. Compute
+\[
+ \coef g{\left(\sum_{n\ge0}c_nh^n\right)}
+   =\sum_{(g_1,\ldots,g_n)\in W(g)} c_n a_{g_1}\cdots a_{g_n}.
+\]
+Every actual nonzero contribution occurs in the list. Extra tuples have a
+zero coefficient factor and contribute zero. The list is a set, so there
+is no duplicate counting. The displayed expression is a finite real
+Cauchy computation. The empty product is one.
+\end{proof}
+
+The classical lemma supplies existence and finiteness of actual
+contributions. The algorithm $W$ supplies their effective completeness.
+One must not conflate those assertions. In a full named-workspace design,
+one must also supply whatever support certificates are required for
+output names and for subsequent operations. This proposition proves
+coefficient computation, not an automatic effective representation theorem
+for every Hahn field.
+
+Theorem~\ref{thm:badproduct} demonstrates that even an apparently tame
+support can fail to supply the needed effective finite search information.
+The iterated construction supplies it by nested finite covers; a general
+Hahn implementation must expose its own equivalent mechanism.
+
+\section{Integration with the Surreal repository}
+\label{sec:repo}
+
+\subsection{Inspected revision and scope}
+
+The repository was inspected at revision
+\begin{center}
+\texttt{4896a2808ce30e01b1c86ae3ba2295a64762d246}.
+\end{center}
+The reading included the root README and the files
+\begin{quote}\small
+\path{Surreal/Foundations/SignSequenceField.lean}\\
+\path{Surreal/HahnSeries/Evaluation.lean}.
+\end{quote}
+Repository structure information was also inspected \cite{repo}. This is a
+scoped source review, not a complete audit or a new build of the repository.
+
+At this revision the sign-sequence carrier already has an ordered-field
+structure transported through its proved equivalence with numeric games.
+The field source explicitly separates the remaining genetic product-cut,
+real-closedness, and Hahn normal-form obligations. Thus it would be
+incorrect to describe multiplication and inversion on the mathematical
+carrier as wholly unimplemented. It would be equally incorrect to infer
+from those field instances that the numerical algorithms of this article
+have been implemented.
+
+The Hahn evaluation source already requires positive order explicitly and
+proves the substituted-term interpretation, a geometric identity, and an
+exact finite remainder. Its evaluator is a mathematical, noncomputable
+Lean definition using existing Hahn infrastructure. This is the right
+semantic layer for our algorithms, but it does not supply computable
+finite-section covers or ordinary Cauchy coefficient procedures. The
+missing bridge is \emph{effective data with correctness proofs}, not a
+second proof that a formal geometric sum exists.
+
+\subsection{A proof-carrying architecture}
+
+A practical design should keep three layers separate.
+
+\paragraph{Semantic values.}
+Use the existing Hahn field as the primary semantic target for the
+rank-one development. Prove the properties of $\Lc$ first there. Transport
+them into the sign-sequence surreal carrier only after the normal-form
+embedding is available. A theorem about a named Hahn series must not be
+advertised as a compiled theorem about the full surreal carrier before
+that bridge is proved.
+
+\paragraph{Executable names.}
+Represent the rational lower bound, the coefficient program, and the
+finite-cover program as explicit data. A validity proposition relates those
+programs to a semantic series. The representation should not force a
+canonical nonzero-support list, since that would hide a real zero test.
+For an initial executable prototype, exact rational or algebraic
+coefficients are easier; ordinary Cauchy coefficients must later retain
+the nonuniformity distinctions proved here.
+
+\paragraph{Operation certificates.}
+Expose separate certificates for positive support, unit leading term,
+leading exponent, a simple residue root, and a valuation-Cauchy modulus.
+These certificates express different facts and cannot safely be collapsed
+into a single ``nonzero'' flag. In particular, a positive-support proof can
+justify deleting nonpositive zero candidates, and a unit proof can justify
+inversion with leading exponent zero. Both are useful even when a general
+normalization procedure is impossible.
+
+The following is a data-contract sketch, not compiled Lean code:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+NumericalName:
+    lower : Rational
+    coefficient(q, precision) : Rational
+    cover(bound) : finite set of Rational
+    validity : error bounds, lower support bound,
+               and completeness of every finite cover
+
+LeadingCertificate(name):
+    exponent : Rational
+    coefficient_at_exponent_is_nonzero
+    all_earlier_coefficients_are_zero
+
+PositiveSupportCertificate(name):
+    all_nonpositive_coefficients_are_zero
+
+HenselInput:
+    integral_polynomial_names
+    residue_root_name
+    residue_root_equation
+    residue_derivative_is_nonzero
+\end{lstlisting}
+\end{minipage}\par
+
+An output certificate may be proved without being found by a general
+search. For example, differentiating a formal series proves that its
+$t^{-1}$ coefficient is zero; multiplying a unit by another unit gives a
+unit certificate; and the Hensel invariant supplies the derivative's
+leading coefficient at every Newton stage. Proof generation along these
+specific constructions is much more realistic than universal
+normalization.
+
+\subsection{A dependency order for formalization}
+
+The first layer should formalize finite covers, truncation, and the two
+finite formulas \eqref{eq:coeffmul}--\eqref{eq:covermul}. These are
+finitary facts independent of real closedness. Next come the positive-gap
+lemma, effective geometric series, and certified inverse, with a clear
+separation between program construction and semantic correctness.
+Effective stabilization and simple Hensel lifting then provide the main
+analytic-algebraic engine. Real closedness can be proved through an
+available valuation criterion or through an explicitly formalized version
+of Lemma~\ref{lem:valuationRC}; it should not be added as an unproved
+instance.
+
+The negative results are valuable formalization targets as well. The
+reduction using $a_e+t$ is much smaller than a full computable-analysis
+library and guards against designing an impossible API. The support-product
+counterexample tests a different assumption and should remain separate.
+Structural validity and the hyperarithmetic classification belong to a
+higher-recursion-theory track, rather than being prerequisites for the
+rank-one numerical algorithms.
+
+No new Lean files are claimed to compile in this package. The supplied
+Python suites check finite exact identities and constructions only.
+A source-level proof in this article, an executable test, and a kernel-checked
+Lean theorem are three different kinds of evidence.
+
+\section{Comparison, boundaries, and further research}
+\label{sec:outlook}
+
+\subsection{A capability comparison}
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Feature & Structural field $\Sc$ & Numerical core $\Lc$ \\
+\midrule
+Input meaning & Hereditary effective cut construction & Cauchy coefficients and finite support covers \\
+Real slice & Hyperarithmetic reals & Ordinary computable reals \\
+Scales & All computable ordinal scales, and more values & Rational powers of $\omega$; enlarged by the atlas \\
+Equality & Not a general decision procedure & Not decidable \\
+Ring operations & Uniform cut compilers & Uniform finite-cover algorithms \\
+Field closure & Established extensional theorem & Proved here; inverse names need normalization data uniformly \\
+Root theory & Established real closedness & Effective simple Hensel lifts and extensional real closedness \\
+Convergence & No nontrivial small net in full-surreal topology & Effective valuation limits with a modulus \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The entry for structural scales does not claim that every surreal of
+computable birthday has an effective structural presentation. Likewise,
+the atlas is not asserted to exhaust structural computability. A complete
+effective translation between arbitrary structural names, ordinal sign
+presentations, and the numerical names above is not proved here. None of
+the main numerical theorems relies on such a translation.
+
+\subsection{What is established, and what is not}
+
+The main theorem has now been proved. Its countability and real slice are
+Proposition~\ref{prop:realslice}; uniform ring arithmetic is
+Theorem~\ref{thm:ring}; certified and extensional inversion are
+Theorem~\ref{thm:inverse}; the precise obstruction is
+Theorem~\ref{thm:inversehard}; Hensel lifting and real closedness are
+Theorems~\ref{thm:hensel} and \ref{thm:Lcrealclosed}; Puiseux closure and
+effective completion are Theorems~\ref{thm:puiseuxclosed} and
+\ref{thm:completioncharacter}; and the functional and surcomplex claims
+are Theorem~\ref{thm:evaluation}, Theorem~\ref{thm:integration}, and
+Proposition~\ref{prop:complexification}. The iterated atlas is an additional
+extension, proved in Theorem~\ref{thm:iterated}.
+
+Several tempting stronger assertions were deliberately excluded. We did
+not prove a general uniform algebraic root-isolation algorithm on raw
+Cauchy--Hahn names. We did not define a universal exact symbolic zero test.
+We did not infer effective finite decomposition from abstract Hahn
+summability. We did not confuse a computable copy of a birthday with
+computable rank access to its signs. We did not claim that valuations,
+coefficient approximation, and full-surreal neighborhoods describe the
+same topology. Finally, the current normal-form bridge and the new
+computability theory have not been machine-checked as part of this work.
+
+\subsection{Research directions with precise targets}
+
+The following are directions left by this article, not claims that the
+corresponding questions have never been studied elsewhere.
+
+\paragraph{Uniform translation complexity.}
+Determine the exact information needed to convert a numerical normal-form
+name into an effective sign presentation, and conversely on a stated
+subclass. The computable-copy example shows that rank access must be part
+of the specification. The structural classification supplies a natural
+upper-level language, but does not by itself yield a practical name
+translator.
+
+\paragraph{Sharper operator degrees.}
+The normalization and inverse tasks have halting degree in the computable
+index setting. Their precise represented-space or Weihrauch classification
+under different cover encodings may distinguish one zero test from finite
+parallel tests or more elaborate search. Any such refinement should
+preserve the elementary lower-bound family $a+t$.
+
+\paragraph{Support certificates beyond left-finiteness.}
+Design reusable certified decomposition structures for more general
+computable ordered groups, especially supports with genuine transfinite
+order type rather than finite-rank nested left-finite structure. A useful
+target is closure under multiplication and geometric inversion with
+explicit finite dependency output for each requested coefficient.
+Theorem~\ref{thm:badproduct} is a minimal adversarial test.
+
+\paragraph{Effective algebraic branch data.}
+Extend the certified algorithms already proved here to broader informative
+root data: a specified Newton slope, a simple initial root, a ramification
+bound, or a certified factorization pattern. The simple Hensel theorem and the finite-jet branch certificate are
+already successful contracts. Repeated roots should not be handled
+by assuming a zero decision for arbitrary coefficients.
+
+\paragraph{Larger transcendental workspaces.}
+Extend the numerical atlas by explicitly named logarithmic and exponential
+scales, while proving that the real slice remains $\Rc$ and specifying
+finite dependency rules for all included operations. A finite symbolic
+expression and an effective coefficient expansion are different output
+formats; a system can support both without asserting that they are uniformly
+interconvertible.
+
+\subsection{Conclusion}
+
+A workable concept of computable surreal number is necessarily
+representation-sensitive. Structural presentations capture hereditary
+construction and admit hyperarithmetic real information. Numerical
+Cauchy--Hahn names capture effective observation of coefficients and their
+support dependencies, recover exactly the ordinary computable reals on
+the real axis, and support a substantial real-closed theory.
+
+The constructive side is not small: the numerical fields contain
+infinitesimals, infinite numbers, arbitrary computable formal coefficient
+families on controlled supports, algebraic roots, effective valuation
+limits, and a hierarchy of higher scales. The obstructions are equally
+precise. Finite mathematical dependency does not imply an effective list;
+field closure does not imply a uniform inverse compiler; and a finite
+program for a transfinite structure does not necessarily compute its real
+value. Respecting those distinctions produces algorithms whose
+mathematical contracts can actually be met.
+
+\appendix
+\section{Finite algorithms and reproducibility}
+\label{app:checks}
+
+\subsection{Rerun checks from all three reports}
+All three original verification programs are retained unchanged, alongside
+a new cross-model suite. They use Python standard-library exact arithmetic
+without network access. The September 22, 2026 rerun, recorded with its
+Python version and UTC timestamp in \texttt{data/summary.json}, gives:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Suite & Reported unit & Rerun result\\
+\midrule
+A & 4,967 exact comparisons & PASS\\
+B & 18 named unit tests & PASS\\
+C & 266 exact checks & PASS\\
+Merged & 4,366 cross-model exact checks & PASS\\
+\bottomrule
+\end{tabular}
+\end{center}
+Unlike test units are not added together. The merged suite compares dense
+and sparse convolution, redundant finite covers, branch transforms, residue
+identities, and denominator examples. Its geometric-cover regression includes
+negative zero candidates and checks both support completeness and the output
+cover range; an exact sparse-series identity would not check that contract. Synthetic halting fixtures do not
+compute the halting set.
+
+These finite checks do not prove the infinite theorems or validate arbitrary
+coefficient programs. No new Lean verification or production surreal
+computer-algebra implementation is claimed.
+
+From the package root:
+\begin{lstlisting}
+python3 code/run_all.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+
+\subsection{A precise finite-dependency recipe}
+
+For reference, the positive-support evaluation algorithm can be implemented
+by the following mathematical pseudocode. All polynomial coefficients
+below are real \emph{names}, and \texttt{finite\_arithmetic} invokes the
+correct real precision subroutine rather than replacing those coefficients
+by exact floating-point numbers.
+\begin{lstlisting}
+coefficient_of_evaluation(f, h, q, precision, positive_support_proof):
+    candidates = h.cover(1)
+    delta = min({1} union {r in candidates : r > 0})
+    choose N >= 0 with (N + 1) * delta > q
+    form the named finite sum S = sum(n = 0..N, f[n] * h^n)
+    return S.coefficient(q, precision)
+
+cover_of_evaluation(f, h, bound, positive_support_proof):
+    extract delta as above
+    form the finite set of n >= 0 with n * delta < bound
+    for these n, compute covers of f[n] * h^n below bound
+    return their union, filtered to [0, bound)
+\end{lstlisting}
+
+For inversion, first normalize using the \emph{supplied} leading exponent
+and its nonzero coefficient, then call this recipe with $f_n=1$. For Hensel
+lifting, every derivative is a certified unit, so its leading exponent is
+zero without a normalization search. These are explicit finite
+computations per output request, even though a whole infinite series is
+never printed.
+
+
+\clearpage
+\section{Reconciliation ledger and source crosswalk}
+\label{app:reconcile}
+This appendix records the mathematical disposition of the three manuscripts.
+Locations below use their original TeX line numbers, not the repaginated PDF.
+A has 2,235 lines, B has 1,916, and C has 2,221.  The three source manuscripts
+are \emph{not} redistributed with this report; the line numbers and the
+recorded hashes identify them, and the disposition of every result is set out
+below, but the texts themselves are not included here.
+The JSON manifest records full hashes; upload suffixes alone are not treated
+as version history. A supplied the continuous left-finite development; shared
+introductions, repeated proofs, bibliographies, and implementation advice were
+consolidated rather than concatenated.
+
+\subsection{Actual corrections and necessary qualifications}
+\paragraph{Nonzero polynomial hypothesis.}
+A, the corollary immediately after its real-closedness theorem (source lines
+1083--1093), says every real surreal root of a polynomial over $\Lc$ is in
+$\Lc$. Literally this fails for the zero polynomial. The merged statement
+explicitly requires a \emph{nonzero} polynomial, as C already does. This is a
+corrected hypothesis, not merely a notation change.
+
+\paragraph{Two fields, not two answers about one field.}
+A's $\Lc$ includes effective finite covers and variable rational denominators;
+B--C's $\Pc$ has one bounded denominator per value. The proper inclusion and
+completion theorem reconcile their scope. A's effective completeness is
+never used to negate B--C's Puiseux incompleteness, and is not upgraded to
+unqualified sequential completeness of $\Lc$.
+
+\paragraph{A source question is answered by another source.}
+C's first concluding question asks for effective supports beyond bounded
+Puiseux denominators with algebraic closure and finite dependency data.
+The finite-cover left-finite construction answers the real-closed version
+and its complexification answers the algebraically closed version. The
+remaining support research target is moved beyond that established case.
+
+\paragraph{Closure is not a uniform algorithm.}
+Every proof that chooses a leading exponent, multiplicity, finite jet, or
+coefficient inverse is labeled as either finite nonuniform existence data
+or an additional algorithmic input. No claim of raw-name field computability
+is inferred from real closedness. C's positive-square-root lower bound and
+B's any-root quadratic lower bound are retained separately.
+
+\paragraph{Two different uses of one jump.}
+B's unrestricted convolution algorithm returns an oracle-computable
+coefficient function; it need not yield an ordinary computable product.
+A--C's inverse and square-root normalization uses $0'$ to choose finite data,
+after which an ordinary program suffices. The convolution search is phrased
+with a c.e. contributor set, not an unjustified decidable zero test on real
+coefficients. All such statements concern valid ordinary computable indices;
+relative names require the corresponding relative jump.
+
+\paragraph{Support and valuation conventions.}
+All three use $t=\omega^{-1}$; increasing $t$ exponents correspond to
+ decreasing $\omega$ exponents. Candidate covers may include zeros and need
+not be nested. A finite cardinality bound is not a finite candidate list.
+At higher rank, full natural valuation and outer valuation are distinguished.
+The formal residue $[t^{-1}]x$ is not standard part $[t^0]x$.
+
+\paragraph{Limits, certificates, and historical status.}
+Exact coefficient-name jets and rational coefficient approximations are
+separate observations. Exact valuation stabilization and real coefficientwise
+Cauchy moduli are separate limit hypotheses. Proof-bearing certificates do
+not make arbitrary semantic validity decidable. The structural classification
+is credited to established work, not re-announced as a new theorem; the
+repository's remaining real-closedness task means a formalization obligation,
+not an open question about the classical surreal field.
+
+\subsection{Topic-by-topic disposition}
+\small
+\begin{longtable}{@{}P{.23\textwidth}P{.25\textwidth}P{.44\textwidth}@{}}
+\toprule
+Topic & Original locations & Merged disposition\\
+\midrule
+\endhead
+Real names, size and topology & A 223--318; B opening conventions; C 242--401 &
+One common fast-Cauchy baseline, intrinsic versus ambient topology, and a separate note on infinitary machines.\\
+Structural field and halting real & A 319--501; B structural section; C 402--666 &
+Common cut compiler and separated base-four encoding retained; classification imported with coding caveat.\\
+Validity and birthdays & A 478--500; C 480--547 &
+Full $\Pi^1_1$ upper bound retained from C; all-left reduction supplies hardness. Recursive-ordinal boundary made explicit.\\
+Signed computable orders & A 502--556; B signed-order construction; C 667--727 &
+C's theorem for every c.e. set retains exact Turing degree; the finite-block variants are consolidated.\\
+Hahn convolution failures & A 557--643; B convolution and one-jump section; C 728--821 &
+Both left-finite and singleton-fiber examples retained; B's dyadic template recorded; sharp $0'$ upper bound included.\\
+Finite-cover numerical model & A 644--902; C convolution certificate &
+A's definition and full arithmetic proofs retained. Complete finite candidate lists are the operational requirement.\\
+Hensel and valuation proof & A 903--1094 &
+Retained with the explicit defectless residue-characteristic-zero input; zero polynomial excluded in the root corollary.\\
+Puiseux field and inclusion & A 1095--1192; B Puiseux field; C 822--1028 &
+One definition, common-denominator ring formulas, certified reciprocal, exact trace, and proper inclusion.\\
+Finite advice and algebraic branches & B simple Hensel and finite-advice normalization; C 1029--1236 &
+One full finite-jet proof, independent of the valuation proof, with Laurent reduction and an explicit certificate.\\
+Uniformity and zero tests & A 1295--1479; B root/sign obstructions; C 1237--1428 &
+Strongest compatible lower bounds; full promised-index classification; exact-coefficient alternative retained.\\
+Limits and completion & A 1193--1294; C 1556--1643 &
+Effective completion in $\Lc$, failure in $\Pc$, and a separate coefficientwise real limit theorem.\\
+Formal functions and equations & A 1480--1610; B differentiation/integration; C 1429--1555 &
+Formal evaluation, implicit examples, residue quotient, and a differential non-solvability example; not global analysis.\\
+Surcomplex & A 1611--1662; B complex section; C 1840--1891 &
+Both complexifications; uniform squared modulus versus nonuniform modulus; branch-dependent operations qualified.\\
+Finite rank & A 1663--1776; B iterated Puiseux construction; C 1644--1750 &
+Parallel $\mathcal P_d$ and $\mathcal L_d$ towers with proper inclusions, correct residues, and a single reused $0'$.\\
+Oracle hierarchies & C 1751--1839 &
+Puiseux degree embedding retained and proved for left-finite names too; unrestricted oracle unions identified separately.\\
+General supports and development plan & A 1777--2043; B support certificates and repository plan; C 1892--2044 &
+General Neumann certificates retained; redundant-name API, branch contract, and remaining support questions unified.\\
+Checks and proof provenance & A 2064--2235; B verification/bibliography; C 2045--2221 &
+All original test suites rerun; counts kept separate; additional cross-model tests; original source hashes preserved.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Bibliographic and repository checks}
+The structural definition and classification were checked directly in pages
+4--6 of Hamkins's 2024 lecture notes and his 2025 announcement. Lurie's
+publisher record confirms June 1998, volume 63(2), pages 337--371; its 2014
+online posting is not a new publication date. The full Lurie and Harkleroad
+papers were not independently read in this merge. The Newton--Puiseux input
+was checked in the introductions of Rond and Kedlaya; the defect formula
+was checked in Rzepka--Szewczyk, Section 2.1, equation (1). The classical
+left-finite definition was checked in Restrepo Borrero--Shamseddine,
+Section 1.1, version 2. None of those sources is cited as having proved the
+particular representation-specific synthesis above.
+
+The repository tree and selected files were read at commit
+\begin{center}\texttt{4896a2808ce30e01b1c86ae3ba2295a64762d246}\end{center}
+the same snapshot recorded by the reports. The root README, the sign-field source, and the
+Hahn evaluation source agree on the distinction between mathematical
+infrastructure and effective observation algorithms. No new commit,
+repository write, or local Lean build is part of this deliverable.
+
+\clearpage
+\section{A proof-dependency ledger}
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.61\textwidth}@{}}
+\toprule
+Result & Dependencies and status \\
+\midrule
+\endhead
+Structural classification & External theorem; historical sources and modern authors' statements cited. Not reproved. \\
+Structural halting real & Effective cut and ring construction; independent explicit reduction, with prior phenomenon acknowledged. \\
+Computable-copy sign trap & Finite halting simulations, canonical real sign expansions, and a direct decoding argument. \\
+Noncomputable Hahn product & Explicit rational supports and base-four uniqueness. Full proof provided. \\
+Numerical ring and field & Definition of covers; finite Cauchy arithmetic; positive gap; geometric identity. Full proofs provided. \\
+Effective Hensel lifting & Certified unit inversion; finite Taylor identity; explicit valuation doubling and coefficient stabilization. Full proof provided. \\
+Numerical real closedness & Hensel lifting, the proved residue and value-group descriptions, and the explicitly cited Ostrowski degree formula. \\
+Puiseux real closedness & Two independent proofs: the common-grid Hensel/valuation route and Newton--Puiseux plus the proved finite-jet uniformity step. \\
+Effective completion & Exact stabilization modulus; finite covers from a selected sequence term. Full proof provided. \\
+Uniform inverse obstruction & The uniformly Cauchy-computable real family $a_e$ and the $t^{-1}$ coefficient of $(a_e+t)^{-1}$. Full proof provided. \\
+Higher-rank atlas & Nested finite covers, one fixed coefficient-inverse choice per Hensel problem, and induction on rank. Full proof provided. \\
+Oracle hierarchies & Relativized algorithms and the explicit separated-digit real encoding; both support classes treated. \\
+Formalization status & No new Lean verification claimed; finite Python tests are supplementary only. \\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{conway}
+J.~H.~Conway, \emph{On Numbers and Games}, Academic Press, 1976;
+second edition, A K Peters, 2001. Classical surreal cuts, arithmetic,
+real closedness, and normal forms.
+
+\bibitem{gonshor}
+H.~Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110, Cambridge University
+Press, 1986. Sign sequences, normal forms, and surreal exponentiation.
+
+\bibitem{harkleroad}
+L.~Harkleroad, ``Recursive surreal numbers,'' \emph{Notre Dame Journal of
+Formal Logic} \textbf{31}(3) (1990), 337--345.
+\href{https://doi.org/10.1305/ndjfl/1093635498}{doi:10.1305/ndjfl/1093635498}.
+Historical bibliographic reference; the full text was not accessible in
+this preparation.
+
+\bibitem{lurie}
+J.~Lurie, ``The effective content of surreal algebra,'' \emph{Journal of
+Symbolic Logic} \textbf{63}(2) (1998), 337--371.
+\href{https://doi.org/10.2307/2586835}{doi:10.2307/2586835}.
+Published abstract and bibliographic metadata consulted; the 2014 online
+posting date is not the article's publication year.
+
+\bibitem{hamkins}
+J.~D.~Hamkins, ``The computable surreal numbers,'' Notre Dame Logic
+Seminar, 3 December 2024; reporting joint work with D.~Turetsky.
+Author's announcement and six-page handwritten lecture notes:
+\url{https://jdh.hamkins.org/the-computable-surreal-numbers-notre-dame-logic-seminar-december-2024/}.
+Lecture notes:
+\url{https://jdh.hamkins.org/wp-content/uploads/Lecture-Notes-Computable-surreal-numbers-ND-Dec-2024.pdf}.
+The relevant pages, including the final classification statement, were
+visually inspected.
+
+\bibitem{turetsky}
+D.~Turetsky and J.~D.~Hamkins, author contributions to ``What do we know
+about the computable surreal numbers?'' \emph{MathOverflow}, 2024,
+question 473211.
+\url{https://mathoverflow.net/questions/473211/what-do-we-know-about-the-computable-surreal-numbers}.
+Primary research discussion; used together with the later lecture
+statement, not as a substitute for a refereed paper.
+
+\bibitem{sacks}
+G.~E.~Sacks, \emph{Higher Recursion Theory}, Perspectives in Mathematical
+Logic, Springer, 1990. Background on hyperarithmeticity, recursive
+well-orders, and well-founded recursive trees.
+
+\bibitem{restrepo}
+M.~Restrepo Borrero and K.~Shamseddine, ``On a Lebesgue-like integral over
+the Levi-Civita field $\mathcal R$,'' arXiv:2506.13930, version 2, 2025.
+\url{https://arxiv.org/abs/2506.13930}.
+Only the introductory definition and classical context of the
+Levi--Civita field in \S1.1 are used here; its integration theory is not
+an input to our formal $t$-integration theorem.
+
+\bibitem{rzepka}
+A.~Rzepka and P.~Szewczyk, ``Defect extensions and a characterization of
+tame fields,'' arXiv:2209.03308, version 1, 2022.
+\url{https://arxiv.org/abs/2209.03308}.
+See \S2.1, equation (1), for the degree formula and the
+residue-characteristic-zero defectless case.
+
+\bibitem{neumann}
+B.~H.~Neumann, ``On ordered division rings,'' \emph{Transactions of the
+American Mathematical Society} \textbf{66} (1949), 202--252.
+Classical support finiteness for positive well-ordered series.
+
+\bibitem{bournez}
+O.~Bournez and Q.~Guilmant, ``Surreal fields stable under exponential,
+logarithmic, derivative and anti-derivative functions,''
+arXiv:2211.08396, 2022.
+\url{https://arxiv.org/abs/2211.08396}.
+Context for larger surreal function-closed subfields, not a source for the
+numerical representation defined here.
+
+\bibitem{repo}
+V.~Reshetnikov, \emph{Surreal}, GitHub repository, inspected revision
+\texttt{4896a2808ce30e01b1c86ae3ba2295a64762d246}.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/4896a2808ce30e01b1c86ae3ba2295a64762d246}.
+Selected sources: root \texttt{README.md},
+\path{Surreal/Foundations/SignSequenceField.lean}, and
+\path{Surreal/HahnSeries/Evaluation.lean}. Repository statements describe
+that revision; no local Lean build was performed for this article.
+
+
+\bibitem{hamkins2025}
+J.~D.~Hamkins, ``The computable surreal numbers, Fudan University, July 2025,''
+author's seminar announcement, posted 16 July 2025, for the talk of 23 July.
+\url{https://jdh.hamkins.org/the-computable-surreal-numbers-fudan-university-july-2025/}.
+Reports joint work with D.~Turetsky and explicitly acknowledges partial
+rediscovery of earlier work of Lurie.
+
+\bibitem{rond}
+G.~Rond, ``About the algebraic closure of the field of power series in several
+variables in characteristic zero,'' \emph{Journal of Singularities}
+\textbf{16} (2017), 1--51; arXiv:1303.1921v4.
+\url{https://arxiv.org/abs/1303.1921}.
+Only the introductory one-variable Newton--Puiseux formulation is used.
+
+\bibitem{kedlaya}
+K.~S.~Kedlaya, ``The algebraic closure of the power series field in positive
+characteristic,'' \emph{Proceedings of the American Mathematical Society}
+\textbf{129} (2001), 3461--3470; arXiv:math/9810142v3.
+\url{https://arxiv.org/abs/math/9810142}.
+The characteristic-zero theorem is stated in its introduction; the positive
+characteristic results are not used here.
+
+\bibitem{galeotti}
+L.~Galeotti and H.~Nobrega, ``Towards computable analysis on the generalised
+real line,'' arXiv:1704.02884, 2017.
+\url{https://arxiv.org/abs/1704.02884}.
+Abstract consulted for the distinction between ordinary and infinitary machines.
+
+\bibitem{faverjon}
+C.~Faverjon and J.~Roques, ``Hahn series and Mahler equations: Algorithmic
+aspects,'' \emph{Journal of the London Mathematical Society} \textbf{110}(1)
+(2024), e12945. \url{https://doi.org/10.1112/jlms.12945};
+\url{https://arxiv.org/abs/2412.04928}.
+Abstract and metadata consulted for structured support-receptacle algorithms.
+
+\bibitem{wiki}
+Wikipedia contributors, ``Computable number,'' user-supplied orientation page,
+consulted for the ordinary computable-real question, not used as a proof of
+the representation-specific theorems.
+\url{https://en.wikipedia.org/wiki/Computable_number}.
+
+\end{thebibliography}
+\end{document}

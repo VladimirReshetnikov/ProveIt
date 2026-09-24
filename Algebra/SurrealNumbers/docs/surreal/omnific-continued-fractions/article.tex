@@ -1,0 +1,2231 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Exact Precision and Algebraic Rigidity of Omnific Continued Fractions},
+ pdfauthor={AI-assisted research draft},pdfsubject={Surreal numbers, Hahn fields, omnific continued fractions}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Omnific continued fractions}
+\fancyhead[R]{\small Precision and algebraic rigidity}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Ofin}{\mathcal O_{\mathrm{fin}}}% [write] the source wrote \mathcal O (macro \OO)
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\F}{\mathcal F}
+\newcommand{\alg}{\operatorname{Alg}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dgr}{\operatorname{deg}}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor_{\Oz}}
+\newcommand{\KG}{K_G}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\codea}{\boldsymbol a}
+\newcommand{\codeb}{\boldsymbol b}
+\newcommand{\rpath}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
+\newcommand{\wtag}{\textup{[write]}}% text added when the report joined the collection
+\newtcolorbox{statusbox}{colback=black!3,colframe=black!35,boxrule=0.4pt,arc=1pt,
+ left=9pt,right=9pt,top=7pt,bottom=7pt}
+\newtcolorbox{resultbox}{colback=MidnightBlue!3,colframe=MidnightBlue!55,
+ boxrule=0.5pt,arc=1pt,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{12mm}
+{\small\scshape Surreal numbers \; / \; omnific arithmetic \; / \; Hahn fields\par}
+\vspace{12mm}
+{\LARGE\bfseries Exact Precision and Algebraic Rigidity\par}
+\vspace{3mm}
+{\LARGE\bfseries of Omnific Continued Fractions\par}
+\vspace{7mm}
+{\large Full Hahn-field realization, valuation ideals,\par
+periodic codes, and surcomplex fibers\par}
+\vspace{10mm}
+{AI-assisted research draft\par}
+{23 September 2026\par}
+\vspace{10mm}
+\begin{minipage}{0.93\textwidth}
+\begin{abstract}
+An ordinary infinite continued fraction with omnific integer digits does not
+usually determine one surreal number. Its indeterminacy was already studied
+by Roggeman. We give a valuation-theoretic refinement and use it to derive
+precise realization and algebraicity criteria. If $q_n$ are the continuant
+denominators and $d_n=\dgr q_n$, the complete fiber of a digit sequence is
+exactly a translate of the ideal of errors $\epsilon$ satisfying
+$v(\epsilon)>2d_n$ for every ordinary $n$. A uniform two-step buffer estimate
+makes this description independent of the chosen realization.
+
+Every admissible sequence in a full real-coefficient Hahn field has a
+realization in that same field; it has exactly one precisely when the
+cumulative denominator degrees are cofinal in the value group. We classify
+when the precision ideal is prime and give an exact two-condition criterion
+for the fiber to contain at most one element algebraic over its digit field.
+For eventually periodic codes an algebraic realization always exists, so
+this becomes a sharp one-versus-countably-many dichotomy. Each full surreal
+fiber nevertheless contains algebraically independent families of every
+set cardinality over every prescribed set-sized coefficient field.
+Coordinatewise surcomplex fibers and their changes under fractional linear
+maps complete the picture. The proofs are written in full, with finite
+symbolic checks and an explicit research agenda.
+\end{abstract}
+\vspace{3mm}
+\begin{statusbox}
+\small\textbf{Status and priority.} This is an unrefereed, AI-assisted research
+draft, not a certified resolution of a named longstanding open problem.
+Basic surreal continued-fraction nonuniqueness is \emph{not} claimed as new.
+The proposed contributions are the sharpened precision, workspace, and
+algebraic-fiber classifications. Their novelty has not been independently
+certified. The accompanying finite tests are not a Lean verification or a
+proof of the infinite-support assertions.
+
+\smallskip
+\wtag{} Single-source research report of the collection, built from
+manuscript~09 of batch~33 and placed in commit \texttt{aa9c891}.
+Independent proof review and formalization are pending. Labels carry the
+prefix \texttt{ocf:}. Conventions, the place in the collection, the
+non-claims and the provenance are in
+Sections~\ref{ocf:sec:conventions}, \ref{ocf:sec:collection},
+\ref{ocf:sec:nonclaims} and Appendix~\ref{ocf:app:report}; added text is
+marked \wtag.
+\end{statusbox}
+\end{minipage}
+\vfill
+{\small Repository comparison pinned to \texttt{958b5c486581}\par}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+
+\section{The question and the contribution}
+\label{ocf:sec:intro}
+
+Over the real numbers, an infinite regular continued-fraction expansion is a
+representation of a single irrational number. Over the surreal numbers,
+there are two different questions: which points produce a specified digit
+sequence, and which point should be selected as its distinguished value?
+The first is an arithmetic question about the floor algorithm. The second
+requires an additional selection principle. Confusing them makes a periodic
+code look more rigid than it is.
+
+This article studies the first question, with digits in Conway's omnific
+integer ring $\Oz$. The sequence length is exactly $\omega$: all indices
+$n,k,m$ used in the continued-fraction algorithm are \emph{ordinary finite}
+natural numbers. Neither a limit-stage continuation of the algorithm nor a
+Gaussian nearest-integer algorithm is silently included.
+
+\subsection{What was already known}
+\label{ocf:sub:known}
+
+Roggeman's \emph{Continued fractions and surreal numbers}
+\cite{Roggeman} already develops the omnific floor algorithm, associated
+classes of points with the same infinite code, and periodic fractions. In
+particular, his Section~3A characterizes associated classes by convergent
+inequalities; Section~3H studies their size and structure; Section~3I
+introduces a generalized continuation. Thus nonuniqueness and a
+proper-class fiber are antecedents, not discoveries of the present article.
+The relevant scanned pages were inspected directly.
+
+The continuant identities and the real periodicity theorem are classical;
+\cite{Krishnan,Eberl} give accessible treatments, with \cite{Eberl} providing
+a formalized real theory. Our finite identities are rederived because the
+infinite digits and non-Archimedean inequalities require careful hypotheses.
+Conway's and Gonshor's normal-form and real-closedness theorems are the
+surreal foundations used here \cite{Conway,Gonshor}.
+
+The repository \cite{SurrealRepo} supplies the setting and an implementation
+roadmap. The inspected root README and report catalogue include the actual
+omnific floor, degree, and normal-form infrastructure. No continued-fraction
+report was identified in that catalogue. This was a focused comparison, not
+a declaration-by-declaration or whole-history audit. No unreviewed advanced
+repository theorem is required below.
+
+\wtag{} This subsection is the source's, written at its pin
+\texttt{958b5c4}. Its statement about the collection is still true at the
+placement commit \texttt{aa9c891}: no report treats surreal or omnific
+continued fractions, and Roggeman is cited nowhere else. The only continued
+fractions elsewhere are ordinary real ones (a rotation number in
+\rpath{surcomplex/dynamics-and-normal-forms}, \lbl{dyn:prop:cf}) and the
+tridiagonal determinant continuants of
+\rpath{surreal/matrix-scaling-at-surreal-scales}
+(\lbl{scale:eq:continuantval}). The omnific floor of
+Lemma~\ref{ocf:lem:floor} is the collection's integer-part theorem, proved
+there and formalized in Lean. The relation to the collection, with labels,
+is in Section~\ref{ocf:sec:collection}.
+
+\subsection{The central classification}
+
+Let $\codea=(a_0,a_1,\ldots)$, where $a_0\in\Oz$ and $a_n\in\Oz$,
+$a_n\ge1$ for $n\ge1$. Write $\F(\codea)$ for all surreals whose
+nonterminating floor algorithm produces this code. Define the usual
+continuant denominators by
+\[
+ q_{-1}=0,\qquad q_0=1,\qquad
+ q_n=a_nq_{n-1}+q_{n-2}\quad(n\ge1),
+\]
+and put
+\begin{equation}\label{ocf:eq:summarydegrees}
+ d_0=0,\qquad d_n=\sum_{j=1}^{n}\dgr a_j=\dgr q_n.
+\end{equation}
+Here $\dgr$ denotes the greatest \emph{growth exponent} in Conway normal
+form; the natural valuation has the opposite sign.
+
+\begin{resultbox}
+For every $x\in\F(\codea)$,
+\[
+ \F(\codea)=x+I_{\codea},\qquad
+ I_{\codea}=\{0\}\cup
+ \{\epsilon\ne0:v(\epsilon)>2d_n\text{ for every }n\}.
+\]
+The sequence records a coset of an explicit valuation ideal, rather than a
+single unrestricted surreal number. The ideal depends only on the degrees
+of the digits after $a_0$, not on their other coefficients.
+\end{resultbox}
+
+The exact formula is proved in Theorem~\ref{ocf:thm:fiber}, using a buffer from
+both cylinder endpoints. It refines the earlier associated-class viewpoint
+into a form usable for Hahn-field descent and algebraic rigidity.
+
+\subsection{Consequences that go beyond basic nonuniqueness}
+
+Theorem~\ref{ocf:thm:hahn} proves existence in every \emph{full}
+$\R$-coefficient Hahn field containing the digits, not merely existence
+somewhere in $\No$. Its uniqueness criterion is exactly cofinality of
+$(d_n)$ in the value group. The existence proof is not a completeness
+assertion about arbitrary non-Archimedean ordered fields.
+
+For the countable digit field $K_{\codea}=\Q(a_0,a_1,\ldots)$, set
+$D_0=\dgr a_0$ when $a_0\ne0$ and $D_0=0$ otherwise. Two simple conditions
+control algebraic rigidity:
+\begin{align}
+ &\text{for every }n\text{ there is }m\text{ with }d_m\ge2d_n,
+    \tag{P}\label{ocf:cond:P}\\
+ &\text{there is }n\text{ with }D_0\le2d_n.
+    \tag{V}\label{ocf:cond:V}
+\end{align}
+When both hold, the fiber has at most one element algebraic over
+$K_{\codea}$. If either fails and one algebraic realization exists, there are
+countably infinitely many, all obtainable in the same finite field
+extension by rational translations. This is
+Theorem~\ref{ocf:thm:algebraic}. For eventually periodic codes, existence of an
+algebraic realization turns this conditional statement into an exact
+dichotomy (Theorem~\ref{ocf:thm:periodiccriterion}).
+
+The prime-ideal criterion, the algebraic dichotomy, and the universal
+Hahn-workspace realization theorem are the main proposed research
+contributions. We do not assert that a literature search establishes their
+priority. Their mathematical content is specified by the statements and
+proofs, not by a label such as ``breakthrough.''
+
+\subsection{Notation and conventions in this report}
+\label{ocf:sec:conventions}
+
+\wtag{} This subsection and the next were written when the manuscript
+joined the collection. One symbol was renamed: the ring of finite surreals,
+written $\mathcal O$ in the source, is written $\Ofin$ here, as in the
+omnific Diophantine report (\rpath{surreal/omnific-diophantine-geometry}),
+where $\operatorname{O}$ is an orthogonal group and $\mathcal O_\Bbbk(\Gamma)$ a
+Hahn valuation ring. Its complex counterpart, written $\mathcal
+O_\C=\mathcal O+i\mathcal O$ in the source, is written $\Ofin[i]$ in
+Theorem~\ref{ocf:thm:complex}. No normalization changed. All other symbols
+are the source's; their meanings are fixed below for the whole report, and
+collisions are disclosed rather than removed. Paths such as
+\rpath{surreal/omnific-diophantine-geometry} are relative to
+\rpath{docs/}, and labels of other reports are cited by name.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item \emph{Exponents and valuation.} The report uses Conway's decreasing
+large-$\omega$ convention $x=\sum r_\gamma\omega^\gamma$ throughout; no
+$t^\gamma=\omega^{-\gamma}$ convention occurs. $\dgr x$ is the greatest
+growth exponent and $v=-\dgr$, as in the collection's notation guide
+(\rpath{NOTATION.md}) and as the Diophantine report's
+$\operatorname{deg}_\omega$, which sets $\operatorname{deg}_\omega0=-\infty$;
+here $\dgr0$ is never used. A \emph{large} valuation means a \emph{small}
+element: the tempting reading of $v(e)>2d_n$ as ``$e$ is large'' is false;
+it says $\lvert e\rvert\prec q_n^{-2}$.
+\item \emph{Degrees.} $d_n=\dgr q_n=\sum_{j=1}^n\dgr a_j$; the first digit
+never contributes. $D_0$ is $\dgr a_0$, or $0$ when $a_0=0$: a bookkeeping
+value, not a degree of zero. $D_*$ and $E$ in \eqref{ocf:eq:periodscales}
+are the largest displayed degree and the degree gained per period.
+\item \emph{Rings and ideals.} $\Oz$ is the omnific ring, $\Ofin$ the finite
+surreals and $\mm$ the infinitesimals. The precision ideal $I_{\codea}$ is a
+convex ideal of the valuation ring $\Ofin$ contained in $\mm$. It is
+\emph{not} an ideal of $\Oz$ (it contains no nonzero omnific integer) or of
+$\No$, not the purely infinite ideal $\Pi$ of other reports, and not one of
+the ideals $I_\kappa$ of $\Oz$ in \rpath{surreal/set-sized-quotients-of-omnific-integers}.
+``Prime'' always refers to $\Ofin$ or $\Ofin\cap K_G$.
+\item \emph{Fields.} $K_G=\R((\omega^G))$ is the \emph{full} Hahn field on a
+set-sized additive subgroup $G\subseteq\No$, which need be neither
+divisible nor convex; it is the field $\mathcal K_\R(G)$ of
+\rpath{surreal/independent-surreal-copies}. A ``set-sized Hahn workspace'' is
+such a $K_G$ containing the data; the workspaces of the foundations report
+(\lbl{found:thm:workspace}) are of this kind with $G$ divisible, and no
+divisibility is needed here. $K_{\codea}=\Q(a_0,a_1,\ldots)$ is the
+countable field generated by the digits, and $K=K_{\codea}$ in
+Section~\ref{ocf:sec:periodic}. The tempting reading of $K_{\codea}$ as a
+Hahn field $K_G$ is false; $K_\R$ in Section~\ref{ocf:sec:examples} is $K_G$
+at $G=\R$.
+\item \emph{Fibre and Fibonacci.} $\F(\codea)$ (calligraphic) is the fibre
+of a code; $F_k$ (italic) are the Fibonacci numbers of \eqref{ocf:eq:fib}
+and of the proof of Theorem~\ref{ocf:thm:fiber}. $A_{\codea}$ is the
+algebraic part of a fibre (Section~\ref{ocf:sec:algebraic}), while $A,B,C,D$
+are the entries of the period matrix $M$ in \eqref{ocf:eq:periodmatrix}.
+\item \emph{Letters with several local meanings.}
+$D$ is an entry of $M$ in Section~\ref{ocf:sec:periodic} and the lower set
+$\bigcup_n[0,2d_n]$ in the proof of Theorem~\ref{ocf:thm:prime}; neither is
+$D_0$ or $D_*$.
+$E$ is the period degree in Section~\ref{ocf:sec:periodic} (and in
+Section~\ref{ocf:sec:collection}), but a set-sized subfield in
+Lemma~\ref{ocf:lem:algerror}, Section~\ref{ocf:sec:independence} and
+Section~\ref{ocf:sec:complex}; $E_t$ is a partial period sum.
+$t$ is the variable of $\Phi_n$ and the complete quotient $x_{n+1}$ in
+Sections~\ref{ocf:sec:cylinders}--\ref{ocf:sec:fibers}, the period-fixed
+root in Theorem~\ref{ocf:thm:periodroot}, and an ordinary index
+$0\le t<\ell$ in \eqref{ocf:eq:perioddegree} and the proofs of
+Theorems~\ref{ocf:thm:periodiccriterion} and~\ref{ocf:thm:orderunit}:
+$E_t$ is not $E$ evaluated at the root.
+$q_n$ are continuant denominators, while a bare $q\in\Q$ is the rational
+multiplier in \eqref{ocf:eq:algtranslations}, in the proof of
+Theorem~\ref{ocf:thm:periodiccriterion} and in Section~\ref{ocf:sec:examples}:
+$\xi+q\delta$ is not $\xi+q_n\delta$.
+$r_n$ are convergents, $r$ is a real constant coefficient in
+Lemma~\ref{ocf:lem:floor} and the prefix length in
+\eqref{ocf:eq:periodiccode}; $s_n$ is the other cylinder endpoint.
+$S$ is a support in \eqref{ocf:eq:normal}, a set of distances in the proof
+of Proposition~\ref{ocf:prop:topology}, and $\sum_{j<r}\dgr a_j$ in
+Section~\ref{ocf:sec:periodic}.
+$C_n$ are cylinders, $C$ an entry of $M$, $C_k$ Catalan numbers in
+\eqref{ocf:eq:rho}, and $\C$ the complex numbers.
+$M$ is the period matrix and a bound on total degrees in the proof of
+Lemma~\ref{ocf:lem:digitfield}; $N$ is an index in
+Theorem~\ref{ocf:thm:hahn} and Lemma~\ref{ocf:lem:digitfield} and an
+ordinary multiplier in \eqref{ocf:eq:periodcriterion}; $m$ is an ordinary
+integer and $\mm$ the ideal.
+$a,b$ are the digits $a_{n+1},a_{n+2}$ in the proof of
+Lemma~\ref{ocf:lem:buffer} and elements of $\Ofin$ in the proof of
+Theorem~\ref{ocf:thm:complex}; $a$ is the floor value in
+Lemma~\ref{ocf:lem:floor}; $b_j$ are period digits and $b$ a digit of
+largest degree in Section~\ref{ocf:sec:periodic}; $\codeb$ is a second code
+in Section~\ref{ocf:sec:complex}; and $a,b$,
+with $c,d$, the complex coefficients of the map in
+Proposition~\ref{ocf:prop:mobius}, where $d$ is not a degree $d_n$.
+$e$ is an error, except that it is an order unit in
+Theorem~\ref{ocf:thm:orderunit}. $\delta$ is a nonzero element of
+$I_{\codea}\cap K_{\codea}$ in Sections~\ref{ocf:sec:algebraic}
+and~\ref{ocf:sec:periodic}, a positive bound in the proof of
+Proposition~\ref{ocf:prop:topology}, and $\delta_\alpha$ are the
+perturbations of Section~\ref{ocf:sec:independence}. $\gamma$ is an
+exponent in \eqref{ocf:eq:normal}, a bound in the proof of
+Corollary~\ref{ocf:cor:neverunique}, and $\gamma_n$ a prescribed cut in
+Proposition~\ref{ocf:prop:prescribed}. $u,w$ are complete quotients in the
+proof of Lemma~\ref{ocf:lem:buffer}, factors in the proof of
+Corollary~\ref{ocf:cor:radical}, and coordinates in $v_\C(u+iw)$. $\rho$ is a real value in the proof of
+Theorem~\ref{ocf:thm:hahn} and the fixed point \eqref{ocf:eq:rho}.
+$\kappa$ is a set cardinal; it is neither the scale $\kappa=v(q)$ of
+\rpath{surcomplex/expanding-polynomial-dynamics} nor a critical point.
+\item \emph{Maps.} $\Phi_n$ of \eqref{ocf:eq:Phi} is a finite prefix map. It
+is not the monomial lift $\Phi_h$ of the independent-copies report and not a
+Taylor automorphism $\Phi_d$. $T$ is the period map. The support
+projection $\pi_G$ in the proof of Theorem~\ref{ocf:thm:hahn} keeps the
+terms with exponents in $G$: it is the bounded-support report's coset
+projection at the zero coset (\lbl{bst:eq:projection}), additive and not
+multiplicative.
+\item \emph{Topologies.} Proposition~\ref{ocf:prop:topology} concerns the
+order topology of the class $\No$, Corollary~\ref{ocf:cor:convergence} that of the set $K_G$. Continuants never
+converge in the first and do converge in the second in the unique case;
+the two statements do not conflict.
+\item All indices $n,k,m,j$ of the algorithm are ordinary natural numbers.
+The spelling ``fiber'' is the source's.
+\end{itemize}
+
+\subsection{Place in the collection}\label{ocf:sec:collection}
+
+\wtag{} The source compared itself with the catalogue at its pin
+(Section~\ref{ocf:sub:known}; Appendix~\ref{ocf:app:pinned}). Checked
+against the collection at the placement commit, the relations are these.
+No named question of any report is answered, and no report is contradicted.
+
+\paragraph{The integer part.} Lemma~\ref{ocf:lem:floor} is the
+integer-part theorem \lbl{odg:thm:floor} of the omnific Diophantine report,
+with the same formula \lbl{odg:eq:floor}; its example
+$\lfloor-\omega^{-1}\rfloor_{\Oz}=-1$ is the source's boundary case
+$\fl{-e}=-1$. The collection proves it also in
+the definable-surreals report (\lbl{dsn:prop:floor}) and the
+computer-algebra report (\lbl{cas:eq-floor}), and prints it once in the
+omnific-notations report (\lbl{onot:eq:floor}), which lists these
+re-proofs; all three are in \rpath{foundations-and-computation/}. Here it is printed
+once, with the source's proof, as one more independent re-derivation; no
+second route is kept. It is the only ingredient of this report that is
+formalized: the ledger \rpath{FORMALIZATION.md} marks \lbl{odg:thm:floor}
+and \lbl{odg:eq:floor} \textbf{Proved} in
+\rpath{../Surreal/Foundations/OmnificFloor.lean} (among others \texttt{omnificFloor\_spec} and
+\texttt{omnificFloor\_of\_negative\_infinitesimal}). The label
+\texttt{ocf:lem:floor} itself has no Lean mapping.
+
+\paragraph{Itinerary fibres at an order unit.}
+\rpath{surcomplex/expanding-polynomial-dynamics} (prefix \texttt{epd:})
+codes the integral points of an expanding polynomial over a Hahn field by
+words, and proves that each word's fibre is a centre plus the ideal
+$I_\kappa=\{h:v(h)>n\kappa\text{ for all }n\}$ (\lbl{epd:lem:ideal},
+\lbl{epd:thm:fibers}), so that a word determines one point exactly when the
+scale $\kappa$ is an order unit (\lbl{epd:def:orderunit}). The exact fibre
+theorem~\ref{ocf:thm:fiber} has the same shape for a different coding, the
+omnific floor algorithm, with an arbitrary countable degree cut in place of
+the multiples of one scale. For an eventually periodic code with $E>0$ and
+$\sum_{j<r}\dgr a_j\le NE$ for some ordinary $N$, one has
+$I_{\codea}=\{0\}\cup\{e:v(e)>kE\text{ for every }k\}$, which is that ideal
+at $\kappa=E$, and Theorem~\ref{ocf:thm:orderunit} is the same order-unit
+threshold. The two proofs are independent; neither report uses the other.
+The separation of countable cofinality from an order unit
+(Corollary~\ref{ocf:cor:cofinality}, Theorem~\ref{ocf:thm:orderunit},
+Section~\ref{ocf:sec:examples}) is also the dividing line of the
+ideal-theoretic trichotomy of
+\rpath{surcomplex/entire-functions-at-arbitrary-rank}
+(\lbl{ent:def:order-unit}); its group without an order unit is of the kind
+in \lbl{epd:ex:no-order-unit}.
+
+\paragraph{Support cosets.} The independence argument of
+Theorem~\ref{ocf:thm:independence}, in which new exponents are rationally
+independent modulo the span $H$ of all given supports so that distinct
+monomials occupy disjoint support cosets, is the standard mechanism of
+\rpath{surreal/independent-surreal-copies} (coset slices,
+\lbl{isc:lem:slice}; linear disjointness of full Hahn fields over the field
+of the intersected group, \lbl{isc:thm:sliceddisjoint}) and of
+\rpath{surreal/transcendence-over-bounded-support} (coset projections,
+\lbl{bst:eq:projection}, \lbl{bst:lem:projection}). It is credited to that
+mechanism; the source's direct proof is printed. The algebraic independence
+of the $\delta_\alpha$ over $\R((\omega^H))$ can also be read off from
+\lbl{isc:thm:sliceddisjoint}, since $H$ meets the rational span of the new
+exponents only in $0$.
+
+\paragraph{Unrelated occurrences.} The continued fractions of
+\rpath{surcomplex/dynamics-and-normal-forms} (\lbl{dyn:prop:cf},
+\lbl{dyn:thm:nonbrjuno}) are ordinary real expansions of a rotation
+number; the continuants of \rpath{surreal/matrix-scaling-at-surreal-scales}
+(\lbl{scale:eq:continuantval}) are tridiagonal determinants. Their
+valuation is computed by a leading-term induction like that of
+Lemma~\ref{ocf:lem:degrees}, but their recurrence has a minus sign, so
+strict dominance of one term replaces the positivity used here.
+
+\paragraph{Formalization.} No \texttt{ocf:} label has a Lean mapping. The
+collection's Lean library has no continuant or continued-fraction
+declaration. Mathlib's continued fractions (\texttt{GenContFract.of})
+require a floor to $\Z$ (\texttt{FloorRing}), which the omnific floor is
+not, so they do not apply to $\No$ as they stand. The formalization route of
+Section~\ref{ocf:sub:formal} is a proposal.
+
+\paragraph{Status of the research questions.} All twelve questions of
+Section~\ref{ocf:sec:questions} are new to the collection and open. None
+is answered by another report. Question~\ref{ocf:q:formal} can start from
+the proved floor. Question~\ref{ocf:q:surcomplex} is not addressed by
+any surcomplex report, and Question~\ref{ocf:q:birthday} is not decided by
+the birthday reports (\rpath{surreal/gonshor-product-birthdays},
+\rpath{surreal/gonshor-laurent-birthdays}).
+
+\section{Surreal and Hahn conventions}
+\label{ocf:sec:prelim}
+
+\subsection{Normal forms, degree, and valuation}
+
+We use the following standard normal-form facts as inputs
+\cite{Gonshor}. Every nonzero surreal has a unique expansion
+\begin{equation}\label{ocf:eq:normal}
+ x=\sum_{\gamma\in S}r_\gamma\omega^\gamma,
+ \qquad r_\gamma\in\R\setminus\{0\},
+\end{equation}
+where $S$ is a reverse well-ordered \emph{set} of surreals. Every such
+normal-form series exists. Its greatest exponent and leading coefficient
+determine its growth and sign. Addition and multiplication are the Hahn
+operations, and $\omega^{\gamma+\delta}=\omega^\gamma\omega^\delta$.
+We write
+\[
+ \dgr x=\max S,\qquad v(x)=-\dgr x,\qquad v(0)=+\infty.
+\]
+In particular $v(xy)=v(x)+v(y)$ for nonzero $x,y$, and
+$v(x+y)\ge\min\{v(x),v(y)\}$, with equality when the two valuations differ.
+For positive $x,y$, leading coefficients do not cancel, so
+\begin{equation}\label{ocf:eq:positivedegree}
+ \dgr(x+y)=\max\{\dgr x,\dgr y\}.
+\end{equation}
+The symbol $\dgr0$ is not used in these identities. The convention
+$D_0=0$ for a zero first digit is a separate bookkeeping definition.
+
+Let $\Ofin$ be the ring of finite surreals and $\mm$ its infinitesimal ideal:
+\[
+ \Ofin=\{0\}\cup\{x:v(x)\ge0\},\qquad
+ \mm=\{0\}\cup\{x:v(x)>0\}.
+\]
+The residue field is $\R$. For $b>0$ we use
+\begin{equation}\label{ocf:eq:little}
+ |e|\prec b\quad\Longleftrightarrow\quad
+ |e|<b/m\ \text{for every ordinary integer }m\ge1.
+\end{equation}
+For nonzero $e$, this is equivalent to $v(e)>v(b)$. Indeed, a leading
+valuation equality makes $|e|/b$ have a positive real leading coefficient,
+which cannot be smaller than every positive real reciprocal.
+
+\subsection{The omnific floor}
+
+\begin{definition}\label{ocf:def:Oz}
+The omnific ring $\Oz$ consists of the normal forms with growth exponents
+in $\No_{\ge0}$ and with ordinary integer coefficient at exponent zero.
+The purely infinite coefficients may be arbitrary real numbers.
+\end{definition}
+
+A nonzero omnific integer has nonnegative degree. An omnific integer of
+degree zero is an ordinary nonzero integer. The ring is discretely ordered:
+its least positive element is $1$. These observations follow immediately
+from the leading term and the integer constant coefficient.
+
+\begin{lemma}[Exact floor, including the boundary correction]
+\label{ocf:lem:floor}
+Each $x\in\No$ has a unique $a\in\Oz$ with $a\le x<a+1$. Write
+$x=x_{>0}+r+e$, where $x_{>0}$ is its positive-growth part, $r\in\R$, and
+$e\in\mm$. If $r\notin\Z$, then
+$a=x_{>0}+\lfloor r\rfloor$. If $r\in\Z$, then
+\[
+ a=\begin{cases}x_{>0}+r,&e\ge0,\\
+                 x_{>0}+r-1,&e<0.
+   \end{cases}
+\]
+\end{lemma}
+\begin{proof}
+In the nonintegral case the real fractional part of $r$ is strictly between
+zero and one, and adding an infinitesimal preserves both inequalities. In
+the integral case the displayed correction gives the same bounds. For
+uniqueness, two distinct omnific integers differ in absolute value by at
+least one and therefore cannot both lie in $(x-1,x]$.
+\end{proof}
+
+We denote this floor by $\fl{x}$. In particular, if $0<e\in\mm$, then
+$\fl{-e}=-1$, not zero. The algorithm below needs the actual floor, not
+constant-term rounding without this correction.
+
+\wtag{} Lemma~\ref{ocf:lem:floor} is the collection's integer-part
+theorem \lbl{odg:thm:floor} (formula \lbl{odg:eq:floor}), also
+\lbl{dsn:prop:floor}, \lbl{cas:eq-floor} and \lbl{onot:eq:floor}. It is
+printed once here, with the source's proof, as an independent
+re-derivation. The ledger marks \lbl{odg:thm:floor} \textbf{Proved} in Lean
+(\rpath{../Surreal/Foundations/OmnificFloor.lean}), including the
+negative-infinitesimal correction $\fl{-e}=-1$
+(Section~\ref{ocf:sec:collection}).
+
+\subsection{Full Hahn fields and class size}
+
+For a set-sized additive subgroup $G\subseteq\No$, let
+\begin{equation}\label{ocf:eq:KG}
+ K_G=\R((\omega^G))
+   =\{x\in\No:\supp(x)\subseteq G\},\qquad
+ \Oz_G=K_G\cap\Oz.
+\end{equation}
+The support in this formula is the set of growth exponents. By the normal
+form theorem $K_G$ is a set-sized ordered field, with value group $G$.
+It is the \emph{full} Hahn field: arbitrary allowed well-ordered valuation
+supports are admitted, not only finite or grid-based supports. Formula
+\eqref{ocf:eq:KG} includes $G=\{0\}$, when $K_G=\R$.
+
+The floor in Lemma~\ref{ocf:lem:floor} preserves $K_G$, since it deletes terms
+and changes only the constant coefficient. Consequently the continued
+fraction of any element of $K_G$, when defined, has digits in $\Oz_G$.
+
+Class statements can be read in a standard conservative class framework,
+or as assertions about the definable class of surreal sign sequences over
+ZFC. Every support, sequence, field generated by specified data, and cut
+used in a construction below is a set. No large-cardinal assumption,
+class-length recursion for this algorithm, or proper-class choice of a
+transcendence basis is used.
+
+\section{Finite continuants and open cylinders}
+\label{ocf:sec:cylinders}
+
+\begin{definition}[Digits and complete quotients]\label{ocf:def:digits}
+For $x_0=x$, define recursively
+\[
+ a_n=\fl{x_n},\qquad x_{n+1}=\frac1{x_n-a_n}
+\]
+provided $x_n\ne a_n$. A sequence $\codea=(a_n)_{n\ge0}$ is
+\emph{admissible} if $a_0\in\Oz$ and $a_n\in\Oz$, $a_n\ge1$ for every
+$n\ge1$. Its fiber $\F(\codea)$ consists of inputs for which all complete
+quotients exist and the digit sequence is exactly $\codea$.
+\end{definition}
+
+The remainder belongs to $(0,1)$ whenever the algorithm continues. Hence
+$x_{n+1}>1$ and its floor is at least one. Finite terminating expansions
+are not included in an infinite fiber.
+
+For an admissible code define, including the initial indices,
+\begin{align}\label{ocf:eq:continuants}
+ p_{-2}=0,\quad p_{-1}=1,&\qquad
+ p_n=a_np_{n-1}+p_{n-2},\\
+ q_{-2}=1,\quad q_{-1}=0,&\qquad
+ q_n=a_nq_{n-1}+q_{n-2}.\nonumber
+\end{align}
+Then $p_0=a_0$ and $q_0=1$. All entries belong to $\Oz$.
+
+\begin{lemma}[Matrix identities]\label{ocf:lem:matrix}
+For every $n\ge0$,
+\begin{align}
+ \prod_{j=0}^{n}\begin{pmatrix}a_j&1\\1&0\end{pmatrix}
+  &=\begin{pmatrix}p_n&p_{n-1}\\q_n&q_{n-1}\end{pmatrix},\label{ocf:eq:matrix}\\
+ p_nq_{n-1}-p_{n-1}q_n&=(-1)^{n+1}.\label{ocf:eq:det}
+\end{align}
+Moreover $q_n>0$ and $q_n\ge q_{n-1}$, and, for the Fibonacci numbers
+$F_1=F_2=1$,
+\begin{equation}\label{ocf:eq:fib}
+ q_{n+k}\ge F_{k+1}q_n\qquad(n,k\ge0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Multiplication of the last matrix gives the recursions in
+\eqref{ocf:eq:continuants}; each factor has determinant $-1$. For the positive
+and monotonic assertions start with $q_{-1}=0,q_0=1$ and use $a_j\ge1$.
+The recurrence gives $q_{j+2}\ge q_{j+1}+q_j$. Induction on $k$, starting
+with $k=0,1$, proves \eqref{ocf:eq:fib}. No Archimedean hypothesis enters.
+\end{proof}
+
+Define
+\begin{equation}\label{ocf:eq:Phi}
+ \Phi_n(t)=\frac{p_nt+p_{n-1}}{q_nt+q_{n-1}},\qquad
+ r_n=\frac{p_n}{q_n},\qquad
+ s_n=\frac{p_n+p_{n-1}}{q_n+q_{n-1}}.
+\end{equation}
+The map $\Phi_n$ is the finite composition
+$a_0+1/(a_1+1/(\cdots+1/(a_n+1/t)))$.
+
+\begin{proposition}[Cylinder description]\label{ocf:prop:cylinder}
+The points having the first $n+1$ digits $a_0,\ldots,a_n$ and a further
+complete quotient form the open interval
+\[
+ C_n=\Phi_n((1,\infty))
+    =(\min(r_n,s_n),\max(r_n,s_n)).
+\]
+These intervals are nested, and
+\begin{equation}\label{ocf:eq:width}
+ |C_n|=\frac1{q_n(q_n+q_{n-1})}\le\frac1{q_n^2}.
+\end{equation}
+If $x=\Phi_n(t)$ with $t>1$, its distances to the two endpoints are
+\begin{align}
+ |x-r_n|&=\frac1{q_n(q_nt+q_{n-1})},\label{ocf:eq:distR}\\
+ |x-s_n|&=\frac{t-1}{(q_n+q_{n-1})(q_nt+q_{n-1})}.\label{ocf:eq:distS}
+\end{align}
+Finally,
+\begin{equation}\label{ocf:eq:intersection}
+ \F(\codea)=\bigcap_{n\ge0}C_n.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Each map $u\mapsto a+1/u$ takes $u>1$ into $(a,a+1)$, so its floor is
+$a$. Iterating proves the digit interpretation and nesting. Subtracting
+two fractional linear expressions and using \eqref{ocf:eq:det} proves
+\eqref{ocf:eq:width}--\eqref{ocf:eq:distS}. The determinant also shows strict
+monotonicity; direct solution for $t$ shows that the image is the entire
+open interval between $r_n$ and $s_n$. Membership in every finite cylinder
+is precisely indefinite continuation with the prescribed digits.
+\end{proof}
+
+\begin{corollary}[Realization in the full surreal field]\label{ocf:cor:realization}
+Every admissible code has a realization in $\No$. In fact, let $L$ and $R$
+be the sets of lower and upper endpoints of all the $C_n$. Then the Conway
+cut $\{L\mid R\}$ belongs to $\F(\codea)$.
+\end{corollary}
+\begin{proof}
+The sets are countable and every member of $L$ is strictly less than every
+member of $R$: compare both with a point of a sufficiently late nonempty
+nested interval. The standard cut property supplies a surreal strictly
+between the two sets. It lies in every $C_n$.
+\end{proof}
+
+The cut in this corollary is a simplicity-based choice. The proof does not
+interpret it as an order-topological limit, and later periodic fixed-point
+choices will not be identified with it without a separate argument.
+
+\section{An exact valuation description of every fiber}
+\label{ocf:sec:fibers}
+
+\subsection{Why both endpoints matter}
+
+An upper error bound $|x-r_n|<q_n^{-2}$ does not by itself show that a
+perturbation preserves the digits. One also needs a lower bound on the
+distance to the \emph{other} boundary. The case of a next digit equal to
+one is the delicate boundary case.
+
+\begin{lemma}[Uniform two-step buffer]\label{ocf:lem:buffer}
+For $x\in\F(\codea)$ and every $n\ge0$, the distance from $x$ to either
+endpoint of $C_n$ is strictly greater than
+\begin{equation}\label{ocf:eq:buffer}
+ \frac1{4q_{n+2}^{\,2}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $t=x_{n+1}=a+1/u$ and $u=x_{n+2}=b+1/w$, where
+$a=a_{n+1}$, $b=a_{n+2}$, and $w>1$. Thus $a<t<a+1$ and $b<u<b+1$.
+Since $q_nt+q_{n-1}<q_{n+1}+q_n\le2q_{n+1}$, formula
+\eqref{ocf:eq:distR} gives
+\[
+ |x-r_n|>\frac1{2q_nq_{n+1}}\ge\frac1{2q_{n+1}^{\,2}}.
+\]
+For the other endpoint first suppose $a>1$. Discreteness of $\Oz$ implies
+$a\ge2$, so $t-1>1$. In \eqref{ocf:eq:distS}, both denominator factors are at
+most $2q_{n+1}$, and the second is strictly smaller. Consequently
+$|x-s_n|>1/(4q_{n+1}^{\,2})$.
+
+If $a=1$, then $q_{n+1}=q_n+q_{n-1}$ and $t-1=1/u$. Substitution in
+\eqref{ocf:eq:distS} gives the sharper identity
+\[
+ |x-s_n|=\frac1{q_{n+1}(q_{n+1}u+q_n)}
+ >\frac1{q_{n+1}(q_{n+2}+q_{n+1})}
+ \ge\frac1{2q_{n+2}^{\,2}}.
+\]
+Monotonicity of the denominators now gives \eqref{ocf:eq:buffer} in all cases.
+\end{proof}
+
+\begin{lemma}[Degree and exact convergent error]\label{ocf:lem:degrees}
+For every $n\ge0$,
+\begin{equation}\label{ocf:eq:degrees}
+ \dgr q_n=d_n=\sum_{j=1}^n\dgr a_j.
+\end{equation}
+For each $x\in\F(\codea)$,
+\begin{equation}\label{ocf:eq:exacterror}
+ v(x-r_n)=d_n+d_{n+1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The denominator degree formula starts at $q_0=1$. In
+$a_nq_{n-1}+q_{n-2}$ both summands are nonnegative and the first has degree
+$\dgr a_n+d_{n-1}\ge d_{n-2}$. Leading coefficients do not cancel, so
+induction proves \eqref{ocf:eq:degrees}.
+
+In \eqref{ocf:eq:distR}, the complete quotient satisfies
+$a_{n+1}<t<a_{n+1}+1$, whence $\dgr t=\dgr a_{n+1}$. The positive
+expression $q_nt+q_{n-1}$ therefore has degree
+$d_n+\dgr a_{n+1}=d_{n+1}$. Taking the valuation of the reciprocal in
+\eqref{ocf:eq:distR} proves \eqref{ocf:eq:exacterror}.
+\end{proof}
+
+\begin{definition}[Precision ideal]\label{ocf:def:ideal}
+For an admissible code let
+\begin{equation}\label{ocf:eq:ideal}
+ I_{\codea}=\{0\}\cup
+ \{e\in\No^\times:v(e)>2d_n\text{ for all }n\ge0\}.
+\end{equation}
+Equivalently, $|e|\prec q_n^{-2}$ for every $n$.
+\end{definition}
+
+\begin{theorem}[Exact fiber]\label{ocf:thm:fiber}
+For every admissible code $\codea$ and every $x\in\F(\codea)$,
+\begin{equation}\label{ocf:eq:fiber}
+ \boxed{\ \F(\codea)=x+I_{\codea}.\ }
+\end{equation}
+The group $I_{\codea}$ is a convex $\R$-linear additive subgroup of $\No$
+and a proper ideal of $\Ofin$, contained in $\mm$.
+\end{theorem}
+\begin{proof}
+Suppose $x,y\in\F(\codea)$. For fixed $n$ and every $k\ge0$, both points
+belong to $C_{n+k}$. Thus by \eqref{ocf:eq:width} and \eqref{ocf:eq:fib},
+\[
+ |x-y|<q_{n+k}^{-2}\le F_{k+1}^{-2}q_n^{-2}.
+\]
+The ordinary Fibonacci numbers are unbounded in the ordinary integers.
+For every ordinary $m$ we may choose $k$ with $F_{k+1}^2>m$. It follows
+that $|x-y|\prec q_n^{-2}$. Since $n$ was arbitrary, $y-x\in I_{\codea}$.
+
+Conversely, take $e\in I_{\codea}$. For each $n$,
+$|e|\prec q_{n+2}^{-2}$, so in particular
+$|e|<1/(4q_{n+2}^{\,2})$. The buffer lemma ensures $x+e\in C_n$.
+This holds for all $n$, proving $x+e\in\F(\codea)$.
+
+The valuation inequality proves additive closure, including cancellation.
+Multiplication by a nonzero real does not change valuation. Multiplication
+by an element of $\Ofin$ can only increase valuation. Convexity follows
+either from \eqref{ocf:eq:little} or from the valuation order. Finally $d_0=0$
+implies $I_{\codea}\subseteq\mm$, so $1\notin I_{\codea}$.
+\end{proof}
+
+\begin{corollary}[No unique unrestricted surreal realization]
+\label{ocf:cor:neverunique}
+Every admissible infinite code has a nonzero precision ideal and a
+proper-class fiber in $\No$.
+\end{corollary}
+\begin{proof}
+The set $\{2d_n:n\ge0\}$ has a strict surreal upper bound $\gamma$.
+Then $\omega^{-\gamma}\in I_{\codea}$. For arbitrarily large positive
+surreal $\eta>\gamma$, the distinct monomials $\omega^{-\eta}$ also lie
+in the ideal. These cannot form a set: their valuations would give a
+set unbounded above in $\No$, contrary to the cut property.
+\end{proof}
+
+The basic proper-class conclusion is consistent with, and already
+anticipated by, the older associated-class theory. The useful refinement
+here is its exact cut of allowed valuations.
+
+\subsection{What an ordinary sequence does not converge to}
+
+\begin{proposition}[Order-topological obstruction]\label{ocf:prop:topology}
+A net indexed by a set that converges in the order topology of $\No$ is
+eventually equal to its limit. In particular, the sequence of continuants
+$r_n$ of an admissible infinite code does not converge in that topology.
+\end{proposition}
+\begin{proof}
+Suppose $(z_j)_{j\in J}$ converges to $z$, where $J$ is a set. The nonzero
+positive distances $|z_j-z|$ form a set $S$. If $S$ is nonempty, the cut
+property gives $0<\delta<s$ for all $s\in S$. Eventual membership in
+$(z-\delta,z+\delta)$ therefore means eventual equality to $z$. The
+continuants are never eventually constant, since the determinant identity
+makes consecutive ones distinct.
+\end{proof}
+
+This elementary class-size obstruction is not presented as a new topology
+theorem. It explains why cylinder realization, coefficientwise Hahn
+behavior, and order convergence must be kept separate.
+
+\section{Realization inside a prescribed full Hahn field}
+\label{ocf:sec:hahn}
+
+We now answer a stronger question than Corollary~\ref{ocf:cor:realization}:
+when the digits lie in a given full Hahn field, can the realization be kept
+inside it? For an arbitrary ordered subfield of $\No$ there is no reason
+for the answer to be affirmative. For $K_G$ it always is.
+
+\begin{theorem}[Hahn realization and exact uniqueness]\label{ocf:thm:hahn}
+Let $G\subseteq\No$ be a set-sized additive subgroup and let $\codea$ be
+an admissible code in $\Oz_G$. Then
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\F(\codea)\cap K_G\ne\varnothing$;
+\item for $x\in\F(\codea)\cap K_G$,
+\[
+ \F(\codea)\cap K_G=x+(I_{\codea}\cap K_G);
+\]
+\item this fiber is a singleton if and only if $(2d_n)$ is cofinal in
+$G_{\ge0}$, in the sense that every $g\in G_{\ge0}$ satisfies
+$g\le2d_n$ for some $n$.
+\end{enumerate}
+No divisibility assumption on $G$ is needed.
+\end{theorem}
+\begin{proof}
+Only existence requires a new argument. All continuants $r_n$ are already
+in $K_G$. Split the proof according to the degree sequence.
+
+\emph{Case 1: $d_n$ is eventually constant.} Each increment
+$d_n-d_{n-1}=\dgr a_n$ is nonnegative. Thus all sufficiently late digits
+have degree zero and are positive ordinary integers. The corresponding
+ordinary real infinite continued fraction has an irrational real value
+$\rho>1$ \cite{Krishnan}. Apply the finite prefix map $\Phi_{N-1}$ to
+$\rho$, where the ordinary tail starts at $a_N$ and $N\ge1$. This produces
+a point of $K_G$ with the required code. The denominator is positive, and
+all tail remainders are nonzero by the ordinary irrationality theorem.
+
+\emph{Case 2: $d_n$ is not eventually constant.} Choose any
+$x\in\F(\codea)$ in $\No$. Delete from its normal form the terms whose
+growth exponents are outside $G$, and call the resulting subseries
+$\pi_G(x)$. A subseries of a reverse well-ordered support is allowed, so
+$\pi_G(x)\in K_G$.
+
+Fix $n$. There is $k$ with $d_k>d_n$. By \eqref{ocf:eq:exacterror},
+\[
+ v(x-r_k)=d_k+d_{k+1}>2d_n.
+\]
+Since $r_k$ is supported in $G$, every term of $x$ outside $G$ is also a
+term of $x-r_k$. Every deleted term therefore has valuation greater than
+$2d_n$. This is true for every $n$, and if the deleted subseries is nonzero
+its leading term is one of those terms. Hence
+\[
+ x-\pi_G(x)\in I_{\codea}.
+\]
+The exact fiber theorem implies $\pi_G(x)\in\F(\codea)$, proving existence.
+
+Assertion (ii) is the intersection of \eqref{ocf:eq:fiber} with $K_G$.
+For (iii), a nonzero element of $I_{\codea}\cap K_G$ has a valuation
+$g\in G$ strictly above every $2d_n$. Conversely every such $g$ is realized
+by $\omega^{-g}\in K_G$. This is exactly the failure of cofinality.
+\end{proof}
+
+\begin{remark}[The projection is not a homomorphism]\label{ocf:rem:projection}
+The map $\pi_G$ in the proof is an additive support projection, not a field
+map. For $G=\Z$, one has
+$\pi_G(\omega^{1/2})=0$ but $\pi_G((\omega^{1/2})^2)=\omega$.
+The argument uses only the support of the difference from an actual
+continuant; it never projects a product or a reciprocal.
+\end{remark}
+
+\begin{remark}[Why eventual constancy was separated]\label{ocf:rem:twocases}
+It would be invalid to demand a $k$ with $d_k>d_n$ in the first case.
+Ordinary digits improve real coefficient precision without changing
+valuation. The real continued-fraction theorem is exactly the missing
+input in that case. The two-case proof also avoids an unjustified
+summation of the differences $r_{n+1}-r_n$.
+\end{remark}
+
+\begin{corollary}[Countable cofinality threshold]\label{ocf:cor:cofinality}
+For a nonzero set-sized additive subgroup $G$ of $\No$, some admissible
+infinite code in $\Oz_G$ has a unique realization in $K_G$ if and only if
+$G_{\ge0}$ has a countable cofinal subset.
+\end{corollary}
+\begin{proof}
+A uniquely realizing code supplies the countable cofinal sequence $(2d_n)$.
+Conversely choose a nondecreasing cofinal sequence $g_n\in G_{\ge0}$,
+with $g_0=0$. Set
+\[
+ a_0=0,\qquad a_n=\omega^{g_n-g_{n-1}}\quad(n\ge1).
+\]
+Zero increments give the digit $1$; positive increments give a positive
+infinite omnific integer. The degree sequence is exactly $g_n$.
+Theorem~\ref{ocf:thm:hahn} gives a unique realization.
+\end{proof}
+
+The cofinality statements using $(d_n)$ and $(2d_n)$ are equivalent. One
+direction is immediate; for the other, apply cofinality of $(2d_n)$ to
+$2g$ to obtain $d_n\ge g$. This does not divide an element of $G$ by two.
+
+\begin{corollary}[Convergence in the unique Hahn case]\label{ocf:cor:convergence}
+If $G\ne\{0\}$ and the conditions for uniqueness in
+Theorem~\ref{ocf:thm:hahn} hold, the continuants converge in the order topology
+of $K_G$ to that unique point.
+\end{corollary}
+\begin{proof}
+For any positive $b\in K_G$, choose $n_0$ with
+$d_{n_0}+d_{n_0+1}>v(b)$. Such a strict bound exists by cofinality and a
+positive element of $G$. For $n\ge n_0$, \eqref{ocf:eq:exacterror} gives
+$|x-r_n|\prec b$, hence $|x-r_n|<b$.
+\end{proof}
+
+When $G=\{0\}$, the field is $\R$ and ordinary real convergence applies
+instead. When $G\ne\{0\}$ but all late digits are ordinary, ordinary
+real coefficient convergence does \emph{not} imply order convergence in
+$K_G$: nonzero real errors exceed every positive infinitesimal.
+
+\section{The algebra of precision ideals}
+\label{ocf:sec:ideals}
+
+\subsection{Realizing an arbitrary countably specified precision cut}
+
+\begin{proposition}[Prescribed degree cut]\label{ocf:prop:prescribed}
+Let $(\gamma_n)_{n\ge0}$ be a nondecreasing sequence of nonnegative
+surreals with $\gamma_0=0$. There is an admissible code with
+\[
+ I_{\codea}=\{0\}\cup\{e:v(e)>\gamma_n\text{ for every }n\}.
+\]
+One choice is
+\begin{equation}\label{ocf:eq:prescribed}
+ a_0=0,\qquad a_n=\omega^{(\gamma_n-\gamma_{n-1})/2}\quad(n\ge1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Every exponent in \eqref{ocf:eq:prescribed} is nonnegative, so each digit is at
+least one and belongs to $\Oz$. Formula \eqref{ocf:eq:degrees} gives
+$2d_n=\gamma_n$, which proves the assertion.
+\end{proof}
+
+Within a prescribed $G$, this construction requires the displayed half
+increments to belong to $G$. This is automatic for divisible $G$ when all
+$\gamma_n\in G$. Theorem~\ref{ocf:thm:hahn} itself has no such divisibility
+requirement.
+
+\begin{theorem}[Prime precision criterion]\label{ocf:thm:prime}
+The ideal $I_{\codea}$ is prime in $\Ofin$ if and only if condition
+\eqref{ocf:cond:P} holds. The same equivalence holds for
+$I_{\codea}\cap K_G$ in $\Ofin\cap K_G$ when the digits lie in $K_G$.
+If \eqref{ocf:cond:P} fails, there is an explicit element whose image in the
+quotient is nonzero but has square zero.
+\end{theorem}
+\begin{proof}
+The nonnegative valuations of elements outside $I_{\codea}$ form the lower
+set
+\[
+ D=\bigcup_{n\ge0}[0,2d_n].
+\]
+Primality is equivalent to closure of $D$ under addition. If
+\eqref{ocf:cond:P} holds and $g,h\in D$, choose $n$ bounding both by $2d_n$
+and then $m$ with $d_m\ge2d_n$. It follows that
+$g+h\le4d_n\le2d_m$, so $g+h\in D$.
+
+Conversely, additive closure applied to $2d_n+2d_n$ gives an $m$ with
+$4d_n\le2d_m$, which is \eqref{ocf:cond:P}.
+If this condition fails, choose $n$ such that $d_m<2d_n$ for every $m$.
+Then $d_n>0$ and
+\[
+ e=\omega^{-2d_n}\notin I_{\codea},\qquad
+ e^2=\omega^{-4d_n}\in I_{\codea}.
+\]
+When all digits lie in $K_G$, these monomials lie there too; thus the same
+necessity proof works in the restricted ring. The sufficiency proof is
+unchanged.
+\end{proof}
+
+Primality for the full class is an elementwise assertion. Quotient rings
+are taken inside set-sized Hahn workspaces containing the digits and the
+elements under discussion. Every displayed witness lies in such a
+workspace. No object consisting of proper-class cosets is assumed.
+
+\begin{corollary}[Radical and nilpotency index]\label{ocf:cor:radical}
+For $0\ne e\in\Ofin$, its class modulo $I_{\codea}$ in a set-sized
+workspace as above is nilpotent exactly when
+\begin{equation}\label{ocf:eq:nilpotency}
+ \text{there is }k\ge1\text{ such that }k\,v(e)>2d_n
+ \text{ for every }n.
+\end{equation}
+The least such $k$ is its nilpotency index, with index one meaning the zero
+class. The radical $\sqrt{I_{\codea}}$ is prime.
+\end{corollary}
+\begin{proof}
+The criterion and index are the equality $v(e^k)=kv(e)$ and the definition
+of the ideal. To prove primality, suppose $(uw)^k\in I_{\codea}$.
+Write $g=v(u)$, $h=v(w)$ and assume $g\le h$. Then
+$2kh\ge k(g+h)>2d_n$ for every $n$, so $w^{2k}\in I_{\codea}$ and
+$w\in\sqrt{I_{\codea}}$. Zero factors are immediate. This is the familiar
+valuation-ring argument, included to identify the precise cut involved.
+\end{proof}
+
+Condition \eqref{ocf:cond:P} is thus more than a growth convenience. It says
+that the undetected infinitesimals define a reduced integral-domain
+quotient, rather than an error calculus with nonzero nilpotent classes.
+It will also be one of the two exact conditions for algebraic rigidity.
+
+\section{Algebraic rigidity over the digit field}
+\label{ocf:sec:algebraic}
+
+\subsection{The coefficient field must be specified}
+
+Define
+\[
+ K_{\codea}=\Q(a_0,a_1,a_2,\ldots),\qquad
+ A_{\codea}=\{x\in\F(\codea):x\text{ is algebraic over }K_{\codea}\}.
+\]
+The field $K_{\codea}$ is countable: every element is a rational expression
+in finitely many members of a countable list. The digits themselves may
+have enormous or uncountable supports, but this does not change the
+cardinality of the field \emph{generated by them}. Consequently the set of
+all elements of $\No$ algebraic over $K_{\codea}$ is countable.
+
+These are statements relative to the specified digit field, not to all
+omnific coefficients or to the whole ambient surreal field. For an
+arbitrary code we do not know that $A_{\codea}$ is nonempty.
+
+\begin{lemma}[Algebraic errors cannot be newly invisible]
+\label{ocf:lem:algerror}
+Let $E\subseteq\No$ be a set-sized subfield. If a nonzero
+$e\in I_{\codea}$ is algebraic over $E$, then
+$I_{\codea}\cap E$ contains a nonzero element. Hence
+\[
+ I_{\codea}\cap E=\{0\}
+ \quad\Longleftrightarrow\quad
+ I_{\codea}\cap\alg_{\No}(E)=\{0\},
+\]
+where $\alg_{\No}(E)$ is the field of elements of $\No$ algebraic over $E$.
+\end{lemma}
+\begin{proof}
+Put $g=v(e)>0$ and take a nonzero polynomial relation
+$\sum_j c_je^j=0$ over $E$. Among the valuations $v(c_j)+jg$ of nonzero
+terms, the minimum occurs at least twice. Otherwise the uniquely leading
+term could not cancel. For two minimizing indices $i<j$,
+\[
+ (j-i)g=v(c_i)-v(c_j)=v(c_i/c_j).
+\]
+The ratio $c_i/c_j$ is a nonzero element of $E$. Since $g>2d_n$ for all
+$n$, its valuation $(j-i)g$ has the same strict lower bounds. Thus the
+ratio belongs to $I_{\codea}$. The reverse implication in the equivalence
+is immediate from $E\subseteq\alg_{\No}(E)$.
+\end{proof}
+
+\begin{lemma}[What the digit field can see]\label{ocf:lem:digitfield}
+With $D_0=\dgr a_0$ for $a_0\ne0$, and $D_0=0$ otherwise,
+\begin{equation}\label{ocf:eq:fieldvisibility}
+ I_{\codea}\cap K_{\codea}=\{0\}
+ \quad\Longleftrightarrow\quad
+ \eqref{ocf:cond:P}\text{ and }\eqref{ocf:cond:V}.
+\end{equation}
+If either condition fails, a nonzero element of the intersection is
+explicitly available from the digits and continuants.
+\end{lemma}
+\begin{proof}
+If \eqref{ocf:cond:V} fails, then $a_0\ne0$ and
+$v(a_0^{-1})=D_0>2d_n$ for every $n$. Thus $a_0^{-1}\in I_{\codea}\cap
+K_{\codea}$.
+If \eqref{ocf:cond:P} fails, choose $n$ with $d_m<2d_n$ for every $m$.
+The nonzero element $q_n^{-4}\in K_{\codea}$ has valuation $4d_n>2d_m$
+for every $m$, so it belongs to the intersection.
+
+For the converse assume both conditions. Let $z\in K_{\codea}^\times$.
+Write $z=P/Q$, where $P,Q$ are nonzero evaluations of integer-coefficient
+polynomials in finitely many digits. They belong to $\Oz$. Choose $N$
+large enough to include those digit indices and to satisfy $D_0\le2d_N$.
+Every degree of an appearing digit is then at most $2d_N$.
+If $M$ bounds the total degrees of both polynomials, every nonzero
+monomial in them has growth degree at most $2Md_N$. Finite addition,
+even with cancellation, cannot increase that bound. Therefore
+\[
+ 0\le\dgr P,\dgr Q\le2Md_N,
+ \qquad |v(z)|=|\dgr Q-\dgr P|\le2Md_N.
+\]
+If $d_N=0$, this gives $v(z)=0$, already excluding $z\in I_{\codea}$.
+Otherwise iterating \eqref{ocf:cond:P} produces an $m$ with
+$d_m\ge M d_N$. It follows that $v(z)\le2d_m$, again excluding membership.
+This proves \eqref{ocf:eq:fieldvisibility}.
+\end{proof}
+
+\begin{theorem}[Exact algebraic-fiber trichotomy]\label{ocf:thm:algebraic}
+For every admissible code the following statements hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If \eqref{ocf:cond:P} and \eqref{ocf:cond:V} both hold, then
+$|A_{\codea}|\le1$.
+\item If either condition fails, then $A_{\codea}$ is either empty or
+countably infinite.
+\item In the nonempty case of (ii), for any $\xi\in A_{\codea}$ there is
+$0\ne\delta\in I_{\codea}\cap K_{\codea}$ such that
+\begin{equation}\label{ocf:eq:algtranslations}
+ \xi+q\delta\in A_{\codea},\qquad
+ K_{\codea}(\xi+q\delta)=K_{\codea}(\xi)
+ \quad(q\in\Q).
+\end{equation}
+\end{enumerate}
+Thus whenever an algebraic realization exists, it is unique if and only
+if both displayed conditions hold.
+\end{theorem}
+\begin{proof}
+If $\xi,\eta$ are algebraic realizations, their difference is algebraic
+over $K_{\codea}$ and belongs to $I_{\codea}$ by
+Theorem~\ref{ocf:thm:fiber}. Lemmas~\ref{ocf:lem:algerror} and
+\ref{ocf:lem:digitfield} force that difference to vanish when both conditions
+hold.
+
+When either fails, Lemma~\ref{ocf:lem:digitfield} supplies a nonzero $\delta$
+in the digit field and precision ideal. Given one algebraic $\xi$, the
+exact fiber theorem and $\R$-linearity of the ideal give all the points
+in \eqref{ocf:eq:algtranslations}. Translation by an element of the base field
+does not change the generated extension. The points are distinct as $q$
+varies. Countability of the entire algebraic closure inside $\No$ gives
+the upper bound and hence the exact countable cardinality.
+\end{proof}
+
+\subsection{Two different sources of failure}
+
+Condition \eqref{ocf:cond:P} is intrinsic to the precision ideal: the observed
+denominator degrees must eventually absorb their own doubles. Condition
+\eqref{ocf:cond:V} is different. The first digit contributes a parameter to
+the coefficient field but contributes nothing to any denominator degree.
+It may therefore introduce a scale invisible to all subsequent digits.
+
+This distinction explains why even a long periodic tail can fail to give
+algebraic uniqueness. It also explains why the full-class nonuniqueness
+of Corollary~\ref{ocf:cor:neverunique} is compatible with uniqueness among
+algebraic elements over a countable coefficient field.
+
+\section{Periodic itineraries and periodic complete quotients}
+\label{ocf:sec:periodic}
+
+\subsection{A distinguished algebraic realization always exists}
+
+Assume an eventually periodic code is displayed as
+\begin{equation}\label{ocf:eq:periodiccode}
+ \codea=(a_0,\ldots,a_{r-1},\overline{b_1,\ldots,b_\ell}),
+ \qquad r\ge1,\quad\ell\ge1,
+\end{equation}
+where the $b_j$ are positive omnific integers. The finite digit field is
+\[
+ K=\Q(a_0,\ldots,a_{r-1},b_1,\ldots,b_\ell)=K_{\codea}.
+\]
+Let
+\begin{equation}\label{ocf:eq:periodmatrix}
+ M=\prod_{j=1}^{\ell}\begin{pmatrix}b_j&1\\1&0\end{pmatrix}
+   =\begin{pmatrix}A&B\\C&D\end{pmatrix},
+ \qquad T(t)=\frac{At+B}{Ct+D}.
+\end{equation}
+Here $B,C>0$, $A,D\ge0$, and $\det M=(-1)^\ell$.
+
+\begin{theorem}[Period-fixed representative]\label{ocf:thm:periodroot}
+There is exactly one $t>1$ satisfying $T(t)=t$. It is the positive root of
+\begin{equation}\label{ocf:eq:periodpoly}
+ Ct^2+(D-A)t-B=0,
+\end{equation}
+namely
+\begin{equation}\label{ocf:eq:periodroot}
+ t=\frac{A-D+\sqrt{(D-A)^2+4BC}}{2C}.
+\end{equation}
+Its complete quotients repeat after the block. The point
+$\xi=\Phi_{r-1}(t)$ belongs to $\F(\codea)$ and satisfies $[K(\xi):K]\le2$.
+It is the unique point in that fiber whose complete quotient at index $r$
+is fixed by this period transformation.
+\end{theorem}
+\begin{proof}
+The discriminant is positive and $\No$ is real closed. The two roots have
+product $-B/C<0$, so exactly one is positive. Moreover $T(1)>1$: a finite
+composition of the maps $u\mapsto b_j+1/u$, applied at $u=1$, has first
+value strictly greater than $b_1\ge1$. Thus the polynomial in
+\eqref{ocf:eq:periodpoly} is negative at $1$, and its positive root exceeds
+$1$.
+
+For this root, the identity $t=T(t)$ presents one full block of digits
+with a final tail equal to $t>1$. All intermediate tails are greater than
+one, so the floor algorithm produces the block and returns to the same
+complete quotient. Induction repeats this indefinitely. Applying the
+finite prefix gives $\xi$ with the code \eqref{ocf:eq:periodiccode}. The
+quadratic equation and the fractional linear prefix place $\xi$ in an
+extension of degree at most two. Finally, the prefix map is injective,
+and \eqref{ocf:eq:periodpoly} has only one root greater than one.
+\end{proof}
+
+This is the familiar fixed-point mechanism behind periodic continued
+fractions, extended by ordered-field algebra. It is not the assertion
+that \emph{every} point with periodic digits satisfies
+\eqref{ocf:eq:periodpoly}. A periodic itinerary does not force its complete
+quotients to recur as equal numbers.
+
+\subsection{The exact algebraic dichotomy}
+
+Define
+\begin{equation}\label{ocf:eq:periodscales}
+\begin{split}
+ E&=\sum_{j=1}^{\ell}\dgr b_j,\\
+ D_*&=\max\bigl(\{0,D_0\}\cup
+ \{\dgr a_j:1\le j<r\}\cup\{\dgr b_j:1\le j\le\ell\}\bigr).
+\end{split}
+\end{equation}
+Thus $E$ is the degree gained per full period. It is not the degree of a
+matrix entry chosen without regard to the recurrence.
+
+\begin{theorem}[One or countably many algebraic periodic realizations]
+\label{ocf:thm:periodiccriterion}
+For the code \eqref{ocf:eq:periodiccode}, exactly one point of $\F(\codea)$ is
+algebraic over $K$ if and only if one of the following holds:
+\begin{equation}\label{ocf:eq:periodcriterion}
+ \boxed{\quad E=D_*=0\quad\text{or}\quad
+ E>0\ \text{and}\ D_*\le N E
+ \text{ for some ordinary }N\ge1.\quad}
+\end{equation}
+In that case the point is $\xi$ from Theorem~\ref{ocf:thm:periodroot}.
+Otherwise there are countably infinitely many algebraic realizations.
+In particular there are infinitely many of degree at most two, all lying
+in the single extension $K(\xi)$.
+\end{theorem}
+\begin{proof}
+Put $S=\sum_{j=1}^{r-1}\dgr a_j$ and
+$E_t=\sum_{j=1}^{t}\dgr b_j$, with $E_0=0$. For $k\ge0$ and
+$0\le t<\ell$,
+\begin{equation}\label{ocf:eq:perioddegree}
+ d_{r-1+k\ell+t}=S+kE+E_t.
+\end{equation}
+If $E=D_*=0$, both conditions \eqref{ocf:cond:P} and \eqref{ocf:cond:V} hold.
+If $E>0$ and $D_*\le NE$, all prefix degrees and all partial-period sums
+are bounded by ordinary multiples of $E$. The unbounded ordinary
+multiples $kE$ in \eqref{ocf:eq:perioddegree} then absorb both the double of
+any specified $d_n$ and $D_0$. Again both conditions hold. Theorem
+\ref{ocf:thm:algebraic} gives at most one algebraic point and
+Theorem~\ref{ocf:thm:periodroot} supplies it.
+
+Suppose \eqref{ocf:eq:periodcriterion} fails. Then $D_*>0$, and either $E=0$
+or $D_*>NE$ for every ordinary $N$. Choose a displayed nonzero digit $b$
+with degree $D_*$, allowing $b=a_0$ if necessary, and put
+\[
+ \delta=b^{-(2r+2)}\in K^\times.
+\]
+Its valuation is $(2r+2)D_*$. The prefix bound
+$S\le(r-1)D_*$ and \eqref{ocf:eq:perioddegree} show that this valuation exceeds
+$2d_n$ for every $n$. For $E>0$, use
+$2(k+1)E<D_*$ for each ordinary $k$; for $E=0$ the assertion is immediate.
+Thus $\delta\in I_{\codea}\cap K$. The points $\xi+q\delta$, $q\in\Q$,
+are distinct algebraic realizations and generate exactly $K(\xi)$.
+Countability gives the asserted total cardinality of algebraic points.
+\end{proof}
+
+\begin{corollary}[Pure periodicity has one algebraic representative]
+\label{ocf:cor:pureperiod}
+For a purely periodic admissible code with positive first digit, exactly
+one realization is algebraic over the field generated by its period
+block. All other realizations are transcendental over that field.
+\end{corollary}
+\begin{proof}
+Display the code with a one-digit prefix and a cyclically rotated block.
+Every displayed digit occurs in the period, so $D_*\le E$ when $E>0$.
+If $E=0$, all digits are ordinary and $D_*=0$. Apply
+Theorem~\ref{ocf:thm:periodiccriterion}.
+\end{proof}
+
+\subsection{A stricter cofinality threshold for periodic codes}
+
+A positive element $e$ of an ordered abelian group $G$ is an \emph{order
+unit} if every $g\in G_{\ge0}$ is bounded above by an ordinary multiple
+of $e$.
+
+\begin{theorem}[Periodic uniqueness detects an order unit]
+\label{ocf:thm:orderunit}
+Let $G\ne\{0\}$ and let \eqref{ocf:eq:periodiccode} be a code in $\Oz_G$.
+Its realization in $K_G$ is unique if and only if its period degree $E$
+is a positive order unit of $G$. Consequently:
+\begin{align*}
+ &\text{some infinite code is unique in }K_G
+   &&\Longleftrightarrow\quad G\text{ has countable cofinality},\\
+ &\text{some eventually periodic code is unique in }K_G
+   &&\Longleftrightarrow\quad G\text{ has a positive order unit}.
+\end{align*}
+\end{theorem}
+\begin{proof}
+If $E$ is an order unit, the terms $S+kE$ in \eqref{ocf:eq:perioddegree} are
+cofinal in $G_{\ge0}$. Theorem~\ref{ocf:thm:hahn} gives uniqueness.
+
+Conversely, uniqueness makes $(d_n)$ cofinal. It cannot happen with
+$E=0$, because then the degrees are eventually bounded by $S$. Given
+$g\in G_{\ge0}$, choose a sufficiently late $n=r-1+k\ell+t$ with
+$d_n\ge S+g$. Formula \eqref{ocf:eq:perioddegree} implies
+$g\le kE+E_t\le(k+1)E$. Thus $E$ is an order unit.
+
+The first existence equivalence is Corollary~\ref{ocf:cor:cofinality}. For the
+second, an order unit $e$ gives the constant code
+$(\omega^e,\omega^e,\ldots)$, whose degree sequence is $d_n=ne$.
+Necessity follows from the preceding paragraph.
+\end{proof}
+
+This separates two notions often conflated by rank-one intuition. A value
+group can have countable cofinality without any order unit. In such a
+field some infinite codes determine unique points, but no eventually
+periodic code does so.
+
+\wtag{} The same order-unit threshold decides, in the expanding-polynomial
+report, whether an itinerary word determines one point
+(\lbl{epd:thm:fibers}); Section~\ref{ocf:sec:collection} compares the two
+fibre ideals.
+
+\section{Worked examples and boundary cases}
+\label{ocf:sec:examples}
+
+\subsection{The golden ratio and its whole infinitesimal neighborhood}
+
+For $\codea=(1,1,1,\ldots)$ all $d_n=0$. Hence
+\begin{equation}\label{ocf:eq:golden}
+ \F(\codea)=\varphi+\mm,
+ \qquad \varphi=\frac{1+\sqrt5}{2}.
+\end{equation}
+The algebraic representative over $K=\Q$ is uniquely $\varphi$. For
+example, $\varphi+\omega^{-1}$ has exactly the same infinite digits but is
+not algebraic over $\Q$. Indeed it is a nonreal surreal, and no nonreal
+surreal is algebraic over the real-closed ordered subfield $\R$.
+The example illustrates the older nonuniqueness phenomenon; the new
+classification explains its algebraic rigidity at the same time.
+
+In $K_{\{0\}}=\R$ the fiber is a singleton. In every $K_G$ with
+$G\ne\{0\}$ it is not, since $K_G$ has a positive infinitesimal. Ordinary
+real continued-fraction uniqueness is therefore exactly consistent with
+\eqref{ocf:eq:golden}.
+
+\subsection{An initial scale that a periodic tail never sees}
+
+For $\codea=(\omega,1,1,1,\ldots)$ again $I_{\codea}=\mm$, but now
+$K=\Q(\omega)$. A period-fixed realization is
+\[
+ \xi=\omega+\frac1\varphi=\omega+\varphi-1.
+\]
+Every $\xi+q/\omega$, $q\in\Q$, has the same code and is algebraic of
+degree two over $K$. Here \eqref{ocf:cond:P} holds, whereas
+\eqref{ocf:cond:V} fails: $D_0=1$ but every $d_n=0$.
+Thus even primeness of the precision ideal does not imply algebraic
+uniqueness over the digit field.
+
+\subsection{One infinite later digit and a nonreduced error quotient}
+
+Take $\codea=(0,\omega,1,1,\ldots)$. Then
+$d_0=0$ and $d_n=1$ for $n\ge1$, so
+\[
+ I_{\codea}=\{0\}\cup\{e:v(e)>2\}.
+\]
+The element $\omega^{-2}$ is outside the ideal but its square is inside.
+The quotient therefore has a nonzero square-zero class. Here
+\eqref{ocf:cond:V} holds and \eqref{ocf:cond:P} fails. A distinguished point is
+$\xi=1/(\omega+1/\varphi)$, and $\xi+q\omega^{-3}$ gives infinitely many
+algebraic realizations over $\Q(\omega)$.
+
+\subsection{A constant infinite period}
+
+For $\codea=(\omega,\omega,\omega,\ldots)$ the positive fixed point is
+\begin{equation}\label{ocf:eq:rho}
+\begin{split}
+ \rho&=\frac{\omega+\sqrt{\omega^2+4}}2\\
+ &=\omega+\omega^{-1}-\omega^{-3}+2\omega^{-5}
+  -5\omega^{-7}+14\omega^{-9}-\cdots.
+\end{split}
+\end{equation}
+The binomial series at the infinitesimal $\omega^{-2}$ gives the displayed
+Hahn expansion. More precisely its coefficient of $\omega^{-2k-1}$ is
+$(-1)^kC_k$, where $C_k=\frac1{k+1}\binom{2k}{k}$.
+Here $d_n=n$, and
+\[
+ I_{\codea}=\{0\}\cup\{e:v(e)>2n\text{ for every ordinary }n\}.
+\]
+There is a unique realization in $\R((\omega^\Q))$ and in
+$\R((\omega^\R))$, but not in $\No$: the perturbation
+$\omega^{-\omega}$ is invisible to the entire code. Nevertheless $\rho$
+is the unique realization algebraic over $\Q(\omega)$.
+
+The code is periodic, its full-class fiber is large, its rank-one Hahn
+fiber is a singleton, and its digit-field algebraic fiber is a singleton.
+These four statements concern different ambient categories and do not
+contradict one another.
+
+\subsection{A bounded increasing cut, with a genuinely different boundary}
+
+Let $a_0=0$ and $a_n=\omega^{2^{-n}}$ for $n\ge1$. Then
+\[
+ d_n=1-2^{-n},\qquad
+ I_{\codea}=\{0\}\cup\{e:v(e)>2-2^{1-n}\text{ for every }n\}.
+\]
+In the rank-one field $K_\R$, this becomes
+\begin{equation}\label{ocf:eq:rankoneboundary}
+ I_{\codea}\cap K_\R=\{0\}\cup\{e\in K_\R:v(e)\ge2\}.
+\end{equation}
+The endpoint is included. In the full surreal value group one must retain
+the sequence of inequalities: the value $2-\omega^{-1}$ satisfies them
+all but is less than $2$. Replacing a real supremum by a nonexistent
+surreal supremum would give the wrong ideal.
+
+Theorem~\ref{ocf:thm:hahn} ensures a realization in $K_\R$ even though the
+cumulative degrees are bounded and the fiber is not a singleton.
+This example exercises the non-eventually-constant support-projection
+case, not the ordinary-tail case.
+
+\subsection{Countable cofinality without an order unit}
+
+Let
+\[
+ G=\bigoplus_{j\ge1}\Q\,\omega^j\ \subseteq(\No,+),
+\]
+where the direct sum means finite rational linear combinations. This
+ordered group has countable cofinality, witnessed by the sequence
+$\omega^j$, but has no order unit: a finite linear combination is dominated
+by a sufficiently higher power of $\omega$.
+
+The code $a_0=0$, $a_n=\omega^{\omega^n}$ has cumulative degrees
+$d_n=\sum_{j=1}^n\omega^j$, cofinal in $G$. It therefore has a unique
+realization in $K_G$. On the other hand,
+Theorem~\ref{ocf:thm:orderunit} excludes uniqueness for every eventually
+periodic code in this field. This is an explicit infinite-rank separation
+between the two uniqueness thresholds.
+
+\section{Arbitrarily large algebraically independent families in a fiber}
+\label{ocf:sec:independence}
+
+The size of a full surreal fiber is not merely a counting defect. Its
+undetected directions can carry arbitrarily much algebraic information.
+The following statement is deliberately set-indexed, so it does not
+presuppose a proper-class transcendence basis.
+
+\begin{theorem}[Hidden algebraic independence]\label{ocf:thm:independence}
+Let $\codea$ be any admissible infinite code, let $E\subseteq\No$ be a
+set-sized subfield, and let $\kappa$ be any set cardinal. Then
+$\F(\codea)$ contains a family of $\kappa$ elements algebraically
+independent over $E$.
+\end{theorem}
+\begin{proof}
+Choose $\xi\in\F(\codea)$. Let $H$ be the rational span of all growth
+exponents occurring in the normal forms of $\xi$ and all members of $E$.
+This is a set-sized subgroup of $\No$, and
+$E\cup\{\xi\}\subseteq\R((\omega^H))$.
+Choose an ordinal $\beta$ so large that
+\begin{equation}\label{ocf:eq:betabound}
+ |h|<\omega^\beta\quad(h\in H),\qquad
+ 2d_n<\omega^\beta\quad(n\ge0).
+\end{equation}
+Such a $\beta$ exists because the quantities to be bounded form a set and
+ordinals are cofinal in $\No$.
+
+For $\alpha<\kappa$ put
+\[
+ \theta_\alpha=\omega^{\beta+\alpha+1},\qquad
+ \delta_\alpha=\omega^{-\theta_\alpha}.
+\]
+Each $\delta_\alpha$ belongs to $I_{\codea}$ by \eqref{ocf:eq:betabound}.
+Moreover the family $(\theta_\alpha)$ is rationally independent modulo
+$H$: a nonzero finite rational linear combination has a largest growth
+exponent at least $\beta+1$, and hence absolute magnitude greater than
+$\omega^\beta$. It cannot lie in $H$.
+
+Consider a nonzero polynomial in finitely many $\delta_\alpha$ over
+$\R((\omega^H))$. A monomial with multi-index $\nu$ shifts the support of
+its nonzero coefficient into the coset
+\[
+ H-\sum_\alpha\nu_\alpha\theta_\alpha.
+\]
+Distinct multi-indices give distinct cosets by the independence just
+proved. The nonzero polynomial summands consequently have disjoint
+supports and cannot cancel. Thus the $\delta_\alpha$ are algebraically
+independent over $\R((\omega^H))$.
+
+Finally set $x_\alpha=\xi+\delta_\alpha$. All these points lie in the
+fiber. Translation of indeterminates by $\xi$, which belongs to the
+coefficient Hahn field, preserves nonzero polynomials. The $x_\alpha$
+are therefore algebraically independent over $E$ as claimed.
+\end{proof}
+
+\begin{remark}[What this does and does not imply]\label{ocf:rem:independence}
+The theorem holds for each prescribed set field $E$ and each prescribed
+set cardinal separately. It does not choose one family independent over
+\emph{all} set subfields simultaneously. Such a reading would be false,
+since a field could contain a chosen member. Nor does it claim a
+first-order definable or algorithmically computable independent family.
+\end{remark}
+
+\wtag{} The support-coset argument in the proof is the standard mechanism
+of the independent-copies and bounded-support reports
+(\lbl{isc:lem:slice}, \lbl{isc:thm:sliceddisjoint}, \lbl{bst:eq:projection});
+it is credited to them, and the source's direct proof is kept
+(Section~\ref{ocf:sec:collection}).
+
+\section{Surcomplex fibers and changes of coordinate}
+\label{ocf:sec:complex}
+
+\subsection{Coordinatewise coding}
+
+There is no order-compatible floor on $\SC$. We therefore specify the
+construction rather than silently importing real continued fractions.
+For $z=x+iy$, record the omnific floor code of $x$ and the omnific floor
+code of $y$, whenever both algorithms are nonterminating.
+
+\begin{theorem}[Exact surcomplex coordinate fiber]\label{ocf:thm:complex}
+If $x\in\F(\codea)$ and $y\in\F(\codeb)$, then the points with the same
+pair of coordinate codes form exactly
+\begin{equation}\label{ocf:eq:complexfiber}
+ (x+iy)+(I_{\codea}+iI_{\codeb}).
+\end{equation}
+If $I_{\codea}=I_{\codeb}=I$, then $I+iI$ is an ideal of
+$\Ofin[i]=\Ofin+i\Ofin$. With
+\[
+ v_\C(u+iw)=\min\{v(u),v(w)\},
+\]
+it is the corresponding surcomplex valuation ideal. If the two ideals
+are different, their sum in \eqref{ocf:eq:complexfiber} is not invariant under
+multiplication by $i$.
+\end{theorem}
+\begin{proof}
+The exact real fiber theorem applied to both coordinates proves
+\eqref{ocf:eq:complexfiber}. If the ideals agree, then
+\[
+ (a+ib)(e+if)=(ae-bf)+i(af+be)\in I+iI
+ \quad(a,b\in\Ofin,\ e,f\in I).
+\]
+The complex normal form combines the real and imaginary coefficients;
+a nonzero real coefficient and a nonzero imaginary coefficient cannot
+cancel each other. This proves the displayed valuation formula and the
+valuation-ideal assertion.
+If multiplication by $i$ preserved $I_{\codea}+iI_{\codeb}$, applying it to
+real and imaginary elements would force both inclusions
+$I_{\codea}\subseteq I_{\codeb}$ and $I_{\codeb}\subseteq I_{\codea}$.
+\end{proof}
+
+Equal cuts therefore give a cut-defined intersection of valuation balls,
+whereas unequal cuts give an anisotropic coordinate neighborhood. This is a coordinatewise theory,
+not a theorem about nearest-Gaussian-integer continued fractions or a
+rotation-invariant coding of all surcomplex points.
+
+\begin{corollary}[Surcomplex hidden independence]\label{ocf:cor:complexindependence}
+Given a pair of admissible infinite coordinate codes, a set-sized
+subfield $E\subseteq\SC$, and any set cardinal $\kappa$, their common
+coordinate fiber contains $\kappa$ points algebraically independent over
+$E$.
+\end{corollary}
+\begin{proof}
+Fix $z=x+iy$ in the fiber. Gather the growth supports of the real and
+imaginary parts of $z$ and of all members of $E$ into a rational span $H$.
+Use the construction of Theorem~\ref{ocf:thm:independence}, bounding the degree
+cuts of both coordinate codes, and work over $\C((\omega^H))$ instead of
+$\R((\omega^H))$. The real perturbations $\delta_\alpha$ are invisible in
+the real coordinate, and the imaginary coordinate is unchanged. Distinct
+support cosets again prevent cancellation, including complex coefficients.
+\end{proof}
+
+\subsection{Exact transport under a fractional linear map}
+
+\begin{proposition}[Precision transport]\label{ocf:prop:mobius}
+Let $f(z)=(az+b)/(cz+d)$ over $\SC$, with $ad-bc\ne0$ and $cz+d\ne0$.
+For a nonzero perturbation $e$ satisfying
+\begin{equation}\label{ocf:eq:smalltransport}
+ v_\C(ce)>v_\C(cz+d),
+\end{equation}
+one has $c(z+e)+d\ne0$ and
+\begin{align}
+ f(z+e)-f(z)
+   &=\frac{(ad-bc)e}{(cz+d)(c(z+e)+d)},\label{ocf:eq:mobiusdiff}\\
+ v_\C(f(z+e)-f(z))
+   &=v_\C(ad-bc)+v_\C(e)-2v_\C(cz+d).\label{ocf:eq:mobiusscale}
+\end{align}
+The hypothesis is automatic when $c=0$, with $v_\C(0)=+\infty$.
+\end{proposition}
+\begin{proof}
+The strict inequality makes $c(z+e)+d$ have the same leading valuation as
+$cz+d$. Subtracting the two fractions proves \eqref{ocf:eq:mobiusdiff}; taking
+valuations proves \eqref{ocf:eq:mobiusscale}.
+\end{proof}
+
+Thus within a sufficiently small fiber neighborhood, a projective change
+of chart translates the valuation threshold by an exact amount. Without
+\eqref{ocf:eq:smalltransport}, a pole or leading cancellation can invalidate
+that linear threshold law. No claim is made that an arbitrary fractional
+linear map preserves the digit codes themselves.
+
+\section{Proof dependencies and reproducible checks}
+\label{ocf:sec:verification}
+
+The mathematical dependency chain is short. Normal forms and the omnific
+floor give the finite matrix identities and cylinders. The two-step buffer
+and Fibonacci growth give the exact fiber. The exact error valuation then
+gives full Hahn-field realization by support projection. Independently,
+the valuation cut gives the prime criterion. Polynomial degree bounds and
+the elementary leading-term cancellation lemma give the digit-field
+algebraic dichotomy. Period matrices supply algebraic existence, and
+support cosets supply hidden independence.
+
+Only the normal-form field construction, the cut property, real
+closedness of $\No$, and classical real continued-fraction existence are
+imported. In particular the proof of algebraic rigidity does not require
+a real-closedness theorem for every Hahn field, a valuation-extension
+structure theorem, a saturation theorem, or any of the repository's
+advanced unrefereed results.
+
+\subsection{The finite verification artifact}\label{ocf:sub:artifact}
+
+The supplied program \texttt{code/verify.py} uses exact rational arithmetic,
+finite generalized polynomials with rational growth exponents, and SymPy
+symbolic identities. The recorded run passed \textbf{81,256 assertions}.
+The main categories are as follows.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check family & Assertions\\
+\midrule
+Fibonacci denominator inequalities & 28,268\\
+Two-step cylinder buffers & 4,294\\
+Generalized-polynomial degree laws & 1,260\\
+Generalized-polynomial determinant identities & 1,260\\
+Rational cylinder widths & 5,694\\
+Rational digit recovery & 5,694\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Other checks cover both endpoint-distance identities, monotonicity,
+nesting, period matrices, the fractional linear difference formula, a
+counterexample to multiplicativity of support projection, and the Catalan
+Laurent expansion through its justified truncation order. The full
+category counts, fixed seed, Python version, and SymPy version are in
+\texttt{audits/verification.json}.
+
+These are finite consistency checks of identities used by the proof. They
+cannot check the proper-class existence quantifier, arbitrary infinite
+supports, countable cofinality, or the absence of every polynomial
+relation. Those conclusions rest on the written proofs, not on the number
+of test cases.
+
+\wtag{} In this report the program is shipped as \rpath{code/verify.py},
+the recorded run as \rpath{data/verification.json} (delivered as
+\texttt{audits/verification.json}) and the Makefile as
+\rpath{code/Makefile}. The program writes a file only when given
+\texttt{--output}; the Makefile's \texttt{check} target writes the delivery
+path \texttt{audits/verification.json}. When the report was written the
+program was rerun on a copy; the counts, the seed and the SymPy version
+agree with the record, and only the Python version differs
+(Appendix~\ref{ocf:app:suite}).
+
+\subsection{A practical formalization route}\label{ocf:sub:formal}
+
+A future Lean development should first isolate the ordered-field
+continuant package from the surreal-specific normal-form package. The
+matrix identities, cylinder inequalities, and two-step buffer need only
+finite recursion, ordered-field arithmetic, and discreteness of the digit
+ring. The exact-fiber proof then adds an Archimedean comparison relation
+quantifying over ordinary natural numbers and the denominator-degree law.
+
+The next genuinely surreal step is the support projection lemma, stated
+as an additive subseries construction and explicitly not as a ring
+homomorphism. The algebraic-error lemma should be proved separately for a
+valued field, by the repeated-minimum argument in
+Lemma~\ref{ocf:lem:algerror}. This keeps the main algebraic classification
+independent of heavy real-closed-field automation.
+
+No Lean file is included as though it had been checked. The repository
+was not built during this task. A written proof, a finite test run, and a
+kernel-checked theorem remain three different levels of evidence.
+
+\wtag{} Of the inputs listed here, only the omnific floor of
+Lemma~\ref{ocf:lem:floor} is formalized in the collection, as
+\lbl{odg:thm:floor}. No continuant, cylinder, fibre or precision-ideal
+statement has a Lean counterpart (Section~\ref{ocf:sec:collection}).
+
+\section{Further research questions}
+\label{ocf:sec:questions}
+
+The following are proposed problems arising from the proved statements.
+They are not all asserted to be previously published open problems. The
+historical comparison is itself part of the research program.
+
+\begin{problem}[Priority and exact equivalence of formulations]\label{ocf:q:priority}
+Compare the valuation-fiber formula, full Hahn realization theorem, and
+digit-field algebraic criterion against the wider literature following
+\cite{Roggeman}. Which statements are genuinely new, and which are hidden
+consequences of earlier associated-class or generalized-fraction
+formulations? A useful outcome would be a theorem-by-theorem concordance,
+not merely a list of citations.
+\end{problem}
+
+\begin{problem}[Proper subfields of a full Hahn field]\label{ocf:q:subfields}
+Characterize subfields $L\subsetneq K_G$ containing $\R$ and closed under
+omnific floor for which every admissible code in $L\cap\Oz$ has a
+realization in $L$. Full Hahn fields have the property by
+Theorem~\ref{ocf:thm:hahn}; arbitrary subfields do not follow from its proof.
+Determine which support-completeness or truncation assumptions suffice.
+\end{problem}
+
+\begin{problem}[Algebraic existence for a nonperiodic code]\label{ocf:q:nonperiodic}
+Theorem~\ref{ocf:thm:algebraic} determines the size of the algebraic fiber
+once its nonemptiness is known. Find checkable conditions on nonperiodic
+omnific digits that imply, or rule out, algebraic existence over the
+countable digit field. In particular, investigate codes with cofinal
+degrees and a finitely described recurrence among their digits.
+\end{problem}
+
+\begin{problem}[A correctly scoped Lagrange converse]\label{ocf:q:lagrange}
+For a specified full Hahn field and a specified coefficient subfield,
+which algebraic points of degree two have eventually periodic omnific
+floor itineraries? The coefficient field and the allowed digits must be
+fixed in advance. Theorem~\ref{ocf:thm:periodroot} proves an existence direction
+for a given periodic code, not this converse.
+\end{problem}
+
+\begin{problem}[Simplicity versus dynamical selection]\label{ocf:q:simplicity}
+When does the simplest cylinder separator $\{L\mid R\}$ coincide with the
+period-fixed algebraic representative of an eventually periodic code?
+How does this comparison behave under finite prefix maps? Establishing
+precise hypotheses would connect the present valuation classification
+with the simplicity-based selections in earlier work. Roggeman's residue
+and periodicity theorems must be compared before any instance is
+classified as a previously unresolved problem.
+\end{problem}
+
+\begin{problem}[Iteration beyond the first block of length $\omega$]\label{ocf:q:transfinite}
+Design and compare limit-stage remainder rules that refine a full fiber
+without discarding the original point. The transfinite problem is not to
+redeclare the first-block cut to be its unique value. It is to retain and
+encode an element of the precision ideal, compatibly with earlier
+generalized continued-fraction constructions.
+\end{problem}
+
+\begin{problem}[Other integer parts]\label{ocf:q:integerparts}
+Which parts of the classification remain true for a different discretely
+ordered integer part of an ordered field? The finite cylinder and buffer
+lemmas are robust, but the degree identity, the ordinary-tail argument,
+and the support projection use special features of $\Oz$. An axiomatic
+characterization of exactly those features would be valuable.
+\end{problem}
+
+\begin{problem}[Primary precision ideals]\label{ocf:q:primary}
+Theorem~\ref{ocf:thm:prime} and Corollary~\ref{ocf:cor:radical}\footnote{\wtag{}
+The source wrote ``Theorems'' for this pair; the second is a corollary.}
+classify primality and the
+radical directly from the degree cut. Characterize when a precision ideal
+is primary in its valuation ring, and describe the torsion and
+annihilators in the associated error quotient at higher value-group rank.
+The rank-one examples suggest useful test cases but do not decide the
+higher-rank problem.
+\end{problem}
+
+\begin{problem}[A genuinely surcomplex continued-fraction algorithm]\label{ocf:q:surcomplex}
+Choose an explicit nearest-Gaussian-omnific-integer rule and determine
+whether any analogue of the exact fiber theorem survives. A central
+obstacle is that complex denominators can have leading cancellation, so
+positivity cannot supply either monotonicity or the degree recurrence.
+The coordinatewise result of Section~\ref{ocf:sec:complex} does not solve this.
+\end{problem}
+
+\begin{problem}[Effective precision and representations]\label{ocf:q:effective}
+For computably presented exponent groups and exact digit notations,
+determine the complexity of finding an index at which a specified error
+becomes visible. Separate the problem of deciding equality of digits from
+the cofinality problem for their cumulative degrees. A finite program for
+rational exponents is not an oracle for arbitrary surreal descriptions.
+\end{problem}
+
+\begin{problem}[Birthday bounds]\label{ocf:q:birthday}
+Bound the birthday of a simplest realization from the birthdays of its
+digits and their support cuts. Compare those bounds with the birthdays
+of the explicit quadratic representative in the periodic case. Ordinary
+field degree and surreal birthday should not be identified, and no
+general product-birthday conjecture is resolved by the present work.
+\end{problem}
+
+\begin{problem}[Formal proof and reusable interfaces]\label{ocf:q:formal}
+Formalize the buffer lemma, exact fiber theorem, support-projection
+existence argument, and algebraic dichotomy in the repository's actual
+surreal field. The decisive interface question is how to expose
+normal-form subseries and their leading valuations without introducing
+unproved summability or class-size assumptions.
+\end{problem}
+
+\wtag{} All twelve questions are open in the collection
+(Section~\ref{ocf:sec:collection}). For Question~\ref{ocf:q:formal}, the
+omnific floor is already formalized (\lbl{odg:thm:floor}); none of the
+statements the question names is.
+
+\section{Conclusion}\label{ocf:sec:conclusion}
+
+An omnific continued fraction is most naturally treated as precision data.
+The exact data are the coset $x+I_{\codea}$, with an explicit lower cut on
+allowed error valuations. From that viewpoint three seemingly conflicting
+phenomena become compatible: every full surreal infinite fiber is large;
+a full Hahn workspace can make a code unique; and a countable digit field
+can single out one algebraic member of a much larger fiber.
+
+The two most useful thresholds are different. General uniqueness in a
+full Hahn field detects countable cofinality of its value group, whereas
+periodic uniqueness detects an order unit. Algebraic uniqueness over the
+digit field is controlled instead by self-doubling of the cumulative
+degrees and visibility of the initial digit. These precise distinctions,
+rather than the already known failure of ordinary uniqueness, are the
+substantive outcome of this investigation.
+
+\section{Consolidated ledger of non-claims}\label{ocf:sec:nonclaims}
+
+\wtag{} The source states its limitations where they arise, and each is
+kept in place. This ledger collects them with their locations.
+``README'' is the delivered README, which is not shipped (its content is in
+the collection README); \rpath{proof\_and\_scope.md} and
+\rpath{source\_audit.md} are the delivered audits, shipped unchanged.
+Items S1--S26 are the source's; items W1--W8 were added when the report
+joined the collection.
+\begin{enumerate}[label=S\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item Basic nonuniqueness of surreal continued fractions and proper-class
+fibres are \emph{not} new. Roggeman's paper \cite{Roggeman} already treats
+the omnific floor algorithm, associated classes, their size and structure,
+periodic fractions and a generalized continuation (abstract; title page;
+Section~\ref{ocf:sub:known}; after Corollary~\ref{ocf:cor:neverunique};
+Section~\ref{ocf:sec:examples}; README; \rpath{source\_audit.md}).
+\item The novelty and priority of the proposed contributions (the precision
+ideal, the full-Hahn realization theorem, the prime criterion and the
+algebraic dichotomy) are not independently certified. No literature search
+is claimed to establish them; a wider concordance could show some of them
+implicit in earlier work; no label such as ``breakthrough'' is claimed
+(title page; Section~\ref{ocf:sec:intro}; Question~\ref{ocf:q:priority};
+README; \rpath{source\_audit.md}; \rpath{proof\_and\_scope.md}).
+\item No certified resolution of a named longstanding open problem is
+claimed. The research questions are proposed, not all previously
+published open problems (title page; Section~\ref{ocf:sec:questions};
+Appendix~\ref{ocf:app:notation}; README; \rpath{source\_audit.md}).
+\item The finite tests are not a Lean verification and not a proof of the
+infinite-support or class-sized assertions. They cannot check the
+proper-class existence quantifier, arbitrary infinite supports, countable
+cofinality, the absence of every polynomial relation, the complete proof or
+novelty (title page; Section~\ref{ocf:sub:artifact};
+Appendix~\ref{ocf:app:notation}; README; \rpath{proof\_and\_scope.md};
+the \texttt{not\_certified} list of \rpath{data/verification.json}).
+\item No Lean file is included as checked, the repository was not built,
+and no proof-assistant certificate exists. A written proof, a finite test
+run and a kernel-checked theorem are three different levels of evidence
+(Section~\ref{ocf:sub:formal}; README; \rpath{proof\_and\_scope.md}).
+\item There has been no independent referee review; the delivered proof audit
+is a self-audit (README; \rpath{proof\_and\_scope.md};
+\rpath{source\_audit.md}).
+\item The sequence length is exactly $\omega$ and every index is an ordinary
+natural number. No limit-stage continuation of the algorithm is included or
+claimed (Section~\ref{ocf:sec:intro}; Question~\ref{ocf:q:transfinite};
+README).
+\item No nearest-Gaussian-integer algorithm is claimed. Section~\ref{ocf:sec:complex}
+is a coordinatewise theory, not a rotation-invariant coding of all
+surcomplex points (Section~\ref{ocf:sec:intro}; after
+Theorem~\ref{ocf:thm:complex}; Question~\ref{ocf:q:surcomplex}; README).
+\item Realization is proved in \emph{full} Hahn fields only. It is not a
+completeness assertion about arbitrary non-Archimedean ordered fields, and
+arbitrary subfields of $K_G$ do not follow from the proof
+(Section~\ref{ocf:sec:intro}; Section~\ref{ocf:sec:hahn};
+Question~\ref{ocf:q:subfields}; README; \rpath{proof\_and\_scope.md}).
+\item The support projection $\pi_G$ is additive, not multiplicative and not
+a field map; the proof never projects a product or a reciprocal
+(Remark~\ref{ocf:rem:projection}; \rpath{proof\_and\_scope.md}).
+\item Algebraic existence is not asserted for nonperiodic codes; for an
+arbitrary code $A_{\codea}$ is not known to be nonempty
+(Section~\ref{ocf:sec:algebraic}; Theorem~\ref{ocf:thm:algebraic};
+Question~\ref{ocf:q:nonperiodic}; README; \rpath{proof\_and\_scope.md}).
+\item No Lagrange converse is claimed: it is not claimed that every quadratic
+surreal has an eventually periodic omnific itinerary
+(Question~\ref{ocf:q:lagrange}; README; \rpath{proof\_and\_scope.md}).
+\item It is not claimed that every point with an eventually periodic
+itinerary is quadratic: periodic digits do not force complete quotients to
+recur (after Theorem~\ref{ocf:thm:periodroot}; \rpath{proof\_and\_scope.md}).
+\item The simplest separator $\{L\mid R\}$ of Corollary~\ref{ocf:cor:realization}
+is not claimed to be the period-fixed root, nor an order-topological limit
+(after Corollary~\ref{ocf:cor:realization}; Question~\ref{ocf:q:simplicity};
+\rpath{proof\_and\_scope.md}).
+\item Unrestricted surreal fibres are never unique
+(Corollary~\ref{ocf:cor:neverunique}); no unique unrestricted realization
+is claimed (\rpath{proof\_and\_scope.md}).
+\item Countable cofinality is not claimed to imply an order unit; the example of
+Section~\ref{ocf:sec:examples} separates them (after
+Theorem~\ref{ocf:thm:orderunit}; \rpath{proof\_and\_scope.md}).
+\item Theorem~\ref{ocf:thm:independence} gives, for each prescribed set
+field and set cardinal separately, one independent family. It does not give
+a proper-class transcendence basis, a family independent over all set
+subfields at once, or a first-order definable or computable family
+(Section~\ref{ocf:sec:prelim}; Remark~\ref{ocf:rem:independence};
+\rpath{proof\_and\_scope.md}).
+\item Every support, sequence, generated field and cut used in a
+construction is a set. No large-cardinal assumption, class-length
+recursion for the algorithm, or proper-class choice is used; quotient rings
+are taken in set-sized Hahn workspaces, and no object of proper-class
+cosets is assumed (Section~\ref{ocf:sec:prelim}; after
+Theorem~\ref{ocf:thm:prime}; README; \rpath{proof\_and\_scope.md}).
+\item Proposition~\ref{ocf:prop:topology} is an elementary class-size
+obstruction, not a new topology theorem (after
+Proposition~\ref{ocf:prop:topology}).
+\item The continuant identities, the real periodicity theorem, the periodic
+fixed-point mechanism and the radical argument are classical; they are
+rederived because the digits are infinite, not claimed as new
+(Section~\ref{ocf:sub:known}; after Theorem~\ref{ocf:thm:periodroot};
+proof of Corollary~\ref{ocf:cor:radical}).
+\item Uniqueness always names its ambient field and algebraicity its
+coefficient field; the algebraic fibre is relative to the digit field, not
+to the whole surreal field; prime-ideal claims refer to the finite
+valuation ring, not to the field (Section~\ref{ocf:sec:algebraic};
+Appendix~\ref{ocf:app:notation}; README; \rpath{proof\_and\_scope.md}).
+\item Ordinary real coefficient convergence is not claimed to imply order
+convergence in $K_G$ when $G\ne\{0\}$ (after
+Corollary~\ref{ocf:cor:convergence}).
+\item Proposition~\ref{ocf:prop:mobius} does not claim that a fractional linear
+map preserves digit codes, and its linear threshold law needs
+\eqref{ocf:eq:smalltransport}. Equal coordinate ideals give a possibly
+nonprincipal intersection of valuation balls, not one ball of realized
+radius (after Theorem~\ref{ocf:thm:complex}; after
+Proposition~\ref{ocf:prop:mobius}; \rpath{proof\_and\_scope.md}).
+\item Field degree and birthday are not identified, and no general
+product-birthday conjecture is resolved (Question~\ref{ocf:q:birthday}).
+\item Only normal forms, the cut property, real closedness of $\No$ and real
+continued-fraction existence are imported; no unreviewed advanced
+repository result is used, and the repository comparison was a focused
+catalogue comparison, not a declaration-by-declaration or whole-history
+audit (Section~\ref{ocf:sub:known}; Section~\ref{ocf:sec:verification};
+README; \rpath{source\_audit.md}).
+\item Bibliographic caveats: the journal metadata of \cite{Roggeman} were
+not established and are not invented; Eberl's formalization \cite{Eberl}
+concerns real continued fractions and certifies nothing here; the
+foundations \cite{Conway,Gonshor} are imported, not reproved. The delivered
+build and layout record (\rpath{data/build\_and\_layout.json}) is an
+artifact check, not a proof or priority certification (bibliography;
+\rpath{source\_audit.md}; \rpath{data/build\_and\_layout.json}).
+\end{enumerate}
+\begin{enumerate}[label=W\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item No \texttt{ocf:} label has a Lean mapping in \rpath{FORMALIZATION.md}.
+Independent proof review and formalization are pending. The only
+formalized ingredient is the omnific floor, through \lbl{odg:thm:floor}
+(Section~\ref{ocf:sec:collection}).
+\item Lemma~\ref{ocf:lem:floor} is not new to the collection: it is
+\lbl{odg:thm:floor}, \lbl{dsn:prop:floor}, \lbl{cas:eq-floor} and
+\lbl{onot:eq:floor}. It is printed once (Section~\ref{ocf:sec:collection}).
+\item The support-coset argument of Theorem~\ref{ocf:thm:independence} is
+credited to the independent-copies and bounded-support reports; no
+priority is claimed for it relative to them. The comparison with the
+expanding-polynomial report's itinerary fibres and order-unit threshold is
+a parallel of shape: neither result is derived from the other, and no
+priority is claimed either way (Section~\ref{ocf:sec:collection}).
+\item No named question of any report is answered; the twelve questions of
+Section~\ref{ocf:sec:questions} stay open (Section~\ref{ocf:sec:collection}).
+\item The source's statements about the collection are those of its pin
+\texttt{958b5c4}; they were rechecked and remain true at the placement
+commit, and are kept as provenance (Appendix~\ref{ocf:app:pinned}).
+\item The proofs were read when the report was written
+(Appendix~\ref{ocf:app:checked}). That reading is not an independent proof
+review.
+\item The rerun of the finite suite (Appendix~\ref{ocf:app:suite}) agrees
+with the record except for the Python version. A passing rerun certifies
+the finite identities only, not any theorem of the report.
+\item Roggeman's paper was not read for this report. The attributions to
+its Sections 3A, 3H and 3I and the statement that its scan was inspected
+are the source's (Appendix~\ref{ocf:app:literature}).
+\end{enumerate}
+
+\appendix
+\section{Notation and scope checklist}\label{ocf:app:notation}
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.73\textwidth}@{}}
+\toprule
+Notation & Meaning\\
+\midrule
+\endhead
+$\No$, $\Oz$, $\SC$ & Surreal field, omnific integer ring, and $\No[i]$.\\
+$\dgr x$, $v(x)$ & Greatest growth exponent and its negative; $v(0)=+\infty$.\\
+$\Ofin$, $\mm$ & Finite surreals and infinitesimals (\wtag{} $\Ofin$ is the source's $\mathcal O$).\\
+$K_G$ & Full real-coefficient Hahn field with growth exponents in the set group $G$.\\
+$\codea$, $\F(\codea)$ & An ordinary $\omega$-indexed admissible code and all its nonterminating realizations.\\
+$p_n,q_n$ & Finite continuants; $q_0=1$.\\
+$r_n,s_n,C_n$ & Convergent, other cylinder endpoint, and open prefix cylinder.\\
+$d_n$ & $\dgr q_n=\sum_{j=1}^n\dgr a_j$; the first digit does not contribute.\\
+$I_{\codea}$ & Errors whose valuations exceed $2d_n$ for every ordinary $n$.\\
+$K_{\codea}$ & Countable field generated over $\Q$ by the digits themselves.\\
+$D_0$ & Degree of the first digit, with value zero assigned if that digit is zero.\\
+$E,D_*$ & Total degree in a period and largest degree among all displayed digits.\\
+\bottomrule
+\end{longtable}
+
+All assertions about uniqueness name their ambient field. All assertions
+about algebraicity name their coefficient field. All arbitrary-support
+series are Hahn normal forms, not analytic limits. Prime-ideal claims
+refer to the finite valuation ring, not to the whole field. Finite tests
+are not formal verification. The proposed research questions are not
+advertised as newly solved published conjectures.
+
+\section{Provenance of this report}\label{ocf:app:report}
+
+\subsection{One manuscript}\label{ocf:app:onesource}
+
+\wtag{} This report is built from \emph{one} manuscript: manuscript~09 of
+batch~33 of the collection, the archive
+\texttt{surreal\_continued\_fractions\_research} (inner directory
+\texttt{surreal\_cf\_article}), titled ``Exact Precision and Algebraic
+Rigidity of Omnific Continued Fractions'', a 22-page PDF dated
+23~September 2026 and pinned to repository commit
+\nolinkurl{958b5c4865819bd55ea1f5ffc050282aea7ef570}. The archive was
+delivered in commit \texttt{73043eb} and placed in \texttt{aa9c891} as a
+new report. There was no second source: nothing was merged and nothing was
+selected away, and every result, proof, example, question and limitation of
+the manuscript is printed here.
+
+The manuscript contributed everything in
+Sections~\ref{ocf:sec:intro}--\ref{ocf:sec:conclusion} and
+Appendix~\ref{ocf:app:notation} except the text marked \wtag: the exact
+floor, continuant cylinders and their widths
+(Lemma~\ref{ocf:lem:floor} to Corollary~\ref{ocf:cor:realization}); the
+two-step buffer, the exact convergent error and the exact fibre
+$\F(\codea)=x+I_{\codea}$ (Lemmas~\ref{ocf:lem:buffer},
+\ref{ocf:lem:degrees}, Theorem~\ref{ocf:thm:fiber},
+Corollary~\ref{ocf:cor:neverunique}, Proposition~\ref{ocf:prop:topology});
+realization in every full Hahn field with its uniqueness criterion and the
+countable-cofinality threshold (Theorem~\ref{ocf:thm:hahn},
+Corollaries~\ref{ocf:cor:cofinality} and~\ref{ocf:cor:convergence}); the
+prime criterion (Proposition~\ref{ocf:prop:prescribed},
+Theorem~\ref{ocf:thm:prime}, Corollary~\ref{ocf:cor:radical}); algebraic
+rigidity over the digit field (Lemmas~\ref{ocf:lem:algerror},
+\ref{ocf:lem:digitfield}, Theorem~\ref{ocf:thm:algebraic}); periodic codes
+(Theorems~\ref{ocf:thm:periodroot}, \ref{ocf:thm:periodiccriterion},
+\ref{ocf:thm:orderunit}, Corollary~\ref{ocf:cor:pureperiod}); six worked
+examples; hidden independence (Theorem~\ref{ocf:thm:independence}); the
+coordinatewise surcomplex fibre and precision transport
+(Theorem~\ref{ocf:thm:complex}, Corollary~\ref{ocf:cor:complexindependence},
+Proposition~\ref{ocf:prop:mobius}); and twelve research questions.
+
+The package held the article, its PDF, a README, a Makefile, a
+requirements file, \texttt{code/verify.py} and an \texttt{audits/}
+directory with two JSON records and two markdown audits. It had no checksum
+manifest. The article was renamed \rpath{article.tex} and rewritten as
+described below, the README was replaced by the collection README, and the
+delivered PDF is not shipped: \rpath{article.pdf} is a build of this text.
+The other files are shipped byte-identical, under the paths of
+Appendix~\ref{ocf:app:files}.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{ocf:}. The source's 77 labels
+are kept, unchanged after the prefix. Thirty-five were added: the new
+sections and subsections \lbl{ocf:sub:known}, \lbl{ocf:sec:conventions},
+\lbl{ocf:sec:collection}, \lbl{ocf:sec:nonclaims}, \lbl{ocf:sec:conclusion},
+\lbl{ocf:sub:artifact}, \lbl{ocf:sub:formal}, \lbl{ocf:app:notation},
+\lbl{ocf:app:report}, \lbl{ocf:app:onesource}, \lbl{ocf:app:pinned},
+\lbl{ocf:app:literature}, \lbl{ocf:app:checked}, \lbl{ocf:app:suite} and
+\lbl{ocf:app:files}; the unlabelled environments \lbl{ocf:def:Oz},
+\lbl{ocf:def:digits}, \lbl{ocf:def:ideal}, \lbl{ocf:rem:projection},
+\lbl{ocf:rem:twocases}, \lbl{ocf:cor:convergence},
+\lbl{ocf:rem:independence} and \lbl{ocf:cor:complexindependence}; and the
+twelve questions \lbl{ocf:q:priority}, \lbl{ocf:q:subfields},
+\lbl{ocf:q:nonperiodic}, \lbl{ocf:q:lagrange}, \lbl{ocf:q:simplicity},
+\lbl{ocf:q:transfinite}, \lbl{ocf:q:integerparts}, \lbl{ocf:q:primary},
+\lbl{ocf:q:surcomplex}, \lbl{ocf:q:effective}, \lbl{ocf:q:birthday} and
+\lbl{ocf:q:formal}. Labels on existing environments change no number.
+\item One symbol was renamed: the source's $\mathcal O$ (finite surreals) is
+$\Ofin$, and its $\mathcal O_\C$ is $\Ofin[i]$
+(Section~\ref{ocf:sec:conventions}).
+\item One mistyped cross-reference was corrected: the source's
+``Theorems 6.2 and 6.3'' in Question~\ref{ocf:q:primary} names a theorem
+and a corollary (footnote there).
+\item The title page names the report as a single-source report of the
+collection. Sections~\ref{ocf:sec:conventions}, \ref{ocf:sec:collection}
+and~\ref{ocf:sec:nonclaims} and this appendix are new. Sentences marked
+\wtag{} were added at the end of Section~\ref{ocf:sub:known}; after
+Lemma~\ref{ocf:lem:floor}; after Theorem~\ref{ocf:thm:orderunit}; after
+Remark~\ref{ocf:rem:independence}; in
+Sections~\ref{ocf:sub:artifact} and~\ref{ocf:sub:formal}; after
+Question~\ref{ocf:q:formal}; and in the notation table of
+Appendix~\ref{ocf:app:notation}.
+\end{enumerate}
+No mathematical statement was changed. Where the edit had to choose: the
+manuscript was placed as a new report, not as an addition. Its floor
+lemma is the Diophantine report's, but that is one imported ingredient,
+and the expanding-polynomial report shares the fibre-plus-ideal shape and
+the order-unit threshold for a different coding; neither report names a
+question that this manuscript answers. It was placed among the surreal
+reports because its fields are subfields of $\No$; the coordinatewise
+surcomplex section is a supplement. The title is kept.
+
+\subsection{Repository statements at the pin}\label{ocf:app:pinned}
+
+The source compared itself with the root README, the catalogue and two
+surcomplex report READMEs at its pin (\rpath{source\_audit.md},
+\cite{SurrealRepo}). The pin is an ancestor of the placement commit
+\texttt{aa9c891}, which is 71 commits later. Checked there:
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item No report treats surreal or omnific continued fractions, and no report
+cites Roggeman; the only other continued fractions and continuants are
+those listed in Section~\ref{ocf:sec:collection}. The source's statement
+that no continued-fraction report exists stands.
+\item The omnific floor, degree and normal-form infrastructure it mentions
+exists; the floor is formalized (\lbl{odg:thm:floor}).
+\item No report supplies Theorems~\ref{ocf:thm:fiber}, \ref{ocf:thm:hahn},
+\ref{ocf:thm:prime}, \ref{ocf:thm:algebraic}, \ref{ocf:thm:periodiccriterion}
+or~\ref{ocf:thm:orderunit}. No stale statement of the source needed
+correction.
+\end{itemize}
+
+\subsection{References checked for this report}\label{ocf:app:literature}
+
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item \emph{Roggeman} \cite{Roggeman}. A web search finds the
+author-hosted record and PDF at the address given, under the stated title
+and author. The paper was not read for this report, and its journal was
+not established; the attributions to its sections are the source's.
+\item Conway \cite{Conway}, Gonshor \cite{Gonshor}, Krishnan
+\cite{Krishnan} and Eberl \cite{Eberl} were not checked.
+\end{itemize}
+
+\subsection{Proofs read when the report was written}\label{ocf:app:checked}
+
+Every proof of Sections~\ref{ocf:sec:prelim}--\ref{ocf:sec:complex} was read
+line by line when the report was written. No error was found. Rechecked in
+detail: the endpoint distances \eqref{ocf:eq:distR}--\eqref{ocf:eq:distS}
+and the identity $\lvert x-s_n\rvert=1/(q_{n+1}(q_{n+1}u+q_n))$ in the case
+$a_{n+1}=1$ of Lemma~\ref{ocf:lem:buffer}; the degree induction of
+Lemma~\ref{ocf:lem:degrees}; the bound $2d_n\le2(r-1)D_*+2(k+1)E<(2r+2)D_*$
+behind $\delta=b^{-(2r+2)}\in I_{\codea}$ in
+Theorem~\ref{ocf:thm:periodiccriterion}; the Catalan coefficients of
+\eqref{ocf:eq:rho} against the binomial series of
+$\omega\sqrt{1+4\omega^{-2}}$; the rank-one boundary
+\eqref{ocf:eq:rankoneboundary}; and the degrees
+$d_n=\sum_{j\le n}\omega^j$ of the example without an order unit. The only
+defect found was the mistyped reference corrected in
+Question~\ref{ocf:q:primary}. This reading is not an independent proof
+review.
+
+\subsection{The verification suite}\label{ocf:app:suite}
+
+\rpath{code/verify.py} (Python~3.10 or later, SymPy; the record used
+Python~3.13.5 and SymPy~1.14.0, pinned in \rpath{data/requirements.txt})
+checks finite rational continued fractions, finite generalized polynomials
+with rational exponents and SymPy identities, with the fixed seed
+20260923. It raises on the first failed check, prints its JSON report, and
+writes a file only with \texttt{--output}. It was rerun on a copy for this
+report under Python~3.14.4 and SymPy~1.14.0: exit code~0,
+\texttt{"status": "passed"}, 81,256 assertions in the same 20 categories
+with the same counts as \rpath{data/verification.json}; the only difference
+is the recorded Python version.
+
+\subsection{Files}\label{ocf:app:files}
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & Delivered as\\
+\midrule
+\rpath{article.tex} & \texttt{article.tex}, rewritten as this report\\
+\rpath{article.pdf} & a build of this text, not the delivered PDF\\
+\rpath{README.md} & the collection README, replacing the delivered one\\
+\rpath{proof\_and\_scope.md} & \texttt{audits/proof\_and\_scope.md}\\
+\rpath{source\_audit.md} & \texttt{audits/source\_audit.md}\\
+\rpath{code/verify.py} & \texttt{code/verify.py}\\
+\rpath{code/Makefile} & \texttt{Makefile}\\
+\rpath{data/requirements.txt} & \texttt{requirements.txt}\\
+\rpath{data/verification.json} & \texttt{audits/verification.json}\\
+\rpath{data/build\_and\_layout.json} & \texttt{audits/build\_and\_layout.json}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The shipped delivered files still use the delivery paths: the docstring
+of \rpath{code/verify.py} and the Makefile's \texttt{check} target write
+\texttt{audits/verification.json}, the Makefile expects to run from the
+report root, and \rpath{proof\_and\_scope.md} names
+\texttt{verification.json} without a directory.
+\rpath{data/build\_and\_layout.json} records the delivered 22-page build,
+not this one.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{Conway}
+J.~H. Conway, \emph{On Numbers and Games}, Academic Press, 1976;
+second edition, A K Peters, 2001.
+Standard source for the surreal construction, normal forms, and field structure.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110, Cambridge University
+Press, 1986.
+
+\bibitem{Roggeman}
+Y. Roggeman, \emph{Continued fractions and surreal numbers}, 1985,
+scanned article, pp.~31--70; received 15 June 1985.
+Author-supplied full text available from
+\href{https://www.researchgate.net/publication/268854423_Continued_fractions_and_surreal_numbers}{the author's ResearchGate record}.
+The complete 21-page scan (two printed pages per scan after the first)
+was inspected; journal metadata was not needed for the comparison.
+
+\bibitem{Krishnan}
+Gautam Gopal Krishnan, \emph{Continued Fractions}, Cornell University notes,
+22 August 2016.
+\url{https://pi.math.cornell.edu/~gautam/ContinuedFractions.pdf}.
+
+\bibitem{Eberl}
+M. Eberl, \emph{Continued Fractions}, Archive of Formal Proofs,
+20 March 2024.
+\url{https://isa-afp.org/entries/Continued_Fractions.html}.
+The cited formalization concerns real continued fractions, not the
+surreal theorems in this article.
+
+\bibitem{SurrealRepo}
+V. Reshetnikov, \emph{Surreal}, research repository,
+\url{https://github.com/VladimirReshetnikov/Surreal},
+snapshot \texttt{958b5c4865819bd55ea1f5ffc050282aea7ef570}, inspected
+23 September 2026. Focused sources: root \texttt{README.md},
+\texttt{docs/README.md}, and selected report READMEs.
+
+\end{thebibliography}
+\end{document}

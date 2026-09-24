@@ -1,0 +1,18 @@
+diff --git a/CombinatorialGames/Game/Birthday.lean b/CombinatorialGames/Game/Birthday.lean
+index 960878d..9abe21c 100644
+--- a/CombinatorialGames/Game/Birthday.lean
++++ b/CombinatorialGames/Game/Birthday.lean
+@@ -211 +211 @@ instance small_setOf_birthday_lt (o : NatOrdinal.{u}) : Small.{u} {x | birthday
+-    ext p; cases p <;> simp_all
++    ext p; cases p <;> simp_all <;> aesop
+@@ -278 +278 @@ theorem strictMono_birthdayFinset : StrictMono birthdayFinset := by
+-  · rw [SetLike.mem_coe, mem_birthdayFinset] at *
++  · rw [mem_birthdayFinset] at *
+diff --git a/CombinatorialGames/Mathlib/Small.lean b/CombinatorialGames/Mathlib/Small.lean
+index 851817e..02b532e 100644
+--- a/CombinatorialGames/Mathlib/Small.lean
++++ b/CombinatorialGames/Mathlib/Small.lean
+@@ -36 +36,2 @@ private theorem small_level (x : α) : ∀ n, Small.{u} (level r x n)
+-    · simp_all
++    · rintro ⟨s, a, _, rfl⟩
++      exact H a

@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: MIT-0
+
+# --- LaTeX build products ---------------------------------------------------
+# The reports' compiled PDFs under docs/ are tracked on purpose; only
+# auxiliary files are ignored.  Recorded evidence logs that a package ships
+# under its own data/ or verification/ directory stay tracked -- a blanket
+# *.log sweep would delete them.
+*.aux
+*.bbl
+!docs/**/*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+*.xdv
+*-blx.bib
+*.dvi
+synthesis/*.log
+reports/*/docs/*.log
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Archives supplied as inputs (their extracted contents are tracked) ------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# --- Editors and operating systems ------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Lean / Lake ---------------------------------------------------------------
+.lake/
+
+# --- Large regenerable report artifacts ------------------------------------
+# These are rebuilt byte-for-byte by each package's own generator, and each
+# package README gives the command.  They are ignored so that regenerating
+# them locally does not put tens of megabytes back into the history.

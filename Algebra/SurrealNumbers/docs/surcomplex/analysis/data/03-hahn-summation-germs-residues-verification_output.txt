@@ -1,0 +1,18 @@
+Exact finite checks for Surcomplex Analysis
+Arithmetic: rational polynomials and exact SymPy expressions.
+No floating-point tolerances or numerical root-finding are used.
+
+PASS 1: rho(s) exp(-rho(s)/2) = s modulo s^11.
+        rho(s)^2 = s^2 exp(rho(s)) modulo s^11.
+        First six coefficients: 1, 1/2, 3/8, 1/3, 125/384, 27/80
+PASS 2: Root factorization and preparation recursion independently give
+        W(z) = z^2 - t(1+z) - t^2(1/2+2z/3)
+               - t^3(11/24+27z/40) + higher t-orders.
+PASS 3: Every checked positive-order coefficient of F'/F has zero
+        residue (orders t^1 through t^8); the leading residue is 2.
+PASS 4: For independent nonzero a and e_a, the coefficients
+        A = e_a/(2a), B = e_a^2(2a-1)/(8a^3)
+        solve 2a*delta + delta^2 = q*e_a*exp(delta) modulo q^3.
+
+ALL FOUR CHECK GROUPS PASSED.
+These finite checks are not a formal verification of the paper's proofs.

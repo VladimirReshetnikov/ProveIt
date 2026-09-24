@@ -1,0 +1,1853 @@
+# Notation and conventions across the reports
+
+Use this guide when moving between the main reports listed in
+[the canonical inventory](FORMALIZATION.md#canonical-report-inventory).
+It translates their local notation and recommends common names for new text.
+It does not identify objects merely because they share a symbol, or transfer
+a theorem between coefficient rings, topologies, or derivative notions.
+Merged reports record source notation in their reconciliation and provenance
+material. Original manuscripts are not distributed in the current tree;
+previously tracked archives remain available in repository history.
+
+## Scalars, workspaces, and size
+
+| Object | Recommended notation | Existing local conventions |
+|---|---|---|
+| Ordinary fields | `ℝ`, `ℂ` | These are the coefficient fields, with their ordinary analysis. |
+| Surreal and surcomplex classes | `No`, `SC = No[i]` | The analysis report writes `K = No[i]`. Most other reports reserve `K` for a **set-sized** field. |
+| Ordered exponent group | `Γ` | A set-sized ordered abelian group; divisibility, nontriviality, and an embedding in `No` must be stated where needed. |
+| Real Hahn workspace | `F_Γ = ℝ((t^Γ))` | Analytic geometry and contours also use `R_Γ`; surquaternions uses `K_Γ` for this **real** field. |
+| Complex Hahn workspace | `K_Γ = ℂ((t^Γ)) = F_Γ[i]` | `K` or `𝕂` after the workspace is fixed. In the rank-one report, `K = ℂ((t^ℝ))`. |
+| Surquaternions | `SQ = ℍ_No` | The quaternion report uses `D_Γ = ℍ_{K_Γ}`, with its local real-field convention above. |
+
+An abstract Hahn field needs no surreal embedding to be defined. Its
+interpretation by Conway normal forms uses an ordered additive-group embedding in
+`No`. A workspace contains the specified set of input numbers; it need not
+be closed under a surreal exponential, a selected scalar derivation, or every
+operation used later. An enlargement or closure hypothesis is additional data.
+See [foundations](foundations-and-computation/foundations/article.tex)
+(`found:thm:workspace`), [spectral theory](surcomplex/spectral-theory/article.tex)
+(`eq:workspace`, `spec:rem:divisibility`), and
+[surquaternions](surquaternions/surquaternions/article.tex)
+(`squat:thm:localization`).
+
+Supports, families being summed, covers, polynomial degrees, and matrix
+sizes have their stated set or finite size restrictions. The whole surreal
+class is not one such workspace. `∞` in a valuation is an added symbol with
+`v(0) = ∞`, not a surreal number. Natural numbers are ordinary finite integers;
+write `ℕ = {0,1,2,…}` and `n ≥ 1` where division by `n` is intended.
+
+## Omnific integers and the constant coefficient
+
+The [Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
+now writes `Oz = ℤ ⊕ Π`, agreeing with the foundations report. Its original
+base used `A = Oz = ℤ ⊕ J`; below `J` denotes the same ideal. The
+[set-sized quotient report](surreal/set-sized-quotients-of-omnific-integers/article.tex)
+now also uses `Π` (its base used `I`) for the infinite-part ideal. The decomposition is additive, not a
+product of unital rings. In growth notation `ω^γ`, every exponent of `Oz`
+is nonnegative and the coefficient at zero is an ordinary integer.
+`J` consists of the forms with strictly positive support, including zero.
+Its nonzero elements can have either sign. In `t^γ = ω^(−γ)` notation these
+conditions become nonpositive and strictly negative support, respectively.
+They constrain **every** exponent, not only the leading exponent.
+
+For a general coefficient field `k`, multiplication by any nonzero scalar
+preserves `Π_k` bijectively. The formula `nΠ_k = Π_k` therefore requires
+the integer `n` to have nonzero image in `k`; in characteristic `p`,
+`pΠ_k = 0`. The quotient report's notation `a ≪ c` compares positive
+exponents: `na < c` for every ordinary positive integer `n`. These integer
+multiples are taken in the ordered exponent group, independently of the
+characteristic of the coefficient field. They do not say that `X^a` is small.
+
+For support bounds, `A^{<λ}` and `B^{<λ}` mean that **each element** has
+support cardinality strictly below λ; the exponent class remains all of No.
+`R_{≤μ} = A^{<μ⁺}` permits at most μ terms per support. Thus finite supports
+use λ=ℵ₀, while countable supports use λ=ℵ₁. An extension to at most μ
+terms with μ infinite always includes countable supports. A separating
+family may contain more than λ elements, because it is not the support of
+one normal form. These support bounds differ from a bound on the whole
+ring's cardinality or a restriction to one set-sized exponent group.
+
+In source 03's countable-support two-armed model, keep the coefficient
+choice in the pair `(A,F)`: `Frac(A^{03}_κ) = F^{03}_κ` over the real
+coefficients, while `Frac(A^{03,ℂ}_κ) = F^{03,ℂ}_κ = F^{03}_κ[i]` in the
+Gaussian case. Under this model's hypothesis `cf(κ) > ℵ₀`, both fields
+have size `κ^{ℵ₀}`, but equal cardinality does
+not identify their field structures. The ideal's least number of generators
+is `cf(κ)`, a different cardinal invariant.
+
+In source 06's regular-cardinal model, `κ^{<κ}` means
+`sup_{ν<κ} κ^ν`, with ν a cardinal. It is the ring size and the detection
+threshold; the ideal requires κ generators. Regularity of κ alone does not
+assert `κ^{<κ} = κ`. A bound on each support remains distinct from the
+bound on the union of a family of supports: the field-closure proof uses
+only finitely many supports, while common monomial divisors for fewer than
+κ elements use regularity. At `κ = ℵ₁`, the countable-support and regular-
+cardinal constructions are isomorphic by reindexing their two rational
+bases, not by identifying each of their embedded surreal elements.
+
+Source 08's controlled field uses the countable real algebraic coefficient
+field `K = ℝ ∩ ℚ̄`. Each element has countable support contained in the
+rational span of **finitely many** basis coordinates. This does not mean
+finite support, nor does the field contain every countably supported
+series. Its closure stages adjoin initial-segment truncations, not arbitrary
+subseries. Use `Φ` to pass from the Hahn carrier to the actual surreal
+subfield; after this identification `X^{e₀}` is the actual `ω`.
+
+Source 09's one-arm model assumes **infinite** `λ` with `λ^{ℵ₀} = λ`;
+the equality alone also admits 0 and 1. Its exponent index is the ordered
+set `ω₁ × λ` in lexicographic order, not a cardinal product used as an
+ordinal. In `j(α,β) = λ·α + β`, λ denotes its initial ordinal and the
+operations are ordinal multiplication and addition. The ring, ambient
+field and detection threshold all have cardinality λ, while the ideal's
+generator cardinality is `ℵ₁`. A residue field's canonical copy of the
+coefficient field depends on the quotient map: it is recovered from
+`φ(rf)/φ(f)` for a detected purely infinite f, even when r is not in A.
+
+For source 11’s one-arm example, κ is regular uncountable and
+`Γ = ⊕_{α<κ} ℚ e_α`, with the least nonzero index dominant. Keep
+`(D,K,Γ,κ)` explicit when writing `R^{11}_{Γ,<κ} = D + I`.
+K can be any set field, including a finite field,
+and D is a unital subring. The ambient `F_{κ,K}` allows supports of
+cardinality strictly below κ. Under the displayed coefficient bound its
+size and every smaller-scale field's size are `κ^{<κ}`, while I needs κ
+generators. Real/integer and complex/Gaussian specializations embed into
+the corresponding omnific rings; positive-characteristic choices do not.
+In the five-model comparison, use θ for a **realized size** when discussing
+`θ^{ℵ₀}=θ`, to distinguish it from the support parameter κ.
+
+In the set-sized homological package, `A = D ⊕ I` is an **additive**
+decomposition, with D the embedded constant subring and `A/I ≅ D`.
+Inflation gives a D-module N the action `a·n = ct(a)n`. The constant
+inclusion is a ring section and D-linear, but is not A-linear for that
+inflated action. Thus the quotient sequence is nonsplit as A-modules.
+`fd_A D = 1` and `pd_A D ≥ 2` refer to flat and projective dimension,
+respectively; a countable generating set for I gives `pd_A D = 2`.
+Inflation maps `Ext_D^n(N,M)` to `Ext_A^n(N,M)`; the resolution/adjunction
+comparison gives its inverse for modules annihilated by I. These Ext
+groups are computed in the full module categories. Their detection
+threshold counts the elements of M, not those of the Ext group.
+
+For the finite-support coordinate cores, `P_Λ = ℚ_{≥0}^{(Λ)}` is a
+monoid of vectors with finitely many nonzero coordinates, and each monoid
+algebra element is itself a finite sum. Coordinate rank counts independent
+exponent directions, not Archimedean scales. Distinguish the constant
+coefficient `ct` (all nonconstant monomials go to zero) from the
+coefficient-sum augmentation (all monomials go to one).
+The `p`-subset summands of the face resolution are in homological degree
+p; the empty face is in degree zero. A contraction in each exponent
+degree proves exactness, but is not an A-linear splitting. In the Boolean
+Tor formula, `K/D` is an additive D-module quotient at a singleton
+exponent, not a quotient ring. The coefficient group in homological
+degree one is D; the higher surviving face groups have coefficients K.
+Formal lifting for `A → D` is distinct from the reduced differential
+module `Ω_{A/D} ⊗_A D`, which uses the section `D → A`.
+
+In Setting (L), a coefficient lattice M is nonzero and has a finite
+D-basis of size r ≥ 1. The D-rank r of its constant part is distinct from
+the rank one of `L(M) = M + Π` over `Frac(A)`. Multiplication by a positive
+monomial identifies it with the ideal `J_g(M) = X^g L(M)`.
+Write `H = (X^g, cX^g)A` uniformly; `g = e₁` gives the coordinate-core
+notation `(X₁,cX₁)`. The two-generator noncoherence certificate requires
+`c ∈ K ∖ Frac(D)`, hence `K ≠ Frac(D)`. A non-finitely generated tail
+alone does not imply noncoherence. For ordered cores, the coinitial
+sequence `2^(−n)g` uses both divisibility and `Γ ⊆ ℝ`; its coinitiality
+does not extend to an arbitrary non-Archimedean exponent group.
+In `Π ⊕ (M ⊗_D N)`, the displayed A-action includes the cross term
+`h·m_{M,N}(t)` in the tail coordinate. The additive decomposition is
+not a decomposition into the two separate A-module actions.
+
+For tensor normal forms, MN and Mⁿ denote D-spans of products, not
+just sets of individual products. Constant extraction on `L(M) = M + Π`
+has value in M; it is the restriction of the coefficient map on B and
+satisfies `ct(ax) = ct(a)ct(x)`. The tensor carrier's multiplication map
+sends `(u,t)` to `u + m(t)`, with torsion embedded as `(0,ker m)`.
+This is A-torsion; in the integer and Gaussian setting the same kernel
+is free over the PID D. Its annihilator is
+exactly Π only when the kernel is nonzero; the zero module has annihilator
+A. The constant inclusion into the tensor carrier is D-linear and need
+not be A-linear. Exterior degree j ≥ 2 has action through ct; symmetric
+degree n ≥ 1 retains the coupled action. Zeroth powers use A.
+For class rings, each universal-property argument fixes a target class
+module and constructs a factorization by finite formulas. The ordinary
+constant tensor, exterior and symmetric modules are set-sized carriers.
+
+For the general coefficient-Tor theorem over an arbitrary unital
+`D ⊆ K`, the lattices M and N are finite free by definition, but
+`MN` and `𝒯(M,N) = ker(M ⊗_D N → K)` need not be free.
+Their ranks are dimensions after localization to `Frac(D)`.
+The kernel 𝒯 is D-torsion-free, although it is A-torsion through the
+constant-term action. The product span `V²` in the field-detection
+criterion is the `Frac(D)`-span of products, not merely their set.
+
+In the Rees algebra, T is a formal grading variable, independent of the
+monomial Xᵉ used to scale L(M) into an ideal. Presentation variables Xᵢ
+(and X,Y in rank two) are likewise distinct from monomials in A.
+The nonlinear kernel is finitely generated as an ideal of Sym_A L(M),
+not as an A-module: a nonzero kernel has unbounded homogeneous degrees.
+“First nonlinear degree” refers to the kernel after imposing the linear
+relations. For f of degree d, Xᵈf(Y/X) means its homogeneous polynomial
+expansion; it does not require inverting X or assuming that f is monic.
+
+For coefficient lattices, `(N:M) = {c ∈ k : cM ⊆ N}` uses ordinary
+coefficient scalars; for A-submodules U,V of F = Frac(A), `(V:U)` permits
+scalars in F. The algebraic dual is `U* = Hom_A(U,A)`, represented by
+`(A:U)`. Double-dual identifications specify the evaluation map, not just
+an abstract isomorphism. The quotient `B/L(M) ≅ k/M` is an additive
+D-module with A-action through ct, and need not be a quotient ring.
+The operation ⊙ removes A-torsion from a tensor product; for lattice
+modules its explicit carrier is L(MN). Its ideal-class subgroup has
+identity L(𝔬), differing from A when the order has D-rank at least two.
+For a common-scale matrix, q is the dimension of its kernel W over k,
+while ℓ is the D-rank of `W ∩ Dⁿ`. “Defined over Frac(D)” means that W
+has a k-basis with all coordinates in Frac(D).
+
+For rank-two moduli and endomorphism orders, the coefficient pairs are
+`(D,k) = (ℤ,ℝ)` or `(ℤ[i],ℂ)`. The larger scope of the preceding
+coefficient-Tor theorem does not make D arbitrary here. Write
+`V = Frac(D)M` and `K_V = {c ∈ k : cV ⊆ V}`; K_V is the multiplier
+field, and the order `𝔬(M)` spans exactly K_V over Frac(D).
+A displayed matrix on ideal generators is not a matrix on an A-basis
+unless those generators are A-independent. For the Pell ideal the pair
+is a D-basis only of the scaled coefficient lattice.
+For a module P killed by Π, the tensor identification uses
+`X^g(m+u) ⊗ p ↦ m ⊗ p`. The final identification with Pʳ chooses
+a D-basis of M. All set-sized modules over the class ring satisfy this
+hypothesis; arbitrary modules over a set-sized model need not.
+
+For class modules, a set-presentation uses finite-support free modules
+A^(S) and A^(T) with S,T sets; their coefficient vectors may form proper
+classes. A finite generating map Aʳ → M need not be a finite presentation:
+the latter also requires finitely many relations. In the lexicographic
+model, `gen_A(Π) = κ` counts generators, not the cardinality of Π or of a
+quotient target. The countable support-bounded model is a ring of finite
+series; its ambient finite-series collection is not asserted to be a field.
+The embedding sends the group element e_α to the surreal exponent ω^(−α),
+and the ring monomial X^(e_α) to ω^(ω^(−α)). Thus X^(e₀) maps to ω.
+The negative of an ordinal and differences between ordinal indices here
+are taken in the additive group of surreals, not by ordinal subtraction.
+
+In the face telescope, Kos_n denotes the stage-n Koszul complex, whereas
+Kos = ⊕_n Kos_n is their direct sum as complexes. Homological differentials
+lower the degree. The cone uses Tel_j = Kos_j ⊕ Kos_(j−1) with
+`d(x,y) = (∂x + Δy, −∂y)` and `Δ = 1 − sh`. Its augmentation sums the
+finitely many degree-zero stage entries modulo the face ideal.
+Dualizing a countable direct sum of free modules gives a product of copies
+of P, with no finite-support restriction on the functional values.
+The inverse transition on `G_n(P) = P / J_U^(n)P` is multiplication by
+u_n, from stage n+1 to n. The cokernel of `y ↦ (y_n − u_n y_(n+1))`
+is the first derived inverse limit; it is not the ordinary inverse limit.
+
+In the top-Ext injection, D^ℕ is the product of all coefficient sequences
+and D^(ℕ) is its direct sum, consisting of the finitely supported sequences.
+The injection of their quotient is D-linear; it is not an assertion that
+an infinite monomial sum belongs to the finite-support core A_d.
+Projective dimension `pd_A M` and flat dimension `fd_A M` concern one
+module. Global and weak global dimension are the respective suprema over
+all A-modules. The bounds `gl.dim A_d ≥ d + 2` and
+`w.gl.dim A_d ≥ d + 1` obtained from rank-two lattices use `K ≠ Frac D`.
+For `d = 1`, `D = K`, weak global dimension is one while `pd_A K = 2`.
+
+The flat lattice-quotient DGA uses homological degrees 0, 1, 2, with
+`d(ab) = d(a)b + (−1)^|a| a d(b)`. Its degree-two syzygy term is flat over
+the ordered core T_ℚ and the universe-relative class ring; this argument
+does not apply to coordinate cores A_d with d ≥ 2. In the first-Tor window,
+`e = min(g,h)`, Π_(0,e) consists of tails supported strictly between 0 and e,
+and `(k/MN)X^e` records the coefficient at the endpoint modulo the D-span
+of products MN. The three-piece decomposition is D-linear, whereas the
+preceding quotient formula is A-linear. The symbol B = k + Π remains the
+support ring, not either cyclic quotient A/I or A/J.
+
+For the self-Tor product, the identification with the coefficient kernel
+uses `Σ_j c_j ⊗ m_j`, the flip of the earlier pair calculation's
+`Σ_j m_j ⊗ c_j`. Under this convention `xy = b(x) ⊗ b(y) − b(y) ⊗ b(x)`.
+The exterior-square map sends `a ∧ b` to `a ⊗ b − b ⊗ a`, with no factor
+of one half. Sym²_D M is the quotient by these differences, not a selected
+submodule of symmetric tensors. The degree-two indecomposable quotient
+Ind₂ divides out the D-span of products, and identifies with the kernel
+of `Sym²_D M → M²`. For orders, the “two halves” are equal ranks in a
+short exact sequence, with no splitting specified. Linear disjointness
+always refers to the given embeddings of the fields into k over Frac D.
+
+The framed order data include the actual embedding of the multiplication
+kernel in `𝔬 ⊗_D 𝔬` and the specified unit 1. An abstract isomorphism type
+of Tor₂ alone omits this information. The derived constant-term shadow
+`E ⊕ (M ⊗_D E)[1]` uses homological degree one for `[1]` (cohomological
+degree −1), with both differentials zero. For E = D its degree-one part
+has square-zero multiplication; for general E only a complex of modules
+is asserted. In the two-universe convention U ∈ V, all modules and tensor
+products may be formed in V, but “every set-sized module acts through ct”
+means U-small underlying modules. The regular module A in V does not
+satisfy that action condition. Conjugation transports Gaussian order data
+semilinearly with respect to conjugation on D = ℤ[i].
+
+For a pointed full-dimensional rational polyhedral cone 𝒞, `A_𝒞` uses
+finite sums with constants in D and all coefficients in K at nonzero
+exponents. For a nonzero face F, `I_F` admits precisely the exponents m
+with `F ⊆ fc(m)`, where fc(m) is the least face containing m. Thus face
+inclusion reverses ideal inclusion, and the join `F ∨ G` corresponds to
+intersection, product and tensor product of the face ideals. The convention
+`I_{0} = A_𝒞` is separate: the same tail-only rule at the zero face would
+give Π_𝒞. The dyadic principal exhaustion always leaves nonzero residual
+exponents, so its factors may retain arbitrary K-coefficients. The common
+fraction field is identified inside `Frac K[ℚ^d]` by the given inclusions.
+
+A geometric monomial ideal in Π_𝒞 admits every K-coefficient at each
+admitted nonzero exponent. Its radical classification uses upper sets of
+nonzero faces, but their complements are taken in the full face poset,
+including the zero face. In the face-labelled simplex resolution, a
+p-element subset has homological degree p and ordinary simplicial degree
+p − 1. The relative-to-reduced shift gives `β_{p,G} = dim_K H̃_{p−2}(𝕂_{<G}; K)`.
+The complex consisting of the empty face alone has H̃₋₁ = K. These β's
+count copies of flat face ideals; they are not ranks of minimal free
+modules. Scalars from K act A_𝒞-linearly on each nonzero face ideal, which
+justifies cancellation, but need not act on all of A_𝒞.
+
+The cap module `𝒲_{G,b}` keeps exponents on G strictly below every facet
+cap; meeting even one cap kills a monomial. Its degree-zero coefficient
+space is K. The degree-b tensor with `I_H` is computed from the shifted
+spaces `𝒲_{b−2^(−n)u_H}`, with transition multiplication by
+`X^((2^(−n)−2^(−n−1))u_H)`. Only label H = G survives in the colimit.
+These homogeneous Tor components belong to ordinary ungraded Tor as well.
+A cap module is finitely generated over A_𝒞 exactly when K is finitely
+generated over D. It is a module over `B = A_𝒞/𝔯_𝓕` exactly when G
+contains no member of 𝓕; thus the labels used to detect nonzero Tor
+give modules outside that quotient-module class. The vanishing theorem
+tests all B-modules, not all A_𝒞-modules.
+
+Distinguish the quotient `A_𝒞/I_F` by a single flat face ideal from
+`A_𝒞(F) = A_𝒞/𝔭_F`, which keeps the monomials on F. The latter has
+flat dimension `μ_𝒞(F) = max{dim G : G ∩ F = {0}}`, where the zero
+face is allowed. Thus F = {0} gives D and flat dimension d; F = 𝒞
+gives the ring itself and both dimensions zero. For a simplicial cone,
+the formula `pd A_𝒞(F) = d − dim F + 1` requires F to be proper.
+The corresponding flat formula `d − dim F` includes the whole face.
+In the cellular resolution, a cone face of dimension p gives a section
+cell of dimension p − 1 in homological degree p; the empty-cell
+augmentation is in homological degree zero. A ray section is a point,
+whose boundary is the augmented complex containing only the empty face.
+
+The face lattice is recovered from the actual nonzero flat radical
+geometric ideals, ordered by inclusion, after separately adjoining the
+unit ideal `I_{0} = A_𝒞`. This reconstruction requires the geometric
+monomial structure to be marked. Tensor product represents face join
+through the multiplication isomorphism. Simpliciality requires flatness
+of the face-prime ideal for every facet, equivalently flat dimension one
+for every facet quotient; a single facet does not suffice. The dimensions
+are over the core A_𝒞, also when it is realized inside an omnific ring.
+
+For squarefree transfer, a coordinate face G corresponds to the monomial
+whose support is its ray-index set; its exponent vector has entries zero
+or one. The lcm label 1 corresponds to the zero face, and both quotient
+resolutions have one homological degree-zero summand. The ordinary
+polynomial quotient's projective dimension becomes flat dimension over
+the root core; projective dimension itself need not be preserved.
+The face multiplicities depend on the coefficient field K only through
+its characteristic and do not depend on the unital constant subring D.
+
+In the arithmetic-module theorem D is a principal ideal domain that is
+not a field. Torsion means D-torsion, and N is an A_𝒞-module through ct.
+Write `T = N_tor` and `V = N/T`, placing V in exponent degree zero when
+tensoring the cellular resolution over D. The localization field
+`Q_D = Frac D` is embedded in K; it need not equal K. For V ≠ 0,
+`K ⊗_D V ≠ 0` supplies the top Tor detector. Vanishing against the
+cap module includes `Tor₀(T, 𝒲) = T ⊗_A 𝒲 = 0`, which is needed
+for the dimension-one case. The torsion sequence need not split.
+
+For lattice modules over a cone, `r = rank_D M` counts independent
+constants and `d = dim 𝒞` counts exponent directions. Their relation
+module is `Π_𝒞^(r−1)`. Multiplication by `X^g` identifies L(M) and
+its ideal J as ungraded modules but shifts exponent degrees. The lattice
+lower bound for weak global dimension uses `K ≠ Frac D`; the separate
+two-ray obstruction to a flat embedding requires only `d ≥ 2`.
+
+The total-order core `T_{λ_ω}` retains constants in D and allows every
+exponent g with `λ_ω(g) > 0`. Its constant map extends that on A_𝒞.
+For ordered distinct ray vectors u,v, the new ratio is `z = X^(u−v)`
+and the relation vector is `(1, −z)` for the ordered pair `(X^u, X^v)`.
+In the explicit orthant example the pair is `(a,b)`, with u=(0,1),
+v=(1,0) and `λ_ω(u−v)=1`, so z becomes ω. The full-ring obstruction
+uses only finite linear combinations of old relations.
+
+For the cone-extension question, both cones are full-dimensional pointed
+rational polyhedral cones in the same `ℚ^d`, with the same D and K.
+Every strict inclusion admits a new g with both g and −g outside the
+old cone; interior vectors u=Nh+g and v=Nh have difference g. The
+relation proof needs this incomparability, not that u and v lie on rays.
+It follows that these fixed-space core inclusions are flat exactly for
+equal cones. The statement does not cover inclusions that change the
+linear span, coefficient pair, exponent group or support convention.
+
+In the internal-field construction, `H_a = {h : n|h| < a for every
+ordinary n ≥ 1}` is an additive real subspace of No, and F_a consists
+of all real normal forms with set support in H_a. It is distinct from
+`cvx(ℤa)`, whose elements are bounded by some ordinary multiple of a.
+The increasing map ϑ sends individual exponents into (−2,−1); Ψ applies
+that reindexing to normal forms and is real-linear. Scaling gives the
+additive embedding `Ψ_a = a Ψ : No → H_a`. Only the next substitution,
+`ω^γ ↦ ω^(Ψ_a(γ))`, is the field map Θ_a and fixes the real coefficients.
+Its image is all series supported in Ψ_a(No), a proper subfield of F_a.
+The map ι_g instead transfers F_a to a target where q(g) is invertible,
+by `ι_g(f) = q(gf) q(g)⁻¹`. Compatible denominators give equal maps on
+overlapping fields. This image commutes with q(Oz), but is not asserted
+to lie in the centre of a noncommutative target; no target support or
+strong-sum structure is assumed.
+
+For the binomial quotient `𝒬_a = Oz/(1+ω^a)`, the localized coefficient
+map is `ι_a(f) = −q_a(ω^a f)`. A nonintegral real coefficient r is
+represented by the omnific integer −rω^a; the quotient coefficient map
+is not constant-term extraction. Localization support must be bounded
+below by −Na for some ordinary integer N. The binomial-division blocks
+escape every such bound but are still bounded below in No, for example
+by −ωa. “Unbounded below” without this qualification is incorrect.
+
+Inside the real quotient, `x_n = q_a(ω^(a/n))`, `i = x_2` denotes the
+chosen imaginary unit of `E_a = F_a[x_2]`, and `ξ_r = x_(2^r)` starts at
+r=1. Its stage has `m=2^(r−1)` coordinates over E_a, with modulus
+`T^m − i`; the next stage repeats each coordinate on its two lifts.
+The Gaussian quotient already has its coefficient imaginary unit and
+uses `T^(2^r)+1` over F_a(i), starting at r=0 with 2^r coordinates.
+Its conjugation sends a Cantor function f to `z ↦ conjugate(f(−1−z))`.
+In both cases all complex exponentials used to label roots are evaluated
+in the ordinary complex field before embedding.
+
+The dyadic Cantor algebra is a proper subalgebra of 𝒬_a. The three-root
+indicator ε in E_a[x_6] depends on k modulo 3 in the common stage
+E_a[x_(6d)], where `d=2^(r−1)`; dyadic stage-r elements depend on k
+modulo d. These are finite coordinate descriptions, with no infinite
+sum of idempotents or classification of all ambient idempotents assumed.
+
+In the class-residue subsection, GB includes no choice principle and
+GBC means GB plus global choice. A **proper class ideal** is a class
+ideal I ≠ R; “proper” here specifies the ideal condition, not its size.
+Quotients use Scott codes (all representatives of least rank) over GB,
+or least representatives in a fixed set-like global well-order over GBC.
+Scott codes are sets and do not require choosing a member of each code.
+The greedy construction stores sets of accepted generators at ordinal
+stages. The generated ideals are defined by finite sums; they are not
+stage values. A uniform family of class ideals is a relation on parameters
+and ring elements, not a class whose elements are proper classes.
+
+In the reverse implication from class maximal-ideal existence to global
+choice, “small” means membership in one variable-generated ideal I_p.
+The small polynomials need not form an ideal. Their complement Σ is
+multiplicative; a maximal ideal of Σ⁻¹F₂[v_p] contracts to an ideal
+maximal among those consisting of small polynomials. That reverse proof
+works over GB and does not invoke the forward construction using global
+choice. The restriction to omnific rings has a separate, unresolved
+choice-strength question.
+
+The cutoff for a monomial ω^b in `𝒬_a` uses `a ≪ b`, meaning b > Na
+for every ordinary positive integer N. It is a cutoff on the exponent b,
+not a comparison between the sizes of the monomials. The discarded tail
+`Π_k^(≫a)` is unchanged by multiplication or division by 1+ω^a.
+Truncation to `cvx(ℤa)` gives additive direct-sum decompositions of the
+ring and the binomial ideal; these are not direct products of rings.
+Positive exponent rescaling transports the coefficient fields, tails and
+branch labels between different embedded scales.
+
+For branch equations use binary depth N: the indicator is e_(N+1,j)
+at real stage N+1, or at Gaussian stage N. In the combined binary/ternary
+construction, v_n means x_(2n) in the real quotient and q_a(ω^(a/n)) in
+the Gaussian quotient. Its n coordinates lie over E_a or F_a(i),
+respectively. Binary and ternary depths N,m have a common stage with
+2^N·3^m coordinates, where their indicators intersect in one coordinate.
+The additional 3-adic branch gives continuum many maximal kernels above
+each fixed 2-adic branch. Their residue fields contain the coefficient
+core; equality with that embedded core, or abstract isomorphism to it,
+is not decided by this construction.
+
+The class-field extension theorem prescribes maps on **set-sized**
+subfields. In the real binomial specialization the prescribed ordinary
+complex field is generated by the embedded real scalars and the residue
+of ω^(a/2), which maps to i. The identity sp_a(rω^a) = −r evaluates the
+map at an omnific element, not at a nonintegral real constant in Oz.
+These algebraic maps need not preserve Hahn summability.
+
+For support primes, **term-closed** includes the constant term and
+**strongly sum-closed** concerns set-indexed strongly summable families.
+Write Π_k^(>H) for positive-support series whose support avoids a convex
+subgroup H. The recovered nonnegative exponents are
+F = {g ≥ 0 : ω^g ∉ P}, with H = F−F. A set-sized cofinal subset of H_≥0
+makes strong sum-closure redundant for a term-closed prime meeting D
+only at zero: one surreal cut gives a monomial divisor of any series
+in Π_k^(>H). This condition holds for cvx(ℤa), with cofinal subset
+given by the ordinary multiples na; it fails for H_a, the exponents infinitesimal
+relative to a. These are distinct convex subgroups.
+
+An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
+a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
+realization. It is stronger than saying that `A/J` has a further set-sized
+image, whose defining kernel may strictly contain `J`. For example,
+`Oz/(ω)` is large but maps onto `ℤ`; the universal set-sized image of
+`A/(f)` is `D/(ct(f))`. The zero ring is allowed, so “no nonzero set-sized
+image” is the appropriate statement for `Oz/(1+ω)`.
+
+In the integral-closure section, `IC_F(A)` means the roots in F of monic
+polynomials over A; `Int` remains reserved for integer-valued polynomials.
+The complete integral closure A* is taken in Frac(A), and almost
+integrality means that **one** nonzero d∈A clears every ordinary finite
+power x^n. Clearing the generator x alone is weaker. The conductor
+(A:R) consists of a∈A with aR⊆A. Finite generation as an A-module means
+a finite list of generators, not that the module is a set when A is a class.
+
+For the countable-support two-armed model, μ=cf(κ)>ℵ₀. The normalization
+needs at least μ algebra generators; the ambient field needs exactly μ,
+with a cofinal family of negative monomials giving the upper bound.
+Those monomials are nonintegral and do not bound the normalization's
+generator count from above. The small field's intrinsic order topology
+differs from the topology induced by the fine topology of No: a μ-indexed net of
+these monomials tends to zero in the small field, but not in No.
+Convergent nets in No with a set-sized index set are eventually constant;
+initial variation is allowed.
+
+Write 𝒩 and 𝒩_C for the real and Gaussian integral closures. Ordinary
+integral closure must be distinguished from **complete integral closure**,
+defined by one nonzero denominator for all ordinary finite powers.
+For a Noetherian domain these two closures in its fraction field agree;
+they equal the original domain only if it is integrally closed.
+The Noetherian ring Z[√5], which excludes the integral element (1+√5)/2,
+illustrates the additional hypothesis.
+
+The complexification comparison is more precise than equality after inverting
+2: with η=(√3+i)/2, one has 𝒩_C=𝒩⊕𝒩η and 𝒩[i]=𝒩⊕2𝒩η.
+The quotient 𝒩_C/𝒩[i] is an **additive module**, isomorphic to 𝒩/2𝒩;
+𝒩[i] is not an ideal of 𝒩_C. The conductor (𝒩[i]:𝒩_C)=2𝒩_C
+differs from the zero conductor (Oz[i]:𝒩_C). The same formulas hold
+in the countable-support model with subscript κ. The fractional module
+(1/2)𝒩[i] is not a ring.
+
+The least-exponent obstruction concerns a **minimum** of the support,
+not its leading (largest) exponent. A negative minimum prevents
+integrality; merely having negative exponents does not. Finite-support
+elements are integral exactly when their support is nonnegative and their
+constant coefficient is a real or complex algebraic integer, respectively.
+For the binomial expansions, Hahn substitution is a coefficientwise ring
+map; it does not assert convergence of partial sums in the fine topology.
+
+The arithmetic fibre is B_●=𝒩_●/Π𝒩_● (sans-serif B in the article);
+its rationalization B_●^ℚ inverts the nonzero ordinary integers. It is also the **total
+quotient ring**, obtained by inverting every non-zero-divisor, and is not
+a field of fractions. After choosing the algebraic coefficient copy,
+both rings have finite idempotent-partition descriptions, with values in
+Z̄ and Q̄ respectively. For x=Σλⱼeⱼ in the rationalization, x# means
+Σ_{λⱼ≠0}λⱼ⁻¹eⱼ and eₓ=Σ_{λⱼ≠0}eⱼ; thus xx#=eₓ and
+x²x#=x. This quasi-inverse need not belong to the integral fibre.
+The splitting-property usage of **absolutely integrally closed** in this
+subsection allows zero divisors. A real lift and its arithmetic residue
+have different order properties: the residue of the real infinitesimal
+υ_T satisfies v²=−1 (sans-serif v in the article).
+
+In the fibre comparison, B denotes B_ℝ and B[i] means the quadratic
+algebra B[X]/(X²+1). Its generator is distinct from the chosen root v
+already in B. Under integral doubling B_ℂ≅B×B, this generator maps
+to (v,−v), and B[i] has image {(r,s): r−s∈2B}. Reducing the inclusion
+modulo 2 is not injective: with R=B/2B and ε=i−v, the source is
+R[ε]/(ε²), the image is diagonal in R×R and the kernel is Rε.
+The residues w_± are the coordinate idempotents; their lifts in 𝒩_ℂ
+are not idempotent. The mod-p nilradical is an **idempotent ideal**,
+meaning n_p²=n_p; its elements are nilpotent, and only zero is also an idempotent.
+
+For the fibre's domain targets, ε_U denotes coefficient selection by one
+Boolean ultrafilter U after fixing the coefficient copy. A prime class
+ideal is P_(U,𝔭)=ε_U⁻¹(𝔭), where 𝔭 is an ordinary prime ideal of Z̄;
+its quotient is Z̄/𝔭. This describes individual ideals, not a set or class
+whose members are all class ideals. Krull dimension one refers to lengths
+of finite strict prime chains. The fibre's zero Jacobson radical is also
+pointwise: each nonzero element is avoided by some maximal class ideal.
+The prime p in its detecting field F̄_p may depend on the element.
+
+For a set-sized exponent subgroup G, K_G is the full Hahn field, 𝒩(G)
+its local normalization and 𝖢(G)=𝒩(G)/√(Π(G)𝒩(G)) its reduced fibre.
+The additive support projection pr_G is K_G[i]-linear but generally not
+multiplicative. By contrast, F_κ^03 has only countable supports in the
+two-armed exponent group. Its positive-gap property makes the extended
+normalization ideals radical, so the radicals may be omitted in that
+model's descent formulas. This does not replace 𝖢(G) by an unreduced
+quotient for arbitrary full Hahn workspaces.
+
+A branch specialization at T=0 is a map on a finite algebra with a proved
+polynomial presentation; it is not evaluation on a Laurent field or a map
+on the whole normalization. Lift a finite Boolean word using the integral
+splitters before applying a monic radical certificate. In the one-radical
+construction, (1+ū_H)/2 denotes the residue of the proved integral element
+(1+u_H)/2; it does not assume that 2 is invertible in the fibre.
+A free Boolean family over R means that every nonzero coefficient r∈R
+survives multiplication by every finite Boolean atom. Its algebra uses
+finite-variable polynomials, not arbitrary functions on all assignments.
+The Boolean order on idempotents is d≤e exactly when de=d; order density
+here means that each nonzero e lies above some nonzero member of the
+specified family.
+
+For a set-indexed family of maps from the normalization, the common kernel
+K in the branching discussion is taken **after factoring through the
+arithmetic fibre**. Its nonzero idempotents are order-dense: for every
+nonzero idempotent f there is 0≠d≤f with d∈K. “Essential ideal” means
+that K meets every nonzero ideal of the fibre; here also Ann(K)=0.
+This is not a topological density assertion. A set-indexed family of
+class maps is one relation on (index, input, output), not a set whose
+elements are proper-class graphs. In the Gaussian product description,
+keep the chosen factor and project the coefficient copy into that factor;
+a specified coefficient copy need not be diagonal.
+
+In a cyclic workspace T=ω^a, 𝓑 is the integral closure of k[T] in the
+Laurent field, while 𝒩(ℤa) is the integral closure of D+Tk[T]. The
+finite-place valuations are normalized by v_𝔮(T)=1; the Laurent valuation
+at infinity has value −1 on T. Use finite-place residues to test
+integrality. Laurent constant extraction on the normalization can have
+any value in k, as f_λ=2λz₂ shows. The additive map λ↦[f_λ] has zero
+products and is not a unital coefficient embedding. The equality
+k𝒩(ℤa)=𝓑 means finite k-linear span, not containment of k in 𝒩(ℤa).
+The nilpotence index convention assigns index 1 to the zero residue.
+The minimum ν_T ranges over finite places above T=0; it is not itself a
+valuation, since different branches can realize minima for two factors.
+Its truncation hat-ν_T gives order 1 to zero and order 0 to every nonzero
+idempotent. Refinement by m has kernel Fil^(1/m) and scales truncated order
+by t↦min(1,mt). The Puiseux union is directed by divisibility of positive
+integer denominators, and each individual element has a common bounded
+denominator; it is smaller than the full rational-exponent Hahn field.
+Keep 𝖨=T𝓑, its radical 𝖩 in the domain, and the nilradical 𝖩/T𝓑 of the
+fibre distinct. Only the last consists of nilpotent elements. Finite-stage local
+valuation rings have fraction fields L varying inside K^alg, not a shared
+fraction field equal to K^alg.
+Fresh quadratic irreducibility is tested at an unramified finite prime;
+the two residue choices lie over T=0, while the prescribed Laurent root
+is expanded at infinity. These are three distinct uses of places.
+Write Z̄_k for the constants of k integral over D. The obstruction
+k/Z̄_k in the cyclic arithmetic annihilator calculation is an additive
+D-module quotient, not a quotient ring. The coefficient fibre's periodic
+free resolution does not give an arithmetic free resolution: its
+annihilator ideals contain additional coefficient multiples.
+
+For henselian branching, B_𝔼=𝔼∩Oz is the actual omnific integer part of
+the seeded real closed field. Its augmentation localization 𝔏 has residue
+field ℚ via b/s↦ct(b)/ct(s); its maximal ideal contains ω and is not an
+order-infinitesimal ideal. In the two normalization lemmas, C₀ and C denote
+integral closures in 𝔼 before and after this localization. The lifted roots
+ũ_α belong to the local henselization; the affine idempotents ê_α and
+imaginary unit ȷ use coefficients and division in its generic fibre
+𝔼⊗_𝔏𝔏ʰ. A Boolean atom in a normalization residue ring is not the same
+element as the corresponding generic idempotent. The denominator argument
+connects the two constructions. The identification of the generic fibre
+with LC(𝖷,𝔼[i]) uses the chosen embedded copy of 𝔼[i]; the structural
+maps from that field to each prime residue field are isomorphisms. The coefficient field carries
+the discrete topology, so locally constant functions on the compact
+Stone space have finite image. Adic completion uses powers of the
+augmentation maximal ideal, not the order or valuation topology.
+A separated local target means ∩ₙ≥₁𝔯ⁿ=0; the residue-factorization
+consequence requires the map to be local. Vanishing tangent spaces
+at the rational point do not assert formal smoothness over ℚ.
+Strict henselization uses the coefficient section ℚ→𝔏ʰ and a chosen
+algebraic closure ℚ̄. Its generic tensor map sends g⊗a to
+(x,σ)↦g(x)σ(a), so 1⊗τ acts by right translation σ↦στ.
+For finite L⊂ℚ̄, the orbits σGal(ℚ̄/L) under right translation
+correspond to embeddings of L; they do not form a quotient group
+unless L/ℚ is Galois. In the Gaussian doubling,
+the external generator i acts as (ȷ,−ȷ) on the two copies of 𝒢;
+it is distinct from the internal ȷ already in 𝒢. Finite projective
+and finite étale ranks take values in ℕ including zero. Rank-zero
+algebra pieces use the zero ring, the empty finite product of fields.
+For a map ψ between generic fibres, the branch map ψ* goes in the
+opposite direction on spectra. Surjectivity of ψ* means every old branch
+has an extension; its fibres record multiple extensions. For the mixed
+ordinary-prime centre write 𝔭_p=pB_𝔼, A_p=(B_𝔼)_{𝔭_p} and
+I_p=Π_𝔼A_p. Here I_p is the completion kernel; the maximal ideal is
+pA_p, and these two ideals are different. Completion is ℤ_p, whereas
+the rational centre 𝔏 completes to ℚ. For perfect complexes, use
+cohomological degree n and Hⁿ[-n]; the splitting into homology is not
+canonical, and the invariant is a finite family of rank functions.
+
+For the finite-test certificates, h_j denotes the product of both
+leading coefficients and the resultant in direction j. Nonvanishing
+preserves degrees as well as coprimality; the resultant alone need not
+detect degree loss. The coefficient group G contains full supports,
+and b>G means b exceeds every element of that group. A Gaussian
+coordinate-degree grid C_{d+1} has (d+1)² nodes a+bi; it is not a
+claim that Gaussian inputs satisfy ordinary binomial closure. The
+interpolation is performed on real and imaginary omnific coordinates.
+The decomposition Num_m(Λ)=Int(D^m)⊕Π_k[X] is additive; cross products
+use ordinary polynomial multiplication, so it is not a ring product.
+The ideal I_F is generated by all polynomial values using finite sums.
+Its ordinary image ct(I_F) has an ordinary gcd generator; that does not
+supply a principal generator for I_F. In an abstract exponent group Γ,
+write the fresh monomial as X^b; ω^b refers to its surreal realization.
+
+The quotient-localization and polynomial-presentation mapping properties use
+`Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
+localization is the zero ring; it has no unital map to a nonzero ring, though
+it still has the nonunital zero map. Profinite inverse limits are indexed by
+positive ordinary integers under divisibility, with reduction from modulus
+`m` to `n` when `n` divides `m`. Prime-adic limits use the positive powers
+of one fixed prime. A Gaussian completion `ℤ_ℓ[i]` means
+`ℤ_ℓ[T]/(T²+1)`, without an assumption that this ring is a domain.
+
+Constant coefficient `ct` is a ring retraction on these support-restricted
+rings. It is not a ring homomorphism on all of `No`, since `ω · ω⁻¹ = 1`,
+and it is not order preserving: `ω − 1 > 0` but `ct(ω − 1) = −1`.
+The ring of finite surreals has the opposite growth-support condition;
+its standard-part homomorphism has a different domain and an infinitesimal
+kernel. The omnific counterexample `X² − X − ω` has two simple roots modulo
+`Π` and no omnific root. Its infinite coefficient `−ω` excludes it from
+finite-surreal residue lifting; it does not contradict that theorem. In the complex
+nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
+For a nonzero form, growth degree is the largest supported exponent and
+satisfies `v = −deg` under the reversed valuation convention.
+
+For an automorphism `σ` of `Oz`, preservation of constant coefficient means
+`ct ∘ σ = ct`. A claim that it fixes `ℝ` refers to its extension to `No`:
+the ordinary reals contained in `Oz` are only `ℤ`. In the omnific-automorphism
+factorization `M_{χ,τ} ∘ u`, apply `u` first, then the monomial map `M_{χ,τ}`.
+
+In the curve part of the Diophantine report, `𝒜_k(Γ)` has nonnegative
+growth support, while the valuation ring `𝒪_k(Γ)` has nonpositive growth
+support. For `Γ = 0` both are the coefficient field; the assertion that
+`𝒜_k(Γ)` is not a valuation ring requires `Γ ≠ 0`. An Euler derivation
+sends these rings into their strictly positive and strictly negative
+support ideals, respectively. This concerns the exponents of the image;
+it does not assert a proper inclusion of the image in either ideal.
+For example, on `k[ω]` with `∂(ωⁿ) = nωⁿ` in characteristic zero,
+the image is exactly `ω k[ω]`. For any nonzero Hahn series `u`,
+`ct(∂_λ u/u) = λ(deg u)`; when `u` is a valuation-ring unit this
+residue is zero. Here `ct` is applied to the logarithmic derivative in
+the valuation ring, not asserted multiplicative on the whole Hahn field.
+
+In that report's two-ring principle, `∂p_L` is the tangent functional
+`p_L*Ω¹_{X/k} → L` taking `df` to `∂(f(p_L))`. The field derivation
+`∂: L → L` kills `k`; the associated tangent derivation on a base-changed
+chart sends `f ⊗ a` to `a∂(f(p_L))` and kills the new scalar factor `L`.
+Symmetric differentials use the quotient symmetric power, evaluated by
+the same tangent functional in every factor. The annihilation statement
+requires positive degree; the degree-zero section `1` does not vanish.
+For the cotangent bundle, `P(E)` parametrizes one-dimensional quotients
+of `E`, so a nonzero tangent functional gives a point of `P(Ω¹)` and
+`O(1)` is the tautological quotient line bundle. Semiampleness here means
+that some positive power of this line bundle is globally generated.
+
+In the Diophantine report's Section 11, `𝒜_k(Γ)` is the ring of all
+nonnegative-growth-support forms over `k`, and `ℛ_o(k,Γ) = o + Π_k(Γ)`
+restricts the constant coefficient to `o`. The quotient report writes its
+corresponding latter ring as `𝒜_{D,k}`; the subscript `D` records that
+restriction. An **intermediate ring** `o ⊆ A ⊆ 𝒜_k(Γ)` with `A ∩ k = o`
+need not satisfy `ct(A) ⊆ o`: for example `Z[ω + 1/2]` does not. This
+condition is enough for the Pell-based integer definition, but not for the
+quadratic ideal predicate, whose witness `x/√2` must belong to the ring.
+`Inf(x)` in that report names the positive-growth-support ideal, including
+zero and elements of either sign; it does not mean a positive infinite
+number or an infinitesimal. The detector `Θ(a)` means `ct(a) ≠ 0`,
+which differs from `a ≠ 0` and from invertibility. The graph predicate
+`CT(x,n)` has the unique output `n = ct(x)`; its existential witness tuple
+need not be unique. The predicate `Mult(a,b)` describes the fraction
+`a/b` preserving the ideal under multiplication, with `b ≠ 0`. Recovering
+the coefficient field requires both a nonzero multiplier and its inverse
+to be multipliers. The interpreted value group uses `v(x) ≥ v(y)` exactly
+when `x/y` is finite, consistent with `v = −leading exponent`.
+
+For fractions, `𝔇(x₁,…,xₙ)` includes zero; actual
+denominators are its nonzero members. It is defined for affine tuples,
+not for the projective point at infinity. In the multiplier theorem, if
+`λv` is primitive integral, the allowed scalar set is `λR_ℤ` for the
+original vector and `R_ℤ` after rescaling the vector by `λ`.
+The specialization label is a real projective point, so it can be infinity
+even for an affine surreal value. The topology on `P¹(No)` uses the order
+topology in both affine charts, with reciprocal coordinate `1/z` at infinity.
+For `0 ≠ t ∈ Π`, the fixed field `ℝ(t)` is discrete in the induced surreal
+order topology; its degree topology is a different, non-discrete topology.
+The focusing matrix `F_{x,b}`
+is the identity when `b = 0`; its value `x + 1/b` at infinity requires `b ≠ 0`.
+
+For projective coordinates over a domain, an invertible coordinate ideal
+need not be the unit ideal; only the latter means that the tuple is
+unimodular. On a rigid projective target, the Diophantine report proves
+that invertible omnific coordinate ideals detect ordinary rational points.
+On rational curves its earlier criterion instead tests constant-term
+specialization. For `[ω:1]`, that specialization is `[0:1]`, while projective
+standard part is `[1:0]`, computed in the reciprocal chart. The point itself
+is not rational, although its coordinate ideal is the unit ideal.
+
+For a domain `R`, **normal** means integrally closed in `Frac(R)`, not
+in every ambient Hahn field containing it. For a nonconstant point of an
+integral constant affine curve over `R = 𝒜_𝕜(Γ)`, the function field embeds
+in `Frac(R)`. Normality of `R` therefore suffices for a normalization lift.
+A square root lying outside `Frac(R)` does not obstruct this argument;
+failure of normality alone does not supply a curve point without a lift.
+The singular-curve criterion concerns existence of nonconstant points,
+not surjectivity of normalization on `R`-points. Its nonconstant-point
+criterion requires `Γ ≠ 0`. For affine arithmetic models with smooth
+geometrically integral generic curve, the exception means that the real fiber is isomorphic to `𝔸¹_ℝ` and an integer
+point exists; the model need not be `𝔸¹_ℤ`. The coordinates of its real
+polynomial parametrization need not have integer coefficients. Evaluating
+at a monomial gives a finite-support witness, whereas an arbitrary
+parameter from `Π` can have infinite support.
+
+In that proof the curve function field `F` has restricted value group
+`γℤ`, although the ambient Hahn group can have any rank. An Euler
+derivation may map `F` into the larger Hahn field without preserving `F`.
+The identity `α(∂) = h∂u`, with `h ∈ F` and the chosen
+`v(∂u) = v(u) = γ`, puts the contraction's valuation in `γℤ`;
+it does not put the contraction itself in `F`.
+
+For `Y^m = P(X)` over an algebraically closed field of characteristic zero,
+`e_i` are the root multiplicities and irreducibility requires
+`gcd(m,e₁,…,e_k)=1`. The local exponent at infinity is `−deg P` in
+the coordinate `s=1/X`. In the quadratic test, `P_odd` is the monic product
+of factors of odd multiplicity, not the odd-degree part of the polynomial.
+Over `ℝ` a factor may be quadratic; use its degree when computing
+`deg P_odd`. The normalization parameter `T` is a function-field element
+and need not be a regular function on the singular model.
+
+In the group-variety applications, `ct:X(𝒜_k(Γ))→X(k)` is the map on
+scheme-valued points induced by the ring retraction. The splitting
+`G(𝒜_k(Γ)) ≅ G(k) ⊕ Π_k(Γ)^d` is a splitting of abelian groups of
+points; it does not assert an algebraic-group product decomposition.
+The vector coordinates on the unipotent subgroup are chosen.
+For coefficient algebras, `S[ε]` means `S[T]/(T²)`, with `ε` the class
+of `T`. This nilpotent is not a surreal infinitesimal. Finite coefficient
+bases allow the Hahn construction to commute with finite scalar extension
+and dual numbers; arbitrary coefficient algebras need not give a tensor
+product. Joint injectivity of all coefficient maps is the descent condition
+used for reduced algebras.
+
+In the logarithmic applications, `X = X̄ ∖ E` and `E` is a reduced
+simple normal-crossings boundary. A logarithmic factor contracts to
+`∂u/u`, which need only lie in the valuation ring `𝒪`, rather than its
+maximal ideal. Vanishing therefore uses `∂(𝒜) ⊆ Π` and `Π ∩ 𝒪 = 0`.
+Both contractions are compared in the ambient Hahn field. Constant
+extraction gives ring maps between `𝒜` and `𝒪`, but those maps do not
+respect their inclusions in that field when the exponent group is nonzero.
+For source C15's `t^γ = ω^(−γ)`, extend its additive functional `ℓ`
+uniquely to the rational hull: `D_ℓ` corresponds to `∂_(−ℓ)`.
+
+Workspace qualifications also govern the geometric summaries. At `Γ = 0`
+the point ring is the coefficient field. For a smooth geometrically integral
+curve, constant-term fibers over ordinary points are singletons in the rigid
+case and copies of `Π_k(Γ)` in the affine-line case. The latter formula is not
+a claim about arbitrary singular curves. A vanishing contraction of a
+differential against an Euler tangent does not mean that the differential
+itself vanishes at that point.
+
+The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
+Its rational residue `res` has domain `Oz_Π`; standard part `st` has
+domain the finite surreals. On their common domain, the maps agree
+exactly on `ℚ ⊕ (ker st ∩ ker res)` additively, not just on `ℚ`.
+In the Gaussian version these are the complex standard part and
+Gaussian-rational residue, with values in `ℂ` and `ℚ(i)`.
+The polynomial model `𝒫[T] = ℤ + Tℝ[T]` uses a formal variable;
+`𝒫_t` denotes its evaluated image at `0 ≠ t ∈ Π`. The scale-defect
+quotient `Uℝ[U]/Uᵐℝ[U]` has real dimension `m−1` but infinite
+length as a `𝒫[U]`-module for `m ≥ 2`. The class `Ex(x)` consists
+of exponents `β`; its associated denominators are `ω^β`.
+
+For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
+`Oz/nOz ≅ ℤ/nℤ` describe quotient
+maps and ordinary representatives; proper-class cosets are not elements of
+a set. Similarly, `Frac(Oz) = No` asserts representation by fractions
+inside `No`. Common support bounds for set-sized families may require a
+larger exponent group than the input workspace. These class statements
+must be distinguished from the corresponding assertions in any fixed Hahn
+field or fixed universe.
+
+For quadratic forms the omnific report uses `q(x) = B(x,x)` and
+`B(x,y) = (q(x+y) − q(x) − q(y))/2`. Off-diagonal entries of the bilinear
+matrix are half the mixed-term polynomial coefficients; an integral
+quadratic polynomial need not have an integral bilinear matrix. Polarization
+is performed over `ℝ` and extended by the same finite expressions to `No`.
+The parameter `t` in its polynomial isometries `U_t` is free and may be
+purely infinite; it is distinct from the fixed monomial `t = ω⁻¹` used below.
+The quadratic energy `π(n) = ½ nᵀΠn` in Hahn–Tate Part II has an explicit
+factor `½`; its associated polarized form therefore has matrix `Π/2`.
+
+For omnific tuples, **primitive** means nonzero with no common nonunit
+divisor; **unimodular** means that an `Oz`-linear combination of the
+coordinates is `1`. Unimodularity implies primitivity. Their equivalence
+for representatives of real projective directions in the Diophantine
+report is a special result, not a convention for arbitrary tuples.
+Its polynomial-arc variable `T` is formal; evaluation at `t ∈ Π` preserves
+omnific membership, while preservation of eventual positive-real signs
+requires `t > 0`. Choosing `t = ω` also ensures finite supports.
+
+For decomposable equations, the real kernel is the kernel of the stacked
+real and imaginary coefficient matrices over `ℝ`; Gaussian variables use
+the complex kernel. A kernel-basis parametrization is coefficientwise Hahn
+linear algebra, without an assertion of partial-sum convergence. The norm
+`N_{E/K}(ΣeⱼXⱼ)` is a finite determinant polynomial over `K`; it does not
+assume an embedding of `E` into the surreal field. Its trace pairing uses
+ordinary transpose, not conjugate transpose. The arbitrary-characteristic
+norm extension concerns abstract Hahn rings with finite étale coefficient
+algebras; actual omnific and Gaussian omnific rings retain `ℝ` and `ℂ`.
+
+## Monomials, support orientation, and valuation
+
+The common Hahn convention is
+
+```text
+z = Σγ cγ t^γ,     t^γ := ω^(−γ),     support well ordered in increasing γ,
+v(z) = min supp(z) for z ≠ 0,         v(0) = ∞.
+```
+
+Here `ω^a` is Conway's monomial map. It is not, for arbitrary surreal `a`,
+an abbreviation for `exp(a log ω)` using the Gonshor exponential. In
+particular, naming a monomial does not provide a differentiation rule for
+arbitrary surreal exponents. The distinction is explicit in
+[analysis](surcomplex/analysis/article.tex) (`a:rem:monomial`) and
+[differential equations](surcomplex/differential-equations/article.tex)
+(`diff:warn:monomialmap`).
+
+An equivalent normal form writes `z = Σα cα ω^α` with **reverse**
+well-ordered growth exponents. Translate by `α = −γ`; the leading growth
+exponent is `−v(z)` for `z ≠ 0`. Negating an exponent reverses inequalities
+in that exponent coordinate. It does not reverse ordinary coefficient
+estimates or every inequality in a proof. The gamma-function report commonly
+uses the growth convention; the two birthday reports use the specific
+supports stated in their own hypotheses.
+
+The [evaluation-at-omega report](surreal/hahn-evaluation-at-omega/article.tex)
+(`eq:source`, `eq:prescription`) deliberately asks about the incompatible
+prescription `x^a ↦ ω^a` on **increasing** source supports. Its negative
+result is not a contradiction to `t^γ ↦ ω^(−γ)`. Keep the source variable
+`x` visible when quoting that obstruction.
+
+| Quantity | Meaning and guard |
+|---|---|
+| `v(z)` | Valuation of a scalar value; larger means smaller magnitude in the Archimedean comparison. |
+| `lc(z)` | Coefficient at `v(z)`, defined for nonzero `z` unless an explicit zero convention is supplied. |
+| `v_H(F)` | Least Hahn exponent whose **coefficient function** is nonzero; not necessarily the valuation of `F(a)` after evaluation. |
+| `v_min(a)` | Minimum of the coordinate valuations of a finite tuple. |
+| `w_{a,ρ}(P)` | Weighted Gauss valuation of a polynomial at a specified center and exponent threshold. |
+
+The scalar rules are `v(xy) = v(x)+v(y)` and
+`v(x+y) ≥ min(v(x),v(y))`; cancellation can make the second inequality
+strict. A nonzero ordinary real or complex constant has valuation zero,
+regardless of its ordinary absolute value.
+
+The [Prony report](surcomplex/prony-reconstruction-at-surreal-scales/article.tex)
+uses separation valuations `v(a_i−a_j)`: a collision has value `∞`, while
+value zero means distinct residue classes for integral nodes. Its nonuniform
+certificate (`prony:thm:graph`) permits a nondivisible `Γ`. Fractional scaling
+potentials belong to the auxiliary ordered divisible hull `Γ_ℚ`; the input,
+inverse correction matrix and reconstructed nodes and weights remain in the
+original Hahn field. This temporary extension does not change the workspace
+named in the theorem.
+
+The [Wick report](surcomplex/wick-summability-certificates/article.tex)
+uses `Hilbert basis` for the finite indecomposable generators of its integer
+incidence semigroup, and `Gaussian expectation` for a finite pairing sum
+with symmetric bilinear covariance. Its `D` is an incidence matrix.
+Coefficientwise nonnegativity is stronger than ordered-field positivity.
+The grouping proposition `wick:prop:signcoherent` permits one common
+nonzero complex factor in the couplings; factoring its `n`th power out
+of each order block prevents cancellation there.
+
+The Wick balancing vector lies in the stated divisible group `Γ`.
+For `P = x²` and `C = t` over integer exponents, the atoms are summable but
+the required `0 < 2p < 1` has no solution in `ℤ`. A rational certificate
+belongs to a larger group. The distinction from the Prony certificate above
+is that the Wick equivalence explicitly asks for the scaling exponents
+in the original group.
+
+The [holonomic report](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex)
+uses `Dom_str(f)` for strong evaluation of the fixed formal coefficient
+family. Its inward-stability lemma `hol:lem:inward` shows that membership
+depends only on the nonzero argument's valuation and is preserved when that
+valuation increases. This does not mean that the leading valuations of the
+coefficients determine the domain; their higher support tails are retained.
+The torsion substitution `z^r G(z^m)` preserves and reflects entireness
+without divisible exponents.
+
+A valuation coarsening changes the value map on the same field. Projecting
+each Hahn exponent through a quotient with a nonzero kernel can collapse
+infinitely many supported exponents to one value; it need not produce a
+Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
+makes this distinction explicit.
+
+The nonlinear holonomic argument keeps the scaled lowest-valuation layer
+as a polynomial `φ_δ(X)`. Its coefficient Gauss value `γ_δ` need not equal
+the valuation of the evaluated sum: `φ_δ(1)` may vanish even though the
+polynomial is nonzero. The selected corner has integer data `(d_P,w_P)`;
+its residue polynomial is `χ_P ∈ k[T]`, while its full-coefficient polynomial
+is `I_P ∈ k((t^Γ))[T]`. Integer roots of `I_P` are roots of `χ_P`, but the
+converse can fail. The degree cutoff `κ_P` is an ordinary rational number;
+the exclusion scale `δ₀` is an element of `Γ`. Computing the former does
+not divide elements of `Γ`. The coordinate derivative `D_z` kills the Hahn
+coefficient field, including all monomials `t^γ`.
+
+For the coefficient-field argument, `cvr(f)` is the dimension of the
+rational span of the nonzero Taylor coefficient values in `Γ ⊗ ℚ`.
+It differs from the rational rank of the full coefficient field's value
+group and from the number of exponents in a coefficient's Hahn support.
+“Rank one” means Archimedean here; it does not mean rational rank one.
+“No order unit” means that no single positive scale has cofinal integer
+multiples, a stronger condition than being non-Archimedean.
+
+The linearization offset `θ = min(ord_z Π_ij − j)` is an integer and can
+be negative. Its multiplier `Ξ(n)` depends on the solution and differs
+from the equation's corner polynomials `χ_P` and `I_P`. Mixed jets use
+differentiation before dilation: `(D_z^j f)(λz)`; differentiating `f(λz)`
+instead multiplies this by `λ^j`. Coarsened residue is `red_Δ` in the field
+`k_Δ`; when it embeds a coefficient field `L`, rational identities descend
+through the embedded copy of `L`, without choosing a residue-field section.
+
+The [hidden-negative-directions report](surcomplex/hidden-negative-hermitian-directions/article.tex)
+uses `𝒫_Γ` for complex Hahn series supported in some finitely generated
+additive subgroup of `Γ`; “finite-lattice support” permits infinite supports
+and nondiscrete subgroups. Its valuation closure is `P̄_Γ`, written
+`\overline{\mathscr P}_Γ` in the article, and uses neighborhoods
+`v(x−a) > ρ` for `ρ ∈ Γ`. For `Γ = ℚ` it is the complex Levi–Civita field
+of left-finite series. This differs from the Hahn–Herglotz notation `𝒞_Γ(X)`
+for Hahn series with continuous-function coefficients.
+
+In that report, `A ⪰ 0` tests **every** vector over the stated scalar field;
+positivity on a smaller probe field always names that field. Its two-scale
+measure criterion uses the scalar Jordan parts `ν_u⁺`, `ν_u⁻` of
+`ν_u = u* M₁ u` and the ordinary vector total variation `|σ_u|` of
+`σ_u = M₁ u`. Neither is an entrywise positive part of a matrix measure.
+The null conditions quantify over every ordinary `u` and every measurable
+null set; the resulting matrix positivity quantifies over all Hahn vectors.
+
+In [bounded-support transcendence](surreal/transcendence-over-bounded-support/article.tex),
+`𝓑_G(K)` is the ring of `K`-coefficient Hahn series whose support is bounded
+above **in G**, and `𝓕_G(K) = Frac(𝓑_G(K))`. These are distinct from the
+full real Hahn field `F_Γ` and the tail-span report's full coefficient fields
+`B`, `B₀`. An unbounded geometric series may already lie in `𝓕_G(K)`.
+When `G` has no order unit, `𝓑_G(K)` itself is a field. The rank-one width
+used in the unit criterion takes a supremum in `ℝ` after passing to the
+highest Archimedean quotient, not a supremum in the original arbitrary group.
+
+For an increasing cofinal support `(a_α)_{α<κ}`, its bounded initial Hahn
+truncations have error valuation `a_β` and converge in the named workspace.
+If `κ` is uncountable, these truncations are generally infinite series.
+In this uncountable case, the net of finite subsums does not reach the neighborhood beyond `a_ω`,
+because a finite set omits some earlier coefficient. Thus strong summability
+and cofinal support do not alone imply convergence of finite subsums.
+
+The [matrix-scaling report](surreal/matrix-scaling-at-surreal-scales/article.tex)
+uses `κ_e = τ_e⁻ − τ` for a spanning-tree deletion gap, with `∞` for a
+bridge. The costs are valuations of the normalized base entries, and
+“positive-leading” means a positive real leading coefficient even when
+higher coefficients are complex. Its `Π_p` projects onto potential differences
+and `H_p = I − Π_p` onto weighted conserved flows; neither symbol denotes a
+Hermitian form. The general-constraint version requires a real constant matrix
+because Hahn-valued minors can contribute their own valuations.
+
+The formal tangent space of the matrix-scaling conservation equations at a
+balanced `h` is `ker(B diag(p_e exp(h_e)))`, a vector space over the Hahn field.
+The evaluated domain `𝔪^E` is not itself a vector space over that field.
+For the trivial value group it is a singleton: formal coefficient sharpness
+still makes sense, but optimality over nonzero infinitesimal changes requires
+`Γ ≠ {0}`.
+
+## Inner products and operator spectra
+
+The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
+uses `⟨x,y⟩ = x* y`, conjugate-linear in the first variable.
+[Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex)
+retains different source conventions: Parts I and IV are linear in the first
+variable; Part II is conjugate-linear in the first, and Part III uses none.
+Conjugate the scalar value, or
+exchange the arguments, when translating between them. Positivity and
+adjoint identities survive this change, but the linearity of a represented
+functional changes.
+
+In that report, `σ_Γ^alg` means failure of bijectivity on `H((t^Γ))` and
+`σ_Γ^adj` means failure of inversion in `B(H)((t^Γ))`. Their equality is
+proved for constant normal operators and for Part IV's compact-residue
+class `T+E`, under their respective hypotheses; Part III also proves it in
+the Volterra and increasing-block examples. The Fredholm alternative
+separately equates bijectivity and algebra inversion for `I+C` with
+nonnegative-valuation trace-class coefficients. Part II's `σ_𝒜` refers to inversion
+in the row- and column-finite Hahn algebra on a different vector space.
+A prime in `σ_ℂ(T)'` denotes ordinary spectral accumulation, not a derivative.
+
+Part III's `Σ^𝔄_Γ(T)` is the algebra-relative spectrum of a constant element
+of a named nonzero unital complex algebra. Its `σ_{D,𝔄}(T)` is the
+**finite-index Drazin spectrum**: it excludes precisely those shifts with
+an invertible corner and a finite-index nilpotent corner. Generalized Drazin
+invertibility, which allows a quasinilpotent corner, is a different notion.
+The idempotents `P_nil` and `P_inv` select corners and need not be central
+in the whole algebra; each corner uses its own idempotent as identity.
+The local resolvent here is `(S − u1)⁻¹`, whose constant Laurent coefficient
+is `S^D`; changing to `(u1 − S)⁻¹` changes that coefficient's sign.
+
+Keep the Drazin index `ν` separate from the polynomial ramification index
+`e_a = ord_{X=a}(p(X) − p(a))`. The former controls the shifted inverse's
+valuation `−ν v(ε)` for `ε ≠ 0` infinitesimal; the latter controls the centered image of a halo:
+zero together with nonzero infinitesimals of valuation in `e_a Γ`.
+That image is a scalar-root condition, not a change in invertibility of
+an old parameter when the exponent workspace grows. `v_𝔄` is the leading
+support exponent of an operator series, with `v_𝔄(0)=∞`; multiplication is
+only superadditive when the coefficient algebra has zero divisors, while
+multiplication by a nonzero scalar has exact additive valuation.
+
+Keep the three size notions distinct: `‖T‖_H` is an ordinary real operator
+norm, `‖x‖` is a positive Hahn scalar, and `ρ(x) = exp(−v(x))` is the real
+valuation size when `Γ ⊆ ℝ`. A field-valued operator bound need not have a
+least possible value. The vector norm and scalar modulus exist without
+divisibility because their squared values have even leading exponents;
+arbitrary positive Hahn scalars have a square root exactly when their
+leading exponent lies in `2Γ`.
+
+Part IV uses `𝒯_Γ = S₁(H)((t^Γ))` for trace-class coefficients and
+`𝒯_Γ⁺ = {C ∈ 𝒯_Γ : v(C) ≥ 0}`. The trace `Tr_Γ` is defined on all of
+`𝒯_Γ`; `Det_Γ(I+C)` is defined only for `C ∈ 𝒯_Γ⁺`. The determinant and
+its Fredholm alternative allow arbitrary complex Hilbert `H` and ordered
+set-sized `Γ`, including zero; the compact-spectrum classification retains
+its stronger hypotheses. Ordinary coefficient trace norms justify the
+Taylor derivatives; Hahn summability uses finite support contributions,
+without a uniform norm bound across coefficients. A zero standard part
+of the determinant does not imply that the Hahn determinant is zero.
+
+Adjunction `C*` is canonical. Operator conjugation `𝒥C𝒥` uses a fixed
+antilinear isometric involution `𝒥` of `H`; the bar on its determinant
+conjugates scalar coefficients only. The Riesz convention `(ζI−T)⁻¹`
+in Part IV has the opposite sign to Part III's local resolvent above.
+In the finite reduction, `F=ικ` has bounded ordinary factors,
+`M_F=I+C+F`, `R_F=M_F⁻¹ι`, and `L_F=I_m−κR_F`; the inverse of `L_F`
+may have negative valuation although each determinant argument lies in
+the declared nonnegative domain. Cokernels and the Fredholm index are
+algebraic over the Hahn field, not quotients by topological closures.
+
+The coupling variable `z` and spectral variable `λ` satisfy `λ=z⁻¹`
+only for `z ≠ 0`. Finite coupling detects reciprocal eigenvalues when
+`A` has trace-class coefficients; it does not evaluate the determinant at
+infinite coupling to detect the spectral monad. Ordinary entire coefficient
+functions alone do not license evaluation at negative-valuation inputs.
+
+The projection calculus in Part II is additive on disjoint label sets
+after applying each projection to a vector and taking a **strong Hahn sum**.
+This is distinct from the classical **strong operator topology**, which
+tests topological convergence on each vector. Even for `Γ = ℚ`, the vector
+`Σₙ t^{1−1/(n+1)} eₙ` is a valid Hahn sum whose coordinate partial sums do
+not converge in valuation. The failure of an operator-valued Hahn sum alone
+does not decide whether a projection-valued set function is a spectral
+measure; specify the intended additivity and topology.
+
+In [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/article.tex),
+the positive period value is `α = v(q)`. Its two convex subgroups have
+different roles:
+
+| Subgroup | Definition and role |
+|---|---|
+| `H_α` | Values bounded in absolute value by some ordinary integer multiple of `α`. The quotient valuation `w = v mod H_α` on `K_Γ` has residue field `K_{H_α}`. |
+| `H_α^-` | Values `γ ∈ H_α` with `n\|γ\| < α` for every `n ≥ 1`. Quotienting `H_α` by this subgroup gives the rank-one valuation on `K_{H_α}` used for classical Tate uniformization. |
+
+The period is a unit for the first coarsening, but has positive rank-one
+valuation for the second. Arbitrary formal coefficients in `K_{H_α}`
+can be evaluated at inputs with `w(z) > 0`; fine positivity `v(z) > 0`
+alone is insufficient. These Part I coarsenings require no divisibility;
+Part II retains its separate hypothesis for halves of period exponents.
+Over the lexicographic group `ℤ ⊕ ℤ` with
+`H = {0} ⊕ ℤ`, substituting `z = t^(0,1)` into
+`Σₙ t^(0,−n) Zⁿ` makes every term `1` and fails strong summability.
+
+Distinguish the circularly ordered quotient `H_α/ℤα` from its rank-one
+quotient `(H_α/H_α^-)/ℤᾱ`: the kernel of the map between them is `H_α^-`.
+Even if `H_α/H_α^-` is the real line, the full quotient can retain
+infinitesimal directions. A classical real circle describes the last
+quotient in that case. It describes the full value quotient when
+`H_α^- = 0` and the embedded value group is all of `ℝ`.
+
+In the same report's node chart, the vector valuation is
+`𝐯(x,y) = min{v(x),v(y)}`, with `v(0) = ∞`. The word “isometry” means equality
+of these ordered-group values for differences in the chosen coordinates;
+it does not introduce a real-valued metric. Both coordinates are needed
+because their leading terms can cancel separately. Passing to a rank-one
+quotient can erase a strict increase in vector valuation, as the
+`ℤ ⊕ ℤ` example in Section 9.3 shows.
+
+Part II of Hahn–Tate uses `Π` for the matrix of period exponents,
+`π(n) = ½ nᵀΠn` for its quadratic energy, and `β_j = v(z_j)` for argument
+values. In a finite lexicographic coordinate model, `𝓑_j` are real bilinear
+forms and `V_j` are their successive restricted radicals. “Rational”
+means `span_ℝ(L ∩ V_j) = V_j`; the form coefficients may be irrational.
+The lattice rank `g`, number of coordinate levels `r`, and number of strict
+radical drops `s` have different roles: `s ≤ min(g,r)`. Under the flag
+criterion, `ω^s` is the order type of the exponent set before cancellation.
+It is the actual support length at positive monomial arguments; it is
+not a surreal birthday. Well-ordering of that exponent set and finiteness
+of every exponent fibre are separate requirements for strong summability.
+
+In Hahn–Tate's coupled theta example, `ξ` is the full Hahn solution and
+`ξ₀` is its reduction retaining only first-coordinate-zero terms. The
+zero-row equation is an equation for `ξ₀`. Its coefficients determine the
+displayed expansion of `ξ` below higher first-coordinate rows.
+
+## Finite elements, standard part, and reduction
+
+Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and
+its infinitesimal ideal in a specified field `F`. Zero belongs to both.
+For the full classes, subscripts `ℝ` and `ℂ` distinguish the real and complex
+versions. Finiteness means bounded magnitude by an ordinary integer;
+infinitesimality means magnitude below every positive ordinary real number.
+Neither says anything about finite birthday or finite support.
+
+These identifications use ordinary real or complex coefficients. For a general
+coefficient field `k`, the Hahn ring `{v ≥ 0}` still has residue map to `k`,
+but its elements need not be bounded by ordinary integers. The
+[computer-algebra report](foundations-and-computation/computer-algebra/article.tex)
+(`cas:thm-core`) separates this general residue from ordinary standard part.
+
+The full-class standard-part universal property concerns maps to set-sized
+rings; a fixed set-sized Hahn valuation ring has its own identity map and
+must not be assigned that property. The residue map's existence alone does
+not establish universal factorization. Modules in the quotient report are
+unital, with their actions specified; projectivity in its category of small
+modules tests only surjections between objects of that category.
+
+Scalar standard part is the ring map `st : O_F → ℝ` or `ℂ`. For finite
+`z`, it is the coefficient at exponent zero, and `z − st(z)` is
+infinitesimal. Some reports call this map `red` or `res`; these names are
+aliases **on that domain**. Coefficient extraction at zero extends to
+infinite elements as an additive operation, but is not a ring homomorphism
+there: the zero coefficients of `ω` and `ω⁻¹` both vanish, while that of
+their product is one. The differential-equations report calls this extended
+operation `ct` (`diff:warn:ct`).
+
+For a nonnegative-support family of holomorphic coefficients, **reduction**
+means `red(Σγ fγ t^γ) = f₀`, whose output is an ordinary **function**.
+This is distinct in type from scalar standard part. The
+[global-divisor report](surcomplex/global-divisors/article.tex)
+(`global:sub:conventions`) intentionally reserves `red` and `st` for these
+two maps. Neither operation is a contour or local residue.
+
+The [finite-probability report](surreal/finite-surreal-probability/article.tex)
+uses **limited** for this same bounded-magnitude notion. Its finite-range
+random variables have finitely many values, which may themselves be infinite.
+Their expectations are finite sums in the scalar field. A point-weight vector
+presupposes the full event algebra; for a smaller finite algebra, use its
+measurable atoms. Regularity means positive mass on every nonempty measurable
+event. Conditional identities are pointwise on positive-mass atoms and hold
+up to arbitrary constant versions on null atoms; scalar expectations remain
+independent of those choices.
+
+Conditional shadows retain the order of leading atom scales and normalized
+leading coefficients, while real-payoff comparisons can also depend on signed
+higher coefficient rows. Neither representation determines arbitrary surreal
+payoff comparisons. For conditioning precision, `β` and `λ` belong to the
+ordered value group: `v(error) > β + λ` is a sufficient uniform contract,
+with `β` the event valuation and `λ ≥ 0` the requested output precision.
+It need not hold when particular numerator and denominator errors cancel.
+Finite likelihood updates require a positive joint normalizer to commute;
+a neutral likelihood ratio of one leaves a binary law unchanged.
+
+The probability report's softmax “limit” is a standard-part identity for
+one finite list of separated surreal scales. Its local `O(η²)` means an
+error bounded by a real constant times `|η|²`. No sequence convergence is
+asserted. Finite-alphabet entropy is limited and commutes with standard part;
+relative entropy may be positive infinite as an actual surreal. Its formal
+`+∞` value for a support mismatch, and formal endpoint logits, lie outside
+the field. Logarithmic loss over strictly positive predictions attains its
+truthful minimum only for an interior true law; boundary truths have an
+unattained entropy infimum in that prediction domain. Brier loss permits
+the full simplex, including its boundary.
+
+For smoothing at an arbitrary positive infinitesimal scale `t`, an unseen
+category satisfies `st(p_i/t) = a_i/N`. In Hahn coordinates its leading
+coefficient is `(a_i/N) lc(t)`, which reduces to `a_i/N` for a monomial with
+unit coefficient. A regular prior need not give a regular posterior: zero
+likelihoods remove categories. Sample sizes and path horizons in the finite
+probability results are ordinary integers. A bounded stopping time takes
+values in one such finite horizon; martingale values may be infinite scalars.
+The stopping-time symbol `T` is local to that subsection and is distinct from
+the preceding transition matrix.
+
+In the rare-latent-regime model, `H` is the binary latent label, `X_i` uses
+positive integer coordinates, `F_n` records the first `n` observations
+(`F_0` is trivial), and `F_∞` is the sigma-algebra generated by all of them.
+It does not introduce a surreal time index. The likelihood ratio
+`r_n = 2^(2K_n−n)` is real at every ordinary time, even on paths where it
+has no real bound over time. Standard-part limits, real limits of each Hahn
+coefficient and order convergence of the Hahn values are different notions:
+on typical common-regime paths the posterior tends coefficientwise to zero,
+yet its consecutive differences always exceed the fixed order tolerance `t²`.
+
+In the Loeb bridge, `I` is the ordinary index set of finite experiments,
+`𝓘` is their internal event algebra, `ν` is the internal hyperreal probability,
+and `ν_L` is its completed real Loeb measure. The algebra `𝓘` need not be
+closed under ordinary countable unions. The Poisson count `S` is internal;
+the union of its ordinary fixed-count events is Loeb measurable and has
+measure one. Defining the ordinary count `Z` on the remaining null set
+completes an ordinary measurable random variable. Here `H` denotes the
+internal sample size, distinct from the binary latent label used earlier.
+An ordered embedding fixing `ℝ` preserves standard parts but supplies no
+internal events or preservation of exponential operations.
+
+The word **finite** has several other explicit uses: a finite-dimensional
+algebra, a finite map, finitely many terms, and finite birthday. The
+[graph report](surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex)
+(`sec:definitions`) uses “finite value” for **finite birthday**. When quoting
+it outside that report, write “value of finite birthday.” The
+[broadcast report](surreal/broadcast-sum-of-surreal-sequences/article.tex)
+(`sec:background`) calls these numbers **short**, and distinguishes them
+from bounded-magnitude finite surreals.
+
+## Topologies and strong summation
+
+| Structure | Neighborhoods or criterion | What must stay explicit |
+|---|---|---|
+| Full surreal **fine topology** | Ordered-modulus balls of every positive surreal radius. | On a set-sized subset its subspace topology is discrete; this does not say the full class is discrete. |
+| **Intrinsic valuation topology** of `K_Γ` | Bounds `v(x−a) > ρ` with `ρ ∈ Γ`. | It uses the workspace's thresholds. At arbitrary rank, increasing valuations need not be cofinal in `Γ`. |
+| **Rank-one valuation metric** | For the report's `Γ = ℝ`, `|x|_v = exp(−v(x))`, with `|0|_v = 0`. | This real-valued non-Archimedean norm gives the intrinsic topology, not the fine subspace topology. |
+| **Standard-part topology** on finite elements | Inverse images of ordinary open sets under `st`. | Points with the same standard part cannot be separated. On the zero monad the restricted topology is indiscrete. |
+
+“Reduction,” “residue,” and “shadow” topology are local names for the last
+row when defined by this pullback. Prefer **standard-part topology** in
+cross-report prose. The analytic-geometry report records “reduction topology”
+as an earlier synonym and states explicitly that the zero-monad restriction
+is indiscrete.
+See [contours](surcomplex/contours-and-stokes/article.tex)
+(`contours:subsec:conventions` and its topology subsections),
+[analysis](surcomplex/analysis/article.tex) (`a:def:fine`, `a:thm:discrete`),
+and [rank-one Berkovich theory](surcomplex/rank-one-berkovich/article.tex)
+(`eq:mainfield`, `prop:topologies`).
+
+The [genetic-gap report](surreal/genetic-gaps-and-primitives/article.tex)
+also uses the original paper's **restricted set-union convention**: global
+open classes must be set-sized unions of intervals with surreal or end-gap
+endpoints. This is stricter than pointwise local order-field openness.
+Its gap indicator is locally constant and has zero local derivative, yet
+fails global continuity for that restricted convention. Its order-automorphism
+primitive is continuous in both senses. State this convention explicitly;
+“fine” or “continuous” alone does not identify the intended assertion.
+
+**Strong Hahn summability** is not another name for convergence in any of
+these topologies. It requires a well-ordered union of supports and finitely
+many contributions at every exponent; the sum is coefficientwise. Thus
+`Σn≥0 t^n = (1−t)⁻¹` is a strong identity. In `ℂ((t^ℝ))` its finite partial
+sums also converge intrinsically, whereas in `ℂ((t^(ℚ+ℚω)))` their error
+valuations never exceed `ω`. In the full fine topology they do not converge
+to that sum. “There is no topological convergence” must therefore name the
+full fine setting and the relevant set-indexed convergence assertion.
+
+In the [tail-span report](surreal/tail-spans-and-differential-transcendence/article.tex),
+a **cofinite tail** removes finitely many coefficient indices. It need not be
+the complement of an ordinal initial segment. By contrast, a **valuation
+truncation** through a threshold retains all exponents below that threshold,
+which can be infinitely many even in a rational-exponent workspace. The
+algebraic-approximation criterion tests the field generated by that whole
+prefix, not just finitely many observed coefficients.
+
+In the [three-duals report](surcomplex/three-duals-of-hahn-vector-spaces/article.tex),
+a **strong map** preserves admissibility of every strong family and commutes
+with its sum; it is linear over the whole Hahn field. Its operator coefficients
+have one common well-ordered support, which is stronger than pointwise support
+or a common lower valuation bound. `E_Γ(V)` has finite total coefficient rank;
+`C_Γ(V)` has finite coefficient rank below every cut. The latter is a completion
+for the induced valuation uniformity, with nets of truncations at arbitrary
+rank. An order unit implies `E ⊊ C` in infinite coefficient dimension; strict
+inclusion `C ⊊ V_Γ` additionally requires a noncyclic nonzero group. Neither
+completion nor strong closure means completion in a coefficient norm. The
+restriction space `P_Γ(V)` requires a common lower valuation bound on constants;
+its supports need not have a well-ordered union. The invisible continuous
+functionals vanish on `C_Γ(V)`, and their common kernel equals that completion.
+For Hilbert coefficients, **order-bounded** means a positive real-Hahn bound.
+When comparing least bounds with the spectral report, allow nonnegative bounds:
+the zero operator has least nonnegative bound `0` but no least positive one.
+A subspace with zero orthogonal complement can have an algebraic direct-sum
+complement while admitting no orthogonal direct-sum complement. Under exponent-group
+inclusion `Γ ⊆ Δ`, the induced topology on `V_Γ` agrees with its intrinsic
+topology when `Γ` is cofinal; otherwise it is discrete. Strong operator series
+extend uniquely as strong operators. For Hilbert coefficient spaces, norms
+and scalar-valued functionals take values in the scalar field; general operator
+outputs remain vectors. Allowing all positive surreal norm tolerances isolates
+those vectors without identifying them with surcomplex scalars.
+
+A **coefficientwise Hahn sum** in the
+[measure report](surreal/hahn-valued-measures-and-probability/article.tex)
+uses one common well-ordered support and ordinary absolutely convergent
+sums at each exponent; infinitely many members may contribute there
+(`meas:lem:coefpositive`). A **strong Hahn measure** requires strong
+summability for every disjoint event sequence. A **coefficientwise Hahn
+measure** instead has finite signed or complex coefficient measures on one
+common support. Only the strong axiom forces finite point support at every
+coefficient on a countably separated space. Positivity of the full Hahn value
+does not mean positivity of every coefficient measure: later signed
+coefficients may be negative while the leading nonzero coefficient is positive.
+
+For normalized probability hierarchies, **coefficientwise convergence** means
+ordinary real convergence at each fixed exponent; it need not imply intrinsic
+valuation or fine convergence. Bounds for the real-observable expectation use
+a uniform real bound (or a bound valid almost everywhere for every component),
+not an essential bound for the leading real shadow alone. Countable common
+support and integrable coefficients preserve positivity when integrating a
+Hahn-valued function against an ordinary positive finite measure; uncountable
+common support alone does not. Finite-hierarchy posterior coefficients are
+measurable on a common well-ordered support, but need not be integrable until
+the observation density is multiplied in and cancels the denominator.
+
+In probability extension arguments, a **fine ultrafilter** contains the cone
+of snapshots containing each prescribed point; “fine” here is a filter property,
+not the full surreal fine topology. The snapshot size `H = [|s|]` is a scalar
+in an ultrapower, and its image after an ordered-field embedding is a surreal;
+it is not an ordinary set cardinality or an induction index. Such embeddings
+preserve order and field operations, but need not preserve chosen exponential
+structures or Hahn coefficientwise summation. Equal singleton masses imply
+invariance under permutations with finite support, not arbitrary permutations.
+
+The [Hahn–Herglotz report](surcomplex/hahn-herglotz-positivity/article.tex)
+uses real coefficientwise measures on the ordinary circle. Its moments are
+Fourier moments `c_n = ∫ ζ^(−n) dμ` and its Toeplitz convention is
+`T_N = (c_(j−k))_(0≤j,k≤N)`, a matrix of size `N+1`.
+These differ from interval power moments and Prony's finite power sums.
+Coefficientwise and strong measure classes overlap: the finite atomic
+quadratures satisfy both, while diffuse Haar leading coefficients exclude
+strong additivity. The distinction is in the summation axiom, not in whether
+the article calls its object a measure.
+
+## Coefficient rings and functions
+
+State both the coefficient category and the ordinary base. The common
+conventions of [analytic geometry](surcomplex/analytic-geometry/article.tex)
+(`analytic:def:ringA` and its ring comparison),
+[finite deformations](surcomplex/finite-deformations/article.tex), and
+[trigonometry](surcomplex/trigonometry/article.tex)
+(`trigonometry:sec:rings`) distinguish:
+
+| Ring | Required coefficient data |
+|---|---|
+| `O(U)((t^Γ))` | One well-ordered Hahn support; all coefficient functions holomorphic on the **fixed** ordinary domain `U`. |
+| Common-domain Hahn germs `𝓡_n` | Germs represented by such a family on **some one common** ordinary neighborhood of the center. |
+| Radius-free germs `A_n = ℂ{z₁,…,zₙ}((t^Γ))` | Each coefficient is a convergent germ; no common neighborhood is required. |
+| Formal-coefficient ring `ℂ[[z₁,…,zₙ]]((t^Γ))` | Formal coefficient power series with one well-ordered Hahn support. |
+| `K_Γ[[Z]]` | Formal power series in an ordinary integer-indexed variable with Hahn coefficients; no common support bound is implicit. |
+| `ℂ[Z]((t^Γ))` | Polynomial coefficients at each Hahn exponent; no common bound on their polynomial degrees is implicit. |
+
+The order of the two series constructions matters. For example,
+`Σn≥0 t^(−n) Z^n` belongs to `K_Γ[[Z]]` when `1 ∈ Γ`, but its combined
+Hahn support is not well ordered, so it is not a formal-coefficient Hahn
+series in `ℂ[[Z]]((t^Γ))`. Conversely, analytic versus formal coefficient
+conditions are about ordinary coefficient functions, not about the valuation
+of a single scalar.
+
+Keep the script letter in `𝓡_n`: analytic geometry reserves `R_n` for the
+ordinary convergent-germ ring `ℂ{z₁,…,zₙ}` (`analytic:def:ringA`), while
+`𝓡_n` is the common-domain Hahn germ ring (`analytic:def:ringR`).
+
+For a Hahn ring `A((t^Γ))`, distinguish its nonnegative-support subring from
+the positive-support **ideal of that subring**. The latter lacks `1`; when
+`Γ` is nontrivial it is not an ideal of the full Hahn ring, where positive
+monomials are invertible. Taylor evaluation of holomorphic coefficients at `c + ε` requires
+`c` in their common ordinary domain and an infinitesimal displacement `ε`.
+
+Do not use the local symbol `A` as a category name: it denotes radius-free
+germs in analytic geometry, polynomial-coefficient Hahn series in the
+[entire-functions report](surcomplex/entire-functions-at-arbitrary-rank/article.tex)
+(`ent:subsec:chain`), and a particular ordinal-support subring in the
+[product-birthday report](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex)
+(`eq:ring-intro`). Likewise `O` may mean a valuation ring or ordinary
+holomorphic functions; include a subscript or the domain when both occur.
+
+A **coherent section** on a fixed ordinary domain, a **canonical lift** of one
+ordinary function, a **germ-analytic** function, and a merely **fine
+differentiable** function name distinct hypotheses. Lifts form a proper
+subclass of coherent sections, and coherent sections a proper subclass of
+germ-analytic functions. Germ analyticity implies fine differentiability;
+the analysis report does not prove strictness of that last inclusion
+(`a:def:classnames`, `b:def-classes`). “Entire” in the
+arbitrary-rank report means its stated strong evaluation condition at every
+point of one fixed Hahn field; it does not mean coherence at every scale of
+the full surreal class. In the genetic-gap report, “entire” means a genetic
+function defined at every surreal input, without asserting analytic
+holomorphy. “Uniform support” should always state the ordinary
+domain or family over which one support is required.
+
+For coherent sections on the finite plane, **ordinary-real boundedness**
+and **coefficientwise boundedness** are incomparable. The section `tZ` has
+real-bounded values but an unbounded coefficient; the constant `ω` has
+bounded coefficients but no ordinary-real value bound. A single surreal
+value bound is weaker than either. State which bound a Liouville or Cauchy
+claim uses. Likewise, injectivity of formal-series evaluation as a
+**function germ** does not imply injectivity at one fixed point: `X−h`
+evaluates to zero at `h`.
+
+## Computability and names
+
+The [computable-surreals report](foundations-and-computation/computable-surreals/article.tex)
+(`sec:conventions`, `def:structural`, `def:elf`, `def:puiseux`) distinguishes
+three representations. “Computable surreal” should name which one is meant.
+
+| Notation | Information carried by a name |
+|---|---|
+| `S_str` | A program hereditarily enumerating a separated, well-founded system of Conway cuts. Validity is a semantic condition, not termination of the enumerating program. |
+| `P_c` | Uniformly computable real coefficients on one lower-bounded rational lattice, with one ramification denominator supplied by the name. |
+| `L_c` | Uniformly computable real coefficients at rational addresses, a rational lower bound, and computable finite candidate covers containing every nonzero exponent below each rational threshold. |
+
+Here `ℝ_c` denotes ordinary computable reals with fast Cauchy names:
+`|A(k)−a| ≤ 2^(−k)`. For a coefficient family, one algorithm `A(q,k)` must
+work jointly in the rational address and precision; the statement that
+each coefficient separately is computable is weaker. A candidate cover may
+include zero coefficients. It supplies a finite complete search domain,
+not an exact nonzero-support list or a zero test. Likewise, **left-finite**
+means finitely many support exponents below each rational bound; merely
+well-ordered support does not imply this property.
+
+Distinguish an **extensional closure** assertion (every result has some
+name) from a **uniform algorithm** transforming all valid input names into
+output names under stated promises. Algebraic closure or field closure does
+not by itself supply a branch selector, inverse algorithm, equality test,
+or a converter between structural and numerical names.
+
+A **valuation stabilization modulus** is supplied computational data:
+`n,m ≥ μ(B)` implies `v(x_n−x_m) ≥ B`, so coefficients below `B` agree
+exactly (`eq:modulus`). This use of “modulus” differs from `|z|` or `|z|_v`.
+An exact finite jet contains names for its real coefficients, not merely
+finite-precision rational approximations. Ordinary coefficient precision,
+exact valuation truncation, and full surreal fine neighborhoods remain
+separate. Finally, the computability report uses `K` for a halting set;
+it is not the Hahn field denoted `K` in neighboring reports.
+
+## Derivatives, exponentials, phases, and residues
+
+| Operation | Convention to state when using it |
+|---|---|
+| Fine derivative `f′(x)` | Difference quotients with all positive surreal tolerances and surreal increments. It differentiates a **function at an argument**. |
+| Coefficientwise derivative `D_z` or `∂_μ` | Differentiate ordinary coefficient functions; hold the Hahn monomials constant. |
+| Formal derivative `d/dZ` | Differentiate the integer powers of an indeterminate; the coefficient field is constant. |
+| Scalar derivation `∂` or `D` | A specified derivation of the surreal field, such as the normalized Berarducci–Mantova derivation with `∂ω = 1`. It acts on scalar coefficients. |
+| Parameter derivative `d/dε` | A specified parameter calculus, for example `d(ε^q)/dε = q ε^(q−1)`; do not substitute another variable while holding it constant. |
+
+Identifying two of these requires a proved compatibility statement. The
+[genetic-gap report](surreal/genetic-gaps-and-primitives/article.tex)
+(`eq:derivative`) and [gamma-function report](surreal/gamma-functions/article.tex)
+(“Fine coordinate derivatives versus a scalar derivation”) use this
+distinction to explain nonconstant zero-derivative functions. The
+[physics report](physics/surreal-scalars-and-spacetime/article.tex)
+(`phys:tab:derivatives`) states explicitly which operation is used for its
+fields on ordinary spacetime.
+
+The [omnific Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
+(`odg:eq:euler`) instead uses freely chosen local Euler derivations
+`∂_λ(ω^h) = λ(h)ω^h`, where `λ : H → ℝ` is rational linear and `H` is a
+set-sized divisible exponent group. They kill the scalar coefficient field.
+In the `t = ω⁻¹` convention this becomes `∂_λ(t^γ) = −λ(γ)t^γ`.
+One fixed `λ` can kill nonconstant monomials; detecting a given nonconstant
+requires choosing a suitable functional. This construction does not specify
+a derivation of the full surreal field.
+
+The quotient report's `D_η` instead uses the globally defined additive
+functional `ℓ_η(x) = [ω^η]x` on the surreal **exponent** x, setting
+`D_η(Σ r_x ω^x) = Σ ℓ_η(x)r_x ω^x`. It kills ordinary scalar coefficients;
+its values on the omnific ring lie in the proper-class module `Π`.
+It has `D₀(ω)=ω`, whereas the normalized Berarducci–Mantova derivation has
+`∂ω=1`. A “small derivation” in differential-field terminology preserves
+infinitesimals; that usage does not assert a set-sized target.
+For a Gaussian module, `M[2]` denotes additive 2-torsion `{m : 2m=0}`,
+not a quotient by 2M. The calculation of Gaussian derivations keeps this
+ordinary ramification term even when the positive-support ideal acts by zero.
+
+In that report's constant-discriminant section (`odg:disc:sub:disc`), the
+Euler family uses rational-valued functionals on `Γ_ℚ` and acts on the
+Hahn field with algebraically closed coefficients. The bar in `P̄ = ct P`
+applies the exponent-zero map to every coefficient; it is neither complex
+conjugation nor extraction of the constant coefficient in `X`. Squarefree
+for `P̄ ∈ 𝔬[X]` means squarefree over the coefficient field `𝕜`, or no
+repeated root over its algebraic closure. A nonzero discriminant in `𝔬`
+need not be a unit of `𝔬`. The unique translation `h = −(a₁ − ct a₁)/n`
+requires positive degree, but does not require `1/n ∈ 𝔬`, since the purely
+infinite ideal is a `𝕜`-vector space.
+
+The empty-product discriminant is `1` in degrees zero and one. A unit
+discriminant makes the finite free trace pairing perfect (its matrix is
+invertible), a stronger condition than a nonzero determinant over a domain.
+In the critical-point application, gaps lie in `𝕜̄`, not necessarily `𝕜`;
+simple critical points can have repeated critical values. In the matrix
+application `M*` is the conjugate transpose, while `ct M` extracts exponent
+zero entrywise; the size must satisfy `n ≥ 1` for the trace divided by `n`.
+For the two-translation normal form `f(X) = f̄(X − h) + β`, the shifts
+`h, β` are purely infinite. Affine conjugacy means `g = L⁻¹ ∘ f ∘ L` with
+`L(X) = aX + b`, `a ≠ 0`, in the Hahn splitting field. For degree at least
+two, such a `g` has ordinary algebraic-closure coefficients for some `L`
+exactly when `β = h`; then one can take `L(X) = X + h` and `g = f̄`.
+
+For a finite étale `𝒜_𝕜(Γ)`-algebra `𝖡`, its constants `𝖢_𝖡` are the elements
+algebraic over `𝕜`. The reduction is `𝖡₀ = 𝖡 / Π_𝕜(Γ)𝖡`; it need not be
+identified with `𝕜`. The report proves that `𝖢_𝖡 → 𝖡₀` is injective, not
+that every fiber element lifts to a constant. The generic algebra is a
+product of finite separable fields. Each individual map to the Hahn
+splitting field selects one factor and may have a kernel on that product;
+all generic maps together give an injection. The characteristic-polynomial
+argument uses finite projectivity and local bases, with no global basis
+assumption on `𝖡`.
+
+In the regular-singular part of the differential-equations report,
+`t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
+The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`
+for ordinary real `γ`. It preserves every `K_Γ` with `Γ ⊆ ℝ`,
+whereas `∂ = −t∂_τ` preserves that field exactly when `Γ = {0}`
+or `1 ∈ Γ`. Multiplying an Euler gauge identity by `−t` always gives
+an identity in `No[i]`; interpreting both systems over the same smaller
+field also requires that their coefficients and derivations stay there.
+
+The regular-singular residual matrix `A₀` is the exponent-zero coefficient
+of the Euler coefficient `A`; the corresponding `∂`-coefficient is `−tA`
+and its exponent-one coefficient is `−A₀`. A Levelt resonance is a
+positive real eigenvalue difference of `A₀`. Its block projection retains
+the entire space of maps between the corresponding generalized eigenspaces,
+not just the kernel of the homological operator. These resonances differ
+from integer relations among differential phases and from the scalar
+resonant coefficient at `t¹` discussed earlier in that report.
+
+For a regular-singular system, the gauge `F` gives the constant Euler
+coefficient `iD + N`, where `D` records residual frequencies and `N`
+is nilpotent and commutes with `D`. The gauge `G_τ = F exp(τN)`
+removes `N` after adjoining `τ`. Thus `K_ℝ`-classification retains
+the nilpotent Jordan partitions at each frequency, while classification
+over `No[i]` retains only frequency multiplicities. Constant intertwiners
+refer to the reduced frame; morphisms of the original systems are
+`F C (F′)⁻¹`. The tensor differential system of coefficients `A,A′`
+has coefficient `A ⊗ I + I ⊗ A′`, rather than the matrix product
+`A ⊗ A′` alone.
+
+For smaller Euler-stable workspaces, `K_Γ(t^{a₁}, …, t^{a_k})`
+means the field of rational expressions in the added monomials over
+`K_Γ`; it does not denote the full Hahn field on the enlarged exponent
+group. Two constant rank-one Euler coefficients `λ, μ ∈ ℂ` are
+gauge equivalent over `K_Γ` exactly when `λ − μ ∈ Γ`. In particular,
+their imaginary parts agree and their real parts agree modulo `Γ`.
+
+The autonomous part of the differential-equations report uses `ð` for
+an arbitrary normalized derivation with `ðω = 1`, not for the rescaled
+Euler derivation. A local parameter `σ` on an ordinary complex curve
+evaluates to an infinitesimal at any point reducing to its center. Formal
+maps acting within these infinitesimal tuples have zero constant term;
+their invertible ordinary linear part gives an inverse on the same
+monad. For a simple zero, `ξ(σ) = λσ + O(σ²)`, the coefficient `λ`
+is unchanged by a change of local parameter. The normalized linearizer
+has `h_p(σ) = σ + O(σ²)`; its formal derivative is distinct from `ð`,
+with the evaluation chain rule connecting them.
+
+At a multiple zero of order `m+1`, `x_m = ω^(−1/m)` and
+`y_ω = (log ω)/ω` are actual infinitesimals; `X,Y` are formal
+variables before evaluation. The series `w_{β,C}(X,Y)` has constant
+term one, and `u_{β,C} = β x_m w_{β,C}(x_m,y_ω)` is the solution.
+Here `β^m = −1/(m c_{m+1})` and `C ∈ ℂ` is the ordinary constant
+in the time primitive `𝔱(u) = ω+C`, after choosing `log β`.
+Replacing `log β` by `log β + 2πik` relabels the same solution by
+`C + 2πik ϱ`, where `ϱ` is the coefficient of `σ⁻¹` in `1/f(σ)`.
+Changing the local parameter to `aσ + O(σ²)` rescales `β` to `aβ`.
+Neither constant is an invariant independent of these choices.
+
+For a real branch use the real primitive with `log |u|` and
+`log |β|`; its time constant is real. On a negative branch, choosing instead
+`log β = log |β| + iπ` in the complex primitive changes the constant to
+`C_ℂ = C_ℝ + iπϱ`. Thus “real solution” does not mean “real complex time
+constant” without fixing the logarithm convention. A simple-zero amplitude
+is the ordinary coefficient multiplying `exp(λω)` in the normalized
+linearizer, a different parameter from this additive time constant.
+
+In the autonomous localization theorem, `𝔊_ξ` is the multiplicative
+monomial group generated by finitely many specified scales, whereas
+`K_ξ = ℂ((𝔊_ξ))` contains every series with reverse well-ordered support
+in that group. Finite generation of `𝔊_ξ` does not assert finite generation
+or finite transcendence degree of the Hahn field over `ℂ`. The common
+normalized derivative on this field shifts each input monomial by one of
+`1`, `ω⁻¹`, `(ω log ω)⁻¹`; collisions may cancel coefficients.
+For every `F ∈ ℂ[Y,Z]`, normalized derivations have the same solution
+collection for `F(y,ðy)=0`. Pointwise equality of their derivatives on that
+collection and a uniform set-sized Hahn field bound require `F ≠ 0`.
+
+An ordinary formal time variable `s` with formal derivative `ds/ds=1`
+is not an arbitrary infinitesimal surcomplex input for the intrinsic
+normalized derivation `ð`: finite surcomplex elements have infinitesimal
+intrinsic derivatives. Thus formal flow identities, fine derivatives of
+evaluated series, and intrinsic differential equations require their
+respective compatibility statements. Current Lean formal evaluation and
+fine-differentiation results do not by themselves identify these operators.
+
+For a constant abelian variety `𝐀/ℂ`, the formal logarithm
+`log_𝓕` maps its identity monad to `Lie(𝐀)(𝔪_ℂ)`; its inverse
+`exp_𝓕` is evaluated only at infinitesimal Lie coordinates. It is distinct
+from the scalar exponential and from an analytic uniformization by a period
+lattice. The logarithmic derivative `dlog_ð` is a Lie-valued group
+homomorphism with image `Lie(𝐀)(ð𝔪_ℂ)` and kernel `𝐀(ℂ)`.
+The complex primitive obstruction `Obs^ℂ_ð` tests both real and imaginary
+coordinates, unlike the multiplicative phase obstruction `Φ`. Defining it
+on every input requires surjectivity of `ð`. The abelian image theorem and
+the explicit speed threshold for `ω^(−p)v`, `p > 1`, do not.
+
+In the critical-potential part, `ℓ_α = ω^(ω^(−α))` uses the Conway
+monomial map at both levels. Each ordinal-indexed sum stops below one
+fixed ordinal, so its index is a set. The monomial product `ℓ_{<α}` is
+defined by summing its exponents; its logarithm agrees with the sum of
+logarithms by the stated imported theorem, including limit stages.
+The real powers `ℓ_α^r` use the ordered real exponential. These formulas
+do not extend the Conway map to exponents in `ℂ \ ℝ`, or define complex
+powers of infinite scales. A surreal exponent outside `ℝ`, such as
+`−2−2ω⁻¹`, is still a valid Conway exponent; distinguish that case from
+a non-real complex exponent. A critical potential is the strong sum of its increments, not
+the generally nonsummable family of its partial potentials.
+
+An exact Hahn normal form specifies every coefficient, including zeros
+outside the displayed support. Prescribing coefficients only at an earlier
+hierarchy of scales allows smaller remainder terms. The critical-potential
+invisibility theorem concerns that latter data; it does not give two
+values for one exact strong sum.
+
+For the three limit-stage fields, distinguish inner support in the Conway
+normal form of an exponent from outer support in the Hahn series itself.
+`Δ₀` is a finite real span of prefix sums. Full Hahn summation allows
+well-ordered outer supports in `Δ₀`, but does not add new exponents to
+`Δ₀`. The first two real fields are closed under the ambient logarithm;
+the third contains `ℓ_λ` but omits its logarithm `ℓ_{λ+1}`. Algebraic
+closure, derivative stability, logarithm closure and solving a particular
+equation are separate properties.
+
+For the limit-stage Picard–Vessiot basis, use the right-matrix convention
+`ψ(Y) = Y M_ψ`. Composition applies the right-hand automorphism first and
+satisfies `M_{ψ∘φ} = M_ψ M_φ`. The action parameters `(a,b)` have law
+`(a,b)·(a′,b′) = (aa′,a′⁻²b+b′)`; the upper-right matrix entry is `ab`.
+In Schwarzian reconstruction, `v² ∂s = 1` is an algebraic square-root
+choice. Möbius matrices lie in `GL₂(ℂ)` and act on a nonconstant solution
+ratio, which ensures their denominators are nonzero. These constructions
+do not require a complex logarithm or a global composition operation.
+
+For a scale `s` with `∂s ≠ 0`, the field derivation
+`∂_s = (∂s)⁻¹∂` has the same constants as `∂`; writing `s∂_s = ∂_{log s}`
+when `s > 0` asserts an operator identity, not a global substitution map.
+The Liouville gauge formula is algebraic for arbitrary coefficients in the
+field. Its Euler kernel classification additionally requires an ordinary
+real coefficient. Membership of a potential in the power-Hahn field
+`ℂ((t^ℝ))` is determined by its surviving Conway exponents: the critical
+family's stage `α = 1, c = 0` is still in that field.
+
+Distinguish the ordered real surreal exponential, the strongly summed
+infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
+surcomplex exponential or global phase. A finite angle has ordinary period
+ambiguity `2πℤ`; the canonical global phase construction uses an omnific
+integer part and has a different period class. A theorem about one domain
+or kernel does not define the others. See
+[trigonometry](surcomplex/trigonometry/article.tex)
+(`trigonometry:thm:stripexp`, `trigonometry:thm:globalexp`) and
+[differential equations](surcomplex/differential-equations/article.tex).
+The [automorphism-rigidity report](surreal/exponential-automorphism-rigidity/article.tex)
+uses `log √(z z̄)` for `z ≠ 0`; this logarithmic modulus takes values in
+`No`, not a choice of complex logarithm.
+
+In the differential-equations report, `Obs(b)` is the purely infinite part
+of a primitive of the real surreal coefficient `b`, and `Φ(a+ib) = Obs(b)`.
+Thus `Obs(1) = Φ(i) = ω` but `Φ(1) = 0`. The normalized primitive `I₀`
+has zero ordinary constant term; it may retain an infinitesimal part and is
+not in general purely infinite. The phase multiset `Ph(A)` classifies finite
+systems over `SC` up to differential gauge equivalence. Computing it from
+instantaneous eigenvalues needs additional hypotheses; its existence alone
+does not provide that formula or an algorithm.
+
+Use “residue” with its definition: formal Laurent coefficient, actual local
+residue at a surcomplex point, residue of an ordinary-centered cluster, or
+the multivariable series/contour functional. In analytic geometry the
+functionals `Res_F` and `Λ_F` agree only through the stated comparison
+(`analytic:prop:residues-agree`). A coefficientwise contour integral should
+retain its `H` decoration and its ordinary parameter path; it is not defined
+by fine-topological Riemann-sum convergence.
+
+## Automorphism structures
+
+The [field-automorphism report](surcomplex/surcomplex-field-automorphisms/article.tex)
+uses `K = No(i)` and the proper-class exponent group `Γ = (No,+,<)`;
+every individual normal-form support remains a set. Its `Aut(K)` is a
+collection of class maps, not an NBG class containing their graphs.
+Factorizations describe individual maps and composition. A finite action
+is encoded by one class relation with a finite index set; fixed-field
+identities for all class automorphisms are interpreted pointwise.
+
+| Preserved structure | Meaning |
+|---|---|
+| Real axis | Setwise preservation of `No`; fixing it pointwise is stronger. |
+| Valuation ring | `α(𝒪)=𝒪`, allowing an ordered reindexing `v(αz)=τ(vz)`. |
+| Individual values | `v(αz)=v(z)` for every nonzero input. |
+| Leading terms | `v(αz−z)>v(z)`, the report's `1`-automorphism condition. |
+| Norm or modulus | Exact preservation forces identity or conjugation; equivariance `|αz|=σ(|z|)` allows other real-axis automorphisms. |
+
+Strong additivity preserves summable families and their Hahn sums; a strong
+automorphism requires this for both directions. It is separate from
+coefficient linearity and fine continuity. A strong field map is determined
+by its coefficient and monomial images. Monomial images alone determine it
+when coefficients are fixed; the Taylor motions `Φ_d` show why that condition
+matters. Residue action `ρ` also need not be the restriction to the embedded
+coefficient field, which can move by infinitesimals.
+
+The decomposition `α=u D_χ M_{ρ,τ}` applies the rightmost map first and uses
+`χ(g)=lc(α(t^{τ⁻¹g}))`. This character is indexed after undoing the value
+action. The additive-group decomposition one level deeper permits arbitrary
+order permutations of exponents, while a field monomial map needs an
+**additive** order automorphism. The coefficient functional `ℓ(g)=[g]₀`
+is defined even for infinite exponents and is not a standard-part map there.
+
+The fine derivative can take any value in `K`; “no `K`-valued derivative”
+excludes infinite values too. It is tested by punctured neighborhoods,
+not by a set-indexed cofinal sequence in the full surreal topology.
+Generic exponential rigidity acts on the actual valuation image `w(Fˣ)`;
+surjectivity onto a larger written codomain must be stated separately.
+
+## Radii, modulus, and order-theoretic terminology
+
+An **ordinary radius** `R > 0` specifies a domain for complex coefficient
+functions: increasing `R` enlarges that domain. A **valuation threshold**
+`ρ ∈ Γ` specifies `v(z−a) > ρ` or `≥ ρ`: increasing `ρ` shrinks that ball.
+In a rank-one norm one may convert by `R_v = exp(−ρ)`. An
+**ordered-modulus radius** `r ∈ No_{>0}` specifies `|z−a| < r` and is yet
+another type of datum. The ordinary modulus, the surreal-valued modulus, and
+`|·|_v` must not be silently substituted for one another. A valuation shell
+`v(z−a) = ρ` is not asserted to be the topological boundary of a valuation
+ball. See [dynamics](surcomplex/dynamics-and-normal-forms/article.tex)
+(`dyn:subsec:radius`) and
+[polynomial algebra](surcomplex/polynomial-algebra/article.tex)
+(`polynomial:subsec:conventions`).
+
+The computer-algebra convention `O_v(β)` means an error with valuation at least
+the **exponent** `β`. Thus for `v(t) = 1`, write `O_v(7)`, not `O_v(t^7)`.
+The [Markov report](surreal/markov-generators-at-every-scale/article.tex) also
+allows `β = +∞`: with `v(0) = +∞`, the bound `O_v(+∞)` means exactly zero,
+entrywise for matrices.
+Other reports may instead define an ordinary asymptotic `O(t^7)`; quote its
+local definition before translating the notation.
+
+In [expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/article.tex),
+`σ` is the one-sided symbolic shift and `κ = v(q) > 0` is the valuation
+gain of an inverse branch. Its error ideal `I_κ` consists of values with
+`v(h) > nκ` for every ordinary `n`. This contrasts with the small-divisor
+rate `σ(λ)` and the divisor thresholds in local normal-form dynamics.
+An order unit can exist in a group of rank greater than one; the Cantor
+description concerns the itinerary space and does not identify the ambient
+valuation as rank one.
+
+The dynamics report's ordinary small-divisor growth rates measure complex
+coefficient sizes, even when every nonzero divisor has Hahn valuation zero
+(`dyn:rem:invisible`). Its local letters `σ`, `τ`, and `log Θ` apply one rate
+construction to different divisor families; they are not equal numbers by
+notation. “Cofinality” in the entire-functions report is cofinality of the
+ordered value group, and an **order unit** has cofinal integer multiples.
+Countable cofinality does not by itself assert the existence of an order unit
+(`ent:rem:one-name`).
+
+For an exact diagonal unitary multiplier in the dynamics report, the
+**angular rank** is `r_ang = dim_ℚ span(1,θ₁,…,θ_d) − 1`, where
+`λ_j = exp(2πiθ_j)`. It is unchanged by changing the angle representatives
+and is independent of the ordered rank of the Hahn exponent group `Γ`.
+Under nonresonance and finite divisor rate `τ`, the universal coefficient
+radius lies between `R exp(−r_ang τ)` and `R exp(−τ)`. It equals `R` when
+`τ = 0` at every angular rank; the unresolved higher-rank optimum concerns
+`0 < τ < ∞`. These are ordinary coefficient radii, not valuation thresholds.
+In the colored-tree proof, `η_v ∈ S` denotes a vertex's Hahn input label,
+whereas `s_v` is its positive integer subtree weight; they live in different
+groups. The fixed complexity `m` may depend on the coefficient exponent,
+and its finite prefactor is not bounded uniformly in `m`.
+
+A sequence whose **range is cofinal** need not tend cofinally to infinity:
+it can keep returning to one small value. An eventual growth estimate must
+state the latter condition. The entire-functions growth barrier
+(`ent:lem:growth-barrier`) requires eventual cofinal growth and gives a
+counterexample to the weaker range condition.
+
+Finally, distinguish ordinary ordinal arithmetic from Hessenberg natural
+operations `⊕`, `⊗` and from surreal field operations. On embedded ordinals,
+the field operations agree with the natural operations, while ordinal
+concatenation still uses ordinary ordinal addition. Birthday `b(x)` is the
+canonical sign length of a **value**, not the rank of an arbitrary form
+representing it. These conventions are spelled out in both
+[birthday](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex)
+[reports](surreal/gonshor-laurent-birthdays/article.tex) and in the graph report.
+In [nonabelian support](surcomplex/nonabelian-support/article.tex), “positive”
+means positive Hahn exponents, not positive-definite matrices; in spectral
+and quaternion algebra those order notions have their separately stated
+meanings. The [computer-algebra report](foundations-and-computation/computer-algebra/article.tex)
+(`cas:sec-objects`) treats these distinctions as representation requirements,
+not interchangeable spellings for software constructors.

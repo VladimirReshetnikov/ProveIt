@@ -1,0 +1,23 @@
+Exact package-loading test, September 21, 2026
+
+The archive's SurrealCASCore.wl and TestCore.wls were transferred as literal
+text (JSON/base64 transport) to the connected Wolfram Language evaluator,
+written into one temporary directory, and TestCore.wls was loaded with Get.
+The test script itself loads SurrealCASCore.wl from the same directory.
+
+Returned result:
+<|"Kernel" -> "15.0.1 for Linux x86 (64-bit) (July 2, 2026)",
+  "Checks" -> 110, "Passed" -> 110, "Failures" -> {}|>
+
+The final package-loading run returned no warning messages. An earlier
+inline-definition exploratory run passed its 105 checks but produced a
+static undefined-global-symbol warning; it is not the package-loading result
+reported above. Five additional deterministic tests were included in the
+final run, giving 20 deterministic tests plus 90 generated property checks.
+
+Scope: exact Gaussian-rational finite sparse Hahn polynomials with rational
+lexicographic exponent vectors, plus unexpanded fractions. These tests do
+not establish support for infinite generators, algebraic-root extensions,
+Hahn-coherent functions, general transseries, or all surreal numbers. They
+are not a formal verification. Other Wolfram versions and Mathics were not
+tested.
