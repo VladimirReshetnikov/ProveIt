@@ -405,10 +405,15 @@ over the integers, and retains the unresolved arithmetic existence case
 for singular real curves. It also explains why one nonconstant unit
 suffices for curve rigidity through the dimension-one argument.
 These geometric and coefficient-algebra results remain pending in Lean.
-A new manuscript in the same report treats monic polynomials with nonzero
-constant discriminant as translates of their constant-term polynomials,
-and studies units of finite étale algebras. That addition awaits independent
-proof review and Lean formalization.
+The same report classifies positive-degree monic polynomials with nonzero
+constant discriminant as translates of their constant-term polynomials.
+Its elementary lemmas and root-velocity proof have now been reviewed: for
+omnific coefficients, each integer root of the constant-term polynomial
+lifts uniquely by the same purely infinite translation. The review makes
+positive degree and squarefreeness over the coefficient field explicit,
+and corrects the example showing why monicity matters. The subsequent
+étale-algebra and matrix proofs remain unreviewed; this discriminant
+classification remains pending in Lean.
 The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
 now assembles fifteen manuscripts. Its latest parts propose formal orbit
 fields, actions of set-sized left-orderable groups with prescribed fixed
