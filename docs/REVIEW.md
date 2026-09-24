@@ -3809,6 +3809,42 @@ No manuscript or PDF changes in this merge. The independent inventory
 still verifies 3,838 standard results in 61 reports, all 4,382 source
 references resolve, and all 1,581 local Markdown destinations pass.
 
+## Singular-curve normalization and conductor review
+
+The Diophantine proof review now covers Section 17.5 and Sections
+17.6.1–17.6.5, through the polynomial witness in every fiber. It reviews
+eleven standard results: the classification, finite power identity,
+conductor certificate, derivative-order bound, boundary place, one-place
+obstruction, positive genus and four structural consequences. The
+repeated-root and arithmetic applications remain unreviewed.
+
+The corrections distinguish failure of normality from an actual failed
+curve lift, and normality in the fraction field from integral closure in
+a larger Hahn field. A nonconstant curve point over `𝕜[ω]` does lift;
+the displayed square root outside `𝕜(ω)` cannot obstruct it. The
+contracted differential need not belong to the function field. Its
+valuation is nevertheless commensurable with the conductor's, by the
+chosen Euler derivative of a uniformizer. The revised proof constructs
+the conductor, explains the fixed multiplier and order-zero identity,
+gives the finite one-place bound, and expands coefficient descent and
+polynomial-fiber nonconstancy.
+
+The nonzero-group convention is explicit in the singular subsection and
+in the dimension-one theorem: `Γ=0`, `X=𝔸¹` refutes that equivalence
+without the guard. All other standard statements, all 471 labels and
+their existing numbers are preserved. Targeted comparison with source
+C16 and primary checks of Seidenberg's argument and the relevant
+normalization, valuation and differential inputs are recorded in the
+report reconciliation. This adds no Lean coverage.
+
+The article and catalogue build in three passes to 199 and 32 pages with
+no warnings, unresolved references or bad boxes. Affected normalization,
+conductor and structural pages and the catalogue entry were inspected.
+The independent inventory verifies 3,838 standard results in 61 reports;
+all 4,382 cited source references and 1,581 local Markdown destinations
+resolve. The root README, notation guide and review boundaries agree
+with this scope. No Lean source changed in this review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

@@ -57,8 +57,11 @@ Those proofs now include support arguments and boundary examples. Source
 reviewed, with the trivial-exponent-group exception and the meaning of
 image inclusions made explicit. Later passes cover the rest of Section 16
 and Sections 17.1–17.4: differential rigidity, smooth curves, exact arithmetic
-fibers, separated-model descent and projective coordinate ideals. Singular curves, curve pointers
-and later additions remain outside that review, with the exact boundary in its
+fibers, separated-model descent and projective coordinate ideals. The review now
+also covers Section 17.5 and the singular-curve criterion through Section 17.6.5:
+conductor certificates, the discrete boundary place and structural consequences.
+Repeated-root applications, curve pointers and later additions remain outside
+that review, with the exact boundary in its
 [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md); its
 remaining geometric arguments and the other new reports and additions await
 review. Lean covers the omnific ring and constant-term package, degree
@@ -83,8 +86,9 @@ written as a single-source report in `781b19e`. Three of its eight companions
 are now integrated: automatic summability (`d4d72d7`) and singular curves
 (`1ad4ad8`), and finite tests at new scales (`9b463f7`), while the other
 five await integration. The singular-curve addition
-claims a normalization criterion beyond the reviewed smooth case; it remains
-outside the Diophantine proof-review boundary. The new report and its
+gives a normalization criterion beyond the smooth case; its proof and immediate
+structural consequences now have a manuscript review, while its later
+applications remain unreviewed. The independent-copies report and its
 class-foundation assumptions remain pending proof review and Lean formalization.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds

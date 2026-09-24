@@ -129,6 +129,22 @@ specialization. For `[ω:1]`, that specialization is `[0:1]`, while projective
 standard part is `[1:0]`, computed in the reciprocal chart. The point itself
 is not rational, although its coordinate ideal is the unit ideal.
 
+For a domain `R`, **normal** means integrally closed in `Frac(R)`, not
+in every ambient Hahn field containing it. For a nonconstant point of an
+integral constant affine curve over `R = 𝒜_𝕜(Γ)`, the function field embeds
+in `Frac(R)`. Normality of `R` therefore suffices for a normalization lift.
+A square root lying outside `Frac(R)` does not obstruct this argument;
+failure of normality alone does not supply a curve point without a lift.
+The singular-curve criterion concerns existence of nonconstant points,
+not surjectivity of normalization on `R`-points.
+
+In that proof the curve function field `F` has restricted value group
+`γℤ`, although the ambient Hahn group can have any rank. An Euler
+derivation may map `F` into the larger Hahn field without preserving `F`.
+The identity `α(∂) = h∂u`, with `h ∈ F` and the chosen
+`v(∂u) = v(u) = γ`, puts the contraction's valuation in `γℤ`;
+it does not put the contraction itself in `F`.
+
 The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
 Its rational residue `res` has domain `Oz_Π`; standard part `st` has
 domain the finite surreals. On their common domain, the maps agree

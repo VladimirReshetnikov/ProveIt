@@ -245,6 +245,13 @@ integer polynomial parametrization covers each entire exceptional fiber,
 including infinite-support points; a finite-support witness can always be
 chosen in the same fiber. The projective review makes the coordinate-ideal
 obstruction explicit and separates rational points from rational specialization.
+The singular-curve criterion now has a manuscript proof review as well:
+over a characteristic-zero field and a nonzero exponent group, a geometrically
+integral affine curve has nonconstant points exactly when its normalization
+is the affine line. A conductor and a discrete boundary valuation supply
+a finite derivative-order obstruction. This classifies existence without
+assuming that every point lifts to the normalization. The review corrects
+the ambient-field normality comparison and the zero-group boundary case.
 These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
