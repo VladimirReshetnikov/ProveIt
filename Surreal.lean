@@ -753,6 +753,8 @@ import Surreal.Surcomplex.GaussianCoefficientSection
 import Surreal.HahnSeries.CharacterTwist
 import Surreal.Surcomplex.CharacterAutomorphisms
 import Surreal.Surcomplex.PhaseTwist
+import Surreal.Algebra.DefinabilityAutomorphisms
+import Surreal.Surcomplex.RealAxisNondefinability
 import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial

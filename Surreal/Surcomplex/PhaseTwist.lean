@@ -7,7 +7,8 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 The literal phase character and automorphism of `odg:def:lem:twist`,
 with the algebraic witnesses used by `odg:def:thm:norealaxis`.
-The latter's formal first-order definability assertions are separate.
+The latter's formal first-order definability assertions are proved in
+`Surreal.Surcomplex.RealAxisNondefinability`.
 -/
 
 universe u
