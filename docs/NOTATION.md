@@ -292,6 +292,17 @@ give Π_𝒞. The dyadic principal exhaustion always leaves nonzero residual
 exponents, so its factors may retain arbitrary K-coefficients. The common
 fraction field is identified inside `Frac K[ℚ^d]` by the given inclusions.
 
+A geometric monomial ideal in Π_𝒞 admits every K-coefficient at each
+admitted nonzero exponent. Its radical classification uses upper sets of
+nonzero faces, but their complements are taken in the full face poset,
+including the zero face. In the face-labelled simplex resolution, a
+p-element subset has homological degree p and ordinary simplicial degree
+p − 1. The relative-to-reduced shift gives `β_{p,G} = dim_K H̃_{p−2}(𝕂_{<G}; K)`.
+The complex consisting of the empty face alone has H̃₋₁ = K. These β's
+count copies of flat face ideals; they are not ranks of minimal free
+modules. Scalars from K act A_𝒞-linearly on each nonzero face ideal, which
+justifies cancellation, but need not act on all of A_𝒞.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

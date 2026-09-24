@@ -295,11 +295,15 @@ constant-term reduction gives only a square-zero algebra: the orders of
 discriminants 8, 12 and 5 have isomorphic reductions. The review makes the
 lower-universe size restriction explicit when applying the universal
 module theorem.
-For rational polyhedral cores, the first five reviewed proofs establish
-the omnific embeddings, the cone-independent fraction field, and flat
-face ideals of projective dimension one. Intersections, products and
-tensor products of these ideals all correspond to joining faces, over
-any unital coefficient subring `D ⊆ K`.
+For rational polyhedral cores, reviewed proofs establish the omnific
+embeddings, the cone-independent fraction field, and flat face ideals of
+projective dimension one over any unital coefficient subring `D ⊆ K`.
+Radical ideals that admit all coefficients at each chosen exponent are
+classified by antichains of nonzero faces. Their quotients have finite
+flat resolutions whose summand counts are reduced homology dimensions of
+face-join complexes. The reviewed construction bounds the length by the
+cone dimension; the subsequent proof that this length is exact remains
+under review.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

@@ -218,13 +218,26 @@ the zero-face convention `I_{0} = A_𝒞` is separate from the tail formula.
 These results allow every unital subring `D ⊆ K` and require no Noetherian
 or principal-ideal assumption. Their Lean proofs remain pending.
 
-The subsequent radical classification, face resolutions and dimension
-formulas, and reconciliation of the parallel sources, remain pending review. Exact scope
+The next six results are also reviewed: radical classification, face-prime
+generators, the simplex resolution, diagonal homology, triangular cancellation
+and crosscut comparison. The radicality proof covers all finite sums by
+intersecting prime face kernels, including the zero-face complement case.
+The resolution has an explicit signed contraction in each nonzero supported
+degree, with the constant degree treated over D. Its reduction uses legal
+A-linear scalar maps on the coefficient-full tails, without giving A a
+K-vector-space structure. The proof explains both homological shifts in
+`β_{p,G} = dim_K H̃_{p−2}(𝕂_{<G}; K)`, the empty-complex case and the
+bound on length by the cone dimension. A rerun of the delivered finite
+verifier reproduces all 52,080 exact assertions and recorded examples;
+these finite rational checks do not prove the general ring statements.
+
+The subsequent face-isolating modules, exact dimension formulas and
+reconciliation of the parallel sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 303 pages
+article.pdf   the compiled report, 305 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

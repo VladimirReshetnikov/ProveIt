@@ -2051,3 +2051,86 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 5,219 source-label references and 1,849 local Markdown destinations in
 226 files pass, as does whitespace checking. No incoming TeX changed;
 the 303-page article and 34-page catalogue remain current.
+
+## Polyhedral cores: radical ideals and reduced flat resolutions
+
+Reviewed the next six results of Section 13.11 in the omnific-quotient
+report: `osq:pc:thm:radical`, `osq:pc:prop:faceprime`,
+`osq:pc:thm:cech`, `osq:pc:lem:diagonal`,
+`osq:pc:lem:cancellation` and `osq:pc:lem:crosscut`. Their statements
+are unchanged. The classification proof now spells out the facet bound
+propagating membership, the role of coefficient-fullness, and the prime
+face-deletion maps that prove radicality for every finite sum. Complements
+are taken in the full face poset, including zero; admitting all nonzero
+faces gives the tail prime with quotient D. The face-prime proof supplies
+both support implications and the minimal-ray characterization.
+
+The simplex resolution has its augmentation, differential signs and
+degreewise contraction written out, including the empty subset, the
+constant degree over D and degrees outside the cone. Finite supports
+justify the passage to ungraded exactness. The diagonal-block proof
+identifies the relative augmented chain complex and explains both shifts
+in reduced H_(p-2), including the one-generator H_(-1) contribution.
+
+The cancellation proof gives the invertible block coordinate changes,
+Schur complement, neighboring differentials and contraction of the
+isolated pair. Scalars in K act A-linearly on the nonzero face ideals
+even when absent from D; maps into A land in its coefficient-full tail,
+so no K-vector-space structure on A is assumed. Label containment makes
+the corrections legal and prevents a cancellation from changing other
+diagonal homologies. The crosscut proof verifies both order maps, their
+composites and the prism homotopy, treats empty complexes, and derives
+the local dimension bound from strict chains of geometric faces.
+
+Updated README, guide, notation, catalogue and source anchors. Reran the
+delivered source-26 verifier from an unchanged scratch copy: all 52,080
+exact assertions and all 70 recorded examples match (excluding elapsed
+time), including 188 face quotients, 1,329 additional antichains,
+56 contractible-pair cancellations and 2,457 rational cap checks.
+These finite rational calculations support the implementation and signs;
+they do not establish the general ring theorems or review the later
+face-isolation and sharp-dimension proofs. Those proofs and full source
+reconciliation remain pending review; the six results remain Pending
+in Lean.
+
+Validation: three clean final TeX passes for the 305-page article and
+34-page catalogue, with no warnings or box diagnostics; inspected the
+revised proof pages and catalogue entry. All 418 standard/principal
+statements, 828 labels, 1,656 auxiliary label/number pairs, 66 questions,
+60 remarks and 28 numbered examples are unchanged. All 4,626 source
+anchors in 63 reports, 5,219 source-label references and 1,849 local
+Markdown destinations in 226 files pass, as does whitespace checking.
+No Lean source changed; the two-thread 4,636-job build and
+17,202-declaration axiom audit remain the baseline before synchronization.
+
+## Synchronization: positive-existential collapse for coefficient pullbacks
+
+Merged origin/main through e575ccd, including 24222b9, and reviewed the
+three new modules against `odg:def:thm:collapse` and its parameter example.
+The logical layer uses native formulas in the existing equality-based
+positive-existential fragment, which is the full positive-existential
+fragment for the pure ring language. Fixed-parameter endomorphisms preserve
+the defined tuple sets; composing a split retraction with its section
+therefore obstructs a definition containing a kernel point but excluding
+zero. The atomic equality with a named point proves why the parameter
+restriction matters.
+
+For full Hahn coefficient pullbacks, every ordinary coefficient parameter
+is fixed. A negative-exponent monomial supplies the nonzero purely infinite
+witness when the ordered group is nontrivial, and its leading coefficient
+makes it positive over an ordered coefficient field. This proves all
+displayed nonzero, nonconstant, punctured-ideal and positive-cone clauses.
+The actual real and Gaussian omnific constant retractions instantiate the
+general obstruction; existing real nonzero and positivity results combine
+with the new nonconstant and punctured-ideal instances, and all three
+Gaussian instances are explicit. The README and ledger correctly mark
+the full source theorem Proved while keeping the later quantifier-free
+and omitted-type results Pending. The result concerns the specified
+positive-existential fragment, not arbitrary first-order nondefinability.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,639 jobs, and
+its axiom audit checks 17,258 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,852 local Markdown destinations in
+226 files pass, as does whitespace checking. No incoming TeX changed;
+the 305-page article and 34-page catalogue remain current.
