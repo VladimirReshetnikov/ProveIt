@@ -326,6 +326,9 @@ arithmetic existence proof. The group and coefficient-algebra review makes
 semiabelian rigidity and the exact unipotent kernel explicit. Rigidity extends
 to reduced coefficient algebras. For dual-number coefficients, the quotient
 by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian variety `A`.
+The logarithmic review extends the differential argument to complements of
+simple normal-crossings boundaries, spells out arithmetic descent, and
+corrects the distinction between ring retractions and common-field inclusions.
 These geometric and coefficient-algebra results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.

@@ -19,12 +19,13 @@ coordinates and coordinate ideals in Section 17.4. The current pass covers
 Section 17.5 and Sections 17.6.1–17.6.8, including the repeated-root test,
 seventh-order certificate and arithmetic existence results. A further pass finishes Sections 17.6.9–17.6.10 and reviews Sections
 18.1–18.4 (groups, reduced coefficients, dual numbers and sharpness).
-Sections 18.5–18.6, their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
+The logarithmic pass now covers Sections 18.5–18.6 and all six standard
+results there. Their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the fourteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. Logarithmic applications and later scope notes remain outside these passes. The review of Section 16
+present numbering. Later scope notes and full source reconciliation remain outside these passes. The review of Section 16
 includes the two-ring principle, symmetric differentials and inheritance.
 Source C16, integrated in `1ad4ad8`, adds seventeen standard results in
 Section 17.6 and updates the earlier singular-curve status notes. Its
@@ -1229,3 +1230,62 @@ and [the tangent-space description](https://stacks.math.columbia.edu/tag/0B28).
 These check the precise imported scope, not priority or every proof in the
 classical foundations. The van den Dries paper remains unread and no new
 comparison with it is claimed. All thirteen results remain **Pending** in Lean.
+
+
+## Logarithmic differentials and arithmetic descent review
+
+This pass reviews the boundaries in Section 18.5 and all six standard
+results in Section 18.6, from `odg:log:lem:valuation` through
+`odg:log:prop:products`, including the tangent-separation definition,
+abstract interface and curve comparison. Their statements and hypotheses
+are unchanged. Later pointers and status notes in Sections 1, 6, 7, 14,
+20 and 21, and complete reconciliation of the parallel sources, remain
+outside this pass.
+
+The source comparison uses `omnific_geometric_rigidity/article.tex` from
+`65775fb:docs/new/omnific_geometric_rigidity.zip`: its differential-comparison
+section, tangent criterion, arithmetic descent, workspace corollary, product
+stability and abstract interface. Its delivered proof audit is read as an
+author-side checklist, not independent certification. The maintained text's
+valuation-ring lemma is already more general than C15's Hahn instance; the
+proof needs exactly its stated derivation and logarithmic-derivative bounds.
+
+The sentence “There is no ring map between” the two series rings was false.
+Constant extraction followed by inclusion gives maps in both directions.
+C15 only says that no such morphism is asserted in its comparison; the
+stronger denial arose in the merged exposition. The correction compares
+the two given inclusions in the common field and explains why the constant
+retractions do not respect them for nonzero exponent groups. No theorem is
+weakened or reclassified as proved.
+
+The simple normal-crossings coordinate module is now constructed and its
+independence of component equations checked. The cited Stacks section
+50.15 treats one smooth divisor and explicitly defers the normal-crossings
+variant; the text no longer presents it as a direct reference for the whole
+claim. The local normal-crossings definition is cited separately. The image
+of the valuation ring's closed point need not be closed in the target.
+For `d/dt` on `k((t))`, the form `dz/z` at `z=t` contracts to `1/t`:
+this counterexample explains why preserving `k[[t]]` alone is insufficient.
+
+The annihilation proof now distinguishes pullback from its natural image in
+differentials of the source ring, uses the quotient definition of symmetric
+powers, and tracks the scalar in `Π^r` and in the valuation ring. Compatibility
+is checked over the common field without assuming one affine chart covers
+both points. Positive symmetric degree is essential. The constancy proof
+writes the affine coordinate map into the joint constants before descending
+its equality; the abstract interface uses that argument without claiming to
+satisfy the different ideal conditions of the earlier interface.
+
+Arithmetic descent spells out the closed equalizer ideal. The class
+corollary includes denominators, cover witnesses and gluing identities in
+its finite workspace data. Finite products retain the ambient separated
+finite-type hypotheses; `(ω^γ,e)` makes the quasi-finite boundary concrete.
+The valuation-ring examples are formal binomial Hahn sums, not topological
+limits at arbitrary rank. The `t`/`ω` translation explicitly extends the
+additive character to the rational hull before negating it.
+
+Primary checks used the [valuative criterion for properness](https://stacks.math.columbia.edu/tag/0BX5),
+[log poles along one divisor](https://stacks.math.columbia.edu/tag/0FMU),
+and [the local normal-crossings definition](https://stacks.math.columbia.edu/tag/0BI9).
+These targeted checks do not certify every imported foundation, novelty or
+priority. All six standard results remain **Pending** in Lean.

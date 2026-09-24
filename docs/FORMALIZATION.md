@@ -1310,6 +1310,16 @@ splitting, and distinguish a nonsurjective tensor map from a flatness claim.
 These results remain **Pending** in Lean. Sections 18.5–18.6, later scope
 notes and full source reconciliation remain outside the completed review.
 
+The logarithmic pass reviews Sections 18.5–18.6, including all six standard
+results and the abstract interface. The statements are unchanged. It corrects
+the false prose assertion that no ring map exists between the series rings:
+constant retractions exist, while the proof compares the given inclusions in
+the Hahn field. The local normal-crossings construction and the separate
+logarithmic-derivative hypothesis are explicit. Arithmetic descent uses the
+closed equalizer, and class points are treated in set-sized workspaces.
+These six results remain **Pending** in Lean. Later pointers, scope notes,
+parallel-source reconciliation and imported foundations remain to review.
+
 ### Synchronization of the September 23 expansions
 
 The merge through `6f47cf9` brings in the batch-28 assemblies: discrete-initial
@@ -5257,15 +5267,15 @@ The separately styled cited theorem
 | Proposition | `odg:cr:prop:char2` (line 9467) | An elliptic point in characteristic two \src{C11, C14, C15} |
 | Proposition | `odg:cr:prop:charp` (line 9506) | Squarefree rigidity fails in characteristic $p$ \src{C13} |
 | Theorem | `odg:cr:thm:dor` (line 9537) | A discretely ordered ring with no omnific copy \src{C11} |
-| Lemma | `odg:log:lem:valuation` (line 9673) | The valuation-ring side \src{C15} |
-| Theorem | `odg:log:thm:annihilation` (line 9706) | Logarithmic annihilation \src{C15} |
-| Corollary | `odg:log:cor:criterion` (line 9754) | The logarithmic tangent criterion \src{C15} |
-| Theorem | `odg:log:thm:descent` (line 9822) | Descent over any coefficient ring \src{C15} |
-| Corollary | `odg:log:cor:omnific` (line 9846) | Omnific points on logarithmic complements \src{C15} |
-| Proposition | `odg:log:prop:products` (line 9874) | Finite products \src{C15} |
-| Theorem | `odg:thm:quadraticformula` (line 9911) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 9972) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 10014) | A two-term root obstruction \src{05} |
+| Lemma | `odg:log:lem:valuation` (line 9698) | The valuation-ring side \src{C15} |
+| Theorem | `odg:log:thm:annihilation` (line 9740) | Logarithmic annihilation \src{C15} |
+| Corollary | `odg:log:cor:criterion` (line 9804) | The logarithmic tangent criterion \src{C15} |
+| Theorem | `odg:log:thm:descent` (line 9884) | Descent over any coefficient ring \src{C15} |
+| Corollary | `odg:log:cor:omnific` (line 9913) | Omnific points on logarithmic complements \src{C15} |
+| Proposition | `odg:log:prop:products` (line 9946) | Finite products \src{C15} |
+| Theorem | `odg:thm:quadraticformula` (line 9990) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 10051) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 10093) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 

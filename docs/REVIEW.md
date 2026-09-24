@@ -4051,6 +4051,44 @@ has eight members and passes ZIP integrity checks, but placement and review
 remain pending. The reviewed Diophantine source/PDF and the catalogue are
 unchanged by this final merge.
 
+## Logarithmic rigidity and arithmetic descent review
+
+The manuscript review now covers Sections 18.5–18.6 of the Diophantine
+report, including its six logarithmic valuation, annihilation, tangent
+separation, arithmetic descent, omnific specialization and product results.
+Their statements and hypotheses are unchanged. The proofs now construct
+the local normal-crossings logarithmic sheaf, compare contractions in the
+common Hahn field, explain constancy from vanishing tangents and descend
+equality through the closed diagonal. The class-sized specialization spells
+out its finite-presentation workspace. A valuation-preserving derivation
+counterexample explains why logarithmic derivative bounds are also needed.
+
+The review corrects the claim that there are no ring maps between the two
+rings: constant-extraction maps exist, but do not commute with their given
+Hahn-field inclusions for a nontrivial exponent group. It also limits the
+Stacks logarithmic-poles citation to its actual single-smooth-divisor scope
+and adds the normal-crossings definition separately. The sign change for
+Euler characters and the exponent group in a valuation-ring example are
+explicit. The source C15 comparison and primary-source checks are recorded
+in the report's reconciliation file; full parallel-source reconciliation
+and later scope notes remain pending.
+
+All 217 standard result environments and all 471 source labels are
+preserved, as are the 942 auxiliary numbering entries. Three-pass builds
+produce a 202-page article and 32-page catalogue without warnings,
+unresolved references or bad boxes. Visual inspection covers article PDF
+pages 137–144, 192 and 202 and catalogue page 9. The copied C15 verifier
+passes 2,820 checks in seven groups; its full JSON differs from the delivered
+record only in the Python version (3.13.5 to 3.13.14). Those finite checks do
+not prove the scheme-theoretic or infinite Hahn-series assertions.
+
+The independent inventory checks 4,238 standard results across 63 reports;
+all 4,782 cited source references and 1,630 local Markdown destinations
+resolve. No Lean source changes in this review. The six results remain
+**Pending** in Lean; the previous combined build passed 4,451 jobs and its
+15,361-declaration axiom audit. Incoming changes require their own subsequent
+synchronization checks.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

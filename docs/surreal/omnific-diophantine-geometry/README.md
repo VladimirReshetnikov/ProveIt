@@ -15,7 +15,7 @@ prefix `16-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 201 pages
+article.pdf                        the compiled report, 202 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -203,12 +203,16 @@ Gaussian existence dichotomy. A real isolated node illustrates why a real
 normalization preimage is required. The next pass checks the closing singular-curve
 scope notes and reviews Sections 18.1–18.4: group rigidity, reduced coefficient
 algebras, the dual-number defect and the characteristic/discrete-order
-counterexamples. Sections 18.5–18.6, the pointers added in Sections 6, 7
+counterexamples. The logarithmic pass now reviews Sections 18.5–18.6,
+including all six standard results, the abstract interface and arithmetic
+descent. It corrects the ring-map explanation and supplies the local
+normal-crossings construction. The pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to
-source C15. The other batch-29 material remains outside it: Section 18.6, the credits, corrections and remarks added for
-source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
+source C15. Beyond the targeted logarithmic review, remaining batch-29
+source reconciliation includes the parallel proofs, credits and remarks
+added for source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
 appendices. Section 18.6 was appended at the end of Section 18, so no section,
 statement or equation number changed. The later batch-31 material of source C16 remains
 unreviewed: the remaining credits and status notes in Sections 1, 16, 17, 20
@@ -1281,7 +1285,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 201 pages with no errors, warnings, undefined
+The current build gives 202 pages with no errors, warnings, undefined
 references, multiply defined labels or overfull boxes. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16
 was integrated, built to 178 pages with the same MiKTeX installation and the same zero
