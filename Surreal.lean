@@ -619,3 +619,8 @@ import Surreal.Surcomplex.NormalFormDegree
 import Surreal.Algebra.ModuleKernelBasis
 import Surreal.Foundations.OmnificPurelyInfiniteModule
 import Surreal.Foundations.OmnificLinearSystems
+import Surreal.Algebra.DecomposableFibers
+import Surreal.Foundations.OmnificPurelyInfiniteCoefficients
+import Surreal.Surcomplex.DecomposableFibers
+import Surreal.Surcomplex.OmnificDecomposableFibers
+import Surreal.Surcomplex.OmnificRealKernel
