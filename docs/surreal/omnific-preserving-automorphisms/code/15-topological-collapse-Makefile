@@ -1,0 +1,11 @@
+ARTICLE := Surreal_Arithmetic_Topological_Collapse
+
+.PHONY: all check clean
+all:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+check:
+	python3 verify.py
+
+clean:
+	latexmk -c $(ARTICLE).tex

@@ -268,10 +268,13 @@ Section 20.3 gives these with labels.
 - [`set-sized-quotients-of-omnific-integers`](../../surreal/set-sized-quotients-of-omnific-integers/)
   (`osq:`). The constant-term discussion is kept apart from its quotients.
 - [`independent-surreal-copies`](../../surreal/independent-surreal-copies/)
-  (written concurrently in batch 30; cited by directory). It identifies `H_j`
-  as its strong exponent lift and relates its linear-disjointness theorem for
-  full Hahn fields to Question 21.6 without answering it, since `J(No)` is not
-  a full Hahn field (Theorem 8.6). Question 21.6 stays open.
+  (`isc:`; written concurrently in batch 31, `781b19e`; now cited by label).
+  It identifies `H_j` as its strong exponent lift (`isc:thm:lift`) and relates
+  its linear-disjointness theorem for full Hahn fields
+  (`isc:thm:sliceddisjoint`) to Question 21.6 without answering it: the note
+  added after Question 21.6 (batch 31) records that `H_j(No)` is the full
+  Hahn field on the subgroup `J(No)`, while neither `J(No)` (Theorem 8.6) nor
+  `C_j` is a full Hahn field. Question 21.6 stays open.
 
 The sources' repository statements were checked at the placement and at the
 time of writing: the reports they cite are unchanged since the pin except the

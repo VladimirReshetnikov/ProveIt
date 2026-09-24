@@ -3,17 +3,24 @@
 **A sharp order-unit criterion for dilations, with uniform exclusion bounds,
 and the exact boundary of nonlinear differential rigidity: first-order for
 every value group, all orders when the value group has no order unit, an
-explicit series of minimal differential order three when it has one, and no
-equation of order two for any value group**
-Merged research report, 22–23 September 2026, from seven manuscripts: 08 and 09,
+explicit series of minimal differential order three when it has one, no
+equation of order two, nor of order three and jet degree at most three, for
+any value group, and mixed differential–dilation equations decided by the
+relative scale of their dilations**
+Merged research report, 22–23 September 2026, from nine manuscripts: 08 and 09,
 written independently on the same day; 10, which adds the nonlinear part; 11
 and 12, written independently and delivered together later, which add the
 coefficient-field part; 13, delivered later still, which adds the
-theta-descent part; and 14, which adds the order-three-threshold part.
+theta-descent part; 14, which adds the order-three-threshold part; and 18 and
+19, delivered together in batch 31, which add the unit-dilation and
+Newton-rigidity parts. Three further manuscripts of batch 31 (local numbers
+15, 16 and 17) have been placed in this directory, with their audit, code and
+data files, but are not yet merged into the text; their files are listed
+below and marked *pending*.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 137 pages
+article.pdf   the compiled report, 175 pages
 README.md     this guide
 08-finite-recurrences-PROOF_AUDIT.md          source 08: assumptions and critical proof steps
 08-finite-recurrences-SOURCES_AND_SCOPE.md    source 08: sources, repository pin, priority limits
@@ -26,6 +33,14 @@ README.md     this guide
 13-theta-descent-PROOF_AUDIT.md               source 13: assumptions, proof dependencies, non-claims
 13-theta-descent-SOURCES_AND_SCOPE.md         source 13: repository pin, literature, priority boundary
 14-order-three-threshold-SOURCE_AUDIT.md      source 14: repository pin, prior manuscript, novelty, checkpoints
+15-polynomial-composition-SOURCE_AUDIT.md     source 15 (pending): source audit
+16-theta-hierarchy-PROOF_AUDIT.md             source 16 (pending): proof audit
+16-theta-hierarchy-SOURCES_AND_SCOPE.md       source 16 (pending): sources and scope
+17-single-scale-PROOF_AUDIT.md                source 17 (pending): proof audit
+17-single-scale-SOURCES_AND_SCOPE.md          source 17 (pending): sources and scope
+18-unit-dilation-SOURCES_AND_SCOPE.md         source 18: repository pin and blob, literature, review priorities, non-claims
+19-newton-rigidity-PROOF_AUDIT.md             source 19: assumptions, dependency chain, critical inequality, limits
+19-newton-rigidity-SOURCES_AND_SCOPE.md       source 19: repository pin, files read, literature, priority limits
 code/
   08-finite-recurrences-verify.py             source 08 checks (3,705)
   09-entire-hahn-holonomic-verification.py    source 09 checks (2,043)
@@ -38,6 +53,15 @@ code/
   13-theta-descent-verify.py                      source 13 checks (1,622; needs SymPy)
   13-theta-descent-build.py                       source 13's build script (see "Build and reproduce")
   14-order-three-threshold-verify.py              source 14 checks (600; needs SymPy; run on a copy)
+  15-polynomial-composition-Makefile              source 15 (pending)
+  15-polynomial-composition-verify.py             source 15 (pending)
+  16-theta-hierarchy-Makefile                     source 16 (pending)
+  16-theta-hierarchy-verify.py                    source 16 (pending)
+  17-single-scale-build.py                        source 17 (pending)
+  17-single-scale-verify.py                       source 17 (pending)
+  18-unit-dilation-verify_finite.py               source 18 checks (16,579; standard library; pass --output)
+  19-newton-rigidity-verify.py                    source 19 checks (259; needs SymPy; run on a copy)
+  19-newton-rigidity-build.py                     source 19's build script (see "Build and reproduce")
 data/
   08-finite-recurrences-verification.txt, 08-finite-recurrences-build_report.txt
   09-entire-hahn-holonomic-verification_results.txt, 09-entire-hahn-holonomic-build_report.txt
@@ -55,11 +79,21 @@ data/
   14-order-three-threshold-verification.json   recorded run of the source 14 checks (through q^47)
   14-order-three-threshold-requirements.txt    sympy>=1.13,<2
   14-order-three-threshold-build_report.json   build and validation record of the 26-page A4 source 14 manuscript
+  15-polynomial-composition-BUILD_REPORT.json, 15-polynomial-composition-requirements.txt,
+  15-polynomial-composition-verification.json            source 15 (pending)
+  16-theta-hierarchy-build_audit.json, 16-theta-hierarchy-verification.json   source 16 (pending)
+  17-single-scale-build_audit.json, 17-single-scale-requirements.txt,
+  17-single-scale-verification_results.json, 17-single-scale-visual_audit.json   source 17 (pending)
+  18-unit-dilation-finite_verification.json    recorded run of the source 18 checks (16,579 in 11 categories)
+  19-newton-rigidity-verification.json         recorded run of the source 19 checks (259 in 17 groups)
+  19-newton-rigidity-requirements.txt          sympy==1.14.0
+  19-newton-rigidity-build_audit.json          build and layout audit of the 24-page source 19 manuscript
 ```
 
 Every label in `article.tex` carries the prefix `hol:`; the nonlinear part
 uses the sub-prefix `hol:nl:`, the coefficient-field part `hol:cf:`, the
-theta-descent part `hol:td:` and the order-three-threshold part `hol:ot:`.
+theta-descent part `hol:td:`, the order-three-threshold part `hol:ot:`, the
+unit-dilation part `hol:ud:` and the Newton-rigidity part `hol:nr:`.
 The merge of sources 11 and 12 renamed or removed no label: the report had 199 labels before it and had 274 after it,
 all 199 original labels still present. The later coefficient-field review
 adds `hol:cf:cor:meromorphicmixed`, giving 275 labels while preserving every
@@ -68,9 +102,12 @@ prefix `hol:td:`, giving 360; all 275 earlier labels are present and keep
 their numbers (checked against the `.aux` files of the builds before and after
 the merge). The merge of source 14 adds 52 labels, all with the prefix
 `hol:ot:`, giving 412; all 360 earlier labels are present and keep their
-numbers, checked the same way. The audit files and programs keep the source
-numbers `08` to `14`
-of the batches they arrived in, and the audit files keep their sources' own
+numbers, checked the same way. The merge of sources 18 and 19 adds 116 labels,
+67 with the prefix `hol:ud:` and 49 with `hol:nr:`, giving 528; all 412 earlier
+labels are present and keep their numbers, checked the same way. The audit
+files and programs keep the source numbers `08` to `19`
+of the batches they arrived in (`15` to `19` are this report's local numbers
+for batch 31's manuscripts 01, 02, 03, 05 and 08), and the audit files keep their sources' own
 notation and theorem numbering. No source manuscript is shipped.
 
 ## Why one report
@@ -96,7 +133,10 @@ divisibility. The review below replaces root extraction by inward stability
 of strong evaluation.
 
 The divisibility-free predecessors are weaker in the constant only, not in the
-conclusion. The nonlinear and coefficient-field parts use no divisibility.
+conclusion. The nonlinear, coefficient-field, theta-descent and unit-dilation
+parts use no divisibility; the order-three-threshold and Newton-rigidity parts
+pass to the divisible hull `Γ ⊗ Q`, in which `Γ` is cofinal, and transfer their
+conclusions back.
 
 ## Source 10: the nonlinear part
 
@@ -325,6 +365,138 @@ accurate at the pin.
   interpreter version and the elapsed time. The Sebbar reference's
   bibliographic data were checked against Crossref; its content was not.
 
+## Source 18: the unit-dilation part
+
+| | Manuscript | Pin | Contributes |
+|---|---|---|---|
+| **18** | *Unit-Dilation Rigidity at Surreal Scales: A valuation form of Skolem–Mahler–Lech and an exact relative-scale criterion for mixed differential–dilation equations* (26 pages, A4, 23 September 2026; batch 31, manuscript 05, archive `Surreal_Unit_Dilation_Rigidity`) | `bcac55a` | The finite-word lemma with proof (Lemma 28.2); one period for residue torsion (Lemma 28.3); the support envelope, eventually periodic valuations at unit valuation and the bivariate estimate for `v(P(n, q^n))` (Lemma 28.4, Theorem 28.5, Corollary 28.7); periodic-affine valuations of Hahn exponential polynomials (Theorem 28.10); exact shift polynomials, rigidity for noncofinal relative scales, the answer to Question 19.4, mixed linear independence (Lemma 29.1, Theorem 29.4, Corollaries 29.6, 29.7); the relative-scale dichotomy and the cyclic mixed criterion (Theorem 29.9, Corollary 29.11) and the top Archimedean scale (Proposition 29.12); surcomplex corollary, examples and boundaries (Sections 29.4–29.5); the finite solution space (Proposition 29.18); Theorem J; Questions 19.19–19.29. Files `18-unit-dilation-*`. |
+
+Source 18 answers Question 19.4 (`hol:q:mixedunit`) **positively, for every
+value group**: for nontorsion `q` with `v(q) = 0`, every strongly entire
+solution of a nonzero mixed equation in `D_z` and powers of `σ_q`, with
+polynomial or rational forcing, is a polynomial, with a uniform degree bound
+and exterior obstruction for each equation. More generally, for multipliers
+`λ_1, …, λ_m` with no root-of-unity quotient, some nonzero mixed linear
+equation supported on them has a nonpolynomial strongly entire solution
+**iff** some `|v(λ_i/λ_j)|` is an order unit; two multipliers and first
+derivatives then suffice (Theorem J). This partly answers Question 19.6
+(existence of *some* equation; not prescribed operators or systems). Its pin
+`bcac55a` is a commit; `86fc492…` in its scope file is the blob of this
+report's `article.tex` there, when the report was the five-source text
+(sources 08–12). Its description of the report was accurate at the pin; its
+"higher-order nonlinear equations with an order unit: left open" and its
+Research question 11.1 are stale now (answered by Theorems H and I and
+Corollary 25.2; Remark 29.19).
+
+- **Placement.** Sections 28–29, after Section 27, so that Sections 1–27,
+  Questions 19.1–19.18 and Theorems A–I keep their numbers; the conclusion is
+  now Section 32. Principal theorem: Theorem J in the introduction; questions
+  19.19–19.29.
+- **Coefficient field.** Any `k` of characteristic zero (Convention 28.1); the
+  part contains Theorem A, the negative direction of Theorem B and Theorem
+  10.2 as special cases over every such `k` (Remark 29.5). No divisibility.
+- **Renamed symbols** (Section 28.1): `K → 𝕂`, `D → D_z`; multipliers
+  `u_j → λ_j`, `u = c(1+ε) → λ = ζ(1+τ)`; `A(n) = Σ P_j(n)u_j^n → 𝒴(n) =
+  Σ R_j(n)λ_j^n`; recurrence coefficients `A_j(n), Q_{j,ℓ} → c_j(n), R_{j,ℓ}`;
+  coefficient polynomials `Q_{j,γ} → r_{j,γ}`; envelope `T → Σ`; shift
+  `S → Sh`; period `M → 𝖬`, residue class `r → b`; slopes `λ_r → ϖ_b`;
+  relative scale `μ → rs(λ_1, …, λ_m)`; noncofinality witness `η → γ`;
+  operator coefficients `c_{ℓ,r,k} z^k → ϰ_{ℓ,r,i} z^i`, output index
+  `m → n̄`; right side `h → 𝗁`, `deg h ≤ e → deg 𝗁 ≤ ē`; `Θ_q → Θ_p`; order unit
+  `H → μ`, `H_* → e_*`, `F → G_μ`, `G → G_μ(z^h)`; maximal proper convex
+  subgroup `Δ → Δ^top`. The shipped scope file keeps the source's notation.
+- **Printed once:** its support lemmas (Lemmas 2.1–2.3), except its proof of
+  the finite-word lemma, printed as Lemma 28.2 because the report imports that
+  lemma from Higman; its exponential-polynomial independence and zero-set
+  lemma (Lemma 21.1); the imported Skolem–Mahler–Lech theorem; its escape
+  theorem, exterior corollary and jump-sensitive certificate (Lemma 3.1,
+  Theorem 3.3, Corollary 3.4, the last with the closed region); the partial
+  theta domain (Theorem 8.1); its Example 4.8 (Remark 4.3); its parity example
+  (Example 4.6); its torsion example (Section 9); its positive-characteristic
+  series (Example 17.3); the `Γ = 0` remark (Section 12).
+- **Merge additions** (marked "merge"): Remark 29.5 (what Theorem 29.4
+  contains, and the comparison with Theorem E(b)); the closed exterior region
+  in Theorem 29.4; Remark 29.19 (source 18's nonlinear question is answered
+  negatively by `𝒯_p`, whose order-three relation fails for `f = z`); the
+  reading of Corollary 29.11 beside Theorem B (derivatives add no existence
+  case).
+- **Stale text corrected in this report:** Section 10 (the remark after
+  Theorem 10.2), the tables of Section 11.3, the ledger and the statuses of
+  Questions 19.4 and 19.6 in Section 19, Section 22.5, the consistency list of
+  Section 25.2, Appendix B's exclusions and this README.
+- **Verified for this merge.** The source 18 suite was rerun on a copy
+  (Python 3.14.4) and reproduced its record exactly (the record names no
+  interpreter). The proofs were re-read against the statements they are
+  attached to.
+
+## Source 19: the Newton-rigidity part
+
+| | Manuscript | Pin | Contributes |
+|---|---|---|---|
+| **19** | *Low-Order Nonlinear Rigidity at Surreal Scales: Newton transitions, Euler-jet geometry, and omnific coefficient descent* (24 pages, US letter, 23 September 2026; batch 31, manuscript 08, archive `surreal_newton_rigidity`) | `3d40856` | An independent re-derivation of Theorem I(a), printed once (its route: Remark 30.2); the first polar and its double factor, the eventual-side lemma, the first-polar criterion, the secant lemma and the factor criterion (Definition 30.3, Lemmas 30.4–30.5, Proposition 30.6, Lemma 30.7, Corollary 30.9); Theorem K; external constants, surcomplex and Gaussian-omnific coefficients (Corollaries 30.12–30.15, Lemma 30.14); algebraic two-state systems (Theorem 30.16, Corollary 30.17); the exact classifications of `𝖧_3` and `𝖰_4` and the sparse series (Theorems 31.1–31.2, Example 31.3); the order-unit family (Proposition 31.5); Questions 19.30–19.35. Files `19-newton-rigidity-*`. |
+
+Source 19's principal claim, second-order rigidity for every value group and
+every differential degree, is **Theorem I(a)** of source 14, with identical
+hypotheses and in substance the same proof (break construction, exterior
+reduction with the same sign-sensitive inequality, and the conic
+factorization `𝔥 = 𝔰^e 𝔥_1`, which is the endpoint lemma in homogeneous
+coordinates since `𝔰(1, U, U² + V) = V`); the two were written the same day,
+each against a text without the other, and no priority is asserted. It is
+printed once. New: **Theorem K**, no nonpolynomial strongly entire solution of
+an equation of order three and total jet degree at most three, for every
+`Γ`. At its pin `3d40856` the report was the five-source text; its abstract's
+"the unrestricted all-order, order-unit case is not resolved" and its
+Question 12.1 are answered negatively by Theorem H.
+
+- **Placement.** Sections 30–31; principal theorem Theorem K; questions
+  19.30–19.35. Its Questions 12.4, 12.6, 12.8 are Questions 19.15–19.17
+  (status notes added); 12.1 is answered.
+- **Coefficient field.** Any `k` of characteristic zero (Convention 30.1);
+  divisibility only through the cofinal extension to `Γ ⊗ Q`.
+- **Renamed symbols** (Section 30.1): `∂ → D_z`, Euler `𝖤 → ϑ`; `α_n, I_δ,
+  F_δ → v(a_n), Act_δ, t^(−γ_δ) f(t^(−δ)X)`; Newton transition → break;
+  `D, W, μ` and the residue corner `H` → `d, w, β` and the exterior form `𝔥_P`;
+  `c_2, c_3, c_r → 𝐦_2, 𝐦_3, 𝐦_r`; `S = Y_0Y_2 − Y_1² → 𝔰`, `H = S^e Q →
+  𝔥 = 𝔰^e 𝔥_1`; `χ_H → χ_𝔥`; first polar `A_H, a, b → Pol_𝔥, a_𝔥, b_𝔥`;
+  `H_3, Q_4, B(m,n) → 𝖧_3, 𝖰_4, 𝖡(m,n)`; `A(N), B(N), N → 𝖠_1(𝗇), 𝖠_2(𝗇), 𝗇`;
+  `U = 𝖤f/f → 𝗎_f`; constants `L → 𝕃`, fields `F, F_1 → 𝔐, 𝔐_1`, minimal
+  polynomial `q → 𝗆`; order unit `u → μ`, `c_n → b_n`, its
+  `Θ(z) = 1 + t^u zΘ(t^(2u)z)` → `G_μ(z) = Θ_(p²)(pz)`, `p = t^μ` (not `Θ_p`);
+  the field `F` of its Section 10 → `K_0`, `p = a_m z^m + a_(2m) z^(2m) → 𝖽_0`;
+  characteristic `p → 𝔭`; its Theorems A, B, C → Theorem I(a), Theorem K,
+  Corollary 30.12 with Theorem 30.16. The shipped audit files keep the
+  source's notation.
+- **Printed once:** Theorem A (Theorem I(a)); its all-scale criterion
+  (Proposition 20.2), closure (Proposition 2.7), cofinal extension (Lemma
+  26.2), escape of active support (Lemma 14.5), break construction (Lemma
+  26.4), exterior reduction (Lemma 26.5), conic lemma and proposition
+  (Lemma 26.8, Remark 30.2); its degenerate example (Proposition 16.4);
+  its finite linear descent (Proposition 22.7, whose basis proof preserves
+  total degree); the full-class obstruction (Proposition 27.6); the embedding;
+  its characteristic-`p` and `Σ z^n/n!` examples (Example 17.3, Section 27.4,
+  equation (2.3)).
+- **Merge additions** (marked "merge"): Remark 30.11 — with `χ = 0` the first
+  polar is nonzero exactly when `i_0 = 1`, then
+  `Υ_𝔥(T, G) = a_𝔥(T)(T − G) + b_𝔥(T)` and source 19's two linear conditions
+  are the two endpoint conditions of Theorem 27.2; the cubic
+  `2Y_0²Y_3 − 5Y_0Y_1Y_2 + 3Y_1³` (first polar `(U − T)²(2U − T)`,
+  `Υ = T − 2G`) is covered by Theorem K but not by Corollary 27.3, which uses
+  the upper endpoint only; Corollary 31.4 — `𝒯_p` satisfies no equation of
+  order three and jet degree ≤ 3, its explicit equation has degree six, so the
+  least such degree is 4, 5 or 6 (irreducibility of that equation not
+  checked), and its exterior form `W² − V² + 4V³` has `i_0 = 2` and vanishing
+  first polar; the sparse series is a negative instance for Question 19.11;
+  `𝖧_3` has `Υ = (G + T)(2G − T)`; the comparison of Theorem 30.16 (entire
+  states, algebraic right-hand sides, external constants) with Corollary
+  26.10 (rational systems, arbitrary states).
+- **Verified for this merge.** The source 19 suite was rerun on a copy
+  (Python 3.14.4, SymPy 1.14.0) and reproduced its record apart from the
+  recorded interpreter version (recorded run: Python 3.13.5). The resultant
+  identity, the identity `Y_0𝖠_2 − Y_1𝖠_1 = −3𝔰𝗇 + (Y_0Y_3 − Y_1Y_2)`, the
+  pair kernel, `[z^5]𝖰_4 = −126 t^17`, the secant Jacobian, the first polars
+  and endpoint–gap polynomials above were rechecked with an independent SymPy
+  script, which is not shipped.
+
 ## What the report claims
 
 Let `K = C((t^Γ))` for a nonzero set-sized ordered abelian group `Γ`, **not
@@ -521,6 +693,50 @@ The order-three-threshold part (source 14, Sections 26–27) also works over
 - No nonpolynomial power series with coefficients in `No[i]` is strongly
   summable at every point of `No[i]` (Proposition 27.6).
 
+The unit-dilation part (source 18, Sections 28–29) works over `𝕂 = k((t^Γ))`
+for any field `k` of characteristic zero and any `Γ`.
+
+- **Theorem J, the relative-scale criterion.** Let `λ_1, …, λ_m ∈ 𝕂^×` have
+  no root-of-unity quotient. (a) If no `|v(λ_i/λ_j)|` is an order unit, every
+  formal solution of `Lf = 𝗁` (`L = Σ p_{ℓ,r}(z) D_z^r σ_{λ_ℓ}` nonzero, `𝗁` a
+  polynomial of bounded degree) that is strongly evaluable at one point of
+  sufficiently negative valuation has degree below a bound depending only on
+  `L` and the degree bound; so every strongly entire solution is a polynomial.
+  (b) Some nonpolynomial strongly entire `f` satisfies some nonzero `Lf = 0`
+  iff some `|v(λ_i/λ_j)|` is an order unit; two multipliers and first
+  derivatives suffice (`f(z) = Θ_p(z/λ_i)`, `p = λ_j/λ_i`). In particular
+  Question 19.4 has a positive answer for every `Γ` (Corollary 29.6).
+- **Valuations of Hahn exponential polynomials** (Theorems 28.5, 28.10):
+  `v(Σ_j R_j(n) λ_j^n)` is eventually affine on each of finitely many
+  arithmetic progressions, or the sequence vanishes there identically, with
+  arbitrary well-ordered Hahn coefficients; at unit valuation it is eventually
+  periodic; for `v(P(n, q^n))` the period divides the order of `res(q)`
+  (Corollary 28.7). The Skolem–Mahler–Lech theorem is imported.
+- Adding derivatives to the powers of `σ_q` creates no new existence case
+  (Corollary 29.11); the multipliers matter only through their images in
+  `Γ/Δ^top` (Proposition 29.12); a common absolute scale is irrelevant; the
+  entire solution space is finite-dimensional (Proposition 29.18); boundary
+  examples for root-of-unity quotients, positive characteristic and operator
+  shape (Section 29.5).
+
+The Newton-rigidity part (source 19, Sections 30–31) works over `𝕂 = k((t^Γ))`
+for any field `k` of characteristic zero and any `Γ`.
+
+- **Theorem K.** A strongly entire solution of a nonzero algebraic
+  differential equation of order at most three and total degree at most three
+  in `f, f', f'', f'''` is a polynomial; more generally so is every strongly
+  entire solution of an equation of order at most three whose exterior form,
+  or each irreducible factor of it, is nonzero on the monomial jet curve or
+  has a nonzero first polar along it (Proposition 30.6, Corollary 30.9).
+- Three-jet independence and the four-jet degree bound survive arbitrary
+  extensions of constants, including finitely many surcomplex and
+  Gaussian-omnific coefficients (Corollaries 30.12–30.15); entire solution
+  pairs of algebraic two-state systems are polynomial (Theorem 30.16).
+- The formal solutions of the order-three quartic `𝖧_3` and the order-four
+  quadratic `𝖰_4` are exactly `0`, monomials and `a z^n + b z^(2n)`
+  (Theorems 31.1, 31.2); `Σ t^(4^j) z^(2^j)` satisfies both exterior equations
+  at every scale but neither equation (Example 31.3).
+
 ## What the report does not claim
 
 - The arbitrary-rank classification is offered as a **proposed original
@@ -532,7 +748,8 @@ The order-three-threshold part (source 14, Sections 26–27) also works over
   covariance. In particular, the partial-theta construction proves one
   direction of the dilation classification and of the order-unit detection
   equivalence. The full classifications and the nonlinear, coefficient-field,
-  theta-descent and order-three-threshold theorem packages remain pending. The detailed coverage is in Section 13.3.
+  theta-descent, order-three-threshold, unit-dilation and Newton-rigidity
+  theorem packages remain pending. The detailed coverage is in Section 13.3.
 - Classical material is credited, not claimed: Stanley's D-finite/P-recursive
   correspondence, Hahn–Neumann support lemmas and Higman's lemma, partial
   theta series and their functional identity, and the Conway normal-form
@@ -563,10 +780,13 @@ The order-three-threshold part (source 14, Sections 26–27) also works over
   a counterexample either (it satisfies a dilation equation), and whether
   `Θ_p` or `Σ t^(n²) z^n` is differentially algebraic (necessarily of order
   at least three) is not decided. The
-  escape proof does not extend to nonlinear equations in any order. Mixed equations at unit
-  valuation are open when `Γ` has an order unit (Question 19.4, formerly 15.2,
-  now re-scoped); several dilations are open with an order unit and for
-  parameters with a root-of-unity quotient (Question 19.6, re-scoped).
+  escape proof does not extend to nonlinear equations in any order. Linear
+  mixed equations at unit valuation are now settled for every `Γ` (Question
+  19.4, formerly 15.2, answered by source 18); several dilations are settled
+  only for the existence of some linear equation with multipliers without a
+  root-of-unity quotient, and stay open for prescribed operators, systems and
+  root-of-unity quotients (Question 19.6, re-scoped). Order three is settled
+  only in total jet degree at most three (Theorem K).
 - The linear exclusion thresholds are explicit and uniform but need not be
   optimal; the nonlinear exclusion bound is explicit, solution-dependent, not
   optimal, and has no converse.
@@ -649,12 +869,40 @@ The order-three-threshold part (source 14, Sections 26–27) also works over
   abstract only and broad searches are not evidence of absence; the research
   questions are not solved; and the merge's additions (O18) carry no priority
   claim.
+- The unit-dilation part keeps every limitation of source 18, listed as
+  U1–U15 in Section 29.8: among them, no referee report or Lean
+  formalization; the Skolem–Mahler–Lech theorem is imported, with no
+  effective exceptional-zero bound; novelty of the valuation theorem is not
+  certified and no rank-one case is claimed new; no nonlinear rigidity is
+  claimed (its own nonlinear question is answered negatively in this text by
+  `𝒯_p`); no torsion-block theorem, the no-root-of-unity hypothesis being
+  essential; Theorem 29.9 concerns some equation, not prescribed operators or
+  systems; no algorithm or effective zero set; exterior regions and degree
+  bounds are not exact domains and depend on the exact operator; entireness is
+  relative to one Hahn field, nothing is entire on `No[i]`, and `D_z` is not
+  the Berarducci–Mantova derivation; omnific integers are coefficients only;
+  linear independence is of formal functions; positive characteristic fails;
+  the 16,579 checks prove nothing infinite and their count measures no
+  coverage; the repository comparison at `bcac55a` was partial.
+- The Newton-rigidity part keeps every limitation of source 19, listed as
+  R1–R16 in Section 31.5: no all-order order-unit rigidity (none holds); no
+  meromorphic order-unit analogue; no all-order independence from three-jet
+  independence; no point-value independence; no omnific factorization (the
+  omnific consequence concerns finitely many coefficients); no uniform degree
+  bound; entireness relative to one Hahn field; not the Berarducci–Mantova
+  derivation; external constants change the relation, not the domain; the
+  first-polar and factor criteria are sufficient, not necessary; `𝖧_3`, `𝖰_4`
+  and the sparse series are not counterexamples; the 259 checks certify
+  nothing infinite; no Lean proof, referee report or priority, and the
+  repository was not built; targeted comparisons at `3d40856`; positive and
+  mixed characteristic excluded.
 - The finite checks validate coefficient conversions, identities, cancellation
   examples and finite ordered-group examples. They do not establish the
   infinite support arguments, the cofinality claims, the generic-line theorem,
   the nonexistence of annihilating operators, the coefficient-field theorem,
-  the descent, any independence statement, the minimal order of `𝒯_p`, or
-  second-order rigidity.
+  the descent, any independence statement, the minimal order of `𝒯_p`,
+  second-order rigidity, the periodic-affine valuation theorem or the
+  Skolem–Mahler–Lech theorem, or Theorem K.
 
 ## Relation to the neighbouring reports
 
@@ -668,8 +916,10 @@ There, the order unit decides Hermite interpolation and the Bézout property of
 the ring. Here, it decides which annihilating operators a nonpolynomial member
 can satisfy (Theorem B), whether a nonpolynomial member can be differentially
 algebraic (Theorem H; without it, differential transcendence in all orders by
-Theorem E; with it, least order three by Theorem I), and mixed-jet
-independence (Theorem G). Neither implies the
+Theorem E; with it, least order three by Theorem I), mixed-jet
+independence (Theorem G), and, through the top Archimedean scale, which finite
+sets of multipliers carry a mixed linear equation with a nonpolynomial
+solution (Theorem J). Neither implies the
 other. The polynomial half of the coarsening descent (Theorem 21.11) is a
 coefficient-field form of that report's intersection `E_Δ ∩ K_Γ[[Z]] = K_Γ[Z]`
 for noncofinal extensions.
@@ -726,13 +976,16 @@ pip install -r data/13-theta-descent-requirements.txt
 python code/13-theta-descent-verify.py --precision 128 --output rerun-13.json
 pip install -r data/14-order-three-threshold-requirements.txt
 python code/14-order-three-threshold-verify.py
+python code/18-unit-dilation-verify_finite.py --output rerun-18.json
+pip install -r data/19-newton-rigidity-requirements.txt
+python code/19-newton-rigidity-verify.py
 ```
 
-The current build gives 137 pages with zero errors, zero warnings, zero
+The current build gives 175 pages with zero errors, zero warnings, zero
 overfull or underfull boxes, zero undefined references, zero multiply defined
 labels and zero duplicate PDF destinations; the build of the text before the
-merge of source 14 gave 118 pages, and that before the merge of source 13 gave
-91 pages, equally clean. The programs of sources 08,
+merge of sources 18 and 19 gave 137 pages, that before the merge of source 14
+118 pages, and that before the merge of source 13 91 pages, equally clean. The programs of sources 08,
 09, 10 and 12 use only the Python standard library with exact integer and
 rational arithmetic; those of sources 11, 13 and 14 use exact SymPy and
 rational arithmetic (SymPy `>=1.12,<2`, and `>=1.13,<2` for 14). Run them on a
@@ -750,6 +1003,13 @@ takes no arguments and always writes `data/verification.json` beside its own
 `data/14-order-three-threshold-verification.json`, which it leaves untouched,
 but a second run overwrites the first, so run it on a copy (it needs SymPy
 `>=1.13,<2`; its Python 3.9 compatibility was not tested by the source).
+`19-newton-rigidity-verify.py` also takes no arguments and writes the **same**
+file `data/verification.json` (with the interpreter and SymPy versions); run it
+on a copy too. It needs SymPy (`data/19-newton-rigidity-requirements.txt` pins
+`sympy==1.14.0`); the source states Python 3.9+. `18-unit-dilation-verify_finite.py`
+uses only the standard library (Python 3.10 or later, per the source), prints
+its record, and writes a file only when `--output` is given, overwriting that
+path; pass a new one.
 The recorded runs passed 3,705 checks (08), 2,043
 checks (09), 2,113 checks (10, seed 20260922, six groups: 450 + 240 + 480 +
 500 + 360 + 83), 8,673 cases in eight groups (11; 8,136 of them binary-prefix
@@ -757,7 +1017,11 @@ comparisons), 9,308 checks (12) and 1,622 checks in eleven groups (13, at
 precision `q^128`: the product and the third-order equation have zero
 residual in every coefficient below `q^128`) and 600 checks in nine groups
 (14: 6 + 10 + 242 + 72 + 162 + 5 + 48 + 48 + 7; the theta product and the
-cleared equation through `q^47`), with no failures. For this merge the
+cleared equation through `q^47`), 16,579 checks in eleven categories (18,
+seed 20260923: 975 + 200 + 1,440 + 12 + 12 + 3,187 + 200 + 3,187 + 205 + 600 +
+6,561 in the record's alphabetical order; 6,561 + 1,440 of them are elementary
+integer identities, the first zero by construction) and 259 checks in
+seventeen groups (19), with no failures. For this merge the
 source 11 and 12 suites were rerun on a copy (Python 3.14.4, SymPy 1.14.0) and
 reproduced their records exactly apart from the recorded interpreter version
 (recorded runs: Python 3.13.5, SymPy 1.14.0); an earlier rerun of the source 10
@@ -766,7 +1030,11 @@ was rerun on a copy (Python 3.14.4, SymPy 1.14.0) and reproduced its record
 apart from the interpreter version and the elapsed time (recorded run: Python
 3.13.5, SymPy 1.14.0). The same holds for the source 14 suite, rerun on a copy
 for its merge (Python 3.14.4, SymPy 1.14.0; recorded run Python 3.13.5, SymPy
-1.14.0).
+1.14.0). For the merge of sources 18 and 19 both suites were rerun on a copy
+(Python 3.14.4, SymPy 1.14.0): source 18's reproduced its record exactly, and
+source 19's apart from the recorded interpreter version (recorded run: Python
+3.13.5, SymPy 1.14.0). Their JSON files were compared after normalizing line
+endings, which a Windows run writes as CRLF.
 
 The build helpers were written for their sources' own manuscripts and are
 kept byte-identical; do not use them here, use `latexmk` on a copy.
@@ -793,7 +1061,17 @@ describes the 21-page source 13 manuscript; its `article_tex_sha256` and
 `article_pdf_sha256` hash that manuscript's source and PDF, which are not in
 this directory. Likewise `data/14-order-three-threshold-build_report.json`
 describes the 26-page A4 source 14 manuscript, whose source and PDF, hashed
-there, are not in this directory; source 14 shipped no build script.
+there, are not in this directory; source 14 shipped no build script, and
+neither did source 18, which also shipped no build record.
+`code/19-newton-rigidity-build.py` runs `pdflatex` on an `article.tex` in its
+own directory `code/`, where there is none, so it fails there (and may leave a
+LaTeX log in `code/`); its `--verify` option would call `code/code/verify.py`,
+which does not exist. `data/19-newton-rigidity-build_audit.json` describes the
+24-page source 19 manuscript (TeX Live 2025/dev on Debian, one remaining
+underfull-box warning), whose source and PDF, hashed there, are not in this
+directory. The pending sources' build files (`15-…-Makefile`,
+`16-…-Makefile`, `17-single-scale-build.py`) are described when those sources
+are merged; do not run them here.
 
 
 ## Subsequent proof review
@@ -981,3 +1259,23 @@ it, and its Question 11.3 is Question 19.10. The reciprocal statements in
 `docs/README.md` and `docs/manifest.tex` are outside this directory. The
 theta-descent part has not been independently refereed or formalized, and it
 is outside the scope of the two earlier main-text reviews recorded above.
+
+## Merge of sources 18 and 19
+
+The code, data and audit files of sources 18 and 19 are byte-identical to the
+delivered packages (placement `9d28e28`). Not shipped: their article sources,
+PDFs and delivery READMEs, and source 19's checksum list (verified before it
+was dropped). Every result of both sources is printed in Sections 28–31 or the
+introduction, with its proof, except the facts listed above as printed once;
+Sections 28.1 and 30.1 map each numbered result to its place here. Both
+sources' references to this report were accurate at their pins, at which the
+report was the five-source text. The statements that called Question 19.4
+open or the mixed unit-valuation case unclassified (Section 10, Section 19's
+ledger and statuses, Section 22.5, Section 25.2, Appendix B and this README)
+now record source 18's answer; Question 19.6 is re-scoped; Questions 19.1,
+19.11 and 19.13–19.17 carry status notes for source 19. Source 18's Research
+question 11.1 is answered in the current text and recorded in Remark 29.19;
+its questions 11.2–11.12 are 19.19–19.29. Source 19's Question 12.1 is
+answered by Theorem H, its Questions 12.4, 12.6 and 12.8 are 19.15–19.17, and
+its Questions 12.2, 12.3, 12.5, 12.7, 12.9 and 12.10 are 19.30–19.35. Neither
+part has been independently refereed or formalized.

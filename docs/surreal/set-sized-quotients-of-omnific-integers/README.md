@@ -695,8 +695,10 @@ strictly positive set support and coefficients in `K`.
   20 adds. Section 18.3 lists twenty questions, merging
   duplicates across sources, with their status: one answered (Question 18.2),
   one answered only for specific examples and constructions (Question 18.1,
-  which also absorbs 13's and 15's cardinal-bound questions), six partly
-  answered (Question 18.3; Question 18.11, whose clause on set-sized images of
+  which also absorbs 13's and 15's cardinal-bound questions), seven partly
+  answered (Question 18.3; Question 18.10, whose second clause, on what an
+  automorphism of `Oz` does inside `Π`, is answered in the omnific-preserving
+  report (`opa:as:cor:invisible`; status note of batch 31); Question 18.11, whose clause on set-sized images of
   `𝒩` is answered for domain images by 19, whose descent clause is answered by
   Corollary 15.59 and whose fixed-subgroup clause is answered for witnesses at
   larger scales by 20; Question 18.12, whose first clause, `pd_{A_d} D`, is
@@ -706,7 +708,7 @@ strictly positive set support and coefficients in `K`.
   answered for `κ = ℵ0`, with part (c) partly
   addressed by 21's framed reconstruction; Question 18.17, whose part (a) 20
   answers and whose part (b) it answers for reduced fibres), one settled for
-  cardinal support bounds only (Question 18.8), and eleven open (Question 18.18
+  cardinal support bounds only (Question 18.8), and ten open (Question 18.18
   is 20's question on the isomorphism type of the Boolean algebra; Questions
   18.19 and 18.20 are 22's, the second with its part (d) partly addressed by
   16's general-`D` results and Remark 16.88; Question 18.16(c) is not
@@ -910,7 +912,12 @@ strictly positive set support and coefficients in `K`.
 - [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/)
   (batch 26) holds the other batch-26 omnific items; its algebraic-parameter
   part identifies its commuting derivations `D_b` with Proposition 7.6 here
-  (`osq:prop:classder`).
+  (`osq:prop:classder`). Its Corollary 24.4 (`opa:as:cor:invisible`, from
+  `opa:as:thm:main` and `opa:as:thm:factor`) answers the second clause of
+  Question 18.10: every automorphism of `Oz` fixes `ct` and `R` and extends to
+  a strong automorphism `M_{χ,τ} ∘ u` of `No`, with `u` classified by
+  `opa:thm:criterion`. The status of Question 18.10 records this (batch 31);
+  its first clause stays open.
 - [`discrete-initial-subgroups-and-omnific-normalization`](../discrete-initial-subgroups-and-omnific-normalization/)
   (batch 28) concerns discretely ordered initial subgroups of `No` in the
   sense of Ehrlich–Kaplan; its "normalization" is not the integral closure

@@ -9,7 +9,7 @@ and first repository PDF were assembled in `ed88b8f`.
 
 ```
 article.tex         the report, standalone LaTeX with an internal bibliography
-article.pdf         the compiled report, 31 pages
+article.pdf         the compiled report, 32 pages
 README.md           this guide
 research_audit.md   the manuscript's repository and literature audit, as delivered
 code/  build.py          three-pass pdfLaTeX builder (expects the flat delivered layout, see "Build")
@@ -181,6 +181,17 @@ transcendental over `F_Q(C)`. Thus for `Γ = Q` the two *fields* `𝒫_Q` and
 almost-disjoint family, not all infinite prime sets. Without an order unit,
 every finitely generated subgroup is bounded above and `𝒫_Γ ⊆ B_Γ(C)`.
 
+**[independent-surreal-copies](../independent-surreal-copies/)** (`isc:`;
+Section 9.5 and the paragraph after Corollary 4.6, both added in batch 31).
+Its `isc:thm:cofinalgap` prints the root count of Corollary 4.6 at every
+cofinality over an arbitrary field, finite fields included, for the series
+`1 + Σ_{α<cf(G)} t^{a_α}`; Corollary 4.6 needs countable cofinality and
+Theorem 5.3 characteristic zero, so the single-series case at uncountable
+cofinality in positive characteristic is not stated here. Its
+`isc:thm:sliceddisjoint` (full Hahn fields on two subgroups are linearly
+disjoint over the full Hahn field on the intersection) uses the projections
+of Lemma 3.1 and is not stated here.
+
 **Notation.** The collection's [notation guide](../../NOTATION.md) writes
 `F_Γ = R((t^Γ))`, and the tail-span report writes `B`, `B_0` for full Hahn
 fields; the calligraphic `𝓑_G(K)`, `𝓕_G(K)` here always carry both arguments and
@@ -277,7 +288,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 or `pdflatex -interaction=nonstopmode -halt-on-error article.tex` three times.
-Last build: exit 0, **31 pages**, no errors, no LaTeX or package warnings, no
+Last build: exit 0, **32 pages** (31 before the batch-31 reciprocal
+remarks; every earlier statement, section and equation number unchanged),
+no errors, no LaTeX or package warnings, no
 undefined or multiply defined references or citations, no duplicate PDF
 destinations, no overfull or underfull boxes.
 

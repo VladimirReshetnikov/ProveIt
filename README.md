@@ -213,6 +213,21 @@ purely infinite nonunits. These arguments use bounds on the union of the
 actual normal-form supports; the new exponent can leave any previously
 chosen Hahn workspace. Smallness is explicit in the carrier's lower universe.
 
+The purely infinite ideal `Π` satisfies `Π² = Π` and has no small set of
+ideal generators; in particular it is not finitely generated. Its cotangent
+module `Π/Π²` vanishes even though `Π` is nonzero. Every positive ideal-power
+quotient is `ℤ`, and completion at `Π` is the discrete integer ring, with
+constant extraction as the canonical map. No finite product of irreducibles
+belongs to `Π`. Any homomorphism sending `Π` into a nilpotent ideal of any
+target ring kills `Π` entirely.
+
+Constant omnific irreducibles are exactly the ordinary signed primes.
+Every nonconstant irreducible has constant coefficient `1` or `-1`, but
+`(ω+1)^2` and `ω^2-1` are proved nonconstant and reducible with those respective
+coefficients. A positive monomial has no finite irreducible factorization,
+even up to a unit. Thus the omnific ring is neither atomic nor a unique
+factorization domain.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
