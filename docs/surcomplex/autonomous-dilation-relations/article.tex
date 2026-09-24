@@ -89,6 +89,9 @@
 \newcommand{\rpath}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
 \newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
 \newcommand{\wtag}{\textup{[write]}}% text added when the report joined the collection
+\newcommand{\mtag}{\textup{[merge]}}% text added when sources 02 and 03 were merged (batch 33)
+\newcommand{\src}[1]{\textup{[#1]}}% the sources proving a statement of Sections 19--27
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \tcbset{colback=Pale,colframe=Olive,boxrule=.5pt,arc=1pt,
  left=9pt,right=9pt,top=8pt,bottom=8pt}
@@ -96,25 +99,26 @@
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
-\vspace*{0.15in}
-{\large\scshape\color{Olive} Single-source research report\par}
-\vspace{0.22in}
+{\large\scshape\color{Olive} Research report from three manuscripts\par}
+\vspace{0.14in}
 {\Huge\bfseries Dilation Rigidity\par}
-\vspace{0.10in}
+\vspace{0.06in}
 {\LARGE\bfseries of Surreal Numbers\par}
-\vspace{0.07in}
-{\LARGE\bfseries and Omnific Integers\par}
-\vspace{0.22in}
-{\large Autonomous Mahler equations, finite support,\\
-sharp algebraic degrees, and a higher-order hierarchy\par}
-\vspace{0.25in}
-{Research article prepared with ChatGPT\\for Vladimir Reshetnikov\par}
-\vspace{0.08in}
-{23 September 2026\par}
 \vspace{0.04in}
-{\small Built from one manuscript of batch~30 of the collection,
-pinned to repository commit \texttt{b895e86}\par}
-\vspace{0.18in}
+{\LARGE\bfseries and Omnific Integers\par}
+\vspace{0.12in}
+{\large Autonomous Mahler equations, finite support, sharp algebraic
+degrees,\\ a higher-order hierarchy, and the support rank of dilation
+orbits\par}
+\vspace{0.12in}
+{Research article prepared with ChatGPT for Vladimir Reshetnikov\par}
+\vspace{0.04in}
+{23 September 2026\par}
+\vspace{0.02in}
+{\small Built from one manuscript of batch~30 of the collection, pinned to
+repository commit \texttt{b895e86},\\ and two of batch~33, pinned to
+\texttt{efc5446} and \texttt{958b5c4}\par}
+\vspace{0.08in}
 \begin{abstract}
 For an integer $d\ge2$, exponent dilation sends
 $\sum a_\gamma t^\gamma$ to $\sum a_\gamma t^{d\gamma}$.
@@ -139,6 +143,11 @@ omnific solutions. Higher order behaves differently: an infinite-support
 omnific integer has exact autonomous order two, and examples realize every
 finite order. A research agenda identifies the remaining classification,
 effectivity, positive-characteristic, and formalization problems.
+
+\mtag{} Two later manuscripts (Sections~19--27) prove that support rank at
+least $m$ forces any $m$ distinct positive dilates to be algebraically
+independent, so that the autonomous order of a finite-support omnific integer
+is its rational support rank, in every rank.
 \end{abstract}
 \vfill
 \begin{tcolorbox}
@@ -153,7 +162,9 @@ carries the prefix \texttt{adr:}. Conventions, the relation to the
 collection as it now stands, the ledger of non-claims and the provenance
 are in \cref{adr:sec:conventions,adr:sec:collection,adr:sec:nonclaims} and
 Appendix~\ref{adr:app:report}; text added when the manuscript joined the collection
-is marked \wtag{} where it sits inside the source's text.
+is marked \wtag{} where it sits inside the source's text. Sections~19--27
+print two later manuscripts (Appendix~\ref{adr:sr:app:sources}); text added
+in that merge is marked \mtag.
 \end{tcolorbox}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -278,7 +289,8 @@ classical inputs above.
 \wtag{} This subsection and the next were written when the manuscript
 joined the collection. No symbol of the source was renamed and no
 normalization was changed; the meanings below are fixed once for the whole
-report, and paths such as \rpath{surcomplex/single-dilation-hahn-support}
+report (\mtag{} Sections~19--27 add their own symbols, fixed in
+\cref{adr:sr:sec:conventions}), and paths such as \rpath{surcomplex/single-dilation-hahn-support}
 are relative to \rpath{docs/}.
 \begin{itemize}[leftmargin=*,itemsep=3pt]
 \item \emph{The dilation.} $S_d$ is the exponent dilation
@@ -428,6 +440,19 @@ statement of that report is used.
 
 \paragraph{Formalization.} No \texttt{adr:} label has a Lean mapping in
 \rpath{FORMALIZATION.md}; no theorem of this report is Lean-verified.
+
+\paragraph{The batch-33 additions.} \mtag{} Two later manuscripts, sources~02
+and~03, were written against this report and are printed in
+Sections~19--27; \cref{adr:sr:sec:answers} lists what they settle here
+(Research question~1 in every rank, the rank part of Research question~2, a
+rank datum for Research question~5, the relative part of Research
+question~8). They use none of \cref{adr:sec:puiseux,adr:sec:bottcher,adr:sec:main}.
+Their fresh-parameter constructions (\cref{adr:sr:sec:fresh}) separate a
+set-sized base by the same support localization as the independent-copies
+report (\rpath{surreal/independent-surreal-copies}, prefix \texttt{isc:};
+\lbl{isc:cor:parameters}), whose subject is independent copies of $\No$ and
+their intersections, not dilation orbits; neither report uses the other. No
+other report treats algebraic independence of exponent dilates.
 
 \section{Hahn fields, normal forms, and the two support directions}
 \label{adr:sec:setup}
@@ -1435,6 +1460,11 @@ first-order classification in the omnific setting.
 the Conway form, after one application of $S_2$, of the second series in
 the single-dilation report's example \lbl{dsup:ex:opposite}
 (\cref{adr:sec:collection}).
+\mtag{} Source~03 re-proves the theorem without \cref{adr:thm:omnific}, by a
+character argument for the transcendence of $u_d$ over $\C(\omega)$
+(\cref{adr:sr:prop:order-two}), and it is the case $\rho=1$ of source~02's
+infinite supports of rank $\rho$ and exact order $\rho+1$
+(\cref{adr:sr:thm:telescopes}).
 
 \begin{theorem}[Every finite order occurs]\label{adr:thm:all-orders}
 Let $g_1,\ldots,g_r$ be positive surreal exponents linearly independent
@@ -1472,6 +1502,15 @@ the field $\C(T_1,\ldots,T_r)$ of transcendence degree $r$, so they are
 dependent. The least order is exactly $r$.
 \end{proof}
 
+\mtag{} When $a_1=\cdots=a_r=1$, the independence of $Y_0,\ldots,Y_{r-1}$ is
+the algebraic independence of the power sums of degrees $1,d,\ldots,d^{r-1}$
+in $r$ variables, a special case of Mel\'anov\'a--Sturmfels--Winter
+\cite[Proposition~3]{MSW} (any $m\le n$ power sums of distinct positive
+degrees in $n$ variables are independent, by a Jacobian computation with
+Vandermonde minors). The original manuscript did not cite it; no priority is
+claimed for that case. The theorem is also the independent-exponent case of
+the exact finite-support formula \cref{adr:sr:thm:finite}.
+
 \begin{proposition}[Bounds from the rational rank of finite support]
 \label{adr:prop:rank-bounds}
 Let $x$ be a nonconstant finite-support omnific integer and let $r$ be
@@ -1486,6 +1525,12 @@ field generated by $r$ algebraically independent monomials. This gives
 the upper bound. The first-order classification gives precisely the
 remaining assertions.
 \end{proof}
+
+\mtag{} \emph{Status (batch 33).} The order is exactly $r$ in every rank:
+\cref{adr:sr:cor:omnific}, proved independently by sources~02 and~03, gives
+equality for $r\ge3$ as well, for every positive rational dilation other
+than $1$, and for all finite-support surreal and surcomplex numbers. The
+bounds stated above remain true; they are no longer the best known.
 
 \section{Boundaries that the conclusions cannot cross}\label{adr:sec:boundaries}
 
@@ -1650,6 +1695,13 @@ four support terms. The bound in \cref{adr:prop:rank-bounds} isolates the
 precise remaining gap.
 \end{question}
 
+\mtag{} \emph{Status (batch 33): answered, yes, in every rank.} Sources~02
+and~03 prove that the order of a finite-support omnific or Gaussian omnific
+integer is the rational rank of its positive exponents, with arbitrary
+dependent supports, for every integer $d\ge2$ and every rational $d>0$,
+$d\ne1$ (\cref{adr:sr:cor:omnific}); the rank-three, six-term example of
+\cref{adr:sr:ex:rank-three-03} has order three.
+
 \begin{question}[The support spectrum at order two; high priority]
 Which well-ordered Hahn supports can occur for omnific solutions of
 $F(x,S_dx,S_d^2x)=0$ over the ordinary constants? Infinite support of
@@ -1659,6 +1711,14 @@ support order types, denominator growth, or rational rank. The goal is
 a classification or a sharp no-bound theorem, not an extrapolation from
 the one telescoping example.
 \end{question}
+
+\mtag{} \emph{Status (batch 33): the rational-rank component is answered.} A
+relation of autonomous order $n$, with any support, forces rational support
+rank at most $n$ (\cref{adr:sr:cor:relation}, both sources), and the bound
+is sharp. Source~02 exhibits infinite supports of every rank $\rho\ge1$ with
+exact order $\rho+1$ (\cref{adr:sr:thm:telescopes}). Whether fixed degree or
+order bounds the support order type or the denominator growth remains open;
+\cref{adr:thm:order-two} shows unbounded denominators at order two.
 
 \begin{question}[Formal verification of the core theorem; high priority]
 Formalize the chain from strong Hahn evaluation through the monomial
@@ -1695,6 +1755,10 @@ $\Gamma$ its nonzero solutions are $\mu_{\abs{a-b}}(k)\,t^\Gamma$. So
 the class of implicit relations with nonintegral $q$ is not empty of
 nonconstant solutions, and for this relation the solutions are single
 monomials. Nothing is known here about general $F$.
+\mtag{} \emph{Status (batch 33): one further partial datum.} By
+\cref{adr:sr:rem:question-five}, every solution of $F(y,S_qy)=0$ over $k$, for
+any rational $q>0$, $q\ne1$, and any support, has rational support rank at
+most one. This says nothing about denominators; the question stays open.
 
 \begin{question}[Tame positive-characteristic variants]
 When $\operatorname{char}k=p>0$ and $p\nmid d$, which support-collapse
@@ -1721,6 +1785,13 @@ bound on the support module generated under multiplication and division
 by $d$, relative to $\Delta$, together with an ordinal support bound.
 Distinguish finite-generation assertions from mere countability.
 \end{question}
+
+\mtag{} \emph{Status (batch 33): the relative-rank part is answered.} A
+relation among $m$ distinct positive rational dilates with coefficients in
+$k(t^\Delta)$ forces support rank at most $m-1$ modulo $\Q\Delta$
+(\cref{adr:sr:rem:question-eight}; stated by source~02, and implied by the
+relative theorem of both sources). The support module, denominator and ordinal
+parts remain open.
 
 \begin{question}[Arithmetic and convergence of the profiles]
 For algebraic coefficients, all profile coefficients are algebraic by
@@ -1762,6 +1833,11 @@ The recommended order is to formalize the support-collapse theorem,
 implement the finite-shape solver, and then attack the rank-three and
 order-two problems. Each has a precise success criterion and can be
 pursued without a general theory of analysis on the entire proper class.
+\mtag{} The rank-three problem is now solved (Research question~1), and the
+rank part of the order-two problem (Research question~2); the further
+questions of the additions are
+Research questions~\ref{adr:sr:q:udl}--\ref{adr:sr:q:birthday}
+in \cref{adr:sr:sec:questions}.
 
 \section{Proof audit and concluding assessment}\label{adr:sec:audit}
 
@@ -1853,7 +1929,8 @@ kept in place. This ledger collects them with their locations; ``README''
 and ``audit'' refer to the delivered README (not shipped; its content is in
 the collection README) and to \rpath{SOURCE_AUDIT.md}. Items S1--S24 are
 the source's; items W1--W7 were added when the report joined the
-collection.
+collection. \mtag{} The limitations of sources~02 and~03 are listed as items
+R1--R23 in \cref{adr:sr:sec:nonclaims}.
 \begin{enumerate}[label=S\arabic*.,leftmargin=2.6em,itemsep=2pt]
 \item Not refereed. No named published conjecture is claimed solved.
 Novelty is proposed, not certified; priority is not certified by an
@@ -1935,6 +2012,8 @@ finiteness of shapes (\cref{adr:sec:effective}; README; audit).
 \item The exact autonomous order for finite support of rational rank
 $r\ge3$ is open; only $2\le\text{order}\le r$ is proved
 (\cref{adr:prop:rank-bounds}; \cref{adr:sec:questions}).
+\mtag{} \emph{Status (batch 33):} no longer open; the order is $r$
+(\cref{adr:sr:cor:omnific}).
 \item The twelve research questions are proposed directions, not
 previously published open problems. A formalization should not add the
 Newton--Puiseux theorem as an axiom and call the result verified
@@ -1978,6 +2057,2145 @@ the surcomplex-automorphisms report's questions is addressed
 \item The source's repository statements were checked at the placement
 commit and stand; they are kept as provenance of its pin
 (Appendix~\ref{adr:app:pinned}).
+\end{enumerate}
+
+\section{Support rank and dilation orbits: two later manuscripts}
+\label{adr:sr:sec:intro}
+
+\mtag{} \Cref{adr:sr:sec:intro,adr:sr:sec:rank,adr:sr:sec:finite,adr:sr:sec:rational,adr:sr:sec:examples,adr:sr:sec:infinite,adr:sr:sec:fresh,adr:sr:sec:charp,adr:sr:sec:scope}
+print two manuscripts of batch~33 of the collection, written against this
+report. In the report's local numbering (Appendix~\ref{adr:sr:app:sources})
+the original manuscript is source~01, and the additions are:
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item \emph{source~03}, archive \texttt{surreal\_dilation\_rank\_research},
+manuscript~04 of batch~33, \emph{Support Rank and Algebraic Independence of
+Dilation Orbits}, pinned to \texttt{efc5446}. It is the \emph{base} of this
+part: it works over an arbitrary ordered subfield $\mathcal F$ of the
+coefficient field, so that real dilations are allowed, relative to a full
+Hahn subfield $K_H(k)$, and it adds ordinal families, a uniform tail beyond
+any set of parameters, a prime-field formula and a polynomial-time
+certificate;
+\item \emph{source~02}, archive \texttt{surreal\_dilation\_rank}, manuscript~02
+of batch~33, \emph{Support Rank and Algebraic Freeness under Surreal
+Dilations}, pinned to \texttt{958b5c4}. It proves the same central theorems
+over $\Q$ by the same method, and adds a general finite denominator index, an
+infinite-support hierarchy of rank $\rho$ and exact order $\rho+1$ for every
+$\rho\ge1$, set-sized families of free orbits over a prescribed base with
+equivariant embeddings of free difference rings into $\Oz$ and $\Goz$, a
+coefficient-matrix algorithm for rational profiles, and the relative part of
+Research question~8.
+\end{itemize}
+Both sources compared themselves with this report at their pins. Its
+\texttt{article.tex} is the same file at both pins, at the placement commit
+\texttt{aa9c891} and at the commit in which the report was written, so their
+descriptions of \cref{adr:sec:order,adr:sec:questions} are accurate. Neither
+source uses \cref{adr:thm:collapse}, Newton--Puiseux factorization or the
+B\"ottcher coordinate: both state this, and the proofs below confirm it. A
+theorem proved by both sources is printed once, with both named; genuinely
+different proofs are kept as marked second routes. Text added in the merge is
+marked \mtag; a bracket such as \src{03, 02} after a heading names the
+sources that prove the statement.
+
+\subsection{What the additions settle in this report}
+\label{adr:sr:sec:answers}
+
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Research question~1} (exact order from finite support) is
+answered affirmatively in every rank by both sources: the autonomous order of
+a finite-support omnific or Gaussian omnific integer is the rational rank of
+its positive exponents (\cref{adr:sr:cor:omnific}), for every integer $d\ge2$
+and indeed every rational $d>0$, $d\ne1$. So the bound $2\le$ order $\le r$ of
+\cref{adr:prop:rank-bounds} is an equality for $r\ge3$ as well.
+\item \emph{Research question~2}, rank component: an autonomous relation of
+order $n$, with any support, forces rational support rank at most $n$
+(\cref{adr:sr:cor:relation}), again by both sources. The order-type and
+denominator components stay open. Source~02 adds the data of
+\cref{adr:sr:thm:telescopes}: infinite supports of every rank $\rho\ge1$ with
+exact order $\rho+1$.
+\item \mtag{} \emph{Research question~5}, a partial datum that neither source
+states: with $m=2$, \cref{adr:sr:cor:relation} shows that every solution of
+$F(y,S_qy)=0$ over $k$, for rational $q>0$, $q\ne1$, and with any support, has
+rational support rank at most one (\cref{adr:sr:rem:question-five}).
+\item \emph{Research question~8}, relative part (source~02 states it; the
+relative theorem of both sources gives it): a relation in $m$ distinct
+dilates with coefficients in $k(t^{\Delta})$ forces rank at most $m-1$
+modulo the rational span of $\Delta$ (\cref{adr:sr:rem:question-eight}).
+\item \cref{adr:thm:all-orders} is the independent-exponent case of
+\cref{adr:sr:thm:finite}; with all $a_j=1$ its independence statement is a
+special case of Mel\'anov\'a--Sturmfels--Winter \cite[Proposition~3]{MSW},
+credited after \cref{adr:thm:all-orders}. \Cref{adr:thm:order-two} is
+re-proved by source~03 without \cref{adr:thm:omnific}
+(\cref{adr:sr:prop:order-two}) and is the case $\rho=1$ of source~02's
+\cref{adr:sr:thm:telescopes}.
+\end{enumerate}
+Not settled: Research questions~3, 4, 6, 7 and 9--12, the order-type and
+denominator parts of Research question~2, and the general case of Research
+question~5. \mtag{} Source~03's question on the exact order of $u_{d,\ell}$
+(Research question~\ref{adr:sr:q:udl}) is \emph{not} answered by source~02:
+its hierarchy raises the rank with a gap of one, whereas $u_{d,\ell}$ has rank
+one and a candidate gap of $\ell$ (\cref{adr:sr:rem:udl}).
+
+\subsection{Conventions and renamed symbols}
+\label{adr:sr:sec:conventions}
+
+\mtag{} Both sources write Hahn series with \emph{growth} support,
+$\sum c_g X^g$ (source~03) or $\sum a_\gamma\mathsf t^\gamma$ (source~02),
+with reverse well-ordered supports, largest exponents leading and
+$X^g=\mathsf t^g=t^{-g}$. This report uses the \emph{valuation} convention
+of \cref{adr:sec:setup}: $\K=k((t^\Gamma))$ with well-ordered supports and
+$t^\gamma\mapsto\omega^{-\gamma}$ \eqref{adr:eq:omega-bridge}. The two sources'
+Hahn-field statements are converted: every support is negated, ``reverse
+well ordered'' becomes ``well ordered'', every greedy maximum becomes a
+minimum, and every ``largest exponent'' of a determinant becomes its
+valuation. Support rank is unchanged, since negation does not change a
+linear span. Statements about surreal numbers are written in Conway's
+$\omega$-notation, where both conventions agree. The tempting false reading
+is that the ``leading'' term of a determinant is its largest $t$-exponent: in
+this report it is the term of least valuation, the largest $\omega$-exponent.
+
+The following symbols of the sources are renamed; everything else is as in
+the sources.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.30\textwidth}P{0.25\textwidth}Y@{}}
+\toprule
+Here & Source 03 / source 02 & Reason\\
+\midrule
+$\mathcal F$, ordered subfield of $k$ & $F$ / (only $\Q$) & $F$ is a relation
+polynomial in this report\\
+$\Gamma$, ordered $\mathcal F$-vector space & $G$ / $V$ & \cref{adr:sec:setup}\\
+$\K=k((t^\Gamma))$, $K_H(k)=k((t^H))$ & $K_G$, $K_H$ / $\mathscr H_k(V)$,
+$\mathscr H_k(H)$ & valuation convention\\
+$\rho_{\mathcal F,H}(y)$, $\rho(y)=\rho_{\Q,0}(y)$ & $\rho_{F,H}$, $r(x)$ /
+$r_H(y)$, $r(y)$ & $r$ is an order in \cref{adr:sec:order}\\
+$\rho_{\mathrm{cm}}(f)$, coefficient-matrix rank & --- / $\rho(f)$ &
+$\rho$ is the support rank\\
+$\operatorname{aord}_{d,\mathfrak B}(y)$ & $\operatorname{aord}$ /
+$\operatorname{aord}_{S_d,B}$ & base field $\mathfrak B$\\
+$\partial_\lambda$, Euler derivation; $\partial_1,\ldots,\partial_m$ &
+$D_\lambda$, $D_i$ / $D_\ell$, $D_j$ & $D$ never denotes a derivation here\\
+$\lambda$, $\lambda_i$, $\vec\lambda(\gamma)$ & $\lambda$, $\lambda_i$,
+$\Lambda(g)$ / $\ell$, $\ell_j$ & $\Lambda$ is a lattice below\\
+$b_1,\ldots,b_m$, greedy basis & $b_j$ / $g_j$ & $g_j$ are exponents in
+\cref{adr:thm:all-orders}\\
+$\Sigma$, a support & $A$ / $E$ & $\A$ is the negative-support ring\\
+$\eta$, leading exponent & $E$ / $\eta$ & \\
+$q_1>\cdots>q_m$ & descending / ascending & one ordering; see
+\cref{adr:sr:rem:ascending}\\
+$\mathcal Q$, a finite set of dilations & $Q$ / --- & $Q$ is a denominator\\
+$F$, a relation polynomial & $P$ / $P$ & as in \cref{adr:sec:main}\\
+$\Lambda$, a finitely generated group or lattice & $L$ / $L$ & $L$ is a
+field in \cref{adr:sec:profiles}\\
+$\Sigma_{P,Q}=\supp P\cup\supp Q$; $\tau$ & $B$; $T$ / --- & $T$ is a
+monomial variable\\
+$T_1,T_2,T_3$, independent monomials & $X,Y,Z$ / $X,Y,Z$ & $X,Y,Z$ are
+polynomial variables\\
+$\Xi-\omega$ & --- / $Y$ & $Y$ is a variable\\
+$\Xi_\alpha$, $g_{\alpha,n}$ & $Z_\alpha$, $b_{\alpha n}$ / --- & $Z$, $b_j$
+taken\\
+$\Upsilon_\alpha$, $h_{\alpha,n}$, $\nu_0$, $\mathcal I$ & --- /
+$Y_\alpha$, $\gamma_{\alpha,n}$, $B$, $T$ & \\
+$\mathfrak B$, a set-sized base field; $\mathfrak P$, a parameter set &
+$E$; $P$ / $F$, $B$ & $F$, $P$, $B$ taken\\
+$\mathcal Z_\rho$, $w_\rho=(S_d-1)\mathcal Z_\rho$ & --- / $Z_r$, $P$ & \\
+$\mathcal D_y$, denominator group; $N$, $N'$ & --- / $A_y$; $N$, $M$ & $\A$,
+$M$ taken\\
+$u_d^{[s]}$ & --- / $V_s$ & $V$ was the exponent space\\
+$\tau_\chi$, $\tau_j$, character twists & $T_j$ / $\sigma_\chi$ & \\
+$\sigma_1,\sigma_2,\sigma_3$, elementary symmetric & $e_1,e_2,e_3$ / --- &
+$e$ is an integer here\\
+$N_0$, $B_0$, $c_*$ (certificate) & $M$, $B$, $C$ / --- & \\
+$\varphi$, a coefficient automorphism & --- / $\rho$ & \\
+$\mathfrak B\subseteq\mathfrak L$ in \cref{adr:sr:lem:jacobian} & $E\subseteq L$ /
+$B\subseteq K$ & $E$, $L$, $K$ taken\\
+$e_\beta$, coefficients in \cref{adr:sr:lem:euler} & $d_u$ / $b_\beta$ & $d$
+is the dilation\\
+$w_1,w_2,w_3$ in \cref{adr:sr:ex:third} & --- / $p,q,r_0$ & $q$ is a
+dilation\\
+$\ell$, observations in \cref{adr:sr:thm:prime} & $t$ / --- & $t$ is the
+Hahn variable\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The letter $\rho$ also names a positive valuation in the proof of
+\cref{adr:lem:monomial}; that use is local. Kept from source~02 as local
+names: the matrix $M$ of \cref{adr:sr:thm:vector} (elsewhere $M$ is a degree),
+the abstract variables $X_1,\ldots,X_s$ of \cref{adr:sr:sec:rational} and the
+monomials $A,B$ of \cref{adr:sr:ex:third} (not the ring $\A$). $H$ is a subspace of exponents,
+not the B\"ottcher series $H_a$ of \cref{adr:prop:germ}. The integer $d\ge2$,
+the rational $q$, and $S_q$ keep their meanings; $S_a$ for $a\in\mathcal F_{>0}$
+extends them. ``Rank'' always means rational (or $\mathcal F$-linear)
+dimension of a support span, never a matrix rank unless a matrix is named.
+``Order'' always means the autonomous algebraic order.
+
+\subsection{The setting}
+\label{adr:sr:sec:setting}
+
+\begin{definition}[Ordered scalar fields and exponent spaces \src{03, 02}]
+\label{adr:sr:def:setting}
+Let $\mathcal F\subseteq k$ be an ordered subfield of a field $k$; in
+particular $\operatorname{char}k=0$. An \emph{ordered $\mathcal F$-vector
+space} is an $\mathcal F$-vector space $\Gamma$ whose additive group is
+totally ordered, with multiplication by every positive element of $\mathcal F$
+preserving strict inequalities. For a set-sized such $\Gamma$ put
+$\K=k((t^\Gamma))$, the full Hahn field with well-ordered supports, and for an
+$\mathcal F$-subspace $H\subseteq\Gamma$ let $K_H(k)=k((t^H))\subseteq\K$.
+Define the \emph{relative support rank}
+\begin{equation}\label{adr:sr:eq:rank}
+ \rho_{\mathcal F,H}(y)=\dim_{\mathcal F}\frac{H+\operatorname{span}_{\mathcal F}\supp y}{H},
+ \qquad \rho(y)=\rho_{\Q,0}(y).
+\end{equation}
+The zero exponent contributes nothing. Source~02 works throughout with
+$\mathcal F=\Q$; source~03 allows any $\mathcal F$. The case $\mathcal F=\Q$
+suffices for every exact finite-support statement, and $\mathcal F=\R$,
+$k=\C$ is used for the stronger independence examples.
+\end{definition}
+
+The Hahn support facts used are the standard ones \cite{Neumann}: a finite
+sum of well-ordered subsets of $\Gamma$ is well ordered, and a fixed exponent
+has only finitely many representations as a sum of one element from each of
+finitely many well-ordered sets. Source~03 notes the two-set case directly:
+infinitely many decompositions $u=g+h$ would, after selection, give a strictly
+increasing sequence of $g$'s and a strictly decreasing sequence of $h$'s,
+contradicting well-ordering; the finite case follows by induction. A family
+of series is strongly summable when the union of its supports is well ordered
+and each exponent lies in only finitely many supports; its sum is
+coefficientwise. Source~02 stresses that strong summation must not be
+confused with convergence of partial sums in a valuation topology: bounded
+increasing valuations often give strong sums without that convergence
+(compare \cref{adr:sec:setup}). No order on $k$ is needed; $k$ may be $\C$.
+
+For $a\in\mathcal F_{>0}$, multiplication by $a$ is an order automorphism of
+$\Gamma$, so
+\begin{equation}\label{adr:sr:eq:dilation}
+ S_a\Bigl(\sum_\gamma c_\gamma t^\gamma\Bigr)=\sum_\gamma c_\gamma t^{a\gamma}
+\end{equation}
+is a strong $k$-automorphism of $\K$, additive and multiplicative because
+$a(g+h)=ag+ah$, with
+\begin{equation}\label{adr:sr:eq:semigroup}
+ S_aS_b=S_{ab},\qquad S_1=\id,\qquad S_a^{-1}=S_{1/a},\qquad S_a(K_H(k))=K_H(k).
+\end{equation}
+It agrees with \eqref{adr:eq:Sd} for $a=d$ and with the $S_q$ of
+\cref{adr:sec:rational} for $a=q$. It is not $y\mapsto y^a$, not argument
+dilation of an analytic function, and not the surreal exponential; the
+single-dilation report studies these exponent dilations and their
+definability properties \cite{RepoDilation}. ``Autonomous'' means that a
+relation has coefficients in the stated base, usually $k$; in the relative
+version the base is $K_H(k)$. A relation with coefficients involving further
+monomials is not a relation over $k$, and passing to a larger core changes
+the relevant rank.
+
+\begin{definition}[Autonomous algebraic order over a base \src{02, 03}]
+\label{adr:sr:def:aord}
+For $d\in\Q_{>0}\setminus\{1\}$ and a subfield $\mathfrak B$ of the ambient
+field, put
+\[
+ \operatorname{aord}_{d,\mathfrak B}(y)
+  =\min\{n\ge0:\ y,S_dy,\ldots,S_d^ny\ \text{are algebraically dependent over }\mathfrak B\},
+\]
+with value $\infty$ when no such $n$ exists; elements of $\mathfrak B$ have
+order zero. For $\mathfrak B=k$ and integer $d\ge2$ this is the autonomous
+algebraic order of \cref{adr:sec:order}. An infinite family is algebraically
+independent when each finite subfamily is; for the orbit
+$\{S_d^ny\}$ this is \emph{difference transcendence} over $\mathfrak B$. It is
+not differential transcendence under any chosen derivation.
+\end{definition}
+
+\paragraph{Surreal transfer.} Every surreal has a unique Conway normal form
+$x=\sum_{g}r_g\omega^g$ with set-sized reverse well-ordered support of
+exponents $g$ and real $r_g\ne0$, and every such series is a surreal
+\cite[Chapter~5]{Gonshor}; a surcomplex number has the analogous complex
+expansion, obtained from the union of its two real supports. Under
+\eqref{adr:eq:omega-bridge}, a set-sized ordered $\mathcal F$-subspace
+$\Gamma\subseteq\No$ gives the embedded fields $\R((t^\Gamma))\subseteq\No$ and
+$\C((t^\Gamma))\subseteq\SC$. Finitely many given numbers, or the members of a
+given set, have a set-sized union of supports, so every finite algebraic
+relation among them lives in one set-sized Hahn field. In $\omega$-notation
+$S_a(\sum r_g\omega^g)=\sum r_g\omega^{ag}$, and \eqref{adr:eq:Oz} shows that
+positive real and rational dilations preserve $\Oz$ and $\Goz$; neither
+positivity nor integrality of the nonconstant coefficients is required. All
+powers $\omega^g$ are Conway's canonical monomials, not values of Gonshor's
+exponential.
+
+\paragraph{Set theory.} The Hahn-field theorems are set-sized algebra in ZFC.
+Linear functionals are extended by the basis theorem on a set-sized space
+only. For proper-class surreal conclusions each proposed finite relation is
+placed in one set-sized workspace; no global basis of $\No$ over $\Q$ or $\R$,
+no proper-class sum and no proper-class determinant is used. The
+ordinal-indexed families below are given by explicit formulas, and their
+algebraic independence means that every finite subfamily is independent: a
+class statement with set-sized proof instances, not a class-sized polynomial
+ring.
+
+\section{The greedy leading Jacobian term and the rank obstruction}
+\label{adr:sr:sec:rank}
+
+\subsection{Euler derivations and the Jacobian criterion}
+
+\begin{lemma}[Support-preserving Euler derivations \src{03, 02}]
+\label{adr:sr:lem:euler}
+Let $\lambda:\Gamma\to k$ be $\mathcal F$-linear. Then
+\begin{equation}\label{adr:sr:eq:euler}
+ \partial_\lambda\Bigl(\sum_\gamma c_\gamma t^\gamma\Bigr)
+   =\sum_\gamma c_\gamma\lambda(\gamma)t^\gamma
+\end{equation}
+is a $k$-linear derivation of $\K$ that commutes with strong sums, and
+\begin{equation}\label{adr:sr:eq:commutation}
+ \partial_\lambda S_a=a\,S_a\partial_\lambda\qquad(a\in\mathcal F_{>0}).
+\end{equation}
+If $\lambda(H)=0$, then $\partial_\lambda$ vanishes on $K_H(k)$.
+\end{lemma}
+\begin{proof}
+The support of the right side of \eqref{adr:sr:eq:euler} is contained in the
+original support, so the series exists; additivity and $k$-linearity are
+coefficientwise. For $f=\sum c_\gamma t^\gamma$ and $h=\sum e_\beta t^\beta$
+the coefficient of $t^\delta$ in $\partial_\lambda(fh)$ is the finite sum
+\[
+ \sum_{\gamma+\beta=\delta}c_\gamma e_\beta\lambda(\gamma+\beta)
+ =\sum_{\gamma+\beta=\delta}c_\gamma e_\beta\bigl(\lambda(\gamma)+\lambda(\beta)\bigr),
+\]
+the coefficient of $(\partial_\lambda f)h+f\,\partial_\lambda h$. The same
+support-subset property and finite coefficient sums give commutation with
+strong sums, and $\lambda(a\gamma)=a\lambda(\gamma)$ gives
+\eqref{adr:sr:eq:commutation}. An element of $K_H(k)$ has all its exponents in
+$H$, so its image is zero when $\lambda(H)=0$.
+\end{proof}
+
+Source~03 takes $\lambda$ with values in $\mathcal F$ and source~02 takes
+$\Q$-linear $\lambda$ with values in $k$; the statement above covers both.
+These are deliberately chosen coordinate derivations. They need not be
+Hardy-type derivations and are not the Berarducci--Mantova derivation or an
+analytic derivative of surreal functions, nor are they asserted to be
+exponential-compatible. Their role is algebraic: they separate independent
+exponent directions while annihilating the chosen coefficient core. General
+series derivations have an established theory \cite{KM}; this simple
+construction is proved so that no further differential-algebra theorem is a
+premise.
+
+\begin{lemma}[An invertible derivative matrix detects independence \src{03, 02}]
+\label{adr:sr:lem:jacobian}
+Let $\mathfrak B\subseteq\mathfrak L$ be fields of characteristic zero, let
+$\partial_1,\ldots,\partial_m$ be derivations of $\mathfrak L$ vanishing on
+$\mathfrak B$, and let $z_1,\ldots,z_m\in\mathfrak L$. If
+$\det[\partial_i(z_j)]_{j,i}\ne0$, then $z_1,\ldots,z_m$ are algebraically
+independent over $\mathfrak B$.
+\end{lemma}
+\begin{proof}
+Otherwise choose a nonzero $F\in\mathfrak B[Y_1,\ldots,Y_m]$ of least total
+degree with $F(z_1,\ldots,z_m)=0$; its degree is positive. Applying
+$\partial_i$ gives
+\[
+ \sum_{j=1}^m\frac{\partial F}{\partial Y_j}(z_1,\ldots,z_m)\,\partial_i(z_j)=0
+ \qquad(1\le i\le m).
+\]
+Invertibility forces every evaluated partial derivative to vanish. In
+characteristic zero some formal partial derivative of the nonconstant $F$ is
+a nonzero polynomial of smaller total degree, a smaller relation. This is a
+contradiction.
+\end{proof}
+
+The proof shows the two hypotheses at work: the derivations must kill the
+\emph{whole} coefficient field of the proposed relation, and characteristic
+zero prevents all partial derivatives of a minimal relation from vanishing.
+The relative core $K_H(k)$ is chosen to meet the first; the characteristic-$p$
+argument of \cref{adr:sr:sec:charp} replaces the second. The same criterion
+closes the proof of \cref{adr:thm:all-orders}, and source~02 compares it with
+the classical form \cite[Theorem~6]{BMS}.
+
+\subsection{Greedy selection and strict rearrangement}
+
+Let $\Sigma\subseteq\Gamma$ be well ordered, and assume that its image in
+$\Gamma/H$ spans a space of dimension at least $m$. Define successively
+\begin{equation}\label{adr:sr:eq:greedy}
+ b_j=\min\bigl(\Sigma\setminus(H+\operatorname{span}_{\mathcal F}\{b_1,\ldots,b_{j-1}\})\bigr),
+ \qquad 1\le j\le m.
+\end{equation}
+Each set is nonempty by the rank hypothesis and has a least element by
+well-ordering. The images of $b_1,\ldots,b_m$ in $\Gamma/H$ are independent,
+and $b_1<b_2<\cdots<b_m$. Elements of $\Sigma\cap H$, however small, are
+skipped: they cannot contribute to derivatives annihilating $K_H(k)$.
+Extending these images to a basis of the set-sized space $\Gamma/H$ gives
+$\mathcal F$-linear maps $\lambda_1,\ldots,\lambda_m:\Gamma\to\mathcal F$ with
+\begin{equation}\label{adr:sr:eq:dual}
+ \lambda_i(H)=0,\qquad\lambda_i(b_j)=\delta_{ij}.
+\end{equation}
+Write $\vec\lambda(\gamma)=(\lambda_1(\gamma),\ldots,\lambda_m(\gamma))\in\mathcal F^m$.
+The remaining basis coordinates are discarded; a term with zero projected
+determinant simply disappears from the Jacobian expansion.
+
+\begin{lemma}[Coordinatewise dominance of the greedy basis \src{03, 02}]
+\label{adr:sr:lem:dominance}
+If $a_1<\cdots<a_m$ are elements of $\Sigma$ with
+$\vec\lambda(a_1),\ldots,\vec\lambda(a_m)$ linearly independent over
+$\mathcal F$, then $a_j\ge b_j$ for $1\le j\le m$.
+\end{lemma}
+\begin{proof}
+If $a_j<b_j$, then $a_1,\ldots,a_j$ are all below $b_j$. By the minimality
+defining $b_j$, every element of $\Sigma$ below $b_j$ lies in
+$H+\operatorname{span}_{\mathcal F}\{b_1,\ldots,b_{j-1}\}$, so its
+$\vec\lambda$-image lies in the span of the first $j-1$ coordinate vectors,
+and the $j$ images $\vec\lambda(a_1),\ldots,\vec\lambda(a_j)$ would be
+dependent.
+\end{proof}
+
+This is the part of the greedy principle for linear matroids \cite{Edmonds}
+that is needed. It compares the $j$th selected element with the $j$th
+element of \emph{every} competing independent selection, which is stronger
+than optimizing one unweighted sum. The proof is finite dimensional even when
+$\Sigma$ has uncountable order type, and no traversal of an infinite support
+is claimed as an algorithm.
+
+\begin{lemma}[Strict rearrangement \src{03, 02}]
+\label{adr:sr:lem:rearrangement}
+Let $a_1<\cdots<a_m$ lie in an ordered $\mathcal F$-vector space and let
+$q_1>\cdots>q_m>0$ lie in $\mathcal F$. For every permutation $\pi$,
+\[
+ \sum_{j=1}^mq_ja_{\pi(j)}\ \ge\ \sum_{j=1}^mq_ja_j,
+\]
+with equality only for the identity.
+\end{lemma}
+\begin{proof}
+If $i<j$ but $a_{\pi(i)}>a_{\pi(j)}$, exchanging the two assigned elements
+lowers the sum by $(q_i-q_j)(a_{\pi(i)}-a_{\pi(j)})>0$, and sorting a
+nonidentity permutation needs at least one such exchange. Only the
+ordered-vector-space axioms are used: no Archimedean hypothesis and no
+real-valued weight.
+\end{proof}
+
+\begin{proposition}[Unique minimizing support tuple \src{03, 02}]
+\label{adr:sr:prop:unique}
+Let $q_1>\cdots>q_m>0$ in $\mathcal F$. Among all ordered tuples
+$(g_1,\ldots,g_m)\in\Sigma^m$ with $\det[\lambda_i(g_j)]_{j,i}\ne0$, the
+sum $\sum_jq_jg_j$ has the unique minimum
+\begin{equation}\label{adr:sr:eq:eta}
+ \eta=q_1b_1+\cdots+q_mb_m,
+\end{equation}
+attained only at $(g_1,\ldots,g_m)=(b_1,\ldots,b_m)$.
+\end{proposition}
+\begin{proof}
+A nonzero determinant makes the $g_j$ distinct; sort them as
+$a_1<\cdots<a_m$. \Cref{adr:sr:lem:rearrangement} gives
+$\sum_jq_jg_j\ge\sum_jq_ja_j$, and \cref{adr:sr:lem:dominance} with $q_j>0$
+gives $\sum_jq_ja_j\ge\sum_jq_jb_j$. The first inequality is strict unless the
+tuple is already increasing; the second is strict if some $a_j>b_j$, because a
+sum of nonnegative elements with a positive summand is positive in an ordered
+group. So equality forces $g_j=b_j$ for all $j$, and the greedy tuple has
+identity projected matrix by \eqref{adr:sr:eq:dual}.
+\end{proof}
+
+The proposition excludes the dangerous case in which several extreme terms
+have the same exponent and cancel: it identifies the extremal \emph{ordered
+tuple}, not merely an extremal value of a weight on possibly cancelling terms.
+
+\subsection{The leading Jacobian term}
+
+\begin{theorem}[The leading Jacobian term \src{03, 02}]
+\label{adr:sr:thm:leading}
+Let $y=\sum_{\gamma\in\Sigma}c_\gamma t^\gamma\in\K$, choose the greedy
+exponents and dual functionals as above, and let $q_1>\cdots>q_m>0$ in
+$\mathcal F$. Put $J_{ji}=\partial_{\lambda_i}(S_{q_j}y)$. Then
+$v(\det J)=\eta$, and
+\begin{equation}\label{adr:sr:eq:leading}
+ [t^\eta]\det J=\Bigl(\prod_{j=1}^mq_j\Bigr)\Bigl(\prod_{j=1}^mc_{b_j}\Bigr)\ne0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \cref{adr:sr:lem:euler}, $J_{ji}=q_j\sum_{\gamma\in\Sigma}c_\gamma
+\lambda_i(\gamma)t^{q_j\gamma}$. Expanding the determinant and collecting one
+support exponent from each row, an ordered tuple $(g_1,\ldots,g_m)$
+contributes
+\begin{equation}\label{adr:sr:eq:expansion}
+ \Bigl(\prod_jq_j\Bigr)\Bigl(\prod_jc_{g_j}\Bigr)\det[\lambda_i(g_j)]_{j,i}\,
+ t^{\sum_jq_jg_j}.
+\end{equation}
+The regrouping is legitimate: there are finitely many permutations, each
+product has support in the finite sum of the well-ordered sets $q_j\Sigma$,
+and each coefficient receives finitely many contributions; no conditionally
+convergent series is rearranged. Tuples with zero projected determinant
+contribute zero. By \cref{adr:sr:prop:unique} the unique least exponent among
+the others is $\eta$, from $(b_1,\ldots,b_m)$, whose projected matrix is the
+identity. Each $c_{b_j}$ is nonzero by definition of the support, and each
+$q_j$ is nonzero in the characteristic-zero field $k$.
+\end{proof}
+
+\begin{theorem}[Support-rank obstruction \src{03, 02}]
+\label{adr:sr:thm:main}
+Let $y\in\K$ and let $a_1,\ldots,a_m$ be distinct elements of
+$\mathcal F_{>0}$, $m\ge1$. If $\rho_{\mathcal F,H}(y)\ge m$, then
+$S_{a_1}y,\ldots,S_{a_m}y$ are algebraically independent over $K_H(k)$.
+Consequently, for every finite list of distinct positive dilations,
+\begin{equation}\label{adr:sr:eq:lower}
+ \trdeg_{K_H(k)}K_H(k)(S_{a_1}y,\ldots,S_{a_m}y)\ge\min\{m,\rho_{\mathcal F,H}(y)\},
+\end{equation}
+where the minimum is $m$ when the rank is infinite.
+\end{theorem}
+\begin{proof}
+Choose $b_1,\ldots,b_m$ by the rank hypothesis. The derivations
+$\partial_{\lambda_i}$ vanish on $K_H(k)$ by \eqref{adr:sr:eq:dual} and
+\cref{adr:sr:lem:euler}, and their matrix on the dilates, with the dilations
+listed in decreasing order, is invertible by \cref{adr:sr:thm:leading}.
+\Cref{adr:sr:lem:jacobian} applies, and reordering a tuple does not affect
+independence. For rank smaller than $m$ apply this to a subset of that many
+dilations; for rank zero the bound is zero.
+\end{proof}
+
+Source~03 proves this for every ordered $\mathcal F$; source~02 proves it for
+$\mathcal F=\Q$ (its relative support-rank obstruction), with a different
+order of choices, recorded as a second route.
+
+\begin{theorem}[Vector-valued greedy determinant \src{02}]
+\label{adr:sr:thm:vector}
+Let $\Sigma\subseteq\Gamma$ be well ordered and let $c_\gamma\in k^m$,
+$\gamma\in\Sigma$, span $k^m$; ignore zero vectors. Choose
+\[
+ g_1=\min\{\gamma:c_\gamma\ne0\},\qquad
+ g_j=\min\{\gamma:c_\gamma\notin\operatorname{span}_k(c_{g_1},\ldots,c_{g_{j-1}})\}
+ \quad(2\le j\le m).
+\]
+Then $g_1<\cdots<g_m$, and if $h_1<\cdots<h_m$ index independent vectors then
+$h_j\ge g_j$ for each $j$. For $q_1>\cdots>q_m>0$ in $\Q$, the matrix
+$M_{ij}=\sum_{\gamma\in\Sigma}c_{\gamma,j}t^{q_i\gamma}$ has nonzero
+determinant, with
+\[
+ v(\det M)=\sum_{j=1}^mq_jg_j,\qquad
+ [t^{v(\det M)}]\det M=\det(c_{g_i,j})_{1\le i,j\le m}\ne0.
+\]
+Multiplying row $i$ by $q_i$ multiplies the coefficient by $\prod_iq_i$ and
+leaves the valuation unchanged.
+\end{theorem}
+\begin{proof}
+The choices exist because the family has rank $m$. Every vector with exponent
+below $g_j$ lies in the span of the first $j-1$ selected vectors, since
+otherwise it would be eligible in place of $g_j$. If $h_j<g_j$, the $j$
+independent vectors indexed by $h_1,\ldots,h_j$ would lie in that
+$(j-1)$-dimensional span. Strict ascent holds because exponents below an
+earlier selected exponent were already ineligible and the selected exponent
+itself lies in the enlarged span.
+
+A choice of exponents $\gamma_1,\ldots,\gamma_m$, one per row, contributes
+$\det(c_{\gamma_i,j})_{i,j}\,t^{q_1\gamma_1+\cdots+q_m\gamma_m}$; the union of
+possible exponents lies in $q_1\Sigma+\cdots+q_m\Sigma$ and each coefficient
+has finitely many contributions. Dependent choices contribute zero. For an
+independent choice sorted as $h_1<\cdots<h_m$,
+\cref{adr:sr:lem:rearrangement} and the dominance just proved give
+$\sum_iq_i\gamma_i\ge\sum_jq_jh_j\ge\sum_jq_jg_j$, with the first equality only
+for the increasing assignment and the second only when every $h_j=g_j$, by
+positivity of the weights. Exactly one independent row choice attains the
+minimum, with rows $c_{g_1},\ldots,c_{g_m}$.
+\end{proof}
+
+\begin{remark}[Source~02's ordering, and its route to \cref{adr:sr:thm:main}]
+\label{adr:sr:rem:ascending}
+\mtag{} Source~02 lists the parameters increasingly, $0<q_1<\cdots<q_m$, and
+states its leading exponent as $\sum_jq_{m+1-j}g_j$ with coefficient
+$(-1)^{m(m-1)/2}\det(c_{g_i,j})$: reversing the rows of $M$ gives the sign.
+This is the same statement. For finite $\Sigma$ the greedy basis is the usual
+greedy basis of a linear matroid \cite{Edmonds}, and the proof shows why an
+infinite well-ordered ground set adds no difficulty when the requested rank is
+finite. \emph{Second route to \cref{adr:sr:thm:main} (source~02, for
+$\mathcal F=\Q$).} Choose $m$ supported exponents independent modulo $H$, take
+coordinate functionals to $\Q$ on their span modulo $H$, and extend them to
+$\Gamma/H$ by extending a rational basis; composing with $\Gamma\to\Gamma/H$
+gives $\lambda_1,\ldots,\lambda_m:\Gamma\to\Q\subseteq k$ vanishing on $H$,
+of rank $m$ on the selected exponents. With $y=\sum c_\gamma t^\gamma$ put
+$\vec c_\gamma=c_\gamma\vec\lambda(\gamma)\in k^m$; these span $k^m$, since the
+selected square minor is a nonzero rational determinant times nonzero
+coefficients. The Euler matrix is
+$\bigl(\partial_{\lambda_j}S_{q_i}y\bigr)_{i,j}
+=\bigl(q_i\sum_\gamma\vec c_{\gamma,j}t^{q_i\gamma}\bigr)_{i,j}$, whose
+determinant is nonzero by \cref{adr:sr:thm:vector}; conclude with
+\cref{adr:sr:lem:jacobian}. Here the functionals are fixed first and the
+greedy basis is chosen among their images, whereas source~03 chooses the greedy
+basis first and makes the functionals dual to it. Both routes need a rank-$m$
+family of coefficient vectors, not merely $m$ nonzero coefficients, and
+discard zero Euler vectors before the greedy choice.
+\end{remark}
+
+\begin{remark}[Why the argument handles difficult supports \src{03, 02}]
+The least exponent of $y$ alone may not suffice: it may lie in the core, or
+several of the smallest exponents may span one direction. Greedy selection
+skips exactly those, and an arbitrary independent set would not do, because
+terms outside it could dominate and cancel; coordinatewise dominance settles
+both issues. Different independent subsets can produce the same nonleading
+exponent and cancel; the theorem does not claim that all determinant terms are
+distinct, only that one extremal nonzero contribution is isolated. Coefficient
+signs and phases never enter the selection: they multiply one nonzero leading
+coefficient after cancellation has been excluded, so arbitrary real or complex
+coefficients are allowed with no positivity or genericity assumption.
+Infinite order types, accumulation toward a cut, and the absence of an
+Archimedean embedding of $\Gamma$ create no extra case.
+\end{remark}
+
+\begin{corollary}[Every relation bounds support rank \src{03, 02}]
+\label{adr:sr:cor:relation}
+If a nonzero $F\in K_H(k)[Y_1,\ldots,Y_m]$ satisfies
+$F(S_{a_1}y,\ldots,S_{a_m}y)=0$ for distinct $a_j\in\mathcal F_{>0}$, then
+$\rho_{\mathcal F,H}(y)\le m-1$. In particular, for rational $d>0$, $d\ne1$,
+a nonzero relation $F(y,S_dy,\ldots,S_d^ny)=0$ over $K_H(k)$ forces
+$\rho_{\Q,H}(y)\le n$, and
+\[
+ \operatorname{aord}_{d,k}(y)=n<\infty\ \Longrightarrow\ \rho(y)\le n.
+\]
+If $\rho_{\mathcal F,H}(y)$ is infinite, all distinct positive
+$\mathcal F$-dilates of $y$ are jointly algebraically independent over
+$K_H(k)$.
+\end{corollary}
+\begin{proof}
+Rank at least $m$ contradicts \cref{adr:sr:thm:main}; the parameters
+$1,d,\ldots,d^n$ are distinct because $d>0$ and $d\ne1$. An infinite rank
+satisfies the hypothesis of \cref{adr:sr:thm:main} for every finite $m$.
+\end{proof}
+
+In the absolute case this is a necessary condition on the normal form of
+every solution, not a statement about chosen examples. It is sharp: sums of
+$n$ monomials with independent exponents have order exactly $n$
+(\cref{adr:thm:all-orders}). It does not say that rank at most $n$ suffices
+for a relation of order $n$, and it bounds neither the degree of a relation
+nor the support's order type or denominators.
+
+\begin{remark}[Research question~5: a partial datum]
+\label{adr:sr:rem:question-five}
+\mtag{} Neither source states the following. Let $\Gamma$ be any ordered
+abelian group in which $S_q$ is defined, $q\in\Q_{>0}\setminus\{1\}$, and let
+$y\in\K\setminus k$ satisfy $F(y,S_qy)=0$ for a nonzero $F\in k[X,Y]$, with
+$\operatorname{char}k=0$. Embed $\K$ coefficientwise into
+$k((t^{\Gamma\otimes\Q}))$; this commutes with $S_q$ and keeps the relation.
+\Cref{adr:sr:cor:relation} with $m=2$, $\mathcal F=\Q$, $H=0$ gives
+$\rho(y)\le1$: the support of $y$ spans at most a one-dimensional rational
+space. For integer $q=d\ge2$ this is weaker than \cref{adr:thm:collapse}. For
+nonintegral $q$ it is new information on Research question~5: no nonconstant
+solution can have two rationally independent support directions, whatever the
+generalized B\"ottcher theory turns out to be. It says nothing about
+denominators, which is the other half of that question, and is consistent with
+the monomial solutions recorded in \cref{adr:sec:collection}. Research
+question~5 stays open.
+\end{remark}
+
+\begin{remark}[Research question~8: the relative part]
+\label{adr:sr:rem:question-eight}
+Source~02 records that its relative theorem answers a part of Research
+question~8. If the coefficients of a relation lie in the monomial field
+$k(t^\Delta)$ of a subgroup $\Delta\subseteq\Gamma$, they lie in $K_H(k)$ for
+$H=\Q\Delta$, so a nonzero relation among $m$ distinct positive rational
+dilates forces rank at most $m-1$ \emph{modulo the rational span of} $\Delta$.
+\mtag{} Source~03's \cref{adr:sr:thm:main} gives the same, over any
+$\mathcal F$. Neither conclusion bounds the support order type, the
+denominators, or the support module generated under multiplication and
+division by $d$ relative to $\Delta$, which that question also asks for; those
+parts remain open. A relation with such coefficients can exist where none
+exists over $k$: $S_du_d-u_d=\omega^d$ (\cref{adr:sec:boundaries}).
+\end{remark}
+
+\section{Finite support: the exact order in every rank}
+\label{adr:sr:sec:finite}
+
+\begin{lemma}[Independent monomials over a Hahn core \src{03, 02}]
+\label{adr:sr:lem:monomials}
+If $\beta_1,\ldots,\beta_\rho\in\Gamma$ are $\Q$-linearly independent modulo a
+$\Q$-subspace $H$, then $t^{\beta_1},\ldots,t^{\beta_\rho}$ are algebraically
+independent over $K_H(k)$.
+\end{lemma}
+\begin{proof}
+For distinct integer multi-indices $\nu\ne\mu$ the cosets
+$H+\sum_i\nu_i\beta_i$ and $H+\sum_i\mu_i\beta_i$ are disjoint. A nonzero
+coefficient in $K_H(k)$ times the corresponding monomial has nonempty support
+in its own coset, so a nonzero polynomial relation would be a sum of nonzero
+series with pairwise disjoint supports, which cannot vanish.
+\end{proof}
+
+\begin{theorem}[Exact finite-support rank \src{03, 02}]
+\label{adr:sr:thm:finite}
+Let $\mathcal F=\Q$, and let $y\in\K$ have finite support with
+$\rho=\rho_{\Q,H}(y)$. For every finite set $\mathcal Q\subseteq\Q_{>0}$,
+\begin{equation}\label{adr:sr:eq:exact}
+ \trdeg_{K_H(k)}K_H(k)(S_qy:q\in\mathcal Q)=\min\{\rho,|\mathcal Q|\}.
+\end{equation}
+The field generated over $K_H(k)$ by all positive rational dilates of $y$ has
+transcendence degree $\rho$. For every rational $d>0$, $d\ne1$,
+$\operatorname{aord}_{d,K_H(k)}(y)=\rho$; in particular
+$\operatorname{aord}_{d,k}(y)=\rho(y)$.
+\end{theorem}
+\begin{proof}
+The lower bound is \cref{adr:sr:thm:main}. For the upper bound choose
+$\beta_1,\ldots,\beta_\rho$ spanning the image of the finite support $\Sigma$
+modulo $H$ and write $\gamma=h_\gamma+\sum_iu_{\gamma i}\beta_i$ with
+$h_\gamma\in H$, $u_{\gamma i}\in\Q$, for $\gamma\in\Sigma$. Since $\mathcal Q$
+and $\Sigma$ are finite there is an integer $N\ge1$ with
+$Nqu_{\gamma i}\in\Z$ for all occurring $q,\gamma,i$. With $z_i=t^{\beta_i/N}$,
+\[
+ t^{q\gamma}=t^{qh_\gamma}\prod_iz_i^{Nqu_{\gamma i}},\qquad t^{qh_\gamma}\in K_H(k),
+\]
+so every $S_qy$ lies in $K_H(k)(z_1,\ldots,z_\rho)$, a rational function field
+of transcendence degree $\rho$ by \cref{adr:sr:lem:monomials}; the generated
+field has transcendence degree at most $\rho$ and at most $|\mathcal Q|$.
+Every monomial $t^\gamma$ with $\gamma$ in the rational span of $\Sigma$ is
+algebraic over $K_H(k)(t^{\beta_1},\ldots,t^{\beta_\rho})$, so the field of
+all positive rational dilates lies in an algebraic extension of that field and
+has transcendence degree exactly $\rho$. Finally, the first $\rho$ consecutive
+transforms are independent and the first $\rho+1$ dependent; for $\rho=0$,
+$y\in K_H(k)$ and the order is zero.
+\end{proof}
+
+Source~03 proves the relative statement \eqref{adr:sr:eq:exact}; source~02
+proves the absolute one ($H=0$) with the statement on all dilates, choosing a
+rational basis $e_1,\ldots,e_\rho$ of the support span and writing a finite
+list of dilates as Laurent polynomials in $t^{e_j/N}$. The two proofs are the
+same. The substance is the lower bound, which must hold for \emph{every}
+nonzero coefficient pattern: the proof exhibits one noncancelling determinant
+term rather than invoking genericity. Cancellation among support terms and
+rational dependencies among exponents are allowed, and the coefficients may
+satisfy arbitrary algebraic relations.
+
+\begin{corollary}[The uniform matroid of the rational orbit \src{03, 02}]
+\label{adr:sr:cor:uniform}
+For a finite-support $y$ with $\rho=\rho(y)>0$, a set of distinct positive
+rational dilates of $y$ is algebraically independent over $k$ if and only if
+it has at most $\rho$ elements. So the algebraic matroid on
+$\{S_qy:q\in\Q_{>0}\}$ is the uniform matroid of rank $\rho$. The same holds
+over $K_H(k)$ with $\rho=\rho_{\Q,H}(y)$.
+\end{corollary}
+
+There are no exceptional finite subsets of distinct positive rational
+parameters. The statement says which subsets are independent; it computes no
+minimal equation and no extension degree, and it does not say that $\rho$
+dilates recover every support monomial by rational functions. An infinite
+collection of rational dilations still generates a field of transcendence
+degree $\rho$, but that field can be an infinite algebraic extension of the
+field of $\rho$ chosen observations: the denominators of the dilations need
+not have a common bound.
+
+\begin{corollary}[Omnific autonomous order; Research question~1 \src{03, 02}]
+\label{adr:sr:cor:omnific}
+Let $x\in\Oz$ or $x\in\Goz$ have finite support, and let $\rho$ be the
+$\Q$-dimension of the span of its nonzero exponents. For every integer
+$d\ge2$, and every rational $d>0$ with $d\ne1$, the autonomous algebraic order
+of $x$ over $\C$ is $\rho$; for real $x$ its order over $\R$ is also $\rho$.
+Any $m$ distinct positive rational dilates of $x$ generate a field of
+transcendence degree $\min\{m,\rho\}$ over $\C$. The same holds for every
+finite-support surreal or surcomplex number, with negative exponents allowed.
+\end{corollary}
+\begin{proof}
+All supports involved lie in the set-sized $\Q$-span of the finite original
+support. Apply \cref{adr:sr:thm:finite} with $k=\C$ and $H=0$, and with
+$k=\R$ for the real statement. Source~02 adds that a determinant with nonzero
+real leading coefficient stays nonzero after scalar extension to $\C$, so the
+real and complex statements agree.
+\end{proof}
+
+This is the equality asked for in Research question~1, including its
+unresolved case of several supported monomials in one $\rho$-dimensional
+exponent span, and it makes \cref{adr:prop:rank-bounds} an equality in every
+rank. The restriction to omnific integers is unnecessary. For $\rho=1$ and
+$\rho=2$ it recovers \cref{adr:prop:rank-bounds} and, with $m=2$, the
+finite-support case of \cref{adr:cor:d-independent}, by a proof that uses none
+of \cref{adr:sec:puiseux,adr:sec:bottcher,adr:sec:main}.
+
+\subsection{Finite determination is not reconstruction}
+\label{adr:sr:sec:reconstruction}
+
+For $\rho$ finite-support observations generating a field of transcendence
+degree $\rho$, the ambient monomial field is finitely generated and algebraic,
+hence a finite extension, over the observation field. The monomial coordinates
+are therefore determined generically up to finitely many algebraic
+possibilities. This is weaker than a birational reconstruction theorem, and
+much weaker than finiteness or uniqueness of every numerical fibre; special
+fibres can be exceptional even for power sums \cite{MSW}. A polynomial
+invariant under a nontrivial permutation of its monomial coordinates keeps
+that symmetry after every dilation, so its observations cannot distinguish the
+permuted coordinates: exact rank does not remove finite symmetries
+(source~03). Uniform algebraic independence alone does not give birational
+recovery, and the finite extension degrees are additional information
+(source~02).
+
+\section{Rational functions of finitely many monomials}
+\label{adr:sr:sec:rational}
+
+A series can have infinite support because a rational expression was expanded
+as a Hahn series. Such series still have exact order equal to rank. The two
+sources prove this by different routes, both printed: source~03 descends the
+function to its support subgroup and computes the rank from a reduced
+quotient; source~02 computes it from a coefficient matrix that needs no
+reduction and bounds the order by a Jacobian rank.
+
+Throughout, $\Lambda\subseteq\Gamma$ is a finitely generated, hence free,
+subgroup, $k(\Lambda)=\operatorname{Frac}(k[t^\Lambda])\subseteq\K$, and
+$\Q\Lambda$ is its rational span. A rational function in $k(\Lambda)$ has Hahn
+support in $\Lambda$: dividing by the least monomial of the denominator and
+expanding the geometric series uses only sums and differences of elements of
+$\Lambda$ (the Neumann expansion of \cref{adr:lem:evaluation}).
+
+\subsection{First route: rational support descent \src{03}}
+
+\begin{lemma}[Rational support descent \src{03}]
+\label{adr:sr:lem:descent}
+Let $W$ be a $\Q$-subspace of $\Q\Lambda$. In $\K$,
+\begin{equation}\label{adr:sr:eq:descent}
+ k(\Lambda)\cap k((t^W))=k(\Lambda\cap W).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Projection onto the exponents in $W$ is an additive map $\pi_W$ of the Hahn
+field, and $\pi_W(hv)=h\,\pi_W(v)$ whenever $h$ is supported in $W$: a
+summand of the coefficient at $w\in W$ uses an exponent $s\in W$ of $h$, so the
+exponent $w-s$ from $v$ also lies in $W$; this is checked coefficientwise on
+finite convolutions. Let $f=P/Q\in k(\Lambda)$ be supported in $W$, pick
+$u\in\supp Q$, and put $P'=t^{-u}P$, $Q'=t^{-u}Q$. The Laurent polynomial $Q'$
+has a nonzero constant coefficient, so $\pi_W(Q')\ne0$, and projecting
+$fQ'=P'$ gives $f=\pi_W(P')/\pi_W(Q')$. Both projections are Laurent
+polynomials supported in $\Lambda\cap W$. The reverse inclusion holds because
+the series supported in $W$ form a field.
+\end{proof}
+
+The projection must not be mistaken for a ring retraction of the whole Hahn
+field: projection onto exponent zero kills $t^g$ and $t^{-g}$ for $g\ne0$ but
+not their product. Only linearity when one factor is supported in the
+subgroup is used.
+
+\begin{theorem}[Exact order for rational monomial functions \src{03, 02}]
+\label{adr:sr:thm:rational}
+Let $f\in k(\Lambda)$, viewed in $\K$; its support may be infinite. Put
+$\rho=\dim_\Q\operatorname{span}_\Q\supp f$. For distinct positive rationals
+$q_1,\ldots,q_m$,
+\[
+ \trdeg_kk(S_{q_1}f,\ldots,S_{q_m}f)=\min\{\rho,m\}.
+\]
+In particular $\operatorname{aord}_{d,k}(f)=\rho$ for every rational $d>0$,
+$d\ne1$.
+\end{theorem}
+\begin{proof}[Proof \src{03}]
+Put $W=\operatorname{span}_\Q\supp f$. The support of $f$ lies in $\Lambda$,
+so \cref{adr:sr:lem:descent} gives $f\in k(\Lambda\cap W)$. The subgroup
+$\Lambda\cap W$ is finitely generated, as a subgroup of the free group
+$\Lambda$ of finite rank, and has rank $\rho$, because it contains the support
+spanning $W$ and lies in the $\rho$-dimensional space $W$. For finitely many
+rational dilations choose a common denominator $N$; all dilates lie in the
+monomial rational function field of the rank-$\rho$ group
+$N^{-1}(\Lambda\cap W)$, which gives the upper bound $\rho$. The lower bound is
+\cref{adr:sr:thm:main}, applied to the possibly infinite support of $f$. The
+order statement follows as in \cref{adr:sr:thm:finite}.
+\end{proof}
+
+\begin{theorem}[A finite rank formula from a reduced quotient \src{03}]
+\label{adr:sr:thm:quotient}
+Write a nonzero $f\in k(\Lambda)$ as $P/Q$ with coprime nonzero Laurent
+polynomials $P,Q\in k[t^\Lambda]$, and put $\Sigma_{P,Q}=\supp P\cup\supp Q$.
+Then
+\begin{equation}\label{adr:sr:eq:quotient}
+ \operatorname{span}_\Q\supp f=\operatorname{span}_\Q\{a-b:a,b\in\Sigma_{P,Q}\}.
+\end{equation}
+So the dimension of the difference span is the exact order in
+\cref{adr:sr:thm:rational}.
+\end{theorem}
+\begin{proof}
+Let $W$ and $V$ be the left and right sides. For $b\in\Sigma_{P,Q}$, both
+$t^{-b}P$ and $t^{-b}Q$ are supported in $V$, so their quotient lies in the
+Hahn field over $V$, and $W\subseteq V$.
+
+Conversely, let $\lambda:\Lambda\to\Z$ be an integral linear functional
+vanishing on $W\cap\Lambda$. With an independent indeterminate $\tau$, the
+substitution $t^a\mapsto\tau^{\lambda(a)}t^a$ is an automorphism of
+$k(\tau)[t^\Lambda]$ and a support-preserving coefficient twist of the
+associated Hahn field. Every exponent of $f$ lies in $W$, so the twist fixes
+$f$; writing $P_\tau,Q_\tau$ for the twisted numerator and denominator,
+$P_\tau/Q_\tau=P/Q$. The Laurent polynomial ring $k(\tau)[t^\Lambda]$ is a
+unique factorization domain, coprimality of $P,Q$ persists under the purely
+transcendental scalar extension, and the substitution preserves it. Two
+coprime pairs representing one fraction differ by a unit, so
+$P_\tau=c(\tau)t^uP$ and $Q_\tau=c(\tau)t^uQ$ with $c(\tau)\in k(\tau)^\times$
+and $u\in\Lambda$. The twist does not change supports, so
+$u+\supp P=\supp P$, and a nonempty finite subset of a torsion-free group is
+not invariant under a nonzero translation; hence $u=0$. Comparing nonzero
+coefficients gives $\tau^{\lambda(a)}=c(\tau)$ for every $a\in\Sigma_{P,Q}$, so
+$\lambda(a-b)=0$ for all $a,b\in\Sigma_{P,Q}$. Finally $W$ is a rational
+subspace of $\Q\Lambda$: a vector of $\Q\Lambda$ outside $W$ is separated from
+$W$ by a rational functional vanishing on $W$, which becomes integral on
+$\Lambda$ after clearing denominators. So every difference $a-b$ lies in $W$,
+and $V\subseteq W$.
+\end{proof}
+
+The factorization facts used are elementary: a Laurent polynomial ring is a
+localization of a polynomial unique factorization domain, its units are
+nonzero scalars times monomials, and an irreducible coefficient polynomial
+stays prime after adjoining and inverting a purely transcendental parameter,
+since its quotient ring stays a domain. No geometric assumption on $k$ is
+needed. Reduction is essential: the unreduced $(T_1+T_2)/(T_1+T_2)$ has
+nonzero difference rank, whereas the function is constant with order zero.
+For a polynomial take $Q=1$; the extra exponent zero makes the difference span
+the linear span of the support, recovering \cref{adr:sr:thm:finite}.
+
+\subsection{Second route: the coefficient matrix \src{02}}
+
+Let $X_1,\ldots,X_s$ be algebraically independent and let $f=P/Q$ with
+Laurent polynomials $P,Q\in k[X_1^{\pm1},\ldots,X_s^{\pm1}]$, $Q\ne0$; a
+common factor need \emph{not} have been cancelled. Define the vector Laurent
+polynomial
+\begin{equation}\label{adr:sr:eq:Bvector}
+ B_j=Q\,X_j\frac{\partial P}{\partial X_j}-P\,X_j\frac{\partial Q}{\partial X_j},
+ \qquad B=(B_1,\ldots,B_s)=\sum_ub_uX^u,\quad b_u\in k^s,
+\end{equation}
+and put
+\begin{equation}\label{adr:sr:eq:rhocm}
+ \rho_{\mathrm{cm}}(f)=\dim_k\operatorname{span}_k\{b_u:u\in\Z^s\};
+\end{equation}
+only finitely many $b_u$ are nonzero.
+
+\begin{lemma}[Coefficient matrix equals support rank \src{02}]
+\label{adr:sr:lem:rhocm}
+Let $e_1,\ldots,e_s\in\Gamma$ be rationally independent and
+$y=f(t^{e_1},\ldots,t^{e_s})$. Then $\rho(y)=\rho_{\mathrm{cm}}(f)$. In
+particular the rank does not depend on the Hahn ordering of the abstract
+exponent lattice or on the chosen fraction $P/Q$.
+\end{lemma}
+\begin{proof}
+With $\Lambda=\Z e_1+\cdots+\Z e_s$, the support of $y$ lies in $\Lambda$. For
+$\vec v\in k^s$ let $\lambda_{\vec v}$ be the $\Q$-linear functional with
+$\lambda_{\vec v}(e_j)=v_j$, extended to $\Gamma$. On the rational function
+field, $\partial_{\lambda_{\vec v}}$ acts as $\sum_jv_jX_j\partial_{X_j}$, so
+\[
+ \partial_{\lambda_{\vec v}}y=0
+ \iff\sum_jv_jB_j=0
+ \iff\vec v\cdot b_u=0\ \text{for every }u.
+\]
+By uniqueness of Hahn coefficients,
+$\partial_{\lambda_{\vec v}}y=0$ if and only if $\vec v\cdot\vec n=0$ for every
+supported lattice coordinate vector $\vec n\in\Z^s$. So the coefficient vectors
+$b_u$ and the support coordinate vectors have the same annihilator in $k^s$,
+hence spans of the same dimension; the rank of a family of rational vectors
+does not change on extension from $\Q$ to a field of characteristic zero,
+because every minor is rational. Both invariances follow from these
+descriptions.
+\end{proof}
+
+\begin{lemma}[Jacobian rank for rational functions \src{02}]
+\label{adr:sr:lem:jacobianrank}
+For $f_1,\ldots,f_m\in k(T_1,\ldots,T_s)$ in characteristic zero, the rank of
+their ordinary, or logarithmic, Jacobian over $k(T_1,\ldots,T_s)$ equals
+$\trdeg_kk(f_1,\ldots,f_m)$.
+\end{lemma}
+\begin{proof}
+A transcendence basis among the $f_i$ has independent differentials: extend it
+to a transcendence basis of $k(T_1,\ldots,T_s)/k$; the coordinate derivations
+of the purely transcendental subfield extend uniquely across the finite
+separable algebraic extension, since differentiating a minimal polynomial
+determines the derivative, and applying them proves independence. Every
+remaining $f_i$ is separable algebraic over the field of that basis, and
+differentiating its minimal polynomial puts its differential in their span.
+The $dT_j$ form a basis of the module of differentials, and multiplying column
+$j$ by the nonzero $T_j$ does not change rank. Compare the polynomial version
+\cite[Theorem~6]{BMS}.
+\end{proof}
+
+\begin{proof}[Second proof of \cref{adr:sr:thm:rational} \src{02}]
+Write $f$ as $P/Q$ in rationally independent monomials $t^{e_1},\ldots,t^{e_s}$
+as above, so that $\rho(y)=\rho_{\mathrm{cm}}(f)$ by \cref{adr:sr:lem:rhocm}.
+The lower bound follows from \cref{adr:sr:thm:main}. For the upper bound choose
+$N$ with every $Nq_i$ a positive integer and put $T_j=t^{e_j/N}$, so that
+$S_{q_i}y=f(T_1^{Nq_i},\ldots,T_s^{Nq_i})$. The $i$th logarithmic Jacobian row
+is
+\[
+ \frac{Nq_i}{Q(T^{Nq_i})^2}\,B(T^{Nq_i}),
+\]
+which lies in the $k(T_1,\ldots,T_s)$-span of the fixed $k$-space spanned by
+the $b_u$, of dimension $\rho_{\mathrm{cm}}(f)$. So the Jacobian has rank at
+most $\rho_{\mathrm{cm}}(f)$, and \cref{adr:sr:lem:jacobianrank} gives the upper
+bound. The order statement follows as in \cref{adr:sr:thm:finite}.
+\end{proof}
+
+\begin{remark}[Why the second upper bound is restricted \src{02}]
+For an arbitrary Hahn series, Euler derivations need not span all
+algebraically relevant derivations of the field generated by its dilates: a
+rank-one support can have order two (\cref{adr:thm:order-two}). The
+finitely generated rational function field of \cref{adr:sr:lem:jacobianrank}
+is essential to the upper bound, and it is not applied to an arbitrary infinite
+Hahn expansion.
+\end{remark}
+
+\paragraph{An exact algorithm and its input contract \src{02}.}
+The invariant is computable by finite exact algebra.
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item Supply a finite rationally independent exponent basis and a rational
+Laurent expression $P/Q$ over an effective field of characteristic zero.
+\item Compute the $s$ Laurent polynomials \eqref{adr:sr:eq:Bvector} and
+collect equal exponent vectors.
+\item Form the matrix with rows $b_u$ and compute its exact rank.
+\item Return that rank as the autonomous order, and use
+\cref{adr:sr:thm:rational} for every requested finite tuple of dilations.
+\end{enumerate}
+This terminates for the specified representation. It makes no claim that
+arbitrary surreal expressions have decidable rational linear relations, or
+that equality in an arbitrary coefficient field is effective; rational and
+exactly represented algebraic-number coefficients meet the input contract. A
+noninjective exponent parametrization must first be reduced to a certified
+rationally independent basis. For finite support one may skip differentiation
+and take the rank of the support coordinate matrix. For a rational profile the
+coefficient matrix matters: the union of the supports of an unreduced
+numerator and denominator can give the wrong answer. The supplied verifier
+checks examples; it is not a surreal computer algebra system.
+
+\begin{example}[Examples of both routes \src{03, 02}]
+\label{adr:sr:ex:rational}
+\begin{enumerate}[label=(\alph*),leftmargin=2em,itemsep=2pt]
+\item $f=T_1/T_2$ has reduced union support $\{(1,0),(0,1)\}$ and a
+one-dimensional difference span, so its order is one (source~03).
+\item $f=T_1/(T_1+T_2)$: $(B_1,B_2)=(T_1T_2,-T_1T_2)$ and
+$\rho_{\mathrm{cm}}(f)=1$. The displayed quotient involves two independent
+monomials, but $f=1/(1+T_2/T_1)$ has one intrinsic scale; where $T_2/T_1$ is
+infinitesimal its expansion is $\sum_{n\ge0}(-1)^n(T_2/T_1)^n$, of infinite
+support, rank one and order one, and the opposite ordering changes the
+expansion but not the rank (source~02).
+\item $f=(T_1+T_2)/(1+T_1T_2)$: $B_1=T_1-T_1T_2^2$ and $B_2=T_2-T_1^2T_2$, whose
+coefficient vectors span $k^2$ (source~02); its reduced difference rank is two
+(source~03). Its expansion is generally infinite; any two distinct positive
+rational dilates are independent, any three dependent, and the order is two.
+Source~02's verifier checks that multiplying numerator and denominator by
+$1+T_1+2T_2$ changes neither example's invariant, and its recorded run also
+lists $(T_1^2T_2^3+1)/(T_1^2T_2^3-2)$, of rank one, and the constant $5/2$, of
+rank zero.
+\end{enumerate}
+\end{example}
+
+\section{Worked examples and finite certificates}
+\label{adr:sr:sec:examples}
+
+In this section $T_1,T_2,T_3$ are independent monomials, abstract Laurent
+variables or $T_j=\omega^{e_j}$ for rationally independent positive surreal
+$e_j$. Exponent vectors refer to $T$-monomials, and an auxiliary integer weight
+$w$ orders them; ``greatest $w$-weight'' corresponds to least valuation when
+$T^a$ is given valuation $-w\cdot a$. The two sources' rank-three certificates
+are different and both are printed.
+
+\subsection{Two rank-three certificates}
+
+\begin{example}[Source~03's certificate]
+\label{adr:sr:ex:rank-three-03}
+Let
+\begin{equation}\label{adr:sr:eq:worked03}
+ f=T_1+T_2+T_3+T_1T_2-2T_2T_3+3T_1^2T_3.
+\end{equation}
+Its six supported exponent vectors span $\Q^3$ but are far from independent.
+Order them by $w=(1,6,36)$. Greedy selection by decreasing weight gives
+$b_1=(0,1,1)$, $b_2=(2,0,1)$, $b_3=(0,0,1)$, with coefficient product
+$(-2)(3)(1)=-6$ and
+\[
+ \det\begin{pmatrix}0&1&1\\2&0&1\\0&0&1\end{pmatrix}=-2.
+\]
+With the ordinary logarithmic coordinate derivations
+$T_1\partial_{T_1},T_2\partial_{T_2},T_3\partial_{T_3}$ and the dilations in the
+order $4,2,1$, the leading Jacobian exponent is $4b_1+2b_2+b_3=(4,4,7)$, and
+the coefficient of $T_1^4T_2^4T_3^7$ is
+\begin{equation}\label{adr:sr:eq:worked03coeff}
+ (4\cdot2\cdot1)(-6)(-2)=96.
+\end{equation}
+The extra determinant factor, compared with \eqref{adr:sr:eq:leading}, comes
+from using coordinate derivations instead of the dual derivations normalized
+on the greedy basis; the unique-extremum argument is unchanged. So
+$f,S_2f,S_4f$ are independent and $f,S_2f,S_4f,S_8f$ are dependent. The exact
+expansion in source~03's program has $97$ nonzero terms; only the one term
+\eqref{adr:sr:eq:worked03coeff} is needed for the proof. For an omnific
+instance put $T_1=\omega$, $T_2=\omega^\omega$, $T_3=\omega^{\omega^2}$; the
+directions $1,\omega,\omega^2$ are rationally independent by uniqueness of
+their own normal forms, and in decreasing normal-form order
+\begin{equation}\label{adr:sr:eq:worked03omnific}
+ x=-2\omega^{\omega^2+\omega}+3\omega^{\omega^2+2}+\omega^{\omega^2}
+   +\omega^{\omega+1}+\omega^\omega+\omega.
+\end{equation}
+All exponents are positive and the constant coefficient is zero, so
+$x\in\Oz$. It has autonomous order three for \emph{every} integer $d\ge2$.
+This is exactly the kind of dependent support that Research question~1 left
+open.
+\end{example}
+
+\begin{example}[Source~02's certificate]
+\label{adr:sr:ex:rank-three-02}
+Let
+\begin{equation}\label{adr:sr:eq:worked02}
+ f=T_1^2T_3+2T_1T_2-3T_3+5T_2+7T_1+11.
+\end{equation}
+Its five nonconstant supported exponents, $e_1,e_2,e_3,e_1+e_2,2e_1+e_3$ for
+$T_j=\omega^{e_j}$, span dimension three but are not independent;
+\cref{adr:sr:thm:finite} shows that $f,S_2f,S_4f$ are independent, that
+adding $S_8f$ creates a relation, and that the order is exactly three. With
+the weight $(1,4,16)$, refined lexicographically to break ties, the greedy
+vectors are $b_1=(2,0,1)$, $b_2=(0,0,1)$, $b_3=(1,1,0)$, with coefficients
+$1,-3,2$. The logarithmic Jacobian with rows
+$\bigl(T_j\partial_{T_j}f(T_1^q,T_2^q,T_3^q)\bigr)_{j}$ for $q=1,2,4$, in this
+order, has the unique leading monomial
+\begin{equation}\label{adr:sr:eq:worked02lead}
+ -96\,T_1^9T_2T_3^6,\qquad(9,1,6)=4b_1+2b_2+b_3.
+\end{equation}
+Source~02's verifier expands the determinant independently and finds $45$
+nonzero terms, with exactly this leading term. \mtag{} The sign differs from
+\eqref{adr:sr:eq:worked03coeff} only because the rows are listed with
+increasing $q$ (\cref{adr:sr:rem:ascending}); in the order $4,2,1$ the
+coefficient is $(4\cdot2\cdot1)(1\cdot(-3)\cdot2)\det(b_i)=8\cdot(-6)\cdot(-2)=96$.
+The auxiliary order need not be the actual order of the surreal $e_j$: the
+certificate proves that the abstract Laurent polynomial is nonzero, and
+evaluation at rationally independent monomials is injective. So once a
+rationally independent exponent basis is certified, a finite certificate
+need not decide the order of arbitrary surreal expressions.
+\end{example}
+
+\subsection{Further examples \src{03}}
+
+\begin{example}[The linear span, not the affine span]
+For $f=T_1T_2+T_1T_2^2$ the support $\{(1,1),(1,2)\}$ has affine span of
+dimension one but linear span of dimension two, so any two distinct positive
+rational dilates are independent and the order is two. Factoring out $T_1T_2$
+does not lower the order: the common monomial factor is itself dilated and
+carries another exponent direction. The theorem concerns the linear span of
+the support, not the affine dimension of a Newton polytope or its number of
+edges. A constant shift is different: adding a constant changes only the zero
+exponent, which contributes nothing to rank, and translates every dilate by
+the same constant, so it neither creates nor destroys independence.
+\end{example}
+
+\begin{example}[A relative example]
+Let $\Gamma$ contain rationally independent $h,\beta,\gamma$, let $H=\Q h$, and
+let $f=t^h+t^\beta+t^\gamma+2t^{h+\beta+\gamma}$. Its absolute rank is three
+and its rank modulo $H$ is two. Three distinct positive rational dilates are
+independent over $k$, while over $K_H(k)$ any two are independent and any
+three dependent. The core knows the whole $h$-direction, including arbitrary
+Hahn series supported on it; this is what relative rank measures.
+\end{example}
+
+\begin{example}[Power sums: a known case with explicit recovery]
+\label{adr:sr:ex:power-sums}
+For $f=T_1+T_2+T_3$ let $p_j=T_1^j+T_2^j+T_3^j$ and let
+$\sigma_1,\sigma_2,\sigma_3$ be the elementary symmetric polynomials. Newton's
+identities give
+\begin{align}
+ \sigma_1&=p_1, & \sigma_2&=\frac{p_1^2-p_2}{2},\label{adr:sr:eq:newton12}\\
+ \sigma_3&=\frac{p_4-\sigma_1^4+4\sigma_1^2\sigma_2-2\sigma_2^2}{4\sigma_1},
+ \label{adr:sr:eq:newton3}
+\end{align}
+a rational identity, checked from $p_3=\sigma_1^3-3\sigma_1\sigma_2+3\sigma_3$
+and $p_4=\sigma_1p_3-\sigma_2p_2+\sigma_3p_1$. So
+$k(p_1,p_2,p_4)=k(\sigma_1,\sigma_2,\sigma_3)$. Given these three observations
+generically, $T_1,T_2,T_3$ are the roots of $Z^3-\sigma_1Z^2+\sigma_2Z-\sigma_3$,
+determined up to their six permutations, and all further power sums follow
+from $p_n=\sigma_1p_{n-1}-\sigma_2p_{n-2}+\sigma_3p_{n-3}$ ($n\ge4$); in
+particular $S_8f=p_8$ is rational in $f,S_2f,S_4f$. These identities are
+classical and illustrate the difference between an order theorem and a
+reconstruction theorem. The independence of power sums is
+\cite[Proposition~3]{MSW}, not a result of either source.
+\end{example}
+
+\subsection{A certificate that avoids full expansion \src{03}}
+\label{adr:sr:sec:certificate}
+
+Let $f=\sum_{a\in\Sigma}c_aT^a$ with exact rational coefficients and
+$\Sigma\subseteq\Z^\rho$, $\operatorname{span}_\Q\Sigma=\Q^\rho$ (rational
+exponent coordinates are first cleared by one common denominator), and let
+$q_1>\cdots>q_\rho>0$ be rationals. A short independence certificate consists
+of a separating integer weight, a greedy basis, its determinant, and one
+exponent and coefficient. Let $N_0=\max_{a\in\Sigma,i}\abs{a_i}$ and
+\begin{equation}\label{adr:sr:eq:weight}
+ B_0=2N_0+2,\qquad w=(1,B_0,B_0^2,\ldots,B_0^{\rho-1}).
+\end{equation}
+The values $w\cdot a$ are distinct on $\Sigma$: for two different vectors, at
+the largest index $j$ where they differ the weighted contribution has absolute
+value at least $B_0^j$, while all lower contributions total at most
+$2N_0(B_0^j-1)/(B_0-1)<B_0^j$. Sort $\Sigma$ by decreasing $w\cdot a$ and keep a
+vector exactly when it raises the rational rank; this gives a basis
+$b_1,\ldots,b_\rho$. For the ordinary logarithmic coordinate derivations the
+certified term is
+\begin{align}
+ \eta&=\sum_{j=1}^\rho q_jb_j,\label{adr:sr:eq:certificate-eta}\\
+ c_*&=\Bigl(\prod_jq_j\Bigr)\Bigl(\prod_jc_{b_j}\Bigr)\det[b_{ji}]_{j,i},
+ \label{adr:sr:eq:certificate-c}
+\end{align}
+the unique term of greatest $w$-weight with nonzero determinant contribution.
+The proof of \cref{adr:sr:prop:unique} is applied with the scalar weights
+$w\cdot a$ in this finite setting; no claim that $w$ preserves every comparison
+of an ambient surreal group is needed. Since $c_*\ne0$ the Jacobian is not the
+zero Laurent polynomial, and an embedding into any Hahn field with independent
+monomial coordinates preserves this. For fewer than $\rho$ observations, take
+the full greedy basis, invert its matrix, and use the first $m$ dual
+functionals; the coefficient is then $\prod_jq_j\prod_jc_{b_j}$, as in
+\cref{adr:sr:thm:leading}. Source~03's program checks both forms.
+
+\paragraph{What is effective \src{03}.} With finite rational-coordinate input,
+the certificate uses a sort, at most $\abs{\Sigma}$ exact rank-increase tests,
+and one determinant or matrix inverse; standard exact linear algebra makes this
+polynomial time in the encoded input size, with separating weights of bit
+length $O(\rho\log(N_0+1))$. It certifies independence; it does not expand a
+possibly huge minimal relation, and the full expansions in the program are
+deliberately more expensive and are not the proposed method. For a surreal
+expression whose exponent dependencies are unresolved, an integer-coordinate
+presentation is additional input: neither source decides arbitrary equality or
+rational dependence of symbolic surreal exponents, and the greatest-element
+choices in the infinite-support proof are existence arguments, not a
+termination claim for encodings of infinite normal forms.
+
+\section{Infinite supports}
+\label{adr:sr:sec:infinite}
+
+\subsection{Difference transcendence from infinite rank}
+
+\begin{corollary}[Infinite-rank orbits \src{03, 02}]
+\label{adr:sr:cor:infinite}
+If $\rho_{\mathcal F,H}(y)$ is infinite, then $\{S_ay:a\in\mathcal F_{>0}\}$ is
+algebraically independent over $K_H(k)$. In particular, for $\mathcal F=\Q$,
+$y$ satisfies no nonzero autonomous relation of any finite order over $K_H(k)$
+for any rational $d>0$, $d\ne1$.
+\end{corollary}
+\begin{proof}
+A relation involves finitely many members; apply \cref{adr:sr:thm:main}, or
+\cref{adr:sr:cor:relation}.
+\end{proof}
+
+This difference transcendence is over the stated base only. It is not
+differential transcendence under a chosen derivation, and it claims no
+independence from further surreal parameters, which need the relative version
+(\cref{adr:sr:sec:fresh}).
+
+\begin{theorem}[A countable omnific support with an independent real orbit \src{03, 02}]
+\label{adr:sr:thm:Xi}
+The omnific integer
+\begin{equation}\label{adr:sr:eq:Xi}
+ \Xi=\sum_{n\ge0}\omega^{\omega^{-n}}=\omega+\omega^{\omega^{-1}}+\omega^{\omega^{-2}}+\cdots
+\end{equation}
+has $\{S_a\Xi:a\in\R_{>0}\}$ algebraically independent over $\C$
+(source~03). The same holds for $\Xi-\omega=\sum_{n\ge1}\omega^{\omega^{-n}}$
+with rational dilations, $\{S_q(\Xi-\omega):q\in\Q_{>0}\}$ (source~02). Both
+elements have support of order type $\omega$ and are difference transcendental
+for every rational $d>0$, $d\ne1$.
+\end{theorem}
+\begin{proof}
+The exponents $\omega^{-n}$ form a strictly decreasing sequence of positive
+surreals, so the support is legitimate, and the element is omnific by
+\eqref{adr:eq:Oz}. The exponents are linearly independent over $\R$: a
+nontrivial finite real combination of the distinct monomials $\omega^{-n}$ is a
+normal form with distinct inner exponents $-n$ and cannot vanish. Let $\Gamma$
+be their set-sized $\R$-span, put $\mathcal F=\R$, $k=\C$, $H=0$, and apply
+\cref{adr:sr:cor:infinite}; for rational dilations one may use $\mathcal F=\Q$
+and the rational span, as source~02 does.
+\end{proof}
+
+The two appearances of $\omega$ have different roles: the inner monomials are
+independent \emph{exponents}, the outer monomials are the terms of the omnific
+integer. The support is countable, but its exponent directions have infinite
+dimension even over $\R$, which is why continuum many positive real dilations
+can be independent. This is not a statement about classical transcendence of
+real exponentials.
+
+\begin{corollary}[Forward, backward and several dilations \src{02}]
+\label{adr:sr:cor:shifts}
+For every $d\in\Q_{>0}\setminus\{1\}$ the elements $S_d^n(\Xi-\omega)$,
+$n\in\Z$, are algebraically independent over $\C$. For multiplicatively
+independent positive rationals $d_1,\ldots,d_s$ the family
+$\{S_{d_1}^{n_1}\cdots S_{d_s}^{n_s}(\Xi-\omega):(n_1,\ldots,n_s)\in\Z^s\}$ is
+algebraically independent over $\C$.
+\end{corollary}
+\begin{proof}
+These are subfamilies of the positive rational orbit, with distinct
+parameters under the stated hypotheses.
+\end{proof}
+
+\subsection{Bounded denominators: two character arguments}
+
+\begin{lemma}[Character extension \src{02}]
+\label{adr:sr:lem:characters}
+Let $k$ be algebraically closed of characteristic zero. Every homomorphism
+from a subgroup $A$ of an abelian group $G$ to $k^\times$ extends to $G$, and a
+finite abelian group $A$ has exactly $\abs{A}$ such characters.
+\end{lemma}
+\begin{proof}
+Take a maximal extension by Zorn's lemma. If $x$ is outside its domain and no
+positive multiple $nx$ lies in the domain, give $x$ any nonzero value;
+otherwise take the least such $n$ and give $x$ an $n$th root of the value at
+$nx$. This extends the character to the domain plus $\Z x$, contradicting
+maximality. The count follows from a decomposition into cyclic groups, since a
+cyclic group of order $n$ has exactly $n$ characters: $k$ contains $n$
+distinct $n$th roots of unity.
+\end{proof}
+
+\begin{theorem}[Finite denominator index for algebraic Hahn elements \src{02}]
+\label{adr:sr:thm:denominators}
+Let $\Lambda\subseteq\Gamma$ be free abelian of finite rank and
+$y\in k((t^{\Q\Lambda}))$ algebraic of degree at most $N$ over $k(t^\Lambda)$.
+Then
+\[
+ \mathcal D_y=(\Lambda+\langle\supp y\rangle_\Z)/\Lambda
+\]
+is finite of order at most $N$. Consequently $\supp y\subseteq N'^{-1}\Lambda$
+for some integer $1\le N'\le N$.
+\end{theorem}
+\begin{proof}
+First let $k$ be algebraically closed. Each character
+$\chi:\Q\Lambda/\Lambda\to k^\times$ defines the strong Hahn automorphism
+$\tau_\chi(\sum c_\gamma t^\gamma)=\sum c_\gamma\chi(\gamma+\Lambda)t^\gamma$,
+fixing $k(t^\Lambda)$. All $\tau_\chi(y)$ are roots of one nonzero polynomial
+of degree at most $N$ over that field, so the character orbit of $y$ has at
+most $N$ elements. Two characters act equally on $y$ exactly when their
+restrictions to $\mathcal D_y$ agree: equality is detected at every nonzero
+coefficient, and those support classes generate $\mathcal D_y$. Every
+character of $\mathcal D_y$ extends to $\Q\Lambda/\Lambda$ by
+\cref{adr:sr:lem:characters}, so if $\mathcal D_y$ is finite its
+$\abs{\mathcal D_y}$ characters give that many distinct conjugates, and
+$\abs{\mathcal D_y}\le N$. If $\mathcal D_y$ were infinite, its elements would
+have unbounded orders: for fixed $e$ the $e$-torsion of
+$\Q\Lambda/\Lambda\cong\Q^\rho/\Z^\rho$ has only $e^\rho$ elements, so a uniform
+bound would put $\mathcal D_y$ in a finite group. An element of order $e>N$
+has $e$ characters on its cyclic subgroup, which extend and give more than $N$
+conjugates, a contradiction. Taking $N'=\abs{\mathcal D_y}$ kills every support
+class. For general $k$, embed coefficientwise in an algebraic closure: the
+polynomial keeps degree at most $N$, and the support and index are unchanged.
+\end{proof}
+
+\begin{lemma}[A rank-one character proof \src{03}]
+\label{adr:sr:lem:denominators}
+If $f\in\C((t^\Q))$ is algebraic over $\C(t)$, then
+$\supp f\subseteq\frac1N\Z$ for some integer $N\ge1$.
+\end{lemma}
+\begin{proof}
+For each integer $j$, $\chi_j(g)=\exp(2\pi ijg)$ is a character of $(\Q,+)$,
+and $\tau_j(\sum c_gt^g)=\sum c_g\chi_j(g)t^g$ is a support-preserving field
+automorphism fixing $\C(t)$, since $\chi_j(1)=1$. If $F(f)=0$ for a nonzero
+$F\in\C(t)[Y]$, all $\tau_j(f)$ are among its finitely many roots, so
+$\tau_a(f)=\tau_b(f)$ for some integers $a>b$ and $\tau_{a-b}(f)=f$. At a
+nonzero coefficient at $g$ this gives $\exp(2\pi i(a-b)g)=1$, so
+$(a-b)g\in\Z$; take $N=a-b$.
+\end{proof}
+
+\Cref{adr:sr:lem:denominators} is the case $\Lambda=\Z$, $k=\C$ of
+\cref{adr:sr:thm:denominators}, without the degree bound; both are printed
+because their proofs differ (explicit exponential characters against extended
+abstract characters). Both conditions are necessary, not sufficient: a series
+with bounded denominators, or on a fixed lattice, can be transcendental over
+the monomial field. They are character-orbit versions of a familiar
+ramification obstruction, and neither source claims the character method as
+new.
+
+\subsection{Rank one, order two}
+
+\begin{proposition}[The rank-one order-two example \src{03}]
+\label{adr:sr:prop:order-two}
+For $d\ge2$ the omnific integer $u_d=\sum_{n\ge0}\omega^{d^{-n}}$ of
+\cref{adr:thm:order-two} has rational support rank one and autonomous order
+two under $S_d$.
+\end{proposition}
+\begin{proof}[Proof \src{03}; a second route to \cref{adr:thm:order-two}]
+The support is decreasing, positive and in $\Q$, with one-dimensional rational
+span. Its denominators are unbounded, so \cref{adr:sr:lem:denominators}, read
+in $\C((t^\Q))$ through $\omega=t^{-1}$, shows that $u_d$ is transcendental
+over $\C(\omega)$. Shifting the Hahn sum gives $S_du_d-u_d=\omega^d$, so
+$\C(u_d,S_du_d)=\C(u_d,\omega^d)$, of transcendence degree two: $\omega^d$ is
+transcendental over $\C$, and $u_d$ is transcendental over $\C(\omega)$,
+hence over $\C(\omega^d)$. So the first two transforms are independent, while
+\begin{equation}\label{adr:sr:eq:rankone}
+ S_d^2u_d-S_du_d=(S_du_d-u_d)^d
+\end{equation}
+makes the first three dependent.
+\end{proof}
+
+This proof uses neither \cref{adr:thm:omnific} nor the support-collapse theorem
+behind it. The example does not contradict \cref{adr:sr:cor:relation}, since
+order two allows rank one. It refutes the unwarranted extension of the
+finite-support \emph{upper} bound to infinite supports, which is why the
+infinite-support theorem is a lower bound, not an equality. Infinite support
+alone does not force difference transcendence either:
+\cref{adr:sr:ex:rational}(b) has infinite support and order one (source~02).
+Infinite support, ordinal support type, unbounded denominators (an infinite
+index modulo a lattice) and infinite rational rank are four different
+properties, and only the last forces independence of all dilates.
+
+\subsection{Rank \texorpdfstring{$\rho$}{rho}, order \texorpdfstring{$\rho+1$}{rho+1}: multi-scale telescopes}
+
+Fix an integer $d\ge2$, rationally independent $\gamma_1,\ldots,\gamma_\rho\in\Gamma_{>0}$
+and nonzero $a_1,\ldots,a_\rho\in k$, and put
+\begin{equation}\label{adr:sr:eq:telescopes}
+ U_j=\sum_{n\ge0}t^{-\gamma_jd^{-n}},\qquad \mathcal Z_\rho=\sum_{j=1}^\rho a_jU_j.
+\end{equation}
+Each support $\{-\gamma_jd^{-n}\}$ is strictly increasing, a finite union of
+well-ordered sets is well ordered, and no two terms from different $j$ share
+an exponent, by rational independence. For $\Gamma\subseteq\No$ and real
+$a_j$, \eqref{adr:eq:omega-bridge} gives
+$\mathcal Z_\rho=\sum_ja_j\sum_n\omega^{\gamma_jd^{-n}}$.
+
+\begin{theorem}[Support rank $\rho$, autonomous order $\rho+1$ \src{02}]
+\label{adr:sr:thm:telescopes}
+The series $\mathcal Z_\rho$ has infinite support, $\rho(\mathcal Z_\rho)=\rho$,
+and $\operatorname{aord}_{d,k}(\mathcal Z_\rho)=\rho+1$. For real nonzero $a_j$
+and positive surreal $\gamma_j$ it is an omnific integer, and its order is
+$\rho+1$ over $\C$ as well.
+\end{theorem}
+\begin{proof}
+Strong reindexing of the supports gives
+\begin{equation}\label{adr:sr:eq:delta}
+ w_\rho:=(S_d-1)\mathcal Z_\rho=\sum_{j=1}^\rho a_jt^{-d\gamma_j},
+\end{equation}
+a finite-support element of rank $\rho$, so
+$w_\rho,S_dw_\rho,\ldots,S_d^{\rho-1}w_\rho$ are independent by
+\cref{adr:sr:thm:finite}. Let $\Lambda=\sum_j\Z\gamma_j$ and
+$K_0=k(t^{\gamma_1},\ldots,t^{\gamma_\rho})$. The support classes of
+$\mathcal Z_\rho$ modulo $\Lambda$ include $\gamma_j/d^n+\Lambda$, of exact
+order $d^n$, so the group $\mathcal D_{\mathcal Z_\rho}$ of
+\cref{adr:sr:thm:denominators} is infinite and $\mathcal Z_\rho$ is
+transcendental over $K_0$. All the listed dilates of $w_\rho$ lie in $K_0$, so
+$\mathcal Z_\rho,w_\rho,S_dw_\rho,\ldots,S_d^{\rho-1}w_\rho$ are $\rho+1$
+independent elements. The invertible triangular change of variables taking
+successive differences identifies the field they generate with
+$k(\mathcal Z_\rho,S_d\mathcal Z_\rho,\ldots,S_d^\rho\mathcal Z_\rho)$, so the
+first $\rho+1$ transforms are independent. Every nonnegative transform lies in
+$K_0(\mathcal Z_\rho)$ by \eqref{adr:sr:eq:delta} and its iterates, a field of
+transcendence degree $\rho+1$, so the first $\rho+2$ are dependent.
+Membership in $\Oz$ follows from positivity of all growth exponents and zero
+constant term, and the argument is unchanged after extending real
+coefficients to $\C$.
+\end{proof}
+
+The case $\rho=1$, $a_1=1$, $\gamma_1=1$ is $u_d$ of \cref{adr:thm:order-two},
+so this is a third route to that theorem. The decreasing-denominator
+construction itself is in Chyzak--Dreyfus--Dumas--Mezzarobba
+\cite[Remark~2.18]{CDDM}, with a shifted starting index; source~02 claims only
+the exact-order calculation for every finite number of independent scales.
+
+\begin{example}[An explicit third-order equation \src{02}]
+\label{adr:sr:ex:third}
+Take $\rho=2$, $d=2$, $a_1=a_2=1$, write $\mathcal Z=\mathcal Z_2$, and put
+$w_1=S_2\mathcal Z-\mathcal Z$, $w_2=S_2^2\mathcal Z-S_2\mathcal Z$,
+$w_3=S_2^3\mathcal Z-S_2^2\mathcal Z$. With $A=t^{-2\gamma_1}$ and
+$B=t^{-2\gamma_2}$ these are $A+B$, $A^2+B^2$ and $A^4+B^4$, so
+\begin{equation}\label{adr:sr:eq:third}
+ 2w_3-w_2^2-2w_1^2w_2+w_1^4=0.
+\end{equation}
+Source~02's verifier expands the left side to zero.
+\cref{adr:sr:thm:telescopes}, not this identity, proves that no lower-order
+relation exists.
+\end{example}
+
+\paragraph{The finite-truncation boundary \src{02}.}
+For $U_N=\sum_{n=0}^Nt^{-\gamma d^{-n}}$,
+\begin{equation}\label{adr:sr:eq:boundary}
+ (S_d-1)U_N=t^{-d\gamma}-t^{-\gamma d^{-N}}.
+\end{equation}
+Dropping the last term at a finite stage is wrong. The infinite identity
+follows from strong cancellation of the reindexed supports, not from the last
+monomial tending to zero in a valuation topology; the exponents are bounded,
+so it does not. This is the identity of Appendix~\ref{adr:app:checks} at
+$\gamma=1$.
+
+\subsection{A family with a candidate gap \texorpdfstring{$\ell$}{l} \src{03}}
+
+For $\ell\ge1$ put
+\begin{equation}\label{adr:sr:eq:udl}
+ u_{d,\ell}=\sum_{n\ge0}\omega^{d^{-\ell n}}.
+\end{equation}
+The same support argument makes it an omnific integer of rational rank one.
+Directly $S_d^\ell u_{d,\ell}-u_{d,\ell}=\omega^{d^\ell}$, hence
+\begin{equation}\label{adr:sr:eq:udl-relation}
+ S_d^{\ell+1}u_{d,\ell}-S_du_{d,\ell}=\bigl(S_d^\ell u_{d,\ell}-u_{d,\ell}\bigr)^d,
+\end{equation}
+an upper bound $\ell+1$ on its order. Equality for general $\ell$ is not
+proved; \cref{adr:sr:prop:order-two} is the case $\ell=1$. It is a concrete
+target for the gap between rank and order on one rational exponent line,
+without the false claim that rank classifies infinite supports.
+
+\begin{remark}[The two hierarchies are different]
+\label{adr:sr:rem:udl}
+\mtag{} Source~02's \cref{adr:sr:thm:telescopes} does not settle the order of
+$u_{d,\ell}$. It realizes the gap order $-$ rank $=1$ at every rank $\rho$,
+using $\rho$ rationally independent scales, whereas $u_{d,\ell}$ has rank one
+and would realize the gap $\ell$. Its dilates $S_d^iu_{d,\ell}$, $0\le i<\ell$,
+live on one rational line, so the transcendence argument over a lattice field
+used there does not separate them. Source~02 asks the parallel question for its
+iterated telescopes (Research question~\ref{adr:sr:q:iterated}). Whether the
+order at fixed rank can exceed rank plus one on an omnific integer is open.
+\end{remark}
+
+\section{Joint independence and fresh parameters}
+\label{adr:sr:sec:fresh}
+
+\begin{theorem}[Joint independence for separated support spans \src{03, 02}]
+\label{adr:sr:thm:blocks}
+Let $y_1,\ldots,y_s\in\K$ and $V_j=(H+\operatorname{span}_{\mathcal F}\supp y_j)/H\subseteq\Gamma/H$,
+and suppose $V_1+\cdots+V_s$ is a direct sum. For each $j$ choose
+$m_j\le\dim_{\mathcal F}V_j$ distinct positive $a_{j1},\ldots,a_{jm_j}\in\mathcal F$.
+Then all $S_{a_{j\nu}}y_j$ ($1\le j\le s$, $1\le\nu\le m_j$) are jointly
+algebraically independent over $K_H(k)$.
+\end{theorem}
+\begin{proof}
+In each support choose the first $m_j$ greedy exponents modulo $H$. Because
+the sum is direct, the corresponding coordinate functionals can be chosen to
+annihilate $H$ and every $V_l$, $l\ne j$, while being dual to the selected
+exponents of $y_j$; extend them to $\Gamma$ by a set-sized basis extension.
+The derivative matrix with rows all chosen dilates and columns all these
+Euler derivations is block diagonal: a functional chosen for $V_j$ kills every
+exponent of $y_l$, $l\ne j$, and its positive multiples. Each diagonal block
+has nonzero determinant by the proof of \cref{adr:sr:thm:leading}, so the whole
+determinant is nonzero, and \cref{adr:sr:lem:jacobian} applies.
+\end{proof}
+
+Source~02 states this for $\mathcal F=\Q$ with $y_\alpha\in K_{V_\alpha}(k)$,
+$\operatorname{span}_\Q\supp y_\alpha=V_\alpha$ and $H+\sum_\alpha V_\alpha$
+direct, for an arbitrary index family of which finitely many members are used;
+its functionals are extended by zero on $H$ and the other $V_\beta$ and each
+block is \cref{adr:sr:thm:vector}. Since a relation involves finitely many
+members, the formulations are equivalent. Disjoint supports do not suffice:
+two disjoint sets of exponents can span the same direction, and the hypothesis
+is independence of the \emph{spans modulo the core}.
+
+\subsection{An explicit ordinal family \src{03}}
+
+For each ordinal $\alpha$ and $n\ge0$ put
+\begin{equation}\label{adr:sr:eq:ordinal}
+ g_{\alpha,n}=\omega^{\alpha+1/(n+2)},\qquad \Xi_\alpha=\sum_{n\ge0}\omega^{g_{\alpha,n}},
+\end{equation}
+with surreal addition in $\alpha+1/(n+2)$, a value strictly between $\alpha$ and
+$\alpha+1$. For fixed $\alpha$ the $g_{\alpha,n}$ are positive and strictly
+decreasing, so $\Xi_\alpha\in\Oz$. The inner exponents are distinct even across
+ordinals: for $\alpha<\beta$,
+$\alpha+1/(n+2)<\alpha+1\le\beta<\beta+1/(m+2)$. So the $g_{\alpha,n}$ are
+distinct Conway monomials, and every finite set of them is linearly
+independent over $\R$.
+
+\begin{theorem}[A class of independent real-dilation orbits \src{03}]
+\label{adr:sr:thm:ordinal}
+The family $\{S_a\Xi_\alpha:\alpha\in\mathbf{On},\ a\in\R_{>0}\}$ is
+algebraically independent over $\C$: every finite subfamily with distinct
+pairs $(\alpha,a)$ is.
+\end{theorem}
+\begin{proof}
+A proposed relation uses finitely many ordinals and finitely many dilations of
+each. The $\R$-spans of those supports are in direct sum, each infinite
+dimensional, with set-sized total span. Apply \cref{adr:sr:thm:blocks} with
+$\mathcal F=\R$, $k=\C$, $H=0$.
+\end{proof}
+
+Source~03 proposes the explicit orbitwise and relative structure as new, not
+the bare existence of many algebraically independent surreals. The family is
+not asserted to be a transcendence basis, or to generate $\SC$.
+
+\begin{theorem}[Freshness beyond every set-sized Hahn core \src{03}]
+\label{adr:sr:thm:tail}
+Let $\mathfrak P\subseteq\SC$ be a set. There are a set-sized $\R$-subspace
+$H\subseteq\No$ and an ordinal $\alpha_0$ with $\mathfrak P\subseteq\C((t^H))$,
+under \eqref{adr:eq:omega-bridge}, such that
+\[
+ \{S_a\Xi_\alpha:\alpha\ge\alpha_0,\ a\in\R_{>0}\}
+\]
+is algebraically independent over the \emph{entire} Hahn field $\C((t^H))$,
+hence over the field generated by $\C$ and $\mathfrak P$ and over all positive
+real dilates of the parameters.
+\end{theorem}
+\begin{proof}
+Let $H$ be the $\R$-span of the union of the normal-form supports of the
+members of $\mathfrak P$; it is a set and places $\mathfrak P$ in the stated
+field. Every $h\in H$ has a set-sized normal form, and the union of all these
+second-level supports is a set. Ordinals are cofinal in the surreals, so
+choose $\alpha_0$ above every exponent of that union (equivalently, bound the
+birthdays first). For $\alpha\ge\alpha_0$ the monomial $g_{\alpha,n}$ has its
+single normal-form exponent above $\alpha_0$, and distinct such monomials have
+distinct exponents; a nontrivial real combination of them has a nonzero normal
+form supported above $\alpha_0$ and is not in $H$. So these $g_{\alpha,n}$ are
+linearly independent modulo $H$, with the ordinal blocks in direct sum. For a
+proposed finite relation let $\Gamma$ be the $\R$-span of $H$ and the
+finitely many countable supports involved, and apply
+\cref{adr:sr:thm:blocks} over $K_H(\C)$. As $H$ is an $\R$-subspace, positive
+real dilations preserve its Hahn field, which contains the dilates of
+$\mathfrak P$.
+\end{proof}
+
+\begin{corollary}[One countable-support witness over any set of parameters \src{03}]
+\label{adr:sr:cor:witness}
+For every set $\mathfrak P\subseteq\SC$ some $z\in\Oz$ of countable support has
+its whole positive real dilation orbit algebraically independent over
+$\C(\mathfrak P)$: take $z=\Xi_{\alpha_0}$.
+\end{corollary}
+
+The parameter set may be of any size as long as it is a set. There is no
+claim of independence over the proper class $\SC$, which contains $z$; and
+there is no single ordinal threshold for every parameter set: the explicit
+family is fixed, but its independent tail depends on the prescribed set.
+
+\subsection{Set-sized families over a prescribed base \src{02}}
+
+\begin{theorem}[Arbitrary set-sized families over a prescribed base \src{02}]
+\label{adr:sr:thm:kappa}
+Let $\mathfrak B$ be a set-sized subfield of $\SC$ and $\kappa$ a set
+cardinal. There are $\Upsilon_\alpha\in\Oz$, $\alpha<\kappa$, such that
+\begin{equation}\label{adr:sr:eq:kappa}
+ \{S_q\Upsilon_\alpha:\alpha<\kappa,\ q\in\Q_{>0}\}
+ \ \text{is algebraically independent over }\mathfrak B,
+\end{equation}
+each with positive support of order type $\omega$ and all coefficients one.
+\end{theorem}
+\begin{proof}
+Let $H$ be the rational span of the union of the outer normal-form supports of
+the elements of $\mathfrak B$: a set-sized rational subspace of $\No$ with
+$\mathfrak B\subseteq\C((t^H))$. Let $\mathcal I$ be the union of the inner
+normal-form supports of all $h\in H$, also a set. Choose an ordinal $\nu_0$
+with $-\nu_0<\tau$ for every $\tau\in\mathcal I$; it exists because a set of
+surreals is bounded above by an ordinal (bound the lengths of their sign
+sequences and apply this to the negatives), and any positive ordinal will do
+if $\mathcal I$ is empty. For $\alpha<\kappa$ and $n\ge0$ put
+\begin{equation}\label{adr:sr:eq:fresh}
+ \beta_{\alpha,n}=\nu_0+\omega\alpha+n+1,\qquad
+ h_{\alpha,n}=\omega^{-\beta_{\alpha,n}},\qquad
+ \Upsilon_\alpha=\sum_{n\ge0}\omega^{h_{\alpha,n}}.
+\end{equation}
+The additions and the product in $\beta_{\alpha,n}$ are \emph{ordinal}
+operations; the minus sign and the two monomials are surreal. The
+$\beta_{\alpha,n}$ are pairwise distinct and increase with $n$ for fixed
+$\alpha$, so $\Upsilon_\alpha$ has the claimed omnific support. A nonzero
+finite rational combination of the $h_{\alpha,n}$ has inner support at the
+distinct exponents $-\beta_{\alpha,n}$, all below $-\nu_0$, while every $h\in H$
+has inner support in $\mathcal I$, above $-\nu_0$; uniqueness of normal forms
+shows that the whole family is rationally independent modulo $H$, and that a
+combination vanishes only when all coefficients do. With
+$V_\alpha=\operatorname{span}_\Q\{h_{\alpha,n}:n\ge0\}$, the sum of $H$ and the
+$V_\alpha$ is direct and each $V_\alpha$ is infinite dimensional. Apply
+\cref{adr:sr:thm:blocks} to each finite subfamily, in the set-sized Hahn field
+of that direct sum; independence over $K_H(\C)$ implies independence over
+$\mathfrak B$.
+\end{proof}
+
+\begin{corollary}[Free omnific difference algebras \src{02}]
+\label{adr:sr:cor:free}
+The assignment $X_{\alpha,q}\mapsto S_q\Upsilon_\alpha$ gives injective ring
+homomorphisms
+\begin{align}
+ \Z[X_{\alpha,q}:\alpha<\kappa,\ q\in\Q_{>0}]&\hookrightarrow\Oz,\label{adr:sr:eq:freeZ}\\
+ \Z[i][X_{\alpha,q}:\alpha<\kappa,\ q\in\Q_{>0}]&\hookrightarrow\Goz.\label{adr:sr:eq:freeG}
+\end{align}
+For each $r\in\Q_{>0}$ they are equivariant for the permutation
+$X_{\alpha,q}\mapsto X_{\alpha,rq}$ and $S_r$. Restricting to $q=d^n$,
+$n\in\Z$, gives a free inversive difference polynomial ring for $S_d$.
+\end{corollary}
+\begin{proof}
+Algebraic independence gives injectivity. Positive support and integral,
+respectively Gaussian integral, constant coefficients are preserved by these
+polynomial operations and by every $S_r$; equivariance is $S_rS_q=S_{rq}$.
+\end{proof}
+
+There is no embedding of $\C$ into $\Oz$ here. With coefficients in $\C$ the
+polynomial ring embeds into the nonnegative-growth-support surcomplex ring
+(the ring $\A$ for $k=\C$), and its fraction field into $\SC$. With
+coefficients in the prescribed $\mathfrak B$, independence gives ordinary
+polynomial and rational function field embeddings into $\SC$; equivariance
+with a fixed coefficient field additionally needs a specified compatible
+action on $\mathfrak B$. The theorem quantifies over set-sized bases and
+families; it constructs no set of proper-class transcendence degree and asserts
+no independence over all of $\SC$, which is impossible. It also does not make
+$(\SC,S_d)$ existentially difference closed: $S_dx-x=1$ has no solution, since
+the left side has zero constant coefficient. Large free subalgebras and
+solvability of difference equations are different properties.
+
+\mtag{} The two constructions differ: source~03 places its fresh exponents
+\emph{above} an ordinal bound (large inner exponents, real dilations, one
+ordinal-indexed family), source~02 places them \emph{below} the negative of
+one (infinitesimal inner exponents, rational dilations, $\kappa$ many orbits
+with coefficients one, and ring embeddings). Both separate a set-sized base by
+bounding the second-level supports of its exponent span, the localization
+also used by the independent-copies report (\lbl{isc:cor:parameters}); neither
+this report nor that one uses the other's results.
+
+\section{Prime characteristic}
+\label{adr:sr:sec:charp}
+
+Characteristic zero is essential to \cref{adr:sr:thm:main}. For coefficients
+in $\mathbb F_p$, Frobenius gives $S_pf=f^p$; for $y=T_1+T_2$ with independent
+monomials, $S_py=T_1^p+T_2^p=y^p$, a dependence at rank two
+(\cref{adr:sec:boundaries}). Both the factor $q=p$ in the logarithmic
+Jacobian and the minimal-degree argument fail. There is nevertheless an exact
+finite-support formula after grouping dilations by their $p$-free parts.
+
+\begin{theorem}[Prime-field finite-support formula \src{03}]
+\label{adr:sr:thm:prime}
+Let $\Lambda$ be a finitely generated ordered abelian group and
+$f=\sum_{a\in\Sigma}c_at^a\in\mathbb F_p[t^\Lambda]$ with nonzero coefficients
+and $\Sigma$ generating $\Lambda$ as an abelian group; let
+$\rho=\operatorname{rank}_\Z\Lambda$. For positive integers
+$n_1,\ldots,n_m$ put $n_j^{(p)}=n_j/p^{v_p(n_j)}$ and
+$s=\abs{\{n_1^{(p)},\ldots,n_m^{(p)}\}}$. Then
+\begin{equation}\label{adr:sr:eq:prime}
+ \trdeg_{\mathbb F_p}\mathbb F_p(S_{n_1}f,\ldots,S_{n_m}f)=\min\{\rho,s\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The torsion-free group $\Lambda$ has a $\Z$-basis, identifying its group
+algebra with a Laurent polynomial ring in $\rho$ variables; the images of
+$\Sigma$ span $\mathbb F_p^\rho$, since $\Sigma$ generates $\Lambda$. The
+coordinates modulo $p$ give derivations $\partial_i(t^a)=(a_i\bmod p)t^a$. For
+distinct positive integers $u_1>\cdots>u_\ell$ prime to $p$, $\ell\le\rho$,
+select a greedy independent support tuple using the projected vectors over
+$\mathbb F_p$ and dual functionals there. Dominance uses only linear rank, so
+it holds over $\mathbb F_p$; rearrangement uses the ordered group $\Lambda$ and
+positive \emph{integer} weights $u_j$, not an order on $\mathbb F_p$, each
+exchange moving the exponent by a positive integer multiple of a positive
+element of $\Lambda$. The unique extremal determinant term has nonzero
+coefficient: each $u_j$ is nonzero modulo $p$, each selected $c_a$ is nonzero,
+and the projected determinant is nonzero. So the derivative matrix is
+invertible. The minimal-relation argument of \cref{adr:sr:lem:jacobian} still
+applies over the perfect field $\mathbb F_p$: if all formal partial
+derivatives of a minimal relation vanished, every exponent in it would be
+divisible by $p$, and since coefficients have $p$th roots in $\mathbb F_p$ it
+would be $F_1^p$ for a smaller relation $F_1$; otherwise a nonzero partial
+derivative gives the usual contradiction. So the $\ell$ observations are
+independent. The bound $\rho$ comes from the Laurent monomial field, the bound
+$\ell$ from the number of observations. Finally
+$S_{n_j}f=(S_{n_j^{(p)}}f)^{p^{v_p(n_j)}}$, so the field generated by one
+observation for each distinct $p$-free part contains the original observation
+field and is algebraic over it; the transcendence degrees agree.
+\end{proof}
+
+The lattice must be the one \emph{generated by the support}, not an arbitrary
+larger one: $T_1^p+T_2^p$ has zero ordinary coordinate derivatives in
+$\mathbb F_p(T_1,T_2)$, but in its support lattice, with monomials
+$T_1^p,T_2^p$, it has full rank two. The theorem is for prime-field
+coefficients: other characteristic-$p$ coefficients bring Frobenius twists and
+are not covered. Source~03 includes this complement with proof as a structural
+comparison, not as a separately certified priority claim; source~02 asserts no
+positive-characteristic version.
+
+\section{Scope, questions and non-claims of the additions}
+\label{adr:sr:sec:scope}
+
+\subsection{Boundaries}
+\label{adr:sr:sec:boundaries}
+
+\paragraph{Positivity and distinctness \src{03, 02}.} Negative dilation does
+not preserve general Hahn supports, and even for finite support mixed signs
+destroy the conclusion: $f=T_1+T_1^{-1}+T_2+T_2^{-1}$ has rank two but
+$S_{-1}f=f$, so the multipliers $1,-1$ give a dependent pair. Strict
+positivity is used in the coordinatewise comparison and in the rearrangement.
+Repeated multipliers repeat an observation, and $d=1$ makes $S_d$ the identity,
+so the exact order fails except accidentally in the smallest ranks. A zero
+multiplier is not in the dilation group and would collapse all monomials to
+one, generally incompatible with infinite summation.
+
+\paragraph{Rational rank and real rank \src{03}.} The lower bound of
+\cref{adr:sr:thm:main} holds over any $\mathcal F$, including $\R$, but the
+exact upper bounds of \cref{adr:sr:thm:finite,adr:sr:thm:rational} use
+rational dilations and rational rank, and do not become exact with real rank
+and real dilations. The finite-support $f=\omega$ has real rank one, yet $f$
+and $S_{\sqrt2}f=\omega^{\sqrt2}$ are independent over $\C$: a relation would
+need two distinct nonnegative integer pairs with equal exponents $i+j\sqrt2$.
+The real-rank bound promises only transcendence degree one there;
+\cref{adr:sr:thm:Xi} uses \emph{infinite} real rank on purpose.
+
+\paragraph{The coefficient field is part of the statement \src{02}.} A
+nonconstant coefficient can create a relation absent over $k$:
+$S_du_d-u_d=\omega^d$ is linear once $\omega^d$ is a coefficient. The relative
+theorem controls directions outside the core's exponent space, but an
+absolute-order calculation is not preserved under arbitrary enlargement of the
+base. In \cref{adr:sr:thm:tail,adr:sr:thm:kappa} the base is fixed first and
+the fresh scales chosen afterwards; exchanging these quantifiers would give an
+impossible statement.
+
+\paragraph{No conclusions about other structures \src{03, 02}.} The Euler
+derivations prove nothing about differential transcendence under the natural
+surreal derivation. Exponent dilation is not the surreal exponential, and no
+exponential-field automorphism is classified. The omnific statements concern
+normal-form support and algebraic difference equations, not factorization,
+primality, Diophantine decidability, integral-closure or normalization fibres,
+holonomic functions under argument dilation, analytic convergence on $\No$,
+birthdays, or the first-order theory of the surreals with dilations; source~03's
+exploratory reading of quotient and normalization reports supplies no theorem
+on those subjects. The finite algorithms assume exact finite exponent
+coordinates and supply no notation system for all surreals; the ordinal family
+is not a maximal transcendence basis; and written proofs and exact experiments
+are different kinds of evidence.
+
+\subsection{The questions of this report}
+\label{adr:sr:sec:status}
+
+\Cref{adr:sr:sec:answers} gives the disposition, repeated as status notes in
+\cref{adr:sec:questions}: Research question~1 is answered in every rank
+(\cref{adr:sr:cor:omnific}); the rank component of Research question~2 is
+answered (\cref{adr:sr:cor:relation}), its order-type and denominator
+components are open, and \eqref{adr:sr:eq:rankone} and
+\cref{adr:sr:thm:telescopes} show unbounded denominators at order two and gaps
+of one at every rank; Research question~5 gains the rank datum of
+\cref{adr:sr:rem:question-five}; Research question~8 gains its relative part
+(\cref{adr:sr:rem:question-eight}). The questions are the repository's own; no
+named published problem is claimed solved.
+
+\subsection{Proof dependencies and a formalization plan}
+\label{adr:sr:sec:dependencies}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.30\textwidth}Y@{}}
+\toprule
+Layer or conclusion & Obligation and sources\\
+\midrule
+Hahn arithmetic & Support-preserving operations, finite coefficient
+convolutions, finite products and strong summability (both).\\
+Linear algebra & Greedy extrema in a well-ordered support; dual functionals on
+a set-sized quotient, which is never ordered (both).\\
+Ordered comparison & Coordinatewise greedy dominance; strict rearrangement for
+positive distinct weights (both).\\
+Differential algebra & Euler derivations annihilating the whole core; a
+nonzero derivative determinant forbids a minimal relation (both).\\
+Noncancellation & The unique extremal support tuple and its explicitly nonzero
+coefficient (both).\\
+Finite and rational upper bounds & Independent monomial coordinates and
+denominator clearing (both); support-linear projection and the reduced
+quotient (03); coefficient-vector annihilators and finite Jacobian rank (02).\\
+Free families & Blocks in direct sum; separation of fresh second-level
+supports from a set-sized base; normal-form uniqueness (both).\\
+Exact telescoping hierarchy & Finite-support exactness; character-orbit
+denominator obstruction; successive differences (02).\\
+Surreal transfer & Conway normal forms and set-sized localization (both).\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+No part of this chain uses \cref{adr:thm:collapse}, the B\"ottcher
+coordinate, Newton--Puiseux factorization, a quotient or normalization theorem
+of another report, or a global class basis, and no unproved repository result
+is a premise; the bounded-denominator lemmas are proved separately and are not
+premises of the main theorem. Both sources propose formalizing without
+surreals first. Source~03's milestones: finite sets of integer exponent vectors
+and Laurent polynomials, greedy dominance and the unique leading term, giving
+independence over any characteristic-zero field with a finite certificate
+format; then abstract well-ordered supports, where the new obligation is the
+legitimacy of collecting the determinant expansion by ordered tuples, with the
+product rule for $\partial_\lambda$ and the derivative criterion proved
+separately; then Conway normal forms, with set-sized localization explicit and
+proper-class conclusions as finite-instance schemes; and the rational-function
+extension kept separate from the core, so that a correction to a
+reconstruction claim cannot touch the rank obstruction. Source~02's five
+stages are the same in substance: greedy basis and dominance on a well-ordered
+index set; rearrangement and the unique leading coefficient; Euler derivations
+with their product and commutation laws; the relative theorem by the
+minimal-degree argument; and specialization to finite support and rational
+functions, with proper-class applications by set-sized localizations rather
+than one universe-sized type. Points to keep: $\Gamma/H$ is used only as a
+vector space, and all comparisons are made in $\Gamma$; $k$ need not be ordered;
+the functionals annihilate \emph{every} exponent of $H$; projecting a product
+is justified only when one factor is supported in the subgroup; positivity and
+distinctness of the weights are both invoked. Neither source supplies Lean
+code, and neither chain has been checked by the repository's build.
+
+\subsection{Recorded finite checks}
+\label{adr:sr:sec:checks}
+
+Source~03's standard-library program \rpath{code/03-support-rank-verify.py}
+uses exact fractions and finite-field arithmetic, with seed
+\texttt{20260923}; source~02's \rpath{code/02-dilation-rank-verify.py} uses
+exact rational arithmetic for its determinants and SymPy~1.14.0 for a few
+polynomial identities, with the same seed. Their recorded runs are:
+\begin{center}\small
+\begin{tabular}{@{}lr@{\qquad}lr@{}}
+\toprule
+Source 03 & Checks & Source 02 & Cases\\
+\midrule
+Full-rank Jacobians, char.\ 0 & 85 & Vector-valued greedy determinants, ranks 1--4 & 257\\
+Partial-rank Jacobians, char.\ 0 & 60 & Logarithmic Jacobians, ranks 1--4 & 133\\
+Char.\ $p$ Jacobians & 72 & Support bases compared with greedy & 1,918\\
+Rational-function Jacobians & 4 & Truncated telescopes with boundary & 140\\
+Frobenius identities & 72 & Rational-profile ranks & 10\\
+Negative-dilation example & 1 & Worked determinant and relation & 2\\
+Rank and inverse-matrix entries & 528 & Frobenius counterexamples & 6\\
+Power-sum reconstructions & 668 & Negative-dilation example & 1\\
+\midrule
+Total check units & 1,490 & Named cases (with 1,918 comparisons) & 549\\
+\bottomrule
+\end{tabular}
+\end{center}
+All passed. Source~03's 217 polynomial Jacobian cases compare the exact
+expanded determinant with the predicted unique extremal term, including signed
+coefficients, negative exponent coordinates, rational dilations and dependent
+supported vectors; four further cases check cleared rational-function
+Jacobians, including a rank-one quotient whose two-observation determinant
+vanishes. Source~02's 390 determinant cases compute the full determinant by an
+independent Leibniz expansion and compare its actual leading term with the
+greedy prediction, so signs, exponent assignments and cancellations are
+checked without using the claimed formula. Counts are recorded check units,
+not counts of verified theorems. None of these computations proves an
+infinite-support theorem, a summability justification, a basis extension, the
+character extension lemma, a class-sized construction or a priority claim.
+Both suites were rerun for this report (Appendix~\ref{adr:sr:app:files}).
+
+\subsection{Research questions of the additions}
+\label{adr:sr:sec:questions}
+
+The questions below continue the numbering of \cref{adr:sec:questions}. They
+are the sources' proposed directions, not previously published open problems.
+Where the two sources ask essentially the same question it is printed once,
+with both formulations.
+
+\begin{question}[Exact order of the cyclic-denominator family; high priority; source~03]
+\label{adr:sr:q:udl}
+For $u_{d,\ell}$ in \eqref{adr:sr:eq:udl}, is the order under $S_d$ exactly
+$\ell+1$? \Cref{adr:sr:eq:udl-relation} gives the upper bound, and
+\cref{adr:sr:prop:order-two} settles $\ell=1$. A first target is independence
+of $u_{d,2},S_du_{d,2},S_d^2u_{d,2}$ over $\C$, which would begin to measure the
+order-rank gap on one rational exponent line.
+\end{question}
+
+\begin{question}[Difference transcendence on one exponent line; source~03]
+Construct, with a transparent proof, an omnific integer of rational rank one
+that is difference transcendental under a fixed $S_d$, or show that a proposed
+broad class of rank-one supports cannot be. The infinite-rank constructions do
+not settle this. A coefficient-twist or lacunarity argument controlling several
+transforms at once, rather than algebraicity over one monomial field, may help.
+\end{question}
+
+\begin{question}[The order spectrum at fixed rank; source~02]
+For fixed rational rank $\rho$, which autonomous orders occur among
+infinite-support Hahn series, and among omnific integers? Rational monomial
+profiles have order $\rho$ and the telescopes of \cref{adr:sr:thm:telescopes}
+order $\rho+1$; an infinite rational profile need not be omnific, so these are
+not yet realizations in one class. Can every integer at least $\rho$ occur? Can
+infinite order occur at rank one? A classification must separate the
+support-lattice index from the rank.
+\end{question}
+
+\begin{question}[Iterated telescopes on one rational scale; source~02]
+\label{adr:sr:q:iterated}
+For $s\ge0$ let $u_d^{[s]}=\sum_{n\ge0}\binom ns\omega^{d^{-n}}$, with
+$\binom ns=0$ for $n<s$. Reindexing gives $(S_d-1)u_d^{[s]}=u_d^{[s-1]}$ for
+$s\ge1$ and $(S_d-1)u_d^{[0]}=\omega^d$, so the order is at most $s+2$. Is it
+exactly $s+2$? The character obstruction gives transcendence over the monomial
+field but not joint independence of the intermediate $u_d^{[j]}$, which is not
+proved.
+\end{question}
+
+\begin{question}[Support structure at fixed order; sources~03 and~02]
+Source~03: with $\rho\le2$ now forced for order-two equations, which
+well-ordered supports in a fixed two-dimensional rational exponent space occur?
+Does a fixed relation bound any support invariant beyond rank? Separate order
+type, denominator growth and accumulation at nonprincipal cuts; this is the
+remaining geometric and combinatorial part of Research question~2. Source~02: a
+relation in $m$ dilates forces rank at most $m-1$; what further restrictions
+follow from a bound on the degree? Candidate invariants are denominator growth,
+the subgroup generated under $d$ and $d^{-1}$, and ordinal type. The rank
+theorem is not a claim that supports lie in finitely many arithmetic
+progressions; find a structure theorem or families ruling one out.
+\end{question}
+
+\begin{question}[Degrees of observation fields; high priority; sources~03 and~02]
+Source~03: for reduced $f=P/Q$ of rank $\rho$ and distinct positive integers
+$n_1,\ldots,n_\rho$, compute or sharply bound
+$[k(\Lambda_f):k(S_{n_1}f,\ldots,S_{n_\rho}f)]$, with
+$\Lambda_f=\Lambda\cap\operatorname{span}_\Q\supp f$ for a fixed finite monomial
+lattice $\Lambda$ presenting $f$. Rank proves finiteness once a common lattice
+is fixed, but not the degree or Galois group; how much is explained by finite
+monomial symmetries and how much by other coincidences? Power-sum fibres
+\cite{MSW} show that dimension and degree are different problems. Source~02:
+for a finite profile of rank $\rho$ determine
+$[k(t^\Lambda):k(S_{q_1}y,\ldots,S_{q_\rho}y)]$ for the support-generated
+lattice $\Lambda$ when the parameters make the smaller field a subfield of
+$k(t^\Lambda)$ (for nonintegral parameters first choose a common lattice
+containing all scaled supports). When is the extension trivial? How do lattice
+and coefficient symmetries and Newton polytopes determine its degree and
+ramification? Uniform independence alone gives no birational recovery.
+\end{question}
+
+\begin{question}[The full field of observations; source~03]
+For fixed $f$ and $d\ge2$, describe the field generated by all $S_d^jf$,
+$j\ge0$. Does a finite initial segment generate it, and when can the monomial
+field be recovered modulo an explicitly computable finite symmetry group? The
+theorem gives its transcendence degree, not its position in a rational monomial
+field. Distinguish integer $d$, where one lattice contains all forward
+transforms, from nonintegral rational $d$, where unbounded denominators can
+matter.
+\end{question}
+
+\begin{question}[Small relations from certificates; sources~03 and~02]
+Source~03: design an algorithm taking a sparse reduced rational function to a
+low-degree relation among its first $\rho+1$ transforms, with a compressed
+elimination certificate, degree bounds in each observation and a proof of
+minimality in a chosen sense; the greedy certificate may organize an
+elimination order without pretending to supply the relation. Source~02: given
+a finite profile of rank $\rho$ and $\rho+1$ positive integer parameters,
+construct a small relation among the dilates; can mixed volumes or sparse
+elimination control its multidegrees and heights? For rational profiles, can a
+canonical minimal monomial quotient be recovered from the annihilator of
+\eqref{adr:sr:eq:Bvector}?
+\end{question}
+
+\begin{question}[Overlapping support spans; sources~03 and~02]
+Find a necessary and sufficient support-and-coefficient criterion for joint
+independence of several different series and their dilates when their support
+spans overlap; \cref{adr:sr:thm:blocks} is only sufficient. A support-only
+answer is impossible: $T_1+T_2$ and $T_1-T_2$ are independent in characteristic
+zero, two copies of $T_1+T_2$ are not, and merely disjoint supports do not
+suffice. Source~03 suggests a leading-term test for the coloured Jacobian whose
+rows come from different coefficient patterns and dilation lists; source~02
+suggests mixed matroid data.
+\end{question}
+
+\begin{question}[Finite supports under real dilations; source~03]
+For finite-support surcomplex $f$ and distinct positive reals
+$a_1,\ldots,a_m$, determine the dependence pattern from the rational relations
+among all products $a_jg$, $g\in\supp f$. The rational theorem and the
+real-rank lower bound are two constraints, not a classification; one monomial
+already detects rational independence of the scalars.
+\end{question}
+
+\begin{question}[Beyond scalar exponent dilation; source~02]
+For an ordered additive automorphism $\theta$ of the exponent space, when can
+the leading-determinant method control $y,S_\theta y,\ldots$? Scalar dilation
+admits strict rearrangement, which a general shear need not. Find hypotheses
+replacing positive scalar ordering and classify the simplest resonance
+obstructions.
+\end{question}
+
+\begin{question}[Character twists and moving coefficients; source~02]
+Replace $S_q$ by
+$\sigma(\sum c_\gamma t^\gamma)=\sum\varphi(c_\gamma)\chi(\gamma)t^{q\gamma}$,
+with $\varphi$ acting on coefficients and $\chi$ a multiplicative character.
+When do iterates keep the uniform algebraic matroid? Which parts of the proof
+survive when the coefficient vectors of different rows are no longer equal up
+to scalars?
+\end{question}
+
+\begin{question}[Frobenius-twisted coefficients; source~03]
+Extend \cref{adr:sr:thm:prime} to coefficients in $\mathbb F_{p^e}$ or a
+general perfect field. Dilation by $p$ then interacts with the inverse
+Frobenius twist on coefficients, and $p$-free parts alone need not keep all
+information; seek an invariant combining lattice rank with coefficient
+Frobenius orbits.
+\end{question}
+
+\begin{question}[Positive characteristic with inseparability separated; source~02]
+Can a useful rank bound be recovered after quotienting out Frobenius
+relations, or with Hasse derivatives and $p$-independence? Even parameters
+prime to $p$ may interact through inseparability, and a valid result must
+separate that from Hahn support cancellation.
+\end{question}
+
+\begin{question}[Effective infinite-support certificates; source~03]
+Specify representations of infinite supports for which the greedy choices and
+their dominance have finite, mechanically checkable certificates, for example
+recursive supports with an effective rank oracle, or finite grammars for nested
+monomial scales. Separate summability, equality of exponents, and finding the
+least support element outside a span; none should be treated as decidable
+merely because the theorem is finite dimensional.
+\end{question}
+
+\begin{question}[Formalization and proof certificates; high priority; sources~03 and~02]
+Formalize the finite greedy-dominance lemma, strict rearrangement in an
+ordered vector space, the derivative-matrix criterion, and then the Hahn
+summability argument (\cref{adr:sr:sec:dependencies}). A first milestone is the
+finite Laurent polynomial theorem with an executable certificate checker that
+records a rational support basis, the selected greedy exponents and the unique
+nonzero leading coefficient, avoiding the full Jacobian; a second is the
+relative well-ordered-support theorem, without postulating its nonvanishing
+conclusion as an axiom. Finite tests are not formal verification.
+\end{question}
+
+\begin{question}[Orbit-free extensions and further surreal operations; source~03]
+Use the tail of \cref{adr:sr:thm:tail} to study extensions of set-sized
+difference fields inside $\SC$ with all positive rational or real dilations
+named. Which free orbit extensions can also satisfy prescribed conditions
+involving Conway simplicity, the natural surreal derivation, or the surreal
+exponential? The construction controls exponent-linear algebra and algebraic
+relations only.
+\end{question}
+
+\begin{question}[Birthday bounds and restricted universes; source~02]
+\label{adr:sr:q:birthday}
+\Cref{adr:sr:thm:kappa} works over every set-sized base but gives no optimized
+birthday bound. For a birthday-bounded base and a cardinal $\kappa$, how low in
+the surreal hierarchy can such a family be placed? Which initial subfields
+contain enough fresh inner scales for the construction?
+\end{question}
+
+\subsection{What the additions do not claim}
+\label{adr:sr:sec:nonclaims}
+
+Every limitation stated by source~03 or source~02 is kept, with its source;
+items marked \mtag{} were added in the merge.
+\begin{enumerate}[label=R\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item Neither source is refereed or independently reviewed; source~02's audit
+states that its proofs and audit were prepared by the same assistant and that
+no external reviewer was consulted, and source~03's proofs were reviewed only
+during preparation. Both are AI-assisted drafts, and no theorem is
+Lean-verified or checked by another proof assistant (both).
+\item No named published conjecture is claimed solved. The questions answered
+are this report's research questions, identified at fixed pins. Novelty is
+proposed and priority is not certified; the literature comparisons were
+focused, not exhaustive, and an absence of search results is not proof of
+priority (both).
+\item Classical inputs are credited, not claimed: Hahn arithmetic and Conway
+normal forms \cite{Gonshor,LM,Neumann}, greedy selection \cite{Edmonds}, the
+Jacobian criterion \cite{BMS}, series derivations \cite{KM}, power-sum
+independence \cite[Proposition~3]{MSW}, the decreasing-denominator series
+\cite[Remark~2.18]{CDDM}, and the character method for ramification. No
+priority is claimed for Hahn summation, the Jacobian criterion, power-sum
+independence, or the bare existence of large algebraically independent
+families of surreals (both).
+\item Characteristic zero is required; there is no unrestricted
+positive-characteristic version (Frobenius), and the prime-field formula
+covers only $\mathbb F_p$ coefficients and the support-generated lattice
+(both; the formula is source~03's).
+\item Distinct positive parameters are required: repeated parameters, $d=1$,
+negative dilations and zero are excluded, with the rank-two counterexample
+$T_1+T_1^{-1}+T_2+T_2^{-1}$ (both).
+\item There is no classification of infinite supports of finite rank. For
+infinite support the rank bound is necessary, not sufficient, and the lower
+bound is not an equality; nothing bounds support order type, denominator
+growth, accumulation at cuts, or the support module or lattice generation asked
+for in Research questions~2 and~8 (both).
+\item The Euler derivations are auxiliary algebraic probes: not the
+Berarducci--Mantova derivation, not asserted to be Hardy-type or
+exponential-compatible, and nothing is claimed about differential
+transcendence under a natural surreal derivation (both).
+\item $S_q$ is exponent dilation: not a power map, not the surreal exponential,
+not argument dilation. Nothing is claimed about factorization, primality,
+Diophantine decidability, integral-closure or normalization fibres, analytic
+convergence, birthdays, exponential-field automorphisms, or the first-order
+theory of the surreals with dilations (both).
+\item No independence over all of $\SC$ is claimed, which is impossible; the
+base is fixed before the fresh scales; the families are not transcendence
+bases and do not generate $\SC$; no global class basis is used (both).
+\item Finite tests are not proofs: the recorded counts are check units, and
+they certify no infinite, summability, basis-extension, character-extension or
+proper-class statement and no priority (both).
+\item The algorithms assume exact finite input (exponent coordinates, or a
+certified rationally independent basis, over an effective field); they do not
+decide equality or rational dependence of arbitrary surreal expressions, and
+the greedy choices for infinite supports are existence arguments, not
+terminating procedures (both).
+\item Exact order is not reconstruction: the uniform matroid computes no
+minimal equation and no extension degree, and symmetric profiles cannot be
+recovered beyond their symmetries (both).
+\item $(\SC,S_d)$ is not existentially difference closed: $S_dx-x=1$ has no
+solution. The embeddings of \cref{adr:sr:cor:free} do not embed $\C$ in $\Oz$,
+and equivariance with a coefficient field needs a specified action (source~02).
+\item \Cref{adr:sr:thm:denominators} and \cref{adr:sr:lem:denominators} are
+necessary conditions only; a series on a fixed lattice can be transcendental
+(both). The exact order of $u_d^{[s]}$ is not proved (source~02).
+\item The auxiliary weight in \cref{adr:sr:ex:rank-three-02} is not the actual
+order of the surreal exponents; it proves only that a Laurent polynomial is
+nonzero (source~02). The upper bound of \cref{adr:sr:thm:rational} by
+Jacobian rank is proved only in a finitely generated rational function field
+(source~02).
+\item Real rank is not an exact upper bound for real dilations ($\omega$ against
+$\omega^{\sqrt2}$) (source~03).
+\item The certificate certifies independence and produces no relation; its
+polynomial-time claim is for encoded finite input; the program's full
+expansions are not the proposed method (source~03).
+\item The ordinal family is not a transcendence basis, and there is no uniform
+threshold for all parameter sets (source~03). The exact order of $u_{d,\ell}$
+for $\ell\ge2$ is not proved (source~03).
+\item The source comparisons are pinned: source~03 read, through a GitHub
+connector at \texttt{efc5446}, the root and documentation catalogues and this
+report's README, source and directory, and selected quotient and normalization
+material; source~02 read, at \texttt{958b5c4}, this report's source (its
+Sections~13 and~16) and the single-dilation report's README, and surveyed the
+root and documentation guides. Neither is a line-by-line review of the
+collection, and neither made a repository Lean build. Source~02's calculations
+were run locally with Python and SymPy, not through a Wolfram connector; its
+sources Edmonds and Beecken--Mittmann--Saxena were consulted at metadata or
+theorem level; source~03 read Mel\'anov\'a--Sturmfels--Winter in full HTML,
+Edmonds, Gonshor and L'Innocente--Mantova by publisher record, and
+Kuhlmann--Matusinski by abstract only.
+\item \mtag{} No \texttt{adr:sr:} label has a Lean mapping in
+\rpath{FORMALIZATION.md}.
+\item \mtag{} \Cref{adr:sr:rem:question-five} is a rank datum for Research
+question~5, not an answer, and \cref{adr:sr:rem:question-eight} answers only
+the relative-rank part of Research question~8.
+\item \mtag{} Source~02 does not answer source~03's question on $u_{d,\ell}$
+(\cref{adr:sr:rem:udl}).
+\item \mtag{} Source~03's text (its source-audit appendix) says that page
+count, build diagnostics and file hashes are in the delivery's build record;
+the shipped \rpath{data/03-support-rank-BUILD_RECORD.json} contains no file
+hashes (Appendix~\ref{adr:sr:app:files}).
 \end{enumerate}
 
 \appendix
@@ -2053,6 +4271,10 @@ answering any of that report's questions (\cref{adr:sec:collection}). There
 was no second source; nothing was merged and nothing was selected away.
 Every result, proof, example, question and limitation of the manuscript is
 printed here.
+\mtag{} This subsection describes the report as first written. Since batch~33
+it also prints two later manuscripts, sources~02 and~03, described in
+Appendix~\ref{adr:sr:app:sources}; the sentences above about one source hold
+for Sections~1--18 and Appendices~A and~B.
 
 The delivered verification program \rpath{code/verify.py}, its recorded
 run \rpath{data/verification_results.json}, the dependency pin
@@ -2198,6 +4420,176 @@ and compare \texttt{\$T/verification\_results.json} with
 under Python~3.14.4 with SymPy~1.14.0: exit code~0, status \texttt{PASS},
 and the output agrees with the recorded run except for the field recording
 the Python version (3.13.5 in the recorded run).
+\mtag{} These are source~01's files. The files of sources~02 and~03 are listed
+in Appendix~\ref{adr:sr:app:files}; source~03's verifier, run in place
+without \texttt{--output}, would overwrite \rpath{data/verification_results.json}
+above, so it too is run only on a copy.
+
+\subsection{Sources 02 and 03 (batch 33)}\label{adr:sr:app:sources}
+
+\mtag{} Since batch~33 the report is built from three manuscripts. In its local
+numbering, source~01 is the original manuscript (\cref{adr:app:onesource});
+the two additions were placed in commit \texttt{aa9c891} and keep the prefixes
+\texttt{02-} and \texttt{03-} of their staged files.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.07\textwidth}P{0.36\textwidth}P{0.09\textwidth}Y@{}}
+\toprule
+Local & Manuscript & Pin & Contributes\\
+\midrule
+03 & batch~33, manuscript~04; archive \texttt{surreal\_dilation\_rank\_research};
+\emph{Support Rank and Algebraic Independence of Dilation Orbits}; 23~September
+2026; 29 pages, US Letter & \texttt{efc5446} & The base of
+\cref{adr:sr:sec:intro,adr:sr:sec:rank,adr:sr:sec:finite,adr:sr:sec:rational,adr:sr:sec:examples,adr:sr:sec:infinite,adr:sr:sec:fresh,adr:sr:sec:charp,adr:sr:sec:scope}:
+the theorems over an ordered scalar field $\mathcal F$ relative to $K_H(k)$,
+rational descent and the reduced-quotient formula, the certificate, $\Xi$ under
+real dilations, the ordinal family and uniform tail, the prime-field formula,
+the real-rank boundary, the $u_{d,\ell}$ family, twelve questions.\\
+02 & batch~33, manuscript~02; archive \texttt{surreal\_dilation\_rank};
+\emph{Support Rank and Algebraic Freeness under Surreal Dilations: exact
+finite-profile order, higher-order support bounds, and free omnific difference
+algebras}; 23~September 2026; 23 pages, A4 & \texttt{958b5c4} & The same
+central theorems over $\Q$; the vector-valued greedy determinant; the
+coefficient-matrix route, Jacobian-rank lemma and algorithm; the second
+rank-three certificate; the $\Z^s$-shift corollary; the character extension
+lemma and denominator index; the telescopes of rank $\rho$ and order $\rho+1$;
+$\kappa$-families and free difference algebras; the relative part of Research
+question~8; eleven questions.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Full pins: \nolinkurl{efc5446229dbf61a97bdd5edae91dba20af9d131} and
+\nolinkurl{958b5c4865819bd55ea1f5ffc050282aea7ef570}. Both are later than this
+report's original pin; at both, and at \texttt{aa9c891}, this report's
+\texttt{article.tex} is the file written in \texttt{260c143}, so the sources'
+descriptions of it (\cref{adr:prop:rank-bounds}, Research questions~1, 2
+and~8, \cref{adr:thm:order-two,adr:thm:all-orders}) were accurate and are not
+stale. Source~03 also read this report's README at its pin; it was unchanged
+at the placement commit, and is rewritten for this merge.
+
+\paragraph{Where the merge chose.} Source~03 is the base because it is more
+general: an ordered subfield $\mathcal F$ of $k$ instead of $\Q$, real
+dilations, and further results. Source~02's proofs use only $\Q$, and were
+re-read for hidden uses of a stronger hypothesis; there are none. Theorems
+proved by both are printed once with both named: the Euler derivations, the
+Jacobian criterion, greedy dominance, rearrangement, the leading term and the
+support-rank obstruction (source~02's Theorem~4.3 is source~03's
+Theorem~1.1 at $\mathcal F=\Q$), the relation-rank corollary (source~02's
+Corollary~4.4, source~03's Corollary~5.2), the exact finite-support formula
+(source~02's Theorem~5.1, source~03's Theorems~1.2 and~5.1 with
+Corollary~6.6), the uniform matroid (source~02's Remark~5.3, source~03's
+Corollary~6.5), $\Xi$ (source~02's Theorem~7.1 for $\Xi-\omega$ and rational
+dilations, source~03's Theorem~8.2), and the block theorem (source~02's
+Theorem~7.3, source~03's Theorem~9.1). Kept as marked second routes: the
+choice of functionals before the greedy basis
+(\cref{adr:sr:rem:ascending}), the coefficient-matrix proof of exact order
+for rational profiles (\cref{adr:sr:sec:rational}), the two character
+arguments (\cref{adr:sr:thm:denominators,adr:sr:lem:denominators}), and the
+two proofs of order two for $u_d$ (\cref{adr:sr:prop:order-two},
+\cref{adr:sr:thm:telescopes}), which are second and third routes to
+\cref{adr:thm:order-two}. Both rank-three certificates are printed. Near-identical
+questions of the two sources are printed once with both formulations.
+
+\paragraph{Notation.} Both sources use growth support; it is converted to this
+report's valuation convention (\cref{adr:sr:sec:conventions}), and the renamed
+symbols are listed there. In particular $D_\lambda$, $D_\ell$ become
+$\partial_\lambda$ (this report reserves $D$ for integers and auxiliary
+series), rank is $\rho$ and order is $\operatorname{aord}$ (this report uses
+$r$ for an order), and source~02's parameters are listed in decreasing order,
+with its original sign convention stated in \cref{adr:sr:rem:ascending}.
+
+\paragraph{Corrections made in printing.} Source~03's text has five
+unclosed quotation marks around the titles of Research questions~1 and~2 (two
+in its introduction, one in its scope section, two in its bibliography entry
+for this report); here the titles are not quoted, and the questions are cited
+by number. Source~03's statement that its build record holds file hashes is
+false for the shipped record (non-claim R23). The sources' ``Section~13'' and
+``Section~16'' of this report are \cref{adr:sec:order,adr:sec:questions},
+unchanged. No mathematical statement of either source was found false.
+
+\paragraph{Stale text in this report corrected in the merge.} Status notes
+(batch~33) were added after \cref{adr:prop:rank-bounds}, after Research
+questions~1, 2, 5 and~8, to non-claim S22 and the closing recommendation of
+\cref{adr:sec:questions}, and to \cref{adr:app:onesource}; the title page,
+abstract and status box now name three manuscripts; a credit to
+Mel\'anov\'a--Sturmfels--Winter follows \cref{adr:thm:all-orders}, which is
+their Proposition~3 when all $a_j=1$ and which the original manuscript did not
+cite; \cref{adr:sec:collection} gained a paragraph on the additions and on the
+independent-copies report; and the bibliography gained \cite{Gonshor},
+\cite{Edmonds}, \cite{KM}, \cite{MSW} and \cite{BMS}. These are marked \mtag.
+
+\paragraph{Literature checked in the merge.} Proposition~3 of
+Mel\'anov\'a--Sturmfels--Winter was read in the arXiv HTML version: for $m$
+distinct positive integers $a_1,\ldots,a_m$ and $m\le n$, the map
+$\mathbb C^n\to\mathbb C^m$ given by the power sums
+$x_1^{a_j}+\cdots+x_n^{a_j}$ is dominant, which is algebraic independence of
+those power sums; the proof shows that every maximal minor of the Jacobian is
+a Vandermonde determinant times a Schur polynomial, up to a constant. With
+$n=m=r$ and $a_j=d^{j-1}$ this is the independence statement of
+\cref{adr:thm:all-orders} for $a_1=\cdots=a_r=1$. The other new references
+(\cite{Gonshor,Edmonds,KM,BMS}) are cited as the sources cite them and were
+not re-read for this report.
+
+\subsection{Files of sources 02 and 03, and their rerun}\label{adr:sr:app:files}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.47\textwidth}Y@{}}
+\toprule
+File & Role (delivery name)\\
+\midrule
+\rpath{03-support-rank-PROOF_AND_SOURCE_AUDIT.md} & source~03's proof and source audit\\
+\rpath{code/03-support-rank-verify.py} & its exact checks, standard library (\texttt{code/verify.py})\\
+\rpath{code/03-support-rank-build.sh}, \rpath{code/03-support-rank-build.ps1} & its build scripts (\texttt{build.sh}, \texttt{build.ps1})\\
+\rpath{data/03-support-rank-verification_results.json} & its recorded run (\texttt{data/verification\_results.json})\\
+\rpath{data/03-support-rank-BUILD_RECORD.json} & its build record (\texttt{BUILD\_RECORD.json})\\
+\rpath{02-dilation-rank-PROOF_AND_SOURCE_AUDIT.md} & source~02's proof and source audit\\
+\rpath{code/02-dilation-rank-verify.py} & its exact checks, SymPy (\texttt{verify.py})\\
+\rpath{code/02-dilation-rank-build.py} & its build helper (\texttt{build.py})\\
+\rpath{data/02-dilation-rank-verification_results.json} & its recorded run (\texttt{verification\_results.json})\\
+\rpath{data/02-dilation-rank-BUILD_REPORT.json} & its build report (\texttt{BUILD\_REPORT.json})\\
+\rpath{data/02-dilation-rank-requirements.txt} & its pin \texttt{sympy==1.14.0} (\texttt{requirements.txt})\\
+\bottomrule
+\end{tabularx}
+\end{center}
+These files are byte-identical to the deliveries. The manuscripts, READMEs,
+PDFs and checksum lists of the two sources are not shipped. The delivered
+texts name their files by delivery names.
+
+\emph{Source~03's program rewrites its record in place.} Its default output
+is the file \rpath{data/verification_results.json} one directory above the
+script, which in this layout is the \emph{original} manuscript's recorded run,
+not source~03's. Never run it in place without \texttt{--output}. Its
+\texttt{build.sh} and \texttt{build.ps1} run it that way and then run
+\texttt{pdflatex} on \texttt{article.tex} beside them, so they must not be run
+in this directory either. Run it on a copy, from the report directory, with a
+fresh scratch directory \texttt{\$T}:
+\begin{verbatim}
+mkdir -p $T/code $T/data
+cp code/03-support-rank-verify.py $T/code/verify.py
+(cd $T && python code/verify.py)
+diff $T/data/verification_results.json \
+     data/03-support-rank-verification_results.json
+\end{verbatim}
+This was done for this report under Python~3.14.4: exit code~0, status
+\texttt{PASS}, 1,490 checks, and the written record is identical to the
+shipped one up to line endings (it records no interpreter version or timing).
+The run takes about one second.
+
+\emph{Source~02's program} writes \texttt{verification\_results.json} in the
+current directory unless \texttt{--output} is given, and its build helper
+writes \texttt{build-pass-}$N$\texttt{.txt} files and runs \texttt{pdflatex}
+beside itself. Run it on a copy:
+\begin{verbatim}
+python -m pip install -r data/02-dilation-rank-requirements.txt
+cp code/02-dilation-rank-verify.py $T/
+(cd $T && python 02-dilation-rank-verify.py --output out.json)
+diff $T/out.json data/02-dilation-rank-verification_results.json
+\end{verbatim}
+This was done for this report under Python~3.14.4 with SymPy~1.14.0: exit
+code~0, 549 named cases and 1,918 comparisons, the rank-three leading term
+$-96T_1^9T_2T_3^6$ with 45 terms, and the output agrees with the record except
+for the recorded Python version (3.13.5 in the delivery) and elapsed time
+(about 10 seconds here, 3.9 in the delivery). The build records state 29 and
+23 pages for the delivered PDFs, which are not shipped.
 
 \begin{thebibliography}{99}
 \small\raggedright
@@ -2292,6 +4684,46 @@ Sonia L'Innocente and Vincenzo Mantova,
 A factorisation theory for generalised power series and omnific integers,
 \emph{Advances in Mathematics} \textbf{442} (2024), 109513.
 \url{https://arxiv.org/abs/1710.07304}; version 5, 22 January 2024.
+
+\bibitem{Gonshor}
+H.~Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110, Cambridge University
+Press, 1986, Chapter~5, Normal Form, pp.~52--94.
+\url{https://doi.org/10.1017/CBO9780511629143}.
+\mtag{} Cited by source~03; publisher record only.
+
+\bibitem{Edmonds}
+J.~Edmonds,
+Matroids and the greedy algorithm,
+\emph{Mathematical Programming} \textbf{1} (1971), 127--136.
+\url{https://doi.org/10.1007/BF01584082}.
+\mtag{} Cited by sources~02 and~03 as the classical greedy antecedent.
+
+\bibitem{KM}
+S.~Kuhlmann and M.~Matusinski,
+Hardy type derivations on generalized series fields,
+arXiv:0903.2197v4 (2012); \emph{Journal of Algebra},
+\url{https://doi.org/10.1016/j.jalgebra.2011.11.024}.
+\url{https://arxiv.org/abs/0903.2197}.
+\mtag{} Cited by source~03 for context on series derivations only.
+
+\bibitem{MSW}
+H.~Mel\'anov\'a, B.~Sturmfels and R.~Winter,
+Recovery from power sums,
+\emph{Experimental Mathematics} \textbf{33}(2) (2024), 225--234; published
+online 23 April 2022.
+\url{https://doi.org/10.1080/10586458.2022.2061650};
+preprint \url{https://arxiv.org/abs/2106.13981}.
+\mtag{} Cited by source~03; Proposition~3 was read for this report
+(Appendix~\ref{adr:sr:app:sources}).
+
+\bibitem{BMS}
+M.~Beecken, J.~Mittmann and N.~Saxena,
+Algebraic independence and blackbox identity testing,
+arXiv:1102.2789 (2011), Theorem~6 and Appendix~A.2.
+\url{https://arxiv.org/abs/1102.2789}.
+\mtag{} Cited by source~02 for the classical Jacobian criterion.
 
 \bibitem{BPR}
 Saugata Basu, Richard Pollack, and Marie-Fran\c{c}oise Roy,
