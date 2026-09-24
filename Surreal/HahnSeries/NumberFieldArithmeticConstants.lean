@@ -7,7 +7,8 @@ import Surreal.HahnSeries.TailoredRecursiveSaturation
 The constant-definition clause of `odg:def:thm:numberfield` and the remaining
 number-field clause of `odg:def:thm:saturation`. The verified tailored primes
 are supplied internally for every number field, with no guard-correctness or
-prime-existence hypothesis. Further detector and ideal clauses are separate.
+prime-existence hypothesis. The remaining detector, ideal and graph clauses
+are proved in `NumberFieldDetector` and `NumberFieldDetectorFormulas`.
 -/
 
 namespace Surreal.HahnSeries

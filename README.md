@@ -474,7 +474,13 @@ number field, without integrality or finite-generation assumptions. The proof
 constructs a parameter-free five-witness guard using a sextic with no root
 in that number field but roots modulo every positive integer. Finiteness of
 quadratic subfields, Dirichlet's theorem and quadratic reciprocity supply
-its primes, with all dependencies formally proved.
+its primes, with all dependencies formally proved. When the larger coefficient
+field contains a root of that sextic, its two-witness equation detects exactly
+the nonzero constant terms in the full coefficient pullback. The same
+polynomial tests every ideal and identifies the purely infinite ideal as the
+largest ideal with a root-free quotient. Native parameter-free formulas also
+define the constant-term graph in both existential–universal and
+universal–existential form, with a unique output for every input.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier
