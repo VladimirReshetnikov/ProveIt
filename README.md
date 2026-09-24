@@ -307,7 +307,9 @@ nonhomogeneous polynomials with those two divisors. In particular,
 `x² − D y² = c` has exactly its ordinary integer solutions for every
 nonzero integer `D` and `c`, including negative or square `D`. This rules
 out infinite omnific Pell solutions without asserting finiteness of the
-ordinary solution set.
+ordinary solution set. The classical case `D = 2, c = 1` now has its
+complete classification: independently signed coordinates of
+`(3 + 2√2)^k` for ordinary natural `k`, using Mathlib’s Pell theory.
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
 with `t` purely infinite. Taking `t = ω` gives an infinite solution.
