@@ -550,13 +550,25 @@ coefficients. Monomial substitution preserves coefficients and is injective.
 Every surcomplex root is an ordinary complex root-of-unity multiple of
 the positive root. Its nonzero coefficient at `γ/m − γ < 0` excludes
 every root from both omnific rings, although the roots are integral over
-them. The claimed invisibility in every small ring image still awaits
-the universal quotient theorem.
-Its support-gap and collision ingredients are now proved: every small
-positive surreal family admits arbitrarily smaller scales, and every
-positive surreal interval is too large for a small target. A finite
-scaled-field identity gives sharp cardinal bounds directly for both ring
-maps and module actions, including nonunital maps.
+them. Nevertheless, every image of either equation in a small ring has the
+root `1`. This now holds for arbitrary small rings, including infinite and
+noncommutative targets. In every small image of the normalization, an
+adjoined root has mth power `1`.
+
+The universal small-target theorem is proved for both actual omnific
+rings: every additive multiplicative map into a small ring factors uniquely
+through its ordinary integer or Gaussian integer constant term, even when
+the map does not preserve one.
+Every such map defined just on the purely infinite ideal is zero. That
+ideal also annihilates every small unital module, whose action reduces to
+the action of ordinary integer or Gaussian integer constants. Here “small”
+means small relative to the birthday universe of the surreal carrier.
+The proof constructs a countable geometric telescope inside the ideal
+and uses collisions among subordinate
+monomials; it requires no continuity of the target map. The version for an
+arbitrary coefficient field remains pending. Real nonunital maps are
+classified by idempotents in the target. Gaussian unital maps are classified
+by square roots of `−1`, which need not be central in the target ring.
 
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the

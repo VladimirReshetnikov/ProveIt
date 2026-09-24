@@ -43,9 +43,19 @@ identified as imports.
 Lean now proves the actual surreal scale-gap lemma, including the explicit
 ordinal family h/ω^(α+1), with smallness measured in the birthday universe.
 It also proves the scaled-field collision identity and direct cardinal
-bounds for nonunital ring maps and unital module actions. The scaled
-large Hahn-subfield instance and the universal quotient theorem remain
-pending; the generic collision lemma alone does not establish them.
+bounds for nonunital ring maps and unital module actions. The universal
+small-target theorem is now proved for both actual omnific rings through
+the separate countable-telescope route: every additive multiplicative map
+to a birthday-universe-small ring factors uniquely through its ordinary
+integer or Gaussian integer constant. Maps defined only on the purely
+infinite ideal vanish, and that ideal annihilates every small unital module.
+The target may be infinite, noncommutative and nonunital. The telescope is
+first constructed as one source element; only its finite product identity
+is mapped, so no continuity is required. Gaussian common division clears
+both coordinates with one real monomial. Real nonunital maps are classified
+by target idempotents; Gaussian unital maps by all square roots of −1,
+without a centrality condition. The arbitrary-coefficient theorem and
+scaled large Hahn-subfield instance remain pending.
 
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
@@ -513,8 +523,12 @@ substitution with exact coefficients. For every positive actual surreal g
 and ordinary m≥2, the constructed positive root of T^m=ω^g+1 is integral
 but non-omnific. Every surcomplex root is an ordinary root-of-unity multiple
 of it, and the nonzero coefficient at g/m−g excludes all Gaussian omnific
-roots as well. The specified √(ω+1) witness is proved. The small-target
-invisibility assertion still awaits the universal quotient theorem.
+roots as well. The specified √(ω+1) witness is proved. Small-target
+invisibility is now proved too: every unital map from either omnific ring
+to a small ring sends the equation to T^m=1, solved by 1. In every small
+image of the normalization, an adjoined root has mth power 1. These results
+include infinite and noncommutative targets; they require only finite
+identities after restriction to the real omnific ring.
 
 Two added consequences sharpen the normalization picture. A negative
 minimum of a normal-form support prevents integrality, so every nonempty

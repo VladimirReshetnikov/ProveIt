@@ -4085,3 +4085,47 @@ integrality or class arguments. Audits pass 4,626 anchors in 63 reports,
 5,237 source-label references and 1,972 local Markdown destinations in
 226 files. No Lean, verifier or historical data file was changed. The next
 review starts with the ramification filtration and general refinement law.
+
+
+### Universal real and Gaussian small-target theorem sync (2026-09-24)
+
+Merged `origin/main` through `7204d26` and read all seven incoming Lean
+modules against the common-divisor, telescope, universal-quotient,
+map-classification and invisible-binomial source statements. The actual
+surreal telescope has exactly the displayed countable decreasing support,
+coefficient one at each supported exponent, the exact product identity and
+the nonfinite remainder in every finite partial product. Subordination
+places the whole quotient in the purely infinite ideal before any map is
+applied. No target homomorphism transports an infinite sum.
+
+All four universal clauses are now proved for both actual omnific rings:
+nonunital maps to small associative rings kill the purely infinite ideal
+and factor uniquely through ordinary constants; unital maps correspond
+naturally to ordinary constant-ring maps; maps defined just on the ideal
+vanish; and the ideal annihilates every small unital module. Smallness is
+relative to the birthday universe. Targets may be infinite and
+noncommutative. The direct module argument uses collisions of vectors.
+In the Gaussian case, both coordinates share one real common monomial,
+and restriction to the real ideal supplies the required vanishing.
+The arbitrary coefficient-field version and the large scaled Hahn-subfield
+instance remain pending.
+
+Ordinary integer maps are classified by target idempotents; Gaussian
+unital maps by roots of minus one, using the commutative subring generated
+by the root inside a possibly noncommutative target. The induced actual
+omnific classifications match both full source corollaries. The separate
+prose classification of nonunital Gaussian maps by pairs remains pending.
+The invisible-binomial theorem now includes arbitrary small targets and
+normalization-root images: the image equation is solved by one, and any
+adjoined root has mth power one. This is stronger than the earlier
+finite-target obstruction and is recorded separately from root exclusion.
+
+Updated the report guide and catalogue to match the merged root README
+and precise coverage ledger. `LEAN_NUM_THREADS=2 lake build` passed all
+5,030 jobs; the axiom audit accepted 18,801 declarations using only
+propext, Classical.choice and Quot.sound. Three final catalogue TeX passes
+were diagnostic-free, still 36 pages; inspected updated pages 12–13.
+The article remains 341 pages and is unchanged by this merge, preserving
+all previously checked statements, labels and numbering. Audits pass
+4,626 anchors in 63 reports, 5,239 source-label references and 1,979 local
+Markdown destinations in 226 files.
