@@ -2974,3 +2974,71 @@ dab0f4259b7cc0501408b9705b5d4c72c7642aed after committing the review;
 there were no incoming commits and the merge was already up to date.
 No Lean rebuild was required for this documentation-only change. The
 4,955-job build and 18,066-declaration audit above remain the baseline.
+
+### Monomial scales and independent ternary branching (2026-09-24)
+
+Reviewed the seven standard results from `osq:cr:thm:cutoff` through
+`osq:cr:thm:twoaxes`, plus the localization route, the omega fibre example,
+tail and degree remarks, field-core comparison, point evaluation and the
+lower-bound scope. This completes the first sixteen standard class-residue
+results. Separation, field realization, support-prime classification and
+full source reconciliation remain pending review.
+
+Made the monomial inverse's endpoints and independence of the chosen
+ordinary bound explicit. Expanded the whole-tail division proof through
+one set-generated exponent group; it does not assume that arbitrary ideals
+are closed under strong sums. Supplied the induced quotient kernel argument
+in its displayed direction. The divisor actually preserves the discarded
+tail: every g-(n+1)a still exceeds every ordinary multiple of a. Hence
+T=(1+omega^a)T for T=Pi_k^(>>a), and both the ring and its binomial ideal
+split additively into the truncated part and T. These are additive direct
+sums, not direct products of rings.
+
+Rescaling preserves and reflects strong summability, commutes with quotient
+maps and transports the small coefficient fields, convex scale groups,
+discarded tails and dyadic coordinate labels. Added the class-replacement
+argument for proper-class residue size. Gave a common binary-depth convention:
+depth N means real stage N+1 and Gaussian stage N. The ordinal triangular
+pattern now includes an explicit inverse at every lower scale.
+
+Corrected `osq:cr:rem:evaluation`: its former assertion that the target is
+not E_a was stronger than the proof and conflicts with the open core-equality
+question. The conclusion is a residue field containing the core; equality
+with that embedded core and abstract isomorphism to it are not established.
+The other 59 numbered remarks, all 66 questions and all 28 examples are
+unchanged. Nonuniqueness is now proved by a separate unnumbered consequence.
+
+That consequence gives continuum many maximal extensions of every fixed
+dyadic branch. Use v_n=x_(2n) over E_a for the real quotient, and
+v_n=q_a(omega^(a/n)) over F_a(i) for the Gaussian quotient. Their n-coordinate
+algebras have compatible root labels with angles pi/2 and pi, respectively.
+At binary depth N and ternary depth m, the common stage has 2^N*3^m
+coordinates. The selected binary and ternary indicators intersect in exactly
+one coordinate by coprimality. A finite expression for one from the branch
+relations is killed by this nonzero joint indicator at the largest depths,
+so all relations generate a proper ideal. Global choice extends it maximally,
+uniformly in a,z,w. Distinct 3-adic w give distinct kernels for each fixed
+2-adic z. This proves nonuniqueness with every binary equation fixed, but
+does not increase the total continuum lower bound or impose a residue-field
+structure over the core. Updated `osq:cr:q:branching`'s status accordingly;
+the larger-cardinal and prescribed-residue questions remain open.
+
+Added a reproducible standard-library checker and its recorded JSON for the
+new finite branch formulas. It passes 86,106 exact assertions over F_3457,
+using primitive generator 7, binary depths 0--4 and ternary depths 0--3,
+for both root conventions. It checks root compatibility, Fourier indicators,
+unique joint coordinates and ternary refinement. These finite checks do not
+verify the infinite branch argument, class ideals or global choice. The
+source-24 verifier and its historical record remain unchanged.
+
+Validation: three clean final TeX passes for the 321-page article and 35-page
+catalogue, with no warnings or box diagnostics; inspected all revised
+scale/branch pages, the question status and catalogue. All 418 standard/
+principal statements, 828 labels and 1,656 auxiliary label/number pairs are
+unchanged; only the identified evaluation remark was corrected. All 4,626
+source anchors in 63 reports, 5,222 source-label references and 1,902 local
+Markdown destinations across 226 files pass, together with whitespace checks.
+Updated root README, report guide, shared notation, catalogue and coverage
+scope/anchors. All reviewed class-residue statements and new consequences
+remain Pending in Lean. No Lean source changed; the current baseline is the
+two-thread 4,955-job build and 18,066-declaration axiom audit.

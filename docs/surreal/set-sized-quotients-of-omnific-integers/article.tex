@@ -11424,6 +11424,13 @@ contributions at each exponent, gives
 this is membership in the principal ideal, not only in its radical. If $0\le b\le Na$, then $\omega^{Na-b}\in A$ and
 $q_a(\omega^b)\,(-1)^Nq_a(\omega^{Na-b})=(-1)^Nq_a(\omega^a)^N=1$. A unit of a nonzero ring is not zero, and every proper quotient of $\Qa^k_a$ keeps
 both the zeros of (i) and the inverse equations of (ii), which gives \eqref{osq:cr:eq:exactmembership}.
+The two cases include $b=0$ and the endpoint $b=Na$:
+the complementary monomial then has exponent $Na$ or $0$, respectively,
+and lies in $A$ in either case. The inverse does not depend on the
+chosen bound. If $N'\ge N$, the factorization
+$q_a(\omega^{N'a-b})=q_a(\omega^{Na-b})(-1)^{N'-N}$
+gives $(-1)^{N'}q_a(\omega^{N'a-b})
+=(-1)^Nq_a(\omega^{Na-b})$.
 \end{proof}
 
 \begin{remark}[A second route through the localization \merge]\label{osq:cr:rem:cutofflocal}
@@ -11458,7 +11465,34 @@ and every exponent that can occur is $g-(n+1)a$ with $a\ll g$, which is positive
 multiplicative on nonnegative supports, with the stated kernel and image. It fixes $1+\omega^a$ and induces the map \eqref{osq:cr:eq:truncatequotient},
 which is surjective, and injective because $\Pi_k^{\gg a}$ is already in the binomial ideal: if $x=(1+\omega^a)y$ is supported in
 $\operatorname{cvx}(\Z a)$, then $x=\operatorname{tr}_a(x)=(1+\omega^a)\operatorname{tr}_a(y)$.
+The division argument applies to the whole series at once, not by
+assuming that an arbitrary ideal is closed under strong sums of its
+elements. To check its Hahn product, the support of $s$ and the
+countable support of the geometric inverse lie in one set-generated
+ordered exponent group. The usual Hahn product there has reverse
+well-ordered support and finitely many pairs contributing to each
+coefficient. Returning to the ambient field does not change it.
+For the induced map's kernel, if
+$\operatorname{tr}_a(x)=(1+\omega^a)y$ with $y$ in the truncated ring,
+then $x-(1+\omega^a)y\in\Pi_k^{\gg a}\subseteq(1+\omega^a)A$.
+This proves injectivity in the direction of the displayed quotient map.
 \end{proof}
+
+\paragraph{Division preserves the discarded tail \merge.}
+In fact $\Pi_k^{\gg a}=(1+\omega^a)\Pi_k^{\gg a}$.
+Every exponent $g-(n+1)a$ in the division above still exceeds
+$ma$ for every ordinary $m$: use $g>(m+n+1)a$.
+Multiplication by $1+\omega^a$ also preserves the tail, since
+both $g$ and $g+a$ stay above all ordinary multiples of $a$.
+Thus, writing $B_a=\A_{D,k}(\operatorname{cvx}(\Z a))$ temporarily,
+the additive decompositions are
+\[
+ A=B_a\oplus\Pi_k^{\gg a},\qquad
+ (1+\omega^a)A=(1+\omega^a)B_a\oplus\Pi_k^{\gg a}.
+\]
+These are direct sums of additive groups; $A$ is not being identified
+with a direct product of rings. The tail is an ideal and $B_a$ is a
+subring, with the truncation as a ring retraction.
 
 \begin{remark}[\src{24}]\label{osq:cr:rem:tails}
 The reduction does not replace the exponent group by a set: $\operatorname{cvx}(\Z a)$, and the much smaller $H_a$, are proper classes. Nor does it
@@ -11497,6 +11531,21 @@ of $\No$ (of $\SC$ for $k=\C$) preserves $A$ and induces $\Qa^k_a\cong\Qa^k_b$.
 Multiplication by the positive surreal $b/a$ is an order-preserving automorphism of the additive exponent group, with inverse multiplication by $a/b$;
 it preserves reverse well-ordering and the finite-decomposition property of Hahn products, positive exponents and the constant coefficient, and it sends
 $1+\omega^a$ to $1+\omega^b$.
+For every set-indexed strongly summable family, the exponent bijection
+preserves both reverse well-ordering of the union of supports and the
+number of contributing terms at each exponent. It therefore preserves
+and reflects strong summability and commutes with the strong sum.
+The quotient maps satisfy the commuting identity
+\[
+ \overline{\operatorname{sc}}_{b/a}\,q_a
+   =q_b\operatorname{sc}_{b/a}.
+\]
+Moreover $(b/a)H_a=H_b$ and
+$(b/a)\operatorname{cvx}(\Z a)=\operatorname{cvx}(\Z b)$,
+so the same map transports the coefficient fields and the discarded
+tails, and sends every $x_n$ at scale $a$ to $x_n$ at scale $b$.
+With the corresponding coefficient-field identification, dyadic
+coordinate labels and point evaluation at a fixed $z\in\Z_2$ agree.
 \end{proof}
 
 This is the standard Hahn rescaling, not a novelty claim; it shows that the monomial cutoff is an invariant of the embedded fibre at a chosen scale,
@@ -11519,6 +11568,10 @@ of $\SC$. No maximal ideal containing $1+\omega^a$ has a set-sized residue field
 $A/M$ is a proper quotient of $\Qa^k_a$. For $k=\R$ it receives the field $\EE_a\subseteq\Qa_a$ of \cref{osq:if:cor:Ea}; for $k=\C$ it receives
 $\FF_a(i)$ by the coefficient embedding of \cref{osq:if:sub:gaussian}. A unital map from a field to a nonzero ring is injective, and $\SC$ embeds in
 $\FF_a(i)$ by \cref{osq:if:thm:compression}. The characteristic is $0$ by \cref{osq:cr:thm:binomialmax}.
+The size conclusion does not require a cardinality assigned to a
+proper class. If the residue field had a set carrier, the inverse
+of the injection on its image would be a class function on a set;
+class replacement would make its domain field a set, a contradiction.
 \end{proof}
 
 24 states the corollary with ``an algebraically closed proper-class Hahn subfield''; the copy of $\SC$ is the merge's addition from 07's compression.
@@ -11549,6 +11602,10 @@ these form a decreasing chain of nonzero idempotents, $e_{r+1,z\bmod2^r}e_{r,z\b
 binary strings, with $e_\varnothing=1$, $e_s=e_{s0}+e_{s1}$, $e_{s0}e_{s1}=0$ and $e_s\ne0$, rooted at the first complex factor in the real case and at the
 scalar field in the Gaussian case. For $\GOz$ the stages are those of \cref{osq:if:thm:complexkernel}, $n=2^r$ with $r\ge0$, and the idempotent of $z$
 at stage $r$ is the indicator of the residue class $z\bmod2^r$; the statements below hold verbatim with this indexing.
+To read the next theorem with a single displayed convention, write
+$e_{r,j}$ for the indicator at binary depth $r-1$ in either case:
+this is real stage $r$ and Gaussian stage $r-1$. Both start with
+$e_{1,0}=1$. This reindexing changes no algebra or branch equation.
 
 \begin{theorem}[Continuum many maximal extensions at a fixed scale \src{24}]\label{osq:cr:thm:cantor}
 In $\mathsf{GBC}$, for each $a>0$ there is a family $(\mathfrak M_{a,z})_{z\in\Z_2}$ of pairwise distinct maximal class ideals of $A$ containing
@@ -11570,9 +11627,74 @@ For $f$ in the Cantor subalgebra \eqref{osq:if:eq:cantor}, factoring through $\Z
 $\mathfrak M_{a,z}$ the idempotent $e_{N+1,z\bmod2^N}$ becomes $1$ and the others, orthogonal to it, become $0$, so $f\equiv c_{z\bmod2^N}=f(z)$. Hence
 the quotient map $\Qa_a\to A/\mathfrak M_{a,z}$ restricts on the Cantor subalgebra to evaluation at $z$ (\cref{osq:if:rem:evaluation}) followed by the
 embedding of $\EE_a$ in the residue field (\cref{osq:cr:cor:properfield}). So with global choice every point evaluation of \cref{osq:if:rem:evaluation}
-extends to a homomorphism of all of $\Qa_a$ onto a field containing $\EE_a$; the extension is not unique or canonical, and its target is not $\EE_a$.
+extends to a homomorphism of all of $\Qa_a$ onto a field containing $\EE_a$.
+The construction does not determine whether that residue field equals
+the embedded core or is abstractly isomorphic to it
+(\cref{osq:cr:q:relative,osq:cr:q:closed}). Nonuniqueness of maximal
+extensions is proved by the additional branch construction below.
 The same holds for $\Qa_a^\C$ with $\FF_a(i)$.
 \end{remark}
+
+\paragraph{Continuum many extensions of each dyadic branch \merge.}
+The three-root construction after \cref{osq:if:cor:boolean} extends
+to a ternary tower, independently of the dyadic tower. To cover the
+real and Gaussian quotients together, use the following local notation:
+\[
+ (\mathbb E,\theta,v_n)=
+ \begin{cases}
+  (\EE_a,\pi/2,x_{2n}),&k=\R,\\
+  (\FF_a(i),\pi,q_a(\omega^{a/n})),&k=\C.
+ \end{cases}
+\]
+In the real case $i=x_2$ as before; in the Gaussian case it is the
+coefficient imaginary unit. For every ordinary $n\ge1$, the exact
+kernel gives
+\[
+ \mathbb E[v_n]\cong\mathbb E^{\Z/n\Z},\qquad
+ \rho_{n,j}=\exp\bigl(i(\theta+2\pi j)/n\bigr)
+ \quad(j\bmod n),
+\]
+by evaluation at these ordinary complex roots. The real assertion is
+the general stage calculation following \cref{osq:if:cor:boolean};
+the Gaussian assertion is \cref{osq:if:thm:complexkernel}.
+The inclusions are compatible since $v_n=v_{hn}^{\,h}$ and
+$\rho_{hn,j}^{\,h}=\rho_{n,j\bmod n}$.
+
+Let $\Z_3$ be the ordinary $3$-adic integers. At ternary depth $m\ge0$
+let $t_{m,j}\in\mathbb E[v_{3^m}]$ be the coordinate indicator,
+explicitly
+\[
+ t_{m,j}=\frac1{3^m}\sum_{\ell=0}^{3^m-1}
+       (v_{3^m}/\rho_{3^m,j})^\ell .
+\]
+These indicators split into three at the next depth. Fix
+$(z,w)\in\Z_2\times\Z_3$. In the common stage
+$\mathbb E[v_{2^N3^m}]$, the product
+\[
+ e_{N+1,z\bmod2^N}\,t_{m,w\bmod3^m}
+\]
+is a nonzero coordinate indicator: its coordinate index is the unique
+solution modulo $2^N3^m$ of the two congruences modulo $2^N$ and
+$3^m$, by the ordinary Chinese remainder theorem. Here the binary
+indicators use the common depth convention just specified, including
+the Gaussian reindexing.
+
+The ideal of $\Qa_a^k$ generated by all
+$1-e_{N+1,z\bmod2^N}$ and $1-t_{m,w\bmod3^m}$ is therefore proper.
+Indeed, a finite expression for $1$ would involve finitely many
+depths; multiplying by the displayed nonzero product at the largest
+two depths annihilates its right side. Extend this ideal maximally
+by \cref{osq:cr:thm:krull} and pull it back to $A$.
+For fixed $z$, distinct $w$ give distinct maximal ideals, because at
+some ternary depth their required indicators are orthogonal and
+cannot both become $1$. The construction is uniform in $a,z,w$
+with a fixed global well-order, exactly as in
+\cref{osq:cr:thm:cantor}. Since $|\Z_3|=2^{\aleph_0}$, every
+dyadic point evaluation has at least continuum many maximal kernels
+extending it. This proves nonuniqueness even after all binary branch
+equations are fixed. It does not raise the total same-scale cardinal
+lower bound, since $|\Z_2\times\Z_3|=2^{\aleph_0}$, and it imposes
+no new condition on the residue field over $\mathbb E$.
 
 \begin{theorem}[Ordinal scales and binary branches together \src{24}]\label{osq:cr:thm:twoaxes}
 In $\mathsf{GBC}$ there is a class relation encoding pairwise distinct maximal class ideals $\mathfrak M_{\alpha,z}$ of $A$, $(\alpha,z)\in\On\times\Z_2$,
@@ -11590,6 +11712,15 @@ with $\mathsf f_\alpha\in\mathfrak M_{\alpha,z}$, and with the quotient maps $\v
 Apply \cref{osq:cr:thm:cantor} with $a=\omega^\alpha$. Different branches at one scale give different ideals; at different scales the base ideals are
 comaximal (\cref{osq:cr:cor:comaximal}), so no proper ideal contains both. The pattern \eqref{osq:cr:eq:triangular} is \cref{osq:cr:thm:cutoff} with the
 relation $\omega^{\omega^\beta}=-1$.
+For clarity, the scale in this quotient is $\omega^\beta$ and the
+exponent of the tested monomial is $\omega^\alpha$. If $\alpha<\beta$,
+the bound in \cref{osq:cr:thm:cutoff} may be taken to be $N=1$,
+so an explicit inverse for the lower-scale image is
+\[
+ -\varpi_{\beta,z}\bigl(\omega^{\omega^\beta-\omega^\alpha}\bigr).
+\]
+The exponent is positive; at equal scales the image is $-1$, and at
+higher scales it is zero by $\omega^\beta\ll\omega^\alpha$.
 \end{proof}
 
 \begin{remark}[Lower bounds, not a spectrum \src{24}]\label{osq:cr:rem:lower}
@@ -18075,6 +18206,12 @@ built in $\Qa_a$, and which compatible finite-algebra specializations extend wit
 \end{question}
 \emph{Status.} Open. The known lower bound at a fixed scale is $2^{\aleph_0}$ (\cref{osq:cr:thm:cantor}). 24's comments: the ordinal family changes the
 embedded scale and rescaling identifies the abstract fibres, so it cannot be counted again; new independent equations inside one fibre are needed.
+The ternary construction after \cref{osq:cr:rem:evaluation} now gives
+continuum many distinct maximal extensions of every fixed dyadic
+branch, for both coefficient pairs. This supplies additional compatible
+finite-algebra specializations, but still only a continuum lower bound
+in total and no prescribed residue-field structure. The larger-cardinal
+and residue-field clauses of the question remain open.
 For comparison, 20's fresh-scale splitting (\cref{osq:bb:thm:uniform,osq:bb:thm:free}) builds free Boolean families of every set size in the
 normalization fibre $\NN/\Pi\NN$, a different ring \merge.
 

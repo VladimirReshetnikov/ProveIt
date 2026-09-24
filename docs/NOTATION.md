@@ -437,6 +437,26 @@ works over GB and does not invoke the forward construction using global
 choice. The restriction to omnific rings has a separate, unresolved
 choice-strength question.
 
+The cutoff for a monomial ω^b in `𝒬_a` uses `a ≪ b`, meaning b > Na
+for every ordinary positive integer N. It is a cutoff on the exponent b,
+not a comparison between the sizes of the monomials. The discarded tail
+`Π_k^(≫a)` is unchanged by multiplication or division by 1+ω^a.
+Truncation to `cvx(ℤa)` gives additive direct-sum decompositions of the
+ring and the binomial ideal; these are not direct products of rings.
+Positive exponent rescaling transports the coefficient fields, tails and
+branch labels between different embedded scales.
+
+For branch equations use binary depth N: the indicator is e_(N+1,j)
+at real stage N+1, or at Gaussian stage N. In the combined binary/ternary
+construction, v_n means x_(2n) in the real quotient and q_a(ω^(a/n)) in
+the Gaussian quotient. Its n coordinates lie over E_a or F_a(i),
+respectively. Binary and ternary depths N,m have a common stage with
+2^N·3^m coordinates, where their indicators intersect in one coordinate.
+The additional 3-adic branch gives continuum many maximal kernels above
+each fixed 2-adic branch. Their residue fields contain the coefficient
+core; equality with that embedded core, or abstract isomorphism to it,
+is not decided by this construction.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

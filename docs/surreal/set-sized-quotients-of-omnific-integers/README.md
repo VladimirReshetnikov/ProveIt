@@ -394,14 +394,42 @@ and its construction needs no maximal-ideal principle.
 Source 24's unchanged verifier passes all 133,770 finite checks; only the
 Python patch version differs from the recorded run. It does not certify
 class recursion or the equivalence with global choice. These manuscript
-results remain pending in Lean. The exact monomial dichotomy and subsequent
-class-residue results, and full source reconciliation, remain pending review.
+results remain pending in Lean. The next seven standard results are now
+reviewed too, from the exact monomial dichotomy through the ordinal-scale
+and branch family. The cutoff includes its endpoints and an inverse
+independent of the chosen ordinary bound. Division preserves the entire
+discarded tail, giving additive decompositions of the ring and binomial
+ideal and an explicit quotient kernel argument. Rescaling transports the
+field core and branch coordinates as well as the abstract quotient.
+
+An independent ternary tower gives continuum many distinct maximal
+extensions of every fixed dyadic branch, in both coefficient cases.
+At each pair of finite depths the binary and ternary indicators intersect
+in exactly one coordinate, by coprimality. This proves compatibility of
+all the branch equations by a finite-witness argument, followed by class
+maximal extension under global choice. It proves nonuniqueness after the
+dyadic choices are fixed; it does not increase the total continuum lower
+bound at one scale or prescribe the residue field over its core.
+The new [finite refinement checker](code/verify-coprime-branch-refinements.py)
+passes [86,106 exact checks](data/coprime-branch-refinements.json) over F_3457,
+for binary depths 0–4 and ternary depths 0–3 in both root conventions.
+It checks finite identities and coordinate compatibility, not class ideals
+or infinite branches. Run it with Python; `--output PATH` optionally saves
+the printed JSON without overwriting any source-24 verification record.
+
+Corrected an overstatement in the evaluation remark: the construction
+does not show that its residue target differs from the embedded core.
+Equality with the core and abstract isomorphism to it remain separate
+open questions. All sixteen reviewed standard class-residue results and
+the new unnumbered consequences remain pending in Lean. Separation,
+field realization, support-prime classification and full source
+reconciliation remain pending review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 319 pages
+article.pdf   the compiled report, 321 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
