@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **63 main texts** with **4238**
+The canonical inventory below identifies **63 main texts** with **4271**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -136,11 +136,14 @@ by itself integrate or formalize their mathematics.
 The delivery merged through `51c1cc7` is now placed in `aa9c891`. Two new
 main texts, omnific continued fractions and exponential relations over
 omnific integers, add 26 and 34 standard results respectively. The current
-inventory has 4,238 standard results across 63 main reports after the
-polynomial-composition addition `8bc7994`. Both new texts
-are **Pending** in Lean and await independent proof review. Seven companions
-have code and audit files placed but await main-text integration and review;
-their claims are not presumed covered by the existing report statements.
+inventory has **4,271** standard results across **63** main reports after
+the dilation-support-rank addition `1ef6bba`. The two new texts were written
+in `68db1b5` and `fa54502` and are indexed with their `exr:` and `ocf:` labels.
+They remain **Pending** in Lean and independent proof review. Two dilation
+companions are now integrated; five companions for the other three reports
+still await main-text integration. Eight new archives arrived in `a4611ad`,
+in addition to the universal-symmetries archive: these await placement and
+indexing and add no inferred Lean coverage.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -868,7 +871,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [physics/surreal-scalars-and-spacetime/article.tex](physics/surreal-scalars-and-spacetime/article.tex) | 4 | 1 | 11 | 3 | 19 |
 | [surcomplex/analysis/article.tex](surcomplex/analysis/article.tex) | 57 | 10 | 24 | 26 | 117 |
 | [surcomplex/analytic-geometry/article.tex](surcomplex/analytic-geometry/article.tex) | 38 | 18 | 16 | 14 | 86 |
-| [surcomplex/autonomous-dilation-relations/article.tex](surcomplex/autonomous-dilation-relations/article.tex) | 13 | 5 | 2 | 6 | 26 |
+| [surcomplex/autonomous-dilation-relations/article.tex](surcomplex/autonomous-dilation-relations/article.tex) | 27 | 15 | 4 | 13 | 59 |
 | [surcomplex/contours-and-stokes/article.tex](surcomplex/contours-and-stokes/article.tex) | 26 | 11 | 12 | 5 | 54 |
 | [surcomplex/differential-equations/article.tex](surcomplex/differential-equations/article.tex) | 64 | 37 | 35 | 39 | 175 |
 | [surcomplex/dynamics-and-normal-forms/article.tex](surcomplex/dynamics-and-normal-forms/article.tex) | 49 | 35 | 37 | 28 | 149 |
@@ -919,7 +922,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
 | [foundations-and-computation/exponential-relations-over-omnific-integers/article.tex](foundations-and-computation/exponential-relations-over-omnific-integers/article.tex) | 13 | 5 | 5 | 11 | 34 |
 | [surreal/omnific-continued-fractions/article.tex](surreal/omnific-continued-fractions/article.tex) | 9 | 6 | 4 | 7 | 26 |
-| **Total** | 1669 | 882 | 827 | 860 | **4238** |
+| **Total** | 1683 | 892 | 829 | 867 | **4271** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1370,6 +1373,14 @@ scope recorded in the implementation table above.
 
 ## Main-report statement index
 
+The first three batch-33 writes through `737fa31` revise the exponential
+relations and continued-fractions main texts with prefixed labels and
+integrate two dilation-support-rank manuscripts. The latter adds 33 standard
+results, giving **4,271** in **63** main reports. All three indexes are
+refreshed. None of these changed reports has a mapped statement in the
+current Lean library; the new/revised material remains **Pending**. The eight
+archives newly delivered in `a4611ad` await placement and integration.
+
 The reciprocal notes merged through `b9f2534` and the group-variety proof
 review change five main texts without adding standard result environments.
 Their statement indexes are refreshed; all 44 mapped/cited statements checked
@@ -1380,8 +1391,8 @@ the existing completion and non-Hausdorff mappings retain their stated scope.
 The two newest report PDFs are now supplied by `b41c41c`.
 
 The polynomial-composition integration `8bc7994` adds 18 standard results
-and the separately styled principal Theorem N. The current standard-result
-count is **4,238** in **63** reports. Its proofs and the reciprocal notes
+and the separately styled principal Theorem N. That standard-result
+count was **4,238** in **63** reports. Its proofs and the reciprocal notes
 merged through `8a60159` remain outside the completed review scopes. The
 new archive in `bbe23a3` awaits placement and is not an indexed main text.
 
@@ -6449,40 +6460,73 @@ in `dsn:rem:largecardinal` is also pending review and formalization.
 
 Source: [surcomplex/autonomous-dilation-relations/article.tex](surcomplex/autonomous-dilation-relations/article.tex).
 
-Placed in `21375f8` as a single-source base and written in `260c143` without
-merging a second source. It concerns constant-coefficient algebraic relations
-between a Hahn series and its exponent dilates, with characteristic and
-support hypotheses. The current `adr:` labels replace the base's unprefixed
-labels. All claims are **Pending** in Lean; proof and source review remain pending.
+Placed in `21375f8` and first written in `260c143`; now a three-manuscript
+assembly after `1ef6bba` integrates both dilation-support-rank companions.
+It has 59 standard results, including 33 new results on support rank of
+dilation orbits. Its `adr:` statement index is refreshed. All claims remain
+**Pending** in Lean and independent proof review.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `adr:lem:evaluation` (line 533) | Formal evaluation |
-| Lemma | `adr:lem:constants` (line 562) | Constants are relatively algebraically closed |
-| Lemma | `adr:lem:monomial` (line 582) | Monomial recognizer |
-| Lemma | `adr:lem:puiseux` (line 625) | Evaluated Puiseux branch |
-| Lemma | `adr:lem:bottcher` (line 678) | Normalized formal coordinate |
-| Proposition | `adr:prop:germ` (line 715) | All Hahn solutions of a superattracting germ |
-| Theorem | `adr:thm:collapse` (line 753) | First-order autonomous support rigidity |
-| Theorem | `adr:thm:profiles` (line 856) | Finite-profile classification |
-| Corollary | `adr:cor:coefficients` (line 906) | Coefficient descent |
-| Theorem | `adr:thm:newton` (line 929) | Exact local Newton-weight criterion |
-| Corollary | `adr:cor:existence` (line 966) | Scale-independent existence |
-| Theorem | `adr:thm:negative` (line 990) | Polynomial-in-one-monomial criterion |
-| Corollary | `adr:cor:d-independent` (line 1027) | Dilation independence |
-| Theorem | `adr:thm:degree` (line 1059) | The exact relation degree |
-| Corollary | `adr:cor:polynomial-field` (line 1094) | An ordinary polynomial field identity |
-| Theorem | `adr:thm:omnific` (line 1129) | Omnific dilation classification |
-| Corollary | `adr:cor:pairs` (line 1153) | All distinct forward dilates |
-| Theorem | `adr:thm:rational` (line 1215) | Rational-map classification |
-| Theorem | `adr:thm:rational-negative` (line 1265) | Rational-map rigidity in the negative-support ring |
-| Corollary | `adr:cor:simultaneous` (line 1290) | Simultaneous rational equations |
-| Theorem | `adr:thm:tail` (line 1316) | First forbidden tail |
-| Theorem | `adr:thm:order-two` (line 1400) | An infinite-support element of exact order two |
-| Theorem | `adr:thm:all-orders` (line 1439) | Every finite order occurs |
-| Proposition | `adr:prop:rank-bounds` (line 1475) | Bounds from the rational rank of finite support |
-| Theorem | `adr:thm:finite-polynomials` (line 1546) | Finitely many bounded polynomial shapes |
-| Theorem | `adr:thm:decidable` (line 1579) | Decidable nonconstant omnific solvability |
+| Lemma | `adr:lem:evaluation` (line 558) | Formal evaluation |
+| Lemma | `adr:lem:constants` (line 587) | Constants are relatively algebraically closed |
+| Lemma | `adr:lem:monomial` (line 607) | Monomial recognizer |
+| Lemma | `adr:lem:puiseux` (line 650) | Evaluated Puiseux branch |
+| Lemma | `adr:lem:bottcher` (line 703) | Normalized formal coordinate |
+| Proposition | `adr:prop:germ` (line 740) | All Hahn solutions of a superattracting germ |
+| Theorem | `adr:thm:collapse` (line 778) | First-order autonomous support rigidity |
+| Theorem | `adr:thm:profiles` (line 881) | Finite-profile classification |
+| Corollary | `adr:cor:coefficients` (line 931) | Coefficient descent |
+| Theorem | `adr:thm:newton` (line 954) | Exact local Newton-weight criterion |
+| Corollary | `adr:cor:existence` (line 991) | Scale-independent existence |
+| Theorem | `adr:thm:negative` (line 1015) | Polynomial-in-one-monomial criterion |
+| Corollary | `adr:cor:d-independent` (line 1052) | Dilation independence |
+| Theorem | `adr:thm:degree` (line 1084) | The exact relation degree |
+| Corollary | `adr:cor:polynomial-field` (line 1119) | An ordinary polynomial field identity |
+| Theorem | `adr:thm:omnific` (line 1154) | Omnific dilation classification |
+| Corollary | `adr:cor:pairs` (line 1178) | All distinct forward dilates |
+| Theorem | `adr:thm:rational` (line 1240) | Rational-map classification |
+| Theorem | `adr:thm:rational-negative` (line 1290) | Rational-map rigidity in the negative-support ring |
+| Corollary | `adr:cor:simultaneous` (line 1315) | Simultaneous rational equations |
+| Theorem | `adr:thm:tail` (line 1341) | First forbidden tail |
+| Theorem | `adr:thm:order-two` (line 1425) | An infinite-support element of exact order two |
+| Theorem | `adr:thm:all-orders` (line 1469) | Every finite order occurs |
+| Proposition | `adr:prop:rank-bounds` (line 1514) | Bounds from the rational rank of finite support |
+| Theorem | `adr:thm:finite-polynomials` (line 1591) | Finitely many bounded polynomial shapes |
+| Theorem | `adr:thm:decidable` (line 1624) | Decidable nonconstant omnific solvability |
+| Lemma | `adr:sr:lem:euler` (line 2334) | Support-preserving Euler derivations \src{03, 02} |
+| Lemma | `adr:sr:lem:jacobian` (line 2374) | An invertible derivative matrix detects independence \src{03, 02} |
+| Lemma | `adr:sr:lem:dominance` (line 2425) | Coordinatewise dominance of the greedy basis \src{03, 02} |
+| Lemma | `adr:sr:lem:rearrangement` (line 2447) | Strict rearrangement \src{03, 02} |
+| Proposition | `adr:sr:prop:unique` (line 2464) | Unique minimizing support tuple \src{03, 02} |
+| Theorem | `adr:sr:thm:leading` (line 2491) | The leading Jacobian term \src{03, 02} |
+| Theorem | `adr:sr:thm:main` (line 2520) | Support-rank obstruction \src{03, 02} |
+| Theorem | `adr:sr:thm:vector` (line 2545) | Vector-valued greedy determinant \src{02} |
+| Corollary | `adr:sr:cor:relation` (line 2628) | Every relation bounds support rank \src{03, 02} |
+| Lemma | `adr:sr:lem:monomials` (line 2691) | Independent monomials over a Hahn core \src{03, 02} |
+| Theorem | `adr:sr:thm:finite` (line 2705) | Exact finite-support rank \src{03, 02} |
+| Corollary | `adr:sr:cor:uniform` (line 2748) | The uniform matroid of the rational orbit \src{03, 02} |
+| Corollary | `adr:sr:cor:omnific` (line 2766) | Omnific autonomous order; Research question~1 \src{03, 02} |
+| Lemma | `adr:sr:lem:descent` (line 2828) | Rational support descent \src{03} |
+| Theorem | `adr:sr:thm:rational` (line 2853) | Exact order for rational monomial functions \src{03, 02} |
+| Theorem | `adr:sr:thm:quotient` (line 2877) | A finite rank formula from a reduced quotient \src{03} |
+| Lemma | `adr:sr:lem:rhocm` (line 2941) | Coefficient matrix equals support rank \src{02} |
+| Lemma | `adr:sr:lem:jacobianrank` (line 2968) | Jacobian rank for rational functions \src{02} |
+| Corollary | `adr:sr:cor:infinite` (line 3234) | Infinite-rank orbits \src{03, 02} |
+| Theorem | `adr:sr:thm:Xi` (line 3251) | A countable omnific support with an independent real orbit \src{03, 02} |
+| Corollary | `adr:sr:cor:shifts` (line 3281) | Forward, backward and several dilations \src{02} |
+| Lemma | `adr:sr:lem:characters` (line 3296) | Character extension \src{02} |
+| Theorem | `adr:sr:thm:denominators` (line 3312) | Finite denominator index for algebraic Hahn elements \src{02} |
+| Lemma | `adr:sr:lem:denominators` (line 3345) | A rank-one character proof \src{03} |
+| Proposition | `adr:sr:prop:order-two` (line 3371) | The rank-one order-two example \src{03} |
+| Theorem | `adr:sr:thm:telescopes` (line 3415) | Support rank $\rho$, autonomous order $\rho+1$ \src{02} |
+| Theorem | `adr:sr:thm:blocks` (line 3509) | Joint independence for separated support spans \src{03, 02} |
+| Theorem | `adr:sr:thm:ordinal` (line 3552) | A class of independent real-dilation orbits \src{03} |
+| Theorem | `adr:sr:thm:tail` (line 3569) | Freshness beyond every set-sized Hahn core \src{03} |
+| Corollary | `adr:sr:cor:witness` (line 3599) | One countable-support witness over any set of parameters \src{03} |
+| Theorem | `adr:sr:thm:kappa` (line 3613) | Arbitrary set-sized families over a prescribed base \src{02} |
+| Corollary | `adr:sr:cor:free` (line 3653) | Free omnific difference algebras \src{02} |
+| Theorem | `adr:sr:thm:prime` (line 3703) | Prime-field finite-support formula \src{03} |
 
 ### independent-surreal-copies
 
@@ -6532,76 +6576,76 @@ proof review and source reconciliation remain pending.
 
 Source: [foundations-and-computation/exponential-relations-over-omnific-integers/article.tex](foundations-and-computation/exponential-relations-over-omnific-integers/article.tex).
 
-Placed as a new base report in `aa9c891`. Exact exponential relations, decidable additive fragments and elementary cores. All statements remain **Pending** in Lean and independent proof review. The delivered LaTeX is indexed; placement does not establish its claims. The repository PDF has been built; this does not constitute proof review.
+Placed in `aa9c891` and written in `68db1b5`, with `exr:` labels. Exact exponential relations, decidable additive fragments and elementary cores. All statements remain **Pending** in Lean and independent proof review. The delivered LaTeX is indexed; placement does not establish its claims. The repository PDF has been built; this does not constitute proof review.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `lem:basic` (line 278) | Untitled |
-| Proposition | `prop:division` (line 296) | Division with remainder |
-| Lemma | `lem:monomial` (line 340) | Complex coefficients on real monomials |
-| Theorem | `thm:independence` (line 366) | Finite exponential independence |
-| Corollary | `cor:injective` (line 391) | Untitled |
-| Corollary | `cor:groupalgebra` (line 402) | Faithful group algebra |
-| Theorem | `thm:toric` (line 433) | Exact toric kernel |
-| Corollary | `cor:algind` (line 467) | Independence criterion |
-| Theorem | `thm:constants` (line 490) | Constant field and linear disjointness |
-| Corollary | `cor:ozconstants` (line 522) | The omnific constant-field formula |
-| Theorem | `thm:partition` (line 563) | Balanced-partition elimination |
-| Corollary | `cor:affine` (line 592) | Affine exponential zero loci |
-| Proposition | `prop:examples` (line 615) | Untitled |
-| Lemma | `lem:rationalaffine` (line 670) | Untitled |
-| Theorem | `thm:rational` (line 686) | Rational slopes add no Presburger expressive power |
-| Lemma | `lem:split` (line 718) | Algebraic coordinate splitting |
-| Lemma | `lem:vectorQE` (line 749) | Ordered vector-space elimination |
-| Theorem | `thm:algdecision` (line 790) | Effective two-sort reduction |
-| Theorem | `thm:defsplit` (line 841) | Definable splitting |
-| Theorem | `thm:rectangles` (line 894) | Rectangular normal form |
-| Corollary | `cor:stable` (line 916) | No extra induced structure |
-| Corollary | `cor:finiteimage` (line 929) | Finite-image cross-component maps |
-| Theorem | `thm:elementary` (line 949) | Classification of elementary substructures |
-| Corollary | `cor:onescale` (line 985) | One-scale elementary cores |
-| Corollary | `cor:embeddings` (line 1009) | Classification of elementary embeddings |
-| Proposition | `prop:difference` (line 1030) | The two slope languages genuinely differ |
-| Theorem | `thm:single` (line 1075) | Single-slope decomposition |
-| Theorem | `thm:degree` (line 1121) | The theory has the degree of the slope |
-| Proposition | `prop:nonuniform` (line 1169) | Nonuniformity of arbitrary real-number names |
-| Proposition | `prop:tails` (line 1216) | A tail obstruction |
-| Theorem | `thm:undecidable` (line 1239) | A single nonlinear relation destroys decidability |
-| Theorem | `thm:fibers` (line 1285) | Ordinary-fiber criterion |
-| Corollary | `cor:ternary` (line 1315) | Positive real-base ternary equations |
-| Corollary | Line 1349 (unlabeled) | An inhomogeneous anchor removes all infinite solutions |
+| Lemma | `exr:lem:basic` (line 550) | Untitled |
+| Proposition | `exr:prop:division` (line 568) | Division with remainder |
+| Lemma | `exr:lem:monomial` (line 623) | Complex coefficients on real monomials |
+| Theorem | `exr:thm:independence` (line 660) | Finite exponential independence |
+| Corollary | `exr:cor:injective` (line 685) | Untitled |
+| Corollary | `exr:cor:groupalgebra` (line 696) | Faithful group algebra |
+| Theorem | `exr:thm:toric` (line 727) | Exact toric kernel |
+| Corollary | `exr:cor:algind` (line 761) | Independence criterion |
+| Theorem | `exr:thm:constants` (line 784) | Constant field and linear disjointness |
+| Corollary | `exr:cor:ozconstants` (line 816) | The omnific constant-field formula |
+| Theorem | `exr:thm:partition` (line 857) | Balanced-partition elimination |
+| Corollary | `exr:cor:affine` (line 886) | Affine exponential zero loci |
+| Proposition | `exr:prop:examples` (line 909) | Untitled |
+| Lemma | `exr:lem:rationalaffine` (line 964) | Untitled |
+| Theorem | `exr:thm:rational` (line 980) | Rational slopes add no Presburger expressive power |
+| Lemma | `exr:lem:split` (line 1012) | Algebraic coordinate splitting |
+| Lemma | `exr:lem:vectorQE` (line 1043) | Ordered vector-space elimination |
+| Theorem | `exr:thm:algdecision` (line 1084) | Effective two-sort reduction |
+| Theorem | `exr:thm:defsplit` (line 1135) | Definable splitting |
+| Theorem | `exr:thm:rectangles` (line 1188) | Rectangular normal form |
+| Corollary | `exr:cor:stable` (line 1210) | No extra induced structure |
+| Corollary | `exr:cor:finiteimage` (line 1223) | Finite-image cross-component maps |
+| Theorem | `exr:thm:elementary` (line 1243) | Classification of elementary substructures |
+| Corollary | `exr:cor:onescale` (line 1279) | One-scale elementary cores |
+| Corollary | `exr:cor:embeddings` (line 1303) | Classification of elementary embeddings |
+| Proposition | `exr:prop:difference` (line 1324) | The two slope languages genuinely differ |
+| Theorem | `exr:thm:single` (line 1369) | Single-slope decomposition |
+| Theorem | `exr:thm:degree` (line 1415) | The theory has the degree of the slope |
+| Proposition | `exr:prop:nonuniform` (line 1463) | Nonuniformity of arbitrary real-number names |
+| Proposition | `exr:prop:tails` (line 1510) | A tail obstruction |
+| Theorem | `exr:thm:undecidable` (line 1533) | A single nonlinear relation destroys decidability |
+| Theorem | `exr:thm:fibers` (line 1596) | Ordinary-fiber criterion |
+| Corollary | `exr:cor:ternary` (line 1639) | Positive real-base ternary equations |
+| Corollary | Unlabeled (line 1673) | An inhomogeneous anchor removes all infinite solutions |
 
 ### omnific-continued-fractions
 
 Source: [surreal/omnific-continued-fractions/article.tex](surreal/omnific-continued-fractions/article.tex).
 
-Placed as a new base report in `aa9c891`. Exact continued-fraction fibers, Hahn realization, algebraic trichotomy and periodic codes. All statements remain **Pending** in Lean and independent proof review. The delivered LaTeX is indexed; placement does not establish its claims. The repository PDF has been built; this does not constitute proof review.
+Placed in `aa9c891` and written in `fa54502`, with `ocf:` labels. Exact continued-fraction fibers, Hahn realization, algebraic trichotomy and periodic codes. All statements remain **Pending** in Lean and independent proof review. The delivered LaTeX is indexed; placement does not establish its claims. The repository PDF has been built; this does not constitute proof review.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `lem:floor` (line 289) | Exact floor, including the boundary correction |
-| Lemma | `lem:matrix` (line 365) | Matrix identities |
-| Proposition | `prop:cylinder` (line 395) | Cylinder description |
-| Corollary | `cor:realization` (line 426) | Realization in the full surreal field |
-| Lemma | `lem:buffer` (line 452) | Uniform two-step buffer |
-| Lemma | `lem:degrees` (line 482) | Degree and exact convergent error |
-| Theorem | `thm:fiber` (line 514) | Exact fiber |
-| Corollary | `cor:neverunique` (line 544) | No unique unrestricted surreal realization |
-| Proposition | `prop:topology` (line 563) | Order-topological obstruction |
-| Theorem | `thm:hahn` (line 589) | Hahn realization and exact uniqueness |
-| Corollary | `cor:cofinality` (line 658) | Countable cofinality threshold |
-| Corollary | Line 679 (unlabeled) | Convergence in the unique Hahn case |
-| Proposition | `prop:prescribed` (line 701) | Prescribed degree cut |
-| Theorem | `thm:prime` (line 723) | Prime precision criterion |
-| Corollary | `cor:radical` (line 759) | Radical and nilpotency index |
-| Lemma | `lem:algerror` (line 803) | Algebraic errors cannot be newly invisible |
-| Lemma | `lem:digitfield` (line 829) | What the digit field can see |
-| Theorem | `thm:algebraic` (line 865) | Exact algebraic-fiber trichotomy |
-| Theorem | `thm:periodroot` (line 934) | Period-fixed representative |
-| Theorem | `thm:periodiccriterion` (line 985) | One or countably many algebraic periodic realizations |
-| Corollary | `cor:pureperiod` (line 1029) | Pure periodicity has one algebraic representative |
-| Theorem | `thm:orderunit` (line 1048) | Periodic uniqueness detects an order unit |
-| Theorem | `thm:independence` (line 1203) | Hidden algebraic independence |
-| Theorem | `thm:complex` (line 1268) | Exact surcomplex coordinate fiber |
-| Corollary | Line 1304 (unlabeled) | Surcomplex hidden independence |
-| Proposition | `prop:mobius` (line 1322) | Precision transport |
+| Lemma | `ocf:lem:floor` (line 520) | Exact floor, including the boundary correction |
+| Lemma | `ocf:lem:matrix` (line 605) | Matrix identities |
+| Proposition | `ocf:prop:cylinder` (line 635) | Cylinder description |
+| Corollary | `ocf:cor:realization` (line 666) | Realization in the full surreal field |
+| Lemma | `ocf:lem:buffer` (line 692) | Uniform two-step buffer |
+| Lemma | `ocf:lem:degrees` (line 722) | Degree and exact convergent error |
+| Theorem | `ocf:thm:fiber` (line 754) | Exact fiber |
+| Corollary | `ocf:cor:neverunique` (line 784) | No unique unrestricted surreal realization |
+| Proposition | `ocf:prop:topology` (line 803) | Order-topological obstruction |
+| Theorem | `ocf:thm:hahn` (line 829) | Hahn realization and exact uniqueness |
+| Corollary | `ocf:cor:cofinality` (line 898) | Countable cofinality threshold |
+| Corollary | `ocf:cor:convergence` (line 919) | Convergence in the unique Hahn case |
+| Proposition | `ocf:prop:prescribed` (line 941) | Prescribed degree cut |
+| Theorem | `ocf:thm:prime` (line 963) | Prime precision criterion |
+| Corollary | `ocf:cor:radical` (line 999) | Radical and nilpotency index |
+| Lemma | `ocf:lem:algerror` (line 1043) | Algebraic errors cannot be newly invisible |
+| Lemma | `ocf:lem:digitfield` (line 1069) | What the digit field can see |
+| Theorem | `ocf:thm:algebraic` (line 1105) | Exact algebraic-fiber trichotomy |
+| Theorem | `ocf:thm:periodroot` (line 1174) | Period-fixed representative |
+| Theorem | `ocf:thm:periodiccriterion` (line 1225) | One or countably many algebraic periodic realizations |
+| Corollary | `ocf:cor:pureperiod` (line 1269) | Pure periodicity has one algebraic representative |
+| Theorem | `ocf:thm:orderunit` (line 1288) | Periodic uniqueness detects an order unit |
+| Theorem | `ocf:thm:independence` (line 1448) | Hidden algebraic independence |
+| Theorem | `ocf:thm:complex` (line 1519) | Exact surcomplex coordinate fiber |
+| Corollary | `ocf:cor:complexindependence` (line 1555) | Surcomplex hidden independence |
+| Proposition | `ocf:prop:mobius` (line 1573) | Precision transport |

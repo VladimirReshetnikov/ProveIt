@@ -95,10 +95,13 @@ Their new proofs remain outside the independent review scopes recorded here.
 Placement `aa9c891` retires the next nine archives and adds two main texts:
 [omnific continued fractions](surreal/omnific-continued-fractions/) and
 [exponential relations over omnific integers](foundations-and-computation/exponential-relations-over-omnific-integers/).
-Their 60 standard results are indexed and PDFs supplied. The seven companions
-to dilation, holonomic rigidity, omnific automorphisms and Diophantine geometry
-have code and audit files placed, but their main-text integration and proof
-review remain pending. Placement alone does not extend any Lean mapping.
+Their 60 standard results are indexed and PDFs supplied; their single-source
+writes `68db1b5` and `fa54502` give `exr:` and `ocf:` labels. The two dilation
+companions are now integrated in `1ef6bba`, adding 33 standard results to the
+59-result dilation report. Five companions for holonomic rigidity, omnific
+automorphisms and Diophantine geometry still await integration. These additions
+remain pending in Lean and independent proof review. Eight further archives
+arrived in `a4611ad` and await placement and indexing.
 A further universal-symmetries and difference-equations archive arrived in
 `bbe23a3`; its ZIP integrity is checked, but placement, integration and
 review remain pending.
