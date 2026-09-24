@@ -3,13 +3,15 @@
 Lean 4 (v4.32.0) + Mathlib (v4.32.0) formalization of
 `docs/cardinals/research-synthesis/Large_Cardinals_Synthesis.tex`.  Set theory is done inside
 Mathlib's model `ZFSet` of ZFC; first-order syntax, the ZF axioms and the Choice formula
-come from the sibling repository `C:\ProveIt` (libraries `FirstOrder`, `ZF`,
-`BoundedZFCConsistency`), which is required by path in `lakefile.toml`.
+come from the enclosing ProveIt repository (libraries `FirstOrder`, `ZF`,
+`BoundedZFCConsistency`), which `lakefile.toml` requires by path as `../..`.
+(Until this project moved into ProveIt at `SetTheory/Cardinals/`, ProveIt was a
+sibling checkout at `C:\ProveIt`.)
 
 ## Build
 
 ```sh
-# once: share ProveIt's package cache instead of re-downloading/rebuilding Mathlib
+# from SetTheory/Cardinals; once: share ProveIt's package cache instead of re-downloading/rebuilding Mathlib
 powershell -Command "New-Item -ItemType Junction -Path .lake\packages -Target C:\ProveIt\.lake\packages"
 lake build
 lake env lean Cardinals/Audit.lean     # prints the axioms behind each main theorem

@@ -14,9 +14,10 @@ theorem CoarseDegrees.not_C1_dyadic  : ¬ C1   -- a third route, independent of 
 
 Turing reducibility is Mathlib's oracle semantics (`Mathlib.Computability.TuringDegree`,
 `RecursiveIn`).  Set-level reducibility (`≤ᵀₛ`), characteristic oracles and the finite
-oracle-program syntax used for *uniform* coarse reductions come from the sibling repository
-`C:\ProveIt` (library `TuringDegrees`, in `Computability/TuringDegrees/Lean`), which is required
-by path in `lakefile.toml`.
+oracle-program syntax used for *uniform* coarse reductions come from the enclosing ProveIt repository
+(library `TuringDegrees`, in `Computability/TuringDegrees/Lean`), which `lakefile.toml` requires
+by path as `../..`. (Until this project moved into ProveIt at `SetTheory/Cardinals/`, ProveIt
+was a sibling checkout at `C:\ProveIt`; the comments in the Lean sources still name it so.)
 
 The library also formalizes research report 10 (`docs/coarse-degrees/research-reports/10`): coarse classes
 with no representative of least *hyperdegree*, and the failure of Martin's cone theorem for the
@@ -25,7 +26,7 @@ coarse degrees.  See "Report 10" below.
 ## Build
 
 ```sh
-# once: share ProveIt's package cache instead of re-downloading and rebuilding Mathlib
+# from SetTheory/Cardinals; once: share ProveIt's package cache instead of re-downloading and rebuilding Mathlib
 powershell -Command "New-Item -ItemType Junction -Path .lake\packages -Target C:\ProveIt\.lake\packages"
 lake build
 lake env lean CoarseDegrees/Audit.lean     # prints the axioms behind each main theorem

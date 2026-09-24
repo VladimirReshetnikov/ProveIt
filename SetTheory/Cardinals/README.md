@@ -61,8 +61,11 @@ material and, where the proofs genuinely differed, every proof.
 
 ## Building
 
-Lean 4 v4.32.0 with Mathlib v4.32.0, and `ProveIt` required by path as a sibling
-checkout:
+Lean 4 v4.32.0 with Mathlib v4.32.0, and `ProveIt` required by path. This project
+now lives inside ProveIt at `SetTheory/Cardinals/`, so the path is `../..` (the
+repository root); before the move it was a sibling checkout. Run from
+`SetTheory/Cardinals`, or from the ProveIt root with
+`lake --dir SetTheory/Cardinals build`:
 
 ```sh
 # once: share ProveIt's package cache instead of re-downloading and rebuilding Mathlib
