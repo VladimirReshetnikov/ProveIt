@@ -349,6 +349,16 @@ placed in the same batch as Parts III and IV, identifies strong endomorphisms
 of `V((t^Γ))` with `End_C(V)((t^Γ))`, a larger algebra than Part I's
 adjointable `B(H)((t^Γ))`; nothing here depends on it.
 
+**[hahn-hilbert-geometry](../hahn-hilbert-geometry/)** (batch 34) answers the
+first further question of Part IV (Section 48.3) in exact-criterion form, not
+in the form posed: a bounded-coefficient unitary conjugating all residual
+cluster projections to the deformed ones exists exactly when the family's
+coefficient maps are bounded at every exponent and its active support is well
+ordered (`hgeo:us:thm:main`, with first-order equation `hgeo:us:prop:first`).
+In terms of spectral gaps and coefficient ideals the question stays open; the
+second and third questions are not addressed. An unnumbered status note after
+Section 48.3's questions records this; it changed no number and no page count.
+
 ## Build
 
 ```sh

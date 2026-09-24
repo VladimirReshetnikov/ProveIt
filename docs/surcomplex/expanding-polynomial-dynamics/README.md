@@ -215,6 +215,15 @@ order unit in `Q ⊕lex Q`. In the other report's field `C((t^R))` every
 positive scale is an order unit. That report has no polynomial dynamics,
 and no transfer is claimed.
 
+**[omnific-continued-fractions](../../surreal/omnific-continued-fractions/)**
+(batch 33) proves a fiber theorem of the same shape for continued-fraction
+digits given by the omnific floor (`ocf:thm:fiber`): each digit sequence has
+fiber one point plus a convex precision ideal, and an eventually periodic
+sequence is unique exactly when its period degree is an order unit
+(`ocf:thm:orderunit`); under a bound on the preperiodic degrees that ideal is
+`I_κ` at `κ = E`. The proofs are independent. An unnumbered note after
+Theorem 5.1 records this; it changed no number and no page count.
+
 ## Build and reproduce
 
 ```sh

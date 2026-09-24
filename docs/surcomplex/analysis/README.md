@@ -86,6 +86,14 @@ finite-lift zero theorem (`c:p4:liftzeros`) to Gamma, zeta and xi
 (`gz:thm:divisor`), and uses the twisted exponentials of `e:thm-twisted` for its
 left zeta prescription and movable zeros (`gz:prop:moving`).
 
+[exponential-relations-over-omnific-integers](../../foundations-and-computation/exponential-relations-over-omnific-integers/)
+(batch 33) studies the restriction of the canonical `Exp` to the additive domain
+`Q̄ + J` (`exr:def:domain`): there values at distinct points are linearly
+independent over `Q̄` (`exr:thm:independence`) and all Laurent relations are
+toric (`exr:thm:toric`). No such independence holds on a domain containing
+`iJ`, which lies in the kernel. An unnumbered note after Remark 12.5
+(`e:rem-kernel`) records this; it changed no number and no page count.
+
 ## Maintained review and historical evidence
 
 The September 2026 review read the main arguments in their logical order and

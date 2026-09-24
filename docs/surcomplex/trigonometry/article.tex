@@ -3943,6 +3943,17 @@ group $\cI$ is discretely ordered with divisible quotient $\cI/\Z\cong\Pi_F$, th
 model of Presburger arithmetic in its ordered-group presentation \cite[\S2]{Jerabek}; this does not make
 it a model of arithmetic with multiplication.
 
+\emph{Related (batch 33).} For $\cI=\Oz$ the collection's report on exponential relations over omnific
+integers (\nolinkurl{docs/foundations-and-computation/exponential-relations-over-omnific-integers})
+re-derives this proposition independently (label \texttt{exr:prop:division}), with $x\equiv y\pmod n$
+exactly when the constant terms of $x$ and $y$ are congruent, and reads the class-sized $\Oz$ formula by
+formula as a $\Z$-group. It adds the zero predicates of finite exponential sums with algebraic
+coefficients and real algebraic slopes. With rational slopes the result is a definitional expansion of
+Presburger arithmetic, and $\Z$ is an elementary substructure (\texttt{exr:thm:rational}); with algebraic
+slopes the theory is still decidable (\texttt{exr:thm:algdecision}). The boundary is the one stated
+above: adjoining the graph of multiplication, as the relation $\exp(xy)=\exp(z)$, makes the theory
+undecidable (\texttt{exr:thm:undecidable}).
+
 \begin{proposition}[Phases and exponentials]\label{trigonometry:per:prop:exponentials}
 Let $F$ carry a real exponential $\exp_F$, i.e.\ $F=\No$ or $F=\No(\lambda)$ with $\lambda$ an epsilon
 number. For every phase $\Psi_\chi$ on $F$, $E_\chi(x+iy)=\exp_F(x)\Psi_\chi(y)$ is a surjective
@@ -3966,6 +3977,14 @@ group law gives $E(x+iy)=\exp_F(x)\Psi(y)$.
 Ehrlich and Kaplan establish the integer-part case \cite[Proposition 11.2]{EK}; here the formula is
 used for additive integer parts that are not rings. The proposition is source~20's Proposition 3.4
 and source~21's Proposition 8.1.
+
+\emph{Related (batch 33).} For $F=\No$, on the additive domain $\overline{\mathbb Q}+\Pi$, whose imaginary
+parts are finite algebraic numbers, every $E_\chi$ restricts to $a+p\mapsto e^a\exp_{\No}(p)$, the
+exponential of the report on exponential relations over omnific integers (\texttt{exr:def:domain}).
+There the values at finitely many distinct points are linearly independent over $\overline{\mathbb Q}$
+(\texttt{exr:thm:independence}, from Gonshor's monomial theorem and the Lindemann--Weierstrass
+theorem). So all the $E_\chi$ agree on that domain and are injective there; the choice of phase
+classified here does not enter.
 
 \begin{proposition}[The local law, for every phase]\label{trigonometry:per:prop:local}
 For every phase $\Psi$ on $F$, every $x\in F$, $h\in\mm_F$, and, when $F$ has a real exponential,

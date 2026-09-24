@@ -16,7 +16,7 @@ prefix `16-`), and one more dated 23 September 2026 (batch-33 manuscript 07, pla
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 225 pages
+article.pdf                        the compiled report, 226 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -960,8 +960,9 @@ quantifier bounds (Question 21.5); roots with omnific coefficients (Question
 at real singular integer points without a real normalization preimage (Question 21.8,
 re-scoped); coefficient recovery of lower quantifier
 complexity (Question 21.9); structure that determines the real form of `Oz[i]`
-(Question 21.10; a batch-32 status note records further negative information
-from `saut:fs:thm:main-count`, not an answer); infinite algebraic extensions (Question 21.11); from sources
+(Question 21.10; batch-32 and batch-34 status notes record further negative
+information from `saut:fs:thm:main-count` and from `saut:gr:prop:finite`,
+`saut:gr:prop:dio`, not an answer); infinite algebraic extensions (Question 21.11); from sources
 08 and 09, denominator ideals beyond one parameter (Question 21.12), the extent
 of `𝒱` (Question 21.13), orbits outside `𝒱` (Question 21.14), several parameters
 (Question 21.15) and other scale extensions (Question 21.16); and, from sources
@@ -1398,6 +1399,21 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   Its batch-32 `opa:tc:thm:oztopology` (every Hahn-compatible ring topology on
   `Oz` is pulled back along `ct` from `Z`) shows that the non-Hausdorff
   congruence topologies after (3.3) are forced (status note there).
+  Its batch-33 automatic formal integration (`opa:hs:thm:integration`) uses
+  (3.2) as its sole structural input (note after Theorem 3.1), and its formal
+  fraction fields and the collapse of the quartic test on `Oz[[s]]`
+  (`opa:hs:prop:formalfrac`, `opa:hs:thm:collapse`) apply Theorem 4.6 to
+  countable coefficient sets (note after that theorem).
+- [`exponential-relations-over-omnific-integers`](../../foundations-and-computation/exponential-relations-over-omnific-integers/):
+  finite exponential sums in omnific-integer variables, excluded from the
+  polynomial systems of Section 5. Its ordinary-fiber criterion
+  (`exr:thm:fibers`) is an analogue of Theorem 5.1, and its undecidability after
+  adjoining `exp(xy) = exp(z)` (`exr:thm:undecidable`) a variant of Corollary
+  13.12; with algebraic slopes alone its theory is decidable
+  (`exr:thm:algdecision`) (note before Theorem 5.1, batch 33).
+- [`omnific-continued-fractions`](../omnific-continued-fractions/): its
+  `ocf:lem:floor` re-derives Theorem 2.7 and uses the floor as the digit map
+  of its continued-fraction algorithm (note after that theorem, batch 33).
 - [`hahn-tate-uniformization`](../../surcomplex/hahn-tate-uniformization/): its
   Tate points are field points of curves with nonconstant `j`-invariant, outside
   the constant-coefficient hypothesis of Section 17; like Remark 17.24 and
@@ -1408,7 +1424,10 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   proves that the twist of Lemma 13.9 preserves `Oz[i]`. Its batch-32
   `saut:fs:thm:main-count` (valued, summation- and `Oz[i]`-preserving
   involutions fall into `2^𝔠` conjugacy types with nonisomorphic fixed fields)
-  is recorded as negative information on Question 21.10.
+  is recorded as negative information on Question 21.10, and so, in batch 34,
+  is the uniform arithmetic of its integer-part rings `R_F` (all finite
+  quotients `Z/nZ` through `ct`, integer polynomial systems solvable exactly
+  when solvable in `Z`: `saut:gr:prop:finite`, `saut:gr:prop:dio`).
 - [`holonomic-rigidity-for-entire-hahn-functions`](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/):
   its factorial floor profile (`hol:fh:thm:floor`) is a case of Theorem 2.7
   (note after that theorem), and its undecidability inside a rigid class of functional
@@ -1436,11 +1455,14 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 225 pages with no errors, warnings, undefined
+The current build gives 226 pages with no errors, warnings, undefined
 references, multiply defined labels or overfull boxes. The batch-32
 cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
 non-claim on polynomial lifting) are unnumbered and changed no label number
-(compared in the `.aux` files against a build of the text before them). The text before
+(compared in the `.aux` files against a build of the text before them). The
+same holds for the batch-33 and batch-34 notes (after Theorems 2.7, 3.1 and 4.6,
+before Theorem 5.1 and after Question 21.10): the text before them built to 225
+pages, and all 553 labels keep their `.aux` numbers. The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
 its 942 `.aux` label entries has the same number in the present build. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16

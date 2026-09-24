@@ -249,7 +249,16 @@ Appendix A.4 and A.5.
   floor, division, Diophantine transfer, the non-terminating Euclidean
   algorithm (`odg:ex:euclid`); `odg:q:roots` and `odg:q:search` stay open.
 - [`holonomic-rigidity-for-entire-hahn-functions`](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/):
-  `hol:lem:integer`; `hol:nl:q:effective` stays open.
+  `hol:lem:integer`; `hol:nl:q:effective` stays open. Its batch-33
+  `hol:rc:thm:coding` reads the series (2.7) as the orbit of a first-order
+  recurrence under multiplication by `ω`, observed at the coefficient of
+  `ω^ω`, and `hol:rc:cor:nosml` concludes that there is no
+  coefficientwise Skolem–Mahler–Lech theorem for omnific recurrences
+  (unnumbered note after (2.7)).
+- [`omnific-continued-fractions`](../../surreal/omnific-continued-fractions/)
+  (batch 33): `ocf:lem:floor` proves the floor (2.5) once more and uses it as
+  the digit map of its continued-fraction algorithm (sentence added in
+  Section 2.2).
 - [`foundations`](../foundations/): `Oz = Π ⊕ Z` (`found:eq:omnific`).
 - [`definable-surreals-and-omnific-integers`](../definable-surreals-and-omnific-integers/),
   written from the same batch: set-theoretic definability, not computability;
@@ -264,7 +273,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The build has no errors, no LaTeX or package warnings, no overfull or underfull
-boxes, no undefined references and no duplicate destinations. Commit only
+boxes, no undefined references and no duplicate destinations. The batch-33
+cross-report notes in Section 2 are unnumbered; against a build of the text
+before them, the page count (69) and every label number are unchanged. Commit only
 `article.pdf`, not the auxiliary files.
 
 ## Reproducing the finite checks
