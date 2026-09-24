@@ -209,8 +209,9 @@ integer-divisibility shortcut now states the necessary characteristic
 condition. The review now also covers representations, small quotients,
 completions, localizations, positive existential conservativity, modules and
 the finite-side standard-part theorem, support thresholds and fixed-group
-lower bounds. A large quotient can still have a nonzero small
-image: `Oz/(ω)` surjects onto `ℤ`, whereas `Oz/(1+ω)` has only the zero
+lower bounds, followed by the countable-support two-armed model. A large
+quotient can still have a nonzero small image: `Oz/(ω)` surjects onto `ℤ`,
+whereas `Oz/(1+ω)` has only the zero
 set-sized image. More generally, the universal set-sized image of `Oz/(f)`
 is `ℤ/(ct(f))`. These are manuscript consequences of the universal theorem;
 later cardinal classifications and full source reconciliation remain pending review.
@@ -221,7 +222,11 @@ derivations of the full surreal field instead have class-sized targets.
 Finite-support omnific rings retain the ordinary finite quotients and admit
 an augmentation to `ℝ` that detects every monomial. Including countable
 supports blocks that map through a finite product identity; no continuity
-assumption on target maps is needed.
+assumption on target maps is needed. The reviewed countable-support model
+with two arms of length `ω₁` has an attained detection threshold of
+`2^{ℵ₀}` and a purely infinite ideal requiring exactly `ℵ₁` generators,
+whether or not CH holds. Its Gaussian version has the corresponding
+complex fraction field. These cardinal results remain pending in Lean.
 
 The actual surreal field is also proved to be a field of fractions of its
 omnific subring, using Mathlib's `IsFractionRing`. One positive Conway

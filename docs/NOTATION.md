@@ -68,6 +68,14 @@ family may contain more than λ elements, because it is not the support of
 one normal form. These support bounds differ from a bound on the whole
 ring's cardinality or a restriction to one set-sized exponent group.
 
+In source 03's countable-support two-armed model, keep the coefficient
+choice in the pair `(A,F)`: `Frac(A^{03}_κ) = F^{03}_κ` over the real
+coefficients, while `Frac(A^{03,ℂ}_κ) = F^{03,ℂ}_κ = F^{03}_κ[i]` in the
+Gaussian case. Under this model's hypothesis `cf(κ) > ℵ₀`, both fields
+have size `κ^{ℵ₀}`, but equal cardinality does
+not identify their field structures. The ideal's least number of generators
+is `cf(κ)`, a different cardinal invariant.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
