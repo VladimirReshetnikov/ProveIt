@@ -772,3 +772,6 @@ import Surreal.Algebra.ArithmeticLanguage
 import Surreal.Algebra.NaturalArithmeticInterpretation
 import Surreal.Foundations.OmnificNaturalArithmetic
 import Surreal.HahnSeries.ArithmeticInterpretation
+import Surreal.Algebra.PositiveExistentialDefinability
+import Surreal.HahnSeries.PositiveExistentialCollapse
+import Surreal.Surcomplex.PositiveExistentialCollapse
