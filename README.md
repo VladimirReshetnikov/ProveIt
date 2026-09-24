@@ -289,6 +289,10 @@ its two coordinates are precisely real omnific integers. The corresponding
 fiber theorem is proved over this ring too, with ordinary Gaussian points,
 unique purely infinite complex kernel parameters, and disjoint fibers over
 distinct ordinary points.
+The converse is proved in both rings: once an ordinary point exists at a
+nonzero level, nonordinary points exist exactly when the relevant real or
+complex kernel is nonzero. Multiplying a nonzero kernel direction by the
+actual monomial ω supplies the nonordinary solution.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,

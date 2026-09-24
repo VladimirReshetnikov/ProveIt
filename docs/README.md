@@ -98,14 +98,16 @@ Placement `aa9c891` retires the next nine archives and adds two main texts:
 Their 60 standard results are indexed and PDFs supplied; their collection
 editions are written in `68db1b5` and `fa54502`. The two dilation companions
 are integrated in `1ef6bba`, adding 33 standard results on support rank and
-algebraic independence of dilation orbits. The five companions to holonomic
-rigidity, omnific automorphisms and Diophantine geometry still await main-text
-integration. Independent proof review of these additions remains pending;
+algebraic independence of dilation orbits. The coefficient-observables and
+Noetherian-compression companion is now integrated in `76dd876`, adding 11
+standard results to the 222-result holonomic report. Four companions to
+omnific automorphisms and Diophantine geometry still await main-text integration. Independent proof review of these additions remains pending;
 assembly alone does not extend any Lean mapping.
 A further universal-symmetries and difference-equations archive arrived in
-`bbe23a3`; its ZIP integrity is checked, but placement, integration and
-review remain pending. Eight more archives arrived in `a4611ad`; they also
-pass ZIP integrity checks and await placement and review.
+`bbe23a3`, and eight more archives arrived in `a4611ad`. All nine are now
+placed in `a7a435f` as additions to six reports, with audits and verification
+code supplied. Main-text integration, indexing and independent review remain
+pending; placement alone does not establish or formalize their claims.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
