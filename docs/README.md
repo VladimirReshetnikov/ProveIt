@@ -100,14 +100,17 @@ editions are written in `68db1b5` and `fa54502`. The two dilation companions
 are integrated in `1ef6bba`, adding 33 standard results on support rank and
 algebraic independence of dilation orbits. The coefficient-observables and
 Noetherian-compression companion is now integrated in `76dd876`, adding 11
-standard results to the 222-result holonomic report. Four companions to
-omnific automorphisms and Diophantine geometry still await main-text integration. Independent proof review of these additions remains pending;
+standard results to the 222-result holonomic report. The constant-discriminant
+and étale-unit companion is integrated in `fdedce0`, adding 27 standard results
+to the 244-result Diophantine report. Three older batch-33 companions still
+await main-text integration. Independent proof review of these additions remains pending;
 assembly alone does not extend any Lean mapping.
 A further universal-symmetries and difference-equations archive arrived in
 `bbe23a3`, and eight more archives arrived in `a4611ad`. All nine are now
 placed in `a7a435f` as additions to six reports, with audits and verification
 code supplied. Main-text integration, indexing and independent review remain
 pending; placement alone does not establish or formalize their claims.
+The Hahn-joins archive delivered in `267b910` awaits placement and integration.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
