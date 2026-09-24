@@ -663,3 +663,4 @@ import Surreal.Surcomplex.EtaleNormRigidity
 import Surreal.HahnSeries.NonpositiveSupportUnits
 import Surreal.HahnSeries.NonpositiveCoefficientExtension
 import Surreal.HahnSeries.EtaleNormRigidity
+import Surreal.HahnSeries.NonpositivePolynomialDegree
