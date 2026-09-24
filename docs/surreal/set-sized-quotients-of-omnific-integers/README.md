@@ -73,13 +73,22 @@ A countable telescope proves projective dimension two in the countably
 generated case; no general exact projective dimension is asserted.
 The coefficient-module thresholds for Ext¹ and Ext² are exactly |A|.
 
-The later core/tensor classifications and reconciliation of the parallel
-sources remain pending review. Exact scope
+The finite-support cores are reviewed through the exact flat-dimension
+theorem: domains and embeddings, finite quotients and completions, flat
+face ideals, the coordinate-intersection resolution, arithmetic Tor
+vanishing, nilpotent lifting, and the Boolean-face Tor computation.
+The contraction establishes exactness degree by degree, without claiming
+an A-linear splitting. In the Tor formula, degree one has coefficients
+in D while higher surviving degrees have coefficients in K. Finite
+quotients and self-Tor therefore do not determine the flat dimension.
+
+The later coefficient-lattice/tensor classifications and reconciliation
+of the parallel sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 278 pages
+article.pdf   the compiled report, 280 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

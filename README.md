@@ -217,7 +217,13 @@ is reviewed as well: the purely infinite ideal is flat and idempotent but
 not projective, and the constant quotient has flat dimension one.
 Nonzero Ext¹ and Ext² classes first occur with coefficient modules of
 size `|A|`. The constant inclusion splits the ring retraction but is not
-an `A`-linear section.
+an `A`-linear section. The finite-support coordinate cores now have
+reviewed proofs of their exact flat dimensions: the constant quotient has
+dimension d in d coordinate directions and infinite dimension in countable
+rank, despite vanishing positive self-Tor. In the integer and Gaussian
+cases, their finite quotients and profinite completions agree with the
+constant ring; the resolution and its test modules explain what this
+finite data misses.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
