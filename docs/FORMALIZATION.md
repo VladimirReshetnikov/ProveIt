@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **61 main texts** with **4087**
+The canonical inventory below identifies **61 main texts** with **4160**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -122,7 +122,9 @@ standard results. Five further batch-32 writes (`026dbb0`, `b8bbfee`,
 `52fc8ea`, `b9cae81`, `fc57b61`) add 144 standard results on arithmetic
 sampling, finite symmetry descent, support-bounded fields, cyclic-workspace
 ramification, and measurable first failures. Their statement indexes are
-refreshed; the remaining companions still await integration. These new results remain
+refreshed. The final batch-32 writes `9199559` and `c315ac9` add 73 standard
+results on elementary Chevalley groups, current Lie rings, topological
+collapse and coefficient recovery; these are now indexed too. These new results remain
 **Pending** in Lean; placing companion audits and verification code does not
 by itself integrate or formalize their mathematics.
 
@@ -130,7 +132,7 @@ The later delivery merged through `51c1cc7` adds nine archives under
 `docs/new/`. Placement, main-text integration, statement indexing and proof
 review are pending; these archives do not themselves add maintained reports
 or indexed statements. The later written expansions bring the current
-inventory to 4,087 standard results across 61 main reports.
+inventory to 4,160 standard results across 61 main reports.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -897,13 +899,13 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/markov-generators-at-every-scale/article.tex](surreal/markov-generators-at-every-scale/article.tex) | 9 | 5 | 3 | 3 | 20 |
 | [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-scaling-at-surreal-scales/article.tex) | 7 | 3 | 2 | 4 | 16 |
 | [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex) | 79 | 44 | 40 | 54 | 217 |
-| [surreal/omnific-groups-and-lattices/article.tex](surreal/omnific-groups-and-lattices/article.tex) | 30 | 26 | 23 | 20 | 99 |
-| [surreal/omnific-preserving-automorphisms/article.tex](surreal/omnific-preserving-automorphisms/article.tex) | 62 | 33 | 19 | 26 | 140 |
+| [surreal/omnific-groups-and-lattices/article.tex](surreal/omnific-groups-and-lattices/article.tex) | 41 | 32 | 28 | 26 | 127 |
+| [surreal/omnific-preserving-automorphisms/article.tex](surreal/omnific-preserving-automorphisms/article.tex) | 79 | 45 | 24 | 37 | 185 |
 | [surreal/set-sized-quotients-of-omnific-integers/article.tex](surreal/set-sized-quotients-of-omnific-integers/article.tex) | 140 | 68 | 44 | 52 | 304 |
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
 | [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 25 | 12 | 8 | 12 | 57 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 1615 | 849 | 803 | 820 | **4087** |
+| **Total** | 1643 | 867 | 813 | 837 | **4160** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1346,8 +1348,15 @@ scope recorded in the implementation table above.
 
 ## Main-report statement index
 
+The final two batch-32 assemblies, merged through `81b1112`, add **73**
+standard statements in omnific groups and omnific-preserving automorphisms.
+The current inventory is **4,160** across **61** main reports. Both expanded
+indexes are refreshed; all new statements remain **Pending** in Lean and
+independent review. Neither changed report has a mapped or cited statement
+body in the current Lean implementation.
+
 The next five batch-32 expansions, merged through `5bc847e`, add **144**
-standard statements. The current inventory is **4,087** across **61** main
+standard statements. That inventory was **4,087** across **61** main
 reports. All five changed statement tables are refreshed; their new sections
 remain **Pending** in Lean and outside previously recorded review scopes.
 All 13 mapped or cited statement bodies checked in the changed reports are
@@ -5539,260 +5548,339 @@ They are not included in the literal standard-environment table below.
 
 Source: [surreal/omnific-preserving-automorphisms/article.tex](surreal/omnific-preserving-automorphisms/article.tex).
 
+The eleven-manuscript assembly now has 185 standard statements, including topological collapse and arbitrary-rank coefficient recovery. These additions remain **Pending** in Lean and independent review.
+
+
 Assembled from the manuscripts placed in `f4c9504`. Proof review and every
 Lean result below remain **Pending**.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `opa:lem:shift` (line 709) | One-shift summation \src{04, 08, 10} |
-| Lemma | `opa:lem:polynomial` (line 728) | Coefficient polynomial \src{04} |
-| Lemma | `opa:lem:divisible` (line 762) | The divisible part \src{04, 08} |
-| Lemma | `opa:lem:additive` (line 809) | Additivity \src{04, 09} |
-| Theorem | `opa:thm:criterion` (line 858) | Convex-support criterion \src{04, 09, 10}\mergetag |
-| Theorem | `opa:thm:derivation` (line 926) | Boundary-preserving derivations \src{09} |
-| Corollary | `opa:cor:operator` (line 949) | Operator form \src{09} |
-| Lemma | `opa:sc:lem:root` (line 1020) | Leading-one roots \src{10} |
-| Theorem | `opa:sc:thm:supportcut` (line 1032) | Support-cut form \src{10} |
-| Proposition | `opa:sc:prop:blocks` (line 1117) | Signed Archimedean blocks \src{10} |
-| Theorem | `opa:thm:shear` (line 1168) | Homogeneous shears \src{04, 09}; after \lbl{saut:thm:shiftflow} |
-| Theorem | `opa:thm:fixedshear` (line 1206) | Exact displacement and fixed field \src{04, 08, 09, 10} |
-| Proposition | `opa:prop:uniform` (line 1242) | Uniformly supported shifts \src{09} |
-| Lemma | `opa:lem:operator` (line 1272) | Iterated operator summability \src{04} |
-| Theorem | `opa:thm:derivcriterion` (line 1286) | Derivations with common shifts \src{04} |
-| Theorem | `opa:thm:lie` (line 1307) | Exponential and logarithm on common shifts \src{04} |
-| Proposition | `opa:prop:iterate` (line 1340) | Falling-factorial iterates \src{08} |
-| Theorem | `opa:thm:threshold` (line 1361) | Threshold for single flows \src{08} |
-| Theorem | `opa:thm:rank` (line 1436) | Rank dichotomy \src{04, 09, 10}; \src{08} for single flows |
-| Theorem | `opa:thm:bottom` (line 1462) | Common fixed field at arbitrary set-sized rank \src{04} |
-| Theorem | `opa:thm:phase` (line 1487) | Finite-dimensional phase shears \src{08} |
-| Theorem | `opa:sc:thm:twists` (line 1532) | Twists \src{10} |
-| Theorem | `opa:sc:thm:fixed` (line 1599) | Fixed field and first displacement \src{10} |
-| Corollary | `opa:sc:cor:relative` (line 1625) | No finite motion \src{10} |
-| Proposition | `opa:sc:prop:algind` (line 1638) | Independent exponent cosets \src{10} |
-| Theorem | `opa:thm:factorization` (line 1676) | Strong valued factorization \src{04, 09, 10} |
-| Corollary | `opa:cor:allautos` (line 1718) | All pair automorphisms \src{08, 09, 10} |
-| Lemma | `opa:lem:bracket` (line 1743) | Homogeneous brackets \src{04, 08, 09} |
-| Lemma | `opa:lem:rankfiltration` (line 1782) | \src{09} |
-| Theorem | `opa:thm:derivedrank` (line 1790) | Finite-rank bound \src{09} |
-| Lemma | `opa:lem:balanced` (line 1816) | Balanced brackets \src{09} |
-| Lemma | `opa:lem:mixed` (line 1825) | Mixed-parameter detection \src{09} |
-| Theorem | `opa:thm:sharp` (line 1844) | Sharp derived length \src{09} |
-| Proposition | `opa:prop:lienilp` (line 1867) | \src{04, 09} |
-| Theorem | `opa:thm:commutator` (line 1882) | Exact commutators \src{04, 08} |
-| Lemma | `opa:lem:vandermonde` (line 1917) | Finite exponential independence \src{08} |
-| Theorem | `opa:thm:wreath` (line 1929) | A faithful $\Z\wr\Z$ \src{08} |
-| Corollary | `opa:cor:localnonabelian` (line 1955) | Every set stabilizer is not nilpotent \src{04, 08} |
-| Lemma | `opa:lem:avoid` (line 2005) | Parameter avoidance \src{04, 08, 09, 10} |
-| Theorem | `opa:thm:fixed` (line 2017) | The common fixed field \src{04, 08, 09} |
-| Lemma | `opa:lem:separation` (line 2039) | Set-sized coefficient separation \src{04} |
-| Theorem | `opa:thm:hull` (line 2058) | Exact elementary hull \src{04} |
-| Corollary | `opa:cor:monoparams` (line 2068) | Monomial parameters \src{04} |
-| Theorem | `opa:thm:product` (line 2090) | Faithful $\R^\kappa$ actions \src{09} |
-| Theorem | `opa:thm:nonsolvable` (line 2110) | Nonsolvable stabilizers \src{09} |
-| Proposition | `opa:sc:prop:dclset` (line 2135) | Definable-closure support bound \src{10} |
-| Lemma | `opa:lem:positive` (line 2199) | Order on $\Oz$ through fractions \src{08} |
-| Theorem | `opa:thm:projections` (line 2212) | Zero-cut projections and floor \src{08, 09} |
-| Theorem | `opa:thm:parameters` (line 2261) | Set-parameter invisibility \src{04, 08, 09, 10} |
-| Corollary | `opa:cor:puring` (line 2300) | \src{04, 09, 10} |
-| Lemma | `opa:lem:fiber` (line 2323) | A whole fiber moves \src{09} |
-| Theorem | `opa:thm:nosection` (line 2332) | No definable section \src{09} |
-| Theorem | `opa:sc:thm:twoterm` (line 2414) | Two-term witnesses \src{10} |
-| Corollary | `opa:sc:cor:birthday` (line 2443) | Bounded birthdays \src{10} |
-| Theorem | `opa:sc:thm:undef` (line 2480) | What remains undefinable \src{10} |
-| Corollary | `opa:sc:cor:innerbound` (line 2528) | Support bounds for definable elements \src{10}; outer bound \mergetag |
-| Theorem | `opa:thm:complex` (line 2570) | Gaussian stabilizer and conjugation-compatible witnesses \src{04, 09, 10} |
-| Theorem | `opa:thm:realaxis` (line 2596) | The real axis inside the leading-term kernel \src{04} |
-| Proposition | `opa:prop:wild` (line 2620) | A wild coefficient lift \src{08} |
-| Corollary | `opa:cor:gaussianfixed` (line 2636) | Gaussian fixed field \src{08, 09} |
-| Proposition | `opa:sc:prop:complex` (line 2668) | Two-term Gaussian witnesses \src{10} |
-| Lemma | `opa:par:lem:localize` (line 2937) | Localization \src{02} |
-| Theorem | `opa:par:thm:scale` (line 2954) | Monomial divisibility \src{02}; after \lbl{bst:thm:fieldcriterion} |
-| Corollary | `opa:par:cor:ozcover` (line 2987) | Omnific root coverage \src{02} |
-| Lemma | `opa:par:lem:rootsfield` (line 3002) | Unbounded roots \src{02} |
-| Lemma | `opa:par:lem:constants` (line 3013) | Algebraic constants \src{02} |
-| Lemma | `opa:par:lem:translates` (line 3027) | Finitely many unit translates \src{02} |
-| Theorem | `opa:par:thm:finitetype` (line 3041) | Finite-type embedding rigidity \src{02} |
-| Theorem | `opa:par:thm:pointed` (line 3066) | Pointed parameter spaces \src{02} |
-| Theorem | `opa:par:thm:poly` (line 3090) | Polynomial coefficient rigidity \src{02} |
-| Lemma | `opa:par:lem:laurentunits` (line 3099) | Laurent units \src{02} |
-| Theorem | `opa:par:thm:laurent` (line 3108) | Laurent coefficient rigidity \src{02} |
-| Theorem | `opa:par:thm:cancellation` (line 3125) | Strong coefficient invariance \src{02} |
-| Theorem | `opa:par:thm:aut` (line 3151) | Automorphisms of polynomial and torus rings \src{02} |
-| Lemma | `opa:par:lem:lnddegree` (line 3177) | \src{02} |
-| Theorem | `opa:par:thm:ML` (line 3185) | Stable locally nilpotent rigidity \src{02} |
-| Corollary | `opa:par:cor:coaction` (line 3197) | No coactions or gradings \src{02} |
-| Proposition | `opa:par:prop:Euler` (line 3220) | Support-preserving Euler derivations \src{02} |
-| Theorem | `opa:par:thm:formal` (line 3239) | Compatible formal flows \src{02} |
-| Theorem | `opa:par:thm:nonalg` (line 3253) | Nonalgebraization at the first jet \src{02} |
-| Lemma | `opa:par:lem:expindep` (line 3284) | Formal exponential independence \src{02} |
-| Theorem | `opa:par:thm:orbitfield` (line 3293) | Monomial orbit field \src{02} |
-| Theorem | `opa:par:thm:Db` (line 3309) | Commuting omnific derivations \src{02}; after \lbl{osq:prop:classder} |
-| Corollary | `opa:par:cor:multiflow` (line 3328) | Multi-parameter flows \src{02} |
-| Corollary | `opa:par:cor:continuum` (line 3354) | A continuum of independent orbit elements \src{02} |
-| Proposition | `opa:par:prop:fracworkspace` (line 3394) | Bounded-scale fraction field \src{02}; after \lbl{bst:prop:localdensity} |
-| Lemma | `opa:as:lem:intersection` (line 3700) | Finite intersection \src{12, 13, 14} |
-| Lemma | `opa:as:lem:triangular` (line 3708) | Triangular detector \src{12} |
-| Lemma | `opa:as:lem:binary` (line 3731) | Binary finite-row lemma \src{13} |
-| Theorem | `opa:as:thm:detect` (line 3752) | Scalar detection of Hahn summability \src{12, 13, 14} |
-| Corollary | `opa:as:cor:countable` (line 3794) | Countable certificates \src{13} |
-| Theorem | `opa:as:thm:ctiso` (line 3826) | Automatic strongness from constant-term covariance \src{12, 13, 14} |
-| Corollary | `opa:as:cor:recover` (line 3859) | The summation operation is recovered \src{12, 14} |
-| Proposition | `opa:as:prop:matrix` (line 3865) | Coefficient matrix \src{13} |
-| Proposition | `opa:as:prop:setpairs` (line 3901) | Pair isomorphisms preserve the constant term \src{12, 13, 14} |
-| Theorem | `opa:as:thm:main` (line 3929) | Automatic strongness of omnific automorphisms \src{12, 13, 14} |
-| Corollary | `opa:as:cor:setpairs` (line 3974) | Full real Hahn pairs \src{12, 13, 14} |
-| Corollary | `opa:as:cor:monodet` (line 3990) | Determination by monomials \src{12, 13, 14} |
-| Theorem | `opa:as:thm:factor` (line 4019) | Factorization of every pair automorphism \src{12, 13, 14} |
-| Corollary | `opa:as:cor:arch` (line 4064) | Archimedean groups \src{12, 14} |
-| Corollary | `opa:as:cor:invisible` (line 4078) | What an automorphism of $\Oz$ does inside $\Pi$ \mergetag |
-| Proposition | `opa:as:prop:scalarrep` (line 4111) | Scalar representability at set size \src{12, 13, 14} |
-| Theorem | `opa:as:thm:adjoint` (line 4125) | Adjoint characterization \src{12, 13, 14} |
-| Theorem | `opa:as:thm:retraction` (line 4153) | A canonical linear retraction \src{12} |
-| Corollary | `opa:as:cor:tower` (line 4177) | Tower law and complement \src{12} |
-| Theorem | `opa:as:thm:classdefect` (line 4213) | A strong functional with no representing surreal \src{12, 13, 14} |
-| Lemma | `opa:as:lem:gap` (line 4263) | Intrinsic description \src{11} |
-| Theorem | `opa:as:thm:classification` (line 4280) | Bottom-gap classification \src{11} |
-| Corollary | `opa:as:cor:onto` (line 4345) | Surjectivity \src{11} |
-| Lemma | `opa:as:lem:taylorsection` (line 4368) | Taylor section \src{11, 12, 13} |
-| Theorem | `opa:as:thm:taylorcriterion` (line 4396) | Exact Taylor admissibility \src{11} |
-| Corollary | `opa:as:cor:rigidity` (line 4409) | Coinitiality is exactly coefficient rigidity \src{11} |
-| Lemma | `opa:as:lem:inner` (line 4437) | Inner lift \src{11} |
-| Lemma | `opa:as:lem:gaps` (line 4461) | The three value images and their gaps |
-| Theorem | `opa:as:thm:explicit` (line 4487) | Proper embeddings moving a real \src{11, 12, 13} |
-| Corollary | `opa:as:cor:image` (line 4531) | Image, reals and a missing test \src{12}; for all three \mergetag |
-| Corollary | `opa:as:cor:homogeneity` (line 4547) | Failure of pair homogeneity \src{13} |
-| Theorem | `opa:as:thm:closed` (line 4574) | Closed images \src{11} |
-| Lemma | `opa:as:lem:natural` (line 4591) | Induced value embedding \src{11} |
-| Theorem | `opa:as:thm:topology` (line 4601) | Continuity or external discreteness \src{11} |
-| Theorem | `opa:as:thm:four` (line 4621) | The two ends are independent \src{11} |
-| Theorem | `opa:as:thm:elementary` (line 4661) | Logical separation \src{11}; \src{12} for its example |
-| Proposition | `opa:as:prop:overlap` (line 4684) | Ordinary overlap \src{11}; \src{12} for Taylor sections |
-| Lemma | `opa:as:lem:side` (line 4698) | One-sided infinitesimal neighbourhoods \src{11} |
-| Theorem | `opa:as:thm:continuum` (line 4712) | One field-conjugacy class, continuum many pair classes \src{11} |
-| Lemma | `opa:as:lem:parameters` (line 4741) | Two-level support control \src{11} |
-| Theorem | `opa:as:thm:parameters` (line 4750) | Parameter-fixed discrete and nondiscrete copies \src{11} |
-| Theorem | `opa:as:thm:relative` (line 4787) | Relative coefficient motion \src{11} |
-| Theorem | `opa:as:thm:conjugation` (line 4812) | Conjugation-compatible automorphisms \src{12, 13, 14} |
-| Theorem | `opa:as:thm:gaussian` (line 4825) | Valuation-compatible Gaussian automorphisms \src{12, 13, 14} |
-| Theorem | `opa:as:thm:complexembed` (line 4848) | Conjugation-compatible embeddings \src{11} |
-| Proposition | `opa:as:prop:complexconst` (line 4865) | Complex constants and nonelementarity \src{11} |
-| Corollary | `opa:as:cor:complexcopies` (line 4878) | Transferred copies \src{11} |
-| Proposition | `opa:as:prop:kappa` (line 4895) | Regular cardinal support bounds \src{12} |
-| Lemma | `opa:cm:lem:matching` (line 5333) | An infinite induced matching \src{14} |
-| Corollary | `opa:cm:cor:allones` (line 5375) | Monomial and all-ones tests suffice \src{14} |
-| Proposition | `opa:cm:prop:workspace` (line 5423) | Detection in a subfield \src{14} |
-| Theorem | `opa:cm:thm:formal` (line 5488) | Formal evaluation is transported \src{14} |
-| Proposition | `opa:cm:prop:adjointmatrix` (line 5518) | The adjoint as a sign-reversed transpose \src{14} |
-| Proposition | `opa:cm:prop:unique` (line 5579) | Extensions from $\mathcal R_\Gamma$ are unique \mergetag |
+| Lemma | `opa:lem:shift` (line 784) | One-shift summation \src{04, 08, 10} |
+| Lemma | `opa:lem:polynomial` (line 803) | Coefficient polynomial \src{04} |
+| Lemma | `opa:lem:divisible` (line 837) | The divisible part \src{04, 08} |
+| Lemma | `opa:lem:additive` (line 884) | Additivity \src{04, 09} |
+| Theorem | `opa:thm:criterion` (line 933) | Convex-support criterion \src{04, 09, 10}\mergetag |
+| Theorem | `opa:thm:derivation` (line 1001) | Boundary-preserving derivations \src{09} |
+| Corollary | `opa:cor:operator` (line 1024) | Operator form \src{09} |
+| Lemma | `opa:sc:lem:root` (line 1095) | Leading-one roots \src{10} |
+| Theorem | `opa:sc:thm:supportcut` (line 1107) | Support-cut form \src{10} |
+| Proposition | `opa:sc:prop:blocks` (line 1192) | Signed Archimedean blocks \src{10} |
+| Theorem | `opa:thm:shear` (line 1243) | Homogeneous shears \src{04, 09}; after \lbl{saut:thm:shiftflow} |
+| Theorem | `opa:thm:fixedshear` (line 1281) | Exact displacement and fixed field \src{04, 08, 09, 10} |
+| Proposition | `opa:prop:uniform` (line 1317) | Uniformly supported shifts \src{09} |
+| Lemma | `opa:lem:operator` (line 1347) | Iterated operator summability \src{04} |
+| Theorem | `opa:thm:derivcriterion` (line 1361) | Derivations with common shifts \src{04} |
+| Theorem | `opa:thm:lie` (line 1382) | Exponential and logarithm on common shifts \src{04} |
+| Proposition | `opa:prop:iterate` (line 1415) | Falling-factorial iterates \src{08} |
+| Theorem | `opa:thm:threshold` (line 1436) | Threshold for single flows \src{08} |
+| Theorem | `opa:thm:rank` (line 1511) | Rank dichotomy \src{04, 09, 10}; \src{08} for single flows |
+| Theorem | `opa:thm:bottom` (line 1537) | Common fixed field at arbitrary set-sized rank \src{04} |
+| Theorem | `opa:thm:phase` (line 1562) | Finite-dimensional phase shears \src{08} |
+| Theorem | `opa:sc:thm:twists` (line 1607) | Twists \src{10} |
+| Theorem | `opa:sc:thm:fixed` (line 1674) | Fixed field and first displacement \src{10} |
+| Corollary | `opa:sc:cor:relative` (line 1700) | No finite motion \src{10} |
+| Proposition | `opa:sc:prop:algind` (line 1713) | Independent exponent cosets \src{10} |
+| Theorem | `opa:thm:factorization` (line 1751) | Strong valued factorization \src{04, 09, 10} |
+| Corollary | `opa:cor:allautos` (line 1793) | All pair automorphisms \src{08, 09, 10} |
+| Lemma | `opa:lem:bracket` (line 1818) | Homogeneous brackets \src{04, 08, 09} |
+| Lemma | `opa:lem:rankfiltration` (line 1857) | \src{09} |
+| Theorem | `opa:thm:derivedrank` (line 1865) | Finite-rank bound \src{09} |
+| Lemma | `opa:lem:balanced` (line 1891) | Balanced brackets \src{09} |
+| Lemma | `opa:lem:mixed` (line 1900) | Mixed-parameter detection \src{09} |
+| Theorem | `opa:thm:sharp` (line 1919) | Sharp derived length \src{09} |
+| Proposition | `opa:prop:lienilp` (line 1942) | \src{04, 09} |
+| Theorem | `opa:thm:commutator` (line 1957) | Exact commutators \src{04, 08} |
+| Lemma | `opa:lem:vandermonde` (line 1992) | Finite exponential independence \src{08} |
+| Theorem | `opa:thm:wreath` (line 2004) | A faithful $\Z\wr\Z$ \src{08} |
+| Corollary | `opa:cor:localnonabelian` (line 2030) | Every set stabilizer is not nilpotent \src{04, 08} |
+| Lemma | `opa:lem:avoid` (line 2080) | Parameter avoidance \src{04, 08, 09, 10} |
+| Theorem | `opa:thm:fixed` (line 2092) | The common fixed field \src{04, 08, 09} |
+| Lemma | `opa:lem:separation` (line 2114) | Set-sized coefficient separation \src{04} |
+| Theorem | `opa:thm:hull` (line 2133) | Exact elementary hull \src{04} |
+| Corollary | `opa:cor:monoparams` (line 2143) | Monomial parameters \src{04} |
+| Theorem | `opa:thm:product` (line 2165) | Faithful $\R^\kappa$ actions \src{09} |
+| Theorem | `opa:thm:nonsolvable` (line 2185) | Nonsolvable stabilizers \src{09} |
+| Proposition | `opa:sc:prop:dclset` (line 2210) | Definable-closure support bound \src{10} |
+| Lemma | `opa:lem:positive` (line 2274) | Order on $\Oz$ through fractions \src{08} |
+| Theorem | `opa:thm:projections` (line 2287) | Zero-cut projections and floor \src{08, 09} |
+| Theorem | `opa:thm:parameters` (line 2336) | Set-parameter invisibility \src{04, 08, 09, 10} |
+| Corollary | `opa:cor:puring` (line 2375) | \src{04, 09, 10} |
+| Lemma | `opa:lem:fiber` (line 2398) | A whole fiber moves \src{09} |
+| Theorem | `opa:thm:nosection` (line 2407) | No definable section \src{09} |
+| Theorem | `opa:sc:thm:twoterm` (line 2489) | Two-term witnesses \src{10} |
+| Corollary | `opa:sc:cor:birthday` (line 2518) | Bounded birthdays \src{10} |
+| Theorem | `opa:sc:thm:undef` (line 2555) | What remains undefinable \src{10} |
+| Corollary | `opa:sc:cor:innerbound` (line 2603) | Support bounds for definable elements \src{10}; outer bound \mergetag |
+| Theorem | `opa:thm:complex` (line 2645) | Gaussian stabilizer and conjugation-compatible witnesses \src{04, 09, 10} |
+| Theorem | `opa:thm:realaxis` (line 2671) | The real axis inside the leading-term kernel \src{04} |
+| Proposition | `opa:prop:wild` (line 2695) | A wild coefficient lift \src{08} |
+| Corollary | `opa:cor:gaussianfixed` (line 2711) | Gaussian fixed field \src{08, 09} |
+| Proposition | `opa:sc:prop:complex` (line 2743) | Two-term Gaussian witnesses \src{10} |
+| Lemma | `opa:par:lem:localize` (line 3016) | Localization \src{02} |
+| Theorem | `opa:par:thm:scale` (line 3033) | Monomial divisibility \src{02, 16}; after \lbl{bst:thm:fieldcriterion} |
+| Corollary | `opa:par:cor:ozcover` (line 3066) | Omnific root coverage \src{02, 16} |
+| Lemma | `opa:par:lem:rootsfield` (line 3081) | Unbounded roots \src{02} |
+| Lemma | `opa:par:lem:constants` (line 3092) | Algebraic constants \src{02} |
+| Lemma | `opa:par:lem:translates` (line 3106) | Finitely many unit translates \src{02} |
+| Theorem | `opa:par:thm:finitetype` (line 3120) | Finite-type embedding rigidity \src{02} |
+| Theorem | `opa:par:thm:pointed` (line 3145) | Pointed parameter spaces \src{02} |
+| Theorem | `opa:par:thm:poly` (line 3169) | Polynomial coefficient rigidity \src{02} |
+| Lemma | `opa:par:lem:laurentunits` (line 3178) | Laurent units \src{02} |
+| Theorem | `opa:par:thm:laurent` (line 3187) | Laurent coefficient rigidity \src{02} |
+| Theorem | `opa:par:thm:cancellation` (line 3204) | Strong coefficient invariance \src{02} |
+| Theorem | `opa:par:thm:aut` (line 3230) | Automorphisms of polynomial and torus rings \src{02} |
+| Lemma | `opa:par:lem:lnddegree` (line 3263) | \src{02} |
+| Theorem | `opa:par:thm:ML` (line 3271) | Stable locally nilpotent rigidity \src{02} |
+| Corollary | `opa:par:cor:coaction` (line 3283) | No coactions or gradings \src{02} |
+| Proposition | `opa:par:prop:Euler` (line 3306) | Support-preserving Euler derivations \src{02} |
+| Theorem | `opa:par:thm:formal` (line 3325) | Compatible formal flows \src{02} |
+| Theorem | `opa:par:thm:nonalg` (line 3339) | Nonalgebraization at the first jet \src{02} |
+| Lemma | `opa:par:lem:expindep` (line 3370) | Formal exponential independence \src{02} |
+| Theorem | `opa:par:thm:orbitfield` (line 3379) | Monomial orbit field \src{02} |
+| Theorem | `opa:par:thm:Db` (line 3395) | Commuting omnific derivations \src{02}; after \lbl{osq:prop:classder} |
+| Corollary | `opa:par:cor:multiflow` (line 3414) | Multi-parameter flows \src{02} |
+| Corollary | `opa:par:cor:continuum` (line 3440) | A continuum of independent orbit elements \src{02} |
+| Proposition | `opa:par:prop:fracworkspace` (line 3480) | Bounded-scale fraction field \src{02}; after \lbl{bst:prop:localdensity} |
+| Lemma | `opa:as:lem:intersection` (line 3791) | Finite intersection \src{12, 13, 14, 15} |
+| Lemma | `opa:as:lem:triangular` (line 3799) | Triangular detector \src{12} |
+| Lemma | `opa:as:lem:binary` (line 3822) | Binary finite-row lemma \src{13} |
+| Theorem | `opa:as:thm:detect` (line 3843) | Scalar detection of Hahn summability \src{12, 13, 14, 15} |
+| Corollary | `opa:as:cor:countable` (line 3886) | Countable certificates \src{13} |
+| Theorem | `opa:as:thm:ctiso` (line 3918) | Automatic strongness from constant-term covariance \src{12, 13, 14, 15} |
+| Corollary | `opa:as:cor:recover` (line 3951) | The summation operation is recovered \src{12, 14} |
+| Proposition | `opa:as:prop:matrix` (line 3957) | Coefficient matrix \src{13} |
+| Proposition | `opa:as:prop:setpairs` (line 3993) | Pair isomorphisms preserve the constant term \src{12, 13, 14, 15} |
+| Theorem | `opa:as:thm:main` (line 4021) | Automatic strongness of omnific automorphisms \src{12, 13, 14, 15} |
+| Corollary | `opa:as:cor:setpairs` (line 4066) | Full real Hahn pairs \src{12, 13, 14, 15} |
+| Corollary | `opa:as:cor:monodet` (line 4082) | Determination by monomials \src{12, 13, 14, 15} |
+| Theorem | `opa:as:thm:factor` (line 4111) | Factorization of every pair automorphism \src{12, 13, 14, 15} |
+| Corollary | `opa:as:cor:arch` (line 4156) | Archimedean groups \src{12, 14, 15} |
+| Corollary | `opa:as:cor:invisible` (line 4170) | What an automorphism of $\Oz$ does inside $\Pi$ \mergetag |
+| Proposition | `opa:as:prop:scalarrep` (line 4203) | Scalar representability at set size \src{12, 13, 14, 15} |
+| Theorem | `opa:as:thm:adjoint` (line 4217) | Adjoint characterization \src{12, 13, 14, 15} |
+| Theorem | `opa:as:thm:retraction` (line 4245) | A canonical linear retraction \src{12} |
+| Corollary | `opa:as:cor:tower` (line 4269) | Tower law and complement \src{12} |
+| Theorem | `opa:as:thm:classdefect` (line 4305) | A strong functional with no representing surreal \src{12, 13, 14, 15} |
+| Lemma | `opa:as:lem:gap` (line 4355) | Intrinsic description \src{11} |
+| Theorem | `opa:as:thm:classification` (line 4372) | Bottom-gap classification \src{11} |
+| Corollary | `opa:as:cor:onto` (line 4437) | Surjectivity \src{11} |
+| Lemma | `opa:as:lem:taylorsection` (line 4460) | Taylor section \src{11, 12, 13} |
+| Theorem | `opa:as:thm:taylorcriterion` (line 4488) | Exact Taylor admissibility \src{11} |
+| Corollary | `opa:as:cor:rigidity` (line 4501) | Coinitiality is exactly coefficient rigidity \src{11} |
+| Lemma | `opa:as:lem:inner` (line 4529) | Inner lift \src{11} |
+| Lemma | `opa:as:lem:gaps` (line 4553) | The three value images and their gaps |
+| Theorem | `opa:as:thm:explicit` (line 4579) | Proper embeddings moving a real \src{11, 12, 13} |
+| Corollary | `opa:as:cor:image` (line 4623) | Image, reals and a missing test \src{12}; for all three \mergetag |
+| Corollary | `opa:as:cor:homogeneity` (line 4639) | Failure of pair homogeneity \src{13} |
+| Theorem | `opa:as:thm:closed` (line 4666) | Closed images \src{11} |
+| Lemma | `opa:as:lem:natural` (line 4683) | Induced value embedding \src{11} |
+| Theorem | `opa:as:thm:topology` (line 4693) | Continuity or external discreteness \src{11} |
+| Theorem | `opa:as:thm:four` (line 4713) | The two ends are independent \src{11} |
+| Theorem | `opa:as:thm:elementary` (line 4753) | Logical separation \src{11}; \src{12} for its example |
+| Proposition | `opa:as:prop:overlap` (line 4776) | Ordinary overlap \src{11}; \src{12} for Taylor sections |
+| Lemma | `opa:as:lem:side` (line 4790) | One-sided infinitesimal neighbourhoods \src{11} |
+| Theorem | `opa:as:thm:continuum` (line 4804) | One field-conjugacy class, continuum many pair classes \src{11} |
+| Lemma | `opa:as:lem:parameters` (line 4833) | Two-level support control \src{11} |
+| Theorem | `opa:as:thm:parameters` (line 4842) | Parameter-fixed discrete and nondiscrete copies \src{11} |
+| Theorem | `opa:as:thm:relative` (line 4879) | Relative coefficient motion \src{11} |
+| Theorem | `opa:as:thm:conjugation` (line 4904) | Conjugation-compatible automorphisms \src{12, 13, 14, 15} |
+| Theorem | `opa:as:thm:gaussian` (line 4917) | Valuation-compatible Gaussian automorphisms \src{12, 13, 14, 15} |
+| Theorem | `opa:as:thm:complexembed` (line 4940) | Conjugation-compatible embeddings \src{11} |
+| Proposition | `opa:as:prop:complexconst` (line 4957) | Complex constants and nonelementarity \src{11} |
+| Corollary | `opa:as:cor:complexcopies` (line 4970) | Transferred copies \src{11} |
+| Proposition | `opa:as:prop:kappa` (line 4987) | Regular cardinal support bounds \src{12} |
+| Lemma | `opa:cm:lem:matching` (line 5442) | An infinite induced matching \src{14} |
+| Corollary | `opa:cm:cor:allones` (line 5484) | Monomial and all-ones tests suffice \src{14} |
+| Proposition | `opa:cm:prop:workspace` (line 5535) | Detection in a subfield \src{14} |
+| Theorem | `opa:cm:thm:formal` (line 5600) | Formal evaluation is transported \src{14} |
+| Proposition | `opa:cm:prop:adjointmatrix` (line 5630) | The adjoint as a sign-reversed transpose \src{14} |
+| Proposition | `opa:cm:prop:unique` (line 5691) | Extensions from $\mathcal R_\Gamma$ are unique \mergetag |
+| Lemma | `opa:tc:lem:densecover` (line 5976) | Two opposite well orders cannot cover a dense interval \src{15} |
+| Lemma | `opa:tc:lem:monomialcollapse` (line 5988) | Monomial collapse \src{15} |
+| Theorem | `opa:tc:thm:topcollapse` (line 6010) | Topological collapse onto the constants \src{15} |
+| Corollary | `opa:tc:cor:toprecipient` (line 6052) | A universal separated recipient \src{15} |
+| Theorem | `opa:tc:thm:oztopology` (line 6081) | Omnific topologies \src{15} |
+| Proposition | `opa:tc:prop:countablecollapse` (line 6092) | Countable monomial tests suffice for the full omnific rings \src{15} |
+| Corollary | `opa:tc:cor:fieldcollapse` (line 6110) | The surreal and surcomplex fields collapse \src{15} |
+| Corollary | `opa:tc:cor:topinvisible` (line 6121) | Automorphisms are topologically invisible \src{15} |
+| Lemma | `opa:tc:lem:cycliccover` (line 6134) | Covers of an ordered group by opposite well orders \src{15} |
+| Theorem | `opa:tc:thm:cyclicboundary` (line 6148) | Exact boundary for full Hahn fields \src{15} |
+| Lemma | `opa:tc:lem:disjoint` (line 6217) | Disjoint rows \src{15} |
+| Corollary | `opa:tc:cor:interpolate` (line 6250) | Sparse interpolation inside a bad family \src{15} |
+| Corollary | `opa:tc:cor:ringinvolution` (line 6280) | The Gaussian ring with its involution \src{15} |
+| Proposition | `opa:tc:prop:classweights` (line 6296) | Class coefficient description of the strong dual \src{15} |
+| Theorem | `opa:tc:thm:topologicalsums` (line 6340) | Unordered sums in the pairing topology \src{15} |
+| Corollary | `opa:tc:cor:continuous` (line 6353) | Continuous linear maps \src{15} |
+| Theorem | `opa:tc:thm:notjoint` (line 6367) | Multiplication is not jointly continuous \src{15} |
+| Lemma | `opa:cr:lem:units` (line 6632) | Monomial factors and units \src{16} |
+| Lemma | `opa:cr:lem:constants` (line 6642) | No new algebraic constants \src{16} |
+| Lemma | `opa:cr:lem:specialize` (line 6657) | One-variable specialization \src{16} |
+| Lemma | `opa:cr:lem:abc` (line 6683) | Mason--Stothers in characteristic zero \src{16} |
+| Lemma | `opa:cr:lem:quarticone` (line 6696) | The quartic has only constant rational points \src{16} |
+| Theorem | `opa:cr:thm:quarticG` (line 6707) | Quartic rigidity in every rational group field \src{16} |
+| Theorem | `opa:cr:thm:quartic` (line 6717) | Uniform coefficient definitions \src{16}; 16's Main Theorem~A |
+| Corollary | `opa:cr:cor:fieldrecover` (line 6739) | Coefficient recovery under isomorphism \src{16} |
+| Theorem | `opa:cr:thm:ringrecover` (line 6759) | Existential coefficient recovery for rings \src{16} |
+| Corollary | `opa:cr:cor:interpretation` (line 6775) | Uniform interpretation \src{16} |
+| Lemma | `opa:cr:lem:multiplicity` (line 6793) | Sparse multiplicity bound \src{16} |
+| Theorem | `opa:cr:thm:sparse` (line 6804) | Uniform sparse power obstruction \src{16}; 16's Main Theorem~B |
+| Corollary | `opa:cr:cor:unbounded` (line 6827) | Unbounded roots force a monomial \src{16} |
+| Lemma | `opa:cr:lem:rootmonomial` (line 6835) | Roots of monomials \src{16} |
+| Proposition | `opa:cr:prop:rootlocus` (line 6848) | The all-order root locus \src{16} |
+| Theorem | `opa:cr:thm:rootembedding` (line 6876) | Arbitrary-monoid coefficient rigidity \src{16} |
+| Proposition | `opa:cr:prop:rootcore` (line 6892) | An intrinsic root-divisor description \src{16} |
+| Theorem | `opa:cr:thm:ringautos` (line 6911) | All group-algebra automorphisms \src{16} |
+| Corollary | `opa:cr:cor:ringgroup` (line 6927) | Reconstruction of the exponent group \src{16} |
+| Theorem | `opa:cr:thm:monoidautos` (line 6943) | Divisible monoids \src{16} |
+| Theorem | `opa:cr:thm:auto` (line 6986) | Exact monomial-automorphism criterion \src{16}; 16's Main Theorem~C |
+| Proposition | `opa:cr:prop:unboundedgroup` (line 7008) | An elementary range \src{16} |
+| Lemma | `opa:cr:lem:rank` (line 7028) | Relative rank is relative transcendence degree \src{16} |
+| Theorem | `opa:cr:thm:pairrecover` (line 7039) | Coefficient field and exponent group together \src{16} |
+| Theorem | `opa:cr:thm:finitecancel` (line 7058) | Finite-rank coefficient invariance \src{16} |
+| Corollary | `opa:cr:cor:finitefield` (line 7070) | Finite-rank field coefficient invariance \src{16} |
+| Theorem | `opa:cr:thm:infinitefail` (line 7084) | Infinite-rank counterexamples \src{16} |
+| Theorem | `opa:cr:thm:threshold` (line 7100) | A sharp rank threshold \src{16}; 16's Main Theorem~D |
 
 ### omnific-groups-and-lattices
 
 Source: [surreal/omnific-groups-and-lattices/article.tex](surreal/omnific-groups-and-lattices/article.tex).
 
+The five-manuscript assembly now has 127 standard statements, including the new elementary Chevalley-group and current-Lie-ring results. These additions remain **Pending** in Lean and independent review.
+
+
 Assembled from the manuscripts placed in `f4c9504`. Proof review and every
 Lean result below remain **Pending**.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `ogl:lem:units` (line 626) | Constant term, units and discreteness \src{06, 07, 10} |
-| Lemma | `ogl:lem:bounded` (line 670) | Bounded coordinates are constant \src{06} |
-| Lemma | `ogl:lem:gap` (line 681) | Gaps \src{06, 07, 10} |
-| Proposition | `ogl:prop:factor` (line 707) | Single-product divisibility \src{06, 07} |
-| Lemma | `ogl:alg:lem:torus` (line 734) | Torus freezing \src{06} |
-| Lemma | `ogl:alg:lem:finite` (line 754) | Finite schemes do not acquire points \src{06} |
-| Theorem | `ogl:alg:thm:fibers` (line 770) | Bounded fibers above a torus \src{06} |
-| Corollary | `ogl:alg:cor:quasifinite` (line 799) | Complex zero-dimensional fibers \src{06} |
-| Corollary | `ogl:alg:cor:compacttorus` (line 809) | Compact-by-torus groups \src{06} |
-| Lemma | `ogl:alg:lem:exp` (line 833) | Polynomial one-parameter subgroup \src{06} |
-| Corollary | `ogl:alg:cor:expI` (line 856) | Purely infinite parameters \src{06} |
-| Lemma | `ogl:alg:lem:compact` (line 885) | Real semisimple compactness criterion \src{06} |
-| Theorem | `ogl:alg:thm:real` (line 917) | Omnific rigidity and real unipotents \src{06} |
-| Theorem | `ogl:alg:thm:complex` (line 966) | The Gaussian dichotomy \src{06} |
-| Proposition | `ogl:alg:prop:bch` (line 1133) | The constant-term kernel of a unipotent group \src{06} |
-| Theorem | `ogl:alg:thm:ut` (line 1164) | Exact commutator filtration \src{06} |
-| Lemma | `ogl:el:lem:normalgen` (line 1239) | The split relative kernel \src{07, 11} |
-| Proposition | `ogl:el:prop:normal` (line 1259) | An abstract idempotent-ideal lemma \src{06} |
-| Proposition | `ogl:el:prop:split` (line 1284) | Exact split kernel \src{06} |
-| Lemma | `ogl:el:lem:absorb` (line 1311) | Absorption \src{06} |
-| Lemma | `ogl:el:lem:scale` (line 1353) | Exponent scaling \src{07} |
-| Lemma | `ogl:el:lem:compress` (line 1370) | Set-field compression \src{07} |
-| Lemma | `ogl:el:lem:ready` (line 1388) | A commutator-ready family \src{07} |
-| Theorem | `ogl:el:thm:invisible` (line 1413) | The purely infinite elementary kernel is invisible to sets \src{06, 07, 11} |
-| Theorem | `ogl:ker:thm:rootkernel` (line 1492) | Root-kernel reconstruction \src{11} |
-| Corollary | `ogl:ker:cor:transfer` (line 1532) | Transfer from rings to groups \src{11} |
-| Lemma | `ogl:ker:lem:closure` (line 1551) | Normal generation \src{11} |
-| Corollary | `ogl:el:cor:actions` (line 1605) | Actions and linear representations \src{06, 07, 11} |
-| Proposition | `ogl:el:prop:criterion` (line 1663) | An abstract collision criterion \src{07} |
-| Theorem | `ogl:el:thm:tower` (line 1699) | A non-simple invisible group with a large residual tower \src{06} |
-| Proposition | `ogl:el:prop:finiteside` (line 1737) | Universal set-sized quotient of $\SL_n$ of the finite surreals \mergetag |
-| Proposition | `ogl:el:prop:local` (line 1831) | Local cardinal form \src{06} |
-| Proposition | `ogl:el:prop:finsupport` (line 1862) | A visible finite-support kernel \src{06, 11} |
-| Lemma | `ogl:el:lem:pingpong` (line 1935) | Alternation of finite and infinite points \src{07} |
-| Theorem | `ogl:el:thm:amalgam` (line 1956) | The two-row amalgam \src{07} |
-| Theorem | `ogl:el:thm:freeproduct` (line 1992) | Kernel decomposition \src{07} |
-| Corollary | `ogl:el:cor:kernelab` (line 2020) | Internal abelianization and torsion \src{07} |
-| Lemma | `ogl:el:lem:functional` (line 2044) | A set-based additive functional \src{07} |
-| Proposition | `ogl:el:prop:specialize` (line 2063) | Additive specialization \src{07} |
-| Theorem | `ogl:el:thm:countable` (line 2080) | One countable target separates finite patterns \src{07} |
-| Corollary | `ogl:el:cor:nouniversal` (line 2107) | No universal set-sized quotient in rank two \src{07} |
-| Lemma | `ogl:el:lem:finite` (line 2124) | Divisibility kills finite root images \src{07} |
-| Proposition | `ogl:el:prop:finitefactor` (line 2131) | All finite images are arithmetic \src{07} |
-| Lemma | `ogl:el:lem:ordinaryrf` (line 2142) | Finite detection in the constant group \src{07} |
-| Theorem | `ogl:el:thm:residuals` (line 2151) | Finite and set residuals \src{07} |
-| Theorem | `ogl:el:thm:trichotomy` (line 2175) | The detection trichotomy \src{07} |
-| Proposition | `ogl:el:prop:realab` (line 2207) | The real abelianization, a classical specialization \src{07} |
-| Proposition | `ogl:el:prop:gaussianab` (line 2239) | Gaussian ambient abelianization \src{07} |
-| Proposition | `ogl:el:prop:cuspresidue` (line 2262) | The finite cusp-residue obstruction \src{07} |
-| Theorem | `ogl:el:thm:nonel` (line 2286) | A non-elementary omnific unipotent \src{07} |
-| Lemma | `ogl:el:lem:block` (line 2315) | A finite block identity \src{07} |
-| Theorem | `ogl:el:thm:stabilize` (line 2329) | One-step stabilization \src{07} |
-| Corollary | `ogl:el:cor:noextend` (line 2345) | A strict failure of extension \src{07} |
-| Theorem | `ogl:ker:thm:torsionfree` (line 2382) | Torsion-free constant-term kernels \src{11} |
-| Theorem | `ogl:ker:thm:center` (line 2404) | Centerlessness \src{11} |
-| Corollary | `ogl:ker:cor:normalsets` (line 2418) | Set-sized normal subgroups and conjugacy classes \src{11} |
-| Proposition | `ogl:ker:prop:finitesubgroups` (line 2434) | Finite subgroups are detected by constant terms \src{11} |
-| Theorem | `ogl:ker:thm:filtration` (line 2456) | A chain at $1+\omega$ \src{11} |
-| Proposition | `ogl:ker:prop:commoncongruence` (line 2488) | Common root elements for a set of congruences \src{11} |
-| Corollary | `ogl:ker:cor:profinite` (line 2515) | The profinite completion \src{11} |
-| Lemma | `ogl:ker:lem:stkernel` (line 2560) | The split Steinberg kernel \src{11} |
-| Theorem | `ogl:ker:thm:steinberg` (line 2574) | Universal set-sized quotient of the Steinberg group \src{11} |
-| Lemma | `ogl:ker:lem:fragment` (line 2632) | Closure and small scales \src{11} |
-| Lemma | `ogl:ker:lem:fragmentring` (line 2658) | No small ring image of the fragment ideal \src{11} |
-| Theorem | `ogl:ker:thm:fragmentgroup` (line 2683) | Cardinal elementary rigidity \src{11} |
-| Corollary | `ogl:ker:cor:fragmentst` (line 2706) | Cardinal Steinberg rigidity \src{11} |
-| Proposition | `ogl:ker:prop:fragmentfiltration` (line 2718) | Non-simple fragments \src{11} |
-| Proposition | `ogl:ker:prop:continuum` (line 2736) | The countable-support case \src{11} |
-| Proposition | `ogl:ker:prop:actioncard` (line 2749) | Action thresholds \src{11} |
-| Corollary | `ogl:ker:cor:boundedactions` (line 2766) | Ordinary groups invisible to bounded actions \src{11} |
-| Corollary | `ogl:ker:cor:complexreps` (line 2779) | Finite-dimensional complex representations \src{11} |
-| Proposition | `ogl:ker:prop:exactthreshold` (line 2800) | An exact-threshold criterion \src{11} |
-| Proposition | `ogl:ker:prop:exact` (line 2829) | Exact thresholds for the fragments \mergetag |
-| Corollary | `ogl:ker:cor:fivemodels` (line 2915) | Exact thresholds in the sibling report's set-sized models \mergetag |
-| Theorem | `ogl:lat:thm:contraction` (line 2983) | Constant-term contraction \src{10} |
-| Corollary | `ogl:lat:cor:strictdescent` (line 2996) | Strict descent for a positive family \src{10} |
-| Lemma | `ogl:lat:lem:coercive` (line 3043) | Coercivity at the last scale \src{10} |
-| Lemma | `ogl:lat:lem:lex` (line 3055) | Exact lexicographic comparison \src{10} |
-| Theorem | `ogl:lat:thm:main` (line 3077) | Minimum or exact missing-infimum cut \src{10} |
-| Theorem | `ogl:lat:thm:simultaneous` (line 3110) | Improvement of every set-sized family \src{10} |
-| Corollary | `ogl:lat:cor:noapprox` (line 3124) | No ordinary-factor approximation \src{10} |
-| Theorem | `ogl:lat:thm:lowflag` (line 3143) | Field span and integral trace of small energies \src{10} |
-| Proposition | `ogl:lat:prop:unidescent` (line 3168) | Unimodular descent \src{10} |
-| Corollary | `ogl:lat:cor:unicountable` (line 3186) | Countable coinitiality \src{10} |
-| Lemma | `ogl:lat:lem:projection` (line 3196) | Discreteness of a projected lattice |
-| Theorem | `ogl:lat:thm:unimodular` (line 3223) | Exact unimodular attainment criterion \src{10} |
-| Proposition | `ogl:lat:prop:closest` (line 3317) | Exact reduction for an ordinary target \src{10} |
-| Theorem | `ogl:lat:thm:closestflag` (line 3337) | Closest points for every ordinary center \src{10}; sufficiency also in the Hahn--Tate report |
-| Corollary | `ogl:lat:cor:parity` (line 3374) | Nearest-point multiplicity \src{10} |
-| Lemma | `ogl:lat:lem:finitetarget` (line 3402) | Matching the target's infinite part \src{10} |
-| Theorem | `ogl:lat:thm:alltargets` (line 3414) | Finite candidates for every target \src{10} |
-| Theorem | `ogl:lat:thm:binarycut` (line 3482) | Unrestricted binary cut \src{10} |
-| Theorem | `ogl:lat:thm:pellcut` (line 3509) | Unimodular cut and countable coinitiality \src{10} |
-| Corollary | `ogl:lat:cor:hierarchy` (line 3544) | A strict hierarchy \src{10} |
-| Lemma | `ogl:lat:lem:gauss` (line 3610) | What Gauss inequalities would imply \src{10} |
-| Corollary | `ogl:lat:cor:nogauss` (line 3622) | No Gauss-reduced basis \src{10} |
-| Theorem | `ogl:lat:thm:nolll` (line 3635) | No ordinary-parameter LLL basis \src{10} |
-| Theorem | `ogl:lat:thm:gaussianlll` (line 3664) | Gaussian reduction obstruction \src{10} |
-| Proposition | `ogl:lat:prop:closed` (line 3690) | Uniform separation without a shortest vector \src{10} |
+| Lemma | `ogl:lem:units` (line 698) | Constant term, units and discreteness \src{06, 07, 10} |
+| Lemma | `ogl:lem:bounded` (line 742) | Bounded coordinates are constant \src{06} |
+| Lemma | `ogl:lem:gap` (line 753) | Gaps \src{06, 07, 10} |
+| Proposition | `ogl:prop:factor` (line 779) | Single-product divisibility \src{06, 07} |
+| Lemma | `ogl:alg:lem:torus` (line 806) | Torus freezing \src{06} |
+| Lemma | `ogl:alg:lem:finite` (line 826) | Finite schemes do not acquire points \src{06} |
+| Theorem | `ogl:alg:thm:fibers` (line 842) | Bounded fibers above a torus \src{06} |
+| Corollary | `ogl:alg:cor:quasifinite` (line 871) | Complex zero-dimensional fibers \src{06} |
+| Corollary | `ogl:alg:cor:compacttorus` (line 881) | Compact-by-torus groups \src{06} |
+| Lemma | `ogl:alg:lem:exp` (line 905) | Polynomial one-parameter subgroup \src{06} |
+| Corollary | `ogl:alg:cor:expI` (line 928) | Purely infinite parameters \src{06} |
+| Lemma | `ogl:alg:lem:compact` (line 957) | Real semisimple compactness criterion \src{06} |
+| Theorem | `ogl:alg:thm:real` (line 989) | Omnific rigidity and real unipotents \src{06} |
+| Theorem | `ogl:alg:thm:complex` (line 1038) | The Gaussian dichotomy \src{06} |
+| Proposition | `ogl:alg:prop:bch` (line 1205) | The constant-term kernel of a unipotent group \src{06} |
+| Theorem | `ogl:alg:thm:ut` (line 1236) | Exact commutator filtration \src{06} |
+| Lemma | `ogl:el:lem:normalgen` (line 1313) | The split relative kernel \src{07, 11} |
+| Proposition | `ogl:el:prop:normal` (line 1333) | An abstract idempotent-ideal lemma \src{06} |
+| Proposition | `ogl:el:prop:split` (line 1358) | Exact split kernel \src{06} |
+| Lemma | `ogl:el:lem:absorb` (line 1385) | Absorption \src{06} |
+| Lemma | `ogl:el:lem:scale` (line 1427) | Exponent scaling \src{07} |
+| Lemma | `ogl:el:lem:compress` (line 1444) | Set-field compression \src{07} |
+| Lemma | `ogl:el:lem:ready` (line 1462) | A commutator-ready family \src{07} |
+| Theorem | `ogl:el:thm:invisible` (line 1487) | The purely infinite elementary kernel is invisible to sets \src{06, 07, 11} |
+| Theorem | `ogl:ker:thm:rootkernel` (line 1566) | Root-kernel reconstruction \src{11} |
+| Corollary | `ogl:ker:cor:transfer` (line 1606) | Transfer from rings to groups \src{11} |
+| Lemma | `ogl:ker:lem:closure` (line 1625) | Normal generation \src{11} |
+| Corollary | `ogl:el:cor:actions` (line 1679) | Actions and linear representations \src{06, 07, 11} |
+| Proposition | `ogl:el:prop:criterion` (line 1740) | An abstract collision criterion \src{07} |
+| Theorem | `ogl:el:thm:tower` (line 1776) | A non-simple invisible group with a large residual tower \src{06} |
+| Proposition | `ogl:el:prop:finiteside` (line 1814) | Universal set-sized quotient of $\SL_n$ of the finite surreals \mergetag |
+| Proposition | `ogl:el:prop:local` (line 1908) | Local cardinal form \src{06} |
+| Proposition | `ogl:el:prop:finsupport` (line 1939) | A visible finite-support kernel \src{06, 11} |
+| Lemma | `ogl:el:lem:pingpong` (line 2012) | Alternation of finite and infinite points \src{07} |
+| Theorem | `ogl:el:thm:amalgam` (line 2033) | The two-row amalgam \src{07} |
+| Theorem | `ogl:el:thm:freeproduct` (line 2069) | Kernel decomposition \src{07} |
+| Corollary | `ogl:el:cor:kernelab` (line 2097) | Internal abelianization and torsion \src{07} |
+| Lemma | `ogl:el:lem:functional` (line 2121) | A set-based additive functional \src{07} |
+| Proposition | `ogl:el:prop:specialize` (line 2140) | Additive specialization \src{07} |
+| Theorem | `ogl:el:thm:countable` (line 2157) | One countable target separates finite patterns \src{07} |
+| Corollary | `ogl:el:cor:nouniversal` (line 2184) | No universal set-sized quotient in rank two \src{07} |
+| Lemma | `ogl:el:lem:finite` (line 2201) | Divisibility kills finite root images \src{07} |
+| Proposition | `ogl:el:prop:finitefactor` (line 2208) | All finite images are arithmetic \src{07} |
+| Lemma | `ogl:el:lem:ordinaryrf` (line 2219) | Finite detection in the constant group \src{07} |
+| Theorem | `ogl:el:thm:residuals` (line 2228) | Finite and set residuals \src{07} |
+| Theorem | `ogl:el:thm:trichotomy` (line 2252) | The detection trichotomy \src{07} |
+| Proposition | `ogl:el:prop:realab` (line 2284) | The real abelianization, a classical specialization \src{07} |
+| Proposition | `ogl:el:prop:gaussianab` (line 2316) | Gaussian ambient abelianization \src{07} |
+| Proposition | `ogl:el:prop:cuspresidue` (line 2339) | The finite cusp-residue obstruction \src{07} |
+| Theorem | `ogl:el:thm:nonel` (line 2363) | A non-elementary omnific unipotent \src{07} |
+| Lemma | `ogl:el:lem:block` (line 2392) | A finite block identity \src{07} |
+| Theorem | `ogl:el:thm:stabilize` (line 2406) | One-step stabilization \src{07} |
+| Corollary | `ogl:el:cor:noextend` (line 2422) | A strict failure of extension \src{07} |
+| Theorem | `ogl:ker:thm:torsionfree` (line 2459) | Torsion-free constant-term kernels \src{11} |
+| Theorem | `ogl:ker:thm:center` (line 2481) | Centerlessness \src{11} |
+| Corollary | `ogl:ker:cor:normalsets` (line 2495) | Set-sized normal subgroups and conjugacy classes \src{11} |
+| Proposition | `ogl:ker:prop:finitesubgroups` (line 2511) | Finite subgroups are detected by constant terms \src{11} |
+| Theorem | `ogl:ker:thm:filtration` (line 2533) | A chain at $1+\omega$ \src{11} |
+| Proposition | `ogl:ker:prop:commoncongruence` (line 2565) | Common root elements for a set of congruences \src{11} |
+| Corollary | `ogl:ker:cor:profinite` (line 2592) | The profinite completion \src{11} |
+| Lemma | `ogl:ker:lem:stkernel` (line 2639) | The split Steinberg kernel \src{11} |
+| Theorem | `ogl:ker:thm:steinberg` (line 2653) | Universal set-sized quotient of the Steinberg group \src{11} |
+| Lemma | `ogl:ker:lem:fragment` (line 2711) | Closure and small scales \src{11} |
+| Lemma | `ogl:ker:lem:fragmentring` (line 2737) | No small ring image of the fragment ideal \src{11} |
+| Theorem | `ogl:ker:thm:fragmentgroup` (line 2762) | Cardinal elementary rigidity \src{11} |
+| Corollary | `ogl:ker:cor:fragmentst` (line 2785) | Cardinal Steinberg rigidity \src{11} |
+| Proposition | `ogl:ker:prop:fragmentfiltration` (line 2797) | Non-simple fragments \src{11} |
+| Proposition | `ogl:ker:prop:continuum` (line 2815) | The countable-support case \src{11} |
+| Proposition | `ogl:ker:prop:actioncard` (line 2828) | Action thresholds \src{11} |
+| Corollary | `ogl:ker:cor:boundedactions` (line 2845) | Ordinary groups invisible to bounded actions \src{11} |
+| Corollary | `ogl:ker:cor:complexreps` (line 2858) | Finite-dimensional complex representations \src{11} |
+| Proposition | `ogl:ker:prop:exactthreshold` (line 2879) | An exact-threshold criterion \src{11} |
+| Proposition | `ogl:ker:prop:exact` (line 2908) | Exact thresholds for the fragments \mergetag |
+| Corollary | `ogl:ker:cor:fivemodels` (line 2994) | Exact thresholds in the sibling report's set-sized models \mergetag |
+| Theorem | `ogl:lat:thm:contraction` (line 3062) | Constant-term contraction \src{10} |
+| Corollary | `ogl:lat:cor:strictdescent` (line 3075) | Strict descent for a positive family \src{10} |
+| Lemma | `ogl:lat:lem:coercive` (line 3122) | Coercivity at the last scale \src{10} |
+| Lemma | `ogl:lat:lem:lex` (line 3134) | Exact lexicographic comparison \src{10} |
+| Theorem | `ogl:lat:thm:main` (line 3156) | Minimum or exact missing-infimum cut \src{10} |
+| Theorem | `ogl:lat:thm:simultaneous` (line 3189) | Improvement of every set-sized family \src{10} |
+| Corollary | `ogl:lat:cor:noapprox` (line 3203) | No ordinary-factor approximation \src{10} |
+| Theorem | `ogl:lat:thm:lowflag` (line 3222) | Field span and integral trace of small energies \src{10} |
+| Proposition | `ogl:lat:prop:unidescent` (line 3247) | Unimodular descent \src{10} |
+| Corollary | `ogl:lat:cor:unicountable` (line 3265) | Countable coinitiality \src{10} |
+| Lemma | `ogl:lat:lem:projection` (line 3275) | Discreteness of a projected lattice |
+| Theorem | `ogl:lat:thm:unimodular` (line 3302) | Exact unimodular attainment criterion \src{10} |
+| Proposition | `ogl:lat:prop:closest` (line 3396) | Exact reduction for an ordinary target \src{10} |
+| Theorem | `ogl:lat:thm:closestflag` (line 3416) | Closest points for every ordinary center \src{10}; sufficiency also in the Hahn--Tate report |
+| Corollary | `ogl:lat:cor:parity` (line 3453) | Nearest-point multiplicity \src{10} |
+| Lemma | `ogl:lat:lem:finitetarget` (line 3481) | Matching the target's infinite part \src{10} |
+| Theorem | `ogl:lat:thm:alltargets` (line 3493) | Finite candidates for every target \src{10} |
+| Theorem | `ogl:lat:thm:binarycut` (line 3561) | Unrestricted binary cut \src{10} |
+| Theorem | `ogl:lat:thm:pellcut` (line 3588) | Unimodular cut and countable coinitiality \src{10} |
+| Corollary | `ogl:lat:cor:hierarchy` (line 3623) | A strict hierarchy \src{10} |
+| Lemma | `ogl:lat:lem:gauss` (line 3689) | What Gauss inequalities would imply \src{10} |
+| Corollary | `ogl:lat:cor:nogauss` (line 3701) | No Gauss-reduced basis \src{10} |
+| Theorem | `ogl:lat:thm:nolll` (line 3714) | No ordinary-parameter LLL basis \src{10} |
+| Theorem | `ogl:lat:thm:gaussianlll` (line 3743) | Gaussian reduction obstruction \src{10} |
+| Proposition | `ogl:lat:prop:closed` (line 3769) | Uniform separation without a shortest vector \src{10} |
+| Lemma | `ogl:ch:lem:descent` (line 4257) | Descent to quotients \src{12} |
+| Lemma | `ogl:ch:lem:residual` (line 4269) | Residual detection obstruction \src{12} |
+| Lemma | `ogl:ch:lem:coverage` (line 4328) | Coverage of all roots \src{12} |
+| Theorem | `ogl:ch:thm:rootideal` (line 4369) | Root-kernel ideal \src{12} |
+| Theorem | `ogl:ch:thm:reconstruction` (line 4408) | Set-image reconstruction \src{12} |
+| Lemma | `ogl:ch:lem:normalclosure` (line 4435) | The relative kernel is a normal closure \src{12} |
+| Theorem | `ogl:ch:thm:intrinsic` (line 4453) | Intrinsic higher-rank invisibility \src{12} |
+| Corollary | `ogl:ch:cor:universal` (line 4470) | Arithmetic quotient and split extension \src{12} |
+| Theorem | `ogl:ch:thm:equivalence` (line 4491) | Ring--group transfer equivalence \src{12} |
+| Proposition | `ogl:ch:prop:perfect` (line 4528) | Perfectness and rootwise commutator bounds \src{12} |
+| Proposition | `ogl:ch:prop:torsioncenter` (line 4554) | Torsion and center \src{12} |
+| Corollary | `ogl:ch:cor:normalclasses` (line 4585) | Normal subgroups, conjugacy classes, finite subgroups \src{12} |
+| Proposition | `ogl:ch:prop:nonsimple` (line 4601) | Nonsimplicity \src{12} |
+| Theorem | `ogl:ch:thm:steinberg` (line 4641) | Steinberg arithmetic quotient \src{12} |
+| Proposition | `ogl:ch:prop:isogeny` (line 4668) | Other split semisimple forms \src{12} |
+| Theorem | `ogl:ch:thm:components` (line 4728) | Componentwise classification \src{12}, (ii) \mergetag |
+| Lemma | `ogl:ch:lem:bracketlattice` (line 4771) | Clearing the bracket lattice \src{12} |
+| Theorem | `ogl:ch:thm:liereconstruction` (line 4785) | Lie-kernel reconstruction \src{12} |
+| Theorem | `ogl:ch:thm:liepositive` (line 4807) | Perfect current Lie rings \src{12} |
+| Corollary | `ogl:ch:cor:lieperfect` (line 4822) | \src{12} |
+| Lemma | `ogl:ch:lem:additive` (line 4831) | Additive detection \src{12} |
+| Theorem | `ogl:ch:thm:lienegative` (line 4844) | Nonperfect obstruction \src{12} |
+| Proposition | `ogl:ch:prop:collision` (line 4908) | A ring collision criterion \src{12} |
+| Theorem | `ogl:ch:thm:cardinalgroup` (line 4926) | Group cardinal transfer \src{12} |
+| Corollary | `ogl:ch:cor:exactsize` (line 4941) | Exact detecting size \src{12} |
+| Theorem | `ogl:ch:thm:cardinallie` (line 4952) | Lie cardinal transfer \src{12} |
+| Corollary | `ogl:ch:cor:thresholds` (line 4980) | Exact thresholds for every root system \mergetag |
+| Corollary | `ogl:ch:cor:support` (line 5049) | Bounded supports \mergetag |
 
 ### definable-surreals-and-omnific-integers
 
