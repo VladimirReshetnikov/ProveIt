@@ -644,3 +644,14 @@ import Surreal.Foundations.OmnificPowerRigidity
 import Surreal.Surcomplex.PowerDifferenceRigidity
 import Surreal.Algebra.PellTwo
 import Surreal.Surcomplex.PellTwoClassification
+import Surreal.Algebra.SplitNormParametrization
+import Surreal.Foundations.TwoTermTruncation
+import Surreal.Foundations.SurrealPellContrast
+import Surreal.Algebra.BinaryQuadraticFactors
+import Surreal.Algebra.CentralConicRigidity
+import Surreal.Surcomplex.CentralConicRigidity
+import Surreal.Algebra.NormFormPolynomial
+import Surreal.Algebra.SeparableNormFactors
+import Surreal.Algebra.SeparableNormRigidity
+import Surreal.Surcomplex.NumberFieldNormRigidity
+import Surreal.Algebra.IntegralNormCoefficients

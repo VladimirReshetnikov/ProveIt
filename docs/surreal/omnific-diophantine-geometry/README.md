@@ -220,8 +220,12 @@ normal-crossings construction. The scope pass checks Section 20 and
 Sections 21.1–21.6 against the maintained statements and Lean ledger. It
 corrects the smooth-fiber and product-with-affine-line summaries, gives a
 fixed-workspace counterexample to idempotence, and distinguishes vanishing
-contractions from vanishing forms. Pointers in Sections 1, 6, 7 and 14 and
-the neighbouring-report comparisons in Section 21.7 remain to review.
+contractions from vanishing forms. A subsequent comparison pass checks the
+geometric pointers in Sections 1, 6, 7 and 14 and the cited statement scopes
+in Section 21.7. It restores the nonzero exponent-group and geometric
+integrality hypotheses, distinguishes an affine-line real fiber from an
+affine-line integral model, and corrects the stale account of the groups
+report. Imported proofs and complete source reconciliation remain separate.
 The elementary pass also covers the corresponding claims credited to
 source C15. Beyond the targeted logarithmic review, remaining batch-29
 source reconciliation includes the parallel proofs, credits and remarks
@@ -233,7 +237,9 @@ The maintained Section 20 and Section 21.1–21.6 status notes, including
 Questions 21.23–21.30, are covered by the scope pass; their full parallel-source
 reconciliation is not claimed. Section 17.6 was appended at the
 end of Section 17, after Section 17.5, so again no section, statement or equation number
-changed. The batch-33 material of source C17 is unreviewed: Section 19.4, its pointers and
+changed. Apart from the positive-degree hypothesis restored in its opening summary
+and the statement-scope check of its sibling-translation comparison, the
+batch-33 material of source C17 is unreviewed: Section 19.4, its pointers and
 credits in Sections 1, 2, 5, 6, 9, 16 and 20, the status notes in Sections 18.5 and 21,
 Questions 21.31–21.40 and the appendix additions. Section 19.4 was appended at the end of
 Section 19, after Section 19.3, and its questions after Question 21.30, so again no section,
@@ -1094,7 +1100,7 @@ claims that these are open in the literature.
   curves and C11 such fields or `R`. None of this is needed; the report states
   the results over every field of characteristic zero and every exponent group.
 - Sources C10, C11 and C14 treat the corner `m = d = 2` of the squarefree theorem
-  by units; the strict inclusion `∂(𝒜) ⊆ Π` of C12 and C13 removes it and is
+  by units; the support inclusion `∂(𝒜) ⊆ Π` of C12 and C13 removes it and is
   printed first. That inclusion is already `opa:par:prop:Euler` and
   `osq:prop:classder`, which none of the five cites; the credit is added.
 - Source C13 cites Stacks Tag 02AT for differentials, which is Section 111.50 of
@@ -1356,8 +1362,10 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   the parity statements of `gz:cor:canonical-zeros` are instances of Theorem
   3.1.
 - [`transcendence-over-bounded-support`](../transcendence-over-bounded-support/):
-  its GCD hypothesis (`bst:hyp:gcd`) is about a different ring, whose units are
-  the monomials; Theorem 4.10 concerns `Oz`, whose units are `±1`. No conflict.
+  its GCD hypothesis (`bst:hyp:gcd`) is about the rank-one ring with support
+  bounded in both directions over an algebraically closed coefficient field.
+  Its units are nonzero monomials; Theorem 4.10 concerns `Oz`, whose units
+  are `±1`. These are different rings, with different support restrictions.
 - [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/)
   prints source 05's universal set-sized quotient theorem with its proof; its
   preliminaries overlap Sections 2–4 here. Its manuscript 13 supplies the
@@ -1370,29 +1378,36 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   of Example 15.27 for monomial `t`, and the scalar step of Theorem 15.11;
   `osq:prop:fractions`(iii) gives `M⁻¹Oz = No`, and `osq:cor:smallprimes` agrees
   with the residue field `Q` of `Oz_Π` (Proposition 15.40). Its class-valued
-  derivations `Oz → Π` (`osq:prop:classder`) contain the strict inclusion
-  `∂(𝒜) ⊆ Π` of Lemma 16.2; its vanishing of derivations of the class ring into
+  derivations `Oz → Π` (`osq:prop:classder`) have the support inclusion
+  `∂(𝒜) ⊆ Π` of Lemma 16.2; this need not be a proper inclusion; its vanishing of derivations of the class ring into
   set-sized modules (`osq:thm:derivations`) is no conflict, since the Euler
-  derivations here act on set-sized workspaces. Its manuscript 18's canonical
+  derivations here act on set-sized workspaces, rather than on the full class
+  with a set-sized module as codomain. Its manuscript 18's canonical
   translation and rich-target theorems (`osq:or:thm:canonical`, `osq:or:thm:eta`,
   `osq:or:thm:targets`) give the normal forms `f = ct_*(f)(X − η)` and
-  `f = ct_*(f)(X − η) + β` of Theorems 19.12 and 19.33 from discreteness of values
-  instead of a constant discriminant (Remark 19.35).
+  `f = ct_*(f)(X − η) + β` of Theorems 19.12 and 19.33 for integer-valued
+  polynomials with more inputs in one ordinary-output coset than their
+  degree. This differs from the constant-discriminant hypothesis;
+  discreteness alone is insufficient (Remark 19.35).
 - [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/): its
   cusp-residue obstruction and non-elementary unipotents
   (`ogl:el:prop:cuspresidue`, `ogl:el:thm:nonel`) show that the focusing
   matrices of Lemma 15.34 lie outside `E_2(Oz)` at irrational centres and that
   the density of Corollary 15.36 needs such matrices (Remark 15.39). It also
   answers Question 21.1 for closed subgroup schemes of `GL_N`; its remark
-  `ogl:alg:rem:affine` still records the curve case as open, which Sections
-  16–18 now settle for smooth curves, and Section 17.6 for geometrically integral
-  singular curves. The two answers agree (Remark 18.7): `G_a`
+  `ogl:alg:rem:affine` now records the smooth classification and the singular
+  normalization criterion. It also retains the unresolved real arithmetic
+  case: affine-line normalization, but no real normalization preimage of
+  any integer point. The Gaussian existence criterion is complete under
+  the stated geometric integrality hypothesis. The two geometric answers
+  agree (Remark 18.7): `G_a`
   is nonrigid and the one-dimensional tori (`G_m`, `SO(2)`) are rigid; the
   commutative-group kernel of Theorem 18.6 is its unipotent kernel
   `ogl:alg:prop:bch` for commutative groups; semiabelian rigidity extends its
   torus freezing beyond linear groups; and real and complex rigidity coincide
-  for smooth curves but not for groups (`SO_3`), with no conflict because the
-  sources here transfer rigidity only from the complex fiber to the real one.
+  for smooth geometrically integral affine curves over the coefficient
+  support rings, but not for groups (`SO_3`). Arithmetic existence separately
+  requires the relevant ordinary point.
 - [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/):
   its Euler derivations map `ℛ_𝔬(k, Γ)` into `Π_k(Γ)` (`opa:par:prop:Euler`),
   the support inclusion used in Sections 16–17; sources C10–C14 did not cite it.
@@ -1438,8 +1453,10 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   fixed workspace, the case excluded by the non-claim on polynomial lifting
   (Appendix B; pointer added there in batch 32).
 - [`single-dilation-hahn-support`](../../surcomplex/single-dilation-hahn-support/)
-  defines the coefficient field and constant coefficient of a Hahn field from
-  one dilation; Theorems 13.2 and 13.4 recover them from the pure ring `Oz`.
+  defines the coefficient field and constant coefficient of a full Hahn
+  field of characteristic zero from the named exponent dilation `S_2`,
+  with a nonzero, 2-divisible exponent group. Theorems 13.2 and 13.4 recover
+  them from the pure ring `Oz` instead.
 - [`euclidean-three-space`](../euclidean-three-space/):
   `e3:cut:thm:smallquotient` is the analogous size phenomenon for `SO(3, No)`;
   by Corollary 9.4, `SO(3, Oz)` is finite.
@@ -1665,3 +1682,17 @@ velocity-certificate, 510 velocity-symmetry, 6 velocity-trace, 2 quadratic-certi
 checks), the same group counts as the shipped record. The report differs from the record
 only in the recorded Python version (3.13.5 there). These checks cover finite identities
 and examples only, not the arbitrary-support theorems.
+
+
+## Positive-exponent correction after the power-rigidity merge
+
+The incoming formalization `365bea6` exposes a missing hypothesis in
+`odg:rem:powers` (alias `odg:cor:powers`). The remark now states positive
+ordinary `m,n` and a nonzero ordinary integer level. Its gcd reduction uses
+positive quotient exponents, and it records the checked counterexample
+`ω^0 − 0² = 1` with `gcd(0,2) = 2`. The closing sentence now limits the
+separated-power theorem to `m,n ≥ 2`; exponent one admits the family
+`y = x^m − c`. The question-status summary is aligned. The corrected gcd
+statement and zero-exponent counterexample are proved in Lean; the coprime
+separated theorem remains pending there. The remark changes, but all 244
+standard theorem/lemma/proposition/corollary statements are unchanged.
