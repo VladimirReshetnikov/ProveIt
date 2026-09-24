@@ -695,6 +695,11 @@ import Surreal.Algebra.QuarticVariantPolynomial
 import Surreal.HahnSeries.NonpositiveSupportBounds
 import Surreal.HahnSeries.QuarticVariant
 import Surreal.Surcomplex.QuarticVariant
+import Surreal.Algebra.AugmentationRootDetector
+import Surreal.Algebra.IntersectiveDetector
+import Surreal.Algebra.AugmentationDetectorExample
+import Surreal.HahnSeries.IntersectiveDetector
+import Surreal.Surcomplex.IntersectiveDetector
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants
