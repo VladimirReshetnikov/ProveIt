@@ -327,13 +327,34 @@ smallest characteristic-sensitive example. The derived-tensor kernel is
 distinguished from the quotient modules that base change retains.
 
 These are manuscript consequences, pending in Lean along with the
-polyhedral results. The subsequent internal-field section and full source
+polyhedral results.
+
+The first eight standard internal-field results are now reviewed, through
+the scaled-field reservoir in a residue fraction field. Closedness is
+proved in a set-sized divisible support group for each polynomial; this
+includes the trivial exponent group. The additive compression Ψ_a and
+the field map Θ_a now have exact coefficient rules. Strong summability is
+both preserved and reflected, and multiplication uses the same finite
+convolution pairs. The image consists exactly of series supported in
+Ψ_a(No); the monomial `ω^(a ω^(−3))` is an explicit element of F_a outside
+it. The ambient bounds `ω^(±a)` themselves lie outside F_a, so boundedness
+in No does not produce an internal bound for the positive field elements.
+
+The transfer proof works in a commutative subring of a possibly
+noncommutative target. A new compatibility calculation proves that two
+eligible denominators give the same field map on overlaps. The unit
+hypothesis is retained: a surviving nilpotent does not suffice. Conditional
+prime quotients are distinguished from the more general residue fraction
+fields. The bounded-field and transfer remarks, explicit compression and
+nilpotent examples, and composed-embedding comparison were checked too.
+These manuscript results and added consequences remain pending in Lean.
+The exact binomial kernel, subsequent internal algebras and full source
 reconciliation remain pending review. Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 314 pages
+article.pdf   the compiled report, 316 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

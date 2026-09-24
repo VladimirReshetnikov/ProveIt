@@ -378,6 +378,21 @@ It follows that these fixed-space core inclusions are flat exactly for
 equal cones. The statement does not cover inclusions that change the
 linear span, coefficient pair, exponent group or support convention.
 
+In the internal-field construction, `H_a = {h : n|h| < a for every
+ordinary n ≥ 1}` is an additive real subspace of No, and F_a consists
+of all real normal forms with set support in H_a. It is distinct from
+`cvx(ℤa)`, whose elements are bounded by some ordinary multiple of a.
+The increasing map ϑ sends individual exponents into (−2,−1); Ψ applies
+that reindexing to normal forms and is real-linear. Scaling gives the
+additive embedding `Ψ_a = a Ψ : No → H_a`. Only the next substitution,
+`ω^γ ↦ ω^(Ψ_a(γ))`, is the field map Θ_a and fixes the real coefficients.
+Its image is all series supported in Ψ_a(No), a proper subfield of F_a.
+The map ι_g instead transfers F_a to a target where q(g) is invertible,
+by `ι_g(f) = q(gf) q(g)⁻¹`. Compatible denominators give equal maps on
+overlapping fields. This image commutes with q(Oz), but is not asserted
+to lie in the centre of a noncommutative target; no target support or
+strong-sum structure is assumed.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
