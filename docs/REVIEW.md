@@ -5004,3 +5004,57 @@ The full two-thread Lean build passes 4,530 jobs, and the audit checks
 so the validated 262-page and 33-page PDFs remain current. The index,
 5,195 source references, 1,747 Markdown destinations and whitespace
 checks pass.
+
+## Representations, small quotients and finite-congruence closure
+
+This pass reviews the sixteen standard results from `osq:cor:Oz` through
+`osq:cor:dense`, including the previously reviewed localization consequence
+`osq:cor:nofield`. The scope is the maintained text on representations,
+residual targets, quotient reflection, small prime and principal ideals,
+quotient size, and finite-congruence closure. Later prime examples,
+completions, localizations, cardinal classifications and full reconciliation
+of the parallel manuscripts remain pending. This is manuscript proof review,
+not a new Lean proof or a certification of the full assembled report.
+
+The original clause in `osq:prop:principal` that a nonconstant principal
+quotient admits no set-sized quotient is false when read as excluding
+further small images. The quotient Oz/(ω) surjects onto Z. The corrected
+statement says that the quotient itself cannot be realized as a set-sized
+ring; it also makes the later quantifier over arbitrary f explicit. The
+universal set-sized image of A/(f) is D/(ct(f)), since ct(fA) = ct(f)D.
+The examples ω, 2+ω and 1+ω distinguish a large quotient with infinite
+small image, one with nonzero finite small image, and one with only the
+zero small image. All three source quotients are nonzero. The notation
+guide, ledger, catalogue and root README now preserve this distinction.
+
+The Gaussian representation discussion records that the image of i need
+not be central in the whole target. A new unnumbered consequence classifies
+nonunital maps by pairs (e,j) with e²=e, ej=je=j and j²=−e, with the
+multiplication identity supplied. The common-kernel proof uses specified
+witnesses, class replacement and the empty-family case. The module proof
+includes the zero vector space. The matrix proof spells out the passage
+from a complex basis to a real basis and verifies both exhaustiveness and
+uniqueness of the complex conjugacy list. The Gaussian automorphism proof
+establishes invariance of the infinite-part ideal before descending.
+
+The residual-target proof defines substitution on finite polynomials even
+when the variables form a proper class. Quotient reflection now verifies
+that ct(J) is a set ideal, the map on residues is well defined and surjective,
+and the preimage identity holds in both directions. The ideal classification
+proves uniqueness of its constant ideal. The small-prime proof distinguishes
+the characteristic-zero image Z from its fraction field Q. The size argument
+uses a set-indexed family and an explicit telescope contradiction. The
+closure proof justifies preimages and intersections, including d=0. The
+dense-principal consequence explains why even a nonunital small-target map
+killing a unit-constant generator is zero.
+
+Validation: three-pass builds produce a clean 263-page article and 33-page
+catalogue, with no TeX warnings or box diagnostics. All 828 source labels,
+1,656 auxiliary label numbers, 409 standard statements and nine principal
+summaries are preserved; only the principal-quotient statement changes text.
+The changed representation and principal-quotient pages were inspected
+visually. All 4,626 indexed statements across 63 reports, 5,195 source-label
+references, 1,747 local Markdown destinations across 226 files, and whitespace
+checks pass. The unchanged source-06/source-11 finite verifiers retain their
+previous 19,444-check baseline; they were not rerun and do not certify the
+class-size or universal arguments. No Lean or shipped verifier source changed.
