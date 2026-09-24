@@ -5135,3 +5135,67 @@ checks pass. No Lean or shipped verifier code changed. Existing real omnific
 completion mappings retain their scope; no Gaussian completion or new
 formula-level mapping is asserted. The previous 4,535-job Lean build and
 15,895-declaration axiom audit remain the documentation-only baseline.
+
+## Small modules, derivations and the finite-side universal residue
+
+This pass reviews the nine standard statements from `osq:thm:modules`
+through `osq:lem:midempotent`, completing the maintained Sections 7–8 proof
+pass. The subsequent support thresholds, cardinal classifications and full
+parallel-source reconciliation remain pending. This is manuscript work;
+no class universal-property theorem is newly formalized in Lean.
+
+The module equivalence now verifies its inverse actions, both directions
+of linearity, and preservation and reflection of exactness on the underlying
+small groups. The nonsplitting argument identifies the additive/ring
+section explicitly. The projectivity argument constructs a lift along a
+surjection between small modules and explains why the class-sized source
+of the constant-term map lies outside that test. A nonzero free class-ring
+module contains the whole ring on one basis vector, so it cannot be small.
+
+The derivation proof explains why additivity and Leibniz kill the integer
+constants, gives the full Gaussian product calculation, and verifies
+naturality. A Gaussian derivation is determined by m = ∂i with 2m=0;
+M[2] is additive torsion, not M/2M. The F₂ example includes its coefficient
+action i↦1 and ∂i=1. The square-zero-extension proof now checks its identity
+and multiplication. The warning about coefficient linearity is supported by
+a construction of a nonzero Q-derivation of R: differentiate one member of
+a transcendence basis and extend over algebraic elements by the minimal-
+polynomial formula. Polynomial representatives make the defining ideal
+stable, and uniqueness makes the finite extensions agree. This uses choice
+for a set basis and gives no continuous or canonical derivation.
+
+The coefficient-weighted class derivations have an explicit support and
+finite-coefficient proof of strong summability and Leibniz. Their independence
+is proved by evaluating the finite linear combination at its distinguishing
+monomials, and the complex extension is written down. The external
+Berarducci–Mantova existence and normalization were checked against
+[arXiv:1503.00315v3, page 2](https://arxiv.org/pdf/1503.00315v3), Theorem A
+and the following normalization statement. They remain imported. The
+bibliography now gives that version and the journal reference. The text
+and notation guide distinguish preservation of infinitesimals, called a
+small derivation in differential-field terminology, from a set-sized target.
+
+The finite-side valuation lemma proves noncancellation of the denominator
+and membership of the quotient in the infinitesimal ideal. The universal
+proof uses an explicit Hartogs-indexed monomial family and a finite product
+contradiction; it neither transports infinite sums nor assumes continuity.
+The same argument also covers nonunital maps, as a new unnumbered consequence.
+The finite-side corollary makes set-sized unital modules and unital ring maps
+explicit. Its proof treats quotient kernels, module actions, derivations and
+unit-forcing localizations individually. The idempotence proof includes zero
+and both ideal inclusions, and supplies a single-product factorization.
+The final residue incompatibility is multiplicative; the cited rotation-group
+classification remains a comparison, not an imported step in this proof.
+
+Validation: three clean passes produce a 266-page article and 33-page
+catalogue, with no TeX warnings or box diagnostics. The derivation and
+finite-side pages were inspected visually. All 828 labels, 1,656 auxiliary
+numbers, 409 standard statements and nine principal summaries remain;
+only `osq:cor:finitequotients` changes its statement text, to clarify the
+size and unital conventions. The source-11 verifier passes all 1,858 exact
+checks with its default seed and 80 cases, including all 16 Gaussian F₂
+Leibniz cases. These are finite checks, not proofs of the class universal
+property or Hahn summability. The 4,626-result index across 63 reports,
+5,196 source-label references, 1,752 local Markdown destinations in 226 files,
+and whitespace checks pass. No Lean or verifier source changed; the previous
+4,535-job build and 15,895-declaration axiom audit remain the baseline.

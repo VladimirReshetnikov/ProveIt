@@ -580,6 +580,13 @@ but its elements need not be bounded by ordinary integers. The
 [computer-algebra report](foundations-and-computation/computer-algebra/article.tex)
 (`cas:thm-core`) separates this general residue from ordinary standard part.
 
+The full-class standard-part universal property concerns maps to set-sized
+rings; a fixed set-sized Hahn valuation ring has its own identity map and
+must not be assigned that property. The residue map's existence alone does
+not establish universal factorization. Modules in the quotient report are
+unital, with their actions specified; projectivity in its category of small
+modules tests only surjections between objects of that category.
+
 Scalar standard part is the ring map `st : O_F → ℝ` or `ℂ`. For finite
 `z`, it is the coefficient at exponent zero, and `z − st(z)` is
 infinitesimal. Some reports call this map `red` or `res`; these names are
@@ -909,6 +916,17 @@ In the `t = ω⁻¹` convention this becomes `∂_λ(t^γ) = −λ(γ)t^γ`.
 One fixed `λ` can kill nonconstant monomials; detecting a given nonconstant
 requires choosing a suitable functional. This construction does not specify
 a derivation of the full surreal field.
+
+The quotient report's `D_η` instead uses the globally defined additive
+functional `ℓ_η(x) = [ω^η]x` on the surreal **exponent** x, setting
+`D_η(Σ r_x ω^x) = Σ ℓ_η(x)r_x ω^x`. It kills ordinary scalar coefficients;
+its values on the omnific ring lie in the proper-class module `Π`.
+It has `D₀(ω)=ω`, whereas the normalized Berarducci–Mantova derivation has
+`∂ω=1`. A “small derivation” in differential-field terminology preserves
+infinitesimals; that usage does not assert a set-sized target.
+For a Gaussian module, `M[2]` denotes additive 2-torsion `{m : 2m=0}`,
+not a quotient by 2M. The calculation of Gaussian derivations keeps this
+ordinary ramification term even when the positive-support ideal acts by zero.
 
 In that report's constant-discriminant section (`odg:disc:sub:disc`), the
 Euler family uses rational-valued functionals on `Γ_ℚ` and acts on the
