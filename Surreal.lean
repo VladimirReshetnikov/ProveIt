@@ -745,6 +745,11 @@ import Surreal.Foundations.OmnificAutomorphisms
 import Surreal.Foundations.NormalFormExponentAutomorphisms
 import Surreal.Foundations.OmnificExponentAutomorphisms
 import Surreal.Foundations.ExponentAutomorphismStrongSums
+import Surreal.Surcomplex.GaussianFractionField
+import Surreal.Surcomplex.GaussianOmnificAutomorphisms
+import Surreal.Surcomplex.SmallHahnRealization
+import Surreal.Surcomplex.CoefficientAutomorphisms
+import Surreal.Surcomplex.GaussianCoefficientSection
 import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial

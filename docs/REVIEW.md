@@ -6623,3 +6623,37 @@ across 63 reports, 5,218 source-label references and 1,830 local Markdown
 destinations across 226 files pass, as does whitespace checking. No Lean
 source changed; the two-thread 4,617-job build and 16,855-declaration axiom
 audit remain the Lean baseline before synchronization.
+
+## Synchronization: Gaussian fractions and the coefficient-automorphism section
+
+Merged origin/main through f09b4df, including 59511d2 and c790d96.
+Reviewed all five incoming modules against the Gaussian fraction-field
+identity in `odg:def:sec:reconstruction` and following
+`odg:frac:prop:gaussianfrac`, and every clause of
+`odg:def:prop:coeffaut`. One positive monomial clears both coordinates of
+an entire family small in the birthday universe. This supplies the actual
+Gaussian omnific fraction-field instance and surjectivity of its native
+fraction embedding. Ring-formula invariance then makes the unique fraction
+extension of any Gaussian omnific automorphism preserve the reconstructed
+ordinary complex field, with restriction a group homomorphism.
+
+The small-Hahn realization uses the two real coordinate forms and realizes
+exactly the lower-universe-small complex supports. Applying an arbitrary
+complex coefficient automorphism preserves that support, so the image is
+an actual surcomplex number. The field lift has the expected inverse,
+fixes real Conway monomials, and preserves strong summability; strong-sum
+commutation retains the small-index hypothesis. Preservation of Gaussian
+integer coefficients restricts the lift to the Gaussian omnific ring.
+Its fraction extension is the original field lift and its coefficient
+restriction is the chosen complex automorphism. The resulting group
+homomorphism is a section of restriction, completing the source
+proposition. No continuity or real-axis preservation, full-Hahn-field
+surjectivity, or set of all proper-class automorphisms is asserted.
+The subsequent phase twist and logical nondefinability remain pending.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,622 jobs; the
+axiom audit checks 16,927 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 anchors across 63 reports, 5,219 source-label
+references and 1,835 local Markdown destinations across 226 files pass,
+as does whitespace checking. No incoming TeX changed; the locally rebuilt
+297-page article and 34-page catalogue remain current.
