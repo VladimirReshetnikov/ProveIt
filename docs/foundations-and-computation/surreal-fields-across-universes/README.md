@@ -9,7 +9,7 @@ Merged research report, 22 September 2026, from four manuscripts: 01 (the base),
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 50 pages (title page, 2 contents pages, 47 numbered pages)
+article.pdf   the compiled report, 51 pages (title page, 2 contents pages, 48 numbered pages)
 README.md     this guide
 03-fresh-sign-gaps-PROOF_STATUS.md               source 03: proof and verification status
 code/
@@ -154,7 +154,15 @@ assumptions stay open (Question 19.3). Source 08's remark that it lacks "a
 complete spectrum of all omitted cut characters" is answered for a fixed pair by
 source 03; the completeness question stays open (Question 19.4). Questions 19.1,
 19.5, 19.6 and 19.7 are open; the finite version of 19.7 is answered by
-Corollary 16.7.
+Corollary 16.7. Batch-32 status notes: in a single universe, the clause of 19.7 on
+infinite collections of regular thresholds is answered without forcing by
+[first-kappa-coefficients](../../surcomplex/first-kappa-coefficients/)
+(`fkc:sb:thm:involutions`, `fkc:sb:rem:univ`, under Global Choice); arbitrary
+saturation spectra, gap spectra with more than one character and families of
+old fields `No^M` stay open. Question 19.6 is related to, not answered by, the
+classification of valued `Oz[i]`-preserving involutions in
+surcomplex-field-automorphisms (`saut:fs:thm:main-involutions`,
+`saut:fs:prop:conjugacy`).
 
 ## What the report does not claim
 
@@ -212,7 +220,17 @@ implies the non-conjugacy statements of Theorems 16.2 and 16.3. What is new here
 (Remark 16.4): real forms with no set-sized cofinal subset, several forms separated
 from one another by the gap invariant, agreement with `c_N` on `C^N`, and
 elementary equivalence with different spectra. These continue, but do not settle,
-that report's open real-form classification (its Section 14).
+that report's open real-form classification (its Section 14). Its batch-32
+finite-symmetry sections classify, up to conjugacy, the involutions preserving the
+valuation, Hahn summation and `Oz[i]` (`saut:fs:thm:main-involutions`,
+`saut:fs:prop:conjugacy`); a note after Remark 16.4 and the status of Question
+19.6 record that this concerns a different class and does not answer 19.6.
+
+**[first-kappa-coefficients](../../surcomplex/first-kappa-coefficients/)** (`fkc:`;
+batch 32) builds, in one universe and without forcing, a proper class of pairwise
+nonconjugate pure-field involutions of `No[i]` from fields of surreals with fewer
+than `κ` terms (`fkc:sb:thm:involutions`); its `fkc:sb:rem:univ` answers the
+regular-threshold clause of Question 19.7 (status note there; Section 1.7).
 
 **[foundations](../foundations/)**: Proposition 14.1 is an external version of
 its Theorem 12.1 (`found:thm:discrete`). It needs only old positive lower bounds,
@@ -241,12 +259,15 @@ uses "gap" for a proper-class gap of `No`; the gaps here are set-presented gaps 
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 50 pages with zero errors, zero LaTeX or package warnings, zero
+The build gives 51 pages with zero errors, zero LaTeX or package warnings, zero
 overfull or underfull boxes, zero undefined references or citations, zero
 multiply defined labels and zero duplicate PDF destinations. The log contains one
 TeX information line, `ignored: Infinite glue shrinkage found in box being split`,
 which the `longtable` package emits when a long table breaks across pages; the
-delivered source 01 produces the same line. Source 01's Makefile runs the same
+delivered source 01 produces the same line. The batch-32 cross-report notes
+(Section 1.7, after Remark 16.4, after Questions 19.6 and 19.7) are unnumbered;
+they took the build from 50 to 51 pages, and all 142 labels keep their numbers
+(compared in the `.aux` files against a build of the committed text). Source 01's Makefile runs the same
 `latexmk` command on `article.tex` in the current directory, so
 `make -f code/01-forcing-omitted-cuts-Makefile` from this directory should build
 the report in place (not tested for this merge, since no `make` was available;

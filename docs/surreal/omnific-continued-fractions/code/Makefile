@@ -9,7 +9,7 @@ pdf:
 	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 check:
-	$(PYTHON) code/verify.py --output data/verification.json
+	$(PYTHON) code/verify.py --output audits/verification.json
 
 clean:
 	$(LATEXMK) -c article.tex

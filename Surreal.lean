@@ -616,3 +616,6 @@ import Surreal.Foundations.OmnificProfiniteTopology
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree
+import Surreal.Algebra.ModuleKernelBasis
+import Surreal.Foundations.OmnificPurelyInfiniteModule
+import Surreal.Foundations.OmnificLinearSystems

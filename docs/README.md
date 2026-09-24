@@ -95,13 +95,17 @@ Their new proofs remain outside the independent review scopes recorded here.
 Placement `aa9c891` retires the next nine archives and adds two main texts:
 [omnific continued fractions](surreal/omnific-continued-fractions/) and
 [exponential relations over omnific integers](foundations-and-computation/exponential-relations-over-omnific-integers/).
-Their 60 standard results are indexed and PDFs supplied. The seven companions
-to dilation, holonomic rigidity, omnific automorphisms and Diophantine geometry
-have code and audit files placed, but their main-text integration and proof
-review remain pending. Placement alone does not extend any Lean mapping.
+Their 60 standard results are indexed and PDFs supplied; their collection
+editions are written in `68db1b5` and `fa54502`. The two dilation companions
+are integrated in `1ef6bba`, adding 33 standard results on support rank and
+algebraic independence of dilation orbits. The five companions to holonomic
+rigidity, omnific automorphisms and Diophantine geometry still await main-text
+integration. Independent proof review of these additions remains pending;
+assembly alone does not extend any Lean mapping.
 A further universal-symmetries and difference-equations archive arrived in
 `bbe23a3`; its ZIP integrity is checked, but placement, integration and
-review remain pending.
+review remain pending. Eight more archives arrived in `a4611ad`; they also
+pass ZIP integrity checks and await placement and review.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
@@ -171,7 +175,6 @@ not extend their earlier proof-review scope.
 
 | Report | Question or main subject |
 |---|---|
-| [Independent surreal copies](surreal/independent-surreal-copies/) | Proposed prescribed Hahn cores, linearly disjoint copies and transcendental arithmetic-intersection gaps; proof review pending |
 | [Hahn evaluation at omega](surreal/hahn-evaluation-at-omega/) | Why increasing-support evaluation `x^a ↦ ω^a` fails, and which exponent maps permit field homomorphisms |
 | [Broadcast sums](surreal/broadcast-sum-of-surreal-sequences/) | The sign-truncation game and Lipparini's broadcast-sum question |
 | [Product birthdays](surreal/gonshor-product-birthdays/) | Gonshor's bound `b(xy) ≤ b(x) ⊗ b(y)` for specified ordinal-support normal forms |
@@ -233,7 +236,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [First-κ coefficients](surcomplex/first-kappa-coefficients/) | Hahn series with fewer than `κ` terms: omitted types classified by the first `κ` coefficients, completion iff `cf(Γ) ≠ cf(κ)`, never spherically complete |
 | [Single-dilation Hahn support](surcomplex/single-dilation-hahn-support/) | One monomial dilation defines coefficients, monomials and the valuation ring; its centralizer among all field automorphisms; undecidability |
 | [Gamma and zeta](surcomplex/gamma-and-zeta-functions/) | Finite lifts and RH, strongly summable Dirichlet series at infinity, Stirling and Hurwitz, Gamma and zeta on the horizontal tube for any phase, reflection obstructions at infinite height; six manuscripts reconciled |
-| [Dilation rigidity](surcomplex/autonomous-dilation-relations/) | Autonomous relations between exponent dilates; assembled in `260c143`, proof review pending |
+| [Dilation rigidity](surcomplex/autonomous-dilation-relations/) | Autonomous relations between exponent dilates; three manuscripts, including support-rank bounds and exact finite-support order; proof review pending |
 
 Three distinctions recur throughout these reports.
 

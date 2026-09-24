@@ -4089,6 +4089,36 @@ resolve. No Lean source changes in this review. The six results remain
 15,361-declaration axiom audit. Incoming changes require their own subsequent
 synchronization checks.
 
+## Logarithmic-review synchronization
+
+The merge through `737fa31` preserves all existing shared labelled standard
+statements in the affected reports. The continued-fraction and exponential
+reports now have written collection editions with prefixed labels; their
+proofs remain pending independent review. The two dilation companions add
+33 standard results, bringing the inventory to 4,271 across 63 reports.
+The reader map and catalogue now distinguish those integrated companions
+from the five batch-33 companions whose main texts remain pending. Eight
+new archives in `a4611ad` pass ZIP integrity checks; placement and review
+remain pending. A duplicate reader-map row was removed.
+
+The three incoming Lean modules were checked against `odg:thm:linear`:
+constant extraction splits every solution with ordinary right-hand side,
+any rational kernel basis gives unique purely infinite coefficients, and
+full column rank forces all solutions to be ordinary. The rational action
+is identified with multiplication in the actual surreal field. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,466 jobs and its axiom audit passes
+15,404 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+
+The merged Diophantine source retains all 217 standard statements and 942
+auxiliary numbering entries. Its three-pass PDF has 202 pages; the updated
+catalogue has 32. Both final logs contain no warnings, unresolved references
+or bad boxes. Incoming cross-report notes change no standard statement;
+their placement does not extend the completed proof-review scope. The
+independent inventory passes, all 4,820 cited source references resolve,
+and all 1,660 local Markdown destinations resolve. The incoming finite
+verification programs and recorded data are unchanged; the C15 rerun and
+its limited scope are recorded above.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
