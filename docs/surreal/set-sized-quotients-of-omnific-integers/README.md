@@ -466,15 +466,16 @@ are not integral, so the normalization's generator count remains open.
 Lean now proves the actual real and Gaussian uniform-denominator theorems,
 the complete-integral-closure claims for both actual fields and all
 intermediate rings, and the general reciprocal obstruction, including
-nonintegrality of 1/2 in both omnific rings. For the actual real omnific
-ring it also proves the full normalization theorem: both strict inclusions,
-fine density, zero conductor and the obstruction to generation by a small
-set. Small-generated omnific algebras are closed and uniformly discrete;
+nonintegrality of 1/2 in both omnific rings. For both actual omnific rings
+it also proves the full normalization theorem: both strict inclusions,
+density in the fine order or surreal-modulus topology, zero conductor and
+the obstruction to generation by a small set. Small-generated real omnific
+algebras are closed and uniformly discrete;
 every Cauchy net in one is eventually constant, without a bound on its
 index or range. The small-unit, density and conductor arguments are
 formalized generically for integer parts with nonnegative square roots.
 The fixed countable-support versions, sharp generator counts and remaining
-Gaussian normalization consequences remain pending. The section
+explicit Gaussian basis and conductor-comparison consequences remain pending. The section
 introduction now distinguishes the Noetherian equality of integral and almost integral closure from
 equality with the original ring, which also requires integral closedness;
 Z[√5] and (1+√5)/2 provide the counterexample to the former wording.
@@ -536,15 +537,37 @@ congruent modulo 2, with additive cokernel B/2B and conductor 2B×2B.
 Writing R=B/2B, its reduction is the map R[ε]/(ε²) → R×R sending
 a+bε to (a,a), with nonzero square-zero kernel Rε. Here B is the real
 arithmetic fibre, and i in B[i] is the formal quadratic generator.
-These are manuscript consequences, pending in Lean. Set-sized images,
-class ultrafilters, the abstract fibre theorem, branching and later
-normalization proofs remain to be reviewed.
+These are manuscript consequences, pending in Lean.
+
+The final six standard arithmetic-fibre results are now reviewed, completing
+all twenty-two through the finite-axiom theorem. The small-target map is
+defined on quotient representatives, and orthogonality selects exactly one
+partition part in a domain in every characteristic. Positive-characteristic
+images are fields because their elements are algebraic over the prime field;
+lifting monic coefficients proves algebraic closedness. The class-ultrafilter
+proof uses a set-like global well-order and set-valued recursion states.
+Evaluation is checked by common refinement, and the field-target criterion
+separates that class choice from ordinary lying over for set rings. The
+abstract theorem now tracks each divisibility and cofinality assumption.
+
+An added consequence classifies individual prime class ideals of the fibre:
+P_(U,p)=ε_U⁻¹(p), for a Boolean ultrafilter U and a prime ideal p of Z̄.
+The quotient is Z̄/p, even if no size assumption was made on the quotient.
+Inclusions preserve U and correspond to inclusions of coefficient primes.
+Thus strict prime chains have at most one inclusion and, under global choice,
+the finite-chain Krull dimension is exactly one. Every nonzero element is
+then detected in some F̄_p, choosing a prime that avoids a nonzero integer
+multiple of its selected coefficient; the fibre's Jacobson radical is zero.
+No collection of all class ideals or class maps is formed. The statements
+concern the fibre, not all prime ideals of the normalization. These results
+remain pending in Lean. Branching and later normalization proofs still
+await review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 329 pages
+article.pdf   the compiled report, 331 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

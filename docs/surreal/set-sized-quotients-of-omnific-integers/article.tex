@@ -13594,7 +13594,17 @@ thus different operations in characteristic two.
 Every unital homomorphism from $\NN_\bullet$ to a set-sized ring kills $\Pi\NN_\bullet$ and factors uniquely through $\mathsf B_\bullet$.
 \end{corollary}
 \begin{proof}
-Its restriction to $\Oz$ kills $\Pi$ (\cref{osq:thm:universal}), hence it kills every finite sum of products in $\Pi\NN_\bullet$.
+Let $\varphi:\NN_\bullet\to S$ be such a map. Its restriction to
+$\Oz$ is unital and has a set-sized target, so it kills $\Pi$ by
+\cref{osq:thm:universal}. For a finite sum $x=\sum_j a_jb_j$ with
+$a_j\in\Pi$ and $b_j\in\NN_\bullet$, multiplicativity and additivity
+give $\varphi(x)=\sum_j\varphi(a_j)\varphi(b_j)=0$. This applies
+also to the Gaussian normalization, using its real omnific subring.
+Consequently $\bar\varphi([x])=\varphi(x)$ is independent of the
+representative and is a unital homomorphism on $\mathsf B_\bullet$.
+Every residue has a representative, so this formula also proves
+uniqueness. The quotient can be coded by sets as in
+\cref{osq:sub:foundations}; no set of all its elements is needed.
 \end{proof}
 
 $\mathsf B_\bullet$ is not asserted to be a set: this is a factorization property for each set-sized target, not a universal object in a category of
@@ -13607,12 +13617,42 @@ $\Char R=0$ and $R\cong\Fpbar$ if $\Char R=p>0$. In particular every such image 
 $\NN_\bullet$ (\cref{osq:nm:thm:nofinite}), and no set-sized formally real field is a unital target.
 \end{theorem}
 \begin{proof}
-By \cref{osq:nf:cor:small} and \cref{osq:nf:thm:boolean}, $\varphi$ factors through $\overline\Z[\Idem(\mathsf B_\bullet)]$. In a domain each idempotent
-goes to $0$ or $1$, so exactly one part of each finite partition goes to $1$, and $R$ is the image of $\overline\Z$. In characteristic $0$ this map is
-injective: a nonzero $\alpha\in\overline\Z$ divides a nonzero ordinary integer. In characteristic $p$, $R$ is a domain algebraic over $\F_p$, hence a
-field, and it is algebraically closed because monic polynomials over $\overline\Z$ split; so $R\cong\Fpbar$. A nonzero finite image, which is
-commutative, has a finite field as a quotient, and that would be a finite domain image; in a formally real field the image of $\mathsf v$ (or of
-$i$) would square to $-1$.
+By \cref{osq:nf:cor:small,osq:nf:thm:boolean}, $\varphi$ factors
+through the finite-partition ring
+$\overline\Z[\Idem(\mathsf B_\bullet)]$. In a nonzero domain an
+idempotent $e$ satisfies $e(e-1)=0$, so its image is $0$ or $1$.
+At least one part of a partition of $1$ maps to $1$. At most one
+does, because distinct parts have product zero whereas $1\cdot1\ne0$.
+This uses orthogonality, so it remains valid in positive characteristic.
+Thus the image of $\sum_j\lambda_je_j$ is the image of one coefficient
+$\lambda_j$, and $R$ is exactly the image of the coefficient ring
+$\overline\Z$.
+
+For $0\ne\alpha\in\overline\Z$, a monic integer polynomial of
+least degree for $\alpha$ has nonzero constant coefficient. Its
+equation gives $\alpha\beta=n$ for some $\beta\in\Z[\alpha]$
+and $0\ne n\in\Z$. In characteristic zero, killing $\alpha$
+would kill $n$, so the coefficient map is injective and
+$R\cong\overline\Z$.
+
+In characteristic $p>0$, $p$ is prime because $R$ is a domain.
+Each element is algebraic over $\F_p$, by reducing its monic integer
+equation. Every nonzero $r\in R$ has an inverse in $\F_p[r]$:
+its minimal polynomial over $\F_p$ has nonzero constant term, and
+its equation expresses $r^{-1}$ as a polynomial in $r$. Hence $R$
+is a field. Lift the finitely many coefficients of a monic polynomial
+over $R$ to $\overline\Z$. That monic lift splits in
+$\overline\Z[X]$, since its roots in $\overline\Q$ are integral
+over $\overline\Z$, hence over $\Z$. Reducing the factorization
+proves that $R$ is algebraically closed. Being algebraic over $\F_p$,
+it is an algebraic closure of $\F_p$, so $R\cong\Fpbar$.
+Both possibilities for $R$ are countably infinite.
+
+If there were a nonzero finite image, it would be commutative and
+would have a maximal ideal; quotienting by it would give a finite
+field image, contrary to the classification. For a map to a formally
+real field, the residue of $\upsilon_T$ (or the actual $i$ in the
+Gaussian case) would have square $-1$, also impossible.
 \end{proof}
 
 This answers, for domain targets, the clause of \cref{osq:q:normalization} asking for the infinite set-sized images of $\NN$, and it
@@ -13631,11 +13671,34 @@ In G\"odel--Bernays class theory with global choice, every Boolean algebra whose
 ultrafilter (a class) containing any prescribed nonzero element.
 \end{lemma}
 \begin{proof}
-Enumerate the algebra along a global well-order, by an ordinal or by the class of ordinals, starting from the prescribed element $e$. At stage
-$\alpha$ add $b_\alpha$ if the decisions so far together with $b_\alpha$ have the finite intersection property, and otherwise $\neg b_\alpha$. If both
-failed, finite meets $c,d$ of earlier decisions would have $c\wedge b_\alpha=0=d\wedge\neg b_\alpha$, hence $c\wedge d=0$, which is impossible; limit
-stages preserve the finite intersection property. The history at each stage is a set, so ordinary transfinite recursion with the global well-order
-as a class parameter defines the class of decisions, which generates an ultrafilter containing $e$.
+Global choice gives a \emph{set-like} global well-order and hence an
+enumeration $(b_\alpha)$ of the Boolean algebra by a set ordinal or,
+if it is a proper class, by $\On$ \cite{HamkinsGC}. Fix the prescribed
+$e\ne0$. Start with the set of decisions $D_0=\{e\}$. At stage
+$\alpha$, adjoin $b_\alpha$ if every finite meet from
+$D_\alpha\cup\{b_\alpha\}$ is nonzero; otherwise adjoin
+$\neg b_\alpha$. At a limit take the union of earlier decisions.
+
+Suppose both choices failed. There would be finite meets $c,d$ of
+earlier decisions with $c\wedge b_\alpha=0$ and
+$d\wedge\neg b_\alpha=0$. Then $c\wedge d=0$, contradicting the
+finite intersection property of $D_\alpha$. At a limit, any finite
+list of decisions already occurs at one earlier stage, so its meet
+is nonzero. Every $D_\alpha$ is a set. The decision test quantifies
+only over finite lists of set-valued elements, with the Boolean
+operations and enumeration as class parameters. Set-length transfinite
+recursion therefore applies at every ordinal; uniqueness makes these
+runs compatible, and elementary comprehension collects their decisions
+into one class $D$. No class-valued state is recursively constructed.
+
+Define $U$ by $b\in U$ if some finite meet of elements of $D$ is
+at most $b$. It is an upward-closed, meet-closed class containing $1$
+and $e$, and excludes $0$ by the finite intersection property.
+For each $b$, its enumeration stage placed either $b$ or $\neg b$
+in $D$, hence in $U$. A proper filter with this decision property is
+an ultrafilter: adjoining any $b\notin U$ would also retain
+$\neg b\in U$ and force $0$. This proves the assertion in both the
+set and proper-class cases.
 \end{proof}
 
 No class form of Zorn's lemma and no measurable cardinal is used; one part of each finite partition is chosen, without any countable
@@ -13648,9 +13711,33 @@ surjective class homomorphism $\NN_\bullet\to\overline\Z$. So $\Pi\NN_\bullet$ i
 domains, and already of those to $\overline\Z$, in the pointwise sense (no set or class of all such maps is formed).
 \end{theorem}
 \begin{proof}
-Exactly one part of a finite partition lies in $U$, and refinement preserves the selected value; so evaluation is a well-defined surjective
-homomorphism. If $x\notin\Pi\NN_\bullet$, its image has a nonzero part $e$ with a nonzero coefficient $\alpha$; take $U\ni e$ by
-\cref{osq:nf:lem:classultra}, and $x\mapsto\alpha$. Conversely maps to countable domains kill $\Pi\NN_\bullet$ by \cref{osq:nf:cor:small}.
+A proper Boolean ultrafilter contains exactly one part of every finite
+partition of $1$: two would have meet zero, while rejecting all parts
+would put all their complements, and thus their zero meet, in $U$.
+For partitions $(e_j)$ and $(f_k)$, the products $e_jf_k$ form a
+common refinement, and its selected part is the product of the two
+selected parts. It is nonzero because it lies in $U$. The
+finite-partition description of \cref{osq:nf:thm:boolean} gives
+the same coefficient there for any two representations of one element.
+Equivalently, a nonzero difference of algebraic coefficients is a unit
+in $\mathsf B^\Q_\bullet$ and cannot annihilate that nonzero part.
+Thus selection defines a well-defined map, which we denote by
+$\varepsilon_U$.
+
+On this same common refinement the coefficients of a sum and product
+are the sums and products of the coefficients. Hence
+$\varepsilon_U$ is additive and multiplicative. It fixes every
+constant $\lambda\cdot1$ with $\lambda\in\overline\Z$, proving
+both unitality and surjectivity. Defining this map from a given $U$
+uses no further choice.
+
+If $x\notin\Pi\NN_\bullet$, its nonzero residue has a nonzero
+partition part $e$ with coefficient $\alpha\ne0$. Choose $U\ni e$
+by \cref{osq:nf:lem:classultra}; the quotient map followed by
+$\varepsilon_U$ sends $x$ to $\alpha$. Conversely every map to a
+countable domain kills $\Pi\NN_\bullet$ by
+\cref{osq:nf:cor:small}. These two assertions give the common-kernel
+statement element by element; they form no collection of class maps.
 \end{proof}
 
 \begin{corollary}[Field targets \src{19}]\label{osq:nf:cor:fieldtargets}
@@ -13658,10 +13745,102 @@ Assume global choice. A set-sized field $L$ receives a unital homomorphism from 
 its prime field.
 \end{corollary}
 \begin{proof}
-A map forces a copy of $\overline\Z$, hence of $\overline\Q$, or a copy of $\Fpbar$ (\cref{osq:nf:thm:domainimages}). Conversely compose an evaluation
-$\NN_\bullet\to\overline\Z$ with $\overline\Z\subseteq\overline\Q\subseteq L$, or with $\overline\Z\to\overline\Z/\mathfrak p\cong\Fpbar$ for a prime
-$\mathfrak p$ of $\overline\Z$ over $p$ (lying over), followed by an inclusion.
+The image of a unital map into the field $L$ is a nonzero domain.
+In characteristic zero, \cref{osq:nf:thm:domainimages} therefore
+embeds $\overline\Z$ into $L$, and taking fractions embeds
+$\overline\Q$. Indeed every algebraic number $a$ has a nonzero
+integer multiple integral over $\Z$: if
+$c_da^d+\cdots+c_0=0$ with integer coefficients and $c_d\ne0$,
+then $c_da$ satisfies a monic integer equation, obtained by multiplying
+by $c_d^{d-1}$. Thus $\operatorname{Frac}(\overline\Z)=\overline\Q$.
+In characteristic $p$, the same classification embeds $\Fpbar$
+directly. This proves necessity.
+
+Conversely choose an ultrafilter, for example one containing $1$,
+and the surjective evaluation
+$\NN_\bullet\to\overline\Z$ from \cref{osq:nf:thm:kernel}.
+In characteristic zero follow it by
+$\overline\Z\subseteq\overline\Q\hookrightarrow L$.
+In characteristic $p$, lying over for the integral extension
+$\Z\subseteq\overline\Z$ supplies a prime
+$\mathfrak p$ with $\mathfrak p\cap\Z=p\Z$
+\cite{StacksIntClosure}. The domain
+$\overline\Z/\mathfrak p$ is algebraic over $\F_p$ and every monic
+polynomial over it splits, by the coefficient-lifting argument in
+\cref{osq:nf:thm:domainimages}. It is therefore isomorphic to
+$\Fpbar$. Compose evaluation, this quotient and its inclusion in $L$.
+Lying over here concerns ordinary set rings; the class choice is used
+to obtain the ultrafilter on the fibre.
 \end{proof}
+
+\paragraph{Prime ideals of the fibre, one at a time \merge.}
+Fix the coefficient copy and write $B=\mathsf B_\bullet$ and
+$E=\Idem(B)$. A Boolean ultrafilter $U$ on $E$ and an ordinary
+prime ideal $\mathfrak p\subset\overline\Z$ determine a prime
+class ideal
+\[
+ P_{U,\mathfrak p}=\varepsilon_U^{-1}(\mathfrak p),\qquad
+ B/P_{U,\mathfrak p}\cong\overline\Z/\mathfrak p.
+\]
+Conversely, every prime class ideal $P$ of $B$ has this form, uniquely.
+Indeed set $U=\{e\in E:e\notin P\}$ and
+$\mathfrak p=P\cap\overline\Z$. Primality and $e(1-e)=0$
+show that exactly one of $e,1-e$ belongs to $U$; primality also
+makes $U$ meet-closed. If $e\le f$ and $e\notin P$, then
+$e=ef$ implies $f\notin P$, proving upward closure. Thus $U$
+is an ultrafilter. For $x=\sum_j\lambda_je_j$, exactly one
+$e_{j_0}$ is outside $P$, and its image modulo $P$ is $1$;
+all other parts vanish. Hence
+\[
+ x\in P\quad\Longleftrightarrow\quad
+ \lambda_{j_0}\in\mathfrak p,
+\]
+which proves the formula and uniqueness. This argument does not assume
+that $B/P$ was set-sized: the displayed isomorphism proves it has
+a set-sized presentation. It classifies individual ideals without
+forming a spectrum whose points would be proper classes. Given $P$
+or $U$, no global choice is needed for this description; global choice
+supplies ultrafilters with prescribed nonzero parts when required.
+
+The coefficient primes are $(0)$ and maximal ideals over ordinary
+primes $p$. To see this, if $0\ne\alpha\in\mathfrak p$, the
+relation $\alpha\beta=n\ne0$ used above gives
+$\mathfrak p\cap\Z=p\Z$ for some prime $p$. The quotient is
+$\Fpbar$, by the same algebraic-domain and splitting argument as
+before, so $\mathfrak p$ is maximal. Conversely lying over supplies
+such ideals for every $p$. Thus every prime quotient of $B$ is
+$\overline\Z$ or $\Fpbar$, and precisely the latter ideals are
+maximal. The former are minimal primes. More explicitly,
+\[
+ P_{U,\mathfrak p}\subseteq P_{V,\mathfrak q}
+ \quad\Longleftrightarrow\quad U=V\ \hbox{and}\
+ \mathfrak p\subseteq\mathfrak q.
+\]
+For necessity, inclusion preserves the zero--one decisions: if
+$e\notin P_{U,\mathfrak p}$, then $1-e\in P_{U,\mathfrak p}$,
+so $1-e\in P_{V,\mathfrak q}$ and $e\notin P_{V,\mathfrak q}$.
+The ultrafilters are therefore equal, and restricting to coefficients
+gives the ideal inclusion. Sufficiency follows from the inverse-image
+formula. Consequently no strict prime chain has two inclusions;
+under global choice there are chains
+$P_{U,(0)}\subsetneq P_{U,\mathfrak p}$, so the fibre has Krull
+dimension one in this finite-chain sense.
+
+There is also a pointwise Jacobson-radical conclusion under global
+choice. Given $0\ne x\in B$, choose an evaluation with
+$\varepsilon_U(x)=\alpha\ne0$, as in \cref{osq:nf:thm:kernel}.
+Choose $\beta$ and $0\ne n\in\Z$ with $\alpha\beta=n$,
+an ordinary prime $p$ not dividing $n$, and a coefficient prime
+$\mathfrak p$ over $p$. Then $\alpha\notin\mathfrak p$,
+so the maximal ideal $P_{U,\mathfrak p}$ avoids $x$. Thus every
+nonzero fibre element survives in some algebraically closed field
+of positive characteristic, and $\operatorname{Jac}(B)=0$ in the
+sense of membership in all maximal class ideals. Equivalently,
+$\Pi\NN_\bullet$ is already the pointwise common kernel of the
+surjective maps $\NN_\bullet\to\Fpbar$, allowing $p$ to vary.
+No single fixed characteristic is asserted to detect all elements,
+and this is not a claim that all class prime ideals of
+$\NN_\bullet$ contain $\Pi\NN_\bullet$.
 
 \begin{theorem}[A finite-axiom form \src{19}]\label{osq:nf:thm:abstract}
 Let $F$ be a real closed field (a set or a class) containing the real algebraic numbers and $A\subseteq F$ a unital subring with a ring
@@ -13672,10 +13851,60 @@ and \cref{osq:nf:cor:aic} hold with $(\Oz,\Pi,\ct)$ replaced by $(A,J,c)$, and \
 positive element of $J$, the roots being positive and distinct but not necessarily infinite.
 \end{theorem}
 \begin{proof}
-The contraction uses only the retraction and finite integrality, torsion freeness uses (i), radicality uses exactly (ii), and saturation uses (i)
-and normality. By (iii) there is $T\in J$ with $T>2$ for \cref{osq:nf:prop:unit} and as large as needed for the lifting; $\upsilon_T$ is a unit with
-residue square $-1$ whether or not it is infinitesimal. Real algebraic integers are integral over $\Z\subseteq A$, so the coefficient embedding,
-the spectral idempotents, the Boolean description and the doubling apply unchanged.
+All monic equations and ideal expressions used below are finite.
+The determinant proof of \cref{osq:nf:lem:contraction} applies to
+$A$ and the retraction $c$, giving $JN_\bullet\cap A=J$ and
+$JN_\bullet\cap\Z=0$. Hypothesis (i) makes $JN_\bullet$ divisible
+by nonzero integers; cancellation in the ambient characteristic-zero
+field then makes $\mathsf B_\bullet$ torsion free. Reducing monic
+equations along $c$ proves it integral over $\Z$.
+
+For radicality write $x^m=\sum_j a_jb_j$ with $a_j\in J$ and
+$b_j\in N_\bullet$. Hypothesis (ii) gives $0\ne d\in J$ with
+$a_j/d^m\in A$, so $(x/d)^m\in N_\bullet$. The element $x/d$
+is integral over $N_\bullet$ and hence over $A$; it belongs to
+$N_\bullet$, proving $x\in JN_\bullet$. Rationalization is
+therefore a reduced algebraic $\Q$-algebra. By (i) its presentation
+from $N_\bullet\otimes_\Z\Q$ has kernel exactly $JN_\bullet$,
+as in \cref{osq:nf:thm:saturation}. Lifting a monic equation and
+subtracting its value puts every element integral over the quotient
+back in the quotient. This proves rational saturation without a
+normal-form or integer-part hypothesis on $A$.
+
+For the lifting, retain the constants $M,C_d,\eta_d$ of
+\cref{osq:nf:thm:rootlift} and use (iii) to choose positive
+$T\in J$ above $C_dM/\eta_d$ and $2$. The same endpoint estimates
+and polynomial intermediate value property give the distinct positive
+roots. The correction $\prod_{j=1}^d(X-jT)-X^d$ has coefficients
+in $J$ because each is an integer multiple of a positive power of $T$.
+Its roots are integral over $N_\R$ and therefore lie in $N_\R$.
+Reduction gives absolute integral closedness of $\mathsf B_\R$.
+Real closedness makes $F(i)$ algebraically closed, so integrality of
+roots gives the same splitting property for $N_\C$ and
+$\mathsf B_\C$. No infinitude of the lifted roots is needed.
+
+For $T>2$, the element
+$\upsilon_T=(T-\sqrt{T^2-4})/2$ is integral over $A$ and is a unit
+of $N_\R$ with inverse $T-\upsilon_T$. Its residue has square $-1$.
+Real algebraic integers already lie in $N_\R$; each nonzero one
+divides a nonzero integer, so they embed after rationalization.
+Adjoining the residue of $\upsilon_T$ gives the coefficient copy
+of $\overline\Q$, and saturation puts $\overline\Z$ in the
+integral fibre. The reduced algebraic rationalization now admits the
+spectral projectors of \cref{osq:nf:lem:spectral}, giving the
+Boolean-power description.
+
+Finally $N_\C\cap F=N_\R$. For $z\in N_\C$, both
+$z+\bar z$ and $(z-\bar z)/i$ are real and integral over $A$,
+so $N_\C[1/2]=N_\R[1/2]+iN_\R[1/2]$. Hypothesis (i) permits
+halving each coefficient in $J$ and gives the equality of additive
+groups $JN_\C=JN_\R+iJN_\R$ even before localization.
+Thus the rationalized complex fibre is
+$\mathsf B^\Q_\R[X]/(X^2+1)$; the roots $\pm\mathsf v$ differ
+by the unit $2\mathsf v$, giving two rationalized real factors.
+Saturation identifies their integral parts componentwise and yields
+$\mathsf B_\C\cong\mathsf B_\R\times\mathsf B_\R$.
+These are exactly the steps of \cref{osq:nf:thm:doubling}.
 \end{proof}
 
 The theorem does not give that $\upsilon_T$ is infinitesimal, nor that $JN_\bullet$ has no set of generators (that needs the set-family divisibility of
@@ -19605,6 +19834,8 @@ The Stacks Project Authors, \emph{The Stacks Project}, Section 10.50, Tag 00I8, 
 \bibitem{StacksIntClosure}
 The Stacks Project Authors, \emph{The Stacks Project}, Lemma 10.161.8, Tag 032L (finiteness of integral closure in a finite separable extension),
 \url{https://stacks.math.columbia.edu/tag/032L}. Cited by 23.
+Lemma~10.36.17, Tag~00GQ (lying over for an injective integral extension),
+\url{https://stacks.math.columbia.edu/tag/00GQ}, checked for the fibre-target review.
 
 \bibitem{StacksDedekind}
 The Stacks Project Authors, \emph{The Stacks Project}, Lemma 10.120.18, Tag 09IG (Dedekind normalization in dimension one),

@@ -548,6 +548,15 @@ The residues w_± are the coordinate idempotents; their lifts in 𝒩_ℂ
 are not idempotent. The mod-p nilradical is an **idempotent ideal**,
 meaning n_p²=n_p; its elements are nilpotent, and only zero is also an idempotent.
 
+For the fibre's domain targets, ε_U denotes coefficient selection by one
+Boolean ultrafilter U after fixing the coefficient copy. A prime class
+ideal is P_(U,𝔭)=ε_U⁻¹(𝔭), where 𝔭 is an ordinary prime ideal of Z̄;
+its quotient is Z̄/𝔭. This describes individual ideals, not a set or class
+whose members are all class ideals. Krull dimension one refers to lengths
+of finite strict prime chains. The fibre's zero Jacobson radical is also
+pointwise: each nonzero element is avoided by some maximal class ideal.
+The prime p in its detecting field F̄_p may depend on the element.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though
