@@ -912,3 +912,7 @@ import Surreal.Surcomplex.SmallRingObservations
 import Surreal.Algebra.ResiduallySmallRings
 import Surreal.Surcomplex.ResiduallySmallTargets
 import Surreal.Surcomplex.SmallRepresentations
+import Surreal.Surcomplex.CommonKernels
+import Surreal.Foundations.OmnificSmallRigidity
+import Surreal.Algebra.GaussianEndomorphisms
+import Surreal.Surcomplex.GaussianConstantRigidity
