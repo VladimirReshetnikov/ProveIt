@@ -679,3 +679,9 @@ import Surreal.HahnSeries.IntersectivePolynomial
 import Surreal.Surcomplex.IntersectivePolynomial
 import Surreal.Algebra.QuadraticModularLifting
 import Surreal.Algebra.IntersectivePolynomialModular
+import Surreal.Algebra.DiophantineConstants
+import Surreal.Algebra.DiophantineConstantsPolynomials
+import Surreal.HahnSeries.DiophantineConstants
+import Surreal.Surcomplex.DiophantineConstants
+import Surreal.Algebra.DiophantineConstantsBoundary
+import Surreal.Surcomplex.DiophantineConstantsBoundary

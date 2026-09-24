@@ -131,16 +131,23 @@ theorem exists_zmod_root (m : ℕ) (hm : m ≠ 0) : ∃ x : ZMod m, value x = 0 
       exact Prod.ext hx hy
   exact aux m hm
 
-/-- The full intersectivity assertion, with an ordinary integer witness. -/
-theorem exists_integer_root_mod (m : ℕ) (hm : 0 < m) :
-    ∃ r : ℤ, (m : ℤ) ∣ value r := by
+/-- An intersective root can be chosen as the least nonnegative residue representative. -/
+theorem exists_integer_root_mod_bounded (m : ℕ) (hm : 0 < m) :
+    ∃ r : ℤ, 0 ≤ r ∧ r < (m : ℤ) ∧ (m : ℤ) ∣ value r := by
   letI : NeZero m := ⟨Nat.ne_of_gt hm⟩
   obtain ⟨x, hx⟩ := exists_zmod_root m (Nat.ne_of_gt hm)
-  refine ⟨x.val, (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp ?_⟩
+  refine ⟨x.val, Int.natCast_nonneg _, by exact_mod_cast x.val_lt, ?_⟩
+  apply (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp
   change (Int.castRingHom (ZMod m)) (value (x.val : ℤ)) = 0
   rw [map_value]
   change value (((x.val : ℕ) : ℤ) : ZMod m) = 0
   simpa only [Int.cast_natCast, ZMod.natCast_zmod_val] using hx
+
+/-- The full intersectivity assertion, with an ordinary integer witness. -/
+theorem exists_integer_root_mod (m : ℕ) (hm : 0 < m) :
+    ∃ r : ℤ, (m : ℤ) ∣ value r := by
+  obtain ⟨r, _, _, hr⟩ := exists_integer_root_mod_bounded m hm
+  exact ⟨r, hr⟩
 
 /-- Every nonzero Gaussian integer divides a value of Lambda at an ordinary integer. -/
 theorem gaussian_multiple_certificate (v : GaussianInt) (hv : v ≠ 0) :

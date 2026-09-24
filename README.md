@@ -342,6 +342,16 @@ Chinese remainder theorem prove the modular assertion. Every nonzero
 Gaussian integer divides a value at an ordinary integer; an element with
 zero Gaussian constant term has no such certificate, even with omnific witnesses.
 
+These results now prove a single parameter-free definition of both ordinary
+constant rings. The same three equations, of exact degrees `3, 3, 7`, with
+five witnesses define `ℤ` in the actual omnific integers and `ℤ[i]` in the
+Gaussian omnific integers. The theorem also covers arbitrary intermediate
+Hahn rings with those constant intersections, without requiring closure
+under constant extraction. The checked examples include a witness for
+`1+i` and the absence of any witness for `ω+i`. In the full surreal and
+surcomplex fields the predicate holds everywhere, so the ring restriction
+is essential.
+
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
 with `t` purely infinite. Taking `t = ω` gives an infinite solution.
