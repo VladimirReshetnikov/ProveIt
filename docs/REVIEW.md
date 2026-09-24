@@ -4875,3 +4875,23 @@ numbers are unchanged. The 4,626-result index across 63 reports, 5,192
 source references and 1,735 Markdown destinations pass before this record
 is appended. No Lean source or shipped verifier changed; the prior full
 Lean build remains the baseline for this documentation-only revision.
+
+## Synchronization with the quadratic ideal formalization
+
+Merged `eef9d87`, including `3480bd8`. The incoming declarations were
+compared with `odg:def:thm:ideal`, `odg:def:cor:idealhom` and the
+other-radicand variant: the general theorem uses the full coefficient
+pullback, a root in the coefficient field and a radicand nonsquare in the
+fraction field of the constant ring. The actual omnific and Gaussian
+omnific predicates are literally `∃ y, x² = 2y²`. Unital homomorphisms
+preserve their witnesses without injectivity, size constraints or a
+requirement to fix a chosen square root or imaginary unit. The incoming
+root README and ledger entries are preserved; C17-specific coverage is
+unchanged.
+
+The full `LEAN_NUM_THREADS=2 lake build` passes 4,524 jobs, with 15,801
+declarations passing the audit using only the three permitted axioms.
+No article or catalogue source changed in this merge, so their validated
+229-page and 33-page PDFs remain current. The source-label audit finds
+5,194 references with none missing; all 1,739 Markdown destinations and
+the 4,626-result index across 63 reports pass, as do whitespace checks.

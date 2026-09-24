@@ -664,3 +664,7 @@ import Surreal.HahnSeries.NonpositiveSupportUnits
 import Surreal.HahnSeries.NonpositiveCoefficientExtension
 import Surreal.HahnSeries.EtaleNormRigidity
 import Surreal.HahnSeries.NonpositivePolynomialDegree
+import Surreal.Algebra.QuadraticIdealDefinition
+import Surreal.Algebra.QuadraticConstantObstruction
+import Surreal.HahnSeries.QuadraticIdealDefinition
+import Surreal.Surcomplex.QuadraticIdealDefinition
