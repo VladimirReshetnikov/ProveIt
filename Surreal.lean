@@ -870,3 +870,8 @@ import Surreal.Surcomplex.GaussianNormalizationDensity
 import Surreal.Surcomplex.GaussianNormalization
 import Surreal.Algebra.NormalizationFiniteTargets
 import Surreal.Surcomplex.NormalizationFiniteTargets
+import Surreal.Algebra.SmallOrderedMaps
+import Surreal.Foundations.SignSequenceOrderedMaps
+import Surreal.Algebra.MonomialValuationObstruction
+import Surreal.Foundations.OmnificValuationObstruction
+import Surreal.Surcomplex.GaussianValuationObstruction
