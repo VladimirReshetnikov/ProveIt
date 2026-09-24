@@ -310,6 +310,11 @@ flat dimension one and projective dimension two. A quotient that keeps
 the monomials on F has a different description: its flat dimension is
 the largest dimension of a face meeting F only at zero. An explicit
 cellular resolution independently proves `fd D = d` for every cone.
+Flat radical geometric ideals recover the face lattice when the monomial
+structure is marked. A cone is simplicial exactly when every facet quotient
+has flat dimension one; cube cones show that a facet quotient can instead
+have flat dimension `d − 1`. These statements concern the finite-support
+cores over which the modules are defined.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

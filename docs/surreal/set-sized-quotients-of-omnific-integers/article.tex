@@ -9371,9 +9371,37 @@ For an irredundant antichain $\mathcal F=\{F_1,\dots,F_r\}$ the following are eq
 \mathfrak r_{\mathcal F})=1$; $r=1$.
 \end{theorem}
 \begin{proof}
-The first two are equivalent because the nonzero quotient is not flat (\cref{osq:pc:thm:homological}), and $r=1$ gives flatness
-(\cref{osq:pc:thm:exhaustion}). If $r\ge2$, take $G$ minimal among the joins $F_i\vee F_j$, $i\ne j$; the $t\ge2$ generators inside $G$ join pairwise to $G$ and
-none equals $G$, so $\mathsf K_{<G}$ is $t$ isolated vertices, $\beta_{2,G}=t-1>0$, and the flat dimension is at least two.
+Put $J=\mathfrak r_{\mathcal F}$ and $B=A_{\mathscr C}/J$;
+the antichain is nonempty, as fixed above. The sequence
+$0\to J\to A_{\mathscr C}\to B\to0$ gives, for every module $N$,
+\[
+ \Tor_1^{A_{\mathscr C}}(J,N)
+   \cong\Tor_2^{A_{\mathscr C}}(B,N).
+\]
+Thus $J$ is flat if and only if $\fd B\le1$, by the Tor criterion for
+flat dimension. The quotient $B$ is nonzero and nonflat by
+\cref{osq:pc:thm:homological}, so this is equivalent to $\fd B=1$.
+If $r=1$, then $J=I_{F_1}$ is flat by
+\cref{osq:pc:thm:exhaustion}.
+
+Conversely, suppose $r\ge2$. Choose $G$ minimal under inclusion among
+the finitely many pairwise joins $F_i\vee F_j$ with $i\ne j$.
+Let $T=\{i:F_i\subseteq G\}$ and $t=|T|\ge2$. No $F_i$ with $i\in T$
+equals $G$: it would contain both generators of the chosen pair,
+contrary to the antichain condition. For distinct $i,j\in T$, the
+pairwise join $F_i\vee F_j$ lies below $G$ and is another member of
+the finite set in which $G$ was minimal. It must therefore equal $G$.
+Every singleton from $T$ has join strictly below $G$, and every subset
+of size at least two has join $G$. Hence $\mathsf K_{<G}$ consists of
+$t$ isolated vertices and the empty face. Its augmented degree-zero
+boundary is the sum map $K^t\to K$, with kernel of dimension $t-1$,
+and it has no degree-one chains. Consequently
+\[
+ \beta_{2,G}=\dim_K\widetilde H_0(\mathsf K_{<G};K)=t-1>0.
+\]
+By \cref{osq:pc:thm:exactfd}, this gives
+$\fd B\ge2$, excluding flatness of $J$. This proves all three
+equivalences over every allowed coefficient field.
 \end{proof}
 
 \begin{corollary}[A marked face lattice \src{26}]\label{osq:pc:cor:reconstruct}
@@ -9381,7 +9409,25 @@ Among the nonzero radical geometric monomial ideals the flat ones are exactly th
 anti-isomorphic to the face lattice and tensor product corresponds to join.
 \end{corollary}
 \begin{proof}
-\Cref{osq:pc:thm:flatclass,osq:pc:thm:products}.
+By \cref{osq:pc:thm:radical}, every nonzero radical geometric monomial
+ideal has a unique nonempty antichain of minimal faces. By
+\cref{osq:pc:thm:flatclass}, it is flat precisely when this antichain
+is a singleton. Thus $F\mapsto I_F$ is a bijection from nonzero faces
+to the indicated flat ideals. Adjoin $A_{\mathscr C}=I_{\{0\}}$:
+this is a separate convention, since the ring contains $1$ whereas
+all geometric monomial ideals under discussion lie in the tail.
+
+For nonzero faces, \cref{osq:pc:thm:products} gives
+$I_G\subseteq I_F$ if and only if $F\subseteq G$. The same equivalence
+holds when exactly one face is zero, because $A_{\mathscr C}$ contains
+every nonzero-face ideal and is contained in none of those proper tail
+ideals. If both faces are zero it is tautological. Hence the bijection reverses
+order, recovering the entire face lattice. Multiplication identifies
+$I_F\otimes_{A_{\mathscr C}}I_G$ with $I_{F\vee G}$ for nonzero
+faces; when one face is zero this is the usual unit isomorphism
+$A_{\mathscr C}\otimes I_G\cong I_G$. The claim uses the actual
+marked ideals and their inclusions, not merely their abstract module
+isomorphism classes.
 \end{proof}
 
 This reconstructs the face lattice from the ring \emph{with its geometric monomial structure marked}; it does not show that an abstract ring isomorphism of
@@ -9392,18 +9438,51 @@ The following are equivalent: (i) $\mathscr C$ is simplicial; (ii) every facet o
 (iv) $\fd A_{\mathscr C}(F)=1$ for every facet $F$.
 \end{theorem}
 \begin{proof}
-(i)$\Rightarrow$(ii) is clear, and (ii), (iii), (iv) are equivalent by \cref{osq:pc:prop:faceprime,osq:pc:thm:flatclass}. Assume (ii). Every ray $\rho$ is
-omitted by some facet, since the facets meet in $\{0\}$; that facet's functional is positive on $\rho$ and zero on the other rays, so in a linear relation among
-ray vectors the coefficient of $\rho$ vanishes. The rays are linearly independent and span $\R^d$, so there are $d$ of them.
+If $\mathscr C$ is simplicial, its $d$ ray generators form a basis of
+$\R^d$ and carry the cone to the nonnegative orthant. Its facets are
+therefore obtained by omitting one basis ray, proving (i)$\Rightarrow$(ii).
+For each facet $F$, the rays outside $F$ form the nonempty irredundant
+antichain defining $\mathfrak p_F$ by
+\cref{osq:pc:prop:faceprime}. The equivalences of
+\cref{osq:pc:thm:flatclass} then say exactly that this antichain has
+one member, that $\mathfrak p_F$ is flat, and that
+$\fd A_{\mathscr C}(F)=1$. This proves the equivalence of (ii), (iii)
+and (iv).
+
+Assume (ii), and choose one nonzero generator $v_\rho$ of each ray.
+The intersection of all facets is $\{0\}$: if all facet functionals
+vanished on $v$, both $v$ and $-v$ would satisfy the cone inequalities,
+so pointedness would force $v=0$. Consequently, for every ray $\rho$
+there is a facet $F_\rho$ not containing it. Its nonnegative supporting
+functional $\ell_\rho$ is positive on $v_\rho$ and, by (ii), zero on
+every other ray generator. Applying it to any real linear relation
+$\sum_\sigma a_\sigma v_\sigma=0$ gives
+$a_\rho\ell_\rho(v_\rho)=0$, hence $a_\rho=0$. This holds for every
+ray, so all the ray generators are linearly independent. They span
+$\R^d$ because the cone is full-dimensional; there are exactly $d$
+of them and the cone is simplicial. The argument includes $d=1$,
+whose only facet is the zero face.
 \end{proof}
 
-The criterion concerns all facets: a nonsimplicial cone can have one facet omitting a single ray (26).
+The criterion concerns all facets. For example, let $\mathscr S\subseteq\R^3$ be the cone over a square. The product
+$\mathscr S\times\R_{\ge0}$ has dimension four and five rays, so it is not simplicial. Yet its facet
+$\mathscr S\times\{0\}$ contains the four square-cone rays and omits only the last coordinate ray. Its face-prime ideal is flat,
+and its face quotient has flat dimension one (26, with this explicit example).
 
 \begin{corollary}[Simplicial face dimensions \src{26}]\label{osq:pc:cor:simplicialface}
 If $\mathscr C$ is simplicial, $\fd A_{\mathscr C}(F)=d-\dim F$ for every face $F$.
 \end{corollary}
 \begin{proof}
-The largest face disjoint from $F$ is spanned by the complementary rays; apply \cref{osq:pc:thm:facebetti}.
+Choose a basis of ray generators $v_1,\ldots,v_d$ for $\mathscr C$.
+Every face is the nonnegative span of a unique subset of these rays.
+Write $F$ for the face on an index set $S$; then $\dim F=|S|$.
+A face on $T$ meets $F$ only at zero if and only if $T\cap S$ is
+empty, since coordinates in the ray basis are unique. Thus every
+face disjoint from $F$ lies in the complementary face on $[d]\setminus S$,
+and that face itself is disjoint from $F$ and has dimension $d-|S|$.
+The maximum in \cref{osq:pc:thm:facebetti} is therefore $d-\dim F$.
+This includes $S=\varnothing$, giving the quotient $D$ of flat dimension
+$d$, and $S=[d]$, giving the identity quotient of flat dimension zero.
 \end{proof}
 
 Through $A_{\mathscr C}\cong A_d$ this is 21's $\fd\mathsf F_U=|U|$ (\cref{osq:da:prop:faces}) with $|U|=d-\dim F$, and 21's
@@ -9428,16 +9507,58 @@ For $n\ge1$ let $\mathscr C_n=\{(x_1,\dots,x_n,z):z\ge|x_i|\ (1\le i\le n)\}$ an
 are facets, and $\fd_{A_{\mathscr C_n}}A_{\mathscr C_n}(F_+)=n$, in the omnific and in the Gaussian omnific cores.
 \end{theorem}
 \begin{proof}
-The section $z=1$ is the $n$-cube and $F_\pm$ are cones over opposite facets; $x_1=z=-x_1$ forces $z=0$ and then all $x_i=0$, so $F_+\cap F_-=\{0\}$ and
-\cref{osq:pc:thm:facebetti} gives $\ge n$; the only face of dimension $n+1$ is $\mathscr C_n$, which meets $F_+$. The embeddings are
-\cref{osq:pc:prop:embedding}.
+The inequalities imply $z\ge0$, and at $z=0$ they force every $x_i=0$.
+Thus $z$ is strictly positive on nonzero cone points, and the section
+$z=1$ is the cube $[-1,1]^n$. It has dimension $n$, so its cone has
+dimension $n+1$. The sections $x_1=\pm1$ are opposite cube facets of
+dimension $n-1$, including two points when $n=1$; their cones $F_\pm$
+are consequently facets of dimension $n$.
+
+On $F_+\cap F_-$ one has $x_1=z=-x_1$, forcing $z=0$ and hence all
+coordinates zero. The disjoint-face formula
+\cref{osq:pc:thm:facebetti} therefore gives a lower bound $n$ using
+$F_-$. For the upper bound, the only face of dimension $n+1$ is the
+whole cone, which meets the nonzero face $F_+$; every disjoint face
+has dimension at most $n$. The two bounds give equality.
+
+This reasoning holds for every unital subring $D\subseteq K$.
+Specialize to $(D,K)=(\Z,\R)$ or $(\Z[i],\C)$ and use the embeddings
+of \cref{osq:pc:prop:embedding}. They identify these rings with their
+omnific or Gaussian core images, preserving module dimensions. No
+extension of scalars to the entire ambient omnific ring is asserted.
 \end{proof}
 
-By \cref{osq:pc:thm:facebetti} a nonzero proper face quotient has flat dimension at most $d-1$, and the cube cones attain it on a facet (26). The multiplicities
-of the reduced face-labelled flat resolutions, starting with the single $A_{\mathscr C}$ in degree $0$, are: $d$-orthant and $D$: $\binom d0,\dots,\binom dd$
-($\fd=d$); square cone and $D$: $(1,4,4,1)$ ($3$); square cone and a facet: $(1,2,1)$ ($2$); square cone and a ray: $(1,3,2)$ ($2$); any cone and
-$A_{\mathscr C}/I_{\mathscr C}$: $(1,1)$ ($1$); cone over a $3$-cube and $D$: $(1,8,12,6,1)$ ($4$); cone over a $3$-cube and a facet: $(1,4,4,1)$ ($3$); cone
-over an octahedron and $D$: $(1,6,12,8,1)$ ($4$). The quotient $A_{\mathscr C}/I_{\mathscr C}$ keeps the boundary faces and is reduced. For $d\ge2$ it has
+By \cref{osq:pc:thm:facebetti}, a quotient retaining a nonzero proper face has flat dimension at most $d-1$:
+the full cone is not disjoint from that face. Cube cones attain this bound on a facet (26).
+The following table lists total summand counts by homological degree, beginning with the single $A_{\mathscr C}$ in degree zero.
+They count flat face ideals, not ranks of free modules.
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Cone & Quotient & Summand counts & Flat dimension \\
+\midrule
+$d$-orthant & $D$ & $\binom d0,\ldots,\binom dd$ & $d$ \\
+Square cone & $D$ & $1,4,4,1$ & $3$ \\
+Square cone & Facet quotient & $1,2,1$ & $2$ \\
+Square cone & Ray quotient & $1,3,2$ & $2$ \\
+Any cone & $A_{\mathscr C}/I_{\mathscr C}$ & $1,1$ & $1$ \\
+Cone over a $3$-cube & $D$ & $1,8,12,6,1$ & $4$ \\
+Cone over a $3$-cube & Facet quotient & $1,4,4,1$ & $3$ \\
+Cone over an octahedron & $D$ & $1,6,12,8,1$ & $4$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+For $D$, the counts enumerate all section faces, including the top cell, by
+\cref{osq:pc:prop:cellular}. For a face quotient they enumerate the faces
+disjoint from the retained face, by \cref{osq:pc:thm:facebetti}.
+In a cube, the faces disjoint from a fixed facet are precisely those in
+the opposite facet: a face fixes some coordinates to $\pm1$, and avoids
+$x_1=1$ exactly when it fixes $x_1=-1$. This gives $1,4,4,1$ for a
+three-cube facet quotient. The single-ideal row is the resolution
+$0\to I_{\mathscr C}\to A_{\mathscr C}\to A_{\mathscr C}/I_{\mathscr C}\to0$;
+its exact dimension is one by \cref{osq:pc:thm:flatclass}.
+
+The quotient $A_{\mathscr C}/I_{\mathscr C}$ keeps the boundary faces and is reduced. For $d\ge2$ it has
 zero divisors and is not a face-prime quotient: choose a facet $H$, a rational ray vector $u$ outside $H$ and a rational
 $v\in\operatorname{relint}H$. Both vectors lie on the boundary, but $u+v$ is interior, since every facet functional is positive on at least one of $u,v$.
 Thus $X^u,X^v$ survive and their product vanishes. For $d=1$, however, $I_{\mathscr C}=\Pi_{\mathscr C}$ and the quotient is the domain $D$, the face-prime

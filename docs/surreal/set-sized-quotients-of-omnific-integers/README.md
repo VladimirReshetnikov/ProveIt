@@ -267,13 +267,24 @@ also now separates dimension one, where the quotient is the domain D, from
 dimensions at least two, where an explicit pair of boundary monomials
 gives zero divisors.
 
-The subsequent flat-ideal classification, simpliciality criterion, examples
-and full source reconciliation remain pending review. Exact scope
-and validation are in [RECONCILIATION.md](RECONCILIATION.md).
+The flat-ideal classification, marked face-lattice reconstruction,
+simpliciality criterion, simplicial face dimensions and cube-cone theorem
+are now reviewed. The minimal-pair-join proof computes the nonzero reduced
+H₀ explicitly; the facet-functional argument proves independence of all
+rays, including the dimension-one case. Reconstruction uses the actual
+marked ideals with their inclusions and separately adjoins the unit ideal
+for the zero face. A square cone times a ray shows why one flat facet
+ideal does not suffice for simpliciality. Cube facets attain flat dimension
+`d − 1`, and the square/cube/octahedron examples now have a comparison
+table of flat summand counts. All five results remain pending in Lean.
+
+The squarefree transfer, coefficient dependence, arithmetic modules,
+nonflat embeddings and full source reconciliation remain pending review.
+Exact scope and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 308 pages
+article.pdf   the compiled report, 309 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

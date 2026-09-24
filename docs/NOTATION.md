@@ -327,6 +327,15 @@ cell of dimension p − 1 in homological degree p; the empty-cell
 augmentation is in homological degree zero. A ray section is a point,
 whose boundary is the augmented complex containing only the empty face.
 
+The face lattice is recovered from the actual nonzero flat radical
+geometric ideals, ordered by inclusion, after separately adjoining the
+unit ideal `I_{0} = A_𝒞`. This reconstruction requires the geometric
+monomial structure to be marked. Tensor product represents face join
+through the multiplication isomorphism. Simpliciality requires flatness
+of the face-prime ideal for every facet, equivalently flat dimension one
+for every facet quotient; a single facet does not suffice. The dimensions
+are over the core A_𝒞, also when it is realized inside an omnific ring.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

@@ -7251,3 +7251,66 @@ Classical.choice and Quot.sound. All 4,626 source anchors, 5,219
 source-label references and 1,867 local Markdown destinations in 226
 files pass, along with whitespace checks. No incoming TeX changed;
 the 308-page article and 34-page catalogue remain current.
+
+## Flat radical ideals, marked reconstruction and simpliciality
+
+Reviewed and expanded `osq:pc:thm:flatclass`, `osq:pc:cor:reconstruct`,
+`osq:pc:thm:simplicial`, `osq:pc:cor:simplicialface` and
+`osq:pc:thm:cubes`, with the adjacent square/cube/octahedron examples.
+The flatness proof now displays Tor dimension shifting for every module.
+For an antichain with at least two members, a minimal pairwise join G
+forces every pair of generators below G to join to G. No such generator
+can equal G. The proper-join complex is therefore t isolated vertices,
+whose augmented sum map K^t -> K has kernel dimension t-1. Nonzero
+beta_(2,G) gives flat dimension at least two over every allowed field.
+
+The reconstruction proof gives the bijection between nonzero faces and
+flat radical geometric ideals, separately adjoins the unit ideal for
+the zero face, and checks order reversal and tensor multiplication,
+including the unit cases. The reconstructed data are marked ideals and
+inclusions, not merely abstract module isomorphism classes or an
+unmarked ring.
+
+The simpliciality proof treats both directions and all equivalences.
+Facets of a simplicial cone omit one basis ray. Conversely, pointedness
+makes the common zero locus of the facet functionals trivial; a facet
+omitting a given ray has a functional isolating its coefficient in any
+linear relation among rays. All ray generators are independent and,
+by full dimensionality, form a basis. The dimension-one case is explicit.
+A square cone times a ray is a four-dimensional, five-ray counterexample
+to testing only one facet: its square-cone facet omits exactly one ray
+and has a flat face-prime ideal, though the cone is not simplicial.
+
+The simplicial face formula now identifies the unique complementary
+face in basis coordinates, including the zero and whole-cone faces.
+The cube proof verifies the positive section, dimensions and opposite
+facets, including n=1, then proves both bounds for flat dimension n.
+The omnific specializations are isomorphisms onto the finite-support
+core images; no module dimension is transferred to the whole ambient
+omnific ring.
+
+Replaced the dense example list by a table of eight flat summand-count
+patterns and explained their face counts. In a cube, a face avoids a
+fixed facet exactly when it lies in the opposite facet. The counts are
+for flat resolutions, not minimal free ranks. Clarified that the d-1
+bound concerns quotients retaining a nonzero proper face. Updated the
+root README, report guide, notation and catalogue, and refreshed source
+anchors. These five manuscript results still have no Lean proofs here;
+squarefree transfer, coefficient dependence, arithmetic modules, nonflat
+embeddings and full source reconciliation remain pending review.
+
+Validation: three clean final TeX passes for the 309-page report and
+34-page catalogue, with no warnings or box diagnostics. Inspected the
+five revised proofs, the comparison table and its explanation, and the
+catalogue entry. All 418 standard/principal statements, 828 labels,
+1,656 auxiliary label/number pairs, 66 questions, 60 remarks and 28
+numbered examples are unchanged. The delivered source-26 verifier was
+rerun unchanged in scratch: all 52,080 assertions and 70 examples match
+its recorded output, excluding elapsed time. It checks 188 face quotients,
+1,329 additional antichains, 56 cancellations and 2,457 rational cap
+calculations; these finite rational checks are not proofs of the general
+ring or characteristic-independent assertions. All 4,626 source anchors
+in 63 reports, 5,219 source-label references and 1,867 local Markdown
+destinations in 226 files pass, along with whitespace checks. No Lean
+source changed locally; the two-thread 4,677-job build and 17,524-
+declaration axiom audit remain the baseline before synchronization.
