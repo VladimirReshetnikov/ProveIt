@@ -309,6 +309,10 @@ ordinary solution set.
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
 with `t` purely infinite. Taking `t = ω` gives an infinite solution.
+The three-variable equation `(x + z)² − 2y² = 1` also has a proved exact
+parametrization: `(a + u, b, d − u)` over ordinary solutions
+`(a + d)² − 2b² = 1`, with `u` purely infinite. Its common kernel permits
+nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,

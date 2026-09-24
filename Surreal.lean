@@ -637,3 +637,4 @@ import Surreal.Algebra.BinaryFormRigidity
 import Surreal.Surcomplex.BinaryFormRigidity
 import Surreal.Surcomplex.PellRigidity
 import Surreal.Surcomplex.ZeroPellFiber
+import Surreal.Surcomplex.RankDeficientPell
