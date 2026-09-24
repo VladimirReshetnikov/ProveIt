@@ -732,6 +732,10 @@ import Surreal.HahnSeries.QuarticConstants
 import Surreal.HahnSeries.ConstantTermQuartic
 import Surreal.HahnSeries.IdealMultipliers
 import Surreal.HahnSeries.MultiplierFormulas
+import Surreal.Algebra.AugmentationFractionField
+import Surreal.HahnSeries.MultiplierTransfer
+import Surreal.Surcomplex.IdealMultipliers
+import Surreal.Surcomplex.SupportFractionFields
 import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial
