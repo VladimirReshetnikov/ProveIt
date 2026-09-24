@@ -201,8 +201,13 @@ finite-index omnific ideal occurs in the diagram. With the inverse-limit
 topology this isomorphism is also a homeomorphism of compact Hausdorff,
 totally disconnected topological rings. The canonical map has dense image
 and induces exactly the omnific congruence topology. Higher Diophantine
-and general set-sized quotient results remain pending; source review is
-distinct from checked formalization.
+and general set-sized quotient results remain pending in Lean. The quotient
+report's elementary proof through the universal theorem has now been reviewed:
+the collision uses only a finite product identity and a set-sized Hartogs
+family, without transporting an infinite sum through a homomorphism. Its
+integer-divisibility shortcut now states the necessary characteristic
+condition. Later cardinal classifications and full source reconciliation
+remain pending review.
 
 The actual surreal field is also proved to be a field of fractions of its
 omnific subring, using Mathlib's `IsFractionRing`. One positive Conway

@@ -719,8 +719,10 @@ $k=\R$ and $\lambda=\kappa$; see the notes in and after the proof of that theore
 $\kappa$-bounded coefficient rings $\Z+K(\!(G^{<0})\!)_\kappa$ of L'Innocente--Mantova \cite{LM} are
 the published precedent for the bounded-support rings of 06 and 11. The Hahn-evaluation report
 \cite{RepoHahnEval}, cited by 12, separates finite polynomial evaluation at $\omega$ from evaluation of
-unrestricted series; 12's embeddings use finite normal forms only. No statement of this report
-has a Lean counterpart; the repository has no omnific module.
+unrestricted series; 12's embeddings use finite normal forms only. The repository now has actual
+omnific and Gaussian omnific rings and shared support, degree, unit and ideal results;
+their exact scope is mapped in \texttt{docs/FORMALIZATION.md}. The full-class universal
+quotient theorem and the later cardinal classifications still need their own formal proofs.
 
 \paragraph{Stale statements corrected.} Three sources report a repository code search for
 ``omnific'' with no hits (06, 08, 11; 09 reports an explicitly incomplete result). At their pins
@@ -944,11 +946,14 @@ On $\B_{D,k}(G)$ the same coefficient is a split surjective ring homomorphism wi
 $\mm_k(G)$; on $\OO_\R$ and $\OO_\C$ it is the standard part, written $\st$.
 \end{lemma}
 \begin{proof}
-All exponents occurring in $\A_{D,k}(G)$ are nonnegative, and a sum of two nonnegative
-exponents is zero only when both are zero; so the constant coefficient of a product is the
-product of the constant coefficients. Additivity, the kernel and the section are
-immediate from uniqueness of the decomposition \eqref{osq:eq:rings}. The negative side is
-identical with nonpositive exponents.
+The nonnegative support cone is closed under addition of exponents. Thus sums and
+Hahn products of such series still have nonnegative support; cancellation only removes
+exponents. A sum of two nonnegative exponents is zero only when both are zero, so the
+constant coefficient of a product is the product of the constant coefficients and lies
+in $D$. This also verifies that $\A_{D,k}(G)$ is a subring. Additivity, the kernel and
+the section follow from the unique decomposition \eqref{osq:eq:rings}; surjectivity follows
+because every $d\in D$ is a constant series. The same argument with nonpositive
+exponents proves all assertions for $\B_{D,k}(G)$.
 \end{proof}
 
 \begin{remark}[What $\ct$ is not]\label{osq:rem:ctnot}
@@ -1056,8 +1061,10 @@ are distinct elements of $U_{\No}(S)$, each $\ll h$.
 For a set $T$, the cuts $\{T\mid\varnothing\}$ and $\{\varnothing\mid T\}$ are set cuts
 and give (i). For (ii), apply the set cut $\{0\mid T\}$ to the set
 $T=\{s/n:s\in S,\ n\ge1\}$ of positive surreals; for $S=\varnothing$ take $h=1$. For
-(iii), $(0,h)$ is not a set: a positive lower bound of it would have a positive half still
-in the interval. The denominators $\omega^{\alpha+1}$ are the Conway monomials of the
+(iii), every $0<u<h$ satisfies $nu<nh<s$, so $(0,h)\subseteq U_{\No}(S)$.
+If this interval were a set, (ii) would give a positive strict lower bound $\ell$;
+since $h/2$ is in the interval, $0<\ell/2<h$, contradicting that lower bound.
+The denominators $\omega^{\alpha+1}$ are the Conway monomials of the
 ordinals $\alpha+1$ in the \emph{exponent} field; they strictly increase with $\alpha$ and
 exceed every ordinary integer, so the $a_\alpha$ are distinct, positive and satisfy
 $na_\alpha<h$.
@@ -1088,26 +1095,39 @@ $\mathcal F\subseteq X^a\Pi_k$ for some $a>0$.
 $\Pi_k^2=\Pi_k$, and $\Pi_k=\bigcup_{a>0}X^aA$ is a directed union of principal ideals.
 \item $\Pi_k$ is not generated, as an ideal of $A$, by any set of its elements.
 \item $d\Pi_k=\Pi_k$ for every $0\neq d\in D$; in particular $n\Pi_k=\Pi_k$ for every
-nonzero ordinary integer $n$.
+ordinary integer $n$ whose image in $k$ is nonzero. In characteristic zero this includes
+every nonzero ordinary integer.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
 (i) The union of the supports of the members of $\mathcal F$ is a set of positive surreals;
-choose $0<a<$ that union by \cref{osq:lem:gap}. Translating each support by $-a$ leaves it
+choose $0<a<$ that union by \cref{osq:lem:gap}; for an empty union take any $a>0$.
+Translating each support by $-a$ leaves it
 positive and reverse well ordered, so $X^{-a}f\in\Pi_k$.
 (ii) Apply (i) to $\{f\}$: $f=X^a(X^{-a}f)$ with both factors in $\Pi_k$. If $0<b<a$ then
-$X^aA\subseteq X^bA$, so the union is directed.
+$X^aA\subseteq X^bA$. Each $X^aA$ is contained in $\Pi_k$, and (i) puts every member
+of $\Pi_k$ in one of these ideals; choosing $b$ below any two positive indices proves
+directedness. The ideal product $\Pi_k^2$ consists of finite sums of products;
+the single-product factorization proves one inclusion, and the ideal property the other.
 (iii) If a set generated $\Pi_k$, (i) would place the generated ideal inside $X^aA$; but
 $X^{a/2}\in\Pi_k$ is not in $X^aA$, since its unique quotient by $X^a$ in the ambient field
 is $X^{-a/2}$, which has a negative exponent.
-(iv) Divide every coefficient by $d$, which is invertible in $k$.
+(iv) Divide every coefficient by $d$, which is invertible in $k$; this preserves the
+support. Multiplication by $d$ gives the reverse inclusion.
 \end{proof}
+
+The qualification on $n$ is essential when $k$ is not assumed to have characteristic
+zero. If $k$ has characteristic $p>0$, then $p\Pi_k=0$, whereas $X^a\in\Pi_k$ is nonzero
+for $a>0$. The unrestricted integer-divisibility clause in the earlier assembly was
+therefore false in that generality; the coefficient statement $d\Pi_k=\Pi_k$ for
+$d\ne0$ is unchanged.
 
 Idempotence and divisibility do not by themselves prove the universal theorem: an
 idempotent, rationally divisible ideal can act nontrivially on infinite set-sized
 modules, and a homomorphism to an infinite characteristic-zero ring need not kill an
-arbitrarily divisible additive subgroup (04, 06, 07, 08). In positive characteristic the
-last item already suffices (\cref{osq:rem:poschar}).
+arbitrarily divisible additive subgroup (04, 06, 07, 08). When $k$ has characteristic zero
+and the target has positive characteristic, the last item already suffices
+(\cref{osq:rem:poschar}).
 
 \begin{equation}\label{osq:eq:nOz}
  n\Oz=n\Z+\Pi=\ct^{-1}(n\Z)\quad(n\ge1),\qquad
@@ -1172,7 +1192,8 @@ injective on $L$.
 \item If $M$ is a unital $A$-module, $v\in M$ and $m^2v\neq0$, then $x\mapsto(mx)v$ is
 injective on $L$.
 \end{enumerate}
-Consequently, if $|L|>|S|$ then $\varphi(m^2)=0$, and if $|L|>|M|$ then $m^2M=0$.
+For set-sized $L$ and targets, consequently, if $|L|>|S|$ then $\varphi(m^2)=0$, and
+if $|L|>|M|$ then $m^2M=0$.
 \end{lemma}
 \begin{proof}
 Since $1\in L$, $m\in A$. For distinct $x,y\in L$ the element $m/(x-y)$ lies in
@@ -1203,7 +1224,7 @@ $H_{c}(G)=H_{2c}(G)$ for every $c\in G_{>0}$.
 \Pi_k(G)$ for every $c\in G$ with $2c\ge a$; for instance $c=a$, or $c=a/2$ when
 $a/2\in G$.
 \item For $G=\No$ the field $\FF_a(k)=\hahn k{H_a}$ is a proper class: it contains the
-distinct monomials $X^{a_\alpha}$ of \eqref{osq:eq:scales} for every ordinal $\alpha$.
+distinct monomials $X^{a/\omega^{\alpha+1}}$ for every ordinal $\alpha$.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -1212,10 +1233,15 @@ convexity are immediate, and if $G$ is divisible then $h/m$ satisfies the same i
 For every $c>0$, $n|h|<c$ for all $n$ is equivalent to $n|h|<2c$ for all $n$.
 (ii) Supports of sums and products of series supported in a subgroup stay in it, and the
 Hahn inverse of $f=cX^g(1+u)$, $\supp u<0$, is $c^{-1}X^{-g}\sum_{n\ge0}(-u)^n$, whose
-support lies in the subgroup generated by $\supp f$. If $2c\ge a$ and $h\in H_a(G)$ then
+support lies in the subgroup generated by $\supp f$. The geometric family is Hahn
+summable by the Neumann support lemma; for a class exponent group this argument takes
+place in the set-sized subgroup generated by the support of $f$.
+If $2c\ge a$ and $h\in H_a(G)$ then
 $2|h|<a\le 2c$, so $c+h>0$; hence $X^cf$ has positive support for
 $f\in\hahn k{H_a(G)}$.
-(iii) Each $a_\alpha\ll a$ lies in $H_a$.
+(iii) Put $a_\alpha=a/\omega^{\alpha+1}$. Each $a_\alpha\ll a$ lies in $H_a$, and
+the exponents are distinct. If $\FF_a(k)$ were a set, restricting this family to its
+Hartogs ordinal would give the forbidden injection into that set.
 \end{proof}
 
 The field $\FF_a=\FF_a(\R)$ is 07's $\mathscr F_a$ and 06's $L_a$ with $k=\R$; it is
@@ -1291,12 +1317,16 @@ Then
  \frac{X^a}{rX^\delta-sX^\eta}
  =\frac1r\sum_{k\ge0}\Bigl(\frac sr\Bigr)^kX^{a-\delta-k(\delta-\eta)}\in\Pi_K ,
 \end{equation}
-and if $\delta=\eta$ and $r\ne s$ the quotient is $(r-s)^{-1}X^{a-\delta}$.
+If instead $\delta=\eta>0$, $\delta\ll a$ and $r\ne s$, the quotient is
+$(r-s)^{-1}X^{a-\delta}\in\Pi_K$.
 \end{lemma}
 \begin{proof}
 The exponents are those of \cref{osq:lem:telescope}; multiplying by $rX^\delta-sX^\eta$
 gives, at exponent $a-k(\delta-\eta)$ with $k\ge1$, the two contributions
-$r\cdot r^{-1}(s/r)^k$ and $-s\cdot r^{-1}(s/r)^{k-1}$, which cancel.
+$r\cdot r^{-1}(s/r)^k$ and $-s\cdot r^{-1}(s/r)^{k-1}$, which cancel. At exponent $a$
+only the initial term contributes, with coefficient $1$. The equal-exponent case
+follows by factoring $(r-s)X^\delta$; its quotient exponent is positive because
+$\delta<a$.
 \end{proof}
 
 \subsection{Division of an arbitrary purely infinite element}\label{osq:sub:division}
@@ -1344,9 +1374,14 @@ $R$-module.
 \begin{proof}
 If $\varphi(x_s)=\varphi(x_t)$ with $e=(x_s-x_t)q$, then
 $\varphi(e)=(\varphi(x_s)-\varphi(x_t))\varphi(q)=0$; neither commutativity of $S$ nor
-preservation of $1$ is used. For (ii), $ev=q(x_s-x_t)v=0$. For (iii), take $\lambda$
-larger than the target, or than the Hartogs ordinal of the target, and apply the
-pigeonhole principle to a set.
+preservation of $1$ is used. For (ii), commutativity lets us write
+$ev=q(x_s-x_t)v=0$. For the ring assertion in (iii), choose a family whose index
+set cannot inject into the target, and apply (i). For a module over a commutative
+$R$, apply (ii) in the same way. For a possibly noncommutative $R$, use instead
+the action homomorphism $R\to\End_\Z(M)$: the endomorphisms of the underlying
+set-sized additive group form a set-sized ring, so the ring assertion makes the
+action of $e$ zero. This last route proves annihilation but uses the size of
+$\End_\Z(M)$, not the sharper bound by $|M|$ in (ii).
 \end{proof}
 
 Item (i) is 04's separation lemma, (ii) is 09's orbit separation and 03's exponent-family
@@ -1363,8 +1398,9 @@ monomials $(u_\alpha)_{\alpha<\Lambda}$ in $\A_{D,k}$ with
 Choose $\delta>0$ strictly below the union of the supports of the members of
 $\mathcal S$ (\cref{osq:lem:gap}), put $a_\alpha=\delta\omega^{-(\alpha+1)}$ and
 $u_\alpha=X^{a_\alpha}$. For $\alpha<\beta$, $0<a_\beta<a_\alpha\le\delta/\omega$, so
-$na_\alpha<\delta$ for every $n$, and \cref{osq:lem:division} applies to each $s$;
-reversing the indices only changes the sign of the quotient.
+$na_\alpha<\delta$ for every $n$, and \cref{osq:lem:division} applies to each nonzero
+$s$; for $s=0$ take quotient zero. Reversing the indices only changes the sign of the
+quotient. The empty family $\mathcal S$ causes no restriction on the choice of $\delta$.
 \end{proof}
 
 The coefficients of the $u_\alpha$ are $1$; no independence of the coefficients of $s$ is
@@ -1408,7 +1444,9 @@ $b_\alpha=g/\omega^{\alpha+1}$ for $\alpha<\lambda$; these are distinct elements
 (\cref{osq:lem:gap}(iii)), so $\alpha\mapsto X^{b_\alpha}$ is an injection
 $\lambda\to L$. If $\varphi(X^g)=\varphi(m^2)\ne0$, \cref{osq:lem:collision}(i) makes
 $x\mapsto\varphi(mx)$ injective on $L$, and composing gives an injection $\lambda\to S$,
-which is impossible. Hence $\varphi(X^g)=0$ for every $g>0$.
+which is impossible. Only the restriction of the explicitly defined class map to the
+set $\lambda$ is used; there is no choice of representatives from a proper class.
+Hence $\varphi(X^g)=0$ for every $g>0$.
 
 \emph{The whole ideal is killed.} For $f\in\Pi_K$, \cref{osq:prop:common} gives
 $f=X^ah$ with $a>0$ and $h\in\Pi_K$, so $\varphi(f)=\varphi(X^a)\varphi(h)=0$. This proves
@@ -1422,7 +1460,8 @@ constructions, which proves (ii).
 
 \emph{Modules.} Let $M$ be a set-sized unital $A$-module and $v\in M$. If $X^gv\ne0$,
 \cref{osq:lem:collision}(ii) injects $L$, hence the Hartogs ordinal of $M$, into $M$;
-so $X^gM=0$ for every $g>0$, and the factorization $f=X^ah$ gives $\Pi_KM=0$. Writing
+so $X^gM=0$ for every $g>0$. For $f=X^ah$ and any $v\in M$,
+$fv=X^a(hv)=0$, because $hv$ is another vector of $M$. Thus $\Pi_KM=0$. Writing
 $f=\ct(f)+(f-\ct(f))$ gives $f\cdot v=\ct(f)v$.
 \end{proof}
 
@@ -1639,11 +1678,17 @@ domain, not a field (\cref{osq:prop:locsupport}), with no nonzero set-sized modu
 completes the proof of \cref{osq:prop:fractions}(iv).
 
 \begin{remark}[Positive characteristic and additive observations]\label{osq:rem:poschar}
-If the target has positive characteristic $n$, the conclusion needs no cardinal argument:
-$f=n(f/n)$ with $f/n\in\Pi_k$ gives $\varphi(f)=n\varphi(f/n)=0$ (04, 07); more generally
-an ideal of $\A_{D,k}$ containing a nonzero element of $D$ contains $\Pi_k$ (07, 15). The
-cardinal argument is needed exactly for characteristic-zero targets such as $\Q$, $\R$ or
-$\End_\Z(M)$ for infinite torsion-free $M$ (11). The theorem concerns multiplicative
+Suppose the target additive group is killed by a positive integer $n$ and $n$ is nonzero
+in the coefficient field $k$. Then no cardinal argument is needed:
+$f=n(f/n)$ with $f/n\in\Pi_k$ gives $\varphi(f)=n\varphi(f/n)=0$ (04, 07).
+This applies to positive-characteristic targets when $k$ has characteristic zero,
+in particular for $\Oz$ and $\GOz$. It does not apply when $k$ and the target both
+have characteristic $p$, since division by $p$ is then unavailable; the full theorem
+still follows from the collision argument. More generally, an ideal of $\A_{D,k}$
+containing a nonzero element of $D$ contains $\Pi_k$ (07, 15), by
+\cref{osq:prop:common}(iv). For characteristic-zero targets such as $\Q$, $\R$ or
+$\End_\Z(M)$ for infinite torsion-free $M$, this bounded-torsion shortcut is unavailable
+(11). The theorem concerns multiplicative
 maps: for a fixed $\gamma>0$ the coefficient extraction $x\mapsto[\omega^\gamma]x$ is a
 nonzero additive map $\Oz\to\R$ detecting $\omega^\gamma$, but it is not multiplicative,
 since $\omega^{\gamma/2}$ has coefficient $0$ at $\gamma$ while its square has coefficient
@@ -13545,8 +13590,13 @@ examples, the splitter identity and the one-radical factorization of \cref{osq:h
 $\jmath^2=-1$ of \cref{osq:hb:prop:complex} and the inverse of the Gaussian decomposition; it verifies no colimit, detector module or henselization.
 
 \subsection{Formalization routes}\label{osq:sub:formalization}
-No statement of this report is formalized, and the repository has no omnific module. The sources
-propose compatible routes, recorded here as proposals only. First formalize the scaled-field collision
+The source-era assertion that the repository has no omnific module is now obsolete.
+The ledger \texttt{docs/FORMALIZATION.md} maps the actual omnific and Gaussian rings,
+their retractions, degree and unit laws, common-divisor support arguments and the
+quadratic definition of the purely infinite ideals through the sibling report's labels.
+This shared material does not prove the full-class quotient theorem or the cardinal
+threshold results here. The following routes remain proposals for those statements.
+First formalize the scaled-field collision
 lemma and the separation lemma, which need no surreals (06, 04, 07). Then the countable telescope in a
 set-sized Hahn workspace, with its two support inequalities, proved coefficientwise and not by
 convergence of partial sums (04, 06, 07, 08, 10). The set-sized criteria
