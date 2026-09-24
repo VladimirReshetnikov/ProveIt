@@ -272,7 +272,10 @@ integral affine curve has nonconstant points exactly when its normalization
 is the affine line. A conductor and a discrete boundary valuation supply
 a finite derivative-order obstruction. This classifies existence without
 assuming that every point lifts to the normalization. The review corrects
-the ambient-field normality comparison and the zero-group boundary case.
+the ambient-field normality comparison and the zero-group boundary case. The
+application review restores the irreducibility assumption in the repeated-root
+superelliptic test and expands the singular elliptic certificate and Gaussian
+arithmetic existence proof.
 These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.

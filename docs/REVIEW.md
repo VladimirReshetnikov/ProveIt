@@ -3897,6 +3897,46 @@ jobs and the axiom audit passes 15,193 declarations with the same three
 axioms. All 4,417 cited source references and 1,590 local Markdown
 destinations resolve. This merge changes no report source or PDF.
 
+## Repeated-root and singular arithmetic application review
+
+The Diophantine review now reaches Section 17.6.8, covering six further
+standard results: the superelliptic and quadratic-root criteria, the
+pinched elliptic example, omnific rigidity, arithmetic families and the
+Gaussian existence dichotomy. The source comparison and exact boundaries
+are recorded in the report reconciliation.
+
+The merged superelliptic theorem omitted C16's irreducibility assumption.
+The polynomial graphs of `Y²=X²` refute the criterion without that guard.
+The assumption is now explicit in the setup and theorem, and the adjoining
+explanation has the correct direction of the power-divisibility condition.
+The ramification calculation now distinguishes finite-root multiplicities
+from the negative exponent at infinity, computes each branch and explains
+why precisely the points over infinity are omitted. The normalization
+parameter is recovered in the function field by an integer Bézout identity.
+
+The pinched elliptic proof verifies its conductor and displays each term
+cleared by `x³`; its seventh-order valuation contradiction and derivative
+count are explicit. Arithmetic families now check the defining equations,
+allowed coefficients, finite support and proper-class distinctness. The
+Gaussian argument supplies the normalization-preimage step. The real
+isolated node with only `±i` over its origin illustrates the limitation
+without claiming that every possible Hahn point in that fiber is excluded.
+The notation guide, reader map, root README and catalogue have matching scope.
+
+All 217 standard statements remain, with only the superelliptic hypothesis
+changed. All 471 labels and their numbers are preserved. The corrected
+article and catalogue build in three passes to 200 and 32 pages without
+warnings, unresolved references or bad boxes; the application pages and
+catalogue entry were visually inspected. The preserved C16 finite suite,
+run on a copy, passes all 113,940 assertions. Its full JSON record matches
+the delivered one apart from Python 3.13.5 becoming 3.13.14 and runtime.
+It checks identities and bounded examples, not the geometric or infinite
+claims. The independent inventory verifies 3,871 results in 61 reports;
+all 4,417 cited source references and 1,590 local Markdown destinations
+resolve. No Lean source changed; the preceding 4,434-job build and
+15,193-declaration axiom audit remain applicable. These six results are
+still **Pending** in Lean, and the broader proof review remains incomplete.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
