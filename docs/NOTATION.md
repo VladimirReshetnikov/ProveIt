@@ -227,6 +227,17 @@ and the ring monomial X^(e_α) to ω^(ω^(−α)). Thus X^(e₀) maps to ω.
 The negative of an ordinal and differences between ordinal indices here
 are taken in the additive group of surreals, not by ordinal subtraction.
 
+In the face telescope, Kos_n denotes the stage-n Koszul complex, whereas
+Kos = ⊕_n Kos_n is their direct sum as complexes. Homological differentials
+lower the degree. The cone uses Tel_j = Kos_j ⊕ Kos_(j−1) with
+`d(x,y) = (∂x + Δy, −∂y)` and `Δ = 1 − sh`. Its augmentation sums the
+finitely many degree-zero stage entries modulo the face ideal.
+Dualizing a countable direct sum of free modules gives a product of copies
+of P, with no finite-support restriction on the functional values.
+The inverse transition on `G_n(P) = P / J_U^(n)P` is multiplication by
+u_n, from stage n+1 to n. The cokernel of `y ↦ (y_n − u_n y_(n+1))`
+is the first derived inverse limit; it is not the ordinary inverse limit.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

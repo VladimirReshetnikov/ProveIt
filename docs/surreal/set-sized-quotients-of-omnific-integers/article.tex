@@ -7268,18 +7268,56 @@ $\mathsf F_{[d]}=A/\Pi=D$. For $1\le p\le|U|$ let $C^U_p=\bigoplus_{S\subseteq U
 The complex $0\to C^U_{|U|}\to\cdots\to C^U_1\to A\to\mathsf F_U\to0$ is exact, every $C^U_p$ is flat, and $\fd_A\mathsf F_U=|U|$.
 \end{proposition}
 \begin{proof}
-For $U=[d]$ this is \cref{osq:hd:thm:resolution,osq:hd:cor:fd} (12). In general fix a multidegree $\boldsymbol\alpha$ and put
-$T=\{i\in U:\alpha_i>0\}$. If $T=\varnothing$, no positive term has a nonzero component in degree $\boldsymbol\alpha$, and $A\to\mathsf F_U$
-is bijective there. Otherwise $(\mathsf F_U)_{\boldsymbol\alpha}=0$, and the degree-$\boldsymbol\alpha$ part of $I_S$ ($S\subseteq U$) is $K$
-exactly when $S\subseteq T$; so this part of the complex is the augmented chain complex of the full simplex on $T$ with coefficients $K$,
-which the homotopy of \cref{osq:hd:thm:resolution} contracts. Flatness is \cref{osq:hd:lem:faces}(i), so $\fd\mathsf F_U\le|U|$.
-For the lower bound tensor with $V_U=A/J_U$, $J_U=(X_i:i\in U)A$, and look at the multidegree $\mathbf e_U$. The top term
-$I_U\otimes_AV_U=I_U/J_UI_U$ has coefficient space $K$ there, because subtracting $\mathbf e_i$ ($i\in U$) from $\mathbf e_U$ gives a vector
-that vanishes at $i$, which is not an exponent of $I_U$. If $|U|\ge2$, the face $U\setminus\{i\}$ is nonempty and
-$kX^{\mathbf e_U}=X_i\cdot kX^{\mathbf e_{U\setminus\{i\}}}\in X_iI_{U\setminus\{i\}}$, so the differential out of the top term vanishes in
-this degree; there is no term above it, and $\Tor^A_{|U|}(\mathsf F_U,V_U)\ne0$. If $U=\{i\}$, the map in degree $\mathbf e_i$ is
-$K\to(V_U)_{\mathbf e_i}=K/D$, because the elements of $X_iA$ of that degree are $DX_i$; its kernel $D$ is a nonzero
-$\Tor^A_1(\mathsf F_U,V_U)$.
+The differentials are the signed face inclusions, so deleting two
+indices in opposite orders proves that their composites vanish.
+To prove exactness, fix a multidegree $\boldsymbol\alpha$ and put
+$T=\{i\in U:\alpha_i>0\}$. If $T=\varnothing$, every positive
+term vanishes in this degree, and $A\to\mathsf F_U$ is an
+isomorphism there. This includes the constant degree, whose
+coefficient module is $D$, as well as degrees supported outside $U$,
+whose coefficient module is $K$.
+
+If $T\ne\varnothing$, the quotient component is zero. The
+component of $I_S$ is $K$ exactly when
+$\varnothing\ne S\subseteq T$, and the degree-zero chain term
+$A_{\boldsymbol\alpha}$ is also $K$. These form the augmented
+simplex complex on $T$. Insert $t=\min T$ when it is absent and
+send a face already containing $t$ to zero. As in
+\cref{osq:hd:thm:resolution}, the term deleting $t$ is the identity
+and all other deletions cancel in pairs, giving $dh+hd=1$.
+This is a contraction of the coefficient complex, not an asserted
+$A$-linear contraction. A chain has finitely many monomials, so
+summing the preimages of its components proves exactness of the
+$A$-module complex. Each $I_S$ is flat by
+\cref{osq:hd:lem:faces}(i), hence so is every finite sum $C^U_p$.
+Thus $\fd_A\mathsf F_U\le|U|$.
+
+For the opposite inequality, tensor this flat resolution with
+$V_U=A/J_U$, where $J_U=(X_i:i\in U)A$. The standard quotient
+tensor identification gives $I_S\otimes_AV_U=I_S/J_UI_S$.
+Consider the multidegree $\mathbf e_U=\sum_{i\in U}\mathbf e_i$.
+The coefficient of $I_U$ there is $K$, and that of $J_UI_U$ is
+zero: subtracting any $\mathbf e_i$ leaves zero in coordinate $i$,
+whereas an exponent of $I_U$ must be strictly positive. The top
+tensor term therefore contains a copy of $K$ in that degree.
+
+If $|U|\ge2$, the face $U\setminus\{i\}$ is nonempty, and for
+every $a\in K$,
+\[
+ aX^{\mathbf e_U}
+ =X_i\bigl(aX^{\mathbf e_{U\setminus\{i\}}}\bigr)
+ \in J_UI_{U\setminus\{i\}}.
+\]
+All components of the top differential vanish on this copy of $K$.
+There is no incoming differential from a higher term, so it survives
+in $\Tor^A_{|U|}(\mathsf F_U,V_U)$.
+For $U=\{i\}$, the target is instead $A/J_U$; its component in
+degree $\mathbf e_i$ is $K/D$, because that of $X_iA$ is $D$.
+The differential is the quotient map $K\to K/D$, with nonzero
+kernel $D$. Thus the top $\Tor$ is nonzero also in this case,
+including when $D=K$ and the target component is zero.
+In either case, a shorter flat resolution would force this $\Tor$
+group to vanish, proving the lower bound.
 \end{proof}
 
 For $n\ge0$ put $J^{(n)}_U=(X_i^{2^{-n}}:i\in U)A$ and $u_n=p_U^{2^{-n-1}}$; since
@@ -7304,16 +7342,85 @@ No regularity of $(X_i^{2^{-n}})_{i\in U}$ is used, and the individual $\mathrm{
 not be regular (for $c\in K\setminus D$, $X_2$ kills the nonzero class of $cX_1$ in $A_2/X_1A_2$).
 \end{theorem}
 \begin{proof}
-(i) Multiplication by $p_S^{2^{-n}}$ embeds the copy $Ae_S$ at stage $n$ in $I_S$ ($A$ is a domain); the embeddings are compatible with
-$f_n$ because $p_S^{2^{-n-1}}p_S^{2^{-n-1}}=p_S^{2^{-n}}$, and their union is $I_S$ by \cref{osq:hd:lem:faces}(i). Under these maps
-$\partial e_S$ goes to $\sum_r(-1)^{r-1}X_{s_r}^{2^{-n}}p_{S\setminus\{s_r\}}^{2^{-n}}=\sum_r(-1)^{r-1}p_S^{2^{-n}}$, the alternating sum
-of the inclusions. (ii) $d^2=0$ because $\partial\Delta=\Delta\partial$. $\Delta$ is injective in every degree: at the least index of a
-nonzero vector its component is unchanged. Its cokernel is the colimit $C^U$ of (i), so $(x,y)\mapsto[x]$ is a surjective chain map
-$\mathrm{Tel}\to C^U$. Its kernel consists of the pairs $(\Delta z,y)$; in the coordinates $(z,y)$ the differential is
-$(z,y)\mapsto(\partial z+y,-\partial y)$, and $h(z,y)=(0,z)$ satisfies $dh+hd=1$. So $\mathrm{Tel}\to C^U$ is a quasi-isomorphism, and
-$C^U\to\mathsf F_U$ is one by \cref{osq:da:prop:faces}. Each $\mathrm{Kos}_j$ is a countable direct sum of finite free modules and
-vanishes for $j>|U|$. For the example, $X_2cX_1=X_1\cdot cX_2$ with $cX_2\in\Pi$, while the elements of $X_1A_2$ of degree $\mathbf e_1$ are
-$DX_1$.
+(i) Fix a nonempty $S\subseteq U$. The stage-$n$ map
+$Ae_S\to I_S$, $ae_S\mapsto ap_S^{2^{-n}}$, is injective
+because $A$ is a domain. It is compatible with the transition:
+\[
+ p_S^{2^{-n-1}}p_S^{2^{-n-1}}=p_S^{2^{-n}}.
+\]
+The images form the increasing chain of principal ideals in
+\cref{osq:hd:lem:faces}(i), with union $I_S$. In particular,
+the union contains arbitrary $K$-coefficients: for a given finite
+support choose $2^{-n}$ strictly smaller than all coordinates on
+$S$, so division by $p_S^{2^{-n}}$ leaves a tail in $A$.
+Taking the finite direct sum over faces of size $p$ gives $C^U_p$.
+In degree zero the transition is the identity on $A$.
+
+For $S=\{s_1<\cdots<s_p\}$, the $r$th term of the stage
+Koszul differential maps to
+\[
+ (-1)^{r-1}X_{s_r}^{2^{-n}}p_{S\setminus\{s_r\}}^{2^{-n}}
+ =(-1)^{r-1}p_S^{2^{-n}}
+\]
+in the face summand $S\setminus\{s_r\}$. This is exactly the
+signed inclusion in $C^U$. When $p=1$, the target is $A$ and
+$p_\varnothing=1$, so the same computation gives the inclusion
+$I_{\{s_1\}}\to A$.
+
+(ii) Regard $\mathrm{Kos}$ as a homological complex and set its
+terms outside degrees $0,\dots,|U|$ to zero. The chain-map identity
+for each $f_n$ gives $\partial\Delta=\Delta\partial$. Hence
+\[
+ d^2(x,y)=(\partial^2x+\partial\Delta y-\Delta\partial y,
+                 \partial^2y)=(0,0).
+\]
+The map $\Delta$ is injective degreewise. Indeed, a nonzero element
+of the direct sum has a least nonzero stage, and the component of
+$\Delta$ at that stage is unchanged. The cokernel identifies each
+stage element with its image under $f_n$ in the next stage, which
+is precisely the direct-limit relation. Part (i) therefore gives
+an exact sequence of complexes
+\[
+ 0\longrightarrow\mathrm{Kos}\xrightarrow{\Delta}
+ \mathrm{Kos}\longrightarrow C^U\longrightarrow0.
+\]
+
+The map $q:\mathrm{Tel}\to C^U$, $q(x,y)=[x]$, is a
+surjective chain map, since $[\Delta y]=0$. Its kernel consists
+uniquely of pairs $(\Delta z,y)$. In the coordinates $(z,y)$,
+with $z\in\mathrm{Kos}_j$ and $y\in\mathrm{Kos}_{j-1}$,
+the kernel differential is
+\[
+ d(z,y)=(\partial z+y,-\partial y).
+\]
+Define $h(z,y)=(0,z)$ in degree $j+1$. Then
+\[
+ dh(z,y)=(z,-\partial z),\qquad
+ hd(z,y)=(0,\partial z+y),
+\]
+so $dh+hd=1$, including the endpoint degrees. The kernel is
+contractible; the long exact homology sequence now shows that
+$q$ induces isomorphisms on homology. By
+\cref{osq:da:prop:faces}, this homology is $\mathsf F_U$ in
+degree zero and zero in positive degrees.
+
+Explicitly, the telescope augmentation sends a finite stage tuple
+$(a_n)_n\in\mathrm{Tel}_0=\bigoplus_n A$ to
+$\sum_n a_n\bmod\mathfrak f_U$. It kills the degree-one
+boundary: the Koszul terms lie in $\mathfrak f_U$, and the
+$\Delta$ terms cancel under the sum. Each telescope term is a
+countable direct sum of finite free modules. The last possible
+term is $\mathrm{Tel}_{|U|+1}=\mathrm{Kos}_{|U|}$, giving the
+claimed free resolution and length bound.
+
+The argument used neither exactness of the individual Koszul
+complexes nor regularity of their defining sequences. For the
+stated failure of regularity, choose $c\in K\setminus D$.
+The element $cX_1$ has nonzero class modulo $X_1A_2$, since in
+degree $\mathbf e_1$ that ideal has only coefficients in $D$.
+But $X_2(cX_1)=X_1(cX_2)$ and $cX_2\in A_2$, so $X_2$
+annihilates that class. The transition system and its cone, not
+an assumption on these finite sequences, provide the resolution.
 \end{proof}
 
 For $|U|=1$ this is 12's telescope $0\to F\to F\to I_S\to0$ of \cref{osq:hd:prop:pd}(i), placed in the cone; 21 assembles the telescopes of
@@ -7328,12 +7435,64 @@ For an $A$-module $P$ put $G_n(P)=P/J^{(n)}_UP$; multiplication by $u_n$ maps $G
 which is $\varprojlim^1$ of the inverse system $(G_n(P))_n$.
 \end{theorem}
 \begin{proof}
-The last nonzero term of $\mathrm{Tel}$ is $\mathrm{Tel}_{|U|+1}=\mathrm{Kos}_{|U|}=\bigoplus_nAe_{U,n}$, where $e_{U,n}$ is $e_U$ at stage $n$,
-so $\Hom_A(\mathrm{Tel}_{|U|+1},P)=\prod_nP$. The dual of $d(0,y)=(\Delta y,-\partial y)$ sends a functional $(\varphi,\psi)$ on
-$\mathrm{Tel}_{|U|}=\mathrm{Kos}_{|U|}\oplus\mathrm{Kos}_{|U|-1}$ to $y\mapsto\varphi(\Delta y)-\psi(\partial y)$. Since
-$\Delta e_{U,n}=e_{U,n}-u_ne_{U,n+1}$, the first part gives $(z_n-u_nz_{n+1})_n$ with $z_n=\varphi(e_{U,n})$ arbitrary; the second gives in
-component $n$ a signed sum $\sum_{i\in U}\pm X_i^{2^{-n}}\psi(e_{U\setminus\{i\},n})$, and these range over all of $\prod_nJ^{(n)}_UP$. The
-top cohomology of $\Hom_A(\mathrm{Tel},P)$ is therefore $\prod_nP$ modulo these elements, which is the stated cokernel.
+First, the transition on $G_n(P)$ is well defined. The identity
+$u_nJ^{(n+1)}_U\subseteq J^{(n)}_U$ gives
+$u_nJ^{(n+1)}_UP\subseteq J^{(n)}_UP$, so changing a
+representative in $G_{n+1}(P)$ does not change its image in $G_n(P)$.
+
+The top term of the free resolution is
+$\mathrm{Tel}_{|U|+1}=\bigoplus_{n\ge0}Ae_{U,n}$.
+A homomorphism from this direct sum is specified by arbitrary
+values on its basis; these values need not have finite support.
+Consequently its dual with values in $P$ is $\prod_{n\ge0}P$.
+There is no higher term, so the desired $\Ext$ group is this
+product modulo the image of the preceding coboundary.
+
+A functional on
+$\mathrm{Tel}_{|U|}=\mathrm{Kos}_{|U|}\oplus\mathrm{Kos}_{|U|-1}$
+is a pair $(\varphi,\psi)$. Its coboundary, evaluated at a top
+element $y$, is
+\[
+ y\longmapsto\varphi(\Delta y)-\psi(\partial y).
+\]
+Since $\Delta e_{U,n}=e_{U,n}-u_ne_{U,n+1}$, the first
+contribution ranges over
+\[
+ (z_n-u_nz_{n+1})_n,\qquad (z_n)_n\in\prod_{n\ge0}P.
+\]
+Write $U=\{i_1<\cdots<i_{|U|}\}$. The second contribution in
+coordinate $n$ is
+\[
+ -\sum_{r=1}^{|U|}(-1)^{r-1}X_{i_r}^{2^{-n}}
+ \psi(e_{U\setminus\{i_r\},n}).
+\]
+Its possible values are exactly $J^{(n)}_UP$.
+These choices are independent for all faces and stages, because
+$\psi$ is a functional on a direct sum of the indicated free
+summands. Thus the second contribution ranges over the whole
+product $\prod_nJ^{(n)}_UP$, not just its direct sum.
+
+Let $W=\prod_nJ^{(n)}_UP$ and let
+$L:\prod_nP\to\prod_nP$ send $z$ to
+$(z_n-u_nz_{n+1})_n$. We have proved
+\[
+ \Ext_A^{|U|+1}(\mathsf F_U,P)
+ \cong (\prod_nP)/(\operatorname{im}L+W).
+\]
+Coordinatewise quotient identifies $(\prod_nP)/W$ with
+$\prod_nG_n(P)$. Moreover $L(W)\subseteq W$ by the transition
+containment checked above. Its induced endomorphism on that
+quotient is exactly $\Delta^\vee_P$, so the displayed quotient
+is its cokernel.
+
+Every $A$-linear map $P\to P'$ respects the ideals, the
+transition multipliers and the preceding coboundaries. The
+identification is therefore natural in $P$. Finally, for a
+countable inverse system of modules, the two-product complex
+with differential $1-\mathrm{shift}$ computes the derived
+inverse limit; its first cohomology is this cokernel
+\cite[Tags 07KV and 0CQC]{StacksDerived}. No surjectivity of
+the transitions or Mittag--Leffler condition is assumed here.
 \end{proof}
 
 \begin{theorem}[A copy of $D^{\N}/D^{(\N)}$ in the top $\Ext$ group \src{21}]\label{osq:da:thm:injection}
@@ -16572,8 +16731,9 @@ The Stacks Project Authors, \emph{The Stacks Project}, Tag 05CU (coherent rings)
 \url{https://stacks.math.columbia.edu/tag/05CU}.
 
 \bibitem{StacksDerived}
-The Stacks Project Authors, \emph{The Stacks Project}, Section 15.60, Tag 06XY (derived tensor product),
-\url{https://stacks.math.columbia.edu/tag/06XY}. Cited by 21.
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 06XY (derived tensor product),
+\url{https://stacks.math.columbia.edu/tag/06XY}, cited by 21. Tags 07KV and 0CQC (derived inverse limits of abelian groups and modules),
+\url{https://stacks.math.columbia.edu/tag/07KV} and \url{https://stacks.math.columbia.edu/tag/0CQC}, checked for the telescope review.
 
 \bibitem{StacksTensor}
 The Stacks Project Authors, \emph{The Stacks Project}, Tag 00DM (tensor algebra),

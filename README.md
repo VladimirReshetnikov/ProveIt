@@ -268,6 +268,10 @@ Over the full class ring, tensoring with any set-sized module makes these
 ideals look free of that coefficient rank, despite their equational
 nonflatness. The review separates this restricted test from flatness
 over the set-sized models.
+The face-quotient resolutions now include an explicit free telescope:
+its kernel contracts even when the finite Koszul complexes are not
+resolutions. Dualizing gives a concrete product cokernel for the top
+Ext group, with every transition and quotient map checked.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
