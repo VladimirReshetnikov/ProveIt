@@ -1157,7 +1157,12 @@ claims that these are open in the literature.
   applications, the boundary examples and the splitting-algebra second proof.
   It handles zero-degree presentations, requires matrix size `n ≥ 1`, and
   distinguishes simple critical points from distinct critical values.
-  Later question/status notes and full parallel-source reconciliation remain pending.
+  A further question/status review explains full faithfulness of base change,
+  a sufficient subring inheritance condition, and the exact affine-conjugacy
+  criterion `β = h` in the two-translation normal form. It also explains why
+  the triangular nonnormal example has free eigenmodules. Full parallel-source
+  reconciliation remains pending. The C17-specific theorems await Lean proofs;
+  shared support-ring prerequisites are recorded in the formalization ledger.
   Its Lemmas 2.1, 3.1 and 6.3 are printed once as Lemmas 16.1–16.3 and Corollary 16.4.
 
 **Stale repository statements.** Source 01 said the repository's

@@ -5236,9 +5236,13 @@ in the coherent-translations theorem. The next pass covers monogenic and
 arithmetic descent, critical-point and normal-matrix applications, boundary
 examples and the splitting-algebra second proof. It handles degree-zero
 presentations, makes `n ≥ 1` explicit in the matrix theorem, and distinguishes
-simple critical points from distinct critical values. Later question/status
-notes and full parallel-source reconciliation remain pending review.
-All C17 results remain **Pending** in Lean.
+simple critical points from distinct critical values. The later question/status
+review supplies full faithfulness of base change after `odg:disc:q:etale`, a
+sufficient subring inheritance criterion after `odg:disc:q:restricted`, and
+the affine-conjugacy criterion `β = h` after `odg:disc:q:dynamics`. These
+deductions and the C17-specific theorems remain **Pending** in Lean; shared
+support-ring prerequisites are mapped above. Full parallel-source
+reconciliation remains pending review.
 The ring/retraction proposition
 `odg:prop:ring`, degree lemma `odg:lem:degree`, unit/finite-element
 proposition `odg:prop:units`, exact floor theorem `odg:thm:floor`,

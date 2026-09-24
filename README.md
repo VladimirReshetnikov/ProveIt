@@ -448,8 +448,11 @@ a normal matrix over the one-sided complex Hahn ring with nonzero constant
 characteristic discriminant differs from its constant matrix by a scalar
 purely infinite matrix; its eigenspaces remain ordinary. The boundary
 examples and splitting-algebra second proof are also reviewed. These C17
-results remain pending in Lean; their later question/status notes and full
-parallel-source reconciliation remain pending review.
+theorems remain pending in Lean, beyond the shared support-ring prerequisites.
+The question/status review now separates full faithfulness from existence
+of étale descent and supplies an exact affine-conjugacy test: within the
+two-translation polynomial normal form, the source and target shifts must
+coincide. Full parallel-source reconciliation remains pending review.
 The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
 now assembles fifteen manuscripts. Its latest parts propose formal orbit
 fields, actions of set-sized left-orderable groups with prescribed fixed

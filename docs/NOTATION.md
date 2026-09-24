@@ -903,6 +903,11 @@ In the critical-point application, gaps lie in `𝕜̄`, not necessarily `𝕜`;
 simple critical points can have repeated critical values. In the matrix
 application `M*` is the conjugate transpose, while `ct M` extracts exponent
 zero entrywise; the size must satisfy `n ≥ 1` for the trace divided by `n`.
+For the two-translation normal form `f(X) = f̄(X − h) + β`, the shifts
+`h, β` are purely infinite. Affine conjugacy means `g = L⁻¹ ∘ f ∘ L` with
+`L(X) = aX + b`, `a ≠ 0`, in the Hahn splitting field. For degree at least
+two, such a `g` has ordinary algebraic-closure coefficients for some `L`
+exactly when `β = h`; then one can take `L(X) = X + h` and `g = f̄`.
 
 For a finite étale `𝒜_𝕜(Γ)`-algebra `𝖡`, its constants `𝖢_𝖡` are the elements
 algebraic over `𝕜`. The reduction is `𝖡₀ = 𝖡 / Π_𝕜(Γ)𝖡`; it need not be

@@ -10379,8 +10379,8 @@ section, statement or equation number changed; its ten questions follow the last
 of \cref{odg:sec:questions}. The elementary lemmas, root-velocity certificate and
 translation classification, its factor/Galois/resultant consequences and the finite
 \'etale unit theorem, monogenic descent, critical-point and matrix applications,
-boundary examples and the second proof have been reviewed. The later question/status
-notes and complete parallel-source reconciliation remain pending, as recorded in
+boundary examples, the second proof and the later C17 question/status
+notes have been reviewed. Complete parallel-source reconciliation remains pending, as recorded in
 \fn{RECONCILIATION.md}.
 
 \paragraph{Conventions and renamed symbols.} As in the curve part
@@ -11449,8 +11449,11 @@ configurations, projection examples and the counterexamples. Its recorded run
 (\cref{odg:app:verification}). Such checks can catch sign errors, wrong normalizations,
 false examples and failures of a finite identity; they cannot certify the theorem for
 arbitrary supports, the formal \'etale argument, or the existence of the certificate in
-every degree. No Lean implementation accompanies the source, and the Lean coverage of the
-repository does not by itself cover these statements \src{C17}.
+every degree. No Lean implementation accompanies the source \src{C17}. The current
+repository proves shared support-ring prerequisites, including the retraction, units,
+polynomial degree and algebraic-constant rigidity, under the mappings for
+\cref{odg:prop:ring,odg:def:lem:units} in \fn{docs/FORMALIZATION.md}. These do not establish
+the C17 certificate, translation theorem, finite \'etale unit theorem or matrix theorem.
 
 \begin{center}
 \small
@@ -11486,8 +11489,8 @@ extensionality and separation of exponents by linear functionals; the surreal
 specialization through the repository's normal-form and omnific-ring identifications,
 with an exact theorem mapping rather than a claim that an abstract theorem has been proved
 for the constructed surreals; and, largely independently, the projectors and the
-normal-idempotent lemma. This is a proposal; no stage is claimed done
-(\cref{odg:disc:q:lean}). The interface is the abstract one of \cref{odg:log:rem:interface}
+normal-idempotent lemma. This is the source's proposal; the shared prerequisites just
+listed do not complete these stages (\cref{odg:disc:q:lean}). The interface is the abstract one of \cref{odg:log:rem:interface}
 with the roles of the ring and the valuation ring as in \cref{odg:cr:sub:tworing}.
 
 \subsubsection{What source C17 does not claim}\label{odg:disc:sub:nonclaims}
@@ -11987,16 +11990,17 @@ refining \cref{odg:cr:q:charp}), normalization invariance in higher dimension
 formalization (\cref{odg:sg:q:lean}). Source C16 does not present them as known open
 problems of the literature.
 
-\paragraph{Roots and coefficients (source C17).} For a monic $P\in\Oz[T]$ with
+\paragraph{Roots and coefficients (source C17).} For a monic $P\in\Oz[T]$ of degree $n\ge1$ with
 $\Disc(P)\in\Z\setminus\{0\}$, source C17 answers \cref{odg:q:roots}: $P=\overline P(T-h)$
 with $h=-(a_1-\ct a_1)/n\in\Pi$, so the omnific roots of $P$ are $h+c$ for the integer roots
 $c$ of $\overline P$, and the finite coefficient test \eqref{odg:disc:eq:test} decides
 whether the hypothesis holds, relative to exact coefficient arithmetic
 (\cref{odg:disc:thm:translation,odg:disc:cor:roots}); the same holds over $\Og$. This
 complements \cref{odg:thm:quadraticformula} and explains \cref{odg:ex:hensel}, whose
-discriminant $1+4\omega$ is not constant (\cref{odg:disc:rem:comparison}). Nonconstant
-discriminants, zero discriminants and nonmonic polynomials stay open, and so does the
-decidability clause for general support classes. For the first clause of
+discriminant $1+4\omega$ is not constant (\cref{odg:disc:rem:comparison}). The general root
+problem outside these hypotheses remains untreated: the boundary examples exclude an
+unrestricted extension of the translation theorem. The decidability clause for general
+support classes also remains open. For the first clause of
 \cref{odg:cr:q:coefficients}, a nonzero constant discriminant is a nondegeneracy condition
 that recovers rigidity for coefficients varying at a surreal scale in dimension zero, over
 every $\crA$ and $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$; units of finite \'etale algebras
@@ -12012,7 +12016,11 @@ refining \cref{odg:q:roots}), positive characteristic (\cref{odg:disc:q:charp}),
 support rings (\cref{odg:disc:q:restricted}), several configurations
 (\cref{odg:disc:q:several}), polynomial dynamics (\cref{odg:disc:q:dynamics}) and
 formalization (\cref{odg:disc:q:lean}). Source C17 does not present them as known open
-problems of the literature.
+problems of the literature. The review notes following these questions separate full
+faithfulness from existence of descent, give a sufficient subring inheritance condition,
+and settle affine conjugacy within the two-translation normal form; these are elementary
+consequences of the printed theorems, not solutions of the remaining classification
+questions \mergetag.
 
 \subsection{Open questions}
 
@@ -12364,7 +12372,7 @@ several equations, so that a checker need not reconstruct the geometry \src{C15}
 with an explicit derivative-order bound (\cref{odg:sg:thm:conductor,odg:sg:cor:jetbound,odg:sg:thm:example});
 optimal bounds and a certificate-producing procedure are \cref{odg:sg:q:order,odg:sg:q:engine}.
 Status (batch 33): for the first clause source C17 gives a rigidity theorem in dimension zero:
-a monic univariate polynomial over $\crA$ or $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ whose
+a positive-degree monic univariate polynomial over $\crA$ or $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ whose
 discriminant is a nonzero constant is a purely infinite translate of its constant-term
 polynomial (\cref{odg:disc:thm:translation}), with a universal finite certificate
 (\cref{odg:disc:lem:certificate}); the batch-31 note above concerns only the certificate
@@ -12474,6 +12482,19 @@ surjective. A proof must bridge a global issue, which generic primitive elements
 monogenic charts do not settle; a counterexample would have to hide its nonconstant
 structure outside its unit group \src{C17}.
 
+\emph{What is already fully faithful \mergetag.} If $C,D$ are finite \'etale
+$\Bbbk$-algebras, every $\crA$-algebra map
+$\crA\otimes_\Bbbk C\to\crA\otimes_\Bbbk D$ comes from a unique
+$\Bbbk$-algebra map $C\to D$. Indeed, $D$ embeds as algebraic constants in
+$\mathsf B=\crA\otimes_\Bbbk D$, and
+\cref{odg:disc:prop:constants} bounds the dimension of its constant subalgebra by
+$\operatorname{rank}_{\crA}\mathsf B=\dim_\Bbbk D$. Thus that subalgebra is exactly
+$D$. Any map sends the algebraic elements of $C$ there, and $\crA$-linearity determines
+the map from this restriction. Conversely base change extends every such restriction.
+The zero-algebra cases are immediate. Consequently the remaining part of the proposed
+equivalence is essential surjectivity: whether every finite \'etale $\crA$-algebra
+is a base change. This argument does not replace that global existence step.
+
 \begin{question}[Arithmetic \'etale descent \src{C17}]\label{odg:disc:q:arithmetic}
 For a number ring $\mathfrak o\subseteq\Bbbk$, does every finite \'etale
 $\mathcal R_{\mathfrak o}$-algebra descend from $\mathfrak o$? Which additional hypotheses
@@ -12489,10 +12510,20 @@ fibers; the field-coefficient unit theorem must not be applied over $\mathfrak o
 What is $\operatorname{Pic}(\crA)$, and which projective modules occur as eigenmodules of a
 matrix with nonzero constant characteristic discriminant?
 \end{question}
-The translation theorem fixes eigenvalues; the rest of the matrix is a system of projective
-summands attached to the spectral idempotents. Normality makes them constant by positivity,
-while \cref{odg:disc:ex:nonnormal} shows freedom without it. A classification up to
-similarity should separate changes of basis from nontrivial projective summands \src{C17}.
+After extending the coefficient field to $\bar\Bbbk$, the translation theorem fixes the
+eigenvalues up to one common shift, and the spectral idempotents define projective
+rank-one summands. Over $\Bbbk$ one must instead retain the blocks defined by the
+irreducible constant factors. In the complex setting, normality makes the projectors
+constant by positivity. A classification up to similarity should separate changes of
+basis from nontrivial projective summands \src{C17}.
+In particular, \cref{odg:disc:ex:nonnormal} does not exhibit a nontrivial line bundle:
+writing its matrix as $M$, one has
+\[
+ M=S\begin{pmatrix}c_1&0\\0&c_2\end{pmatrix}S^{-1},\qquad
+ S=\begin{pmatrix}1&s/(c_2-c_1)\\0&1\end{pmatrix},\qquad \det S=1.
+\]
+Thus its eigenmodules are free, although their positions in the ambient free module
+vary with $s$ \mergetag.
 
 \begin{question}[Sharp denominator certificates \src{C17}]\label{odg:disc:q:certificate}
 What is the least exponent $d(n,s)$ for which $\Delta^{d(n,s)}e_s(w)$ is a universal
@@ -12501,13 +12532,16 @@ with practical size?
 \end{question}
 \Cref{odg:disc:lem:certificate} gives $d(n,s)\le2s$, and for $n=2$, $s=1$ one power of
 $\Delta$ suffices (\cref{odg:disc:rem:quadratic}). The problem is finite algebra,
-independent of surreal foundations \src{C17}.
+independent of surreal foundations \src{C17}. Here $1\le s\le\binom n2$, and
+$d(n,s)$ is a nonnegative integer clearing the universal denominator. For $n\le1$
+there are no root pairs and no such $s$ \mergetag.
 
 \begin{question}[Nonconstant discriminants and quantitative defects \src{C17}]\label{odg:disc:q:defect}
 Can the support or valuation of $\Disc(P)$ bound the possible nonconstant motion of the root
 gaps when the discriminant is not constant?
 \end{question}
-The identities \eqref{odg:disc:eq:certificate} remain valid, and their valuations give
+For a separable polynomial, so that $\Delta\ne0$, the identities
+\eqref{odg:disc:eq:certificate} remain valid, and their valuations give
 inequalities between derivative coefficients and powers of $\Delta$, but the
 zero-intersection argument no longer closes. A Newton-polygon theory of the velocity
 polynomial could measure how far a polynomial is from a constant configuration plus a
@@ -12527,10 +12561,18 @@ neither asserted sufficient \src{C17}. Compare \cref{odg:cr:q:charp,odg:sg:q:cha
 For which proper subrings of a Hahn ring does the discriminant theorem hold, with the
 translation in the subring?
 \end{question}
-A candidate should be closed under the Euler derivations, contain the purely nonconstant part
-divided by the degree, and keep the opposite-support intersection; effective left-finite,
-bounded-denominator and definability-restricted representations are natural tests
-\src{C17}.
+A direct proof internal to the candidate ring can use closure under the Euler derivations,
+division of the purely nonconstant part by the degree, and the opposite-support
+intersection; these are sufficient features to investigate, not asserted necessary
+conditions. Effective left-finite, bounded-denominator and definability-restricted
+representations are natural tests \src{C17}.
+For a subring $R\subseteq\crA$, there is also an immediate inheritance criterion:
+if $\ct(R)\subseteq R$ and $(a-\ct a)/n\in R$ for every $a\in R$ and integer $n\ge1$,
+then every positive-degree monic $P\in R[X]$ with nonzero constant discriminant has
+$P=\overline P(X-h)$ with $\overline P\in\ct(R)[X]$ and $h\in R\cap\crP$.
+Apply the ambient translation theorem and its explicit formula for $h$; no separate
+Euler-closure assumption on $R$ is needed for this deduction. This algebraic criterion
+does not provide an effective representation or equality procedure for $R$ \mergetag.
 
 \begin{question}[Several polynomial configurations \src{C17}]\label{odg:disc:q:several}
 What are the minimal invariant conditions forcing a family of finite root configurations to
@@ -12545,10 +12587,25 @@ their symmetric quotients and handling arithmetic descent \src{C17}.
 Under which extra conditions does $f=\overline f(X-h)+\beta$ become conjugate, rather than
 left-right equivalent, to an ordinary polynomial?
 \end{question}
-\Cref{odg:disc:thm:critical} reduces this to a relation between $h$, $\beta$ and the chosen
-dynamical normalization; fixed points, critical orbits or an ordinary marked value are
-possible extra data, and iterates must be kept separate from the fixed-degree theorem
-\src{C17}.
+For affine conjugacy in the Hahn splitting field, the normal form already gives an exact
+criterion: under \cref{odg:disc:thm:critical}, with $d\ge2$, $f$ is affinely conjugate
+to a polynomial in $\bar\Bbbk[X]$ if and only if $\beta=h$ \mergetag.
+To see necessity, let $L(X)=aX+b$, $a\ne0$, with $a,b\in\Hbar$, and suppose
+$g=L^{-1}\circ f\circ L$ has coefficients in $\bar\Bbbk$. Write
+$\overline f=X^d+q_1X^{d-1}+\cdots$. The two leading coefficients of $g$ are
+\[
+ a^{d-1},\qquad a^{d-2}\bigl(d(b-h)+q_1\bigr).
+\]
+The first makes $a$ algebraic over the algebraically closed coefficient field, hence
+$a\in\bar\Bbbk^\times$; the second gives $b-h\in\bar\Bbbk$. The constant coefficient
+$g(0)=(\overline f(b-h)+\beta-b)/a$ then gives
+$\beta-h\in\bar\Bbbk\cap\crP=0$. Conversely, if $\beta=h$, taking $L(X)=X+h$
+gives $L^{-1}\circ f\circ L=\overline f$. This characterizes affine conjugacy within
+the proved normal form, without asserting a broader classification of dynamics.
+Which additional data force this equality---for example fixed points, critical orbits
+or marked values---is a further question, and iteration remains separate from the
+fixed-degree theorem. These further directions were suggested by source C17; the affine
+criterion and its proof are additions of the review \mergetag.
 
 \begin{question}[Formal verification and constructive extraction \src{C17}]\label{odg:disc:q:lean}
 Can the universal certificate and the finite \'etale unit theorem be formalized for the
@@ -12558,7 +12615,11 @@ extractor for supported notation systems?
 The extractor is \eqref{odg:disc:eq:h}; the difficulty is certified equality of the
 resulting infinite coefficients and a proof that the input denotes a legal Hahn series. A
 verified finite-support implementation, then the generic support interface, is proposed as a
-first milestone (\cref{odg:disc:sub:audit}) \src{C17}.
+first milestone (\cref{odg:disc:sub:audit}) \src{C17}. The shared support-ring lemmas
+already mapped in \fn{docs/FORMALIZATION.md} supply prerequisites, but no executable
+extractor or Lean proof of the C17 certificate and finite \'etale unit theorem is recorded
+there. Finite coefficient arithmetic alone also does not certify the hypotheses of the
+translation theorem \mergetag.
 
 \subsection{Synthesis}
 
@@ -13201,6 +13262,9 @@ translation (\cref{odg:disc:rem:osq}); and the second route for symmetric omnifi
 (\cref{odg:disc:q:etale,odg:disc:q:arithmetic,odg:disc:q:picard,odg:disc:q:certificate,odg:disc:q:defect,odg:disc:q:charp,odg:disc:q:restricted,odg:disc:q:several,odg:disc:q:dynamics,odg:disc:q:lean});
 the fifth refines \cref{odg:q:roots} and the sixth sits beside
 \cref{odg:cr:q:charp,odg:sg:q:charp}. They are not merged into those questions.
+The later review adds the explicitly marked full-faithfulness, subring-inheritance
+and affine-conjugacy deductions, and explains why the triangular example gives free
+eigenmodules. The question statements themselves are unchanged.
 \end{enumerate}
 
 \paragraph{Printed once.} The floor formula, retraction, congruences, finite
@@ -13622,7 +13686,12 @@ logical route stated in its abstract are corrected above, and it contradicts no 
 source. In source C16 no gap was found in the proofs; its one remark with an
 unnecessary hypothesis is noted above, its one-place proposition is consistent with the
 positive-characteristic examples of \cref{odg:cr:sub:charp}, and it contradicts no other
-source. In source C17 no gap was found in the proofs, and it contradicts no other source. The later proof review of
+source. The C17 assembly reported no proof gap or contradiction; that report was not an
+independent review. The subsequent review makes positive-degree and nonempty-family
+hypotheses explicit, corrects the nonmonic counterexample, expands the descent and
+matrix proofs, and qualifies the later question/status notes. Its exact scope and the
+remaining parallel-source reconciliation are recorded in \fn{RECONCILIATION.md}.
+The later proof review of
 \cref{odg:sec:transfer,odg:sec:rigidity,odg:sec:derivations} (recorded in
 \fn{RECONCILIATION.md}) corrects the coefficient-derivation hypothesis in the
 merge's own \cref{odg:rem:separatedidentity}: the derivation must kill $a$

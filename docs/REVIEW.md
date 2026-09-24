@@ -4816,3 +4816,62 @@ the merge. The 4,626-result index across 63 reports, 5,189 source references,
 1,735 local Markdown destinations and whitespace checks pass before this
 record is appended. The unchanged finite suite was not repeated for this
 synchronization.
+
+## C17 question/status notes and elementary consequences
+
+Reviewed the C17 notes in Section 19.4.11–12, the roots/coefficient status
+paragraphs, all ten C17 questions and their explanations, and the C17
+assembly/nonclaim summaries. This completes the maintained C17
+question/status pass, not full reconciliation of the parallel manuscripts
+or a literature search certifying the questions as open. The ten question
+statements and all 244 standard theorem statements are unchanged.
+
+The full-descent question now separates two issues. Full faithfulness of
+base change follows from `odg:disc:prop:constants`: the algebraic constants
+of A tensor D are exactly D by the dimension bound, so every map between
+constant base changes restricts uniquely to a map over the coefficient
+field. Existence of descent for every finite étale A-algebra remains
+unproved. The arithmetic case is still separated from the field case.
+
+The spectral-module note now splits the ordinary polynomial over the
+algebraic closure before describing rank-one eigenmodules, and limits
+positivity to the complex setting. Its explicit shear similarity shows
+that the triangular nonnormal example has free eigenmodules; it is not
+evidence for a nontrivial Picard group. The certificate note specifies its
+index range, and the quantitative-defect note retains nonzero discriminant
+so root velocities and denominator formulas are defined.
+
+A sufficient inheritance criterion now answers a subcase of the
+restricted-ring question. A subring of the one-sided coefficient ring
+closed under constant extraction and division of purely nonconstant parts
+by positive integers inherits translation from the ambient theorem and
+its unique shift formula. Euler closure is not an extra assumption for
+that deduction; no effective equality procedure follows from it.
+
+The dynamics note proves an exact elementary consequence. Under the
+critical-point normal form, in degree at least two, affine conjugacy in
+the Hahn splitting field to a polynomial over the algebraically closed
+coefficient field exists exactly when beta equals h. For L(X)=aX+b,
+the leading coefficient forces a to be constant, the next coefficient
+forces b-h to be constant, and the constant coefficient forces beta-h to
+be constant. Its purely infinite support then makes it zero. Conversely
+L(X)=X+h gives the ordinary polynomial. This does not classify iteration
+or other notions of dynamical equivalence. The proof and the other new
+deductions are marked as review additions, not attributed to source C17.
+
+The Lean-status wording now acknowledges the shared ring, unit, degree
+and algebraic-constant prerequisites already mapped in the ledger, while
+keeping the C17 certificate, translation, étale-unit and matrix theorems,
+and these new deductions, pending. The root README, catalogue, report
+guide and notation guide reflect this distinction.
+
+Validation: 26 scratch SymPy 1.14.0 assertions check the displayed affine
+coefficient/conjugacy identities in degrees 2–7 and the shear similarity
+and determinant. They are finite sanity checks, not proofs of general
+support or descent. Three-pass builds of the 229-page article and 33-page
+catalogue have no warnings, unresolved references or bad boxes; the
+changed pages were inspected. All 553 labels and 1,106 auxiliary label
+numbers are unchanged. The 4,626-result index across 63 reports, 5,192
+source references and 1,735 Markdown destinations pass before this record
+is appended. No Lean source or shipped verifier changed; the prior full
+Lean build remains the baseline for this documentation-only revision.
