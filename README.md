@@ -369,8 +369,16 @@ closure hypothesis when the associated subgroup has a set-sized cofinal
 subset, including every principal convex subgroup. These are manuscript
 proofs, pending in Lean; full source reconciliation remains pending review.
 The normalization proofs before the arithmetic fibres are reviewed.
-Every surreal is almost integral over `Oz`, but its integral closure is
-a proper dense subring with zero conductor and no set of algebra generators. Uniform denominators
+Lean now proves that one positive monomial clears an entire algebra generated
+by a small set into the purely infinite ideal, in both `No` and `No[i]`.
+Consequently **every surreal and surcomplex number is almost integral**
+over its omnific ring, as are all elements over any intermediate ring.
+These rings have the full ambient field as their fraction field and complete
+integral closure. Ordinary integral closure is strictly smaller: `1/2` is
+almost integral but not integral, since a nonunit cannot gain an integral
+reciprocal. The stronger manuscript description of ordinary integral closure
+as a proper dense subring with zero conductor and no set of algebra generators
+remains pending in Lean. Uniform denominators
 make every set-generated overring closed and uniformly discrete in the
 fine topology. In the countable-support model, exactly `cf(κ)` negative
 monomials generate the ambient field over its integer part, proving the
