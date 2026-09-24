@@ -272,7 +272,7 @@ Its class constructions and proofs remain pending in Lean.
 
 The expanded [critical-point-defects report](docs/foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
 compares two actions of a large-cardinal embedding on surreal normal forms.
-Its three manuscripts describe an exact support threshold for their agreement,
+Its four manuscripts describe an exact support threshold for their agreement,
 measure recovery from a defect coefficient, and criteria for the transformed
 series to belong to the target model. These are conditional research claims;
 independent proof review and Lean formalization remain pending.
