@@ -420,16 +420,34 @@ the printed JSON without overwriting any source-24 verification record.
 Corrected an overstatement in the evaluation remark: the construction
 does not show that its residue target differs from the embedded core.
 Equality with the core and abstract isomorphism to it remain separate
-open questions. All sixteen reviewed standard class-residue results and
-the new unnumbered consequences remain pending in Lean. Separation,
-field realization, support-prime classification and full source
-reconciliation remain pending review.
+open questions. The remaining seven standard class-residue results are
+now reviewed too, completing all 23. Field embeddings explicitly keep
+set-sized stages, choose least admissible witnesses and extend only a
+prescribed set-sized base. Back-and-forth puts both a source and a target
+element into each successor stage. The separation and residual
+surcomplexity proofs retain their elementwise class-family meaning.
+The failure of strong summability needs no coefficient-fixing assumption:
+the image monomials satisfy integer polynomials that split in the ordinary
+complex numbers of the target.
+
+The support-prime classification now details why coefficients can be
+removed without multiplying by a nonintegral constant in the ring, why
+strong sums preserve arithmetic divisibility, and why convex truncation
+is multiplicative. An added consequence partially answers the closure
+question: a term-closed prime meeting D only at zero is automatically
+strongly sum-closed if its recovered convex subgroup has a set-sized
+cofinal subset. One surreal cut produces a monomial in the prime dividing
+an entire supported series. This covers the zero and principal convex
+subgroups; the smaller-scale H_a has no set-sized cofinal subset, as
+another explicit cut proves. The unrestricted classification and reverse
+implication remain open. All reviewed statements and new consequences
+remain pending in Lean. Full source reconciliation remains pending review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 321 pages
+article.pdf   the compiled report, 322 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

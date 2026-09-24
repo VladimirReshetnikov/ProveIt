@@ -11762,13 +11762,35 @@ In $\mathsf{GBC}$, every set or class field $\mathbb K$ of characteristic $0$ ha
 set-sized subfield $\mathbb K_0\subseteq\mathbb K$ extends to one of $\mathbb K$.
 \end{theorem}
 \begin{proof}
-Fix a set-like enumeration $(x_\alpha)$ of $\mathbb K$ and build compatible embeddings $e_\alpha:\mathbb K_\alpha\to\SC$ of set-sized subfields, starting
-from the prescribed one (or from the canonical embedding of $\Q$). At a successor stage do nothing if $x_\alpha\in\mathbb K_\alpha$. If $x_\alpha$ is
-algebraic over $\mathbb K_\alpha$, transport its minimal polynomial by $e_\alpha$ and send $x_\alpha$ to the least root in $\SC$ in the global
-well-order; $\SC$ is algebraically closed. If $x_\alpha$ is transcendental, send it to an element of $\SC$ transcendental over $e_\alpha(\mathbb K_\alpha)$:
-the polynomials over a set field form a set, each nonzero one has finitely many roots, and the proper class $\SC$ is not exhausted by this set of
-algebraic elements. At limits take unions; a set ordinal indexes a set of sets, and each $\mathbb K_\alpha(x_\alpha)$ is a set, described by finite
-rational expressions. These are set-valued recursions as above, and the union is the required class embedding.
+Fix a set-like global well-order and the induced enumeration $(x_\alpha)$
+of $\mathbb K$, of set ordinal length if $\mathbb K$ is a set and of
+length $\On$ otherwise. Start with the prescribed embedding of
+$\mathbb K_0$, or the canonical embedding of $\Q$ if none was prescribed.
+Maintain compatible embeddings
+$e_\alpha:\mathbb K_\alpha\to\SC$ of set-sized subfields. At a successor
+stage skip $x_\alpha$ if it is already in $\mathbb K_\alpha$.
+
+If $x_\alpha$ is algebraic over $\mathbb K_\alpha$, transport its monic
+minimal polynomial $p$ through $e_\alpha$. The transported polynomial
+is irreducible over $e_\alpha(\mathbb K_\alpha)$ and has a root in
+$\SC$. Choose its least root in the fixed well-order. Evaluation gives
+an embedding of $\mathbb K_\alpha[T]/(p)$, hence of
+$\mathbb K_\alpha(x_\alpha)$, extending $e_\alpha$.
+If $x_\alpha$ is transcendental, choose the least element of $\SC$
+transcendental over the current image. Such an element exists: the
+nonzero polynomials over that set field form a set, and the root class
+of each is finite, hence a set. Class replacement and union collect all
+these roots into one set, which cannot exhaust $\SC$. Substitution at
+the chosen transcendental extends $e_\alpha$ to the rational-function
+field; nonzero denominators remain nonzero and the map is injective.
+
+At a limit set ordinal take unions. Each successor field is a set,
+since its elements are values of finite rational expressions, and each
+partial embedding is a set. Thus ordinary set-valued recursion with
+class parameters gives a unique construction of every set ordinal
+length. The compatible initial constructions define a class recursion;
+its union exhausts $\mathbb K$ and is the required embedding. No
+proper-class subfield is used as a stage value or as the prescribed base.
 \end{proof}
 
 This is the standard universality argument for an algebraically closed field with more than set-many transcendence resources; 24 includes it so as not to
@@ -11778,9 +11800,19 @@ assume a classification of the residue fields or that they are algebraically clo
 In $\mathsf{GBC}$, every proper-class algebraically closed field of characteristic $0$ is isomorphic, as an abstract class field, to $\SC$.
 \end{corollary}
 \begin{proof}
-Run the construction of \cref{osq:cr:thm:universalfield} back and forth along ordinal enumerations of both fields, alternately putting the next source
-element in the domain and the next target element in the range; both fields are algebraically closed and have elements transcendental over each
-set-sized subfield, every stage is a set partial isomorphism, and the union is bijective.
+Start with the canonical isomorphism of the prime subfields and fix
+ordinal enumerations of both fields. At each successor stage perform
+two extensions: first put the next source element in the domain, using
+the one-element construction of \cref{osq:cr:thm:universalfield}; then
+apply the same construction to the inverse partial isomorphism to put
+the next target element in its range. Skip elements already included.
+Both ambient fields are algebraically closed and, by the root-set
+argument above, have elements transcendental over every set-sized
+subfield. Choose least admissible witnesses throughout. At limit set
+ordinals take unions, so every partial isomorphism remains a set.
+The final class union is injective, exhausts the source by the forth
+steps and exhausts the target by the back steps. It is therefore a
+field isomorphism.
 \end{proof}
 
 This is the class back-and-forth of the surcomplex-automorphism report (\nolinkurl{saut:thm:acfhomogeneity} \cite{RepoSaut}, which extends every isomorphism
@@ -11807,6 +11839,13 @@ $u^2=-1$; prescribe its embedding into $\C\subseteq\SC$ by $u\mapsto i$ and the 
 \cref{osq:cr:thm:universalfield}. Since the class of $r\omega^a$ is the embedded scalar $-r$, all the identities follow.
 \end{proof}
 
+Here the prescribed copy of $\C$ is only a set-sized subfield of the
+residue field. The extension theorem does not prescribe an embedding
+on the entire proper-class field core. Nor does
+\eqref{osq:cr:eq:scalarspecial} evaluate $\operatorname{sp}_a$ at an
+arbitrary real constant in $\Oz$: its argument is the valid omnific
+element $r\omega^a$.
+
 \begin{remark}[What ``residually surcomplex'' means \src{24}]\label{osq:cr:rem:residually}
 The phrase means the separating family of \cref{osq:cr:thm:residually}. It is not residual finiteness, not a representation in a set-indexed product,
 and not a single injective homomorphism with maximal kernel; a product indexed by a proper class of class fields would need further foundations and is
@@ -11818,10 +11857,21 @@ Let $\varphi:A\to\SC$ be a unital ring homomorphism with $\varphi(1+\omega^a)=0$
 family in $A$ to a strongly summable family in $\SC$.
 \end{theorem}
 \begin{proof}
-The family $(\omega^{a/2^n})_{n\ge1}$ is strongly summable: its supports are distinct points of a strictly decreasing sequence. But
-$\varphi(\omega^{a/2^n})^{2^n}=-1$, and $T^{2^n}+1$ splits over the ordinary complex numbers, so every $\varphi(\omega^{a/2^n})$ is a nonzero ordinary
-complex number, with
-support $\{0\}$. The exponent $0$ then occurs in infinitely many members of the image family.
+The family $(\omega^{a/2^n})_{n\ge1}$ is strongly summable. Its union of
+supports is a set and is reverse well-ordered: every nonempty subset
+has a largest exponent, corresponding to the least index in that
+subset of positive integers. Each exponent occurs in just one member.
+All exponents are positive, so its strong sum also belongs to $A$.
+
+Put $z_n=\varphi(\omega^{a/2^n})$. Multiplicativity and unitality give
+$z_n^{2^n}=-1$. The polynomial $T^{2^n}+1$ splits into linear factors
+over the ordinary $\C\subseteq\SC$. Since the target is a field,
+one factor vanishes at $z_n$, so $z_n$ is an ordinary complex root,
+necessarily nonzero. This uses no assumption that $\varphi$ fixes
+complex coefficients in its domain: the polynomial has integer
+coefficients, and its factorization is taken in the target.
+Every $z_n$ consequently has support $\{0\}$, violating the finite
+contribution condition at exponent $0$ for the image family.
 \end{proof}
 
 No sum in the source is missing, since $\sum_{n\ge1}\omega^{a/2^n}$ is a valid omnific integer; its image is simply not the strong sum of the images. So the specializations
@@ -11854,20 +11904,66 @@ None of the characteristic-zero primes in this list is maximal.
 \end{theorem}
 \begin{proof}
 If $P$ meets $D$ nontrivially, $\Pi_k\subseteq P$ (\cref{osq:prop:common}), $P\cap D$ is a nonzero prime of $D$ and $P=\ct^{-1}(P\cap D)=(P\cap D)A$;
-such ideals have both closure properties, their only condition being divisibility of the constant term. Suppose $P\cap D=0$. Term-closedness gives
+such ideals have both closure properties, their only condition being divisibility of the constant term. Indeed, every positive term lies in
+$\Pi_k$, and the constant coefficient of a strongly summable family
+receives only finitely many nonzero contributions, each in $P\cap D$.
+Suppose $P\cap D=0$. Term-closedness gives
 $P\subseteq\Pi_k$. For $g>0$ and $r\in k^\times$ the identities $(r\omega^g)^2=\omega^g(r^2\omega^g)$ and $(\omega^g)^2=(r\omega^g)(r^{-1}\omega^g)$, all of
 whose factors lie in $A$, and primality give
 \begin{equation}\label{osq:cr:eq:coeffindependence}
  r\omega^g\in P\iff\omega^g\in P .
 \end{equation}
+For example, $r\omega^g\in P$ puts $(\omega^g)^2$ in $P$ by the
+second identity, and primality puts $\omega^g$ in $P$; the first identity
+gives the reverse implication in the same way. We do not multiply by
+the constant $r^{-1}$ inside $A$, where that constant need not lie.
 Let $F=\{g\ge0:\omega^g\notin P\}$. It contains $0$, is closed under addition by primality, and is downward closed: if $0\le h\le g\in F$ and
 $\omega^h\in P$, then $\omega^g=\omega^h\omega^{g-h}\in P$. So $H=F-F$ is a convex subgroup with $H\cap\No_{\ge0}=F$ (a nonnegative difference $f_1-f_2$ is
 at most $f_1\in F$). Term-closedness and \eqref{osq:cr:eq:coeffindependence} make every support in $P$ avoid $H$; conversely, if $s\in\Pi_k$ has support
 avoiding $H$, its terms lie in $P$ by \eqref{osq:cr:eq:coeffindependence}, they form a strongly summable set-indexed family, and $s\in P$. So
 $P=\Pi_k^{>H}$. Conversely, deleting the exponents outside $H$ is, as in \cref{osq:cr:prop:tails}, a ring retraction $A\to D\oplus\Pi_k(H)$ onto a domain
-with kernel $\Pi_k^{>H}$, so $\Pi_k^{>H}$ is prime, and both closure properties are clear from the support description. $H$ is recovered from the
+with kernel $\Pi_k^{>H}$, so $\Pi_k^{>H}$ is prime. To check the
+retraction on products, use nonnegativity of the supports: if $g,h\ge0$
+and $g+h\in H$, convexity puts both $g$ and $h$ in $H$. Thus no
+discarded term can contribute to a retained coefficient. Deleting
+exponents also preserves strong summability and commutes with its sums;
+the kernel is strongly sum-closed and is term-closed by its support
+description. $H$ is recovered from the
 nonnegative monomials outside the ideal. Finally $\Pi_k^{>H}\subseteq\Pi_k$, which is proper and not maximal since $A/\Pi_k\cong D$.
 \end{proof}
+
+\paragraph{A cofinality condition makes strong sum-closure redundant \merge.}
+Let $P$ be a term-closed prime with $P\cap D=0$. The part of the proof
+above preceding the use of strong sum-closure already constructs the
+unique convex subgroup
+\[
+ F=\{g\ge0:\omega^g\notin P\},\qquad H=F-F,
+ \qquad P\subseteq\Pi_k^{>H}.
+\]
+Suppose $H_{\ge0}$ has a set-sized cofinal subset $C$, and include $0$
+in $C$. Then $P=\Pi_k^{>H}$ without assuming strong sum-closure.
+Indeed, for $0\ne s\in\Pi_k^{>H}$ put $S=\supp s$. Both $C$ and $S$
+are sets and every member of $C$ is below every member of $S$.
+The surreal cut $h=\{C\mid S\}$ therefore satisfies $C<h<S$.
+Cofinality gives $h>H$, so $h>0$ and $\omega^h\in P$.
+Every exponent of $s/\omega^h$ is positive, whence
+$s/\omega^h\in\Pi_k\subseteq A$ and
+\[
+ s=\omega^h\,(s/\omega^h)\in P.
+\]
+This uses a single ideal multiplication, not closure under infinite
+sums. The support description now implies both closure properties.
+
+The condition holds for $H=\{0\}$ and for
+$H=\operatorname{cvx}(\Z a)$, $a>0$, using respectively $C=\{0\}$
+and $C=\{na:n\ge0\}$. The endpoint $H=\No$ separately forces $P=0$.
+The hypothesis is a restriction: the smaller-scale subgroup $H_a$
+has no set-sized cofinal subset. For any set $C\subseteq(H_a)_{\ge0}$,
+the cut $\{C\cup\{0\}\mid\{a/n:n\ge1\}\}$ lies in $H_a$ and is
+strictly above $C$. Thus $H_a$ must not be confused with
+$\operatorname{cvx}(\Z a)$. This answers the redundancy question under
+a cofinality hypothesis, leaving the unrestricted classification in
+\cref{osq:cr:q:support} open.
 
 \begin{corollary}[A maximal binomial kernel is not a support ideal \src{24}]\label{osq:cr:cor:notsupport}
 A maximal ideal containing $1+\omega^a$ is not term-closed: it contains the two-term series $1+\omega^a$ and neither of its terms. Its monomials are
@@ -18222,6 +18318,14 @@ one closure property force the other under a natural additional algebraic or def
 \emph{Status.} Open. 24's comments: the proof of \cref{osq:cr:thm:termprimes} uses the two properties at different points, one to extract a monomial
 support restriction and the other to rebuild a series from its terms; a counterexample or a redundancy theorem would locate the reach of coefficientwise
 methods, and neither implication should be assumed.
+The consequence following \cref{osq:cr:thm:termprimes} now proves one
+conditional redundancy: for a term-closed prime meeting $D$ only in $0$,
+if the recovered convex subgroup has a set-sized cofinal subset, then
+the prime is $\Pi_k^{>H}$ and is automatically strongly sum-closed.
+This includes $H=\{0\}$ and the principal convex subgroups
+$\operatorname{cvx}(\Z a)$. The arithmetic case already has both
+closures. Neither the general term-closed classification nor the
+reverse implication from strong sum-closure is settled \merge.
 
 \begin{question}[Formal verification at the right foundational level; 24]\label{osq:cr:q:formal}
 Can the finite-algebra and support-identity package be formalized over the repository's constructed surreal field, with the class-choice theorem

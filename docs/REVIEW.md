@@ -8027,3 +8027,66 @@ references and 1,914 local Markdown destinations in 226 files pass, with
 whitespace checks. No incoming TeX or PDF changed; the final three-pass
 compilation and page inspections remain valid. The local manuscript
 scale/branch improvements remain Pending in Lean.
+
+### Class-field realizations and support-prime closure (2026-09-24)
+
+Reviewed the final seven standard class-residue results, from
+`osq:cr:thm:separation` through `osq:cr:cor:notsupport`, completing all
+23 standard results of that subsection. The separation witness 1−ωx
+has unit constant term and forces the residue of ω to invert that of x;
+the Jacobson-radical argument itself uses only the unit criterion.
+Arithmetic maximal ideals still intersect in the purely infinite ideal.
+No collection of all proper-class ideals is formed.
+
+Expanded the class-field embedding proof: a transported irreducible
+polynomial gives an injective algebraic extension, while substitution at
+a transcendental preserves nonzero denominators. Root classes of nonzero
+polynomials are finite sets; class replacement over the set of polynomials
+collects the algebraic elements into a set. A proper-class target cannot
+be exhausted by it. Least admissible witnesses in a fixed set-like global
+well-order make every set-valued recursion deterministic. The prescribed
+base and every partial field remain sets. The back-and-forth proof performs
+both extensions at each successor stage, using the inverse map for the
+back step. Cross-checked the credited proofs `saut:thm:acfhomogeneity`
+and `fkc:sb:lem:backforth` in their current sources.
+
+Clarified that residual surcomplexity prescribes only the ordinary
+set-sized complex subfield, not the full proper-class field core, and
+that sp_a(rω^a) evaluates at a valid omnific element. The failure of Hahn
+summability now verifies reverse well-ordering and finite contributions
+in the source. Image monomials are nonzero ordinary complex roots because
+their integer polynomials split in the target field. No assumption that
+the homomorphism fixes complex coefficients is used. Infinitely many
+images contribute at exponent zero, so even summability fails.
+
+The support-prime proof now explains both directions of coefficient
+independence without multiplying by constants absent from the ring.
+Arithmetic closure uses finitely many contributions to the constant term.
+Convex truncation is multiplicative because nonnegative exponents summing
+into the subgroup must both lie there, and it commutes with strong sums.
+
+Added an unnumbered partial answer to `osq:cr:q:support`. For a term-closed
+prime P meeting D only at zero, recover F={g≥0:ω^g∉P} and H=F−F before
+using strong sum-closure. If H_≥0 has a set-sized cofinal subset C, every
+nonzero series s supported above H admits the surreal cut h={C|supp(s)}
+(after including zero in C). Then h>H, ω^h lies in P, and s/ω^h has strictly
+positive support. A single ideal multiplication gives s∈P. Consequently
+P=Π_k^(>H), automatically strongly sum-closed. This covers H=0 and every
+principal convex subgroup cvx(ℤa); H=No separately forces P=0. The condition
+is substantive: for any set C⊆(H_a)_≥0, the cut {C∪{0}|{a/n:n≥1}} belongs
+to H_a above C, so the smaller-scale H_a has no set-sized cofinal subset.
+The unrestricted classification and the reverse closure implication remain
+open. Neither this consequence nor the source class-residue results is
+claimed formalized in Lean.
+
+Updated the root and report READMEs, shared notation, catalogue, coverage
+narrative and all shifted source anchors. Validation: three final TeX passes
+for the article (322 pages) and catalogue (35 pages), with no final log
+diagnostics. Inspected article PDF pages 180–183 and 306 and catalogue page
+12. All 418 result environments, 828 labels, 1,656 AUX numbering fields,
+66 questions, 60 remarks and 28 examples are unchanged. All 4,626 source
+anchors in 63 reports, 5,223 source-label references and 1,914 local Markdown
+destinations in 226 files pass, with whitespace checks. Historical source
+verification records and scripts are unchanged; finite computations do not
+certify these class and support arguments. No Lean implementation changed
+in this documentation pass. Full source reconciliation remains pending.
