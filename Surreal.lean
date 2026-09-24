@@ -906,3 +906,6 @@ import Surreal.Surcomplex.GaussianSmallPrimes
 import Surreal.Surcomplex.GaussianPrincipalGrowth
 import Surreal.Surcomplex.GaussianInfiniteGenerators
 import Surreal.Surcomplex.GaussianPrincipalQuotients
+import Surreal.Algebra.GaussianNonUnitalMaps
+import Surreal.Surcomplex.GaussianNonUnitalMaps
+import Surreal.Surcomplex.SmallRingObservations

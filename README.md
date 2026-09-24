@@ -580,6 +580,11 @@ monomials; it requires no continuity of the target map. The version for an
 arbitrary coefficient field remains pending. Real nonunital maps are
 classified by idempotents in the target. Gaussian unital maps are classified
 by square roots of `−1`, which need not be central in the target ring.
+The nonunital Gaussian classification is also complete: maps correspond
+exactly to pairs `(e,j)` with `e²=e`, `ej=je=j` and `j²=−e`, even when the
+target has no identity. In both omnific rings, all small unital ring maps
+identify precisely the elements with equal constant terms; the purely
+infinite ideal is their common kernel.
 
 Every small quotient of the real omnific ring is now classified: it is
 `ℤ` or `ℤ/nℤ` for an ordinary positive integer n, including the zero ring
