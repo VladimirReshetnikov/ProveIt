@@ -547,3 +547,24 @@ local Markdown destinations across 226 files and whitespace checks pass.
 No Lean or verifier source changed. Finite computations were not rerun to
 claim evidence for these cardinal arguments; the previous 4,560-job Lean
 build and 16,059-declaration axiom audit remain the documentation-only baseline.
+
+### Synchronization after the regular-cardinal model review
+
+Merged `d33b8cf`, including `601bf05`, which formalizes source 07's
+alternative quartic `odg:def:eq:F4` and `odg:def:rem:quarticvariant`.
+Compared its literal polynomial, exact degree four, six witnesses and
+all-coordinate standardness with the manuscript. The intermediate Hahn-ring
+proof needs precisely the integer constant intersection, without closure
+under constant extraction, a square root of two in the coefficient field,
+nontrivial exponents or an Archimedean coefficient field. The actual omnific
+instance is proved separately. The printed Gaussian witnesses work for every
+Gaussian omnific integer, and omega is proved to be an accepted nonconstant
+element. The five-witness three-square guard remains pending; this merge
+adds no proof of the cardinal models reviewed here.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` succeeds with 4,565 jobs and an
+axiom audit of 16,094 declarations, using only `propext`, `Classical.choice`
+and `Quot.sound`. All 4,626 statement anchors in 63 reports, 5,204 cited
+source labels, 1,775 local Markdown destinations across 226 files and
+whitespace checks pass. The merge leaves article and catalogue sources and
+PDFs unchanged, so their clean three-pass builds remain current.

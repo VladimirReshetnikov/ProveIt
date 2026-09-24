@@ -690,6 +690,11 @@ import Surreal.Algebra.PellTwoGrowth
 import Surreal.Algebra.QuarticConstants
 import Surreal.Algebra.QuarticPolynomial
 import Surreal.Foundations.OmnificQuartic
+import Surreal.Algebra.QuarticVariant
+import Surreal.Algebra.QuarticVariantPolynomial
+import Surreal.HahnSeries.NonpositiveSupportBounds
+import Surreal.HahnSeries.QuarticVariant
+import Surreal.Surcomplex.QuarticVariant
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants
