@@ -1,79 +1,357 @@
 # Exponential Relations over Omnific Integers
 
-**Exact toric kernels, decidable fragments, and one-scale elementary cores**  
-Research manuscript, 23 September 2026.
+**Exact toric kernels, decidable fragments, and one-scale elementary cores**
 
-## Contents
+This is a single-source research report dated 23 September 2026. It is built
+from one manuscript, manuscript 06 of batch 33 (archive
+`surreal_exponential_relations`, main file `article.tex`, a 28-page PDF). The
+manuscript is pinned to repository commit `958b5c4` and was placed in commit
+`aa9c891`. Author line: AI-assisted research manuscript.
 
-- `article.pdf`: the complete 28-page typeset article.
-- `article.tex`: self-contained LaTeX source, including its bibliography.
-- `SOURCE_AUDIT.md`: source provenance, claim classifications, dependency and limitation checks.
-- `code/checks.py`: exact finite checks and a reusable balanced-partition generator.
-- `check_results.json`: the actual deterministic test result, with 22,074 cases passing.
-- `Makefile`: build and check commands.
-- `MANIFEST.sha256`: checksums of the delivered files other than the manifest itself.
+This directory holds one manuscript. It is not a merge: there was no second
+source, and nothing was selected out of a larger body of work. Every result,
+proof, example, question and limitation of the manuscript is printed. The
+report is AI-assisted and unrefereed. **Independent proof review and
+formalization are pending.**
 
-No external bibliography database, image assets, proprietary software, or network connection is needed to build the article or run the checks. A normal LaTeX installation must provide the packages listed in `article.tex`.
+```
+article.tex                the report, standalone LaTeX with an internal bibliography
+article.pdf                the compiled report, 39 pages (unnumbered title page,
+                           contents pages 1–2, then pages 3–38)
+README.md                  this guide
+SOURCE_AUDIT.md            the source's source-and-claim audit, as delivered
+code/checks.py             the source's exact finite checks (standard library only), as delivered
+code/Makefile              the source's build/check targets, as delivered (delivery layout)
+data/check_results.json    the source's recorded run, as delivered
+```
 
-## Mathematical scope
+`code/`, `data/` and `SOURCE_AUDIT.md` are byte-identical to the delivery. The
+delivered README and PDF are not shipped: this README replaces the delivered
+one, and `article.pdf` is a build of this text. The checksum manifest
+`MANIFEST.sha256` was not shipped; its seven entries (article, PDF, README,
+audit, program, record, Makefile) were verified against the delivery first.
+The delivered README lists `check_results.json` and `Makefile` at the package
+root and `MANIFEST.sha256`; they are shipped as `data/check_results.json` and
+`code/Makefile`, and the manifest not at all. `SOURCE_AUDIT.md`, the Makefile
+and the docstring of `code/checks.py` still use the delivery paths.
 
-Write `Oz = Z + J`, where `J` is the real vector space of purely infinite surreal normal forms. Let `A` be the field of real algebraic numbers. The manuscript develops the following results.
+Every label in `article.tex` carries the prefix `exr:` (all delivered labels
+were bare). The source's 94 labels are kept, unchanged after the prefix.
+Twenty were added: three new sections (`exr:sec:conventions`,
+`exr:sec:collection`, `exr:sec:nonclaims`), nine labels on research questions
+that had none (`exr:q:scalars`, `exr:q:coefficients`, `exr:q:nonlinear`,
+`exr:q:parameters`, `exr:q:complexity`, `exr:q:toric`, `exr:q:modeltheory`,
+`exr:q:surcomplex`, `exr:q:formal`), and eight appendix labels
+(`exr:app:report`, `exr:app:onesource`, `exr:app:pinned`, `exr:app:checked`,
+`exr:app:numbers`, `exr:app:suite`, `exr:app:files`, `exr:app:references`).
+That makes 114 labels. No theorem, section or equation number changed: the
+`.aux` numbers of all 94 source labels were compared with a build of the
+delivered text. No `exr:` label has a Lean mapping in the
+[formalization ledger](../../FORMALIZATION.md).
 
-1. **Faithful exponential group algebras and exact relations.** On the additive domain `Qbar + J` in `No[i]`, use the ordinary complex exponential for the algebraic constant part and Gonshor's exponential for the purely infinite part. Distinct arguments have exponentials linearly independent over `Qbar`. Consequently, the finite polynomial relations among these exponentials are exactly their additive toric relations. The ordinary constants in every finitely generated such field are determined exactly.
+Text added when the manuscript joined the collection is marked `[write]`.
+Sections 1.4, 1.5 and 16 and Appendix C are new. Short `[write]` paragraphs sit
+at the end of Section 1.3, after the paragraph following Proposition 2.2, at
+the end of Section 2.4, after the text following Theorem 11.2, in Section 11.4,
+after the proof of Theorem 12.1, in Sections 13.2 and 13.3, after each of the
+eleven research questions, after the table of Appendix A and at the end of
+Appendix B. No mathematical statement of the source was changed and no symbol
+was renamed.
 
-2. **A decidable exponential-equality language.** Start with ordered additive omnific arithmetic. Add externally interpreted zero predicates for finite exponential sums with algebraic coefficients, complex-algebraic shifts, and real-algebraic affine slopes. The entire first-order theory in this precise language is decidable. The proof first uses balanced partitions, then separates ordinary integer coordinates from purely infinite coordinates, and finally eliminates quantifiers in Presburger arithmetic and ordered algebraic vector spaces.
+## Setting and notation (Section 1.4)
 
-3. **Definability, elementary substructures, and embeddings.** In that language, the integer part and purely infinite part are definable. Every definable set is a finite union of integer/vector rectangles. The elementary substructures inside `Oz` are exactly `Z + W` for nonzero ordered `A`-vector subspaces `W` of `J`. Thus `Z + A*u` is a countable elementary core for each positive purely infinite `u`. These are additive relational structures, not subfields and generally not subrings.
+`J` is the real vector space of purely infinite surreals: normal forms whose
+**every** exponent is positive, zero included; nonzero elements have either
+sign, so `J` is not "the positive infinite numbers". `Oz = Z ⊕ J`. `J` is the
+collection's `Π` (Diophantine, trigonometry, quotient and foundations reports)
+and the analysis report's bold `J`; [NOTATION.md](../../NOTATION.md) lists `J`
+as an alias of the same ideal. The growth convention is Conway's
+`Σ r_γ ω^γ`, with the purely infinite part at positive exponents (the analysis
+report's `t^γ = ω^{−γ}` reverses this).
 
-4. **An exact computability boundary.** For a fixed irrational real `alpha`, use just addition, order, `0`, `1`, and the relation `S(x,y)` meaning `exp(y)=exp(alpha*x)`. Its first-order theory has exactly the Turing degree of the rational cut of `alpha`. It is therefore decidable precisely when `alpha` is a computable real. This is a fixed-parameter statement; uniform decision from arbitrary approximation programs fails even with algebraic irrational slopes promised.
+`Qbar` is the field of complex algebraic numbers and `A = Qbar ∩ R` the ordered
+field of real algebraic numbers (blackboard `A` in the article). It is **not**
+the Diophantine report's ring `𝒜_k(Γ)`, nor its original name `A = Oz`, and
+`Z + A·u` is an additive group, not a ring generated by `u`.
 
-5. **Limits and further consequences.** Adding `exp(x*y)=exp(z)` to the decidable algebraic language makes the full first-order theory undecidable. Explicit counterexamples locate the failure of independence when arbitrary finite constants or infinitesimal tails are admitted. For arbitrary positive real bases, a separate theorem determines the purely infinite fibers above ordinary integer solutions of equations such as `a^x+b^y=c^z`.
+`exp` is Gonshor's real exponential. `Exp(a + p) = e^a exp(p)` is defined only
+on the additive domain `E_alg = Qbar + J` (Definition 2.4). The analysis and
+trigonometry reports use `Exp` for the canonical **global** exponential on
+`No[i]` (`e:def-canonicalexp`, `e:thm-exp`, `trigonometry:thm:globalexp`),
+and the trigonometry report has phase exponentials `E_χ`
+(`trigonometry:per:prop:exponentials`). All of them agree with this `Exp` on
+`E_alg`, so the two uses never conflict; the global map is not injective
+(kernel `2πi Oz`, and `Exp(ip) = 1` for `p ∈ J`).
 
-Section 14 proposes eleven further research topics. The introduction, Appendix A, and `SOURCE_AUDIT.md` distinguish classical inputs, elementary transports, proposed contributions, and unresolved extensions.
+`𝔐` is the Conway monomial group; the sans-serif `M(x,y,z)` of Theorem 11.2 is
+the ternary predicate `exp(xy) = exp(z)`, not `𝔐` and not a monomial map of the
+omnific-preserving report. `ct` is the constant-term ring homomorphism
+`Oz → Z` (not order preserving), `pp(x) = x − ct(x)`. The formulas `Pure`,
+`Int`, `CT` are formulas of `L_alg`; `Int` is not the ring `Int(Z^r)` of the
+quotient report, and `CT` defines the same graph as the Diophantine report's
+`𝖢𝖳(x,n)` but without multiplication. `K_α = Q(α)` is a subfield of `R`, not a
+Hahn workspace; the predicate `S` of `S_α` is not an exponent dilation `S_d`.
+Local letters (`H`, `L`, `K`, `F`, `Φ_H`, `B`, `G`, `W`, `V`, `T`) are listed
+in Section 1.4.
 
-## Status and limitations
+## What the report claims
 
-This is an AI-assisted, unrefereed research manuscript. Its arguments are supplied in full relative to the explicitly cited classical inputs. The results are proposed contributions, not certified priority claims or a claimed settlement of a named classical conjecture. A bounded literature and repository search cannot establish that a statement has never appeared before.
+Theorem numbers are those of the built `article.pdf`, which agree with the
+delivered PDF. Lemmas, propositions, corollaries, definitions, examples and
+remarks share one counter; research questions are numbered 1–11.
 
-The article does **not** claim decidability of the unrestricted surreal exponential field, an internal exponential operation on `Oz`, a global surcomplex exponential, a decision procedure for arbitrary surreal normal forms, or an implementation of the full decision procedure. It does not define exponential values at infinitely large imaginary arguments.
+Imported, not reproved: Conway normal forms; Gonshor's theorem
+`exp(J) = 𝔐` (not `exp(p) = ω^p`); the Lindemann–Weierstrass theorem;
+Presburger quantifier elimination; the undecidability of true arithmetic and
+of halting.
 
-The finite tests validate exact combinatorial and coordinate identities. They do not prove Gonshor's theorem, Lindemann--Weierstrass, quantifier elimination, the Turing-degree result, or proper-class claims. No Lean verification or external peer review was performed.
+- **Faithful exponential group algebras (Section 3).** For distinct
+  `z_1, …, z_s ∈ Qbar + J`, the values `Exp(z_j)` are linearly independent over
+  `Qbar` (Theorem 3.1): group by purely infinite part (distinct monomials,
+  Lemma 2.3), then apply Lindemann–Weierstrass in each group. `Exp` is
+  injective and `Exp(z) ∈ Qbar` only for `z = 0` (Corollary 3.3); `Qbar[H] → No[i]`
+  is injective for every set-sized subgroup `H` (Corollary 3.4).
+- **Exact toric kernels and constants (Section 4).** The kernel of Laurent
+  evaluation at `Exp(z_1), …, Exp(z_d)` is the toric ideal
+  `(X^ℓ − 1 : ℓ ∈ L)` of the relation lattice `L`, and the transcendence degree
+  is `dim_Q span_Q{z_k}` (Theorem 4.1); `Q`-independence of arguments equals
+  algebraic independence of exponentials (Corollary 4.2). The generated field
+  `F` and `C` are linearly disjoint over `K = Qbar(Exp(H ∩ Qbar))`, and
+  `F ∩ C = K` (Theorem 4.3). For omnific arguments with `H ∩ Z = gZ` the
+  ordinary constants are `Qbar` or `Qbar(e^g)` (Corollary 4.4), e.g. `Qbar(e)` for
+  `ω, 2ω+1` and `Qbar(e²)` for `ω, ω+2`.
+- **Balanced partitions (Section 5).** A finite exponential sum vanishes iff
+  some partition of its terms with zero coefficient sum in every block has equal
+  exponents in each block (Theorem 5.2); affine zero loci are effectively finite
+  unions of algebraic-affine systems (Corollary 5.3); worked equations
+  `exp x + exp y = 2 ⇔ x = y = 0` and two others (Proposition 5.5).
+- **Rational slopes (Section 6).** Every `L_rat`-formula translates effectively
+  to Presburger arithmetic; the theory is decidable and
+  `(Z, L_rat) ≼ (Oz, L_rat)` (Theorem 6.2). Division with remainder
+  (Proposition 2.2) makes `Oz` a model of Presburger arithmetic.
+- **Algebraic slopes (Sections 7–8).** Algebraic-affine equations split into a
+  vector equation on the purely infinite coordinates and integer equations on
+  the constant coordinates (Lemma 7.1); ordered `A`-vector spaces have
+  quantifier elimination (Lemma 7.2); `Th(Oz, L_alg)` is decidable by an
+  effective two-sort reduction (Theorem 7.3). `J`, `Z` and the graph of `ct` are
+  parameter-free definable (Theorem 8.1, via `exists y Exp(y) = Exp(√2 x)`);
+  every definable set is a finite union of Presburger × `A`-semilinear
+  rectangles (Theorem 8.3); the two components are stably embedded with no extra
+  induced structure (Corollary 8.4) and definable maps between them have finite
+  image (Corollary 8.5).
+- **Elementary substructures (Section 9).** `G ≼ (Oz, L_alg)` iff `G = Z + W`
+  for a nonzero `A`-subspace `W ⊆ J` (Theorem 9.1); `Z + A·u` is a countable
+  elementary core for every positive `u ∈ J`, all isomorphic (Corollary 9.2);
+  elementary embeddings are `n + p ↦ n + T(p)` with `T` order-preserving
+  `A`-linear (Corollary 9.3); `Z ⊆ Oz` is elementary for `L_rat` but not for
+  `L_alg` (Proposition 9.4).
+- **One irrational slope (Section 10).** For fixed irrational real `α` and
+  `S(x,y) ⇔ exp(y) = exp(αx)`, the structure is Presburger `Z` plus the ordered
+  `Q(α)`-vector space `J`, with elementary substructures `Z + W` (Theorem 10.2);
+  `Th(S_α) ≡_T P_α ≡_T D_α`, the degree of the rational cut of `α`, so the
+  theory is decidable iff `α` is computable (Theorem 10.3); no uniform algorithm
+  from approximation names, even for algebraic irrational slopes
+  (Proposition 10.4, halting-coded `α_e = √2 + 2^{−t}`).
+- **Boundaries (Section 11).** `log 2` breaks independence; infinitesimal tails
+  break it with integer coefficients (`ε = ω^{−1}`,
+  `exp(log(1+ε)) − exp(log ε) − exp(0) = 0`, Proposition 11.1); adding
+  `exp(xy) = exp(z)` makes the full theory undecidable (Theorem 11.2).
+- **Real bases (Section 12).** For complex coefficients and real slopes, the
+  fibre above each integer point is given by balanced partitions of the
+  ordinary coefficients `d_j(n)` and is a finite union of real-linear subspaces
+  of `J^d` (Theorem 12.1). All solutions of `a^x + b^y = c^z` (`a, b, c > 1`)
+  are `n + λ/log a`, `m + λ/log b`, `k + λ/log c` with `a^n + b^m = c^k` and
+  `λ ∈ J` arbitrary (Corollary 12.2); `a^x − b^y = 1` has only its ordinary
+  integer solutions (the anchored corollary).
+- **Procedure and checks (Section 13).** A terminating four-step decision
+  pipeline (partition enumeration, coordinate split, two-sort elimination);
+  a formalization path. **Research questions 1–11** (Section 14) are open.
 
-## Reproduce the PDF
+## What the report does not claim
 
-Using a standard TeX Live or equivalent installation:
+Section 16 collects every non-claim with its location: 24 from the source
+(S1–S24) and 10 added when the report joined the collection (W1–W10). In brief:
+
+- Not decidability of the unrestricted surreal exponential field; not an
+  internal exponential on `Oz` (the graph of `exp` is not in the language, and
+  the cores need not contain exponential values); not a global surcomplex
+  exponential, no values at infinite imaginary arguments, and `Qbar + J` is not a
+  ring (the collection's global exponentials are recorded separately, W4).
+- No decision procedure for arbitrary surreal parameters or normal forms; the
+  toric theorem is constructive only given a relation lattice. The full
+  procedure is not implemented: partition enumeration is Bell-number sized
+  (the program caps it at ten terms) and no complexity bound is claimed.
+- No exponential inequalities or order comparisons of exponential sums, and no
+  irrational-slope inequalities on the integer coordinates; no quantifier
+  elimination in the one-sorted signature; no one-scale subfield or subring.
+- The source claims no undecidability of the existential fragment of the
+  nonlinear expansion, and not that every nonlinear predicate is undecidable
+  (the collection supplies the existential statement, W5). No uniform decision
+  from approximation names. No maximality of `Qbar + J`.
+- Theorem 12.1 and its corollaries leave the ordinary integer equations unsolved
+  and decide no partition condition uniformly.
+- Lindemann–Weierstrass, Gonshor's theorem, Presburger elimination and the
+  classical undecidability results are imported, not reproved and not tested;
+  not a new transcendence theorem. The constant-field formula does not classify
+  larger exponential subfields.
+- Novelty rests on bounded searches, and the repository search was incomplete
+  (in fact a false negative, W3); priority is not certified; no named conjecture
+  is solved. AI-assisted, unrefereed; no Lean and no peer review; the finite
+  checks work in a formal group algebra and test no infinite or class-sized
+  statement. No class-indexed sums or global satisfaction class. The research
+  questions are proposals.
+- Added: (W1) no `exr:` label has a Lean mapping; (W2) Proposition 2.2 and the
+  Presburger remark are printed once and credited; (W3) the "Presburger" search
+  was a false negative; (W4) the global exponentials agree with `Exp` on
+  `Qbar + J`, and the `Qbar + J + iJ` observation is a write addition; (W5) the
+  existential undecidability comes from `odg:cor:H10`; (W6) the retraction
+  observation after Theorem 12.1 is a write addition; (W7) no named question is
+  answered; (W8) the cores are unrelated to the definable-surreals report's
+  exponential-field cores; (W9) the suite was rerun on a copy; (W10) the
+  proof reading at the write is not an independent review.
+
+## Relation to the neighbouring reports
+
+Section 1.5 of the article gives these relations with labels. No report treats
+the Lindemann–Weierstrass theorem, exponential sums at omnific arguments, or
+the languages `L_rat`, `L_alg`, `S_α`; the decidability and
+elementary-substructure spine is no report's, so the manuscript is a new report
+and answers no named question.
+
+**[omnific-diophantine-geometry](../../surreal/omnific-diophantine-geometry/)**
+(`odg:`) — it excludes exponential equations from its scope (before
+`odg:thm:transfer`: equations with variable exponents or surreal
+exponentiation are not polynomial systems in its sense); a scope statement,
+not a question. Theorem 12.1 is the exponential analogue of its retraction
+theorem `odg:thm:transfer` and fibres `odg:eq:fiber`: every balanced partition
+has total coefficient sum zero, so `ct` of an omnific solution is an ordinary
+solution, and existence transfers (a `[write]` observation after Theorem 12.1);
+the fibres here are linear, unlike polynomial fibres. Proposition 2.2 is in
+`odg:thm:finitequotients`. Theorem 11.2 has a second route through
+`odg:def:cor:arithmetic` (`Z` definable in the pure ring `Oz`); the source's
+route defines `Z` by the exponential predicate `Int` instead. The existential
+fragment of the expansion is undecidable by `odg:cor:H10` (straight-line
+programs with `M` for each product), which the source does not claim.
+
+**[trigonometry](../../surcomplex/trigonometry/)** (`trigonometry:`) —
+`trigonometry:per:prop:division` is Proposition 2.2 for every additive integer
+part, and its next sentence calls such a group a model of Presburger
+arithmetic; printed once here and credited. Its canonical global exponential
+`trigonometry:thm:globalexp` (kernel `2πi Oz`) and phase exponentials `E_χ`
+(`trigonometry:per:prop:exponentials`, kernel `2πi 𝓘(Ψ_χ)`) restrict to `Exp`
+on `Qbar + J`, so Theorem 3.1 holds for each of them there.
+
+**[analysis](../../surcomplex/analysis/)** (part prefix `e:`) — the canonical
+exponential `e:def-canonicalexp`, `e:thm-exp`, with `ker Exp = 2πi Oz`
+(`e:rem-kernel`). Restricted to `Qbar + J` it is the source's `Exp`. Since
+`Exp(ip) = 1` for `p ∈ J`, research question 3 (extensions of the domain) is
+constrained: injectivity of the canonical extension on `E ⊇ Qbar + J` needs
+`E ∩ i(J + 2πZ) = {0}`, and of `E_χ` needs `E ∩ 2πi 𝓘(Ψ_χ) = {0}` (necessary
+conditions only). Research question 10 (a larger canonical surcomplex domain)
+is partly supplied: a canonical exponential with controlled kernel exists on
+all of `No[i]`; on `Qbar + J + iJ` it factors through deleting the `iJ`
+component (kernel exactly `iJ` there), so Theorem 3.1 holds modulo `iJ` (a
+`[write]` observation). Independence with noncanonical phases or on larger
+domains stays open.
+
+**[discrete-initial-subgroups-and-omnific-normalization](../../surreal/discrete-initial-subgroups-and-omnific-normalization/)**
+(`isg:`) — its `Z`-groups are the ordered-group models of Presburger
+arithmetic; division with remainder is its residue lemma
+`isg:cf:lem:residues`, and the lexicographic order (2.3) is the split form
+`G ≅ G^dv ⊕_lex Z` of `isg:cf:main:presburger` with `G^dv = J`. Nothing here
+concerns initiality.
+
+**[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**
+(`dsn:`) — its elementary substructures and maximal initial core
+(`dsn:thm:elementary`, `dsn:thm:core`) are for ordered exponential fields; the
+cores here are for the additive relational language `L_alg`. Unrelated.
+
+**Reports the source cited.**
+[set-sized-quotients-of-omnific-integers](../../surreal/set-sized-quotients-of-omnific-integers/)
+writes `Oz = Z ⊕ Π`, as the source says;
+[exponential-automorphism-rigidity](../../surreal/exponential-automorphism-rigidity/)
+concerns field automorphisms compatible with `exp`, unrelated to the automorphism
+groups `Aut_{A,<}(W)` of Corollary 9.3.
+
+## Source 06
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| 06 of batch 33, *Exponential Relations over Omnific Integers: Exact toric kernels, decidable fragments, and one-scale elementary cores* (archive `surreal_exponential_relations`, 28 pp.) | `958b5c4` (71 commits before the placement `aa9c891`) | Everything: Sections 1–15 and Appendices A–B, `SOURCE_AUDIT.md`, `code/`, `data/` |
+
+- **Placement.** A new report in `foundations-and-computation/`: its subject is
+  the model theory and computability of a language over `Oz`, it answers no
+  named question, and the Diophantine report's exclusion of exponential
+  equations is a scope statement, not a named gap.
+- **Renamed symbols.** None. Collisions are disclosed in Section 1.4.
+- **Printed once.** Proposition 2.2 and the Presburger paragraph after it
+  (credited to `trigonometry:per:prop:division`, `odg:thm:finitequotients`,
+  `isg:cf:lem:residues`).
+- **Write additions.** Sections 1.4, 1.5, 16, Appendix C, the `[write]`
+  paragraphs listed above; the observations after Theorem 12.1 (retraction to
+  ordinary solutions) and in Section 1.5 (existential undecidability via
+  `odg:cor:H10`; the canonical `Exp` on `Qbar + J + iJ`); status notes on all
+  eleven research questions; the title-page anchor fix.
+- **Stale or false statements of the source.** Its report that a repository
+  search for "Presburger" returned no items is a false negative: at the pin the
+  word occurs in the trigonometry, discrete-initial-subgroups and Diophantine
+  reports, in the catalogue `manifest.tex`, and in three markdown files of the
+  first two reports (a README, a provenance file and a source audit). The source flagged the
+  search as incomplete and used none of those results. Its statement that its
+  notation "requires no global surcomplex exponential" is true; the collection
+  nevertheless has one (Section 1.5). No mathematical error was found.
+- **Verification.** The proofs of Sections 2–12 were read line by line and the
+  worked examples rechecked (Appendix C.3); this is not an independent proof
+  review. The suite was rerun on a copy (below). The references were not
+  re-read for this report.
+
+## Build
+
+TeX Live or MiKTeX with lmodern, geometry, microtype, amsmath/amssymb/amsthm,
+mathtools, booktabs, array, longtable, aliascnt, enumitem, fancyhdr, xcolor,
+xurl, hyperref and cleveref. No external figures or bibliography file.
 
 ```sh
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-Alternatively, run `pdflatex` three times to stabilize the contents and cross-references:
+The recorded build (MiKTeX) has 39 pages and no errors, undefined references
+or citations, multiply defined labels, duplicate destinations, LaTeX or package
+warnings, or overfull or underfull boxes. (The delivered text produced one
+duplicate `page.1` destination from its title page; the write wraps the title
+page in `\hypersetup{pageanchor=false}`.) A clean compile proves nothing about
+the proofs.
+
+## Rerun the checks
+
+`code/checks.py` needs Python 3.10 or later and only the standard library. It
+prints its record and **writes it to the `--output` path (default
+`check_results.json` in the current directory), overwriting any file of that
+name**. It does not rewrite `data/check_results.json` unless pointed at it. The
+delivered `code/Makefile` assumes the flat delivery layout (`article.tex`,
+`code/checks.py` and `check_results.json` side by side): in the delivery its
+`checks` target would overwrite the delivered record; here `make -f code/Makefile
+checks` from this directory would create an unshipped `check_results.json`
+beside `article.tex`, and its `pdf` target would build in place. Run on a copy,
+from this directory:
 
 ```sh
-pdflatex -interaction=nonstopmode -halt-on-error article.tex
-pdflatex -interaction=nonstopmode -halt-on-error article.tex
-pdflatex -interaction=nonstopmode -halt-on-error article.tex
+T=$(mktemp -d)
+cp -r code data "$T"/
+(cd "$T" && python code/checks.py --output check_results.json > run.txt)
+diff --strip-trailing-cr "$T/check_results.json" data/check_results.json
 ```
 
-The PDF was built successfully with no overfull/underfull box warnings or unresolved references in the final log. All pages were rendered and visually inspected, with selected mathematical pages inspected at higher resolution. Binary PDF bytes can vary between TeX versions or builds; the mathematical source and test output are the reproducible inputs.
-
-## Run the exact checks
-
-Python 3.10 or newer; standard library only:
-
-```sh
-python3 code/checks.py --output check_results.json
-```
-
-The expected headline is `"status": "PASS"`, with `"total_cases": 22074` and seed `20260923`. A failure raises an exception, including when Python optimization is enabled. The script's size cap for direct partition enumeration is deliberate; Bell-number growth makes this a small exact prototype, not a scalable solver.
-
-## Repository comparison
-
-The comparison used the following immutable snapshot:
-
-```text
-VladimirReshetnikov/Surreal
-958b5c4865819bd55ea1f5ffc050282aea7ef570
-```
-
-The inspected material was the report catalogue and selected relevant material on omnific quotients and exponential automorphism rigidity. The whole repository was not audited. None of its conjectural or unreviewed mathematical claims is used as a theorem in the present proofs. The source audit records this boundary in detail.
+Failures raise an exception, also under Python optimization (the checks do not
+use `assert`). This was run for this report
+under Python 3.14.4: exit code 0, `"status": "PASS"`, seed `20260923`, and the
+written record agrees with `data/check_results.json` except for Windows line
+endings. The 22,074 cases are 7,381 exhaustive balanced-partition cases, 729
+for `exp x + exp y = 2`, 729 for the factorization example, 6,561 two-term
+multiset cases, 49 for the `√2` pure-part detector, 2,000 quadratic-field
+coordinate-splitting cases (1,000 of them true equations, a subcount), 4,000
+homogeneous and 625 anchored real-base fibre cases; the record also lists the
+Bell numbers 1, 1, 2, 5, 15, 52, 203 for `n = 0, …, 6`. Exponentials are basis
+symbols of a finite formal group algebra: the checks test the combinatorial and
+coordinate implementations, not Gonshor's theorem, Lindemann–Weierstrass, the
+quantifier-elimination pipeline or the Turing-degree result.
