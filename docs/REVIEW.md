@@ -3953,6 +3953,104 @@ placement, integration and review. No maintained report source, PDF or Lean
 file changes, so the existing inventory and build validation remain
 applicable. Archive integrity is not a mathematical review.
 
+## Group varieties and coefficient algebras review
+
+The Diophantine review checks the closing singular-curve scope notes and
+all thirteen standard results in Sections 18.1–18.4. The proofs now show
+how torus descent reflects equality, why finite coefficient bases give the
+scalar-extension isomorphism, and how quasi-finite fibers reduce to finite
+coordinate algebras. The commutative-group proof applies the product
+structure theorem to its affine subgroup and writes the inverse maps for
+the splitting of point groups. The Milne statement numbers and their
+characteristic-zero and affine hypotheses were checked in the 2017 edition.
+
+For reduced coefficient algebras, the closed equalizer ideal makes the
+joint-injectivity argument explicit. A series over `k[s]` shows why the
+natural tensor map need not be surjective; this does not imply failure of
+flatness. Dual-number lifts are derived on charts and glued, and the
+ordinary dual-number subgroup is tracked before taking the tangent-space
+quotient. The characteristic-two example uses finite coefficient incidence,
+not convergence of truncations. The discretely ordered-ring proof verifies
+injectivity by parity of leading exponents and identifies the nonzero
+element killed by any proposed unital embedding into the omnific integers.
+The notation guide, reader maps, catalogue and root README reflect this scope.
+
+All 217 standard results and 471 label numbers are preserved. The only
+statement-text change defines dual numbers unambiguously as `S[T]/(T²)`.
+Three-pass builds give a 201-page article and 32-page catalogue, without
+warnings, unresolved references or bad boxes. Article pages 131–138 and 201
+and catalogue page 9 were visually checked. The copied C11 finite suite
+passes 13,049 assertions and its entire JSON output matches the delivered
+record; it does not certify the geometric or infinite claims. The independent
+inventory checks 3,871 results in 61 reports, and all 4,419 source references
+and 1,596 local Markdown destinations resolve.
+
+Synchronization through `9ee2dac` includes the two modules proving the
+strict ascending ideal chain and failure of integral closure. Their mapped
+statement and proofs were checked. The combined `LEAN_NUM_THREADS=2 lake
+build` passes 4,440 jobs; the axiom audit passes 15,269 declarations with
+only `propext`, `Classical.choice` and `Quot.sound`. No Lean source is changed
+by this review. Its thirteen geometric and coefficient-algebra results
+remain **Pending** in Lean. Sections 18.5–18.6, later scope notes and full
+source reconciliation remain outside the completed manuscript review.
+
+## Group-review synchronization and two new reports
+
+The synchronization through `f388f95` includes the nine report expansions
+through `c315ac9` and placement `aa9c891`. The former add 289 standard
+results; their new proofs remain outside the completed review scopes.
+Existing labelled standard statements change only in their source credits;
+the separate `osq:main:closure` overview gains the cyclic-workspace claims.
+None of those changed labels has an implementation mapping. All cited source
+labels still resolve. The four incoming Lean modules implement polynomial
+and positive-existential transfer, retraction closure and its definability
+obstructions. Their native ring-language fragment, integer-parameter guard
+and explicit positivity counterexample agree with the mapped Diophantine
+statements. The combined two-thread build passes 4,449 jobs and the axiom
+audit passes 15,345 declarations with only `propext`, `Classical.choice`
+and `Quot.sound`.
+
+Placement adds two main texts: continued fractions (26 standard results)
+and exponential relations over omnific integers (34). The inventory now
+includes 4,220 standard results across 63 reports. Seven companions have
+audit, code and data files placed but main-text integration remains pending.
+The catalogue, reader map and root README reflect the distinction. The new
+package instructions use the actual `code/` and `data/` locations and no
+longer advertise an omitted manifest. Their article sources and recorded
+verification data are unchanged.
+
+The missing PDFs build in three clean passes to 22 and 28 pages. Visual
+checks cover their title and contents pages, continued-fraction pages 10
+and 22, and exponential-relation pages 15 and 28. The continued-fraction
+suite passes 81,256 assertions; its entire JSON differs only in the Python
+version (3.13.5 to 3.13.14, with SymPy 1.14.0 unchanged). The exponential
+suite passes 22,074 cases with identical JSON. These finite regression
+checks are not an independent proof review of the new manuscripts.
+
+The updated catalogue builds in three passes to 32 pages without warnings,
+unresolved references or bad boxes; the opening pages, new entries and
+family transitions were visually checked. Every one of its 63 main-document
+destinations exists. The independent inventory audit passes; all 4,763
+cited source references and 1,623 local Markdown destinations resolve.
+The reviewed Diophantine source and its 201-page PDF are unchanged by this
+integration. The new reports and all unreviewed additions remain pending
+independent proof review and Lean formalization.
+
+The final synchronization through `8a60159` also brings the chosen-Smith-
+reduction criterion and all-solutions description. The two modules were
+checked against `odg:thm:smith`: zero rows require the whole transformed
+entry to vanish, pivots need ordinary constant-term divisibility, and the
+free coordinates remain arbitrary. The combined two-thread build passes
+4,451 jobs and the 15,361-declaration axiom audit, with the same three allowed
+axioms. The polynomial-composition integration adds 18 standard results
+and principal Theorem N; reciprocal notes in six neighbouring reports
+change no existing standard statement. The refreshed inventory has 4,238
+standard results in 63 reports. All 4,782 cited source references and 1,630
+local Markdown destinations resolve. The new universal-symmetries archive
+has eight members and passes ZIP integrity checks, but placement and review
+remain pending. The reviewed Diophantine source/PDF and the catalogue are
+unchanged by this final merge.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
