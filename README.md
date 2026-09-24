@@ -302,7 +302,7 @@ measure recovery from a defect coefficient, and criteria for the transformed
 series to belong to the target model. These are conditional research claims;
 independent proof review and Lean formalization remain pending.
 
-Two newly placed reports connect omnific arithmetic with other classical
+Two recent reports connect omnific arithmetic with other classical
 questions. [Continued fractions](docs/surreal/omnific-continued-fractions/)
 describes exactly which errors preserve every ordinary finite digit, with
 realization and uniqueness criteria in full Hahn fields. [Exponential relations](docs/foundations-and-computation/exponential-relations-over-omnific-integers/)
@@ -310,6 +310,11 @@ proposes a decidable language of finite exponential equalities with algebraic
 coefficients and slopes, and locates its boundary when multiplication is
 admitted. These reports have written proofs and finite checks; independent
 proof review and Lean coverage remain pending.
+The expanded [dilation report](docs/surcomplex/autonomous-dilation-relations/)
+connects a finite-support number's rational support rank with the least order
+of an algebraic relation among its exponent dilates. Its two added manuscripts
+also treat infinite supports and relative independence; these additions await
+independent proof review and Lean formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
@@ -344,6 +349,9 @@ arithmetic existence proof. The group and coefficient-algebra review makes
 semiabelian rigidity and the exact unipotent kernel explicit. Rigidity extends
 to reduced coefficient algebras. For dual-number coefficients, the quotient
 by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian variety `A`.
+The logarithmic review extends the differential argument to complements of
+simple normal-crossings boundaries, spells out arithmetic descent, and
+corrects the distinction between ring retractions and common-field inclusions.
 These geometric and coefficient-algebra results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
