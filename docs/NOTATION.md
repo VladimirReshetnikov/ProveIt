@@ -141,7 +141,13 @@ in `Frac(R)`. Normality of `R` therefore suffices for a normalization lift.
 A square root lying outside `Frac(R)` does not obstruct this argument;
 failure of normality alone does not supply a curve point without a lift.
 The singular-curve criterion concerns existence of nonconstant points,
-not surjectivity of normalization on `R`-points.
+not surjectivity of normalization on `R`-points. Its nonconstant-point
+criterion requires `Γ ≠ 0`. For affine arithmetic models with smooth
+geometrically integral generic curve, the exception means that the real fiber is isomorphic to `𝔸¹_ℝ` and an integer
+point exists; the model need not be `𝔸¹_ℤ`. The coordinates of its real
+polynomial parametrization need not have integer coefficients. Evaluating
+at a monomial gives a finite-support witness, whereas an arbitrary
+parameter from `Π` can have infinite support.
 
 In that proof the curve function field `F` has restricted value group
 `γℤ`, although the ambient Hahn group can have any rank. An Euler
