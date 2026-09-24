@@ -593,14 +593,29 @@ that model's two descent formulas can be removed, and its unreduced
 arithmetic fibres embed in the full fibres. The argument requires
 cf(κ)>ℵ₀ and the model's positive-gap property; it does not apply to every
 fixed full Hahn workspace. These reviewed results and the added consequence
-remain pending in Lean. The subsequent splitting, Boolean-family and later
-normalization proofs still await review.
+remain pending in Lean.
+
+The next nine standard branching results are now reviewed too, through
+idempotent matrix splitting. Projecting a finite certificate precedes
+specialization in the branch algebra; no map on the full Laurent field
+is used. The one-radical candidate is integral before its half is reduced
+modulo the ideal. Square-class independence gives the multiquadratic
+basis and all sign assignments, which preserve every nonzero coefficient
+on every finite Boolean atom. This proves rank extension and relative
+Boolean freeness, including over rings with zero divisors. Scott codes
+and the canonical fresh scale avoid global choice in the set-length
+construction. The explicit ordinal family, atomlessness, absence of a
+set-sized dense core and matrix splitting have expanded proofs. One
+splitter, or any prescribed finite Boolean partition, works for a whole
+set of nonzero idempotent matrices at once. These results remain pending
+in Lean. Fixed-Hahn-fibre structure, the surcomplex transfer, small-target
+branching and later normalization proofs still await review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 333 pages
+article.pdf   the compiled report, 336 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

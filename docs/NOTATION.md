@@ -566,6 +566,19 @@ normalization ideals radical, so the radicals may be omitted in that
 model's descent formulas. This does not replace 𝖢(G) by an unreduced
 quotient for arbitrary full Hahn workspaces.
 
+A branch specialization at T=0 is a map on a finite algebra with a proved
+polynomial presentation; it is not evaluation on a Laurent field or a map
+on the whole normalization. Lift a finite Boolean word using the integral
+splitters before applying a monic radical certificate. In the one-radical
+construction, (1+ū_H)/2 denotes the residue of the proved integral element
+(1+u_H)/2; it does not assume that 2 is invertible in the fibre.
+A free Boolean family over R means that every nonzero coefficient r∈R
+survives multiplication by every finite Boolean atom. Its algebra uses
+finite-variable polynomials, not arbitrary functions on all assignments.
+The Boolean order on idempotents is d≤e exactly when de=d; order density
+here means that each nonzero e lies above some nonzero member of the
+specified family.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though

@@ -439,6 +439,12 @@ to the exponent group of its element, using a linear support projection.
 In the countable-support model, the positive support gap also makes the
 extended normalization ideals radical: the small arithmetic fibres themselves
 embed in the full fibres. This added consequence remains pending in Lean.
+The branching proofs now explain how one new dominant scale supplies
+independent Boolean choices over a smaller reduced fibre. Globally, every
+set-sized subring admits a simultaneous splitter, giving free Boolean
+families of every set size and an atomless proper-class Boolean algebra
+with no set-sized order-dense core. The proof uses finite branch-algebra
+specializations and set-length recursion; these results still await Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

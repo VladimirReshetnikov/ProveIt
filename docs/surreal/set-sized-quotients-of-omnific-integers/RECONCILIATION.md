@@ -3859,3 +3859,57 @@ AUX number entries unchanged. Audits pass 4,626 anchors in 63 reports,
 5,231 source-label references and 1,963 local Markdown destinations in
 226 files. The support-descent review and its new model radicality
 consequence remain pending in Lean.
+
+### Uniform splitting and Boolean-family proof review (2026-09-24)
+
+Reviewed the next nine standard branching results, `osq:bb:thm:split`
+through `osq:bb:cor:matrix`, after the nine support-descent prerequisites.
+The one-scale proof now projects a finite monic certificate before
+specializing inside the proved finite branch algebra; the resulting
+equality descends from K_G[i] to K_G because every term is in the embedded
+subfield. The uniform proof uses the union of Scott codes and checks the
+two-factor homomorphism and kernel explicitly, including zero divisors.
+
+For the one-radical candidates, integrality of the half is established
+before its residue is taken. A rational square root of h²+1 would be
+polynomial by coprime-denominator cancellation, and then the difference
+of two squares would make h constant. Cyclic positive support is finite,
+so all candidates stated there are covered. The equivalence with the
+unit's nonmembership uses torsion-freeness of the quotient; the notation
+(1+ū_H)/2 does not assert that 2 is invertible in the fibre. The normality
+step agrees with transitivity of integral closure in
+[Stacks, Tag 0308](https://stacks.math.columbia.edu/tag/0308); the proof
+uses this only on the displayed integral element.
+
+Expanded the multiquadratic induction by comparing coefficients under
+individual sign flips. The rank-extension proof stays inside the two
+set-sized Hahn fields and retains both local radicals. Simple-zero
+square-class witnesses give the finite branch presentation. Each Boolean
+atom is lifted to an integral product, and a specialization sending every
+chosen factor to one transfers any radical certificate back to the
+smaller field. Finite atom expansions prove injectivity even with zero
+divisors. Set-length recursion, the explicit ordinal family, atomlessness,
+proper-class size and lack of a set-sized order-dense core are now proved
+step by step. The matrix proof checks both orthogonal products and uses
+a surviving nonzero entry. An added unnumbered consequence gives one
+simultaneous scalar splitter for any set of nonzero idempotent matrices,
+or 2^n nonzero orthogonal pieces for every ordinary n≥1. No classification
+of all projectives or fixed-workspace radicality is inferred.
+
+Updated the root/report guides, notation, catalogue and coverage ledger.
+All eighteen reviewed branching results and the simultaneous-matrix
+consequence remain pending in Lean; the next result to review is the
+fixed-Hahn-fibre structure theorem. Three final diagnostic-free TeX
+passes give a 336-page article and 36-page catalogue. Inspected article
+PDF pages 217–222 and catalogue pages 12–13; rechecked article page 220
+after making the distinct-variable Boolean-atom condition explicit.
+All 418 result statements (409 standard and nine maintheorems), 828
+labels, 1,656 AUX number entries, 66 questions, 60 remarks and 28 examples
+remain unchanged. The byte-identical Source 20 verifier, run from scratch
+to preserve historical records, passed all 6,674 assertions in five groups;
+its JSON matches the recorded output except Python 3.13.14 versus 3.13.5
+(SymPy 1.14.0 in both). These diagnostics do not prove arbitrary-support,
+integrality or proper-class claims. Audits pass all 4,626 statement anchors
+in 63 reports, 5,231 source-label references and 1,963 local Markdown
+destinations in 226 files. No Lean or historical verification files were
+changed in this review pass.
