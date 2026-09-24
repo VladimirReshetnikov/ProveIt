@@ -791,7 +791,11 @@ generated fat-point ideal on a straight line (Example 11.70).
   `hol:cf:lem:reduction` (one-variable polynomial reduction modulo a proper
   convex subgroup) is the antecedent of Theorem 11.53, which is its
   several-variable form with evaluation compatibility, applied to an
-  automorphism and its inverse; the seventh source did not cite it.
+  automorphism and its inverse; the seventh source did not cite it. Its
+  `hol:pc:prop:composition` reproves the polynomial case of the composition
+  clause of Proposition 3.5, and `hol:pc:prop:pullback` computes the Gauss
+  value, active exponents and residue polynomial of `F ∘ P` at large scales
+  (batch-34 note after Proposition 3.5; its scale sign is opposite to ours).
 - **`surreal/omnific-diophantine-geometry`** and
   **`surreal/set-sized-quotients-of-omnific-integers`** were placed after the
   seventh source's pin. The only omnific input of Sections 11.9–11.15 is the
@@ -829,6 +833,12 @@ generated fat-point ideal on a straight line (Example 11.70).
   extension completely. A paragraph after Remark 1.8 records it as the
   algebraic counterpart of Theorem 1.7 (b), (d); the objects differ and
   neither theorem is used for the other.
+- **`surreal/omnific-continued-fractions`** meets both invariants of Remark
+  1.4 in `R((ω^G))`: some infinite continued-fraction code is uniquely
+  realized exactly when `cf(G) = aleph_0` (`ocf:cor:cofinality`), some
+  eventually periodic one exactly when `G` has a positive order unit
+  (`ocf:thm:orderunit`). A batch-34 sentence at the end of Remark 1.4 records
+  it; neither report uses the other.
 
 ## What was run
 
@@ -879,6 +889,9 @@ generated fat-point ideal on a straight line (Example 11.70).
   The batch-32 reciprocal paragraph on `bst:gr:thm:transition` (after
   Remark 1.8, unnumbered) takes the build from 159 to 160 pages, with the
   same clean log; it adds no label, and all 493 labels keep their numbers.
+  The two batch-34 paragraphs (end of Remark 1.4, after Proposition 3.5)
+  leave the build at 160 pages with the same clean log; no label is added and
+  all 493 keep their numbers.
 
 The checks prove no infinite theorem. In particular the **finite truncations
 of the counterexample pair are coprime polynomials and do satisfy polynomial

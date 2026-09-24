@@ -1535,6 +1535,10 @@ depend on it.
     `No(i)`); 16 recovers `No(i)` as a coefficient field but not its conjugation.
     The surcomplex automorphism report's valued results (`saut:fs:rem:gaussianstrong`,
     `saut:fs:thm:main-involutions`) assume the valuation and do not address it.
+    Batch 34: still open; that report's source 03 asks it again
+    (`saut:gr:sec:questions`) and adds `saut:gr:q:nonvalued` (can an involution
+    preserve `Oz[i]` but not the valuation?), whose first clause a positive
+    answer here would settle negatively.
   - 32.2: must an embedding `f` of `No` with `f^{−1}(Oz) = Oz` be strong, also
     when `ct ∘ f = ct`, and what survives without strongness (12, 13, 14; 11)?
     **Negative answer under a measurable cardinal**: the large-cardinal report
@@ -1578,6 +1582,9 @@ depend on it.
     `𝔬 ∈ {Z, Z[i]}`, automorphisms of `ℛ_𝔬` preserve `k` and `Π`
     (`saut:fs:prop:reconstruction`) and valued ones are strong
     (`saut:fs:rem:gaussianstrong`); without the valuation it stays open.
+    Batch 34: still open; `saut:gr:sec:questions` (its source 03's Question 5)
+    asks the `(k, 𝔬)` clause again, notes that `⋂ n𝔬` must be controlled, and
+    `saut:gr:q:charp` asks the positive-characteristic analogue.
   - 32.14: isomorphisms of small integer parts (13, 14). 14 asks the automorphism
     case with uniqueness; **uniqueness is answered** by Proposition 36.5 (merge),
     existence stays open.

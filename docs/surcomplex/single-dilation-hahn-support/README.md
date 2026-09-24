@@ -208,10 +208,25 @@ ordered additive automorphisms `T` of `(No,+,<)`. Theorems 11.2 and 11.3 are new
 statements about these maps. Which lifts commute with `exp` is not addressed;
 its Question 13.1 (`q:image`) is untouched.
 
+**[omnific-preserving-automorphisms](../../surreal/omnific-preserving-automorphisms/)**
+(`opa:`) — its Part X (batch 34), from a manuscript that does not cite this
+report, re-derives the difference core with trivial character: the weighted
+Green operator `opa:us:thm:green` is Theorem 4.1's partial inverse with
+`χ = 1` (dictionary `opa:us:rem:dsup`), proved directly on the class `No`;
+`opa:us:thm:multiplicative` and the relative retraction
+`opa:us:thm:retraction` specialize Theorem 6.3; `opa:us:thm:firstorder`
+solves `σx − ax = b` with nonconstant `a`; `opa:us:thm:cocycles` gives
+degree-one cohomology for every group with a central nonidentity element
+(Theorem 7.1 has every degree for `Z^d`). A batch-34 paragraph in Section 1.5
+records this; no statement here changes.
+
 **[holonomic-rigidity-for-entire-hahn-functions](../holonomic-rigidity-for-entire-hahn-functions/)**
 — the dilations of its batch-22 material are argument dilations
 `f(z) ↦ f(λz)` of formal functions; `S_q` acts on the exponents of scalars. The
-two share a word, not a theorem.
+two share a word, not a theorem. Its batch-31 `hol:pc:cor:linear` (strongly
+entire solutions of mixed differential–Mahler equations are polynomials)
+concerns substitutions `f(P_j(z))` in the variable, not exponent dilations; a
+batch-34 note in Section 1.2 compares it with the Mahler remark there.
 
 **[birthday-cutoffs-and-hereditary-sets](../../foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)**,
 placed after the pin — the surreal field expanded by birthday interprets full
@@ -257,8 +272,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 The recorded build (MiKTeX) has 35 pages and no errors, undefined references
 or citations, multiply defined labels, duplicate destinations, LaTeX or package
-warnings, or overfull or underfull boxes. A clean compile proves nothing about
-the proofs.
+warnings, or overfull or underfull boxes. With the batch-34 paragraphs of
+Section 1.5 (still 35 pages, every label number unchanged) the log also
+contains one informational line "ignored: Infinite glue shrinkage found in box
+being split" at a page break inside a `longtable`; it is not a warning. A clean
+compile proves nothing about the proofs.
 
 `code/verify.py` needs Python 3.10 or later and only the standard library. It
 uses exact rational arithmetic, prints to standard output and writes no file.

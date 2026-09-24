@@ -17,8 +17,8 @@ routes. Independent proof review and formalization are pending.
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 65 pages (unnumbered title page,
-                                             contents pages i–ii, then pages 1–62)
+article.pdf                                  the compiled report, 66 pages (unnumbered title page,
+                                             contents pages i–ii, then pages 1–63)
 README.md                                    this guide
 SOURCE_AUDIT.md                              source 01's author-side source and claim audit, as delivered
 02-dilation-rank-PROOF_AND_SOURCE_AUDIT.md   source 02's proof and source audit, as delivered
@@ -393,7 +393,10 @@ dilation conventions; nothing of it is used as a premise.
 base by bounding the second-level supports of its exponent span, the
 localization of `isc:cor:parameters`. That report's subject is independent
 copies of `No` and their intersections, not dilation orbits; neither report
-uses the other.
+uses the other. Batch 34: its coefficient-field part proves
+`isc:cp:thm:resilience`, a fixed ordinal tail differentially independent over
+every set of parameters, the same shape as Theorem 25.3 with Euler jets in
+place of dilation orbits (a note after Section 25's comparison paragraph).
 
 **[surcomplex-field-automorphisms](../surcomplex-field-automorphisms/)**
 (`saut:`) — `S_d` is its `S_a` at `a = d` (`saut:eq:dilation`), built by
@@ -410,8 +413,20 @@ exponential) stays open, as does source 03's question 29.
 **[holonomic-rigidity-for-entire-hahn-functions](../holonomic-rigidity-for-entire-hahn-functions/)**
 (`hol:`) — its dilations are argument dilations `f(z) ↦ f(qz)` of entire Hahn
 functions in linear `q`-difference equations (`hol:main:q`,
-`hol:sec:qnecessity`), and its "order" is a differential order. It shares a
-word with this report, not a theorem.
+`hol:sec:qnecessity`), and its "order" is a differential order. Apart from
+one example, it shares a word with this report, not a theorem: its
+`hol:pc:ex:critical` (the formal solutions of `f(z^d) = f(z)^d` are `0` and
+`c z^N` with `c^{d−1} = 1`) is the function-variable twin of Lemma 3.3, by the
+same lowest-term comparison (batch-34 note after Lemma 3.3).
+
+**[omnific-preserving-automorphisms](../../surreal/omnific-preserving-automorphisms/)**
+(`opa:`) — its `opa:us:thm:maindiff` gives the exact image `ker ct` of
+`σ − 1` for the automorphisms of its left-orderable group actions, its Green
+operator `opa:us:thm:green` covers every monomial automorphism of the exponent
+group, `S_d` included, and it records this report's remark that
+`S_d x − x = 1` has no solution. For rational dilations the exact image is
+`dsup:thm:surreal` (1). A batch-34 note after that remark (Section 25)
+records this; nothing of it is used here.
 
 **[dynamics-and-normal-forms](../dynamics-and-normal-forms/)** — cited by
 source 01 as a point of contact; it has no superattracting germs or Böttcher
@@ -464,9 +479,10 @@ figures or bibliography file.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX) has 65 pages and no errors, undefined references
-or citations, multiply defined labels, duplicate destinations, LaTeX or package
-warnings, or overfull or underfull boxes. A clean compile proves nothing about
+The recorded build (MiKTeX) has 66 pages (65 before the three batch-34
+"Related" paragraphs, which add no label and change no label number) and no
+errors, undefined references or citations, multiply defined labels, duplicate
+destinations, LaTeX or package warnings, or overfull or underfull boxes. A clean compile proves nothing about
 the proofs. Do **not** run the delivered build scripts
 (`code/02-dilation-rank-build.py`, `code/03-support-rank-build.sh`,
 `code/03-support-rank-build.ps1`) in this directory: they run `pdflatex` on an
