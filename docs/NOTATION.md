@@ -94,6 +94,16 @@ series. Its closure stages adjoin initial-segment truncations, not arbitrary
 subseries. Use `Φ` to pass from the Hahn carrier to the actual surreal
 subfield; after this identification `X^{e₀}` is the actual `ω`.
 
+Source 09's one-arm model assumes **infinite** `λ` with `λ^{ℵ₀} = λ`;
+the equality alone also admits 0 and 1. Its exponent index is the ordered
+set `ω₁ × λ` in lexicographic order, not a cardinal product used as an
+ordinal. In `j(α,β) = λ·α + β`, λ denotes its initial ordinal and the
+operations are ordinal multiplication and addition. The ring, ambient
+field and detection threshold all have cardinality λ, while the ideal's
+generator cardinality is `ℵ₁`. A residue field's canonical copy of the
+coefficient field depends on the quotient map: it is recovered from
+`φ(rf)/φ(f)` for a detected purely infinite f, even when r is not in A.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
