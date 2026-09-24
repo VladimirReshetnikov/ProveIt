@@ -396,3 +396,89 @@ reports, 5,199 cited source labels and 1,766 local Markdown destinations
 across 226 files pass their checks. The article and catalogue sources and
 PDFs are unchanged by this merge, so their clean three-pass builds remain
 current.
+
+## Countable-support two-armed model
+
+This pass reviews the six standard results `osq:lem:hcfield`,
+`osq:lem:twosided`, `osq:lem:smallcommon`, `osq:lem:card03`,
+`osq:thm:model03` and `osq:lem:cardinalfacts`, together with the adjacent
+integer-part construction and continuum/power-set examples. It supplies
+this model's contribution to the organizing theorem. The other four models,
+the summary across all five models, later classifications and full
+parallel-source reconciliation remain pending review.
+
+The Gaussian alternative in the cardinal realization theorem printed the
+real field as its fraction field. This is false: i belongs to the Gaussian
+ring and its fraction field, but not to the real field. The corrected
+statement explicitly pairs (A,F,D) with the real or complex construction.
+The cardinality equality is unchanged, and the ledger records the original
+error separately from the corrected statement's pending Lean status.
+
+The field-closure proof puts finitely many supports inside their countable
+subgroup, then uses a countable divisible hull for closedness. Real positive
+square roots and odd-degree roots are separated from complex polynomial
+roots; splitting real and imaginary parts proves both complexification
+inclusions. The floor proof explains the endpoint correction when the
+constant term is an integer and the remaining tail is negative. The scale
+proof bounds coordinate indices, specifies both arms, and counts the final
+forward tail. The common-divisor proof handles empty/zero families and
+preserves support and coefficient constraints under translation.
+
+The cardinality proof gives both upper bounds and injective coding by
+countable subsets of a forward tail, verifies reverse well-ordering of the
+coded supports, and shifts every smaller-scale field into the positive
+ideal. The threshold proof is direct from the field bound, with an attaining
+identity map and regular module, and an explicit factor through the constant
+term. It therefore does not depend on a proof of the five-model summary.
+For the fraction-field assertion, adjoining zero to the set to be bounded
+ensures that the clearing exponent itself is positive.
+
+The ideal proof exhibits a strictly increasing chain of principal ideals
+of length cf(kappa), excludes every smaller generating family with a missing
+half-scale monomial, and uses its set-indexed free modules to prove flatness.
+Its product factorization gives idempotence and tensor vanishing against
+constant-term modules. The constant quotient still fails flatness, witnessed
+by tensoring the inclusion of a nonzero principal ideal. These are direct
+proofs of the homological clauses used here; they do not review the entire
+later homological package. The cardinal-arithmetic proof handles finite and
+empty ranges and spells out the blockwise diagonal argument for cofinality.
+
+Imported inputs were checked against
+[L’Innocente–Mantova v5, Fact 2.1.1](https://arxiv.org/html/1710.07304v5#S2.SS1)
+for closedness of full Hahn fields (translating the sign convention), and
+[Stacks Lemma 10.39.3, Tag 05UT](https://stacks.math.columbia.edu/tag/05UT)
+for directed colimits of flat modules. These remain imported results.
+
+Validation: the article (268 pages) and catalogue (33 pages) build in three
+clean passes with no TeX warnings or box diagnostics. The cardinal
+realization and cardinal-arithmetic pages were inspected visually. All 828
+labels, 1,656 auxiliary label/number pairs, 409 standard results and nine
+principal summaries remain; the cardinal realization theorem is the only
+changed statement. All 4,626 indexed statements in 63 reports, 5,199 cited
+source labels and 1,766 local Markdown destinations across 226 files pass
+checks, as does whitespace. No Lean or verifier source changed. Finite
+verification programs were not rerun as evidence for the cardinal arguments;
+the previous 4,556-job build and 16,010-declaration axiom audit remain the
+Lean baseline for this documentation-only change.
+
+### Synchronization after the countable-support model review
+
+Merged `b22c26d`, including `b528168`, which adds the ordinary Pell growth
+and parity lemmas and the six-witness real quartic definition. Compared
+`odg:lem:pellsequence`, `odg:eq:pellmod8`, `odg:thm:standarddef`,
+`odg:eq:standardsystem`, `odg:eq:standardquartic` and the subsequent vector
+extension with the incoming declarations. The proof applies to the actual
+omnific carrier, bounds each input and square witness by an ordinary Pell
+coordinate, and proves all witnesses ordinary. The scalar polynomial has
+exact total degree four; the vector formula keeps six witnesses for every
+finite length, including zero. The distinct five-witness three-square guard
+and source 07's alternative squared-coordinate quartic remain pending, as
+the updated ledger states.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes with 4,560 jobs and an
+axiom audit of 16,059 declarations, using only `propext`, `Classical.choice`
+and `Quot.sound`. All 4,626 indexed statements in 63 reports, 5,202 source
+references, 1,770 local Markdown destinations across 226 files and whitespace
+checks pass. The merged changes do not touch the article or catalogue
+sources/PDFs, preserving their clean three-pass builds. This synchronization
+adds no Lean proof of the countable-support cardinal model reviewed above.
