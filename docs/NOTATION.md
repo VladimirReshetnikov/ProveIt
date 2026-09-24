@@ -417,6 +417,26 @@ E_a[x_(6d)], where `d=2^(r−1)`; dyadic stage-r elements depend on k
 modulo d. These are finite coordinate descriptions, with no infinite
 sum of idempotents or classification of all ambient idempotents assumed.
 
+In the class-residue subsection, GB includes no choice principle and
+GBC means GB plus global choice. A **proper class ideal** is a class
+ideal I ≠ R; “proper” here specifies the ideal condition, not its size.
+Quotients use Scott codes (all representatives of least rank) over GB,
+or least representatives in a fixed set-like global well-order over GBC.
+Scott codes are sets and do not require choosing a member of each code.
+The greedy construction stores sets of accepted generators at ordinal
+stages. The generated ideals are defined by finite sums; they are not
+stage values. A uniform family of class ideals is a relation on parameters
+and ring elements, not a class whose elements are proper classes.
+
+In the reverse implication from class maximal-ideal existence to global
+choice, “small” means membership in one variable-generated ideal I_p.
+The small polynomials need not form an ideal. Their complement Σ is
+multiplicative; a maximal ideal of Σ⁻¹F₂[v_p] contracts to an ideal
+maximal among those consisting of small polynomials. That reverse proof
+works over GB and does not invoke the forward construction using global
+choice. The restriction to omnific rings has a separate, unresolved
+choice-strength question.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

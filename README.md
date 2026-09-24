@@ -351,8 +351,14 @@ algebra with explicit refining idempotents. That Cantor algebra is a
 proper subalgebra: a three-root indicator lies outside every dyadic stage.
 In the Gaussian version, conjugation also permutes the root coordinates,
 acting on Cantor functions by `f(z) ↦ conjugate(f(−1−z))`.
-These are manuscript proofs, pending in Lean. The later class-residue
-classification and full source reconciliation remain pending review.
+The class-residue foundations are now reviewed through maximal-ideal
+existence: global choice gives characteristic-zero maximal class quotients
+above each binomial. Conversely, maximal-ideal existence for all class
+rings implies global choice, already for class domains of characteristic
+two. The proof uses finite witnesses and set-valued recursion, with no
+class of all class ideals. These are manuscript proofs, pending in Lean;
+the later monomial and residue classifications and full source
+reconciliation remain pending review.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

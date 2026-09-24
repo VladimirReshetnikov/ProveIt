@@ -7805,3 +7805,80 @@ and Quot.sound. All 4,626 source anchors in 63 reports, 5,221 source-label
 references and 1,900 local Markdown destinations in 226 files pass, along
 with whitespace checks. No incoming TeX or PDF changed; the three-pass
 article/catalogue validation and page inspection remain applicable.
+
+### Class maximal ideals, choice and coefficient comparison (2026-09-24)
+
+Reviewed the first nine standard class-residue results, from
+`osq:cr:thm:krull` through `osq:cr:lem:coefficients`, together with their
+foundational setup, CMIT definition, constructive/Boolean/restriction remarks
+and the arithmetic/nonarithmetic distinction. Later monomial and residue
+results and full source reconciliation remain pending review.
+
+Expanded the Scott quotient coding over GB: each code is the nonempty set
+of congruent elements of least rank, the rank minimum is bounded using one
+existing representative, operations are representative independent, and no
+member is selected from every code. Distinguished a proper ideal from an
+ideal of proper-class size. Expanded the greedy proof's finite rejection
+witness, which gives a residue inverse, and its set-ring terminal stage
+versus the finite-sum class union. Uniform families are relations on set-valued
+parameters and ring elements, not collections with classes as elements.
+Prime avoidance uses the explicit product of two rejection witnesses;
+prescribed equations require joint finite ideal consistency, not merely
+that each individual generator be a nonunit.
+
+Expanded the choice-free localization step in finite-polynomial compatibility.
+Monomials are finite codes with zero exponents omitted, so their codes are
+sets even with a proper class of variables. Variable-generated ideals are
+prime by finite-variable polynomial calculations. Their union need not be
+an ideal, while its complement is multiplicative. Clearing denominators
+proves that a maximal localized ideal contracts to one maximal among ideals
+of small polynomials. This reverse proof does not invoke the forward
+prime-avoidance theorem requiring global choice. Added the zero-polynomial
+degree convention, the variable-ideal membership test, the empty finite
+subset case and the elementary graph formula extracting global choice.
+
+The same proof gives an unnumbered consequence: class maximal-ideal existence
+restricted to commutative domains of characteristic two already implies
+global choice. In fact it uses one specified localization of the F2 polynomial
+class ring indexed by finite partial choice functions. The separate choice
+strength of omnific maximal ideals remains open. No priority claim is added.
+
+For the arithmetic application, gave the principal-ideal division proving
+ct^(-1)(p)=pA and the Gaussian norm showing positive residue characteristic.
+Rewrote the unit-constant contradiction to state that a maximal ideal
+containing f also contains f-ct(f), hence would contain the unit ct(f).
+The coefficient comparison now displays its exact contraction identity
+and separates that choice-free isomorphism from subsequent maximal extensions.
+All theorem statements and hypotheses are unchanged; the new material is in
+proofs or unnumbered commentary and remains Pending in Lean.
+
+Primary-source checks: read the global-choice equivalences in
+[Hamkins's exposition](https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/)
+and the polynomial compatibility/localization proof in
+[Entin's corrected v3](https://arxiv.org/html/2404.18351v3), adding its direct
+link to the bibliography. These support the cited ingredients, not an
+independent literature-priority claim for the class adaptation. The
+[Gitman–Hamkins–Holy–Schlicht–Williams abstract](https://arxiv.org/abs/1707.03700)
+was checked for the stronger class-valued recursion distinction; no new
+full-paper review is claimed.
+
+Validation: three clean final TeX passes for the 319-page article and 35-page
+catalogue, without warnings or box diagnostics; inspected the quotient codes,
+greedy proof, compatibility and converse, arithmetic application, coefficient
+comparison and catalogue pages. All 418 standard/principal statements,
+828 labels, 1,656 auxiliary label/number pairs, 66 questions, 60 remarks and
+28 numbered examples remain unchanged. Source 24's unchanged verifier passes
+all 133,770 finite assertions with identical groups and counts; only Python
+3.13.5 versus 3.13.14 differs. It does not verify class recursion, global
+choice or the general class results. All 4,626 source anchors in 63 reports,
+5,221 source-label references and 1,900 local Markdown destinations across
+226 files pass, together with whitespace checks. No Lean source changed;
+the two-thread 4,955-job build and 18,066-declaration axiom audit are the
+current synchronization baseline. Updated the root README, report guide,
+notation, catalogue and formalization scope/anchors.
+
+Synchronization: fetched origin/main again at
+dab0f4259b7cc0501408b9705b5d4c72c7642aed after committing the review;
+there were no incoming commits and the merge was already up to date.
+No Lean rebuild was required for this documentation-only change. The
+4,955-job build and 18,066-declaration audit above remain the baseline.
