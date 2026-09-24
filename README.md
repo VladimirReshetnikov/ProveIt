@@ -463,11 +463,14 @@ avoid every nonzero integer polynomial. Finitely many polynomials leave an
 ordinary natural witness at most their total degree, but every ordinary
 integer or Gaussian integer has an integer annihilator. These statements
 are proved for native ring formulas and for intermediate Hahn rings as well.
-An executable syntax checker recognizes exactly the formulas in this type;
-canonical coefficient-list validity is also proved primitive recursive.
-Native formulas now have verified primitive-recursive encoding and parsing,
-including bound-variable scope checks. Computability of the full type recognizer
-under this encoding and the recursive-saturation conclusion remain pending.
+The full type-membership predicate is proved primitive recursive under a
+verified encoding of native formulas, including bound-variable scope checks.
+Thus both actual universe-indexed omnific rings, and every integer- or
+Gaussian-constant intermediate Hahn ring, **fail recursive saturation**:
+a computable collection of requirements can have every finite subset
+satisfiable while having no simultaneous solution. The general number-field
+coefficient case is proved conditional on a native formula defining that
+coefficient image; constructing its tailored guard remains pending.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier

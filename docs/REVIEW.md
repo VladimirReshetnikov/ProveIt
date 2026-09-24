@@ -7647,3 +7647,38 @@ All 4,626 source anchors across 63 reports, 5,220 source-label references,
 and 1,878 local Markdown destinations across 226 files pass, with
 whitespace checks. No Lean source changed; the two-thread 4,686-job build
 and 17,793-declaration axiom audit remain the synchronization baseline.
+
+### Computable omitted-type synchronization (2026-09-24)
+
+Merged origin/main at 2c0c9fb3c21ca229bf356320b628a1d8322c5a1e,
+including 01bc607, after the compressed-field review. Read all nine
+incoming Lean modules against `odg:def:thm:saturation` and checked the
+updated README and four prerequisite mappings plus the new conclusion row.
+
+The standard integer encoding supplies primitive-recursive signed
+arithmetic. A prefix-stack fold computes native term analysis, with its
+three projections proved equal to the existing parser even on malformed
+candidates. The formula-code checker proposes a coefficient list, checks
+canonicity and regenerates the entire inequality code. Relabeling connects
+that stream to the original native formula. Primitive-recursive membership
+is therefore proved for the original type, and the earlier native Boolean
+checker inherits the same guarantee under the explicit formula encoding.
+
+Recursive saturation quantifies over computable finitely satisfiable unary
+partial types with fixed finite parameter tuples in the initial native
+bound-variable context. The zero-context bridge identifies this with the
+already proved parameter-free finite satisfiability and omission. Thus the
+conclusion holds for integer/Gaussian intermediate Hahn rings and both
+actual universe-indexed omnific carriers. No retraction or nontrivial
+exponent group is assumed. The general number-field result is conditional
+on a native guard for the coefficient image; constructing that guard is
+still pending. The actual-carrier result does not identify the proper class
+of all surreals with a single small model.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` completed 4,699 jobs, and the
+axiom audit passed for 17,931 declarations with only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,220 source-label references and 1,887 local Markdown destinations in
+226 files pass, along with whitespace checks. The merge changes no TeX
+source or PDF, so the final three-pass document validation above remains
+applicable. No local manuscript review has been promoted to Lean coverage.
