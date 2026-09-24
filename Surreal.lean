@@ -596,6 +596,8 @@ import Surreal.Algebra.PolynomialSolutionRetraction
 import Surreal.Algebra.PositiveExistentialRetraction
 import Surreal.Foundations.OmnificEquationalTransfer
 import Surreal.Foundations.OmnificDefinabilityObstructions
+import Surreal.Algebra.MatrixSmithReduction
+import Surreal.Foundations.OmnificSmithCriterion
 import Surreal.Foundations.OmnificPurelyInfiniteIdeal
 import Surreal.Foundations.OmnificIrreducibles
 import Surreal.Algebra.IdempotentAdicCompletion

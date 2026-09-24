@@ -265,6 +265,13 @@ nonvanishing, positivity and nonnegativity with integer parameters. The
 explicit equation `(X+1)^2 = 2(Y+1)^2` has a positive omnific solution even
 though it has no solution in ordinary natural numbers.
 
+Given an integer Smith normal form, linear systems over the omnific ring
+now have a proved complete solution criterion. Nonzero diagonal entries
+impose divisibility conditions on constant coefficients; zero rows require
+the full transformed entry to vanish. The proof also describes every
+solution: pivot coordinates are fixed quotients and the remaining omnific
+coordinates are arbitrary.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
