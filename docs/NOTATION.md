@@ -336,6 +336,24 @@ of the face-prime ideal for every facet, equivalently flat dimension one
 for every facet quotient; a single facet does not suffice. The dimensions
 are over the core A_𝒞, also when it is realized inside an omnific ring.
 
+For squarefree transfer, a coordinate face G corresponds to the monomial
+whose support is its ray-index set; its exponent vector has entries zero
+or one. The lcm label 1 corresponds to the zero face, and both quotient
+resolutions have one homological degree-zero summand. The ordinary
+polynomial quotient's projective dimension becomes flat dimension over
+the root core; projective dimension itself need not be preserved.
+The face multiplicities depend on the coefficient field K only through
+its characteristic and do not depend on the unital constant subring D.
+
+In the arithmetic-module theorem D is a principal ideal domain that is
+not a field. Torsion means D-torsion, and N is an A_𝒞-module through ct.
+Write `T = N_tor` and `V = N/T`, placing V in exponent degree zero when
+tensoring the cellular resolution over D. The localization field
+`Q_D = Frac D` is embedded in K; it need not equal K. For V ≠ 0,
+`K ⊗_D V ≠ 0` supplies the top Tor detector. Vanishing against the
+cap module includes `Tor₀(T, 𝒲) = T ⊗_A 𝒲 = 0`, which is needed
+for the dimension-one case. The torsion sequence need not split.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

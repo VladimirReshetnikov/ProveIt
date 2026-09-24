@@ -314,7 +314,12 @@ Flat radical geometric ideals recover the face lattice when the monomial
 structure is marked. A cone is simplicial exactly when every facet quotient
 has flat dimension one; cube cones show that a facet quotient can instead
 have flat dimension `d − 1`. These statements concern the finite-support
-cores over which the modules are defined.
+cores over which the modules are defined. Squarefree monomial quotients
+retain their Betti multiplicities and ordinary projective dimension as
+flat dimension in the rational-root core. For a principal ideal domain D
+that is not a field, every nonzero module acting through the constant map
+has flat dimension one if it is D-torsion, and d otherwise. This holds
+without finite generation.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

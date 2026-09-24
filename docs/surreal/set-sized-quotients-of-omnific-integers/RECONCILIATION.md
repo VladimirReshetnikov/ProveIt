@@ -2406,3 +2406,104 @@ in 63 reports, 5,219 source-label references and 1,867 local Markdown
 destinations in 226 files pass, along with whitespace checks. No Lean
 source changed locally; the two-thread 4,677-job build and 17,524-
 declaration axiom audit remain the baseline before synchronization.
+
+## Squarefree transfer, coefficient dependence and arbitrary arithmetic modules
+
+Reviewed and expanded `osq:pc:cor:squarefree`,
+`osq:pc:cor:coefficients`, `osq:pc:prop:scalar` and
+`osq:pc:thm:arithmetic`. The squarefree proof checks that the minimal
+supports form a nonempty antichain of nonempty sets. Taking a least common
+multiple corresponds exactly to taking their union, identifying its
+monomial label with a coordinate face. The minimal lcm label 1 is the
+zero face; an atom gives augmented homology in degree minus one and a
+Betti contribution in degree one. The crosscut comparison identifies the
+open intervals with the proper-join homology. The external citation now
+specifies Theorem 2.1 of Gasharov--Peeva--Welker; its p-2 shift was checked
+against the publisher-indexed theorem statement. Taylor-resolution labels
+exclude all other multidegrees. Scalar cancellation and tensoring a minimal
+free resolution with the residue field explain why the last Betti degree
+is ordinary projective dimension on the polynomial side. The previously
+proved cap theorem makes that degree ordinary flat dimension on the core
+side. Projective dimension itself is not transferred.
+
+The coefficient proof uses minors of the augmented integer boundary
+matrices to show equality of rank over a field and its prime subfield.
+The homology-dimension formula includes the empty-face augmentation.
+The constant subring D does not occur in those matrices. The real and
+Gaussian cases agree because both coefficient fields have characteristic
+zero; no equality across all characteristics is asserted.
+
+For scalar quotients the kernel of the constant map modulo a is explicit.
+The domain property supplies the two-term free resolution. If a is a
+nonunit of D, the quotient is nonzero and tensoring the injection given
+by multiplication by a produces a noninjective zero map. This proves
+both dimensions equal one and separates the unit/zero-quotient case.
+
+The arithmetic proof handles arbitrary, possibly infinitely generated
+modules. Finite torsion submodules decompose over the PID; filtered
+colimits preserve the required Tor vanishing. A killed nonzero element
+proves nonflatness in the torsion case. The quotient by torsion is proved
+torsion free, hence flat over D. Tensoring the cellular resolution with
+it preserves exactness; the degree-zero term is flat by base change and
+each positive term is a possibly infinite direct sum of flat face ideals.
+The cap isolates K tensor_D V in the top degree. Localization at Frac D
+followed by field extension to K proves its nonvanishing.
+
+To pass back to a mixed module, multiplication by a nonzero scalar is an
+isomorphism on the cap module, so all Tor groups against the torsion part
+vanish, including degree zero. That degree-zero clause makes the long
+exact sequence work in cone dimension one. No splitting of the torsion
+sequence is assumed. The upper bound is checked against every target
+module, and the nonzero homogeneous detector belongs to ordinary Tor.
+
+Updated root README, guide, shared notation and catalogue. Replaced an
+outdated blanket pending-review sentence in the ledger with links to the
+current guide and reconciliation, and refreshed the source anchors.
+The four manuscript statements are unchanged and remain Pending in Lean.
+The lattice-module remark, nonflat embeddings and full source
+reconciliation remain pending review.
+
+Validation: three clean final TeX passes for the 311-page article and
+34-page catalogue, with no warnings or box diagnostics; inspected all
+four revised proofs and the catalogue entry. All 418 standard/principal
+statements, 828 labels, 1,656 auxiliary label/number pairs, 66 questions,
+60 remarks and 28 numbered examples are unchanged. All 4,626 source
+anchors in 63 reports, 5,219 source-label references and 1,869 local
+Markdown destinations in 226 files pass, along with whitespace checks.
+The preceding pass's finite rational verifier remains unchanged and is
+not evidence for the new arbitrary-module or all-characteristic proofs.
+No Lean source changed locally; the two-thread 4,677-job build and
+17,524-declaration axiom audit remain the baseline before synchronization.
+
+## Synchronization: primitive-recursive native ring-term codes
+
+Merged origin/main through 9e70115, including d52c892, and reviewed its
+three modules against the effective-syntax step of `odg:def:thm:saturation`.
+Prefix tokens distinguish natural-number variables and all five ring
+function symbols. Stack parsing rejects missing arguments and leftover
+terms. Both round trips hold, including exact reconstruction of the
+whole input after successful decoding; malformed suffixes are not ignored.
+
+The numerical stack-height scan is proved primitive recursive and
+characterizes precisely the encoder's range. The equivalence with valid
+prefix streams supplies an explicit local Primcodable instance using
+Mathlib's existing token/list encodings. Under that instance, the native
+term code is definitionally the token-list code, and both encoding and
+decoding are proved primitive recursive. Variable, negation, addition
+and multiplication constructors have corresponding proofs. Natural and
+signed numerals, powers and finite coefficient-list polynomial terms are
+primitive recursive with these exact native constructors, rather than
+only semantically equivalent expressions.
+
+The new mapping accurately remains Prerequisites proved for the full
+omitted-type computability clause. Bounded-formula coding and variable
+scopes, the complete membership recognizer and the recursive-saturation
+consequence remain pending. The local encoding does not replace other
+Mathlib encodings globally. No incoming manuscript changed.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,680 jobs and
+the axiom audit passes for 17,621 declarations, using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,872 local Markdown destinations in
+226 files pass, together with whitespace checks. The 311-page article
+and 34-page catalogue remain current.
