@@ -7744,17 +7744,80 @@ and all products of positive degrees summing to at least three equal to zero, it
 differential graded algebra, and the augmentation $\mathsf P_\bullet\to A/I$ is a quasi-isomorphism of differential graded algebras.
 \end{theorem}
 \begin{proof}
-Exactness is \cref{osq:tn:thm:syzygy}(ii) together with $0\to I\to A\to A/I\to0$; $\mathsf P_0,\mathsf P_1$ are free and $\mathsf P_2\cong\Pi^{r-1}$ is flat. Each
-coordinate of $u\cdot v$ lies in $X^g(M+\Pi)A\subseteq\Pi$, and $m(u\cdot v)=X^g(m(u)m(v)-m(v)m(u))=0$, so the product lies in
-$\mathrm{Syz}_M$; it is bilinear and alternating, so degree-one squares are zero. For $u,v\in\mathsf P_1$,
-$d(u\cdot v)=X^gm(u)v-X^gm(v)u=d(u)v-u\,d(v)$. For $u\in\mathsf P_1$ and $x\in\mathsf P_2$ the product is zero, and $d(u)x-u\cdot d(x)=X^gm(u)x-X^g(m(u)x-m(x)u)=0$
-because $m(x)=0$; the case $x\cdot u$ is the same with the sign of degree two. All other cases are $A$-linearity or vanish for degree reasons,
-and so do associativity and graded commutativity. The augmentation is the quotient map in degree $0$ and zero above, so it is multiplicative.
+Write $d_1(u)=X^gm(u)$ and let $d_2$ be the inclusion of
+$\mathrm{Syz}_M$ into $A^r$. The relation $m(x)=0$ for
+$x\in\mathrm{Syz}_M$ gives $d_1d_2=0$. The presentation in
+\cref{osq:tn:thm:syzygy}(ii), scaled by the nonzero monomial
+$X^g$, identifies $\ker d_1$ with $\mathrm{Syz}_M$ and
+$\operatorname{im}d_1$ with $I$. Since $d_2$ is injective,
+this proves exactness of the augmented complex. Its terms in
+degrees zero and one are free; its degree-two term is isomorphic
+to $\Pi^{r-1}$ and is flat because $\Pi$ is flat in the two
+rings under consideration. This includes $r=1$, when that term
+is zero.
+
+The proposed product is well defined. Indeed,
+$X^gm(u),X^gm(v)\in I\subseteq\Pi$, so each coordinate of
+$X^g(m(u)v-m(v)u)$ lies in the ideal $\Pi$. Applying $m$ gives
+\[
+ X^g\bigl(m(u)m(v)-m(v)m(u)\bigr)=0,
+\]
+so the vector belongs to $\mathrm{Syz}_M$. The formula is
+$A$-bilinear, changes sign on interchanging $u,v$, and is zero
+when $u=v$. Products involving degree zero are the prescribed
+$A$-module actions, with unit $1\in A$. They obey associativity
+by bilinearity. If three factors all have positive degree, either
+parenthesization is zero: a first product is either zero or has
+degree at least two, and multiplying it by the remaining factor
+has degree at least three. This proves associativity. Graded
+commutativity follows from the alternating degree-one formula,
+commutativity of the scalar action, and the zero higher products.
+
+Use homological degrees, so the Leibniz rule is
+$d(ab)=d(a)b+(-1)^{|a|}a\,d(b)$. In degrees $(1,1)$ it reads
+\[
+ d_2(u\cdot v)=X^gm(u)v-X^gm(v)u
+             =d_1(u)v-u\,d_1(v).
+\]
+For $u\in\mathsf P_1$ and $x\in\mathsf P_2$ the product
+$ux$ is zero, while its required differential is
+\[
+ d_1(u)x-u\cdot d_2(x)
+ =X^gm(u)x-X^g\bigl(m(u)x-m(x)u\bigr)=0.
+\]
+In the opposite order the degree-two sign is positive, and
+\[
+ d_2(x)\cdot u+x\,d_1(u)
+ =X^g\bigl(m(x)u-m(u)x\bigr)+X^gm(u)x=0.
+\]
+Here both equalities use $m(x)=0$. For two degree-two factors,
+each term on the right has degree three and is zero. Cases
+involving degree zero are exactly the $A$-linearity of the
+differential, since $d(A)=0$. Thus all degree pairs satisfy the
+Leibniz rule.
+
+Finally the quotient map in degree zero and the zero maps above
+it form a multiplicative augmentation: $d_1$ lands in $I$, and
+positive-degree products have positive degree. Exactness already
+shows that it induces $H_0(\mathsf P_\bullet)\cong A/I$ and
+zero homology above degree zero. It is therefore the claimed
+quasi-isomorphism of differential graded algebras.
 \end{proof}
 
-A bounded flat resolution computes derived tensor products, so $\mathsf P_\bullet\otimes_AA/J$ computes $\Tor^A(A/I,A/J)$, and for $J=I$ its
-multiplication induces the product of the $\Tor$ algebra (21, citing \cite{StacksDerived}). 21 does not claim that this model is a cofibrant
-simplicial commutative algebra, that it determines higher operations, or any $E_\infty$-formality statement.
+The bounded complex of flat modules $\mathsf P_\bullet$ is
+K-flat, so $\mathsf P_\bullet\otimes_AA/J$ computes
+$A/I\otimes_A^{\mathrm L}A/J$ and its homology computes the
+$\Tor$ groups. Its multiplication also computes their usual
+product. Indeed, the chain map
+$\mathsf P_\bullet\otimes_A\mathsf P_\bullet\to\mathsf P_\bullet$
+lifts multiplication on $A/I$ through the multiplicative
+augmentation. Derived base change to $A/J$ and passage to
+homology give precisely the canonical $\Tor$ product
+\cite[Tags 06XY and 068G]{StacksDerived}. In particular this applies
+to the self-$\Tor$ algebra when $J=I$. This is the ordinary
+derived product; 21 does not claim that the model is a cofibrant
+simplicial commutative algebra, determines higher operations, or
+is $E_\infty$-formal.
 
 \begin{theorem}[All $\Tor$ groups of two lattice quotients \src{17; 21}]\label{osq:da:thm:pair}
 \leavevmode
@@ -7772,24 +7835,110 @@ an $A$-module splitting.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(i) For $T_\Q$ the isomorphism and the rank are \cref{osq:rel:thm:tor} (17, with the merge over $T_\Gamma$). For the class ring in the reading
-above the proof of \cref{osq:rel:thm:tor} applies verbatim, since it uses only Setting (L) and the natural presentation; this is 21's
-computation of the homology $(\mathrm{Syz}_M\cap J^r)/X^h\mathrm{Syz}_M$ of $\mathsf P_\bullet\otimes_AA/J$ in degree two. The kernel is free, being a
-submodule of the finite free $D$-module $M\otimes_DN$ over a principal ideal domain. The resolution $\mathsf P_\bullet$ is flat of length two, which
-gives $\Tor_{\ge3}=0$ (for $T_\Q$ this is also $\fd(A/I)=2$, \cref{osq:hd:thm:fdlattice}).
-(ii) Tensoring $0\to I\to A\to A/I\to0$ with $A/J$ gives $\Tor_1(A/I,A/J)=\ker(I/IJ\to A/J)=(I\cap J)/IJ$; no flatness is used. If $g<h$ then
-$J\subseteq I$, since $X^{h-g}(N+\Pi)\subseteq\Pi$; so $I\cap J=J$ and $I+J=I$, and symmetrically if $h<g$. If $g=h$, separating the
-coefficient at $X^g$ from the higher terms gives $I\cap J=X^g((M\cap N)+\Pi)$ and $I+J=X^g((M+N)+\Pi)$. In all cases
-$I\cap J=X^{\max(g,h)}(\mathsf L_{g,h}+\Pi)$, and $IJ=X^{g+h}(MN+\Pi)$ (proof of \cref{osq:rel:thm:tor}); dividing by $X^{\max(g,h)}$ gives
-the first formula. The denominator consists of the elements with coefficient in $MN$ at $X^e$ and arbitrary terms above $e$, and no terms
-below; splitting a representative into its constant term, its terms in $(0,e)$, its term at $e$ and its terms above $e$ (truncation keeps
-supports admissible) gives the second. A tail multiplier can move a term of the window to the boundary or beyond it, so the decomposition is
-not $A$-linear.
+(i) Put $S=\mathrm{Syz}_M$. Tensoring the flat resolution of
+\cref{osq:da:thm:dga} with $A/J$ identifies its degree-two
+homology with
+\[
+ \ker\bigl(S/JS\longrightarrow(A/J)^r\bigr)
+ =\frac{S\cap J^r}{JS}.
+\]
+There are no boundaries from degree three. The module $S$ is
+stable under multiplication by $B=k+\Pi$ and by $k$.
+Thus $JS\subseteq X^hS$. Conversely choose $0\ne n\in N$;
+then $X^hx=(X^hn)(x/n)\in JS$ for every $x\in S$.
+Consequently $JS=X^hS$.
+
+For $x\in S\cap J^r$, divide its coordinates by $X^h$ to
+write $x=X^hy$, $y\in(N+\Pi)^r$. Cancellation gives
+$m(y)=0$. Its constant tuple $c=\ct(y)\in N^r$ satisfies
+$\sum_jm_jc_j=0$. Conversely such a tuple lifts to $X^hc$;
+it has tail coordinates and satisfies the same relation, hence
+belongs to $S\cap J^r$. The kernel of this coefficient map is
+$X^hS$: zero constants mean $y\in\Pi^r$ and $m(y)=0$.
+The basis map
+\[
+ (c_j)\longmapsto\sum_jm_j\otimes c_j
+\]
+therefore identifies $H_2$ with $\mathcal T(M,N)$, exactly as
+in \cref{osq:rel:thm:tor}. For $a\in A$, taking constants of
+$ay$ multiplies this tuple by $\ct(a)$, proving the asserted
+$A$-action. The resulting coefficient module involves neither
+scale $g$ nor scale $h$.
+
+Both $\Z$ and $\Z[i]$ are principal ideal domains. Hence the
+kernel $\mathcal T(M,N)\subseteq M\otimes_DN\cong D^{rs}$
+is finite free. Localizing the exact coefficient sequence
+\[
+ 0\longrightarrow\mathcal T(M,N)\longrightarrow M\otimes_DN
+ \longrightarrow MN\longrightarrow0
+\]
+at $D\setminus\{0\}$ gives its rank $rs-\rk(MN)$.
+All homology in degree at least three vanishes because the
+resolution has length at most two. Over $T_\Q$ its quotient
+has flat dimension exactly two when $r\ge2$ by
+\cref{osq:hd:thm:fdlattice}; for $r=1$ the ideal is principal
+and the dimension is one. The vanishing assertion includes both
+cases. For the universe-relative class ring the same argument
+takes place among ordinary modules in the larger universe;
+no tensor product of literal proper-class modules is needed.
+
+(ii) Right exactness gives
+$(A/I)\otimes_A(A/J)\cong A/(I+J)$. Tensor the sequence
+$0\to I\to A\to A/I\to0$ with $A/J$. Since $A$ is free,
+the initial part of the long exact sequence is
+\[
+ 0\longrightarrow\Tor^A_1(A/I,A/J)
+ \longrightarrow I/IJ\longrightarrow A/J.
+\]
+The last map is induced by inclusion, so its kernel is
+$(I\cap J)/IJ$. This formula does not assume that $I$ or
+$J$ is flat.
+
+If $g<h$, every element of $J$ belongs to $I$, because
+$X^{h-g}(N+\Pi)\subseteq\Pi\subseteq M+\Pi$.
+Thus $I\cap J=J$ and $I+J=I$; if $h<g$ the roles reverse.
+If $g=h$, cancellation of $X^g$ and uniqueness of the constant
+and tail parts give
+\[
+ I\cap J=X^g\bigl((M\cap N)+\Pi\bigr),\qquad
+ I+J=X^g\bigl((M+N)+\Pi\bigr).
+\]
+In all three cases the intersection is
+$X^{\max(g,h)}(\mathsf L_{g,h}+\Pi)$.
+Also $(M+\Pi)(N+\Pi)=MN+\Pi$, where the left side denotes
+the additive span of products. Products involving a tail stay
+in $\Pi$, and, for a fixed $0\ne m\in M$, every tail $w$
+is $m(w/m)$ with $w/m\in\Pi\subseteq N+\Pi$.
+This proves $IJ=X^{g+h}(MN+\Pi)$. Since
+$g+h-\max(g,h)=e$, division by $X^{\max(g,h)}$ is an
+$A$-linear identification with the first displayed quotient.
+
+To obtain the second identification, write a representative
+uniquely as
+\[
+ l+w_{<e}+cX^e+w_{>e},\qquad
+ l\in\mathsf L_{g,h},\quad w_{<e}\in\Pi_{(0,e)},\quad c\in k,
+\]
+where $w_{>e}$ has support strictly above $e$.
+Truncation to each of these support pieces preserves admissibility;
+translation by $-e$ carries $w_{>e}$ to a tail. The denominator
+$X^e(MN+\Pi)$ consists exactly of arbitrary such $w_{>e}$
+and boundary coefficients $c\in MN$. Thus the map to
+$(l,w_{<e},[c]X^e)$ has precisely that denominator as kernel.
+It is onto: any three displayed components give an admissible
+representative by their finite union. This proves the $D$-linear
+direct-sum formula. Tail multiplication can move a term of the
+open interval to its endpoint or past it, so the coefficientwise
+decomposition is not an $A$-module splitting.
 \end{proof}
 
 So the first $\Tor$ keeps a whole interval of scales and a boundary quotient $k/MN$, which can have torsion, while the second is a
 finite-rank coefficient module that does not see the scales at all; neither should be replaced by a leading-term approximation (21). In
-particular $\Tor_1\ne0$ always, so the vanishing of $\Tor_2$ is never $\Tor$-independence.
+particular $\Tor_1\ne0$ always: the monomial $X^{e/2}$ lies in
+$\Pi_{(0,e)}$ and survives because the denominator has no support
+below $e$. This holds even if $\mathsf L_{g,h}=0$ and
+$\Tor_2=0$. Thus vanishing of $\Tor_2$ is never
+$\Tor$-independence.
 
 \begin{lemma}[The compositum \src{21}]\label{osq:da:lem:compositum}
 Let $\mathfrak o_1,\mathfrak o_2\subset k$ be orders over $D$: unital subrings, finite free over $D$, whose $\Frac(D)$-spans $K_1,K_2$ are fields.
@@ -16864,6 +17013,7 @@ The Stacks Project Authors, \emph{The Stacks Project}, Tag 05CU (coherent rings)
 The Stacks Project Authors, \emph{The Stacks Project}, Tag 06XY (derived tensor product),
 \url{https://stacks.math.columbia.edu/tag/06XY}, cited by 21. Tags 07KV and 0CQC (derived inverse limits of abelian groups and modules),
 \url{https://stacks.math.columbia.edu/tag/07KV} and \url{https://stacks.math.columbia.edu/tag/0CQC}, checked for the telescope review.
+Tag 068G (products and Tor), \url{https://stacks.math.columbia.edu/tag/068G}, checked for the flat DGA review.
 
 \bibitem{StacksTensor}
 The Stacks Project Authors, \emph{The Stacks Project}, Tag 00DM (tensor algebra),

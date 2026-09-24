@@ -1749,3 +1749,49 @@ and Quot.sound. All 4,626 anchors across 63 reports, 5,219 source-label
 references and 1,835 local Markdown destinations across 226 files pass,
 as does whitespace checking. No incoming TeX changed; the locally rebuilt
 297-page article and 34-page catalogue remain current.
+
+## Flat DGA resolution and all Tor groups of two lattice quotients
+
+Reviewed `osq:da:thm:dga` and `osq:da:thm:pair`, keeping both
+statements. The resolution proof separates exactness and flatness from
+its algebra structure, verifies that the degree-one product lies in the
+syzygy module, and checks associativity, the unit and graded commutativity.
+It writes the Leibniz identities in degrees (1,1), (1,2) and (2,1), with
+opposite signs in the two mixed cases, and explains the remaining degree
+pairs. The multiplicative augmentation gives the quasi-isomorphism.
+Bounded flatness justifies derived tensoring; the augmentation-compatible
+multiplication yields the canonical Tor product by derived base change.
+Checked this against Stacks Tags 06XY and 068G and added the latter to the
+existing derived-functor bibliography entry.
+
+The pair calculation now writes degree-two cycles and their coefficient
+map, proves JS = X^h S, gives lifts of every multiplication relation and
+identifies the kernel. Principal-ideal-domain freeness and the localization
+rank are separate steps. The dimension-two aside now requires lattice
+rank at least two; principal rank-one quotients have dimension one, while
+Tor vanishes above degree two in both cases. This is over the ordered core
+and the class ring interpreted as a set in the larger universe, not over
+the nonflat coordinate cores of dimension at least two.
+
+For degree one, the ideal exact sequence gives (I intersect J)/IJ without
+assuming the ideals flat. Each scale ordering is checked, as is the ideal
+product formula. The truncation map to the constant term, open interval
+and endpoint modulo MN has the displayed denominator as kernel and is
+surjective. Its splitting is D-linear only. The monomial of exponent e/2
+proves nonvanishing even when the constant intersection and second Tor
+both vanish. Updated the root README, report guide, catalogue, shared
+notation and source anchors. These two results remain Pending in Lean;
+the subsequent linear-disjointness, self-Tor product, reconstruction and
+shadow results, and full source reconciliation, remain pending review.
+
+Validation: three clean final TeX passes for the 299-page article and
+34-page catalogue, with no warnings or box diagnostics; inspected all
+revised proof pages and the catalogue. All 418 standard/principal
+statements, 828 labels, 1,656 auxiliary label/number pairs, 66 questions,
+60 remarks and 28 examples are unchanged. All 4,626 anchors in 63 reports,
+5,219 source-label references and 1,835 local Markdown destinations in
+226 files pass, as does whitespace checking. No Lean source changed;
+the two-thread 4,622-job build and 16,927-declaration axiom audit remain
+the Lean baseline before synchronization. Existing finite verifiers do
+not establish these general DGA and support arguments and were not used
+as substitutes for the proof review.

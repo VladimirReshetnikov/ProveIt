@@ -248,6 +248,16 @@ all A-modules. The bounds `gl.dim A_d ≥ d + 2` and
 `w.gl.dim A_d ≥ d + 1` obtained from rank-two lattices use `K ≠ Frac D`.
 For `d = 1`, `D = K`, weak global dimension is one while `pd_A K = 2`.
 
+The flat lattice-quotient DGA uses homological degrees 0, 1, 2, with
+`d(ab) = d(a)b + (−1)^|a| a d(b)`. Its degree-two syzygy term is flat over
+the ordered core T_ℚ and the universe-relative class ring; this argument
+does not apply to coordinate cores A_d with d ≥ 2. In the first-Tor window,
+`e = min(g,h)`, Π_(0,e) consists of tails supported strictly between 0 and e,
+and `(k/MN)X^e` records the coefficient at the endpoint modulo the D-span
+of products MN. The three-piece decomposition is D-linear, whereas the
+preceding quotient formula is A-linear. The symbol B = k + Π remains the
+support ring, not either cyclic quotient A/I or A/J.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
