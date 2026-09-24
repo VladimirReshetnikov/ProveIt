@@ -307,7 +307,9 @@ nonhomogeneous polynomials with those two divisors. In particular,
 `x² − D y² = c` has exactly its ordinary integer solutions for every
 nonzero integer `D` and `c`, including negative or square `D`. This rules
 out infinite omnific Pell solutions without asserting finiteness of the
-ordinary solution set.
+ordinary solution set. The classical case `D = 2, c = 1` now has its
+complete classification: independently signed coordinates of
+`(3 + 2√2)^k` for ordinary natural `k`, using Mathlib’s Pell theory.
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
 with `t` purely infinite. Taking `t = ω` gives an infinite solution.
@@ -400,11 +402,14 @@ constant discriminant as translates of their constant-term polynomials,
 and studies units of finite étale algebras. That addition awaits independent
 proof review and Lean formalization.
 The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
-now assembles fourteen manuscripts. Its latest parts propose formal orbit
+now assembles fifteen manuscripts. Its latest parts propose formal orbit
 fields, actions of set-sized left-orderable groups with prescribed fixed
 fields, and formal integration of all omnific derivations. These additions
 await independent proof review and Lean formalization; the surcomplex
-group classification requires compatibility with conjugation.
+group classification requires compatibility with conjugation. A further
+chapter treats universal symmetries and exact difference equations. The
+quotient report adds class residue fields and semialgebraic preservers;
+these new claims also await independent proof review.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

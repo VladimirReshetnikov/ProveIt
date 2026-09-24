@@ -21,7 +21,8 @@
  homological and tensor algebra of omnific cores, polynomial maps,
  relation modules, ordinary-output loci, normalization fibres, Boolean branching,
  exact projective dimensions, Tor algebras of lattice ideals,
- finite tests at new scales, ramification in cyclic workspaces}}
+ finite tests at new scales, ramification in cyclic workspaces,
+ class maximal ideals and residue fields, semialgebraic preservers}}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
@@ -149,8 +150,9 @@
 {\large The universal constant-term quotient, exact cardinal thresholds,\par
 support thresholds, and what survives in large quotients\par}
 \vspace{0.2in}
-{Merged research report built from twenty manuscripts (03, 04, 06--11 of one batch,\par
-12--16 of the next, 17--19 of a third, 20 of a fourth, 21 of a fifth, 22 of a sixth, 23 of a seventh)\par}
+{Merged research report built from twenty-two manuscripts (03, 04, 06--11 of one batch,\par
+12--16 of the next, 17--19 of a third, 20 of a fourth, 21 of a fifth, 22 of a sixth, 23 of a seventh,\par
+24 and 25 of an eighth)\par}
 \vspace{0.08in}
 {22--23 September 2026; merged 23 September 2026\par}
 \vspace{0.2in}
@@ -187,13 +189,16 @@ with integrality local to the exponent group of an element. A fifth shows that f
 rank $d$ the projective dimension of the arithmetic quotient is $d+1$. A sixth certifies rational functions of several
 variables by finitely many values at one fresh scale, removes set-sized exceptional sets in every number of variables, and
 transfers ordinary constant test sets exactly. A seventh shows that over one cyclic exponent group the extended ideal of
-the integral closure is not radical, while the Boolean algebra of the reduced fibre is still atomless. It is an AI-assisted
+the integral closure is not radical, while the Boolean algebra of the reduced fibre is still atomless. Two manuscripts of an eighth batch
+show, with global choice, that $1+\omega^a$ lies in characteristic-zero maximal class ideals of $\Oz$, modulo which exactly the monomials
+$\omega^b$ with $b>na$ for every $n$ vanish and whose residue fields embed in $\SC$; and that a globally smooth semialgebraic map preserving
+$\Oz^r$ is an integer-valued polynomial, while finitely smooth ones need not be even piecewise polynomial. It is an AI-assisted
 merge of unrefereed manuscripts; nothing in it is verified in Lean.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.9\textwidth}\small
-\textbf{Status.} Proof-bearing research report assembled from twenty AI-assisted
+\textbf{Status.} Proof-bearing research report assembled from twenty-two AI-assisted
 manuscripts written on 22 and 23 September 2026. The sources call their main results candidate
 original; priority is not certified, no named conjecture is claimed solved, the proofs have
 not been refereed, and no statement is formalized. Results added in the merge are marked
@@ -244,6 +249,11 @@ one-variable content re-derives 16's (22; \cref{osq:ft:sub:tests}).
 A manuscript of a seventh batch decides the fixed-workspace questions on that fibre for cyclic exponent groups, with opposite
 answers: the extended ideal is not radical, while the Boolean algebra of the reduced fibre is atomless, both by ramification over
 the place $\omega^a=0$ of the rational functions in $\omega^a$ (23; \cref{osq:rm:sub:cyclic}).
+Two manuscripts of an eighth batch go beyond set-sized targets and beyond polynomial maps. With global choice, every proper class ideal lies
+in a maximal class ideal, so $1+\omega^a$ lies in characteristic-zero maximal ideals of $\Oz$ whose residue fields are proper-class fields embedded
+in $\SC$, and the monomials vanishing there are exactly the $\omega^b$ with $b>na$ for every ordinary $n$ (24; \cref{osq:cr:sub:residues}).
+Globally smooth semialgebraic maps preserving $\Oz^r$ are the integer-valued polynomials, while for every finite order of smoothness an
+explicit bump, built at the same scale threshold, agrees with no finite family of polynomials on $\Oz$ (25; \cref{osq:sa:sub:semialgebraic}).
 This report prints the common spine once and keeps every result of every source.
 
 \subsection{Main theorems}\label{osq:sub:main}
@@ -297,7 +307,12 @@ If a nonzero purely infinite element becomes a unit in a nonzero ring, the ring 
 explicitly embedded copy of $\No$. The nonzero quotient $\Oz/(1+\omega^a)$, which has no
 nonzero set-sized image, contains an algebraically closed field containing $\SC$, exact
 cyclotomic algebras over it, and the Cantor algebra of locally constant functions on $\Z_2$
-(07; one proposition of 06). (\Cref{osq:if:thm:transfer,osq:if:thm:binomialkernel,osq:if:thm:cantor}.)
+(07; one proposition of 06). With global choice, every proper class ideal of a commutative class ring lies in a maximal class
+ideal, a principle equivalent to global choice; so $1+\omega^a$ lies in at least $2^{\aleph_0}$ maximal class ideals of $\Oz$, all of
+characteristic $0$, modulo each of which $\omega^b$ ($b\ge0$) vanishes if $b>na$ for every ordinary $n$ and is a unit otherwise; these
+residue fields embed in $\SC$, and the maps $\Oz\to\SC$ so obtained separate points, those vanishing on some $1+\omega^a$ without preserving
+strong summability (24).
+(\Cref{osq:if:thm:transfer,osq:if:thm:binomialkernel,osq:if:thm:cantor,osq:cr:thm:krull,osq:cr:thm:equivalence,osq:cr:thm:binomialmax,osq:cr:thm:cutoff,osq:cr:thm:cantor,osq:cr:thm:residually}.)
 \end{maintheorem}
 
 \begin{maintheorem}[Closures and invisible equations]\label{osq:main:closure}
@@ -335,7 +350,11 @@ coordinate degrees at most $d$, the values on an ordinary box and on $m$ grids w
 $(d+1)^m+m(2d^2+2d+1)^{m-1}$ of them, certify preservation of $\Oz$ (similarly of $\GOz$); set-sized exceptional sets are removable in
 every number of variables; $\Num_m(\Oz)\cong\Oz\otimes_\Z\Int(\Z^m)$ and $\Num_m(\GOz)\cong\GOz\otimes_{\Z[i]}\Int(\Z[i]^m)$; and a
 finite subset of $\Z^m$ (or $\Z[i]^m$) tests preservation of $\Oz$ (or $\GOz$) exactly when it tests $\Int(\Z^m)$ (or $\Int(\Z[i]^m)$) (22).
-(\Cref{osq:pm:thm:numreal,osq:pm:thm:cp,osq:pm:cor:completion,osq:pm:cor:bijections,osq:fs:thm:imagegap,osq:fs:thm:surjective,osq:fs:thm:lower,osq:fs:thm:nosmall,osq:or:thm:canonical,osq:or:thm:targets,osq:ft:thm:certificate,osq:ft:thm:exceptions,osq:ft:thm:basechange,osq:ft:thm:lifting}.)
+Over a real closed field with a cofinal discretely ordered subring $B$, a globally $C^\infty$ semialgebraic map preserving $B^r$ has
+coordinates in $\Num_r(B)$ ($C^{\mathsf D^2}$ suffices at graph degree $\mathsf D$), and every semialgebraic preserver of $B$ is polynomial on its two
+tails; for every ordinary $\mathsf k$ a semialgebraic $C^{\mathsf k}$ map sends $\Oz$ into $\Pi$ and agrees with no finite family of polynomials on
+$\Oz$, and no set of sample points tests preservation of $\Oz$ even for globally smooth quadratic algebraic branches (25).
+(\Cref{osq:sa:thm:smoothmany,osq:sa:thm:tails,osq:sa:thm:bumps,osq:sa:thm:nosettests,osq:pm:thm:numreal,osq:pm:thm:cp,osq:pm:cor:completion,osq:pm:cor:bijections,osq:fs:thm:imagegap,osq:fs:thm:surjective,osq:fs:thm:lower,osq:fs:thm:nosmall,osq:or:thm:canonical,osq:or:thm:targets,osq:ft:thm:certificate,osq:ft:thm:exceptions,osq:ft:thm:basechange,osq:ft:thm:lifting}.)
 \end{maintheorem}
 
 \begin{maintheorem}[Natural ordinal arithmetic]\label{osq:main:ordinal}
@@ -372,7 +391,7 @@ framed second $\Tor$ of an order recovers its multiplication (21).
 
 \subsection{Sources, provenance and where the merge chose}\label{osq:sub:sources}
 
-The report is built from twenty manuscripts. Eight (03, 04, 06--11), dated 22 September 2026
+The report is built from twenty-two manuscripts. Eight (03, 04, 06--11), dated 22 September 2026
 and placed in commit \texttt{be06fc8}, were merged first; their numbers are arrival numbers in
 their batch. Five (12--16), dated 23 September 2026 and placed in commit \texttt{cf350b1}, are items
 02--06 of the following batch; they are numbered here by the file prefixes under which their
@@ -385,8 +404,10 @@ in other reports. One (21), also dated 23 September 2026 and placed in commit \t
 numbered in the same way; the other eight items of that batch were placed in other reports. One (22), also dated 23 September 2026 and
 placed in commit \texttt{9d28e28}, is item 09 of a sixth batch, numbered in the same way; the other eight items of that batch were placed
 in other reports. One (23), also dated 23 September 2026 and placed in commit \texttt{7d04483}, is item 01 of a seventh batch,
-numbered in the same way; the other eight items of that batch were placed in other reports. None has a reviewer, and none is shipped
-with this report.
+numbered in the same way; the other eight items of that batch were placed in other reports. Two (24, 25), also dated 23 September 2026 and
+placed in commit \texttt{a7a435f}, are items 02 and 04 of an eighth batch, numbered by their file prefixes, which continue this directory's local
+sequence; items 06 and 07 of that batch are also placed in this directory (file prefixes 26 and 27) and are not yet written into this text, and
+the other five items were placed in other reports. None has a reviewer, and none is shipped with this report.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.03\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
@@ -471,6 +492,17 @@ with this report.
 \end{tabular}
 \end{center}
 
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.03\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
+\toprule
+& Eighth-batch manuscript (pages) & Pin & Contribution and placement\\
+\midrule
+24 & \emph{Beyond the Constant Term: Class Residue Fields of the Omnific Integers} (26) & \texttt{51c1cc7} & in $\mathsf{GBC}$: maximal class extensions of proper class ideals, equivalent to global choice for all class rings; characteristic-zero maximal ideals above $1+\omega^a$; the exact zero-or-unit monomial cutoff, truncation to $\operatorname{cvx}(\Z a)$, B\'ezout identities between separated scales; $2^{\aleph_0}$ maximal ideals per scale and an $\On\times\Z_2$ family; separation by characteristic-zero maximal ideals and embeddings of their residue fields in $\SC$, the binomial specializations not strongly summable; term-closed and strongly sum-closed primes (\cref{osq:cr:sub:residues}); its field core re-derives 07's (credited)\\
+25 & \emph{Smooth Rigidity and Bounded-Scale Flexibility of Omnific-Preserving Maps} (23) & \texttt{738a390} & over a real closed field with a cofinal discrete subring: polynomial tails of semialgebraic preservers, the two-end quotient, globally $C^\infty$ semialgebraic preservers are integer-valued polynomials in every dimension, $C^{\mathsf D^2}$ at graph degree $\mathsf D$; support-field absorption, the exact square-root threshold, $C^{\mathsf k}$ bumps and shears, real-semialgebraic surcomplex forms, a smooth quadratic defeating every set of tests, removal of set-sized exceptions, set-sized models (\cref{osq:sa:sub:semialgebraic}); its numerical-polynomial description is 10's (credited)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 The pins are the repository commits the manuscripts inspected (\texttt{cd80e5e0adc2},
 \texttt{a5c2a97df4b5}, \texttt{37eefca1a309}, all of 22 September 2026, Pacific time; and
 \texttt{71e9606d297c}, 23 September 2026, for 13--16). The commit \texttt{71e9606} precedes the placement
@@ -492,6 +524,11 @@ and \cref{osq:fs:q:fresh}, but not 20's or 21's material. 22 read the repository
 holonomic-rigidity reports and the fractions audit of the Diophantine report, not this report.
 23 pins \texttt{343dc2c47121} (23 September 2026), which contains the writing of the fifth merge (\texttt{a8f35b5}) but not that of the sixth:
 at that commit this report held 20's and 21's material but not 22's; 23 read its normalization, fibre and branching sections.
+24 pins \texttt{51c1cc702402} and 25 pins \texttt{738a39017285} (both 23 September 2026); both commits contain the writing of the sixth merge
+(\texttt{9b463f7}) but not that of the seventh (\texttt{b9cae81}), and their text of this report is the same (Git blob \texttt{ef7aef1}), so neither saw
+23's \cref{osq:rm:sub:cyclic}. 24 read the large-quotient section, \cref{osq:if:cor:primefield} and the README sentence on nonarithmetic class
+primes; 25 read selected ranges, among them the numerical polynomials, the rational-map results and 22's non-claim on semialgebraic maps, through a
+connector whose long responses were sometimes truncated.
 Manuscript~05 of the same batch, \emph{Omnific Integers and Diophantine Rigidity}, is merged
 into the sibling report \cite{RepoOdg}. It also proves the unital universal theorem for $\Oz$
 (its ``set-target rigidity''), the clearing of set supports and common monomial divisors, and it
@@ -518,7 +555,9 @@ general law is stated.
 constructions satisfy (\cref{osq:thm:homological}).
 \item \emph{Foundations.} NBG with choice for sets; global choice, stated by 04, 06, 09 (and 05) and
 by 17, 19 and 20, is used only for the class ultrafilters of 19 and 20, and the results depending on them say so
-(\cref{osq:sub:foundations,osq:bb:rem:choice}).
+(\cref{osq:sub:foundations,osq:bb:rem:choice}). (Status (batch 34): 24 adds an essential use, maximal class ideals
+(\cref{osq:cr:thm:krull}), whose unrestricted form is equivalent to global choice (\cref{osq:cr:thm:equivalence}); every result of
+\cref{osq:cr:sub:residues} built on it states $\mathsf{GBC}$. 25 reads its class-sized support fields through set-sized ones and uses no global choice.)
 \item \emph{Later manuscripts.} 13 and 15 reprove the universal theorem and its consequences; they are
 credited where each result is printed, and only two one-line additions of 15 are printed
 (\cref{osq:rep:cor:kernels,osq:rep:prop:projectivity}); 13's answer to Elliott's question is credited in
@@ -571,6 +610,19 @@ Gaussian and fixed-ideal corollary (\cref{osq:rm:cor:rational}), and 23 credits 
 cyclic fibre is 20's (\cref{osq:bb:thm:rank} with $G=\{0\}$), which 23 did not cite; 23's own family is kept. Its Puiseux radicality is kept with
 19's finite-axiom theorem as a second route (\cref{osq:rm:rem:puiabstract}). Two of its questions are merged into \cref{osq:nf:q:fibre}(b), (c),
 and its other seven form \cref{osq:rm:q:fullQ,osq:rm:q:boolean,osq:rm:q:gluing,osq:rm:q:arhomology,osq:rm:q:completion,osq:rm:q:nonmonomial,osq:rm:q:formal}.
+\item \emph{Eighth batch.} 24 answers, with global choice, the existence clause of \cref{osq:q:primes} and joins \cref{osq:sec:internal} in one new
+subsection (\cref{osq:cr:sub:residues}), placed after \cref{osq:if:sub:boundaries} at the end of the section so that no earlier statement is renumbered;
+25 answers the first clause of \cref{osq:ft:q:maps}(a) for globally smooth semialgebraic maps and joins \cref{osq:sec:polynomial} in one new subsection
+(\cref{osq:sa:sub:semialgebraic}), placed after 22's at the end of that section. 24's field core (its Section~7) and its dyadic lemma re-derive 07's
+results in a weaker form and are printed once, under 07's labels (\cref{osq:if:prop:closed}, with 24 added as a proving source, and
+\cref{osq:if:lem:localization,osq:if:cor:Ea,osq:if:cor:primefield,osq:if:thm:binomialkernel}, credited), 24's degree proof being kept as a second route
+(\cref{osq:cr:rem:dyadic}); its class back-and-forth is credited to the surcomplex-automorphism and first-$\kappa$ reports. 25's numerical-polynomial
+descriptions are 10's and are credited, not reprinted (\cref{osq:pm:thm:numreal,osq:pm:thm:grid}, and \cref{osq:pm:thm:numgaussian} for $r=1$). The two sources
+state the same scale threshold independently, 24 as $b\gg a$ and 25 as $b>na$ for all $n$; it is written $a\ll b$ throughout, as in \eqref{osq:eq:Ha},
+and 24's $C_a$ and 25's $H_a$, one and the same group, are written $\operatorname{cvx}(\Z a)$ (\cref{osq:sa:rem:threshold}). 24's Question~12.6 is
+merged into \cref{osq:q:binomial}, 25's Questions~12.7 and 12.9 into \cref{osq:ft:q:maps}(a), (b); their other questions form
+\cref{osq:cr:q:choice,osq:cr:q:definable,osq:cr:q:closed,osq:cr:q:relative,osq:cr:q:branching,osq:cr:q:support,osq:cr:q:formal} and
+\cref{osq:sa:q:optimal,osq:sa:q:multireg,osq:sa:q:bounded,osq:sa:q:individual,osq:sa:q:rank,osq:sa:q:ominimal,osq:sa:q:groups,osq:sa:q:complex,osq:sa:q:invisibility,osq:sa:q:formal}.
 \end{itemize}
 
 \paragraph{Results added in the merge.} Each carries the tag \merge\ and a complete proof:
@@ -615,6 +667,16 @@ route to 23's Puiseux radicality through 19's finite-axiom theorem, with the Boo
 Puiseux fibre and the atomlessness of its Boolean algebra (\cref{osq:rm:rem:puiabstract}); the Boolean-power form of the cyclic reduced fibre, with
 an atomless parameter of size and density $2^{\aleph_0}$, and for the real algebraic fragment the ring of locally constant $\overline\Z$-valued
 functions on Cantor space (\cref{osq:rm:rem:booleanform}); and 19's $\upsilon_T$ as a witness inside the cyclic workspace (\cref{osq:rm:rem:nonreal}).
+From the eighth batch: 19's and 20's class-ultrafilter lemmas as the Boolean-ring case of 24's maximal class extensions, for class families as well
+as sets (\cref{osq:cr:rem:ultrafilters}); a second route to 24's monomial cutoff through 07's localization and the support description of
+$\Oz[\omega^{-a}]$ (\cref{osq:cr:rem:cutofflocal}); a copy of $\SC$, not only an algebraically closed Hahn field, in every residue field above
+$1+\omega^a$ (\cref{osq:cr:cor:properfield}); the identification of 24's first idempotents with 07's (\cref{osq:cr:rem:dyadic}); the extension of 07's
+point evaluations on the Cantor subalgebra to homomorphisms of all of $\Qa_a$ onto fields containing $\EE_a$ (\cref{osq:cr:rem:evaluation}); the
+observation that the embedded $\FF_a$ alone does not distinguish the maximal ideals above one binomial (status of \cref{osq:q:primes}); the
+containment of \cref{osq:lem:Ha}(ii), \cref{osq:if:lem:gf} and 16's freshness in 25's absorption theorem (after \cref{osq:sa:thm:absorption}); the
+equivalence of 24's and 25's thresholds with absorption of $K_{\operatorname{cvx}(\Z a)}$ and with $\omega^b/(1+\omega^a)\in\Oz$
+(\cref{osq:sa:rem:threshold}); and $C^{\mathsf k}$ examples showing that 25's removal of exceptions needs global smoothness
+(\cref{osq:sa:rem:exceptionsnecessary}).
 Each follows from lemmas of the sources; none is a new method.
 
 \subsection{Relation to the repository}\label{osq:sub:repository}
@@ -689,7 +751,14 @@ radical; it credits \cref{osq:bb:thm:rational}. It presents its independent fami
 pin this report already stated, after \cref{osq:bb:thm:rank}, that one Laurent scale carries continuum many independent idempotents over
 $\overline\Z_\R$, which with $G=\{0\}$ is an independent family of size $2^{\aleph_0}$ in $\Idem(\mathsf C(\Z a))$; so the lower-bound half of 23's
 cardinality statement for the reduced fibre is 20's. Its Puiseux radicality also follows from 19's \cref{osq:nf:thm:abstract}, which was in the report at its
-pin. What is new in 23 is listed in \cref{osq:rm:sub:cyclic}. The shipped audit
+pin. What is new in 23 is listed in \cref{osq:rm:sub:cyclic}. 24 (pin \texttt{51c1cc7}) states accurately that this report refrains from deriving
+maximal class ideals by an unqualified Zorn argument and that the README does not claim nonarithmetic class primes; it credits the field core and the
+Cantor-type subalgebra to this report and presents their promotion to maximal residue fields as its point. Its Section~7 is weaker than the report at its
+pin, which already embedded $\No$ in $\FF_a$ and $\SC$ in $\EE_a$ (\cref{osq:if:thm:compression,osq:if:cor:Ea}); its class back-and-forth is in the
+surcomplex-automorphism and first-$\kappa$ reports, which it does not cite; and its recursion is the mechanism of 19's and 20's class ultrafilters. 25
+(pin \texttt{738a390}) states accurately that 22's non-claim leaves algebraic and semialgebraic maps unclassified; its tail theorem generalizes 18's
+collapse (\cref{osq:or:thm:rational}), which it credits only as context, and its no-set-test and exception theorems refine 16's and 22's, which it credits
+in general terms (\cref{osq:sa:sub:semialgebraic}). The shipped audit
 files keep these statements verbatim; the README records the corrections.
 
 \paragraph{Corrections to the sources.} 03's source lost a relation symbol and prints
@@ -717,7 +786,9 @@ Laurent blocks without credit (it could not see them); they are credited (\cref{
 credit (it could not see them); they are credited (\cref{osq:da:sub:derived}); its proofs contain no error found in this merge. 22 repeats
 10's and 16's results without credit (it did not read this report); they are credited (\cref{osq:ft:sub:tests}), and its proofs contain no error
 found in this merge. 23 does not cite 20's continuum family or 19's finite-axiom theorem (see above; credited in
-\cref{osq:rm:sub:cyclic}); its proofs contain no error found in this merge. No source contains a false theorem.
+\cref{osq:rm:sub:cyclic}); its proofs contain no error found in this merge. 24 and 25 repeat 07's field core and 10's numerical polynomials
+with credit, and 18's collapse, 16's and 22's sampling and exception theorems without precise citation (credited in
+\cref{osq:cr:sub:residues,osq:sa:sub:semialgebraic}); no error was found in their proofs. No source contains a false theorem.
 
 \section{Conventions, notation, and the constant-term retraction}
 \label{osq:sec:conv}
@@ -741,7 +812,11 @@ splitting) are avoided below, and 19's one essential use, a class ultrafilter on
 that may be a proper class, is stated with its hypothesis (\cref{osq:nf:lem:classultra}); only the
 results built on it (\cref{osq:nf:thm:kernel,osq:nf:cor:fieldtargets}) need global choice. 20 states the same foundation;
 its splitting results need only choice for sets (\cref{osq:bb:rem:choice}), and its extension of branch maps
-(\cref{osq:bb:thm:manymaps}) uses class ultrafilters as 19's detection does. 23 uses only set-sized rings and choice for sets. The collision step of the
+(\cref{osq:bb:thm:manymaps}) uses class ultrafilters as 19's detection does. 23 uses only set-sized rings and choice for sets. 24 works in
+G\"odel--Bernays class theory with global choice and uses it essentially: its maximal class ideals (\cref{osq:cr:thm:krull}) come from a recursion with
+set-valued stages along a global well-order, and for all class rings the principle is equivalent to global choice (\cref{osq:cr:thm:equivalence});
+the results of \cref{osq:cr:sub:residues} that need it say so, while its monomial cutoff, truncation and support-prime classification do not. 25 reads
+proper-class support fields pointwise, through set-sized divisible hulls, and uses no global choice. The collision step of the
 universal theorem (\cref{osq:thm:universal}) is choice-free in the formulation of
 08, which we adopt: for a set $S$, its Hartogs ordinal is an ordinal that does not
 inject into $S$; it exists in ZF. The same device is used in the rotation-group
@@ -878,7 +953,8 @@ collision by renaming in the new material. The renamings, and the tags distingui
 the different set-sized constructions, are listed below; \cref{osq:hd:sec:cores} and
 \cref{osq:fs:sub:gaps} list the further renamings of 12, 14 and 16,
 \cref{osq:rel:sub:relations,osq:or:sub:outputs,osq:nf:sub:fibre} those of 17, 18 and 19, \cref{osq:bb:sub:branching}
-those of 20, \cref{osq:da:sub:derived} those of 21, \cref{osq:ft:sub:tests} those of 22, and \cref{osq:rm:sub:cyclic} those of 23.
+those of 20, \cref{osq:da:sub:derived} those of 21, \cref{osq:ft:sub:tests} those of 22, \cref{osq:rm:sub:cyclic} those of 23, and
+\cref{osq:cr:sub:residues,osq:sa:sub:semialgebraic} those of 24 and 25.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
@@ -1313,6 +1389,11 @@ so $X^gM=0$ for every $g>0$, and the factorization $f=X^ah$ gives $\Pi_KM=0$. Wr
 $f=\ct(f)+(f-\ct(f))$ gives $f\cdot v=\ct(f)v$.
 \end{proof}
 
+(Status (batch 33): multiplicativity in (i) cannot be weakened to additivity. The coefficient map $x\mapsto[\omega^\omega]x$ is additive on $\Oz$ but
+not multiplicative: it kills $\omega^{\omega/2}$ and sends its square to $1$. The holonomic-rigidity report \cite{RepoHol} uses it to show that one fixed
+Conway coefficient of the orbit $y_{n+1}=\omega y_n$ of a purely infinite omnific integer can encode any real sequence
+(\nolinkurl{hol:rc:thm:coding}); this does not conflict with (i), since every $y_n$ has constant term $0$ (\nolinkurl{hol:rc:rem:quotients}).)
+
 \paragraph{Sources and routes.} The statement is proved in the following generality by the
 sources: any set field $K$ and unital $D\subseteq K$ (06, 07, 10); $k\in\{\R,\C\}$ and any
 unital $D\subseteq k$ (04, 09, 11); $\Oz$, $\GOz$ and complex coefficients with any unital
@@ -1644,7 +1725,10 @@ In particular $\Pi$ is prime but not maximal (it lies in $p\Oz$). These results 
 only ideals with set-sized quotients: $(0)$ is prime in $\Oz$ with a proper-class quotient,
 and no Zorn argument for a proper class of ideals is used to assert that proper class
 ideals lie in maximal class ideals; a maximal ideal outside this list, if one is given,
-has a proper-class residue field (07, 08, 11).
+has a proper-class residue field (07, 08, 11). (Status (batch 34): with global choice, 24 proves that every proper class ideal
+lies in a maximal class ideal (\cref{osq:cr:thm:krull}), by a recursion with set-valued stages rather than a Zorn argument, and
+that $1+\omega^a$ lies in characteristic-zero maximal class ideals of $\Oz$ and $\GOz$ outside this list (\cref{osq:cr:thm:binomialmax}); the
+classification above, of the ideals with set-sized quotients, is unaffected.)
 
 \begin{proposition}[Principal quotients \src{04}]\label{osq:prop:principal}
 Let $f\in A$ be nonconstant and $\beta=\degw(f)>0$. For distinct $\gamma,\delta\in(0,\beta)$,
@@ -4737,7 +4821,7 @@ Manuscript~07 checks directly that $H_a$ is a subgroup by the inequality
 $n|h+h'|\le n|h|+n|h'|<a/2+a/2$, using the defining inequalities at $2n$; this is
 part of \cref{osq:lem:Ha}.
 
-\begin{proposition}[Closedness of the compressed fields \src{07}]\label{osq:if:prop:closed}
+\begin{proposition}[Closedness of the compressed fields \src{07, 24}]\label{osq:if:prop:closed}
 The class $\FF_a$ is a real closed subfield of $\No$, and $\FF_a(i)$ is an algebraically
 closed subfield of $\SC$.
 \end{proposition}
@@ -4975,7 +5059,9 @@ $\Q(i)$-, algebra structure.
 \end{proof}
 
 The corollary is deliberately conditional. Manuscript~07 does not assert that prime ideals
-with these properties exist; see \cref{osq:if:sub:boundaries}.
+with these properties exist; see \cref{osq:if:sub:boundaries}. (Status (batch 34): with global choice they exist. Every maximal class ideal
+containing $1+\omega^a$ is one (\cref{osq:cr:thm:binomialmax,osq:cr:prop:arithmetic}), and 24 proves this corollary again, with a proper-class
+Hahn field in place of $\No$ (\cref{osq:cr:sub:residues}).)
 
 \begin{example}[Invertibility cannot be replaced by nonvanishing \src{07}]
 \label{osq:if:ex:nilpotent}
@@ -5320,7 +5406,9 @@ $\EE_a$, and one can equally take the finite-factorization condition as the defi
 Evaluation at a point $z\in\Z_2$ is a homomorphism from the subalgebra
 \eqref{osq:if:eq:cantor} onto $\EE_a$. Its target is a proper-class field, not a set-sized
 ring, and no assertion is made that it extends to all of $\Qa_a$. The construction is
-therefore fully compatible with the absence of small ring images of $\Qa_a$.
+therefore fully compatible with the absence of small ring images of $\Qa_a$. (Status (batch 34): with global choice, evaluation at $z$ does
+extend, not onto $\EE_a$ but to a homomorphism of $\Qa_a$ onto a proper-class field containing $\EE_a$, through the maximal ideal $\mathfrak M_{a,z}$ of
+\cref{osq:cr:thm:cantor}; see \cref{osq:cr:rem:evaluation}.)
 \end{remark}
 
 For $m=2^{r-1}$ and $k\in\Z/m\Z$ define, in $\mathcal S_r$,
@@ -5474,7 +5562,11 @@ maximal ideals cannot simply be repeated over its class of ideals. Statements su
 \cref{osq:if:cor:primefield} are deliberately conditional: it is not concluded that a
 proper-class nonarithmetic maximal ideal exists merely because $(1+\omega^a)$ is proper.
 Likewise (06) \cref{osq:if:prop:reservoir} is a necessary condition on residue fields, not an
-existence theorem.
+existence theorem. (Status (batch 34): the existence question is settled with global choice. A proper class of ideals is not searched: 24's
+recursion (\cref{osq:cr:thm:krull}) enumerates the \emph{elements} of the ring along a global well-order and stores a set of accepted generators at
+each stage, keeping finite witnesses of improperness, so $(1+\omega^a)$ does lie in maximal class ideals, all nonarithmetic
+(\cref{osq:cr:thm:binomialmax}), and which monomials lie in a proper ideal containing $1+\omega^a$ is decided by \cref{osq:cr:thm:cutoff}. 07's and 06's statements
+remain necessary conditions, now on ideals that exist; the prime ideals of $\Qa_a$ are still not described.)
 
 \paragraph{Strong sums versus limits.} Every infinite sum used above, namely the geometric
 series for $(1+\omega^a)^{-1}$ and the block expansion \eqref{osq:if:eq:remainderdivision},
@@ -5492,6 +5584,659 @@ mathematical proof in the text. For a formalization, 07 recommends keeping the s
 characterization of $\Oz[\omega^{-a}]$ and the exact binomial kernel separate from the
 routine finite Chinese remainder calculations; no corresponding Lean declarations are
 claimed.
+
+\subsection{Class residue fields beyond the constant term}\label{osq:cr:sub:residues}
+
+This subsection is manuscript~24's (\cref{osq:sub:sources}). Its subject is the maximal class ideals of $\Oz$ and $\GOz$ that the universal
+theorem cannot see. Working in G\"odel--Bernays class theory with global choice, 24 proves that every proper class ideal of a commutative class
+ring lies in a maximal class ideal (\cref{osq:cr:thm:krull}), by a recursion that stores only sets of generators, and that the unrestricted form of
+this principle is equivalent to global choice (\cref{osq:cr:thm:equivalence}). Consequently $1+\omega^a$ lies in a characteristic-zero maximal ideal
+of $\Oz$ and of $\GOz$ for every $a>0$ (\cref{osq:cr:thm:binomialmax}): this answers, with global choice, the existence clause of
+\cref{osq:q:primes}, whose classification clause stays open. In the binomial quotient a monomial $\omega^b$, $b\ge0$, is zero exactly when $a\ll b$
+and is a unit otherwise (\cref{osq:cr:thm:cutoff}); separated scales are comaximal by an explicit B\'ezout identity (\cref{osq:cr:cor:comaximal});
+every branch of 07's dyadic idempotent tree lies in its own maximal ideal, which gives at least $2^{\aleph_0}$ maximal ideals above each $1+\omega^a$
+and a family indexed by $\On\times\Z_2$ across scales (\cref{osq:cr:thm:cantor,osq:cr:thm:twoaxes}); characteristic-zero maximal ideals separate
+the points of $\Oz$, and their residue fields embed in $\SC$ (\cref{osq:cr:thm:separation,osq:cr:thm:residually}), the specializations that
+vanish on a binomial $1+\omega^a$ not preserving strong summability (\cref{osq:cr:thm:nonstrong}); and the primes that are both term-closed and strongly sum-closed are
+classified (\cref{osq:cr:thm:termprimes}). Where the universal theorem says that every \emph{set-sized} image of $\Oz$ sees only $\ct$, these
+class-sized field images together see every element.
+
+24 pins \texttt{51c1cc7} (23 September 2026), whose text of this report is the one written after the sixth merge (it has 22's subsection, not 23's
+\cref{osq:rm:sub:cyclic}); it read this report's large-quotient section, the conditional \cref{osq:if:cor:primefield} and the README sentence recording
+that the existence of nonarithmetic class primes is not claimed (\cref{osq:q:primes}, numbered 18.4 then as now). Its field core is already in
+this report, in a stronger form, and is printed once. 24's Lemma~7.1 is \cref{osq:if:prop:closed} together with \cref{osq:lem:Ha}(iii); its
+shifted embedding $\Theta_a$ (its Theorem~7.2) is 07's $\iota_a$ of \cref{osq:if:lem:localization}(iii), extended to $\FF_a(i)$ by $i\mapsto u$ in
+\cref{osq:if:cor:Ea} and, for $\GOz$, by the coefficient embedding before \cref{osq:if:thm:complexkernel}; and its field-reservoir Proposition~7.4 is
+\cref{osq:if:cor:primefield}, by the mechanism of \cref{osq:if:thm:transfer,osq:if:prop:reservoir}. 24's Section~7 concludes only that these
+quotients contain a proper-class real closed or algebraically closed Hahn field, whereas \cref{osq:if:thm:compression,osq:if:cor:Ea} put a copy of $\No$
+in $\FF_a$ and a copy of $\SC$ in $\EE_a\subseteq\Qa_a$. 24 is added as a proving source to \cref{osq:if:prop:closed}, the one of these statements
+it proves in full, and is credited as an independent proof of the parts it proves of the others; its corollary on residue fields is printed below with
+the stronger conclusion (\cref{osq:cr:cor:properfield}). 24's dyadic Lemma~8.1 is the constant-coefficient case $n=2^r$ of
+\cref{osq:if:thm:binomialkernel,osq:if:thm:complexkernel}, and its idempotent tree is 07's tree \eqref{osq:if:eq:refine}; 24's degree proof, shorter for
+constant coefficients, is kept as a second route (\cref{osq:cr:rem:dyadic}). The class back-and-forth behind 24's Corollary~9.3 is
+\nolinkurl{saut:thm:acfhomogeneity} of the surcomplex-automorphism report \cite{RepoSaut} and \nolinkurl{fkc:sb:lem:backforth} of \cite{RepoFKC}, which
+24 does not cite. Set-sized analogues are older: 08 finds a characteristic-zero maximal ideal containing $1+X^{e_0}$ in $A^{08}_\kappa$
+(\cref{osq:thm:model08}(vi)), and 09 has pairwise comaximal ideals $(1-X^{e_\ell})$ by the same geometric identity, field detection of every nonzero
+purely infinite element and $\Jac=0$ (\cref{osq:thm:residue}); those are set-sized rings with the ordinary maximal-ideal theorem. The recursion of
+\cref{osq:cr:thm:krull}, a greedy transfinite recursion that keeps finite witnesses, is the mechanism of 19's and 20's class-ultrafilter lemmas
+(\cref{osq:nf:lem:classultra,osq:bb:lem:classultra}), there for Boolean algebras; the ring form is new here, and so is the equivalence with global
+choice (\cref{osq:cr:thm:equivalence}), which 24 says may be folklore. 24 credits as antecedents the greedy Krull method, the polynomial compatibility
+argument of Hodges, Ern\'e and Entin \cite{Hodges,Erne,Entin}, recursive constructions of maximal ideals in countable rings \cite{BlechschmidtSchuster},
+the characteristic-zero Hahn-field theorem \cite{MacLane,KnightLange}, the exponent-rescaling automorphism, the standard universality and back-and-forth
+method for algebraically closed fields, the monomial-prime and convex-face mechanism of ordered monoid algebras, and this report's field reservoirs and
+dyadic product algebras. The numbering of 24 cited here is that of its own manuscript.
+
+\paragraph{Foundations, notation and renamings.} Every statement of this subsection that asserts the existence of a maximal class ideal, or of a
+map built from one, is proved in $\mathsf{GBC}$: G\"odel--Bernays class theory $\mathsf{GB}$, which here includes no choice principle, together with
+global choice $\mathsf{GC}$. This is stronger than the base theory of \cref{osq:sub:foundations}, NBG with choice for sets, and 24 never substitutes
+choice for sets for global choice. Over $\mathsf{GB}$, global choice is equivalent to a set-like global well-ordering of the universe and to an
+enumeration of every proper class in order type $\On$ \cite{HamkinsGC}. A \emph{class ring} has a class of set-valued elements and class functions as
+operations; a class ideal satisfies the finite ideal axioms; \emph{maximal} means maximal among proper class ideals, which for a proper class ideal
+$M$ of a commutative unital class ring $R$ is equivalent to the finite criterion
+\begin{equation}\label{osq:cr:eq:maxcriterion}
+ x\notin M\ \Longrightarrow\ 1-rx\in M\ \text{for some }r\in R,
+\end{equation}
+since \eqref{osq:cr:eq:maxcriterion} follows from $M+(x)=R$ and implies maximality; so no collection of class ideals is ever formed. A quotient
+$R/I$ is coded in $\mathsf{GBC}$ by the least representative of each coset in a fixed set-like global well-order, with the operations computed on
+representatives and reduced, and over $\mathsf{GB}$ by Scott codes, the members of a coset of least rank, as in \cref{osq:sub:foundations}. Every
+recursion below has a \emph{set} as its state at each ordinal stage: for each set ordinal, ordinary transfinite recursion with class parameters
+applies, uniqueness makes the runs of different lengths compatible, and elementary comprehension collects them into one class relation. No recursion
+with proper-class values, and no unrestricted elementary transfinite recursion for class-valued stages, is used; such principles need separate
+attention in class set theory \cite{GHHSW}.
+
+Throughout, $(D,k)$ is $(\Z,\R)$ or $(\Z[i],\C)$, $A=\A_{D,k}$ is $\Oz$ or $\GOz$, and $a>0$. We write $\Qa_a^k=A/(1+\omega^a)A$, so that
+$\Qa_a^\R=\Qa_a$ and $\Qa_a^\C$ are the rings of \cref{osq:if:sub:binomial,osq:if:sub:gaussian}, and $q_a$ for the quotient map (07's $q_a^\C$ for the
+Gaussian pair). Every series has a set-sized support, even when its ambient ring or exponent group is a proper class. $\operatorname{cvx}(\Z a)=\{g\in\No:
+|g|\le na\text{ for some ordinary }n\ge1\}$ is the convex subgroup of $\No$ generated by $a$, the class form of $\operatorname{cvx}_\Gamma(G)$ of
+\cref{osq:ft:prop:relative}, and $a\ll b$ is the relation of \eqref{osq:eq:Ha}: $b>na$ for every ordinary $n\ge1$; for $b>0$ this says $b\notin
+\operatorname{cvx}(\Z a)$. 24's symbols are renamed as follows.
+\begin{itemize}
+\item Its $(D,K)$, $\Pi_K$, $A_D$, $B_K=K\oplus\Pi_K$ and $Q_a$ are $(D,k)$, $\Pi_k$, $\A_{D,k}$, $\A_{k,k}$ and $\Qa^k_a$ ($\B$ is the ring $D+\mm_k$);
+its classes $[x]$ are $q_a(x)$. Its relation $b\gg a$ is $a\ll b$, the same relation written with the opposite symbol.
+\item Its convex subgroup $C_a$ is $\operatorname{cvx}(\Z a)$ ($C_j$ are clopen sets in \cref{osq:if:cor:boolean}, $C_{d+1}$ a Gaussian grid and
+$\mathsf C(G)$ a reduced fibre); its support ideal $J_a$ is $\Pi_k^{\gg a}$, its truncation $\tau_a$ is $\operatorname{tr}_a$ and its ring $A_D(C_a)$ is
+$\A_{D,k}(\operatorname{cvx}(\Z a))$ (\eqref{osq:cr:eq:tails}; $J$ and $\mathsf J$ are other ideals and $\tau$ an exponent automorphism). For a convex
+subgroup $H\subseteq\No$ its $\Pi_K(H)$ is $\Pi_k(H)$ of \eqref{osq:eq:ideals} and its support ideal $P_H$ is $\Pi_k^{>H}$ (\eqref{osq:cr:eq:PH}).
+\item Its geometric series $q_{a,b}$ is $\mathsf g_{a,b}$ ($q_a$ is the quotient map); its scales $a_\alpha=\omega^\alpha$ are written out, since
+$a_\alpha$ denotes the small scales of \eqref{osq:eq:scales}, and its binomials $f_\alpha$ are $\mathsf f_\alpha$; its rescaling automorphism $\sigma_{b/a}$ is
+$\operatorname{sc}_{b/a}$ ($\sigma$ is an endomorphism of $\Oz$ in \cref{osq:sub:consequences} and 20's specialization).
+\item Its field $F_a$ and group $H_a$ are $\FF_a$ and $H_a$, the same objects (the Hahn field over the scale subgroup \eqref{osq:eq:Ha}), and its
+$F_a[i]$ is $\FF_a(i)$. Its shifted embedding $\Theta_a(x)=-[\omega^ax]$ is 07's $\iota_a$ of \eqref{osq:if:eq:iota}; $\Theta_a$ is 07's compression
+$\No\hookrightarrow\FF_a$ of \eqref{osq:if:eq:Theta}, a different map.
+\item Its dyadic classes $u_n=[\omega^{a/2^n}]$ are 07's $\xi_n$, and $u=u_1$ is 07's $u=\xi_1$; 07's $x_n=q_a(\omega^{a/n})$ has $x_{2^n}=\xi_n$. Its
+family $z_n=\omega^{a/2^n}$ in Theorem~9.6 is written out ($\mathsf z_n$ are 23's branches and $z$ is a $2$-adic integer here). Its
+binary idempotent tree $(e_s)$ is 07's $(e_{r,k})$, a branch $\eta\in2^{\N}$ being read as the $2$-adic integer $z=\sum_j\eta_j2^j$; its maximal ideals
+$M_{a,\eta}$, $M_{\alpha,\eta}$, $M_x$ and quotient maps $\pi_{\beta,\eta}$ are $\mathfrak M_{a,z}$, $\mathfrak M_{\alpha,z}$, $\mathfrak M_x$ and
+$\varpi_{\beta,z}$ ($M$ is a coefficient lattice and $\pi_b$ a detecting map).
+\item Its multiplicative class $T$ (its Proposition~3.3 and Lemma~4.3) is $\Sigma$, and its class poset $X$, with a variable for each element and
+the ideals $I_x$, is $\mathcal P$, with variables $v_p$ and ideals $I_p$ ($X^g$ are formal monomials; $T$ is a polynomial variable in
+\cref{osq:if:sub:kernel} and the monomial $\omega^a$ in \cref{osq:rm:sub:cyclic}).
+\item Its class field $L$ and set subfield $E_0$ in Theorem~9.2 are $\mathbb K$ and $\mathbb K_0$ ($L$ is a set field or a lower set elsewhere and $E$ an
+ambient field), and its specialization $\varphi_a:\Oz\to\SC$ is $\operatorname{sp}_a$ ($\varphi$ is a general map in \cref{osq:thm:universal} and a
+branch map in \cref{osq:bb:sub:branching}).
+\end{itemize}
+Five tempting readings are false. (1) $a\ll b$ is not $b>a$: $\omega^{2a}$ is infinitely larger than $\omega^a$, but $q_a(\omega^{2a})=1$ is a unit;
+only $a\ll b$ kills $\omega^b$ (\cref{osq:cr:thm:cutoff}). (2) $\operatorname{cvx}(\Z a)$ is not $H_a$: $H_a$ collects the exponents infinitesimal
+relative to $a$, $\operatorname{cvx}(\Z a)$ those bounded by a multiple of $a$, and $H_a\subsetneq\operatorname{cvx}(\Z a)$; manuscript~25 writes $H_a$ for
+$\operatorname{cvx}(\Z a)$ (\cref{osq:sa:sub:semialgebraic}). (3) A residue field containing an algebraically closed class subfield need not be
+algebraically closed (\cref{osq:cr:q:closed}). (4) $\operatorname{sp}_a$ is a ring homomorphism, not an ordered or strongly additive map
+(\cref{osq:cr:thm:nonstrong}). (5) ``Nonarithmetic'' is a predicate on individual ideals, and a family of maximal ideals is one class relation on
+parameters and ring elements; no class of all class ideals is formed.
+
+\paragraph{Maximal class ideals under global choice.}
+
+\begin{theorem}[Maximal class extensions \src{24}]\label{osq:cr:thm:krull}
+In $\mathsf{GBC}$, let $R$ be a nonzero commutative unital class ring and $I\subsetneq R$ a class ideal. There is a maximal class ideal $M$ of $R$
+containing $I$. With a fixed global well-order, $M$ can be defined uniformly from the class parameters coding $R$ and $I$.
+\end{theorem}
+\begin{proof}
+Choose an ordinal-indexed enumeration $(r_\alpha)$ of $R$ (for a set ring a set ordinal suffices) and define sets $S_\alpha$ of accepted
+generators by $S_0=\varnothing$,
+\begin{equation}\label{osq:cr:eq:greedy}
+ S_{\alpha+1}=\begin{cases}
+ S_\alpha\cup\{r_\alpha\},&1\notin I+(S_\alpha\cup\{r_\alpha\})R,\\
+ S_\alpha,&1\in I+(S_\alpha\cup\{r_\alpha\})R,
+ \end{cases}
+\end{equation}
+and $S_\lambda=\bigcup_{\alpha<\lambda}S_\alpha$ at limits; $S_\lambda$ is a set, being a set-indexed union of sets contained in the set of elements
+enumerated before $\lambda$. For a set $T_0$, the assertion $1\in I+T_0R$ says that there are an ordinary $m$, elements $t_1,\dots,t_m\in T_0$,
+coefficients $c_1,\dots,c_m\in R$ and $z\in I$ with
+\begin{equation}\label{osq:cr:eq:finitewitness}
+ 1=z+\sum_{j=1}^mc_jt_j ;
+\end{equation}
+this is an elementary formula with class parameters, all of whose quantified objects are sets, so the set-length recursions described above apply,
+and the usually proper-class ideal $I+S_\alpha R$ is never stored. Let $S$ be the class of all accepted generators and $M=I+SR$, defined by the same
+finite-sum formula; it is a class ideal. It is proper: an equation \eqref{osq:cr:eq:finitewitness} with $t_j\in S$ involves finitely many acceptance
+stages, all below one ordinal, and would already make an earlier $I+S_\alpha R$ improper, contrary to the recursion; at limit stages the same
+finite-witness argument preserves properness. If $x\notin M$, its occurrence in the enumeration was rejected, so
+$1\in I+(S_\alpha\cup\{x\})R\subseteq M+(x)$ at that stage, and \eqref{osq:cr:eq:maxcriterion} proves maximality. Every decision is definable from
+the global well-order and the class parameters, which proves uniformity.
+\end{proof}
+
+\begin{remark}[What has been made constructive \src{24}]\label{osq:cr:rem:constructive}
+The recursion is explicit as a class definition, not an effective algorithm: the finite-equation test quantifies over all ring elements and can be
+undecidable. The method is the familiar greedy proof of Krull's theorem with its size obligations checked; recursive approaches for set-sized rings are
+classical and appear in constructive work \cite{BlechschmidtSchuster}. No new general algorithm for ideal membership is claimed (24).
+\end{remark}
+
+\begin{proposition}[Prime extension avoiding a multiplicative class \src{24}]\label{osq:cr:prop:avoid}
+In $\mathsf{GBC}$, let $\Sigma\subseteq R$ be a multiplicatively closed class containing $1$ with $I\cap\Sigma=\varnothing$. There is a prime class
+ideal $P\supseteq I$ disjoint from $\Sigma$.
+\end{proposition}
+\begin{proof}
+Accept $r_\alpha$ exactly when $\bigl(I+(S_\alpha\cup\{r_\alpha\})R\bigr)\cap\Sigma=\varnothing$. A violation again has one element of $\Sigma$ and a
+finite membership witness, so the resulting ideal $P$ is disjoint from $\Sigma$, and rejection shows that it is maximal among ideals disjoint from
+$\Sigma$. If $xy\in P$ with $x,y\notin P$, maximality gives $t=p+rx\in\Sigma$ and $u=p'+sy\in\Sigma$ with $p,p'\in P$, and then $tu\in P\cap\Sigma$, a
+contradiction. So $P$ is prime; it is not asserted to be a maximal ideal of $R$.
+\end{proof}
+
+\begin{corollary}[Compatible prescribed equations \src{24}]\label{osq:cr:cor:prescribe}
+In $\mathsf{GBC}$, if a class family $(f_t)_{t\in T_0}$ of elements of $R$ has no finite subfamily generating $1$, then all the equations $f_t=0$
+hold in some maximal class quotient of $R$.
+\end{corollary}
+\begin{proof}
+The ideal generated by the family is proper because its membership relation uses finite sums; apply \cref{osq:cr:thm:krull} and code the quotient
+as above.
+\end{proof}
+
+\begin{remark}[Class ultrafilters as the Boolean case \merge]\label{osq:cr:rem:ultrafilters}
+For a Boolean algebra $\mathcal A$ whose elements are sets, viewed as the Boolean ring with addition the symmetric difference, the ideal generated by
+finitely many complements $\neg s_1,\dots,\neg s_n$ is principal, generated by $\neg s_1\vee\cdots\vee\neg s_n$, so it contains $1$ exactly when
+$s_1\wedge\cdots\wedge s_n=0$. A class family with the finite intersection property therefore has complements generating a proper ideal, and a
+maximal class ideal $M$ containing them (\cref{osq:cr:cor:prescribe}) has residue field $\F_2$, so $\{x:x\notin M\}$ is an ultrafilter containing the
+family. Thus 19's and 20's class-ultrafilter lemmas (\cref{osq:nf:lem:classultra,osq:bb:lem:classultra}) are the Boolean-ring case of
+\cref{osq:cr:cor:prescribe}, and 20's lemma holds for a class family with the finite intersection property, not only a set. Their proofs decide $b$
+or $\neg b$ at each stage; \cref{osq:cr:thm:krull} accepts or rejects a generator. The foundation is the same.
+\end{remark}
+
+\begin{definition}[\src{24}]\label{osq:cr:def:cmit}
+The \emph{class maximal ideal principle} $\mathsf{CMIT}$ asserts that every nonzero commutative unital class ring has a maximal class ideal. It
+quantifies over class rings, not only over rings whose carriers are sets.
+\end{definition}
+
+\begin{theorem}[Class Krull and global choice \src{24}]\label{osq:cr:thm:equivalence}
+Over $\mathsf{GB}$, $\mathsf{CMIT}$ is equivalent to $\mathsf{GC}$. Equivalently, global choice is equivalent to the assertion that every proper
+class ideal of every commutative unital class ring has a maximal class extension.
+\end{theorem}
+
+The reverse implication uses the finite-polynomial mechanism of the classical proofs that Krull's theorem implies choice, following the
+maximal-small-ideal argument in the corrected (third) version of Entin's exposition, with antecedents in Ern\'e and Hodges
+\cite{Entin,Erne,Hodges}. 24's contribution is the passage to classes and the choice of a class poset encoding a \emph{global} choice function;
+the finite algebraic lemma is not offered as new (24).
+
+\begin{lemma}[Finite-polynomial compatibility \src{24}]\label{osq:cr:lem:compat}
+Assume $\mathsf{CMIT}$. Every nonempty class poset $\mathcal P$ has a subclass $\mathcal Y$ maximal with the property that every finite subset of
+$\mathcal Y$ has an upper bound in $\mathcal P$.
+\end{lemma}
+\begin{proof}
+Let $R=\F_2[v_p:p\in\mathcal P]$ be the class polynomial ring with finite supports, and for $p\in\mathcal P$ let $I_p$ be the ideal generated by the
+variables $v_q$ with $q\le p$. Call a polynomial \emph{small} if it lies in some $I_p$. Each $I_p$ is a monomial prime ideal, so the nonsmall
+polynomials form a multiplicative class $\Sigma$ with $1\in\Sigma$ and $0\notin\Sigma$. A maximal ideal of $\Sigma^{-1}R$, which exists by
+$\mathsf{CMIT}$, contracts to a prime ideal $P$ of $R$ maximal among ideals consisting of small polynomials; the localization uses finite fractions and
+Scott codes, so needs no global choice.
+
+A small polynomial has zero constant term. If a monomial $m$ occurs in some $f\in P$, choose a variable $v$ dividing $m$; given $g\in P$, take an
+ordinary $d>\deg g$. Then $v^df+g\in P$ is small, say in $I_{p'}$, and there is no cancellation between the terms of $g$ and those of $v^df$ (the latter
+have degree above $\deg g$). As $I_{p'}$ is a monomial ideal, $g\in I_{p'}$ and $v^dm\in I_{p'}$; every variable dividing $v^dm$ divides $m$, so $m\in
+I_{p'}$ and $g+hm$ is small for every polynomial $h$. So $P+(m)$ consists of small polynomials, maximality gives $m\in P$, and primality puts a
+variable of $m$ in $P$. Hence $P=(\mathcal Y)$ for the class $\mathcal Y$ of $p$ with $v_p\in P$.
+
+A sum of finitely many distinct variables from $\mathcal Y$ lies in $P$, hence in some $I_p$, so they have the common upper bound $p$. Conversely, if
+$\mathcal Y'\supseteq\mathcal Y$ has the finite-upper-bound property, every element of the ideal $(\mathcal Y')$ lies in some $I_p$; maximality of $P$
+gives $(\mathcal Y')=P$ and then $\mathcal Y'=\mathcal Y$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{osq:cr:thm:equivalence}]
+Global choice implies the maximal-extension assertion by \cref{osq:cr:thm:krull}, and that assertion implies $\mathsf{CMIT}$ (take the zero ideal).
+Conversely assume $\mathsf{CMIT}$ and let $\mathcal P$ be the class of all \emph{finite} partial choice functions, finite functions $p$ on sets of
+nonempty sets with $p(B)\in B$ for $B$ in their domain, ordered by extension; it contains the empty function, and a finite subset of $\mathcal P$ has an
+upper bound exactly when its members agree on overlapping domains, the union then being a finite upper bound. Let $\mathcal Y$ be given by
+\cref{osq:cr:lem:compat}. Pairwise compatibility makes $h=\bigcup\mathcal Y$ a class function. If a nonempty set $B$ were not in its domain, fix
+$b\in B$: the singleton function $\{(B,b)\}$ is compatible with every finite subfamily of $\mathcal Y$ (the union of such a subfamily and
+$\{(B,b)\}$ is a finite upper bound), so it could be adjoined to $\mathcal Y$, and maximality would put it in $\mathcal Y$, contradicting the omission of
+$B$. Hence $h(B)\in B$ for every nonempty set $B$, and $h$ is a global choice function.
+\end{proof}
+
+\begin{remark}[The quantifier restriction matters \src{24}]\label{osq:cr:rem:restricted}
+\Cref{osq:cr:thm:equivalence} does \emph{not} show that the existence of one nonarithmetic maximal ideal of $\Oz$, or even of one above every
+$1+\omega^a$, implies global choice: the converse uses arbitrary, specially built class rings, and necessity for the restricted omnific problem is a
+separate question (\cref{osq:cr:q:choice}). Likewise the ordinary maximal-ideal theorem for set rings yields choice for sets; it is the class-uniform
+version that yields global choice (24).
+\end{remark}
+
+\paragraph{Nonarithmetic maximal ideals exist.}
+
+\begin{proposition}[The arithmetic maximal ideals \src{24}]\label{osq:cr:prop:arithmetic}
+A maximal class ideal $M$ of $A$ with $M\cap D\ne0$ is $\ct^{-1}(\mathfrak p)=\mathfrak pA$ for a nonzero prime ideal $\mathfrak p$ of $D$, with
+quotient $D/\mathfrak p$. Every other maximal class ideal has $M\cap D=0$, a residue field of characteristic $0$, and $M\not\subseteq\Pi_k$.
+\end{proposition}
+\begin{proof}
+If $0\ne d\in M\cap D$, then $\Pi_k=d\Pi_k\subseteq M$ (\cref{osq:prop:common}), so $M$ is the preimage of a maximal ideal of $D$
+(\cref{osq:thm:quotients}); for $D=\Z$ or $\Z[i]$ these are the nonzero prime ideals. Conversely each such preimage is maximal, since its quotient is the
+field $D/\mathfrak p$, and coefficient division gives $\ct^{-1}(\mathfrak p)=\mathfrak pA$. If $M\cap D=0$, the quotient contains a copy of $D$ and has
+characteristic $0$; and $M\subseteq\Pi_k$ would force $M=\Pi_k$ by maximality, which is impossible because $A/\Pi_k\cong D$ is not a field.
+\end{proof}
+
+For $\Oz$ the arithmetic maximal ideals are the $p\Oz$ of \cref{osq:cor:smallprimes}, and for $\GOz$ they are generated by the Gaussian primes. A
+maximal class ideal is \emph{nonarithmetic} if it is not of this form; by \cref{osq:cr:prop:arithmetic} it then satisfies the hypotheses of
+\cref{osq:if:cor:primefield}. This defines a predicate on single ideals, not a set of ideals (24).
+
+\begin{theorem}[Binomial maximal extensions \src{24}]\label{osq:cr:thm:binomialmax}
+In $\mathsf{GBC}$, for every $a\in\No_{>0}$ there is a maximal class ideal $M$ of $A$ with $1+\omega^a\in M$ and $M\cap D=0$. Every maximal
+class ideal containing $1+\omega^a$ is nonarithmetic, with a residue field of characteristic $0$.
+\end{theorem}
+\begin{proof}
+$1+\omega^a$ is a nonunit (\cref{osq:lem:units}), so $(1+\omega^a)$ is proper and \cref{osq:cr:thm:krull} gives $M$. If some maximal $M\ni1+\omega^a$
+met $D$ nontrivially, \cref{osq:cr:prop:arithmetic} would give $\omega^a\in\Pi_k\subseteq M$ and then $1\in M$.
+\end{proof}
+
+\begin{corollary}[Unit-constant fibres \src{24}]\label{osq:cr:cor:unitconstant}
+In $\mathsf{GBC}$, every nonconstant $f\in A$ with $\ct(f)\in D^\times$ lies in a maximal class ideal, and every maximal class ideal containing $f$
+has characteristic $0$.
+\end{corollary}
+\begin{proof}
+Positive degree makes $f$ a nonunit (\cref{osq:lem:units}); an arithmetic maximal ideal contains $\Pi_k$, hence $\ct(f)$, and cannot contain an element
+with unit constant term. Apply \cref{osq:cr:thm:krull}.
+\end{proof}
+
+So the quotients $\Oz/(1+g)$ and $\GOz/(1+g)$ of \cref{osq:if:cor:unitconstant}, which contain copies of $\No$ and $\SC$ and have no nonzero
+set-sized image, have characteristic-zero maximal class quotients. In 08's set-sized ring $A^{08}_\kappa$ the same element $1+X^{e_0}$ lies in a
+characteristic-zero maximal ideal by the ordinary maximal-ideal theorem, with a residue field of size $\kappa$ (\cref{osq:thm:model08}(vi) and the
+paragraph after it); 08 notes that this quotient map cannot extend to $\Oz$ with a set-sized target, and \cref{osq:cr:thm:binomialmax} supplies class-sized
+targets instead.
+
+\begin{lemma}[The same binomial quotient over $D$ and over $k$ \src{24}]\label{osq:cr:lem:coefficients}
+Inclusion induces an isomorphism of class rings
+\begin{equation}\label{osq:cr:eq:coefficients}
+ \A_{D,k}/(1+\omega^a)\A_{D,k}\ \xrightarrow{\ \sim\ }\ \A_{k,k}/(1+\omega^a)\A_{k,k}.
+\end{equation}
+The quotient is nonzero, the natural map from $k$ to it is injective, and $k$ stays embedded in every proper quotient.
+\end{lemma}
+\begin{proof}
+For $c\in k$ and $s\in\Pi_k$, the relation $\omega^a=-1$ identifies the class of $c+s$ with that of $s-c\omega^a\in\A_{D,k}$, which proves
+surjectivity. If $x\in\A_{D,k}$ and $x=(1+\omega^a)y$ with $y\in\A_{k,k}$, then $\ct(y)=\ct(x)\in D$ because $\ct$ is multiplicative on $\A_{k,k}$, so
+$y\in\A_{D,k}$; this proves injectivity. The binomial is a nonunit of $\A_{k,k}$, so the quotient is nonzero, and a nonzero $c\in k$ is a unit of
+$\A_{k,k}$, which stays a unit, hence nonzero, in every proper quotient.
+\end{proof}
+
+Both sides of \eqref{osq:cr:eq:coefficients} are $\Qa_a^k$. The embedded scalar $c\in k$ is represented in $\A_{D,k}$ by $-c\omega^a$, as after
+\cref{osq:if:lem:localization}; the embedding is a feature of the quotient and does not put $k$ inside $\A_{D,k}$. \Cref{osq:if:lem:localization}(ii)
+presents the same ring as $\Oz[\omega^{-a}]/(1+\omega^a)$, by the other inclusion.
+
+\paragraph{The exact monomial kernel at one scale.}
+
+\begin{theorem}[Exact monomial dichotomy \src{24}]\label{osq:cr:thm:cutoff}
+Let $a>0$ and $b\ge0$.
+\begin{enumerate}
+\item If $a\ll b$, then $q_a(\omega^b)=0$.
+\item Otherwise $b\le Na$ for some ordinary $N\ge1$, and $q_a(\omega^b)$ is a unit of $\Qa^k_a$ with
+\begin{equation}\label{osq:cr:eq:monomialinverse}
+ q_a(\omega^b)^{-1}=(-1)^Nq_a(\omega^{Na-b}).
+\end{equation}
+\end{enumerate}
+Consequently, for every proper ideal $J$ of $A$ containing $1+\omega^a$, prime or not,
+\begin{equation}\label{osq:cr:eq:exactmembership}
+ \omega^b\in J\iff a\ll b .
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $a\ll b$, the series
+\begin{equation}\label{osq:cr:eq:g}
+ \mathsf g_{a,b}=\sum_{n\ge0}(-1)^n\omega^{b-(n+1)a}
+\end{equation}
+has strictly decreasing, strictly positive exponents, so $\mathsf g_{a,b}\in\Pi_k$, and multiplying by the two-term series $1+\omega^a$, with at most two
+contributions at each exponent, gives
+\begin{equation}\label{osq:cr:eq:telescope}
+ (1+\omega^a)\,\mathsf g_{a,b}=\omega^b ;
+\end{equation}
+this is membership in the principal ideal, not only in its radical. If $0\le b\le Na$, then $\omega^{Na-b}\in A$ and
+$q_a(\omega^b)\,(-1)^Nq_a(\omega^{Na-b})=(-1)^Nq_a(\omega^a)^N=1$. A unit of a nonzero ring is not zero, and every proper quotient of $\Qa^k_a$ keeps
+both the zeros of (i) and the inverse equations of (ii), which gives \eqref{osq:cr:eq:exactmembership}.
+\end{proof}
+
+\begin{remark}[A second route through the localization \merge]\label{osq:cr:rem:cutofflocal}
+By \cref{osq:if:lem:localization}(ii) and \cref{osq:prop:locsupport}, $q_a(\omega^b)=0$ if and only if $\omega^b/(1+\omega^a)=\sum_{n\ge0}(-1)^n
+\omega^{b-(n+1)a}$ has support bounded below by some $-Na$, that is, $b-(n+1)a\ge-Na$ for every $n$, which holds exactly when $a\ll b$. This gives
+(i) and its converse without the inverse formula; the inverse \eqref{osq:cr:eq:monomialinverse} is the finer information of (ii).
+\end{remark}
+
+\begin{example}[The fibre $1+\omega=0$ \src{24}]\label{osq:cr:ex:omega}
+For $a=1$ the relation is $q_1(\omega)=-1$. Every monomial $\omega^b$ with $0\le b\le N$ for an ordinary $N$ is a unit, for instance $b=\sqrt2$,
+$b=1/\omega$ and every ordinary $b\ge0$; every monomial with positive infinite exponent vanishes, for instance $q_1(\omega^\omega)=0$ and
+$q_1(\omega^{\sqrt\omega})=0$. The square root $u=q_1(\omega^{1/2})$ satisfies $u^2=-1$, so $\Qa^k_1$ is not ordered by the order inherited from $\Oz$.
+\end{example}
+
+Truncation to $\operatorname{cvx}(\Z a)$ removes entire tails. Put
+\begin{equation}\label{osq:cr:eq:tails}
+ \Pi_k^{\gg a}=\{s\in\Pi_k:\ a\ll g\text{ for every }g\in\supp s\},\qquad
+ \operatorname{tr}_a\Bigl(\sum_gc_g\omega^g\Bigr)=\sum_{g\in\operatorname{cvx}(\Z a)}c_g\omega^g .
+\end{equation}
+
+\begin{proposition}[Discarding all exponents above the scale \src{24}]\label{osq:cr:prop:tails}
+$\Pi_k^{\gg a}\subseteq(1+\omega^a)A$. The truncation $\operatorname{tr}_a:A\to\A_{D,k}(\operatorname{cvx}(\Z a))$, onto the elements of $A$ supported in
+$\operatorname{cvx}(\Z a)$, is a surjective ring homomorphism with kernel $\Pi_k^{\gg a}$, and
+\begin{equation}\label{osq:cr:eq:truncatequotient}
+ \Qa^k_a\cong\A_{D,k}(\operatorname{cvx}(\Z a))/(1+\omega^a)\A_{D,k}(\operatorname{cvx}(\Z a)).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $s\in\Pi_k^{\gg a}$ multiply $s$ in the ambient Hahn field by $(1+\omega^a)^{-1}=\sum_{n\ge0}(-1)^n\omega^{-(n+1)a}$; the Hahn product is defined,
+and every exponent that can occur is $g-(n+1)a$ with $a\ll g$, which is positive. So $s/(1+\omega^a)\in\Pi_k$. If $g,h\ge0$ and $g+h\in
+\operatorname{cvx}(\Z a)$, convexity gives $g,h\in\operatorname{cvx}(\Z a)$, and if one of $g,h$ lies outside, so does $g+h$; so truncation is
+multiplicative on nonnegative supports, with the stated kernel and image. It fixes $1+\omega^a$ and induces the map \eqref{osq:cr:eq:truncatequotient},
+which is surjective, and injective because $\Pi_k^{\gg a}$ is already in the binomial ideal: if $x=(1+\omega^a)y$ is supported in
+$\operatorname{cvx}(\Z a)$, then $x=\operatorname{tr}_a(x)=(1+\omega^a)\operatorname{tr}_a(y)$.
+\end{proof}
+
+\begin{remark}[\src{24}]\label{osq:cr:rem:tails}
+The reduction does not replace the exponent group by a set: $\operatorname{cvx}(\Z a)$, and the much smaller $H_a$, are proper classes. Nor does it
+classify the elements of the binomial ideal: inside $\operatorname{cvx}(\Z a)$ different terms can cancel modulo the binomial, and the dyadic
+idempotents show substantial branching (24). The ring $\A_{D,k}(\operatorname{cvx}(\Z a))$ is $\A_{D,k}(G)$ of \eqref{osq:eq:rings} for the class group
+$G=\operatorname{cvx}(\Z a)$.
+\end{remark}
+
+\begin{corollary}[A B\'ezout identity between separated scales \src{24}]\label{osq:cr:cor:comaximal}
+If $a\ll b$, then
+\begin{equation}\label{osq:cr:eq:bezout}
+ 1=(1+\omega^b)-(1+\omega^a)\,\mathsf g_{a,b},
+\end{equation}
+so the principal ideals $(1+\omega^a)$ and $(1+\omega^b)$ are comaximal and no proper ideal contains both.
+\end{corollary}
+\begin{proof}
+Subtract \eqref{osq:cr:eq:telescope} from $1+\omega^b$.
+\end{proof}
+
+For an ordinal $\alpha$ put
+\begin{equation}\label{osq:cr:eq:ordinalscales}
+ \mathsf f_\alpha=1+\omega^{\omega^\alpha}.
+\end{equation}
+If $\alpha<\beta$, then $\omega^\beta=\omega^\alpha\omega^{\beta-\alpha}$ with $\omega^{\beta-\alpha}$ infinite, so $\omega^\alpha\ll\omega^\beta$, and the
+ideals $(\mathsf f_\alpha)$ are pairwise comaximal: a proper-class range of scales, obtained without counting a putative set of ideals (24). 09's
+comaximal ideals $(1-X^{e_\ell})$ in a set-sized ring are the same identity (\cref{osq:thm:residue}(iv)).
+
+\begin{proposition}[The abstract binomial ring does not depend on $a$ \src{24}]\label{osq:cr:prop:rescale}
+For $a,b>0$ the coefficient-fixing strong automorphism
+\[
+ \operatorname{sc}_{b/a}\Bigl(\sum_gc_g\omega^g\Bigr)=\sum_gc_g\omega^{(b/a)g}
+\]
+of $\No$ (of $\SC$ for $k=\C$) preserves $A$ and induces $\Qa^k_a\cong\Qa^k_b$.
+\end{proposition}
+\begin{proof}
+Multiplication by the positive surreal $b/a$ is an order-preserving automorphism of the additive exponent group, with inverse multiplication by $a/b$;
+it preserves reverse well-ordering and the finite-decomposition property of Hahn products, positive exponents and the constant coefficient, and it sends
+$1+\omega^a$ to $1+\omega^b$.
+\end{proof}
+
+This is the standard Hahn rescaling, not a novelty claim; it shows that the monomial cutoff is an invariant of the embedded fibre at a chosen scale,
+not evidence that the abstract quotient rings are pairwise nonisomorphic (24).
+
+\paragraph{The field core.} As explained at the start of this subsection, 24's Lemma~7.1, Theorem~7.2 and Proposition~7.4 are printed once, as
+\cref{osq:if:prop:closed,osq:lem:Ha,osq:if:lem:localization,osq:if:cor:Ea,osq:if:thm:complexkernel,osq:if:cor:primefield}. 24's proofs are the same as
+07's: the closure of $\FF_a$ and $\FF_a(i)$ is reduced polynomial by polynomial to set-sized divisible support groups, the shifted map is multiplicative
+because $\omega^axy(1+\omega^a)$ lies in the binomial ideal, $T^2+1$ is irreducible over the real closed $\FF_a$, and a unital map from a field to a nonzero
+ring is injective. 24's reservoir argument for a prime $P$ with $P\cap D=0$ and $P\not\subseteq\Pi_k$ takes $c+s\in P$ with $0\ne c\in D$, puts $v=s/c$ and
+$a$ below $\supp v$, and embeds the Hahn field over $H_a$ by $x\mapsto-q(vx)$, which is 07's transfer with $g=v$; in the real case it asserts no square
+root of $-1$ in $A/P$. Its purpose in 24, making the size statements independent of the universal theorem, is served equally by 07's versions.
+
+\begin{corollary}[Residue fields above the binomial \src{24} \merge]\label{osq:cr:cor:properfield}
+Let $M$ be a maximal class ideal of $A$ containing $1+\omega^a$, which exists in $\mathsf{GBC}$ (\cref{osq:cr:thm:binomialmax}). Then $A/M$ is a
+proper-class field of characteristic $0$ containing an isomorphic copy of $\EE_a\cong\FF_a(i)$, an algebraically closed proper-class Hahn field, and hence
+of $\SC$. No maximal ideal containing $1+\omega^a$ has a set-sized residue field.
+\end{corollary}
+\begin{proof}
+$A/M$ is a proper quotient of $\Qa^k_a$. For $k=\R$ it receives the field $\EE_a\subseteq\Qa_a$ of \cref{osq:if:cor:Ea}; for $k=\C$ it receives
+$\FF_a(i)$ by the coefficient embedding of \cref{osq:if:sub:gaussian}. A unital map from a field to a nonzero ring is injective, and $\SC$ embeds in
+$\FF_a(i)$ by \cref{osq:if:thm:compression}. The characteristic is $0$ by \cref{osq:cr:thm:binomialmax}.
+\end{proof}
+
+24 states the corollary with ``an algebraically closed proper-class Hahn subfield''; the copy of $\SC$ is the merge's addition from 07's compression.
+Neither says that $A/M$ is algebraically closed: a field can be a proper transcendental extension of an algebraically closed subfield
+(\cref{osq:cr:q:closed}).
+
+\paragraph{Continuum branching at one scale.} 24's Lemma~8.1 states that $\R[\xi_n]\cong\R[T]/(T^{2^n}+1)\cong\C^{2^{n-1}}$ inside $\Qa_a$, that
+$\R[\xi_n]\subseteq\R[\xi_{n+1}]$ via $\xi_n=\xi_{n+1}^2$ splits every primitive idempotent into two nonzero orthogonal ones, and that for $\GOz$ the
+corresponding rings are $\C^{2^n}$ from $n=0$. This is the restriction to constant coefficients of \cref{osq:if:thm:binomialkernel} (with
+\eqref{osq:if:eq:finiteCRT}, \eqref{osq:if:eq:refine}) and \cref{osq:if:thm:complexkernel}.
+
+\begin{remark}[A degree proof for constant coefficients \src{24}]\label{osq:cr:rem:dyadic}
+Work in $\A_{\R,\R}/(1+\omega^a)$, which is $\Qa_a$ by \cref{osq:cr:lem:coefficients}. A nonzero remainder $r(T)\in\R[T]$ of degree less than $2^n$ gives
+$\degw r(\omega^{a/2^n})<a$, while every nonzero multiple of $1+\omega^a$ in $\A_{\R,\R}$ has degree at least $a$ (\cref{osq:lem:units}); so the kernel of
+$T\mapsto\xi_n$ on $\R[T]$ is exactly $(T^{2^n}+1)$. The roots of $T^{2^n}+1$ are simple and form $2^{n-1}$ conjugate pairs, and under squaring each pair
+has two pairs of preimages; over $\C$ every root is its own factor with two square roots. This route needs no support description of
+$\Oz[\omega^{-a}]$, but it does not cover coefficients in $\FF_a$, which have negative exponents; 07's proof does. At $n=2$, $T^4+1=(T^2-\sqrt2T+1)
+(T^2+\sqrt2T+1)$, and 24's idempotents
+\[
+ e_\pm=\tfrac12\pm\tfrac{\sqrt2}{4}\,(\xi_2-\xi_2^3),\qquad (\xi_2-\xi_2^3)^2=2\ \text{modulo }\xi_2^4+1,
+\]
+are 07's $e_\pm$ of \eqref{osq:if:eq:firstidempotents} \merge: with $y=\xi_2$ and $\zeta=(1+y^2)/\sqrt2$, $y^4=-1$ gives $(1+y^2)(1-y^2)=2$, so
+$y/\zeta=\frac{\sqrt2}2(y-y^3)$.
+\end{remark}
+
+A \emph{branch} of 07's tree is a $2$-adic integer $z\in\Z_2$; its idempotent at stage $r$ is $e_{r,z\bmod 2^{r-1}}$, and by \eqref{osq:if:eq:refine}
+these form a decreasing chain of nonzero idempotents, $e_{r+1,z\bmod2^r}e_{r,z\bmod2^{r-1}}=e_{r+1,z\bmod2^r}$. 24 indexes the same tree by finite
+binary strings, with $e_\varnothing=1$, $e_s=e_{s0}+e_{s1}$, $e_{s0}e_{s1}=0$ and $e_s\ne0$, rooted at the first complex factor in the real case and at the
+scalar field in the Gaussian case. For $\GOz$ the stages are those of \cref{osq:if:thm:complexkernel}, $n=2^r$ with $r\ge0$, and the idempotent of $z$
+at stage $r$ is the indicator of the residue class $z\bmod2^r$; the statements below hold verbatim with this indexing.
+
+\begin{theorem}[Continuum many maximal extensions at a fixed scale \src{24}]\label{osq:cr:thm:cantor}
+In $\mathsf{GBC}$, for each $a>0$ there is a family $(\mathfrak M_{a,z})_{z\in\Z_2}$ of pairwise distinct maximal class ideals of $A$ containing
+$1+\omega^a$, encoded by a single class membership relation on $\Z_2\times A$, with $e_{r,z\bmod2^{r-1}}\equiv1$ modulo $\mathfrak M_{a,z}$ for every
+$r\ge1$. Every residue field $A/\mathfrak M_{a,z}$ has the properties of \cref{osq:cr:cor:properfield}.
+\end{theorem}
+\begin{proof}
+For $z\in\Z_2$ let $I_z$ be the ideal of $\Qa^k_a$ generated by the $1-e_{r,z\bmod2^{r-1}}$, $r\ge1$. It is proper: an equation for $1$ uses finitely
+many generators; multiplying by $e_{N,z\bmod2^{N-1}}$ for $N$ at least all stages occurring annihilates every generator used, since $e_{N,z\bmod2^{N-1}}
+(1-e_{r,z\bmod2^{r-1}})=0$ for $r\le N$, and leaves the nonzero idempotent $e_{N,z\bmod2^{N-1}}$ on the left. \Cref{osq:cr:thm:krull} extends $I_z$ to a
+maximal class ideal of $\Qa^k_a$, whose preimage in $A$ is $\mathfrak M_{a,z}$. For $z\ne z'$ choose $r$ with $z\not\equiv z'\bmod2^{r-1}$; the two
+idempotents at stage $r$ are orthogonal, and one maximal ideal containing both sets of branch equations would make their product both $0$ and $1$. With
+the global well-order the extension is a uniform class definition with the set parameters $a,z$, so the membership predicates form one class relation;
+no choice from a set of maximal class ideals is made.
+\end{proof}
+
+\begin{remark}[Evaluation at a point extends \merge]\label{osq:cr:rem:evaluation}
+For $f$ in the Cantor subalgebra \eqref{osq:if:eq:cantor}, factoring through $\Z/2^N\Z$, write $f=\sum_kc_ke_{N+1,k}$ with $c_k\in\EE_a$. Modulo
+$\mathfrak M_{a,z}$ the idempotent $e_{N+1,z\bmod2^N}$ becomes $1$ and the others, orthogonal to it, become $0$, so $f\equiv c_{z\bmod2^N}=f(z)$. Hence
+the quotient map $\Qa_a\to A/\mathfrak M_{a,z}$ restricts on the Cantor subalgebra to evaluation at $z$ (\cref{osq:if:rem:evaluation}) followed by the
+embedding of $\EE_a$ in the residue field (\cref{osq:cr:cor:properfield}). So with global choice every point evaluation of \cref{osq:if:rem:evaluation}
+extends to a homomorphism of all of $\Qa_a$ onto a field containing $\EE_a$; the extension is not unique or canonical, and its target is not $\EE_a$.
+The same holds for $\Qa_a^\C$ with $\FF_a(i)$.
+\end{remark}
+
+\begin{theorem}[Ordinal scales and binary branches together \src{24}]\label{osq:cr:thm:twoaxes}
+In $\mathsf{GBC}$ there is a class relation encoding pairwise distinct maximal class ideals $\mathfrak M_{\alpha,z}$ of $A$, $(\alpha,z)\in\On\times\Z_2$,
+with $\mathsf f_\alpha\in\mathfrak M_{\alpha,z}$, and with the quotient maps $\varpi_{\beta,z}$,
+\begin{equation}\label{osq:cr:eq:triangular}
+ \varpi_{\beta,z}\bigl(\omega^{\omega^\alpha}\bigr)=
+ \begin{cases}
+ 0,&\alpha>\beta,\\
+ -1,&\alpha=\beta,\\
+ \text{a nonzero unit},&\alpha<\beta.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \cref{osq:cr:thm:cantor} with $a=\omega^\alpha$. Different branches at one scale give different ideals; at different scales the base ideals are
+comaximal (\cref{osq:cr:cor:comaximal}), so no proper ideal contains both. The pattern \eqref{osq:cr:eq:triangular} is \cref{osq:cr:thm:cutoff} with the
+relation $\omega^{\omega^\beta}=-1$.
+\end{proof}
+
+\begin{remark}[Lower bounds, not a spectrum \src{24}]\label{osq:cr:rem:lower}
+\Cref{osq:cr:thm:cantor} is a continuum lower bound within one fibre: it does not say that all maximal ideals of the fibre are indexed by $\Z_2$, nor that
+$\Qa^k_a$ is a ring of functions on Cantor space. \Cref{osq:cr:thm:twoaxes} is a uniform class-family statement. In two-sorted class theory the
+collection of \emph{all} proper class ideals is not a class of set-valued elements, so no cardinality of it and no class-sized Zariski space with it as
+points is asserted (24). The ordinal family changes the embedded scale, and by \cref{osq:cr:prop:rescale} the abstract fibres are isomorphic, so it
+gives no larger same-fibre bound (\cref{osq:cr:q:branching}).
+\end{remark}
+
+\paragraph{Separation and realization in the surcomplex field.}
+
+\begin{theorem}[Characteristic-zero maximal separation \src{24}]\label{osq:cr:thm:separation}
+In $\mathsf{GBC}$, for every $0\ne x\in A$ there is a characteristic-zero maximal class ideal $\mathfrak M_x$ with $x\notin\mathfrak M_x$ and
+\begin{equation}\label{osq:cr:eq:separating}
+ 1-\omega x\in\mathfrak M_x .
+\end{equation}
+Its residue field is a proper class. So every nonzero element of $A$ lies outside some nonarithmetic maximal class ideal: the nonarithmetic maximal
+ideals have zero intersection in this elementwise sense.
+\end{theorem}
+\begin{proof}
+As $x\ne0$ has nonnegative support, $\omega x$ is a nonzero purely infinite element, so $1-\omega x$ is nonconstant with constant term $1$ and
+\cref{osq:cr:cor:unitconstant} gives a characteristic-zero maximal ideal containing it; if it contained $x$ it would contain $\omega x$ and $1$.
+By \eqref{osq:cr:eq:separating} the image of $\omega$ is the inverse of the image of $x$. The residue field contains a copy of $\No$ by
+\cref{osq:if:cor:primefield}, since the ideal is nonarithmetic (\cref{osq:cr:prop:arithmetic}); 24 cites its reservoir Proposition~7.4.
+\end{proof}
+
+The intersection of the arithmetic maximal ideals is $\Pi_k$, since their membership conditions are divisibility conditions on the constant term and
+the nonzero primes of $D$ intersect in $0$; the tails invisible to every arithmetic residue field are separated by the nonarithmetic class residue fields.
+The Jacobson radical, expressed by the unit criterion without forming a collection of ideals, is
+\[
+ \Jac(A)=\{x\in A:1-rx\text{ is a unit for every }r\in A\}=0,
+\]
+already because $1-\omega x$ is a nonunit for $x\ne0$ (\cref{osq:lem:units}); 24 regards this as an elementary consequence. \Cref{osq:cr:thm:separation}
+realizes it by nonarithmetic maximal ideals, with the foundation stated. 09 proves the set-sized analogue for its rings (\cref{osq:thm:residue}).
+
+\begin{theorem}[Embedding a class field in $\SC$ \src{24}]\label{osq:cr:thm:universalfield}
+In $\mathsf{GBC}$, every set or class field $\mathbb K$ of characteristic $0$ has a unital field embedding into $\SC$, and every embedding into $\SC$ of a
+set-sized subfield $\mathbb K_0\subseteq\mathbb K$ extends to one of $\mathbb K$.
+\end{theorem}
+\begin{proof}
+Fix a set-like enumeration $(x_\alpha)$ of $\mathbb K$ and build compatible embeddings $e_\alpha:\mathbb K_\alpha\to\SC$ of set-sized subfields, starting
+from the prescribed one (or from the canonical embedding of $\Q$). At a successor stage do nothing if $x_\alpha\in\mathbb K_\alpha$. If $x_\alpha$ is
+algebraic over $\mathbb K_\alpha$, transport its minimal polynomial by $e_\alpha$ and send $x_\alpha$ to the least root in $\SC$ in the global
+well-order; $\SC$ is algebraically closed. If $x_\alpha$ is transcendental, send it to an element of $\SC$ transcendental over $e_\alpha(\mathbb K_\alpha)$:
+the polynomials over a set field form a set, each nonzero one has finitely many roots, and the proper class $\SC$ is not exhausted by this set of
+algebraic elements. At limits take unions; a set ordinal indexes a set of sets, and each $\mathbb K_\alpha(x_\alpha)$ is a set, described by finite
+rational expressions. These are set-valued recursions as above, and the union is the required class embedding.
+\end{proof}
+
+This is the standard universality argument for an algebraically closed field with more than set-many transcendence resources; 24 includes it so as not to
+assume a classification of the residue fields or that they are algebraically closed.
+
+\begin{corollary}[Algebraically closed class fields \src{24}]\label{osq:cr:cor:acfiso}
+In $\mathsf{GBC}$, every proper-class algebraically closed field of characteristic $0$ is isomorphic, as an abstract class field, to $\SC$.
+\end{corollary}
+\begin{proof}
+Run the construction of \cref{osq:cr:thm:universalfield} back and forth along ordinal enumerations of both fields, alternately putting the next source
+element in the domain and the next target element in the range; both fields are algebraically closed and have elements transcendental over each
+set-sized subfield, every stage is a set partial isomorphism, and the union is bijective.
+\end{proof}
+
+This is the class back-and-forth of the surcomplex-automorphism report (\nolinkurl{saut:thm:acfhomogeneity} \cite{RepoSaut}, which extends every isomorphism
+between set-sized subfields of two proper-class algebraically closed fields of the same characteristic) and of \nolinkurl{fkc:sb:lem:backforth}
+\cite{RepoFKC}; 24's corollary is the case of prime subfields in characteristic $0$.
+
+\begin{theorem}[Residual surcomplexity \src{24}]\label{osq:cr:thm:residually}
+In $\mathsf{GBC}$, every nonarithmetic maximal class ideal of $A$ is the kernel of a unital class ring homomorphism $A\to\SC$ whose image is a
+proper-class field, and these homomorphisms together separate the points of $A$. In particular, for every $a>0$ there is a unital homomorphism
+\begin{equation}\label{osq:cr:eq:complexspecial}
+ \operatorname{sp}_a:\Oz\longrightarrow\SC,\qquad \operatorname{sp}_a(\omega^a)=-1,
+\end{equation}
+which can be chosen with
+\begin{equation}\label{osq:cr:eq:scalarspecial}
+ \operatorname{sp}_a(\omega^{a/2})=i,\qquad \operatorname{sp}_a(r\omega^a)=-r\quad(r\in\R).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Code the maximal quotient as a class field and compose the quotient map with an embedding from \cref{osq:cr:thm:universalfield}; the kernel is the given
+ideal, and the image is a proper class by \cref{osq:if:cor:primefield}. \Cref{osq:cr:thm:separation}, applied to a nonzero difference, separates points.
+For \eqref{osq:cr:eq:complexspecial} take a maximal ideal containing $1+\omega^a$. For \eqref{osq:cr:eq:scalarspecial} note that its residue field
+contains the set-sized field $\C$ formed from the embedded $\R$ of \cref{osq:cr:lem:coefficients} and the class $u$ of $\omega^{a/2}$, with
+$u^2=-1$; prescribe its embedding into $\C\subseteq\SC$ by $u\mapsto i$ and the identity on $\R$, and use the extension clause of
+\cref{osq:cr:thm:universalfield}. Since the class of $r\omega^a$ is the embedded scalar $-r$, all the identities follow.
+\end{proof}
+
+\begin{remark}[What ``residually surcomplex'' means \src{24}]\label{osq:cr:rem:residually}
+The phrase means the separating family of \cref{osq:cr:thm:residually}. It is not residual finiteness, not a representation in a set-indexed product,
+and not a single injective homomorphism with maximal kernel; a product indexed by a proper class of class fields would need further foundations and is
+not used. It is not asserted that each residue field is isomorphic to $\SC$, nor that an embedding of a residue field is surjective (24).
+\end{remark}
+
+\begin{theorem}[Failure to preserve Hahn summability \src{24}]\label{osq:cr:thm:nonstrong}
+Let $\varphi:A\to\SC$ be a unital ring homomorphism with $\varphi(1+\omega^a)=0$ for some $a>0$. Then $\varphi$ does not send every strongly summable
+family in $A$ to a strongly summable family in $\SC$.
+\end{theorem}
+\begin{proof}
+The family $(\omega^{a/2^n})_{n\ge1}$ is strongly summable: its supports are distinct points of a strictly decreasing sequence. But
+$\varphi(\omega^{a/2^n})^{2^n}=-1$, and $T^{2^n}+1$ splits over the ordinary complex numbers, so every $\varphi(\omega^{a/2^n})$ is a nonzero ordinary
+complex number, with
+support $\{0\}$. The exponent $0$ then occurs in infinitely many members of the image family.
+\end{proof}
+
+No sum in the source is missing, since $\sum_{n\ge1}\omega^{a/2^n}$ is a valid omnific integer; its image is simply not the strong sum of the images. So the specializations
+do not contradict rigidity theorems for strong maps: they have nonzero kernels and fail even to preserve summability. A homomorphism satisfying
+\eqref{osq:cr:eq:complexspecial} cannot take values in an ordered field, since the image of $\omega^{a/2}$ squares to $-1$; the inclusion
+$\Oz\hookrightarrow\No$ is a different homomorphism (24).
+
+\paragraph{Primes read term by term.} The monomial-prime and convex-face mechanism of ordered monoid algebras is standard; 24 uses it to delimit the
+support-controlled part of the prime ideals, not to suggest that every omnific prime is a monomial prime.
+
+\begin{definition}[\src{24}]\label{osq:cr:def:termclosed}
+An ideal $P\subseteq A$ is \emph{term-closed} if for every $x\in P$ every nonzero normal-form term of $x$, including its constant term, lies in $P$; it
+is \emph{strongly sum-closed} if the strong sum of every set-indexed strongly summable family of elements of $P$ lies in $P$.
+\end{definition}
+
+For a convex subgroup $H\subseteq\No$ put
+\begin{equation}\label{osq:cr:eq:PH}
+ \Pi_k^{>H}=\{s\in\Pi_k:\supp s\cap H=\varnothing\}=\{s\in\Pi_k:g>H\text{ for every }g\in\supp s\};
+\end{equation}
+the two descriptions agree because a positive element outside a convex subgroup lies above it. The endpoints are $\Pi_k^{>\{0\}}=\Pi_k$ and
+$\Pi_k^{>\No}=0$, and $\Pi_k^{\gg a}=\Pi_k^{>\operatorname{cvx}(\Z a)}$.
+
+\begin{theorem}[Support-closed primes \src{24}]\label{osq:cr:thm:termprimes}
+The prime class ideals of $A$ that are both term-closed and strongly sum-closed are exactly
+\begin{enumerate}
+\item the ideals $\mathfrak pA$ for a nonzero prime ideal $\mathfrak p$ of $D$, and
+\item the ideals $\Pi_k^{>H}$ for a convex subgroup $H\subseteq\No$, with $H$ unique.
+\end{enumerate}
+None of the characteristic-zero primes in this list is maximal.
+\end{theorem}
+\begin{proof}
+If $P$ meets $D$ nontrivially, $\Pi_k\subseteq P$ (\cref{osq:prop:common}), $P\cap D$ is a nonzero prime of $D$ and $P=\ct^{-1}(P\cap D)=(P\cap D)A$;
+such ideals have both closure properties, their only condition being divisibility of the constant term. Suppose $P\cap D=0$. Term-closedness gives
+$P\subseteq\Pi_k$. For $g>0$ and $r\in k^\times$ the identities $(r\omega^g)^2=\omega^g(r^2\omega^g)$ and $(\omega^g)^2=(r\omega^g)(r^{-1}\omega^g)$, all of
+whose factors lie in $A$, and primality give
+\begin{equation}\label{osq:cr:eq:coeffindependence}
+ r\omega^g\in P\iff\omega^g\in P .
+\end{equation}
+Let $F=\{g\ge0:\omega^g\notin P\}$. It contains $0$, is closed under addition by primality, and is downward closed: if $0\le h\le g\in F$ and
+$\omega^h\in P$, then $\omega^g=\omega^h\omega^{g-h}\in P$. So $H=F-F$ is a convex subgroup with $H\cap\No_{\ge0}=F$ (a nonnegative difference $f_1-f_2$ is
+at most $f_1\in F$). Term-closedness and \eqref{osq:cr:eq:coeffindependence} make every support in $P$ avoid $H$; conversely, if $s\in\Pi_k$ has support
+avoiding $H$, its terms lie in $P$ by \eqref{osq:cr:eq:coeffindependence}, they form a strongly summable set-indexed family, and $s\in P$. So
+$P=\Pi_k^{>H}$. Conversely, deleting the exponents outside $H$ is, as in \cref{osq:cr:prop:tails}, a ring retraction $A\to D\oplus\Pi_k(H)$ onto a domain
+with kernel $\Pi_k^{>H}$, so $\Pi_k^{>H}$ is prime, and both closure properties are clear from the support description. $H$ is recovered from the
+nonnegative monomials outside the ideal. Finally $\Pi_k^{>H}\subseteq\Pi_k$, which is proper and not maximal since $A/\Pi_k\cong D$.
+\end{proof}
+
+\begin{corollary}[A maximal binomial kernel is not a support ideal \src{24}]\label{osq:cr:cor:notsupport}
+A maximal ideal containing $1+\omega^a$ is not term-closed: it contains the two-term series $1+\omega^a$ and neither of its terms. Its monomials are
+nevertheless exactly the $\omega^b$ with $a\ll b$ (\cref{osq:cr:thm:cutoff}).
+\end{corollary}
+
+There is no tension: a monomial kernel records what happens to isolated scales, not how sums of surviving terms cancel, and the dyadic branch choices
+and the binomial equation live in that additional information (24).
+
+\paragraph{Dependencies and plausible but incorrect arguments (24).} The existence theorem is short only after the foundations are supplied; its chain is
+$\mathsf{GC}\Rightarrow$ a set-like enumeration $\Rightarrow$ finite-witness recursion $\Rightarrow$ maximal class extension, and normal-form degree
+(properness of the binomial ideal) and scalar divisibility of $\Pi_k$ (no arithmetic extension) connect it to $\Oz$ and $\GOz$. The monomial cutoff is
+independent of the maximal-ideal construction: it concerns the concrete principal ideal, and its only infinite calculation is the strongly summable
+identity \eqref{osq:cr:eq:telescope}. The continuum branching needs the finite dyadic algebras and one maximal extension per branch; the surcomplex
+realization needs algebraic closedness of $\SC$ and set-valued field recursion; the support-prime classification uses primality, coefficient identities,
+convexity and the two closure hypotheses, and is not used to construct maximal ideals. 24 lists eight distinctions on which its proofs depend.
+\begin{enumerate}
+\item A proper ideal is not a set of generators: $I$ and the ideals at the stages may be proper classes; the recursive state is the set $S_\alpha$, and
+membership is a finite formula with $I$ as a class parameter.
+\item A class quotient is not a collection of literal cosets; least-representative coding in $\mathsf{GBC}$, or Scott coding in $\mathsf{GB}$, keeps its
+elements set-valued.
+\item The converse choice theorem has universal scope: it concerns every class ring and gives no lower bound for the choice strength of the omnific ring.
+\item Infinite telescoping is a support assertion: every exponent in \eqref{osq:cr:eq:g} must stay positive, so $b>a$ in place of $a\ll b$ would invalidate
+it, and for $b\le Na$ the opposite holds, the monomial being a unit.
+\item Finite product factors do not become prime by declaration: a dyadic branch first gives a proper ideal, and the class Krull construction extends it
+to a maximal one.
+\item Containing an algebraically closed field is not algebraic closedness.
+\item An algebraic homomorphism is not a strong homomorphism: the source sum in \cref{osq:cr:thm:nonstrong} is valid, its image family is not strongly
+summable, and no interchange of the map with the sum is allowed.
+\item Computations certify only finite examples: 24's checks test finite greedy constructions, polynomial identities, finite dyadic product algebras and
+finite-rank support examples, not class recursion, all surreal supports, global choice or priority.
+\end{enumerate}
 
 \section{Integral closure, complete integral closure, and invisible equations}
 \label{osq:sec:closure}
@@ -9699,6 +10444,608 @@ denominator detection with invariance under positive-support additions; and the 
 mechanism. Its proofs need neither algebraic closedness of $\SC$, nor differentiation, nor a topology, and $\omega^\gamma$ is the normal-form monomial,
 not an analytic exponential.
 
+\subsection{Semialgebraic preservers: smooth rigidity and bounded-scale flexibility}\label{osq:sa:sub:semialgebraic}
+
+This subsection is manuscript~25's (\cref{osq:sub:sources}). It answers the first clause of \cref{osq:ft:q:maps}(a) for globally smooth maps: over any
+real closed field $E$ with a cofinal discretely ordered subring $B$, a globally $C^\infty$ semialgebraic map $E^r\to E^{r'}$ maps $B^r$ into $B^{r'}$ if
+and only if its coordinates are integer-valued polynomials in $\Num_r(B)$ (\cref{osq:sa:thm:smoothmany}), and for a scalar graph of degree at most
+$\mathsf D$ global $C^{\mathsf D^2}$ regularity suffices in every dimension; for $\Oz$ and $\GOz$ this gives finite binomial expansions with omnific
+coefficients (\cref{osq:sa:cor:explicit,osq:sa:thm:complexreal}). Without smoothness every semialgebraic preserver is still polynomial on each of its
+two tails (\cref{osq:sa:thm:tails}), but on a bounded interval it can be far from polynomial: $\omega^b\sqrt x$ is omnific for every omnific $x\in[0,
+\omega^a]$ exactly when $a\ll b$ (\cref{osq:sa:thm:radical}), the same threshold as \cref{osq:cr:thm:cutoff}; for every ordinary $\mathsf k$ an explicit
+$C^{\mathsf k}$ bump sends $\Oz$ into $\Pi$ and agrees with no finite family of polynomials on $\Oz$ (\cref{osq:sa:thm:bumps}); and no set-sized sample
+tests preservation, even for the globally $C^\infty$ branch of an irreducible quadratic graph (\cref{osq:sa:thm:nosettests}). So the answer to the first
+clause of \cref{osq:ft:q:maps}(a) is complete for globally $C^\infty$ semialgebraic maps in every dimension and negative, as far as polynomial or
+finitely piecewise polynomial descriptions go, below that regularity; the certificate clause is answered negatively for samples chosen independently of
+the coefficients, and coefficient-adapted certificates stay open.
+
+25 pins \texttt{738a390} (23 September 2026), whose text of this report is the same blob as at 24's pin, the text after the sixth merge. It read
+selected parts: the numerical polynomials, the rational-map results and 22's non-claim (10), which leaves algebraic and semialgebraic maps unclassified
+and names $|X|$. Printed once, under 10's labels, are the decomposition of the numerical polynomials with its Newton coefficients
+(25's Proposition~5.3, \cref{osq:pm:thm:numreal,osq:pm:thm:grid}) and its Gaussian form in one variable (25's Proposition~9.3,
+\cref{osq:pm:thm:numgaussian} with $r=1$); 25 proves the additive decompositions again, with 10's arguments, and credits them to this report. 25's two-tail theorem (\cref{osq:sa:thm:tails}) generalizes the
+\emph{Collapse} and \emph{Filling} steps of 18's \cref{osq:or:thm:rational} from rational functions over a discretely ordered ring to semialgebraic
+functions over a real closed field in which the ring is cofinal; the mechanism, a finite difference below $1$ at lattice points that the discrete gap makes
+exactly $0$, is 18's, which 25 credits only as ``rational-collapse context''. The sufficiency half of its absorption theorem (\cref{osq:sa:thm:absorption})
+contains \cref{osq:lem:Ha}(ii), 07's \cref{osq:if:lem:gf} and the freshness of 16's \cref{osq:fs:lem:fresh}; its quadratic no-set-test theorem refines
+\cref{osq:fs:thm:nosmall} and \cref{osq:ft:rem:deceiver}, whose witnesses are rational functions with a pole in $\No$; and its removal of exceptions
+extends \cref{osq:fs:thm:cosmall,osq:ft:thm:exceptions} from rational functions to globally $C^\infty$ semialgebraic ones. 25 credits as antecedents
+the definable integer-valued rigidity of Jones--Thomas--Wilkie and of Bhardwaj--McCulloch--Ramachandran--Woo \cite{JTW,BMRW}, the finite-difference
+strategy, finite-order detection of smoothness and nonflatness of tame functions \cite{Miller,BCR}, Hahn-field real closedness \cite{LM}, Newton
+interpolation and this report's numerical-polynomial arithmetic and fresh-scale sampling obstructions. It names as its principal candidate
+contributions the combination of the cofinal smooth classification with the exact bounded-scale obstruction, the explicit family separating every finite
+order of smoothness from $C^\infty$, and the fixed-degree quadratic sampling obstruction; its bounded-window theorem controls a proper class of inputs at
+once, not only the denominators of one set of values. The numbering of 25 cited here is that of its own
+manuscript.
+
+\paragraph{Conventions and renamings.} $E$ is a real closed ordered field and $B\subseteq E$ a unital subring that is \emph{discretely ordered}, $1$
+being its least positive element, as for 18's rings (\cref{osq:or:sub:outputs}), and \emph{cofinal}: every element of $E$ lies below some element of $B$.
+Every integer part of a real closed field satisfies both conditions, and the proofs use no floor function; $\Z$ is not cofinal in a
+non-Archimedean field. $\Oz$ is a cofinal discretely ordered subring of $\No$: a nonconstant omnific integer has a positive leading exponent and so
+exceeds every ordinary real in absolute value, and a monomial above the leading scale of a given surreal is omnific (25). A function $E^r\to E$ is
+\emph{semialgebraic} if its graph is defined by a finite ordered-field formula with finitely many parameters from $E$, which by quantifier elimination may
+be taken quantifier-free; the predicate $x\in B$ (or $x\in\Oz$) is \emph{not} allowed in the formula, and preservation of $B$ is a separate hypothesis.
+Differentiability is taken in the order topology of $E$, all positive elements of $E$ being tolerances; $C^{\mathsf k}$ means continuous partial
+derivatives through order $\mathsf k$, and global $C^\infty$ means $C^{\mathsf k}$ for every ordinary $\mathsf k$. Exponents follow
+\cref{osq:sub:orientation} (25's growth convention). For a divisible ordered subgroup or subclass $H\subseteq\No$,
+\begin{equation}\label{osq:sa:eq:KH}
+ K_H=\{x\in\No:\supp x\subseteq H\},\qquad H^{\uparrow}=\{\gamma\in\No:\gamma>h\text{ for every }h\in H\};
+\end{equation}
+for a set $H$ this is 16's Hahn field $K_H$ with $k=\R$, and $K_{H_a}=\FF_a$. $T=\omega^a$ is the actual monomial, as in
+\cref{osq:bb:sub:branching,osq:rm:sub:cyclic}, and $a\ll b$ is the relation of \eqref{osq:eq:Ha}. For an ordinary $\mathsf D\ge1$, a \emph{degree-$\mathsf
+D$ graph description} of $f:E^r\to E$ is a quantifier-free Boolean formula defining the graph of $f$ whose polynomial atoms all have total degree at most
+$\mathsf D$; the number of atoms is finite but not bounded, and the coefficients are arbitrary elements of $E$. 25's symbols are renamed as follows.
+\begin{itemize}
+\item Its real closed field $F$ and cofinal discrete ring $R$ are $E$ (the ambient field, as in \cref{osq:or:sub:outputs,osq:ft:sub:tests}) and $B$ (18's
+letter; $\B$ is the ring $D+\mm_k$); its input and output dimensions $n,m$ are $r,r'$, as in $\Num_r$; the order $m$ of its finite differences is $s$, as in
+the proof of \cref{osq:or:thm:rational}.
+\item Its graph degree $D$ is $\mathsf D$ and its smoothness order $k$ is $\mathsf k$ ($D$ is the constant ring and $k$ the coefficient field); so its
+$C^{D^2}$, $C^k$ and $s(D)$ are $C^{\mathsf D^2}$, $C^{\mathsf k}$ and $\mathsf s(\mathsf D)$. $C^{\mathsf k}$ is a regularity class, not a fibre
+$\mathsf C(G)$ or a set $C_j$.
+\item Its convex subgroup $H_a=\{\gamma:|\gamma|\le na\text{ for some }n\}$ is $\operatorname{cvx}(\Z a)$, as in \cref{osq:cr:sub:residues}; it is the
+\emph{opposite} of this report's $H_a$ of \eqref{osq:eq:Ha}, which collects the exponents infinitesimal relative to $a$. Its $K_H$ keeps its name,
+extended to classes, and its $H^+$ is $H^{\uparrow}$ ($\kappa^+$ is a successor cardinal).
+\item Its multiplier $L=\omega^b$ is written $\omega^b$ ($L(M)$ is 14's module and $L_h$ 03's field); its bumps $B_k$ are $\mathfrak b_{\mathsf k}$ ($\B$ is
+the negative-support ring); its ring $\mathcal E_R$ of semialgebraic preservers and ideal $\mathcal B_R$ of bounded-region ones are $\operatorname{SA}(B)$
+and $\operatorname{SA}_{\mathrm b}(B)$ ($\EE_a$ is 07's field and $\mathsf B_\R$ 19's fibre).
+\item Its test function $G_b$ is $\mathsf r_b$ ($G$ is a group), its shears $S_k$ are $\operatorname{Sh}_{\mathsf k}$ ($S$ is a set of points), and in
+proofs its polynomial $A(x,h)$, bound $M$ and Lagrange basis $\ell_j$ are $\mathsf u(x,h)$, $M_0$ and $\mathsf l_j$.
+\end{itemize}
+Five tempting readings are false. (1) 25's $H_a$ is $\operatorname{cvx}(\Z a)\supsetneq H_a$; its threshold ``$b>na$ for every $n$'' is $a\ll b$, not
+$b\in H_a$. (2) Ordinary shifts are not cofinal: $\Z$ is not cofinal in a non-Archimedean $E$, so extrapolation must use a large step in $B$
+(\eqref{osq:sa:eq:extrapolation}). (3) A finite difference below $1$ is an estimate; it becomes $0$ only at lattice points, by the discrete gap, and
+semialgebraicity then spreads the zero set to a ray. (4) Rolle's theorem, the mean-value theorem and the identity principle are used only for
+semialgebraic functions and finite derivative orders, never for arbitrary functions on $\No$ (\cref{osq:sa:rem:calculus}). (5) The multiplier acts on
+supports: $|\omega^b\phi(x)|>1$ does not make $\omega^b\phi(x)$ omnific, since an infinite surreal may still have negative support.
+
+\paragraph{Polynomial rigidity on the two tails.}
+
+\begin{lemma}[Polynomial and reciprocal growth \src{25}]\label{osq:sa:lem:growth}
+If $g:(c_0,\infty)\to E$ is semialgebraic, there are an ordinary $d\ge0$ and $C>0$ in $E$ with $|g(x)|\le Cx^d$ for all sufficiently large $x$. If a
+semialgebraic $h$ is nonzero on $(c,c+\delta)$, then, after shrinking $\delta$, $|h(c+t)|\ge Ct^N$ for $0<t<\delta$, some $C>0$ and an ordinary $N\ge0$;
+similarly on the left of $c$.
+\end{lemma}
+\begin{proof}
+A graph has empty interior, so in a quantifier-free description at every graph point some nonzero defining polynomial vanishes (otherwise all signs are
+locally constant and the formula contains an open box). There are finitely many of them, so after a finite semialgebraic partition, on a final interval
+$Q(x,g(x))=0$ for a nonzero $Q\in E[X,Y]$ of positive degree in $Y$, whose leading coefficient in $Y$ is nonzero for large $x$. The root bound
+$|y|\le1+\sum_{j<q}|a_j/a_q|$ for $a_qy^q+\cdots+a_0=0$ (compare the leading term with the others when $|y|>1$) bounds $g(x)$ by finitely many rational
+functions of $x$, hence by $Cx^d$. For the second assertion apply the first to $u\mapsto1/|h(c+1/u)|$ on a final ray and substitute $u=1/t$. No
+Archimedean assumption and no convergent real sequence is used.
+\end{proof}
+
+The same graph argument shows semialgebraic smoothness on small intervals: take a squarefree irreducible factor of $Q$ involving $Y$; its resultant with
+its $Y$-derivative is a nonzero polynomial in $X$, away from whose finitely many zeros a branch is a simple algebraic root, differentiable to every finite
+order by the semialgebraic implicit-function theorem; monotonicity follows after further finite partition (25). One-variable semialgebraic functions are
+eventually monotone and eventually $C^{\mathsf k}$ for each fixed $\mathsf k$, their derivatives are semialgebraic, and Rolle's and the mean-value theorem
+hold for them; these, quantifier elimination and a semialgebraic subset of the line being a finite union of points and intervals are the standard facts of
+real algebraic geometry used \cite{BCR}.
+
+\begin{remark}[What is not transferred \src{25}]\label{osq:sa:rem:calculus}
+The mean-value theorem is not asserted for arbitrary functions on $\No$; it is used only for semialgebraic functions and a fixed finite derivative order,
+where it holds over every real closed field by real-algebraic methods. This excludes the known pathologies of unconstrained surreal-valued calculus (25).
+\end{remark}
+
+\begin{lemma}[A derivative lowers the growth \src{25}]\label{osq:sa:lem:derivative}
+If $g$ is semialgebraic and eventually $C^1$ with $|g(x)|\le Cx^j$ eventually, $j\in\Z$, then $|g'(x)|\le C'x^{j-1}$ eventually for some $C'>0$.
+\end{lemma}
+\begin{proof}
+Eventually $|g'|$ is monotone. If it is nondecreasing, the mean-value theorem on $[x,2x]$ gives $|g'(x)|\le|g'(\xi)|=|g(2x)-g(x)|/x\le
+C(2^j+1)x^{j-1}$; if it is nonincreasing, $[x/2,x]$ gives $|g'(x)|\le2C(1+2^{-j})x^{j-1}$. The constants lie in $E$; no real uniformity is needed.
+\end{proof}
+
+\begin{lemma}[Small high differences \src{25}]\label{osq:sa:lem:differences}
+For a semialgebraic $f:E\to E$ there is an ordinary $s\ge1$ such that $\Delta^sf(x)=\sum_{j=0}^s(-1)^{s-j}\binom sjf(x+j)$ satisfies $|\Delta^sf(x)|<1$
+for all sufficiently large $x$.
+\end{lemma}
+\begin{proof}
+Take $|f(x)|\le Cx^d$ (\cref{osq:sa:lem:growth}) and $s=d+1$. On a final ray $f$ is $C^s$, and \cref{osq:sa:lem:derivative} applied $s$ times gives
+$|f^{(s)}(x)|\le C_s/x$. The interpolating polynomial of $f$ at $x,x+1,\dots,x+s$ has leading coefficient $\Delta^sf(x)/s!$, and repeated Rolle applied to
+the difference gives $\Delta^sf(x)=f^{(s)}(\xi)$ with $x<\xi<x+s$; take $x>C_s$.
+\end{proof}
+
+\begin{lemma}[A semialgebraic difference kernel \src{25}]\label{osq:sa:lem:kernel}
+A semialgebraic function with $\Delta^sf=0$ on a final ray agrees on a final ray with a polynomial of degree at most $s-1$.
+\end{lemma}
+\begin{proof}
+A semialgebraic $g$ with $g(x+1)=g(x)$ on a final ray is constant there, being eventually constant or strictly monotone. Applied to
+$\Delta^{s-1}f$ this gives a constant $c$, and since $\Delta\binom Xj=\binom X{j-1}$, $f-c\binom X{s-1}$ has vanishing $(s-1)$st difference on a
+final ray; induce on $s$.
+\end{proof}
+
+\begin{lemma}[Tail values determine membership \src{25}]\label{osq:sa:lem:tailmembership}
+Let $B\subseteq E$ be cofinal and $P\in E[X]$ of degree at most $d$. If $P(a)\in B$ for all sufficiently large $a\in B$, then $P(B)\subseteq B$.
+\end{lemma}
+\begin{proof}
+Fix $a\in B$. By cofinality there is a positive $h\in B$ such that all $a+jh$, $1\le j\le d+1$, lie in the allowed tail, and the vanishing of the
+$(d+1)$st difference with step $h$ gives
+\begin{equation}\label{osq:sa:eq:extrapolation}
+ P(a)=\sum_{j=1}^{d+1}(-1)^{j+1}\binom{d+1}jP(a+jh)\in B .
+\end{equation}
+The step $h$ may be an infinite element of $B$; an ordinary integer step would not reach the tail in a non-Archimedean field.
+\end{proof}
+
+\begin{theorem}[Two-tail polynomiality \src{25}]\label{osq:sa:thm:tails}
+Let $B$ be a cofinal discretely ordered subring of the real closed field $E$. If $f:E\to E$ is semialgebraic and $f(B)\subseteq B$, there are unique
+$P_-,P_+\in\Num_1(B)$ and $H>0$ with $f=P_-$ on $(-\infty,-H)$ and $f=P_+$ on $(H,\infty)$. For $P_+$ alone it suffices that $f(a)\in B$ for all
+sufficiently large $a\in B$.
+\end{theorem}
+\begin{proof}
+By \cref{osq:sa:lem:differences}, $|\Delta^sf|<1$ on a final ray. At lattice points $a$ far enough out, all $f(a+j)$ lie in $B$, so $\Delta^sf(a)\in B$
+has modulus below $1$ and is $0$. The zero set of $\Delta^sf$ is semialgebraic and contains a cofinal subset of $E$, and a finite union of points and
+intervals with that property contains a final ray. \Cref{osq:sa:lem:kernel} gives a polynomial $P_+$ on a final ray and \cref{osq:sa:lem:tailmembership}
+puts it in $\Num_1(B)$; apply the same to $x\mapsto f(-x)$ for $P_-$. Two distinct polynomials do not agree on a ray.
+\end{proof}
+
+This isolates the mechanism: semialgebraicity turns infinitely many discrete zero values into an identity on a tail, and the lattice gap supplies those
+zeros; it is a non-Archimedean adaptation of a classical finite-difference idea, not an asymptotic expansion (25). For rational functions over a
+discretely ordered ring these are the \emph{Collapse} and \emph{Filling} steps of \cref{osq:or:thm:rational} (18).
+
+Let $\operatorname{SA}(B)$ be the ring of semialgebraic functions $E\to E$ preserving $B$, and $\operatorname{SA}_{\mathrm b}(B)$ its ideal of those
+vanishing outside a bounded interval.
+
+\begin{corollary}[The two-end quotient \src{25}]\label{osq:sa:cor:germs}
+There is a split exact sequence of rings
+\begin{equation}\label{osq:sa:eq:germs}
+ 0\longrightarrow\operatorname{SA}_{\mathrm b}(B)\longrightarrow\operatorname{SA}(B)\xrightarrow{\ (P_-,P_+)\ }\Num_1(B)\times\Num_1(B)
+ \longrightarrow0,
+\end{equation}
+so $\operatorname{SA}(B)/\operatorname{SA}_{\mathrm b}(B)\cong\Num_1(B)^2$.
+\end{corollary}
+\begin{proof}
+Uniqueness of the tail polynomials makes the map a ring homomorphism, with kernel $\operatorname{SA}_{\mathrm b}(B)$; a splitting sends $(P,Q)$ to the
+function equal to $P$ on $x<0$ and to $Q$ on $x\ge0$.
+\end{proof}
+
+``Bounded'' is order-theoretic; no compactness of $[-H,H]$ is asserted. For $E=\No$ the function rings are read through finite formula codes with
+finite parameter tuples, statements about their operations pointwise; no set of arbitrary class functions is formed (25).
+
+\paragraph{Global smoothness and a degree bound.}
+
+\begin{lemma}[Smooth identity principle \src{25}]\label{osq:sa:lem:identity}
+Let $I\subseteq E$ be an interval and $h:I\to E$ semialgebraic and $C^\infty$. If $h$ vanishes on a nonempty open subinterval, it vanishes on $I$.
+\end{lemma}
+\begin{proof}
+Otherwise, since the zero set is a finite union of points and intervals, there is an interior point $c$ where a zero interval meets an adjacent interval
+on which $h\ne0$; all derivatives of $h$ vanish at $c$, by continuity from the zero side. On the other side \cref{osq:sa:lem:growth} gives $|h(c+t)|\ge
+C|t|^N$ for small $t\ne0$. If $N=0$ continuity is contradicted; if $N\ge1$, Taylor's formula with Rolle remainder, $h(c+t)=h^{(N)}(\xi_t)t^N/N!$ with
+$h^{(N)}(\xi_t)\to0$, gives $h(c+t)=o(|t|^N)$ in the order topology, a contradiction.
+\end{proof}
+
+This is the elementary semialgebraic nonflatness argument, with classical and more general antecedents \cite{Miller,BCR}; 25 uses it to propagate an
+arithmetic tail identity, not as a new identity theorem.
+
+\begin{theorem}[One-variable smooth classification \src{25}]\label{osq:sa:thm:smoothone}
+A globally $C^\infty$ semialgebraic $f:E\to E$ preserves $B$ if and only if $f$ is a polynomial in $\Num_1(B)$.
+\end{theorem}
+\begin{proof}
+$f=P_+$ on a final ray (\cref{osq:sa:thm:tails}); apply \cref{osq:sa:lem:identity} to $f-P_+$. The converse is clear.
+\end{proof}
+
+\begin{corollary}[One irreducible graph equation \src{25}]\label{osq:sa:cor:irreducible}
+If $f:E\to E$ is semialgebraic, preserves $B$ and satisfies $Q(x,f(x))=0$ for all $x$ for one irreducible nonconstant $Q\in E[X,Y]$, then $f\in\Num_1(B)$,
+without any smoothness hypothesis.
+\end{corollary}
+\begin{proof}
+On a final ray $f=P$ (\cref{osq:sa:thm:tails}), so $Q(X,P(X))$ has infinitely many roots and vanishes; division in $Y$ shows $Y-P(X)\mid Q$, and
+irreducibility makes $Q$ a scalar multiple of $Y-P(X)$, so $f=P$ everywhere.
+\end{proof}
+
+The hypothesis is one global irreducible equation; an arbitrary semialgebraic graph may switch between components, as the bumps below do at the ends of
+their support (25).
+
+\begin{theorem}[An explicit smoothness threshold \src{25}]\label{osq:sa:thm:degree}
+Let $f:E\to E$ be semialgebraic with a degree-$\mathsf D$ graph description, and suppose $f$ agrees with a polynomial $P$ on a nonempty open interval. Put
+$d=\max(0,\deg P)$ ($d=0$ also for $P=0$) and $N=\mathsf D\max(1,d)$. Then $d\le\mathsf D$, and if $f$ is globally $C^N$, then $f=P$ everywhere. In
+particular a globally $C^{\mathsf D^2}$ semialgebraic preserver of $B$ with a degree-$\mathsf D$ graph description lies in $\Num_1(B)$.
+\end{theorem}
+\begin{proof}
+At every graph point some nonzero atom vanishes. Factoring the atoms, on a subinterval of agreement one irreducible factor $Q$ vanishes along $(x,P(x))$,
+so $Y-P(X)$ divides $Q$ and $\max(1,d)\le\mathsf D$. Suppose $h=f-P\ne0$. Its semialgebraic zero set contains an open interval, so it has a boundary point
+$c$ with $h=0$ on one side and $h\ne0$ on an adjacent interval on the other, which we shrink so that one irreducible factor $Q$ of an atom vanishes along the
+graph of $f$ there. $Q$ is not a scalar multiple of $Y-P(X)$, since $f\ne P$ there, so $q(X)=Q(X,P(X))\ne0$ with $\deg q\le\mathsf D\max(1,d)=N$, and
+$q(c)=Q(c,f(c))=0$ by continuity. If $q$ vanishes to order $j_0$ at $c$, then $1\le j_0\le N$ and $|q(x)|\ge C|x-c|^{j_0}$ near $c$. On the other hand
+$Q(x,P(x)+h(x))-Q(x,P(x))=h(x)\,\mathsf u(x,h(x))$ for a polynomial $\mathsf u$, and the first term is $0$; as $h$ is continuous with $h(c)=0$,
+$|\mathsf u(x,h(x))|\le M_0$ near $c$, so $|h(x)|\ge(C/M_0)|x-c|^{j_0}$. All derivatives of $h$ through order $N$ vanish at $c$, and the Taylor argument
+of \cref{osq:sa:lem:identity} through order $j_0\le N$ contradicts this bound. For preservers, \cref{osq:sa:thm:tails} supplies the initial agreement.
+\end{proof}
+
+The bound $\mathsf D^2$ is an elementary sufficient bound, not claimed optimal; it does not depend on the size of the surreal parameters, the number of
+atoms or the ring $B$. Finite-differentiability-to-smoothness phenomena have classical antecedents \cite{Miller}; the arithmetic contact estimate is proved
+here explicitly (25). The degree is that of a quantifier-free description; a degree bound for a formula with unresolved quantifiers is a different notion
+and is not covered.
+
+\paragraph{Several variables and the numerical polynomials.}
+
+\begin{lemma}[Uniform degree of polynomial slices \src{25}]\label{osq:sa:lem:slices}
+Let $f:E^r\to E$ have a degree-$\mathsf D$ graph description. If fixing all but one coordinate gives a polynomial in the remaining one, its degree is at
+most $\mathsf D$.
+\end{lemma}
+\begin{proof}
+Specialize the fixed coordinates and discard atoms that become zero. At every point of the specialized graph some remaining nonzero atom vanishes,
+otherwise the formula would contain an open box; so one of them vanishes at infinitely many points $(t,P(t))$, hence vanishes after $Y=P(X)$ and is
+divisible by $Y-P(X)$. Its degree is at most $\mathsf D$; a constant slice is included.
+\end{proof}
+
+\begin{theorem}[Finite-dimensional smooth classification \src{25}]\label{osq:sa:thm:smoothmany}
+Let $B$ be a cofinal discretely ordered subring of the real closed field $E$. If $f:E^r\to E$ is globally $C^\infty$, semialgebraic and maps $B^r$ into
+$B$, then $f\in\Num_r(B)$. If its graph has a degree-$\mathsf D$ description, global $C^{\mathsf D^2}$ regularity suffices, independently of $r$, and
+$f$ has total degree at most $\mathsf D$. Applied coordinatewise: a globally $C^\infty$ semialgebraic map $E^r\to E^{r'}$ maps $B^r$ into $B^{r'}$ if and
+only if its coordinates lie in $\Num_r(B)$.
+\end{theorem}
+\begin{proof}
+It suffices to assume global $C^{\mathsf D^2}$ regularity for a degree-$\mathsf D$ description. Fixing all but one coordinate at elements of $B$ gives a
+semialgebraic $C^{\mathsf D^2}$ function preserving $B$ with a graph of degree at most $\mathsf D$, so by \cref{osq:sa:thm:tails,osq:sa:thm:degree} a
+polynomial of degree at most $\mathsf D$. With the Lagrange basis $\mathsf l_j$ of the nodes $\{0,1,\dots,\mathsf D\}$ put
+\begin{equation}\label{osq:sa:eq:tensor}
+ P(\mathbf X)=\sum_{\mathbf j\in\{0,\dots,\mathsf D\}^r}f(\mathbf j)\prod_{i=1}^r\mathsf l_{j_i}(X_i);
+\end{equation}
+repeated one-variable interpolation gives $f=P$ on $B^r$. A lattice is not order-dense, so equality off the lattice needs an argument. Put $h=f-P$. For
+fixed $x_2,\dots,x_r\in B$, $t\mapsto h(t,x_2,\dots,x_r)$ vanishes on $B$, so its zero set contains a final ray, and as the slice of $P$ has degree at most
+$\mathsf D$, the propagation of \cref{osq:sa:thm:degree} makes it zero on $E$: $h=0$ on $E\times B^{r-1}$. Fixing the first coordinate in $E$ and the last
+$r-2$ in $B$, the same argument in the second coordinate gives $h=0$ on $E^2\times B^{r-2}$, and so on; at each stage the slice of $f$ is $C^{\mathsf D^2}$
+with graph degree at most $\mathsf D$ and the slice of $P$ has degree at most $\mathsf D$. So $f=P$, and its values on $B^r$ put $P\in\Num_r(B)$. For the
+total degree, with the nonzero atoms $Q_j(\mathbf X,Y)$ of the description, $\prod_jQ_j(\mathbf X,P(\mathbf X))$ vanishes on $E^r$, so some
+$Q_j(\mathbf X,P(\mathbf X))$ is identically zero, $Y-P(\mathbf X)$ divides $Q_j$, and $\deg P\le\mathsf D$.
+\end{proof}
+
+No analyticity, no ordinary-real coefficients and no density of lattice points is used; the uniform complexity bound supplies one tensor interpolant
+instead of unrelated polynomials on different lines. For a map $E^r\to E^{r'}$ the bound $C^{\mathsf D^2}$ applies when each scalar coordinate graph has a
+degree-$\mathsf D$ description; a degree bound for the full vector graph must first be converted into bounds for the coordinate graphs (25).
+
+For $\Oz$, 25's Proposition~5.3 is \cref{osq:pm:thm:numreal} with the Newton coefficients of \cref{osq:pm:thm:grid}: every $P\in\Num_r(\Oz)$ is a unique
+finite sum $\sum_{\boldsymbol\alpha}c_{\boldsymbol\alpha}\binom{\mathbf X}{\boldsymbol\alpha}$ with $c_{\boldsymbol\alpha}=(\Delta_1^{\alpha_1}\cdots
+\Delta_r^{\alpha_r}P)(\mathbf 0)\in\Oz$, and $\Num_r(\Oz)=\Int(\Z^r)\oplus\Pi[\mathbf X]$ additively. 25's proof is 10's (binomial closure, the ordinary
+Newton expansion and the splitting $c=m+p$); it credits this report. $\binom X2$ is numerical although $\frac12\notin\Oz$, which is why ``polynomial''
+alone would be an incomplete arithmetic answer (25).
+
+\begin{corollary}[An explicit smooth omnific classification \src{25}]\label{osq:sa:cor:explicit}
+A globally $C^\infty$ semialgebraic map $f:\No^r\to\No^{r'}$ preserves $\Oz^r$ if and only if each coordinate has a finite expansion
+\begin{equation}\label{osq:sa:eq:newton}
+ f_j(\mathbf X)=\sum_{\boldsymbol\alpha}c_{j,\boldsymbol\alpha}\prod_{i=1}^r\binom{X_i}{\alpha_i},\qquad c_{j,\boldsymbol\alpha}\in\Oz .
+\end{equation}
+Its constant-term action at a lattice input is obtained by applying $\ct$ to every coefficient and every input.
+\end{corollary}
+\begin{proof}
+Combine \cref{osq:sa:thm:smoothmany} with \cref{osq:pm:thm:numreal,osq:pm:thm:grid}; the last assertion is \eqref{osq:pm:eq:evshadow}, since $\ct$ is
+multiplicative on nonnegative supports.
+\end{proof}
+
+The expansion is an exact algebraic description, not an algorithm on arbitrary symbolic descriptions of surreal numbers: equality, support membership and
+exact coefficient operations are not assumed decidable (25).
+
+\paragraph{Convex support fields and absorption.} Tail rigidity says nothing inside a bounded interval; there the relevant object is a convex portion of
+the exponent group, not a set of values (25).
+
+\begin{lemma}[Real closed support fields \src{25}]\label{osq:sa:lem:KH}
+For a divisible ordered subgroup or subclass $H\subseteq\No$, $K_H$ is a real closed subfield of $\No$, and a semialgebraic function defined over $K_H$
+takes an argument in $K_H$ to a value in $K_H$ whenever it is defined.
+\end{lemma}
+\begin{proof}
+Hahn operations keep supports in the group generated by the original supports, so $K_H$ is a field. For a polynomial over $K_H$ the union of the supports
+of its coefficients is a set whose divisible hull $G\subseteq H$ is a set-sized divisible group; $K_G$ is real closed \cite{LM} and embeds in $\No$ by normal
+forms, so positive elements have square roots and odd-degree polynomials have roots in $K_H$. An inclusion of real closed fields is elementary, so for
+parameters and input in $K_H$ the unique output lies in $K_H$; for a class $H$ this is a pointwise argument inside a set-sized support field containing the
+finitely many parameters and the input.
+\end{proof}
+
+This is \cref{osq:if:prop:closed} for $H=H_a$, and the same set-sized reduction.
+
+\begin{theorem}[Exact support-field absorption \src{25}]\label{osq:sa:thm:absorption}
+For $c\in\No$ and a divisible $H\subseteq\No$,
+\begin{equation}\label{osq:sa:eq:absorption}
+ cK_H\subseteq\Pi\iff\supp c\subseteq H^{\uparrow}.
+\end{equation}
+In particular $\omega^bK_H\subseteq\Pi$ whenever $b>h$ for every $h\in H$. If $H^{\uparrow}$ is empty, the only such multiplier is $c=0$.
+\end{theorem}
+\begin{proof}
+If $cK_H\subseteq\Pi$, then for each $h\in H$ the monomial $\omega^{-h}\in K_H$ translates $\supp c$ without cancellation, so every $\gamma\in\supp c$ has
+$\gamma-h>0$; hence $\gamma\in H^{\uparrow}$. Conversely, if $\supp c\subseteq H^{\uparrow}$ and $x\in K_H$, every exponent that can occur in $cx$ is
+$\gamma+\eta$ with $\gamma\in\supp c$, $\eta\in H$, and $-\eta\in H$ gives $\gamma+\eta>0$; cancellation removes exponents but cannot create a nonpositive
+one.
+\end{proof}
+
+The sufficiency half contains \cref{osq:lem:Ha}(ii) ($H=H_a$ and $c=X^{c'}$ with $2c'\ge a$, since $H_a<a/2$), 07's \cref{osq:if:lem:gf} ($H=H_a$ and
+$\supp g>a$) and the freshness of \cref{osq:fs:lem:fresh} ($H$ a set group $G$ and $b>G$) \merge. The theorem is a direct support calculation, not a
+union-of-supports argument over a proper class: $K_{\operatorname{cvx}(\Z a)}$ contains every omnific input of a bounded box and every semialgebraic value
+defined over it (25).
+
+\begin{lemma}[A bounded omnific window lies in one support field \src{25}]\label{osq:sa:lem:window}
+If $x\in\Oz$ and $|x|\le T=\omega^a$, then $\supp x\subseteq[0,a]\subseteq\operatorname{cvx}(\Z a)$.
+\end{lemma}
+\begin{proof}
+Omnific supports are nonnegative, and a leading exponent above $a$ would make $|x|>\omega^a$ whatever its nonzero real coefficient.
+\end{proof}
+
+\begin{theorem}[Bounded-window absorption \src{25}]\label{osq:sa:thm:window}
+Let $a\ll b$, $T=\omega^a$, and let $\phi:\No^r\to\No^{r'}$ be semialgebraic with parameters in $K_{\operatorname{cvx}(\Z a)}$. Then
+\begin{equation}\label{osq:sa:eq:window}
+ \Phi(\mathbf x)=\begin{cases}\omega^b\phi(\mathbf x),&|x_j|\le T\text{ for every }j,\\ 0,&\text{otherwise},\end{cases}
+\end{equation}
+is semialgebraic and $\Phi(\Oz^r)\subseteq\Pi^{r'}$. The same holds for a semialgebraic partial map, set to $0$ outside its domain and the box.
+\end{theorem}
+\begin{proof}
+The defining conditions are semialgebraic. An omnific input in the box has coordinates in $K_{\operatorname{cvx}(\Z a)}$ (\cref{osq:sa:lem:window}), so the
+outputs of $\phi$ lie there (\cref{osq:sa:lem:KH}), and $a\ll b$ means $b>\operatorname{cvx}(\Z a)$, so \cref{osq:sa:thm:absorption} moves them into $\Pi$.
+\end{proof}
+
+A multiplier always exists: $b=\omega a$, a product in $\No$, satisfies $a\ll b$, although $\operatorname{cvx}(\Z a)$ need not be a set; here
+$\omega^b$ is a normal-form monomial, not an analytic exponential (25). So no rule forces a semialgebraic lattice preserver to be locally polynomial
+throughout an infinite bounded interval: a radical, an algebraic implicit
+branch or any finite semialgebraic construction survives there after multiplication by a higher scale, and every ordinary constant-term output is $0$
+although the underlying geometry is nontrivial. The theorem asserts no regularity at the boundary of the box (the bumps below prescribe finite
+regularity), and it gives no holomorphic cutoff: the surcomplex reading is through real coordinates (25).
+
+\paragraph{The square-root threshold.}
+
+\begin{theorem}[Sharp square-root threshold \src{25}]\label{osq:sa:thm:radical}
+Let $a>0$, $b\in\No$ and $T=\omega^a$. The following are equivalent:
+\begin{enumerate}
+\item $\omega^b\sqrt x\in\Oz$ for every $x\in\Oz$ with $0\le x\le T$;
+\item $\omega^b\sqrt{T-1}\in\Oz$;
+\item $a\ll b$.
+\end{enumerate}
+Then all the values in (i) lie in $\Pi$.
+\end{theorem}
+\begin{proof}
+(i)$\Rightarrow$(ii) because $T-1$ is a positive omnific integer, and (iii)$\Rightarrow$(i), with values in $\Pi$, by
+\cref{osq:sa:lem:window,osq:sa:lem:KH,osq:sa:thm:absorption}. For (ii)$\Rightarrow$(iii) use the formal binomial expansion
+\begin{equation}\label{osq:sa:eq:radical}
+ \omega^b\sqrt{T-1}=\sum_{j\ge0}(-1)^j\binom{1/2}j\,\omega^{\,b+(1/2-j)a},
+\end{equation}
+a Hahn series, not a limit in the fine topology: its exponents strictly decrease, its square is $\omega^{2b}(T-1)$ by multiplying the formal power series,
+and its leading coefficient is positive. Every coefficient is nonzero. If $b\le na$ for an ordinary $n$, then $b+(1/2-j)a<0$ for $j>n+1$, and that exponent
+cannot cancel with another, so the value has negative support.
+\end{proof}
+
+\begin{corollary}[Other rational powers \src{25}]\label{osq:sa:cor:powers}
+If $r_0\in\Q\setminus\Z_{\ge0}$ and $x^{r_0}$ is taken in the positive real closed sense on $x>0$, then $\omega^bx^{r_0}\in\Oz$ for every $x\in\Oz$ with
+$1\le x\le\omega^a$ if and only if $a\ll b$.
+\end{corollary}
+\begin{proof}
+Sufficiency is \cref{osq:sa:thm:absorption}, positive rational powers being algebraic and so in $K_{\operatorname{cvx}(\Z a)}$. For necessity expand
+$\omega^b(T-1)^{r_0}=\sum_{j\ge0}(-1)^j\binom{r_0}j\omega^{b+(r_0-j)a}$; no binomial coefficient vanishes for $r_0\notin\Z_{\ge0}$, and without $a\ll b$ an
+exponent becomes negative for large ordinary $j$.
+\end{proof}
+
+\begin{example}[An ordinary power of the scale never suffices \src{25}]\label{osq:sa:ex:finite}
+For $a=1$ no $\omega^M$ with ordinary $M$ makes $\omega^M\sqrt x$ omnific for all omnific $x\in[0,\omega]$: already $x=\omega-1$ leaves a nonzero negative
+tail. $\omega^\omega$ works for every such $x$ at once.
+\end{example}
+
+The threshold is an Archimedean-rank statement about the \emph{exponent}: $\omega^b$ must have an exponent above every ordinary multiple of the exponent of
+$T$, not merely be larger than $T$ or a few of its powers (25).
+
+\begin{remark}[One threshold, three readings \merge]\label{osq:sa:rem:threshold}
+For $a>0$ and $b\ge0$ the following are equivalent: $a\ll b$; $q_a(\omega^b)=0$ in the binomial quotient $\Qa_a$ (\cref{osq:cr:thm:cutoff}, 24);
+$\omega^b\sqrt{\omega^a-1}\in\Oz$ (\cref{osq:sa:thm:radical}, 25); $\omega^bK_{\operatorname{cvx}(\Z a)}\subseteq\Pi$ (\cref{osq:sa:thm:absorption}); and
+$\omega^b/(1+\omega^a)\in\Oz$. All rest on one computation, the positivity of every exponent $b-ja$ of a binomial expansion in $\omega^{-a}$; 24's ideal
+$\Pi^{\gg a}$ (\eqref{osq:cr:eq:tails}) is the set of $c\in\Pi$ with $\supp c\subseteq\operatorname{cvx}(\Z a)^{\uparrow}$, the multipliers absorbing
+$K_{\operatorname{cvx}(\Z a)}$ into $\Pi$. The two sources state the threshold independently, 24 as $b\gg a$ and 25 as ``$b>na$ for every $n$''.
+\end{remark}
+
+\paragraph{Counterexamples at every finite order of differentiability.}
+
+\begin{theorem}[Finite-smoothness flexibility \src{25}]\label{osq:sa:thm:bumps}
+Let $a\ll b$ and $T=\omega^a$. For an ordinary $\mathsf k\ge0$ put
+\begin{equation}\label{osq:sa:eq:bump}
+ \mathfrak b_{\mathsf k}(x)=\begin{cases}\omega^b\,[x(T-x)]^{\mathsf k}\sqrt{x(T-x)},&0\le x\le T,\\ 0,&x<0\text{ or }x>T.\end{cases}
+\end{equation}
+\begin{enumerate}
+\item $\mathfrak b_{\mathsf k}$ is semialgebraic, globally $C^{\mathsf k}$ and not $C^{\mathsf k+1}$;
+\item $\mathfrak b_{\mathsf k}(\Oz)\subseteq\Pi$;
+\item no finite family $P_1,\dots,P_s\in\No[X]$ has $\mathfrak b_{\mathsf k}(x)\in\{P_1(x),\dots,P_s(x)\}$ for every $x\in\Oz$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+On $(0,T)$ the function is a positive algebraic branch of
+\begin{equation}\label{osq:sa:eq:bumpeq}
+ Y^2=\omega^{2b}[X(T-X)]^{2\mathsf k+1},\qquad Y>0,
+\end{equation}
+which with the zero branches outside $[0,T]$ is a finite semialgebraic description. Near $0$ on the right, $\mathfrak b_{\mathsf k}(x)=\omega^bx^{\mathsf
+k+1/2}(T-x)^{\mathsf k+1/2}$, the second factor being smooth near $0$ with value $T^{\mathsf k+1/2}\ne0$; derivatives of order $j\le\mathsf k$ have smallest
+power $x^{\mathsf k+1/2-j}$, which tends to $0$, and the same at $T$ with $T-x$, so all derivatives through order $\mathsf k$ match the zero branches (for
+$\mathsf k=0$ this is continuity). The $\mathsf k$th derivative is $A_0x^{1/2}+o(x^{1/2})$ with $A_0=\omega^bT^{\mathsf k+1/2}(\mathsf k+\frac12)(\mathsf
+k-\frac12)\cdots\frac32\ne0$ (the empty product being $1$ for $\mathsf k=0$), so its difference quotient at $0$ is unbounded as $x\downarrow0$ and
+$\mathfrak b_{\mathsf k}$ is not $C^{\mathsf k+1}$; these are order-topological statements, valid with infinite $T$ and $\omega^b$ since arbitrarily small
+surreal radii may be chosen for a prescribed surreal tolerance. For omnific $x\in[0,T]$, $x$ and $T-x$ lie in $K_{\operatorname{cvx}(\Z a)}$, and so do
+their product, its square root and its powers; multiplication by $\omega^b$ moves the value into $\Pi$ (\cref{osq:sa:thm:absorption}), and outside $[0,T]$
+the value is $0$. For (iii), $P(X)^2-\omega^{2b}[X(T-X)]^{2\mathsf k+1}\ne0$ for every $P\in\No[X]$, since the second term has odd multiplicity $2\mathsf
+k+1$ at the distinct roots $0,T$ and a square has even multiplicities; so $P$ agrees with $\mathfrak b_{\mathsf k}$ at finitely many points of $(0,T)$, and
+finitely many such sets cannot cover the ordinary positive integers, which all lie in $(0,T)$.
+\end{proof}
+
+With $a=1$ and $b=\omega$ this is 25's overview Theorem~1.2. Assertion (iii) is stronger than failing to be piecewise polynomial on a finite
+semialgebraic partition: even with arbitrary pieces, finitely many polynomial formulas do not suffice. The family shows that no coefficient-independent finite regularity order forces global
+polynomiality; it does not contradict \cref{osq:sa:thm:degree}, because the degree of \eqref{osq:sa:eq:bumpeq} grows with $\mathsf k$ (25).
+
+\begin{corollary}[Bounds for the least regularity order \src{25}]\label{osq:sa:cor:regularity}
+Let $\mathsf s(\mathsf D)$ be the least $s_0\ge0$ such that every globally $C^{s_0}$ semialgebraic preserver $\No\to\No$ of $\Oz$ with a degree-$\mathsf D$ graph
+description is a polynomial. Then $\mathsf s(1)=1$, and $1+\lfloor(\mathsf D-2)/4\rfloor\le\mathsf s(\mathsf D)\le\mathsf D^2$ for every $\mathsf D\ge2$.
+\end{corollary}
+\begin{proof}
+The upper bound is \cref{osq:sa:thm:degree}. For $\mathsf D=1$, $|X|$ is a continuous nonpolynomial preserver with a degree-one description. For $\mathsf
+D\ge2$ put $\mathsf k=\lfloor(\mathsf D-2)/4\rfloor$: the description of $\mathfrak b_{\mathsf k}$ has total degree at most $4\mathsf k+2\le\mathsf D$, its
+only high-degree atom being \eqref{osq:sa:eq:bumpeq} and its cutoff and sign conditions linear, so \cref{osq:sa:thm:bumps} gives $\mathsf s(\mathsf D)>\mathsf k$.
+\end{proof}
+
+\begin{corollary}[Finite-smoothness shears \src{25}]\label{osq:sa:cor:shears}
+For $\mathsf k\ge1$, $\operatorname{Sh}_{\mathsf k}(x,y)=(x,y+\mathfrak b_{\mathsf k}(x))$ is a semialgebraic $C^{\mathsf k}$ diffeomorphism of $\No^2$ with
+Jacobian determinant $1$ that restricts to a bijection of $\Oz^2$, and no finite family of polynomial maps represents it on $\Oz^2$.
+\end{corollary}
+\begin{proof}
+The inverse $(x,y)\mapsto(x,y-\mathfrak b_{\mathsf k}(x))$ has the same regularity and preserves $\Oz^2$; the Jacobian matrix is
+$\bigl(\begin{smallmatrix}1&0\\\mathfrak b_{\mathsf k}'(x)&1\end{smallmatrix}\bigr)$. A finite polynomial representation, restricted to the line $y=0$ and
+to the second coordinate, would contradict \cref{osq:sa:thm:bumps}(iii).
+\end{proof}
+
+These are maps of the lattice as a set, not ring automorphisms, and the Jacobian statement is a triangular calculation, not a claim about the Jacobian
+conjecture. Under $z=x+iy$, $z\mapsto x+i(y+\mathfrak b_{\mathsf k}(x))$ is a real-semialgebraic bijection of $\GOz$ that is not holomorphic in general
+(25). They are not polynomial automorphisms, so they do not bear on \cref{osq:ft:q:maps}(c), and 16's and 22's shears (\cref{osq:ft:ex:shear}) are
+polynomial.
+
+\paragraph{Surcomplex consequences.}
+
+\begin{theorem}[Surcomplex smooth classification \src{25}]\label{osq:sa:thm:complexreal}
+Identify $\SC^r$ with $\No^{2r}$. A globally $C^\infty$ real-semialgebraic map $\SC^r\to\SC^{r'}$ preserves $\GOz^r$ if and only if every real and
+imaginary coordinate lies in $\Num_{2r}(\Oz)$, that is, has a finite binomial expansion \eqref{osq:sa:eq:newton} with omnific coefficients in the $2r$ real
+coordinates.
+\end{theorem}
+\begin{proof}
+\Cref{osq:sa:thm:smoothmany,osq:sa:cor:explicit} under $\GOz^r=\Oz^{2r}$.
+\end{proof}
+
+The statement concerns the actual surcomplex lattice but is deliberately real-algebraic: it presupposes no global surreal exponential, no global sine and
+no topology in which all real analytic series converge (25).
+
+\begin{corollary}[Holomorphic polynomial rigidity \src{25}]\label{osq:sa:cor:holomorphic}
+If such a map also satisfies the Cauchy--Riemann equations in every complex input coordinate, each coordinate is a polynomial in $z_1,\dots,z_r$ alone,
+with coefficients in $\SC$, and is $\GOz$-valued on $\GOz^r$.
+\end{corollary}
+\begin{proof}
+By \cref{osq:sa:thm:complexreal} a coordinate is a polynomial in the $x_j,y_j$; the invertible linear substitution $x_j=(z_j+\bar z_j)/2$,
+$y_j=(z_j-\bar z_j)/(2i)$ makes it a polynomial in the $z_j,\bar z_j$, whose formal $\bar z_j$-derivatives vanish by the Cauchy--Riemann equations; in
+characteristic $0$ all positive powers of the $\bar z_j$ then have zero coefficients.
+\end{proof}
+
+In one variable the coefficient ring is \cref{osq:pm:thm:numgaussian} with $r=1$: the polynomials $P\in\SC[Z]$ with $P(\GOz)\subseteq\GOz$ are
+$\Int(\Z[i])\oplus\Pi_\C[Z]$ additively. This is 25's Proposition~9.3, whose proof (interpolation at $0,\dots,d$ and coefficientwise constant terms) is
+10's, and 25 credits it; it is not a Gaussian binomial-basis theorem, ordinary binomial polynomials need not be $\Z[i]$-valued on $\Z[i]$
+(\cref{osq:pm:rem:gaussnewton}), and the smooth classification must be combined with this Gaussian coefficient condition (25).
+
+\paragraph{Sampling and exceptional sets.} For polynomials of known degree finite interpolation gives exact tests; smooth algebraic branches of fixed
+degree behave differently (25).
+
+\begin{theorem}[No coefficient-independent set of quadratic tests \src{25}]\label{osq:sa:thm:nosettests}
+For every set $S\subseteq\Oz$ there is $b>0$ such that the globally $C^\infty$ semialgebraic function
+\begin{equation}\label{osq:sa:eq:testfunction}
+ \mathsf r_b(x)=\omega^b\sqrt{x^2+1}
+\end{equation}
+satisfies $\mathsf r_b(S)\subseteq\Pi$ but does not preserve $\Oz$. Its graph is one branch of an irreducible polynomial equation of total degree $2$.
+\end{theorem}
+\begin{proof}
+The supports of the $\sqrt{s^2+1}$, $s\in S$, form a set; take $b>0$ with $b+\gamma>0$ for every exponent $\gamma$ in their union (\cref{osq:lem:gap}), so
+$\mathsf r_b(S)\subseteq\Pi$. At the omnific monomial $x_b=\omega^{b+1}$ the formal binomial expansion gives
+\begin{equation}\label{osq:sa:eq:testfailure}
+ \mathsf r_b(x_b)=\omega^{2b+1}+\tfrac12\,\omega^{-1}-\tfrac18\,\omega^{-2b-3}+\cdots,
+\end{equation}
+with strictly decreasing exponents since $b>0$; the coefficient of $\omega^{-1}$ is $\frac12\ne0$ and cannot cancel, so $\mathsf r_b(x_b)\notin\Oz$. The
+graph is the positive branch of $Y^2-\omega^{2b}(X^2+1)=0$, which is irreducible in $\No[X,Y]$: a factorization of this monic quadratic in $Y$ would make
+$X^2+1$ a square in $\No(X)$, contrary to the simple roots $\pm i$ in $\SC$. Since $x^2+1>0$ everywhere, $\mathsf r_b$ is semialgebraic and $C^\infty$ on
+$\No$.
+\end{proof}
+
+The adversary is severe: a globally smooth branch of an irreducible quadratic graph, whose degree stays $2$ while the scale of its coefficient changes with
+the test set (25). There is no contradiction with \cref{osq:sa:cor:irreducible}, which assumes preservation at every lattice point, nor with
+coefficient-adapted tests: once $b$ is known, \eqref{osq:sa:eq:testfailure} gives a bad point. 16's and 22's witnesses for \cref{osq:fs:thm:nosmall},
+$\omega^\beta/(X-\frac12)$ and $\omega^{\omega b}/(X+t+\frac12)$ (\cref{osq:ft:rem:deceiver}), are rational functions of degree one with a pole in $\No$
+(outside $\Lambda$); $\mathsf r_b$ has no pole, is globally smooth, and has graph degree $2$.
+
+\begin{corollary}[Removal of set-sized exceptions \src{25}]\label{osq:sa:cor:exceptions}
+Let $f:\No\to\No$ be semialgebraic and globally $C^\infty$. If $\{x\in\Oz:f(x)\notin\Oz\}$ is a set, it is empty and $f\in\Num_1(\Oz)$; a globally smooth
+semialgebraic function that fails to preserve $\Oz$ fails on a proper class of omnific inputs.
+\end{corollary}
+\begin{proof}
+A set of surreals is bounded above, so the exceptions miss a final ray; the one-sided form of \cref{osq:sa:thm:tails} gives a numerical polynomial on a
+positive tail, and \cref{osq:sa:lem:identity} extends the equality to $\No$.
+\end{proof}
+
+\begin{corollary}[Removal of exceptions in several variables \src{25}]\label{osq:sa:cor:exceptionsmany}
+Let $f:\No^r\to\No^{r'}$ be globally $C^\infty$ and semialgebraic. If the set of bad lattice inputs is a set, $f$ is a coordinatewise numerical polynomial
+and has no bad lattice input.
+\end{corollary}
+\begin{proof}
+The coordinate projections of the exceptional set are sets, hence bounded. On each coordinate line with the other coordinates fixed in $\Oz$, all
+sufficiently large positive lattice inputs are good, and the one-sided tail theorem with the identity principle makes each output coordinate on that line a
+numerical polynomial; evaluating at the chosen coordinate shows that every lattice point is good. Apply \cref{osq:sa:thm:smoothmany}.
+\end{proof}
+
+The two results are complementary: every fixed set of witnesses is fooled by a new coefficient scale, yet every nonpreserving smooth semialgebraic function
+has more bad inputs than a set can hold. This is a proper-class quantifier phenomenon, not a statement about running time (25). For rational functions the
+same alternative is \cref{osq:fs:thm:cosmall} (one variable, 16) and \cref{osq:ft:thm:exceptions} (several, 22).
+
+\begin{remark}[Smoothness cannot be dropped \merge]\label{osq:sa:rem:exceptionsnecessary}
+For every ordinary $\mathsf k\ge0$ the function $f(x)=\frac12(1-4x^2)^{\mathsf k+1}$ on $|x|\le\frac12$, and $0$ elsewhere, is semialgebraic and globally
+$C^{\mathsf k}$ (its derivatives through order $\mathsf k$ vanish at $\pm\frac12$), and its set of bad omnific inputs is $\{0\}$, since $\Oz\cap
+[-\frac12,\frac12]=\{0\}$. So \cref{osq:sa:cor:exceptions} fails for $C^{\mathsf k}$ in place of $C^\infty$, and nonempty set-sized exceptional sets occur.
+\end{remark}
+
+\paragraph{Set-sized models and the role of rank.} The bounded-window construction is not an artifact of proper classes; the no-set-test theorem, by
+contrast, uses scales beyond an arbitrary set (25).
+
+\begin{proposition}[A set-sized realization \src{25}]\label{osq:sa:prop:setmodel}
+Let $\Gamma=\Q\times\Q$ with the lexicographic order, $a=(0,1)$, $b=(1,0)$, $E=\hahn\R\Gamma$ with reverse well-ordered supports and $X^g$ written
+$\omega^g$, and $B=\Z\oplus\{x\in E:\supp x\subseteq\Gamma_{>0}\}$. Then $E$ is real closed, $B$ is an integer part of $E$, and the functions
+\eqref{osq:sa:eq:bump} with $T=\omega^a$ and multiplier $\omega^b$ satisfy (i)--(iii) of \cref{osq:sa:thm:bumps} with $E,B$ in place of $\No,\Oz$.
+\end{proposition}
+\begin{proof}
+$\Gamma$ is divisible, so $E$ is real closed; truncating positive support and flooring the constant coefficient, with the correction for a negative
+infinitesimal remainder, gives an integer part. For every ordinary $n$, $b>na$, and the convex subgroup generated by $a$ is $\{0\}\times\Q$, which is
+divisible; the absorption, the endpoint calculation and the square obstruction apply unchanged.
+\end{proof}
+
+\begin{proposition}[The rank-one obstruction to the multiplier mechanism \src{25}]\label{osq:sa:prop:rankone}
+Let $\Gamma\ne0$ be an Archimedean divisible ordered group and $a\in\Gamma_{>0}$. In $\hahn\R\Gamma$ with its normal-form integer part, no monomial
+$\omega^b$, $b\in\Gamma$, sends $\sqrt x$ into the integer part for every integer-part input $x\in[0,\omega^a]$.
+\end{proposition}
+\begin{proof}
+For every $b\in\Gamma$ some ordinary $n$ has $b\le na$, and the expansion \eqref{osq:sa:eq:radical} at $x=\omega^a-1$ has negative support.
+\end{proof}
+
+This limits the uniform monomial multiplier only; it does not classify the semialgebraic preservers in rank one, and nonmonomial multipliers or other
+input domains need separate analysis (25). It is the analogue of the fixed-workspace remark after \cref{osq:ft:prop:relative}: in an Archimedean group the
+hypothesis of the method fails, which is not a proof that nonpolynomial preservers do not exist. The rigidity half, \cref{osq:sa:thm:tails,osq:sa:thm:smoothmany},
+holds in every such Hahn field, since it needs only a cofinal discretely ordered subring of a real closed field; this matches 18's observation that
+discrete-gap arguments survive in fixed workspaces (\cref{osq:or:cor:workspace}).
+
+For $\No$ itself every normal-form support and every formula used is set-sized; the possibly proper-class $K_{\operatorname{cvx}(\Z a)}$ is used only through
+its individual elements, finitely many at a time, and real closedness is reduced to the set-sized divisible hull of a finite support union. The absorption
+theorem is checked on individual Hahn products. No class Zorn lemma, no set of all class ideals and no class-indexed product is used. In
+\cref{osq:sa:thm:nosettests} there is a set-indexed support union, so an exponent above it exists; in \cref{osq:sa:thm:window} the inputs form a proper class
+in general, and their exponents are controlled by the explicitly bounded convex group $\operatorname{cvx}(\Z a)$. Confusing the two arguments would leave a
+foundational gap, which is one reason to state the absorption theorem separately (25).
+
+\paragraph{Dependencies and tempting errors (25).} The argument has two largely independent halves. Rigidity (tails, smooth classification, the
+$\mathsf D^2$ threshold) uses real closed semialgebraic calculus, cofinality and the discrete gap, and needs surreal normal forms only for the final
+numerical-polynomial reading; it needs neither lattice density nor infinite Taylor series. Flexibility (window absorption, the $C^{\mathsf k}$ examples)
+uses normal forms, real closedness of support fields and a larger Archimedean exponent scale, not the tail theorem and not a set of all window inputs; the
+quadratic no-set theorem uses a set support union and one explicit negative term, no undecidability assumption. 25 lists six places where an incorrect
+argument is tempting.
+\begin{enumerate}
+\item Ordinary shifts are not cofinal: \eqref{osq:sa:eq:extrapolation} uses a large element of $B$ as its step, and moving an infinite negative point into a
+positive tail by an ordinary integer would fail.
+\item Finite differences vanish only after the discrete-gap argument: an estimate tending to zero is not an identity; the difference lies in $B$ and has
+modulus below $1$ at lattice points, and semialgebraicity then extends the zero set to a ray.
+\item The smooth identity principle is not available for arbitrary functions; the reciprocal-growth argument is why a semialgebraic function cannot be
+infinitely flat where it stops vanishing.
+\item The multiplier acts on supports, not on numerical approximations: $\omega^bK_{\operatorname{cvx}(\Z a)}\subseteq\Pi$ because every shifted exponent is
+positive, not because $|\omega^b\phi(x)|>1$.
+\item The radical tail is an exact Hahn object: the proof at $T-1$ uses an infinite binomial series with distinct exponents and nonzero coefficients;
+checking many terms cannot prove the threshold.
+\item Set-sized and class-sized families differ: a support union over a sample set is a set, over all inputs of a bounded window it need not be, and the
+latter case is controlled by $\operatorname{cvx}(\Z a)$, not by a union over a proper class.
+\end{enumerate}
+
 \section{Natural ordinal arithmetic is not a quotient of the omnific integers}\label{osq:sec:ordinal}
 
 This section is manuscript~11's. Let $\mathcal G_{\mathrm{nat}}$ be the Grothendieck ring of the
@@ -9766,7 +11113,9 @@ alone (only targets of positive characteristic are handled). The set-sized thres
 for the five constructions and the two fixed-group examples treated; no classification of exponent
 groups or support restrictions is claimed, and generator counts follow no general law stated here.
 The large-quotient results describe specified subalgebras of $\Oz/(1+\omega^a)$ and conditional
-statements about primes; no existence theorem for nonarithmetic class primes is claimed.
+statements about primes; no existence theorem for nonarithmetic class primes is claimed. (Status (batch 34): the eighth-batch addition proves
+one with global choice, \cref{osq:cr:thm:binomialmax}; without global choice, and for $\Oz$ specifically, the question of \cref{osq:cr:q:choice}
+remains, and the nonarithmetic primes and maximal ideals are not classified.)
 The later additions do not change this. The flat and projective dimensions of \cref{osq:hd:sec:cores} are those of
 set-sized finite-support cores, of coefficient-lattice modules and of the rings of \cref{osq:sec:homological}; they
 say nothing about the homological dimensions of the class ring $\Oz$, and a flat dimension computed for one subring of
@@ -9791,6 +11140,12 @@ Nor does the seventh-batch addition: it concerns one cyclic exponent group, its 
 arbitrary groups or support classes or the Hahn field over $\Q a$; its residue criterion is a criterion, not an algorithm; of the uncountable
 Boolean algebras it determines atomlessness, cardinality and order density, not the isomorphism type; and its periodic resolution and infinite
 dimensions concern the coefficient fibre, not the arithmetic fibre or $\Oz$ (\cref{osq:rm:sub:cyclic}).
+Nor do the eighth-batch additions. 24's maximal ideals exist in $\mathsf{GBC}$, not in the base theory of \cref{osq:sub:foundations}; they are
+defined relative to a global well-order, not canonically, their membership may be undecidable, and neither the maximal ideals above $1+\omega^a$ nor
+their residue fields are classified: the branching count $2^{\aleph_0}$ is a lower bound, and the residue fields embed in $\SC$ without being
+identified with it (\cref{osq:cr:sub:residues}). 25 classifies the globally smooth semialgebraic preservers only; finitely smooth and nonsmooth ones
+are controlled on their tails, not on bounded intervals, and its sampling theorem excludes coefficient-independent tests, not coefficient-adapted
+certificates (\cref{osq:sa:sub:semialgebraic}).
 
 As an internal ring, $\Oz$ has all surreal scales available through its fraction field, a nonzero
 proper-class ideal $\Pi$, nonzero class-valued derivations and nonarithmetic prime quotients; as a
@@ -9833,7 +11188,8 @@ ring homomorphisms. (19) No claim about unrestricted surcomplex analytic continu
 
 \paragraph{04.} (1) Unrefereed; no Lean formalization; the universal theorems are candidate
 contributions without certified priority. (2) No classification of all class ideals, no class Zorn
-argument, no claim that proper class ideals extend to maximal ones. (3) The module equivalence covers
+argument, no claim that proper class ideals extend to maximal ones (24 has since proved the extension with global choice,
+\cref{osq:cr:thm:krull}; batch 34). (3) The module equivalence covers
 set-sized modules only, not class modules, group representations of $\mathrm{GL}_n(\Oz)$, or
 additive homomorphisms. (4) It does not say that $P(\ct(x))=0$ implies $P(x)=0$. (5) It does not
 classify infinite points of curves; the earlier project's curve questions are not declared solved.
@@ -9867,7 +11223,8 @@ successful build are not proofs; the formalization route was not executed.
 development \cite{Abramov} is cited for its claim and caveats only); no historical priority; no referee;
 no Lean. (2) The Cantor algebra is a specified subalgebra; neither the idempotents nor the prime ideals
 of $\Qa_a$ are classified, and $\Qa_a$ is not claimed to be a function ring. (3) The statement on
-nonarithmetic primes is conditional; no existence is asserted. (4) Surreal self-similarity is credited
+nonarithmetic primes is conditional; no existence is asserted (24 has since proved existence with global choice, \cref{osq:cr:thm:binomialmax};
+batch 34). (4) Surreal self-similarity is credited
 to Bagayoko--van der Hoeven. (5) $\Theta_a$ is not claimed to preserve the ordinal embedding,
 birthdays, simplicity or the exponential; $\vartheta$ is not additive and $\Psi$ not multiplicative.
 (6) Quotient, completion and module classifications are consequences, not separate major discoveries.
@@ -9875,9 +11232,11 @@ birthdays, simplicity or the exponential; $\vartheta$ is not additive and $\Psi$
 module equivalence is not a homological-dimension statement over class modules. (9) The global theorem
 is not a theorem about small approximations of $\Oz$. (10) The finite checks do not verify the
 transfinite or ambient-support arguments. (11) The CRT isomorphisms at different stages need not be
-coherent; evaluation at a point of $\Z_2$ is not claimed to extend to $\Qa_a$; no topology on $\EE_a$
+coherent; evaluation at a point of $\Z_2$ is not claimed to extend to $\Qa_a$ (with global choice it extends to a map onto a larger
+field, \cref{osq:cr:rem:evaluation}; batch 34); no topology on $\EE_a$
 is used. (12) Class prime ideals are not classified, and no Zorn argument for a proper class of
-ideals is used. (13) No exponential function on surcomplex arguments is assumed.
+ideals is used (24 has since shown, with global choice and a recursion on elements rather than a Zorn argument, that maximal class ideals
+exist, \cref{osq:cr:thm:krull}; they are still not classified; batch 34). (13) No exponential function on surcomplex arguments is assumed.
 
 \paragraph{08.} (1) Candidate-original, not certified priority, not refereed, no Lean; the broad
 factorization questions for $\Oz$ are not addressed. (2) $\Frac(A^{08}_\kappa)=F^{08}_\kappa$ is not
@@ -9889,7 +11248,7 @@ small scales at all). (7) The non-integral-closure corollary is not a factorizat
 are not classified; the theorem is not an isomorphism with $\Z$, and individual monomials can be
 represented faithfully in small rings. (9) The Hahn derivations $D_\eta$ are not an
 exponential-compatible calculus. (10) No maximal-ideal theorem for proper-class rings; no assertion that
-proper class ideals lie in maximal ones. (11) The quantitative criterion gives sufficient conditions
+proper class ideals lie in maximal ones (24 has since proved one with global choice, \cref{osq:cr:thm:krull}; batch 34). (11) The quantitative criterion gives sufficient conditions
 only. (12) The finite checks prove neither the class theorem, nor summability, nor real closedness.
 (13) The primality of $\omega^{\sqrt2}+\omega+1$ is an imported published theorem.
 
@@ -10117,7 +11476,8 @@ full proper class and fails for set-sized rings; the fixed-workspace extension n
 value groups is a failure of the method, not a proof that every finite test fails. (10) Arbitrary functions, entire Hahn series, surreal
 exponentials, infinite-dimensional operators and Diophantine varieties are not classified (entire series preserving the omnific part of a
 fixed workspace are classified in \cite{RepoEnt}; batch-32 status note after \cref{osq:or:cor:workspace}), nor are algebraic or semialgebraic maps ($|X|$ preserves
-$\Oz$ and is only piecewise polynomial). (11) The birational corollary assumes a rational inverse in both directions; no bijective polynomial map is
+$\Oz$ and is only piecewise polynomial; 25 has since classified the globally $C^\infty$ semialgebraic ones, \cref{osq:sa:thm:smoothmany}, and shown
+that finitely smooth ones need not be finitely piecewise polynomial, \cref{osq:sa:thm:bumps}; batch 34). (11) The birational corollary assumes a rational inverse in both directions; no bijective polynomial map is
 claimed to have one, no Jacobian-conjecture claim is made, the coordinates need not have coefficients in $\Lambda$, and the automorphism group is not
 classified. (12) Image ideals are not assumed principal, and no greatest-common-divisor conclusion is drawn. (13) The tensor isomorphisms are read
 through finite sums of pure tensors or in a containing universe; they do not assert that $\Oz$ is a set. (14) Gaussian arithmetic is not replaced
@@ -10155,6 +11515,76 @@ descent theorem is compared, not used, and no unrefereed repository theorem is a
 not assert that the cyclic calculation settles an unrestricted Hahn problem; divisibility of the exponent group alone is not a proof of radicality.
 (13) The formalization plan claims no implemented declaration and no repository build.
 
+\paragraph{24.} (1) AI-assisted, unrefereed research draft with written proofs; no Lean or other proof-assistant check and no Wolfram computation;
+historical priority is not certified; the generic equivalence of global choice with the class maximal-ideal principle may be familiar folklore, and the
+monomial and support-prime statements may have antecedents in the generalized-series or ordered-monoid literature. (2) \Cref{osq:cr:thm:equivalence}
+gives no lower bound for $\Oz$ itself: it does not show that a nonarithmetic maximal ideal of $\Oz$, or one above every $1+\omega^a$, implies global
+choice; its converse uses arbitrary specially built class rings, and the maximal-ideal theorem for set rings yields only choice for sets. (3) The class
+recursion is a class definition, not an effective algorithm; the finite-equation test quantifies over all ring elements and may be undecidable, and no
+algorithm for ideal membership or decision procedure for membership in a chosen maximal ideal is given. (4) No canonical or choice-free maximal ideal is
+constructed; uniformity is relative to a chosen global well-order, not parameter-free canonicity. (5) The continuum branching is a lower bound within one
+fibre, not a spectrum: not every maximal ideal of the fibre is indexed by a branch, and $\Qa^k_a$ is not claimed to be a ring of functions on Cantor
+space. (6) No cardinality is asserted for the collection of all class ideals and no class-sized Zariski space is formed; families of class ideals are
+single class relations on parameters and ring elements. (7) Containing an algebraically closed class subfield does not make a residue field
+algebraically closed; the residue fields are not claimed isomorphic to $\SC$, and their embeddings in $\SC$ need not be surjective. (8) The maps to
+$\SC$ need not preserve order, strong summability, arbitrary infinite sums, exponentiation or any analytic structure; no analytic extension of complex
+functions to all surcomplex arguments is claimed, and the algebraic closedness of $\SC$ is background, not reproved. (9) ``Residually surcomplex'' means
+a separating family of homomorphisms: not residual finiteness, not a representation in a set-indexed product, not a single injective homomorphism with
+maximal kernel; no product indexed by a proper class of class fields is used. (10) \Cref{osq:cr:thm:termprimes} needs both term-closure and strong
+sum-closure; it is not a classification of all prime ideals and does not say that every omnific prime is a monomial prime. (11) No factorization
+conjecture is used or addressed (refinement, unique factorization of generalized series); the existence and cutoff theorems classify neither all prime
+ideals, nor all maximal ideals of a binomial fibre, nor all residue-field extensions of the embedded Hahn core. (12) The finite checks
+($133{,}770$ assertions in six groups: greedy ideals in $\Z/n\Z$ and in products of $\F_2$, finite geometric remainders, dyadic algebra over $\F_{257}$,
+finite branch filters, lexicographic scale examples) certify no class recursion, infinite Hahn sum, arbitrary surreal support, global choice or priority.
+(13) The field cores, the dyadic product algebras and the Cantor-type subalgebra are this report's (07's), reproved and credited, not claimed; the greedy
+Krull method, the compatibility mechanism of Hodges, Ern\'e and Entin (checked through Entin's corrected version, not against every line of Ern\'e's paper
+or Hodges's), the characteristic-zero Hahn closure (Mac~Lane through Knight--Lange, Mac~Lane's paper not fully inspected), the rescaling automorphism, the
+universality and back-and-forth method and $\Jac(A)=0$ are credited or called elementary; Conway and Gonshor are cited as standard, not reread. (14) Only
+the comparison with set-sized targets uses the unrefereed universal theorem; the constructions and separation proofs do not. (15) The rescaling
+\cref{osq:cr:prop:rescale} shows that the cutoff is an invariant of the embedded fibre at a chosen scale, not that the abstract fibres are
+nonisomorphic, and the ordinal family changes the scale, so it gives no larger same-fibre count. (16) The repository comparison covered the pinned
+report and selected guides, not every report or unintegrated companion, and absence from the excerpts was not taken as absence; the literature search
+was targeted; the delivered Wikipedia link served for orientation only. (17) The eleven hypotheses 24's audit calls critical are kept: $\mathsf{GB}$ has
+no choice and the unrestricted principle is not the restricted omnific one; ring elements are sets and cosets are coded by least representatives or Scott
+codes; a stage stores a set of generators or a set partial embedding, never a proper-class ideal; ideal membership and rejection witnesses are finite
+sums; every Hahn series has a set support and the geometric cancellation rests on summability, not convergence; $b>na$ must hold for \emph{every}
+ordinary $n$; closure over a class exponent group is reduced polynomial by polynomial to set groups; a field core is not algebraic closedness; the
+support-prime classification assumes both closure properties; the maps to $\SC$ need not preserve order, summability, infinite sums, exponentiation or
+analytic structure; uniform families are relations, and no class of all class ideals and no proper-class-indexed product is formed. (18) Its audit's
+record of what was not performed is kept: the proofs had internal review only, not independent peer review; the finite checks ran under Python~3.13.5;
+no Lean, proof-assistant or Wolfram verification was performed; the PDF was built with pdfLaTeX and inspected visually. (19) The eight plausible but
+incorrect arguments of 24's Section~11.2 are printed at the end of \cref{osq:cr:sub:residues}. (20) Its questions are not claimed resolved.
+
+\paragraph{25.} (1) AI-assisted and unrefereed, with complete written arguments; no Lean formalization or build, no Wolfram computation and no
+independent proof review; novelty is proposed relative to the inspected sources, priority is not certified, and no named longstanding conjecture
+(factorization, birthdays, surreal exponentiation) is claimed settled. (2) The repository was read selectively through a connector whose long responses
+were sometimes truncated, not checked out or built; newly delivered and unintegrated manuscripts were not exhaustively audited, an empty search was not
+taken as evidence of absence, and it is not asserted that no equivalent statement occurs in them or in the wider literature. (3) The finite-difference
+strategy, real polynomial rigidity, finite-order detection of smoothness and the nonflatness of tame functions are classical (Jones--Thomas--Wilkie,
+Bhardwaj--McCulloch--Ramachandran--Woo, Miller, Bochnak--Coste--Roy) and not claimed; the Bhardwaj et al.\ preprint is cited in its inspected version
+v1, without transferring its numerical growth constants; Miller's paper is a bibliographic and contextual antecedent, with limited full-text access, whose
+specific argument is reproved; the Bochnak--Coste--Roy monograph was not reread in full. (4) The bound $\mathsf D^2$ is sufficient, not claimed optimal,
+and concerns scalar graph descriptions; a degree bound for a full vector graph must first be converted by output elimination. (5) The graph degree is
+that of a quantifier-free description; a bound for formulas with unresolved quantifiers is a different notion. (6) The mean-value and Rolle theorems are
+used only for semialgebraic functions at finite order; nothing is asserted about unconstrained surreal-valued calculus. (7) The numerical-polynomial
+normal form is exact algebra, not an algorithm on symbolic descriptions: equality, support membership and exact coefficient operations are not assumed
+decidable; the Newton basis and the decompositions are inherited from this report. (8) $\ct$ is multiplicative only on nonnegative supports, not on
+$\No$. (9) The bounded-window theorem asserts no regularity at the boundary of the box and supplies no holomorphic cutoff. (10) The shears are maps of the
+lattice as a set, not ring automorphisms; the Jacobian statement is a triangular calculation, not a claim about the Jacobian conjecture; the surcomplex
+shears are not holomorphic in general. (11) The surcomplex results are real-algebraic; no global surreal exponential or sine and no topology in which all
+real analytic series converge is presupposed. (12) The Gaussian split is not a Gaussian binomial-basis theorem; ordinary binomial polynomials need not be
+$\Z[i]$-valued. (13) The rank-one obstruction concerns the uniform monomial multiplier only, not the classification of semialgebraic preservers in rank
+one; nonmonomial multipliers and restricted input domains need separate analysis. (14) $K_{\operatorname{cvx}(\Z a)}$ is used pointwise, through
+set-sized divisible hulls; no union of supports over a proper class, no class Zorn lemma, no set of all class ideals and no class-indexed product is
+used, and ``bounded'' in the two-end quotient is order-theoretic, with no compactness. (15) Nothing is classified for arbitrary class functions, all
+finite-smoothness preservers, arbitrary omnific ideals, all polynomial automorphisms in several variables or holomorphic functions in an unrestricted
+surreal calculus; no physical prediction is made. (16) The no-set-test theorem excludes coefficient-independent tests only, not coefficient-adapted
+certificates or algorithms; it is a proper-class quantifier phenomenon, not a running-time statement. (17) The finite checks ($1{,}578$ exact assertions in
+18 groups) verify finite identities, finite binomial jets, finite Newton grids and sampled lexicographic comparisons, not infinite supports, class
+quantifiers, general semialgebraic calculus, the complete theorems or novelty; the PDF build is a document check, and the PowerShell build script was not
+executed. (18) Some ingredients are elementary consequences of classical real algebraic geometry; independent review may find stronger antecedents, a
+shorter formulation or errors. (19) The integer-part formula of $\Oz$ needs the correction for a negative infinitesimal remainder, and no argument drops it.
+
 \paragraph{The merge.} (1) The results marked \merge\ are consequences of the sources' lemmas; they
 are no more refereed than the sources and are not formalized. (2) No general law is asserted for the
 generator counts. (3) For full-support Hahn rings over a prescribed set group, exact thresholds are computed only in
@@ -10179,6 +11609,12 @@ decides nothing about finite certificates in a workspace without fresh exponents
 concern the real pair; \cref{osq:rm:rem:puiabstract} concerns the bounded-denominator Puiseux ring only and determines neither the isomorphism type
 nor the order density of its Boolean algebra; \cref{osq:rm:rem:booleanform} rests on applying the proof of \cref{osq:bb:prop:fixedboolean}
 verbatim to the coefficient field $\overline\Q\cap\R$, and nothing is claimed for noncyclic groups or for the Hahn field over $\Q a$.
+(17) The eighth-batch merge results need 24's foundation where they use maximal ideals: the extension of point evaluations in
+\cref{osq:cr:rem:evaluation} uses global choice, is not canonical and does not land in $\EE_a$; \cref{osq:cr:rem:ultrafilters} gives class
+ultrafilters in $\mathsf{GBC}$ only; and the copy of $\SC$ in \cref{osq:cr:cor:properfield} makes the residue fields neither algebraically closed nor
+isomorphic to $\SC$. (18) \Cref{osq:sa:rem:threshold} concerns monomial multipliers and the real pair; \cref{osq:sa:rem:exceptionsnecessary} shows only
+that global smoothness cannot be weakened to $C^{\mathsf k}$ in \cref{osq:sa:cor:exceptions}, not what the exceptional sets of finitely smooth maps are;
+and the batch-34 status of \cref{osq:ft:q:maps} re-scopes 22's comment, it does not supply a piecewise classification.
 
 \subsection{Open questions and their status}\label{osq:sub:questions}
 The sources pose the following questions, each as a question suggested by the proofs rather than as
@@ -10229,12 +11665,31 @@ $\Z$, and which class fields occur as $\Frac(\Oz/P)$ for primes $P\not\supseteq\
 field $\FF_a$ distinguish such primes?
 \end{question}
 \emph{Status.} Open. Necessary conditions: \cref{osq:if:cor:primefield,osq:if:prop:reservoir,osq:if:rem:composition}.
+\emph{Status (batch 34).} Partly answered, with global choice. The existence clause is answered by 24: every maximal class ideal containing
+$1+\omega^a$, or any nonconstant element with unit constant term, is a nonarithmetic prime with $P\cap\Z=0$ and $P\not\subseteq\Pi$, and such ideals exist
+in $\mathsf{GBC}$ (\cref{osq:cr:thm:binomialmax,osq:cr:cor:unitconstant,osq:cr:prop:arithmetic}); they separate the points of $\Oz$
+(\cref{osq:cr:thm:separation}), and there are at least $2^{\aleph_0}$ of them above each $1+\omega^a$ and a family indexed by $\On\times\Z_2$ across scales
+(\cref{osq:cr:thm:cantor,osq:cr:thm:twoaxes}). On the second clause: every maximal residue field of characteristic $0$ embeds in $\SC$
+(\cref{osq:cr:thm:residually}) and, above $1+\omega^a$, contains a copy of $\SC$ (\cref{osq:cr:cor:properfield}); which fields occur is not determined
+(\cref{osq:cr:q:closed,osq:cr:q:relative}). On the third: the embedded $\FF_a$ meets every maximal ideal above $1+\omega^a$ trivially, a field mapping injectively to every
+nonzero quotient, so by itself it does not distinguish them; the maximal ideals of \cref{osq:cr:thm:cantor} are separated by the dyadic idempotents over
+$\EE_a$, and the monomial cutoff \cref{osq:cr:thm:cutoff} separates the scales \merge. The classification of nonarithmetic primes stays open, as does existence without global choice (\cref{osq:cr:q:choice,osq:cr:q:definable}).
+The primes that are term-closed and strongly sum-closed are classified, and none of characteristic $0$ is maximal (\cref{osq:cr:thm:termprimes}).
 
 \begin{question}[The ambient binomial quotient; 07]\label{osq:q:binomial}
 Which normal-form invariants describe the elements and ideals of $\Qa_a$ beyond the Cantor algebra;
 which idempotents lie outside it; how are cyclotomic decompositions at different scales related?
 \end{question}
-\emph{Status.} Open.
+\emph{Status.} Open. \emph{Status (batch 34).} Partly addressed by 24. Every monomial $\omega^b$, $b\ge0$, is zero or a unit in $\Qa_a$, zero exactly
+when $a\ll b$ (\cref{osq:cr:thm:cutoff}); the whole tail above $\operatorname{cvx}(\Z a)$ can be discarded, $\Qa_a$ being the binomial quotient of the
+elements supported in $\operatorname{cvx}(\Z a)$ (\cref{osq:cr:prop:tails}); the binomial quotients at separated scales are comaximal, and those at
+different scales are abstractly isomorphic by rescaling (\cref{osq:cr:cor:comaximal,osq:cr:prop:rescale}), which relates the cyclotomic decompositions
+at different scales; and every branch of the Cantor algebra lies in a maximal ideal (\cref{osq:cr:thm:cantor}). Idempotents outside the Cantor algebra,
+the nilradical and the prime ideals of $\Qa_a$ remain open. 24 asks the same question in sharper form (its Question~12.6): determine the nilradical and
+the Jacobson radical of $\Qa^k_a$; is $(1+\omega^a)$ radical; how much of the idempotent algebra is generated by finite rational-exponent blocks; and what
+information beyond the monomial cutoff and the dyadic branch data determines a maximal ideal? 24's comments: the reduction to
+$\operatorname{cvx}(\Z a)$ should be used first, but it still leaves a proper-class infinitesimal exponent core and general infinite supports, and finite
+polynomial squarefreeness does not by itself give radicality in the full non-Noetherian Hahn support ring.
 
 \begin{question}[Residue fields of the set-sized models; 08, 09]\label{osq:q:residue}
 Which characteristic-zero fields of the threshold cardinality occur as maximal residue fields of
@@ -10462,6 +11917,25 @@ removal of exceptions for every unital $D\subseteq k$ (\cref{osq:fs:thm:collapse
 absence of set-sized tests holds for every $D\ne k$ (\cref{osq:ft:rem:otherD}, a merge result); finite constant test sets for $\Int(D^m)$ and the
 lifting theorem for general $D$ remain open.
 
+\emph{Status (batch 34).} The first clause of (a) is answered by 25 for globally smooth maps, in every dimension: a globally $C^\infty$ semialgebraic
+map $\No^r\to\No^{r'}$ preserves $\Oz^r$ if and only if its coordinates are integer-valued polynomials, with explicit binomial expansions, and global
+$C^{\mathsf D^2}$ regularity suffices at scalar graph degree $\mathsf D$ (\cref{osq:sa:thm:smoothmany,osq:sa:cor:explicit}); the same holds over every real
+closed field with a cofinal discretely ordered subring, and for $\GOz$ in real coordinates (\cref{osq:sa:thm:complexreal}). A semialgebraic preserver of $\Oz$
+whose graph lies on one irreducible plane curve is a polynomial without any smoothness hypothesis (\cref{osq:sa:cor:irreducible}). Every semialgebraic preserver is polynomial
+on its two tails, the quotient by the bounded-region preservers being $\Num_1(B)^2$ (\cref{osq:sa:thm:tails,osq:sa:cor:germs}); but for every ordinary
+$\mathsf k$ a semialgebraic $C^{\mathsf k}$ preserver agrees on $\Oz$ with no finite family of polynomials (\cref{osq:sa:thm:bumps}). So 22's target
+of a piecewise classification with finitely many polynomial pieces is attainable only on the tails, or with algebraic branches as pieces; the
+bounded-region preservers are \cref{osq:sa:q:bounded}. The certificate clause of (a) is answered negatively for samples chosen independently of the
+coefficients, even for a globally smooth branch of an irreducible quadratic graph (\cref{osq:sa:thm:nosettests}), while a globally smooth semialgebraic
+nonpreserver fails on a proper class of inputs (\cref{osq:sa:cor:exceptions,osq:sa:cor:exceptionsmany}). 25 asks for coefficient-adapted certificates
+(its Question~12.7), merged into (a): given a quantifier-free algebraic graph description and exact access to its surreal coefficients, can preservation be
+certified or refuted by finitely many coefficient-adapted lattice points and finitely many support conditions? 25's comments: its no-set theorem leaves
+this adaptive question open, and an answer should distinguish symbolic decidability from the existence of a finite mathematical certificate. 25 also asks
+(its Question~12.9), merged into (b), to extend the smooth classification from affine space to semialgebraic manifolds or algebraic varieties with a
+specified omnific integral model, and which geometric conditions replace coordinate cofinality and tensor interpolation; 25's comments: the affine proof
+does not transplant, since a variety may have few omnific points and no cofinal coordinate lines, and the omnific Diophantine geometry of the repository
+\cite{RepoOdg} should be a separate input with its hypotheses audited. The rest of (b), and (c), (d), stay as above.
+
 \begin{question}[The full rational Hahn workspace; 23]\label{osq:rm:q:fullQ}
 Let $K_{\Q a}=\hahn k{\Q a}$, with arbitrary reverse well-ordered supports, let $\A(\Q a)$ be its omnific or Gaussian omnific integer part and
 $\Pi(\Q a)$ its positive-support ideal. Is $\Pi(\Q a)\IC_{K_{\Q a}}(\A(\Q a))$ radical?
@@ -10530,12 +12004,148 @@ the coefficient-span lemma and the exact ideal test; the Boolean splitting needs
 periodic resolution follows once the annihilator identity is available. No declaration has been implemented, and no repository build was run for 23
 (\cref{osq:sub:formalization}).
 
+\begin{question}[Choice strength for the omnific ring; 24]\label{osq:cr:q:choice}
+Over $\mathsf{GB}$ with choice for sets, does every $(1+\omega^a)\subseteq\Oz$ have a maximal class extension? Does the existence of such extensions for
+all $a>0$ imply global choice? What changes when a single value, such as $a=1$, is fixed?
+\end{question}
+\emph{Status.} Open. 24's comments: \cref{osq:cr:thm:equivalence} cannot answer this restriction, since its converse builds class polynomial rings whose
+variables encode all finite partial choice functions; a first step would be to see whether that compatibility encoding can be interpreted in a fixed
+binomial quotient without assuming the global choice class.
+
+\begin{question}[Definable rather than globally selected kernels; 24]\label{osq:cr:q:definable}
+Can a nonarithmetic maximal ideal of $\Oz$ be defined in the pure set-theoretic language from a set parameter, in natural models of set theory? Can one
+specify a branch of the dyadic algebra for which a definable maximal extension exists?
+\end{question}
+\emph{Status.} Open. 24's comments: its uniformity is relative to a chosen global well-order, not parameter-free canonicity; absoluteness and
+definability should be studied separately from existence in an expanded class model, and a construction stable under a useful class of universe
+extensions would be much stronger than the choice-dependent recursion.
+
+\begin{question}[Are the binomial residue fields algebraically closed?; 24]\label{osq:cr:q:closed}
+For a maximal ideal $M\supseteq(1+\omega^a)$, must $\Oz/M$ be algebraically closed? If not, which algebraic extensions occur over it? Ask the same for
+$\GOz$.
+\end{question}
+\emph{Status.} Open. 24's comments: by \cref{osq:cr:cor:acfiso} a positive answer would identify these residue fields abstractly with $\SC$ in
+$\mathsf{GBC}$; the embedded algebraically closed field (\cref{osq:cr:cor:properfield}) supplies roots only for polynomials with coefficients in it; a
+concrete test is to understand integral extensions of the binomial quotient and which of their elements descend into its maximal fields, and a first
+target is a root-existence theorem for monic polynomials with coefficients in a finite extension of the embedded dyadic and Hahn core. 24 calls this the
+most consequential next step.
+
+\begin{question}[Size over the Hahn core; 24]\label{osq:cr:q:relative}
+How large can a family algebraically independent over the embedded $\FF_a(i)$ be in a binomial residue field? Can the residue field equal that core, or a
+prescribed set-generated extension of it? Which branch choices force additional transcendence?
+\end{question}
+\emph{Status.} Open. 24's comments: the explicit core is useful because it is a fixed base for algebraic dependence, not only a cardinal bound; the dyadic
+roots are algebraic over it, so the continuum of branch choices is not by itself a transcendence-degree argument.
+
+\begin{question}[Branching beyond the dyadic subalgebra; 24]\label{osq:cr:q:branching}
+At one fixed scale $a$, is there a family of distinct maximal class ideals indexed by every set cardinal? Can larger independent idempotent families be
+built in $\Qa_a$, and which compatible finite-algebra specializations extend with prescribed residue-field properties?
+\end{question}
+\emph{Status.} Open. The known lower bound at a fixed scale is $2^{\aleph_0}$ (\cref{osq:cr:thm:cantor}). 24's comments: the ordinal family changes the
+embedded scale and rescaling identifies the abstract fibres, so it cannot be counted again; new independent equations inside one fibre are needed.
+For comparison, 20's fresh-scale splitting (\cref{osq:bb:thm:uniform,osq:bb:thm:free}) builds free Boolean families of every set size in the
+normalization fibre $\NN/\Pi\NN$, a different ring \merge.
+
+\begin{question}[Removing one support-closure hypothesis; 24]\label{osq:cr:q:support}
+Classify the term-closed prime ideals of $\Oz$ without assuming strong sum-closure, and the strongly sum-closed ones without assuming term-closure. Does
+one closure property force the other under a natural additional algebraic or definability condition?
+\end{question}
+\emph{Status.} Open. 24's comments: the proof of \cref{osq:cr:thm:termprimes} uses the two properties at different points, one to extract a monomial
+support restriction and the other to rebuild a series from its terms; a counterexample or a redundancy theorem would locate the reach of coefficientwise
+methods, and neither implication should be assumed.
+
+\begin{question}[Formal verification at the right foundational level; 24]\label{osq:cr:q:formal}
+Can the finite-algebra and support-identity package be formalized over the repository's constructed surreal field, with the class-choice theorem
+formalized separately in an explicit model of $\mathsf{GB}$?
+\end{question}
+\emph{Status.} Open. 24's plan: first the degree and unit lemmas, the geometric multiplier, the monomial inverse certificates, the dyadic idempotents and
+the convex truncation kernels; maximal ideals of set rings in a larger Lean universe can then check the algebraic consequences of maximality, but do not
+verify the metatheorem over two-sorted $\mathsf{GB}$, since a Lean type is set-sized relative to a larger universe and the strength of global choice must
+not be hidden in a universe change; the last step is an explicit syntactic or semantic formalization of the class recursion and the choice equivalence
+(\cref{osq:sub:formalization}).
+
+\begin{question}[The optimal differentiability threshold; 25]\label{osq:sa:q:optimal}
+For each graph degree $\mathsf D$, determine the least $\mathsf k(\mathsf D)$ such that every globally $C^{\mathsf k(\mathsf D)}$ semialgebraic preserver of a
+cofinal discretely ordered ring is polynomial. Is a linear bound in $\mathsf D$ possible, or can polynomial contact force quadratic growth?
+\end{question}
+\emph{Status.} Open; for $\Oz$, $1+\lfloor(\mathsf D-2)/4\rfloor\le\mathsf s(\mathsf D)\le\mathsf D^2$ and $\mathsf s(1)=1$ (\cref{osq:sa:cor:regularity}).
+25's comments: the proof of \cref{osq:sa:thm:degree} bounds the contact order of $Q(X,Y)=0$ with $Y=P(X)$ by $\mathsf D\deg P$, and improving that estimate
+under the arithmetic tail constraint is a concrete route; the lower bound is linear in $\mathsf D$ but proves no optimality of $\mathsf D^2$.
+
+\begin{question}[Bounds for full vector graphs; 25]\label{osq:sa:q:multireg}
+Given a degree-$\mathsf D$ description of the full graph of a map $E^r\to E^{r'}$, find an explicit regularity threshold in terms of $\mathsf D,r,r'$ without
+first using an unspecified quantifier-elimination bound for the scalar coordinate graphs. Can output elimination keep useful dimension-free bounds?
+\end{question}
+\emph{Status.} Open. 25's comments: \cref{osq:sa:thm:smoothmany} gives the dimension-free bound $\mathsf D^2$ for scalar graphs and for vector maps whose
+coordinate graphs each have that degree; eliminating the other outputs from one full graph can increase degree, and quantifying that increase is a distinct
+problem.
+
+\begin{question}[Bounded-region structure; 25]\label{osq:sa:q:bounded}
+Classify the ideal $\operatorname{SA}_{\mathrm b}(\Oz)$ of bounded-region semialgebraic lattice preservers. Which of its elements arise by multiplying a
+semialgebraic function over $K_H$ by a multiplier supported in $H^{\uparrow}$, followed by a finite cutoff?
+\end{question}
+\emph{Status.} Open. 25's comments: the exact quotient \cref{osq:sa:cor:germs} reduces the classification of all semialgebraic preservers to this ideal
+and a known numerical-polynomial ring; absorption gives a large explicit subclass, not a converse. 25 names this the focused next problem, with regularity
+and exponent rank tracked together.
+
+\begin{question}[Multipliers for one algebraic family; 25]\label{osq:sa:q:individual}
+For a fixed algebraic branch $\phi$, determine all $c\in\No$ with $c\phi(x)\in\Oz$ on a prescribed omnific interval. Can cancellation in a nonmonomial $c$
+allow substantially smaller supports than absorption of all of $K_H$ requires?
+\end{question}
+\emph{Status.} Open. 25's comments: \cref{osq:sa:thm:absorption} answers the uniform field-absorption question exactly and \cref{osq:sa:thm:radical} the
+monomial square-root case; the family-specific problem between them is not settled.
+
+\begin{question}[Rank and local flexibility; 25]\label{osq:sa:q:rank}
+For a fixed divisible ordered exponent group $\Gamma$, when does its normal-form integer part admit a semialgebraic preserver of a prescribed finite
+smoothness order that is not finitely piecewise polynomial?
+\end{question}
+\emph{Status.} Open. 25's comments: a pair $0<a\ll b$ in $\Gamma$ suffices (\cref{osq:sa:prop:setmodel}); its failure in rank one rules out one mechanism
+(\cref{osq:sa:prop:rankone}), and necessity for all constructions is not proved.
+
+\begin{question}[Beyond semialgebraicity; 25]\label{osq:sa:q:ominimal}
+Which polynomially bounded o-minimal expansions of real closed Hahn fields admit the same cofinal-discrete-ring tail theorem? Under what hypotheses does
+global infinite differentiability still continue the tail polynomial through the whole domain?
+\end{question}
+\emph{Status.} Open. 25's comments: the finite-difference part needs polynomial growth, derivative control and eventual monotonicity, and the global step
+the appropriate nonflatness theorem; exponential structures need different growth conclusions, and the classical literature \cite{JTW,BMRW} is a guide,
+not an automatic transfer.
+
+\begin{question}[Groups of finite-smoothness lattice diffeomorphisms; 25]\label{osq:sa:q:groups}
+Study the group of semialgebraic $C^{\mathsf k}$ diffeomorphisms of $\No^r$ preserving $\Oz^r$. How much of it is generated by numerical-polynomial
+automorphisms, affine arithmetic maps and the bounded-window shears of \cref{osq:sa:cor:shears}?
+\end{question}
+\emph{Status.} Open. 25's comments: the globally smooth subgroup is polynomial by \cref{osq:sa:thm:smoothmany}, which does not classify its
+automorphisms; the finite-smoothness group contains bounded-window elements of Jacobian determinant one, and its relation to the smooth subgroup is
+unexplored. The polynomial subgroup is the subject of \cref{osq:ft:q:maps}(c).
+
+\begin{question}[Complex regularity versus real cutoffs; 25]\label{osq:sa:q:complex}
+Find minimal regularity assumptions under which a real-semialgebraic lattice preserver of $\GOz$ satisfying the Cauchy--Riemann equations is polynomial.
+Can the $C^\infty$ hypothesis of \cref{osq:sa:cor:holomorphic} be reduced uniformly at fixed graph complexity?
+\end{question}
+\emph{Status.} Open. 25's comments: the shear counterexamples are not holomorphic, so they do not settle it, and a proof should stay within an explicit
+surreal differential framework rather than import complex analytic continuation.
+
+\begin{question}[Arithmetic invisibility inside the purely infinite ideal; 25]\label{osq:sa:q:invisibility}
+Classify the semialgebraic maps whose lattice values all lie in $\Pi$, modulo bounded-region modifications. More generally, prescribe the ordinary
+constant-term map on $\Oz^r$ and determine the allowed bounded-window deformations.
+\end{question}
+\emph{Status.} Open. 25's comments: for smooth maps the numerical-polynomial decomposition and coefficientwise constant terms answer it
+(\cref{osq:sa:cor:explicit}); finite regularity brings in the radical examples, whose geometry is invisible to every output constant term.
+
+\begin{question}[Formal verification; 25]\label{osq:sa:q:formal}
+Formalize the cofinal tail-extrapolation lemma, semialgebraic finite-difference rigidity and convex-support absorption, and combine them with the
+repository's actual omnific ring. Which part of real closed semialgebraic calculus can be reused without new axioms?
+\end{question}
+\emph{Status.} Open. 25's comments: the core algebraic identities are finite and good early targets; the delicate obligations are semialgebraic Rolle and
+monotonicity over arbitrary real closed fields, the class-to-set support reduction, and the exact support of a rational-power Hahn expansion
+(\cref{osq:sub:formalization}).
+
 \section{Verification record and formalization routes}\label{osq:sec:provenance}
 
 \subsection{Finite checks}\label{osq:sub:checks}
 Each manuscript ships a program that checks finite identities with exact arithmetic. They are
 kept byte-identical in \texttt{code/} with their recorded outputs in \texttt{data/}; all were rerun
-for the seven merges on copies (Python~3.14.4, SymPy~1.14.0) and reproduce the recorded outputs, up to line
+for the eight merges on copies (Python~3.14.4, SymPy~1.14.0) and reproduce the recorded outputs, up to line
 endings, the recorded Python version, for 18 the recorded time stamp and for 23 its hash of the unshipped manuscript.
 
 \begingroup\small
@@ -10566,6 +12176,8 @@ Source & What is checked & Checks & Needs\\
 21 & Koszul squares and transition identities in dimensions 1--6, finite telescope identities and support barriers; integral multiplication-kernel bases, ranks and discriminants of $\Z[\sqrt2]$, $\Z[\sqrt3]$, $\Z[\sqrt[3]2]$, $\Z[\varphi]$, and the product rank for $\Q(\sqrt2),\Q(\sqrt3)$ & 1{,}608 & stdlib\\
 22 & Newton reconstruction in 1--3 variables, integral binomial values, grid determinants and integral inverses, resultant coordinate-degree bounds, good specializations (degrees, coprimality, nonzero bad-locus polynomial), first negative Laurent terms, the geometric remainder, Gaussian examples, fixed-divisor ideals, triangular inverses, sampled lexicographic block signs (22 categories, seed 23092026) & 1{,}776 & SymPy\\
 23 & binomial power identities of $\mathsf z_n$ for $n\le20$ to order 18 and the displayed coefficients of $\mathsf z_2$, refinement thresholds for $n\le100$, $m\le50$ and the table for $\mathsf z_{12}$, monic refinement certificates, the idempotent identity of $\mathsf y_c$ for $c=1,4,\dots,1600$, finite Boolean word and partition models in $r\le8$ variables, truncated-polynomial annihilators and alternating compositions for $n\le40$, clipped refinement composition (12 categories) & 18{,}040 & stdlib\\
+24 & greedy maximal-ideal selection in $\Z/n\Z$ with rejection witnesses and in finite products of $\F_2$, finite geometric remainders, roots and primitive idempotents of $T^{2^n}+1$ over $\F_{257}$ with the binary refinement, finite branch filters, finite-rank lexicographic examples of the zero-or-unit cutoff (6 groups, seed 20260923) & 133{,}770 & stdlib\\
+25 & extrapolation with arbitrary rational steps, high differences, Newton reconstruction on finite grids, binomial square jets, nonzero binomial coefficients, endpoint exponents and odd root multiplicities, the quadratic witness's exponents and coefficient, rank-two and rank-one exponent comparisons (18 groups, seed 20260923) & 1{,}578 & stdlib\\
 \end{longtable}
 \endgroup
 
@@ -10596,7 +12208,17 @@ computation, not shipped, rechecked in $2{,}642$ checks (most of them the expone
 the relations \eqref{osq:rm:eq:zn} for $n\le7$ and \eqref{osq:rm:eq:splitter}, the refinement certificates of \cref{osq:rm:thm:explicitrefinement}, the
 Laurent coefficients and the full-class factorization of \cref{osq:rm:ex:sqrt}, the residues of the Boolean words of \cref{osq:rm:thm:cardinality} modulo
 $T$ for three parameters with the squarefreeness of their radicands, and the cancellation identity behind \cref{osq:rm:thm:annC}; like 23's program it
-verifies no integral closure, place or cardinality.
+verifies no integral closure, place or cardinality. For the eighth merge 24's and 25's programs (standard library only) were rerun on copies with an
+explicit output path (Python~3.14.4): 24 passed all $133{,}770$ assertions in the same six groups and 25 all $1{,}578$ in the same 18 groups, and the
+rewritten records differ from \texttt{data/24-class-residues-verification.json} and \texttt{data/25-semialgebraic-smoothness-verification.json} only in the
+recorded Python version (3.14.4 for 3.13.5) and, on Windows, in line endings; 24's shipped \texttt{.txt} record is byte-identical to its JSON record.
+Neither program proves a class recursion, an infinite Hahn identity, a semialgebraic calculus theorem or a proper-class statement. An independent exact
+computation (SymPy), not shipped, rechecked in $300$ checks the identification of 24's first idempotents with 07's modulo $\xi_2^4+1$
+(\cref{osq:cr:rem:dyadic}), the squarefreeness and absence of real roots of $T^{2^n}+1$ for $n\le5$, finite geometric remainders behind
+\eqref{osq:cr:eq:telescope}, the Boolean-ring criterion of \cref{osq:cr:rem:ultrafilters} for pairs in the algebra of subsets of a four-element set, the
+coefficients $\frac12$ and $-\frac18$ of \eqref{osq:sa:eq:testfailure} for $b=1,\dots,4$, the constant of the $\mathsf k$th derivative in the proof of
+\cref{osq:sa:thm:bumps} for $\mathsf k\le6$ with the degree count of \cref{osq:sa:cor:regularity}, and the vanishing orders behind
+\cref{osq:sa:rem:exceptionsnecessary}; it verifies no class recursion, infinite support or semialgebraic calculus.
 
 \subsection{Formalization routes}\label{osq:sub:formalization}
 No statement of this report is formalized, and the repository has no omnific module. The sources
@@ -10641,7 +12263,12 @@ the explicit deceptive function, with the proper-class conclusions proved throug
 would not establish the full claims (\cref{osq:ft:q:certificates}(f)). The seventh batch adds one. 23 would first prove its $\mathsf z_n$ argument from
 finite normalization and one valuation, then the coefficient-span lemma and the exact ideal test, with an abstract algebraic-function-field layer
 separate from the embedding into the surreal field; the Boolean splitting needs further ramification infrastructure, and the periodic resolution
-follows from the annihilator identity (\cref{osq:rm:q:formal}). None was executed.
+follows from the annihilator identity (\cref{osq:rm:q:formal}). The eighth batch adds two. 24 would first verify the degree and unit lemmas, the
+geometric multiplier, the monomial inverse certificates, the dyadic idempotents and the convex truncation kernels over the constructed surreal field, and
+formalize the class recursion and the choice equivalence separately, in an explicit model of $\mathsf{GB}$, without hiding global choice in a change of
+universe (\cref{osq:cr:q:formal}). 25 would start from the cofinal tail extrapolation, semialgebraic finite-difference rigidity and convex-support
+absorption, with semialgebraic Rolle and monotonicity over arbitrary real closed fields, the class-to-set support reduction and the exact support of a
+rational-power Hahn expansion as the delicate obligations (\cref{osq:sa:q:formal}). None was executed.
 
 \begingroup
 \raggedright
@@ -10883,6 +12510,64 @@ $\omega$}, \texttt{docs/surreal/hahn-evaluation-at-omega/}.
 \emph{Surreal} repository, report on entire functions at arbitrary rank,
 \texttt{docs/surcomplex/entire-functions-at-arbitrary-rank/} (labels \nolinkurl{ent:as:thm:sampling},
 \nolinkurl{ent:as:thm:integer}; cited in batch-32 status notes).
+
+\bibitem{RepoHol}
+\emph{Surreal} repository, report on holonomic rigidity for entire Hahn functions,
+\texttt{docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions/} (labels \nolinkurl{hol:rc:thm:coding},
+\nolinkurl{hol:rc:rem:quotients}; cited in a batch-33 status note).
+
+\bibitem{RepoSaut}
+\emph{Surreal} repository, report on surcomplex field automorphisms, \texttt{docs/surcomplex/surcomplex-field-automorphisms/}
+(label \nolinkurl{saut:thm:acfhomogeneity}, the class back-and-forth).
+
+\bibitem{HamkinsGC}
+J.~D.~Hamkins, The global choice principle in G\"odel--Bernays set theory, author's exposition, 3 December 2014,
+\url{https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/}. Cited by 24.
+
+\bibitem{GHHSW}
+V.~Gitman, J.~D.~Hamkins, P.~Holy, P.~Schlicht and K.~J.~Williams, The exact strength of the class forcing theorem, \emph{Journal of Symbolic
+Logic} \textbf{85} (2020), 869--905; arXiv:1707.03700. Cited by 24 for the distinction between set-valued and class-valued recursion.
+
+\bibitem{Hodges}
+W.~Hodges, Krull implies Zorn, \emph{Journal of the London Mathematical Society} (2) \textbf{19} (1979), 285--287. Cited by 24 as a historical
+antecedent, through Entin's exposition.
+
+\bibitem{Erne}
+M.~Ern\'e, A primrose path from Krull to Zorn, \emph{Commentationes Mathematicae Universitatis Carolinae} \textbf{36} (1995), 123--126. Cited by 24;
+its mechanism was checked through Entin's version.
+
+\bibitem{Entin}
+A.~Entin, Maximal ideals in commutative rings and the axiom of choice, arXiv:2404.18351, version~3, 27 June 2025. The corrected version, with the
+monomial-to-prime step, is the one 24 consulted.
+
+\bibitem{BlechschmidtSchuster}
+I.~Blechschmidt and P.~Schuster, Maximal ideals in countable rings, constructively, arXiv:2207.03873. Cited by 24 as a recursive antecedent for
+set-sized rings, not a class-ring theorem.
+
+\bibitem{MacLane}
+S.~Mac~Lane, The universality of formal power series fields, \emph{Bulletin of the American Mathematical Society} \textbf{45} (1939), 888--890,
+\href{https://doi.org/10.1090/S0002-9904-1939-07110-3}{doi:10.1090/S0002-9904-1939-07110-3}. Cited by 24, not fully inspected by it.
+
+\bibitem{KnightLange}
+J.~F.~Knight and K.~Lange, Lengths of roots of polynomials in a Hahn field, \emph{Algebra and Logic} \textbf{60} (2021), 95--107,
+\href{https://doi.org/10.1007/s10469-021-09632-0}{doi:10.1007/s10469-021-09632-0}. Cited by 24 for the characteristic-zero Hahn closure theorem.
+
+\bibitem{JTW}
+G.~O.~Jones, M.~E.~M.~Thomas and A.~J.~Wilkie, Integer-valued definable functions, \emph{Bulletin of the London Mathematical Society} \textbf{44}
+(2012), 1285--1291, \href{https://doi.org/10.1112/blms/bds059}{doi:10.1112/blms/bds059}. Cited by 25.
+
+\bibitem{BMRW}
+N.~Bhardwaj, R.~McCulloch, N.~Ramachandran and K.~Woo, Integer-valued o-minimal functions, arXiv:2404.10737v1, 2024. Cited by 25 in the
+inspected version v1; no claim depends on its numerical growth constants.
+
+\bibitem{Miller}
+C.~Miller, Infinite differentiability in polynomially bounded o-minimal structures, \emph{Proceedings of the American Mathematical Society}
+\textbf{123} (1995), 2551--2555, \href{https://doi.org/10.1090/S0002-9939-1995-1257118-1}{doi:10.1090/S0002-9939-1995-1257118-1}. Cited by 25 as a
+bibliographic antecedent.
+
+\bibitem{BCR}
+J.~Bochnak, M.~Coste and M.-F.~Roy, \emph{Real Algebraic Geometry}, Ergebnisse der Mathematik und ihrer Grenzgebiete (3) \textbf{36}, Springer,
+1998, \href{https://doi.org/10.1007/978-3-662-03718-8}{doi:10.1007/978-3-662-03718-8}. Cited by 25 as standard background; not reread in full.
 
 \end{thebibliography}
 \endgroup

@@ -4344,6 +4344,38 @@ all 5,029 cited source references and 1,693 local Markdown destinations in
 225 files resolve. The new manuscript expansions and other outstanding
 proof-review obligations retain their previous status.
 
+## Pell-two and class-residue synchronization
+
+The merge through `f45cddd` retains the corrected power remark and adds
+`c091c6e`'s ordinary and omnific Pell-two classification. The two modules
+verify the fundamental pair `(3,2)`, identify natural powers with
+`(3 + 2√2)^k`, and apply Mathlib's proved fundamental-solution theorem with
+independent coordinate signs. This matches `odg:ex:pell2` and keeps the
+index an ordinary natural number. The combined two-thread build passes
+4,497 jobs; the axiom audit passes 15,636 declarations with only the three
+permitted axioms.
+
+The universal-symmetries/difference-equations companion (`50dde76`) adds
+24 standard statements to the preserving-automorphism report; all 274
+earlier statements and labels remain unchanged. The two quotient
+companions (`97ff204`) add 53 standard statements, expand the principal
+summaries `osq:main:internal` and `osq:main:polynomial`, and add one source
+credit to `osq:if:prop:closed`. The remaining prior statements and labels
+are unchanged. These expansions, including their class-choice and
+semialgebraic claims, remain pending independent proof review and Lean
+formalization. The quotient and preserving-automorphism reports now have
+twenty-two and fifteen integrated manuscripts respectively. Seven of the
+nine companions placed in `a7a435f` are integrated; two remain staged.
+
+The refreshed independent inventory passes for 4,550 standard results in
+63 reports. All 5,106 source references and 1,698 local Markdown destinations
+in 225 files resolve. The revised 33-page catalogue builds in three passes
+without diagnostics and its changed entries on pages 10–11 are visually
+checked. This merge does not change the corrected Diophantine source or
+its validated 225-page PDF. No incoming finite suite was rerun in this
+synchronization, and the new manuscript proofs remain outside earlier
+review scopes.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

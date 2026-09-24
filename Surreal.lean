@@ -642,3 +642,5 @@ import Surreal.Surcomplex.CartesianKernel
 import Surreal.Algebra.PowerDifferenceFactors
 import Surreal.Foundations.OmnificPowerRigidity
 import Surreal.Surcomplex.PowerDifferenceRigidity
+import Surreal.Algebra.PellTwo
+import Surreal.Surcomplex.PellTwoClassification
