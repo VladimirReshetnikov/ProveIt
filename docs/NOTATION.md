@@ -579,6 +579,17 @@ The Boolean order on idempotents is d≤e exactly when de=d; order density
 here means that each nonzero e lies above some nonzero member of the
 specified family.
 
+For a set-indexed family of maps from the normalization, the common kernel
+K in the branching discussion is taken **after factoring through the
+arithmetic fibre**. Its nonzero idempotents are order-dense: for every
+nonzero idempotent f there is 0≠d≤f with d∈K. “Essential ideal” means
+that K meets every nonzero ideal of the fibre; here also Ann(K)=0.
+This is not a topological density assertion. A set-indexed family of
+class maps is one relation on (index, input, output), not a set whose
+elements are proper-class graphs. In the Gaussian product description,
+keep the chosen factor and project the coefficient copy into that factor;
+a specified coefficient copy need not be diagonal.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though
