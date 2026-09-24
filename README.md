@@ -481,7 +481,14 @@ with rational residue field. The completed main-theorem review proves that
 the henselization has exactly 2^κ minimal primes, each with complexified
 fraction field. Its completion is only ℚ: every generic branch disappears.
 Even maps to separated local ℚ-algebras, such as ℚ[[ε]], see only the
-rational residue. These manuscript results remain pending in Lean.
+rational residue. The rest of the henselian section is now reviewed too:
+strict henselization adds the absolute Galois group of ℚ as a factor in
+the generic spectrum, and Gaussian extension produces two copies with
+conjugate scalar actions. Finite projective modules and finite étale
+algebras on the generic fibre are classified by locally constant ranks;
+all constant-rank projectives are free. The valuation space has exactly
+2^κ connected components, using the cited external correspondence.
+These manuscript results remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted
