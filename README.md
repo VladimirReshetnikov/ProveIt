@@ -406,11 +406,15 @@ though it has no solution in ordinary natural numbers.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier
-translation turns every integer ring formula into an omnific ring formula
-with the same truth on standard inputs, including arbitrary alternations of
-universal and existential quantifiers. In particular, every integer ring
-sentence has a proved truth-equivalent omnific ring sentence. The separate
-computability and undecidability consequences remain pending.
+translation turns every integer ring formula and every natural arithmetic
+formula into an omnific ring formula with the same truth on standard inputs,
+including arbitrary alternations of universal and existential quantifiers.
+The natural arithmetic translation also works uniformly in every
+integer-constant intermediate Hahn ring over an ordered coefficient field;
+closure under constant extraction is unnecessary. Each arithmetic sentence
+therefore has a proved truth-equivalent ring sentence. Computability on
+encoded syntax, the many-one reduction and the undecidability consequences
+remain pending.
 
 Given an integer Smith normal form, linear systems over the omnific ring
 now have a proved complete solution criterion. Nonzero diagonal entries

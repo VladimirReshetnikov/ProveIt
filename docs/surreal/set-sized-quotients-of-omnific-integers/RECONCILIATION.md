@@ -2024,3 +2024,30 @@ anchors in 63 reports, 5,219 source-label references and 1,844 local
 Markdown destinations in 226 files pass, as does whitespace checking.
 No Lean source changed; the two-thread 4,631-job build and
 17,116-declaration axiom audit remain the baseline before synchronization.
+
+## Synchronization: natural arithmetic in omnific and intermediate rings
+
+Merged origin/main through 13c9f6f, including 5c21c5f, and reviewed all
+five new modules against `odg:def:cor:arithmetic`. The source language
+has exactly zero, one, addition and multiplication, so the natural-number
+inclusion is a first-order embedding. A change-of-language version of
+relativization permits the guard to use the richer ring language. Formula
+induction proves the translation preserves truth at every standard natural
+assignment, including arbitrary quantifier alternations and sentences.
+
+The same parameter-free translation applies to the actual omnific carrier
+at every universe and to every integer-constant intermediate Hahn ring
+over an ordered coefficient field. For the latter, mapping four-square
+witnesses to the coefficient field proves positivity without requiring
+constant extraction to land back in the intermediate ring. Both integer
+and natural domains are natively definable there. The README and ledger
+accurately retain the distinction between this syntactic/semantic result
+and computability on encoded syntax: the many-one reduction, undecidability
+and non-recursive axiomatizability remain Pending.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,636 jobs, and
+its axiom audit checks 17,202 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,849 local Markdown destinations in
+226 files pass, as does whitespace checking. No incoming TeX changed;
+the 303-page article and 34-page catalogue remain current.

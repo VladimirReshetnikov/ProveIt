@@ -767,3 +767,8 @@ import Surreal.Foundations.OmnificNaturalNumbersDefinition
 import Surreal.Algebra.ArithmeticGuards
 import Surreal.Algebra.FormulaRelativization
 import Surreal.Foundations.OmnificArithmeticInterpretation
+import Surreal.Algebra.FormulaRelativizationLanguageMap
+import Surreal.Algebra.ArithmeticLanguage
+import Surreal.Algebra.NaturalArithmeticInterpretation
+import Surreal.Foundations.OmnificNaturalArithmetic
+import Surreal.HahnSeries.ArithmeticInterpretation
