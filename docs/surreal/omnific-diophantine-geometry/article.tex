@@ -8762,14 +8762,22 @@ Let $\Bbbk$ be algebraically closed of characteristic zero, $m\ge2$, and
 \begin{equation}\label{odg:sg:eq:superpoly}
  P(X)=c\prod_{i=1}^{k}(X-a_i)^{e_i},\qquad c\ne0,\quad e_i\ge1,
 \end{equation}
-with distinct $a_i$ and $d=\deg P=\sum_ie_i$. The polynomial $Y^m-P(X)$ is irreducible if
-and only if $\gcd(m,e_1,\ldots,e_k)=1$: the field $\Bbbk(X)$ contains the $m$th roots of
-unity, so the Kummer extension $\Bbbk(X)(P^{1/m})$ has degree $m$ exactly when $P$ is not a
-$p$th power for any prime $p\mid m$, and over an algebraically closed field that happens
-exactly when $p$ divides every $e_i$ \src{C16}.
+with distinct $a_i$ and $d=\deg P=\sum_ie_i$. Assume throughout this theorem that
+$Y^m-P(X)$ is irreducible, equivalently $\gcd(m,e_1,\ldots,e_k)=1$.
+Indeed, $P$ is a $p$th power in $\Bbbk(X)$ exactly when $p$ divides every $e_i$:
+necessity follows from the orders at the $a_i$, and sufficiency from taking a
+$p$th root of $c$. For completeness, put $K=\Bbbk(X)$ and $b^m=P$.
+Since $K$ contains all $m$th roots of unity, $K(b)/K$ is cyclic Galois of degree
+$r\mid m$, and $b^r\in K$ \cite{StacksKummer}. If $r<m$, then
+$P=(b^r)^{m/r}$ is a $p$th power for some prime $p\mid m/r$.
+Conversely, such a power makes $Y^m-P$ reducible by a difference-of-powers
+factorization. Gauss's lemma transfers irreducibility between $K[Y]$ and
+$\Bbbk[X,Y]$. Thus irreducibility means that for every prime $p\mid m$,
+\emph{some} $e_i$ is not divisible by $p$ \src{C16}.
 
 \begin{theorem}[Superelliptic flexibility criterion \src{C16}]\label{odg:sg:thm:super}
-Under these hypotheses $Y^m=P(X)$ has a nonconstant $\crA$-point if and only if exactly one
+Assume $Y^m-P(X)$ is irreducible, in addition to the hypotheses above.
+Then $Y^m=P(X)$ has a nonconstant $\crA$-point if and only if exactly one
 index $i$ has $m\nmid e_i$, and for that index $\gcd(m,e_i)=1$. Equivalently, after
 extracting polynomial $m$th powers,
 \begin{equation}\label{odg:sg:eq:exceptional}
@@ -8782,16 +8790,30 @@ and then a normalization parameter is
 In every other irreducible case all solutions in $\crA^2$ are constant.
 \end{theorem}
 \begin{proof}
-In the smooth projective model of the cover of the $X$-line, a finite root $a_i$ has
-$\gcd(m,e_i)$ points above it, each with ramification index $m/\gcd(m,e_i)$, and infinity
-has $n_\infty=\gcd(m,d)$ points, each with index $m/\gcd(m,d)$: extract a unit $m$th root
-in the completed local field and factor $Y^m=s^{e_i}$ (with $s=1/X$ at infinity); the
-coprime residual exponents give a uniformizer. Riemann--Hurwitz \cite{StacksRH} gives
+Let $\overline C$ be the smooth projective model of this degree-$m$ cover of
+the $X$-line. At $a_i$ put $s=X-a_i$, and at infinity put $s=1/X$.
+Locally $P=s^a U(s)$ with $U\in\Bbbk[[s]]^\times$, where $a=e_i$ at a finite
+root and $a=-d$ at infinity. The unit $U$ has an $m$th root: take a root of
+its constant coefficient and expand the remaining unit by the binomial series.
+After dividing $Y$ by this root, the local equation is $w^m=s^a$.
+Put $h=\gcd(m,|a|)$. It has $h$ branches, each with
+$s=u^{m/h}$ and $w=\zeta u^{a/h}$ for an appropriate constant $\zeta$.
+The relatively prime integers $m/h$ and $a/h$ generate $u$ in the branch
+field, so its completed normalization is $\Bbbk[[u]]$ and its ramification
+index is $m/h$. At finite nonroots $a=0$, giving $m$ unramified branches.
+Thus a root contributes $m-\gcd(m,e_i)$ to the ramification sum, and
+infinity has $n_\infty=\gcd(m,d)$ points and contributes $m-n_\infty$.
+Characteristic zero makes this ramification tame, so Riemann--Hurwitz
+\cite{StacksRH} gives
 \begin{equation}\label{odg:sg:eq:RH}
  2g-2=-2m+\sum_{i=1}^k\bigl(m-\gcd(m,e_i)\bigr)+m-\gcd(m,d).
 \end{equation}
-The normalization of the ring of the equation, which is monic in $Y$, is finite over the
-$X$-line, so the affine normalization omits exactly the $n_\infty$ points over infinity. By
+The coordinate ring is integral over $\Bbbk[X]$ because the equation is
+monic in $Y$. Its normalization is the integral closure of $\Bbbk[X]$ in
+the same function field: integrality in either direction follows from
+transitivity and from inclusion of the base ring. It is finite over
+$\Bbbk[X]$ and identifies with the inverse image of the affine $X$-line
+in $\overline C$. Hence it omits exactly the $n_\infty$ points over infinity. By
 \cref{odg:sg:thm:main} (with \cref{odg:sg:thm:genus,odg:sg:prop:oneplace}), flexibility is
 equivalent to $g=0$ and $n_\infty=1$, which by \eqref{odg:sg:eq:RH} give
 \begin{equation}\label{odg:sg:eq:deficit}
@@ -8802,9 +8824,16 @@ there is exactly one nonzero summand, and its gcd is one. Conversely that patter
 $d\equiv e\pmod m$, so $\gcd(m,d)=1$, and \eqref{odg:sg:eq:deficit}, hence $g=0$ and one
 point at infinity. Finally \eqref{odg:sg:eq:superparam} satisfies the equation; $T$ is
 integral over the coordinate ring since $T^m=X-a$; and $T^m$ and $T^e=Y/(\eta P_1(X))$
-generate $T$ in the function field because $\gcd(m,e)=1$. So $\Bbbk[T]$ is a finite
+generate $T$ in the function field: choose integers $a_0,b_0$ with
+$a_0m+b_0e=1$ and use $T=(T^m)^{a_0}(T^e)^{b_0}$ there. Negative powers
+are allowed in the function field, not asserted to lie in the coordinate ring.
+So $\Bbbk[T]$ is a finite
 birational normal extension of the coordinate ring, that is, its normalization.
 \end{proof}
+
+The irreducibility assumption is essential. Without it, $Y^2=X^2$ has the
+nonconstant polynomial families $(T,\pm T)$ although no multiplicity is odd.
+The quadratic corollary below includes such reducible cases separately.
 
 Repeated factors, and so arbitrarily singular affine models, are governed by the same test;
 the Riemann--Hurwitz computation itself is classical. Many repeated roots do not make a
@@ -8836,7 +8865,9 @@ Over $\C$, a nonconstant $P_{\mathrm{odd}}$ makes the curve irreducible and
 $Y=\pm\sqrt c\,P_1(X)$ are polynomial graphs. Over $\R$, $\deg P_{\mathrm{odd}}\ge2$ is rigid
 after complexification. If $P_{\mathrm{odd}}=X-a$, then $X=a+cT^2$, $Y=cP_1(a+cT^2)\,T$ is a
 real polynomial family for either sign of $c$. If $P_{\mathrm{odd}}=1$ and $c>0$ the graphs
-are real. If $P_{\mathrm{odd}}=1$ and $c<0$, the ordering of the real Hahn field forces
+are real. Evaluating any of these nonconstant polynomial families at
+$T=\omega^\gamma$, $\gamma>0$, gives a nonconstant finite-support Hahn point.
+If $P_{\mathrm{odd}}=1$ and $c<0$, the ordering of the real Hahn field forces
 $Y=0$ and $P_1(X)=0$, and the roots of a real polynomial in an ordered extension of $\R$
 are real, so the points are constant.
 \end{proof}
@@ -8855,9 +8886,13 @@ Consider
 singular at the origin. Put $f(X)=X^3-X+1$, of discriminant $-23$, so the affine elliptic
 curve $E:\ Y^2=f(X)$ is smooth; it is the curve with $\Delta_0=23$ of
 \cref{odg:cr:cor:weierstrass,odg:cr:ex:denominator}. The map $(X,Y)\mapsto(X,Z=XY)$ is the
-normalization of \eqref{odg:sg:eq:pinched} and identifies $(0,1)$ with $(0,-1)$. In ring
+normalization of \eqref{odg:sg:eq:pinched} and identifies $(0,1)$ with $(0,-1)$.
+Indeed, $y$ is integral by $y^2=f(x)$ and is the fraction $z/x$, while the
+smooth ring $\Bbbk[x,y]/(y^2-f(x))$ is normal. In ring
 terms $\Bbbk[C]=\Bbbk[x,xy]\subseteq\Bbbk[\widetilde C]=\Bbbk[x,y]$ with $y^2=f(x)$, and
-$x\,\Bbbk[\widetilde C]\subseteq\Bbbk[C]$, so $\kappa=x$ is a conductor element \src{C16}.
+$x\,\Bbbk[\widetilde C]\subseteq\Bbbk[C]$: every element of the larger ring
+is $A(x)+B(x)y$, whose product with $x$ is $xA(x)+B(x)z$. Thus
+$\kappa=x$ is a conductor element \src{C16}.
 
 \begin{theorem}[A pinched elliptic curve \src{C16}]\label{odg:sg:thm:example}
 Over every field of characteristic zero every solution of \eqref{odg:sg:eq:pinched} in
@@ -8872,7 +8907,10 @@ order at most seven.
 Rigidity follows from \cref{odg:sg:thm:main}, since the normalization $E$ has genus one.
 Here is the explicit certificate. Suppose $(x,z)\in\crA^2$ is nonconstant. If $x\in\Bbbk$,
 then $z$ is algebraic over $\Bbbk$ and constant; so $x\notin\Bbbk$, $x\ne0$, and
-$y=z/x\in\crH$ satisfies $y^2=f(x)$. Then $2v(y)=3v(x)$, and $\gamma=v(x/y)\in\Gamma$
+$y=z/x\in\crH$ satisfies $y^2=f(x)$. Since a nonconstant element of $\crA$
+has negative valuation, $v(x)<0$. The term $x^3$ has strictly smaller
+valuation than both $-x$ and $1$, so it cannot cancel. Thus
+$2v(y)=3v(x)$, and $\gamma=v(x/y)\in\Gamma$
 satisfies $\gamma>0$, $v(x)=-2\gamma$ and $v(y)=-3\gamma$: these are the pole orders two and
 three at the point at infinity of $E$. Choose $\lambda$ with $\lambda(-\gamma)=1$, so
 $\lambda(\ddeg x)=-2\ne0$, and put $\partial=\partial_\lambda$ and
@@ -8886,16 +8924,27 @@ $2y\,\partial y=f'(x)\,\partial x$ they give
 \begin{equation}\label{odg:sg:eq:sdecomp}
  \alpha(\partial)=\frac{U(x)\,y}{2}\,\partial x+W(x)\,\partial y .
 \end{equation}
-For every $j\ge0$, $xy^j\in\Bbbk[C]$: reduce even powers by $y^2=f(x)$ and use $xy=z$ for
-the odd ones. By \cref{odg:sg:lem:seidenberg}, $x^2(\partial y)^j\in\crA$ for all $j$.
-Expanding the $n$th power of \eqref{odg:sg:eq:sdecomp}, a term with $y^i(\partial y)^j$
-lies in $\crA$ after multiplying $y^i$ by $x$ and $(\partial y)^j$ by $x^2$, the factors
-$U(x)$, $W(x)$, $\partial x$ being in $\crA$ already. Hence
+For every $j\ge0$, $xy^j\in\Bbbk[C]$: explicitly,
+$xy^{2a}=xf(x)^a$ and $xy^{2a+1}=zf(x)^a$. Applying
+\cref{odg:sg:lem:seidenberg} with conductor $x$ and element $y$ gives
+$x^2(\partial y)^j\in\crA$ for all $j$, including $j=0$.
+In the binomial expansion of the $n$th power of \eqref{odg:sg:eq:sdecomp},
+the summand indexed by $i+j=n$, after multiplication by $x^3$, is
+\[
+ \binom ni \frac{U(x)^iW(x)^j}{2^i}
+ (\partial x)^i\,(xy^i)\,\bigl(x^2(\partial y)^j\bigr).
+\]
+Every displayed factor lies in $\crA$; in particular, division by $2^i$
+is division by a nonzero constant. Hence
 \begin{equation}\label{odg:sg:eq:ellipticcert}
  x^3\alpha(\partial)^n\in\crA\qquad(n\ge0).
 \end{equation}
 At $n=7$ this nonzero element has valuation $3(-2\gamma)+7\gamma=\gamma>0$, a contradiction.
-Only derivatives of order at most seven of the elements $xy^j$, $0\le j\le7$, occur. The
+For the term indexed by $j\le7$, Seidenberg's identity uses at most $j$
+derivatives of $xy^a$ and powers of $x$, with $0\le a\le j$.
+The latter derivatives are polynomial expressions in derivatives of $x=xy^0$.
+Thus only derivatives of order at most seven of the elements $xy^a$,
+$0\le a\le7$, occur. No assertion that $y$ itself belongs to $\crA$ is used. The
 omnific statements follow in a common workspace, as in \cref{odg:cr:cor:weierstrass}.
 \end{proof}
 
@@ -8949,14 +8998,25 @@ finite support and constant term $\mathbf x_0$, and they form a proper class of 
 points.
 \end{proposition}
 \begin{proof}
-Membership and constant terms follow from \eqref{odg:sg:eq:arithfamily}. A coordinate
-polynomial of degree $e\ge1$ has leading exponent $e\beta$ at $c+\omega^\beta$, which
-cannot cancel against lower powers of $\omega^\beta$; so distinct $\beta$ give distinct
-tuples, and every tuple has finitely many exponents.
+Write $p_i(c+S)=p_i(c)+\sum_{j=1}^{d_i}b_{ij}S^j$.
+At $S=\omega^\beta$ the exponents $j\beta$ are positive and distinct.
+The constant coefficient is $p_i(c)\in\mathfrak o$; the other coefficients
+need only belong to $\Bbbk$, as allowed in the omnific ring. Every defining
+equation vanishes identically after substitution of the polynomial tuple
+$\nu(T)$, so it still vanishes at $c+\omega^\beta$.
+At least one coordinate polynomial has degree $e\ge1$, because the
+normalization map is not constant. Its leading exponent is $e\beta$ with
+nonzero coefficient, so the tuple is nonconstant. Multiplication by the
+positive integer $e$ is injective on the ordered exponent group; distinct
+$\beta$ therefore give distinct tuples. Each tuple has finite support.
+Finally the positive surreal exponents form a proper class, proving the
+claimed size of this family in the standing class convention.
 \end{proof}
 
 Over $\C$ every ordinary point has a complex preimage under the finite surjective
-normalization, so the existence dichotomy is complete for Gaussian points.
+normalization: its fiber is a nonempty finite $\C$-scheme, and any closed
+point of that fiber has residue field a finite extension of $\C$, hence $\C$.
+Thus the existence dichotomy is complete for Gaussian points.
 
 \begin{corollary}[The Gaussian existence dichotomy \src{C16}]\label{odg:sg:cor:gaussian}
 Let $\mathcal C$ be an affine $\Z[i]$-model with geometrically integral complex fiber $C_\C$.
@@ -8965,15 +9025,23 @@ $\mathcal C(\Z[i])\ne\varnothing$. Then every ordinary Gaussian point is the con
 a proper class of finite-support nonordinary points.
 \end{corollary}
 \begin{proof}
-A nonordinary point forces the normalization condition by \cref{odg:sg:thm:main}, and its
-constant term is an ordinary Gaussian point. The converse is
+A nonordinary tuple lies in a complex Hahn workspace and is nonconstant
+there, because $\Og\cap\C=\Z[i]$. It forces the normalization condition by
+\cref{odg:sg:thm:main}. Constant extraction is a ring homomorphism fixing
+$\Z[i]$, so applying it to the defining equations gives an ordinary
+Gaussian point. The converse is
 \cref{odg:sg:prop:arithfamily}.
 \end{proof}
 
 For real omnific points the converse holds at every nonsingular ordinary point and at every
 singular ordinary point with a real preimage under the normalization. A real point of a
 singular curve can have only nonreal preimages, so the complex argument does not transfer,
-and the real singular fibers are not classified (\cref{odg:sg:q:real}) \src{C16}. For
+and the real singular fibers are not classified (\cref{odg:sg:q:real}) \src{C16}.
+For example, $Y^2=X^2(X-1)$ has affine-line normalization
+$(X,Y)=(T^2+1,T(T^2+1))$, but the ordinary point $(0,0)$ has only the
+preimages $T=\pm i$. Thus the real polynomial-family construction does not
+apply at that point; this observation alone does not rule out all possible
+Hahn points in its constant-term fiber. For
 smooth curves the fibers are known exactly (\cref{odg:cr:cor:omnific}); for singular
 exceptional curves \cref{odg:sg:prop:arithfamily} gives families in the fibers, not the
 entire fibers: no lifting theorem for every point is proved
@@ -13270,5 +13338,9 @@ The Stacks Project Authors.
 The Stacks Project Authors.
 \emph{Riemann--Hurwitz}, Section 53.12, Tag 0C1B, including Lemma 53.12.3.
 \url{https://stacks.math.columbia.edu/tag/0C1B}. Cited by source C16.
+\bibitem{StacksKummer}
+The Stacks Project Authors.
+\emph{Kummer extensions}, Section 9.24, Tag 09I6, opening discussion.
+\url{https://stacks.math.columbia.edu/tag/09I6}.
 \end{thebibliography}
 \end{document}

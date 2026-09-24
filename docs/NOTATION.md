@@ -150,6 +150,15 @@ The identity `α(∂) = h∂u`, with `h ∈ F` and the chosen
 `v(∂u) = v(u) = γ`, puts the contraction's valuation in `γℤ`;
 it does not put the contraction itself in `F`.
 
+For `Y^m = P(X)` over an algebraically closed field of characteristic zero,
+`e_i` are the root multiplicities and irreducibility requires
+`gcd(m,e₁,…,e_k)=1`. The local exponent at infinity is `−deg P` in
+the coordinate `s=1/X`. In the quadratic test, `P_odd` is the monic product
+of factors of odd multiplicity, not the odd-degree part of the polynomial.
+Over `ℝ` a factor may be quadratic; use its degree when computing
+`deg P_odd`. The normalization parameter `T` is a function-field element
+and need not be a regular function on the singular model.
+
 The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
 Its rational residue `res` has domain `Oz_Π`; standard part `st` has
 domain the finite surreals. On their common domain, the maps agree
