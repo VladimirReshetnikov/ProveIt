@@ -223,7 +223,11 @@ dimension d in d coordinate directions and infinite dimension in countable
 rank, despite vanishing positive self-Tor. In the integer and Gaussian
 cases, their finite quotients and profinite completions agree with the
 constant ring; the resolution and its test modules explain what this
-finite data misses.
+finite data misses. The lattice presentations, nonflatness witnesses and
+ordered-cone dimension comparisons now have expanded proofs too.
+The noncoherence certificate requires `K ≠ Frac(D)`: the coefficient-field
+case `K[ℚ≥0]` is coherent, so nonfinite generation of the tail alone
+does not establish noncoherence.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

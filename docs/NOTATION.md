@@ -143,6 +143,20 @@ degree one is D; the higher surviving face groups have coefficients K.
 Formal lifting for `A → D` is distinct from the reduced differential
 module `Ω_{A/D} ⊗_A D`, which uses the section `D → A`.
 
+In Setting (L), a coefficient lattice M is nonzero and has a finite
+D-basis of size r ≥ 1. The D-rank r of its constant part is distinct from
+the rank one of `L(M) = M + Π` over `Frac(A)`. Multiplication by a positive
+monomial identifies it with the ideal `J_g(M) = X^g L(M)`.
+Write `H = (X^g, cX^g)A` uniformly; `g = e₁` gives the coordinate-core
+notation `(X₁,cX₁)`. The two-generator noncoherence certificate requires
+`c ∈ K ∖ Frac(D)`, hence `K ≠ Frac(D)`. A non-finitely generated tail
+alone does not imply noncoherence. For ordered cores, the coinitial
+sequence `2^(−n)g` uses both divisibility and `Γ ⊆ ℝ`; its coinitiality
+does not extend to an arbitrary non-Archimedean exponent group.
+In `Π ⊕ (M ⊗_D N)`, the displayed A-action includes the cross term
+`h·m_{M,N}(t)` in the tail coordinate. The additive decomposition is
+not a decomposition into the two separate A-module actions.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
