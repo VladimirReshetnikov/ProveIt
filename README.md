@@ -237,6 +237,13 @@ all nonlinear equations. Algebraic degree d is exactly the first nonlinear
 degree, yielding two-generated ideals with arbitrarily late first relations.
 Finite generation here is as an ideal of the symmetric algebra; a nonzero
 relation ideal is not finitely generated as a module over the omnific ring.
+The scalar Hom and dual descriptions now explain how distinct coefficient
+lattices can have the same double dual. Ordinary ideal classes survive
+multiplication after removing tensor torsion, with an identity different
+from the omnific ring when the number-field degree is at least two.
+For matrices at one common monomial scale, the image is finitely presented
+exactly when the ordinary kernel is defined over ℚ (over ℚ(i) in the
+Gaussian case); then the image is free.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

@@ -180,6 +180,19 @@ not as an A-module: a nonzero kernel has unbounded homogeneous degrees.
 relations. For f of degree d, Xᵈf(Y/X) means its homogeneous polynomial
 expansion; it does not require inverting X or assuming that f is monic.
 
+For coefficient lattices, `(N:M) = {c ∈ k : cM ⊆ N}` uses ordinary
+coefficient scalars; for A-submodules U,V of F = Frac(A), `(V:U)` permits
+scalars in F. The algebraic dual is `U* = Hom_A(U,A)`, represented by
+`(A:U)`. Double-dual identifications specify the evaluation map, not just
+an abstract isomorphism. The quotient `B/L(M) ≅ k/M` is an additive
+D-module with A-action through ct, and need not be a quotient ring.
+The operation ⊙ removes A-torsion from a tensor product; for lattice
+modules its explicit carrier is L(MN). Its ideal-class subgroup has
+identity L(𝔬), differing from A when the order has D-rank at least two.
+For a common-scale matrix, q is the dimension of its kernel W over k,
+while ℓ is the D-rank of `W ∩ Dⁿ`. “Defined over Frac(D)” means that W
+has a k-basis with all coordinates in Frac(D).
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

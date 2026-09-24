@@ -6078,8 +6078,15 @@ so this increasing chain of lattices cannot eventually stabilize.
 
 \subsection{Homomorphisms, ideal classes and duals}\label{osq:tn:sub:hom}
 
-For lattices put $(N:M)=\{c\in k:cM\subseteq N\}$ and $\mathfrak o(M)=(M:M)$.
+For lattices put $(N:M)=\{c\in k:cM\subseteq N\}$ and
+$\mathfrak o(M)=(M:M)$. More generally, for nonzero $A$-submodules
+$U,V$ of $F=\Frac(A)$, write
+$(V:U)=\{q\in F:qU\subseteq V\}$. The lattice colon is restricted
+to the ordinary coefficient field $k$; the module colon permits a
+scalar in $F$. Below, $U^*=\Hom_A(U,A)$ is the algebraic $A$-dual,
+with its natural $A$-module structure.
 
+\Needspace{10\baselineskip}
 \begin{theorem}[Scalar homomorphisms and isomorphism types \src{14; 17}]\label{osq:tn:thm:hom}
 Identifying a scalar with multiplication by it, $\Hom_A(L(M),L(N))=\Pi+(N:M)$, composition is multiplication, and
 $L(M)\cong L(N)$ if and only if $N=cM$ for some $c\in k^\times$. Hence $\End_AL(M)=\Pi+\mathfrak o(M)$ and
@@ -6087,21 +6094,88 @@ $\operatorname{Aut}_AL(M)=\mathfrak o(M)^\times$. The ring $\mathfrak o(M)$ is f
 $\Q\,\mathfrak o(M)\subseteq\R$ is a number field of degree at most $\rk M$ (not necessarily totally real).
 \end{theorem}
 \begin{proof}
-An $A$-linear map $\varphi$ between nonzero $A$-submodules of the fraction field is multiplication by a scalar: for nonzero $a,b$ in a
-common ideal (after a monomial denominator), $a\varphi(b)=b\varphi(a)$. If $qL(M)\subseteq L(N)$ and $0\ne m_0\in M$, then
-$q=(qm_0)/m_0\in B$; write $q=c+h$ with $c\in k$, $h\in\Pi$; the inclusion is equivalent to $cM\subseteq N$. An isomorphism has $q$ and
-$q^{-1}$ in $B$, so $q\in B^\times=k^\times$ (\cref{osq:lem:units}), and nonzero constants preserve $\Pi$. Multiplication by $m_0$ embeds
-$\mathfrak o(M)$ in $M$; Cayley--Hamilton for the matrix of multiplication by $c$ on a basis of $M$ gives integrality; in the real case the
-rational span is a finite-dimensional domain, hence a field, of dimension at most $\rk M$.
+We first justify the scalar description for arbitrary nonzero
+$A$-submodules $U,V\subseteq F$, including $\Pi$ and $B$.
+Fix $0\ne u_0\in U$ and an $A$-linear map $\varphi:U\to V$.
+For each $u\in U$, choose a nonzero $a\in A$ clearing the two
+denominators, so $au_0,au\in A$. By $A$-linearity,
+\[
+ (au_0)\varphi(u)=\varphi((au_0)u)
+ =\varphi((au)u_0)=(au)\varphi(u_0).
+\]
+Cancelling $au_0$ in $F$ gives
+$\varphi(u)=qu$, where $q=\varphi(u_0)/u_0$ is independent of
+$u$. Conversely every $q\in(V:U)$ defines such a map, uniquely.
+This also includes the zero map, coded by $q=0$. For class modules,
+each specified class map therefore has one scalar code; $\Hom$ is
+realized by this explicit class of scalars, not by a collection of
+arbitrary class functions. Addition and composition become scalar
+addition and multiplication.
+
+Now suppose $qL(M)\subseteq L(N)$ and choose $0\ne m_0\in M$.
+Since $qm_0\in L(N)\subseteq B$ and $B$ is a $k$-algebra,
+$q=(qm_0)/m_0\in B$. Write uniquely $q=c+h$ with $c\in k$,
+$h\in\Pi$. For $m\in M$ and $v\in\Pi$,
+\[
+ (c+h)(m+v)=cm+(cv+hm+hv),
+\]
+and the parenthesized term lies in $\Pi$. Thus the required
+inclusion is equivalent to $cM\subseteq N$, proving the formula
+for $\Hom$ and, on taking $N=M$, for $\End$.
+
+If the map is an isomorphism, its inverse is multiplication by
+$q^{-1}$. Both scalars lie in $B$, so $q\in B^\times=k^\times$:
+the leading-degree argument of \cref{osq:lem:units} applies both
+to the full class ring and to the finite-support model. Hence an
+isomorphism forces $N=qM$. Conversely any nonzero $c\in k$ with
+$N=cM$ gives an isomorphism because $c\Pi=\Pi$.
+The automorphisms are exactly the constants $c$ with
+$cM=M$, equivalently $c,c^{-1}\in\mathfrak o(M)$.
+
+The map $c\mapsto cm_0$ embeds $\mathfrak o(M)$ as a
+$D$-submodule of the finite free module $M$. Since $D$ is a
+principal ideal domain, this proves finite generation and freeness.
+For $c\in\mathfrak o(M)$, multiplication by $c$ has a matrix over
+$D$ on a basis of $M$. Its monic characteristic polynomial
+annihilates this endomorphism by Cayley--Hamilton. Applying it to
+$m_0\ne0$ shows that the same polynomial vanishes at $c$ in $k$,
+proving integrality.
+
+In the real case, $E=\Q\,\mathfrak o(M)$ is a finite-dimensional
+$\Q$-algebra inside $\R$, and $c\mapsto cm_0$ embeds it in
+$\Q M$, of dimension $\rk M$. Multiplication by a nonzero element
+of $E$ is an injective endomorphism of a finite-dimensional vector
+space, hence surjective; its inverse image of $1$ is the
+multiplicative inverse. Thus $E$ is a number field with the stated
+degree bound.
 \end{proof}
 
 Manuscript~17 proves the $\Hom$, isomorphism and automorphism statements independently for $\Oz$ and $\GOz$ (for the ideals
 $J_\gamma(M)$, with $\Hom_A(J_\gamma(M),J_\eta(N))=\omega^{\eta-\gamma}((N:M)+\Pi)$), and sharpens the degree bound: the field spanned
 by $\mathfrak o(M)$ has degree dividing $\rk M$ (\cref{osq:rel:thm:order}).
 
-Let $K_0\subset\R$ be a number field and $\mathfrak o\subset K_0$ an order. An invertible fractional $\mathfrak o$-ideal is a lattice, and
-for these modules put $U\odot V=(U\otimes_AV)/(\text{elements killed by a nonzero element of }A)$; by \cref{osq:tn:thm:tensor},
-$L(M)\odot L(N)\cong L(MN)$.
+The qualification ``not necessarily totally real'' is essential:
+for $M=\Z[\sqrt[3]{2}]\subset\R$, the multiplier ring is $M$
+itself, since $1\in M$ and $M$ is a ring. Its rational span
+$\Q(\sqrt[3]{2})$ has two nonreal embeddings, despite its chosen
+embedding in $\R$.
+
+For the next theorem and example only, specialize to the real case
+$D=\Z$, $k=\R$. Let $K_0\subset\R$ be a number field and
+$\mathfrak o\subset K_0$ an order, that is, a subring whose
+additive group is a full integer lattice in $K_0$. An invertible
+fractional $\mathfrak o$-ideal $P$ is a coefficient lattice:
+it is finitely generated over $\mathfrak o$, hence over $\Z$,
+and torsion-free inside $K_0$. Its rational span is $K_0$, since
+$p\mathfrak o\subseteq P$ for any $0\ne p\in P$; thus its
+integer rank is $[K_0:\Q]$.
+
+For these modules put
+$U\odot V=(U\otimes_AV)/(A\text{-torsion})$. By
+\cref{osq:tn:thm:tensor}, multiplication realizes
+$L(M)\odot L(N)$ as $L(MN)$: its kernel is exactly the torsion
+and its image is $L(MN)$. In the class case this image is the
+explicit carrier intended by the quotient notation.
 
 \begin{theorem}[Ideal classes survive torsion-free multiplication \src{14}]\label{osq:tn:thm:pic}
 $P\mapsto L(P)$ distinguishes exactly the ideal classes of invertible fractional $\mathfrak o$-ideals, and under $\odot$ these isomorphism
@@ -6109,15 +6183,44 @@ types form a group isomorphic to $\operatorname{Pic}(\mathfrak o)$ with identity
 $\operatorname{Pic}(A)$ and its identity is not $[A]$.
 \end{theorem}
 \begin{proof}
-If $L(P)\cong L(Q)$ then $Q=cP$ with $c\in\R^\times$ (\cref{osq:tn:thm:hom}), and $c=(cp)/p\in K_0^\times$ for $0\ne p\in P$; the converse is
-clear. $\odot$ corresponds to ideal multiplication, $\mathfrak oP=P$ and $PP^{-1}=\mathfrak o$. For $[K_0:\Q]\ge2$, $L(P)$ needs $[K_0:\Q]$
-generators and is not flat (\cref{osq:tn:prop:nonflat}), so it is not invertible, and $L(\mathfrak o)$ needs two or more generators while
-$A=L(\Z)$ needs one.
+By \cref{osq:tn:thm:hom}, $L(P)\cong L(Q)$ exactly when
+$Q=cP$ for some $c\in\R^\times$. Choose $0\ne p\in P$.
+Then $cp\in Q\subset K_0$, so $c=(cp)/p\in K_0^\times$.
+This is precisely equality of the fractional-ideal classes in
+$\operatorname{Pic}(\mathfrak o)$; the reverse implication is
+multiplication by $c$.
+
+The product formula gives $L(P)\odot L(Q)\cong L(PQ)$.
+Replacing $P,Q$ by $aP,bQ$ replaces $PQ$ by $abPQ$, so the
+operation is well-defined on their isomorphism types. Associativity
+and commutativity follow from fractional-ideal multiplication;
+$\mathfrak oP=P$ gives the identity and $PP^{-1}=\mathfrak o$
+gives the inverse. These statements prove the asserted group
+isomorphism, including its identity.
+
+Put $d=[K_0:\Q]$. Each $P$ has integer rank $d$, so
+\cref{osq:tn:thm:syzygy}(i) says that $L(P)$ needs exactly $d$
+generators. If $d\ge2$, the nonflatness obstruction of
+\cref{osq:tn:prop:nonflat} rules out invertibility over $A$:
+an invertible module is finitely generated projective, hence flat
+\cite[Tag~0AFW]{StacksPicard}.
+For the class ring, invertibility would likewise give a finite
+dual basis and hence the equational criterion contradicted there.
+Moreover $L(\mathfrak o)$ needs $d\ge2$ generators whereas
+$A=L(\Z)$ needs one, so these modules are not isomorphic.
+Thus this realization of the ideal-class group does not take its
+values in $\operatorname{Pic}(A)$.
 \end{proof}
 
-The group has its own idempotent identity inside a larger multiplicative semigroup; it is not a unital homomorphism into the Picard
-group of $A$. In the class setting the isomorphism is read as an explicit set-indexed family of representatives with its equivalence
-criterion (14).
+The group has its own idempotent identity inside the multiplicative
+semigroup of lattice-module types: $L(\mathfrak o)\odot
+L(\mathfrak o)\cong L(\mathfrak o)$. When $[K_0:\Q]\ge2$ this
+identity differs from the semigroup identity $A$. In the class setting, choose ordinary
+fractional-ideal representatives indexed by the set
+$\operatorname{Pic}(\mathfrak o)$ and apply $P\mapsto P+\Pi$.
+The scalar criterion and product formula express the group law on
+this indexed family without forming a collection of all class
+modules (14).
 
 \begin{example}[A class of order two \src{14}]\label{osq:tn:ex:sqrt10}
 In $K_0=\Q(\sqrt{10})$ with $\mathfrak o=\Z+\Z\sqrt{10}$ let $P=2\Z+\Z\sqrt{10}$. It is an $\mathfrak o$-ideal, $P^2=4\Z+2\sqrt{10}\,\Z+10\Z=2\mathfrak o$,
@@ -6127,21 +6230,85 @@ tensor square of $L(P)$ has torsion of rank $4-2=2$. As ideals, $\omega L(P)=(2\
 $\omega L(\mathfrak o)=(\omega,\sqrt{10}\,\omega)$.
 \end{example}
 
+To spell out the arithmetic in the example, multiplication by
+$\sqrt{10}$ sends the generators $2,\sqrt{10}$ of $P$ to
+$2\sqrt{10},10\in P$, so $P$ is an $\mathfrak o$-ideal.
+The constants $4$ and $10$ generate $2\Z$, giving
+$P^2=2\mathfrak o$ and the explicit inverse $P^{-1}=\tfrac12P$.
+If $P=c\mathfrak o$, then $c\in P\subset\mathfrak o$, since
+$1\in\mathfrak o$. For $c=a+b\sqrt{10}$, multiplication on the
+basis $1,\sqrt{10}$ has matrix
+$\bigl(\begin{smallmatrix}a&10b\\b&a\end{smallmatrix}\bigr)$.
+Its determinant has absolute value
+$[\mathfrak o:c\mathfrak o]=[\mathfrak o:P]=2$.
+But $a^2-10b^2\equiv a^2\pmod5$ cannot be $2$ or $-2$, since
+the squares modulo $5$ are $0,1,4$. This proves nonprincipality
+and hence exact order two of the ideal class. The rank-one assertion
+is over $\Frac(A)$; the rank-two torsion assertion is over $\Z$.
+
+\Needspace{11\baselineskip}
+We now return to both coefficient pairs $(D,k)$ fixed above.
+
 \begin{theorem}[Uniform duals \src{14}]\label{osq:tn:thm:duals}
 $(A:\Pi)=B$ and $(A:B)=\Pi$ (in both cases of this subsection). For a lattice $M$ of rank at least two,
 $L(M)^*=\Hom_A(L(M),A)=\Pi$, $L(M)^{**}=B$, the canonical bidual map is the inclusion $L(M)\hookrightarrow B$, and $B/L(M)\cong k/M$ with
 $A$ acting through $\ct$. Moreover $\Pi^*=B$, $B^*=\Pi$, $\Pi^{**}=\Pi$, $B^{**}=B$, and $J_e(M)^*=X^{-e}\Pi$, $J_e(M)^{**}=X^eB$.
 \end{theorem}
 \begin{proof}
-If $q\Pi\subseteq A$ and $q$ had a negative exponent $\gamma$, then for $0<\delta<-\gamma$ the coefficient of $X^{\gamma+\delta}$ in $qX^\delta$
-would be the same nonzero coefficient; so $q\in B$ (in $T_\Q$, first $qX^1\in T_\Q$ shows that $q$ has finite rational support). If $qB\subseteq A$
-then $q=d+u\in A$ and $dk\subseteq D$ forces $d=0$. By \cref{osq:tn:thm:hom}, $L(M)^*=\Pi+(D:M)$, and $(D:M)=0$ because a nonzero $c$ would
-embed $M$ in $D$. Evaluation at $x$ sends $u\in\Pi$ to $ux$, so the bidual scalar of $x$ is $x$. Scaling by $X^e$ reverses in the first dual and
-restores in the second.
+The scalar argument in \cref{osq:tn:thm:hom} identifies the dual
+of any nonzero $A$-submodule $U\subseteq F$ with $(A:U)$.
+First suppose $q\Pi\subseteq A$. Since $X^1\in\Pi$,
+$qX^1\in A$, and $q=X^{-1}(qX^1)$ has the corresponding
+shifted normal form. In the model $T_\Q$ this proves, before
+inspecting exponents, that $q$ has finite rational support;
+an arbitrary rational function need not have that property.
+If a nonzero coefficient of $q$ occurred at a negative exponent
+$\gamma$, choose $0<\delta<-\gamma$ in the same exponent group
+(for example $\delta=-\gamma/2$). The coefficient at
+$\gamma+\delta<0$ of $qX^\delta$ would be unchanged and nonzero,
+contradicting $qX^\delta\in A$. Thus $q$ has only nonnegative
+exponents and belongs to $B$. Conversely $B\Pi\subseteq\Pi$
+because $\Pi$ is an ideal of $B$. This proves $(A:\Pi)=B$.
+
+If $qB\subseteq A$, then $q=q\cdot1\in A$, so write
+$q=d+u$ with $d\in D$ and $u\in\Pi$. Testing all constants
+$c\in k\subset B$ gives $dc\in D$. If $d\ne0$, taking
+$c=1/(2d)$ would give $1/2\in D$, impossible for either
+$D=\Z$ or $D=\Z[i]$. Hence $d=0$ and $q\in\Pi$.
+The reverse inclusion is again $\Pi B\subseteq\Pi$, proving
+$(A:B)=\Pi$. In particular $\Pi^*=B$ and $B^*=\Pi$.
+
+For a lattice, \cref{osq:tn:thm:hom} gives
+$L(M)^*=\Pi+(D:M)$. A nonzero $c\in(D:M)$ would give an
+injective $D$-linear map $M\to D$, contradicting $\rk_D M\ge2$
+after tensoring with $\Frac(D)$. Thus $(D:M)=0$, the first dual
+is $\Pi$, and the second is $B$. Under these scalar
+identifications, evaluation at $x\in L(M)$ sends the functional
+with scalar $u\in\Pi$ to $ux$. Its scalar code in
+$\Hom_A(\Pi,A)=B$ is therefore $x$ itself. This proves that the
+canonical bidual map is the stated inclusion. The same evaluation
+calculation for $\Pi$ and $B$ gives their displayed bidual
+identities and proves both modules reflexive.
+
+The surjective map $B\to k/M$ given by $c+h\mapsto c+M$
+has kernel $L(M)$. For $a=d+v\in A$, its value on $a(c+h)$
+is $dc+M$, so the $A$-action on $k/M$ is through
+$\ct:A\to D$. This is an additive module quotient; no ring
+structure on $k/M$ is asserted. In the class case the ordinary
+set-sized module $k/M$ explicitly realizes the displayed quotient.
+
+Finally, for $0\ne t\in F$ and $U\subseteq F$,
+$(tU)^*=t^{-1}U^*$, since $q(tU)\subseteq A$ is equivalent to
+$qt\in U^*$. Applying this twice with $t=X^e$ gives
+$J_e(M)^*=X^{-e}\Pi$ and $J_e(M)^{**}=X^eB$.
 \end{proof}
 
-So the two nonisomorphic modules of \cref{osq:tn:ex:sqrt10} have the same dual and reflexive hull: their difference lies below the hull and is
-seen by coefficient arithmetic, not by rank or double dualization (14).
+The rank restriction matters: if $M=Dm$ has rank one, then
+$L(M)=mA$, its dual is $m^{-1}A$, and its bidual is $mA$.
+For rank at least two, the two nonisomorphic modules of
+\cref{osq:tn:ex:sqrt10} have the same dual and reflexive hull.
+Their difference is retained by the coefficient lattice but lost
+under double dualization (14).
 
 \begin{theorem}[Common-scale constant matrices \src{14; 17}]\label{osq:tn:thm:matrix}
 Let $C\in k^{m\times n}$, $e>0$, $W=\ker_kC$, $q=\dim_kW$, $W_D=W\cap D^n$ and $\ell=\rk_DW_D$. Then
@@ -6149,10 +6316,71 @@ $\ker_A(X^eC)\cong A^\ell\oplus\Pi^{q-\ell}$. The image of $X^eC:A^n\to A^m$ is 
 if and only if $W$ is defined over $\Frac(D)$, and it is then free of rank $n-q$.
 \end{theorem}
 \begin{proof}
-For $x=d+u$, $Cx=0$ splits into $Cd=0$ and $Cu=0$ (constants against tails). $W_D$ is saturated in $D^n$, hence a direct summand; a $D$-basis of
-it is $k$-independent and extends to a $k$-basis of $W$; in these coordinates the kernel is $A^\ell\oplus\Pi^{q-\ell}$ (Gaussian elimination
-with constants preserves $\Pi$). If $q>\ell$ the kernel projects onto $\Pi$ and is not finitely (set-) generated. If $q=\ell$, a constant change of
-basis over $D$ makes the first $q$ columns zero and the others independent over the fraction field.
+All entries of $X^eC$ belong to $\Pi\subseteq A$, and the
+nonzero common scalar $X^e$ does not change the kernel. Decompose
+$x\in A^n$ uniquely as $x=d+u$ with $d\in D^n$ and $u\in\Pi^n$.
+Because $Cd$ is constant and $Cu$ is a tail vector,
+$Cx=0$ is equivalent to the two equations $Cd=0$ and $Cu=0$.
+
+The submodule $W_D\subseteq D^n$ is saturated: if
+$0\ne a\in D$ and $av\in W_D$, then $aCv=0$ in $k^m$,
+so $Cv=0$. Hence $D^n/W_D$ is finitely generated and torsion-free
+over the principal ideal domain $D$, and is free. The quotient
+map therefore splits. Choose a $D$-basis $v_1,\ldots,v_\ell$
+of $W_D$ and extend it to a $D$-basis of $D^n$.
+In particular these first vectors are $k$-independent; extend them
+instead to a $k$-basis $v_1,\ldots,v_q$ of $W$.
+
+Gaussian elimination over $k$ gives
+\[
+ \{u\in\Pi^n:Cu=0\}
+   =\left\{\sum_{j=1}^q h_jv_j:h_j\in\Pi\right\}.
+\]
+Indeed, the coordinates in this kernel basis are fixed $k$-linear
+combinations of the coordinates of $u$, and hence remain in the
+$k$-vector space $\Pi$. Independence remains valid over $F$,
+as a nonzero $q$-rowed minor over $k$ remains nonzero in $F$.
+Combining constants and tails now gives the explicit $A$-linear
+isomorphism
+\[
+ A^\ell\oplus\Pi^{q-\ell}\longrightarrow\ker_A(X^eC),
+ \qquad (a_1,\ldots,a_\ell,h_{\ell+1},\ldots,h_q)
+ \longmapsto\sum_{j\le\ell}a_jv_j+\sum_{j>\ell}h_jv_j.
+\]
+The decomposition above proves surjectivity and the independence
+proves injectivity. The construction uses only finite matrices and
+also defines the class-module isomorphism.
+
+If $q>\ell$, projection onto one tail coordinate shows that the
+kernel is not finitely generated (and not set-generated in the
+class case). This excludes every finite presentation of the image,
+not just the displayed presentation \cite[Tag~0517]{StacksFiniteModules}. To see this, a hypothetical
+finite presentation with finitely generated relation module $R$
+and free module $A^a$ would, by the finite-free pullback argument
+of Schanuel's lemma, give
+\[
+ \ker_A(X^eC)\oplus A^a\cong R\oplus A^n.
+\]
+The right side is finitely generated, so its direct summand
+$\ker_A(X^eC)$ would be too. Only finitely many lifts of free
+basis vectors are used, so the argument applies to the class
+presentation as well.
+
+If $q=\ell$, use the chosen extension of the $D$-basis of $W_D$
+to a basis of $D^n$. After this invertible change of columns, the
+first $q$ columns of $C$ are zero and the other $n-q$ are
+independent over $k$, hence over $F$. Their multiples by $X^e$
+form an $A$-basis of the image. Thus the image is free of rank
+$n-q$ and in particular finitely presented.
+
+Finally put $F_0=\Frac(D)$. Clearing the finitely many
+denominators of a vector gives
+$F_0W_D=W\cap F_0^n$. It follows that $\ell$ is the
+$F_0$-dimension of this intersection. Equality $\ell=q$ is
+therefore equivalent to $W$ having a basis over $k$ consisting
+of vectors in $F_0^n$, which is the asserted meaning of ``defined
+over $F_0$''. The formulas include $q=0$ (zero kernel) and
+$C=0$ (kernel $A^n$ and zero image).
 \end{proof}
 
 The matrix theorem concerns constant matrices at one common monomial scale; several support levels need more analysis (14, 17).
@@ -6164,14 +6392,38 @@ $\Frac(D)$-rational, is in the real case the rationality theorem for primitive c
 \cite{RepoOdg}, which 14 does not credit (it credits only that report's example $[1:\sqrt2]$, to a companion manuscript); the Gaussian and
 principal-ideal form is printed there with that theorem, not here.
 
-\paragraph{The Gaussian case and the reach of the results (14).} All proofs above use only a principal ideal domain $D\subset k$ and the
-common-factor property, so the Gaussian versions over $\GOz=\Z[i]+\Pi_\C$ are proved, not merely analogous: ranks are $\Z[i]$-ranks,
-multiplication kernels are killed by $\Pi_\C$, and in \cref{osq:tn:thm:degree} the degree is taken over $\Q(i)$. For real algebraic $\alpha$ it
-equals the degree over $\Q$ ($[K_0(i):\Q(i)]=[K_0:\Q]$ for $K_0\subset\R$), so \cref{osq:tn:cor:alldegrees} holds over $\GOz$ with the same
-ranks over $\Z[i]$; for $\sqrt2\notin\Q(i)$ the ideal $(\omega,\sqrt2\,\omega)\subseteq\GOz$ has the single quadratic equation $Y^2-2X^2$.
-Complex conjugation transports the construction for $M$ to that for $\overline M$. These results concern the omnific \emph{rings}: over the
-surcomplex field itself all these module calculations are vector-space calculations and the arithmetic torsion vanishes. They do not classify
-arbitrary finitely generated omnific ideals, whose generators may lie at several support levels.
+\paragraph{The Gaussian case and the reach of the results (14).}
+The tensor, power, Rees, scalar-homomorphism, dual and matrix results
+above treat both $(D,k)=(\Z,\R)$ and $(\Z[i],\C)$.
+Their proofs use the stated properties of these rings, including
+the principal-ideal property of $D$, the common-factor property of
+$\Pi$, and, for the scalar and dual descriptions, the support and
+unit calculations in $B$. They are not consequences of the
+principal-ideal hypothesis alone. Over
+$\GOz=\Z[i]+\Pi_\C$, ranks are $\Z[i]$-ranks,
+multiplication kernels are killed by $\Pi_\C$, and the degree in
+\cref{osq:tn:thm:degree} is taken over $\Q(i)$.
+
+For real algebraic $\alpha$, put $K_0=\Q(\alpha)\subset\R$.
+Since $i\notin K_0$, the tower formula gives
+$[K_0(i):\Q]=2[K_0:\Q]=2[K_0(i):\Q(i)]$.
+Thus the degree of $\alpha$ over $\Q(i)$ equals its degree over
+$\Q$. Consequently \cref{osq:tn:cor:alldegrees} holds over
+$\GOz$ with the same ranks over $\Z[i]$; in particular
+$(\omega,\sqrt2\,\omega)$ has the single nonlinear equation
+$Y^2-2X^2$. The ideal-class argument also has a Gaussian version:
+take an order over $\Z[i]$ in a finite extension of $\Q(i)$
+inside $\C$, and replace its integer rank by its $\Z[i]$-rank.
+The displayed $\Q(\sqrt{10})$ example above remains a real
+example; no assertion that extending coefficients preserves its
+nontrivial ideal class is needed.
+
+Complex conjugation transports the construction for $M$ to that
+for $\overline M$. These results concern the omnific \emph{rings}:
+after extending scalars to their fraction fields, the modules become
+vector spaces and the arithmetic torsion vanishes. They do not
+classify arbitrary finitely generated omnific ideals, whose
+generators may lie at several support levels.
 
 
 \subsection{Relations, \texorpdfstring{$\Tor$}{Tor} and moduli of lattice ideals}\label{osq:rel:sub:relations}
@@ -16038,6 +16290,14 @@ A.~B.~de Felipe and B.~Teissier, Valuations and henselization, arXiv:1903.10793v
 \emph{Surreal} repository, report on independent surreal copies,
 \texttt{docs/surreal/independent-surreal-copies/} (labels \nolinkurl{isc:hj:main:prime},
 \nolinkurl{isc:hj:cor:nonassociate}; cited in a batch-35 note after \cref{osq:cor:primeexample}).
+
+\bibitem{StacksPicard}
+The Stacks Project Authors, \emph{Picard groups of rings}, Tag~0AFW,
+\url{https://stacks.math.columbia.edu/tag/0AFW}.
+
+\bibitem{StacksFiniteModules}
+The Stacks Project Authors, \emph{Finite modules and finitely presented modules}, Tag~0517,
+\url{https://stacks.math.columbia.edu/tag/0517}.
 
 \end{thebibliography}
 \endgroup

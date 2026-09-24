@@ -1238,3 +1238,85 @@ reports, 5,214 source-label references and 1,810 local Markdown
 destinations across 226 files pass, as does whitespace checking.
 The merge changes no TeX source, so the three-pass 287-page article and
 34-page catalogue from the Rees review remain current.
+
+## Scalar Hom, ideal classes, duals and common-scale matrices
+
+Reviewed `osq:tn:thm:hom`, `osq:tn:thm:pic`, `osq:tn:thm:duals`
+and `osq:tn:thm:matrix`, the arithmetic supporting
+`osq:tn:ex:sqrt10`, and the following Gaussian-scope paragraph.
+The four theorem statements and the example statement are unchanged.
+
+The Hom proof clears two denominators at a time to show that every map
+between nonzero submodules of the fraction field is multiplication by
+one scalar. This covers the infinite tail and coefficient ring as well
+as lattice modules. For the class case it gives an explicit scalar
+carrier for Hom. Expanding constants and tails proves the colon formula;
+units of B give the isomorphism and automorphism criteria. The multiplier
+ring is embedded in a finite lattice to prove freeness, and its faithful
+matrix action gives integrality. A real cubic example explains the
+qualification that its number field need not be totally real.
+
+The ideal-class setup specifies the real base and the full rank of a
+fractional ideal. Torsion-free tensor multiplication is realized by its
+image L(PQ), also for class carriers. The proof checks independence of
+representatives, identity and inverses, and excludes invertibility over A
+using the nonflatness obstruction. The subsequent identity discussion
+now retains the necessary number-field-degree-at-least-two condition;
+when the field is Q, the identity is A. The quadratic example's product,
+explicit inverse, determinant index and modulo-five obstruction are
+spelled out. No Gaussian preservation of this nontrivial real ideal class
+is inferred from the general Gaussian version.
+
+The dual proof first obtains a shifted allowed normal form from qX in A;
+this also forces finite rational support in the set-sized model.
+Testing negative exponents and ordinary constants proves the two colon
+identities in both real and Gaussian cases. Evaluation gives the actual
+bidual inclusion, and the ordinary additive quotient k/M realizes the
+class quotient. Scaling and the rank-one exception are explicit.
+
+The matrix proof supplies saturation over the PID, the resulting direct
+summand, a finite-coordinate kernel isomorphism and its inverse criterion.
+Schanuel's finite-free pullback excludes any finite presentation when the
+kernel has a tail summand. When the ordinary kernel is rational, the
+remaining columns form a free image basis. Clearing denominators proves
+the rationality equivalence; zero matrices and zero kernels are included.
+The Gaussian paragraph now states the support and unit hypotheses used,
+and proves equality of real algebraic degrees after adjoining i.
+
+Updated the root README, report guide, catalogue, shared notation and
+ledger; the four theorems remain Pending in Lean. Later relation/moduli
+and derived classifications and full source reconciliation await review.
+Added primary references to Stacks Tags 0AFW and 0517 for invertibility
+and presentation independence. The existing tensor verifier's previous
+2,189-assertion run covers unchanged finite formulas, including the
+quadratic ideal product; it was not rerun or treated as verification of
+the class Hom or support arguments.
+
+Validation: three clean TeX passes for the article (290 pages) and
+catalogue (34 pages), no warnings or box diagnostics, with visual checks
+of scalar Hom, ideal classes, duals, matrix kernels and the catalogue.
+All 418 theorem/lemma/proposition/corollary/principal-summary statements,
+28 example environments, 828 source labels and 1,656 auxiliary label/number
+pairs are unchanged. All 4,626 anchors across 63 reports, 5,215 source-label
+references and 1,814 local Markdown destinations across 226 files pass,
+as does whitespace validation.
+
+## Synchronization of the two seven-witness quartic graphs
+
+Fast-forwarded 01e2b41 to 7ea2e32 and checked its four new modules
+against the two seven-witness variants of `odg:def:cor:ctquartic`.
+The generic formula selects either constant-defining quartic and adds
+the squared quadratic kernel equation. A faithful ordered-ring inclusion
+separates the three squares; each variant therefore defines exactly the
+constant-term graph. Native integer multivariate polynomials evaluate
+to the expression and have exact degree four, detected in the fresh
+input variable. The implementation covers actual real omnific integers
+and full ordered Hahn pullbacks containing a coefficient square root of
+two. The additional Hahn theorem establishes the original quartic on
+intermediate rings with precisely the integer constant intersection.
+The six-witness guard variant remains pending; the ledger preserves
+that distinction and makes no Gaussian single-polynomial claim.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,602 jobs; the
+axiom audit checks 16,567 declarations using only propext,
+Classical.choice and Quot.sound. No TeX source changed in this merge.
