@@ -293,6 +293,11 @@ The converse is proved in both rings: once an ordinary point exists at a
 nonzero level, nonordinary points exist exactly when the relevant real or
 complex kernel is nonzero. Multiplying a nonzero kernel direction by the
 actual monomial ω supplies the nonordinary solution.
+Each nonzero kernel direction also embeds the entire purely infinite ideal
+into the fiber over an ordinary point. These fibers are proved not small in
+the lower universe, the formalization's version of proper-class size. The
+ordinary-point hypothesis is necessary: `X − Y = √2` has a nonzero kernel
+but no solution in either omnific ring.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
