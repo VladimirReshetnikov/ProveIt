@@ -24,6 +24,8 @@
 \newtheorem{warning}[theorem]{Warning}
 \crefname{mainthm}{Theorem}{Theorems}
 \Crefname{mainthm}{Theorem}{Theorems}
+\crefname{warning}{warning}{warnings}% [merge] used with the cleveref type hints on labels
+\Crefname{warning}{Warning}{Warnings}
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\Oz}{\mathbf{Oz}}
 \newcommand{\On}{\mathbf{On}}
@@ -57,6 +59,13 @@
 \newcommand{\rpath}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
 \newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
 \newcommand{\wtag}{\textup{[write]}}% text added when the report joined the collection
+\newcommand{\mtag}{\textup{[merge]}}% text added when source 02 was merged (batch 34)
+\newcommand{\crk}{\operatorname{crk}}% coefficient rank (source 02)
+\newcommand{\cc}{\mathfrak c}
+\newcommand{\dtrdeg}{\operatorname{dtrdeg}}
+\newcommand{\Cfg}{\mathcal C_{\mathrm{fg}}}
+\newcommand{\ordt}{\operatorname{ord}_t}
+\newcommand{\jet}{\mathcal J}
 \numberwithin{equation}{section}
 \setlength{\parskip}{3pt}
 \setlength{\parindent}{1.15em}
@@ -75,19 +84,19 @@
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{0.05in}
-{\large\scshape Single-source research report\par}
-\vspace{0.2in}
+{\large\scshape Research report built from two manuscripts\par}
+\vspace{0.1in}
 {\Huge\bfseries Independent Surreal Copies\par}
 \vspace{0.12in}
 {\Huge\bfseries and Arithmetic Intersections\par}
 \vspace{0.16in}
 {\Large Prescribed Hahn cores, algebraic independence,\par
-and two transcendental descent obstructions\par}
-\vspace{0.2in}
+two transcendental descent obstructions, and composita\par}
+\vspace{0.12in}
 {\large AI-assisted research draft\par 23 September 2026\par}
 \vspace{0.04in}
-{\small Built from one manuscript of batch~31 of the collection,
-pinned to repository commit \texttt{bcac55a}\par}
+{\small Built from manuscripts of batches~31 and~34 of the collection,
+pinned to \texttt{bcac55a} and \texttt{7b256e0}\par}
 \vspace{0.16in}
 \hrule
 \vspace{0.15in}
@@ -128,6 +137,8 @@ carry the prefix \texttt{isc:}. Conventions, the place in the collection,
 the non-claims and the provenance are in
 \cref{isc:sec:conventions,isc:sec:collection,isc:sec:nonclaims} and
 Appendix~\ref{isc:app:report}; added text is marked \wtag.
+\mtag{} Sections~15--27 add a second manuscript (prefix
+\texttt{isc:cp:}).
 
 \smallskip
 \noindent\small Repository comparison is pinned to commit\par
@@ -537,6 +548,16 @@ Research question~2 is a pair version of \lbl{opa:as:q:conjugacy}, 6 and~7
 lie inside \lbl{opa:as:q:exp}, 8 is the bounded-support programme, and 9 is
 an instance of \lbl{opa:as:q:elementary}. Research question~10 overlaps
 \lbl{opa:as:q:formal} in its Hahn-field kernel.
+\mtag{} \emph{Status (batch 34).} Research question~3 is now answered in
+the separated case with trivial common core, the case of
+\cref{isc:main:join}, and in the natural Laurent-series cardinal cases, by
+the second manuscript printed in
+Sections~\ref{isc:cp:sec:intro}--\ref{isc:cp:sec:verify}
+(\cref{isc:cp:sec:answers}); the non-separated case and prescribed nonzero
+common cores stay open. Research questions~11--22 come from that
+manuscript and are new. The relations of the addition to the three-duals,
+tail-spans, bounded-support and dilation reports are in
+\cref{isc:cp:sec:collection}.
 
 \section{Foundations, support, and size}\label{isc:sec:foundations}
 
@@ -651,7 +672,7 @@ The core construction is carried out on the \emph{additive exponent group},
 not initially on the field. Its flexibility comes from the ability to realize
 a set-sized cut while avoiding all previously used values.
 
-\begin{lemma}[A cut avoiding a set]\label{isc:lem:avoid}
+\begin{lemma}[A cut avoiding a set]\label[lemma]{isc:lem:avoid}
 Let $L,R,E\subseteq\No$ be sets and suppose $L<R$. There is a surreal
 $y\notin E$ with $L<y<R$.
 \end{lemma}
@@ -665,7 +686,7 @@ Then $L<y<R$. Were $y\in E$, it would belong to $T$, contradicting
 $T<y$. This also covers empty $L$, $R$, or $T$.
 \end{proof}
 
-\begin{lemma}[Ordered one-point extension with avoidance]\label{isc:lem:extend}
+\begin{lemma}[Ordered one-point extension with avoidance]\label[lemma]{isc:lem:extend}
 Let $D$ be a set-sized $\Q$-vector subspace of $\No$, let
 $f:D\to\No$ be an ordered additive embedding, and let $E$ be a set-sized
 $\Q$-vector subspace containing $f(D)$. For $x\notin D$, there is an
@@ -759,7 +780,7 @@ final range elements is also witnessed at one stage. Consequently the final
 ranges are independent over $H$.
 \end{proof}
 
-\begin{corollary}\label{isc:cor:groupintersection}
+\begin{corollary}\label[corollary]{isc:cor:groupintersection}
 For distinct $\alpha,\beta$, one has $G_\alpha\cap G_\beta=H$. More
 generally, for $\alpha\notin J$,
 \[
@@ -775,7 +796,7 @@ identity on $H$ imply $h_\beta(x)\notin H$. Thus it cannot lie in
 $G_\alpha$, although it lies in $\No$.
 \end{proof}
 
-\begin{remark}[The role of the base]\label{isc:rem:base}
+\begin{remark}[The role of the base]\label[remark]{isc:rem:base}
 The maps $h_\alpha$ fix $H$ as a set of \emph{exponent values}. The field
 maps constructed next fix $\K{\R}{H}$. These are different assertions:
 for a general subgroup $H$, it need not be true that $H\subseteq\K{\R}{H}$.
@@ -816,7 +837,7 @@ field on $h(\No)$, not merely the field generated by its monomials. Taking
 real and imaginary coefficients gives the complex assertion.
 \end{proof}
 
-\begin{proposition}[What the lift remembers]\label{isc:prop:arithmeticlift}
+\begin{proposition}[What the lift remembers]\label[proposition]{isc:prop:arithmeticlift}
 The map $\Phi_h$ preserves the three normal-form projections to positive,
 zero, and negative exponents. It preserves and reflects membership in
 $\Oz$, and
@@ -852,7 +873,7 @@ order preservation on the real part, and uniqueness of that square root
 prove the modulus identity.
 \end{proof}
 
-\begin{remark}[A floor boundary that must not be dropped]\label{isc:rem:floor}
+\begin{remark}[A floor boundary that must not be dropped]\label[remark]{isc:rem:floor}
 The positive-exponent truncation plus the ordinary floor of the constant
 coefficient is not always the omnific floor. For example, if $0<\varepsilon$
 is infinitesimal and $n\in\Z$, then
@@ -861,7 +882,7 @@ retains this endpoint case automatically.
 \end{remark}
 
 \begin{proposition}[Classification within the monomial-preserving class]
-\label{isc:prop:classification}
+\label[proposition]{isc:prop:classification}
 Every strongly additive, real-fixing field embedding
 $\Phi:\No\to\No$ that maps each Conway monomial to a Conway monomial
 is uniquely $\Phi_h$ for an ordered additive embedding $h:\No\to\No$.
@@ -885,7 +906,7 @@ after the pin. Without the real-fixing hypothesis the exact-monomial
 embeddings preserving $\Oz$ are the maps $J_{h,\rho}$, which may move
 reals (\cref{isc:sec:collection}).
 
-\begin{warning}[Preserving monomials is not preserving the omega-map]\label{isc:warn:omega}
+\begin{warning}[Preserving monomials is not preserving the omega-map]\label[warning]{isc:warn:omega}
 The equality $\Phi_h(\omega^g)=\omega^{h(g)}$ does not say
 $\Phi_h(\omega^g)=\omega^{\Phi_h(g)}$. In general $h\ne\Phi_h$ as maps
 on surreal numbers. Nor have we shown compatibility with the Gonshor
@@ -911,7 +932,7 @@ The value depends on the chosen representative $g$ by the expected monomial
 normalization. We do not choose a global transversal of $G/H$.
 \end{definition}
 
-\begin{lemma}[Slice linearity and separation]\label{isc:lem:slice}
+\begin{lemma}[Slice linearity and separation]\label[lemma]{isc:lem:slice}
 Every $\lambda_{g,H}$ is $\K{k}{H}$-linear, and the family of slices
 separates points of $\K{k}{G}$.
 \end{lemma}
@@ -926,7 +947,7 @@ If $f\ne0$, choose any $g$ in its support. Its slice contains the nonzero
 coefficient $a_g$ at exponent zero, so the slice is nonzero.
 \end{proof}
 
-\begin{lemma}[A finite separating matrix]\label{isc:lem:matrix}
+\begin{lemma}[A finite separating matrix]\label[lemma]{isc:lem:matrix}
 If $f_1,\ldots,f_m\in\K{k}{G}$ are linearly independent over
 $L=\K{k}{H}$, there are $g_1,\ldots,g_m\in G$ such that
 \[
@@ -977,7 +998,7 @@ disjointness.
 \end{proof}
 
 \begin{corollary}[Independence of any finite number of full Hahn fields]
-\label{isc:cor:joint}
+\label[corollary]{isc:cor:joint}
 If $(G_i)_{i\in I}$ are independent over $H$, then the full fields
 $\K{k}{G_i}$ are jointly linearly disjoint over $\K{k}{H}$.
 For $i\notin J$, the field $\K{k}{G_i}$ is linearly disjoint over
@@ -996,7 +1017,7 @@ choose a basis of the finite span of the preceding products and apply linear
 disjointness to that basis.
 \end{proof}
 
-\begin{corollary}[Polynomial-relation descent]\label{isc:cor:relations}
+\begin{corollary}[Polynomial-relation descent]\label[corollary]{isc:cor:relations}
 Let $P=\K{k}{G_1}$, $Q=\K{k}{G_2}$, and $L=\K{k}{G_1\cap G_2}$.
 For a finite tuple $a$ from $P$, let $I_L(a)\subseteq L[X_1,\ldots,X_n]$
 be its polynomial relation ideal. Then
@@ -1031,7 +1052,7 @@ omnific assertions. The same groups and the same slice argument with
 coefficients in $\C$ give the entire complex package.
 \end{proof}
 
-\begin{corollary}[Fixing every element of a prescribed set]\label{isc:cor:parameters}
+\begin{corollary}[Fixing every element of a prescribed set]\label[corollary]{isc:cor:parameters}
 For every set $A\subseteq\No$ there is a set-sized real closed full Hahn
 field $L\supseteq\R\cup A$ which is the exact pairwise intersection of
 an ordinal-indexed family of independent strong omnific-preserving copies
@@ -1055,6 +1076,17 @@ exact-monomial copies fixing $A\cup\R$ and preserving and reflecting $\Oz$
 are \lbl{opa:as:thm:parameters} of the omnific-preserving report; the
 corollary extends that result to an $\On$-indexed family with an exact
 common field (\cref{isc:sec:collection}).
+\mtag{} The same support-closure step localizes a set of parameters in two
+later results. In the dilation report, \lbl{adr:sr:thm:tail} places a set of
+surcomplex parameters in the Hahn field of the real span of their supports
+and finds a tail of an explicit ordinal family whose positive real dilation
+orbits are algebraically independent over that whole field, and
+\lbl{adr:sr:thm:kappa} gives set-sized families of independent orbits over
+any set-sized base. In this report, \cref{isc:cp:lem:localizeP} applies the
+step one normal-form level deeper, to the outer coefficients of a parameter
+set, and \cref{isc:cp:thm:resilience} keeps a tail of a fixed ordinal family
+differentially independent over the compositum with any set of parameters
+adjoined.
 
 \begin{theorem}[Exact classification of set-sized intersections in this class]
 \label{isc:thm:intersectionclassification}
@@ -1118,14 +1150,14 @@ on the sum of the two exponent groups, hence is $E_{J\cup T}$.
 Every $G_J$ is divisible, which gives the closedness assertions.
 \end{proof}
 
-\begin{remark}[The word ``join'']\label{isc:rem:join}
+\begin{remark}[The word ``join'']\label[remark]{isc:rem:join}
 The theorem realizes a Boolean meet diagram with \emph{Hahn} joins. It does
 not identify ordinary field composita with those joins. \Cref{isc:main:join}
 shows that the difference can already be transcendental for two factors.
 \end{remark}
 
 \begin{corollary}[Independent choices and absence of new relations]
-\label{isc:cor:choices}
+\label[corollary]{isc:cor:choices}
 For distinct indices $i_1,\ldots,i_m$, choose
 $a_j\in K_{i_j}\setminus L_\R$. Then $(a_1,\ldots,a_m)$ is algebraically
 independent over $L_\R$. The same assertion holds over $L_\C$ for the
@@ -1162,7 +1194,7 @@ The general construction can fix an arbitrary set-sized Hahn core, but uses
 class bookkeeping. When $H=0$ there is a direct formula. It also furnishes
 the separated scales needed for \cref{isc:main:join}.
 
-\begin{lemma}[Compression of the surreal order]\label{isc:lem:compression}
+\begin{lemma}[Compression of the surreal order]\label[lemma]{isc:lem:compression}
 The function
 \[
  \psi(x)=\frac12+\frac{x}{2(1+|x|)}
@@ -1245,7 +1277,7 @@ also explicitly shows
 Thus preservation of the set of Conway monomials is much weaker than
 commutation with the omega-map as a unary operation on all of $\No$.
 
-\begin{remark}[A tempting formula that does not give a proper copy]\label{isc:rem:scaling}
+\begin{remark}[A tempting formula that does not give a proper copy]\label[remark]{isc:rem:scaling}
 Replacing every exponent $g$ by $cg$ with a fixed $c>0$ gives an
 automorphism, not a proper self-embedding, because $c\No=\No$. The
 compression above is applied one normal-form level below the field lift;
@@ -1267,7 +1299,7 @@ $G_0+G_1$, and the sign of $a+b$ for $b\ne0$ is the sign of $b$.
 
 \subsection{Iterated Hahn coordinates}
 
-\begin{lemma}[Re-expansion at separated scales]\label{isc:lem:iterated}
+\begin{lemma}[Re-expansion at separated scales]\label[lemma]{isc:lem:iterated}
 Suppose $A,B$ are additive subgroups with $A\cap B=0$ and every element
 of $A$ is infinitesimal relative to every positive element of $B$, in the
 sense of \eqref{isc:eq:separated}. Then regrouping by $B$-coordinate gives a
@@ -1307,7 +1339,7 @@ For $k=\R$ or $\C$, put
 In the iterated coordinates, $K_0$ is the coefficient field and $K_1$ has
 coefficients in the original $k$.
 
-\begin{lemma}[Finite coefficient-field control]\label{isc:lem:finitecoeff}
+\begin{lemma}[Finite coefficient-field control]\label[lemma]{isc:lem:finitecoeff}
 Every finite subset of the ordinary compositum $M$ is contained, in the
 iterated coordinates, in a field $\K{D}{G_1}$ where $D\subseteq K_0$ is
 a field finitely generated over $k$.
@@ -1325,6 +1357,11 @@ operations, proving the assertion.
 This lemma does not claim that every series with coefficients in such a
 $D$ is in $M$. It gives a necessary coefficient-field constraint, which is
 all that is needed.
+\mtag{} The constraint is far from sufficient: a series whose coefficients
+all lie in a field $\R(x)$ generated by one element can be differentially
+transcendental over $M$ (\cref{isc:cp:cor:fginsufficient}). The exact
+description of $M$ in these coordinates is the finite coefficient-rank
+denominator test of \cref{isc:cp:cor:surrealrank}.
 
 \begin{theorem}[A coefficient-transcendence obstruction]\label{isc:thm:joinobstruction}
 Let $s_1,s_2,\ldots\in K_0$ be algebraically independent over $k$, where
@@ -1394,7 +1431,16 @@ and is transcendental over the appropriate ordinary compositum by
 relative algebraic closure.
 \end{proof}
 
-\begin{remark}[Why the infinite list of coefficients matters]\label{isc:rem:infinite}
+\mtag{} The second manuscript extends this witness. With
+$b=\omega^{15/4}\in G_1$, the element $\omega^bS$ is the first member $Y_0$ of
+an ordinal family $Y_\alpha$ of purely infinite omnific integers of order
+type $\omega$ (\cref{isc:cp:thm:omnific}); all their Euler jets are
+algebraically independent over $M$, and a tail of the family stays
+independent after any set of parameters is adjoined
+(\cref{isc:cp:thm:resilience}). In the real case $S$ itself is then
+differentially transcendental over $M$ for that Euler derivation.
+
+\begin{remark}[Why the infinite list of coefficients matters]\label[remark]{isc:rem:infinite}
 A rational expression in the two fields can use arbitrary elements of each
 field, but only finitely many of them. In the separated-scale expansion this
 bounds the transcendence degree of its coefficient field over the constants.
@@ -1422,7 +1468,7 @@ We use the ordinary class fraction field of a class domain to mean the
 subfield of the ambient field consisting of ratios of two of its elements,
 with nonzero denominator. No quotient set of a proper class is invoked.
 
-\begin{lemma}[Common denominators for a set of surreals]\label{isc:lem:denominator}
+\begin{lemma}[Common denominators for a set of surreals]\label[lemma]{isc:lem:denominator}
 Every set $X\subseteq\No$ has a positive monomial $d\in\Oz$ such that
 $dX\subseteq\Oz$. The same holds for a set of surcomplex numbers with
 $\GOz$ in place of $\Oz$, and a positive real monomial denominator.
@@ -1448,7 +1494,7 @@ Transporting the lemma through an embedding gives more than merely one
 denominator for each individual element.
 
 \begin{proposition}[Separate uniform denominators, no shared uniform one]
-\label{isc:prop:uniform}
+\label[proposition]{isc:prop:uniform}
 Let $K_\alpha,R_\alpha,L_\R$ be as in \cref{isc:main:copies}. Then
 $\Frac(R_\alpha)=K_\alpha$, and there is a nonzero $d_\alpha\in R_\alpha$
 with
@@ -1503,7 +1549,7 @@ two upper bounds bounds a product. Its elements can have infinite support
 inside a bounded interval. In this convention $\A{k}{H}$ consists of
 series with negative exponents and a constant coefficient in $D_k$.
 
-\begin{proposition}[Identification of the fraction fields]\label{isc:prop:boundedfrac}
+\begin{proposition}[Identification of the fraction fields]\label[proposition]{isc:prop:boundedfrac}
 If $H\ne0$, then
 \begin{equation}\label{isc:eq:boundedfrac}
  \Frac\A{k}{H}=\Frac\B{k}{H}.
@@ -1545,7 +1591,7 @@ over an arbitrary coefficient field is not stated there, but its proof is
 that report's tail estimate and root count (\cref{isc:sec:collection}). No
 priority is claimed for it.
 
-\begin{lemma}[Cofinal sequences with polynomial gaps]\label{isc:lem:gapscale}
+\begin{lemma}[Cofinal sequences with polynomial gaps]\label[lemma]{isc:lem:gapscale}
 Let $H\ne0$ be a set-sized ordered abelian group and put $\kappa=\cf(H)$.
 There is a strictly increasing cofinal family $(a_\alpha)_{\alpha<\kappa}$
 in $H^{>0}$ such that for every positive integer $d$ and every $c\in H$,
@@ -1637,7 +1683,7 @@ infinitely many distinct roots of the nonzero finite-degree polynomial
 $Q$, a contradiction. The argument uses no characteristic-zero assumption.
 \end{proof}
 
-\begin{corollary}[The factorial witness]\label{isc:cor:factorial}
+\begin{corollary}[The factorial witness]\label[corollary]{isc:cor:factorial}
 In $\R((t^\Q))$ or $\C((t^\Q))$, the series
 \[
  F=1+\sum_{n=1}^{\infty}t^{n!}
@@ -1673,7 +1719,7 @@ for $H=\Q$. This proves every assertion.
 \end{proof}
 
 \begin{corollary}[Failure witnessed by the denominator equation]
-\label{isc:cor:noshareddenom}
+\label[corollary]{isc:cor:noshareddenom}
 For $H=\Q$ and $F$ from \cref{isc:cor:factorial}, there are nonzero
 $d_\alpha\in R_\alpha$ and $d_\beta\in R_\beta$ with
 $d_\alpha F\in R_\alpha$ and $d_\beta F\in R_\beta$, but there are no
@@ -1790,6 +1836,25 @@ after algebraic closure. A necessary-and-sufficient condition would be much
 stronger. For a proper-class extension, formulate dimension statements as
 independent families of specified set cardinalities rather than casually
 assigning a set cardinal to the whole class.
+\mtag{} \emph{Status (batch 34): answered in the separated case, open in
+general.} For the separated explicit copies of \cref{isc:main:join} (trivial
+core, $G_0$ infinitesimal relative to $G_1$), the compositum is
+characterized by a finite coefficient-rank denominator test
+(\cref{isc:cp:thm:rank,isc:cp:cor:surrealrank}), and the necessary condition
+of \cref{isc:lem:finitecoeff} is shown not to be sufficient
+(\cref{isc:cp:cor:fginsufficient}). In the natural set-sized Laurent
+examples the algebraic and Euler-differential transcendence degrees of
+$F((t))$ over $F k((t))$ are both $|F|^{\aleph_0}$ when $|k|\le\cc$ and
+$\trdeg(F/k)>0$ (\cref{isc:cp:thm:cardinal}). In the class-sized explicit
+join, as this question asks, the answer is given by independent families of
+every set cardinal of countably supported omnific integers
+(\cref{isc:cp:thm:omnific}), a tail independent over any set of adjoined
+parameters (\cref{isc:cp:thm:resilience}), and the absence of set-sized
+generation (\cref{isc:cp:cor:nosetgen}). Open: groups over a common core $H$
+that are not separated, prescribed nonzero common cores, infinite algebraic
+coefficient extensions, and $|k|>\cc$ with small positive $\trdeg(F/k)$
+(Research questions~\ref{isc:cp:q:amalgams}, \ref{isc:cp:q:large},
+\ref{isc:cp:q:algebraic} and~\ref{isc:cp:q:cores}).
 
 \begin{question}[Descent for the arithmetic intersection]
 How do integral closure, complete integral closure, and finite-type
@@ -1992,7 +2057,9 @@ in abstract auxiliary examples.
 kept in place. This ledger collects them with their locations. ``README''
 refers to the delivered README, which is not shipped; its content is in the
 collection README. Items S1--S24 are the source's. Items W1--W8 were added
-when the report joined the collection.
+when the report joined the collection. \mtag{} The limitations of the second
+manuscript (Sections~15--27) are listed separately, as items C1--C23 and
+M1--M5 of \cref{isc:cp:sub:nonclaims}.
 \begin{enumerate}[label=S\arabic*.,leftmargin=2.6em,itemsep=2pt]
 \item The common field is a \emph{full} Hahn field on a \emph{set-sized}
 divisible subgroup. It is not an arbitrary prescribed real closed or
@@ -2102,7 +2169,10 @@ verification of the mathematics (bibliography; README).
 \item No \texttt{isc:} label has a Lean mapping in \rpath{FORMALIZATION.md}.
 Independent proof review and formalization are pending. The package shipped
 no verification code, data or audit, so the report has no suite to rerun
-(\cref{isc:sec:collection}; Appendix~\ref{isc:app:files}).
+(\cref{isc:sec:collection}; Appendix~\ref{isc:app:files}). \mtag{} This
+holds for source~01; the second manuscript shipped a finite-check suite,
+rerun in Appendix~\ref{isc:cp:app:files}, which tests none of source~01's
+theorems.
 \item \Cref{isc:thm:lift,isc:prop:arithmeticlift,isc:prop:classification}
 and the inner lift of \cref{isc:sec:explicit} are the real-fixing case of
 the omnific-preserving report's classification and its inner lift; no
@@ -2134,6 +2204,2162 @@ Appendix~\ref{isc:app:pinned}).
 review.
 \end{enumerate}
 
+\section{Beyond composita of surreal copies: a later manuscript}
+\label{isc:cp:sec:intro}
+
+\mtag{} \Cref{isc:cp:sec:intro,isc:cp:sec:foundations,isc:cp:sec:rank,isc:cp:sec:disjoint,isc:cp:sec:lacunary,isc:cp:sec:generic,isc:cp:sec:cardinal,isc:cp:sec:surreal,isc:cp:sec:resilience,isc:cp:sec:arithmetic,isc:cp:sec:audit,isc:cp:sec:questions,isc:cp:sec:verify}
+print a second manuscript, written against this report. In the report's
+local numbering (Appendix~\ref{isc:cp:app:source}) the original manuscript
+is source~01 and the addition is \emph{source~02}: manuscript~05 of batch~34
+of the collection, archive \texttt{Surreal\_Composita\_Research},
+\emph{Beyond Composita of Surreal Copies: Exact rank tests, differential
+transcendence, and omnific witnesses}, a 29-page PDF dated 23 September
+2026 and pinned to repository commit
+\nolinkurl{7b256e0792df7718995b816ad12a77bf56731f8f}. At that pin this
+report's \texttt{article.tex} was the blob
+\nolinkurl{7d5cfe644e7c902f2b594179c337a6c633350fc3}. Since then only
+three \wtag{} sentences about the bounded-support report have changed
+(\cref{isc:subsec:provenance,isc:sec:collection,isc:sub:bounded}), so the
+source's description of \cref{isc:sec:explicit,isc:sec:join,isc:sec:questions}
+is accurate. The source takes Research question~3 of
+\cref{isc:sec:questions} as its target.
+
+Section~$n$ of the source is Section~$n+14$ here for $n=1,\ldots,12$, and
+every numbered statement keeps its position: the source's Theorem~$n.m$ is
+Theorem~$(n+14).m$ here, and likewise for lemmas, corollaries, remarks,
+definitions and examples. Its Questions~1--12 are Research
+questions~11--22. Its Appendices~A and~B form \cref{isc:cp:sec:verify}; its
+notation index (Appendix~C) is folded into the table of
+\cref{isc:cp:sec:conventions}. Where the source cites this report by section
+number, the citation is replaced by a cross-reference to the same section;
+the numbering of Sections~\ref{isc:sec:introduction}--\ref{isc:sec:questions} has not
+changed since the pin. Where the source reproduces material already printed
+here (the explicit copies of \cref{isc:sec:explicit} and the re-expansion of
+\cref{isc:sec:join}), it is printed once and the source is credited
+(\cref{isc:cp:sub:copies}). Text added in the merge is marked \mtag; symbols
+renamed from the source are listed in \cref{isc:cp:sec:conventions}. Every
+result, proof, example, question and limitation of the source is printed.
+
+\subsection{Field generation is not Hahn summation}
+
+A Hahn field permits well-ordered, potentially infinite supports. An
+ordinary field compositum permits only finitely many field operations on
+finitely many elements at a time. These are different closure operations.
+Even when two Hahn subfields have a transparent intersection, their
+ordinary compositum need not contain all the series supported on the sum
+of their exponent groups.
+
+This report constructs explicit strong surreal self-embeddings whose images
+$K_0,K_1$ intersect in the real constants (\cref{isc:thm:explicit}), and
+\cref{isc:sec:join} proves that the full Hahn join $E$ contains an element
+transcendental over $M=K_0K_1$ (\cref{isc:main:join}). Research question~3
+asks for an exact description of ordinary composita and the transcendence
+degree of the join over the compositum. Source~02 takes that question as
+its target. The explicit copies and the one-series coefficient-transcendence
+obstruction of \cref{isc:thm:joinobstruction} are this report's; neither is
+claimed by source~02 as a new construction.
+
+There are two genuinely different ways for a series to escape the
+compositum. Its coefficients can use infinitely much algebraically
+independent information. More subtly, its coefficients can all lie in one
+field $k(x)$ and nevertheless have complexity in $x$ that defeats every
+finite algebraic or differential relation over the compositum. The second
+phenomenon shows that the necessary finite coefficient-field condition of
+\cref{isc:lem:finitecoeff} is far from sufficient.
+
+\subsection{Main conclusions}
+
+The first conclusion is an exact test. If the \emph{coefficient rank} of a
+Hahn series means the dimension over $k$ of the span of its coefficients,
+then
+\begin{equation}\label{isc:cp:eq:introtest}
+ x\in F k((t^\Gamma))
+ \quad\Longleftrightarrow\quad
+ \exists q\ne0\;\bigl(\crk_k(q)<\infty\ \text{and}\ \crk_k(qx)<\infty\bigr).
+\end{equation}
+This is an intrinsic test once the coefficient field and Hahn coordinates
+have been fixed. It does not assert decidability for arbitrary infinite
+input. The proof is elementary tensor algebra and is presented as such.
+
+The second conclusion is a maximal-cardinality theorem. Write
+$\cc=2^{\aleph_0}$. For $|k|\le\cc$ and any coefficient extension $F/k$ of
+positive transcendence degree,
+\begin{equation}\label{isc:cp:eq:introdimension}
+ \dtrdeg\bigl(F((t))/F k((t))\bigr)
+ =\trdeg\bigl(F((t))/F k((t))\bigr)=|F|^{\aleph_0}.
+\end{equation}
+Thus even $F=k(x)$, a single transcendental coefficient extension, produces
+the full continuum of differential freedom when $k$ is $\Q$, $\R$, or $\C$.
+Here the derivation acts only on the outer series variable.
+
+The third conclusion concerns actual omnific integers. For the explicit
+separated copies of \cref{isc:sec:explicit}, with the order isomorphism
+$\psi(u)=\frac12+\frac{u}{2(1+|u|)}$ of \cref{isc:lem:compression} and
+ordinal arithmetic used only in the label $\omega\cdot\alpha+n$, define
+\begin{equation}\label{isc:cp:eq:introwitness}
+ Y_\alpha
+ =\sum_{n\ge1}
+ \omega^{\,\omega^{15/4}-n\omega^{7/2}
+                    +\omega^{\psi(\omega\cdot\alpha+n)}}
+ \qquad(\alpha\in\On).
+\end{equation}
+Every exponent in this normal form is positive, and the exponents strictly
+decrease with $n$. Hence $Y_\alpha$ is a purely infinite omnific integer with
+countable support. All its Euler jets, together with the jets of all the
+other $Y_\alpha$, are algebraically independent over the compositum in the
+precise finite-relation sense. Moreover, given \emph{any set} $P\subseteq E$,
+there is an ordinal $\alpha_0$ such that the tail
+$\{Y_\alpha:\alpha\ge\alpha_0\}$ remains differentially algebraically
+independent over $M\langle P\rangle$.
+
+This last assertion is stronger than producing a fresh witness separately
+for each parameter set: a tail of one predefined family works. It also
+avoids assigning a set cardinal to a proper-class transcendence degree.
+\mtag{} For $\alpha=0$ the label is $\beta_{0,n}=n$, and
+$Y_0=\omega^{\omega^{15/4}}S$, where $S$ is the witness
+\eqref{isc:eq:explicitS} of \cref{isc:main:join}. Source~02 thus extends this
+report's witness to an ordinal family inside $\Oz$, as it says.
+
+\subsection{Scope, sources, and the meaning of new}\label{isc:cp:sub:scope}
+
+Hahn arithmetic, linear disjointness, algebraic extension of derivations in
+characteristic zero, and the surreal normal-form construction are
+established tools. Standard Hahn derivation frameworks appear in
+Kuhlmann--Matusinski \cite{KM}; recurrence descriptions of generalized
+series subfields are studied by Krapp--Kuhlmann--Serra \cite{KKS}. The
+finite-rank characterization below is a coefficient-space counterpart, not a
+replacement for their recurrence theory. Omnific arithmetic has a
+substantial factorization literature, including L'Innocente--Mantova
+\cite{LM}; no factorization conjecture is addressed here.
+
+The candidate contributions of source~02 are the rapid coefficient-degree
+differential-independence theorem, its combination with independent
+coefficient trees to give \eqref{isc:cp:eq:introdimension}, and the explicit
+omnific tail-resilience theorem and arithmetic consequences. The literature
+comparison is targeted, not exhaustive. These claims are proved in the
+source but are not certified as previously unpublished. The differential
+statements use a specified diagonal Euler derivation, \emph{not} the
+exponential-compatible surreal derivation of Berarducci--Mantova \cite{BM}.
+
+Source~02's own source audit (shipped as
+\rpath{02-composita-SOURCE\_AUDIT.md}) lists six candidate contributions:
+the rapid coefficient-degree theorem over $k((t))(x)$ with arbitrary Laurent
+coefficients in the relation; private coefficient-block independence over
+the whole finitely-generated-coefficient envelope and its tree
+amplification; their combination into the exact degrees
+$|F|^{\aleph_0}$; the explicit purely infinite omnific family with support
+of order type $\omega$ and the sharpness of its support cardinality; tail
+resilience of that predefined family under arbitrary set-sized parameter
+adjunction, including differential parameters; and persistent
+nonintegrality of the arithmetic join after set adjunction, with the
+Gaussian versions. It calls them proposed research contributions with
+written proofs; a targeted source search did not find them elsewhere, and
+that absence does not establish novelty.
+
+\subsection{What the addition settles in this report}
+\label{isc:cp:sec:answers}
+
+\mtag{}
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Research question~3} (an exact description of ordinary
+composita) is answered in the \emph{separated} case with trivial common
+core, which is the case of \cref{isc:main:join}, and in the stated cardinal
+cases. Its first part, the characterization of the compositum, is the
+finite coefficient-rank denominator test (\cref{isc:cp:thm:rank}) and, for
+the explicit copies, \cref{isc:cp:cor:surrealrank}. Its second part, the
+transcendence degree of the join over the compositum, is answered in the
+natural set-sized Laurent examples by \cref{isc:cp:thm:cardinal}: both the
+algebraic and the Euler-differential transcendence degree of $F((t))$ over
+$F k((t))$ are $|F|^{\aleph_0}$ when $|k|\le\cc$ and $\trdeg(F/k)>0$. In
+the class-sized explicit join it is answered in the form the question asks
+for, by independent families of every set cardinal
+(\cref{isc:cp:thm:omnific}), a tail that survives every set of parameters
+(\cref{isc:cp:thm:resilience}), and the absence of set-sized generation
+(\cref{isc:cp:cor:nosetgen}); no set cardinal is assigned to the class
+extension. Open: independent groups that are not separated (neither
+infinitesimal relative to the other), copies with a prescribed nonzero
+common core $H$, infinite algebraic coefficient extensions, and $|k|>\cc$
+with small positive $\trdeg(F/k)$. These are Research
+questions~\ref{isc:cp:q:amalgams}, \ref{isc:cp:q:cores},
+\ref{isc:cp:q:algebraic} and~\ref{isc:cp:q:large}.
+\item \Cref{isc:lem:finitecoeff} is shown to be far from sufficient: one
+transcendental coefficient $x$ already gives a series with all coefficients
+in $k(x)$ that is differentially transcendental over the compositum
+(\cref{isc:cp:cor:fginsufficient}).
+\item \Cref{isc:thm:joinobstruction} is strengthened for the explicit
+witness: $S=\omega^{-b}Y_0$, with $\omega^{-b}\in K_1$ a constant of the
+Euler derivation $\Delta$ of \cref{isc:cp:sub:euler}, so $S$ is
+differentially transcendental over $\Cfg(K_0/\R;G_1)\supseteq M$ by
+\cref{isc:cp:thm:omnific} (see the \mtag{} note after the proof of
+\cref{isc:main:join}).
+\item No other question of this report is answered. Research question~4
+(descent for the arithmetic intersection $\A{k}{H}$) is untouched: the
+nonintegrality result, \cref{isc:cp:thm:arithmetic}, concerns the join of two
+copies, not their intersection, and computes no normalization.
+\end{enumerate}
+
+\subsection{Conventions and renamed symbols}
+\label{isc:cp:sec:conventions}
+
+\mtag{} Source~02 uses both exponent conventions of this report: the
+decreasing large-$\omega$ convention $\sum c_g\omega^g$ with
+reverse-well-ordered support, written $\K{k}{G}$ as here, and the
+increasing small-$t$ convention $F((t^\Gamma))$ with well-ordered support,
+identified by $t^\gamma=\omega^{-\gamma}$ as in \cref{isc:sub:bounded}. In
+\cref{isc:cp:sec:foundations,isc:cp:sec:rank,isc:cp:sec:disjoint,isc:cp:sec:lacunary,isc:cp:sec:generic,isc:cp:sec:cardinal}
+the fields are abstract $t$-series fields over arbitrary coefficient fields,
+not subfields of $\No$. From \cref{isc:cp:sec:surreal} on, the fields are
+the explicit surreal fields of \cref{isc:sec:explicit,isc:sec:join}, with
+$k=\R$ (and $\C$ in \cref{isc:cp:thm:complex}).
+
+The following symbols of the source are renamed; everything else is as in
+the source.
+\begin{center}\small
+\begin{longtable}{@{}p{0.27\textwidth}p{0.20\textwidth}p{0.45\textwidth}@{}}
+\toprule
+Here & Source 02 & Reason\\
+\midrule
+\endhead
+$\Gamma$, $\Gamma_0$, $\Gamma'$: the outer ordered group, a subgroup, a
+set subgroup & $H$, $H_0$, $H'$ & $H$ is the prescribed common core of
+\cref{isc:main:copies}, and the source itself uses $H$ in that sense in its
+Question~4 (Research question~\ref{isc:cp:q:cores})\\
+$g>0$ in $\Gamma$ with $\lambda(g)=1$; $g=\omega^{7/2}$ in
+\cref{isc:cp:sec:surreal,isc:cp:sec:resilience,isc:cp:sec:arithmetic} & $h$
+& $h$, $h_\alpha$ are ordered additive embeddings here; this report already
+writes $g=h_1(1)=\omega^{7/2}$ (proof of \cref{isc:main:join}) and uses $g$
+in this role in \cref{isc:thm:joinobstruction}\\
+$\omega^b$, the shift multiplier & $s$ & $s_n=\omega^{g_n}$ are the
+coefficients of \eqref{isc:eq:explicitS}\\
+$F[L]$, the ring generated by $F$ and $L$ & $T$ & $T$ is also the source's
+inner support set\\
+$\Theta$, $G_\Theta$, $C_\Theta$: inner support set, its support group and
+localized coefficient field & $T$, $H_T$, $C_T$ & as above; $G_\Theta$ is a
+subgroup of $G_0$\\
+$R_0[R_1]$, the ring generated by $R_0\cup R_1$; $R_0[R_1][S]$;
+$R_0[R_1][i]$ & $B$; $B[S]$; $B_{\C}$ & $B$ is a subgroup in
+\cref{isc:lem:iterated}, and $\B{k}{H}$ is the bounded-support ring\\
+$j=0,1$, index of the two explicit copies & $i$ & $i=\sqrt{-1}$ in
+\cref{isc:cp:sec:arithmetic}; \cref{isc:main:join} writes $K_j$\\
+$\mathfrak A$, a family of infinite subsets of $\N_{>0}$ & $\mathcal A$ &
+$\A{k}{H}$ is the integer ring of \cref{isc:sec:fractions}\\
+$p_{ij}=P_{Y_{ij}}(\mathbf f)$, evaluated partials & $A_{ij}$ & $A_i$ are
+members of $\mathfrak A$ in the same proof\\
+$W_i(X,x)$, the leading polynomials in \eqref{isc:cp:eq:Hpolynomial} & $H_i(T,x)$ &
+$H$ and $T$ as above\\
+$w_i$, $\mathbf w$: tails in the proof of \cref{isc:cp:thm:lacunary} & $R_i$,
+$\mathbf R$ & $R_j$ are the omnific copies; $R$ is a cut side\\
+$\nu$, the degree in $x$ in the same proof & $D$ & $D$ is a finitely
+generated coefficient field, as in \cref{isc:lem:finitecoeff}\\
+$\gamma_0+\gamma_1$ with $\gamma_j\in G_j$, and $e$: generic
+exponents from \cref{isc:cp:sec:surreal} on & $g_0+g_1$, $g$ & $g$ is
+$\omega^{7/2}$ above\\
+$\crk_k$, coefficient rank & $\operatorname{crk}_k$, macro \texttt{\textbackslash rk} &
+same symbol; only the macro name differs\\
+\bottomrule
+\end{longtable}
+\end{center}
+No normalization is changed by these renamings. In particular
+$\omega^{7/2}=g$ and $\omega^{15/4}=b$ are the same surreals as in the
+source, and \eqref{isc:cp:eq:introwitness} is the source's formula verbatim.
+
+\paragraph{Agreements.} $\K{k}{G}$, $E=\K{\R}{G_0+G_1}$, $M=K_0K_1$,
+$K_j=\K{\R}{G_j}$, $G_j=h_j(\No)$, $I_j=(3j,3j+1)$, $\psi$, $h_j$, $\Phi_j$,
+the convention $t^\gamma=\omega^{-\gamma}$, the finitely generated field $D$
+of \cref{isc:lem:finitecoeff}, and a series $S_i=\sum a_{b_i(n)}t^{ng}$ of the
+shape of \cref{isc:thm:joinobstruction} mean the same here as in
+\cref{isc:sec:explicit,isc:sec:join}. The source's $g_{\alpha,n}$ and
+$a_{\alpha,n}$ extend this report's $g_n=\omega^{\psi(n)}$ and
+$s_n=\omega^{g_n}$: $g_{0,n}=g_n$ and $a_{0,n}=s_n$.
+
+\paragraph{Local letters and tempting false readings.}
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item In
+\cref{isc:cp:sec:foundations,isc:cp:sec:rank,isc:cp:sec:disjoint,isc:cp:sec:lacunary,isc:cp:sec:generic,isc:cp:sec:cardinal},
+$E=F((t^\Gamma))$, $L=k((t^\Gamma))$ and $M=FL$. This $L$ is \emph{not} the
+common field $L_k=\K{k}{H}$ of \cref{isc:main:copies} and not a cut side;
+this $F$ is a coefficient field, not the witness $F$ of
+\cref{isc:main:fractions}. In the surreal instance $K_0$ plays the role of
+$F$, $K_1\simeq\R((t^{G_1}))$ that of $L$, and $\R$ that of $k$.
+\item $\lambda:\Gamma\to k$ is an additive \emph{Euler weight}. It is not a
+coset slice $\lambda_{g,H}$ of \eqref{isc:eq:slice}, and not a class
+functional.
+\item $\partial$ and $\Delta$ are Euler derivations, $d$ and $d_b$
+coefficient derivations. The omnific-preserving report reserves $d$ and $D$
+for derivations; here $D$ is always a field, and $d$ is also a total degree,
+$d_n$ a degree sequence, and $d\in G_j$ a denominator exponent in
+\cref{isc:cp:lem:clearing}; none of these is an Euler derivation.
+$D_\R=\Z$ and $D_\C=\Z[i]$ keep their meaning from \cref{isc:sec:fractions}.
+\item $\jet(y_i:i\in I)$ is a set of jets, not an index set $J$. $I$ is an
+index set and $I_j$ an interval, as in \cref{isc:sec:conventions}. The
+index set $B$ of a coefficient family $(a_b)_{b\in B}$ and the label maps
+$b_i$ are local to \cref{isc:cp:sec:generic}; $b=\omega^{15/4}$ is a
+positive element of $G_1$, as the letter $b$ is in \eqref{isc:eq:separated}.
+\item $\kappa$ is an infinite cardinal in \cref{isc:cp:cor:tree} and a set
+cardinal in \cref{isc:cp:thm:omnific}; it is not $\cf(H)$ of
+\cref{isc:sec:gaps}. $\mu=|F|$ in \cref{isc:cp:thm:cardinal}. $\cc$ is
+$2^{\aleph_0}$, with no assumption on its value as an aleph.
+\item $P$ is a polynomial relation in
+\cref{isc:cp:sec:lacunary,isc:cp:sec:generic} and a set of parameters in
+\cref{isc:cp:sec:resilience,isc:cp:sec:arithmetic}; $M\langle P\rangle$ is
+the differential field generated by $M$ and all jets of $P$. $O=E\cap\Oz$.
+$Y_\alpha$ and $Z_\alpha$ are the omnific witnesses (the letter $Y$ is also a
+jet variable $Y_{ij}$). $\tau=\omega^{-g}$ is a monomial, not an exponent
+map.
+\item \emph{Tempting false reading:} ``$\crk_k(x)<\infty$ is necessary for
+$x\in M$.'' It is necessary only for $x\in F[L]$; the compositum $M$ is the
+fraction field of $F[L]$ and contains series of infinite coefficient rank
+(\cref{isc:cp:ex:geometric}).
+\item \emph{Tempting false reading:} ``$\Delta$ is a surreal derivation.''
+It is a diagonal Euler derivation of the explicit join, defined through the
+iterated coordinates, killing $K_0$; it is not the Berarducci--Mantova
+derivation, not Hardy type, and not compatible with the exponential.
+\item \emph{Strong} means preserving Hahn summability, as in
+\cref{isc:sec:conventions}, not convergence in an order topology.
+\end{itemize}
+
+\paragraph{Notation index of the source (its Appendix~C), with the names
+used here.} $F((t^\Gamma))$: small-$t$ Hahn field, well-ordered support in
+$\Gamma$. $\K{k}{G}$: large-$\omega$ Hahn field, reverse-well-ordered
+support in $G$. $E,L,M$ in the abstract sections: $F((t^\Gamma))$,
+$k((t^\Gamma))$ and the ordinary field compositum $FL$. $F[L]$: the finite
+coefficient-rank ring, the image of $F\otimes_kL$. $\crk_k(z)$: dimension
+over $k$ of the span of all coefficients of $z$. $\Cfg(F/k;\Gamma)$: union
+of $D((t^\Gamma))$ over finitely generated coefficient fields $D/k$ inside
+$F$. $\partial$: abstract outer Euler derivation, with weight map
+$\lambda:\Gamma\to k$. $h_j,\Phi_j$: inner additive embedding and outer
+surreal field embedding. $G_j,K_j,R_j$: exponent-group image, full field
+image, and omnific image of copy $j$. $E,M$ from \cref{isc:cp:sec:surreal}
+on: the explicit Hahn join $\K{\R}{G_0+G_1}$ and its ordinary compositum
+$K_0K_1$. $g,b,\omega^b$: $\omega^{7/2}$, $\omega^{15/4}$, and the monomial
+that shifts all witness exponents into the positive cone. $\Delta$: Euler
+derivation extracting the inner $\omega^{7/2}$ coefficient from the
+dominant exponent coordinate, with the sign in \eqref{isc:cp:eq:Delta}.
+$\beta_{\alpha,n}$: the ordinal label $\omega\cdot\alpha+n$, the only place
+where ordinal arithmetic is used. $g_{\alpha,n},a_{\alpha,n}$: independent
+inner exponents and the corresponding outer monomial coefficients.
+$Y_\alpha,Z_\alpha$: real omnific witness and its Gaussian multiple
+$(1+i)Y_\alpha$. $\Theta,G_\Theta,C_\Theta$: set of inner support labels,
+its full additive support group, and the localized coefficient field.
+$R_0[R_1],O$: the ring generated by the two omnific copies, and the full
+omnific ring inside their Hahn join. $M\langle P\rangle$: differential field
+generated by $M$ and all jets of the set $P$.
+
+\subsection{Place in the collection}\label{isc:cp:sec:collection}
+
+\mtag{} Source~02 cites only this report from the collection. Checked
+against the collection at the placement commit \texttt{a7a435f}, the
+following reports bear on it; none is a dependency of its proofs.
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{This report.} \Cref{isc:cp:lem:coset} is a variant of the
+coset-slice result, \cref{isc:thm:sliceddisjoint}: there two full Hahn
+fields with the same coefficient field are disjoint over the field of the
+intersection group; here $F((t^{\Gamma_0}))$ and $k((t^\Gamma))$, with
+different coefficient fields and $\Gamma_0\subseteq\Gamma$, are disjoint
+over $k((t^{\Gamma_0}))$, by the same slice argument. The source credits
+the coset slice as part of the elementary Hahn toolkit. The first clause
+of \cref{isc:cp:lem:clearing}, $\Frac(R_j)=K_j$, is the first clause of
+\cref{isc:prop:uniform} for the explicit copies, by the monomial clearing of
+\cref{isc:lem:denominator}, as the source says. \Cref{isc:cp:lem:cfg} is
+\cref{isc:lem:finitecoeff} in the abstract setting. The localization of a
+parameter set in \cref{isc:cp:lem:localizeP} is the support-closure step of
+\cref{isc:cor:parameters}, applied one normal-form level deeper.
+\item \emph{Three duals of Hahn vector spaces}
+(\rpath{surcomplex/three-duals-of-hahn-vector-spaces}, prefix
+\texttt{duals:}). Parts~(i)--(ii) of \cref{isc:cp:thm:rank} are the
+injectivity paragraph before \lbl{duals:prop:algebraic} and that
+proposition, for the $k$-vector space $V=F$: the scalar extension
+$K\otimes_kV$, $K=k((t^\Gamma))$, embeds in $V_\Gamma=F((t^\Gamma))$ with
+image the vectors of finite total coefficient rank. Source~02 does not cite
+that report and presents the tensor fact as standard. Part~(iii), the
+fraction-field test, is new but immediate from~(ii).
+\item \emph{Tail spans and differential transcendence}
+(\rpath{surreal/tail-spans-and-differential-transcendence}, prefix
+\texttt{tail:}). \lbl{tail:thm:surreal} uses the same binary-prefix almost
+disjoint family as \cref{isc:cp:cor:continuum}, private indices and a
+Vandermonde argument to give $\cc$ differentially independent series. The
+base ($\Q((t^\Q))$), the derivation (Berarducci--Mantova, via Euler jets)
+and the mechanism (the tail-span theorem \lbl{tail:thm:tail} for
+multiquadratic coefficients) differ from those of
+\cref{isc:cp:thm:lacunary,isc:cp:thm:generic}, whose base is a compositum
+or a finite-generation envelope and whose tool is coefficient degree or a
+coefficient derivation. Source~02 does not cite it; the two are related,
+not duplicates.
+\item \emph{Bounded-support transcendence}
+(\rpath{surreal/transcendence-over-bounded-support}, prefix \texttt{bst:}).
+\lbl{bst:thm:independent} obtains $2^{\cf(G)}$ independent series over the
+bounded-support fraction field by coefficient codes realized at cofinally
+many indices, a private-index device over a different base, with a
+support-gap estimate instead of a derivation. Source~02 does not cite it.
+\item \emph{Dilation rigidity}
+(\rpath{surcomplex/autonomous-dilation-relations}, prefix \texttt{adr:}).
+\lbl{adr:sr:thm:tail} localizes a set of surcomplex parameters in the Hahn
+field of the real span of their supports and finds a tail of an explicit
+ordinal family whose dilation orbits are independent over that whole field;
+\lbl{adr:sr:thm:kappa} gives set-sized families over a prescribed set base.
+\Cref{isc:cp:thm:resilience} has the same shape, with Euler jets instead of
+dilation orbits and localization at the inner normal-form level.
+\item \emph{Omnific-preserving automorphisms} (\texttt{opa:}). The
+explicit copies are the maps $M_{1,\iota_{\sigma_j}}$ of that report's
+Part~III (\cref{isc:sec:collection}). Research questions~\ref{isc:cp:q:bm}
+and~\ref{isc:cp:q:exp} lie inside \lbl{opa:as:q:exp}.
+\end{enumerate}
+No \texttt{isc:cp:} label has a Lean mapping in \rpath{FORMALIZATION.md}.
+
+\section{Conventions and foundational lemmas of the addition}
+\label{isc:cp:sec:foundations}
+
+\subsection{Two support conventions}
+
+For a field $F$ and an ordered abelian group $\Gamma$, the Hahn field
+$F((t^\Gamma))$ consists of formal sums
+\[
+ x=\sum_{\gamma\in\Gamma}x_\gamma t^\gamma
+\]
+whose nonzero coefficient support is a well-ordered set. All supports are
+sets. Addition is coefficientwise. In a product, the coefficient at
+$\gamma$ is the finite sum of $x_\alpha y_\beta$ over pairs with
+$\alpha+\beta=\gamma$.
+
+Surreal normal forms instead use the large-$\omega$ convention
+$x=\sum_g c_g\omega^g$, with reverse-well-ordered support: every nonempty
+subset has a greatest element. As in \cref{isc:sec:foundations}, $\K{k}{G}$
+is the full field of these normal forms with coefficients in $k$ and
+exponents in an additive subgroup $G\subseteq\No$. Whenever the conventions
+change, the identification is
+\begin{equation}\label{isc:cp:eq:signconvention}
+ t^\gamma=\omega^{-\gamma},
+\end{equation}
+as in \cref{isc:sub:bounded}. The reversal in
+\eqref{isc:cp:eq:signconvention} is essential in the final omnific
+construction.
+
+For set-sized groups, ordinary Hahn field algebra suffices. For
+proper-class exponent groups, each finite calculation occurs in the
+subgroup generated by a set of supports. The inverse of a nonzero series
+can likewise be constructed in a set-sized Hahn field containing its
+support. Thus the formulas define class fields without allowing class-sized
+sums. The class assertions are formulated in NBG with global choice, with
+ZFC for sets, as in \cref{isc:sec:foundations}. The displayed class families
+and derivations are given by formulas; no class-state recursion, class
+transcendence basis, or class satisfaction predicate is used.
+
+\subsection{Euler derivations and differential independence}
+
+\begin{definition}\label[definition]{isc:cp:def:euler}
+Let $k\subseteq F$ have characteristic zero and let $\lambda:\Gamma\to(k,+)$
+be additive. The associated outer Euler derivation is
+\begin{equation}\label{isc:cp:eq:euler}
+ \partial\Bigl(\sum_\gamma a_\gamma t^\gamma\Bigr)
+ =\sum_\gamma \lambda(\gamma)a_\gamma t^\gamma.
+\end{equation}
+It kills $F$. When $\Gamma=\Z$ and $\lambda(n)=n$, it is $t\,d/dt$.
+\end{definition}
+
+\begin{lemma}\label[lemma]{isc:cp:lem:derivation}
+Formula \eqref{isc:cp:eq:euler} is a derivation of $F((t^\Gamma))$. It
+preserves Hahn-summable families and their sums. If $d:F\to F$ is a
+$k$-derivation, its coefficientwise extension to $F((t^\Gamma))$ is also a
+derivation and commutes with $\partial$.
+\end{lemma}
+\begin{proof}
+Both maps only delete terms or change coefficients, so the support
+condition is preserved. For a product coefficient, finiteness of the
+convolution and $\lambda(\alpha+\beta)=\lambda(\alpha)+\lambda(\beta)$ give
+the Leibniz identity. The same finite calculation works for $d$. A
+Hahn-summable family has a well-ordered union of supports and only finitely
+many nonzero contributions at each exponent; neither property is destroyed.
+Finally $d(\lambda(\gamma))=0$ because $\lambda(\gamma)\in k$, proving
+commutation coefficient by coefficient.
+\end{proof}
+
+\begin{definition}\label[definition]{isc:cp:def:diffind}
+A family $(y_i)_{i\in I}$ in a differential field extension $E/M$ is
+\emph{differentially algebraically independent over $M$} if the family
+\[
+ \jet(y_i:i\in I)=\{\partial^j y_i:i\in I,\ j\ge0\}
+\]
+is algebraically independent over $M$. Every relation and every collection
+of variables in a polynomial are finite. We write $M\langle P\rangle$ for
+the field generated by $M$ and all $\partial^j p$, $p\in P$, $j\ge0$.
+\end{definition}
+
+For set fields, differential transcendence degree has its usual meaning.
+All lower bounds below are proved by exhibiting independent families of the
+stated cardinality. For class fields, only the finite-relation definition
+and set-indexed subfamilies are used; no class transcendence basis is
+postulated, and no cardinal equal to the size of $\No$.
+
+\subsection{The coefficient-field envelope}
+
+Throughout the set-sized theory, put
+\begin{equation}\label{isc:cp:eq:basicfields}
+ E=F((t^\Gamma)),\qquad L=k((t^\Gamma)),\qquad M=FL.
+\end{equation}
+The compositum is taken in $E$ and is a field. In contrast, the ring
+$F[L]$ generated by $F$ and $L$ consists of finite sums of products.
+
+\begin{definition}\label[definition]{isc:cp:def:cfg}
+Define the finite-generation coefficient envelope by
+\begin{equation}\label{isc:cp:eq:cfg}
+ \Cfg(F/k;\Gamma)
+ =\bigcup_{\substack{k\subseteq D\subseteq F\\D/k\ \mathrm{finitely\ generated}}}
+          D((t^\Gamma)).
+\end{equation}
+Here ``finitely generated'' means as a field, not as a ring.
+\end{definition}
+
+\begin{lemma}\label[lemma]{isc:cp:lem:cfg}
+The union in \eqref{isc:cp:eq:cfg} is a field containing $M$ and is stable
+under every Euler derivation \eqref{isc:cp:eq:euler}. Every finite subset of
+$M$ is contained in one $D((t^\Gamma))$ with $D/k$ finitely generated.
+\end{lemma}
+\begin{proof}
+The compositum of two finitely generated coefficient fields is again
+finitely generated, so the union is directed. Each constituent is a Hahn
+field. A finite field expression in elements of $F$ and $L$ uses only
+finitely many elements $a_1,\ldots,a_r$ of $F$, and therefore belongs to
+$k(a_1,\ldots,a_r)((t^\Gamma))$. The same argument handles finitely many
+expressions simultaneously. Formula \eqref{isc:cp:eq:euler} introduces only
+scalars from $k$ into coefficients.
+\end{proof}
+
+The last lemma is the finite coefficient-field control of
+\cref{isc:lem:finitecoeff}, in the abstract setting. The later constructions
+show both strictness of its necessary condition and independence over the
+entire envelope.
+
+\section{An exact coefficient-rank test for the compositum}
+\label{isc:cp:sec:rank}
+
+\begin{definition}\label[definition]{isc:cp:def:rank}
+For $x=\sum x_\gamma t^\gamma\in E$, define
+\[
+ \crk_k(x)=\dim_k\operatorname{span}_k\{x_\gamma:\gamma\in\Gamma\}.
+\]
+In particular, $\crk_k(0)=0$. Let $F[L]\subseteq E$ be the ring generated
+by $F$ and $L$.
+\end{definition}
+
+\begin{theorem}[Finite rank and finite-rank denominators]\label{isc:cp:thm:rank}
+For arbitrary fields $k\subseteq F$ and any ordered abelian group $\Gamma$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The natural multiplication map $F\otimes_k L\to E$ is injective, with
+image $F[L]$.
+\item $F[L]=\{x\in E:\crk_k(x)<\infty\}$.
+\item $M=\Frac(F[L])$, and an element $x\in E$ belongs to $M$ exactly when
+there is $q\in E\setminus\{0\}$ for which both $\crk_k(q)$ and
+$\crk_k(qx)$ are finite.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+A finite tensor can be written as $\sum_{i=1}^r b_i\otimes\ell_i$ with the
+$b_i\in F$ linearly independent over $k$. If its image vanishes, then
+comparison at each exponent $\gamma$ gives
+\[
+ \sum_{i=1}^r b_i(\ell_i)_\gamma=0.
+\]
+All $(\ell_i)_\gamma$ belong to $k$, so each is zero. Thus every $\ell_i=0$,
+proving injectivity. The image is the finite sums of products of elements of
+$F$ and $L$, namely $F[L]$.
+
+For $x=\sum_{i=1}^r b_i\ell_i$, every coefficient of $x$ lies in the
+finite-dimensional space spanned by the $b_i$. Conversely, suppose the
+coefficient span has basis $b_1,\ldots,b_r$. Write uniquely
+\[
+ x_\gamma=\sum_{i=1}^r b_i c_{i,\gamma},\qquad c_{i,\gamma}\in k.
+\]
+For every $i$, the support of $\ell_i=\sum_\gamma c_{i,\gamma}t^\gamma$ is
+contained in $\supp(x)$, hence is well ordered. Therefore $\ell_i\in L$ and
+$x=\sum b_i\ell_i\in F[L]$.
+
+Since $F[L]$ is a subring of a field, its fraction field inside $E$ is
+precisely the smallest field containing $F$ and $L$, which is $M$. Finally
+$x=p/q$ with $p,q\in F[L]$, $q\ne0$, is equivalent to $q,qx\in F[L]$ for
+such a $q$. Part~(ii) gives the asserted test.
+\end{proof}
+
+\mtag{} Parts~(i) and~(ii) are, for the $k$-vector space $V=F$, the
+injectivity paragraph before \lbl{duals:prop:algebraic} of the three-duals
+report and that proposition (\cref{isc:cp:sec:collection}); the source does
+not cite it and presents the tensor fact as standard.
+
+\begin{remark}[What the criterion does and does not do]\label[remark]{isc:cp:rem:ranktest}
+The theorem describes the subfield exactly in terms of its coefficients,
+rather than merely as an unspecified compositum. Nevertheless, the
+existential search over $q$ is an infinite-input problem. No algorithm
+deciding arbitrary Hahn-series membership follows. The tensor argument is a
+standard linear-disjointness mechanism; neither a new tensor-product theorem
+nor a new general theory of rational series is claimed. The comparison with
+recurrence criteria in \cite{KKS} is conceptual, not a claim that the two
+formulations have identical inputs.
+\end{remark}
+
+\begin{example}[Infinite rank inside the compositum]\label[example]{isc:cp:ex:geometric}
+Let $u\in F$ be transcendental over $k$ and let $g\in\Gamma$ be positive.
+The geometric series
+\[
+ z=\frac1{1-ut^g}=\sum_{n\ge0}u^n t^{ng}
+\]
+has infinite coefficient rank, because the powers of $u$ are linearly
+independent over $k$. Yet $z\in M$: the multiplier $q=1-ut^g$ has rank two
+and $qz=1$ has rank one. The support $\{ng:n\ge0\}$ is well ordered in every
+ordered abelian group. No cofinality assumption on $g$ is needed.
+\end{example}
+
+\begin{corollary}[Finite coefficient extensions]\label[corollary]{isc:cp:cor:finitecoeff}
+If $[F:k]<\infty$, then $E=F[L]=M$.
+\end{corollary}
+\begin{proof}
+Every coefficient span is a subspace of the finite-dimensional $k$-space $F$.
+Apply \cref{isc:cp:thm:rank}.
+\end{proof}
+
+For finite ranks one also has
+\[
+ \crk_k(x+y)\le\crk_k(x)+\crk_k(y),\qquad
+ \crk_k(xy)\le\crk_k(x)\crk_k(y).
+\]
+Indeed a coefficient of the product lies in the span of pairwise products
+of basis elements for the two coefficient spaces. Infinite rank therefore
+obstructs membership in $F[L]$, but not in its fraction field.
+
+\section{Linear disjointness under two enlargements}\label{isc:cp:sec:disjoint}
+
+The next lemmas prevent an independence proof over a small coefficient
+field or a cyclic exponent group from being lost when the ambient Hahn
+field is enlarged. The arguments are included instead of silently treating
+base extension as harmless. Linear disjointness has its usual definition
+via injectivity of the tensor multiplication map \cite{StacksLD}, as in
+\cref{isc:sec:foundations}.
+
+\begin{lemma}[Coefficient extension]\label[lemma]{isc:cp:lem:coeffld}
+If $F_0\subseteq F$, then $F$ and $F_0((t^\Gamma))$ are linearly disjoint
+over $F_0$ inside $F((t^\Gamma))$.
+\end{lemma}
+\begin{proof}
+A finite relation with coefficients in $F_0((t^\Gamma))$ among elements of
+$F$ linearly independent over $F_0$ vanishes coefficientwise only when every
+coefficient series is zero. This is the first argument of
+\cref{isc:cp:thm:rank} with $k=F_0$.
+\end{proof}
+
+\begin{lemma}[Intermediate base change]\label[lemma]{isc:cp:lem:basechange}
+Suppose fields $A$ and $B$ are linearly disjoint over $K$ in an ambient
+field, and $K\subseteq A_0\subseteq A$. Then $A$ and $A_0B$ are linearly
+disjoint over $A_0$.
+\end{lemma}
+\begin{proof}
+Let $a_1,\ldots,a_m\in A$ be linearly independent over $A_0$ and suppose
+$\sum_i a_i c_i=0$ with $c_i\in A_0B$. Clear a common nonzero denominator
+from the ring generated by $A_0$ and $B$. Each resulting coefficient is a
+finite sum of products. Choose a $K$-linearly independent list
+$b_1,\ldots,b_r\in B$ spanning all the finitely many $B$-entries used. The
+relation becomes
+\[
+ \sum_{j=1}^r\Bigl(\sum_{i=1}^m a_i a_{ij}\Bigr)b_j=0,
+ \qquad a_{ij}\in A_0.
+\]
+Linear disjointness over $K$ makes the $b_j$ linearly independent over $A$.
+Hence every inner sum vanishes. Independence of the $a_i$ over $A_0$ gives
+all $a_{ij}=0$, so all the original $c_i$ are zero.
+\end{proof}
+
+\begin{lemma}[Coset slices]\label[lemma]{isc:cp:lem:coset}
+Let $\Gamma_0\subseteq\Gamma$ be an additive subgroup. Inside
+$F((t^\Gamma))$, the fields
+\[
+ E_0=F((t^{\Gamma_0})),\qquad L=k((t^\Gamma))
+\]
+are linearly disjoint over $L_0=k((t^{\Gamma_0}))$. No convexity assumption
+on $\Gamma_0$ is required.
+\end{lemma}
+\begin{proof}
+Suppose $u_1,\ldots,u_m\in E_0$ are linearly independent over $L_0$ and
+$\sum_i u_i v_i=0$, $v_i\in L$. For a coset $C$ of $\Gamma_0$ meeting one of
+the supports of the $v_i$, choose a representative $c\in C$. Let $v_{i,C}$
+be the sum of the terms of $v_i$ supported on $C$, multiplied by $t^{-c}$.
+Its support is a translate of a subset of a well-ordered set, and is
+contained in $\Gamma_0$, so $v_{i,C}\in L_0$.
+
+Multiplication by a series supported in $\Gamma_0$ does not change the
+coset of an exponent. Extracting the $C$-slice of the original relation and
+translating by $-c$ therefore gives
+\[
+ \sum_i u_i v_{i,C}=0.
+\]
+Independence over $L_0$ yields $v_{i,C}=0$ for all $i$. Every support
+exponent belongs to a coset that was considered; hence every $v_i=0$. Only a
+set of cosets is involved, even in the class-supported setting.
+\end{proof}
+
+\mtag{} Up to the change of convention \eqref{isc:cp:eq:signconvention},
+$v_{i,C}$ is a normalized coset slice as in \eqref{isc:eq:slice}, and the
+lemma is a variant of \cref{isc:thm:sliceddisjoint} with different
+coefficient fields on the two sides (\cref{isc:cp:sec:collection}).
+
+\begin{corollary}[Independence survives both enlargements]\label[corollary]{isc:cp:cor:transfer}
+Let $x\in F$ be transcendental over $k$, let $g>0$ in $\Gamma$, and let
+$\lambda:\Gamma\to k$ satisfy $\lambda(g)=1$. If a family in $k(x)((t))$
+is differentially algebraically independent over $k((t))(x)$ for
+$t\,d/dt$, then replacing $t^n$ by $t^{ng}$ gives a family differentially
+algebraically independent over $F k((t^\Gamma))$ in $F((t^\Gamma))$.
+\end{corollary}
+\begin{proof}
+First apply \cref{isc:cp:lem:coeffld} to $k(x)\subseteq F$ and the cyclic
+exponent group. Then apply \cref{isc:cp:lem:basechange} with
+$A=k(x)((t))$ and $A_0=k((t))(x)$: the field $A$ is linearly disjoint from
+$F k((t))$ over $A_0$. Distinct monomials in any finite collection of jets,
+which were linearly independent over $A_0$, remain so over $F k((t))$.
+
+Next identify this cyclic Hahn field with $F((t^{\Z g}))$. Apply
+\cref{isc:cp:lem:coset}, followed by \cref{isc:cp:lem:basechange} with the
+intermediate field $F k((t^{\Z g}))$. This preserves independence after
+adjoining $k((t^\Gamma))$. Finally $\partial(t^{ng})=n t^{ng}$, so the
+transported elements have exactly the transported jets.
+\end{proof}
+
+\section{Differential independence from one coefficient variable}
+\label{isc:cp:sec:lacunary}
+
+The next theorem is the key to the small-transcendence-degree case. The
+exponents in the outer variable need not be sparse. Instead, the degrees in
+a single coefficient variable grow so fast that a late coefficient cannot be
+canceled by any fixed differential polynomial.
+
+\begin{definition}\label[definition]{isc:cp:def:private}
+A family $\mathfrak A$ of infinite subsets of $\N_{>0}$ has the \emph{finite
+private-index property} if, for every finite subfamily $A_1,\ldots,A_r$ of
+distinct members and every $i$, the set
+\[
+ A_i\setminus\bigcup_{j\ne i}A_j
+\]
+is infinite. In particular, every pairwise almost disjoint family of
+infinite subsets has this property.
+\end{definition}
+
+\begin{theorem}[Rapid coefficient-degree independence]\label{isc:cp:thm:lacunary}
+Let $k$ have characteristic zero, let $x$ be transcendental over $k$, and
+let $(d_n)_{n\ge1}$ be a strictly increasing sequence of positive integers
+such that
+\begin{equation}\label{isc:cp:eq:fastgrowth}
+ \frac{d_n}{d_{n-1}}\longrightarrow+\infty.
+\end{equation}
+For a family $\mathfrak A$ with the finite private-index property, put
+\begin{equation}\label{isc:cp:eq:fA}
+ f_A=\sum_{n\in A}x^{d_n}t^n\in k(x)((t)).
+\end{equation}
+Then $(f_A)_{A\in\mathfrak A}$ is differentially algebraically independent
+over $k((t))(x)$ for $\partial=t\,d/dt$ and $\partial x=0$.
+\end{theorem}
+\begin{proof}
+Suppose there is a relation in finitely many jets of distinct
+$f_{A_1},\ldots,f_{A_r}$. Among all nonzero polynomial relations over
+$k((t))(x)$ in finite lists of these jets, choose one of least total jet
+degree $d$. Write it as
+\[
+ P\bigl((\partial^j f_{A_i})_{1\le i\le r,\,0\le j\le m}\bigr)=0,
+\]
+allowing unused variables. A degree-zero nonzero relation is impossible, so
+$d\ge1$.
+
+Clear the denominators in $x$ of the finitely many coefficients of $P$,
+then multiply by a power of $t$ large enough to remove their negative outer
+exponents. We may therefore assume
+\begin{equation}\label{isc:cp:eq:integralP}
+ P\in k[[t]][x][Y_{ij}:1\le i\le r,\ 0\le j\le m].
+\end{equation}
+Let $\nu$ be its degree in $x$. These operations do not change total jet
+degree or minimality. We use $\mathbf f$ to denote the tuple of all the
+indicated jets.
+
+For each variable set
+\[
+ p_{ij}=P_{Y_{ij}}(\mathbf f)\in k[x][[t]].
+\]
+If the formal polynomial $P_{Y_{ij}}$ is nonzero, its total jet degree is
+smaller than $d$, so minimality forces $p_{ij}\ne0$. At least one formal
+partial is nonzero, because the characteristic is zero and $d\ge1$.
+Consequently
+\[
+ \ell=\min_{p_{ij}\ne0}\ordt(p_{ij})
+\]
+is a nonnegative integer. Define polynomials in a new indeterminate $X$ by
+\begin{equation}\label{isc:cp:eq:Hpolynomial}
+ W_i(X,x)=\sum_{j=0}^m [t^\ell]p_{ij}\,X^j\in k[x][X].
+\end{equation}
+At least one $W_i$ is nonzero: its coefficients occupy distinct powers of
+$X$, and at least one $p_{ij}$ attains the valuation $\ell$. Fix such an
+index $i_*$.
+
+For an integer $n$, truncate every original series strictly before $t^n$:
+\[
+ v_i=\sum_{\substack{a\in A_i\\a<n}}x^{d_a}t^a,
+ \qquad w_i=f_{A_i}-v_i.
+\]
+Every jet of $w_i$ has $t$-valuation at least $n$. Let $\mathbf v$ and
+$\mathbf w$ be the corresponding tuples of jets. Evaluating any polynomial
+from \eqref{isc:cp:eq:integralP} at $\mathbf f$ or $\mathbf v$ changes it only
+by a multiple of $t^n$. Therefore, when $n>\ell$, the partial evaluations
+$P_{Y_{ij}}(\mathbf v)$ have zero coefficients below $\ell$ and the same
+coefficient at $\ell$ as $p_{ij}$.
+
+Choose $n$ in the infinite private-index set
+\[
+ A_{i_*}\setminus\bigcup_{i\ne i_*}A_i.
+\]
+We may require simultaneously
+\begin{equation}\label{isc:cp:eq:nchoices}
+ n>\max\{\ell,1\},\qquad W_{i_*}(n,x)\ne0,\qquad
+ d_n>\nu+d\,d_{n-1}.
+\end{equation}
+The middle condition excludes only finitely many integers, since a nonzero
+polynomial in $X$ over the field $k(x)$ has finitely many roots and
+characteristic zero gives distinct integer elements. The last condition
+holds eventually by \eqref{isc:cp:eq:fastgrowth}.
+
+The polynomial Taylor expansion about $\mathbf v$ is
+\begin{equation}\label{isc:cp:eq:taylor}
+ P(\mathbf v+\mathbf w)
+ =P(\mathbf v)+\sum_{i,j}P_{Y_{ij}}(\mathbf v)\partial^jw_i
+       +\text{terms of tail degree at least two}.
+\end{equation}
+Every omitted term is divisible by $t^{2n}$. Since $n+\ell<2n$, these terms
+do not contribute at exponent $n+\ell$. In the linear sum, a tail
+coefficient after exponent $n$ could contribute only by multiplying a
+partial coefficient before $\ell$, and those coefficients vanish. At
+exponent $n$, only $w_{i_*}$ is nonzero, and
+\[
+ [t^n]\partial^jw_{i_*}=n^j x^{d_n}.
+\]
+Taking $[t^{n+\ell}]$ in \eqref{isc:cp:eq:taylor}, using $P(\mathbf f)=0$,
+gives the exact polynomial identity
+\begin{equation}\label{isc:cp:eq:degreecontradiction}
+ 0=[t^{n+\ell}]P(\mathbf v)+x^{d_n}W_{i_*}(n,x).
+\end{equation}
+
+Every coefficient of every truncated jet has degree in $x$ at most
+$d_{n-1}$. Thus the first summand in \eqref{isc:cp:eq:degreecontradiction}
+has degree at most $\nu+d\,d_{n-1}$. The second is nonzero and has degree
+at least $d_n$. The final inequality in \eqref{isc:cp:eq:nchoices} makes
+cancellation impossible. This contradiction proves the theorem.
+\end{proof}
+
+\begin{remark}[Why arbitrary Laurent coefficients are allowed]\label[remark]{isc:cp:rem:laurentcoeff}
+The coefficients of $P$ can be arbitrary elements of $k((t))(x)$, not just
+rational functions of $t$ and $x$ over $k$. Clearing denominators makes
+their degree in $x$ uniformly finite, while their $t$-series can remain
+infinite. The proof uses only this finite $x$-degree and a common lower
+bound on outer exponents. It does not impose a recurrence on those
+coefficient series.
+\end{remark}
+
+\begin{corollary}[A continuum family in one coefficient field]\label[corollary]{isc:cp:cor:continuum}
+For every characteristic-zero field $k$ and transcendental $x$, the field
+$k(x)((t))$ contains $\cc$ elements differentially algebraically
+independent over $k((t))(x)$, all with coefficients in $k(x)$.
+\end{corollary}
+\begin{proof}
+Take $d_n=n!$. Encode the nonempty finite binary strings injectively by
+positive integers. For each infinite binary sequence $\eta$, let $A_\eta$
+consist of the labels of its finite nonempty prefixes. Distinct branches
+have only finitely many common prefixes, so their sets are pairwise almost
+disjoint. There are $\cc$ branches. Apply \cref{isc:cp:thm:lacunary}.
+\end{proof}
+
+\mtag{} The binary-prefix family is the one of \lbl{tail:eq:Aalpha} in the
+tail-spans report, where it serves \lbl{tail:thm:surreal} over a different
+base and with a different derivation (\cref{isc:cp:sec:collection}).
+
+\begin{corollary}[Failure of the finite coefficient-field criterion]\label[corollary]{isc:cp:cor:fginsufficient}
+Suppose $F/k$ has positive transcendence degree and there are $g>0$ in
+$\Gamma$ and additive $\lambda:\Gamma\to k$ with $\lambda(g)=1$. Then
+$\Cfg(F/k;\Gamma)$ contains an element differentially transcendental over
+$M=F k((t^\Gamma))$. In particular, containment of all coefficients in a
+single finitely generated field does not imply membership in $M$, or even
+algebraicity over $M$.
+\end{corollary}
+\begin{proof}
+Choose a transcendental $x\in F$ and use
+\[
+ f=\sum_{n\ge1}x^{n!}t^{ng}.
+\]
+The singleton family $\{\N_{>0}\}$ satisfies the private-index condition.
+Apply \cref{isc:cp:thm:lacunary,isc:cp:cor:transfer}. The series belongs to
+$k(x)((t^\Gamma))\subseteq\Cfg(F/k;\Gamma)$.
+\end{proof}
+
+\begin{example}[The first terms and the mechanism]\label[example]{isc:cp:ex:mechanism}
+The last witness starts as
+\[
+ xt^g+x^2t^{2g}+x^6t^{3g}+x^{24}t^{4g}+x^{120}t^{5g}+\cdots.
+\]
+The outer support here is the entire positive cyclic progression, not a
+factorially sparse support. A polynomial differential relation of total jet
+degree $d$ and coefficient degree $\nu$ sees only degree at most
+$\nu+d(n-1)!$ in the truncation before $t^{ng}$. A surviving linear response
+to the next coefficient has degree at least $n!$. This is the obstruction.
+Merely pointing to gaps in the outer support would not prove this example.
+\end{example}
+
+\mtag{} The source's table in \cref{isc:cp:sec:audit} applies
+\cref{isc:cp:cor:fginsufficient} to the explicit join of \cref{isc:sec:join},
+with $F=K_0$, $k=\R$, $\Gamma=G_1$ and $\lambda$ as in
+\cref{isc:cp:sub:euler}; the lemmas of \cref{isc:cp:sec:disjoint} use only
+finite relations, so the class-sized $F$ causes no difficulty. The example
+is then a series with every coefficient in the one-generator field
+$\R(x)$, $x\in K_0$ transcendental over $\R$. \Cref{isc:lem:finitecoeff}
+places every finite subset of $M$ in some $\K{D}{G_1}$ with $D$ finitely
+generated; the example shows that the converse fails for a single
+generator.
+
+\section{Independent coefficient blocks and tree amplification}
+\label{isc:cp:sec:generic}
+
+The preceding theorem uses one coefficient variable. The next results
+exploit many algebraically independent coefficients and obtain independence
+over a larger base than the compositum itself.
+
+\subsection{Coefficient derivations with finite avoidance}
+
+\begin{lemma}[Avoiding a finitely generated coefficient field]\label[lemma]{isc:cp:lem:partial}
+Let $F/k$ have characteristic zero, let $(a_b)_{b\in B}\subseteq F$ be
+algebraically independent over $k$, and let $D\subseteq F$ be finitely
+generated over $k$. There is a finite set $B_0\subseteq B$ such that, for
+every $b\in B\setminus B_0$, a $k$-derivation $d_b:F\to F$ exists with
+\[
+ d_b(a_b)=1,\qquad d_b(a_c)=0\ (c\ne b),\qquad d_b(D)=0.
+\]
+\end{lemma}
+\begin{proof}
+Extend the given independent set to a transcendence basis $\mathcal T$ of
+the set field $F/k$. Each member of a finite generating list for $D/k$ is
+algebraic over $k(\mathcal T_0)$ for some finite
+$\mathcal T_0\subseteq\mathcal T$; take one such finite set for the whole
+list. Let $B_0$ consist of the $b$ with $a_b\in\mathcal T_0$.
+
+On the rational function field $k(\mathcal T)$ define the coordinate
+derivation that sends $a_b$ to $1$ and all other basis elements to $0$. It
+extends uniquely over the algebraic extension $F/k(\mathcal T)$, because
+this extension is separable. Explicitly, for an algebraic element $z$ with
+minimal polynomial $p(X)$, differentiation of $p(z)=0$ forces
+\begin{equation}\label{isc:cp:eq:derivextension}
+ d_b(z)=-\frac{(d_b p)(z)}{p'(z)}.
+\end{equation}
+The denominator is nonzero. This formula gives the usual compatible
+extension through finite algebraic subextensions and hence through their
+union. If $b\notin B_0$, the derivation kills $k(\mathcal T_0)$, so
+\eqref{isc:cp:eq:derivextension} makes it kill each of the chosen generators
+of $D$. It therefore kills $D$.
+\end{proof}
+
+\subsection{The block theorem}
+
+\begin{theorem}[Private coefficient blocks]\label{isc:cp:thm:generic}
+Let $F/k$ have characteristic zero. Let $(a_b)_{b\in B}\subseteq F$ be
+algebraically independent over $k$, and choose $g>0$ in $\Gamma$ and
+additive $\lambda:\Gamma\to k$ with $\lambda(g)=1$. For each $i\in I$, let
+\[
+ b_i:\N_{>0}\longrightarrow B
+\]
+be injective. Assume that for every finite set of distinct indices
+$i_1,\ldots,i_r$ and every $i=i_q$, there are infinitely many $n$ such that
+the label $b_i(n)$ occurs in no other sequence $b_{i_p}$, at any position.
+Put
+\begin{equation}\label{isc:cp:eq:genericseries}
+ S_i=\sum_{n\ge1}a_{b_i(n)}t^{ng}.
+\end{equation}
+Then $(S_i)_{i\in I}$ is differentially algebraically independent over
+$\Cfg(F/k;\Gamma)$ for the Euler derivation associated to $\lambda$.
+\end{theorem}
+\begin{proof}
+Every displayed series has well-ordered support contained in
+$\{ng:n\ge1\}$. Suppose a nonzero polynomial relation exists among finitely
+many jets of finitely many distinct $S_i$, with coefficients in
+$\Cfg(F/k;\Gamma)$. Choose a relation $P$ of least total jet degree. Its
+coefficients all lie in one $D((t^\Gamma))$ with $D/k$ finitely generated.
+The total degree is positive.
+
+Fix one index $i$ involved in the relation. By the private-label hypothesis,
+there are infinitely many positions $n$ whose coefficient label occurs only
+in this series among those under consideration. After excluding the finite
+exceptional set of \cref{isc:cp:lem:partial}, infinitely many remain. For
+such a position, extend $d_{b_i(n)}$ coefficientwise to the Hahn field. By
+\cref{isc:cp:lem:derivation}, it kills every coefficient of $P$, commutes
+with $\partial$, and satisfies
+\[
+ d_{b_i(n)}(\partial^jS_i)=n^j t^{ng},\qquad
+ d_{b_i(n)}(\partial^jS_{i'})=0\quad(i'\ne i).
+\]
+Differentiating $P=0$ by this coefficient derivation and dividing by the
+nonzero monomial $t^{ng}$ gives
+\begin{equation}\label{isc:cp:eq:vandermonde}
+ \sum_{j=0}^m n^j P_{Y_{ij}}\bigl((\partial^aS_{i'})_{i',a}\bigr)=0.
+\end{equation}
+Here $m$ bounds all jet orders used. The coefficients in
+\eqref{isc:cp:eq:vandermonde} do not depend on $n$. Since it holds for
+infinitely many distinct integers in a characteristic-zero field, the
+polynomial in $n$ is identically zero. Thus every evaluated partial
+$P_{Y_{ij}}$ is zero. Repeat for each index $i$ in the relation.
+
+A nonconstant polynomial in characteristic zero has some nonzero formal
+partial derivative. That partial has smaller total jet degree than $P$, yet
+its evaluation vanishes. This contradicts minimality. Therefore no relation
+exists.
+\end{proof}
+
+\begin{remark}[A finite Vandermonde version]\label[remark]{isc:cp:rem:vandermonde}
+For a relation involving jets only through order $m$, it is enough to use
+$m+1$ distinct private positions outside the finite exceptional set. The
+matrix $(n_a^j)_{0\le a,j\le m}$ has determinant
+$\prod_{a<b}(n_b-n_a)\ne0$. The polynomial-root argument in the proof is
+simply a convenient way to avoid choosing a particular finite list.
+\end{remark}
+
+\begin{corollary}[Tree amplification]\label[corollary]{isc:cp:cor:tree}
+If $\trdeg(F/k)\ge\kappa$ for an infinite cardinal $\kappa$, and
+$\Gamma,g,\lambda$ satisfy the preceding hypotheses, then $F((t^\Gamma))$
+contains a family of cardinality $\kappa^{\aleph_0}$ differentially
+algebraically independent over $\Cfg(F/k;\Gamma)$.
+\end{corollary}
+\begin{proof}
+The set of nonempty finite sequences in $\kappa$ has cardinality $\kappa$.
+Choose an algebraically independent coefficient $a_s$ for every such finite
+sequence $s$. For each branch $\eta\in\kappa^{\N_{>0}}$, use
+\[
+ S_\eta=\sum_{n\ge1}a_{\eta|n}t^{ng}.
+\]
+Two distinct branches share only finitely many prefix labels. Relative to
+any finite collection of other branches, every sufficiently long prefix is
+private. Apply \cref{isc:cp:thm:generic}.
+\end{proof}
+
+\subsection{Local use for class coefficient fields}\label{isc:cp:sub:classlocal}
+
+\begin{proposition}[Set-local form]\label[proposition]{isc:cp:prop:local}
+The private coefficient-block argument remains valid when $F$ or $\Gamma$
+is a class, provided that $k$ is a set field, every series has set support,
+and algebraic independence of the coefficient family means independence of
+every finite subfamily. The conclusion concerns every finite polynomial
+relation. No class transcendence basis is required.
+\end{proposition}
+\begin{proof}
+Fix a proposed relation. It involves finitely many $S_i$, so the union of
+their coefficient labels is a set. Its finitely many coefficient series
+belong to $D((t^\Gamma))$ for a single set field $D$ finitely generated over
+$k$. Form the set field $F'$ generated by $D$, $k$, and all the
+coefficients in the finitely many chosen $S_i$. The subgroup $\Gamma'$
+generated by $g$ and all supports of the relation coefficients is a set.
+Restrict $\lambda$ to $\Gamma'$.
+
+Every expression in the relation lies in $F'((t^{\Gamma'}))$. The
+algebraically independent coefficient family used there is a set, so
+\cref{isc:cp:lem:partial} applies to $F'/k$ in ordinary set theory. All
+differentiations, finite convolution identities, and the contradiction now
+occur in this set-sized field. This proves the class statement one finite
+relation at a time.
+\end{proof}
+
+\begin{corollary}[Three distinct closure levels]\label[corollary]{isc:cp:cor:sandwich}
+Assume $\trdeg(F/k)$ is infinite and that $\Gamma$ admits $g>0$ and
+$\lambda$ with $\lambda(g)=1$. Then
+\begin{equation}\label{isc:cp:eq:sandwich}
+ F[L]\subsetneq M\subsetneq\Cfg(F/k;\Gamma)\subsetneq E.
+\end{equation}
+Moreover, the second strict inclusion has a differential-transcendental
+witness over $M$, and the third has one over $\Cfg(F/k;\Gamma)$.
+\end{corollary}
+\begin{proof}
+The first strictness is \cref{isc:cp:ex:geometric}, the second is
+\cref{isc:cp:cor:fginsufficient}, and the third follows from a single
+sequence of algebraically independent coefficients in
+\cref{isc:cp:thm:generic}.
+\end{proof}
+
+\section{Exact transcendence degrees for Laurent-series composita}
+\label{isc:cp:sec:cardinal}
+
+\begin{theorem}[Maximal Laurent transcendence]\label{isc:cp:thm:cardinal}
+Let $k\subseteq F$ be set fields of characteristic zero. Suppose
+\[
+ |k|\le\cc=2^{\aleph_0},\qquad \trdeg(F/k)>0.
+\]
+Inside $E=F((t))$, put $M=F k((t))$ and use $\partial=t\,d/dt$, acting
+trivially on $F$. Then
+\begin{equation}\label{isc:cp:eq:cardinalmain}
+ \boxed{\quad\dtrdeg(E/M)=\trdeg(E/M)=|F|^{\aleph_0}.\quad}
+\end{equation}
+No continuum hypothesis or other cardinal-arithmetic hypothesis is imposed.
+\end{theorem}
+\begin{proof}
+Write $\mu=|F|$, an infinite cardinal. The set of Laurent series has
+cardinality $\mu^{\aleph_0}$: a series is specified by an integer lower
+bound and a sequence of coefficients, and arbitrary coefficient sequences
+already occur in $F[[t]]$. Thus
+\[
+ \dtrdeg(E/M)\le\trdeg(E/M)\le\mu^{\aleph_0}.
+\]
+The first inequality also follows directly from the definition: the zeroth
+jets of a differentially independent family are algebraically independent.
+
+If $\mu\le\cc$, then
+\[
+ \cc\le\mu^{\aleph_0}\le\cc^{\aleph_0}=\cc,
+\]
+so $\mu^{\aleph_0}=\cc$. Choose a transcendental $x\in F$. The continuum
+family from \cref{isc:cp:cor:continuum} remains differentially independent
+over $M$ by \cref{isc:cp:cor:transfer}, with $\Gamma=\Z$ and $g=1$. This
+reaches the upper bound.
+
+If $\mu>\cc$, let $\mathcal T$ be a transcendence basis for $F/k$. A field
+algebraic over $k(\mathcal T)$ has cardinality
+\[
+ \max\{|k|,|\mathcal T|,\aleph_0\}.
+\]
+This follows by counting polynomials and their finitely many roots. Since
+$|k|\le\cc<\mu$, it follows that $|\mathcal T|=\mu$. The tree family from
+\cref{isc:cp:cor:tree}, with $\kappa=\mu$, has size $\mu^{\aleph_0}$ and is
+differentially independent even over $\Cfg(F/k;\Z)$, hence over $M$. Again
+it reaches the upper bound. The two cases prove both equalities.
+\end{proof}
+
+\begin{corollary}\label[corollary]{isc:cp:cor:classicalexamples}
+For $k=\Q,\R,$ or $\C$ and $x$ transcendental over $k$,
+\[
+ \dtrdeg\bigl(k(x)((t))/k((t))(x)\bigr)
+ =\trdeg\bigl(k(x)((t))/k((t))(x)\bigr)=\cc.
+\]
+More generally, \cref{isc:cp:thm:cardinal} applies to every
+positive-transcendence-degree extension of any of these three fields,
+irrespective of the cardinality of $F$.
+\end{corollary}
+
+\subsection{Boundary cases that must not be suppressed}\label{isc:cp:sub:boundary}
+
+If $F/k$ is finite, \cref{isc:cp:cor:finitecoeff} gives $E=M$, so both
+transcendence degrees are zero. An infinite algebraic coefficient extension
+is not covered by either the finite-extension conclusion or
+\cref{isc:cp:thm:cardinal}; the formula is not silently extended to that
+case.
+
+If $\Gamma=0$, there is no outer series variable and $E=M=F$. If $\Gamma$
+is nonzero but no specified map $\lambda:\Gamma\to k$ takes a chosen
+positive element to $1$, the particular differential statements here have
+not been formulated for it. The purely algebraic finite-rank test still
+applies. For divisible groups and characteristic-zero coefficient fields,
+suitable maps can often be chosen by linear algebra over $\Q$, but the
+theorems keep the needed map explicit.
+
+Characteristic zero is substantive. In characteristic $p>0$, the standard
+Euler derivation on $F((t))$ satisfies
+\[
+ \partial^p=\partial,
+\]
+because $n^p=n$ in the prime field. Every element then satisfies the
+differential polynomial $Y^{(p)}-Y^{(1)}=0$. The differential-independence
+conclusion is therefore impossible for that derivation in positive
+characteristic. This does not settle the corresponding ordinary
+algebraic-transcendence problem.
+
+The hypothesis $|k|\le\cc$ enters only in the cardinal upper-bound matching
+when the coefficient transcendence degree is small. Both independence
+constructions themselves work over every characteristic-zero base field.
+For larger $k$, they still give their explicit lower bounds, but it is not
+claimed that the bounds always equal $|F|^{\aleph_0}$.
+
+\section{Separated surreal copies and explicit omnific witnesses}
+\label{isc:cp:sec:surreal}
+
+The set-local results now apply to actual surreal normal forms. The
+source reproduces the explicit two-copy construction of
+\cref{isc:sec:explicit} to make its later proofs independent of any
+unreviewed general class-embedding theorem, in particular of
+\cref{isc:thm:group}. Only normal-form algebra and the elementary order
+comparison are needed.
+
+\subsection{The inner and outer levels, printed once}\label{isc:cp:sub:copies}
+
+\mtag{} The source's Subsections~8.1 and~8.2 re-derive, with the same
+proofs, material printed in \cref{isc:sec:explicit,isc:sec:join}; it is
+printed once, there, and the source is credited as an independent
+re-derivation. The correspondence is: the order isomorphism $\psi$ and its
+surjectivity proof are \cref{isc:lem:compression}; the intervals
+$I_j=(3j,3j+1)$, the inner maps $h_j$ of \eqref{isc:eq:inner}, their
+non-unitality \eqref{isc:eq:innerone} and the description of
+$G_j=h_j(\No)$ as all normal forms supported in $I_j$ are in
+\cref{isc:sec:explicit} (with $\alpha=j\in\{0,1\}$); the outer lifts
+$\Phi_j$ of \eqref{isc:eq:explicitouter} with images $K_j=\K{\R}{G_j}$ are
+\cref{isc:thm:lift,isc:thm:explicit}; the scale separation is
+\eqref{isc:eq:separated}; and the re-expansion is \cref{isc:lem:iterated},
+whose proof the source repeats. The source adds the following, each
+immediate from those statements.
+
+Conway's omnific integers are
+\begin{equation}\label{isc:cp:eq:oz}
+ \Oz=\Bigl\{\sum_{e>0}r_e\omega^e+n:
+           r_e\in\R,\ n\in\Z,\ \supp\text{ reverse well ordered}\Bigr\}.
+\end{equation}
+A \emph{purely infinite} omnific integer has constant term zero; the term
+does not require every coefficient to be positive. Since $h_j$ preserves
+the sign and zero of an exponent, $\Phi_j$ preserves and reflects the
+condition in \eqref{isc:cp:eq:oz} (\cref{isc:prop:arithmeticlift}), so
+\begin{equation}\label{isc:cp:eq:Ri}
+ R_j:=\Phi_j(\Oz)=K_j\cap\Oz,\qquad R_0\cap R_1=\Z,
+\end{equation}
+as in \cref{isc:thm:explicit}, and $\Phi_j$ preserves and reflects purely
+infinite elements. None of this says that $\Phi_j$ commutes with the unary
+omega-map: $\Phi_0(\omega)=\omega^{\omega^{1/2}}\ne\omega^{\Phi_0(1)}=\omega$
+(\cref{isc:warn:omega}). By \eqref{isc:eq:separated}, $G_0+G_1$ is a direct
+sum as a group, ordered lexicographically with $G_1$ dominant. With
+\[
+ E=\K{\R}{G_0+G_1},\qquad M=K_0K_1,
+\]
+as in \cref{isc:main:join}, regrouping by the $G_1$-coordinate
+(\cref{isc:lem:iterated}) and using $t^\gamma=\omega^{-\gamma}$ identifies
+\begin{equation}\label{isc:cp:eq:iterated}
+ E\simeq K_0((t^{G_1})),\qquad
+ K_1\simeq\R((t^{G_1})).
+\end{equation}
+Here the coefficient field $K_0$ is a class, but each individual outer
+series uses only a set of coefficients.
+
+\subsection{The exact test for the explicit copies}
+
+\begin{corollary}[The exact test for these copies]\label[corollary]{isc:cp:cor:surrealrank}
+Expand $z\in E$ as a Hahn series in $G_1$ with coefficients in $K_0$. Then
+$z\in M$ if and only if some nonzero $q\in E$ has both its coefficient space
+and the coefficient space of $qz$ finite-dimensional over $\R$.
+\end{corollary}
+\begin{proof}
+Apply the coefficientwise proof of \cref{isc:cp:thm:rank} in the coordinates
+\eqref{isc:cp:eq:iterated}. Every tensor, finite-dimensional span, and
+fraction used in that proof is set-sized even though the ambient fields are
+classes.
+\end{proof}
+
+\subsection{A concrete Euler derivation}\label{isc:cp:sub:euler}
+
+Define
+\begin{equation}\label{isc:cp:eq:hb}
+ g=\omega^{7/2}\in G_1,\qquad b=\omega^{15/4}\in G_1,
+ \qquad \tau=\omega^{-g}.
+\end{equation}
+Here $\tau$ is the single cyclic monomial indexed by $g$ in the full
+small-$t$ notation $t^\gamma=\omega^{-\gamma}$, which is retained only for
+the full iterated Hahn field. The element $g$ is $h_1(1)$, the same $g$ as
+in the proof of \cref{isc:main:join}.
+
+Let $\lambda:G_1\to\R$ extract the coefficient of the inner monomial
+$\omega^{7/2}$ from an element of $G_1$. Coefficient extraction is
+additive, with
+\[
+ \lambda(g)=1,\qquad\lambda(b)=0.
+\]
+The associated derivation $\Delta$ on $E$ kills $K_0$ and, in Conway
+notation, satisfies
+\begin{equation}\label{isc:cp:eq:Delta}
+ \Delta(\omega^{\gamma_0+\gamma_1})
+  =-\lambda(\gamma_1)\omega^{\gamma_0+\gamma_1}
+ \quad(\gamma_j\in G_j).
+\end{equation}
+In particular $\Delta\tau=\tau$ and $\Delta\omega^b=0$. It preserves both
+$K_1$ and $M$. By \cref{isc:cp:lem:derivation} it is a strong derivation
+for Hahn summation. It does not alter support exponents, and therefore maps
+$E\cap\Oz$ into its purely infinite ideal: any constant term is killed.
+
+This is an explicitly specified Euler derivation adapted to the separated
+coordinates. It is not asserted to be a Hardy-type derivation, the
+Berarducci--Mantova derivation, or compatible with surreal exponentiation
+\cite{KM,BM}.
+
+\subsection{The countably supported family}
+
+For every ordinal $\alpha$ and integer $n\ge1$, let
+\begin{equation}\label{isc:cp:eq:labels}
+ \beta_{\alpha,n}=\omega\cdot\alpha+n,
+ \qquad g_{\alpha,n}=\omega^{\psi(\beta_{\alpha,n})},
+ \qquad a_{\alpha,n}=\omega^{g_{\alpha,n}}.
+\end{equation}
+The product and sum in the label $\beta_{\alpha,n}$ are ordinary
+\emph{ordinal} operations. All arithmetic in $g_{\alpha,n}$, $a_{\alpha,n}$
+and subsequent exponent formulas is surreal-field arithmetic. Distinct pairs
+$(\alpha,n)$ give distinct ordinal labels: the finite tail after
+$\omega\cdot\alpha$ lies strictly before $\omega\cdot(\alpha+1)$.
+
+Each $g_{\alpha,n}$ lies in $G_0$. The family of all these $g_{\alpha,n}$ is
+linearly independent over $\Q$, because their inner normal forms are
+distinct monomials. Hence the family of all $a_{\alpha,n}$ is algebraically
+independent over $\R$: distinct monomials in any finite polynomial produce
+distinct sums of the $g_{\alpha,n}$ as outer exponents, and cannot cancel.
+\mtag{} For $\alpha=0$ these are the $g_n=g_{0,n}$ and $s_n=a_{0,n}$ of the
+proof of \cref{isc:main:join}, with the same independence argument.
+
+\begin{theorem}[Explicit omnific differential freedom]\label{isc:cp:thm:omnific}
+Define
+\begin{align}
+ Y_\alpha
+ &=\omega^b\sum_{n\ge1}a_{\alpha,n}\omega^{-ng}\label{isc:cp:eq:Yfactored}\\
+ &=\sum_{n\ge1}\omega^{b-ng+g_{\alpha,n}}.
+ \label{isc:cp:eq:Ynormal}
+\end{align}
+Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $Y_\alpha$ is a purely infinite omnific integer in $E$ whose support,
+read in decreasing order, has order type $\omega$.
+\item Its jets are
+\begin{equation}\label{isc:cp:eq:Yjets}
+ \Delta^jY_\alpha=\sum_{n\ge1}n^j\omega^{b-ng+g_{\alpha,n}}
+ \qquad(j\ge0).
+\end{equation}
+\item The family $(Y_\alpha)_{\alpha\in\On}$ is differentially algebraically
+independent over $\Cfg(K_0/\R;G_1)$, hence over $M$, in the finite-relation
+sense.
+\item For every set cardinal $\kappa$, the subfamily indexed by
+$\alpha<\kappa$ has cardinality $\kappa$ and has the same independence
+property.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The inner leading monomial of $b$ has exponent $15/4$, that of $g$ has
+exponent $7/2$, and all the $g_{\alpha,n}$ have inner leading exponent below
+$1$. Consequently
+\[
+ b-ng+g_{\alpha,n}>0
+\]
+for every finite $n$. Moreover
+\[
+ (b-ng+g_{\alpha,n})-(b-(n+1)g+g_{\alpha,n+1})
+   =g+g_{\alpha,n}-g_{\alpha,n+1}>0
+\]
+by \eqref{isc:eq:separated}. Thus \eqref{isc:cp:eq:Ynormal} is a
+reverse-well-ordered normal form with distinct positive exponents indexed in
+decreasing order by the positive integers. Its coefficients are all $1$,
+and it has no constant term. This proves~(i).
+
+Formula \eqref{isc:cp:eq:Delta} gives eigenvalue $n$ on the $n$th summand,
+since $\lambda(b)=0$, $\lambda(g)=1$, and $\Delta$ kills the $G_0$-part.
+Strongness gives \eqref{isc:cp:eq:Yjets}.
+
+The coefficient sequences $n\mapsto a_{\alpha,n}$ are disjoint blocks in an
+algebraically independent family. Apply
+\cref{isc:cp:thm:generic,isc:cp:prop:local} to the unscaled sums in
+\eqref{isc:cp:eq:Yfactored}, using $k=\R$, $F=K_0$, and $\Gamma=G_1$. The
+multiplier $\omega^b$ is a nonzero member of $M$ with $\Delta\omega^b=0$.
+Multiplying every jet by $\omega^b$ is an invertible substitution over the
+base, so the scaled family remains independent. This proves~(iii).
+Part~(iv) follows by restriction; independence in particular implies
+distinctness.
+\end{proof}
+
+\mtag{} Since $Y_0=\omega^bS$ with $S$ the witness \eqref{isc:eq:explicitS}
+and $\omega^{-b}\in K_1$ is a $\Delta$-constant, part~(iii) contains the
+statement that $S$ is differentially transcendental over
+$\Cfg(K_0/\R;G_1)$, a strengthening of \cref{isc:thm:joinobstruction} for this
+$S$ in the real case. \Cref{isc:thm:joinobstruction} itself needs neither
+characteristic-zero derivations nor the explicit coefficients: it holds for
+any algebraically independent $s_n$ and also over $\C$.
+
+\begin{corollary}[Countable support is the sharp cardinal threshold]\label[corollary]{isc:cp:cor:threshold}
+Every element of $E$ with finite Conway normal-form support belongs to $M$.
+Nevertheless, $E\cap\Oz$ contains countably supported purely infinite
+elements differentially transcendental over $M$. Thus $\aleph_0$ is the
+least possible support cardinality for this phenomenon in the explicit
+join.
+\end{corollary}
+\begin{proof}
+A finite-support element is a finite sum of terms
+\[
+ c\,\omega^{\gamma_0+\gamma_1}=(c\,\omega^{\gamma_0})\omega^{\gamma_1}\in K_0K_1
+ \qquad(\gamma_j\in G_j).
+\]
+Apply \cref{isc:cp:thm:omnific} for the countable examples. The threshold is
+about support cardinality, not birthday or cofinality in the value group.
+\end{proof}
+
+\begin{remark}[Algebraic enlargements of the base]\label[remark]{isc:cp:rem:algebraicbase}
+Every finite family of jets in \cref{isc:cp:thm:omnific} remains
+algebraically independent after any algebraic base extension within a
+common ambient extension field. Indeed, for a finite tuple $\mathbf y$, if
+$N/M$ is algebraic, then $N(\mathbf y)/M(\mathbf y)$ is algebraic;
+transcendence degree in the two towers gives
+$\trdeg(N(\mathbf y)/N)=\trdeg(M(\mathbf y)/M)$. Only finitely many
+algebraic coefficients are involved in a proposed relation. In particular,
+the witnesses remain differentially independent over the relative algebraic
+closure of $M$ in $E$, with the induced derivation: differentiating a
+minimal polynomial shows that this relative algebraic closure is stable
+under the derivation. This observation is not a computation of that
+closure.
+\end{remark}
+
+\section{A fixed tail survives every set of parameters}\label{isc:cp:sec:resilience}
+
+The class-sized strength of the preceding construction is not just that its
+indices run through the ordinals. Set-supported normal forms allow every
+set of parameters to be localized to a bounded collection of inner
+supports. All sufficiently late coefficient labels escape that collection.
+
+\begin{lemma}[Coefficient localization for a parameter set]\label[lemma]{isc:cp:lem:localizeP}
+For every set $P\subseteq E$, there is a set $\Theta\subseteq(0,1)$ such
+that, if $G_\Theta$ is the additive group of all inner surreal normal forms
+supported in $\Theta$ and
+\[
+ C_\Theta=\K{\R}{G_\Theta}\subseteq K_0,
+\]
+then $G_\Theta$ and $C_\Theta$ are sets and
+\begin{equation}\label{isc:cp:eq:paramcontain}
+ P\subseteq C_\Theta((t^{G_1})).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expand each element of $P$ in the iterated coordinates
+\eqref{isc:cp:eq:iterated}. Collect all its outer coefficients in $K_0$.
+This is a set, since $P$ and all its supports are sets. Expand each of these
+coefficients in its Conway normal form, whose exponents lie in $G_0$, and
+collect the resulting set of exponents. Expand each such exponent once more
+in its inner normal form. Its support is a subset of $(0,1)$. The union
+$\Theta$ of all these supports is again a set.
+
+Every collected exponent belongs to $G_\Theta$, so every original outer
+coefficient belongs to $C_\Theta$. This gives \eqref{isc:cp:eq:paramcontain}.
+The class of inner normal forms supported in a fixed set $\Theta$ injects
+into the set of functions $\Theta\to\R$, and is closed under addition and
+negatives; it is therefore a set-sized additive group. Likewise the full
+Hahn field on the set group $G_\Theta$ injects into the set of functions
+$G_\Theta\to\R$ and is a set. All these statements use ordinary replacement
+and union, not a class-sized support operation.
+\end{proof}
+
+\mtag{} This is the support-closure step of \cref{isc:cor:parameters},
+applied to the outer coefficients and then to their exponents: there the
+parameters are placed in $\K{\R}{H}$ with $H$ the rational span of their
+supports; here their outer coefficients are placed in $\K{\R}{G_\Theta}$.
+
+\begin{lemma}[A tail is independent over the localized coefficient field]\label[lemma]{isc:cp:lem:tailcoeff}
+For $\Theta$ and $C_\Theta$ as above, there is an ordinal $\alpha_0$ such
+that the family
+\[
+ \{a_{\alpha,n}:\alpha\ge\alpha_0,\ n\ge1\}
+\]
+is algebraically independent over $C_\Theta$.
+\end{lemma}
+\begin{proof}
+Because $\psi$ is injective, the ordinals $\beta$ satisfying
+$\psi(\beta)\in\Theta$ form a set: each member of $\Theta$ has at most one
+inverse image, and replacement collects the ordinal inverse images. Choose
+$\alpha_0$ greater than every such ordinal. If $\alpha\ge\alpha_0$, then
+$\beta_{\alpha,n}=\omega\cdot\alpha+n\ge\alpha$ and hence
+$\psi(\beta_{\alpha,n})\notin\Theta$.
+
+The corresponding $g_{\alpha,n}$ are distinct inner monomials supported
+outside $\Theta$. Every nonzero rational linear combination of finitely many
+of them still has a nonzero coefficient outside $\Theta$, and thus does not
+belong to $G_\Theta$. They are therefore linearly independent over $\Q$
+modulo $G_\Theta$.
+
+In a nonzero polynomial in finitely many $a_{\alpha,n}$ with coefficients in
+$C_\Theta$, the support of each coefficient is contained in $G_\Theta$.
+Multiplication by a monomial in the $a_{\alpha,n}$ translates that support
+by the corresponding integer linear combination of the $g_{\alpha,n}$.
+Distinct polynomial monomials produce distinct cosets modulo $G_\Theta$.
+Their supports are consequently disjoint, so their nonzero terms cannot
+cancel. This proves algebraic independence over $C_\Theta$.
+\end{proof}
+
+\begin{theorem}[Set-parameter tail resilience]\label{isc:cp:thm:resilience}
+For every set $P\subseteq E$, there is an ordinal $\alpha_0$ such that the
+predefined tail
+\[
+ (Y_\alpha)_{\alpha\ge\alpha_0}
+\]
+is differentially algebraically independent over $M\langle P\rangle$. In
+fact it is independent over the larger field
+\begin{equation}\label{isc:cp:eq:largebase}
+ \Cfg(K_0/C_\Theta;G_1)
+\end{equation}
+for a set coefficient field $C_\Theta$ supplied by
+\cref{isc:cp:lem:localizeP}.
+\end{theorem}
+\begin{proof}
+Choose $\Theta$, $C_\Theta$, and $\alpha_0$ from the preceding lemmas. Apply
+the private coefficient-block theorem with base field $C_\Theta$,
+coefficient field $K_0$, outer group $G_1$, and the tail coefficients
+$a_{\alpha,n}$. Its hypotheses hold by \cref{isc:cp:lem:tailcoeff}. The
+Euler weight map takes its values in $\R\subseteq C_\Theta$, so it is valid
+over this enlarged base. The set-local formulation \cref{isc:cp:prop:local}
+applies because $C_\Theta$ is a set. This gives differential independence of
+the unscaled tail over \eqref{isc:cp:eq:largebase}, and then of the
+$Y_\alpha$ after multiplication by $\omega^b$.
+
+It remains to verify inclusion of the desired parameter field. The envelope
+\eqref{isc:cp:eq:largebase} contains every element of $K_0$ as an outer
+constant, since an individual element generates a finitely generated
+extension of $C_\Theta$. It contains $K_1$ because its coefficients lie in
+$\R\subseteq C_\Theta$. It contains $P$ by \eqref{isc:cp:eq:paramcontain}.
+Finally it is stable under $\Delta$, by the proof of \cref{isc:cp:lem:cfg}.
+Therefore it contains $M\langle P\rangle$, and independence descends to that
+smaller base.
+\end{proof}
+
+\begin{corollary}[No set-sized algebraic or differential generation]\label[corollary]{isc:cp:cor:nosetgen}
+For no set $P\subseteq E$ is $E$ algebraic over $M(P)$. For no such $P$ is
+$E$ differential-algebraic over $M\langle P\rangle$. In particular, no set of
+ordinary or differential generators, even followed by the respective
+algebraic closure operation within $E$, generates $E$ over $M$.
+\end{corollary}
+\begin{proof}
+A member of the tail supplied by \cref{isc:cp:thm:resilience} is
+differentially transcendental over $M\langle P\rangle$ and therefore
+algebraically transcendental over its subfield $M(P)$. This contradicts
+either asserted algebraicity.
+\end{proof}
+
+\begin{remark}[Why the set qualification is sharp for the method]\label[remark]{isc:cp:rem:setsharp}
+A proper class of parameters could use every inner support label
+$\psi(\beta)$. The localization set $\Theta$ would then no longer be a set,
+and the ordinal bound in \cref{isc:cp:lem:tailcoeff} would not be available.
+The theorem is a genuine set-parameter result, not a statement about
+arbitrary proper-class parameter collections. It also does not assert
+independence over a differential-algebraic closure of $M\langle P\rangle$;
+that stronger base-change statement is unnecessary for
+\cref{isc:cp:cor:nosetgen}.
+\end{remark}
+
+\section{Arithmetic joins and the surcomplex extension}\label{isc:cp:sec:arithmetic}
+
+\subsection{Fraction fields of the three integer rings}
+
+Let $R_j=K_j\cap\Oz$ as in \eqref{isc:cp:eq:Ri}. Let
+\begin{equation}\label{isc:cp:eq:arithrings}
+ R_0[R_1]=\text{the subring generated by }R_0\cup R_1,
+ \qquad O=E\cap\Oz.
+\end{equation}
+Thus $R_0[R_1]$ is formed by finite ring operations, whereas $O$ permits
+every set-supported omnific normal form whose exponents lie in $G_0+G_1$.
+Both are class domains. Fractions and integrality are interpreted by their
+ordinary finite formulas, as in \cref{isc:sec:fractions}.
+
+\begin{lemma}[Monomial denominator clearing]\label[lemma]{isc:cp:lem:clearing}
+One has
+\begin{equation}\label{isc:cp:eq:fractions}
+ \Frac(R_j)=K_j,\qquad \Frac(R_0[R_1])=M,\qquad \Frac(O)=E.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $x\in K_j$, its support is a set in $G_j$. Pull it back through the
+ordered-group isomorphism $h_j:\No\to G_j$. Every set of surreal numbers has
+an upper bound, so choose $d\in G_j$, $d>0$, with $d+e>0$ for every $e$ in
+the support of $x$. Both $\omega^d$ and $\omega^d x$ have only positive
+exponents, and hence belong to $R_j$. Thus $x=(\omega^d x)/\omega^d$ is a
+fraction of elements of $R_j$. The reverse inclusion is immediate.
+
+The fraction field of $R_0[R_1]$ contains both $K_j$ and is contained in
+their compositum, giving $\Frac(R_0[R_1])=M$.
+
+Finally take $x\in E$. Project its set of support exponents to a set in
+$G_1$. Choose $d\in G_1$, $d>0$, strictly greater than the negatives of all
+these projections. If $\gamma_0+\gamma_1$ occurs in $x$, then $d+\gamma_1$
+is positive in $G_1$ and dominates $\gamma_0$ by \eqref{isc:eq:separated}.
+Hence $d+\gamma_0+\gamma_1>0$. The same denominator $\omega^d$ clears $x$
+into $O$, proving $\Frac(O)=E$.
+\end{proof}
+
+The first clearing mechanism is already part of this report's omnific
+fraction theory (\cref{isc:lem:denominator}, and $\Frac(R_\alpha)=K_\alpha$
+in \cref{isc:prop:uniform}). It is included here because the exact fraction
+field of the \emph{two-copy generated ring} is needed in the next result.
+
+\begin{theorem}[Arithmetic failure cannot be repaired by a set]\label{isc:cp:thm:arithmetic}
+With $R_0[R_1]\subseteq O$ as in \eqref{isc:cp:eq:arithrings}:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every set $J\subseteq\On$, substitution $X_\alpha\mapsto Y_\alpha$
+embeds the polynomial $R_0[R_1]$-algebra in the variables
+$(X_\alpha)_{\alpha\in J}$ into $O$.
+\item For every set $S\subseteq O$, the extension $O/R_0[R_1][S]$ is not
+integral. In fact $E$ is not algebraic over $\Frac(R_0[R_1][S])=M(S)$.
+\item The obstructing element in~(ii) can be chosen from a tail of the same
+family \eqref{isc:cp:eq:Ynormal}; it has purely positive, countable Conway
+support.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Since $R_0[R_1]\subseteq M$, algebraic independence over $M$ implies the
+injectivity in~(i); the image lies in $O$ by \cref{isc:cp:thm:omnific}. For
+(ii), apply \cref{isc:cp:thm:resilience} with $P=S$. Any tail member is
+transcendental over $M(S)$, while \cref{isc:cp:lem:clearing} gives
+$\Frac(R_0[R_1][S])=M(S)$. If it were integral over $R_0[R_1][S]$, a monic
+polynomial over that ring would make it algebraic over $M(S)$, a
+contradiction. The same element proves~(iii).
+\end{proof}
+
+\begin{remark}[Not a normalization calculation]\label[remark]{isc:cp:rem:normalization}
+Nonintegrality of $O/R_0[R_1][S]$ does not compute the integral closure of
+$R_0[R_1]$ in $M$ or in $E$. Nor does it compute a Picard group, a class
+group, or a projective module. The theorem isolates a much larger
+transcendental obstruction that no set of arithmetic parameters removes.
+Questions about normalization inside the fixed fraction field remain
+distinct.
+\end{remark}
+
+\subsection{Surcomplex and Gaussian omnific versions}
+
+Put
+\[
+ E_{\C}=E[i],\qquad K_{j,\C}=K_j[i],\qquad M_{\C}=M[i].
+\]
+Because $E$ is ordered, adjoining $i$ gives a genuine quadratic field
+extension. Separating real and imaginary coefficients identifies these
+fields with the corresponding full complex-coefficient Hahn fields on the
+same groups. The union of two set supports is still a set, so this
+identification preserves the Hahn conventions.
+
+Extend $\Delta$ by $\Delta i=0$. Define
+\[
+ O_{\C}=E_{\C}\cap\Oz[i]=O[i].
+\]
+The Gaussian integer images are $R_j[i]$, and the ring they generate is
+$R_0[R_1][i]$.
+
+\begin{theorem}[Surcomplex independence and Gaussian witnesses]\label{isc:cp:thm:complex}
+The following statements hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The real family $(Y_\alpha)$ remains differentially algebraically
+independent over $M_{\C}$ in $E_{\C}$.
+\item The genuinely nonreal elements
+\begin{equation}\label{isc:cp:eq:Zfamily}
+ Z_\alpha=(1+i)Y_\alpha
+\end{equation}
+belong to $\Oz[i]$, have countable support, and are differentially
+algebraically independent over $M_{\C}$.
+\item For every set $P\subseteq E_{\C}$, a tail of each of these families is
+differentially algebraically independent over $M_{\C}\langle P\rangle$.
+\item $\Frac(R_0[R_1][i])=M_{\C}$ and $\Frac(O_{\C})=E_{\C}$. For every set
+$S\subseteq O_{\C}$, the ring $O_{\C}$ is not integral over
+$R_0[R_1][i][S]$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For a polynomial relation over $M[i]$ among real jets, write each
+coefficient uniquely as $a+ib$, $a,b\in M$. Its real and imaginary parts
+give polynomial relations over $M$. At least one is a nonzero polynomial if
+the original was nonzero. This contradicts \cref{isc:cp:thm:omnific},
+proving~(i). Multiplication by the nonzero constant $1+i$ is an invertible
+substitution on all jets, proving~(ii).
+
+For~(iii), take the set $P_{\R}\subseteq E$ consisting of the real and
+imaginary parts of all members of $P$. Apply \cref{isc:cp:thm:resilience} to
+$P_{\R}$. Splitting coefficients as above gives independence over
+$M\langle P_{\R}\rangle[i]$, which contains $M_{\C}\langle P\rangle$. Again
+rescale to obtain the $Z_\alpha$ version.
+
+For~(iv), the displayed fraction fields follow from
+\cref{isc:cp:lem:clearing} after adjoining $i$, or by clearing real and
+imaginary parts with a common monomial. A tail element supplied by~(iii) is
+transcendental over $\Frac(R_0[R_1][i][S])=M_{\C}(S)$, so cannot be integral
+over $R_0[R_1][i][S]$.
+\end{proof}
+
+No statement here depends on extending analytic functions to all
+surcomplex arguments, choosing a complex logarithm, or assuming an
+exponential-compatible derivation. The passage from real to complex is
+finite algebraic extension and coefficient separation.
+
+\section{What the addition resolves, and what it does not}\label{isc:cp:sec:audit}
+
+\subsection{Relation to Research question 3}
+
+Research question~3 has two parts: an exact description of the ordinary
+compositum and a dimension calculation for the Hahn join over it. The
+results of the addition give the following answers in specified domains.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.29\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Problem component & Conclusion proved by source~02 \\
+\midrule
+Membership in separated coordinates & The finite coefficient-rank
+denominator criterion, \cref{isc:cp:thm:rank,isc:cp:cor:surrealrank}. \\
+Finite coefficient-field condition & Not sufficient even for algebraicity;
+a witness uses only $k(x)$, \cref{isc:cp:cor:fginsufficient}. \\
+Natural set-sized dimensions & Exact algebraic and differential dimensions
+for $F((t))/F k((t))$ under the hypotheses of \cref{isc:cp:thm:cardinal}. \\
+Explicit class-sized join & Independent families of every set cardinal,
+with countable purely infinite supports, \cref{isc:cp:thm:omnific}. \\
+Dependence on set parameters & A fixed tail remains independent after any
+set adjunction, \cref{isc:cp:thm:resilience}. \\
+Arithmetic and complex forms & Nonintegrality persists after set
+adjunction; the same phenomena occur in $\Oz[i]$,
+\cref{isc:cp:thm:arithmetic,isc:cp:thm:complex}. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These answers do not solve the complete problem for arbitrary non-separated
+ordered amalgams of exponent groups, arbitrary coefficient-field
+cardinalities, and arbitrary prescribed common Hahn cores. The rank
+criterion applies whenever an iterated coefficient interpretation has been
+established. The cardinal theorem does not assign a set cardinal to the
+class extension. The question addressed is a question posed in this report,
+not a claimed resolution of a separately established, long-standing
+published conjecture.
+
+\subsection{Provenance and proof dependencies}
+
+The source compared itself with this report at commit
+\nolinkurl{7b256e0792df7718995b816ad12a77bf56731f8f}, where the report's
+source had blob identifier
+\nolinkurl{7d5cfe644e7c902f2b594179c337a6c633350fc3}. The key portions
+consulted were the explicit-copy and re-expansion material of
+\cref{isc:sec:explicit,isc:sec:join} and the question list of
+\cref{isc:sec:questions}. The report's README and the collection's main
+catalogue were also consulted. The source's audit (shipped as
+\rpath{02-composita-SOURCE\_AUDIT.md}) records the paths and distinguishes
+sources read for substance from sources consulted only for orientation.
+
+The explicit maps \eqref{isc:eq:inner} and \eqref{isc:eq:explicitouter}, the
+scale separation, and the finite coefficient-field observation are credited
+to this report. The coset-slice argument belongs to the same elementary Hahn
+toolkit and is not presented as a priority claim. The proofs of the new
+class conclusions do not import this report's general transfinite
+independent-copy recursion (\cref{isc:thm:group}), nor, in the source's
+words, the repository's proposed automatic-strongness results,
+curve-rigidity results, or unreviewed quotient theorems.
+
+The main dependency chains are
+\begin{align*}
+ \text{rapid degrees}
+ &\Longrightarrow \text{continuum family}
+ \Longrightarrow \text{small-cardinality case},\\
+ \text{coefficient derivations}
+ &\Longrightarrow \text{private blocks}
+ \Longrightarrow \text{tree amplification},\\
+ \text{tree amplification}
+ &\Longrightarrow \text{large-cardinality case},\\
+ \text{separated copies and private blocks}
+ &\Longrightarrow \text{omnific witnesses},\\
+ \text{inner-support localization}
+ &\Longrightarrow \text{tail resilience},\\
+ \text{tail resilience}
+ &\Longrightarrow \text{arithmetic and complex consequences}.
+\end{align*}
+No numerical experiment replaces any arrow in these chains.
+
+\subsection{Critical proof checks}
+
+The rapid-degree argument depends on more than comparing leading terms
+informally. The polynomial relation is made integral in the outer variable
+before valuations are compared. Minimal total jet degree guarantees a
+nonzero evaluated partial derivative. The selected coefficient lies at
+$n+\ell<2n$, so all quadratic tail terms vanish there. Partial coefficients
+below $\ell$ vanish, so later tail coefficients cannot interfere. Finally the
+coefficient degree $\nu$ is fixed even though the outer coefficient series
+are arbitrary Laurent series.
+
+The private-block argument depends on a different finiteness principle. A
+finitely generated field $D$ is algebraic over a field generated by finitely
+many elements of a transcendence basis. Coordinate derivations outside that
+finite set kill $D$ after separable extension. This is why the argument
+controls whole coefficient series in $D((t^\Gamma))$, not merely their
+leading coefficients. Characteristic zero is used both for separability and
+for distinct integer eigenvalues.
+
+The class argument uses two levels of support localization. An outer
+coefficient is a surreal series in exponents from $G_0$; those exponents
+themselves have inner supports in $(0,1)$. Taking the union of the inner
+supports for a \emph{set} of parameters produces a set $\Theta$. The
+predefined ordinal coefficient labels outside $\Theta$ remain independent
+modulo $G_\Theta$. Replacing this argument with an unproved claim that ``a
+class is larger than a set'' would not establish the required independence
+over the parameter field.
+
+The source's proof audit (shipped as \rpath{02-composita-PROOF\_AUDIT.md})
+adds three points. The auxiliary coordinate derivations of
+\cref{isc:cp:thm:generic} need not preserve any \emph{inner} surreal
+summation; they are extended coefficientwise only in the explicitly used
+\emph{outer} Hahn representation. The rapid-degree argument does not require
+sparse outer support, but it does require a uniform finite degree in $x$
+after denominators are cleared. In \cref{isc:cp:thm:omnific} the
+$g_{\alpha,n}$ are inner monomials in $(0,1)$ and the $a_{\alpha,n}$ are
+independent outer coefficient monomials; the Euler derivation has weight
+$-\lambda(\gamma_1)$ in Conway notation, so the $n$th witness term has
+eigenvalue $n$, and the shift multiplier has derivative zero.
+
+\subsection{Limitations and nonclaims, as stated by the source}
+
+The proofs are mathematical arguments, not Lean-checked results. The finite
+program supplied with the source tests identities and finite models only.
+Independent review should prioritize
+\cref{isc:cp:thm:lacunary,isc:cp:thm:generic,isc:cp:thm:resilience}. The
+source search did not certify novelty or exhaustive priority. The adjective
+``strong'' refers to Hahn summability, not convergence in an order topology.
+
+No claim is made about Gonshor-exponential compatibility, preservation of
+simplicity, initiality of the two images, birthday optimality, or the
+Berarducci--Mantova derivation. The full algebraic closure of the
+compositum, its normalization, and its projective modules are not
+calculated. No general algorithm deciding compositum membership is proved.
+These distinctions are mathematically relevant, not merely editorial
+qualifications.
+
+\subsection{What the addition does not claim}\label{isc:cp:sub:nonclaims}
+
+\mtag{} This list collects every limitation stated by source~02, in its
+article, delivered README, source and proof audits, recorded run and build
+audit, with its location here, followed by those added in the merge.
+\begin{enumerate}[label=C\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item The rank test is not a decision procedure: the existential search
+over $q$ is an infinite-input problem, and no algorithm deciding arbitrary
+Hahn-series membership follows (\cref{isc:cp:rem:ranktest};
+Research question~\ref{isc:cp:q:effective}).
+\item The tensor fact is not new: it is a standard linear-disjointness
+mechanism. No new tensor-product theorem and no general theory of rational
+series is claimed (\cref{isc:cp:rem:ranktest}; source audit).
+\item The comparison with Krapp--Kuhlmann--Serra \cite{KKS} is conceptual,
+not a claim that the formulations have identical inputs; that paper was
+used for the literature comparison, not as a proof of the compositum
+theorems (\cref{isc:cp:rem:ranktest}; bibliography).
+\item Infinite coefficient rank obstructs membership in $F[L]$, not in $M$;
+a geometric series of infinite rank lies in $M$
+(\cref{isc:cp:ex:geometric,isc:cp:cor:finitecoeff}).
+\item Base extension is not treated as harmless; coefficient extension uses
+coefficientwise independence of constants, intermediate base change clears
+denominators, and exponent-group extension uses coset slices, not an
+unjustified claim that arbitrary base extension preserves algebraic
+independence. No convexity is required for the coset slice, but the
+surreal iterated presentation requires the explicit scale separation
+(\cref{isc:cp:sec:disjoint}; proof audit).
+\item The rapid-degree theorem does not rest on gaps in the outer support;
+merely pointing to such gaps would not prove \cref{isc:cp:ex:mechanism}. It
+requires characteristic zero, a transcendental coefficient variable,
+unbounded ratios $d_n/d_{n-1}$, infinitely many private indices relative to
+each finite subfamily, and a uniform finite $x$-degree after clearing
+denominators (\cref{isc:cp:thm:lacunary,isc:cp:rem:laurentcoeff}; proof
+audit).
+\item The formula $|F|^{\aleph_0}$ is not extended to infinite algebraic
+coefficient extensions, to $\Gamma=0$, to groups without a specified
+$\lambda$ with $\lambda(g)=1$ (only the algebraic rank test applies there),
+or to $|k|>\cc$ with small positive transcendence degree, where only the
+explicit lower bounds are claimed; the rapid-degree family need not reach
+the cardinality of the Laurent field for large $k$
+(\cref{isc:cp:sub:boundary}; Research questions~\ref{isc:cp:q:large}
+and~\ref{isc:cp:q:algebraic}).
+\item Characteristic zero is essential for the differential statements: in
+characteristic $p$ the Euler derivation satisfies $\partial^p=\partial$. This
+does not settle the ordinary algebraic-transcendence problem in
+characteristic $p$ (\cref{isc:cp:sub:boundary}).
+\item The derivation $\Delta$ is an explicitly specified diagonal Euler
+derivation. It is not asserted to be Hardy type, the Berarducci--Mantova
+derivation, or compatible with exponentiation. It is proved to be a
+derivation directly and is not identified with a Hardy-type derivation of
+Kuhlmann--Matusinski \cite{KM}, whose Hardy-type theory the source did not
+review in full (\cref{isc:cp:sub:euler,isc:cp:sub:scope}; source audit;
+Research question~\ref{isc:cp:q:bm}).
+\item The explicit copies do not commute with the omega-map, and strong
+Hahn summability alone does not provide compatibility with it or with the
+exponential (\cref{isc:cp:sub:copies}; Research question~\ref{isc:cp:q:exp}).
+\item \Cref{isc:cp:rem:algebraicbase} is not a computation of the relative
+algebraic closure of $M$ in $E$.
+\item The class results use only finite relations, set-indexed families and
+set-parameter resilience. No class transcendence basis is chosen, no set
+cardinal is assigned to the proper-class transcendence degree, and no
+cardinal equal to the size of $\No$ is postulated. No class-state recursion
+or class satisfaction predicate is used (\cref{isc:cp:sec:foundations};
+\cref{isc:cp:prop:local}; delivered README; proof audit).
+\item Tail resilience is for \emph{set} parameters only; proper-class
+parameter collections are not covered. Independence is not asserted over
+the differential-algebraic closure of $M\langle P\rangle$
+(\cref{isc:cp:rem:setsharp}).
+\item Nonintegrality of $O/R_0[R_1][S]$ does not compute the integral
+closure of $R_0[R_1]$ in $M$ or $E$, a normalization, a Picard group, a
+class group or a projective module (\cref{isc:cp:rem:normalization};
+Research question~\ref{isc:cp:q:normalization}).
+\item The complex versions use only finite algebraic extension and
+coefficient separation: no analytic continuation to surcomplex arguments,
+no complex logarithm, no exponential-compatible derivation
+(\cref{isc:cp:sec:arithmetic}).
+\item Research question~3 is not solved for non-separated ordered amalgams,
+arbitrary coefficient-field cardinalities, or arbitrary prescribed common
+Hahn cores; the cardinal theorem assigns no set cardinal to the class
+extension; the question is this report's own, not a long-standing
+published conjecture (\cref{isc:cp:sec:audit}).
+\item The explicit maps, scale separation and finite coefficient-field
+observation are this report's; the coset slice is elementary. The proofs do
+not import this report's transfinite recursion, nor automatic-strongness,
+curve-rigidity or quotient theorems of the repository. No numerical
+experiment replaces a proof step (\cref{isc:cp:sec:audit}).
+\item Nothing is claimed on Gonshor-exponential compatibility, simplicity,
+initiality, birthday optimality, the full algebraic closure of the
+compositum, normalization or projective modules; no general membership
+algorithm is claimed (\cref{isc:cp:sec:audit}; Research
+question~\ref{isc:cp:q:birthday}).
+\item Status: the proofs are not Lean-checked, not refereed and not
+independently reviewed; the source's proof audit is author-side, not a
+referee report; review should prioritize
+\cref{isc:cp:thm:lacunary,isc:cp:thm:generic,isc:cp:thm:resilience}.
+Priority is not certified: the literature comparison was targeted, a
+search that finds nothing does not establish novelty, and not all related
+literature was read (\cref{isc:cp:sub:scope,isc:cp:sec:audit}; title page of
+the source; source and proof audits; build audit).
+\item The source's comparison with this report was targeted: it read two
+line ranges of the pinned source for substance, not every proof of the
+report. The Stacks Project was used for terminology; the encyclopedia page
+on surreal numbers for orientation only; L'Innocente--Mantova for context,
+with no factorization result claimed (source audit; bibliography).
+\item The research questions are proposed by the proved statements. Except
+for Research question~3 of this report, they are not represented as
+previously published open problems (\cref{isc:cp:sec:questions}).
+\item The finite checks are narrower than the theorems. They test
+polynomial identities, finite coefficient ranks, finite combinatorial
+examples and finite ordered-group models; they do not implement $\No$ or
+infinite Hahn summation, do not represent countably supported surreals, and
+prove no independence, cardinal or proper-class assertion. The
+lexicographic model is a model of the comparisons, not an approximation to
+a surreal number. Neither typesetting nor finite computation is proof
+verification (\cref{isc:cp:sec:verify}; recorded run).
+\item The formalization decomposition names implementation targets, not
+declarations that exist (\cref{isc:cp:sub:formal}).
+\end{enumerate}
+\begin{enumerate}[label=M\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item Parts~(i)--(ii) of \cref{isc:cp:thm:rank} are
+\lbl{duals:prop:algebraic} of the three-duals report and its preceding
+injectivity paragraph; part~(iii) is new but immediate. The source does not
+cite that report. \Cref{isc:cp:lem:coset} is a variant of
+\cref{isc:thm:sliceddisjoint} (\cref{isc:cp:sec:collection}).
+\item The private-index and tree mechanisms are related to
+\lbl{tail:thm:surreal} and \lbl{bst:thm:independent}, which use different
+bases, derivations and tools, and the tail resilience to
+\lbl{adr:sr:thm:tail}; the source cites none of them
+(\cref{isc:cp:sec:collection}).
+\item Research question~3 is answered only in the separated case with
+trivial core and in the cardinal cases of \cref{isc:cp:thm:cardinal}; its
+remaining part is Research questions~\ref{isc:cp:q:amalgams}
+and~\ref{isc:cp:q:cores}. No other question of this report is answered, and
+no question of another report (\cref{isc:cp:sec:answers}).
+\item No \texttt{isc:cp:} label has a Lean mapping in
+\rpath{FORMALIZATION.md}. The proofs were read when the addition was
+merged (Appendix~\ref{isc:cp:app:source}); that reading is not an
+independent review.
+\item The recorded run was repeated in the merge on a copy, with identical
+counts; the shipped \rpath{code/02-composita-build.sh} does not run
+unchanged under the shipped file names (Appendix~\ref{isc:cp:app:files}).
+\end{enumerate}
+
+\section{Research questions of the addition}\label{isc:cp:sec:questions}
+
+The following questions are proposed by the proved statements of
+source~02. Except for Research question~3, which the source takes from this
+report, they are not represented as previously published open problems.
+Each asks for a specific extension, obstruction, or effective refinement.
+\mtag{} The source's Question~$n$ is Research question~$10+n$ here.
+
+\begin{question}[Non-separated ordered amalgams]\label{isc:cp:q:amalgams}
+Let $G_0,G_1$ be independent ordered subgroups but assume neither is
+infinitesimal relative to the other. Determine the image of
+$\K{k}{G_0}\K{k}{G_1}$ inside $\K{k}{G_0+G_1}$ and its transcendence defect.
+Can a finite-rank denominator criterion be formulated without an iterated
+Hahn coefficient field?
+\end{question}
+The obstacle is not the finite tensor argument itself, but choosing slices
+with support properties strong enough to characterize the entire join. This
+is the main part of Research question~3 left untreated.
+
+\begin{question}[Very large base fields]\label{isc:cp:q:large}
+For $|k|>\cc$ and $0<\trdeg(F/k)<|k|$, must
+\[
+ \trdeg\bigl(F((t))/F k((t))\bigr)=|F|^{\aleph_0}
+\]
+still hold? Does the same equality hold for differential transcendence
+degree under the outer Euler derivation?
+\end{question}
+The rapid-degree theorem gives a continuum family over any $k$, but that
+family need not reach the cardinality of the entire Laurent field. A
+stronger combinatorial coefficient construction or a counterexample would
+settle the gap in the cardinal argument.
+
+\begin{question}[Infinite algebraic coefficient extensions]\label{isc:cp:q:algebraic}
+For an infinite algebraic extension $F/k$ of characteristic zero,
+characterize $F k((t))$ inside $F((t))$ and determine the algebraic and
+differential transcendence degrees of the latter over the former.
+\end{question}
+Finite extensions give equality of fields, while the
+transcendental-coordinate derivations no longer apply. Growth in the
+algebraic degrees needed to contain successive coefficients is a natural
+replacement invariant, but no theorem about it is claimed.
+
+\begin{question}[Prescribed nonzero common Hahn cores]\label{isc:cp:q:cores}
+Can the explicit omnific tail-resilience theorem be extended to independent
+surreal copies with a prescribed set-sized common field $\K{\R}{H}$? Which
+separation conditions on the ordered amalgam over $H$ suffice?
+\end{question}
+This report already constructs copies with prescribed cores
+(\cref{isc:main:copies}). What is needed is a compatible local coefficient
+decomposition and an independent-label family modulo the shared support
+group, not just an abstract pair of embeddings. \mtag{} Here $H$ is the
+common core of \cref{isc:main:copies}, as in the source's question.
+
+\begin{question}[Presentation-independent coefficient rank]\label{isc:cp:q:presentation}
+Which part of the finite-rank denominator criterion can be recovered from
+the pair of embedded fields alone, without naming a monomial cross-section
+or a chosen iterated Hahn presentation?
+\end{question}
+The compositum is intrinsic, but coefficient rank is a
+presentation-dependent certificate. An invariant description of the
+smallest possible certificate spaces could distinguish coordinate artifacts
+from structure of the pair.
+
+\begin{question}[Effective membership on controlled inputs]\label{isc:cp:q:effective}
+For rational, recurrence-defined, automatic, or otherwise effectively
+presented supports and coefficients, when is the finite-rank denominator
+test decidable? Can one bound the denominator rank in a useful subclass?
+\end{question}
+The generalized recurrence framework of \cite{KKS} is a relevant starting
+point. A useful algorithm must specify its representation of infinite
+series and should not treat a formal coefficient oracle as an effective
+finite input.
+
+\begin{question}[Natural surreal derivations]\label{isc:cp:q:bm}
+Do comparable compositum-independence and set-parameter resilience
+statements hold for a Hardy-type surreal derivation, particularly the
+Berarducci--Mantova derivation, on subfields stable under it?
+\end{question}
+The proofs exploit a diagonal derivation that kills the entire lower-scale
+coefficient field. A natural surreal derivation generally differentiates
+those coefficients and may not preserve the explicit copy images.
+Establishing an appropriate stable pair is part of the problem, not an
+automatic corollary of \cref{isc:cp:thm:omnific}. \mtag{} Research
+question~6 asks the analogous question for the prescribed-intersection
+theorem.
+
+\begin{question}[Exponential-compatible copies]\label{isc:cp:q:exp}
+Can one obtain a similarly large gap for a pair of proper surreal
+self-embeddings commuting with the Gonshor exponential, or with the
+omega-map? Which common cores must then be closed under the additional
+operation?
+\end{question}
+The displayed copies fail to commute with the omega-map. Strong Hahn
+summability alone does not provide the desired compatibility. This question
+connects the compositum programme to the richer embedding questions already
+distinguished in this report (Research question~6).
+
+\begin{question}[Normalization within the fraction field]\label{isc:cp:q:normalization}
+For $R_0[R_1]$ from \eqref{isc:cp:eq:arithrings}, compute or constrain its
+integral closure inside $M$. How does that ring compare with $M\cap\Oz$, and
+what can be said about finitely generated projective modules over it?
+\end{question}
+The nonintegrality of $O/R_0[R_1][S]$ comes from transcendence outside $M$
+and therefore does not answer this within-fraction-field problem. A
+normalization result would complement rather than restate
+\cref{isc:cp:thm:arithmetic}. \mtag{} Research question~4 asks the
+corresponding questions for the intersection ring $\A{k}{H}$.
+
+\begin{question}[Birthday complexity of minimal-support witnesses]\label{isc:cp:q:birthday}
+Among countably supported omnific elements transcendental over the explicit
+compositum, what birthday bounds are possible? Can one lower the nested
+normal-form complexity while retaining set-parameter tail resilience?
+\end{question}
+The support cardinality $\aleph_0$ is already sharp by
+\cref{isc:cp:cor:threshold}. Birthday optimality is a different invariant
+and requires genuine estimates on surreal construction lengths.
+
+\begin{question}[Several scales and commuting derivations]\label{isc:cp:q:scales}
+For three or more separated copies, construct several commuting Euler
+derivations and determine algebraic independence of mixed jets over the
+corresponding ordinary compositum. What is the correct tree-label condition
+for joint differential independence?
+\end{question}
+Coefficient derivations still offer finite avoidance, but one must separate
+multivariable eigenvalue interpolation from the ordered-group support
+problem. A multidimensional Vandermonde argument alone does not settle the
+Hahn support conditions.
+
+\begin{question}[Formalization of the core mechanisms]\label{isc:cp:q:formal}
+Can the coefficient-rank theorem, the coefficient-extension and coset-slice
+lemmas, the rapid-degree Taylor argument, and the private-block theorem be
+formalized as reusable Hahn-field results before specializing to surreal
+numbers?
+\end{question}
+A promising order is to formalize the finite polynomial and
+coefficient-space identities first, then the set-sized Hahn statements, and
+only afterwards the class-local interface. This would test the most
+important new proofs without requiring a monolithic formalization of the
+entire report. \mtag{} It overlaps Research question~10 in the coset-slice
+kernel.
+
+\section{Finite verification and a formalization decomposition of the addition}
+\label{isc:cp:sec:verify}
+
+\subsection{Finite verification and reproducibility}
+
+The source's program, shipped as \rpath{code/02-composita-verify.py},
+performs exact finite checks. Its recorded output, shipped as
+\rpath{data/02-composita-verification.json}, records the actual checks and
+their counts: 2,530 checks in 21 categories. These checks are deliberately
+narrower than the theorems. They do not represent countably supported
+surreal numbers and do not prove an independence or cardinality statement.
+
+The checked mechanisms include finite geometric-series convolution and
+coefficient ranks, Euler and coefficient-derivation identities on
+polynomial examples, Vandermonde determinants at distinct integer
+eigenvalues, finite prefix-tree private-label behaviour, factorial growth
+inequalities used in \eqref{isc:cp:eq:nchoices}, and a multivariable Taylor
+coefficient calculation with quadratic tails excluded at the relevant
+order. A finite lexicographic exponent model tests the sign and strict
+descent used in \eqref{isc:cp:eq:Ynormal}. It is a model of the comparisons,
+not a numerical approximation to an actual surreal number.
+
+A characteristic-$p$ check illustrates the explicit boundary
+$\partial^p=\partial$ on monomials. Finite complex substitution checks
+confirm that multiplying variables by $1+i$ is invertible; the proof for
+arbitrary polynomials remains the elementary field argument above.
+
+The program uses the standard library and SymPy. It writes a file only when
+given \texttt{--output}. The source's build script also supports repeated
+\texttt{pdflatex} passes when \texttt{latexmk} is unavailable, and its build
+audit records the compiler result, page count, reference checks, and layout
+checks for the delivered PDF. Neither successful typesetting nor finite
+computation constitutes proof verification. \mtag{} The shipped file names,
+the rerun and its comparison with the recorded output are in
+Appendix~\ref{isc:cp:app:files}.
+
+\subsection{A proposed formalization decomposition}\label{isc:cp:sub:formal}
+
+The following are implementation targets, not declarations claimed to exist
+in the collection.
+
+\paragraph{Coefficient-space layer.}
+Represent a finite-dimensional coefficient span and prove that its
+coordinate functions define Hahn series with supports contained in the
+original support. Prove tensor injectivity by coefficient comparison.
+Derive the rank-denominator criterion using the ordinary fraction field
+universal property.
+
+\paragraph{Support and base-change layer.}
+Define restriction to an exponent coset, prove its compatibility with
+multiplication by series on the subgroup, and establish the two
+linear-disjointness transfer lemmas. Make the chosen ambient field explicit
+to avoid conflating abstract tensor products with a specified compositum.
+
+\paragraph{Polynomial perturbation layer.}
+For a polynomial in finitely many jet variables over $k[[t]][x]$, prove a
+first-order Taylor congruence modulo $t^{2n}$ after a perturbation divisible
+by $t^n$. Prove the coefficient-degree bound $\nu+d\,d_{n-1}$. These finite
+statements are the delicate reusable kernel of \cref{isc:cp:thm:lacunary}.
+
+\paragraph{Derivation and interpolation layer.}
+Formalize coefficientwise Hahn derivations, their commutation with Euler
+derivations, extension of a derivation over separable algebraic fields,
+and the finite Vandermonde elimination of evaluated partials. This yields
+the set-sized private-block theorem.
+
+\paragraph{Cardinal and surreal layer.}
+Add the prefix-tree construction and cardinal counting. For the explicit
+surreals, prove the two-level normal-form relabeling, lexicographic
+comparison, and set-support localization. Each proposed relation must be
+transported into a set-sized field before invoking a transcendence basis.
+No unrestricted class basis should be introduced just to shorten the proof.
+
+\mtag{} The coset-slice and iterated-Hahn items overlap items (1)--(3)
+and~(6) of \cref{isc:sub:formal}.
+
 \appendix
 \section{Provenance of this report}\label{isc:app:report}
 
@@ -2150,6 +4376,10 @@ for full copies of $\No$, is the subject of no existing report
 (\cref{isc:sec:collection}). There was no second source. Nothing was
 merged and nothing was selected away: every result, proof, example,
 question and limitation of the manuscript is printed here.
+\mtag{} This subsection describes the report as written in batch~31. In
+batch~34 a second manuscript was added as source~02
+(Appendix~\ref{isc:cp:app:source}); the report is now built from two
+manuscripts.
 
 The package contained the article, its PDF and a README, and nothing else:
 no code, recorded data, audit or checksum list. The article was renamed
@@ -2283,6 +4513,157 @@ The source shipped no verification program, recorded run or audit, so
 there is nothing to rerun. The delivered README reports a build with
 pdfTeX~1.40.26 and a visual inspection of rendered pages and contact
 sheets; those renderings are not shipped.
+\mtag{} This table lists the files of source~01. The seven shipped files of
+source~02, with the prefix \texttt{02-composita-}, and their rerun are in
+Appendix~\ref{isc:cp:app:files}.
+
+\subsection{Source 02 (batch 34)}\label{isc:cp:app:source}
+
+\mtag{} Source~02 is manuscript~05 of batch~34 of the collection: the
+archive \nolinkurl{Surreal_Composita_Research}, delivered in commit
+\texttt{a4611ad} and placed in commit \texttt{a7a435f} as an addition to
+this report with local number~02. Its main file \texttt{article.tex} (a
+standalone article with an internal bibliography) is titled \emph{Beyond
+Composita of Surreal Copies: Exact rank tests, differential transcendence,
+and omnific witnesses}, dated 23 September 2026, with the author line
+``AI-assisted research draft prepared for Vladimir Reshetnikov''; its PDF
+has 29 pages. It is pinned to commit
+\nolinkurl{7b256e0792df7718995b816ad12a77bf56731f8f}, at which this report's
+\texttt{article.tex} was blob \nolinkurl{7d5cfe644e7c902f2b594179c337a6c633350fc3}.
+The placement chose an addition rather than a new report because the
+manuscript answers this report's Research question~3 in the separated case
+and extends its witness \eqref{isc:eq:explicitS}. Its manuscript, README and
+PDF are not shipped; its code, recorded data and two audits are shipped with
+the prefix \texttt{02-composita-} (Appendix~\ref{isc:cp:app:files}).
+
+\emph{What it contributed.} The finite coefficient-rank test for composita
+(\cref{isc:cp:thm:rank}), the base-change lemmas of
+\cref{isc:cp:sec:disjoint}, the rapid coefficient-degree theorem and its
+continuum family (\cref{isc:cp:thm:lacunary,isc:cp:cor:continuum}), the
+failure of the finite coefficient-field criterion
+(\cref{isc:cp:cor:fginsufficient}), the private-block theorem and tree
+amplification over the finite-generation envelope
+(\cref{isc:cp:thm:generic,isc:cp:cor:tree,isc:cp:prop:local,isc:cp:cor:sandwich}),
+the exact Laurent degrees $|F|^{\aleph_0}$ (\cref{isc:cp:thm:cardinal}), the
+ordinal family $Y_\alpha$ of purely infinite omnific integers with
+independent Euler jets (\cref{isc:cp:thm:omnific,isc:cp:cor:threshold}),
+set-parameter tail resilience (\cref{isc:cp:thm:resilience,isc:cp:cor:nosetgen}),
+the arithmetic and Gaussian consequences
+(\cref{isc:cp:thm:arithmetic,isc:cp:thm:complex}), twelve research questions
+and a formalization decomposition.
+
+\emph{Editorial changes.}
+\begin{enumerate}[label=(\arabic*)]
+\item Every label of the source carries the prefix \texttt{isc:cp:}, with
+the source's name after it, except that its \texttt{sec:conventions} is
+\lbl{isc:cp:sec:foundations} and its appendix labels are replaced by
+\lbl{isc:cp:sec:verify} and \lbl{isc:cp:sub:formal}. The merge also labels
+the source's unlabelled definition of coefficient rank, example, remarks
+and questions, and its new subsections and appendix subsections.
+\item Symbols are renamed as in \cref{isc:cp:sec:conventions}; no
+normalization changed.
+\item The source's re-derivation of the explicit copies and of the
+re-expansion (its Subsections~8.1--8.2) is printed once, in
+\cref{isc:sec:explicit,isc:sec:join}, with the correspondence in
+\cref{isc:cp:sub:copies}; the source's added observations are kept there.
+Its duplicate of \cref{isc:lem:denominator} is kept inside
+\cref{isc:cp:lem:clearing}, where it serves a new statement.
+\item The source's citations of this report by section number are replaced
+by cross-references to the same sections. Its bibliography entries
+\cite{KKS,KM,BM,StacksLD} are added to this report's; its entry for
+L'Innocente--Mantova is this report's \cite{LM}. These four references
+were not checked in the merge.
+\item Text marked \mtag{} was added in the merge: in
+\cref{isc:cp:sec:intro} (the first paragraph, the note on $Y_0$, and
+\cref{isc:cp:sec:answers,isc:cp:sec:conventions,isc:cp:sec:collection}),
+after \cref{isc:cp:thm:rank,isc:cp:lem:coset,isc:cp:cor:continuum,isc:cp:ex:mechanism,isc:cp:thm:omnific,isc:cp:lem:localizeP},
+in \cref{isc:cp:sub:copies}, in the construction of the $a_{\alpha,n}$, in
+\cref{isc:cp:sub:nonclaims}, after Research
+questions~\ref{isc:cp:q:cores}, \ref{isc:cp:q:bm},
+\ref{isc:cp:q:normalization} and~\ref{isc:cp:q:formal}, in
+\cref{isc:cp:sec:verify}, and in this appendix. In source~01's text, \mtag{}
+notes were added to the title page, to \cref{isc:sec:collection} (the status
+of the research questions), after \cref{isc:cor:parameters} (with the
+reciprocal note for the dilation report), after
+\cref{isc:lem:finitecoeff}, after the proof of \cref{isc:main:join}, after
+Research question~3, at the start of \cref{isc:sec:nonclaims}, in item~W1,
+and in Appendices~\ref{isc:app:onesource} and~\ref{isc:app:files}. No
+statement of source~01 was changed.
+\item Cross-references to lemmas, propositions, corollaries, remarks and
+the warning were printed as ``theorem'' before the merge: the environments
+share the theorem counter, and cleveref named them by the counter. The
+merge adds cleveref's type hint to the labels of these environments (26 of
+source~01 and 33 of source~02; for example the label of
+\cref{isc:lem:finitecoeff} now carries the hint \texttt{[lemma]}) and a
+cleveref name for the warning. No label was renamed and no number changed; only the printed names
+of those references are corrected.
+\end{enumerate}
+
+\emph{Where the merge chose.} The addition is printed after the ledger of
+non-claims and before the appendix, so that no existing section, theorem,
+equation or question number changes; its sections keep the source's
+numbering shifted by fourteen. The outer group is renamed $\Gamma$ rather
+than keeping $H$, because $H$ is this report's common core and the source
+uses it in that sense too. The explicit copies are not reprinted.
+
+\emph{Checks in the merge.} The proofs of
+\cref{isc:cp:thm:rank,isc:cp:lem:basechange,isc:cp:lem:coset,isc:cp:cor:transfer,isc:cp:thm:lacunary,isc:cp:lem:partial,isc:cp:thm:generic,isc:cp:cor:tree,isc:cp:prop:local,isc:cp:thm:cardinal,isc:cp:thm:omnific,isc:cp:lem:tailcoeff,isc:cp:thm:resilience,isc:cp:lem:clearing,isc:cp:thm:arithmetic,isc:cp:thm:complex}
+were read line by line when the addition was merged; no error was found.
+The following were rechecked: $g=\omega^{7/2}$ and $b=\omega^{15/4}$ lie in
+$G_1$ (inner exponents in $(3,4)$), $\lambda(g)=1$, $\lambda(b)=0$,
+$\Delta\tau=\tau$ and $\Delta\omega^b=0$ from \eqref{isc:cp:eq:Delta};
+$\beta_{0,n}=n$, so $g_{0,n}=\omega^{\psi(n)}$ and
+$Y_0=\omega^{\omega^{15/4}}S$ with $S$ as in \eqref{isc:eq:explicitS}; the
+consecutive exponents of \eqref{isc:cp:eq:Ynormal} differ by
+$g+g_{\alpha,n}-g_{\alpha,n+1}>0$; and the source's numbering (its
+Theorem~8.2 is the omnific theorem, its Theorem~10.4 the surcomplex one)
+agrees with its delivered PDF. This reading is not an independent proof
+review. The source's statements about this report are those of its pin;
+the parts it used are unchanged since.
+
+\subsection{Files of source 02, and their rerun}\label{isc:cp:app:files}
+
+\mtag{} The seven shipped files of source~02 are these.
+\begin{center}\small
+\begin{tabular}{@{}p{0.40\textwidth}p{0.22\textwidth}p{0.30\textwidth}@{}}
+\toprule
+Shipped path & Delivered name & Role\\
+\midrule
+\rpath{02-composita-SOURCE\_AUDIT.md} & \texttt{SOURCE\_AUDIT.md} & pin,
+source scope, priority limits\\
+\rpath{02-composita-PROOF\_AUDIT.md} & \texttt{PROOF\_AUDIT.md} &
+hypotheses, critical steps, nonclaims\\
+\rpath{code/02-composita-verify.py} & \texttt{verify.py} & exact finite
+checks (SymPy)\\
+\rpath{code/02-composita-build.sh} & \texttt{build.sh} & runs the checks,
+then builds the source's PDF\\
+\rpath{data/02-composita-verification.json} & \texttt{verification.json} &
+recorded run: 2,530 checks, 21 categories\\
+\rpath{data/02-composita-requirements.txt} & \texttt{requirements.txt} &
+\texttt{sympy==1.14.0}\\
+\rpath{data/02-composita-BUILD\_AUDIT.json} & \texttt{BUILD\_AUDIT.json} &
+build and PDF inspection record of the delivered PDF\\
+\bottomrule
+\end{tabular}
+\end{center}
+All seven are byte-identical to the delivery. The manuscript, its README
+and its PDF are not shipped; the build audit therefore describes a PDF (29
+pages, 499{,}044 bytes, pdfTeX~1.40.26) that is not in the collection.
+
+The program writes a file only when given \texttt{--output}; otherwise it
+prints its JSON report. The delivered \texttt{build.sh} changes into its own
+directory and runs \texttt{python3 verify.py --output verification.json}
+before building \texttt{article.tex}. Under the shipped names it finds
+neither file in \rpath{code/}, and an adapted copy would write its record
+next to the script, not over the shipped data file. Rerun the checks on a
+copy, or with an explicit output path outside the report:
+\begin{verbatim}
+python code/02-composita-verify.py --output <scratch>/verification.json
+\end{verbatim}
+In the merge the program was run on a copy with Python~3.14.4 and
+SymPy~1.14.0. It passed all 2,530 checks with the same 21 category counts
+as the recorded run; the only difference in the JSON record is the Python
+version (3.13.5 in the recorded run).
 
 \begin{thebibliography}{99}
 
@@ -2349,6 +4730,34 @@ page, consulted 23 September 2026.
 \url{https://en.wikipedia.org/wiki/Surreal_number}.
 This reference is orientation only; the proofs rely on the named
 mathematical foundations above rather than on this page.
+
+
+\bibitem{KKS}
+L.~S.~Krapp, S.~Kuhlmann and M.~Serra, \emph{Generalised power series
+determined by linear recurrence relations},
+\href{https://arxiv.org/abs/2206.04126v3}{arXiv:2206.04126v3}, 2025.
+Cited by source~02 for the literature comparison with recurrence-defined
+series substructures, not as a proof of its compositum theorems.
+
+\bibitem{KM}
+S.~Kuhlmann and M.~Matusinski, \emph{Hardy type derivations on generalized
+series fields},
+\href{https://arxiv.org/abs/0903.2197v4}{arXiv:0903.2197v4}, 2012.
+\href{https://doi.org/10.1016/j.jalgebra.2011.11.024}{doi:10.1016/j.jalgebra.2011.11.024}.
+Cited by source~02 for the background distinction between series
+derivations and Hardy-type conditions.
+
+\bibitem{BM}
+A.~Berarducci and V.~Mantova, \emph{Surreal numbers, derivations and
+transseries}, \emph{Journal of the European Mathematical Society}
+\textbf{20} (2018), 339--390.
+\href{https://arxiv.org/abs/1503.00315v3}{arXiv:1503.00315v3}.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
+
+\bibitem{StacksLD}
+The Stacks Project Authors, \emph{The Stacks Project}, Section~9.27,
+``Linearly disjoint extensions'', Tag~09IC.
+\url{https://stacks.math.columbia.edu/tag/09IC}.
 
 \end{thebibliography}
 \end{document}
