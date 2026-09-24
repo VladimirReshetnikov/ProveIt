@@ -859,3 +859,5 @@ import Surreal.Algebra.SmallIntegralUnits
 import Surreal.Algebra.NormalizationConductor
 import Surreal.Foundations.OmnificNormalizationDensity
 import Surreal.Foundations.OmnificNormalization
+import Surreal.Algebra.SeparatedSubrings
+import Surreal.Foundations.OmnificAlgebraDiscreteness

@@ -382,9 +382,12 @@ proper dense subring of `No`, has zero conductor and has no small set of
 algebra generators. The density proof constructs integral units
 `√(H²+1) − H` below every positive surreal radius and uses the omnific floor
 to approximate from below. Its generic form applies to any integer part of
-an ordered field with nonnegative square roots. The manuscript also proves
-that every set-generated overring is closed and uniformly discrete in the
-fine topology; that assertion remains pending in Lean. In the countable-support model, exactly `cf(κ)` negative
+an ordered field with nonnegative square roots. Every omnific algebra generated
+by a small surreal set is now proved closed and uniformly discrete in the
+fine topology, even though the algebra itself need not be small. One positive
+monomial denominator separates every pair of distinct elements. Every
+Cauchy net inside such an algebra is eventually constant, with no bound on
+the size of its index or range. In the countable-support model, exactly `cf(κ)` negative
 monomials generate the ambient field over its integer part, proving the
 denominator size bound sharp. This leaves the normalization's own generator
 count open. A least negative support exponent prevents
