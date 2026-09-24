@@ -655,3 +655,5 @@ import Surreal.Algebra.SeparableNormFactors
 import Surreal.Algebra.SeparableNormRigidity
 import Surreal.Surcomplex.NumberFieldNormRigidity
 import Surreal.Algebra.IntegralNormCoefficients
+import Surreal.Algebra.CubicNormForm
+import Surreal.Surcomplex.CubicNormRigidity

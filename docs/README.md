@@ -117,11 +117,12 @@ rotation-equivariant dynamics, Gaussian omnific real forms, beyond-composita
 obstructions, infinite simultaneous unitary straightening, universal
 symmetries and difference equations, class residue fields, semialgebraic
 preservers, polyhedral-cone cores and henselian branching. Their 204 new
-standard results bring the index to 4,602 across 63 reports. Independent
+standard results brought the index to 4,602 across 63 reports. Independent
 review and Lean formalization of these new claims remain pending.
-The Hahn-joins archive from `267b910` is placed in `dec8d56` as a further
-companion to independent surreal copies. Its main-text integration and
-independent proof review remain pending.
+The Hahn-joins archive from `267b910`, placed in `dec8d56`, is now integrated
+in `32bb723` as the third independent-copies manuscript. Its 24 new standard
+results bring the current index to 4,626 across 63 reports. Independent
+proof review and Lean formalization remain pending.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
@@ -216,7 +217,7 @@ not extend their earlier proof-review scope.
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups with no new omnific points; `SL_n(ℤ)` as the universal set-sized quotient of `E_n(Oz)` for `n ≥ 3`, but none in rank two; shortest vectors and missing infima in omnific lattices; five manuscripts |
 | [Omnific continued fractions](surreal/omnific-continued-fractions/) | Exact digit fibers as translates of a valuation ideal, full Hahn realizations and periodic algebraic fibers; ordinary finite indices only; proof review pending |
 | [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | A proposed affirmative answer to Ehrlich–Kaplan's question (JSL Question 9.1): every discrete initial subgroup of `No` is isomorphic to an initial subgroup of `Oz`; convex subquotients of initial groups are initially realizable; two manuscripts |
-| [Independent surreal copies](surreal/independent-surreal-copies/) | Prescribed common Hahn cores, surreal self-embeddings and transcendence gaps; class assumptions and proof review pending |
+| [Independent surreal copies](surreal/independent-surreal-copies/) | Prescribed common Hahn cores, surreal self-embeddings, transcendence gaps and maximal transcendence of Hahn joins; three manuscripts; class assumptions and proof review pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows

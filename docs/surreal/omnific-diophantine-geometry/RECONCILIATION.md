@@ -1550,7 +1550,37 @@ degree, explicit translation setting for marked values, nonempty family
 for resultants). All 244 standard results, 553 labels and 1,106 auxiliary
 label numbers are retained. The article and catalogue build cleanly in
 three passes to 227 and 33 pages; the changed proof pages were checked
-visually. The 4,602-result index, 5,159 source references and 1,723 local
+visually. The 4,602-result index, 5,160 source references and 1,723 local
 Markdown destinations pass before this review record is appended. No Lean
 source or finite verifier changed; this pass does not rerun the previously
 passing finite suite or claim that it verifies the étale proofs.
+
+
+## Synchronization with cubic norm rigidity and Hahn joins
+
+Merged `8105a52`, preserving the finite étale review and the incoming
+henselian-branching pointers. Those pointers were compared with the cited
+local-ring, branching and forced-complexification statements; this does
+not establish their proofs. The cubic norm implementation was compared
+with the displayed example after `odg:thm:norm`, including the actual
+omnific and Gaussian omnific carriers and nonzero ordinary levels.
+The full two-thread Lean build passes 4,513 jobs and audits 15,719
+declarations using only the three permitted axioms.
+
+The independent-copies report now integrates its third manuscript, Hahn
+joins, in Sections 28–41. It adds 24 standard results and four separately
+styled main theorems; all 57 earlier standard results and all three earlier
+main theorems are unchanged. The 81 standard results and seven main
+obligations are recorded in the ledger. This new mathematics remains
+pending independent proof review and Lean formalization. The collection's
+current standard-result count is 4,626 across 63 reports, and the old
+staged-companion notes have been updated.
+
+The merged Diophantine article builds in three passes to 228 pages with
+no warnings, unresolved references or bad boxes. All 244 standard
+statements agree with the preceding review commit, and all 553 source
+labels and 1,106 auxiliary label numbers are preserved. The revised
+33-page catalogue is likewise clean; changed pages were inspected.
+The independent index, 5,188 source references, 1,726 local Markdown
+destinations and whitespace checks pass. The finite verification scripts
+are unchanged and were not rerun during this synchronization.

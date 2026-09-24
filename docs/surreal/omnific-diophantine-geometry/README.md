@@ -16,7 +16,7 @@ prefix `16-`), and one more dated 23 September 2026 (batch-33 manuscript 07, pla
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 227 pages
+article.pdf                        the compiled report, 228 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -1407,7 +1407,15 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   `f = ct_*(f)(X − η) + β` of Theorems 19.12 and 19.33 for integer-valued
   polynomials with more inputs in one ordinary-output coset than their
   degree. This differs from the constant-discriminant hypothesis;
-  discreteness alone is insufficient (Remark 19.35).
+  discreteness alone is insufficient (Remark 19.35). Its manuscript 27
+  localizes the integer part `𝔼 ∩ Oz` of a seeded real closed field of
+  cardinality `κ` at its constant-term ideal (`osq:hb:cor:local`), a
+  set-sized analogue of `Oz_Π` with residue field `Q` and idempotent maximal
+  ideal, whose henselization has `2^κ` minimal primes, all with fraction field
+  `𝔼[i]` (`osq:hb:thm:main`); the complex branches are forced by roots of
+  equations like `U² − U + ω` (`osq:hb:prop:complex`), the henselian side of
+  Example 19.5 (batch-34 status notes after Proposition 15.40 and after the
+  paragraph following Example 19.5).
 - [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/): its
   cusp-residue obstruction and non-elementary unipotents
   (`ogl:el:prop:cuspresidue`, `ogl:el:thm:nonel`) show that the focusing
@@ -1491,14 +1499,18 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 227 pages with no errors, warnings, undefined
+The current build gives 228 pages with no errors, warnings, undefined
 references, multiply defined labels or overfull boxes. The batch-32
 cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
 non-claim on polynomial lifting) are unnumbered and changed no label number
 (compared in the `.aux` files against a build of the text before them). The
 same holds for the batch-33 and batch-34 notes (after Theorems 2.7, 3.1 and 4.6,
 before Theorem 5.1 and after Question 21.10): the text before them built to 225
-pages, and all 553 labels keep their `.aux` numbers. The text before
+pages, and all 553 labels keep their `.aux` numbers. The later batch-34
+notes on the sibling report's henselian branching (after Proposition 15.40
+and after the paragraph following Example 19.5) did not change the page count (226 pages when added; 227 after a later proof-review edit)
+and change no label number (all 553 compared against a build of the
+committed text). The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
 its 942 `.aux` label entries has the same number in the present build. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16

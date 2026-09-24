@@ -335,13 +335,19 @@ Number-field norm equations now have a complete rigidity proof for every
 rational basis: a nonzero rational norm level forces all omnific coordinates
 to be ordinary integers. A basis of algebraic integers also gives an integer
 norm polynomial, whose omnific and ordinary integer solution sets agree.
+The explicit cubic `x³ + 2y³ + 4z³ − 6xyz` now has a checked norm identity
+and factorization. At every nonzero ordinary level, its omnific solutions
+are ordinary integer triples; its Gaussian omnific solutions are ordinary
+Gaussian integer triples. Both statements identify the exact solution sets.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
 Its class constructions and proofs remain pending in Lean. Its second
 manuscript adds rank tests and differential-transcendence obstructions to
-ordinary composita; these new proofs await independent review. The latest
+ordinary composita. Its third manuscript studies maximal transcendence in
+Hahn joins, mixed-support independence and prime omnific witnesses; these
+new proofs await independent review. The latest
 dynamics, surcomplex real-form and Hahn–Hilbert additions likewise remain
 outside the earlier review scopes recorded in the ledger.
 
