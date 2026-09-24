@@ -231,13 +231,31 @@ bound on length by the cone dimension. A rerun of the delivered finite
 verifier reproduces all 52,080 exact assertions and recorded examples;
 these finite rational checks do not prove the general ring statements.
 
-The subsequent face-isolating modules, exact dimension formulas and
-reconciliation of the parallel sources remain pending review. Exact scope
+The face-isolating modules, exact flat dimension, projective interval and
+homological epimorphism theorem are now reviewed as well. The tensor-colimit
+proof keeps every degree shift and transition, separates the three face
+cases and identifies an eventual system of copies of K with identity maps.
+Nonzero homogeneous Tor is shown to give ordinary ungraded Tor, obstructing
+every shorter flat resolution. The projective bound is derived through
+explicit syzygies; non-finite generation supplies its lower bound of two.
+For quotient modules the positive terms tensor to zero, whereas a killed
+monomial proves that the quotient itself is nonflat.
+
+The cap-module explanation now has exact qualifications. Such a module is
+finitely generated over A_𝒞 exactly when K is finitely generated over D,
+and is cyclic for D = K. It is a module over the radical quotient exactly
+when its face contains none of the defining antichain faces. The detecting
+labels fail that condition, but caps on other faces can satisfy it; the
+two coordinate rays give a simple example. These are manuscript proofs,
+with Lean formalization still pending.
+
+The subsequent topology and multiplicities of face quotients, later
+classification results and full source reconciliation remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 305 pages
+article.pdf   the compiled report, 307 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

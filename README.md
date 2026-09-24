@@ -301,9 +301,12 @@ projective dimension one over any unital coefficient subring `D ⊆ K`.
 Radical ideals that admit all coefficients at each chosen exponent are
 classified by antichains of nonzero faces. Their quotients have finite
 flat resolutions whose summand counts are reduced homology dimensions of
-face-join complexes. The reviewed construction bounds the length by the
-cone dimension; the subsequent proof that this length is exact remains
-under review.
+face-join complexes. Face-isolating modules now prove that the last
+nonzero degree is the exact ordinary flat dimension, bounded by the cone
+dimension. These quotients are nonflat homological ring epimorphisms:
+positive Tor vanishes against every quotient module, while the detecting
+modules lie outside that class. A one-face quotient has flat dimension
+one and projective dimension two.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

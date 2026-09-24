@@ -8959,17 +8959,59 @@ $A_{\mathscr C}$-algebra by discarding the monomials outside $G$ and including $
  \mathfrak z_{G,b}=\bigoplus_{m\in P_G,\ \ell^G_j(m)\ge\ell^G_j(b)\text{ for some }j}KX^m,\qquad \mathcal W_{G,b}=K[P_G]/\mathfrak z_{G,b};
 \end{equation}
 $\mathfrak z_{G,b}$ is an ideal because the $\ell^G_j$ are nonnegative on $G$. The surviving monomials lie below \emph{every} cap: $(\mathcal W_{G,b})_b=0$,
-while small inward translates of $b$ survive. $\mathcal W_{G,b}$ is usually not finitely generated, which detection of flat dimension does not need.
+while small inward translates of $b$ survive. The coefficient space in degree zero is $K$.
+In fact, $\mathcal W_{G,b}$ is finitely generated over $A_{\mathscr C}$
+if and only if $K$ is finitely generated over $D$. Necessity follows by
+taking the constant-term quotient $\mathcal W_{G,b}\twoheadrightarrow K$,
+on which $A_{\mathscr C}$ acts through $D$. Conversely, finitely many
+$D$-module generators of $K$, together with $1$, generate the cap module:
+every nonconstant surviving term $aX^m$ is the action of that element
+of $A_{\mathscr C}$ on $1$. In particular it is cyclic when $D=K$.
+Detection of flat dimension allows all modules and needs no finite-generation
+hypothesis.
 
 \begin{theorem}[Isolation of one face label \src{26}]\label{osq:pc:thm:isolation}
 For every nonzero face $H$, $(I_H\otimes_{A_{\mathscr C}}\mathcal W_{G,b})_b$ is $K$ if $H=G$ and $0$ otherwise.
 \end{theorem}
 \begin{proof}
-By \eqref{osq:pc:eq:exhaustion} the degree-$b$ component is the colimit of $(\mathcal W_{G,b})_{b-q_nu_H}$, $q_n=2^{-n}$, with transition maps multiplication by
-$X^{(q_n-q_{n+1})u_H}$ (the degree shifts must be kept). If $H\not\subseteq G$, a supporting functional of $G$ vanishing on $G$ and positive at $u_H$ is negative at
-$b-q_nu_H$, so all terms are zero. If $H\subsetneq G$, some facet of $G$ contains $H$, and its functional has $\ell^G_j(b-q_nu_H)=\ell^G_j(b)$, so the cap kills
-every term in $G$. If $H=G$, every $\ell^G_j(u_G)>0$, and for large $n$ the exponent $b-q_nu_G$ lies in $G$ strictly below every cap; late transitions send $a$
-to the same coefficient $a$, so the colimit is $K$.
+Let $q_n=2^{-n}$ and $P_n=X^{q_nu_H}A_{\mathscr C}$. The exhaustion
+$I_H=\varinjlim_n P_n$ is an exhaustion by graded ideals. Each $P_n$
+is free on its generator of degree $q_nu_H$, so tensoring with
+$\mathcal W_{G,b}$ and taking degree $b$ gives
+\[
+ (I_H\otimes_{A_{\mathscr C}}\mathcal W_{G,b})_b
+ \cong\varinjlim_n(\mathcal W_{G,b})_{b-q_nu_H}.
+\]
+Tensor products commute with this filtered colimit, and its graded maps
+allow homogeneous components to be taken before the colimit. The inclusion
+$P_n\hookrightarrow P_{n+1}$ sends its generator to
+$X^{q_{n+1}u_H}X^{(q_n-q_{n+1})u_H}$; hence the transition on the right
+is multiplication by $X^{(q_n-q_{n+1})u_H}$. Its target degree is
+$b-q_{n+1}u_H$, as required. These shifts cannot be omitted.
+
+If $H\not\subseteq G$, no $b-q_nu_H$ lies in $G$. Indeed, otherwise
+$b=(b-q_nu_H)+q_nu_H$ would be a sum of two cone points lying in the
+face $G$, forcing $u_H\in G$ and hence $H\subseteq G$. Since
+$\mathcal W_{G,b}$ is supported on $P_G$, every term of the colimit
+is therefore zero.
+
+If $H\subsetneq G$, some facet of $G$ contains $H$. For its functional
+$\ell^G_j$ one has $\ell^G_j(u_H)=0$, so
+$\ell^G_j(b-q_nu_H)=\ell^G_j(b)$. Whenever the shifted exponent lies
+in $P_G$, this equality puts its monomial in the cap ideal; otherwise
+there is no coefficient space at that exponent. Again every term is zero.
+
+Finally let $H=G$. Both $b$ and $u_G$ are in the relative interior, so
+all their facet values are positive. Choose $n_0$ such that
+\[
+ 0<q_n\ell^G_j(u_G)<\ell^G_j(b)
+       \qquad(j=1,\dots,t,\ n\ge n_0).
+\]
+Then $b-q_nu_G\in P_G$ lies strictly below every cap, and its coefficient
+space is one copy of $K$. Each late transition sends
+$aX^{b-q_nu_G}$ to $aX^{b-q_{n+1}u_G}$, a surviving monomial with the
+same coefficient. The cofinal tail of the system is thus $K$ with
+identity maps, whose colimit is $K$.
 \end{proof}
 
 Faces not in $G$ are excluded by support, proper subfaces of $G$ by equality at a cap; only a move into the relative interior of $G$ leaves all its facets
@@ -8987,11 +9029,48 @@ and for every nonzero $G\in\mathcal L$ and $p\ge1$,
 \end{equation}
 \end{theorem}
 \begin{proof}
-\Cref{osq:pc:lem:cancellation,osq:pc:lem:crosscut} give $\fd\le\operatorname{len}\le d$. Tensor $R^{\mathcal F}_*$ with $\mathcal W_{G,b}$ in degree $b$:
-the degree-zero term vanishes, only the summands labelled $G$ survive (\cref{osq:pc:thm:isolation}), $\beta_{p,G}$ of them in degree $p$, and the
-differentials between them vanish because the reduced differential strictly decreases labels. This is \eqref{osq:pc:eq:torbeta} and the lower bound.
-$\beta_{1,F_i}=1$ makes $\operatorname{len}\ge1$. For the ideal shift $\Tor$ in $0\to\mathfrak r_{\mathcal F}\to A_{\mathscr C}\to A_{\mathscr C}/
-\mathfrak r_{\mathcal F}\to0$ if $\operatorname{len}\ge2$; if $\operatorname{len}=1$, truncation shows that $\mathfrak r_{\mathcal F}$ is flat.
+Write $\ell_0=\operatorname{len}(\mathcal F)$. The maximum is defined:
+there are finitely many labels and degrees, and
+$\beta_{1,F_i}=1$ for each member of the nonempty antichain. By
+\cref{osq:pc:lem:cancellation,osq:pc:lem:crosscut}, the reduced flat
+resolution has no terms above degree $\ell_0$, with
+$1\le\ell_0\le d$. Forgetting the grading gives a flat resolution
+of the ordinary module, so its flat dimension is at most $\ell_0$.
+
+Fix a nonzero $G\in\mathcal L$ and $b\in\operatorname{relint}G\cap\Q^d$.
+All coordinate changes in the reduced resolution preserve the exponent
+grading. Tensor it with $\mathcal W_{G,b}$ and take degree $b$.
+The degree-zero homological term becomes
+$(\mathcal W_{G,b})_b=0$. By \cref{osq:pc:thm:isolation}, the term in
+each homological degree $p\ge1$ is $K^{\beta_{p,G}}$, contributed
+exactly by the summands labelled $G$. Every differential component either
+has a different label at one end, whose degree-$b$ tensor component is
+zero, or would keep label $G$, which is forbidden by the strict label
+decrease. Thus every differential in this degree is zero. The tensor
+complex computes $\Tor$, proving \eqref{osq:pc:eq:torbeta}.
+
+Choose a label with $\beta_{\ell_0,G}\ne0$. Its nonzero homogeneous
+$\Tor_{\ell_0}$ component is a direct summand of the ungraded homology:
+the tensor complex is a direct sum of its degree subcomplexes and the
+differentials preserve those degrees. Hence ordinary
+$\Tor_{\ell_0}(A_{\mathscr C}/\mathfrak r_{\mathcal F},\mathcal W_{G,b})$
+is nonzero. Every flat resolution of length less than $\ell_0$ would
+make this group vanish, giving the required lower bound without any
+grading or finite-generation restriction on competing resolutions.
+
+For the ideal itself, truncating the reduced resolution at its image
+$\mathfrak r_{\mathcal F}$ gives a flat resolution of length
+$\ell_0-1$. If $\ell_0\ge2$, the short exact sequence
+$0\to\mathfrak r_{\mathcal F}\to A_{\mathscr C}\to
+A_{\mathscr C}/\mathfrak r_{\mathcal F}\to0$ gives, for every module $N$,
+\[
+ \Tor_j^{A_{\mathscr C}}(\mathfrak r_{\mathcal F},N)
+ \cong\Tor_{j+1}^{A_{\mathscr C}}
+       (A_{\mathscr C}/\mathfrak r_{\mathcal F},N)\qquad(j\ge1).
+\]
+Use the same detecting module and $j=\ell_0-1$ for the lower bound.
+If $\ell_0=1$, the truncation identifies the nonzero ideal with the
+flat term $R^{\mathcal F}_1$, so its flat dimension is zero.
 \end{proof}
 
 A finite incidence calculation alone would give only an upper bound; the detecting module turns diagonal homology into an obstruction to every shorter
@@ -9002,9 +9081,31 @@ With $\ell_0=\operatorname{len}(\mathcal F)$, $\max\{2,\ell_0\}\le\pd_{A_{\maths
 quotient $A_{\mathscr C}/I_F$ has flat dimension one and projective dimension two.
 \end{corollary}
 \begin{proof}
-Each $I_G$ has a free resolution of length one \eqref{osq:pc:eq:telescope}, so dimension shifting along the reduced resolution gives $\le\ell_0+1$, and
-$\pd\ge\fd$. If $\pd\le1$, the kernel $\mathfrak r_{\mathcal F}$ of $A_{\mathscr C}\to A_{\mathscr C}/\mathfrak r_{\mathcal F}$ would be projective, hence
-finitely generated, against \cref{osq:pc:thm:radical}.
+Put $B=A_{\mathscr C}/\mathfrak r_{\mathcal F}$. Each positive term
+$R^{\mathcal F}_p$ is a finite direct sum of face ideals, each with the
+free resolution of length one in \eqref{osq:pc:eq:telescope}; thus
+$\pd R^{\mathcal F}_p\le1$. Set $Z_0=B$ and let $Z_{p+1}$ be the
+kernel of the surjection $R^{\mathcal F}_p\to Z_p$. Exactness gives
+$Z_{\ell_0}\cong R^{\mathcal F}_{\ell_0}$ and short exact sequences
+\[
+ 0\to Z_{p+1}\to R^{\mathcal F}_p\to Z_p\to0
+       \qquad(0\le p<\ell_0).
+\]
+Their long exact $\Ext$ sequences give
+$\pd Z_p\le\max\{\pd R^{\mathcal F}_p,1+\pd Z_{p+1}\}$.
+Starting with $\pd Z_{\ell_0}\le1$ and using that
+$R^{\mathcal F}_0=A_{\mathscr C}$ is free yields $\pd B\le\ell_0+1$.
+
+Projective modules are flat, so $\pd B\ge\fd B=\ell_0$.
+If $\pd B\le1$, the exact sequence with free middle term
+$0\to\mathfrak r_{\mathcal F}\to A_{\mathscr C}\to B\to0$
+would give $\Ext^1_{A_{\mathscr C}}(\mathfrak r_{\mathcal F},N)=0$
+for every $N$, making the ideal projective. A projective ideal in this
+domain is finitely generated by the dual-basis argument in
+\cref{osq:pc:thm:exhaustion}, contradicting
+\cref{osq:pc:thm:radical}. Hence $\pd B\ge2$. For a one-face antichain,
+the only nonzero multiplicity is $\beta_{1,F}=1$, so $\ell_0=1$;
+the two projective bounds coincide at two, while the flat dimension is one.
 \end{proof}
 
 For $\ell_0\ge2$ the argument does not decide the endpoint, and 21's exact value for coordinate cores (\cref{osq:da:cor:exactpd}) cannot be transferred to
@@ -9016,13 +9117,56 @@ For every $B=A_{\mathscr C}/\mathfrak r_{\mathcal F}$ and every $B$-module $N$, 
 so $A_{\mathscr C}\to B$ is a homological ring epimorphism. Yet $B$ is not flat when $\mathfrak r_{\mathcal F}\ne0$.
 \end{theorem}
 \begin{proof}
-For a positive summand $I_{G_S}$ of \eqref{osq:pc:eq:cech} and $i\in S$, $I_{F_i}I_{G_S}=I_{G_S}$ (\cref{osq:pc:thm:products}), so
-$\mathfrak r_{\mathcal F}I_{G_S}=I_{G_S}$ and $I_{G_S}\otimes N\cong(I_{G_S}/\mathfrak r_{\mathcal F}I_{G_S})\otimes_BN=0$. For nonflatness, multiplication by a
-nonzero monomial of $\mathfrak r_{\mathcal F}$ is injective on $A_{\mathscr C}$ and zero on $B$.
+The ideal $\mathfrak r_{\mathcal F}$ annihilates any $B$-module $N$.
+The canonical map $B\otimes_{A_{\mathscr C}}N\to N$, given by
+$\bar a\otimes n\mapsto\bar a n$, has inverse $n\mapsto\bar1\otimes n$.
+Thus the claimed degree-zero isomorphism needs no flatness of $N$.
+
+For a positive summand $I_{G_S}$ in the simplex resolution and any
+$i\in S$, the containment $F_i\subseteq G_S$ gives
+$I_{F_i}I_{G_S}=I_{G_S}$ by \cref{osq:pc:thm:products}. Therefore
+$\mathfrak r_{\mathcal F}I_{G_S}=I_{G_S}$, and the standard balanced-tensor
+identification is
+\[
+ I_{G_S}\otimes_{A_{\mathscr C}}N
+ \cong (I_{G_S}/\mathfrak r_{\mathcal F}I_{G_S})\otimes_B N=0.
+\]
+Tensoring that flat resolution with $N$ leaves $N$ in homological degree
+zero and zero in every positive degree, proving all the asserted
+$\Tor$ vanishings. In particular this holds for $N=B$; the quotient
+map is a ring epimorphism because it is surjective, so it is a
+homological ring epimorphism.
+
+To check nonflatness directly, choose a nonzero monomial
+$x\in\mathfrak r_{\mathcal F}$. Multiplication by $x$ gives an
+injection $A_{\mathscr C}\to A_{\mathscr C}$, since this ring is a
+domain. Tensoring with $B$ turns it into the zero map $B\to B$.
+The module $B$ is nonzero because
+$\mathfrak r_{\mathcal F}\subseteq\Pi_{\mathscr C}$ and its quotient
+still contains $D$. Hence this zero map is not injective, contradicting
+what flatness of $B$ would require.
 \end{proof}
 
-Vanishing self-$\Tor$ and positive flat dimension do not conflict: the former tests only modules killed by $\mathfrak r_{\mathcal F}$, and the cap modules are
-not such (26). For $\mathfrak r_{\mathcal F}=\Pi_{\mathscr C}$ this is 12's \cref{osq:hd:cor:arithmeticTor}.
+Vanishing self-$\Tor$ and positive flat dimension do not conflict. The
+vanishing theorem tests modules killed by $\mathfrak r_{\mathcal F}$;
+the detecting cap modules with $G\in\mathcal L\setminus\{\{0\}\}$ are
+not killed by it. Indeed, such a $G$ contains some $F_i$. For sufficiently
+small rational $q>0$, the monomial $X^{qu_{F_i}}$ survives every cap in
+$\mathcal W_{G,b}$. It belongs to $I_{F_i}\subseteq\mathfrak r_{\mathcal F}$
+and acts nontrivially on the class of $1$.
+
+More generally, a cap module on any nonzero face $G$ is a $B$-module
+exactly when no $F_i$ is contained in $G$. The forward obstruction is
+the same surviving monomial. For the converse, each exponent admitted
+by $\mathfrak r_{\mathcal F}$ has least face containing some $F_i$;
+if no such $F_i$ lies in $G$, none of those exponents lies in $G$, so
+face deletion annihilates the ideal. Thus cap modules on other faces
+can be $B$-modules; the obstruction concerns the labels used for detection.
+For example, in the two-dimensional orthant with $\mathcal F$ consisting
+of the first coordinate ray, cap modules on the second coordinate ray
+are $B$-modules, while those on the first ray detect nonzero $\Tor_1$.
+For $\mathfrak r_{\mathcal F}=\Pi_{\mathscr C}$ the vanishing theorem is
+12's \cref{osq:hd:cor:arithmeticTor}.
 
 \paragraph{Face quotients.}
 

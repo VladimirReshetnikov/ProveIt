@@ -303,6 +303,18 @@ count copies of flat face ideals; they are not ranks of minimal free
 modules. Scalars from K act A_𝒞-linearly on each nonzero face ideal, which
 justifies cancellation, but need not act on all of A_𝒞.
 
+The cap module `𝒲_{G,b}` keeps exponents on G strictly below every facet
+cap; meeting even one cap kills a monomial. Its degree-zero coefficient
+space is K. The degree-b tensor with `I_H` is computed from the shifted
+spaces `𝒲_{b−2^(−n)u_H}`, with transition multiplication by
+`X^((2^(−n)−2^(−n−1))u_H)`. Only label H = G survives in the colimit.
+These homogeneous Tor components belong to ordinary ungraded Tor as well.
+A cap module is finitely generated over A_𝒞 exactly when K is finitely
+generated over D. It is a module over `B = A_𝒞/𝔯_𝓕` exactly when G
+contains no member of 𝓕; thus the labels used to detect nonzero Tor
+give modules outside that quotient-module class. The vanishing theorem
+tests all B-modules, not all A_𝒞-modules.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
