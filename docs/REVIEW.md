@@ -6753,3 +6753,33 @@ source-label references and 1,835 local Markdown destinations in 226
 files pass, as does whitespace checking. No Lean source changed; the
 two-thread 4,622-job build and 16,927-declaration axiom audit remain the
 Lean baseline before synchronization.
+
+## Synchronization: actual character and phase twists
+
+Merged origin/main through e6f13a0, including 4f52bfb, and reviewed all
+three incoming modules against `odg:def:lem:twist`, its preceding character
+construction, and the witnesses used by `odg:def:thm:norealaxis`.
+The generic Hahn construction multiplies coefficients by an additive
+character with nonzero values, preserves full support, and checks the
+finite convolution antidiagonals; the inverse character supplies the
+inverse. Small-support realization then gives an actual surcomplex field
+automorphism. It fixes ordinary complex constants and the zero coefficient,
+hence restricts to a Gaussian omnific automorphism fixing Gaussian integers.
+
+The phase character uses the additive zero-coefficient map on actual
+surreal exponents and only the ordinary complex exponential. Its value
+at one is i. The values on omega, inverse omega and one explicitly show
+that the additive coefficient map is not multiplicative. The twist sends
+omega to i times omega, outside the entire actual real axis, and fails
+to commute with conjugation there. Its Gaussian restriction moves the
+omnific omega outside the embedded real omnific ring. The README and ledger
+correctly distinguish these algebraic obstruction witnesses from the
+still-pending first-order nondefinability theorem. No global surreal
+exponential or unrestricted full-Hahn surjectivity is assumed.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,625 jobs; the
+axiom audit checks 16,987 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,219 source-label
+references and 1,839 local Markdown destinations in 226 files pass, as
+does whitespace checking. No incoming TeX changed; the newly verified
+300-page article and 34-page catalogue remain current.
