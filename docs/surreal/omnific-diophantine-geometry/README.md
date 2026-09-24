@@ -15,7 +15,7 @@ prefix `16-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 198 pages
+article.pdf                        the compiled report, 200 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -190,15 +190,25 @@ Section 17.4 now has a proof review of unimodular coordinates and invertible
 coordinate ideals, including their finite workspace witnesses. It corrects the
 comparison with rational curves: rational specialization does not imply a
 rational projective point. The Gaussian unit factors and the elliptic
-noninvertible-ideal example are explicit. Section 17.5 and 18, the pointers added in Sections 6, 7
+noninvertible-ideal example are explicit. The next review covers Section 17.5
+and Sections 17.6.1–17.6.5, through Corollary 17.37: normalization, conductor
+certificates, the discrete boundary place, the singular-curve criterion and
+its structural consequences. It distinguishes normality in the fraction field
+from integral closure in a larger Hahn field, and does not infer a failed
+curve lift from a non-normality example. The reducible-curve theorem now
+explicitly requires `Γ ≠ 0`. The application review now covers Sections 17.6.6–17.6.8: it restores the
+irreducibility hypothesis in the superelliptic theorem, expands ramification
+and the seventh-order certificate, and checks arithmetic families and the
+Gaussian existence dichotomy. A real isolated node illustrates why a real
+normalization preimage is required. Sections 17.6.9 onward and 18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to
 source C15. The other batch-29 material remains outside it: Section 18.6, the credits, corrections and remarks added for
 source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
 appendices. Section 18.6 was appended at the end of Section 18, so no section,
-statement or equation number changed. The batch-31 material of source C16 is also
-unreviewed: Section 17.6, the credits and status notes added in Sections 1, 16, 17, 20
+statement or equation number changed. The later batch-31 material of source C16 remains
+unreviewed: Section 17.6.9 onward, the remaining credits and status notes in Sections 1, 16, 17, 20
 and 21, Questions 21.23–21.30 and the appendix additions. Section 17.6 was appended at the
 end of Section 17, after Section 17.5, so again no section, statement or equation number
 changed. Inserting Section 15
@@ -988,9 +998,10 @@ literature.
 - Source C15 says that its example `t^{-1}(1 + t²)^{1/2}` for `Γ = Z` shows that
   "normality really is unavailable" even there. For `Γ = Z` the ring is the
   polynomial ring `𝕜[ω]`, which is normal; the element shows only that the ring is
-  not integrally closed in the Hahn field, which is what matters for lifting through a
-  normalization. It is printed in that form in Section 17.5, next to C14's same
-  example; C15's proof audit words the point correctly.
+  not integrally closed in the larger Hahn field. That root lies outside the
+  fraction field and cannot obstruct a normalization lift of a nonconstant
+  curve point over `𝕜[ω]`. Section 17.5 now explains this distinction next to
+  C14's example; non-normality in other workspaces is a separate fact.
 - Source C15's abstract says that semiabelian rigidity follows "consequently" from
   logarithmic annihilation; its proof goes through the abelian quotient and the torus
   kernel (Theorem 18.4), and no derivation from Corollary 18.18 is claimed. Its
@@ -1267,9 +1278,9 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 198 pages with no errors, warnings, undefined references,
-multiply defined labels or overfull boxes (one page more than the C16 write alone, from the
-concurrent proof review merged with it). (The text at `4253328`, before source C16
+The current build gives 200 pages with no errors, warnings, undefined
+references, multiply defined labels or overfull boxes. The earlier combined
+C16/projective review built to 198 pages. (The text at `4253328`, before source C16
 was integrated, built to 178 pages with the same MiKTeX installation and the same zero
 counts, and every label it defines has the same number in the present build. The text
 at `6f47cf9`, before source
